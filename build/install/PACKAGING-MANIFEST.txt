@@ -1,0 +1,110 @@
+This file lists all the files that need to be packaged for release and where
+they reside in the GMAT repositories. The list below was created in preparation
+for the R2011a beta release, and should be updated prior to every future
+release.
+
+This file layout represents the layout of the system once installed by the user.
+Platform-dependent variations are noted for the bin directory. In cases where
+the entire directory structure is present in the source location, individual
+files are not listed.
+
+The placeholders used below are:
+    <network>:      \\mesa-file\595\GMAT
+    <SF repo>:      https://gmat.svn.sourceforge.net/svnroot/gmat
+    <Jazz repo>:    https://gs580s-jazz.ndc.nasa.gov/svn/GMAT
+
+bin/ (Windows)
+    GMAT.exe                            source: <network>\Builds\windows\<date>
+    GMAT.ini                            source: <SF repo>/trunk/application/
+    gmat_startup_file.txt               source: <SF repo>/trunk/application/
+    libCcsdsEphemerisFile.dll           source: <network>\Builds\windows\<date>
+    libDataFile.dll                     source: <network>\Builds\windows\<date>
+    libGmatBase.dll                     source: <network>\Builds\windows\<date>
+    libpcre-0.dll                       source: <network>\Builds\windows\gcc_lib\other
+    libpcrecpp-0.dll                    source: <network>\Builds\windows\gcc_lib\other
+    mingwm10.dll                        source: <network>\Builds\windows\gcc_lib\other
+    wxbase28_gcc_custom.dll             source: <network>\Builds\windows\gcc_lib\wx2.8.11
+    wxmsw28_adv_gcc_custom.dll          source: <network>\Builds\windows\gcc_lib\wx2.8.11
+    wxmsw28_core_gcc_custom.dll         source: <network>\Builds\windows\gcc_lib\wx2.8.11
+    wxmsw28_gl_gcc_custom.dll           source: <network>\Builds\windows\gcc_lib\wx2.8.11
+    wxmsw28_netutils_gcc_custom.dll     source: <network>\Builds\windows\gcc_lib\wx2.8.11
+    wxmsw28_stc_gcc_custom.dll          source: <network>\Builds\windows\gcc_lib\wx2.8.11
+
+bin/ (Mac OS X)
+    <incomplete>
+
+bin/ (Linux)                            source: Thinking Systems FTP Server
+    GMAT
+    GMAT.ini
+    gmat_startup_file.txt
+    libCcsdsEphemerisFile.so
+    libDataFile.so
+    libGmatBase.so
+    RunGmat.sh
+    
+bin/lib/ (Linux only)                   source: Thinking Systems FTP Server
+    libpcrecpp.so.0
+    libpcrecpp.so.0.0.0  
+    libpcre.so.0      
+    libpcre.so.0.0.1  
+    libwx_base-2.8.so.0      
+    libwx_base_xml-2.8.so.0  
+    libwx_gtk2_aui-2.8.so.0   
+    libwx_gtk2_gl-2.8.so.0    
+    libwx_gtk2_qa-2.8.so.0        
+    libwx_gtk2_xrc-2.8.so.0
+    libwx_base_net-2.8.so.0  
+    libwx_gtk2_adv-2.8.so.0  
+    libwx_gtk2_core-2.8.so.0  
+    libwx_gtk2_html-2.8.so.0  
+    libwx_gtk2_richtext-2.8.so.0
+
+data/                                   source: <SF repo>/trunk/application/
+    *
+
+docs/
+    GMATAcceptanceTestPlan.pdf          source: ?
+    GMATArchitecturalSpec.pdf           source: ?
+    GMATCompilerSetup.pdf               source: ?
+    GMATInputRangeTestPlan.pdf          source: ?
+    GMATMathSpec.pdf                    source: ?
+    GMATMissionStatement.pdf            source: ?
+    GMATProductBrochure.pdf             source: ?
+    GMATQuickTables.pdf                 source: ?
+    GMATStyleGuide.pdf                  source: ?
+    GMATSystemTestPlan.pdf              source: ?
+    GMATUsersGuide.pdf                  source: ?
+    help/                               source: <SF repo>/trunk/application/
+        *
+
+matlab/                                 source: <SF repo>/trunk/application/
+    *
+
+output/
+    <empty>
+
+plugins/ (Windows)
+    libFminconOptimizer.dll             source: <network>\Builds\windows\<date>
+    libGmatEstimation.dll               source: <network>\Builds\windows\<date>
+    libMatlabInterface.dll              source: <network>\Builds\windows\<date>
+    proprietary/
+        <empty>
+
+plugins/ (Mac OS X)
+    <incomplete>
+    proprietary/
+        <empty>
+
+plugins/ (Linux)
+    <incomplete>
+    proprietary/
+        <empty>
+
+samples/                                source: <SF repo>/trunk/application/
+    *
+
+userfunctions/                          source: <SF repo>/trunk/application/
+    *
+
+License.txt                             source: <SF repo>/trunk/application/
+README.txt                              source: <SF repo>/trunk/application/
