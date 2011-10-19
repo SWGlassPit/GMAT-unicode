@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry version="5.0" xml:id="Vary" xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:xi="http://www.w3.org/2001/XInclude"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:m="http://www.w3.org/1998/Math/MathML"
+          xmlns:html="http://www.w3.org/1999/xhtml"
+          xmlns:db="http://docbook.org/ns/docbook">
+  <indexterm>
+    <primary>Vary</primary>
+  </indexterm>
+
+  <refmeta>
+    <refentrytitle>Vary</refentrytitle>
+
+    <refmiscinfo class="source">GMAT</refmiscinfo>
+
+    <refmiscinfo class="version">2011a</refmiscinfo>
+
+    <refmiscinfo class="manual">Commands</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>Vary</refname>
+
+    <refpurpose>Perform a vary command</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <synopsis></synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>The Vary command is used in conjunction with the Target and Optimize
+    Commands. The Vary command varies a particular parameter within the Target
+    and Optimize Commands until certain conditions are met. It is a highly
+    useful command for creating missions. Multiple Vary commands can be used
+    within the same targeting or optimizing sequence.</para>
+  </refsection>
+
+  <refsection>
+    <title>Options</title>
+
+    <para>Parameters Associated with All Solvers</para>
+
+    <variablelist>
+      <varlistentry>
+        <term>SolverName</term>
+
+        <listitem>
+          <para>The SolverName option allows the user to choose which solver
+          to assign to the vary command.</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>DefaultDC</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Any user defined solver</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Variable</term>
+
+        <listitem>
+          <para>The Variable option allows the user to select any single
+          element user defined parameter, except a number, to vary. For
+          example, DefaultIB.V, DefaultIB.N, DefaultIB.Element1, DefaultSC.TA,
+          Array(1,1), and Variable are all valid values. The three element
+          burn vector or multidimensional Arrays are not valid values.</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>DefaultIB.V</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Spacecrafy paremeter, Array element, Variable, or any
+                other single element user defined parameter, excluding
+                numbers</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>InitialGuess</term>
+
+        <listitem>
+          <para>The InitialGuess option allows the user to set the initial
+          guess for the selected Variable.</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0.5</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number, Array element, Variable, or any user
+                defined parameter that obeys the conditions for the selected
+                Variable object</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>km/s</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Lower</term>
+
+        <listitem>
+          <para>The Lower option allows the user to set Arg3 to the lower
+          bound of the quantity being varied.</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0.0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number, Array element, Variable, or any user
+                defined parameter (Upper &gt; Lower )</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Upper</term>
+
+        <listitem>
+          <para>The Upper option allows the user to set Arg4 to the upper
+          bound of the quantity being varied.</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>3.14159</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number, Array element, Variable, or any user
+                defined parameter (Upper &gt; Lower )</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para>Parameters Associated with Differential Corrector</para>
+
+    <variablelist>
+      <varlistentry>
+        <term>Perturbation</term>
+
+        <listitem>
+          <para>The Perturbation option is set by specifying a value for Arg1.
+          The value of Arg1 is the perturbation size in calculating the finite
+          difference derivative.</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>1e-4</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number, Array element, Variable, or any user
+                defined parameter &gt; 0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>MaxStep</term>
+
+        <listitem>
+          <para>The MaxStep option is set by specifying a value for Arg2. The
+          value of Arg2 limits the size of the step taken during an
+          interaction of the differential corrector.</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0.2</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number, Array element, Variable, or any user
+                defined parameter &gt; 0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para>Parameters Associated with fmincon Optimizer</para>
+
+    <variablelist>
+      <varlistentry>
+        <term>Additive Scale Factor</term>
+
+        <listitem>
+          <para>The AdditiveScaleFactor Field is used to nondimensionalize the
+          independent variable. fmincon sees only the nondimensional form of
+          the variable. The nondimensionalization is performed using the
+          following equation: x<subscript>n</subscript> =
+          (x<subscript>d</subscript> - a)/m . (x<subscript>n</subscript> is
+          the non-dimensional parameter. x<subscript>d</subscript> is the
+          dimensional parameter. a= additive scale factor. m= multiplicative
+          scale factor.)</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number, Array element, Variable, or any user
+                defined parameter</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Multiplicative Scale Factor</term>
+
+        <listitem>
+          <para>The MultiplicativeScaleFactor Field is used to
+          nondimensionalize the independent variable. fmincon sees only the
+          nondimensional form of the variable. The nondimensionalization is
+          performed using the following equation: x<subscript>n</subscript> =
+          (x<subscript>d</subscript> - a)/m . (x<subscript>n</subscript> is
+          the non-dimensional parameter. x<subscript>d</subscript> is the
+          dimensional parameter. a= additive scale factor. m= multiplicative
+          scale factor.)</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>1.0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number, Array element, Variable, or any user
+                defined parameter</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Examples</title>
+
+    <refsection>
+      <title>Script Syntax</title>
+
+      <programlisting><code>Vary SolverName(Variable=InitialGuess,{Perturbation=Arg1, MaxStep=Arg2, 
+  Lower=Arg3,...Upper=Arg4, AdditiveScalefactor=Arg6,MultiplicativeScalefactor=Arg6})</code></programlisting>
+    </refsection>
+
+    <refsection>
+      <title>Script Examples</title>
+
+      <programlisting><code>% Impulsive Burn Vary Command
+
+Vary DefaultDC(DefaultIB.V = 0.5, {Perturbation = 0.0001, MaxStep = 0.2, 
+Lower = 0, Upper = 3.14159});</code></programlisting>
+    </refsection>
+  </refsection>
+</refentry>

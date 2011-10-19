@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry version="5.0" xml:id="NonLinearConstraint"
+          xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:xi="http://www.w3.org/2001/XInclude"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:m="http://www.w3.org/1998/Math/MathML"
+          xmlns:html="http://www.w3.org/1999/xhtml"
+          xmlns:db="http://docbook.org/ns/docbook">
+  <indexterm>
+    <primary>NonLinearConstraint</primary>
+  </indexterm>
+
+  <refmeta>
+    <refentrytitle>NonLinearConstraint</refentrytitle>
+
+    <refmiscinfo class="source">GMAT</refmiscinfo>
+
+    <refmiscinfo class="version">2011a</refmiscinfo>
+
+    <refmiscinfo class="manual">Commands</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>NonLinearConstraint</refname>
+
+    <refpurpose>Apply nonlinear constraint</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <synopsis></synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>The nonlinear constraints in GMAT allows spacecraft properties,
+    variable or array to apply constraint values, and also NonLinearConstraint
+    can be created in optimize sequences. By using the fmincon optimizer,
+    users can give various nonlinear constraints.</para>
+
+    <refsection>
+      <title>Possible Coupling with Other Objects</title>
+
+      <itemizedlist>
+        <listitem>
+          <para>Optimize Command</para>
+
+          <itemizedlist>
+            <listitem>
+              <para>NonLinearConstraints are used in Optimize Command.</para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+
+        <listitem>
+          <para>Optimizers (Solvers)</para>
+
+          <itemizedlist>
+            <listitem>
+              <para>Must set optimizer in order to apply
+              NonLinearConstraints.</para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+      </itemizedlist>
+    </refsection>
+  </refsection>
+
+  <refsection>
+    <title>Options</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>OptimizeName</term>
+
+        <listitem>
+          <para>The OptimizerName option allows the user to specify which
+          solver to use in satisfying nonlinear constraints.</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>SQP1</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Any existing fmincon solver</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>{logical expression}</term>
+
+        <listitem>
+          <para>The logical expression field allows the user to specify the
+          constraint to be satisfied upon convergence of the solver given by
+          OptimizerName. Arg1 and Arg2 can be any of the following: Real
+          Number, a 1-D Array (column vector),Array element, Variable,
+          Spacecraft Parameter or any other numeric user defined parameter. If
+          Arg1 is a 1-D Array, then Arg2 must be a 1-D Array with the same
+          dimensions and vice-versa.</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>DefaultSC.SMA = 7000</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Arg1 &lt;= Arg2 where &lt;= can be &gt;= ; &lt;= ;
+                =</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Examples</title>
+
+    <refsection>
+      <title>Script Syntax</title>
+
+      <programlisting><code>NonLinearConstraint OptimizerName ({logical expression})</code></programlisting>
+    </refsection>
+
+    <refsection>
+      <title>Script Examples</title>
+
+      <programlisting><code>% Constrain the SMA of Sat to be 7000 km, using fminconSQP
+NonLinearConstraint fminconSQP( Sat.SMA = 7000 );
+
+% Constrain the SMA of Sat to be less than or equal to 7000 km, using fminconSQP
+NonLinearConstraint fminconSQP( Sat.SMA &lt;= 7000 );
+
+% Constrain the SMA of Sat to be greater than or equal to 7000 km, using fminconSQP
+NonLinearConstraint fminconSQP( Sat.SMA &gt;= 7000a );</code></programlisting>
+    </refsection>
+  </refsection>
+</refentry>

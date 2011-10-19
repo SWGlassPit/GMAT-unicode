@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry version="5.0" xml:id="LibrationPoint"
+         xmlns="http://docbook.org/ns/docbook"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:svg="http://www.w3.org/2000/svg"
+         xmlns:m="http://www.w3.org/1998/Math/MathML"
+         xmlns:html="http://www.w3.org/1999/xhtml"
+         xmlns:db="http://docbook.org/ns/docbook">
+  <refmeta>
+    <refentrytitle>LibrationPoint</refentrytitle>
+
+    <refmiscinfo class="source">GMAT</refmiscinfo>
+
+    <refmiscinfo class="version">2011a</refmiscinfo>
+
+    <refmiscinfo class="manual">Resources</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>Libration Point</refname>
+
+    <refpurpose>A libration point.</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <synopsis>Create LibrationPoint <replaceable>name</replaceable>
+<replaceable>name</replaceable>.<replaceable>field</replaceable> = <replaceable>value</replaceable>
+</synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Description</title>
+
+    <para> A Libration point, also called a Lagrange point, is a point of
+	equilibrium in the restricted three-body problem.  
+   </para>
+  </refsection>
+  
+  <refsection>
+    <title>Fields</title>
+    
+    <variablelist>
+        <varlistentry>
+            <term>Primary</term>
+
+            <listitem>
+                <para>The Primary field allows you to define the 
+               body treated as the primary in the calculation of the
+            libration point location.  (See Math. Spec for more details).</para>
+                
+                <variablelist spacing="compact">
+                    <varlistentry>
+                        <term>Default</term>
+                        
+                        <listitem>
+                            <para>Sun</para>
+                        </listitem>
+                    </varlistentry>
+                    
+                    <varlistentry>
+                        <term>Limits</term>
+                        
+                        <listitem>
+                            <para>Sun, Mercury,
+            Venus, Earth, Luna, Mars, Jupiter, Saturn, Uranus, Neptune,
+            Pluto, or any Barycenter. ( The Primary and Secondary bodies
+            cannot be the same )</para>
+                        </listitem>
+                    </varlistentry>
+                    
+                    <varlistentry>
+                        <term>Units</term>
+                        
+                        <listitem>
+                            <para>N/A</para>
+                        </listitem>
+                    </varlistentry>
+                </variablelist>
+            </listitem>
+        </varlistentry>
+        
+        <varlistentry>
+            <term>Secondary</term>
+
+            <listitem>
+                <para>The Secondary field allows you to define the 
+               body treated as the secondary in the calculation of the
+            libration point location.</para>
+                
+                <variablelist spacing="compact">
+                    <varlistentry>
+                        <term>Default</term>
+                        
+                        <listitem>
+                            <para>Earth</para>
+                        </listitem>
+                    </varlistentry>
+                    
+                    <varlistentry>
+                        <term>Limits</term>
+                        
+                        <listitem>
+                            <para>Sun, Mercury, Venus, Earth, Luna, Mars, Jupiter, Saturn, Uranus,
+            Neptune, Pluto, or any Barycenter. ( The Primary and Secondary
+            bodies cannot be the same )</para>
+                        </listitem>
+                    </varlistentry>
+                    
+                    <varlistentry>
+                        <term>Units</term>
+                        
+                        <listitem>
+                            <para>N/A</para>
+                        </listitem>
+                    </varlistentry>
+                </variablelist>
+            </listitem>
+        </varlistentry>
+        
+        <varlistentry>
+            <term>Point</term>
+
+            <listitem>
+                <para>The Point field specifies which libration point
+            the object corresponds to.</para>
+                
+                <variablelist spacing="compact">
+                    <varlistentry>
+                        <term>Default</term>
+                        
+                        <listitem>
+                            <para>L1</para>
+                        </listitem>
+                    </varlistentry>
+                    
+                    <varlistentry>
+                        <term>Limits</term>
+                        
+                        <listitem>
+                            <para>L1, L2, L3, L4, L5</para>
+                        </listitem>
+                    </varlistentry>
+                    
+                    <varlistentry>
+                        <term>Units</term>
+                        
+                        <listitem>
+                            <para>N/A</para>
+                        </listitem>
+                    </varlistentry>
+                </variablelist>
+            </listitem>
+        </varlistentry>
+    </variablelist>
+  </refsection>
+     
+  <refsection>
+    <title>Examples</title>
+
+    <refsection>
+      <title>Script Syntax</title>
+
+      <programlisting><code>
+Create Libration Point;
+.Primary = ;
+.Secondary = ;
+.Point = &lt;'L1', 'L2', 'L3', 'L4', 'L5'&gt;</code></programlisting>
+    </refsection>
+
+    <refsection>
+      <title>Sample Script</title>
+
+      <programlisting><code>Create LibrationPoint Libration1;
+GMAT Libration1.Primary = Sun;
+GMAT Libration1.Secondary = Earth;
+GMAT Libration1.Point = 'L1';</code></programlisting>
+    </refsection>
+  </refsection>
+</refentry>

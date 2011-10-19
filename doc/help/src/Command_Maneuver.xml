@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry version="5.0" xml:id="Maneuver"
+          xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:xi="http://www.w3.org/2001/XInclude"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:m="http://www.w3.org/1998/Math/MathML"
+          xmlns:html="http://www.w3.org/1999/xhtml"
+          xmlns:db="http://docbook.org/ns/docbook">
+  <indexterm>
+    <primary>Maneuver</primary>
+  </indexterm>
+
+  <refmeta>
+    <refentrytitle>Maneuver</refentrytitle>
+
+    <refmiscinfo class="source">GMAT</refmiscinfo>
+
+    <refmiscinfo class="version">2011a</refmiscinfo>
+
+    <refmiscinfo class="manual">Commands</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>Maneuver</refname>
+
+    <refpurpose>Perform a maneuver command</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <synopsis></synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>The Maneuver command is placed in the mission tree and applies a
+    selected impulsive burn to a selected spacecraft. A finite burn requires
+    something else to be applied.</para>
+  </refsection>
+
+  <refsection>
+    <title>Options</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>BurnName</term>
+
+        <listitem>
+          <para>The BurnName field allows the user to choose between any
+          previously created impulsive burn. As an example, to maneuver
+          DefaultSC using DefaultIB, the script line would appear as Manevuer
+          DefaultIB(DefaultSC).</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>DefaultIB</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Any impulsive burn existing in the resource tree or
+                created in the script</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>SpacecraftName</term>
+
+        <listitem>
+          <para>The SpacecraftName field allows the user to select which
+          spacecraft to maneuver using the maneuver selected in the BurnName
+          field.</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>DefaultSC</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Any spacecraft existing in the resource tree or created
+                in the script</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Examples</title>
+
+    <refsection>
+      <title>Script Syntax</title>
+
+      <programlisting><code>Maneuver BurnName (SpacecraftName);</code></programlisting>
+    </refsection>
+
+    <refsection>
+      <title>Script Examples</title>
+
+      <programlisting><code>% Impulsive Burn
+Maneuver DefaultIB(DefaultSC);</code></programlisting>
+    </refsection>
+  </refsection>
+</refentry>

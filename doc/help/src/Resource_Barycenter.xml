@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry version="5.0" xml:id="Barycenter"
+          xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:xi="http://www.w3.org/2001/XInclude"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:m="http://www.w3.org/1998/Math/MathML"
+          xmlns:html="http://www.w3.org/1999/xhtml"
+          xmlns:db="http://docbook.org/ns/docbook">
+<indexterm>
+    <primary>BaryCenter</primary>
+</indexterm>
+		  
+  <refmeta>
+    <refentrytitle>Barycenter</refentrytitle>
+
+    <refmiscinfo class="source">GMAT</refmiscinfo>
+
+    <refmiscinfo class="version">2011a</refmiscinfo>
+
+    <refmiscinfo class="manual">Resources</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>Barycenter</refname>
+
+    <refpurpose>A barycenter.</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <synopsis>Create Barycenter <replaceable>name</replaceable>
+<replaceable>name</replaceable>.BodyNames = {<replaceable>bodyName1,bodyName2,...,bodyNameN</replaceable>}
+</synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>A barycenter is the center of mass of one or more celestial bodies and
+	can be used as the origin of a <link
+    linkend="CoordinateSystem">CoordinateSystem</link>, a reference point in an OrbitView,
+	or as one of the points in a <link
+    linkend="LibrationPoint">LibrationPoint</link>.</para>
+  </refsection>
+
+  <refsection>
+    <title>Fields</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>BodyNames</term>
+        
+        <listitem>
+          <para>The BodyNames field is a list that contains the bodies used to
+          define a barycenter. In a script, the list must be surrounded by
+          curly braces. (i.e. BaryCenterName.BodyNames = { Earth, Luna
+          })
+		  <emphasis><indexterm><primary>BodyNames</primary></indexterm></emphasis>
+		  </para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>Earth, Luna</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Sun, Mercury, Venus, Earth, Luna, Mars, Jupiter, Saturn,
+                Uranus, Neptune, Pluto, or any user-defined celestial body. At least one body must be
+                selected!</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>N/A</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Interactions</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>Coordinate Systems</term>
+
+        <listitem>
+          <para>Interacts with the barycenter object selecting it as the
+          origin of the coordinate system or as a primary or secondary point
+          for defining the axes.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>OpenGL Plot</term>
+
+        <listitem>
+          <para>It can be selected as a celestial object to be drawn onto the
+          plot, a View Point Reference, or the View Direction within the
+          dialog box.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Examples</title>
+
+    <programlisting><code>Create Barycenter EarthMoonBary;
+GMAT EarthMoonBary.BodyNames = {Earth, Luna};</code></programlisting>
+  </refsection>
+</refentry>

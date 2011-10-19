@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry version="5.0" xml:id="ScriptEvent"
+          xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:xi="http://www.w3.org/2001/XInclude"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:m="http://www.w3.org/1998/Math/MathML"
+          xmlns:html="http://www.w3.org/1999/xhtml"
+          xmlns:db="http://docbook.org/ns/docbook">
+  <indexterm>
+    <primary>ScriptEvent</primary>
+  </indexterm>
+
+  <refmeta>
+    <refentrytitle>ScriptEvent</refentrytitle>
+
+    <refmiscinfo class="source">GMAT</refmiscinfo>
+
+    <refmiscinfo class="version">2011a</refmiscinfo>
+
+    <refmiscinfo class="manual">Commands</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>ScriptEvent</refname>
+
+    <refpurpose>Perform a ScriptEvent command</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <synopsis></synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Overview</title>
+
+    <para>The ScriptEvent command allows a user to enter in script within the
+    GUI in the mission sequence. This can be useful in a number of ways if its
+    easier to enter the script than to use the GUI interface. Also, if
+    multiple things needed to be changed rapidly, this could be useful.
+    Additionally, the ScriptEvent allows a user to have more freedom if the
+    GUI is problematic and won't allow the user to perform the desired
+    operation.</para>
+  </refsection>
+
+  <refsection>
+    <title>Options</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>&lt;Statements&gt;</term>
+
+        <listitem>
+          <variablelist>
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Any valid line of GMAT script</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Examples</title>
+
+    <refsection>
+      <title>Script Syntax</title>
+
+      <programlisting><code>BeginScript
+     &lt;Statements&gt;
+EndScript;</code></programlisting>
+    </refsection>
+
+    <refsection>
+      <title>Script Examples</title>
+
+      <programlisting><code>% Assignment Command inside Script Event
+
+BeginScript
+     GMAT testVar = 24;
+EndScript;</code></programlisting>
+    </refsection>
+  </refsection>
+</refentry>

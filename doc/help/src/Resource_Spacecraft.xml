@@ -1,0 +1,1297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xml:id="Spacecraft"
+          version="5.0" xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:xi="http://www.w3.org/2001/XInclude"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:m="http://www.w3.org/1998/Math/MathML"
+          xmlns:html="http://www.w3.org/1999/xhtml"
+          xmlns:db="http://docbook.org/ns/docbook">
+  <indexterm>
+    <primary>Spacecraft</primary>
+  </indexterm>
+
+  <refmeta>
+    <refentrytitle>Spacecraft</refentrytitle>
+
+    <refmiscinfo class="source">GMAT</refmiscinfo>
+
+    <refmiscinfo class="version">2011a</refmiscinfo>
+
+    <refmiscinfo class="manual">Resources</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>Spacecraft</refname>
+
+    <refpurpose>A spacecraft</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <synopsis>Create Spacecraft <replaceable>name</replaceable>
+<replaceable>name</replaceable>.<replaceable>field</replaceable> = <replaceable>value</replaceable>
+…</synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>A Spacecraft resource contains information about the spacecraft's
+    orbit, its attitude, its physical parameters (such as mass and drag
+    coefficient), and any attached hardware, including thrusters and <link
+    linkend="FuelTank">fuel tanks</link>. It also contains information about
+    the visual model used to represent it in an OrbitView.</para>
+  </refsection>
+
+  <refsection>
+    <title>Fields</title>
+
+    <refsection>
+      <title>Epoch</title>
+
+      <variablelist>
+        <varlistentry>
+          <term><literal>DateFormat</literal></term>
+
+          <listitem>
+            <para>The entry format and time system of the Epoch field.</para>
+
+            <caution>
+              <para>The definition of the modified Julian date is not the same
+              as other software. Most software uses the Smithsonian
+              Astrophysical Observatory definition of 1957, where
+              <inlineequation>
+                  <mathphrase>JD</mathphrase>
+                </inlineequation> is the full Julian date:<informalequation>
+                  <mathphrase>MJD = JD - 2400000.5</mathphrase>
+                </informalequation>GMAT, however, uses the following
+              definition:</para>
+
+              <informalequation>
+                <mathphrase>MJD = JD - 2430000.0</mathphrase>
+              </informalequation>
+            </caution>
+
+            <informaltable>
+              <tgroup cols="2">
+                <colspec align="center" />
+
+                <thead>
+                  <row>
+                    <entry align="center">Value</entry>
+
+                    <entry align="center">Description</entry>
+                  </row>
+                </thead>
+
+                <tbody>
+                  <row>
+                    <entry><literal>A1Gregorian</literal></entry>
+
+                    <entry>A.1 time scale, Gregorian format ("DD MMM YYYY
+                    hh:mm:ss.ddd")</entry>
+                  </row>
+
+                  <row>
+                    <entry><literal>A1ModJulian</literal></entry>
+
+                    <entry>A.1 time scale, modified Julian format</entry>
+                  </row>
+
+                  <row>
+                    <entry><literal>TAIGregorian</literal></entry>
+
+                    <entry>TAI time scale</entry>
+                  </row>
+
+                  <row>
+                    <entry><literal>TAIModJulian</literal></entry>
+
+                    <entry><emphasis>Default</emphasis></entry>
+                  </row>
+
+                  <row>
+                    <entry><literal>TTGregorian</literal></entry>
+
+                    <entry>TT time scale</entry>
+                  </row>
+
+                  <row>
+                    <entry><literal>TTModJulian</literal></entry>
+
+                    <entry></entry>
+                  </row>
+
+                  <row>
+                    <entry><literal>UTCGregorian</literal></entry>
+
+                    <entry>UTC time scale</entry>
+                  </row>
+
+                  <row>
+                    <entry><literal>UTCModJulian</literal></entry>
+
+                    <entry></entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </informaltable>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><literal>Epoch</literal></term>
+
+          <listitem>
+            <para>The initial epoch of the spacecraft's state and
+            properties.</para>
+
+            <variablelist spacing="compact">
+              <varlistentry>
+                <term>Type</term>
+
+                <listitem>
+                  <para>string</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>Default</term>
+
+                <listitem>
+                  <para><literal>21545</literal> (TAIModJulian format)</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>Limits</term>
+
+                <listitem>
+                  <para><literal>04 Oct 1957 12:00:00.000</literal> or later
+                  in all time systems (<literal>6116.0</literal> modified
+                  Julian)</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>Units</term>
+
+                <listitem>
+                  <para>days (modified Julian format only)</para>
+                </listitem>
+              </varlistentry>
+            </variablelist>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </refsection>
+
+    <refsection>
+      <title>Orbit</title>
+
+      <variablelist>
+        <varlistentry>
+          <term><literal>CoordinateSystem</literal></term>
+
+          <listitem>
+            <para>The Coordinate System field allows the user to choose which
+            coordinate system with which to define the orbit state vector. The
+            Coordinate System field has a dependency upon the State Type
+            field. If the coordinate system chosen by the user does not have a
+            gravitational body at the origin, then the state types Keplerian,
+            ModifiedKeplerian, and Equinoctial are not permitted. This is
+            because these state types require a µ value.</para>
+
+            <variablelist spacing="compact">
+              <varlistentry>
+                <term>Type</term>
+
+                <listitem>
+                  <para>enumeration</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>Values</term>
+
+                <listitem>
+                  <itemizedlist spacing="compact">
+                    <listitem>
+                      <para><literal>EarthMJ2000Eq</literal> (default)</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><literal>EarthMJ2000Ec</literal></para>
+                    </listitem>
+
+                    <listitem>
+                      <para><literal>EarthFixed</literal></para>
+                    </listitem>
+
+                    <listitem>
+                      <para>any user-defined coordinate system</para>
+                    </listitem>
+                  </itemizedlist>
+                </listitem>
+              </varlistentry>
+            </variablelist>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><literal>DisplayStateType</literal></term>
+
+          <listitem>
+            <para>The State Type field allows the user to configure the type
+            of state vector that they wish to use. The State Type field has a
+            dependency upon the Coordinate System field. If the coordinate
+            system chosen by the user does not have a gravitational body at
+            the origin, then the state types Keplerian, ModifiedKeplerian, and
+            Equinoctial are not permitted. This is because these state types
+            require a µ value.</para>
+
+            <variablelist spacing="compact">
+              <varlistentry>
+                <term>Type</term>
+
+                <listitem>
+                  <para>enumeration</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>Values</term>
+
+                <listitem>
+                  <itemizedlist spacing="compact">
+                    <listitem>
+                      <para><literal>Cartesian</literal> (default)</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><literal>Keplerian</literal></para>
+                    </listitem>
+
+                    <listitem>
+                      <para><literal>ModifiedKeplerian</literal></para>
+                    </listitem>
+
+                    <listitem>
+                      <para><literal>SphericalAZFPA</literal></para>
+                    </listitem>
+
+                    <listitem>
+                      <para><literal>SphericalRADEC</literal></para>
+                    </listitem>
+
+                    <listitem>
+                      <para><literal>Equinoctial</literal></para>
+                    </listitem>
+                  </itemizedlist>
+                </listitem>
+              </varlistentry>
+            </variablelist>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+
+      <refsection>
+        <title>Cartesian State</title>
+
+        <variablelist>
+          <varlistentry>
+            <term><literal>X</literal></term>
+
+            <listitem>
+              <para>X is the x-component of the Spacecraft state in the
+              coordinate system chosen in the Spacecraft Coordinate System
+              field.</para>
+
+              <variablelist spacing="compact">
+                <varlistentry>
+                  <term>Type</term>
+
+                  <listitem>
+                    <para>real number</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Default</term>
+
+                  <listitem>
+                    <para>7100</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Limits</term>
+
+                  <listitem>
+                    <para></para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Units</term>
+
+                  <listitem>
+                    <para>km</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><literal>Y</literal></term>
+
+            <listitem>
+              <para>Y is the y-component of the Spacecraft state in the
+              coordinate system chosen in the Spacecraft Coordinate System
+              field.</para>
+
+              <variablelist spacing="compact">
+                <varlistentry>
+                  <term>Type</term>
+
+                  <listitem>
+                    <para>real number</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Default</term>
+
+                  <listitem>
+                    <para>0</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Limits</term>
+
+                  <listitem>
+                    <para></para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Units</term>
+
+                  <listitem>
+                    <para>km</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><literal>Z</literal></term>
+
+            <listitem>
+              <para>Z is the z-component of the Spacecraft state in the
+              coordinate system chosen in the Spacecraft Coordinate System
+              field.</para>
+
+              <variablelist spacing="compact">
+                <varlistentry>
+                  <term>Type</term>
+
+                  <listitem>
+                    <para>real number</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Default</term>
+
+                  <listitem>
+                    <para>1300</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Limits</term>
+
+                  <listitem>
+                    <para></para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Units</term>
+
+                  <listitem>
+                    <para>km</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><literal>VX</literal></term>
+
+            <listitem>
+              <para>VX is the x-component of the Spacecraft velocity in the
+              coordinate system chosen in the Spacecraft Coordinate System
+              field.</para>
+
+              <variablelist spacing="compact">
+                <varlistentry>
+                  <term>Type</term>
+
+                  <listitem>
+                    <para>real number</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Default</term>
+
+                  <listitem>
+                    <para>0</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Limits</term>
+
+                  <listitem>
+                    <para></para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Units</term>
+
+                  <listitem>
+                    <para>km</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><literal>VY</literal></term>
+
+            <listitem>
+              <para>VY is the y-component of the Spacecraft velocity in the
+              coordinate system chosen in the Spacecraft Coordinate System
+              field.</para>
+
+              <variablelist spacing="compact">
+                <varlistentry>
+                  <term>Type</term>
+
+                  <listitem>
+                    <para>real number</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Default</term>
+
+                  <listitem>
+                    <para>7.35</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Limits</term>
+
+                  <listitem>
+                    <para></para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Units</term>
+
+                  <listitem>
+                    <para>km</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><literal>VZ</literal></term>
+
+            <listitem>
+              <para>VZ is the z-component of the Spacecraft velocity in the
+              coordinate system chosen in the Spacecraft Coordinate System
+              field.</para>
+
+              <variablelist spacing="compact">
+                <varlistentry>
+                  <term>Type</term>
+
+                  <listitem>
+                    <para>real number</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Default</term>
+
+                  <listitem>
+                    <para>1</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Limits</term>
+
+                  <listitem>
+                    <para></para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Units</term>
+
+                  <listitem>
+                    <para>km</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </refsection>
+
+      <refsection xml:id="SpacecraftDisplayStateTypeKeplerian">
+        <title>Keplerian State</title>
+
+        <variablelist>
+          <varlistentry>
+            <term><literal>SMA</literal></term>
+
+            <listitem>
+              <para>The SMA field is the spacecraft orbit's osculating
+              Keplerian semimajor axis in the coordinate system chosen in the
+              Spacecraft Coordinate System field. SMA must be strictly greater
+              than 1 m or less than -1 m to avoid numerical issues in the
+              conversions to other state types. For circular and elliptical
+              orbits ( 0 &lt;= ECC &lt; 0.9999999 ) SMA should only be greater
+              than 1 m and for hyperbolic orbits (ECC &gt; 1.0000001) SMA
+              should be less than -1 m. GMAT does not support the creation of
+              parabolic orbits.</para>
+
+              <variablelist spacing="compact">
+                <varlistentry>
+                  <term>Type</term>
+
+                  <listitem>
+                    <para>real number</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Default</term>
+
+                  <listitem>
+                    <para></para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Limits</term>
+
+                  <listitem>
+                    <informalequation>
+                      <mathphrase>|SMA| &gt; 1e-3 km</mathphrase>
+                    </informalequation>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Units</term>
+
+                  <listitem>
+                    <para>km</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><literal>ECC</literal></term>
+
+            <listitem>
+              <para>The ECC field is the spacecraft orbit's osculating
+              eccentricity. For circular or elliptic orbits, ECC must be
+              greater than or equal to 0.0, and less than or equal to
+              0.9999999 to avoid numerical issues in the conversion to other
+              state types as the Keplerian elements are undefined for
+              parabolic orbits. For hyperbolic orbits ECC must be greater than
+              or equal to 1.0000001. See also the SMA description.</para>
+
+              <variablelist spacing="compact">
+                <varlistentry>
+                  <term>Type</term>
+
+                  <listitem>
+                    <para>real number</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Default</term>
+
+                  <listitem>
+                    <para></para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Limits</term>
+
+                  <listitem>
+                    <informalequation>
+                      <mathphrase>0.0 &lt;= ECC &lt;= 0.9999999 or ECC &gt;=
+                      1.0000001</mathphrase>
+                    </informalequation>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Units</term>
+
+                  <listitem>
+                    <para>none</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><literal>INC</literal></term>
+
+            <listitem>
+              <para>The INC field is the spacecraft orbit's osculating
+              inclination, in degrees, with respect to the selected coordinate
+              system.</para>
+
+              <variablelist spacing="compact">
+                <varlistentry>
+                  <term>Type</term>
+
+                  <listitem>
+                    <para>real number</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Default</term>
+
+                  <listitem>
+                    <para></para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Limits</term>
+
+                  <listitem>
+                    <para></para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Units</term>
+
+                  <listitem>
+                    <para>degrees</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><literal>RAAN</literal></term>
+
+            <listitem>
+              <para>The RAAN field is the spacecraft orbit's osculating right
+              ascension of the ascending node, in degrees, with respect to the
+              selected coordinate system.</para>
+
+              <variablelist spacing="compact">
+                <varlistentry>
+                  <term>Type</term>
+
+                  <listitem>
+                    <para>real number</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Default</term>
+
+                  <listitem>
+                    <para></para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Limits</term>
+
+                  <listitem>
+                    <para></para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Units</term>
+
+                  <listitem>
+                    <para>degrees</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><literal>AOP</literal></term>
+
+            <listitem>
+              <para>The AOP field is the spacecraft orbit's osculating
+              argument of periapsis, in degrees, with respect to the selected
+              coordinate system.</para>
+
+              <variablelist spacing="compact">
+                <varlistentry>
+                  <term>Type</term>
+
+                  <listitem>
+                    <para>real number</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Default</term>
+
+                  <listitem>
+                    <para></para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Limits</term>
+
+                  <listitem>
+                    <para></para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Units</term>
+
+                  <listitem>
+                    <para>degrees</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><literal>TA</literal></term>
+
+            <listitem>
+              <para>The TA field is the spacecraft orbit's osculating true
+              anomaly.</para>
+
+              <variablelist spacing="compact">
+                <varlistentry>
+                  <term>Type</term>
+
+                  <listitem>
+                    <para>real number</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Default</term>
+
+                  <listitem>
+                    <para></para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Limits</term>
+
+                  <listitem>
+                    <para></para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Units</term>
+
+                  <listitem>
+                    <para>degrees</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </refsection>
+
+      <refsection>
+        <title>ModifiedKeplerian State</title>
+
+        <variablelist>
+          <varlistentry>
+            <term><literal>RadPer</literal></term>
+
+            <listitem>
+              <para>The RadPer field is the spacecraft orbit's osculating
+              radius of periapsis. RadPer must be greater than zero.</para>
+
+              <variablelist>
+                <varlistentry>
+                  <term>Type</term>
+
+                  <listitem>
+                    <para>real number</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Default</term>
+
+                  <listitem>
+                    <para></para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Limits</term>
+
+                  <listitem>
+                    <informalequation>
+                      <mathphrase>RadPer &gt; 0</mathphrase>
+                    </informalequation>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Units</term>
+
+                  <listitem>
+                    <para>km</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><literal>RadApo</literal></term>
+
+            <listitem>
+              <para>The RadApo field is the spacecraft orbit's osculating
+              radius of apoapsis. RadApo must be strictly greater than or less
+              than zero. When RadApo is negative, the orbit is
+              hyperbolic.</para>
+
+              <para><variablelist>
+                  <varlistentry>
+                    <term>Type</term>
+
+                    <listitem>
+                      <para>real number</para>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Default</term>
+
+                    <listitem>
+                      <para></para>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Limits</term>
+
+                    <listitem>
+                      <informalequation>
+                        <alt>RadApo ~= 0</alt>
+
+                        <m:math>
+                          <m:mrow>
+                            <m:mi>RadApo</m:mi>
+
+                            <m:mo></m:mo>
+
+                            <m:mn>0</m:mn>
+                          </m:mrow>
+                        </m:math>
+                      </informalequation>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Units</term>
+
+                    <listitem>
+                      <para>km</para>
+                    </listitem>
+                  </varlistentry>
+                </variablelist></para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><literal>INC</literal></term>
+
+            <listitem>
+              <para>See the <xref
+              linkend="SpacecraftDisplayStateTypeKeplerian" /> section for a
+              description of this field.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><literal>RAAN</literal></term>
+
+            <listitem>
+              <para>See the <xref
+              linkend="SpacecraftDisplayStateTypeKeplerian" /> section for a
+              description of this field.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><literal>AOP</literal></term>
+
+            <listitem>
+              <para>See the <xref
+              linkend="SpacecraftDisplayStateTypeKeplerian" /> section for a
+              description of this field.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><literal>TA</literal></term>
+
+            <listitem>
+              <para>See the <xref
+              linkend="SpacecraftDisplayStateTypeKeplerian" /> section for a
+              description of this field.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </refsection>
+
+      <refsection>
+        <title>SphericalAZFPA State</title>
+
+        <para><variablelist>
+            <varlistentry>
+              <term><literal>RMAG</literal></term>
+
+              <listitem>
+                <para>The RMAG field allows the user to set the magnitude of
+                the spacecraft's position vector.</para>
+
+                <variablelist>
+                  <varlistentry>
+                    <term>Type</term>
+
+                    <listitem>
+                      <para>real number</para>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Default</term>
+
+                    <listitem>
+                      <para></para>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Limits</term>
+
+                    <listitem>
+                      <informalequation>
+                        <alt>RMAG &gt; 0</alt>
+
+                        <m:math display="block">
+                          <m:mi>RMAG</m:mi>
+
+                          <m:mo>&gt;</m:mo>
+
+                          <m:mn>0</m:mn>
+                        </m:math>
+                      </informalequation>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Units</term>
+
+                    <listitem>
+                      <para>km</para>
+                    </listitem>
+                  </varlistentry>
+                </variablelist>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><literal>RA</literal></term>
+
+              <listitem>
+                <para>The RA field allows the user to set the spacecraft's
+                right ascension.</para>
+
+                <variablelist>
+                  <varlistentry>
+                    <term>Type</term>
+
+                    <listitem>
+                      <para>real number</para>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Default</term>
+
+                    <listitem>
+                      <para></para>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Limits</term>
+
+                    <listitem>
+                      <para></para>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Units</term>
+
+                    <listitem>
+                      <para>degrees</para>
+                    </listitem>
+                  </varlistentry>
+                </variablelist>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><literal>DEC</literal></term>
+
+              <listitem>
+                <para>The DEC field allows the user to set the spacecraft's
+                declination.</para>
+
+                <variablelist>
+                  <varlistentry>
+                    <term>Type</term>
+
+                    <listitem>
+                      <para>real number</para>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Default</term>
+
+                    <listitem>
+                      <para></para>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Limits</term>
+
+                    <listitem>
+                      <para></para>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Units</term>
+
+                    <listitem>
+                      <para>degrees</para>
+                    </listitem>
+                  </varlistentry>
+                </variablelist>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><literal>VMAG</literal></term>
+
+              <listitem>
+                <para>The VMAG field allows the user to set the magnitude of
+                the spacecraft's velocity.</para>
+
+                <variablelist>
+                  <varlistentry>
+                    <term>Type</term>
+
+                    <listitem>
+                      <para>real number</para>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Default</term>
+
+                    <listitem>
+                      <para></para>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Limits</term>
+
+                    <listitem>
+                      <informalequation>
+                        <mathphrase>VMAG &gt;= 0</mathphrase>
+                      </informalequation>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Units</term>
+
+                    <listitem>
+                      <informalequation>
+                        <alt>km/s</alt>
+
+                        <m:math>
+                          <m:mi>km</m:mi>
+
+                          <m:mo>/</m:mo>
+
+                          <m:mi>s</m:mi>
+                        </m:math>
+                      </informalequation>
+                    </listitem>
+                  </varlistentry>
+                </variablelist>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><literal>AZI</literal></term>
+
+              <listitem>
+                <para>The AZI field allows the user to set the spacecraft's
+                azimuth angle.</para>
+
+                <variablelist>
+                  <varlistentry>
+                    <term>Type</term>
+
+                    <listitem>
+                      <para>real number</para>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Default</term>
+
+                    <listitem>
+                      <para></para>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Limits</term>
+
+                    <listitem>
+                      <para></para>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Units</term>
+
+                    <listitem>
+                      <para>degrees</para>
+                    </listitem>
+                  </varlistentry>
+                </variablelist>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><literal>FPA</literal></term>
+
+              <listitem>
+                <para>The FPA allows the user to set a spacecraft's flight
+                path angle.</para>
+
+                <variablelist>
+                  <varlistentry>
+                    <term>Type</term>
+
+                    <listitem>
+                      <para>real number</para>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Default</term>
+
+                    <listitem>
+                      <para></para>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Limits</term>
+
+                    <listitem>
+                      <para></para>
+                    </listitem>
+                  </varlistentry>
+
+                  <varlistentry>
+                    <term>Units</term>
+
+                    <listitem>
+                      <para>degrees</para>
+                    </listitem>
+                  </varlistentry>
+                </variablelist>
+              </listitem>
+            </varlistentry>
+          </variablelist></para>
+      </refsection>
+    </refsection>
+  </refsection>
+
+  <refsection>
+    <title>Examples</title>
+
+    <example>
+      <title>Creating a default Spacecraft</title>
+
+      <programlisting>Create Spacecraft sc;</programlisting>
+    </example>
+  </refsection>
+</refentry>

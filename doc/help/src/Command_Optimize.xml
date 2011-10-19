@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry version="5.0" xml:id="Optimize"
+          xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:xi="http://www.w3.org/2001/XInclude"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:m="http://www.w3.org/1998/Math/MathML"
+          xmlns:html="http://www.w3.org/1999/xhtml"
+          xmlns:db="http://docbook.org/ns/docbook">
+  <indexterm>
+    <primary>Optimize</primary>
+  </indexterm>
+
+  <refmeta>
+    <refentrytitle>Optimize</refentrytitle>
+
+    <refmiscinfo class="source">GMAT</refmiscinfo>
+
+    <refmiscinfo class="version">2011a</refmiscinfo>
+
+    <refmiscinfo class="manual">Commands</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>Optimize</refname>
+
+    <refpurpose>Perform an optimize command</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <synopsis></synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>The optimize command in GMAT allows variables to optimize by using a
+    solver fmincon object.</para>
+
+    <refsection>
+      <title>Possible Coupling with Other Objects</title>
+
+      <itemizedlist>
+        <listitem>
+          <para>fmincon Object</para>
+
+          <itemizedlist>
+            <listitem>
+              <para>Must set in order to use Optimize Command.</para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+
+        <listitem>
+          <para>Minimize</para>
+
+          <itemizedlist>
+            <listitem>
+              <para>Must be defined if you would like to minimize variable in
+              an optimize sequence.</para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+
+        <listitem>
+          <para>Vary</para>
+        </listitem>
+
+        <listitem>
+          <para>NonLinearConstraint</para>
+        </listitem>
+      </itemizedlist>
+    </refsection>
+  </refsection>
+
+  <refsection>
+    <title>Options</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>SolverName</term>
+
+        <listitem>
+          <para>The SolverName field allows the user to choose between any
+          previously created optimizer for use in an optimization sequence.
+          For example, to begin a optimization sequence using DefaultSQP, the
+          script is Optimize DefaultSQP.</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>DefaultSQP</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Any existing optimizer</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>&lt;Statements&gt;</term>
+
+        <listitem>
+          <para></para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Any non-targeter and non-optimizer command lines used in
+                the mission sequence, as well as the optimizer dependent
+                command lines Vary, NonLinearConstraint, and Minimize.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Examples</title>
+
+    <refsection>
+      <title>Script Syntax</title>
+
+      <programlisting><code>Optimize SolverName;
+   &lt;Statements&gt;;
+EndOptimize;</code></programlisting>
+    </refsection>
+
+    <refsection>
+      <title>Script Examples</title>
+
+      <programlisting><code>% Beginning and ending syntax for the Optimize command
+Optimize DefaultDC;
+
+EndOptimize;</code></programlisting>
+    </refsection>
+  </refsection>
+</refentry>

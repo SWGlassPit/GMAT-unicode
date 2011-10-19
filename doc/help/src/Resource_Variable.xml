@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry version="5.0" xml:id="Variable"
+          xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:xi="http://www.w3.org/2001/XInclude"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:m="http://www.w3.org/1998/Math/MathML"
+          xmlns:html="http://www.w3.org/1999/xhtml"
+          xmlns:db="http://docbook.org/ns/docbook">
+  <refmeta>
+    <refentrytitle>Variable</refentrytitle>
+
+    <refmiscinfo class="source">GMAT</refmiscinfo>
+
+    <refmiscinfo class="version">2011a</refmiscinfo>
+
+    <refmiscinfo class="manual">Resources</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>Variable</refname>
+
+    <refpurpose>A variable.</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <synopsis>Create Variable <replaceable>name</replaceable>
+<replaceable>name</replaceable> = <replaceable>value</replaceable>
+</synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>The Variable object allows you to create and name a variable and
+    assign to it a real number value. A variable can be used in numerous
+    commands which allows you to customize the mission sequence to your
+    application. In the simplest case, a variable can be defined by a simple
+    assignment to a numeric literal. In more complex cases, a variable can be
+    defined using an assignment that contains a complicated mathematical
+    expression.</para>
+  </refsection>
+
+  <refsection>
+    <title>Interfaces</title>
+
+    <screenshot>
+      <info>
+        <title>Figure: Parameter Create Dialog Box</title>
+      </info>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" contentdepth="100%"
+                     fileref="files/images/Resource_Variable_ParameterCreateDialogBox.bmp"
+                     scalefit="1" width="100%"></imagedata>
+        </imageobject>
+
+        <caption>
+          <para>Figure: Parameter Create Dialog Box</para>
+        </caption>
+      </mediaobject>
+    </screenshot>
+  </refsection>
+
+  <refsection>
+    <title>Interactions</title>
+
+    <itemizedlist>
+      <listitem>
+        <para><link linkend="Spacecraft">Spacecraft
+        Object</link></para>
+      </listitem>
+
+      <listitem>
+        <para><link linkend="Report">Report Command</link></para>
+      </listitem>
+
+      <listitem>
+        <para><link linkend="Equation">Equation Command</link></para>
+      </listitem>
+
+      <listitem>
+        <para><link linkend="Vary">Vary Command</link></para>
+      </listitem>
+
+      <listitem>
+        <para><link linkend="Achieve">Achieve Command</link></para>
+      </listitem>
+
+      <listitem>
+        <para><link linkend="Minimize">Minimize Command</link></para>
+      </listitem>
+    </itemizedlist>
+  </refsection>
+
+  <refsection>
+    <title>Examples</title>
+
+    <programlisting><code>Create Variable pi Energy mu SMA
+mu     = 398600.4415;
+pi     = 3.14159265358979;
+Energy = MySpacecraft.VMAG^2/2 - mu/r; 
+SMA    = -mu/2/Energy;</code></programlisting>
+  </refsection>
+</refentry>

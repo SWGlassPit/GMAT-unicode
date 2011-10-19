@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry version="5.0" xml:id="Else" xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:xi="http://www.w3.org/2001/XInclude"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:m="http://www.w3.org/1998/Math/MathML"
+          xmlns:html="http://www.w3.org/1999/xhtml"
+          xmlns:db="http://docbook.org/ns/docbook">
+  <indexterm>
+    <primary>Else</primary>
+  </indexterm>
+
+  <refmeta>
+    <refentrytitle>Else</refentrytitle>
+
+    <refmiscinfo class="source">GMAT</refmiscinfo>
+
+    <refmiscinfo class="version">2011a</refmiscinfo>
+
+    <refmiscinfo class="manual">Commands</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>Else</refname>
+
+    <refpurpose>Perform an else statement</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <synopsis></synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>If-Else statements in GMAT work as they do in other programming
+    languages, especially Matlab. The Else command adds another dimension to
+    an If statement. You use an Else statement when you want something to
+    happen when the conditions of an If statement are not met. For example, an
+    If statement who's condition is "x &lt; 5" will only execute the script
+    within its scope when x is indeed less than 5. GMAT would otherwise pass
+    over the If statement's associated script and continue. However, having an
+    Else statement after the If will ensure that the lines of script within
+    the scope of that Else are executed when x is equal to 5 or
+    greater.</para>
+  </refsection>
+
+  <refsection>
+    <title>Examples</title>
+
+    <refsection>
+      <title>Script Syntax</title>
+
+      <programlisting><code>If &lt;logical expression&gt;;
+   &lt;Statements&gt;;
+Else;
+   &lt;Statements&gt;;
+EndIf;</code></programlisting>
+    </refsection>
+
+    <refsection>
+      <title>Script Examples</title>
+
+      <programlisting><code>If DefaultSC.ElapsedDays &lt; 1;
+   Propagate DefaultProp( DefaultSC , { DefaultSC.ElapsedDays = 0.01 });
+Else;
+   Propagate DefaultProp( DefaultSC , { DefaultSC.ElapsedDays = 0.2 });
+EndIf;</code></programlisting>
+    </refsection>
+  </refsection>
+</refentry>

@@ -1,0 +1,1358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry version="5.0" xml:id="Thruster"
+          xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:xi="http://www.w3.org/2001/XInclude"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:m="http://www.w3.org/1998/Math/MathML"
+          xmlns:html="http://www.w3.org/1999/xhtml"
+          xmlns:db="http://docbook.org/ns/docbook">
+  <refmeta>
+    <refentrytitle>Thruster</refentrytitle>
+
+    <refmiscinfo class="source">GMAT</refmiscinfo>
+
+    <refmiscinfo class="version">2011a</refmiscinfo>
+
+    <refmiscinfo class="manual">Resources</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>Thruster</refname>
+
+    <refpurpose>A thruster.</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <synopsis>Create Thruster <replaceable>name</replaceable>
+<replaceable>name</replaceable>.<replaceable>field</replaceable> = <replaceable>value</replaceable>
+</synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>The Thruster uses the fuel tank and directs the thrust of the rocket
+    engine while in space. It is used for finite burns.</para>
+  </refsection>
+
+  <refsection>
+    <title>Fields</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>CoordinateSystem</term>
+
+        <listitem>
+          <para>The CoordinateSystem field for a thrusterdetermines what
+          coordinate system the orientation parametersX_Direction,
+          Y_Direction, and Z_Direction arereferenced to. This is a temporary
+          fix in GMAT. Eventually, theuser will specify the attitude of
+          aspacecraft, and then X_Direction, Y_Direction, and Z_Direction will
+          be referenced to the spacecraft body frame.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>EarthMJ2000Eq</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>EarthMJ2000Eq, EarthMJ2000Ec, EarthMJ2000Eq, or anyuser
+                defined system</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Axis</term>
+
+        <listitem>
+          <para>The Axis field allows the user to define a localcoordinate
+          system for a thruster. Note that there is a couplingbetween the Axis
+          parameter and the CoordinateSystemparameter for a thruster. Only one
+          of the two canbe specified.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>VNB</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>InertialVNB</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Origin</term>
+
+        <listitem>
+          <para>The Origin fieldallows the user to define a local origin for a
+          thruster. Note thatthere is a coupling between the Origin parameter
+          and theCoordinateSystem parameter for a thruster. Only one of the
+          twocan be specified.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>Earth</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Sun, Mercury, Venus, Earth, Luna, Mars,Jupiter, Saturn,
+                Uranus, Neptune, Pluto</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>X_Direction</term>
+
+        <listitem>
+          <para>X_Direction, divided by the RSS of the three
+          directioncomponents, forms the x direction of the spacecraft thrust
+          vector direction.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>1</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Y_Direction</term>
+
+        <listitem>
+          <para>Y_Direction, divided by the RSS of the three
+          directioncomponents, forms the y direction of the spacecraft thrust
+          vector direction.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Z_Direction</term>
+
+        <listitem>
+          <para>Z_Direction, divided by the RSS of the three
+          directioncomponents, forms the z direction of the spacecraft thrust
+          vector direction.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>ThrustScaleFactor</term>
+
+        <listitem>
+          <para>ThrustScaleFactor is a scale factor that is multiplied by the
+          thrust vector for a given thruster, before the thrust vector is
+          added into the total accleration.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>1</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number &gt; 0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Tank</term>
+
+        <listitem>
+          <para>The Tank field specifies which tank the thruster draws
+          propellant from.</para>
+
+          <para>The constants C<subscript>i</subscript> below are used in the
+          following equation to calculate thrust F<subscript>T</subscript> as
+          a function of pressure P and temperature T</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Tank Name</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>F<subscript>T</subscript>(P,T) =
+                {C<subscript>1</subscript>+C<subscript>2</subscript>P+C<subscript>3</subscript>P<superscript>2</superscript>+C<subscript>4</subscript>P<superscript>C<subscript>5</subscript></superscript>+C<subscript>6</subscript>P<superscript>C<subscript>7</subscript></superscript>+C<subscript>8</subscript>P<superscript>C<subscript>9</subscript></superscript>
+                +C<subscript>10</subscript>C<subscript>11</subscript><superscript>C<subscript>12</subscript>P</superscript>}(T/T<subscript>ref</subscript>)<superscript>1+C<subscript>13</subscript>+C<subscript>14</subscript>P</superscript></para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>C1</term>
+
+        <listitem>
+          <para>Thrust coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>500</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>N</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>C2</term>
+
+        <listitem>
+          <para>Thrust coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>N/kPa</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>C3</term>
+
+        <listitem>
+          <para>Thrust coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>N/kPa</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>C4</term>
+
+        <listitem>
+          <para>Thrust coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>N/kPa<superscript>C5</superscript></para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>C5</term>
+
+        <listitem>
+          <para>Thrust coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>C6</term>
+
+        <listitem>
+          <para>Thrust coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>N/kPa<superscript>C7</superscript></para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>C7</term>
+
+        <listitem>
+          <para>Thrust coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>C8</term>
+
+        <listitem>
+          <para>Thrust coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>N/kPa<superscript>C9</superscript></para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>C9</term>
+
+        <listitem>
+          <para>Thrust coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>C10</term>
+
+        <listitem>
+          <para>Thrust coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>N</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>C11</term>
+
+        <listitem>
+          <para>Thrust coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>1</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>C12</term>
+
+        <listitem>
+          <para>Thrust coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>1/kPa</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>C13</term>
+
+        <listitem>
+          <para>Thrust coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>C14</term>
+
+        <listitem>
+          <para>Thrust coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>1/kPa</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>The constants K<subscript>i</subscript> below are used in
+              the following equation tocalculate Isp as a function of pressure
+              P and temperatureT</term>
+
+              <listitem>
+                <para>I<subscript>sp</subscript>(P,T) &amp;nbsp = &amp;nbsp
+                {K<subscript>1</subscript>+K<subscript>2</subscript>P+K<subscript>3</subscript>P<superscript>2</superscript>+K<subscript>4</subscript>P<superscript>K<subscript>5</subscript></superscript>+K<subscript>6</subscript>P<superscript>K<subscript>7</subscript></superscript>+K<subscript>8</subscript>P<superscript>K<subscript>9</subscript></superscript>+
+                K<subscript>10</subscript>K<subscript>11</subscript><superscript>K<subscript>12</subscript>P</superscript>}
+                (T/T<subscript>ref</subscript>)<superscript>1+K<subscript>13</subscript>+K<subscript>14</subscript>P</superscript></para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>K1</term>
+
+        <listitem>
+          <para>Isp coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>2150</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>m/sec</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>K2</term>
+
+        <listitem>
+          <para>Isp coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>m/(sec?kPa)</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>K3</term>
+
+        <listitem>
+          <para>Isp coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>m/(sec?kPa<superscript>2</superscript>)</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>K4</term>
+
+        <listitem>
+          <para>Isp coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>m/(sec?kPa<superscript>K5</superscript>)</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>K5</term>
+
+        <listitem>
+          <para>Isp coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>K6</term>
+
+        <listitem>
+          <para>Isp coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>m/(sec?kPa<superscript>K7</superscript>)</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>K7</term>
+
+        <listitem>
+          <para>Isp coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>K8</term>
+
+        <listitem>
+          <para>Isp coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>m/(sec?kPa<superscript>K9</superscript></para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>K9</term>
+
+        <listitem>
+          <para>Isp coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>K10</term>
+
+        <listitem>
+          <para>Isp coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>m/sec</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>K11</term>
+
+        <listitem>
+          <para>Isp coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>1</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>K12</term>
+
+        <listitem>
+          <para>Isp coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>1/kPa</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>K13</term>
+
+        <listitem>
+          <para>Isp coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>K14</term>
+
+        <listitem>
+          <para>Isp coefficient.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>1/kPa</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Interactions</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>BeginFiniteBurn/EndFiniteBurn</term>
+
+        <listitem>
+          <para>These commands use the tank and the thruster to start a finite
+          burn, where the delta V is not instantaneous.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Fuel Tank</term>
+
+        <listitem>
+          <para>This object contains the fuel used to power the thruster and
+          subsequently the finite burn.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>FiniteBurn</term>
+
+        <listitem>
+          <para>This takes the parameters of the tank and the thruster and
+          apply it to a coordinate system, with a scaling method available if
+          wanted.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Spacecraft</term>
+
+        <listitem>
+          <para>This is the object that the burn is applied to.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Script Examples</title>
+
+    <programlisting><code>Create Thruster Thruster1;
+GMAT Thruster1.Element1 = 1;
+GMAT Thruster1.Element2 = 0;
+GMAT Thruster1.Element3 = 0;
+GMAT Thruster1.C1 = 500;
+GMAT Thruster1.C2 = 0;
+GMAT Thruster1.C3 = 0;
+GMAT Thruster1.C4 = 0;
+GMAT Thruster1.C5 = 0;
+GMAT Thruster1.C6 = 0;
+GMAT Thruster1.C7 = 0;
+GMAT Thruster1.C8 = 0;
+GMAT Thruster1.C9 = 0;
+GMAT Thruster1.C10 = 0;
+GMAT Thruster1.C11 = 1;
+GMAT Thruster1.C12 = 0;
+GMAT Thruster1.C13 = 0;
+GMAT Thruster1.C14 = 0;
+GMAT Thruster1.K1 = 2150;
+GMAT Thruster1.K2 = 0;
+GMAT Thruster1.K3 = 0;
+GMAT Thruster1.K4 = 0;
+GMAT Thruster1.K5 = 0;
+GMAT Thruster1.K6 = 0;
+GMAT Thruster1.K7 = 0;
+GMAT Thruster1.K8 = 0;
+GMAT Thruster1.K9 = 0;
+GMAT Thruster1.K10 = 0;
+GMAT Thruster1.K11 = 1;
+GMAT Thruster1.K12 = 0;
+GMAT Thruster1.K13 = 0;
+GMAT Thruster1.K14 = 0;
+GMAT Thruster1.CoordinateSystem = 'MJ2000EarthEquator';
+GMAT Thruster1.ThrustScaleFactor = 1;</code></programlisting>
+  </refsection>
+</refentry>

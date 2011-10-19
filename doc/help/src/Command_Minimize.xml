@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry version="5.0" xml:id="Minimize"
+          xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:xi="http://www.w3.org/2001/XInclude"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:m="http://www.w3.org/1998/Math/MathML"
+          xmlns:html="http://www.w3.org/1999/xhtml"
+          xmlns:db="http://docbook.org/ns/docbook">
+  <indexterm>
+    <primary>Minimize</primary>
+  </indexterm>
+
+  <refmeta>
+    <refentrytitle>Minimize</refentrytitle>
+
+    <refmiscinfo class="source">GMAT</refmiscinfo>
+
+    <refmiscinfo class="version">2011a</refmiscinfo>
+
+    <refmiscinfo class="manual">Commands</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>Minimize</refname>
+
+    <refpurpose>Perform a minimize command</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <synopsis></synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>The minimize command in GMAT allows variables to minimize by using a
+    defined optimizer in optimize sequence.</para>
+
+    <refsection>
+      <title>Possible Coupling with Other Objects</title>
+
+      <itemizedlist>
+        <listitem>
+          <para>fmincon Object</para>
+
+          <itemizedlist>
+            <listitem>
+              <para>Must set in order to use Minimize Command.</para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+
+        <listitem>
+          <para>Optimize Command</para>
+
+          <itemizedlist>
+            <listitem>
+              <para>Must be defined in order to use minimize command in
+              optimize sequence.</para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+      </itemizedlist>
+    </refsection>
+  </refsection>
+
+  <refsection>
+    <title>Options</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>OptimizerName</term>
+
+        <listitem>
+          <para>The OptimizerName option allows the user to specify which
+          solver to use to minimize the cost function.</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>SQP1</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Any existing fmincon solver</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Arg</term>
+
+        <listitem>
+          <para>The Arg field allows the user to specify the function to be
+          minimized upon convergence of the solver given by OptimizerName. Arg
+          can be any of the following: Variable, Array element, or Spacecraft
+          Parameter or any other 1x1 numeric user defined parameter.</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>DefaultSC.ECC</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Variable, Spacecraft parameter, or Array element</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Examples</title>
+
+    <refsection>
+      <title>Script Syntax</title>
+
+      <programlisting><code>Minimize OptimizerName (Arg)</code></programlisting>
+    </refsection>
+
+    <refsection>
+      <title>Script Examples</title>
+
+      <programlisting><code>% Minimize the eccentricity of Sat, using fminconSQP
+Minimize fminconSQP(Sat.ECC);
+
+% Minimize the Variable DeltaV, using fminconSQP
+Minimize fminconSQP(DeltaV);
+
+% Minimize the first component of MyArray, using fminconSQP
+Minimize fminconSQP(MyArray(1,1));</code></programlisting>
+    </refsection>
+  </refsection>
+</refentry>

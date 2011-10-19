@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry version="5.0" xml:id="BeginFiniteBurn"
+         xmlns="http://docbook.org/ns/docbook"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:svg="http://www.w3.org/2000/svg"
+         xmlns:m="http://www.w3.org/1998/Math/MathML"
+         xmlns:html="http://www.w3.org/1999/xhtml"
+         xmlns:db="http://docbook.org/ns/docbook">
+  <indexterm>
+    <primary>BeginFiniteBurn</primary>
+  </indexterm>
+
+  <refmeta>
+    <refentrytitle>BeginFiniteBurn</refentrytitle>
+
+    <refmiscinfo class="source">GMAT</refmiscinfo>
+
+    <refmiscinfo class="version">2011a</refmiscinfo>
+
+    <refmiscinfo class="manual">Commands</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>BeginFiniteBurn</refname>
+
+    <refpurpose>Perform a begin finite burn</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <synopsis></synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>The Begin Finite Burn and End Finite Burn commands are very simple.
+    When the Begin Finite Burn command is entered into the mission sequence it
+    will initiate the thrusters of the spacecraft until the End Finite Burn
+    command is reached. After the finite burn is turned off, the spacecraft's
+    thrusters will shut down.</para>
+  </refsection>
+
+  <refsection>
+    <title>Options</title>
+    
+    <variablelist>
+        <varlistentry>
+            <term>ManeuverName</term>
+            
+            <listitem>
+              <para>The ManeuverName option allows the user to choose
+            between any previously created finite burn. As an example, to
+            maneuver DefaultSC using DefaultFB, the script linewould appear as
+            Manevuer DefaultFB(DefaultSC).</para>
+              
+              <variablelist>
+                <varlistentry>
+                    <term>Default</term>
+                    <listitem>
+                        <para>DefaultFB</para>
+                    </listitem>
+                </varlistentry>
+                
+                <varlistentry>
+                    <term>Limits</term>
+                    <listitem>
+                        <para>Any
+            finite burn existing in the resource tree or created in the script</para>
+                    </listitem>
+                </varlistentry>
+                
+                <varlistentry>
+                    <term>Units</term>
+                    <listitem>
+                        <para>None</para>
+                    </listitem>
+                 </varlistentry>
+              </variablelist>
+            </listitem>
+        </varlistentry>
+        
+        <varlistentry>
+            <term>SpacecraftName</term>
+            
+            <listitem>
+              <para>The SpacecraftName option allows the user to select
+            which spacecraft to maneuver using the maneuver selected in the
+            ManeuverName option.</para>
+              
+              <variablelist>
+                <varlistentry>
+                    <term>Default</term>
+                    <listitem>
+                        <para>DefaultSC</para>
+                    </listitem>
+                </varlistentry>
+                
+                <varlistentry>
+                    <term>Limits</term>
+                    <listitem>
+                        <para>Any
+            spacecraft existing in the resource tree or created in the script</para>
+                    </listitem>
+                </varlistentry>
+                
+                <varlistentry>
+                    <term>Units</term>
+                    <listitem>
+                        <para>None</para>
+                    </listitem>
+                 </varlistentry>
+              </variablelist>
+            </listitem>
+        </varlistentry>
+      </variablelist>
+  </refsection>
+  
+  <refsection>
+    <title>Examples</title>
+      <programlisting><code>BeginFiniteBurn ManeuverName (SpacecraftName); 
+EndFiniteBurn DefaultFB(DefaultSC);</code></programlisting>
+  </refsection>
+</refentry>

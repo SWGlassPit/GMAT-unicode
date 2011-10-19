@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry version="5.0" xml:id="Achieve" xmlns="http://docbook.org/ns/docbook"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:svg="http://www.w3.org/2000/svg"
+         xmlns:m="http://www.w3.org/1998/Math/MathML"
+         xmlns:html="http://www.w3.org/1999/xhtml"
+         xmlns:db="http://docbook.org/ns/docbook">
+  <indexterm>
+    <primary>Achieve</primary>
+  </indexterm>
+
+  <refmeta>
+    <refentrytitle>Achieve</refentrytitle>
+
+    <refmiscinfo class="source">GMAT</refmiscinfo>
+
+    <refmiscinfo class="version">2011a</refmiscinfo>
+
+    <refmiscinfo class="manual">Commands</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>Achieve</refname>
+
+    <refpurpose>Perform an achieve command</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <synopsis></synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>The purpose of the Achieve command is to define a goal for the
+    spacecraft to reach at some point in its trajectory. The goal must have a
+    corresponding value and tolerance so the differential corrector can solve
+    for the best solution during the spacecraft's flight. To define a goal, a
+    property must be chosen out of the Parameter Select dialog box along with
+    the correct components in the other fields. The command can only be
+    appended within a targeting sequence and must be accompanied and preceeded
+    by a Vary, Maneuver, and Propagate command.</para>
+  </refsection>
+
+  <refsection>
+    <title>Options</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>Goal</term>
+        
+        <listitem>
+          <para>The option allows the user to select any single element user
+            defined parameter, except a number, to Achieve.</para>
+          
+          <variablelist>
+            <varlistentry>
+                <term>Default</term>
+                <listitem>
+                    <para>DefaultSC.Earth.RMAG</para>
+                </listitem>
+            </varlistentry>
+            
+            <varlistentry>
+                <term>Limits</term>
+                <listitem>
+                    <para>Spacecraft parameter, Array element, Variable, or any other
+                    single element user defined parameter, excluding numbers</para>
+                </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term>Arg1</term>
+        
+        <listitem>
+          <para>The Arg1 option is the desired value for
+            after the solver has converged.</para>
+          
+          <variablelist>
+            <varlistentry>
+                <term>Default</term>
+                <listitem>
+                    <para>42165</para>
+                </listitem>
+            </varlistentry>
+            
+            <varlistentry>
+                <term>Limits</term>
+                <listitem>
+                    <para>Real Number, Array element, Variable, or any user defined parameter that obeys
+                    the conditions of Chapter~\\ref\{Ch:ObjectsNResources\} for the selected</para>
+                </listitem>
+            </varlistentry>
+            
+            <varlistentry>
+                <term>Units</term>
+                <listitem>
+                    <para>None</para>
+                </listitem>
+             </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term>Tolerance</term>
+        
+        <listitem>
+          <para>The Tolerance option sets Arg2. Arg2 is the
+            convergence tolerance for Arg1.</para>
+          
+          <variablelist>
+            <varlistentry>
+                <term>Default</term>
+                <listitem>
+                    <para>0.1</para>
+                </listitem>
+            </varlistentry>
+            
+            <varlistentry>
+                <term>Limits</term>
+                <listitem>
+                    <para>Real Number, Array element, Variable, or any user defined parameter &gt; 0</para>
+                </listitem>
+            </varlistentry>
+            
+            <varlistentry>
+                <term>Units</term>
+                <listitem>
+                    <para>None</para>
+                </listitem>
+             </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term>SolverName</term>
+        
+        <listitem>
+          <para>The SolverName
+            option allows the user to choose which solver to assign to the
+            Achieve command.</para>
+          
+          <variablelist>
+            <varlistentry>
+                <term>Default</term>
+                <listitem>
+                    <para>DefaultDC</para>
+                </listitem>
+            </varlistentry>
+            
+            <varlistentry>
+                <term>Limits</term>
+                <listitem>
+                    <para>Any user
+            defined differential corrector</para>
+                </listitem>
+            </varlistentry>
+            
+            <varlistentry>
+                <term>Units</term>
+                <listitem>
+                    <para>None</para>
+                </listitem>
+             </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+  
+  <refsection>
+    <title>Examples</title>
+    <programlisting><code>Achieve SolverName(Goal) = Arg1, Tolerance = Arg2</code></programlisting>
+  </refsection>
+</refentry>

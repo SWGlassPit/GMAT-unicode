@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry version="5.0" xml:id="DifferentialCorrector"
+         xmlns="http://docbook.org/ns/docbook"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:svg="http://www.w3.org/2000/svg"
+         xmlns:m="http://www.w3.org/1998/Math/MathML"
+         xmlns:html="http://www.w3.org/1999/xhtml"
+         xmlns:db="http://docbook.org/ns/docbook">
+  <refmeta>
+    <refentrytitle>DifferentialCorrector</refentrytitle>
+
+    <refmiscinfo class="source">GMAT</refmiscinfo>
+
+    <refmiscinfo class="version">2011a</refmiscinfo>
+
+    <refmiscinfo class="manual">Resources</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>Differential Corrector</refname>
+
+    <refpurpose>A differential corrector.</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <synopsis>Create DifferentialCorrector <replaceable>name</replaceable>
+<replaceable>name</replaceable>.<replaceable>field</replaceable> = <replaceable>value</replaceable>
+</synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>A differential corrector is a numerical solver for solving two-point
+    boundary value problems. The DC in GMAT uses a simple shooting method
+    where the derivatives are determined using finite differencing. In the
+    mission sequence, you use the differential corrector object in a Target
+    sequence to solve two-point value problems. For example, differential
+    correctors are often used to determine the maneuver components required to
+    achieve desired orbital conditions, say, B-plane conditions at a planetary
+    flyby.</para>
+
+    <para>You must create and configure a differential corrector object
+    according to your application by setting numerical properties of the
+    solver such as tolerance and maximum iterations. You can also select among
+    different output options that show increasing levels of information for
+    each differential corrector iteration.</para>
+
+    <para>The allowable settings for a differential corrector are shown in the
+    GUI screen shots and reference table below. You can learn more about how
+    to use a DC in a targeting sequence by reading the help files for Target,
+    Vary, and Achieve.</para>
+  </refsection>
+
+  <refsection>
+    <title>Fields</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>MaximumIterations</term>
+
+        <listitem>
+            <para>The MaximumIterations field allows the user to set
+            the maximum number of iterations the differential corrector is
+            allowed during the attempt to find a solution. If the maximum
+            iterations is reached, GMAT exits the target loop and continues to
+            the next command in the mission sequence. In this case, the
+            objects retain their states as of the last nominal pass through
+            the targeting loop.</para>
+            
+            <variablelist spacing="compact">
+                <varlistentry>
+                    <term>Default</term>
+                    
+                    <listitem>
+                        <para>25</para>
+                    </listitem>
+                </varlistentry>
+                
+                <varlistentry>
+                    <term>Limits</term>
+                    
+                    <listitem>
+                        <para>Integer &gt;= 1</para>
+                    </listitem>
+                </varlistentry>
+                
+                <varlistentry>
+                    <term>Units</term>
+                    
+                    <listitem>
+                        <para>N/A</para>
+                    </listitem>
+                </varlistentry>
+            </variablelist>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term>DerivativeMethod</term>
+
+        <listitem>
+            <para>The DerivativeMethod field allows the user to choose between
+            one-sided and central differencing for numerically determining the
+            Jacobian matrix.</para>
+            
+            <variablelist spacing="compact">
+                <varlistentry>
+                    <term>Default</term>
+                    
+                    <listitem>
+                        <para>ForwardDifference</para>
+                    </listitem>
+                </varlistentry>
+                
+                <varlistentry>
+                    <term>Limits</term>
+                    
+                    <listitem>
+                        <para>ForwardDifference, BackwardDifference, CentralDifference</para>
+                    </listitem>
+                </varlistentry>
+                
+                <varlistentry>
+                    <term>Units</term>
+                    
+                    <listitem>
+                        <para>N/A</para>
+                    </listitem>
+                </varlistentry>
+            </variablelist>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term>ShowProgress</term>
+
+        <listitem>
+            <para>When the ShowProgress field is set to true,
+            then data illustrating the progress of the differential correction
+            process are written to the message window. The message window is
+            updated with information on the current control variable values
+            and the contraint variances for both on perturbation and iteration
+            passes. When the ShowProgress field is set to false, no
+            information on the progress of the differential correction process
+            is displayed.</para>
+            
+            <variablelist spacing="compact">
+                <varlistentry>
+                    <term>Default</term>
+                    
+                    <listitem>
+                        <para>true</para>
+                    </listitem>
+                </varlistentry>
+                
+                <varlistentry>
+                    <term>Limits</term>
+                    
+                    <listitem>
+                        <para>true, false</para>
+                    </listitem>
+                </varlistentry>
+                
+                <varlistentry>
+                    <term>Units</term>
+                    
+                    <listitem>
+                        <para>N/A</para>
+                    </listitem>
+                </varlistentry>
+            </variablelist>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term>ReportStyle</term>
+
+        <listitem>
+            <para>The ReportStyle field
+            allows the user to control the amount and type of information
+            written to the file defined in the ReportFile field. Currently,
+            the Normal and Concise options contain the same information: the
+            Jacobian, the inverse of the Jacobian, the current values of the
+            control variables, and achieved and desired values of the
+            constraints. Verbose contains values of the perturbation variables
+            in addition to the data for Normal and Concise. Debug contains
+            detailed script snippets at each iteration for objects who have
+            control variables.</para>
+            
+            <variablelist spacing="compact">
+                <varlistentry>
+                    <term>Default</term>
+                    
+                    <listitem>
+                        <para>Normal</para>
+                    </listitem>
+                </varlistentry>
+                
+                <varlistentry>
+                    <term>Limits</term>
+                    
+                    <listitem>
+                        <para>Normal, Concise, Verbose, Debug</para>
+                    </listitem>
+                </varlistentry>
+                
+                <varlistentry>
+                    <term>Units</term>
+                    
+                    <listitem>
+                        <para>N/A</para>
+                    </listitem>
+                </varlistentry>
+            </variablelist>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term>ReportFile</term>
+
+        <listitem>
+            <para>The ReportFile field allows the user to specify the path and file name
+            for the differential correction report.</para>
+            
+            <variablelist spacing="compact">
+                <varlistentry>
+                    <term>Default</term>
+                    
+                    <listitem>
+                        <para>DifferentialCorrectorDCName</para>
+                    </listitem>
+                </varlistentry>
+                
+                <varlistentry>
+                    <term>Limits</term>
+                    
+                    <listitem>
+                        <para>Filename consistent with OS</para>
+                    </listitem>
+                </varlistentry>
+                
+                <varlistentry>
+                    <term>Units</term>
+                    
+                    <listitem>
+                        <para>N/A</para>
+                    </listitem>
+                </varlistentry>
+            </variablelist>
+        </listitem>
+      </varlistentry>
+      
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Object and Command Interactions</title>
+
+    <para>The Differential Corrector does not interact directly with any
+    resource objects.</para>
+
+    <para>The Differential Corrector is used in the following mission sequence
+    commands:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>Target</para>
+      </listitem>
+
+      <listitem>
+        <para>Vary</para>
+      </listitem>
+
+      <listitem>
+        <para>Achieve</para>
+      </listitem>
+    </itemizedlist>
+  </refsection>
+  
+  <refsection>
+    <title>Examples</title>
+
+    <screenshot>
+      <info>
+        <title>Figure: Default Name and Settings for the Differential
+        Corrector Dialog Box</title>
+      </info>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata scalefit="1" width="100%" contentdepth="100%" align="center"
+                     fileref="files/images/Resource_DifferentialCorrector_Default.bmp"></imagedata>
+        </imageobject>
+
+        <caption>
+          <para>Figure: Default Name and Settings for the Differential
+          Corrector Dialog Box</para>
+        </caption>
+      </mediaobject>
+    </screenshot>
+
+    <programlisting><code>Create DifferentialCorrector DefaultDC;
+GMAT DefaultDC.ShowProgress = true;
+GMAT DefaultDC.ReportStyle = 'Normal';
+GMAT DefaultDC.TargeterTextFile = 'DifferentialCorrectorDefaultDC.data';
+GMAT DefaultDC.MaximumIterations = 25;
+GMAT DefaultDC.UseCentralDifferences = false;</code></programlisting>
+  </refsection>
+</refentry>

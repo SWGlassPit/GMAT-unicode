@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry version="5.0" xml:id="SolarSystem"
+          xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:xi="http://www.w3.org/2001/XInclude"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:m="http://www.w3.org/1998/Math/MathML"
+          xmlns:html="http://www.w3.org/1999/xhtml"
+          xmlns:db="http://docbook.org/ns/docbook">
+  <refmeta>
+    <refentrytitle>SolarSystem</refentrytitle>
+
+    <refmiscinfo class="source">GMAT</refmiscinfo>
+
+    <refmiscinfo class="version">2011a</refmiscinfo>
+
+    <refmiscinfo class="manual">Resources</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>Solar System</refname>
+
+    <refpurpose>A solar system.</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <synopsis>Create SolarSystem <replaceable>name</replaceable>
+<replaceable>name</replaceable>.<replaceable>field</replaceable> = <replaceable>value</replaceable>
+</synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>This folder, found if the Solar System folder itself is
+    double-clicked, enables the user to determine where he gets his data on
+    the movements of planets, how often it updates, and how accurate the data
+    is.</para>
+  </refsection>
+
+  <refsection>
+    <title>Fields</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>EphemerisSource</term>
+
+        <listitem>
+          <para>The EphemerisSourcefield allows the user to select the source
+          used for planetaryephemerides. The source is used globally whenever
+          planetaryephemeris information is required.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>DE405</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>DE405,DE200, SLP, Analytic</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Ephemeris UpdateInterval</term>
+
+        <listitem>
+          <para>The EphemerisUpdateInterval is used to set howoften planetary
+          positions are updated when calculating accelerationsduring
+          propagation. For low-Earth orbits,EphemerisUpdateInterval can be set
+          to around 60 for fasternumerical integration with little effect on
+          the accuracy of thepropagation. For deep space
+          propagation,EphemerisUpdateInterval should be set to zero.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Real Number ≥ 0</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>sec</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>UseTTForEphemeris</term>
+
+        <listitem>
+          <para>GMAT uses time in the TDB system as thedefault time system in
+          the JPL ephemeris files. However, often itis possible to use time in
+          the TT time system, without significantdifference in propagation
+          accuracy. (TT and TDB are within 1millisecond of each other). The
+          advantage to using TT is that itavoids the transformation from TT to
+          TDB and therefore orbitpropagation will execute faster. The
+          UseTTForEphemeris fieldallows the user to choose between the default
+          of TDB in theephemeris files (UseTTForEphemeris=false), or TT in
+          theephemeris files (UseTTForEphemeris = true).</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>false</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>true, false</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>EphemerisFile</term>
+
+        <listitem>
+          <para>The EphemerisFile field allows the user to specify the
+          locationand name of the file for each type of ephemeris GMAT
+          supports. Forexample, if Ephemeris is set to DE405, you can set
+          thepath for a DE405 file using SolarSystem.EphemerisFile
+          =c:/MyPath/MyDE405.file.</para>
+
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>Same as startup file.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>Filepath and file name consistent with operating
+                system</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>AnalyticModel</term>
+
+        <listitem>
+          <variablelist spacing="compact">
+            <varlistentry>
+              <term>Default</term>
+
+              <listitem>
+                <para>LowFidelity</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Limits</term>
+
+              <listitem>
+                <para>LowFidelity</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Units</term>
+
+              <listitem>
+                <para>None</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Interactions</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>CelestialBodies, BaryCenter, and Libration Point</term>
+
+        <listitem>
+          <para>The position and data on all these depend on the source of the
+          Solar System data and how often it is updated.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Propagator</term>
+
+        <listitem>
+          <para>How often the position of the planetary bodies are updated
+          will have an impact on how a spacecraft will propagate.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Spacecraft</term>
+
+        <listitem>
+          <para>A number of parameters of a spacecraft are based off the
+          position of the planets</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+</refentry>

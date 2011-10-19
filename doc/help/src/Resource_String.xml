@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry version="5.0" xml:id="String"
+          xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:xi="http://www.w3.org/2001/XInclude"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:m="http://www.w3.org/1998/Math/MathML"
+          xmlns:html="http://www.w3.org/1999/xhtml"
+          xmlns:db="http://docbook.org/ns/docbook">
+  <refmeta>
+    <refentrytitle>String</refentrytitle>
+
+    <refmiscinfo class="source">GMAT</refmiscinfo>
+
+    <refmiscinfo class="version">2011a</refmiscinfo>
+
+    <refmiscinfo class="manual">Resources</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>String</refname>
+
+    <refpurpose>A string.</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <synopsis>Create String <replaceable>name</replaceable>
+<replaceable>name</replaceable>.<replaceable>field</replaceable> = <replaceable>value</replaceable>
+</synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>This page will show you how to create and use String objects. Stings
+    are useful for storing characters as a set. One possible use of them is to
+    report back a specific message at a set point in the mission
+    sequence.</para>
+  </refsection>
+
+  <refsection>
+    <title>Interactions</title>
+
+    <variablelist>
+      <varlistentry>
+        <term><link linkend="ReportFile">ReportFile</link></term>
+
+        <listitem>
+          <para>You may add a string to the Parameter List in the Report
+          Object dialog box via the ParameterSelectDialog box.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><link linkend="Report">Report Command</link></term>
+
+        <listitem>
+          <para>Alternatively, you may add a string to the Parameter List in
+          the Report Command dialog box</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Using the Script</title>
+
+    <refsection>
+      <title>Script Syntax</title>
+
+      <programlisting><code>GMAT String Name = String;</code></programlisting>
+    </refsection>
+
+    <refsection>
+      <title>Script Examples</title>
+
+      <programlisting><code>% The following is an example String declaration
+GMAT Example = hello world;</code></programlisting>
+    </refsection>
+  </refsection>
+</refentry>
