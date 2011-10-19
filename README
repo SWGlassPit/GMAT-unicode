@@ -1,0 +1,12 @@
+This is NASA's General Mission Analysis Tool (GMAT), adapted to make it Unicode-compliant.
+
+The original was pulled from a svn checkout on August 30 from the official GMAT source tree
+(http://www.sourceforge.net/projects/gmat).  There have been commits upstream since then.  As of now
+(19 October 2011), I have made no effort to merge upstream changes into the current source tree, as
+nearly every source file has been altered to some degree.  This builds on a 32-bit Fedora 15 install
+with Unicode wxWidgets 2.8.  The build has not been tested for accuracy or stability.  Testing,
+especially cross-platform testing, is encouraged.
+
+Tristan Moody
+SWGlassPit (github and twitter)
+19 October 2011
