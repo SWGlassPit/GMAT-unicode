@@ -1,0 +1,950 @@
+//$Id: GroundTrackPlot.cpp 9692 2011-07-12 19:20:21Z lindajun $
+//------------------------------------------------------------------------------
+//                                  GroundTrackPlot
+//------------------------------------------------------------------------------
+// GMAT: General Mission Analysis Tool
+//
+// Copyright (c) 2002-2011 United States Government as represented by the
+// Administrator of The National Aeronautics and Space Administration.
+// All Other Rights Reserved.
+//
+// Developed jointly by NASA/GSFC and Thinking Systems, Inc. under contract
+// number X-XXXXX-X
+//
+// Author: Linda Jun
+// Created: 2011/05/31
+//
+/**
+ * Implements GroundTrackPlot class.
+ */
+//------------------------------------------------------------------------------
+
+#include "GroundTrackPlot.hpp"
+#include "PlotInterface.hpp"       // for UpdateGlPlot()
+#include "SubscriberException.hpp" // for SubscriberException()
+#include "MessageInterface.hpp"    // for ShowMessage()
+
+
+//#define DBGLVL_PARAM_STRING 2
+//#define DBGLVL_OBJ 1
+//#define DBGLVL_UPDATE 1
+
+//---------------------------------
+// static data
+//---------------------------------
+
+/// Available show foot print options
+StringArray GroundTrackPlot::footPrintOptions;
+
+const wxString
+GroundTrackPlot::FOOT_PRINT_OPTION_TEXT[FootPrintOptionCount] =
+{
+   wxT("None"), wxT("All"), 
+};
+
+
+const wxString
+GroundTrackPlot::PARAMETER_TEXT[GroundTrackPlotParamCount - OrbitPlotParamCount] =
+{
+   wxT("CentralBody"),
+   wxT("TextureMap"),
+   wxT("ShowFootPrints"),
+}; 
+
+
+const Gmat::ParameterType
+GroundTrackPlot::PARAMETER_TYPE[GroundTrackPlotParamCount - OrbitPlotParamCount] =
+{
+   Gmat::OBJECT_TYPE,         // wxT("CentralBody")
+   Gmat::STRING_TYPE,         // wxT("TextureMap")
+   Gmat::ENUMERATION_TYPE,    // wxT("ShowFootPrints")
+};
+
+
+//------------------------------------------------------------------------------
+// GroundTrackPlot(const wxString &type, const wxString &name)
+//------------------------------------------------------------------------------
+/**
+ * The default constructor
+ */
+//------------------------------------------------------------------------------
+GroundTrackPlot::GroundTrackPlot(const wxString &name)
+   : OrbitPlot(wxT("GroundTrackPlot"), name)
+{
+   // GmatBase data
+   parameterCount = GroundTrackPlotParamCount;
+   objectTypeNames.push_back(wxT("GroundTrackPlot"));
+   
+   centralBody = NULL;
+   centralBodyName = wxT("Earth");
+   mViewCoordSysName = wxT("EarthFixed");
+   footPrints = wxT("None");
+   footPrintOption = FP_NONE;
+   
+   footPrintOptions.clear();
+   for (UnsignedInt i = 0; i < FootPrintOptionCount; i++)
+      footPrintOptions.push_back(FOOT_PRINT_OPTION_TEXT[i]);
+}
+
+
+//------------------------------------------------------------------------------
+// GroundTrackPlot(const GroundTrackPlot &plot)
+//------------------------------------------------------------------------------
+/**
+ * The copy consturctor
+ */
+//------------------------------------------------------------------------------
+GroundTrackPlot::GroundTrackPlot(const GroundTrackPlot &plot)
+   : OrbitPlot(plot)
+{
+   centralBody        = plot.centralBody;
+   centralBodyName    = plot.centralBodyName;
+   footPrints         = plot.footPrints;
+   textureMapFileName = plot.textureMapFileName;
+   footPrintOption    = plot.footPrintOption;
+}
+
+
+//------------------------------------------------------------------------------
+// GroundTrackPlot& operator=(const GroundTrackPlot &plot)
+//------------------------------------------------------------------------------
+/**
+ * The assignment operator
+ */
+//------------------------------------------------------------------------------
+GroundTrackPlot& GroundTrackPlot::operator=(const GroundTrackPlot& plot)
+{
+   if (this == &plot)
+      return *this;
+   
+   OrbitPlot::operator=(plot);
+   
+   centralBody        = plot.centralBody;
+   centralBodyName    = plot.centralBodyName;
+   footPrints         = plot.footPrints;
+   textureMapFileName = plot.textureMapFileName;
+   footPrintOption    = plot.footPrintOption;
+   
+   return *this;
+}
+
+
+//------------------------------------------------------------------------------
+// ~GroundTrackPlot()
+//------------------------------------------------------------------------------
+/**
+ * Destructor
+ *
+ * @note This destructor does not delete 3DView window, but clears data.
+ *       3DView window is deleted when it is closed by the user or GMAT
+ *       shuts down.
+ */
+//------------------------------------------------------------------------------
+GroundTrackPlot::~GroundTrackPlot()
+{
+}
+
+
+//----------------------------------
+// inherited methods from Subscriber
+//----------------------------------
+
+//---------------------------------
+// inherited methods from GmatBase
+//---------------------------------
+
+//------------------------------------------------------------------------------
+//  bool Validate()
+//------------------------------------------------------------------------------
+/**
+ * Performs any pre-run validation that the object needs.
+ *
+ * @return true unless validation fails.
+ */
+//------------------------------------------------------------------------------
+bool GroundTrackPlot::Validate()
+{
+   return true;
+}
+
+
+//------------------------------------------------------------------------------
+// virtual bool Initialize()
+//------------------------------------------------------------------------------
+bool GroundTrackPlot::Initialize()
+{
+   if (GmatGlobal::Instance()->GetRunMode() == GmatGlobal::TESTING_NO_PLOTS)
+      return true;
+   
+   bool retval = OrbitPlot::Initialize();
+   
+   #if DBGLVL_INIT
+   MessageInterface::ShowMessage
+      (wxT("GroundTrackPlot::Initialize() this=<%p>'%s', active=%d, isInitialized=%d, ")
+       wxT("isEndOfReceive=%d, mAllSpCount=%d\n"), this, GetName().c_str(), active,
+       isInitialized, isEndOfReceive, mAllSpCount);
+   #endif
+   
+   //--------------------------------------------------------
+   // start initializing for ground track plot
+   //--------------------------------------------------------
+   if (active && !isInitialized)
+   {
+      #if DBGLVL_INIT
+      MessageInterface::ShowMessage
+         (wxT("GroundTrackPlot::Initialize() CreateGlPlotWindow() theSolarSystem=%p\n"),
+          theSolarSystem);
+      #endif
+      
+      // set ViewType
+      PlotInterface::SetViewType(GmatPlot::GROUND_TRACK_PLOT);
+      
+      if (PlotInterface::CreateGlPlotWindow
+          (instanceName, mOldName, mNumPointsToRedraw))
+      {
+         #if DBGLVL_INIT
+         MessageInterface::ShowMessage
+            (wxT("   mViewPointRefObj=%p, mViewScaleFactor=%f\n"),
+             mViewPointRefObj, mViewScaleFactor);
+         #endif
+         
+         //--------------------------------------------------------
+         // Set Spacecraft and non-Spacecraft objects.
+         // If non-Spacecraft, position has to be computed in the
+         // TrajPlotCanvas, so need to pass those object pointers.
+         //--------------------------------------------------------
+         
+         ClearDynamicArrays();
+         BuildDynamicArrays();
+         
+         // Add central body to object list and always show
+         if (centralBody != NULL)
+            UpdateObjectList(centralBody, true);
+         
+         //===========================================================
+         // Save this in incase we need to use light
+         //===========================================================
+         // Add Sun to list if it was not added already to enable light source 
+         if (find(mObjectNameArray.begin(), mObjectNameArray.end(), wxT("Sun")) ==
+             mObjectNameArray.end())
+            UpdateObjectList(theSolarSystem->GetBody(wxT("Sun")), false);
+         //===========================================================
+                  
+         #if DBGLVL_INIT > 1
+         MessageInterface::ShowMessage
+            (wxT("   mScNameArray.size=%d, mScOrbitColorArray.size=%d\n"),
+             mScNameArray.size(), mScOrbitColorArray.size());
+         MessageInterface::ShowMessage
+            (wxT("   mObjectNameArray.size=%d, mOrbitColorArray.size=%d\n"),
+             mObjectNameArray.size(), mOrbitColorArray.size());
+         
+         bool draw, show;
+         for (int i=0; i<mObjectCount; i++)
+         {
+            draw = mDrawOrbitArray[i] ? true : false;
+            show = mDrawObjectArray[i] ? true : false;
+            MessageInterface::ShowMessage
+               (wxT("   mObjectNameArray[%d]=%s, draw=%d, show=%d, color=%d\n"),
+                i, mObjectNameArray[i].c_str(), draw, show, mOrbitColorArray[i]);
+         }
+         #endif
+         
+         #if DBGLVL_INIT
+         MessageInterface::ShowMessage
+            (wxT("   calling PlotInterface::SetGlSolarSystem(%p)\n"), theSolarSystem);
+         #endif
+         
+         // set SolarSystem
+         PlotInterface::SetGlSolarSystem(instanceName, theSolarSystem);
+         
+         #if DBGLVL_INIT
+         MessageInterface::ShowMessage
+            (wxT("   calling PlotInterface::SetGlObject()\n"));
+         for (UnsignedInt i=0; i<mObjectArray.size(); i++)
+            MessageInterface::ShowMessage
+               (wxT("      mObjectArray[%d]=<%p>'%s'\n"), i, mObjectArray[i],
+                mObjectArray[i]->GetName().c_str());
+         #endif
+         
+         // set all object array and pointers
+         PlotInterface::SetGlObject(instanceName, mObjectNameArray,
+                                    mOrbitColorArray, mObjectArray);
+         
+         //--------------------------------------------------------
+         // set CoordinateSystem
+         //--------------------------------------------------------
+         #if DBGLVL_INIT
+         MessageInterface::ShowMessage
+            (wxT("   calling PlotInterface::SetGlCoordSystem()\n"));
+         #endif
+
+         if (mViewCoordSystem == NULL)
+         {
+            mViewCoordSystem = CoordinateSystem::CreateLocalCoordinateSystem
+               (mViewCoordSysName, wxT("BodyFixed"), centralBody, NULL,
+                NULL, theInternalCoordSystem->GetJ2000Body(), theSolarSystem);
+         }
+         
+         PlotInterface::SetGlCoordSystem(instanceName, theInternalCoordSystem,
+                                         mViewCoordSystem, mViewCoordSystem);
+         
+         
+         //--------------------------------------------------------
+         // set drawing options
+         //--------------------------------------------------------
+         #if DBGLVL_INIT
+         MessageInterface::ShowMessage
+            (wxT("   calling PlotInterface::SetGlDrawingOption()\n"));
+         #endif
+         
+         PlotInterface::SetGl2dDrawingOption(instanceName, centralBodyName,
+                                             textureMapFileName, (Integer)footPrintOption);
+         
+         //--------------------------------------------------------
+         // set viewpoint info
+         //--------------------------------------------------------
+         #if DBGLVL_INIT
+         MessageInterface::ShowMessage
+            (wxT("   calling PlotInterface::SetGlViewOption()\n"));
+         #endif
+         
+         PlotInterface::SetGlUpdateFrequency(instanceName, mUpdatePlotFrequency);
+         
+         //--------------------------------------------------------
+         // set drawing object flag
+         //--------------------------------------------------------
+         PlotInterface::SetGlDrawOrbitFlag(instanceName, mDrawOrbitArray);
+         PlotInterface::SetGlShowObjectFlag(instanceName, mDrawObjectArray);
+         
+         //--------------------------------------------------------
+         // initialize GL
+         //--------------------------------------------------------
+         PlotInterface::InitializeGlPlot(instanceName);
+         
+         isInitialized = true;
+         retval = true;
+      }
+      else
+      {
+         retval = false;
+      }
+   }
+   else
+   {
+      #if DBGLVL_INIT
+      MessageInterface::ShowMessage
+         (wxT("GroundTrackPlot::Initialize() Plot is active and initialized, ")
+          wxT("so calling DeleteGlPlot()\n"));
+      #endif
+      
+      // Why do we want to delete plot if active and initialized?
+      // This causes Global 3DView not to show, so commented out (loj: 2008.10.08)
+      //retval =  PlotInterface::DeleteGlPlot(instanceName);
+   }
+   
+   #if DBGLVL_INIT
+   MessageInterface::ShowMessage(wxT("GroundTrackPlot::Initialize() returning %d\n"), retval);
+   #endif
+   
+   return retval;
+}
+
+
+//------------------------------------------------------------------------------
+//  GmatBase* Clone() const
+//------------------------------------------------------------------------------
+/**
+ * This method returns a clone of the GroundTrackPlot.
+ *
+ * @return clone of the GroundTrackPlot.
+ *
+ */
+//------------------------------------------------------------------------------
+GmatBase* GroundTrackPlot::Clone() const
+{
+   return (new GroundTrackPlot(*this));
+}
+
+
+//---------------------------------------------------------------------------
+// void Copy(const GmatBase* orig)
+//---------------------------------------------------------------------------
+/**
+ * Sets this object to match another one.
+ * 
+ * @param orig The original that is being copied.
+ */
+//---------------------------------------------------------------------------
+void GroundTrackPlot::Copy(const GmatBase* orig)
+{
+   operator=(*((GroundTrackPlot *)(orig)));
+}
+
+
+//------------------------------------------------------------------------------
+// virtual bool TakeAction(const wxString &action,  
+//                         const wxString &actionData = wxT(""));
+//------------------------------------------------------------------------------
+/**
+ * This method performs action.
+ *
+ * @param <action> action to perform
+ * @param <actionData> action data associated with action
+ * @return true if action successfully performed
+ *
+ */
+//------------------------------------------------------------------------------
+bool GroundTrackPlot::TakeAction(const wxString &action,
+                                 const wxString &actionData)
+{
+   return OrbitPlot::TakeAction(action, actionData);
+}
+
+
+//---------------------------------------------------------------------------
+//  bool RenameRefObject(const Gmat::ObjectType type,
+//                       const wxString &oldName, const wxString &newName)
+//---------------------------------------------------------------------------
+bool GroundTrackPlot::RenameRefObject(const Gmat::ObjectType type,
+                                      const wxString &oldName,
+                                      const wxString &newName)
+{
+   #if DBGLVL_RENAME
+   MessageInterface::ShowMessage
+      (wxT("GroundTrackPlot::RenameRefObject() type=%s, oldName=%s, newName=%s\n"),
+       GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
+   #endif
+   
+   if (type == Gmat::CELESTIAL_BODY)
+   {
+      // for central body name
+      if (centralBodyName == oldName)
+         centralBodyName = newName;
+   }
+   
+   return true;
+}
+
+
+//------------------------------------------------------------------------------
+// wxString GetParameterText(const Integer id) const
+//------------------------------------------------------------------------------
+wxString GroundTrackPlot::GetParameterText(const Integer id) const
+{
+   if (id >= OrbitPlotParamCount && id < GroundTrackPlotParamCount)
+      return PARAMETER_TEXT[id - OrbitPlotParamCount];
+   else
+      return OrbitPlot::GetParameterText(id);
+    
+}
+
+
+//------------------------------------------------------------------------------
+// Integer GetParameterID(const wxString &str) const
+//------------------------------------------------------------------------------
+Integer GroundTrackPlot::GetParameterID(const wxString &str) const
+{
+   for (int i=OrbitPlotParamCount; i<GroundTrackPlotParamCount; i++)
+   {
+      if (str == PARAMETER_TEXT[i - OrbitPlotParamCount])
+         return i;
+   }
+   
+   return OrbitPlot::GetParameterID(str);
+}
+
+
+//------------------------------------------------------------------------------
+// Gmat::ParameterType GetParameterType(const Integer id) const
+//------------------------------------------------------------------------------
+Gmat::ParameterType GroundTrackPlot::GetParameterType(const Integer id) const
+{
+   if (id >= OrbitPlotParamCount && id < GroundTrackPlotParamCount)
+      return PARAMETER_TYPE[id - OrbitPlotParamCount];
+   else
+      return OrbitPlot::GetParameterType(id);
+}
+
+
+//------------------------------------------------------------------------------
+// wxString GetParameterTypeString(const Integer id) const
+//------------------------------------------------------------------------------
+wxString GroundTrackPlot::GetParameterTypeString(const Integer id) const
+{
+   return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
+}
+
+
+//---------------------------------------------------------------------------
+//  bool IsParameterReadOnly(const Integer id) const
+//---------------------------------------------------------------------------
+/**
+ * Checks to see if the requested parameter is read only.
+ *
+ * @param <id> Description for the parameter.
+ *
+ * @return true if the parameter is read only, false (the default) if not,
+ *         throws if the parameter is out of the valid range of values.
+ */
+//---------------------------------------------------------------------------
+bool GroundTrackPlot::IsParameterReadOnly(const Integer id) const
+{
+   if (id == COORD_SYSTEM || id == DRAW_OBJECT || id == ORBIT_COLOR ||
+       id == TARGET_COLOR)
+      return true;
+   
+   return OrbitPlot::IsParameterReadOnly(id);
+}
+
+
+//------------------------------------------------------------------------------
+// wxString GetStringParameter(const Integer id) const
+//------------------------------------------------------------------------------
+wxString GroundTrackPlot::GetStringParameter(const Integer id) const
+{
+   #if DBGLVL_PARAM_STRING
+   MessageInterface::ShowMessage
+      (wxT("GroundTrackPlot::GetStringParameter() id = %d\n"), id);
+   #endif
+   
+   switch (id)
+   {
+   case CENTRAL_BODY:
+      return centralBodyName;
+   case TEXTURE_MAP:
+      return textureMapFileName;
+   case SHOW_FOOT_PRINTS:
+      return footPrints;
+   default:
+      return OrbitPlot::GetStringParameter(id);
+   }
+}
+
+
+//------------------------------------------------------------------------------
+// wxString GetStringParameter(const wxString &label) const
+//------------------------------------------------------------------------------
+wxString GroundTrackPlot::GetStringParameter(const wxString &label) const
+{
+   #if DBGLVL_PARAM_STRING
+   MessageInterface::ShowMessage
+      (wxT("GroundTrackPlot::GetStringParameter() label = %s\n"), label.c_str());
+   #endif
+   
+   return GetStringParameter(GetParameterID(label));
+}
+
+
+//------------------------------------------------------------------------------
+// bool SetStringParameter(const Integer id, const wxString &value)
+//------------------------------------------------------------------------------
+bool GroundTrackPlot::SetStringParameter(const Integer id, const wxString &value)
+{
+   #if DBGLVL_PARAM_STRING
+   MessageInterface::ShowMessage
+      (wxT("GroundTrackPlot::SetStringParameter() this=<%p>'%s', id=%d<%s>, value='%s'\n"),
+       this, instanceName.c_str(), id, GetParameterText(id).c_str(), value.c_str());
+   #endif
+   
+   switch (id)
+   {
+   case COORD_SYSTEM:
+      // script do not specify view coordinate system, so do nothing here
+      // we want to create local body fixed coord system instead in Initialize()
+      break;
+   case CENTRAL_BODY:
+      centralBodyName = value;
+      // Since ground track data uses body fixed coordinates, name it here
+      mViewCoordSysName = value + wxT("Fixed");
+      return true;
+   case TEXTURE_MAP:
+      textureMapFileName = value;
+      return true;
+   case SHOW_FOOT_PRINTS:
+      {
+         bool itemFound = false;
+         int index = -1;
+         for (int i = 0; i < FootPrintOptionCount; i++)
+         {
+            if (value == FOOT_PRINT_OPTION_TEXT[i])
+            {
+               itemFound = true;
+               index = i;
+               break;
+            }
+         }
+         
+         if (itemFound)
+         {
+            footPrints = value;
+            footPrintOption = (FootPrintOption)index;
+            #if DBGLVL_PARAM_STRING
+            MessageInterface::ShowMessage(wxT("   footPrintOption = %d\n"), footPrintOption);
+            #endif
+            return true;
+         }
+         else
+         {
+            SubscriberException se;
+            wxString options;
+            for (int i = 0; i < FootPrintOptionCount - 1; i++)               
+               options = options + FOOT_PRINT_OPTION_TEXT[i] + wxT(" ,");
+            options = options + FOOT_PRINT_OPTION_TEXT[FootPrintOptionCount - 1];
+            
+            se.SetDetails(errorMessageFormat.c_str(), value.c_str(),
+                          GetParameterText(id).c_str(), options.c_str());
+            throw se;
+         }
+      }
+   default:
+      ;           // Intentional drop through so all paths return a value
+   }
+   return OrbitPlot::SetStringParameter(id, value);
+}
+
+
+//------------------------------------------------------------------------------
+// bool SetStringParameter(const wxString &label, const wxString &value)
+//------------------------------------------------------------------------------
+bool GroundTrackPlot::SetStringParameter(const wxString &label,
+                                         const wxString &value)
+{
+   #if DBGLVL_PARAM_STRING
+   MessageInterface::ShowMessage
+      (wxT("GroundTrackPlot::SetStringParameter()<%s> label=%s, value=%s \n"),
+       instanceName.c_str(), label.c_str(), value.c_str());
+   #endif
+   
+   return SetStringParameter(GetParameterID(label), value);
+}
+
+
+//------------------------------------------------------------------------------
+// virtual wxString GetRefObjectName(const Gmat::ObjectType type) const
+//------------------------------------------------------------------------------
+wxString GroundTrackPlot::GetRefObjectName(const Gmat::ObjectType type) const
+{
+   if (type == Gmat::CELESTIAL_BODY)
+      return centralBodyName;
+   
+   return OrbitPlot::GetRefObjectName(type);
+}
+
+
+//------------------------------------------------------------------------------
+// virtual bool HasRefObjectTypeArray()
+//------------------------------------------------------------------------------
+/**
+ * @see GmatBase
+ */
+//------------------------------------------------------------------------------
+bool GroundTrackPlot::HasRefObjectTypeArray()
+{
+   return true;
+}
+
+
+//------------------------------------------------------------------------------
+// const ObjectTypeArray& GetRefObjectTypeArray()
+//------------------------------------------------------------------------------
+/**
+ * Retrieves the list of ref object types used by this class.
+ *
+ * @return the list of object types.
+ * 
+ */
+//------------------------------------------------------------------------------
+const ObjectTypeArray& GroundTrackPlot::GetRefObjectTypeArray()
+{
+   refObjectTypes.clear();
+   return OrbitPlot::GetRefObjectTypeArray();
+}
+
+
+//------------------------------------------------------------------------------
+// virtual const StringArray& GetRefObjectNameArray(const Gmat::ObjectType type)
+//------------------------------------------------------------------------------
+const StringArray& GroundTrackPlot::GetRefObjectNameArray(const Gmat::ObjectType type)
+{
+   #if DBGLVL_OBJ
+   MessageInterface::ShowMessage
+      (wxT("GroundTrackPlot::GetRefObjectNameArray() entered, type=%d\n"), type);
+   #endif
+   
+   refObjectNames.clear();
+   refObjectNames = OrbitPlot::GetRefObjectNameArray(type);
+   
+   if (type == Gmat::UNKNOWN_OBJECT || type == Gmat::SPACE_POINT ||
+       type == Gmat::CELESTIAL_BODY)
+   {      
+      #if DBGLVL_OBJ
+      MessageInterface::ShowMessage(wxT("   Adding '%s' to array\n"), centralBodyName.c_str());
+      #endif
+      refObjectNames.push_back(centralBodyName);
+   }
+   
+   #if DBGLVL_OBJ
+   MessageInterface::ShowMessage
+      (wxT("GroundTrackPlot::GetRefObjectNameArray() returning for type:%d\n"), type);
+   for (unsigned int i=0; i<refObjectNames.size(); i++)
+      MessageInterface::ShowMessage(wxT("   %s\n"), refObjectNames[i].c_str());
+   #endif
+   
+   return refObjectNames;
+}
+
+
+//------------------------------------------------------------------------------
+// virtual GmatBase* GetRefObject(const Gmat::ObjectType type,
+//                                const wxString &name)
+//------------------------------------------------------------------------------
+GmatBase* GroundTrackPlot::GetRefObject(const Gmat::ObjectType type,
+                                        const wxString &name)
+{
+   // Any ref orbjet declared in this class?
+   if (type == Gmat::CELESTIAL_BODY && name == centralBodyName)
+      return centralBody;
+   
+   return OrbitPlot::GetRefObject(type, name);
+}
+
+
+//------------------------------------------------------------------------------
+// virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
+//                           const wxString &name = wxT(""))
+//------------------------------------------------------------------------------
+/**
+ * Set reference object pointer.
+ *
+ * @param <obj>  Reference object pointer to set to given object type and name
+ * @param <type> Reference object type
+ * @param <name> Reference object name
+ */
+//------------------------------------------------------------------------------
+bool GroundTrackPlot::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
+                                   const wxString &name)
+{
+   #if DBGLVL_OBJ
+   MessageInterface::ShowMessage
+      (wxT("GroundTrackPlot::SetRefObject() this=<%p>'%s', obj=<%p>'%s', type=%d[%s], name='%s'\n"),
+       this, GetName().c_str(), obj, obj->GetName().c_str(), type,
+       obj->GetTypeName().c_str(), name.c_str());
+   #endif
+   
+   wxString realName = name;
+   if (name == wxT(""))
+      realName = obj->GetName();
+   
+   if (obj->IsOfType(Gmat::SPACE_POINT))
+   {
+      if (realName == centralBodyName)
+         centralBody = (CelestialBody*)obj;
+   }
+   
+   return OrbitPlot::SetRefObject(obj, type, realName);
+}
+
+
+//---------------------------------
+// protected methods
+//---------------------------------
+
+//------------------------------------------------------------------------------
+// bool UpdateSolverData()
+//------------------------------------------------------------------------------
+bool GroundTrackPlot::UpdateSolverData()
+{
+   int size = mCurrEpochArray.size();
+   int last = size - 1;
+   
+   #if DBGLVL_SOLVER_CURRENT_ITER
+   MessageInterface::ShowMessage(wxT("===> num buffered data = %d\n"), size);
+   MessageInterface::ShowMessage(wxT("==========> now update solver plot\n"));
+   #endif
+   
+   if (size == 0)
+      return true;
+   
+   UnsignedIntArray colorArray = mScOrbitColorArray;
+   if (runstate == Gmat::SOLVING)
+      colorArray = mScTargetColorArray;
+   else
+      colorArray = mScOrbitColorArray;
+   
+   // Update plot with last iteration data
+   for (int i=0; i<size-1; i++)
+   {
+      #if DBGLVL_SOLVER_CURRENT_ITER > 1
+      for (int sc=0; sc<mScCount; sc++)
+         MessageInterface::ShowMessage
+            (wxT("   i=%d, sc=%d, solver epoch = %f, X,Y,Z = %f, %f, %f\n"), i, sc,
+             mCurrEpochArray[i], mCurrXArray[i][sc], mCurrYArray[i][sc],
+             mCurrZArray[i][sc]);
+      #endif
+      
+      // Just buffer data up to last point - 1
+      PlotInterface::
+         UpdateGlPlot(instanceName, mOldName, mCurrScArray[i],
+                      mCurrEpochArray[i], mCurrXArray[i], mCurrYArray[i],
+                      mCurrZArray[i], mCurrVxArray[i], mCurrVyArray[i],
+                      mCurrVzArray[i], colorArray, true, mSolverIterOption,
+                      false, isDataOn);
+   }
+   
+   // Buffer last point and Update the plot
+   PlotInterface::
+      UpdateGlPlot(instanceName, mOldName, mCurrScArray[last],
+                   mCurrEpochArray[last], mCurrXArray[last], mCurrYArray[last],
+                   mCurrZArray[last], mCurrVxArray[last], mCurrVyArray[last],
+                   mCurrVzArray[last], colorArray, true, mSolverIterOption, true,
+                   isDataOn);
+   
+   // clear arrays
+   mCurrScArray.clear();
+   mCurrEpochArray.clear();
+   mCurrXArray.clear();
+   mCurrYArray.clear();
+   mCurrZArray.clear();
+   mCurrVxArray.clear();
+   mCurrVyArray.clear();
+   mCurrVzArray.clear();
+   
+   if (runstate == Gmat::SOLVING)
+   {
+      PlotInterface::TakeGlAction(instanceName, wxT("ClearSolverData"));
+   }
+   return true;
+}
+
+
+//------------------------------------------------------------------------------
+// bool Distribute(const Real *dat, Integer len)
+//------------------------------------------------------------------------------
+bool GroundTrackPlot::Distribute(const Real *dat, Integer len)
+{
+   #if DBGLVL_UPDATE
+   MessageInterface::ShowMessage
+      (wxT("===========================================================================\n")
+       wxT("GroundTrackPlot::Distribute() instanceName=%s, active=%d, isEndOfRun=%d, ")
+       wxT("isEndOfReceive=%d\n   mAllSpCount=%d, mScCount=%d, len=%d, runstate=%d, ")
+       wxT("isDataStateChanged=%d\n"), instanceName.c_str(), active, isEndOfRun, isEndOfReceive,
+       mAllSpCount, mScCount, len, runstate, isDataStateChanged);
+   #endif
+   
+   if (GmatGlobal::Instance()->GetRunMode() == GmatGlobal::TESTING_NO_PLOTS)
+      return true;
+   
+   // if data state changed from on to off or vice versa, update plot data so
+   // data points can be flagged.
+   if (isDataStateChanged)
+   {
+      if (isDataOn)
+         PlotInterface::TakeGlAction(instanceName, wxT("PenDown"));
+      else
+         PlotInterface::TakeGlAction(instanceName, wxT("PenUp"));
+      
+      isDataStateChanged = false;
+   }
+   
+   if (!active || mScCount <= 0)
+      return true;
+   
+   // test isEndOfRun first
+   if (isEndOfRun)
+   {
+      return PlotInterface::SetGlEndOfRun(instanceName);
+   }
+   
+   if (isEndOfReceive)
+   {
+      if ((mSolverIterOption == SI_CURRENT) &&
+          (runstate == Gmat::SOLVING || runstate == Gmat::SOLVEDPASS))
+      {
+         UpdateSolverData();
+      }
+      else
+      {
+         return PlotInterface::RefreshGlPlot(instanceName);
+      }
+   }
+   
+   
+   if (len <= 0)
+      return true;
+   
+   
+   #if DBGLVL_DATA
+   MessageInterface::ShowMessage(wxT("%s, len=%d\n"), GetName().c_str(), len);
+   for (int i=0; i<len; i++)
+      MessageInterface::ShowMessage(wxT("%.11f  "), dat[i]);
+   MessageInterface::ShowMessage(wxT("\n"));
+   #endif
+   
+   //------------------------------------------------------------
+   // if targeting and draw target is None, just return
+   //------------------------------------------------------------
+   if ((mSolverIterOption == SI_NONE) && (runstate == Gmat::SOLVING))
+   {
+      #if DBGLVL_UPDATE > 1
+      MessageInterface::ShowMessage
+         (wxT("   Just returning: SolverIterations is %d and runstate is %d\n"),
+          mSolverIterOption, runstate);
+      #endif
+      
+      return true;
+   }
+   
+   //------------------------------------------------------------
+   // update plot data
+   //------------------------------------------------------------
+   
+   UpdateData(dat, len);
+   
+   
+   //loj: always return true otherwise next subscriber will not call ReceiveData()
+   //     in Publisher::Publish()
+   return true;
+}
+
+
+//------------------------------------------------------------------------------
+// const wxString* GetFootPrintOptionList()
+//------------------------------------------------------------------------------
+const wxString* GroundTrackPlot::GetFootPrintOptionList()
+{
+   return FOOT_PRINT_OPTION_TEXT;
+}
+
+
+//---------------------------------------------------------------------------
+// Gmat::ObjectType GetPropertyObjectType(const Integer id) const
+//---------------------------------------------------------------------------
+Gmat::ObjectType GroundTrackPlot::GetPropertyObjectType(const Integer id) const
+{
+   if (id == CENTRAL_BODY)
+      return Gmat::CELESTIAL_BODY;
+   
+   return OrbitPlot::GetPropertyObjectType(id);
+}
+
+
+//---------------------------------------------------------------------------
+// const StringArray& GetPropertyEnumStrings(const Integer id) const
+//---------------------------------------------------------------------------
+const StringArray& GroundTrackPlot::GetPropertyEnumStrings(const Integer id) const
+{
+   if (id == SHOW_FOOT_PRINTS)
+      return footPrintOptions;
+   
+   return OrbitPlot::GetPropertyEnumStrings(id);
+}
+
+
+//---------------------------------------------------------------------------
+// const StringArray& GetPropertyEnumStrings(const wxString &label) const
+//---------------------------------------------------------------------------
+const StringArray& GroundTrackPlot::GetPropertyEnumStrings(const wxString &label) const
+{
+   return GetPropertyEnumStrings(GetParameterID(label));
+}
+
