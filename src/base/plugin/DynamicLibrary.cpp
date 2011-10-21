@@ -153,7 +153,7 @@ bool DynamicLibrary::LoadDynamicLibrary()
       libHandle = dlopen(nameWithPath.char_str(), RTLD_LAZY);
 
       if (libHandle == NULL)
-         MessageInterface::ShowMessage(wxT("\n%s\n"), dlerror());
+         MessageInterface::ShowMessage(wxT("\n%s\n"), (wxString::FromAscii(dlerror())).c_str());
    #endif
 
    // Set the MessageReceiver if the Library needs it

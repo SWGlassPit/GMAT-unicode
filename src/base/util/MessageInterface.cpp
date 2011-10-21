@@ -107,7 +107,7 @@ void MessageInterface::ShowMessage(const wxString &format, ...)
       //LogMessage(wxT("strlen(format)=%d, size=%d\n"), strlen(format), size);
       
       va_start(marker, format);
-      ret = msgBuffer.Printf(format, marker);
+      ret = msgBuffer.PrintfV(format, marker);
       if (ret < 0)
          theMessageReceiver->ShowMessage(wxT("Unable to complete messaging"));
       else
