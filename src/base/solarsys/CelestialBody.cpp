@@ -988,7 +988,7 @@ Real CelestialBody::GetGravitationalConstant()
       {
          MessageInterface::LogMessage
             (wxT("For body %s, not using potential file, so using default mu (%.18f)\n"),
-             instanceName.c_str(), mu, potentialFileName.c_str());
+             instanceName.c_str(), mu);
          
          isFirstTimeMu = false;
       }

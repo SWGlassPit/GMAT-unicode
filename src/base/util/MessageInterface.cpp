@@ -151,7 +151,7 @@ void MessageInterface::PopupMessage(Gmat::MessageType msgType, const wxString &f
       // actual max message length is MAX_MESSAGE_LENGTH
       
       va_start(marker, format);
-      ret = msgBuffer.Printf( format, marker);
+      ret = msgBuffer.PrintfV( format, marker);
       if (ret < 0)
          theMessageReceiver->PopupMessage(msgType,
                wxT("Unable to complete messaging"));
@@ -259,7 +259,7 @@ void MessageInterface::LogMessage(const wxString &msg, ...)
       //LogMessage(wxT("strlen(msg)=%d, size=%d\n"), strlen(msg), size);
       
       va_start(marker, msg);
-      ret = msgBuffer.Printf(msg, marker);
+      ret = msgBuffer.PrintfV(msg, marker);
       if (ret < 0) // vsprintf failed
          theMessageReceiver->LogMessage(wxT("Unable to complete messaging\n"));
       else
