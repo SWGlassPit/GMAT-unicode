@@ -554,7 +554,7 @@ void DeFile::InitializeDeFile(wxString fName, Gmat::DeFileFormat fileFmt)
    {
       // ERROR!  Other formats not currently supported!!!
    }
-   int worked = Initialize_Ephemeris((char*)binaryFileName.c_str());
+   int worked = Initialize_Ephemeris(binaryFileName.char_str());
    
    if (worked == FAILURE)
    {
@@ -788,25 +788,25 @@ int DeFile::Initialize_Ephemeris( char *fileName )
 
 #if defined (__UNIT_TEST__)
        std::ofstream fout;
-       fout.open(wxT("TestDeFile.txt"));
+       fout.open("TestDeFile.txt");
                      
-       fout << wxT(" In: Initialize_Ephemeris") << std::endl;
-       fout << wxT("     ARRAY_SIZE     ") << arraySize << std::endl;
-       fout << wxT("     R1.timeData[0] ") << R1.timeData[0] << std::endl;
-       fout << wxT("     R1.timeData[1] ") << R1.timeData[1] << std::endl;
-       fout << wxT("     R1.timeData[2] ") << R1.timeData[2] << std::endl;
-       fout << wxT("     R1.numConst    ") << R1.numConst << std::endl;
-       fout << wxT("     R1.AU          ") << R1.AU << std::endl;
-       fout << wxT("     R1.EMRAT       ") <<  R1.EMRAT << std::endl;
-       fout << wxT("     R1.coeffPtr[0][0] ") << R1.coeffPtr[0][0] << std::endl;
-       fout << wxT("     R1.coeffPtr[11][2]") << R1.coeffPtr[11][2] << std::endl;
+       fout << " In: Initialize_Ephemeris" << std::endl;
+       fout << "     ARRAY_SIZE     " << arraySize << std::endl;
+       fout << "     R1.timeData[0] " << R1.timeData[0] << std::endl;
+       fout << "     R1.timeData[1] " << R1.timeData[1] << std::endl;
+       fout << "     R1.timeData[2] " << R1.timeData[2] << std::endl;
+       fout << "     R1.numConst    " << R1.numConst << std::endl;
+       fout << "     R1.AU          " << R1.AU << std::endl;
+       fout << "     R1.EMRAT       " <<  R1.EMRAT << std::endl;
+       fout << "     R1.coeffPtr[0][0] " << R1.coeffPtr[0][0] << std::endl;
+       fout << "     R1.coeffPtr[11][2]" << R1.coeffPtr[11][2] << std::endl;
             
-       fout << wxT("     R1.DENUM   ") << R1.DENUM << std::endl;
-       fout << wxT("     headerID   ") << headerID << std::endl;
-       fout << wxT("     EPHEMERIS  ") << EPHEMERIS << std::endl;
-       fout << wxT("     T_Beg      ") << T_beg << std::endl;
-       fout << wxT("     T_End      ") << T_end << std::endl;
-       fout << wxT("     T_Span     ") << T_span << std::endl;
+       fout << "     R1.DENUM   " << R1.DENUM << std::endl;
+       fout << "     headerID   " << headerID << std::endl;
+       fout << "     EPHEMERIS  " << EPHEMERIS << std::endl;
+       fout << "     T_Beg      " << T_beg << std::endl;
+       fout << "     T_End      " << T_end << std::endl;
+       fout << "     T_Span     " << T_span << std::endl;
 
        fout.close();
 #endif

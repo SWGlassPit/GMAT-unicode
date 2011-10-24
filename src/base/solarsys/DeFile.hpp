@@ -135,18 +135,19 @@ protected:
    // (from JPL/JSC code - Hoffman)
    // wcs - added constructors, and operator=
 #pragma pack(push, 1)
-   struct GMAT_API recOneData {
-      recOneData()  // default constructor
+   struct GMAT_API recOneData 
    {
+      recOneData()  // default constructor
+      {
          int i, j;
          for (i=0;i<3;i++)
          {
-            label[i] = wxT("");
+            strcpy(label[i], "\0");
             timeData[i]  = 0.0;
             libratPtr[i] = 0;
             for (j=0;j<12;j++) coeffPtr[j][i] = 0;
          }
-         for (i=0;i<400;i++)    constName[i] = wxT("");
+         for (i=0;i<400;i++)    strcpy(constName[i], "\0");
          numConst        = 0;
          AU              = 0.0;
          EMRAT           = 0.0;
@@ -155,43 +156,43 @@ protected:
          #else
             DENUM           = (long int) 0;
          #endif
-   }
+      }
       recOneData(const recOneData& r)  // copy constructor
-   {
+      {
          int i, j;
          for (i=0;i<3;i++)
          {
-            label[i] = r.label[i];
+            strcpy(label[i],r.label[i]);
             timeData[i]  = r.timeData[i];
             libratPtr[i] = r.libratPtr[i];
             for (j=0;j<12;j++) coeffPtr[j][i] = r.coeffPtr[j][i];
          }
-         for (i=0;i<400;i++)    constName[i] = r.constName[i];
+         for (i=0;i<400;i++)    strcpy(constName[i], r.constName[i]);
          numConst        = r.numConst;
          AU              = r.AU;
          EMRAT           = r.EMRAT;
          DENUM           = r.DENUM;
-   }
+      }
       recOneData& operator=(const recOneData& r) 
-   {
+      {
          int i, j;
          for (i=0;i<3;i++)
          {
-            label[i] = r.label[i];
+            strcpy(label[i], r.label[i]);
             timeData[i]  = r.timeData[i];
             libratPtr[i] = r.libratPtr[i];
             for (j=0;j<12;j++) coeffPtr[j][i] = r.coeffPtr[j][i];
          }
-	 for (i=0;i<400;i++)    constName[i] = r.constName[i];
+	 for (i=0;i<400;i++)    strcpy(constName[i], r.constName[i]);
          numConst        = r.numConst;
          AU              = r.AU;
          EMRAT           = r.EMRAT;
          DENUM           = r.DENUM;
          return *this;
-   }
+      }
       // data
-      wxString label[3];
-      wxString constName[400];
+      char label[3][84];
+      char constName[400][6];
       double timeData[3];
       #if (USE_64_BIT_LONGS == 1)
          int numConst;
@@ -213,26 +214,27 @@ protected:
       #endif
    };
 
-   struct GMAT_API recTwoData {
+   struct GMAT_API recTwoData 
+   {
       // default constructor
       recTwoData()
-   {
+      {
          int i;
          for (i=0;i<400;i++) constValue[i] = 0.0;
-   }
+      }
       // copy constructor
       recTwoData(const recTwoData& r)
-   {
+      {
          int i;
          for (i=0;i<400;i++) constValue[i] = r.constValue[i];
-   }
+      }
       // operator=
       recTwoData& operator=(const recTwoData& r)
-   {
+      {
          int i;
          for (i=0;i<400;i++) constValue[i] = r.constValue[i];
          return *this;
-   }
+      }
       //data
       double constValue[400];
    };
@@ -242,12 +244,14 @@ protected:
    typedef struct recTwoData recTwoType;
 
    // structs representing the formats of the header records - need ARRAY_SIZE?
-   struct GMAT_API headerOne {
-         recOneType data;
-         char pad[MAX_ARRAY_SIZE*sizeof(double) - sizeof(recOneType)];  // MAX
-      };
+   struct GMAT_API headerOne 
+   {
+      recOneType data;
+      char pad[MAX_ARRAY_SIZE*sizeof(double) - sizeof(recOneType)];  // MAX
+   };
 
-   struct GMAT_API headerTwo {
+   struct GMAT_API headerTwo 
+   {
       recTwoType data;
       char pad[MAX_ARRAY_SIZE*sizeof(double) - sizeof(recTwoType)];  // MAX
    };
@@ -287,11 +291,11 @@ private:
    /// File beginning in ModJulian format
    double       mA1FileBeg;
 
-      #if (USE_64_BIT_LONGS == 1)
-         int numConst;
-      #else
-         long int numConst;
-      #endif
+   #if (USE_64_BIT_LONGS == 1)
+      int numConst;
+   #else
+      long int numConst;
+   #endif
    
    Integer EPHEMERIS; // caps because of reuse from JPL/JSC code (Hoffman)
 
@@ -304,73 +308,17 @@ private:
    // --------------- methods from JPL/JSC code (Hoffman) ______________________
 
 
-   /*-------------------------------------------------------------------------*/
-   /*  Read_Coefficients      - from JPL/JSC code (Hoffman)                   */
-   /*-------------------------------------------------------------------------*/
-   void Read_Coefficients( double Time );
-
-   /*-------------------------------------------------------------------------*/
-   /*  Initialize_Ephemeris      - from JPL/JSC code (Hoffman)                */
-   /*-------------------------------------------------------------------------*/
-   int Initialize_Ephemeris( char *fileName );
-
-   /*-------------------------------------------------------------------------*/
-   /*  Interpolate_Libration     - from JPL/JSC code (Hoffman)                */
-   /*-------------------------------------------------------------------------*/
-   void Interpolate_Libration( double Time, int Target, 
-                               double Libration[3], double rates[3] );
-
-   /*-------------------------------------------------------------------------*/
-   /*  Interpolate_Nutation     - from JPL/JSC code (Hoffman)                 */
-   /*-------------------------------------------------------------------------*/
-   void Interpolate_Nutation( double Time , int Target , double Nutation[2] );
-
-   /*-------------------------------------------------------------------------*/
-   /*  Interpolate_Position      - from JPL/JSC code (Hoffman)                */
-   /*-------------------------------------------------------------------------*/
-   void Interpolate_Position( double Time , int Target , double Position[3] );
-
-   /*-------------------------------------------------------------------------*/
-   /*  Interpolate_State     - from JPL/JSC code (Hoffman)                    */
-   /*-------------------------------------------------------------------------*/
-   void Interpolate_State( double Time , int Target , stateType *p );
-
-   /*-------------------------------------------------------------------------*/
-   /*  Find_Value     - from JPL/JSC code (Hoffman)                           */
-   /*-------------------------------------------------------------------------*/
-   double Find_Value( char    name[]             ,
-                             char    name_array[400][6] ,
-                             double  value_array[400]   );
-
-   /*-------------------------------------------------------------------------*/
-   /**  Gregorian_to_Julian     - from JPL/JSC code (Hoffman)                 */
-   /*-------------------------------------------------------------------------*/
-   double Gregorian_to_Julian( int     year ,   int     month   ,
-                                      int     day  ,   int     hour    ,
-                                      int     min  ,   double  seconds );
-
-   /*-------------------------------------------------------------------------*/
-   /*  Integer modulo function.     - from JPL/JSC code (Hoffman)             */
-   /*-------------------------------------------------------------------------*/
-   int mod( int x, int y );
-
-   /*-------------------------------------------------------------------------*/
-   /*  Read_File_Line     - from JPL/JSC code (Hoffman)                       */
-   /*-------------------------------------------------------------------------*/
-   int Read_File_Line( FILE *inFile, int filter, char lineBuffer[82]);
-
-   /*-------------------------------------------------------------------------*/
-   /*  Read_Group_Header     - from JPL/JSC code (Hoffman)                    */
-   /*-------------------------------------------------------------------------*/
-   int Read_Group_Header( FILE *inFile );
-
-   /*-------------------------------------------------------------------------*/
-   /*  Warning     - from JPL/JSC code (Hoffman)                              */
-   /*-------------------------------------------------------------------------*/
-
-   //extern void Warning( int errorCode );
-   
-
+   void   Read_Coefficients( double Time );
+   int    Initialize_Ephemeris( char *fileName );
+   void   Interpolate_Libration( double Time, int Target, double Libration[3], double rates[3] );
+   void   Interpolate_Nutation( double Time, int Target, double Nutation[2] );
+   void   Interpolate_Position( double Time, int Target, double Position[3] );
+   void   Interpolate_State( double Time, int Target, stateType *p );
+   double Find_Value( char name[], char name_array[400][6], double value_array[400] );
+   double Gregorian_to_Julian( int year, int month, int day, int hour, int min, double seconds );
+   int    mod( int x, int y );
+   int    Read_File_Line( FILE *inFile, int filter, char lineBuffer[82]);
+   int    Read_Group_Header( FILE *inFile );
 
 };
 #endif // DeFile_hpp
