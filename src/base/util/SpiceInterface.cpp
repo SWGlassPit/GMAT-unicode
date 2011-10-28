@@ -596,7 +596,7 @@ void SpiceInterface::InitializeInterface()
       errprt_c("SET", 1840, report);
       erract_c("SET", 1840, action);
 
-      delete pathChar;
+      delete [] pathChar;
    }
 }
 
