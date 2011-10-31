@@ -147,66 +147,31 @@ int GuiMessageReceiver::GetNumberOfMessageLines()
 
 
 //------------------------------------------------------------------------------
-//  void ShowMessage(const wxString &msg, ...)
+//  void ShowMessage(const wxString &msg)
 //------------------------------------------------------------------------------
 /**
- * Displays a message passed in as a char* and a variable argument
- * list.  Throws std::bad_alloc on memory exhaustion.
+ * Displays the message passed in as a wxString.
  * 
- * @param msg The message, possibly including markers for variable argument 
- *            substitution.
- * @param ... The optional list of parameters that are inserted into the msg 
- *            string.
+ * @param msg The message to be displayed. 
  */
 //------------------------------------------------------------------------------
-void GuiMessageReceiver::ShowMessage(const wxString &msg, ...)
+void GuiMessageReceiver::ShowMessage(const wxString &msgString)
 {
-   short    ret;
-   short    size;
-   va_list  marker;
-   wxString msgBuffer;
-   
-   // msg is vsprintf format
-   // actual max message length is MAX_MESSAGE_LENGTH
-   //LogMessage("strlen(msg)=%d, size=%d\n", strlen(msg), size);
-   
-//   if( (msgBuffer = (char *)malloc(size)) != NULL )
-//   {
-//      va_start(marker, msg);
-//      ret = vsprintf(msgBuffer, msg, marker);
-//      va_end(marker);
-//      //LogMessage("ret from vsprintf()=%d\n", ret);
-//   }
-//   else
-//   {
-//      msgBuffer =
-//         "*** WARNING *** Cannot allocate enough memory to show the message.\n";
-//   }
-
-
-   // For older C++ compilers, duplicate that behavior by hand.
-
-   // Process the message
-   va_start(marker, msg);
-   ret = msgBuffer.PrintfV( msg, marker);
-   va_end(marker);
-   //LogMessage("ret from vsprintf()=%d\n", ret);
-   
    GmatAppData *appData = GmatAppData::Instance();
    if (appData->GetMessageTextCtrl() != NULL)
    {
-      appData->GetMessageTextCtrl()->AppendText(wxString(msgBuffer));
+      appData->GetMessageTextCtrl()->AppendText(msgString);
       appData->GetMessageTextCtrl()->PageDown();
       appData->GetMessageTextCtrl()->Update();
    }
-   LogMessage(wxString(msgBuffer));
+   LogMessage(msgString);
 
-//   free(msgBuffer);
 } // end ShowMessage()
 
 
 //------------------------------------------------------------------------------
-//  void PopupAbortContinue(const wxString abortMsg, ...)
+//  void PopupAbortContinue(const wxString & abortMsg, 
+//                          const wxString & continueMsg, const wxString & msg)
 //------------------------------------------------------------------------------
 /**
  * Pops up Abort or Continue message box.
@@ -228,75 +193,37 @@ void GuiMessageReceiver::PopupAbortContinue(const wxString &abortMsg,
 
 
 //------------------------------------------------------------------------------
-//  static void PopupMessage(Gmat::MessageType msgType, const wxString &msg, ...)
+//  static void PopupMessage(Gmat::MessageType msgType, const wxString &msg)
 //------------------------------------------------------------------------------
 /**
  * Pops up a message in a message box.
  * 
  * This method logs informational messages directed at pop-up message boxes and
- * shows the message as a pop-up.
+ * shows them in a pop-up.
  *
- * Throws std::bad_alloc in memory exhaustion.
- * 
  * @param msgType The type of message that is displayed, selected from the set
  *                {ERROR_, WARNING_, INFO_} enumerated in the Gmat namespace.
- * @param msg The message, possibly including markers for variable argument 
- *            substitution.
- * @param ... The optional list of parameters that are inserted into the msg 
- *            string.
+ * @param msg The message. 
  */
 //------------------------------------------------------------------------------
-void GuiMessageReceiver::PopupMessage(Gmat::MessageType msgType, const wxString &msg, ...)
+void GuiMessageReceiver::PopupMessage(Gmat::MessageType msgType, const wxString &msg)
 {
-   short    ret;
-   short    size;
-   va_list  marker;
-   wxString msgBuffer;
-   
-   // msg is vsprintf format
-   // actual max message length is MAX_MESSAGE_LENGTH
-   
-   // Process the message
-   va_start(marker, msg);
-   ret = msgBuffer.PrintfV( msg, marker);
-   va_end(marker);
-
-   // if no EOL then append it
-   if (msgBuffer.EndsWith(wxT("\n")))
-      msgBuffer += wxT("\n");
-
-//   if ( (msgBuffer = (char *)malloc(size)) != NULL )
-//   {
-//      va_start(marker, msg);
-//      ret = vsprintf(msgBuffer, msg, marker);
-//      va_end(marker);
-//
-//      // if no EOL then append it
-//      if (msgBuffer[strlen(msgBuffer)-1] != '\n')
-//         msgBuffer[strlen(msgBuffer)] = '\n';
-//   }
-//   else
-//   {
-//      msgBuffer = "*** WARNING *** Cannot allocate enough memory to show the message.\n";
-//   }
-   
-   // always show message
-   ShowMessage(msgBuffer);
+   ShowMessage(msg);
    
    if (GmatGlobal::Instance()->IsBatchMode() != true)
    {
       switch (msgType)
       {
       case Gmat::ERROR_:
-         (void)wxMessageBox(msgBuffer,
+         (void)wxMessageBox(msg,
                             wxT("GMAT Error"));
          break;
       case Gmat::WARNING_:
-         (void)wxMessageBox(msgBuffer,
+         (void)wxMessageBox(msg,
                             wxT("GMAT Warning"));
          break;
       case Gmat::INFO_:
-         (void)wxMessageBox(msgBuffer,
+         (void)wxMessageBox(msg,
                             wxT("Information"));
          break;
       default:
@@ -304,7 +231,6 @@ void GuiMessageReceiver::PopupMessage(Gmat::MessageType msgType, const wxString 
       };
    }
    
-//   free(msgBuffer);
 } // end PopupMessage()
 
 
@@ -355,55 +281,21 @@ wxString GuiMessageReceiver::GetLogFileName()
 
 
 //------------------------------------------------------------------------------
-//  void LogMessage(const wxString &msg, ...)
+//  void LogMessage(const wxString &msg)
 //------------------------------------------------------------------------------
 /**
- * Logs a variable argument formatted message to the log file.
+ * Logs the message to the log file.
  * 
- * This method calls the wxString vrrersion of LogMessage to do the actual
- * logging.
+ * This method displays the input message on the console and writes it to the 
+ * log file.
  *
- * Throws std::bad_alloc on memory exhaustion.
- * 
- * @param msg The message, possibly including markers for variable argument 
- *            substitution.
- * @param ... The optional list of parameters that are inserted into the msg 
- *            string.
+ * @param msg The message.
  */
 //------------------------------------------------------------------------------
-void GuiMessageReceiver::LogMessage(const wxString &msg, ...)
+void GuiMessageReceiver::LogMessage(const wxString &msg)
 {
-   short    ret;
-   short    size;
-   va_list  marker;
-   wxString msgBuffer;
-   
-   // msg is vsprintf format
-   // actual max message length is MAX_MESSAGE_LENGTH
-   
-//   if ( (msgBuffer = (char *)malloc(size)) != NULL )
-//   {
-//      va_start(marker, msg);
-//      ret = vsprintf(msgBuffer, msg, marker);
-//      va_end(marker);
-//   }
-//   else
-//   {
-//      msgBuffer = "*** WARNING *** Cannot allocate enough memory to log the message.\n";
-//   }
-//
+   std::cout << msg.mb_str();
 
-   // Note: 'new' throws an exception of type std::bad_alloc on failure.
-   // (Note that if an exception is thrown, no memory will have been
-   // allocated, so there will be no memory leak.)
-
-   // For older C++ compilers, duplicate that behavior by hand.
-
-   // Process the message
-   va_start(marker, msg);
-   ret = msgBuffer.PrintfV( msg, marker);
-   va_end(marker);
-   
    if (logEnabled)
    {
       if (logFile == NULL)
@@ -418,13 +310,10 @@ void GuiMessageReceiver::LogMessage(const wxString &msg, ...)
    
    if (logFile)
    {
-      //wxString tempStr = GmatStringUtil::Replace(msg, "%", "%%");
-      //fprintf(logFile, "%s", tempStr.c_str());
       fprintf(logFile, "%s", (char *) msg.char_str());
       fflush(logFile);
    }
    
-//   free(msgBuffer);
 } // end LogMessage()
 
 

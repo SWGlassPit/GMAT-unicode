@@ -50,19 +50,16 @@ public:
    // static MessageReceiver*  Instance();
    
    // Derived classes must implement all of the following methods:
-//   virtual void ShowMessage(const wxString &msg) = 0;
-   virtual void ShowMessage(const wxString &msg, ...) = 0;
+   virtual void ShowMessage(const wxString &msg) = 0;
 
-//   virtual void PopupMessage(Gmat::MessageType msgType, const wxString &msg) = 0;
-   virtual void PopupMessage(Gmat::MessageType msgType, const wxString &msg, ...) = 0;
+   virtual void PopupMessage(Gmat::MessageType msgType, const wxString &msg) = 0;
    
    virtual wxString GetLogFileName() = 0;
    virtual void SetLogEnable(bool flag) = 0;
    virtual void SetLogPath(const wxString &pathname, bool append = false) = 0;
    virtual void SetLogFile(const wxString &filename) = 0;
 
-//   virtual void LogMessage(const wxString &msg) = 0;
-   virtual void LogMessage(const wxString &msg, ...) = 0;
+   virtual void LogMessage(const wxString &msg) = 0;
 
    virtual void ClearMessage() = 0;
 

@@ -40,13 +40,13 @@ public:
 
    virtual void ClearMessage();
    virtual int  GetNumberOfMessageLines();
-   virtual void ShowMessage(const wxString &msg, ...);
-   virtual void PopupMessage(Gmat::MessageType msgType, const wxString &msg, ...);
+   virtual void ShowMessage(const wxString &msg);
+   virtual void PopupMessage(Gmat::MessageType msgType, const wxString &msg);
    virtual void PopupAbortContinue(const wxString &abortMsg,
                                   const wxString &continueMsg,
                                   const wxString &msg);
    
-   virtual void LogMessage(const wxString &msg, ...);
+   virtual void LogMessage(const wxString &msg);
    
    virtual wxString GetLogFileName();
 
