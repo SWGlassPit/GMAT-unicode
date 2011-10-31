@@ -156,7 +156,7 @@ bool PenDown::InterpretAction()
    
    Integer loc = generatingString.find(wxT("PenDown"), 0) + 7;
    wxString str = generatingString;
-   while (str[loc] == ' ')
+   while (str[loc] == wxT(' '))
       ++loc;
 
    // this command, for compatability with MATLAB, should not have

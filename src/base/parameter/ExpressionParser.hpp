@@ -85,7 +85,7 @@ private:
    void GetValue(Real &result);
    Real EvalVariable(wxString &var);
    void GetToken();
-   bool IsDelimiter(char c);
+   bool IsDelimiter(wxChar c);
    void HandleSyntaxError(int error);
       
 };

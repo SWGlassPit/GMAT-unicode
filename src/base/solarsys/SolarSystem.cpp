@@ -2332,7 +2332,7 @@ bool SolarSystem::SetStringParameter(const Integer id,
       unsigned int pos           = 0;
       while ((!validSrcFound) && pos < parts.size())
       {
-         validSrc = GmatStringUtil::RemoveAll(parts[pos], '\'');
+         validSrc = GmatStringUtil::RemoveAll(parts[pos], wxT('\''));
          for (unsigned int jj = 0; jj < Gmat::PosVelSourceCount; jj++)
          {
             if (validSrc == Gmat::POS_VEL_SOURCE_STRINGS[jj])

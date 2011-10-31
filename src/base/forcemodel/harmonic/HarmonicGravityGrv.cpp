@@ -75,7 +75,7 @@ void HarmonicGravityGrv::Load()
       wxTextInputStream lineStream(lineStreamString);
 
       // ignore comment lines
-      if (line[0] != '#')
+      if (line[0] != wxT('#'))
       {
          lineStream >> firstStr;
          if (firstStr == wxT("END")) break;

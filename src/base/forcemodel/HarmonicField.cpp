@@ -633,11 +633,9 @@ bool HarmonicField::SetStringParameter(const Integer id,
    if (id == INPUT_COORD_SYSTEM)
    {
       #ifdef DEBUG_HARMONIC_FIELD
-         char str[1024];
-         strcpy(str, value.c_str());
          
          MessageInterface::ShowMessage(
-                wxT("Setting input coordinate system name to \"%s\"\n"), str);
+                wxT("Setting input coordinate system name to \"%s\"\n"), value.c_str());
       #endif
       inputCSName = value;
       
@@ -646,11 +644,9 @@ bool HarmonicField::SetStringParameter(const Integer id,
    if (id == FIXED_COORD_SYSTEM)
    {
       #ifdef DEBUG_HARMONIC_FIELD
-         char str[1024];
-         strcpy(str, value.c_str());
          
          MessageInterface::ShowMessage(
-                wxT("Setting fixed coordinate system name to \"%s\"\n"), str);
+                wxT("Setting fixed coordinate system name to \"%s\"\n"), value.c_str());
       #endif
       fixedCSName = value;
       
@@ -659,11 +655,9 @@ bool HarmonicField::SetStringParameter(const Integer id,
    if (id == TARGET_COORD_SYSTEM)
    {
       #ifdef DEBUG_HARMONIC_FIELD
-         char str[1024];
-         strcpy(str, value.c_str());
          
          MessageInterface::ShowMessage(
-                wxT("Setting target coordinate system name to \"%s\"\n"), str);
+                wxT("Setting target coordinate system name to \"%s\"\n"), value.c_str());
       #endif
       targetCSName = value;
       

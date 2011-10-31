@@ -182,7 +182,7 @@ void EopFile::Initialize()
       bool done = false;
       while (!done)
       {
-         if (!IsBlank(line.char_str()))
+         if (!IsBlank(line))
          {
             wxStringInputStream lineStream(line);
             wxTextInputStream lineS(lineStream);
@@ -217,7 +217,7 @@ void EopFile::Initialize()
       while (!done && (!eopInputFile.Eof()))
       {
          line = eopFile.ReadLine();
-         if (!IsBlank(line.char_str()))
+         if (!IsBlank(line))
          {
             wxStringInputStream lineStream(line);
             wxTextInputStream lineS(lineStream);
@@ -225,7 +225,7 @@ void EopFile::Initialize()
             lineS >> mjd >> ipFlag1
                >> x >> dx >> y >> dy >> ipFlag2 >> ut1_utc >> dut1_utc >> lod;
             // We're done when we reach the end of the predicted values
-            if ((ipFlag1 != 'I') && (ipFlag1 != 'P')) 
+            if ((ipFlag1 != wxT('I')) && (ipFlag1 != wxT('P'))) 
             {
                done = true;
             }
@@ -487,7 +487,7 @@ bool EopFile::GetPolarMotionAndLod(Real forUtcMjd, Real &xval, Real  &yval,
 }
 
 //------------------------------------------------------------------------------
-//  bool IsBlank(char* aLine)
+//  bool IsBlank(wxString &aLine)
 //------------------------------------------------------------------------------
 /**
  * This method returns true if the string is empty or is all white space.
@@ -495,10 +495,10 @@ bool EopFile::GetPolarMotionAndLod(Real forUtcMjd, Real &xval, Real  &yval,
  * @return success flag.
  */
 //------------------------------------------------------------------------------
-bool EopFile::IsBlank(const char* aLine)
+bool EopFile::IsBlank(const wxString & aLine)
 {
    Integer i;
-   for (i=0;i<(int)strlen(aLine);i++)
+   for (i=0;i<aLine.Length();i++)
    {
       //loj: 5/18/04 if (!isblank(aLine[i])) return false;
       if (!isspace(aLine[i])) return false;

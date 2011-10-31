@@ -159,8 +159,8 @@ void MessageInterface::PopupMessage(Gmat::MessageType msgType, const wxString &f
       {
 
          // if no EOL then append it
-         if (msgBuffer.at(msgBuffer.length()-1) != '\n')
-            msgBuffer.append(1,'\n');
+         if (msgBuffer.at(msgBuffer.length()-1) != wxT('\n'))
+            msgBuffer.append(1,wxT('\n'));
          theMessageReceiver->PopupMessage(msgType, wxString(msgBuffer));
       }
       va_end(marker);

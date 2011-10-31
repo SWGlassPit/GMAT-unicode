@@ -371,12 +371,12 @@ void GmatCommand::SetGeneratingString(const wxString &gs)
 {
    // Drop the leading white space
    UnsignedInt start = 0, end;
-   while ((start < gs.length()) && (gs[start] == ' '))
+   while ((start < gs.length()) && (gs[start] == wxT(' ')))
       ++start;
    generatingString = gs.substr(start);
    
    end = gs.length()-1;
-   while ((end > 0) && (gs[end] == ' '))
+   while ((end > 0) && (gs[end] == wxT(' ')))
       --end;
 
    generatingString = gs.substr(0, end+1);
@@ -2928,7 +2928,7 @@ GmatBase* GmatCommand::FindObject(const wxString &name)
    wxString newName = name;
    
    // Ignore array indexing of Array
-   wxString::size_type index = name.find('(');
+   wxString::size_type index = name.find(wxT('('));
    if (index != name.npos)
       newName = name.substr(0, index);
    

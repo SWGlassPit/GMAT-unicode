@@ -979,7 +979,7 @@ bool GravityField::SetStart(Gmat::StateElementId id, Integer index,
 
 
 //------------------------------------------------------------------------------
-//  bool IsBlank(char* aLine)
+//  bool IsBlank(wxString & aLine)
 //------------------------------------------------------------------------------
 /**
  * This method returns true if the string is empty or is all white space.
@@ -987,17 +987,6 @@ bool GravityField::SetStart(Gmat::StateElementId id, Integer index,
  * @return success flag.
  */
 //------------------------------------------------------------------------------
-bool GravityField::IsBlank(char* aLine)
-{
-   Integer i;
-   for (i=0;i<(int)strlen(aLine);i++)
-   {
-      //loj: 5/18/04 if (!isblank(aLine[i])) return false;
-      if (!isspace(aLine[i])) return false;
-   }
-   return true;
-}
-
 bool GravityField::IsBlank(const wxString &aLine)
 {
    Integer i;

@@ -75,7 +75,7 @@ void HarmonicGravityCof::Load()
       line = inStream.ReadLine();
 
       // ignore comment lines
-      if (line[0] != 'C')
+      if (line[0] != wxT('C'))
       {
          firstStr = line.substr(0, 8);
          firstStr = GmatStringUtil::Trim(firstStr);

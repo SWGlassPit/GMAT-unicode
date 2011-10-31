@@ -119,7 +119,7 @@ GmatFM::GravityFileType GravityFile::GetFileType(const wxString &filename)
       #endif
 
       // Get first non-comment line
-      if (line[0] != 'C' && line[0] != '#')
+      if (line[0] != wxT('C') && line[0] != wxT('#'))
       {
          if (line.find(wxT("POTFIELD")) != line.npos)
          {
@@ -252,7 +252,7 @@ bool GravityFile::ReadCofFile(const wxString &filename, Integer& degree,
       wxTextInputStream lineStream(lineInputStringStream);
 
       // ignore comment lines
-      if (line[0] != 'C')
+      if (line[0] != wxT('C'))
       {
          firstStr = line.substr(0, 8);
          firstStr = GmatStringUtil::Trim(firstStr);
@@ -374,7 +374,7 @@ bool GravityFile::ReadDatFile(const wxString &filename, Integer& degree,
          line = inStream.ReadLine();
 
          // ignore comment lines
-         if (line[0] != '#')
+         if (line[0] != wxT('#'))
             break;
       }
 
@@ -393,7 +393,7 @@ bool GravityFile::ReadDatFile(const wxString &filename, Integer& degree,
       while (!inFileStream.Eof())
       {
          line = inStream.ReadLine();
-         if (line[0] != '#')
+         if (line[0] != wxT('#'))
          {
             wxStringInputStream coefStringStream(line);
             wxTextInputStream coefStream(coefStringStream);
@@ -433,7 +433,7 @@ bool GravityFile::ReadDatFile(const wxString &filename, Integer& degree,
    while ( iscomment )
    {
       rtn = fgetc( fp );
-      if ( (char)rtn == '#' )
+      if ( (wxChar)rtn == wxT('#') )
       {
          // Intentionally get the return and then ignore it to move warning from
          // system libraries to GMAT code base.  The wxT("unused variable") warning
@@ -497,7 +497,7 @@ bool GravityFile::ReadDatFile(const wxString &filename, Integer& degree,
    // read coefficient drift rate
    //-------------------------------------------------------
    char* ch = fgets( buf, maxLen, fp );
-   while ( ( (char)(rtn=fgetc(fp)) != '#' ) && (rtn != EOF) )
+   while ( ( (wxChar)(rtn=fgetc(fp)) != wxT('#') ) && (rtn != EOF) )
    {
       ungetc( rtn, fp );
       // Intentionally get the return and then ignore it to move warning from
@@ -600,7 +600,7 @@ bool GravityFile::ReadGrvFile(const wxString &filename, Integer& degree,
       wxTextInputStream lineStream(lineStringStream);
 
       // ignore comment lines
-      if (line[0] != '#')
+      if (line[0] != wxT('#'))
       {
          lineStream >> firstStr;
          if (firstStr == wxT("END")) break;

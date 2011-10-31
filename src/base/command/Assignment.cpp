@@ -447,7 +447,7 @@ bool Assignment::InterpretAction()
    
    // check for unexpected commas on the left-hand-side
    Integer commaPos = -1;
-   if (lhs.find(',') != lhs.npos)
+   if (lhs.find(wxT(',')) != lhs.npos)
    {
       GmatStringUtil::GetArrayCommaIndex(lhs, commaPos);
       if (commaPos == -1)
@@ -468,7 +468,7 @@ bool Assignment::InterpretAction()
          MessageInterface::ShowMessage
             (wxT("   Removing single quote from <%s>\n"), rhs.c_str());
          #endif
-         rhs = GmatStringUtil::RemoveAll(rhs, '\'');
+         rhs = GmatStringUtil::RemoveAll(rhs, wxT('\''));
          
          #ifdef DEBUG_ASSIGNMENT_IA
          MessageInterface::ShowMessage
@@ -530,7 +530,7 @@ bool Assignment::InterpretAction()
             #endif
             
             str1 = GmatStringUtil::RemoveLastString(str1, wxT("'"));
-            str1 = GmatStringUtil::RemoveAll(str1, ' ');
+            str1 = GmatStringUtil::RemoveAll(str1, wxT(' '));
             StringArray gmatFnNames = mp.GetGmatFunctionNames();
             bool isError = false;
             for (UnsignedInt i=0; i<gmatFnNames.size(); i++)
@@ -1172,7 +1172,7 @@ const StringArray& Assignment::GetWrapperObjectNameArray()
       {
          // If LHS has more than 1 dot add to the list and Interpreter::ValidateCommand()
          // will figure out if it is settable Parameter or not.(LOJ: 2009.12.22)
-         if (GmatStringUtil::NumberOfOccurrences(lhs, '.') > 1)
+         if (GmatStringUtil::NumberOfOccurrences(lhs, wxT('.')) > 1)
             wrapperObjectNames.push_back(lhs);
       }
       

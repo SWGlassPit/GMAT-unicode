@@ -1005,7 +1005,7 @@ bool GroundStation::IsValidID(const wxString &id)
    // each character must be a letter, an integer, a dash, or an underscore
    unsigned int sz = id.size();
    for (unsigned int ii = 0; ii < sz; ii++)
-      if (!isalnum(id[ii]) && id[ii] != '-' && id[ii] != '_') return false;
+      if (!isalnum(id[ii]) && id[ii] != wxT('-') && id[ii] != wxT('_')) return false;
 
    return true;
 }

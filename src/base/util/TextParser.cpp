@@ -117,7 +117,7 @@ StringArray TextParser::DecomposeBlock(const wxString &logicalBlock)
          (wxT("   ===> TextParser::DecomposeBlock() str[%d]=%c, %d\n"), i, str[i], str[i]);
       #endif
 
-      if (str[i] == '\n' || str[i] == '\r')
+      if (str[i] == wxT('\n') || str[i] == wxT('\r'))
       {
          // Remove end-of-line character
          block = str.substr(lastPos, i-lastPos+1);
@@ -227,7 +227,7 @@ Gmat::BlockType TextParser::EvaluateBlock(const wxString &logicalBlock)
       index1 = str.find_first_not_of(whiteSpace);
       if (index1 != str.npos)
       {
-         if (str[index1] == '%' || str[index1] == '\n' || str[index1] == '\r')
+         if (str[index1] == wxT('%') || str[index1] == wxT('\n') || str[index1] == wxT('\r'))
          {
             prefaceComment = prefaceComment + str;
             commentCounter++;
@@ -240,7 +240,7 @@ Gmat::BlockType TextParser::EvaluateBlock(const wxString &logicalBlock)
          //If white space found (Added for VC++)
          if (index2 != str.npos)
          {
-            if (str[index2-1] == ';')
+            if (str[index2-1] == wxT(';'))
                keyword = str.substr(index1, index2-index1-1);
             else
                keyword = str.substr(index1, index2-index1);
@@ -1003,7 +1003,7 @@ StringArray TextParser::SeparateAllBrackets(const wxString &chunk,
             (wxT("   parts2[%d] = %s\n"), j, parts2[j].c_str());
          #endif
          // If closeBracket found at the end, insert openBracket back if not found
-         if ((parts2[j][0] != '{') &&
+         if ((parts2[j][0] != wxT('{')) &&
              (parts2[j].find(closeBracket) == parts2[j].size()-1))
             parts2[j].insert(0, openBracket);
       }
@@ -1139,19 +1139,19 @@ bool TextParser::IsCommand(const wxString &str)
 
 
 //-------------------------------------------------------------------------------
-// char GetClosingBracket(const char &openBracket)
+// wxChar GetClosingBracket(const wxChar &openBracket)
 //-------------------------------------------------------------------------------
-char TextParser::GetClosingBracket(const char &openBracket)
+wxChar TextParser::GetClosingBracket(const wxChar &openBracket)
 {
    switch (openBracket)
    {
-   case '(':
-      return ')';
-   case '[':
-      return ']';
-   case '{':
-      return '}';
-   case '<':
+   case wxT('('):
+      return wxT(')');
+   case wxT('['):
+      return wxT(']');
+   case wxT('{'):
+      return wxT('}');
+   case wxT('<'):
       return '>';
 
    default:

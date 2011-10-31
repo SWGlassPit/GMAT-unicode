@@ -3885,7 +3885,7 @@ bool CelestialBody::ReadPotentialFile()
 
 
 //------------------------------------------------------------------------------
-//  bool IsBlank(char* aLine)
+//  bool IsBlank(wxString &aLine)
 //------------------------------------------------------------------------------
 /**
  * This method returns true if the string is empty or is all white space.
@@ -3893,10 +3893,10 @@ bool CelestialBody::ReadPotentialFile()
  * @return success flag.
  */
 //------------------------------------------------------------------------------
-bool CelestialBody::IsBlank(char* aLine)
+bool CelestialBody::IsBlank(wxString & aLine)
 {
    Integer i;
-   for (i=0;i<(int)strlen(aLine);i++)
+   for (i=0;i<aLine.Length();i++)
    {
       if (!isspace(aLine[i])) return false;
    }

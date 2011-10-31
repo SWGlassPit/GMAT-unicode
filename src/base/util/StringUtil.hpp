@@ -33,7 +33,7 @@ namespace GmatStringUtil
       BOTH = 3,
    };
    
-   GMAT_API wxString RemoveAll(const wxString &str, char ch, Integer start = 0);
+   GMAT_API wxString RemoveAll(const wxString &str, wxChar ch, Integer start = 0);
    GMAT_API wxString RemoveLastNumber(const wxString &str, Integer &lastNumber);
    GMAT_API wxString RemoveLastString(const wxString &str, const wxString &lastStr,
                                 bool removeAll = false);
@@ -74,7 +74,7 @@ namespace GmatStringUtil
    GMAT_API wxString AddEnclosingString(const wxString &str, const wxString &enStr);
    GMAT_API wxString GetInvalidNameMessageFormat();
    
-   GMAT_API char GetClosingBracket(const char &openBracket);
+   GMAT_API wxChar GetClosingBracket(const wxChar &openBracket);
    
    GMAT_API StringArray SeparateBy(const wxString &str, const wxString &delim,
                           bool putBracketsTogether = false, bool insertDelim = false,
@@ -109,7 +109,7 @@ namespace GmatStringUtil
    GMAT_API void GetArrayIndexVar(const wxString &str, wxString &rowStr,
                          wxString &colStr, wxString &name,
                          const wxString &bracketPair = wxT("()"));
-   GMAT_API void FindFirstAndLast(const wxString &str, char ch, Integer &first,
+   GMAT_API void FindFirstAndLast(const wxString &str, wxChar ch, Integer &first,
                          Integer &last);
    GMAT_API void FindParenMatch(const wxString &str, Integer &open, Integer &close,
                        bool &isOuterParen);
@@ -147,7 +147,7 @@ namespace GmatStringUtil
    GMAT_API bool HasMissingQuote(const wxString &str, const wxString &quote);
    GMAT_API bool IsMathEquation(const wxString &str);
    
-   GMAT_API Integer NumberOfOccurrences(const wxString &str, const char c);
+   GMAT_API Integer NumberOfOccurrences(const wxString &str, const wxChar c);
    
    GMAT_API StringArray GetVarNames(const wxString &str);
    GMAT_API void WriteStringArray(const StringArray &strArray,

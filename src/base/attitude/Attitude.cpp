@@ -206,7 +206,7 @@ Rmatrix33 Attitude::ToCosineMatrix(const Rvector &quat1)
    {
       wxString errmsg;
       errmsg << wxT("Quaternion error : the quaternion must have a magnitude greater than ");
-      errmsg << QUAT_MIN_MAG << '\n';
+      errmsg << QUAT_MIN_MAG << wxT('\n');
       throw AttitudeException(errmsg);
    }
 
@@ -1011,7 +1011,7 @@ Rvector3 Attitude::ToEulerAngleRates(const Rvector3 &angularVel,
       errmsg << (eulerAngles(0) * GmatMathConstants::DEG_PER_RAD) << wxT(", ")
              << (eulerAngles(1) * GmatMathConstants::DEG_PER_RAD) << wxT(", ")
              << (eulerAngles(2) * GmatMathConstants::DEG_PER_RAD);
-      errmsg << wxT(") is near a singularity.") << '\n';
+      errmsg << wxT(") is near a singularity.") << wxT('\n');
       throw AttitudeException(errmsg);
    }
    #ifdef DEBUG_EULER_ANGLE_RATES
@@ -1166,19 +1166,19 @@ StringArray Attitude::GetEulerSequenceStrings()
 UnsignedIntArray Attitude::ExtractEulerSequence(const wxString &seqStr)
 {
    UnsignedIntArray intSeq;
-   if (seqStr[0] == '1')      intSeq.push_back(1);
-   else if (seqStr[0] == '2') intSeq.push_back(2);
-   else if (seqStr[0] == '3') intSeq.push_back(3);
+   if (seqStr[0] == wxT('1'))      intSeq.push_back(1);
+   else if (seqStr[0] == wxT('2')) intSeq.push_back(2);
+   else if (seqStr[0] == wxT('3')) intSeq.push_back(3);
    else
    throw AttitudeException(wxT("Invalid character in euler sequence string."));
-   if (seqStr[1] == '1')      intSeq.push_back(1);
-   else if (seqStr[1] == '2') intSeq.push_back(2);
-   else if (seqStr[1] == '3') intSeq.push_back(3);
+   if (seqStr[1] == wxT('1'))      intSeq.push_back(1);
+   else if (seqStr[1] == wxT('2')) intSeq.push_back(2);
+   else if (seqStr[1] == wxT('3')) intSeq.push_back(3);
    else
    throw AttitudeException(wxT("Invalid character in euler sequence string."));
-   if (seqStr[2] == '1')      intSeq.push_back(1);
-   else if (seqStr[2] == '2') intSeq.push_back(2);
-   else if (seqStr[2] == '3') intSeq.push_back(3);
+   if (seqStr[2] == wxT('1'))      intSeq.push_back(1);
+   else if (seqStr[2] == wxT('2')) intSeq.push_back(2);
+   else if (seqStr[2] == wxT('3')) intSeq.push_back(3);
    else
    throw AttitudeException(wxT("Invalid character in euler sequence string."));
    return intSeq;
@@ -2447,7 +2447,7 @@ Real Attitude::SetRealParameter(const Integer id,
          errmsg << wxT("Error: the attitude defined by the input euler angles (");
          errmsg << (eulerAngles(0) * GmatMathConstants::DEG_PER_RAD) << wxT(", ")
                 << value << wxT(", ") << (eulerAngles(2) * GmatMathConstants::DEG_PER_RAD);
-         errmsg << wxT(") is near a singularity.") << '\n';
+         errmsg << wxT(") is near a singularity.") << wxT('\n');
          throw AttitudeException(errmsg);
       }
       // check for a nearly singular attitude, for non-symmetric sequences
@@ -2458,7 +2458,7 @@ Real Attitude::SetRealParameter(const Integer id,
          errmsg << wxT("Error: the attitude defined by the input euler angles (");
          errmsg << (eulerAngles(0) * GmatMathConstants::DEG_PER_RAD) << wxT(", ")
                 << value << wxT(", ") << (eulerAngles(2) * GmatMathConstants::DEG_PER_RAD);
-         errmsg << wxT(") is near a singularity.") << '\n';
+         errmsg << wxT(") is near a singularity.") << wxT('\n');
          throw AttitudeException(errmsg);
       }
       (const_cast<Attitude*>(this))->UpdateState(wxT("EulerAngles"));
@@ -2780,7 +2780,7 @@ Real Attitude::SetRealParameter(const Integer id, const Real value,
             wxString errmsg;
             errmsg << wxT("Error: the attitude defined by the input euler angles (");
             errmsg << eulerAngles(0) << wxT(", ") << value << wxT(", ") << eulerAngles(2);
-            errmsg << wxT(") is near a singularity.") << '\n';
+            errmsg << wxT(") is near a singularity.") << wxT('\n');
             throw AttitudeException(errmsg);
          }
          // check for a nearly singular attitude, for non-symmetric sequences
@@ -2790,7 +2790,7 @@ Real Attitude::SetRealParameter(const Integer id, const Real value,
             wxString errmsg;
             errmsg << wxT("Error: the attitude defined by the input euler angles (");
             errmsg << eulerAngles(0) << wxT(", ") << value << wxT(", ") << eulerAngles(2);
-            errmsg << wxT(") is near a singularity.") << '\n';
+            errmsg << wxT(") is near a singularity.") << wxT('\n');
             throw AttitudeException(errmsg);
          }
       }

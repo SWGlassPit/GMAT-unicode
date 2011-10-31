@@ -875,7 +875,7 @@ wxString GmatCommandUtil::GetCommandSeqString(GmatCommand *cmd, bool showAddr,
    wxString cmdseq, cmdstr, genStr;
    cmdstr = wxT("\n---------- Mission Sequence ----------\n");
    cmdseq.append(cmdstr);
-   buf[0] = '\0';
+   buf[0] = wxT('\0');
    
    #ifdef DEBUG_COMMAND_SEQ_STRING
    MessageInterface::ShowMessage
@@ -933,7 +933,7 @@ void GmatCommandUtil::GetSubCommandString(GmatCommand* brCmd, Integer level,
    GmatCommand* nextInBranch;
    GmatCommand* child;
    wxString cmdstr, genStr;
-   buf[0] = '\0';
+   buf[0] = wxT('\0');
    
    while((child = current->GetChildCommand(childNo)) != NULL)
    {

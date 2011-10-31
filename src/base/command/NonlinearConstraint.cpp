@@ -586,17 +586,17 @@ bool NonlinearConstraint::InterpretAction()
    if (currentChunks.size() > 2) tooMuch = true;
    wxString cc = GmatStringUtil::Strip(currentChunks[1]);
    Integer ccEnd = cc.size() - 1;
-   if ((tooMuch) || (cc.at(0) != '(') || (cc.at(ccEnd) != ')'))
+   if ((tooMuch) || (cc.at(0) != wxT('(')) || (cc.at(ccEnd) != wxT(')')))
       throw CommandException(
            wxT("Missing parentheses, or unexpected characters found, around logical expression argument to NonlinearConstraint command."));
    if (!GmatStringUtil::IsBracketBalanced(cc, wxT("()")))
       throw CommandException(wxT("Parentheses unbalanced in NonlinearConstraint command."));
    // @todo - if tolerance allowed later, will need to not check for braces here ...
-   if ((cc.find('[') != cc.npos) || (cc.find(']') != cc.npos) ||
-       (cc.find('{') != cc.npos) || (cc.find('}') != cc.npos) )
+   if ((cc.find(wxT('[')) != cc.npos) || (cc.find(wxT(']')) != cc.npos) ||
+       (cc.find(wxT('{')) != cc.npos) || (cc.find(wxT('}')) != cc.npos) )
       throw CommandException(wxT("NonlinearConstraint command may not contain brackets or braces."));
    
-   wxString noSpaces2     = GmatStringUtil::RemoveAll(cc,' ');
+   wxString noSpaces2     = GmatStringUtil::RemoveAll(cc,wxT(' '));
    //wxString noSpaces2     = GmatStringUtil::RemoveAll(currentChunks[1],' ');
    currentChunks = parser.SeparateBrackets(noSpaces2, wxT("()"), wxT(","), false);
    
@@ -682,7 +682,7 @@ bool NonlinearConstraint::InterpretAction()
    // Currently, this should not happen ..... 
    if (testForMore)
    {
-      wxString noSpaces     = GmatStringUtil::RemoveAll(currentChunks[1],' ');
+      wxString noSpaces     = GmatStringUtil::RemoveAll(currentChunks[1],wxT(' '));
       currentChunks = parser.SeparateBrackets(noSpaces, wxT("{}"), wxT(","), false);
       
       #ifdef DEBUG_NLC_PARSING

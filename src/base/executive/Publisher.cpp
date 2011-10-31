@@ -335,7 +335,7 @@ bool Publisher::Publish(GmatBase *provider, Integer id, Real *data, Integer coun
 
 
 //------------------------------------------------------------------------------
-// bool Publish(char *data, Integer count = 0)
+// bool Publish(Integer id, wxString & data, Integer count = 0)
 //------------------------------------------------------------------------------
 bool Publisher::Publish(Integer id, wxString &data, Integer count)
 {

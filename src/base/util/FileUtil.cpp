@@ -267,7 +267,7 @@ wxString GmatFileUtil::ParseFileExtension(const wxString &fullPath,
          #endif
          
          // Check for path separator
-         if (fileExt[0] == '/' || fileExt[0] == '\\')
+         if (fileExt[0] == wxT('/') || fileExt[0] == wxT('\\'))
             fileExt = wxT("");
       }
    }
@@ -476,7 +476,7 @@ bool GmatFileUtil::GetLine(std::istream *is, wxString &line)
    char ch;
    wxString result;
    
-   while (is->get(ch) && ch != '\r' && ch != '\n' && ch != '\0' &&
+   while (is->get(ch) && ch != wxT('\r') && ch != wxT('\n') && ch != wxT('\0') &&
           !is->eof()) 
       result += ch;
    
@@ -681,7 +681,7 @@ GmatFileUtil::GetFunctionOutputTypes(std::istream *inStream, const StringArray &
          line = GmatStringUtil::Trim(line, GmatStringUtil::BOTH, true, true);
          
          // Skip empty line or comment line
-         if (line[0] == '\0' || line[0] == '%')
+         if (line[0] == wxT('\0') || line[0] == wxT('%'))
             continue;
          
          StringArray parts = GmatStringUtil::SeparateBy(line, wxT(" ,"), true);
@@ -1214,14 +1214,14 @@ StringArray& GmatFileUtil::Compare(const wxString &filename1,
    
    for (int i=0; i<numCols; i++)
    {
-      minGtTol = ' ';
-      maxGtTol = ' ';
+      minGtTol = wxT(' ');
+      maxGtTol = wxT(' ');
       
       if (minDiffs[i] > tol)
-         minGtTol = '*';
+         minGtTol = wxT('*');
       
       if (maxDiffs[i] > tol)
-         maxGtTol = '*';
+         maxGtTol = wxT('*');
 
       if (colTitles.size() == 0)
       {
@@ -1574,19 +1574,19 @@ StringArray& GmatFileUtil::Compare(Integer numDirsToCompare, const wxString &bas
    
    for (int i=0; i<numCols; i++)
    {
-      maxGtTol1 = ' ';
-      maxGtTol2 = ' ';
-      maxGtTol3 = ' ';
+      maxGtTol1 = wxT(' ');
+      maxGtTol2 = wxT(' ');
+      maxGtTol3 = wxT(' ');
       
       if (maxDiffs1[i] > tol)
-         maxGtTol1 = '*';
+         maxGtTol1 = wxT('*');
 
       if (maxDiffs2[i] > tol)
-         maxGtTol2 = '*';
+         maxGtTol2 = wxT('*');
 
       if (numDirsToCompare == 3)
          if (maxDiffs3[i] > tol)
-            maxGtTol3 = '*';
+            maxGtTol3 = wxT('*');
       
       if (numDirsToCompare == 2)
       {
@@ -1855,8 +1855,8 @@ bool GmatFileUtil::SkipHeaderLines(std::ifstream &in, StringArray &tokens)
          MessageInterface::ShowMessage(wxT("%c"), ch);
          #endif
          
-         if (!isdigit(ch) && ch != '.' && ch != 'e' && ch != 'E' && ch != '-' &&
-             ch != ' ')
+         if (!isdigit(ch) && ch != wxT('.') && ch != wxT('e') && ch != wxT('E') && ch != wxT('-') &&
+             ch != wxT(' '))
          {
             alphaFound = true;
             break;

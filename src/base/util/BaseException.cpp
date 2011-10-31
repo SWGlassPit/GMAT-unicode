@@ -107,7 +107,7 @@ const BaseException& BaseException::operator=(const wxString &newMessage)
 }
 
 //------------------------------------------------------------------------------
-// void SetDetails(const char *details, ...)
+// void SetDetails(const wxString &details, ...)
 //------------------------------------------------------------------------------
 /**
  * constructor taking variable arguments

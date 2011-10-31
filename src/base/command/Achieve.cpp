@@ -556,7 +556,7 @@ bool Achieve::InterpretAction()
    if (chunks.size() <= 1)
       throw CommandException(wxT("Missing information for Achieve command.\n"));
    
-   if (chunks[1].at(0) == '(')
+   if (chunks[1].at(0) == wxT('('))
       throw CommandException(wxT("Missing solver name for Achieve command.\n"));
       
    if ((chunks[1].find(wxT("[")) != chunks[1].npos) || (chunks[1].find(wxT("]")) != chunks[1].npos))
@@ -579,7 +579,7 @@ bool Achieve::InterpretAction()
       MessageInterface::ShowMessage(wxT("\n"));
    #endif
    
-   wxString noSpaces2     = GmatStringUtil::RemoveAll(currentChunks[1],' ');
+   wxString noSpaces2     = GmatStringUtil::RemoveAll(currentChunks[1],wxT(' '));
    #ifdef DEBUG_ACHIEVE_PARSE
       MessageInterface::ShowMessage(
          wxT("Achieve: noSpaces2 = %s\n"), noSpaces2.c_str());
@@ -616,7 +616,7 @@ bool Achieve::InterpretAction()
    // if there are no more chunks, just return
    if (currentChunks.size() == (Integer) 1) return true;
    
-   wxString noSpaces     = GmatStringUtil::RemoveAll(currentChunks[1],' ');
+   wxString noSpaces     = GmatStringUtil::RemoveAll(currentChunks[1],wxT(' '));
    // Now deal with the settable parameters
    currentChunks = parser.SeparateBrackets(noSpaces, wxT("{}"), wxT(","), true);
    

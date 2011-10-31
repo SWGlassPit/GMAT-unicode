@@ -71,7 +71,7 @@ void GmatInterface::ClearScript()
 
 
 //------------------------------------------------------------------------------
-// void PutScript(char *str)
+// void PutScript(wxString &str)
 //------------------------------------------------------------------------------
 /*
  * Appends script to a string stream.

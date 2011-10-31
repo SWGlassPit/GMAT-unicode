@@ -795,7 +795,7 @@ bool Vary::InterpretAction()
    if (chunks.size() <= 1)
       throw CommandException(wxT("Missing information for Vary command.\n"));
    
-   if (chunks[1].at(0) == '(')
+   if (chunks[1].at(0) == wxT('('))
       throw CommandException(wxT("Missing solver name for Vary command.\n"));
    
    if ((chunks[1].find(wxT("[")) != chunks[1].npos) || (chunks[1].find(wxT("]")) != chunks[1].npos))
@@ -816,7 +816,7 @@ bool Vary::InterpretAction()
    //wxString noLeftBrace  = GmatStringUtil::RemoveAll(currentChunks[1],'{');
    //wxString noRightBrace = GmatStringUtil::RemoveAll(noLeftBrace,'}');
    //wxString noSpaces     = GmatStringUtil::RemoveAll(noRightBrace,' ');
-   wxString noSpaces2     = GmatStringUtil::RemoveAll(currentChunks[1],' ');
+   wxString noSpaces2     = GmatStringUtil::RemoveAll(currentChunks[1],wxT(' '));
    currentChunks = parser.Decompose(noSpaces2, wxT("()"), true, true);
    //currentChunks = parser.Decompose(currentChunks[1], "()", true, true);
    
@@ -855,7 +855,7 @@ bool Vary::InterpretAction()
    
    if (currentChunks.size() > 1)
    {
-      wxString noSpaces     = GmatStringUtil::RemoveAll(currentChunks[1],' ');
+      wxString noSpaces     = GmatStringUtil::RemoveAll(currentChunks[1],wxT(' '));
       // Now deal with the settable parameters
       //currentChunks = parser.SeparateBrackets(currentChunks[1], "{}", ",", false);
       currentChunks = parser.SeparateBrackets(noSpaces, wxT("{}"), wxT(","), true);

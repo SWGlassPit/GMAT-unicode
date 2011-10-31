@@ -502,7 +502,7 @@ void TextEphemFile::WriteColumnTitle()
           dstream.width(width); // sets miminum field width
           
           //dstream.width(columnWidth);
-          dstream.fill(' ');
+          dstream.fill(wxT(' '));
           
           if (leftJustify)
              dstream.setf(std::ios::left);
@@ -713,7 +713,7 @@ void TextEphemFile::WriteTime(Real epoch)
 
    dstream.width(mColWidth[0]);
    dstream.precision(precision);
-   dstream.fill(' ');
+   dstream.fill(wxT(' '));
          
    if (leftJustify)
       dstream.setf(std::ios::left);
@@ -744,7 +744,7 @@ void TextEphemFile::WriteData()
    for (int i=1; i<mNumParams; i++)
    {
       dstream.width(mColWidth[i]);
-      dstream.fill(' ');
+      dstream.fill(wxT(' '));
       
       if (leftJustify)
          dstream.setf(std::ios::left);
@@ -788,7 +788,7 @@ void TextEphemFile::WriteFirstData()
       rval = mParams[i]->EvaluateReal();
       
       dstream.width(mColWidth[i]);
-      dstream.fill(' ');
+      dstream.fill(wxT(' '));
       
       if (leftJustify)
          dstream.setf(std::ios::left);

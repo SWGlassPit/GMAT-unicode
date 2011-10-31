@@ -107,7 +107,7 @@ bool Toggle::InterpretAction()
    
    Integer loc = genStr.find(wxT("Toggle"), 0) + 6;
    wxString str = genStr;
-   while (str[loc] == ' ')
+   while (str[loc] == wxT(' '))
       ++loc;
    Integer subEnd, commentStart;
    if ((commentStart = (Integer) genStr.find_first_of(wxT("%"), 0)) != 

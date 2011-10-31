@@ -619,9 +619,9 @@ bool Target::Execute()
    
    #ifdef DEBUG_TARGET_COMMANDS
       MessageInterface::ShowMessage(wxT("TargetExecute(%c%c%c%d)\n"),
-         (commandExecuting?'Y':'N'),
-         (commandComplete?'Y':'N'),
-         (branchExecuting?'Y':'N'),
+         (commandExecuting?wxT('Y'):wxT('N')),
+         (commandComplete?wxT('Y'):wxT('N')),
+         (branchExecuting?wxT('Y'):wxT('N')),
          state);
       MessageInterface::ShowMessage(wxT("   targeterConverged=%d\n"), 
             targeterConverged);

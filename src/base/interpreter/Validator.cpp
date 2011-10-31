@@ -864,7 +864,7 @@ bool Validator::CreateAssignmentWrappers(GmatCommand *cmd, Integer manage)
       // Handle deprecated Element* on Thruster (2009.12.15)
       wxString newType = type;
       if ((type == wxT("Element1") || type == wxT("Element2") || type == wxT("Element3")) &&
-          GmatStringUtil::NumberOfOccurrences(lhs, '.') > 1)
+          GmatStringUtil::NumberOfOccurrences(lhs, wxT('.')) > 1)
       {
          newType = GmatStringUtil::Replace(newType, wxT("Element"), wxT("ThrustDirection"));
          #if DBGLVL_WRAPPERS > 0
@@ -2133,7 +2133,7 @@ ElementWrapper* Validator::CreateValidWrapperWithDot(GmatBase *obj,
    
    // if there are two dots, then treat it as a Parameter
    // e.g. Sat.Thruster1.K1
-   if (GmatStringUtil::NumberOfOccurrences(theDescription, '.') > 1)
+   if (GmatStringUtil::NumberOfOccurrences(theDescription, wxT('.')) > 1)
    {
       // see if reallay create a ParameterWrapper first, there are a few exceptions.
       bool paramFirst = true;

@@ -1617,7 +1617,7 @@ GmatBase* FunctionManager::FindObject(const wxString &name, bool arrayElementsAl
    wxString newName = name;
    
    // Ignore array indexing of Array
-   wxString::size_type index = name.find('(');
+   wxString::size_type index = name.find(wxT('('));
    if (index != name.npos)
    {
       if (!arrayElementsAllowed) return NULL; // we deal with array elements separately
@@ -1692,7 +1692,7 @@ GmatBase* FunctionManager::CreateObject(const wxString &fromString)
       createdLiterals.insert(std::make_pair(str,obj));
    }
    // Now check to see if it is a string literal, enclosed with single quotes
-   else if ((str[0] == '\'') && (str[sz-1] == '\''))
+   else if ((str[0] == wxT('\'')) && (str[sz-1] == wxT('\'')))
    {
       sval = str.substr(1, sz-2);
       StringVar *sv = new StringVar(str);      

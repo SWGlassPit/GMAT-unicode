@@ -77,7 +77,7 @@ public:
 protected:
       
    bool IsCommand(const wxString &str);
-   char GetClosingBracket(const char &openBracket);
+   wxChar GetClosingBracket(const wxChar &openBracket);
    
 private:
    

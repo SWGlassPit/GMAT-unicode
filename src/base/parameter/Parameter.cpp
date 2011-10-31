@@ -116,7 +116,7 @@ Parameter::Parameter(const wxString &name, const wxString &typeStr,
       wxString tempName = name;
       wxString replaceStr = wxT("_");
       for (unsigned int i=0; i<tempName.size(); i++)
-         if (tempName[i] == ' ')
+         if (tempName[i] == wxT(' '))
             tempName.replace(i, 1, replaceStr);
       
       instanceName = tempName;

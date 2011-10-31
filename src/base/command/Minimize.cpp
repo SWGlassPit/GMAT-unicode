@@ -546,15 +546,15 @@ bool Minimize::InterpretAction()
    // parameters, all contained in currentChunks[1].  Deal with those next.
    wxString cc = GmatStringUtil::Strip(currentChunks[1]);
    Integer ccEnd = cc.size() - 1;
-   if ((cc.at(0) != '(') || (cc.at(ccEnd) != ')'))
+   if ((cc.at(0) != wxT('(')) || (cc.at(ccEnd) != wxT(')')))
       throw CommandException(
            wxT("Missing parentheses, or unexpected characters found, around argument to Minimize command."));
    if (!GmatStringUtil::IsBracketBalanced(cc, wxT("()")))
       throw CommandException(wxT("Parentheses unbalanced in Minimize command."));
-   if ((cc.find('[') != cc.npos) || (cc.find(']') != cc.npos) ||
-       (cc.find('{') != cc.npos) || (cc.find('}') != cc.npos) )
+   if ((cc.find(wxT('[')) != cc.npos) || (cc.find(wxT(']')) != cc.npos) ||
+       (cc.find(wxT('{')) != cc.npos) || (cc.find(wxT('}')) != cc.npos) )
       throw CommandException(wxT("Minimize command may not contain brackets or braces."));
-   wxString noSpaces     = GmatStringUtil::RemoveAll(cc,' ');
+   wxString noSpaces     = GmatStringUtil::RemoveAll(cc,wxT(' '));
    currentChunks = parser.Decompose(noSpaces, wxT("()"), true, true);
    
    #ifdef DEBUG_MINIMIZE_PARSING

@@ -84,7 +84,7 @@ protected:
    
    bool isInitialized;
    
-   bool IsBlank(const char* aLine);
+   bool IsBlank(const wxString &aLine);
    
    // Performance code
    Integer              previousIndex;

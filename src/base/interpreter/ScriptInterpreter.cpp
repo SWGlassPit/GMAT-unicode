@@ -543,7 +543,7 @@ bool ScriptInterpreter::ReadFirstPass()
       return false;
    }
    
-   char ch;
+   wxChar ch;
    bool reachedEndOfFile = false;
    wxString line, newLine, type;
    StringArray controlLines;
@@ -558,7 +558,7 @@ bool ScriptInterpreter::ReadFirstPass()
       charCounter++;
       inStream->SeekI(charCounter, wxFromStart);
       
-      while ((ch = inStream->Peek()) != '\r' && ch != '\n' && inStream->LastRead() != 0)
+      while ((ch = inStream->Peek()) != wxT('\r') && ch != wxT('\n') && inStream->LastRead() != 0)
       {
          line += ch;
          charCounter++;
@@ -568,7 +568,7 @@ bool ScriptInterpreter::ReadFirstPass()
       newLine = GmatStringUtil::Trim(line, GmatStringUtil::BOTH, true);
       
       // Skip blank or comment line
-      if (newLine != wxT("") && newLine[0] != '%')
+      if (newLine != wxT("") && newLine[0] != wxT('%'))
       {         
          // Remove ending % or ;
          wxString::size_type index;
@@ -589,7 +589,7 @@ bool ScriptInterpreter::ReadFirstPass()
          if (index != newLine.npos)
          {
             type = newLine.substr(0, index);
-            if (type[index-1] == ';')
+            if (type[index-1] == wxT(';'))
                type = type.substr(0, index-1);         
          }
          
@@ -603,12 +603,12 @@ bool ScriptInterpreter::ReadFirstPass()
       if (inStream->LastRead() == 0)
          break;
       
-      if (ch == '\r' || ch == '\n')
+      if (ch == wxT('\r') || ch == wxT('\n'))
       {
          lineCounter++;
          inStream->SeekI(charCounter+1, wxFromStart);
          // Why is line number incorrect for some script files?
-         if (inStream->Peek() == '\n')
+         if (inStream->Peek() == wxT('\n'))
             charCounter++;
       }
    }
@@ -1415,7 +1415,7 @@ bool ScriptInterpreter::ParseDefinitionBlock(const StringArray &chunks,
    StringArray names;
    if (type == wxT("Array"))
    {
-      if (chunks[2].find('[') == chunks[2].npos)
+      if (chunks[2].find(wxT('[')) == chunks[2].npos)
          throw InterpreterException(wxT("Opening bracket \"[\" not found"));
       
       names = theTextParser.Decompose(chunks[2], wxT("[]"));
@@ -2400,10 +2400,10 @@ void ScriptInterpreter::WriteVariablesAndArrays(StringArray &objs,
                wxString::size_type equalPos = genStr.find(wxT("="));
                wxString rhs = genStr.substr(equalPos + 1);
                wxString rhsComment = wxT("");
-               if (rhs.find('%') != wxString::npos)
+               if (rhs.find(wxT('%')) != wxString::npos)
                {
-                  rhsComment = rhs.substr(rhs.find('%'));
-                  rhs = rhs.substr(0, rhs.find('%'));
+                  rhsComment = rhs.substr(rhs.find(wxT('%')));
+                  rhs = rhs.substr(0, rhs.find(wxT('%')));
                   MessageInterface::ShowMessage(wxT("Variable with value and comment\n   Value: %s\n   Comment: %s\n"),
                         rhs.c_str(), rhsComment.c_str());
                }

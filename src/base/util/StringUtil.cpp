@@ -42,23 +42,22 @@
 
 
 //------------------------------------------------------------------------------
-// wxString RemoveAll(const wxString &str, char ch, Integer start = 0)
+// wxString RemoveAll(const wxString &str, wxChar ch, Integer start = 0)
 //------------------------------------------------------------------------------
-wxString GmatStringUtil::RemoveAll(const wxString &str, char ch,
+wxString GmatStringUtil::RemoveAll(const wxString &str, wxChar ch,
                                       Integer start)
 {
-   wxString str2 = str;
+   wxString str2;
+   size_t len = str.length();
+   str2.Alloc(len);
 
-   wxString::iterator iter = str2.begin();
-   for (int i=0; i<start; i++)
-      iter++;
+   for ( int i = 0; i < start; i++ )
+      str2 += str[i];
 
-   while (iter != str2.end())
+   for (int i = start; i < len; i++)
    {
-      if (*iter == ch)
-         str2.erase(iter);
-      else
-         ++iter;
+      if (str[i] != ch)
+         str2 += str[i];
    }
 
    return str2;
@@ -171,7 +170,7 @@ wxString GmatStringUtil::RemoveSpaceInBrackets(const wxString &str,
 
          // find close paren and copy non-blank char
          for (UnsignedInt j=index1+1; j<=closeParen; j++)
-            if (str[j] != ' ')
+            if (str[j] != wxT(' '))
                str1 += str[j];
 
          index1 = closeParen+1;
@@ -249,16 +248,16 @@ wxString GmatStringUtil::Trim(const wxString &str, StripType stype,
             str2 = Replace(str2, wxT("\t"), wxT(" "));
 
             // remove trailing \r and \n
-            while (str2[str2.size()-1] == '\n' || str2[str2.size()-1] == '\r')
+            while (str2[str2.size()-1] == wxT('\n') || str2[str2.size()-1] == wxT('\r'))
                str2.erase(str2.size()-1, 1);
 
             // remove trailing blanks
-            while (str2[str2.size()-1] == ' ')
+            while (str2[str2.size()-1] == wxT(' '))
                str2.erase(str2.size()-1, 1);
          }
 
          // remove trailing semicolns
-         while (str2.size() > 0 && str2[str2.size()-1] == ';')
+         while (str2.size() > 0 && str2[str2.size()-1] == wxT(';'))
             str2.erase(str2.size()-1, 1);
       }
    }
@@ -473,12 +472,12 @@ wxString GmatStringUtil::ReplaceName(const wxString &str, const wxString &from,
          
          if (pos == 0 && fromSize < strSize)
          {
-            if (!isalnum(str1[fromSize]) && str1[fromSize] != '_')
+            if (!isalnum(str1[fromSize]) && str1[fromSize] != wxT('_'))
                replace = true;
          }
          else if (pos > 0 && (pos + fromSize) < strSize)
          {
-            if (!isalnum(str1[pos + fromSize]) && str1[pos + fromSize] != '_')
+            if (!isalnum(str1[pos + fromSize]) && str1[pos + fromSize] != wxT('_'))
                replace = true;
          }
          else if (pos == strSize-fromSize) // replace last name
@@ -494,8 +493,8 @@ wxString GmatStringUtil::ReplaceName(const wxString &str, const wxString &from,
          {
             // Check for the system Parameter name which should not not be replace,
             // such as SMA in sat.SMA Parameter or sat.EarthEqCS.X
-            if (pos == 0 || (pos > 0 && str1[pos-1] == '.') &&
-                (pos-1 != str1.find_last_of('.')))
+            if (pos == 0 || (pos > 0 && str1[pos-1] == wxT('.')) &&
+                (pos-1 != str1.find_last_of(wxT('.'))))
                str1.replace(pos, fromSize, to);
          }
          
@@ -681,20 +680,20 @@ wxString GmatStringUtil::ToString(const Integer &val, bool useCurrentFormat,
 
 
 //-------------------------------------------------------------------------------
-// char GetClosingBracket(const char &openBracket)
+// wxChar GetClosingBracket(const wxChar &openBracket)
 //-------------------------------------------------------------------------------
-char GmatStringUtil::GetClosingBracket(const char &openBracket)
+wxChar GmatStringUtil::GetClosingBracket(const wxChar &openBracket)
 {
    switch (openBracket)
    {
-   case '(':
-      return ')';
-   case '[':
-      return ']';
-   case '{':
-      return '}';
-   case '<':
-      return '>';
+   case wxT('('):
+      return wxT(')');
+   case wxT('['):
+      return wxT(']');
+   case wxT('{'):
+      return wxT('}');
+   case wxT('<'):
+      return wxT('>');
 
    default:
       UtilityException ex;
@@ -915,7 +914,7 @@ StringArray GmatStringUtil::SeparateByComma(const wxString &str)
 
    for (int i=0; i<count; i++)
    {
-      if (str1[i] == ',')
+      if (str1[i] == wxT(','))
       {
          if (insideQuote || openCount > 0)
          {
@@ -927,7 +926,7 @@ StringArray GmatStringUtil::SeparateByComma(const wxString &str)
             part = wxT("");
          }
       }
-      else if (str1[i] == '\'')
+      else if (str1[i] == wxT('\''))
       {
          part = part + str1[i];
          if (insideQuote)
@@ -935,12 +934,12 @@ StringArray GmatStringUtil::SeparateByComma(const wxString &str)
          else
             insideQuote = true;
       }
-      else if (str1[i] == '(')
+      else if (str1[i] == wxT('('))
       {
          part = part + str1[i];
          openCount++;
       }
-      else if (str1[i] == ')')
+      else if (str1[i] == wxT(')'))
       {
          part = part + str1[i];
          openCount--;
@@ -1064,7 +1063,7 @@ bool GmatStringUtil::ToReal(const wxString &str, Real &value, bool trimParens)
       return false;
 
    // If first character is not '+', '-', '.' and digit, it's false
-   if (str2[0] != '+' && str2[0] != '-' && !isdigit(str2[0]) && str2[0] != '.')
+   if (str2[0] != wxT('+') && str2[0] != wxT('-') && !isdigit(str2[0]) && str2[0] != wxT('.'))
       return false;
 
    // Check for multiple E or e
@@ -1088,10 +1087,10 @@ bool GmatStringUtil::ToReal(const wxString &str, Real &value, bool trimParens)
 
    for (unsigned int i=0; i<str2.length(); i++)
    {
-      if (i == 0 && (str2[0] == '-' || str2[0] == '+'))
+      if (i == 0 && (str2[0] == wxT('-') || str2[0] == wxT('+')))
          continue;
 
-      if (str2[i] == '.')
+      if (str2[i] == wxT('.'))
       {
          numDot++;
 
@@ -1104,12 +1103,12 @@ bool GmatStringUtil::ToReal(const wxString &str, Real &value, bool trimParens)
       if (!isdigit(str2[i]))
       {
          // Handle scientific notation
-         if ((str2[i] == 'e' || str2[i] == 'E') &&
-             (str2[i+1] == '+' || str2[i+1] == '-' || isdigit(str2[i+1])))
+         if ((str2[i] == wxT('e') || str2[i] == wxT('E')) &&
+             (str2[i+1] == wxT('+') || str2[i+1] == wxT('-') || isdigit(str2[i+1])))
             continue;
 
-         if ((str2[i] == '+' || str2[i] == '-' || isdigit(str2[i])) &&
-             (str2[i-1] == 'e' || str2[i-1] == 'E'))
+         if ((str2[i] == wxT('+') || str2[i] == wxT('-') || isdigit(str2[i])) &&
+             (str2[i-1] == wxT('e') || str2[i-1] == wxT('E')))
             continue;
 
          return false;
@@ -1165,12 +1164,12 @@ bool GmatStringUtil::ToInteger(const wxString &str, Integer &value, bool trimPar
    if (str2.length() == 0)
       return false;
 
-   if (str2[0] != '-' && !isdigit(str2[0]))
+   if (str2[0] != wxT('-') && !isdigit(str2[0]))
       return false;
 
    for (unsigned int i=0; i<str2.length(); i++)
    {
-      if (i == 0 && str2[0] == '-')
+      if (i == 0 && str2[0] == wxT('-'))
          continue;
 
       if (!isdigit(str2[i]))
@@ -1507,7 +1506,7 @@ void GmatStringUtil::GetArrayCommaIndex(const wxString &str, Integer &comma,
    #endif
 
 
-   firstComma = str1.find(',');
+   firstComma = str1.find(wxT(','));
 
 
    #if DEBUG_ARRAY_INDEX
@@ -1517,7 +1516,7 @@ void GmatStringUtil::GetArrayCommaIndex(const wxString &str, Integer &comma,
    // if closing paren found
    if (close != -1)
    {
-      wxString::size_type commaAfterClose = str1.find(',', close);
+      wxString::size_type commaAfterClose = str1.find(wxT(','), close);
 
       // if row is missing
       if (commaAfterClose == str1.npos && firstComma > UnsignedInt(open))
@@ -1587,7 +1586,7 @@ void GmatStringUtil::GetArrayIndexVar(const wxString &str, wxString &rowStr,
 {
    wxString str1;
    str1 = Trim(str, BOTH, true, true);
-   str1 = RemoveAll(str1, ' ');
+   str1 = RemoveAll(str1, wxT(' '));
    wxString openStr = bracketPair.substr(0,1);
    wxString closeStr = bracketPair.substr(1,1);
    
@@ -1770,7 +1769,7 @@ void GmatStringUtil::GetArrayIndex(const wxString &str, wxString &rowStr,
 
 
 //------------------------------------------------------------------------------
-// void FindFirstAndLast(const wxString &str, char ch, Integer &first,
+// void FindFirstAndLast(const wxString &str, wxChar ch, Integer &first,
 //                       Integer &last)
 //------------------------------------------------------------------------------
 /*
@@ -1783,7 +1782,7 @@ void GmatStringUtil::GetArrayIndex(const wxString &str, wxString &rowStr,
  * @param  last  output index of last input character found
  */
 //------------------------------------------------------------------------------
-void GmatStringUtil::FindFirstAndLast(const wxString &str, char ch,
+void GmatStringUtil::FindFirstAndLast(const wxString &str, wxChar ch,
                                       Integer &first, Integer &last)
 {
    first = str.find_first_of(ch);
@@ -1815,11 +1814,11 @@ void GmatStringUtil::FindParenMatch(const wxString &str, Integer &openParen,
 {
    //MessageInterface::ShowMessage(wxT("FindParenMatch() str=%s\n"), str.c_str());
 
-   openParen = str.find_first_of('(');
+   openParen = str.find_first_of(wxT('('));
    if (openParen == (Integer)str.npos)
       openParen = -1;
 
-   closeParen = str.find_last_of(')');
+   closeParen = str.find_last_of(wxT(')'));
    if (closeParen == (Integer)str.npos)
       closeParen = -1;
 
@@ -1872,13 +1871,13 @@ void GmatStringUtil::FindMatchingParen(const wxString &str, Integer &openParen,
 
    for (int i=start; i<length; i++)
    {
-      if (str[i] == '(')
+      if (str[i] == wxT('('))
       {
          openCounter++;
          if (openCounter == 1)
             openParen = i;
       }
-      else if (str[i] == ')')
+      else if (str[i] == wxT(')'))
       {
          openCounter--;
          closeParen = i;
@@ -1993,8 +1992,8 @@ void GmatStringUtil::FindLastParenMatch(const wxString &str, Integer &openParen,
       //MessageInterface::ShowMessage
       //   (wxT("   ===> start=%d, open1=%d, close1=%d\n"), start1, open1, close1);
 
-      // find next open parenthesis '('
-      start1 = str.find('(', close1);
+      // find next open parenthesis wxT('(')
+      start1 = str.find(wxT('('), close1);
 
       if (start1 == -1)
          done = true;
@@ -2048,11 +2047,11 @@ bool GmatStringUtil::IsEnclosedWithExtraParen(const wxString &str, bool checkOps
    bool isEnclosed = false;
    Integer openCounter = 0;
 
-   Integer openParen = str.find_first_of('(');
+   Integer openParen = str.find_first_of(wxT('('));
    if (openParen == (Integer)str.npos)
       openParen = -1;
 
-   Integer closeParen = str.find_last_of(')');
+   Integer closeParen = str.find_last_of(wxT(')'));
    if (closeParen == (Integer)str.npos)
       closeParen = -1;
 
@@ -2069,13 +2068,13 @@ bool GmatStringUtil::IsEnclosedWithExtraParen(const wxString &str, bool checkOps
 
    for (int i=0; i<length; i++)
    {
-      if (str[i] == '(')
+      if (str[i] == wxT('('))
       {
          openCounter++;
          if (openCounter == 1)
             openParen = i;
       }
-      else if (str[i] == ')')
+      else if (str[i] == wxT(')'))
       {
          openCounter--;
          closeParen = i;
@@ -2088,7 +2087,7 @@ bool GmatStringUtil::IsEnclosedWithExtraParen(const wxString &str, bool checkOps
    if (openParen == 0 && closeParen == length-1)
    {
       // check for double parentheses
-      if (str[1] == '(' && str[length-2] == ')')
+      if (str[1] == wxT('(') && str[length-2] == wxT(')'))
       {
          Integer open2, close2;
          Integer start = 1;
@@ -2119,8 +2118,8 @@ bool GmatStringUtil::IsEnclosedWithExtraParen(const wxString &str, bool checkOps
             isEnclosed = true;
          else
          {
-            if (substr.find('+') == substr.npos && substr.find('-') == substr.npos &&
-                substr.find('*') == substr.npos && substr.find('/') == substr.npos)
+            if (substr.find(wxT('+')) == substr.npos && substr.find(wxT('-')) == substr.npos &&
+                substr.find(wxT('*')) == substr.npos && substr.find(wxT('/')) == substr.npos)
                isEnclosed = true;
          }
       }
@@ -2177,9 +2176,9 @@ bool GmatStringUtil::IsParenBalanced(const wxString &str)
 
    for (int i=0; i<length; i++)
    {
-      if (str[i] == '(')
+      if (str[i] == wxT('('))
          openCounter++;
-      else if (str[i] == ')')
+      else if (str[i] == wxT(')'))
          openCounter--;
    }
 
@@ -2202,8 +2201,8 @@ bool GmatStringUtil::IsParenBalanced(const wxString &str)
 bool GmatStringUtil::IsBracketBalanced(const wxString &str,
                                        const wxString &bracketPair)
 {
-   char open = bracketPair[0];
-   char close = bracketPair[1];
+   wxChar open = bracketPair[0];
+   wxChar close = bracketPair[1];
    int length = str.size();
    Integer openCounter = 0;
    bool retval = true;
@@ -2313,11 +2312,11 @@ bool GmatStringUtil::IsOuterParen(const wxString &str)
    int length = str.size();
    bool isOuterParen = true;
 
-   Integer openParen = str.find_first_of('(');
+   Integer openParen = str.find_first_of(wxT('('));
    if (openParen == (Integer)str.npos)
       openParen = -1;
 
-   Integer closeParen = str.find_last_of(')');
+   Integer closeParen = str.find_last_of(wxT(')'));
    if (closeParen == (Integer)str.npos)
       closeParen = -1;
 
@@ -2330,8 +2329,8 @@ bool GmatStringUtil::IsOuterParen(const wxString &str)
    if (openParen == 0 && closeParen == length-1)
    {
       // make sure ending ) is not part of ^(-1)
-      wxString::size_type lastOpenParen = str.find_last_of('(');
-      wxString::size_type lastCloseParen = str.find_last_of(')', closeParen-1);
+      wxString::size_type lastOpenParen = str.find_last_of(wxT('('));
+      wxString::size_type lastCloseParen = str.find_last_of(wxT(')'), closeParen-1);
 
       #if DEBUG_STRING_UTIL > 1
       MessageInterface::ShowMessage
@@ -2433,7 +2432,7 @@ bool GmatStringUtil::IsCommaPartOfArray(const wxString &str, Integer start)
  * return true if parentheses or square bracket is part of an array.
  *    For example: (2,2) or (abc,def) or [2,2], [i,j]
  *
- * return false if no parentheses found or non-alphanumeric char found inside
+ * return false if no parentheses found or non-alphanumeric wxChar found inside
  * parentheses.
  *    For example: abc, abc((2,2)), (1,), (3,2]
  */
@@ -2448,13 +2447,13 @@ bool GmatStringUtil::IsBracketPartOfArray(const wxString &str,
        wxT("checkOnlyFirst=%d\n"), str.c_str(), bracketPairs.c_str(), checkOnlyFirst);
    #endif
 
-   wxString str1 = RemoveAll(str, ' ');
+   wxString str1 = RemoveAll(str, wxT(' '));
    bool ret = true;
    wxString::size_type index1, index2, comma;
    wxString substr;
    Integer count = bracketPairs.size();
-   char openChar = 'x';
-   char closeChar = 'x';
+   wxChar openChar = wxT('x');
+   wxChar closeChar = wxT('x');
 
    if (count%2 == 1)
       throw UtilityException(wxT("Invalid number of Bracket pair\n"));
@@ -2503,8 +2502,8 @@ bool GmatStringUtil::IsBracketPartOfArray(const wxString &str,
    closeChar = str[index2];
    //MessageInterface::ShowMessage(wxT("   closeChar=%c\n"), closeChar);
 
-   if ((openChar == '(' && closeChar == ']') ||
-       (openChar == '[' && closeChar == ')'))
+   if ((openChar == wxT('(') && closeChar == wxT(']')) ||
+       (openChar == wxT('[') && closeChar == wxT(')')))
    {
       #if DEBUG_STRING_UTIL_ARRAY
       MessageInterface::ShowMessage(wxT("   open and close bracket don't match.\n"));
@@ -2531,7 +2530,7 @@ bool GmatStringUtil::IsBracketPartOfArray(const wxString &str,
 
 
    Integer length = str2.size();
-   comma = str2.find(',');
+   comma = str2.find(wxT(','));
    //MessageInterface::ShowMessage(wxT("   comma=%u\n"), comma);
 
    //-----------------------------------------------------------------
@@ -2604,7 +2603,7 @@ bool GmatStringUtil::IsBracketPartOfArray(const wxString &str,
  * return true if parentheses is part of an array.
  *    For example: (2,2) or (abc,def)
  *
- * return false if no parentheses found or non-alphanumeric char found inside
+ * return false if no parentheses found or non-alphanumeric wxChar found inside
  * parentheses.
  *    For example: abc, abc((2,2))
  */
@@ -2636,14 +2635,14 @@ bool GmatStringUtil::IsThereEqualSign(const wxString &str)
 
    for (Integer i=0; i<size; i++)
    {
-      if (str[i] == '\'')
+      if (str[i] == wxT('\''))
       {
          if (inQuotes)
             inQuotes = false;
          else
             inQuotes = true;
       }
-      else if (str[i] == '=')
+      else if (str[i] == wxT('='))
       {
          if (!inQuotes)
             return true;
@@ -2671,15 +2670,15 @@ bool GmatStringUtil::IsThereMathSymbol(const wxString &str)
 
    for (Integer i=0; i<size; i++)
    {
-      if (str[i] == '\'')
+      if (str[i] == wxT('\''))
       {
          if (inQuotes)
             inQuotes = false;
          else
             inQuotes = true;
       }
-      else if (str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/' ||
-               str[i] == '^' || str[i] == '=' || str[i] == '<' || str[i] == '>')
+      else if (str[i] == wxT('+') || str[i] == wxT('-') || str[i] == wxT('*') || str[i] == wxT('/') ||
+               str[i] == wxT('^') || str[i] == wxT('=') || str[i] == wxT('<') || str[i] == wxT('>'))
       {
          if (!inQuotes)
             return true;
@@ -2714,7 +2713,7 @@ bool GmatStringUtil::HasNoBrackets(const wxString &str,
    wxString str2 = str;
    wxString left, right, arrName;
    bool hasNone = true;
-   if ((str1.find('(') != str1.npos) || (str1.find(')') != str1.npos))
+   if ((str1.find(wxT('(')) != str1.npos) || (str1.find(wxT(')')) != str1.npos))
    {
       if (parensForArraysAllowed)
       {
@@ -2766,8 +2765,8 @@ bool GmatStringUtil::HasNoBrackets(const wxString &str,
       else
          return false;
    }
-   if ((str.find('[') != str.npos) || (str.find(']') != str.npos)) return false;
-   if ((str.find('{') != str.npos) || (str.find('}') != str.npos)) return false;
+   if ((str.find(wxT('[')) != str.npos) || (str.find(wxT(']')) != str.npos)) return false;
+   if ((str.find(wxT('{')) != str.npos) || (str.find(wxT('}')) != str.npos)) return false;
 
    return true;
 }
@@ -2800,10 +2799,10 @@ bool GmatStringUtil::IsSingleItem(const wxString &str)
 
    for (int i=0; i<length; i++)
    {
-      if (isalnum(str[i]) || str[i] == '.')
+      if (isalnum(str[i]) || str[i] == wxT('.'))
          continue;
 
-      if (str[i] == '-')
+      if (str[i] == wxT('-'))
       {
          minusSignCounter++;
          continue;
@@ -2816,7 +2815,7 @@ bool GmatStringUtil::IsSingleItem(const wxString &str)
    if (singleItem)
    {
       if (minusSignCounter > 0)
-         if (str[0] != '-' || minusSignCounter != 1)
+         if (str[0] != wxT('-') || minusSignCounter != 1)
             singleItem = false;
    }
 
@@ -2865,10 +2864,10 @@ wxString GmatStringUtil::RemoveExtraParen(const wxString &str)
    wxString str2 = str1;
    length = str1.size();
 
-   // go through each char and remove extra parentheses
+   // go through each wxChar and remove extra parentheses
    for (int i=0; i<length; i++)
    {
-      if (str1[i] == '(')
+      if (str1[i] == wxT('('))
       {
          openParen = i;
          openCounter++;
@@ -2879,7 +2878,7 @@ wxString GmatStringUtil::RemoveExtraParen(const wxString &str)
             (wxT("===> openParen:  i=%d, openCounter=%d\n"), i, openCounter);
          #endif
       }
-      else if (str1[i] == ')')
+      else if (str1[i] == wxT(')'))
       {
          closeParen = i;
          closeParenMap[openCounter] = i;
@@ -2907,16 +2906,16 @@ wxString GmatStringUtil::RemoveExtraParen(const wxString &str)
 
          // if ( is not part of function or array
          if ((openParen == 0) ||
-             (str1[openParen-1] == '+' || str1[openParen-1] == '-' ||
-              str1[openParen-1] == '*' || str1[openParen-1] == '/' ||
-              str1[openParen-1] == '(' || str1[openParen-1] == ' '))
+             (str1[openParen-1] == wxT('+') || str1[openParen-1] == wxT('-') ||
+              str1[openParen-1] == wxT('*') || str1[openParen-1] == wxT('/') ||
+              str1[openParen-1] == wxT('(') || str1[openParen-1] == wxT(' ')))
          {
-            if (str1[closeParen+1] != '^')
+            if (str1[closeParen+1] != wxT('^'))
             {
                if (IsEnclosedWithExtraParen(substr))
                {
-                  str2[openParen] = '?';
-                  str2[closeParen] = '?';
+                  str2[openParen] = wxT('?');
+                  str2[closeParen] = wxT('?');
                }
             }
          }
@@ -2926,7 +2925,7 @@ wxString GmatStringUtil::RemoveExtraParen(const wxString &str)
       }
    }
 
-   str2 = RemoveAll(str2, '?', 0);
+   str2 = RemoveAll(str2, wxT('?'), 0);
 
    #if DEBUG_STRING_UTIL
    MessageInterface::ShowMessage(wxT("RemoveExtraParen() exiting str2=%s\n"), str2.c_str());
@@ -3044,8 +3043,8 @@ wxString GmatStringUtil::ParseFunctionName(const wxString &str)
       return wxT("");
    
    // Remove all spaces and semicolons
-   wxString str1 = RemoveAll(str, ' ');
-   while (str1[str1.size()-1] == ';')
+   wxString str1 = RemoveAll(str, wxT(' '));
+   while (str1[str1.size()-1] == wxT(';'))
       str1.erase(str1.size()-1, 1);
    
    wxString funcName;
@@ -3245,7 +3244,7 @@ bool GmatStringUtil::IsValidName(const wxString &str, bool ignoreBracket)
 
    for (UnsignedInt i=1; i<str1.size(); i++)
    {
-      if (!isalnum(str1[i]) && str1[i] != '_')
+      if (!isalnum(str1[i]) && str1[i] != wxT('_'))
       {
          #ifdef DEBUG_VALID_NAME
          MessageInterface::ShowMessage
@@ -3307,7 +3306,7 @@ bool GmatStringUtil::IsValidNumber(const wxString &str)
  * Checks if text has only blank spaces.
  *
  * @param  text  input text
- * @param  ignoreEol  Set this to true if end-of-line char to be ignored
+ * @param  ignoreEol  Set this to true if end-of-line wxChar to be ignored
  *
  * @return true if text has only blank spaces
  */
@@ -3318,8 +3317,8 @@ bool GmatStringUtil::IsBlank(const wxString &text, bool ignoreEol)
 
    if (ignoreEol)
    {
-      str = RemoveAll(str, '\n');
-      str = RemoveAll(str, '\r');
+      str = RemoveAll(str, wxT('\n'));
+      str = RemoveAll(str, wxT('\r'));
    }
 
    if (str == wxT(""))
@@ -3427,8 +3426,8 @@ bool GmatStringUtil::IsMathEquation(const wxString &str)
       #endif
 
       // remove ()
-      str1 = RemoveAll(str1, '(');
-      str1 = RemoveAll(str1, ')');
+      str1 = RemoveAll(str1, wxT('('));
+      str1 = RemoveAll(str1, wxT(')'));
 
       #if DEBUG_MATH_EQ > 1
       MessageInterface::ShowMessage(wxT("   after () removed '%s'\n"), str1.c_str());
@@ -3459,7 +3458,7 @@ bool GmatStringUtil::IsMathEquation(const wxString &str)
 
 
 //------------------------------------------------------------------------------
-// Integer NumberOfOccurrences(const wxString &str, const char c)
+// Integer NumberOfOccurrences(const wxString &str, const wxChar c)
 //------------------------------------------------------------------------------
 /*
  * Counts the number of occurrences of the character c in the string str.
@@ -3470,7 +3469,7 @@ bool GmatStringUtil::IsMathEquation(const wxString &str)
  * @return number of occurrences of c in str
  */
 //------------------------------------------------------------------------------
-Integer GmatStringUtil::NumberOfOccurrences(const wxString &str, const char c)
+Integer GmatStringUtil::NumberOfOccurrences(const wxString &str, const wxChar c)
 {
    Integer count = 0;
    Integer strSz = (Integer) str.size();
@@ -3504,7 +3503,7 @@ StringArray GmatStringUtil::GetVarNames(const wxString &str)
 
    for (UnsignedInt i=0; i<str1.size(); i++)
    {
-      if (isalnum(str1[i]) || str1[i] == '_')
+      if (isalnum(str1[i]) || str1[i] == wxT('_'))
       {
          name = name + str1[i];
       }

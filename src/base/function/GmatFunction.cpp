@@ -767,7 +767,7 @@ bool GmatFunction::SetStringParameter(const Integer id, const wxString &value)
          // Compose full path if it has relative path.
          // Assuming if first char has '.', it has relative path.
          wxString temp = GmatStringUtil::Trim(value);
-         if (temp[0] == '.')
+         if (temp[0] == wxT('.'))
          {
             wxString currPath = fm->GetCurrentPath();
             

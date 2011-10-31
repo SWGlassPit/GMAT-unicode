@@ -951,7 +951,7 @@ GmatBase* Function::FindObject(const wxString &name)
    wxString newName = name;
    
    // Ignore array indexing of Array
-   wxString::size_type index = name.find('(');
+   wxString::size_type index = name.find(wxT('('));
    if (index != name.npos)
       newName = name.substr(0, index);
    

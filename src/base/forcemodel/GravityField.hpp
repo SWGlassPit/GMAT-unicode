@@ -167,7 +167,6 @@ protected:
    HarmonicGravity    *gravityModel;    // JPD
    
 
-   bool          IsBlank(char* aLine);  // leaving this one in for now
    bool          IsBlank(const wxString &aLine);  // leaving this one in for now
 
    static const Integer stateSize             = 6;

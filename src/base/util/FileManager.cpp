@@ -396,10 +396,10 @@ void FileManager::ReadStartupFile(const wxString &fileName)
       // Skip empty line or comment line
       if (line.length() > 0)     // Crashes in VS 2010 debugger without this
       {
-         if (line[0] == '\0' || line[0] == '#')
+         if (line[0] == wxT('\0') || line[0] == wxT('#'))
          {
             // save line with ## in the first col
-            if (line.size() > 1 && line[1] == '#')
+            if (line.size() > 1 && line[1] == wxT('#'))
                mSavedComments.push_back(line);
             continue;
          }

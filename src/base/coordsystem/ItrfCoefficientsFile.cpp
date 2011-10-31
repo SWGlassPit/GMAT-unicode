@@ -548,7 +548,7 @@ bool ItrfCoefficientsFile::InitializeArrays(GmatItrf::NutationTerms nutT,
 }
 
 //------------------------------------------------------------------------------
-//  bool IsBlank(char* aLine)
+//  bool IsBlank(wxString& aLine)
 //------------------------------------------------------------------------------
 /**
  * This method returns true if the string is empty or is all white space.
@@ -556,10 +556,10 @@ bool ItrfCoefficientsFile::InitializeArrays(GmatItrf::NutationTerms nutT,
  * @return success flag.
  */
 //------------------------------------------------------------------------------
-bool ItrfCoefficientsFile::IsBlank(const char* aLine)
+bool ItrfCoefficientsFile::IsBlank(const wxString& aLine)
 {
    Integer i;
-   for (i=0;i<(int)strlen(aLine);i++)
+   for (i=0;i<aLine.Length();i++)
    {
       //loj: 5/18/04 if (!isblank(aLine[i])) return false;
       if (!isspace(aLine[i])) return false;

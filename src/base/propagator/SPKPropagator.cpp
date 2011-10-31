@@ -619,8 +619,8 @@ bool SPKPropagator::Initialize()
 
             // Check to see if this name includes path information
             // If no path designation slash character is found, add the default path
-            if ((fullPath.find('/') == wxString::npos) &&
-                (fullPath.find('\\') == wxString::npos))
+            if ((fullPath.find(wxT('/')) == wxString::npos) &&
+                (fullPath.find(wxT('\\')) == wxString::npos))
             {
                fullPath = ephemPath + fullPath;
             }

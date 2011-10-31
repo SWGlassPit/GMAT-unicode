@@ -158,7 +158,7 @@ bool ClearPlot::InterpretAction()
    
    Integer loc = generatingString.find(wxT("ClearPlot"), 0) + 9;
    wxString str = generatingString;
-   while (str[loc] == ' ')
+   while (str[loc] == wxT(' '))
       ++loc;
 
    // this command, for compatability with MATLAB, should not have

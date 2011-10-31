@@ -948,7 +948,7 @@ bool OrbitPlot::SetStringParameter(const Integer id, const wxString &value)
       return true;
    case ADD:
       {
-         if (value[0] == '{')
+         if (value[0] == wxT('{'))
          {
             #if 1
             try
@@ -976,7 +976,7 @@ bool OrbitPlot::SetStringParameter(const Integer id, const wxString &value)
       }
    case ORBIT_COLOR:
    case TARGET_COLOR:
-      if (value[0] == '[')
+      if (value[0] == wxT('['))
          PutUnsignedIntValue(id, value);
       return true;
    default:

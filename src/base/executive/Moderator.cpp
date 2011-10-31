@@ -730,12 +730,12 @@ void Moderator::LoadAPlugin(wxString pluginName)
       MessageInterface::ShowMessage(wxT("Input plugin name: \"%s\"\n"), pluginName.c_str());
    #endif
 
-   char fSlash = '/';
-   char bSlash = '\\';
-   char osSlash = '\\';       // Default to Windows, but change if *nix
+   wxChar fSlash = wxT('/');
+   wxChar bSlash = wxT('\\');
+   wxChar osSlash = wxT('\\');       // Default to Windows, but change if *nix
 
    #ifndef _WIN32
-      osSlash = '/';          // Mac or Linux
+      osSlash = wxT('/');          // Mac or Linux
    #endif
 
    #ifdef DEBUG_PLUGIN_REGISTRATION
@@ -3259,7 +3259,7 @@ Parameter* Moderator::CreateParameter(const wxString &type,
    wxString newType = type;
    if (type == wxT("Element1") || type == wxT("Element2") || type == wxT("Element3"))
    {
-      Integer numDots = GmatStringUtil::NumberOfOccurrences(name, '.');
+      Integer numDots = GmatStringUtil::NumberOfOccurrences(name, wxT('.'));
       if (numDots > 1)
       {
          newType = GmatStringUtil::Replace(newType, wxT("Element"), wxT("ThrustDirection"));

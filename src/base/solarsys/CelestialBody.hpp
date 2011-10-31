@@ -558,7 +558,7 @@ protected:
    virtual bool     DeterminePotentialFileNameFromStartup();
    bool             ReadPotentialFile();
    
-   bool             IsBlank(char* aLine);
+   bool             IsBlank(wxString &aLine);
    virtual Real     GetJulianDaysFromTCBEpoch(const A1Mjd &forTime) const;
    virtual Rvector6 ComputeTwoBody(const A1Mjd &forTime);
    virtual Rvector6 KeplersProblem(const A1Mjd &forTime);

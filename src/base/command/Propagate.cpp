@@ -394,7 +394,7 @@ bool Propagate::SetObject(const wxString &name, const Gmat::ObjectType type,
       case Gmat::PROP_SETUP:
          {
             propName.push_back(name);
-            if (name[0] == '-')
+            if (name[0] == wxT('-'))
             {
                direction = -1.0;
                MessageInterface::ShowMessage(wxT("Please use the keyword \"BackProp\" ")
@@ -1065,7 +1065,7 @@ bool Propagate::SetStringParameter(const Integer id, const wxString &value)
    if (id == PROP_NAME)
    {
       wxString propNameString = value;
-      if (propNameString[0] == '-')
+      if (propNameString[0] == wxT('-'))
       {
          direction = -1.0;
          MessageInterface::ShowMessage(wxT("Please use the keyword \"BackProp\" to ")
@@ -1540,7 +1540,7 @@ const StringArray& Propagate::GetRefObjectNameArray(const Gmat::ObjectType type)
       for (UnsignedInt i=0; i<propName.size(); i++)
       {
          newPropName = propName[i];
-         if (newPropName[0] == '-')
+         if (newPropName[0] == wxT('-'))
             newPropName = propName[i].substr(1);
 
          refObjectNames.push_back(newPropName);
@@ -1653,14 +1653,14 @@ bool Propagate::InterpretAction()
    Integer parenCount[2] = {0,0}, bracketCount[2] = {0,0};
    for (UnsignedInt i = 0; i < str.length(); ++i)
    {
-      if (str[i] == '(')
+      if (str[i] == wxT('('))
          ++parenCount[0];
-      if (str[i] == ')')
+      if (str[i] == wxT(')'))
          ++parenCount[1];
 
-      if (str[i] == '{')
+      if (str[i] == wxT('{'))
          ++bracketCount[0];
-      if (str[i] == '}')
+      if (str[i] == wxT('}'))
          ++bracketCount[1];
    }
    wxString errmsg;
@@ -1675,7 +1675,7 @@ bool Propagate::InterpretAction()
    if (errmsg.length() > 0)
       throw CommandException(errmsg);
 
-   while (str[loc] == ' ')
+   while (str[loc] == wxT(' '))
       ++loc;
 
    // Check to see if there are optional parameters (e.g. "Synchronized")
@@ -1698,7 +1698,7 @@ bool Propagate::InterpretAction()
 
    for (UnsignedInt i = 0; i < propName.size(); ++i)
    {
-      if ((propName[i].c_str())[0] == '-')
+      if ((propName[i].c_str())[0] == wxT('-'))
          propName[i] = propName[i].substr(1);
 
       #ifdef DEBUG_PROPSETUP_NAMES
@@ -2152,7 +2152,7 @@ void Propagate::FindSetupsAndStops(Integer &loc,
    //=================================================================
    // First parse the pieces from the string, starting at loc
    wxString tempString, setupWithStop, oneStop;
-   const char *str = generatingString.c_str();
+   const wxChar *str = generatingString.c_str();
    Integer currentLoc = loc, parmstart, end, commaLoc;
 
    bool scanning = true;
@@ -2169,7 +2169,7 @@ void Propagate::FindSetupsAndStops(Integer &loc,
                                 wxT(" string does not identify propagator"));
       ++end;
 
-      if (generatingString[currentLoc] == '-')
+      if (generatingString[currentLoc] == wxT('-'))
       {
          direction = -1.0;
          MessageInterface::ShowMessage(wxT("Please use the keyword \"BackProp\" to ")
@@ -2196,7 +2196,7 @@ void Propagate::FindSetupsAndStops(Integer &loc,
          tempString = setupWithStop.substr(0, braceStart);
          // Remove the comma
          Integer commaLoc = braceStart - 1;
-         while ((tempString[commaLoc] == ',') || (tempString[commaLoc] == ' '))
+         while ((tempString[commaLoc] == wxT(',')) || (tempString[commaLoc] == wxT(' ')))
          {
             --commaLoc;
          }
@@ -2210,7 +2210,7 @@ void Propagate::FindSetupsAndStops(Integer &loc,
       currentLoc = end; // +1;  Valgrind fix from Joris Olympio
 
       // Skip trailing comma or white space
-      while ((str[currentLoc] == ',') || (str[currentLoc] == ' '))
+      while ((str[currentLoc] == wxT(',')) || (str[currentLoc] == wxT(' ')))
          ++currentLoc;
       parmstart = generatingString.find(wxT("("), currentLoc);
       if (parmstart == (Integer)wxString::npos)
@@ -2246,11 +2246,11 @@ void Propagate::FindSetupsAndStops(Integer &loc,
          commaLoc = tempString.find(wxT(","), currentLoc);
          oneStop = tempString.substr(currentLoc, commaLoc - currentLoc);
          // Remove leading white space
-         while (oneStop[0] == ' ')
+         while (oneStop[0] == wxT(' '))
             oneStop = oneStop.substr(1);
          // Remove trailing white space
          currentLoc = oneStop.length() - 1;
-         while (oneStop[currentLoc] == ' ')
+         while (oneStop[currentLoc] == wxT(' '))
             --currentLoc;
          oneStop = oneStop.substr(0, currentLoc+1);
          stopStrings.push_back(oneStop);
@@ -2261,7 +2261,7 @@ void Propagate::FindSetupsAndStops(Integer &loc,
       currentLoc = end; // +1;  Valgrind fix from Joris Olympio
 
       // Skip trailing comma or white space
-      while ((str[currentLoc] == ',') || (str[currentLoc] == ' '))
+      while ((str[currentLoc] == wxT(',')) || (str[currentLoc] == wxT(' ')))
          ++currentLoc;
       parmstart = generatingString.find(wxT("{"), currentLoc);
       if (parmstart == (Integer)wxString::npos)
@@ -2276,7 +2276,7 @@ void Propagate::FindSetupsAndStops(Integer &loc,
    StringArray chunks;
    wxString str1 = generatingString.substr(loc);
    // Remove all blank spaces
-   str1 = GmatStringUtil::RemoveAll(str1, ' ');
+   str1 = GmatStringUtil::RemoveAll(str1, wxT(' '));
    wxString str2;
 
    #ifdef DEBUG_PARSING
@@ -2295,7 +2295,7 @@ void Propagate::FindSetupsAndStops(Integer &loc,
       wxString::size_type lastCloseParen = str2.find_last_of(wxT(")"));
 
       // Remove last ) after }
-      if (lastCloseParen == (str2.size() - 1) && str2[lastCloseParen - 1] == '}')
+      if (lastCloseParen == (str2.size() - 1) && str2[lastCloseParen - 1] == wxT('}'))
       {
          // Remove last )
          str2 = GmatStringUtil::RemoveLastString(str2, wxT(")"));
@@ -2303,8 +2303,8 @@ void Propagate::FindSetupsAndStops(Integer &loc,
          // Replace last comma before { with )
          wxString::size_type openBrace = str2.find(wxT("{"));
          wxString::size_type lastComma = str2.find_last_of(wxT(","), openBrace);
-         if (lastComma != str2.npos && str2[lastComma-1] != ')')
-            str2[lastComma] = ')';
+         if (lastComma != str2.npos && str2[lastComma-1] != wxT(')'))
+            str2[lastComma] = wxT(')');
          else if (lastComma != str2.npos)
             str2.erase(lastComma, 1);
 
@@ -2328,7 +2328,7 @@ void Propagate::FindSetupsAndStops(Integer &loc,
          #endif
 
          // If it does not starts with {, it is propagator and spacecraft
-         if (parts[i][0] != '{')
+         if (parts[i][0] != wxT('{'))
          {
             #ifdef DEBUG_PARSING
             MessageInterface::ShowMessage(wxT("   adding prop setups\n"));
@@ -2401,7 +2401,7 @@ void Propagate::ConfigurePropSetup(wxString &setupDesc)
    loc = 0;
    while (loc != wxString::npos)
    {
-      loc = sats.find(',');
+      loc = sats.find(wxT(','));
       sat = sats.substr(0, loc);
       sats = sats.substr(loc+1);
       CleanString(sat, &extras);
@@ -2590,7 +2590,7 @@ void Propagate::CleanString(wxString &theString, const StringArray *extras)
    // Clean up the start of the string
    for (loc = 0; loc < len; ++loc)
    {
-      if ((theString[loc] != ' ') && (theString[loc] != '\''))
+      if ((theString[loc] != wxT(' ')) && (theString[loc] != wxT('\'')))
       {
          if (extras != NULL)
             for (StringArray::const_iterator i = extras->begin(); i != extras->end(); ++i)
@@ -2608,7 +2608,7 @@ void Propagate::CleanString(wxString &theString, const StringArray *extras)
    keepGoing = false;
    for (loc = theString.length() - 1; loc >= 0; --loc)
    {
-      if ((theString[loc] != ' ') && (theString[loc] != '\''))
+      if ((theString[loc] != wxT(' ')) && (theString[loc] != wxT('\'')))
       {
          if (extras != NULL)
             for (StringArray::const_iterator i = extras->begin(); i != extras->end(); ++i)
@@ -2705,7 +2705,7 @@ bool Propagate::Initialize()
       if (satName.size() <= index)
          throw CommandException(wxT("Size mismatch for SpaceObject names\n"));
 
-      if ((*i)[0] == '-')
+      if ((*i)[0] == wxT('-'))
          pName = i->substr(1);
       else
         pName = *i;

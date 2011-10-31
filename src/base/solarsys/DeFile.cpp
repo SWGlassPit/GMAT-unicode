@@ -1556,7 +1556,7 @@ double DeFile::Find_Value( char    name[],
         /*.....................Convert current name array element to a string */
       
         for ( j=0 ; j<6 ; j++ )  target[j] = name_array[i][j];
-            target[6] = '\0';
+            target[6] = wxT('\0');
       
         /*................................See if it matches the string sought */
       
@@ -1704,7 +1704,7 @@ int DeFile::Read_File_Line( FILE *inFile, int filter, char lineBuffer[82])
   /*  Protect against lines over 80 characters long.                          */
   /*--------------------------------------------------------------------------*/
 
-  if ( (strlen(lineBuffer) == 81) && (lineBuffer[80] != '\n') )
+  if ( (strlen(lineBuffer) == 81) && (lineBuffer[80] != wxT('\n')) )
      {
        // Intentionally get the return and then ignore it to move warning from
        // system libraries to GMAT code base.  The wxT("unused variable") warning
@@ -1712,7 +1712,7 @@ int DeFile::Read_File_Line( FILE *inFile, int filter, char lineBuffer[82])
        char* ch = fgets(ignore,40,inFile);      /* Read past next end of line */
        if (ch == NULL)
           throw PlanetaryEphemException(wxT("Unable to read line from the DE file"));
-       lineBuffer[81] = '\0';
+       lineBuffer[81] = wxT('\0');
      }
 
   /*--------------------------------------------------------------------------*/
@@ -1723,8 +1723,8 @@ int DeFile::Read_File_Line( FILE *inFile, int filter, char lineBuffer[82])
      {
        for ( i=0 ; i<82 ; i++ )
            {
-             if (lineBuffer[i] == '\0') break;
-             if (lineBuffer[i] ==  'D') lineBuffer[i] = 'E';
+             if (lineBuffer[i] == wxT('\0')) break;
+             if (lineBuffer[i] ==  wxT('D')) lineBuffer[i] = wxT('E');
            }
      }
 
@@ -1769,7 +1769,7 @@ int DeFile::Read_Group_Header(FILE *inFile)
   /* Build the group header string.                                           */
   /*--------------------------------------------------------------------------*/
 
-  headStr[0] = '\0';                               /* Start with empty string */
+  headStr[0] = wxT('\0');                               /* Start with empty string */
 
   do { 
        /*................................................. Read one character */
@@ -1781,12 +1781,12 @@ int DeFile::Read_Group_Header(FILE *inFile)
        if ( isgraph(charIn) )          /* Build sting of non-blank characters */
           {
             appStr[0] = charIn;
-            appStr[1] = '\0';
+            appStr[1] = wxT('\0');
             strcat(headStr,appStr);
           }
        else                                              /* Count line breaks */
           {
-            if (charIn == '\n') count = count + 1;
+            if (charIn == wxT('\n')) count = count + 1;
           }
             
        /*.......................................Protect against strange input */

@@ -70,7 +70,7 @@ ExpressionParser::~ExpressionParser()
 
 
 //------------------------------------------------------------------------------
-// Real EvalExp(const char *exp)
+// Real EvalExp(const wxString &exp)
 //------------------------------------------------------------------------------
 /*
  * Evaluates given expression and return results.
@@ -137,22 +137,22 @@ void ExpressionParser::SetParameterDatabase(ParameterDatabase *pdb)
 //------------------------------------------------------------------------------
 void ExpressionParser::EvalTwoTerms(Real &result)
 {
-   register char op; // it's heavily used
+   register wxChar op; // it's heavily used
    Real temp;
 
    EvalTwoFactors(result);
 
-   while ((op = *mToken) == '+' || op == '-')
+   while ((op = *mToken) == wxT('+') || op == wxT('-'))
    {
       GetToken();
       EvalTwoFactors(temp);
 
       switch (op)
       {
-      case '-':
+      case wxT('-'):
          result = result - temp;
          break;
-      case '+':
+      case wxT('+'):
          result = result + temp;
          break;
       default:
@@ -171,22 +171,22 @@ void ExpressionParser::EvalTwoTerms(Real &result)
 //------------------------------------------------------------------------------
 void ExpressionParser::EvalTwoFactors(Real &result)
 {
-   register char op; // it's heavily used
+   register wxChar op; // it's heavily used
    Real temp;
 
    EvalExponent(result);
 
-   while ((op = *mToken) == '*' || op == '/' || op == '%')
+   while ((op = *mToken) == wxT('*') || op == wxT('/') || op == wxT('%'))
    {
       GetToken();
       EvalExponent(temp);
 
       switch (op)
       {
-      case '*':
+      case wxT('*'):
          result = result * temp;
          break;
-      case '/':
+      case wxT('/'):
          result = result / temp;
          break;
       default:
@@ -210,7 +210,7 @@ void ExpressionParser::EvalExponent(Real &result)
 
    EvalUnary(result);
 
-   if (*mToken == '^')
+   if (*mToken == wxT('^'))
    {
       GetToken();
       EvalExponent(temp);
@@ -242,11 +242,11 @@ void ExpressionParser::EvalExponent(Real &result)
 //------------------------------------------------------------------------------
 void ExpressionParser::EvalUnary(Real &result)
 {
-   register char op;
+   register wxChar op;
 
    op = 0;
 
-   if (((mTokenType == DELIMITER) && *mToken == '+') || *mToken == '-')
+   if (((mTokenType == DELIMITER) && *mToken == wxT('+')) || *mToken == wxT('-'))
    {
       op = *mToken;
       GetToken();
@@ -254,7 +254,7 @@ void ExpressionParser::EvalUnary(Real &result)
 
    EvalParenExp(result);
 
-   if (op == '-')
+   if (op == wxT('-'))
       result = - result;
 }
 
@@ -268,13 +268,13 @@ void ExpressionParser::EvalUnary(Real &result)
 //------------------------------------------------------------------------------
 void ExpressionParser::EvalParenExp(Real &result)
 {
-   if (*mToken == '(')
+   if (*mToken == wxT('('))
    {
       GetToken();
 
       EvalTwoTerms(result);
 
-      if (*mToken != ')')
+      if (*mToken != wxT(')'))
          HandleSyntaxError(UNBALANCED_PARENTHESES);
 
       GetToken();
@@ -395,7 +395,7 @@ void ExpressionParser::GetToken()
       mTokenType = VARIABLE;
    }
    //else if (isdigit(*mExp))
-   else if (isdigit(ch) || ch == '.') //loj: 7/15/05 Added check for .
+   else if (isdigit(ch) || ch == wxT('.')) //loj: 7/15/05 Added check for .
    {
       while (!IsDelimiter(ch))
       {
@@ -410,14 +410,16 @@ void ExpressionParser::GetToken()
 
 
 //------------------------------------------------------------------------------
-// bool IsDelimiter(char c)
+// bool IsDelimiter(wxChar c)
 //------------------------------------------------------------------------------
 /* Return true if c is a delimiter.
  */
 //------------------------------------------------------------------------------
-bool ExpressionParser::IsDelimiter(char c)
+bool ExpressionParser::IsDelimiter(wxChar c)
 {
-   if (strchr(" +-/*^=()", c) || c==9 || c=='\r' || c==0)
+   if (c == wxT(' ') || c == wxT('+') || c == wxT('-') || c == wxT('/') || c == wxT('*') 
+    || c == wxT('^') || c == wxT('=') || c == wxT('(') || c == wxT(')') || c==wxT('\t') 
+    || c==wxT('\r') || c==wxT('\0'))
       return true;
    else
       return false;

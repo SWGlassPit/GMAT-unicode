@@ -275,7 +275,7 @@ std::ostream& GmatRealUtil::operator<< (std::ostream &output, const Rvector &a)
       if (horizontal)
       {
          wxString spaces;
-         spaces.append(spacing, ' ');
+         spaces.append(spacing, wxT(' '));
          
          for (int i=0; i<size; i++)
          {
@@ -387,7 +387,7 @@ std::ostream& GmatRealUtil::operator<< (std::ostream &output, const Rmatrix &a)
    else
    {      
       wxString spaces;
-      spaces.append(spacing, ' ');
+      spaces.append(spacing, wxT(' '));
       
       if (horizontal) 
       {

@@ -1664,11 +1664,11 @@ void StopCondition::SetRhsString(const wxString &str)
    rhsString = str;
    
    // remove leading blanks
-   wxString::size_type pos = rhsString.find_first_not_of(' ');
+   wxString::size_type pos = rhsString.find_first_not_of(wxT(' '));
    rhsString.erase(0, pos);
    
    // if str is just a number
-   if (isdigit(rhsString[0]) || rhsString[0] == '.' || rhsString[0] == '-')
+   if (isdigit(rhsString[0]) || rhsString[0] == wxT('.') || rhsString[0] == wxT('-'))
    {
       rhsString.ToDouble(&currentGoalValue);
       initialGoalValue = currentGoalValue;

@@ -156,7 +156,7 @@ bool MarkPoint::InterpretAction()
    
    Integer loc = generatingString.find(wxT("MarkPoint"), 0) + 9;
    wxString str = generatingString;
-   while (str[loc] == ' ')
+   while (str[loc] == wxT(' '))
       ++loc;
 
    // this command, for compatability with MATLAB, should not have

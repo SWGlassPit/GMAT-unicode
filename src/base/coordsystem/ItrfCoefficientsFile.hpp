@@ -148,7 +148,7 @@ protected:
    bool InitializeArrays(GmatItrf::NutationTerms nutT,
                          GmatItrf::PlanetaryTerms planT);
    
-   bool IsBlank(const char* aLine);
+   bool IsBlank(const wxString& aLine);
    
 };
 #endif // ItrfCoefficientsFile_hpp

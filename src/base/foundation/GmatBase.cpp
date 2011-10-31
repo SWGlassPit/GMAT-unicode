@@ -3334,7 +3334,7 @@ StringArray GmatBase::GetGeneratingStringArray(Gmat::WriteMode mode,
    Integer start = 0, end = 0, len = genstr.length();
 
    while (end < len) {
-      if (genstr[end] == '\n') {
+      if (genstr[end] == wxT('\n')) {
          text = genstr.substr(start, end - start);
          sar.push_back(text);
          start = end+1;

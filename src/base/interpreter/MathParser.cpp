@@ -190,7 +190,7 @@ bool MathParser::IsEquation(const wxString &str, bool checkMinusSign)
          if (checkMinusSign)
          {
             // Check for - sign used as string
-            if (GmatStringUtil::NumberOfOccurrences(str, '-') == 1 &&
+            if (GmatStringUtil::NumberOfOccurrences(str, wxT('-')) == 1 &&
                 GmatStringUtil::StartsWith(str, wxT("-")) &&
                 GmatStringUtil::IsSingleItem(str))
             {
@@ -326,7 +326,7 @@ wxString MathParser::FindLowestOperator(const wxString &str,
       #endif
       
       // find next open parenthesis '('
-      start1 = str.find('(', close1);
+      start1 = str.find(wxT('('), close1);
       
       if (start1 == -1)
       {
@@ -512,8 +512,8 @@ MathNode* MathParser::Parse(const wxString &str)
    #endif
    
    // first remove all blank spaces and semicoln
-   wxString newEq = GmatStringUtil::RemoveAll(theEquation, ' ');
-   wxString::size_type index = newEq.find_first_of(';');
+   wxString newEq = GmatStringUtil::RemoveAll(theEquation, wxT(' '));
+   wxString::size_type index = newEq.find_first_of(wxT(';'));
    if (index != newEq.npos)
       newEq.erase(index);
    
@@ -862,7 +862,7 @@ StringArray MathParser::Decompose(const wxString &str)
    wxString str1;
    str1 = str;
    
-   if (items[0] == wxT("") && str[0] == '(' && str[str.size()-1] == ')')
+   if (items[0] == wxT("") && str[0] == wxT('(') && str[str.size()-1] == wxT(')'))
    {
       if (GmatStringUtil::IsOuterParen(str))
       {
@@ -953,7 +953,7 @@ StringArray MathParser::ParseParenthesis(const wxString &str)
    //-----------------------------------------------------------------
    // if no opening parenthesis '(' found, just return
    //-----------------------------------------------------------------
-   wxString::size_type index1 = str.find('(');
+   wxString::size_type index1 = str.find(wxT('('));
    
    if (index1 == str.npos)
    {
@@ -1440,7 +1440,7 @@ wxString MathParser::FindOperator(const wxString &str, Integer &opIndex)
          #endif
          
          if ((index4 > 0) &&
-             (str[index4-1] == '*' || str[index4-1] == '/'))
+             (str[index4-1] == wxT('*') || str[index4-1] == wxT('/')))
             checkNext = true;
       }
    }
@@ -1543,9 +1543,9 @@ wxString MathParser::FindOperator(const wxString &str, Integer &opIndex)
       op = str1.substr(index, 1);
       opIndex = index;
    }
-   else if (str[index-1] == '+' || str[index-1] == '-' ||
-            str[index-1] == '*' || str[index-1] == '/' ||
-            str[index-1] == '^')
+   else if (str[index-1] == wxT('+') || str[index-1] == wxT('-') ||
+            str[index-1] == wxT('*') || str[index-1] == wxT('/') ||
+            str[index-1] == wxT('^'))
    {
       op = str1.substr(index-1, 1);
       opIndex = index-1;
@@ -1651,7 +1651,7 @@ wxString::size_type MathParser::FindSubtract(const wxString &str,
       (wxT("MathParser::FindSubtract() str=%s, start=%u\n"), str.c_str(), start);
    #endif
    
-   wxString::size_type index2 = str.find('-', start);
+   wxString::size_type index2 = str.find(wxT('-'), start);
    wxString::size_type index3 = str.find(wxT("^(-1)"), start);
    
    #if DEBUG_INVERSE_OP
@@ -1755,8 +1755,8 @@ StringArray MathParser::ParseAddSubtract(const wxString &str)
    wxString right;
 
    // find last - or +
-   wxString::size_type index1 = str.find_last_of('+');
-   wxString::size_type index2 = str.find_last_of('-');
+   wxString::size_type index1 = str.find_last_of(wxT('+'));
+   wxString::size_type index2 = str.find_last_of(wxT('-'));
    
    #if DEBUG_ADD_SUBTRACT
    MessageInterface::ShowMessage
@@ -1826,7 +1826,7 @@ StringArray MathParser::ParseAddSubtract(const wxString &str)
    op = GetOperatorName(opStr, opFound);
    
    // if double operator +- or -+ found
-   if (str[index+1] == '+' || str[index+1] == '-')
+   if (str[index+1] == wxT('+') || str[index+1] == wxT('-'))
    {
       #if DEBUG_ADD_SUBTRACT
       MessageInterface::ShowMessage
@@ -1834,13 +1834,13 @@ StringArray MathParser::ParseAddSubtract(const wxString &str)
           str.substr(index, 2).c_str());
       #endif
       
-      if (opStr == wxT("+") && str[index+1] == '+')
+      if (opStr == wxT("+") && str[index+1] == wxT('+'))
          op = wxT("Add");
-      else if (opStr == wxT("+") && str[index+1] == '-')
+      else if (opStr == wxT("+") && str[index+1] == wxT('-'))
          op = wxT("Subtract");
-      else if (opStr == wxT("-") && str[index+1] == '-')
+      else if (opStr == wxT("-") && str[index+1] == wxT('-'))
          op = wxT("Add");
-      else if (opStr == wxT("-") && str[index+1] == '+')
+      else if (opStr == wxT("-") && str[index+1] == wxT('+'))
          op = wxT("Subtract");
       
       indexRight = indexRight + 1;
@@ -1893,8 +1893,8 @@ StringArray MathParser::ParseMultDivide(const wxString &str)
    // a * b / c * d
    //-----------------------------------------------------------------
    
-   wxString::size_type index1 = str.find_last_of('*');
-   wxString::size_type index2 = str.find_last_of('/');
+   wxString::size_type index1 = str.find_last_of(wxT('*'));
+   wxString::size_type index2 = str.find_last_of(wxT('/'));
    
    if (index1 == str.npos && index2 == str.npos)
    {
@@ -1937,7 +1937,7 @@ StringArray MathParser::ParseMultDivide(const wxString &str)
    //-------------------------------------------------------
    // find double operator *+, *-, /+, /-
    //-------------------------------------------------------
-   if (str[index+1] == '+' || str[index+1] == '-')
+   if (str[index+1] == wxT('+') || str[index+1] == wxT('-'))
    {
       wxString right = str.substr(index+2, str.npos);
       
@@ -1978,7 +1978,7 @@ StringArray MathParser::ParsePower(const wxString &str)
    wxString op = wxT("");
    
    // We should find last ^ insted of first ^ to fix bug 2176 (LOJ: 2010.10.29)
-   wxString::size_type index1 = str.find_last_of('^');
+   wxString::size_type index1 = str.find_last_of(wxT('^'));
    
    if (index1 == str.npos)
    {
@@ -2068,8 +2068,8 @@ StringArray MathParser::ParseUnary(const wxString &str)
    }
    
    // find  - or -
-   wxString::size_type index1 = str.find('-');
-   wxString::size_type index2 = str.find('+');
+   wxString::size_type index1 = str.find(wxT('-'));
+   wxString::size_type index2 = str.find(wxT('+'));
    
    if (index1 == str.npos && index2 == str.npos)
    {
@@ -2412,8 +2412,8 @@ bool MathParser::IsGmatFunction(const wxString &name)
 //------------------------------------------------------------------------------
 bool MathParser::IsValidOperator(const wxString &str)
 {
-   char op = str[0];
-   if (op == '+' || op == '-' || op == '*' || op == '/' || op == '^' || op == '\'')
+   wxChar op = str[0];
+   if (op == wxT('+') || op == wxT('-') || op == wxT('*') || op == wxT('/') || op == wxT('^') || op == wxT('\''))
       return true;
    else
       return false;
@@ -2629,10 +2629,10 @@ wxString::size_type MathParser::FindMatchingParen(const wxString &str,
    
    for (UnsignedInt i = start; i < str.size(); i++)
    {
-      if (str[i] == '(')
+      if (str[i] == wxT('('))
          leftCounter++;
 
-      if (str[i] == ')')
+      if (str[i] == wxT(')'))
          rightCounter++;
       
       if (leftCounter == rightCounter)

@@ -163,7 +163,7 @@ bool PenUp::InterpretAction()
    
    Integer loc = generatingString.find(wxT("PenUp"), 0) + 5; //, end;
    wxString str = generatingString;
-   while (str[loc] == ' ')
+   while (str[loc] == wxT(' '))
       ++loc;
 
    // this command, for compatability with MATLAB, should not have

@@ -1700,10 +1700,10 @@ void Interpreter::ParseAndSetCommandName(GmatCommand *cmd, const wxString &cmdTy
    #endif
    if (desc.find(wxT("'")) != desc.npos)
    {
-      if (desc[0] == '\'')
+      if (desc[0] == wxT('\''))
       {
          // if matching quote found, continue
-         if (desc.find('\'', 1) != desc.npos)
+         if (desc.find(wxT('\''), 1) != desc.npos)
          {
             StringArray parts = GmatStringUtil::SeparateBy(newDesc, wxT("'"));
             #ifdef DEBUG_CREATE_COMMAND
@@ -1780,7 +1780,7 @@ GmatCommand* Interpreter::CreateCommand(const wxString &type,
    #endif
    
    // Check for CallFunction
-   if (type1[0] == '[')
+   if (type1[0] == wxT('['))
    {
       #ifdef DEBUG_CREATE_COMMAND
       MessageInterface::ShowMessage
@@ -2306,7 +2306,7 @@ bool Interpreter::AssembleCallFunctionCommand(GmatCommand *cmd,
          validInput = true;
       }
       // Parameter or object property
-      else if (inArray[i].find('.') != wxString::npos)
+      else if (inArray[i].find(wxT('.')) != wxString::npos)
       {
          // if input parameter is a system Parameter then create
          if (IsParameterType(inArray[i]))
@@ -2425,7 +2425,7 @@ bool Interpreter::AssembleConditionalCommand(GmatCommand *cmd,
    // Remove enclosed parenthesis first
    Integer length = desc.size();
    wxString str1 = desc;
-   if (desc[0] == '(' && desc[length-1] == ')')
+   if (desc[0] == wxT('(') && desc[length-1] == wxT(')'))
    {
       str1 = desc.substr(1, length-2);
    }
@@ -2623,7 +2623,7 @@ bool Interpreter::AssembleForCommand(GmatCommand *cmd, const wxString &desc)
    index = GmatStringUtil::Trim(index);
    
    wxString substr = desc.substr(equalSign+1);
-   if (substr.find(':') == substr.npos)
+   if (substr.find(wxT(':')) == substr.npos)
    {
       InterpreterException ex(wxT("Missing colon (:) for For loop control"));
       HandleError(ex);
@@ -2634,7 +2634,7 @@ bool Interpreter::AssembleForCommand(GmatCommand *cmd, const wxString &desc)
    int count = parts.size();
    Integer numColons = 0;
    for (unsigned int ii = 0; ii < substr.size(); ii++)
-      if (substr.at(ii) == ':') numColons++;
+      if (substr.at(ii) == wxT(':')) numColons++;
    if (numColons >= (Integer) count)
    {
       InterpreterException ex(wxT("Too many colons (:) for For loop control"));
@@ -2896,7 +2896,7 @@ bool Interpreter::AssembleFiniteBurnCommand(GmatCommand *cmd, const wxString &de
          HandleError(ex);
          retval = false;
       }
-      Integer numCommas = GmatStringUtil::NumberOfOccurrences(parts[1],',');
+      Integer numCommas = GmatStringUtil::NumberOfOccurrences(parts[1],wxT(','));
       if (count != (numCommas + 1))
       {
          InterpreterException ex
@@ -3263,7 +3263,7 @@ bool Interpreter::SetCommandRefObjects(GmatCommand *cmd, const wxString &desc)
    
    for (unsigned int i=0; i<numParts; i++)
    {
-      if (parts[i].find(',') != parts[i].npos)
+      if (parts[i].find(wxT(',')) != parts[i].npos)
       {
          wxString msg = 
             wxT("The ") + cmd->GetTypeName() + wxT(" command is not allowed to contain commas - ")
@@ -3435,7 +3435,7 @@ Parameter* Interpreter::GetArrayIndex(const wxString &arrayStr,
    GmatStringUtil::GetArrayIndex(arrayStr, rowStr, colStr, row, col, name);
    
    // Remove - sign from the name
-   if (name[0] == '-')
+   if (name[0] == wxT('-'))
       name = name.substr(1);
    
    #ifdef DEBUG_ARRAY_GET
@@ -3609,7 +3609,7 @@ GmatBase* Interpreter::MakeAssignment(const wxString &lhs, const wxString &rhs)
          return NULL;
       }
       
-      dot = lhs.find('.');
+      dot = lhs.find(wxT('.'));
       if (dot == lhs.npos)
          lhsPropName = lhsParts[1];
       else
@@ -3687,7 +3687,7 @@ GmatBase* Interpreter::MakeAssignment(const wxString &lhs, const wxString &rhs)
          #endif
          
          // Check if it is CallFunction first
-         dot = rhs.find('.');
+         dot = rhs.find(wxT('.'));
          if (dot == rhs.npos)
          {
             rhsPropName = rhsParts[1];
@@ -3722,7 +3722,7 @@ GmatBase* Interpreter::MakeAssignment(const wxString &lhs, const wxString &rhs)
       // Propagate -prop(Sat1, Sat2, {Sat1.Periapsis})
       wxString newName = rhs;
       
-      if (rhs[0] == '-')
+      if (rhs[0] == wxT('-'))
          newName = rhs.substr(1);
       
       rhsObj = FindObject(newName);
@@ -3904,7 +3904,7 @@ bool Interpreter::SetObjectToObject(GmatBase *toObj, GmatBase *fromObj,
    if (toObj->IsOfType(wxT("Variable")))
    {
       // If first char is - sign, negate the value
-      if (rhs[0] == '-')
+      if (rhs[0] == wxT('-'))
       {
          Real rval = toObj->GetRealParameter(wxT("Value")) * -1;
          toObj->SetRealParameter(wxT("Value"), rval);
@@ -4085,7 +4085,7 @@ bool Interpreter::SetObjectToArray(GmatBase *toObj, const wxString &fromArray)
    try
    {
       // Handle minus sign
-      if (fromArray[0] == '-')
+      if (fromArray[0] == wxT('-'))
          rval = -rval;
       toObj->SetRealParameter(wxT("Value"), rval);
    }
@@ -4886,7 +4886,7 @@ bool Interpreter::SetArrayToArray(GmatBase *toArrObj, const wxString &toArray,
    
    try
    {
-      if (fromArray[0] == '-')
+      if (fromArray[0] == wxT('-'))
          toArrObj->SetRealParameter(wxT("SingleValue"), -rval, rowTo, colTo);
       else   
          toArrObj->SetRealParameter(wxT("SingleValue"), rval, rowTo, colTo);
@@ -8236,7 +8236,7 @@ bool Interpreter::CheckFunctionDefinition(const wxString &funcPath,
       line = GmatStringUtil::Trim(line, GmatStringUtil::BOTH, true, true);
       
       // Skip empty line or comment line
-      if (line[0] == '\0' || line[0] == '%')
+      if (line[0] == wxT('\0') || line[0] == wxT('%'))
          continue;
       
       //------------------------------------------------------

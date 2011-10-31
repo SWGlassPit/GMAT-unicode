@@ -1280,7 +1280,7 @@ bool Subscriber::SetWrapperReference(GmatBase *obj, const wxString &name)
       
       refname = paramWrappers[i]->GetDescription();
       if (paramWrappers[i]->GetWrapperType() == Gmat::ARRAY_ELEMENT_WT)
-         refname = refname.substr(0, refname.find('('));
+         refname = refname.substr(0, refname.find(wxT('(')));
       if (refname == name)
       {
          nameFound = true;
@@ -1328,7 +1328,7 @@ bool Subscriber::SetWrapperReference(GmatBase *obj, const wxString &name)
       case Gmat::ARRAY_ELEMENT_WT:
          // for array element, we need to go through all array elements set
          // ref object, so break insted of return
-         refname = refname.substr(0, refname.find('('));
+         refname = refname.substr(0, refname.find(wxT('(')));
          if (refname == name)
             paramWrappers[i]->SetRefObject(obj);
          break;

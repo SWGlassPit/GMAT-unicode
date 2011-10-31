@@ -1400,7 +1400,7 @@ void ReportFile::WriteHeaders()
           #endif
           
           dstream.width(width + 3); // sets miminum field width
-          dstream.fill(' ');
+          dstream.fill(wxT(' '));
           
           if (leftJustify)
              dstream.setf(std::ios::left);

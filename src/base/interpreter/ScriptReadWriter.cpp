@@ -331,7 +331,7 @@ bool ScriptReadWriter::Initialize()
 //------------------------------------------------------------------------------
 wxString ScriptReadWriter::CrossPlatformGetLine()
 {
-   char ch;
+   wxChar ch;
    wxString result;
    wxTextInputStream theInStream(*inStream);
    

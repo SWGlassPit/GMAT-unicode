@@ -404,8 +404,6 @@ void GuiMessageReceiver::LogMessage(const wxString &msg, ...)
    ret = msgBuffer.PrintfV( msg, marker);
    va_end(marker);
    
-   std::cout << msg;
-   
    if (logEnabled)
    {
       if (logFile == NULL)

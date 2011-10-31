@@ -1653,7 +1653,7 @@ bool OpenGlPlot::SetStringParameter(const Integer id, const wxString &value)
       return AddSpacePoint(value, mAllSpCount);
    case ORBIT_COLOR:
    case TARGET_COLOR:
-      if (value[0] == '[')
+      if (value[0] == wxT('['))
          PutUnsignedIntValue(id, value);
       return true;
    case COORD_SYSTEM:
@@ -1668,7 +1668,7 @@ bool OpenGlPlot::SetStringParameter(const Integer id, const wxString &value)
       if (value == wxT("Vector") || GmatStringUtil::IsNumber(value))
          mViewPointRefType = wxT("Vector");
       
-      if (value[0] == '[')
+      if (value[0] == wxT('['))
       {
          PutRvector3Value(mViewPointRefVector, id, value);
          mViewPointRefType = wxT("Vector");
@@ -1682,7 +1682,7 @@ bool OpenGlPlot::SetStringParameter(const Integer id, const wxString &value)
       if (value == wxT("Vector") || GmatStringUtil::IsNumber(value))
          mViewPointRefType = wxT("Vector");
       
-      if (value[0] == '[')
+      if (value[0] == wxT('['))
       {
          PutRvector3Value(mViewPointRefVector, id, value);
          mViewPointRefType = wxT("Vector");
@@ -1698,7 +1698,7 @@ bool OpenGlPlot::SetStringParameter(const Integer id, const wxString &value)
       if (value == wxT("Vector") || GmatStringUtil::IsNumber(value))
          mViewPointVecType = wxT("Vector");
       
-      if (value[0] == '[')
+      if (value[0] == wxT('['))
       {
          PutRvector3Value(mViewPointVecVector, id, value);
          mViewPointVecType = wxT("Vector");
@@ -1715,7 +1715,7 @@ bool OpenGlPlot::SetStringParameter(const Integer id, const wxString &value)
       if (value == wxT("Vector") || GmatStringUtil::IsNumber(value))
          mViewDirectionType = wxT("Vector");
       
-      if (value[0] == '[')
+      if (value[0] == wxT('['))
       {
          PutRvector3Value(mViewDirectionVector, id, value);
          mViewDirectionType = wxT("Vector");

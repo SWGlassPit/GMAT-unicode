@@ -268,7 +268,7 @@ const wxString BeginScript::GetChildString(const wxString &prefix,
    {
       cmdstr = current->GetGeneratingString();
       start = 0;
-      while (cmdstr[start] == ' ')
+      while (cmdstr[start] == wxT(' '))
          ++start;
       cmdstr = cmdstr.substr(start);
       sstr << prefix << cmdstr << wxT("\n");
