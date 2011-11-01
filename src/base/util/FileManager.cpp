@@ -2042,7 +2042,7 @@ void FileManager::RefreshFiles()
 
    // luna gravity files
    AddFileType(wxT("LUNA_POT_PATH"), wxT("DATA_PATH/gravity/luna/"));
-   AddFileType(wxT("LP165P_FILE"), wxT("LUNA_POT_PATH/lp165p.cof"));
+   AddFileType(wxT("LP165P_FILE"), wxT("LUNA_POT_PATH/LP165P.cof"));
 
    // venus gravity files
    AddFileType(wxT("VENUS_POT_PATH"), wxT("DATA_PATH/gravity/venus/"));

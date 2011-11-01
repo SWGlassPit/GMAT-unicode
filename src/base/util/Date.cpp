@@ -173,26 +173,19 @@ Real Date::ToPackedCalendarReal() const
 wxString& Date::ToPackedCalendarString()
 {
    wxString ss;
+   ss += wxString::Format(wxT("%04d"), yearD);
+   ss += wxString::Format(wxT("%02d"), monthD);
+   ss += wxString::Format(wxT("%02d"), dayD);
+   ss += wxT(".");
+   Integer hour, minute;
+   Real realSecond;
+   ToHMSFromSecondsOfDay( secondsOfDayD, hour, minute, realSecond );
+   Integer intSecond = floor( realSecond * 1000.0 );
+   ss += wxString::Format(wxT("%02d"), hour);
+   ss += wxString::Format(wxT("%02d"), minute);
+   ss += wxString::Format(wxT("%05d"), intSecond);
 
-   Real ymd;
-   Real hms;
-
-   ToYearMonDayHourMinSec(ymd, hms);
-
-   // Get date in YMD
-   ss << ymd;
-   StringTokenizer stringToken(ss, wxT("."));
-   wxString tempString = stringToken.GetToken(0);
-
-   // Get time in HMS
-   ss.Clear();
-   ss << hms;
-   stringToken.Set(ss, wxT("."));
-   tempString = tempString + wxT(".") + stringToken.GetToken(1);
-
-//    ss << (ymd + hms);
-//   mPackedString = ss.str();
-   mPackedString = tempString;
+   mPackedString = ss;
 
    return mPackedString;
 }

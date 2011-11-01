@@ -411,13 +411,7 @@ void GregorianDate::ParseOut(const wxString &str)
 //---------------------------------------------------------------------------
 wxString GregorianDate::NumToString(const Integer num)
 {
-   wxString temp(wxT(""));
-
-   if (num < 10)
-      temp = wxT("0");
-
-   temp += num;
-
+   wxString temp = wxString::Format(wxT("%02d"), num);
    return temp;
 }
 
@@ -434,7 +428,7 @@ wxString GregorianDate::NumToString(const Integer num)
 //---------------------------------------------------------------------------
 wxString GregorianDate::NumToString(const Real num)
 {
-   wxString temp(wxT(""));
+   wxString temp;
 
    if (num < 10.0)
       temp = wxT("0");
