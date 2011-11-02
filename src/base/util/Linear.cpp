@@ -467,11 +467,25 @@ wxString GmatRealUtil::ToString(const Real &rval, bool useCurrentFormat,
       isScientific = global->IsScientific();
       isShowPointSet = global->ShowPoint();
    }
+
    
-   wxString ss;
+   wxString formatStr = wxT("%");
+   
+   if (isShowPointSet)
+      formatStr += wxT("#");
+   
+   formatStr += wxString::Format(wxT("%i"), w);
+   formatStr += wxT(".");
+   formatStr += wxString::Format(wxT("%i"), p);
+   
+   if (isScientific)
+      formatStr += wxT("e");
+   else
+      formatStr += wxT("f");
+
+   wxString ss = wxString::Format(formatStr, rval);
    
 
-   ss << rval;
    //return ss.str();
    
    // How do I specify 2 digints of the exponent? (LOJ: 2010.05.03)

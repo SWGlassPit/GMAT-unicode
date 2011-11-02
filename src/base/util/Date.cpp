@@ -386,17 +386,22 @@ Date::Date(const GmatTimeUtil::CalDate &date)
 //------------------------------------------------------------------------------
 Date::Date(const wxString& time)
 {
-   const char *tempTime = time.char_str();
+   StringTokenizer timeTokens(time, wxT(".")); 
    Integer datePart;
    Integer timePart;
    Integer year, month, day, hour, minute;
    Real    second;
+   
+   long tempDate = 0;
+   timeTokens.GetToken(0).ToLong(&tempDate);
+   datePart = tempDate;
 
-   datePart = atoi(tempTime);
-   tempTime = strstr(tempTime, ".");
-
-   if (tempTime != NULL)
-      timePart = atoi(tempTime + 1);
+   if (timeTokens.CountTokens() == 2)
+   {
+      long tempTime = 0;
+      timeTokens.GetToken(1).ToLong(&tempTime);
+      timePart = tempTime;
+   }
    else
       timePart = 1;
 
