@@ -35,7 +35,7 @@
 #include <wx/image.h>
 #include "FileManager.hpp"
 
-//#define DRAW_NORMALS
+#define DRAW_NORMALS
 //#define WIREFRAME_MODE
 
 //int control_object;
@@ -142,7 +142,7 @@ void ModelObject::LoadTextures(){
    wxString string;
    for (i = 0; i < num_materials; i++){
       string = filePath;
-      string.Append(material[i].texture_name);
+      string.Append(wxString::FromAscii(material[i].texture_name));
       result = LoadTexture(string);
       material[i].id_texture = result;
    }

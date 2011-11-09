@@ -63,8 +63,8 @@ typedef struct{
 
 // The material type
 typedef struct{
-   wxString name;   // The name of the material
-   wxString texture_name; // The file name of the texture associated with the material
+   char name[255];   // The name of the material
+   char texture_name[255]; // The file name of the texture associated with the material
    int num_faces; // The number of faces that use this material
    unsigned short faces[MAX_POLYGONS]; // The indices of the faces using this material
    rgba_type mat_ambient;  // The ambient color of the material

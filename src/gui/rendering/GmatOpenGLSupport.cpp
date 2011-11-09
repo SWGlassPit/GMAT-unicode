@@ -125,8 +125,8 @@ void SetDefaultGLFont()
 void InitGL()
 {
    // remove back faces
-   glEnable(GL_CULL_FACE);
-   //glDisable(GL_CULL_FACE);
+   //glEnable(GL_CULL_FACE);
+   glDisable(GL_CULL_FACE);
 
    // enable depth testing, so that objects further away from the
    // viewer aren't drawn over closer objects

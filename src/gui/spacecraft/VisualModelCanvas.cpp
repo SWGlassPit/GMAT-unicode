@@ -44,10 +44,12 @@ GLfloat ox, oy, oz,
    rx, ry, rz,
    sx, sy, sz;
 
+int GmatGLCanvasAttribs[2] = {WX_GL_DOUBLEBUFFER, 0};
+
 VisualModelCanvas::VisualModelCanvas(wxWindow *parent, Spacecraft *spacecraft,
    const wxWindowID id, const wxPoint &pos, const wxSize &size, const wxString &name, long style)
    #ifdef __USE_WX280_GL__
-   : wxGLCanvas(parent, id, 0, pos, size, style, name)
+   : wxGLCanvas(parent, id, GmatGLCanvasAttribs , pos, size, style, name)
    #else
    : wxGLCanvas(parent, id, pos, size, style, name)
    #endif
@@ -98,7 +100,7 @@ VisualModelCanvas::~VisualModelCanvas()
 {
    #ifndef __WXMAC__
       ModelManager *mm = ModelManager::Instance();
-      if (!mm->modelContext)
+      if (mm->modelContext)
       {
          // delete modelContext since it was created in the constructor
          delete mm->modelContext;

@@ -198,7 +198,7 @@ char Load3DS(ModelObject *p_object, const wxString &p_filename){
                i++;
             } while (l_char != '\0' && i < 255);
             for (i = 0; i < p_object->num_materials; i++){
-               if (strcmp(p_object->material[i].name.char_str(), str) == 0){
+               if (strcmp(p_object->material[i].name, str) == 0){
                   index = i;
                   break;
                }
