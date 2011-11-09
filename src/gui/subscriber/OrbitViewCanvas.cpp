@@ -348,7 +348,7 @@ OrbitViewCanvas::~OrbitViewCanvas()
    
    #ifndef __WXMAC__
       ModelManager *mm = ModelManager::Instance();
-      if (!mm->modelContext)
+      if (mm->modelContext)
       {
          // delete modelContext since it was created in the constructor
          delete mm->modelContext;

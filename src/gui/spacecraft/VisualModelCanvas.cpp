@@ -44,8 +44,6 @@ GLfloat ox, oy, oz,
    rx, ry, rz,
    sx, sy, sz;
 
-int GmatGLCanvasAttribs[2] = {WX_GL_DOUBLEBUFFER, 0};
-
 VisualModelCanvas::VisualModelCanvas(wxWindow *parent, Spacecraft *spacecraft,
    const wxWindowID id, const wxPoint &pos, const wxSize &size, const wxString &name, long style)
    #ifdef __USE_WX280_GL__

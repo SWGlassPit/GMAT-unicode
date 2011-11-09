@@ -202,7 +202,7 @@ bool SpiceInterface::LoadKernel(const wxString &fileName)
          return false;
       }
    kernelNameSPICE = fileName.char_str();
-   furnsh_c(kernelNameSPICE);
+   furnsh_c(fileName.char_str());
    if (failed_c() == SPICETRUE)
    {
 //      ConstSpiceChar option[] = wxT("SHORT"); // retrieve short error message, for now
@@ -292,7 +292,7 @@ bool SpiceInterface::UnloadKernel(const wxString &fileName)
             fileName.c_str());
    #endif
    kernelNameSPICE = fileName.char_str();
-   unload_c(kernelNameSPICE);
+   unload_c(fileName.char_str());
    if (failed_c())
    {
 //      ConstSpiceChar option[] = wxT("SHORT"); // retrieve short error message, for now
@@ -355,7 +355,7 @@ bool SpiceInterface::UnloadAllKernels()
                (*jj).c_str());
       #endif
       kernelNameSPICE = (*jj).char_str();
-      unload_c(kernelNameSPICE);
+      unload_c((*jj).char_str());
       if (failed_c())
       {
 //         ConstSpiceChar option[] = wxT("SHORT"); // retrieve short error message, for now

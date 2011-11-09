@@ -83,7 +83,7 @@ ViewCanvas::ViewCanvas(wxWindow *parent, wxWindowID id,
    // Currently it repaints when I make window size larger, but not when I
    // reduce the size. (LOJ: 2011.07.01)
    #ifdef __USE_WX280_GL__
-   : wxGLCanvas(parent, id, 0, pos, size, style, name)
+   : wxGLCanvas(parent, id, GmatGLCanvasAttribs, pos, size, style, name)
    #else
    : wxGLCanvas(parent, id, pos, size, style, name)
    #endif
