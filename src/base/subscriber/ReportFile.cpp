@@ -501,9 +501,9 @@ bool ReportFile::WriteData(WrapperArray wrapperArray)
          
          UnsignedInt numRow = output[param].size();
          if (numRow >= row+1)
-            dstream << output[param][row];
+            dstream << output[param][row].char_str();
          else if (numRow < maxRow)
-            dstream << wxT("  ");
+            dstream << "  ";
       }
       dstream << std::endl;
       
@@ -1400,13 +1400,13 @@ void ReportFile::WriteHeaders()
           #endif
           
           dstream.width(width + 3); // sets miminum field width
-          dstream.fill(wxT(' '));
+          dstream.fill(' ');
           
           if (leftJustify)
              dstream.setf(std::ios::left);
           
           //dstream << mParamNames[i] << wxT("   ");
-          dstream << mParamNames[i];
+          dstream << mParamNames[i].char_str();
       }
       
       dstream << std::endl;
@@ -1526,7 +1526,7 @@ bool ReportFile::Distribute(int len)
          MessageInterface::ShowMessage(wxT("   Writing data to '%s'\n"), filename.c_str());
          #endif
          
-         dstream << data;
+         dstream << data.char_str();
          dstream << std::endl;
       }
       return true;
