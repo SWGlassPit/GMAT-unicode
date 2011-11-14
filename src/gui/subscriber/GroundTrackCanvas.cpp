@@ -239,13 +239,19 @@ GroundTrackCanvas::~GroundTrackCanvas()
    // deleting m_glContext is handled in wxGLCanvas
    
    #ifndef __WXMAC__
-      ModelManager *mm = ModelManager::Instance();
-      if (mm->modelContext)
-      {
-         // delete modelContext since it was created in the constructor
-         delete mm->modelContext;
-         mm->modelContext = NULL;
-      }
+   // Problem -- ModelManager is a singleton, but multiple canvases can access the 
+   // modelContext member directly. If the modelContext is deleted, all other canvases
+   // will be context-less.  Commented out now -- will be a small memory leak, but 
+   // either handling of the wxGLContext needs to be completely separate from ModelManager, or 
+   // ModelManager needs a safe delete for it.
+
+//      ModelManager *mm = ModelManager::Instance();
+//      if (mm->modelContext)
+//      {
+//         // delete modelContext since it was created in the constructor
+//         delete mm->modelContext;
+//         mm->modelContext = NULL;
+//      }
    #endif
    
    ClearObjectArrays();
