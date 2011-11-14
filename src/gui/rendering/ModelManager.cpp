@@ -50,6 +50,10 @@ ModelManager::~ModelManager()
          delete pos->second;
       }
    }
+   if ( modelContext != NULL )
+   {
+      delete modelContext;
+   }
 }
 
 ModelObject* ModelManager::GetModel(int id){
