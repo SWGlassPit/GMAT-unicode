@@ -1,4 +1,4 @@
-# $Id: MakeBase.eclipse 9800 2011-08-26 16:13:37Z lindajun $
+# $Id: MakeBase.eclipse 9841 2011-09-07 00:21:55Z djcinsb $
 # 
 # GMAT: General Mission Analysis Tool.
 # 
@@ -260,9 +260,9 @@ OBJECTS = \
     coordsystem/TOEEqAxes.o \
     coordsystem/TopocentricAxes.o \
     coordsystem/TrueOfDateAxes.o \
+    event/EventException.o \
     event/EventFunction.o \
     event/EventLocator.o \
-    event/EventException.o \
     event/LocatedEventTable.o \
     event/LocatedEvent.o \
     executive/Moderator.o \
