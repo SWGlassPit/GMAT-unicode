@@ -1,4 +1,4 @@
-//$Id: OrbitPlot.hpp 9692 2011-07-12 19:20:21Z lindajun $
+//$Id: OrbitPlot.hpp 9846 2011-09-07 17:57:29Z wendys-dev $
 //------------------------------------------------------------------------------
 //                                  OrbitPlot
 //------------------------------------------------------------------------------
@@ -212,8 +212,6 @@ protected:
    void                 ClearDynamicArrays();
    /// Updates plotting object information such as plotting object pointer, option flags, etc.
    void                 UpdateObjectList(SpacePoint *sp, bool show = false);
-   /// Parses string value such as wxT("[0 127 255]") and converts to unsigned int array for color
-   void                 PutUnsignedIntValue(Integer id, const wxString &sval);
    
    enum
    {

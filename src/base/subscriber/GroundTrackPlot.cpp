@@ -1,4 +1,4 @@
-//$Id: GroundTrackPlot.cpp 9692 2011-07-12 19:20:21Z lindajun $
+//$Id: GroundTrackPlot.cpp 9846 2011-09-07 17:57:29Z wendys-dev $
 //------------------------------------------------------------------------------
 //                                  GroundTrackPlot
 //------------------------------------------------------------------------------
@@ -200,7 +200,8 @@ bool GroundTrackPlot::Initialize()
       PlotInterface::SetViewType(GmatPlot::GROUND_TRACK_PLOT);
       
       if (PlotInterface::CreateGlPlotWindow
-          (instanceName, mOldName, mNumPointsToRedraw))
+          (instanceName, mOldName, mPlotUpperLeft[0], mPlotUpperLeft[1],
+           mPlotSize[0], mPlotSize[1], mNumPointsToRedraw))
       {
          #if DBGLVL_INIT
          MessageInterface::ShowMessage
@@ -222,7 +223,7 @@ bool GroundTrackPlot::Initialize()
             UpdateObjectList(centralBody, true);
          
          //===========================================================
-         // Save this in incase we need to use light
+         // Save this in in case we need to use light
          //===========================================================
          // Add Sun to list if it was not added already to enable light source 
          if (find(mObjectNameArray.begin(), mObjectNameArray.end(), wxT("Sun")) ==

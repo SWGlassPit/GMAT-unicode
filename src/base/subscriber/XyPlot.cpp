@@ -1,4 +1,4 @@
-//$Id: XyPlot.cpp 9513 2011-04-30 21:23:06Z djcinsb $
+//$Id: XyPlot.cpp 9846 2011-09-07 17:57:29Z wendys-dev $
 //------------------------------------------------------------------------------
 //                                  XyPlot
 //------------------------------------------------------------------------------
@@ -321,7 +321,8 @@ bool XyPlot::Initialize()
          (wxT("XyPlot::Initialize() calling CreateXyPlotWindow()\n"));
       #endif
       
-      PlotInterface::CreateXyPlotWindow(instanceName, mOldName, mPlotTitle,
+      PlotInterface::CreateXyPlotWindow(instanceName, mOldName, mPlotUpperLeft[0], mPlotUpperLeft[1],
+                                        mPlotSize[0], mPlotSize[1], mPlotTitle,
                                         mXAxisTitle, mYAxisTitle, mDrawGrid);
       
       PlotInterface::SetXyPlotTitle(instanceName, mPlotTitle);
@@ -656,6 +657,9 @@ bool XyPlot::IsParameterReadOnly(const Integer id) const
       )
       return true;
    
+   if ((id == UPPER_LEFT) || (id == SIZE))
+      return false;
+
    return Subscriber::IsParameterReadOnly(id);
 }
 

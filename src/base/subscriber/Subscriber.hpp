@@ -1,4 +1,4 @@
-//$Id: Subscriber.hpp 9692 2011-07-12 19:20:21Z lindajun $
+//$Id: Subscriber.hpp 9846 2011-09-07 17:57:29Z wendys-dev $
 //------------------------------------------------------------------------------
 //                                  Subscriber
 //------------------------------------------------------------------------------
@@ -123,6 +123,20 @@ public:
    virtual wxString  GetOnOffParameter(const wxString &label) const;
    virtual bool         SetOnOffParameter(const wxString &label, 
                                           const wxString &value);
+   virtual Real         GetRealParameter(const Integer id) const;
+   virtual Real         SetRealParameter(const Integer id,
+                                         const Real value);
+   virtual Real         GetRealParameter(const Integer id,
+                                         const Integer index) const;
+   virtual Real         SetRealParameter(const Integer id,
+                                         const Real value,
+                                         const Integer index);
+   virtual const Rvector& GetRvectorParameter(const Integer id) const;
+   virtual const Rvector& SetRvectorParameter(const Integer id,
+                                              const Rvector &value);
+   virtual const Rvector& GetRvectorParameter(const wxString &label) const;
+   virtual const Rvector& SetRvectorParameter(const wxString &label,
+                                              const Rvector &value);
    
    enum SolverIterOption
    {
@@ -158,6 +172,11 @@ protected:
    bool                 isDataOn;
    bool                 isDataStateChanged;
    
+   // arrays for holding position and size
+   Rvector              mPlotUpperLeft;
+   Rvector              mPlotSize;
+
+
    /// The current run state, so actions based on state can be taken
    Gmat::RunState       runstate;
    Integer              currProviderId;
@@ -186,12 +205,17 @@ protected:
    virtual void         HandleScPropertyChange(GmatBase *originator, Real epoch,
                                                const wxString &satName,
                                                const wxString &desc);
-   
+
+   /// Parses string value such as "[0 127 255]" and converts to unsigned int array for color, position, size, etc.
+   virtual void         PutUnsignedIntValue(Integer id, const wxString &sval);
+
 public:
    enum
    {
       SOLVER_ITERATIONS = GmatBaseParamCount,
       TARGET_STATUS,
+      UPPER_LEFT,
+      SIZE,
       SubscriberParamCount,
    };
    

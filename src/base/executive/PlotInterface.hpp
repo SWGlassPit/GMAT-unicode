@@ -1,4 +1,4 @@
-//$Id: PlotInterface.hpp 9692 2011-07-12 19:20:21Z lindajun $
+//$Id: PlotInterface.hpp 9846 2011-09-07 17:57:29Z wendys-dev $
 //------------------------------------------------------------------------------
 //                             PlotInterface
 //------------------------------------------------------------------------------
@@ -41,6 +41,8 @@ public:
    // for OpenGL Plot
    static bool CreateGlPlotWindow(const wxString &plotName,
                         const wxString &oldName,
+                        Real positionX, Real positionY,
+                        Real width, Real height,
                         Integer numPtsToRedraw);
    
    static void SetViewType(GmatPlot::ViewType view);
@@ -107,6 +109,8 @@ public:
    // for XY plot
    static bool CreateXyPlotWindow(const wxString &plotName,
                         const wxString &oldName,
+                        Real positionX, Real positionY,
+                        Real width, Real height,
                         const wxString &plotTitle,
                         const wxString &xAxisTitle,
                         const wxString &yAxisTitle,

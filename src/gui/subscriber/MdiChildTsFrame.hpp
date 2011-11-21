@@ -1,4 +1,4 @@
-//$Id: MdiChildTsFrame.hpp 9514 2011-04-30 21:44:00Z djcinsb $
+//$Id: MdiChildTsFrame.hpp 9846 2011-09-07 17:57:29Z wendys-dev $
 //------------------------------------------------------------------------------
 //                              MdiChildTsFrame
 //------------------------------------------------------------------------------
@@ -92,7 +92,6 @@ public:
    void RedrawCurve();
     
    // getter
-   wxString GetPlotName() {return mPlotName;}
    wxString GetPlotTitle() {return mPlotTitle;}
    wxString GetXAxisTitle() {return mXAxisTitle;}
    wxString GetYAxisTitle() {return mYAxisTitle;}
@@ -124,6 +123,7 @@ public:
    void OnPlotClose(wxCloseEvent& event);
    void OnClose(wxCloseEvent& event);
    
+   virtual void SavePlotPositionAndSize();
    
 protected:
    
@@ -133,7 +133,6 @@ protected:
    
    static const int MAX_NUM_CURVE = 6;
     
-   wxString mPlotName;
    wxString mPlotTitle;
    wxString mXAxisTitle;
    wxString mYAxisTitle;

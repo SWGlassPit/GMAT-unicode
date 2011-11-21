@@ -1,4 +1,4 @@
-//$Id: PlotInterface.cpp 9692 2011-07-12 19:20:21Z lindajun $
+//$Id: PlotInterface.cpp 9846 2011-09-07 17:57:29Z wendys-dev $
 //------------------------------------------------------------------------------
 //                             PlotInterface
 //------------------------------------------------------------------------------
@@ -74,6 +74,8 @@ PlotInterface::~PlotInterface()
  *
  * @param <plotName> plot name
  * @param <oldName>  old plot name, this is needed for renaming plot
+ * @param <x, y>     position of the plot in screen coordinates
+ * @param <w, h>     size of the plot in screen coordinates
  * @param <drawEcPlane>  true if draw ecliptic plane
  * @param <drawXyPlane>  true if draw XY plane
  * @param <drawWirePlane>  true if draw wire frame
@@ -87,16 +89,19 @@ PlotInterface::~PlotInterface()
 //------------------------------------------------------------------------------
 bool PlotInterface::CreateGlPlotWindow(const wxString &plotName,
                                        const wxString &oldName,
+                                       Real positionX, Real positionY,
+                                       Real width, Real height,
                                        Integer numPtsToRedraw)
 {
    #if DEBUG_PLOTIF_GL_CREATE
    MessageInterface::ShowMessage
-      (wxT("PI::CreateGlPlotWindow() %s entered, thePlotReceiver=<%p>\n"), plotName.c_str(),
+      (wxT("PI::CreateGlPlotWindow() %s entered, x = %12.10f, y = %12.10f, w = %12.10f, h = %12.10f,")
+            wxT("thePlotReceiver=<%p>\n"), plotName.c_str(), positionX, positionY, width, height,
        thePlotReceiver);
    #endif
    
    if (thePlotReceiver != NULL)
-      return thePlotReceiver->CreateGlPlotWindow(plotName, oldName, numPtsToRedraw);
+      return thePlotReceiver->CreateGlPlotWindow(plotName, oldName, positionX, positionY, width, height, numPtsToRedraw);
    
    return false;
 }
@@ -374,6 +379,8 @@ bool PlotInterface::TakeGlAction(const wxString &plotName,
  *
  * @param plotName Name of the plot
  * @param oldName Former name of the plot
+ * @param x, y  position of the plot in screen coordinates
+ * @param w, h  size of the plot in screen coordinates
  * @param plotTitle Title of the plot
  * @param xAxisTitle X-axis label for the plot
  * @param yAxisTitle Y-axis label for the plot
@@ -384,13 +391,15 @@ bool PlotInterface::TakeGlAction(const wxString &plotName,
 //------------------------------------------------------------------------------
 bool PlotInterface::CreateXyPlotWindow(const wxString &plotName,
                                        const wxString &oldName,
+                                       Real positionX, Real positionY,
+                                       Real width, Real height,
                                        const wxString &plotTitle,
                                        const wxString &xAxisTitle,
                                        const wxString &yAxisTitle,
                                        bool drawGrid)
 {    
    if (thePlotReceiver != NULL)
-      return thePlotReceiver->CreateXyPlotWindow(plotName, oldName, plotTitle, 
+      return thePlotReceiver->CreateXyPlotWindow(plotName, oldName, positionX, positionY, width, height, plotTitle,
             xAxisTitle, yAxisTitle, drawGrid);
    
    return false;

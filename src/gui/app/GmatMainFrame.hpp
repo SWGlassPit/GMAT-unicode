@@ -1,4 +1,4 @@
-//$Id: GmatMainFrame.hpp 9829 2011-09-01 17:56:21Z lindajun $
+//$Id: GmatMainFrame.hpp 9846 2011-09-07 17:57:29Z wendys-dev $
 //------------------------------------------------------------------------------
 //                              GmatMainFrame
 //------------------------------------------------------------------------------
@@ -256,6 +256,8 @@ private:
    void UpdateTitle(const wxString &filename = wxT(""));
    void SaveGuiToActiveScript();
    
+   void SavePlotPositionsAndSizes();
+
    // IDs for the controls
    enum
    {

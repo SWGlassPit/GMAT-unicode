@@ -1,4 +1,4 @@
-//$Id: PlotReceiver.hpp 9692 2011-07-12 19:20:21Z lindajun $
+//$Id: PlotReceiver.hpp 9846 2011-09-07 17:57:29Z wendys-dev $
 //------------------------------------------------------------------------------
 //                             PlotReceiver
 //------------------------------------------------------------------------------
@@ -50,6 +50,8 @@ public:
    
    virtual bool CreateGlPlotWindow(const wxString &plotName,
                         const wxString &oldName,
+                        Real positionX, Real positionY,
+                        Real width, Real height,
                         Integer numPtsToRedraw) = 0;
    
    virtual void SetGlSolarSystem(const wxString &plotName,
@@ -117,6 +119,8 @@ public:
    // for XY plot
    virtual bool CreateXyPlotWindow(const wxString &plotName,
                         const wxString &oldName,
+                        Real positionX, Real positionY,
+                        Real width, Real height,
                         const wxString &plotTitle,
                         const wxString &xAxisTitle,
                         const wxString &yAxisTitle,

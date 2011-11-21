@@ -1,4 +1,4 @@
-//$Id: OwnedPlot.cpp 9513 2011-04-30 21:23:06Z djcinsb $
+//$Id: OwnedPlot.cpp 9846 2011-09-07 17:57:29Z wendys-dev $
 //------------------------------------------------------------------------------
 //                                  OwnedPlot
 //------------------------------------------------------------------------------
@@ -270,7 +270,7 @@ bool OwnedPlot::Initialize()
                (wxT("OwnedPlot::Initialize() calling CreateOwnedPlotWindow()\n"));
       #endif
       
-      PlotInterface::CreateXyPlotWindow(instanceName, mOldName, mPlotTitle,
+      PlotInterface::CreateXyPlotWindow(instanceName, mOldName, 0.0, 0.0, 0.0, 0.0, mPlotTitle,
             mXAxisTitle, mYAxisTitle, (mDrawGrid == wxT("On")));
       
       PlotInterface::SetXyPlotTitle(instanceName, mPlotTitle);

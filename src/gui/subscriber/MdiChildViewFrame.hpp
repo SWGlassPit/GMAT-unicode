@@ -1,4 +1,4 @@
-//$Id: MdiChildViewFrame.hpp 9790 2011-08-24 16:08:37Z wendys-dev $
+//$Id: MdiChildViewFrame.hpp 9846 2011-09-07 17:57:29Z wendys-dev $
 //------------------------------------------------------------------------------
 //                              MdiChildViewFrame
 //------------------------------------------------------------------------------
@@ -46,7 +46,6 @@ public:
    virtual ~MdiChildViewFrame();
    
    // getters
-   virtual wxString GetPlotName();
    virtual bool GetOverlapPlot();
    virtual ViewCanvas* GetGlCanvas();
    virtual wxGLContext* GetGLContext();
@@ -151,6 +150,9 @@ public:
    virtual void RefreshPlot();
    virtual void DeletePlot();
    virtual void SetEndOfRun();
+
+   virtual void SavePlotPositionAndSize();
+
       
 protected:
    
@@ -158,7 +160,6 @@ protected:
    
    ViewCanvas *mCanvas;
    
-   wxString mPlotName;
    wxString mPlotTitle;
    wxString mViewType;
    bool mOverlapPlot;
