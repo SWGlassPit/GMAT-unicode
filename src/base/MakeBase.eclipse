@@ -262,6 +262,7 @@ OBJECTS = \
     coordsystem/TrueOfDateAxes.o \
     event/EventFunction.o \
     event/EventLocator.o \
+    event/EventException.o \
     event/LocatedEventTable.o \
     event/LocatedEvent.o \
     executive/Moderator.o \

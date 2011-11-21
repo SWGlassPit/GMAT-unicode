@@ -1,4 +1,4 @@
-//$Id: Moderator.cpp 9754 2011-08-10 12:42:26Z wendys-dev $
+//$Id: Moderator.cpp 9840 2011-09-07 00:20:57Z djcinsb $
 //------------------------------------------------------------------------------
 //                                 Moderator
 //------------------------------------------------------------------------------
@@ -4245,6 +4245,98 @@ ObType* Moderator::GetObType(const wxString &name)
    else
       return (ObType*)FindObject(name);
 }
+
+
+//------------------------------------------------------------------------------
+// EventLocator* Moderator::CreateEventLocator(const wxString &type,
+//                          const wxString &name)
+//------------------------------------------------------------------------------
+/**
+ * Calls the FactoryManager to create an EventLocator
+ *
+ * @param type The type of event locator to be created
+ * @param name The name of the new EventLocator
+ *
+ * @return The named EventLocator
+ */
+//------------------------------------------------------------------------------
+EventLocator* Moderator::CreateEventLocator(const wxString &type,
+                         const wxString &name)
+{
+   #if DEBUG_CREATE_RESOURCE
+   MessageInterface::ShowMessage(wxT("====================\n"));
+   MessageInterface::ShowMessage(wxT("Moderator::CreateEventLocator() name='%s'\n"),
+                                 name.c_str());
+   #endif
+
+   if (GetEventLocator(name) == NULL)
+   {
+      EventLocator *el = theFactoryManager->CreateEventLocator(type, name);
+
+      if (el == NULL)
+      {
+         MessageInterface::PopupMessage
+            (Gmat::ERROR_, wxT("The Moderator cannot create an EventLocator.\n")
+             wxT("Make sure EventLocator is correct type and registered to a ")
+             wxT("EventLocatorFactory.\n"));
+         return NULL;
+      }
+
+      #ifdef DEBUG_MEMORY
+      if (el)
+      {
+         wxString funcName;
+         funcName = currentFunction ?
+               wxT("function: ") + currentFunction->GetName() : wxT("");
+         MemoryTracker::Instance()->Add
+            (el, name, wxT("Moderator::CreateEventLocator()"), funcName);
+      }
+      #endif
+
+      if (name != wxT("") && objectManageOption == 1)
+         theConfigManager->AddEventLocator(el);
+
+      #if DEBUG_CREATE_RESOURCE
+      MessageInterface::ShowMessage
+         (wxT("Moderator::CreateEventLocator() returning new EventLocator ")
+               wxT("<%p>\n"), el);
+      #endif
+
+      return el;
+   }
+   else
+   {
+      #if DEBUG_CREATE_RESOURCE
+      MessageInterface::ShowMessage
+         (wxT("Moderator::CreateEventLocator() Unable to create ")
+          ("EventLocator name: %s already exists\n"), name.c_str());
+      #endif
+      return GetEventLocator(name);
+   }
+}
+
+
+//------------------------------------------------------------------------------
+// EventLocator* GetEventLocator(const wxString &name)
+//------------------------------------------------------------------------------
+/**
+ * Retrieves a previously created EventLoactor
+ *
+ * @param name The name of the EventLocator
+ *
+ * @return A pointer to the EventLocator, or NULL if it is not in the
+ *         configuration.
+ */
+//------------------------------------------------------------------------------
+EventLocator* Moderator::GetEventLocator(const wxString &name)
+{
+   if (name == wxT(""))
+      return NULL;
+   else
+      return (EventLocator*)FindObject(name);
+}
+
+
 
 //------------------------------------------------------------------------------
 // Interpolator* CreateInterpolator(const wxString &type,

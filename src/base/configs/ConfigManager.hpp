@@ -1,4 +1,4 @@
-//$Id: ConfigManager.hpp 9513 2011-04-30 21:23:06Z djcinsb $
+//$Id: ConfigManager.hpp 9840 2011-09-07 00:20:57Z djcinsb $
 //------------------------------------------------------------------------------
 //                                ConfigManager
 //------------------------------------------------------------------------------
@@ -50,6 +50,7 @@ class DataFile;
 class ObType;
 class TrackingSystem;
 class TrackingData;
+class EventLocator;
 
 
 /**
@@ -90,6 +91,7 @@ public:
    void                AddMeasurement(CoreMeasurement *meas);
    void                AddDataFile(DataFile *meas);
    void                AddObType(ObType *meas);
+   void                AddEventLocator(EventLocator *el);
    void                AddTrackingSystem(TrackingSystem *ts);
    void                AddTrackingData(TrackingData *td);
 
@@ -137,6 +139,8 @@ public:
    TrackingData*       GetTrackingData(const wxString &name);
 
    DataFile *          GetDataStream(const wxString &name);
+
+   EventLocator*       GetEventLocator(const wxString &name);
 
    bool                HasConfigurationChanged();
    void                ConfigurationChanged(bool tf);

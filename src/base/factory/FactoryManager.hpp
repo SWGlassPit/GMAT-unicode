@@ -1,4 +1,4 @@
-//$Id: FactoryManager.hpp 9603 2011-06-16 17:36:17Z djcinsb $
+//$Id: FactoryManager.hpp 9840 2011-09-07 00:20:57Z djcinsb $
 //------------------------------------------------------------------------------
 //                             FactoryManager
 //------------------------------------------------------------------------------
@@ -56,6 +56,7 @@ class TrackingSystem;
 class TrackingData;
 class EphemerisFile;
 class Interface;
+class EventLocator;
 
 /**
  * GMAT Factory Manager Class, the interface between the Moderator and the
@@ -144,6 +145,8 @@ public:
    TrackingSystem*        CreateTrackingSystem(const wxString &ofType,
                                                const wxString &withName);
    TrackingData*          CreateTrackingData(const wxString &withName = wxT(""));
+   EventLocator*          CreateEventLocator(const wxString &ofType,
+                                             const wxString &withName = wxT(""));
 
    // method to return a list of strings representing the objects of the input
    // type that may be created in the system

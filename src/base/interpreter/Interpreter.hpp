@@ -1,4 +1,4 @@
-//$Id: Interpreter.hpp 9783 2011-08-19 21:43:47Z lindajun $
+//$Id: Interpreter.hpp 9840 2011-09-07 00:20:57Z djcinsb $
 //------------------------------------------------------------------------------
 //                                  Interpreter
 //------------------------------------------------------------------------------
@@ -51,6 +51,7 @@ class Function;
 class Moderator;
 class Validator;
 class Interface;
+
 
 /**
  * Interpreter is the base class for the GMAT Interpreter subsystem.  
@@ -357,6 +358,7 @@ private:
    StringArray   subscriberList;
    StringArray   spacePointList;
    StringArray   celestialBodyList;
+   StringArray   eventLocatorList;
    
    StringArray   matlabFunctionNames;
    

@@ -1,4 +1,4 @@
-//$Id: ConfigManager.cpp 9513 2011-04-30 21:23:06Z djcinsb $
+//$Id: ConfigManager.cpp 9840 2011-09-07 00:20:57Z djcinsb $
 //------------------------------------------------------------------------------
 //                                ConfigManager
 //------------------------------------------------------------------------------
@@ -707,6 +707,30 @@ void ConfigManager::AddObType(ObType *ot)
 
    MessageInterface::ShowMessage(wxT("Warning: ObType %s configured; it ")
          wxT("should be hidden inside of a DataFile"), name.c_str());
+   AddObject(obj);
+}
+
+
+//------------------------------------------------------------------------------
+// void AddEventLocator(EventLocator *el)
+//------------------------------------------------------------------------------
+/**
+ * Adds a named EventLocator to the configuration
+ *
+ * @param el The EventLocator that is being added
+ */
+//------------------------------------------------------------------------------
+void ConfigManager::AddEventLocator(EventLocator *el)
+{
+   GmatBase *obj = (GmatBase*)el;
+
+   wxString name = obj->GetName();
+   if (name == wxT(""))
+      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+
+   if (!obj->IsOfType(Gmat::EVENT_LOCATOR))
+      throw ConfigManagerException(name + wxT(" is not an EventLocator"));
+
    AddObject(obj);
 }
 
@@ -2078,6 +2102,17 @@ TrackingData* ConfigManager::GetTrackingData(const wxString &name)
    return obj;
 }
 
+//-----------------------------------------------------------------------------
+// DataFile* GetDataStream(const wxString &name)
+//-----------------------------------------------------------------------------
+/**
+ * Retrieves a DataStream from the configuration.
+ *
+ * @param name the name of the DataStream.
+ *
+ * @return A pointer to the DataStream.
+ */
+//-----------------------------------------------------------------------------
 DataFile* ConfigManager::GetDataStream(const wxString &name)
 {
    DataFile *df = NULL;
@@ -2091,7 +2126,29 @@ DataFile* ConfigManager::GetDataStream(const wxString &name)
    return df;
 }
 
-
+//------------------------------------------------------------------------------
+// EventLocator* GetEventLocator(const wxString &name)
+//------------------------------------------------------------------------------
+/**
+ * Retrieves an EventLocator from the configuration.
+ *
+ * @param name The name of the EventLocator.
+ *
+ * @return A pointer to the locator.
+ */
+//------------------------------------------------------------------------------
+EventLocator* ConfigManager::GetEventLocator(const wxString &name)
+{
+   EventLocator *el = NULL;
+   if (mapping.find(name) != mapping.end())
+   {
+      if (mapping[name]->IsOfType(Gmat::EVENT_LOCATOR))
+      {
+         el = (EventLocator *)mapping[name];
+      }
+   }
+   return el;
+}
 //------------------------------------------------------------------------------
 // bool HasConfigurationChanged()
 //------------------------------------------------------------------------------

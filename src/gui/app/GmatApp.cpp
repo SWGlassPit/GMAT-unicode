@@ -350,7 +350,7 @@ int GmatApp::OnExit()
 //------------------------------------------------------------------------------
 int GmatApp::FilterEvent(wxEvent& event)
 {
-   if (theMainFrame)
+   if (theMainFrame != NULL)
    {
       if (event.GetEventType() == wxEVT_KEY_DOWN)
       {

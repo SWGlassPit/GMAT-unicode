@@ -1,4 +1,4 @@
-//$Id: FactoryManager.cpp 9603 2011-06-16 17:36:17Z djcinsb $
+//$Id: FactoryManager.cpp 9840 2011-09-07 00:20:57Z djcinsb $
 //------------------------------------------------------------------------------
 //                               Factory Manager
 //------------------------------------------------------------------------------
@@ -654,6 +654,14 @@ TrackingData* FactoryManager::CreateTrackingData(const wxString &withName)
    return NULL;
 }
 
+EventLocator* FactoryManager::CreateEventLocator(const wxString &ofType,
+                                          const wxString &withName)
+{
+   Factory* f = FindFactory(Gmat::EVENT_LOCATOR, ofType);
+   if (f != NULL)
+      return f->CreateEventLocator(ofType, withName);
+   return NULL;
+}
 
 //------------------------------------------------------------------------------
 // ObType* FactoryManager::CreateObType(const wxString &ofType,
@@ -1048,7 +1056,7 @@ Factory* FactoryManager::FindFactory(Gmat::ObjectType ofType,
          
          if (!listObj.empty())
          {
-            StringArray::iterator s = listObj.begin();
+//            StringArray::iterator s = listObj.begin();
             wxString objType = forType;
             
             // Make sure that all type name begins with upper case if

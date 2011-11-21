@@ -1,4 +1,4 @@
-//$Id: Moderator.hpp 9721 2011-07-20 19:08:07Z wendys-dev $
+//$Id: Moderator.hpp 9840 2011-09-07 00:20:57Z djcinsb $
 //------------------------------------------------------------------------------
 //                                 Moderator
 //------------------------------------------------------------------------------
@@ -65,6 +65,7 @@
 class DataFile;
 class ObType;
 class Interface;
+class EventLocator;
 
 namespace Gmat
 {
@@ -266,7 +267,12 @@ public:
    ObType* CreateObType(const wxString &type,
                         const wxString &name);
    ObType* GetObType(const wxString &name);
-   
+
+   // EventLocator
+   EventLocator* CreateEventLocator(const wxString &type,
+                            const wxString &name);
+   EventLocator* GetEventLocator(const wxString &name);
+
    // Interpolator
    Interpolator* CreateInterpolator(const wxString &type,
                                     const wxString &name);

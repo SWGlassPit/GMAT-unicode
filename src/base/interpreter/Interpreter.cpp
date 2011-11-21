@@ -1,4 +1,4 @@
-//$Id: Interpreter.cpp 9783 2011-08-19 21:43:47Z lindajun $
+//$Id: Interpreter.cpp 9840 2011-09-07 00:20:57Z djcinsb $
 //------------------------------------------------------------------------------
 //                                  Interpreter
 //------------------------------------------------------------------------------
@@ -426,6 +426,13 @@ void Interpreter::BuildCreatableObjectMaps()
    for (UnsignedInt i = 0; i < trackingSystemList.size(); i++)
       objectTypeMap.insert(std::make_pair(trackingSystemList[i], Gmat::TRACKING_SYSTEM));
    
+   eventLocatorList.clear();
+   StringArray ell = theModerator->GetListOfFactoryItems(Gmat::EVENT_LOCATOR);
+   copy(ell.begin(), ell.end(), back_inserter(eventLocatorList));
+   copy(ell.begin(), ell.end(), back_inserter(allObjectTypeList));
+   for (UnsignedInt i = 0; i < eventLocatorList.size(); i++)
+      objectTypeMap.insert(std::make_pair(eventLocatorList[i], Gmat::EVENT_LOCATOR));
+
    #ifdef DEBUG_OBJECT_LIST
       std::vector<wxString>::iterator pos;
       
@@ -583,6 +590,10 @@ StringArray Interpreter::GetCreatableList(Gmat::ObjectType type,
          clist = dataFileList;
          break;
          
+      case Gmat::EVENT_LOCATOR:
+         clist = eventLocatorList;
+         break;
+
       case Gmat::FUNCTION:
          clist = functionList;
          break;
@@ -1029,6 +1040,11 @@ GmatBase* Interpreter::CreateObject(const wxString &type,
             subscriberList.end())
       obj = (GmatBase*)theModerator->CreateSubscriber(type, name);
    
+   // Handle EventLocators
+   else if (find(eventLocatorList.begin(), eventLocatorList.end(), type) !=
+            eventLocatorList.end())
+      obj = (GmatBase*)theModerator->CreateEventLocator(type, name);
+
    // Handle other registered creatable object types
    else if (find(allObjectTypeList.begin(), allObjectTypeList.end(), type) != 
             allObjectTypeList.end())
@@ -1179,6 +1195,11 @@ GmatBase* Interpreter::CreateObject(const wxString &type,
                subscriberList.end())
          obj = (GmatBase*)theModerator->CreateSubscriber(type, name);
       
+      // Handle EventLocators
+      else if (find(eventLocatorList.begin(), eventLocatorList.end(), type) !=
+               eventLocatorList.end())
+         obj = (GmatBase*)theModerator->CreateEventLocator(type, name);
+
       // Handle EphemerisFile
       else if (find(ephemFileList.begin(), ephemFileList.end(), type) != 
                ephemFileList.end())
