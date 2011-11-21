@@ -962,9 +962,9 @@ bool Subscriber::IsParameterVisible(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-// bool IsParameterVisible(const std::string &label) const
+// bool IsParameterVisible(const wxString &label) const
 //---------------------------------------------------------------------------
-bool Subscriber::IsParameterVisible(const std::string &label) const
+bool Subscriber::IsParameterVisible(const wxString &label) const
 {
    return IsParameterVisible(GetParameterID(label));
 }

@@ -1385,7 +1385,7 @@ bool GmatBase::IsParameterVisible(const Integer id) const
 }
 
 //---------------------------------------------------------------------------
-//  bool IsParameterVisible(const std::string &label) const
+//  bool IsParameterVisible(const wxString &label) const
 //---------------------------------------------------------------------------
 /**
  * Checks to see if the requested parameter is visible from the GUI
@@ -1395,7 +1395,7 @@ bool GmatBase::IsParameterVisible(const Integer id) const
  * @return true if the parameter is visible from the GUI, false if not
  */
 //---------------------------------------------------------------------------
-bool GmatBase::IsParameterVisible(const std::string &label) const
+bool GmatBase::IsParameterVisible(const wxString &label) const
 {
    return IsParameterVisible(GetParameterID(label));
 }

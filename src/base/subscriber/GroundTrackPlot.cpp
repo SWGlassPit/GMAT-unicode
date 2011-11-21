@@ -83,7 +83,7 @@ GroundTrackPlot::GroundTrackPlot(const wxString &name)
    
    // Set default texture map file from the startup file through the FileManager
    FileManager *fm = FileManager::Instance();
-   textureMapFileName = fm->GetFullPathname("EARTH_TEXTURE_FILE");
+   textureMapFileName = fm->GetFullPathname(wxT("EARTH_TEXTURE_FILE"));
    
    footPrintOption = FP_NONE;
    

@@ -187,7 +187,7 @@ public:
    virtual bool         IsParameterEqualToDefault(const Integer id) const;
    virtual bool         IsParameterEqualToDefault(const wxString &label) const;
    virtual bool         IsParameterVisible(const Integer id) const;
-   virtual bool         IsParameterVisible(const std::string &label) const;
+   virtual bool         IsParameterVisible(const wxString &label) const;
 
    virtual bool         ParameterAffectsDynamics(const Integer id) const;
    virtual bool         ParameterDvInitializesNonzero(const Integer id,

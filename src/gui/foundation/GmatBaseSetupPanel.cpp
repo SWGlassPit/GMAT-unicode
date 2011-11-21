@@ -717,7 +717,7 @@ wxControl *GmatBaseSetupPanel::BuildControl(wxWindow *parent, GmatBase *theObjec
             wxCheckListBox *clbControl =
                theGuiManager->GetSpacePointCheckListBox(this, ID_CHECKLISTBOX,
                                                         wxSize(200,100));
-            managedCheckListBoxMap.insert(std::make_pair("CelestialBody", clbControl));
+            managedCheckListBoxMap.insert(std::make_pair(wxT("CelestialBody"), clbControl));
             control = clbControl;
          }
          else
@@ -963,16 +963,16 @@ bool GmatBaseSetupPanel::SaveControl(GmatBase *theObject, const wxString &label,
       
    case Gmat::OBJECTARRAY_TYPE:
       {
-         theObject->TakeAction("Clear");
+         theObject->TakeAction(wxT("Clear"));
          wxCheckListBox *clb = (wxCheckListBox*)theControl;
          int count = clb->GetCount();
          for (int i = 0; i < count; i++)
          {
             if (clb->IsChecked(i))
             {
-               std::string objName =  clb->GetString(i).c_str();
+               wxString objName =  clb->GetString(i).c_str();
                #ifdef DEBUG_SAVE_CONTROL
-               MessageInterface::ShowMessage("   objName = '%s'\n", objName.c_str());
+               MessageInterface::ShowMessage(wxT("   objName = '%s'\n"), objName.c_str());
                #endif
                theObject->SetStringParameter(paramId, objName);
             }
