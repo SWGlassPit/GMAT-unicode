@@ -1,4 +1,4 @@
-//$Id: OrbitPlot.hpp 9846 2011-09-07 17:57:29Z wendys-dev $
+//$Id: OrbitPlot.hpp 9857 2011-09-12 18:37:14Z lindajun $
 //------------------------------------------------------------------------------
 //                                  OrbitPlot
 //------------------------------------------------------------------------------
@@ -123,6 +123,10 @@ public:
                                   const wxString &name);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
                                      const wxString &name = wxT(""));
+   
+   // for GUI population
+   virtual Gmat::ObjectType
+                        GetPropertyObjectType(const Integer id) const;
    
 protected:
    

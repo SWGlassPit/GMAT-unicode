@@ -1,4 +1,4 @@
-//$Id: Propagate.cpp 9789 2011-08-23 02:10:15Z djcinsb $
+//$Id: Propagate.cpp 9853 2011-09-09 20:08:55Z djcinsb $
 //------------------------------------------------------------------------------
 //                                 Propagate
 //------------------------------------------------------------------------------
@@ -30,6 +30,7 @@
 #include "StringUtil.hpp" // for Trim()
 #include "AngleUtil.hpp"  // for PutAngleInDegRange()
 #include "MessageInterface.hpp"
+#include "EventLocator.hpp"
 
 #include <sstream>
 #include <cmath>
@@ -56,6 +57,7 @@
 //#define DEBUG_PUBLISH_DATA
 //#define DEBUG_TRANSIENT_FORCES
 //#define DEBUG_FINAL_STEP
+//#define DEBUG_EVENTLOCATORS
 
 //#ifndef DEBUG_MEMORY
 //#define DEBUG_MEMORY
@@ -2879,6 +2881,16 @@ bool Propagate::Initialize()
       ++index;
    } // End of loop through PropSetups
 
+   #ifdef DEBUG_EVENTLOCATORS
+      MessageInterface::ShowMessage("Propagating with %d event locators\n",
+            events->size());
+   #endif
+   // Fire the locators to load initial data
+   for (UnsignedInt i = 0; i < events->size(); ++i)
+   {
+      events->at(i)->Evaluate();
+   }
+
    // Prep the publisher
    StringArray owners, elements;
    owners.push_back(wxT("All"));
@@ -3821,6 +3833,11 @@ bool Propagate::Execute()
             #endif
 
             publisher->Publish(this, streamID, pubdata, dim+1);
+// Temporarily here
+            for (UnsignedInt i = 0; i < events->size(); ++i)
+            {
+               events->at(i)->Evaluate();
+            }
          }
          else
          {
@@ -4831,13 +4848,12 @@ Real Propagate::RefineFinalStep(Real secsToStep, StopCondition *stopper)
    bool nextTimeThrough = false;
    Integer attempts = 0;
 
-   Real x[2], y[2], slope, target, intercept;
+   Real x[2], y[2], slope, target;
    Parameter *stopParam = stopper->GetStopParameter(),
              *targParam = stopper->GetGoalParameter();
 
    x[0] = x[1] = y[1] = 0.0;
-
-   intercept = y[0] = stopParam->EvaluateReal();
+   y[0] = stopParam->EvaluateReal();
 
    #ifdef DEBUG_SECANT_DETAILS
       MessageInterface::ShowMessage(wxT("InitialPoint: [%.12lf %.12lf]\n"), x[0], y[0]);

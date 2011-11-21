@@ -1,4 +1,4 @@
-# $Id: MakeGui.eclipse 9817 2011-08-30 20:50:36Z lindajun $
+# $Id: MakeGui.eclipse 9853 2011-09-09 20:08:55Z djcinsb $
 # 
 # GMAT: General Mission Analysis Tool.
 # 
@@ -118,6 +118,7 @@ HEADERS = -I../base/include \
           -I../base/command \
           -I../base/configs \
           -I../base/coordsystem \
+          -I../base/event \
           -I../base/executive \
           -I../base/factory \
           -I../base/forcemodel \

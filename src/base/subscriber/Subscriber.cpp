@@ -1,4 +1,4 @@
-//$Id: Subscriber.cpp 9846 2011-09-07 17:57:29Z wendys-dev $
+//$Id: Subscriber.cpp 9857 2011-09-12 18:37:14Z lindajun $
 //------------------------------------------------------------------------------
 //                                  Subscriber
 //------------------------------------------------------------------------------
@@ -946,6 +946,27 @@ bool Subscriber::IsParameterReadOnly(const Integer id) const
       return true;
    
    return GmatBase::IsParameterReadOnly(id);
+}
+
+
+//---------------------------------------------------------------------------
+// bool IsParameterVisible(const Integer id) const
+//---------------------------------------------------------------------------
+bool Subscriber::IsParameterVisible(const Integer id) const
+{
+   if (id == TARGET_STATUS || id == UPPER_LEFT || id == SIZE)
+      return false;
+   
+   return GmatBase::IsParameterVisible(id);
+}
+
+
+//---------------------------------------------------------------------------
+// bool IsParameterVisible(const std::string &label) const
+//---------------------------------------------------------------------------
+bool Subscriber::IsParameterVisible(const std::string &label) const
+{
+   return IsParameterVisible(GetParameterID(label));
 }
 
 

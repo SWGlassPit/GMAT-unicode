@@ -1,4 +1,4 @@
-//$Id: GmatBase.hpp 9568 2011-06-06 18:27:29Z djcinsb $
+//$Id: GmatBase.hpp 9857 2011-09-12 18:37:14Z lindajun $
 //------------------------------------------------------------------------------
 //                                  GmatBase
 //------------------------------------------------------------------------------
@@ -186,6 +186,8 @@ public:
    virtual bool         IsParameterCloaked(const wxString &label) const;
    virtual bool         IsParameterEqualToDefault(const Integer id) const;
    virtual bool         IsParameterEqualToDefault(const wxString &label) const;
+   virtual bool         IsParameterVisible(const Integer id) const;
+   virtual bool         IsParameterVisible(const std::string &label) const;
 
    virtual bool         ParameterAffectsDynamics(const Integer id) const;
    virtual bool         ParameterDvInitializesNonzero(const Integer id,

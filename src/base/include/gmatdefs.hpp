@@ -1,4 +1,4 @@
-//$Id: gmatdefs.hpp 9789 2011-08-23 02:10:15Z djcinsb $
+//$Id: gmatdefs.hpp 9853 2011-09-09 20:08:55Z djcinsb $
 // *** File Name : gmatdefs.h
 // *** Created   : May 20, 2003
 // **************************************************************************
@@ -281,6 +281,7 @@ namespace Gmat
       ORBIT_STATE_TRANSITION_MATRIX,   // 6x6 STM for the orbit
       ORBIT_A_MATRIX,
       MASS_FLOW,                       // m dot
+      EVENT_FUNCTION_STATE,            // For event location
       PREDEFINED_STATE_MAX,
       USER_DEFINED_BEGIN = 3800,
       USER_DEFINED_END = 3999          // Allow up to 200 dynamic entries

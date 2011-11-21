@@ -1,6 +1,6 @@
-//$Id: LocatedEvent.cpp 9853 2011-09-09 20:08:55Z djcinsb $
+//$Id$
 //------------------------------------------------------------------------------
-//                           LocatedEvent
+//                           EventModel
 //------------------------------------------------------------------------------
 // GMAT: General Mission Analysis Tool.
 //
@@ -12,7 +12,7 @@
 // Contract NNG10CP02C, Task Order 28
 //
 // Author: Darrel J. Conway, Thinking Systems, Inc.
-// Created: Sep 2, 2011
+// Created: Sep 7, 2011
 //
 /**
  * Definition of the ...
@@ -20,35 +20,45 @@
 //------------------------------------------------------------------------------
 
 
-#include "LocatedEvent.hpp"
+#include "EventModel.hpp"
 
-LocatedEvent::LocatedEvent() :
-   epoch       (0.0),
-   boundary    (wxT("")),
-   type        (wxT(""))
+EventModel::EventModel(const std::string &typeStr, const std::string &nomme) :
+   PhysicalModel        (Gmat::PHYSICAL_MODEL, typeStr, nomme)
 {
 }
 
-LocatedEvent::~LocatedEvent()
+EventModel::~EventModel()
 {
 }
 
-LocatedEvent::LocatedEvent(const LocatedEvent& le) :
-   epoch       (le.epoch),
-   boundary    (le.boundary),
-   type        (le.type)
+EventModel::EventModel(const EventModel & em) :
+   PhysicalModel        (em)
 {
-
 }
 
-LocatedEvent& LocatedEvent::operator=(const LocatedEvent& le)
+EventModel& EventModel::operator=(const EventModel & em)
 {
-   if (this != &le)
+   if (this != &em)
    {
-      epoch = le.epoch;
-      boundary = le.boundary;
-      type = le.type;
+      PhysicalModel::operator=(em);
    }
 
    return *this;
 }
+
+
+bool EventModel::Initialize()
+{
+   bool retval = false;
+
+   return retval;
+}
+
+bool EventModel::GetDerivatives(Real *state, Real dt, Integer order, const Integer id)
+{
+   bool retval = false;
+
+   return retval;
+}
+
+

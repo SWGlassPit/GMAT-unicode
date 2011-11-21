@@ -1,4 +1,4 @@
-//$Id: OrbitPlot.cpp 9846 2011-09-07 17:57:29Z wendys-dev $
+//$Id: OrbitPlot.cpp 9857 2011-09-12 18:37:14Z lindajun $
 //------------------------------------------------------------------------------
 //                                  OrbitPlot
 //------------------------------------------------------------------------------
@@ -952,7 +952,6 @@ bool OrbitPlot::SetStringParameter(const Integer id, const wxString &value)
       {
          if (value[0] == wxT('{'))
          {
-            #if 1
             try
             {
                TextParser tp;
@@ -969,7 +968,6 @@ bool OrbitPlot::SetStringParameter(const Integer id, const wxString &value)
                              wxT("Add"), wxT("Valid CelestialBody list"));
                throw se;
             }
-            #endif
          }
          else
          {
@@ -1427,6 +1425,18 @@ bool OrbitPlot::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
    }
    
    return Subscriber::SetRefObject(obj, type, realName);
+}
+
+
+//---------------------------------------------------------------------------
+// Gmat::ObjectType GetPropertyObjectType(const Integer id) const
+//---------------------------------------------------------------------------
+Gmat::ObjectType OrbitPlot::GetPropertyObjectType(const Integer id) const
+{
+   if (id == ADD)
+      return Gmat::SPACE_POINT;
+   
+   return Subscriber::GetPropertyObjectType(id);
 }
 
 

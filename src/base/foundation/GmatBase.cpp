@@ -1,4 +1,4 @@
-//$Id: GmatBase.cpp 9811 2011-08-29 21:15:18Z wendys-dev $
+//$Id: GmatBase.cpp 9857 2011-09-12 18:37:14Z lindajun $
 //------------------------------------------------------------------------------
 //                                  GmatBase
 //------------------------------------------------------------------------------
@@ -586,10 +586,6 @@ const StringArray& GmatBase::GetRefObjectNameArray(const Gmat::ObjectType type)
    // Changed to return empty array (LOJ: 2010.05.13)
    refObjectNames.clear();
    return refObjectNames;
-   
-   //throw GmatBaseException(wxT("GetRefObjectNameArray(") + GetObjectTypeString(type) +
-   //                        wxT(") not defined for ") + typeName + wxT(" named \"") +
-   //                        instanceName + wxT("\"\n"));
 }
 
 //---------------------------------------------------------------------------
@@ -1370,6 +1366,38 @@ bool GmatBase::IsParameterEqualToDefault(const Integer id) const
 bool GmatBase::IsParameterEqualToDefault(const wxString &label) const
 {
    return IsParameterEqualToDefault(GetParameterID(label));
+}
+
+//---------------------------------------------------------------------------
+//  bool IsParameterVisible(const Integer id) const
+//---------------------------------------------------------------------------
+/**
+ * Checks to see if the requested parameter is visible from the GUI
+ *
+ * @param <id> ID for the parameter.
+ *
+ * @return true if the parameter is visible from the GUI, false if not
+ */
+//---------------------------------------------------------------------------
+bool GmatBase::IsParameterVisible(const Integer id) const
+{
+   return true;
+}
+
+//---------------------------------------------------------------------------
+//  bool IsParameterVisible(const std::string &label) const
+//---------------------------------------------------------------------------
+/**
+ * Checks to see if the requested parameter is visible from the GUI
+ *
+ * @param <label> Description for the parameter.
+ *
+ * @return true if the parameter is visible from the GUI, false if not
+ */
+//---------------------------------------------------------------------------
+bool GmatBase::IsParameterVisible(const std::string &label) const
+{
+   return IsParameterVisible(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------

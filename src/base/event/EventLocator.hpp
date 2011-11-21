@@ -1,4 +1,4 @@
-//$Id$
+//$Id: EventLocator.hpp 9853 2011-09-09 20:08:55Z djcinsb $
 //------------------------------------------------------------------------------
 //                           EventLocator
 //------------------------------------------------------------------------------
@@ -101,10 +101,15 @@ public:
                         GetStringArrayParameter(const wxString &label,
                                                 const Integer index) const;
 
+   virtual void         SetSolarSystem(SolarSystem *ss);
+//   virtual void         SetInternalCoordSystem(CoordinateSystem *cs);
+//   virtual wxString  GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual const StringArray&
+                        GetRefObjectNameArray(const Gmat::ObjectType type);
+   virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
+                              const wxString &name);
+
    virtual bool         Initialize();
-
-
-
 
    /// Evaluates contained EventFunctions and returns values and derivatives.
    virtual Real *Evaluate();
@@ -130,15 +135,19 @@ protected:
    /// The LocatedEventTable for the EventLocator.
    LocatedEventTable eventTable;
    wxString filename;
+   /// The number of event functions to be processed
+   UnsignedInt efCount;
    /// The last data set computed
    Real *lastData;
 
    /// Names of the "target" spacecraft in the location
    StringArray satNames;
+   /// Pointers to the sats -- using SpaceObject so Formations can be supported
+   std::vector<SpaceObject*> targets;
    /// Event location tolerance
    Real eventTolerance;
-   /// Name of the output file
-   wxString eventFile;
+   /// The space environment
+   SolarSystem *solarSys;
 
    /// Published parameters for event locators
     enum

@@ -1,4 +1,4 @@
-//$Id: GroundTrackPlot.cpp 9846 2011-09-07 17:57:29Z wendys-dev $
+//$Id: GroundTrackPlot.cpp 9857 2011-09-12 18:37:14Z lindajun $
 //------------------------------------------------------------------------------
 //                                  GroundTrackPlot
 //------------------------------------------------------------------------------
@@ -22,6 +22,7 @@
 #include "GroundTrackPlot.hpp"
 #include "PlotInterface.hpp"       // for UpdateGlPlot()
 #include "SubscriberException.hpp" // for SubscriberException()
+#include "FileManager.hpp"         // for GetFullPathname()
 #include "MessageInterface.hpp"    // for ShowMessage()
 
 
@@ -56,7 +57,7 @@ const Gmat::ParameterType
 GroundTrackPlot::PARAMETER_TYPE[GroundTrackPlotParamCount - OrbitPlotParamCount] =
 {
    Gmat::OBJECT_TYPE,         // wxT("CentralBody")
-   Gmat::STRING_TYPE,         // wxT("TextureMap")
+   Gmat::FILENAME_TYPE,       // wxT("TextureMap")
    Gmat::ENUMERATION_TYPE,    // wxT("ShowFootPrints")
 };
 
@@ -79,6 +80,11 @@ GroundTrackPlot::GroundTrackPlot(const wxString &name)
    centralBodyName = wxT("Earth");
    mViewCoordSysName = wxT("EarthFixed");
    footPrints = wxT("None");
+   
+   // Set default texture map file from the startup file through the FileManager
+   FileManager *fm = FileManager::Instance();
+   textureMapFileName = fm->GetFullPathname("EARTH_TEXTURE_FILE");
+   
    footPrintOption = FP_NONE;
    
    footPrintOptions.clear();
@@ -427,6 +433,28 @@ bool GroundTrackPlot::RenameRefObject(const Gmat::ObjectType type,
 }
 
 
+//---------------------------------------------------------------------------
+//  bool IsParameterReadOnly(const Integer id) const
+//---------------------------------------------------------------------------
+/**
+ * Checks to see if the requested parameter is read only.
+ *
+ * @param <id> Description for the parameter.
+ *
+ * @return true if the parameter is read only, false (the default) if not,
+ *         throws if the parameter is out of the valid range of values.
+ */
+//---------------------------------------------------------------------------
+bool GroundTrackPlot::IsParameterReadOnly(const Integer id) const
+{
+   if (id == COORD_SYSTEM || id == DRAW_OBJECT || id == ORBIT_COLOR ||
+       id == TARGET_COLOR || id == SHOW_FOOT_PRINTS)
+      return true;
+   
+   return OrbitPlot::IsParameterReadOnly(id);
+}
+
+
 //------------------------------------------------------------------------------
 // wxString GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
@@ -473,28 +501,6 @@ Gmat::ParameterType GroundTrackPlot::GetParameterType(const Integer id) const
 wxString GroundTrackPlot::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
-}
-
-
-//---------------------------------------------------------------------------
-//  bool IsParameterReadOnly(const Integer id) const
-//---------------------------------------------------------------------------
-/**
- * Checks to see if the requested parameter is read only.
- *
- * @param <id> Description for the parameter.
- *
- * @return true if the parameter is read only, false (the default) if not,
- *         throws if the parameter is out of the valid range of values.
- */
-//---------------------------------------------------------------------------
-bool GroundTrackPlot::IsParameterReadOnly(const Integer id) const
-{
-   if (id == COORD_SYSTEM || id == DRAW_OBJECT || id == ORBIT_COLOR ||
-       id == TARGET_COLOR)
-      return true;
-   
-   return OrbitPlot::IsParameterReadOnly(id);
 }
 
 

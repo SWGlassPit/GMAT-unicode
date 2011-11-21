@@ -1,4 +1,4 @@
-//$Id: PhysicalModel.hpp 9578 2011-06-08 15:11:12Z djcinsb $
+//$Id: PhysicalModel.hpp 9853 2011-09-09 20:08:55Z djcinsb $
 //------------------------------------------------------------------------------
 //                              PhysicalModel
 //------------------------------------------------------------------------------
@@ -134,11 +134,6 @@ public:
    PhysicalModel(const PhysicalModel&);
    PhysicalModel& operator=(const PhysicalModel&);
     
-   //loj: 5/11/04 removed Get/SetBody()   
-   //CelestialBody* GetBody();
-   //void SetBody(CelestialBody *body);
-   //bool SetBody(const wxString &name);
-
    virtual bool Initialize();
 
    virtual CelestialBody* GetBody();

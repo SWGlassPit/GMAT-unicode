@@ -1,4 +1,4 @@
-//$Id: GroundTrackPlot.hpp 9659 2011-06-28 16:46:24Z lindajun $
+//$Id: GroundTrackPlot.hpp 9857 2011-09-12 18:37:14Z lindajun $
 //------------------------------------------------------------------------------
 //                                  GroundTrackPlot
 //------------------------------------------------------------------------------
@@ -46,12 +46,13 @@ public:
                                         const wxString &newName);
    
    // methods for parameters
+   virtual bool         IsParameterReadOnly(const Integer id) const;
+   
    virtual wxString  GetParameterText(const Integer id) const;
    virtual Integer      GetParameterID(const wxString &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
    virtual wxString  GetParameterTypeString(const Integer id) const;
-   virtual bool         IsParameterReadOnly(const Integer id) const;
    
    virtual wxString  GetStringParameter(const Integer id) const;
    virtual bool         SetStringParameter(const Integer id, const wxString &value);

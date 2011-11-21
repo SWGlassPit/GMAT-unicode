@@ -686,8 +686,9 @@ void ObjectInitializer::InitializeAllOtherObjects(ObjectMap *objMap)
             if (obj->IsOfType(Gmat::SPACE_POINT)       ||
                 obj->IsOfType(Gmat::BURN)              ||
                 obj->IsOfType(Gmat::HARDWARE)          ||
-                obj->IsOfType(wxT("Estimator"))             ||
-                obj->IsOfType(wxT("Simulator")))
+                obj->IsOfType(wxT("Estimator"))        ||
+                obj->IsOfType(wxT("Simulator"))        ||
+                obj->IsOfType(Gmat::EVENT_LOCATOR))
             {
                BuildReferencesAndInitialize(obj);
             }

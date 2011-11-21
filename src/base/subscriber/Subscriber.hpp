@@ -1,4 +1,4 @@
-//$Id: Subscriber.hpp 9846 2011-09-07 17:57:29Z wendys-dev $
+//$Id: Subscriber.hpp 9857 2011-09-12 18:37:14Z lindajun $
 //------------------------------------------------------------------------------
 //                                  Subscriber
 //------------------------------------------------------------------------------
@@ -98,6 +98,9 @@ public:
    
    // methods for parameters
    virtual bool         IsParameterReadOnly(const Integer id) const;
+   virtual bool         IsParameterVisible(const Integer id) const;
+   virtual bool         IsParameterVisible(const wxString &label) const;
+   
    virtual wxString  GetParameterText(const Integer id) const;
    virtual Integer      GetParameterID(const wxString &str) const;
    virtual Gmat::ParameterType

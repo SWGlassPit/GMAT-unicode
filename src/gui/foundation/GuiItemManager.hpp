@@ -1,4 +1,4 @@
-//$Id: GuiItemManager.hpp 9514 2011-04-30 21:44:00Z djcinsb $
+//$Id: GuiItemManager.hpp 9857 2011-09-12 18:37:14Z lindajun $
 //------------------------------------------------------------------------------
 //                              GuiItemManager
 //------------------------------------------------------------------------------
@@ -173,7 +173,7 @@ public:
    
    wxComboBox* GetFunctionComboBox(wxWindow *parent, wxWindowID id,
                                    const wxSize &size);
-
+   
    wxComboBox* GetSpacePointComboBox(wxWindow *parent, wxWindowID id, 
                                      const wxSize &size, bool addVector = false);
    
@@ -211,8 +211,12 @@ public:
                                              wxArrayString *excList = NULL);
    wxCheckListBox* GetXyPlotCheckListBox(wxWindow *parent, wxWindowID id,
                                          const wxSize &size,
-                                         wxArrayString *excList = NULL);
-   
+                                         wxArrayString *excList = NULL);   
+   wxCheckListBox* GetSpacePointCheckListBox(wxWindow *parent, wxWindowID id,
+                                             const wxSize &size,
+                                             wxArrayString *excList = NULL,
+                                             bool includeCelesBodies = false,
+                                             bool includeCalPoints = false);      
    wxCheckListBox* GetSpacecraftCheckListBox(wxWindow *parent, wxWindowID id,
                                              const wxSize &size,
                                              wxArrayString *excList = NULL);      
@@ -394,6 +398,7 @@ private:
    std::vector<wxListBox*> mImpBurnLBList;
    std::vector<wxCheckListBox*> mSubscriberCLBList;
    std::vector<wxCheckListBox*> mXyPlotCLBList;
+   std::vector<wxCheckListBox*> mSpacePointCLBList;
    std::vector<wxCheckListBox*> mSpacecraftCLBList;
    std::vector<wxCheckListBox*> mAllObjectCLBList;
    std::vector<wxListBox*> mFuelTankLBList;
@@ -419,6 +424,7 @@ private:
    
    std::vector<wxArrayString*> mCelestialPointExcList;
    std::vector<wxArrayString*> mCelestialBodyExcList;
+   std::vector<wxArrayString*> mSpacePointExcList;
    std::vector<wxArrayString*> mSpaceObjectExcList;
    std::vector<wxArrayString*> mSpacecraftExcList;
    std::vector<wxArrayString*> mImpBurnExcList;

@@ -1,4 +1,4 @@
-//$Id: GmatMainFrame.cpp 9846 2011-09-07 17:57:29Z wendys-dev $
+//$Id: GmatMainFrame.cpp 9858 2011-09-12 19:47:27Z lindajun $
 //------------------------------------------------------------------------------
 //                              GmatMainFrame
 //------------------------------------------------------------------------------
@@ -1053,14 +1053,12 @@ bool GmatMainFrame::RemoveChild(const wxString &name, GmatTree::ItemType itemTyp
          // destructors.
          //------------------------------------------------------
 
-         //childName = child->GetName();
-
          #ifdef DEBUG_REMOVE_CHILD
          MessageInterface::ShowMessage
-            (wxT("   removing title:%s\n   name: %s\n"), childName.c_str(),
-             name.c_str());
+            (wxT("   removing title: %s\n   name: %s, child=<%p>\n"),
+             childName.c_str(), name.c_str(), child);
          #endif
-
+         
          // MdiChildViewFrame::OnPlotClose() and MdiChildTsrame::OnPlotClose()
          // set deleteChild to false
          if (deleteChild)
@@ -1070,10 +1068,10 @@ bool GmatMainFrame::RemoveChild(const wxString &name, GmatTree::ItemType itemTyp
          childRemoved = true;
          break;
       }
-
+      
       node = node->GetNext();
    }
-
+      
    // If plot was removed, remove it from the OutputTree also
    if (childRemoved)
    {
@@ -3235,15 +3233,8 @@ GmatMainFrame::CreateUndockedMissionPanel(const wxString &title,
          #endif
          
          mtPanel->SetGmatNotebook(theNotebook);
-         //MessageInterface::ShowMessage
-         //   ("---> In GmatMainFrame, setting this<%p> to newMissionTree<%p>\n", this, newMissionTree);
          newMissionTree->SetMainFrame(this);
-         //MessageInterface::ShowMessage
-         //   ("---> In GmatMainFrame, setting theNotebook<%p> to newMissionTree<%p>\n", theNotebook, newMissionTree);
          newMissionTree->SetNotebook(theNotebook);
-         //MessageInterface::ShowMessage
-         //   ("---> In GmatMainFrame, setting newMissionTree<%p> to appData<%p>\n",
-         //    newMissionTree, GmatAppData::Instance());
          GmatAppData::Instance()->SetMissionTree(newMissionTree);
          sizer->Add(mtPanel, 0, wxGROW|wxALL, 0);
          break;
@@ -4941,7 +4932,7 @@ void GmatMainFrame::SaveGuiToActiveScript()
 //------------------------------------------------------------------------------
 void GmatMainFrame::SavePlotPositionsAndSizes()
 {
-#ifdef __WXMAC__
+   //#ifdef __WXMAC__
    wxNode *node = theMdiChildren->GetFirst();
 
    while (node)
@@ -4951,5 +4942,5 @@ void GmatMainFrame::SavePlotPositionsAndSizes()
 
       node = node->GetNext();
    }
-#endif
+   //#endif
 }

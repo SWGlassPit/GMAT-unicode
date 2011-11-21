@@ -1,4 +1,4 @@
-//$Id$
+//$Id: EventFunction.hpp 9853 2011-09-09 20:08:55Z djcinsb $
 //------------------------------------------------------------------------------
 //                           EventFunction
 //------------------------------------------------------------------------------
@@ -32,18 +32,26 @@ class SpaceObject;
 class GMAT_API EventFunction //: public GmatBase
 {
 public:
-   EventFunction();
+   EventFunction(const wxString &typeStr);
    virtual ~EventFunction();
    EventFunction(const EventFunction& ef);
    EventFunction& operator=(const EventFunction& ef);
 
+   // Methods used to identify the EventFunction
+   wxString GetTypeName();
+   wxString GetName();
+
+   bool SetPrimary(SpaceObject *so);
+   virtual bool Initialize();
    virtual Real* Evaluate() = 0;
 
 protected:
-   /// The value of the event function when last evaluated
-   Real              value;
-   /// The value of the event function derivative when last evaluated
-   Real              derivative;
+   /// Event function type
+   wxString       typeName;
+   /// Event function descriptor
+   wxString       instanceName;
+   /// Current/most recently evaluated epoch, event value, derivative
+   Real              eventData[3];
    /// SpaceObject that plays the role of “target” in the event computations.
    SpaceObject       *primary;
 };
