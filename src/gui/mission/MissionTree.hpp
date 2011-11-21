@@ -1,4 +1,4 @@
-//$Id: MissionTree.hpp 9843 2011-09-07 16:11:26Z lindajun $
+//$Id: MissionTree.hpp 9864 2011-09-14 14:15:19Z lindajun $
 //------------------------------------------------------------------------------
 //                              MissionTree
 //------------------------------------------------------------------------------
@@ -93,6 +93,10 @@ private:
    int mNumVary;
    int mNumSave;
    int mNumToggle;
+   int mNumClearPlot;
+   int mNumMarkPoint;
+   int mNumPenUp;
+   int mNumPenDown;
    int mNumReport;
    int mNumIfStatement;
    int mNumWhileLoop;

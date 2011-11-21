@@ -1,4 +1,4 @@
-//$Id: BranchCommand.cpp 9791 2011-08-24 16:17:06Z wendys-dev $
+//$Id: BranchCommand.cpp 9861 2011-09-13 16:40:57Z djcinsb $
 //------------------------------------------------------------------------------
 //                               BranchCommand
 //------------------------------------------------------------------------------
@@ -291,6 +291,9 @@ bool BranchCommand::Initialize()
    for (node = branch.begin(); node != branch.end(); ++node)
    {
       currentPtr = *node;
+      if (events != NULL)
+         currentPtr->SetEventLocators(events);
+
       while (currentPtr != this)
       {
          #ifdef DEBUG_BRANCHCOMMAND_INIT

@@ -1,4 +1,4 @@
-//$Id: MissionTree.cpp 9847 2011-09-07 22:29:26Z lindajun $
+//$Id: MissionTree.cpp 9864 2011-09-14 14:15:19Z lindajun $
 //------------------------------------------------------------------------------
 //                              MissionTree
 //------------------------------------------------------------------------------
@@ -534,6 +534,10 @@ void MissionTree::InitializeCounter()
    mNumSave = 0;
    mNumReport = 0;
    mNumToggle = 0;
+   mNumClearPlot = 0;
+   mNumMarkPoint = 0;
+   mNumPenUp = 0;
+   mNumPenDown = 0;
    mNumIfStatement = 0;
    mNumWhileLoop = 0;
    mNumForLoop = 0;
@@ -4332,6 +4336,14 @@ int* MissionTree::GetCommandCounter(const wxString &cmd)
       return &mNumSave;
    if (cmd == wxT("Toggle"))
       return &mNumToggle;
+   if (cmd == wxT("ClearPlot"))
+      return &mNumClearPlot;
+   if (cmd == wxT("MarkPoint"))
+      return &mNumMarkPoint;
+   if (cmd == wxT("PenUp"))
+      return &mNumPenUp;
+   if (cmd == wxT("PenDown"))
+      return &mNumPenDown;
    if (cmd == wxT("Report"))
       return &mNumReport;
    if (cmd == wxT("For"))

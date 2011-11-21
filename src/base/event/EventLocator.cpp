@@ -1,4 +1,4 @@
-//$Id: EventLocator.cpp 9853 2011-09-09 20:08:55Z djcinsb $
+//$Id: EventLocator.cpp 9869 2011-09-15 18:54:39Z djcinsb $
 //------------------------------------------------------------------------------
 //                           EventLocator
 //------------------------------------------------------------------------------
@@ -22,6 +22,7 @@
 
 #include "EventLocator.hpp"
 #include "EventException.hpp"
+#include "FileManager.hpp"      // for GetPathname()
 #include "MessageInterface.hpp"
 
 
@@ -40,7 +41,8 @@ EventLocator::PARAMETER_TEXT[EventLocatorParamCount - GmatBaseParamCount] =
 {
    wxT("Spacecraft"),        // SATNAMES,
    wxT("Tolerance"),         // TOLERANCE,
-   wxT("Filename")           // EVENT_FILENAME,
+   wxT("Filename"),           // EVENT_FILENAME,
+   wxT("IsActive")           // IS_ACTIVE
 };
 
 const Gmat::ParameterType
@@ -48,7 +50,8 @@ EventLocator::PARAMETER_TYPE[EventLocatorParamCount - GmatBaseParamCount] =
 {
    Gmat::STRINGARRAY_TYPE,       // SATNAMES,
    Gmat::REAL_TYPE,              // TOLERANCE,
-   Gmat::STRING_TYPE             // EVENT_FILENAME,
+   Gmat::STRING_TYPE,            // EVENT_FILENAME,
+   Gmat::BOOLEAN_TYPE            // IS_ACTIVE
 };
 
 
@@ -63,6 +66,7 @@ EventLocator::EventLocator(const wxString &typeStr,
    filename       (wxT("LocatedEvents.txt")),
    efCount        (0),
    lastData       (NULL),
+   isActive       (true),
    eventTolerance (1.0e-3),
    solarSys       (NULL)
 {
@@ -83,6 +87,7 @@ EventLocator::EventLocator(const EventLocator& el):
    filename          (el.filename),
    efCount           (0),
    lastData          (NULL),
+   isActive          (el.isActive),
    satNames          (el.satNames),
    targets           (el.targets),
    eventTolerance    (el.eventTolerance),
@@ -99,6 +104,7 @@ EventLocator& EventLocator::operator=(const EventLocator& el)
       filename       = el.filename;
       efCount        = 0;
       lastData       = NULL;
+      isActive       = el.isActive;
       satNames       = el.satNames;
       targets        = el.targets;
       eventTolerance = el.eventTolerance;
@@ -146,12 +152,15 @@ wxString EventLocator::GetParameterTypeString(const Integer id) const
 
 bool EventLocator::IsParameterReadOnly(const Integer id) const
 {
+   if (id == IS_ACTIVE)
+      return true;
+
    return GmatBase::IsParameterReadOnly(id);
 }
 
 bool EventLocator::IsParameterReadOnly(const wxString &label) const
 {
-   return GmatBase::IsParameterReadOnly(label);
+   return IsParameterReadOnly(GetParameterID(label));
 }
 
 Real EventLocator::GetRealParameter(const Integer id) const
@@ -351,6 +360,59 @@ const StringArray& EventLocator::GetStringArrayParameter(const wxString &label,
 }
 
 
+bool EventLocator::GetBooleanParameter(const Integer id) const
+{
+   if (id == IS_ACTIVE)
+      return isActive;
+
+   return GmatBase::GetBooleanParameter(id);
+}
+
+bool EventLocator::SetBooleanParameter(const Integer id, const bool value)
+{
+   if (id == IS_ACTIVE)
+   {
+      isActive = value;
+      return isActive;
+   }
+   return GmatBase::SetBooleanParameter(id, value);
+}
+
+bool EventLocator::GetBooleanParameter(const Integer id,
+      const Integer index) const
+{
+   return GmatBase::GetBooleanParameter(id, index);
+}
+
+bool EventLocator::SetBooleanParameter(const Integer id, const bool value,
+      const Integer index)
+{
+   return GmatBase::SetBooleanParameter(id, value, index);
+}
+
+bool EventLocator::GetBooleanParameter(const wxString &label) const
+{
+   return GetBooleanParameter(GetParameterID(label));
+}
+
+bool EventLocator::SetBooleanParameter(const wxString &label,
+      const bool value)
+{
+   return SetBooleanParameter(GetParameterID(label), value);
+}
+
+bool EventLocator::GetBooleanParameter(const wxString &label,
+      const Integer index) const
+{
+   return GetBooleanParameter(GetParameterID(label), index);
+}
+
+bool EventLocator::SetBooleanParameter(const wxString &label,
+      const bool value, const Integer index)
+{
+   return SetBooleanParameter(GetParameterID(label), value, index);
+}
+
 void EventLocator::SetSolarSystem(SolarSystem *ss)
 {
    solarSys = ss;
@@ -470,22 +532,69 @@ Real *EventLocator::Evaluate()
    }
 
    #ifdef DEBUG_DUMPEVENTDATA
-      dumpfile << "\n";
+      dumpfile << wxT("\n");
    #endif
 
    return lastData;
 }
 
+UnsignedInt EventLocator::GetFunctionCount()
+{
+   return eventFunctions.size();
+}
+
+
+void EventLocator::BufferEvent(Integer forEventFunction)
+{
+   // Build a LocatedEvent structure
+   LocatedEvent *theEvent = new LocatedEvent;
+
+   Real *theData = eventFunctions[forEventFunction]->GetData();
+   theEvent->epoch = theData[0];
+   theEvent->eventValue = theData[1];
+   theEvent->type = eventFunctions[forEventFunction]->GetTypeName();
+   theEvent->participants = eventFunctions[forEventFunction]->GetName();
+   theEvent->boundary = eventFunctions[forEventFunction]->GetBoundaryType();
+   theEvent->isEntry = eventFunctions[forEventFunction]->IsEventEntry();
+
+   #ifdef DEBUG_EVENTLOCATION
+      MessageInterface::ShowMessage(wxT("Adding event to event table:\n   ")
+            wxT("%-20s%-30s%-15s%15.9lf\n"), theEvent->type.c_str(),
+            theEvent->participants.c_str(), theEvent->boundary.c_str(),
+            theEvent->epoch);
+   #endif
+
+   eventTable.AddEvent(theEvent);
+}
+
+
 /// Adds an event to the LocatedEventTable.
 void EventLocator::BufferEvent(Real epoch, wxString type, bool isStart)
 {
-
 }
 
 /// Writes the event data to file.
 void EventLocator::ReportEventData()
 {
+   wxString fullFileName;
 
+   if ((filename.find(wxT('/'), 0) == std::string::npos) &&
+       (filename.find(wxT('\\'), 0) == std::string::npos))
+   {
+      FileManager *fm = FileManager::Instance();
+      wxString outPath = fm->GetAbsPathname(FileManager::OUTPUT_PATH);
+
+      // Check for terminating '/' and add if needed
+      Integer len = outPath.length();
+      if ((outPath[len-1] != wxT('/')) && (outPath[len-1] != wxT('\\')))
+         outPath = outPath + wxT("/");
+
+      fullFileName = outPath + filename;
+   }
+   else
+      fullFileName = filename;
+
+   eventTable.WriteToFile(fullFileName);
 }
 
 /// Writes the event data statistics to file.

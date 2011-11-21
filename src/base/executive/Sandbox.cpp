@@ -1,4 +1,4 @@
-//$Id: Sandbox.cpp 9853 2011-09-09 20:08:55Z djcinsb $
+//$Id: Sandbox.cpp 9868 2011-09-15 01:22:33Z djcinsb $
 //------------------------------------------------------------------------------
 //                                 Sandbox
 //------------------------------------------------------------------------------
@@ -894,6 +894,10 @@ bool Sandbox::Execute()
    publisher->SetRunState(currentState);
    publisher->NotifyEndOfRun();
    
+   // Write out event data, if any
+   for (UnsignedInt i = 0; i < events.size(); ++i)
+      events[i]->ReportEventData();
+
    return rv;
 }
 

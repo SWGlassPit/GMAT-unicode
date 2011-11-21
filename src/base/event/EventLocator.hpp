@@ -1,4 +1,4 @@
-//$Id: EventLocator.hpp 9853 2011-09-09 20:08:55Z djcinsb $
+//$Id: EventLocator.hpp 9868 2011-09-15 01:22:33Z djcinsb $
 //------------------------------------------------------------------------------
 //                           EventLocator
 //------------------------------------------------------------------------------
@@ -101,6 +101,24 @@ public:
                         GetStringArrayParameter(const wxString &label,
                                                 const Integer index) const;
 
+   virtual bool         GetBooleanParameter(const Integer id) const;
+   virtual bool         SetBooleanParameter(const Integer id,
+                                            const bool value);
+   virtual bool         GetBooleanParameter(const Integer id,
+                                            const Integer index) const;
+   virtual bool         SetBooleanParameter(const Integer id,
+                                            const bool value,
+                                            const Integer index);
+   virtual bool         GetBooleanParameter(const wxString &label) const;
+   virtual bool         SetBooleanParameter(const wxString &label,
+                                            const bool value);
+   virtual bool         GetBooleanParameter(const wxString &label,
+                                            const Integer index) const;
+   virtual bool         SetBooleanParameter(const wxString &label,
+                                            const bool value,
+                                            const Integer index);
+
+
    virtual void         SetSolarSystem(SolarSystem *ss);
 //   virtual void         SetInternalCoordSystem(CoordinateSystem *cs);
 //   virtual wxString  GetRefObjectName(const Gmat::ObjectType type) const;
@@ -111,17 +129,14 @@ public:
 
    virtual bool         Initialize();
 
-   /// Evaluates contained EventFunctions and returns values and derivatives.
    virtual Real *Evaluate();
-   /// Adds an event to the LocatedEventTable.
+
+   UnsignedInt GetFunctionCount();
+   void BufferEvent(Integer forEventFunction = 0);
    void BufferEvent(Real epoch, wxString type, bool isStart);
-   /// Writes the event data to file.
    void ReportEventData();
-   /// Writes the event data statistics to file.
    void ReportEventStatistics();
-   /// Retrieves data for a specified event.
    Real *GetEventData(wxString type, Integer whichOne = 0);
-   /// Updates the data in the event table, possibly sorting as well
    void UpdateEventTable(SortStyle how);
 
 
@@ -139,6 +154,8 @@ protected:
    UnsignedInt efCount;
    /// The last data set computed
    Real *lastData;
+   /// Flag used to turn the locator on or off (default is on)
+   bool isActive;
 
    /// Names of the "target" spacecraft in the location
    StringArray satNames;
@@ -155,6 +172,7 @@ protected:
        SATNAMES = GmatBaseParamCount,
        TOLERANCE,
        EVENT_FILENAME,
+       IS_ACTIVE,
        EventLocatorParamCount
     };
 

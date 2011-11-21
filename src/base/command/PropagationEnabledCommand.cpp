@@ -1,4 +1,4 @@
-//$Id: PropagationEnabledCommand.cpp 9791 2011-08-24 16:17:06Z wendys-dev $
+//$Id: PropagationEnabledCommand.cpp 9868 2011-09-15 01:22:33Z djcinsb $
 //------------------------------------------------------------------------------
 //                       PropagationEnabledCommand
 //------------------------------------------------------------------------------
@@ -25,6 +25,7 @@
 
 #include "ODEModel.hpp"
 #include "PropagationStateManager.hpp"
+#include "EventLocator.hpp"
 
 //#define DEBUG_INITIALIZATION
 //#define DEBUG_EXECUTION
@@ -61,7 +62,11 @@ PropagationEnabledCommand::PropagationEnabledCommand(const wxString &typeStr)
    dim                  (0),
    epochID              (-1),
    j2kState             (NULL),
-   pubdata              (NULL)
+   pubdata              (NULL),
+   activeLocatorCount   (0),
+   previousEventData    (NULL),
+   currentEventData     (NULL),
+   eventBufferSize      (0)
 {
    objectTypeNames.push_back(wxT("PropagationEnabledCommand"));
    physicsBasedCommand = true;
@@ -95,6 +100,12 @@ PropagationEnabledCommand::~PropagationEnabledCommand()
 
    if (pubdata)
       delete [] pubdata;
+
+   if (previousEventData != NULL)
+      delete [] previousEventData;
+
+   if (currentEventData != NULL)
+      delete [] currentEventData;
 }
 
 
@@ -116,12 +127,18 @@ PropagationEnabledCommand::PropagationEnabledCommand(
    dim                  (pec.dim),
    epochID              (pec.epochID),
    j2kState             (NULL),
-   pubdata              (NULL)
+   pubdata              (NULL),
+   activeLocatorCount     (0),
+   previousEventData    (NULL),
+   currentEventData     (NULL),
+   eventBufferSize      (0)
 {
    initialized = false;
    propagatorNames = pec.propagatorNames;
    for (UnsignedInt i = 0; i < pec.propObjectNames.size(); ++i)
       propObjectNames.push_back(pec.propObjectNames[i]);
+
+   activeEventIndices.clear();
 }
 
 
@@ -161,6 +178,17 @@ PropagationEnabledCommand& PropagationEnabledCommand::operator=(
       propagatorNames = pec.propagatorNames;
       for (UnsignedInt i = 0; i < pec.propObjectNames.size(); ++i)
          propObjectNames.push_back(pec.propObjectNames[i]);
+
+      activeLocatorCount  = 0;
+      if (previousEventData != NULL)
+         delete [] previousEventData;
+      previousEventData = NULL;
+
+      if (currentEventData != NULL)
+         delete [] currentEventData;
+      currentEventData = NULL;
+
+      eventBufferSize = 0;
    }
 
    return *this;
@@ -351,7 +379,6 @@ bool PropagationEnabledCommand::Initialize()
             MessageInterface::ShowMessage(
                   wxT("PEC Initialize() failed to initialize the PropSetups\n"));
       #endif
-
    }
 
    return retval;
@@ -436,7 +463,7 @@ bool PropagationEnabledCommand::PrepareToPropagate()
 //                  {
 //                     #ifdef DEBUG_TRANSIENT_FORCES
 //                     MessageInterface::ShowMessage
-//                        ("Propagate::PrepareToPropagate() Adding transientForce<%p>'%s'\n",
+//                        (wxT("Propagate::PrepareToPropagate() Adding transientForce<%p>'%s'\n"),
 //                         *i, (*i)->GetName().c_str());
 //                     #endif
 //                     prop[index]->GetODEModel()->AddForce(*i);
@@ -493,7 +520,7 @@ bool PropagationEnabledCommand::PrepareToPropagate()
 //      {
 //         #ifdef DEBUG_INITIALIZATION
 //            MessageInterface::ShowMessage(
-//                  "   Setting PSM on ODEModel for propagator %s\n",
+//                  wxT("   Setting PSM on ODEModel for propagator %s\n"),
 //                  (*i)->GetName().c_str());
 //         #endif
 //
@@ -927,5 +954,183 @@ void PropagationEnabledCommand::BufferSatelliteStates(bool fillingBuffer)
 }
 
 
+void PropagationEnabledCommand::InitializeForEventLocation()
+{
+   if (events == NULL)
+   {
+      #ifdef DEBUG_EVENTLOCATORS
+         MessageInterface::ShowMessage(wxT("Initializing with no event locator ")
+               wxT("pointer\n"));
+      #endif
+      return;
+   }
+
+   #ifdef DEBUG_EVENTLOCATORS
+      MessageInterface::ShowMessage(wxT("Initializing with %d event locators\n"),
+            events->size());
+   #endif
+
+   activeLocatorCount = 0;
+   activeEventIndices.clear();
+   eventStartIndices.clear();
+   eventBufferSize = 0;
+
+   for (UnsignedInt i = 0; i < events->size(); ++i)
+   {
+      if (events->at(i)->GetBooleanParameter(wxT("IsActive")))
+      {
+         ++activeLocatorCount;
+         activeEventIndices.push_back(i);
+
+         // Data for the Locator starts at the end of the current size
+         eventStartIndices.push_back(eventBufferSize);
+         // Each function returns 3 datum
+         eventBufferSize += events->at(i)->GetFunctionCount() * 3;
+      }
+   }
+   #ifdef DEBUG_EVENTLOCATORS
+      MessageInterface::ShowMessage(wxT("Found %d active event locators\n"),
+            activeLocatorCount);
+   #endif
+
+   if (previousEventData != NULL)
+      delete [] previousEventData;
+   previousEventData = new Real[eventBufferSize];
+
+   if (currentEventData != NULL)
+      delete [] currentEventData;
+   currentEventData = new Real[eventBufferSize];
+
+   Integer dataIndex;
+   for (Integer i = 0; i < activeLocatorCount; ++i)
+   {
+      Real *data = events->at(activeEventIndices[i])->Evaluate();
+      dataIndex = eventStartIndices[i];
+      UnsignedInt fc = events->at(activeEventIndices[i])->GetFunctionCount();
+      for (UnsignedInt j = 0; j < fc*3; ++j)
+         previousEventData[dataIndex + j] = data[j];
+   }
+}
+
+void PropagationEnabledCommand::CheckForEvents()
+{
+   if (events == NULL)
+   {
+      #ifdef DEBUG_EVENTLOCATORS
+         MessageInterface::ShowMessage(wxT("Checking for events with no event ")
+               wxT("locator pointer\n"));
+      #endif
+      return;
+   }
 
 
+   Integer dataIndex;
+   // First evaluate the event functions
+   for (Integer i = 0; i < activeLocatorCount; ++i)
+   {
+      Real *data = events->at(activeEventIndices[i])->Evaluate();
+      dataIndex = eventStartIndices[i];
+      UnsignedInt fc = events->at(activeEventIndices[i])->GetFunctionCount();
+      for (UnsignedInt j = 0; j < fc*3; ++j)
+         currentEventData[dataIndex + j] = data[j];
+   }
+
+   // Check function values
+   for (UnsignedInt i = 1; i < eventBufferSize; i += 3)
+   {
+      if (currentEventData[i] * previousEventData[i] <= 0.0)
+      {
+         #ifdef DEBUG_EVENTLOCATORS
+            MessageInterface::ShowMessage(wxT("Event function sign change ")
+                  wxT("detected\n   Transition from %lf to %lf at index %d, epoch ")
+                  wxT("[%12lf %12lf]\n"), previousEventData[i], currentEventData[i],
+                  i, previousEventData[i-1], currentEventData[i-1]);
+         #endif
+
+         Integer index;
+         for (index = 0; index < (Integer)(events->size()) - 1; ++index)
+         {
+            if (index + 1 < (Integer)events->size())
+               if ((Integer)i < activeEventIndices[index+1])
+                  break;
+         }
+
+         Integer functionIndex = (Integer)(i/3) - activeEventIndices[index];
+
+         #ifdef DEBUG_EVENTLOCATORS
+            MessageInterface::ShowMessage(wxT("i = %d gives function %d on ")
+                  wxT("locator %d\n"), i, functionIndex, index);
+         #endif
+
+         LocateEvent(events->at(index), functionIndex);
+      }
+   }
+
+   // Check derivative values
+   for (UnsignedInt i = 2; i < eventBufferSize; i += 3)
+   {
+      if (currentEventData[i] * previousEventData[i] <= 0.0)
+      {
+         #ifdef DEBUG_EVENTLOCATORS
+            MessageInterface::ShowMessage(wxT("Event function derivative sign ")
+                  wxT("change detected\n   Transition from %lf to %lf at index %d, ")
+                  wxT("epoch %12lf\n"), currentEventData[i], previousEventData[i], i,
+                  currentEventData[i-2]);
+         #endif
+      }
+   }
+
+   // Move current to previous
+   memcpy(previousEventData, currentEventData, eventBufferSize*sizeof(Real));
+}
+
+void PropagationEnabledCommand::LocateEvent(EventLocator* el, Integer index)
+{
+   bool eventFound = false;
+
+   if (events == NULL)
+   {
+      #ifdef DEBUG_EVENTLOCATORS
+         MessageInterface::ShowMessage(wxT("LocateEvent called; event locator ")
+               wxT("pointer not set\n"));
+      #endif
+
+      // TBD: Throw here?
+      MessageInterface::ShowMessage(wxT("PropagationEnabledCommand::LocateEvent ")
+            wxT("was called unexpectedly; no EventLocators have been set\n"));
+
+      return;
+   }
+
+   // Temporary: Linear interpolate to get the epoch
+   #ifdef DEBUG_EVENTLOCATORS
+      Real bounds[2], epochs[2];
+      bounds[0] = previousEventData[index*3+1];
+      bounds[1] = currentEventData[index*3+1];
+
+      epochs[0] = previousEventData[index*3];
+      epochs[1] = currentEventData[index*3];
+
+      Real zero = epochs[0] - bounds[0] * (epochs[1] - epochs[0]) /
+            (bounds[1] - bounds[0]);
+
+      MessageInterface::ShowMessage(wxT("Zero at %12lf\n"), zero);
+   #endif
+   eventFound = true;
+
+   // End of temporary section
+
+   if (eventFound)
+      UpdateEventTable(el, index);
+}
+
+
+void PropagationEnabledCommand::UpdateEventTable(EventLocator* el, Integer index)
+{
+   el->BufferEvent(index);
+}
+
+
+//void PropagationEnabledCommand::UpdateEventTable(EventLocator* el, LocatedEvent *le)
+//{
+//}

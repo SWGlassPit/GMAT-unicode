@@ -1,4 +1,4 @@
-//$Id: LocatedEvent.hpp 9853 2011-09-09 20:08:55Z djcinsb $
+//$Id: LocatedEvent.hpp 9875 2011-09-16 20:25:20Z djcinsb $
 //------------------------------------------------------------------------------
 //                           LocatedEvent
 //------------------------------------------------------------------------------
@@ -40,10 +40,20 @@ public:
 
    /// The epoch of the data element.
    GmatEpoch epoch;
-   /// Identifier for the type of datum represented
+   /// Identifier for the type of entry/exit represented
    wxString boundary;
-   /// The type of the event.
+   /// Flag for entry/exit
+   bool isEntry;
+   /// The type of the event (Umbra, Contact. etc).
    wxString type;
+   /// The event function value at the located event
+   Real eventValue;
+   /// The participant indicator -- e.g. "Sat - Earth"
+   wxString participants;
+   /// The event that opens or closes this one
+   LocatedEvent *partner;
+   /// Duration of the event (set on both partners; zero until a pair is built
+   Real duration;
 };
 
 #endif /* LocatedEvent_hpp */

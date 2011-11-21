@@ -1,4 +1,4 @@
-//$Id: EventFunction.hpp 9853 2011-09-09 20:08:55Z djcinsb $
+//$Id: EventFunction.hpp 9868 2011-09-15 01:22:33Z djcinsb $
 //------------------------------------------------------------------------------
 //                           EventFunction
 //------------------------------------------------------------------------------
@@ -24,9 +24,7 @@
 #define EventFunction_hpp
 
 #include "GmatBase.hpp"
-
-
-class SpaceObject;
+#include "SpaceObject.hpp"
 
 
 class GMAT_API EventFunction //: public GmatBase
@@ -44,6 +42,9 @@ public:
    bool SetPrimary(SpaceObject *so);
    virtual bool Initialize();
    virtual Real* Evaluate() = 0;
+   Real* GetData();
+   virtual wxString GetBoundaryType();
+   virtual bool IsEventEntry();
 
 protected:
    /// Event function type
@@ -54,6 +55,10 @@ protected:
    Real              eventData[3];
    /// SpaceObject that plays the role of “target” in the event computations.
    SpaceObject       *primary;
+   /// Event boundary type; defaults to "Entry" or "Exit"
+   wxString       boundaryType;
+   /// Boolean indicating is the boundary is an entry or exit
+   bool              isStart;
 };
 
 #endif /* EventFunction_hpp */

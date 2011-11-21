@@ -1,4 +1,4 @@
-//$Id: LocatedEvent.cpp 9853 2011-09-09 20:08:55Z djcinsb $
+//$Id: LocatedEvent.cpp 9875 2011-09-16 20:25:20Z djcinsb $
 //------------------------------------------------------------------------------
 //                           LocatedEvent
 //------------------------------------------------------------------------------
@@ -25,7 +25,12 @@
 LocatedEvent::LocatedEvent() :
    epoch       (0.0),
    boundary    (wxT("")),
-   type        (wxT(""))
+   isEntry     (false),
+   type        (wxT("")),
+   eventValue  (999.999),
+   participants(wxT("")),
+   partner     (NULL),
+   duration    (0.0)
 {
 }
 
@@ -36,18 +41,27 @@ LocatedEvent::~LocatedEvent()
 LocatedEvent::LocatedEvent(const LocatedEvent& le) :
    epoch       (le.epoch),
    boundary    (le.boundary),
-   type        (le.type)
+   isEntry     (le.isEntry),
+   type        (le.type),
+   eventValue  (le.eventValue),
+   participants(le.participants),
+   partner     (NULL),
+   duration    (le.duration)
 {
-
 }
 
 LocatedEvent& LocatedEvent::operator=(const LocatedEvent& le)
 {
    if (this != &le)
    {
-      epoch = le.epoch;
-      boundary = le.boundary;
-      type = le.type;
+      epoch        = le.epoch;
+      boundary     = le.boundary;
+      isEntry      = le.isEntry;
+      type         = le.type;
+      eventValue   = le.eventValue;
+      participants = le.participants;
+      partner      = NULL;
+      duration     = 0.0;
    }
 
    return *this;

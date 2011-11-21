@@ -1,4 +1,4 @@
-//$Id: LocatedEventTable.hpp 9853 2011-09-09 20:08:55Z djcinsb $
+//$Id: LocatedEventTable.hpp 9875 2011-09-16 20:25:20Z djcinsb $
 //------------------------------------------------------------------------------
 //                           LocatedEventTable
 //------------------------------------------------------------------------------
@@ -48,13 +48,15 @@ public:
    LocatedEventTable& operator=(const LocatedEventTable& let);
 
    /// Adds a new event entry to the table of events.
+   void AddEvent(LocatedEvent *theEvent);
+   /// Adds a new event entry to the table of events.
    void AddEvent(GmatEpoch epoch, wxString boundaryType, wxString eventType);
    /// Returns the longest duration for the detected events of the specified type.
-   Real GetMaxSpan(wxString eventType);
+   Real GetMaxSpan(wxString eventType, wxString parties);
    /// Returns the duration of the most recent detected event of the specified type.
-   Real GetLastSpan(wxString eventType);
+   Real GetLastSpan(wxString eventType, wxString parties = wxT(""));
    /// Returns the average duration for the detected events of the specified type.
-   Real GetAverageSpan(wxString eventType);
+   Real GetAverageSpan(wxString eventType, wxString parties = wxT(""));
    /// Sets flags to sort the event data in the specified primary and secondary order when generating the event data file.
    void SortEvents(SortStyle how, SortStyle secondaryStyle);
    /// Writes the event data to an event data file with the specified name.
@@ -65,6 +67,18 @@ public:
 protected:
    /// The table of located event boundaries
    std::vector<LocatedEvent*>    events;
+   /// Main sort style
+   SortStyle primarySortStyle;
+   /// Secondary sort style
+   SortStyle secondarySortStyle;
+   /// The report order for the events
+   std::vector<UnsignedInt> sortOrder;
+   /// Flag indicating stale associations
+   bool associationsCurrent;
+
+   void BuildAssociations();
+   void SortEvents();
+   std::string BuildEventSummary();
 };
 
 #endif /* LocatedEventTable_hpp */

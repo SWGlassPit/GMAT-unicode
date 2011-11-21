@@ -1,4 +1,4 @@
-//$Id: Spacecraft.cpp 9766 2011-08-15 20:38:01Z wendys-dev $
+//$Id: Spacecraft.cpp 9874 2011-09-16 20:24:05Z djcinsb $
 //------------------------------------------------------------------------------
 //                                  Spacecraft
 //------------------------------------------------------------------------------
@@ -4531,9 +4531,11 @@ void Spacecraft::WriteParameters(Gmat::WriteMode mode, wxString &prefix,
    Gmat::ParameterType parmType;
    wxString value;
 
-   bool showAnomaly = false;
-   if (stateType == wxT("Keplerian") || stateType == wxT("ModKeplerian"))
-      showAnomaly = true;
+   #ifdef __WRITE_ANOMALY_TYPE__
+      bool showAnomaly = false;
+      if (stateType == wxT("Keplerian") || stateType == wxT("ModKeplerian"))
+         showAnomaly = true;
+   #endif
 
    Integer *parmOrder = new Integer[parameterCount];
    Integer parmIndex = 0;
