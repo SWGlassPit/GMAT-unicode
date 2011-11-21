@@ -1,4 +1,4 @@
-//$Id: GuiItemManager.cpp 9514 2011-04-30 21:44:00Z djcinsb $
+//$Id: GuiItemManager.cpp 9850 2011-09-09 18:48:32Z lindajun $
 //------------------------------------------------------------------------------
 //                              GuiItemManager
 //------------------------------------------------------------------------------
@@ -20,6 +20,7 @@
 
 #include "GuiItemManager.hpp"
 #include "GmatAppData.hpp"
+#include "GmatPanel.hpp"
 #include "gmatdefs.hpp"           //put this one after GUI includes
 #include "Parameter.hpp"
 #include "Array.hpp"
@@ -5012,7 +5013,14 @@ void GuiItemManager::UpdateSubscriberList()
       for (int i=0; i<theNumXyPlot; i++)
          if ((*pos)->FindString(theXyPlotList[i]) == wxNOT_FOUND)
             (*pos)->Append(theXyPlotList[i]);
-      
+
+      // If new item is the only item, put check mark
+      if ((*pos)->GetCount() == 1)
+      {
+         GmatPanel *parent = (GmatPanel*)((*pos)->GetParent());
+         (*pos)->Check(0, true);
+         parent->TakeAction(wxT("EnableUpdate"));
+      }
    }
    
 } // UpdateSubscriberList()

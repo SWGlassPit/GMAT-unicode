@@ -1,4 +1,4 @@
-//$Id: MissionTree.cpp 9844 2011-09-07 17:48:48Z lindajun $
+//$Id: MissionTree.cpp 9847 2011-09-07 22:29:26Z lindajun $
 //------------------------------------------------------------------------------
 //                              MissionTree
 //------------------------------------------------------------------------------
@@ -1235,11 +1235,22 @@ MissionTree::InsertNodeAfter(wxTreeItemId parentId, wxTreeItemId currId,
       }
       else
       {
-         #if DEBUG_MISSION_TREE_INSERT
-         MessageInterface::ShowMessage("   312 appending to realPrevId \n");
-         #endif
-         node = AppendItem(prevVisId, nodeName, icon, -1,
-                           new MissionTreeItemData(nodeName, itemType, nodeName, cmd));
+         if (realPrevName == prevVisName)
+         {
+            #if DEBUG_MISSION_TREE_INSERT
+            MessageInterface::ShowMessage("   312 appending to realPrevId\n");
+            #endif
+            node = AppendItem(prevVisId, nodeName, icon, -1,
+                              new MissionTreeItemData(nodeName, itemType, nodeName, cmd));
+         }
+         else
+         {
+            #if DEBUG_MISSION_TREE_INSERT
+            MessageInterface::ShowMessage("   313 insertnig by realParentId and realPrevId\n");
+            #endif
+            node = InsertItem(realParentId, realPrevId, nodeName, icon, -1,
+                              new MissionTreeItemData(nodeName, itemType, nodeName, cmd));
+         }
       }
    }
    else if (realPrevId == prevVisId)
@@ -4026,8 +4037,6 @@ GmatTree::ItemType MissionTree::GetCommandId(const wxString &cmd)
       return GmatTree::VARY;
    if (cmd == wxT("Save"))
       return GmatTree::SAVE;
-   if (cmd == wxT("Toggle"))
-      return GmatTree::TOGGLE;
    if (cmd == wxT("Report"))
       return GmatTree::REPORT;
    if (cmd == wxT("For"))
@@ -4058,10 +4067,12 @@ GmatTree::ItemType MissionTree::GetCommandId(const wxString &cmd)
       return GmatTree::ASSIGNMENT;
    if (cmd == wxT("BeginScript"))
       return GmatTree::SCRIPT_EVENT;
-   if (cmd == wxT("MarkPoint"))
+   if (cmd == wxT("MarkPoint") || cmd == wxT("ClearPlot"))
       return GmatTree::XY_PLOT_ACTION;
-   if (cmd == wxT("ClearPlot") || cmd == wxT("PenUp") || cmd == wxT("PenDown"))
+   if (cmd == wxT("PenUp") || cmd == wxT("PenDown"))
       return GmatTree::PLOT_ACTION;
+   if (cmd == wxT("Toggle"))
+      return GmatTree::TOGGLE;
    
    return GmatTree::OTHER_COMMAND;
 }

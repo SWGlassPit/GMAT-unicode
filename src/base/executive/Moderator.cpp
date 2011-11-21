@@ -1,4 +1,4 @@
-//$Id: Moderator.cpp 9840 2011-09-07 00:20:57Z djcinsb $
+//$Id: Moderator.cpp 9850 2011-09-09 18:48:32Z lindajun $
 //------------------------------------------------------------------------------
 //                                 Moderator
 //------------------------------------------------------------------------------
@@ -5349,6 +5349,29 @@ GmatCommand* Moderator::CreateDefaultCommand(const wxString &type,
          cmd->SetRefObjectName(Gmat::SPACECRAFT,
                                GetDefaultSpacecraft()->GetName());
       }
+      else if (type == wxT("ClearPlot") || type == wxT("MarkPoint") ||
+               type == wxT("PenUp") || type == wxT("PenDown"))
+      {
+         Subscriber *defSub = GetDefaultSubscriber(wxT("XYPlot"), false, false);
+         if (defSub != NULL)
+         {
+            // Set default XYPlot
+            if (defSub != NULL)
+               cmd->SetStringParameter(cmd->GetParameterID(wxT("Subscriber")),
+                                       defSub->GetName(), 0);
+         }
+         else
+         {
+            if (type == wxT("PenUp") || type == wxT("PenDown"))
+            {
+               // default XYPlot not found so set default GroundTrackPlot
+               defSub = GetDefaultSubscriber(wxT("GroundTrackPlot"), false, false);          
+               if (defSub != NULL)
+                  cmd->SetStringParameter(cmd->GetParameterID(wxT("Subscriber")),
+                                          defSub->GetName(), 0);
+            }
+         }
+      }
       else if (type == wxT("Toggle"))
       {
          cmd->SetStringParameter(cmd->GetParameterID(wxT("Subscriber")),
@@ -8244,9 +8267,16 @@ Hardware* Moderator::GetDefaultHardware(const wxString &type)
 
 
 //------------------------------------------------------------------------------
-// Subscriber* GetDefaultSubscriber(const wxString &type, bool addObjects = true)
+// Subscriber* GetDefaultSubscriber(const wxString &type, bool addObjects = true,
+//                                  bool createIfNoneFound = true)
 //------------------------------------------------------------------------------
-Subscriber* Moderator::GetDefaultSubscriber(const wxString &type, bool addObjects)
+/**
+ * Returns default subcriber of given type, if createIfNoneFound is true, it will
+ * create default subscriber.
+ */
+//------------------------------------------------------------------------------
+Subscriber* Moderator::GetDefaultSubscriber(const wxString &type, bool addObjects,
+                                            bool createIfNoneFound)
 {
    StringArray configList = GetListOfObjects(Gmat::SUBSCRIBER);
    int subSize = configList.size();
@@ -8258,6 +8288,10 @@ Subscriber* Moderator::GetDefaultSubscriber(const wxString &type, bool addObject
       if (sub->GetTypeName() == type)
          return sub;
    }
+   
+   // If not creating default subscriber, just return NULL
+   if (!createIfNoneFound)
+      return NULL;
    
    if (type == wxT("OrbitView"))
    {
@@ -8281,10 +8315,10 @@ Subscriber* Moderator::GetDefaultSubscriber(const wxString &type, bool addObject
    {
       // create default XYPlot
       sub = CreateSubscriber(wxT("XYPlot"), wxT("DefaultXYPlot"));
-      sub->SetStringParameter(wxT("IndVar"), wxT("DefaultSC.A1ModJulian"));
-      sub->SetStringParameter(wxT("Add"), wxT("DefaultSC.EarthMJ2000Eq.X"), 0);      
-      sub->SetStringParameter(wxT("Add"), wxT("DefaultSC.EarthMJ2000Eq.Y"), 1);
-      sub->SetStringParameter(wxT("Add"), wxT("DefaultSC.EarthMJ2000Eq.Z"), 2);
+      sub->SetStringParameter(wxT("XVariable"), wxT("DefaultSC.A1ModJulian"));
+      sub->SetStringParameter(wxT("YVariables"), wxT("DefaultSC.EarthMJ2000Eq.X"), 0);      
+      sub->SetStringParameter(wxT("YVariables"), wxT("DefaultSC.EarthMJ2000Eq.Y"), 1);
+      sub->SetStringParameter(wxT("YVariables"), wxT("DefaultSC.EarthMJ2000Eq.Z"), 2);
       sub->Activate(true);
    }
    else if (type == wxT("ReportFile"))

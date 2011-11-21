@@ -1,4 +1,4 @@
-//$Id: GmatPanel.cpp 9585 2011-06-10 19:54:28Z lindajun $
+//$Id: GmatPanel.cpp 9850 2011-09-09 18:48:32Z lindajun $
 //------------------------------------------------------------------------------
 //                              GmatPanel
 //------------------------------------------------------------------------------
@@ -225,6 +225,15 @@ void GmatPanel::EnableUpdate(bool enable)
    }
    // toggle the Apply button based on modifications (T Grubb)
    if (theApplyButton != NULL) theApplyButton->Enable(mDataChanged);
+}
+
+
+//------------------------------------------------------------------------------
+// virtual bool TakeAction(const wxString &action)
+//------------------------------------------------------------------------------
+bool GmatPanel::TakeAction(const wxString &action)
+{
+   return true;
 }
 
 

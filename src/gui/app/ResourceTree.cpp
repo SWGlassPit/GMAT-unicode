@@ -1,4 +1,4 @@
-//$Id: ResourceTree.cpp 9829 2011-09-01 17:56:21Z lindajun $
+//$Id: ResourceTree.cpp 9848 2011-09-08 13:38:14Z wendys-dev $
 //------------------------------------------------------------------------------
 //                              ResourceTree
 //------------------------------------------------------------------------------
@@ -109,7 +109,7 @@
 // If we are ready to handle Constellations, enable this
 //define __ENABLE_CONSTELLATIONS__
 
-#define DEBUG_RESOURCE_TREE
+//#define DEBUG_RESOURCE_TREE
 //#define DEBUG_ADD_DEFAULT_OBJECTS
 //#define DEBUG_RENAME
 //#define DEBUG_DELETE

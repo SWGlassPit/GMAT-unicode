@@ -1,4 +1,4 @@
-//$Id: AtmosphereFactory.cpp 9750 2011-08-09 20:52:46Z lindajun $
+//$Id: AtmosphereFactory.cpp 9849 2011-09-09 15:46:47Z lindajun $
 //------------------------------------------------------------------------------
 //                            AtmosphereFactory
 //------------------------------------------------------------------------------
@@ -25,7 +25,6 @@
 #include "AtmosphereModel.hpp"
 #include "ExponentialAtmosphere.hpp"
 #include "Msise90Atmosphere.hpp"
-#include "NRLMsise00Atmosphere.hpp"
 #include "JacchiaRobertsAtmosphere.hpp"
 #include "SimpleExponentialAtmosphere.hpp"
 
@@ -62,10 +61,6 @@ AtmosphereFactory::CreateAtmosphereModel(const wxString &ofType,
       return new SimpleExponentialAtmosphere(withName);
    else if (ofType == wxT("MSISE90"))
       return new Msise90Atmosphere(withName);
-//    else if (ofType == "MSISE86")
-//       return new Msise86Atmosphere(withName);
-   else if (ofType == wxT("NRLMSISE00"))
-      return new NRLMsise00Atmosphere(withName);
    else if (ofType == wxT("JacchiaRoberts"))
       return new JacchiaRobertsAtmosphere(withName);
    return NULL;
@@ -90,8 +85,6 @@ Factory(Gmat::ATMOSPHERE)
       creatables.push_back(wxT("Exponential"));
       creatables.push_back(wxT("Simple"));
       creatables.push_back(wxT("MSISE90"));
-      //creatables.push_back("MSISE86");
-      creatables.push_back(wxT("NRLMSISE00"));
       creatables.push_back(wxT("JacchiaRoberts"));
    }
 }

@@ -1,4 +1,4 @@
-//$Id: TogglePanel.cpp 9826 2011-08-31 22:16:42Z lindajun $
+//$Id: TogglePanel.cpp 9850 2011-09-09 18:48:32Z lindajun $
 //------------------------------------------------------------------------------
 //                              TogglePanel
 //------------------------------------------------------------------------------
@@ -87,6 +87,24 @@ TogglePanel::~TogglePanel()
 }
 
 
+//------------------------------------------------------------------------------
+// virtual bool TakeAction(const wxString &action)
+//------------------------------------------------------------------------------
+bool TogglePanel::TakeAction(const wxString &action)
+{
+   #ifdef DEBUG_TAKE_ACTION
+   MessageInterface::ShowMessage
+      (wxT("TogglePanel::TakeAction() for '%s' entered, action = '%s'\n"),
+       mCmdTypeName.c_str(), action.c_str());
+   #endif
+   
+   if (action == wxT("EnableUpdate"))
+      EnableUpdate(true);
+   
+   return true;
+}
+
+
 //---------------------------------
 // protected methods
 //---------------------------------
@@ -109,11 +127,11 @@ void TogglePanel::Create()
    #endif
    
    int bsize = 2;
-   wxString cmdName = theCommand->GetTypeName().c_str();
+   mCmdTypeName = theCommand->GetTypeName().c_str();
    
    // create object label
    wxStaticText *objectLabel =
-      new wxStaticText(this, ID_TEXT, wxT("Select Subscribers to " + cmdName),
+      new wxStaticText(this, ID_TEXT, wxT("Select Subscribers to " + mCmdTypeName),
                        wxDefaultPosition, wxDefaultSize, 0);
    
    // create subscriber check list box
@@ -179,6 +197,12 @@ void TogglePanel::LoadData()
       // get subscriber names 
       StringArray subNames = theCommand->GetRefObjectNameArray(Gmat::SUBSCRIBER);
       int subsize = subNames.size();
+      #if DEBUG_TOGGLE_PANEL
+      MessageInterface::ShowMessage("   There are %d subscribers\n", subsize);
+      for (unsigned int i=0; i<subNames.size(); i++)
+         MessageInterface::ShowMessage
+            ("      subNames[%d]='%s'\n", i, subNames[i].c_str());
+      #endif
       
       wxString toggleState;
       if (mShowToggleState)
@@ -189,7 +213,7 @@ void TogglePanel::LoadData()
          #if DEBUG_TOGGLE_PANEL
          for (unsigned int i=0; i<subNames.size(); i++)
             MessageInterface::ShowMessage
-               (wxT("TogglePanel::LoadData() subName[%d]=%s, toggleState=%s\n"), i,
+               (wxT("   subName[%d]=%s, toggleState=%s\n"), i,
                 subNames[i].c_str(), toggleState.c_str());
          #endif
       }
@@ -200,7 +224,7 @@ void TogglePanel::LoadData()
       {
          name = mSubsCheckListBox->GetString(i).c_str();
          #if DEBUG_TOGGLE_PANEL
-         MessageInterface::ShowMessage(wxT("   name = '%s'\n"), name.c_str());
+         MessageInterface::ShowMessage(wxT("   available name = '%s'\n"), name.c_str());
          #endif
          for (int j=0; j<subsize; j++)
          {
@@ -262,7 +286,7 @@ void TogglePanel::SaveData()
    {
       MessageInterface::PopupMessage
          (Gmat::ERROR_,
-          wxT("Please select one or more subscribers to toggle on or off."));
+          wxT("Please select one or more subscribers to %s."), theCommand->GetTypeName().c_str());
       canClose = false;
       return;
    }
@@ -277,7 +301,7 @@ void TogglePanel::SaveData()
       theCommand->TakeAction(wxT("Clear"));
       
       wxString subName;
-      wxString cmdStr = theCommand->GetTypeName();
+      //wxString cmdStr = theCommand->GetTypeName();
       for (int i=0; i<count; i++)
       {
          subName = mSubsCheckListBox->GetString(i);
@@ -290,14 +314,8 @@ void TogglePanel::SaveData()
             MessageInterface::ShowMessage(wxT("it is checked\n"));
             #endif
             
-            cmdStr = cmdStr + wxT(" ") + subName;
-            
-            //@todo
-            // We need to add SetStringParameter() to MarkPoint, ClearPlot, PenUp/Down
-            // Maybe we need to create PlotCommand and derive Toggle, MarkPoint, ClearPlot, PenUp/Down
-            // from it. For now use InterpretAction() to set subscribers ohter than Toggle
-            if (mShowToggleState)
-               theCommand->SetStringParameter(theCommand->GetParameterID(wxT("Subscriber")), subName);
+            //cmdStr = cmdStr + wxT(" ") + subName;
+            theCommand->SetStringParameter(theCommand->GetParameterID(wxT("Subscriber")), subName);
          }
          else
          {
@@ -306,7 +324,8 @@ void TogglePanel::SaveData()
             #endif
          }
       }
-      
+
+      #if 0
       if (mShowToggleState)
          cmdStr = cmdStr + wxT(" ") + onOff;
       cmdStr = cmdStr + wxT(";");
@@ -314,9 +333,7 @@ void TogglePanel::SaveData()
       #if DEBUG_TOGGLE_PANEL
       MessageInterface::ShowMessage(wxT("   cmdStr = '%s'\n"), cmdStr.c_str());
       #endif
-      
-      theCommand->SetGeneratingString(cmdStr);
-      theCommand->InterpretAction();
+      #endif
       
       if (mShowToggleState)
          theCommand->SetStringParameter(theCommand->GetParameterID(wxT("ToggleState")), onOff);

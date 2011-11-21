@@ -1,4 +1,4 @@
-//$Id: PenDown.hpp 9692 2011-07-12 19:20:21Z lindajun $
+//$Id: PenDown.hpp 9850 2011-09-09 18:48:32Z lindajun $
 //------------------------------------------------------------------------------
 //                                PenDown
 //------------------------------------------------------------------------------
@@ -15,7 +15,7 @@
 // number NNG06CA54C
 //
 /**
- * Class implementation for the PenDown command
+ * Class declaration for the PenDown command
  */
 //------------------------------------------------------------------------------
 
@@ -23,38 +23,28 @@
 #ifndef PenDown_hpp
 #define PenDown_hpp
 
-#include "GmatCommand.hpp"
-//#include "XyPlot.hpp"
-#include "Subscriber.hpp"
+#include "PlotCommand.hpp"
 
 
 /**
  * Command used to restore plotting on an XY plot during a run; see also the 
  * PenUp command.
  */
-class GMAT_API PenDown : public GmatCommand
+class GMAT_API PenDown : public PlotCommand
 {
 public:
-        PenDown();
-        virtual          ~PenDown();
+   PenDown();
+   virtual       ~PenDown();
    PenDown(const PenDown &c);
-   PenDown&        operator=(const PenDown &c);
+   PenDown&      operator=(const PenDown &c);
    
    virtual GmatBase* Clone() const;
-   
-   virtual const ObjectTypeArray&
-                     GetRefObjectTypeArray();
-   virtual const StringArray&
-                     GetRefObjectNameArray(const Gmat::ObjectType type);
-
-   bool              InterpretAction();
+      
    bool              Initialize();
    bool              Execute();
 
 protected:
-   StringArray          plotNameList;   
-   //std::vector<XyPlot*> thePlotList;
-   std::vector<Subscriber*> thePlotList;
+
 };
 
 #endif /* PenDown_hpp */

@@ -1,4 +1,4 @@
-//$Id: MarkPoint.hpp 9513 2011-04-30 21:23:06Z djcinsb $
+//$Id: MarkPoint.hpp 9850 2011-09-09 18:48:32Z lindajun $
 //------------------------------------------------------------------------------
 //                                MarkPoint
 //------------------------------------------------------------------------------
@@ -23,35 +23,27 @@
 #ifndef MarkPoint_hpp
 #define MarkPoint_hpp
 
-#include "GmatCommand.hpp"
-#include "XyPlot.hpp"
+#include "PlotCommand.hpp"
 
 
 /**
  * Command used to restore plotting on an XY plot during a run.
  */
-class GMAT_API MarkPoint : public GmatCommand
+class GMAT_API MarkPoint : public PlotCommand
 {
 public:
    MarkPoint();
-   virtual          ~MarkPoint();
+   virtual         ~MarkPoint();
    MarkPoint(const MarkPoint &c);
-   MarkPoint&        operator=(const MarkPoint &c);
+   MarkPoint&      operator=(const MarkPoint &c);
    
-   virtual GmatBase* Clone() const;
+   virtual GmatBase*    Clone() const;
    
-   virtual const ObjectTypeArray&
-                     GetRefObjectTypeArray();
-   virtual const StringArray&
-                     GetRefObjectNameArray(const Gmat::ObjectType type);
-
-   bool              InterpretAction();
-   bool              Initialize();
-   bool              Execute();
-
+   bool                 Initialize();
+   bool                 Execute();
+      
 protected:
-   StringArray          plotNameList;   
-   std::vector<XyPlot*> thePlotList;
+   
 };
 
 #endif /* MarkPoint_hpp */

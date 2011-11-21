@@ -1,4 +1,4 @@
-//$Id: Moderator.hpp 9840 2011-09-07 00:20:57Z djcinsb $
+//$Id: Moderator.hpp 9850 2011-09-09 18:48:32Z lindajun $
 //------------------------------------------------------------------------------
 //                                 Moderator
 //------------------------------------------------------------------------------
@@ -446,7 +446,8 @@ private:
    Hardware*   GetDefaultHardware(const wxString &type);
    Solver*     GetDefaultSolver();
    Subscriber* GetDefaultSubscriber(const wxString &type,
-                                    bool addObjects = true);
+                                    bool addObjects = true,
+                                    bool createIfNoneFound = true);
    Parameter*  GetDefaultX();
    Parameter*  GetDefaultY();
    StopCondition* CreateDefaultStopCondition();

@@ -1,4 +1,4 @@
-//$Id: GmatPanel.hpp 9547 2011-05-20 18:52:45Z lindajun $
+//$Id: GmatPanel.hpp 9850 2011-09-09 18:48:32Z lindajun $
 //------------------------------------------------------------------------------
 //                              GmatPanel
 //------------------------------------------------------------------------------
@@ -46,7 +46,8 @@ public:
              bool showScriptButton = true);
 
    virtual wxPanel* GetPanel();
-   
+
+   virtual bool TakeAction(const wxString &action);
    virtual bool PrepareObjectNameChange();
    virtual void ObjectNameChanged(Gmat::ObjectType type,
                                   const wxString &oldName,

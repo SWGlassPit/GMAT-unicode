@@ -1,4 +1,4 @@
-//$Id: TogglePanel.hpp 9826 2011-08-31 22:16:42Z lindajun $
+//$Id: TogglePanel.hpp 9850 2011-09-09 18:48:32Z lindajun $
 //------------------------------------------------------------------------------
 //                              TogglePanel
 //------------------------------------------------------------------------------
@@ -32,10 +32,13 @@ public:
    TogglePanel(wxWindow *parent, GmatCommand *cmd, bool forXyPlotOnly = false,
                bool showToggleState = false);
    ~TogglePanel();
+
+   virtual bool TakeAction(const wxString &action);
    
 protected:
    // member data
    GmatCommand *theCommand;
+   wxString     mCmdTypeName;
    bool         isForXyPlotOnly;
    bool         mShowToggleState;
    

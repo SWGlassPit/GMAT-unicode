@@ -1,4 +1,4 @@
-# $Id: MakeBase.eclipse 9841 2011-09-07 00:21:55Z djcinsb $
+# $Id: MakeBase.eclipse 9850 2011-09-09 18:48:32Z lindajun $
 # 
 # GMAT: General Mission Analysis Tool.
 # 
@@ -219,6 +219,7 @@ OBJECTS = \
     command/Optimize.o \
     command/PenDown.o \
     command/PenUp.o \
+    command/PlotCommand.o \
     command/Propagate.o \
     command/PropagationEnabledCommand.o \
     command/Report.o \
