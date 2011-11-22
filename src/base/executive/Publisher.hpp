@@ -1,4 +1,4 @@
-//$Id: Publisher.hpp 9513 2011-04-30 21:23:06Z djcinsb $
+//$Id: Publisher.hpp 9876 2011-09-16 20:58:50Z lindajun $
 //------------------------------------------------------------------------------
 //                                  Publisher
 //------------------------------------------------------------------------------
@@ -45,6 +45,8 @@ public:
    
    bool FlushBuffers(bool endOfDataBlock = true);
    bool NotifyEndOfRun();
+   
+   const std::list<Subscriber*> GetSubscriberList();
    
    // Interface methods used to identify the data sent to the publisher and
    // subscribers

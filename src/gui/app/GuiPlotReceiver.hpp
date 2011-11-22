@@ -1,4 +1,4 @@
-//$Id: GuiPlotReceiver.hpp 9846 2011-09-07 17:57:29Z wendys-dev $
+//$Id: GuiPlotReceiver.hpp 9876 2011-09-16 20:58:50Z lindajun $
 //------------------------------------------------------------------------------
 //                             GuiPlotReceiver
 //------------------------------------------------------------------------------
@@ -178,6 +178,11 @@ public:
 
    virtual bool DeactivateXyPlot(const wxString &plotName);
    virtual bool ActivateXyPlot(const wxString &plotName);
+
+protected:
+   bool ComputePlotPositionAndSize(bool isGLPlot, Real positionX,
+                                   Real positionY, Real width, Real height,
+                                   Integer &x, Integer &y, Integer &w, Integer &h);
    
 private:
    GuiPlotReceiver();

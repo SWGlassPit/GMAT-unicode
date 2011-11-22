@@ -1,4 +1,4 @@
-//$Id: MdiChild3DViewFrame.cpp 9611 2011-06-17 20:53:49Z lindajun $
+//$Id: MdiChild3DViewFrame.cpp 9877 2011-09-16 22:36:24Z lindajun $
 //------------------------------------------------------------------------------
 //                              MdiChild3DViewFrame
 //------------------------------------------------------------------------------
@@ -7,8 +7,6 @@
 // Copyright (c) 2002-2011 United States Government as represented by the
 // Administrator of The National Aeronautics and Space Administration.
 // All Other Rights Reserved.
-//
-// ** Legal **
 //
 // Author: Linda Jun
 // Created: 2003/11/25
@@ -30,10 +28,6 @@ BEGIN_EVENT_TABLE(MdiChild3DViewFrame, MdiChildViewFrame)
    EVT_MENU(GmatPlot::MDI_GL_SHOW_DEFAULT_VIEW, MdiChildViewFrame::OnShowDefaultView)
    EVT_MENU(GmatPlot::MDI_GL_SHOW_WIRE_FRAME, MdiChildViewFrame::OnDrawWireFrame)
    EVT_MENU(GmatPlot::MDI_GL_SHOW_EQUATORIAL_PLANE, MdiChildViewFrame::OnDrawXyPlane)
-   //EVT_ACTIVATE(MdiChildViewFrame::OnActivate)
-   //EVT_SIZE(MdiChildViewFrame::OnPlotSize)
-   EVT_MOVE(MdiChildViewFrame::OnMove)
-   EVT_CLOSE(MdiChildViewFrame::OnPlotClose) 
 END_EVENT_TABLE()
 
 //------------------------------------------------------------------------------

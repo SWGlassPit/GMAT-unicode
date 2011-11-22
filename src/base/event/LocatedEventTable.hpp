@@ -1,4 +1,4 @@
-//$Id: LocatedEventTable.hpp 9875 2011-09-16 20:25:20Z djcinsb $
+//$Id: LocatedEventTable.hpp 9878 2011-09-17 01:00:43Z djcinsb $
 //------------------------------------------------------------------------------
 //                           LocatedEventTable
 //------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ enum SortStyle
 /**
  * The table of events located during a run
  */
-class LocatedEventTable
+class GMAT_API LocatedEventTable
 {
 public:
    LocatedEventTable();

@@ -1,4 +1,4 @@
-# $Id: MakeBase.eclipse 9860 2011-09-13 14:42:28Z tnguye2 $
+# $Id: MakeBase.eclipse 9898 2011-09-23 16:33:36Z djcinsb $
 # 
 # GMAT: General Mission Analysis Tool.
 # 
@@ -22,8 +22,8 @@ ifeq ($(LINUX_MAC), 1)
 
 ifdef MAC_SPECIFIC
 SHARED_EXTENSION = .dylib
-SHARED_LIB_FLAGS = $(SPICE_LIBRARIES) -dylib -dynamiclib -Wl -two_levelnamespace -undefined dynamic_lookup $(WX_CARBON_BUILD)
-MSISE_C_OBJECTS  = 
+SHARED_LIB_FLAGS = $(SPICE_LIBRARIES) -dylib -dynamiclib -Wl -two_levelnamespace -undefined dynamic_lookup $(USE_CARBON)
+MSISE_C_OBJECTS  = solarsys/msise90_sub.o
 else
 SHARED_EXTENSION = .so
 #SHARED_LIB_FLAGS = -shared -Wl -L$(SPICE_LIB_DIR) -lcspice
@@ -42,11 +42,11 @@ SHARED_EXTENSION = .dll
 
 endif
 
-WXTARGET = lib/libGmatBase$(SHARED_EXTENSION)
+BASETARGET = lib/libGmatBase$(SHARED_EXTENSION)
 
 else
 
-WXTARGET = lib/libGmatBase.a
+BASETARGET = lib/libGmatBase.a
 
 endif
 
@@ -60,7 +60,7 @@ BRIDGEOBJECTS =
 
 else
 
-TARGET = $(WXTARGET)
+TARGET = $(BASETARGET)
 # GUI versions of these objects
 # Note: ExternalOptimizer also uses some wx code, so it is included here
 
@@ -92,7 +92,7 @@ endif
 
 
 all: $(TARGET)
-gui: $(WXTARGET)
+gui: $(BASETARGET)
 console: $(CONSOLETARGET)
 
 HEADERS = -Iinclude \
@@ -161,7 +161,7 @@ archclean :
 	rm -rf */core
 	rm -rf bin/*
 	rm -rf obj/*
-	rm -rf $(WXTARGET)
+	rm -rf $(BASETARGET)
 	rm -rf ../matlab/gmat_mex/src/*.o
 
 endif
@@ -261,11 +261,13 @@ OBJECTS = \
     coordsystem/TOEEqAxes.o \
     coordsystem/TopocentricAxes.o \
     coordsystem/TrueOfDateAxes.o \
+    event/Brent.o \
     event/EventException.o \
     event/EventFunction.o \
     event/EventLocator.o \
     event/LocatedEventTable.o \
     event/LocatedEvent.o \
+    event/RootFinder.o \
     executive/Moderator.o \
     executive/PlotInterface.o \
     executive/PlotReceiver.o \
@@ -556,6 +558,7 @@ OBJECTS = \
     $(TCPIP_OBJECTS) \
     $(SPICE_OBJECTS)
 #    solarsys/BodyDataReader.o \
+#    interface/SocketServer.o \
 
 #    parameter/OrbitAMatrixParameters.o \
 #    forcemodel/harmonic/EarthTide.o \
@@ -566,7 +569,7 @@ OBJECTS = \
 
 
 
-FORTRAN_OBJECTS = solarsys/msise90_sub.o \
+FORTRAN_OBJECTS = solarsys/msise90_sub.o
 
     # parameter/EquinoctialParameters.o \
     # stopcond/BaseStopCondition.o \

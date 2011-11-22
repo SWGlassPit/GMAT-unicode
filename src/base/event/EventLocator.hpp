@@ -1,4 +1,4 @@
-//$Id: EventLocator.hpp 9868 2011-09-15 01:22:33Z djcinsb $
+//$Id: EventLocator.hpp 9878 2011-09-17 01:00:43Z djcinsb $
 //------------------------------------------------------------------------------
 //                           EventLocator
 //------------------------------------------------------------------------------
@@ -29,7 +29,7 @@
 #include "EventFunction.hpp"
 
 
-class EventLocator: public GmatBase
+class GMAT_API EventLocator: public GmatBase
 {
 public:
    EventLocator(const wxString &typeStr, const wxString &nomme = wxT(""));

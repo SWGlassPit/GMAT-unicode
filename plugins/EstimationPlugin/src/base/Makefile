@@ -88,6 +88,7 @@ HEADERS = -Iinclude \
           $(DATAFILE_INCLUDES) \
           -I$(GMAT_Code_Location)/base/include \
           -I$(GMAT_Code_Location)/base/foundation \
+          -I$(GMAT_Code_Location)/base/event \
           -I$(GMAT_Code_Location)/base/executive \
           -I$(GMAT_Code_Location)/base/attitude \
           -I$(GMAT_Code_Location)/base/hardware \
@@ -146,7 +147,7 @@ CPP_OBJECTS = \
     event/EventData.o \
     event/EventManager.o \
     event/LightTimeCorrection.o \
-    event/RootFinder.o \
+    event/EstimationRootFinder.o \
     factory/EstimationCommandFactory.o \
     factory/EstimatorFactory.o \
     factory/EventFactory.o \

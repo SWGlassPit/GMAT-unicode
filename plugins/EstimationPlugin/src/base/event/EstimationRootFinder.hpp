@@ -1,6 +1,6 @@
-//$Id: RootFinder.hpp,v 1.2 2010/01/19 00:00:07 djc Exp $
+//$Id: EstimationRootFinder.hpp 9898 2011-09-23 16:33:36Z djcinsb $
 //------------------------------------------------------------------------------
-//                         RootFinder
+//                         EstimationRootFinder
 //------------------------------------------------------------------------------
 // GMAT: General Mission Analysis Tool
 //
@@ -20,10 +20,11 @@
 //------------------------------------------------------------------------------
 
 
-#ifndef RootFinder_hpp
-#define RootFinder_hpp
+#ifndef EstimationRootFinder_hpp
+#define EstimationRootFinder_hpp
 
 
+#include "estimation_defs.hpp"
 #include "gmatdefs.hpp"
 #include "PropSetup.hpp"
 #include "Propagator.hpp"
@@ -38,17 +39,17 @@
 /**
  * Locates roots in Event objects
  */
-class ESTIMATION_API RootFinder
+class ESTIMATION_API EstimationRootFinder
 {
 public:
-   RootFinder();
-   ~RootFinder();
-   RootFinder(const RootFinder& rl);
-   RootFinder& operator=(const RootFinder& rl);
+   EstimationRootFinder();
+   ~EstimationRootFinder();
+   EstimationRootFinder(const EstimationRootFinder& rl);
+   EstimationRootFinder& operator=(const EstimationRootFinder& rl);
 
-   void SetPropSetup(PropSetup* ps);
-   void FixState(Event *thisOne);
-   Real Locate(ObjectArray &whichOnes);
+   virtual void SetPropSetup(PropSetup* ps);
+   virtual void FixState(Event *thisOne);
+   virtual Real Locate(ObjectArray &whichOnes);
 
 protected:
    /// The propagator used to locate the root
@@ -62,11 +63,11 @@ protected:
    std::vector<Spacecraft *>    satBuffer;
    /// Buffer of Formations used to restore the initial data
    std::vector<Formation *>     formBuffer;
-   /// The current set of events that the RootFinder is using
+   /// The current set of events that the EstimationRootFinder is using
    std::vector<Event*> *events;
 
-   Real FindRoot(Integer whichOne);
-   void BufferSatelliteStates(bool fillingBuffer);
+   virtual Real FindRoot(Integer whichOne);
+   virtual void BufferSatelliteStates(bool fillingBuffer);
 };
 
-#endif // RootFinder_hpp
+#endif // EstimationRootFinder_hpp

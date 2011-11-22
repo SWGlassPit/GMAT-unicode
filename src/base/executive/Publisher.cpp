@@ -1,4 +1,4 @@
-//$Id: Publisher.cpp 9513 2011-04-30 21:23:06Z djcinsb $
+//$Id: Publisher.cpp 9876 2011-09-16 20:58:50Z lindajun $
 //------------------------------------------------------------------------------
 //                            Publisher
 //------------------------------------------------------------------------------
@@ -467,6 +467,15 @@ bool Publisher::NotifyEndOfRun()
    }
    
    return true;
+}
+
+
+//------------------------------------------------------------------------------
+// const std::list<Subscriber*> GetSubscriberList()
+//------------------------------------------------------------------------------
+const std::list<Subscriber*> Publisher::GetSubscriberList()
+{
+   return subscriberList;
 }
 
 

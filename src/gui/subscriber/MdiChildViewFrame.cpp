@@ -1,4 +1,4 @@
-//$Id: MdiChildViewFrame.cpp 9846 2011-09-07 17:57:29Z wendys-dev $
+//$Id: MdiChildViewFrame.cpp 9895 2011-09-21 21:25:04Z lindajun $
 //------------------------------------------------------------------------------
 //                              MdiChildViewFrame
 //------------------------------------------------------------------------------
@@ -27,8 +27,17 @@
 #include "ColorTypes.hpp"         // for namespace GmatColor::
 #include "MessageInterface.hpp"
 
+
+BEGIN_EVENT_TABLE(MdiChildViewFrame, GmatMdiChildFrame)
+   EVT_ACTIVATE(MdiChildViewFrame::OnActivate)
+   EVT_SIZE(MdiChildViewFrame::OnPlotSize)
+   EVT_MOVE(MdiChildViewFrame::OnMove)
+   EVT_CLOSE(MdiChildViewFrame::OnPlotClose) 
+END_EVENT_TABLE()
+
 //#define DEBUG_VIEW_FRAME
 //#define DEBUG_MDI_CHILD_FRAME_CLOSE
+//#define DEBUG_PLOT_PERSISTENCY
 
 //------------------------------------------------------------------------------
 // MdiChildViewFrame(wxMDIParentFrame *parent, const wxString& title, ...)
@@ -591,12 +600,9 @@ void MdiChildViewFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
 void MdiChildViewFrame::OnActivate(wxActivateEvent& event)
 {
    if ( event.GetActive() && mCanvas )
-   {
       mCanvas->SetFocus();
-   }
    
    GmatMdiChildFrame::OnActivate(event);
-   event.Skip();
 }
 
 
@@ -608,9 +614,10 @@ void MdiChildViewFrame::OnPlotSize(wxSizeEvent& event)
    // VZ: under MSW the size event carries the client size (quite
    //     unexpectedly) *except* for the very first one which has the full
    //     size... what should it really be? TODO: check under wxGTK
-   wxSize size1 = event.GetSize();
-   wxSize size2 = GetSize();
-   wxSize size3 = GetClientSize();
+   
+   //wxSize size1 = event.GetSize();
+   //wxSize size2 = GetSize();
+   //wxSize size3 = GetClientSize();
 
    //wxLogStatus(GmatAppData::Instance()->GetMainFrame(),
    //            wxT("size from event: %dx%d, from frame %dx%d, client %dx%d"),
@@ -625,11 +632,22 @@ void MdiChildViewFrame::OnPlotSize(wxSizeEvent& event)
 //------------------------------------------------------------------------------
 void MdiChildViewFrame::OnMove(wxMoveEvent& event)
 {
+   // Refresh canvas when frame moves (LOJ: 2011.09.16)
+   // Implemented here so that when user moves scroll bar the plot will be repainted
+   // Without this, OrbitView or GroundTrack plot shows only white background.
+   if ( mCanvas )
+   {
+      // Do not use Refresh, it makes flickering
+      //mCanvas->Refresh(false);
+      mCanvas->Update();
+   }
+   
    // VZ: here everything is totally wrong under MSW, the positions are
    //     different and both wrong (pos2 is off by 2 pixels for me which seems
    //     to be the width of the MDI canvas border)
-   wxPoint pos1 = event.GetPosition();
-   wxPoint pos2 = GetPosition();
+   
+   //wxPoint pos1 = event.GetPosition();
+   //wxPoint pos2 = GetPosition();
    
    //wxLogStatus(GmatAppData::Instance()->GetMainFrame(),
    //            wxT("position from event: (%d, %d), from frame (%d, %d)"),
@@ -914,40 +932,55 @@ void MdiChildViewFrame::SetEndOfRun()
    }
 }
 
-
 //------------------------------------------------------------------------------
 // void SavePlotPositionAndSize()
 //------------------------------------------------------------------------------
 void MdiChildViewFrame::SavePlotPositionAndSize()
 {
    // Get the position and size of the window first
-   Integer screenWidth  = wxSystemSettings::GetMetric(wxSYS_SCREEN_X);
-   Integer screenHeight = wxSystemSettings::GetMetric(wxSYS_SCREEN_Y);
-//   wxRect      wxR         = GetScreenRect();
-//   wxPoint     wxP         = wxR.GetPosition();
-//   wxSize      wxS         = wxR.GetSize();
-//   Integer     x           = (Integer) wxP.x;
-//   Integer     y           = (Integer) wxP.y;
-//   Integer     w           = (Integer) wxS.GetWidth();
-//   Integer     h           = (Integer) wxS.GetHeight();
+   #ifdef __WXMAC__
+      Integer screenWidth  = wxSystemSettings::GetMetric(wxSYS_SCREEN_X);
+      Integer screenHeight = wxSystemSettings::GetMetric(wxSYS_SCREEN_Y);
+   #else
+      Integer screenWidth;
+      Integer screenHeight;
+      theParent->GetClientSize(&screenWidth, &screenHeight);
+   #endif
+   
+   #ifdef DEBUG_PLOT_PERSISTENCY
+   wxRect      wxR         = GetScreenRect();
+   wxPoint     wxP         = wxR.GetPosition();
+   wxSize      wxS         = wxR.GetSize();
+   Integer     x           = (Integer) wxP.x;
+   Integer     y           = (Integer) wxP.y;
+   Integer     w           = (Integer) wxS.GetWidth();
+   Integer     h           = (Integer) wxS.GetHeight();
+   MessageInterface::ShowMessage
+      ("wxP.x = %d, wxP.y = %d, wxS.w = %d, wxS.h = %d\n", x, y, w, h);
+   #endif
+   
    int tmpX = -1, tmpY = -1;
    int tmpW = -1, tmpH = -1;
    GetPosition(&tmpX, &tmpY);
    GetSize(&tmpW, &tmpH);
    Rvector upperLeft(2, ((Real) tmpX /(Real)  screenWidth), ((Real) tmpY /(Real)  screenHeight));
    Rvector plotSize(2,  ((Real) tmpW /(Real)  screenWidth), ((Real) tmpH /(Real)  screenHeight));
-//   // ======================= begin temporary ==============================
-//   MessageInterface::ShowMessage("*** Size of SCREEN %s is:     width = %d, height = %d\n", mPlotName.c_str(), screenWidth, screenHeight);
-//   MessageInterface::ShowMessage("Position of View plot %s is: x     = %d, y      = %d\n", mPlotName.c_str(), tmpX, tmpY);
-//   MessageInterface::ShowMessage("Size of View plot %s is:     width = %d, height = %d\n", mPlotName.c_str(), tmpW, tmpH);
-//   MessageInterface::ShowMessage("Position of View plot %s in pixels rel. to parent window is: x     = %d, y      = %d\n",
-//         mPlotName.c_str(), (Integer) tmpX, (Integer) tmpY);
-//   MessageInterface::ShowMessage("Size of View plot %s in pixels rel. to parent window is:     x     = %d, y      = %d\n",
-//         mPlotName.c_str(), (Integer) tmpW, (Integer) tmpH);
-//   wxPoint tmpPt = ScreenToClient(wxP);
-//   MessageInterface::ShowMessage("--- Position of View plot %s in client coords is: x     = %d, y      = %d\n",
-//         mPlotName.c_str(), (Integer) tmpPt.x, (Integer) tmpPt.y);
+
+   #ifdef DEBUG_PLOT_PERSISTENCY
+   // ======================= begin temporary ==============================
+   MessageInterface::ShowMessage("*** Size of SCREEN %s is: width = %d, height = %d\n", mPlotName.c_str(), screenWidth, screenHeight);
+   MessageInterface::ShowMessage("Position of View plot %s is: x = %d, y = %d\n", mPlotName.c_str(), tmpX, tmpY);
+   MessageInterface::ShowMessage("Size of View plot %s is: width = %d, height = %d\n", mPlotName.c_str(), tmpW, tmpH);
+   MessageInterface::ShowMessage("Position of View plot %s in pixels rel. to parent window is: x = %d, y = %d\n",
+                                 mPlotName.c_str(), (Integer) tmpX, (Integer) tmpY);
+   MessageInterface::ShowMessage("Size of View plot %s in pixels rel. to parent window is: x = %d, y = %d\n",
+                                 mPlotName.c_str(), (Integer) tmpW, (Integer) tmpH);
+   wxPoint tmpPt = ScreenToClient(wxP);
+   MessageInterface::ShowMessage("--- Position of View plot %s in client coords is: x = %d, y = %d\n",
+                                 mPlotName.c_str(), (Integer) tmpPt.x, (Integer) tmpPt.y);
    // ======================= end temporary ==============================
+   #endif
+   
    Subscriber *sub =
       (Subscriber*)theGuiInterpreter->GetConfiguredObject(mPlotName.c_str());
    if (!sub)

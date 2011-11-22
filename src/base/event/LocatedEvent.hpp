@@ -1,4 +1,4 @@
-//$Id: LocatedEvent.hpp 9875 2011-09-16 20:25:20Z djcinsb $
+//$Id: LocatedEvent.hpp 9878 2011-09-17 01:00:43Z djcinsb $
 //------------------------------------------------------------------------------
 //                           LocatedEvent
 //------------------------------------------------------------------------------
@@ -30,7 +30,7 @@
  * storing the event location data.  Since it is a struct in use, all of the
  * attributes are public.
  */
-class LocatedEvent
+class GMAT_API LocatedEvent
 {
 public:
    LocatedEvent();

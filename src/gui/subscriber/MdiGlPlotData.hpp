@@ -1,4 +1,4 @@
-//$Id: MdiGlPlotData.hpp 9514 2011-04-30 21:44:00Z djcinsb $
+//$Id: MdiGlPlotData.hpp 9876 2011-09-16 20:58:50Z lindajun $
 //------------------------------------------------------------------------------
 //                              MdiGlPlotData
 //------------------------------------------------------------------------------
@@ -82,7 +82,8 @@ namespace GmatPlot
 struct MdiGlPlot
 {
    static wxList mdiChildren;
-   static int numChildren;
+   static int    numChildren;
+   static bool   usePresetSize;;
 };
 
 #endif

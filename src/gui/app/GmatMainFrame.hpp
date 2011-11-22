@@ -1,4 +1,4 @@
-//$Id: GmatMainFrame.hpp 9846 2011-09-07 17:57:29Z wendys-dev $
+//$Id: GmatMainFrame.hpp 9876 2011-09-16 20:58:50Z lindajun $
 //------------------------------------------------------------------------------
 //                              GmatMainFrame
 //------------------------------------------------------------------------------
@@ -73,6 +73,8 @@ public:
    
    Integer GetNumberOfChildOpen(bool scriptsOnly = false, bool incPlots = false,
                                 bool incScripts = false);
+   bool IsMissionTreeUndocked(Integer &width);
+   void IconizeUndockedMissionTree();
    bool IsChildOpen(GmatTreeItemData *item, bool restore = true);
    bool RenameChild(GmatTreeItemData *item, wxString newName);
    bool RenameChild(const wxString &oldName, const wxString &newName);

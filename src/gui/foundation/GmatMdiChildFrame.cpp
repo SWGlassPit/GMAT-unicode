@@ -1,4 +1,4 @@
-//$Id: GmatMdiChildFrame.cpp 9846 2011-09-07 17:57:29Z wendys-dev $
+//$Id: GmatMdiChildFrame.cpp 9894 2011-09-21 16:44:26Z wendys-dev $
 //------------------------------------------------------------------------------
 //                             GmatMdiChildFrame
 //------------------------------------------------------------------------------
@@ -399,7 +399,7 @@ void GmatMdiChildFrame::OnClose(wxCloseEvent &event)
    MessageInterface::ShowMessage
       (wxT("GmatMdiChildFrame::OnClose() will call GmatMainFrame to remove child and exit\n"));
    #endif
-   
+   SavePlotPositionAndSize();
    // remove from list of frames
    GmatAppData::Instance()->GetMainFrame()->RemoveChild(GetName(), mItemType);   
    wxSafeYield();

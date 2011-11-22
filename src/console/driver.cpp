@@ -1,6 +1,6 @@
-//$Id: driver.cpp 9517 2011-04-30 21:57:41Z djcinsb $
+//$Id: driver.cpp 9887 2011-09-20 19:00:51Z wendys-dev $
 //------------------------------------------------------------------------------
-//                           TestScriptInterpreter driver
+//                           GmatConsole driver
 //------------------------------------------------------------------------------
 // GMAT: General Mission Analysis Tool.
 //
@@ -15,7 +15,7 @@
 // number S-67573-G
 //
 /**
- * Program entry point for TestScriptInterpreter.
+ * Program entry point for GmatConsole.
  */
 //------------------------------------------------------------------------------
 
@@ -43,31 +43,31 @@
 //------------------------------------------------------------------------------
 void ShowHelp()
 {
-   std::cout << _T("Usage: One of the following\n")  
-             << _T("   TestScriptInterpreter\n")
-             << _T("   TestScriptInterpreter ScriptFileName\n")
-             << _T("   TestScriptInterpreter <option> <string>\n\n")
-             << _T("The first selection runs an interactive session.\n")
-             << _T("The second runs the input script once and then exits.\n")
-             << _T("The third selection executes specific testing scenarios.\n\n") 
-             << _T("Valid options are:\n")
-             << _T("   --help               Shows available options\n")
-             << _T("   --save               Saves current script (interactive ")
-             << _T("mode only)\n")
-             << _T("   --summary            Writes command summary (interactive ")
-             << _T("mode only)\n")
-             << _T("   --batch <filename>   ")
-             << _T("Runs multiple scripts listed in specified file\n")
-             << _T("   --verbose <on/off>   ")
-             << _T("Toggles display of command sequence prior to a run\n")
-             << _T("                        This option is set on the startup line\n")
-             << _T("                        (default is on)\n")
+   std::cout << "Usage: One of the following\n"  
+             << "   GmatConsole\n"
+             << "   GmatConsole ScriptFileName\n"
+             << "   GmatConsole <option> <string>\n\n"
+             << "The first selection runs an interactive session.\n"
+             << "The second runs the input script once and then exits.\n"
+             << "The third selection executes specific testing scenarios.\n\n" 
+             << "Valid options are:\n"
+             << "   --help               Shows available options\n"
+             << "   --save               Saves current script (interactive "
+             << "mode only)\n"
+             << "   --summary            Writes command summary (interactive "
+             << "mode only)\n"
+             << "   --batch <filename>   "
+             << "Runs multiple scripts listed in specified file\n"
+             << "   --verbose <on/off>   "
+             << "Toggles display of command sequence prior to a run\n"
+             << "                        This option is set on the startup line\n"
+             << "                        (default is on)\n"
              << std::endl;   
 }
 
 
 //------------------------------------------------------------------------------
-// void RunScriptInterpreter(wxString script, int verbosity, bool batchmode)
+// void RunScriptInterpreter(std::string script, int verbosity, bool batchmode)
 //------------------------------------------------------------------------------
 /**
  * Executes a script.
@@ -79,15 +79,15 @@ void ShowHelp()
  *                    single script.
  */
 //------------------------------------------------------------------------------
-void RunScriptInterpreter(wxString script, int verbosity, bool batchmode)
+void RunScriptInterpreter(std::string script, int verbosity, bool batchmode)
 {
    static bool moderatorInitialized = false;
    
    std::ifstream fin(script.c_str());
    if (!(fin)) {
-      wxString errstr = _T("Script file ");
+      std::string errstr = "Script file ";
       errstr += script;
-      errstr += _T(" does not exist");
+      errstr += " does not exist";
       if (!batchmode) {
          std::cout << errstr << std::endl;
          return;
@@ -106,7 +106,7 @@ void RunScriptInterpreter(wxString script, int verbosity, bool batchmode)
    
    if (!moderatorInitialized) {
       if (!mod->Initialize()) {
-         throw ConsoleAppException(_T("Moderator failed to initialize!"));
+         throw ConsoleAppException("Moderator failed to initialize!");
       }
       
       moderatorInitialized = true;
@@ -116,17 +116,17 @@ void RunScriptInterpreter(wxString script, int verbosity, bool batchmode)
    {
       if (!mod->InterpretScript(script)) {
          if (!batchmode) {
-            std::cout << _T("\n***Could not read script.***\n\n");
+            std::cout << "\n***Could not read script.***\n\n";
             ShowHelp();
          }
          else
-            throw ConsoleAppException(_T("Script file did not parse"));
+            throw ConsoleAppException("Script file did not parse");
          return;
       }
    }
    catch (BaseException &oops)
    {
-      std::cout << _T("ERROR!!!!!! ---- ") << oops.GetFullMessage();
+      std::cout << "ERROR!!!!!! ---- " << oops.GetFullMessage();
    }
    // print out the sequence
    GmatCommand *top = mod->GetFirstCommand();
@@ -138,18 +138,18 @@ void RunScriptInterpreter(wxString script, int verbosity, bool batchmode)
    
    // And now run it
    if (mod->RunMission() != 1)
-      throw ConsoleAppException(_T("Moderator::RunMission failed"));
+      throw ConsoleAppException("Moderator::RunMission failed");
    
    // Success!
    if (!batchmode)
-      std::cout << _T("\n\n*** GMAT Integration test ")
-                << _T("(Console version) successful! ***")
-                << _T("\n\n");
+      std::cout << "\n\n*** GMAT Integration test "
+                << "(Console version) successful! ***"
+                << "\n\n";
 }
 
 
 //------------------------------------------------------------------------------
-// Integer RunBatch(wxString& batchfilename)
+// Integer RunBatch(std::string& batchfilename)
 //------------------------------------------------------------------------------
 /**
  * Executes a collection of scripts.
@@ -159,20 +159,20 @@ void RunScriptInterpreter(wxString script, int verbosity, bool batchmode)
  * @return The number of lines parsed from teh batch file.
  */
 //------------------------------------------------------------------------------
-Integer RunBatch(wxString& batchfilename)
+Integer RunBatch(std::string& batchfilename)
 {
    Integer count = 0, successful = 0, failed = 0, skipped = 0;
-   wxString script;
+   std::string script;
    StringArray failedScripts;
    StringArray skippedScripts;
       
-   std::cout << _T("Running batch file \"") << batchfilename << _T("\"") << std::endl;
+   std::cout << "Running batch file \"" << batchfilename << "\"" << std::endl;
    std::ifstream batchfile(batchfilename.c_str());
    
    if (!(batchfile)) {
-      wxString errstr = _T("Batch file ");
+      std::string errstr = "Batch file ";
       errstr += batchfilename;
-      errstr += _T(" does not exist");
+      errstr += " does not exist";
       std::cout << errstr << std::endl;
          return 0;
    }
@@ -180,7 +180,7 @@ Integer RunBatch(wxString& batchfilename)
    batchfile >> script;
 
    while (!batchfile.eof()) {
-      if (script == _T("--summary"))
+      if (script == "--summary")
       {
          ShowCommandSummary();
       }
@@ -188,22 +188,22 @@ Integer RunBatch(wxString& batchfilename)
       {
          ++count;
          if (script[0] != '%') {
-            std::cout << _T("\n*************************************************\n*** ") 
-                      << count << _T(": \"") << script 
-                      << _T("\"\n*************************************************\n") 
+            std::cout << "\n*************************************************\n*** " 
+                      << count << ": \"" << script 
+                      << "\"\n*************************************************\n" 
                       << std::endl;
             try {
                RunScriptInterpreter(script, 0, true);
                ++successful;
             }
             catch (BaseException &ex) {
-               std::cout << _T("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
-                         << _T("!!!\n")
-                         << _T("!!! Exception in script \"") << script << _T("\"\n")
-                         << _T("!!!    \"")
-                         << ex.GetFullMessage() << _T("\"\n") 
-                         << _T("!!!\n")
-                         << _T("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
+               std::cout << "\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
+                         << "!!!\n"
+                         << "!!! Exception in script \"" << script << "\"\n"
+                         << "!!!    \""
+                         << ex.GetFullMessage() << "\"\n" 
+                         << "!!!\n"
+                         << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
                          << std::endl;
                          
                ++failed;
@@ -211,11 +211,11 @@ Integer RunBatch(wxString& batchfilename)
             }
             catch (...)
             {
-               std::cout << _T("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
-                         << _T("!!!\n")
-                         << _T("!!! Unhandled Exception in script \"") << script << _T("\"\n")
-                         << _T("!!!\n")
-                         << _T("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
+               std::cout << "\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
+                         << "!!!\n"
+                         << "!!! Unhandled Exception in script \"" << script << "\"\n"
+                         << "!!!\n"
+                         << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
                          << std::endl;
                          
                ++failed;
@@ -223,9 +223,9 @@ Integer RunBatch(wxString& batchfilename)
             }
          }
          else {
-            std::cout << _T("\n*************************************************\n*** ") 
-                      << count << _T(": Skipping script \"") << script.substr(1)
-                      << _T("\"\n*************************************************\n") 
+            std::cout << "\n*************************************************\n*** " 
+                      << count << ": Skipping script \"" << script.substr(1)
+                      << "\"\n*************************************************\n" 
                       << std::endl;
             skippedScripts.push_back(script.substr(1));
             ++skipped;
@@ -234,27 +234,27 @@ Integer RunBatch(wxString& batchfilename)
       batchfile >> script;
    }
    
-   std::cout << _T("\n\n**************************************\n*** ")
-             << _T("Batch Run Statistics:")
-             <<               _T("\n***   Successful scripts:  ") 
-             << successful << _T("\n***   Failed Scripts:      ")
-             << failed     << _T("\n***   Skipped Scripts:     ")
-             << skipped    << _T("\n**************************************\n");
+   std::cout << "\n\n**************************************\n*** "
+             << "Batch Run Statistics:"
+             <<               "\n***   Successful scripts:  " 
+             << successful << "\n***   Failed Scripts:      "
+             << failed     << "\n***   Skipped Scripts:     "
+             << skipped    << "\n**************************************\n";
              
    if (failed > 0) {
-      std::cout << _T("\n**************************************\n") 
-                << _T("***   Scripts that failed:\n");
+      std::cout << "\n**************************************\n" 
+                << "***   Scripts that failed:\n";
       for (StringArray::iterator i = failedScripts.begin(); 
            i != failedScripts.end(); ++i)
-         std::cout << _T("***      ") << *i << _T("\n");
-      std::cout << _T("**************************************\n");
+         std::cout << "***      " << *i << "\n";
+      std::cout << "**************************************\n";
    }
    if (skipped > 0) {
-      std::cout << _T("\n**************************************\n")<< _T("***   Scripts that were skipped:\n");
+      std::cout << "\n**************************************\n"<< "***   Scripts that were skipped:\n";
       for (StringArray::iterator i = skippedScripts.begin(); 
            i != skippedScripts.end(); ++i)
-         std::cout << _T("***      ") << *i << _T("\n");
-      std::cout << _T("**************************************\n\n");
+         std::cout << "***      " << *i << "\n";
+      std::cout << "**************************************\n\n";
    }
 
    return count;
@@ -262,7 +262,7 @@ Integer RunBatch(wxString& batchfilename)
 
 
 //------------------------------------------------------------------------------
-// void SaveScript(wxString filename)
+// void SaveScript(std::string filename)
 //------------------------------------------------------------------------------
 /**
  * Saves the current script to a file
@@ -270,16 +270,16 @@ Integer RunBatch(wxString& batchfilename)
  * @param <filename> The name of the script file.
  */
 //------------------------------------------------------------------------------
-void SaveScript(wxString filename)
+void SaveScript(std::string filename)
 {
     Moderator *mod = Moderator::Instance();
     mod->SaveScript(filename);
-    std::cout << _T("\n\n");
+    std::cout << "\n\n";
 }
 
 
 //------------------------------------------------------------------------------
-// void ShowCommandSummary(wxString filename)
+// void ShowCommandSummary(std::string filename)
 //------------------------------------------------------------------------------
 /**
  * Displays the command summary, either on screen or writing to a file
@@ -287,34 +287,34 @@ void SaveScript(wxString filename)
  * @param <filename> The name of the summary file.
  */
 //------------------------------------------------------------------------------
-void ShowCommandSummary(wxString filename)
+void ShowCommandSummary(std::string filename)
 {
    Moderator *mod = Moderator::Instance();
    GmatCommand *cmd = mod->GetFirstCommand();
-   if (cmd->GetTypeName() == _T("NoOp"))
+   if (cmd->GetTypeName() == "NoOp")
       cmd = cmd->GetNext();
    
    if (cmd == NULL)
    {
-      std::cout << _T("Command stream is empty.\n\n");
+      std::cout << "Command stream is empty.\n\n";
       return;
    }
    
-   if (filename == _T(""))
+   if (filename == "")
    {
-      std::cout << _T("\n\n");
-      wxString summary = cmd->GetStringParameter(_T("MissionSummary"));
-      std::cout << summary << _T("\n\n");
+      std::cout << "\n\n";
+      std::string summary = cmd->GetStringParameter("MissionSummary");
+      std::cout << summary << "\n\n";
    }
    else
    {
-      std::cout << _T("File output for command summaries is not yet available\n\n");
+      std::cout << "File output for command summaries is not yet available\n\n";
    }
 }
 
 
 //------------------------------------------------------------------------------
-// void TestSyncModeAccess(wxString filename)
+// void TestSyncModeAccess(std::string filename)
 //------------------------------------------------------------------------------
 /**
  * Tests the propsync script.
@@ -324,83 +324,83 @@ void ShowCommandSummary(wxString filename)
  * @param <filename> The name of the script file.  (Not used)
  */
 //------------------------------------------------------------------------------
-void TestSyncModeAccess(wxString filwwename)
+void TestSyncModeAccess(std::string filwwename)
 {
     Moderator *mod = Moderator::Instance();
     
     // First load up the Moderator with the propsync script
-    RunScriptInterpreter(_T("propsync.script"), 1);
-    std::cout << _T("\n\n");
+    RunScriptInterpreter("propsync.script", 1);
+    std::cout << "\n\n";
     
     // Find the command entry point
     GmatCommand *cmd = mod->GetFirstCommand();
     StringArray props, sats;
     
     while (cmd) {
-       if (cmd->GetTypeName() == _T("Propagate")) {
-          std::cout << _T("Found \"") << cmd->GetGeneratingString() << _T("\"\n");
-          std::cout << _T("Current propagation mode is \"") 
-                    << cmd->GetStringParameter(_T("PropagateMode"))
-                    << _T("\"\n");
-          props = cmd->GetStringArrayParameter(_T("Propagator"));
+       if (cmd->GetTypeName() == "Propagate") {
+          std::cout << "Found \"" << cmd->GetGeneratingString() << "\"\n";
+          std::cout << "Current propagation mode is \"" 
+                    << cmd->GetStringParameter("PropagateMode")
+                    << "\"\n";
+          props = cmd->GetStringArrayParameter("Propagator");
           for (Integer i = 0; i < (Integer) props.size(); ++i) {
-             std::cout << _T("  Propagator: ") << props[i] << _T("\n");
-             sats = cmd->GetStringArrayParameter(_T("Spacecraft"), i);
+             std::cout << "  Propagator: " << props[i] << "\n";
+             sats = cmd->GetStringArrayParameter("Spacecraft", i);
              for (Integer i = 0; i < (Integer) sats.size(); ++i) {
-                std::cout << _T("    SpaceObject: ") << sats[i] << _T("\n");
+                std::cout << "    SpaceObject: " << sats[i] << "\n";
              }
           }
           
           // Now try clearing this puppy
-          std::cout << _T("*** Testing the \"Clear\" action\n");
-          cmd->TakeAction(_T("Clear"));
-          std::cout << _T("Current propagation mode is \"") 
-                    << cmd->GetStringParameter(_T("PropagateMode"))
-                    << _T("\"\n");
-          props = cmd->GetStringArrayParameter(_T("Propagator"));
+          std::cout << "*** Testing the \"Clear\" action\n";
+          cmd->TakeAction("Clear");
+          std::cout << "Current propagation mode is \"" 
+                    << cmd->GetStringParameter("PropagateMode")
+                    << "\"\n";
+          props = cmd->GetStringArrayParameter("Propagator");
           for (Integer i = 0; i < (Integer) props.size(); ++i) {
-             std::cout << _T("  Propagator: ") << props[i] << _T("\n");
-             sats = cmd->GetStringArrayParameter(_T("Spacecraft"), i);
+             std::cout << "  Propagator: " << props[i] << "\n";
+             sats = cmd->GetStringArrayParameter("Spacecraft", i);
              for (Integer i = 0; i < (Integer) sats.size(); ++i) {
-                std::cout << _T("    SpaceObject: ") << sats[i] << _T("\n");
+                std::cout << "    SpaceObject: " << sats[i] << "\n";
              }
           }
           
           // Now add in some bogus data
-          std::cout << _T("*** Testing the \"SetString\" method: \"\", ")
-                    << _T("\"Bogus\", \"Synchronized\"\n");
-          cmd->SetStringParameter(_T("PropagateMode"), _T(""));
-          std::cout << _T("Current propagation mode is \"") 
-                    << cmd->GetStringParameter(_T("PropagateMode"))
-                    << _T("\"\n");
-//          cmd->SetStringParameter(_T("PropagateMode"), _T("Bogus"));
-          std::cout << _T("Current propagation mode is \"") 
-                    << cmd->GetStringParameter(_T("PropagateMode"))
-                    << _T("\"\n");
-          cmd->SetStringParameter(_T("PropagateMode"), _T("Synchronized"));
-          std::cout << _T("Current propagation mode is \"") 
-                    << cmd->GetStringParameter(_T("PropagateMode"))
-                    << _T("\"\n");
+          std::cout << "*** Testing the \"SetString\" method: \"\", "
+                    << "\"Bogus\", \"Synchronized\"\n";
+          cmd->SetStringParameter("PropagateMode", "");
+          std::cout << "Current propagation mode is \"" 
+                    << cmd->GetStringParameter("PropagateMode")
+                    << "\"\n";
+//          cmd->SetStringParameter("PropagateMode", "Bogus");
+          std::cout << "Current propagation mode is \"" 
+                    << cmd->GetStringParameter("PropagateMode")
+                    << "\"\n";
+          cmd->SetStringParameter("PropagateMode", "Synchronized");
+          std::cout << "Current propagation mode is \"" 
+                    << cmd->GetStringParameter("PropagateMode")
+                    << "\"\n";
 
-          std::cout << _T("Setting the stooges as the PropSetups\n");
-          cmd->SetStringParameter(_T("Propagator"), _T("Moe"));
-          cmd->SetStringParameter(_T("Propagator"), _T("Curly"));
-          cmd->SetStringParameter(_T("Propagator"), _T("Larry"));
-          std::cout << _T("Setting the dwarfs as the Spacecraft\n");
-          cmd->SetStringParameter(_T("Spacecraft"), _T("Dopey"), 0);
-          cmd->SetStringParameter(_T("Spacecraft"), _T("Sleepy"), 1);
-          cmd->SetStringParameter(_T("Spacecraft"), _T("Doc"), 2);
-          cmd->SetStringParameter(_T("Spacecraft"), _T("Happy"), 0);
-          cmd->SetStringParameter(_T("Spacecraft"), _T("Grumpy"), 1);
-          cmd->SetStringParameter(_T("Spacecraft"), _T("Bashful"), 2);
-          cmd->SetStringParameter(_T("Spacecraft"), _T("Sneezy"), 0);
+          std::cout << "Setting the stooges as the PropSetups\n";
+          cmd->SetStringParameter("Propagator", "Moe");
+          cmd->SetStringParameter("Propagator", "Curly");
+          cmd->SetStringParameter("Propagator", "Larry");
+          std::cout << "Setting the dwarfs as the Spacecraft\n";
+          cmd->SetStringParameter("Spacecraft", "Dopey", 0);
+          cmd->SetStringParameter("Spacecraft", "Sleepy", 1);
+          cmd->SetStringParameter("Spacecraft", "Doc", 2);
+          cmd->SetStringParameter("Spacecraft", "Happy", 0);
+          cmd->SetStringParameter("Spacecraft", "Grumpy", 1);
+          cmd->SetStringParameter("Spacecraft", "Bashful", 2);
+          cmd->SetStringParameter("Spacecraft", "Sneezy", 0);
           
-          props = cmd->GetStringArrayParameter(_T("Propagator"));
+          props = cmd->GetStringArrayParameter("Propagator");
           for (Integer i = 0; i < (Integer) props.size(); ++i) {
-             std::cout << _T("  Propagator: ") << props[i] << _T("\n");
-             sats = cmd->GetStringArrayParameter(_T("Spacecraft"), i);
+             std::cout << "  Propagator: " << props[i] << "\n";
+             sats = cmd->GetStringArrayParameter("Spacecraft", i);
              for (Integer i = 0; i < (Integer) sats.size(); ++i) {
-                std::cout << _T("    SpaceObject: ") << sats[i] << _T("\n");
+                std::cout << "    SpaceObject: " << sats[i] << "\n";
              }
           }
        }
@@ -408,7 +408,7 @@ void TestSyncModeAccess(wxString filwwename)
        cmd = cmd->GetNext();
     }
     
-    std::cout << _T("\n\n");
+    std::cout << "\n\n";
 }
 
 
@@ -427,21 +427,21 @@ void DumpDEData(double secsToStep, double spanInSecs)
 {
    double baseEpoch = 21545.0, currentEpoch = 21545.0;
    long step = 0;
-   std::ofstream data(_T("EarthMoonDe.txt"));
+   std::ofstream data("EarthMoonDe.txt");
 
    Moderator *mod = Moderator::Instance();
    if (!mod->Initialize()) {
-      throw ConsoleAppException(_T("Moderator failed to initialize!"));
+      throw ConsoleAppException("Moderator failed to initialize!");
    }
 
    SolarSystem *sol = mod->GetSolarSystemInUse();
    if (sol == NULL)
-      MessageInterface::ShowMessage(_T("Oh no, the solar system is NULL!"));
+      MessageInterface::ShowMessage("Oh no, the solar system is NULL!");
 
-   CelestialBody *earth = sol->GetBody(_T("Earth"));
-   CelestialBody *moon  = sol->GetBody(_T("Luna"));
+   CelestialBody *earth = sol->GetBody("Earth");
+   CelestialBody *moon  = sol->GetBody("Luna");
 
-   data << _T("Earth and Moon Position and Velocity from the DE file\n\n");
+   data << "Earth and Moon Position and Velocity from the DE file\n\n";
 
    data.precision(17);
    double targetEpoch = currentEpoch + spanInSecs / 86400.0;
@@ -453,13 +453,13 @@ void DumpDEData(double secsToStep, double spanInSecs)
       Rvector6 moonRV  = moon->GetMJ2000State(currentEpoch);
       Rvector3 moonAcc = moon->GetMJ2000Acceleration(currentEpoch);
 
-      data << currentEpoch << _T(" ") << (step * secsToStep) << _T(" ")
-//           << earthRV[0] << _T(" ") << earthRV[1] << _T(" ") << earthRV[2] << _T(" ")
-//           << earthRV[3] << _T(" ") << earthRV[4] << _T(" ") << earthRV[5] << _T(" | ")
-           << moonRV[0] << _T(" ") << moonRV[1] << _T(" ") << moonRV[2] << _T(" ")
-           << moonRV[3] << _T(" ") << moonRV[4] << _T(" ") << moonRV[5]
-           << moonAcc[0] << _T(" ") << moonAcc[1] << _T(" ") << moonAcc[2]
-           << _T("\n");
+      data << currentEpoch << " " << (step * secsToStep) << " "
+//           << earthRV[0] << " " << earthRV[1] << " " << earthRV[2] << " "
+//           << earthRV[3] << " " << earthRV[4] << " " << earthRV[5] << " | "
+           << moonRV[0] << " " << moonRV[1] << " " << moonRV[2] << " "
+           << moonRV[3] << " " << moonRV[4] << " " << moonRV[5]
+           << moonAcc[0] << " " << moonAcc[1] << " " << moonAcc[2]
+           << "\n";
 
       ++step;
    }
@@ -481,81 +481,91 @@ void DumpDEData(double secsToStep, double spanInSecs)
 int main(int argc, char *argv[])
 {
    try {
-      wxString msg = _T("General Mission Analysis Tool\nConsole Based Version\n");
+      std::string msg = "General Mission Analysis Tool\nConsole Based Version\n";
 
-      msg += _T("Build Date: ");
+      msg += "Build Date: ";
       msg += __DATE__;
-      msg += _T("  ");
+      msg += "  ";
       msg += __TIME__;
       
-      std::cout << _T("\n********************************************\n")
-                << _T("***  GMAT Console Application\n")
-                << _T("********************************************\n\n")
-                << msg << _T("\n\n")
+      std::cout << "\n********************************************\n"
+                << "***  GMAT Console Application\n"
+                << "********************************************\n\n"
+                << msg << "\n\n"
                 << std::endl;
       
       char scriptfile[1024];
       bool runcomplete = false;
       int verbosity = 1;
-      wxString optionParm = _T("");
+      std::string optionParm = "";
       StringArray parms;
       
       do {
-         if (argc < 2) {
-            std::cout << _T("Enter a script file, ") 
-                      << _T("q to quit, or an option:  ");
+         if (argc < 2)
+         {
+            std::cout << "Enter a script file, " 
+                      << "q to quit, or an option:  ";
             
             std::cin >> scriptfile;
             // Drop the return character -- may be platform dependent
             std::cin.ignore(1);
             
             parms.clear();
-            wxString chunk;
+            std::string chunk;
             // Integer start = 0, finish;
          }
-         else {
+         else
+         {
             strcpy(scriptfile, argv[1]);
             if (argc == 3)
                optionParm = argv[2];
-            if (optionParm != _T(""))
-               std::cout << _T("Optional parameter: \"") << optionParm << _T("\"\n");
+            if (optionParm != "")
+               std::cout << "Optional parameter: \"" << optionParm << "\"\n";
          }
             
-         if ((!strcmp(scriptfile, _T("q"))) || (!strcmp(scriptfile, _T("Q"))))
+         if ((!strcmp(scriptfile, "q")) || (!strcmp(scriptfile, "Q")))
             runcomplete = true;
             
-         if (scriptfile[0] == '-') {
-            if (!strcmp(scriptfile, _T("--help"))) {
+         if (scriptfile[0] == '-')
+         {
+            if (!strcmp(scriptfile, "--help"))
+            {
                ShowHelp();
             }
-            else if (!strcmp(scriptfile, _T("--batch"))) {
+            else if (!strcmp(scriptfile, "--batch"))
+            {
                RunBatch(optionParm);
             }
-            else if (!strcmp(scriptfile, _T("--save"))) {
+            else if (!strcmp(scriptfile, "--save"))
+            {
                SaveScript();
             }
-            else if (!strcmp(scriptfile, _T("--summary"))) {
+            else if (!strcmp(scriptfile, "--summary"))
+            {
                ShowCommandSummary();
             }
-            else if (!strcmp(scriptfile, _T("--sync"))) {
+            else if (!strcmp(scriptfile, "--sync"))
+            {
                TestSyncModeAccess();
             }
-            else if (!strcmp(scriptfile, _T("--verbose")))
+            else if (!strcmp(scriptfile, "--verbose"))
             {
-               if (!strcmp(optionParm.c_str(), _T("off")))
+               if (!strcmp(optionParm.c_str(), "off"))
                   verbosity = 0;
-               std::cout << _T("Verbose mode is ") 
-                         << (verbosity == 0 ? _T("off") : _T("on"))
-                         << _T("\n");
+               std::cout << "Verbose mode is " 
+                         << (verbosity == 0 ? "off" : "on")
+                         << "\n";
                argc = 1;
             }
             // Options used for some detailed tests but hidden from casual users
             // (i.e. missing from the help messages)
-            else if (!strcmp(scriptfile, _T("--DumpDEData"))) {
+            else if (!strcmp(scriptfile, "--DumpDEData"))
+            {
                DumpDEData(0.001, 0.2);
             }
-            else {
-               std::cout << _T("Unrecognized option.\n\n");
+            else
+            {
+               std::cout << "Unrecognized option.\n\n";
                ShowHelp();
             }
          }

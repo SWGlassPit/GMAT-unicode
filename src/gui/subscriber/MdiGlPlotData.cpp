@@ -1,4 +1,4 @@
-//$Id: MdiGlPlotData.cpp 9514 2011-04-30 21:44:00Z djcinsb $
+//$Id: MdiGlPlotData.cpp 9876 2011-09-16 20:58:50Z lindajun $
 //------------------------------------------------------------------------------
 //                              MdiGlPlotData
 //------------------------------------------------------------------------------
@@ -19,8 +19,8 @@
 #include "MdiGlPlotData.hpp"
 
 wxList MdiGlPlot::mdiChildren;
-int MdiGlPlot::numChildren = 0;
-
+int    MdiGlPlot::numChildren = 0;
+bool   MdiGlPlot::usePresetSize = false;
 
 wxString GmatPlot::BodyInfo::BODY_NAME[GmatPlot::MAX_BODIES] =
 {

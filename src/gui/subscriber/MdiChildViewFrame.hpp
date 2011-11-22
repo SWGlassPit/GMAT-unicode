@@ -1,4 +1,4 @@
-//$Id: MdiChildViewFrame.hpp 9846 2011-09-07 17:57:29Z wendys-dev $
+//$Id: MdiChildViewFrame.hpp 9877 2011-09-16 22:36:24Z lindajun $
 //------------------------------------------------------------------------------
 //                              MdiChildViewFrame
 //------------------------------------------------------------------------------
@@ -167,5 +167,7 @@ protected:
    
    wxArrayString mBodyNames;
    UnsignedIntArray mBodyColors;
+   
+   DECLARE_EVENT_TABLE()
 };
 #endif

@@ -1,4 +1,4 @@
-//$Id: MdiTsPlotData.cpp 9514 2011-04-30 21:44:00Z djcinsb $
+//$Id: MdiTsPlotData.cpp 9876 2011-09-16 20:58:50Z lindajun $
 //------------------------------------------------------------------------------
 //                              MdiGlPlotData
 //------------------------------------------------------------------------------
@@ -19,4 +19,5 @@
 #include "MdiTsPlotData.hpp" 
 
 wxList MdiTsPlot::mdiChildren;
-int MdiTsPlot::numChildren = 0;
+int    MdiTsPlot::numChildren = 0;
+bool   MdiTsPlot::usePresetSize = false;

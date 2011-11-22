@@ -1,4 +1,4 @@
-//$Id: BaseException.cpp 9513 2011-04-30 21:23:06Z djcinsb $
+//$Id: BaseException.cpp 9898 2011-09-23 16:33:36Z djcinsb $
 //------------------------------------------------------------------------------
 //                             BaseException
 //------------------------------------------------------------------------------
@@ -131,6 +131,9 @@ void BaseException::SetDetails(const wxString &details, ...)
 //      #else
    ret = msgBuffer.Printf(details, marker);
 //      #endif
+
+      if (ret < 0)
+         ;   // Neg number means the call failed; should we do anything?
 
    va_end(marker);
 

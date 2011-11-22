@@ -1,4 +1,4 @@
-//$Id: GmatApp.cpp 9681 2011-07-07 16:46:20Z lindajun $
+//$Id: GmatApp.cpp 9893 2011-09-21 16:43:42Z wendys-dev $
 //------------------------------------------------------------------------------
 //                              GmatApp
 //------------------------------------------------------------------------------
@@ -293,7 +293,7 @@ bool GmatApp::OnInit()
       wxString nowStr = wxNowStr.c_str();
       
       MessageInterface::LogMessage
-         (nowStr + wxT("Error encounted while launching GMAT GUI.\n\n"));
+         (nowStr + wxT("Error encountered while launching GMAT GUI.\n\n"));
       
       MessageInterface::LogMessage(e.GetFullMessage());
       return false;
@@ -305,7 +305,7 @@ bool GmatApp::OnInit()
       wxString nowStr = wxNowStr.c_str();
       
       MessageInterface::LogMessage
-         (nowStr + wxT("Unknown error encounted while launching GMAT GUI.\n\n"));
+         (nowStr + wxT("Unknown error encountered while launching GMAT GUI.\n\n"));
       return false;
    }
 }

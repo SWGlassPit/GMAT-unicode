@@ -1,4 +1,4 @@
-//$Id: AtmosphereModel.hpp 9757 2011-08-10 22:47:51Z djcinsb $
+//$Id: AtmosphereModel.hpp 9881 2011-09-19 21:13:26Z tnguye2 $
 //------------------------------------------------------------------------------
 //                              AtmosphereModel
 //------------------------------------------------------------------------------
@@ -176,6 +176,10 @@ protected:
 
    
    Real                    CalculateGeodetics(Real *position,
+                                 GmatEpoch when = -1.0,
+                                 bool includeLatLong = false);
+
+   Real                    CalculateGeocentrics(Real *position,
                                  GmatEpoch when = -1.0,
                                  bool includeLatLong = false);
 
