@@ -1,4 +1,4 @@
-//$Id: GmatMainFrame.cpp 9900 2011-09-23 17:06:26Z lindajun $
+//$Id: GmatMainFrame.cpp 9909 2011-09-26 14:42:30Z wendys-dev $
 //------------------------------------------------------------------------------
 //                              GmatMainFrame
 //------------------------------------------------------------------------------
@@ -29,6 +29,7 @@
  * This class provides the main frame for GMAT.
  */
 //------------------------------------------------------------------------------
+#include <wx/fileconf.h>
 #include "gmatwxrcs.hpp"
 #include "GmatMainFrame.hpp"
 #include "GmatAppData.hpp"
@@ -116,6 +117,8 @@
 
 
 #include <wx/dir.h>
+#include <wx/sstream.h>
+#include <wx/txtstrm.h>
 #include <wx/filename.h>
 #include <wx/gdicmn.h>
 #include <wx/toolbar.h>
@@ -149,6 +152,8 @@
 //#define DEBUG_SERVER
 //#define DEBUG_CREATE_CHILD
 //#define DEBUG_CHILD_OPEN
+//#define DEBUG_CHILD_WINDOW
+
 //#define DEBUG_REMOVE_CHILD
 //#define DEBUG_OPEN_SCRIPT
 //#define DEBUG_REFRESH_SCRIPT
@@ -157,6 +162,8 @@
 //#define DEBUG_SIZE
 //#define DBGLVL_MENUBAR 1
 //#define DEBUG_PENDING_EVENTS
+//#define DEBUG_DOCK_UNDOCK
+//#define DEBUG_CONFIG_DATA
 
 using namespace GmatMenu;
 
@@ -293,6 +300,7 @@ GmatMainFrame::GmatMainFrame(wxWindow *parent,  const wxWindowID id,
    mAnimationEnabled = true;
    mInterpretFailed = false;
    mExitWithoutConfirm = false;
+   mUndockedMissionTreePresized = false;
    mRunStatus = 0;
    
    viewSubframe = (MdiChildViewFrame *)NULL;
@@ -693,8 +701,12 @@ GmatMdiChildFrame* GmatMainFrame::CreateChild(GmatTreeItemData *item,
    if (newChild != NULL)
    {
       int numChildren = GetNumberOfChildOpen(false, false, true);
-      if (numChildren > 0)
+      if ((numChildren > 0) && !((newChild->GetItemType() == GmatTree::MISSION_TREE_UNDOCKED) && mUndockedMissionTreePresized))
       {         
+         #ifdef DEBUG_CHILD_WINDOW
+         MessageInterface::ShowMessage
+            (wxT("Now repositioning the Mdi child window(s) ...................\n"));
+         #endif
          int toolW, toolH;
          theToolBar->GetSize(&toolW, &toolH);         
          int x = (numChildren - 1) * 20;         
@@ -718,7 +730,7 @@ GmatMdiChildFrame* GmatMainFrame::CreateChild(GmatTreeItemData *item,
             int y = x - toolH;
             
             // Why it doesn't position first child (0,0) to top left corner?
-            // Put UndockedMissionPanel alway in the top left corner
+            // Put UndockedMissionPanel always in the top left corner
             if (newChild->GetItemType() == GmatTree::MISSION_TREE_UNDOCKED)
             {
                int mpW, mpH;
@@ -881,16 +893,32 @@ bool GmatMainFrame::IsMissionTreeUndocked(Integer &width)
    int h = 0;
    width = 0;
    
-   GmatMdiChildFrame *child = GetChild(wxT("MissionTree"));
+//   GmatMdiChildFrame *child = GetChild("MissionTree");
+   GmatMdiChildFrame *child = GetChild(wxT("Mission"));
    if (child != NULL)
    {
       if (child->GetItemType() == GmatTree::MISSION_TREE_UNDOCKED)
       {
          child->GetSize(&w, &h);
          width = w;
+         #ifdef DEBUG_DOCK_UNDOCK
+            MessageInterface::ShowMessage(wxT("IsMissionTreeUndocked: returning true\n"));
+         #endif
          return true;
       }
+      #ifdef DEBUG_DOCK_UNDOCK
+         else
+         {
+            MessageInterface::ShowMessage(wxT("IsMissionTreeUndocked: child is not of type MISSION_TREE_UNDOCKED\n"));
+         }
+      #endif
    }
+   #ifdef DEBUG_DOCK_UNDOCK
+      else
+      {
+         MessageInterface::ShowMessage(wxT("IsMissionTreeUndocked: child == NULL\n"));
+      }
+   #endif
    
    return false;
 }
@@ -900,7 +928,7 @@ bool GmatMainFrame::IsMissionTreeUndocked(Integer &width)
 // void IconizeUndockedMissionTree()
 //------------------------------------------------------------------------------
 /**
- * Iconizes undocled mission tree if opened
+ * Iconizes undocked mission tree if opened
  */
 //------------------------------------------------------------------------------
 void GmatMainFrame::IconizeUndockedMissionTree()
@@ -1262,11 +1290,26 @@ bool GmatMainFrame::CloseAllChildren(bool closeScriptWindow, bool closePlots,
    #ifdef DEBUG_MAINFRAME_CLOSE
    MessageInterface::ShowMessage
       (wxT("GmatMainFrame::CloseAllChildren() closeScriptWindow=%d, closePlots=%d, ")
-       wxT("closeReports=%d\n"), closeScriptWindow, closePlots, closeReports);
+       wxT("closeReports=%d, closeUndockedMissionTree=%d\n"), closeScriptWindow, closePlots,
+       closeReports, closeUndockedMissionTree );
    MessageInterface::ShowMessage
       (wxT("   Number of children = %d\n"), theMdiChildren->GetCount());
    #endif
 
+   // Make sure the Mission Tree data is set in the personalization file
+   if (closeUndockedMissionTree)
+   {
+      wxFileConfig *pConfig;
+      pConfig = (wxFileConfig *) GmatAppData::Instance()->GetPersonalizationConfig();
+      Integer width = 0;
+      if (IsMissionTreeUndocked(width))
+      {
+         pConfig->Write(wxT("/MissionTree/Docked"), wxT("false"));
+//         SaveConfigurationData("MissionTree");
+      }
+      else
+         pConfig->Write(wxT("/MissionTree/Docked"), wxT("true"));
+   }
    wxString name;
    wxString title;
    GmatTree::ItemType type;
@@ -2011,6 +2054,21 @@ void GmatMainFrame::EnableAnimation(bool enable)
    mAnimationEnabled = enable;
 }
 
+//------------------------------------------------------------------------------
+// void ManageMissionTree()
+//------------------------------------------------------------------------------
+void GmatMainFrame::ManageMissionTree()
+{
+   // Check to see if the Mission Tree should be undocked
+   wxFileConfig *pConfig;
+   pConfig = (wxFileConfig *) GmatAppData::Instance()->GetPersonalizationConfig();
+   wxString isMissionTreeDocked;
+   pConfig->Read(wxT("/MissionTree/Docked"), &isMissionTreeDocked, wxT("true"));
+   if (isMissionTreeDocked.Lower() == wxT("false"))
+      theNotebook->CreateUndockedMissionPanel();
+
+}
+
 //-------------------------------
 // private methods
 //-------------------------------
@@ -2151,7 +2209,7 @@ bool GmatMainFrame::SaveScriptAs()
          if (wxMessageBox(wxT("File already exists.\nDo you want to overwrite?"),
                           wxT("Please confirm"), wxICON_QUESTION | wxYES_NO) == wxYES)
          {
-            SavePlotPositionsAndSizes();
+            SaveChildPositionsAndSizes();
             theGuiInterpreter->SaveScript(mScriptFilename);
          }
          else
@@ -2162,7 +2220,7 @@ bool GmatMainFrame::SaveScriptAs()
       }
       else
       {
-         SavePlotPositionsAndSizes();
+         SaveChildPositionsAndSizes();
          theGuiInterpreter->SaveScript(mScriptFilename);
       }
    }
@@ -3198,13 +3256,91 @@ GmatMainFrame::CreateNewOutput(const wxString &title, const wxString &name,
    #endif
    
    wxGridSizer *sizer = new wxGridSizer(1, 0, 0);
-   GmatMdiChildFrame *newChild = new GmatMdiChildFrame(this, name, title, itemType);
-   wxScrolledWindow *scrolledWin = new wxScrolledWindow(newChild);
+   GmatMdiChildFrame *newChild;
+   wxScrolledWindow *scrolledWin;
 
    switch (itemType)
    {
    case GmatTree::OUTPUT_REPORT:
       {
+         GmatBase *obj = (Subscriber*) theGuiInterpreter->GetConfiguredObject(name.c_str());
+         if ((!obj) || !(obj->IsOfType(wxT("Subscriber"))))
+         {
+            wxMessageBox(wxT("The object \"") + name + wxT("\" cannot be found or is not a Subscriber - cannot obtain report file panel position and size.\n"),
+                         wxT("GMAT Error"));
+         }
+         Subscriber *sub = (Subscriber*) obj;
+         // Get the position and size of the report file panel
+         Real positionX = sub->GetRealParameter(sub->GetParameterID(wxT("UpperLeft")),0);
+         Real positionY = sub->GetRealParameter(sub->GetParameterID(wxT("UpperLeft")),1);
+         Real width     = sub->GetRealParameter(sub->GetParameterID(wxT("Size")),0);
+         Real height    = sub->GetRealParameter(sub->GetParameterID(wxT("Size")),1);
+
+         Integer x = 0.0;
+         Integer y = 0.0;
+         Integer w = 0.0;
+         Integer h = 0.0;
+         // ********* replace this with cross-platform code *********
+         Integer screenWidth  = wxSystemSettings::GetMetric(wxSYS_SCREEN_X);
+         Integer screenHeight = wxSystemSettings::GetMetric(wxSYS_SCREEN_Y);
+         // if position and size were not saved from an earlier run, figure out the initial values
+         if (GmatMathUtil::IsEqual(positionX,0.0) && GmatMathUtil::IsEqual(positionY,0.0) &&
+             GmatMathUtil::IsEqual(width,0.0)     && GmatMathUtil::IsEqual(height,0.0))
+         {
+            #ifdef __WXMAC__
+               x = -1;   // @todo - move it so it doesn't come up in the upper left corner on top of the main frame
+               y = -1;
+               w = -1;
+               h = -1;
+            #else
+               w = (Integer)((Real)screenWidth / 3.0);
+               h = (Integer)((Real)screenHeight / 2.5);
+            // customize size up to 4 plots for now
+//            int newCount = plotCount + 1;
+//            if (newCount <= 4)
+//            {
+//               // if odd number, put it in 1st row
+//               if ((newCount % 2) == 1)
+//               {
+//                  x = 0;
+//                  y = h * ((newCount + 1) / 2 - 1);
+//               }
+//               else  // even number, put it in 2nd row
+//               {
+//                  x = w;
+//                  y = h * (newCount / 2 - 1);
+//               }
+//            }
+//            else
+//            {
+               x = -1;
+               y = -1;
+//            }
+         #endif
+         }
+         else
+         {
+            x = (Integer) (positionX * (Real) screenWidth);
+            y = (Integer) (positionY * (Real) screenHeight);
+            w = (Integer) (width     * (Real) screenWidth);
+            h = (Integer) (height    * (Real) screenHeight);
+         }
+         #ifndef __WXMAC__
+            Real realW = (Real)screenWidth;
+            Real realH = (Real)screenHeight;
+            Integer xOffset = (Integer)((realW * 0.01) + (10000.0 / realW));
+            Integer yOffset = (Integer)((realH * 0.06) + (10000.0 / realH));
+            if (x == -1) x = 0;
+            //else x -= xOffset;
+            y -= yOffset;
+            #ifdef DEBUG_PLOT_PERSISTENCY
+            MessageInterface::ShowMessage(wxT("   screen offset: x = %4d, y = %4d\n"), xOffset, yOffset);
+            MessageInterface::ShowMessage(wxT("   after offset : x = %4d, y = %4d\n"), x, y);
+            #endif
+         #endif
+
+         newChild = new GmatMdiChildFrame(this, name, title, itemType, -1, wxPoint(x,y), wxSize(w,h));
+         scrolledWin = new wxScrolledWindow(newChild);
          ReportFilePanel *reportPanel = new ReportFilePanel(scrolledWin, name);
          sizer->Add(reportPanel, 0, wxGROW|wxALL, 0);
          newChild->SetScriptTextCtrl(reportPanel->mFileContentsTextCtrl);
@@ -3212,6 +3348,8 @@ GmatMainFrame::CreateNewOutput(const wxString &title, const wxString &name,
       }
    case GmatTree::COMPARE_REPORT:
       {
+         newChild = new GmatMdiChildFrame(this, name, title, itemType); // -1, wxPoint, wxSize
+         scrolledWin = new wxScrolledWindow(newChild);
          CompareReportPanel *comparePanel = new CompareReportPanel(scrolledWin, name);
          sizer->Add(comparePanel, 0, wxGROW|wxALL, 0);
          newChild->SetScriptTextCtrl(comparePanel->GetTextCtrl());
@@ -3259,8 +3397,12 @@ GmatMainFrame::CreateUndockedMissionPanel(const wxString &title,
        title.c_str(), name.c_str(), itemType);
    #endif
    
+   // Get config data from the personalization file
+   Integer x = -1, y = -1, w = -1, h = -1;
+   mUndockedMissionTreePresized = GetConfigurationData(wxT("MissionTree"), x, y, w, h);
+
    wxGridSizer *sizer = new wxGridSizer(1, 0, 0);
-   GmatMdiChildFrame *newChild = new GmatMdiChildFrame(this, name, title, itemType);
+   GmatMdiChildFrame *newChild = new GmatMdiChildFrame(this, name, title, itemType, -1, wxPoint(x, y), wxSize(w, h));
    wxScrolledWindow *scrolledWin = new wxScrolledWindow(newChild);
    
    switch (itemType)
@@ -3270,7 +3412,7 @@ GmatMainFrame::CreateUndockedMissionPanel(const wxString &title,
          UndockedMissionPanel *mtPanel = new UndockedMissionPanel(scrolledWin, name);
          MissionTree *newMissionTree = mtPanel->GetMissionTree();
          
-         // Now GMAT will work new mission tree, so set apppropriate pointers
+         // Now GMAT will work new mission tree, so set appropriate pointers
          #ifdef DEBUG_MISSION_TREE
          MessageInterface::ShowMessage(wxT("   newMissionTree=<%p>\n"), newMissionTree);
          #endif
@@ -3295,8 +3437,11 @@ GmatMainFrame::CreateUndockedMissionPanel(const wxString &title,
    #ifdef __USE_CHILD_BEST_SIZE__
    if (itemType != GmatTree::SCRIPT_FILE)
    {
-      wxSize bestSize = newChild->GetBestSize();
-      newChild->SetSize(bestSize.GetWidth(), bestSize.GetHeight());
+      if (!((newChild->GetItemType() == GmatTree::MISSION_TREE_UNDOCKED) && mUndockedMissionTreePresized))
+      {
+         wxSize bestSize = newChild->GetBestSize();
+         newChild->SetSize(bestSize.GetWidth(), bestSize.GetHeight());
+      }
    }
    else
    {
@@ -4966,23 +5111,110 @@ void GmatMainFrame::SaveGuiToActiveScript()
          (wxT("***** Old script saved to backup file \"%s\"\n"), backupFilename.c_str());
    }
    
-   SavePlotPositionsAndSizes();
+   SaveChildPositionsAndSizes();
    theGuiInterpreter->SaveScript(mScriptFilename);
 }
 
 //------------------------------------------------------------------------------
-// void SavePlotPositionsAndSizes()
+// void SaveChildPositionsAndSizes()
 //------------------------------------------------------------------------------
-void GmatMainFrame::SavePlotPositionsAndSizes()
+void GmatMainFrame::SaveChildPositionsAndSizes()
 {
    wxNode *node = theMdiChildren->GetFirst();
 
    while (node)
    {
       GmatMdiChildFrame *child = (GmatMdiChildFrame *)node->GetData();
-      child->SavePlotPositionAndSize();
+      child->SaveChildPositionAndSize();
 
       node = node->GetNext();
    }
+}
+
+//------------------------------------------------------------------------------
+// void GetConfigurationData(const wxString &forItem)
+//------------------------------------------------------------------------------
+bool GmatMainFrame::GetConfigurationData(const wxString &forItem, Integer &x, Integer &y, Integer &w, Integer &h)
+{
+   bool isPresetSizeUsed = false;
+   // Get configuration data associated with MissionTree or ScriptEditor here
+   Real positionX = 0.0, positionY = 0.0;
+   Real width     = 0.0, height    = 0.0;
+
+   wxFileConfig *pConfig;
+   pConfig = (wxFileConfig *) GmatAppData::Instance()->GetPersonalizationConfig();
+   wxString upperLeftString = wxT("//");
+   upperLeftString += forItem + wxT("//UpperLeft");
+   wxString sizeString = wxT("//");
+   sizeString += forItem + wxT("//Size");
+
+   wxString treeUpperLeft, treeSize;
+   pConfig->Read(upperLeftString.c_str(), &treeUpperLeft, wxT("false"));
+   pConfig->Read(sizeString.c_str(), &treeSize, wxT("false"));
+   if ((treeUpperLeft.Lower() == wxT("false")) || (treeSize.Lower() == wxT("false")))
+   {
+      x = -1;   // @todo - move it so it doesn't come up in the upper left corner on top of the main frame
+      y = -1;
+      w = -1;
+      h = -1;
+      return isPresetSizeUsed;
+   }
+   // Compute the location and size for the item
+   wxString upperLeftStringStream(treeUpperLeft.c_str());
+   wxStringInputStream upperLeftStream(upperLeftStringStream);
+   wxTextInputStream upperLeft(upperLeftStream);
+   wxString sizeStringStream(treeSize.c_str());
+   wxStringInputStream sizeStream(sizeStringStream);
+   wxTextInputStream size(sizeStream);
+//   std::string xStr, yStr, wStr, hStr;  // ???????????????
+   upperLeft >> positionX >> positionY;
+   size      >> width     >> height;
+
+   #ifdef DEBUG_CONFIG_DATA
+   MessageInterface::ShowMessage(wxT("   config data read for %s  : x = %12.10f, y = %12.10f, w = %12.10f, h = %12.10f\n"),
+         forItem.c_str(), positionX, positionY, width, height);
+   #endif
+   Integer screenWidth  = 0;
+   Integer screenHeight = 0;
+
+   #ifdef __WXMAC__
+      screenWidth  = wxSystemSettings::GetMetric(wxSYS_SCREEN_X);
+      screenHeight = wxSystemSettings::GetMetric(wxSYS_SCREEN_Y);
+   #else
+      GetClientSize(&screenWidth, &screenHeight);
+   #endif
+
+   // Do we need the part with the plotCount, etc. (see GuiPlotReceiver)?????? <<<<<<<<<<<<<<<<<<<<
+   #ifdef DEBUG_CONFIG_DATA
+   MessageInterface::ShowMessage(wxT("   screen size  : w = %4d, h = %4d\n"), screenWidth, screenHeight);
+   #endif
+
+   isPresetSizeUsed = true;
+
+   x = (Integer) (positionX * (Real) screenWidth);
+   y = (Integer) (positionY * (Real) screenHeight);
+   w = (Integer) (width     * (Real) screenWidth);
+   h = (Integer) (height    * (Real) screenHeight);
+
+   #ifdef DEBUG_CONFIG_DATA
+   MessageInterface::ShowMessage(wxT("   before offset: x = %4d, y = %4d, w = %4d, h = %4d\n"), x, y, w,h);
+   #endif
+
+   // Since -1 is default position, change it to 0
+   #ifndef __WXMAC__
+      Real realW = (Real)screenWidth;
+      Real realH = (Real)screenHeight;
+      Integer xOffset = (Integer)((realW * 0.01) + (10000.0 / realW));
+      Integer yOffset = (Integer)((realH * 0.06) + (10000.0 / realH));
+      if (x == -1) x = 0;
+      //else x -= xOffset;
+      y -= yOffset;
+      #ifdef DEBUG_CONFIG_DATA
+      MessageInterface::ShowMessage(wxT("   screen offset: x = %4d, y = %4d\n"), xOffset, yOffset);
+      MessageInterface::ShowMessage(wxT("   after offset : x = %4d, y = %4d\n"), x, y);
+      #endif
+   #endif
+
+   return isPresetSizeUsed;
 }
 

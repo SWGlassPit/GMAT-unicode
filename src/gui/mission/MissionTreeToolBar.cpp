@@ -1,4 +1,4 @@
-//$Id: MissionTreeToolBar.cpp 9826 2011-08-31 22:16:42Z lindajun $
+//$Id: MissionTreeToolBar.cpp 9906 2011-09-24 20:15:28Z djcinsb $
 //------------------------------------------------------------------------------
 //                                 MissionTreeToolBar
 //------------------------------------------------------------------------------
@@ -149,8 +149,7 @@ void MissionTreeToolBar::CreateMissionTreeToolBar()
    guiManager->LoadIcon(wxT("mtc_ExcCall"), bitmapType, &bitmaps[++index], mtc_ExcCall_xpm);
    guiManager->LoadIcon(wxT("mtc_CustomView"), bitmapType, &bitmaps[++index], mtc_CustomView_xpm);
    
-   index = -1;
-   ++index;
+   index = 0;
    AddCheckTool(TOOL_LEVEL_ALL, wxT("LevelA"), *bitmaps[index],
                                  *bitmaps[index], wxT("Expand All Levels"));
    ++index;
@@ -162,8 +161,8 @@ void MissionTreeToolBar::CreateMissionTreeToolBar()
    ++index;
    AddCheckTool(TOOL_LEVEL_3, wxT("Level3"), *bitmaps[index],
                                  *bitmaps[index], wxT("Expand Three Levels"));
-   ++index;
    AddSeparator();
+   ++index;
    AddCheckTool(TOOL_INC_PHYSICS, wxT("IncPhysics"), *bitmaps[index],
                                  *bitmaps[index], wxT("Include Physics Related commands"));
    ++index;
@@ -175,8 +174,8 @@ void MissionTreeToolBar::CreateMissionTreeToolBar()
    ++index;
    AddCheckTool(TOOL_INC_CONTROL, wxT("IncControl"), *bitmaps[index],
                                  *bitmaps[index], wxT("Include Control Flow"));
-   ++index;
    AddSeparator();
+   ++index;
    AddCheckTool(TOOL_EXC_REPORT, wxT("ExcReport"), *bitmaps[index],
                                  *bitmaps[index], wxT("Exclude Report"));
    ++index;
@@ -188,8 +187,8 @@ void MissionTreeToolBar::CreateMissionTreeToolBar()
    ++index;
    AddCheckTool(TOOL_EXC_CALL, wxT("ExcCall"), *bitmaps[index],
                                  *bitmaps[index], wxT("Exclude CallFunction, Save commands"));
-   ++index;
    AddSeparator();
+   ++index;
    AddTool(TOOL_CUSTOM_VIEW, wxT("CustomizeView"), *bitmaps[index],
                             wxT("Customize Mission Tree View"));
    Realize();

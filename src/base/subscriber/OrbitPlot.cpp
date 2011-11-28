@@ -1,4 +1,4 @@
-//$Id: OrbitPlot.cpp 9857 2011-09-12 18:37:14Z lindajun $
+//$Id: OrbitPlot.cpp 9907 2011-09-26 14:38:05Z wendys-dev $
 //------------------------------------------------------------------------------
 //                                  OrbitPlot
 //------------------------------------------------------------------------------
@@ -768,26 +768,6 @@ Gmat::ParameterType OrbitPlot::GetParameterType(const Integer id) const
 wxString OrbitPlot::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
-}
-
-
-//---------------------------------------------------------------------------
-//  bool IsParameterReadOnly(const Integer id) const
-//---------------------------------------------------------------------------
-/**
- * Checks to see if the requested parameter is read only.
- *
- * @param <id> Description for the parameter.
- *
- * @return true if the parameter is read only, false (the default) if not,
- *         throws if the parameter is out of the valid range of values.
- */
-//---------------------------------------------------------------------------
-bool OrbitPlot::IsParameterReadOnly(const Integer id) const
-{
-   if ((id == UPPER_LEFT) || (id == SIZE))
-      return false;
-   return Subscriber::IsParameterReadOnly(id);
 }
 
 

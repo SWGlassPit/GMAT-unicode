@@ -1,4 +1,4 @@
-//$Id: MdiChildTsFrame.hpp 9846 2011-09-07 17:57:29Z wendys-dev $
+//$Id: MdiChildTsFrame.hpp 9908 2011-09-26 14:41:48Z wendys-dev $
 //------------------------------------------------------------------------------
 //                              MdiChildTsFrame
 //------------------------------------------------------------------------------
@@ -122,9 +122,7 @@ public:
    void OnMove(wxMoveEvent& event);
    void OnPlotClose(wxCloseEvent& event);
    void OnClose(wxCloseEvent& event);
-   
-   virtual void SavePlotPositionAndSize();
-   
+
 protected:
    
    void AdjustYScale();

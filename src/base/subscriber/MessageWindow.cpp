@@ -1,4 +1,4 @@
-//$Id: MessageWindow.cpp 9513 2011-04-30 21:23:06Z djcinsb $
+//$Id: MessageWindow.cpp 9907 2011-09-26 14:38:05Z wendys-dev $
 //------------------------------------------------------------------------------
 //                                  MessageWindow
 //------------------------------------------------------------------------------
@@ -174,6 +174,26 @@ wxString MessageWindow::GetParameterTypeString(const Integer id) const
       return GmatBase::PARAM_TYPE_STRING[GetParameterType(id - SubscriberParamCount)];
    else
       return Subscriber::GetParameterTypeString(id);
+}
+
+//---------------------------------------------------------------------------
+//  bool IsParameterReadOnly(const Integer id) const
+//---------------------------------------------------------------------------
+/**
+ * Checks to see if the requested parameter is read only.
+ *
+ * @param <id> Description for the parameter.
+ *
+ * @return true if the parameter is read only, false (the default) if not,
+ *         throws if the parameter is out of the valid range of values.
+ */
+//---------------------------------------------------------------------------
+bool MessageWindow::IsParameterReadOnly(const Integer id) const
+{
+   if (id == UPPER_LEFT || id == SIZE || id == RELATIVE_Z_ORDER || id == MINIMIZED)
+      return true;
+
+   return Subscriber::IsParameterReadOnly(id);
 }
 
 

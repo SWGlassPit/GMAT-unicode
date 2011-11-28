@@ -1,4 +1,4 @@
-//$Id: MessageWindow.hpp 9513 2011-04-30 21:23:06Z djcinsb $
+//$Id: MessageWindow.hpp 9907 2011-09-26 14:38:05Z wendys-dev $
 //------------------------------------------------------------------------------
 //                                  MessageWindow
 //------------------------------------------------------------------------------
@@ -37,8 +37,9 @@ public:
    virtual wxString GetParameterText(const Integer id) const;
    virtual Integer     GetParameterID(const wxString &str) const;
    virtual Gmat::ParameterType
-                     GetParameterType(const Integer id) const;
+                       GetParameterType(const Integer id) const;
    virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual bool        IsParameterReadOnly(const Integer id) const;
    
    virtual Integer     GetIntegerParameter(const Integer id) const;
    virtual Integer     SetIntegerParameter(const Integer id,

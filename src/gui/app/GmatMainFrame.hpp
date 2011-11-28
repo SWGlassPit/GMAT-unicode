@@ -1,4 +1,4 @@
-//$Id: GmatMainFrame.hpp 9876 2011-09-16 20:58:50Z lindajun $
+//$Id: GmatMainFrame.hpp 9909 2011-09-26 14:42:30Z wendys-dev $
 //------------------------------------------------------------------------------
 //                              GmatMainFrame
 //------------------------------------------------------------------------------
@@ -108,6 +108,7 @@ public:
    wxStatusBar* GetMainFrameStatusBar();
    
    void EnableAnimation(bool enable = true);
+   void ManageMissionTree();
    
    // event handling
    void OnClose(wxCloseEvent& event);
@@ -215,6 +216,7 @@ private:
    bool mRunCompleted;
    bool mInterpretFailed;
    bool mExitWithoutConfirm;
+   bool mUndockedMissionTreePresized;
    Integer mRunStatus;
    
    GmatServer *mMatlabServer;
@@ -258,7 +260,8 @@ private:
    void UpdateTitle(const wxString &filename = wxT(""));
    void SaveGuiToActiveScript();
    
-   void SavePlotPositionsAndSizes();
+   void SaveChildPositionsAndSizes();
+   bool GetConfigurationData(const wxString &forItem, Integer &x, Integer &y, Integer &w, Integer &h);
 
    // IDs for the controls
    enum

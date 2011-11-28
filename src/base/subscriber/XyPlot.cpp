@@ -1,4 +1,4 @@
-//$Id: XyPlot.cpp 9851 2011-09-09 18:49:52Z lindajun $
+//$Id: XyPlot.cpp 9907 2011-09-26 14:38:05Z wendys-dev $
 //------------------------------------------------------------------------------
 //                                  XyPlot
 //------------------------------------------------------------------------------
@@ -657,9 +657,6 @@ bool XyPlot::IsParameterReadOnly(const Integer id) const
       )
       return true;
    
-   if ((id == UPPER_LEFT) || (id == SIZE))
-      return false;
-
    return Subscriber::IsParameterReadOnly(id);
 }
 

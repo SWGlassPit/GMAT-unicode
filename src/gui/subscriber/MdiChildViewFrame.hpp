@@ -1,4 +1,4 @@
-//$Id: MdiChildViewFrame.hpp 9877 2011-09-16 22:36:24Z lindajun $
+//$Id: MdiChildViewFrame.hpp 9908 2011-09-26 14:41:48Z wendys-dev $
 //------------------------------------------------------------------------------
 //                              MdiChildViewFrame
 //------------------------------------------------------------------------------
@@ -150,8 +150,6 @@ public:
    virtual void RefreshPlot();
    virtual void DeletePlot();
    virtual void SetEndOfRun();
-
-   virtual void SavePlotPositionAndSize();
 
       
 protected:

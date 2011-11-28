@@ -1,4 +1,4 @@
-//$Id: GmatMdiChildFrame.hpp 9846 2011-09-07 17:57:29Z wendys-dev $
+//$Id: GmatMdiChildFrame.hpp 9908 2011-09-26 14:41:48Z wendys-dev $
 //------------------------------------------------------------------------------
 //                              GmatMdiChildFrame
 //------------------------------------------------------------------------------
@@ -74,7 +74,7 @@ public:
    virtual void OnClose(wxCloseEvent &event);
    virtual void UpdateScriptActiveStatus(bool isActive);
    
-   virtual void SavePlotPositionAndSize();
+   virtual void SaveChildPositionAndSize();
 
 protected:
    
@@ -82,6 +82,9 @@ protected:
    wxString childTitle;
 #endif
    
+   static Integer maxZOrder;
+   Integer        relativeZOrder;
+
    wxString mPlotName;
 
    bool mDirty;

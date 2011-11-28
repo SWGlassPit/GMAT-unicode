@@ -1,4 +1,4 @@
-//$Id: ReportFile.hpp 9811 2011-08-29 21:15:18Z wendys-dev $
+//$Id: ReportFile.hpp 9907 2011-09-26 14:38:05Z wendys-dev $
 //------------------------------------------------------------------------------
 //                                  ReportFile
 //------------------------------------------------------------------------------
@@ -72,7 +72,6 @@ public:
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
    virtual wxString  GetParameterTypeString(const Integer id) const;
-   virtual bool         IsParameterReadOnly(const Integer id) const;
    
    virtual bool         GetBooleanParameter(const Integer id) const;
    virtual bool         SetBooleanParameter(const Integer id,

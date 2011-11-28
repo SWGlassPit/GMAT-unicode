@@ -1,4 +1,4 @@
-//$Id: MdiChildViewFrame.cpp 9895 2011-09-21 21:25:04Z lindajun $
+//$Id: MdiChildViewFrame.cpp 9908 2011-09-26 14:41:48Z wendys-dev $
 //------------------------------------------------------------------------------
 //                              MdiChildViewFrame
 //------------------------------------------------------------------------------
@@ -930,67 +930,6 @@ void MdiChildViewFrame::SetEndOfRun()
       mCanvas->Refresh(false);
       Update();
    }
-}
-
-//------------------------------------------------------------------------------
-// void SavePlotPositionAndSize()
-//------------------------------------------------------------------------------
-void MdiChildViewFrame::SavePlotPositionAndSize()
-{
-   // Get the position and size of the window first
-   #ifdef __WXMAC__
-      Integer screenWidth  = wxSystemSettings::GetMetric(wxSYS_SCREEN_X);
-      Integer screenHeight = wxSystemSettings::GetMetric(wxSYS_SCREEN_Y);
-   #else
-      Integer screenWidth;
-      Integer screenHeight;
-      theParent->GetClientSize(&screenWidth, &screenHeight);
-   #endif
-   
-   #ifdef DEBUG_PLOT_PERSISTENCY
-   wxRect      wxR         = GetScreenRect();
-   wxPoint     wxP         = wxR.GetPosition();
-   wxSize      wxS         = wxR.GetSize();
-   Integer     x           = (Integer) wxP.x;
-   Integer     y           = (Integer) wxP.y;
-   Integer     w           = (Integer) wxS.GetWidth();
-   Integer     h           = (Integer) wxS.GetHeight();
-   MessageInterface::ShowMessage
-      ("wxP.x = %d, wxP.y = %d, wxS.w = %d, wxS.h = %d\n", x, y, w, h);
-   #endif
-   
-   int tmpX = -1, tmpY = -1;
-   int tmpW = -1, tmpH = -1;
-   GetPosition(&tmpX, &tmpY);
-   GetSize(&tmpW, &tmpH);
-   Rvector upperLeft(2, ((Real) tmpX /(Real)  screenWidth), ((Real) tmpY /(Real)  screenHeight));
-   Rvector plotSize(2,  ((Real) tmpW /(Real)  screenWidth), ((Real) tmpH /(Real)  screenHeight));
-
-   #ifdef DEBUG_PLOT_PERSISTENCY
-   // ======================= begin temporary ==============================
-   MessageInterface::ShowMessage("*** Size of SCREEN %s is: width = %d, height = %d\n", mPlotName.c_str(), screenWidth, screenHeight);
-   MessageInterface::ShowMessage("Position of View plot %s is: x = %d, y = %d\n", mPlotName.c_str(), tmpX, tmpY);
-   MessageInterface::ShowMessage("Size of View plot %s is: width = %d, height = %d\n", mPlotName.c_str(), tmpW, tmpH);
-   MessageInterface::ShowMessage("Position of View plot %s in pixels rel. to parent window is: x = %d, y = %d\n",
-                                 mPlotName.c_str(), (Integer) tmpX, (Integer) tmpY);
-   MessageInterface::ShowMessage("Size of View plot %s in pixels rel. to parent window is: x = %d, y = %d\n",
-                                 mPlotName.c_str(), (Integer) tmpW, (Integer) tmpH);
-   wxPoint tmpPt = ScreenToClient(wxP);
-   MessageInterface::ShowMessage("--- Position of View plot %s in client coords is: x = %d, y = %d\n",
-                                 mPlotName.c_str(), (Integer) tmpPt.x, (Integer) tmpPt.y);
-   // ======================= end temporary ==============================
-   #endif
-   
-   Subscriber *sub =
-      (Subscriber*)theGuiInterpreter->GetConfiguredObject(mPlotName.c_str());
-   if (!sub)
-   {
-      wxString errmsg = wxT("Cannot find subscriber ");
-      errmsg += mPlotName + wxT("\n");
-      throw SubscriberException(errmsg);
-   }
-   sub->SetRvectorParameter(sub->GetParameterID(wxT("UpperLeft")), upperLeft);
-   sub->SetRvectorParameter(sub->GetParameterID(wxT("Size")), plotSize);
 }
 
 

@@ -1,4 +1,4 @@
-//$Id: OrbitPlot.hpp 9857 2011-09-12 18:37:14Z lindajun $
+//$Id: OrbitPlot.hpp 9907 2011-09-26 14:38:05Z wendys-dev $
 //------------------------------------------------------------------------------
 //                                  OrbitPlot
 //------------------------------------------------------------------------------
@@ -70,7 +70,6 @@ public:
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
    virtual wxString  GetParameterTypeString(const Integer id) const;
-   virtual bool         IsParameterReadOnly(const Integer id) const;
    
    virtual Integer      GetIntegerParameter(const Integer id) const;
    virtual Integer      SetIntegerParameter(const Integer id, const Integer value);

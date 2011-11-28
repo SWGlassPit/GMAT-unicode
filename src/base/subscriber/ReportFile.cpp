@@ -1,4 +1,4 @@
-//$Id: ReportFile.cpp 9815 2011-08-30 14:19:48Z wendys-dev $
+//$Id: ReportFile.cpp 9907 2011-09-26 14:38:05Z wendys-dev $
 //------------------------------------------------------------------------------
 //                                  ReportFile
 //------------------------------------------------------------------------------
@@ -779,24 +779,6 @@ wxString ReportFile::GetParameterTypeString(const Integer id) const
    else
       return Subscriber::GetParameterTypeString(id);
 
-}
-
-
-//---------------------------------------------------------------------------
-//  bool IsParameterReadOnly(const Integer id) const
-//---------------------------------------------------------------------------
-/**
- * Checks to see if the requested parameter is read only.
- *
- * @param <id> Description for the parameter.
- *
- * @return true if the parameter is read only, false (the default) if not,
- *         throws if the parameter is out of the valid range of values.
- */
-//---------------------------------------------------------------------------
-bool ReportFile::IsParameterReadOnly(const Integer id) const
-{
-   return Subscriber::IsParameterReadOnly(id);
 }
 
 

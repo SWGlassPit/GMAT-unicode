@@ -1,4 +1,4 @@
-//$Id: Subscriber.hpp 9857 2011-09-12 18:37:14Z lindajun $
+//$Id: Subscriber.hpp 9907 2011-09-26 14:38:05Z wendys-dev $
 //------------------------------------------------------------------------------
 //                                  Subscriber
 //------------------------------------------------------------------------------
@@ -107,6 +107,9 @@ public:
                         GetParameterType(const Integer id) const;
    virtual wxString  GetParameterTypeString(const Integer id) const;
    
+   virtual Integer      GetIntegerParameter(const Integer id) const;
+   virtual Integer      SetIntegerParameter(const Integer id,
+                                            const Integer value);
    virtual wxString  GetStringParameter(const Integer id) const;
    virtual wxString  GetStringParameter(const wxString &label) const;
    virtual bool         SetStringParameter(const Integer id,
@@ -120,6 +123,12 @@ public:
                                            const wxString &value,
                                            const Integer index);
    
+   virtual bool         GetBooleanParameter(const Integer id) const;
+   virtual bool         SetBooleanParameter(const Integer id,
+                                            const bool value);
+   virtual bool         GetBooleanParameter(const wxString &label) const;
+   virtual bool         SetBooleanParameter(const wxString &label,
+                                            const bool value);
    virtual wxString  GetOnOffParameter(const Integer id) const;
    virtual bool         SetOnOffParameter(const Integer id, 
                                           const wxString &value);
@@ -178,6 +187,8 @@ protected:
    // arrays for holding position and size
    Rvector              mPlotUpperLeft;
    Rvector              mPlotSize;
+   Integer              relativeZOrder;
+   bool                 isMinimized;
 
 
    /// The current run state, so actions based on state can be taken
@@ -219,6 +230,8 @@ public:
       TARGET_STATUS,
       UPPER_LEFT,
       SIZE,
+      RELATIVE_Z_ORDER,
+      MINIMIZED,
       SubscriberParamCount,
    };
    

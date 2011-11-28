@@ -1,4 +1,4 @@
-//$Id: GmatApp.cpp 9893 2011-09-21 16:43:42Z wendys-dev $
+//$Id: GmatApp.cpp 9909 2011-09-26 14:42:30Z wendys-dev $
 //------------------------------------------------------------------------------
 //                              GmatApp
 //------------------------------------------------------------------------------
@@ -240,8 +240,11 @@ bool GmatApp::OnInit()
          if (GmatGlobal::Instance()->GetGuiMode() == GmatGlobal::MINIMIZED_GUI)
             theMainFrame->Show(false);
          else
+         {
             theMainFrame->Show(true);
-         
+            theMainFrame->ManageMissionTree();
+         }
+
          if (runScript)
          {
             if (GmatGlobal::Instance()->GetGuiMode() == GmatGlobal::MINIMIZED_GUI)

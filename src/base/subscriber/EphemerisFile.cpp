@@ -1,4 +1,4 @@
-//$Id: EphemerisFile.cpp 9697 2011-07-14 15:33:32Z lindajun $
+//$Id: EphemerisFile.cpp 9907 2011-09-26 14:38:05Z wendys-dev $
 //------------------------------------------------------------------------------
 //                                  EphemerisFile
 //------------------------------------------------------------------------------
@@ -840,6 +840,8 @@ bool EphemerisFile::IsParameterReadOnly(const Integer id) const
    // Disable interpolator type until it is selectable -- currently set by
    // ephem file format
    if (id == INTERPOLATOR)
+      return true;
+   if (id == UPPER_LEFT || id == SIZE || id == RELATIVE_Z_ORDER || id == MINIMIZED)
       return true;
    
    return Subscriber::IsParameterReadOnly(id);
@@ -3223,7 +3225,7 @@ void EphemerisFile::DebugWriteOrbit(const wxString &msg, Real epoch,
    {
       char strBuff[200];
       sprintf(strBuff, "%s  %24.14f  %24.14f  %24.14f  %19.16f  %19.16f  %19.16f\n",
-              epochStr.c_str(), outState[0], outState[1], outState[2], outState[3],
+              (char *)(epochStr.char_str()), outState[0], outState[1], outState[2], outState[3],
               outState[4], outState[5]);
       dstream << strBuff;
       dstream.flush();
