@@ -1,4 +1,4 @@
-//$Id: GmatMdiChildFrame.cpp 9910 2011-09-26 18:55:29Z wendys-dev $
+//$Id: GmatMdiChildFrame.cpp 9920 2011-09-28 16:04:04Z lindajun $
 //------------------------------------------------------------------------------
 //                             GmatMdiChildFrame
 //------------------------------------------------------------------------------
@@ -7,8 +7,6 @@
 // Copyright (c) 2002-2011 United States Government as represented by the
 // Administrator of The National Aeronautics and Space Administration.
 // All Other Rights Reserved.
-//
-// ** Legal **
 //
 // Author: Allison Greene
 // Created: 2003/08/28
@@ -37,6 +35,7 @@
 //#define DEBUG_UPDATE_GUI_ITEM
 //#define DEBUG_CLOSE
 //#define DEBUG_PERSISTENCE
+//#define DEBUG_ACTIVATE
 
 
 Integer GmatMdiChildFrame::maxZOrder = 0;
@@ -78,7 +77,8 @@ GmatMdiChildFrame::GmatMdiChildFrame(wxMDIParentFrame *parent,
        wxT("name='%s'\n   title='%s', "), type, name.c_str(), title.c_str());
    #endif
    
-   relativeZOrder = maxZOrder++;
+   relativeZOrder          = maxZOrder++;
+   usingSavedConfiguration = false;
    mPlotName = name;
    theParent = parent;
    mDirty = false;
@@ -193,6 +193,22 @@ wxString GmatMdiChildFrame::GetPlotName()
 void GmatMdiChildFrame::SetPlotName(const wxString &name)
 {
    mPlotName = name;
+}
+
+//------------------------------------------------------------------------------
+// void SetSavedConfigFlag(bool isPreset)
+//------------------------------------------------------------------------------
+void GmatMdiChildFrame::SetSavedConfigFlag(bool isPreset)
+{
+   usingSavedConfiguration = isPreset;
+}
+
+//------------------------------------------------------------------------------
+// bool GetSavedConfigFlag()
+//------------------------------------------------------------------------------
+bool GmatMdiChildFrame::GetSavedConfigFlag()
+{
+   return usingSavedConfiguration;
 }
 
 //------------------------------------------------------------------------------
@@ -333,6 +349,11 @@ void GmatMdiChildFrame::OnActivate(wxActivateEvent &event)
    UpdateGuiItem(1, 1);
    
    relativeZOrder = maxZOrder++;
+   #ifdef DEBUG_ACTIVATE
+   MessageInterface::ShowMessage
+      (wxT("GmatMdiChildFrame::OnActivate() setting zOrder for %s to %d, and maxZOrder set to %d\n"),
+       GetTitle().c_str(), relativeZOrder, maxZOrder);
+   #endif
    event.Skip();
 }
 
@@ -435,20 +456,21 @@ void GmatMdiChildFrame::SaveChildPositionAndSize()
    #else
       Integer screenWidth;
       Integer screenHeight;
-      theParent->GetClientSize(&screenWidth, &screenHeight);
+      //theParent->GetClientSize(&screenWidth, &screenHeight);
+      GmatAppData::Instance()->GetMainFrame()->GetActualClientSize(&screenWidth, &screenHeight, true);
    #endif
 
-   #ifdef DEBUG_PERSISTENCE
-   wxRect      wxR         = GetScreenRect();
-   wxPoint     wxP         = wxR.GetPosition();
-   wxSize      wxS         = wxR.GetSize();
-   Integer     x           = (Integer) wxP.x;
-   Integer     y           = (Integer) wxP.y;
-   Integer     w           = (Integer) wxS.GetWidth();
-   Integer     h           = (Integer) wxS.GetHeight();
-   MessageInterface::ShowMessage
-      (wxT("wxP.x = %d, wxP.y = %d, wxS.w = %d, wxS.h = %d\n"), x, y, w, h);
-   #endif
+//   #ifdef DEBUG_PERSISTENCE
+//   wxRect      wxR         = GetScreenRect();
+//   wxPoint     wxP         = wxR.GetPosition();
+//   wxSize      wxS         = wxR.GetSize();
+//   Integer     x           = (Integer) wxP.x;
+//   Integer     y           = (Integer) wxP.y;
+//   Integer     w           = (Integer) wxS.GetWidth();
+//   Integer     h           = (Integer) wxS.GetHeight();
+//   MessageInterface::ShowMessage
+//      (wxT("wxP.x = %d, wxP.y = %d, wxS.w = %d, wxS.h = %d\n"), x, y, w, h);
+//   #endif
 
    int tmpX = -1, tmpY = -1;
    int tmpW = -1, tmpH = -1;
@@ -462,18 +484,18 @@ void GmatMdiChildFrame::SaveChildPositionAndSize()
    MessageInterface::ShowMessage(wxT("*** Size of SCREEN %s is: width = %d, height = %d\n"), mPlotName.c_str(), screenWidth, screenHeight);
    MessageInterface::ShowMessage(wxT("Position of View plot %s is: x = %d, y = %d\n"), mPlotName.c_str(), tmpX, tmpY);
    MessageInterface::ShowMessage(wxT("Size of View plot %s is: width = %d, height = %d\n"), mPlotName.c_str(), tmpW, tmpH);
-   MessageInterface::ShowMessage(wxT("Position of View plot %s in pixels rel. to parent window is: x = %d, y = %d\n"),
-                                 mPlotName.c_str(), (Integer) tmpX, (Integer) tmpY);
-   MessageInterface::ShowMessage(wxT("Size of View plot %s in pixels rel. to parent window is: x = %d, y = %d\n"),
-                                 mPlotName.c_str(), (Integer) tmpW, (Integer) tmpH);
-   wxPoint tmpPt = ScreenToClient(wxP);
-   MessageInterface::ShowMessage(wxT("--- Position of View plot %s in client coords is: x = %d, y = %d\n"),
-                                 mPlotName.c_str(), (Integer) tmpPt.x, (Integer) tmpPt.y);
+//   MessageInterface::ShowMessage(wxT("Position of View plot %s in pixels rel. to parent window is: x = %d, y = %d\n"),
+//                                 mPlotName.c_str(), (Integer) tmpX, (Integer) tmpY);
+//   MessageInterface::ShowMessage(wxT("Size of View plot %s in pixels rel. to parent window is: x = %d, y = %d\n"),
+//                                 mPlotName.c_str(), (Integer) tmpW, (Integer) tmpH);
+//   wxPoint tmpPt = ScreenToClient(wxP);
+//   MessageInterface::ShowMessage(wxT("--- Position of View plot %s in client coords is: x = %d, y = %d\n"),
+//                                 mPlotName.c_str(), (Integer) tmpPt.x, (Integer) tmpPt.y);
    // ======================= end temporary ==============================
    #endif
 
    if ((mItemType == GmatTree::OUTPUT_REPORT)  || (mItemType == GmatTree::OUTPUT_ORBIT_VIEW) ||
-       (mItemType == GmatTree::OUTPUT_XY_PLOT))
+       (mItemType == GmatTree::OUTPUT_XY_PLOT) || (mItemType == GmatTree::OUTPUT_GROUND_TRACK_PLOT))
    {
       GmatBase *obj =
          (Subscriber*)theGuiInterpreter->GetConfiguredObject(mPlotName.c_str());
@@ -484,6 +506,13 @@ void GmatMdiChildFrame::SaveChildPositionAndSize()
          throw SubscriberException(errmsg);
       }
       Subscriber *sub = (Subscriber*) obj;
+
+      #ifdef DEBUG_PERSISTENCE
+         MessageInterface::ShowMessage("...... Now saving plot data to %s:\n", (sub->GetName()).c_str());
+         MessageInterface::ShowMessage("       Upper left             = %12.10f   %12.10f\n", upperLeft[0], upperLeft[1]);
+         MessageInterface::ShowMessage("       Size                   = %12.10f   %12.10f\n", childSize[0], childSize[1]);
+         MessageInterface::ShowMessage("       RelativeZOrder         = %d\n", relativeZOrder);
+      #endif
       sub->SetRvectorParameter(sub->GetParameterID(wxT("UpperLeft")), upperLeft);
       sub->SetRvectorParameter(sub->GetParameterID(wxT("Size")), childSize);
       sub->SetIntegerParameter(sub->GetParameterID(wxT("RelativeZOrder")), relativeZOrder);
@@ -580,7 +609,8 @@ void GmatMdiChildFrame::UpdateGuiItem(int updateEdit, int updateAnimation)
    // update animation icons from toolbar
    //------------------------------------------------------------
    // If mission is running, ignore   
-   if (updateAnimation == 1 && mItemType == GmatTree::OUTPUT_ORBIT_VIEW)
+   if (updateAnimation == 1 &&
+      (mItemType == GmatTree::OUTPUT_ORBIT_VIEW || mItemType == GmatTree::OUTPUT_GROUND_TRACK_PLOT))
    {
       // If Play button is enabled, mission is not running
       if (toolBar->GetToolEnabled(GmatMenu::TOOL_RUN))

@@ -1,4 +1,4 @@
-//$Id: GuiPlotReceiver.cpp 9876 2011-09-16 20:58:50Z lindajun $
+//$Id: GuiPlotReceiver.cpp 9920 2011-09-28 16:04:04Z lindajun $
 //------------------------------------------------------------------------------
 //                             GuiPlotReceiver
 //------------------------------------------------------------------------------
@@ -177,9 +177,10 @@ bool GuiPlotReceiver::CreateGlPlotWindow(const wxString &plotName,
       MessageInterface::ShowMessage
          ("plotName = '%s', plotCount = %d\n", plotName.c_str(), plotCount);
       #endif
-      
+      bool isUsingSaved = false;
       bool isPresetSizeUsed = ComputePlotPositionAndSize(true, positionX, positionY,
-                                                         width, height, x, y, w, h);
+                                                         width, height, x, y, w, h,
+                                                         isUsingSaved);
       
       
       // create a frame, containing a plot canvas
@@ -210,6 +211,8 @@ bool GuiPlotReceiver::CreateGlPlotWindow(const wxString &plotName,
          return false;
       }
       
+      frame->SetSavedConfigFlag(isUsingSaved);
+
       if (frame)
          frame->Show();
       else
@@ -235,9 +238,9 @@ bool GuiPlotReceiver::CreateGlPlotWindow(const wxString &plotName,
       ++MdiGlPlot::numChildren;
       plotCount = MdiGlPlot::numChildren + MdiTsPlot::numChildren;
       
-      // If preset size is not used and plot is more than 5, then tile(LOJ: 2011.09.15)
-      if (!isPresetSizeUsed && plotCount > 5)
-         GmatAppData::Instance()->GetMainFrame()->Tile(wxVERTICAL);
+      // Do no tile at all (LOj: 2011.09.23)
+      //if (!isPresetSizeUsed && plotCount > 5)
+      //   GmatAppData::Instance()->GetMainFrame()->Tile(wxVERTICAL);
    }
    else
    {
@@ -857,6 +860,7 @@ bool GuiPlotReceiver::CreateXyPlotWindow(const wxString &plotName,
 
       Integer x, y, w, h;
       Integer plotCount = MdiGlPlot::numChildren + MdiTsPlot::numChildren;
+      bool isUsingSaved = false;
       
       #ifdef DEBUG_PLOT_PERSISTENCY
       MessageInterface::ShowMessage
@@ -864,7 +868,8 @@ bool GuiPlotReceiver::CreateXyPlotWindow(const wxString &plotName,
       #endif
       
       bool isPresetSizeUsed = ComputePlotPositionAndSize(false, positionX, positionY,
-                                                         width, height, x, y, w, h);
+                                                         width, height, x, y, w, h,
+                                                         isUsingSaved);
       
       // create a frame, containing a XY plot canvas
       frame =
@@ -877,6 +882,7 @@ bool GuiPlotReceiver::CreateXyPlotWindow(const wxString &plotName,
                              wxDEFAULT_FRAME_STYLE);
       
       frame->Show();
+      frame->SetSavedConfigFlag(isUsingSaved);
       
       ++MdiTsPlot::numChildren;
       
@@ -893,9 +899,9 @@ bool GuiPlotReceiver::CreateXyPlotWindow(const wxString &plotName,
          
       plotCount = MdiGlPlot::numChildren + MdiTsPlot::numChildren;
       
-      // If preset size is not used and plot is more than 5, then tile(LOJ: 2011.09.15)
-      if (!isPresetSizeUsed && plotCount > 5)
-         GmatAppData::Instance()->GetMainFrame()->Tile(wxVERTICAL);
+      // Do no tile at all (LOj: 2011.09.23)
+      //if (!isPresetSizeUsed && plotCount > 5)
+      //   GmatAppData::Instance()->GetMainFrame()->Tile(wxVERTICAL);
       
       frame->RedrawCurve();
    }
@@ -1935,30 +1941,37 @@ bool GuiPlotReceiver::ActivateXyPlot(const wxString &plotName)
 //------------------------------------------------------------------------------
 bool GuiPlotReceiver::ComputePlotPositionAndSize(bool isGLPlot, Real positionX,
                                                  Real positionY, Real width, Real height,
-                                                 Integer &x, Integer &y, Integer &w, Integer &h)
+                                                 Integer &x, Integer &y, Integer &w, Integer &h,
+                                                 bool usingSaved)
 {
    #ifdef DEBUG_PLOT_PERSISTENCY
    MessageInterface::ShowMessage
       ("ComputePlotPositionAndSize() entered, %s, positionX = %f, positionY = %f, "
-       "width = %f, height = %f\n", isGLPlot ? "GLPlot" : "XYPlot", positionX,
-       positionY, width, height);
+       "width = %f, height = %f, usingSaved = %d\n", isGLPlot ? "GLPlot" : "XYPlot", positionX,
+       positionY, width, height, usingSaved);
    #endif
    
    Integer plotCount = MdiGlPlot::numChildren + MdiTsPlot::numChildren;
    bool isPresetSizeUsed = false;
+   GmatMainFrame *mainFrame = GmatAppData::Instance()->GetMainFrame();
    
    Integer screenWidth = 0;
    Integer screenHeight = 0;
+   Integer missionTreeX = 0;
+   Integer missionTreeY = 0;
+   Integer missionTreeW = 0;
    
    #ifdef __WXMAC__
       screenWidth  = wxSystemSettings::GetMetric(wxSYS_SCREEN_X);
       screenHeight = wxSystemSettings::GetMetric(wxSYS_SCREEN_Y);
    #else
-      GmatAppData::Instance()->GetMainFrame()->GetClientSize(&screenWidth, &screenHeight);
+      //mainFrame->GetClientSize(&screenWidth, &screenHeight);
+      mainFrame->GetActualClientSize(&screenWidth, &screenHeight, true);
    #endif
    
    #ifdef DEBUG_PLOT_PERSISTENCY
    MessageInterface::ShowMessage("   screen size  : w = %4d, h = %4d\n", screenWidth, screenHeight);
+   MessageInterface::ShowMessage("   mission tree : w = %4d\n", missionTreeW);
    #endif
    
    // if position and size were not saved from an earlier run, figure out the initial values
@@ -1968,6 +1981,9 @@ bool GuiPlotReceiver::ComputePlotPositionAndSize(bool isGLPlot, Real positionX,
       if (MdiGlPlot::usePresetSize || MdiTsPlot::usePresetSize)
          isPresetSizeUsed = true;
       
+      //mainFrame->GetActualClientSize(&screenWidth, &screenHeight, false);
+      
+      usingSaved = false;
       #ifdef __WXMAC__
          wxSize size = wxGetDisplaySize();
          w = (size.GetWidth() - 239) / 2;
@@ -1977,29 +1993,55 @@ bool GuiPlotReceiver::ComputePlotPositionAndSize(bool isGLPlot, Real positionX,
          x = 238 + hLoc * w + 1;
          y = 20  + vLoc * (h+10);
       #else
-         w = (Integer)((Real)screenWidth / 3.0);
-         h = (Integer)((Real)screenHeight / 2.5);
-         // customize size up to 4 plots for now
+         // If MissionTree is undocked, subtract its width before computing w
+         if (mainFrame->IsMissionTreeUndocked(missionTreeX, missionTreeY, missionTreeW))
+            screenWidth -= missionTreeW;
+         
+         // Get active plot count
+         Integer activePlotCount = mainFrame->GetNumberOfActivePlots();
          int newCount = plotCount + 1;
-         if (newCount <= 4)
+         Real realH = (Real)screenHeight;
+         Integer yOffset = (Integer)((realH * 0.06) + (10000.0 / realH));
+         if (yOffset > 40) yOffset = 40;
+         #ifdef DEBUG_PLOT_PERSISTENCY
+         MessageInterface::ShowMessage
+            ("   activePlotCount = %d, newCount = %d\n", activePlotCount, newCount);
+         MessageInterface::ShowMessage("   screen y offset = %4d\n", yOffset);
+         #endif
+         
+         // compute plot size depends on number of active plots
+         if (activePlotCount == 1)
          {
-            // if odd number, put it in 1st row
-            if ((newCount % 2) == 1)
-            {
-               x = 0;
-               y = h * ((newCount + 1) / 2 - 1);
-            }
-            else  // even number, put it in 2nd row
-            {
-               x = w;
-               y = h * (newCount / 2 - 1);
-            }
+            w = (Integer)((Real)screenWidth * 0.8);
+            h = (Integer)((Real)screenHeight * 0.85);
          }
          else
          {
-            x = -1;
-            y = -1;
-         }            
+            w = (Integer)((Real)screenWidth * 0.5);
+            h = (Integer)((Real)screenHeight * 0.45);
+         }
+         
+         // compute plot position
+         if (newCount == 1)
+         {
+            x = missionTreeW + 5;
+            y = 0;
+         }
+         else if (newCount == 2)
+         {
+            x = missionTreeW + 5;
+            y = h * (newCount - 1) + (newCount - 1) * 5;
+         }
+         else
+         {
+            x = missionTreeW + newCount * 20;               
+            y = h + 5 + (newCount - 1) * 20;
+         }
+         y -= yOffset;
+         
+         #ifdef DEBUG_PLOT_PERSISTENCY
+         MessageInterface::ShowMessage("   after offset : x = %4d, y = %4d\n", x, y);
+         #endif
       #endif
    }
    else
@@ -2010,6 +2052,9 @@ bool GuiPlotReceiver::ComputePlotPositionAndSize(bool isGLPlot, Real positionX,
          MdiTsPlot::usePresetSize = true;
       
       isPresetSizeUsed = true;
+      usingSaved       = true;
+      
+      //mainFrame->GetActualClientSize(&screenWidth, &screenHeight, false);
       
       x = (Integer) (positionX * (Real) screenWidth);
       y = (Integer) (positionY * (Real) screenHeight);
@@ -2020,12 +2065,15 @@ bool GuiPlotReceiver::ComputePlotPositionAndSize(bool isGLPlot, Real positionX,
       MessageInterface::ShowMessage("   before offset: x = %4d, y = %4d, w = %4d, h = %4d\n", x, y, w,h);
       #endif
       
-      // Since -1 is default position, change it to 0
+      // Why x = 0 and y = 0 does not position to top left of the client window?
+      // Make some position adjustments on non Mac
       #ifndef __WXMAC__
          Real realW = (Real)screenWidth;
          Real realH = (Real)screenHeight;
          Integer xOffset = (Integer)((realW * 0.01) + (10000.0 / realW));
          Integer yOffset = (Integer)((realH * 0.06) + (10000.0 / realH));
+         if (yOffset > 40) yOffset = 40;
+         // Since -1 is default position, change it to 0
          if (x == -1) x = 0;
          //else x -= xOffset;
          y -= yOffset;

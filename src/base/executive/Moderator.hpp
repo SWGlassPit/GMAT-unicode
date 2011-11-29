@@ -1,4 +1,4 @@
-//$Id: Moderator.hpp 9850 2011-09-09 18:48:32Z lindajun $
+//$Id: Moderator.hpp 9914 2011-09-26 19:07:00Z lindajun $
 //------------------------------------------------------------------------------
 //                                 Moderator
 //------------------------------------------------------------------------------
@@ -292,6 +292,7 @@ public:
                                 const wxString &fileName = wxT(""),
                                 bool createDefault = false);
    Subscriber* GetSubscriber(const wxString &name);
+   Integer GetNumberOfActivePlots();
    
    // EphemerisFile
    Subscriber* CreateEphemerisFile(const wxString &type,

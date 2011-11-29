@@ -1,4 +1,4 @@
-//$Id: MdiChildViewFrame.hpp 9908 2011-09-26 14:41:48Z wendys-dev $
+//$Id: MdiChildViewFrame.hpp 9914 2011-09-26 19:07:00Z lindajun $
 //------------------------------------------------------------------------------
 //                              MdiChildViewFrame
 //------------------------------------------------------------------------------
@@ -42,7 +42,8 @@ public:
    MdiChildViewFrame(wxMDIParentFrame *parent, const wxString& plotName,
                      const wxString& title, const wxPoint& pos,
                      const wxSize& size, const long style,
-                     const wxString &viewType);
+                     const wxString &viewType,
+                     const GmatTree::ItemType itemType);
    virtual ~MdiChildViewFrame();
    
    // getters

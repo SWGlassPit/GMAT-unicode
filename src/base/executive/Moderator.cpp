@@ -1,4 +1,4 @@
-//$Id: Moderator.cpp 9850 2011-09-09 18:48:32Z lindajun $
+//$Id: Moderator.cpp 9914 2011-09-26 19:07:00Z lindajun $
 //------------------------------------------------------------------------------
 //                                 Moderator
 //------------------------------------------------------------------------------
@@ -51,6 +51,7 @@
 #include "MathFactory.hpp"
 #include "Interface.hpp"
 #include "XyPlot.hpp"
+#include "OrbitPlot.hpp"
 #include "GmatDefaults.hpp"
 
 #include "NoOp.hpp"
@@ -4689,6 +4690,51 @@ Subscriber* Moderator::GetSubscriber(const wxString &name)
    else
       return (Subscriber*)FindObject(name);
 }
+
+
+//------------------------------------------------------------------------------
+// Integer GetNumberOfActivePlots()
+//------------------------------------------------------------------------------
+/**
+ * Returns number of active plots which means plots with ShowPlot is on.
+ */
+//------------------------------------------------------------------------------
+Integer Moderator::GetNumberOfActivePlots()
+{
+   Integer activePlotCount = 0;
+   Subscriber *obj;
+   StringArray names = theConfigManager->GetListOfItems(Gmat::SUBSCRIBER);
+   
+   #ifdef DEBUG_ACTIVE_PLOTS
+   MessageInterface::ShowMessage
+      (wxT("Moderator::GetNumberOfActivePlots() subscriber count = %d\n"), names.size());
+   #endif
+   
+   //@todo
+   // Should we create a new class GmatPlot and derive XYPlot and OrbitPlot from it?
+   for (Integer i=0; i<(Integer)names.size(); i++)
+   {
+      obj = theConfigManager->GetSubscriber(names[i]);
+      if (obj->IsOfType(wxT("XYPlot")))
+      {
+         if ( ((XyPlot*)obj)->GetBooleanParameter(wxT("ShowPlot")) )
+            activePlotCount++;
+      }
+      else if (obj->IsOfType(wxT("OrbitPlot")))
+      {
+         if ( ((OrbitPlot*)obj)->GetBooleanParameter(wxT("ShowPlot")) )
+            activePlotCount++;
+      }
+   }
+   
+   #ifdef DEBUG_ACTIVE_PLOTS
+   MessageInterface::ShowMessage
+      (wxT("Moderator::GetNumberOfActivePlots() returning %d\n"), activePlotCount);
+   #endif
+   
+   return activePlotCount;
+}
+
 
 //------------------------------------------------------------------------------
 // Subscriber* CreateEphemerisFile(const wxString &type,

@@ -85,6 +85,8 @@ protected:
    GmatBase*   FindObject(const wxString &name);
    void        ShowObjectMaps(const wxString &title = wxT(""));
    
+   std::list<Subscriber*> GetSubscribersInZOrder(std::list<Subscriber*> subList);
+
 private:
    
    ObjectInitializer();

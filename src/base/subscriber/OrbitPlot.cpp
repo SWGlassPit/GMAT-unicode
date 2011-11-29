@@ -1,4 +1,4 @@
-//$Id: OrbitPlot.cpp 9907 2011-09-26 14:38:05Z wendys-dev $
+//$Id: OrbitPlot.cpp 9914 2011-09-26 19:07:00Z lindajun $
 //------------------------------------------------------------------------------
 //                                  OrbitPlot
 //------------------------------------------------------------------------------
@@ -99,6 +99,7 @@ OrbitPlot::OrbitPlot(const wxString &type, const wxString &name)
 {
    // GmatBase data
    parameterCount = OrbitPlotParamCount;
+   objectTypeNames.push_back(wxT("OrbitPlot"));
    
    mViewCoordSystem = NULL;
    
@@ -1132,6 +1133,15 @@ bool OrbitPlot::GetBooleanParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
+// bool GetBooleanParameter(const wxString &label) const
+//------------------------------------------------------------------------------
+bool OrbitPlot::GetBooleanParameter(const wxString &label) const
+{
+   return GetBooleanParameter(GetParameterID(label));
+}
+
+
+//------------------------------------------------------------------------------
 // bool SetBooleanParameter(const Integer id, const bool value)
 //------------------------------------------------------------------------------
 bool OrbitPlot::SetBooleanParameter(const Integer id, const bool value)
@@ -1149,6 +1159,15 @@ bool OrbitPlot::SetBooleanParameter(const Integer id, const bool value)
    }
    
    return Subscriber::SetBooleanParameter(id, value);
+}
+
+
+//------------------------------------------------------------------------------
+// bool SetBooleanParameter(const wxString &label, const bool value)
+//------------------------------------------------------------------------------
+bool OrbitPlot::SetBooleanParameter(const wxString &label, const bool value)
+{
+   return SetBooleanParameter(GetParameterID(label), value);
 }
 
 

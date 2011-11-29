@@ -1,4 +1,4 @@
-//$Id: GmatTreeItemData.hpp 9826 2011-08-31 22:16:42Z lindajun $
+//$Id: GmatTreeItemData.hpp 9914 2011-09-26 19:07:00Z lindajun $
 //------------------------------------------------------------------------------
 //                             GmatTreeItemData
 //------------------------------------------------------------------------------
@@ -313,6 +313,7 @@ namespace GmatTree
       BEGIN_OF_OUTPUT = 46000,
       OUTPUT_REPORT,
       OUTPUT_ORBIT_VIEW,
+      OUTPUT_GROUND_TRACK_PLOT,
       OUTPUT_XY_PLOT,
       COMPARE_REPORT,
       END_OF_OUTPUT,

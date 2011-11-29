@@ -1,4 +1,4 @@
-//$Id: GmatMdiChildFrame.hpp 9908 2011-09-26 14:41:48Z wendys-dev $
+//$Id: GmatMdiChildFrame.hpp 9918 2011-09-27 18:44:35Z wendys-dev $
 //------------------------------------------------------------------------------
 //                              GmatMdiChildFrame
 //------------------------------------------------------------------------------
@@ -49,6 +49,8 @@ public:
 
    virtual wxString   GetPlotName();
    virtual void       SetPlotName(const wxString &name);
+   virtual void       SetSavedConfigFlag(bool isPreset);
+   virtual bool       GetSavedConfigFlag();
 
    wxMenuBar*         GetMenuBar();
    GmatTree::ItemType GetItemType();
@@ -84,6 +86,7 @@ protected:
    
    static Integer maxZOrder;
    Integer        relativeZOrder;
+   bool           usingSavedConfiguration;
 
    wxString mPlotName;
 

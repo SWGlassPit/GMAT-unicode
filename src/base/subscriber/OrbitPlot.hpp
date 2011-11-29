@@ -1,4 +1,4 @@
-//$Id: OrbitPlot.hpp 9907 2011-09-26 14:38:05Z wendys-dev $
+//$Id: OrbitPlot.hpp 9914 2011-09-26 19:07:00Z lindajun $
 //------------------------------------------------------------------------------
 //                                  OrbitPlot
 //------------------------------------------------------------------------------
@@ -99,7 +99,10 @@ public:
                         GetStringArrayParameter(const Integer id) const;
    
    virtual bool         GetBooleanParameter(const Integer id) const;
+   virtual bool         GetBooleanParameter(const wxString &label) const;
    virtual bool         SetBooleanParameter(const Integer id,
+                                            const bool value);
+   virtual bool         SetBooleanParameter(const wxString &label,
                                             const bool value);
    
    virtual const BooleanArray&

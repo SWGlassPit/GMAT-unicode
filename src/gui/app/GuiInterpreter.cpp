@@ -1,4 +1,4 @@
-//$Id: GuiInterpreter.cpp 9585 2011-06-10 19:54:28Z lindajun $
+//$Id: GuiInterpreter.cpp 9914 2011-09-26 19:07:00Z lindajun $
 //------------------------------------------------------------------------------
 //                              GuiInterpreter
 //------------------------------------------------------------------------------
@@ -443,6 +443,15 @@ Subscriber* GuiInterpreter::CreateSubscriber(const wxString &type,
    theModerator->SetObjectManageOption(1);
    return theModerator->
       CreateSubscriber(type, name, filename, createDefault);
+}
+
+
+//------------------------------------------------------------------------------
+// Integer GetNumberOfActivePlots()
+//------------------------------------------------------------------------------
+Integer GuiInterpreter::GetNumberOfActivePlots()
+{
+   return theModerator->GetNumberOfActivePlots();
 }
 
 

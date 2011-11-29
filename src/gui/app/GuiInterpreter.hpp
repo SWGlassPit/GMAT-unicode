@@ -1,4 +1,4 @@
-//$Id: GuiInterpreter.hpp 9518 2011-04-30 22:32:04Z djcinsb $
+//$Id: GuiInterpreter.hpp 9914 2011-09-26 19:07:00Z lindajun $
 //------------------------------------------------------------------------------
 //                              GuiInterpreter
 //------------------------------------------------------------------------------
@@ -82,6 +82,7 @@ public:
                                 const wxString &name,
                                 const wxString &filename = wxT(""),
                                 bool createDefault = true);
+   Integer GetNumberOfActivePlots();
    
    GmatBase* CreateDefaultPropSetup(const wxString &name);
    GmatBase* CreateNewODEModel(const wxString &name);

@@ -1,4 +1,4 @@
-//$Id: Subscriber.cpp 9907 2011-09-26 14:38:05Z wendys-dev $
+//$Id: Subscriber.cpp 9912 2011-09-26 18:56:46Z wendys-dev $
 //------------------------------------------------------------------------------
 //                                  Subscriber
 //------------------------------------------------------------------------------
@@ -118,6 +118,7 @@ Subscriber::Subscriber(const wxString &typeStr, const wxString &nomme) :
    isFinalized           (false),
    isDataOn              (true),
    isDataStateChanged    (false),
+   relativeZOrder        (0),
    runstate              (Gmat::IDLE),
    currProviderId        (0)
 {
@@ -135,7 +136,6 @@ Subscriber::Subscriber(const wxString &typeStr, const wxString &nomme) :
 
    mPlotUpperLeft = Rvector(2,0.0,0.0);
    mPlotSize      = Rvector(2,0.0,0.0);
-   relativeZOrder = 0;
    isMinimized    = false;
 }
 
@@ -161,6 +161,7 @@ Subscriber::Subscriber(const Subscriber &copy) :
    isDataStateChanged    (copy.isDataStateChanged),
 //   mPlotUpperLeft        (copy.mPlotUpperLeft),
 //   mPlotSize             (copy.mPlotSize),
+   relativeZOrder        (copy.relativeZOrder),
    runstate              (copy.runstate),
    currProviderId        (copy.currProviderId),
    wrapperObjectNames    (copy.wrapperObjectNames)
@@ -171,7 +172,6 @@ Subscriber::Subscriber(const Subscriber &copy) :
    
    mPlotUpperLeft    = Rvector(2,copy.mPlotUpperLeft[0], copy.mPlotUpperLeft[1]);
    mPlotSize         = Rvector(2,copy.mPlotSize[0],      copy.mPlotSize[1]);
-   relativeZOrder    = 0;
    isMinimized       = false;
 
 #ifdef __ENABLE_CLONING_WRAPPERS__
@@ -1059,6 +1059,10 @@ Integer Subscriber::GetIntegerParameter(const Integer id) const
 //------------------------------------------------------------------------------
 Integer Subscriber::SetIntegerParameter(const Integer id, const Integer value)
 {
+   #ifdef DEBUG_SUBSCRIBER_SET
+      MessageInterface::ShowMessage("Now setting value of %d(%s) to %d for object %s\n",
+            id, GetParameterText(id).c_str(), value, instanceName.c_str());
+   #endif
    if (id == RELATIVE_Z_ORDER)
    {
       relativeZOrder = value;

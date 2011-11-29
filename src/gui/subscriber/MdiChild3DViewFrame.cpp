@@ -1,4 +1,4 @@
-//$Id: MdiChild3DViewFrame.cpp 9877 2011-09-16 22:36:24Z lindajun $
+//$Id: MdiChild3DViewFrame.cpp 9914 2011-09-26 19:07:00Z lindajun $
 //------------------------------------------------------------------------------
 //                              MdiChild3DViewFrame
 //------------------------------------------------------------------------------
@@ -37,7 +37,8 @@ MdiChild3DViewFrame::MdiChild3DViewFrame(wxMDIParentFrame *parent,
                                      const wxString& plotName, const wxString& title,
                                      const wxPoint& pos, const wxSize& size,
                                      const long style)
-   : MdiChildViewFrame(parent, plotName, title, pos, size, style, wxT("3D"))
+   : MdiChildViewFrame(parent, plotName, title, pos, size, style, wxT("3D"),
+                       GmatTree::OUTPUT_ORBIT_VIEW)
 {
    // Create GLCanvas
    int width, height;

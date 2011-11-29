@@ -1,4 +1,4 @@
-//$Id: OrbitView.cpp 9846 2011-09-07 17:57:29Z wendys-dev $
+//$Id: OrbitView.cpp 9914 2011-09-26 19:07:00Z lindajun $
 //------------------------------------------------------------------------------
 //                                  OrbitView
 //------------------------------------------------------------------------------
@@ -608,7 +608,10 @@ bool OrbitView::Initialize()
       
       // Why do we want to delete plot if active and initialized?
       // This causes Global 3DView not to show, so commented out (loj: 2008.10.08)
-      //retval =  PlotInterface::DeleteGlPlot(instanceName);
+      // We still need to delete non-active plots so that plot persistency works,
+      // so uncommented (loj: 2011.09.23)
+      if (!active)
+         retval =  PlotInterface::DeleteGlPlot(instanceName);
    }
    
    #if DBGLVL_INIT

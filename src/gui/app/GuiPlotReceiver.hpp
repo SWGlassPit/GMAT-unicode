@@ -1,4 +1,4 @@
-//$Id: GuiPlotReceiver.hpp 9876 2011-09-16 20:58:50Z lindajun $
+//$Id: GuiPlotReceiver.hpp 9918 2011-09-27 18:44:35Z wendys-dev $
 //------------------------------------------------------------------------------
 //                             GuiPlotReceiver
 //------------------------------------------------------------------------------
@@ -182,7 +182,8 @@ public:
 protected:
    bool ComputePlotPositionAndSize(bool isGLPlot, Real positionX,
                                    Real positionY, Real width, Real height,
-                                   Integer &x, Integer &y, Integer &w, Integer &h);
+                                   Integer &x, Integer &y, Integer &w, Integer &h,
+                                   bool usingSaved = false);
    
 private:
    GuiPlotReceiver();
