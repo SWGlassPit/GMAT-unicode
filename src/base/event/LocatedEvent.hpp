@@ -1,4 +1,4 @@
-//$Id: LocatedEvent.hpp 9878 2011-09-17 01:00:43Z djcinsb $
+//$Id: LocatedEvent.hpp 9941 2011-10-04 23:31:25Z djcinsb $
 //------------------------------------------------------------------------------
 //                           LocatedEvent
 //------------------------------------------------------------------------------
@@ -54,6 +54,8 @@ public:
    LocatedEvent *partner;
    /// Duration of the event (set on both partners; zero until a pair is built
    Real duration;
+   /// Name used on the data plots
+   wxString dataName;
 };
 
 #endif /* LocatedEvent_hpp */

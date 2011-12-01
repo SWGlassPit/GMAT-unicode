@@ -1,4 +1,4 @@
-//$Id: Propagate.cpp 9923 2011-09-29 15:55:33Z djcinsb $
+//$Id: Propagate.cpp 9947 2011-10-10 22:23:59Z djcinsb $
 //------------------------------------------------------------------------------
 //                                 Propagate
 //------------------------------------------------------------------------------
@@ -2879,7 +2879,7 @@ bool Propagate::Initialize()
       ++index;
    } // End of loop through PropSetups
 
-   // Fire the locators to load initial data
+   // Prepare the locator buffers and data structures
    InitializeForEventLocation();
 
    // Prep the publisher
@@ -3824,11 +3824,6 @@ bool Propagate::Execute()
             #endif
 
             publisher->Publish(this, streamID, pubdata, dim+1);
-// Temporarily here
-//            for (UnsignedInt i = 0; i < events->size(); ++i)
-//            {
-//               events->at(i)->Evaluate();
-//            }
             CheckForEvents();
          }
          else

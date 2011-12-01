@@ -1,4 +1,4 @@
-//$Id: MdiChildTsFrame.cpp 9908 2011-09-26 14:41:48Z wendys-dev $
+//$Id: MdiChildTsFrame.cpp 9942 2011-10-05 16:45:27Z djcinsb $
 //------------------------------------------------------------------------------
 //                              MdiChildTsFrame
 //------------------------------------------------------------------------------
@@ -132,6 +132,9 @@ MdiChildTsFrame::MdiChildTsFrame(wxMDIParentFrame *parent, bool isMainFrame,
                        wxTAB_TRAVERSAL,//wxPLOT_DEFAULT,
                        plotTitle);
    
+   frame->SetLabel(xAxisTitle.c_str(), TsPlotCanvas::X_LABEL);
+   frame->SetLabel(yAxisTitle.c_str(), TsPlotCanvas::Y_LABEL);
+
    mXyPlot = frame;
    
    wxBoxSizer *topSizer = new wxBoxSizer( wxVERTICAL );

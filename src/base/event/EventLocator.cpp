@@ -1,4 +1,4 @@
-//$Id: EventLocator.cpp 9935 2011-10-01 00:03:11Z djcinsb $
+//$Id: EventLocator.cpp 9947 2011-10-10 22:23:59Z djcinsb $
 //------------------------------------------------------------------------------
 //                           EventLocator
 //------------------------------------------------------------------------------
@@ -267,8 +267,6 @@ wxString EventLocator::GetParameterTypeString(const Integer id) const
 bool EventLocator::IsParameterReadOnly(const Integer id) const
 {
    if (id == IS_ACTIVE)
-      return true;
-   if (id == SHOW_PLOT)
       return true;
 
    return GmatBase::IsParameterReadOnly(id);

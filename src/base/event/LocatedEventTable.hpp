@@ -1,4 +1,4 @@
-//$Id: LocatedEventTable.hpp 9933 2011-09-30 20:49:24Z djcinsb $
+//$Id: LocatedEventTable.hpp 9947 2011-10-10 22:23:59Z djcinsb $
 //------------------------------------------------------------------------------
 //                           LocatedEventTable
 //------------------------------------------------------------------------------
@@ -55,12 +55,11 @@ public:
    Real GetMaxSpan(wxString eventType, wxString parties);
    Real GetLastSpan(wxString eventType, wxString parties = wxT(""));
    Real GetAverageSpan(wxString eventType, wxString parties = wxT(""));
-   void SortEvents(SortStyle how, SortStyle secondaryStyle);
+   void SortEvents(SortStyle how, SortStyle secondaryStyle = UNSORTED);
    std::vector<LocatedEvent*> *GetEvents();
 
    bool WriteToFile(wxString filename);
    void ShowPlot();
-   void BuildPlot(const wxString &plotName);
 
 protected:
    /// The table of located event boundaries
@@ -77,10 +76,16 @@ protected:
    StringArray eventTypesWithNames;
    /// Plot of the event data
    OwnedPlot *thePlot;
+   /// X Data for plotting
+   std::map<wxString,RealArray> xData;
+   /// Y Data for plotting
+   std::map<wxString,RealArray> yData;
 
    void BuildAssociations();
    void SortEvents();
    std::string BuildEventSummary();
+   void CollectData(const wxString &forCurve, RealArray &xv, RealArray &yv);
+   void BuildPlot(const wxString &plotName);
 };
 
 #endif /* LocatedEventTable_hpp */

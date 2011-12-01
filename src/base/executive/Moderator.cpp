@@ -1,4 +1,4 @@
-//$Id: Moderator.cpp 9914 2011-09-26 19:07:00Z lindajun $
+//$Id: Moderator.cpp 9950 2011-10-13 02:20:46Z wendys-dev $
 //------------------------------------------------------------------------------
 //                                 Moderator
 //------------------------------------------------------------------------------
@@ -5879,6 +5879,10 @@ GmatCommand* Moderator::DeleteCommand(GmatCommand *cmd, Integer sandboxNum)
 //------------------------------------------------------------------------------
 GmatCommand* Moderator::GetFirstCommand(Integer sandboxNum)
 {
+   if (commands.empty())
+   {
+      return NULL;
+   }
    return commands[sandboxNum-1];
 }
 

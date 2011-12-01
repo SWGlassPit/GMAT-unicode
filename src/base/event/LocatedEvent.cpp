@@ -1,4 +1,4 @@
-//$Id: LocatedEvent.cpp 9875 2011-09-16 20:25:20Z djcinsb $
+//$Id: LocatedEvent.cpp 9941 2011-10-04 23:31:25Z djcinsb $
 //------------------------------------------------------------------------------
 //                           LocatedEvent
 //------------------------------------------------------------------------------
@@ -30,7 +30,8 @@ LocatedEvent::LocatedEvent() :
    eventValue  (999.999),
    participants(wxT("")),
    partner     (NULL),
-   duration    (0.0)
+   duration    (0.0),
+   dataName    (wxT(""))
 {
 }
 
@@ -46,7 +47,8 @@ LocatedEvent::LocatedEvent(const LocatedEvent& le) :
    eventValue  (le.eventValue),
    participants(le.participants),
    partner     (NULL),
-   duration    (le.duration)
+   duration    (le.duration),
+   dataName    (le.dataName)
 {
 }
 
@@ -62,6 +64,7 @@ LocatedEvent& LocatedEvent::operator=(const LocatedEvent& le)
       participants = le.participants;
       partner      = NULL;
       duration     = 0.0;
+      dataName     = le.dataName;
    }
 
    return *this;

@@ -1,4 +1,4 @@
-//$Id: GuiPlotReceiver.cpp 9939 2011-10-04 16:31:09Z djcinsb $
+//$Id: GuiPlotReceiver.cpp 9944 2011-10-05 17:58:56Z wendys-dev $
 //------------------------------------------------------------------------------
 //                             GuiPlotReceiver
 //------------------------------------------------------------------------------
@@ -214,7 +214,12 @@ bool GuiPlotReceiver::CreateGlPlotWindow(const wxString &plotName,
       frame->SetSavedConfigFlag(isUsingSaved);
 
       if (frame)
-         frame->Show();
+      {
+         if (GmatGlobal::Instance()->GetGuiMode() == GmatGlobal::MINIMIZED_GUI)
+            frame->Show(false);
+         else
+            frame->Show(true);
+      }
       else
          return false;
       
@@ -889,7 +894,10 @@ bool GuiPlotReceiver::CreateXyPlotWindow(const wxString &plotName,
                              wxPoint(x, y), wxSize(w, h),
                              wxDEFAULT_FRAME_STYLE);
       
-      frame->Show();
+      if (GmatGlobal::Instance()->GetGuiMode() == GmatGlobal::MINIMIZED_GUI)
+         frame->Show(false);
+      else
+         frame->Show(true);
       frame->SetSavedConfigFlag(isUsingSaved);
       frame->SetSaveLocationFlag(canSaveLocation);
       

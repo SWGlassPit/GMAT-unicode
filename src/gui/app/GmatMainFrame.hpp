@@ -1,4 +1,4 @@
-//$Id: GmatMainFrame.hpp 9920 2011-09-28 16:04:04Z lindajun $
+//$Id: GmatMainFrame.hpp 9944 2011-10-05 17:58:56Z wendys-dev $
 //------------------------------------------------------------------------------
 //                              GmatMainFrame
 //------------------------------------------------------------------------------
@@ -76,6 +76,7 @@ public:
                                 bool incScripts = false);
    Integer GetNumberOfActivePlots();
    bool IsMissionTreeUndocked(Integer &xPos, Integer &yPos, Integer &width);
+   bool IsScriptEditorOpen(Integer &xPos, Integer &yPos, Integer &width);
    void IconizeUndockedMissionTree();
    bool IsChildOpen(GmatTreeItemData *item, bool restore = true);
    bool IsChildOpen(const wxString &name, GmatTree::ItemType itemType,

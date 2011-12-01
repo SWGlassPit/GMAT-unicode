@@ -1,4 +1,4 @@
-//$Id: GmatApp.cpp 9909 2011-09-26 14:42:30Z wendys-dev $
+//$Id: GmatApp.cpp 9945 2011-10-06 12:47:21Z wendys-dev $
 //------------------------------------------------------------------------------
 //                              GmatApp
 //------------------------------------------------------------------------------
@@ -384,12 +384,12 @@ void GmatApp::ProcessCommandLineOptions()
 {
    wxString commandLineOptions =
       wxT("Valid command line options are:\n")
-      wxT("   -help            Shows available options\n")
-      wxT("   -date            Shows GMAT build date\n")
-      wxT("   -ms              Starts MATLAB server when GMAT launches\n")
-      wxT("   -br 'filename'   Builds and runs the script\n")
-      wxT("   -minimize        Minimizes GMAT window\n")
-      wxT("   -exit            Exits GMAT after a script is run\n\n");
+      wxT("   --help, -h              Shows available options\n")
+      wxT("   --version, -v           Shows GMAT build date\n")
+      wxT("   --start-server          Starts GMAT server on start-up\n")
+      wxT("   --run, -r <scriptname>  Builds and runs the script\n")
+      wxT("   --minimize, -m          Minimizes GMAT window\n")
+      wxT("   --exit, -x              Exits GMAT after a script is run\n\n");
 
    #ifdef DEBUG_CMD_LINE
    MessageInterface::ShowMessage(wxT("argc = %d\n"), argc);
@@ -404,17 +404,20 @@ void GmatApp::ProcessCommandLineOptions()
          #ifdef DEBUG_CMD_LINE
          MessageInterface::ShowMessage(wxT("arg = %s\n"), arg.c_str());
          #endif
-         if (arg == wxT("-ms"))
+//         if (arg == "-ms")
+         if (arg == wxT("--start-server"))
          {
             startMatlabServer = true;
          }
-         else if (arg == wxT("-date"))
+//         else if (arg == "-date")
+         else if ((arg == wxT("--version")) || (arg == wxT("-v")))
          {
             wxString buildDate;
             buildDate.Printf(wxT("Build Date: %s %s\n"), wxT(__DATE__), wxT(__TIME__));
             MessageInterface::ShowMessage(buildDate.c_str());
          }
-         else if (arg == wxT("-br"))
+//         else if (arg == "-br")
+         else if ((arg == wxT("--run")) || (arg == wxT("-r")))
          {
             if (argc < 3)
             {
@@ -433,15 +436,18 @@ void GmatApp::ProcessCommandLineOptions()
                #endif
             }
          }
-         else if (arg == wxT("-help"))
+//         else if (arg == "-help")
+         else if ((arg == wxT("--help")) || (arg == wxT("-h")))
          {
             MessageInterface::ShowMessage(commandLineOptions.c_str());
          }
-         else if (arg == wxT("-exit"))
+//         else if (arg == "-exit")
+         else if ((arg == wxT("--exit")) || (arg == wxT("-x")))
          {
             GmatGlobal::Instance()->SetRunMode(GmatGlobal::EXIT_AFTER_RUN);
          }
-         else if (arg == wxT("-minimize"))
+//         else if (arg == "-minimize")
+         else if ((arg == wxT("--minimize")) || (arg == wxT("-m")))
          {
             GmatGlobal::Instance()->SetGuiMode(GmatGlobal::MINIMIZED_GUI);
          }
