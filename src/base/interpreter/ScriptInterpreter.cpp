@@ -1,4 +1,4 @@
-//$Id: ScriptInterpreter.cpp 9840 2011-09-07 00:20:57Z djcinsb $
+//$Id: ScriptInterpreter.cpp 9927 2011-09-29 23:38:47Z djcinsb $
 //------------------------------------------------------------------------------
 //                               ScriptInterpreter
 //------------------------------------------------------------------------------
@@ -1306,6 +1306,16 @@ bool ScriptInterpreter::WriteScript(Gmat::WriteMode mode)
    #endif
    if (objs.size() > 0)
       WriteObjects(objs, wxT("TrackingSystems"), mode);
+
+   //---------------------------------------------
+   // Event Locators
+   //---------------------------------------------
+   objs = theModerator->GetListOfObjects(Gmat::EVENT_LOCATOR);
+   #ifdef DEBUG_SCRIPT_WRITING
+   MessageInterface::ShowMessage(wxT("   Found %d Event Locators\n"), objs.size());
+   #endif
+   if (objs.size() > 0)
+      WriteObjects(objs, wxT("EventLocators"), mode);
 
    //-----------------------------------
    // Solver

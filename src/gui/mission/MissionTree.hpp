@@ -1,4 +1,4 @@
-//$Id: MissionTree.hpp 9864 2011-09-14 14:15:19Z lindajun $
+//$Id: MissionTree.hpp 9929 2011-09-30 14:59:49Z lindajun $
 //------------------------------------------------------------------------------
 //                              MissionTree
 //------------------------------------------------------------------------------
@@ -72,6 +72,9 @@ private:
    bool            mUsingViewLevel;
    int             mViewLevel;
    
+   // For debug or DEBUG_MISSION_TREE = ON in the startup file
+   bool            mWriteMissionSeq;
+   
    wxArrayString mCommandList;
    wxArrayString mCommandListForViewControl;
    wxWindow *mParent;
@@ -117,12 +120,14 @@ private:
    int  mScriptEventCount;
    
    void InitializeCounter();
-   GmatCommand* CreateCommand(const wxString &cmdName);
+   GmatCommand* CreateCommand(const wxString &cmdTypeName);
    void UpdateCommand();
    
    bool IsAnyViewCommandInBranch(GmatCommand *branch);
    void ShowEllipsisInPreviousNode(wxTreeItemId parent, wxTreeItemId node);
    wxTreeItemId BuildTreeItem(wxTreeItemId parent, GmatCommand *cmd,
+                              Integer level, bool &isPrevItemHidden);
+   wxTreeItemId BuildTreeItemInBranch(wxTreeItemId parent, GmatCommand *branch,
                               Integer level, bool &isPrevItemHidden);
    
    wxTreeItemId& UpdateCommandTree(wxTreeItemId parent, GmatCommand *cmd,
@@ -149,11 +154,11 @@ private:
                               GmatCommand *prevCmd, GmatCommand *cmd, int *cmdCount,
                               bool insertBefore);
    
-   void Append(const wxString &cmdName);
+   void Append(const wxString &cmdTypeName);
+   void InsertBefore(const wxString &cmdTypeName);
+   void InsertAfter(const wxString &cmdTypeName);
    void DeleteCommand(const wxString &cmdName);
-   void InsertBefore(const wxString &cmdName);
-   void InsertAfter(const wxString &cmdName);
-   void UpdateGuiManager(const wxString &cmdName);
+   void UpdateGuiManager(const wxString &cmdTypeName);
    
    void AddDefaultMissionSeq(wxTreeItemId universe);
    void AddIcons();
@@ -168,6 +173,7 @@ private:
    bool CheckClickIn(wxPoint position);
    
    void OnAddMissionSeq(wxCommandEvent &event);
+   void OnPopupAppend(wxCommandEvent &event);
    
    void OnAppend(wxCommandEvent &event);
    void OnInsertBefore(wxCommandEvent &event);
@@ -184,6 +190,7 @@ private:
    
    void OnRun(wxCommandEvent &event);
    void OnShowDetail(wxCommandEvent &event);
+   void OnShowMissionSequence(wxCommandEvent &event);
    void OnShowScript(wxCommandEvent &event);
    void OnShowCommandSummary(wxCommandEvent &event);
    void OnShowMissionSummaryAll(wxCommandEvent &event);
@@ -196,12 +203,12 @@ private:
    void OnOpen(wxCommandEvent &event);
    void OnClose(wxCommandEvent &event);
    
-   wxMenu* CreatePopupMenu(int type, ActionType action);
-   wxMenu* CreateTargetPopupMenu(int type, ActionType action);
-   wxMenu* CreateOptimizePopupMenu(int type, ActionType action);
-   wxMenu* AppendTargetPopupMenu(wxMenu *menu, ActionType action);
-   wxMenu* AppendOptimizePopupMenu(wxMenu *menu, ActionType action);
-   wxMenu* CreateControlLogicPopupMenu(int type, ActionType action);
+   wxMenu* CreateSubMenu(int type, ActionType action);
+   wxMenu* CreateTargetSubMenu(int type, ActionType action);
+   wxMenu* CreateOptimizeSubMenu(int type, ActionType action);
+   wxMenu* AppendTargetSubMenu(wxMenu *menu, ActionType action);
+   wxMenu* AppendOptimizeSubMenu(wxMenu *menu, ActionType action);
+   wxMenu* CreateControlLogicSubMenu(int type, ActionType action);
    
    wxString GetCommandString(GmatCommand *cmd, const wxString &currStr);
    GmatTree::ItemType GetCommandId(const wxString &cmd);
@@ -213,6 +220,7 @@ private:
    
    GmatTree::MissionIconType GetIconId(const wxString &cmd);
    wxTreeItemId FindChild(wxTreeItemId parentId, const wxString &cmd);
+   wxTreeItemId FindElse(wxTreeItemId parentId);
    bool IsInsideSolver(wxTreeItemId itemId, GmatTree::ItemType &itemType);
    
    // for Debug
@@ -371,6 +379,7 @@ private:
       
       POPUP_RUN,
       POPUP_SHOW_DETAIL,
+      POPUP_SHOW_MISSION_SEQUENCE,
       POPUP_SHOW_SCRIPT,
       POPUP_COMMAND_SUMMARY,
       POPUP_MISSION_SUMMARY_ALL,

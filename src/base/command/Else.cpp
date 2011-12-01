@@ -1,4 +1,4 @@
-//$Id: Else.cpp 9513 2011-04-30 21:23:06Z djcinsb $
+//$Id: Else.cpp 9921 2011-09-28 21:42:16Z lindajun $
 //------------------------------------------------------------------------------
 //                                Else
 //------------------------------------------------------------------------------
@@ -34,6 +34,7 @@
 Else::Else() :
     GmatCommand      (wxT("Else"))
 {
+   objectTypeNames.push_back(wxT("Else"));
    objectTypeNames.push_back(wxT("BranchEnd"));
    //depthChange = -1;  // is this correct here?
 }

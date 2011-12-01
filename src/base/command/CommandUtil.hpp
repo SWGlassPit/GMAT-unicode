@@ -1,4 +1,4 @@
-//$Id: CommandUtil.hpp 9513 2011-04-30 21:23:06Z djcinsb $
+//$Id: CommandUtil.hpp 9929 2011-09-30 14:59:49Z lindajun $
 //------------------------------------------------------------------------------
 //                                 CommandUtil
 //------------------------------------------------------------------------------
@@ -34,19 +34,20 @@ namespace GmatCommandUtil
    GmatCommand GMAT_API *GetParentCommand(GmatCommand *top, GmatCommand *cmd);
    GmatCommand GMAT_API *GetSubParent(GmatCommand *brCmd, GmatCommand *cmd);
    GmatCommand GMAT_API *RemoveCommand(GmatCommand *seq, GmatCommand *cmd);
+   bool GMAT_API IsElseFoundInIf(GmatCommand *ifCmd);
    bool GMAT_API ClearCommandSeq(GmatCommand *seq, bool leaveFirstCmd = true,
-                        bool callRunComplete = true);
+                    bool callRunComplete = true);
    bool GMAT_API IsAfter(GmatCommand *cmd1, GmatCommand *cmd2);
    bool GMAT_API FindObject(GmatCommand *cmd, Gmat::ObjectType objType,
-                   const wxString &objName, wxString &cmdName);
+                    const wxString &objName, wxString &cmdName);
    bool GMAT_API FindObjectFromSubCommands(GmatCommand *brCmd, Integer level,
-                                  Gmat::ObjectType objType,
-                                  const wxString &objName, wxString &cmdName);
+                    Gmat::ObjectType objType,
+                    const wxString &objName, wxString &cmdName);
    wxString GMAT_API GetCommandSeqString(GmatCommand *cmd, bool showAddr = true,
-                                   bool showGenStr = false);
+                    bool showGenStr = false, const wxString &indentStr = wxT("---"));
    void GMAT_API GetSubCommandString(GmatCommand* brCmd, Integer level,
-                            wxString &cmdseq, bool showAddr = true,
-                            bool showGenStr = false);
+                    wxString &cmdseq, bool showAddr = true,
+                    bool showGenStr = false, const wxString &indentStr = wxT("---"));
    void GMAT_API ShowCommand(const wxString &title1, GmatCommand *cmd1,
                     const wxString &title2 = wxT(""), GmatCommand *cmd2 = NULL);
 }

@@ -1,4 +1,4 @@
-//$Id: Propagator.hpp 9513 2011-04-30 21:23:06Z djcinsb $
+//$Id: Propagator.hpp 9923 2011-09-29 15:55:33Z djcinsb $
 //------------------------------------------------------------------------------
 //                              Propagator
 //------------------------------------------------------------------------------
@@ -147,6 +147,9 @@ public:
 
    virtual Real GetTime();
    virtual void SetTime(Real t);
+
+   virtual bool PropagatesForward();
+   virtual void SetForwardPropagation(bool tf);
 
    // Abstract methods
 

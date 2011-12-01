@@ -1,4 +1,4 @@
-//$Id: GmatMainFrame.cpp 9920 2011-09-28 16:04:04Z lindajun $
+//$Id: GmatMainFrame.cpp 9924 2011-09-29 18:13:29Z lindajun $
 //------------------------------------------------------------------------------
 //                              GmatMainFrame
 //------------------------------------------------------------------------------
@@ -1302,14 +1302,14 @@ bool GmatMainFrame::RemoveChild(const wxString &name, GmatTree::ItemType itemTyp
       
       node = node->GetNext();
    }
-      
+   
    // If plot was removed, remove it from the OutputTree also
    if (childRemoved)
    {
       #ifdef DEBUG_REMOVE_CHILD
       MessageInterface::ShowMessage(wxT("   %s removed\n"), name.c_str());
       #endif
-
+      
       if (gmatAppData->GetOutputTree() != NULL)
       {
          #ifdef DEBUG_REMOVE_CHILD
@@ -1318,16 +1318,18 @@ bool GmatMainFrame::RemoveChild(const wxString &name, GmatTree::ItemType itemTyp
 
          gmatAppData->GetOutputTree()->RemoveItem(itemType, name);
       }
-
+      
       // Change MissionTree node label (loj: 2007.11.15)
-      gmatAppData->GetMissionTree()->ChangeNodeLabel(childName);
+      // I just cannot recall why mission tree node label needs to be changed here.
+      // So commented out (loj: 2011.09.29)
+      //gmatAppData->GetMissionTree()->ChangeNodeLabel(childName);
    }
    
    #ifdef DEBUG_REMOVE_CHILD
    MessageInterface::ShowMessage
       (wxT("GmatMainFrame::RemoveChild() returning %d\n"), childRemoved);
    #endif
-
+   
    return childRemoved;
 }
 
@@ -1495,10 +1497,7 @@ bool GmatMainFrame::CloseAllChildren(bool closeScriptWindow, bool closePlots,
       pConfig = (wxFileConfig *) GmatAppData::Instance()->GetPersonalizationConfig();
       Integer x = 0, y = 0, width = 0;
       if (IsMissionTreeUndocked(x, y, width))
-      {
          pConfig->Write(wxT("/MissionTree/Docked"), wxT("false"));
-//         SaveConfigurationData("MissionTree");
-      }
       else
          pConfig->Write(wxT("/MissionTree/Docked"), wxT("true"));
    }

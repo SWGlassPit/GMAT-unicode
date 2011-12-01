@@ -1,4 +1,4 @@
-//$Id: GmatGlobal.hpp 9518 2011-04-30 22:32:04Z djcinsb $
+//$Id: GmatGlobal.hpp 9929 2011-09-30 14:59:49Z lindajun $
 //------------------------------------------------------------------------------
 //                                 GmatGlobal
 //------------------------------------------------------------------------------
@@ -43,6 +43,13 @@ public:
    {
       NORMAL_GUI = 20,
       MINIMIZED_GUI,
+   };
+   
+   enum PlotMode
+   {
+      NORMAL_PLOT = 25,
+      TILED_PLOT,
+      CASCADED_PLOT,
    };
    
    ///@note MatlabInterface uses the same enum
@@ -90,6 +97,8 @@ public:
    void SetRunMode(Integer mode);
    Integer GetGuiMode();
    void SetGuiMode(Integer mode);
+   Integer GetPlotMode();
+   void SetPlotMode(Integer mode);
    
    // MATLAB
    Integer GetMatlabMode();
@@ -98,6 +107,8 @@ public:
    void SetMatlabAvailable(bool flag);
    bool IsMatlabDebugOn();
    void SetMatlabDebug(bool flag);
+   bool IsMissionTreeDebugOn();
+   void SetMissionTreeDebug(bool flag);
 
    // IO formatting
    bool IsScientific();
@@ -207,9 +218,11 @@ private:
    bool runInterrupted;
    bool isMatlabAvailable;
    bool isMatlabDebugOn;
+   bool isMissionTreeDebugOn;
    
    Integer runMode;
    Integer guiMode;
+   Integer plotMode;
    Integer matlabMode;
    IoFormat defaultFormat;
    IoFormat currentFormat;

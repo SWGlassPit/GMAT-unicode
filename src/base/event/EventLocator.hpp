@@ -1,4 +1,4 @@
-//$Id: EventLocator.hpp 9878 2011-09-17 01:00:43Z djcinsb $
+//$Id: EventLocator.hpp 9926 2011-09-29 23:12:16Z djcinsb $
 //------------------------------------------------------------------------------
 //                           EventLocator
 //------------------------------------------------------------------------------
@@ -138,7 +138,7 @@ public:
    void ReportEventStatistics();
    Real *GetEventData(wxString type, Integer whichOne = 0);
    void UpdateEventTable(SortStyle how);
-
+   virtual GmatEpoch GetLastEpoch(Integer index);
 
 protected:
    /// The collection of event functions used by the EventLocator.
@@ -154,6 +154,8 @@ protected:
    UnsignedInt efCount;
    /// The last data set computed
    Real *lastData;
+   /// Epochs of the last events located
+   GmatEpoch *lastEpochs;
    /// Flag used to turn the locator on or off (default is on)
    bool isActive;
 

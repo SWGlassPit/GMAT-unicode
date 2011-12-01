@@ -1,4 +1,4 @@
-//$Id: FileManager.hpp 9518 2011-04-30 22:32:04Z djcinsb $
+//$Id: FileManager.hpp 9929 2011-09-30 14:59:49Z lindajun $
 //------------------------------------------------------------------------------
 //                                  FileManager
 //------------------------------------------------------------------------------
@@ -164,8 +164,10 @@ private:
    wxString mStartupFileDir;
    wxString mStartupFileName;
    wxString mRunMode;
+   wxString mPlotMode;
    wxString mMatlabMode;
    wxString mDebugMatlab;
+   wxString mDebugMissionTree;
    std::ifstream mInStream;
    std::map<wxString, wxString> mPathMap;
    std::map<wxString, FileInfo*> mFileMap;
@@ -184,7 +186,7 @@ private:
    void AddFileType(const wxString &type, const wxString &name);
    void AddAvailablePotentialFiles();
    void WriteHeader(std::ofstream &outStream);
-   void WriteFiles(std::ofstream &outStream, const wxString &type);
+   void WriteFiles(std::ofstream &outStream, const std::string &type);
    void RefreshFiles();
    
    // For debugging

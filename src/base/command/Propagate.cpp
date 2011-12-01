@@ -1,4 +1,4 @@
-//$Id: Propagate.cpp 9861 2011-09-13 16:40:57Z djcinsb $
+//$Id: Propagate.cpp 9923 2011-09-29 15:55:33Z djcinsb $
 //------------------------------------------------------------------------------
 //                                 Propagate
 //------------------------------------------------------------------------------
@@ -129,7 +129,6 @@ static bool firstStepFired = false;
 //------------------------------------------------------------------------------
 Propagate::Propagate() :
    PropagationEnabledCommand   (wxT("Propagate")),
-   direction                   (1.0),
    currentPropMode             (wxT("")),
    interruptCheckFrequency     (30),
    inProgress                  (false),
@@ -242,7 +241,6 @@ Propagate::~Propagate()
 Propagate::Propagate(const Propagate &prp) :
    PropagationEnabledCommand   (prp),
    propName                    (prp.propName),
-   direction                   (prp.direction),
    satName                     (prp.satName),
    currentPropMode             (prp.currentPropMode),
    interruptCheckFrequency     (prp.interruptCheckFrequency),
@@ -302,7 +300,7 @@ Propagate& Propagate::operator=(const Propagate &prp)
       return *this;
 
    // Call the base assignment operator
-   GmatCommand::operator=(prp);
+   PropagationEnabledCommand::operator=(prp);
 
    propName                = prp.propName;
    direction               = prp.direction;
@@ -418,7 +416,7 @@ bool Propagate::SetObject(const wxString &name, const Gmat::ObjectType type,
          break;
    }
 
-   return GmatCommand::SetObject(name, type, associate, associateType);
+   return PropagationEnabledCommand::SetObject(name, type, associate, associateType);
 }
 
 
@@ -455,7 +453,7 @@ bool Propagate::SetObject(GmatBase *obj, const Gmat::ObjectType type)
       break;
    }
 
-   return GmatCommand::SetObject(obj, type);
+   return PropagationEnabledCommand::SetObject(obj, type);
 }
 
 //------------------------------------------------------------------------------
@@ -508,7 +506,7 @@ GmatBase* Propagate::GetGmatObject(const Gmat::ObjectType type,
          return stopWhen[0];
    }
 
-   return GmatCommand::GetGmatObject(type, objName);
+   return PropagationEnabledCommand::GetGmatObject(type, objName);
 }
 
 //------------------------------------------------------------------------------
@@ -597,7 +595,7 @@ const wxString& Propagate::GetGeneratingString(Gmat::WriteMode mode,
 
    generatingString = gen + wxT(";");
    // Then call the base class method
-   return GmatCommand::GetGeneratingString(mode, prefix, useName);
+   return PropagationEnabledCommand::GetGeneratingString(mode, prefix, useName);
 }
 
 
@@ -647,7 +645,7 @@ wxString Propagate::GetRefObjectName(const Gmat::ObjectType type) const
          break;
    }
 
-   return GmatCommand::GetRefObjectName(type);
+   return PropagationEnabledCommand::GetRefObjectName(type);
 }
 
 
@@ -696,7 +694,7 @@ bool Propagate::SetRefObjectName(const Gmat::ObjectType type,
          break;
    }
 
-   return GmatCommand::SetRefObjectName(type, name);
+   return PropagationEnabledCommand::SetRefObjectName(type, name);
 }
 
 // Reference object accessor methods
@@ -742,7 +740,7 @@ GmatBase* Propagate::GetRefObject(const Gmat::ObjectType type,
       break;
    }
 
-   return GmatCommand::GetRefObject(type, name, index);
+   return PropagationEnabledCommand::GetRefObject(type, name, index);
 }
 
 //------------------------------------------------------------------------------
@@ -841,7 +839,7 @@ bool Propagate::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
          break;
    }
 
-   return GmatCommand::SetRefObject(obj, type, name, index);
+   return PropagationEnabledCommand::SetRefObject(obj, type, name, index);
 }
 
 //------------------------------------------------------------------------------
@@ -870,7 +868,7 @@ ObjectArray& Propagate::GetRefObjectArray(const Gmat::ObjectType type)
          break;
    }
 
-   return GmatCommand::GetRefObjectArray(type);
+   return PropagationEnabledCommand::GetRefObjectArray(type);
 }
 
 
@@ -892,7 +890,7 @@ wxString Propagate::GetParameterText(const Integer id) const
    if ((id < PropagateCommandParamCount) && (id >= GmatCommandParamCount))
       return PARAMETER_TEXT[id - GmatCommandParamCount];
 
-   return GmatCommand::GetParameterText(id);
+   return PropagationEnabledCommand::GetParameterText(id);
 }
 
 
@@ -915,7 +913,7 @@ Integer Propagate::GetParameterID(const wxString &str) const
          return i;
    }
 
-   return GmatCommand::GetParameterID(str);
+   return PropagationEnabledCommand::GetParameterID(str);
 }
 
 
@@ -935,7 +933,7 @@ Gmat::ParameterType Propagate::GetParameterType(const Integer id) const
    if (id >= GmatCommandParamCount && id < PropagateCommandParamCount)
       return PARAMETER_TYPE[id - GmatBaseParamCount];
 
-   return GmatCommand::GetParameterType(id);
+   return PropagationEnabledCommand::GetParameterType(id);
 }
 
 
@@ -972,7 +970,7 @@ Integer Propagate::GetIntegerParameter(const Integer id) const
    if (id == INTERRUPT_FREQUENCY)
       return interruptCheckFrequency;
 
-   return GmatCommand::GetIntegerParameter(id);
+   return PropagationEnabledCommand::GetIntegerParameter(id);
 }
 
 
@@ -996,7 +994,7 @@ Integer Propagate::SetIntegerParameter(const Integer id, const Integer value)
       return interruptCheckFrequency;
    }
 
-   return GmatCommand::SetIntegerParameter(id, value);
+   return PropagationEnabledCommand::SetIntegerParameter(id, value);
 }
 
 
@@ -1016,7 +1014,7 @@ wxString Propagate::GetStringParameter(const Integer id) const
    if (id == PROP_COUPLED)
       return currentPropMode;
 
-   return GmatCommand::GetStringParameter(id);
+   return PropagationEnabledCommand::GetStringParameter(id);
 }
 
 
@@ -1087,7 +1085,7 @@ bool Propagate::SetStringParameter(const Integer id, const wxString &value)
       return true;
    }
 
-   return GmatCommand::SetStringParameter(id, value);
+   return PropagationEnabledCommand::SetStringParameter(id, value);
 }
 
 
@@ -1118,7 +1116,7 @@ bool Propagate::SetStringParameter(const Integer id, const wxString &value,
       return true;
    }
 
-   return GmatCommand::SetStringParameter(id, value, index);
+   return PropagationEnabledCommand::SetStringParameter(id, value, index);
 }
 
 //------------------------------------------------------------------------------
@@ -1152,7 +1150,7 @@ const StringArray& Propagate::GetStringArrayParameter(const Integer id) const
       return propName;
    }
 
-   return GmatCommand::GetStringArrayParameter(id);
+   return PropagationEnabledCommand::GetStringArrayParameter(id);
 }
 
 //------------------------------------------------------------------------------
@@ -1174,7 +1172,7 @@ const StringArray& Propagate::GetStringArrayParameter(const Integer id,
    if (id == SAT_NAME)
       return *satName[index];
 
-   return GmatCommand::GetStringArrayParameter(id, index);
+   return PropagationEnabledCommand::GetStringArrayParameter(id, index);
 }
 
 
@@ -1199,7 +1197,7 @@ bool Propagate::GetBooleanParameter(const Integer id) const
    if (id == PROP_FORWARD)
       return (direction > 0.0 ? true : false);
 
-   return GmatCommand::GetBooleanParameter(id);
+   return PropagationEnabledCommand::GetBooleanParameter(id);
 }
 
 
@@ -1244,7 +1242,7 @@ bool Propagate::SetBooleanParameter(const Integer id, const bool value)
       return true;
    }
 
-   return GmatCommand::SetBooleanParameter(id, value);
+   return PropagationEnabledCommand::SetBooleanParameter(id, value);
 }
 
 
@@ -1297,7 +1295,7 @@ Real Propagate::GetRealParameter(const Integer id) const
 {
    if (id == STOP_ACCURACY)
       return stopAccuracy;
-   return GmatCommand::GetRealParameter(id);
+   return PropagationEnabledCommand::GetRealParameter(id);
 }
 
 Real Propagate::SetRealParameter(const Integer id, const Real value)
@@ -1321,7 +1319,7 @@ Real Propagate::SetRealParameter(const Integer id, const Real value)
       }
       return stopAccuracy;
    }
-   return GmatCommand::SetRealParameter(id, value);
+   return PropagationEnabledCommand::SetRealParameter(id, value);
 }
 
 Real Propagate::GetRealParameter(const wxString &label) const
@@ -1423,7 +1421,7 @@ bool Propagate::TakeAction(const wxString &action,
       return true;
    }
 
-   return GmatCommand::TakeAction(action, actionData);
+   return PropagationEnabledCommand::TakeAction(action, actionData);
 }
 
 
@@ -5395,7 +5393,7 @@ void Propagate::RunComplete()
    // Clear transient forces(LOJ: 2009.05.07)
    ClearTransientForces();
 
-   GmatCommand::RunComplete();
+   PropagationEnabledCommand::RunComplete();
 }
 
 //------------------------------------------------------------------------------

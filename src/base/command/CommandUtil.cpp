@@ -1,4 +1,4 @@
-//$Id: CommandUtil.cpp 9513 2011-04-30 21:23:06Z djcinsb $
+//$Id: CommandUtil.cpp 9929 2011-09-30 14:59:49Z lindajun $
 //------------------------------------------------------------------------------
 //                                 CommandUtil
 //------------------------------------------------------------------------------
@@ -186,10 +186,10 @@ GmatCommand* GmatCommandUtil::GetPreviousCommand(GmatCommand *from,
 // GmatCommand* GetMatchingEnd(GmatCommand *cmd)
 //------------------------------------------------------------------------------
 /*
- * Returns EndScript of matching BeginScrpt.
+ * Returns matching EndScript of BeginScrpt or matching EndBranch of BranchCommand
  *
  * @param  cmd  BeginScript command which search begins from
- * @return next Matching EndScript, NULL if matching EndScript not found
+ * @return  Matching end command, NULL if matching end command not found
  */
 //------------------------------------------------------------------------------
 GmatCommand* GmatCommandUtil::GetMatchingEnd(GmatCommand *cmd)
@@ -348,7 +348,7 @@ GmatCommand* GmatCommandUtil::GetSubParent(GmatCommand *brCmd, GmatCommand *cmd)
 {
    #ifdef DEBUG_GET_PARENT
    ShowCommand
-      (wxT("     GmatCommandUtil::GetSubParent() brCmd = "), brCmd, _T9", cmd = "), cmd);
+      (wxT("     GmatCommandUtil::GetSubParent() brCmd = "), brCmd, wxT(", cmd = "), cmd);
    #endif
    
    GmatCommand *current = brCmd;
@@ -567,6 +567,70 @@ GmatCommand* GmatCommandUtil::RemoveCommand(GmatCommand *seq, GmatCommand *cmd)
    
    // Just return cmd, it should be deleted by the caller.
    return cmd;
+}
+
+
+//------------------------------------------------------------------------------
+// bool IsElseFoundInIf(GmatCommand *ifCmd)
+//------------------------------------------------------------------------------
+/**
+ * Checks if Else command exist in the first children of If branch command.
+ *
+ * @return true if Else command is found in the If command, flase otherwise
+ */
+//------------------------------------------------------------------------------
+bool GmatCommandUtil::IsElseFoundInIf(GmatCommand *ifCmd)
+{
+   if (ifCmd == NULL)
+      return false;
+   
+   #ifdef DEBUG_IF_ELSE
+   ShowCommand
+      (wxT("===> GmatCommandUtil::IsElseFoundInIf() ifCmd = "), ifCmd);
+   #endif
+   
+   if (!ifCmd->IsOfType(wxT("If")))
+   {
+      #ifdef DEBUG_IF_ELSE
+      MessageInterface::ShowMessage
+         (wxT("IsElseFoundInIf() returning false, it is not If command\n"));
+      #endif
+      return false;
+   }
+   
+   GmatCommand *current = ifCmd;
+   GmatCommand *child = NULL;
+   Integer branch = 0;
+   
+   // Check only one level first branch
+   child = current->GetChildCommand(branch);
+   
+   while (child != NULL)
+   {
+      #ifdef DEBUG_IF_ELSE
+      ShowCommand(wxT("   child = "), child);
+      #endif
+      
+      if (child->IsOfType(wxT("BranchEnd")))
+      {
+         if (child->GetTypeName() == wxT("Else"))
+         {
+            #ifdef DEBUG_IF_ELSE
+            MessageInterface::ShowMessage(wxT("IsElseFoundInIf() returning true\n"));
+            #endif
+            return true;
+         }            
+         break;
+      }
+      
+      child = child->GetNext();
+   }
+   
+   #ifdef DEBUG_IF_ELSE
+   MessageInterface::ShowMessage(wxT("IsElseFoundInIf() returning false\n"));
+   #endif
+   
+   return false;
 }
 
 
@@ -858,7 +922,7 @@ bool GmatCommandUtil::FindObjectFromSubCommands(GmatCommand *brCmd, Integer leve
 
 //------------------------------------------------------------------------------
 // wxString GetCommandSeqString(GmatCommand *cmd, bool showAddr = true,
-//                                 bool showGenStr = false)
+//                bool showGenStr = false, const wxString &indentStr = wxT("---"))
 //------------------------------------------------------------------------------
 /*
  * Returns string of command sequence given by cmd.
@@ -867,8 +931,9 @@ bool GmatCommandUtil::FindObjectFromSubCommands(GmatCommand *brCmd, Integer leve
  * comment with % in the scripts
  */
 //------------------------------------------------------------------------------
-wxString GmatCommandUtil::GetCommandSeqString(GmatCommand *cmd, bool showAddr,
-                                                 bool showGenStr)
+wxString GmatCommandUtil::
+GetCommandSeqString(GmatCommand *cmd, bool showAddr, bool showGenStr,
+                    const wxString &indentStr)
 {
    wxString buf;
    GmatCommand *current = cmd;
@@ -899,8 +964,13 @@ wxString GmatCommandUtil::GetCommandSeqString(GmatCommand *cmd, bool showAddr,
          else
             genStr = wxT(" <") + current->GetGeneratingString(Gmat::NO_COMMENTS) + wxT(">");
       }
+
+      // if indentation string is not blank, use it from the first level
+      if (indentStr.find(wxT(" ")) == indentStr.npos)
+         cmdstr = indentStr + wxT(" ") + wxString(buf) + current->GetTypeName() + genStr + wxT("\n");
+      else
+         cmdstr = wxString(buf) + current->GetTypeName() + genStr + wxT("\n");
       
-      cmdstr = wxT("--- ") + buf + current->GetTypeName() + genStr + wxT("\n");
       cmdseq.append(cmdstr);
       
       #ifdef DEBUG_COMMAND_SEQ_STRING
@@ -908,7 +978,7 @@ wxString GmatCommandUtil::GetCommandSeqString(GmatCommand *cmd, bool showAddr,
       #endif
       
       if ((current->GetChildCommand(0)) != NULL)
-         GetSubCommandString(current, 0, cmdseq, showAddr, showGenStr);
+         GetSubCommandString(current, 0, cmdseq, showAddr, showGenStr, indentStr);
       
       current = current->GetNext();
    }
@@ -921,11 +991,12 @@ wxString GmatCommandUtil::GetCommandSeqString(GmatCommand *cmd, bool showAddr,
 
 //------------------------------------------------------------------------------
 // void GetSubCommandString(GmatCommand* brCmd, Integer level, wxString &cmdseq,
-//                          bool showAddr = true, bool showGenStr = false)
+//                          bool showAddr = true, bool showGenStr = false,
+//                          const wxString &indentStr = wxT("---"))
 //------------------------------------------------------------------------------
-void GmatCommandUtil::GetSubCommandString(GmatCommand* brCmd, Integer level,
-                                          wxString &cmdseq, bool showAddr,
-                                          bool showGenStr)
+void GmatCommandUtil::
+GetSubCommandString(GmatCommand* brCmd, Integer level, wxString &cmdseq,
+                    bool showAddr, bool showGenStr, const wxString &indentStr)
 {
    wxString buf;
    GmatCommand* current = brCmd;
@@ -943,10 +1014,10 @@ void GmatCommandUtil::GetSubCommandString(GmatCommand* brCmd, Integer level,
       {
          for (int i=0; i<=level; i++)
          {
-            cmdseq.append(wxT("---"));
+            cmdseq.append(indentStr);
             
             #ifdef DEBUG_COMMAND_SEQ_STRING
-            MessageInterface::ShowMessage(wxT("---"));
+            MessageInterface::ShowMessage(indentStr);
             #endif
          }
          
@@ -961,7 +1032,12 @@ void GmatCommandUtil::GetSubCommandString(GmatCommand* brCmd, Integer level,
          else
             genStr = wxT(" <") + nextInBranch->GetGeneratingString(Gmat::NO_COMMENTS) + wxT(">");
          
-         cmdstr = wxT("--- ") + buf + nextInBranch->GetTypeName() + genStr + wxT("\n");
+         // if indentation string is not blank, use it from the first sub level
+         if (indentStr.find(wxT(" ")) == indentStr.npos)
+            cmdstr = indentStr + wxT(" ") + buf + nextInBranch->GetTypeName() + genStr + wxT("\n");
+         else
+            cmdstr = buf + nextInBranch->GetTypeName() + genStr + wxT("\n");
+         
          cmdseq.append(cmdstr);
          
          #ifdef DEBUG_COMMAND_SEQ_STRING
@@ -969,7 +1045,7 @@ void GmatCommandUtil::GetSubCommandString(GmatCommand* brCmd, Integer level,
          #endif
          
          if (nextInBranch->GetChildCommand() != NULL)
-            GetSubCommandString(nextInBranch, level+1, cmdseq, showAddr, showGenStr);
+            GetSubCommandString(nextInBranch, level+1, cmdseq, showAddr, showGenStr, indentStr);
          
          nextInBranch = nextInBranch->GetNext();
       }

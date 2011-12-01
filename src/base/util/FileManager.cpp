@@ -1,4 +1,4 @@
-//$Id: FileManager.cpp 9518 2011-04-30 22:32:04Z djcinsb $
+//$Id: FileManager.cpp 9929 2011-09-30 14:59:49Z lindajun $
 //------------------------------------------------------------------------------
 //                            FileManager
 //------------------------------------------------------------------------------
@@ -447,6 +447,12 @@ void FileManager::ReadStartupFile(const wxString &fileName)
          else if (name == wxT("EXIT_AFTER_RUN"))
             GmatGlobal::Instance()->SetRunMode(GmatGlobal::EXIT_AFTER_RUN);
       }
+      else if (type == wxT("PLOT_MODE"))
+      {
+         mPlotMode = name;
+         if (name == wxT("TILE"))
+            GmatGlobal::Instance()->SetPlotMode(GmatGlobal::TILED_PLOT);
+      }
       else if (type == wxT("MATLAB_MODE"))
       {
          mMatlabMode = name;
@@ -463,6 +469,14 @@ void FileManager::ReadStartupFile(const wxString &fileName)
          {
             mDebugMatlab = name;
             GmatGlobal::Instance()->SetMatlabDebug(true);
+         }
+      }
+      else if (type == wxT("DEBUG_MISSION_TREE"))
+      {
+         if (name == wxT("ON"))
+         {
+            mDebugMissionTree = name;
+            GmatGlobal::Instance()->SetMissionTreeDebug(true);
          }
       }
       else
@@ -564,20 +578,35 @@ void FileManager::WriteStartupFile(const wxString &fileName)
    outStream << std::setw(22) << wxT("#RUN_MODE") << wxT(" = EXIT_AFTER_RUN\n");
    
    //---------------------------------------------
+   // write PLOT_MODE if not blank
+   //---------------------------------------------
+   if (mPlotMode != wxT(""))
+   {
+      #ifdef DEBUG_WRITE_STARTUP_FILE
+      MessageInterface::ShowMessage("   .....Writing PLOT_MODE\n");
+      #endif
+      outStream << std::setw(22) << "PLOT_MODE" << " = " << mRunMode.char_str() << "\n";
+   }
+   
+   // Write other option as comments
+   // There are no other options implemented for now
+   //outStream << std::setw(22) << "#PLOT_MODE" << " = TILE\n";
+   
+   //---------------------------------------------
    // write MATLAB_MODE if not blank
    //---------------------------------------------
    if (mMatlabMode != wxT(""))
    {
       #ifdef DEBUG_WRITE_STARTUP_FILE
-      MessageInterface::ShowMessage(wxT("   .....Writing RUN_MODE\n"));
+      MessageInterface::ShowMessage(wxT("   .....Writing MATLAB_MODE\n"));
       #endif
-      outStream << std::setw(22) << wxT("MATLAB_MODE") << wxT(" = ") << mMatlabMode << wxT("\n");
+      outStream << std::setw(22) << "MATLAB_MODE" << " = " << mMatlabMode.char_str() << "\n";
    }
    
    // Write other option as comments
-   outStream << std::setw(22) << wxT("#MATLAB_MODE") << wxT(" = SINGLE\n");
-   outStream << std::setw(22) << wxT("#MATLAB_MODE") << wxT(" = SHARED\n");
-   outStream << std::setw(22) << wxT("#MATLAB_MODE") << wxT(" = NO_MATLAB\n");
+   outStream << std::setw(22) << "#MATLAB_MODE" << " = SINGLE\n";
+   outStream << std::setw(22) << "#MATLAB_MODE" << " = SHARED\n";
+   outStream << std::setw(22) << "#MATLAB_MODE" << " = NO_MATLAB\n";
    
    //---------------------------------------------
    // write DEBUG_MATLAB if not blank
@@ -585,13 +614,25 @@ void FileManager::WriteStartupFile(const wxString &fileName)
    if (mDebugMatlab != wxT(""))
    {
       #ifdef DEBUG_WRITE_STARTUP_FILE
-      MessageInterface::ShowMessage(wxT("   .....Writing RUN_MODE\n"));
+      MessageInterface::ShowMessage(wxT("   .....Writing DEBUG_MATLAB\n"));
       #endif
-      outStream << std::setw(22) << wxT("DEBUG_MATLAB") << wxT(" = ") << mDebugMatlab << wxT("\n");
+      outStream << std::setw(22) << "DEBUG_MATLAB" << " = " << mDebugMatlab.char_str() << "\n";
+   }
+      
+   //---------------------------------------------
+   // write DEBUG_MISSION_TREE if not blank
+   //---------------------------------------------
+   if (mDebugMissionTree != wxT(""))
+   {
+      #ifdef DEBUG_WRITE_STARTUP_FILE
+      MessageInterface::ShowMessage(wxT("   .....Writing DEBUG_MISSION_TREE\n"));
+      #endif
+      outStream << std::setw(22) << "DEBUG_MISSION_TREE" << " = " << mDebugMissionTree.char_str() << "\n";
    }
    
-   if (mRunMode != wxT("") || mMatlabMode != wxT("") || mDebugMatlab != wxT(""))
-      outStream << wxT("#-----------------------------------------------------------\n");
+   if (mRunMode != wxT("") || mPlotMode != wxT("") || mMatlabMode != wxT("") ||
+       mDebugMatlab != wxT("") || mDebugMissionTree != wxT(""))
+      outStream << "#-----------------------------------------------------------\n";
    
    //---------------------------------------------
    // write ROOT_PATH next
@@ -599,9 +640,9 @@ void FileManager::WriteStartupFile(const wxString &fileName)
    #ifdef DEBUG_WRITE_STARTUP_FILE
    MessageInterface::ShowMessage(wxT("   .....Writing ROOT_PATH path\n"));
    #endif
-   outStream << std::setw(22) << wxT("ROOT_PATH") << wxT(" = ") << mPathMap[wxT("ROOT_PATH")]
-             << wxT("\n");
-   outStream << wxT("#-----------------------------------------------------------\n");
+   outStream << std::setw(22) << "ROOT_PATH" << " = " << mPathMap[wxT("ROOT_PATH")].char_str()
+             << "\n";
+   outStream << "#-----------------------------------------------------------\n";
    mPathWrittenOuts.push_back(wxT("ROOT_PATH"));
    
    //---------------------------------------------
@@ -614,10 +655,10 @@ void FileManager::WriteStartupFile(const wxString &fileName)
    {
       for (UnsignedInt i = 0; i < mPluginList.size(); ++i)
       {
-         outStream << std::setw(22) << wxT("PLUGIN") << wxT(" = ") << mPluginList[i]
-                   << wxT("\n");
+         outStream << std::setw(22) << "PLUGIN" << " = " << mPluginList[i].char_str()
+                   << "\n";
       }
-      outStream << wxT("#-----------------------------------------------------------\n");
+      outStream << "#-----------------------------------------------------------\n";
    }
    
    //---------------------------------------------
@@ -626,12 +667,12 @@ void FileManager::WriteStartupFile(const wxString &fileName)
    #ifdef DEBUG_WRITE_STARTUP_FILE
    MessageInterface::ShowMessage(wxT("   .....Writing OUTPUT_PATH paths\n"));
    #endif
-   outStream << std::setw(22) << wxT("OUTPUT_PATH") << wxT(" = ")
-             << mPathMap[wxT("OUTPUT_PATH")] << wxT("\n");
-   WriteFiles(outStream, wxT("LOG_"));
-   WriteFiles(outStream, wxT("REPORT_"));
-   WriteFiles(outStream, wxT("SCREENSHOT_"));
-   outStream << wxT("#-----------------------------------------------------------\n");
+   outStream << std::setw(22) << "OUTPUT_PATH" << " = "
+             << mPathMap[wxT("OUTPUT_PATH")].char_str() << "\n";
+   WriteFiles(outStream, "LOG_");
+   WriteFiles(outStream, "REPORT_");
+   WriteFiles(outStream, "SCREENSHOT_");
+   outStream << "#-----------------------------------------------------------\n";
    mPathWrittenOuts.push_back(wxT("OUTPUT_PATH"));
    
    //---------------------------------------------
@@ -640,9 +681,9 @@ void FileManager::WriteStartupFile(const wxString &fileName)
    #ifdef DEBUG_WRITE_STARTUP_FILE
    MessageInterface::ShowMessage(wxT("   .....Writing MEASUREMENT_PATH paths\n"));
    #endif
-   outStream << std::setw(22) << wxT("MEASUREMENT_PATH") << wxT(" = ")
-             << mPathMap[wxT("MEASUREMENT_PATH")] << wxT("\n");
-   outStream << wxT("#-----------------------------------------------------------\n");
+   outStream << std::setw(22) << "MEASUREMENT_PATH" << " = "
+             << mPathMap[wxT("MEASUREMENT_PATH")].char_str() << "\n";
+   outStream << "#-----------------------------------------------------------\n";
    mPathWrittenOuts.push_back(wxT("MEASUREMENT_PATH"));
    
    //---------------------------------------------
@@ -653,10 +694,10 @@ void FileManager::WriteStartupFile(const wxString &fileName)
       #ifdef DEBUG_WRITE_STARTUP_FILE
       MessageInterface::ShowMessage(wxT("   .....Writing EPHEM_PATH path\n"));
       #endif
-      outStream << std::setw(22) << wxT("EPHEM_PATH") << wxT(" = ")
-                << mPathMap[wxT("EPHEM_PATH")];
-      outStream << wxT("\n#---------------------------------------------")
-            wxT("--------------\n");
+      outStream << std::setw(22) << "EPHEM_PATH" << " = "
+                << mPathMap[wxT("EPHEM_PATH")].char_str();
+      outStream << "\n#---------------------------------------------"
+            "--------------\n";
       mPathWrittenOuts.push_back(wxT("EPHEM_PATH"));
    }
    
@@ -676,8 +717,8 @@ void FileManager::WriteStartupFile(const wxString &fileName)
          std::list<wxString>::iterator listpos = mGmatFunctionPaths.begin();
          while (listpos != mGmatFunctionPaths.end())
          {
-            outStream << std::setw(22) << pos->first << wxT(" = ")
-                      << *listpos << wxT("\n");
+            outStream << std::setw(22) << pos->first.char_str() << " = "
+                      << (*listpos).char_str() << "\n";
             ++listpos;
          }
          isEmptyPath = false;
@@ -685,9 +726,9 @@ void FileManager::WriteStartupFile(const wxString &fileName)
       }
    }
    if (isEmptyPath)
-      outStream << std::setw(22) << wxT("#GMAT_FUNCTION_PATH ") << wxT(" = ") << wxT("\n");
+      outStream << std::setw(22) << "#GMAT_FUNCTION_PATH " << " = " << "\n";
    
-   outStream << wxT("#-----------------------------------------------------------\n");
+   outStream << "#-----------------------------------------------------------\n";
    mPathWrittenOuts.push_back(wxT("GMAT_FUNCTION_PATH"));
    
    //---------------------------------------------
@@ -706,16 +747,16 @@ void FileManager::WriteStartupFile(const wxString &fileName)
          std::list<wxString>::iterator listpos = mMatlabFunctionPaths.begin();
          while (listpos != mMatlabFunctionPaths.end())
          {
-            outStream << std::setw(22) << pos->first << wxT(" = ") << *listpos << wxT("\n");
+            outStream << std::setw(22) << pos->first.char_str() << " = " << (*listpos).char_str() << "\n";
             ++listpos;
          }
          break;
       }
    }
    if (isEmptyPath)
-      outStream << std::setw(22) << wxT("#MATLAB_FUNCTION_PATH ") << wxT(" = ") << wxT("\n");
+      outStream << std::setw(22) << "#MATLAB_FUNCTION_PATH " << " = " << "\n";
    
-   outStream << wxT("#-----------------------------------------------------------\n");
+   outStream << "#-----------------------------------------------------------\n";
    mPathWrittenOuts.push_back(wxT("MATLAB_FUNCTION_PATH"));
    
    //---------------------------------------------
@@ -724,9 +765,9 @@ void FileManager::WriteStartupFile(const wxString &fileName)
    #ifdef DEBUG_WRITE_STARTUP_FILE
    MessageInterface::ShowMessage(wxT("   .....Writing DATA_PATH path\n"));
    #endif
-   outStream << std::setw(22) << wxT("DATA_PATH") << wxT(" = ") << mPathMap[wxT("DATA_PATH")]
-             << wxT("\n");
-   outStream << wxT("#-----------------------------------------------------------\n");
+   outStream << std::setw(22) << "DATA_PATH" << " = " << mPathMap[wxT("DATA_PATH")].char_str()
+             << "\n";
+   outStream << "#-----------------------------------------------------------\n";
    mPathWrittenOuts.push_back(wxT("DATA_PATH"));
    
    //---------------------------------------------
@@ -742,8 +783,8 @@ void FileManager::WriteStartupFile(const wxString &fileName)
          #ifdef DEBUG_WRITE_STARTUP_FILE
          MessageInterface::ShowMessage(wxT("   .....Writing %s\n"), relPath.c_str());
          #endif
-         outStream << std::setw(22) << relPath << wxT(" = ") << mPathMap[relPath] << wxT("\n");
-         outStream << wxT("#-----------------------------------------------------------\n");
+         outStream << std::setw(22) << relPath.char_str() << " = " << mPathMap[relPath].char_str() << "\n";
+         outStream << "#-----------------------------------------------------------\n";
          mPathWrittenOuts.push_back(relPath);
       }
    }
@@ -754,10 +795,10 @@ void FileManager::WriteStartupFile(const wxString &fileName)
    #ifdef DEBUG_WRITE_STARTUP_FILE
    MessageInterface::ShowMessage(wxT("   .....Writing SPK path\n"));
    #endif
-   outStream << std::setw(22) << wxT("SPK_PATH") << wxT(" = ")
-             << mPathMap[wxT("SPK_PATH")] << wxT("\n");
-   WriteFiles(outStream, wxT("SPK"));
-   outStream << wxT("#-----------------------------------------------------------\n");
+   outStream << std::setw(22) << "SPK_PATH" << " = "
+             << mPathMap[wxT("SPK_PATH")].char_str() << "\n";
+   WriteFiles(outStream, "SPK");
+   outStream << "#-----------------------------------------------------------\n";
    mPathWrittenOuts.push_back(wxT("SPK_PATH"));
    
    //---------------------------------------------
@@ -766,10 +807,10 @@ void FileManager::WriteStartupFile(const wxString &fileName)
    #ifdef DEBUG_WRITE_STARTUP_FILE
    MessageInterface::ShowMessage(wxT("   .....Writing DE path\n"));
    #endif
-   outStream << std::setw(22) << wxT("DE_PATH") << wxT(" = ")
-             << mPathMap[wxT("DE_PATH")] << wxT("\n");
-   WriteFiles(outStream, wxT("DE405"));
-   outStream << wxT("#-----------------------------------------------------------\n");
+   outStream << std::setw(22) << "DE_PATH" << " = "
+             << mPathMap[wxT("DE_PATH")].char_str() << "\n";
+   WriteFiles(outStream, "DE405");
+   outStream << "#-----------------------------------------------------------\n";
    mPathWrittenOuts.push_back(wxT("DE_PATH"));
    
    //---------------------------------------------
@@ -778,12 +819,12 @@ void FileManager::WriteStartupFile(const wxString &fileName)
    #ifdef DEBUG_WRITE_STARTUP_FILE
    MessageInterface::ShowMessage(wxT("   .....Writing PLANETARY_COEFF_PATH path\n"));
    #endif
-   outStream << std::setw(22) << wxT("PLANETARY_COEFF_PATH") << wxT(" = ")
-             << mPathMap[wxT("PLANETARY_COEFF_PATH")] << wxT("\n");
-   WriteFiles(outStream, wxT("EOP_FILE"));
-   WriteFiles(outStream, wxT("PLANETARY_COEFF_FILE"));
-   WriteFiles(outStream, wxT("NUTATION_COEFF_FILE"));
-   outStream << wxT("#-----------------------------------------------------------\n");
+   outStream << std::setw(22) << "PLANETARY_COEFF_PATH" << " = "
+             << mPathMap[wxT("PLANETARY_COEFF_PATH")].char_str() << "\n";
+   WriteFiles(outStream, "EOP_FILE");
+   WriteFiles(outStream, "PLANETARY_COEFF_FILE");
+   WriteFiles(outStream, "NUTATION_COEFF_FILE");
+   outStream << "#-----------------------------------------------------------\n";
    mPathWrittenOuts.push_back(wxT("PLANETARY_COEFF_PATH"));
 
    //---------------------------------------------
@@ -792,10 +833,10 @@ void FileManager::WriteStartupFile(const wxString &fileName)
    #ifdef DEBUG_WRITE_STARTUP_FILE
    MessageInterface::ShowMessage(wxT("   .....Writing TIME path\n"));
    #endif
-   outStream << std::setw(22) << wxT("TIME_PATH") << wxT(" = ") << mPathMap[wxT("TIME_PATH")] << wxT("\n");
-   WriteFiles(outStream, wxT("LEAP_"));
-   WriteFiles(outStream, wxT("LSK_"));
-   outStream << wxT("#-----------------------------------------------------------\n");
+   outStream << std::setw(22) << "TIME_PATH" << " = " << mPathMap[wxT("TIME_PATH")].char_str() << "\n";
+   WriteFiles(outStream, "LEAP_");
+   WriteFiles(outStream, "LSK_");
+   outStream << "#-----------------------------------------------------------\n";
    mPathWrittenOuts.push_back(wxT("TIME_PATH"));
 
    //---------------------------------------------
@@ -809,20 +850,20 @@ void FileManager::WriteStartupFile(const wxString &fileName)
    {
       if (pos->first.find(wxT("_POT_")) != wxString::npos)
       {
-         outStream << std::setw(22) << pos->first << wxT(" = ")
-                   << pos->second << wxT("\n");
+         outStream << std::setw(22) << pos->first.char_str() << " = "
+                   << pos->second.char_str() << "\n";
          mPathWrittenOuts.push_back(pos->first);
       }
    }
-   outStream << wxT("#-----------------------------------------------------------\n");
-   WriteFiles(outStream, wxT("POT_FILE"));
-   WriteFiles(outStream, wxT("EGM96"));
-   WriteFiles(outStream, wxT("JGM"));
-   WriteFiles(outStream, wxT("MARS50C"));
-   WriteFiles(outStream, wxT("MGNP180U"));
-   WriteFiles(outStream, wxT("LP165P"));
+   outStream << "#-----------------------------------------------------------\n";
+   WriteFiles(outStream, "POT_FILE");
+   WriteFiles(outStream, "EGM96");
+   WriteFiles(outStream, "JGM");
+   WriteFiles(outStream, "MARS50C");
+   WriteFiles(outStream, "MGNP180U");
+   WriteFiles(outStream, "LP165P");
    
-   outStream << wxT("#-----------------------------------------------------------\n");
+   outStream << "#-----------------------------------------------------------\n";
 
    //---------------------------------------------
    // write the GUI_CONFIG_PATH and files next
@@ -830,10 +871,10 @@ void FileManager::WriteStartupFile(const wxString &fileName)
    #ifdef DEBUG_WRITE_STARTUP_FILE
    MessageInterface::ShowMessage(wxT("   .....Writing GUI_CONFIG_PATH path\n"));
    #endif
-   outStream << std::setw(22) << wxT("GUI_CONFIG_PATH") << wxT(" = ")
-             << mPathMap[wxT("GUI_CONFIG_PATH")] << wxT("\n");
-   WriteFiles(outStream, wxT("PERSONALIZATION_FILE"));
-   outStream << wxT("#-----------------------------------------------------------\n");
+   outStream << std::setw(22) << "GUI_CONFIG_PATH" << " = "
+             << mPathMap[wxT("GUI_CONFIG_PATH")].char_str() << "\n";
+   WriteFiles(outStream, "PERSONALIZATION_FILE");
+   outStream << "#-----------------------------------------------------------\n";
    mPathWrittenOuts.push_back(wxT("GUI_CONFIG_PATH"));
    
    //---------------------------------------------
@@ -842,10 +883,10 @@ void FileManager::WriteStartupFile(const wxString &fileName)
    #ifdef DEBUG_WRITE_STARTUP_FILE
    MessageInterface::ShowMessage(wxT("   .....Writing ICON_PATH path\n"));
    #endif
-   outStream << std::setw(22) << wxT("ICON_PATH") << wxT(" = ")
-             << mPathMap[wxT("ICON_PATH")] << wxT("\n");
-   WriteFiles(outStream, wxT("ICON_FILE"));
-   outStream << wxT("#-----------------------------------------------------------\n");
+   outStream << std::setw(22) << "ICON_PATH" << " = "
+             << mPathMap[wxT("ICON_PATH")].char_str() << "\n";
+   WriteFiles(outStream, "ICON_FILE");
+   outStream << "#-----------------------------------------------------------\n";
    mPathWrittenOuts.push_back(wxT("ICON_PATH"));
 
    //---------------------------------------------
@@ -854,10 +895,10 @@ void FileManager::WriteStartupFile(const wxString &fileName)
    #ifdef DEBUG_WRITE_STARTUP_FILE
    MessageInterface::ShowMessage(wxT("   .....Writing SPLASH_PATH path\n"));
    #endif
-   outStream << std::setw(22) << wxT("SPLASH_PATH") << wxT(" = ")
-             << mPathMap[wxT("SPLASH_PATH")] << wxT("\n");
-   WriteFiles(outStream, wxT("SPLASH_FILE"));
-   outStream << wxT("#-----------------------------------------------------------\n");
+   outStream << std::setw(22) << "SPLASH_PATH" << " = "
+             << mPathMap[wxT("SPLASH_PATH")].char_str() << "\n";
+   WriteFiles(outStream, "SPLASH_FILE");
+   outStream << "#-----------------------------------------------------------\n";
    mPathWrittenOuts.push_back(wxT("SPLASH_PATH"));
    
    //---------------------------------------------
@@ -866,10 +907,10 @@ void FileManager::WriteStartupFile(const wxString &fileName)
    #ifdef DEBUG_WRITE_STARTUP_FILE
    MessageInterface::ShowMessage(wxT("   .....Writing TEXTURE_PATH path\n"));
    #endif
-   outStream << std::setw(22) << wxT("TEXTURE_PATH") << wxT(" = ")
-             << mPathMap[wxT("TEXTURE_PATH")] << wxT("\n");
-   WriteFiles(outStream, wxT("TEXTURE_FILE"));
-   outStream << wxT("#-----------------------------------------------------------\n");
+   outStream << std::setw(22) << "TEXTURE_PATH" << " = "
+             << mPathMap[wxT("TEXTURE_PATH")].char_str() << "\n";
+   WriteFiles(outStream, "TEXTURE_FILE");
+   outStream << "#-----------------------------------------------------------\n";
    mPathWrittenOuts.push_back(wxT("TEXTURE_PATH"));
 
    //---------------------------------------------
@@ -878,11 +919,11 @@ void FileManager::WriteStartupFile(const wxString &fileName)
    #ifdef DEBUG_WRITE_STARTUP_FILE
    MessageInterface::ShowMessage(wxT("   .....Writing STAR_PATH path\n"));
    #endif
-   outStream << std::setw(22) << wxT("STAR_PATH") << wxT(" = ")
-             << mPathMap[wxT("STAR_PATH")] << wxT("\n");
-   WriteFiles(outStream, wxT("STAR_FILE"));
-   WriteFiles(outStream, wxT("CONSTELLATION_FILE"));
-   outStream << wxT("#-----------------------------------------------------------\n");
+   outStream << std::setw(22) << "STAR_PATH" << " = "
+             << mPathMap[wxT("STAR_PATH")].char_str() << "\n";
+   WriteFiles(outStream, "STAR_FILE");
+   WriteFiles(outStream, "CONSTELLATION_FILE");
+   outStream << "#-----------------------------------------------------------\n";
    mPathWrittenOuts.push_back(wxT("STAR_PATH"));
 
    //---------------------------------------------
@@ -891,10 +932,10 @@ void FileManager::WriteStartupFile(const wxString &fileName)
    #ifdef DEBUG_WRITE_STARTUP_FILE
    MessageInterface::ShowMessage(wxT("   .....Writing MODEL_PATH path\n"));
    #endif
-   outStream << std::setw(22) << wxT("MODEL_PATH") << wxT(" = ")
-             << mPathMap[wxT("MODEL_PATH")] << wxT("\n");
-   WriteFiles(outStream, wxT("SPACECRAFT_MODEL_FILE"));
-   outStream << wxT("#-----------------------------------------------------------\n");
+   outStream << std::setw(22) << "MODEL_PATH" << " = "
+             << mPathMap[wxT("MODEL_PATH")].char_str() << "\n";
+   WriteFiles(outStream, "SPACECRAFT_MODEL_FILE");
+   outStream << "#-----------------------------------------------------------\n";
    mPathWrittenOuts.push_back(wxT("MODEL_PATH"));
    
    //---------------------------------------------
@@ -905,10 +946,10 @@ void FileManager::WriteStartupFile(const wxString &fileName)
    #endif
    
    if (GetFilename(wxT("HELP_FILE")) == wxT(""))
-      outStream << std::setw(22) << wxT("#HELP_FILE ") << wxT(" = ") << wxT("\n");
+      outStream << std::setw(22) << "#HELP_FILE " << " = " << "\n";
    else
-      WriteFiles(outStream, wxT("HELP_FILE"));
-   outStream << wxT("#-----------------------------------------------------------\n");
+      WriteFiles(outStream, "HELP_FILE");
+   outStream << "#-----------------------------------------------------------\n";
    mFileWrittenOuts.push_back(wxT("HELP_FILE"));
    
    //---------------------------------------------
@@ -917,9 +958,9 @@ void FileManager::WriteStartupFile(const wxString &fileName)
    #ifdef DEBUG_WRITE_STARTUP_FILE
    MessageInterface::ShowMessage(wxT("   .....Writing rest of paths and files\n"));
    #endif
-   WriteFiles(outStream, wxT("-OTHER-PATH-"));
-   WriteFiles(outStream, wxT("-OTHER-"));
-   outStream << wxT("#-----------------------------------------------------------\n");
+   WriteFiles(outStream, "-OTHER-PATH-");
+   WriteFiles(outStream, "-OTHER-");
+   outStream << "#-----------------------------------------------------------\n";
    
    //---------------------------------------------
    // write saved comments
@@ -929,14 +970,14 @@ void FileManager::WriteStartupFile(const wxString &fileName)
       #ifdef DEBUG_WRITE_STARTUP_FILE
       MessageInterface::ShowMessage(wxT("   .....Writing saved comments\n"));
       #endif
-      outStream << wxT("# Saved Comments\n");
-      outStream << wxT("#-----------------------------------------------------------\n");
+      outStream << "# Saved Comments\n";
+      outStream << "#-----------------------------------------------------------\n";
       for (UnsignedInt i=0; i<mSavedComments.size(); i++)
-         outStream << mSavedComments[i] << wxT("\n");
-      outStream << wxT("#-----------------------------------------------------------\n");
+         outStream << mSavedComments[i].char_str() << "\n";
+      outStream << "#-----------------------------------------------------------\n";
    }
 
-   outStream << wxT("\n");
+   outStream << "\n";
    outStream.close();
 
    #ifdef DEBUG_WRITE_STARTUP_FILE
@@ -977,7 +1018,7 @@ wxString FileManager::GetPathname(const FileType type)
    if (type >=0 && type < FileTypeCount)
       return GetPathname(FILE_TYPE_STRING[type]);
    
-   wxString ss(wxT(""));
+   wxString ss;
    ss << wxT("FileManager::GetPathname() enum type: ") << type
       << wxT(" is out of bounds\n");
    
@@ -1854,48 +1895,48 @@ void FileManager::AddAvailablePotentialFiles()
 //------------------------------------------------------------------------------
 void FileManager::WriteHeader(std::ofstream &outStream)
 {
-   outStream << wxT("#-------------------------------------------------------------------------------\n");
-   outStream << wxT("# General Mission Analysis Tool (GMAT) startup file\n");
-   outStream << wxT("#-------------------------------------------------------------------------------\n");
-   outStream << wxT("# Comment line starts with #\n");
-   outStream << wxT("# Comment line starting with ## will be saved when saving startup file.\n");
-   outStream << wxT("#\n");
-   outStream << wxT("# Path/File naming convention:\n");
-   outStream << wxT("#   - Path name should end with _PATH\n");
-   outStream << wxT("#   - File name should end with _FILE\n");
-   outStream << wxT("#   - Path/File names are case sensative\n");
-   outStream << wxT("#\n");
-   outStream << wxT("# You can add potential and texture files by following the naming convention.\n");
-   outStream << wxT("#   - Potential file should begin with planet name and end with _POT_FILE\n");
-   outStream << wxT("#   - Texture file should begin with planet name and end with _TEXTURE_FILE\n");
-   outStream << wxT("#\n");
-   outStream << wxT("# If same _FILE is specified multiple times, it will use the last one.\n");
-   outStream << wxT("#\n");
-   outStream << wxT("# You can have more than one line containing GMAT_FUNCTION_PATH. GMAT will store \n");
-   outStream << wxT("# the multiple paths you specify and scan for GMAT Functions using the paths \n");
-   outStream << wxT("# in top to bottom order and use the first function found from the search paths.\n");
-   outStream << wxT("#\n");
-   outStream << wxT("# In order for an object plugin to work inside GMAT, the plugin dynamic link libraries; \n");
-   outStream << wxT("# Windows(.dll), Linux(.so) and Mac(.dylib), must be placed in the folder containing\n");
-   outStream << wxT("# the GMAT executable or application. Once placed in the correct folder \n");
-   outStream << wxT("# the PLUGIN line below must be set equal to the plugin name without the dynamic link \n");
-   outStream << wxT("# library extension with the comment (#) removed from the front of the line.\n");
-   outStream << wxT("#\n");
-   outStream << wxT("# Some available PLUGINs are:\n");
-   outStream << wxT("# PLUGIN = libMatlabInterface\n");
-   outStream << wxT("# PLUGIN = libFminconOptimizer\n");
-   outStream << wxT("# PLUGIN = libVF13Optimizer\n");
-   outStream << wxT("# PLUGIN = libDataFile\n");
-   outStream << wxT("# PLUGIN = libCcsdsEphemerisFile\n");
-   outStream << wxT("# PLUGIN = libGmatEstimation\n");
-   outStream << wxT("#\n");
-   outStream << wxT("#===============================================================================\n");
+   outStream << "#-------------------------------------------------------------------------------\n";
+   outStream << "# General Mission Analysis Tool (GMAT) startup file\n";
+   outStream << "#-------------------------------------------------------------------------------\n";
+   outStream << "# Comment line starts with #\n";
+   outStream << "# Comment line starting with ## will be saved when saving startup file.\n";
+   outStream << "#\n";
+   outStream << "# Path/File naming convention:\n";
+   outStream << "#   - Path name should end with _PATH\n";
+   outStream << "#   - File name should end with _FILE\n";
+   outStream << "#   - Path/File names are case sensative\n";
+   outStream << "#\n";
+   outStream << "# You can add potential and texture files by following the naming convention.\n";
+   outStream << "#   - Potential file should begin with planet name and end with _POT_FILE\n";
+   outStream << "#   - Texture file should begin with planet name and end with _TEXTURE_FILE\n";
+   outStream << "#\n";
+   outStream << "# If same _FILE is specified multiple times, it will use the last one.\n";
+   outStream << "#\n";
+   outStream << "# You can have more than one line containing GMAT_FUNCTION_PATH. GMAT will store \n";
+   outStream << "# the multiple paths you specify and scan for GMAT Functions using the paths \n";
+   outStream << "# in top to bottom order and use the first function found from the search paths.\n";
+   outStream << "#\n";
+   outStream << "# In order for an object plugin to work inside GMAT, the plugin dynamic link libraries; \n";
+   outStream << "# Windows(.dll), Linux(.so) and Mac(.dylib), must be placed in the folder containing\n";
+   outStream << "# the GMAT executable or application. Once placed in the correct folder \n";
+   outStream << "# the PLUGIN line below must be set equal to the plugin name without the dynamic link \n";
+   outStream << "# library extension with the comment (#) removed from the front of the line.\n";
+   outStream << "#\n";
+   outStream << "# Some available PLUGINs are:\n";
+   outStream << "# PLUGIN = libMatlabInterface\n";
+   outStream << "# PLUGIN = libFminconOptimizer\n";
+   outStream << "# PLUGIN = libVF13Optimizer\n";
+   outStream << "# PLUGIN = libDataFile\n";
+   outStream << "# PLUGIN = libCcsdsEphemerisFile\n";
+   outStream << "# PLUGIN = libGmatEstimation\n";
+   outStream << "#\n";
+   outStream << "#===============================================================================\n";
 }
 
 //------------------------------------------------------------------------------
 // void WriteFiles(std::ofstream &outStream, const wxString &type)
 //------------------------------------------------------------------------------
-void FileManager::WriteFiles(std::ofstream &outStream, const wxString &type)
+void FileManager::WriteFiles(std::ofstream &outStream, const std::string &type)
 {
    #ifdef DEBUG_WRITE_STARTUP_FILE
    MessageInterface::ShowMessage(wxT("   .....Writing %s file\n"), type.c_str());
@@ -1904,7 +1945,7 @@ void FileManager::WriteFiles(std::ofstream &outStream, const wxString &type)
    wxString realPath;
    
    // Write remainder of path
-   if (type == wxT("-OTHER-PATH-"))
+   if (type == "-OTHER-PATH-")
    {
       for (std::map<wxString, wxString>::iterator pos = mPathMap.begin();
            pos != mPathMap.end(); ++pos)
@@ -1917,8 +1958,8 @@ void FileManager::WriteFiles(std::ofstream &outStream, const wxString &type)
             {
                realPath = pos->second;
                mPathWrittenOuts.push_back(pos->first);
-               outStream << std::setw(22) << pos->first << wxT(" = ")
-                         << realPath << wxT("\n");
+               outStream << std::setw(22) << pos->first.char_str() << " = "
+                         << realPath.char_str() << "\n";
             }
          }
       }
@@ -1926,7 +1967,7 @@ void FileManager::WriteFiles(std::ofstream &outStream, const wxString &type)
    }
    
    // Write remainder of files
-   if (type == wxT("-OTHER-"))
+   if (type == "-OTHER-")
    {
       for (std::map<wxString, FileInfo*>::iterator pos = mFileMap.begin();
            pos != mFileMap.end(); ++pos)
@@ -1944,8 +1985,8 @@ void FileManager::WriteFiles(std::ofstream &outStream, const wxString &type)
                   realPath = realPath + mPathSeparator;
                
                mFileWrittenOuts.push_back(pos->first);
-               outStream << std::setw(22) << pos->first << wxT(" = ")
-                         << realPath << pos->second->mFile << wxT("\n");
+               outStream << std::setw(22) << pos->first.char_str() << " = "
+                         << realPath.char_str() << pos->second->mFile.char_str() << "\n";
             }
          }
       }
@@ -1955,7 +1996,7 @@ void FileManager::WriteFiles(std::ofstream &outStream, const wxString &type)
    for (std::map<wxString, FileInfo*>::iterator pos = mFileMap.begin();
         pos != mFileMap.end(); ++pos)
    {
-      if (pos->first.find(type) != wxString::npos)
+      if (pos->first.find(wxString::FromAscii(type.c_str())) != wxString::npos)
       {
          if (pos->second)
          {
@@ -1966,8 +2007,8 @@ void FileManager::WriteFiles(std::ofstream &outStream, const wxString &type)
                realPath = realPath + mPathSeparator;
             
             mFileWrittenOuts.push_back(pos->first);
-            outStream << std::setw(22) << pos->first << wxT(" = ")
-                      << realPath << pos->second->mFile << wxT("\n");
+            outStream << std::setw(22) << pos->first.char_str() << " = "
+                      << realPath << pos->second->mFile.char_str() << "\n";
          }
       }
    }
@@ -1980,8 +2021,11 @@ void FileManager::WriteFiles(std::ofstream &outStream, const wxString &type)
 void FileManager::RefreshFiles()
 {
    mRunMode = wxT("");
+   mPlotMode = wxT("");
+   mDebugMatlab = wxT("");
    mMatlabMode = wxT("");
    mDebugMatlab = wxT("");
+   mDebugMissionTree = wxT("");
    mPathMap.clear();
    mGmatFunctionPaths.clear();
    mMatlabFunctionPaths.clear();

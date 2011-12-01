@@ -1,4 +1,4 @@
-//$Id: Propagator.cpp 9513 2011-04-30 21:23:06Z djcinsb $
+//$Id: Propagator.cpp 9923 2011-09-29 15:55:33Z djcinsb $
 //------------------------------------------------------------------------------
 //                              Propagator
 //------------------------------------------------------------------------------
@@ -989,6 +989,36 @@ void Propagator::SetTime(Real t)
       physicalModel->SetTime(t);
 }
 
+
+//------------------------------------------------------------------------------
+// bool PropagatesForward()
+//------------------------------------------------------------------------------
+/**
+ * Accesses the current step direction
+ *
+ * @return true for forward propagation, false for backwards
+ */
+//------------------------------------------------------------------------------
+bool Propagator::PropagatesForward()
+{
+   return (stepSize > 0.0 ? true : false);
+}
+
+
+//------------------------------------------------------------------------------
+// void SetForwardPropagation(bool tf)
+//------------------------------------------------------------------------------
+/**
+ * Sets the current propagation direction
+ *
+ * @param tf Flag indicating if the direction is forwards (true) or backwards
+ */
+//------------------------------------------------------------------------------
+void Propagator::SetForwardPropagation(bool tf)
+{
+   stepSize       = (tf ? 1.0 : -1.0) * GmatMathUtil::Abs(stepSize);
+   stepSizeBuffer = (tf ? 1.0 : -1.0) * GmatMathUtil::Abs(stepSizeBuffer);
+}
 
 
 //------------------------------------------------------------------------------
