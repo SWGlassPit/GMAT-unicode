@@ -1,4 +1,4 @@
-//$Id: ResourceTree.cpp 9914 2011-09-26 19:07:00Z lindajun $
+//$Id: ResourceTree.cpp 9934 2011-09-30 21:49:02Z lindajun $
 //------------------------------------------------------------------------------
 //                              ResourceTree
 //------------------------------------------------------------------------------
@@ -4045,16 +4045,20 @@ void ResourceTree::OnRunScriptsFromFolder(wxCommandEvent &event)
    
    if (runInterruptedScripts.GetCount() > 0)
    {
-      int numInterrupted = failedToRunScripts.GetCount();
+      int numInterrupted = runInterruptedScripts.GetCount();
       wxString scriptNames3;
       msg3.Printf(wxT("\nThe following %d script(s) were interrupted by user:\n"),
                   numInterrupted);
       
+      // Why following line causes crash?
       for (int i = 0; i < numInterrupted; i++)
+      {
          scriptNames3 = scriptNames3 + runInterruptedScripts[i] + wxT("\n");
+      }
       
       msg3 = msg3 + scriptNames3;
    }
+   
    
    if (msg1 != wxT("") || msg2 != wxT("") || msg3 != wxT(""))
    {

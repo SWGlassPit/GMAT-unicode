@@ -1,4 +1,4 @@
-//$Id: PlotReceiver.hpp 9846 2011-09-07 17:57:29Z wendys-dev $
+//$Id: PlotReceiver.hpp 9939 2011-10-04 16:31:09Z djcinsb $
 //------------------------------------------------------------------------------
 //                             PlotReceiver
 //------------------------------------------------------------------------------
@@ -124,7 +124,8 @@ public:
                         const wxString &plotTitle,
                         const wxString &xAxisTitle,
                         const wxString &yAxisTitle,
-                        bool drawGrid = false) = 0;
+                        bool drawGrid = false,
+                        bool canSaveLocation = true) = 0;
    virtual bool DeleteXyPlot(const wxString &plotName) = 0;
    virtual bool AddXyPlotCurve(const wxString &plotName, int curveIndex,
                         int yOffset, Real yMin, Real yMax,

@@ -1,4 +1,4 @@
-//$Id: GmatMdiChildFrame.hpp 9918 2011-09-27 18:44:35Z wendys-dev $
+//$Id: GmatMdiChildFrame.hpp 9939 2011-10-04 16:31:09Z djcinsb $
 //------------------------------------------------------------------------------
 //                              GmatMdiChildFrame
 //------------------------------------------------------------------------------
@@ -76,6 +76,7 @@ public:
    virtual void OnClose(wxCloseEvent &event);
    virtual void UpdateScriptActiveStatus(bool isActive);
    
+   virtual void SetSaveLocationFlag(bool tf = true);
    virtual void SaveChildPositionAndSize();
 
 protected:
@@ -93,6 +94,7 @@ protected:
    bool mDirty;
    bool mOverrideDirty;
    bool mCanClose;
+   bool mCanSaveLocation;
    GmatTree::ItemType mItemType;
    wxTextCtrl *theScriptTextCtrl;
    GmatMenuBar *theMenuBar;

@@ -1,4 +1,4 @@
-//$Id: Brent.hpp 9898 2011-09-23 16:33:36Z djcinsb $
+//$Id: Brent.hpp 9935 2011-10-01 00:03:11Z djcinsb $
 //------------------------------------------------------------------------------
 //                           Brent
 //------------------------------------------------------------------------------
@@ -25,6 +25,14 @@
 
 #include "RootFinder.hpp"
 
+/**
+ * Implementation of Brent's method for use in GMAT
+ *
+ * This code implement Brent's root finding method, as described in "Algorithms
+ * for Minimization without Derivatives," Richard P. Brent, Prentice Hall, 1973,
+ * and summarized in the GMAT mathematical specifications.  The code is used in
+ * GMAT's event location subsystem.
+ */
 class Brent: public RootFinder
 {
 public:

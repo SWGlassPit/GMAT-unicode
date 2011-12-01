@@ -1,4 +1,4 @@
-//$Id: OwnedPlot.cpp 9846 2011-09-07 17:57:29Z wendys-dev $
+//$Id: OwnedPlot.cpp 9939 2011-10-04 16:31:09Z djcinsb $
 //------------------------------------------------------------------------------
 //                                  OwnedPlot
 //------------------------------------------------------------------------------
@@ -128,6 +128,7 @@ OwnedPlot::OwnedPlot(const wxString &name, const wxString &plotTitle,
    // GmatBase data
    objectTypes.push_back(Gmat::XY_PLOT);
    objectTypeNames.push_back(wxT("XYPlot"));
+   objectTypeNames.push_back(wxT("OwnedPlot"));
    parameterCount = OwnedPlotParamCount;
 }
 
@@ -271,7 +272,7 @@ bool OwnedPlot::Initialize()
       #endif
       
       PlotInterface::CreateXyPlotWindow(instanceName, mOldName, 0.0, 0.0, 0.0, 0.0, mPlotTitle,
-            mXAxisTitle, mYAxisTitle, (mDrawGrid == wxT("On")));
+            mXAxisTitle, mYAxisTitle, (mDrawGrid == wxT("On")), false);
       
       PlotInterface::SetXyPlotTitle(instanceName, mPlotTitle);
       mIsOwnedPlotWindowSet = true;

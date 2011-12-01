@@ -1,4 +1,4 @@
-//$Id: PlotInterface.hpp 9846 2011-09-07 17:57:29Z wendys-dev $
+//$Id: PlotInterface.hpp 9939 2011-10-04 16:31:09Z djcinsb $
 //------------------------------------------------------------------------------
 //                             PlotInterface
 //------------------------------------------------------------------------------
@@ -114,7 +114,7 @@ public:
                         const wxString &plotTitle,
                         const wxString &xAxisTitle,
                         const wxString &yAxisTitle,
-                        bool drawGrid = false);
+                        bool drawGrid = false, bool canSave = true);
    static bool DeleteXyPlot(const wxString &plotName);
    static bool AddXyPlotCurve(const wxString &plotName, int curveIndex,
                         int yOffset, Real yMin, Real yMax,

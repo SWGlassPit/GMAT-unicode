@@ -1,4 +1,4 @@
-//$Id: GuiPlotReceiver.hpp 9918 2011-09-27 18:44:35Z wendys-dev $
+//$Id: GuiPlotReceiver.hpp 9939 2011-10-04 16:31:09Z djcinsb $
 //------------------------------------------------------------------------------
 //                             GuiPlotReceiver
 //------------------------------------------------------------------------------
@@ -112,7 +112,8 @@ public:
                         const wxString &plotTitle,
                         const wxString &xAxisTitle,
                         const wxString &yAxisTitle,
-                        bool drawGrid = false);
+                        bool drawGrid = false,
+                        bool canSaveLocation = true);
    virtual bool DeleteXyPlot(const wxString &plotName);
    virtual bool AddXyPlotCurve(const wxString &plotName, int curveIndex,
                         int yOffset, Real yMin, Real yMax,

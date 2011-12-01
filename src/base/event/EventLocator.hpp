@@ -1,4 +1,4 @@
-//$Id: EventLocator.hpp 9926 2011-09-29 23:12:16Z djcinsb $
+//$Id: EventLocator.hpp 9935 2011-10-01 00:03:11Z djcinsb $
 //------------------------------------------------------------------------------
 //                           EventLocator
 //------------------------------------------------------------------------------
@@ -15,7 +15,7 @@
 // Created: Jul 6, 2011
 //
 /**
- * Definition of the ...
+ * Definition of the the event locator base class
  */
 //------------------------------------------------------------------------------
 
@@ -29,6 +29,14 @@
 #include "EventFunction.hpp"
 
 
+/**
+ * Base class for the event locators.
+ *
+ * EventLocators are container classes that collect together a set of event
+ * functions defining a specific type of location process.  For example, the
+ * EclipseLocator class collects together Penumbra, Umbra, and Antumbra event
+ * functions.
+ */
 class GMAT_API EventLocator: public GmatBase
 {
 public:
@@ -128,6 +136,7 @@ public:
                               const wxString &name);
 
    virtual bool         Initialize();
+   virtual Real         GetTolerance();
 
    virtual Real *Evaluate();
 
@@ -158,6 +167,8 @@ protected:
    GmatEpoch *lastEpochs;
    /// Flag used to turn the locator on or off (default is on)
    bool isActive;
+   /// Flag used to show or hide plot of the data
+   bool showPlot;
 
    /// Names of the "target" spacecraft in the location
    StringArray satNames;
@@ -175,6 +186,7 @@ protected:
        TOLERANCE,
        EVENT_FILENAME,
        IS_ACTIVE,
+       SHOW_PLOT,
        EventLocatorParamCount
     };
 

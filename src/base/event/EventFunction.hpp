@@ -1,4 +1,4 @@
-//$Id: EventFunction.hpp 9868 2011-09-15 01:22:33Z djcinsb $
+//$Id: EventFunction.hpp 9935 2011-10-01 00:03:11Z djcinsb $
 //------------------------------------------------------------------------------
 //                           EventFunction
 //------------------------------------------------------------------------------
@@ -15,7 +15,7 @@
 // Created: Jul 6, 2011
 //
 /**
- * Definition of the ...
+ * Base class defining interfaces for event functions.
  */
 //------------------------------------------------------------------------------
 
@@ -26,7 +26,18 @@
 #include "GmatBase.hpp"
 #include "SpaceObject.hpp"
 
-
+/**
+ * Base class for event function classes
+ *
+ * The event function classes define continuous, differentiable functions that
+ * pass through zero at locations that match event boundaries, and that are
+ * (by default, but overridable) positive definite for the interval over which
+ * the event is occurring.
+ *
+ * An example of the event functions in GMAT is the umbra event function, which
+ * passes from negative values to positive when a spacecraft enters the umbral
+ * cone of an obscuring body, and from positive to negative on exit.
+ */
 class GMAT_API EventFunction //: public GmatBase
 {
 public:
@@ -39,7 +50,7 @@ public:
    wxString GetTypeName();
    wxString GetName();
 
-   bool SetPrimary(SpaceObject *so);
+   virtual bool SetPrimary(SpaceObject *so);
    virtual bool Initialize();
    virtual Real* Evaluate() = 0;
    Real* GetData();

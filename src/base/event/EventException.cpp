@@ -1,4 +1,4 @@
-//$Id: EventException.cpp 9853 2011-09-09 20:08:55Z djcinsb $
+//$Id: EventException.cpp 9935 2011-10-01 00:03:11Z djcinsb $
 //------------------------------------------------------------------------------
 //                               EventException
 //------------------------------------------------------------------------------
@@ -9,7 +9,7 @@
 // All Other Rights Reserved.
 //
 // Author: Darrel J. Conway
-// Created: 2004/1/13
+// Created: 2011/09/01
 //
 // Developed jointly by NASA/GSFC and Thinking Systems, Inc. under contract
 // number NNG04CC06P.
@@ -56,7 +56,7 @@ EventException::~EventException()
 /**
  * Constructs EventException instance (copy constructor).
  *
- * @param <be> The instance that is copied.
+ * @param be The instance that is copied.
  */
 //------------------------------------------------------------------------------
 EventException::EventException(const EventException &be) :

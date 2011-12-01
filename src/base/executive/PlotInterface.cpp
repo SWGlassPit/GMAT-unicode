@@ -1,4 +1,4 @@
-//$Id: PlotInterface.cpp 9846 2011-09-07 17:57:29Z wendys-dev $
+//$Id: PlotInterface.cpp 9939 2011-10-04 16:31:09Z djcinsb $
 //------------------------------------------------------------------------------
 //                             PlotInterface
 //------------------------------------------------------------------------------
@@ -396,11 +396,11 @@ bool PlotInterface::CreateXyPlotWindow(const wxString &plotName,
                                        const wxString &plotTitle,
                                        const wxString &xAxisTitle,
                                        const wxString &yAxisTitle,
-                                       bool drawGrid)
+                                       bool drawGrid, bool canSave)
 {    
    if (thePlotReceiver != NULL)
       return thePlotReceiver->CreateXyPlotWindow(plotName, oldName, positionX, positionY, width, height, plotTitle,
-            xAxisTitle, yAxisTitle, drawGrid);
+            xAxisTitle, yAxisTitle, drawGrid, canSave);
    
    return false;
 }
