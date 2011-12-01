@@ -1,4 +1,4 @@
-//$Id: driver.hpp 9517 2011-04-30 21:57:41Z djcinsb $
+//$Id: driver.hpp 9951 2011-10-13 02:26:28Z wendys-dev $
 //------------------------------------------------------------------------------
 //                           TestScriptInterpreter driver
 //------------------------------------------------------------------------------
@@ -41,8 +41,8 @@ void ShowHelp();
 void RunScriptInterpreter(wxString script, int verbosity, 
                           bool batchmode = false);
 Integer RunBatch(wxString& batchfilename);
-void SaveScript(wxString filename = _T("Output.script"));
-void ShowCommandSummary(wxString filename = _T(""));
+void SaveScript(wxString filename = wxT(""));
+void ShowVersionInfo();
 void TestSyncModeAccess(wxString filename = _T("Output.script"));
 void DumpDEData(double secsToStep, double spanInSecs = 86400.0);
 int main(int argc, char *argv[]);

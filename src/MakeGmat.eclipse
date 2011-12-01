@@ -10,18 +10,32 @@
 # Mac OSX (Leopard) makefile for GMAT, using Eclipse
 # wcs - 2010.04.13 - updated to work for all 3 platforms
 
+BUILD_GUI_WITH_WX = 1
+
 include BuildEnv.mk
 ifeq ($(LINUX_MAC),1)
 PROGRAM_EXTENSION =
+ifeq ($(MAC_SPECIFIC), 1)
+LIBRARY_EXTENSION=.dylib
+ifeq ($(BUILD_64BIT_MAC), 1)
+BUILD_GUI_WITH_WX = 0
+endif
+else
+LIBRARY_EXTENSION=.so
+endif
 else
 PROGRAM_EXTENSION =.exe
+LIBRARY_EXTENSION=.dll
 endif
 
 ifeq ($(CONSOLE_APP),1)
-PROGRAM = gmatConsole(PROGRAM_EXTENSION)
-LIBRARY = base/lib/libGmatConsole.a
+PROGRAM = GmatConsole$(PROGRAM_EXTENSION)
 else
 PROGRAM = gmat$(PROGRAM_EXTENSION)
+endif
+ifeq ($(SHARED_BASE), 1)
+LIBRARY = base/lib/libGmatBase$(LIBRARY_EXTENSION)
+else
 LIBRARY = base/lib/libGmatBase.a
 endif
 
@@ -44,9 +58,14 @@ else
 $(TARGET): $(LIBRARY) gui/$(PROGRAM)
 endif
 
+ifeq ($(BUILD_GUI_WITH_WX), 1)
 gui/$(PROGRAM):
 	cd base; make -f MakeBase.eclipse all
 	cd gui; make -f MakeGui.eclipse all
+else
+gui/$(PROGRAM):
+	cd base; make -f MakeBase.eclipse all
+endif
 
 console/$(PROGRAM):
 	cd base; make -f MakeBase.eclipse all
@@ -54,8 +73,3 @@ console/$(PROGRAM):
 
 $(LIBRARY):
 	cd base; make -f MakeBase.eclipse all
-
-ifeq ($(CONSOLE_APP),1)
-../application/bin/$(PROGRAM): base/lib/libGmatConsole.a
-	cd console; make -f MakeConsole.eclipse
-endif
