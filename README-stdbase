@@ -1,0 +1,2 @@
+This is an attempt to rework the base library back to using only the standard library, to match
+upstream design decisions.  Eventually, this base should be able to work more easily with wxWidgets 3.0 (2.9)
