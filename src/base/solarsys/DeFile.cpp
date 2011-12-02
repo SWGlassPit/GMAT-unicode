@@ -1,4 +1,4 @@
-//$Id: DeFile.cpp 9719 2011-07-20 19:06:05Z wendys-dev $
+//$Id: DeFile.cpp 9991 2011-10-28 15:41:34Z wendys-dev $
 //------------------------------------------------------------------------------
 //                                  DeFile
 //------------------------------------------------------------------------------
@@ -744,12 +744,11 @@ int DeFile::Initialize_Ephemeris( char *fileName )
   /*--------------------------------------------------------------------------*/
 
   if ( Ephemeris_File == NULL ) /*........................No need to continue */
-     {
-       //printf(wxT("\n Unable to open ephemeris file: %s.\n"),fileName);
+  {
        return FAILURE;
-     }
+  }
   else 
-     { /*.................Read first three header records from ephemeris file */
+  { /*.................Read first three header records from ephemeris file */
 
        //fread(&H1,sizeof(double),ARRAY_SIZE,Ephemeris_File);
        //fread(&H2,sizeof(double),ARRAY_SIZE,Ephemeris_File);
@@ -814,18 +813,14 @@ int DeFile::Initialize_Ephemeris( char *fileName )
        /*..................................................Return status code */
 
        if ( headerID == EPHEMERIS ) 
-          {
+       {
             return SUCCESS;
-          }
+       }
        else 
-          {
-            //printf(wxT("\n Opened wrong file: %s"),fileName);
-            //printf(wxT(" for ephemeris: %d.\n"),EPHEMERIS);
-              // throw PlanetaryEphemException(
-              //             wxT("DE file is not of specified format!!"));  // wcs
+       {
             return FAILURE;
-          }
-     }
+       }
+   }
 }
 
 /**==========================================================================**/

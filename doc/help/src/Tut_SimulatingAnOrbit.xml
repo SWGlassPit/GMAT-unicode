@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter version="5.0" xml:id="CreatingandPropagatingaSpacecraft"
+<chapter version="5.0" xml:id="SimulatingAnOrbit"
          xmlns="http://docbook.org/ns/docbook"
          xmlns:xlink="http://www.w3.org/1999/xlink"
          xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -7,7 +7,7 @@
          xmlns:m="http://www.w3.org/1998/Math/MathML"
          xmlns:html="http://www.w3.org/1999/xhtml"
          xmlns:db="http://docbook.org/ns/docbook">
-  <title>Propagating a Spacecraft</title>
+  <title>Simulating an Orbit</title>
 
   <section>
     <title>Objective and Overview</title>
@@ -171,7 +171,7 @@
           <mediaobject>
             <imageobject>
               <imagedata align="center" contentdepth="100%"
-                         fileref="media/img/Tut_PropSpacecraft_SpacecraftStateSetup.jpeg"
+                         fileref="files/images/Tut_PropSpacecraft_SpacecraftStateSetup.jpeg"
                          scalefit="1" width="100%"></imagedata>
             </imageobject>
           </mediaobject>
@@ -281,7 +281,7 @@
           <mediaobject>
             <imageobject>
               <imagedata align="center" contentdepth="100%"
-                         fileref="media/img/Tut_PropSpacecraft_ForceModelConfiguration.jpeg"
+                         fileref="files/images/Tut_PropSpacecraft_ForceModelConfiguration.jpeg"
                          scalefit="1" width="100%"></imagedata>
             </imageobject>
           </mediaobject>
@@ -331,7 +331,7 @@
           <mediaobject>
             <imageobject>
               <imagedata align="center" contentdepth="100%"
-                         fileref="media/img/Tut_PropSpacecraft_DefaultOrbitviewConfiguration.jpeg"
+                         fileref="files/images/Tut_PropSpacecraft_DefaultOrbitviewConfiguration.jpeg"
                          scalefit="1" width="100%"></imagedata>
             </imageobject>
           </mediaobject>
@@ -395,7 +395,7 @@
         <mediaobject>
           <imageobject>
             <imagedata align="center" contentdepth="100%"
-                       fileref="media/img/Tut_PropSpacecraft_PropagateCommandParameterSelectDialogConfiguration.png"
+                       fileref="files/images/Tut_PropSpacecraft_PropagateCommandParameterSelectDialogConfiguration.png"
                        scalefit="1" width="100%"></imagedata>
           </imageobject>
         </mediaobject>
@@ -409,7 +409,7 @@
         <mediaobject>
           <imageobject>
             <imagedata align="center" contentdepth="100%"
-                       fileref="media/img/Tut_PropSpacecraft_PropagateCommandConfiguration.jpeg"
+                       fileref="files/images/Tut_PropSpacecraft_PropagateCommandConfiguration.jpeg"
                        scalefit="1" width="100%"></imagedata>
           </imageobject>
         </mediaobject>
@@ -477,7 +477,7 @@
         <mediaobject>
           <imageobject>
             <imagedata align="center" contentdepth="100%"
-                       fileref="media/img/Tut_PropSpacecraft_OrbitviewPlotAfterMissionRun.jpeg"
+                       fileref="files/images/Tut_PropSpacecraft_OrbitviewPlotAfterMissionRun.jpeg"
                        scalefit="1" width="100%"></imagedata>
           </imageobject>
         </mediaobject>
