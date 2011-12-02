@@ -1,4 +1,4 @@
-//$Id: GmatMainFrame.cpp 9944 2011-10-05 17:58:56Z wendys-dev $
+//$Id: GmatMainFrame.cpp 10029 2011-12-01 16:34:52Z lindajun $
 //------------------------------------------------------------------------------
 //                              GmatMainFrame
 //------------------------------------------------------------------------------
@@ -92,6 +92,7 @@
 #include "EditorPrintout.hpp"
 #endif
 #include "ReportFilePanel.hpp"
+#include "EventFilePanel.hpp"
 #include "BarycenterPanel.hpp"
 #include "LibrationPointPanel.hpp"
 #include "CelestialBodyPanel.hpp"
@@ -721,9 +722,10 @@ GmatMdiChildFrame* GmatMainFrame::CreateChild(GmatTreeItemData *item,
    else if (itemType >= GmatTree::BEGIN_OF_OUTPUT &&
             itemType <= GmatTree::END_OF_OUTPUT)
    {
-      // Create panel if Report or Compare Report
+      // Create panel if Report or Compare Report or Event Report
       if (itemType == GmatTree::OUTPUT_REPORT ||
-          itemType == GmatTree::COMPARE_REPORT)
+          itemType == GmatTree::COMPARE_REPORT ||
+          itemType == GmatTree::EVENT_REPORT)
          newChild = CreateNewOutput(item->GetTitle(), item->GetName(), itemType);
    }
    else if (itemType == GmatTree::MISSION_TREE_UNDOCKED)
@@ -751,6 +753,7 @@ GmatMdiChildFrame* GmatMainFrame::CreateChild(GmatTreeItemData *item,
       #endif
       
       #ifdef __WXMAC__
+      // todo: Need to handle EVENT_REPORT here?
       if ((numChildren > 0) && !((newChild->GetItemType() == GmatTree::MISSION_TREE_UNDOCKED) && mUndockedMissionTreePresized) &&
           !((newChild->GetItemType() == GmatTree::OUTPUT_REPORT) && newChild->GetSavedConfigFlag()))
       #else
@@ -1393,6 +1396,8 @@ void GmatMainFrame::RemoveOutputIfOpened(const wxString &name)
       RemoveChild(name, GmatTree::OUTPUT_GROUND_TRACK_PLOT);
    else if (IsChildOpen(name, GmatTree::OUTPUT_REPORT, false))
       RemoveChild(name, GmatTree::OUTPUT_REPORT);
+   else if (IsChildOpen(name, GmatTree::EVENT_REPORT, false))
+      RemoveChild(name, GmatTree::EVENT_REPORT);
    
    #ifdef DEBUG_REMOVE_CHILD
    MessageInterface::ShowMessage
@@ -1782,7 +1787,8 @@ void GmatMainFrame::RepositionChildren(int xOffset)
       if (itemType == GmatTree::OUTPUT_REPORT ||
           itemType == GmatTree::OUTPUT_ORBIT_VIEW ||
           itemType == GmatTree::OUTPUT_GROUND_TRACK_PLOT ||
-          itemType == GmatTree::OUTPUT_XY_PLOT)
+          itemType == GmatTree::OUTPUT_XY_PLOT ||
+          itemType == GmatTree::EVENT_REPORT)
       {
          // If plots or report, just move right
          if (!isIconized)
@@ -3234,6 +3240,9 @@ GmatMainFrame::CreateNewResource(const wxString &title, const wxString &name,
       sizer->Add(new EphemerisFilePanel(scrolledWin, name), 0, wxGROW|wxALL, 0);
       break;
    case GmatTree::GROUND_TRACK_PLOT:
+		// Set reload values on ComboBox change to true here
+      sizer->Add(new GmatBaseSetupPanel(scrolledWin, name, true), 0, wxGROW|wxALL, 0);
+      break;
    case GmatTree::SUBSCRIBER:
       // Switched to use GmatBaseSetupPanel (LOJ: 2011.06.02)
       //sizer->Add(new SubscriberSetupPanel(scrolledWin, name), 0, wxGROW|wxALL, 0);
@@ -3286,6 +3295,9 @@ GmatMainFrame::CreateNewResource(const wxString &title, const wxString &name,
    case GmatTree::LIBRATION_POINT:
       sizer->Add(new LibrationPointPanel(scrolledWin, name), 0, wxGROW|wxALL, 0);
       break;
+   case GmatTree::EVENT_LOCATOR:
+     sizer->Add(new GmatBaseSetupPanel(scrolledWin, name), 0, wxGROW|wxALL, 0);
+     break;
    case GmatTree::USER_DEFINED_OBJECT:
      sizer->Add(new GmatBaseSetupPanel(scrolledWin, name), 0, wxGROW|wxALL, 0);
      break;
@@ -3605,6 +3617,17 @@ GmatMainFrame::CreateNewOutput(const wxString &title, const wxString &name,
          ReportFilePanel *reportPanel = new ReportFilePanel(scrolledWin, name);
          sizer->Add(reportPanel, 0, wxGROW|wxALL, 0);
          newChild->SetScriptTextCtrl(reportPanel->mFileContentsTextCtrl);
+         newChild->SetSavedConfigFlag(isUsingSaved);
+         break;
+      }
+   case GmatTree::EVENT_REPORT:
+      {
+         newChild = new GmatMdiChildFrame(this, name, title, itemType); // -1, wxPoint, wxSize
+         scrolledWin = new wxScrolledWindow(newChild);
+         EventFilePanel *eventPanel = new EventFilePanel(scrolledWin, name);
+         sizer->Add(eventPanel, 0, wxGROW|wxALL, 0);
+         newChild->SetScriptTextCtrl(eventPanel->mFileContentsTextCtrl);
+         bool isUsingSaved = false;
          newChild->SetSavedConfigFlag(isUsingSaved);
          break;
       }
@@ -5227,6 +5250,7 @@ void GmatMainFrame::OnFont(wxCommandEvent& event)
          GmatMdiChildFrame *child = (GmatMdiChildFrame *)node->GetData();
          if ((child->GetItemType() == GmatTree::SCRIPT_FILE)   ||
              (child->GetItemType() == GmatTree::OUTPUT_REPORT)  ||
+             (child->GetItemType() == GmatTree::EVENT_REPORT)  ||
              (child->GetItemType() == GmatTree::SCRIPT_EVENT) ||
              (child->GetItemType() == GmatTree::GMAT_FUNCTION))
          {

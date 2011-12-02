@@ -1,4 +1,4 @@
-//$Id: GmatBase.cpp 9969 2011-10-21 22:56:49Z djcinsb $
+//$Id: GmatBase.cpp 10025 2011-11-29 23:31:31Z djcinsb $
 //------------------------------------------------------------------------------
 //                                  GmatBase
 //------------------------------------------------------------------------------
@@ -3206,6 +3206,41 @@ bool GmatBase::TakeRequiredAction(const wxString &label)
 {
    Integer id = GetParameterID(label);
    return TakeRequiredAction(id);
+}
+
+
+//------------------------------------------------------------------------------
+// const std::vector<Gmat::ObjectType>& GetTypesForList(const Integer id)
+//------------------------------------------------------------------------------
+/**
+ * Retrieves a list of types that need to be shown on a GUI for a parameter
+ *
+ * @param id The parameter ID
+ *
+ * @return The list of types
+ */
+//------------------------------------------------------------------------------
+const ObjectTypeArray& GmatBase::GetTypesForList(const Integer id)
+{
+   listedTypes.clear();
+   return listedTypes;
+}
+
+//------------------------------------------------------------------------------
+// const std::vector<Gmat::ObjectType>&
+//       GetTypesForList(const wxString &label)
+//------------------------------------------------------------------------------
+/**
+ * Retrieves a list of types that need to be shown on a GUI for a parameter
+ *
+ * @param label The parameter's identifying string
+ *
+ * @return The list of types
+ */
+//------------------------------------------------------------------------------
+const ObjectTypeArray& GmatBase::GetTypesForList(const wxString &label)
+{
+   return GetTypesForList(GetParameterID(label));
 }
 
 

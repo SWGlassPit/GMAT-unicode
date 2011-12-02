@@ -1,4 +1,4 @@
-//$Id: ViewCanvas.cpp 9709 2011-07-19 19:54:43Z lindajun $
+//$Id: ViewCanvas.cpp 10016 2011-11-16 23:20:54Z djcinsb $
 //------------------------------------------------------------------------------
 //                              ViewCanvas
 //------------------------------------------------------------------------------
@@ -83,6 +83,9 @@ ViewCanvas::ViewCanvas(wxWindow *parent, wxWindowID id,
    // Currently it repaints when I make window size larger, but not when I
    // reduce the size. (LOJ: 2011.07.01)
    #ifdef __USE_WX280_GL__
+   // Double buffer activation needed in Linux (Patch from Tristan Moody)
+   // Old code:
+   // : wxGLCanvas(parent, id, 0, pos, size, style, name)
    : wxGLCanvas(parent, id, GmatGLCanvasAttribs, pos, size, style, name)
    #else
    : wxGLCanvas(parent, id, pos, size, style, name)

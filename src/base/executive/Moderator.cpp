@@ -1,4 +1,4 @@
-//$Id: Moderator.cpp 9950 2011-10-13 02:20:46Z wendys-dev $
+//$Id: Moderator.cpp 10024 2011-11-23 19:51:49Z djcinsb $
 //------------------------------------------------------------------------------
 //                                 Moderator
 //------------------------------------------------------------------------------
@@ -313,6 +313,11 @@ bool Moderator::Initialize(const wxString &startupFile, bool fromGui)
    MessageInterface::ShowMessage
       (wxT("%s GMAT Moderator successfully created core engine\n"), timestr.c_str());
    
+   // Check to see if there are any event locator factories
+   StringArray elList = theFactoryManager->GetListOfItems(Gmat::EVENT_LOCATOR);
+   if (elList.size() > 0)
+      GmatGlobal::Instance()->SetEventLocationAvailable(true);
+
    // Check if MatlabInterface is required
    if (GmatGlobal::Instance()->GetMatlabMode() == GmatGlobal::NO_MATLAB)
    {

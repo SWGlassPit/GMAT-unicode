@@ -1,4 +1,4 @@
-//$Id: GmatMdiChildFrame.cpp 9939 2011-10-04 16:31:09Z djcinsb $
+//$Id: GmatMdiChildFrame.cpp 10027 2011-11-30 23:26:45Z djcinsb $
 //------------------------------------------------------------------------------
 //                             GmatMdiChildFrame
 //------------------------------------------------------------------------------
@@ -516,7 +516,10 @@ void GmatMdiChildFrame::SaveChildPositionAndSize()
    #endif
 
    if ((mItemType == GmatTree::OUTPUT_REPORT)  || (mItemType == GmatTree::OUTPUT_ORBIT_VIEW) ||
-       (mItemType == GmatTree::OUTPUT_XY_PLOT) || (mItemType == GmatTree::OUTPUT_GROUND_TRACK_PLOT))
+       (mItemType == GmatTree::OUTPUT_XY_PLOT) || (mItemType == GmatTree::OUTPUT_GROUND_TRACK_PLOT)
+       // We'll want to add the event reports eventually, but they are not subscriber based
+       //|| (mItemType == GmatTree::EVENT_REPORT)
+       )
    {
       GmatBase *obj =
          (Subscriber*)theGuiInterpreter->GetConfiguredObject(mPlotName.c_str());

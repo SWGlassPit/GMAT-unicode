@@ -1,4 +1,4 @@
-//$Id: EventFunction.hpp 9969 2011-10-21 22:56:49Z djcinsb $
+//$Id: EventFunction.hpp 10013 2011-11-16 18:46:12Z djcinsb $
 //------------------------------------------------------------------------------
 //                           EventFunction
 //------------------------------------------------------------------------------
@@ -64,7 +64,9 @@ protected:
    /// Event function descriptor
    wxString       instanceName;
    /// Current/most recently evaluated epoch, event value, derivative
-   Real              eventData[3];
+   Real              *eventData;
+   /// Size of the event data array
+   UnsignedInt       dataSize;
    /// SpaceObject that plays the role of “target” in the event computations.
    SpaceObject       *primary;
    /// Event boundary type; defaults to "Entry" or "Exit"

@@ -1,4 +1,4 @@
-//$Id: Sandbox.cpp 9868 2011-09-15 01:22:33Z djcinsb $
+//$Id: Sandbox.cpp 10024 2011-11-23 19:51:49Z djcinsb $
 //------------------------------------------------------------------------------
 //                                 Sandbox
 //------------------------------------------------------------------------------
@@ -625,6 +625,10 @@ bool Sandbox::Initialize()
       obj = omi->second;
       if (obj->IsOfType(Gmat::EVENT_LOCATOR))
       {
+         #ifdef DEBUG_EVENTLOCATION
+            MessageInterface::ShowMessage("Testing event locator %s...\n",
+                  obj->GetName().c_str());
+         #endif
          if (find(events.begin(), events.end(), (EventLocator*)obj) == events.end())
          {
             #ifdef DEBUG_EVENTLOCATION

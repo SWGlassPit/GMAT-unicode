@@ -1,4 +1,4 @@
-# $Id: MakeGui.eclipse 9971 2011-10-24 16:22:40Z wendys-dev $
+# $Id: MakeGui.eclipse 10027 2011-11-30 23:26:45Z djcinsb $
 # 
 # GMAT: General Mission Analysis Tool.
 # 
@@ -241,6 +241,7 @@ OBJECTS = \
     output/CompareReportPanel.o \
     output/OutputTree.o \
     output/ReportFilePanel.o \
+    output/EventFilePanel.o \
     propagator/PropagationConfigPanel.o \
     propagator/PropagatorSelectDialog.o \
     rendering/Camera.o \

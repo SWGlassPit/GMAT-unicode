@@ -1,4 +1,4 @@
-//$Id: NotAKnotInterpolator.cpp 9513 2011-04-30 21:23:06Z djcinsb $
+//$Id: NotAKnotInterpolator.cpp 10024 2011-11-23 19:51:49Z djcinsb $
 //------------------------------------------------------------------------------
 //                            NotAKnotInterpolator
 //------------------------------------------------------------------------------
@@ -190,9 +190,7 @@ bool NotAKnotInterpolator::Interpolate(const Real ind, Real *results)
             MessageInterface::ShowMessage(wxT("   %.12lf"), y[i][j]);
          MessageInterface::ShowMessage(wxT("\n"));
       }
-            
          
-   
       MessageInterface::ShowMessage(wxT("Cubic spline (not a knot) data points:\n"));
       
       Real increment = (x[bufferSize - 1] - x[0]) / 100.0, xval;

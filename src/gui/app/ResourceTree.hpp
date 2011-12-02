@@ -1,4 +1,4 @@
-//$Id: ResourceTree.hpp 9518 2011-04-30 22:32:04Z djcinsb $
+//$Id: ResourceTree.hpp 10024 2011-11-23 19:51:49Z djcinsb $
 //------------------------------------------------------------------------------
 //                              ResourceTree
 //------------------------------------------------------------------------------
@@ -66,6 +66,7 @@ protected:
    bool mHasUserInterrupted;
    bool mScriptAdded;
    bool mMatlabServerStarted;
+   bool mHasEventLocatorPlugin;
    wxString mLastScriptAdded;
    wxString mLastActiveScript;
    
@@ -91,6 +92,7 @@ protected:
    //wxTreeItemId mPredefinedFunctItem;
    wxTreeItemId mSpecialPointsItem;
    wxTreeItemId mScriptItem;
+   wxTreeItemId mEventLocatorItem;
    wxTreeItemId mScriptFolderItem;
    wxTreeItemId mUniverseItem;
    wxTreeItemId interfaceItem;
@@ -126,6 +128,7 @@ protected:
    void AddDefaultFormations(wxTreeItemId itemId, bool resetCounter = true);
    void AddDefaultConstellations(wxTreeItemId itemId);
    void AddDefaultPropagators(wxTreeItemId itemId, bool resetCounter = true);
+   void AddDefaultLocators(wxTreeItemId itemId, bool restartCounter);
    void AddDefaultBurns(wxTreeItemId itemId, bool resetCounter = true);
    void AddDefaultSolvers(wxTreeItemId itemId, bool resetCounter = true);
    void AddDefaultSubscribers(wxTreeItemId itemId, bool resetCounter = true);
@@ -175,6 +178,7 @@ protected:
    void OnAddSqp(wxCommandEvent &event);
    void OnAddHardware(wxCommandEvent &event);
    void OnAddSolver(wxCommandEvent &event);
+   void OnAddLocator(wxCommandEvent &event);
    void OnAddVariable(wxCommandEvent &event);
    void OnAddArray(wxCommandEvent &event);
    void OnAddString(wxCommandEvent &event);
@@ -303,6 +307,8 @@ protected:
       POPUP_ADD_MOON,
       POPUP_ADD_COMET,
       POPUP_ADD_ASTEROID,
+
+      POPUP_ADD_LOCATOR,
 
       POPUP_ADD_PLUGIN,
 

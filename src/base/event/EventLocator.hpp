@@ -1,4 +1,4 @@
-//$Id: EventLocator.hpp 9969 2011-10-21 22:56:49Z djcinsb $
+//$Id: EventLocator.hpp 10025 2011-11-29 23:31:31Z djcinsb $
 //------------------------------------------------------------------------------
 //                           EventLocator
 //------------------------------------------------------------------------------
@@ -136,6 +136,12 @@ public:
    virtual bool         SetBooleanParameter(const wxString &label,
                                             const bool value,
                                             const Integer index);
+
+   virtual bool         TakeAction(const wxString &action,
+                                   const wxString &actionData = wxT(""));
+   virtual const ObjectTypeArray& GetTypesForList(const Integer id);
+   virtual const ObjectTypeArray& GetTypesForList(const wxString &label);
+
 
 
    virtual void         SetSolarSystem(SolarSystem *ss);

@@ -1,4 +1,4 @@
-//$Id: GmatGlobal.hpp 9929 2011-09-30 14:59:49Z lindajun $
+//$Id: GmatGlobal.hpp 10024 2011-11-23 19:51:49Z djcinsb $
 //------------------------------------------------------------------------------
 //                                 GmatGlobal
 //------------------------------------------------------------------------------
@@ -110,6 +110,9 @@ public:
    bool IsMissionTreeDebugOn();
    void SetMissionTreeDebug(bool flag);
 
+   void SetEventLocationAvailable(bool flag);
+   bool IsEventLocationAvailable();
+
    // IO formatting
    bool IsScientific();
    bool ShowPoint();
@@ -219,7 +222,9 @@ private:
    bool isMatlabAvailable;
    bool isMatlabDebugOn;
    bool isMissionTreeDebugOn;
-   
+
+   bool isEventLocationAvailable;
+
    Integer runMode;
    Integer guiMode;
    Integer plotMode;

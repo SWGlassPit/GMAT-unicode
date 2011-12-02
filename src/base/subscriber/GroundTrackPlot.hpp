@@ -1,4 +1,4 @@
-//$Id: GroundTrackPlot.hpp 9857 2011-09-12 18:37:14Z lindajun $
+//$Id: GroundTrackPlot.hpp 10025 2011-11-29 23:31:31Z djcinsb $
 //------------------------------------------------------------------------------
 //                                  GroundTrackPlot
 //------------------------------------------------------------------------------
@@ -59,6 +59,8 @@ public:
    virtual wxString  GetStringParameter(const wxString &label) const;
    virtual bool         SetStringParameter(const wxString &label,
                                            const wxString &value);
+   virtual const ObjectTypeArray& GetTypesForList(const Integer id);
+   virtual const ObjectTypeArray& GetTypesForList(const wxString &label);
    
    virtual wxString  GetRefObjectName(const Gmat::ObjectType type) const;
    virtual bool         HasRefObjectTypeArray();

@@ -1,4 +1,4 @@
-//$Id: GmatBaseSetupPanel.cpp 9857 2011-09-12 18:37:14Z lindajun $
+//$Id: GmatBaseSetupPanel.cpp 10029 2011-12-01 16:34:52Z lindajun $
 //------------------------------------------------------------------------------
 //                           GmatBaseSetupPanel
 //------------------------------------------------------------------------------
@@ -36,6 +36,7 @@
 
 //#define DEBUG_BASEPANEL_LOAD
 //#define DEBUG_BASEPANEL_CREATE
+//#define DEBUG_LOAD_CONTROL
 //#define DEBUG_SAVE_CONTROL
 
 //-----------------------------------------
@@ -52,7 +53,7 @@ BEGIN_EVENT_TABLE(GmatBaseSetupPanel, GmatPanel)
    EVT_COMBOBOX(ID_COMBOBOX, GmatBaseSetupPanel::OnComboBoxChange)
    EVT_TEXT(ID_COMBOBOX, GmatBaseSetupPanel::OnComboBoxTextChange)
    EVT_TEXT(ID_TEXTCTRL, GmatBaseSetupPanel::OnTextChange)
-   EVT_CHECKBOX(ID_CHECKBOX, GmatBaseSetupPanel::OnComboBoxChange)
+   EVT_CHECKBOX(ID_CHECKBOX, GmatBaseSetupPanel::OnCheckBoxChange)
    EVT_BUTTON(ID_BUTTON_BROWSE, GmatBaseSetupPanel::OnBrowseButton)
    EVT_CHECKLISTBOX(ID_CHECKLISTBOX, GmatBaseSetupPanel::OnCheckListBoxChange)
 END_EVENT_TABLE()
@@ -63,16 +64,20 @@ END_EVENT_TABLE()
 //-----------------------------------------
 
 //------------------------------------------------------------------------------
-// GmatBaseSetupPanel(wxWindow *parent, const wxString &name)
+// GmatBaseSetupPanel(wxWindow *parent, const wxString &name, bool reloadOnCBChange)
 //------------------------------------------------------------------------------
 /**
  * Panel constructor
  *
  * @param parent Owner for this panel
  * @param name Name of the object that is to be configured
+ * @param reloadOnCBChange If this flag is set to true all gui item values will be
+ *                         reloadded from the cloned base object when ComboBox
+ *                         selection changes
  */
 //------------------------------------------------------------------------------
-GmatBaseSetupPanel::GmatBaseSetupPanel(wxWindow *parent, const wxString &name)
+GmatBaseSetupPanel::GmatBaseSetupPanel(wxWindow *parent, const wxString &name,
+													bool reloadOnCBChange)
    : GmatPanel(parent)
 {
    #ifdef DEBUG_BASEPANEL_CREATE
@@ -80,7 +85,8 @@ GmatBaseSetupPanel::GmatBaseSetupPanel(wxWindow *parent, const wxString &name)
       (wxT("GmatBaseSetupPanel::Constructor() entered, name='%s'"), name.c_str());
    #endif
    mObject = theGuiInterpreter->GetConfiguredObject(name.c_str());
-
+	reloadOnComboBoxChange = reloadOnCBChange;
+	
    if (mObject != NULL)
    {
       Create();
@@ -196,8 +202,8 @@ SizerMapType* GmatBaseSetupPanel::CreateGroups(wxFlexGridSizer *mainSizer,
    StringArray groupNames;
    for (item = groups->begin(); item != groups->end(); ++item)
    {
-           groupName = item->first;
-           groupNames.push_back(groupName.Lower().c_str());
+		groupName = item->first;
+		groupNames.push_back(groupName.Lower().c_str());
 
    }
    SortGroups(&groupNames, config);
@@ -725,6 +731,18 @@ wxControl *GmatBaseSetupPanel::BuildControl(wxWindow *parent, GmatBase *theObjec
             wxArrayString emptyList;
             control = new wxCheckListBox(parent, ID_CHECKLISTBOX, wxDefaultPosition,
                                          wxSize(200,100), emptyList, wxLB_SINGLE|wxLB_SORT);
+            // Get the list of types needed
+            ObjectTypeArray types = theObject->GetTypesForList(index);
+            // Add the existing objects to the control
+            for (UnsignedInt i = 0; i < types.size(); ++i)
+            {
+               wxCheckListBox *clb = (wxCheckListBox*)control;
+               StringArray objs = theGuiInterpreter->GetListOfObjects(types[i]);
+               for (UnsignedInt j = 0; j < objs.size(); ++j)
+               {
+                  clb->Append(objs[j].c_str());
+               }
+            }
          }
       }
       break;
@@ -763,6 +781,9 @@ wxControl *GmatBaseSetupPanel::BuildControl(wxWindow *parent, GmatBase *theObjec
       }
       break;
    case Gmat::FILENAME_TYPE:
+      control = new wxTextCtrl(parent, ID_TEXTCTRL,
+                               wxT(""), wxDefaultPosition, wxSize(250,-1));
+		break;
    case Gmat::STRING_TYPE:
    default:
       control = new wxTextCtrl(parent, ID_TEXTCTRL,
@@ -830,6 +851,7 @@ void GmatBaseSetupPanel::LoadControl(GmatBase *theObject, const wxString &label)
       case Gmat::STRING_TYPE:
          valueString = theObject->GetStringParameter(label).c_str();
          ((wxTextCtrl*)theControl)->ChangeValue(valueString);
+			((wxTextCtrl*)theControl)->SetInsertionPointEnd();
          break;
          
       case Gmat::OBJECT_TYPE:
@@ -855,6 +877,19 @@ void GmatBaseSetupPanel::LoadControl(GmatBase *theObject, const wxString &label)
                      clb->Check(j, true);
                }
             }
+            break;
+         }
+      case Gmat::STRINGARRAY_TYPE:
+         {
+            StringArray strings = theObject->GetStringArrayParameter(paramId);
+            wxString theList;
+            for (UnsignedInt i = 0; i < strings.size(); i++)
+            {
+               theList += strings[i].c_str();
+               if (i < strings.size() - 1)
+                  theList += wxT(", ");
+            }
+            ((wxTextCtrl*)theControl)->ChangeValue(theList);
             break;
          }
       case Gmat::ENUMERATION_TYPE:
@@ -963,7 +998,7 @@ bool GmatBaseSetupPanel::SaveControl(GmatBase *theObject, const wxString &label,
       
    case Gmat::OBJECTARRAY_TYPE:
       {
-         theObject->TakeAction(wxT("Clear"));
+         theObject->TakeAction(wxT("Clear"), label);
          wxCheckListBox *clb = (wxCheckListBox*)theControl;
          int count = clb->GetCount();
          for (int i = 0; i < count; i++)
@@ -980,6 +1015,21 @@ bool GmatBaseSetupPanel::SaveControl(GmatBase *theObject, const wxString &label,
          break;
       }
       
+   case Gmat::STRINGARRAY_TYPE:
+      {
+         StringArray strings = theObject->GetStringArrayParameter(paramId);
+         wxString theList;
+         for (UnsignedInt i = 0; i < strings.size(); i++)
+         {
+            theList += strings[i].c_str();
+            if (i < strings.size() - 1)
+               theList += wxT(", ");
+         }
+         ((wxTextCtrl*)theControl)->ChangeValue(theList);
+         break;
+      }
+
+
    default:
       break;
    }
@@ -1215,9 +1265,41 @@ void GmatBaseSetupPanel::OnBrowseButton(wxCommandEvent& event)
       if (!filename.IsSameAs(oldname))
       {
          control->SetValue(filename);
+			control->SetInsertionPointEnd();
          EnableUpdate(true);
       }
    }
+}
+
+
+//------------------------------------------------------------------------------
+// void OnCheckBoxChange(wxCommandEvent& event)
+//------------------------------------------------------------------------------
+/**
+ * Event handler for comboboxes
+ *
+ * Activates the Apply button when selection is changed.
+ *
+ * @param event The triggering event.
+ */
+//------------------------------------------------------------------------------
+void GmatBaseSetupPanel::OnCheckBoxChange(wxCommandEvent& event)
+{
+   // We don't want save every text change here so removed (LOJ: 2011.06.02)
+   // The change will be save when an user hits apply button
+   #if 0
+   wxString label = localObject->GetParameterText(inverseControlMap[(wxControl *) event.GetEventObject()]);
+   try
+   {
+      if (SaveControl(localObject, label))
+         RefreshProperties(localObject);
+   }
+   catch (BaseException &)
+   {
+   }
+   #endif
+   
+   EnableUpdate(true);
 }
 
 
@@ -1236,17 +1318,21 @@ void GmatBaseSetupPanel::OnComboBoxChange(wxCommandEvent& event)
 {
    // We don't want save every text change here so removed (LOJ: 2011.06.02)
    // The change will be save when an user hits apply button
-   #if 0
-   wxString label = localObject->GetParameterText(inverseControlMap[(wxControl *) event.GetEventObject()]);
-   try
-   {
-      if (SaveControl(localObject, label))
-         RefreshProperties(localObject);
+	// Actually in some cases we need to reload the value upon ComboBox selection change.
+	// For example, when ComboBox selection changed from Earth to Mars for GroundTrackPlot,
+	// we also want to change the texture map file to Mars. So changed (LOJ: 2011.11.30)
+   if (reloadOnComboBoxChange)
+	{
+		wxString label = localObject->GetParameterText(inverseControlMap[(wxControl *) event.GetEventObject()]);
+		try
+		{
+			if (SaveControl(localObject, label))
+				RefreshProperties(localObject);
+		}
+		catch (BaseException &)
+		{
+		}
    }
-   catch (BaseException &)
-   {
-   }
-   #endif
    
    EnableUpdate(true);
 }

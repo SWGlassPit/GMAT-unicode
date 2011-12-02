@@ -1,4 +1,4 @@
-//$Id: BranchCommand.cpp 9861 2011-09-13 16:40:57Z djcinsb $
+//$Id: BranchCommand.cpp 10015 2011-11-16 21:31:19Z djcinsb $
 //------------------------------------------------------------------------------
 //                               BranchCommand
 //------------------------------------------------------------------------------
@@ -291,14 +291,14 @@ bool BranchCommand::Initialize()
    for (node = branch.begin(); node != branch.end(); ++node)
    {
       currentPtr = *node;
-      if (events != NULL)
-         currentPtr->SetEventLocators(events);
 
       while (currentPtr != this)
       {
          #ifdef DEBUG_BRANCHCOMMAND_INIT
          ShowCommand(wxT("About to initialize child in "), wxT("child="), currentPtr);
          #endif
+         if (events != NULL)
+            currentPtr->SetEventLocators(events);
          if (!currentPtr->Initialize())
                retval = false;
          currentPtr = currentPtr->GetNext();

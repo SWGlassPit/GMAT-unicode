@@ -1,4 +1,4 @@
-//$Id: GmatGlobal.cpp 9929 2011-09-30 14:59:49Z lindajun $
+//$Id: GmatGlobal.cpp 10024 2011-11-23 19:51:49Z djcinsb $
 //------------------------------------------------------------------------------
 //                                 GmatGlobal
 //------------------------------------------------------------------------------
@@ -290,6 +290,35 @@ void GmatGlobal::SetMatlabDebug(bool flag)
 {
    isMatlabDebugOn = flag;
 }
+
+//------------------------------------------------------------------------------
+// void SetEventLocationAvailable(bool flag)
+//------------------------------------------------------------------------------
+/**
+ * Sets the event locator flag
+ *
+ * @param flag Flag that is true if there are event locators, false if not
+ */
+//------------------------------------------------------------------------------
+void GmatGlobal::SetEventLocationAvailable(bool flag)
+{
+   isEventLocationAvailable = flag;
+}
+
+//------------------------------------------------------------------------------
+// bool IsEventLocationAvailable()
+//------------------------------------------------------------------------------
+/**
+ * Returns the event locator available flag
+ *
+ * @return The flag
+ */
+//------------------------------------------------------------------------------
+bool GmatGlobal::IsEventLocationAvailable()
+{
+   return isEventLocationAvailable;
+}
+
 
 //------------------------------------------------------------------------------
 // bool IsMissionTreeDebugOn()
@@ -594,6 +623,7 @@ GmatGlobal::GmatGlobal()
    runInterrupted = false;
    isMatlabAvailable = false;
    isMatlabDebugOn = false;
+   isEventLocationAvailable = false;
    isMissionTreeDebugOn = false;
    runMode = NORMAL;
    guiMode = NORMAL_GUI;

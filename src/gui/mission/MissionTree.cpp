@@ -1,4 +1,4 @@
-//$Id: MissionTree.cpp 9929 2011-09-30 14:59:49Z lindajun $
+//$Id: MissionTree.cpp 10026 2011-11-30 16:44:10Z lindajun $
 //------------------------------------------------------------------------------
 //                              MissionTree
 //------------------------------------------------------------------------------
@@ -1456,10 +1456,12 @@ MissionTree::InsertCommand(wxTreeItemId parentId, wxTreeItemId currId,
        GetItemText(prevId).c_str(), insertBefore);
    #endif
    
-   MissionTreeItemData *currItem = (MissionTreeItemData *)GetItemData(currId); 
+   MissionTreeItemData *currItem = (MissionTreeItemData *)GetItemData(currId);
    GmatCommand *currCmd = currItem->GetCommand();
+	wxString currItemName = GetItemText(currId);
    wxString currTypeName = currCmd->GetTypeName().c_str();
    wxString cmdTypeName = cmd->GetTypeName().c_str();   
+   wxString prevTypeName = prevCmd->GetTypeName().c_str();
    wxString nodeName = cmd->GetName().c_str();
    wxTreeItemId node;
    GmatCommand *endCmd = NULL;
@@ -1467,8 +1469,12 @@ MissionTree::InsertCommand(wxTreeItemId parentId, wxTreeItemId currId,
    GmatTree::ItemType endType = GmatTree::END_TARGET;
    bool cmdAdded = false;
    
-   wxString prevTypeName = prevCmd->GetTypeName().c_str();
-   
+   #if DEBUG_MISSION_TREE_INSERT
+   MessageInterface::ShowMessage
+      (wxT("   currItemName='%s', currTypeName='%s', prevTypeName='%s'\n"),
+		 currItemName.c_str(), currTypeName.c_str(), prevTypeName.c_str());
+   #endif
+	
    // Show "Equation" instead of "GMAT" to be more clear for user
    if (currTypeName == wxT("GMAT"))
       currTypeName = wxT("Equation");
@@ -1588,7 +1594,7 @@ MissionTree::InsertCommand(wxTreeItemId parentId, wxTreeItemId currId,
    if (cmdTypeName == wxT("Else"))
       nodeName.Printf(wxT("%s%d"), cmdTypeName.c_str(), (*cmdCount));
    
-   // if command has name or command has the type name append counter
+   // if command has name or command has the type name then append counter
    if (nodeName.Trim() == wxT("") || nodeName == cmdTypeName)
       nodeName.Printf(wxT("%s%d"), cmdTypeName.c_str(), ++(*cmdCount));
    
@@ -1674,40 +1680,91 @@ MissionTree::InsertCommand(wxTreeItemId parentId, wxTreeItemId currId,
       else if (prevTypeName.Contains(wxT("End")) && prevTypeName != wxT("EndScript") &&
                prevTypeName != wxT("EndFiniteBurn"))
       {
+         wxTreeItemId realParentId = parentId;
          wxTreeItemId realPrevId = prevId;
-         
-         // Since EndScript and EndFiniteBurn is not part of branch command
-         // handle separately here
-         if (!prevCmd->IsOfType(wxT("BranchEnd")))
-            realPrevId = GetItemParent(prevId);
-         
-         wxString realPrevName = GetItemText(realPrevId);         
-         
+			
+			if (prevCmd->IsOfType(wxT("BranchEnd")))
+			{
+				realPrevId = GetItemParent(prevId);
+				realParentId = GetItemParent(realPrevId);
+				
+				// We want indent children of Else in the tree eventhough actual command is not
+				// branch command
+				if (currTypeName == wxT("Else"))
+					realParentId = currId;
+			}
+			
+         wxString realParentName = GetItemText(realParentId);
+         wxString realPrevName = GetItemText(realPrevId);
+			
+			if (realParentName == wxT(""))
+			{
+				realParentId = parentId;
+				realParentName = GetItemText(realParentId);
+			}
+			
          #if DEBUG_MISSION_TREE_INSERT
          MessageInterface::ShowMessage(wxT("   ==> previous type contains End\n"));
          MessageInterface::ShowMessage
+            (wxT("   ==> realParentId=%u'%s'\n"), realParentId, realParentName.c_str());
+         MessageInterface::ShowMessage
             (wxT("   ==> realPrevId=%u'%s'\n"), realPrevId, realPrevName.c_str());
          #endif
-         
-         if (parentId == realPrevId)
-         {
+
+			
+			if (realParentId == realPrevId)
+			{
             #if DEBUG_MISSION_TREE_INSERT
-            MessageInterface::ShowMessage(wxT("   211 inserting by parentId and prevId\n"));
+				MessageInterface::ShowMessage
+					(wxT("   211 inserting '%s' after '%s' from parent '%s'\n"), nodeName.c_str(), currItemName.c_str(),
+					 realParentName.c_str());
             #endif
-            node = InsertItem(parentId, prevId, nodeName, icon, -1,
-                              new MissionTreeItemData(nodeName, itemType, nodeName, cmd));
-         }
-         else
-         {
+				
+				node = InsertItem(realParentId, currId, nodeName, icon, -1,
+										new MissionTreeItemData(nodeName, itemType, nodeName, cmd));
+			}
+			else if (realParentName != wxT(""))
+			{
+
+				// Outdent items inserting after If-Else-EndIf
+				MissionTreeItemData *realParentItem = (MissionTreeItemData *)GetItemData(realParentId);
+				MissionTreeItemData *realPrevItem = (MissionTreeItemData *)GetItemData(realPrevId);
+				GmatCommand *realParentCmd = realParentItem->GetCommand();
+				GmatCommand *realPrevCmd = realPrevItem->GetCommand();
+				if (realParentCmd->IsOfType(wxT("If")) && realPrevCmd->IsOfType(wxT("Else")))
+				{
+					MessageInterface::ShowMessage(wxT("Parent node is If, node to insert after is Else\n"));
+					realPrevId = realParentId;
+					realParentId = GetItemParent(realParentId);
+				}
+				
             #if DEBUG_MISSION_TREE_INSERT
-            MessageInterface::ShowMessage(wxT("   212 inserting by parentId and realPrevId\n"));
+				MessageInterface::ShowMessage
+					(wxT("   221 inserting '%s' after '%s' from parent '%s'\n"), nodeName.c_str(), realPrevName.c_str(),
+					 realParentName.c_str());
             #endif
-            node = InsertItem(parentId, realPrevId, nodeName, icon, -1,
-                              new MissionTreeItemData(nodeName, itemType, nodeName, cmd));
-         }
-      }
+				
+				node = InsertItem(realParentId, realPrevId, nodeName, icon, -1,
+										new MissionTreeItemData(nodeName, itemType, nodeName, cmd));
+			}
+			else
+			{
+            #if DEBUG_MISSION_TREE_INSERT
+				MessageInterface::ShowMessage
+					(wxT("   231 inserting '%s' after '%s', parent='%s'\n"), nodeName.c_str(),
+					 currItemName.c_str(), realParentName.c_str());
+            #endif
+				node = InsertNodeAfter(realParentId, currId, prevId, icon, nodeName, itemType,
+											  cmd, insertBefore);
+			}
+		}
       else
       {
+         #if DEBUG_MISSION_TREE_INSERT
+			MessageInterface::ShowMessage
+				(wxT("   241 inserting '%s' after '%s', parent='%s'\n"), nodeName.c_str(),
+				 currItemName.c_str(), GetItemText(parentId).c_str());
+         #endif
          node = InsertNodeAfter(parentId, currId, prevId, icon, nodeName, itemType,
                                 cmd, insertBefore);
       }
@@ -1725,6 +1782,7 @@ MissionTree::InsertCommand(wxTreeItemId parentId, wxTreeItemId currId,
          {
             wxString elseName;
             elseName.Printf(wxT("Else%d"), (*cmdCount));
+				elseCmd->SetSummaryName(elseName.c_str());
             
             wxTreeItemId elseNode =
                InsertItem(node, 0, elseName, icon, -1,
@@ -1734,6 +1792,7 @@ MissionTree::InsertCommand(wxTreeItemId parentId, wxTreeItemId currId,
             wxString endName = wxT("End") + cmdTypeName;
             wxString tmpName;
             tmpName.Printf(wxT("%s%d"), endName.c_str(), *cmdCount);
+				endCmd->SetSummaryName(tmpName.c_str());
             InsertItem(node, elseNode, tmpName, GmatTree::MISSION_ICON_NEST_RETURN, -1,
                        new MissionTreeItemData(tmpName, endType, tmpName, endCmd));
          }
@@ -1742,6 +1801,7 @@ MissionTree::InsertCommand(wxTreeItemId parentId, wxTreeItemId currId,
             wxString endName = wxT("End") + cmdTypeName;
             wxString tmpName;
             tmpName.Printf(wxT("%s%d"), endName.c_str(), *cmdCount);
+				endCmd->SetSummaryName(tmpName.c_str());
             InsertItem(node, 0, tmpName, GmatTree::MISSION_ICON_NEST_RETURN, -1,
                        new MissionTreeItemData(tmpName, endType, tmpName, endCmd));
          }
@@ -1931,8 +1991,15 @@ void MissionTree::Append(const wxString &cmdTypeName)
       MissionTreeItemData *ifItem = (MissionTreeItemData *)GetItemData(ifId);
       GmatCommand *ifCmd = ifItem->GetCommand();
       GmatCommand *endIf = GmatCommandUtil::GetMatchingEnd(ifCmd);
+		
+      #if DEBUG_MISSION_TREE_APPEND
+      MessageInterface::ShowMessage
+			(wxT("   ==> realLast item is %s\n"), GetItemText(realLastId).c_str());
+		#endif
+		
       prevCmd = endIf->GetPrevious();
-      
+		prevId = realLastId;
+		
       // If previous command is BranchCommand, use End BranchCommand as previous command
       if (prevCmd->IsOfType(wxT("BranchCommand")))
       {
@@ -1941,9 +2008,12 @@ void MissionTree::Append(const wxString &cmdTypeName)
          #endif
          prevCmd = GmatCommandUtil::GetMatchingEnd(prevCmd);
       }
-      
-      // If previous command is BranchEnd and visible,
-      // previous item should be parent of BranchEnd
+		
+      #if DEBUG_MISSION_TREE_APPEND
+      WriteCommand(wxT("   "), wxT("prevCmd = "), prevCmd);
+		#endif
+		
+      // If previous command is BranchEnd, previous item should be parent of BranchEnd
       if (prevCmd->IsOfType(wxT("BranchEnd")))
       {
          if (GetItemParent(prevId) != itemId)
@@ -2029,7 +2099,9 @@ void MissionTree::Append(const wxString &cmdTypeName)
       
       #if DEBUG_MISSION_TREE_APPEND
       MessageInterface::ShowMessage
-         (wxT("   ==> Calling InsertCommand(%s)\n"), insertBefore ? wxT("before") : wxT("after"));
+         (wxT("   ==> Calling InsertCommand(%s), parent='%s', current='%s', previous='%s'\n"),
+			 insertBefore ? wxT("before") : wxT("after"), GetItemText(parentId).c_str(),
+			 GetItemText(currId).c_str(), GetItemText(prevId).c_str());
       #endif
       
       // Added to tree node if visible command
@@ -2183,6 +2255,18 @@ void MissionTree::InsertBefore(const wxString &cmdTypeName)
          
          UpdateGuiManager(cmdTypeName);
          
+			// Handle Else block in the tree, indent children of Else eventhough Else
+			// is not a branch command
+			wxTreeItemId elseId = GetItemParent(prevId);
+			MissionTreeItemData *elseItem = (MissionTreeItemData *)GetItemData(elseId);
+			GmatCommand *elseCmd = elseItem->GetCommand();
+			if (elseCmd->IsOfType(wxT("Else")))
+				 parentId = elseId;
+			
+         #if DEBUG_MISSION_TREE_INSERT
+         MessageInterface::ShowMessage(wxT("   ==> Calling InsertCommand(true)\n"));
+         #endif
+			
          wxTreeItemId node =
             InsertCommand(parentId, itemId, prevId, GetIconId(cmdTypeName),
                           GetCommandId(cmdTypeName), cmdTypeName, realPrevCmd, cmd,
@@ -2303,7 +2387,7 @@ void MissionTree::InsertAfter(const wxString &cmdTypeName)
       {
          cmd->ForceSetPrevious(currCmd);
          prevId = itemId;
-         itemId = parentId;
+         //itemId = parentId;
          parentId = GetItemParent(itemId);
       }
       else
@@ -2317,10 +2401,18 @@ void MissionTree::InsertAfter(const wxString &cmdTypeName)
       {
          UpdateGuiManager(cmdTypeName);
          
+			// Handle Else block in the tree, indent children of Else eventhough Else
+			// is not a branch command
+			wxTreeItemId elseId = GetItemParent(prevId);
+			MissionTreeItemData *elseItem = (MissionTreeItemData *)GetItemData(elseId);
+			GmatCommand *elseCmd = elseItem->GetCommand();
+			if (elseCmd->IsOfType(wxT("Else")))
+				 parentId = elseId;
+			
          #if DEBUG_MISSION_TREE_INSERT
          MessageInterface::ShowMessage(wxT("   ==> Calling InsertCommand(false)\n"));
          #endif
-         
+
          wxTreeItemId node =
             InsertCommand(parentId, itemId, prevId, GetIconId(cmdTypeName),
                           GetCommandId(cmdTypeName), cmdTypeName, prevCmd, cmd,
@@ -2805,8 +2897,6 @@ void MissionTree::ShowMenu(wxTreeItemId id, const wxPoint& pt)
    wxString title = treeItem->GetTitle();
    GmatTree::ItemType itemType = treeItem->GetItemType();
    wxTreeItemId parent = GetItemParent(id);
-   //MissionTreeItemData *parentItem = (MissionTreeItemData *)GetItemData(parent);
-   //int parentDataType = parentItem->GetItemType();
    
    #if DEBUG_MISSION_TREE_MENU
    MessageInterface::ShowMessage
@@ -4828,27 +4918,30 @@ void MissionTree::WriteCommand(const wxString &prefix,
    {
       if (cmd1 == NULL)
          MessageInterface::ShowMessage
-            (wxT("%s%sNULL(%p)\n"), prefix.c_str(), title1.c_str(), cmd1);
+            (wxT("%s%sNULL<%p>'%s'\n"), prefix.c_str(), title1.c_str(), cmd1,
+				 cmd1->GetSummaryName().c_str());
       else
          MessageInterface::ShowMessage
-            (wxT("%s%s%s(%p)\n"), prefix.c_str(), title1.c_str(),
-             cmd1->GetTypeName().c_str(), cmd1);
+            (wxT("%s%s%s<%p>'%s'\n"), prefix.c_str(), title1.c_str(),
+             cmd1->GetTypeName().c_str(), cmd1, cmd1->GetSummaryName().c_str());
    }
    else
    {
       if (cmd1 == NULL)
          MessageInterface::ShowMessage
-            (wxT("%s%sNULL(%p)%s%s(%p)\n"), prefix.c_str(), title1.c_str(),
-             cmd1, title2.c_str(), cmd2->GetTypeName().c_str(), cmd2);
+            (wxT("%s%sNULL<%p>'%s'%s%s<%p>'%s'\n"), prefix.c_str(), title1.c_str(),
+             cmd1, cmd1->GetSummaryName().c_str(), title2.c_str(),
+				 cmd2->GetTypeName().c_str(), cmd2, cmd2->GetSummaryName().c_str());
       else if (cmd2 == NULL)
          MessageInterface::ShowMessage
-            (wxT("%s%s%s(%p)%sNULL(%p)\n"), prefix.c_str(), title1.c_str(),
-             cmd1->GetTypeName().c_str(), cmd1, title2.c_str(), cmd2);
+            (wxT("%s%s%s<%p>'%s'%sNULL<%p>'%s'\n"), prefix.c_str(), title1.c_str(),
+             cmd1->GetTypeName().c_str(), cmd1, cmd1->GetSummaryName().c_str(),
+				 title2.c_str(), cmd2, cmd2->GetSummaryName().c_str());
       else
          MessageInterface::ShowMessage
-            (wxT("%s%s%s(%p)%s%s(%p)\n"), prefix.c_str(), 
-             title1.c_str(), cmd1->GetTypeName().c_str(), cmd1,
-             title2.c_str(), cmd2->GetTypeName().c_str(), cmd2);
+            (wxT("%s%s%s<%p>'%s'%s%s<%p>'%s'\n"), prefix.c_str(), 
+             title1.c_str(), cmd1->GetTypeName().c_str(), cmd1, cmd1->GetSummaryName().c_str(),
+             title2.c_str(), cmd2->GetTypeName().c_str(), cmd2, cmd2->GetSummaryName().c_str());
    }
 }
 

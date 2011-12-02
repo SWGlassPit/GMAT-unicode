@@ -1,4 +1,4 @@
-//$Id: GuiItemManager.cpp 9857 2011-09-12 18:37:14Z lindajun $
+//$Id: GuiItemManager.cpp 10024 2011-11-23 19:51:49Z djcinsb $
 //------------------------------------------------------------------------------
 //                              GuiItemManager
 //------------------------------------------------------------------------------
@@ -480,6 +480,9 @@ void GuiItemManager::UpdateAll(Gmat::ObjectType objType)
       case Gmat::SOLVER:
          UpdateSolver(false);
          break;
+      case Gmat::EVENT_LOCATOR:
+         UpdateLocator(false);
+         break;
       default:
          MessageInterface::ShowMessage
             (wxT("*** INTERNAL ERROR *** GuiItemManager::UpdateAll() the object type ")
@@ -566,6 +569,11 @@ void GuiItemManager::UpdateAll(Gmat::ObjectType objType)
    MessageInterface::ShowMessage(wxT("======> after UpdateSolver()\n"));
    #endif
    
+   UpdateLocator(false);
+   #if DBGLVL_GUI_ITEM_UPDATE
+   MessageInterface::ShowMessage("======> after UpdateLocator()\n");
+   #endif
+
    AddToAllObjectArray();
    
    #if DBGLVL_GUI_ITEM_UPDATE
@@ -907,6 +915,25 @@ void GuiItemManager::UpdateSubscriber(bool updateObjectArray)
       AddToAllObjectArray();
 }
 
+//------------------------------------------------------------------------------
+// void UpdateLocator(bool updateObjectArray = true)
+//------------------------------------------------------------------------------
+/**
+ * Updates event locator related GUI components
+ *
+ * @param updateObjectArray TBD
+ */
+//------------------------------------------------------------------------------
+void GuiItemManager::UpdateLocator(bool updateObjectArray)
+{
+   #if DBGLVL_GUI_ITEM_UPDATE
+      MessageInterface::ShowMessage("===> UpdateLocator\n");
+   #endif
+
+   UpdateLocatorList();
+   if (updateObjectArray)
+      AddToAllObjectArray();
+}
 
 //------------------------------------------------------------------------------
 // void AddToResourceUpdateListeners(GmatPanel *panel)
@@ -5314,6 +5341,38 @@ void GuiItemManager::UpdateForceModelList()
    
 }
 
+//------------------------------------------------------------------------------
+// void UpdateLocatorList()
+//------------------------------------------------------------------------------
+/**
+ * Updates event locator list
+ */
+//------------------------------------------------------------------------------
+void GuiItemManager::UpdateLocatorList()
+{
+   StringArray listEl = theGuiInterpreter->GetListOfObjects(Gmat::EVENT_LOCATOR);
+   int numLocator = listEl.size();
+
+   #if DBGLVL_GUI_ITEM_EL
+   MessageInterface::ShowMessage
+      ("GuiItemManager::UpdateLocatorList() numLocator=%d\n", numLocator);
+   #endif
+
+   theLocatorList.Clear();
+
+   // check to see if any locators exist
+   for (int i=0; i<numLocator; i++)
+   {
+      theLocatorList.Add(listEl[i].c_str());
+
+      #if DBGLVL_GUI_ITEM_EL > 1
+      MessageInterface::ShowMessage
+         ("   %s added to theLocatorList\n", theLocatorList[i].c_str());
+      #endif
+   }
+
+   theNumLocator = theLocatorList.GetCount();
+}
 
 //------------------------------------------------------------------------------
 // void AddToAllObjectArray()
@@ -5462,6 +5521,13 @@ void GuiItemManager::AddToAllObjectArray()
       theAllObjectList.Add(theSubscriberList[i] + wxT(" <") + typeName + wxT(">"));
    }
    
+   // Add EventLocator objects to the list
+   #if DBGLVL_GUI_ITEM_ALL_OBJECT > 1
+   MessageInterface::ShowMessage("   Adding %d EventLocators\n", theNumLocator);
+   #endif
+   for (int i=0; i<theNumLocator; i++)
+      theAllObjectList.Add(theLocatorList[i] + wxT(" <EventLocator>"));
+
    theNumAllObject = theAllObjectList.GetCount();
    
    // Add SolarSystem objects to the list
@@ -5583,6 +5649,7 @@ GuiItemManager::GuiItemManager()
    theNumUserString = 0;
    theNumUserArray = 0;
    theNumUserParam = 0;
+   theNumLocator = 0;
    
    // update property list
    UpdatePropertyList();

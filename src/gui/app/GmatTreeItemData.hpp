@@ -1,4 +1,4 @@
-//$Id: GmatTreeItemData.hpp 9914 2011-09-26 19:07:00Z lindajun $
+//$Id: GmatTreeItemData.hpp 10027 2011-11-30 23:26:45Z djcinsb $
 //------------------------------------------------------------------------------
 //                             GmatTreeItemData
 //------------------------------------------------------------------------------
@@ -188,6 +188,7 @@ namespace GmatTree
       PREDEFINED_FUNCTION_FOLDER,
       SCRIPT_FOLDER,
       CONSTELLATION_FOLDER,
+      EVENT_LOCATOR_FOLDER,
       // Added for user modules
       PLUGIN_FOLDER,
       END_OF_RESOURCE_FOLDER,
@@ -246,6 +247,8 @@ namespace GmatTree
       VARIABLE = 41600,
       ARRAY,
       STRING,
+
+      EVENT_LOCATOR = 41650,
 
       MATLAB_FUNCTION = 41700,
       GMAT_FUNCTION,
@@ -308,6 +311,7 @@ namespace GmatTree
       REPORTS_FOLDER,
       ORBIT_VIEWS_FOLDER,
       XY_PLOTS_FOLDER,
+      EVENTS_FOLDER,
 
       // for output
       BEGIN_OF_OUTPUT = 46000,
@@ -316,6 +320,7 @@ namespace GmatTree
       OUTPUT_GROUND_TRACK_PLOT,
       OUTPUT_XY_PLOT,
       COMPARE_REPORT,
+      EVENT_REPORT,
       END_OF_OUTPUT,
 
       //---------- NO panels will be created

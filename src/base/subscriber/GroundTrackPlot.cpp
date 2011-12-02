@@ -1,4 +1,4 @@
-//$Id: GroundTrackPlot.cpp 9914 2011-09-26 19:07:00Z lindajun $
+//$Id: GroundTrackPlot.cpp 10029 2011-12-01 16:34:52Z lindajun $
 //------------------------------------------------------------------------------
 //                                  GroundTrackPlot
 //------------------------------------------------------------------------------
@@ -23,6 +23,7 @@
 #include "PlotInterface.hpp"       // for UpdateGlPlot()
 #include "SubscriberException.hpp" // for SubscriberException()
 #include "FileManager.hpp"         // for GetFullPathname()
+#include "StringUtil.hpp"          // for ToUpper()
 #include "MessageInterface.hpp"    // for ShowMessage()
 
 
@@ -522,6 +523,9 @@ wxString GroundTrackPlot::GetStringParameter(const Integer id) const
    case CENTRAL_BODY:
       return centralBodyName;
    case TEXTURE_MAP:
+      #if DBGLVL_PARAM_STRING
+		MessageInterface::ShowMessage(wxT("   returning '%s'\n"), textureMapFileName.c_str());
+		#endif
       return textureMapFileName;
    case SHOW_FOOT_PRINTS:
       return footPrints;
@@ -563,9 +567,17 @@ bool GroundTrackPlot::SetStringParameter(const Integer id, const wxString &value
       // we want to create local body fixed coord system instead in Initialize()
       break;
    case CENTRAL_BODY:
-      centralBodyName = value;
-      // Since ground track data uses body fixed coordinates, name it here
-      mViewCoordSysName = value + wxT("Fixed");
+		if (centralBodyName != value)
+		{
+			centralBodyName = value;
+			// Since ground track data uses body fixed coordinates, name it here
+			mViewCoordSysName = value + wxT("Fixed");
+			
+			// Get default texture map file for the new body
+			FileManager *fm = FileManager::Instance();
+			wxString mapFile = GmatStringUtil::ToUpper(centralBodyName) + wxT("_TEXTURE_FILE");
+			textureMapFileName = fm->GetFullPathname(mapFile);
+		}
       return true;
    case TEXTURE_MAP:
       textureMapFileName = value;
@@ -628,6 +640,45 @@ bool GroundTrackPlot::SetStringParameter(const wxString &label,
    return SetStringParameter(GetParameterID(label), value);
 }
 
+//------------------------------------------------------------------------------
+// const ObjectTypeArray& GetTypesForList(const Integer id)
+//------------------------------------------------------------------------------
+/**
+ * Retrieves a list of types that need to be shown on a GUI for a parameter
+ *
+ * @param id The parameter ID
+ *
+ * @return The list of types
+ */
+//------------------------------------------------------------------------------
+const ObjectTypeArray& GroundTrackPlot::GetTypesForList(const Integer id)
+{
+   if (id == ADD)
+   {
+      listedTypes.clear();
+      listedTypes.push_back(Gmat::SPACECRAFT);
+      listedTypes.push_back(Gmat::GROUND_STATION);
+   }
+
+   return listedTypes;
+}
+
+//------------------------------------------------------------------------------
+// const ObjectTypeArray& GetTypesForList(const wxString &label)
+//------------------------------------------------------------------------------
+/**
+ * Retrieves a list of types that need to be shown on a GUI for a parameter
+ *
+ * @param label The parameter's label
+ *
+ * @return The list of types
+ */
+//------------------------------------------------------------------------------
+const ObjectTypeArray&
+      GroundTrackPlot::GetTypesForList(const wxString &label)
+{
+   return GetTypesForList(GetParameterID(label));
+}
 
 //------------------------------------------------------------------------------
 // virtual wxString GetRefObjectName(const Gmat::ObjectType type) const

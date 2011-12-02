@@ -1,4 +1,4 @@
-//$Id: EventLocator.cpp 9973 2011-10-24 23:19:47Z djcinsb $
+//$Id: EventLocator.cpp 10031 2011-12-01 21:30:50Z djcinsb $
 //------------------------------------------------------------------------------
 //                           EventLocator
 //------------------------------------------------------------------------------
@@ -51,9 +51,10 @@ EventLocator::PARAMETER_TEXT[EventLocatorParamCount - GmatBaseParamCount] =
 const Gmat::ParameterType
 EventLocator::PARAMETER_TYPE[EventLocatorParamCount - GmatBaseParamCount] =
 {
-   Gmat::STRINGARRAY_TYPE,       // SATNAMES,
+//   Gmat::STRINGARRAY_TYPE,       // SATNAMES,
+   Gmat::OBJECTARRAY_TYPE,       // SATNAMES,
    Gmat::REAL_TYPE,              // TOLERANCE,
-   Gmat::STRING_TYPE,            // EVENT_FILENAME,
+   Gmat::FILENAME_TYPE,          // EVENT_FILENAME,
    Gmat::BOOLEAN_TYPE,           // IS_ACTIVE
    Gmat::BOOLEAN_TYPE,           // SHOW_PLOT
    Gmat::REAL_TYPE,              // EPOCH (Read only)
@@ -102,6 +103,9 @@ EventLocator::EventLocator(const wxString &typeStr,
 //------------------------------------------------------------------------------
 EventLocator::~EventLocator()
 {
+//   MessageInterface::ShowMessage("Deleting event locator %s <%p>\n",
+//         instanceName.c_str(), this);
+
    if (lastData != NULL)
       delete [] lastData;
 
@@ -374,7 +378,7 @@ Real EventLocator::GetRealParameter(const Integer id, const Integer index) const
    if (id == EVENT_FUNCTION)
    {
       Real retval = 0.0;
-      if (index < eventFunctions.size())
+      if (index < (Integer)eventFunctions.size())
       {
          Real *data = eventFunctions[index]->Evaluate();
          retval = data[1];
@@ -646,6 +650,16 @@ bool EventLocator::SetStringParameter(const Integer id,
          return true;
       }
       return false;
+   }
+
+   if (id == SATNAMES)
+   {
+      if (find(satNames.begin(), satNames.end(), value) == satNames.end())
+      {
+         satNames.push_back(value);
+         targets.push_back(NULL);
+      }
+      return true;
    }
 
    return GmatBase::SetStringParameter(id, value);
@@ -1032,6 +1046,76 @@ bool EventLocator::SetBooleanParameter(const wxString &label,
       const bool value, const Integer index)
 {
    return SetBooleanParameter(GetParameterID(label), value, index);
+}
+
+
+//------------------------------------------------------------------------------
+// bool TakeAction(const std::string &action, const std::string &actionData)
+//------------------------------------------------------------------------------
+/**
+ * Performs a custom action on the object.
+ *
+ * Event locators use this method to clear arrays in the locator.
+ *
+ * @param action The string specifying the action to be taken
+ *
+ * @return true on success, false on failure
+ */
+//------------------------------------------------------------------------------
+bool EventLocator::TakeAction(const wxString &action,
+      const wxString &actionData)
+{
+   if (action == wxT("Clear"))
+   {
+      if ((actionData == wxT("Spacecraft")) || (actionData == wxT("")))
+      {
+         satNames.clear();
+         targets.clear();
+      }
+      return true;
+   }
+
+   return GmatBase::TakeAction(action, actionData);
+}
+
+//------------------------------------------------------------------------------
+// const ObjectTypeArray& GetTypesForList(const Integer id)
+//------------------------------------------------------------------------------
+/**
+ * Retrieves a list of types that need to be shown on a GUI for a parameter
+ *
+ * @param id The parameter ID
+ *
+ * @return The list of types
+ */
+//------------------------------------------------------------------------------
+const ObjectTypeArray& EventLocator::GetTypesForList(const Integer id)
+{
+   if (id == SATNAMES)
+   {
+      if (find(listedTypes.begin(), listedTypes.end(), Gmat::SPACECRAFT) ==
+            listedTypes.end())
+         listedTypes.push_back(Gmat::SPACECRAFT);
+      return listedTypes;
+   }
+
+   return GmatBase::GetTypesForList(id);
+}
+
+//------------------------------------------------------------------------------
+// const ObjectTypeArray& GetTypesForList(const wxString &label)
+//------------------------------------------------------------------------------
+/**
+ * Retrieves a list of types that need to be shown on a GUI for a parameter
+ *
+ * @param label The parameter's identifying string
+ *
+ * @return The list of types
+ */
+//------------------------------------------------------------------------------
+const ObjectTypeArray& EventLocator::GetTypesForList(const wxString &label)
+{
+   return GetTypesForList(GetParameterID(label));
 }
 
 

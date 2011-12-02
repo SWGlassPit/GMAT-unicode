@@ -1,4 +1,4 @@
-//$Id: OrbitViewCanvas.cpp 9692 2011-07-12 19:20:21Z lindajun $
+//$Id: OrbitViewCanvas.cpp 10017 2011-11-16 23:40:37Z djcinsb $
 //------------------------------------------------------------------------------
 //                              OrbitViewCanvas
 //------------------------------------------------------------------------------
@@ -343,24 +343,26 @@ OrbitViewCanvas::~OrbitViewCanvas()
       (wxT("OrbitViewCanvas::~OrbitViewCanvas() '%s' entered\n"), mPlotName.c_str());
    #endif
    
-   // Note:
-   // deleting m_glContext is handled in wxGLCanvas
-   
-   #ifndef __WXMAC__
-   // Problem -- ModelManager is a singleton, but multiple canvases can access the 
-   // modelContext member directly. If the modelContext is deleted, all other canvases
-   // will be context-less.  Commented out now -- will be a small memory leak, but 
-   // either handling of the wxGLContext needs to be completely separate from ModelManager, or 
-   // ModelManager needs a safe delete for it.
-
+   // Patch from Tristan Moody
+   //   This patch moves the modelContext deletion to the ModelManager
+   //   destructor from the OrbitViewCanvas and GroundTrackCanvas destructors.
+   //   As long as the ModelManager destructor is called after all other
+   //   OpenGL-related code is finished (to be verified), this should fix the
+   //   problem reported in Bug 2591.
+   //
+   // Old code:
+//   // Note:
+//   // deleting m_glContext is handled in wxGLCanvas
+//
+//   #ifndef __WXMAC__
 //      ModelManager *mm = ModelManager::Instance();
-//      if (mm->modelContext)
+//      if (!mm->modelContext)
 //      {
 //         // delete modelContext since it was created in the constructor
 //         delete mm->modelContext;
 //         mm->modelContext = NULL;
 //      }
-   #endif
+//   #endif
    
    ClearObjectArrays();
    

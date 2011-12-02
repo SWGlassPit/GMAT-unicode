@@ -1,4 +1,4 @@
-//$Id: GmatBase.hpp 9969 2011-10-21 22:56:49Z djcinsb $
+//$Id: GmatBase.hpp 10025 2011-11-29 23:31:31Z djcinsb $
 //------------------------------------------------------------------------------
 //                                  GmatBase
 //------------------------------------------------------------------------------
@@ -369,6 +369,9 @@ public:
    virtual bool         TakeRequiredAction(const Integer id);
    virtual bool         TakeRequiredAction(const wxString &label);
 
+   virtual const ObjectTypeArray& GetTypesForList(const Integer id);
+   virtual const ObjectTypeArray& GetTypesForList(const wxString &label);
+
    virtual const wxString&
                         GetGeneratingString(
                            Gmat::WriteMode mode = Gmat::SCRIPTING,
@@ -515,6 +518,8 @@ protected:
    bool                showInlineComment;
    /// flag indicating whether or not to omit the wxT("Create") line when writing the script
    bool                cloaking;
+   /// Utility array used to return types for objects to be shown on a GUI
+   ObjectTypeArray     listedTypes;
 
    // Ordered list of parameters that have covariances
    StringArray         covarianceList;

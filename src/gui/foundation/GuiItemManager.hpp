@@ -1,4 +1,4 @@
-//$Id: GuiItemManager.hpp 9857 2011-09-12 18:37:14Z lindajun $
+//$Id: GuiItemManager.hpp 10024 2011-11-23 19:51:49Z djcinsb $
 //------------------------------------------------------------------------------
 //                              GuiItemManager
 //------------------------------------------------------------------------------
@@ -82,6 +82,7 @@ public:
    void UpdateSpacePoint(bool updateObjectArray = true);
    void UpdateSolver(bool updateObjectArray = true);
    void UpdateSubscriber(bool updateObjectArray = true);
+   void UpdateLocator(bool updateObjectArray = true);
    
    // For handling of resource update 
    void AddToResourceUpdateListeners(GmatPanel *panel);
@@ -373,6 +374,7 @@ private:
    void UpdateSolverList();
    void UpdatePropagatorList();
    void UpdateForceModelList();
+   void UpdateLocatorList();
    
    //void AddToAllObjectList();
    void AddToAllObjectArray();
@@ -495,6 +497,9 @@ private:
    int theNumUserArray;
    int theNumUserParam;
    
+   // EventLocator
+   int theNumLocator;
+
    // Spacecraft Properties
    wxArrayString theScPropertyList;
    
@@ -553,6 +558,8 @@ private:
    wxArrayString theUserArrayList;
    wxArrayString theUserParamList;
    
+   // EventLocator
+   wxArrayString theLocatorList;
 };
 
 #endif // GuiItemManager_hpp

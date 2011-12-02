@@ -1,4 +1,4 @@
-//$Id: gmatwxdefs.hpp 9515 2011-04-30 21:46:27Z djcinsb $
+//$Id: gmatwxdefs.hpp 10016 2011-11-16 23:20:54Z djcinsb $
 //------------------------------------------------------------------------------
 // GMAT: General Mission Analysis Tool
 // 
@@ -66,8 +66,8 @@
 #    include <GL/glu.h>
 #  endif
 #  include "wx/glcanvas.h"
-static int GmatGLCanvasAttribs[2] = {WX_GL_DOUBLEBUFFER, 0};
-
+   // Double buffer activation needed in Linux (Patch from Tristan Moody)
+   static int GmatGLCanvasAttribs[2] = {WX_GL_DOUBLEBUFFER, 0};
 #endif
 
 #ifdef __WXMSW__  // Windows

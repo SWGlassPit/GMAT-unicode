@@ -29,6 +29,7 @@
     <xsl:param name="body.font.family">Garamond</xsl:param>
     <xsl:param name="body.font.master">11</xsl:param>
     <xsl:param name="title.font.family">Helvetica</xsl:param>
+    <xsl:param name="monospace.font.family">Consolas, monospace</xsl:param>
 
     <!-- Titles -->
     <xsl:attribute-set name="component.title.properties">
@@ -78,12 +79,26 @@
     <!-- Program listings -->
     <xsl:param name="shade.verbatim" select="1"/>
     <xsl:attribute-set name="monospace.verbatim.properties">
-        <xsl:attribute name="font-family">Consolas, monospace</xsl:attribute>
         <xsl:attribute name="font-size">10</xsl:attribute>
     </xsl:attribute-set>
 
     <!-- Formatting for specific tags -->
+    <xsl:template match="d:guibutton">
+        <xsl:call-template name="inline.boldseq"/>
+    </xsl:template>
+    <xsl:template match="d:guiicon">
+        <xsl:call-template name="inline.boldseq"/>
+    </xsl:template>
     <xsl:template match="d:guilabel">
+        <xsl:call-template name="inline.boldseq"/>
+    </xsl:template>
+    <xsl:template match="d:guimenu">
+        <xsl:call-template name="inline.boldseq"/>
+    </xsl:template>
+    <xsl:template match="d:guimenuitem">
+        <xsl:call-template name="inline.boldseq"/>
+    </xsl:template>
+    <xsl:template match="d:guisubmenu">
         <xsl:call-template name="inline.boldseq"/>
     </xsl:template>
 
@@ -134,6 +149,45 @@
         procedure before
         task before
     </xsl:param>
+    <!-- switched default values for titles below the figure -->
+    <xsl:attribute-set name="formal.title.properties" use-attribute-sets="normal.para.spacing">
+        <xsl:attribute name="space-before.minimum">
+            <xsl:choose>
+                <xsl:when test="ancestor-or-self::d:figure">0.4em</xsl:when>
+                <xsl:otherwise>0.8em</xsl:otherwise>
+            </xsl:choose>
+        </xsl:attribute>
+        <xsl:attribute name="space-before.optimum">
+            <xsl:choose>
+                <xsl:when test="ancestor-or-self::d:figure">0.6em</xsl:when>
+                <xsl:otherwise>1em</xsl:otherwise>
+            </xsl:choose>
+        </xsl:attribute>
+        <xsl:attribute name="space-before.maximum">
+            <xsl:choose>
+                <xsl:when test="ancestor-or-self::d:figure">0.8em</xsl:when>
+                <xsl:otherwise>1.2em</xsl:otherwise>
+            </xsl:choose>
+        </xsl:attribute>
+        <xsl:attribute name="space-after.minimum">
+            <xsl:choose>
+                <xsl:when test="ancestor-or-self::d:figure">0.8em</xsl:when>
+                <xsl:otherwise>0.4em</xsl:otherwise>
+            </xsl:choose>
+        </xsl:attribute>
+        <xsl:attribute name="space-after.optimum">
+            <xsl:choose>
+                <xsl:when test="ancestor-or-self::d:figure">1em</xsl:when>
+                <xsl:otherwise>0.6em</xsl:otherwise>
+            </xsl:choose>
+        </xsl:attribute>
+        <xsl:attribute name="space-after.maximum">
+            <xsl:choose>
+                <xsl:when test="ancestor-or-self::d:figure">1.2em</xsl:when>
+                <xsl:otherwise>0.8em</xsl:otherwise>
+            </xsl:choose>
+        </xsl:attribute>
+    </xsl:attribute-set>
 
     <!-- Equation numbering (templates copied from
          DocBook XSL Stylesheets 1.76.1) -->
@@ -256,6 +310,9 @@
         <xsl:attribute name="space-before.optimum">0em</xsl:attribute>
         <xsl:attribute name="space-before.minimum">0em</xsl:attribute>
         <xsl:attribute name="space-before.maximum">0.2em</xsl:attribute>
+    </xsl:attribute-set>
+    <xsl:attribute-set name="variablelist.term.properties">
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
     </xsl:attribute-set>
 
     <!-- Admonitions -->

@@ -1,4 +1,4 @@
-//$Id: OutputTree.hpp 9514 2011-04-30 21:44:00Z djcinsb $
+//$Id: OutputTree.hpp 10027 2011-11-30 23:26:45Z djcinsb $
 //------------------------------------------------------------------------------
 //                              OutputTree
 //------------------------------------------------------------------------------
@@ -48,6 +48,7 @@ private:
    wxTreeItemId mReportItem;
    wxTreeItemId mOpenGlItem;
    wxTreeItemId mXyPlotItem;
+   wxTreeItemId mEventsItem;
    
    void AddDefaultResources();
    wxTreeItemId FindItem(wxTreeItemId parentId, const wxString &name);
