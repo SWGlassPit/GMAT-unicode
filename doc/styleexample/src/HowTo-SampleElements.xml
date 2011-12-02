@@ -8,17 +8,15 @@
          xmlns:db="http://docbook.org/ns/docbook">
   <title>Sample Elements</title>
 
-  <table>
+  <table colsep="0" frame="topbot">
     <title>An example table</title>
 
     <tgroup cols="2">
-      <colspec align="center" />
-
       <thead>
         <row>
-          <entry align="center">Column 1</entry>
+          <entry>Column 1</entry>
 
-          <entry align="center">Column 2</entry>
+          <entry>Column 2</entry>
         </row>
       </thead>
 
@@ -44,7 +42,7 @@
     </tgroup>
   </table>
 
-  <figure>
+  <figure xml:id="SmallSS">
     <title>An example small screenshot</title>
 
     <screenshot>
@@ -101,19 +99,53 @@ GMAT DefaultSC.DragArea = 15;
 GMAT DefaultSC.SRPArea = 1;</programlisting>
   </example>
 
-  <para><emphasis role="bold">A numbered equation:</emphasis></para>
+  <section>
+    <title>Miscellaneous elements</title>
 
-  <equation>
-    <m:math display="block">
-      <m:mi>3</m:mi>
+    <itemizedlist>
+      <listitem>
+        <para>A numbered equation:</para>
 
-      <m:mo>=</m:mo>
+        <equation>
+          <m:math display="block">
+            <m:mn>3</m:mn>
 
-      <m:mi>2</m:mi>
+            <m:mo>=</m:mo>
 
-      <m:mo>+</m:mo>
+            <m:mn>2</m:mn>
 
-      <m:mi>1</m:mi>
-    </m:math>
-  </equation>
+            <m:mo>+</m:mo>
+
+            <m:mn>1</m:mn>
+          </m:math>
+        </equation>
+      </listitem>
+
+      <listitem>
+        <para>An unnumbered equation:</para>
+
+        <informalequation>
+          <m:math display="block">
+            <m:mo>-</m:mo>
+
+            <m:mn>1</m:mn>
+
+            <m:mo>=</m:mo>
+
+            <m:mo>cos</m:mo>
+
+            <m:mo>(</m:mo>
+
+            <m:mn>π</m:mn>
+
+            <m:mo>)</m:mo>
+          </m:math>
+        </informalequation>
+      </listitem>
+
+      <listitem>
+        <para>A cross-reference to <xref linkend="SmallSS" /></para>
+      </listitem>
+    </itemizedlist>
+  </section>
 </chapter>

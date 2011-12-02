@@ -1,4 +1,4 @@
-# Makefile for the GMAT Style Example.
+# Makefile for the GMAT Training Manual.
 # Must be run in an MSYS environment on Windows.
 
 # Common variables
@@ -20,25 +20,24 @@ FOPCONF = config/fop.xconf
 # Rules
 all: pdf
 
-pdf: GmatStyleExampleA4.pdf
+pdf: GmatTrainingManualA4.pdf
 
 clean:
-	rm -f *.fo GmatStyleExampleA4.pdf
+	rm -f *.fo GmatTrainingManualA4.pdf
 
 validate:
 	$(JING) $(contribdir)/docbook/docbookxi.rng src/*.xml
 
-GmatStyleExampleA4.pdf: GmatStyleExampleA4.fo $(FOPCONF)
+GmatTrainingManualA4.pdf: GmatTrainingManualA4.fo $(FOPCONF)
 	$(FOP) $< $@
 
-GmatStyleExampleA4.fo: validate src/*.xml xform/fo.xsl
+GmatTrainingManualA4.fo: validate src/*.xml xform/fo.xsl
 	$(XALAN) \
 	    -PARAM paper.type A4 \
 	    -PARAM img.src.path src/ \
 	    -PARAM use.extensions 1 \
-	    -PARAM fop1.extensions 1 \
 	    -PARAM graphicsize.extension 1 \
-	    -IN src/GmatStyleExample.xml \
+	    -IN src/GmatTrainingManual.xml \
 	    -XSL xform/fo.xsl \
 	    -OUT $@
 
