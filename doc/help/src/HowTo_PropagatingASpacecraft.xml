@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter version="5.0" xml:id="PropagatingSpacecraft"
+         xmlns="http://docbook.org/ns/docbook"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:svg="http://www.w3.org/2000/svg"
+         xmlns:m="http://www.w3.org/1998/Math/MathML"
+         xmlns:html="http://www.w3.org/1999/xhtml"
+         xmlns:db="http://docbook.org/ns/docbook">
+  <title>Propagating a Spacecraft</title>
+
+  <section>
+    <title>Configuring the Force Model</title>
+
+    <para>In the example below, you’ll learn how to configure a high fidelity
+    propagator for low Earth orbits. Starting from the default mission:</para>
+
+    <procedure>
+      <step>
+        <para>In the <guilabel>Resources</guilabel> tree, double-click on
+        <guilabel>DefaultProp</guilabel> to open it.</para>
+      </step>
+
+      <step>
+        <para>In the <guilabel>Gravity</guilabel> section, type 21 in the
+        <guilabel>Degree</guilabel> box.</para>
+      </step>
+
+      <step>
+        <para>Type 21 in the <guilabel>Order</guilabel> box.</para>
+      </step>
+
+      <step>
+        <para>Click on the <guilabel>Atmosphere Model</guilabel> drop-down
+        list and select MSISE90 .</para>
+      </step>
+
+      <step>
+        <para>Click the <guilabel>Select</guilabel> button next to the
+        <guilabel>PointMasses</guilabel> box.</para>
+      </step>
+
+      <step>
+        <para>Click on <guilabel>Sun</guilabel> and then click the right arrow
+        <guilabel>-&gt;</guilabel> to add the <guilabel>Sun</guilabel> to your
+        force model.</para>
+      </step>
+
+      <step>
+        <para>Add <guilabel>Moon</guilabel>, and <guilabel>Jupiter</guilabel>
+        using the same steps as above.</para>
+      </step>
+
+      <step>
+        <para>Click <guilabel>OK</guilabel> on the
+        <guilabel>CelestialBodySelect</guilabel> dialog box.</para>
+      </step>
+
+      <step>
+        <para>Click on the <guilabel>UseSolarRadiationPressure</guilabel>
+        check box. The box should be checked now.</para>
+      </step>
+
+      <step>
+        <para>Click <guilabel>OK</guilabel> on the
+        <guilabel>PropSetup</guilabel> dialog box.</para>
+      </step>
+    </procedure>
+
+    <para>The script for the force model configured above is shown
+    below.</para>
+
+    <programlisting>Create ForceModel DefaultProp_ForceModel;
+DefaultProp_ForceModel.CentralBody = Earth;
+DefaultProp_ForceModel.PrimaryBodies = {Earth};
+DefaultProp_ForceModel.PointMasses = {Jupiter, Luna};
+DefaultProp_ForceModel.Drag = MSISE90;
+DefaultProp_ForceModel.SRP = On;
+DefaultProp_ForceModel.ErrorControl = RSSStep;
+DefaultProp_ForceModel.GravityField.Earth.Degree = 21;
+DefaultProp_ForceModel.GravityField.Earth.Order = 21;
+DefaultProp_ForceModel.GravityField.Earth.PotentialFile = 'JGM2.cof';</programlisting>
+  </section>
+
+  <section>
+    <title>Propagating for a Duration</title>
+
+    <para>GMAT can propagate a spacecraft for a duration of time, such as 60
+    seconds, 30 days, or one orbit period. Starting from the default
+    mission:</para>
+
+    <procedure>
+      <step>
+        <para>Click the <guilabel>Mission</guilabel> tab to show the
+        <guilabel>Mission</guilabel> tree.</para>
+      </step>
+
+      <step>
+        <para>Double-click <guilabel>Propagate1</guilabel>. The default
+        mission is configured to propagate the DefaultSC spacecraft for 12000
+        seconds.</para>
+      </step>
+
+      <step>
+        <para>In the <guilabel>Parameter</guilabel> column, to the left of
+        <guilabel>DefaultSC.ElapsedSecs</guilabel>, click
+        <guibutton>…</guibutton>. This will display a window allowing you to
+        choose a new type of duration parameter.</para>
+      </step>
+
+      <step>
+        <para>In the <guilabel>Object Properties</guilabel> list, click
+        <guilabel>ElapsedDays</guilabel>, then click
+        <guibutton>-&gt;</guibutton> to add it to the <guilabel>Selected
+        Value(s)</guilabel> list.</para>
+      </step>
+
+      <step>
+        <para>Click <guibutton>OK</guibutton>.</para>
+      </step>
+
+      <step>
+        <para>In the <guilabel>Condition</guilabel> column, double-click the
+        value <userinput>0.0</userinput> and enter <userinput>30</userinput>
+        instead.</para>
+      </step>
+
+      <step>
+        <para>Click <guibutton>OK</guibutton>, then click
+        <guibutton>Run</guibutton>.</para>
+      </step>
+    </procedure>
+
+    <para>GMAT will propagate the spacecraft for 30 days.</para>
+  </section>
+
+  <section>
+    <title>Propagating to an Orbit Condition</title>
+
+    <para>GMAT can propagate a spacecraft to a specific orbit condition, such
+    as periapsis, an altitude value, or a latitude value. Starting from the
+    default mission:</para>
+
+    <procedure>
+      <step>
+        <para>Click the <guilabel>Mission</guilabel> tab to show the
+        <guilabel>Mission</guilabel> tree.</para>
+      </step>
+
+      <step>
+        <para>Double-click <guilabel>Propagate1</guilabel>. The default
+        mission is configured to propagate the DefaultSC spacecraft for 12000
+        seconds.</para>
+      </step>
+
+      <step>
+        <para>In the <guilabel>Parameter</guilabel> column, to the left of
+        <guilabel>DefaultSC.ElapsedSecs</guilabel>, click
+        <guibutton>…</guibutton>. This will display a window allowing you to
+        choose a new type of duration parameter.</para>
+      </step>
+
+      <step>
+        <para>In the <guilabel>Object Properties</guilabel> list, click
+        <guilabel>Periapsis</guilabel>.</para>
+      </step>
+
+      <step>
+        <para>In the <guilabel>Central Body</guilabel> list, make sure
+        <guilabel>Earth</guilabel> is selected. Then click
+        <guibutton>-&gt;</guibutton> to add it to the <guilabel>Selected
+        Value(s)</guilabel> list.</para>
+      </step>
+
+      <step>
+        <para>Click <guibutton>OK</guibutton> to close the
+        <guilabel>ParameterSelectDialog</guilabel> window.</para>
+      </step>
+
+      <step>
+        <para>Click <guibutton>OK</guibutton>, then click
+        <guibutton>Run</guibutton>.</para>
+      </step>
+    </procedure>
+
+    <para>GMAT will propagate the spacecraft until it reaches
+    periapsis.</para>
+  </section>
+</chapter>

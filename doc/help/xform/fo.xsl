@@ -5,11 +5,19 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
     version="1.0"> 
 
-    <xsl:import href="../../build/contrib/docbook-xsl-ns/fo/docbook.xsl"/> 
+    <xsl:import href="../../build/contrib/docbook-xsl-ns/fo/docbook.xsl"/>
+    
+    <!-- Title page -->
+    <xsl:import href="../fo.titlepage.templates.xsl"/>
 
     <!-- Local variables -->
+    <xsl:variable name="black" select="'#000000'"/>
     <xsl:variable name="blue" select="'#0b3d91'"/>
+    <xsl:variable name="blue25" select="'#c2cee3'"/>
     <xsl:variable name="gray" select="'#79797c'"/>
+    <xsl:variable name="red" select="'#fc3d21'"/>
+    <xsl:variable name="red25" select="'#fecec7'"/>
+    <xsl:variable name="white" select="'#ffffff'"/>
 
     <!-- Page layout -->
     <xsl:param name="double.sided">1</xsl:param>
@@ -71,6 +79,7 @@
     <xsl:param name="shade.verbatim" select="1"/>
     <xsl:attribute-set name="monospace.verbatim.properties">
         <xsl:attribute name="font-family">Consolas, monospace</xsl:attribute>
+        <xsl:attribute name="font-size">10</xsl:attribute>
     </xsl:attribute-set>
 
     <!-- Formatting for specific tags -->
@@ -97,6 +106,7 @@
         /section  toc
         set       toc,title
     </xsl:param>
+    <xsl:template match="d:section[@role = 'notintoc']" mode="toc"/>
 
     <!-- copied from http://sagehill.net/docbookxsl/PrintToc.html#PartToc -->
     <xsl:template name="part.titlepage.before.verso" priority="1">
@@ -239,4 +249,50 @@
             </xsl:choose>
         </fo:block>
     </xsl:template>
+
+    <!-- Lists -->
+    <xsl:attribute-set name="list.item.spacing">
+        <!-- defaults from compact.list.item.spacing -->
+        <xsl:attribute name="space-before.optimum">0em</xsl:attribute>
+        <xsl:attribute name="space-before.minimum">0em</xsl:attribute>
+        <xsl:attribute name="space-before.maximum">0.2em</xsl:attribute>
+    </xsl:attribute-set>
+
+    <!-- Admonitions -->
+    <xsl:param name="admon.graphics">1</xsl:param>
+    <xsl:param name="admon.graphics.extension">.svg</xsl:param>
+    <xsl:attribute-set name="graphical.admonition.properties">
+        <xsl:attribute name="background-color">
+            <xsl:choose>
+                <xsl:when test="ancestor-or-self::d:tip">
+                    <xsl:value-of select="$white"/>
+                </xsl:when>
+                <xsl:when test="ancestor-or-self::d:note">
+                    <xsl:value-of select="$blue25"/>
+                </xsl:when>
+                <xsl:when test="ancestor-or-self::d:important">
+                    <xsl:value-of select="$white"/>
+                </xsl:when>
+                <xsl:when test="ancestor-or-self::d:caution">
+                    <xsl:value-of select="$red25"/>
+                </xsl:when>
+                <xsl:when test="ancestor-or-self::d:warning">
+                    <xsl:value-of select="$red25"/>
+                </xsl:when>
+            </xsl:choose>
+        </xsl:attribute>
+        <xsl:attribute name="border-style">solid</xsl:attribute>
+        <xsl:attribute name="border-color">
+            <xsl:value-of select="$black"/>
+        </xsl:attribute>
+        <xsl:attribute name="padding-right">1em</xsl:attribute>
+        <xsl:attribute name="padding-bottom">1em</xsl:attribute>
+    </xsl:attribute-set>
+    
+    <!-- Verbatim environments -->
+    <xsl:attribute-set name="verbatim.properties">
+        <xsl:attribute name="wrap-option">wrap</xsl:attribute>
+        <xsl:attribute name="keep-together.within-column">auto</xsl:attribute>
+        <xsl:attribute name="background-color">transparent</xsl:attribute>
+    </xsl:attribute-set>
 </xsl:stylesheet>
