@@ -1,4 +1,4 @@
-# $Id: MakeBase.eclipse 9960 2011-10-20 17:43:19Z wendys-dev $
+# $Id: MakeBase.eclipse 9969 2011-10-21 22:56:49Z djcinsb $
 # 
 # GMAT: General Mission Analysis Tool.
 # 
@@ -296,6 +296,7 @@ OBJECTS = \
     factory/StopConditionFactory.o \
     factory/SubscriberFactory.o \
     forcemodel/DragForce.o \
+    forcemodel/EventModel.o \
     forcemodel/FiniteThrust.o \
     forcemodel/GravityField.o \
     forcemodel/HarmonicField.o \

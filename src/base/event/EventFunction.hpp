@@ -1,4 +1,4 @@
-//$Id: EventFunction.hpp 9935 2011-10-01 00:03:11Z djcinsb $
+//$Id: EventFunction.hpp 9969 2011-10-21 22:56:49Z djcinsb $
 //------------------------------------------------------------------------------
 //                           EventFunction
 //------------------------------------------------------------------------------
@@ -49,10 +49,11 @@ public:
    // Methods used to identify the EventFunction
    wxString GetTypeName();
    wxString GetName();
+   wxString GetPrimaryName();
 
    virtual bool SetPrimary(SpaceObject *so);
    virtual bool Initialize();
-   virtual Real* Evaluate() = 0;
+   virtual Real* Evaluate(GmatEpoch atEpoch = -1.0, Real* forState = NULL) = 0;
    Real* GetData();
    virtual wxString GetBoundaryType();
    virtual bool IsEventEntry();

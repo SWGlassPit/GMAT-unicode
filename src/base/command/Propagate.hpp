@@ -1,4 +1,4 @@
-//$Id: Propagate.hpp 9923 2011-09-29 15:55:33Z djcinsb $
+//$Id: Propagate.hpp 9969 2011-10-21 22:56:49Z djcinsb $
 //------------------------------------------------------------------------------
 //                                 Propagate
 //------------------------------------------------------------------------------
@@ -152,7 +152,6 @@ public:
    virtual void         ClearWrappers();
    
    // Methods used for running the command
-   virtual void         SetTransientForces(std::vector<PhysicalModel*> *tf);
    virtual bool         Initialize();
    virtual void         FillFormation(SpaceObject *so, StringArray& owners,
                                       StringArray& elements);
@@ -260,9 +259,6 @@ protected:
    Integer                 cartDim;
    /// Identifies when the command is in single step mode
    bool                    singleStepMode;
-   /// List of forces that can be turned on or off by other commands
-   std::vector<PhysicalModel*> 
-                           *transientForces;
    /// Variable that tracks the current propagation mode
    PropModes               currentMode;
    /// Bracketing timesteps used in the bisection method

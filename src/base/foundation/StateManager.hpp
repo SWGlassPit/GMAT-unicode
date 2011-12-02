@@ -1,4 +1,4 @@
-//$Id: StateManager.hpp 9568 2011-06-06 18:27:29Z djcinsb $
+//$Id: StateManager.hpp 9969 2011-10-21 22:56:49Z djcinsb $
 //------------------------------------------------------------------------------
 //                                  StateManager
 //------------------------------------------------------------------------------
@@ -32,6 +32,7 @@ struct GMAT_API ListItem
 {
    wxString objectName;
    wxString elementName;
+   wxString associateName;
    GmatBase*   object;
    // Gmat::StateElementId
    Integer     elementID;

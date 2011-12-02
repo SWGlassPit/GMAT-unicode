@@ -1,4 +1,4 @@
-//$Id: EventFunction.cpp 9935 2011-10-01 00:03:11Z djcinsb $
+//$Id: EventFunction.cpp 9969 2011-10-21 22:56:49Z djcinsb $
 //------------------------------------------------------------------------------
 //                           EventFunction
 //------------------------------------------------------------------------------
@@ -138,6 +138,16 @@ wxString EventFunction::GetTypeName()
 wxString EventFunction::GetName()
 {
    return instanceName;
+}
+
+wxString EventFunction::GetPrimaryName()
+{
+   wxString retval = wxT("");
+
+   if (primary != NULL)
+      retval = primary->GetName();
+
+   return retval;
 }
 
 

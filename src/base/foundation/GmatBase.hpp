@@ -1,4 +1,4 @@
-//$Id: GmatBase.hpp 9857 2011-09-12 18:37:14Z lindajun $
+//$Id: GmatBase.hpp 9969 2011-10-21 22:56:49Z djcinsb $
 //------------------------------------------------------------------------------
 //                                  GmatBase
 //------------------------------------------------------------------------------
@@ -426,6 +426,8 @@ public:
    virtual Real*           GetPropItem(const Integer item);
    virtual Integer         GetPropItemSize(const Integer item);
    virtual bool            PropItemNeedsFinalUpdate(const Integer item);
+   virtual bool            HasAssociatedStateObjects();
+   virtual wxString     GetAssociateName(UnsignedInt val = 0);
 
    virtual Integer         GetEstimationParameterID(const wxString &param);
    virtual Integer         SetEstimationParameter(const wxString &param);

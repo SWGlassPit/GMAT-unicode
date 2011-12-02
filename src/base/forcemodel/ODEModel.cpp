@@ -1,4 +1,4 @@
-//$Id: ODEModel.cpp 9701 2011-07-14 20:36:28Z wendys-dev $
+//$Id: ODEModel.cpp 9969 2011-10-21 22:56:49Z djcinsb $
 //------------------------------------------------------------------------------
 //                              ODEModel
 //------------------------------------------------------------------------------
@@ -67,6 +67,7 @@
 //#define DEBUG_ODEMODEL
 //#define DEBUG_ODEMODEL_INIT
 //#define DEBUG_ODEMODEL_EXE
+//#define DEBUG_INITIALIZATION
 //#define DEBUG_FORCE_REF_OBJ
 //#define DEBUG_ODEMODEL_EPOCHS
 //#define DEBUG_SATELLITE_PARAMETERS
@@ -1009,7 +1010,7 @@ bool ODEModel::BuildModelFromMap()
    if (map == NULL)
    {
       MessageInterface::ShowMessage(wxT("ODEModel::BuildModelFromMap():  Cannot ")
-            wxT("build the model: the map is NULL\n"));
+            wxT("build the model: the map is NULL for %s\n"), instanceName.c_str());
       return retval;
    }
 
@@ -1209,6 +1210,11 @@ bool ODEModel::BuildModelElement(Gmat::StateElementId id, Integer start,
       if (aMatrixStart == -1)
          aMatrixStart = start;
       ++aMatrixCount;
+   }
+
+   if (id == Gmat::EVENT_FUNCTION_STATE)
+   {
+      // todo Fill this in?
    }
 
    #ifdef DEBUG_BUILDING_MODELS
@@ -2063,9 +2069,13 @@ bool ODEModel::GetDerivatives(Real * state, Real dt, Integer order,
    #endif
 
    if (order > 2)
+   {
       return false;
+   }
    if (!initialized)
+   {
       return false;
+   }
 
    if (dynamicProperties)
    {
