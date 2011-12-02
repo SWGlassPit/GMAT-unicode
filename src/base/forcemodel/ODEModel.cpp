@@ -1,4 +1,4 @@
-//$Id: ODEModel.cpp 9969 2011-10-21 22:56:49Z djcinsb $
+//$Id: ODEModel.cpp 9973 2011-10-24 23:19:47Z djcinsb $
 //------------------------------------------------------------------------------
 //                              ODEModel
 //------------------------------------------------------------------------------
@@ -2468,24 +2468,24 @@ Real ODEModel::EstimateError(Real *diffs, Real *answer) const
       }
    }
 
-//   // Handle non-Cartesian state elements as an L1 norm
-//   for (int i = cartesianStart + cartStateSize; i < dimension; ++i)
-//   {
-//      // L1 norm
-//      mag = fabs(answer[ i ] - modelState[ i ]);
-//      err = fabs(diffs[i]);
-//      if (mag >relativeErrorThreshold)
-//         err = err / mag;
-//
-//      #ifdef DEBUG_ERROR_ESTIMATE
-//         MessageInterface::ShowMessage(wxT("   {%d EstErr = %le} "), i, err);
-//      #endif
-//
-//      if (err > retval)
-//      {
-//         retval = err;
-//      }
-//   }
+   // Handle non-Cartesian state elements as an L1 norm
+   for (int i = cartesianStart + cartStateSize; i < dimension; ++i)
+   {
+      // L1 norm
+      mag = fabs(answer[ i ] - modelState[ i ]);
+      err = fabs(diffs[i]);
+      if (mag >relativeErrorThreshold)
+         err = err / mag;
+
+      #ifdef DEBUG_ERROR_ESTIMATE
+         MessageInterface::ShowMessage(wxT("   {%d EstErr = %le} "), i, err);
+      #endif
+
+      if (err > retval)
+      {
+         retval = err;
+      }
+   }
 
    #ifdef DEBUG_ERROR_ESTIMATE
       MessageInterface::ShowMessage(wxT("   >>> Estimated Error = %le\n"), retval);

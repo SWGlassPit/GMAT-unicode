@@ -1,4 +1,4 @@
-//$Id$
+//$Id: EventModel.cpp 9973 2011-10-24 23:19:47Z djcinsb $
 //------------------------------------------------------------------------------
 //                           EventModel
 //------------------------------------------------------------------------------
@@ -15,7 +15,7 @@
 // Created: Sep 7, 2011
 //
 /**
- * Definition of the ...
+ * Implementation of the physical model used to integrate event functions
  */
 //------------------------------------------------------------------------------
 
@@ -24,6 +24,8 @@
 #include "EventLocator.hpp"
 #include "MessageInterface.hpp"
 
+
+//#define DEBUG_EXE
 
 EventModel::EventModel(const wxString &nomme) :
    PhysicalModel        (Gmat::PHYSICAL_MODEL, wxT("EventModel"), nomme)
@@ -81,9 +83,11 @@ bool EventModel::Initialize()
       functionCounts.push_back(fc);
       for (Integer j = 0; j < fc; ++j)
       {
-         MessageInterface::ShowMessage(wxT("Calling SetStateIndices(%d, %d, ")
-               wxT("%d)\n"), j, eventStarts[i] + j,
-               theState->GetAssociateIndex(eventStarts[i]+j));
+         #ifdef DEBUG_INIT
+            MessageInterface::ShowMessage(wxT("Calling SetStateIndices(%d, %d, ")
+                  wxT("%d)\n"), j, eventStarts[i] + j,
+                  theState->GetAssociateIndex(eventStarts[i]+j));
+         #endif
          events->at(i)->SetStateIndices(j, eventStarts[i] + j,
                theState->GetAssociateIndex(eventStarts[i]+j));
       }
@@ -99,6 +103,10 @@ bool EventModel::GetDerivatives(Real *state, Real dt, Integer order, const Integ
    #ifdef DEBUG_EXE
       MessageInterface::ShowMessage(wxT("EventModel::GetDerivatives called\n%d ")
             wxT("events\n%d functionCounts\n"), events->size(), functionCounts.size());
+      MessageInterface::ShowMessage(wxT("State = ["));
+      for (Integer i = 0; i < eventStarts[0]+functionCounts[0]; ++i)
+         MessageInterface::ShowMessage(wxT(" %le "), state[i]);
+      MessageInterface::ShowMessage(wxT("]\n"));
    #endif
 
    for (UnsignedInt i = 0; i < events->size(); ++i)
@@ -107,8 +115,7 @@ bool EventModel::GetDerivatives(Real *state, Real dt, Integer order, const Integ
       Real *data = events->at(i)->Evaluate(now, state);
       for (Integer j = 0; j < functionCounts[i]; ++j)
       {
-//         Integer associate = theState->GetAssociateIndex(eventStarts[i]+j);
-         deriv[eventStarts[i]+j] = 0.0; //data[j*3+2];
+         deriv[eventStarts[i]+j] = data[j*3+2];
       }
    }
 

@@ -1,4 +1,4 @@
-//$Id: EventLocator.cpp 9969 2011-10-21 22:56:49Z djcinsb $
+//$Id: EventLocator.cpp 9973 2011-10-24 23:19:47Z djcinsb $
 //------------------------------------------------------------------------------
 //                           EventLocator
 //------------------------------------------------------------------------------
@@ -372,8 +372,15 @@ Real EventLocator::SetRealParameter(const Integer id, const Real value)
 Real EventLocator::GetRealParameter(const Integer id, const Integer index) const
 {
    if (id == EVENT_FUNCTION)
-      return 0.0;       // todo Return the event function value
-
+   {
+      Real retval = 0.0;
+      if (index < eventFunctions.size())
+      {
+         Real *data = eventFunctions[index]->Evaluate();
+         retval = data[1];
+      }
+      return retval;       // todo Return the event function value
+   }
    return GmatBase::GetRealParameter(id, index);
 }
 
@@ -1495,6 +1502,6 @@ void EventLocator::SetStateIndices(UnsignedInt forFunction, Integer index,
             wxT("does not have the requested event function (has it been ")
             wxT("initialized?)"));
 
-   stateIndices[forFunction] = index;
+   stateIndices[forFunction]     = index;
    associateIndices[forFunction] = associate;
 }
