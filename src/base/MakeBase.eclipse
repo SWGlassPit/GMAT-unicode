@@ -147,14 +147,6 @@ HEADERS = -Iinclude \
           -Icoordsystem \
           -Imath \
           -Iplugin \
-          -I../gui/include \
-          -I../gui/include/bitmaps \
-          -I../gui/app \
-          -I../gui/view \
-          -I../gui/output \
-          -I../gui/foundation \
-          -I../gui/subscriber \
-          -I../gui/mission 
 
 
 
