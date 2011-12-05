@@ -1,4 +1,4 @@
-//$Id: OutputTree.cpp 10027 2011-11-30 23:26:45Z djcinsb $
+//$Id: OutputTree.cpp 10037 2011-12-03 01:21:08Z djcinsb $
 //------------------------------------------------------------------------------
 //                              OutputTree
 //------------------------------------------------------------------------------
@@ -193,13 +193,19 @@ void OutputTree::UpdateOutput(bool resetTree, bool removeReports)
    #endif
    
    if (removeReports)
+   {
       Collapse(mReportItem);
+      Collapse(mEventsItem);
+   }
    Collapse(mOpenGlItem);
    Collapse(mXyPlotItem);
    
    // delete all old children
    if (removeReports)
+   {
       DeleteChildren(mReportItem);
+      DeleteChildren(mEventsItem);
+   }
    DeleteChildren(mOpenGlItem);
    DeleteChildren(mXyPlotItem);
    

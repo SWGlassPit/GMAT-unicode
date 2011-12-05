@@ -1,4 +1,4 @@
-//$Id: MissionTree.hpp 9929 2011-09-30 14:59:49Z lindajun $
+//$Id: MissionTree.hpp 10034 2011-12-02 21:44:39Z lindajun $
 //------------------------------------------------------------------------------
 //                              MissionTree
 //------------------------------------------------------------------------------
@@ -121,6 +121,7 @@ private:
    
    void InitializeCounter();
    GmatCommand* CreateCommand(const wxString &cmdTypeName);
+	GmatCommand* CreateEndCommand(const wxString &cmdTypeName, GmatTree::ItemType &endType);
    void UpdateCommand();
    
    bool IsAnyViewCommandInBranch(GmatCommand *branch);

@@ -1,4 +1,4 @@
-//$Id: CommandUtil.cpp 9929 2011-09-30 14:59:49Z lindajun $
+//$Id: CommandUtil.cpp 10034 2011-12-02 21:44:39Z lindajun $
 //------------------------------------------------------------------------------
 //                                 CommandUtil
 //------------------------------------------------------------------------------
@@ -964,7 +964,12 @@ GetCommandSeqString(GmatCommand *cmd, bool showAddr, bool showGenStr,
          else
             genStr = wxT(" <") + current->GetGeneratingString(Gmat::NO_COMMENTS) + wxT(">");
       }
-
+		else
+		{
+			// Show only summary name
+			genStr = wxT("(") + current->GetSummaryName() + wxT(")");
+		}
+		
       // if indentation string is not blank, use it from the first level
       if (indentStr.find(wxT(" ")) == indentStr.npos)
          cmdstr = indentStr + wxT(" ") + wxString(buf) + current->GetTypeName() + genStr + wxT("\n");
@@ -1025,13 +1030,21 @@ GetSubCommandString(GmatCommand* brCmd, Integer level, wxString &cmdseq,
             buf.Printf( wxT("(%p)"), nextInBranch);
          
          genStr = wxT("");
-         if (nextInBranch->GetTypeName() == wxT("BeginScript"))
-            genStr = wxT("<BeginScript>");
-         else if (nextInBranch->GetTypeName() == wxT("EndScript"))
-            genStr = wxT("<EndScript>");
-         else
-            genStr = wxT(" <") + nextInBranch->GetGeneratingString(Gmat::NO_COMMENTS) + wxT(">");
-         
+			if (showGenStr)
+			{
+				if (nextInBranch->GetTypeName() == wxT("BeginScript"))
+					genStr = wxT("<BeginScript>");
+				else if (nextInBranch->GetTypeName() == wxT("EndScript"))
+					genStr = wxT("<EndScript>");
+				else
+					genStr = wxT(" <") + nextInBranch->GetGeneratingString(Gmat::NO_COMMENTS) + wxT(">");
+         }
+			else
+			{
+				// Show only summary name
+				genStr = wxT("(") + nextInBranch->GetSummaryName() + wxT(")");
+			}
+			
          // if indentation string is not blank, use it from the first sub level
          if (indentStr.find(wxT(" ")) == indentStr.npos)
             cmdstr = indentStr + wxT(" ") + buf + nextInBranch->GetTypeName() + genStr + wxT("\n");

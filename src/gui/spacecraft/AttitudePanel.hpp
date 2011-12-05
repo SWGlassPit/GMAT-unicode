@@ -1,4 +1,4 @@
-//$Id: AttitudePanel.hpp 9514 2011-04-30 21:44:00Z djcinsb $
+//$Id: AttitudePanel.hpp 10033 2011-12-02 21:41:12Z wendys-dev $
 //------------------------------------------------------------------------------
 //                            AttitudePanel
 //------------------------------------------------------------------------------
@@ -47,6 +47,8 @@ public:
    bool CanClosePanel() { return canClose;    };
    
 private:    
+
+   wxFlexGridSizer    *flexGridSizer2;
 
    GmatStaticBoxSizer *attitudeSizer;
    GmatStaticBoxSizer *attRateSizer;
@@ -201,6 +203,8 @@ private:
    void EnableAll();
    void DisplaySpiceReminder();
 
+   void ResizeTextCtrl1234(bool forQuaternion = false);
+
    wxString ToString(Real rval); // ??
    
    // Event Handling
@@ -261,6 +265,9 @@ private:
    static const Integer STARTUP_STATE_TYPE_SELECTION;
    static const Integer STARTUP_RATE_STATE_TYPE_SELECTION;
    
+   static const Integer ATTITUDE_TEXT_CTRL_WIDTH;
+   static const Integer QUATERNION_TEXT_CTRL_WIDTH;
+
 };
 #endif
 
