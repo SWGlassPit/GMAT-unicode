@@ -2308,7 +2308,7 @@ void MissionTree::InsertAfter(const wxString &cmdTypeName)
 			
 			// If it is not a Else then reassign nodes, since Else is not a really
 			// BranchEnd in the tree(LOJ: 2011.12.02)
-			if (!currCmd->IsOfType("Else"))
+			if (!currCmd->IsOfType(wxT("Else")))
 			{
 				itemId = parentId;
 				parentId = GetItemParent(itemId);

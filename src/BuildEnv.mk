@@ -94,8 +94,8 @@ endif
 LINUX_MAC = 1
 
 ifeq ($(CONSOLE_APP), 0)
-WXCPPFLAGS = `$(WX_CONFIG_PATH)wx-config --cppflags`
-WXLINKFLAGS = `$(WX_CONFIG_PATH)wx-config --libs --gl-libs --static=no`
+WXCPPFLAGS = `$(WX_CONFIG_PATH)wx-config --version=2.8 --cppflags`
+WXLINKFLAGS = `$(WX_CONFIG_PATH)wx-config --version=2.8 --libs --gl-libs --static=no`
 endif
 
 

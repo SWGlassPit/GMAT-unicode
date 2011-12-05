@@ -737,7 +737,7 @@ wxControl *GmatBaseSetupPanel::BuildControl(wxWindow *parent, GmatBase *theObjec
                StringArray objs = theGuiInterpreter->GetListOfObjects(types[i]);
                for (UnsignedInt j = 0; j < objs.size(); ++j)
                {
-                  theList.Add(wxT(objs[j].c_str()));
+                  theList.Add(objs[j].c_str());
                }
             }
             control = new wxCheckListBox(parent, ID_CHECKLISTBOX, wxDefaultPosition,
