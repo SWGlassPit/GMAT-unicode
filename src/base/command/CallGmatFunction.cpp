@@ -52,9 +52,9 @@
 // CallGmatFunction::CallGmatFunction()
 //------------------------------------------------------------------------------
 CallGmatFunction::CallGmatFunction() :
-   CallFunction(wxT("CallGmatFunction"))
+   CallFunction("CallGmatFunction")
 {
-   objectTypeNames.push_back(wxT("CallGmatFunction"));
+   objectTypeNames.push_back("CallGmatFunction");
 }
 
 
@@ -112,10 +112,10 @@ bool CallGmatFunction::Initialize()
 {
    #ifdef DEBUG_CALL_FUNCTION_INIT
       MessageInterface::ShowMessage
-         (wxT("CallGmatFunction::Initialize() this=<%p> entered, command = '%s'\n   ")
-          wxT("function type is '%s', callingFunction is '%s'\n"), this,
+         ("CallGmatFunction::Initialize() this=<%p> entered, command = '%s'\n   "
+          "function type is '%s', callingFunction is '%s'\n", this,
           GetGeneratingString(Gmat::NO_COMMENTS).c_str(), mFunction->GetTypeName().c_str(),
-          callingFunction? (callingFunction->GetFunctionName()).c_str() : wxT("NULL"));
+          callingFunction? (callingFunction->GetFunctionName()).c_str() : "NULL");
    #endif
       
    bool rv = CallFunction::Initialize();
@@ -125,7 +125,7 @@ bool CallGmatFunction::Initialize()
    {
       #ifdef DEBUG_GMAT_FUNCTION_INIT
          MessageInterface::ShowMessage
-            (wxT("CallGmatFunction::Initialize: Initializing GmatFunction '%s'\n"),
+            ("CallGmatFunction::Initialize: Initializing GmatFunction '%s'\n",
              mFunction->GetName().c_str());
       #endif
       fm.SetSolarSystem(solarSys);
@@ -145,25 +145,25 @@ bool CallGmatFunction::Execute()
    bool status = false;
    
    if (mFunction == NULL)
-      throw CommandException(wxT("Function is not defined for CallGmatFunction"));
+      throw CommandException("Function is not defined for CallGmatFunction");
    
    #ifdef DEBUG_TRACE
    static Integer callCount = 0;
    callCount++;      
    clock_t t1 = clock();
    MessageInterface::ShowMessage
-      (wxT("=== CallGmatFunction::Execute() entered, '%s' Count = %d\n"),
+      ("=== CallGmatFunction::Execute() entered, '%s' Count = %d\n",
        GetGeneratingString(Gmat::NO_COMMENTS).c_str(), callCount);
    #endif
    
    #ifdef DEBUG_CALL_FUNCTION_EXEC
    MessageInterface::ShowMessage
-      (wxT("CallGmatFunction::Execute() this=<%p> entered, command = '%s'\n   ")
-       wxT("function type is '%s', callingFunction is '%s'\n"), this,
+      ("CallGmatFunction::Execute() this=<%p> entered, command = '%s'\n   "
+       "function type is '%s', callingFunction is '%s'\n", this,
        GetGeneratingString(Gmat::NO_COMMENTS).c_str(), mFunction->GetTypeName().c_str(),
-       callingFunction? (callingFunction->GetFunctionName()).c_str() : wxT("NULL"));
+       callingFunction? (callingFunction->GetFunctionName()).c_str() : "NULL");
       #ifdef DEBUG_OBJECT_MAP
-      ShowObjectMaps(wxT("object maps at the start"));
+      ShowObjectMaps("object maps at the start");
       #endif
    #endif
       
@@ -171,8 +171,8 @@ bool CallGmatFunction::Execute()
    {
       #ifdef DEBUG_CALL_FUNCTION_EXEC
       MessageInterface::ShowMessage
-         (wxT("   calling FunctionManager::Execute() with callingFunction='%s'\n"),
-          callingFunction ? (callingFunction->GetFunctionName()).c_str() : wxT("NULL"));
+         ("   calling FunctionManager::Execute() with callingFunction='%s'\n",
+          callingFunction ? (callingFunction->GetFunctionName()).c_str() : "NULL");
       #endif
       status = fm.Execute(callingFunction);
    }
@@ -180,31 +180,31 @@ bool CallGmatFunction::Execute()
    {
       // The function is not GmatFunction so throw an exception
       throw CommandException
-         (wxT("*** INTERNAL ERROR *** in CallGmatFunction. ") +
-          GetGeneratingString(Gmat::NO_COMMENTS) + wxT(" cannot be executed, ")
-          wxT("the function type should be GmatFunction, but it is ") +
-          mFunction->GetTypeName() + wxT(".\n"));
+         ("*** INTERNAL ERROR *** in CallGmatFunction. " +
+          GetGeneratingString(Gmat::NO_COMMENTS) + " cannot be executed, "
+          "the function type should be GmatFunction, but it is " +
+          mFunction->GetTypeName() + ".\n");
    }
    
    #ifdef DEBUG_CALL_FUNCTION_EXEC
    MessageInterface::ShowMessage
-      (wxT("   Executed command, about to build command summery\n"));
+      ("   Executed command, about to build command summery\n");
    #endif
    
    BuildCommandSummary(true);
    
    #ifdef DEBUG_CALL_FUNCTION_EXEC
    MessageInterface::ShowMessage
-      (wxT("CallGmatFunction::Execute() GmatFunction exiting with %d\n"), status);
+      ("CallGmatFunction::Execute() GmatFunction exiting with %d\n", status);
       #ifdef DEBUG_OBJECT_MAP
-      ShowObjectMaps(wxT("object maps at the end"));
+      ShowObjectMaps("object maps at the end");
       #endif
    #endif
    
    #ifdef DEBUG_TRACE
    clock_t t2 = clock();
    MessageInterface::ShowMessage
-      (wxT("=== CallGmatFunction::Execute() exiting, '%s' Count = %d, Run Time: %f seconds\n"),
+      ("=== CallGmatFunction::Execute() exiting, '%s' Count = %d, Run Time: %f seconds\n",
        GetGeneratingString(Gmat::NO_COMMENTS).c_str(), callCount, (Real)(t2-t1)/CLOCKS_PER_SEC);
    #endif
    
@@ -219,15 +219,15 @@ void CallGmatFunction::RunComplete()
 {
    #ifdef DEBUG_RUN_COMPLETE
    MessageInterface::ShowMessage
-      (wxT("CallGmatFunction::RunComplete() entered for this=<%p> '%s',\n   ")
-       wxT("FCS %sfinalized\n"), this, GetGeneratingString(Gmat::NO_COMMENTS).c_str(),
-       fm.IsFinalized() ? wxT("already ") : wxT("NOT "));
+      ("CallGmatFunction::RunComplete() entered for this=<%p> '%s',\n   "
+       "FCS %sfinalized\n", this, GetGeneratingString(Gmat::NO_COMMENTS).c_str(),
+       fm.IsFinalized() ? "already " : "NOT ");
    #endif
    
    if (!fm.IsFinalized())
    {
       #ifdef DEBUG_RUN_COMPLETE
-      MessageInterface::ShowMessage(wxT("   calling FunctionManager::Finalize()\n"));
+      MessageInterface::ShowMessage("   calling FunctionManager::Finalize()\n");
       #endif
       fm.Finalize();
    }

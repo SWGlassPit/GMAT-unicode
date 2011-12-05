@@ -41,19 +41,19 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-//  Spinner(const wxString &typeStr, const wxString &itsName)
+//  Spinner(const std::string &typeStr, const std::string &itsName)
 //------------------------------------------------------------------------------
 /**
  * This method creates an object of the Spinner class (Constructor).
  * The default value is the (0,0,0,1) quaternion.
  */
 //------------------------------------------------------------------------------
-Spinner::Spinner(const wxString &itsName) : 
-   Kinematic(wxT("Spinner"), itsName)
+Spinner::Spinner(const std::string &itsName) : 
+   Kinematic("Spinner", itsName)
 {
    parameterCount = SpinnerParamCount;
-   objectTypeNames.push_back(wxT("Spinner"));
-   attitudeModelName = wxT("Spinner");
+   objectTypeNames.push_back("Spinner");
+   attitudeModelName = "Spinner";
  }
  
  //------------------------------------------------------------------------------
@@ -116,12 +116,12 @@ bool Spinner::Initialize()
 {
    #ifdef DEBUG_SPINNER_INIT
    MessageInterface::ShowMessage(
-   wxT("------- Entering Spinner::Initialize, and calling Kinematic::Initialize\n"));
+   "------- Entering Spinner::Initialize, and calling Kinematic::Initialize\n");
    #endif
    Kinematic::Initialize();
    #ifdef DEBUG_SPINNER_INIT
    MessageInterface::ShowMessage(
-   wxT("------- after calling Kinematic::Initialize, angVel = %.12f %.12f %.12f\n"),
+   "------- after calling Kinematic::Initialize, angVel = %.12f %.12f %.12f\n",
    angVel[0] * GmatMathUtil::DEG_PER_RAD,angVel[1] * GmatMathUtil::DEG_PER_RAD, 
    angVel[2] * GmatMathUtil::DEG_PER_RAD);
    #endif
@@ -137,32 +137,32 @@ bool Spinner::Initialize()
    {
       #ifdef DEBUG_SPINNER_INIT
       MessageInterface::ShowMessage(
-      wxT("------- error initializing rotation matrix for Spinner\n"));
+      "------- error initializing rotation matrix for Spinner\n");
       #endif
    }
    #ifdef DEBUG_SPINNER_INIT
-   wxString RBiStream;
+   std::stringstream RBiStream;
    RBiStream << RBi << std::endl;
    MessageInterface::ShowMessage(
-   wxT("------- RBi = %s\n"), RBiStream.c_str());
-   wxString RiIStream;
+   "------- RBi = %s\n", (RBiStream.str()).c_str());
+   std::stringstream RiIStream;
    RiIStream << RiI << std::endl;
    MessageInterface::ShowMessage(
-   wxT("------- RiI = %s\n"), RiIStream.c_str());
+   "------- RiI = %s\n", (RiIStream.str()).c_str());
    #endif
    
    RB0I           = RBi * RiI;
    //angVel         = RBi * wIBi; // doesn't change  (spec mod per Steve 2006.04.05)
    
    #ifdef DEBUG_SPINNER_INIT
-   wxString RB0IStream;
+   std::stringstream RB0IStream;
    RB0IStream << RB0I << std::endl;
    MessageInterface::ShowMessage(
-   wxT("------- RB0I = %s\n"), RB0IStream.c_str());
-   wxString IBBStream;
+   "------- RB0I = %s\n", (RB0IStream.str()).c_str());
+   std::stringstream IBBStream;
    IBBStream << angVel * GmatMathUtil::DEG_PER_RAD << std::endl;
    MessageInterface::ShowMessage(
-   wxT("------- angVel = %s\n"), IBBStream.c_str());
+   "------- angVel = %s\n", (IBBStream.str()).c_str());
    #endif
    
    initialwMag    = angVel.GetMagnitude();
@@ -211,7 +211,7 @@ void Spinner::ComputeCosineMatrixAndAngularVelocity(Real atTime)
 {
    #ifdef DEBUG_SPINNER
    MessageInterface::ShowMessage(
-   wxT("Entering Spinner::Compute ... angVel = %.12f %.12f %.12f\n"),
+   "Entering Spinner::Compute ... angVel = %.12f %.12f %.12f\n",
    angVel[0] * GmatMathUtil::DEG_PER_RAD, angVel[1] * GmatMathUtil::DEG_PER_RAD, 
    angVel[2] * GmatMathUtil::DEG_PER_RAD);
    #endif
@@ -230,7 +230,7 @@ void Spinner::ComputeCosineMatrixAndAngularVelocity(Real atTime)
    // currentwIBB already computed in Initialize 
    #ifdef DEBUG_SPINNER
    MessageInterface::ShowMessage(
-   wxT("EXITING Spinner::Compute ... angVel = %.12f %.12f %.12f\n"),
+   "EXITING Spinner::Compute ... angVel = %.12f %.12f %.12f\n",
    angVel[0] * GmatMathUtil::DEG_PER_RAD, angVel[1] * GmatMathUtil::DEG_PER_RAD, 
    angVel[2] * GmatMathUtil::DEG_PER_RAD);
    #endif

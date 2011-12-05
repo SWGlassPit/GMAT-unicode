@@ -33,8 +33,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Log::Log(const wxString &nomme)
-   : MathFunction(wxT("Log"), nomme)
+Log::Log(const std::string &nomme)
+   : MathFunction("Log", nomme)
 {
 }
 
@@ -93,7 +93,7 @@ void Log::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
    leftNode->GetOutputInfo(type1, row1, col1);
    
    if (type1 != Gmat::REAL_TYPE)
-      throw MathException(wxT("Left is not scalar, so cannot do Log().\n"));  
+      throw MathException("Left is not scalar, so cannot do Log().\n");  
    else
    {
       type = type1;
@@ -114,7 +114,7 @@ void Log::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 bool Log::ValidateInputs()
 {
    if (leftNode == NULL)
-      throw MathException(wxT("Log() - Missing input arguments.\n"));
+      throw MathException("Log() - Missing input arguments.\n");
    
    Integer type1, row1, col1; // Left node
    

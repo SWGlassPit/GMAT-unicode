@@ -34,8 +34,8 @@ class GMAT_API TrueOfDateAxes : public DynamicAxes
 public:
 
    // default constructor
-   TrueOfDateAxes(const wxString &itsType,
-                  const wxString &itsName = wxT(""));
+   TrueOfDateAxes(const std::string &itsType,
+                  const std::string &itsName = "");
    // copy constructor
    TrueOfDateAxes(const TrueOfDateAxes &tod);
    // operator = for assignment

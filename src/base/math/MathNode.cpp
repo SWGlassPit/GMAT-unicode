@@ -23,7 +23,7 @@
 #include "MessageInterface.hpp"
 
 //------------------------------------------------------------------------------
-//  MathNode(wxString typeStr, wxString nomme)
+//  MathNode(std::string typeStr, std::string nomme)
 //------------------------------------------------------------------------------
 /**
  * Constructs the MathNode object (default constructor).
@@ -32,7 +32,7 @@
  * @param <nomme>   Name for the object
  */
 //------------------------------------------------------------------------------
-MathNode::MathNode(const wxString &typeStr, const wxString &nomme) :
+MathNode::MathNode(const std::string &typeStr, const std::string &nomme) :
    GmatBase        (Gmat::MATH_NODE, typeStr, nomme),
    isNumber        (false),
    isFunction      (false),
@@ -41,7 +41,7 @@ MathNode::MathNode(const wxString &typeStr, const wxString &nomme) :
    realValue       (REAL_PARAMETER_UNDEFINED)
 {
    objectTypes.push_back(Gmat::MATH_NODE);
-   objectTypeNames.push_back(wxT("MathNode"));   
+   objectTypeNames.push_back("MathNode");   
 }
 
 
@@ -55,7 +55,7 @@ MathNode::MathNode(const wxString &typeStr, const wxString &nomme) :
 MathNode::~MathNode()
 {
    //MessageInterface::ShowMessage
-   //   (wxT("==> MathNode::~MathNode() deleting %s, %s\n"), GetTypeName().c_str(),
+   //   ("==> MathNode::~MathNode() deleting %s, %s\n", GetTypeName().c_str(),
    //    GetName().c_str());
 }
 
@@ -134,11 +134,11 @@ void MathNode::SetMatrixValue(const Rmatrix &mat)
    matrix = mat;
    
    #if DEBUG_MATRIX_NODE
-   wxString ss(wxT(""));
+   std::stringstream ss("");
    ss << matarix;
    MessageInterface::ShowMessage
-      (wxT("MathNode::SetMatrixValue() theReturnType=%d, theRowCount=%d, ")
-       wxT("theColCount=%d, matarix=\n%s\n"), theReturnType, theRowCount, theColCount,
+      ("MathNode::SetMatrixValue() theReturnType=%d, theRowCount=%d, "
+       "theColCount=%d, matarix=\n%s\n", theReturnType, theRowCount, theColCount,
        ss.str().c_str());
    #endif
 }
@@ -155,7 +155,7 @@ void MathNode::SetMathWrappers(WrapperMap *wrapperMap)
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /*
  * Renames referenced objects
@@ -168,8 +168,8 @@ void MathNode::SetMathWrappers(WrapperMap *wrapperMap)
  */
 //---------------------------------------------------------------------------
 bool MathNode::RenameRefObject(const Gmat::ObjectType type,
-                               const wxString &oldName,
-                               const wxString &newName)
+                               const std::string &oldName,
+                               const std::string &newName)
 {
    // There are no renamable objects
    return true;

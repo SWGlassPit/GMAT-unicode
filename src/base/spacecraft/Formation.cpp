@@ -36,14 +36,14 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 Formation::PARAMETER_TEXT[FormationParamCount - SpaceObjectParamCount] =
 {
-   wxT("Add"),
-   wxT("Remove"),
-   wxT("Clear"),
-   wxT("STM"),
-   wxT("CartesianState"),
+   "Add",
+   "Remove",
+   "Clear",
+   "STM",
+   "CartesianState",
 };
 
 
@@ -63,8 +63,8 @@ Formation::PARAMETER_TYPE[FormationParamCount - SpaceObjectParamCount] =
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// Formation(Gmat::ObjectType typeId, const wxString &typeStr,
-//           const wxString &instName)
+// Formation(Gmat::ObjectType typeId, const std::string &typeStr,
+//           const std::string &instName)
 //------------------------------------------------------------------------------
 /**
  * Default constructor.
@@ -74,14 +74,14 @@ Formation::PARAMETER_TYPE[FormationParamCount - SpaceObjectParamCount] =
  * @param <instName> Name of the constructed instance.
  */
 //------------------------------------------------------------------------------
-Formation::Formation(Gmat::ObjectType typeId, const wxString &typeStr,
-                     const wxString &instName) :
+Formation::Formation(Gmat::ObjectType typeId, const std::string &typeStr,
+                     const std::string &instName) :
    SpaceObject    (typeId, typeStr, instName),
    dimension      (0),
    satCount       (0)
 {
    objectTypes.push_back(Gmat::FORMATION);
-   objectTypeNames.push_back(wxT("Formation"));
+   objectTypeNames.push_back("Formation");
 
    parameterCount = FormationParamCount;
 }
@@ -149,7 +149,7 @@ Formation& Formation::operator=(const Formation& orig)
    }
    #ifdef DEBUG_FORMATION
       MessageInterface::ShowMessage(
-         wxT("Formation::operator= : Formation '%s' has %d components\n"), 
+         "Formation::operator= : Formation '%s' has %d components\n", 
          instanceName.c_str(), components.size());
    #endif
    
@@ -180,7 +180,7 @@ const Rvector6 Formation::GetMJ2000State(const A1Mjd &atTime)
    satCount = components.size();
    
    if (j2000Body == NULL)
-      throw SpaceObjectException(wxT("MJ2000 body not yet set for ") +
+      throw SpaceObjectException("MJ2000 body not yet set for " +
          instanceName);
 
    // First calculate the geometric center of the formation
@@ -192,7 +192,7 @@ const Rvector6 Formation::GetMJ2000State(const A1Mjd &atTime)
    if (satCount == 0)
    {
       MessageInterface::ShowMessage(
-         wxT("Warning: Attempting to find MJ2000 state for an empty formation\n"));
+         "Warning: Attempting to find MJ2000 state for an empty formation\n");
       return centerState;
    }
 
@@ -226,7 +226,7 @@ const Rvector6 Formation::GetMJ2000State(const A1Mjd &atTime)
 
 //------------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * Renames referenced objects.
@@ -239,12 +239,12 @@ const Rvector6 Formation::GetMJ2000State(const A1Mjd &atTime)
  */
 //------------------------------------------------------------------------------
 bool Formation::RenameRefObject(const Gmat::ObjectType type,
-                                const wxString &oldName,
-                                const wxString &newName)
+                                const std::string &oldName,
+                                const std::string &newName)
 {
    #if DEBUG_RENAME
       MessageInterface::ShowMessage
-         (wxT("Formation::RenameRefObject() type=%s, oldName=%s, newName=%s\n"),
+         ("Formation::RenameRefObject() type=%s, oldName=%s, newName=%s\n",
           GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
    #endif
    
@@ -314,7 +314,7 @@ void Formation::ParametersHaveChanged(bool flag)
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -324,7 +324,7 @@ void Formation::ParametersHaveChanged(bool flag)
  * @return parameter text for the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString Formation::GetParameterText(const Integer id) const
+std::string Formation::GetParameterText(const Integer id) const
 {
    if (id >= SpaceObjectParamCount && id < FormationParamCount)
       return PARAMETER_TEXT[id - SpaceObjectParamCount];
@@ -338,7 +338,7 @@ wxString Formation::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -348,7 +348,7 @@ wxString Formation::GetParameterText(const Integer id) const
  * @return ID for the requested parameter.
  */
 //------------------------------------------------------------------------------
-Integer Formation::GetParameterID(const wxString &str) const
+Integer Formation::GetParameterID(const std::string &str) const
 {
    for (Integer i = SpaceObjectParamCount; i < FormationParamCount; i++)
    {
@@ -433,7 +433,7 @@ bool Formation::GetBooleanParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// bool GetBooleanParameter(const wxString &label) const
+// bool GetBooleanParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Retrieve a boolean parameter.
@@ -443,7 +443,7 @@ bool Formation::GetBooleanParameter(const Integer id) const
  * @return the boolean value for this parameter.
  */
 //------------------------------------------------------------------------------
-bool Formation::GetBooleanParameter(const wxString &label) const
+bool Formation::GetBooleanParameter(const std::string &label) const
 {
    return GetBooleanParameter(GetParameterID(label));
 }
@@ -466,7 +466,7 @@ bool Formation::SetBooleanParameter(const Integer id, const bool value)
 {
    #ifdef DEBUG_FORMATION_ACTIONS
       MessageInterface::ShowMessage(
-         wxT("Formation::SetBooleanParameter called with id = %d\n"), id);
+         "Formation::SetBooleanParameter called with id = %d\n", id);
    #endif
  
    switch (id)
@@ -479,7 +479,7 @@ bool Formation::SetBooleanParameter(const Integer id, const bool value)
 }
 
 //------------------------------------------------------------------------------
-// bool SetBooleanParameter(const wxString &label, const bool value)
+// bool SetBooleanParameter(const std::string &label, const bool value)
 //------------------------------------------------------------------------------
 /**
  * Sets the value for a boolean parameter.
@@ -490,12 +490,12 @@ bool Formation::SetBooleanParameter(const Integer id, const bool value)
  * @return the boolean value for this parameter.
  */
 //------------------------------------------------------------------------------
-bool Formation::SetBooleanParameter(const wxString &label,
+bool Formation::SetBooleanParameter(const std::string &label,
                                     const bool value)
 {
    #ifdef DEBUG_FORMATION_ACTIONS
       MessageInterface::ShowMessage(
-         wxT("Formation::SetBooleanParameter called with label = %s\n"),
+         "Formation::SetBooleanParameter called with label = %s\n",
          label.c_str());
    #endif
 
@@ -503,7 +503,7 @@ bool Formation::SetBooleanParameter(const wxString &label,
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -513,14 +513,14 @@ bool Formation::SetBooleanParameter(const wxString &label,
  * @return parameter type string of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString Formation::GetParameterTypeString(const Integer id) const
+std::string Formation::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
 }
 
 
 //------------------------------------------------------------------------------
-//  wxString  SetStringParameter(const Integer id, const wxString value)
+//  std::string  SetStringParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the string parameter value, given the input
@@ -532,7 +532,7 @@ wxString Formation::GetParameterTypeString(const Integer id) const
  * @return  success flag.
  */
 //------------------------------------------------------------------------------
-bool Formation::SetStringParameter(const Integer id, const wxString &value)
+bool Formation::SetStringParameter(const Integer id, const std::string &value)
 {
    if (id == ADDED_SPACECRAFT)
    {
@@ -542,12 +542,12 @@ bool Formation::SetStringParameter(const Integer id, const wxString &value)
       componentNames.push_back(value);
 
       #ifdef DEBUG_FORMATION_ACTIONS
-         MessageInterface::ShowMessage(wxT("%s%s%s\n"),
-            wxT("Formation \""), instanceName.c_str(),
-            wxT("\" now consists of these spacecraft names:"));
+         MessageInterface::ShowMessage("%s%s%s\n",
+            "Formation \"", instanceName.c_str(),
+            "\" now consists of these spacecraft names:");
          for (StringArray::iterator i = componentNames.begin(); 
               i != componentNames.end(); ++i)
-            MessageInterface::ShowMessage(wxT("    \"%s\"\n"), i->c_str());
+            MessageInterface::ShowMessage("    \"%s\"\n", i->c_str());
       #endif
 
       parmsChanged = true;
@@ -591,7 +591,7 @@ Real Formation::SetRealParameter(const Integer id, const Real value)
       {
          if (retval != value)
             throw SpaceObjectException(
-               wxT("Formation update returned incorrect epoch"));
+               "Formation update returned incorrect epoch");
          // Update the epoch on the constituent pieces
          for (std::vector<SpaceObject*>::iterator i = components.begin();
               i != components.end(); ++i)
@@ -599,7 +599,7 @@ Real Formation::SetRealParameter(const Integer id, const Real value)
             retval = (*i)->SetRealParameter(id, value);
             if (retval != value)
                throw SpaceObjectException(
-                  wxT("Formation constituent returned incorrect epoch"));
+                  "Formation constituent returned incorrect epoch");
          }
       }
    }   
@@ -609,7 +609,7 @@ Real Formation::SetRealParameter(const Integer id, const Real value)
 
 
 //------------------------------------------------------------------------------
-//  Real  SetRealParameter(const wxString &label, const Real value)
+//  Real  SetRealParameter(const std::string &label, const Real value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the Real parameter value, given the input parameter ID.
@@ -620,14 +620,14 @@ Real Formation::SetRealParameter(const Integer id, const Real value)
  * @return Real value of the requested parameter.
  */
 //------------------------------------------------------------------------------
-Real Formation::SetRealParameter(const wxString &label, const Real value)
+Real Formation::SetRealParameter(const std::string &label, const Real value)
 {
    return SetRealParameter(GetParameterID(label), value);
 }
 
 
 //------------------------------------------------------------------------------
-//  bool SetStringParameter(const Integer id, const wxString &value,
+//  bool SetStringParameter(const Integer id, const std::string &value,
 //                          const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -640,7 +640,7 @@ Real Formation::SetRealParameter(const wxString &label, const Real value)
  * @return true if the string is stored, false if not.
  */
 //------------------------------------------------------------------------------
-bool Formation::SetStringParameter(const Integer id, const wxString &value,
+bool Formation::SetStringParameter(const Integer id, const std::string &value,
                                    const Integer index)
 {
    if (id == ADDED_SPACECRAFT)
@@ -656,7 +656,7 @@ bool Formation::SetStringParameter(const Integer id, const wxString &value,
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id) const
+//  std::string  GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -667,17 +667,17 @@ bool Formation::SetStringParameter(const Integer id, const wxString &value,
  * @return  string value of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString  Formation::GetStringParameter(const Integer id) const
+std::string  Formation::GetStringParameter(const Integer id) const
 {
    if (id == REMOVED_SPACECRAFT)
    {
-      return wxT("");
+      return "";
    }
    return SpaceObject::GetStringParameter(id);
 }
 
 //------------------------------------------------------------------------------
-// wxString  GetStringParameter(const Integer id) const
+// std::string  GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -689,12 +689,12 @@ wxString  Formation::GetStringParameter(const Integer id) const
  * @return  string value of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString  Formation::GetStringParameter(const Integer id,
+std::string  Formation::GetStringParameter(const Integer id,
                                            const Integer index) const
 {
    if (id == REMOVED_SPACECRAFT)
    {
-      return wxT("");
+      return "";
    }
    return SpaceObject::GetStringParameter(id, index);
 }
@@ -722,9 +722,9 @@ const StringArray& Formation::GetStringArrayParameter(const Integer id) const
 
 
 const StringArray& 
-         Formation::GetStringArrayParameter(const wxString &label) const
+         Formation::GetStringArrayParameter(const std::string &label) const
 {
-   if (label == wxT("Add"))
+   if (label == "Add")
       return componentNames;
    return SpaceObject::GetStringArrayParameter(label);
 }
@@ -747,7 +747,7 @@ const StringArray& Formation::GetRefObjectNameArray(const Gmat::ObjectType type)
 
 //------------------------------------------------------------------------------
 // GmatBase* Formation::GetRefObject(const Gmat::ObjectType type,
-//                                   const wxString &name,
+//                                   const std::string &name,
 //                                   const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -764,7 +764,7 @@ const StringArray& Formation::GetRefObjectNameArray(const Gmat::ObjectType type)
  */
 //------------------------------------------------------------------------------
 GmatBase* Formation::GetRefObject(const Gmat::ObjectType type,
-                                  const wxString &name,
+                                  const std::string &name,
                                   const Integer index)
 {
    return SpaceObject::GetRefObject(type, name, index);
@@ -773,7 +773,7 @@ GmatBase* Formation::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // bool Formation::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                              const wxString &name)
+//                              const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Accessor used to set or replace a referenced object.
@@ -786,7 +786,7 @@ GmatBase* Formation::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool Formation::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                             const wxString &name)
+                             const std::string &name)
 {
    SpaceObject *so;
    
@@ -804,9 +804,9 @@ bool Formation::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
          else
             if (state.GetEpoch() != newepoch)
             {
-               wxString errorMsg;
-               errorMsg.Printf(wxT("Epochs (%lf) and (%lf) are not synchronized ")
-                       wxT("in the formation %s"), newepoch, state.GetEpoch(),
+               char errorMsg[256];
+               sprintf(errorMsg, "Epochs (%lf) and (%lf) are not synchronized "
+                       "in the formation %s", newepoch, state.GetEpoch(),
                        instanceName.c_str());
               
                throw SpaceObjectException(errorMsg);
@@ -823,7 +823,7 @@ bool Formation::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // bool Formation::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                              const wxString &name)
+//                              const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Accessor used to set or replace a referenced object.
@@ -840,7 +840,7 @@ bool Formation::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool Formation::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                    const wxString &name,
+                                    const std::string &name,
                                     const Integer index)
 {
    return SpaceObject::SetRefObject(obj, type, name, index);
@@ -884,7 +884,7 @@ ObjectArray& Formation::GetRefObjectArray(const Gmat::ObjectType type)
 
 
 //------------------------------------------------------------------------------
-//  ObjectArray& GetRefObjectArray(const wxString& typeString)
+//  ObjectArray& GetRefObjectArray(const std::string& typeString)
 //------------------------------------------------------------------------------
 /**
  * Obtains an array of GmatBase pointers by type.
@@ -894,14 +894,14 @@ ObjectArray& Formation::GetRefObjectArray(const Gmat::ObjectType type)
  * @return Reference to the array.
  */
 //------------------------------------------------------------------------------
-ObjectArray& Formation::GetRefObjectArray(const wxString& typeString)
+ObjectArray& Formation::GetRefObjectArray(const std::string& typeString)
 {
    Gmat::ObjectType id = Gmat::UNKNOWN_OBJECT;
-   if (typeString == wxT("Spacecraft")) 
+   if (typeString == "Spacecraft") 
       id = Gmat::SPACECRAFT;
-   if (typeString == wxT("Formation")) 
+   if (typeString == "Formation") 
       id = Gmat::FORMATION;
-   if (typeString == wxT("SpaceObject")) 
+   if (typeString == "SpaceObject") 
       id = Gmat::SPACEOBJECT;
       
    if (id != Gmat::UNKNOWN_OBJECT)
@@ -921,14 +921,14 @@ ObjectArray& Formation::GetRefObjectArray(const wxString& typeString)
 void Formation::BuildState()
 {
    #ifdef DEBUG_FORMATION_ACTIONS
-      MessageInterface::ShowMessage(wxT("%s%s%s%d\n"),
-         wxT("In BuildState, Formation \""), instanceName.c_str(),
-         wxT("\" has dimension "), dimension);
+      MessageInterface::ShowMessage("%s%s%s%d\n",
+         "In BuildState, Formation \"", instanceName.c_str(),
+         "\" has dimension ", dimension);
    #endif
 
    if (dimension <= 0)
       throw SpaceObjectException(
-         wxT("Error building Formation state; no spacecraft are set"));
+         "Error building Formation state; no spacecraft are set");
 
    // Setup the GmatState
    Real *data = new Real[dimension], *st;
@@ -943,7 +943,7 @@ void Formation::BuildState()
    {
       if ((*i) == NULL)
          throw SpaceObjectException(
-            wxT("Error building Formation state; member spacecraft not set"));
+            "Error building Formation state; member spacecraft not set");
       ps = &((*i)->GetState());
       st = ps->GetState();
       for (k = 0; k < ps->GetSize(); ++k)
@@ -954,27 +954,27 @@ void Formation::BuildState()
    }
    
    #ifdef DEBUG_FORMATION_ACTIONS
-      MessageInterface::ShowMessage(wxT("%s%s%s\n"),
-         wxT("In BuildState, Formation \""), instanceName.c_str(),
-         wxT("\" consists of these spacecraft names:"));
+      MessageInterface::ShowMessage("%s%s%s\n",
+         "In BuildState, Formation \"", instanceName.c_str(),
+         "\" consists of these spacecraft names:");
       for (StringArray::iterator i = componentNames.begin(); 
            i != componentNames.end(); ++i)
-         MessageInterface::ShowMessage(wxT("    \"%s\"\n"), i->c_str());
+         MessageInterface::ShowMessage("    \"%s\"\n", i->c_str());
   
-      MessageInterface::ShowMessage(wxT("%s%s%s\n"),
-         wxT("In BuildState, Formation \""), instanceName.c_str(),
-         wxT("\" consists of these spacecraft:"));
+      MessageInterface::ShowMessage("%s%s%s\n",
+         "In BuildState, Formation \"", instanceName.c_str(),
+         "\" consists of these spacecraft:");
       for (std::vector<SpaceObject *>::iterator j = components.begin(); 
            j < components.end(); ++j)
       {
-         MessageInterface::ShowMessage(wxT("    \"%s\"\n"), (*j)->GetName().c_str());
+         MessageInterface::ShowMessage("    \"%s\"\n", (*j)->GetName().c_str());
       }
    #endif
    
    if (!state.SetState(data, dimension))
    {
       delete [] data;
-      throw SpaceObjectException(wxT("Error building Formation state"));
+      throw SpaceObjectException("Error building Formation state");
    }
    
    // as per kw report
@@ -1027,7 +1027,7 @@ void Formation::UpdateState()
       {
          ep0 = (*i)->GetEpoch();
          #ifdef DEBUG_FORMATION
-            MessageInterface::ShowMessage(wxT("Base epoch is %.12lf\n"), ep0);
+            MessageInterface::ShowMessage("Base epoch is %.12lf\n", ep0);
          #endif
       }
       else
@@ -1035,8 +1035,8 @@ void Formation::UpdateState()
          ep = (*i)->GetEpoch();
          if (ep != ep0)
             MessageInterface::ShowMessage(
-               wxT("WARNING!  Formation Member Epochs are not synchronized!\n")
-               wxT("First spacecraft epoch is %.12lf, but %s has epoch %.12lf\n"), 
+               "WARNING!  Formation Member Epochs are not synchronized!\n"
+               "First spacecraft epoch is %.12lf, but %s has epoch %.12lf\n", 
                ep0, (*i)->GetName().c_str(), ep);
       }
       ps = &((*i)->GetState());
@@ -1044,7 +1044,7 @@ void Formation::UpdateState()
       
       #ifdef DEBUG_FORMATION_UPDATES
          MessageInterface::ShowMessage(
-            wxT("Formation: Updating(%d to %d) from %s::%s\n"), 
+            "Formation: Updating(%d to %d) from %s::%s\n", 
             index, index + size - 1, instanceName.c_str(), (*i)->GetName().c_str());
       #endif
       
@@ -1059,7 +1059,7 @@ void Formation::UpdateState()
 
 
 //------------------------------------------------------------------------------
-// bool TakeAction(const wxString &action, const wxString &actionData)
+// bool TakeAction(const std::string &action, const std::string &actionData)
 //------------------------------------------------------------------------------
 /**
  * This method performs action.
@@ -1070,14 +1070,14 @@ void Formation::UpdateState()
  * @return true if action successfully performed
  */
 //------------------------------------------------------------------------------
-bool Formation::TakeAction(const wxString &action,
-                           const wxString &actionData)
+bool Formation::TakeAction(const std::string &action,
+                           const std::string &actionData)
 {
-   if (action == wxT("Clear"))
+   if (action == "Clear")
    {
       return ClearSpacecraftList();
    }
-   else if (action == wxT("Remove"))
+   else if (action == "Remove")
    {
       return RemoveSpacecraft(actionData);
    }
@@ -1096,7 +1096,7 @@ void Formation::ClearLastStopTriggered()
       
    #ifdef DEBUG_STOPCONDITION_TRACKING
       MessageInterface::ShowMessage(
-         wxT("Cleared stop identifier from Formation \"%s\"\n"), 
+         "Cleared stop identifier from Formation \"%s\"\n", 
          instanceName.c_str());
    #endif
 }
@@ -1115,7 +1115,7 @@ bool Formation::ClearSpacecraftList()
 {
    #ifdef DEBUG_FORMATION_ACTIONS
       MessageInterface::ShowMessage(
-         wxT("Formation::ClearSpacecraftList() called\n"));
+         "Formation::ClearSpacecraftList() called\n");
    #endif
    componentNames.clear();
    components.clear();
@@ -1124,7 +1124,7 @@ bool Formation::ClearSpacecraftList()
 
 
 //------------------------------------------------------------------------------
-// bool RemoveSpacecraft(const wxString &name)
+// bool RemoveSpacecraft(const std::string &name)
 //------------------------------------------------------------------------------
 /*
  * Removes spacecraft from the spacecraft list
@@ -1134,11 +1134,11 @@ bool Formation::ClearSpacecraftList()
  * @return true if spacecraft was removed from the list, false otherwise
  */
 //------------------------------------------------------------------------------
-bool Formation::RemoveSpacecraft(const wxString &name)
+bool Formation::RemoveSpacecraft(const std::string &name)
 {
    #ifdef DEBUG_FORMATION_ACTIONS
-      MessageInterface::ShowMessage(wxT("%s%s\"\n"),
-         wxT("Formation::RemoveSpacecraft called to remove \""), name.c_str());
+      MessageInterface::ShowMessage("%s%s\"\n",
+         "Formation::RemoveSpacecraft called to remove \"", name.c_str());
    #endif
 
    StringArray::iterator scPos = 
@@ -1162,20 +1162,20 @@ bool Formation::RemoveSpacecraft(const wxString &name)
       }
 
       #ifdef DEBUG_FORMATION_ACTIONS
-         MessageInterface::ShowMessage(wxT("%s%s%s\n"),
-            wxT("Formation \""), instanceName.c_str(),
-            wxT("\" now consists of these spacecraft names:"));
+         MessageInterface::ShowMessage("%s%s%s\n",
+            "Formation \"", instanceName.c_str(),
+            "\" now consists of these spacecraft names:");
          for (StringArray::iterator i = componentNames.begin(); 
               i != componentNames.end(); ++i)
-            MessageInterface::ShowMessage(wxT("    \"%s\"\n"), i->c_str());
+            MessageInterface::ShowMessage("    \"%s\"\n", i->c_str());
      
-         MessageInterface::ShowMessage(wxT("%s%s%s\n"),
-            wxT("Formation \""), instanceName.c_str(),
-            wxT("\" now consists of these spacecraft:"));
+         MessageInterface::ShowMessage("%s%s%s\n",
+            "Formation \"", instanceName.c_str(),
+            "\" now consists of these spacecraft:");
          for (j = components.begin(); j < components.end(); ++j)
          {
             MessageInterface::ShowMessage(
-               wxT("    \"%s\"\n"), (*j)->GetName().c_str());
+               "    \"%s\"\n", (*j)->GetName().c_str());
          }
       #endif
 
@@ -1184,19 +1184,19 @@ bool Formation::RemoveSpacecraft(const wxString &name)
    }
 
    #ifdef DEBUG_FORMATION_ACTIONS
-      MessageInterface::ShowMessage(wxT("%s%s\"\n"),
-         wxT("Formation::RemoveSpacecraft Did not find \""), name.c_str());
+      MessageInterface::ShowMessage("%s%s\"\n",
+         "Formation::RemoveSpacecraft Did not find \"", name.c_str());
    #endif
 
    return false;
 }
 
 
-Integer Formation::SetPropItem(const wxString &propItem)
+Integer Formation::SetPropItem(const std::string &propItem)
 {
-   if (propItem == wxT("CartesianState"))
+   if (propItem == "CartesianState")
       return Gmat::CARTESIAN_STATE;
-   if (propItem == wxT("STM"))
+   if (propItem == "STM")
       return Gmat::ORBIT_STATE_TRANSITION_MATRIX;
    
    return SpaceObject::SetPropItem(propItem);
@@ -1206,7 +1206,7 @@ Integer Formation::SetPropItem(const wxString &propItem)
 StringArray Formation::GetDefaultPropItems()
 {
    StringArray defaults = SpaceObject::GetDefaultPropItems();
-   defaults.push_back(wxT("CartesianState"));
+   defaults.push_back("CartesianState");
    return defaults;
 }
 
@@ -1285,12 +1285,12 @@ Real Formation::GetRealParameter(const Integer id) const
 {
    #ifdef DEBUG_GET_REAL
       MessageInterface::ShowMessage(
-      wxT("In Formation::GetReal, asking for parameter %d, whose string is \"%s\"\n"), 
+      "In Formation::GetReal, asking for parameter %d, whose string is \"%s\"\n", 
       id, (GetParameterText(id)).c_str());
       //for (Integer i=0; i<6;i++)
-      //   MessageInterface::ShowMessage(wxT("   state(%d) = %.12f\n"),
+      //   MessageInterface::ShowMessage("   state(%d) = %.12f\n",
       //   i, state[i]);
-      //MessageInterface::ShowMessage(wxT("    and stateType = %s\n"),
+      //MessageInterface::ShowMessage("    and stateType = %s\n",
       //   stateType.c_str());
    #endif
 
@@ -1301,7 +1301,7 @@ Real Formation::GetRealParameter(const Integer id) const
 }
 
 //---------------------------------------------------------------------------
-//  Real GetRealParameter(const wxString &label) const
+//  Real GetRealParameter(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * Retrieve the value for a Real parameter.
@@ -1310,10 +1310,10 @@ Real Formation::GetRealParameter(const Integer id) const
  *
  * @return The parameter's value.
  */
-Real Formation::GetRealParameter(const wxString &label) const
+Real Formation::GetRealParameter(const std::string &label) const
 {
    // Performance!
-    if (label == wxT("A1Epoch"))
+    if (label == "A1Epoch")
        return state.GetEpoch();
    
     return GetRealParameter(GetParameterID(label));
@@ -1335,8 +1335,8 @@ Real Formation::GetRealParameter(const wxString &label) const
 //Real Formation::SetRealParameter(const Integer id, const Real value)
 //{
 //   #ifdef DEBUG_SPACECRAFT_SET
-//   MessageInterface::ShowMessage(wxT("In Formation::SetRealParameter, ")
-//         wxT("id = %d and value = %.12f\n"), id, value);
+//   MessageInterface::ShowMessage("In Formation::SetRealParameter, "
+//         "id = %d and value = %.12f\n", id, value);
 //   #endif
 //   if (id >= CARTESIAN_STATE )
 //   {
@@ -1348,7 +1348,7 @@ Real Formation::GetRealParameter(const wxString &label) const
 //}
 //
 ////---------------------------------------------------------------------------
-////  Real SetRealParameter(const wxString &label, const Real value)
+////  Real SetRealParameter(const std::string &label, const Real value)
 ////---------------------------------------------------------------------------
 ///**
 // * Set the value for a Real parameter.
@@ -1360,11 +1360,11 @@ Real Formation::GetRealParameter(const wxString &label) const
 // *         REAL_PARAMETER_UNDEFINED if the parameter id is invalid or the 
 // *         parameter type is not Real.
 // */
-//Real Formation::SetRealParameter(const wxString &label, const Real value)
+//Real Formation::SetRealParameter(const std::string &label, const Real value)
 //{
 //   #ifdef DEBUG_SPACECRAFT_SET
 //   MessageInterface::ShowMessage
-//      (wxT("In Formation::SetRealParameter(label), label = %s and value = %.12f\n"),
+//      ("In Formation::SetRealParameter(label), label = %s and value = %.12f\n",
 //       label.c_str(), value);
 //   #endif
 //

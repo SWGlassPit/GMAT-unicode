@@ -32,7 +32,7 @@
  class GMAT_API FiniteBurn : public Burn
 {
 public:
-   FiniteBurn(const wxString &nomme = wxT(""));
+   FiniteBurn(const std::string &nomme = "");
    virtual ~FiniteBurn();
    FiniteBurn(const FiniteBurn& fb);
    FiniteBurn&          operator=(const FiniteBurn& fb);
@@ -42,18 +42,18 @@ public:
    virtual bool         Fire(Real *burnData = NULL, Real epoch = GmatTimeConstants::MJD_OF_J2000);
    
    // Inherited (GmatBase) methods
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    virtual bool         IsParameterReadOnly(const Integer id) const;
 
-   virtual wxString  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
+                                           const std::string &value);
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
    virtual const StringArray&
                         GetStringArrayParameter(const Integer id) const;
@@ -68,9 +68,9 @@ public:
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name);
+                                     const std::string &name);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    
    virtual bool         Initialize();
    
@@ -78,8 +78,8 @@ public:
    virtual void         Copy(const GmatBase* orig);
    
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
    virtual bool         DepletesMass();
 
@@ -104,7 +104,7 @@ protected:
    };
    
    /// Thruster parameter labels
-   static const wxString 
+   static const std::string 
                         PARAMETER_TEXT[FiniteBurnParamCount - BurnParamCount];
    /// Thruster parameter types
    static const Gmat::ParameterType 

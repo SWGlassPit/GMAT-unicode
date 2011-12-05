@@ -38,7 +38,7 @@ class GMAT_API SandboxException : public BaseException
 {
 public:
    // class constructor
-   SandboxException(wxString details, Gmat::MessageType mt = Gmat::ERROR_);
+   SandboxException(std::string details, Gmat::MessageType mt = Gmat::ERROR_);
    // class destructor
    ~SandboxException();
 };

@@ -23,7 +23,7 @@
 #include "LinearInterpolator.hpp" // class's header file
 
 //------------------------------------------------------------------------------
-//  LinearInterpolator(const wxString &name, Integer dim)
+//  LinearInterpolator(const std::string &name, Integer dim)
 //------------------------------------------------------------------------------
 /**
  * Creates an instance of a LinearInterpolator (default constructor).
@@ -32,8 +32,8 @@
  * @param <dim>  Dimension of data that will be interpolated (defaults to 1).
  */
 //------------------------------------------------------------------------------
-LinearInterpolator::LinearInterpolator(const wxString &name, Integer dim) :
-    Interpolator        (name, wxT("LinearInterpolator"), dim)
+LinearInterpolator::LinearInterpolator(const std::string &name, Integer dim) :
+    Interpolator        (name, "LinearInterpolator", dim)
 {
 }
 

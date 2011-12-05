@@ -48,7 +48,7 @@ struct LeapSecondInformation
 class GMAT_API LeapSecsFileReader
 {
 public:
-   LeapSecsFileReader(const wxString &fileName = wxT("tai-utc.dat"));
+   LeapSecsFileReader(const std::string &fileName = "tai-utc.dat");
    virtual ~LeapSecsFileReader();
    LeapSecsFileReader(const LeapSecsFileReader& lsfr);
    LeapSecsFileReader& operator=(const LeapSecsFileReader& lsfr);
@@ -58,12 +58,12 @@ public:
 
 private:
 
-   bool Parse(wxString line);
+   bool Parse(std::string line);
 
    // member data
    bool isInitialized;
    std::vector<LeapSecondInformation> lookUpTable;
-   wxString withFileName;
+   std::string withFileName;
 };
 
 #endif // LeapSecsFileReader_hpp

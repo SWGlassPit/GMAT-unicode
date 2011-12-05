@@ -39,7 +39,7 @@ class GMAT_API MHA : public PlanetReal
 {
 public:
 
-   MHA(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   MHA(const std::string &name = "", GmatBase *obj = NULL);
    MHA(const MHA &copy);
    const MHA& operator=(const MHA &right);
    virtual ~MHA();
@@ -67,7 +67,7 @@ class GMAT_API Longitude : public PlanetReal
 {
 public:
 
-   Longitude(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   Longitude(const std::string &name = "", GmatBase *obj = NULL);
    Longitude(const Longitude &copy);
    const Longitude& operator=(const Longitude &right);
    virtual ~Longitude();
@@ -95,7 +95,7 @@ class GMAT_API Altitude : public PlanetReal
 {
 public:
    
-   Altitude(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   Altitude(const std::string &name = "", GmatBase *obj = NULL);
    Altitude(const Altitude &copy);
    const Altitude& operator=(const Altitude &right);
    virtual ~Altitude();
@@ -123,7 +123,7 @@ class GMAT_API Latitude : public PlanetReal
 {
 public:
 
-   Latitude(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   Latitude(const std::string &name = "", GmatBase *obj = NULL);
    Latitude(const Latitude &copy);
    const Latitude& operator=(const Latitude &right);
    virtual ~Latitude();
@@ -151,7 +151,7 @@ class GMAT_API LST : public PlanetReal
 {
 public:
 
-   LST(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   LST(const std::string &name = "", GmatBase *obj = NULL);
    LST(const LST &copy);
    const LST& operator=(const LST &right);
    virtual ~LST();

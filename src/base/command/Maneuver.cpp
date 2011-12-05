@@ -36,10 +36,10 @@
  */
 //------------------------------------------------------------------------------
 Maneuver::Maneuver() :
-   GmatCommand (wxT("Maneuver")),
-   burnName    (wxT("")),
+   GmatCommand ("Maneuver"),
+   burnName    (""),
    burn        (NULL),
-   satName     (wxT("")),
+   satName     (""),
    sat         (NULL),
    firedOnce   (false),
    // Parameter IDs
@@ -117,8 +117,8 @@ Maneuver& Maneuver::operator=(const Maneuver& m)
 }
 
 //------------------------------------------------------------------------------
-//  bool SetObject(const wxString &name, const Gmat::ObjectType type,
-//                 const wxString &associate,
+//  bool SetObject(const std::string &name, const Gmat::ObjectType type,
+//                 const std::string &associate,
 //                 const Gmat::ObjectType associateType)
 //------------------------------------------------------------------------------
 /**
@@ -132,8 +132,8 @@ Maneuver& Maneuver::operator=(const Maneuver& m)
  * @return true if the object was set.
  */
 //------------------------------------------------------------------------------
-bool Maneuver::SetObject(const wxString &name, const Gmat::ObjectType type,
-                         const wxString &associate,
+bool Maneuver::SetObject(const std::string &name, const Gmat::ObjectType type,
+                         const std::string &associate,
                          const Gmat::ObjectType associateType)
 {
    return GmatCommand::SetObject(name, type, associate, associateType);
@@ -175,7 +175,7 @@ GmatBase* Maneuver::Clone() const
 
 
 //------------------------------------------------------------------------------
-//  const wxString GetGeneratingString()
+//  const std::string GetGeneratingString()
 //------------------------------------------------------------------------------
 /**
  * Method used to retrieve the string that was parsed to build this GmatCommand.
@@ -195,12 +195,12 @@ GmatBase* Maneuver::Clone() const
  * @return The script line that defines this GmatCommand.
  */
 //------------------------------------------------------------------------------
-const wxString& Maneuver::GetGeneratingString(Gmat::WriteMode mode,
-                                                 const wxString &prefix,
-                                                 const wxString &useName)
+const std::string& Maneuver::GetGeneratingString(Gmat::WriteMode mode,
+                                                 const std::string &prefix,
+                                                 const std::string &useName)
 {
-   generatingString = prefix + wxT("Maneuver ");
-   generatingString += burnName + wxT("(") + satName + wxT(");");
+   generatingString = prefix + "Maneuver ";
+   generatingString += burnName + "(" + satName + ");";
    
    return GmatCommand::GetGeneratingString(mode, prefix, useName);
 }
@@ -208,7 +208,7 @@ const wxString& Maneuver::GetGeneratingString(Gmat::WriteMode mode,
 
 //------------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * This method renames an object used by the maneuver command.
@@ -221,12 +221,12 @@ const wxString& Maneuver::GetGeneratingString(Gmat::WriteMode mode,
  */
 //------------------------------------------------------------------------------
 bool Maneuver::RenameRefObject(const Gmat::ObjectType type,
-                               const wxString &oldName,
-                               const wxString &newName)
+                               const std::string &oldName,
+                               const std::string &newName)
 {
    #if DEBUG_MANEUVER
       MessageInterface::ShowMessage
-         (wxT("Maneuver::RenameConfiguredItem() type=%s, oldName=%s, newName=%s\n"),
+         ("Maneuver::RenameConfiguredItem() type=%s, oldName=%s, newName=%s\n",
           GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
    #endif
 
@@ -288,7 +288,7 @@ const ObjectTypeArray& Maneuver::GetRefObjectTypeArray()
 const StringArray& Maneuver::GetRefObjectNameArray(const Gmat::ObjectType type)
 {
    #ifdef DEBUG_MANEUVER_REFOBJ
-   MessageInterface::ShowMessage(wxT("Maneuver::GetRefObjectNameArray(%d)\n"), type);
+   MessageInterface::ShowMessage("Maneuver::GetRefObjectNameArray(%d)\n", type);
    #endif
 
    refObjectNames.clear();
@@ -306,9 +306,9 @@ const StringArray& Maneuver::GetRefObjectNameArray(const Gmat::ObjectType type)
    }
 
    #ifdef DEBUG_MANEUVER_REFOBJ
-   MessageInterface::ShowMessage(wxT("===> returning\n"));
+   MessageInterface::ShowMessage("===> returning\n");
    for (UnsignedInt i=0; i<refObjectNames.size(); i++)
-      MessageInterface::ShowMessage(wxT("   %s\n"), refObjectNames[i].c_str());
+      MessageInterface::ShowMessage("   %s\n", refObjectNames[i].c_str());
    #endif
 
    return refObjectNames;
@@ -316,7 +316,7 @@ const StringArray& Maneuver::GetRefObjectNameArray(const Gmat::ObjectType type)
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -326,14 +326,14 @@ const StringArray& Maneuver::GetRefObjectNameArray(const Gmat::ObjectType type)
  * @return parameter text for the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString Maneuver::GetParameterText(const Integer id) const
+std::string Maneuver::GetParameterText(const Integer id) const
 {
    if (id == burnNameID) {
-      return wxT("Burn");
+      return "Burn";
    }
 
    else if (id == satNameID) {
-      return wxT("Spacecraft");
+      return "Spacecraft";
    }
 
    return GmatCommand::GetParameterText(id);
@@ -341,7 +341,7 @@ wxString Maneuver::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -351,13 +351,13 @@ wxString Maneuver::GetParameterText(const Integer id) const
  * @return ID for the requested parameter.
  */
 //------------------------------------------------------------------------------
-Integer Maneuver::GetParameterID(const wxString &str) const
+Integer Maneuver::GetParameterID(const std::string &str) const
 {
-   if (str == wxT("Burn")) {
+   if (str == "Burn") {
       return burnNameID;
    }
 
-   else if (str == wxT("Spacecraft")) {
+   else if (str == "Spacecraft") {
       return satNameID;
    }
 
@@ -391,7 +391,7 @@ Gmat::ParameterType Maneuver::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -401,7 +401,7 @@ Gmat::ParameterType Maneuver::GetParameterType(const Integer id) const
  * @return parameter type string of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString Maneuver::GetParameterTypeString(const Integer id) const
+std::string Maneuver::GetParameterTypeString(const Integer id) const
 {
    if (id == burnNameID)
       return PARAM_TYPE_STRING[Gmat::STRING_TYPE];
@@ -414,7 +414,7 @@ wxString Maneuver::GetParameterTypeString(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id) const
+//  std::string  GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -425,7 +425,7 @@ wxString Maneuver::GetParameterTypeString(const Integer id) const
  * @return  string value of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString Maneuver::GetStringParameter(const Integer id) const
+std::string Maneuver::GetStringParameter(const Integer id) const
 {
    if (id == burnNameID)
       return burnName;
@@ -438,7 +438,7 @@ wxString Maneuver::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString  SetStringParameter(const Integer id, const wxString value)
+//  std::string  SetStringParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the string parameter value, given the input
@@ -450,7 +450,7 @@ wxString Maneuver::GetStringParameter(const Integer id) const
  * @return  success flag.
  */
 //------------------------------------------------------------------------------
-bool Maneuver::SetStringParameter(const Integer id, const wxString &value)
+bool Maneuver::SetStringParameter(const Integer id, const std::string &value)
 {
    if (id == burnNameID) {
       burnName = value;
@@ -488,28 +488,28 @@ bool Maneuver::InterpretAction()
    StringArray chunks = InterpretPreface();
 
    // Find and set the burn object name ...
-   StringArray currentChunks = parser.Decompose(chunks[1], wxT("()"), false);
+   StringArray currentChunks = parser.Decompose(chunks[1], "()", false);
 
    if (currentChunks.size() < 2)
-      throw CommandException(wxT("Missing Maneuver parameter. Expecting ")
-                             wxT("\"ImpulsiveBurnName(SpacecraftName)\"\n"));
+      throw CommandException("Missing Maneuver parameter. Expecting "
+                             "\"ImpulsiveBurnName(SpacecraftName)\"\n");
 
    SetStringParameter(burnNameID, currentChunks[0]);
 
    #ifdef DEBUG_MANEUVER_PARSE
-      MessageInterface::ShowMessage(wxT("In Maneuver, after Decompose, currentChunks = \n"));
+      MessageInterface::ShowMessage("In Maneuver, after Decompose, currentChunks = \n");
       for (unsigned int ii=0; ii<currentChunks.size(); ii++)
-         MessageInterface::ShowMessage(wxT("    %s\n"), currentChunks.at(ii).c_str());
+         MessageInterface::ShowMessage("    %s\n", currentChunks.at(ii).c_str());
    #endif
    // ... and the spacecraft that is maneuvered
-   currentChunks = parser.SeparateBrackets(currentChunks[1], wxT("()"), wxT(","));
+   currentChunks = parser.SeparateBrackets(currentChunks[1], "()", ",");
    #ifdef DEBUG_MANEUVER_PARSE
-      MessageInterface::ShowMessage(wxT("In Maneuver, after Separatebrackets, currentChunks = \n"));
+      MessageInterface::ShowMessage("In Maneuver, after Separatebrackets, currentChunks = \n");
       for (unsigned int ii=0; ii<currentChunks.size(); ii++)
-         MessageInterface::ShowMessage(wxT("    %s\n"), currentChunks.at(ii).c_str());
+         MessageInterface::ShowMessage("    %s\n", currentChunks.at(ii).c_str());
    #endif
    if (currentChunks.size() > 1)
-      throw CommandException(wxT("Unexpected text after spacecraft name in Maneuver command\n"));
+      throw CommandException("Unexpected text after spacecraft name in Maneuver command\n");
 
    SetStringParameter(satNameID, currentChunks[0]);
 
@@ -530,7 +530,7 @@ bool Maneuver::Initialize()
 {
    #ifdef DEBUG_MANEUVER_INIT
    MessageInterface::ShowMessage
-      (wxT("Maneuver::Initialize() this=<%p>'%s' entered\n"), this,
+      ("Maneuver::Initialize() this=<%p>'%s' entered\n", this,
        GetGeneratingString(Gmat::NO_COMMENTS).c_str());
    #endif
    
@@ -538,13 +538,13 @@ bool Maneuver::Initialize()
 
    GmatBase *mapObj = NULL;
    if ((mapObj = FindObject(burnName)) == NULL)
-      throw CommandException(wxT("Maneuver command cannot find Burn"));
+      throw CommandException("Maneuver command cannot find Burn");
    burn = (Burn *)mapObj;
    if (!burn)
       return false;
 
    if ((mapObj = FindObject(satName)) == NULL)
-      throw CommandException(wxT("Maneuver command cannot find Spacecraft"));
+      throw CommandException("Maneuver command cannot find Spacecraft");
    sat = (Spacecraft *)mapObj;
    if (!sat)
       return false;
@@ -555,13 +555,13 @@ bool Maneuver::Initialize()
    #ifdef __REGISTER_MANEUVER__
    StringArray owners, elements;
    owners.push_back(satName);
-   elements.push_back(satName + wxT(".epoch"));
+   elements.push_back(satName + ".epoch");
    streamID = publisher->RegisterPublishedData(this, streamID, owners, elements);
    
    #ifdef DEBUG_MANEUVER_INIT
-   MessageInterface::ShowMessage(wxT("   streamID=%d\n"), streamID);
+   MessageInterface::ShowMessage("   streamID=%d\n", streamID);
    MessageInterface::ShowMessage
-      (wxT("Maneuver::Initialize() this=<%p>'%s' returning true\n"), this,
+      ("Maneuver::Initialize() this=<%p>'%s' returning true\n", this,
        GetGeneratingString(Gmat::NO_COMMENTS).c_str());
    #endif
    #endif
@@ -585,39 +585,39 @@ bool Maneuver::Initialize()
 bool Maneuver::Execute()
 {
    #ifdef DEBUG_MANEUVER_EXEC
-      MessageInterface::ShowMessage(wxT("Maneuver::Execute this=<%p> maneuvering %s\n"),
-            this, ((sat == NULL) ? wxT("a NULL spaceecraft") : sat->GetName().c_str()));
+      MessageInterface::ShowMessage("Maneuver::Execute this=<%p> maneuvering %s\n",
+            this, ((sat == NULL) ? "a NULL spaceecraft" : sat->GetName().c_str()));
    #endif
       
-   Real epoch = sat->GetRealParameter(wxT("A1Epoch"));
+   Real epoch = sat->GetRealParameter("A1Epoch");
    
    #ifdef DEBUG_MANEUVER_EXEC
    Rvector6 state = sat->GetState(0); // Get cartesian state
    MessageInterface::ShowMessage
-      (wxT("   state before maneuver at epoch %f\n   %s\n"), epoch, state.ToString().c_str());
+      ("   state before maneuver at epoch %f\n   %s\n", epoch, state.ToString().c_str());
    #endif
    
    burn->SetSpacecraftToManeuver(sat);
    
    // Set maneuvering to Publisher so that any subscriber can do its own action
-   publisher->SetManeuvering(this, true, epoch, satName, wxT("ImpulsiveBurn"));
+   publisher->SetManeuvering(this, true, epoch, satName, "ImpulsiveBurn");
    
    bool retval = burn->Fire(NULL, epoch);
    
    // Reset maneuvering to Publisher so that any subscriber can do its own action
-   publisher->SetManeuvering(this, false, epoch, satName, wxT("ImpulsiveBurn"));
+   publisher->SetManeuvering(this, false, epoch, satName, "ImpulsiveBurn");
    
    #ifdef DEBUG_MANEUVER_EXEC
    state = sat->GetState(0); // Get cartesian state
    MessageInterface::ShowMessage
-      (wxT("   state after  maneuver at epoch %f \n   %s"), epoch, state.ToString().c_str());
+      ("   state after  maneuver at epoch %f \n   %s", epoch, state.ToString().c_str());
    #endif
    
    firedOnce = true;
    BuildCommandSummary(true);
    
    #ifdef DEBUG_MANEUVER_EXEC
-      MessageInterface::ShowMessage(wxT("Maneuver::Execute this=<%p> complete\n"), this);
+      MessageInterface::ShowMessage("Maneuver::Execute this=<%p> complete\n", this);
    #endif
 
    return retval;
@@ -647,34 +647,34 @@ void Maneuver::BuildCommandSummaryString(bool commandCompleted)
 
    if (canSummarize)
    {
-      wxString data;
+      std::stringstream data;
 
-      data << wxT("\n")
-           << wxT("\n        Maneuver Summary")
-           << wxT("\n        -----------------")
-           << wxT("\n        Impulsive Burn:     ") << burnName
-           << wxT("\n        Spacecraft:         ") << burn->GetStringParameter(burn->GetParameterID(wxT("SpacecraftName")))
-           << wxT("\n        Coordinate System:  ") << burn->GetStringParameter(burn->GetParameterID(wxT("CoordinateSystem")))
-           << wxT("\n        Origin:             ") << burn->GetStringParameter(burn->GetParameterID(wxT("Origin")))
-           << wxT("\n        Axes:               ") << burn->GetStringParameter(burn->GetParameterID(wxT("Axes")))
+      data << "\n"
+           << "\n        Maneuver Summary"
+           << "\n        -----------------"
+           << "\n        Impulsive Burn:     " << burnName
+           << "\n        Spacecraft:         " << burn->GetStringParameter(burn->GetParameterID("SpacecraftName"))
+           << "\n        Coordinate System:  " << burn->GetStringParameter(burn->GetParameterID("CoordinateSystem"))
+           << "\n        Origin:             " << burn->GetStringParameter(burn->GetParameterID("Origin"))
+           << "\n        Axes:               " << burn->GetStringParameter(burn->GetParameterID("Axes"))
 
-           << wxT("\n        Burn Vector:")
-           << wxT("\n           Element 1:  ") << BuildNumber(burn->GetRealParameter(burn->GetParameterID(wxT("Element1"))))
-           << wxT("\n           Element 2:  ") << BuildNumber(burn->GetRealParameter(burn->GetParameterID(wxT("Element2"))))
-           << wxT("\n           Element 3:  ") << BuildNumber(burn->GetRealParameter(burn->GetParameterID(wxT("Element3"))))
-           << wxT("\n");
+           << "\n        Burn Vector:"
+           << "\n           Element 1:  " << BuildNumber(burn->GetRealParameter(burn->GetParameterID("Element1")))
+           << "\n           Element 2:  " << BuildNumber(burn->GetRealParameter(burn->GetParameterID("Element2")))
+           << "\n           Element 3:  " << BuildNumber(burn->GetRealParameter(burn->GetParameterID("Element3")))
+           << "\n";
 
-      if (burn->GetBooleanParameter(burn->GetParameterID(wxT("DecrementMass"))))
+      if (burn->GetBooleanParameter(burn->GetParameterID("DecrementMass")))
       {
          Real thrust, tx, ty, tz;
-         tx = burn->GetRealParameter(burn->GetParameterID(wxT("Element1")));
-         ty = burn->GetRealParameter(burn->GetParameterID(wxT("Element2")));
-         tz = burn->GetRealParameter(burn->GetParameterID(wxT("Element3")));
+         tx = burn->GetRealParameter(burn->GetParameterID("Element1"));
+         ty = burn->GetRealParameter(burn->GetParameterID("Element2"));
+         tz = burn->GetRealParameter(burn->GetParameterID("Element3"));
          thrust = GmatMathUtil::Sqrt(tx*tx + ty*ty + tz*tz);
 
          StringArray tanks =
-               burn->GetStringArrayParameter(burn->GetParameterID(wxT("Tank")));
-         wxString tanklist;
+               burn->GetStringArrayParameter(burn->GetParameterID("Tank"));
+         std::string tanklist;
 
          if (tanks.size() == 1)
             tanklist = tanks[0];
@@ -683,24 +683,24 @@ void Maneuver::BuildCommandSummaryString(bool commandCompleted)
             for (UnsignedInt i = 0; i < tanks.size(); ++i)
             {
                tanklist += tanks[i];
-               tanklist += wxT(", ");
+               tanklist += ", ";
                if (i == (tanks.size() - 2))
-                  tanklist += wxT("and ");
+                  tanklist += "and ";
             }
          }
 
-         data << wxT("\n        Mass depletion from ") << tanklist <<wxT(":  ")
-              << wxT("\n           Thrust:       ")    << BuildNumber(thrust) << wxT(" N")
-              << wxT("\n           Isp:          ")    << BuildNumber(burn->GetRealParameter(burn->GetParameterID(wxT("Isp")))) << wxT(" s")
-              << wxT("\n           Mass change:  ")    << BuildNumber(burn->GetRealParameter(burn->GetParameterID(wxT("DeltaTankMass")))) << wxT(" kg")
-              << wxT("\n");
+         data << "\n        Mass depletion from " << tanklist <<":  "
+              << "\n           Thrust:       "    << BuildNumber(thrust) << " N"
+              << "\n           Isp:          "    << BuildNumber(burn->GetRealParameter(burn->GetParameterID("Isp"))) << " s"
+              << "\n           Mass change:  "    << BuildNumber(burn->GetRealParameter(burn->GetParameterID("DeltaTankMass"))) << " kg"
+              << "\n";
 
       }
       else
-         data << wxT("\n")
-              << wxT("\n        No mass depletion\n");
+         data << "\n"
+              << "\n        No mass depletion\n";
 
 
-      commandSummary = commandSummary + data;
+      commandSummary = commandSummary + data.str();
    }
 }

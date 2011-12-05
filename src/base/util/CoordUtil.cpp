@@ -66,8 +66,8 @@ Real CoordUtil::MeanToTrueAnomaly(Real ma, Real ecc, Real tol)
    ret = CoordUtil::ComputeMeanToTrueAnomaly(ma, ecc, tol, &ta, &iter);
 
    if (ret > 0 )
-      throw UtilityException(wxT("CoordUtil::MeanToTrueAnomaly() Error converting ")
-                             wxT(" Mean Anomaly to True Anomaly\n"));
+      throw UtilityException("CoordUtil::MeanToTrueAnomaly() Error converting "
+                             " Mean Anomaly to True Anomaly\n");
    else
       return ta;
 }
@@ -213,9 +213,9 @@ Integer CoordUtil::ComputeMeanToTrueAnomaly(Real ma, Real ecc, Real tol,
          if (*iter > 1000)
          {
             throw UtilityException
-               (wxT("CoordUtil::ComputeMeanToTrueAnomaly() ")
-                wxT("Caught in infinite loop numerical argument ")
-                wxT("out of domain for sinh() and cosh()\n"));
+               ("CoordUtil::ComputeMeanToTrueAnomaly() "
+                "Caught in infinite loop numerical argument "
+                "out of domain for sinh() and cosh()\n");
          }
       }
 
@@ -265,9 +265,9 @@ Integer CoordUtil::ComputeCartToKepl(Real grav, Real r[3], Real v[3], Real *tfp,
                                      Real elem[6], Real *ma)
 {
    #ifdef DEBUG_CART_TO_KEPL
-      MessageInterface::ShowMessage(wxT("CoordUtil::ComputeCartToKepl called ... \n"));
-      MessageInterface::ShowMessage(wxT("   grav = %12.10f\n"), grav);
-      MessageInterface::ShowMessage(wxT("   KEP_ECC_TOL = %12.10f\n"), GmatOrbitConstants::KEP_ECC_TOL);
+      MessageInterface::ShowMessage("CoordUtil::ComputeCartToKepl called ... \n");
+      MessageInterface::ShowMessage("   grav = %12.10f\n", grav);
+      MessageInterface::ShowMessage("   KEP_ECC_TOL = %12.10f\n", GmatOrbitConstants::KEP_ECC_TOL);
    #endif
 
    if (Abs(grav) < 1E-30)
@@ -283,14 +283,14 @@ Integer CoordUtil::ComputeCartToKepl(Real grav, Real r[3], Real v[3], Real *tfp,
    Real h = angMomentum.GetMagnitude();
    #ifdef DEBUG_CART_TO_KEPL
       MessageInterface::ShowMessage(
-            wxT("   in ComputeCartToKepl, pos = %12.10f  %12.10f  %12.10f \n"), pos[0], pos[1], pos[2]);
+            "   in ComputeCartToKepl, pos = %12.10f  %12.10f  %12.10f \n", pos[0], pos[1], pos[2]);
       MessageInterface::ShowMessage(
-            wxT("   in ComputeCartToKepl, vel = %12.10f  %12.10f  %12.10f \n"), vel[0], vel[1], vel[2]);
+            "   in ComputeCartToKepl, vel = %12.10f  %12.10f  %12.10f \n", vel[0], vel[1], vel[2]);
       MessageInterface::ShowMessage(
-            wxT("   in ComputeCartToKepl, angMomentum = %12.10f  %12.10f  %12.10f\n"),
+            "   in ComputeCartToKepl, angMomentum = %12.10f  %12.10f  %12.10f\n",
             angMomentum[0], angMomentum[1], angMomentum[2]);
       MessageInterface::ShowMessage(
-            wxT("   in ComputeCartToKepl, h = %12.10f\n"), h);
+            "   in ComputeCartToKepl, h = %12.10f\n", h);
    #endif
    
 //   if (h < 1E-30)
@@ -316,28 +316,28 @@ Integer CoordUtil::ComputeCartToKepl(Real grav, Real r[3], Real v[3], Real *tfp,
    Real zeta = 0.5*velMag*velMag - grav/posMag;
    #ifdef DEBUG_CART_TO_KEPL
       MessageInterface::ShowMessage(
-            wxT("   in ComputeCartToKepl, nodeVec = %12.10f  %12.10f  %12.10f \n"),
+            "   in ComputeCartToKepl, nodeVec = %12.10f  %12.10f  %12.10f \n",
             nodeVec[0], nodeVec[1], nodeVec[2]);
       MessageInterface::ShowMessage(
-            wxT("   in ComputeCartToKepl, n = %12.10f\n"), n);
+            "   in ComputeCartToKepl, n = %12.10f\n", n);
       MessageInterface::ShowMessage(
-            wxT("   in ComputeCartToKepl, posMag = %12.10f\n"), posMag);
+            "   in ComputeCartToKepl, posMag = %12.10f\n", posMag);
       MessageInterface::ShowMessage(
-            wxT("   in ComputeCartToKepl, velMag = %12.10f\n"), velMag);
+            "   in ComputeCartToKepl, velMag = %12.10f\n", velMag);
       MessageInterface::ShowMessage(
-            wxT("   in ComputeCartToKepl, eccVec = %12.10f  %12.10f  %12.10f \n"), eccVec[0], eccVec[1], eccVec[2]);
+            "   in ComputeCartToKepl, eccVec = %12.10f  %12.10f  %12.10f \n", eccVec[0], eccVec[1], eccVec[2]);
       MessageInterface::ShowMessage(
-            wxT("   in ComputeCartToKepl, e = %12.10f\n"), e);
+            "   in ComputeCartToKepl, e = %12.10f\n", e);
       MessageInterface::ShowMessage(
-            wxT("   in ComputeCartToKepl, zeta = %12.10f\n"), zeta);
+            "   in ComputeCartToKepl, zeta = %12.10f\n", zeta);
       MessageInterface::ShowMessage(
-            wxT("   in ComputeCartToKepl, Abs(1.0 - e) = %12.10f\n"), Abs(1.0 - e));
+            "   in ComputeCartToKepl, Abs(1.0 - e) = %12.10f\n", Abs(1.0 - e));
    #endif
    
    if ((Abs(1.0 - e)) <= GmatOrbitConstants::KEP_ECC_TOL)
    {
-      wxString errmsg = wxT("Error in conversion to Keplerian state: ");
-      errmsg += wxT("The state results in an orbit that is nearly parabolic.\n");
+      std::string errmsg = "Error in conversion to Keplerian state: ";
+      errmsg += "The state results in an orbit that is nearly parabolic.\n";
       throw UtilityException(errmsg);
    } 
    
@@ -345,19 +345,19 @@ Integer CoordUtil::ComputeCartToKepl(Real grav, Real r[3], Real v[3], Real *tfp,
    Real sma = -grav/(2*zeta);
    #ifdef DEBUG_CART_TO_KEPL
       MessageInterface::ShowMessage(
-            wxT("   in ComputeCartToKepl, sma = %12.10f\n"), sma);
+            "   in ComputeCartToKepl, sma = %12.10f\n", sma);
    #endif
 
 
    if (Abs(sma*(1 - e)) < .001)
    {
       throw UtilityException
-      (wxT("Error in conversion from Cartesian to Keplerian state: ")
-       wxT("The state results in a singular conic section with radius of periapsis less than 1 m.\n"));
-//         (wxT("CoordUtil::CartesianToKeplerian() ")
-//          wxT("Warning: A nearly singular conic section was encountered while ")
-//          wxT("converting from the Cartesian state to the Keplerian elements.  The radius of ")
-//          wxT("periapsis must be greater than 1 meter.\n"));
+      ("Error in conversion from Cartesian to Keplerian state: "
+       "The state results in a singular conic section with radius of periapsis less than 1 m.\n");
+//         ("CoordUtil::CartesianToKeplerian() "
+//          "Warning: A nearly singular conic section was encountered while "
+//          "converting from the Cartesian state to the Keplerian elements.  The radius of "
+//          "periapsis must be greater than 1 meter.\n");
 
    }
    // eqn 4.11
@@ -365,8 +365,8 @@ Integer CoordUtil::ComputeCartToKepl(Real grav, Real r[3], Real v[3], Real *tfp,
    if (i >= PI - GmatOrbitConstants::KEP_TOL)
    {
       throw UtilityException
-         (wxT("Error in conversion to Keplerian state: ")
-          wxT("GMAT does not currently support orbits with inclination of 180 degrees.\n"));
+         ("Error in conversion to Keplerian state: "
+          "GMAT does not currently support orbits with inclination of 180 degrees.\n");
    } 
    Real raan, argPeriapsis, trueAnom;
    raan=argPeriapsis=trueAnom=0;
@@ -444,8 +444,8 @@ Integer CoordUtil::ComputeKeplToCart(Real grav, Real elem[6], Real r[3],
    if ((Abs(1.0 - ecc)) <= GmatOrbitConstants::KEP_ECC_TOL)
    {
       throw UtilityException
-         (wxT("Error in conversion from Keplerian state: ")
-          wxT("The state results in an orbit that is nearly parabolic.\n"));
+         ("Error in conversion from Keplerian state: "
+          "The state results in an orbit that is nearly parabolic.\n");
    } 
    
    // **************
@@ -469,13 +469,13 @@ Integer CoordUtil::ComputeKeplToCart(Real grav, Real elem[6], Real r[3],
    // radius near infinite
    //if (1-ecc*Cos(anom) < 1E-30) {
    #ifdef DEBUG_KEPL_TO_CART
-      MessageInterface::ShowMessage(wxT("ecc = %12.10f, anom = %12.10f, Cos(anom) = %12.10f, 1+ecc*Cos(anom) = %12.10f\n"),
+      MessageInterface::ShowMessage("ecc = %12.10f, anom = %12.10f, Cos(anom) = %12.10f, 1+ecc*Cos(anom) = %12.10f\n",
             ecc, anom, Cos(anom), (1+ecc*Cos(anom)));
    #endif
    if (Abs(1+ecc*Cos(anom)) < 1E-30)
    {
       MessageInterface::PopupMessage(Gmat::WARNING_,
-             wxT("Warning::Radius is near infinite in keplerian to cartesian conversion.\n"));
+             "Warning::Radius is near infinite in keplerian to cartesian conversion.\n");
       return 1;
    }
    
@@ -521,12 +521,12 @@ Rvector6 CoordUtil::CartesianToKeplerian(const Rvector6 &cartVec, const Real gra
     anomaly.SetECC(newKepl[1]);
     anomaly.SetValue(newKepl[5]);
    
-    if (anomaly.GetTypeString() == wxT("MA"))
+    if (anomaly.GetTypeString() == "MA")
     {
        newKepl[5] = ma;
        anomaly.SetValue(ma); 
     }
-    else if (anomaly.GetTypeString() == wxT("EA"))
+    else if (anomaly.GetTypeString() == "EA")
     {
        Anomaly tempAnomaly(newKepl[0], newKepl[1], newKepl[5], Anomaly::TA);
        newKepl[5] = tempAnomaly.GetEccentricAnomaly();
@@ -543,7 +543,7 @@ Rvector6 CoordUtil::CartesianToKeplerian(const Rvector6 &cartVec, const Real gra
 Rvector6 CoordUtil::CartesianToKeplerian(const Rvector6 &cartVec, Real grav, Real *ma)
 {
    #ifdef DEBUG_CART_TO_KEPL
-      MessageInterface::ShowMessage(wxT("CoordUtil::CartesianToKeplerian called ... \n"));
+      MessageInterface::ShowMessage("CoordUtil::CartesianToKeplerian called ... \n");
    #endif
 
    Real kepl[6];
@@ -558,16 +558,16 @@ Rvector6 CoordUtil::CartesianToKeplerian(const Rvector6 &cartVec, Real grav, Rea
    
    if(grav < 1.0)
    {
-      throw UtilityException(wxT("CoordUtil::CartesianToKeplerian() gravity constant ")
-                             wxT("too small for conversion to Keplerian elements\n"));
+      throw UtilityException("CoordUtil::CartesianToKeplerian() gravity constant "
+                             "too small for conversion to Keplerian elements\n");
    }
    else
    {
       cartVec.GetR(r);
       cartVec.GetV(v);
 
-      //MessageInterface::ShowMessage(wxT("CoordUtil::CartesianToKeplerian() r=%f, %f, %f ")
-      //                              wxT("v=%f, %f, %f\n"), r[0], r[1], r[2], v[0], v[1], v[2]);
+      //MessageInterface::ShowMessage("CoordUtil::CartesianToKeplerian() r=%f, %f, %f "
+      //                              "v=%f, %f, %f\n", r[0], r[1], r[2], v[0], v[1], v[2]);
       
       if (CoordUtil::IsRvValid(r,v))
       {
@@ -580,21 +580,21 @@ Rvector6 CoordUtil::CartesianToKeplerian(const Rvector6 &cartVec, Real grav, Rea
             break;
          case 2:
             throw UtilityException
-               (wxT("CoordUtil::CartesianToKeplerian() ")
-                wxT("Gravity constant too small for conversion to Keplerian elements\n"));
+               ("CoordUtil::CartesianToKeplerian() "
+                "Gravity constant too small for conversion to Keplerian elements\n");
          default:
             throw UtilityException
-               (wxT("CoordUtil::CartesianToKeplerian() ")
-                wxT("Unable to convert Cartesian elements to Keplerian\n"));
+               ("CoordUtil::CartesianToKeplerian() "
+                "Unable to convert Cartesian elements to Keplerian\n");
          }
       }
       else
       {
-         wxString ss;
-         //ss << cartVec;
+         std::stringstream ss;
+         ss << cartVec;
          throw UtilityException
-            (wxT("CoordUtil::CartesianToKeplerian() Invalid Cartesian elements:\n") +
-             ss);
+            ("CoordUtil::CartesianToKeplerian() Invalid Cartesian elements:\n" +
+             ss.str());
       }
    }
 
@@ -611,13 +611,13 @@ Rvector6 CoordUtil::CartesianToKeplerian(const Rvector6 &cartVec, Real grav, Rea
 Rvector6 CoordUtil::KeplerianToCartesian(const Rvector6 &keplVec, 
                                          const Real grav, Anomaly anomaly)
 {
-   if (anomaly.GetTypeString() == wxT("EA") || anomaly.GetTypeString() == wxT("HA"))
+   if (anomaly.GetTypeString() == "EA" || anomaly.GetTypeString() == "HA")
    {
       Rvector6 temp = keplVec;
       temp[5] = anomaly.GetTrueAnomaly();
       return KeplerianToCartesian(temp, grav, CoordUtil::TA);
    }
-   else if (anomaly.GetTypeString() == wxT("TA"))
+   else if (anomaly.GetTypeString() == "TA")
       return KeplerianToCartesian(keplVec, grav, CoordUtil::TA);
    
    else   //  mean anomaly
@@ -649,19 +649,19 @@ Rvector6 CoordUtil::KeplerianToCartesian(const Rvector6 &keplVec, Real grav,
    else if(kepl[1] < 0.0)
    {
       MessageInterface::ShowMessage
-         (wxT("CoordUtil::KeplerianToCartesian() ")
-          wxT("Can't have an eccentricity less than 0.0 (%g).")
-          wxT(" Will change the sign of the eccentricity.\n"), kepl[1]);
+         ("CoordUtil::KeplerianToCartesian() "
+          "Can't have an eccentricity less than 0.0 (%g)."
+          " Will change the sign of the eccentricity.\n", kepl[1]);
 
       kepl[1] *= -1.0;
    }
    else if((kepl[0] > 0.0) && (kepl[1] > 1.0))
    {
       MessageInterface::ShowMessage
-         (wxT("CoordUtil::KeplerianToCartesian() ")
-          wxT("Can't have a positive semimajor axis (%g)")
-          wxT(" with an eccentricity greater than 1.0 (%g).")
-          wxT(" Will change the sign of the semimajor axis.\n"),
+         ("CoordUtil::KeplerianToCartesian() "
+          "Can't have a positive semimajor axis (%g)"
+          " with an eccentricity greater than 1.0 (%g)."
+          " Will change the sign of the semimajor axis.\n",
           kepl[0], kepl[1]);
       
       kepl[0] *= -1.0;
@@ -669,10 +669,10 @@ Rvector6 CoordUtil::KeplerianToCartesian(const Rvector6 &keplVec, Real grav,
    else if((kepl[0] < 0.0) && (kepl[1] < 1.0))
    {
       MessageInterface::ShowMessage
-         (wxT("CoordUtil::KeplerianToCartesian() ")
-          wxT("Can't have a negative semimajor axis (%g)")
-          wxT(" with an eccentricity less than 1.0 (%g).")
-          wxT(" Will change the sign of the semimajor axis.\n"),
+         ("CoordUtil::KeplerianToCartesian() "
+          "Can't have a negative semimajor axis (%g)"
+          " with an eccentricity less than 1.0 (%g)."
+          " Will change the sign of the semimajor axis.\n",
           kepl[0], kepl[1]);
 
       kepl[0] *= -1.0;
@@ -688,32 +688,32 @@ Rvector6 CoordUtil::KeplerianToCartesian(const Rvector6 &keplVec, Real grav,
       if(grav < 1.0)
       {
          throw UtilityException
-            (wxT("CoordUtil::KeplerianToCartesian() ")
-             wxT("Gravity constant too small for conversion to Keplerian elements\n"));
+            ("CoordUtil::KeplerianToCartesian() "
+             "Gravity constant too small for conversion to Keplerian elements\n");
       }
       else if (kepl[1] == 1.0)
       {
          throw UtilityException
-            (wxT("CoordUtil::KeplerianToCartesian() ")
-             wxT("Conversion of parabolic state (ecc = 1) from ")
-             wxT("Keplerian to Cartesian not currently supported\n"));
+            ("CoordUtil::KeplerianToCartesian() "
+             "Conversion of parabolic state (ecc = 1) from "
+             "Keplerian to Cartesian not currently supported\n");
       }
       else
       {
          if(kepl[1] > 50.0)
          {
             MessageInterface::ShowMessage
-               (wxT("CoordUtil::KeplerianToCartesian() ")
-                wxT("Probable loss of precision in conversion ")
-                wxT("of hyperbolic Keplerian elements to Cartesian.\n"));
+               ("CoordUtil::KeplerianToCartesian() "
+                "Probable loss of precision in conversion "
+                "of hyperbolic Keplerian elements to Cartesian.\n");
          }
 
          // if the return code from a call to compute_kepl_to_cart is greater than zero
          if (CoordUtil::ComputeKeplToCart(grav, kepl, temp_r, temp_v, anomalyType) > 0)
          {
             throw UtilityException
-               (wxT("CoordUtil::KeplerianToCartesian() ")
-                wxT("Unable to convert Keplerian elements to Cartesian\n"));
+               ("CoordUtil::KeplerianToCartesian() "
+                "Unable to convert Keplerian elements to Cartesian\n");
          }
          else
          {

@@ -30,7 +30,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  Interface* CreateInterface(const wxString &ofType, const wxString &withName)
+//  Interface* CreateInterface(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested Interface class. 
@@ -41,8 +41,8 @@
  * @return A pointer to the created object.
  */
 //------------------------------------------------------------------------------
-Interface* InterfaceFactory::CreateInterface(const wxString &ofType,
-                                             const wxString &withName)
+Interface* InterfaceFactory::CreateInterface(const std::string &ofType,
+                                             const std::string &withName)
 {
    // There is no Interface to be created from base code
    // MatlabInterface is created from the MatlabInterfaceFactory
@@ -90,7 +90,7 @@ InterfaceFactory::InterfaceFactory(StringArray createList) :
 /**
  * This method creates an object of the class InterfaceFactory.  (copy constructor)
  *
- * @param <fact> the factory object to copy to wxT("this") factory.
+ * @param <fact> the factory object to copy to "this" factory.
  */
 //------------------------------------------------------------------------------
 InterfaceFactory::InterfaceFactory(const InterfaceFactory& fact) :
@@ -111,7 +111,7 @@ InterfaceFactory::InterfaceFactory(const InterfaceFactory& fact) :
  *
  * @param <fact> the InterfaceFactory object that is copied.
  *
- * @return wxT("this") InterfaceFactory with data set to match the input factory (fact).
+ * @return "this" InterfaceFactory with data set to match the input factory (fact).
  */
 //------------------------------------------------------------------------------
 InterfaceFactory& InterfaceFactory::operator=(const InterfaceFactory& fact)

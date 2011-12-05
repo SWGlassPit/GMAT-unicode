@@ -25,10 +25,10 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 MessageWindow::PARAMETER_TEXT[MessageWindowParamCount - SubscriberParamCount] =
 {
-   wxT("Precision")
+   "Precision"
 }; 
 
 const Gmat::ParameterType
@@ -46,17 +46,21 @@ MessageWindow::MessageWindow(const MessageWindow &mw)
 {
    // GmatBase data
    //parameterCount = MessageWindowParamCount;
+   dstream.precision(precision);
+   dstream.setf(std::ios::fixed);
 }
 
 //------------------------------------------------------------------------------
-// MessageWindow(const wxString &name)
+// MessageWindow(const std::string &name)
 //------------------------------------------------------------------------------
-MessageWindow::MessageWindow(const wxString &name)
-   : Subscriber (wxT("MessageWindow"), name),
+MessageWindow::MessageWindow(const std::string &name)
+   : Subscriber ("MessageWindow", name),
      precision  (10)
 {
    // GmatBase data
    parameterCount = MessageWindowParamCount;
+   dstream.precision(precision);
+   dstream.setf(std::ios::fixed);
 }
 
 //------------------------------------------------------------------------------
@@ -64,6 +68,7 @@ MessageWindow::MessageWindow(const wxString &name)
 //------------------------------------------------------------------------------
 MessageWindow::~MessageWindow(void)
 {
+    dstream.flush();
 }
 
 //------------------------------------------------------------------------------
@@ -71,7 +76,7 @@ MessageWindow::~MessageWindow(void)
 //------------------------------------------------------------------------------
 bool MessageWindow::Distribute(int len)
 {
-   dstream = wxT("");
+   dstream.str("");
    
    if (len == 0)
       //dstream << data;
@@ -80,7 +85,8 @@ bool MessageWindow::Distribute(int len)
       for (int i = 0; i < len; ++i)
          dstream << data[i];
    
-   MessageInterface::ShowMessage(dstream);
+   dstream.flush();
+   MessageInterface::ShowMessage(dstream.str());
    return true;
 }
 
@@ -89,7 +95,8 @@ bool MessageWindow::Distribute(int len)
 //------------------------------------------------------------------------------
 bool MessageWindow::Distribute(const Real * dat, Integer len)
 {
-    dstream = wxT("");
+    dstream.str("");
+    dstream.flush();
     
     if (len == 0)
     {
@@ -98,14 +105,14 @@ bool MessageWindow::Distribute(const Real * dat, Integer len)
     else
     {
         for (int i = 0; i < len-1; ++i)
-            dstream << dat[i] << wxT("  ");
+            dstream << dat[i] << "  ";
         
-        dstream << dat[len-1] << wxT("\n");
+        dstream << dat[len-1] << std::endl;
     }
 
-    MessageInterface::ShowMessage(dstream);
-    //dstream.str(wxT(""));
-    //dstream << wxT("line # ") << MessageInterface::GetNumberOfMessageLines() << wxT("\n");
+    MessageInterface::ShowMessage(dstream.str());
+    //dstream.str("");
+    //dstream << "line # " << MessageInterface::GetNumberOfMessageLines() << std::endl;
     //MessageInterface::ShowMessage(dstream.str());
     return true;
 }
@@ -127,9 +134,9 @@ GmatBase* MessageWindow::Clone() const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
-wxString MessageWindow::GetParameterText(const Integer id) const
+std::string MessageWindow::GetParameterText(const Integer id) const
 {
    if (id >= SubscriberParamCount && id < MessageWindowParamCount)
       return PARAMETER_TEXT[id - MessageWindowParamCount];
@@ -139,9 +146,9 @@ wxString MessageWindow::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer MessageWindow::GetParameterID(const wxString &str) const
+Integer MessageWindow::GetParameterID(const std::string &str) const
 {
    for (int i=SubscriberParamCount; i<MessageWindowParamCount; i++)
    {
@@ -166,9 +173,9 @@ Gmat::ParameterType MessageWindow::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
-wxString MessageWindow::GetParameterTypeString(const Integer id) const
+std::string MessageWindow::GetParameterTypeString(const Integer id) const
 {
    if (id >= SubscriberParamCount && id < MessageWindowParamCount)
       return GmatBase::PARAM_TYPE_STRING[GetParameterType(id - SubscriberParamCount)];
@@ -223,6 +230,7 @@ Integer MessageWindow::SetIntegerParameter(const Integer id, const Integer value
         if (value > 0)
         {
             precision = value;
+            dstream.precision(precision);
         }
         return precision;
     default:

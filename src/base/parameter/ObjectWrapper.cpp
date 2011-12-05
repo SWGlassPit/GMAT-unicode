@@ -53,7 +53,7 @@ ObjectWrapper::ObjectWrapper() :
  * Constructs base ObjectWrapper structures used in derived classes, by 
  * copying the input instance (copy constructor).
  *
- * @param <copy>  ObjectWrapper instance to copy to create wxT("this") instance.
+ * @param <copy>  ObjectWrapper instance to copy to create "this" instance.
  */
 //------------------------------------------------------------------------------
 ObjectWrapper::ObjectWrapper(const ObjectWrapper &copy) :
@@ -99,15 +99,15 @@ ObjectWrapper::~ObjectWrapper()
 
 
 //------------------------------------------------------------------------------
-// wxString ToString()
+// std::string ToString()
 //------------------------------------------------------------------------------
 /**
- * @return ObjectWrapper value converted to wxString.
+ * @return ObjectWrapper value converted to std::string.
  *
  * @exception <GmatBaseException> thrown if this method is called.
  */
 //------------------------------------------------------------------------------
-wxString ObjectWrapper::ToString()
+std::string ObjectWrapper::ToString()
 {
    return theObject->GetGeneratingString(Gmat::NO_COMMENTS);
 }
@@ -130,13 +130,13 @@ Gmat::ParameterType ObjectWrapper::GetDataType() const
 
 
 //---------------------------------------------------------------------------
-// GmatBase* GetRefObject(const wxString &name = wxT(""))
+// GmatBase* GetRefObject(const std::string &name = "")
 //---------------------------------------------------------------------------
 /*
  * @see ElementWrapper
  */
 //---------------------------------------------------------------------------
-GmatBase* ObjectWrapper::GetRefObject(const wxString &name)
+GmatBase* ObjectWrapper::GetRefObject(const std::string &name)
 {
    return theObject;
 }
@@ -165,7 +165,7 @@ bool ObjectWrapper::SetRefObject(GmatBase *obj)
 
 
 //---------------------------------------------------------------------------
-//  bool RenameObject(const wxString &oldName, const wxString &newName)
+//  bool RenameObject(const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /**
  * Method to rename a reference object for the wrapper.
@@ -173,8 +173,8 @@ bool ObjectWrapper::SetRefObject(GmatBase *obj)
  * @return true if successful; false otherwise.
  */
 //---------------------------------------------------------------------------
-bool ObjectWrapper::RenameObject(const wxString &oldName, 
-                                 const wxString &newName)
+bool ObjectWrapper::RenameObject(const std::string &oldName, 
+                                 const std::string &newName)
 {
    ElementWrapper::RenameObject(oldName, newName);
    description = refObjectNames[0];  
@@ -197,7 +197,7 @@ bool ObjectWrapper::RenameObject(const wxString &oldName,
 Real ObjectWrapper::EvaluateReal() const
 {
    throw ParameterException(
-      wxT("EvaluateReal() method not valid for wrapper of Object type.\n"));
+      "EvaluateReal() method not valid for wrapper of Object type.\n");
 }
 
 
@@ -215,7 +215,7 @@ Real ObjectWrapper::EvaluateReal() const
 bool ObjectWrapper::SetReal(const Real toValue)
 {
    throw ParameterException(
-      wxT("SetReal() method not valid for wrapper of Object type.\n"));
+      "SetReal() method not valid for wrapper of Object type.\n");
 }
 
 
@@ -250,11 +250,11 @@ bool ObjectWrapper::SetObject(GmatBase *obj)
    if (obj == NULL)
    {
       if (theObject == NULL)
-         throw ParameterException(wxT("Cannot set undefined object to undefined object"));
+         throw ParameterException("Cannot set undefined object to undefined object");
       else
          throw ParameterException
-            (wxT("Cannot set undefined object to object of type \"") +
-             theObject->GetTypeName() +  wxT("\""));         
+            ("Cannot set undefined object to object of type \"" +
+             theObject->GetTypeName() +  "\"");         
    }
    
    if (theObject != NULL)
@@ -264,7 +264,7 @@ bool ObjectWrapper::SetObject(GmatBase *obj)
       {
          #ifdef DEBUG_OBJECT_WRAPPER
          MessageInterface::ShowMessage
-            (wxT("ObjectWrapper::SetObject() fromType=%s, toType=%s\n"),
+            ("ObjectWrapper::SetObject() fromType=%s, toType=%s\n",
              obj->GetTypeName().c_str(), theObject->GetTypeName().c_str());
          #endif
          
@@ -273,15 +273,15 @@ bool ObjectWrapper::SetObject(GmatBase *obj)
       else
       {
          ParameterException pe;
-         pe.SetDetails(wxT("Cannot set object of type \"%s\" to object of type \"%s\""),
+         pe.SetDetails("Cannot set object of type \"%s\" to object of type \"%s\"",
                        obj->GetTypeName().c_str(), theObject->GetTypeName().c_str());
          throw pe;
       }
    }
    else
    {
-      throw ParameterException(wxT("Cannot set object \"") + obj->GetName() +
-                               wxT("\" to an undefined object"));
+      throw ParameterException("Cannot set object \"" + obj->GetName() +
+                               "\" to an undefined object");
    }
    
    return true;

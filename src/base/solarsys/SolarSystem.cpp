@@ -58,18 +58,18 @@ using namespace GmatSolarSystemDefaults;
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 SolarSystem::PARAMETER_TEXT[SolarSystemParamCount - GmatBaseParamCount] =
 {
-   wxT("BodiesInUse"),
-   wxT("NumberOfBodies"),
-   wxT("Ephemeris"),            // deprecated!!!!
-   wxT("EphemerisSource"),
-   wxT("DEFilename"),
-   wxT("SPKFilename"),
-   wxT("LSKFilename"),
-   wxT("UseTTForEphemeris"),
-   wxT("EphemerisUpdateInterval"),
+   "BodiesInUse",
+   "NumberOfBodies",
+   "Ephemeris",            // deprecated!!!!
+   "EphemerisSource",
+   "DEFilename",
+   "SPKFilename",
+   "LSKFilename",
+   "UseTTForEphemeris",
+   "EphemerisUpdateInterval",
 };
 
 const Gmat::ParameterType
@@ -86,79 +86,79 @@ SolarSystem::PARAMETER_TYPE[SolarSystemParamCount - GmatBaseParamCount] =
    Gmat::REAL_TYPE,
 };
 
-const wxString SolarSystem::SOLAR_SYSTEM_BARYCENTER_NAME = GmatSolarSystemDefaults::SOLAR_SYSTEM_BARYCENTER_NAME;
+const std::string SolarSystem::SOLAR_SYSTEM_BARYCENTER_NAME = GmatSolarSystemDefaults::SOLAR_SYSTEM_BARYCENTER_NAME;
 
 
-const wxString SolarSystem::SUN_NAME        = GmatSolarSystemDefaults::SUN_NAME;
+const std::string SolarSystem::SUN_NAME        = GmatSolarSystemDefaults::SUN_NAME;
 
-const wxString SolarSystem::MERCURY_NAME    = GmatSolarSystemDefaults::MERCURY_NAME;
+const std::string SolarSystem::MERCURY_NAME    = GmatSolarSystemDefaults::MERCURY_NAME;
 
-const wxString SolarSystem::VENUS_NAME      = GmatSolarSystemDefaults::VENUS_NAME;
+const std::string SolarSystem::VENUS_NAME      = GmatSolarSystemDefaults::VENUS_NAME;
 
-const wxString SolarSystem::EARTH_NAME      = GmatSolarSystemDefaults::EARTH_NAME;
-const wxString SolarSystem::MOON_NAME       = GmatSolarSystemDefaults::MOON_NAME;
+const std::string SolarSystem::EARTH_NAME      = GmatSolarSystemDefaults::EARTH_NAME;
+const std::string SolarSystem::MOON_NAME       = GmatSolarSystemDefaults::MOON_NAME;
 
-const wxString SolarSystem::MARS_NAME       = GmatSolarSystemDefaults::MARS_NAME;
-const wxString SolarSystem::PHOBOS_NAME     = GmatSolarSystemDefaults::PHOBOS_NAME;
-const wxString SolarSystem::DEIMOS_NAME     = GmatSolarSystemDefaults::DEIMOS_NAME;
+const std::string SolarSystem::MARS_NAME       = GmatSolarSystemDefaults::MARS_NAME;
+const std::string SolarSystem::PHOBOS_NAME     = GmatSolarSystemDefaults::PHOBOS_NAME;
+const std::string SolarSystem::DEIMOS_NAME     = GmatSolarSystemDefaults::DEIMOS_NAME;
 
-const wxString SolarSystem::JUPITER_NAME    = GmatSolarSystemDefaults::JUPITER_NAME;
-const wxString SolarSystem::METIS_NAME      = GmatSolarSystemDefaults::METIS_NAME;
-const wxString SolarSystem::ADRASTEA_NAME   = GmatSolarSystemDefaults::ADRASTEA_NAME;
-const wxString SolarSystem::AMALTHEA_NAME   = GmatSolarSystemDefaults::AMALTHEA_NAME;
-const wxString SolarSystem::THEBE_NAME      = GmatSolarSystemDefaults::THEBE_NAME;
-const wxString SolarSystem::IO_NAME         = GmatSolarSystemDefaults::IO_NAME;
-const wxString SolarSystem::EUROPA_NAME     = GmatSolarSystemDefaults::EUROPA_NAME;
-const wxString SolarSystem::GANYMEDE_NAME   = GmatSolarSystemDefaults::GANYMEDE_NAME;
-const wxString SolarSystem::CALLISTO_NAME   = GmatSolarSystemDefaults::CALLISTO_NAME;
+const std::string SolarSystem::JUPITER_NAME    = GmatSolarSystemDefaults::JUPITER_NAME;
+const std::string SolarSystem::METIS_NAME      = GmatSolarSystemDefaults::METIS_NAME;
+const std::string SolarSystem::ADRASTEA_NAME   = GmatSolarSystemDefaults::ADRASTEA_NAME;
+const std::string SolarSystem::AMALTHEA_NAME   = GmatSolarSystemDefaults::AMALTHEA_NAME;
+const std::string SolarSystem::THEBE_NAME      = GmatSolarSystemDefaults::THEBE_NAME;
+const std::string SolarSystem::IO_NAME         = GmatSolarSystemDefaults::IO_NAME;
+const std::string SolarSystem::EUROPA_NAME     = GmatSolarSystemDefaults::EUROPA_NAME;
+const std::string SolarSystem::GANYMEDE_NAME   = GmatSolarSystemDefaults::GANYMEDE_NAME;
+const std::string SolarSystem::CALLISTO_NAME   = GmatSolarSystemDefaults::CALLISTO_NAME;
 
-const wxString SolarSystem::SATURN_NAME     = GmatSolarSystemDefaults::SATURN_NAME;
-const wxString SolarSystem::PAN_NAME        = GmatSolarSystemDefaults::PAN_NAME;
-const wxString SolarSystem::ATLAS_NAME      = GmatSolarSystemDefaults::ATLAS_NAME;
-const wxString SolarSystem::PROMETHEUS_NAME = GmatSolarSystemDefaults::PROMETHEUS_NAME;
-const wxString SolarSystem::PANDORA_NAME    = GmatSolarSystemDefaults::PANDORA_NAME;
-const wxString SolarSystem::EPIMETHEUS_NAME = GmatSolarSystemDefaults::EPIMETHEUS_NAME;
-const wxString SolarSystem::JANUS_NAME      = GmatSolarSystemDefaults::JANUS_NAME;
-const wxString SolarSystem::MIMAS_NAME      = GmatSolarSystemDefaults::MIMAS_NAME;
-const wxString SolarSystem::ENCELADUS_NAME  = GmatSolarSystemDefaults::ENCELADUS_NAME;
-const wxString SolarSystem::TETHYS_NAME     = GmatSolarSystemDefaults::TETHYS_NAME;
-const wxString SolarSystem::TELESTO_NAME    = GmatSolarSystemDefaults::TELESTO_NAME;
-const wxString SolarSystem::CALYPSO_NAME    = GmatSolarSystemDefaults::CALYPSO_NAME;
-const wxString SolarSystem::DIONE_NAME      = GmatSolarSystemDefaults::DIONE_NAME;
-const wxString SolarSystem::HELENE_NAME     = GmatSolarSystemDefaults::HELENE_NAME;
-const wxString SolarSystem::RHEA_NAME       = GmatSolarSystemDefaults::RHEA_NAME;
-const wxString SolarSystem::TITAN_NAME      = GmatSolarSystemDefaults::TITAN_NAME;
-const wxString SolarSystem::IAPETUS_NAME    = GmatSolarSystemDefaults::IAPETUS_NAME;
-const wxString SolarSystem::PHOEBE_NAME     = GmatSolarSystemDefaults::PHOEBE_NAME;
+const std::string SolarSystem::SATURN_NAME     = GmatSolarSystemDefaults::SATURN_NAME;
+const std::string SolarSystem::PAN_NAME        = GmatSolarSystemDefaults::PAN_NAME;
+const std::string SolarSystem::ATLAS_NAME      = GmatSolarSystemDefaults::ATLAS_NAME;
+const std::string SolarSystem::PROMETHEUS_NAME = GmatSolarSystemDefaults::PROMETHEUS_NAME;
+const std::string SolarSystem::PANDORA_NAME    = GmatSolarSystemDefaults::PANDORA_NAME;
+const std::string SolarSystem::EPIMETHEUS_NAME = GmatSolarSystemDefaults::EPIMETHEUS_NAME;
+const std::string SolarSystem::JANUS_NAME      = GmatSolarSystemDefaults::JANUS_NAME;
+const std::string SolarSystem::MIMAS_NAME      = GmatSolarSystemDefaults::MIMAS_NAME;
+const std::string SolarSystem::ENCELADUS_NAME  = GmatSolarSystemDefaults::ENCELADUS_NAME;
+const std::string SolarSystem::TETHYS_NAME     = GmatSolarSystemDefaults::TETHYS_NAME;
+const std::string SolarSystem::TELESTO_NAME    = GmatSolarSystemDefaults::TELESTO_NAME;
+const std::string SolarSystem::CALYPSO_NAME    = GmatSolarSystemDefaults::CALYPSO_NAME;
+const std::string SolarSystem::DIONE_NAME      = GmatSolarSystemDefaults::DIONE_NAME;
+const std::string SolarSystem::HELENE_NAME     = GmatSolarSystemDefaults::HELENE_NAME;
+const std::string SolarSystem::RHEA_NAME       = GmatSolarSystemDefaults::RHEA_NAME;
+const std::string SolarSystem::TITAN_NAME      = GmatSolarSystemDefaults::TITAN_NAME;
+const std::string SolarSystem::IAPETUS_NAME    = GmatSolarSystemDefaults::IAPETUS_NAME;
+const std::string SolarSystem::PHOEBE_NAME     = GmatSolarSystemDefaults::PHOEBE_NAME;
 
-const wxString SolarSystem::URANUS_NAME     = GmatSolarSystemDefaults::URANUS_NAME;
-const wxString SolarSystem::CORDELIA_NAME   = GmatSolarSystemDefaults::CORDELIA_NAME;
-const wxString SolarSystem::OPHELIA_NAME    = GmatSolarSystemDefaults::OPHELIA_NAME;
-const wxString SolarSystem::BIANCA_NAME     = GmatSolarSystemDefaults::BIANCA_NAME;
-const wxString SolarSystem::CRESSIDA_NAME   = GmatSolarSystemDefaults::CRESSIDA_NAME;
-const wxString SolarSystem::DESDEMONA_NAME  = GmatSolarSystemDefaults::DESDEMONA_NAME;
-const wxString SolarSystem::JULIET_NAME     = GmatSolarSystemDefaults::JULIET_NAME;
-const wxString SolarSystem::PORTIA_NAME     = GmatSolarSystemDefaults::PORTIA_NAME;
-const wxString SolarSystem::ROSALIND_NAME   = GmatSolarSystemDefaults::ROSALIND_NAME;
-const wxString SolarSystem::BELINDA_NAME    = GmatSolarSystemDefaults::BELINDA_NAME;
-const wxString SolarSystem::PUCK_NAME       = GmatSolarSystemDefaults::PUCK_NAME;
-const wxString SolarSystem::MIRANDA_NAME    = GmatSolarSystemDefaults::MIRANDA_NAME;
-const wxString SolarSystem::ARIEL_NAME      = GmatSolarSystemDefaults::ARIEL_NAME;
-const wxString SolarSystem::UMBRIEL_NAME    = GmatSolarSystemDefaults::UMBRIEL_NAME;
-const wxString SolarSystem::TITANIA_NAME    = GmatSolarSystemDefaults::TITANIA_NAME;
-const wxString SolarSystem::OBERON_NAME     = GmatSolarSystemDefaults::OBERON_NAME;
+const std::string SolarSystem::URANUS_NAME     = GmatSolarSystemDefaults::URANUS_NAME;
+const std::string SolarSystem::CORDELIA_NAME   = GmatSolarSystemDefaults::CORDELIA_NAME;
+const std::string SolarSystem::OPHELIA_NAME    = GmatSolarSystemDefaults::OPHELIA_NAME;
+const std::string SolarSystem::BIANCA_NAME     = GmatSolarSystemDefaults::BIANCA_NAME;
+const std::string SolarSystem::CRESSIDA_NAME   = GmatSolarSystemDefaults::CRESSIDA_NAME;
+const std::string SolarSystem::DESDEMONA_NAME  = GmatSolarSystemDefaults::DESDEMONA_NAME;
+const std::string SolarSystem::JULIET_NAME     = GmatSolarSystemDefaults::JULIET_NAME;
+const std::string SolarSystem::PORTIA_NAME     = GmatSolarSystemDefaults::PORTIA_NAME;
+const std::string SolarSystem::ROSALIND_NAME   = GmatSolarSystemDefaults::ROSALIND_NAME;
+const std::string SolarSystem::BELINDA_NAME    = GmatSolarSystemDefaults::BELINDA_NAME;
+const std::string SolarSystem::PUCK_NAME       = GmatSolarSystemDefaults::PUCK_NAME;
+const std::string SolarSystem::MIRANDA_NAME    = GmatSolarSystemDefaults::MIRANDA_NAME;
+const std::string SolarSystem::ARIEL_NAME      = GmatSolarSystemDefaults::ARIEL_NAME;
+const std::string SolarSystem::UMBRIEL_NAME    = GmatSolarSystemDefaults::UMBRIEL_NAME;
+const std::string SolarSystem::TITANIA_NAME    = GmatSolarSystemDefaults::TITANIA_NAME;
+const std::string SolarSystem::OBERON_NAME     = GmatSolarSystemDefaults::OBERON_NAME;
 
-const wxString SolarSystem::NEPTUNE_NAME    = GmatSolarSystemDefaults::NEPTUNE_NAME;
-const wxString SolarSystem::NAIAD_NAME      = GmatSolarSystemDefaults::NAIAD_NAME;
-const wxString SolarSystem::THALASSA_NAME   = GmatSolarSystemDefaults::THALASSA_NAME;
-const wxString SolarSystem::DESPINA_NAME    = GmatSolarSystemDefaults::DESPINA_NAME;
-const wxString SolarSystem::GALATEA_NAME    = GmatSolarSystemDefaults::GALATEA_NAME;
-const wxString SolarSystem::LARISSA_NAME    = GmatSolarSystemDefaults::LARISSA_NAME;
-const wxString SolarSystem::PROTEUS_NAME    = GmatSolarSystemDefaults::PROTEUS_NAME;
-const wxString SolarSystem::TRITON_NAME     = GmatSolarSystemDefaults::TRITON_NAME;
+const std::string SolarSystem::NEPTUNE_NAME    = GmatSolarSystemDefaults::NEPTUNE_NAME;
+const std::string SolarSystem::NAIAD_NAME      = GmatSolarSystemDefaults::NAIAD_NAME;
+const std::string SolarSystem::THALASSA_NAME   = GmatSolarSystemDefaults::THALASSA_NAME;
+const std::string SolarSystem::DESPINA_NAME    = GmatSolarSystemDefaults::DESPINA_NAME;
+const std::string SolarSystem::GALATEA_NAME    = GmatSolarSystemDefaults::GALATEA_NAME;
+const std::string SolarSystem::LARISSA_NAME    = GmatSolarSystemDefaults::LARISSA_NAME;
+const std::string SolarSystem::PROTEUS_NAME    = GmatSolarSystemDefaults::PROTEUS_NAME;
+const std::string SolarSystem::TRITON_NAME     = GmatSolarSystemDefaults::TRITON_NAME;
 
-const wxString SolarSystem::PLUTO_NAME      = GmatSolarSystemDefaults::PLUTO_NAME;
-const wxString SolarSystem::CHARON_NAME     = GmatSolarSystemDefaults::CHARON_NAME;
+const std::string SolarSystem::PLUTO_NAME      = GmatSolarSystemDefaults::PLUTO_NAME;
+const std::string SolarSystem::CHARON_NAME     = GmatSolarSystemDefaults::CHARON_NAME;
 
 
 
@@ -178,24 +178,24 @@ const Integer               SolarSystem::PLANET_NUM_MAGNETIC_MODELS[NumberOfDefa
 const Integer               SolarSystem::PLANET_NUM_SHAPE_MODELS[NumberOfDefaultPlanets] =
    {  0,  0,  0,  0,  0,  0,  0,  0,  0};
 
-const wxString           SolarSystem::PLANET_GRAVITY_MODELS[] =
+const std::string           SolarSystem::PLANET_GRAVITY_MODELS[] =
 {
-   wxT("mercury2x0"),
-   wxT("mgn75hsaap"), wxT("shg120"),
-   wxT("JGM2"),       wxT("JGM3"),       wxT("EGM96"),
-   wxT("GMM-1"),
-   wxT("jupiter6x2"),
-   wxT("saturn8x0"),
-   wxT("uranus4x0"),
-   wxT("neptune4x0"),
+   "mercury2x0",
+   "mgn75hsaap", "shg120",
+   "JGM2",       "JGM3",       "EGM96",
+   "GMM-1",
+   "jupiter6x2",
+   "saturn8x0",
+   "uranus4x0",
+   "neptune4x0",
    // none for Pluto at this time
 };
 
-const wxString           SolarSystem::PLANET_ATMOSPHERE_MODELS[] =
+const std::string           SolarSystem::PLANET_ATMOSPHERE_MODELS[] =
 {
    // none for Mercury at this time
    // none for Venus at this time
-   wxT("Exponential"), wxT("MSISE90"),  wxT("Jacchia-Roberts"), wxT("Simple"),
+   "Exponential", "MSISE90",  "Jacchia-Roberts", "Simple",
    // none for Mars at this time
    // none for Jupiter at this time
    // none for Saturn at this time
@@ -204,9 +204,9 @@ const wxString           SolarSystem::PLANET_ATMOSPHERE_MODELS[] =
    // none for Pluto at this time
 };
 
-const wxString           SolarSystem::PLANET_MAGNETIC_MODELS[] =
+const std::string           SolarSystem::PLANET_MAGNETIC_MODELS[] =
 {
-   wxT("None")
+   "None"
    // none for Mercury at this time
    // none for Venus at this time
    // none for Earth at this time
@@ -218,9 +218,9 @@ const wxString           SolarSystem::PLANET_MAGNETIC_MODELS[] =
    // none for Pluto at this time
 };
 
-const wxString          SolarSystem::PLANET_SHAPE_MODELS[] =
+const std::string          SolarSystem::PLANET_SHAPE_MODELS[] =
 {
-   wxT("None")
+   "None"
    // none for Mercury at this time
    // none for Venus at this time
    // none for Earth at this time
@@ -269,24 +269,24 @@ const Integer               SolarSystem::MOON_NUM_SHAPE_MODELS[NumberOfDefaultMo
          //0, 0,
    };
 
-const wxString           SolarSystem::MOON_GRAVITY_MODELS[] =
+const std::string           SolarSystem::MOON_GRAVITY_MODELS[] =
 {
-   wxT("LP100"),
+   "LP100",
 };
 
-const wxString           SolarSystem::MOON_ATMOSPHERE_MODELS[] =
+const std::string           SolarSystem::MOON_ATMOSPHERE_MODELS[] =
 {
-   wxT("None")
+   "None"
 };
 
-const wxString           SolarSystem::MOON_MAGNETIC_MODELS[] =
+const std::string           SolarSystem::MOON_MAGNETIC_MODELS[] =
 {
-   wxT("None")
+   "None"
 };
 
-const wxString          SolarSystem::MOON_SHAPE_MODELS[] =
+const std::string          SolarSystem::MOON_SHAPE_MODELS[] =
 {
-   wxT("None")
+   "None"
 };
 //// default values for Planet data ------------------------  the Sun  ------------------------
 //
@@ -297,10 +297,10 @@ const Integer               SolarSystem::STAR_NUM_GRAVITY_MODELS = 0;
 const Integer               SolarSystem::STAR_NUM_ATMOSPHERE_MODELS = 0;
 const Integer               SolarSystem::STAR_NUM_MAGNETIC_MODELS = 0;
 const Integer               SolarSystem::STAR_NUM_SHAPE_MODELS = 0;
-const wxString           SolarSystem::STAR_GRAVITY_MODELS = wxT("None");
-const wxString           SolarSystem::STAR_ATMOSPHERE_MODELS = wxT("None");
-const wxString           SolarSystem::STAR_MAGNETIC_MODELS = wxT("None");
-const wxString           SolarSystem::STAR_SHAPE_MODELS = wxT("None"); // @todo add Shape Models
+const std::string           SolarSystem::STAR_GRAVITY_MODELS = "None";
+const std::string           SolarSystem::STAR_ATMOSPHERE_MODELS = "None";
+const std::string           SolarSystem::STAR_MAGNETIC_MODELS = "None";
+const std::string           SolarSystem::STAR_SHAPE_MODELS = "None"; // @todo add Shape Models
 
 
 // add other moons, asteroids, comets, as needed
@@ -318,20 +318,20 @@ const wxString           SolarSystem::STAR_SHAPE_MODELS = wxT("None"); // @todo 
 
 
 //------------------------------------------------------------------------------
-//  SolarSystem(wxString withName)
+//  SolarSystem(std::string withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates an object of the SolarSystem class (default constructor).
  *
  * @param <withName> optional parameter indicating the name of the solar
- *                   system (default is wxT("")).
+ *                   system (default is "").
  */
 //------------------------------------------------------------------------------
-SolarSystem::SolarSystem(wxString withName)
-   : GmatBase(Gmat::SOLAR_SYSTEM, wxT("SolarSystem"), withName)
+SolarSystem::SolarSystem(std::string withName)
+   : GmatBase(Gmat::SOLAR_SYSTEM, "SolarSystem", withName)
 {
    objectTypes.push_back(Gmat::SOLAR_SYSTEM);
-   objectTypeNames.push_back(wxT("SolarSystem"));
+   objectTypeNames.push_back("SolarSystem");
    parameterCount      = SolarSystemParamCount;
    pvSrcForAll         = Gmat::DE405;
    thePlanetaryEphem   = NULL;
@@ -341,7 +341,7 @@ SolarSystem::SolarSystem(wxString withName)
    planetarySPK   = new SpiceOrbitKernelReader();
    #ifdef DEBUG_SS_CREATE
    MessageInterface::ShowMessage
-      (wxT("SolarSystem::SolarSystem(default), this=<%p>, planetarySPK<%p> created\n"),
+      ("SolarSystem::SolarSystem(default), this=<%p>, planetarySPK<%p> created\n",
        this, planetarySPK);
    #endif
 #endif
@@ -352,20 +352,20 @@ SolarSystem::SolarSystem(wxString withName)
    // want to include the Create line either
    cloaking = true;
 
-   theSPKFilename             = wxT("");
-   lskKernelName              = wxT("");
+   theSPKFilename             = "";
+   lskKernelName              = "";
 
    FileManager *fm = FileManager::Instance();
-   wxString upperCaseName;
-   wxString filename, textureFile;
+   std::string upperCaseName;
+   std::string filename, textureFile;
 
    // create and add the default bodies
    // Assume only one Star for now : )
    Star* theSun     = new Star(SUN_NAME);
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Add
-      (theSun, theSun->GetName(), wxT("SolarSystem::SolarSystem()"),
-       wxT("Star* theSun = new Star(SUN_NAME)"));
+      (theSun, theSun->GetName(), "SolarSystem::SolarSystem()",
+       "Star* theSun = new Star(SUN_NAME)");
    #endif
    theSun->SetCentralBody(EARTH_NAME);  // central body here is a reference body
    theSun->SetSolarSystem(this);
@@ -379,30 +379,30 @@ SolarSystem::SolarSystem(wxString withName)
 //   theSun->SetHarmonicCoefficientsCij(STAR_CIJ);
    theSun->SetRadiantPower(STAR_RADIANT_POWER, STAR_REFERENCE_DISTANCE);
    theSun->SetPhotosphereRadius(STAR_PHOTOSPHERE_RADIUS);
-   theSun->SetIntegerParameter(theSun->GetParameterID(wxT("NAIFId")),STAR_NAIF_IDS);
+   theSun->SetIntegerParameter(theSun->GetParameterID("NAIFId"),STAR_NAIF_IDS);
 
    theSun->SetTwoBodyEpoch(STAR_TWO_BODY_EPOCH);
    theSun->SetTwoBodyElements(STAR_TWO_BODY_ELEMENTS);
-   theSun->AddValidModelName(Gmat::GRAVITY_FIELD,wxT("Other"));
-   theSun->AddValidModelName(Gmat::ATMOSPHERE_MODEL,wxT("Other"));
-   theSun->AddValidModelName(Gmat::MAGNETIC_FIELD,wxT("Other"));
+   theSun->AddValidModelName(Gmat::GRAVITY_FIELD,"Other");
+   theSun->AddValidModelName(Gmat::ATMOSPHERE_MODEL,"Other");
+   theSun->AddValidModelName(Gmat::MAGNETIC_FIELD,"Other");
 // @todo - add Shape models or remove these if not necessary
-   //         newPlanet->AddValidModelName(Gmat::SHAPE_MODEL,wxT("Other"));
+   //         newPlanet->AddValidModelName(Gmat::SHAPE_MODEL,"Other");
    // Set the orientation parameters for the body
    theSun->SetOrientationParameters(STAR_ORIENTATION_PARAMETERS);
    // find and set the texture map
    upperCaseName = GmatStringUtil::ToUpper(SUN_NAME);
-   filename      = upperCaseName + wxT("_TEXTURE_FILE");
+   filename      = upperCaseName + "_TEXTURE_FILE";
    try
    {
       textureFile   = fm->GetFullPathname(filename);
    }
    catch (UtilityException &)
    {
-      MessageInterface::ShowMessage(wxT("Texture map file is missing or unknown for default body %s\n"),
+      MessageInterface::ShowMessage("Texture map file is missing or unknown for default body %s\n",
                                     SUN_NAME.c_str());
    }
-   theSun->SetStringParameter(theSun->GetParameterID(wxT("TextureMapFileName")), textureFile);
+   theSun->SetStringParameter(theSun->GetParameterID("TextureMapFileName"), textureFile);
    // add the body to the default SolarSystem
    AddBody(theSun);
 
@@ -418,8 +418,8 @@ SolarSystem::SolarSystem(wxString withName)
       Planet *newPlanet = new Planet(PLANET_NAMES[ii], SUN_NAME);
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (newPlanet, newPlanet->GetName(), wxT("SolarSystem::SolarSystem()"),
-          wxT("Planet *newPlanet = new Planet()"));
+         (newPlanet, newPlanet->GetName(), "SolarSystem::SolarSystem()",
+          "Planet *newPlanet = new Planet()");
       #endif
       if (PLANET_NAMES[ii] == EARTH_NAME) theEarth = newPlanet;
       newPlanet->SetCentralBody(SUN_NAME);
@@ -440,36 +440,36 @@ SolarSystem::SolarSystem(wxString withName)
       for (Integer jj = 0; jj < PLANET_NUM_GRAVITY_MODELS[ii]; jj++)
          newPlanet->AddValidModelName(Gmat::GRAVITY_FIELD,
                     PLANET_GRAVITY_MODELS[indexGravityModels++]);
-      newPlanet->AddValidModelName(Gmat::GRAVITY_FIELD,wxT("Other"));
+      newPlanet->AddValidModelName(Gmat::GRAVITY_FIELD,"Other");
       for (Integer jj = 0; jj < PLANET_NUM_ATMOSPHERE_MODELS[ii]; jj++)
          newPlanet->AddValidModelName(Gmat::ATMOSPHERE_MODEL,
                     PLANET_ATMOSPHERE_MODELS[indexAtmosphereModels++]);
-      newPlanet->AddValidModelName(Gmat::ATMOSPHERE_MODEL,wxT("Other"));
+      newPlanet->AddValidModelName(Gmat::ATMOSPHERE_MODEL,"Other");
       for (Integer jj = 0; jj < PLANET_NUM_MAGNETIC_MODELS[ii]; jj++)
          newPlanet->AddValidModelName(Gmat::MAGNETIC_FIELD,
                     PLANET_MAGNETIC_MODELS[indexMagneticModels++]);
-      newPlanet->AddValidModelName(Gmat::MAGNETIC_FIELD,wxT("Other"));
+      newPlanet->AddValidModelName(Gmat::MAGNETIC_FIELD,"Other");
 // @todo - add Shape models or remove these if not necessary
 //      for (unsigned int jj = 0; jj < PLANET_NUM_SHAPE_MODELS[ii]; jj++)
 //         newPlanet->AddValidModelName(Gmat::SHAPE_MODEL,
 //                    PLANET_SHAPE_MODELS[indexShapeModels++]);
-      //         newPlanet->AddValidModelName(Gmat::SHAPE_MODEL,wxT("Other"));
+      //         newPlanet->AddValidModelName(Gmat::SHAPE_MODEL,"Other");
       // Set the orientation parameters for the body (Neptune is a special case - handled in the Planet class
       newPlanet->SetOrientationParameters(PLANET_ORIENTATION_PARAMETERS[ii]);
-      newPlanet->SetIntegerParameter(newPlanet->GetParameterID(wxT("NAIFId")),PLANET_NAIF_IDS[ii]);
+      newPlanet->SetIntegerParameter(newPlanet->GetParameterID("NAIFId"),PLANET_NAIF_IDS[ii]);
       // find and set the texture map
       upperCaseName = GmatStringUtil::ToUpper(PLANET_NAMES[ii]);
-      filename      = upperCaseName + wxT("_TEXTURE_FILE");
+      filename      = upperCaseName + "_TEXTURE_FILE";
       try
       {
          textureFile   = fm->GetFullPathname(filename);
       }
       catch (UtilityException &)
       {
-         MessageInterface::ShowMessage(wxT("Texture map file is missing or unknown for default body %s\n"),
+         MessageInterface::ShowMessage("Texture map file is missing or unknown for default body %s\n",
                                        (PLANET_NAMES[ii]).c_str());
       }
-      newPlanet->SetStringParameter(newPlanet->GetParameterID(wxT("TextureMapFileName")), textureFile);
+      newPlanet->SetStringParameter(newPlanet->GetParameterID("TextureMapFileName"), textureFile);
       // add the body to the default SolarSystem
       AddBody(newPlanet);
    }
@@ -484,8 +484,8 @@ SolarSystem::SolarSystem(wxString withName)
       Moon *newMoon = new Moon(MOON_NAMES[ii], MOON_CENTRAL_BODIES[ii]);
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (newMoon, newMoon->GetName(), wxT("SolarSystem::SolarSystem()"),
-          wxT("Moon *newMoon = new Moon()"));
+         (newMoon, newMoon->GetName(), "SolarSystem::SolarSystem()",
+          "Moon *newMoon = new Moon()");
       #endif
       newMoon->SetSource(MOON_POS_VEL_SOURCE[ii]);
       newMoon->SetEquatorialRadius(MOON_EQUATORIAL_RADIUS[ii]);
@@ -499,9 +499,9 @@ SolarSystem::SolarSystem(wxString withName)
       CelestialBody *central = FindBody(MOON_CENTRAL_BODIES[ii]);
       if (!central)
       {
-         wxString errMsg = wxT("Central body ") + MOON_CENTRAL_BODIES[ii];
-         errMsg += wxT(" must be created before moon ");
-         errMsg += MOON_NAMES[ii] + wxT("\n");
+         std::string errMsg = "Central body " + MOON_CENTRAL_BODIES[ii];
+         errMsg += " must be created before moon ";
+         errMsg += MOON_NAMES[ii] + "\n";
          throw SolarSystemException(errMsg);
       }
       newMoon->SetCentralBody(MOON_CENTRAL_BODIES[ii]);
@@ -525,31 +525,31 @@ SolarSystem::SolarSystem(wxString withName)
 //                    MOON_SHAPE_MODELS[indexShapeModels++]);
       // Set the orientation parameters for the body (Neptune is a special case - handled in the Planet class
       newMoon->SetOrientationParameters(PLANET_ORIENTATION_PARAMETERS[ii]);
-      newMoon->SetIntegerParameter(newMoon->GetParameterID(wxT("NAIFId")),MOON_NAIF_IDS[ii]);
+      newMoon->SetIntegerParameter(newMoon->GetParameterID("NAIFId"),MOON_NAIF_IDS[ii]);
       // find and set the texture map
       upperCaseName = GmatStringUtil::ToUpper(MOON_NAMES[ii]);
-      filename      = upperCaseName + wxT("_TEXTURE_FILE");
+      filename      = upperCaseName + "_TEXTURE_FILE";
       try
       {
          textureFile   = fm->GetFullPathname(filename);
       }
       catch (UtilityException &)
       {
-         MessageInterface::ShowMessage(wxT("Texture map file is missing or unknown for default body %s\n"),
+         MessageInterface::ShowMessage("Texture map file is missing or unknown for default body %s\n",
                                        (MOON_NAMES[ii]).c_str());
       }
-      newMoon->SetStringParameter(newMoon->GetParameterID(wxT("TextureMapFileName")), textureFile);
+      newMoon->SetStringParameter(newMoon->GetParameterID("TextureMapFileName"), textureFile);
       // add the body to the default SolarSystem
       AddBody(newMoon);
    }
 
    // Create special points
    #ifdef DEBUG_SS_CONSTRUCT_DESTRUCT
-      MessageInterface::ShowMessage(wxT("Now about to create the Barycenter special point ...\n"));
+      MessageInterface::ShowMessage("Now about to create the Barycenter special point ...\n");
    #endif
    // 1. Create the SolarSystemBarycenter
    SpecialCelestialPoint *ssb = new SpecialCelestialPoint(SOLAR_SYSTEM_BARYCENTER_NAME);
-   ssb->SetIntegerParameter(ssb->GetParameterID(wxT("NAIFId")), GmatSolarSystemDefaults::SSB_NAIF_ID);
+   ssb->SetIntegerParameter(ssb->GetParameterID("NAIFId"), GmatSolarSystemDefaults::SSB_NAIF_ID);
 //   ssb->SetGravitationalConstant(GmatSolarSystemDefaults::SSB_MU);
    ssb->SetSolarSystem(this);
 #ifdef __USE_SPICE__
@@ -558,12 +558,12 @@ SolarSystem::SolarSystem(wxString withName)
 #endif
    specialPoints[SOLAR_SYSTEM_BARYCENTER_NAME] = ssb;
    #ifdef DEBUG_SS_CONSTRUCT_DESTRUCT
-      MessageInterface::ShowMessage(wxT("Now DONE creating the Solar System Barycenter special point ...\n"));
+      MessageInterface::ShowMessage("Now DONE creating the Solar System Barycenter special point ...\n");
    #endif
 
 
    if (!theEarth)
-      throw SolarSystemException(wxT("The Earth not defined.\n"));
+      throw SolarSystemException("The Earth not defined.\n");
 
    // Set j2000body (LOJ: 2009.06.18)
    SetJ2000Body();
@@ -592,7 +592,7 @@ SolarSystem::SolarSystem(wxString withName)
    }
 
    #ifdef DEBUG_SS_CONSTRUCT_DESTRUCT
-      MessageInterface::ShowMessage(wxT("Just constructed a new SolarSystem with name %s at <%p>\n"),
+      MessageInterface::ShowMessage("Just constructed a new SolarSystem with name %s at <%p>\n",
             withName.c_str(), this);
    #endif
 }
@@ -632,7 +632,7 @@ SolarSystem::SolarSystem(const SolarSystem &ss) :
 
 {
    #ifdef DEBUG_SS_CONSTRUCT_DESTRUCT
-      MessageInterface::ShowMessage(wxT("Now starting the Solar System copy constructor ...\n"));
+      MessageInterface::ShowMessage("Now starting the Solar System copy constructor ...\n");
    #endif
    theDefaultDeFile  = NULL;
    parameterCount    = SolarSystemParamCount;
@@ -641,7 +641,7 @@ SolarSystem::SolarSystem(const SolarSystem &ss) :
    planetarySPK = (ss.planetarySPK)->Clone();
    #ifdef DEBUG_SS_CREATE
    MessageInterface::ShowMessage
-      (wxT("SolarSystem::SolarSystem(copy), this=<%p>, planetarySPK<%p> cloned\n"),
+      ("SolarSystem::SolarSystem(copy), this=<%p>, planetarySPK<%p> cloned\n",
        this, planetarySPK);
    #endif
 #endif
@@ -655,23 +655,23 @@ SolarSystem::SolarSystem(const SolarSystem &ss) :
 
    #ifdef DEBUG_SS_PLANETARY_FILE
    MessageInterface::ShowMessage
-      (wxT("SolarSystem::copy constructor() num ephem source types=%d\n"),
+      ("SolarSystem::copy constructor() num ephem source types=%d\n",
        thePlanetarySourceTypesInUse.size());
    for (UnsignedInt i=0; i<thePlanetarySourceTypesInUse.size(); i++)
       MessageInterface::ShowMessage
-         (wxT("   '%s'\n"), thePlanetarySourceTypesInUse[i].c_str());
+         ("   '%s'\n", thePlanetarySourceTypesInUse[i].c_str());
    #endif
 
    // set current planetary source
    SetPlanetarySourceTypesInUse(thePlanetarySourceTypesInUse);
 
    #ifdef DEBUG_SS_CONSTRUCT_DESTRUCT
-      MessageInterface::ShowMessage(wxT("Trying to clone the bodies and special points ...\n"));
+      MessageInterface::ShowMessage("Trying to clone the bodies and special points ...\n");
    #endif
    CloneBodiesInUse(ss, true);
    SetJ2000Body();
    #ifdef DEBUG_SS_CONSTRUCT_DESTRUCT
-      MessageInterface::ShowMessage(wxT("Now DONE with the Solar System copy constructor ...\n"));
+      MessageInterface::ShowMessage("Now DONE with the Solar System copy constructor ...\n");
    #endif
 }
 
@@ -682,10 +682,10 @@ SolarSystem::SolarSystem(const SolarSystem &ss) :
 /**
  * Assignment operator for the SolarSystem class.
  *
- * @param <ss> the solar system object whose data to assign to wxT("this")
+ * @param <ss> the solar system object whose data to assign to "this"
  *             solar system.
  *
- * @return wxT("this") solarsystem with data of input solarsystem ss.
+ * @return "this" solarsystem with data of input solarsystem ss.
  */
 //------------------------------------------------------------------------------
 SolarSystem& SolarSystem::operator=(const SolarSystem &ss)
@@ -719,7 +719,7 @@ SolarSystem& SolarSystem::operator=(const SolarSystem &ss)
    planetarySPK          = ss.planetarySPK;
    #ifdef DEBUG_SS_CREATE
    MessageInterface::ShowMessage
-      (wxT("SolarSystem::operator=(), this=<%p>, planetarySPK<%p> copied\n"),
+      ("SolarSystem::operator=(), this=<%p>, planetarySPK<%p> copied\n",
        this, planetarySPK);
    #endif
 #endif
@@ -749,7 +749,7 @@ SolarSystem& SolarSystem::operator=(const SolarSystem &ss)
 SolarSystem::~SolarSystem()
 {
    #ifdef DEBUG_SS_CONSTRUCT_DESTRUCT
-      MessageInterface::ShowMessage(wxT("Now destructing the SolarSystem with name %s at <%p>\n"),
+      MessageInterface::ShowMessage("Now destructing the SolarSystem with name %s at <%p>\n",
             instanceName.c_str(), this);
    #endif
       
@@ -757,7 +757,7 @@ SolarSystem::~SolarSystem()
    
    #ifdef DEBUG_SS_CLONING
    MessageInterface::ShowMessage
-      (wxT("SolarSystem::~SolarSystem() <%s> thePlanetaryEphem=%p, planetarySPK=<%p> \n"),
+      ("SolarSystem::~SolarSystem() <%s> thePlanetaryEphem=%p, planetarySPK=<%p> \n",
        GetName().c_str(), thePlanetaryEphem, planetarySPK);
    #endif
    
@@ -765,7 +765,7 @@ SolarSystem::~SolarSystem()
 //   {
 //      #ifdef DEBUG_SS_CLONING
 //      MessageInterface::ShowMessage
-//         (wxT("   deleting theDefaultSlpFile=%p\n"),  theDefaultSlpFile);
+//         ("   deleting theDefaultSlpFile=%p\n",  theDefaultSlpFile);
 //      #endif
 //
 //      delete theDefaultSlpFile;
@@ -775,7 +775,7 @@ SolarSystem::~SolarSystem()
    {
       #ifdef DEBUG_SS_CLONING
       MessageInterface::ShowMessage
-         (wxT("   deleting theDefaultDeFile=%p\n"), theDefaultDeFile);
+         ("   deleting theDefaultDeFile=%p\n", theDefaultDeFile);
       #endif
 
       // This call crashes Linux
@@ -798,16 +798,16 @@ bool SolarSystem::Initialize()
 {
    #ifdef DEBUG_SS_INIT
    MessageInterface::ShowMessage
-      (wxT("SolarSystem::Initialize() this=<%p> entered.\n")
-       wxT("There are %d bodies in use\n"), this, bodiesInUse.size());
+      ("SolarSystem::Initialize() this=<%p> entered.\n"
+       "There are %d bodies in use\n", this, bodiesInUse.size());
    for (UnsignedInt i = 0; i < bodiesInUse.size(); i++)
    {
       CelestialBody *cb = bodiesInUse[i];
       MessageInterface::ShowMessage
-         (wxT("   <%p>  %-9s %-10s\n"), cb, cb->GetTypeName().c_str(), cb->GetName().c_str());
+         ("   <%p>  %-9s %-10s\n", cb, cb->GetTypeName().c_str(), cb->GetName().c_str());
    }
    #ifdef __USE_SPICE__
-   MessageInterface::ShowMessage(wxT("   planetarySPK=<%p>\n"), planetarySPK);
+   MessageInterface::ShowMessage("   planetarySPK=<%p>\n", planetarySPK);
    #endif
    #endif
 
@@ -818,7 +818,7 @@ bool SolarSystem::Initialize()
    }
    catch (UtilityException &)
    {
-      wxString errmsg = wxT("ERROR loading the main Solar System ephemeris (SPK) or leap second (LSK) kernel.\n");
+      std::string errmsg = "ERROR loading the main Solar System ephemeris (SPK) or leap second (LSK) kernel.\n";
       throw SolarSystemException(errmsg);
    }
 #endif
@@ -830,7 +830,7 @@ bool SolarSystem::Initialize()
       ++cbi;
    }
    // Initialize the Special Points
-   std::map<wxString, SpecialCelestialPoint*>::iterator spi = specialPoints.begin();
+   std::map<std::string, SpecialCelestialPoint*>::iterator spi = specialPoints.begin();
    while (spi != specialPoints.end())
    {
       (spi->second)->Initialize();
@@ -852,7 +852,7 @@ bool SolarSystem::Initialize()
 void SolarSystem::CreatePlanetarySource(bool setDefault)
 {
    #ifdef DEBUG_SS_PLANETARY_FILE
-   MessageInterface::ShowMessage(wxT("SolarSystem initializing planetary source...\n"));
+   MessageInterface::ShowMessage("SolarSystem initializing planetary source...\n");
    #endif
 
    // initialize planetary source
@@ -870,39 +870,39 @@ void SolarSystem::CreatePlanetarySource(bool setDefault)
    {
       #ifdef DEBUG_SS_PLANETARY_FILE
       MessageInterface::ShowMessage(
-            wxT("SS::CreatePlanetarySource ... setting to defaults from file manager...\n"));
+            "SS::CreatePlanetarySource ... setting to defaults from file manager...\n");
       #endif
       FileManager *fm = FileManager::Instance();
 
       //initialize file names
-      thePlanetarySourceNames.push_back(wxT("N/A"));  // TwoBodyPropagation has no file associated with it
+      thePlanetarySourceNames.push_back("N/A");  // TwoBodyPropagation has no file associated with it
 
-      thePlanetarySourceNames.push_back(fm->GetFullPathname(wxT("DE405_FILE")));
+      thePlanetarySourceNames.push_back(fm->GetFullPathname("DE405_FILE"));
       if (spiceAvailable)
       {
-         wxString spkFullPath = fm->GetFullPathname(wxT("PLANETARY_SPK_FILE"));
+         std::string spkFullPath = fm->GetFullPathname("PLANETARY_SPK_FILE");
          if (!(GmatStringUtil::IsBlank(spkFullPath)))
          {
             SetSPKFile(spkFullPath);
             thePlanetarySourceNames.push_back(theSPKFilename);
          }
-         wxString lskFullPath = fm->GetFullPathname(wxT("LSK_FILE"));
+         std::string lskFullPath = fm->GetFullPathname("LSK_FILE");
          if (!(GmatStringUtil::IsBlank(lskFullPath)))
          {
             SetLSKFile(lskFullPath);
          }
          else
-            throw SolarSystemException(wxT("Unable to obtain Leap Second Kernel (LSK) full path name.  Please set LSK_FILE in start-up file.\n"));
+            throw SolarSystemException("Unable to obtain Leap Second Kernel (LSK) full path name.  Please set LSK_FILE in start-up file.\n");
       }
    }
    // Set planetary ephemeris source
    #ifdef DEBUG_SS_PLANETARY_FILE
-   MessageInterface::ShowMessage(wxT(" ... thePlanetarySourceNames are ... \n"));
+   MessageInterface::ShowMessage(" ... thePlanetarySourceNames are ... \n");
    for (unsigned int ii = 0; ii < thePlanetarySourceNames.size(); ii++)
-      MessageInterface::ShowMessage(wxT(" ... %d    %s\n"),
+      MessageInterface::ShowMessage(" ... %d    %s\n",
             (Integer) ii, (thePlanetarySourceNames.at(ii)).c_str());
    MessageInterface::ShowMessage(
-         wxT("SS::CreatePlanetarySource ... about to call SetDefaultPlanetarySource...\n"));
+         "SS::CreatePlanetarySource ... about to call SetDefaultPlanetarySource...\n");
    #endif
    SetDefaultPlanetarySource(); // do this each time ...
 }
@@ -950,19 +950,19 @@ const StringArray& SolarSystem::GetPlanetarySourceTypesInUse()
 
 
 //------------------------------------------------------------------------------
-// bool SetPlanetarySourceName(const wxString &sourceType,
-//                           const wxString &fileName)
+// bool SetPlanetarySourceName(const std::string &sourceType,
+//                           const std::string &fileName)
 //------------------------------------------------------------------------------
-bool SolarSystem::SetPlanetarySourceName(const wxString &sourceType,
-                                         const wxString &fileName)
+bool SolarSystem::SetPlanetarySourceName(const std::string &sourceType,
+                                         const std::string &fileName)
 {
    bool status = false;
    Integer id = GetPlanetarySourceId(sourceType);
    #ifdef DEBUG_SS_PLANETARY_FILE
       MessageInterface::ShowMessage(
-            wxT("In SS:SetPlanetarySourceName, sourceType = %s  and fileName = %s\n"),
+            "In SS:SetPlanetarySourceName, sourceType = %s  and fileName = %s\n",
             sourceType.c_str(), fileName.c_str());
-      MessageInterface::ShowMessage(wxT("   and id for that type = %d\n"), id);
+      MessageInterface::ShowMessage("   and id for that type = %d\n", id);
    #endif
 
    if (id >= 0)
@@ -989,16 +989,16 @@ bool SolarSystem::SetPlanetarySourceName(const wxString &sourceType,
 
 
 //------------------------------------------------------------------------------
-// wxString GetPlanetarySourceName(const wxString &sourceType)
+// std::string GetPlanetarySourceName(const std::string &sourceType)
 //------------------------------------------------------------------------------
-wxString SolarSystem::GetPlanetarySourceName(const wxString &sourceType)
+std::string SolarSystem::GetPlanetarySourceName(const std::string &sourceType)
 {
    Integer id = GetPlanetarySourceId(sourceType);
 
    if (id >= 0)
       return thePlanetarySourceNames[id];
    else
-      return wxT("Unknown Source Type");
+      return "Unknown Source Type";
 }
 
 
@@ -1018,10 +1018,10 @@ Integer SolarSystem::SetPlanetarySourceTypesInUse(const StringArray &sourceTypes
 {
    #ifdef DEBUG_SS_PLANETARY_FILE
    MessageInterface::ShowMessage
-      (wxT("SolarSystem::SetPlanetarySourceTypesInUse() num source types=%d\n"),
+      ("SolarSystem::SetPlanetarySourceTypesInUse() num source types=%d\n",
        sourceTypes.size());
    for (UnsignedInt i=0; i<sourceTypes.size(); i++)
-      MessageInterface::ShowMessage(wxT("   '%s'\n"), sourceTypes[i].c_str());
+      MessageInterface::ShowMessage("   '%s'\n", sourceTypes[i].c_str());
    #endif
 
    bool status = false;
@@ -1033,7 +1033,7 @@ Integer SolarSystem::SetPlanetarySourceTypesInUse(const StringArray &sourceTypes
    {
       #ifdef DEBUG_SS_PLANETARY_FILE
       MessageInterface::ShowMessage
-         (wxT("SolarSystem::SetPlanetarySourceTypesInUse() updating planetary source\n"));
+         ("SolarSystem::SetPlanetarySourceTypesInUse() updating planetary source\n");
       #endif
 
       thePlanetarySourceTypesInUse.clear();
@@ -1042,7 +1042,7 @@ Integer SolarSystem::SetPlanetarySourceTypesInUse(const StringArray &sourceTypes
       {
          #ifdef DEBUG_SS_PLANETARY_FILE
          MessageInterface::ShowMessage
-            (wxT("   and the input sourceTypes[%d] = %s\n"),
+            ("   and the input sourceTypes[%d] = %s\n",
                   (Integer) i, (sourceTypes.at(i)).c_str());
          #endif
          thePlanetarySourceTypesInUse.push_back(sourceTypes[i]);
@@ -1067,7 +1067,7 @@ Integer SolarSystem::SetPlanetarySourceTypesInUse(const StringArray &sourceTypes
       {
          #ifdef DEBUG_SS_PLANETARY_FILE
          MessageInterface::
-            ShowMessage(wxT("SolarSystem::SetPlanetarySourceTypesInUse() create DE405 (%s)\n"),
+            ShowMessage("SolarSystem::SetPlanetarySourceTypesInUse() create DE405 (%s)\n",
                   (thePlanetarySourceNames[Gmat::DE405]).c_str());
          #endif
 
@@ -1085,12 +1085,12 @@ Integer SolarSystem::SetPlanetarySourceTypesInUse(const StringArray &sourceTypes
       {
          #ifdef DEBUG_SS_PLANETARY_FILE
             MessageInterface::ShowMessage(
-                  wxT("SolarSystem::SetPlanetarySourceTypesInUse() SPICE selected\n"));
+                  "SolarSystem::SetPlanetarySourceTypesInUse() SPICE selected\n");
          #endif
          if ((!allowSpiceForDefaultBodies) || (!spiceAvailable))
          {
-            wxString errMsg = wxT("Cannot be selected for ephemeris source for entire solar system: \"");
-            errMsg += thePlanetarySourceTypesInUse[i] + wxT("\"\n");
+            std::string errMsg = "Cannot be selected for ephemeris source for entire solar system: \"";
+            errMsg += thePlanetarySourceTypesInUse[i] + "\"\n";
             throw SolarSystemException(errMsg);
          }
          thePlanetarySourcePriority[Gmat::SPICE] = HIGHEST_PRIORITY - i;
@@ -1101,8 +1101,8 @@ Integer SolarSystem::SetPlanetarySourceTypesInUse(const StringArray &sourceTypes
       }
       else
       {
-         wxString errMsg = wxT("Unknown planetary ephemeris source \"");
-         errMsg += thePlanetarySourceTypesInUse[i] + wxT("\"\n");
+         std::string errMsg = "Unknown planetary ephemeris source \"";
+         errMsg += thePlanetarySourceTypesInUse[i] + "\"\n";
          throw SolarSystemException(errMsg);
       }
    }
@@ -1110,16 +1110,16 @@ Integer SolarSystem::SetPlanetarySourceTypesInUse(const StringArray &sourceTypes
    // set SolarSystem to use the file
    if (sourceTypeInUse == -1)
    {
-      MessageInterface::ShowMessage(wxT("SolarSystem::SetPlanetarySourceTypesInUse() NO ")
-                                    wxT("Planetary file is set to use \n"));
+      MessageInterface::ShowMessage("SolarSystem::SetPlanetarySourceTypesInUse() NO "
+                                    "Planetary file is set to use \n");
       retCode = 0;
    }
    else
    {
       #ifdef DEBUG_SS_PLANETARY_FILE
       MessageInterface::
-         ShowMessage(wxT("SolarSystem::SetPlanetarySourceTypesInUse() ")
-                     wxT("Set Planetary Source to use:%d\n"), sourceTypeInUse);
+         ShowMessage("SolarSystem::SetPlanetarySourceTypesInUse() "
+                     "Set Planetary Source to use:%d\n", sourceTypeInUse);
       #endif
       switch (sourceTypeInUse)
       {
@@ -1134,7 +1134,7 @@ Integer SolarSystem::SetPlanetarySourceTypesInUse(const StringArray &sourceTypes
          break;
       case Gmat::SPICE:
          if (SetSource(Gmat::SPICE))
-            if (theSPKFilename != wxT(""))
+            if (theSPKFilename != "")
             {
                SetSPKFile(theSPKFilename);
             }
@@ -1173,7 +1173,7 @@ Integer SolarSystem::SetPlanetarySourceTypesInUse(const StringArray &sourceTypes
       for (unsigned int i=0; i<thePlanetarySourceTypesInUse.size(); i++)
       {
          MessageInterface::ShowMessage
-            (wxT("thePlanetarySourceTypesInUse[%d]=%s\n"), i,
+            ("thePlanetarySourceTypesInUse[%d]=%s\n", i,
              thePlanetarySourceTypesInUse[i].c_str());
       }
       #endif
@@ -1181,15 +1181,15 @@ Integer SolarSystem::SetPlanetarySourceTypesInUse(const StringArray &sourceTypes
 
    if (retCode > 0)
       MessageInterface::LogMessage
-         (wxT("Successfully set Planetary Source to use: %s\n"),
+         ("Successfully set Planetary Source to use: %s\n",
           Gmat::POS_VEL_SOURCE_STRINGS[sourceTypeInUse].c_str());
 
    theCurrentPlanetarySource = Gmat::POS_VEL_SOURCE_STRINGS[sourceTypeInUse];
 
    #ifdef DEBUG_SS_PLANETARY_FILE
    MessageInterface::ShowMessage
-      (wxT("SolarSystem::SetPlanetarySourceTypesInUse() returning %d, ")
-       wxT("theCurrentPlanetarySource is set to '%s'\n"), retCode,
+      ("SolarSystem::SetPlanetarySourceTypesInUse() returning %d, "
+       "theCurrentPlanetarySource is set to '%s'\n", retCode,
        theCurrentPlanetarySource.c_str());
    #endif
 
@@ -1197,9 +1197,9 @@ Integer SolarSystem::SetPlanetarySourceTypesInUse(const StringArray &sourceTypes
 }
 
 //------------------------------------------------------------------------------
-// Integer GetPlanetarySourceId(const wxString &sourceType)
+// Integer GetPlanetarySourceId(const std::string &sourceType)
 //------------------------------------------------------------------------------
-Integer SolarSystem::GetPlanetarySourceId(const wxString &sourceType)
+Integer SolarSystem::GetPlanetarySourceId(const std::string &sourceType)
 {
    for (int i=0; i<Gmat::PosVelSourceCount; i++)
    {
@@ -1212,9 +1212,9 @@ Integer SolarSystem::GetPlanetarySourceId(const wxString &sourceType)
 
 
 //------------------------------------------------------------------------------
-// wxString GetPlanetarySourceNameInUse()
+// std::string GetPlanetarySourceNameInUse()
 //------------------------------------------------------------------------------
-wxString SolarSystem::GetCurrentPlanetarySource()
+std::string SolarSystem::GetCurrentPlanetarySource()
 {
    return theCurrentPlanetarySource;
 }
@@ -1230,17 +1230,17 @@ void SolarSystem::SetIsSpiceAllowedForDefaultBodies(const bool allowSpice)
    {
 #ifdef DEBUG_SS_SPICE
    if ((*cbi)->IsUserDefined())
-      MessageInterface::ShowMessage(wxT("In SS, body %s is user-defined\n"),
+      MessageInterface::ShowMessage("In SS, body %s is user-defined\n",
             ((*cbi)->GetName()).c_str());
    else
-      MessageInterface::ShowMessage(wxT("In SS, setting allowSpice flag on body %s\n"),
+      MessageInterface::ShowMessage("In SS, setting allowSpice flag on body %s\n",
             ((*cbi)->GetName()).c_str());
 #endif
       if (!((*cbi)->IsUserDefined())) (*cbi)->SetAllowSpice(allowSpiceForDefaultBodies);
       ++cbi;
    }
    // Set the flag on special points as well
-   std::map<wxString, SpecialCelestialPoint*>::iterator spi = specialPoints.begin();
+   std::map<std::string, SpecialCelestialPoint*>::iterator spi = specialPoints.begin();
    while (spi != specialPoints.end())
    {
       (spi->second)->SetAllowSpice(allowSpiceForDefaultBodies);
@@ -1274,17 +1274,17 @@ void SolarSystem::LoadSpiceKernels()
       planetarySPK->LoadKernel(theSPKFilename);
       #ifdef DEBUG_SS_SPICE
       MessageInterface::ShowMessage
-         (wxT("   kernelReader has successfully loaded the SPK file %s\n"), theSPKFilename.c_str());
+         ("   kernelReader has successfully loaded the SPK file %s\n", theSPKFilename.c_str());
       #endif
    }
    catch (UtilityException&)
    {
       // try again with path name if no path found
-      wxString spkName = theSPKFilename;
-      if (spkName.find(wxT("/")) == spkName.npos &&
-          spkName.find(wxT("\\")) == spkName.npos)
+      std::string spkName = theSPKFilename;
+      if (spkName.find("/") == spkName.npos &&
+          spkName.find("\\") == spkName.npos)
       {
-         wxString spkPath =
+         std::string spkPath =
             FileManager::Instance()->GetFullPathname(FileManager::SPK_PATH);
          spkName = spkPath + spkName;
          try
@@ -1292,20 +1292,20 @@ void SolarSystem::LoadSpiceKernels()
             planetarySPK->LoadKernel(spkName);
             #ifdef DEBUG_SS_SPICE
             MessageInterface::ShowMessage
-               (wxT("   kernelReader has loaded file %s\n"), spkName.c_str());
+               ("   kernelReader has loaded file %s\n", spkName.c_str());
             #endif
          }
          catch (UtilityException&)
          {
-            MessageInterface::ShowMessage(wxT("ERROR loading kernel %s\n"),
+            MessageInterface::ShowMessage("ERROR loading kernel %s\n",
                spkName.c_str());
             throw; // rethrow the exception, for now
          }
       }
       else
       {
-         wxString errmsg = wxT("Error loading the SPICE Planetary Ephemeris (SPK) Kernel \"");
-         errmsg += theSPKFilename + wxT("\"\n");
+         std::string errmsg = "Error loading the SPICE Planetary Ephemeris (SPK) Kernel \"";
+         errmsg += theSPKFilename + "\"\n";
          throw SolarSystemException(errmsg);
       }
    }
@@ -1316,47 +1316,47 @@ void SolarSystem::LoadSpiceKernels()
       planetarySPK->SetLeapSecondKernel(lskKernelName);
       #ifdef DEBUG_SS_SPICE
       MessageInterface::ShowMessage
-         (wxT("   kernelReader has successfully loaded the LSK file %s\n"), lskKernelName.c_str());
+         ("   kernelReader has successfully loaded the LSK file %s\n", lskKernelName.c_str());
       #endif
    }
    catch (UtilityException&)
    {
       #ifdef DEBUG_SS_SPICE
       MessageInterface::ShowMessage
-         (wxT("   kernelReader has NOT successfully loaded the LSK file %s - exception thrown\n"), lskKernelName.c_str());
+         ("   kernelReader has NOT successfully loaded the LSK file %s - exception thrown\n", lskKernelName.c_str());
       #endif
       // try again with path name if no path found
-      wxString lskName = lskKernelName;
-      if (lskName.find(wxT("/")) == lskName.npos &&
-          lskName.find(wxT("\\")) == lskName.npos)
+      std::string lskName = lskKernelName;
+      if (lskName.find("/") == lskName.npos &&
+          lskName.find("\\") == lskName.npos)
       {
-         wxString lskPath =
+         std::string lskPath =
             FileManager::Instance()->GetFullPathname(FileManager::TIME_PATH);
          lskName = lskPath + lskName;
          try
          {
             #ifdef DEBUG_SS_SPICE
             MessageInterface::ShowMessage
-               (wxT("   kernelReader now trying to load the LSK file %s\n"), lskName.c_str());
+               ("   kernelReader now trying to load the LSK file %s\n", lskName.c_str());
             #endif
             planetarySPK->SetLeapSecondKernel(lskName);
 //            planetarySPK->LoadKernel(lskName);
             #ifdef DEBUG_SS_SPICE
             MessageInterface::ShowMessage
-               (wxT("   kernelReader has loaded LSK file %s\n"), lskName.c_str());
+               ("   kernelReader has loaded LSK file %s\n", lskName.c_str());
             #endif
          }
          catch (UtilityException&)
          {
-            MessageInterface::ShowMessage(wxT("ERROR loading kernel %s - rethrowing exception\n"),
+            MessageInterface::ShowMessage("ERROR loading kernel %s - rethrowing exception\n",
                lskName.c_str());
             throw; // rethrow the exception, for now
          }
       }
       else
       {
-         wxString errmsg = wxT("Error loading the SPICE Leap Second Kernel \"");
-         errmsg += lskKernelName + wxT("\"\n");
+         std::string errmsg = "Error loading the SPICE Leap Second Kernel \"";
+         errmsg += lskKernelName + "\"\n";
          throw SolarSystemException(errmsg);
       }
    }
@@ -1376,7 +1376,7 @@ void SolarSystem::ResetToDefaults()
 {
    #ifdef DEBUG_SS_DEFAULTS
    MessageInterface::ShowMessage
-      (wxT("SolarSystem::ResetToDefaults() <%p> '%s' entered\n"), this, GetName().c_str());
+      ("SolarSystem::ResetToDefaults() <%p> '%s' entered\n", this, GetName().c_str());
    #endif
 
    pvSrcForAll         = Gmat::DE405;
@@ -1396,7 +1396,7 @@ void SolarSystem::ResetToDefaults()
    }
 
    // Reset the Special Points as well
-   std::map<wxString, SpecialCelestialPoint*>::iterator spi = specialPoints.begin();
+   std::map<std::string, SpecialCelestialPoint*>::iterator spi = specialPoints.begin();
    while (spi != specialPoints.end())
    {
       (spi->second)->SetSource(pvSrcForAll);
@@ -1424,7 +1424,7 @@ bool SolarSystem::AddBody(CelestialBody* cb)
 {
    #ifdef DEBUG_SS_ADD_BODY
    MessageInterface::ShowMessage
-      (wxT("SolarSystem::AddBody() this=<%p> '%s' entered\n"), this, GetName().c_str());
+      ("SolarSystem::AddBody() this=<%p> '%s' entered\n", this, GetName().c_str());
    #endif
 
    if (cb == NULL)
@@ -1440,7 +1440,7 @@ bool SolarSystem::AddBody(CelestialBody* cb)
 
    #ifdef DEBUG_SS_ADD_BODY
    MessageInterface::ShowMessage
-      (wxT("   %s, Added <%p> %s\n"), GetName().c_str(), cb, cb->GetName().c_str());
+      ("   %s, Added <%p> %s\n", GetName().c_str(), cb, cb->GetName().c_str());
    #endif
 
    // Set the source, source file, and override flag for the new body
@@ -1457,7 +1457,7 @@ bool SolarSystem::AddBody(CelestialBody* cb)
    // Set the SpiceKernelReader for the new body
    #ifdef __USE_SPICE__
       #ifdef DEBUG_SS_INIT
-         MessageInterface::ShowMessage(wxT("Now about to set SPKreader on user-defined body %s\n"),
+         MessageInterface::ShowMessage("Now about to set SPKreader on user-defined body %s\n",
                (cb->GetName()).c_str());
       #endif
      // Set the kernel reader on the celestial bodies
@@ -1468,7 +1468,7 @@ bool SolarSystem::AddBody(CelestialBody* cb)
 }
 
 //------------------------------------------------------------------------------
-//  CelestialBody* GetBody(wxString withName)
+//  CelestialBody* GetBody(std::string withName)
 //------------------------------------------------------------------------------
 /**
  * This method returns a pointer to the requested celestial body.
@@ -1479,12 +1479,12 @@ bool SolarSystem::AddBody(CelestialBody* cb)
  *
  */
 //------------------------------------------------------------------------------
-CelestialBody* SolarSystem::GetBody(wxString withName)
+CelestialBody* SolarSystem::GetBody(std::string withName)
 {
    return FindBody(withName);
 }
 
-bool SolarSystem::DeleteBody(const wxString &withName)
+bool SolarSystem::DeleteBody(const std::string &withName)
 {
    // Search through bodiesInUse for the body with the name withName
    std::vector<CelestialBody*>::iterator cbi = bodiesInUse.begin();
@@ -1497,8 +1497,8 @@ bool SolarSystem::DeleteBody(const wxString &withName)
          
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (bodyToDelete, bodyToDelete->GetName(), wxT("SolarSystem::DeleteBody()"),
-             wxT(" delete bodyToDelete"));
+            (bodyToDelete, bodyToDelete->GetName(), "SolarSystem::DeleteBody()",
+             " delete bodyToDelete");
          #endif
          delete bodyToDelete;
          
@@ -1515,9 +1515,9 @@ bool SolarSystem::DeleteBody(const wxString &withName)
    return false;
 }
 
-SpecialCelestialPoint* SolarSystem::GetSpecialPoint(const wxString &withName)
+SpecialCelestialPoint* SolarSystem::GetSpecialPoint(const std::string &withName)
 {
-   std::map<wxString, SpecialCelestialPoint*>::iterator spi;
+   std::map<std::string, SpecialCelestialPoint*>::iterator spi;
    for (spi = specialPoints.begin(); spi != specialPoints.end(); ++spi)
    {
       if (spi->first == withName)   return spi->second;
@@ -1526,7 +1526,7 @@ SpecialCelestialPoint* SolarSystem::GetSpecialPoint(const wxString &withName)
 }
 
 //------------------------------------------------------------------------------
-//  bool IsBodyInUse(wxString theBody)
+//  bool IsBodyInUse(std::string theBody)
 //------------------------------------------------------------------------------
 /**
  * This method returns a flag indicating whether the specified celestial body
@@ -1538,7 +1538,7 @@ SpecialCelestialPoint* SolarSystem::GetSpecialPoint(const wxString &withName)
  *
  */
 //------------------------------------------------------------------------------
-bool SolarSystem::IsBodyInUse(wxString theBody)
+bool SolarSystem::IsBodyInUse(std::string theBody)
 {
    // Search through bodiesInUse for the body with the name withName
    std::vector<CelestialBody*>::iterator cbi = bodiesInUse.begin();
@@ -1580,7 +1580,7 @@ Gmat::PosVelSource   SolarSystem::GetPosVelSource() const
 
 
 //------------------------------------------------------------------------------
-//  wxString GetSourceFileName() const
+//  std::string GetSourceFileName() const
 //------------------------------------------------------------------------------
 /**
  * This method returns the source file name for the bodies in
@@ -1590,9 +1590,9 @@ Gmat::PosVelSource   SolarSystem::GetPosVelSource() const
  *
  */
 //------------------------------------------------------------------------------
-wxString SolarSystem::GetSourceFileName() const
+std::string SolarSystem::GetSourceFileName() const
 {
-   if (thePlanetaryEphem == NULL) return wxT("");
+   if (thePlanetaryEphem == NULL) return "";
    return thePlanetaryEphem->GetName();
 }
 
@@ -1616,10 +1616,10 @@ Real SolarSystem::GetEphemUpdateInterval() const
 
 
 //------------------------------------------------------------------------------
-// StringArray GetValidModelList(Gmat::ModelType m, const wxString &forBody)
+// StringArray GetValidModelList(Gmat::ModelType m, const std::string &forBody)
 //------------------------------------------------------------------------------
 StringArray SolarSystem::GetValidModelList(Gmat::ModelType m,
-                         const wxString &forBody)
+                         const std::string &forBody)
 {
    for (std::vector<CelestialBody*>::iterator i = bodiesInUse.begin();
         i != bodiesInUse.end(); ++i)
@@ -1627,7 +1627,7 @@ StringArray SolarSystem::GetValidModelList(Gmat::ModelType m,
       if ((*i)->GetName() == forBody)
          return (*i)->GetValidModelList(m);
    }
-   throw SolarSystemException(wxT("Model list requested for unknown body ")
+   throw SolarSystemException("Model list requested for unknown body "
                                + forBody);
 }
 
@@ -1648,7 +1648,7 @@ StringArray SolarSystem::GetValidModelList(Gmat::ModelType m,
 bool SolarSystem::SetSource(Gmat::PosVelSource pvSrc)
 {
    #ifdef DEBUG_SS_PLANETARY_FILE
-      MessageInterface::ShowMessage(wxT("Setting Solar System ephem source to %d (%s)\n"),
+      MessageInterface::ShowMessage("Setting Solar System ephem source to %d (%s)\n",
             (Integer) pvSrc, (Gmat::POS_VEL_SOURCE_STRINGS[pvSrc]).c_str());
    #endif
 
@@ -1664,7 +1664,7 @@ bool SolarSystem::SetSource(Gmat::PosVelSource pvSrc)
       ++cbi;
    }
    // Set the source flag on all of the special points as well
-   std::map<wxString, SpecialCelestialPoint*>::iterator spi = specialPoints.begin();
+   std::map<std::string, SpecialCelestialPoint*>::iterator spi = specialPoints.begin();
    while (spi != specialPoints.end())
    {
       if ((spi->second)->SetSource(pvSrc) == false)  return false;
@@ -1672,22 +1672,22 @@ bool SolarSystem::SetSource(Gmat::PosVelSource pvSrc)
    }
 
    pvSrcForAll = pvSrc;
-   wxString srcStr = wxT("");
+   std::string srcStr = "";
    for (Integer ii = 0; ii < Gmat::PosVelSourceCount; ii++)
       if (pvSrc == ii)
       {
          srcStr = Gmat::POS_VEL_SOURCE_STRINGS[ii];
          break;
       }
-   if (srcStr == wxT(""))
-      throw SolarSystemException(wxT("Error setting source for Solar System - unknown source\n"));
+   if (srcStr == "")
+      throw SolarSystemException("Error setting source for Solar System - unknown source\n");
 
    theCurrentPlanetarySource = srcStr;
    return true;
 }
 
 //------------------------------------------------------------------------------
-//  bool SetSource(const wxString &pvSrc)
+//  bool SetSource(const std::string &pvSrc)
 //------------------------------------------------------------------------------
 /**
  * This method sets the source for the bodies in
@@ -1699,7 +1699,7 @@ bool SolarSystem::SetSource(Gmat::PosVelSource pvSrc)
  *
  */
 //------------------------------------------------------------------------------
-bool SolarSystem::SetSource(const wxString &pvSrc)
+bool SolarSystem::SetSource(const std::string &pvSrc)
 {
    Gmat::PosVelSource theSrc = Gmat::PosVelSourceCount;
    for (Integer i = 0; i < Gmat::PosVelSourceCount; i++)
@@ -1708,7 +1708,7 @@ bool SolarSystem::SetSource(const wxString &pvSrc)
          theSrc = (Gmat::PosVelSource) i;
    }
    if (theSrc == Gmat::PosVelSourceCount)
-      throw SolarSystemException(wxT("Unknown ephemeris source ") + pvSrc);
+      throw SolarSystemException("Unknown ephemeris source " + pvSrc);
 
    // Search through bodiesInUse and set the source for all
    return SetSource(theSrc);
@@ -1737,7 +1737,7 @@ bool SolarSystem::SetSourceFile(PlanetaryEphem *src)
 
    #ifdef DEBUG_SS_PLANETARY_FILE
    MessageInterface::ShowMessage
-      (wxT("SolarSystem::SetSourceFile() Setting source file to <%p>\n   %s\n"), src,
+      ("SolarSystem::SetSourceFile() Setting source file to <%p>\n   %s\n", src,
        src->GetName().c_str(), src);
    #endif
 
@@ -1752,7 +1752,7 @@ bool SolarSystem::SetSourceFile(PlanetaryEphem *src)
    }
 
    // Set the file on each of the special points
-   std::map<wxString, SpecialCelestialPoint*>::iterator spi = specialPoints.begin();
+   std::map<std::string, SpecialCelestialPoint*>::iterator spi = specialPoints.begin();
    while (spi != specialPoints.end())
    {
       if ((spi->second)->SetSourceFile(thePlanetaryEphem) == false) return false;
@@ -1764,24 +1764,24 @@ bool SolarSystem::SetSourceFile(PlanetaryEphem *src)
 
 
 //------------------------------------------------------------------------------
-// bool SolarSystem::SetSPKFile(const wxString &spkFile)
+// bool SolarSystem::SetSPKFile(const std::string &spkFile)
 //------------------------------------------------------------------------------
-bool SolarSystem::SetSPKFile(const wxString &spkFile)
+bool SolarSystem::SetSPKFile(const std::string &spkFile)
 {
-   wxString fullSpkName = spkFile;
+   std::string fullSpkName = spkFile;
    if (!(GmatFileUtil::DoesFileExist(spkFile)))
    {
       // try again with path name from startup file
-      wxString spkPath = FileManager::Instance()->GetPathname(wxT("PLANETARY_SPK_FILE"));
+      std::string spkPath = FileManager::Instance()->GetPathname("PLANETARY_SPK_FILE");
       
-      if (GmatFileUtil::ParsePathName(spkFile) == wxT(""))
+      if (GmatFileUtil::ParsePathName(spkFile) == "")
          fullSpkName = spkPath + fullSpkName;
       
       if (!(GmatFileUtil::DoesFileExist(fullSpkName)))
       {
          SolarSystemException sse;
          sse.SetDetails(errorMessageFormat.c_str(),
-                        spkFile.c_str(), wxT("SPKFilename"), wxT("File must exist"));
+                        spkFile.c_str(), "SPKFilename", "File must exist");
          throw sse;
       }
    }
@@ -1792,23 +1792,23 @@ bool SolarSystem::SetSPKFile(const wxString &spkFile)
 
 
 //------------------------------------------------------------------------------
-// bool SetLSKFile(const wxString &lskFile)
+// bool SetLSKFile(const std::string &lskFile)
 //------------------------------------------------------------------------------
-bool SolarSystem::SetLSKFile(const wxString &lskFile)
+bool SolarSystem::SetLSKFile(const std::string &lskFile)
 {
-   wxString fullLskName = lskFile;
+   std::string fullLskName = lskFile;
    if (!(GmatFileUtil::DoesFileExist(lskFile)))
    {
-      wxString lskPath = FileManager::Instance()->GetPathname(wxT("LSK_FILE"));
+      std::string lskPath = FileManager::Instance()->GetPathname("LSK_FILE");
       
-      if (GmatFileUtil::ParsePathName(lskFile) == wxT(""))
+      if (GmatFileUtil::ParsePathName(lskFile) == "")
          fullLskName = lskPath + fullLskName;
       
       if (!(GmatFileUtil::DoesFileExist(fullLskName)))
       {
          SolarSystemException sse;
          sse.SetDetails(errorMessageFormat.c_str(),
-                        lskFile.c_str(), wxT("LSKFilename"), wxT("File must exist"));
+                        lskFile.c_str(), "LSKFilename", "File must exist");
          throw sse;
       }
    }
@@ -1833,7 +1833,7 @@ bool SolarSystem::SetOverrideTimeSystem(bool overrideIt)
 {
    #ifdef DEBUG_SS_SET
    MessageInterface::ShowMessage
-      (wxT("SolarSystem::SetOverrideTimeSystem() <%p> '%s' entered, overrideIt=%d\n"),
+      ("SolarSystem::SetOverrideTimeSystem() <%p> '%s' entered, overrideIt=%d\n",
        this, GetName().c_str(), overrideIt);
    #endif
 
@@ -1845,7 +1845,7 @@ bool SolarSystem::SetOverrideTimeSystem(bool overrideIt)
       ++cbi;
    }
    // Set it for each of the special points
-   std::map<wxString, SpecialCelestialPoint*>::iterator spi = specialPoints.begin();
+   std::map<std::string, SpecialCelestialPoint*>::iterator spi = specialPoints.begin();
    while (spi != specialPoints.end())
    {
       if ((spi->second)->SetOverrideTimeSystem(overrideIt) == false)  return false;
@@ -1866,7 +1866,7 @@ bool SolarSystem::SetEphemUpdateInterval(Real intvl)
       SolarSystemException sse;
       sse.SetDetails(errorMessageFormat.c_str(),
                      GmatStringUtil::ToString(intvl, GetDataPrecision()).c_str(),
-                     wxT("Ephemeris Update Interval"), wxT("Real Number >= 0.0"));
+                     "Ephemeris Update Interval", "Real Number >= 0.0");
       throw sse;
    }
 
@@ -1878,7 +1878,7 @@ bool SolarSystem::SetEphemUpdateInterval(Real intvl)
       ++cbi;
    }
    // Set it for each of the special points
-   std::map<wxString, SpecialCelestialPoint*>::iterator spi = specialPoints.begin();
+   std::map<std::string, SpecialCelestialPoint*>::iterator spi = specialPoints.begin();
    while (spi != specialPoints.end())
    {
       if ((spi->second)->SetEphemUpdateInterval(intvl) == false)  return false;
@@ -1890,12 +1890,12 @@ bool SolarSystem::SetEphemUpdateInterval(Real intvl)
 
 
 //------------------------------------------------------------------------------
-// bool AddValidModelName(Gmat::ModelType m, const wxString &forBody,
-//                        const wxString &theModel)
+// bool AddValidModelName(Gmat::ModelType m, const std::string &forBody,
+//                        const std::string &theModel)
 //------------------------------------------------------------------------------
 bool SolarSystem::AddValidModelName(Gmat::ModelType m,
-                  const wxString &forBody,
-                  const wxString &theModel)
+                  const std::string &forBody,
+                  const std::string &theModel)
 {
    for (std::vector<CelestialBody*>::iterator i = bodiesInUse.begin();
         i != bodiesInUse.end(); ++i)
@@ -1903,18 +1903,18 @@ bool SolarSystem::AddValidModelName(Gmat::ModelType m,
       if ((*i)->GetName() == forBody)
          return (*i)->AddValidModelName(m, theModel);
    }
-   throw SolarSystemException(wxT("Cannot set new model for unknown body ")
+   throw SolarSystemException("Cannot set new model for unknown body "
                               + forBody);
 }
 
 //------------------------------------------------------------------------------
 // bool SolarSystem::RemoveValidModelName(Gmat::ModelType m,
-//                  const wxString & forBody,
-//                  const wxString &theModel)
+//                  const std::string & forBody,
+//                  const std::string &theModel)
 //------------------------------------------------------------------------------
 bool SolarSystem::RemoveValidModelName(Gmat::ModelType m,
-                  const wxString & forBody,
-                  const wxString &theModel)
+                  const std::string & forBody,
+                  const std::string &theModel)
 {
    for (std::vector<CelestialBody*>::iterator i = bodiesInUse.begin();
         i != bodiesInUse.end(); ++i)
@@ -1922,22 +1922,22 @@ bool SolarSystem::RemoveValidModelName(Gmat::ModelType m,
       if ((*i)->GetName() == forBody)
          return (*i)->RemoveValidModelName(m, theModel);
    }
-   throw SolarSystemException(wxT("Cannot remove model for unknown body ")
+   throw SolarSystemException("Cannot remove model for unknown body "
                               + forBody);
 }
 
 //------------------------------------------------------------------------------
-// Rvector6 SolarSystem::GetCelestialBodyState(const wxString &bodyName,
+// Rvector6 SolarSystem::GetCelestialBodyState(const std::string &bodyName,
 //                       CoordinateSystem *cs, const A1Mjd &epoch)
 //------------------------------------------------------------------------------
-Rvector6 SolarSystem::GetCelestialBodyState(const wxString &bodyName,
+Rvector6 SolarSystem::GetCelestialBodyState(const std::string &bodyName,
                                            CoordinateSystem *cs, const A1Mjd &epoch)
 {
    // check to see if the body is a valid celestial body in this solar system
    if (!IsBodyInUse(bodyName))
    {
-      wxString errmsg = wxT("GetCelestialBodyState:: Body \"");
-      errmsg += bodyName + wxT("\" is not in use.\n");
+      std::string errmsg = "GetCelestialBodyState:: Body \"";
+      errmsg += bodyName + "\" is not in use.\n";
       throw SolarSystemException(errmsg);
    }
    CelestialBody *body  = GetBody(bodyName);
@@ -1979,7 +1979,7 @@ SolarSystem* SolarSystem::Clone() const
    SolarSystem * clonedSS = new SolarSystem(*this);
    
    #ifdef DEBUG_SS_CONSTRUCT_DESTRUCT
-      MessageInterface::ShowMessage(wxT("Now cloning a new SolarSystem from <%p> to <%p>\n"),
+      MessageInterface::ShowMessage("Now cloning a new SolarSystem from <%p> to <%p>\n",
             this, clonedSS);
    #endif
 
@@ -2028,19 +2028,19 @@ void SolarSystem::Copy(const GmatBase* orig)
 
          #ifdef DEBUG_SS_COPY
          MessageInterface::ShowMessage
-            (wxT("   Copied %s from <%p> to <%p>\n"), cb->GetName().c_str(), cb, body);
+            ("   Copied %s from <%p> to <%p>\n", cb->GetName().c_str(), cb, body);
          #endif
       }
       else
       {
          SolarSystemException ss;
-         ss.SetDetails(wxT("%s not found in the solar system named ")
-                       wxT("\"%s\"\n"), cb->GetName().c_str(), GetName().c_str());
+         ss.SetDetails("%s not found in the solar system named "
+                       "\"%s\"\n", cb->GetName().c_str(), GetName().c_str());
          throw ss;
       }
    }
    // copy the Special Points
-   for (std::map<wxString, SpecialCelestialPoint*>::const_iterator spi = ss->specialPoints.begin();
+   for (std::map<std::string, SpecialCelestialPoint*>::const_iterator spi = ss->specialPoints.begin();
         spi != ss->specialPoints.end(); ++spi)
    {
       SpecialCelestialPoint *sp = spi->second;
@@ -2052,8 +2052,8 @@ void SolarSystem::Copy(const GmatBase* orig)
       else
       {
          SolarSystemException ss;
-         ss.SetDetails(wxT("Special Point %s not found in the solar system named ")
-                       wxT("\"%s\"\n"), ((spi->first).c_str()), GetName().c_str());
+         ss.SetDetails("Special Point %s not found in the solar system named "
+                       "\"%s\"\n", ((spi->first).c_str()), GetName().c_str());
          throw ss;
       }
    }
@@ -2061,7 +2061,7 @@ void SolarSystem::Copy(const GmatBase* orig)
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -2072,7 +2072,7 @@ void SolarSystem::Copy(const GmatBase* orig)
  *
  */
 //------------------------------------------------------------------------------
-wxString SolarSystem::GetParameterText(const Integer id) const
+std::string SolarSystem::GetParameterText(const Integer id) const
 {
    if (id >= GmatBaseParamCount && id < SolarSystemParamCount)
       return PARAMETER_TEXT[id - GmatBaseParamCount];
@@ -2080,7 +2080,7 @@ wxString SolarSystem::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -2091,7 +2091,7 @@ wxString SolarSystem::GetParameterText(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer SolarSystem::GetParameterID(const wxString &str) const
+Integer SolarSystem::GetParameterID(const std::string &str) const
 {
    for (Integer i = GmatBaseParamCount; i < SolarSystemParamCount; i++)
    {
@@ -2123,7 +2123,7 @@ Gmat::ParameterType SolarSystem::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -2134,7 +2134,7 @@ Gmat::ParameterType SolarSystem::GetParameterType(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString SolarSystem::GetParameterTypeString(const Integer id) const
+std::string SolarSystem::GetParameterTypeString(const Integer id) const
 {
    return SolarSystem::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -2161,7 +2161,7 @@ Integer SolarSystem::GetIntegerParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer  GetIntegerParameter(const wxString &label) const
+//  Integer  GetIntegerParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
 * This method returns the Integer parameter value, given the input
@@ -2173,7 +2173,7 @@ Integer SolarSystem::GetIntegerParameter(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer SolarSystem::GetIntegerParameter(const wxString &label) const
+Integer SolarSystem::GetIntegerParameter(const std::string &label) const
 {
    return GetIntegerParameter(GetParameterID(label));
 }
@@ -2190,9 +2190,9 @@ Real SolarSystem::GetRealParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label) const
+// Real GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-Real SolarSystem::GetRealParameter(const wxString &label) const
+Real SolarSystem::GetRealParameter(const std::string &label) const
 {
    return GetRealParameter(GetParameterID(label));
 }
@@ -2212,9 +2212,9 @@ Real SolarSystem::SetRealParameter(const Integer id, const Real value)
 
 
 //------------------------------------------------------------------------------
-// Real SetRealParameter(const wxString &label, const Real value)
+// Real SetRealParameter(const std::string &label, const Real value)
 //------------------------------------------------------------------------------
-Real SolarSystem::SetRealParameter(const wxString &label, const Real value)
+Real SolarSystem::SetRealParameter(const std::string &label, const Real value)
 {
    return SetRealParameter(GetParameterID(label),value);
 }
@@ -2231,9 +2231,9 @@ bool SolarSystem::GetBooleanParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// bool GetBooleanParameter(const wxString &label) const
+// bool GetBooleanParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-bool SolarSystem::GetBooleanParameter(const wxString &label) const
+bool SolarSystem::GetBooleanParameter(const std::string &label) const
 {
    return GetBooleanParameter(GetParameterID(label));
 }
@@ -2246,7 +2246,7 @@ bool SolarSystem::SetBooleanParameter(const Integer id, const bool value)
 {
    #ifdef DEBUG_SS_SET
    MessageInterface::ShowMessage
-      (wxT("SolarSystem::SetBooleanParameter() this=<%p> entered\n"), this);
+      ("SolarSystem::SetBooleanParameter() this=<%p> entered\n", this);
    #endif
 
    if (id == OVERRIDE_TIME_SYSTEM)
@@ -2259,15 +2259,15 @@ bool SolarSystem::SetBooleanParameter(const Integer id, const bool value)
 
 
 //------------------------------------------------------------------------------
-// bool SetBooleanParameter(const wxString &label, const bool value)
+// bool SetBooleanParameter(const std::string &label, const bool value)
 //------------------------------------------------------------------------------
-bool SolarSystem::SetBooleanParameter(const wxString &label, const bool value)
+bool SolarSystem::SetBooleanParameter(const std::string &label, const bool value)
 {
    return SetBooleanParameter(GetParameterID(label), value);
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id) const
+//  std::string  GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -2279,7 +2279,7 @@ bool SolarSystem::SetBooleanParameter(const wxString &label, const bool value)
  *
  */
 //------------------------------------------------------------------------------
-wxString SolarSystem::GetStringParameter(const Integer id) const
+std::string SolarSystem::GetStringParameter(const Integer id) const
 {
    if (id == EPHEMERIS)        return theCurrentPlanetarySource; // deprecated!!!!
    if (id == EPHEMERIS_SOURCE) return theCurrentPlanetarySource;    // pvSrcForAll (string of)?
@@ -2292,7 +2292,7 @@ wxString SolarSystem::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const wxString &label) const
+//  std::string  GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -2304,35 +2304,35 @@ wxString SolarSystem::GetStringParameter(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString SolarSystem::GetStringParameter(const wxString &label) const
+std::string SolarSystem::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 bool SolarSystem::SetStringParameter(const Integer id,
-                                     const wxString &value)
+                                     const std::string &value)
 {
    if (id == EPHEMERIS)
    {
-      StringArray parts = GmatStringUtil::SeparateBy(value, wxT("{}, "));
+      StringArray parts = GmatStringUtil::SeparateBy(value, "{}, ");
 
       #ifdef DEBUG_SS_SET
       MessageInterface::ShowMessage
-         (wxT("SolarSystem::SetStringParameter() Has %d ephemeris types\n"), parts.size());
+         ("SolarSystem::SetStringParameter() Has %d ephemeris types\n", parts.size());
       for (UnsignedInt i=0; i<parts.size(); i++)
          MessageInterface::ShowMessage
-            (wxT("   ephemType[%d] = '%s'\n"), i, parts[i].c_str());
+            ("   ephemType[%d] = '%s'\n", i, parts[i].c_str());
       #endif
-      wxString  validSrc      = wxT("");
+      std::string  validSrc      = "";
       bool         validSrcFound = false;
       unsigned int pos           = 0;
       while ((!validSrcFound) && pos < parts.size())
       {
-         validSrc = GmatStringUtil::RemoveAll(parts[pos], wxT('\''));
+         validSrc = GmatStringUtil::RemoveAll(parts[pos], '\'');
          for (unsigned int jj = 0; jj < Gmat::PosVelSourceCount; jj++)
          {
             if (validSrc == Gmat::POS_VEL_SOURCE_STRINGS[jj])
@@ -2346,18 +2346,18 @@ bool SolarSystem::SetStringParameter(const Integer id,
       if (validSrcFound)
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** \"Ephemeris\" is deprecated and will be ")
-             wxT("removed from a future build; please use \"EphemerisSource\" ")
-             wxT("instead.\nSetting ephemeris source to first valid source in list - \"%s\".\n"),
+            ("*** WARNING *** \"Ephemeris\" is deprecated and will be "
+             "removed from a future build; please use \"EphemerisSource\" "
+             "instead.\nSetting ephemeris source to first valid source in list - \"%s\".\n",
              validSrc.c_str());
          SetSource(validSrc);
          return true;
       }
       else
       {
-         wxString errmsg = wxT("*** WARNING *** \"Ephemeris\" is deprecated and will be ")
-             wxT("removed from a future build; please use \"EphemerisSource\" ")
-             wxT("instead.\n*** ERROR *** No valid source string found.\n");
+         std::string errmsg = "*** WARNING *** \"Ephemeris\" is deprecated and will be "
+             "removed from a future build; please use \"EphemerisSource\" "
+             "instead.\n*** ERROR *** No valid source string found.\n";
          throw SolarSystemException(errmsg);
       }
    }
@@ -2405,10 +2405,10 @@ bool SolarSystem::SetStringParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
-bool SolarSystem::SetStringParameter(const wxString &label,
-                                     const wxString &value)
+bool SolarSystem::SetStringParameter(const std::string &label,
+                                     const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
@@ -2438,7 +2438,7 @@ const StringArray& SolarSystem::GetStringArrayParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  const StringArray&   GetStringArrayParameter(const wxString &label) const
+//  const StringArray&   GetStringArrayParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the StringArray parameter value, given the input
@@ -2451,7 +2451,7 @@ const StringArray& SolarSystem::GetStringArrayParameter(const Integer id) const
  */
 //------------------------------------------------------------------------------
 const StringArray&
-SolarSystem::GetStringArrayParameter(const wxString &label) const
+SolarSystem::GetStringArrayParameter(const std::string &label) const
 {
    return GetStringArrayParameter(GetParameterID(label));
 }
@@ -2489,10 +2489,10 @@ bool SolarSystem::IsParameterReadOnly(const Integer id) const
    if (id == EPHEMERIS)     // deprecated!!!!
       return true;
 
-//   if ((theCurrentPlanetarySource == wxT("DE405")) && (id == SPK_FILE_NAME))
+//   if ((theCurrentPlanetarySource == "DE405") && (id == SPK_FILE_NAME))
 //      return true;
 //
-//   if ((theCurrentPlanetarySource == wxT("SPICE")) && (id == DE_FILE_NAME))
+//   if ((theCurrentPlanetarySource == "SPICE") && (id == DE_FILE_NAME))
 //      return true;
 //
    return GmatBase::IsParameterReadOnly(id);
@@ -2502,7 +2502,7 @@ bool SolarSystem::IsParameterReadOnly(const Integer id) const
 bool SolarSystem::IsParameterCloaked(const Integer id) const
 {
    #ifdef DEBUG_SS_CLOAKING
-      MessageInterface::ShowMessage(wxT("In SS:IsParameterCloaked with id = %d (%s)\n"),
+      MessageInterface::ShowMessage("In SS:IsParameterCloaked with id = %d (%s)\n",
             id, (GetParameterText(id)).c_str());
    #endif
    if (!cloaking) return false;
@@ -2519,21 +2519,21 @@ bool SolarSystem::IsParameterCloaked(const Integer id) const
 bool SolarSystem::IsParameterEqualToDefault(const Integer id) const
 {
    #ifdef DEBUG_SS_CLOAKING
-      MessageInterface::ShowMessage(wxT("Entering SS:IsParameterEqualToDefault: id = %d (%s)\n"),
+      MessageInterface::ShowMessage("Entering SS:IsParameterEqualToDefault: id = %d (%s)\n",
             id, (GetParameterText(id)).c_str());
    #endif
    if (id == EPHEMERIS)    // deprecated!!!!
    {
 //      #ifdef DEBUG_SS_PARAM_EQUAL
-//            MessageInterface::ShowMessage(wxT("Checking equality for ephem filenames for SS\n"));
-//            MessageInterface::ShowMessage(wxT("size of default list is %d;   size of list is %d\n"),
+//            MessageInterface::ShowMessage("Checking equality for ephem filenames for SS\n");
+//            MessageInterface::ShowMessage("size of default list is %d;   size of list is %d\n",
 //                  default_planetarySourceTypesInUse.size(), thePlanetarySourceTypesInUse.size());
 //      #endif
 //      if (default_planetarySourceTypesInUse.size() != thePlanetarySourceTypesInUse.size()) return false;
 //      for (unsigned int ii = 0; ii < default_planetarySourceTypesInUse.size(); ii++)
 //      {
 //         #ifdef DEBUG_SS_PARAM_EQUAL
-//               MessageInterface::ShowMessage(wxT("    %s     vs.     %s\n"),
+//               MessageInterface::ShowMessage("    %s     vs.     %s\n",
 //                     (default_planetarySourceTypesInUse.at(ii)).c_str(), (thePlanetarySourceTypesInUse.at(ii)).c_str());
 //         #endif
 //         if (default_planetarySourceTypesInUse.at(ii) != thePlanetarySourceTypesInUse.at(ii)) return false;
@@ -2543,8 +2543,8 @@ bool SolarSystem::IsParameterEqualToDefault(const Integer id) const
    if (id == EPHEMERIS_SOURCE)
    {
       #ifdef DEBUG_SS_PARAM_EQUAL
-            MessageInterface::ShowMessage(wxT("Checking equality for ephem source for SS\n"));
-            MessageInterface::ShowMessage(wxT("    %s     vs.     %s\n"),
+            MessageInterface::ShowMessage("Checking equality for ephem source for SS\n");
+            MessageInterface::ShowMessage("    %s     vs.     %s\n",
                   default_ephemerisSource.c_str(), theCurrentPlanetarySource.c_str());
       #endif
       return (default_ephemerisSource == theCurrentPlanetarySource);
@@ -2575,8 +2575,8 @@ bool SolarSystem::IsParameterEqualToDefault(const Integer id) const
 bool SolarSystem::SaveAllAsDefault()
 {
    #ifdef DEBUG_SS_CLOAKING
-      MessageInterface::ShowMessage(wxT("Entering SS:SaveAllAsDefault\n"));
-      MessageInterface::ShowMessage(wxT(" default_ephemerisSource = \"%s\", theCurrentPlanetarySource = \"%s\"\n"),
+      MessageInterface::ShowMessage("Entering SS:SaveAllAsDefault\n");
+      MessageInterface::ShowMessage(" default_ephemerisSource = \"%s\", theCurrentPlanetarySource = \"%s\"\n",
             default_ephemerisSource.c_str(), theCurrentPlanetarySource.c_str());
    #endif
    default_planetarySourceTypesInUse = thePlanetarySourceTypesInUse;  // deprecated!!!!
@@ -2587,8 +2587,8 @@ bool SolarSystem::SaveAllAsDefault()
    default_overrideTimeForAll        = overrideTimeForAll;
    default_ephemUpdateInterval       = ephemUpdateInterval;
 #ifdef DEBUG_SS_CLOAKING
-   MessageInterface::ShowMessage(wxT("EXITING SS:SaveAllAsDefault\n"));
-   MessageInterface::ShowMessage(wxT(" default_ephemerisSource = \"%s\", theCurrentPlanetarySource = \"%s\"\n"),
+   MessageInterface::ShowMessage("EXITING SS:SaveAllAsDefault\n");
+   MessageInterface::ShowMessage(" default_ephemerisSource = \"%s\", theCurrentPlanetarySource = \"%s\"\n",
          default_ephemerisSource.c_str(), theCurrentPlanetarySource.c_str());
 #endif
    return true;
@@ -2642,7 +2642,7 @@ bool SolarSystem::SaveParameterAsDefault(const Integer id)
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// CelestialBody* FindBody(wxString withName)
+// CelestialBody* FindBody(std::string withName)
 //------------------------------------------------------------------------------
 /**
 * Return a pointer to a CelestialBody with the name withName.
@@ -2652,10 +2652,10 @@ bool SolarSystem::SaveParameterAsDefault(const Integer id)
  * @return pointer to a CelestialBody wiith the requested name.
  */
 //------------------------------------------------------------------------------
-CelestialBody* SolarSystem::FindBody(wxString withName)
+CelestialBody* SolarSystem::FindBody(std::string withName)
 {
    #ifdef DEBUG_SS_FIND_BODY
-      MessageInterface::ShowMessage(wxT("In SS::FindBody (%s) at location <%p>, there are %d bodiesInUse\n"),
+      MessageInterface::ShowMessage("In SS::FindBody (%s) at location <%p>, there are %d bodiesInUse\n",
             withName.c_str(), (this), (Integer) bodiesInUse.size());
    #endif
    // Search through bodiesInUse for the body with the name withName
@@ -2686,7 +2686,7 @@ void SolarSystem::SetJ2000Body()
 
    if (earth != NULL)
    {
-      wxString j2000BodyName = earth->GetJ2000BodyName();
+      std::string j2000BodyName = earth->GetJ2000BodyName();
       CelestialBody *j2000Body = FindBody(j2000BodyName);
       if (j2000Body != NULL)
       {
@@ -2696,7 +2696,7 @@ void SolarSystem::SetJ2000Body()
             (*cbi)->SetJ2000Body(j2000Body);
             ++cbi;
          }
-         std::map<wxString, SpecialCelestialPoint*>::const_iterator spi = specialPoints.begin();
+         std::map<std::string, SpecialCelestialPoint*>::const_iterator spi = specialPoints.begin();
          while (spi != specialPoints.end())
          {
             (spi->second)->SetJ2000Body(j2000Body);
@@ -2713,7 +2713,7 @@ void SolarSystem::SetJ2000Body()
 void SolarSystem::CloneBodiesInUse(const SolarSystem &ss, bool cloneSpecialPoints)
 {
    #ifdef DEBUG_SS_CLONING
-   MessageInterface::ShowMessage(wxT("   ===> Cloning %d bodies\n"), ss.bodiesInUse.size());
+   MessageInterface::ShowMessage("   ===> Cloning %d bodies\n", ss.bodiesInUse.size());
    #endif
 
    bodiesInUse.clear();
@@ -2727,22 +2727,22 @@ void SolarSystem::CloneBodiesInUse(const SolarSystem &ss, bool cloneSpecialPoint
       
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (cb, cb->GetName(), wxT("SolarSystem::CloneBodiesInUse()"),
-          wxT("CelestialBody *cb = (CelestialBody*)((*cbi)->Clone())"));
+         (cb, cb->GetName(), "SolarSystem::CloneBodiesInUse()",
+          "CelestialBody *cb = (CelestialBody*)((*cbi)->Clone())");
       #endif
       #ifdef DEBUG_SS_CLONING
-      MessageInterface::ShowMessage(wxT("   Cloned <%p> %s to <%p> %s\n"),
+      MessageInterface::ShowMessage("   Cloned <%p> %s to <%p> %s\n",
             (*cbi), ((*cbi)->GetName()).c_str(), cb, cb->GetName().c_str());
       #endif
    }
    
    // set references to cloned bodies
    #ifdef DEBUG_SS_CLONING
-      MessageInterface::ShowMessage(wxT("   there are now %d cloned celestial bodies\n"),
+      MessageInterface::ShowMessage("   there are now %d cloned celestial bodies\n",
                                     ((Integer) bodiesInUse.size()));
    #endif
 
-   wxString   cbName   = wxT("");
+   std::string   cbName   = "";
    CelestialBody *cb      = NULL;
    CelestialBody *central = NULL;
    for (std::vector<CelestialBody*>::const_iterator cbi = bodiesInUse.begin();
@@ -2753,31 +2753,31 @@ void SolarSystem::CloneBodiesInUse(const SolarSystem &ss, bool cloneSpecialPoint
       central = FindBody(cbName);
       if (central == NULL)
       {
-         wxString errmsg = wxT("Central Body \"") + cbName;
-         errmsg += wxT("\" for body \"") + cb->GetName();
-         errmsg += wxT("\" cannot be found.");
+         std::string errmsg = "Central Body \"" + cbName;
+         errmsg += "\" for body \"" + cb->GetName();
+         errmsg += "\" cannot be found.";
          throw SolarSystemException(errmsg);
       }
       #ifdef DEBUG_SS_CLONING
-      MessageInterface::ShowMessage(wxT("   setting reference objects on %s\n"),
+      MessageInterface::ShowMessage("   setting reference objects on %s\n",
                         (cb->GetName()).c_str());
       #endif
       cb->SetRefObject(central, Gmat::CELESTIAL_BODY, cbName);
    }
    #ifdef DEBUG_SS_CLONING
-      MessageInterface::ShowMessage(wxT("   about to clone %d special celestial points\n"),
+      MessageInterface::ShowMessage("   about to clone %d special celestial points\n",
                                     ((Integer) ss.specialPoints.size()));
    #endif
    if (cloneSpecialPoints)
    {
       specialPoints.clear();
       // clone the Special Points
-      std::map<wxString, SpecialCelestialPoint*>::const_iterator spi = (ss.specialPoints).begin();
+      std::map<std::string, SpecialCelestialPoint*>::const_iterator spi = (ss.specialPoints).begin();
       while (spi != (ss.specialPoints).end())
       {
          SpecialCelestialPoint *sp = (SpecialCelestialPoint*)(spi->second)->Clone();
          #ifdef DEBUG_SS_CLONING
-            MessageInterface::ShowMessage(wxT("   Object %s cloned for use ...\n"),sp->GetName().c_str());
+            MessageInterface::ShowMessage("   Object %s cloned for use ...\n",sp->GetName().c_str());
          #endif
 //         specialPoints[spi->first] = sp;
          specialPoints.insert(std::make_pair(spi->first, sp));
@@ -2793,7 +2793,7 @@ void SolarSystem::CloneBodiesInUse(const SolarSystem &ss, bool cloneSpecialPoint
 void SolarSystem::DeleteBodiesInUse(bool deleteSpecialPoints)
 {
    #ifdef DEBUG_SS_CLONING
-   MessageInterface::ShowMessage(wxT("   ===> Deleting %d bodies\n"), bodiesInUse.size());
+   MessageInterface::ShowMessage("   ===> Deleting %d bodies\n", bodiesInUse.size());
    #endif
 
    std::vector<CelestialBody*>::iterator cbi = bodiesInUse.begin();
@@ -2801,12 +2801,12 @@ void SolarSystem::DeleteBodiesInUse(bool deleteSpecialPoints)
    {
       #ifdef DEBUG_SS_CLONING
       MessageInterface::ShowMessage
-         (wxT("   Deleting <%p> %s\n"), (*cbi), (*cbi)->GetName().c_str());
+         ("   Deleting <%p> %s\n", (*cbi), (*cbi)->GetName().c_str());
       #endif
       
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (*cbi, (*cbi)->GetName(), wxT("SolarSystem::DeleteBodiesInUse()"), wxT(" deleting body"));
+         (*cbi, (*cbi)->GetName(), "SolarSystem::DeleteBodiesInUse()", " deleting body");
       #endif
       delete (*cbi);       // delete each body first
       (*cbi) = NULL;
@@ -2820,7 +2820,7 @@ void SolarSystem::DeleteBodiesInUse(bool deleteSpecialPoints)
 
    if (deleteSpecialPoints)
    {
-      std::map<wxString, SpecialCelestialPoint*>::iterator spi = specialPoints.begin();
+      std::map<std::string, SpecialCelestialPoint*>::iterator spi = specialPoints.begin();
       while (spi != specialPoints.end())
       {
          delete spi->second;       // delete each special point first
@@ -2839,7 +2839,7 @@ void SolarSystem::DeleteBodiesInUse(bool deleteSpecialPoints)
 void SolarSystem::SetDefaultPlanetarySource()
 {
    #ifdef DEBUG_SS_PLANETARY_FILE
-   MessageInterface::ShowMessage(wxT("SolarSystem setting default planetary source...\n"));
+   MessageInterface::ShowMessage("SolarSystem setting default planetary source...\n");
    #endif
 
    // initialize planetary file types/names in use
@@ -2855,13 +2855,13 @@ void SolarSystem::SetDefaultPlanetarySource()
 
 
 ////------------------------------------------------------------------------------
-//// bool CreateSlpFile(const wxString &fileName)
+//// bool CreateSlpFile(const std::string &fileName)
 ////------------------------------------------------------------------------------
-//bool SolarSystem::CreateSlpFile(const wxString &fileName)
+//bool SolarSystem::CreateSlpFile(const std::string &fileName)
 //{
 //   #ifdef DEBUG_SS_PLANETARY_FILE
 //   MessageInterface::ShowMessage
-//      (wxT("SolarSystem::CreateSlpFile() fileName=%s\n"), fileName.c_str());
+//      ("SolarSystem::CreateSlpFile() fileName=%s\n", fileName.c_str());
 //   #endif
 //
 //   bool status = false;
@@ -2869,7 +2869,7 @@ void SolarSystem::SetDefaultPlanetarySource()
 //   if (isPlanetarySourceInUse[SLP])
 //   {
 //      MessageInterface::ShowMessage
-//         (wxT("SolarSystem::CreateSlpFile() SlpFile already created\n"));
+//         ("SolarSystem::CreateSlpFile() SlpFile already created\n");
 //      status = true;
 //   }
 //   else
@@ -2877,7 +2877,7 @@ void SolarSystem::SetDefaultPlanetarySource()
 //      theDefaultSlpFile = new SlpFile(fileName);
 //
 //      #ifdef DEBUG_SS_PLANETARY_FILE
-//      MessageInterface::ShowMessage(wxT("SolarSystem::CreateSlpFile() SlpFile created\n"));
+//      MessageInterface::ShowMessage("SolarSystem::CreateSlpFile() SlpFile created\n");
 //      #endif
 //
 //      if (theDefaultSlpFile != NULL)
@@ -2889,10 +2889,10 @@ void SolarSystem::SetDefaultPlanetarySource()
 //
 
 //------------------------------------------------------------------------------
-// bool CreateDeFile(const Integer id, const wxString &fileName,
+// bool CreateDeFile(const Integer id, const std::string &fileName,
 //                   Gmat::DeFileFormat format = Gmat::DE_BINARY)
 //------------------------------------------------------------------------------
-bool SolarSystem::CreateDeFile(Integer id, const wxString &fileName,
+bool SolarSystem::CreateDeFile(Integer id, const std::string &fileName,
                                Gmat::DeFileFormat format)
 {
    bool status = false;
@@ -2909,7 +2909,7 @@ bool SolarSystem::CreateDeFile(Integer id, const wxString &fileName,
       {
          #ifdef DEBUG_SS_PLANETARY_FILE
          MessageInterface::ShowMessage
-            (wxT("SolarSystem::CreateDeFile() deleting old DeFile %s\n"),
+            ("SolarSystem::CreateDeFile() deleting old DeFile %s\n",
              (theDefaultDeFile->GetName()).c_str());
          #endif
          delete theDefaultDeFile;
@@ -2924,25 +2924,25 @@ bool SolarSystem::CreateDeFile(Integer id, const wxString &fileName,
    default:
       MessageInterface::PopupMessage
          (Gmat::WARNING_,
-          wxT("SolarSystem::CreateDeFile() unsupported DE file type"));
+          "SolarSystem::CreateDeFile() unsupported DE file type");
       return false;
    }
 
    #ifdef DEBUG_SS_PLANETARY_FILE
    MessageInterface::ShowMessage
-      (wxT("SolarSystem::CreateDeFile() creating DeFile. type=%d,\n   ")
-       wxT("fileName=%s, format=%d\n"), deFileType, fileName.c_str(),
+      ("SolarSystem::CreateDeFile() creating DeFile. type=%d,\n   "
+       "fileName=%s, format=%d\n", deFileType, fileName.c_str(),
        format);
    #endif
 
-   FILE *defile = fopen(fileName.char_str(), "rb");
+   FILE *defile = fopen(fileName.c_str(), "rb");
    if (defile == NULL)
    {
       MessageInterface::PopupMessage
          (Gmat::WARNING_,
-          wxT("Error opening DE file:%s. \n")
-          wxT("Please check file path. ")
-          wxT("The next filetype in the list will be used.\n"), fileName.c_str());
+          "Error opening DE file:%s. \n"
+          "Please check file path. "
+          "The next filetype in the list will be used.\n", fileName.c_str());
    }
    else
    {
@@ -2954,7 +2954,7 @@ bool SolarSystem::CreateDeFile(Integer id, const wxString &fileName,
          thePlanetaryEphem = theDefaultDeFile;
          #ifdef DEBUG_SS_PLANETARY_FILE
          MessageInterface::ShowMessage
-            (wxT("SolarSystem::CreateDeFile() NOW creating DeFile %s\n"),
+            ("SolarSystem::CreateDeFile() NOW creating DeFile %s\n",
              fileName.c_str());
          #endif
 
@@ -2965,9 +2965,9 @@ bool SolarSystem::CreateDeFile(Integer id, const wxString &fileName,
       {
          MessageInterface::PopupMessage
             (Gmat::WARNING_,
-             wxT("SolarSystem::CreateDeFile() Error creating %s. ")
-             wxT("The next filetype in the list will ")
-             wxT("be created.\n"), fileName.c_str());
+             "SolarSystem::CreateDeFile() Error creating %s. "
+             "The next filetype in the list will "
+             "be created.\n", fileName.c_str());
       }
    }
    return status;

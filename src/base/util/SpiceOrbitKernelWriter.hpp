@@ -63,10 +63,10 @@ extern "C"
 class GMAT_API SpiceOrbitKernelWriter :public SpiceKernelWriter
 {
 public:
-   SpiceOrbitKernelWriter(const wxString       &objName,   const wxString &centerName,
+   SpiceOrbitKernelWriter(const std::string       &objName,   const std::string &centerName,
                      Integer                 objNAIFId,  Integer            centerNAIFId,
-                     const wxString       &fileName,  Integer            deg = 7,
-                     const wxString       &frame = wxT("J2000"));
+                     const std::string       &fileName,  Integer            deg = 7,
+                     const std::string       &frame = "J2000");
    SpiceOrbitKernelWriter(const SpiceOrbitKernelWriter &copy);
    SpiceOrbitKernelWriter& operator=(const SpiceOrbitKernelWriter &copy);
    ~SpiceOrbitKernelWriter();
@@ -75,19 +75,19 @@ public:
 
    void        WriteSegment(const A1Mjd &start, const A1Mjd &end,
                             const StateArray &states, const EpochArray &epochs);
-   void        AddMetaData(const wxString &line,  bool done = false);
+   void        AddMetaData(const std::string &line,  bool done = false);
    void        AddMetaData(const StringArray &lines, bool done = false);
    void        FinalizeKernel();
 
 protected:
    /// the name of the spacecraft or body for which the SPK is created
-   wxString     objectName;
+   std::string     objectName;
    /// the name of the central body
-   wxString     centralBodyName;
+   std::string     centralBodyName;
    /// the file (kernel) name
-   wxString     kernelFileName;
+   std::string     kernelFileName;
    // the reference frame
-   wxString     frameName;
+   std::string     frameName;
 
    // data converted to SPICE types, to pass into SPICE methods
    /// the target body or spacecraft NAIF Id (SPICE)
@@ -100,7 +100,7 @@ protected:
    ConstSpiceChar  *referenceFrame;
    /// handle to the SPK file to which to write the data
    SpiceInt        handle;
-   /// wxT("Basic") metadata
+   /// "Basic" metadata
    StringArray     basicMetaData;
    /// Added metadata
    StringArray     addedMetaData;
@@ -108,7 +108,7 @@ protected:
    /// open for writing
    bool            fileOpen;
    /// the name of the temporary text file
-   wxString     tmpTxtFileName;
+   std::string     tmpTxtFileName;
    /// the temporary text file
    FILE            *tmpTxtFile;
    /// flag indicating whether or not the temporary file can be written
@@ -116,7 +116,7 @@ protected:
    /// an instance of the FileManager to handle renaming, etc.
    FileManager     *fm;
 
-   static       wxString TMP_TXT_FILE_NAME;
+   static       std::string TMP_TXT_FILE_NAME;
    static const Integer     MAX_FILE_RENAMES;
 
    void     SetBasicMetaData();

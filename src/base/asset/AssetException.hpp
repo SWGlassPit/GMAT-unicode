@@ -28,7 +28,7 @@ class GMAT_API AssetException : public BaseException
 {
 public:
 
-   AssetException(wxString details = wxT(""));
+   AssetException(std::string details = "");
 
 protected:
 

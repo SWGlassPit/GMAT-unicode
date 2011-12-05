@@ -52,7 +52,7 @@
 //---------------------------------
 // static data
 //---------------------------------
-//const wxString
+//const std::string
 //GmatFunction::PARAMETER_TEXT[GmatFunctionParamCount - FunctionParamCount] =
 //{
 //};
@@ -66,7 +66,7 @@
 
 
 //------------------------------------------------------------------------------
-// GmatFunction(wxString &name)
+// GmatFunction(std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -74,38 +74,38 @@
  * @param <name> function name
  */
 //------------------------------------------------------------------------------
-GmatFunction::GmatFunction(const wxString &name) :
-   Function(wxT("GmatFunction"), name)
+GmatFunction::GmatFunction(const std::string &name) :
+   Function("GmatFunction", name)
 {
    mIsNewFunction = false;
    unusedGlobalObjectList = NULL;
    
    // for initial function path, use FileManager
    FileManager *fm = FileManager::Instance();
-   wxString pathname;
+   std::string pathname;
    
    try
    {
       // if there is a function name, try to locate it
-      if (name != wxT(""))
+      if (name != "")
       {
          // Get path of first it is located
-         pathname = fm->GetGmatFunctionPath(name + wxT(".gmf"));
+         pathname = fm->GetGmatFunctionPath(name + ".gmf");
          
          // gmat function uses whole path name
-         pathname = pathname + name + wxT(".gmf");         
+         pathname = pathname + name + ".gmf";         
          functionPath = pathname;
          functionName = GmatFileUtil::ParseFileName(functionPath);
          
          // Remove path and .gmf
          functionName = GmatFileUtil::ParseFileName(functionPath);
-         wxString::size_type dotIndex = functionName.find(wxT(".gmf"));
+         std::string::size_type dotIndex = functionName.find(".gmf");
          functionName = functionName.substr(0, dotIndex);
       }
       else
       {
          // gmat function uses whole path name
-         functionPath = fm->GetFullPathname(wxT("GMAT_FUNCTION_PATH"));    
+         functionPath = fm->GetFullPathname("GMAT_FUNCTION_PATH");    
       }
    }
    catch (GmatBaseException &e)
@@ -119,7 +119,7 @@ GmatFunction::GmatFunction(const wxString &name) :
       // see if there is FUNCTION_PATH
       try
       {
-         pathname = fm->GetFullPathname(wxT("FUNCTION_PATH"));
+         pathname = fm->GetFullPathname("FUNCTION_PATH");
          functionPath = pathname;
       }
       catch (GmatBaseException &e)
@@ -132,13 +132,13 @@ GmatFunction::GmatFunction(const wxString &name) :
       }
    }
    
-   objectTypeNames.push_back(wxT("GmatFunction"));
+   objectTypeNames.push_back("GmatFunction");
 
    #ifdef DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("   Gmat functionPath=<%s>\n"), functionPath.c_str());
+      ("   Gmat functionPath=<%s>\n", functionPath.c_str());
    MessageInterface::ShowMessage
-      (wxT("   Gmat functionName=<%s>\n"), functionName.c_str());
+      ("   Gmat functionName=<%s>\n", functionName.c_str());
    #endif
 }
 
@@ -154,7 +154,7 @@ GmatFunction::~GmatFunction()
 {
    #ifdef DEBUG_GMATFUNCTION
    MessageInterface::ShowMessage
-      (wxT("GmatFunction() destructor entered, this=<%p> '%s', fcs=<%p>\n"), this,
+      ("GmatFunction() destructor entered, this=<%p> '%s', fcs=<%p>\n", this,
        GetName().c_str(), fcs);
    #endif
    
@@ -166,7 +166,7 @@ GmatFunction::~GmatFunction()
       delete unusedGlobalObjectList;
    
    #ifdef DEBUG_GMATFUNCTION
-   MessageInterface::ShowMessage(wxT("GmatFunction() destructor exiting\n"));
+   MessageInterface::ShowMessage("GmatFunction() destructor exiting\n");
    #endif
 }
 
@@ -244,18 +244,18 @@ bool GmatFunction::Initialize()
    static Integer callCount = 0;
    callCount++;      
    clock_t t1 = clock();
-   ShowTrace(callCount, t1, wxT("GmatFunction::Initialize() entered"));
+   ShowTrace(callCount, t1, "GmatFunction::Initialize() entered");
    #endif
    
    #ifdef DEBUG_FUNCTION_INIT
       MessageInterface::ShowMessage
-         (wxT("======================================================================\n")
-          wxT("GmatFunction::Initialize() entered for function '%s'\n"), functionName.c_str());
-      MessageInterface::ShowMessage(wxT("   and FCS is %s set.\n"), (fcs? wxT("correctly") : wxT("NOT")));
-      MessageInterface::ShowMessage(wxT("   Pointer for FCS is %p\n"), fcs);
-      MessageInterface::ShowMessage(wxT("   First command in fcs is %s\n"),
+         ("======================================================================\n"
+          "GmatFunction::Initialize() entered for function '%s'\n", functionName.c_str());
+      MessageInterface::ShowMessage("   and FCS is %s set.\n", (fcs? "correctly" : "NOT"));
+      MessageInterface::ShowMessage("   Pointer for FCS is %p\n", fcs);
+      MessageInterface::ShowMessage("   First command in fcs is %s\n",
             (fcs->GetTypeName()).c_str());
-      MessageInterface::ShowMessage(wxT("   internalCS is %p\n"), internalCoordSys);
+      MessageInterface::ShowMessage("   internalCS is %p\n", internalCoordSys);
    #endif
    if (!fcs) return false;
    
@@ -264,12 +264,12 @@ bool GmatFunction::Initialize()
    // Initialize the Validator - I think I need to do this each time - or do I?
    validator->SetFunction(this);
    validator->SetSolarSystem(solarSys);
-   std::map<wxString, GmatBase *>::iterator omi;
+   std::map<std::string, GmatBase *>::iterator omi;
    
    // add automatic objects such as sat.X to the FOS (well, actually, clones of them)
    for (omi = automaticObjectMap.begin(); omi != automaticObjectMap.end(); ++omi)
    {
-      wxString autoObjName = omi->first;
+      std::string autoObjName = omi->first;
       
       // if name not found, clone it and add to map (loj: 2008.12.15)
       if (objectStore->find(autoObjName) == objectStore->end())
@@ -277,15 +277,15 @@ bool GmatFunction::Initialize()
          GmatBase *autoObj = (omi->second)->Clone();
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Add
-            (autoObj, autoObjName, wxT("GmatFunction::Initialize()"),
-             wxT("autoObj = (omi->second)->Clone()"));
+            (autoObj, autoObjName, "GmatFunction::Initialize()",
+             "autoObj = (omi->second)->Clone()");
          #endif
          
          #ifdef DEBUG_FUNCTION_INIT
          try
          {
             MessageInterface::ShowMessage
-               (wxT("   autoObj->EvaluateReal() = %f\n"), autoObj->GetRealParameter(wxT("Value")));
+               ("   autoObj->EvaluateReal() = %f\n", autoObj->GetRealParameter("Value"));
          }
          catch (BaseException &e)
          {
@@ -304,8 +304,8 @@ bool GmatFunction::Initialize()
    while (current)
    {
       #ifdef DEBUG_FUNCTION_INIT
-         if (!current)  MessageInterface::ShowMessage(wxT("Current is NULL!!!\n"));
-         else MessageInterface::ShowMessage(wxT("   =====> Current command is %s <%s>\n"),
+         if (!current)  MessageInterface::ShowMessage("Current is NULL!!!\n");
+         else MessageInterface::ShowMessage("   =====> Current command is %s <%s>\n",
                  (current->GetTypeName()).c_str(),
                  current->GetGeneratingString(Gmat::NO_COMMENTS).c_str());
       #endif
@@ -316,7 +316,7 @@ bool GmatFunction::Initialize()
       current->SetTransientForces(forces);
       #ifdef DEBUG_FUNCTION_INIT
          MessageInterface::ShowMessage
-            (wxT("   Now about to set object map of type %s to Validator\n"),
+            ("   Now about to set object map of type %s to Validator\n",
              (current->GetTypeName()).c_str());      
       #endif
       // (Re)set object map on Validator (necessary because objects may have been added to the 
@@ -330,7 +330,7 @@ bool GmatFunction::Initialize()
       
       #ifdef DEBUG_FUNCTION_INIT
       MessageInterface::ShowMessage
-         (wxT("   Now about to call Validator->ValidateCommand() of type %s\n"),
+         ("   Now about to call Validator->ValidateCommand() of type %s\n",
           current->GetTypeName().c_str());
       #endif
       
@@ -340,18 +340,18 @@ bool GmatFunction::Initialize()
       {
          // get error message (loj: 2008.06.04)
          StringArray errList = validator->GetErrorList();
-         wxString msg; // Check for empty errList (loj: 2009.03.17)
+         std::string msg; // Check for empty errList (loj: 2009.03.17)
          if (errList.empty())
-            msg = wxT("Error occurred");
+            msg = "Error occurred";
          else
             msg = errList[0];
          
-         throw FunctionException(msg + wxT(" in the function \"") + functionPath + wxT("\""));
+         throw FunctionException(msg + " in the function \"" + functionPath + "\"");
       }
       
       #ifdef DEBUG_FUNCTION_INIT
       MessageInterface::ShowMessage
-         (wxT("   Now about to initialize command of type %s\n"), current->GetTypeName().c_str());
+         ("   Now about to initialize command of type %s\n", current->GetTypeName().c_str());
       #endif
       
       // catch exception and add function name to message (loj: 2008.09.23)
@@ -361,7 +361,7 @@ bool GmatFunction::Initialize()
          {
             #ifdef DEBUG_FUNCTION_INIT
             MessageInterface::ShowMessage
-               (wxT("Exiting  GmatFunction::Initialize for function '%s' with false\n"),
+               ("Exiting  GmatFunction::Initialize for function '%s' with false\n",
                 functionName.c_str());
             #endif
             return false;
@@ -369,15 +369,15 @@ bool GmatFunction::Initialize()
       }
       catch (BaseException &e)
       {
-         throw FunctionException(wxT("Cannot continue due to ") + e.GetFullMessage() +
-                                 wxT(" in the function \"") + functionPath + wxT("\""));
+         throw FunctionException("Cannot continue due to " + e.GetFullMessage() +
+                                 " in the function \"" + functionPath + "\"");
       }
       
       // Check to see if the command needs a server startup (loj: 2008.07.25)
       if (current->NeedsServerStartup())
          if (validator->StartMatlabServer(current) == false)
-            throw FunctionException(wxT("Unable to start the server needed by the ") +
-                                   (current->GetTypeName()) + wxT(" command"));
+            throw FunctionException("Unable to start the server needed by the " +
+                                   (current->GetTypeName()) + " command");
       
       current = current->GetNext();
    }
@@ -391,12 +391,12 @@ bool GmatFunction::Initialize()
    fcsFinalized = false;
    #ifdef DEBUG_FUNCTION_INIT
    MessageInterface::ShowMessage
-      (wxT("GmatFunction::Initialize() exiting for function '%s' with true\n"),
+      ("GmatFunction::Initialize() exiting for function '%s' with true\n",
        functionName.c_str());
    #endif
    
    #ifdef DEBUG_TRACE
-   ShowTrace(callCount, t1, wxT("GmatFunction::Initialize() exiting"), true);
+   ShowTrace(callCount, t1, "GmatFunction::Initialize() exiting", true);
    #endif
    
    return true;
@@ -415,14 +415,14 @@ bool GmatFunction::Execute(ObjectInitializer *objInit, bool reinitialize)
    static Integer callCount = 0;
    callCount++;      
    clock_t t1 = clock();
-   ShowTrace(callCount, t1, wxT("GmatFunction::Execute() entered"));
+   ShowTrace(callCount, t1, "GmatFunction::Execute() entered");
    #endif
    
    #ifdef DEBUG_FUNCTION_EXEC
    MessageInterface::ShowMessage
-      (wxT("======================================================================\n")
-       wxT("GmatFunction::Execute() entered for '%s'\n   internalCS is <%p>, ")
-       wxT("reinitialize = %d\n"), functionName.c_str(), internalCoordSys, reinitialize);
+      ("======================================================================\n"
+       "GmatFunction::Execute() entered for '%s'\n   internalCS is <%p>, "
+       "reinitialize = %d\n", functionName.c_str(), internalCoordSys, reinitialize);
    #endif
    
    GmatCommand *current = fcs;
@@ -440,10 +440,10 @@ bool GmatFunction::Execute(ObjectInitializer *objInit, bool reinitialize)
    {
       if (!objInit->InitializeObjects(true, Gmat::COORDINATE_SYSTEM))
          throw FunctionException
-            (wxT("Failed to re-initialize Parameters in the \"") + functionName + wxT("\""));
+            ("Failed to re-initialize Parameters in the \"" + functionName + "\"");
       if (!objInit->InitializeObjects(true, Gmat::PARAMETER))
          throw FunctionException
-            (wxT("Failed to re-initialize Parameters in the \"") + functionName + wxT("\""));
+            ("Failed to re-initialize Parameters in the \"" + functionName + "\"");
    }
    
    // Go through each command in the sequence and execute.
@@ -453,9 +453,9 @@ bool GmatFunction::Execute(ObjectInitializer *objInit, bool reinitialize)
       // Call to IsNextAFunction is necessary for branch commands in particular
       #ifdef DEBUG_FUNCTION_EXEC
       MessageInterface::ShowMessage
-         (wxT("......Function executing <%p><%s> [%s]\n"), current, current->GetTypeName().c_str(),
+         ("......Function executing <%p><%s> [%s]\n", current, current->GetTypeName().c_str(),
           current->GetGeneratingString(Gmat::NO_COMMENTS).c_str());
-      MessageInterface::ShowMessage(wxT("      objectsInitialized=%d\n"), objectsInitialized);
+      MessageInterface::ShowMessage("      objectsInitialized=%d\n", objectsInitialized);
       #endif
       
       last = current;
@@ -470,18 +470,18 @@ bool GmatFunction::Execute(ObjectInitializer *objInit, bool reinitialize)
          // so check it first otherwise do in the old way. (loj: 2010.07.16)
          Function *func = current->GetCurrentFunction();
          bool isEquation = false;
-         wxString cmdType = current->GetTypeName();
-         if (func && cmdType == wxT("GMAT"))
+         std::string cmdType = current->GetTypeName();
+         if (func && cmdType == "GMAT")
             if (((Assignment*)current)->GetMathTree() != NULL)
                isEquation = true;
          
-         if (cmdType != wxT("NoOp") && cmdType != wxT("Create") && cmdType != wxT("Global"))
+         if (cmdType != "NoOp" && cmdType != "Create" && cmdType != "Global")
          {
             bool beginInit = true;            
-            if (cmdType == wxT("GMAT") && !isEquation)
+            if (cmdType == "GMAT" && !isEquation)
                beginInit = false;
 
-            if (cmdType == wxT("BeginMissionSequence") || cmdType == wxT("BeginScript"))
+            if (cmdType == "BeginMissionSequence" || cmdType == "BeginScript")
                beginInit = true;
             
             if (beginInit)
@@ -490,8 +490,8 @@ bool GmatFunction::Execute(ObjectInitializer *objInit, bool reinitialize)
                validator->HandleCcsdsEphemerisFile(objectStore, true);
                #ifdef DEBUG_FUNCTION_EXEC
                MessageInterface::ShowMessage
-                  (wxT("============================ Initializing LocalObjects at current\n")
-                   wxT("%s\n"), current->GetGeneratingString(Gmat::NO_COMMENTS).c_str());
+                  ("============================ Initializing LocalObjects at current\n"
+                   "%s\n", current->GetGeneratingString(Gmat::NO_COMMENTS).c_str());
                #endif
                InitializeLocalObjects(objInit, current, true);
             }
@@ -503,7 +503,7 @@ bool GmatFunction::Execute(ObjectInitializer *objInit, bool reinitialize)
       {
          #ifdef DEBUG_FUNCTION_EXEC
          MessageInterface::ShowMessage
-            (wxT("Now calling <%p>[%s]->Execute()\n"), current->GetTypeName().c_str(),
+            ("Now calling <%p>[%s]->Execute()\n", current->GetTypeName().c_str(),
              current->GetGeneratingString(Gmat::NO_COMMENTS).c_str());
          #endif
          
@@ -514,13 +514,13 @@ bool GmatFunction::Execute(ObjectInitializer *objInit, bool reinitialize)
       {
          // If it is user interrupt, rethrow (loj: 2008.10.16)
          // How can we tell if it is thrown by Stop command?
-         // For now just find the phrase wxT("interrupted by Stop command")
-         wxString msg = e.GetFullMessage();
-         if (msg.find(wxT("interrupted by Stop command")) != msg.npos)
+         // For now just find the phrase "interrupted by Stop command"
+         std::string msg = e.GetFullMessage();
+         if (msg.find("interrupted by Stop command") != msg.npos)
          {
             #ifdef DEBUG_FUNCTION_EXEC
             MessageInterface::ShowMessage
-               (wxT("*** Interrupted by Stop commaned, so re-throwing...\n"));
+               ("*** Interrupted by Stop commaned, so re-throwing...\n");
             #endif
             throw;
          }
@@ -529,11 +529,11 @@ bool GmatFunction::Execute(ObjectInitializer *objInit, bool reinitialize)
          {
             #ifdef DEBUG_FUNCTION_EXEC
             MessageInterface::ShowMessage
-               (wxT("*** The exception is fatal, so re-throwing...\n"));
+               ("*** The exception is fatal, so re-throwing...\n");
             #endif
             // Add command line to error message (LOJ: 2010.04.13)
             throw FunctionException
-               (wxT("In ") + current->GetGeneratingString(Gmat::NO_COMMENTS) + wxT(", ") +
+               ("In " + current->GetGeneratingString(Gmat::NO_COMMENTS) + ", " +
                 e.GetFullMessage());
             //throw;
          }
@@ -543,15 +543,15 @@ bool GmatFunction::Execute(ObjectInitializer *objInit, bool reinitialize)
          {
             #ifdef DEBUG_FUNCTION_EXEC
             MessageInterface::ShowMessage
-               (wxT("============================ Reinitializing LocalObjects at current\n")
-                wxT("%s\n"), current->GetGeneratingString(Gmat::NO_COMMENTS).c_str());
+               ("============================ Reinitializing LocalObjects at current\n"
+                "%s\n", current->GetGeneratingString(Gmat::NO_COMMENTS).c_str());
             #endif
             
             InitializeLocalObjects(objInit, current, false);
             
             #ifdef DEBUG_FUNCTION_EXEC
             MessageInterface::ShowMessage
-               (wxT("......Function re-executing <%p><%s> [%s]\n"), current,
+               ("......Function re-executing <%p><%s> [%s]\n", current,
                 current->GetTypeName().c_str(),
                 current->GetGeneratingString(Gmat::NO_COMMENTS).c_str());
             #endif
@@ -567,20 +567,20 @@ bool GmatFunction::Execute(ObjectInitializer *objInit, bool reinitialize)
          catch (BaseException &be)
          {
             throw FunctionException
-               (wxT("During initialization of local objects before \"") +
-                current->GetGeneratingString(Gmat::NO_COMMENTS) + wxT("\", ") +
+               ("During initialization of local objects before \"" +
+                current->GetGeneratingString(Gmat::NO_COMMENTS) + "\", " +
                 e.GetFullMessage());
          }
       }
       
       // If current command is BranchCommand and still executing, continue to next
       // command in the branch (LOJ: 2009.03.24)
-      if (current->IsOfType(wxT("BranchCommand")) && current->IsExecuting())
+      if (current->IsOfType("BranchCommand") && current->IsExecuting())
       {
          #ifdef DEBUG_FUNCTION_EXEC
          MessageInterface::ShowMessage
-            (wxT("In Function '%s', still executing current command is <%p><%s>\n"),
-             functionName.c_str(), current, current ? current->GetTypeName().c_str() : wxT("NULL"));
+            ("In Function '%s', still executing current command is <%p><%s>\n",
+             functionName.c_str(), current, current ? current->GetTypeName().c_str() : "NULL");
          #endif
          
          continue;
@@ -590,8 +590,8 @@ bool GmatFunction::Execute(ObjectInitializer *objInit, bool reinitialize)
       
       #ifdef DEBUG_FUNCTION_EXEC
       MessageInterface::ShowMessage
-         (wxT("In Function '%s', the next command is <%p><%s>\n"), functionName.c_str(),
-          current, current ? current->GetTypeName().c_str() : wxT("NULL"));
+         ("In Function '%s', the next command is <%p><%s>\n", functionName.c_str(),
+          current, current ? current->GetTypeName().c_str() : "NULL");
       #endif
    }
    
@@ -601,7 +601,7 @@ bool GmatFunction::Execute(ObjectInitializer *objInit, bool reinitialize)
    
    #ifdef DEBUG_FUNCTION_EXEC
    MessageInterface::ShowMessage
-      (wxT("   Now about to create %d output wrapper(s) to set results, objectsInitialized=%d\n"),
+      ("   Now about to create %d output wrapper(s) to set results, objectsInitialized=%d\n",
        outputNames.size(), objectsInitialized);
    #endif
    
@@ -612,17 +612,17 @@ bool GmatFunction::Execute(ObjectInitializer *objInit, bool reinitialize)
    {
       if (!(obj = FindObject(outputNames.at(jj))))
       {
-         wxString errMsg = wxT("Function: Output \"") + outputNames.at(jj);
-         errMsg += wxT(" not found for function \"") + functionName + wxT("\"");
+         std::string errMsg = "Function: Output \"" + outputNames.at(jj);
+         errMsg += " not found for function \"" + functionName + "\"";
          throw FunctionException(errMsg);
       }
-      wxString outName = outputNames.at(jj);
+      std::string outName = outputNames.at(jj);
       ElementWrapper *outWrapper =
          validator->CreateElementWrapper(outName, false, false);
       #ifdef DEBUG_MORE_MEMORY
       MessageInterface::ShowMessage
-         (wxT("+++ GmatFunction::Execute() *outWrapper = validator->")
-          wxT("CreateElementWrapper(%s), <%p> '%s'\n"), outName.c_str(), outWrapper,
+         ("+++ GmatFunction::Execute() *outWrapper = validator->"
+          "CreateElementWrapper(%s), <%p> '%s'\n", outName.c_str(), outWrapper,
           outWrapper->GetDescription().c_str());
       #endif
       
@@ -635,18 +635,18 @@ bool GmatFunction::Execute(ObjectInitializer *objInit, bool reinitialize)
       // Set new outWrapper
       outputArgMap[outName] = outWrapper;
       #ifdef DEBUG_FUNCTION_EXEC // --------------------------------------------------- debug ---
-         MessageInterface::ShowMessage(wxT("GmatFunction: Output wrapper created for %s\n"),
+         MessageInterface::ShowMessage("GmatFunction: Output wrapper created for %s\n",
                                        (outputNames.at(jj)).c_str());
       #endif // -------------------------------------------------------------- end debug ---
    }
    
    #ifdef DEBUG_FUNCTION_EXEC
    MessageInterface::ShowMessage
-      (wxT("GmatFunction::Execute() exiting true for '%s'\n"), functionName.c_str());
+      ("GmatFunction::Execute() exiting true for '%s'\n", functionName.c_str());
    #endif
    
    #ifdef DEBUG_TRACE
-   ShowTrace(callCount, t1, wxT("GmatFunction::Execute() exiting"), true);
+   ShowTrace(callCount, t1, "GmatFunction::Execute() exiting", true);
    #endif
    
    return true; 
@@ -662,15 +662,15 @@ void GmatFunction::Finalize()
    static Integer callCount = 0;
    callCount++;      
    clock_t t1 = clock();
-   ShowTrace(callCount, t1, wxT("GmatFunction::Finalize() entered"));
+   ShowTrace(callCount, t1, "GmatFunction::Finalize() entered");
    #endif
    
    #ifdef DEBUG_FUNCTION_FINALIZE
    MessageInterface::ShowMessage
-      (wxT("======================================================================\n")
-       wxT("GmatFunction::Finalize() entered for '%s', FCS %s\n"),
-       functionName.c_str(), fcsFinalized ? wxT("already finalized, so skp fcs") :
-       wxT("NOT finalized, so call fcs->RunComplete"));
+      ("======================================================================\n"
+       "GmatFunction::Finalize() entered for '%s', FCS %s\n",
+       functionName.c_str(), fcsFinalized ? "already finalized, so skp fcs" :
+       "NOT finalized, so call fcs->RunComplete");
    #endif
    
    // Call RunComplete on each command in fcs
@@ -683,11 +683,11 @@ void GmatFunction::Finalize()
          #ifdef DEBUG_FUNCTION_FINALIZE
             if (!current)
                MessageInterface::ShowMessage
-                  (wxT("   GmatFunction:Finalize() Current is NULL!!!\n"));
+                  ("   GmatFunction:Finalize() Current is NULL!!!\n");
             else
                MessageInterface::ShowMessage
-                  (wxT("   GmatFunction:Finalize() Now about to finalize ")
-                   wxT("(call RunComplete on) command %s\n"),
+                  ("   GmatFunction:Finalize() Now about to finalize "
+                   "(call RunComplete on) command %s\n",
                    (current->GetTypeName()).c_str());
          #endif
          current->RunComplete();
@@ -698,11 +698,11 @@ void GmatFunction::Finalize()
    Function::Finalize();
    
    #ifdef DEBUG_FUNCTION_FINALIZE
-   MessageInterface::ShowMessage(wxT("GmatFunction::Finalize() leaving\n"));
+   MessageInterface::ShowMessage("GmatFunction::Finalize() leaving\n");
    #endif
    
    #ifdef DEBUG_TRACE
-   ShowTrace(callCount, t1, wxT("GmatFunction::Finalize() exiting"), true, true);
+   ShowTrace(callCount, t1, "GmatFunction::Finalize() exiting", true, true);
    #endif
    
 }
@@ -743,7 +743,7 @@ void GmatFunction::Copy(const GmatBase* orig)
 //  bool SetStringParameter(const Integer id, const Real value)
 //------------------------------------------------------------------------------
 /**
- * Sets the value for a wxString parameter.
+ * Sets the value for a std::string parameter.
  * 
  * @param <id> Integer ID of the parameter.
  * @param <value> New value for the parameter.
@@ -751,11 +751,11 @@ void GmatFunction::Copy(const GmatBase* orig)
  * @return If value of the parameter was set.
  */
 //------------------------------------------------------------------------------
-bool GmatFunction::SetStringParameter(const Integer id, const wxString &value)
+bool GmatFunction::SetStringParameter(const Integer id, const std::string &value)
 {
    #ifdef DEBUG_FUNCTION_SET
    MessageInterface::ShowMessage
-      (wxT("GmatFunction::SetStringParameter() entered, id=%d, value=%s\n"), id, value.c_str());
+      ("GmatFunction::SetStringParameter() entered, id=%d, value=%s\n", id, value.c_str());
    #endif
    
    switch (id)
@@ -766,13 +766,13 @@ bool GmatFunction::SetStringParameter(const Integer id, const wxString &value)
          
          // Compose full path if it has relative path.
          // Assuming if first char has '.', it has relative path.
-         wxString temp = GmatStringUtil::Trim(value);
-         if (temp[0] == wxT('.'))
+         std::string temp = GmatStringUtil::Trim(value);
+         if (temp[0] == '.')
          {
-            wxString currPath = fm->GetCurrentPath();
+            std::string currPath = fm->GetCurrentPath();
             
             #ifdef DEBUG_FUNCTION_SET
-            MessageInterface::ShowMessage(wxT("   currPath=%s\n"), currPath.c_str());
+            MessageInterface::ShowMessage("   currPath=%s\n", currPath.c_str());
             #endif
             
             functionPath = currPath + temp.substr(1);
@@ -789,14 +789,14 @@ bool GmatFunction::SetStringParameter(const Integer id, const wxString &value)
          functionName = GmatFileUtil::ParseFileName(functionPath);
          
          // Remove .gmf if GmatGmatFunction
-         wxString::size_type dotIndex = functionName.find(wxT(".gmf"));
+         std::string::size_type dotIndex = functionName.find(".gmf");
          functionName = functionName.substr(0, dotIndex);
          
          #ifdef DEBUG_FUNCTION_SET
          MessageInterface::ShowMessage
-            (wxT("   functionPath=<%s>\n"), functionPath.c_str());
+            ("   functionPath=<%s>\n", functionPath.c_str());
          MessageInterface::ShowMessage
-            (wxT("   functionName=<%s>\n"), functionName.c_str());
+            ("   functionName=<%s>\n", functionName.c_str());
          #endif
          
          return true;
@@ -807,7 +807,7 @@ bool GmatFunction::SetStringParameter(const Integer id, const wxString &value)
          functionName = GmatFileUtil::ParseFileName(functionPath);
          
          // Remove .gmf if GmatGmatFunction
-         wxString::size_type dotIndex = functionName.find(wxT(".gmf"));
+         std::string::size_type dotIndex = functionName.find(".gmf");
          functionName = functionName.substr(0, dotIndex);
          
          return true;
@@ -819,20 +819,20 @@ bool GmatFunction::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
-bool GmatFunction::SetStringParameter(const wxString &label,
-                                      const wxString &value)
+bool GmatFunction::SetStringParameter(const std::string &label,
+                                      const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
 
 
 //------------------------------------------------------------------------------
-// void ShowTrace(Integer count, Integer t1, const wxString &label = wxT(""),
+// void ShowTrace(Integer count, Integer t1, const std::string &label = "",
 //                bool showMemoryTracks = false, bool addEol = false)
 //------------------------------------------------------------------------------
-void GmatFunction::ShowTrace(Integer count, Integer t1, const wxString &label,
+void GmatFunction::ShowTrace(Integer count, Integer t1, const std::string &label,
                              bool showMemoryTracks, bool addEol)
 {
    // To locally control debug output
@@ -846,7 +846,7 @@ void GmatFunction::ShowTrace(Integer count, Integer t1, const wxString &label,
       #ifdef DEBUG_TRACE
       clock_t t2 = clock();
       MessageInterface::ShowMessage
-         (wxT("=== %s, '%s' Count = %d, elapsed time: %f sec\n"), label.c_str(),
+         ("=== %s, '%s' Count = %d, elapsed time: %f sec\n", label.c_str(),
           functionName.c_str(), count, (Real)(t2-t1)/CLOCKS_PER_SEC);
       #endif
    }
@@ -857,14 +857,14 @@ void GmatFunction::ShowTrace(Integer count, Integer t1, const wxString &label,
       StringArray tracks = MemoryTracker::Instance()->GetTracks(false, false);
       if (showTrace)
          MessageInterface::ShowMessage
-            (wxT("    ==> There are %d memory tracks\n"), tracks.size());
+            ("    ==> There are %d memory tracks\n", tracks.size());
       else
          MessageInterface::ShowMessage
-            (wxT("=== There are %d memory tracks when %s, '%s'\n"), tracks.size(),
+            ("=== There are %d memory tracks when %s, '%s'\n", tracks.size(),
              label.c_str(), functionName.c_str());
       
       if (addEol)
-         MessageInterface::ShowMessage(wxT("\n"));
+         MessageInterface::ShowMessage("\n");
       #endif
    }
 }
@@ -880,10 +880,10 @@ bool GmatFunction::InitializeLocalObjects(ObjectInitializer *objInit,
 {
    #ifdef DEBUG_FUNCTION_EXEC
    MessageInterface::ShowMessage
-      (wxT("\n============================ Begin initialization of local objects in '%s'\n"),
+      ("\n============================ Begin initialization of local objects in '%s'\n",
        functionName.c_str());
    MessageInterface::ShowMessage
-      (wxT("Now at command \"%s\"\n"),
+      ("Now at command \"%s\"\n",
        current->GetGeneratingString(Gmat::NO_COMMENTS).c_str());
    #endif
    
@@ -910,8 +910,8 @@ bool GmatFunction::InitializeLocalObjects(ObjectInitializer *objInit,
       {
          #ifdef DEBUG_FUNCTION_EXEC
          MessageInterface::ShowMessage
-            (wxT("objInit->InitializeObjects() threw a fatal exception:\n'%s'\n")
-             wxT("   So rethrow...\n"), e.GetFullMessage().c_str());
+            ("objInit->InitializeObjects() threw a fatal exception:\n'%s'\n"
+             "   So rethrow...\n", e.GetFullMessage().c_str());
          #endif
          throw;
       }
@@ -919,15 +919,15 @@ bool GmatFunction::InitializeLocalObjects(ObjectInitializer *objInit,
       {
          #ifdef DEBUG_FUNCTION_EXEC
          MessageInterface::ShowMessage
-            (wxT("objInit->InitializeObjects() threw an exception:\n'%s'\n")
-             wxT("   So ignoring...\n"), e.GetFullMessage().c_str());
+            ("objInit->InitializeObjects() threw an exception:\n'%s'\n"
+             "   So ignoring...\n", e.GetFullMessage().c_str());
          #endif
       }
    }
    
    #ifdef DEBUG_FUNCTION_EXEC
    MessageInterface::ShowMessage
-      (wxT("============================ End   initialization of local objects\n"));
+      ("============================ End   initialization of local objects\n");
    #endif
    
    return true;
@@ -949,7 +949,7 @@ void GmatFunction::BuildUnusedGlobalObjectList()
 {
    #ifdef DEBUG_UNUSED_GOL
    MessageInterface::ShowMessage
-      (wxT("BuildUnusedGlobalObjectList() entered. There are %d global objects\n"),
+      ("BuildUnusedGlobalObjectList() entered. There are %d global objects\n",
        globalObjectStore->size());
    #endif
    
@@ -959,8 +959,8 @@ void GmatFunction::BuildUnusedGlobalObjectList()
    unusedGlobalObjectList = new StringArray;
    
    // Check global object store
-   wxString cmdUsed;
-   std::map<wxString, GmatBase *>::iterator omi;
+   std::string cmdUsed;
+   std::map<std::string, GmatBase *>::iterator omi;
    for (omi = globalObjectStore->begin(); omi != globalObjectStore->end(); ++omi)
    {
       GmatBase *obj = omi->second;
@@ -972,9 +972,9 @@ void GmatFunction::BuildUnusedGlobalObjectList()
          // we don't want to throw an exception for unexisting Spacecraft in the GOS.
          if (obj->IsOfType(Gmat::COORDINATE_SYSTEM))
          {
-            GmatBase *origin = obj->GetRefObject(Gmat::SPACE_POINT, wxT("_GFOrigin_"));
-            GmatBase *primary = obj->GetRefObject(Gmat::SPACE_POINT, wxT("_GFPrimary_"));
-            GmatBase *secondary = obj->GetRefObject(Gmat::SPACE_POINT, wxT("_GFSecondary_"));
+            GmatBase *origin = obj->GetRefObject(Gmat::SPACE_POINT, "_GFOrigin_");
+            GmatBase *primary = obj->GetRefObject(Gmat::SPACE_POINT, "_GFPrimary_");
+            GmatBase *secondary = obj->GetRefObject(Gmat::SPACE_POINT, "_GFSecondary_");
             
             if ((origin != NULL && origin->IsOfType(Gmat::SPACECRAFT)) ||
                 (primary != NULL && primary->IsOfType(Gmat::SPACECRAFT)) ||
@@ -982,7 +982,7 @@ void GmatFunction::BuildUnusedGlobalObjectList()
             {
                #ifdef DEBUG_UNUSED_GOL
                MessageInterface::ShowMessage
-                  (wxT("==> Adding '%s' to unusedGOL\n"), (omi->first).c_str());
+                  ("==> Adding '%s' to unusedGOL\n", (omi->first).c_str());
                #endif
                unusedGlobalObjectList->push_back(omi->first);
             }
@@ -991,7 +991,7 @@ void GmatFunction::BuildUnusedGlobalObjectList()
    }
    #ifdef DEBUG_UNUSED_GOL
    MessageInterface::ShowMessage
-      (wxT("BuildUnusedGlobalObjectList() leaving, There are %d unused global objects\n"),
+      ("BuildUnusedGlobalObjectList() leaving, There are %d unused global objects\n",
        unusedGlobalObjectList->size());
    #endif
 }

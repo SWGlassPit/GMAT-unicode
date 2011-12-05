@@ -87,7 +87,7 @@ Publisher::~Publisher()
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (dataList, wxT("dataList"), wxT("Publisher::UnregisterPublishedData()"), wxT("deleting dataList"));
+            (dataList, "dataList", "Publisher::UnregisterPublishedData()", "deleting dataList");
          #endif
          
          delete dataList;
@@ -103,7 +103,7 @@ bool Publisher::Subscribe(Subscriber *s)
 {
    #if DBGLVL_PUBLISHER_SUBSCRIBE
    MessageInterface::ShowMessage
-      (wxT("Publisher::Subscribe() sub = <%p><%s>'%s'\n"), s, s->GetTypeName().c_str(),
+      ("Publisher::Subscribe() sub = <%p><%s>'%s'\n", s, s->GetTypeName().c_str(),
        s->GetName().c_str());
    #endif
    
@@ -113,8 +113,8 @@ bool Publisher::Subscribe(Subscriber *s)
    if (s->GetType() != Gmat::SUBSCRIBER)
    {
       MessageInterface::ShowMessage
-         (wxT("**** ERROR **** Publisher::Subscribe() Cannot add non-Subscriber object ")
-          wxT("'%s'. It is type of '%s'\n"), s->GetName().c_str(), s->GetTypeName().c_str());
+         ("**** ERROR **** Publisher::Subscribe() Cannot add non-Subscriber object "
+          "'%s'. It is type of '%s'\n", s->GetName().c_str(), s->GetTypeName().c_str());
       return false;
    }
    
@@ -125,7 +125,7 @@ bool Publisher::Subscribe(Subscriber *s)
       s->SetProviderId(currProviderId);
       #if DBGLVL_PUBLISHER_SUBSCRIBE
       MessageInterface::ShowMessage
-         (wxT("   Adding <%p>'%s' to subscriber list\n"), s, s->GetName().c_str());
+         ("   Adding <%p>'%s' to subscriber list\n", s, s->GetName().c_str());
       ShowSubscribers();
       #endif
    }
@@ -133,7 +133,7 @@ bool Publisher::Subscribe(Subscriber *s)
    {
       #if DBGLVL_PUBLISHER_SUBSCRIBE
       MessageInterface::ShowMessage
-         (wxT("   <%p>'%s' was already added\n"), s, s->GetName().c_str());
+         ("   <%p>'%s' was already added\n", s, s->GetName().c_str());
       #endif      
    }
    
@@ -152,26 +152,26 @@ bool Publisher::Unsubscribe(Subscriber *s)
    {
       #if DBGLVL_PUBLISHER_SUBSCRIBE
       MessageInterface::ShowMessage
-         (wxT("Publisher::Unsubscribe() sub = <%p>'%s' returning false, ")
-          wxT("the subscriber list is empty\n"), s, s->GetName().c_str());
+         ("Publisher::Unsubscribe() sub = <%p>'%s' returning false, "
+          "the subscriber list is empty\n", s, s->GetName().c_str());
       #endif
       return false;
    }
    
    #if DBGLVL_PUBLISHER_SUBSCRIBE
    MessageInterface::ShowMessage
-      (wxT("Publisher::Unsubscribe() sub = <%p>'%s'\n"), s, s->GetName().c_str());
+      ("Publisher::Unsubscribe() sub = <%p>'%s'\n", s, s->GetName().c_str());
    #endif
    
    #if DBGLVL_PUBLISHER_SUBSCRIBE
-   MessageInterface::ShowMessage(wxT("   About to remove <%p> from the list\n"), s);
+   MessageInterface::ShowMessage("   About to remove <%p> from the list\n", s);
    ShowSubscribers();
    #endif
    
    subscriberList.remove(s);
    
    #if DBGLVL_PUBLISHER_SUBSCRIBE
-   MessageInterface::ShowMessage(wxT("Publisher::Unsubscribe() returning true\n"));
+   MessageInterface::ShowMessage("Publisher::Unsubscribe() returning true\n");
    #endif
    
    return true;
@@ -184,7 +184,7 @@ bool Publisher::UnsubscribeAll()
 {
    #if DBGLVL_PUBLISHER_SUBSCRIBE
    MessageInterface::ShowMessage
-      (wxT("Publisher::UnsubscribeAll() entered. Clearing %d subscribers\n"),
+      ("Publisher::UnsubscribeAll() entered. Clearing %d subscribers\n",
        subscriberList.size());
    #endif
    
@@ -193,14 +193,14 @@ bool Publisher::UnsubscribeAll()
    ClearPublishedData();
    
    // delete locally created coordinate systems
-   std::map<wxString, CoordinateSystem*>::iterator iter;
+   std::map<std::string, CoordinateSystem*>::iterator iter;
    for (iter = coordSysMap.begin(); iter != coordSysMap.end(); ++iter)
    {
-      if ((iter->first).find(wxT("Local-")) != wxString::npos)
+      if ((iter->first).find("Local-") != std::string::npos)
       {
          #if DBGLVL_PUBLISHER
          MessageInterface::ShowMessage
-            (wxT("Publisher::UnsubscribeAll() deleting %s\n"), iter->first.c_str());
+            ("Publisher::UnsubscribeAll() deleting %s\n", iter->first.c_str());
          #endif
          
          delete iter->second;
@@ -219,10 +219,10 @@ bool Publisher::Publish(GmatBase *provider, Integer id, Real *data, Integer coun
 {
    #if DBGLVL_PUBLISHER_PUBLISH
    MessageInterface::ShowMessage
-      (wxT("Publisher::Publish(Real) entered, provider=<%p><%s>, id=%d, ")
-       wxT("currProviderId=%d, count=%d\n"), provider, provider->GetTypeName().c_str(),
+      ("Publisher::Publish(Real) entered, provider=<%p><%s>, id=%d, "
+       "currProviderId=%d, count=%d\n", provider, provider->GetTypeName().c_str(),
        id, currProviderId, count);
-   MessageInterface::ShowMessage(wxT("   providerMap.size()=%d\n"), providerMap.size());
+   MessageInterface::ShowMessage("   providerMap.size()=%d\n", providerMap.size());
    #endif
 
    // No subscribers
@@ -230,8 +230,8 @@ bool Publisher::Publish(GmatBase *provider, Integer id, Real *data, Integer coun
    {
       #if DBGLVL_PUBLISHER_PUBLISH
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** Publisher::Publish() There are no subscribers, ")
-          wxT("so just returning false\n"));
+         ("*** WARNING *** Publisher::Publish() There are no subscribers, "
+          "so just returning false\n");
       #endif      
       return false;
    }
@@ -242,8 +242,8 @@ bool Publisher::Publish(GmatBase *provider, Integer id, Real *data, Integer coun
    {
       #if DBGLVL_PUBLISHER_PUBLISH
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** Publisher::Publish() There are no registered providers, ")
-          wxT("so just returning false\n"));
+         ("*** WARNING *** Publisher::Publish() There are no registered providers, "
+          "so just returning false\n");
       #endif      
       return false;
    }
@@ -259,40 +259,42 @@ bool Publisher::Publish(GmatBase *provider, Integer id, Real *data, Integer coun
    std::vector<DataType>* dataList = iter->second;
 
    #if DBGLVL_PUBLISHER_PUBLISH > 1
-   MessageInterface::ShowMessage(wxT("   dataList->size()=%d\n"), dataList->size());
+   MessageInterface::ShowMessage("   dataList->size()=%d\n", dataList->size());
    #endif
    
    // Convert the data into a string for distribution
    Integer length = count*25 + 1;
-   wxString stream;
+   char *stream = new char[length];
 
    #ifdef DEBUG_PUBLISHER_BUFFERS
-      MessageInterface::ShowMessage(wxT("Allocated %d chars at %p\n"), length,
+      MessageInterface::ShowMessage("Allocated %d chars at %p\n", length,
             stream);
    #endif
 
+   stream[0] = '\0';    // Init to empty string
+   
    for (Integer i = 0; i < count; ++i)
    {
       #ifdef DEBUG_PUBLISHER_BUFFERS
-         MessageInterface::ShowMessage(wxT("   %d: %12lf\n"), i, data[i]);
+         MessageInterface::ShowMessage("   %d: %12lf\n", i, data[i]);
       #endif
-      stream.Printf(wxT("%s%16le"), stream.c_str(), data[i]);
+      sprintf(stream, "%s%16le", stream, data[i]);
       if (i < count - 1)
-         stream.append( wxT(", "));
+         strcat(stream, ", ");
       else
-         stream.append( wxT("\n"));
+         strcat(stream, "\n");
       #ifdef DEBUG_PUBLISHER_BUFFERS
-            MessageInterface::ShowMessage(wxT("   used %d\n"), stream.length());
+            MessageInterface::ShowMessage("   used %d\n", strlen(stream));
       #endif
    }   
 
    #ifdef DEBUG_PUBLISHER_BUFFERS
-      MessageInterface::ShowMessage(wxT("   Data:  %s\n"), stream);
+      MessageInterface::ShowMessage("   Data:  %s\n", stream);
    #endif
 
    #if DBGLVL_PUBLISHER_PUBLISH
    MessageInterface::ShowMessage
-      (wxT("Publisher::Publish() calling ReceiveData() number of subsbribers = %d\n"),
+      ("Publisher::Publish() calling ReceiveData() number of subsbribers = %d\n",
        subscriberList.size());
    #endif
    
@@ -300,13 +302,13 @@ bool Publisher::Publish(GmatBase *provider, Integer id, Real *data, Integer coun
    while (current != subscriberList.end())
    {
       #ifdef DEBUG_PUBLISHER_BUFFERS
-         MessageInterface::ShowMessage(wxT("   Publishing to %s\n"),
+         MessageInterface::ShowMessage("   Publishing to %s\n",
                (*current)->GetName().c_str());
       #endif
 
       #if DBGLVL_PUBLISHER_PUBLISH > 1
       MessageInterface::ShowMessage
-         (wxT("Publisher::Publish() sub = <%p><%p>'%s'\n"), (*current),
+         ("Publisher::Publish() sub = <%p><%p>'%s'\n", (*current),
           (*current)->GetTypeName().c_str(), (*current)->GetName().c_str());
       #endif
       
@@ -324,20 +326,21 @@ bool Publisher::Publish(GmatBase *provider, Integer id, Real *data, Integer coun
    }
    
    #ifdef DEBUG_PUBLISHER_BUFFERS
-      MessageInterface::ShowMessage(wxT("   Cleaning up\n"));
+      MessageInterface::ShowMessage("   Cleaning up\n");
    #endif
+   delete [] stream;
 
    #if DBGLVL_PUBLISHER_PUBLISH
-   MessageInterface::ShowMessage(wxT("Publisher::Publish() returning true\n"));
+   MessageInterface::ShowMessage("Publisher::Publish() returning true\n");
    #endif
    return true;
 }
 
 
 //------------------------------------------------------------------------------
-// bool Publish(Integer id, wxString & data, Integer count = 0)
+// bool Publish(char *data, Integer count = 0)
 //------------------------------------------------------------------------------
-bool Publisher::Publish(Integer id, wxString &data, Integer count)
+bool Publisher::Publish(Integer id, char *data, Integer count)
 {
    Integer i;
     
@@ -346,13 +349,13 @@ bool Publisher::Publish(Integer id, wxString &data, Integer count)
       return false;
 
    #if DBGLVL_PUBLISHER_PUBLISH > 1
-   MessageInterface::ShowMessage(wxT("Publisher::Publish(char) id = %d\n"), id);
+   MessageInterface::ShowMessage("Publisher::Publish(char) id = %d\n", id);
    #endif
    
    if ((id < 0) || (id > providerId))
    {
       throw PublisherException
-         (wxT("Character data provider has not registered with the Publisher."));
+         ("Character data provider has not registered with the Publisher.");
    }
    
    if (id != currProviderId)
@@ -362,10 +365,26 @@ bool Publisher::Publish(Integer id, wxString &data, Integer count)
    }
    
    // Convert the data into a string for distribution
+   Integer length;
+   if (count)
+        length = count + 1;
+   else
+        length = strlen(data) + 1;
         
-   wxString stream = data;
+   char *stream = new char[length];
 
-   stream.append( wxT("\n"));
+   if (count)
+   {
+      for (i = 0; i < count; ++i)
+         stream[i] = data[i];
+      stream[i] = '\0';
+   }
+   else
+   {
+      strcpy(stream, data);
+   }
+   
+   strcat(stream, "\n");
 
    std::list<Subscriber*>::iterator current = subscriberList.begin();
    while (current != subscriberList.end())
@@ -375,6 +394,7 @@ bool Publisher::Publish(Integer id, wxString &data, Integer count)
       current++;
    }
 
+   delete [] stream;
    return true;
 }
 
@@ -388,12 +408,12 @@ bool Publisher::Publish(Integer id, Integer *data, Integer count)
       return false;
    
    #if DBGLVL_PUBLISHER_PUBLISH > 1
-   MessageInterface::ShowMessage(wxT("Publisher::Publish(Integer) id = %d\n"), id);
+   MessageInterface::ShowMessage("Publisher::Publish(Integer) id = %d\n", id);
    #endif
    
    if ((id < 0) || (id > providerId))
       throw PublisherException
-         (wxT("Integer data provider has not registered with the Publisher."));
+         ("Integer data provider has not registered with the Publisher.");
    
    if (id != currProviderId)
    {
@@ -402,15 +422,16 @@ bool Publisher::Publish(Integer id, Integer *data, Integer count)
    }
    
    // Convert the data into a string for distribution
-   wxString stream;
+   char *stream = new char[count*25 + 1];
+   stream[0] = '\0';
    
    for(Integer i = 0; i < count; ++i)
    {
-      stream.Printf( wxT("%s%d"), stream.c_str(), data[i]);
+      sprintf(stream, "%s%d", stream, data[i]);
       if (i < count - 1)
-         stream.append( wxT(", "));
+         strcat(stream, ", ");
       else
-         stream.append( wxT("\n"));
+         strcat(stream, "\n");
    }
    
    std::list<Subscriber*>::iterator current = subscriberList.begin();
@@ -421,6 +442,7 @@ bool Publisher::Publish(Integer id, Integer *data, Integer count)
       current++;
    }
 
+   delete [] stream;
    return true;
 }
 
@@ -486,10 +508,10 @@ void Publisher::ClearPublishedData()
 {   
    #if DBGLVL_PUBLISHER_CLEAR
    MessageInterface::ShowMessage
-      (wxT("Publisher::ClearPublishedData() entered, clearing %d element owner objects\n"),
+      ("Publisher::ClearPublishedData() entered, clearing %d element owner objects\n",
        objectArray.size());
-   MessageInterface::ShowMessage(wxT("   providerMap.size()=%u\n"), providerMap.size());
-   MessageInterface::ShowMessage(wxT("   subscriberList.size()=%u\n"), subscriberList.size());
+   MessageInterface::ShowMessage("   providerMap.size()=%u\n", providerMap.size());
+   MessageInterface::ShowMessage("   subscriberList.size()=%u\n", subscriberList.size());
    #endif
    
    objectArray.clear();
@@ -507,7 +529,7 @@ void Publisher::ClearPublishedData()
    
    #if DBGLVL_PUBLISHER_CLEAR > 1
    MessageInterface::ShowMessage
-      (wxT("Publisher::ClearPublishedData() Using new Publisher code\n"));
+      ("Publisher::ClearPublishedData() Using new Publisher code\n");
    #endif
    
    std::map<GmatBase*, std::vector<DataType>* >::iterator iter = providerMap.begin();
@@ -518,7 +540,7 @@ void Publisher::ClearPublishedData()
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (dataList, wxT("dataList"), wxT("Publisher::ClearPublishedData()"), wxT("deleting dataList"));
+            (dataList, "dataList", "Publisher::ClearPublishedData()", "deleting dataList");
          #endif
          
          delete dataList;
@@ -531,7 +553,7 @@ void Publisher::ClearPublishedData()
    
    #if DBGLVL_PUBLISHER_CLEAR
    MessageInterface::ShowMessage
-      (wxT("Publisher::ClearPublishedData() leaving, providerMap.size()=%u\n"),
+      ("Publisher::ClearPublishedData() leaving, providerMap.size()=%u\n",
        providerMap.size());
    #endif
 }
@@ -563,31 +585,31 @@ Integer Publisher::RegisterPublishedData(GmatBase *provider, Integer id,
 {
    #if DBGLVL_PUBLISHER_REGISTER
    MessageInterface::ShowMessage
-      (wxT("Publisher::RegisterPublishedData() entered, <%p><%s> passed id: %d, %d ")
-       wxT("owners and %d elements\n"), provider, provider->GetTypeName().c_str(), id,
+      ("Publisher::RegisterPublishedData() entered, <%p><%s> passed id: %d, %d "
+       "owners and %d elements\n", provider, provider->GetTypeName().c_str(), id,
        owners.size(), elements.size());
-   MessageInterface::ShowMessage(wxT("   providerMap.size()=%d\n"), providerMap.size());
+   MessageInterface::ShowMessage("   providerMap.size()=%d\n", providerMap.size());
    #endif
    
    #if DBGLVL_PUBLISHER_REGISTER > 1
    for (unsigned int i=0; i<owners.size(); i++)
-      MessageInterface::ShowMessage(wxT("   owner[%d]=%s\n"), i, owners[i].c_str());
+      MessageInterface::ShowMessage("   owner[%d]=%s\n", i, owners[i].c_str());
    for (unsigned int i=0; i<elements.size(); i++)
-      MessageInterface::ShowMessage(wxT("   elements[%d]=%s\n"), i, elements[i].c_str());   
+      MessageInterface::ShowMessage("   elements[%d]=%s\n", i, elements[i].c_str());   
    MessageInterface::ShowMessage
-      (wxT("   providerId=%d, subscriberList.size()=%d\n"), providerId, subscriberList.size());
+      ("   providerId=%d, subscriberList.size()=%d\n", providerId, subscriberList.size());
    #endif
    
    if (subscriberList.empty())
    {
       // Let's just show warning if debug is turned on
-      //throw PublisherException(wxT("There are no registered subscribers."));
+      //throw PublisherException("There are no registered subscribers.");
       #if DBGLVL_PUBLISHER_REGISTER
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** Publisher::RegisterPublishedData() There are no ")
-          wxT("subscribers to register data\n"));
+         ("*** WARNING *** Publisher::RegisterPublishedData() There are no "
+          "subscribers to register data\n");
       MessageInterface::ShowMessage
-         (wxT("Publisher::RegisterPublishedData() returning %d\n"), providerId);
+         ("Publisher::RegisterPublishedData() returning %d\n", providerId);
       #endif
       return providerId;
    }
@@ -596,15 +618,15 @@ Integer Publisher::RegisterPublishedData(GmatBase *provider, Integer id,
    
    #if DBGLVL_PUBLISHER_REGISTER > 1
    MessageInterface::ShowMessage
-      (wxT("Publisher::RegisterPublishedData() Using new Publisher code\n"));
+      ("Publisher::RegisterPublishedData() Using new Publisher code\n");
    #endif
    
    if (id != -1)
    {
       #if DBGLVL_PUBLISHER_REGISTER
       MessageInterface::ShowMessage
-         (wxT("Publisher::RegisterPublishedData() returning %d, provider already has ")
-          wxT("registered with data\n"), id);
+         ("Publisher::RegisterPublishedData() returning %d, provider already has "
+          "registered with data\n", id);
       #endif
       
       // Just set current run state
@@ -613,7 +635,7 @@ Integer Publisher::RegisterPublishedData(GmatBase *provider, Integer id,
       {
          #if DBGLVL_PUBLISHER_REGISTER > 1
          MessageInterface::ShowMessage
-            (wxT("   calling <%s>->SetRunState()\n"), (*current)->GetName().c_str());
+            ("   calling <%s>->SetRunState()\n", (*current)->GetName().c_str());
          #endif
          
          (*current)->SetRunState(runState);
@@ -643,7 +665,7 @@ Integer Publisher::RegisterPublishedData(GmatBase *provider, Integer id,
       if (iter == providerMap.end())
       {
          #if DBGLVL_PUBLISHER_REGISTER
-         MessageInterface::ShowMessage(wxT("==> provider not found\n"));
+         MessageInterface::ShowMessage("==> provider not found\n");
          #endif
          
          // create new dataList
@@ -654,7 +676,7 @@ Integer Publisher::RegisterPublishedData(GmatBase *provider, Integer id,
          
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Add
-            (dataList, wxT("dataList", "Publisher::RegisterPublishedData()", "creating dataList"));
+            (dataList, "dataList", "Publisher::RegisterPublishedData()", "creating dataList");
          #endif
          
          dataList->push_back(newData);
@@ -663,7 +685,7 @@ Integer Publisher::RegisterPublishedData(GmatBase *provider, Integer id,
       else
       {
          #if DBGLVL_PUBLISHER_REGISTER
-         MessageInterface::ShowMessage(wxT("==> provider found\n"));
+         MessageInterface::ShowMessage("==> provider found\n");
          #endif
          
          std::vector<DataType>* oldList = iter->second;
@@ -677,7 +699,7 @@ Integer Publisher::RegisterPublishedData(GmatBase *provider, Integer id,
    std::map<GmatBase*, std::vector<DataType>* >::iterator iter2 = providerMap.find(provider);
    std::vector<DataType>* tempList = iter2->second;
    MessageInterface::ShowMessage
-      (wxT("   actualId=%d, tempList->size() = %d\n"), actualId, tempList->size());
+      ("   actualId=%d, tempList->size() = %d\n", actualId, tempList->size());
    #endif
    
    providerId = actualId;
@@ -687,7 +709,7 @@ Integer Publisher::RegisterPublishedData(GmatBase *provider, Integer id,
    {
       #if DBGLVL_PUBLISHER_REGISTER > 1
       MessageInterface::ShowMessage
-         (wxT("   calling <%s>->SetDataLabels()\n"), (*current)->GetName().c_str());
+         ("   calling <%s>->SetDataLabels()\n", (*current)->GetName().c_str());
       #endif
       
       (*current)->SetDataLabels(elements);
@@ -696,9 +718,9 @@ Integer Publisher::RegisterPublishedData(GmatBase *provider, Integer id,
    }
    
    #if DBGLVL_PUBLISHER_REGISTER
-   MessageInterface::ShowMessage(wxT("   providerMap.size()=%d\n"), providerMap.size());
+   MessageInterface::ShowMessage("   providerMap.size()=%d\n", providerMap.size());
    MessageInterface::ShowMessage
-      (wxT("Publisher::RegisterPublishedData() provider=<%p> returning %d\n"),
+      ("Publisher::RegisterPublishedData() provider=<%p> returning %d\n",
        provider, actualId);
    #endif
    
@@ -713,7 +735,7 @@ void Publisher::UnregisterPublishedData(GmatBase *provider)
 {
    #if DBGLVL_PUBLISHER_REGISTER
    MessageInterface::ShowMessage
-      (wxT("Publisher::UnregisterPublishedData() entered, <%p><%s>, providerMap.size() = %d\n"),
+      ("Publisher::UnregisterPublishedData() entered, <%p><%s>, providerMap.size() = %d\n",
        provider, provider->GetTypeName().c_str(), providerMap.size());
    #endif
    
@@ -725,7 +747,7 @@ void Publisher::UnregisterPublishedData(GmatBase *provider)
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (dataList, wxT("dataList"), wxT("Publisher::UnregisterPublishedData()"), wxT("deleting dataList"));
+            (dataList, "dataList", "Publisher::UnregisterPublishedData()", "deleting dataList");
          #endif
          
          delete dataList;
@@ -736,14 +758,14 @@ void Publisher::UnregisterPublishedData(GmatBase *provider)
    {
       #if DBGLVL_PUBLISHER_REGISTER
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** Publisher::UnregisterPublishedData() provider <%p> ")
-          wxT("not registered\n"));
+         ("*** WARNING *** Publisher::UnregisterPublishedData() provider <%p> "
+          "not registered\n");
       #endif
    }
    
    #if DBGLVL_PUBLISHER_REGISTER
    MessageInterface::ShowMessage
-      (wxT("Publisher::UnregisterPublishedData() leaving, providerMap.size() = %d\n"),
+      ("Publisher::UnregisterPublishedData() leaving, providerMap.size() = %d\n",
        providerMap.size());
    #endif
    
@@ -751,20 +773,20 @@ void Publisher::UnregisterPublishedData(GmatBase *provider)
 
 
 //------------------------------------------------------------------------------
-// const StringArray& GetStringArrayParameter(const wxString& type)
+// const StringArray& GetStringArrayParameter(const std::string& type)
 //------------------------------------------------------------------------------
-const StringArray& Publisher::GetStringArrayParameter(const wxString& type)
+const StringArray& Publisher::GetStringArrayParameter(const std::string& type)
 {
    if ((currProviderId < 0) || (currProviderId > providerId))
-      throw PublisherException(wxT("Data provider id out of range."));
+      throw PublisherException("Data provider id out of range.");
    
-   if (type == wxT("SpaceObjectMap"))
+   if (type == "SpaceObjectMap")
       return objectArray[currProviderId];
    
-   if (type == wxT("PublishedDataMap"))
+   if (type == "PublishedDataMap")
       return elementArray[currProviderId];
    
-   throw PublisherException(wxT("Unknown StringArray type requested."));
+   throw PublisherException("Unknown StringArray type requested.");
 }
 
 
@@ -808,7 +830,7 @@ void Publisher::SetDataCoordSystem(CoordinateSystem *cs)
    }
    
    // if coordinate system not found in the map, add
-   wxString csName = cs->GetName();
+   std::string csName = cs->GetName();
    if (coordSysMap.find(csName) != coordSysMap.end())
       coordSysMap[csName] = cs;
 }
@@ -832,15 +854,15 @@ void Publisher::SetDataMJ2000EqOrigin(CelestialBody *cb)
    
    #if DBGLVL_PUBLISHER_DATA_REP
    MessageInterface::ShowMessage
-      (wxT("Publisher::SetDataMJ2000EqOrigin() cb=%s<%p>\n"), cb->GetName().c_str(),
+      ("Publisher::SetDataMJ2000EqOrigin() cb=%s<%p>\n", cb->GetName().c_str(),
        cb);
    #endif
    
    dataMJ2000EqOrigin = cb;
-   wxString originName = cb->GetName();
-   wxString csName = originName + wxT("MJ2000Eq");
+   std::string originName = cb->GetName();
+   std::string csName = originName + "MJ2000Eq";
       
-   std::map<wxString, CoordinateSystem*>::iterator csIter =
+   std::map<std::string, CoordinateSystem*>::iterator csIter =
       coordSysMap.find(csName);
    
    if (coordSysMap.find(csName) != coordSysMap.end())
@@ -851,7 +873,7 @@ void Publisher::SetDataMJ2000EqOrigin(CelestialBody *cb)
    else
    {
       // check as local name
-      csName = wxT("Local-") + csName;
+      csName = "Local-" + csName;
       if (coordSysMap.find(csName) != coordSysMap.end())
          dataCoordSystem = coordSysMap.find(csName)->second;
       else
@@ -859,7 +881,7 @@ void Publisher::SetDataMJ2000EqOrigin(CelestialBody *cb)
          // Create coordinate system if not exist
          CoordinateSystem *newCs = (CoordinateSystem*)internalCoordSystem->Clone();
          newCs->SetName(csName);
-         newCs->SetStringParameter(wxT("Origin"), originName);
+         newCs->SetStringParameter("Origin", originName);
          newCs->SetRefObject(cb, Gmat::CELESTIAL_BODY, originName);
          newCs->Initialize();
          coordSysMap[csName] = newCs;
@@ -867,7 +889,7 @@ void Publisher::SetDataMJ2000EqOrigin(CelestialBody *cb)
          
          #if DBGLVL_PUBLISHER_DATA_REP
          MessageInterface::ShowMessage
-            (wxT("   ===> %s not found in the map, so created <%p>\n"), csName.c_str(),
+            ("   ===> %s not found in the map, so created <%p>\n", csName.c_str(),
              newCs);
          #endif
       }
@@ -891,8 +913,8 @@ void Publisher::SetRunState(const Gmat::RunState state)
 {
    #ifdef DEBUG_PUBLISHER_RUN_STATE
    MessageInterface::ShowMessage
-      (wxT("Publisher::SetRunState() entered, setting run state %d to ")
-       wxT("%d subscribers\n"), state, subscriberList.size());
+      ("Publisher::SetRunState() entered, setting run state %d to "
+       "%d subscribers\n", state, subscriberList.size());
    #endif
    
    runState = state;
@@ -900,7 +922,7 @@ void Publisher::SetRunState(const Gmat::RunState state)
    while (current != subscriberList.end())
    {
       #ifdef DEBUG_PUBLISHER_RUN_STATE
-      MessageInterface::ShowMessage(wxT("   current=<%p>\n"), *current);
+      MessageInterface::ShowMessage("   current=<%p>\n", *current);
       #endif
       
       (*current)->SetRunState(runState);
@@ -908,14 +930,14 @@ void Publisher::SetRunState(const Gmat::RunState state)
    }
    
    #ifdef DEBUG_PUBLISHER_RUN_STATE
-   MessageInterface::ShowMessage(wxT("Publisher::SetRunState() exiting\n"));
+   MessageInterface::ShowMessage("Publisher::SetRunState() exiting\n");
    #endif
 }
 
 
 //------------------------------------------------------------------------------
 // void SetManeuvering(GmatBase *originator, bool flag, Real epoch,
-//                     const wxString &satName, const wxString &desc)
+//                     const std::string &satName, const std::string &desc)
 //------------------------------------------------------------------------------
 /**
  * Sets single spacecraft maneuvering flag.
@@ -928,8 +950,8 @@ void Publisher::SetRunState(const Gmat::RunState state)
  */
 //------------------------------------------------------------------------------
 void Publisher::SetManeuvering(GmatBase *originator, bool flag, Real epoch,
-                               const wxString &satName,
-                               const wxString &desc)
+                               const std::string &satName,
+                               const std::string &desc)
 {
    maneuvering = flag;
    std::list<Subscriber*>::iterator current = subscriberList.begin();
@@ -943,7 +965,7 @@ void Publisher::SetManeuvering(GmatBase *originator, bool flag, Real epoch,
 
 //------------------------------------------------------------------------------
 // void SetManeuvering(GmatBase *originator, bool flag, Real epoch,
-//                     const StringArray &satNames, const wxString &desc)
+//                     const StringArray &satNames, const std::string &desc)
 //------------------------------------------------------------------------------
 /**
  * Sets multiple spacecrafts maneuvering flag.
@@ -957,7 +979,7 @@ void Publisher::SetManeuvering(GmatBase *originator, bool flag, Real epoch,
 //------------------------------------------------------------------------------
 void Publisher::SetManeuvering(GmatBase *originator, bool flag, Real epoch,
                                const StringArray &satNames,
-                               const wxString &desc)
+                               const std::string &desc)
 {
    maneuvering = flag;
    std::list<Subscriber*>::iterator current = subscriberList.begin();
@@ -980,7 +1002,7 @@ bool Publisher::GetManeuvering()
 
 //------------------------------------------------------------------------------
 // void SetScPropertyChanged(GmatBase *originator, Real epoch,
-//                           const wxString &satName, const wxString &desc)
+//                           const std::string &satName, const std::string &desc)
 //------------------------------------------------------------------------------
 /**
  * Sets spacecraft property change so that subscribers can handle appropriately.
@@ -992,8 +1014,8 @@ bool Publisher::GetManeuvering()
  */
 //------------------------------------------------------------------------------
 void Publisher::SetScPropertyChanged(GmatBase *originator, Real epoch,
-                                     const wxString &satName,
-                                     const wxString &desc)
+                                     const std::string &satName,
+                                     const std::string &desc)
 {
    std::list<Subscriber*>::iterator current = subscriberList.begin();
    while (current != subscriberList.end())
@@ -1025,18 +1047,18 @@ void Publisher::ShowSubscribers()
 {
    if (subscriberList.empty())
    {
-      MessageInterface::ShowMessage(wxT("   ===== There are no subscribers\n"));
+      MessageInterface::ShowMessage("   ===== There are no subscribers\n");
       return;
    }
    
    MessageInterface::ShowMessage
-      (wxT("   ===== There are %d subscriber(s)\n"), subscriberList.size());
+      ("   ===== There are %d subscriber(s)\n", subscriberList.size());
    
    std::list<Subscriber*>::iterator current = subscriberList.begin();
    while (current != subscriberList.end())
    {
       MessageInterface::ShowMessage
-         (wxT("   <%p>'%s'\n"), *current, (*current)->GetName().c_str());
+         ("   <%p>'%s'\n", *current, (*current)->GetName().c_str());
       current++;
    }
 }

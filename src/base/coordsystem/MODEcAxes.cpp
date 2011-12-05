@@ -34,7 +34,7 @@
 //---------------------------------
 
 /* placeholder - may be needed later
-const wxString
+const std::string
 MODEcAxes::PARAMETER_TEXT[MODEcAxesParamCount - MeanOfDateAxesParamCount] =
 {
    "",
@@ -51,8 +51,8 @@ MODEcAxes::PARAMETER_TYPE[MODEcAxesParamCount - MeanOfDateAxesParamCount] =
 //------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//  MODEcAxes(const wxString &itsType,
-//            const wxString &itsName);
+//  MODEcAxes(const std::string &itsType,
+//            const std::string &itsName);
 //---------------------------------------------------------------------------
 /**
  * Constructs base MODEcAxes structures
@@ -63,10 +63,10 @@ MODEcAxes::PARAMETER_TYPE[MODEcAxesParamCount - MeanOfDateAxesParamCount] =
  *
  */
 //---------------------------------------------------------------------------
-MODEcAxes::MODEcAxes(const wxString &itsName) :
-MeanOfDateAxes(wxT("MODEc"),itsName)
+MODEcAxes::MODEcAxes(const std::string &itsName) :
+MeanOfDateAxes("MODEc",itsName)
 {
-   objectTypeNames.push_back(wxT("MODEcAxes"));
+   objectTypeNames.push_back("MODEcAxes");
    parameterCount = MODEcAxesParamCount;
 }
 
@@ -149,7 +149,7 @@ GmatBase* MODEcAxes::Clone() const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -160,7 +160,7 @@ GmatBase* MODEcAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*wxString MODEcAxes::GetParameterText(const Integer id) const
+/*std::string MODEcAxes::GetParameterText(const Integer id) const
 {
    if (id >= MeanOfDateAxesParamCount && id < MODEcAxesParamCount)
       return PARAMETER_TEXT[id - MeanOfDateAxesParamCount];
@@ -168,7 +168,7 @@ GmatBase* MODEcAxes::Clone() const
 }
 */
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -179,7 +179,7 @@ GmatBase* MODEcAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*Integer MODEcAxes::GetParameterID(const wxString &str) const
+/*Integer MODEcAxes::GetParameterID(const std::string &str) const
 {
    for (Integer i = MeanOfDateAxesParamCount; i < MODEcAxesParamCount; i++)
    {
@@ -211,7 +211,7 @@ GmatBase* MODEcAxes::Clone() const
 }
 */
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -222,7 +222,7 @@ GmatBase* MODEcAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*wxString MODEcAxes::GetParameterTypeString(const Integer id) const
+/*std::string MODEcAxes::GetParameterTypeString(const Integer id) const
 {
    return MeanOfDateAxes::PARAM_TYPE_STRING[GetParameterType(id)];
 }

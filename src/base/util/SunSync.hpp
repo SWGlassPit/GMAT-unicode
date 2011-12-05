@@ -44,7 +44,7 @@ public:
    Real GetROA();
    Real GetP();
    bool IsError();
-   wxString GetError();
+   std::string GetError();
 
    Real SolveA(Real e, Real i, bool flag);
    Real SolveE(Real a, Real i, bool flag, bool altFlag = false);
@@ -68,7 +68,7 @@ private:
    };
 
    orbitElements elements;
-   wxString errormsg;
+   std::string errormsg;
    bool isError;
 };
 

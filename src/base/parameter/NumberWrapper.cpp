@@ -60,7 +60,7 @@ NumberWrapper::NumberWrapper() :
  * Constructs base NumberWrapper structures used in derived classes, by 
  * copying the input instance (copy constructor).
  *
- * @param <nr>  NumberWrapper instance to copy to create wxT("this") instance.
+ * @param <nr>  NumberWrapper instance to copy to create "this" instance.
  */
 //---------------------------------------------------------------------------
 NumberWrapper::NumberWrapper(const NumberWrapper &nr) :
@@ -170,17 +170,17 @@ bool NumberWrapper::SetReal(const Real toValue)
 //---------------------------------------------------------------------------
 void NumberWrapper::SetupWrapper()
 {
-   // Changed this so that math equation such as wxT("2+2") or wxT("x") will work
+   // Changed this so that math equation such as "2+2" or "x" will work
    // as GmatFunction input value(loj:2008.08.27)
    if (GmatStringUtil::ToReal(description, value) == false)
    {
       if (!GmatStringUtil::IsMathEquation(description) &&
           !GmatStringUtil::IsValidName(description))
       {
-         wxString errmsg = wxT("For number wrapper \"");
+         std::string errmsg = "For number wrapper \"";
          errmsg += description;
          errmsg += 
-            wxT("\", the description string does not evaluate to a real number\n"); 
+            "\", the description string does not evaluate to a real number\n"; 
          throw ParameterException(errmsg);
       }
    }

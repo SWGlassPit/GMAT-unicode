@@ -53,7 +53,7 @@ class GMAT_API DormandElMikkawyPrince68 :  public RungeKuttaNystrom
 {
 public:
 //    DormandElMikkawyPrince68();
-   DormandElMikkawyPrince68(const wxString &nomme = wxT(""));
+   DormandElMikkawyPrince68(const std::string &nomme = "");
    virtual ~DormandElMikkawyPrince68();
 
    DormandElMikkawyPrince68(const DormandElMikkawyPrince68& dpn);

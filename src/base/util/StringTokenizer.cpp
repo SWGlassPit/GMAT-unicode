@@ -40,13 +40,13 @@
 //-------------------------------------------------------------------------------
 StringTokenizer::StringTokenizer()
 {
-   delimiters = wxT(" ");
+   delimiters = " ";
    countTokens = 0;
 }
 
 
 //-------------------------------------------------------------------------------
-//  StringTokenizer(const wxString &str, const wxString &delim)
+//  StringTokenizer(const std::string &str, const std::string &delim)
 //-------------------------------------------------------------------------------
 /**
  * Creates constructor with parameters.
@@ -56,11 +56,11 @@ StringTokenizer::StringTokenizer()
  * 
  */
 //-------------------------------------------------------------------------------
-StringTokenizer::StringTokenizer(const wxString &str, const wxString &delim)
+StringTokenizer::StringTokenizer(const std::string &str, const std::string &delim)
 {
    #if DEBUG_STRING_TOKENIZER
    MessageInterface::ShowMessage
-      (wxT("StringTokenizer() str=<%s>, delim=<%s>\n"), str.c_str(), delim.c_str());
+      ("StringTokenizer() str=<%s>, delim=<%s>\n", str.c_str(), delim.c_str());
    #endif
    
    delimiters = delim;
@@ -69,7 +69,7 @@ StringTokenizer::StringTokenizer(const wxString &str, const wxString &delim)
 
 
 //-------------------------------------------------------------------------------
-//  StringTokenizer(const wxString &str, const wxString &delim,
+//  StringTokenizer(const std::string &str, const std::string &delim,
 //                  bool insertDelim)
 //-------------------------------------------------------------------------------
 /**
@@ -82,18 +82,18 @@ StringTokenizer::StringTokenizer(const wxString &str, const wxString &delim)
  *
  * @note:
  * I want to have constructor with
- * StringTokenizer(const wxString &str, const wxString &delim,
+ * StringTokenizer(const std::string &str, const std::string &delim,
  *                  bool insertDelim = false)
  * but this causing some numeric differences when routine test is running
  *
  */
 //-------------------------------------------------------------------------------
-StringTokenizer::StringTokenizer(const wxString &str, const wxString &delim,
+StringTokenizer::StringTokenizer(const std::string &str, const std::string &delim,
                                  bool insertDelim)
 {
    #if DEBUG_STRING_TOKENIZER
    MessageInterface::ShowMessage
-      (wxT("StringTokenizer() str='%s', delim='%s', insertDelim=%d\n"), str.c_str(),
+      ("StringTokenizer() str='%s', delim='%s', insertDelim=%d\n", str.c_str(),
        delim.c_str(), insertDelim);
    #endif
    
@@ -130,7 +130,7 @@ Integer StringTokenizer::CountTokens() const
 }
 
 //-------------------------------------------------------------------------------
-//  wxString GetToken(const Integer loc) 
+//  std::string GetToken(const Integer loc) 
 //-------------------------------------------------------------------------------
 /**
  * Get the string from specifiying the token number.
@@ -140,12 +140,12 @@ Integer StringTokenizer::CountTokens() const
  * 
  */
 //-------------------------------------------------------------------------------
-wxString StringTokenizer::GetToken(const Integer loc)  const
+std::string StringTokenizer::GetToken(const Integer loc)  const
 {
    if (loc <= countTokens)
       return stringTokens.at(loc);
 
-   return wxString(wxT(""));
+   return std::string("");
 }
 
 //-------------------------------------------------------------------------------
@@ -165,7 +165,7 @@ const StringArray& StringTokenizer::GetAllTokens() const
 
 
 //-------------------------------------------------------------------------------
-//  void Set(const wxString &str, const wxString &delim) 
+//  void Set(const std::string &str, const std::string &delim) 
 //-------------------------------------------------------------------------------
 /**
  * Set the string token.
@@ -175,11 +175,11 @@ const StringArray& StringTokenizer::GetAllTokens() const
  * 
  */
 //-------------------------------------------------------------------------------
-void StringTokenizer::Set(const wxString &str, const wxString &delim)
+void StringTokenizer::Set(const std::string &str, const std::string &delim)
 {
    #if DEBUG_STRING_TOKENIZER
    MessageInterface::ShowMessage
-      (wxT("StringTokenizer::Set() str=<%s>, delim=<%s>\n"), str.c_str(), delim.c_str());
+      ("StringTokenizer::Set() str=<%s>, delim=<%s>\n", str.c_str(), delim.c_str());
    #endif
    
    stringTokens.clear();
@@ -188,7 +188,7 @@ void StringTokenizer::Set(const wxString &str, const wxString &delim)
 }
 
 //-------------------------------------------------------------------------------
-//  void Set(const wxString &str, const wxString &delim) 
+//  void Set(const std::string &str, const std::string &delim) 
 //-------------------------------------------------------------------------------
 /**
  * Set the string token.
@@ -198,12 +198,12 @@ void StringTokenizer::Set(const wxString &str, const wxString &delim)
  * 
  */
 //-------------------------------------------------------------------------------
-void StringTokenizer::Set(const wxString &str, const wxString &delim,
+void StringTokenizer::Set(const std::string &str, const std::string &delim,
                           bool insertDelim)
 {
    #if DEBUG_STRING_TOKENIZER
    MessageInterface::ShowMessage
-      (wxT("StringTokenizer::Set() str='%s', delim='%s', insertDelim=%d\n"), str.c_str(),
+      ("StringTokenizer::Set() str='%s', delim='%s', insertDelim=%d\n", str.c_str(),
        delim.c_str(), insertDelim);
    #endif
    
@@ -218,7 +218,7 @@ void StringTokenizer::Set(const wxString &str, const wxString &delim,
 //-------------------------------------
 
 //-------------------------------------------------------------------------------
-//  void Parse(const wxString &str)
+//  void Parse(const std::string &str)
 //-------------------------------------------------------------------------------
 /**
  * Parse out the string for token
@@ -227,16 +227,16 @@ void StringTokenizer::Set(const wxString &str, const wxString &delim,
  *
  */
 //-------------------------------------------------------------------------------
-void StringTokenizer::Parse(const wxString &str)
+void StringTokenizer::Parse(const std::string &str)
 {
    #if DEBUG_STRING_TOKENIZER_PARSE
    MessageInterface::ShowMessage
-      (wxT("StringTokenizer::Parse() str=%s, delimiters=<%s>, insertDelim=%d\n"),
+      ("StringTokenizer::Parse() str=%s, delimiters=<%s>, insertDelim=%d\n",
        str.c_str(), delimiters.c_str(), insertDelim);
    #endif
    
-   wxString::size_type pos, lastPos;
-   wxString substr;
+   std::string::size_type pos, lastPos;
+   std::string substr;
    
    // Skip delimiters at beginning.
    lastPos = str.find_first_not_of(delimiters, 0);
@@ -245,7 +245,7 @@ void StringTokenizer::Parse(const wxString &str)
    pos = str.find_first_of(delimiters, lastPos);
    
    #if DEBUG_STRING_TOKENIZER_PARSE > 1
-   MessageInterface::ShowMessage(wxT("   lastPos=%u, pos=%u\n"), lastPos, pos);
+   MessageInterface::ShowMessage("   lastPos=%u, pos=%u\n", lastPos, pos);
    #endif
    
    if (pos == str.npos)
@@ -258,23 +258,23 @@ void StringTokenizer::Parse(const wxString &str)
       {
          #if DEBUG_STRING_TOKENIZER_PARSE > 1
          MessageInterface::ShowMessage
-            (wxT("   lastPos=%u, pos=%u\n"), lastPos, pos);
+            ("   lastPos=%u, pos=%u\n", lastPos, pos);
          #endif
          
          // Found a token, add it to the vector.
          substr = str.substr(lastPos, pos - lastPos);
          
          #if DEBUG_STRING_TOKENIZER_PARSE > 1
-         MessageInterface::ShowMessage(wxT("   substr=<%s>\n"), substr.c_str());
+         MessageInterface::ShowMessage("   substr=<%s>\n", substr.c_str());
          #endif
 
          
          stringTokens.push_back(str.substr(lastPos, pos - lastPos));
          
-         // Skip delimiters.  Note the wxT("not_of")
+         // Skip delimiters.  Note the "not_of"
          lastPos = str.find_first_not_of(delimiters, pos);
          
-         // Find next wxT("delimiter")
+         // Find next "delimiter"
          pos = str.find_first_of(delimiters, lastPos);
       }
    }
@@ -283,14 +283,14 @@ void StringTokenizer::Parse(const wxString &str)
    countTokens = stringTokens.size();
    
    #if DEBUG_STRING_TOKENIZER_PARSE
-   MessageInterface::ShowMessage(wxT("   countTokens=%d\n"), countTokens);
+   MessageInterface::ShowMessage("   countTokens=%d\n", countTokens);
    #endif
    
 }
 
 
 //-------------------------------------------------------------------------------
-//  void Parse(const wxString &str)
+//  void Parse(const std::string &str)
 //-------------------------------------------------------------------------------
 /**
  * Parse out the string for token
@@ -299,16 +299,16 @@ void StringTokenizer::Parse(const wxString &str)
  *
  */
 //-------------------------------------------------------------------------------
-void StringTokenizer::Parse(const wxString &str, bool insertDelim)
+void StringTokenizer::Parse(const std::string &str, bool insertDelim)
 {
    #if DEBUG_STRING_TOKENIZER_PARSE
    MessageInterface::ShowMessage
-      (wxT("StringTokenizer::Parse() str=%s, delimiters=<%s>, insertDelim=%d\n"),
+      ("StringTokenizer::Parse() str=%s, delimiters=<%s>, insertDelim=%d\n",
        str.c_str(), delimiters.c_str(), insertDelim);
    #endif
    
-   wxString::size_type pos, lastPos;
-   wxString substr;
+   std::string::size_type pos, lastPos;
+   std::string substr;
    
    // Skip delimiters at beginning.
    lastPos = str.find_first_not_of(delimiters, 0);
@@ -317,7 +317,7 @@ void StringTokenizer::Parse(const wxString &str, bool insertDelim)
    pos = str.find_first_of(delimiters, lastPos);
    
    #if DEBUG_STRING_TOKENIZER_PARSE > 1
-   MessageInterface::ShowMessage(wxT("   lastPos=%u, pos=%u\n"), lastPos, pos);
+   MessageInterface::ShowMessage("   lastPos=%u, pos=%u\n", lastPos, pos);
    #endif
    
    if (pos == str.npos)
@@ -330,24 +330,24 @@ void StringTokenizer::Parse(const wxString &str, bool insertDelim)
       {
          #if DEBUG_STRING_TOKENIZER_PARSE > 1
          MessageInterface::ShowMessage
-            (wxT("   lastPos=%u, pos=%u\n"), lastPos, pos);
+            ("   lastPos=%u, pos=%u\n", lastPos, pos);
          #endif
          
          // Found a token, add it to the vector.
          substr = str.substr(lastPos, pos - lastPos);
          
          #if DEBUG_STRING_TOKENIZER_PARSE > 1
-         MessageInterface::ShowMessage(wxT("   substr=<%s>\n"), substr.c_str());
+         MessageInterface::ShowMessage("   substr=<%s>\n", substr.c_str());
          #endif
 
          
          ////stringTokens.push_back(str.substr(lastPos, pos - lastPos));
          stringTokens.push_back(str.substr(lastPos, pos - lastPos + 1));
          
-         // Skip delimiters.  Note the wxT("not_of")
+         // Skip delimiters.  Note the "not_of"
          lastPos = str.find_first_not_of(delimiters, pos);
          
-         // Find next wxT("delimiter")
+         // Find next "delimiter"
          pos = str.find_first_of(delimiters, lastPos);
       }
    }
@@ -356,7 +356,7 @@ void StringTokenizer::Parse(const wxString &str, bool insertDelim)
    countTokens = stringTokens.size();
    
    #if DEBUG_STRING_TOKENIZER_PARSE
-   MessageInterface::ShowMessage(wxT("   countTokens=%d\n"), countTokens);
+   MessageInterface::ShowMessage("   countTokens=%d\n", countTokens);
    #endif
    
 }

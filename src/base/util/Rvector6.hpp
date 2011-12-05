@@ -76,7 +76,7 @@ public:
    const Rvector6& operator/=(const Rmatrix66 &m);
    
    Integer GetNumData() const;
-   const wxString* GetDataDescriptions() const;
+   const std::string* GetDataDescriptions() const;
    
    bool IsValid(const Real val);
    
@@ -85,6 +85,6 @@ public:
    
 private:
    static const Integer NUM_DATA;
-   static const wxString DATA_DESCRIPTIONS[NUM_DATA_INIT];
+   static const std::string DATA_DESCRIPTIONS[NUM_DATA_INIT];
 };
 #endif // Rvector6_hpp

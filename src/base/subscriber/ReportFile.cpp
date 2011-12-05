@@ -46,44 +46,44 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 ReportFile::PARAMETER_TEXT[ReportFileParamCount - SubscriberParamCount] =
 {
-   wxT("Filename"),
-   wxT("Precision"),
-   wxT("Add"),
-   wxT("WriteHeaders"),
-   wxT("LeftJustify"),
-   wxT("ZeroFill"),
-   wxT("ColumnWidth"),
-   wxT("WriteReport"),
+   "Filename",
+   "Precision",
+   "Add",
+   "WriteHeaders",
+   "LeftJustify",
+   "ZeroFill",
+   "ColumnWidth",
+   "WriteReport",
 };
 
 const Gmat::ParameterType
 ReportFile::PARAMETER_TYPE[ReportFileParamCount - SubscriberParamCount] =
 {
-   Gmat::FILENAME_TYPE,      //wxT("Filename"),
-   Gmat::INTEGER_TYPE,       //wxT("Precision"),
-   Gmat::OBJECTARRAY_TYPE,   //wxT("Add"),
-   Gmat::ON_OFF_TYPE,        //wxT("WriteHeaders"),
-   Gmat::ON_OFF_TYPE,        //wxT("LeftJustify"),
-   Gmat::ON_OFF_TYPE,        //wxT("ZeroFill"),
-   Gmat::INTEGER_TYPE,       //wxT("ColumnWidth"),
-   Gmat::BOOLEAN_TYPE,       //wxT("WriteReport"),
+   Gmat::FILENAME_TYPE,      //"Filename",
+   Gmat::INTEGER_TYPE,       //"Precision",
+   Gmat::OBJECTARRAY_TYPE,   //"Add",
+   Gmat::ON_OFF_TYPE,        //"WriteHeaders",
+   Gmat::ON_OFF_TYPE,        //"LeftJustify",
+   Gmat::ON_OFF_TYPE,        //"ZeroFill",
+   Gmat::INTEGER_TYPE,       //"ColumnWidth",
+   Gmat::BOOLEAN_TYPE,       //"WriteReport",
 };
 
 
 //------------------------------------------------------------------------------
-// ReportFile(const wxString &type, const wxString &name,
-//            const wxString &fileName)
+// ReportFile(const std::string &type, const std::string &name,
+//            const std::string &fileName)
 //------------------------------------------------------------------------------
-ReportFile::ReportFile(const wxString &type, const wxString &name,
-                       const wxString &fileName, Parameter *firstParam) :
+ReportFile::ReportFile(const std::string &type, const std::string &name,
+                       const std::string &fileName, Parameter *firstParam) :
    Subscriber      (type, name),
-   outputPath      (wxT("")),
+   outputPath      (""),
    filename        (fileName),
-   defFileName     (wxT("")),
-   fullPathName    (wxT("")),
+   defFileName     (""),
+   fullPathName    (""),
    precision       (16),
    columnWidth     (20),
    writeHeaders    (true),
@@ -95,7 +95,7 @@ ReportFile::ReportFile(const wxString &type, const wxString &name,
    calledByReport  (false)
 {
    objectTypes.push_back(Gmat::REPORT_FILE);
-   objectTypeNames.push_back(wxT("ReportFile"));
+   objectTypeNames.push_back("ReportFile");
    
    mNumParams = 0;
    
@@ -146,7 +146,7 @@ ReportFile::ReportFile(const ReportFile &rf) :
 
    #ifdef DEBUG_REPORTFILE
    MessageInterface::ShowMessage
-      (wxT("ReportFile:: copy constructor entered, r.mNumParams=%d, mNumParams=%d\n"),
+      ("ReportFile:: copy constructor entered, r.mNumParams=%d, mNumParams=%d\n",
        rf.mNumParams, mNumParams);
    #endif
 }
@@ -190,7 +190,7 @@ ReportFile& ReportFile::operator=(const ReportFile& rf)
    
    #ifdef DEBUG_REPORTFILE
    MessageInterface::ShowMessage
-      (wxT("ReportFile::operator= entered, r.mNumParams=%d, mNumParams=%d\n"),
+      ("ReportFile::operator= entered, r.mNumParams=%d, mNumParams=%d\n",
        rf.mNumParams, mNumParams);
    #endif
    
@@ -202,32 +202,32 @@ ReportFile& ReportFile::operator=(const ReportFile& rf)
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// wxString GetDefaultFileName()
+// std::string GetDefaultFileName()
 //------------------------------------------------------------------------------
 /**
  * Returns default filename without path.
  */
 //------------------------------------------------------------------------------
-wxString ReportFile::GetDefaultFileName()
+std::string ReportFile::GetDefaultFileName()
 {
    return defFileName;
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetPathAndFileName()
+// std::string GetPathAndFileName()
 //------------------------------------------------------------------------------
 /**
  * Returns full file name with path
  */
 //------------------------------------------------------------------------------
-wxString ReportFile::GetPathAndFileName()
+std::string ReportFile::GetPathAndFileName()
 {
-   wxString fname = filename;
+   std::string fname = filename;
    
    #ifdef DEBUG_REPORTFILE_OPEN
    MessageInterface::ShowMessage
-      (wxT("ReportFile::GetPathAndFileName() fname=%s\n"), fname.c_str());
+      ("ReportFile::GetPathAndFileName() fname=%s\n", fname.c_str());
    #endif
    
    try
@@ -235,17 +235,17 @@ wxString ReportFile::GetPathAndFileName()
       FileManager *fm = FileManager::Instance();
       outputPath = fm->GetPathname(FileManager::REPORT_FILE);
       
-      if (filename == wxT(""))
+      if (filename == "")
       {
-         defFileName = instanceName + wxT(".txt");
+         defFileName = instanceName + ".txt";
          filename = defFileName;
          fname = outputPath + filename;
       }
       else
       {
          // add output path if there is no path
-         if (filename.find(wxT("/")) == filename.npos &&
-             filename.find(wxT("\\")) == filename.npos)
+         if (filename.find("/") == filename.npos &&
+             filename.find("\\") == filename.npos)
          {
             fname = outputPath + filename;
          }
@@ -253,15 +253,15 @@ wxString ReportFile::GetPathAndFileName()
    }
    catch (GmatBaseException &e)
    {
-      if (filename == wxT(""))
-         fname = instanceName + wxT(".txt");
+      if (filename == "")
+         fname = instanceName + ".txt";
       
       MessageInterface::ShowMessage(e.GetFullMessage());
    }
    
    #ifdef DEBUG_REPORTFILE_OPEN
    MessageInterface::ShowMessage
-      (wxT("ReportFile::GetPathAndFileName() returning fname=%s\n"), fname.c_str());
+      ("ReportFile::GetPathAndFileName() returning fname=%s\n", fname.c_str());
    #endif
    
    fullPathName = fname;
@@ -279,17 +279,17 @@ Integer ReportFile::GetNumParameters()
 
 
 //------------------------------------------------------------------------------
-// bool AddParameter(const wxString &paramName, Integer index)
+// bool AddParameter(const std::string &paramName, Integer index)
 //------------------------------------------------------------------------------
-bool ReportFile::AddParameter(const wxString &paramName, Integer index)
+bool ReportFile::AddParameter(const std::string &paramName, Integer index)
 {
    #ifdef DEBUG_REPORTFILE_SET
    MessageInterface::ShowMessage
-      (wxT("ReportFile::AddParameter() Adding parameter '%s' to ")
-       wxT("ReportFile '%s'\n"), paramName.c_str(), instanceName.c_str());
+      ("ReportFile::AddParameter() Adding parameter '%s' to "
+       "ReportFile '%s'\n", paramName.c_str(), instanceName.c_str());
    #endif
    
-   if (paramName != wxT("") && index == mNumParams)
+   if (paramName != "" && index == mNumParams)
    {
       // if paramName not found, add
       if (find(mParamNames.begin(), mParamNames.end(), paramName) ==
@@ -302,7 +302,7 @@ bool ReportFile::AddParameter(const wxString &paramName, Integer index)
          
          #ifdef DEBUG_REPORTFILE_SET
          MessageInterface::ShowMessage
-            (wxT("   '%s' added, size=%d\n"), paramName.c_str(), mNumParams);
+            ("   '%s' added, size=%d\n", paramName.c_str(), mNumParams);
          #endif
          
          return true;
@@ -314,17 +314,17 @@ bool ReportFile::AddParameter(const wxString &paramName, Integer index)
 
 
 //------------------------------------------------------------------------------
-// bool AddParameterForTitleOnly(const wxString &paramName)
+// bool AddParameterForTitleOnly(const std::string &paramName)
 //------------------------------------------------------------------------------
-bool ReportFile::AddParameterForTitleOnly(const wxString &paramName)
+bool ReportFile::AddParameterForTitleOnly(const std::string &paramName)
 {
    #ifdef DEBUG_REPORTFILE_SET
    MessageInterface::ShowMessage
-      (wxT("ReportFile::AddParameterForTitle() Adding parameter '%s' to \n   ")
-       wxT("ReportFile '%s'\n"), paramName.c_str(), instanceName.c_str());
+      ("ReportFile::AddParameterForTitle() Adding parameter '%s' to \n   "
+       "ReportFile '%s'\n", paramName.c_str(), instanceName.c_str());
    #endif
    
-   if (paramName != wxT(""))
+   if (paramName != "")
    {
       if (find(mParamNames.begin(), mParamNames.end(), paramName) ==
           mParamNames.end())
@@ -352,16 +352,16 @@ bool ReportFile::WriteData(WrapperArray wrapperArray)
    Integer numData = wrapperArray.size();
    UnsignedInt maxRow = 1;
    Real rval = -9999.999;
-   wxString sval;
-   wxString desc;
+   std::string sval;
+   std::string desc;
    
    // create output buffer
    StringArray *output = new StringArray[numData];
    Integer *colWidths = new Integer[numData];
    
    #if DBGLVL_WRITE_DATA > 0
-   MessageInterface::ShowMessage(wxT("ReportFile::WriteData() has %d wrappers\n"), numData);
-   MessageInterface::ShowMessage(wxT("   ==> Now start buffering data\n"));
+   MessageInterface::ShowMessage("ReportFile::WriteData() has %d wrappers\n", numData);
+   MessageInterface::ShowMessage("   ==> Now start buffering data\n");
    #endif
    
    // buffer formatted data
@@ -370,13 +370,13 @@ bool ReportFile::WriteData(WrapperArray wrapperArray)
       desc = wrapperArray[i]->GetDescription();
       
       #if DBGLVL_WRITE_DATA > 1
-      MessageInterface::ShowMessage(wxT("   desc is '%s'\n"), desc.c_str());
+      MessageInterface::ShowMessage("   desc is '%s'\n", desc.c_str());
       #endif
       
       Gmat::WrapperDataType wrapperType = wrapperArray[i]->GetWrapperType();
       #if DBGLVL_WRITE_DATA > 1
       MessageInterface::ShowMessage
-         (wxT("      It's wrapper type is %d\n"), wrapperType);
+         ("      It's wrapper type is %d\n", wrapperType);
       #endif
       
       Integer defWidth = columnWidth;
@@ -388,7 +388,7 @@ bool ReportFile::WriteData(WrapperArray wrapperArray)
             desc.length() : columnWidth;
          
          // parameter name has Gregorian, minimum width is 24
-         if (desc.find(wxT("Gregorian")) != desc.npos)
+         if (desc.find("Gregorian") != desc.npos)
             if (defWidth < 24)
                defWidth = 24;
       }
@@ -408,11 +408,11 @@ bool ReportFile::WriteData(WrapperArray wrapperArray)
          {
             rval = wrapperArray[i]->EvaluateReal();
             if (IsNotANumber(rval))
-               output[i].push_back(wxT("NaN"));
+               output[i].push_back("NaN");
             else
                output[i].push_back(GmatStringUtil::ToString(rval, precision, zeroFill));
             #ifdef DEBUG_REAL_DATA
-               MessageInterface::ShowMessage(wxT("   resulting string for value of %12.10f = %s\n"), rval, output[i].back().c_str());
+               MessageInterface::ShowMessage("   resulting string for value of %12.10f = %s\n", rval, output[i].back().c_str());
             #endif
             break;
          }
@@ -421,7 +421,7 @@ bool ReportFile::WriteData(WrapperArray wrapperArray)
             Gmat::ParameterType dataType = wrapperArray[i]->GetDataType();
             #if DBGLVL_WRITE_DATA > 1
             MessageInterface::ShowMessage
-               (wxT("      It's data type is %d\n"), dataType);
+               ("      It's data type is %d\n", dataType);
             #endif
             switch (dataType)
             {
@@ -429,11 +429,11 @@ bool ReportFile::WriteData(WrapperArray wrapperArray)
                {
                   rval = wrapperArray[i]->EvaluateReal();
                   if (IsNotANumber(rval))
-                     output[i].push_back(wxT("NaN"));
+                     output[i].push_back("NaN");
                   else
                      output[i].push_back(GmatStringUtil::ToString(rval, precision, zeroFill));
                   #ifdef DEBUG_REAL_DATA
-                     MessageInterface::ShowMessage(wxT("   resulting string for value of %12.10f = %s\n"), rval, output[i].back().c_str());
+                     MessageInterface::ShowMessage("   resulting string for value of %12.10f = %s\n", rval, output[i].back().c_str());
                   #endif
                   break;
                }
@@ -451,8 +451,8 @@ bool ReportFile::WriteData(WrapperArray wrapperArray)
                }
             default:
                throw GmatBaseException
-                  (wxT("Cannot write \"") + desc + wxT("\" due to unimplemented ")
-                   wxT("Parameter data type"));
+                  ("Cannot write \"" + desc + "\" due to unimplemented "
+                   "Parameter data type");
             }
             break;
          }
@@ -468,7 +468,7 @@ bool ReportFile::WriteData(WrapperArray wrapperArray)
             output[i].push_back(sval);
             #if DBGLVL_WRITE_DATA > 1
             MessageInterface::ShowMessage
-               (wxT("      Got string value of '%s'\n"), sval.c_str());
+               ("      Got string value of '%s'\n", sval.c_str());
             #endif
             break;
          }
@@ -479,7 +479,7 @@ bool ReportFile::WriteData(WrapperArray wrapperArray)
    
    #if DBGLVL_WRITE_DATA > 0
    MessageInterface::ShowMessage
-      (wxT("   ==> Now write data to stream, maxRow is %d, first item = '%s'\n"),
+      ("   ==> Now write data to stream, maxRow is %d, first item = '%s'\n",
        maxRow, output[0][0].c_str());
    #endif
    
@@ -495,20 +495,20 @@ bool ReportFile::WriteData(WrapperArray wrapperArray)
          
          #if DBGLVL_WRITE_DATA > 1
          MessageInterface::ShowMessage
-            (wxT("leftJustify=%d, w=%2d, %s\n"), leftJustify, colWidths[param],
+            ("leftJustify=%d, w=%2d, %s\n", leftJustify, colWidths[param],
              output[param][row].c_str());
          #endif
          
          UnsignedInt numRow = output[param].size();
          if (numRow >= row+1)
-            dstream << output[param][row].char_str();
+            dstream << output[param][row];
          else if (numRow < maxRow)
             dstream << "  ";
       }
       dstream << std::endl;
       
       #if DBGLVL_WRITE_DATA > 1
-      MessageInterface::ShowMessage(wxT("\n"));
+      MessageInterface::ShowMessage("\n");
       #endif
    }
    
@@ -523,7 +523,7 @@ bool ReportFile::WriteData(WrapperArray wrapperArray)
    }
    
    #if DBGLVL_WRITE_DATA > 0
-   MessageInterface::ShowMessage(wxT("ReportFile::WriteData() returning true\n"));
+   MessageInterface::ShowMessage("ReportFile::WriteData() returning true\n");
    #endif
    
    return true;
@@ -541,8 +541,8 @@ bool ReportFile::Initialize()
 {
    #ifdef DEBUG_REPORTFILE_INIT
    MessageInterface::ShowMessage
-      (wxT("ReportFile::Initialize() this=<%p> '%s', active=%d, isInitialized=%d, ")
-       wxT("mNumParams=%d, usedByReport=%d\n   filename='%s'\n"), this, GetName().c_str(),
+      ("ReportFile::Initialize() this=<%p> '%s', active=%d, isInitialized=%d, "
+       "mNumParams=%d, usedByReport=%d\n   filename='%s'\n", this, GetName().c_str(),
        active, isInitialized, mNumParams, usedByReport, filename.c_str());
    #endif
    
@@ -552,8 +552,8 @@ bool ReportFile::Initialize()
       if ((mNumParams == 0) && !usedByReport)
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** The ReportFile named \"%s\" will not be created.\n")
-             wxT("No parameters were added to ReportFile.\n"), GetName().c_str());
+            ("*** WARNING *** The ReportFile named \"%s\" will not be created.\n"
+             "No parameters were added to ReportFile.\n", GetName().c_str());
          
          active = false;
          return false;
@@ -563,8 +563,8 @@ bool ReportFile::Initialize()
          if (mParams[0] == NULL)
          {
             MessageInterface::ShowMessage
-               (wxT("*** WARNING *** The ReportFile named \"%s\" will not be created.\n")
-                wxT("The first parameter:%s added for the report file is NULL\n"),
+               ("*** WARNING *** The ReportFile named \"%s\" will not be created.\n"
+                "The first parameter:%s added for the report file is NULL\n",
                 GetName().c_str(), mParamNames[0].c_str());
             
             active = false;
@@ -622,8 +622,8 @@ void ReportFile::Copy(const GmatBase* orig)
 
 
 //------------------------------------------------------------------------------
-// virtual bool TakeAction(const wxString &action,
-//                         const wxString &actionData = wxT(""));
+// virtual bool TakeAction(const std::string &action,
+//                         const std::string &actionData = "");
 //------------------------------------------------------------------------------
 /**
  * This method performs action.
@@ -634,30 +634,30 @@ void ReportFile::Copy(const GmatBase* orig)
  *
  */
 //------------------------------------------------------------------------------
-bool ReportFile::TakeAction(const wxString &action,
-                            const wxString &actionData)
+bool ReportFile::TakeAction(const std::string &action,
+                            const std::string &actionData)
 {
    #ifdef DEBUG_REPORTFILE_ACTION
    MessageInterface::ShowMessage
-      (wxT("ReportFile::TakeAction() action='%s', actionData='%s'\n"), action.c_str(),
+      ("ReportFile::TakeAction() action='%s', actionData='%s'\n", action.c_str(),
        actionData.c_str());
    #endif
    
-   if (action == wxT("Clear"))
+   if (action == "Clear")
    {
       ClearParameters();
       return true;
    }
    
-   if (action == wxT("PassedToReport"))
+   if (action == "PassedToReport")
    {
       usedByReport = true;
       return true;
    }
    
-   if (action == wxT("ActivateForReport"))
+   if (action == "ActivateForReport")
    {
-      calledByReport = ((actionData == wxT("On")) ? true : false);
+      calledByReport = ((actionData == "On") ? true : false);
       if (calledByReport)
       {
          if (!dstream.is_open())
@@ -666,8 +666,8 @@ bool ReportFile::TakeAction(const wxString &action,
             {
                #ifdef DEBUG_REPORTFILE_ACTION
                MessageInterface::ShowMessage
-                  (wxT("*** WARNING *** ReportFile::Distribute() failed to open ")
-                   wxT("report file '%s', so returning false\n"));
+                  ("*** WARNING *** ReportFile::Distribute() failed to open "
+                   "report file '%s', so returning false\n");
                #endif
                return false;
             }
@@ -675,7 +675,7 @@ bool ReportFile::TakeAction(const wxString &action,
       }
    }
    
-   if (action == wxT("Finalize"))
+   if (action == "Finalize")
    {
       if (dstream.is_open())
          dstream.close();
@@ -687,15 +687,15 @@ bool ReportFile::TakeAction(const wxString &action,
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool ReportFile::RenameRefObject(const Gmat::ObjectType type,
-                                 const wxString &oldName,
-                                 const wxString &newName)
+                                 const std::string &oldName,
+                                 const std::string &newName)
 {
    #ifdef DEBUG_RENAME
       MessageInterface::ShowMessage
-         (wxT("ReportFile::RenameRefObject() type=%s, oldName=%s, newName=%s\n"),
+         ("ReportFile::RenameRefObject() type=%s, oldName=%s, newName=%s\n",
           GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
    #endif
    
@@ -714,7 +714,7 @@ bool ReportFile::RenameRefObject(const Gmat::ObjectType type,
    }
    else
    {
-      wxString::size_type pos;
+      std::string::size_type pos;
       
       for (unsigned int i=0; i<mParamNames.size(); i++)
       {
@@ -730,9 +730,9 @@ bool ReportFile::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
-wxString ReportFile::GetParameterText(const Integer id) const
+std::string ReportFile::GetParameterText(const Integer id) const
 {
     if (id >= SubscriberParamCount && id < ReportFileParamCount)
         return PARAMETER_TEXT[id - SubscriberParamCount];
@@ -742,9 +742,9 @@ wxString ReportFile::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer ReportFile::GetParameterID(const wxString &str) const
+Integer ReportFile::GetParameterID(const std::string &str) const
 {
    for (Integer i = SubscriberParamCount; i < ReportFileParamCount; i++)
    {
@@ -770,9 +770,9 @@ Gmat::ParameterType ReportFile::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
-wxString ReportFile::GetParameterTypeString(const Integer id) const
+std::string ReportFile::GetParameterTypeString(const Integer id) const
 {
    if (id >= SubscriberParamCount && id < ReportFileParamCount)
       return Subscriber::PARAM_TYPE_STRING[GetParameterType(id)];
@@ -808,7 +808,7 @@ bool ReportFile::SetBooleanParameter(const Integer id, const bool value)
 {
    #if DBGLVL_OPENGL_PARAM
    MessageInterface::ShowMessage
-      (wxT("ReportFile::SetBooleanParameter()<%s> id=%d, value=%d\n"),
+      ("ReportFile::SetBooleanParameter()<%s> id=%d, value=%d\n",
        instanceName.c_str(), id, value);
    #endif
    
@@ -822,26 +822,26 @@ bool ReportFile::SetBooleanParameter(const Integer id, const bool value)
 
 
 //---------------------------------------------------------------------------
-//  bool GetBooleanParameter(const wxString &label) const
+//  bool GetBooleanParameter(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-bool ReportFile::GetBooleanParameter(const wxString &label) const
+bool ReportFile::GetBooleanParameter(const std::string &label) const
 {
    return GetBooleanParameter(GetParameterID(label));
 }
 
 
 //---------------------------------------------------------------------------
-//  bool SetBooleanParameter(const wxString &label, const bool value)
+//  bool SetBooleanParameter(const std::string &label, const bool value)
 //---------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-bool ReportFile::SetBooleanParameter(const wxString &label, const bool value)
+bool ReportFile::SetBooleanParameter(const std::string &label, const bool value)
 {
    return SetBooleanParameter(GetParameterID(label), value);
 }
@@ -881,7 +881,7 @@ Integer ReportFile::SetIntegerParameter(const Integer id, const Integer value)
          se.SetDetails(errorMessageFormat.c_str(),
                        GmatStringUtil::ToString(value, 1).c_str(),
                        GetParameterText(PRECISION).c_str(),
-                       wxT("Integer Number > 0 "));
+                       "Integer Number > 0 ");
          throw se;
       }
       
@@ -896,7 +896,7 @@ Integer ReportFile::SetIntegerParameter(const Integer id, const Integer value)
          se.SetDetails(errorMessageFormat.c_str(),
                        GmatStringUtil::ToString(value, 1).c_str(),
                        GetParameterText(COL_WIDTH).c_str(),
-                       wxT("Integer Number > 0 "));
+                       "Integer Number > 0 ");
          throw se;
       }
       
@@ -909,21 +909,21 @@ Integer ReportFile::SetIntegerParameter(const Integer id, const Integer value)
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
-wxString ReportFile::GetStringParameter(const Integer id) const
+std::string ReportFile::GetStringParameter(const Integer id) const
 {
    if (id == FILENAME)
    {
       return filename;
       
-//       wxString::size_type index = filename.find_last_of("/\\");
+//       std::string::size_type index = filename.find_last_of("/\\");
 //       if (index != filename.npos)
 //          return filename;
 //       else
 //       {
 //          // if pathname is the same as the default path, just write name
-//          wxString opath = filename.substr(0, index+1);
+//          std::string opath = filename.substr(0, index+1);
 //          if (opath == outputPath)
 //             return filename.substr(index+1);
 //          else
@@ -936,33 +936,33 @@ wxString ReportFile::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString ReportFile::GetStringParameter(const wxString &label) const
+std::string ReportFile::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
-bool ReportFile::SetStringParameter(const Integer id, const wxString &value)
+bool ReportFile::SetStringParameter(const Integer id, const std::string &value)
 {
    if (id == FILENAME)
    {
       #ifdef DEBUG_REPORTFILE_SET
       MessageInterface::ShowMessage
-         (wxT("ReportFile::SetStringParameter() Setting filename '%s' to ")
-          wxT("ReportFile '%s'\n"), value.c_str(), instanceName.c_str());
+         ("ReportFile::SetStringParameter() Setting filename '%s' to "
+          "ReportFile '%s'\n", value.c_str(), instanceName.c_str());
       #endif
       
       // Validate filename
       if (!GmatFileUtil::IsValidFileName(value))
       {
-         wxString msg = GmatFileUtil::GetInvalidFileNameMessage(1);
+         std::string msg = GmatFileUtil::GetInvalidFileNameMessage(1);
          SubscriberException se;
-         se.SetDetails(errorMessageFormat.c_str(), value.c_str(), wxT("Filename"), msg.c_str());
+         se.SetDetails(errorMessageFormat.c_str(), value.c_str(), "Filename", msg.c_str());
          throw se;
       }
       
@@ -970,27 +970,27 @@ bool ReportFile::SetStringParameter(const Integer id, const wxString &value)
       if (!GmatFileUtil::DoesDirectoryExist(value))
       {
          SubscriberException se;
-         se.SetDetails(wxT("Path does not exist in '%s'"), value.c_str());
+         se.SetDetails("Path does not exist in '%s'", value.c_str());
          throw se;
       }
       
       filename = value;
       
       // If file extension is blank, append .txt
-      if (GmatFileUtil::ParseFileExtension(filename) == wxT(""))
+      if (GmatFileUtil::ParseFileExtension(filename) == "")
       {
-         filename = filename + wxT(".txt");
+         filename = filename + ".txt";
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** Appended .txt to file name '%s'\n"), value.c_str());
+            ("*** WARNING *** Appended .txt to file name '%s'\n", value.c_str());
       }
       
-      wxString fullName = GetPathAndFileName();
+      std::string fullName = GetPathAndFileName();
       
       // Close the stream if it is open
       if (dstream.is_open())
       {
          dstream.close();
-         dstream.open(fullPathName.char_str());
+         dstream.open(fullPathName.c_str());
       }
       
       return true;
@@ -999,8 +999,8 @@ bool ReportFile::SetStringParameter(const Integer id, const wxString &value)
    {
       #ifdef DEBUG_REPORTFILE_SET
          MessageInterface::ShowMessage(
-            wxT("ReportFile::SetStringParameter() Adding parameter '%s' to ")
-            wxT("ReportFile '%s'\n"), value.c_str(), instanceName.c_str());
+            "ReportFile::SetStringParameter() Adding parameter '%s' to "
+            "ReportFile '%s'\n", value.c_str(), instanceName.c_str());
       #endif
       return AddParameter(value, mNumParams);
    }
@@ -1010,21 +1010,21 @@ bool ReportFile::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label,
-//                         const wxString &value)
+// bool SetStringParameter(const std::string &label,
+//                         const std::string &value)
 //------------------------------------------------------------------------------
-bool ReportFile::SetStringParameter(const wxString &label,
-                                    const wxString &value)
+bool ReportFile::SetStringParameter(const std::string &label,
+                                    const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
 
 
 //------------------------------------------------------------------------------
-// virtual bool SetStringParameter(const Integer id, const wxString &value,
+// virtual bool SetStringParameter(const Integer id, const std::string &value,
 //                                 const Integer index)
 //------------------------------------------------------------------------------
-bool ReportFile::SetStringParameter(const Integer id, const wxString &value,
+bool ReportFile::SetStringParameter(const Integer id, const std::string &value,
                                     const Integer index)
 {
    switch (id)
@@ -1038,12 +1038,12 @@ bool ReportFile::SetStringParameter(const Integer id, const wxString &value,
 
 
 //------------------------------------------------------------------------------
-// virtual bool SetStringParameter(const wxString &label,
-//                                 const wxString &value,
+// virtual bool SetStringParameter(const std::string &label,
+//                                 const std::string &value,
 //                                 const Integer index)
 //------------------------------------------------------------------------------
-bool ReportFile::SetStringParameter(const wxString &label,
-                                const wxString &value,
+bool ReportFile::SetStringParameter(const std::string &label,
+                                const std::string &value,
                                 const Integer index)
 {
    return SetStringParameter(GetParameterID(label), value, index);
@@ -1057,8 +1057,8 @@ const StringArray& ReportFile::GetStringArrayParameter(const Integer id) const
 {
    #ifdef DEBUG_REPORTFILE_GET
    MessageInterface::ShowMessage
-      (wxT("ReportFile::GetStringArrayParameter() id=%d, mParamNames.size()=%d, ")
-       wxT("mNumParams=%d\n"), id, mParamNames.size(), mNumParams);
+      ("ReportFile::GetStringArrayParameter() id=%d, mParamNames.size()=%d, "
+       "mNumParams=%d\n", id, mParamNames.size(), mNumParams);
    #endif
    
    switch (id)
@@ -1072,31 +1072,31 @@ const StringArray& ReportFile::GetStringArrayParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// StringArray& GetStringArrayParameter(const wxString &label) const
+// StringArray& GetStringArrayParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-const StringArray& ReportFile::GetStringArrayParameter(const wxString &label) const
+const StringArray& ReportFile::GetStringArrayParameter(const std::string &label) const
 {
    return GetStringArrayParameter(GetParameterID(label));
 }
 
 
 //---------------------------------------------------------------------------
-//  wxString GetOnOffParameter(const Integer id) const
+//  std::string GetOnOffParameter(const Integer id) const
 //---------------------------------------------------------------------------
-wxString ReportFile::GetOnOffParameter(const Integer id) const
+std::string ReportFile::GetOnOffParameter(const Integer id) const
 {
-   wxString retStr;
+   std::string retStr;
    
    switch (id)
    {
    case WRITE_HEADERS:
-      retStr = writeHeaders ? wxT("On") : wxT("Off");
+      retStr = writeHeaders ? "On" : "Off";
       return retStr;
    case LEFT_JUSTIFY:
-      retStr = leftJustify ? wxT("On") : wxT("Off");
+      retStr = leftJustify ? "On" : "Off";
       return retStr;
    case ZERO_FILL:
-      retStr = zeroFill ? wxT("On") : wxT("Off");
+      retStr = zeroFill ? "On" : "Off";
       return retStr;
    default:
       return Subscriber::GetOnOffParameter(id);
@@ -1105,20 +1105,20 @@ wxString ReportFile::GetOnOffParameter(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-//  bool SetOnOffParameter(const Integer id, const wxString &value)
+//  bool SetOnOffParameter(const Integer id, const std::string &value)
 //---------------------------------------------------------------------------
-bool ReportFile::SetOnOffParameter(const Integer id, const wxString &value)
+bool ReportFile::SetOnOffParameter(const Integer id, const std::string &value)
 {
    switch (id)
    {
    case WRITE_HEADERS:
-      writeHeaders = (value == wxT("On")) ? true : false;
+      writeHeaders = (value == "On") ? true : false;
       return true;
    case LEFT_JUSTIFY:
-      leftJustify = (value == wxT("On")) ? true : false;
+      leftJustify = (value == "On") ? true : false;
       return true;
    case ZERO_FILL:
-      zeroFill = (value == wxT("On")) ? true : false;
+      zeroFill = (value == "On") ? true : false;
       return true;
    default:
       return Subscriber::SetOnOffParameter(id, value);
@@ -1127,19 +1127,19 @@ bool ReportFile::SetOnOffParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// wxString ReportFile::GetOnOffParameter(const wxString &label) const
+// std::string ReportFile::GetOnOffParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString ReportFile::GetOnOffParameter(const wxString &label) const
+std::string ReportFile::GetOnOffParameter(const std::string &label) const
 {
    return GetOnOffParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetOnOffParameter(const wxString &label, const wxString &value)
+// bool SetOnOffParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
-bool ReportFile::SetOnOffParameter(const wxString &label, 
-                                   const wxString &value)
+bool ReportFile::SetOnOffParameter(const std::string &label, 
+                                   const std::string &value)
 {
    return SetOnOffParameter(GetParameterID(label), value);
 }
@@ -1147,10 +1147,10 @@ bool ReportFile::SetOnOffParameter(const wxString &label,
 
 //------------------------------------------------------------------------------
 // virtual GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                                const wxString &name)
+//                                const std::string &name)
 //------------------------------------------------------------------------------
 GmatBase* ReportFile::GetRefObject(const Gmat::ObjectType type,
-                                   const wxString &name)
+                                   const std::string &name)
 {
    for (int i=0; i<mNumParams; i++)
    {
@@ -1158,22 +1158,22 @@ GmatBase* ReportFile::GetRefObject(const Gmat::ObjectType type,
          return mParams[i];
    }
 
-   throw SubscriberException(wxT("ReportFile::GetRefObject() the object name: ") + name +
-                             wxT("not found\n"));
+   throw SubscriberException("ReportFile::GetRefObject() the object name: " + name +
+                             "not found\n");
 }
 
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                           const wxString &name = wxT(""))
+//                           const std::string &name = "")
 //------------------------------------------------------------------------------
 bool ReportFile::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                              const wxString &name)
+                              const std::string &name)
 {
    #if DBGLVL_REPORTFILE_REF_OBJ
    MessageInterface::ShowMessage
-      (wxT("ReportFile::SetRefObject() <%p>'%s' entered, obj=%p, name=%s, objtype=%s, ")
-       wxT("objname=%s\n"), this, GetName().c_str(), obj, name.c_str(), obj->GetTypeName().c_str(),
+      ("ReportFile::SetRefObject() <%p>'%s' entered, obj=%p, name=%s, objtype=%s, "
+       "objname=%s\n", this, GetName().c_str(), obj, name.c_str(), obj->GetTypeName().c_str(),
        obj->GetName().c_str());
    #endif
    
@@ -1185,11 +1185,11 @@ bool ReportFile::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
       {
          // Handle array elements
          Integer row, col;
-         wxString realName;
+         std::string realName;
          GmatStringUtil::GetArrayIndex(mParamNames[i], row, col, realName);
          
          #if DBGLVL_REPORTFILE_REF_OBJ > 1
-         MessageInterface::ShowMessage(wxT("   realName=%s\n"), realName.c_str());
+         MessageInterface::ShowMessage("   realName=%s\n", realName.c_str());
          #endif
          
          if (realName == name)
@@ -1248,7 +1248,7 @@ const StringArray& ReportFile::GetRefObjectNameArray(const Gmat::ObjectType type
       {
          // Handle array index
          Integer row, col;
-         wxString realName;
+         std::string realName;
          for (int i=0; i<mNumParams; i++)
          {
             GmatStringUtil::GetArrayIndex(mParamNames[i], row, col, realName);
@@ -1274,9 +1274,9 @@ const StringArray& ReportFile::GetWrapperObjectNameArray()
    
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("ReportFile::GetWrapperObjectNameArray() size=%d\n"),  wrapperObjectNames.size());
+      ("ReportFile::GetWrapperObjectNameArray() size=%d\n",  wrapperObjectNames.size());
    for (UnsignedInt i=0; i<wrapperObjectNames.size(); i++)
-      MessageInterface::ShowMessage(wxT("   %s\n"), wrapperObjectNames[i].c_str());
+      MessageInterface::ShowMessage("   %s\n", wrapperObjectNames[i].c_str());
    #endif
    
    return wrapperObjectNames;
@@ -1295,31 +1295,31 @@ bool ReportFile::OpenReportFile(void)
    filename = GetPathAndFileName();
 
    // If file name is blank, use default file name (LOJ: 2009.10.02)
-   if (filename == wxT(""))
+   if (filename == "")
       filename = defFileName;
    
    #ifdef DEBUG_REPORTFILE_OPEN
    MessageInterface::ShowMessage
-      (wxT("ReportFile::OpenReportFile() entered, filename = %s\n"), filename.c_str());
+      ("ReportFile::OpenReportFile() entered, filename = %s\n", filename.c_str());
    #endif
    
    if (dstream.is_open())
      dstream.close();
    
-   dstream.open(filename.char_str());
+   dstream.open(filename.c_str());
    if (!dstream.is_open())
    {
       #ifdef DEBUG_REPORTFILE_OPEN
       MessageInterface::ShowMessage
-         (wxT("ReportFile::OpenReportFile() Failed to open report file: %s\n"),
+         ("ReportFile::OpenReportFile() Failed to open report file: %s\n",
           filename.c_str());
       #endif
       
-      throw SubscriberException(wxT("Cannot open report file: ") + filename + wxT("\n"));
+      throw SubscriberException("Cannot open report file: " + filename + "\n");
    }
    
    #ifdef DEBUG_REPORTFILE_OPEN
-   MessageInterface::ShowMessage(wxT("ReportFile::OpenReportFile() returning true\n"));
+   MessageInterface::ShowMessage("ReportFile::OpenReportFile() returning true\n");
    #endif
    
    return true;
@@ -1332,7 +1332,7 @@ bool ReportFile::OpenReportFile(void)
 void ReportFile::ClearParameters()
 {
    #ifdef DEBUG_REPORTFILE_SET
-   MessageInterface::ShowMessage(wxT("ReportFile::ClearParameters() entered\n"));
+   MessageInterface::ShowMessage("ReportFile::ClearParameters() entered\n");
    #endif
    
    mParams.clear();
@@ -1353,7 +1353,7 @@ void ReportFile::WriteHeaders()
 {
    #ifdef DEBUG_WRITE_HEADERS
    MessageInterface::ShowMessage
-      (wxT("ReportFile::WriteHeaders() entered, mNumParams=%d, columnWidth=%d\n"),
+      ("ReportFile::WriteHeaders() entered, mNumParams=%d, columnWidth=%d\n",
        mNumParams, columnWidth);
    #endif
    
@@ -1373,12 +1373,12 @@ void ReportFile::WriteHeaders()
              mParamNames[i].length() : columnWidth;
           
           // parameter name has Gregorian, minimum width is 24
-          if (mParamNames[i].find(wxT("Gregorian")) != mParamNames[i].npos)
+          if (mParamNames[i].find("Gregorian") != mParamNames[i].npos)
              if (width < 24)
                 width = 24;
           
           #ifdef DEBUG_WRITE_HEADERS
-          MessageInterface::ShowMessage(wxT("   column %d: width = %d\n"), i, width);
+          MessageInterface::ShowMessage("   column %d: width = %d\n", i, width);
           #endif
           
           dstream.width(width + 3); // sets miminum field width
@@ -1387,8 +1387,8 @@ void ReportFile::WriteHeaders()
           if (leftJustify)
              dstream.setf(std::ios::left);
           
-          //dstream << mParamNames[i] << wxT("   ");
-          dstream << mParamNames[i].char_str();
+          //dstream << mParamNames[i] << "   ";
+          dstream << mParamNames[i];
       }
       
       dstream << std::endl;
@@ -1397,7 +1397,7 @@ void ReportFile::WriteHeaders()
    initial = false;
    
    #ifdef DEBUG_WRITE_HEADERS
-   MessageInterface::ShowMessage(wxT("ReportFile::WriteHeaders() leaving\n"));
+   MessageInterface::ShowMessage("ReportFile::WriteHeaders() leaving\n");
    #endif
 } // WriteHeaders()
 
@@ -1424,7 +1424,7 @@ Integer ReportFile::WriteMatrix(StringArray *output, Integer param,
 {
    #ifdef DEBUG_WRITE_MATRIX
    MessageInterface::ShowMessage
-      (wxT("ReportFile::WriteMatrix() maxRow=%d, defWidth=%d\n"), maxRow, defWidth);
+      ("ReportFile::WriteMatrix() maxRow=%d, defWidth=%d\n", maxRow, defWidth);
    #endif
    
    UnsignedInt numRow = rmat.GetNumRows();
@@ -1438,12 +1438,12 @@ Integer ReportFile::WriteMatrix(StringArray *output, Integer param,
    
    for (UnsignedInt jj=0; jj<numRow; jj++)
    {
-      wxString rowStr = rmat.ToRowString(jj, precision, w, zeroFill);
+      std::string rowStr = rmat.ToRowString(jj, precision, w, zeroFill);
       output[param].push_back(rowStr);
       
       #ifdef DEBUG_WRITE_MATRIX
       MessageInterface::ShowMessage
-         (wxT("   rowStr.length()=%d, colWidth=%d\n"), rowStr.length(), colWidth);
+         ("   rowStr.length()=%d, colWidth=%d\n", rowStr.length(), colWidth);
       #endif
       
       if (rowStr.length() > (UnsignedInt)colWidth)
@@ -1463,7 +1463,7 @@ Integer ReportFile::WriteMatrix(StringArray *output, Integer param,
    
    #ifdef DEBUG_WRITE_MATRIX
    MessageInterface::ShowMessage
-      (wxT("ReportFile::WriteMatrix() returning %d\n"), newWidth);
+      ("ReportFile::WriteMatrix() returning %d\n", newWidth);
    #endif
    return newWidth;
 } // WriteMatrix()
@@ -1478,11 +1478,11 @@ Integer ReportFile::WriteMatrix(StringArray *output, Integer param,
 bool ReportFile::Distribute(int len)
 {
    #if DBGLVL_REPORTFILE_DATA > 1
-   MessageInterface::ShowMessage(wxT("ReportFile::Distribute(int len) called len=%d\n"), len);
+   MessageInterface::ShowMessage("ReportFile::Distribute(int len) called len=%d\n", len);
    if (len > 0)
-      MessageInterface::ShowMessage(wxT("   data = '%s'\n"), data);
-   MessageInterface::ShowMessage(wxT("   usedByReport = %s, calledByReport = %s\n"),
-      (usedByReport ? wxT("true") : wxT("false")), (calledByReport ? wxT("true") : wxT("false")));
+      MessageInterface::ShowMessage("   data = '%s'\n", data);
+   MessageInterface::ShowMessage("   usedByReport = %s, calledByReport = %s\n",
+      (usedByReport ? "true" : "false"), (calledByReport ? "true" : "false"));
    #endif
    
    if (usedByReport && calledByReport)
@@ -1495,8 +1495,8 @@ bool ReportFile::Distribute(int len)
             {
                #if DBGLVL_REPORTFILE_DATA > 0
                MessageInterface::ShowMessage
-                  (wxT("*** WARNING *** ReportFile::Distribute() failed to open ")
-                   wxT("report file '%s', so returning false\n"));
+                  ("*** WARNING *** ReportFile::Distribute() failed to open "
+                   "report file '%s', so returning false\n");
                #endif
                return false;
             }
@@ -1505,10 +1505,10 @@ bool ReportFile::Distribute(int len)
             dstream.clear();
          
          #if DBGLVL_REPORTFILE_DATA > 1
-         MessageInterface::ShowMessage(wxT("   Writing data to '%s'\n"), filename.c_str());
+         MessageInterface::ShowMessage("   Writing data to '%s'\n", filename.c_str());
          #endif
          
-         dstream << data.char_str();
+         dstream << data;
          dstream << std::endl;
       }
       return true;
@@ -1531,13 +1531,13 @@ bool ReportFile::Distribute(const Real * dat, Integer len)
 {
    #if DBGLVL_REPORTFILE_DATA > 0
    MessageInterface::ShowMessage
-      (wxT("ReportFile::Distribute() this=<%p>'%s' called len=%d\n")wxT("   filename='%s'\n"),
+      ("ReportFile::Distribute() this=<%p>'%s' called len=%d\n""   filename='%s'\n",
        this, GetName().c_str(), len, filename.c_str());
    MessageInterface::ShowMessage
-      (wxT("   active=%d, isEndOfReceive=%d, mSolverIterOption=%d, runstate=%d\n"),
+      ("   active=%d, isEndOfReceive=%d, mSolverIterOption=%d, runstate=%d\n",
        active, isEndOfReceive, mSolverIterOption, runstate);
    if (len > 0)
-      MessageInterface::ShowMessage(wxT("   dat[0]=%f, dat[1]=%f\n"), dat[0], dat[1]);
+      MessageInterface::ShowMessage("   dat[0]=%f, dat[1]=%f\n", dat[0], dat[1]);
    #endif
    
    if (!active)
@@ -1551,8 +1551,8 @@ bool ReportFile::Distribute(const Real * dat, Integer len)
    {
       #if DBGLVL_REPORTFILE_DATA > 0
       MessageInterface::ShowMessage
-         (wxT("   ===> Just returning; writing current iteration only and solver ")
-          wxT("is not finished\n"));
+         ("   ===> Just returning; writing current iteration only and solver "
+          "is not finished\n");
       #endif
       return true;
    }
@@ -1568,7 +1568,7 @@ bool ReportFile::Distribute(const Real * dat, Integer len)
    {
       #if DBGLVL_REPORTFILE_DATA > 0
       MessageInterface::ShowMessage
-         (wxT("   ===> Just returning; not writing solver data and solver is running\n"));
+         ("   ===> Just returning; not writing solver data and solver is running\n");
       #endif
       
       return true;
@@ -1579,13 +1579,13 @@ bool ReportFile::Distribute(const Real * dat, Integer len)
    {
       #if DBGLVL_REPORTFILE_DATA > 0
       MessageInterface::ShowMessage
-         (wxT("   ===> Just returning; current time is the same as last report time\n"));
+         ("   ===> Just returning; current time is the same as last report time\n");
       #endif
       return true;
    }
    
    #if DBGLVL_REPORTFILE_DATA > 0
-   MessageInterface::ShowMessage(wxT("   Start writing data\n"));
+   MessageInterface::ShowMessage("   Start writing data\n");
    #endif
    
    //------------------------------------------------------------
@@ -1593,7 +1593,7 @@ bool ReportFile::Distribute(const Real * dat, Integer len)
    //------------------------------------------------------------
    if (mNumParams > 0)
    {
-      wxString sval;
+      std::string sval;
       
       if (!dstream.is_open())
          if (!OpenReportFile())
@@ -1618,7 +1618,7 @@ bool ReportFile::Distribute(const Real * dat, Integer len)
       
       #if DBGLVL_REPORTFILE_DATA > 1
       MessageInterface::ShowMessage
-         (wxT("ReportFile::Distribute() dat=%f %f %f %f %g %g %g\n"), dat[0], dat[1],
+         ("ReportFile::Distribute() dat=%f %f %f %f %g %g %g\n", dat[0], dat[1],
           dat[2], dat[3], dat[4], dat[5], dat[6]);
       #endif
    }
@@ -1629,7 +1629,7 @@ bool ReportFile::Distribute(const Real * dat, Integer len)
 bool ReportFile::IsNotANumber(Real rval)
 {
    #ifdef DEBUG_REAL_DATA
-      MessageInterface::ShowMessage(wxT("Entering IsNotANumber with value = %12.10f\n"), rval);
+      MessageInterface::ShowMessage("Entering IsNotANumber with value = %12.10f\n", rval);
    #endif
    // zero is OK
    if (GmatMathUtil::IsEqual(rval, 0.0))   return false;
@@ -1639,12 +1639,12 @@ bool ReportFile::IsNotANumber(Real rval)
        GmatMathUtil::IsNaN(rval))
    {
       #ifdef DEBUG_REAL_DATA
-         MessageInterface::ShowMessage(wxT("         IsNotANumber returning true\n"));
+         MessageInterface::ShowMessage("         IsNotANumber returning true\n");
       #endif
       return true;
    }
    #ifdef DEBUG_REAL_DATA
-      MessageInterface::ShowMessage(wxT("         IsNotANumber returning false\n"));
+      MessageInterface::ShowMessage("         IsNotANumber returning false\n");
    #endif
    return false;
 }

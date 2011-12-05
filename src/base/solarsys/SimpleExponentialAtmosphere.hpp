@@ -55,7 +55,7 @@
 class GMAT_API SimpleExponentialAtmosphere : public AtmosphereModel
 {
 public:
-   SimpleExponentialAtmosphere(const wxString &name = wxT(""));
+   SimpleExponentialAtmosphere(const std::string &name = "");
    virtual ~SimpleExponentialAtmosphere();
    SimpleExponentialAtmosphere(const SimpleExponentialAtmosphere& atm);
    SimpleExponentialAtmosphere&  operator=(const SimpleExponentialAtmosphere&

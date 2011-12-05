@@ -36,9 +36,9 @@ class GMAT_API Moon : public CelestialBody
 {
 public:
    // default constructor, with optional name
-   Moon(wxString name = SolarSystem::MOON_NAME);
+   Moon(std::string name = SolarSystem::MOON_NAME);
    // additional constructor
-   Moon(wxString name, const wxString &cBody);
+   Moon(std::string name, const std::string &cBody);
    // copy constructor
    Moon(const Moon &m);
    // operator=
@@ -62,7 +62,7 @@ protected:
       
    };
    
-   //static const wxString PARAMETER_TEXT[MoonParamCount - CelestialBodyParamCount];
+   //static const std::string PARAMETER_TEXT[MoonParamCount - CelestialBodyParamCount];
    
    //static const Gmat::ParameterType 
    //                         PARAMETER_TYPE[MoonParamCount - CelestialBodyParamCount];

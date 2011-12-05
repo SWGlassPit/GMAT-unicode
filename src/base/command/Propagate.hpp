@@ -62,62 +62,62 @@ public:
    Propagate&           operator=(const Propagate &prp);
    
    // Methods used for configuration
-   virtual wxString  GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual std::string  GetRefObjectName(const Gmat::ObjectType type) const;
    virtual bool         SetRefObjectName(const Gmat::ObjectType type,
-                                         const wxString &name);
+                                         const std::string &name);
    
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
    virtual const ObjectTypeArray&
                         GetRefObjectTypeArray();
    virtual const StringArray&
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    
-   virtual bool         SetObject(const wxString &name,
+   virtual bool         SetObject(const std::string &name,
                                   const Gmat::ObjectType type,
-                                  const wxString &associate = wxT(""),
+                                  const std::string &associate = "",
                                   const Gmat::ObjectType associateType =
                                   Gmat::UNKNOWN_OBJECT);
    virtual bool         SetObject(GmatBase *obj, const Gmat::ObjectType type);
    virtual GmatBase*    GetGmatObject(const Gmat::ObjectType type, 
-                                  const wxString objName = wxT(""));
+                                  const std::string objName = "");
    virtual void         ClearObject(const Gmat::ObjectType type);
    
    // inherited from GmatBase
    virtual GmatBase*    Clone(void) const;
    
-   virtual const wxString&
+   virtual const std::string&
                         GetGeneratingString(Gmat::WriteMode mode =
                                             Gmat::SCRIPTING,
-                                            const wxString &prefix = wxT(""),
-                                            const wxString &useName = wxT(""));
+                                            const std::string &prefix = "",
+                                            const std::string &useName = "");
    
    // Reference object accessor methods
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name,
+                                     const std::string &name,
                                      const Integer index);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name,
+                                     const std::string &name,
                                      const Integer index);
    virtual ObjectArray& GetRefObjectArray(const Gmat::ObjectType type);
    
    // Parameter accessor methods
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    
    virtual Integer      GetIntegerParameter(const Integer id) const;
    virtual Integer      SetIntegerParameter(const Integer id,
                                             const Integer value);
-   virtual wxString  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
+                                           const std::string &value);
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
    virtual const StringArray& 
                         GetStringArrayParameter(const Integer id) const;
@@ -127,18 +127,18 @@ public:
    virtual bool         GetBooleanParameter(const Integer id) const;
    virtual bool         SetBooleanParameter(const Integer id,
                                             const bool value);
-   virtual bool         GetBooleanParameter(const wxString &label) const;
-   virtual bool         SetBooleanParameter(const wxString &label,
+   virtual bool         GetBooleanParameter(const std::string &label) const;
+   virtual bool         SetBooleanParameter(const std::string &label,
                                             const bool value);
    virtual Real         GetRealParameter(const Integer id) const;
    virtual Real         SetRealParameter(const Integer id,
                                          const Real value);
-   virtual Real         GetRealParameter(const wxString &label) const;
-   virtual Real         SetRealParameter(const wxString &label,
+   virtual Real         GetRealParameter(const std::string &label) const;
+   virtual Real         SetRealParameter(const std::string &label,
                                          const Real value);
    
-   virtual bool         TakeAction(const wxString &action,  
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,  
+                                   const std::string &actionData = "");
    
    // Methods used for interpreting the command
    virtual bool         InterpretAction();
@@ -148,7 +148,7 @@ public:
    virtual const StringArray& 
                         GetWrapperObjectNameArray();
    virtual bool         SetElementWrapper(ElementWrapper* toWrapper,
-                                          const wxString &withName);
+                                          const std::string &withName);
    virtual void         ClearWrappers();
    
    // Methods used for running the command
@@ -166,7 +166,7 @@ protected:
    /// The spacecraft associated with this propagation, grouped by propagator
    std::vector<StringArray *>   satName;
    /// Flag used to determine if the spacecraft are propagated coupled
-   wxString                  currentPropMode;
+   std::string                  currentPropMode;
    /// Frequency used to check for user interrupts of the run
    Integer                      interruptCheckFrequency;
    /// Flag that specifies if we are rejoining a run in progress
@@ -290,26 +290,26 @@ protected:
    static const Gmat::ParameterType
       PARAMETER_TYPE[PropagateCommandParamCount - GmatCommandParamCount];
    /// Parameter ID strings
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[PropagateCommandParamCount - GmatCommandParamCount];
    /// Array of allowed propagation modes
-   static wxString      PropModeList[PropModeCount];
+   static std::string      PropModeList[PropModeCount];
 
    
-   virtual void            SetNames(const wxString& name, 
+   virtual void            SetNames(const std::string& name, 
                                     StringArray& owners, StringArray& elements);
    virtual void            CheckForOptions(Integer &loc, 
-                                           wxString& generatingString);
+                                           std::string& generatingString);
 
    virtual void            AssemblePropagators(Integer &loc, 
-                              wxString& generatingString);
+                              std::string& generatingString);
    void                    FindSetupsAndStops(Integer &loc, 
-                              wxString& generatingString,
+                              std::string& generatingString,
                               StringArray &setupStrings, 
                               StringArray &stopStrings);
-   void                    ConfigurePropSetup(wxString &setupDesc);
-   void                    ConfigureStoppingCondition(wxString &stopDesc);
-   void                    CleanString(wxString &theString, 
+   void                    ConfigurePropSetup(std::string &setupDesc);
+   void                    ConfigureStoppingCondition(std::string &stopDesc);
+   void                    CleanString(std::string &theString, 
                               const StringArray *extras = NULL);
    virtual void            PrepareToPropagate();
    virtual void            CheckStopConditions(Integer EpochID);

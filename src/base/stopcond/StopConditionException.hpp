@@ -26,8 +26,8 @@
 class GMAT_API StopConditionException : public BaseException
 {
    public:
-      StopConditionException(const wxString& message = 
-                         wxT("Error occurred in StopCondition class")) 
+      StopConditionException(const std::string& message = 
+                         "Error occurred in StopCondition class") 
          : BaseException(message) {};
 };
 #endif

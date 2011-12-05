@@ -84,7 +84,7 @@
 class GMAT_API GravityField : public HarmonicField
 {
 public:
-   GravityField(const wxString &name, const wxString &forBodyName,
+   GravityField(const std::string &name, const std::string &forBodyName,
                 Integer maxDeg = HarmonicField::HF_MAX_DEGREE,
                 Integer maxOrd = HarmonicField::HF_MAX_ORDER);
    virtual ~GravityField();
@@ -97,30 +97,30 @@ public:
                                   Integer order = 1, 
                                   const Integer id = -1);
 
-   virtual bool    GetBodyAndMu(wxString &itsName, Real &itsMu);
+   virtual bool    GetBodyAndMu(std::string &itsName, Real &itsMu);
 
    // inherited from GmatBase
    virtual GmatBase* Clone(void) const;
 
    // override access methods derived from GmatBase
-   virtual wxString GetParameterText(const Integer id) const;
-   virtual Integer     GetParameterID(const wxString &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
+   virtual Integer     GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
    virtual bool        IsParameterReadOnly(const Integer id) const;
 
    virtual Real        GetRealParameter(const Integer id) const;
    virtual Real        SetRealParameter(const Integer id,
                                         const Real value);
-   virtual Real        GetRealParameter(const wxString &label) const;
-   virtual Real        SetRealParameter(const wxString &label,
+   virtual Real        GetRealParameter(const std::string &label) const;
+   virtual Real        SetRealParameter(const std::string &label,
                                         const Real value);
-   virtual wxString GetStringParameter(const Integer id) const;
+   virtual std::string GetStringParameter(const Integer id) const;
    virtual bool        SetStringParameter(const Integer id,
-                                          const wxString &value);
-   virtual wxString GetStringParameter(const wxString &label) const;
-   virtual bool        SetStringParameter(const wxString &label,
-                                          const wxString &value);
+                                          const std::string &value);
+   virtual std::string GetStringParameter(const std::string &label) const;
+   virtual bool        SetStringParameter(const std::string &label,
+                                          const std::string &value);
    
    // Methods used by the ODEModel to set the state indexes, etc
    virtual bool SupportsDerivative(Gmat::StateElementId id);
@@ -141,7 +141,7 @@ protected:
    static std::vector<HarmonicGravity*> cache;
    static GravityFile                   *gravFile;
 
-   static const wxString PARAMETER_TEXT[
+   static const std::string PARAMETER_TEXT[
       GravityFieldParamCount - HarmonicFieldParamCount];
 
    static const Gmat::ParameterType PARAMETER_TYPE[
@@ -152,7 +152,7 @@ protected:
    /// radius of central body ( mean equatorial )
    Real               a;
    /// string for tide model
-   wxString        earthTideModel;
+   std::string        earthTideModel;
    /// default mu
    Real               defaultMu;
    /// default equatorial radius
@@ -167,7 +167,8 @@ protected:
    HarmonicGravity    *gravityModel;    // JPD
    
 
-   bool          IsBlank(const wxString &aLine);  // leaving this one in for now
+   bool          IsBlank(char* aLine);  // leaving this one in for now
+   bool          IsBlank(const std::string &aLine);  // leaving this one in for now
 
    static const Integer stateSize             = 6;
    
@@ -183,7 +184,7 @@ protected:
                    Real force[3], Rmatrix33& grad);
    void InverseRotate(Rmatrix33& rot, const Real in[3], Real out[3]);
    
-   HarmonicGravity* GetGravityFile(const wxString &filename, const Real &radius, const Real &mukm);
+   HarmonicGravity* GetGravityFile(const std::string &filename, const Real &radius, const Real &mukm);
 };
 
 

@@ -50,59 +50,59 @@ public:
    virtual GmatBase*    Clone() const;
    
    // Parameter accessor methods
-   virtual Integer      GetParameterID(const wxString &str) const;
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const wxString &label) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const std::string &label) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value,
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value,
                                            const Integer index);
    virtual const StringArray&
                         GetStringArrayParameter(const Integer id) const;
    virtual const StringArray&
-                        GetStringArrayParameter(const wxString &label) const;
+                        GetStringArrayParameter(const std::string &label) const;
    
    // ElementWrapper accessor methods
    virtual const StringArray& 
                         GetWrapperObjectNameArray();
    virtual bool         SetElementWrapper(ElementWrapper* toWrapper,
-                                          const wxString &withName);
+                                          const std::string &withName);
    virtual void         ClearWrappers();
    
    // Object accessor methods
-   virtual wxString  GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual std::string  GetRefObjectName(const Gmat::ObjectType type) const;
    virtual const StringArray&
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name,
+                                     const std::string &name,
                                      const Integer index);
    
    // Command methods
-   virtual bool         TakeAction(const wxString &action,  
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,  
+                                   const std::string &actionData = "");
    
    bool                 Initialize();
    virtual bool         Execute();
    virtual void         RunComplete();
    
    // Generating string method
-   virtual const wxString&
+   virtual const std::string&
                         GetGeneratingString(Gmat::WriteMode mode = Gmat::SCRIPTING,
-                                            const wxString &prefix = wxT(""),
-                                            const wxString &useName = wxT(""));
+                                            const std::string &prefix = "",
+                                            const std::string &useName = "");
    
 protected:
    /// Name of the subscriber
-   wxString                rfName;
+   std::string                rfName;
    /// The ReportFile subscriber that receives the data
    ReportFile                 *reporter;
    /// The ID for the subscriber
@@ -124,8 +124,8 @@ protected:
    /// ElementWraper pointers of parameters
    std::vector<ElementWrapper*> parmWrappers;
    
-   void WriteHeaders(wxString &datastream, Integer colWidth);
-   bool AddParameter(const wxString &paramName, Integer index,
+   void WriteHeaders(std::stringstream &datastream, Integer colWidth);
+   bool AddParameter(const std::string &paramName, Integer index,
                      Parameter *param = NULL);
    void DeleteParameters();
    
@@ -138,7 +138,7 @@ protected:
    
 private:
 
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[ReportParamCount - GmatCommandParamCount];
    static const Gmat::ParameterType
       PARAMETER_TYPE[ReportParamCount - GmatCommandParamCount];

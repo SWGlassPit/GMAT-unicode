@@ -41,7 +41,7 @@ public:
    static const Integer COEFFICIENT_COUNT = 16;
    static const Integer AXES_COUNT = 4;
    
-   Thruster(wxString nomme);
+   Thruster(std::string nomme);
    virtual ~Thruster();
    Thruster(const Thruster& th);
    Thruster&            operator=(const Thruster& th);
@@ -51,23 +51,23 @@ public:
    virtual void         Copy(const GmatBase* inst);
    
    // Parameter access methods - overridden from GmatBase
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    virtual bool         IsParameterReadOnly(const Integer id) const;
    
    virtual Real         GetRealParameter(const Integer id) const;
    virtual Real         SetRealParameter(const Integer id,
                                          const Real value);
-   virtual wxString  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
-   virtual wxString  GetStringParameter(const Integer id,
+                                           const std::string &value);
+   virtual std::string  GetStringParameter(const Integer id,
                                            const Integer index) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
    virtual bool         GetBooleanParameter(const Integer id) const;
    virtual bool         SetBooleanParameter(const Integer id,
@@ -80,26 +80,26 @@ public:
    virtual const StringArray&
                         GetPropertyEnumStrings(const Integer id) const;
    virtual const StringArray&
-                        GetPropertyEnumStrings(const wxString &label) const;
+                        GetPropertyEnumStrings(const std::string &label) const;
    
    // Ref. object access methods - overridden from GmatBase
-   virtual wxString  GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual std::string  GetRefObjectName(const Gmat::ObjectType type) const;
    virtual const ObjectTypeArray&
                         GetRefObjectTypeArray();
    virtual const StringArray&
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    virtual bool         SetRefObject(GmatBase *obj, 
                                      const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    virtual ObjectArray& GetRefObjectArray(const Gmat::ObjectType type);
-   virtual ObjectArray& GetRefObjectArray(const wxString& typeString);
+   virtual ObjectArray& GetRefObjectArray(const std::string& typeString);
    
    
-   virtual bool         TakeAction(const wxString &action,  
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,  
+                                   const std::string &actionData = "");
    virtual void         SetSolarSystem(SolarSystem *ss);
    virtual bool         Initialize();
    Real                 CalculateMassFlow();
@@ -121,15 +121,15 @@ protected:
    /// Secondary Spacecraft object if coordinate system is set to Local
    Spacecraft                 *spacecraft;
    /// Coordinate system name
-   wxString                coordSystemName;
+   std::string                coordSystemName;
    /// Origin name if coordinate system is set to Local
-   wxString                localOriginName;
+   std::string                localOriginName;
    /// Axes name if coordinate system is set to Local
-   wxString                localAxesName;
+   std::string                localAxesName;
    /// Name of the J2000 body
-   wxString                j2000BodyName;
+   std::string                j2000BodyName;
    /// Name of the Spacecraft that has thruster
-   wxString                satName;
+   std::string                satName;
    /// Acceleration due to gravity, used to specify Isp in seconds
    Real                       gravityAccel;   
    /// Thrust duty cycle for this thruster
@@ -204,7 +204,7 @@ protected:
    };
    
    /// Thruster parameter labels
-   static const wxString
+   static const std::string
                         PARAMETER_TEXT[ThrusterParamCount - HardwareParamCount];
    /// Thruster parameter types
    static const Gmat::ParameterType
@@ -217,8 +217,8 @@ protected:
    void                 ConvertDirectionToInertial(Real *dv, Real *dvInertial,
                                                    Real epoch);
    void                 ComputeInertialDirection(Real epoch);
-   void                 WriteDeprecatedMessage(const wxString &oldProp,
-                                               const wxString &newProp) const;
+   void                 WriteDeprecatedMessage(const std::string &oldProp,
+                                               const std::string &newProp) const;
    
 };
 

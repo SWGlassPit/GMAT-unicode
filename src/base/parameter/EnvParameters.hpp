@@ -36,7 +36,7 @@ class GMAT_API AtmosDensity : public EnvReal
 {
 public:
 
-   AtmosDensity(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   AtmosDensity(const std::string &name = "", GmatBase *obj = NULL);
    AtmosDensity(const AtmosDensity &copy);
    const AtmosDensity& operator=(const AtmosDensity &right);
    virtual ~AtmosDensity();

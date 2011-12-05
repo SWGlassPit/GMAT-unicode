@@ -24,7 +24,7 @@
 
 
 //------------------------------------------------------------------------------
-//  FunctionException(wxString details)
+//  FunctionException(std::string details)
 //------------------------------------------------------------------------------
 /**
  * Constructs FunctionException instance (default constructor).
@@ -32,8 +32,8 @@
  * @param details A message providing the details of the exception. 
  */
 //------------------------------------------------------------------------------
-FunctionException::FunctionException(wxString details) :
-    BaseException           (wxT("Function Exception Thrown: "), details)
+FunctionException::FunctionException(std::string details) :
+    BaseException           ("Function Exception Thrown: ", details)
 {
 }
 

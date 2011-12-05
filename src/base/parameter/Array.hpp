@@ -30,8 +30,8 @@ class GMAT_API Array : public Parameter
 {
 public:
    
-   Array(const wxString &name = wxT(""), const wxString &desc = wxT(""),
-         const wxString &unit = wxT(""));
+   Array(const std::string &name = "", const std::string &desc = "",
+         const std::string &unit = "");
    Array(const Array &copy);
    Array& operator= (const Array& right);
    virtual ~Array();
@@ -49,69 +49,69 @@ public:
    virtual void SetRmatrix(const Rmatrix &mat);
    virtual const Rmatrix& GetRmatrix() const { return mRmatValue; }
    virtual const Rmatrix& EvaluateRmatrix() { return mRmatValue; } /// assumes it has only numbers
-   virtual wxString ToString();
-   virtual const wxString* GetParameterList() const;
+   virtual std::string ToString();
+   virtual const std::string* GetParameterList() const;
    
    // methods inherited from GmatBase
    virtual GmatBase* Clone() const;
    virtual void Copy(const GmatBase*);
-   virtual wxString GetParameterText(const Integer id) const;
-   virtual Integer GetParameterID(const wxString &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
+   virtual Integer GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
    virtual bool IsParameterReadOnly(const Integer id) const;
    
    virtual Integer GetIntegerParameter(const Integer id) const;
-   virtual Integer GetIntegerParameter(const wxString &label) const;
+   virtual Integer GetIntegerParameter(const std::string &label) const;
    virtual Integer SetIntegerParameter(const Integer id, const Integer value);
-   virtual Integer SetIntegerParameter(const wxString &label,
+   virtual Integer SetIntegerParameter(const std::string &label,
                                        const Integer value);
    
    virtual const Rmatrix& GetRmatrixParameter(const Integer id) const;
-   virtual const Rmatrix& GetRmatrixParameter(const wxString &label) const;
+   virtual const Rmatrix& GetRmatrixParameter(const std::string &label) const;
    virtual const Rmatrix& SetRmatrixParameter(const Integer id,
                                               const Rmatrix &value);
-   virtual const Rmatrix& SetRmatrixParameter(const wxString &label,
+   virtual const Rmatrix& SetRmatrixParameter(const std::string &label,
                                               const Rmatrix &value);
    
    virtual Real GetRealParameter(const Integer id, const Integer index) const;
-   virtual Real GetRealParameter(const wxString &label,
+   virtual Real GetRealParameter(const std::string &label,
                                  const Integer index) const;
    
    virtual Real GetRealParameter(const Integer id, const Integer row,
                                  const Integer col) const;
-   virtual Real GetRealParameter(const wxString &label, const Integer row,
+   virtual Real GetRealParameter(const std::string &label, const Integer row,
                                  const Integer col) const;
    
    virtual Real SetRealParameter(const Integer id, const Real value,
                                  const Integer row, const Integer col);
-   virtual Real SetRealParameter(const wxString &label,
+   virtual Real SetRealParameter(const std::string &label,
                                  const Real value, const Integer row,
                                  const Integer col);
    
    virtual Rvector GetRvectorParameter(const Integer id,
                                        const Integer index) const;
-   virtual Rvector GetRvectorParameter(const wxString &label,
+   virtual Rvector GetRvectorParameter(const std::string &label,
                                        const Integer index) const;
    
    virtual const Rvector& SetRvectorParameter(const Integer id,
                                               const Rvector &value,
                                               const Integer index);   
-   virtual const Rvector& SetRvectorParameter(const wxString &label,
+   virtual const Rvector& SetRvectorParameter(const std::string &label,
                                               const Rvector &value,
                                               const Integer index);
    
-   virtual wxString GetStringParameter(const Integer id) const;
-   virtual wxString GetStringParameter(const wxString &label) const;
-   virtual bool SetStringParameter(const Integer id, const wxString &value);
-   virtual bool SetStringParameter(const wxString &label,
-                                   const wxString &value);
+   virtual std::string GetStringParameter(const Integer id) const;
+   virtual std::string GetStringParameter(const std::string &label) const;
+   virtual bool SetStringParameter(const Integer id, const std::string &value);
+   virtual bool SetStringParameter(const std::string &label,
+                                   const std::string &value);
    
-   virtual const wxString&
+   virtual const std::string&
                         GetGeneratingString(
                            Gmat::WriteMode mode = Gmat::SCRIPTING,
-                           const wxString &prefix = wxT(""),
-                           const wxString &useName = wxT(""));
+                           const std::string &prefix = "",
+                           const std::string &useName = "");
 protected:
 
    Integer mNumRows;
@@ -119,10 +119,10 @@ protected:
    Integer mInitialValueType; // 1 = number, 2 = Variable or other Array
    bool mSizeSet;
    Rmatrix mRmatValue;
-   std::map<wxString, wxString> initialValueMap;
+   std::map<std::string, std::string> initialValueMap;
    
-   wxString GetArrayDefString() const;
-   wxString GetInitialValueString(const wxString &prefix = wxT(""));
+   std::string GetArrayDefString() const;
+   std::string GetInitialValueString(const std::string &prefix = "");
    
    enum
    {
@@ -139,7 +139,7 @@ protected:
    
    static const Gmat::ParameterType
       PARAMETER_TYPE[ArrayParamCount - ParameterParamCount];
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[ArrayParamCount - ParameterParamCount];
     
 private:

@@ -44,7 +44,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  CreateObject(const wxString &ofType, const wxString &withName)
+//  CreateObject(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested ODEModel class
@@ -55,14 +55,14 @@
  *
  */
 //------------------------------------------------------------------------------
-Propagator* PropagatorFactory::CreateObject(const wxString &ofType,
-                                          const wxString &withName)
+Propagator* PropagatorFactory::CreateObject(const std::string &ofType,
+                                          const std::string &withName)
 {
    return CreatePropagator(ofType, withName);
 }
 
 //------------------------------------------------------------------------------
-//  CreatePropagator(const wxString &ofType, const wxString &withName)
+//  CreatePropagator(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested Propagator class 
@@ -71,32 +71,32 @@ Propagator* PropagatorFactory::CreateObject(const wxString &ofType,
  * @param <withName> the name to give the newly-created Propagator object.
  */
 //------------------------------------------------------------------------------
-Propagator* PropagatorFactory::CreatePropagator(const wxString &ofType,
-                                                const wxString &withName)
+Propagator* PropagatorFactory::CreatePropagator(const std::string &ofType,
+                                                const std::string &withName)
 {
-   if (ofType == wxT("RungeKutta89"))
+   if (ofType == "RungeKutta89")
       return new RungeKutta89(withName);
-   if (ofType == wxT("PrinceDormand78"))
+   if (ofType == "PrinceDormand78")
       return new PrinceDormand78(withName);
-   if (ofType == wxT("PrinceDormand45"))
+   if (ofType == "PrinceDormand45")
       return new PrinceDormand45(withName);
-//   if (ofType == wxT("DormandElMikkawyPrince68"))
+//   if (ofType == "DormandElMikkawyPrince68")
 //      return new DormandElMikkawyPrince68(withName);
-   if (ofType == wxT("RungeKutta68"))
+   if (ofType == "RungeKutta68")
       return new DormandElMikkawyPrince68(withName);
-//   if (ofType == wxT("RungeKuttaFehlberg56"))
+//   if (ofType == "RungeKuttaFehlberg56")
 //      return new RungeKuttaFehlberg56(withName);
-   if (ofType == wxT("RungeKutta56"))
+   if (ofType == "RungeKutta56")
       return new RungeKuttaFehlberg56(withName);
-   if (ofType == wxT("BulirschStoer"))
+   if (ofType == "BulirschStoer")
       return new BulirschStoer(withName);
-   if (ofType == wxT("AdamsBashforthMoulton"))
+   if (ofType == "AdamsBashforthMoulton")
       return new AdamsBashforthMoulton(withName);
-//   if (ofType == wxT("Cowell"))
+//   if (ofType == "Cowell")
 //      return new Cowell(withName);
    // EphemerisPropagators
    #ifdef __USE_SPICE__
-      if (ofType == wxT("SPK"))
+      if (ofType == "SPK")
          return new SPKPropagator(withName);
    #endif
 
@@ -122,19 +122,19 @@ PropagatorFactory::PropagatorFactory()
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("RungeKutta89"));
-      creatables.push_back(wxT("PrinceDormand78"));
-      creatables.push_back(wxT("PrinceDormand45"));
-//      creatables.push_back(wxT("DormandElMikkawyPrince68"));
-            creatables.push_back(wxT("RungeKutta68"));
-//      creatables.push_back(wxT("RungeKuttaFehlberg56"));
-            creatables.push_back(wxT("RungeKutta56"));
-      creatables.push_back(wxT("BulirschStoer"));
-      creatables.push_back(wxT("AdamsBashforthMoulton"));
-//      creatables.push_back(wxT("Cowell"));
+      creatables.push_back("RungeKutta89");
+      creatables.push_back("PrinceDormand78");
+      creatables.push_back("PrinceDormand45");
+//      creatables.push_back("DormandElMikkawyPrince68");
+            creatables.push_back("RungeKutta68");
+//      creatables.push_back("RungeKuttaFehlberg56");
+            creatables.push_back("RungeKutta56");
+      creatables.push_back("BulirschStoer");
+      creatables.push_back("AdamsBashforthMoulton");
+//      creatables.push_back("Cowell");
       
       #ifdef __USE_SPICE__
-         creatables.push_back(wxT("SPK"));
+         creatables.push_back("SPK");
       #endif
    }
 }
@@ -162,7 +162,7 @@ PropagatorFactory::PropagatorFactory(StringArray createList) :
    * This method creates an object of the class PropagatorFactory 
    * (copy constructor).
    *
-   * @param <fact> the factory object to copy to wxT("this") factory.
+   * @param <fact> the factory object to copy to "this" factory.
    */
 //------------------------------------------------------------------------------
 PropagatorFactory::PropagatorFactory(const PropagatorFactory &fact) 
@@ -178,10 +178,10 @@ PropagatorFactory::PropagatorFactory(const PropagatorFactory &fact)
 /**
  * Assignment operator for the PropagatorFactory base class.
  *
- * @param <fact> the PropagatorFactory object whose data to assign to wxT("this")
+ * @param <fact> the PropagatorFactory object whose data to assign to "this"
  *  factory.
  *
- * @return wxT("this") PropagatorFactory with data of input factory fact.
+ * @return "this" PropagatorFactory with data of input factory fact.
  */
 //------------------------------------------------------------------------------
 PropagatorFactory& PropagatorFactory::operator= (const PropagatorFactory &fact)

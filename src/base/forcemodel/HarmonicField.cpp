@@ -75,30 +75,30 @@ using namespace GmatMathUtil;
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 HarmonicField::PARAMETER_TEXT[HarmonicFieldParamCount - PhysicalModelParamCount] =
 {
-   wxT("MaxDegree"),
-   wxT("MaxOrder"),
-   wxT("Degree"),
-   wxT("Order"),
-   wxT("PotentialFile"),
-   wxT("InputCoordinateSystem"),
-   wxT("FixedCoordinateSystem"),
-   wxT("TargetCoordinateSystem"),
+   "MaxDegree",
+   "MaxOrder",
+   "Degree",
+   "Order",
+   "PotentialFile",
+   "InputCoordinateSystem",
+   "FixedCoordinateSystem",
+   "TargetCoordinateSystem",
 };
 
 const Gmat::ParameterType
 HarmonicField::PARAMETER_TYPE[HarmonicFieldParamCount - PhysicalModelParamCount] =
 {
-   Gmat::INTEGER_TYPE,   // wxT("MaxDegree"),
-   Gmat::INTEGER_TYPE,   // wxT("MaxOrder"),
-   Gmat::INTEGER_TYPE,   // wxT("Degree"),
-   Gmat::INTEGER_TYPE,   // wxT("Order"),
-   Gmat::STRING_TYPE,    // wxT("PotentialFile"),
-   Gmat::STRING_TYPE,    // wxT("InputCoordinateSystem"),
-   Gmat::STRING_TYPE,    // wxT("FixedCoordinateSystem"),
-   Gmat::STRING_TYPE,    // wxT("TargetCoordinateSystem"),
+   Gmat::INTEGER_TYPE,   // "MaxDegree",
+   Gmat::INTEGER_TYPE,   // "MaxOrder",
+   Gmat::INTEGER_TYPE,   // "Degree",
+   Gmat::INTEGER_TYPE,   // "Order",
+   Gmat::STRING_TYPE,    // "PotentialFile",
+   Gmat::STRING_TYPE,    // "InputCoordinateSystem",
+   Gmat::STRING_TYPE,    // "FixedCoordinateSystem",
+   Gmat::STRING_TYPE,    // "TargetCoordinateSystem",
 };
 
 
@@ -106,7 +106,7 @@ HarmonicField::PARAMETER_TYPE[HarmonicFieldParamCount - PhysicalModelParamCount]
 // public methods
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  HarmonicField(const wxString &name, Integer deg, Integer ord)
+//  HarmonicField(const std::string &name, Integer deg, Integer ord)
 //------------------------------------------------------------------------------
 /**
  * This method creates an object of the HarmonicField class
@@ -117,7 +117,7 @@ HarmonicField::PARAMETER_TYPE[HarmonicFieldParamCount - PhysicalModelParamCount]
  * @param <ord>  maximum order of he polynomials.
  */
 //------------------------------------------------------------------------------
-HarmonicField::HarmonicField(const wxString &name, const wxString &typeName,
+HarmonicField::HarmonicField(const std::string &name, const std::string &typeName,
                              Integer maxDeg, Integer maxOrd) :
 PhysicalModel           (Gmat::PHYSICAL_MODEL, typeName, name),
 hMinitialized           (false),
@@ -125,25 +125,25 @@ maxDegree               (maxDeg),
 maxOrder                (maxOrd),
 degree                  (4),
 order                   (4),
-filename                (wxT("")),
+filename                (""),
 fileRead                (false),
 usingDefaultFile        (false),
 isFirstTimeDefault      (true),
-inputCSName             (wxT("EarthMJ2000Eq")),
-fixedCSName             (wxT("EarthFixed")),
-targetCSName            (wxT("EarthMJ2000Eq")),
-potPath                 (wxT("")),
+inputCSName             ("EarthMJ2000Eq"),
+fixedCSName             ("EarthFixed"),
+targetCSName            ("EarthMJ2000Eq"),
+potPath                 (""),
 inputCS                 (NULL),
 fixedCS                 (NULL),
 targetCS                (NULL),
 eop                     (NULL)
 {
-   objectTypeNames.push_back(wxT("HarmonicField"));
+   objectTypeNames.push_back("HarmonicField");
    parameterCount = HarmonicFieldParamCount;
    r = s = t = u = 0.0;
    
    FileManager *fm = FileManager::Instance();
-   potPath = fm->GetAbsPathname(bodyName + wxT("_POT_PATH"));
+   potPath = fm->GetAbsPathname(bodyName + "_POT_PATH");
    
 }
 
@@ -257,23 +257,23 @@ bool HarmonicField::Initialize()
    //body->SetPotentialFilename(filename);
    
    if (solarSystem == NULL) throw ODEModelException(
-                            wxT("Solar System undefined for Harmonic Field ") 
+                            "Solar System undefined for Harmonic Field " 
                              + instanceName);
    if (!inputCS) throw ODEModelException(
-                 wxT("Input coordinate system undefined for Harmonic Field ")
+                 "Input coordinate system undefined for Harmonic Field "
                   + instanceName);
    if (!fixedCS) throw ODEModelException(
-                 wxT("Body fixed coordinate system undefined for Harmonic Field ")
+                 "Body fixed coordinate system undefined for Harmonic Field "
                   + instanceName);
    if (!targetCS) targetCS = inputCS;
 
    if (!eop) throw ODEModelException(
-             wxT("EOP file is undefined for Harmonic Field ") + instanceName);
+             "EOP file is undefined for Harmonic Field " + instanceName);
 
    hMinitialized = true;
    if (usingDefaultFile && isFirstTimeDefault)
    {
-      MessageInterface::ShowMessage(wxT("Using default potential file \"%s\" for GravityField object \"%s\"\n"),
+      MessageInterface::ShowMessage("Using default potential file \"%s\" for GravityField object \"%s\"\n",
             filename.c_str(), instanceName.c_str());
       isFirstTimeDefault = false;
    }
@@ -304,7 +304,7 @@ bool HarmonicField::SetDegreeOrder(Integer deg, Integer ord)
         degree = maxDegree;
         retval = false;
         MessageInterface::ShowMessage(
-          wxT("In HarmonicField, Potential Degree exceeds maximum degree in model"));
+          "In HarmonicField, Potential Degree exceeds maximum degree in model");
     }
 
     if ((ord <= deg) && (ord <= maxOrder))
@@ -314,7 +314,7 @@ bool HarmonicField::SetDegreeOrder(Integer deg, Integer ord)
         order = (deg < maxOrder ? deg : maxOrder );
         retval = false;
         MessageInterface::ShowMessage(
-          wxT("In HarmonicField, Potential Order exceeds valid range in model"));
+          "In HarmonicField, Potential Order exceeds valid range in model");
     }
 
     return retval;
@@ -322,7 +322,7 @@ bool HarmonicField::SetDegreeOrder(Integer deg, Integer ord)
 
 
 //------------------------------------------------------------------------------
-//  bool SetFilename(const wxString &fn)
+//  bool SetFilename(const std::string &fn)
 //------------------------------------------------------------------------------
 /**
  * This method sets the filename for this HarmonicField object.
@@ -332,18 +332,18 @@ bool HarmonicField::SetDegreeOrder(Integer deg, Integer ord)
  * @return flag indicating success of the operation.
  */
 //------------------------------------------------------------------------------
-bool HarmonicField::SetFilename(const wxString &fn)
+bool HarmonicField::SetFilename(const std::string &fn)
 {
    #ifdef DEBUG_HARMONIC_FIELD_FILENAME
    MessageInterface::ShowMessage
-      (wxT("HarmonicField::SetFilename() for %s\n   filename = %s\n   newname  = %s\n"),
+      ("HarmonicField::SetFilename() for %s\n   filename = %s\n   newname  = %s\n",
        bodyName.c_str(), filename.c_str(), fn.c_str());
-   MessageInterface::ShowMessage(wxT("   potPath  = %s\n"), potPath.c_str());
+   MessageInterface::ShowMessage("   potPath  = %s\n", potPath.c_str());
    #endif
    
    bool hasDefaultIndicator = false;
-   wxString newfn;
-   if (fn.substr(0, 6) == wxT("DFLT__"))  // Must match Interpreter static const wxString defaultIndicator
+   std::string newfn;
+   if (fn.substr(0, 6) == "DFLT__")  // Must match Interpreter static const std::string defaultIndicator
    {
       newfn               = fn.substr(6,fn.npos-6);
       hasDefaultIndicator = true;
@@ -357,12 +357,12 @@ bool HarmonicField::SetFilename(const wxString &fn)
    {
       #ifdef DEBUG_HARMONIC_FIELD_FILENAME
       MessageInterface::ShowMessage
-         (wxT("HarmonicField::SetFilename(): hasDefaultIndicator = %s, newfn = %s\n"),
-          (hasDefaultIndicator? wxT("true") : wxT("false")), newfn.c_str());
-      MessageInterface::ShowMessage(wxT("   potPath  = %s\n"), potPath.c_str());
+         ("HarmonicField::SetFilename(): hasDefaultIndicator = %s, newfn = %s\n",
+          (hasDefaultIndicator? "true" : "false"), newfn.c_str());
+      MessageInterface::ShowMessage("   potPath  = %s\n", potPath.c_str());
       #endif
       // Add default pathname if none specified
-      if (newfn.find(wxT("/")) == newfn.npos && newfn.find(wxT("\\")) == newfn.npos)
+      if (newfn.find("/") == newfn.npos && newfn.find("\\") == newfn.npos)
       {
          try
          {
@@ -379,11 +379,11 @@ bool HarmonicField::SetFilename(const wxString &fn)
          filename = newfn;
       }
       
-      std::ifstream potfile(filename.char_str());
+      std::ifstream potfile(filename.c_str());
       if (!potfile) 
       {
          throw ODEModelException
-            (wxT("The file name \"") + filename + wxT("\" does not exist."));
+            ("The file name \"" + filename + "\" does not exist.");
       }
       
       if (body != NULL)
@@ -391,7 +391,7 @@ bool HarmonicField::SetFilename(const wxString &fn)
    }
    
    #ifdef DEBUG_HARMONIC_FIELD_FILENAME
-   MessageInterface::ShowMessage(wxT("   filename = %s\n"), filename.c_str());
+   MessageInterface::ShowMessage("   filename = %s\n", filename.c_str());
    #endif
    
    fileRead = false;
@@ -404,13 +404,13 @@ bool HarmonicField::SetFilename(const wxString &fn)
 // inherited methods from GmatBase
 //---------------------------------
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
 * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString HarmonicField::GetParameterText(const Integer id) const
+std::string HarmonicField::GetParameterText(const Integer id) const
 {
    if ((id >= PhysicalModelParamCount) && (id < HarmonicFieldParamCount))
       return PARAMETER_TEXT[id - PhysicalModelParamCount];
@@ -418,17 +418,17 @@ wxString HarmonicField::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
 * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Integer HarmonicField::GetParameterID(const wxString &str) const
+Integer HarmonicField::GetParameterID(const std::string &str) const
 {
-   wxString useStr = str;
-   if (useStr == wxT("Model"))
-      useStr = wxT("PotentialFile");
+   std::string useStr = str;
+   if (useStr == "Model")
+      useStr = "PotentialFile";
  
    for (Integer i = PhysicalModelParamCount; i < HarmonicFieldParamCount; i++)
    {
@@ -453,13 +453,13 @@ Gmat::ParameterType HarmonicField::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
 * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString HarmonicField::GetParameterTypeString(const Integer id) const
+std::string HarmonicField::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];   
 }
@@ -504,14 +504,14 @@ Integer HarmonicField::SetIntegerParameter(const Integer id, const Integer value
          degree = value;
       else
       {
-         wxString buffer;
+         std::stringstream buffer;
          buffer << value;
          throw ODEModelException(
-            wxT("The value of \"") + buffer + wxT("\" for field \"") 
-            + GetParameterText(id).c_str() + wxT("\" on object \"") 
-            + instanceName + wxT("\" is not an allowed value.\n")
-            wxT("The allowed values are: [Integer >= 0 ")
-            wxT("and < the maximum specified by the model, Order <= Degree]."));
+            "The value of \"" + buffer.str() + "\" for field \"" 
+            + GetParameterText(id).c_str() + "\" on object \"" 
+            + instanceName + "\" is not an allowed value.\n"
+            "The allowed values are: [Integer >= 0 "
+            "and < the maximum specified by the model, Order <= Degree].");
       }
       return degree;
    }
@@ -521,14 +521,14 @@ Integer HarmonicField::SetIntegerParameter(const Integer id, const Integer value
          order = value;
       else
       {
-         wxString buffer;
+         std::stringstream buffer;
          buffer << value;
          throw ODEModelException(
-            wxT("The value of \"") + buffer + wxT("\" for field \"") 
-            + GetParameterText(id).c_str() + wxT("\" on object \"") 
-            + instanceName + wxT("\" is not an allowed value.\n")
-            wxT("The allowed values are: [Integer >= 0 ")
-            wxT("and < the maximum specified by the model, Order <= Degree]."));
+            "The value of \"" + buffer.str() + "\" for field \"" 
+            + GetParameterText(id).c_str() + "\" on object \"" 
+            + instanceName + "\" is not an allowed value.\n"
+            "The allowed values are: [Integer >= 0 "
+            "and < the maximum specified by the model, Order <= Degree].");
       }
       return order;
    }
@@ -538,7 +538,7 @@ Integer HarmonicField::SetIntegerParameter(const Integer id, const Integer value
 
 
 //------------------------------------------------------------------------------
-// Integer GetIntegerParameter(const wxString &label) const
+// Integer GetIntegerParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to get a parameter value
@@ -548,13 +548,13 @@ Integer HarmonicField::SetIntegerParameter(const Integer id, const Integer value
  * @return the value of the parameter
  */
 //------------------------------------------------------------------------------
-Integer HarmonicField::GetIntegerParameter(const wxString &label) const
+Integer HarmonicField::GetIntegerParameter(const std::string &label) const
 {
    return GetIntegerParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-// Integer SetIntegerParameter(const wxString &label, const Integer value)
+// Integer SetIntegerParameter(const std::string &label, const Integer value)
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to get a parameter value
@@ -563,14 +563,14 @@ Integer HarmonicField::GetIntegerParameter(const wxString &label) const
  * @param    <value> The new value for the parameter
  */
 //------------------------------------------------------------------------------
-Integer HarmonicField::SetIntegerParameter(const wxString &label,
+Integer HarmonicField::SetIntegerParameter(const std::string &label,
                                            const Integer value)
 {
    return SetIntegerParameter(GetParameterID(label), value);
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to get a parameter value
@@ -580,12 +580,12 @@ Integer HarmonicField::SetIntegerParameter(const wxString &label,
  * @return the value of the parameter
  */
 //------------------------------------------------------------------------------
-wxString HarmonicField::GetStringParameter(const Integer id) const
+std::string HarmonicField::GetStringParameter(const Integer id) const
 {
    if (id == FILENAME)
    {
       //return filename;
-      wxString::size_type index = filename.find_last_of(wxT("/\\"));
+      std::string::size_type index = filename.find_last_of("/\\");
       
       // if path not found, just write filename
       if (index == filename.npos)
@@ -593,8 +593,8 @@ wxString HarmonicField::GetStringParameter(const Integer id) const
       else
       {
          // if actual pathname is the same as the default path, write only name part
-         wxString actualPath = filename.substr(0, index+1);
-         wxString fname = filename;
+         std::string actualPath = filename.substr(0, index+1);
+         std::string fname = filename;
          if (potPath == actualPath)
             fname = filename.substr(index+1);
          
@@ -609,7 +609,7 @@ wxString HarmonicField::GetStringParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to get a parameter value
@@ -619,23 +619,25 @@ wxString HarmonicField::GetStringParameter(const Integer id) const
  */
 //------------------------------------------------------------------------------
 bool HarmonicField::SetStringParameter(const Integer id,
-                                       const wxString &value)
+                                       const std::string &value)
 {
    if (id == FILENAME)
    {
-      wxString newValue = value;
+      std::string newValue = value;
       // if value has no file extension, add .cof as default (loj: 2008.10.14)
-      if (value.find(wxT(".")) == value.npos)
-         newValue = value + wxT(".cof");
+      if (value.find(".") == value.npos)
+         newValue = value + ".cof";
       
       return SetFilename(newValue);  
    }
    if (id == INPUT_COORD_SYSTEM)
    {
       #ifdef DEBUG_HARMONIC_FIELD
+         char str[1024];
+         strcpy(str, value.c_str());
          
          MessageInterface::ShowMessage(
-                wxT("Setting input coordinate system name to \"%s\"\n"), value.c_str());
+                "Setting input coordinate system name to \"%s\"\n", str);
       #endif
       inputCSName = value;
       
@@ -644,9 +646,11 @@ bool HarmonicField::SetStringParameter(const Integer id,
    if (id == FIXED_COORD_SYSTEM)
    {
       #ifdef DEBUG_HARMONIC_FIELD
+         char str[1024];
+         strcpy(str, value.c_str());
          
          MessageInterface::ShowMessage(
-                wxT("Setting fixed coordinate system name to \"%s\"\n"), value.c_str());
+                "Setting fixed coordinate system name to \"%s\"\n", str);
       #endif
       fixedCSName = value;
       
@@ -655,9 +659,11 @@ bool HarmonicField::SetStringParameter(const Integer id,
    if (id == TARGET_COORD_SYSTEM)
    {
       #ifdef DEBUG_HARMONIC_FIELD
+         char str[1024];
+         strcpy(str, value.c_str());
          
          MessageInterface::ShowMessage(
-                wxT("Setting target coordinate system name to \"%s\"\n"), value.c_str());
+                "Setting target coordinate system name to \"%s\"\n", str);
       #endif
       targetCSName = value;
       
@@ -671,20 +677,20 @@ bool HarmonicField::SetStringParameter(const Integer id,
          FileManager *fm = FileManager::Instance();
          try
          {
-            potPath = fm->GetAbsPathname(bodyName + wxT("_POT_PATH"));
+            potPath = fm->GetAbsPathname(bodyName + "_POT_PATH");
          }
          catch (BaseException &ex)
          {
-            MessageInterface::ShowMessage(wxT("**** WARNING ****: %s\n"),
+            MessageInterface::ShowMessage("**** WARNING ****: %s\n",
                   ex.GetFullMessage().c_str());
          }
          
          #ifdef DEBUG_HARMONIC_FIELD
          MessageInterface::ShowMessage
-            (wxT("Setting potential file path to \"%s\"\n"), potPath.c_str());
+            ("Setting potential file path to \"%s\"\n", potPath.c_str());
          #endif
          
-         fixedCSName = value + wxT("Fixed");
+         fixedCSName = value + "Fixed";
          return true;
       }
       return false;
@@ -694,7 +700,7 @@ bool HarmonicField::SetStringParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to get a parameter value
@@ -704,13 +710,13 @@ bool HarmonicField::SetStringParameter(const Integer id,
  * @return the value of the parameter
  */
 //------------------------------------------------------------------------------
-wxString HarmonicField::GetStringParameter(const wxString &label) const
+std::string HarmonicField::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to get a parameter value
@@ -719,8 +725,8 @@ wxString HarmonicField::GetStringParameter(const wxString &label) const
  * @param    <value> The new value for the parameter
  */
 //------------------------------------------------------------------------------
-bool HarmonicField::SetStringParameter(const wxString &label,
-                                       const wxString &value)
+bool HarmonicField::SetStringParameter(const std::string &label,
+                                       const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
@@ -728,7 +734,7 @@ bool HarmonicField::SetStringParameter(const wxString &label,
 
 //------------------------------------------------------------------------------
 //  GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                         const wxString &name)
+//                         const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * This method returns a reference object from the HarmonicField class.
@@ -741,7 +747,7 @@ bool HarmonicField::SetStringParameter(const wxString &label,
  */
 //------------------------------------------------------------------------------
 GmatBase* HarmonicField::GetRefObject(const Gmat::ObjectType type,
-                                      const wxString &name)
+                                      const std::string &name)
 {
    switch (type)
    {
@@ -793,9 +799,9 @@ const StringArray& HarmonicField::GetRefObjectNameArray(const Gmat::ObjectType t
       refs.push_back(targetCSName);
       
       #ifdef DEBUG_REFERENCE_SETTING
-         MessageInterface::ShowMessage(wxT("+++ReferenceObjects:\n"));
+         MessageInterface::ShowMessage("+++ReferenceObjects:\n");
          for (StringArray::iterator i = refs.begin(); i != refs.end(); ++i)
-            MessageInterface::ShowMessage(wxT("   %s\n"), i->c_str());
+            MessageInterface::ShowMessage("   %s\n", i->c_str());
       #endif
       
       return refs;
@@ -810,9 +816,9 @@ const StringArray& HarmonicField::GetRefObjectNameArray(const Gmat::ObjectType t
       refs.push_back(targetCSName);
       
       #ifdef DEBUG_REFERENCE_SETTING
-         MessageInterface::ShowMessage(wxT("+++ReferenceObjects:\n"));
+         MessageInterface::ShowMessage("+++ReferenceObjects:\n");
          for (StringArray::iterator i = refs.begin(); i != refs.end(); ++i)
-            MessageInterface::ShowMessage(wxT("   %s\n"), i->c_str());
+            MessageInterface::ShowMessage("   %s\n", i->c_str());
       #endif
       
       return refs;
@@ -825,7 +831,7 @@ const StringArray& HarmonicField::GetRefObjectNameArray(const Gmat::ObjectType t
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                    const wxString &name)
+//                    const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * This method sets a reference object for the HarmonicField class.
@@ -840,14 +846,14 @@ const StringArray& HarmonicField::GetRefObjectNameArray(const Gmat::ObjectType t
 //------------------------------------------------------------------------------
 bool HarmonicField::SetRefObject(GmatBase *obj,
                                  const Gmat::ObjectType type,
-                                 const wxString &name)
+                                 const std::string &name)
 {
    if (obj->IsOfType(Gmat::COORDINATE_SYSTEM))
    {
       if (name == inputCSName)
       {
          #ifdef DEBUG_REFERENCE_SETTING
-            MessageInterface::ShowMessage(wxT("Setting %s as input CS for %s\n"),
+            MessageInterface::ShowMessage("Setting %s as input CS for %s\n",
                                           name.c_str(), instanceName.c_str());
          #endif
          inputCS = (CoordinateSystem*) obj;
@@ -855,7 +861,7 @@ bool HarmonicField::SetRefObject(GmatBase *obj,
       if (name == fixedCSName)
       {
          #ifdef DEBUG_REFERENCE_SETTING
-            MessageInterface::ShowMessage(wxT("Setting %s as body fixed CS for %s\n"),
+            MessageInterface::ShowMessage("Setting %s as body fixed CS for %s\n",
                                           name.c_str(), instanceName.c_str());
          #endif
          fixedCS = (CoordinateSystem*) obj;
@@ -863,7 +869,7 @@ bool HarmonicField::SetRefObject(GmatBase *obj,
       if (name == targetCSName)
       {
          #ifdef DEBUG_REFERENCE_SETTING
-            MessageInterface::ShowMessage(wxT("Setting %s as target CS for %s\n"),
+            MessageInterface::ShowMessage("Setting %s as target CS for %s\n",
                                           name.c_str(), instanceName.c_str());
          #endif
          targetCS = (CoordinateSystem*) obj;
@@ -878,7 +884,7 @@ bool HarmonicField::SetRefObject(GmatBase *obj,
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                    const wxString &name)
+//                    const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * This method sets the force model origin, and derived the base coordinate 
@@ -891,8 +897,8 @@ void HarmonicField::SetForceOrigin(CelestialBody* toBody)
 {
    PhysicalModel::SetForceOrigin(toBody);
    
-   wxString originName = toBody->GetName();
-   inputCSName = originName + wxT("MJ2000Eq");
+   std::string originName = toBody->GetName();
+   inputCSName = originName + "MJ2000Eq";
    targetCSName = inputCSName;
 }
 
@@ -933,8 +939,8 @@ bool HarmonicField::IsParameterReadOnly(const Integer id) const
    
    if (id >= HarmonicFieldParamCount)
       throw ODEModelException(
-         wxT("Attempting to determine accessibility of a parameter outside of the ")
-         wxT("scope of a HarmonicField object."));
+         "Attempting to determine accessibility of a parameter outside of the "
+         "scope of a HarmonicField object.");
    
    if ((id == DEGREE) || (id == ORDER) || (id == FILENAME))
       return false;

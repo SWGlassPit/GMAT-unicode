@@ -48,21 +48,21 @@ public:
    // destructor
    virtual ~ElementWrapper();
    
-   virtual wxString        ToString();
+   virtual std::string        ToString();
    virtual ElementWrapper*    Clone() const;
-   virtual void               SetDescription(const wxString &str);
-   virtual wxString        GetDescription() const;
+   virtual void               SetDescription(const std::string &str);
+   virtual std::string        GetDescription() const;
    Gmat::WrapperDataType      GetWrapperType() const;
    
    virtual void               ClearRefObjectNames();
    virtual const StringArray& GetRefObjectNames();
-   virtual bool               SetRefObjectName(const wxString &name,
+   virtual bool               SetRefObjectName(const std::string &name,
                                                Integer index = 0);
-   virtual GmatBase*          GetRefObject(const wxString &name = wxT(""));
+   virtual GmatBase*          GetRefObject(const std::string &name = "");
    virtual bool               SetRefObject(GmatBase *obj);
    
-   virtual bool               RenameObject(const wxString &oldName, 
-                                           const wxString &newName);
+   virtual bool               RenameObject(const std::string &oldName, 
+                                           const std::string &newName);
    
    // This method tells a wrapper's object to take whatever action it needs to take
    // before the value for the specified parameter is set (e.g. clearing arrays).
@@ -77,7 +77,7 @@ public:
                         SolarSystem *solarSys, ObjectMap *objMap,
                         ObjectMap *globalObjMap, bool setRefObj = true);
    
-   static GmatBase* FindObject(const wxString &name, SolarSystem *solarSys,
+   static GmatBase* FindObject(const std::string &name, SolarSystem *solarSys,
                                ObjectMap *objMap, ObjectMap *globalObjMap);
    
    static void ShowObjectMaps(ObjectMap *objMap, ObjectMap *globalObjMap);
@@ -124,10 +124,10 @@ public:
    
    virtual const Rmatrix&  EvaluateArray() const;
    virtual bool            SetArray(const Rmatrix &toValue); 
-   virtual wxString     EvaluateString() const;
-   virtual bool            SetString(const wxString &toValue); 
-   virtual wxString     EvaluateOnOff() const;
-   virtual bool            SetOnOff(const wxString &toValue); 
+   virtual std::string     EvaluateString() const;
+   virtual bool            SetString(const std::string &toValue); 
+   virtual std::string     EvaluateOnOff() const;
+   virtual bool            SetOnOff(const std::string &toValue); 
    virtual bool            EvaluateBoolean() const;
    virtual bool            SetBoolean(const bool toValue); 
    virtual Integer         EvaluateInteger() const;
@@ -139,7 +139,7 @@ protected:
 
    static const Real UNDEFINED_REAL;
    /// Description of the wrapper
-   wxString           description;
+   std::string           description;
    StringArray           refObjectNames;
    
    Gmat::WrapperDataType wrapperType;

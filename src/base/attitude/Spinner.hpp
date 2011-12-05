@@ -45,7 +45,7 @@ class GMAT_API Spinner : public Kinematic
 {
 public:
    // Constructor
-   Spinner(const wxString &itsName = wxT(""));
+   Spinner(const std::string &itsName = "");
    // copy constructor
    Spinner(const Spinner& att);
    // operator =
@@ -66,7 +66,7 @@ protected:
    };
    
    // leave these here, in case we need them later
-   //static const wxString PARAMETER_TEXT[SpinnerParamCount - KinematicParamCount];
+   //static const std::string PARAMETER_TEXT[SpinnerParamCount - KinematicParamCount];
    
    //static const Gmat::ParameterType PARAMETER_TYPE[SpinnerParamCount - KinematicParamCount];
 

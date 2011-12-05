@@ -81,8 +81,8 @@ public:
    friend std::istream& operator>>(std::istream& input, Cartesian& c);
 
    Integer GetNumData() const;
-   const wxString* GetDataDescriptions() const;
-   wxString* ToValueStrings();
+   const std::string* GetDataDescriptions() const;
+   std::string* ToValueStrings();
 
    static const Cartesian ZeroCartesian;
     
@@ -98,8 +98,8 @@ private:
    Rvector3 velocityD;               //  Velocity vector (3 elements)
 
    static const Integer NUM_DATA = 6;
-   static const wxString DATA_DESCRIPTIONS[NUM_DATA];
-   wxString stringValues[NUM_DATA];
+   static const std::string DATA_DESCRIPTIONS[NUM_DATA];
+   std::string stringValues[NUM_DATA];
 
 };
 #endif // Cartesian_hpp

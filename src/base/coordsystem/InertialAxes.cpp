@@ -30,7 +30,7 @@
 //---------------------------------
 
 /* placeholder - may be needed later
-const wxString
+const std::string
 InertialAxes::PARAMETER_TEXT[InertialAxesParamCount - AxisSystemParamCount] =
 {
    "",
@@ -47,8 +47,8 @@ InertialAxes::PARAMETER_TYPE[InertialAxesParamCount - AxisSystemParamCount] =
 //------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//  InertialAxes(const wxString &itsType,
-//               const wxString &itsName);
+//  InertialAxes(const std::string &itsType,
+//               const std::string &itsName);
 //---------------------------------------------------------------------------
 /**
  * Constructs base InertialAxes structures used in derived classes
@@ -61,11 +61,11 @@ InertialAxes::PARAMETER_TYPE[InertialAxesParamCount - AxisSystemParamCount] =
  *       classes must pass in the itsType and itsName parameters.
  */
 //---------------------------------------------------------------------------
-InertialAxes::InertialAxes(const wxString &itsType,
-                           const wxString &itsName) :
+InertialAxes::InertialAxes(const std::string &itsType,
+                           const std::string &itsName) :
 AxisSystem(itsType,itsName)
 {
-   objectTypeNames.push_back(wxT("InertialAxes"));
+   objectTypeNames.push_back("InertialAxes");
    parameterCount = InertialAxesParamCount;
 }
 
@@ -134,7 +134,7 @@ bool InertialAxes::Initialize()
 // public methods inherited from GmatBase
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -145,7 +145,7 @@ bool InertialAxes::Initialize()
  *
  */
 //------------------------------------------------------------------------------
-/*wxString InertialAxes::GetParameterText(const Integer id) const
+/*std::string InertialAxes::GetParameterText(const Integer id) const
 {
    if (id >= AxisSystemParamCount && id < InertialAxesParamCount)
       return PARAMETER_TEXT[id - AxisSystemParamCount];
@@ -153,7 +153,7 @@ bool InertialAxes::Initialize()
 }
 */
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -164,7 +164,7 @@ bool InertialAxes::Initialize()
  *
  */
 //------------------------------------------------------------------------------
-/*Integer InertialAxes::GetParameterID(const wxString &str) const
+/*Integer InertialAxes::GetParameterID(const std::string &str) const
 {
    for (Integer i = AxisSystemParamCount; i < InertialAxesParamCount; i++)
    {
@@ -196,7 +196,7 @@ bool InertialAxes::Initialize()
 }
 */
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -207,7 +207,7 @@ bool InertialAxes::Initialize()
  *
  */
 //------------------------------------------------------------------------------
-/*wxString InertialAxes::GetParameterTypeString(const Integer id) const
+/*std::string InertialAxes::GetParameterTypeString(const Integer id) const
 {
    return AxisSystem::PARAM_TYPE_STRING[GetParameterType(id)];
 }

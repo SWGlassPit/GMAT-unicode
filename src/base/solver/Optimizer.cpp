@@ -33,14 +33,14 @@
 // static data
 //------------------------------------------------------------------------------
 
-const wxString
+const std::string
 Optimizer::PARAMETER_TEXT[OptimizerParamCount -SolverParamCount] =
 {
-   wxT("ObjectiveFunction"),
-   wxT("Tolerance"),
-   wxT("EqualityConstraintNames"),
-   wxT("InequalityConstraintNames"),
-   wxT("PlotCost"),
+   "ObjectiveFunction",
+   "Tolerance",
+   "EqualityConstraintNames",
+   "InequalityConstraintNames",
+   "PlotCost",
 };
 
 const Gmat::ParameterType
@@ -60,17 +60,17 @@ const Integer Optimizer::INEQ_CONST_START = 2000;
 // public methods
 //------------------------------------------------------------------------------
 
-Optimizer::Optimizer(wxString typeName, wxString name) :
+Optimizer::Optimizer(std::string typeName, std::string name) :
    Solver                  (typeName, name),
    objectiveDefined        (false),
-   objectiveFnName         (wxT("")),
+   objectiveFnName         (""),
    cost                    (0.0),   // valid value?
    tolerance               (0.0),   // valid value?
    converged               (false),
    eqConstraintCount       (0),
    ineqConstraintCount     (0)
 {
-   objectTypeNames.push_back(wxT("Optimizer"));
+   objectTypeNames.push_back("Optimizer");
    parameterCount = OptimizerParamCount;
 }
 
@@ -84,7 +84,7 @@ Optimizer::~Optimizer()
 Optimizer::Optimizer(const Optimizer &opt) :
    Solver                  (opt),
    objectiveDefined        (false),
-   objectiveFnName         (wxT("")),
+   objectiveFnName         (""),
    cost                    (opt.cost), 
    tolerance               (opt.tolerance), 
    converged               (false),
@@ -142,7 +142,7 @@ bool Optimizer::IsParameterReadOnly(const Integer id) const
 }
 
 
-bool Optimizer::IsParameterReadOnly(const wxString &label) const
+bool Optimizer::IsParameterReadOnly(const std::string &label) const
 {
    return IsParameterReadOnly(GetParameterID(label));
 }
@@ -152,8 +152,8 @@ bool Optimizer::Initialize()
 {
    if (variableNames.size() == 0)  // constraints are not required
    {
-      wxString errorMessage = wxT("Optimizer cannot initialize: ");
-      errorMessage += wxT("No variables are set.\n");
+      std::string errorMessage = "Optimizer cannot initialize: ";
+      errorMessage += "No variables are set.\n";
       throw SolverException(errorMessage);
    }
    
@@ -165,7 +165,7 @@ bool Optimizer::Initialize()
 }
 
 //------------------------------------------------------------------------------
-// Integer SetSolverResults(Real *data, const wxString &name)
+// Integer SetSolverResults(Real *data, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets up the data fields used for the results of an iteration.
@@ -180,16 +180,16 @@ bool Optimizer::Initialize()
  */
 //------------------------------------------------------------------------------
 Integer Optimizer::SetSolverResults(Real *data,
-                                    const wxString &name,
-                                    const wxString &type)
+                                    const std::string &name,
+                                    const std::string &type)
 {
    #ifdef DEBUG_SET_RESULT
       MessageInterface::ShowMessage(
-         wxT("Optimizer::SetSolverResults - name = %s, type = %s, data = %.16f\n"),
+         "Optimizer::SetSolverResults - name = %s, type = %s, data = %.16f\n",
          name.c_str(), type.c_str(), data[0]); 
    #endif
    
-   if (type == wxT("Objective"))
+   if (type == "Objective")
    {
       // need to check here if the name is not the same as the 
       // objectiveFnName? (error)
@@ -198,22 +198,22 @@ Integer Optimizer::SetSolverResults(Real *data,
       cost = data[0];
       return 0;
    }
-   else if (type == wxT("EqConstraint"))
+   else if (type == "EqConstraint")
    {
       //if (eqConstraintNames[eqConstraintCount] != name)
       //  throw SolverException(
-      //     wxT("Mismatch between parsed and configured equality constraint"));
+      //     "Mismatch between parsed and configured equality constraint");
       ///eqConstraintValues[eqConstraintCount] = data[0];
       eqConstraintNames.push_back(name);
       eqConstraintValues.push_back(data[0]);
       ++eqConstraintCount;
       return EQ_CONST_START + eqConstraintCount - 1;
     }
-    else if (type == wxT("IneqConstraint"))
+    else if (type == "IneqConstraint")
     {
       //if (ineqConstraintNames[ineqConstraintCount] != name)
       //  throw SolverException(
-      //     wxT("Mismatch between parsed and configured inequality constraint"));
+      //     "Mismatch between parsed and configured inequality constraint");
       //ineqConstraintValues[ineqConstraintCount] = data[0];
       ineqConstraintNames.push_back(name);
       ineqConstraintValues.push_back(data[0]);
@@ -224,12 +224,12 @@ Integer Optimizer::SetSolverResults(Real *data,
     else
     {
        throw SolverException(
-           wxT("Unknown type passed in to SetSolverResults"));
+           "Unknown type passed in to SetSolverResults");
     }
 }
 
 //------------------------------------------------------------------------------
-// void SetResultValue(Integer id, Real value, const wxString &resultType = wxT(""))
+// void SetResultValue(Integer id, Real value, const std::string &resultType = "")
 //------------------------------------------------------------------------------
 /**
  * Passes in the results obtained from a run in the Optimizer loop.
@@ -239,76 +239,78 @@ Integer Optimizer::SetSolverResults(Real *data,
  */
 //------------------------------------------------------------------------------
 void Optimizer::SetResultValue(Integer id, Real value, 
-                               const wxString &resultType)
+                               const std::string &resultType)
 {
    #ifdef DEBUG_SET_RESULT // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
-      MessageInterface::ShowMessage(wxT("In Optimizer::SetResultValue\n"));
+      MessageInterface::ShowMessage("In Optimizer::SetResultValue\n");
       MessageInterface::ShowMessage(
-      wxT("   id = %d; value = %.12f, resultType = %s\n"),
+      "   id = %d; value = %.12f, resultType = %s\n",
       id, value, resultType.c_str());
    #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
-   if (resultType == wxT("Objective"))
+   if (resultType == "Objective")
    {
       cost = value;
    }
-   else if (resultType == wxT("EqConstraint"))
+   else if (resultType == "EqConstraint")
    {
       if (id > (EQ_CONST_START + eqConstraintCount))
         throw SolverException(
-           wxT("id range error for equality constraint"));
+           "id range error for equality constraint");
      eqConstraintValues[id - EQ_CONST_START] = value;
     }
-    else if (resultType == wxT("IneqConstraint"))
+    else if (resultType == "IneqConstraint")
     {
        if (id > (INEQ_CONST_START + ineqConstraintCount))
         throw SolverException(
-           wxT("id range error for inequality constraint"));
+           "id range error for inequality constraint");
      ineqConstraintValues[id - INEQ_CONST_START] = value;
     }
     // add Gradient and Jacobian later ...
     else
     {
        throw SolverException(
-           wxT("Unknown result type passed in to SetResultValue"));
+           "Unknown result type passed in to SetResultValue");
     }
 }
 
 //------------------------------------------------------------------------------
-//  wxString GetProgressString()
+//  std::string GetProgressString()
 //------------------------------------------------------------------------------
 /**
  * Generates a string that reporting the current differential corrector state.
  */
 //------------------------------------------------------------------------------
-wxString Optimizer::GetProgressString()
+std::string Optimizer::GetProgressString()
 {
    StringArray::iterator current;
    Integer i;
-   wxString progress;
+   std::stringstream progress;
+   progress.str("");
+   progress.precision(12);
 
    if (initialized)
    {
       switch (currentState)
       {
          case INITIALIZING:
-            // This state is basically a wxT("paused state") used for the Optimize
+            // This state is basically a "paused state" used for the Optimize
             // command to finalize the initial data for the variables and
             // goals.  All that is written here is the header information.
             {
                Integer localVariableCount = variableNames.size();
                Integer localEqCount       = eqConstraintNames.size();
                Integer localIneqCount     = ineqConstraintNames.size();
-               progress << wxT("************************************************")
-                        << wxT("********\n")
-                        << wxT("*** Performing ")
+               progress << "************************************************"
+                        << "********\n"
+                        << "*** Performing "
                         << typeName 
-                        << wxT(" Optimization ")
-                        << wxT("(using \"") << instanceName << wxT("\")\n");
+                        << " Optimization "
+                        << "(using \"" << instanceName << "\")\n";
 
                // Write out the setup data
-               progress << wxT("*** ") << localVariableCount << wxT(" variables; ")
-                        << localEqCount << wxT(" equality constraints; ")
-                        << localIneqCount << wxT(" inequality constraints\n   Variables:  ");
+               progress << "*** " << localVariableCount << " variables; "
+                        << localEqCount << " equality constraints; "
+                        << localIneqCount << " inequality constraints\n   Variables:  ";
 
                // Iterate through the variables and goals, writing them to
                // the file
@@ -316,59 +318,59 @@ wxString Optimizer::GetProgressString()
                     current != variableNames.end(); ++current)
                {
                   if (current != variableNames.begin())
-                     progress << wxT(", ");
+                     progress << ", ";
                   progress << *current;
                }
 
                if (localEqCount > 0)
                {
-                  progress << wxT("\n   Equality Constraints:  ");
+                  progress << "\n   Equality Constraints:  ";
    
                   for (current = eqConstraintNames.begin(), i = 0;
                        current != eqConstraintNames.end(); ++current)
                   {
                      if (current != eqConstraintNames.begin())
-                        progress << wxT(", ");
+                        progress << ", ";
                      progress << *current;
                   }
                }
                
                if (localIneqCount > 0)
                {
-                  progress << wxT("\n   Inequality Constraints:  ");
+                  progress << "\n   Inequality Constraints:  ";
    
                   for (current = ineqConstraintNames.begin(), i = 0;
                        current != ineqConstraintNames.end(); ++current)
                   {
                      if (current != ineqConstraintNames.begin())
-                        progress << wxT(", ");
+                        progress << ", ";
                      progress << *current;
                   }
                }
                
-               progress << wxT("\n****************************")
-                        << wxT("****************************");
+               progress << "\n****************************"
+                        << "****************************";
             }
             break;
 
          case NOMINAL:
-            progress << instanceName << wxT(" Iteration ") << iterationsTaken+1
-                     << wxT("; Nominal Pass\n   Variables:  ");
+            progress << instanceName << " Iteration " << iterationsTaken+1
+                     << "; Nominal Pass\n   Variables:  ";
             // Iterate through the variables, writing them to the string
             for (current = variableNames.begin(), i = 0;
                  current != variableNames.end(); ++current)
             {
                if (current != variableNames.begin())
-                  progress << wxT(", ");
-               progress << *current << wxT(" = ") << variable[i++];
+                  progress << ", ";
+               progress << *current << " = " << variable[i++];
             }
             break;
 
          case PERTURBING:  // does this apply to optimization??
-            progress << wxT("   Completed iteration ") << iterationsTaken
-                     << wxT(", pert ") << pertNumber+1 << wxT(" (")
-                     << variableNames[pertNumber] << wxT(" = ")
-                     << variable[pertNumber] << wxT(")\n");
+            progress << "   Completed iteration " << iterationsTaken
+                     << ", pert " << pertNumber+1 << " ("
+                     << variableNames[pertNumber] << " = "
+                     << variable[pertNumber] << ")\n";
             break;
 
          case CALCULATING:
@@ -377,82 +379,82 @@ wxString Optimizer::GetProgressString()
 
          case CHECKINGRUN:
             // Iterate through the constraints, writing them to the file
-            progress << wxT("   Equality Constraints and achieved values:\n      ");
+            progress << "   Equality Constraints and achieved values:\n      ";
 
             for (current = eqConstraintNames.begin(), i = 0;
                  current != eqConstraintNames.end(); ++current)
             {
                if (current != eqConstraintNames.begin())
-                  progress << wxT(",  ");
+                  progress << ",  ";
                   // does this make sense???
-               //progress << *current << wxT("  Desired: ") << eqConstaint[i]
-               //         << wxT("  Achieved: ") << nominal[i];
+               //progress << *current << "  Desired: " << eqConstaint[i]
+               //         << "  Achieved: " << nominal[i];
                ++i;
             }
 
-           progress << wxT("   Inequality Constraints and achieved values:\n      ");
+           progress << "   Inequality Constraints and achieved values:\n      ";
 
             for (current = ineqConstraintNames.begin(), i = 0;
                  current != ineqConstraintNames.end(); ++current)
             {
                if (current != ineqConstraintNames.begin())
-                  progress << wxT(",  ");
+                  progress << ",  ";
                   // does this make sense???
-               //progress << *current << wxT("  Desired: ") << eqConstaint[i]
-               //         << wxT("  Achieved: ") << nominal[i];
+               //progress << *current << "  Desired: " << eqConstaint[i]
+               //         << "  Achieved: " << nominal[i];
                ++i;
             }
 
             break;
 
          case RUNEXTERNAL:
-            progress << instanceName << wxT(" Iteration ") << iterationsTaken+1
-                     << wxT("; External Run\n   Variables:  ");
+            progress << instanceName << " Iteration " << iterationsTaken+1
+                     << "; External Run\n   Variables:  ";
             // Iterate through the variables, writing them to the string
             for (current = variableNames.begin(), i = 0;
                  current != variableNames.end(); ++current)
             {
                if (current != variableNames.begin())
-                  progress << wxT(", ");
-               progress << *current << wxT(" = ") << variable[i++];
+                  progress << ", ";
+               progress << *current << " = " << variable[i++];
             }
             break;
 
          case FINISHED:
-            progress << wxT("\n*** Optimization Completed in ") << iterationsTaken
-                     << wxT(" iterations");
+            progress << "\n*** Optimization Completed in " << iterationsTaken
+                     << " iterations";
                      
             if (iterationsTaken > maxIterations)
-               progress << wxT("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                        << wxT("!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
-                        << wxT("!!! WARNING: Optimizer did NOT converge in ")
-                        << maxIterations << wxT(" iterations!")
-                        << wxT("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                        << wxT("!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+               progress << "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+                        << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
+                        << "!!! WARNING: Optimizer did NOT converge in "
+                        << maxIterations << " iterations!"
+                        << "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+                        << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
             
-            progress << wxT("\nFinal Variable values:\n");
+            progress << "\nFinal Variable values:\n";
             // Iterate through the variables, writing them to the string
             for (current = variableNames.begin(), i = 0;
                  current != variableNames.end(); ++current)
-               progress << wxT("   ") << *current << wxT(" = ") << variable[i++] << wxT("\n");
+               progress << "   " << *current << " = " << variable[i++] << "\n";
             break;
 
          case ITERATING:     // Intentional fall through
          default:
             throw SolverException(
-               wxT("Solver state not supported for the targeter"));
+               "Solver state not supported for the targeter");
       }
    }
    else
       return Solver::GetProgressString();
       
-   return progress;
+   return progress.str();
 
 }
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -462,7 +464,7 @@ wxString Optimizer::GetProgressString()
  * @return parameter text for the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString Optimizer::GetParameterText(const Integer id) const
+std::string Optimizer::GetParameterText(const Integer id) const
 {
    if ((id >= SolverParamCount) && (id < OptimizerParamCount))
       return PARAMETER_TEXT[id - SolverParamCount];
@@ -471,7 +473,7 @@ wxString Optimizer::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -481,7 +483,7 @@ wxString Optimizer::GetParameterText(const Integer id) const
  * @return ID for the requested parameter.
  */
 //------------------------------------------------------------------------------
-Integer Optimizer::GetParameterID(const wxString &str) const
+Integer Optimizer::GetParameterID(const std::string &str) const
 {
    for (Integer i = SolverParamCount; i < OptimizerParamCount; ++i)
    {
@@ -515,7 +517,7 @@ Gmat::ParameterType Optimizer::GetParameterType(
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -525,7 +527,7 @@ Gmat::ParameterType Optimizer::GetParameterType(
  * @return parameter type string of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString Optimizer::GetParameterTypeString(
+std::string Optimizer::GetParameterTypeString(
                                       const Integer id) const
 {
    return Solver::PARAM_TYPE_STRING[GetParameterType(id)];
@@ -569,9 +571,9 @@ Real Optimizer::SetRealParameter(const Integer id, const Real value)
    {
       if (value <= 0.0)
          throw SolverException(
-               wxT("The value entered for the optimizer tolerance on ") +
-               instanceName + wxT(" is not an allowed value. The allowed value ")
-               wxT("is: [Real > 0.0]."));
+               "The value entered for the optimizer tolerance on " +
+               instanceName + " is not an allowed value. The allowed value "
+               "is: [Real > 0.0].");
 
       tolerance = value;
       return tolerance;
@@ -580,7 +582,7 @@ Real Optimizer::SetRealParameter(const Integer id, const Real value)
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id) const
+//  std::string  GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -591,7 +593,7 @@ Real Optimizer::SetRealParameter(const Integer id, const Real value)
  * @return  string value of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString Optimizer::GetStringParameter(const Integer id) const
+std::string Optimizer::GetStringParameter(const Integer id) const
 {
     if (id == OBJECTIVE_FUNCTION)
         return objectiveFnName;
@@ -601,7 +603,7 @@ wxString Optimizer::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer SetStringParameter(const Integer id, const wxString &value)
+//  Integer SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * This method sets a string or string array parameter value, given the input
@@ -614,7 +616,7 @@ wxString Optimizer::GetStringParameter(const Integer id) const
  */
 //------------------------------------------------------------------------------
 bool Optimizer::SetStringParameter(const Integer id,
-                                   const wxString &value)
+                                   const std::string &value)
 {
     if (id == OBJECTIVE_FUNCTION) 
     {
@@ -627,43 +629,43 @@ bool Optimizer::SetStringParameter(const Integer id,
 }
 
 // compiler complained again - so here they are ....
-wxString Optimizer::GetStringParameter(const wxString& label) const
+std::string Optimizer::GetStringParameter(const std::string& label) const
 {
    return Solver::GetStringParameter(label);
 }
-bool Optimizer::SetStringParameter(const wxString& label,
-                                           const wxString &value)
+bool Optimizer::SetStringParameter(const std::string& label,
+                                           const std::string &value)
 {
    return Solver::SetStringParameter(label, value);
 }
-wxString Optimizer::GetStringParameter(const Integer id,
+std::string Optimizer::GetStringParameter(const Integer id,
                                                   const Integer index) const
 {
    return Solver::GetStringParameter(id, index);
 }
 
 bool Optimizer::SetStringParameter(const Integer id, 
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index)
 {
    return Solver::SetStringParameter(id, value, index);
 }
 
-wxString Optimizer::GetStringParameter(const wxString &label,
+std::string Optimizer::GetStringParameter(const std::string &label,
                                                   const Integer index) const
 {
    return Solver::GetStringParameter(label, index);
 }
 
-bool Optimizer::SetStringParameter(const wxString &label, 
-                                           const wxString &value,
+bool Optimizer::SetStringParameter(const std::string &label, 
+                                           const std::string &value,
                                            const Integer index)
 {
    return Solver::SetStringParameter(label, value, index);
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringArrayParameter(const Integer id) const
+//  std::string  GetStringArrayParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -687,15 +689,15 @@ const StringArray& Optimizer::GetStringArrayParameter(
 }
 
 //------------------------------------------------------------------------------
-//  bool TakeAction(const wxString &action, const wxString &actionData)
+//  bool TakeAction(const std::string &action, const std::string &actionData)
 //------------------------------------------------------------------------------
 /**
  * This method performs an action on the instance.
  *
  * TakeAction is a method overridden from GmatBase.  The only actions defined for
- * an Optimizer are wxT("IncrementInstanceCount"), which the Sandbox uses
+ * an Optimizer are "IncrementInstanceCount", which the Sandbox uses
  * to tell an instance if if it is a reused instance (i.e. a clone) of the
- * configured instance of the Optimizer; and wxT("Reset") which resets the
+ * configured instance of the Optimizer; and "Reset" which resets the
  * optimizer data.
  *
  * @param <action>      Text label for the action.
@@ -704,16 +706,16 @@ const StringArray& Optimizer::GetStringArrayParameter(
  * @return  The value of the parameter at the completion of the call.
  */
 //------------------------------------------------------------------------------
-bool Optimizer::TakeAction(const wxString &action,
-                                       const wxString &actionData)
+bool Optimizer::TakeAction(const std::string &action,
+                                       const std::string &actionData)
 {
-   if (action == wxT("IncrementInstanceCount"))
+   if (action == "IncrementInstanceCount")
    {
       ++instanceNumber;
       return true;
    }
  
-   if (action == wxT("Reset"))
+   if (action == "Reset")
    {
       currentState = INITIALIZING;
    }

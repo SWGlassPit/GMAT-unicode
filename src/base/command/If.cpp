@@ -33,10 +33,10 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 If::PARAMETER_TEXT[IfParamCount - ConditionalBranchParamCount] =
 {
-   wxT("NestLevel"),
+   "NestLevel",
 };
 
 const Gmat::ParameterType
@@ -53,7 +53,7 @@ If::PARAMETER_TYPE[IfParamCount - ConditionalBranchParamCount] =
  */
 //------------------------------------------------------------------------------
 If::If() :
-ConditionalBranch  (wxT("If")),
+ConditionalBranch  ("If"),
 nestLevel          (0)
 {
 }
@@ -125,23 +125,23 @@ bool If::Append(GmatCommand *cmd)
         return false;
         
      #ifdef DEBUG_IF_APPEND
-        MessageInterface::ShowMessage(wxT("If::Append .... type being appended is %s\n"),
+        MessageInterface::ShowMessage("If::Append .... type being appended is %s\n",
         (cmd->GetTypeName()).c_str());
      #endif
 
     // Check for the end of "If" branch, point that end back to this command
-    if (cmd->GetTypeName() == wxT("EndIf") || cmd->GetTypeName() == wxT("Else") ||
-        cmd->GetTypeName() == wxT("ElseIf"))
+    if (cmd->GetTypeName() == "EndIf" || cmd->GetTypeName() == "Else" ||
+        cmd->GetTypeName() == "ElseIf")
     {
      #ifdef DEBUG_IF_APPEND
-        MessageInterface::ShowMessage(wxT("If::Append (if) .... nestLevel = %d\n"),
+        MessageInterface::ShowMessage("If::Append (if) .... nestLevel = %d\n",
         nestLevel);
      #endif
        if ((nestLevel== 0) && (branchToFill != -1))
        {
           cmd->Append(this);
           // IF statement is complete; -1 points us back to the main sequence.
-          if (cmd->GetTypeName() == wxT("EndIf"))
+          if (cmd->GetTypeName() == "EndIf")
              branchToFill = -1;
           else // "Else" or "ElseIf" starts another branch
              ++branchToFill;
@@ -150,11 +150,11 @@ bool If::Append(GmatCommand *cmd)
        {
          // only decrease the nextLevel if we've reached the actual end of the 
          // If command
-          if (cmd->GetTypeName() == wxT("EndIf"))  --nestLevel;
+          if (cmd->GetTypeName() == "EndIf")  --nestLevel;
        }
     }
 
-    if (cmd->GetTypeName() == wxT("If"))
+    if (cmd->GetTypeName() == "If")
     {
        ++nestLevel;
     }
@@ -181,14 +181,14 @@ bool If::Execute()
    {
       #ifdef DEBUG_IF_EXEC
       MessageInterface::ShowMessage
-      (wxT("In If::Execute - Branch Executing -------------\n"));
+      ("In If::Execute - Branch Executing -------------\n");
       #endif
       retval = ExecuteBranch(branchToExecute);
       #ifdef DEBUG_IF_EXEC
          MessageInterface::ShowMessage
-         (wxT("In If:: retval returned from ExecuteBranch = %s\n"), (retval? wxT("true") : wxT("false")));
+         ("In If:: retval returned from ExecuteBranch = %s\n", (retval? "true" : "false"));
          MessageInterface::ShowMessage
-         (wxT("        branchExecuting=%d\n"), branchExecuting);
+         ("        branchExecuting=%d\n", branchExecuting);
       #endif
       if (!branchExecuting)
       {
@@ -200,7 +200,7 @@ bool If::Execute()
    {
       #ifdef DEBUG_IF_EXEC
       MessageInterface::ShowMessage
-      (wxT("In If::Execute - Branch NOT Executing -------------\n"));
+      ("In If::Execute - Branch NOT Executing -------------\n");
       #endif
       if (!commandExecuting)
          ConditionalBranch::Execute();
@@ -210,7 +210,7 @@ bool If::Execute()
       {
          #ifdef DEBUG_IF_EXEC
          MessageInterface::ShowMessage
-         (wxT("In If::Execute all conditions are true - executing first branch\n"));
+         ("In If::Execute all conditions are true - executing first branch\n");
          #endif
          branchToExecute = 0;
          branchExecuting = true;
@@ -221,7 +221,7 @@ bool If::Execute()
       {
          #ifdef DEBUG_IF_EXEC
          MessageInterface::ShowMessage
-         (wxT("In If::Execute some conditions are FALSE - executing second branch\n"));
+         ("In If::Execute some conditions are FALSE - executing second branch\n");
          #endif
          branchExecuting = true;
          branchToExecute = 1; // @todo - add ElseIf (more than two branches)
@@ -232,7 +232,7 @@ bool If::Execute()
       {
          #ifdef DEBUG_IF_EXEC
          MessageInterface::ShowMessage
-         (wxT("In If::Execute - conditions are FALSE - no other branch to execute\n"));
+         ("In If::Execute - conditions are FALSE - no other branch to execute\n");
          //("In If::Execute - ERROR with number of branches - more than two not yet implemented\n");
          #endif
          branchToExecute = 0;
@@ -245,7 +245,7 @@ bool If::Execute()
    BuildCommandSummary(true);
    #ifdef DEBUG_IF_EXEC
    MessageInterface::ShowMessage
-      (wxT("If::BuildCommandSummary completed\n"));
+      ("If::BuildCommandSummary completed\n");
    #endif
    return retval;
 } // Execute()
@@ -259,7 +259,7 @@ bool If::Execute()
    
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -270,7 +270,7 @@ bool If::Execute()
  *
  */
 //------------------------------------------------------------------------------
-wxString If::GetParameterText(const Integer id) const
+std::string If::GetParameterText(const Integer id) const
 {
    if (id >= ConditionalBranchParamCount && id < IfParamCount)
       return PARAMETER_TEXT[id - ConditionalBranchParamCount];
@@ -278,7 +278,7 @@ wxString If::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -289,7 +289,7 @@ wxString If::GetParameterText(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer If::GetParameterID(const wxString &str) const
+Integer If::GetParameterID(const std::string &str) const
 {
    for (Integer i = ConditionalBranchParamCount; i < IfParamCount; i++)
    {
@@ -321,7 +321,7 @@ Gmat::ParameterType If::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -332,7 +332,7 @@ Gmat::ParameterType If::GetParameterType(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString If::GetParameterTypeString(const Integer id) const
+std::string If::GetParameterTypeString(const Integer id) const
 {
    return ConditionalBranch::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -380,7 +380,7 @@ Integer If::SetIntegerParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetIntegerParameter(const wxString &label) const
+//  Integer  GetIntegerParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the Integer parameter value, given the input
@@ -392,13 +392,13 @@ Integer If::SetIntegerParameter(const Integer id,
  *
  */
 //------------------------------------------------------------------------------
-Integer If::GetIntegerParameter(const wxString &label) const
+Integer If::GetIntegerParameter(const std::string &label) const
 {
    return GetIntegerParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-//  Integer  SetIntegerParameter(const wxString &label, const Integer value)
+//  Integer  SetIntegerParameter(const std::string &label, const Integer value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the Integer parameter value, given the input
@@ -411,7 +411,7 @@ Integer If::GetIntegerParameter(const wxString &label) const
  *
  */
 //------------------------------------------------------------------------------
-Integer If::SetIntegerParameter(const wxString &label,
+Integer If::SetIntegerParameter(const std::string &label,
                                 const Integer value)
 {
    return SetIntegerParameter(GetParameterID(label), value);
@@ -433,7 +433,7 @@ GmatBase* If::Clone() const
 }
 
 //------------------------------------------------------------------------------
-//  const wxString& GetGeneratingString()
+//  const std::string& GetGeneratingString()
 //------------------------------------------------------------------------------
 /**
  * Method used to retrieve the string that was parsed to build this GmatCommand.
@@ -453,18 +453,18 @@ GmatBase* If::Clone() const
  * @return The script line that, when interpreted, defines this If command.
  */
 //------------------------------------------------------------------------------
-const wxString& If::GetGeneratingString(Gmat::WriteMode mode,
-                                           const wxString &prefix,
-                                           const wxString &useName)
+const std::string& If::GetGeneratingString(Gmat::WriteMode mode,
+                                           const std::string &prefix,
+                                           const std::string &useName)
 {
    if (mode == Gmat::NO_COMMENTS)
    {
-      generatingString = wxT("If ") + GetConditionalString();
+      generatingString = "If " + GetConditionalString();
       return generatingString;
    }
    
    // Build the local string
-   generatingString = prefix + wxT("If ") + GetConditionalString();
+   generatingString = prefix + "If " + GetConditionalString();
    return ConditionalBranch::GetGeneratingString(mode, prefix, useName);
 }
 

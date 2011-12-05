@@ -34,10 +34,10 @@
 //---------------------------------
 //  static data
 //---------------------------------
-const wxString
+const std::string
 SaveMission::PARAMETER_TEXT[SaveMissionParamCount - GmatCommandParamCount] = 
 {
-   wxT("FileName"),
+   "FileName",
 };
 
 const Gmat::ParameterType
@@ -55,7 +55,7 @@ SaveMission::PARAMETER_TYPE[SaveMissionParamCount - GmatCommandParamCount] =
  */
 //------------------------------------------------------------------------------
 SaveMission::SaveMission() :
-    GmatCommand(wxT("SaveMission"))
+    GmatCommand("SaveMission")
 {
 }
 
@@ -124,33 +124,33 @@ bool SaveMission::Execute()
    if (currentFunction == NULL && GmatCommandUtil::GetLastCommand(this) == this)
    {
       FileManager *fm = FileManager::Instance();
-      wxString outPath = fm->GetAbsPathname(FileManager::OUTPUT_PATH);
-      wxString fname = fileName;
+      std::string outPath = fm->GetAbsPathname(FileManager::OUTPUT_PATH);
+      std::string fname = fileName;
       
       // add output path if there is no path
-      if (fileName.find(wxT("/")) == fileName.npos &&
-          fileName.find(wxT("\\")) == fileName.npos)
+      if (fileName.find("/") == fileName.npos &&
+          fileName.find("\\") == fileName.npos)
       {
          fname = outPath + fileName;
       }
       
       // If file name has no extension, add .script
-      if (GmatFileUtil::ParseFileExtension(fname) == wxT(""))
-         fname = fname + wxT(".script");
+      if (GmatFileUtil::ParseFileExtension(fname) == "")
+         fname = fname + ".script";
       
       // Call Moderator::GetScript();
-      wxString script = Moderator::Instance()->GetScript();
+      std::string script = Moderator::Instance()->GetScript();
       
       #ifdef DEBUG_SAVEMISSION_EXE
       MessageInterface::ShowMessage
-         (wxT("SaveMission::Execute() '%s' should save mission to a file\n"),
+         ("SaveMission::Execute() '%s' should save mission to a file\n",
           GetGeneratingString(Gmat::NO_COMMENTS).c_str());
-      MessageInterface::ShowMessage(wxT("   fileName='%s'\n"), fname.c_str());
+      MessageInterface::ShowMessage("   fileName='%s'\n", fname.c_str());
       //MessageInterface::ShowMessage(script);
       #endif
       
       std::ofstream dstream;
-      dstream.open(fname.char_str());
+      dstream.open(fname.c_str());
       dstream << script;
    }
    
@@ -174,19 +174,19 @@ bool SaveMission::InterpretAction()
 {
    #ifdef DEBUG_SAVEMISSION_IA
    MessageInterface::ShowMessage
-      (wxT("SaveMission::InterpretAction(), generatingString = %s\n"),
+      ("SaveMission::InterpretAction(), generatingString = %s\n",
        generatingString.c_str());
    #endif
    
    StringArray chunks = InterpretPreface();
    
    if (chunks.size() < 2)
-      throw CommandException(wxT("Missing information for MissionSave command.\n"));
+      throw CommandException("Missing information for MissionSave command.\n");
    
    fileName = chunks[1];
    
    // Remove single quotes
-   fileName = GmatStringUtil::RemoveEnclosingString(chunks[1], wxT("'"));
+   fileName = GmatStringUtil::RemoveEnclosingString(chunks[1], "'");
    
    return true;
 }
@@ -209,15 +209,15 @@ GmatBase* SaveMission::Clone() const
 
 //------------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
 bool SaveMission::RenameRefObject(const Gmat::ObjectType type,
-                                  const wxString &oldName,
-                                  const wxString &newName)
+                                  const std::string &oldName,
+                                  const std::string &newName)
 {
    // There are no objects to be renamed here
    return true;
@@ -225,9 +225,9 @@ bool SaveMission::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
-wxString SaveMission::GetParameterText(const Integer id) const
+std::string SaveMission::GetParameterText(const Integer id) const
 {
    if (id >= GmatCommandParamCount && id < SaveMissionParamCount)
       return PARAMETER_TEXT[id - GmatCommandParamCount];
@@ -237,9 +237,9 @@ wxString SaveMission::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer SaveMission::GetParameterID(const wxString &str) const
+Integer SaveMission::GetParameterID(const std::string &str) const
 {
    for (int i=GmatCommandParamCount; i<SaveMissionParamCount; i++)
    {
@@ -264,9 +264,9 @@ Gmat::ParameterType SaveMission::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
-wxString SaveMission::GetParameterTypeString(const Integer id) const
+std::string SaveMission::GetParameterTypeString(const Integer id) const
 {
    if (id >= GmatCommandParamCount && id < SaveMissionParamCount)
       return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
@@ -276,9 +276,9 @@ wxString SaveMission::GetParameterTypeString(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
-wxString SaveMission::GetStringParameter(const Integer id) const
+std::string SaveMission::GetStringParameter(const Integer id) const
 {
    switch (id)
    {
@@ -291,18 +291,18 @@ wxString SaveMission::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString SaveMission::GetStringParameter(const wxString &label) const
+std::string SaveMission::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString value)
+// bool SetStringParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
-bool SaveMission::SetStringParameter(const Integer id, const wxString &value)
+bool SaveMission::SetStringParameter(const Integer id, const std::string &value)
 {
    switch (id)
    {
@@ -316,26 +316,26 @@ bool SaveMission::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
-bool SaveMission::SetStringParameter(const wxString &label, const wxString &value)
+bool SaveMission::SetStringParameter(const std::string &label, const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
 
 
 //------------------------------------------------------------------------------
-// const wxString& GetGeneratingString(Gmat::WriteMode mode = Gmat::SCRIPTING,
-//                    const wxString &prefix = "",
-//                    const wxString &useName = "");
+// const std::string& GetGeneratingString(Gmat::WriteMode mode = Gmat::SCRIPTING,
+//                    const std::string &prefix = "",
+//                    const std::string &useName = "");
 //------------------------------------------------------------------------------
-const wxString& SaveMission::GetGeneratingString(Gmat::WriteMode mode,
-                                                    const wxString &prefix,
-                                                    const wxString &useName)
+const std::string& SaveMission::GetGeneratingString(Gmat::WriteMode mode,
+                                                    const std::string &prefix,
+                                                    const std::string &useName)
 {
    // Build the local string
-   generatingString = prefix + wxT("SaveMission");
-   generatingString += wxT(" '") + fileName + wxT("';");
+   generatingString = prefix + "SaveMission";
+   generatingString += " '" + fileName + "';";
    
    // Then call the base class method for comments
    return GmatCommand::GetGeneratingString(mode, prefix, useName);

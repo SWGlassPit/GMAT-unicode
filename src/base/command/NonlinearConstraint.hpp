@@ -44,8 +44,8 @@ public:
    virtual GmatBase*   Clone() const;
 
    virtual bool        RenameRefObject(const Gmat::ObjectType type,
-                                       const wxString &oldName,
-                                       const wxString &newName);
+                                       const std::string &oldName,
+                                       const std::string &newName);
    virtual const ObjectTypeArray&
                        GetRefObjectTypeArray();
    virtual const StringArray&
@@ -53,38 +53,38 @@ public:
    
    
    // Parameter accessors
-   virtual wxString GetParameterText(const Integer id) const;
-   virtual Integer     GetParameterID(const wxString &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
+   virtual Integer     GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                        GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
 
    virtual Real        GetRealParameter(const Integer id) const;
    virtual Real        SetRealParameter(const Integer id,
                                         const Real value);
-   virtual wxString GetStringParameter(const Integer id) const;
+   virtual std::string GetStringParameter(const Integer id) const;
    virtual bool        SetStringParameter(const Integer id, 
-                                          const wxString &value);
+                                          const std::string &value);
                                            
    virtual bool        SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                    const wxString &name = wxT(""));
+                                    const std::string &name = "");
     
    // Inherited methods overridden from the base class
    virtual bool        InterpretAction();
    virtual const StringArray& 
                        GetWrapperObjectNameArray();
    virtual bool        SetElementWrapper(ElementWrapper* toWrapper,
-                                         const wxString &withName);
+                                         const std::string &withName);
    virtual void        ClearWrappers();
 
    virtual bool        Initialize();
    virtual bool        Execute();
    virtual void        RunComplete();
    
-   virtual const wxString&
+   virtual const std::string&
                        GetGeneratingString(Gmat::WriteMode mode,
-                                           const wxString &prefix,
-                                           const wxString &useName);
+                                           const std::string &prefix,
+                                           const std::string &useName);
     
 protected:
    // Parameter IDs
@@ -97,7 +97,7 @@ protected:
       TOLERANCE,
       NonlinearConstraintParamCount
    };
-   static const wxString
+   static const std::string
                        PARAMETER_TEXT[NonlinearConstraintParamCount - GmatCommandParamCount];
    static const Gmat::ParameterType
                        PARAMETER_TYPE[NonlinearConstraintParamCount - GmatCommandParamCount];
@@ -109,30 +109,30 @@ protected:
       EQUAL
    };
    
-   static const wxString OP_STRINGS[3];
+   static const std::string OP_STRINGS[3];
 
    /// The name of the spacecraft that gets maneuvered
-   wxString         optimizerName;
+   std::string         optimizerName;
    /// The optimizer instance used to manage the optimizer state machine
    Solver              *optimizer;
    /// Name of the variable to be constrained
-   wxString         arg1Name;
+   std::string         arg1Name;
    // pointer to the Variable that is to be minimized
    //Parameter           *constraint;
    ElementWrapper      *arg1;
    /// most recent value of the variable
    Real                constraintValue; // do I still need this?
    /// name of the parameter part of the right-hand-side
-   wxString         arg2Name;
+   std::string         arg2Name;
    //Parameter           *nlcParm;
    ElementWrapper      *arg2;
 
    /// String of value array name  // I don't think I need any of this stuff
-   //wxString         nlcArrName;
+   //std::string         nlcArrName;
    /// constraint array row index variable name
-   //wxString         nlcArrRowStr;
+   //std::string         nlcArrRowStr;
    /// constraint array column index variable name
-   //wxString         nlcArrColStr;
+   //std::string         nlcArrColStr;
    /// constraint array row index
    //Integer             nlcArrRow;
    /// constraint array column index
@@ -144,7 +144,7 @@ protected:
    /// constraint
    bool                isInequality;
    /// string to send into the optimizer, based on isInequality
-   wxString         isIneqString;
+   std::string         isIneqString;
    /// the desired value (right hand side of the constraint equation)
    Real                desiredValue;
    /// indicates what type of operator was passed in for the generating
@@ -167,10 +167,10 @@ protected:
    /// flag indicating whether or not the generating string has been interpreted
    bool                interpreted;
    
-   //bool                InterpretParameter(const wxString text,
-   //                                       wxString &paramType,
-   //                                       wxString &paramObj,
-   //                                       wxString &parmSystem);
+   //bool                InterpretParameter(const std::string text,
+   //                                       std::string &paramType,
+   //                                       std::string &paramObj,
+   //                                       std::string &parmSystem);
                                           
 
    //bool                ConstructConstraint(const char* str);

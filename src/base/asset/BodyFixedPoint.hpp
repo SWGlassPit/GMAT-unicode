@@ -39,7 +39,7 @@
 class GMAT_API BodyFixedPoint : public SpacePoint
 {
 public:
-   BodyFixedPoint(const wxString &itsType, const wxString &itsName,
+   BodyFixedPoint(const std::string &itsType, const std::string &itsName,
          Gmat::ObjectType objType = Gmat::BODY_FIXED_POINT);
    virtual ~BodyFixedPoint();
    BodyFixedPoint(const BodyFixedPoint& bfp);
@@ -50,36 +50,36 @@ public:
 
    // Parameter access methods - overridden from GmatBase
    virtual void            Copy(const GmatBase* orig);
-   virtual wxString     GetParameterText(const Integer id) const;
-   virtual Integer         GetParameterID(const wxString &str) const;
+   virtual std::string     GetParameterText(const Integer id) const;
+   virtual Integer         GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                            GetParameterType(const Integer id) const;
-   virtual wxString     GetParameterTypeString(const Integer id) const;
+   virtual std::string     GetParameterTypeString(const Integer id) const;
 
    virtual bool            IsParameterReadOnly(const Integer id) const;
-   virtual bool            IsParameterReadOnly(const wxString &label) const;
+   virtual bool            IsParameterReadOnly(const std::string &label) const;
 
    virtual Gmat::ObjectType
                            GetPropertyObjectType(const Integer id) const;
    virtual const StringArray&
                            GetPropertyEnumStrings(const Integer id) const;
 
-   virtual wxString     GetStringParameter(const Integer id) const;
+   virtual std::string     GetStringParameter(const Integer id) const;
    virtual bool            SetStringParameter(const Integer id,
-                                              const wxString &value);
-   virtual wxString     GetStringParameter(const wxString &label) const;
-   virtual bool            SetStringParameter(const wxString &label,
-                                              const wxString &value);
+                                              const std::string &value);
+   virtual std::string     GetStringParameter(const std::string &label) const;
+   virtual bool            SetStringParameter(const std::string &label,
+                                              const std::string &value);
 
-   virtual wxString     GetStringParameter(const Integer id,
+   virtual std::string     GetStringParameter(const Integer id,
                                               const Integer index) const;
    virtual bool            SetStringParameter(const Integer id,
-                                              const wxString &value,
+                                              const std::string &value,
                                               const Integer index);
-   virtual wxString     GetStringParameter(const wxString &label,
+   virtual std::string     GetStringParameter(const std::string &label,
                                               const Integer index) const;
-   virtual bool            SetStringParameter(const wxString &label,
-                                              const wxString &value,
+   virtual bool            SetStringParameter(const std::string &label,
+                                              const std::string &value,
                                               const Integer index);
 
    virtual Real            GetRealParameter(const Integer id) const;
@@ -94,34 +94,34 @@ public:
 //                                         const Integer index);
 //   virtual Real            SetRealParameter(const Integer id, const Real value,
 //                                         const Integer row, const Integer col);
-   virtual Real            GetRealParameter(const wxString &label) const;
-   virtual Real            SetRealParameter(const wxString &label,
+   virtual Real            GetRealParameter(const std::string &label) const;
+   virtual Real            SetRealParameter(const std::string &label,
                                          const Real value);
-//   virtual Real            GetRealParameter(const wxString &label,
+//   virtual Real            GetRealParameter(const std::string &label,
 //                                         const Integer index) const;
-//   virtual Real            SetRealParameter(const wxString &label,
+//   virtual Real            SetRealParameter(const std::string &label,
 //                                         const Real value,
 //                                         const Integer index);
-//   virtual Real            GetRealParameter(const wxString &label,
+//   virtual Real            GetRealParameter(const std::string &label,
 //                                         const Integer row,
 //                                         const Integer col) const;
-//   virtual Real            SetRealParameter(const wxString &label,
+//   virtual Real            SetRealParameter(const std::string &label,
 //                                         const Real value, const Integer row,
 //                                         const Integer col);
 
    virtual GmatBase*       GetRefObject(const Gmat::ObjectType type,
-                                        const wxString &name);
+                                        const std::string &name);
    virtual bool            SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                        const wxString &name = wxT(""));
+                                        const std::string &name = "");
    virtual GmatBase*       GetRefObject(const Gmat::ObjectType type,
-                                        const wxString &name,
+                                        const std::string &name,
                                         const Integer index);
    virtual bool            SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                        const wxString &name,
+                                        const std::string &name,
                                         const Integer index);
 
    virtual bool            HasRefObjectTypeArray();
-   virtual wxString     GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual std::string     GetRefObjectName(const Gmat::ObjectType type) const;
    virtual const StringArray&
                            GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual const ObjectTypeArray&
@@ -136,11 +136,11 @@ public:
                            GetBodyFixedCoordinateSystem() const;
 
    virtual void            SetSolarSystem(SolarSystem *ss);
-   virtual bool            IsValidID(const wxString &id) = 0;
+   virtual bool            IsValidID(const std::string &id) = 0;
 
 protected:
    /// The point is attached to this body
-   wxString       cBodyName;
+   std::string       cBodyName;
    /// The point is attached to this body
    SpacePoint        *theBody;
    /// Mean Radius of the body
@@ -152,9 +152,9 @@ protected:
    /// Strings that identify the location units
    StringArray       locationUnits;
    /// Type of coordinate system
-   wxString       stateType;
+   std::string       stateType;
    /// For geographic states, the horizon type
-   wxString       horizon;
+   std::string       horizon;
    /// The location, in the stateType-horizon system
    Real              location[3];
    /// The Cartesian body-fixed location
@@ -162,11 +162,11 @@ protected:
    /// A solar system pointer (not sure if this is needed)
    SolarSystem       *solarSystem;
    /// name of the BodyFixed coordinate system
-   wxString       bfcsName;
+   std::string       bfcsName;
    /// The body-fixed coordinate system that the BFP lives on
    CoordinateSystem  *bfcs;
    /// name of the MJ2000 coordinate system
-   wxString       mj2kcsName;
+   std::string       mj2kcsName;
    /// A MJ2000 coordinate system
    CoordinateSystem  *mj2kcs;
 
@@ -203,7 +203,7 @@ public:
    };
 
    /// burn parameter labels
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[BodyFixedPointParamCount - SpacePointParamCount];
    /// burn parameter types
    static const Gmat::ParameterType

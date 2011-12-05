@@ -54,11 +54,11 @@ namespace Gmat
       PosVelSourceCount
    };
 
-   const wxString POS_VEL_SOURCE_STRINGS[PosVelSourceCount] =
+   const std::string POS_VEL_SOURCE_STRINGS[PosVelSourceCount] =
    {
-      wxT("TwoBodyPropagation"),
-      wxT("DE405"),
-      wxT("SPICE")
+      "TwoBodyPropagation",
+      "DE405",
+      "SPICE"
    };
 
    // possible types of celestial bodies
@@ -74,15 +74,15 @@ namespace Gmat
       BodyTypeCount
    };
    
-   const wxString BODY_TYPE_STRINGS[BodyTypeCount] = 
+   const std::string BODY_TYPE_STRINGS[BodyTypeCount] = 
    {
-      wxT("Star"),
-      wxT("Planet"),
-      wxT("Moon"),
-      wxT("Asteroid"),
-      wxT("Comet"),
-      wxT("SpecialCelestialPoint"),
-      wxT("KuiperBeltObject"),   // KBOs not yet implemented
+      "Star",
+      "Planet",
+      "Moon",
+      "Asteroid",
+      "Comet",
+      "SpecialCelestialPoint",
+      "KuiperBeltObject",   // KBOs not yet implemented
    };
    
    // types of environment models for a body
@@ -95,12 +95,12 @@ namespace Gmat
       ModelTypeCount
    };
    
-   const wxString MODEL_TYPE_STRINGS[ModelTypeCount] =
+   const std::string MODEL_TYPE_STRINGS[ModelTypeCount] =
    {
-      wxT("AtmosphereModel"),
-      wxT("GravityField"),
-      wxT("MagneticField"),
-      wxT("ShapeModel"),    // reserved for future use
+      "AtmosphereModel",
+      "GravityField",
+      "MagneticField",
+      "ShapeModel",    // reserved for future use
    };
    
    enum RotationDataSource
@@ -113,13 +113,13 @@ namespace Gmat
       RotationDataSrcCount
    };
    
-   const wxString ROTATION_DATA_SOURCE_STRINGS[RotationDataSrcCount] = 
+   const std::string ROTATION_DATA_SOURCE_STRINGS[RotationDataSrcCount] = 
    {
-      wxT("DE405File"),
-      wxT("IAU2002"),
-//      wxT("IAUFile"),  // TBD
-      wxT("FK5IAU1980"),
-      wxT("IAUSimplified"),
+      "DE405File",
+      "IAU2002",
+//      "IAUFile",  // TBD
+      "FK5IAU1980",
+      "IAUSimplified",
    };
 };
 
@@ -135,9 +135,9 @@ class GMAT_API CelestialBody : public SpacePoint
 public:
    
    // additional constructor, specifying body type (as string) and name
-   CelestialBody(wxString itsBodyType, wxString name);
+   CelestialBody(std::string itsBodyType, std::string name);
    // additional constructor, specifying type (as Gmat::BodyType) and name
-   CelestialBody(Gmat::BodyType itsBodyType, wxString name);
+   CelestialBody(Gmat::BodyType itsBodyType, std::string name);
    // copy constructor
    CelestialBody(const CelestialBody &cBody);
    // operator=
@@ -162,14 +162,14 @@ public:
    // methods to return the body type, central body, gravitational constant,
    // radius, mass, posvel source, analytic method, and userDefined flag
    virtual Gmat::BodyType       GetBodyType() const;
-   virtual const wxString&   GetCentralBody() const;
+   virtual const std::string&   GetCentralBody() const;
    virtual Real                 GetGravitationalConstant();
    virtual Real                 GetEquatorialRadius();
    virtual Real                 GetFlattening() const;
    virtual Real                 GetPolarRadius();
    virtual Real                 GetMass();
    virtual Gmat::PosVelSource   GetPosVelSource() const;
-   virtual wxString          GetSourceFileName() const;
+   virtual std::string          GetSourceFileName() const;
    virtual PlanetaryEphem*      GetSourceFile() const;
    virtual bool                 GetUsePotentialFile() const;
    virtual bool                 GetOverrideTimeSystem() const;
@@ -183,7 +183,7 @@ public:
 //   virtual const Rmatrix&       GetHarmonicCoefficientsCij();
    virtual Integer              GetDegree();
    virtual Integer              GetOrder();
-   virtual wxString          GetAtmosphereModelType();
+   virtual std::string          GetAtmosphereModelType();
    virtual AtmosphereModel*     GetAtmosphereModel();
    virtual bool                 GetDensity(Real *position, Real *density,
                                         Real epoch = GmatTimeConstants::MJD_OF_J2000,
@@ -201,7 +201,7 @@ public:
 
    // methods to set data for the body
    virtual bool           SetBodyType(Gmat::BodyType bType);
-   virtual bool           SetCentralBody(const wxString &cBody);
+   virtual bool           SetCentralBody(const std::string &cBody);
    virtual bool           SetGravitationalConstant(Real newMu);
    virtual bool           SetEquatorialRadius(Real newEqRadius);
    virtual bool           SetFlattening(Real flat);
@@ -213,9 +213,9 @@ public:
    virtual bool           SetOverrideTimeSystem(bool overrideIt);
    virtual bool           SetEphemUpdateInterval(Real intvl);
    virtual bool           AddValidModelName(Gmat::ModelType m, 
-                                            const wxString &newModel);
+                                            const std::string &newModel);
    virtual bool           RemoveValidModelName(Gmat::ModelType m, 
-                                               const wxString &modelName);
+                                               const std::string &modelName);
    virtual bool           SetValidModelList(Gmat::ModelType m, const StringArray &toList);
    virtual bool           SetOrder(Integer toOrder);
    virtual bool           SetDegree(Integer toDegree);
@@ -223,9 +223,9 @@ public:
 //   virtual bool           SetHarmonicCoefficientsCij(const Rmatrix &coeffCij);
 
    
-   virtual bool           SetAtmosphereModelType(wxString toAtmModelType);
+   virtual bool           SetAtmosphereModelType(std::string toAtmModelType);
    virtual bool           SetAtmosphereModel(AtmosphereModel *toAtmModel);
-   virtual bool           SetPotentialFilename(const wxString &fn);
+   virtual bool           SetPotentialFilename(const std::string &fn);
    virtual bool           SetTwoBodyEpoch(const A1Mjd &toTime);
    virtual bool           SetTwoBodyElements(const Rvector6 &kepl);
    virtual bool           SetSMA(Real value);
@@ -271,11 +271,11 @@ public:
    
    
    // Parameter access methods - overridden from GmatBase
-   virtual wxString    GetParameterText(const Integer id) const;     // const?
-   virtual Integer        GetParameterID(const wxString &str) const; // const?
+   virtual std::string    GetParameterText(const Integer id) const;     // const?
+   virtual Integer        GetParameterID(const std::string &str) const; // const?
    virtual Gmat::ParameterType
                           GetParameterType(const Integer id) const;
-   virtual wxString    GetParameterTypeString(const Integer id) const;
+   virtual std::string    GetParameterTypeString(const Integer id) const;
 
    virtual Real           GetRealParameter(const Integer id) const;
    virtual Real           SetRealParameter(const Integer id,
@@ -283,12 +283,12 @@ public:
    virtual Integer        GetIntegerParameter(const Integer id) const; // const?
    virtual Integer        SetIntegerParameter(const Integer id,
                                               const Integer value); // const?
-   virtual wxString    GetStringParameter(const Integer id) const; // const?
-   virtual wxString    GetStringParameter(const Integer id,
+   virtual std::string    GetStringParameter(const Integer id) const; // const?
+   virtual std::string    GetStringParameter(const Integer id,
                                              const Integer index) const;
    virtual bool           SetStringParameter(const Integer id, 
-                                             const wxString &value); // const?
-   virtual bool           SetStringParameter(const Integer id, const wxString &value,
+                                             const std::string &value); // const?
+   virtual bool           SetStringParameter(const Integer id, const std::string &value,
                                              const Integer index);
    virtual bool           GetBooleanParameter(const Integer id) const; // const?
    virtual bool           SetBooleanParameter(const Integer id,
@@ -296,16 +296,16 @@ public:
    virtual const Rvector&    GetRvectorParameter(const Integer id) const;
    virtual const Rvector&    SetRvectorParameter(const Integer id,
                                                  const Rvector &value);
-   virtual const Rvector&    GetRvectorParameter(const wxString &label) const;
-   virtual const Rvector&    SetRvectorParameter(const wxString &label,
+   virtual const Rvector&    GetRvectorParameter(const std::string &label) const;
+   virtual const Rvector&    SetRvectorParameter(const std::string &label,
                                                  const Rvector &value);
    virtual const StringArray& GetStringArrayParameter(const Integer id) const;
 
    virtual GmatBase*   GetRefObject(const Gmat::ObjectType type,
-                                    const wxString &name);
+                                    const std::string &name);
    const StringArray&  GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool        SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                    const wxString &name = wxT(""));
+                                    const std::string &name = "");
    
    virtual bool        IsParameterReadOnly(const Integer id) const;
    virtual bool        IsParameterCloaked(const Integer id) const;
@@ -325,8 +325,8 @@ public:
    
    
    // strings representing the possible celestial body types
-   //static const wxString BODY_TYPE_STRINGS[Gmat::BodyTypeCount];
-   //static const wxString POS_VEL_STRINGS[Gmat::PosVelSourceCount];
+   //static const std::string BODY_TYPE_STRINGS[Gmat::BodyTypeCount];
+   //static const std::string POS_VEL_STRINGS[Gmat::PosVelSourceCount];
 
    // local constants
    static const Integer BUFSIZE               = 256;
@@ -384,7 +384,7 @@ protected:
       // @todo - add Shape Models, etc.
       CelestialBodyParamCount
    };
-   static const wxString PARAMETER_TEXT[CelestialBodyParamCount - SpacePointParamCount];
+   static const std::string PARAMETER_TEXT[CelestialBodyParamCount - SpacePointParamCount];
 
    static const Gmat::ParameterType PARAMETER_TYPE[CelestialBodyParamCount - SpacePointParamCount];
    static const Real    JD_EPOCH_2000_TCB;
@@ -414,7 +414,7 @@ protected:
    A1Mjd                    stateTime;
    
    /// name of central body around which this body revolves
-   wxString              theCentralBodyName;
+   std::string              theCentralBodyName;
    /// central body around which this body revolves
    CelestialBody            *theCentralBody;
    /// flag indicating whether or not the central body has been set
@@ -424,7 +424,7 @@ protected:
    /// body number of origin of coordinate system for file
    Integer                  referenceBodyNumber;
    /// name of file that is the source of position and velocity for this body (DE)
-   wxString              sourceFilename;
+   std::string              sourceFilename;
    /// the source file (DE)
    PlanetaryEphem           *theSourceFile;
    #ifdef __USE_SPICE__
@@ -435,15 +435,15 @@ protected:
    /// flag indicating whether or not to get data from potential file
    bool                     usePotentialFile;
    /// file name of the potential file to use
-   wxString              potentialFileName;
+   std::string              potentialFileName;
    /// angular velocity
    Rvector3                 angularVelocity;
    /// the hour angle 
    Real                     hourAngle;
    /// pointer to the atmosphere model to use for the body
    AtmosphereModel*         atmModel;
-   /// the type of the atmosphere model (e.g. wxT("Exponential"))
-   wxString              atmModelType;
+   /// the type of the atmosphere model (e.g. "Exponential")
+   std::string              atmModelType;
 
    /// has the potential file been read already?
    bool                     potentialFileRead;
@@ -455,11 +455,11 @@ protected:
    /// default mu to use if potential file is not used
    Real                     default_mu;
    /// default value for the ephem source
-   wxString              default_posVelSrc;
+   std::string              default_posVelSrc;
    /// default value for the central body
-   wxString              default_centralBodyName;
+   std::string              default_centralBodyName;
    /// default value for the ephemeris file
-   wxString              default_sourceFilename;
+   std::string              default_sourceFilename;
    /// default values for the SPICe kernel names
    StringArray              default_orbitSpiceKernelNames;
    /// default value for rotation data source
@@ -475,7 +475,7 @@ protected:
    /// SpinAxisDECRate, RotationConstant, RotationRate
    Rvector6                 default_orientation;
    /// default value for texture map file name
-   wxString              default_textureMapFileName;
+   std::string              default_textureMapFileName;
 
    
    /// order of the gravity model
@@ -487,9 +487,9 @@ protected:
 //   /// spherical harmonic coefficients (Cij) for the body
 //   Rmatrix                cij;
    /// date format for the twoBody method epoch
-   wxString            twoBodyFormat;
+   std::string            twoBodyFormat;
    /// state type for twoBody inputs
-   wxString            twoBodyStateType;
+   std::string            twoBodyStateType;
    /// Initial epoch for twoBody method
    A1Mjd                  twoBodyEpoch;
    /// initial Keplerian elements for twoBody method 
@@ -527,7 +527,7 @@ protected:
    bool                   allowSpice;
    
    /// date format for the orientation epoch
-   wxString            orientationDateFormat;
+   std::string            orientationDateFormat;
    /// initial epoch for the orientation parameters
    A1Mjd                  orientationEpoch;  // A1Mjd?  Ew.
    /// orientation parameters for the body in the order: 
@@ -536,9 +536,9 @@ protected:
    // has the naifID been set (figured out from SPK file(s))
    bool                   naifIdSet;
    /// name to use when requesting data from an SPK kernel
-   wxString            naifName;
+   std::string            naifName;
    /// Name of the texture map file to use when plotting
-   wxString            textureMapFileName;
+   std::string            textureMapFileName;
    /// has message about possible needed SPKs been written
    bool                   msgWritten;
    /// date and time of start of source file
@@ -553,12 +553,12 @@ protected:
    //Rmatrix                defaultCij;
    
    // initialze the body
-   void             InitializeBody(wxString withBodyType = wxT("Planet"));
+   void             InitializeBody(std::string withBodyType = "Planet");
    // methods to read the potential file, if requested
    virtual bool     DeterminePotentialFileNameFromStartup();
    bool             ReadPotentialFile();
    
-   bool             IsBlank(wxString &aLine);
+   bool             IsBlank(char* aLine);
    virtual Real     GetJulianDaysFromTCBEpoch(const A1Mjd &forTime) const;
    virtual Rvector6 ComputeTwoBody(const A1Mjd &forTime);
    virtual Rvector6 KeplersProblem(const A1Mjd &forTime);

@@ -34,11 +34,11 @@
  */
 Converter::Converter()  
 {
-    type = wxT("unknown");
+    type = "unknown";
 }
 
 //---------------------------------------------------------------------------
-//  Converter(wxString &type)
+//  Converter(std::string &type)
 //---------------------------------------------------------------------------
 /**
  * Creates constructors with parameters.
@@ -46,7 +46,7 @@ Converter::Converter()
  * @param <typeStr> GMAT script string associated with this type of object.
  *
  */
-Converter::Converter(const wxString &type) :
+Converter::Converter(const std::string &type) :
     type  (type)
 {
 }
@@ -97,7 +97,7 @@ Converter& Converter::operator=(const Converter &converter)
 }
 
 //---------------------------------------------------------------------------
-//  wxString GetType()
+//  std::string GetType()
 //---------------------------------------------------------------------------
 /**
  * Get the type name.
@@ -105,13 +105,13 @@ Converter& Converter::operator=(const Converter &converter)
  * @return the type name 
  *
  */
-wxString Converter::GetType()
+std::string Converter::GetType()
 {
     return type;
 }
 
 //---------------------------------------------------------------------------
-//  void SetType(const wxString &type)
+//  void SetType(const std::string &type)
 //---------------------------------------------------------------------------
 /**
  * Set the type name.
@@ -119,7 +119,7 @@ wxString Converter::GetType()
  * @param <type>  Type name 
  *
  */
-void Converter::SetType(const wxString &type)
+void Converter::SetType(const std::string &type)
 {
     this->type = type;
 }

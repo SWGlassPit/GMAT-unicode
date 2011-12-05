@@ -49,98 +49,98 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 OpenGlPlot::PARAMETER_TEXT[OpenGlPlotParamCount - SubscriberParamCount] =
 {
-   wxT("Add"),
-   wxT("OrbitColor"),
-   wxT("TargetColor"),
-   wxT("CoordinateSystem"),
-   wxT("ViewPointRef"),
-   wxT("ViewPointReference"),
-   wxT("ViewPointRefType"),
-   wxT("ViewPointRefVector"),
-   wxT("ViewPointVector"),
-   wxT("ViewPointVectorType"),
-   wxT("ViewPointVectorVector"),
-   wxT("ViewDirection"),
-   wxT("ViewDirectionType"),
-   wxT("ViewDirectionVector"),
-   wxT("ViewScaleFactor"),
-   wxT("FixedFovAngle"),
-   wxT("ViewUpCoordinateSystem"),
-   wxT("ViewUpAxis"),
-   wxT("CelestialPlane"),
-   wxT("XYPlane"),
-   wxT("WireFrame"),
-   wxT("Axes"),
-   wxT("Grid"),
-   wxT("EarthSunLines"),
-   wxT("SunLine"),
-   wxT("Overlap"),
-   wxT("UseInitialView"),
-   wxT("PerspectiveMode"),
-   wxT("UseFixedFov"),
-   wxT("DataCollectFrequency"),
-   wxT("UpdatePlotFrequency"),
-   wxT("NumPointsToRedraw"),
-   wxT("ShowPlot"),
-        wxT("StarCount"),
-        wxT("EnableStars"),
-        wxT("EnableConstellations"),
-        wxT("MinFOV"),
-        wxT("MaxFOV"),
-        wxT("InitialFOV"),
+   "Add",
+   "OrbitColor",
+   "TargetColor",
+   "CoordinateSystem",
+   "ViewPointRef",
+   "ViewPointReference",
+   "ViewPointRefType",
+   "ViewPointRefVector",
+   "ViewPointVector",
+   "ViewPointVectorType",
+   "ViewPointVectorVector",
+   "ViewDirection",
+   "ViewDirectionType",
+   "ViewDirectionVector",
+   "ViewScaleFactor",
+   "FixedFovAngle",
+   "ViewUpCoordinateSystem",
+   "ViewUpAxis",
+   "CelestialPlane",
+   "XYPlane",
+   "WireFrame",
+   "Axes",
+   "Grid",
+   "EarthSunLines",
+   "SunLine",
+   "Overlap",
+   "UseInitialView",
+   "PerspectiveMode",
+   "UseFixedFov",
+   "DataCollectFrequency",
+   "UpdatePlotFrequency",
+   "NumPointsToRedraw",
+   "ShowPlot",
+        "StarCount",
+        "EnableStars",
+        "EnableConstellations",
+        "MinFOV",
+        "MaxFOV",
+        "InitialFOV",
 }; 
 
 
 const Gmat::ParameterType
 OpenGlPlot::PARAMETER_TYPE[OpenGlPlotParamCount - SubscriberParamCount] =
 {
-   Gmat::OBJECTARRAY_TYPE,       //wxT("Add")
-   Gmat::UNSIGNED_INTARRAY_TYPE, //wxT("OrbitColor"),
-   Gmat::UNSIGNED_INTARRAY_TYPE, //wxT("TargetColor"),
-   Gmat::OBJECT_TYPE,            //wxT("CoordinateSystem")
-   Gmat::OBJECT_TYPE,            //wxT("ViewPointRef"),
-   Gmat::OBJECT_TYPE,            //wxT("ViewPointReference"),
-   Gmat::STRING_TYPE,            //wxT("ViewPointRefType")
-   Gmat::RVECTOR_TYPE,           //wxT("ViewPointRefVector"),
-   //Gmat::STRING_TYPE,            //wxT("ViewPointVector"),
-   Gmat::OBJECT_TYPE,            //wxT("ViewPointVector"),
-   Gmat::STRING_TYPE,            //wxT("ViewPointVectorType"),
-   Gmat::RVECTOR_TYPE,           //wxT("ViewPointVectorVector"),
-   Gmat::OBJECT_TYPE,            //wxT("ViewDirection"),
-   Gmat::STRING_TYPE,            //wxT("ViewDirectionType"),
-   Gmat::RVECTOR_TYPE,           //wxT("ViewDirectionVector"),
-   Gmat::REAL_TYPE,              //wxT("ViewScaleFactor"),
-   Gmat::REAL_TYPE,              //wxT("FixedFovAngle"),
-   Gmat::OBJECT_TYPE,            //wxT("ViewUpCoordinaetSystem")
-   Gmat::ENUMERATION_TYPE,       //wxT("ViewUpAxis")
+   Gmat::OBJECTARRAY_TYPE,       //"Add"
+   Gmat::UNSIGNED_INTARRAY_TYPE, //"OrbitColor",
+   Gmat::UNSIGNED_INTARRAY_TYPE, //"TargetColor",
+   Gmat::OBJECT_TYPE,            //"CoordinateSystem"
+   Gmat::OBJECT_TYPE,            //"ViewPointRef",
+   Gmat::OBJECT_TYPE,            //"ViewPointReference",
+   Gmat::STRING_TYPE,            //"ViewPointRefType"
+   Gmat::RVECTOR_TYPE,           //"ViewPointRefVector",
+   //Gmat::STRING_TYPE,            //"ViewPointVector",
+   Gmat::OBJECT_TYPE,            //"ViewPointVector",
+   Gmat::STRING_TYPE,            //"ViewPointVectorType",
+   Gmat::RVECTOR_TYPE,           //"ViewPointVectorVector",
+   Gmat::OBJECT_TYPE,            //"ViewDirection",
+   Gmat::STRING_TYPE,            //"ViewDirectionType",
+   Gmat::RVECTOR_TYPE,           //"ViewDirectionVector",
+   Gmat::REAL_TYPE,              //"ViewScaleFactor",
+   Gmat::REAL_TYPE,              //"FixedFovAngle",
+   Gmat::OBJECT_TYPE,            //"ViewUpCoordinaetSystem"
+   Gmat::ENUMERATION_TYPE,       //"ViewUpAxis"
    
-   Gmat::ON_OFF_TYPE,            //wxT("CelestialPlane")
-   Gmat::ON_OFF_TYPE,            //wxT("XYPlane")
-   Gmat::ON_OFF_TYPE,            //wxT("WireFrame")
-   Gmat::ON_OFF_TYPE,            //wxT("Axes")
-   Gmat::ON_OFF_TYPE,            //wxT("Grid")
-   Gmat::ON_OFF_TYPE,            //wxT("EarthSunLines")   
-   Gmat::ON_OFF_TYPE,            //wxT("SunLine")   
-   Gmat::ON_OFF_TYPE,            //wxT("Overlap")
-   Gmat::ON_OFF_TYPE,            //wxT("LockView")
-   Gmat::ON_OFF_TYPE,            //wxT("PerspectiveMode")
-   Gmat::ON_OFF_TYPE,            //wxT("UseFixedFov")
+   Gmat::ON_OFF_TYPE,            //"CelestialPlane"
+   Gmat::ON_OFF_TYPE,            //"XYPlane"
+   Gmat::ON_OFF_TYPE,            //"WireFrame"
+   Gmat::ON_OFF_TYPE,            //"Axes"
+   Gmat::ON_OFF_TYPE,            //"Grid"
+   Gmat::ON_OFF_TYPE,            //"EarthSunLines"   
+   Gmat::ON_OFF_TYPE,            //"SunLine"   
+   Gmat::ON_OFF_TYPE,            //"Overlap"
+   Gmat::ON_OFF_TYPE,            //"LockView"
+   Gmat::ON_OFF_TYPE,            //"PerspectiveMode"
+   Gmat::ON_OFF_TYPE,            //"UseFixedFov"
    
-   Gmat::INTEGER_TYPE,           //wxT("DataCollectFrequency")
-   Gmat::INTEGER_TYPE,           //wxT("UpdatePlotFrequency")
-   Gmat::INTEGER_TYPE,           //wxT("NumPointsToRedraw")
+   Gmat::INTEGER_TYPE,           //"DataCollectFrequency"
+   Gmat::INTEGER_TYPE,           //"UpdatePlotFrequency"
+   Gmat::INTEGER_TYPE,           //"NumPointsToRedraw"
    
-   Gmat::BOOLEAN_TYPE,           //wxT("ShowPlot")
+   Gmat::BOOLEAN_TYPE,           //"ShowPlot"
 
-        Gmat::INTEGER_TYPE,                             //wxT("StarCount")
-        Gmat::ON_OFF_TYPE,                              //wxT("EnableStars")
-        Gmat::ON_OFF_TYPE,                              //wxT("EnableConstellations")
-        Gmat::INTEGER_TYPE,                             //wxT("MinFOV")
-        Gmat::INTEGER_TYPE,                             //wxT("MaxFOV")
-        Gmat::INTEGER_TYPE,                             //wxT("InitialFOV")
+        Gmat::INTEGER_TYPE,                             //"StarCount"
+        Gmat::ON_OFF_TYPE,                              //"EnableStars"
+        Gmat::ON_OFF_TYPE,                              //"EnableConstellations"
+        Gmat::INTEGER_TYPE,                             //"MinFOV"
+        Gmat::INTEGER_TYPE,                             //"MaxFOV"
+        Gmat::INTEGER_TYPE,                             //"InitialFOV"
 };
 
 
@@ -156,34 +156,34 @@ OpenGlPlot::DEFAULT_ORBIT_COLOR[MAX_SP_COLOR] =
 
 
 //------------------------------------------------------------------------------
-// OpenGlPlot(const wxString &name)
+// OpenGlPlot(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * The default constructor
  */
 //------------------------------------------------------------------------------
-OpenGlPlot::OpenGlPlot(const wxString &name)
-   : Subscriber(wxT("OpenGLPlot"), name)
+OpenGlPlot::OpenGlPlot(const std::string &name)
+   : Subscriber("OpenGLPlot", name)
 {
    // GmatBase data
    parameterCount = OpenGlPlotParamCount;
    objectTypes.push_back(Gmat::ORBIT_VIEW);
-   objectTypeNames.push_back(wxT("OpenGLPlot"));
+   objectTypeNames.push_back("OpenGLPlot");
    
-   mEclipticPlane = wxT("Off");
-   mXYPlane = wxT("On");
-   mWireFrame = wxT("Off");
-   mAxes = wxT("On");
-   mGrid = wxT("Off");
-   mSunLine = wxT("Off");
-   mOverlapPlot = wxT("Off");
-   mUseInitialView = wxT("On");
-   mPerspectiveMode = wxT("Off");
-   mUseFixedFov = wxT("Off");
+   mEclipticPlane = "Off";
+   mXYPlane = "On";
+   mWireFrame = "Off";
+   mAxes = "On";
+   mGrid = "Off";
+   mSunLine = "Off";
+   mOverlapPlot = "Off";
+   mUseInitialView = "On";
+   mPerspectiveMode = "Off";
+   mUseFixedFov = "Off";
 
         // stars
-        mEnableStars = wxT("On");
-        mEnableConstellations = wxT("On");
+        mEnableStars = "On";
+        mEnableConstellations = "On";
         mStarCount = 46000;
 
         // FOV
@@ -192,17 +192,17 @@ OpenGlPlot::OpenGlPlot(const wxString &name)
         mInitialFOV = 45;
    
    mOldName = instanceName;
-   mViewCoordSysName = wxT("EarthMJ2000Eq");
-   mViewUpCoordSysName = wxT("EarthMJ2000Eq");
-   mViewUpAxisName = wxT("Z");
+   mViewCoordSysName = "EarthMJ2000Eq";
+   mViewUpCoordSysName = "EarthMJ2000Eq";
+   mViewUpAxisName = "Z";
    
    // viewpoint
-   mViewPointRefName = wxT("Earth");
-   mViewPointRefType = wxT("Object");
-   mViewPointVecName = wxT("[ 0 0 30000 ]");
-   mViewPointVecType = wxT("Vector");
-   mViewDirectionName = wxT("Earth");
-   mViewDirectionType= wxT("Object");
+   mViewPointRefName = "Earth";
+   mViewPointRefType = "Object";
+   mViewPointVecName = "[ 0 0 30000 ]";
+   mViewPointVecType = "Vector";
+   mViewDirectionName = "Earth";
+   mViewDirectionType= "Object";
    mViewScaleFactor = 1.0;
    mFixedFovAngle = 45.0;
    mViewPointRefVector.Set(0.0, 0.0, 0.0);
@@ -253,17 +253,17 @@ OpenGlPlot::OpenGlPlot(const wxString &name)
    mNonStdBodyCount = 0;
    
    // default planet color
-   mOrbitColorMap[wxT("Earth")] = GmatColor::GREEN32;
-   mOrbitColorMap[wxT("Luna")] = GmatColor::SILVER32;
-   mOrbitColorMap[wxT("Sun")] = GmatColor::ORANGE32;
-   mOrbitColorMap[wxT("Mercury")] = GmatColor::GRAY32;
-   mOrbitColorMap[wxT("Venus")] = GmatColor::BEIGE32;
-   mOrbitColorMap[wxT("Mars")] = GmatColor::L_GRAY32;
-   mOrbitColorMap[wxT("Jupiter")] = GmatColor::L_BROWN32;
-   mOrbitColorMap[wxT("Saturn")] = GmatColor::D_BROWN32;
-   mOrbitColorMap[wxT("Uranus")] = GmatColor::BLUE32;
-   mOrbitColorMap[wxT("Neptune")] = GmatColor::NAVY32;
-   mOrbitColorMap[wxT("Pluto")] = GmatColor::PURPLE32;
+   mOrbitColorMap["Earth"] = GmatColor::GREEN32;
+   mOrbitColorMap["Luna"] = GmatColor::SILVER32;
+   mOrbitColorMap["Sun"] = GmatColor::ORANGE32;
+   mOrbitColorMap["Mercury"] = GmatColor::GRAY32;
+   mOrbitColorMap["Venus"] = GmatColor::BEIGE32;
+   mOrbitColorMap["Mars"] = GmatColor::L_GRAY32;
+   mOrbitColorMap["Jupiter"] = GmatColor::L_BROWN32;
+   mOrbitColorMap["Saturn"] = GmatColor::D_BROWN32;
+   mOrbitColorMap["Uranus"] = GmatColor::BLUE32;
+   mOrbitColorMap["Neptune"] = GmatColor::NAVY32;
+   mOrbitColorMap["Pluto"] = GmatColor::PURPLE32;
    
 }
 
@@ -467,7 +467,7 @@ OpenGlPlot& OpenGlPlot::operator=(const OpenGlPlot& ogl)
 //------------------------------------------------------------------------------
 OpenGlPlot::~OpenGlPlot()
 {
-   PlotInterface::TakeGlAction(instanceName, wxT("ClearObjects"));
+   PlotInterface::TakeGlAction(instanceName, "ClearObjects");
 }
 
 
@@ -499,23 +499,23 @@ const StringArray& OpenGlPlot::GetNonSpacecraftList()
 
 
 //------------------------------------------------------------------------------
-// UnsignedInt GetColor(const wxString &item, const wxString &name)
+// UnsignedInt GetColor(const std::string &item, const std::string &name)
 //------------------------------------------------------------------------------
-UnsignedInt OpenGlPlot::GetColor(const wxString &item,
-                                 const wxString &name)
+UnsignedInt OpenGlPlot::GetColor(const std::string &item,
+                                 const std::string &name)
 {
    #if DBGLVL_OPENGL_PARAM
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::GetColor() item=%s, name=%s\n"),
+      ("OpenGlPlot::GetColor() item=%s, name=%s\n",
        item.c_str(), name.c_str());
    #endif
    
-   if (item == wxT("Orbit"))
+   if (item == "Orbit")
    {
       if (mOrbitColorMap.find(name) != mOrbitColorMap.end())
          return mOrbitColorMap[name];
    }
-   else if (item == wxT("Target"))
+   else if (item == "Target")
    {
       if (mTargetColorMap.find(name) != mTargetColorMap.end())
          return mTargetColorMap[name];
@@ -526,19 +526,19 @@ UnsignedInt OpenGlPlot::GetColor(const wxString &item,
 
 
 //------------------------------------------------------------------------------
-// bool SetColor(const wxString &item, const wxString &name,
+// bool SetColor(const std::string &item, const std::string &name,
 //               UnsignedInt value)
 //------------------------------------------------------------------------------
-bool OpenGlPlot::SetColor(const wxString &item, const wxString &name,
+bool OpenGlPlot::SetColor(const std::string &item, const std::string &name,
                           UnsignedInt value)
 {
    #if DBGLVL_OPENGL_PARAM
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::SetColor() item=%s, name=%s, value=%u\n"),
+      ("OpenGlPlot::SetColor() item=%s, name=%s, value=%u\n",
        item.c_str(), name.c_str(), value);
    #endif
    
-   if (item == wxT("Orbit"))
+   if (item == "Orbit")
    {
       if (mOrbitColorMap.find(name) != mOrbitColorMap.end())
       {
@@ -551,7 +551,7 @@ bool OpenGlPlot::SetColor(const wxString &item, const wxString &name,
          return true;
       }
    }
-   else if (item == wxT("Target"))
+   else if (item == "Target")
    {
       if (mTargetColorMap.find(name) != mTargetColorMap.end())
       {
@@ -570,13 +570,13 @@ bool OpenGlPlot::SetColor(const wxString &item, const wxString &name,
 
 
 //------------------------------------------------------------------------------
-// bool GetShowObject(const wxString &name)
+// bool GetShowObject(const std::string &name)
 //------------------------------------------------------------------------------
-bool OpenGlPlot::GetShowObject(const wxString &name)
+bool OpenGlPlot::GetShowObject(const std::string &name)
 {
    #if DBGLVL_OPENGL_PARAM
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::GetShowObject() name=%s returning %d\n"),
+      ("OpenGlPlot::GetShowObject() name=%s returning %d\n",
        name.c_str(), mDrawOrbitMap[name]);
    #endif
    
@@ -585,13 +585,13 @@ bool OpenGlPlot::GetShowObject(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// void SetShowObject(const wxString &name, bool value)
+// void SetShowObject(const std::string &name, bool value)
 //------------------------------------------------------------------------------
-void OpenGlPlot::SetShowObject(const wxString &name, bool value)
+void OpenGlPlot::SetShowObject(const std::string &name, bool value)
 {
    #if DBGLVL_OPENGL_PARAM
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::SetShowObject() name=%s setting %d\n"), name.c_str(), value);
+      ("OpenGlPlot::SetShowObject() name=%s setting %d\n", name.c_str(), value);
    #endif
    
    mShowObjectMap[name] = value;
@@ -601,40 +601,40 @@ void OpenGlPlot::SetShowObject(const wxString &name, bool value)
 
 
 //------------------------------------------------------------------------------
-// Rvector3 GetVector(const wxString &which)
+// Rvector3 GetVector(const std::string &which)
 //------------------------------------------------------------------------------
-Rvector3 OpenGlPlot::GetVector(const wxString &which)
+Rvector3 OpenGlPlot::GetVector(const std::string &which)
 {
-   if (which == wxT("ViewPointReference"))
+   if (which == "ViewPointReference")
       return mViewPointRefVector;
-   else if (which == wxT("ViewPointVector"))
+   else if (which == "ViewPointVector")
       return mViewPointVecVector;
-   else if (which == wxT("ViewDirection"))
+   else if (which == "ViewDirection")
       return mViewDirectionVector;
    else
-      throw SubscriberException(which + wxT(" is unknown OpenGlPlot parameter\n"));
+      throw SubscriberException(which + " is unknown OpenGlPlot parameter\n");
 }
 
 
 //------------------------------------------------------------------------------
-// void SetVector(const wxString &which, const Rvector3 &value)
+// void SetVector(const std::string &which, const Rvector3 &value)
 //------------------------------------------------------------------------------
-void OpenGlPlot::SetVector(const wxString &which, const Rvector3 &value)
+void OpenGlPlot::SetVector(const std::string &which, const Rvector3 &value)
 {
    #if DBGLVL_OPENGL_SET
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::SetVector() which=%s, value=%s\n"), which.c_str(),
+      ("OpenGlPlot::SetVector() which=%s, value=%s\n", which.c_str(),
        value.ToString().c_str());
    #endif
    
-   if (which == wxT("ViewPointReference"))
+   if (which == "ViewPointReference")
       mViewPointRefVector = value;
-   else if (which == wxT("ViewPointVector"))
+   else if (which == "ViewPointVector")
       mViewPointVecVector = value;
-   else if (which == wxT("ViewDirection"))
+   else if (which == "ViewDirection")
       mViewDirectionVector = value;
    else
-      throw SubscriberException(which + wxT(" is unknown OpenGlPlot parameter\n"));
+      throw SubscriberException(which + " is unknown OpenGlPlot parameter\n");
 }
 
 
@@ -657,15 +657,15 @@ bool OpenGlPlot::Initialize()
    {
       active = false;
       MessageInterface::PopupMessage
-         (Gmat::WARNING_, wxT("*** WARNING *** The OpenGL plot named \"%s\" will be turned off. ")
-          wxT("It has a NULL internal coordinate system pointer.\n"), GetName().c_str());
+         (Gmat::WARNING_, "*** WARNING *** The OpenGL plot named \"%s\" will be turned off. "
+          "It has a NULL internal coordinate system pointer.\n", GetName().c_str());
       return false;
    }
    
    #if DBGLVL_OPENGL_INIT
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::Initialize() this=<%p>'%s', active=%d, isInitialized=%d, ")
-       wxT("isEndOfReceive=%d, mAllSpCount=%d\n"), this, GetName().c_str(), active,
+      ("OpenGlPlot::Initialize() this=<%p>'%s', active=%d, isInitialized=%d, "
+       "isEndOfReceive=%d, mAllSpCount=%d\n", this, GetName().c_str(), active,
        isInitialized, isEndOfReceive, mAllSpCount);
    #endif
    
@@ -677,8 +677,8 @@ bool OpenGlPlot::Initialize()
    {
       active = false;
       MessageInterface::PopupMessage
-         (Gmat::WARNING_, wxT("*** WARNING *** The OpenGL plot named \"%s\" will be turned off. ")
-          wxT("No SpacePoints were added to plot.\n"), GetName().c_str());
+         (Gmat::WARNING_, "*** WARNING *** The OpenGL plot named \"%s\" will be turned off. "
+          "No SpacePoints were added to plot.\n", GetName().c_str());
       return false;
    }
    
@@ -687,7 +687,7 @@ bool OpenGlPlot::Initialize()
    {
       #if DBGLVL_OPENGL_INIT > 1
       MessageInterface::ShowMessage
-         (wxT("OpenGlPlot::Initialize() mAllSpNameArray[%d]=%s, addr=%d\n"),
+         ("OpenGlPlot::Initialize() mAllSpNameArray[%d]=%s, addr=%d\n",
           i, mAllSpNameArray[i].c_str(), mAllSpArray[i]);
       #endif
       
@@ -707,8 +707,8 @@ bool OpenGlPlot::Initialize()
    {
       active = false;
       MessageInterface::PopupMessage
-         (Gmat::WARNING_, wxT("*** WARNING *** The OpenGL plot named \"%s\" will be turned off. ")
-          wxT("%d SpaceObjects have NULL pointers.\n"), GetName().c_str(), nullCounter);
+         (Gmat::WARNING_, "*** WARNING *** The OpenGL plot named \"%s\" will be turned off. "
+          "%d SpaceObjects have NULL pointers.\n", GetName().c_str(), nullCounter);
       return false;
    }
    
@@ -716,8 +716,8 @@ bool OpenGlPlot::Initialize()
    {
       active = false;
       MessageInterface::PopupMessage
-         (Gmat::WARNING_, wxT("*** WARNING *** The OpenGL plot named \"%s\" will be turned off. ")
-          wxT("No Spacecraft was added to plot.\n"), GetName().c_str());
+         (Gmat::WARNING_, "*** WARNING *** The OpenGL plot named \"%s\" will be turned off. "
+          "No Spacecraft was added to plot.\n", GetName().c_str());
       return false;
    }
    
@@ -729,20 +729,20 @@ bool OpenGlPlot::Initialize()
    {
       #if DBGLVL_OPENGL_INIT
       MessageInterface::ShowMessage
-         (wxT("OpenGlPlot::Initialize() CreateGlPlotWindow() theSolarSystem=%p\n"),
+         ("OpenGlPlot::Initialize() CreateGlPlotWindow() theSolarSystem=%p\n",
           theSolarSystem);
       #endif
       
       if (PlotInterface::CreateGlPlotWindow
-          (instanceName, mOldName, (mEclipticPlane == wxT("On")), (mXYPlane == wxT("On")),
-           (mWireFrame == wxT("On")), (mAxes == wxT("On")), (mGrid == wxT("On")),
-           (mSunLine == wxT("On")), (mOverlapPlot == wxT("On")), (mUseInitialView == wxT("On")),
-           (mPerspectiveMode == wxT("On")), mNumPointsToRedraw, 
-			  (mEnableStars == wxT("On")), (mEnableConstellations == wxT("On")), mStarCount))
+          (instanceName, mOldName, (mEclipticPlane == "On"), (mXYPlane == "On"),
+           (mWireFrame == "On"), (mAxes == "On"), (mGrid == "On"),
+           (mSunLine == "On"), (mOverlapPlot == "On"), (mUseInitialView == "On"),
+           (mPerspectiveMode == "On"), mNumPointsToRedraw, 
+			  (mEnableStars == "On"), (mEnableConstellations == "On"), mStarCount))
       {
          #if DBGLVL_OPENGL_INIT
          MessageInterface::ShowMessage
-            (wxT("   mViewPointRefObj=%p, mViewScaleFactor=%f\n"),
+            ("   mViewPointRefObj=%p, mViewScaleFactor=%f\n",
              mViewPointRefObj, mViewScaleFactor);
          #endif
          
@@ -759,7 +759,7 @@ bool OpenGlPlot::Initialize()
          {
             #if DBGLVL_OPENGL_INIT > 1
             MessageInterface::ShowMessage
-               (wxT("OpenGlPlot::Initialize() mAllSpNameArray[%d]=%s, addr=%d\n"),
+               ("OpenGlPlot::Initialize() mAllSpNameArray[%d]=%s, addr=%d\n",
                 i, mAllSpNameArray[i].c_str(), mAllSpArray[i]);
             #endif
             
@@ -789,8 +789,8 @@ bool OpenGlPlot::Initialize()
             else
             {
                MessageInterface::PopupMessage
-                  (Gmat::WARNING_, wxT("The SpacePoint name: %s has NULL pointer.\n")
-                   wxT("It will be removed from the OpenGL plot.\n"),
+                  (Gmat::WARNING_, "The SpacePoint name: %s has NULL pointer.\n"
+                   "It will be removed from the OpenGL plot.\n",
                    mAllSpNameArray[i].c_str());
             }
          }
@@ -802,13 +802,13 @@ bool OpenGlPlot::Initialize()
          // included in the non-spacecraft list
          if (mViewCoordSystem == NULL)
             throw SubscriberException
-               (wxT("OpenGlPlot::Initialize() CoordinateSystem: ") + mViewCoordSysName +
-                wxT(" not set\n"));
+               ("OpenGlPlot::Initialize() CoordinateSystem: " + mViewCoordSysName +
+                " not set\n");
          
          if (mViewUpCoordSystem == NULL)
             throw SubscriberException
-               (wxT("OpenGlPlot::Initialize() CoordinateSystem: ") + mViewUpCoordSysName +
-                wxT(" not set\n"));               
+               ("OpenGlPlot::Initialize() CoordinateSystem: " + mViewUpCoordSysName +
+                " not set\n");               
          
          // Get View CoordinateSystem Origin pointer
          mViewCoordSysOrigin = mViewCoordSystem->GetOrigin();
@@ -836,10 +836,10 @@ bool OpenGlPlot::Initialize()
          
          #if DBGLVL_OPENGL_INIT > 1
          MessageInterface::ShowMessage
-            (wxT("   mScNameArray.size=%d, mScOrbitColorArray.size=%d\n"),
+            ("   mScNameArray.size=%d, mScOrbitColorArray.size=%d\n",
              mScNameArray.size(), mScOrbitColorArray.size());
          MessageInterface::ShowMessage
-            (wxT("   mObjectNameArray.size=%d, mOrbitColorArray.size=%d\n"),
+            ("   mObjectNameArray.size=%d, mOrbitColorArray.size=%d\n",
              mObjectNameArray.size(), mOrbitColorArray.size());
          
          bool draw, show;
@@ -848,14 +848,14 @@ bool OpenGlPlot::Initialize()
             draw = mDrawOrbitArray[i] ? true : false;
             show = mShowObjectArray[i] ? true : false;
             MessageInterface::ShowMessage
-               (wxT("   mObjectNameArray[%d]=%s, draw=%d, show=%d, color=%d\n"),
+               ("   mObjectNameArray[%d]=%s, draw=%d, show=%d, color=%d\n",
                 i, mObjectNameArray[i].c_str(), draw, show, mOrbitColorArray[i]);
          }
          #endif
          
          #if DBGLVL_OPENGL_INIT
          MessageInterface::ShowMessage
-            (wxT("   calling PlotInterface::SetGlSolarSystem(%p)\n"), theSolarSystem);
+            ("   calling PlotInterface::SetGlSolarSystem(%p)\n", theSolarSystem);
          #endif
          
          // set SolarSystem
@@ -863,10 +863,10 @@ bool OpenGlPlot::Initialize()
          
          #if DBGLVL_OPENGL_INIT
          MessageInterface::ShowMessage
-            (wxT("   calling PlotInterface::SetGlObject()\n"));
+            ("   calling PlotInterface::SetGlObject()\n");
          for (UnsignedInt i=0; i<mObjectArray.size(); i++)
             MessageInterface::ShowMessage
-               (wxT("      mObjectArray[%d]=<%p>'%s'\n"), i, mObjectArray[i],
+               ("      mObjectArray[%d]=<%p>'%s'\n", i, mObjectArray[i],
                 mObjectArray[i]->GetName().c_str());
          #endif
          
@@ -879,13 +879,13 @@ bool OpenGlPlot::Initialize()
          //--------------------------------------------------------
          #if DBGLVL_OPENGL_INIT
          MessageInterface::ShowMessage
-            (wxT("   theInternalCoordSystem = <%p>, origin = <%p>'%s'\n")
-             wxT("   theDataCoordSystem     = <%p>, origin = <%p>'%s'\n")
-             wxT("   mViewCoordSystem       = <%p>, origin = <%p>'%s'\n")
-             wxT("   mViewUpCoordSystem     = <%p>, origin = <%p>'%s'\n")
-             wxT("   mViewPointRefObj       = <%p>'%s'\n")
-             wxT("   mViewPointObj          = <%p>'%s'\n")
-             wxT("   mViewDirectionObj      = <%p>'%s'\n"),
+            ("   theInternalCoordSystem = <%p>, origin = <%p>'%s'\n"
+             "   theDataCoordSystem     = <%p>, origin = <%p>'%s'\n"
+             "   mViewCoordSystem       = <%p>, origin = <%p>'%s'\n"
+             "   mViewUpCoordSystem     = <%p>, origin = <%p>'%s'\n"
+             "   mViewPointRefObj       = <%p>'%s'\n"
+             "   mViewPointObj          = <%p>'%s'\n"
+             "   mViewDirectionObj      = <%p>'%s'\n",
              theInternalCoordSystem, theInternalCoordSystem->GetOrigin(),
              theInternalCoordSystem->GetOriginName().c_str(),
              theDataCoordSystem, theDataCoordSystem->GetOrigin(),
@@ -895,14 +895,14 @@ bool OpenGlPlot::Initialize()
              mViewUpCoordSystem, mViewUpCoordSystem->GetOrigin(),
              mViewUpCoordSystem->GetOriginName().c_str(),
              mViewPointRefObj,
-             mViewPointRefObj ? mViewPointRefObj->GetName().c_str() : wxT("NULL"),
+             mViewPointRefObj ? mViewPointRefObj->GetName().c_str() : "NULL",
              mViewPointObj,
-             mViewPointObj ? mViewPointObj->GetName().c_str() : wxT("NULL"),
+             mViewPointObj ? mViewPointObj->GetName().c_str() : "NULL",
              mViewDirectionObj,
-             mViewDirectionObj ? mViewDirectionObj->GetName().c_str() : wxT("NULL"));
+             mViewDirectionObj ? mViewDirectionObj->GetName().c_str() : "NULL");
          
          MessageInterface::ShowMessage
-            (wxT("   calling PlotInterface::SetGlCoordSystem()\n"));
+            ("   calling PlotInterface::SetGlCoordSystem()\n");
          #endif
          
          PlotInterface::SetGlCoordSystem(instanceName, theInternalCoordSystem,
@@ -913,15 +913,15 @@ bool OpenGlPlot::Initialize()
          //--------------------------------------------------------
          #if DBGLVL_OPENGL_INIT
          MessageInterface::ShowMessage
-            (wxT("   calling PlotInterface::SetGlViewOption()\n"));
+            ("   calling PlotInterface::SetGlViewOption()\n");
          #endif
          
          PlotInterface::SetGlViewOption
             (instanceName, mViewPointRefObj, mViewPointObj,
              mViewDirectionObj, mViewScaleFactor, mViewPointRefVector,
              mViewPointVecVector, mViewDirectionVector, mViewUpAxisName,
-             (mViewPointRefType == wxT("Vector")), (mViewPointVecType == wxT("Vector")),
-             (mViewDirectionType == wxT("Vector")), (mUseFixedFov == wxT("On")),
+             (mViewPointRefType == "Vector"), (mViewPointVecType == "Vector"),
+             (mViewDirectionType == "Vector"), (mUseFixedFov == "On"),
              mFixedFovAngle);
          
          PlotInterface::SetGlUpdateFrequency(instanceName, mUpdatePlotFrequency);
@@ -944,8 +944,8 @@ bool OpenGlPlot::Initialize()
    {
       #if DBGLVL_OPENGL_INIT
       MessageInterface::ShowMessage
-         (wxT("OpenGlPlot::Initialize() Plot is active and initialized, ")
-          wxT("so calling DeleteGlPlot()\n"));
+         ("OpenGlPlot::Initialize() Plot is active and initialized, "
+          "so calling DeleteGlPlot()\n");
       #endif
       
       // Why do we want to delete plot if active and initialized?
@@ -954,7 +954,7 @@ bool OpenGlPlot::Initialize()
    }
    
    #if DBGLVL_OPENGL_INIT
-   MessageInterface::ShowMessage(wxT("OpenGlPlot::Initialize() exiting\n"));
+   MessageInterface::ShowMessage("OpenGlPlot::Initialize() exiting\n");
    #endif
    
    return retval;
@@ -968,7 +968,7 @@ void OpenGlPlot::Activate(bool state)
 {
    #ifdef DEBUG_OPENGL_ACTIVATE
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::Activate() this=<%p>'%s' entered, state=%d, isInitialized=%d\n"),
+      ("OpenGlPlot::Activate() this=<%p>'%s' entered, state=%d, isInitialized=%d\n",
        this, GetName().c_str(), state, isInitialized);
    #endif
    
@@ -1012,7 +1012,7 @@ void OpenGlPlot::Copy(const GmatBase* orig)
 
 
 //------------------------------------------------------------------------------
-// bool SetName(const wxString &who, const std;:string &oldName = wxT(""))
+// bool SetName(const std::string &who, const std;:string &oldName = "")
 //------------------------------------------------------------------------------
 /**
  * Set the name for this instance.
@@ -1021,15 +1021,15 @@ void OpenGlPlot::Copy(const GmatBase* orig)
  *
  */
 //------------------------------------------------------------------------------
-bool OpenGlPlot::SetName(const wxString &who, const wxString &oldName)
+bool OpenGlPlot::SetName(const std::string &who, const std::string &oldName)
 {
    #if DBGLVL_RENAME
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::SetName() newName=%s, oldName=%s\n"), who.c_str(),
+      ("OpenGlPlot::SetName() newName=%s, oldName=%s\n", who.c_str(),
        oldName.c_str());
    #endif
    
-   if (oldName == wxT(""))
+   if (oldName == "")
       mOldName = instanceName;
    else
       mOldName = oldName;
@@ -1039,8 +1039,8 @@ bool OpenGlPlot::SetName(const wxString &who, const wxString &oldName)
 
 
 //------------------------------------------------------------------------------
-// virtual bool TakeAction(const wxString &action,  
-//                         const wxString &actionData = wxT(""));
+// virtual bool TakeAction(const std::string &action,  
+//                         const std::string &actionData = "");
 //------------------------------------------------------------------------------
 /**
  * This method performs action.
@@ -1051,23 +1051,23 @@ bool OpenGlPlot::SetName(const wxString &who, const wxString &oldName)
  *
  */
 //------------------------------------------------------------------------------
-bool OpenGlPlot::TakeAction(const wxString &action,
-                            const wxString &actionData)
+bool OpenGlPlot::TakeAction(const std::string &action,
+                            const std::string &actionData)
 {
    #if DBGLVL_TAKE_ACTION
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::TakeAction() '%s' entered, action='%s', actionData='%s'\n"),
+      ("OpenGlPlot::TakeAction() '%s' entered, action='%s', actionData='%s'\n",
        GetName().c_str(), action.c_str(), actionData.c_str());
    #endif
-   if (action == wxT("Clear"))
+   if (action == "Clear")
    {
       return ClearSpacePointList();
    }
-   else if (action == wxT("Remove"))
+   else if (action == "Remove")
    {
       return RemoveSpacePoint(actionData);
    }
-   else if (action == wxT("Finalize"))
+   else if (action == "Finalize")
    {
       PlotInterface::DeleteGlPlot(instanceName);
    }
@@ -1078,15 +1078,15 @@ bool OpenGlPlot::TakeAction(const wxString &action,
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool OpenGlPlot::RenameRefObject(const Gmat::ObjectType type,
-                                 const wxString &oldName,
-                                 const wxString &newName)
+                                 const std::string &oldName,
+                                 const std::string &newName)
 {
    #if DBGLVL_RENAME
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::RenameRefObject() type=%s, oldName=%s, newName=%s\n"),
+      ("OpenGlPlot::RenameRefObject() type=%s, oldName=%s, newName=%s\n",
        GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
    #endif
    
@@ -1105,8 +1105,8 @@ bool OpenGlPlot::RenameRefObject(const Gmat::ObjectType type,
       // color map, I can't change the key name, so it is
       // removed and inserted with new name
       //----------------------------------------------------
-      std::map<wxString, UnsignedInt>::iterator orbColorPos, targColorPos;
-      std::map<wxString, bool>::iterator drawOrbitPos, showObjectPos;
+      std::map<std::string, UnsignedInt>::iterator orbColorPos, targColorPos;
+      std::map<std::string, bool>::iterator drawOrbitPos, showObjectPos;
       orbColorPos = mOrbitColorMap.find(oldName);
       targColorPos = mTargetColorMap.find(oldName);
       drawOrbitPos = mDrawOrbitMap.find(oldName);
@@ -1126,12 +1126,12 @@ bool OpenGlPlot::RenameRefObject(const Gmat::ObjectType type,
          mShowObjectMap.erase(showObjectPos);
          
          #if DBGLVL_RENAME
-         MessageInterface::ShowMessage(wxT("---After rename\n"));
+         MessageInterface::ShowMessage("---After rename\n");
          for (orbColorPos = mOrbitColorMap.begin();
               orbColorPos != mOrbitColorMap.end(); ++orbColorPos)
          {
             MessageInterface::ShowMessage
-               (wxT("sc=%s, color=%d\n"), orbColorPos->first.c_str(), orbColorPos->second);
+               ("sc=%s, color=%d\n", orbColorPos->first.c_str(), orbColorPos->second);
          }
          #endif
       }
@@ -1150,9 +1150,9 @@ bool OpenGlPlot::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
-wxString OpenGlPlot::GetParameterText(const Integer id) const
+std::string OpenGlPlot::GetParameterText(const Integer id) const
 {
    if (id >= SubscriberParamCount && id < OpenGlPlotParamCount)
       return PARAMETER_TEXT[id - SubscriberParamCount];
@@ -1163,9 +1163,9 @@ wxString OpenGlPlot::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer OpenGlPlot::GetParameterID(const wxString &str) const
+Integer OpenGlPlot::GetParameterID(const std::string &str) const
 {
    for (int i=SubscriberParamCount; i<OpenGlPlotParamCount; i++)
    {
@@ -1190,9 +1190,9 @@ Gmat::ParameterType OpenGlPlot::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
-wxString OpenGlPlot::GetParameterTypeString(const Integer id) const
+std::string OpenGlPlot::GetParameterTypeString(const Integer id) const
 {
    if (id >= SubscriberParamCount && id < OpenGlPlotParamCount)
       return GmatBase::PARAM_TYPE_STRING[GetParameterType(id - SubscriberParamCount)];
@@ -1258,9 +1258,9 @@ Integer OpenGlPlot::GetIntegerParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// virtual Integer GetIntegerParameter(const wxString &label) const
+// virtual Integer GetIntegerParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-Integer OpenGlPlot::GetIntegerParameter(const wxString &label) const
+Integer OpenGlPlot::GetIntegerParameter(const std::string &label) const
 {
    return GetIntegerParameter(GetParameterID(label));
 }
@@ -1284,7 +1284,7 @@ Integer OpenGlPlot::SetIntegerParameter(const Integer id, const Integer value)
          SubscriberException se;
          se.SetDetails(errorMessageFormat.c_str(),
                        GmatStringUtil::ToString(value, 1).c_str(),
-                       wxT("DataCollectFrequency"), wxT("Integer Number > 0"));
+                       "DataCollectFrequency", "Integer Number > 0");
          throw se;
       }
    case UPDATE_PLOT_FREQUENCY:
@@ -1298,7 +1298,7 @@ Integer OpenGlPlot::SetIntegerParameter(const Integer id, const Integer value)
          SubscriberException se;
          se.SetDetails(errorMessageFormat.c_str(),
                        GmatStringUtil::ToString(value, 1).c_str(),
-                       wxT("UpdatePlotFrequency"), wxT("Integer Number > 0"));
+                       "UpdatePlotFrequency", "Integer Number > 0");
          throw se;
       }
    case NUM_POINTS_TO_REDRAW:
@@ -1312,7 +1312,7 @@ Integer OpenGlPlot::SetIntegerParameter(const Integer id, const Integer value)
          SubscriberException se;
          se.SetDetails(errorMessageFormat.c_str(),
                        GmatStringUtil::ToString(value, 1).c_str(),
-                       wxT("NumPointsToRedraw"), wxT("Integer Number >= 0"));
+                       "NumPointsToRedraw", "Integer Number >= 0");
          throw se;
       }
         case STAR_COUNT:
@@ -1326,7 +1326,7 @@ Integer OpenGlPlot::SetIntegerParameter(const Integer id, const Integer value)
                         SubscriberException se;
                         se.SetDetails(errorMessageFormat.c_str(),
                                                         GmatStringUtil::ToString(value, 1).c_str(),
-                                                        wxT("StarCount"), wxT("Integer Value >= 0"));
+                                                        "StarCount", "Integer Value >= 0");
                 }
         case MIN_FOV:
                 mMinFOV = value;
@@ -1344,10 +1344,10 @@ Integer OpenGlPlot::SetIntegerParameter(const Integer id, const Integer value)
 
 
 //------------------------------------------------------------------------------
-// virtual Integer SetIntegerParameter(const wxString &label,
+// virtual Integer SetIntegerParameter(const std::string &label,
 //                                     const Integer value)
 //------------------------------------------------------------------------------
-Integer OpenGlPlot::SetIntegerParameter(const wxString &label,
+Integer OpenGlPlot::SetIntegerParameter(const std::string &label,
                                         const Integer value)
 {
    return SetIntegerParameter(GetParameterID(label), value);
@@ -1372,13 +1372,13 @@ Real OpenGlPlot::GetRealParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// virtual Real GetRealParameter(const wxString &label) const
+// virtual Real GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-Real OpenGlPlot::GetRealParameter(const wxString &label) const
+Real OpenGlPlot::GetRealParameter(const std::string &label) const
 {
    #if DBGLVL_OPENGL_PARAM
      MessageInterface::ShowMessage
-        (wxT("OpenGlPlot::GetRealParameter() label = %s\n"), label.c_str());
+        ("OpenGlPlot::GetRealParameter() label = %s\n", label.c_str());
    #endif
    
    return GetRealParameter(GetParameterID(label));
@@ -1405,13 +1405,13 @@ Real OpenGlPlot::SetRealParameter(const Integer id, const Real value)
 
 
 //------------------------------------------------------------------------------
-// virtual Real SetRealParameter(const wxString &label, const Real value)
+// virtual Real SetRealParameter(const std::string &label, const Real value)
 //------------------------------------------------------------------------------
-Real OpenGlPlot::SetRealParameter(const wxString &label, const Real value)
+Real OpenGlPlot::SetRealParameter(const std::string &label, const Real value)
 {
    #if DBGLVL_OPENGL_PARAM
       MessageInterface::ShowMessage
-         (wxT("OpenGlPlot::SetRealParameter() label = %s, value = %f \n"),
+         ("OpenGlPlot::SetRealParameter() label = %s, value = %f \n",
           label.c_str(), value);
    #endif
    
@@ -1489,7 +1489,7 @@ const Rvector& OpenGlPlot::GetRvectorParameter(const Integer id) const
          #if DBGLVL_OPENGL_PARAM
          Rvector vec = mViewPointVecVector;
          MessageInterface::ShowMessage
-            (wxT("OpenGlPlot::GetRvectorParameter() returning = %s\n"),
+            ("OpenGlPlot::GetRvectorParameter() returning = %s\n",
              vec.ToString().c_str());
          #endif
          return mViewPointVecVector;
@@ -1504,13 +1504,13 @@ const Rvector& OpenGlPlot::GetRvectorParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// virtual const Rvector& GetRvectorParameter(const wxString &label) const
+// virtual const Rvector& GetRvectorParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-const Rvector& OpenGlPlot::GetRvectorParameter(const wxString &label) const
+const Rvector& OpenGlPlot::GetRvectorParameter(const std::string &label) const
 {
    #if DBGLVL_OPENGL_PARAM
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::GetRvectorParameter() label = %s\n"), label.c_str());
+      ("OpenGlPlot::GetRvectorParameter() label = %s\n", label.c_str());
    #endif
    
    return GetRvectorParameter(GetParameterID(label));
@@ -1553,17 +1553,17 @@ const Rvector& OpenGlPlot::SetRvectorParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-// virtual const Rvector& SetRvectorParameter(const wxString &label,
+// virtual const Rvector& SetRvectorParameter(const std::string &label,
 //                                            const Rvector &value)
 //------------------------------------------------------------------------------
-const Rvector& OpenGlPlot::SetRvectorParameter(const wxString &label,
+const Rvector& OpenGlPlot::SetRvectorParameter(const std::string &label,
                                                const Rvector &value)
 {
    #if DBGLVL_OPENGL_PARAM
    Rvector val = value;
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::SetRvectorParameter() label = %s, ")
-       wxT("value = %s \n"), label.c_str(), val.ToString().c_str());
+      ("OpenGlPlot::SetRvectorParameter() label = %s, "
+       "value = %s \n", label.c_str(), val.ToString().c_str());
    #endif
    
    return SetRvectorParameter(GetParameterID(label), value);
@@ -1571,13 +1571,13 @@ const Rvector& OpenGlPlot::SetRvectorParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
-wxString OpenGlPlot::GetStringParameter(const Integer id) const
+std::string OpenGlPlot::GetStringParameter(const Integer id) const
 {
    #if DBGLVL_OPENGL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::GetStringParameter()<%s> id=%d<%s>\n"),
+      ("OpenGlPlot::GetStringParameter()<%s> id=%d<%s>\n",
        instanceName.c_str(), id, GetParameterText(id).c_str());
    #endif
    
@@ -1587,27 +1587,27 @@ wxString OpenGlPlot::GetStringParameter(const Integer id) const
       return mViewCoordSysName;
    case VIEWPOINT_REF:      
       WriteDeprecatedMessage(id);
-      if (mViewPointRefType == wxT("Vector"))
-         return (wxT("[ ") + mViewPointRefVector.ToString(16) + wxT(" ]"));
+      if (mViewPointRefType == "Vector")
+         return ("[ " + mViewPointRefVector.ToString(16) + " ]");
       else
          return mViewPointRefName;
    case VIEWPOINT_REFERENCE:      
-      if (mViewPointRefType == wxT("Vector"))         
-         return (wxT("[ ") + mViewPointRefVector.ToString(16) + wxT(" ]"));
+      if (mViewPointRefType == "Vector")         
+         return ("[ " + mViewPointRefVector.ToString(16) + " ]");
       else
          return mViewPointRefName;
    case VIEWPOINT_REF_TYPE:
       return mViewPointRefType;
    case VIEWPOINT_VECTOR:
-      if (mViewPointVecType == wxT("Vector"))
-         return (wxT("[ ") + mViewPointVecVector.ToString(16) + wxT(" ]"));
+      if (mViewPointVecType == "Vector")
+         return ("[ " + mViewPointVecVector.ToString(16) + " ]");
       else
          return mViewPointVecName;
    case VIEWPOINT_VECTOR_TYPE:
       return mViewPointVecType;
    case VIEW_DIRECTION:
-      if (mViewDirectionType == wxT("Vector"))
-         return (wxT("[ ") + mViewDirectionVector.ToString(16) + wxT(" ]"));
+      if (mViewDirectionType == "Vector")
+         return ("[ " + mViewDirectionVector.ToString(16) + " ]");
       else
          return mViewDirectionName;
    case VIEW_DIRECTION_TYPE:
@@ -1623,13 +1623,13 @@ wxString OpenGlPlot::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString OpenGlPlot::GetStringParameter(const wxString &label) const
+std::string OpenGlPlot::GetStringParameter(const std::string &label) const
 {
    #if DBGLVL_OPENGL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::GetStringParameter() label = %s\n"), label.c_str());
+      ("OpenGlPlot::GetStringParameter() label = %s\n", label.c_str());
    #endif
    
    return GetStringParameter(GetParameterID(label));
@@ -1637,13 +1637,13 @@ wxString OpenGlPlot::GetStringParameter(const wxString &label) const
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
-bool OpenGlPlot::SetStringParameter(const Integer id, const wxString &value)
+bool OpenGlPlot::SetStringParameter(const Integer id, const std::string &value)
 {
    #if DBGLVL_OPENGL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::SetStringParameter() this=<%p>'%s', id=%d<%s>, value='%s'\n"),
+      ("OpenGlPlot::SetStringParameter() this=<%p>'%s', id=%d<%s>, value='%s'\n",
        this, instanceName.c_str(), id, GetParameterText(id).c_str(), value.c_str());
    #endif
    
@@ -1653,7 +1653,7 @@ bool OpenGlPlot::SetStringParameter(const Integer id, const wxString &value)
       return AddSpacePoint(value, mAllSpCount);
    case ORBIT_COLOR:
    case TARGET_COLOR:
-      if (value[0] == wxT('['))
+      if (value[0] == '[')
          PutUnsignedIntValue(id, value);
       return true;
    case COORD_SYSTEM:
@@ -1662,46 +1662,46 @@ bool OpenGlPlot::SetStringParameter(const Integer id, const wxString &value)
    case VIEWPOINT_REF:
       WriteDeprecatedMessage(id);
       mViewPointRefName = value;
-      mViewPointRefType = wxT("Object");
+      mViewPointRefType = "Object";
       
-      // Handle deprecated value wxT("Vector")
-      if (value == wxT("Vector") || GmatStringUtil::IsNumber(value))
-         mViewPointRefType = wxT("Vector");
+      // Handle deprecated value "Vector"
+      if (value == "Vector" || GmatStringUtil::IsNumber(value))
+         mViewPointRefType = "Vector";
       
-      if (value[0] == wxT('['))
+      if (value[0] == '[')
       {
          PutRvector3Value(mViewPointRefVector, id, value);
-         mViewPointRefType = wxT("Vector");
+         mViewPointRefType = "Vector";
       }
       return true;
    case VIEWPOINT_REFERENCE:
       mViewPointRefName = value;
-      mViewPointRefType = wxT("Object");
+      mViewPointRefType = "Object";
       
-      // Handle deprecated value wxT("Vector")
-      if (value == wxT("Vector") || GmatStringUtil::IsNumber(value))
-         mViewPointRefType = wxT("Vector");
+      // Handle deprecated value "Vector"
+      if (value == "Vector" || GmatStringUtil::IsNumber(value))
+         mViewPointRefType = "Vector";
       
-      if (value[0] == wxT('['))
+      if (value[0] == '[')
       {
          PutRvector3Value(mViewPointRefVector, id, value);
-         mViewPointRefType = wxT("Vector");
+         mViewPointRefType = "Vector";
       }
    case VIEWPOINT_REF_TYPE:
       mViewPointRefType = value;
       return true;
    case VIEWPOINT_VECTOR:
       mViewPointVecName = value;
-      mViewPointVecType = wxT("Object");
+      mViewPointVecType = "Object";
       
-      // Handle deprecated value wxT("Vector")
-      if (value == wxT("Vector") || GmatStringUtil::IsNumber(value))
-         mViewPointVecType = wxT("Vector");
+      // Handle deprecated value "Vector"
+      if (value == "Vector" || GmatStringUtil::IsNumber(value))
+         mViewPointVecType = "Vector";
       
-      if (value[0] == wxT('['))
+      if (value[0] == '[')
       {
          PutRvector3Value(mViewPointVecVector, id, value);
-         mViewPointVecType = wxT("Vector");
+         mViewPointVecType = "Vector";
       }
       return true;
    case VIEWPOINT_VECTOR_TYPE:
@@ -1709,16 +1709,16 @@ bool OpenGlPlot::SetStringParameter(const Integer id, const wxString &value)
       return true;
    case VIEW_DIRECTION:
       mViewDirectionName = value;
-      mViewDirectionType = wxT("Object");
+      mViewDirectionType = "Object";
       
-      // Handle deprecated value wxT("Vector")
-      if (value == wxT("Vector") || GmatStringUtil::IsNumber(value))
-         mViewDirectionType = wxT("Vector");
+      // Handle deprecated value "Vector"
+      if (value == "Vector" || GmatStringUtil::IsNumber(value))
+         mViewDirectionType = "Vector";
       
-      if (value[0] == wxT('['))
+      if (value[0] == '[')
       {
          PutRvector3Value(mViewDirectionVector, id, value);
-         mViewDirectionType = wxT("Vector");
+         mViewDirectionType = "Vector";
       }
       return true;
    case VIEW_DIRECTION_TYPE:
@@ -1737,14 +1737,14 @@ bool OpenGlPlot::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
-bool OpenGlPlot::SetStringParameter(const wxString &label,
-                                    const wxString &value)
+bool OpenGlPlot::SetStringParameter(const std::string &label,
+                                    const std::string &value)
 {
    #if DBGLVL_OPENGL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::SetStringParameter()<%s> label=%s, value=%s \n"),
+      ("OpenGlPlot::SetStringParameter()<%s> label=%s, value=%s \n",
        instanceName.c_str(), label.c_str(), value.c_str());
    #endif
    
@@ -1753,15 +1753,15 @@ bool OpenGlPlot::SetStringParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// virtual bool SetStringParameter(const Integer id, const wxString &value,
+// virtual bool SetStringParameter(const Integer id, const std::string &value,
 //                                 const Integer index)
 //------------------------------------------------------------------------------
-bool OpenGlPlot::SetStringParameter(const Integer id, const wxString &value,
+bool OpenGlPlot::SetStringParameter(const Integer id, const std::string &value,
                                     const Integer index)
 {
    #if DBGLVL_OPENGL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::SetStringParameter()<%s> id=%d<%s>, value=%s, index= %d\n"),
+      ("OpenGlPlot::SetStringParameter()<%s> id=%d<%s>, value=%s, index= %d\n",
        instanceName.c_str(), id, GetParameterText(id).c_str(), value.c_str(), index);
    #endif
    
@@ -1771,19 +1771,19 @@ bool OpenGlPlot::SetStringParameter(const Integer id, const wxString &value,
       return AddSpacePoint(value, index);
    case VIEWPOINT_REF:
       WriteDeprecatedMessage(id);
-      mViewPointRefType = wxT("Vector");
+      mViewPointRefType = "Vector";
       PutRvector3Value(mViewPointRefVector, id, value, index);
       return true;
    case VIEWPOINT_REFERENCE:
-      mViewPointRefType = wxT("Vector");
+      mViewPointRefType = "Vector";
       PutRvector3Value(mViewPointRefVector, id, value, index);
       return true;
    case VIEWPOINT_VECTOR:
-      mViewPointVecType = wxT("Vector");
+      mViewPointVecType = "Vector";
       PutRvector3Value(mViewPointVecVector, id, value, index);
       return true;
    case VIEW_DIRECTION:
-      mViewDirectionType = wxT("Vector");
+      mViewDirectionType = "Vector";
       PutRvector3Value(mViewDirectionVector, id, value, index);
       return true;
    default:
@@ -1793,17 +1793,17 @@ bool OpenGlPlot::SetStringParameter(const Integer id, const wxString &value,
 
 
 //------------------------------------------------------------------------------
-// virtual bool SetStringParameter(const wxString &label,
-//                                 const wxString &value,
+// virtual bool SetStringParameter(const std::string &label,
+//                                 const std::string &value,
 //                                 const Integer index)
 //------------------------------------------------------------------------------
-bool OpenGlPlot::SetStringParameter(const wxString &label,
-                                    const wxString &value,
+bool OpenGlPlot::SetStringParameter(const std::string &label,
+                                    const std::string &value,
                                     const Integer index)
 {
    #if DBGLVL_OPENGL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::SetStringParameter() label = %s, value = %s, index = %d\n"),
+      ("OpenGlPlot::SetStringParameter() label = %s, value = %s, index = %d\n",
        label.c_str(), value.c_str(), index);
    #endif
    
@@ -1841,8 +1841,8 @@ UnsignedInt OpenGlPlot::SetUnsignedIntParameter(const Integer id,
 {
    #if DBGLVL_OPENGL_PARAM
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::SetUnsignedIntParameter() this=%s\n   id=%d, value=%u, index=%d, ")
-       wxT("mAllSpCount=%d, mOrbitColorArray.size()=%d, mTargetColorArray.size()=%d\n"),
+      ("OpenGlPlot::SetUnsignedIntParameter() this=%s\n   id=%d, value=%u, index=%d, "
+       "mAllSpCount=%d, mOrbitColorArray.size()=%d, mTargetColorArray.size()=%d\n",
        instanceName.c_str(), id, value, index, mAllSpCount, mOrbitColorArray.size(),
        mTargetColorArray.size());
    #endif
@@ -1854,7 +1854,7 @@ UnsignedInt OpenGlPlot::SetUnsignedIntParameter(const Integer id,
          Integer size = mAllSpNameArray.size();
          if (index >= size)
             throw SubscriberException
-               (wxT("index out of bounds for ") + GetParameterText(id));
+               ("index out of bounds for " + GetParameterText(id));
          
          for (int i=0; i<size; i++)
          {
@@ -1873,7 +1873,7 @@ UnsignedInt OpenGlPlot::SetUnsignedIntParameter(const Integer id,
          Integer size = mAllSpNameArray.size();
          if (index >= size)
             throw SubscriberException
-               (wxT("index out of bounds for ") + GetParameterText(id));
+               ("index out of bounds for " + GetParameterText(id));
          
          for (int i=0; i<size; i++)
          {
@@ -1926,7 +1926,7 @@ bool OpenGlPlot::SetBooleanParameter(const Integer id, const bool value)
 {
    #if DBGLVL_OPENGL_PARAM
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::SetBooleanParameter()<%s> id=%d, value=%d\n"),
+      ("OpenGlPlot::SetBooleanParameter()<%s> id=%d, value=%d\n",
        instanceName.c_str(), id, value);
    #endif
    
@@ -1940,9 +1940,9 @@ bool OpenGlPlot::SetBooleanParameter(const Integer id, const bool value)
 
 
 //---------------------------------------------------------------------------
-//  wxString GetOnOffParameter(const Integer id) const
+//  std::string GetOnOffParameter(const Integer id) const
 //---------------------------------------------------------------------------
-wxString OpenGlPlot::GetOnOffParameter(const Integer id) const
+std::string OpenGlPlot::GetOnOffParameter(const Integer id) const
 {
    switch (id)
    {
@@ -1979,18 +1979,18 @@ wxString OpenGlPlot::GetOnOffParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString OpenGlPlot::GetOnOffParameter(const wxString &label) const
+// std::string OpenGlPlot::GetOnOffParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString OpenGlPlot::GetOnOffParameter(const wxString &label) const
+std::string OpenGlPlot::GetOnOffParameter(const std::string &label) const
 {
    return GetOnOffParameter(GetParameterID(label));
 }
 
 
 //---------------------------------------------------------------------------
-//  bool SetOnOffParameter(const Integer id, const wxString &value)
+//  bool SetOnOffParameter(const Integer id, const std::string &value)
 //---------------------------------------------------------------------------
-bool OpenGlPlot::SetOnOffParameter(const Integer id, const wxString &value)
+bool OpenGlPlot::SetOnOffParameter(const Integer id, const std::string &value)
 {
    switch (id)
    {
@@ -2041,23 +2041,23 @@ bool OpenGlPlot::SetOnOffParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetOnOffParameter(const wxString &label, const wxString &value)
+// bool SetOnOffParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
-bool OpenGlPlot::SetOnOffParameter(const wxString &label, 
-                                   const wxString &value)
+bool OpenGlPlot::SetOnOffParameter(const std::string &label, 
+                                   const std::string &value)
 {
    return SetOnOffParameter(GetParameterID(label), value);
 }
 
 
 //------------------------------------------------------------------------------
-// virtual wxString GetRefObjectName(const Gmat::ObjectType type) const
+// virtual std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
-wxString OpenGlPlot::GetRefObjectName(const Gmat::ObjectType type) const
+std::string OpenGlPlot::GetRefObjectName(const Gmat::ObjectType type) const
 {
    #if DBGLVL_OPENGL_OBJ
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::GetRefObjectName() type: %s\n"),
+      ("OpenGlPlot::GetRefObjectName() type: %s\n",
        GmatBase::GetObjectTypeString(type).c_str());
    #endif
    
@@ -2067,9 +2067,9 @@ wxString OpenGlPlot::GetRefObjectName(const Gmat::ObjectType type) const
    }
    
    #if DBGLVL_OPENGL_OBJ
-   wxString msg = wxT("type: ") + GmatBase::GetObjectTypeString(type) + wxT(" not found");
+   std::string msg = "type: " + GmatBase::GetObjectTypeString(type) + " not found";
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::GetRefObjectName() %s\n"), msg.c_str());
+      ("OpenGlPlot::GetRefObjectName() %s\n", msg.c_str());
    #endif
    
    return Subscriber::GetRefObjectName(type);
@@ -2116,10 +2116,10 @@ const StringArray& OpenGlPlot::GetRefObjectNameArray(const Gmat::ObjectType type
    mAllRefObjectNames.clear();
    
    // if Draw Earth-Sun lines is on, add Earth and Sun
-   if (mSunLine == wxT("On"))
+   if (mSunLine == "On")
    {
-      AddSpacePoint(wxT("Earth"), mAllSpCount, false);
-      AddSpacePoint(wxT("Sun"), mAllSpCount, false);
+      AddSpacePoint("Earth", mAllSpCount, false);
+      AddSpacePoint("Sun", mAllSpCount, false);
    }
    
    if (type == Gmat::COORDINATE_SYSTEM)
@@ -2131,21 +2131,21 @@ const StringArray& OpenGlPlot::GetRefObjectNameArray(const Gmat::ObjectType type
    {
       mAllRefObjectNames = mAllSpNameArray;
       
-      if (mViewPointRefType != wxT("Vector"))
+      if (mViewPointRefType != "Vector")
       {
          if (find(mAllRefObjectNames.begin(), mAllRefObjectNames.end(),
                   mViewPointRefName) == mAllRefObjectNames.end())
             mAllRefObjectNames.push_back(mViewPointRefName);
       }
       
-      if (mViewPointVecType != wxT("Vector"))
+      if (mViewPointVecType != "Vector")
       {
          if (find(mAllRefObjectNames.begin(), mAllRefObjectNames.end(),
                   mViewPointVecName) == mAllRefObjectNames.end())
             mAllRefObjectNames.push_back(mViewPointVecName);
       }
       
-      if (mViewDirectionType != wxT("Vector"))
+      if (mViewDirectionType != "Vector")
       {
          if (find(mAllRefObjectNames.begin(), mAllRefObjectNames.end(),
                   mViewDirectionName) == mAllRefObjectNames.end())
@@ -2156,7 +2156,7 @@ const StringArray& OpenGlPlot::GetRefObjectNameArray(const Gmat::ObjectType type
    {
       #ifdef DEBUG_OPENGL_OBJ
       MessageInterface::ShowMessage
-         (wxT("mViewPointRefType=%s, mViewPointVecType=%s, mViewDirectionType=%s\n"),
+         ("mViewPointRefType=%s, mViewPointVecType=%s, mViewDirectionType=%s\n",
           mViewPointRefType.c_str(), mViewPointVecType.c_str(), mViewDirectionType.c_str());
       #endif
       
@@ -2167,21 +2167,21 @@ const StringArray& OpenGlPlot::GetRefObjectNameArray(const Gmat::ObjectType type
       if (mViewCoordSysName != mViewUpCoordSysName)
          mAllRefObjectNames.push_back(mViewUpCoordSysName);
       
-      if (mViewPointRefType != wxT("Vector"))
+      if (mViewPointRefType != "Vector")
       {
          if (find(mAllRefObjectNames.begin(), mAllRefObjectNames.end(),
                   mViewPointRefName) == mAllRefObjectNames.end())
             mAllRefObjectNames.push_back(mViewPointRefName);
       }
       
-      if (mViewPointVecType != wxT("Vector"))
+      if (mViewPointVecType != "Vector")
       {
          if (find(mAllRefObjectNames.begin(), mAllRefObjectNames.end(),
                   mViewPointVecName) == mAllRefObjectNames.end())
             mAllRefObjectNames.push_back(mViewPointVecName);
       }
       
-      if (mViewDirectionType != wxT("Vector"))
+      if (mViewDirectionType != "Vector")
       {
          if (find(mAllRefObjectNames.begin(), mAllRefObjectNames.end(),
                   mViewDirectionName) == mAllRefObjectNames.end())
@@ -2191,9 +2191,9 @@ const StringArray& OpenGlPlot::GetRefObjectNameArray(const Gmat::ObjectType type
    
    #if DBGLVL_OPENGL_OBJ
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::GetRefObjectNameArray() returning for type:%d\n"), type);
+      ("OpenGlPlot::GetRefObjectNameArray() returning for type:%d\n", type);
    for (unsigned int i=0; i<mAllRefObjectNames.size(); i++)
-      MessageInterface::ShowMessage(wxT("   %s\n"), mAllRefObjectNames[i].c_str());
+      MessageInterface::ShowMessage("   %s\n", mAllRefObjectNames[i].c_str());
    #endif
    
    return mAllRefObjectNames;
@@ -2202,10 +2202,10 @@ const StringArray& OpenGlPlot::GetRefObjectNameArray(const Gmat::ObjectType type
 
 //------------------------------------------------------------------------------
 // virtual GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                                const wxString &name)
+//                                const std::string &name)
 //------------------------------------------------------------------------------
 GmatBase* OpenGlPlot::GetRefObject(const Gmat::ObjectType type,
-                                   const wxString &name)
+                                   const std::string &name)
 {
    if (type == Gmat::COORDINATE_SYSTEM)
    {
@@ -2226,14 +2226,14 @@ GmatBase* OpenGlPlot::GetRefObject(const Gmat::ObjectType type,
    
    return Subscriber::GetRefObject(type, name);
    
-//    throw SubscriberException(wxT("OpenGlPlot::GetRefObject() the object name: ") + name +
-//                            wxT("not found\n"));
+//    throw SubscriberException("OpenGlPlot::GetRefObject() the object name: " + name +
+//                            "not found\n");
 }
 
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                           const wxString &name = wxT(""))
+//                           const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Set reference object pointer.
@@ -2244,17 +2244,17 @@ GmatBase* OpenGlPlot::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool OpenGlPlot::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                              const wxString &name)
+                              const std::string &name)
 {
    #if DBGLVL_OPENGL_OBJ
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::SetRefObject() this=<%p>'%s', obj=<%p>'%s', type=%d[%s], name='%s'\n"),
+      ("OpenGlPlot::SetRefObject() this=<%p>'%s', obj=<%p>'%s', type=%d[%s], name='%s'\n",
        this, GetName().c_str(), obj, obj->GetName().c_str(), type,
        obj->GetTypeName().c_str(), name.c_str());
    #endif
    
-   wxString realName = name;
-   if (name == wxT(""))
+   std::string realName = name;
+   if (name == "")
       realName = obj->GetName();
    
    if (type == Gmat::COORDINATE_SYSTEM)
@@ -2268,21 +2268,21 @@ bool OpenGlPlot::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
    else if (obj->IsOfType(Gmat::SPACE_POINT))
    {
       #if DBGLVL_OPENGL_OBJ
-      MessageInterface::ShowMessage(wxT("   mAllSpCount=%d\n"), mAllSpCount);
+      MessageInterface::ShowMessage("   mAllSpCount=%d\n", mAllSpCount);
       #endif
       
       for (Integer i=0; i<mAllSpCount; i++)
       {
          #if DBGLVL_OPENGL_OBJ
          MessageInterface::ShowMessage
-            (wxT("   mAllSpNameArray[%d]='%s'\n"), i, mAllSpNameArray[i].c_str());
+            ("   mAllSpNameArray[%d]='%s'\n", i, mAllSpNameArray[i].c_str());
          #endif
          
          if (mAllSpNameArray[i] == realName)
          {
             #if DBGLVL_OPENGL_OBJ > 1
             MessageInterface::ShowMessage
-               (wxT("   Setting object to '%s'\n"), mAllSpNameArray[i].c_str());
+               ("   Setting object to '%s'\n", mAllSpNameArray[i].c_str());
             #endif
             
             mAllSpArray[i] = (SpacePoint*)(obj);
@@ -2291,8 +2291,8 @@ bool OpenGlPlot::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
       
       #if DBGLVL_OPENGL_OBJ
       MessageInterface::ShowMessage
-         (wxT("OpenGlPlot::SetRefObject() realName='%s', mViewPointRefName='%s', ")
-          wxT("mViewPointVecName='%s', mViewDirectionName='%s'\n"), realName.c_str(),
+         ("OpenGlPlot::SetRefObject() realName='%s', mViewPointRefName='%s', "
+          "mViewPointVecName='%s', mViewDirectionName='%s'\n", realName.c_str(),
           mViewPointRefName.c_str(), mViewPointVecName.c_str(),
           mViewDirectionName.c_str());
       #endif
@@ -2309,8 +2309,8 @@ bool OpenGlPlot::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
       
       #if DBGLVL_OPENGL_OBJ
       MessageInterface::ShowMessage
-         (wxT("OpenGlPlot::SetRefObject() mViewPointRefObj=<%p>, mViewPointObj=<%p>, ")
-          wxT("mViewDirectionObj=<%p>\n"), mViewPointRefObj, mViewPointObj,
+         ("OpenGlPlot::SetRefObject() mViewPointRefObj=<%p>, mViewPointObj=<%p>, "
+          "mViewDirectionObj=<%p>\n", mViewPointRefObj, mViewPointObj,
           mViewDirectionObj);
       #endif
       return true;
@@ -2325,13 +2325,13 @@ bool OpenGlPlot::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// bool AddSpacePoint(const wxString &name, Integer index, bool show = true)
+// bool AddSpacePoint(const std::string &name, Integer index, bool show = true)
 //------------------------------------------------------------------------------
-bool OpenGlPlot::AddSpacePoint(const wxString &name, Integer index, bool show)
+bool OpenGlPlot::AddSpacePoint(const std::string &name, Integer index, bool show)
 {
    #if DBGLVL_OPENGL_ADD
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::AddSpacePoint()<%s> name=%s, index=%d, show=%d, mAllSpCount=%d\n"),
+      ("OpenGlPlot::AddSpacePoint()<%s> name=%s, index=%d, show=%d, mAllSpCount=%d\n",
        instanceName.c_str(), name.c_str(), index, show, mAllSpCount);
    #endif
    
@@ -2339,7 +2339,7 @@ bool OpenGlPlot::AddSpacePoint(const wxString &name, Integer index, bool show)
    if (find(mAllSpNameArray.begin(), mAllSpNameArray.end(), name) ==
        mAllSpNameArray.end())
    {
-      if (name != wxT("") && index == mAllSpCount)
+      if (name != "" && index == mAllSpCount)
       {
          mAllSpNameArray.push_back(name);
          mAllSpArray.push_back(NULL);
@@ -2377,16 +2377,16 @@ bool OpenGlPlot::AddSpacePoint(const wxString &name, Integer index, bool show)
    }
    
    #if DBGLVL_OPENGL_ADD   
-   wxString objName;
+   std::string objName;
    for (int i=0; i<mAllSpCount; i++)
    {
       objName = mAllSpNameArray[i];
       MessageInterface::ShowMessage
-         (wxT("   mAllSpNameArray[%d]=%s, draw=%d, show=%d ")
-          wxT("orbColor=%u, targColor=%u\n"), i, objName.c_str(), mDrawOrbitMap[objName],
+         ("   mAllSpNameArray[%d]=%s, draw=%d, show=%d "
+          "orbColor=%u, targColor=%u\n", i, objName.c_str(), mDrawOrbitMap[objName],
           mShowObjectMap[objName], mOrbitColorMap[objName], mTargetColorMap[objName]);
       MessageInterface::ShowMessage
-         (wxT("   mOrbitColorArray[%d]=%u, mTargetColorArray[%d]=%u\n"), i, mOrbitColorArray[i],
+         ("   mOrbitColorArray[%d]=%u, mTargetColorArray[%d]=%u\n", i, mOrbitColorArray[i],
           i, mTargetColorArray[i]);
    }
    #endif
@@ -2400,7 +2400,7 @@ bool OpenGlPlot::AddSpacePoint(const wxString &name, Integer index, bool show)
 //------------------------------------------------------------------------------
 bool OpenGlPlot::ClearSpacePointList()
 {
-   //MessageInterface::ShowMessage(wxT("OpenGlPlot::ClearSpacePointList()\n"));
+   //MessageInterface::ShowMessage("OpenGlPlot::ClearSpacePointList()\n");
    
    mAllSpNameArray.clear();
    mAllSpArray.clear();
@@ -2430,7 +2430,7 @@ bool OpenGlPlot::ClearSpacePointList()
 
 
 //------------------------------------------------------------------------------
-// bool RemoveSpacePoint(const wxString &name)
+// bool RemoveSpacePoint(const std::string &name)
 //------------------------------------------------------------------------------
 /*
  * Removes spacecraft from the spacecraft list
@@ -2441,7 +2441,7 @@ bool OpenGlPlot::ClearSpacePointList()
  *
  */
 //------------------------------------------------------------------------------
-bool OpenGlPlot::RemoveSpacePoint(const wxString &name)
+bool OpenGlPlot::RemoveSpacePoint(const std::string &name)
 {
    //-----------------------------------------------------------------
    #ifdef __REMOVE_OBJ_BY_SETTING_FLAG__
@@ -2471,13 +2471,13 @@ bool OpenGlPlot::RemoveSpacePoint(const wxString &name)
    //-------------------------------------------------------
    #if DBGLVL_REMOVE_SP
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::RemoveSpacePoint() name=%s\n--- Before remove from ")
-       wxT("mScNameArray:\n"), name.c_str());
-   MessageInterface::ShowMessage(wxT("mScCount=%d\n"), mScCount);
+      ("OpenGlPlot::RemoveSpacePoint() name=%s\n--- Before remove from "
+       "mScNameArray:\n", name.c_str());
+   MessageInterface::ShowMessage("mScCount=%d\n", mScCount);
    for (int i=0; i<mScCount; i++)
    {
       MessageInterface::ShowMessage
-         (wxT("mScNameArray[%d]=%s\n"), i, mScNameArray[i].c_str());
+         ("mScNameArray[%d]=%s\n", i, mScNameArray[i].c_str());
    }
    #endif
    
@@ -2486,7 +2486,7 @@ bool OpenGlPlot::RemoveSpacePoint(const wxString &name)
    
    if (scPos != mScNameArray.end())
    {
-      MessageInterface::ShowMessage(wxT("sc to be erased=%s\n"), (*scPos).c_str());
+      MessageInterface::ShowMessage("sc to be erased=%s\n", (*scPos).c_str());
       
       // erase given spacecraft from the arrays
       mScNameArray.erase(scPos);
@@ -2511,12 +2511,12 @@ bool OpenGlPlot::RemoveSpacePoint(const wxString &name)
       }
       
       #if DBGLVL_REMOVE_SP
-      MessageInterface::ShowMessage(wxT("---After remove from mScNameArray:\n"));
-      MessageInterface::ShowMessage(wxT("mScCount=%d\n"), mScCount);
+      MessageInterface::ShowMessage("---After remove from mScNameArray:\n");
+      MessageInterface::ShowMessage("mScCount=%d\n", mScCount);
       for (int i=0; i<mScCount; i++)
       {
          MessageInterface::ShowMessage
-            (wxT("mScNameArray[%d]=%s\n"), i, mScNameArray[i].c_str());
+            ("mScNameArray[%d]=%s\n", i, mScNameArray[i].c_str());
       }
       #endif
       
@@ -2530,13 +2530,13 @@ bool OpenGlPlot::RemoveSpacePoint(const wxString &name)
    //-------------------------------------------------------
    #if DBGLVL_REMOVE_SP
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::RemoveSpacePoint() name=%s\n--- Before remove from ")
-       wxT("mAllSpNameArray:\n"), name.c_str());
-   MessageInterface::ShowMessage(wxT("mAllSpCount=%d\n"), mAllSpCount);
+      ("OpenGlPlot::RemoveSpacePoint() name=%s\n--- Before remove from "
+       "mAllSpNameArray:\n", name.c_str());
+   MessageInterface::ShowMessage("mAllSpCount=%d\n", mAllSpCount);
    for (int i=0; i<mAllSpCount; i++)
    {
       MessageInterface::ShowMessage
-         (wxT("mAllSpNameArray[%d]=%s\n"), i, mAllSpNameArray[i].c_str());
+         ("mAllSpNameArray[%d]=%s\n", i, mAllSpNameArray[i].c_str());
    }
    #endif
    
@@ -2547,7 +2547,7 @@ bool OpenGlPlot::RemoveSpacePoint(const wxString &name)
    
    if (spPos != mAllSpNameArray.end() && objPos != mObjectNameArray.end())
    {
-      std::map<wxString, UnsignedInt>::iterator orbColorPos, targColorPos;
+      std::map<std::string, UnsignedInt>::iterator orbColorPos, targColorPos;
       orbColorPos = mOrbitColorMap.find(name);
       targColorPos = mTargetColorMap.find(name);
       
@@ -2574,12 +2574,12 @@ bool OpenGlPlot::RemoveSpacePoint(const wxString &name)
          }
          
          #if DBGLVL_REMOVE_SP
-         MessageInterface::ShowMessage(wxT("---After remove from mAllSpNameArray\n"));
-         MessageInterface::ShowMessage(wxT("mAllSpCount=%d\n"), mAllSpCount);
+         MessageInterface::ShowMessage("---After remove from mAllSpNameArray\n");
+         MessageInterface::ShowMessage("mAllSpCount=%d\n", mAllSpCount);
          for (int i=0; i<mAllSpCount; i++)
          {
             MessageInterface::ShowMessage
-               (wxT("mAllSpNameArray[%d]=%s\n"), i, mAllSpNameArray[i].c_str());
+               ("mAllSpNameArray[%d]=%s\n", i, mAllSpNameArray[i].c_str());
          }
          #endif
          
@@ -2592,16 +2592,16 @@ bool OpenGlPlot::RemoveSpacePoint(const wxString &name)
    //-------------------------------------------------------
    #if DBGLVL_REMOVE_SP
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::RemoveSpacePoint() name=%s\n--- Before remove from ")
-       wxT("mObjectArray:\n"), name.c_str());
-   MessageInterface::ShowMessage(wxT("size=%d\n"), mObjectArray.size());
+      ("OpenGlPlot::RemoveSpacePoint() name=%s\n--- Before remove from "
+       "mObjectArray:\n", name.c_str());
+   MessageInterface::ShowMessage("size=%d\n", mObjectArray.size());
    #endif
    
    for (std::vector<SpacePoint*>::iterator objptPos = mObjectArray.begin();
         objptPos != mObjectArray.end(); ++objptPos)
    {
       MessageInterface::ShowMessage
-         (wxT("mObjectArray=%s\n"), (*objptPos)->GetName().c_str());
+         ("mObjectArray=%s\n", (*objptPos)->GetName().c_str());
       if ((*objptPos)->GetName() == name)
       {
          mObjectArray.erase(objptPos);
@@ -2611,9 +2611,9 @@ bool OpenGlPlot::RemoveSpacePoint(const wxString &name)
    
    #if DBGLVL_REMOVE_SP
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::RemoveSpacePoint() name=%s\n--- After remove from ")
-       wxT("mObjectArray:\n"), name.c_str());
-   MessageInterface::ShowMessage(wxT("size=%d\n"), mObjectArray.size());
+      ("OpenGlPlot::RemoveSpacePoint() name=%s\n--- After remove from "
+       "mObjectArray:\n", name.c_str());
+   MessageInterface::ShowMessage("size=%d\n", mObjectArray.size());
    #endif
    
    if (removedFromScArray && removedFromAllSpArray)
@@ -2660,7 +2660,7 @@ void OpenGlPlot::ClearDynamicArrays()
 void OpenGlPlot::UpdateObjectList(SpacePoint *sp, bool show)
 {   
    // Add all spacepoint objects
-   wxString name = sp->GetName();
+   std::string name = sp->GetName();
    StringArray::iterator pos = 
       find(mObjectNameArray.begin(), mObjectNameArray.end(), name);
    
@@ -2681,13 +2681,13 @@ void OpenGlPlot::UpdateObjectList(SpacePoint *sp, bool show)
    #if DBGLVL_OPENGL_INIT > 1
    Integer draw, showObj;
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::UpdateObjectList() instanceName=%s\n"), instanceName.c_str());
+      ("OpenGlPlot::UpdateObjectList() instanceName=%s\n", instanceName.c_str());
    for (int i=0; i<mObjectCount; i++)
    {
       draw = mDrawOrbitArray[i] ? 1 : 0;
       showObj = mShowObjectArray[i] ? 1 : 0;
       MessageInterface::ShowMessage
-         (wxT("   mObjectNameArray[%d]=%s, draw=%d, show=%d, color=%d\n"), i,
+         ("   mObjectNameArray[%d]=%s, draw=%d, show=%d, color=%d\n", i,
           mObjectNameArray[i].c_str(), draw, showObj, mOrbitColorArray[i]);
    }
    #endif
@@ -2696,7 +2696,7 @@ void OpenGlPlot::UpdateObjectList(SpacePoint *sp, bool show)
 
 //------------------------------------------------------------------------------
 // void PutRvector3Value(Rvector3 &rvec3, Integer id,
-//                       const wxString &sval, Integer index = -1);
+//                       const std::string &sval, Integer index = -1);
 //------------------------------------------------------------------------------
 /*
  * Converts input string to Real and store as Rvector3 element at idnex.
@@ -2706,21 +2706,21 @@ void OpenGlPlot::UpdateObjectList(SpacePoint *sp, bool show)
  * @param sval   input string value
  * @param index  input index to be used for storing a Rvector3 element
  *               if index is -1, whole 3 elements are converted and stored
- *               from a string format of wxT("[element1 element2 element3]")
+ *               from a string format of "[element1 element2 element3]"
  */
 //------------------------------------------------------------------------------
 void OpenGlPlot::PutRvector3Value(Rvector3 &rvec3, Integer id,
-                                  const wxString &sval, Integer index)
+                                  const std::string &sval, Integer index)
 {
    #if DBGLVL_OPENGL_PARAM_RVEC3
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::PutRvector3Value() id=%d, sval=%s, index=%d\n"),
+      ("OpenGlPlot::PutRvector3Value() id=%d, sval=%s, index=%d\n",
        id, sval.c_str(), index);
    #endif
    
-   wxString badVal;
+   std::string badVal;
    bool isValid = true;
-   wxString field = GetParameterText(id);
+   std::string field = GetParameterText(id);
    
    // Check index, throw exception if out of bound
    if (index < -1 || index > 2)
@@ -2746,12 +2746,12 @@ void OpenGlPlot::PutRvector3Value(Rvector3 &rvec3, Integer id,
       else if (index == -1)
       {
          StringArray valArray;
-         wxString svalue = sval;
+         std::string svalue = sval;
          svalue = GmatStringUtil::Trim(svalue);
-         wxString::size_type index1 = svalue.find_first_of(wxT("["));
+         std::string::size_type index1 = svalue.find_first_of("[");
          if (index1 != svalue.npos)
          {
-            wxString::size_type index2 = svalue.find_last_of(wxT("]"));
+            std::string::size_type index2 = svalue.find_last_of("]");
             if (index2 != svalue.npos)
             {
                svalue = svalue.substr(index1+1, index2-index1-1);
@@ -2763,7 +2763,7 @@ void OpenGlPlot::PutRvector3Value(Rvector3 &rvec3, Integer id,
             }
          }
          
-         valArray = GmatStringUtil::SeparateBy(svalue, wxT(" ,"));         
+         valArray = GmatStringUtil::SeparateBy(svalue, " ,");         
          int arraySize = valArray.size();
          
          if (arraySize == 3)
@@ -2799,21 +2799,21 @@ void OpenGlPlot::PutRvector3Value(Rvector3 &rvec3, Integer id,
    {
       SubscriberException se;
       se.SetDetails(errorMessageFormat.c_str(), badVal.c_str(), field.c_str(),
-                    wxT("SpacecraftName, CelestialBodyName, LibrationPointName, ")
-                    wxT("BarycenterName, or a 3-vector of numerical values"));
+                    "SpacecraftName, CelestialBodyName, LibrationPointName, "
+                    "BarycenterName, or a 3-vector of numerical values");
       throw se;
    }
 }
 
 
 //------------------------------------------------------------------------------
-// void PutUnsignedIntValue(Integer id, const wxString &sval)
+// void PutUnsignedIntValue(Integer id, const std::string &sval)
 //------------------------------------------------------------------------------
-void OpenGlPlot::PutUnsignedIntValue(Integer id, const wxString &sval)
+void OpenGlPlot::PutUnsignedIntValue(Integer id, const std::string &sval)
 {
    #ifdef DEBUG_OPENGL_PUT
    MessageInterface::ShowMessage
-      (wxT("PutUnsignedIntValue() id=%d, sval='%s'\n"), id, sval.c_str());
+      ("PutUnsignedIntValue() id=%d, sval='%s'\n", id, sval.c_str());
    #endif
    
    UnsignedIntArray vals = GmatStringUtil::ToUnsignedIntArray(sval);
@@ -2840,9 +2840,9 @@ void OpenGlPlot::WriteDeprecatedMessage(Integer id) const
       if (writeEarthSunLines)
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** \"EarthSunLines\" is deprecated and will be ")
-             wxT("removed from a future build; please use \"SunLine\" ")
-             wxT("instead.\n"));
+            ("*** WARNING *** \"EarthSunLines\" is deprecated and will be "
+             "removed from a future build; please use \"SunLine\" "
+             "instead.\n");
          writeEarthSunLines = false;
       }
       break;
@@ -2850,9 +2850,9 @@ void OpenGlPlot::WriteDeprecatedMessage(Integer id) const
       if (writeViewpointRef)
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** \"ViewPointRef\" is deprecated and will be ")
-             wxT("removed from a future build; please use \"ViewPointReference\" ")
-             wxT("instead.\n"));
+            ("*** WARNING *** \"ViewPointRef\" is deprecated and will be "
+             "removed from a future build; please use \"ViewPointReference\" "
+             "instead.\n");
          writeViewpointRef = false;
       }
       break;
@@ -2860,8 +2860,8 @@ void OpenGlPlot::WriteDeprecatedMessage(Integer id) const
       if (writeViewpointRefVector)
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** \"ViewPointRefVector\" is deprecated and will be ")
-             wxT("removed from a future build.\n"));
+            ("*** WARNING *** \"ViewPointRefVector\" is deprecated and will be "
+             "removed from a future build.\n");
          writeViewpointRefVector = false;
       }
       break;
@@ -2869,8 +2869,8 @@ void OpenGlPlot::WriteDeprecatedMessage(Integer id) const
       if (writeViewpointVectorVector)
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** \"ViewPointVectorVector\" is deprecated and will be ")
-             wxT("removed from a future build.\n"));
+            ("*** WARNING *** \"ViewPointVectorVector\" is deprecated and will be "
+             "removed from a future build.\n");
          writeViewpointVectorVector = false;
       }
       break;
@@ -2878,8 +2878,8 @@ void OpenGlPlot::WriteDeprecatedMessage(Integer id) const
       if (writeViewDirectionVector)
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** \"ViewDirectionVector\" is deprecated and will be ")
-             wxT("removed from a future build.\n"));
+            ("*** WARNING *** \"ViewDirectionVector\" is deprecated and will be "
+             "removed from a future build.\n");
          writeViewDirectionVector = false;
       }
       break;
@@ -2898,8 +2898,8 @@ bool OpenGlPlot::UpdateSolverData()
    int last = size - 1;
    
    #if DBGLVL_SOLVER_CURRENT_ITER
-   MessageInterface::ShowMessage(wxT("===> num buffered data = %d\n"), size);
-   MessageInterface::ShowMessage(wxT("==========> now update solver plot\n"));
+   MessageInterface::ShowMessage("===> num buffered data = %d\n", size);
+   MessageInterface::ShowMessage("==========> now update solver plot\n");
    #endif
    
    if (size == 0)
@@ -2917,7 +2917,7 @@ bool OpenGlPlot::UpdateSolverData()
       #if DBGLVL_SOLVER_CURRENT_ITER > 1
       for (int sc=0; sc<mScCount; sc++)
          MessageInterface::ShowMessage
-            (wxT("   i=%d, sc=%d, solver epoch = %f, X,Y,Z = %f, %f, %f\n"), i, sc,
+            ("   i=%d, sc=%d, solver epoch = %f, X,Y,Z = %f, %f, %f\n", i, sc,
              mCurrEpochArray[i], mCurrXArray[i][sc], mCurrYArray[i][sc],
              mCurrZArray[i][sc]);
       #endif
@@ -2948,7 +2948,7 @@ bool OpenGlPlot::UpdateSolverData()
    mCurrVzArray.clear();
    
    if (runstate == Gmat::SOLVING)
-      PlotInterface::TakeGlAction(instanceName, wxT("ClearSolverData"));
+      PlotInterface::TakeGlAction(instanceName, "ClearSolverData");
    
    return true;
 }
@@ -2975,8 +2975,8 @@ bool OpenGlPlot::Distribute(const Real *dat, Integer len)
 {
    #if DBGLVL_OPENGL_UPDATE
    MessageInterface::ShowMessage
-      (wxT("OpenGlPlot::Distribute() instanceName=%s, active=%d, isEndOfRun=%d, ")
-       wxT("isEndOfReceive=%d\n   mAllSpCount=%d, mScCount=%d, len=%d, runstate=%d\n"),
+      ("OpenGlPlot::Distribute() instanceName=%s, active=%d, isEndOfRun=%d, "
+       "isEndOfReceive=%d\n   mAllSpCount=%d, mScCount=%d, len=%d, runstate=%d\n",
        instanceName.c_str(), active, isEndOfRun, isEndOfReceive, mAllSpCount,
        mScCount, len, runstate);
    #endif
@@ -3010,10 +3010,10 @@ bool OpenGlPlot::Distribute(const Real *dat, Integer len)
    
    
    #if DBGLVL_OPENGL_DATA
-   MessageInterface::ShowMessage(wxT("%s, len=%d\n"), GetName().c_str(), len);
+   MessageInterface::ShowMessage("%s, len=%d\n", GetName().c_str(), len);
    for (int i=0; i<len; i++)
-      MessageInterface::ShowMessage(wxT("%.11f  "), dat[i]);
-   MessageInterface::ShowMessage(wxT("\n"));
+      MessageInterface::ShowMessage("%.11f  ", dat[i]);
+   MessageInterface::ShowMessage("\n");
    #endif
    
    //------------------------------------------------------------
@@ -3023,7 +3023,7 @@ bool OpenGlPlot::Distribute(const Real *dat, Integer len)
    {
       #if DBGLVL_OPENGL_UPDATE > 1
       MessageInterface::ShowMessage
-         (wxT("   Just returning: SolverIterations is %d and runstate is %d\n"),
+         ("   Just returning: SolverIterations is %d and runstate is %d\n",
           mSolverIterOption, runstate);
       #endif
       
@@ -3039,7 +3039,7 @@ bool OpenGlPlot::Distribute(const Real *dat, Integer len)
    
    #if DBGLVL_OPENGL_UPDATE > 1
    MessageInterface::ShowMessage
-      (wxT("   mNumData=%d, mDataCollectFrequency=%d, currentProvider=<%p>\n"),
+      ("   mNumData=%d, mDataCollectFrequency=%d, currentProvider=<%p>\n",
        mNumData, mDataCollectFrequency, currentProvider);
    #endif
    
@@ -3051,13 +3051,13 @@ bool OpenGlPlot::Distribute(const Real *dat, Integer len)
       
       #if DBGLVL_OPENGL_UPDATE > 1
       MessageInterface::ShowMessage
-         (wxT("   currentProvider=%d, theDataLabels.size()=%d\n"),
+         ("   currentProvider=%d, theDataLabels.size()=%d\n",
           currentProvider, theDataLabels.size());
       #endif
       
       #if DBGLVL_OPENGL_UPDATE > 2
       MessageInterface::ShowMessage
-         (wxT("OpenGlPlot::Distribute() Using new Publisher code\n"));
+         ("OpenGlPlot::Distribute() Using new Publisher code\n");
       #endif
       
       // @note
@@ -3068,10 +3068,10 @@ bool OpenGlPlot::Distribute(const Real *dat, Integer len)
       StringArray dataLabels = theDataLabels[0];
             
       #if DBGLVL_OPENGL_DATA_LABELS
-      MessageInterface::ShowMessage(wxT("   Data labels for %s =\n   "), GetName().c_str());
+      MessageInterface::ShowMessage("   Data labels for %s =\n   ", GetName().c_str());
       for (int j=0; j<(int)dataLabels.size(); j++)
-         MessageInterface::ShowMessage(wxT("%s "), dataLabels[j].c_str());
-      MessageInterface::ShowMessage(wxT("\n"));
+         MessageInterface::ShowMessage("%s ", dataLabels[j].c_str());
+      MessageInterface::ShowMessage("\n");
       #endif
       
       Integer idX, idY, idZ;
@@ -3080,17 +3080,17 @@ bool OpenGlPlot::Distribute(const Real *dat, Integer len)
       
       for (int i=0; i<mScCount; i++)
       {
-         idX = FindIndexOfElement(dataLabels, mScNameArray[i]+wxT(".X"));
-         idY = FindIndexOfElement(dataLabels, mScNameArray[i]+wxT(".Y"));
-         idZ = FindIndexOfElement(dataLabels, mScNameArray[i]+wxT(".Z"));
+         idX = FindIndexOfElement(dataLabels, mScNameArray[i]+".X");
+         idY = FindIndexOfElement(dataLabels, mScNameArray[i]+".Y");
+         idZ = FindIndexOfElement(dataLabels, mScNameArray[i]+".Z");
          
-         idVx = FindIndexOfElement(dataLabels, mScNameArray[i]+wxT(".Vx"));
-         idVy = FindIndexOfElement(dataLabels, mScNameArray[i]+wxT(".Vy"));
-         idVz = FindIndexOfElement(dataLabels, mScNameArray[i]+wxT(".Vz"));
+         idVx = FindIndexOfElement(dataLabels, mScNameArray[i]+".Vx");
+         idVy = FindIndexOfElement(dataLabels, mScNameArray[i]+".Vy");
+         idVz = FindIndexOfElement(dataLabels, mScNameArray[i]+".Vz");
          
          #if DBGLVL_OPENGL_DATA_LABELS
          MessageInterface::ShowMessage
-            (wxT("   mScNameArray[%d]=%s, idX=%d, idY=%d, idZ=%d, idVx=%d, idVy=%d, idVz=%d\n"),
+            ("   mScNameArray[%d]=%s, idX=%d, idY=%d, idZ=%d, idVx=%d, idVy=%d, idVz=%d\n",
              i, mScNameArray[i].c_str(), idX, idY, idZ, idVx, idVy, idVz);
          #endif
          
@@ -3112,7 +3112,7 @@ bool OpenGlPlot::Distribute(const Real *dat, Integer len)
             
             #if DBGLVL_OPENGL_DATA
             MessageInterface::ShowMessage
-               (wxT("   %s, %.11f, X,Y,Z = %f, %f, %f\n"), GetName().c_str(), dat[0],
+               ("   %s, %.11f, X,Y,Z = %f, %f, %f\n", GetName().c_str(), dat[0],
                 dat[idX], dat[idY], dat[idZ]);
             #endif
             
@@ -3147,13 +3147,13 @@ bool OpenGlPlot::Distribute(const Real *dat, Integer len)
             
             #if DBGLVL_OPENGL_DATA
             MessageInterface::ShowMessage
-               (wxT("   after buffering, scNo=%d, scIndex=%d, X,Y,Z = %f, %f, %f\n"),
+               ("   after buffering, scNo=%d, scIndex=%d, X,Y,Z = %f, %f, %f\n",
                 i, scIndex, mScXArray[scIndex], mScYArray[scIndex], mScZArray[scIndex]);
             #endif
             
             #if DBGLVL_OPENGL_DATA > 1
             MessageInterface::ShowMessage
-               (wxT("   Vx,Vy,Vz = %f, %f, %f\n"),
+               ("   Vx,Vy,Vz = %f, %f, %f\n",
                 mScVxArray[scIndex], mScVyArray[scIndex], mScVzArray[scIndex]);
             #endif
          }
@@ -3178,14 +3178,14 @@ bool OpenGlPlot::Distribute(const Real *dat, Integer len)
          if (runstate == Gmat::SOLVING)
          {
             //MessageInterface::ShowMessage
-            //   (wxT("=====> num buffered = %d\n"), mCurrEpochArray.size());
+            //   ("=====> num buffered = %d\n", mCurrEpochArray.size());
             return true;
          }
       }
       
       
       #if DBGLVL_OPENGL_UPDATE > 0
-      MessageInterface::ShowMessage(wxT("==========> now update GL plot\n"));
+      MessageInterface::ShowMessage("==========> now update GL plot\n");
       #endif
       
       bool solving = false;

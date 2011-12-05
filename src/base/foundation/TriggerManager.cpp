@@ -24,7 +24,7 @@
 
 TriggerManager::TriggerManager() :
    triggerType       (Gmat::UNKNOWN_OBJECT),
-   triggerTypeString (wxT("Unknown"))
+   triggerTypeString ("Unknown")
 {
 }
 
@@ -58,7 +58,7 @@ const Integer TriggerManager::GetTriggerType()
 }
 
 
-const wxString TriggerManager::GetTriggerTypeString()
+const std::string TriggerManager::GetTriggerTypeString()
 {
    return triggerTypeString;
 }

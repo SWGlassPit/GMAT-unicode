@@ -28,7 +28,7 @@ class GMAT_API InterpolatorException : public BaseException
 {
 public:
    // class constructor
-   InterpolatorException(wxString details = wxT(""));
+   InterpolatorException(std::string details = "");
    // class destructor
    ~InterpolatorException();
 };

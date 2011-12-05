@@ -110,7 +110,7 @@ Real GmatMathUtil::Mod (Real left, Real right)
 {
    if (right == 0.0)  
    {
-      throw RealUtilitiesExceptions::ArgumentError(wxT("Mod(x, 0.0)"));
+      throw RealUtilitiesExceptions::ArgumentError("Mod(x, 0.0)");
    };
    return (left - Real(floor(left/right)*right));
 }
@@ -122,7 +122,7 @@ Real GmatMathUtil::Rem (Real left, Real right)
 {
    if (right == 0.0) 
    {
-      throw RealUtilitiesExceptions::ArgumentError(wxT("Rem(x, 0.0)"));
+      throw RealUtilitiesExceptions::ArgumentError("Rem(x, 0.0)");
    }; 
    return((left-Real(Integer(left/right))*right));
 }
@@ -134,7 +134,7 @@ void GmatMathUtil::Quotient (Real top, Real bottom, Integer &result)
 { 
     if (bottom == 0.0) 
     {
-        throw RealUtilitiesExceptions::ArgumentError(wxT("Quotient(x, 0.0, Integer)"));
+        throw RealUtilitiesExceptions::ArgumentError("Quotient(x, 0.0, Integer)");
     }; 
     result=Integer(top/bottom);
 }
@@ -146,7 +146,7 @@ void GmatMathUtil::Quotient (Real top, Real bottom, Real &result)
 {
    if (bottom == 0.0) 
    {
-      throw RealUtilitiesExceptions::ArgumentError(wxT("Quotient(x, 0.0, Real)"));
+      throw RealUtilitiesExceptions::ArgumentError("Quotient(x, 0.0, Real)");
    }; 
 
    result= Real(Integer(top/bottom));
@@ -308,7 +308,7 @@ Real GmatMathUtil::ArcsecToRad (Real asec, bool modBy2Pi)
 Real GmatMathUtil::Sin (Real angleInRad, Real cycleInRad)
 {
    if (cycleInRad<=0.0) 
-      throw RealUtilitiesExceptions::ArgumentError(wxT("Sin(angle, cycle <= 0.0)"));
+      throw RealUtilitiesExceptions::ArgumentError("Sin(angle, cycle <= 0.0)");
 
    return sin( (TWO_PI/cycleInRad)*angleInRad);
 }
@@ -334,7 +334,7 @@ Real GmatMathUtil::SinXOverX (Real angleInRad, Real cycleInRad)
 Real GmatMathUtil::Cos (Real angleInRad, Real cycleInRad)
 {
    if (cycleInRad<=0.0) 
-      throw RealUtilitiesExceptions::ArgumentError(wxT("Cos(angle, cycle <= 0.0)\n"));
+      throw RealUtilitiesExceptions::ArgumentError("Cos(angle, cycle <= 0.0)\n");
    
    return cos( (TWO_PI/cycleInRad)*angleInRad);
 }
@@ -345,7 +345,7 @@ Real GmatMathUtil::Cos (Real angleInRad, Real cycleInRad)
 Real GmatMathUtil::Tan (Real angleInRad, Real cycleInRad)
 {
    if (cycleInRad <= 0.0) 
-      throw RealUtilitiesExceptions::ArgumentError(wxT("Tan(angle, cycle <= 0.0)\n"));
+      throw RealUtilitiesExceptions::ArgumentError("Tan(angle, cycle <= 0.0)\n");
 
    return tan( (TWO_PI/cycleInRad)*angleInRad);
 }
@@ -356,7 +356,7 @@ Real GmatMathUtil::Tan (Real angleInRad, Real cycleInRad)
 Real GmatMathUtil::Cosh (Real angleInRad, Real cycleInRad)
 {
    if (cycleInRad <= 0.0) 
-      throw RealUtilitiesExceptions::ArgumentError(wxT("Cosh(angle, cycle <= 0.0)\n"));
+      throw RealUtilitiesExceptions::ArgumentError("Cosh(angle, cycle <= 0.0)\n");
    else if (IsEqual(GmatMathUtil::Cos(angleInRad,cycleInRad),0.0)) 
       throw RealUtilitiesExceptions::ArgumentError();
    
@@ -369,7 +369,7 @@ Real GmatMathUtil::Cosh (Real angleInRad, Real cycleInRad)
 Real GmatMathUtil::Sinh (Real angleInRad, Real cycleInRad)
 {
    if (cycleInRad <= 0.0) 
-      throw RealUtilitiesExceptions::ArgumentError(wxT("Sinh(angle, cycle <= 0.0)\n"));
+      throw RealUtilitiesExceptions::ArgumentError("Sinh(angle, cycle <= 0.0)\n");
    else if (IsEqual(GmatMathUtil::Cos(angleInRad,cycleInRad),0.0)) 
       throw RealUtilitiesExceptions::ArgumentError();
    
@@ -382,7 +382,7 @@ Real GmatMathUtil::Sinh (Real angleInRad, Real cycleInRad)
 Real GmatMathUtil::Tanh (Real angleInRad, Real cycleInRad)
 {
    if (cycleInRad <= 0.0) 
-      throw RealUtilitiesExceptions::ArgumentError(wxT("Tanh(angle, cycle <= 0.0)\n"));
+      throw RealUtilitiesExceptions::ArgumentError("Tanh(angle, cycle <= 0.0)\n");
    else if (IsEqual(GmatMathUtil::Cos(angleInRad,cycleInRad),0.0)) 
       throw RealUtilitiesExceptions::ArgumentError();
    
@@ -395,14 +395,14 @@ Real GmatMathUtil::Tanh (Real angleInRad, Real cycleInRad)
 Real GmatMathUtil::ASin (Real x, Real tol, Real cycleInRad)
 {
    if (cycleInRad <= 0.0) 
-      throw RealUtilitiesExceptions::ArgumentError(wxT("ASin(angle, cycle <= 0.0)\n"));
+      throw RealUtilitiesExceptions::ArgumentError("ASin(angle, cycle <= 0.0)\n");
 //   else if ((fabs(x) - 1.0) > GmatRealConstants::REAL_TOL)
-//      throw RealUtilitiesExceptions::ArgumentError(wxT("ASin(value > 1.0, cycle)\n"));
+//      throw RealUtilitiesExceptions::ArgumentError("ASin(value > 1.0, cycle)\n");
    if ((fabs(x) - 1.0) > 0.0)
    {
       #ifdef DEBUG_MATH_UTIL
       MessageInterface::ShowMessage
-         (wxT("ACos() checking additional tolerance for x=%.16f\n"), x);
+         ("ACos() checking additional tolerance for x=%.16f\n", x);
       #endif
 
       if ((x > 1.0 - tol) && (x <= 1.0 + tol))
@@ -411,8 +411,8 @@ Real GmatMathUtil::ASin (Real x, Real tol, Real cycleInRad)
          return - PI_OVER_TWO;
       else
          throw RealUtilitiesExceptions::ArgumentError
-            (wxT("The input \"") + GmatRealUtil::ToString(x, false, false, true, 17, 1) +
-             wxT("\" to ASin() is not within -1.0 and 1.0."));
+            ("The input \"" + GmatRealUtil::ToString(x, false, false, true, 17, 1) +
+             "\" to ASin() is not within -1.0 and 1.0.");
    }
    
    return (cycleInRad/TWO_PI)*asin(x);
@@ -425,13 +425,13 @@ Real GmatMathUtil::ASin (Real x, Real tol, Real cycleInRad)
 Real GmatMathUtil::ACos (Real x, Real tol, Real cycleInRad)
 {
    if (cycleInRad <= 0.0)
-      throw RealUtilitiesExceptions::ArgumentError(wxT("ACos(angle, cycle <= 0.0)\n"));
+      throw RealUtilitiesExceptions::ArgumentError("ACos(angle, cycle <= 0.0)\n");
    
    if ((fabs(x) - 1.0) > 0.0)
    {
       #ifdef DEBUG_MATH_UTIL
       MessageInterface::ShowMessage
-         (wxT("ACos() checking additional tolerance for x=%.16f\n"), x);
+         ("ACos() checking additional tolerance for x=%.16f\n", x);
       #endif
       
       if ((x > 1.0 - tol) && (x <= 1.0 + tol))
@@ -440,8 +440,8 @@ Real GmatMathUtil::ACos (Real x, Real tol, Real cycleInRad)
          return PI;
       else
          throw RealUtilitiesExceptions::ArgumentError
-            (wxT("The input \"") + GmatRealUtil::ToString(x, false, false, true, 17, 1) +
-             wxT("\" to ACos() is not within -1.0 and 1.0."));
+            ("The input \"" + GmatRealUtil::ToString(x, false, false, true, 17, 1) +
+             "\" to ACos() is not within -1.0 and 1.0.");
    }
    
    return (cycleInRad/TWO_PI)*acos(x);
@@ -454,7 +454,7 @@ Real GmatMathUtil::ACos (Real x, Real tol, Real cycleInRad)
 Real GmatMathUtil::ATan (Real y, Real x , Real cycleInRad)
 {
    if (cycleInRad <= 0.0) 
-      throw RealUtilitiesExceptions::ArgumentError(wxT("ATan(angle, cycle <= 0.0)\n"));
+      throw RealUtilitiesExceptions::ArgumentError("ATan(angle, cycle <= 0.0)\n");
    
    return (cycleInRad/TWO_PI)*atan2(y,x);
 }
@@ -466,7 +466,7 @@ Real GmatMathUtil::ATan (Real y, Real x , Real cycleInRad)
 Real GmatMathUtil::ATan2 (Real y, Real x , Real cycleInRad)
 {
    if (cycleInRad <= 0.0) 
-      throw RealUtilitiesExceptions::ArgumentError(wxT("ATan(angle, cycle <= 0.0)\n"));
+      throw RealUtilitiesExceptions::ArgumentError("ATan(angle, cycle <= 0.0)\n");
    
    return (cycleInRad/TWO_PI)*atan2(y,x);
 }
@@ -478,7 +478,7 @@ Real GmatMathUtil::ATan2 (Real y, Real x , Real cycleInRad)
 Real GmatMathUtil::ASinh (Real x, Real cycleInRad)
 {
    if (cycleInRad <= 0.0) 
-      throw RealUtilitiesExceptions::ArgumentError(wxT("ASinh(angle, cycle <= 0.0)\n"));
+      throw RealUtilitiesExceptions::ArgumentError("ASinh(angle, cycle <= 0.0)\n");
    
 #ifndef _MSC_VER  // if not Microsoft Visual C++
    return (cycleInRad/TWO_PI)*asinh(x);
@@ -494,7 +494,7 @@ Real GmatMathUtil::ASinh (Real x, Real cycleInRad)
 Real GmatMathUtil::ACosh (Real x, Real cycleInRad)
 {
    if (cycleInRad <= 0.0) 
-      throw RealUtilitiesExceptions::ArgumentError(wxT("ACosh(angle, cycle <= 0.0)\n"));
+      throw RealUtilitiesExceptions::ArgumentError("ACosh(angle, cycle <= 0.0)\n");
    
 #ifndef _MSC_VER  // if not Microsoft Visual C++
    return (cycleInRad/TWO_PI)*acosh(x);
@@ -510,7 +510,7 @@ Real GmatMathUtil::ACosh (Real x, Real cycleInRad)
 Real GmatMathUtil::ATanh (Real x, Real cycleInRad)
 {
    if (cycleInRad <= 0.0) 
-      throw RealUtilitiesExceptions::ArgumentError(wxT("ATanh(angle, cycle <= 0.0)\n"));
+      throw RealUtilitiesExceptions::ArgumentError("ATanh(angle, cycle <= 0.0)\n");
    
    //VC++ error C3861: 'atanh': identifier not found
 #ifndef _MSC_VER  // if not Microsoft Visual C++
@@ -531,7 +531,7 @@ Real GmatMathUtil::ATanh (Real x, Real cycleInRad)
 Real GmatMathUtil::Ln(Real x)
 {
    if (x <= 0.0)
-      throw RealUtilitiesExceptions::ArgumentError(wxT("Ln(x <= 0.0)\n"));
+      throw RealUtilitiesExceptions::ArgumentError("Ln(x <= 0.0)\n");
 
    return (log(x));
 }
@@ -547,7 +547,7 @@ Real GmatMathUtil::Ln(Real x)
 Real GmatMathUtil::Log(Real x)
 {
    if (x <= 0.0)
-      throw RealUtilitiesExceptions::ArgumentError(wxT("Log(x <= 0.0)\n"));
+      throw RealUtilitiesExceptions::ArgumentError("Log(x <= 0.0)\n");
 
    return (log(x));
 }
@@ -563,7 +563,7 @@ Real GmatMathUtil::Log(Real x)
 Real GmatMathUtil::Log10(Real x)
 {
    if (x <= 0.0)
-      throw RealUtilitiesExceptions::ArgumentError(wxT("Log10(x <= 0.0)\n"));
+      throw RealUtilitiesExceptions::ArgumentError("Log10(x <= 0.0)\n");
 
    return (log10(x));
 }
@@ -900,7 +900,7 @@ Real GmatMathUtil::Sqrt(Real x)
    if (x < 0.0)
    {      
       throw RealUtilitiesExceptions::ArgumentError
-         (wxT("Sqrt(x) x is less than 0.0.  x = ") + GmatRealUtil::ToString(x) +wxT("\n"));
+         ("Sqrt(x) x is less than 0.0.  x = " + GmatRealUtil::ToString(x) +"\n");
    }
    
    return sqrt(x);

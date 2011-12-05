@@ -26,7 +26,7 @@
 class GMAT_API RadToDeg : public MathFunction
 {
 public:
-   RadToDeg(const wxString &nomme);
+   RadToDeg(const std::string &nomme);
    virtual ~RadToDeg();
    RadToDeg(const RadToDeg &copy);
                  

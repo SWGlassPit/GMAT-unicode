@@ -35,8 +35,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Determinant::Determinant(const wxString &nomme)
-   : MathFunction(wxT("Determinant"), nomme)
+Determinant::Determinant(const std::string &nomme)
+   : MathFunction("Determinant", nomme)
 {
 }
 
@@ -95,7 +95,7 @@ void Determinant::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCo
 
    #if DEBUG_DETERMINANT
    MessageInterface::ShowMessage
-      (wxT("Determinant::GetOutputInfo() type=%d, rowCount=%d, colCount=%d\n"),
+      ("Determinant::GetOutputInfo() type=%d, rowCount=%d, colCount=%d\n",
        type, rowCount, colCount);
    #endif
 }
@@ -112,13 +112,13 @@ void Determinant::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCo
 bool Determinant::ValidateInputs()
 {
    if (leftNode == NULL)
-      throw MathException(wxT("Determinant() - Missing input arguments.\n"));
+      throw MathException("Determinant() - Missing input arguments.\n");
    
    Integer type1, row1, col1; // Left node
 
    #if DEBUG_DETERMINANT
    MessageInterface::ShowMessage
-      (wxT("Determinant::ValidateInputs() left=%s, %s\n"),
+      ("Determinant::ValidateInputs() left=%s, %s\n",
        leftNode->GetTypeName().c_str(), leftNode->GetName().c_str());
    #endif
    

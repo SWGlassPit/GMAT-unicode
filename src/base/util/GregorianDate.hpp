@@ -37,44 +37,44 @@ public:
    class GregorianDateException : public BaseException
    { 
       public: 
-         GregorianDateException(const wxString& message =
-          wxT("GregorianDateException:  Invalid date format"))
+         GregorianDateException(const std::string& message =
+          "GregorianDateException:  Invalid date format")
          : BaseException(message) {};
    };
    
    GregorianDate();
-   GregorianDate(const wxString &str);
+   GregorianDate(const std::string &str);
    GregorianDate(Date *newDate, Integer format = 1);
    ~GregorianDate();
    
-   wxString      GetDate() const;
-   bool             SetDate(const wxString &str);
+   std::string      GetDate() const;
+   bool             SetDate(const std::string &str);
    bool             SetDate(Date *newDate, Integer format = 1);
    
-   wxString      GetType() const;
-   bool             SetType(const wxString &str);
+   std::string      GetType() const;
+   bool             SetType(const std::string &str);
    
-   wxString      GetYMDHMS() const;
+   std::string      GetYMDHMS() const;
    
    bool             IsValid() const;
-   static bool      IsValid(const wxString &greg);
+   static bool      IsValid(const std::string &greg);
    
 private:
    // function method
-   void           Initialize(const wxString &str);
-   void           ParseOut(const wxString &str);
+   void           Initialize(const std::string &str);
+   void           ParseOut(const std::string &str);
    
-   wxString    NumToString(const Integer num);
-   wxString    NumToString(const Real num);
-   Integer        ToInteger(const wxString &str);
-   Real           ToReal(const wxString &str);
+   std::string    NumToString(const Integer num);
+   std::string    NumToString(const Real num);
+   Integer        ToInteger(const std::string &str);
+   Real           ToReal(const std::string &str);
    
-   wxString    GetMonthName(const Integer month);
+   std::string    GetMonthName(const Integer month);
    
    // data method
-   wxString      stringDate;
-   wxString      stringYMDHMS;
-   wxString      type;
+   std::string      stringDate;
+   std::string      stringYMDHMS;
+   std::string      type;
    Integer          outFormat;
    bool             isValid;
    bool             initialized;

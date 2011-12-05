@@ -27,7 +27,7 @@
 class GMAT_API Tanh : public MathFunction
 {
 public:
-   Tanh(const wxString &nomme);
+   Tanh(const std::string &nomme);
    virtual ~Tanh();
    Tanh(const Tanh &copy);
                  

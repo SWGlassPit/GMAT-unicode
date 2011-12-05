@@ -22,7 +22,7 @@
 #include "MathException.hpp"
 
 //------------------------------------------------------------------------------
-//  MathException(wxString details)
+//  MathException(std::string details)
 //------------------------------------------------------------------------------
 /**
  * Constructs MathException instance (default constructor).
@@ -30,8 +30,8 @@
  * @param details A message providing the details of the exception. 
  */
 //------------------------------------------------------------------------------
-MathException::MathException(wxString details)
-   : BaseException (wxT("Math Exception: "), details)
+MathException::MathException(std::string details)
+   : BaseException ("Math Exception: ", details)
 {
 }
 

@@ -26,7 +26,7 @@
 #include "StringUtil.hpp"  // for Replace()
 #include "MessageInterface.hpp"
 #include "TextParser.hpp"
-#include <sstream>         // for wxStringstream
+#include <sstream>         // for std::stringstream
 
 
 //#define DEBUG_VARIABLE_RANGES
@@ -48,18 +48,18 @@
 //------------------------------------------------------------------------------
 //  static data
 //------------------------------------------------------------------------------
-const wxString Vary::PARAMETER_TEXT[VaryParamCount -
+const std::string Vary::PARAMETER_TEXT[VaryParamCount -
                                        GmatCommandParamCount] = 
 {
-   wxT("SolverName"),
-   wxT("Variable"),
-   wxT("InitialValue"),
-   wxT("Perturbation"),
-   wxT("Lower"),
-   wxT("Upper"),
-   wxT("MaxStep"),
-   wxT("AdditiveScaleFactor"),
-   wxT("MultiplicativeScaleFactor")   
+   "SolverName",
+   "Variable",
+   "InitialValue",
+   "Perturbation",
+   "Lower",
+   "Upper",
+   "MaxStep",
+   "AdditiveScaleFactor",
+   "MultiplicativeScaleFactor"   
 };
 
 const Gmat::ParameterType Vary::PARAMETER_TYPE[VaryParamCount -
@@ -85,35 +85,35 @@ const Gmat::ParameterType Vary::PARAMETER_TYPE[VaryParamCount -
  */
 //------------------------------------------------------------------------------
 Vary::Vary() :
-   GmatCommand                   (wxT("Vary")),
-   solverName                    (wxT("")),
+   GmatCommand                   ("Vary"),
+   solverName                    (""),
    solver                        (NULL),
-   variableName                  (wxT("")),
+   variableName                  (""),
    variable                      (NULL),
-   initialValueName              (wxT("0.0")),
+   initialValueName              ("0.0"),
    initialValue                  (NULL),
    currentValue                  (0.0),
-   perturbationName              (wxT("0.001")),
+   perturbationName              ("0.001"),
    perturbation                  (NULL),
-   variableLowerName             (wxT("-9.999999e300")),
+   variableLowerName             ("-9.999999e300"),
    variableLower                 (NULL),
-   variableUpperName             (wxT("9.999999e300")),
+   variableUpperName             ("9.999999e300"),
    variableUpper                 (NULL),
-   variableMaximumStepName       (wxT("9.999999e300")),
+   variableMaximumStepName       ("9.999999e300"),
    variableMaximumStep           (NULL),
-   additiveScaleFactorName       (wxT("0.0")),
+   additiveScaleFactorName       ("0.0"),
    additiveScaleFactor           (NULL),
-   multiplicativeScaleFactorName (wxT("1.0")),
+   multiplicativeScaleFactorName ("1.0"),
    multiplicativeScaleFactor     (NULL),
    variableID                    (-1),
    solverDataFinalized           (false)
 {
-   settables.push_back(wxT("Perturbation")); 
-   settables.push_back(wxT("MaxStep"));
-   settables.push_back(wxT("Lower"));  
-   settables.push_back(wxT("Upper"));  
-   settables.push_back(wxT("AdditiveScaleFactor"));
-   settables.push_back(wxT("MultiplicativeScaleFactor"));
+   settables.push_back("Perturbation"); 
+   settables.push_back("MaxStep");
+   settables.push_back("Lower");  
+   settables.push_back("Upper");  
+   settables.push_back("AdditiveScaleFactor");
+   settables.push_back("MultiplicativeScaleFactor");
 //    //parameterCount += 7;
 //    additiveScaleFactor.push_back(0.0);
 //    multiplicativeScaleFactor.push_back(1.0);
@@ -225,7 +225,7 @@ GmatBase* Vary::Clone() const
 
 
 //------------------------------------------------------------------------------
-//  const wxString& GetGeneratingString()
+//  const std::string& GetGeneratingString()
 //------------------------------------------------------------------------------
 /**
  * Method used to retrieve the string that was parsed to build this GmatCommand.
@@ -245,130 +245,131 @@ GmatBase* Vary::Clone() const
  * @return The script line that, when interpreted, defines this Vary command.
  */
 //------------------------------------------------------------------------------
-const wxString& Vary::GetGeneratingString(Gmat::WriteMode mode,
-                                             const wxString &prefix,
-                                             const wxString &useName)
+const std::string& Vary::GetGeneratingString(Gmat::WriteMode mode,
+                                             const std::string &prefix,
+                                             const std::string &useName)
 {
    #ifdef DEBUG_VARY_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("Vary::GetGeneratingString() <%p>'%s' entered\n"), this, GetTypeName().c_str());
+      ("Vary::GetGeneratingString() <%p>'%s' entered\n", this, GetTypeName().c_str());
    #endif
    
    // Build the local string
-   wxString details;
+   std::stringstream details;
+   details.precision(16);
    
-   wxString gen = prefix + wxT("Vary ") + solverName + wxT("(");
+   std::string gen = prefix + "Vary " + solverName + "(";
    
    // loj: added check for NULL pointer to avoid crash and we can still
    // get generating string (2008.05.22)
    // Iterate through the variables
    if (variable)
-      details << variable->GetDescription() << wxT(" = ");
+      details << variable->GetDescription() << " = ";
    else
-      details << wxT("Unknown-Variable") << wxT(" = ");
+      details << "Unknown-Variable" << " = ";
    
    if (initialValue)
       if (initialValue->GetWrapperType() != Gmat::NUMBER_WT)
-         details << initialValue->GetDescription() <<  wxT(", ");
+         details << initialValue->GetDescription() <<  ", ";
       else
-         details << initialValue->EvaluateReal() <<  wxT(", ");
+         details << initialValue->EvaluateReal() <<  ", ";
    else
-      details << wxT("Unknown-InitialValue")  <<  wxT(", ");
+      details << "Unknown-InitialValue"  <<  ", ";
    
-   details << wxT("{");
+   details << "{";
    Integer addCount = 0;
    
    if (solver)
    {
       #ifdef DEBUG_VARY_GEN_STRING
       MessageInterface::ShowMessage
-         (wxT("   solver = <%p><%s>'%s'\n"), solver, solver->GetTypeName().c_str(),
+         ("   solver = <%p><%s>'%s'\n", solver, solver->GetTypeName().c_str(),
           solver->GetName().c_str());
       #endif
       
-      Integer id = solver->GetParameterID(wxT("AllowVariablePertSetting"));
+      Integer id = solver->GetParameterID("AllowVariablePertSetting");
       if (solver->GetBooleanParameter(id))
       {
-         details << wxT("Perturbation = ");
+         details << "Perturbation = ";
          if (perturbation)
             details << perturbation->GetDescription();
          else
-            details << wxT("Unknown-Perturbation");
+            details << "Unknown-Perturbation";
          
          addCount++;
       }
       
-      id = solver->GetParameterID(wxT("AllowRangeSettings"));
+      id = solver->GetParameterID("AllowRangeSettings");
       if (solver->GetBooleanParameter(id))
       {
          if (addCount > 0)
-            details << wxT(", ");
+            details << ", ";
          
-         details << wxT("Lower = ");
+         details << "Lower = ";
          if (variableLower)
             details << variableLower->GetDescription();
          else
-            details << wxT("Unknown-VariableLower");
+            details << "Unknown-VariableLower";
          
-         details << wxT(", Upper = ");
+         details << ", Upper = ";
          if (variableUpper)
             details << variableUpper->GetDescription();
          else
-            details << wxT("Unknown-VariableUpper");
+            details << "Unknown-VariableUpper";
          
          addCount++;
       }
       
-      id = solver->GetParameterID(wxT("AllowStepsizeSetting"));
+      id = solver->GetParameterID("AllowStepsizeSetting");
       if (solver->GetBooleanParameter(id))
       {
          if (addCount > 0)
-            details << wxT(", ");
+            details << ", ";
          
-         details << wxT("MaxStep = ");
+         details << "MaxStep = ";
          
          if (variableMaximumStep)
             details << variableMaximumStep->GetDescription();
          else
-            details << wxT("Unknown-VariableMaximumStep");
+            details << "Unknown-VariableMaximumStep";
          
          addCount++;
       }
       
-      id = solver->GetParameterID(wxT("AllowScaleSetting"));
-      if (solver->GetBooleanParameter(solver->GetParameterID(wxT("AllowScaleSetting"))))
+      id = solver->GetParameterID("AllowScaleSetting");
+      if (solver->GetBooleanParameter(solver->GetParameterID("AllowScaleSetting")))
       {
          if (addCount > 0)
-            details << wxT(", ");
+            details << ", ";
          
-         details << wxT("AdditiveScaleFactor = ");
+         details << "AdditiveScaleFactor = ";
          if (additiveScaleFactor)
             details << additiveScaleFactor->GetDescription();
          else
-            details << wxT("Unknown-AdditiveScaleFactor");
+            details << "Unknown-AdditiveScaleFactor";
          
-         details << wxT(", MultiplicativeScaleFactor = ");
+         details << ", MultiplicativeScaleFactor = ";
          if (multiplicativeScaleFactor)
             details << multiplicativeScaleFactor->GetDescription();
          else
-            details << wxT("Unknown-MultiplicativeScaleFactor");
+            details << "Unknown-MultiplicativeScaleFactor";
       }
    }
    else
    {
       #ifdef DEBUG_VARY_GEN_STRING
-      MessageInterface::ShowMessage(wxT("   solver is NULL\n"));
+      MessageInterface::ShowMessage("   solver is NULL\n");
       #endif
 
-      details << wxT("SOLVER IS NOT SET");
+      details << "SOLVER IS NOT SET";
    }
    
-   gen += details;
-   generatingString = gen + wxT("});");
+   gen += details.str();
+   generatingString = gen + "});";
    
    #ifdef DEBUG_VARY_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("Vary::GetGeneratingString() <%p>'%s' returning, '%s'\n"),
+      ("Vary::GetGeneratingString() <%p>'%s' returning, '%s'\n",
        this, GetTypeName().c_str(), generatingString.c_str());
    #endif
    
@@ -379,15 +380,15 @@ const wxString& Vary::GetGeneratingString(Gmat::WriteMode mode,
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool Vary::RenameRefObject(const Gmat::ObjectType type,
-                           const wxString &oldName,
-                           const wxString &newName)
+                           const std::string &oldName,
+                           const std::string &newName)
 {
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("Vary::RenameRefObject() type=%d, oldName=%s, newName=%s\n"),
+      ("Vary::RenameRefObject() type=%d, oldName=%s, newName=%s\n",
        type, oldName.c_str(), newName.c_str());
    #endif
 
@@ -490,9 +491,9 @@ const StringArray& Vary::GetRefObjectNameArray(const Gmat::ObjectType type)
 
 
 //---------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //---------------------------------------------------------------------------
-wxString Vary::GetParameterText(const Integer id) const
+std::string Vary::GetParameterText(const Integer id) const
 {
    if ((id >= GmatCommandParamCount) && (id < VaryParamCount))
       return PARAMETER_TEXT[id - GmatCommandParamCount];
@@ -502,9 +503,9 @@ wxString Vary::GetParameterText(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //---------------------------------------------------------------------------
-Integer Vary::GetParameterID(const wxString &str) const
+Integer Vary::GetParameterID(const std::string &str) const
 {
    for (Integer i = GmatCommandParamCount; i < VaryParamCount; ++i)
    {
@@ -529,9 +530,9 @@ Gmat::ParameterType Vary::GetParameterType(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //---------------------------------------------------------------------------
-wxString Vary::GetParameterTypeString(const Integer id) const
+std::string Vary::GetParameterTypeString(const Integer id) const
 {
    return GmatCommand::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -581,7 +582,7 @@ Real Vary::SetRealParameter(const Integer id, const Real value)
 {
    #ifdef DEBUG_VARY_PARAMS
       MessageInterface::ShowMessage(
-      wxT("Vary::Setting value of %f for parameter %s\n"), value,
+      "Vary::Setting value of %f for parameter %s\n", value,
       (GetParameterText(id)).c_str());
    #endif
 
@@ -590,9 +591,9 @@ Real Vary::SetRealParameter(const Integer id, const Real value)
 
 
 //---------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //---------------------------------------------------------------------------
-wxString Vary::GetStringParameter(const Integer id) const
+std::string Vary::GetStringParameter(const Integer id) const
 {
    //if (id == solverNameID)
    if (id == SOLVER_NAME)
@@ -628,13 +629,13 @@ wxString Vary::GetStringParameter(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-//  wxString GetStringParameter(const wxString &label) const
+//  std::string GetStringParameter(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString Vary::GetStringParameter(const wxString &label) const
+std::string Vary::GetStringParameter(const std::string &label) const
 {
    Integer id = GetParameterID(label);
    return GetStringParameter(id);
@@ -642,9 +643,9 @@ wxString Vary::GetStringParameter(const wxString &label) const
 
 
 //---------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //---------------------------------------------------------------------------
-bool Vary::SetStringParameter(const Integer id, const wxString &value)
+bool Vary::SetStringParameter(const Integer id, const std::string &value)
 {
    if (id == SOLVER_NAME)
    {
@@ -699,7 +700,7 @@ bool Vary::SetStringParameter(const Integer id, const wxString &value)
             break;
          
          default:
-            throw GmatBaseException(wxT("Unknown property for Vary command\n"));
+            throw GmatBaseException("Unknown property for Vary command\n");
       }
       
       return true;
@@ -710,13 +711,13 @@ bool Vary::SetStringParameter(const Integer id, const wxString &value)
 
 
 //---------------------------------------------------------------------------
-//  bool SetStringParameter(const wxString &label, const wxString &value)
+//  bool SetStringParameter(const std::string &label, const std::string &value)
 //---------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-bool Vary::SetStringParameter(const wxString &label, const wxString &value)
+bool Vary::SetStringParameter(const std::string &label, const std::string &value)
 {
    Integer id = GetParameterID(label);
    return SetStringParameter(id, value);
@@ -725,7 +726,7 @@ bool Vary::SetStringParameter(const wxString &label, const wxString &value)
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                    const wxString &name = "")
+//                    const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Sets referenced objects.
@@ -738,7 +739,7 @@ bool Vary::SetStringParameter(const wxString &label, const wxString &value)
  */
 //------------------------------------------------------------------------------
 bool Vary::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                        const wxString &name)
+                        const std::string &name)
 {
    if (type == Gmat::SOLVER)
    {
@@ -786,59 +787,59 @@ bool Vary::InterpretAction()
    StringArray chunks = InterpretPreface();
 
    #ifdef DEBUG_VARY_PARSING
-      MessageInterface::ShowMessage(wxT("Preface chunks as\n"));
+      MessageInterface::ShowMessage("Preface chunks as\n");
       for (StringArray::iterator i = chunks.begin(); i != chunks.end(); ++i)
-         MessageInterface::ShowMessage(wxT("   \"%s\"\n"), i->c_str());
-      MessageInterface::ShowMessage(wxT("\n"));
+         MessageInterface::ShowMessage("   \"%s\"\n", i->c_str());
+      MessageInterface::ShowMessage("\n");
    #endif
 
    if (chunks.size() <= 1)
-      throw CommandException(wxT("Missing information for Vary command.\n"));
+      throw CommandException("Missing information for Vary command.\n");
    
-   if (chunks[1].at(0) == wxT('('))
-      throw CommandException(wxT("Missing solver name for Vary command.\n"));
+   if (chunks[1].at(0) == '(')
+      throw CommandException("Missing solver name for Vary command.\n");
    
-   if ((chunks[1].find(wxT("[")) != chunks[1].npos) || (chunks[1].find(wxT("]")) != chunks[1].npos))
-      throw CommandException(wxT("Brackets not allowed in Vary command"));
+   if ((chunks[1].find("[") != chunks[1].npos) || (chunks[1].find("]") != chunks[1].npos))
+      throw CommandException("Brackets not allowed in Vary command");
 
-   if (!GmatStringUtil::AreAllBracketsBalanced(chunks[1], wxT("({)}")))      
+   if (!GmatStringUtil::AreAllBracketsBalanced(chunks[1], "({)}"))      
       throw CommandException
-         (wxT("Parentheses, braces, or brackets are unbalanced"));
+         ("Parentheses, braces, or brackets are unbalanced");
 
       // Find and set the solver object name
    // This is the only setting in Vary that is not in a wrapper
-   StringArray currentChunks = parser.Decompose(chunks[1], wxT("()"), false);
+   StringArray currentChunks = parser.Decompose(chunks[1], "()", false);
    SetStringParameter(SOLVER_NAME, currentChunks[0]);
    
    // The remaining text in the instruction is the variable definition and 
    // parameters, all contained in currentChunks[1].  Deal with those next.
    //currentChunks = parser.SeparateBrackets(currentChunks[1], "()", ", ");
-   //wxString noLeftBrace  = GmatStringUtil::RemoveAll(currentChunks[1],'{');
-   //wxString noRightBrace = GmatStringUtil::RemoveAll(noLeftBrace,'}');
-   //wxString noSpaces     = GmatStringUtil::RemoveAll(noRightBrace,' ');
-   wxString noSpaces2     = GmatStringUtil::RemoveAll(currentChunks[1],wxT(' '));
-   currentChunks = parser.Decompose(noSpaces2, wxT("()"), true, true);
+   //std::string noLeftBrace  = GmatStringUtil::RemoveAll(currentChunks[1],'{');
+   //std::string noRightBrace = GmatStringUtil::RemoveAll(noLeftBrace,'}');
+   //std::string noSpaces     = GmatStringUtil::RemoveAll(noRightBrace,' ');
+   std::string noSpaces2     = GmatStringUtil::RemoveAll(currentChunks[1],' ');
+   currentChunks = parser.Decompose(noSpaces2, "()", true, true);
    //currentChunks = parser.Decompose(currentChunks[1], "()", true, true);
    
    #ifdef DEBUG_VARY_PARSING
       //MessageInterface::ShowMessage(
       //   "Vary:  noSpaces = %s\n", noSpaces.c_str());
       MessageInterface::ShowMessage(
-         wxT("Vary: after Decompose, current chunks = \n"));
+         "Vary: after Decompose, current chunks = \n");
       for (Integer jj = 0; jj < (Integer) currentChunks.size(); jj++)
-         MessageInterface::ShowMessage(wxT("   %s\n"),
+         MessageInterface::ShowMessage("   %s\n",
                                        currentChunks[jj].c_str());
    #endif
 
    // First chunk is the variable and initial value
-   wxString lhs, rhs;
+   std::string lhs, rhs;
    if (!SeparateEquals(currentChunks[0], lhs, rhs, true))
       // Variable takes default initial value
       //rhs = "0.0";
    {
-      throw CommandException(wxT("The variable \"") + lhs + 
-         wxT("\" is missing the \"=\" operator or an initial value required for a ") + typeName + 
-         wxT(" command.\n"));
+      throw CommandException("The variable \"" + lhs + 
+         "\" is missing the \"=\" operator or an initial value required for a " + typeName + 
+         " command.\n");
    }
       
    variableName = lhs;
@@ -848,23 +849,23 @@ bool Vary::InterpretAction()
    
    #ifdef DEBUG_VARY_PARSING
       MessageInterface::ShowMessage(
-         wxT("Vary:  setting variableName to %s\n"), variableName.c_str());
+         "Vary:  setting variableName to %s\n", variableName.c_str());
       MessageInterface::ShowMessage(
-         wxT("Vary:  setting initialValueName to %s\n"), initialValueName.c_str());
+         "Vary:  setting initialValueName to %s\n", initialValueName.c_str());
    #endif
    
    if (currentChunks.size() > 1)
    {
-      wxString noSpaces     = GmatStringUtil::RemoveAll(currentChunks[1],wxT(' '));
+      std::string noSpaces     = GmatStringUtil::RemoveAll(currentChunks[1],' ');
       // Now deal with the settable parameters
       //currentChunks = parser.SeparateBrackets(currentChunks[1], "{}", ",", false);
-      currentChunks = parser.SeparateBrackets(noSpaces, wxT("{}"), wxT(","), true);
+      currentChunks = parser.SeparateBrackets(noSpaces, "{}", ",", true);
       
       #ifdef DEBUG_VARY_PARSING
          MessageInterface::ShowMessage(
-            wxT("Vary: After SeparateBrackets, current chunks = \n"));
+            "Vary: After SeparateBrackets, current chunks = \n");
          for (Integer jj = 0; jj < (Integer) currentChunks.size(); jj++)
-            MessageInterface::ShowMessage(wxT("   %s\n"),
+            MessageInterface::ShowMessage("   %s\n",
                                           currentChunks[jj].c_str());
       #endif
       
@@ -875,20 +876,20 @@ bool Vary::InterpretAction()
       {
          bool isOK = SeparateEquals(*i, lhs, rhs, true);
          #ifdef DEBUG_VARY_PARSING
-            MessageInterface::ShowMessage(wxT("Setting Vary properties\n"));
-            MessageInterface::ShowMessage(wxT("   \"%s\" = \"%s\"\n"), lhs.c_str(), rhs.c_str());
+            MessageInterface::ShowMessage("Setting Vary properties\n");
+            MessageInterface::ShowMessage("   \"%s\" = \"%s\"\n", lhs.c_str(), rhs.c_str());
          #endif
          if (!isOK || lhs.empty() || rhs.empty())
-            throw CommandException(wxT("The setting \"") + lhs + 
-               wxT("\" is missing the \"=\" operator or a value required for a ") + typeName + 
-               wxT(" command.\n"));
+            throw CommandException("The setting \"" + lhs + 
+               "\" is missing the \"=\" operator or a value required for a " + typeName + 
+               " command.\n");
          
          if (IsSettable(lhs))
             SetStringParameter(GetParameterID(lhs), rhs);
          else
-            throw CommandException(wxT("The setting \"") + lhs + 
-               wxT("\" is not a valid setting for a ") + typeName + 
-               wxT(" command.\n"));
+            throw CommandException("The setting \"" + lhs + 
+               "\" is not a valid setting for a " + typeName + 
+               " command.\n");
       }
    }
    return true;
@@ -937,14 +938,14 @@ const StringArray& Vary::GetWrapperObjectNameArray()
 
 
 //------------------------------------------------------------------------------
-// bool SetElementWrapper(ElementWrapper *toWrapper, const wxString &withName)
+// bool SetElementWrapper(ElementWrapper *toWrapper, const std::string &withName)
 //------------------------------------------------------------------------------
-bool Vary::SetElementWrapper(ElementWrapper *toWrapper, const wxString &withName)
+bool Vary::SetElementWrapper(ElementWrapper *toWrapper, const std::string &withName)
 {
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("Vary::SetElementWrapper() <%p> entered, toWrapper=<%p>'%s', withName='%s'\n"),
-       this, toWrapper, toWrapper ? toWrapper->GetDescription().c_str() : wxT("NULL"),
+      ("Vary::SetElementWrapper() <%p> entered, toWrapper=<%p>'%s', withName='%s'\n",
+       this, toWrapper, toWrapper ? toWrapper->GetDescription().c_str() : "NULL",
        withName.c_str());
    #endif
    
@@ -954,15 +955,15 @@ bool Vary::SetElementWrapper(ElementWrapper *toWrapper, const wxString &withName
    
    if (toWrapper->GetWrapperType() == Gmat::ARRAY_WT)
    {
-      throw CommandException(wxT("A value of type \"Array\" on command \"") + typeName + 
-                  wxT("\" is not an allowed value.\nThe allowed values are:")
-                  wxT(" [ Real Number, Variable, Array Element, or Parameter ]. ")); 
+      throw CommandException("A value of type \"Array\" on command \"" + typeName + 
+                  "\" is not an allowed value.\nThe allowed values are:"
+                  " [ Real Number, Variable, Array Element, or Parameter ]. "); 
    }
-   CheckDataType(toWrapper, Gmat::REAL_TYPE, wxT("Vary"), true);
+   CheckDataType(toWrapper, Gmat::REAL_TYPE, "Vary", true);
    
    
    #ifdef DEBUG_WRAPPER_CODE   
-   MessageInterface::ShowMessage(wxT("   Setting wrapper \"%s\" on Vary command\n"), 
+   MessageInterface::ShowMessage("   Setting wrapper \"%s\" on Vary command\n", 
       withName.c_str());
    #endif
    
@@ -1064,7 +1065,7 @@ bool Vary::SetElementWrapper(ElementWrapper *toWrapper, const wxString &withName
    
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("Vary::SetElementWrapper() <%p> returning %d\n"), this, retval);
+      ("Vary::SetElementWrapper() <%p> returning %d\n", this, retval);
    #endif
    
    return retval;
@@ -1078,7 +1079,7 @@ void Vary::ClearWrappers()
 {
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("Vary::ClearWrappers() entered, has %d old wrappers\n"), oldWrappers.size());
+      ("Vary::ClearWrappers() entered, has %d old wrappers\n", oldWrappers.size());
    #endif
    
    // For element wrapper cleanup
@@ -1109,10 +1110,10 @@ bool Vary::Initialize()
    bool retval = GmatCommand::Initialize();
 
    if (solver == NULL)
-      throw CommandException(wxT("solver not initialized for Vary command\n  \"")
-                             + generatingString + wxT("\"\n"));
+      throw CommandException("solver not initialized for Vary command\n  \""
+                             + generatingString + "\"\n");
 
-   Integer id = solver->GetParameterID(wxT("Variables"));
+   Integer id = solver->GetParameterID("Variables");
    solver->SetStringParameter(id, variableName);
         
    // The solver cannot be finalized until all of the loop is initialized
@@ -1120,56 +1121,56 @@ bool Vary::Initialize()
 
    // Set references for the wrappers   
    #ifdef DEBUG_VARY_PARAMS
-      MessageInterface::ShowMessage(wxT("Setting refs for variable\n"));
+      MessageInterface::ShowMessage("Setting refs for variable\n");
    #endif
    if (SetWrapperReferences(*variable) == false)
       return false;
-   CheckDataType(variable, Gmat::REAL_TYPE, wxT("Vary"));
+   CheckDataType(variable, Gmat::REAL_TYPE, "Vary");
    #ifdef DEBUG_VARY_PARAMS
-      MessageInterface::ShowMessage(wxT("Setting refs for initial value\n"));
+      MessageInterface::ShowMessage("Setting refs for initial value\n");
    #endif
    if (SetWrapperReferences(*initialValue) == false)
       return false;
-   CheckDataType(initialValue, Gmat::REAL_TYPE, wxT("Vary"));
+   CheckDataType(initialValue, Gmat::REAL_TYPE, "Vary");
    #ifdef DEBUG_VARY_PARAMS
-      MessageInterface::ShowMessage(wxT("Setting refs for perturbation\n"));
+      MessageInterface::ShowMessage("Setting refs for perturbation\n");
    #endif
    if (SetWrapperReferences(*perturbation) == false)
       return false;
-   CheckDataType(perturbation, Gmat::REAL_TYPE, wxT("Vary"));
+   CheckDataType(perturbation, Gmat::REAL_TYPE, "Vary");
    #ifdef DEBUG_VARY_PARAMS
-      MessageInterface::ShowMessage(wxT("Setting refs for minimum\n"));
+      MessageInterface::ShowMessage("Setting refs for minimum\n");
    #endif
    if (SetWrapperReferences(*variableLower) == false)
       return false;
-   CheckDataType(variableLower, Gmat::REAL_TYPE, wxT("Vary"));
+   CheckDataType(variableLower, Gmat::REAL_TYPE, "Vary");
    #ifdef DEBUG_VARY_PARAMS
-      MessageInterface::ShowMessage(wxT("Setting refs for maximum\n"));
+      MessageInterface::ShowMessage("Setting refs for maximum\n");
    #endif
    if (SetWrapperReferences(*variableUpper) == false)
       return false;
-   CheckDataType(variableUpper, Gmat::REAL_TYPE, wxT("Vary"));
+   CheckDataType(variableUpper, Gmat::REAL_TYPE, "Vary");
    #ifdef DEBUG_VARY_PARAMS
-      MessageInterface::ShowMessage(wxT("Setting refs for max step\n"));
+      MessageInterface::ShowMessage("Setting refs for max step\n");
    #endif
    if (SetWrapperReferences(*variableMaximumStep) == false)
       return false;
-   CheckDataType(variableMaximumStep, Gmat::REAL_TYPE, wxT("Vary"));
+   CheckDataType(variableMaximumStep, Gmat::REAL_TYPE, "Vary");
    #ifdef DEBUG_VARY_PARAMS
-      MessageInterface::ShowMessage(wxT("Setting refs for additive scale factor\n"));
+      MessageInterface::ShowMessage("Setting refs for additive scale factor\n");
    #endif
    if (SetWrapperReferences(*additiveScaleFactor) == false)
       return false;
-   CheckDataType(additiveScaleFactor, Gmat::REAL_TYPE, wxT("Vary"));
+   CheckDataType(additiveScaleFactor, Gmat::REAL_TYPE, "Vary");
    #ifdef DEBUG_VARY_PARAMS
-      MessageInterface::ShowMessage(wxT("Setting refs for mult. scale factor\n"));
+      MessageInterface::ShowMessage("Setting refs for mult. scale factor\n");
    #endif
    if (SetWrapperReferences(*multiplicativeScaleFactor) == false)
       return false;
-   CheckDataType(multiplicativeScaleFactor, Gmat::REAL_TYPE, wxT("Vary"));
+   CheckDataType(multiplicativeScaleFactor, Gmat::REAL_TYPE, "Vary");
 
    #ifdef DEBUG_VARY_PARAMS
-      MessageInterface::ShowMessage(wxT("Vary command Initialization complete\n"));
+      MessageInterface::ShowMessage("Vary command Initialization complete\n");
    #endif
 
    return retval;
@@ -1196,14 +1197,14 @@ bool Vary::Execute()
 
    #ifdef DEBUG_VARY_EXECUTE
       MessageInterface::ShowMessage
-         (wxT("Vary::Execute() solverDataFinalized=%d\n"), solverDataFinalized);
+         ("Vary::Execute() solverDataFinalized=%d\n", solverDataFinalized);
    #endif
     
    if (!solverDataFinalized) 
    {
       #ifdef DEBUG_VARY_EXECUTE
          MessageInterface::ShowMessage
-            (wxT("Vary::Execute() - running code for the first time through <<<\n"));
+            ("Vary::Execute() - running code for the first time through <<<\n");
       #endif
       // First time through, tell the solver about the variables
       Real varData[6], asf, msf;
@@ -1221,23 +1222,23 @@ bool Vary::Execute()
       
       #ifdef DEBUG_VARY_EXECUTE
          MessageInterface::ShowMessage(
-            wxT("For variable \"%s\", data is [%15.9lf %15.9lf %15.9lf %15.9lf ")
-            wxT("%15.9lf]\n"), variableName.c_str(), varData[0], varData[1], varData[2], 
+            "For variable \"%s\", data is [%15.9lf %15.9lf %15.9lf %15.9lf "
+            "%15.9lf]\n", variableName.c_str(), varData[0], varData[1], varData[2], 
             varData[3], varData[4]);
       #endif      
    
       variableID = solver->SetSolverVariables(varData, variableName);
 
       #ifdef DEBUG_VARY_EXECUTE
-         MessageInterface::ShowMessage(wxT("Solver variables were set\n"));
+         MessageInterface::ShowMessage("Solver variables were set\n");
       #endif
 
       solverDataFinalized = true;
       BuildCommandSummary(true);
       #ifdef DEBUG_VARY_EXECUTE
          MessageInterface::ShowMessage
-            (wxT("Vary::Execute - exiting with retval = %s\n"),
-            (retval? wxT("true") : wxT("False")));
+            ("Vary::Execute - exiting with retval = %s\n",
+            (retval? "true" : "False"));
       #endif
       return retval;
    }
@@ -1249,7 +1250,7 @@ bool Vary::Execute()
    
    #ifdef DEBUG_VARIABLE_RANGES
       MessageInterface::ShowMessage(
-         wxT("Setting %s to %.12le; allowed range is [%.12le, %.12le]\n"),
+         "Setting %s to %.12le; allowed range is [%.12le, %.12le]\n",
          variableName.c_str(), var, variableLower->EvaluateReal(), 
          variableUpper->EvaluateReal());
    #endif
@@ -1260,8 +1261,8 @@ bool Vary::Execute()
    BuildCommandSummary(true);
    #ifdef DEBUG_VARY_EXECUTE
       MessageInterface::ShowMessage
-         (wxT("Vary::Execute - exiting with retval = %s\n"),
-          (retval? wxT("true") : wxT("False")));
+         ("Vary::Execute - exiting with retval = %s\n",
+          (retval? "true" : "False"));
    #endif
    return retval;
 }
@@ -1274,8 +1275,8 @@ void Vary::RunComplete()
 {
    #ifdef DEBUG_VARY_EXECUTE
       MessageInterface::ShowMessage(
-      wxT("In Vary::RunComplete, solverDataFinalized = %s, ... now setting it to false\n"),
-      (solverDataFinalized? wxT("true") : wxT("false")));
+      "In Vary::RunComplete, solverDataFinalized = %s, ... now setting it to false\n",
+      (solverDataFinalized? "true" : "false"));
    #endif
    solverDataFinalized = false;
    GmatCommand::RunComplete();
@@ -1283,7 +1284,7 @@ void Vary::RunComplete()
 
 
 //------------------------------------------------------------------------------
-// bool TakeAction(const wxString &action, const wxString &actionData)
+// bool TakeAction(const std::string &action, const std::string &actionData)
 //------------------------------------------------------------------------------
 /**
  * Performs an action specific to Vary commands
@@ -1295,9 +1296,9 @@ void Vary::RunComplete()
  * @return true if an action was performed, false if not
  */
 //------------------------------------------------------------------------------
-bool Vary::TakeAction(const wxString &action, const wxString &actionData)
+bool Vary::TakeAction(const std::string &action, const std::string &actionData)
 {
-   if (action == wxT("SolverReset"))
+   if (action == "SolverReset")
    {
       // Prep to refresh the solver data if called again
       RefreshData();
@@ -1325,27 +1326,28 @@ bool Vary::TakeAction(const wxString &action, const wxString &actionData)
 //------------------------------------------------------------------------------
 void Vary::SetInitialValue(Solver *theSolver)
 {
-   MessageInterface::ShowMessage(wxT("Setting initial value\n"));
+   MessageInterface::ShowMessage("Setting initial value\n");
    if (solver == theSolver)
    {
       Real var = solver->GetSolverVariable(variableID);
       initialValue->SetReal(var);
       MessageInterface::ShowMessage(
-            wxT("   Solvers matched; solution value %.12lf reset IV for %s to %.12lf\n"),
+            "   Solvers matched; solution value %.12lf reset IV for %s to %.12lf\n",
             var, initialValueName.c_str(), initialValue->EvaluateReal());
       
       if (initialValue->GetWrapperType() == Gmat::NUMBER_WT)
       {
-         wxString numString;
+         std::stringstream numString;
+         numString.precision(16);
          numString << var;
-         initialValueName = numString;
+         initialValueName = numString.str();
       }
    }
 }
 
 
 //------------------------------------------------------------------------------
-// bool IsThereSameWrapperName(const wxString &wrapperName)
+// bool IsThereSameWrapperName(const std::string &wrapperName)
 //------------------------------------------------------------------------------
 /*
  * Checks if there is the same wrapper name. Wrapper name can be a number.
@@ -1353,11 +1355,11 @@ void Vary::SetInitialValue(Solver *theSolver)
  * @return  true if the same wrapper name found, false otherwise
  */
 //------------------------------------------------------------------------------
-bool Vary::IsThereSameWrapperName(int param, const wxString &wrapperName)
+bool Vary::IsThereSameWrapperName(int param, const std::string &wrapperName)
 {
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("GmatCommand::IsThereSameWrapperName() <%p>'%s' entered, wrapperName='%s'\n"),
+      ("GmatCommand::IsThereSameWrapperName() <%p>'%s' entered, wrapperName='%s'\n",
        this, GetTypeName().c_str(), wrapperName.c_str());
    #endif
    
@@ -1378,7 +1380,7 @@ bool Vary::IsThereSameWrapperName(int param, const wxString &wrapperName)
    
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("GmatCommand::IsThereSameWrapperName() <%p>'%s' wrapperName='%s' returning %d\n"),
+      ("GmatCommand::IsThereSameWrapperName() <%p>'%s' wrapperName='%s' returning %d\n",
        this, GetTypeName().c_str(), wrapperName.c_str(), retval);
    #endif
    
@@ -1411,8 +1413,8 @@ void Vary::RefreshData()
 
    #ifdef DEBUG_VARY_EXECUTE
       MessageInterface::ShowMessage(
-         wxT("For variable \"%s\", data is [%15.9lf %15.9lf %15.9lf %15.9lf ")
-         wxT("%15.9lf]\n"), variableName.c_str(), varData[0], varData[1], varData[2],
+         "For variable \"%s\", data is [%15.9lf %15.9lf %15.9lf %15.9lf "
+         "%15.9lf]\n", variableName.c_str(), varData[0], varData[1], varData[2],
          varData[3], varData[4]);
    #endif
 

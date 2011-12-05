@@ -27,12 +27,12 @@
 class HarmonicGravity : public Harmonic
 {
 public:
-   HarmonicGravity (const wxString& filename);
+   HarmonicGravity (const std::string& filename);
    HarmonicGravity(const HarmonicGravity& hg);
    HarmonicGravity& operator=(const HarmonicGravity& hg);
    virtual ~HarmonicGravity();
 
-   wxString              GetFilename();
+   std::string              GetFilename();
 
    virtual Real Cnm(const Real& jday, const Integer& n, const Integer& m) const;
    virtual Real Snm(const Real& jday, const Integer& n, const Integer& m) const;
@@ -47,7 +47,7 @@ public:
                                    const Real &xp,           const Real &yp,
                                    const bool& fillgradient, Real  acc[3],          Rmatrix33& gradient);
 protected:
-   wxString gravityFilename;
+   std::string gravityFilename;
    bool        useTideModel;
 
    /// Earth tide coefficients

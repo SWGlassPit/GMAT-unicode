@@ -14,7 +14,7 @@
 // Author: M. Weippert, T. McRoberts, L. Jun, E. Corderman
 // Created: 1995/10/10 for GSS project (originally Vector)
 // Modified:
-//   2003/09/15 Linda Jun - Replaced GSSString with wxString
+//   2003/09/15 Linda Jun - Replaced GSSString with std::string
 //
 /**
  * Declarations for the Rvector class, providing linear algebra operations
@@ -39,8 +39,8 @@ public:
    
    // exceptions
    class ZeroVector : public BaseException
-   { public:  ZeroVector(const wxString &details = wxT(""))
-        : BaseException(wxT("Rvector error : vector is a zero vector"), details) {}; };
+   { public:  ZeroVector(const std::string &details = "")
+        : BaseException("Rvector error : vector is a zero vector", details) {}; };
    
    Rvector();
    Rvector(int size);
@@ -78,15 +78,15 @@ public:
    virtual bool IsZeroVector() const;
    Real Norm();
    
-   virtual wxString ToString(Integer precision, bool horizontal = true,
-                                const wxString &prefix = wxT("")) const;
+   virtual std::string ToString(Integer precision, bool horizontal = true,
+                                const std::string &prefix = "") const;
    
-   virtual wxString ToString(bool useCurrentFormat = true,
+   virtual std::string ToString(bool useCurrentFormat = true,
                                 bool scientific = false, bool showPoint = false,
                                 Integer precision = GmatGlobal::DATA_PRECISION,
                                 Integer width = GmatGlobal::DATA_WIDTH,
                                 bool horizontal = true, Integer spacing = 1,
-                                const wxString &prefix = wxT(""),
+                                const std::string &prefix = "",
                                 bool appendEol = true) const;
    
    friend Rvector operator*(Real s, const Rvector &v);

@@ -32,9 +32,9 @@
  */
 //------------------------------------------------------------------------------
 EndScript::EndScript() :
-   GmatCommand(wxT("EndScript"))
+   GmatCommand("EndScript")
 {
-   generatingString = wxT("EndScript;");
+   generatingString = "EndScript;";
 }
 
 
@@ -117,7 +117,7 @@ GmatBase* EndScript::Clone() const
 
 //------------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * Renames referenced objects.
@@ -130,8 +130,8 @@ GmatBase* EndScript::Clone() const
  */
 //------------------------------------------------------------------------------
 bool EndScript::RenameRefObject(const Gmat::ObjectType type,
-                                  const wxString &oldName,
-                                  const wxString &newName)
+                                  const std::string &oldName,
+                                  const std::string &newName)
 {
    return true;
 }

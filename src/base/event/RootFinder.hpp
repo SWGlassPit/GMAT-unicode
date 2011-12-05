@@ -34,7 +34,7 @@ class Event;
 class RootFinder
 {
 public:
-   RootFinder(wxString finderType);
+   RootFinder(std::string finderType);
    virtual ~RootFinder();
    RootFinder(const RootFinder& rf);
    RootFinder& operator=(const RootFinder& rf);
@@ -49,7 +49,7 @@ public:
 
 protected:
    /// Type of the root finding algorithm
-   wxString typeName;
+   std::string typeName;
    /// Tolerance for the root finding algorithm
    Real tolerance;
    /// Data size for the buffers; this part is algorithm dependent

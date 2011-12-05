@@ -50,7 +50,7 @@
 //                                - All double types to Real types
 //                                - All primitive int types to Integer types
 //                                - virtual char* GetParameterName(const int parm) const to
-//                                  virtual wxString GetParameterName(const int parm) const
+//                                  virtual std::string GetParameterName(const int parm) const
 //                                - Changed GetParameterName() from if statements to switch statements
 //                              Removals:
 //                                - static Real parameterUndefined
@@ -79,8 +79,8 @@
 //                                          W. Waktola, Missions Applications Branch
 //                              Changes:
 //                                - Changed constructor from PhysicalModel::PhysicalModel(void) to
-//                                  PhysicalModel(Gmat::ObjectType typeId, const wxString &typeStr,
-//                                  const wxString &nomme = wxT(""))
+//                                  PhysicalModel(Gmat::ObjectType typeId, const std::string &typeStr,
+//                                  const std::string &nomme = "")
 //                                - Added parameterCount = 1 in constructors
 //                                - In SetErrorThreshold(), changed statement from relativeErrorThreshold = fabs(thold);
 //                                  to relativeErrorThreshold = (thold >= 0.0 ? thold : -thold);
@@ -109,13 +109,13 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 PhysicalModel::PARAMETER_TEXT[PhysicalModelParamCount - GmatBaseParamCount] =
 {
-   wxT("Epoch"),
-   wxT("ElapsedSeconds"),
-   wxT("BodyName"),
-   wxT("DerivativeID"),
+   "Epoch",
+   "ElapsedSeconds",
+   "BodyName",
+   "DerivativeID",
 };
 
 const Gmat::ParameterType
@@ -132,8 +132,8 @@ PhysicalModel::PARAMETER_TYPE[PhysicalModelParamCount - GmatBaseParamCount] =
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// PhysicalModel(Gmat::ObjectType typeId, const wxString &typeStr,
-//    const wxString &nomme = wxT(""))
+// PhysicalModel(Gmat::ObjectType typeId, const std::string &typeStr,
+//    const std::string &nomme = "")
 //------------------------------------------------------------------------------
 /**
  * Constructor for the Physical Model base class
@@ -144,12 +144,12 @@ PhysicalModel::PARAMETER_TYPE[PhysicalModelParamCount - GmatBaseParamCount] =
  * state data array.
  */
 //------------------------------------------------------------------------------
-PhysicalModel::PhysicalModel(Gmat::ObjectType id, const wxString &typeStr,
-                             const wxString &nomme) :
+PhysicalModel::PhysicalModel(Gmat::ObjectType id, const std::string &typeStr,
+                             const std::string &nomme) :
    GmatBase                    (id, typeStr, nomme),
    body                        (NULL),
    forceOrigin                 (NULL),
-   bodyName                    (wxT("Earth")),
+   bodyName                    ("Earth"),
    dimension                   (1),
    initialized                 (false),
    stateChanged                (false),
@@ -173,7 +173,7 @@ PhysicalModel::PhysicalModel(Gmat::ObjectType id, const wxString &typeStr,
    aMatrixCount                (0)
 {
    objectTypes.push_back(Gmat::PHYSICAL_MODEL);
-   objectTypeNames.push_back(wxT("PhysicalModel"));
+   objectTypeNames.push_back("PhysicalModel");
    parameterCount = PhysicalModelParamCount;
 }
              
@@ -192,8 +192,8 @@ PhysicalModel::~PhysicalModel()
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (rawState, wxT("rawState"), wxT("PhysicalModel::~PhysicalModel()"),
-             wxT("deleting rawState"), this);
+            (rawState, "rawState", "PhysicalModel::~PhysicalModel()",
+             "deleting rawState", this);
          #endif
          delete [] rawState;
       }
@@ -202,8 +202,8 @@ PhysicalModel::~PhysicalModel()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (modelState, wxT("modelState"), wxT("PhysicalModel::~PhysicalModel()"),
-          wxT("deleting modelState"), this);
+         (modelState, "modelState", "PhysicalModel::~PhysicalModel()",
+          "deleting modelState", this);
       #endif
       delete [] modelState;
    }
@@ -212,8 +212,8 @@ PhysicalModel::~PhysicalModel()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (deriv, wxT("deriv"), wxT("PhysicalModel::~PhysicalModel()"),
-          wxT("deleting deriv"), this);
+         (deriv, "deriv", "PhysicalModel::~PhysicalModel()",
+          "deleting deriv", this);
       #endif
       delete [] deriv;
    }
@@ -261,8 +261,8 @@ PhysicalModel::PhysicalModel(const PhysicalModel& pm) :
       modelState = new Real[dimension];
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (modelState, wxT("modelState"), wxT("PhysicalModel::PhysicalModel(copy)"),
-          wxT("modelState = new Real[dimension]"), this);
+         (modelState, "modelState", "PhysicalModel::PhysicalModel(copy)",
+          "modelState = new Real[dimension]", this);
       #endif
       if (modelState != NULL) 
          memcpy(modelState, pm.modelState, dimension * sizeof(Real));
@@ -278,8 +278,8 @@ PhysicalModel::PhysicalModel(const PhysicalModel& pm) :
       deriv = new Real[dimension];
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (deriv, wxT("deriv"), wxT("PhysicalModel::PhysicalModel(copy)"),
-          wxT("deriv = new Real[dimension]"), this);
+         (deriv, "deriv", "PhysicalModel::PhysicalModel(copy)",
+          "deriv = new Real[dimension]", this);
       #endif
       if (deriv != NULL) 
          memcpy(deriv, pm.deriv, dimension * sizeof(Real));
@@ -337,8 +337,8 @@ PhysicalModel& PhysicalModel::operator=(const PhysicalModel& pm)
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (modelState, wxT("modelState"), wxT("PhysicalModel::operator=()"),
-             wxT("deleting modelState"), this);
+            (modelState, "modelState", "PhysicalModel::operator=()",
+             "deleting modelState", this);
          #endif
          delete [] modelState;
          modelState = NULL;
@@ -347,8 +347,8 @@ PhysicalModel& PhysicalModel::operator=(const PhysicalModel& pm)
       modelState = new Real[dimension];
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (modelState, wxT("modelState"), wxT("ODEModel::operator=()"),
-          wxT("modelState = new Real[dimension]"), this);
+         (modelState, "modelState", "ODEModel::operator=()",
+          "modelState = new Real[dimension]", this);
       #endif
       
       if (modelState != NULL) 
@@ -367,8 +367,8 @@ PhysicalModel& PhysicalModel::operator=(const PhysicalModel& pm)
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (deriv, wxT("deriv"), wxT("PhysicalModel::operator=()"),
-             wxT("deleting deriv"), this);
+            (deriv, "deriv", "PhysicalModel::operator=()",
+             "deleting deriv", this);
          #endif
          delete [] deriv;
          deriv = NULL;
@@ -377,8 +377,8 @@ PhysicalModel& PhysicalModel::operator=(const PhysicalModel& pm)
       deriv = new Real[dimension];
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (deriv, wxT("deriv"), wxT("ODEModel::operator=()"),
-          wxT("deriv = new Real[dimension]"), this);
+         (deriv, "deriv", "ODEModel::operator=()",
+          "deriv = new Real[dimension]", this);
       #endif
       
       if (deriv != NULL) 
@@ -409,7 +409,7 @@ CelestialBody* PhysicalModel::GetBody()
  *
  */
 //------------------------------------------------------------------------------
-wxString PhysicalModel::GetBodyName()
+std::string PhysicalModel::GetBodyName()
 {
    return bodyName;
 }
@@ -429,8 +429,8 @@ void PhysicalModel::SetBody(CelestialBody *theBody)
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (deriv, wxT("deriv"), wxT("PhysicalModel::SetBody()"),
-             wxT("deleting deriv"), this);
+            (deriv, "deriv", "PhysicalModel::SetBody()",
+             "deleting deriv", this);
          #endif
          delete body;
       }
@@ -464,7 +464,7 @@ bool PhysicalModel::Initialize()
 { 
    #ifdef DEBUG_INITIALIZATION
       MessageInterface::ShowMessage(
-            wxT("PhysicalModel::Initialize() entered for %s; dimension = %d\n"),
+            "PhysicalModel::Initialize() entered for %s; dimension = %d\n",
             typeName.c_str(), dimension);
    #endif
       
@@ -472,8 +472,8 @@ bool PhysicalModel::Initialize()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (rawState, wxT("rawState"), wxT("PhysicalModel::Initialize()"),
-          wxT("deleting rawState"), this);
+         (rawState, "rawState", "PhysicalModel::Initialize()",
+          "deleting rawState", this);
       #endif
       delete [] rawState;
       rawState = NULL;
@@ -483,8 +483,8 @@ bool PhysicalModel::Initialize()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (modelState, wxT("modelState"), wxT("PhysicalModel::Initialize()"),
-          wxT("deleting modelState"), this);
+         (modelState, "modelState", "PhysicalModel::Initialize()",
+          "deleting modelState", this);
       #endif
       delete [] modelState;
       modelState = NULL;
@@ -497,20 +497,20 @@ bool PhysicalModel::Initialize()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (deriv, wxT("deriv"), wxT("PhysicalModel::Initialize()"),
-          wxT("deleting deriv"), this);
+         (deriv, "deriv", "PhysicalModel::Initialize()",
+          "deleting deriv", this);
       #endif
       delete [] deriv;
       deriv = NULL;
    }
 
-   // MessageInterface::ShowMessage(wxT("PMInitialize setting dim = %d\n"), dimension);   
+   // MessageInterface::ShowMessage("PMInitialize setting dim = %d\n", dimension);   
    
    modelState = new Real[dimension];
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Add
-      (modelState, wxT("modelState"), wxT("PhysicalModel::Initialize()"),
-       wxT("modelState = new Real[dimension]"), this);
+      (modelState, "modelState", "PhysicalModel::Initialize()",
+       "modelState = new Real[dimension]", this);
    #endif
    
    if (modelState != NULL)
@@ -522,8 +522,8 @@ bool PhysicalModel::Initialize()
 
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (deriv, wxT("deriv"), wxT("PhysicalModel::Initialize()"),
-          wxT("deriv = new Real[dimension]"), this);
+         (deriv, "deriv", "PhysicalModel::Initialize()",
+          "deriv = new Real[dimension]", this);
       #endif
       if (deriv)
          initialized = true;
@@ -536,7 +536,7 @@ bool PhysicalModel::Initialize()
 }
 
 //------------------------------------------------------------------------------
-//  bool SetBody(const wxString &theBody)
+//  bool SetBody(const std::string &theBody)
 //------------------------------------------------------------------------------
 /**
  * This method sets the body for this PhysicalModel object.
@@ -546,24 +546,24 @@ bool PhysicalModel::Initialize()
  * @return flag indicating success of the operation.
  */
 //------------------------------------------------------------------------------
-bool PhysicalModel::SetBody(const wxString &theBody)
+bool PhysicalModel::SetBody(const std::string &theBody)
 {
    bodyName = theBody;
    // initialize the body
    if (solarSystem == NULL) throw ODEModelException( // or just return false?
-                                                       wxT("Solar System undefined for Harmonic Field."));
+                                                       "Solar System undefined for Harmonic Field.");
    body = solarSystem->GetBody(bodyName);  // catch errors here?
    return true;
 }
 
 //------------------------------------------------------------------------------
-// void SetBodyName(const wxString &name)
+// void SetBodyName(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  *
  */
 //------------------------------------------------------------------------------
-void PhysicalModel::SetBodyName(const wxString &theBody)
+void PhysicalModel::SetBodyName(const std::string &theBody)
 {
    bodyName = theBody;
 }
@@ -674,7 +674,7 @@ void PhysicalModel::SetState(const Real * st)
 {
    #ifdef PHYSICAL_MODEL_DEBUG_INIT
       MessageInterface::ShowMessage(
-         wxT("PhysicalModel::SetState() called for %s<%s>\n"), 
+         "PhysicalModel::SetState() called for %s<%s>\n", 
          typeName.c_str(), instanceName.c_str());
    #endif
                                  
@@ -688,7 +688,7 @@ void PhysicalModel::SetState(GmatState * st)
 {
    theState = st;
    if (dimension != st->GetSize())
-      MessageInterface::ShowMessage(wxT("Dimension mismatch!!!\n"));
+      MessageInterface::ShowMessage("Dimension mismatch!!!\n");
    if (modelState != NULL)
       SetState(st->GetState());
 }
@@ -720,16 +720,16 @@ const Real* PhysicalModel::GetDerivativeArray()
 void PhysicalModel::IncrementTime(Real dt)
 {
    #ifdef DEBUG_TIME_INCREMENT
-      MessageInterface::ShowMessage(wxT("Increment time called; prevElapsedTime = ")
-            wxT("%.12lf, elapsed time = %.12lf  ==> "), prevElapsedTime,
+      MessageInterface::ShowMessage("Increment time called; prevElapsedTime = "
+            "%.12lf, elapsed time = %.12lf  ==> ", prevElapsedTime,
             elapsedTime);
    #endif
    prevElapsedTime = elapsedTime;
    elapsedTime += dt;
    stateChanged = true;
    #ifdef DEBUG_TIME_INCREMENT
-      MessageInterface::ShowMessage(wxT("prevElapsedTime = %.12lf, elapsed time = ")
-            wxT("%.12lf\n"), prevElapsedTime, elapsedTime);
+      MessageInterface::ShowMessage("prevElapsedTime = %.12lf, elapsed time = "
+            "%.12lf\n", prevElapsedTime, elapsedTime);
    #endif
 }
 
@@ -877,9 +877,9 @@ Real PhysicalModel::EstimateError(Real * diffs, Real * answer) const
  * need.  The default implementation simply returns false.
  *
  * When the model for the class can provide a map for the data elements, it will
- * fill in the array of elements with either a wxT("no map") indicator of -1, or the 
+ * fill in the array of elements with either a "no map" indicator of -1, or the 
  * mapping between the selected element and its corresponding derivative.  These
- * data are placed into the input wxT("map") array, which must be an integer array
+ * data are placed into the input "map" array, which must be an integer array
  * sized to match the dimension of the model.  The user also specifies the order
  * of the mapping; for instance, to obtain the mapping for first derivative 
  * information, the order is set to 1.
@@ -948,7 +948,7 @@ void PhysicalModel::SetSolarSystem(SolarSystem *ss)
 
 //------------------------------------------------------------------------------
 // void PhysicalModel::SetSatelliteParameter(const Integer i, 
-//                                           const wxString parmName, 
+//                                           const std::string parmName, 
 //                                           const Real parm)
 //------------------------------------------------------------------------------
 /**
@@ -962,7 +962,7 @@ void PhysicalModel::SetSolarSystem(SolarSystem *ss)
  */
 //------------------------------------------------------------------------------
 void PhysicalModel::SetSatelliteParameter(const Integer i, 
-                                          const wxString parmName, 
+                                          const std::string parmName, 
                                           const Real parm,
                                           const Integer parmID)
 {
@@ -976,8 +976,8 @@ void PhysicalModel::SetSatelliteParameter(const Integer i,
 
 //------------------------------------------------------------------------------
 // void PhysicalModel::SetSatelliteParameter(const Integer i, 
-//                                           const wxString parmName, 
-//                                           const wxString parm)
+//                                           const std::string parmName, 
+//                                           const std::string parm)
 //------------------------------------------------------------------------------
 /**
  * Passes spacecraft parameters to the force model.
@@ -990,15 +990,15 @@ void PhysicalModel::SetSatelliteParameter(const Integer i,
  */
 //------------------------------------------------------------------------------
 void PhysicalModel::SetSatelliteParameter(const Integer i, 
-                                          const wxString parmName, 
-                                          const wxString parm)
+                                          const std::string parmName, 
+                                          const std::string parm)
 {
 }
 
 //------------------------------------------------------------------------------
 // void PhysicalModel::SetSatelliteParameter(const Integer i,
-//                                           const wxString parmName,
-//                                           const wxString parm)
+//                                           const std::string parmName,
+//                                           const std::string parm)
 //------------------------------------------------------------------------------
 /**
  * Resets the PhysicalModel to receive a new set of satellite parameters.
@@ -1009,7 +1009,7 @@ void PhysicalModel::SetSatelliteParameter(const Integer i,
  *                 of the satellite parameters for the PhysicalModel.
  */
 //------------------------------------------------------------------------------
-void PhysicalModel::ClearSatelliteParameters(const wxString parmName)
+void PhysicalModel::ClearSatelliteParameters(const std::string parmName)
 {
 }
 
@@ -1063,11 +1063,11 @@ bool PhysicalModel::DepletesMass()
 /**
  * Specifies if a force is set by a user module.
  * 
- * Specifies whether the PhysicalModel is an wxT("extra") force added by a plug-in or 
+ * Specifies whether the PhysicalModel is an "extra" force added by a plug-in or 
  * other user method.  Forces added to the ODEModel this way appear in the 
- * wxT("UserDefined") field of the force model when it is written out or parsed.
+ * "UserDefined" field of the force model when it is written out or parsed.
  * 
- * @return true if the force should be in the wxT("UserDefined") field.
+ * @return true if the force should be in the "UserDefined" field.
  */
 //------------------------------------------------------------------------------
 bool PhysicalModel::IsUserForce()
@@ -1140,13 +1140,13 @@ bool PhysicalModel::SetStart(Gmat::StateElementId id, Integer index,
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// wxString PhysicalModel::GetParameterText(const Integer id)
+// std::string PhysicalModel::GetParameterText(const Integer id)
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString PhysicalModel::GetParameterText(const Integer id) const
+std::string PhysicalModel::GetParameterText(const Integer id) const
 {
    if (id >= GmatBaseParamCount && id < PhysicalModelParamCount)
       return PARAMETER_TEXT[id - GmatBaseParamCount];
@@ -1155,13 +1155,13 @@ wxString PhysicalModel::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// Integer PhysicalModel::GetParameterID(const wxString str)
+// Integer PhysicalModel::GetParameterID(const std::string str)
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Integer PhysicalModel::GetParameterID(const wxString &str) const
+Integer PhysicalModel::GetParameterID(const std::string &str) const
 {
    for (int i = GmatBaseParamCount; i < PhysicalModelParamCount; i++)
    {
@@ -1187,13 +1187,13 @@ Gmat::ParameterType PhysicalModel::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// wxString PhysicalModel::GetParameterTypeString(const Integer id) const
+// std::string PhysicalModel::GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString PhysicalModel::GetParameterTypeString(const Integer id) const
+std::string PhysicalModel::GetParameterTypeString(const Integer id) const
 {
    if (id >= GmatBaseParamCount && id < PhysicalModelParamCount)
       return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
@@ -1223,7 +1223,7 @@ bool PhysicalModel::IsParameterReadOnly(const Integer id) const
 }
 
 //---------------------------------------------------------------------------
-//  bool IsParameterReadOnly(const wxString &label) const
+//  bool IsParameterReadOnly(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * Checks to see if the requested parameter is read only.
@@ -1234,7 +1234,7 @@ bool PhysicalModel::IsParameterReadOnly(const Integer id) const
  *         throws if the parameter is out of the valid range of values.
  */
 //---------------------------------------------------------------------------
-bool PhysicalModel::IsParameterReadOnly(const wxString &label) const
+bool PhysicalModel::IsParameterReadOnly(const std::string &label) const
 {
    if ((label == PARAMETER_TEXT[EPOCH - GmatBaseParamCount]) || 
        (label == PARAMETER_TEXT[ELAPSED_SECS - GmatBaseParamCount]) || 
@@ -1286,7 +1286,7 @@ Real PhysicalModel::SetRealParameter(const Integer id, const Real value)
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to get a parameter value
@@ -1296,14 +1296,14 @@ Real PhysicalModel::SetRealParameter(const Integer id, const Real value)
  * @return the value of the parameter
  */
 //------------------------------------------------------------------------------
-wxString PhysicalModel::GetStringParameter(const Integer id) const
+std::string PhysicalModel::GetStringParameter(const Integer id) const
 {
    if (id == BODY_NAME) return bodyName;
    return GmatBase::GetStringParameter(id);
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to get a parameter value
@@ -1313,11 +1313,11 @@ wxString PhysicalModel::GetStringParameter(const Integer id) const
  */
 //------------------------------------------------------------------------------
 bool PhysicalModel::SetStringParameter(const Integer id,
-                                       const wxString &value)
+                                       const std::string &value)
 {
    #ifdef DEBUG_PM_SET
    MessageInterface::ShowMessage
-      (wxT("PhysicalModel::SetStringParameter() entered, id=%d, value='%s'\n"),
+      ("PhysicalModel::SetStringParameter() entered, id=%d, value='%s'\n",
        id, value.c_str());
    #endif
    
@@ -1333,7 +1333,7 @@ bool PhysicalModel::SetStringParameter(const Integer id,
          return SetBody(value);
       }
 //      if (!solarSystem) throw ODEModelException(
-//          wxT("In PhysicalModel, cannot set body, as no solar system has been set"));
+//          "In PhysicalModel, cannot set body, as no solar system has been set");
 //      if (value != bodyName)
 //      {
 //         body = solarSystem->GetBody(value);
@@ -1350,7 +1350,7 @@ bool PhysicalModel::SetStringParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to get a parameter value
@@ -1360,13 +1360,13 @@ bool PhysicalModel::SetStringParameter(const Integer id,
  * @return the value of the parameter
  */
 //------------------------------------------------------------------------------
-wxString PhysicalModel::GetStringParameter(const wxString &label) const
+std::string PhysicalModel::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to get a parameter value
@@ -1375,15 +1375,15 @@ wxString PhysicalModel::GetStringParameter(const wxString &label) const
  * @param    <value> The new value for the parameter
  */
 //------------------------------------------------------------------------------
-bool PhysicalModel::SetStringParameter(const wxString &label,
-                                       const wxString &value)
+bool PhysicalModel::SetStringParameter(const std::string &label,
+                                       const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
 
 //------------------------------------------------------------------------------
 //  GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                         const wxString &name)
+//                         const std::string &name)
 //------------------------------------------------------------------------------
 /**
 * This method returns a reference object from the ObjectReferencedAxes class.
@@ -1396,7 +1396,7 @@ bool PhysicalModel::SetStringParameter(const wxString &label,
  */
 //------------------------------------------------------------------------------
 GmatBase* PhysicalModel::GetRefObject(const Gmat::ObjectType type,
-                                      const wxString &name)
+                                      const std::string &name)
 {
    switch (type)
    {
@@ -1436,9 +1436,9 @@ const StringArray& PhysicalModel::GetRefObjectNameArray(
          refs.push_back(bodyName);
       
          #ifdef DEBUG_REFERENCE_SETTING
-            MessageInterface::ShowMessage(wxT("+++ReferenceObjects:\n"));
+            MessageInterface::ShowMessage("+++ReferenceObjects:\n");
             for (StringArray::iterator i = refs.begin(); i != refs.end(); ++i)
-               MessageInterface::ShowMessage(wxT("   %s\n"), i->c_str());
+               MessageInterface::ShowMessage("   %s\n", i->c_str());
          #endif
       
       return refs;
@@ -1451,7 +1451,7 @@ const StringArray& PhysicalModel::GetRefObjectNameArray(
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                    const wxString &name)
+//                    const std::string &name)
 //------------------------------------------------------------------------------
 /**
 * This method sets a reference object for the ObjectReferencedAxes class.
@@ -1466,14 +1466,14 @@ const StringArray& PhysicalModel::GetRefObjectNameArray(
 //------------------------------------------------------------------------------
 bool PhysicalModel::SetRefObject(GmatBase *obj,
                                  const Gmat::ObjectType type,
-                                 const wxString &name)
+                                 const std::string &name)
 {
-   if (obj->IsOfType(wxT("CelestialBody")))
+   if (obj->IsOfType("CelestialBody"))
    {
       if (name == bodyName)
       {
          #ifdef DEBUG_REFERENCE_SETTING
-            MessageInterface::ShowMessage(wxT("Setting %s as primary for %s\n"),
+            MessageInterface::ShowMessage("Setting %s as primary for %s\n",
                                           name.c_str(), instanceName.c_str());
          #endif
          body = (CelestialBody*) obj;
@@ -1486,13 +1486,13 @@ bool PhysicalModel::SetRefObject(GmatBase *obj,
 }
 
 bool PhysicalModel::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                           const wxString &name, const Integer index)
+                           const std::string &name, const Integer index)
 {
    return GmatBase::SetRefObject(obj, type, name, index);
 }
 
 GmatBase* PhysicalModel::GetRefObject(const Gmat::ObjectType type,
-                           const wxString &name, const Integer index)
+                           const std::string &name, const Integer index)
 {
    return GmatBase::GetRefObject(type, name, index);
 }

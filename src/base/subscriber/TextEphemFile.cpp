@@ -37,12 +37,12 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 TextEphemFile::PARAMETER_TEXT[TextEphemFileParamCount - ReportFileParamCount] =
 {
-   wxT("EpochFormat"),
-   wxT("Interval"),
-   wxT("CoordinateSystem"),
+   "EpochFormat",
+   "Interval",
+   "CoordinateSystem",
 };
 
 const Gmat::ParameterType
@@ -56,22 +56,22 @@ TextEphemFile::PARAMETER_TYPE[TextEphemFileParamCount - ReportFileParamCount] =
 static const Real TIME_TOL = 1.0e-8;
 
 //------------------------------------------------------------------------------
-// TextEphemFile(const wxString &type, const wxString &name,
-//               const wxString &fileName)
+// TextEphemFile(const std::string &type, const std::string &name,
+//               const std::string &fileName)
 //------------------------------------------------------------------------------
-TextEphemFile::TextEphemFile(const wxString &type, const wxString &name,
-                             const wxString &fileName, Parameter *firstVarParam) :
+TextEphemFile::TextEphemFile(const std::string &type, const std::string &name,
+                             const std::string &fileName, Parameter *firstVarParam) :
    ReportFile(type, name, fileName, firstVarParam)
 {
    // create Interpolator
-   mInterpolator = new CubicSplineInterpolator(wxT("InternalInterpolator"), 6);
+   mInterpolator = new CubicSplineInterpolator("InternalInterpolator", 6);
    
    // rename data file name
-   //filename = fileName + wxT(".tempdata$$$");
-   filename = fileName + wxT(".data");
+   //filename = fileName + ".tempdata$$$";
+   filename = fileName + ".data";
    mHeaderFileName = fileName;
-   mEpochFormat = wxT("");
-   mCoordSysName = wxT("");
+   mEpochFormat = "";
+   mCoordSysName = "";
    mIntervalInSec = 0.0;
    mCurrA1Mjd = 0.0;
    mOutputA1Mjd = 0.0;
@@ -85,7 +85,7 @@ TextEphemFile::TextEphemFile(const wxString &type, const wxString &name,
    
    #if DEBUG_EPHEM_FILE
    MessageInterface::ShowMessage
-      (wxT("TextEphemFile() Constructor: mBufferSize=%d\n"), mBufferSize);
+      ("TextEphemFile() Constructor: mBufferSize=%d\n", mBufferSize);
    #endif
 }
 
@@ -144,7 +144,7 @@ TextEphemFile::TextEphemFile(const TextEphemFile &copy) :
    
    #if DEBUG_EPHEM_FILE
    MessageInterface::ShowMessage
-      (wxT("TextEphemFile() Copy Constructor: mBufferSize=%d\n"), mBufferSize);
+      ("TextEphemFile() Copy Constructor: mBufferSize=%d\n", mBufferSize);
    #endif
 }
 
@@ -200,7 +200,7 @@ TextEphemFile& TextEphemFile::operator=(const TextEphemFile& right)
 
    #if DEBUG_EPHEM_FILE
    MessageInterface::ShowMessage
-      (wxT("TextEphemFile() = operator: mBufferSize=%d\n"), mBufferSize);
+      ("TextEphemFile() = operator: mBufferSize=%d\n", mBufferSize);
    #endif
    
    return *this;
@@ -224,9 +224,9 @@ GmatBase* TextEphemFile::Clone(void) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer TextEphemFile::GetParameterID(const wxString &str) const
+Integer TextEphemFile::GetParameterID(const std::string &str) const
 {
    for (Integer i = ReportFileParamCount; i < TextEphemFileParamCount; i++)
    {
@@ -239,9 +239,9 @@ Integer TextEphemFile::GetParameterID(const wxString &str) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
-wxString TextEphemFile::GetParameterText(const Integer id) const
+std::string TextEphemFile::GetParameterText(const Integer id) const
 {
     if (id >= ReportFileParamCount && id < TextEphemFileParamCount)
         return PARAMETER_TEXT[id - ReportFileParamCount];
@@ -264,9 +264,9 @@ Gmat::ParameterType TextEphemFile::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
-wxString TextEphemFile::GetParameterTypeString(const Integer id) const
+std::string TextEphemFile::GetParameterTypeString(const Integer id) const
 {
    if (id >= ReportFileParamCount && id < TextEphemFileParamCount)
       return ReportFile::PARAM_TYPE_STRING[GetParameterType(id)];
@@ -292,9 +292,9 @@ Real TextEphemFile::GetRealParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// virtual Real GetRealParameter(const wxString &label) const
+// virtual Real GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-Real TextEphemFile::GetRealParameter(const wxString &label) const
+Real TextEphemFile::GetRealParameter(const std::string &label) const
 {
    return GetRealParameter(GetParameterID(label));
 }
@@ -317,18 +317,18 @@ Real TextEphemFile::SetRealParameter(const Integer id, const Real value)
 
 
 //------------------------------------------------------------------------------
-// virtual Real SetRealParameter(const wxString &label, const Real value)
+// virtual Real SetRealParameter(const std::string &label, const Real value)
 //------------------------------------------------------------------------------
-Real TextEphemFile::SetRealParameter(const wxString &label, const Real value)
+Real TextEphemFile::SetRealParameter(const std::string &label, const Real value)
 {
    return SetRealParameter(GetParameterID(label), value);
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
-wxString TextEphemFile::GetStringParameter(const Integer id) const
+std::string TextEphemFile::GetStringParameter(const Integer id) const
 {
    switch (id)
    {
@@ -343,18 +343,18 @@ wxString TextEphemFile::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString TextEphemFile::GetStringParameter(const wxString &label) const
+std::string TextEphemFile::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
-bool TextEphemFile::SetStringParameter(const Integer id, const wxString &value)
+bool TextEphemFile::SetStringParameter(const Integer id, const std::string &value)
 {
    switch (id)
    {
@@ -372,10 +372,10 @@ bool TextEphemFile::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
-bool TextEphemFile::SetStringParameter(const wxString &label,
-                                       const wxString &value)
+bool TextEphemFile::SetStringParameter(const std::string &label,
+                                       const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
@@ -402,7 +402,7 @@ bool TextEphemFile::Distribute(const Real * dat, Integer len)
    {
       #if DEBUG_EPHEMFILE_LAST
       MessageInterface::ShowMessage
-         (wxT("==> TextEphemFile::Distribute() EndOfRun: mCurrA1Mjd=%f, mOutputA1Mjd=%f\n"),
+         ("==> TextEphemFile::Distribute() EndOfRun: mCurrA1Mjd=%f, mOutputA1Mjd=%f\n",
           mCurrA1Mjd, mOutputA1Mjd);
       #endif
       
@@ -444,10 +444,10 @@ bool TextEphemFile::Distribute(const Real * dat, Integer len)
          
          #if DEBUG_EPHEMFILE_FIRST
          MessageInterface::ShowMessage
-         (wxT("TextEphemFile::Distribute() first dat=%f %f %f %f %g %g %g\n"), dat[0], dat[1],
+         ("TextEphemFile::Distribute() first dat=%f %f %f %f %g %g %g\n", dat[0], dat[1],
           dat[2], dat[3], dat[4], dat[5], dat[6]);
          MessageInterface::ShowMessage
-            (wxT("   mNumParams=%d, mOutputA1Mjd=%f, mIntervalInSec=%f\n"),
+            ("   mNumParams=%d, mOutputA1Mjd=%f, mIntervalInSec=%f\n",
              mNumParams, mOutputA1Mjd, mIntervalInSec);
          #endif
       }
@@ -465,7 +465,7 @@ bool TextEphemFile::Distribute(const Real * dat, Integer len)
       
       #if DEBUG_EPHEMFILE_DATA > 1
       MessageInterface::ShowMessage
-         (wxT("TextEphemFile::Distribute() dat=%f %f %f %f %g %g %g\n"), dat[0], dat[1],
+         ("TextEphemFile::Distribute() dat=%f %f %f %f %g %g %g\n", dat[0], dat[1],
           dat[2], dat[3], dat[4], dat[5], dat[6]);
       #endif
    }
@@ -495,14 +495,14 @@ void TextEphemFile::WriteColumnTitle()
              mParamNames[i].length() : columnWidth;
 
           // parameter name has Gregorian, minimum width is 24
-          if (mParamNames[i].find(wxT("Gregorian")) != mParamNames[i].npos)
+          if (mParamNames[i].find("Gregorian") != mParamNames[i].npos)
              if (width < 24)
                 width = 24;
           
           dstream.width(width); // sets miminum field width
           
           //dstream.width(columnWidth);
-          dstream.fill(wxT(' '));
+          dstream.fill(' ');
           
           if (leftJustify)
              dstream.setf(std::ios::left);
@@ -510,7 +510,7 @@ void TextEphemFile::WriteColumnTitle()
           if (zeroFill)
              dstream.setf(std::ios::showpoint);
           
-          dstream << mParamNames[i] << wxT("   ");
+          dstream << mParamNames[i] << "   ";
 
           // save time width for writing data
           mColWidth[i] = width;
@@ -530,7 +530,7 @@ void TextEphemFile::WriteToBuffer()
 {
    #if DEBUG_EPHEMFILE_DATA
    MessageInterface::ShowMessage
-      (wxT("TextEphemFile::WriteToBuffer() mNumValidPoints=%d, mBufferSize=%d\n"),
+      ("TextEphemFile::WriteToBuffer() mNumValidPoints=%d, mBufferSize=%d\n",
        mNumValidPoints, mBufferSize);
    #endif
    
@@ -540,7 +540,7 @@ void TextEphemFile::WriteToBuffer()
 
    #if DEBUG_EPHEMFILE_DATA
    MessageInterface::ShowMessage
-      (wxT("TextEphemFile::WriteToBuffer() mNumValidPoints=%d, BUFFER_SIZE=%d\n"),
+      ("TextEphemFile::WriteToBuffer() mNumValidPoints=%d, BUFFER_SIZE=%d\n",
        mNumValidPoints, BUFFER_SIZE);
    #endif
    
@@ -562,7 +562,7 @@ void TextEphemFile::WriteToBuffer()
    
    #if DEBUG_EPHEMFILE_DATA
    MessageInterface::ShowMessage
-      (wxT("TextEphemFile::WriteToBuffer() mCurrA1Mjd=%f\n"), mCurrA1Mjd);
+      ("TextEphemFile::WriteToBuffer() mCurrA1Mjd=%f\n", mCurrA1Mjd);
    #endif
    
    for (int i=1; i < mNumParams; i++)
@@ -573,7 +573,7 @@ void TextEphemFile::WriteToBuffer()
       
       #if DEBUG_EPHEMFILE_DATA
       MessageInterface::ShowMessage
-         (wxT("TextEphemFile::WriteToBuffer() i=%d, rval=%f\n"), i, rval);
+         ("TextEphemFile::WriteToBuffer() i=%d, rval=%f\n", i, rval);
       #endif
       
       if (i == 1)
@@ -618,8 +618,8 @@ bool TextEphemFile::IsTimeToWrite()
 {
    #if DEBUG_EPHEMFILE_DATA
    MessageInterface::ShowMessage
-      (wxT("TextEphemFile::IsTimeToWrite() mNumValidPoints=%d, mCurrA1Mjd=%f, ")
-       wxT("mOutputA1Mjd=%f\n"), mNumValidPoints,  mCurrA1Mjd, mOutputA1Mjd);
+      ("TextEphemFile::IsTimeToWrite() mNumValidPoints=%d, mCurrA1Mjd=%f, "
+       "mOutputA1Mjd=%f\n", mNumValidPoints,  mCurrA1Mjd, mOutputA1Mjd);
    #endif
 
    //if (mOutputA1Mjd > mCurrA1Mjd + 1.0e-6)
@@ -630,14 +630,14 @@ bool TextEphemFile::IsTimeToWrite()
    if (mNumValidPoints >= mBufferSize)
    {
       Integer startIndex = BUFFER_SIZE - mNumValidPoints;
-      //MessageInterface::ShowMessage(wxT("==> startIndex=%d\n"), startIndex);
+      //MessageInterface::ShowMessage("==> startIndex=%d\n", startIndex);
       // find mid point
       Integer midIndex = -1;
       for (int i=startIndex; i<BUFFER_SIZE-1; i++)
       {
          #if DEBUG_EPHEMFILE_DATA > 1
          MessageInterface::ShowMessage
-            (wxT("==> mTimeBuffer[%d]=%f\n"), i, mTimeBuffer[i]);
+            ("==> mTimeBuffer[%d]=%f\n", i, mTimeBuffer[i]);
          #endif
          
          if (mOutputA1Mjd > mTimeBuffer[i] && mOutputA1Mjd <= mTimeBuffer[i+1])
@@ -651,8 +651,8 @@ bool TextEphemFile::IsTimeToWrite()
       {
          #if DEBUG_EPHEMFILE_WARNING
          MessageInterface::ShowMessage
-            (wxT("*** Warning: TextEphemFile::IsTimeToWrite() Cannot find ")
-             wxT("midpoint for time: %f\n   mTimeBuffer[0]=%f, mTimeBuffer[9]=%f\n"),
+            ("*** Warning: TextEphemFile::IsTimeToWrite() Cannot find "
+             "midpoint for time: %f\n   mTimeBuffer[0]=%f, mTimeBuffer[9]=%f\n",
              mOutputA1Mjd, mTimeBuffer[0], mTimeBuffer[9]);
          #endif
          
@@ -667,7 +667,7 @@ bool TextEphemFile::IsTimeToWrite()
       
       #if DEBUG_EPHEMFILE_DATA
       MessageInterface::ShowMessage
-         (wxT("==> midIndex=%d, mTimeBuffer[%d]=%f\n"), midIndex, midIndex, mTimeBuffer[midIndex]);
+         ("==> midIndex=%d, mTimeBuffer[%d]=%f\n", midIndex, midIndex, mTimeBuffer[midIndex]);
       #endif
       
       Real vals[6];
@@ -693,7 +693,7 @@ bool TextEphemFile::IsTimeToWrite()
       {
          #if DEBUG_EPHEMFILE_WARNING
          MessageInterface::ShowMessage
-            (wxT("*** Warning: TextEphemFile::IsTimeToWrite() Interpolate() returned false\n"));
+            ("*** Warning: TextEphemFile::IsTimeToWrite() Interpolate() returned false\n");
          #endif
       }
    }
@@ -713,7 +713,7 @@ void TextEphemFile::WriteTime(Real epoch)
 
    dstream.width(mColWidth[0]);
    dstream.precision(precision);
-   dstream.fill(wxT(' '));
+   dstream.fill(' ');
          
    if (leftJustify)
       dstream.setf(std::ios::left);
@@ -723,12 +723,12 @@ void TextEphemFile::WriteTime(Real epoch)
    
    if (mIsGregorian)
    {
-      wxString timeStr = TimeConverterUtil::ConvertMjdToGregorian(time);
-      dstream << timeStr << wxT("   ");
+      std::string timeStr = TimeConverterUtil::ConvertMjdToGregorian(time);
+      dstream << timeStr << "   ";
    }
    else
    {
-      dstream << epoch << wxT("   ");
+      dstream << epoch << "   ";
    }
    
 }
@@ -744,7 +744,7 @@ void TextEphemFile::WriteData()
    for (int i=1; i<mNumParams; i++)
    {
       dstream.width(mColWidth[i]);
-      dstream.fill(wxT(' '));
+      dstream.fill(' ');
       
       if (leftJustify)
          dstream.setf(std::ios::left);
@@ -753,7 +753,7 @@ void TextEphemFile::WriteData()
          dstream.setf(std::ios::showpoint);
       
       dstream.precision(precision);
-      dstream << mOutputVals[i-1] << wxT("   "); 
+      dstream << mOutputVals[i-1] << "   "; 
    }
    
    dstream << std::endl;
@@ -766,7 +766,7 @@ void TextEphemFile::WriteData()
    
    #if DEBUG_EPHEMFILE_DATA
    MessageInterface::ShowMessage
-      (wxT("TextEphemFile::WriteData() new mOutputA1Mjd=%f, mCurrA1Mjd=%f\n\n"),
+      ("TextEphemFile::WriteData() new mOutputA1Mjd=%f, mCurrA1Mjd=%f\n\n",
        mOutputA1Mjd, mCurrA1Mjd);
    #endif
 }
@@ -788,7 +788,7 @@ void TextEphemFile::WriteFirstData()
       rval = mParams[i]->EvaluateReal();
       
       dstream.width(mColWidth[i]);
-      dstream.fill(wxT(' '));
+      dstream.fill(' ');
       
       if (leftJustify)
          dstream.setf(std::ios::left);
@@ -797,7 +797,7 @@ void TextEphemFile::WriteFirstData()
          dstream.setf(std::ios::showpoint);
       
       dstream.precision(precision);
-      dstream << rval << wxT("   "); 
+      dstream << rval << "   "; 
    }
    
    dstream << std::endl;
@@ -814,7 +814,7 @@ void TextEphemFile::WriteEphemHeader()
 {
    #if DEBUG_EPHEMFILE_DATA
    MessageInterface::ShowMessage
-      (wxT("TextEphemFile::WriteEphemHeader() mHeaderFileName=%s\n"),
+      ("TextEphemFile::WriteEphemHeader() mHeaderFileName=%s\n",
        mHeaderFileName.c_str());
    #endif
 
@@ -824,32 +824,32 @@ void TextEphemFile::WriteEphemHeader()
    theModerator->SaveScript(mHeaderFileName, Gmat::EPHEM_HEADER);
 
    // Write additional parameters
-   std::ofstream headerStream(mHeaderFileName.char_str(), std::ios::app);
+   std::ofstream headerStream(mHeaderFileName.c_str(), std::ios::app);
    headerStream.precision(precision);
    
-   wxString ephemSource = theModerator->GetCurrentPlanetarySource();
-   headerStream << wxT("\n\n");
-   headerStream << wxT("PlanetaryEphemerisSource = '") << ephemSource << wxT("';\n");
-   headerStream << wxT("\n");
+   std::string ephemSource = theModerator->GetCurrentPlanetarySource();
+   headerStream << "\n\n";
+   headerStream << "PlanetaryEphemerisSource = '" << ephemSource << "';\n";
+   headerStream << "\n";
    
-   headerStream << wxT("Output.EpochType = '") << mEpochFormat << wxT("';\n");
-   headerStream << wxT("Output.StartEpoch = ") << mStartA1Mjd << wxT(";\n");
-   headerStream << wxT("Output.StopEpoch = ") << mStopA1Mjd << wxT(";\n");
-   headerStream << wxT("Output.IntervalType = 'Second';\n");
-   headerStream << wxT("Output.Interval = ") << mIntervalInSec << wxT(";\n");
-   headerStream << wxT("Output.CoordinateSystem = '") << mCoordSysName << wxT("';\n");
-   headerStream << wxT("Output.StateType = 'Cartesian';\n");
-   headerStream << wxT("\n");
+   headerStream << "Output.EpochType = '" << mEpochFormat << "';\n";
+   headerStream << "Output.StartEpoch = " << mStartA1Mjd << ";\n";
+   headerStream << "Output.StopEpoch = " << mStopA1Mjd << ";\n";
+   headerStream << "Output.IntervalType = 'Second';\n";
+   headerStream << "Output.Interval = " << mIntervalInSec << ";\n";
+   headerStream << "Output.CoordinateSystem = '" << mCoordSysName << "';\n";
+   headerStream << "Output.StateType = 'Cartesian';\n";
+   headerStream << "\n";
    
-   headerStream << wxT("Time.Unit = 'Day';\n");
-   headerStream << wxT("X.Unit = 'Km';\n");
-   headerStream << wxT("Y.Unit = 'Km';\n");
-   headerStream << wxT("Z.Unit = 'Km';\n");
-   headerStream << wxT("VX.Unit = 'Km/Sec';\n");
-   headerStream << wxT("VY.Unit = 'Km/Sec';\n");
-   headerStream << wxT("VZ.Unit = 'Km/Sec';\n");
-   headerStream << wxT("\n");
-   headerStream << wxT("\n");
+   headerStream << "Time.Unit = 'Day';\n";
+   headerStream << "X.Unit = 'Km';\n";
+   headerStream << "Y.Unit = 'Km';\n";
+   headerStream << "Z.Unit = 'Km';\n";
+   headerStream << "VX.Unit = 'Km/Sec';\n";
+   headerStream << "VY.Unit = 'Km/Sec';\n";
+   headerStream << "VZ.Unit = 'Km/Sec';\n";
+   headerStream << "\n";
+   headerStream << "\n";
 
    // Actually I want use cmd processor to append the file,
    // but, I don't know how it will work on Mac and Linux.
@@ -857,14 +857,14 @@ void TextEphemFile::WriteEphemHeader()
    // Open data file
    #if DEBUG_EPHEMFILE_DATA
    MessageInterface::ShowMessage
-      (wxT("TextEphemFile::WriteEphemHeader() filename=%s\n"), filename.c_str());
+      ("TextEphemFile::WriteEphemHeader() filename=%s\n", filename.c_str());
    #endif
    
-   std::ifstream dataStream(filename.char_str());
+   std::ifstream dataStream(filename.c_str());
    if (!dataStream.is_open())
    {
       MessageInterface::ShowMessage
-         (wxT("*** ERROR *** TextEphemFile::WriteEphemHeader() Fail to open %s\n"),
+         ("*** ERROR *** TextEphemFile::WriteEphemHeader() Fail to open %s\n",
           filename.c_str());
       headerStream.close();
       return;
@@ -876,8 +876,8 @@ void TextEphemFile::WriteEphemHeader()
    while (!dataStream.eof())
    {
       dataStream.getline(buffer, MAX_LINE_CHAR-1);
-      headerStream << buffer << wxT("\n");
-      //MessageInterface::ShowMessage(wxT("buffer=%s\n"), buffer);
+      headerStream << buffer << "\n";
+      //MessageInterface::ShowMessage("buffer=%s\n", buffer);
    }
 
    dataStream.close();
@@ -886,10 +886,10 @@ void TextEphemFile::WriteEphemHeader()
 //    // It doesn't work!!!
 //    #ifdef __WINDOWS__
 //    // Delete data file
-//    if (system((wxT("rm ") + filename).c_str()) == 0)
-//       MessageInterface::ShowMessage(wxT("==> Sucessfully removed file:%s\n"), filename.c_str());
+//    if (system(("rm " + filename).c_str()) == 0)
+//       MessageInterface::ShowMessage("==> Sucessfully removed file:%s\n", filename.c_str());
 //    else
-//       MessageInterface::ShowMessage(wxT("==> Removing file:%s was Unsuccessful\n"), filename.c_str());
+//       MessageInterface::ShowMessage("==> Removing file:%s was Unsuccessful\n", filename.c_str());
 //    #endif
 }
 
@@ -899,26 +899,26 @@ void TextEphemFile::WriteEphemHeader()
 //------------------------------------------------------------------------------
 void TextEphemFile::SaveEpochType()
 {
-   Integer loc = mEpochFormat.find(wxT("ModJulian"), 0);
+   Integer loc = mEpochFormat.find("ModJulian", 0);
    
    if (loc == -1)
-      loc = mEpochFormat.find(wxT("Gregorian"), 0);
+      loc = mEpochFormat.find("Gregorian", 0);
    
    if (loc == 0)
       throw SpaceObjectException
-         (wxT("TextEphemFile::SaveEpochType() Error parsing time format '") +
-          mEpochFormat + wxT("'; could not find 'Gregorian' or 'ModJulian' substring."));
+         ("TextEphemFile::SaveEpochType() Error parsing time format '" +
+          mEpochFormat + "'; could not find 'Gregorian' or 'ModJulian' substring.");
    
-   wxString epochSys = mEpochFormat.substr(0, loc);
+   std::string epochSys = mEpochFormat.substr(0, loc);
    mEpochSysId = TimeConverterUtil::GetTimeTypeID(epochSys);
    mIsGregorian = false;
    
-   if (mEpochFormat.substr(loc) == wxT("Gregorian"))
+   if (mEpochFormat.substr(loc) == "Gregorian")
       mIsGregorian = true;
 
    #if TEXT_EPHEMFILE_FIRST
    MessageInterface::ShowMessage
-      (wxT("TextEphemFile::SaveEpochType() epochSys=%S, mIsGregorian=%d, mIntervalInSec=%f\n"),
+      ("TextEphemFile::SaveEpochType() epochSys=%S, mIsGregorian=%d, mIntervalInSec=%f\n",
        epochSys.c_str(),  mIsGregorian, mIntervalInSec);
    #endif
 }

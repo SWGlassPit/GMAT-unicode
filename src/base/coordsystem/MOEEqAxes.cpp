@@ -34,7 +34,7 @@
 //---------------------------------
 
 /* placeholder - may be needed later
-const wxString
+const std::string
 MOEEqAxes::PARAMETER_TEXT[MOEEqAxesParamCount - InertialAxesParamCount] =
 {
    "",
@@ -51,8 +51,8 @@ MOEEqAxes::PARAMETER_TYPE[MOEEqAxesParamCount - InertialAxesParamCount] =
 //------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//  MOEEqAxes(const wxString &itsType,
-//            const wxString &itsName);
+//  MOEEqAxes(const std::string &itsType,
+//            const std::string &itsName);
 //---------------------------------------------------------------------------
 /**
  * Constructs base MOEEqAxes structures
@@ -63,10 +63,10 @@ MOEEqAxes::PARAMETER_TYPE[MOEEqAxesParamCount - InertialAxesParamCount] =
  *
  */
 //---------------------------------------------------------------------------
-MOEEqAxes::MOEEqAxes(const wxString &itsName) :
-InertialAxes(wxT("MOEEq"),itsName)
+MOEEqAxes::MOEEqAxes(const std::string &itsName) :
+InertialAxes("MOEEq",itsName)
 {
-   objectTypeNames.push_back(wxT("MOEEqAxes"));
+   objectTypeNames.push_back("MOEEqAxes");
    parameterCount = MOEEqAxesParamCount;
 }
 
@@ -194,7 +194,7 @@ GmatBase* MOEEqAxes::Clone() const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -205,7 +205,7 @@ GmatBase* MOEEqAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*wxString MOEEqAxes::GetParameterText(const Integer id) const
+/*std::string MOEEqAxes::GetParameterText(const Integer id) const
 {
    if (id >= InertialAxesParamCount && id < MOEEqAxesParamCount)
       return PARAMETER_TEXT[id - InertialAxesParamCount];
@@ -213,7 +213,7 @@ GmatBase* MOEEqAxes::Clone() const
 }
 */
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -224,7 +224,7 @@ GmatBase* MOEEqAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*Integer MOEEqAxes::GetParameterID(const wxString &str) const
+/*Integer MOEEqAxes::GetParameterID(const std::string &str) const
 {
    for (Integer i = InertialAxesParamCount; i < MOEEqAxesParamCount; i++)
    {
@@ -256,7 +256,7 @@ GmatBase* MOEEqAxes::Clone() const
 }
 */
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -267,7 +267,7 @@ GmatBase* MOEEqAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*wxString MOEEqAxes::GetParameterTypeString(const Integer id) const
+/*std::string MOEEqAxes::GetParameterTypeString(const Integer id) const
 {
    return InertialAxes::PARAM_TYPE_STRING[GetParameterType(id)];
 }

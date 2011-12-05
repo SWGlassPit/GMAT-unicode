@@ -34,24 +34,24 @@
 // static data
 //---------------------------------
 
-const wxString
+const std::string
 Solver::PARAMETER_TEXT[SolverParamCount - GmatBaseParamCount] =
 {
-   wxT("ShowProgress"),
-   wxT("ReportStyle"),
-   wxT("ReportFile"),
-   wxT("Variables"),
-   wxT("MaximumIterations"),
-   wxT("NumberOfVariables"),
-   wxT("RegisteredVariables"),
-   wxT("RegisteredComponents"),
-   wxT("AllowScaleSetting"),
-   wxT("AllowRangeSettings"),
-   wxT("AllowStepsizeSetting"),
-   wxT("AllowVariablePertSetting"),
-   wxT("SolverMode"),
-   wxT("ExitMode"),
-   wxT("SolverStatus")
+   "ShowProgress",
+   "ReportStyle",
+   "ReportFile",
+   "Variables",
+   "MaximumIterations",
+   "NumberOfVariables",
+   "RegisteredVariables",
+   "RegisteredComponents",
+   "AllowScaleSetting",
+   "AllowRangeSettings",
+   "AllowStepsizeSetting",
+   "AllowVariablePertSetting",
+   "SolverMode",
+   "ExitMode",
+   "SolverStatus"
 };
 
 const Gmat::ParameterType
@@ -74,13 +74,13 @@ Solver::PARAMETER_TYPE[SolverParamCount - GmatBaseParamCount] =
    Gmat::INTEGER_TYPE
 };
 
-const wxString    
+const std::string    
 Solver::STYLE_TEXT[MaxStyle - NORMAL_STYLE] =
 {
-   wxT("Normal"),
-   wxT("Concise"),
-   wxT("Verbose"),
-   wxT("Debug")
+   "Normal",
+   "Concise",
+   "Verbose",
+   "Debug"
 };
 
 
@@ -89,25 +89,25 @@ Solver::STYLE_TEXT[MaxStyle - NORMAL_STYLE] =
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  Solver(const wxString &type, const wxString &name)
+//  Solver(const std::string &type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Core constructor for Solver objects.
  * 
  * @param type Text description of the type of solver constructed 
- *             (e.g. wxT("DifferentialCorrector"))
+ *             (e.g. "DifferentialCorrector")
  * @param name The solver's name
  */
 //------------------------------------------------------------------------------
-Solver::Solver(const wxString &type, const wxString &name) :
+Solver::Solver(const std::string &type, const std::string &name) :
    GmatBase                (Gmat::SOLVER, type, name),
    isInternal              (true),   
    currentState            (INITIALIZING),
    nestedState             (INITIALIZING),
-   textFileMode            (wxT("Normal")),
+   textFileMode            ("Normal"),
    showProgress            (true),
    progressStyle           (NORMAL_STYLE),
-   debugString             (wxT("")),
+   debugString             (""),
    variableCount           (0),
    //variable                (NULL),
    iterationsTaken         (0),
@@ -125,7 +125,7 @@ Solver::Solver(const wxString &type, const wxString &name) :
    AllowRangeLimits        (true),
    AllowStepsizeLimit      (true),
    AllowIndependentPerts   (true),
-   solverMode              (wxT("")),
+   solverMode              (""),
    currentMode             (SOLVE),
    exitMode                (DISCARD),
    status                  (CREATED),
@@ -133,16 +133,16 @@ Solver::Solver(const wxString &type, const wxString &name) :
    plotter                 (NULL)
 {
    objectTypes.push_back(Gmat::SOLVER);
-   objectTypeNames.push_back(wxT("Solver"));
-   //solverTextFile = wxT("solver_");
+   objectTypeNames.push_back("Solver");
+   //solverTextFile = "solver_";
    solverTextFile  = type;
    solverTextFile += instanceName;
-   solverTextFile += wxT(".data");
+   solverTextFile += ".data";
 }
 
 
 //------------------------------------------------------------------------------
-//  Solver(wxString type, wxString name)
+//  Solver(std::string type, std::string name)
 //------------------------------------------------------------------------------
 /**
  *  Solver destructor.
@@ -202,7 +202,7 @@ Solver::Solver(const Solver &sol) :
 {
    #ifdef DEBUG_SOLVER_INIT
       MessageInterface::ShowMessage(
-         wxT("In Solver::Solver (copy constructor)\n"));
+         "In Solver::Solver (copy constructor)\n");
    #endif
    variableNames.clear();
    //variable.clear();
@@ -284,7 +284,7 @@ bool Solver::Initialize()
    
    #ifdef DEBUG_SOLVER_INIT
       MessageInterface::ShowMessage(
-         wxT("In Solver::Initialize with localVariableCount = %d\n"), 
+         "In Solver::Initialize with localVariableCount = %d\n", 
          localVariableCount);
    #endif
 
@@ -292,7 +292,7 @@ bool Solver::Initialize()
    {
    #ifdef DEBUG_SOLVER_INIT
       MessageInterface::ShowMessage(
-         wxT("In Solver::Initialize - about to set default values\n"));
+         "In Solver::Initialize - about to set default values\n");
    #endif
       for (Integer i = 0; i < localVariableCount; ++i)
       {
@@ -308,7 +308,7 @@ bool Solver::Initialize()
    }
    catch(const std::exception &)
    {
-      throw SolverException(wxT("Range error initializing Solver object %s\n"),
+      throw SolverException("Range error initializing Solver object %s\n",
             instanceName.c_str());
    }
    
@@ -316,7 +316,7 @@ bool Solver::Initialize()
    iterationsTaken = 0;
    #ifdef DEBUG_SOLVER_INIT
       MessageInterface::ShowMessage(
-         wxT("In Solver::Initialize completed\n"));
+         "In Solver::Initialize completed\n");
    #endif
       
    status = INITIALIZED;
@@ -324,8 +324,8 @@ bool Solver::Initialize()
 //      delete plotter;
 //   if (plotCount > 0)
 //   {
-//      plotter = new OwnedPlot(wxT(""));
-//      plotter->SetName(instanceName + wxT("_masterPlot"));
+//      plotter = new OwnedPlot("");
+//      plotter->SetName(instanceName + "_masterPlot");
 //   }
    
    return true;
@@ -345,7 +345,7 @@ bool Solver::Finalize()
 
 
 //------------------------------------------------------------------------------
-//  Integer SetSolverVariables(Real *data, const wxString &name)
+//  Integer SetSolverVariables(Real *data, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Derived classes use this method to pass in parameter data specific to
@@ -359,10 +359,10 @@ bool Solver::Finalize()
  * @return The ID used for the variable.
  */
 //------------------------------------------------------------------------------
-Integer Solver::SetSolverVariables(Real *data, const wxString &name)
+Integer Solver::SetSolverVariables(Real *data, const std::string &name)
 {
    if (variableNames[variableCount] != name)
-      throw SolverException(wxT("Mismatch between parsed and configured variable"));
+      throw SolverException("Mismatch between parsed and configured variable");
 
    //variable[variableCount] = data[0];
    //perturbation[variableCount] = data[1];
@@ -375,23 +375,23 @@ Integer Solver::SetSolverVariables(Real *data, const wxString &name)
    catch(const std::exception &)
    {
       throw SolverException(
-              wxT("Range error setting variable or perturbation in ")
-              wxT("SetSolverVariables\n"));
+              "Range error setting variable or perturbation in "
+              "SetSolverVariables\n");
    }
    // Sanity check min and max
    if (data[2] >= data[3])
    {
-      wxString errMsg;
-      errMsg << wxT("Minimum allowed variable value (received ") << data[2]
-             << wxT(") must be less than maximum (received ") << data[3] << wxT(")");
-      throw SolverException(errMsg);
+      std::stringstream errMsg;
+      errMsg << "Minimum allowed variable value (received " << data[2]
+             << ") must be less than maximum (received " << data[3] << ")";
+      throw SolverException(errMsg.str());
    }
    if (data[4] <= 0.0)
    {
-      wxString errMsg;
-      errMsg << wxT("Largest allowed step must be positive! (received ")
-             << data[4] << wxT(")");
-      throw SolverException(errMsg);
+      std::stringstream errMsg;
+      errMsg << "Largest allowed step must be positive! (received "
+             << data[4] << ")";
+      throw SolverException(errMsg.str());
    }
 
    //variableMinimum[variableCount] = data[2];
@@ -407,7 +407,7 @@ Integer Solver::SetSolverVariables(Real *data, const wxString &name)
    catch(const std::exception &)
    {
       throw SolverException(
-            wxT("Range error setting variable min/max in SetSolverVariables\n"));
+            "Range error setting variable min/max in SetSolverVariables\n");
    }
    
    ++variableCount;
@@ -417,7 +417,7 @@ Integer Solver::SetSolverVariables(Real *data, const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// bool Solver::RefreshSolverVariables(Real *data, const wxString &name)
+// bool Solver::RefreshSolverVariables(Real *data, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Refreshes Variable data to the current Mission Control Sequence values.
@@ -433,14 +433,14 @@ Integer Solver::SetSolverVariables(Real *data, const wxString &name)
  * @return true is the data was updated, false if not.
  */
 //------------------------------------------------------------------------------
-bool Solver::RefreshSolverVariables(Real *data, const wxString &name)
+bool Solver::RefreshSolverVariables(Real *data, const std::string &name)
 {
    bool retval = false;
 
    // Find index of the variable
    for (UnsignedInt n = 0; n < variableNames.size(); ++n)
    {
-      wxString varName = variableNames[n];
+      std::string varName = variableNames[n];
       if (varName == name)
       {
          try
@@ -452,23 +452,23 @@ bool Solver::RefreshSolverVariables(Real *data, const wxString &name)
          catch(const std::exception &)
          {
             throw SolverException(
-                    wxT("Range error setting variable or perturbation in ")
-                    wxT("SetSolverVariables\n"));
+                    "Range error setting variable or perturbation in "
+                    "SetSolverVariables\n");
          }
          // Sanity check min and max
          if (data[2] >= data[3])
          {
-            wxString errMsg;
-            errMsg << wxT("Minimum allowed variable value (received ") << data[2]
-                   << wxT(") must be less than maximum (received ") << data[3] << wxT(")");
-            throw SolverException(errMsg);
+            std::stringstream errMsg;
+            errMsg << "Minimum allowed variable value (received " << data[2]
+                   << ") must be less than maximum (received " << data[3] << ")";
+            throw SolverException(errMsg.str());
          }
          if (data[4] <= 0.0)
          {
-            wxString errMsg;
-            errMsg << wxT("Largest allowed step must be positive! (received ")
-                   << data[4] << wxT(")");
-            throw SolverException(errMsg);
+            std::stringstream errMsg;
+            errMsg << "Largest allowed step must be positive! (received "
+                   << data[4] << ")";
+            throw SolverException(errMsg.str());
          }
 
          //variableMinimum[variableCount] = data[2];
@@ -484,8 +484,8 @@ bool Solver::RefreshSolverVariables(Real *data, const wxString &name)
          catch(const std::exception &)
          {
             throw SolverException(
-                  wxT("Range error setting variable min/max in ")
-                  wxT("RefreshSolverVariables\n"));
+                  "Range error setting variable min/max in "
+                  "RefreshSolverVariables\n");
          }
 
          retval = true;
@@ -511,12 +511,12 @@ Real Solver::GetSolverVariable(Integer id)
 {
    if (id >= variableCount)
       throw SolverException(
-         wxT("Solver member requested a parameter outside the range ")
-         wxT("of the configured variables."));
+         "Solver member requested a parameter outside the range "
+         "of the configured variables.");
 
    #ifdef DEBUG_STATE_MACHINE
       MessageInterface::ShowMessage(
-            wxT("   State %d setting variable %d    to value = %.12lf\n"), 
+            "   State %d setting variable %d    to value = %.12lf\n", 
             currentState, id, variable.at(id));
    #endif
 
@@ -537,8 +537,8 @@ void Solver::SetUnscaledVariable(Integer id, Real value)
 {
    if (id >= variableCount)
       throw SolverException(
-         wxT("Solver member requested a parameter outside the range ")
-         wxT("of the configured variables."));
+         "Solver member requested a parameter outside the range "
+         "of the configured variables.");
 
    unscaledVariable.at(id) = value;
 }
@@ -617,7 +617,7 @@ Solver::SolverState Solver::AdvanceState()
          break;
         
       default:
-         throw SolverException(wxT("Undefined Solver state"));
+         throw SolverException("Undefined Solver state");
     };
     
     ReportProgress();
@@ -636,7 +636,7 @@ Solver::SolverState Solver::AdvanceState()
 //------------------------------------------------------------------------------
 StringArray Solver::AdvanceNestedState(std::vector<Real> vars)
 {
-   wxString errorStr = wxT("AdvanceNestedState not implemented for solver ")
+   std::string errorStr = "AdvanceNestedState not implemented for solver "
       + instanceName;
    throw SolverException(errorStr);
 }
@@ -683,7 +683,7 @@ bool Solver::UpdateSolverTolerance(Integer id, Real newValue)
 // Access methods overriden from the base class
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -693,11 +693,11 @@ bool Solver::UpdateSolverTolerance(Integer id, Real newValue)
  * @return parameter text for the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString Solver::GetParameterText(const Integer id) const
+std::string Solver::GetParameterText(const Integer id) const
 {
    if ((id >= GmatBaseParamCount) && (id < SolverParamCount))
    {
-      //MessageInterface::ShowMessage(wxT("'%s':\n"), 
+      //MessageInterface::ShowMessage("'%s':\n", 
       //   PARAMETER_TEXT[id - GmatBaseParamCount].c_str());
       return PARAMETER_TEXT[id - GmatBaseParamCount];
    }
@@ -706,7 +706,7 @@ wxString Solver::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -716,23 +716,23 @@ wxString Solver::GetParameterText(const Integer id) const
  * @return ID for the requested parameter.
  */
 //------------------------------------------------------------------------------
-Integer Solver::GetParameterID(const wxString &str) const
+Integer Solver::GetParameterID(const std::string &str) const
 {
    // Write deprecated message per GMAT session
    static bool writeDeprecatedMsg = true;
    
    // 1. This part will be removed for a future build:
-   wxString param_text = str;
-   if (param_text == wxT("TargeterTextFile"))
+   std::string param_text = str;
+   if (param_text == "TargeterTextFile")
    {
       if (writeDeprecatedMsg)
       {
          MessageInterface::ShowMessage
-            (deprecatedMessageFormat.c_str(), wxT("TargeterTextFile"), GetName().c_str(),
-             wxT("ReportFile"));
+            (deprecatedMessageFormat.c_str(), "TargeterTextFile", GetName().c_str(),
+             "ReportFile");
          writeDeprecatedMsg = false;
       }
-      param_text = wxT("ReportFile");
+      param_text = "ReportFile";
    }
    
    // 2. This part is kept for a future build:
@@ -767,7 +767,7 @@ Gmat::ParameterType Solver::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -777,7 +777,7 @@ Gmat::ParameterType Solver::GetParameterType(const Integer id) const
  * @return parameter type string of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString Solver::GetParameterTypeString(const Integer id) const
+std::string Solver::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -814,7 +814,7 @@ bool Solver::IsParameterReadOnly(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-//  bool IsParameterReadOnly(const wxString &label) const
+//  bool IsParameterReadOnly(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * Checks to see if the requested parameter is read only.
@@ -824,7 +824,7 @@ bool Solver::IsParameterReadOnly(const Integer id) const
  * @return true if the parameter is read only, false (the default) if not.
  */
 //---------------------------------------------------------------------------
-bool Solver::IsParameterReadOnly(const wxString &label) const
+bool Solver::IsParameterReadOnly(const std::string &label) const
 {
    return IsParameterReadOnly(GetParameterID(label));
 }
@@ -877,8 +877,8 @@ Integer Solver::SetIntegerParameter(const Integer id,
          maxIterations = value;
       else
          throw SolverException(
-            wxT("The value entered for the maximum iterations on ") + instanceName +
-            wxT(" is not an allowed value. The allowed value is: [Integer > 0]."));
+            "The value entered for the maximum iterations on " + instanceName +
+            " is not an allowed value. The allowed value is: [Integer > 0].");
       return maxIterations;
    }
    
@@ -959,7 +959,7 @@ bool Solver::SetBooleanParameter(const Integer id, const bool value)
 
 
 //---------------------------------------------------------------------------
-//  wxString GetStringParameter(const Integer id) const
+//  std::string GetStringParameter(const Integer id) const
 //---------------------------------------------------------------------------
 /**
  * Retrieve a string parameter.
@@ -970,7 +970,7 @@ bool Solver::SetBooleanParameter(const Integer id, const bool value)
  *         there is no string association.
  */
 //---------------------------------------------------------------------------
-wxString Solver::GetStringParameter(const Integer id) const
+std::string Solver::GetStringParameter(const Integer id) const
 {
    if (id == ReportStyle)
       return textFileMode;
@@ -982,7 +982,7 @@ wxString Solver::GetStringParameter(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-//  wxString GetStringParameter(const wxString &label) const
+//  std::string GetStringParameter(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * Retrieve a string parameter.
@@ -993,14 +993,14 @@ wxString Solver::GetStringParameter(const Integer id) const
  *         there is no string association.
  */
 //---------------------------------------------------------------------------
-wxString Solver::GetStringParameter(const wxString &label) const
+std::string Solver::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 
 //---------------------------------------------------------------------------
-//  bool SetStringParameter(const Integer id, const wxString &value)
+//  bool SetStringParameter(const Integer id, const std::string &value)
 //---------------------------------------------------------------------------
 /**
  * Change the value of a string parameter.
@@ -1011,7 +1011,7 @@ wxString Solver::GetStringParameter(const wxString &label) const
  * @return true if the string is stored, throw if the parameter is not stored.
  */
 //---------------------------------------------------------------------------
-bool Solver::SetStringParameter(const Integer id, const wxString &value)
+bool Solver::SetStringParameter(const Integer id, const std::string &value)
 {
    if (id == ReportStyle)
    {
@@ -1025,9 +1025,9 @@ bool Solver::SetStringParameter(const Integer id, const wxString &value)
          }
       }
       throw SolverException(
-         wxT("The value of \"") + value + wxT("\" for field \"Report Style\"")
-         wxT(" on object \"") + instanceName + wxT("\" is not an allowed value.\n")
-         wxT("The allowed values are: [Normal, Concise, Verbose, Debug]."));
+         "The value of \"" + value + "\" for field \"Report Style\""
+         " on object \"" + instanceName + "\" is not an allowed value.\n"
+         "The allowed values are: [Normal, Concise, Verbose, Debug].");
    }
    
    if (id == solverTextFileID) 
@@ -1044,32 +1044,32 @@ bool Solver::SetStringParameter(const Integer id, const wxString &value)
 
    if (id == SolverModeID) 
    {
-      if (value == wxT("Solve"))
+      if (value == "Solve")
          currentMode = SOLVE;
-      else if (value == wxT("RunInitialGuess"))
+      else if (value == "RunInitialGuess")
          currentMode = INITIAL_GUESS;
-      else if (value == wxT("RunCorrected"))
+      else if (value == "RunCorrected")
          currentMode = RUN_CORRECTED;
       else
-         throw SolverException(wxT("Solver mode ") + value +
-                  wxT("not recognized; allowed values are {\"Solve\", ")
-                  wxT("\"RunInitialGuess\", \"RunCorrected\"}"));
+         throw SolverException("Solver mode " + value +
+                  "not recognized; allowed values are {\"Solve\", "
+                  "\"RunInitialGuess\", \"RunCorrected\"}");
       solverMode = value;
       return true;
    }
 
    if (id == ExitModeID) 
    {
-      if (value == wxT("DiscardAndContinue"))
+      if (value == "DiscardAndContinue")
          exitMode = DISCARD;
-      else if (value == wxT("SaveAndContinue"))
+      else if (value == "SaveAndContinue")
          exitMode = RETAIN;
-      else if (value == wxT("Stop"))
+      else if (value == "Stop")
          exitMode = HALT;
       else
-         throw SolverException(wxT("Exit mode ") + value +
-                  wxT("not recognized; allowed values are {\"DiscardAndContinue\", ")
-                  wxT("\"SaveAndContinue\", \"Stop\"}"));
+         throw SolverException("Exit mode " + value +
+                  "not recognized; allowed values are {\"DiscardAndContinue\", "
+                  "\"SaveAndContinue\", \"Stop\"}");
       exitModeText = value;
       return true;
    }
@@ -1079,7 +1079,7 @@ bool Solver::SetStringParameter(const Integer id, const wxString &value)
 
 
 //---------------------------------------------------------------------------
-//  bool SetStringParameter(const Integer id, const wxString &value)
+//  bool SetStringParameter(const Integer id, const std::string &value)
 //---------------------------------------------------------------------------
 /**
  * Change the value of a string parameter.
@@ -1089,41 +1089,41 @@ bool Solver::SetStringParameter(const Integer id, const wxString &value)
  *
  * @return true if the string is stored, throw if the parameter is not stored.
  */
-bool Solver::SetStringParameter(const wxString &label, 
-                                const wxString &value)
+bool Solver::SetStringParameter(const std::string &label, 
+                                const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
 
 
-wxString Solver::GetStringParameter(const Integer id,
+std::string Solver::GetStringParameter(const Integer id,
                                                   const Integer index) const
 {
    return GmatBase::GetStringParameter(id, index);
 }
 
 bool Solver::SetStringParameter(const Integer id, 
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index)
 {
    return GmatBase::SetStringParameter(id, value, index);
 }
 
-wxString Solver::GetStringParameter(const wxString &label,
+std::string Solver::GetStringParameter(const std::string &label,
                                                   const Integer index) const
 {
    return GmatBase::GetStringParameter(label, index);
 }
 
-bool Solver::SetStringParameter(const wxString &label, 
-                                           const wxString &value,
+bool Solver::SetStringParameter(const std::string &label, 
+                                           const std::string &value,
                                            const Integer index)
 {
    return GmatBase::SetStringParameter(label, value, index);
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringArrayParameter(const Integer id) const
+//  std::string  GetStringArrayParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -1162,10 +1162,10 @@ const StringArray& Solver::GetPropertyEnumStrings(const Integer id) const
 
    if (id == ReportStyle)
    {
-      enumStrings.push_back(wxT("Normal"));
-      enumStrings.push_back(wxT("Concise"));
-      enumStrings.push_back(wxT("Verbose"));
-      enumStrings.push_back(wxT("Debug"));
+      enumStrings.push_back("Normal");
+      enumStrings.push_back("Concise");
+      enumStrings.push_back("Verbose");
+      enumStrings.push_back("Debug");
       return enumStrings;
    }
    return GmatBase::GetPropertyEnumStrings(id);
@@ -1185,12 +1185,12 @@ void Solver::ReportProgress()
 {
    if (showProgress)
    {
-      MessageInterface::ShowMessage(wxT("%s\n"), GetProgressString().c_str());
+      MessageInterface::ShowMessage("%s\n", GetProgressString().c_str());
    }
 }
 
 //------------------------------------------------------------------------------
-//  void SetDebugString(const wxString &str)
+//  void SetDebugString(const std::string &str)
 //------------------------------------------------------------------------------
 /**
  * Fills the buffer with run data for (user space) debug mode in the Solvers.
@@ -1198,7 +1198,7 @@ void Solver::ReportProgress()
  * @param <str> The data passed from the command stream.
  */
 //------------------------------------------------------------------------------
-void Solver::SetDebugString(const wxString &str)
+void Solver::SetDebugString(const std::string &str)
 {
    debugString = str;
 }
@@ -1351,15 +1351,15 @@ void Solver::ResetVariables()
 
 
 //------------------------------------------------------------------------------
-//  wxString GetProgressString()
+//  std::string GetProgressString()
 //------------------------------------------------------------------------------
 /**
  * Generates a string that is written out by solvers when showProgress is true.
  */
 //------------------------------------------------------------------------------
-wxString Solver::GetProgressString()
+std::string Solver::GetProgressString()
 {
-   return wxT("Solver progress string not yet implemented for ") + typeName;
+   return "Solver progress string not yet implemented for " + typeName;
 }
 
 //------------------------------------------------------------------------------
@@ -1390,8 +1390,8 @@ void Solver::OpenSolverTextFile()
 {
    #ifdef DEBUG_SOLVER_INIT
    MessageInterface::ShowMessage
-      (wxT("Solver::OpenSolverTextFile() entered, showProgress=%d, solverTextFile='%s', ")
-       wxT("textFileOpen=%d"), showProgress, solverTextFile.c_str(), textFile.is_open());
+      ("Solver::OpenSolverTextFile() entered, showProgress=%d, solverTextFile='%s', "
+       "textFileOpen=%d", showProgress, solverTextFile.c_str(), textFile.is_open());
    #endif
    
    if (!showProgress)
@@ -1399,29 +1399,29 @@ void Solver::OpenSolverTextFile()
    
    FileManager *fm;
    fm = FileManager::Instance();
-   wxString outPath = fm->GetFullPathname(FileManager::OUTPUT_PATH);
-   wxString fullSolverTextFile = outPath + solverTextFile;
+   std::string outPath = fm->GetFullPathname(FileManager::OUTPUT_PATH);
+   std::string fullSolverTextFile = outPath + solverTextFile;
    
    if (textFile.is_open())
       textFile.close();
    
    #ifdef DEBUG_SOLVER_INIT
-   MessageInterface::ShowMessage(wxT("   instanceNumber=%d\n"), instanceNumber);
+   MessageInterface::ShowMessage("   instanceNumber=%d\n", instanceNumber);
    #endif
    
    if (instanceNumber == 1)
-      textFile.open(fullSolverTextFile.char_str());
+      textFile.open(fullSolverTextFile.c_str());
    else
-      textFile.open(fullSolverTextFile.char_str(), std::ios::app);
+      textFile.open(fullSolverTextFile.c_str(), std::ios::app);
    
    if (!textFile.is_open())
-      throw SolverException(wxT("Error opening targeter text file ") +
+      throw SolverException("Error opening targeter text file " +
                             solverTextFile);
    
    textFile.precision(16);
    
    #ifdef DEBUG_SOLVER_INIT
-   MessageInterface::ShowMessage(wxT("Solver::OpenSolverTextFile() leaving\n"));
+   MessageInterface::ShowMessage("Solver::OpenSolverTextFile() leaving\n");
    #endif
 }
 

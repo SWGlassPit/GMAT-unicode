@@ -53,8 +53,8 @@ public:
    GmatTimeUtil::ElapsedDate ToElapsedDate() const;
 
    Integer GetNumData() const;
-   const wxString* GetDataDescriptions() const;
-   wxString* ToValueStrings();
+   const std::string* GetDataDescriptions() const;
+   std::string* ToValueStrings();
 
 protected:
 private:
@@ -63,8 +63,8 @@ private:
    Real tolerance; // Used for time comparison (==, !=)
 
    static const Integer NUM_DATA = 1;
-   static const wxString DATA_DESCRIPTIONS[NUM_DATA];
-   wxString stringValues[NUM_DATA];
+   static const std::string DATA_DESCRIPTIONS[NUM_DATA];
+   std::string stringValues[NUM_DATA];
 
 };
 

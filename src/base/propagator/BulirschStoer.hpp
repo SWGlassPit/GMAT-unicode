@@ -65,7 +65,7 @@
 class GMAT_API BulirschStoer : public Integrator
 {
 public:
-   BulirschStoer(const wxString &nomme = wxT(""));
+   BulirschStoer(const std::string &nomme = "");
    virtual ~BulirschStoer(void);
    BulirschStoer(const BulirschStoer& bs);
    BulirschStoer& operator=(const BulirschStoer& bs);
@@ -83,14 +83,14 @@ public:
    bool AdaptStep(Real maxerror);
 
    // Parameter accessor methods -- overridden from GmatBase
-   virtual wxString         GetParameterText(const Integer id) const;
-   virtual Integer             GetParameterID(const wxString &str) const;
+   virtual std::string         GetParameterText(const Integer id) const;
+   virtual Integer             GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType GetParameterType(const Integer id) const;
-   virtual wxString         GetParameterTypeString(const Integer id) const;
+   virtual std::string         GetParameterTypeString(const Integer id) const;
    virtual Real    GetRealParameter(const Integer id) const;
-   virtual Real    GetRealParameter(const wxString &label) const;
+   virtual Real    GetRealParameter(const std::string &label) const;
    virtual Real    SetRealParameter(const Integer id, const Real value);
-   virtual Real    SetRealParameter(const wxString &label, const Real value);
+   virtual Real    SetRealParameter(const std::string &label, const Real value);
         
 protected:
    enum
@@ -100,7 +100,7 @@ protected:
       MIN_TOLERANCE,
       BulirschStoerParamCount  /// Count of the parameters for this class
    };
-   static const wxString PARAMETER_TEXT[BulirschStoerParamCount - IntegratorParamCount];
+   static const std::string PARAMETER_TEXT[BulirschStoerParamCount - IntegratorParamCount];
    static const Gmat::ParameterType PARAMETER_TYPE[BulirschStoerParamCount - IntegratorParamCount];
 
 private:
@@ -108,7 +108,7 @@ private:
    Integer depth;
    /// Flag  indicating status of the arrays sized by depth
    bool depthInitialized;
-   /// Current level (depth to go in wxT("this") step) for the extrapolation
+   /// Current level (depth to go in "this" step) for the extrapolation
    Integer level;
    /// Maximum error encountered at each level
    Real *levelError;

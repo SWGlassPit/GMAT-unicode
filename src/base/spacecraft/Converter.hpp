@@ -29,21 +29,21 @@ class GMAT_API Converter
 public:
     // Default constructor
     Converter();
-    Converter(const wxString &type);
+    Converter(const std::string &type);
     // Copy constructor
     Converter(const Converter &converter);
     // Assignment operator
     Converter& operator=(const Converter &converter);
     
-    virtual wxString GetType();
-    virtual void SetType(const wxString &type);
+    virtual std::string GetType();
+    virtual void SetType(const std::string &type);
 
     // Destructor
     virtual ~Converter();
 
 protected:
     // Declare protetced method data 
-    wxString type;
+    std::string type;
 
 private:
 

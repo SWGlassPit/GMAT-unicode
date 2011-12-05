@@ -31,9 +31,9 @@
  */
 //------------------------------------------------------------------------------
 Stop::Stop() :
-    GmatCommand(wxT("Stop"))
+    GmatCommand("Stop")
 {
-   generatingString = wxT("Stop");
+   generatingString = "Stop";
 }
 
 
@@ -104,7 +104,7 @@ Stop& Stop::operator=(const Stop &stop)
 bool Stop::Execute()
 {
    throw CommandException(
-      wxT("Command Sequence intentionally interrupted by Stop command.\n"));
+      "Command Sequence intentionally interrupted by Stop command.\n");
    return true;
 }
 
@@ -125,14 +125,14 @@ GmatBase* Stop::Clone() const
 
 
 //------------------------------------------------------------------------------
-// const wxString& GetGeneratingString(Gmat::WriteMode mode,
-//                                        const wxString &prefix,
-//                                        const wxString &useName)
+// const std::string& GetGeneratingString(Gmat::WriteMode mode,
+//                                        const std::string &prefix,
+//                                        const std::string &useName)
 //------------------------------------------------------------------------------
-const wxString& Stop::GetGeneratingString(Gmat::WriteMode mode,
-                                             const wxString &prefix,
-                                             const wxString &useName)
+const std::string& Stop::GetGeneratingString(Gmat::WriteMode mode,
+                                             const std::string &prefix,
+                                             const std::string &useName)
 {
-   generatingString = prefix + wxT("Stop;");
+   generatingString = prefix + "Stop;";
    return GmatCommand::GetGeneratingString(mode, prefix, useName);
 }

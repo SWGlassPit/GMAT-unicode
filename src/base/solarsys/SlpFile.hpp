@@ -34,7 +34,7 @@ class GMAT_API SlpFile : public PlanetaryEphem
 public:
 
    // default constructor
-   SlpFile(wxString withFileName);
+   SlpFile(std::string withFileName);
    // copy constructor
    SlpFile(const SlpFile& slpf);
    // operator=
@@ -43,7 +43,7 @@ public:
    ~SlpFile();
 
    // method to return the body ID number, given the name of the body
-   Integer GetBodyID(wxString bodyName);
+   Integer GetBodyID(std::string bodyName);
 
    // method to return the position and velocity of the specified body
    // at the specified time
@@ -172,7 +172,7 @@ private:
 
    void InitializeSlpFile();
 
-   wxString itsName;
+   std::string itsName;
 
    // from slp_data_types.h
    // length of planetary ephemeris header records

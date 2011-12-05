@@ -43,26 +43,26 @@ public:
    
    // inherited from GmatBase
    virtual GmatBase*    Clone() const;
-   virtual const wxString&
+   virtual const std::string&
                         GetGeneratingString(
                            Gmat::WriteMode mode = Gmat::SCRIPTING,
-                           const wxString &prefix = wxT(""),
-                           const wxString &useName = wxT(""));
+                           const std::string &prefix = "",
+                           const std::string &useName = "");
    
-   const wxString    GetChildString(const wxString &prefix,
+   const std::string    GetChildString(const std::string &prefix,
                                        GmatCommand *child, GmatCommand *parent);
    
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
 protected:
    
-   void IndentChildString(wxString &gen, GmatCommand* cmd, 
-                          wxString &indent, Gmat::WriteMode mode,
-                          const wxString &prefix, const wxString &useName,
+   void IndentChildString(std::stringstream &gen, GmatCommand* cmd, 
+                          std::string &indent, Gmat::WriteMode mode,
+                          const std::string &prefix, const std::string &useName,
                           bool indentCommentOnly);
-   void IndentComment(wxString &gen, wxString &comment,
-                      const wxString &prefix);
+   void IndentComment(std::stringstream &gen, std::string &comment,
+                      const std::string &prefix);
 };
 
 #endif // BeginScript_hpp

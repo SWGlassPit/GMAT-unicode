@@ -47,8 +47,8 @@ class GMAT_API CalculatedPoint : public SpacePoint
 {
 public:
    // default constructor, specifying calculated point type and name
-   CalculatedPoint(const wxString &ptType = wxT("LibrationPoint"), 
-                   const wxString &itsName = wxT(""));
+   CalculatedPoint(const std::string &ptType = "LibrationPoint", 
+                   const std::string &itsName = "");
    // copy constructor
    CalculatedPoint(const CalculatedPoint &cp);
    // operator=
@@ -63,56 +63,56 @@ public:
    //virtual const Rvector3           GetMJ2000Velocity(const A1Mjd &atTime);   
    
    // Parameter access methods - overridden from GmatBase
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const; 
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const; 
    virtual Gmat::ParameterType 
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    virtual bool         IsParameterReadOnly(const Integer id) const;
-   virtual bool         IsParameterReadOnly(const wxString &label) const;
+   virtual bool         IsParameterReadOnly(const std::string &label) const;
    
    virtual Integer      GetIntegerParameter(const Integer id) const;
-   virtual Integer      GetIntegerParameter(const wxString &label) const;
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const Integer id,
+   virtual Integer      GetIntegerParameter(const std::string &label) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const Integer id,
                                            const Integer index) const;
-   virtual wxString  GetStringParameter(const wxString &label,
+   virtual std::string  GetStringParameter(const std::string &label,
                                            const Integer index) const;
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label, 
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label, 
+                                           const std::string &value);
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
-   virtual bool         SetStringParameter(const wxString &label, 
-                                           const wxString &value,
+   virtual bool         SetStringParameter(const std::string &label, 
+                                           const std::string &value,
                                            const Integer index);
    
    virtual const StringArray&  
                         GetStringArrayParameter(const Integer id) const;
    virtual const StringArray&  
-                        GetStringArrayParameter(const wxString &label) const;
+                        GetStringArrayParameter(const std::string &label) const;
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name,
+                                     const std::string &name,
                                      const Integer index);
    virtual bool         SetRefObject(GmatBase *obj, 
                                      const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    virtual bool         HasRefObjectTypeArray();
    virtual const ObjectTypeArray&
                         GetRefObjectTypeArray();
    virtual const StringArray& 
                         GetRefObjectNameArray(const Gmat::ObjectType type);
-   virtual bool         TakeAction(const wxString &action,  
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,  
+                                   const std::string &actionData = "");
    virtual bool         TakeRequiredAction(const Integer id);
 
    
-   virtual void         SetDefaultBody(const wxString &defBody);
+   virtual void         SetDefaultBody(const std::string &defBody);
    virtual const StringArray&
                         GetDefaultBodies() const;
 
@@ -125,7 +125,7 @@ protected:
       CalculatedPointParamCount
    };
    
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[CalculatedPointParamCount - SpacePointParamCount];
    static const Gmat::ParameterType
       PARAMETER_TYPE[CalculatedPointParamCount - SpacePointParamCount];

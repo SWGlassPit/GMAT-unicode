@@ -27,18 +27,18 @@
 
 
 //------------------------------------------------------------------------------
-// bool IsValidMonthName(const wxString &str)
+// bool IsValidMonthName(const std::string &str)
 //------------------------------------------------------------------------------
 /*
  * Checks if input string is valid month short name. Input month name should
- *   be month name abbreviation.  For example, wxT("Jan"), wxT("Feb"), etc.
+ *   be month name abbreviation.  For example, "Jan", "Feb", etc.
  *
  * @param  str  input month string
  *
  * @return return true if input string is valid month name
  */
 //------------------------------------------------------------------------------ 
-bool GmatTimeUtil::IsValidMonthName(const wxString &str)
+bool GmatTimeUtil::IsValidMonthName(const std::string &str)
 {
    for (int i=0; i<12; i++)
    {
@@ -51,7 +51,7 @@ bool GmatTimeUtil::IsValidMonthName(const wxString &str)
 
 
 //------------------------------------------------------------------------------
-// wxString GetMonthName(Integer month)
+// std::string GetMonthName(Integer month)
 //------------------------------------------------------------------------------
 /*
  * Return corresponding Month Name for integer month.
@@ -63,12 +63,12 @@ bool GmatTimeUtil::IsValidMonthName(const wxString &str)
  * @exception <TimeException> thrown if input month is out of range
  */
 //------------------------------------------------------------------------------
-wxString GmatTimeUtil::GetMonthName(Integer month)
+std::string GmatTimeUtil::GetMonthName(Integer month)
 {
    if (month < 1 || month > 12) 
    {
       throw TimeException
-         (wxT("Cannot get Month Name for ") + GmatStringUtil::ToString(month));
+         ("Cannot get Month Name for " + GmatStringUtil::ToString(month));
    }
    
    return GmatTimeConstants::MONTH_NAME_TEXT[month-1];
@@ -76,11 +76,11 @@ wxString GmatTimeUtil::GetMonthName(Integer month)
 
 
 //------------------------------------------------------------------------------
-// Integer GetMonth(const wxString &monthName)
+// Integer GetMonth(const std::string &monthName)
 //------------------------------------------------------------------------------
 /*
  * Return corresponding month for input Month Name. Input month name should
- *   be month name abbreviation.  For example, wxT("Jan"), wxT("Feb"), etc.
+ *   be month name abbreviation.  For example, "Jan", "Feb", etc.
  *
  * @param  monthName  input month name
  *
@@ -90,7 +90,7 @@ wxString GmatTimeUtil::GetMonthName(Integer month)
  * @exception <TimeException> thrown if input month name is out of range
  */
 //------------------------------------------------------------------------------
-Integer GmatTimeUtil::GetMonth(const wxString &monthName)
+Integer GmatTimeUtil::GetMonth(const std::string &monthName)
 {
    for (int i=0; i<12; i++)
    {
@@ -103,25 +103,25 @@ Integer GmatTimeUtil::GetMonth(const wxString &monthName)
 
 
 //------------------------------------------------------------------------------
-// wxString FormatCurrentTime(Integer format = 1)
+// std::string FormatCurrentTime(Integer format = 1)
 //------------------------------------------------------------------------------
 /*
  * Returns the current time in specified format.
  *
  * @param  format  Used in formating current time (1)
- *                 1 = wxT("Wed Apr 16 12:30:22 2008")
- *                 2 = wxT("2008-04-16T12:30:22")
- *                 3 = wxT("2008-04-16 12:30:22")
+ *                 1 = "Wed Apr 16 12:30:22 2008"
+ *                 2 = "2008-04-16T12:30:22"
+ *                 3 = "2008-04-16 12:30:22"
  *
  */
 //------------------------------------------------------------------------------
-wxString GmatTimeUtil::FormatCurrentTime(Integer format)
+std::string GmatTimeUtil::FormatCurrentTime(Integer format)
 {
    time_t currTime = time(NULL);
 
    if (format == 1)
    {
-      wxString currTimeStr = wxString::FromAscii(ctime(&currTime));
+      char *currTimeStr = ctime(&currTime);
       return currTimeStr;
    }
    else
@@ -132,20 +132,20 @@ wxString GmatTimeUtil::FormatCurrentTime(Integer format)
          strftime(timeBuf, 20, "%Y-%m-%dT%I:%M:%S", loctime);
       else
          strftime(timeBuf, 20, "%Y-%m-%d %I:%M:%S", loctime);
-      return wxString::FromAscii(timeBuf);
+      return timeBuf;
    }
 }
 
 //------------------------------------------------------------------------------
-// wxString GetGregorianFormat()
+// std::string GetGregorianFormat()
 //------------------------------------------------------------------------------
 /**
  * Return gregorian time format
  */
 //------------------------------------------------------------------------------
-wxString GmatTimeUtil::GetGregorianFormat()
+std::string GmatTimeUtil::GetGregorianFormat()
 {
-   return wxT("DD MMM YYYY HH:MM:SS.mmm");
+   return "DD MMM YYYY HH:MM:SS.mmm";
 }
 
 

@@ -26,15 +26,15 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  PlanetaryEphemException(wxString details)
+//  PlanetaryEphemException(std::string details)
 //------------------------------------------------------------------------------
 /**
 * Constructs an PlanetaryEphemException object (default constructor).
  */
 //------------------------------------------------------------------------------
 
-PlanetaryEphemException::PlanetaryEphemException(const wxString &details) :
-BaseException  (wxT("PlanetaryEphem (sub)class exception: "), details)
+PlanetaryEphemException::PlanetaryEphemException(const std::string &details) :
+BaseException  ("PlanetaryEphem (sub)class exception: ", details)
 {
 
 }

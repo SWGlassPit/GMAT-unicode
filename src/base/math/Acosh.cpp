@@ -33,8 +33,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Acosh::Acosh(const wxString &nomme)
-   : MathFunction(wxT("Acosh"), nomme)
+Acosh::Acosh(const std::string &nomme)
+   : MathFunction("Acosh", nomme)
 {
 }
 
@@ -93,7 +93,7 @@ void Acosh::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
    leftNode->GetOutputInfo(type1, row1, col1);
    
    if (type1 != Gmat::REAL_TYPE)
-      throw MathException(wxT("Left is not scalar, so cannot do Acosh().\n"));  
+      throw MathException("Left is not scalar, so cannot do Acosh().\n");  
    else
    {
       type = type1;
@@ -114,7 +114,7 @@ void Acosh::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 bool Acosh::ValidateInputs()
 {
    if (leftNode == NULL)
-      throw MathException(wxT("Acosh() - Missing input arguments.\n"));
+      throw MathException("Acosh() - Missing input arguments.\n");
    
    Integer type1, row1, col1; // Left node
    

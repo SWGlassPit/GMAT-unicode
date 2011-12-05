@@ -37,13 +37,13 @@ public:
    virtual Real         EvaluateReal() const;
    virtual bool         SetReal(const Real val);
    
-   virtual wxString  EvaluateString() const;
-   virtual bool         SetString(const wxString &val);
+   virtual std::string  EvaluateString() const;
+   virtual bool         SetString(const std::string &val);
    
 protected:  
    
    // the bool value
-   wxString value;
+   std::string value;
    
    virtual void         SetupWrapper();
 };

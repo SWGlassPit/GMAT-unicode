@@ -79,7 +79,7 @@ bool FactoryManager::RegisterFactory(Factory* fact)
    }
 
    //MessageInterface::ShowMessage
-   //   (wxT("FactoryManager::RegisterFactory() adding factory %d\n"), fact->GetFactoryType());
+   //   ("FactoryManager::RegisterFactory() adding factory %d\n", fact->GetFactoryType());
    
    factoryList.push_back(fact);  // better to put it at the back of the list?
    factoryTypeList.push_back(fact->GetFactoryType());
@@ -90,21 +90,21 @@ bool FactoryManager::RegisterFactory(Factory* fact)
 
 //------------------------------------------------------------------------------
 //  GmatBase* CreateObject(const Gmat::ObjectType generalType,
-//               const wxString &ofType, const wxString &withName)
+//               const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an generic object, with the name withName.
  *
  * @param <ofType> type of the new Spacecraft object (currently defaults
- *                 to wxT("Spacecraft"))
+ *                 to "Spacecraft")
  * @param <withName> name of the new Spacecraft object.
  *
  * @return pointer to the newly-created Spacecraft object
  */
 //------------------------------------------------------------------------------
 GmatBase* FactoryManager::CreateObject(const Gmat::ObjectType generalType,
-                                       const wxString &ofType,
-                                       const wxString &withName)
+                                       const std::string &ofType,
+                                       const std::string &withName)
 {
    Factory* f = FindFactory(generalType, ofType);
    if (f != NULL)
@@ -114,20 +114,20 @@ GmatBase* FactoryManager::CreateObject(const Gmat::ObjectType generalType,
 
 
 //------------------------------------------------------------------------------
-//  Spacecraft* CreateSpacecraft(const wxString &ofType, const wxString &withName)
+//  Spacecraft* CreateSpacecraft(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type Spacecraft, with the name withName.
  *
  * @param <ofType> type of the new Spacecraft object (currently defaults
- *                 to wxT("Spacecraft"))
+ *                 to "Spacecraft")
  * @param <withName> name of the new Spacecraft object.
  *
  * @return pointer to the newly-created Spacecraft object
  */
 //------------------------------------------------------------------------------
-SpaceObject* FactoryManager::CreateSpacecraft(const wxString &ofType,
-                                              const wxString &withName)
+SpaceObject* FactoryManager::CreateSpacecraft(const std::string &ofType,
+                                              const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::SPACECRAFT, ofType);
    if (f != NULL)
@@ -136,8 +136,8 @@ SpaceObject* FactoryManager::CreateSpacecraft(const wxString &ofType,
 }
 
 //------------------------------------------------------------------------------
-//  Parameter* CreateParameter(const wxString &ofType,
-//                             const wxString &withName)
+//  Parameter* CreateParameter(const std::string &ofType,
+//                             const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type Parameter, with the name withName, and of the
@@ -149,8 +149,8 @@ SpaceObject* FactoryManager::CreateSpacecraft(const wxString &ofType,
  * @return pointer to the newly-created Parameter object
  */
 //------------------------------------------------------------------------------
-Parameter* FactoryManager::CreateParameter(const wxString &ofType,
-                                           const wxString &withName)
+Parameter* FactoryManager::CreateParameter(const std::string &ofType,
+                                           const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::PARAMETER, ofType);
    if (f != NULL)
@@ -159,8 +159,8 @@ Parameter* FactoryManager::CreateParameter(const wxString &ofType,
 }
 
 //------------------------------------------------------------------------------
-//  Propagator* CreatePropagator(const wxString &ofType,
-//                               const wxString &withName)
+//  Propagator* CreatePropagator(const std::string &ofType,
+//                               const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type Propagator, with the name withName, and of the
@@ -172,18 +172,18 @@ Parameter* FactoryManager::CreateParameter(const wxString &ofType,
  * @return pointer to the newly-created Propagator object
  */
 //------------------------------------------------------------------------------
-Propagator* FactoryManager::CreatePropagator(const wxString &ofType,
-                                             const wxString &withName)
+Propagator* FactoryManager::CreatePropagator(const std::string &ofType,
+                                             const std::string &withName)
 {
    #ifdef DEBUG_CREATION
-      MessageInterface::ShowMessage(wxT("Creating an integrator of type %s with ")
-            wxT("name %s\n"), ofType.c_str(), withName.c_str());
+      MessageInterface::ShowMessage("Creating an integrator of type %s with "
+            "name %s\n", ofType.c_str(), withName.c_str());
    #endif
 
    Factory* f = FindFactory(Gmat::PROPAGATOR, ofType);
 
    #ifdef DEBUG_CREATION
-      MessageInterface::ShowMessage(wxT("Factory pointer: %p\n"), f);
+      MessageInterface::ShowMessage("Factory pointer: %p\n", f);
    #endif
 
    if (f != NULL)
@@ -192,8 +192,8 @@ Propagator* FactoryManager::CreatePropagator(const wxString &ofType,
 }
 
 //------------------------------------------------------------------------------
-//  Force* CreatePhysicalModel(const wxString &ofType,
-//       const wxString &withName)
+//  Force* CreatePhysicalModel(const std::string &ofType,
+//       const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type PhysicalModel, with the name withName, and of the
@@ -205,8 +205,8 @@ Propagator* FactoryManager::CreatePropagator(const wxString &ofType,
  * @return pointer to the newly-created PhysicalModel object
  */
 //------------------------------------------------------------------------------
-PhysicalModel* FactoryManager::CreatePhysicalModel(const wxString &ofType,
-                                                   const wxString &withName)
+PhysicalModel* FactoryManager::CreatePhysicalModel(const std::string &ofType,
+                                                   const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::PHYSICAL_MODEL, ofType);
    if (f != NULL)
@@ -216,7 +216,7 @@ PhysicalModel* FactoryManager::CreatePhysicalModel(const wxString &ofType,
 
 
 //------------------------------------------------------------------------------
-//  StopCondition* CreateStopCondition(const wxString &withName)
+//  StopCondition* CreateStopCondition(const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type StopCondition, with the name withName.
@@ -227,8 +227,8 @@ PhysicalModel* FactoryManager::CreatePhysicalModel(const wxString &ofType,
  * @return pointer to the newly-created StopCondition object
  */
 //------------------------------------------------------------------------------
-StopCondition* FactoryManager::CreateStopCondition(const wxString &ofType,
-                                                   const wxString &withName)
+StopCondition* FactoryManager::CreateStopCondition(const std::string &ofType,
+                                                   const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::STOP_CONDITION, ofType);
    if (f != NULL)
@@ -237,8 +237,8 @@ StopCondition* FactoryManager::CreateStopCondition(const wxString &ofType,
 }
 
 //------------------------------------------------------------------------------
-//  CalculatedPoint* CreateCalculatedPoint(const wxString &ofType,
-//                                         const wxString &withName)
+//  CalculatedPoint* CreateCalculatedPoint(const std::string &ofType,
+//                                         const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type CalculatedPoint, with the name withName,
@@ -250,8 +250,8 @@ StopCondition* FactoryManager::CreateStopCondition(const wxString &ofType,
  * @return pointer to the newly-created CalculatedPoint object
  */
 //------------------------------------------------------------------------------
-CalculatedPoint* FactoryManager::CreateCalculatedPoint(const wxString &ofType,
-                                                       const wxString &withName)
+CalculatedPoint* FactoryManager::CreateCalculatedPoint(const std::string &ofType,
+                                                       const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::CALCULATED_POINT, ofType);
    if (f != NULL)
@@ -261,8 +261,8 @@ CalculatedPoint* FactoryManager::CreateCalculatedPoint(const wxString &ofType,
 
 
 //------------------------------------------------------------------------------
-//  CelestialBody* CreateCelestialBody(const wxString &ofType,
-//                                     const wxString &withName)
+//  CelestialBody* CreateCelestialBody(const std::string &ofType,
+//                                     const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type CelestialBody, with the name withName,
@@ -274,8 +274,8 @@ CalculatedPoint* FactoryManager::CreateCalculatedPoint(const wxString &ofType,
  * @return pointer to the newly-created CelestialBody object
  */
 //------------------------------------------------------------------------------
-CelestialBody* FactoryManager::CreateCelestialBody(const wxString &ofType,
-                                                   const wxString &withName)
+CelestialBody* FactoryManager::CreateCelestialBody(const std::string &ofType,
+                                                   const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::CELESTIAL_BODY, ofType);
    if (f != NULL)
@@ -284,8 +284,8 @@ CelestialBody* FactoryManager::CreateCelestialBody(const wxString &ofType,
 }
 
 //------------------------------------------------------------------------------
-//  Solver* CreateSolver(const wxString &ofType,
-//                       const wxString &withName)
+//  Solver* CreateSolver(const std::string &ofType,
+//                       const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type Solver, with the name withName,
@@ -297,8 +297,8 @@ CelestialBody* FactoryManager::CreateCelestialBody(const wxString &ofType,
  * @return pointer to the newly-created Solver object
  */
 //------------------------------------------------------------------------------
-Solver* FactoryManager::CreateSolver(const wxString &ofType,
-                                     const wxString &withName)
+Solver* FactoryManager::CreateSolver(const std::string &ofType,
+                                     const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::SOLVER, ofType);
    if (f != NULL)
@@ -307,9 +307,9 @@ Solver* FactoryManager::CreateSolver(const wxString &ofType,
 }
 
 //------------------------------------------------------------------------------
-//  Subscriber* CreateSubscriber(const wxString &ofType,
-//                               const wxString &withName,
-//                               const wxString &fileName)
+//  Subscriber* CreateSubscriber(const std::string &ofType,
+//                               const std::string &withName,
+//                               const std::string &fileName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type Subscriber, with the name withName.
@@ -322,9 +322,9 @@ Solver* FactoryManager::CreateSolver(const wxString &ofType,
  * @return pointer to the newly-created Subscriber object
  */
 //------------------------------------------------------------------------------
-Subscriber* FactoryManager::CreateSubscriber(const wxString &ofType,
-                                             const wxString &withName,
-                                             const wxString &fileName)
+Subscriber* FactoryManager::CreateSubscriber(const std::string &ofType,
+                                             const std::string &withName,
+                                             const std::string &fileName)
 {
    Factory* f = FindFactory(Gmat::SUBSCRIBER, ofType);
 
@@ -332,15 +332,15 @@ Subscriber* FactoryManager::CreateSubscriber(const wxString &ofType,
       return f->CreateSubscriber(ofType, withName, fileName);
    
    #ifdef DEBUG_FACTORY_MANAGER
-   MessageInterface::ShowMessage(wxT("Could not find Factory for %s\n"), ofType.c_str());
+   MessageInterface::ShowMessage("Could not find Factory for %s\n", ofType.c_str());
    #endif
    
    return NULL;
 }
 
 //------------------------------------------------------------------------------
-//  EphemerisFile* CreateEphemerisFile(const wxString &ofType,
-//                                     const wxString &withName)
+//  EphemerisFile* CreateEphemerisFile(const std::string &ofType,
+//                                     const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type EphemerisFile, with the name withName.
@@ -351,8 +351,8 @@ Subscriber* FactoryManager::CreateSubscriber(const wxString &ofType,
  * @return pointer to the newly-created EphemerisFile object
  */
 //------------------------------------------------------------------------------
-EphemerisFile* FactoryManager::CreateEphemerisFile(const wxString &ofType,
-                                                   const wxString &withName)
+EphemerisFile* FactoryManager::CreateEphemerisFile(const std::string &ofType,
+                                                   const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::EPHEMERIS_FILE, ofType);
    
@@ -360,14 +360,14 @@ EphemerisFile* FactoryManager::CreateEphemerisFile(const wxString &ofType,
       return f->CreateEphemerisFile(ofType, withName);
    
    #ifdef DEBUG_FACTORY_MANAGER
-   MessageInterface::ShowMessage(wxT("Could not find Factory for %s\n"), ofType.c_str());
+   MessageInterface::ShowMessage("Could not find Factory for %s\n", ofType.c_str());
    #endif
    
    return NULL;
 }
 
 //------------------------------------------------------------------------------
-//  GmatCommand* CreateCommand(const wxString &ofType, const wxString &withName)
+//  GmatCommand* CreateCommand(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type GmatCommand, with the name withName.
@@ -378,8 +378,8 @@ EphemerisFile* FactoryManager::CreateEphemerisFile(const wxString &ofType,
  * @return pointer to the newly-created GmatCommand object
  */
 //------------------------------------------------------------------------------
-GmatCommand* FactoryManager::CreateCommand(const wxString &ofType,
-                                           const wxString &withName)
+GmatCommand* FactoryManager::CreateCommand(const std::string &ofType,
+                                           const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::COMMAND, ofType);
    if (f != NULL)
@@ -389,7 +389,7 @@ GmatCommand* FactoryManager::CreateCommand(const wxString &ofType,
 
 
 //------------------------------------------------------------------------------
-//  Burn* CreateBurn(const wxString &ofType, const wxString &withName)
+//  Burn* CreateBurn(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type Burn, with the name withName.
@@ -400,8 +400,8 @@ GmatCommand* FactoryManager::CreateCommand(const wxString &ofType,
  * @return pointer to the newly-created Burn object
  */
 //------------------------------------------------------------------------------
-Burn* FactoryManager::CreateBurn(const wxString &ofType,
-                                 const wxString &withName)
+Burn* FactoryManager::CreateBurn(const std::string &ofType,
+                                 const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::BURN, ofType);
    if (f != NULL)
@@ -411,9 +411,9 @@ Burn* FactoryManager::CreateBurn(const wxString &ofType,
 
 
 //------------------------------------------------------------------------------
-//  AtmosphereModel* CreateAtmosphereModel(const wxString &ofType,
-//                                         const wxString &withName,
-//                                         const wxString &forBody)
+//  AtmosphereModel* CreateAtmosphereModel(const std::string &ofType,
+//                                         const std::string &withName,
+//                                         const std::string &forBody)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type AtmosphereModel, with the name withName.
@@ -425,9 +425,9 @@ Burn* FactoryManager::CreateBurn(const wxString &ofType,
  * @return pointer to the newly-created AtmosphereModel object
  */
 //------------------------------------------------------------------------------
-AtmosphereModel* FactoryManager::CreateAtmosphereModel(const wxString &ofType,
-                                                       const wxString &withName,
-                                                       const wxString &forBody)
+AtmosphereModel* FactoryManager::CreateAtmosphereModel(const std::string &ofType,
+                                                       const std::string &withName,
+                                                       const std::string &forBody)
 {
    Factory* f = FindFactory(Gmat::ATMOSPHERE, ofType);
    if (f != NULL)
@@ -437,8 +437,8 @@ AtmosphereModel* FactoryManager::CreateAtmosphereModel(const wxString &ofType,
 
 
 //------------------------------------------------------------------------------
-//  Function* CreateFunction(const wxString &ofType,
-//                           const wxString &withName)
+//  Function* CreateFunction(const std::string &ofType,
+//                           const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type Function, with the name withName.
@@ -449,8 +449,8 @@ AtmosphereModel* FactoryManager::CreateAtmosphereModel(const wxString &ofType,
  * @return pointer to the newly-created Function object
  */
 //------------------------------------------------------------------------------
-Function* FactoryManager::CreateFunction(const wxString &ofType,
-                                         const wxString &withName)
+Function* FactoryManager::CreateFunction(const std::string &ofType,
+                                         const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::FUNCTION, ofType);
    if (f != NULL)
@@ -460,8 +460,8 @@ Function* FactoryManager::CreateFunction(const wxString &ofType,
 
 
 //------------------------------------------------------------------------------
-//  Hardware* CreateHardware(const wxString &ofType,
-//                           const wxString &withName)
+//  Hardware* CreateHardware(const std::string &ofType,
+//                           const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type Hardware, with the name withName.
@@ -472,8 +472,8 @@ Function* FactoryManager::CreateFunction(const wxString &ofType,
  * @return pointer to the newly-created Hardware object
  */
 //------------------------------------------------------------------------------
-Hardware* FactoryManager::CreateHardware(const wxString &ofType,
-                                         const wxString &withName)
+Hardware* FactoryManager::CreateHardware(const std::string &ofType,
+                                         const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::HARDWARE, ofType);
    if (f != NULL)
@@ -483,8 +483,8 @@ Hardware* FactoryManager::CreateHardware(const wxString &ofType,
 
 
 //------------------------------------------------------------------------------
-//  AxisSystem* CreateAxisSystem(const wxString &ofType,
-//                               const wxString &withName)
+//  AxisSystem* CreateAxisSystem(const std::string &ofType,
+//                               const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an AxisSystem object of type ofType, with the name withName.
@@ -496,8 +496,8 @@ Hardware* FactoryManager::CreateHardware(const wxString &ofType,
  */
 //------------------------------------------------------------------------------
 AxisSystem* 
-FactoryManager::CreateAxisSystem(const wxString &ofType,
-                                 const wxString &withName)
+FactoryManager::CreateAxisSystem(const std::string &ofType,
+                                 const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::AXIS_SYSTEM, ofType);
    if (f != NULL)
@@ -507,8 +507,8 @@ FactoryManager::CreateAxisSystem(const wxString &ofType,
 
 
 //------------------------------------------------------------------------------
-//  MathNode* CreateMathNode(const wxString &ofType,
-//                           const wxString &withName)
+//  MathNode* CreateMathNode(const std::string &ofType,
+//                           const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an MathNode object of type ofType, with the name withName.
@@ -520,8 +520,8 @@ FactoryManager::CreateAxisSystem(const wxString &ofType,
  */
 //------------------------------------------------------------------------------
 MathNode* 
-FactoryManager::CreateMathNode(const wxString &ofType,
-                               const wxString &withName)
+FactoryManager::CreateMathNode(const std::string &ofType,
+                               const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::MATH_NODE, ofType);
    if (f != NULL)
@@ -530,8 +530,8 @@ FactoryManager::CreateMathNode(const wxString &ofType,
 }
 
 //------------------------------------------------------------------------------
-//  Attitude* CreateAttitude(const wxString &ofType,
-//                           const wxString &withName)
+//  Attitude* CreateAttitude(const std::string &ofType,
+//                           const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an Attitude object of type ofType, with the name withName.
@@ -543,8 +543,8 @@ FactoryManager::CreateMathNode(const wxString &ofType,
  */
 //------------------------------------------------------------------------------
 Attitude* 
-FactoryManager::CreateAttitude(const wxString &ofType,
-                               const wxString &withName)
+FactoryManager::CreateAttitude(const std::string &ofType,
+                               const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::ATTITUDE, ofType);
    if (f != NULL)
@@ -553,7 +553,7 @@ FactoryManager::CreateAttitude(const wxString &ofType,
 }
 
 //------------------------------------------------------------------------------
-// SpacePoint* CreateSpacePoint(const wxString &ofType, const wxString &withName)
+// SpacePoint* CreateSpacePoint(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type SpacePoint, with the name withName.
@@ -564,8 +564,8 @@ FactoryManager::CreateAttitude(const wxString &ofType,
  * @return pointer to the newly-created SpacePoint object
  */
 //------------------------------------------------------------------------------
-SpacePoint* FactoryManager::CreateSpacePoint(const wxString &ofType,
-                                             const wxString &withName)
+SpacePoint* FactoryManager::CreateSpacePoint(const std::string &ofType,
+                                             const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::SPACE_POINT, ofType);
    if (f != NULL)
@@ -575,7 +575,7 @@ SpacePoint* FactoryManager::CreateSpacePoint(const wxString &ofType,
 
 //----- Just container
 //------------------------------------------------------------------------------
-//  SolarSystem* CreateSolarSystem(const wxString &withName)
+//  SolarSystem* CreateSolarSystem(const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type SolarSystem, with the name withName.
@@ -585,17 +585,17 @@ SpacePoint* FactoryManager::CreateSpacePoint(const wxString &ofType,
  * @return pointer to the newly-created SolarSystem object
  */
 //------------------------------------------------------------------------------
-SolarSystem* FactoryManager::CreateSolarSystem(const wxString &withName)
+SolarSystem* FactoryManager::CreateSolarSystem(const std::string &withName)
 {
-   Factory* f = FindFactory(Gmat::SOLAR_SYSTEM, wxT("SolarSystem"));
+   Factory* f = FindFactory(Gmat::SOLAR_SYSTEM, "SolarSystem");
    if (f != NULL)
-      return f->CreateSolarSystem(wxT("SolarSystem"), withName);
+      return f->CreateSolarSystem("SolarSystem", withName);
    return NULL;
 }
 
 
 //------------------------------------------------------------------------------
-//  PropSetup* CreatePropSetup(const wxString &withName)
+//  PropSetup* CreatePropSetup(const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type PropSetup, with the name withName.
@@ -605,18 +605,18 @@ SolarSystem* FactoryManager::CreateSolarSystem(const wxString &withName)
  * @return pointer to the newly-created PropSetup object
  */
 //------------------------------------------------------------------------------
-PropSetup* FactoryManager::CreatePropSetup(const wxString &withName)
+PropSetup* FactoryManager::CreatePropSetup(const std::string &withName)
 {
-   Factory* f = FindFactory(Gmat::PROP_SETUP, wxT("PropSetup"));
+   Factory* f = FindFactory(Gmat::PROP_SETUP, "PropSetup");
    if (f != NULL)
-      return f->CreatePropSetup(wxT("PropSetup"), withName);
+      return f->CreatePropSetup("PropSetup", withName);
    return NULL;
 }
 
 
 //------------------------------------------------------------------------------
-// CoreMeasurement* FactoryManager::CreateMeasurement(const wxString &ofType,
-//                                          const wxString &withName)
+// CoreMeasurement* FactoryManager::CreateMeasurement(const std::string &ofType,
+//                                          const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates the measurement primitive used in a MeasurementModel
@@ -628,8 +628,8 @@ PropSetup* FactoryManager::CreatePropSetup(const wxString &withName)
  * @return The pointer to the new object
  */
 //------------------------------------------------------------------------------
-CoreMeasurement* FactoryManager::CreateMeasurement(const wxString &ofType,
-                                         const wxString &withName)
+CoreMeasurement* FactoryManager::CreateMeasurement(const std::string &ofType,
+                                         const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::CORE_MEASUREMENT, ofType);
    if (f != NULL)
@@ -637,8 +637,8 @@ CoreMeasurement* FactoryManager::CreateMeasurement(const wxString &ofType,
    return NULL;
 }
 
-TrackingSystem* FactoryManager::CreateTrackingSystem(const wxString &ofType,
-         const wxString &withName)
+TrackingSystem* FactoryManager::CreateTrackingSystem(const std::string &ofType,
+         const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::TRACKING_SYSTEM, ofType);
    if (f != NULL)
@@ -646,16 +646,16 @@ TrackingSystem* FactoryManager::CreateTrackingSystem(const wxString &ofType,
    return NULL;
 }
 
-TrackingData* FactoryManager::CreateTrackingData(const wxString &withName)
+TrackingData* FactoryManager::CreateTrackingData(const std::string &withName)
 {
-   Factory* f = FindFactory(Gmat::TRACKING_DATA, wxT("TrackingData"));
+   Factory* f = FindFactory(Gmat::TRACKING_DATA, "TrackingData");
    if (f != NULL)
-      return f->CreateTrackingData(wxT("TrackingData"), withName);
+      return f->CreateTrackingData("TrackingData", withName);
    return NULL;
 }
 
-EventLocator* FactoryManager::CreateEventLocator(const wxString &ofType,
-                                          const wxString &withName)
+EventLocator* FactoryManager::CreateEventLocator(const std::string &ofType,
+                                          const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::EVENT_LOCATOR, ofType);
    if (f != NULL)
@@ -664,8 +664,8 @@ EventLocator* FactoryManager::CreateEventLocator(const wxString &ofType,
 }
 
 //------------------------------------------------------------------------------
-// ObType* FactoryManager::CreateObType(const wxString &ofType,
-//                                      const wxString &withName)
+// ObType* FactoryManager::CreateObType(const std::string &ofType,
+//                                      const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates the ObType used in a DataFile
@@ -677,8 +677,8 @@ EventLocator* FactoryManager::CreateEventLocator(const wxString &ofType,
  * @return The pointer to the new object
  */
 //------------------------------------------------------------------------------
-ObType* FactoryManager::CreateObType(const wxString &ofType,
-                                     const wxString &withName)
+ObType* FactoryManager::CreateObType(const std::string &ofType,
+                                     const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::OBTYPE, ofType);
    if (f != NULL)
@@ -687,8 +687,8 @@ ObType* FactoryManager::CreateObType(const wxString &ofType,
 }
 
 //------------------------------------------------------------------------------
-// Interface* FactoryManager::CreateInterface(const wxString &ofType,
-//                                            const wxString &withName)
+// Interface* FactoryManager::CreateInterface(const std::string &ofType,
+//                                            const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates the Interface used in a DataFile
@@ -700,8 +700,8 @@ ObType* FactoryManager::CreateObType(const wxString &ofType,
  * @return The pointer to the new object
  */
 //------------------------------------------------------------------------------
-Interface* FactoryManager::CreateInterface(const wxString &ofType,
-                                           const wxString &withName)
+Interface* FactoryManager::CreateInterface(const std::string &ofType,
+                                           const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::INTERFACE, ofType);
    if (f != NULL)
@@ -710,7 +710,7 @@ Interface* FactoryManager::CreateInterface(const wxString &ofType,
 }
 
 //------------------------------------------------------------------------------
-// MeasurementModel* CreateMeasurementModel(const wxString &withName)
+// MeasurementModel* CreateMeasurementModel(const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type MeasurementModel, with the name withName.
@@ -720,17 +720,17 @@ Interface* FactoryManager::CreateInterface(const wxString &ofType,
  * @return pointer to the newly-created MeasurementModel object
  */
 //------------------------------------------------------------------------------
-MeasurementModel* FactoryManager::CreateMeasurementModel(const wxString &withName)
+MeasurementModel* FactoryManager::CreateMeasurementModel(const std::string &withName)
 {
-   Factory* f = FindFactory(Gmat::MEASUREMENT_MODEL, wxT("MeasurementModel"));
+   Factory* f = FindFactory(Gmat::MEASUREMENT_MODEL, "MeasurementModel");
    if (f != NULL)
-      return f->CreateMeasurementModel(wxT("MeasurementModel"), withName);
+      return f->CreateMeasurementModel("MeasurementModel", withName);
    return NULL;
 }
 
 //------------------------------------------------------------------------------
-// DataFile* FactoryManager::CreateDataFile(const wxString &ofType,
-//                                          const wxString &withName)
+// DataFile* FactoryManager::CreateDataFile(const std::string &ofType,
+//                                          const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type DataFile, with the name withName.
@@ -741,8 +741,8 @@ MeasurementModel* FactoryManager::CreateMeasurementModel(const wxString &withNam
  * @return pointer to the newly-created DataFile object
  */
 //------------------------------------------------------------------------------
-DataFile* FactoryManager::CreateDataFile(const wxString &ofType,
-                                         const wxString &withName)
+DataFile* FactoryManager::CreateDataFile(const std::string &ofType,
+                                         const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::DATA_FILE, ofType);
    if (f != NULL)
@@ -752,7 +752,7 @@ DataFile* FactoryManager::CreateDataFile(const wxString &ofType,
 
 
 //------------------------------------------------------------------------------
-//  ODEModel* CreateODEModel(const wxString &ofType, const wxString &withName)
+//  ODEModel* CreateODEModel(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type ODEModel, with the name withName.
@@ -762,8 +762,8 @@ DataFile* FactoryManager::CreateDataFile(const wxString &ofType,
  * @return pointer to the newly-created ODEModel object
  */
 //------------------------------------------------------------------------------
-ODEModel* FactoryManager::CreateODEModel(const wxString &ofType,
-                                         const wxString &withName)
+ODEModel* FactoryManager::CreateODEModel(const std::string &ofType,
+                                         const std::string &withName)
 {
    Factory* f = FindFactory(Gmat::ODE_MODEL, ofType);
    if (f != NULL)
@@ -773,7 +773,7 @@ ODEModel* FactoryManager::CreateODEModel(const wxString &ofType,
 
 
 //------------------------------------------------------------------------------
-//  CoordinateSystem* CreateCoordinateSystem(const wxString &withName)
+//  CoordinateSystem* CreateCoordinateSystem(const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Create an object of type CoordinateSystem, with the name withName.
@@ -784,18 +784,18 @@ ODEModel* FactoryManager::CreateODEModel(const wxString &ofType,
  */
 //------------------------------------------------------------------------------
 CoordinateSystem*
-FactoryManager::CreateCoordinateSystem(const wxString &withName)
+FactoryManager::CreateCoordinateSystem(const std::string &withName)
 {
-   Factory* f = FindFactory(Gmat::COORDINATE_SYSTEM, wxT("CoordinateSystem"));
+   Factory* f = FindFactory(Gmat::COORDINATE_SYSTEM, "CoordinateSystem");
    if (f != NULL)
-      return f->CreateCoordinateSystem(wxT("CoordinateSystem"), withName);
+      return f->CreateCoordinateSystem("CoordinateSystem", withName);
    return NULL;
 }
 
 
 //------------------------------------------------------------------------------
 // const StringArray& GetListOfItems(Gmat::ObjectType byType,
-//             const wxString &withQualifier = wxT(""))
+//             const std::string &withQualifier = "")
 //------------------------------------------------------------------------------
 /**
  * Return a list of items of type byType that can be created.
@@ -807,7 +807,7 @@ FactoryManager::CreateCoordinateSystem(const wxString &withName)
  */
 //------------------------------------------------------------------------------
 const StringArray& FactoryManager::GetListOfItems(Gmat::ObjectType byType,
-            const wxString &withQualifier)
+            const std::string &withQualifier)
 {
    entireList.clear();
    return GetList(byType, withQualifier);
@@ -832,7 +832,7 @@ const StringArray& FactoryManager::GetListOfAllItems()
    std::list<Gmat::ObjectType>::iterator ftype = factoryTypeList.begin();
    while (ftype != factoryTypeList.end())
    {
-      GetList(*ftype, wxT(""));
+      GetList(*ftype, "");
       ftype++;
    }
    
@@ -878,7 +878,7 @@ const StringArray& FactoryManager::GetListOfAllItemsExcept(const ObjectTypeArray
    while (ftype != factoryTypeList.end())
    {
       if (find(types.begin(), types.end(), *ftype) == types.end())
-         GetList((*ftype), wxT(""));
+         GetList((*ftype), "");
       
       ftype++;
    }
@@ -922,8 +922,8 @@ const StringArray& FactoryManager::GetListOfUnviewableItems(Gmat::ObjectType byT
 
 
 //------------------------------------------------------------------------------
-// bool DoesObjectTypeMatchSubtype(const wxString &theType,
-//       const wxString &theSubtype)
+// bool DoesObjectTypeMatchSubtype(const std::string &theType,
+//       const std::string &theSubtype)
 //------------------------------------------------------------------------------
 /**
  * Checks if a creatable object type matches a subtype.
@@ -937,7 +937,7 @@ const StringArray& FactoryManager::GetListOfUnviewableItems(Gmat::ObjectType byT
  */
 //------------------------------------------------------------------------------
 bool FactoryManager::DoesObjectTypeMatchSubtype(const Gmat::ObjectType coreType,
-      const wxString &theType, const wxString &theSubtype)
+      const std::string &theType, const std::string &theSubtype)
 {
    Factory* theFactory = FactoryManager::FindFactory(coreType, theType);
    if (theFactory == NULL)
@@ -947,7 +947,7 @@ bool FactoryManager::DoesObjectTypeMatchSubtype(const Gmat::ObjectType coreType,
 
 
 //------------------------------------------------------------------------------
-// Gmat::ObjectType GetBaseTypeOf(const wxString &typeName)
+// Gmat::ObjectType GetBaseTypeOf(const std::string &typeName)
 //------------------------------------------------------------------------------
 /**
  * Return the base type for the input string.
@@ -957,10 +957,10 @@ bool FactoryManager::DoesObjectTypeMatchSubtype(const Gmat::ObjectType coreType,
  * @return the base Gmat::ObjectType for this string type name.
  */
 //------------------------------------------------------------------------------
-Gmat::ObjectType FactoryManager::GetBaseTypeOf(const wxString &typeName)
+Gmat::ObjectType FactoryManager::GetBaseTypeOf(const std::string &typeName)
 {
-   // Special case for the wxT("Create Propagator") line - do we want this?
-   //if (typeName == wxT("Propagator")) return Gmat::PROP_SETUP;
+   // Special case for the "Create Propagator" line - do we want this?
+   //if (typeName == "Propagator") return Gmat::PROP_SETUP;
    StringArray listByType;
    for (int ii = Gmat::SPACECRAFT; ii < Gmat::UNKNOWN_OBJECT; ii++)
    {
@@ -982,12 +982,12 @@ Gmat::ObjectType FactoryManager::GetBaseTypeOf(const wxString &typeName)
 //------------------------------------------------------------------------------
 FactoryManager::~FactoryManager()
 {
-   //MessageInterface::ShowMessage(wxT("~FactoryManager() size=%d\n"), factoryList.size());
+   //MessageInterface::ShowMessage("~FactoryManager() size=%d\n", factoryList.size());
    
    std::list<Factory*>::iterator f = factoryList.begin();
    while (f != factoryList.end())
    {
-      //MessageInterface::ShowMessage(wxT("Deleting FactoryType=%d\n"), (*f)->GetFactoryType());
+      //MessageInterface::ShowMessage("Deleting FactoryType=%d\n", (*f)->GetFactoryType());
       delete *f;       // delete each factory first
       ++f;
    }
@@ -1017,7 +1017,7 @@ FactoryManager::FactoryManager()
 
 
 //------------------------------------------------------------------------------
-// Factory* FindFactory(Gmat::ObjectType ofType, const wxString forType)
+// Factory* FindFactory(Gmat::ObjectType ofType, const std::string forType)
 //------------------------------------------------------------------------------
 /**
  * Return a pointer to a factory that can create objects of type forType.
@@ -1029,11 +1029,11 @@ FactoryManager::FactoryManager()
  */
 //------------------------------------------------------------------------------
 Factory* FactoryManager::FindFactory(Gmat::ObjectType ofType,
-                                     const wxString &forType)
+                                     const std::string &forType)
 {
    #ifdef DEBUG_FACTORY_CREATE
    MessageInterface::ShowMessage(
-   wxT("Entering FactoryManager::FindFactory with type = %d and forType = %s\n"),
+   "Entering FactoryManager::FindFactory with type = %d and forType = %s\n",
    (Integer) ofType, forType.c_str());
    #endif
    
@@ -1050,14 +1050,14 @@ Factory* FactoryManager::FindFactory(Gmat::ObjectType ofType,
          
          #ifdef DEBUG_FACTORY_CREATE
          MessageInterface::ShowMessage(
-         wxT("    isCaseSensitive = %s\n"),
-         (isCaseSensitive?  wxT("TRUE") : wxT("False")));
+         "    isCaseSensitive = %s\n",
+         (isCaseSensitive?  "TRUE" : "False"));
          #endif
          
          if (!listObj.empty())
          {
 //            StringArray::iterator s = listObj.begin();
-            wxString objType = forType;
+            std::string objType = forType;
             
             // Make sure that all type name begins with upper case if
             // factory expects case sensitive type names since all GMAT type names
@@ -1076,14 +1076,14 @@ Factory* FactoryManager::FindFactory(Gmat::ObjectType ofType,
    }
    #ifdef DEBUG_FACTORY_CREATE
    MessageInterface::ShowMessage(
-   wxT("At end of FactoryManager::FindFactory, returning NULL\n"));
+   "At end of FactoryManager::FindFactory, returning NULL\n");
    #endif
    return NULL;
 }
 
 //------------------------------------------------------------------------------
 // const StringArray& GetList(Gmat::ObjectType ofType,
-//             const wxString &withQualifier) const
+//             const std::string &withQualifier) const
 //------------------------------------------------------------------------------
 /**
  * Return a list of items of type ofType that can be created.
@@ -1095,7 +1095,7 @@ Factory* FactoryManager::FindFactory(Gmat::ObjectType ofType,
  */
 //------------------------------------------------------------------------------
 const StringArray& FactoryManager::GetList(Gmat::ObjectType ofType,
-            const wxString &withQualifier)
+            const std::string &withQualifier)
 {
    //entireList.clear();
    std::list<Factory*>::iterator f = factoryList.begin();

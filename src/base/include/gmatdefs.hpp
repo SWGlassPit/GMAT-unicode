@@ -27,13 +27,12 @@
 #define GMATDEFS_HPP
 
 
-#include <string>               // For wxString
+#include <string>               // For std::string
 #include <cstring>              // Resolves issues for GCC 4.3
 #include <vector>               // For std::vector
 #include <map>                  // For std::map
 #include <stack>                // for std::stack
 #include <list>                 // To fix VS DLL import/export issues
-//#include "wx/wx.h"
 
 #ifdef _WIN32  // Windows
    #ifdef _MSC_VER  // Microsoft Visual C++
@@ -85,7 +84,7 @@ typedef unsigned int    UnsignedInt;       // 4 byte unsigned integer
 typedef std::vector<Real>        RealArray;
 typedef std::vector<Integer>     IntegerArray;
 typedef std::vector<UnsignedInt> UnsignedIntArray;
-typedef std::vector<wxString> StringArray;
+typedef std::vector<std::string> StringArray;
 typedef std::vector<bool>        BooleanArray;
 
 class GmatBase;        // Forward reference for ObjectArray
@@ -96,9 +95,9 @@ typedef std::vector<GmatBase*>                 ObjectArray;
 typedef std::vector<ElementWrapper*>           WrapperArray;
 typedef std::vector<Rvector6*>                 StateArray;
 typedef std::vector<A1Mjd*>                    EpochArray;
-typedef std::map<wxString, Integer>         IntegerMap;
-typedef std::map<wxString, GmatBase*>       ObjectMap;
-typedef std::map<wxString, ElementWrapper*> WrapperMap;
+typedef std::map<std::string, Integer>         IntegerMap;
+typedef std::map<std::string, GmatBase*>       ObjectMap;
+typedef std::map<std::string, ElementWrapper*> WrapperMap;
 typedef std::stack<ObjectMap*>                 ObjectMapStack;
 
 typedef struct geoparms
@@ -289,10 +288,10 @@ namespace Gmat
 
    typedef struct PluginResource
    {
-      wxString nodeName;         // Identifier for the resource
-      wxString parentNodeName;   // Owning type identifier, if any
+      std::string nodeName;         // Identifier for the resource
+      std::string parentNodeName;   // Owning type identifier, if any
       ObjectType  type;             // Core type
-      wxString subtype;          // Subtype off of the core
+      std::string subtype;          // Subtype off of the core
    } PLUGIN_RESOURCE;
 
 
@@ -309,7 +308,7 @@ namespace Gmat
 
 typedef std::vector<Gmat::ObjectType>           ObjectTypeArray;
 typedef std::vector<Gmat::WrapperDataType>      WrapperTypeArray;
-typedef std::map<wxString, Gmat::ObjectType> ObjectTypeMap;
+typedef std::map<std::string, Gmat::ObjectType> ObjectTypeMap;
 
 
 #ifdef EXPORT_TEMPLATES
@@ -327,7 +326,7 @@ typedef std::map<wxString, Gmat::ObjectType> ObjectTypeMap;
     // of the members of the listed classes. It exports them from the DLL 
     // and imports them into the .exe file.
 
-    // This fixes wxString:
+    // This fixes std::string:
     // Only do this if the export is not already in a different module (wx, I'm looking at you!)
     #ifdef IMPEXP_STDSTRING
         EXPIMP_TEMPLATE template class DECLSPECIFIER std::allocator<char>;
@@ -346,8 +345,8 @@ typedef std::map<wxString, Gmat::ObjectType> ObjectTypeMap;
 	//		(typename basic_string<_Elem, _Traits, _Alloc>::size_type)(-1);
 
     // Fix StringArray:
-    EXPIMP_TEMPLATE template class DECLSPECIFIER std::allocator<wxString>;
-    EXPIMP_TEMPLATE template class DECLSPECIFIER std::vector<wxString>;
+    EXPIMP_TEMPLATE template class DECLSPECIFIER std::allocator<std::string>;
+    EXPIMP_TEMPLATE template class DECLSPECIFIER std::vector<std::string>;
 
     // Fix vector of StringArray
     EXPIMP_TEMPLATE template class DECLSPECIFIER std::allocator<StringArray>;
@@ -441,15 +440,15 @@ typedef std::map<wxString, Gmat::ObjectType> ObjectTypeMap;
     EXPIMP_TEMPLATE template class DECLSPECIFIER std::vector<Gmat::PluginResource*>;
 
     // Maps -- still need to be addressed
-    //EXPIMP_TEMPLATE template class DECLSPECIFIER std::allocator<wxString>;
-    //EXPIMP_TEMPLATE template struct DECLSPECIFIER std::less< wxString >;
-    //EXPIMP_TEMPLATE template struct DECLSPECIFIER std::pair< wxString,wxString >;
-    //EXPIMP_TEMPLATE template class  DECLSPECIFIER std::allocator<std::pair<const wxString,wxString> >;
-    //EXPIMP_TEMPLATE template class  DECLSPECIFIER std::_Tmap_traits<wxString,wxString,std::less<wxString>, std::allocator<std::pair<const wxString,wxString> >,false>;
-    //EXPIMP_TEMPLATE template class  DECLSPECIFIER std::_Tree_nod<std::_Tmap_traits<wxString,wxString,std::less<wxString>, std::allocator<std::pair<const wxString,wxString> >,false> >;
-    //EXPIMP_TEMPLATE template class  DECLSPECIFIER std::allocator<std::_Tree_nod<std::_Tmap_traits<wxString,wxString,std::less<wxString>, std::allocator<std::pair<const wxString,wxString> >,false> > >;
-    //EXPIMP_TEMPLATE template class  DECLSPECIFIER std::_Tree_val<std::_Tmap_traits<wxString,wxString,std::less<wxString>, std::allocator<std::pair<const wxString,wxString> >,false> >;
-    //EXPIMP_TEMPLATE template class  DECLSPECIFIER std::map<wxString, wxString, std::less< wxString >, std::allocator<std::pair<const wxString,wxString> > >;
+    //EXPIMP_TEMPLATE template class DECLSPECIFIER std::allocator<std::string>;
+    //EXPIMP_TEMPLATE template struct DECLSPECIFIER std::less< std::string >;
+    //EXPIMP_TEMPLATE template struct DECLSPECIFIER std::pair< std::string,std::string >;
+    //EXPIMP_TEMPLATE template class  DECLSPECIFIER std::allocator<std::pair<const std::string,std::string> >;
+    //EXPIMP_TEMPLATE template class  DECLSPECIFIER std::_Tmap_traits<std::string,std::string,std::less<std::string>, std::allocator<std::pair<const std::string,std::string> >,false>;
+    //EXPIMP_TEMPLATE template class  DECLSPECIFIER std::_Tree_nod<std::_Tmap_traits<std::string,std::string,std::less<std::string>, std::allocator<std::pair<const std::string,std::string> >,false> >;
+    //EXPIMP_TEMPLATE template class  DECLSPECIFIER std::allocator<std::_Tree_nod<std::_Tmap_traits<std::string,std::string,std::less<std::string>, std::allocator<std::pair<const std::string,std::string> >,false> > >;
+    //EXPIMP_TEMPLATE template class  DECLSPECIFIER std::_Tree_val<std::_Tmap_traits<std::string,std::string,std::less<std::string>, std::allocator<std::pair<const std::string,std::string> >,false> >;
+    //EXPIMP_TEMPLATE template class  DECLSPECIFIER std::map<std::string, std::string, std::less< std::string >, std::allocator<std::pair<const std::string,std::string> > >;
 
 /*
    #define EXPORT_STL_MAP( mapkey, mapvalue ) \
@@ -476,11 +475,11 @@ typedef std::map<wxString, Gmat::ObjectType> ObjectTypeMap;
        mapkey, mapvalue, std::less< mapkey >, \
        std::allocator<std::pair<const mapkey,mapvalue> > >;
 
-   EXPORT_STL_MAP(wxString, wxString)
+   EXPORT_STL_MAP(std::string, std::string)
 */
 
     // Here are lists of strings:
-    //EXPIMP_TEMPLATE template class DECLSPECIFIER std::list<wxString>;
+    //EXPIMP_TEMPLATE template class DECLSPECIFIER std::list<std::string>;
 
 
     // other examples:

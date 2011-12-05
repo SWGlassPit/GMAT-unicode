@@ -48,17 +48,17 @@
 StringArray Burn::localAxesLabels;
 
 /// Labels used for the thruster element parameters.
-const wxString
+const std::string
 Burn::PARAMETER_TEXT[BurnParamCount - GmatBaseParamCount] =
 {
-   wxT("CoordinateSystem"),
-   wxT("Origin"),
-   wxT("Axes"),
-   wxT("VectorFormat"), // deprecated
-   wxT("Element1"),
-   wxT("Element2"),
-   wxT("Element3"),
-   wxT("SpacecraftName"),
+   "CoordinateSystem",
+   "Origin",
+   "Axes",
+   "VectorFormat", // deprecated
+   "Element1",
+   "Element2",
+   "Element3",
+   "SpacecraftName",
 };
 
 /// Types of the parameters used by thrusters.
@@ -81,7 +81,7 @@ Burn::PARAMETER_TYPE[BurnParamCount - GmatBaseParamCount] =
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  Burn(wxString typeStr, wxString nomme)
+//  Burn(std::string typeStr, std::string nomme)
 //------------------------------------------------------------------------------
 /**
  * Constructs the Burn object (default constructor) with default VNB Local
@@ -97,8 +97,8 @@ Burn::PARAMETER_TYPE[BurnParamCount - GmatBaseParamCount] =
  *       spacecraft is set
  */
 //------------------------------------------------------------------------------
-Burn::Burn(Gmat::ObjectType type, const wxString &typeStr,
-           const wxString &nomme) :
+Burn::Burn(Gmat::ObjectType type, const std::string &typeStr,
+           const std::string &nomme) :
    GmatBase             (type, typeStr, nomme),
    solarSystem          (NULL),
    localCoordSystem     (NULL),
@@ -106,18 +106,18 @@ Burn::Burn(Gmat::ObjectType type, const wxString &typeStr,
    localOrigin          (NULL),
    j2000Body            (NULL),
    spacecraft           (NULL),
-   coordSystemName      (wxT("Local")),
-   localOriginName      (wxT("Earth")),
-   localAxesName        (wxT("VNB")),
-   j2000BodyName        (wxT("Earth")),
-   satName              (wxT("")),
+   coordSystemName      ("Local"),
+   localOriginName      ("Earth"),
+   localAxesName        ("VNB"),
+   j2000BodyName        ("Earth"),
+   satName              (""),
    usingLocalCoordSys   (true),
    isMJ2000EqAxes       (false),
    isSpacecraftBodyAxes (false),
    initialized          (false)
 {
    objectTypes.push_back(Gmat::BURN);
-   objectTypeNames.push_back(wxT("Burn"));
+   objectTypeNames.push_back("Burn");
    parameterCount = BurnParamCount;
    
    deltaV[0] = deltaV[1] = deltaV[2] = 0.0;
@@ -130,10 +130,10 @@ Burn::Burn(Gmat::ObjectType type, const wxString &typeStr,
    // Available local axes labels
    // Since it is static data, clear it first
    localAxesLabels.clear();
-   localAxesLabels.push_back(wxT("VNB"));
-   localAxesLabels.push_back(wxT("LVLH"));
-   localAxesLabels.push_back(wxT("MJ2000Eq"));
-   localAxesLabels.push_back(wxT("SpacecraftBody"));
+   localAxesLabels.push_back("VNB");
+   localAxesLabels.push_back("LVLH");
+   localAxesLabels.push_back("MJ2000Eq");
+   localAxesLabels.push_back("SpacecraftBody");
 }
 
 
@@ -150,8 +150,8 @@ Burn::~Burn()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (localCoordSystem, wxT("localCoordSystem"), wxT("Burn::~Burn()"),
-          wxT("deleting localCoordSystem"));
+         (localCoordSystem, "localCoordSystem", "Burn::~Burn()",
+          "deleting localCoordSystem");
       #endif
       delete localCoordSystem;
       localCoordSystem = NULL;
@@ -271,7 +271,7 @@ bool Burn::IsUsingLocalCoordSystem()
 
 
 //------------------------------------------------------------------------------
-//  wxString GetParameterText(const Integer id) const
+//  std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Gets the name of the parameter with the input id.
@@ -281,7 +281,7 @@ bool Burn::IsUsingLocalCoordSystem()
  * @return The string name of the parameter.
  */
 //------------------------------------------------------------------------------
-wxString Burn::GetParameterText(const Integer id) const
+std::string Burn::GetParameterText(const Integer id) const
 {
    if (id >= GmatBaseParamCount && id < BurnParamCount)
       return PARAMETER_TEXT[id - GmatBaseParamCount];
@@ -290,7 +290,7 @@ wxString Burn::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer GetParameterID(const wxString &str) const
+//  Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * Gets the id corresponding to a named parameter.
@@ -300,7 +300,7 @@ wxString Burn::GetParameterText(const Integer id) const
  * @return The ID.
  */
 //------------------------------------------------------------------------------
-Integer Burn::GetParameterID(const wxString &str) const
+Integer Burn::GetParameterID(const std::string &str) const
 {
    static bool vectorFormatFirstWarning = true;
    static bool vFirstWarning = true;
@@ -309,54 +309,54 @@ Integer Burn::GetParameterID(const wxString &str) const
    
    #ifdef DEBUG_BURN_PARAM
    MessageInterface::ShowMessage
-      (wxT("Burn::GetParameterID() str=%s\n"), str.c_str());
+      ("Burn::GetParameterID() str=%s\n", str.c_str());
    #endif
    
    Integer id = -1;
    
-   if (str == wxT("VectorFormat"))
+   if (str == "VectorFormat")
    {
       if (vectorFormatFirstWarning)
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** \"VectorFormat\" field of Burn ")
-             wxT("is deprecated and will be removed from a future build.\n"));
+            ("*** WARNING *** \"VectorFormat\" field of Burn "
+             "is deprecated and will be removed from a future build.\n");
          vectorFormatFirstWarning = false;
       }
       return VECTORFORMAT;
    }
    
-   if (str == wxT("V"))
+   if (str == "V")
    {
       if (vFirstWarning)
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** \"V\" field of Burn is deprecated and will be ")
-             wxT("removed from a future build; please use \"Element1\" instead.\n"));
+            ("*** WARNING *** \"V\" field of Burn is deprecated and will be "
+             "removed from a future build; please use \"Element1\" instead.\n");
          vFirstWarning = false;
       }
       return DELTAV1;
    }
    
-   if (str == wxT("N"))
+   if (str == "N")
    {
       if (nFirstWarning)
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** \"N\" field of Burn is deprecated and will be ")
-             wxT("removed from a future build; please use \"Element2\" instead.\n"));
+            ("*** WARNING *** \"N\" field of Burn is deprecated and will be "
+             "removed from a future build; please use \"Element2\" instead.\n");
          nFirstWarning = false;
       }
       return DELTAV2;
    }
    
-   if (str == wxT("B"))
+   if (str == "B")
    {
       if (bFirstWarning)
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** \"B\" field of Burn is deprecated and will be ")
-             wxT("removed from a future build; please use \"Element3\" instead.\n"));
+            ("*** WARNING *** \"B\" field of Burn is deprecated and will be "
+             "removed from a future build; please use \"Element3\" instead.\n");
          bFirstWarning = false;
       }
       return DELTAV3;
@@ -374,7 +374,7 @@ Integer Burn::GetParameterID(const wxString &str) const
    if (id != -1)
    {
       #ifdef DEBUG_BURN_PARAM
-      MessageInterface::ShowMessage(wxT("Burn::GetParameterID() returning %d\n"), id);
+      MessageInterface::ShowMessage("Burn::GetParameterID() returning %d\n", id);
       #endif
       
       return id;
@@ -405,7 +405,7 @@ Gmat::ParameterType Burn::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString GetParameterTypeString(const Integer id) const
+//  std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Gets the text description for the type of a parameter.
@@ -415,7 +415,7 @@ Gmat::ParameterType Burn::GetParameterType(const Integer id) const
  * @return The text description of the type of the parameter.
  */
 //------------------------------------------------------------------------------
-wxString Burn::GetParameterTypeString(const Integer id) const
+std::string Burn::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -442,7 +442,7 @@ bool Burn::IsParameterReadOnly(const Integer id) const
       return true;
    
    if ((id == BURNORIGIN || id == BURNAXES))
-      if (coordSystemName != wxT("Local"))
+      if (coordSystemName != "Local")
          return true;
    
    return GmatBase::IsParameterReadOnly(id);
@@ -463,7 +463,7 @@ bool Burn::IsParameterReadOnly(const Integer id) const
 Real Burn::GetRealParameter(const Integer id) const
 {
    #ifdef DEBUG_BURN_GET
-   MessageInterface::ShowMessage(wxT("Burn::GetRealParameter() id=%d\n"), id);
+   MessageInterface::ShowMessage("Burn::GetRealParameter() id=%d\n", id);
    #endif
    
    if (id == DELTAV1)
@@ -495,7 +495,7 @@ Real Burn::SetRealParameter(const Integer id, const Real value)
 {
    #ifdef DEBUG_BURN_SET
    MessageInterface::ShowMessage
-      (wxT("Burn::SetRealParameter() id=%d, value=%f\n"), id, value);
+      ("Burn::SetRealParameter() id=%d, value=%f\n", id, value);
    #endif
    
    if (id == DELTAV1)
@@ -521,17 +521,17 @@ Real Burn::SetRealParameter(const Integer id, const Real value)
 
 
 //------------------------------------------------------------------------------
-//  wxString GetStringParameter(const Integer id) const
+//  std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
- * Gets the value for a wxString parameter.
+ * Gets the value for a std::string parameter.
  * 
  * @param <id> Integer ID of the parameter.
  * 
  * @return The value of the parameter.
  */
 //------------------------------------------------------------------------------
-wxString Burn::GetStringParameter(const Integer id) const
+std::string Burn::GetStringParameter(const Integer id) const
 {
    if (id == BURNORIGIN)
       return localOriginName;
@@ -556,7 +556,7 @@ wxString Burn::GetStringParameter(const Integer id) const
 //  bool SetStringParameter(const Integer id, const Real value)
 //------------------------------------------------------------------------------
 /**
- * Sets the value for a wxString parameter.
+ * Sets the value for a std::string parameter.
  * 
  * @param <id>    Integer ID of the parameter.
  * @param <value> New value for the parameter.
@@ -564,11 +564,11 @@ wxString Burn::GetStringParameter(const Integer id) const
  * @return The value of the parameter.
  */
 //------------------------------------------------------------------------------
-bool Burn::SetStringParameter(const Integer id, const wxString &value)
+bool Burn::SetStringParameter(const Integer id, const std::string &value)
 {
    #ifdef DEBUG_BURN_SET
    MessageInterface::ShowMessage
-      (wxT("Burn::SetStringParameter() this=<%p> '%s', id=%d, value='%s'\n"), this,
+      ("Burn::SetStringParameter() this=<%p> '%s', id=%d, value='%s'\n", this,
        GetName().c_str(), id, value.c_str());
    #endif
    
@@ -576,7 +576,7 @@ bool Burn::SetStringParameter(const Integer id, const wxString &value)
    {
    case COORDINATESYSTEM:
       coordSystemName = value;
-      if (coordSystemName == wxT("Local"))
+      if (coordSystemName == "Local")
          usingLocalCoordSys = true;
       else
          usingLocalCoordSys = false;
@@ -585,7 +585,7 @@ bool Burn::SetStringParameter(const Integer id, const wxString &value)
       localOriginName = value;
       #ifdef DEBUG_BURN_SET
       MessageInterface::ShowMessage
-         (wxT("Burn::SetStringParameter() exiting, localOriginName set to '%s'\n"),
+         ("Burn::SetStringParameter() exiting, localOriginName set to '%s'\n",
           value.c_str());
       #endif
       return true;
@@ -601,38 +601,38 @@ bool Burn::SetStringParameter(const Integer id, const wxString &value)
          {
             #ifdef DEBUG_BURN_SET
             MessageInterface::ShowMessage
-               (wxT("   Local axes '%s' found, so setting coordSystemName to Local\n"),
+               ("   Local axes '%s' found, so setting coordSystemName to Local\n",
                 localAxesName.c_str());
             #endif
             if (usingLocalCoordSys)
-               coordSystemName = wxT("Local");
+               coordSystemName = "Local";
          }
          else
          {
             // write one warning per GMAT session
             static bool firstTimeWarning = true;
-            wxString framelist = localAxesLabels[0];
+            std::string framelist = localAxesLabels[0];
             for (UnsignedInt n = 1; n < localAxesLabels.size(); ++n)
-               framelist += wxT(", ") + localAxesLabels[n];
+               framelist += ", " + localAxesLabels[n];
             
-            wxString msg =
-               wxT("The value of \"") + value + wxT("\" for field \"Axes\"")
-               wxT(" on object \"") + instanceName + wxT("\" is not an allowed value.\n")
-               wxT("The allowed values are: [ ") + framelist + wxT(" ]. ");
+            std::string msg =
+               "The value of \"" + value + "\" for field \"Axes\""
+               " on object \"" + instanceName + "\" is not an allowed value.\n"
+               "The allowed values are: [ " + framelist + " ]. ";
             
             if (firstTimeWarning)
             {
                firstTimeWarning = false;
                
-               if (value == wxT("Inertial"))
-                  MessageInterface::ShowMessage(wxT("*** WARNING *** ") + msg + wxT("\n"));
+               if (value == "Inertial")
+                  MessageInterface::ShowMessage("*** WARNING *** " + msg + "\n");
                else
                   throw BurnException(msg);
             }
             
-            if (value == wxT("Inertial"))
+            if (value == "Inertial")
             {
-               coordSystemName = wxT("EarthMJ2000Eq");
+               coordSystemName = "EarthMJ2000Eq";
                usingLocalCoordSys = false;
             }
             else
@@ -658,7 +658,7 @@ bool Burn::SetStringParameter(const Integer id, const wxString &value)
 //                          const Integer index)
 //------------------------------------------------------------------------------
 /**
- * Sets the value for a specific wxString element in an array.
+ * Sets the value for a specific std::string element in an array.
  *
  * @param <id>    Integer ID of the parameter.
  * @param <value> New value for the parameter.
@@ -667,7 +667,7 @@ bool Burn::SetStringParameter(const Integer id, const wxString &value)
  * @return true on success
  */
 //------------------------------------------------------------------------------
-bool Burn::SetStringParameter(const Integer id, const wxString &value,
+bool Burn::SetStringParameter(const Integer id, const std::string &value,
                               const Integer index)
 {
    return GmatBase::SetStringParameter(id, value, index);
@@ -696,7 +696,7 @@ const StringArray& Burn::GetPropertyEnumStrings(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  const StringArray& GetPropertyEnumStrings(const wxString &label) const
+//  const StringArray& GetPropertyEnumStrings(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Access an array of enumerated string data.
@@ -706,7 +706,7 @@ const StringArray& Burn::GetPropertyEnumStrings(const Integer id) const
  * @return The requested StringArray
  */
 //------------------------------------------------------------------------------
-const StringArray& Burn::GetPropertyEnumStrings(const wxString &label) const
+const StringArray& Burn::GetPropertyEnumStrings(const std::string &label) const
 {
    return GetPropertyEnumStrings(GetParameterID(label));
 }
@@ -758,7 +758,7 @@ const StringArray& Burn::GetRefObjectNameArray(const Gmat::ObjectType type)
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                    const wxString &name)
+//                    const std::string &name)
 //------------------------------------------------------------------------------
 /**
 * This method sets a reference object for the CoordinateSystem class.
@@ -772,12 +772,12 @@ const StringArray& Burn::GetRefObjectNameArray(const Gmat::ObjectType type)
  */
 //------------------------------------------------------------------------------
 bool Burn::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                        const wxString &name)
+                        const std::string &name)
 {
    #ifdef DEBUG_BURN_SET
    MessageInterface::ShowMessage
-      (wxT("Burn::SetRefObject() this=<%p> '%s', objType=%d, objTypeName=%s, ")
-       wxT("objName=%s, type=%d, name=%s\n"), this, GetName().c_str(), obj->GetType(),
+      ("Burn::SetRefObject() this=<%p> '%s', objType=%d, objTypeName=%s, "
+       "objName=%s, type=%d, name=%s\n", this, GetName().c_str(), obj->GetType(),
        obj->GetTypeName().c_str(), obj->GetName().c_str(), type, name.c_str());
    #endif
    
@@ -818,7 +818,7 @@ bool Burn::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /**
  * Renames reference object name used in this class.
@@ -831,8 +831,8 @@ bool Burn::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  */
 //---------------------------------------------------------------------------
 bool Burn::RenameRefObject(const Gmat::ObjectType type,
-                           const wxString &oldName,
-                           const wxString &newName)
+                           const std::string &oldName,
+                           const std::string &newName)
 {
    if (type == Gmat::SPACECRAFT)
    {
@@ -860,8 +860,8 @@ void Burn::SetSpacecraftToManeuver(Spacecraft *sat)
    
    #ifdef DEBUG_BURN_SET
    MessageInterface::ShowMessage
-      (wxT("Burn::SetSpacecraftToManeuver() sat=<%p>'%s', usingLocalCoordSys=%d, ")
-       wxT("localCoordSystem=<%p>\n"), sat, sat->GetName().c_str(), usingLocalCoordSys,
+      ("Burn::SetSpacecraftToManeuver() sat=<%p>'%s', usingLocalCoordSys=%d, "
+       "localCoordSystem=<%p>\n", sat, sat->GetName().c_str(), usingLocalCoordSys,
        localCoordSystem);
    #endif
    
@@ -877,8 +877,8 @@ void Burn::SetSpacecraftToManeuver(Spacecraft *sat)
          {
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Remove
-               (localCoordSystem, wxT("localCoordSystem"), wxT("Burn::SetSpacecraftToManeuver()"),
-                wxT("deleting localCoordSystem"));
+               (localCoordSystem, "localCoordSystem", "Burn::SetSpacecraftToManeuver()",
+                "deleting localCoordSystem");
             #endif
             delete localCoordSystem;
             localCoordSystem = NULL;
@@ -888,7 +888,7 @@ void Burn::SetSpacecraftToManeuver(Spacecraft *sat)
    }
    
    #ifdef DEBUG_BURN_SET
-   MessageInterface::ShowMessage(wxT("Burn::SetSpacecraftToManeuver() returning\n"));
+   MessageInterface::ShowMessage("Burn::SetSpacecraftToManeuver() returning\n");
    #endif
 }
 
@@ -906,7 +906,7 @@ void Burn::SetSolarSystem(SolarSystem *ss)
 {
    #ifdef DEBUG_BURN_SET
    MessageInterface::ShowMessage
-      (wxT("Burn::SetSolarSystem() ss=<%p> '%s'\n"), ss, ss->GetName().c_str());
+      ("Burn::SetSolarSystem() ss=<%p> '%s'\n", ss, ss->GetName().c_str());
    #endif
    SolarSystem *oldSS = solarSystem;
    solarSystem = ss;
@@ -927,7 +927,7 @@ bool Burn::Initialize()
 {
    #ifdef DEBUG_BURN_INIT
    MessageInterface::ShowMessage
-      (wxT("Burn::Initialize() <%p>'%s' entered, spacecraft=<%p>\n"), this,
+      ("Burn::Initialize() <%p>'%s' entered, spacecraft=<%p>\n", this,
        GetName().c_str(), spacecraft);
    #endif
    
@@ -936,17 +936,17 @@ bool Burn::Initialize()
    if (retval)
    {
       if ((!solarSystem))
-         throw BurnException(wxT("Unable to initialize the burn object \"") + 
-            instanceName + wxT("\"; the SolarSystem was not set."));
+         throw BurnException("Unable to initialize the burn object \"" + 
+            instanceName + "\"; the SolarSystem was not set.");
       
       j2000Body = solarSystem->GetBody(j2000BodyName);
       if (!localOrigin)
          localOrigin = solarSystem->GetBody(localOriginName);
       
       if ((!localOrigin) || (!j2000Body))
-         throw BurnException(wxT("Unable to initialize the burn object ") + 
-            instanceName + wxT("; either ") + j2000BodyName + wxT(" or ") + 
-            localOriginName + wxT(" was not set for the burn."));
+         throw BurnException("Unable to initialize the burn object " + 
+            instanceName + "; either " + j2000BodyName + " or " + 
+            localOriginName + " was not set for the burn.");
    }
    
    // delete old local coordinate system
@@ -954,8 +954,8 @@ bool Burn::Initialize()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (localCoordSystem, wxT("localCoordSystem"), wxT("Burn::Initialize()"),
-          wxT("deleting localCoordSystem"));
+         (localCoordSystem, "localCoordSystem", "Burn::Initialize()",
+          "deleting localCoordSystem");
       #endif
       delete localCoordSystem;
       localCoordSystem = NULL;
@@ -970,7 +970,7 @@ bool Burn::Initialize()
    
    #ifdef DEBUG_BURN_INIT
    MessageInterface::ShowMessage
-      (wxT("Burn::Initialize() <%p>'%s' returning %d, localCoordSystem=<%p>\n"),
+      ("Burn::Initialize() <%p>'%s' returning %d, localCoordSystem=<%p>\n",
        this, GetName().c_str(), retval, localCoordSystem);
    #endif
    
@@ -985,8 +985,8 @@ CoordinateSystem* Burn::CreateLocalCoordinateSystem()
 {
    #ifdef DEBUG_BURN_INIT
    MessageInterface::ShowMessage
-      (wxT("Burn::CreateLocalCoordinateSystem() '%s' entered, usingLocalCoordSys=%d, ")
-       wxT("spacecraft=<%p>, solarSystem=<%p>\n"), GetName().c_str(), usingLocalCoordSys,
+      ("Burn::CreateLocalCoordinateSystem() '%s' entered, usingLocalCoordSys=%d, "
+       "spacecraft=<%p>, solarSystem=<%p>\n", GetName().c_str(), usingLocalCoordSys,
        spacecraft, solarSystem);
    #endif
    
@@ -996,12 +996,12 @@ CoordinateSystem* Burn::CreateLocalCoordinateSystem()
    {
       #ifdef DEBUG_BURN_INIT
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** Burn::CreateLocalCoordinateSystem() Unable to create local ")
-          wxT("coordiante system, SolarSystem is NULL\n"));
+         ("*** WARNING *** Burn::CreateLocalCoordinateSystem() Unable to create local "
+          "coordiante system, SolarSystem is NULL\n");
       #endif
       throw BurnException
-         (wxT("*** WARNING *** Burn::CreateLocalCoordinateSystem() Unable to create ")
-          wxT("local coordiante system, SolarSystem is NULL\n"));
+         ("*** WARNING *** Burn::CreateLocalCoordinateSystem() Unable to create "
+          "local coordiante system, SolarSystem is NULL\n");
    }
    
    CoordinateSystem *localCS = NULL;
@@ -1014,8 +1014,8 @@ CoordinateSystem* Burn::CreateLocalCoordinateSystem()
          // Since spacecraft is set later, just return NULL for now
          #ifdef DEBUG_BURN_INIT
          MessageInterface::ShowMessage
-            (wxT("Burn::CreateLocalCoordinateSystem() spacecraft is not set so, ")
-             wxT("returning NULL\n"));
+            ("Burn::CreateLocalCoordinateSystem() spacecraft is not set so, "
+             "returning NULL\n");
          #endif
          return NULL;
          //throw BurnException("Unable to initialize the Burn object " + 
@@ -1025,15 +1025,15 @@ CoordinateSystem* Burn::CreateLocalCoordinateSystem()
       // Call CoordinateSystem static method to create a local coordinate system
       localOrigin = solarSystem->GetBody(localOriginName);
       localCS = CoordinateSystem::CreateLocalCoordinateSystem
-         (wxT("Local"), localAxesName, spacecraft, localOrigin, spacecraft,
+         ("Local", localAxesName, spacecraft, localOrigin, spacecraft,
           j2000Body, solarSystem);
       
       if (localCS == NULL)
          return NULL;
       
-      if (localAxesName == wxT("MJ2000Eq"))
+      if (localAxesName == "MJ2000Eq")
          isMJ2000EqAxes = true;
-      else if (localAxesName == wxT("SpacecraftBody"))
+      else if (localAxesName == "SpacecraftBody")
          isSpacecraftBodyAxes = true;
       
    }
@@ -1044,15 +1044,15 @@ CoordinateSystem* Burn::CreateLocalCoordinateSystem()
       if (coordSystem)
       {
          throw BurnException
-            (wxT("Unable to initialize the Burn object ") + 
-             instanceName + wxT(" ") + coordSystemName + wxT(" was not set for the burn."));
+            ("Unable to initialize the Burn object " + 
+             instanceName + " " + coordSystemName + " was not set for the burn.");
       }
       localCS = coordSystem;
    }
    
    #ifdef DEBUG_BURN_INIT
    MessageInterface::ShowMessage
-      (wxT("Burn::CreateLocalCoordinateSystem() returning <%p>\n"), localCS);
+      ("Burn::CreateLocalCoordinateSystem() returning <%p>\n", localCS);
    #endif
    
    return localCS;
@@ -1066,22 +1066,22 @@ void Burn::ConvertDeltaVToInertial(Real *dv, Real *dvInertial, Real epoch)
 {
    #ifdef DEBUG_BURN_CONVERT
    MessageInterface::ShowMessage
-      (wxT("Burn::ConvertDeltaVToInertial(), usingLocalCoordSys=%d, coordSystemName='%s', ")
-       wxT("coordSystem=<%p>'%s'\n"), usingLocalCoordSys, coordSystemName.c_str(),
+      ("Burn::ConvertDeltaVToInertial(), usingLocalCoordSys=%d, coordSystemName='%s', "
+       "coordSystem=<%p>'%s'\n", usingLocalCoordSys, coordSystemName.c_str(),
        coordSystem, coordSystem ? coordSystem->GetName().c_str() : "NULL");
    #endif
    
    if (usingLocalCoordSys && localCoordSystem == NULL)
    {      
       throw BurnException
-         (wxT("Unable to convert burn elements to Inertial, the local Coordinate ")
-          wxT("System has not been created"));
+         ("Unable to convert burn elements to Inertial, the local Coordinate "
+          "System has not been created");
    }
    else if (!usingLocalCoordSys && coordSystem == NULL)
    {
       throw BurnException
-         (wxT("Unable to convert burn elements to Inertial, the Coordinate ")
-          wxT("System has not been set"));      
+         ("Unable to convert burn elements to Inertial, the Coordinate "
+          "System has not been set");      
    }
    
    Real inDeltaV[6], outDeltaV[6];
@@ -1100,7 +1100,7 @@ void Burn::ConvertDeltaVToInertial(Real *dv, Real *dvInertial, Real epoch)
       #ifdef DEBUG_BURN_CONVERT_ROTMAT
       Rmatrix33 rotMat = coordSystem->GetLastRotationMatrix();
       MessageInterface::ShowMessage
-         (wxT("rotMat=\n%s\n"), rotMat.ToString(16, 20).c_str());
+         ("rotMat=\n%s\n", rotMat.ToString(16, 20).c_str());
       #endif
       
       dvInertial[0] = outDeltaV[0];
@@ -1142,8 +1142,8 @@ void Burn::ConvertDeltaVToInertial(Real *dv, Real *dvInertial, Real epoch)
    
    #ifdef DEBUG_BURN_CONVERT
    MessageInterface::ShowMessage
-      (wxT("Burn::ConvertDeltaVToInertial() returning\n")
-       wxT("           dv = %f %f %f\n   dvInertial = %f %f %f\n"),
+      ("Burn::ConvertDeltaVToInertial() returning\n"
+       "           dv = %f %f %f\n   dvInertial = %f %f %f\n",
        dv[0], dv[1], dv[2], dvInertial[0], dvInertial[1], dvInertial[2]);
    #endif
 }
@@ -1165,8 +1165,8 @@ void Burn::TransformJ2kToBurnOrigin(const Real *scState, Real *state,
 {
    #ifdef DEBUG_BURN_ORIGIN
       MessageInterface::ShowMessage(
-         wxT("State transformation for Burn\n")
-         wxT("   Input state =  [ %lf %lf %lf %.9lf %.9lf %.9lf ]\n"), scState[0], 
+         "State transformation for Burn\n"
+         "   Input state =  [ %lf %lf %lf %.9lf %.9lf %.9lf ]\n", scState[0], 
          scState[1], scState[2], scState[3], scState[4], scState[5]);
    #endif
       
@@ -1182,15 +1182,15 @@ void Burn::TransformJ2kToBurnOrigin(const Real *scState, Real *state,
       
       #ifdef DEBUG_BURN_ORIGIN
          MessageInterface::ShowMessage(
-            wxT("   j2000       =  [ %lf %lf %lf %.9lf %.9lf %.9lf ]\n"),
+            "   j2000       =  [ %lf %lf %lf %.9lf %.9lf %.9lf ]\n",
             j2kState[0], j2kState[1], j2kState[2], j2kState[3], j2kState[4], 
             j2kState[5]);
          MessageInterface::ShowMessage(
-            wxT("   Origin      =  [ %lf %lf %lf %.9lf %.9lf %.9lf ]\n"),
+            "   Origin      =  [ %lf %lf %lf %.9lf %.9lf %.9lf ]\n",
             originState[0], originState[1], originState[2], originState[3], 
             originState[4], originState[5]);
          MessageInterface::ShowMessage(
-            wxT("   Delta       =  [ %lf %lf %lf %.9lf %.9lf %.9lf ]\n"),
+            "   Delta       =  [ %lf %lf %lf %.9lf %.9lf %.9lf ]\n",
             delta[0], delta[1], delta[2], delta[3], delta[4], delta[5]);
       #endif
       
@@ -1204,7 +1204,7 @@ void Burn::TransformJ2kToBurnOrigin(const Real *scState, Real *state,
    
    #ifdef DEBUG_BURN_ORIGIN
       MessageInterface::ShowMessage(
-         wxT("   Output state = [ %lf %lf %lf %.9lf %.9lf %.9lf ]\n"),
+         "   Output state = [ %lf %lf %lf %.9lf %.9lf %.9lf ]\n",
          state[0], state[1], state[2], state[3], state[4], state[5]);
    #endif
 }

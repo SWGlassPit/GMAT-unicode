@@ -37,11 +37,11 @@ public:
 
   LatLonHgt();
   LatLonHgt(const Rvector3 &cartPosition, const Real &equatorialRadius, 
-	    const Real &flattening, const wxString &typ=wxT("Geodetic"),
-	    const wxString &hgtRef=wxT("Ellipsoid"));
+	    const Real &flattening, const std::string &typ="Geodetic",
+	    const std::string &hgtRef="Ellipsoid");
   LatLonHgt(const Real &lat, const Real &lon, const Real &hgt, 
-	    const wxString &typ=wxT("Geodetic"), 
-	    const wxString &hgtRef=wxT("Ellipsoid")); 
+	    const std::string &typ="Geodetic", 
+	    const std::string &hgtRef="Ellipsoid"); 
   LatLonHgt(const LatLonHgt &LatLonHgt);
   LatLonHgt& operator=(const LatLonHgt &LatLonHgt);
   virtual ~LatLonHgt();
@@ -52,7 +52,7 @@ public:
   
   // public method 
   Real GetLatitude() const;
-  void SetLatitude(const Real &lat, const wxString &typ);
+  void SetLatitude(const Real &lat, const std::string &typ);
   
   Real GetLongitude() const;
   void SetLongitude(const Real &lon);
@@ -60,17 +60,17 @@ public:
   Real GetHeight() const;
   void SetHeight(const Real &hgt);
 
-  wxString GetHeightRef() const;
-  void SetHeightRef(const wxString &hgtReference);
+  std::string GetHeightRef() const;
+  void SetHeightRef(const std::string &hgtReference);
 
-  wxString GetType() const;
-  void SetType(const wxString &typ);
+  std::string GetType() const;
+  void SetType(const std::string &typ);
   
   Integer GetNumData() const;
-  const wxString* GetDataDescriptions() const;
-  const wxString* GetTypeDescriptions() const;
-  const wxString* GetHeightDescriptions() const;
-  wxString* ToValueStrings();
+  const std::string* GetDataDescriptions() const;
+  const std::string* GetTypeDescriptions() const;
+  const std::string* GetHeightDescriptions() const;
+  std::string* ToValueStrings();
   
   Rvector3 GetSitePosition(const Real &equatorialRadius, const Real &flattening);
   void GeocentricToGeodeticLat( const Real &flattening );
@@ -92,8 +92,8 @@ protected:
   Real     latitude;    //  angle measured from the Equatorial plane to point of interest
   Real     longitude;       // angle measured positive to the east from the Greenwhich meridian 
   Real     height;          //  height above the Earth's surface
-  wxString type;   // Geodetic, geocentric, reduced
-  wxString hgtRef; // Ellipsoid, Geoid, MeanSeaLevel
+  std::string type;   // Geodetic, geocentric, reduced
+  std::string hgtRef; // Ellipsoid, Geoid, MeanSeaLevel
 
   enum TYPE_REPS {
     GEOCENTRIC_ID = 0,
@@ -111,19 +111,19 @@ protected:
 
   // protected methods
   void CartesianToLatLonHgt( const Rvector3 &cartVector, const Real &equatorialRadius, 
-			     const Real &flattening, const wxString &typ=wxT("Geodetic"),
-			     const wxString &hgtReference=wxT("Ellipsoid"));
-  Integer GetTypeID(const wxString &label);
-  wxString GetTypeText(const Integer &id) const;
-  Integer GetHeightID(const wxString &label);
-  wxString GetHeightText(const Integer &id) const;
+			     const Real &flattening, const std::string &typ="Geodetic",
+			     const std::string &hgtReference="Ellipsoid");
+  Integer GetTypeID(const std::string &label);
+  std::string GetTypeText(const Integer &id) const;
+  Integer GetHeightID(const std::string &label);
+  std::string GetHeightText(const Integer &id) const;
   
 private:
   static const Integer NUM_DATA = 4;
-  static const wxString DATA_DESCRIPTIONS[NUM_DATA];
-  static const wxString TYPE_DESCRIPTIONS[3];
-  static const wxString HEIGHT_DESCRIPTIONS[3];
-  wxString stringValues[NUM_DATA];
+  static const std::string DATA_DESCRIPTIONS[NUM_DATA];
+  static const std::string TYPE_DESCRIPTIONS[3];
+  static const std::string HEIGHT_DESCRIPTIONS[3];
+  std::string stringValues[NUM_DATA];
   Real GetDegree(const Real angle, const Real minAngle, 
 			    const Real maxAngle);
   

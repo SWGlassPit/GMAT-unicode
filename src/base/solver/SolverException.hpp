@@ -31,7 +31,7 @@ class GMAT_API SolverException : public BaseException
 {
 public:
    //---------------------------------------------------------------------------
-   // SolverException(const wxString &details, const wxString &message)
+   // SolverException(const std::string &details, const std::string &message)
    //---------------------------------------------------------------------------
    /**
     * Default constructor.
@@ -40,8 +40,8 @@ public:
     * @param <message> Initial part of the exception message.
     */
    //---------------------------------------------------------------------------
-   SolverException(const wxString &details,
-                   const wxString &message = wxT("Solver subsystem exception: ")):
+   SolverException(const std::string &details,
+                   const std::string &message = "Solver subsystem exception: "):
       BaseException       (message, details)
    {
    }

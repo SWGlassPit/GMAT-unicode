@@ -27,19 +27,19 @@
 // #define DEBUG_STATEVECTOR 1 
 
 // StateVector constant variables for the lists of state types and elements 
-const wxString StateVector::STATE_LIST[StateTypeCount] =
+const std::string StateVector::STATE_LIST[StateTypeCount] =
    {
-      wxT("Cartesian"), wxT("Keplerian"), wxT("ModifiedKeplerian"), 
-      wxT("SphericalAZFPA"), wxT("SphericalRADEC")
+      "Cartesian", "Keplerian", "ModifiedKeplerian", 
+      "SphericalAZFPA", "SphericalRADEC"
    };
 
-const wxString StateVector::ELEMENT_LIST[StateTypeCount][ElementTypeCount] =
+const std::string StateVector::ELEMENT_LIST[StateTypeCount][ElementTypeCount] =
    {
-      {wxT("X"), wxT("Y"), wxT("Z"), wxT("VX"), wxT("VY"), wxT("VZ"),wxT(""),wxT("")},
-      {wxT("SMA"), wxT("ECC"), wxT("INC"), wxT("RAAN"), wxT("AOP"), wxT("TA"), wxT("MA"), wxT("EA")},
-      {wxT("RadPer"), wxT("RadApo"), wxT("INC"), wxT("RAAN"), wxT("AOP"), wxT("TA"), wxT("MA"), wxT("EA")},
-      {wxT("RMAG"), wxT("RA"), wxT("DEC"), wxT("VMAG"), wxT("AZI"), wxT("FPA"), wxT(""), wxT("")},
-      {wxT("RMAG"), wxT("RA"), wxT("DEC"), wxT("VMAG"), wxT("RAV"), wxT("DECV"), wxT(""), wxT("")}
+      {"X", "Y", "Z", "VX", "VY", "VZ","",""},
+      {"SMA", "ECC", "INC", "RAAN", "AOP", "TA", "MA", "EA"},
+      {"RadPer", "RadApo", "INC", "RAAN", "AOP", "TA", "MA", "EA"},
+      {"RMAG", "RA", "DEC", "VMAG", "AZI", "FPA", "", ""},
+      {"RMAG", "RA", "DEC", "VMAG", "RAV", "DECV", "", ""}
    };
 
 //-------------------------------------
@@ -60,7 +60,7 @@ StateVector::StateVector()
 
 
 //---------------------------------------------------------------------------
-//  StateVector(const wxString &type)
+//  StateVector(const std::string &type)
 //---------------------------------------------------------------------------
 /**
  * Creates constructors with parameters.
@@ -69,14 +69,14 @@ StateVector::StateVector()
  *
  */
 //---------------------------------------------------------------------------
-StateVector::StateVector(const wxString &type)
+StateVector::StateVector(const std::string &type)
 {
    DefineDefault();
     
    // Check if invalid then use default
    if (!SetValue(type))
-      MessageInterface::ShowMessage(wxT("\n****Warning: Invalid state type ***")
-                                    wxT("\nUse default state values.\n"));  
+      MessageInterface::ShowMessage("\n****Warning: Invalid state type ***"
+                                    "\nUse default state values.\n");  
 }
 
 
@@ -98,7 +98,7 @@ StateVector::StateVector(const Rvector6 stateVector)
 
 
 //---------------------------------------------------------------------------
-//  StateVector(const wxString &type, const Rvector6 stateVector)
+//  StateVector(const std::string &type, const Rvector6 stateVector)
 //---------------------------------------------------------------------------
 /**
  * Creates constructors with parameters.
@@ -108,14 +108,14 @@ StateVector::StateVector(const Rvector6 stateVector)
  *
  */
 //---------------------------------------------------------------------------
-StateVector::StateVector(const wxString &type, const Rvector6 stateVector)
+StateVector::StateVector(const std::string &type, const Rvector6 stateVector)
 {
    DefineDefault();
 
    // Check for invalid state type
    if (!SetValue(type, stateVector))
-      MessageInterface::ShowMessage(wxT("\n****Warning: Invalid state type ***")
-                                    wxT("\nUse default state values.\n"));  
+      MessageInterface::ShowMessage("\n****Warning: Invalid state type ***"
+                                    "\nUse default state values.\n");  
 }
 
 
@@ -185,7 +185,7 @@ Rvector6 StateVector::GetValue() const
 
 
 //---------------------------------------------------------------------------
-//  Rvector6 GetValue(const wxString &type) const
+//  Rvector6 GetValue(const std::string &type) const
 //---------------------------------------------------------------------------
 /**
  * Retrieve the value with the specific state type.
@@ -193,14 +193,14 @@ Rvector6 StateVector::GetValue() const
  * @return the state's value.
  */
 //---------------------------------------------------------------------------
-Rvector6 StateVector::GetValue(const wxString &type) const
+Rvector6 StateVector::GetValue(const std::string &type) const
 {
    return (mStateConverter.Convert(mState, mStateType, type, (Anomaly&)mAnomaly));
 }
 
 
 //---------------------------------------------------------------------------
-//  bool SetValue(const wxString &type)
+//  bool SetValue(const std::string &type)
 //---------------------------------------------------------------------------
 /**
  * Set the value with the specific state type.
@@ -210,7 +210,7 @@ Rvector6 StateVector::GetValue(const wxString &type) const
  * @return true when successful; otherwise, false.
  */
 //---------------------------------------------------------------------------
-bool StateVector::SetValue(const wxString &type) 
+bool StateVector::SetValue(const std::string &type) 
 {
    if (!IsValidType(type))
       return false; 
@@ -253,7 +253,7 @@ bool StateVector::SetValue(const Rvector6 state)
 
 
 //---------------------------------------------------------------------------
-//  bool SetValue(const wxString &type,const Rvector6 state)
+//  bool SetValue(const std::string &type,const Rvector6 state)
 //---------------------------------------------------------------------------
 /**
  * Set the value with the specific state type.
@@ -264,7 +264,7 @@ bool StateVector::SetValue(const Rvector6 state)
  * @return true when successful; otherwise, false.
  */
 //---------------------------------------------------------------------------
-bool StateVector::SetValue(const wxString &type, const Rvector6 state) 
+bool StateVector::SetValue(const std::string &type, const Rvector6 state) 
 {
    if (IsValidType(type))
       return false;
@@ -291,19 +291,19 @@ bool StateVector::SetValue(const wxString &type, const Rvector6 state)
 Real StateVector::GetElement(const Integer id) const
 {
    #if DEBUG_STATEVECTOR   
-   MessageInterface::ShowMessage(wxT("\n*** StateVector::GetElement(%d) ****\n"),id);
+   MessageInterface::ShowMessage("\n*** StateVector::GetElement(%d) ****\n",id);
    #endif
 
    // Check for out of the range then throw exception
    if (id < 1 || id > 6)
-      throw StateVectorException(wxT("StateVector::GetElement - out of range"));
+      throw StateVectorException("StateVector::GetElement - out of range");
    
    return mState[id - 1];    
 }
 
 
 //---------------------------------------------------------------------------
-//  Real GetElement(const wxString &label) const
+//  Real GetElement(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * Retrieve the value for element.
@@ -313,20 +313,20 @@ Real StateVector::GetElement(const Integer id) const
  * @return the element's value.
  */
 //---------------------------------------------------------------------------
-Real StateVector::GetElement(const wxString &label) const
+Real StateVector::GetElement(const std::string &label) const
 {
    // Find the state type
-   wxString findType = FindType(label);
+   std::string findType = FindType(label);
 
    #if DEBUG_STATEVECTOR   
-   MessageInterface::ShowMessage(wxT("\n*** StateVector::GetElement(%s), findType ")
-                                 wxT("= %s\n"),label.c_str(), findType.c_str());
+   MessageInterface::ShowMessage("\n*** StateVector::GetElement(%s), findType "
+                                 "= %s\n",label.c_str(), findType.c_str());
    #endif
    
-   if (findType == wxT("NoFound"))
+   if (findType == "NoFound")
    {
-      MessageInterface::ShowMessage(wxT("\nNo found due to invalid label.\n"));
-      throw StateVectorException(wxT("\nNo found due to invalid label.\n"));
+      MessageInterface::ShowMessage("\nNo found due to invalid label.\n");
+      throw StateVectorException("\nNo found due to invalid label.\n");
    }
    
    // First check with anomaly -> @todo: also need move into element1-6 below
@@ -362,7 +362,7 @@ bool StateVector::SetElement(const Integer id, const Real value)
 {
    #if DEBUG_STATEVECTOR
    MessageInterface::ShowMessage(
-       wxT("\n*** StateVector::SetElement(%d,%f) enters...\n\ttype = %s\n"), 
+       "\n*** StateVector::SetElement(%d,%f) enters...\n\ttype = %s\n", 
        id, value, type.c_str());
    #endif
 
@@ -376,7 +376,7 @@ bool StateVector::SetElement(const Integer id, const Real value)
 
 
 //---------------------------------------------------------------------------
-//  void SetElement(const wxString &label, const Real value)
+//  void SetElement(const std::string &label, const Real value)
 //---------------------------------------------------------------------------
 /**
  * Set the value for element.
@@ -387,25 +387,25 @@ bool StateVector::SetElement(const Integer id, const Real value)
  * @return true if successful; otherwise, false.
  */
 //---------------------------------------------------------------------------
-bool StateVector::SetElement(const wxString &label, const Real value)
+bool StateVector::SetElement(const std::string &label, const Real value)
 {
    #if DEBUG_STATEVECTOR
    MessageInterface::ShowMessage(
-       wxT("\n*** StateVector::SetElement(%s,%f) with type (%s) enters...\n"), 
+       "\n*** StateVector::SetElement(%s,%f) with type (%s) enters...\n", 
        label.c_str(),value,type.c_str());
    #endif
    
    // Find the state type
-   wxString findType = FindType(label);
+   std::string findType = FindType(label);
    
    #if DEBUG_STATEVECTOR
-   MessageInterface::ShowMessage(wxT("\nfindType = %s\n"), findType.c_str());
+   MessageInterface::ShowMessage("\nfindType = %s\n", findType.c_str());
    #endif
    
-   if (findType == wxT("NoFound"))
+   if (findType == "NoFound")
    {
-       MessageInterface::ShowMessage(wxT("\nStateVector::SetElement(%s,%f), ")
-                                     wxT("label(%s) has no found.\n"),
+       MessageInterface::ShowMessage("\nStateVector::SetElement(%s,%f), "
+                                     "label(%s) has no found.\n",
                                      label.c_str(), value, label.c_str());
        return false;
    }
@@ -414,7 +414,7 @@ bool StateVector::SetElement(const wxString &label, const Real value)
    UnsignedInt id = GetElementID(label);
    
    #if DEBUG_STATEVECTOR
-   MessageInterface::ShowMessage(wxT("\nStateVector::SetElement..., id = %d\n"),id);
+   MessageInterface::ShowMessage("\nStateVector::SetElement..., id = %d\n",id);
    #endif
    
    // if different type from current then do conversion
@@ -438,7 +438,7 @@ bool StateVector::SetElement(const wxString &label, const Real value)
 
 
 //---------------------------------------------------------------------------
-//  wxString GetType() const
+//  std::string GetType() const
 //---------------------------------------------------------------------------
 /**
  * Get the state type.
@@ -446,14 +446,14 @@ bool StateVector::SetElement(const wxString &label, const Real value)
  * @return the element's type. 
  */
 //---------------------------------------------------------------------------
-wxString StateVector::GetType() const
+std::string StateVector::GetType() const
 {
    return mStateType;
 }
 
 
 //---------------------------------------------------------------------------
-//  bool SetType(const wxString &type) 
+//  bool SetType(const std::string &type) 
 //---------------------------------------------------------------------------
 /**
  * Set the state type.
@@ -463,7 +463,7 @@ wxString StateVector::GetType() const
  * @return true if successful; otherwise, false.
  */
 //---------------------------------------------------------------------------
-bool StateVector::SetType(const wxString &type)
+bool StateVector::SetType(const std::string &type)
 {
    if (!SetValue(type))
       return false; 
@@ -473,7 +473,7 @@ bool StateVector::SetType(const wxString &type)
 
 
 //---------------------------------------------------------------------------
-//  wxString GetLabel(const Integer id)
+//  std::string GetLabel(const Integer id)
 //---------------------------------------------------------------------------
 /**
  * Determines the label of the element ID. 
@@ -483,26 +483,26 @@ bool StateVector::SetType(const wxString &type)
  * @return the element's label 
  */
 //---------------------------------------------------------------------------
-wxString StateVector::GetLabel(const Integer id) const
+std::string StateVector::GetLabel(const Integer id) const
 {
    #if DEBUG_STATEVECTOR
-   MessageInterface::ShowMessage(wxT("\n*** StateVector::GetLabel(%d)\n"),id);
+   MessageInterface::ShowMessage("\n*** StateVector::GetLabel(%d)\n",id);
    #endif
 
    if (id < 1 || id > 6)
-      throw StateVectorException(wxT("StateVector::GetElement - out of range"));
+      throw StateVectorException("StateVector::GetElement - out of range");
  
    // Check for Cartesian
    if (mStateType == STATE_LIST[0])
    {
       switch (id)
       {
-         case 1:   return wxT("X");
-         case 2:   return wxT("Y");
-         case 3:   return wxT("Z");
-         case 4:   return wxT("VX");
-         case 5:   return wxT("VY");
-         case 6:   return wxT("VZ");
+         case 1:   return "X";
+         case 2:   return "Y";
+         case 3:   return "Z";
+         case 4:   return "VX";
+         case 5:   return "VY";
+         case 6:   return "VZ";
       }
    }
    
@@ -511,13 +511,13 @@ wxString StateVector::GetLabel(const Integer id) const
    {
       switch (id)
       {
-         case 1:   if (mStateType == STATE_LIST[1]) return wxT("SMA");
-                   return wxT("RadPer");
-         case 2:   if (mStateType == STATE_LIST[1]) return wxT("ECC");
-                   return wxT("RadApo");
-         case 3:   return wxT("INC");
-         case 4:   return wxT("RAAN");
-         case 5:   return wxT("APO");
+         case 1:   if (mStateType == STATE_LIST[1]) return "SMA";
+                   return "RadPer";
+         case 2:   if (mStateType == STATE_LIST[1]) return "ECC";
+                   return "RadApo";
+         case 3:   return "INC";
+         case 4:   return "RAAN";
+         case 5:   return "APO";
          case 6:   return mAnomaly.GetTypeString();
       }
    }
@@ -527,23 +527,23 @@ wxString StateVector::GetLabel(const Integer id) const
    {
       switch (id)
       {
-         case 1:   return wxT("RMAG"); 
-         case 2:   return wxT("RA");
-         case 3:   return wxT("DEC");
-         case 4:   return wxT("VMAG");
-         case 5:   if (mStateType == STATE_LIST[2]) return wxT("AZI");
-                   return wxT("RAV");
-         case 6:   if (mStateType == STATE_LIST[2]) return wxT("FPA");
-                   return wxT("DECV");
+         case 1:   return "RMAG"; 
+         case 2:   return "RA";
+         case 3:   return "DEC";
+         case 4:   return "VMAG";
+         case 5:   if (mStateType == STATE_LIST[2]) return "AZI";
+                   return "RAV";
+         case 6:   if (mStateType == STATE_LIST[2]) return "FPA";
+                   return "DECV";
       }
    }
    
-   return wxT("");   // Won't happen unless the state type or element is no found
+   return "";   // Won't happen unless the state type or element is no found
 }
 
 
 //---------------------------------------------------------------------------
-//  bool IsElement(const Integer id, const wxString &label) const
+//  bool IsElement(const Integer id, const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * Determines if the ID is for the element. 
@@ -554,7 +554,7 @@ wxString StateVector::GetLabel(const Integer id) const
  * @return true if it is a part of element; otherwise,false.
  */
 //---------------------------------------------------------------------------
-bool StateVector::IsElement(const Integer id, const wxString &label) const
+bool StateVector::IsElement(const Integer id, const std::string &label) const
 {
    if (id < 1 || id > 6)
       return false;
@@ -579,7 +579,7 @@ bool StateVector::IsElement(const Integer id, const wxString &label) const
 
 
 //---------------------------------------------------------------------------
-//  bool IsElement(const wxString &label) const
+//  bool IsElement(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * Determines if the label is for the element. 
@@ -589,10 +589,10 @@ bool StateVector::IsElement(const Integer id, const wxString &label) const
  * @return true if it is a part of element; otherwise,false.
  */
 //---------------------------------------------------------------------------
-bool StateVector::IsElement(const wxString &label) const
+bool StateVector::IsElement(const std::string &label) const
 {
    #if DEBUG_STATEVECTOR
-   MessageInterface::ShowMessage(wxT("\nStateVector::IsElement(%s)\n"),
+   MessageInterface::ShowMessage("\nStateVector::IsElement(%s)\n",
                                  label.c_str());
    #endif
 
@@ -610,7 +610,7 @@ bool StateVector::IsElement(const wxString &label) const
 
 
 //---------------------------------------------------------------------------
-//  bool SetAnomaly(const Rvector6 kepl,const wxString &type)
+//  bool SetAnomaly(const Rvector6 kepl,const std::string &type)
 //---------------------------------------------------------------------------
 /**
  * Set the anomaly. 
@@ -621,7 +621,7 @@ bool StateVector::IsElement(const wxString &label) const
  * @return true if successful; otherwise,false.
  */
 //---------------------------------------------------------------------------
-bool StateVector::SetAnomaly(const Rvector6 kepl,const wxString &type)
+bool StateVector::SetAnomaly(const Rvector6 kepl,const std::string &type)
 {
    mAnomaly.Set(kepl[0], kepl[1], kepl[5], type);
   
@@ -630,7 +630,7 @@ bool StateVector::SetAnomaly(const Rvector6 kepl,const wxString &type)
 
 
 //---------------------------------------------------------------------------
-//  wxString GetAnomalyType() const 
+//  std::string GetAnomalyType() const 
 //---------------------------------------------------------------------------
 /**
  * Get the anomaly type. 
@@ -638,14 +638,14 @@ bool StateVector::SetAnomaly(const Rvector6 kepl,const wxString &type)
  * @return anomaly type.
  */
 //---------------------------------------------------------------------------
-wxString StateVector::GetAnomalyType() const
+std::string StateVector::GetAnomalyType() const
 {
    return mAnomaly.GetTypeString();
 }
 
 
 //---------------------------------------------------------------------------
-//  bool SetAnomalyType(const wxString &type) 
+//  bool SetAnomalyType(const std::string &type) 
 //---------------------------------------------------------------------------
 /**
  * Set the anomaly type.
@@ -655,7 +655,7 @@ wxString StateVector::GetAnomalyType() const
  * @return true if successful; otherwise, false.
  */
 //---------------------------------------------------------------------------
-bool StateVector::SetAnomalyType(const wxString &type)
+bool StateVector::SetAnomalyType(const std::string &type)
 {
    try
    {
@@ -670,7 +670,7 @@ bool StateVector::SetAnomalyType(const wxString &type)
 
 
 //---------------------------------------------------------------------------
-//  bool IsValidType(const wxString &type) const
+//  bool IsValidType(const std::string &type) const
 //---------------------------------------------------------------------------
 /**
  * Check validity on the given state type. 
@@ -680,7 +680,7 @@ bool StateVector::SetAnomalyType(const wxString &type)
  * @return true if valid; otherwise, false.
  */
 //---------------------------------------------------------------------------
-bool StateVector::IsValidType(const wxString &type) const
+bool StateVector::IsValidType(const std::string &type) const
 {
    for (UnsignedInt i=0; i < 5; i++)
    {
@@ -718,7 +718,7 @@ bool StateVector::SetCoordSys(const CoordinateSystem *cs)
 //---------------------------------------------------------------------------
 void StateVector::DefineDefault()
 {
-   mStateType = wxT("Cartesian");
+   mStateType = "Cartesian";
 
    mState[0] = 7100.0;
    mState[1] = 0.0;
@@ -728,8 +728,8 @@ void StateVector::DefineDefault()
    mState[5] = 1.0;
 
    // Get the keplerian state and then initialize anomaly
-   Rvector6 tempKepl = GetValue(wxT("Keplerian"));  
-   mAnomaly.Set(tempKepl[0], tempKepl[1], tempKepl[5], wxT("TA"));
+   Rvector6 tempKepl = GetValue("Keplerian");  
+   mAnomaly.Set(tempKepl[0], tempKepl[1], tempKepl[5], "TA");
 }
 
 
@@ -753,7 +753,7 @@ void StateVector::InitializeDataMethod(const StateVector &s)
 
 
 //---------------------------------------------------------------------------
-// wxString FindType(const wxString &label)
+// std::string FindType(const std::string &label)
 //---------------------------------------------------------------------------
 /** 
  * Determine the state type from the given element.
@@ -763,43 +763,43 @@ void StateVector::InitializeDataMethod(const StateVector &s)
  * @return Getting the state type from the given element.
  */    
 //---------------------------------------------------------------------------
-wxString StateVector::FindType(const wxString &label) const
+std::string StateVector::FindType(const std::string &label) const
 {            
    #if DEBUG_STATEVECTOR
-   MessageInterface::ShowMessage(wxT("\n*** StateVector::FindType-> label: %s"),
+   MessageInterface::ShowMessage("\n*** StateVector::FindType-> label: %s",
                                  label.c_str());
    #endif
 
-   if (label == wxT("X") || label == wxT("Y") || label == wxT("Z") ||
-       label == wxT("VX") || label == wxT("VY") || label == wxT("VZ"))
+   if (label == "X" || label == "Y" || label == "Z" ||
+       label == "VX" || label == "VY" || label == "VZ")
    {
       return STATE_LIST[0];
    }
 
-   if (label == wxT("SMA") || label == wxT("ECC") || label == wxT("INC") || label == wxT("RAAN") ||
-       label == wxT("AOP") || !(mAnomaly.IsInvalid(label)))
+   if (label == "SMA" || label == "ECC" || label == "INC" || label == "RAAN" ||
+       label == "AOP" || !(mAnomaly.IsInvalid(label)))
    {
       return STATE_LIST[1];
    }
 
-   if (label == wxT("RadPer") || label == wxT("RadApo"))
+   if (label == "RadPer" || label == "RadApo")
       return STATE_LIST[2];
 
-   if (label == wxT("RMAG") || label == wxT("RA") || label == wxT("DEC") || label == wxT("VMAG") ||
-       label == wxT("AZI") || label == wxT("FPA"))
+   if (label == "RMAG" || label == "RA" || label == "DEC" || label == "VMAG" ||
+       label == "AZI" || label == "FPA")
    {
       return STATE_LIST[3];
    }
 
-   if (label == wxT("RAV") || label == wxT("DECV"))
+   if (label == "RAV" || label == "DECV")
       return STATE_LIST[4];
 
-   return wxT("NoFound");
+   return "NoFound";
 }
 
 
 //---------------------------------------------------------------------------
-// UnsignedInt GetElementID(const wxString &label) const
+// UnsignedInt GetElementID(const std::string &label) const
 //---------------------------------------------------------------------------
 /** 
  * Determine the state type from the given element.
@@ -809,24 +809,24 @@ wxString StateVector::FindType(const wxString &label) const
  * @return the element ID.
  */    
 //---------------------------------------------------------------------------
-UnsignedInt StateVector::GetElementID(const wxString &label) const
+UnsignedInt StateVector::GetElementID(const std::string &label) const
 {
-   if (label == wxT("X") || label == wxT("SMA") || label == wxT("RadPer") || label == wxT("RMAG"))
+   if (label == "X" || label == "SMA" || label == "RadPer" || label == "RMAG")
       return 0;
 
-   if (label == wxT("Y") || label == wxT("ECC") || label == wxT("RadApo") || label == wxT("RA"))
+   if (label == "Y" || label == "ECC" || label == "RadApo" || label == "RA")
       return 1;
 
-   if (label == wxT("Z") || label == wxT("INC") || label == wxT("DEC"))
+   if (label == "Z" || label == "INC" || label == "DEC")
       return 2;
 
-   if (label == wxT("VX") || label == wxT("RAAN") || label == wxT("VMAG"))
+   if (label == "VX" || label == "RAAN" || label == "VMAG")
       return 3;
 
-   if (label == wxT("VY") || label == wxT("AOP") || label == wxT("AZI") || label == wxT("RAV"))
+   if (label == "VY" || label == "AOP" || label == "AZI" || label == "RAV")
       return 4;
 
-   if (label == wxT("VZ") || label == wxT("FPA") || label == wxT("DECV") || 
+   if (label == "VZ" || label == "FPA" || label == "DECV" || 
        !mAnomaly.IsInvalid(label))
       return 5;
    

@@ -75,10 +75,10 @@ Covariance& Covariance::operator=(const Covariance &cov)
 Real& Covariance::operator()(const Integer r, const Integer c)
 {
    if ((r < 0 ) || (r >= dimension))
-      throw GmatBaseException(wxT("Covariance row index out of bounds"));
+      throw GmatBaseException("Covariance row index out of bounds");
 
    if ((c < 0 ) || (c >= dimension))
-      throw GmatBaseException(wxT("Covariance column index out of bounds"));
+      throw GmatBaseException("Covariance column index out of bounds");
 
    return theCovariance(r,c);
 }
@@ -87,24 +87,24 @@ Real& Covariance::operator()(const Integer r, const Integer c)
 Real Covariance::operator()(const Integer r, const Integer c) const
 {
    if ((r < 0 ) || (r >= dimension))
-      throw GmatBaseException(wxT("Covariance row index out of bounds"));
+      throw GmatBaseException("Covariance row index out of bounds");
 
    if ((c < 0 ) || (c >= dimension))
-      throw GmatBaseException(wxT("Covariance column index out of bounds"));
+      throw GmatBaseException("Covariance column index out of bounds");
 
    return theCovariance(r,c);
 }
 
 
-void Covariance::AddCovarianceElement(const wxString &name,
+void Covariance::AddCovarianceElement(const std::string &name,
       GmatBase* owner)
 {
    Integer parmID = owner->GetParameterID(name);
    Integer covSize = owner->HasParameterCovariances(parmID);
 
    #ifdef DEBUG_CONSTRUCTION
-      MessageInterface::ShowMessage(wxT("Adding covariance element %s with id %d")
-            wxT("to object named %s\n"), name.c_str(), owner->GetParameterID(name),
+      MessageInterface::ShowMessage("Adding covariance element %s with id %d"
+            "to object named %s\n", name.c_str(), owner->GetParameterID(name),
             owner->GetName().c_str());
    #endif
 
@@ -134,20 +134,20 @@ void Covariance::AddCovarianceElement(const wxString &name,
       }
    }
    else
-      throw GmatBaseException(wxT("Covariance handling for ") + name +
-            wxT(" is not implemented"));
+      throw GmatBaseException("Covariance handling for " + name +
+            " is not implemented");
 
    #ifdef DEBUG_CONSTRUCTION
-      MessageInterface::ShowMessage(wxT("Covariance dimension is now %d\n"),
+      MessageInterface::ShowMessage("Covariance dimension is now %d\n",
             dimension);
    #endif
 }
 
-bool Covariance::ConstructLHS(const wxString& lhs)
+bool Covariance::ConstructLHS(const std::string& lhs)
 {
    bool retval = false;
 
-   if (lhs != wxT(""))
+   if (lhs != "")
    {
 
    }
@@ -158,7 +158,7 @@ bool Covariance::ConstructLHS(const wxString& lhs)
 }
 
 
-bool Covariance::ConstructRHS(const wxString& rhs)
+bool Covariance::ConstructRHS(const std::string& rhs)
 {
    bool retval = false;
 
@@ -172,13 +172,13 @@ bool Covariance::ConstructRHS(Rvector diagonal, Integer start)
    bool retval = false;
 
    if (diagonal.IsSized() == false)
-      throw GmatBaseException(wxT("Diagonal covariance vector is not properly ")
-            wxT("initialized"));
+      throw GmatBaseException("Diagonal covariance vector is not properly "
+            "initialized");
 
    Integer length = diagonal.GetSize();
    if (start + length > dimension)
-      throw GmatBaseException(wxT("Diagonal covariance vector is will not fit in ")
-            wxT("the allocated covariance matrix"));
+      throw GmatBaseException("Diagonal covariance vector is will not fit in "
+            "the allocated covariance matrix");
 
    length += start;
    for (Integer i = start; i < length; ++i)
@@ -197,16 +197,16 @@ bool Covariance::ConstructRHS(Rmatrix data, Integer start)
    bool retval = false;
 
    if (data.IsSized() == false)
-      throw GmatBaseException(wxT("Input covariance matrix is not properly ")
-            wxT("initialized"));
+      throw GmatBaseException("Input covariance matrix is not properly "
+            "initialized");
 
    Integer length = data.GetNumRows();
    if (data.GetNumColumns() != length)
-      throw GmatBaseException(wxT("Input covariance matrix is not square"));
+      throw GmatBaseException("Input covariance matrix is not square");
 
    if (start + length > dimension)
-      throw GmatBaseException(wxT("Input covariance matrix is will not fit in ")
-            wxT("the allocated covariance matrix"));
+      throw GmatBaseException("Input covariance matrix is will not fit in "
+            "the allocated covariance matrix");
 
    for (Integer i = 0; i < length; ++i)
       for (Integer j = i; j < length; ++j)
@@ -229,9 +229,9 @@ bool Covariance::FillMatrix(const Rmatrix& rhs, bool overrideAndFill)
 
    // Check sizes of the matrices
    if (!overrideAndFill && (dimension != rhs.GetNumRows()))
-      throw GmatBaseException(wxT("Covariance assignment dimensions do not match"));
+      throw GmatBaseException("Covariance assignment dimensions do not match");
    if (rhs.GetNumRows() != rhs.GetNumColumns())
-      throw GmatBaseException(wxT("Input covariance matrix is not square"));
+      throw GmatBaseException("Input covariance matrix is not square");
 
    // Fill in the matrix info
    if (dimension != rhs.GetNumRows())
@@ -243,7 +243,7 @@ bool Covariance::FillMatrix(const Rmatrix& rhs, bool overrideAndFill)
       elementSizes.clear();
       elementOwners.clear();
 
-      elementNames.push_back(wxT("GenericCovariance"));
+      elementNames.push_back("GenericCovariance");
       elementIndices.push_back(-1);
       // set dimension to the input size
       dimension = rhs.GetNumRows();
@@ -287,7 +287,7 @@ Rmatrix *Covariance::GetCovariance(Integer forParameterID)
    for (UnsignedInt i = 0; i < elementIndices.size(); ++i)
    {
       #ifdef DEBUG_ACCESS
-         MessageInterface::ShowMessage(wxT("Checking if index %d == %d\n"),
+         MessageInterface::ShowMessage("Checking if index %d == %d\n",
                elementIndices[i], forParameterID);
       #endif
 

@@ -26,7 +26,7 @@
 class GMAT_API SubscriberException : public BaseException
 {
 public:
-   SubscriberException(const wxString& details = wxT("")) 
-      : BaseException(wxT("Subscriber Exception: "), details) {};
+   SubscriberException(const std::string& details = "") 
+      : BaseException("Subscriber Exception: ", details) {};
 };
 #endif

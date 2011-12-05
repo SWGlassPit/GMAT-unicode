@@ -81,7 +81,7 @@ bool RepeatSunSync::IsError()
 	return isError;
 }
 
-wxString RepeatSunSync::GetError()
+std::string RepeatSunSync::GetError()
 {
 	return errormsg;
 }
@@ -105,7 +105,7 @@ void RepeatSunSync::CalculateRepeatSunSync(bool eccVal, Real ECC, bool dtrVal,
 
    if (!eccVal)
    {
-	  errormsg = wxT("ECC must be selected");
+	  errormsg = "ECC must be selected";
 	  isError = true;
       return;
    }
@@ -115,14 +115,14 @@ void RepeatSunSync::CalculateRepeatSunSync(bool eccVal, Real ECC, bool dtrVal,
       if (revsToRepeat<1)
 	  {
             errormsg = 
-			   wxT("Please choose revs to repeat greater than or equal to 1");
+			   "Please choose revs to repeat greater than or equal to 1";
 			isError = true;
             return;
 	  }
       else if (revsPerDay<1)
 	  {
             errormsg = 
-			   wxT("Please choose revs per day greater than or equal to 1");
+			   "Please choose revs per day greater than or equal to 1";
             isError = true;
             return;
 	  }
@@ -136,14 +136,14 @@ void RepeatSunSync::CalculateRepeatSunSync(bool eccVal, Real ECC, bool dtrVal,
       if (daysToRepeat<1)
 	  {
          errormsg = 
-		    wxT("Please choose days to repeat greater than or equal to 1");
+		    "Please choose days to repeat greater than or equal to 1";
          isError = true;
          return;
 	  }
       else if (revsPerDay<1)
 	  {
          errormsg = 
-		    wxT("Please choose revs per day greater than or equal to 1");
+		    "Please choose revs per day greater than or equal to 1";
          isError = true;
          return;
 	  }
@@ -157,14 +157,14 @@ void RepeatSunSync::CalculateRepeatSunSync(bool eccVal, Real ECC, bool dtrVal,
       if (revsToRepeat<1)
 	  {
          errormsg = 
-		    wxT("Please choose revs to repeat greater than or equal to 1");
+		    "Please choose revs to repeat greater than or equal to 1";
          isError = true;
          return;
 	  }
       else if (daysToRepeat<1)
 	  {
          errormsg = 
-		    wxT("Please choose days to repeat greater than or equal to 1");
+		    "Please choose days to repeat greater than or equal to 1";
          isError = true;
          return;
 	  }
@@ -176,14 +176,14 @@ void RepeatSunSync::CalculateRepeatSunSync(bool eccVal, Real ECC, bool dtrVal,
    else
    {
       errormsg = 
-	     wxT("Please select two of days to repeat, revs to repeat, and revs per day");
+	     "Please select two of days to repeat, revs to repeat, and revs per day";
       isError = true;
       return;
    }
 
    if ((ECC<0) || (ECC>=1))
    {
-      errormsg = wxT("ECC out of range, 0<=ECC<1");
+      errormsg = "ECC out of range, 0<=ECC<1";
       isError = true;
       return;
    }
@@ -194,7 +194,7 @@ void RepeatSunSync::CalculateRepeatSunSync(bool eccVal, Real ECC, bool dtrVal,
    diff = 1;
    inc = 98*GmatMathConstants::PI/180;
    a = 7000;
-   errormsg = wxT("");
+   errormsg = "";
 
    while ((GmatMathUtil::Abs(sun) > sunTol) && (diff> smaTol) && (count <= 100))
    {
@@ -231,7 +231,7 @@ void RepeatSunSync::CalculateRepeatSunSync(bool eccVal, Real ECC, bool dtrVal,
          newInc = acos(incCheck);
       if (newA <= GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])
 	  {
-         errormsg = wxT("Could not find orbit");
+         errormsg = "Could not find orbit";
 		 isError = true;
          return;
 	  }
@@ -241,7 +241,7 @@ void RepeatSunSync::CalculateRepeatSunSync(bool eccVal, Real ECC, bool dtrVal,
 	  }
       if ((newE >= 1) || (newE < 0))
 	  {
-         errormsg = wxT("Could not find orbit");
+         errormsg = "Could not find orbit";
 		 isError = true;
          return;
 	  }
@@ -252,7 +252,7 @@ void RepeatSunSync::CalculateRepeatSunSync(bool eccVal, Real ECC, bool dtrVal,
       if ((newInc*180/GmatMathConstants::PI >= 110) || 
 		 (newInc*180/GmatMathConstants::PI < 90))
 	  {
-         errormsg = wxT("Could not find orbit");
+         errormsg = "Could not find orbit";
 		 isError = true;
          newInc = newInc*180/GmatMathConstants::PI;
          return;
@@ -273,7 +273,7 @@ void RepeatSunSync::CalculateRepeatSunSync(bool eccVal, Real ECC, bool dtrVal,
     
    if (count > 100)
    {
-      errormsg = wxT("Could not find orbit in 100 iterations");
+      errormsg = "Could not find orbit in 100 iterations";
       isError = true;
    }
 }

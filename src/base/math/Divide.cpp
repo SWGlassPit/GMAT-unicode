@@ -35,8 +35,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Divide::Divide(const wxString &nomme)
-   : MathFunction(wxT("Divide"), nomme)
+Divide::Divide(const std::string &nomme)
+   : MathFunction("Divide", nomme)
 {
 }
 
@@ -91,7 +91,7 @@ void Divide::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 {
    #if DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Divide::GetOutputInfo() this=<%p><%s><%s>\n"), this, GetTypeName().c_str(),
+      ("Divide::GetOutputInfo() this=<%p><%s><%s>\n", this, GetTypeName().c_str(),
        GetName().c_str());
    #endif
    
@@ -102,20 +102,20 @@ void Divide::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
    if (leftNode)
       leftNode->GetOutputInfo(type1, row1, col1);
    else
-      throw MathException(wxT("Left node is NULL in ") + GetTypeName() +
-                          wxT("::GetOutputInfo()\n"));
+      throw MathException("Left node is NULL in " + GetTypeName() +
+                          "::GetOutputInfo()\n");
    
    // Get the type(Real or Matrix), # rows and # columns of the right node
    if (rightNode)
       rightNode->GetOutputInfo(type2, row2, col2);
    else
-      throw MathException(wxT("Right node is NULL in ") + GetTypeName() +
-                          wxT("::GetOutputInfo()\n"));
+      throw MathException("Right node is NULL in " + GetTypeName() +
+                          "::GetOutputInfo()\n");
    
    #if DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Divide::GetOutputInfo() type1=%d, row1=%d, col1=%d, type2=%d, ")
-       wxT("row2=%d, col2=%d\n"), type1, row1, col1, type2, row2, col2);
+      ("Divide::GetOutputInfo() type1=%d, row1=%d, col1=%d, type2=%d, "
+       "row2=%d, col2=%d\n", type1, row1, col1, type2, row2, col2);
    #endif
    
    type = type1;
@@ -159,14 +159,14 @@ bool Divide::ValidateInputs()
 {
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("\Divide::ValidateInputs() '%s' entered\n"), GetName().c_str());
+      ("\Divide::ValidateInputs() '%s' entered\n", GetName().c_str());
    #endif
    
    if (leftNode == NULL)
-      throw MathException(wxT("Divide() - Missing input arguments"));
+      throw MathException("Divide() - Missing input arguments");
    
    if (rightNode == NULL)
-      throw MathException(wxT("Divide() - Not enough input arguments"));
+      throw MathException("Divide() - Not enough input arguments");
    
    Integer type1, row1, col1; // Left node
    Integer type2, row2, col2; // Right node
@@ -180,8 +180,8 @@ bool Divide::ValidateInputs()
    
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Divide::ValidateInputs() type1=%d, row1=%d, col1=%d, ")
-       wxT("type2=%d, row2=%d, col2=%d\n"), type1, row1, col1, type2, row2, col2);
+      ("Divide::ValidateInputs() type1=%d, row1=%d, col1=%d, "
+       "type2=%d, row2=%d, col2=%d\n", type1, row1, col1, type2, row2, col2);
    #endif
    
    if ((type1 == Gmat::REAL_TYPE) && (type2 == Gmat::REAL_TYPE))
@@ -198,7 +198,7 @@ bool Divide::ValidateInputs()
    
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Divide::ValidateInputs() '%s' returning %d\n"), GetName().c_str(), retval);
+      ("Divide::ValidateInputs() '%s' returning %d\n", GetName().c_str(), retval);
    #endif
    
    return retval;
@@ -231,7 +231,7 @@ Rmatrix Divide::MatrixEvaluate()
 {
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("\Divide::MatrixEvaluate() '%s' entered\n"), GetName().c_str());
+      ("\Divide::MatrixEvaluate() '%s' entered\n", GetName().c_str());
    #endif
    
    Integer type1, row1, col1; // Left node matrix
@@ -258,7 +258,7 @@ Rmatrix Divide::MatrixEvaluate()
    
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Divide::MatrixEvaluate() '%s' returning %s\n"), GetName().c_str(), div.ToString().c_str());
+      ("Divide::MatrixEvaluate() '%s' returning %s\n", GetName().c_str(), div.ToString().c_str());
    #endif
    
    return div;

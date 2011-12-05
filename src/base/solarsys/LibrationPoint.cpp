@@ -43,12 +43,12 @@
 const Real LibrationPoint::CONVERGENCE_TOLERANCE = 1.0e-8;
 const Real LibrationPoint::MAX_ITERATIONS        = 2000;
 
-const wxString
+const std::string
 LibrationPoint::PARAMETER_TEXT[LibrationPointParamCount - CalculatedPointParamCount] =
 {
-   wxT("Primary"),
-   wxT("Secondary"),
-   wxT("Point"),
+   "Primary",
+   "Secondary",
+   "Point",
 };
 
 const Gmat::ParameterType
@@ -63,7 +63,7 @@ LibrationPoint::PARAMETER_TYPE[LibrationPointParamCount - CalculatedPointParamCo
 // public methods
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  LibrationPoint(const wxString &itsName)
+//  LibrationPoint(const std::string &itsName)
 //------------------------------------------------------------------------------
 /**
  * This method creates an object of the LibrationPoint class
@@ -73,16 +73,16 @@ LibrationPoint::PARAMETER_TYPE[LibrationPointParamCount - CalculatedPointParamCo
  * @param <itsName> parameter indicating the name of the LibrationPoint.
  */
 //------------------------------------------------------------------------------
-LibrationPoint::LibrationPoint(const wxString &itsName) :
-CalculatedPoint(wxT("LibrationPoint"), itsName),
-primaryBodyName     (wxT("")),
-secondaryBodyName   (wxT("")),
-whichPoint          (wxT("")),
+LibrationPoint::LibrationPoint(const std::string &itsName) :
+CalculatedPoint("LibrationPoint", itsName),
+primaryBodyName     (""),
+secondaryBodyName   (""),
+whichPoint          (""),
 primaryBody         (NULL),
 secondaryBody       (NULL)
 {
    objectTypes.push_back(Gmat::LIBRATION_POINT);
-   objectTypeNames.push_back(wxT("LibrationPoint"));
+   objectTypeNames.push_back("LibrationPoint");
    parameterCount = LibrationPointParamCount;
 }
 
@@ -112,10 +112,10 @@ secondaryBody            (lp.secondaryBody)
 /**
  * Assignment operator for the LibrationPoint class.
  *
- * @param <lp> the LibrationPoint object whose data to assign to wxT("this")
+ * @param <lp> the LibrationPoint object whose data to assign to "this"
  *             calculated point.
  *
- * @return wxT("this") LibrationPoint with data of input LibrationPoint lp.
+ * @return "this" LibrationPoint with data of input LibrationPoint lp.
  */
 //------------------------------------------------------------------------------
 LibrationPoint& LibrationPoint::operator=(const LibrationPoint &lp)
@@ -159,8 +159,8 @@ const Rvector6 LibrationPoint::GetMJ2000State(const A1Mjd &atTime)
 {
    #ifdef DEBUG_GET_STATE
    MessageInterface::ShowMessage
-      (wxT("LibrationPoint::GetMJ2000State() '%s' entered, atTime=%f, ")
-       wxT("primaryBody=<%p> '%s', secondaryBody=<%p> '%s'\n"), GetName().c_str(),
+      ("LibrationPoint::GetMJ2000State() '%s' entered, atTime=%f, "
+       "primaryBody=<%p> '%s', secondaryBody=<%p> '%s'\n", GetName().c_str(),
        atTime.GetReal(), primaryBody, primaryBody->GetName().c_str(),
        secondaryBody, secondaryBody->GetName().c_str());
    #endif
@@ -172,9 +172,9 @@ const Rvector6 LibrationPoint::GetMJ2000State(const A1Mjd &atTime)
    
    #ifdef DEBUG_GET_STATE
    MessageInterface::ShowMessage
-      (wxT("   primaryState =\n   %s\n"), primaryState.ToString().c_str());
+      ("   primaryState =\n   %s\n", primaryState.ToString().c_str());
    MessageInterface::ShowMessage
-      (wxT("   secondaryState =\n   %s\n"), secondaryState.ToString().c_str());
+      ("   secondaryState =\n   %s\n", secondaryState.ToString().c_str());
    #endif
    
    Rvector6 pToS = (secondaryBody->GetMJ2000State(atTime)) - primaryState;
@@ -194,23 +194,23 @@ const Rvector6 LibrationPoint::GetMJ2000State(const A1Mjd &atTime)
       massSecondary = ((Barycenter*) secondaryBody)->GetMass();
    if ((massPrimary == 0.0) && (massSecondary == 0.0))
       throw SolarSystemException(
-            wxT("Primary and secondary bodies for LibrationPoint are massless"));
+            "Primary and secondary bodies for LibrationPoint are massless");
    Real muStar = massSecondary / (massPrimary + massSecondary);
    #ifdef DEBUG_GET_STATE
    MessageInterface::ShowMessage
-      (wxT("   Mass of the primary is %f\n"), massPrimary);
+      ("   Mass of the primary is %f\n", massPrimary);
    MessageInterface::ShowMessage
-      (wxT("   Mass of the secondary is %f\n"), massSecondary);
+      ("   Mass of the secondary is %f\n", massSecondary);
    #endif
    
    Real gamma = 0.0;
    Real gamma2 = 0.0, gamma3 = 0.0, gamma4 = 0.0, gamma5 = 0.0, gammaPrev = 0.0;
    Real F = 0.0, Fdot = 0.0;
-   if ((whichPoint == wxT("L1")) || (whichPoint == wxT("L2")) ||
-       (whichPoint == wxT("L3")))
+   if ((whichPoint == "L1") || (whichPoint == "L2") ||
+       (whichPoint == "L3"))
    {
       // Determine initial gamma
-      if (whichPoint == wxT("L3"))  gamma = 1.0;
+      if (whichPoint == "L3")  gamma = 1.0;
       else  gamma = GmatMathUtil::Pow((muStar / (3.0 * (1.0 - muStar))),
                                       (1.0 / 3.0));
       
@@ -221,12 +221,12 @@ const Rvector6 LibrationPoint::GetMJ2000State(const A1Mjd &atTime)
       {
          if (counter > MAX_ITERATIONS)
             throw SolarSystemException(
-                  wxT("Libration point gamma not converging."));
+                  "Libration point gamma not converging.");
          gamma2 = gamma  * gamma;
          gamma3 = gamma2 * gamma;
          gamma4 = gamma3 * gamma;
          gamma5 = gamma4 * gamma;
-         if (whichPoint == wxT("L1"))
+         if (whichPoint == "L1")
          {
             F = gamma5 - ((3.0 - muStar) * gamma4) + 
                 ((3.0 - 2.0 * muStar) * gamma3) - 
@@ -235,7 +235,7 @@ const Rvector6 LibrationPoint::GetMJ2000State(const A1Mjd &atTime)
                    (3.0 * (3.0 - 2.0 * muStar) * gamma2) - 
                    (2.0 * muStar * gamma) + (2.0 * muStar);
          }
-         else if (whichPoint == wxT("L2"))
+         else if (whichPoint == "L2")
          {
             F = gamma5 + ((3.0 - muStar) * gamma4) + 
                 ((3.0 - 2.0 * muStar) * gamma3) - 
@@ -244,7 +244,7 @@ const Rvector6 LibrationPoint::GetMJ2000State(const A1Mjd &atTime)
                (3.0 * (3.0 - 2.0 * muStar) * gamma2) - (2.0 * muStar * gamma) - 
                (2.0 * muStar);
          }
-         else  // whichPoint == wxT("L3")
+         else  // whichPoint == "L3"
          {
             F = gamma5 + ((2.0 + muStar) * gamma4) + 
                 ((1.0 + 2.0 * muStar) * gamma3) -
@@ -262,34 +262,34 @@ const Rvector6 LibrationPoint::GetMJ2000State(const A1Mjd &atTime)
    }
    Real x = 0.0;
    Real y = 0.0;
-   if (whichPoint == wxT("L1")) 
+   if (whichPoint == "L1") 
    {
       x = 1.0 - gamma;
       y = 0.0;
    }
-   else if (whichPoint == wxT("L2"))
+   else if (whichPoint == "L2")
    {
       x = 1.0 + gamma;
       y = 0.0;
    }
-   else if (whichPoint == wxT("L3"))
+   else if (whichPoint == "L3")
    {
       x = - gamma;
       y = 0.0;
    }
-   else if (whichPoint == wxT("L4"))
+   else if (whichPoint == "L4")
    {
       x = 0.5;
       y = GmatMathUtil::Sqrt(3.0) / 2.0;
    }
-   else if (whichPoint == wxT("L5"))
+   else if (whichPoint == "L5")
    {
       x = 0.5;
       y = - GmatMathUtil::Sqrt(3.0) / 2.0;
    }
    else // ERROR
       throw SolarSystemException
-         (wxT("\"") + whichPoint + wxT("\" is illegal value for libration point."));
+         ("\"" + whichPoint + "\" is illegal value for libration point.");
    
    // Express position and velocity of the libration point in the rotating
    // system with the origin centered on the primary body
@@ -341,7 +341,7 @@ const Rvector6 LibrationPoint::GetMJ2000State(const A1Mjd &atTime)
    
    #ifdef DEBUG_GET_STATE
    MessageInterface::ShowMessage
-      (wxT("LibrationPoint::GetMJ2000State() returning\n   %s\n"),
+      ("LibrationPoint::GetMJ2000State() returning\n   %s\n",
        rvResult.ToString().c_str());
    #endif
    return rvResult;
@@ -383,7 +383,7 @@ const Rvector3 LibrationPoint::GetMJ2000Velocity(const A1Mjd &atTime)
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -394,7 +394,7 @@ const Rvector3 LibrationPoint::GetMJ2000Velocity(const A1Mjd &atTime)
  *
  */
 //------------------------------------------------------------------------------
-wxString LibrationPoint::GetParameterText(const Integer id) const
+std::string LibrationPoint::GetParameterText(const Integer id) const
 {
    if (id >= CalculatedPointParamCount && id < LibrationPointParamCount)
       return PARAMETER_TEXT[id - CalculatedPointParamCount];
@@ -402,7 +402,7 @@ wxString LibrationPoint::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -413,7 +413,7 @@ wxString LibrationPoint::GetParameterText(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer     LibrationPoint::GetParameterID(const wxString &str) const
+Integer     LibrationPoint::GetParameterID(const std::string &str) const
 {
    for (Integer i = CalculatedPointParamCount; i < LibrationPointParamCount; i++)
    {
@@ -445,7 +445,7 @@ Gmat::ParameterType LibrationPoint::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -456,13 +456,13 @@ Gmat::ParameterType LibrationPoint::GetParameterType(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString LibrationPoint::GetParameterTypeString(const Integer id) const
+std::string LibrationPoint::GetParameterTypeString(const Integer id) const
 {
    return CalculatedPoint::PARAM_TYPE_STRING[GetParameterType(id)];
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id) const
+//  std::string  GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -474,7 +474,7 @@ wxString LibrationPoint::GetParameterTypeString(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString LibrationPoint::GetStringParameter(const Integer id) const
+std::string LibrationPoint::GetStringParameter(const Integer id) const
 {
    if (id == PRIMARY_BODY_NAME)             
    {
@@ -496,7 +496,7 @@ wxString LibrationPoint::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const wxString &label) const
+//  std::string  GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -508,13 +508,13 @@ wxString LibrationPoint::GetStringParameter(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString LibrationPoint::GetStringParameter(const wxString &label) const
+std::string LibrationPoint::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-//  wxString  SetStringParameter(const Integer id, const wxString value)
+//  std::string  SetStringParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the string parameter value, given the input
@@ -528,7 +528,7 @@ wxString LibrationPoint::GetStringParameter(const wxString &label) const
  */
 //------------------------------------------------------------------------------
 bool LibrationPoint::SetStringParameter(const Integer id, 
-                                        const wxString &value)
+                                        const std::string &value)
 {     
    if (id == PRIMARY_BODY_NAME)             
    {
@@ -546,12 +546,12 @@ bool LibrationPoint::SetStringParameter(const Integer id,
    }
    if (id == WHICH_POINT)             
    {
-      if ((value != wxT("L1")) && (value != wxT("L2")) && (value != wxT("L3")) &&
-          (value != wxT("L4")) && (value != wxT("L5")))
+      if ((value != "L1") && (value != "L2") && (value != "L3") &&
+          (value != "L4") && (value != "L5"))
          throw SolarSystemException(
-            wxT("The value of \"") + value + wxT("\" for field \"Libration\"")
-            wxT(" on object \"") + instanceName + wxT("\" is not an allowed value.\n")
-            wxT("The allowed values are: [ L1, L2, L3, L4, L5 ]. "));
+            "The value of \"" + value + "\" for field \"Libration\""
+            " on object \"" + instanceName + "\" is not an allowed value.\n"
+            "The allowed values are: [ L1, L2, L3, L4, L5 ]. ");
       whichPoint = value;
       return true;
    }
@@ -560,8 +560,8 @@ bool LibrationPoint::SetStringParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-//  wxString  SetStringParameter(const wxString &label, 
-//                                  const wxString value)
+//  std::string  SetStringParameter(const std::string &label, 
+//                                  const std::string value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the string parameter value, given the input
@@ -574,14 +574,14 @@ bool LibrationPoint::SetStringParameter(const Integer id,
  *
  */
 //------------------------------------------------------------------------------
-bool LibrationPoint::SetStringParameter(const wxString &label, 
-                                        const wxString &value)
+bool LibrationPoint::SetStringParameter(const std::string &label, 
+                                        const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
 
 //------------------------------------------------------------------------------
-//  bool  SetStringParameter(const Integer id, const wxString value.
+//  bool  SetStringParameter(const Integer id, const std::string value.
 //                           const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -599,14 +599,14 @@ bool LibrationPoint::SetStringParameter(const wxString &label,
  */
 //------------------------------------------------------------------------------
 bool  LibrationPoint::SetStringParameter(const Integer id,
-                                          const wxString &value,
+                                          const std::string &value,
                                           const Integer index) 
 {
    return CalculatedPoint::SetStringParameter(id, value, index);
 }
 
 //------------------------------------------------------------------------------
-//  bool  SetStringParameter(const wxString &label, const wxString value.
+//  bool  SetStringParameter(const std::string &label, const std::string value.
 //                           const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -623,8 +623,8 @@ bool  LibrationPoint::SetStringParameter(const Integer id,
  *
  */
 //------------------------------------------------------------------------------
-bool  LibrationPoint::SetStringParameter(const wxString &label,
-                                          const wxString &value,
+bool  LibrationPoint::SetStringParameter(const std::string &label,
+                                          const std::string &value,
                                           const Integer index) 
 {
    return SetStringParameter(GetParameterID(label),value,index);
@@ -678,7 +678,7 @@ const StringArray& LibrationPoint::GetRefObjectNameArray(const Gmat::ObjectType 
 
 //------------------------------------------------------------------------------
 // bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                   const wxString &name)
+//                   const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets the reference object.
@@ -692,18 +692,18 @@ const StringArray& LibrationPoint::GetRefObjectNameArray(const Gmat::ObjectType 
 //------------------------------------------------------------------------------
 bool LibrationPoint::SetRefObject(GmatBase *obj, 
                                   const Gmat::ObjectType type,
-                                  const wxString &name)
+                                  const std::string &name)
 {
    if (obj == NULL)
       return false;
    
    #ifdef DEBUG_LP_OBJECT
    MessageInterface::ShowMessage
-      (wxT("LibrationPoint::SetRefObject() this=<%p> '%s', obj=<%p><%s> entered\n"),
+      ("LibrationPoint::SetRefObject() this=<%p> '%s', obj=<%p><%s> entered\n",
        this, GetName().c_str(), obj, obj->GetName().c_str());
    MessageInterface::ShowMessage
-      (wxT("   primaryBodyName='%s', primaryBody=<%p>\n   secondaryBodyName='%s', ")
-       wxT("secondaryBody=<%p>\n"), primaryBodyName.c_str(), primaryBody,
+      ("   primaryBodyName='%s', primaryBody=<%p>\n   secondaryBodyName='%s', "
+       "secondaryBody=<%p>\n", primaryBodyName.c_str(), primaryBody,
        secondaryBodyName.c_str(), secondaryBody);
    #endif
    
@@ -716,11 +716,11 @@ bool LibrationPoint::SetRefObject(GmatBase *obj,
    }
    #ifdef DEBUG_LP_OBJECT
    MessageInterface::ShowMessage
-      (wxT("   end of SetRefObject() this=<%p> '%s', obj=<%p><%s> entered\n"),
+      ("   end of SetRefObject() this=<%p> '%s', obj=<%p><%s> entered\n",
        this, GetName().c_str(), obj, obj->GetName().c_str());
    MessageInterface::ShowMessage
-      (wxT("   primaryBodyName='%s', primaryBody=<%p>\n   secondaryBodyName='%s', ")
-       wxT("secondaryBody=<%p>\n"), primaryBodyName.c_str(), primaryBody,
+      ("   primaryBodyName='%s', primaryBody=<%p>\n   secondaryBodyName='%s', "
+       "secondaryBody=<%p>\n", primaryBodyName.c_str(), primaryBody,
        secondaryBodyName.c_str(), secondaryBody);
    #endif
    
@@ -757,7 +757,7 @@ GmatBase* LibrationPoint::Clone() const
 void LibrationPoint::Copy(const GmatBase* orig)
 {
    // We don't want to copy instanceName
-   wxString name = instanceName;
+   std::string name = instanceName;
    operator=(*((LibrationPoint *)(orig)));
    instanceName = name;
 }
@@ -784,21 +784,21 @@ void LibrationPoint::CheckBodies()
    
    #ifdef DEBUG_CHECK_BODIES
    MessageInterface::ShowMessage
-      (wxT("LibrationPoint::CheckBodies() this=<%p> '%s' has %d body names, and %d body")
-       wxT(" pointers\n"), this, GetName().c_str(), bodyNames.size(), bodyList.size());
+      ("LibrationPoint::CheckBodies() this=<%p> '%s' has %d body names, and %d body"
+       " pointers\n", this, GetName().c_str(), bodyNames.size(), bodyList.size());
    #endif
    for (unsigned int i = 0; i < bodyList.size() ; i++)
    {
       #ifdef DEBUG_CHECK_BODIES
       MessageInterface::ShowMessage
-         (wxT("   bodyList[%d] = %s\n"), i,
-          (bodyList[i] == NULL ? wxT("NULL") : bodyList[i]->GetName().c_str()));
+         ("   bodyList[%d] = %s\n", i,
+          (bodyList[i] == NULL ? "NULL" : bodyList[i]->GetName().c_str()));
       #endif
       
       if (((bodyList.at(i))->GetType() != Gmat::CELESTIAL_BODY) &&
-          ((bodyList.at(i))->GetTypeName() != wxT("Barycenter")))
+          ((bodyList.at(i))->GetTypeName() != "Barycenter"))
          throw SolarSystemException(
-             wxT("Bodies for LibrationPoint must be CelestialBodys or Barycenters"));
+             "Bodies for LibrationPoint must be CelestialBodys or Barycenters");
       if ((bodyList.at(i))->GetName() == primaryBodyName) 
       {
          foundPrimary = true;
@@ -812,17 +812,17 @@ void LibrationPoint::CheckBodies()
    }
    if (!foundPrimary)
       throw SolarSystemException(
-            wxT("Primary body \"") + primaryBodyName + wxT("\" not found for LibrationPoint ") +
-            wxT("\"") + GetName() + wxT("\""));
+            "Primary body \"" + primaryBodyName + "\" not found for LibrationPoint " +
+            "\"" + GetName() + "\"");
    if (!foundSecondary)
       throw SolarSystemException(
-            wxT("Secondary body \"") + secondaryBodyName + wxT("\" not found for LibrationPoint ") +
-            wxT("\"") + GetName() + wxT("\""));
+            "Secondary body \"" + secondaryBodyName + "\" not found for LibrationPoint " +
+            "\"" + GetName() + "\"");
    if (primaryBody == secondaryBody)
       throw SolarSystemException(
-            wxT("Primary body \"") + primaryBodyName + wxT("\" and Secondary body \"") +
-            secondaryBodyName + wxT("\" cannot be the same for LibrationPoint ") +
-            wxT("\"") + GetName() + wxT("\""));
+            "Primary body \"" + primaryBodyName + "\" and Secondary body \"" +
+            secondaryBodyName + "\" cannot be the same for LibrationPoint " +
+            "\"" + GetName() + "\"");
 }
 
 

@@ -74,7 +74,7 @@ class GMAT_API AdamsBashforthMoulton :
 {
 public:
 //    AdamsBashforthMoulton();
-    AdamsBashforthMoulton(const wxString &nomme);
+    AdamsBashforthMoulton(const std::string &nomme);
 
     virtual ~AdamsBashforthMoulton();
 

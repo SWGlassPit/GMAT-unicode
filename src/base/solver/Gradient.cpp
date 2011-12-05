@@ -127,7 +127,7 @@ bool Gradient::Initialize(UnsignedInt varCount, UnsignedInt componentCount)
 
    #ifdef DEBUG_GRADIENT
       MessageInterface::ShowMessage(
-         wxT("Gradient initialized in mode %d with %d variables\n"), calcMode, 
+         "Gradient initialized in mode %d with %d variables\n", calcMode, 
          varCount);
    #endif
 
@@ -162,7 +162,7 @@ void Gradient::Achieved(Integer pertNumber, Integer componentId, Real dx,
    {
       #ifdef DEBUG_GRADIENT
          MessageInterface::ShowMessage(
-            wxT("Setting Gradient Nominal Value to %.12lf\n"), value);
+            "Setting Gradient Nominal Value to %.12lf\n", value);
       #endif
       nominal = value;
    }
@@ -199,24 +199,24 @@ bool Gradient::Calculate(std::vector<Real> &grad)
    {
       #ifdef DEBUG_GRADIENT
             MessageInterface::ShowMessage(
-                  wxT("   Component %d of %d, pert = %.12lf\n"), i, gradSize, 
+                  "   Component %d of %d, pert = %.12lf\n", i, gradSize, 
                   pert.at(i));
       #endif   
 
             if (pert.at(i) == 0.0)
          throw SolverException(
-               wxT("Perturbation of size 0.0 found in gradient calculation"));
+               "Perturbation of size 0.0 found in gradient calculation");
 
       #ifdef DEBUG_GRADIENT
          MessageInterface::ShowMessage(
-            wxT("   Finding Gradient in mode %d\n"), calcMode);
+            "   Finding Gradient in mode %d\n", calcMode);
       #endif
 
       switch (calcMode) 
       {
          case FORWARD_DIFFERENCE:
             #ifdef DEBUG_GRADIENT
-            MessageInterface::ShowMessage(wxT("   FD[%d]:  %.15lf - %.15lf / %.15lf\n"), 
+            MessageInterface::ShowMessage("   FD[%d]:  %.15lf - %.15lf / %.15lf\n", 
                   i, plusPertEffect[i], nominal, pert[i]);
             #endif
 
@@ -225,7 +225,7 @@ bool Gradient::Calculate(std::vector<Real> &grad)
             
          case CENTRAL_DIFFERENCE:
             #ifdef DEBUG_GRADIENT
-            MessageInterface::ShowMessage(wxT("   CD[%d]:  %.15lf - %.15lf / 2 * %.15lf\n"), 
+            MessageInterface::ShowMessage("   CD[%d]:  %.15lf - %.15lf / 2 * %.15lf\n", 
                   i, plusPertEffect[i], minusPertEffect[i], pert[i]);
             #endif
 
@@ -235,7 +235,7 @@ bool Gradient::Calculate(std::vector<Real> &grad)
             
          case BACKWARD_DIFFERENCE:
             #ifdef DEBUG_GRADIENT
-            MessageInterface::ShowMessage(wxT("   BD[%d]:  %.15lf - %.15lf / %.15lf\n"), 
+            MessageInterface::ShowMessage("   BD[%d]:  %.15lf - %.15lf / %.15lf\n", 
                   i, nominal, minusPertEffect[i], pert[i]);
             #endif
 
@@ -244,20 +244,20 @@ bool Gradient::Calculate(std::vector<Real> &grad)
             
          default:
             throw SolverException(
-                  wxT("Gradient differencing mode is not available"));
+                  "Gradient differencing mode is not available");
       }
    }
 
    #ifdef DEBUG_GRADIENT
       MessageInterface::ShowMessage(
-         wxT("      Gradient = ["));
+         "      Gradient = [");
       for (UnsignedInt i = 0; i < gradSize; ++i)
       {
-         MessageInterface::ShowMessage(wxT("%.12lf"), gradient[i]);
+         MessageInterface::ShowMessage("%.12lf", gradient[i]);
          if (i < gradSize - 1)
-            MessageInterface::ShowMessage(wxT(", "));
+            MessageInterface::ShowMessage(", ");
       }
-      MessageInterface::ShowMessage(wxT("]\n"));
+      MessageInterface::ShowMessage("]\n");
    #endif
 
    grad = gradient;

@@ -32,7 +32,7 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// KepSMA(const wxString &name, GmatBase *obj)
+// KepSMA(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -41,12 +41,12 @@
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-KepSMA::KepSMA(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("SMA"), obj, wxT("Semi-Major Axis"), wxT("Km"), GmatParam::ORIGIN, true)
+KepSMA::KepSMA(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "SMA", obj, "Semi-Major Axis", "Km", GmatParam::ORIGIN, true)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
 }
 
 
@@ -145,7 +145,7 @@ GmatBase* KepSMA::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// KepEcc(const wxString &name, GmatBase *obj)
+// KepEcc(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -154,12 +154,12 @@ GmatBase* KepSMA::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-KepEcc::KepEcc(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("ECC"), obj, wxT("Eccentricity"), wxT(" "), GmatParam::ORIGIN, true)
+KepEcc::KepEcc(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "ECC", obj, "Eccentricity", " ", GmatParam::ORIGIN, true)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
 }
 
 
@@ -258,7 +258,7 @@ GmatBase* KepEcc::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// KepInc(const wxString &name, GmatBase *obj)
+// KepInc(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -267,10 +267,10 @@ GmatBase* KepEcc::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-KepInc::KepInc(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("INC"), obj, wxT("Inclination"), wxT("Deg"), GmatParam::COORD_SYS, true)
+KepInc::KepInc(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "INC", obj, "Inclination", "Deg", GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    mIsAngleParam = true;
    mCycleType = GmatParam::ZERO_180;
@@ -372,7 +372,7 @@ GmatBase* KepInc::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// KepAOP(const wxString &name, GmatBase *obj)
+// KepAOP(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -381,11 +381,11 @@ GmatBase* KepInc::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-KepAOP::KepAOP(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("AOP"), obj, wxT("Argument of Periapsis"), wxT("Deg"),
+KepAOP::KepAOP(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "AOP", obj, "Argument of Periapsis", "Deg",
                GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    mIsAngleParam = true;
    mCycleType = GmatParam::ZERO_360;
@@ -487,7 +487,7 @@ GmatBase* KepAOP::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// KepRAAN(const wxString &name, GmatBase *obj)
+// KepRAAN(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -496,11 +496,11 @@ GmatBase* KepAOP::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-KepRAAN::KepRAAN(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("RAAN"), obj, wxT("RA of Asscending Node"), wxT("Deg"),
+KepRAAN::KepRAAN(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "RAAN", obj, "RA of Asscending Node", "Deg",
                GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    mIsAngleParam = true;
    mCycleType = GmatParam::ZERO_360;
@@ -602,7 +602,7 @@ GmatBase* KepRAAN::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// KepRADN(const wxString &name, GmatBase *obj)
+// KepRADN(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -611,10 +611,10 @@ GmatBase* KepRAAN::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-KepRADN::KepRADN(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("RADN"), obj, wxT("RA of Asscending Node"), wxT("Deg"), GmatParam::COORD_SYS)
+KepRADN::KepRADN(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "RADN", obj, "RA of Asscending Node", "Deg", GmatParam::COORD_SYS)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
 }
 
@@ -714,7 +714,7 @@ GmatBase* KepRADN::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// KepTA(const wxString &name, GmatBase *obj)
+// KepTA(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -723,12 +723,12 @@ GmatBase* KepRADN::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-KepTA::KepTA(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("TA"), obj, wxT("True Anomaly"), wxT("Deg"), GmatParam::ORIGIN, true)
+KepTA::KepTA(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "TA", obj, "True Anomaly", "Deg", GmatParam::ORIGIN, true)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
    mIsAngleParam = true;
    mCycleType = GmatParam::ZERO_360;
 }
@@ -829,7 +829,7 @@ GmatBase* KepTA::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// KepMA(const wxString &name, GmatBase *obj)
+// KepMA(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -838,12 +838,12 @@ GmatBase* KepTA::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-KepMA::KepMA(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("MA"), obj, wxT("Mean Anomaly"), wxT("Deg"), GmatParam::ORIGIN, true)
+KepMA::KepMA(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "MA", obj, "Mean Anomaly", "Deg", GmatParam::ORIGIN, true)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
    mIsAngleParam = true;
    mCycleType = GmatParam::ZERO_360;
 }
@@ -944,7 +944,7 @@ GmatBase* KepMA::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// KepEA(const wxString &name, GmatBase *obj)
+// KepEA(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -953,12 +953,12 @@ GmatBase* KepMA::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-KepEA::KepEA(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("EA"), obj, wxT("Eccentric Anomaly"), wxT("Deg"), GmatParam::ORIGIN, true)
+KepEA::KepEA(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "EA", obj, "Eccentric Anomaly", "Deg", GmatParam::ORIGIN, true)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
    mIsAngleParam = true;
    mCycleType = GmatParam::ZERO_360;
 }
@@ -1059,7 +1059,7 @@ GmatBase* KepEA::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// KepHA(const wxString &name, GmatBase *obj)
+// KepHA(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -1068,12 +1068,12 @@ GmatBase* KepEA::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-KepHA::KepHA(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("HA"), obj, wxT("Hyperbolic Anomaly"), wxT("Deg"), GmatParam::ORIGIN, true)
+KepHA::KepHA(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "HA", obj, "Hyperbolic Anomaly", "Deg", GmatParam::ORIGIN, true)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
    mIsAngleParam = true;
    mCycleType = GmatParam::ZERO_360;
 }
@@ -1174,7 +1174,7 @@ GmatBase* KepHA::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// KepMM(const wxString &name, GmatBase *obj)
+// KepMM(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -1183,12 +1183,12 @@ GmatBase* KepHA::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-KepMM::KepMM(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("MM"), obj, wxT("Mean Motion"), wxT("Deg"), GmatParam::ORIGIN)
+KepMM::KepMM(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "MM", obj, "Mean Motion", "Deg", GmatParam::ORIGIN)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
 }
 
 
@@ -1287,7 +1287,7 @@ GmatBase* KepMM::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// KepElem(const wxString &name, GmatBase *obj)
+// KepElem(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -1296,11 +1296,11 @@ GmatBase* KepMM::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-KepElem::KepElem(const wxString &name, GmatBase *obj)
-   : OrbitRvec6(name, wxT("Keplerian"), obj, wxT("Keplerian Elements"), wxT(" "), GmatParam::COORD_SYS)
+KepElem::KepElem(const std::string &name, GmatBase *obj)
+   : OrbitRvec6(name, "Keplerian", obj, "Keplerian Elements", " ", GmatParam::COORD_SYS)
 {
    // Parameter member data
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    mIsPlottable = false;
 }
@@ -1399,7 +1399,7 @@ GmatBase* KepElem::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// ModKepElem(const wxString &name, GmatBase *obj)
+// ModKepElem(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -1408,12 +1408,12 @@ GmatBase* KepElem::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-ModKepElem::ModKepElem(const wxString &name, GmatBase *obj)
-   : OrbitRvec6(name, wxT("ModKeplerian"), obj, wxT("Keplerian Elements"), wxT(" "),
+ModKepElem::ModKepElem(const std::string &name, GmatBase *obj)
+   : OrbitRvec6(name, "ModKeplerian", obj, "Keplerian Elements", " ",
                 GmatParam::COORD_SYS)
 {
    // Parameter member data
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    mIsPlottable = false;
 }

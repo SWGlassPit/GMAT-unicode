@@ -77,7 +77,7 @@ class GMAT_API Moderator
 public:
 
    static Moderator* Instance();
-   bool Initialize(const wxString &startupFile = wxT(""), bool isFromGui = false);
+   bool Initialize(const std::string &startupFile = "", bool isFromGui = false);
    void Finalize();
    void SetRunReady(bool flag = true);
    void SetShowFinalState(bool flag = true);
@@ -89,14 +89,14 @@ public:
    
    //----- Plug-in code
    void LoadPlugins();
-   void LoadAPlugin(wxString pluginName);
-   DynamicLibrary *LoadLibrary(const wxString &libraryName);
-   bool IsLibraryLoaded(const wxString &libName);
-   void (*GetDynamicFunction(const wxString &funName, 
-                             const wxString &libraryName))();
+   void LoadAPlugin(std::string pluginName);
+   DynamicLibrary *LoadLibrary(const std::string &libraryName);
+   bool IsLibraryLoaded(const std::string &libName);
+   void (*GetDynamicFunction(const std::string &funName, 
+                             const std::string &libraryName))();
    
    //----- ObjectType
-   wxString GetObjectTypeString(Gmat::ObjectType type);  
+   std::string GetObjectTypeString(Gmat::ObjectType type);  
    
    //----- interpreter
    static ScriptInterpreter* GetUiInterpreter();
@@ -111,34 +111,34 @@ public:
    void SetObjectManageOption(Integer option);
    Integer GetObjectManageOption();
    void ResetObjectPointer(ObjectMap *objMap, GmatBase *newobj,
-                           const wxString &name);
+                           const std::string &name);
    
    //----- factory
    const StringArray& GetListOfFactoryItems(Gmat::ObjectType type);
    const StringArray& GetListOfAllFactoryItems();
    const StringArray& GetListOfAllFactoryItemsExcept(const ObjectTypeArray &types);
    const StringArray& GetListOfViewableItems(Gmat::ObjectType type);
-   const StringArray& GetListOfViewableItems(const wxString &typeName);
+   const StringArray& GetListOfViewableItems(const std::string &typeName);
    const StringArray& GetListOfUnviewableItems(Gmat::ObjectType type);
-   const StringArray& GetListOfUnviewableItems(const wxString &typeName);
+   const StringArray& GetListOfUnviewableItems(const std::string &typeName);
    bool               DoesObjectTypeMatchSubtype(
                             const Gmat::ObjectType coreType,
-                            const wxString &theType,
-                            const wxString &theSubtype);
+                            const std::string &theType,
+                            const std::string &theSubtype);
    
    //----- configuration
    ObjectMap* GetConfiguredObjectMap();
    const StringArray& GetListOfObjects(Gmat::ObjectType type,
                                        bool excludeDefaultObjects = false);
-   const StringArray& GetListOfObjects(const wxString &typeName,
+   const StringArray& GetListOfObjects(const std::string &typeName,
                                        bool excludeDefaultObjects = false);
-   GmatBase* GetConfiguredObject(const wxString &name);
-   bool ReconfigureItem(GmatBase *newobj, const wxString &name);
-   wxString GetNewName(const wxString &name, Integer startCount);
-   wxString AddClone(const wxString &name);
-   bool RenameObject(Gmat::ObjectType type, const wxString &oldName,
-                     const wxString &newName);
-   bool RemoveObject(Gmat::ObjectType type, const wxString &name,
+   GmatBase* GetConfiguredObject(const std::string &name);
+   bool ReconfigureItem(GmatBase *newobj, const std::string &name);
+   std::string GetNewName(const std::string &name, Integer startCount);
+   std::string AddClone(const std::string &name);
+   bool RenameObject(Gmat::ObjectType type, const std::string &oldName,
+                     const std::string &newName);
+   bool RemoveObject(Gmat::ObjectType type, const std::string &name,
                      bool delOnlyIfNotUsed);
    bool HasConfigurationChanged(Integer sandboxNum = 1);
    void ConfigurationChanged(GmatBase *obj, bool tf);
@@ -148,198 +148,198 @@ public:
    
    // SolarSystem
    SolarSystem* GetDefaultSolarSystem();
-   SolarSystem* CreateSolarSystem(const wxString &name);
+   SolarSystem* CreateSolarSystem(const std::string &name);
    SolarSystem* GetSolarSystemInUse(Integer manage = 1);
    void SetSolarSystemInUse(SolarSystem *ss);
    void SetInternalSolarSystem(SolarSystem *ss);
-   bool SetSolarSystemInUse(const wxString &name);
+   bool SetSolarSystemInUse(const std::string &name);
    
    // CalculatedPoint
-   CalculatedPoint* CreateCalculatedPoint(const wxString &type,
-                                          const wxString &name,
+   CalculatedPoint* CreateCalculatedPoint(const std::string &type,
+                                          const std::string &name,
                                           bool addDefaultBodies = true);
-   CalculatedPoint* GetCalculatedPoint(const wxString &name);
+   CalculatedPoint* GetCalculatedPoint(const std::string &name);
    
    // CelestialBody
-   CelestialBody* CreateCelestialBody(const wxString &type,
-                                      const wxString &name);
-   CelestialBody* GetCelestialBody(const wxString &name);
+   CelestialBody* CreateCelestialBody(const std::string &type,
+                                      const std::string &name);
+   CelestialBody* GetCelestialBody(const std::string &name);
 
    // Spacecraft
-   SpaceObject* CreateSpacecraft(const wxString &type,
-                                 const wxString &name);
-   SpaceObject* GetSpacecraft(const wxString &name);
-   wxString GetSpacecraftNotInFormation();
+   SpaceObject* CreateSpacecraft(const std::string &type,
+                                 const std::string &name);
+   SpaceObject* GetSpacecraft(const std::string &name);
+   std::string GetSpacecraftNotInFormation();
    
    // SpacePoints
-   SpacePoint* CreateSpacePoint(const wxString &type,
-                                 const wxString &name);
-   SpacePoint* GetSpacePoint(const wxString &name);
+   SpacePoint* CreateSpacePoint(const std::string &type,
+                                 const std::string &name);
+   SpacePoint* GetSpacePoint(const std::string &name);
    
    // Hardware
-   Hardware* CreateHardware(const wxString &type,
-                            const wxString &name);
-   Hardware* GetHardware(const wxString &name);
+   Hardware* CreateHardware(const std::string &type,
+                            const std::string &name);
+   Hardware* GetHardware(const std::string &name);
    
    // Propagator
-   Propagator* CreatePropagator(const wxString &type,
-                                const wxString &name);
-   Propagator* GetPropagator(const wxString &name);
+   Propagator* CreatePropagator(const std::string &type,
+                                const std::string &name);
+   Propagator* GetPropagator(const std::string &name);
    
    // PhysicalModel
-   PhysicalModel* CreateDefaultPhysicalModel(const wxString &name);
-   PhysicalModel* CreatePhysicalModel(const wxString &type,
-                                      const wxString &name);
-   PhysicalModel* GetPhysicalModel(const wxString &name);
+   PhysicalModel* CreateDefaultPhysicalModel(const std::string &name);
+   PhysicalModel* CreatePhysicalModel(const std::string &type,
+                                      const std::string &name);
+   PhysicalModel* GetPhysicalModel(const std::string &name);
    
    // AtmosphereModel
-   AtmosphereModel* CreateAtmosphereModel(const wxString &type,
-                                          const wxString &name,
-                                          const wxString &body = wxT("Earth"));
-   AtmosphereModel* GetAtmosphereModel(const wxString &name);
+   AtmosphereModel* CreateAtmosphereModel(const std::string &type,
+                                          const std::string &name,
+                                          const std::string &body = "Earth");
+   AtmosphereModel* GetAtmosphereModel(const std::string &name);
    
    // Burn
-   Burn* CreateBurn(const wxString &type,
-                    const wxString &name, bool createDefault = false);
-   Burn* GetBurn(const wxString &name);
+   Burn* CreateBurn(const std::string &type,
+                    const std::string &name, bool createDefault = false);
+   Burn* GetBurn(const std::string &name);
    
    // Parameter
-   bool IsParameter(const wxString &type);
-   Parameter* CreateAutoParameter(const wxString &type,
-                                  const wxString &name,
+   bool IsParameter(const std::string &type);
+   Parameter* CreateAutoParameter(const std::string &type,
+                                  const std::string &name,
                                   bool &alreadyManaged,
-                                  const wxString &ownerName = wxT(""),
-                                  const wxString &depName = wxT(""),
+                                  const std::string &ownerName = "",
+                                  const std::string &depName = "",
                                   Integer manage = 1);
-   Parameter* CreateParameter(const wxString &type,
-                              const wxString &name,
-                              const wxString &ownerName = wxT(""),
-                              const wxString &depName = wxT(""),
+   Parameter* CreateParameter(const std::string &type,
+                              const std::string &name,
+                              const std::string &ownerName = "",
+                              const std::string &depName = "",
                               Integer manage = 1);
-   Parameter* GetParameter(const wxString &name);
-   void SetParameterRefObject(Parameter *param, const wxString &type,
-                              const wxString &name,
-                              const wxString &ownerName,
-                              const wxString &depName, Integer manage);
+   Parameter* GetParameter(const std::string &name);
+   void SetParameterRefObject(Parameter *param, const std::string &type,
+                              const std::string &name,
+                              const std::string &ownerName,
+                              const std::string &depName, Integer manage);
    
    // ODEModel
-   ODEModel* CreateDefaultODEModel(const wxString &name);
-   ODEModel* CreateODEModel(const wxString &type, const wxString &name);
-   ODEModel* GetODEModel(const wxString &name);
-   bool AddToODEModel(const wxString &odeModelName,
-                        const wxString &forceName);
+   ODEModel* CreateDefaultODEModel(const std::string &name);
+   ODEModel* CreateODEModel(const std::string &type, const std::string &name);
+   ODEModel* GetODEModel(const std::string &name);
+   bool AddToODEModel(const std::string &odeModelName,
+                        const std::string &forceName);
    
    // Solver
-   Solver* CreateSolver(const wxString &type,
-                        const wxString &name);
-   Solver* GetSolver(const wxString &name);
+   Solver* CreateSolver(const std::string &type,
+                        const std::string &name);
+   Solver* GetSolver(const std::string &name);
    
    // PropSetup
-   PropSetup* CreateDefaultPropSetup(const wxString &name);
-   PropSetup* CreatePropSetup(const wxString &name);
-   PropSetup* GetPropSetup(const wxString &name);
+   PropSetup* CreateDefaultPropSetup(const std::string &name);
+   PropSetup* CreatePropSetup(const std::string &name);
+   PropSetup* GetPropSetup(const std::string &name);
    
    // MeasurementModel
-   MeasurementModel* CreateMeasurementModel(const wxString &name);
-   MeasurementModel* GetMeasurementModel(const wxString &name);
+   MeasurementModel* CreateMeasurementModel(const std::string &name);
+   MeasurementModel* GetMeasurementModel(const std::string &name);
    
    // TrackingSystem
-   TrackingSystem* CreateTrackingSystem(const wxString &type,
-                                        const wxString &name);
-   TrackingSystem* GetTrackingSystem(const wxString &name);
+   TrackingSystem* CreateTrackingSystem(const std::string &type,
+                                        const std::string &name);
+   TrackingSystem* GetTrackingSystem(const std::string &name);
 
    // TrackingData
-   TrackingData* CreateTrackingData(const wxString &name);
-   TrackingData* GetTrackingData(const wxString &name);
+   TrackingData* CreateTrackingData(const std::string &name);
+   TrackingData* GetTrackingData(const std::string &name);
 
    // Core Measurement
-   CoreMeasurement* CreateMeasurement(const wxString &type,
-         const wxString &name);
-   CoreMeasurement* GetMeasurement(const wxString &type,
-         const wxString &name);
+   CoreMeasurement* CreateMeasurement(const std::string &type,
+         const std::string &name);
+   CoreMeasurement* GetMeasurement(const std::string &type,
+         const std::string &name);
    
    // DataFile
-   DataFile* CreateDataFile(const wxString &type,
-                            const wxString &name);
-   DataFile* GetDataFile(const wxString &name);
+   DataFile* CreateDataFile(const std::string &type,
+                            const std::string &name);
+   DataFile* GetDataFile(const std::string &name);
    
    // ObType
-   ObType* CreateObType(const wxString &type,
-                        const wxString &name);
-   ObType* GetObType(const wxString &name);
+   ObType* CreateObType(const std::string &type,
+                        const std::string &name);
+   ObType* GetObType(const std::string &name);
 
    // EventLocator
-   EventLocator* CreateEventLocator(const wxString &type,
-                            const wxString &name);
-   EventLocator* GetEventLocator(const wxString &name);
+   EventLocator* CreateEventLocator(const std::string &type,
+                            const std::string &name);
+   EventLocator* GetEventLocator(const std::string &name);
 
    // Interpolator
-   Interpolator* CreateInterpolator(const wxString &type,
-                                    const wxString &name);
-   Interpolator* GetInterpolator(const wxString &name);
+   Interpolator* CreateInterpolator(const std::string &type,
+                                    const std::string &name);
+   Interpolator* GetInterpolator(const std::string &name);
    
    // CoordinateSystem
-   CoordinateSystem* CreateCoordinateSystem(const wxString &name,
+   CoordinateSystem* CreateCoordinateSystem(const std::string &name,
                                             bool createDefault = false,
                                             bool internal = false,
                                             Integer manage = 1);
-   CoordinateSystem* GetCoordinateSystem(const wxString &name);
+   CoordinateSystem* GetCoordinateSystem(const std::string &name);
    const StringArray& GetDefaultCoordinateSystemNames();
    
    // Subscriber
-   Subscriber* CreateSubscriber(const wxString &type,
-                                const wxString &name,
-                                const wxString &fileName = wxT(""),
+   Subscriber* CreateSubscriber(const std::string &type,
+                                const std::string &name,
+                                const std::string &fileName = "",
                                 bool createDefault = false);
-   Subscriber* GetSubscriber(const wxString &name);
+   Subscriber* GetSubscriber(const std::string &name);
    Integer GetNumberOfActivePlots();
    
    // EphemerisFile
-   Subscriber* CreateEphemerisFile(const wxString &type,
-                                   const wxString &name);
-   Subscriber* GetEphemerisFile(const wxString &name);
+   Subscriber* CreateEphemerisFile(const std::string &type,
+                                   const std::string &name);
+   Subscriber* GetEphemerisFile(const std::string &name);
    void        HandleCcsdsEphemerisFile(ObjectMap *objMap, bool deleteOld = false);
    
    // Function
-   Function* CreateFunction(const wxString &type,
-                            const wxString &name,
+   Function* CreateFunction(const std::string &type,
+                            const std::string &name,
                             Integer manage = 1);
-   Function* GetFunction(const wxString &name);
+   Function* GetFunction(const std::string &name);
    
    // Create other object
-   GmatBase* CreateOtherObject(Gmat::ObjectType objType, const wxString &type,
-                               const wxString &name, bool createDefault = false);
+   GmatBase* CreateOtherObject(Gmat::ObjectType objType, const std::string &type,
+                               const std::string &name, bool createDefault = false);
    
    //----- Non-Configurable Items
    // StopCondition
-   StopCondition* CreateStopCondition(const wxString &type,
-                                      const wxString &name);
+   StopCondition* CreateStopCondition(const std::string &type,
+                                      const std::string &name);
    
    // AxisSystem
-   AxisSystem* CreateAxisSystem(const wxString &type,
-                                const wxString &name,
+   AxisSystem* CreateAxisSystem(const std::string &type,
+                                const std::string &name,
                                 Integer manage = 1);
    
    // MathNode
-   MathNode* CreateMathNode(const wxString &type,
-                            const wxString &name = wxT(""));
+   MathNode* CreateMathNode(const std::string &type,
+                            const std::string &name = "");
    
    // AxisSystem
-   Attitude* CreateAttitude(const wxString &type,
-                            const wxString &name);
+   Attitude* CreateAttitude(const std::string &type,
+                            const std::string &name);
    
    // GmatCommand
-   GmatCommand* InterpretGmatFunction(const wxString &fileName);
+   GmatCommand* InterpretGmatFunction(const std::string &fileName);
    GmatCommand* InterpretGmatFunction(Function *funct,
                                       ObjectMap *objMap = NULL,
                                       SolarSystem *ss = NULL);
-   GmatCommand* CreateCommand(const wxString &type,
-                              const wxString &name, bool &retFlag);
-   GmatCommand* CreateDefaultCommand(const wxString &type,
-                                     const wxString &name = wxT(""),
+   GmatCommand* CreateCommand(const std::string &type,
+                              const std::string &name, bool &retFlag);
+   GmatCommand* CreateDefaultCommand(const std::string &type,
+                                     const std::string &name = "",
                                      GmatCommand *refCmd = NULL);
-   GmatCommand* AppendCommand(const wxString &type,
-                              const wxString &name, bool &retFlag,
+   GmatCommand* AppendCommand(const std::string &type,
+                              const std::string &name, bool &retFlag,
                               Integer sandboxNum = 1);
    GmatCommand* DeleteCommand(GmatCommand *cmd, Integer sandboxNum = 1);
    GmatCommand* GetFirstCommand(Integer sanboxNum = 1);
@@ -357,20 +357,20 @@ public:
    const StringArray& GetPlanetarySourceNames();
    const StringArray& GetPlanetarySourceTypesInUse();
 //   const StringArray& GetAnalyticModelNames();
-//   bool SetAnalyticModelToUse(const wxString &modelName);
-   bool SetPlanetarySourceName(const wxString &sourceType,
-                               const wxString &fileName);
+//   bool SetAnalyticModelToUse(const std::string &modelName);
+   bool SetPlanetarySourceName(const std::string &sourceType,
+                               const std::string &fileName);
    Integer SetPlanetarySourceTypesInUse(const StringArray &sourceTypes); 
-   Integer GetPlanetarySourceId(const wxString &sourceType);
-   wxString GetPlanetarySourceName(const wxString &sourceType);
-   wxString GetCurrentPlanetarySource();
+   Integer GetPlanetarySourceId(const std::string &sourceType);
+   std::string GetPlanetarySourceName(const std::string &sourceType);
+   std::string GetCurrentPlanetarySource();
    
    // Potential field files
-   wxString GetPotentialFileName(const wxString &fileType);
+   std::string GetPotentialFileName(const std::string &fileType);
    
    // Getting file names
    // This will eventually replace Get*FileName() above (loj: 7/7/05)
-   wxString GetFileName(const wxString &fileType);
+   std::string GetFileName(const std::string &fileType);
    
    // Mission
    bool LoadDefaultMission();
@@ -384,19 +384,19 @@ public:
    
    // Sandbox
    void ClearAllSandboxes();
-   GmatBase* GetInternalObject(const wxString &name, Integer sandboxNum = 1);
+   GmatBase* GetInternalObject(const std::string &name, Integer sandboxNum = 1);
    Integer RunMission(Integer sandboxNum = 1);
-   Integer ChangeRunState(const wxString &state, Integer sandboxNum = 1);
+   Integer ChangeRunState(const std::string &state, Integer sandboxNum = 1);
    Gmat::RunState GetUserInterrupt();
    Gmat::RunState GetRunState();
    
    // Script
-   bool InterpretScript(const wxString &filename, bool readBack = false,
-                        const wxString &newPath = wxT(""));
-   bool InterpretScript(wxInputStream *ss, bool clearObjs);
-   bool SaveScript(const wxString &filename,
+   bool InterpretScript(const std::string &filename, bool readBack = false,
+                        const std::string &newPath = "");
+   bool InterpretScript(std::istringstream *ss, bool clearObjs);
+   bool SaveScript(const std::string &filename,
                    Gmat::WriteMode mode = Gmat::SCRIPTING);
-   wxString GetScript(Gmat::WriteMode mode = Gmat::SCRIPTING);
+   std::string GetScript(Gmat::WriteMode mode = Gmat::SCRIPTING);
    Integer RunScript(Integer sandboxNum = 1);
    
    // MATLAB Server Startup Interface
@@ -405,8 +405,8 @@ public:
    // Plugin GUI data
    std::vector<Gmat::PluginResource*> *GetPluginResourceList();
 
-   bool IsSequenceStarter(const wxString &commandType);
-   const wxString& GetStarterStringList();
+   bool IsSequenceStarter(const std::string &commandType);
+   const std::string& GetStarterStringList();
 
 private:
    
@@ -425,28 +425,28 @@ private:
    void CreateDefaultMission();
    
    // Parameter reference object setting
-   void CheckParameterType(Parameter *param, const wxString &type,
-                           const wxString &ownerName);
+   void CheckParameterType(Parameter *param, const std::string &type,
+                           const std::string &ownerName);
    
    // object map
-   GmatBase* FindObject(const wxString &name);
+   GmatBase* FindObject(const std::string &name);
    bool AddObject(GmatBase *obj);
    void SetSolarSystemAndObjectMap(SolarSystem *ss, ObjectMap *objMap,
                                    bool forFunction,
-                                   const wxString &callFrom = wxT(""));
+                                   const std::string &callFrom = "");
 
    // Handlers for the commands that can start a mission sequence
    StringArray sequenceStarters;
-   wxString starterList;
+   std::string starterList;
    const StringArray& GetSequenceStarters();
    
    // default objects
    Spacecraft* GetDefaultSpacecraft();
    PropSetup*  GetDefaultPropSetup();
-   Burn*       GetDefaultBurn(const wxString &type);
-   Hardware*   GetDefaultHardware(const wxString &type);
+   Burn*       GetDefaultBurn(const std::string &type);
+   Hardware*   GetDefaultHardware(const std::string &type);
    Solver*     GetDefaultSolver();
-   Subscriber* GetDefaultSubscriber(const wxString &type,
+   Subscriber* GetDefaultSubscriber(const std::string &type,
                                     bool addObjects = true,
                                     bool createIfNoneFound = true);
    Parameter*  GetDefaultX();
@@ -465,9 +465,9 @@ private:
    void ExecuteSandbox(Integer index);
    
    // for Debug
-   void ShowCommand(const wxString &title1, GmatCommand *cmd1,
-                    const wxString &title2 = wxT(""), GmatCommand *cmd2 = NULL);
-   void ShowObjectMap(const wxString &title, ObjectMap *objMap = NULL);
+   void ShowCommand(const std::string &title1, GmatCommand *cmd1,
+                    const std::string &title2 = "", GmatCommand *cmd2 = NULL);
+   void ShowObjectMap(const std::string &title, ObjectMap *objMap = NULL);
    
    Moderator();
    virtual ~Moderator();
@@ -509,7 +509,7 @@ private:
    Gmat::RunState runState;
 
    // Dynamic library data table
-   std::map<wxString, DynamicLibrary*>   userLibraries;
+   std::map<std::string, DynamicLibrary*>   userLibraries;
    std::vector<Gmat::PluginResource*>  userResources;
 };
 

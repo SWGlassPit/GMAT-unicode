@@ -39,28 +39,28 @@
 class GMAT_API Hardware : public GmatBase 
 {
 public:
-   Hardware(Gmat::ObjectType typeId, const wxString &typeStr, 
-            const wxString &nomme = wxT(""));
+   Hardware(Gmat::ObjectType typeId, const std::string &typeStr, 
+            const std::string &nomme = "");
    virtual ~Hardware();
    Hardware(const Hardware& hw);
    Hardware&               operator=(const Hardware& hw);
    
    // Parameter access methods - overridden from GmatBase
-   virtual wxString        GetParameterText(const Integer id) const;
-   virtual Integer            GetParameterID(const wxString &str) const;
+   virtual std::string        GetParameterText(const Integer id) const;
+   virtual Integer            GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                               GetParameterType(const Integer id) const;
-   virtual wxString        GetParameterTypeString(const Integer id) const;
+   virtual std::string        GetParameterTypeString(const Integer id) const;
    
    
    virtual Real               GetRealParameter(const Integer id) const;
    virtual Real               SetRealParameter(const Integer id,
                                                const Real value);
-   virtual Real               GetRealParameter(const wxString &label) const;
-   virtual Real               SetRealParameter(const wxString &label,
+   virtual Real               GetRealParameter(const std::string &label) const;
+   virtual Real               SetRealParameter(const std::string &label,
                                          const Real value);
 
-//   virtual bool	 VerifyRefObject(wxString subTypeName, GmatBase* obj); // made changes by Tuan Nguyen
+//   virtual bool	 VerifyRefObject(std::string subTypeName, GmatBase* obj); // made changes by Tuan Nguyen
 
 protected:
    /// Location of center of the hardware element on the spacecraft, in meters.
@@ -87,7 +87,7 @@ protected:
    };
    
    /// Hardware Parameter labels
-   static const wxString 
+   static const std::string 
                         PARAMETER_TEXT[HardwareParamCount - GmatBaseParamCount];
    /// Hardware Parameter types
    static const Gmat::ParameterType 

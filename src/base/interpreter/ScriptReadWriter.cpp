@@ -23,12 +23,12 @@
 #include "InterpreterException.hpp"
 #include "StringUtil.hpp"
 #include "MessageInterface.hpp"
-#include <wx/txtstrm.h>
+#include <string.h>
 #include <sstream>
 
 ScriptReadWriter* ScriptReadWriter::instance = NULL;
-const wxString ScriptReadWriter::sectionDelimiter = wxT("%--------");
-const wxString ScriptReadWriter::ellipsis = wxT("...");
+const std::string ScriptReadWriter::sectionDelimiter = "%--------";
+const std::string ScriptReadWriter::ellipsis = "...";
 
 //#define DEBUG_SCRIPT_READ
 //#define DEBUG_FIRST_BLOCK
@@ -61,9 +61,9 @@ ScriptReadWriter::~ScriptReadWriter()
 
 
 //------------------------------------------------------------------------------
-// void SetInStream(wxInputStream *is)
+// void SetInStream(std::istream *is)
 //------------------------------------------------------------------------------
-void ScriptReadWriter::SetInStream(wxInputStream *is)
+void ScriptReadWriter::SetInStream(std::istream *is)
 {
    inStream = is; 
    reachedEndOfFile = false;
@@ -88,8 +88,8 @@ void ScriptReadWriter::SetLineWidth(Integer width)
 {
    if ((width < 20) && (width != 0))
       throw InterpreterException
-         (wxT("Line width must either be unlimited (denoted by 0) or greater ")
-          wxT("than 19 characters.\n"));
+         ("Line width must either be unlimited (denoted by 0) or greater "
+          "than 19 characters.\n");
    
    lineWidth = width;
 }
@@ -104,7 +104,7 @@ Integer ScriptReadWriter::GetLineNumber()
 
 
 //------------------------------------------------------------------------------
-// void ReadFirstBlock(wxString &header, wxString &firstBlock,
+// void ReadFirstBlock(std::string &header, std::string &firstBlock,
 //                     bool skipHeader = false)
 //------------------------------------------------------------------------------
 /*
@@ -119,12 +119,12 @@ Integer ScriptReadWriter::GetLineNumber()
  * @param  skipHeader Flag indicating first comment block is not a header(false)
  */
 //------------------------------------------------------------------------------
-void ScriptReadWriter::ReadFirstBlock(wxString &header, wxString &firstBlock,
+void ScriptReadWriter::ReadFirstBlock(std::string &header, std::string &firstBlock,
                                       bool skipHeader)
 {
-   wxString newLine = wxT("");
-   header = wxT("");
-   firstBlock = wxT("");
+   std::string newLine = "";
+   header = "";
+   firstBlock = "";
    bool doneWithHeader = false;
    
    if (reachedEndOfFile)
@@ -135,7 +135,7 @@ void ScriptReadWriter::ReadFirstBlock(wxString &header, wxString &firstBlock,
    
    #ifdef DEBUG_FIRST_BLOCK
    MessageInterface::ShowMessage
-      (wxT("ReadFirstBlock() firstLine=<<<%s>>>\n"), newLine.c_str());
+      ("ReadFirstBlock() firstLine=<<<%s>>>\n", newLine.c_str());
    #endif
    
    if (reachedEndOfFile && IsBlank(newLine))
@@ -148,7 +148,7 @@ void ScriptReadWriter::ReadFirstBlock(wxString &header, wxString &firstBlock,
       return;
    }
    
-   header = newLine + wxT("\n");
+   header = newLine + "\n";
    
    if (IsBlank(newLine))
       doneWithHeader = true;
@@ -165,24 +165,24 @@ void ScriptReadWriter::ReadFirstBlock(wxString &header, wxString &firstBlock,
          
          #ifdef DEBUG_FIRST_BLOCK
          MessageInterface::ShowMessage
-            (wxT("   header newLine=<<<%s>>>\n"), newLine.c_str());
+            ("   header newLine=<<<%s>>>\n", newLine.c_str());
          #endif
          
          // If non-blank and non-comment line found, return
          if (!IsBlank(newLine) && (!IsComment(newLine)))
          {
-            firstBlock = newLine + wxT("\n");
+            firstBlock = newLine + "\n";
             
             if (skipHeader)
             {
                firstBlock = header + firstBlock;
-               header = wxT("");
+               header = "";
             }
             
             #ifdef DEBUG_FIRST_BLOCK
             MessageInterface::ShowMessage
-               (wxT("ReadFirstBlock() non-blank and non-comment found\n")
-                wxT("header=<<<%s>>>\nfirstBlock=<<<%s>>>\n"), header.c_str(),
+               ("ReadFirstBlock() non-blank and non-comment found\n"
+                "header=<<<%s>>>\nfirstBlock=<<<%s>>>\n", header.c_str(),
                 firstBlock.c_str());
             #endif
             
@@ -192,12 +192,12 @@ void ScriptReadWriter::ReadFirstBlock(wxString &header, wxString &firstBlock,
          // If blank line found, break
          if (IsBlank(newLine))
          {
-            header = header + newLine + wxT("\n");
+            header = header + newLine + "\n";
             doneWithHeader = true;
             break;
          }
          
-         header = header + newLine + wxT("\n");
+         header = header + newLine + "\n";
       }
    }
    
@@ -212,77 +212,77 @@ void ScriptReadWriter::ReadFirstBlock(wxString &header, wxString &firstBlock,
       newLine = CrossPlatformGetLine();
       
       #ifdef DEBUG_FIRST_BLOCK
-      MessageInterface::ShowMessage(wxT("   1stblk newLine=<<<%s>>>\n"), newLine.c_str());
+      MessageInterface::ShowMessage("   1stblk newLine=<<<%s>>>\n", newLine.c_str());
       #endif
       
       // If non-blank and non-comment line found, break
       if (!IsBlank(newLine) && (!IsComment(newLine)))
       {
-         firstBlock = firstBlock + newLine + wxT("\n");
+         firstBlock = firstBlock + newLine + "\n";
          break;
       }
       
-      firstBlock = firstBlock + newLine + wxT("\n");
+      firstBlock = firstBlock + newLine + "\n";
    }
    
    if (skipHeader)
    {
       firstBlock = header + firstBlock;
-      header = wxT("");
+      header = "";
    }
    
    #ifdef DEBUG_FIRST_BLOCK
    MessageInterface::ShowMessage
-      (wxT("ReadFirstBlock() header=<<<%s>>>\nfirstBlock=<<<%s>>>\n"), header.c_str(),
+      ("ReadFirstBlock() header=<<<%s>>>\nfirstBlock=<<<%s>>>\n", header.c_str(),
        firstBlock.c_str());
    #endif
 }
 
 
 //------------------------------------------------------------------------------
-// wxString ReadLogicalBlock()
+// std::string ReadLogicalBlock()
 //------------------------------------------------------------------------------
 /*
  * Reads lines until non-blank and non-comment line from the input stream
  */
 //------------------------------------------------------------------------------
-wxString ScriptReadWriter::ReadLogicalBlock()
+std::string ScriptReadWriter::ReadLogicalBlock()
 {
-   wxString result = wxT("");
-   wxString oneLine = wxT(""); 
-   wxString block = wxT("");
+   std::string result = "";
+   std::string oneLine = ""; 
+   std::string block = "";
    
    if (reachedEndOfFile)
-      return wxT("\0");
+      return "\0";
    
    // get 1 line of text
    oneLine = CrossPlatformGetLine();
    
    if (reachedEndOfFile && IsBlank(oneLine))
-      return wxT("\0");
+      return "\0";
    
    #ifdef DEBUG_SCRIPT_READ
    MessageInterface::ShowMessage
-      (wxT("ReadLogicalBlock() oneLine=\n<<<%s>>>\n"), oneLine.c_str());
+      ("ReadLogicalBlock() oneLine=\n<<<%s>>>\n", oneLine.c_str());
    #endif
    
    // keep looping till we find non-blank or non-comment line
    while ((!reachedEndOfFile) && (IsBlank(oneLine) || IsComment(oneLine)))
    {
-      block = block + oneLine + wxT("\n");
+      block = block + oneLine + "\n";
       oneLine = CrossPlatformGetLine();
       
       #ifdef DEBUG_SCRIPT_READ
       MessageInterface::ShowMessage
-         (wxT("ReadLogicalBlock() oneLine=\n<<<%s>>>\n"), oneLine.c_str());
+         ("ReadLogicalBlock() oneLine=\n<<<%s>>>\n", oneLine.c_str());
       #endif
    }
    
-   block = block + oneLine + wxT("\n");
+   block = block + oneLine + "\n";
    
    #ifdef DEBUG_SCRIPT_READ
    MessageInterface::ShowMessage
-      (wxT("ReadLogicalBlock() block=\n<<<%s>>>\n"), block.c_str());
+      ("ReadLogicalBlock() block=\n<<<%s>>>\n", block.c_str());
    #endif
    
    result = block;
@@ -300,13 +300,12 @@ wxString ScriptReadWriter::ReadLogicalBlock()
 
 
 //------------------------------------------------------------------------------
-// bool WriteText(const wxString &textToWrite)
+// bool WriteText(const std::string &textToWrite)
 //------------------------------------------------------------------------------
-bool ScriptReadWriter::WriteText(const wxString &textToWrite)
+bool ScriptReadWriter::WriteText(const std::string &textToWrite)
 {
-   wxTextOutputStream theOutStream(*outStream);
-   theOutStream << textToWrite;
-//   outStream->flush();
+   *outStream << textToWrite;
+   outStream->flush();
    return true;
 }
 
@@ -327,15 +326,14 @@ bool ScriptReadWriter::Initialize()
 
 
 //------------------------------------------------------------------------------
-// wxString CrossPlatformGetLine()
+// std::string CrossPlatformGetLine()
 //------------------------------------------------------------------------------
-wxString ScriptReadWriter::CrossPlatformGetLine()
+std::string ScriptReadWriter::CrossPlatformGetLine()
 {
-   wxChar ch;
-   wxString result;
-   wxTextInputStream theInStream(*inStream);
+   char ch;
+   std::string result;
    
- /*  while (inStream->get(ch) && ch != '\r' && ch != '\n' && ch != '\0' &&
+   while (inStream->get(ch) && ch != '\r' && ch != '\n' && ch != '\0' &&
           !inStream->eof()) 
    {
       if (result.length() < 3)
@@ -343,17 +341,16 @@ wxString ScriptReadWriter::CrossPlatformGetLine()
          // Test 1st 3 bytes for non-ANSI encoding -- anything with the top bit set
          if (ch < 0)
          {
-            throw InterpreterException(wxT("Non-standard characters were ")
-                  wxT("encountered in the script file; please check the file to ")
-                  wxT("be sure it is saved as an ASCII file, and not formatted ")
-                  wxT("for Unicode or UTDF."));
+            throw InterpreterException("Non-standard characters were "
+                  "encountered in the script file; please check the file to "
+                  "be sure it is saved as an ASCII file, and not formatted "
+                  "for Unicode or UTDF.");
          }
       }
       result += ch;
    }
-   */
-   result = theInStream.ReadLine();
-   if  (inStream->Eof())
+   
+   if ((ch == '\0') || (inStream->eof()))
    {
       reachedEndOfFile = true;
    }
@@ -366,23 +363,23 @@ wxString ScriptReadWriter::CrossPlatformGetLine()
 
 
 //------------------------------------------------------------------------------
-// bool IsComment(const wxString &text)
+// bool IsComment(const std::string &text)
 //------------------------------------------------------------------------------
-bool ScriptReadWriter::IsComment(const wxString &text)
+bool ScriptReadWriter::IsComment(const std::string &text)
 {
-   wxString str = GmatStringUtil::Trim(text, GmatStringUtil::BOTH);
-   return GmatStringUtil::StartsWith(str, wxT("%"));
+   std::string str = GmatStringUtil::Trim(text, GmatStringUtil::BOTH);
+   return GmatStringUtil::StartsWith(str, "%");
 }
 
 
 //------------------------------------------------------------------------------
-// bool IsBlank(const wxString &text)
+// bool IsBlank(const std::string &text)
 //------------------------------------------------------------------------------
-bool ScriptReadWriter::IsBlank(const wxString &text)
+bool ScriptReadWriter::IsBlank(const std::string &text)
 {
-   wxString str = GmatStringUtil::Trim(text, GmatStringUtil::BOTH);
+   std::string str = GmatStringUtil::Trim(text, GmatStringUtil::BOTH);
    
-   if (str == wxT(""))
+   if (str == "")
       return true;
    else
       return false;
@@ -390,11 +387,11 @@ bool ScriptReadWriter::IsBlank(const wxString &text)
 
 
 //------------------------------------------------------------------------------
-// bool HasEllipse(const wxString &text)
+// bool HasEllipse(const std::string &text)
 //------------------------------------------------------------------------------
-bool ScriptReadWriter::HasEllipse(const wxString &text)
+bool ScriptReadWriter::HasEllipse(const std::string &text)
 {
-   wxString ellipsis = wxT("...");
+   std::string ellipsis = "...";
 
    int pos = text.find(ellipsis,0);
    
@@ -405,11 +402,11 @@ bool ScriptReadWriter::HasEllipse(const wxString &text)
 }
 
 //------------------------------------------------------------------------------
-// wxString HandleEllipsis(const wxString &text)
+// std::string HandleEllipsis(const std::string &text)
 //------------------------------------------------------------------------------
-wxString ScriptReadWriter::HandleEllipsis(const wxString &text)
+std::string ScriptReadWriter::HandleEllipsis(const std::string &text)
 {
-   wxString str = GmatStringUtil::Trim(text, GmatStringUtil::TRAILING);
+   std::string str = GmatStringUtil::Trim(text, GmatStringUtil::TRAILING);
    int pos = str.find(ellipsis,0);
    
    if (pos < 0)      // no ellipsis
@@ -418,26 +415,26 @@ wxString ScriptReadWriter::HandleEllipsis(const wxString &text)
    // make sure ellipsis is at the end of the line
    if ((int)(str.size())-3 != pos)
    {
-      wxString buffer;
+      std::stringstream buffer;
       buffer << currentLineNumber;
-      throw InterpreterException(wxT("Script Line ") + buffer +
-                                 wxT("-->Ellipses must be at the end of the line\n") );
+      throw InterpreterException("Script Line " + buffer.str() +
+                                 "-->Ellipses must be at the end of the line\n" );
    }
    
-   wxString result = wxT("");
+   std::string result = "";
    
    while (pos >= 0)
    {
       if (pos == 0)     // ellipsis were on a line by themselves
-        result += wxT(" ");
+        result += " ";
       else
       {
          result += str.substr(0, pos);  // add substring to first set
-         result += wxT(" ");
+         result += " ";
       }
       
       // reset str string and position
-      str = wxT("");
+      str = "";
       pos = -1;
       
       // read a line
@@ -448,18 +445,18 @@ wxString ScriptReadWriter::HandleEllipsis(const wxString &text)
       
       if (IsBlank(str) && reachedEndOfFile)
       {
-         wxString buffer;
+         std::stringstream buffer;
          buffer << currentLineNumber;
-         throw InterpreterException(wxT("Script Line ") + buffer +
-             wxT("-->Prematurely reached the end of file.\n"));
+         throw InterpreterException("Script Line " + buffer.str() +
+             "-->Prematurely reached the end of file.\n");
       }
       
       if (IsComment(str))
       {
-         wxString buffer;
+         std::stringstream buffer;
          buffer << currentLineNumber;
-         throw InterpreterException(wxT("Script Line ") + buffer +
-            wxT("-->Comments are not allowed in the middle of a block\n"));
+         throw InterpreterException("Script Line " + buffer.str() +
+            "-->Comments are not allowed in the middle of a block\n");
       }
       
       str = GmatStringUtil::Trim(str, GmatStringUtil::TRAILING);      
@@ -469,10 +466,10 @@ wxString ScriptReadWriter::HandleEllipsis(const wxString &text)
    // add the last line on to result
    if (IsComment(str))
    {
-      wxString buffer;
+      std::stringstream buffer;
       buffer << currentLineNumber;
-      throw InterpreterException(wxT("Script Line ") + buffer +
-         wxT("-->Comments are not allowed in the middle of a block\n"));
+      throw InterpreterException("Script Line " + buffer.str() +
+         "-->Comments are not allowed in the middle of a block\n");
    }
    
    result += str;
@@ -481,18 +478,18 @@ wxString ScriptReadWriter::HandleEllipsis(const wxString &text)
 
 
 //------------------------------------------------------------------------------
-// wxString HandleComments(const wxString &text)
+// std::string HandleComments(const std::string &text)
 //------------------------------------------------------------------------------
-wxString ScriptReadWriter::HandleComments(const wxString &text)
+std::string ScriptReadWriter::HandleComments(const std::string &text)
 {
-   wxString result = text + wxT("\n");
+   std::string result = text + "\n";
    
-   wxString newLine = CrossPlatformGetLine();
+   std::string newLine = CrossPlatformGetLine();
 
    // keep adding to comment if line is blank or comment
    while (((IsComment(newLine)) || (IsBlank(newLine))) && (!reachedEndOfFile))
    {
-      result += (newLine + wxT("\n"));
+      result += (newLine + "\n");
       newLine = CrossPlatformGetLine();
    }
    

@@ -36,8 +36,8 @@
 //------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//  TrueOfDateAxes(const wxString &itsType,
-//                 const wxString &itsName);
+//  TrueOfDateAxes(const std::string &itsType,
+//                 const std::string &itsName);
 //---------------------------------------------------------------------------
 /**
  * Constructs base TrueOfDateAxes structures used in derived classes
@@ -50,11 +50,11 @@
  *       classes must pass in the typeId and typeStr parameters.
  */
 //---------------------------------------------------------------------------
-TrueOfDateAxes::TrueOfDateAxes(const wxString &itsType,
-                               const wxString &itsName) :
+TrueOfDateAxes::TrueOfDateAxes(const std::string &itsType,
+                               const std::string &itsName) :
 DynamicAxes(itsType,itsName)
 {
-   objectTypeNames.push_back(wxT("TrueOfDateAxes"));
+   objectTypeNames.push_back("TrueOfDateAxes");
    parameterCount = TrueOfDateAxesParamCount;
 }
 

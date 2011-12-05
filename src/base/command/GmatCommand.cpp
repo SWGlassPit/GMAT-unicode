@@ -72,12 +72,12 @@
 //---------------------------------
 //  static members
 //---------------------------------
-const wxString 
+const std::string 
    GmatCommand::PARAMETER_TEXT[GmatCommandParamCount - GmatBaseParamCount] =
    {
-      wxT("Comment"),
-      wxT("Summary"),
-      wxT("MissionSummary")
+      "Comment",
+      "Summary",
+      "MissionSummary"
    };
 
 
@@ -104,13 +104,13 @@ Integer GmatCommand::satTotalMassID;
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  GmatCommand(const wxString &typeStr)
+//  GmatCommand(const std::string &typeStr)
 //------------------------------------------------------------------------------
 /**
  * Constructs GmatCommand core structures (default constructor).
  */
 //------------------------------------------------------------------------------
-GmatCommand::GmatCommand(const wxString &typeStr) :
+GmatCommand::GmatCommand(const std::string &typeStr) :
    GmatBase             (Gmat::COMMAND, typeStr),
    initialized          (false),
    currentFunction      (NULL),
@@ -129,22 +129,22 @@ GmatCommand::GmatCommand(const wxString &typeStr) :
    streamID             (-1),
    depthChange          (0),
    commandChangedState  (false),
-   commandSummary       (wxT("")),
-   summaryCoordSysName  (wxT("EarthMJ2000Eq")),
+   commandSummary       (""),
+   summaryCoordSysName  ("EarthMJ2000Eq"),
    summaryCoordSys      (NULL),
    summaryForEntireMission (false),
    missionPhysicsBasedOnly (false),
    physicsBasedCommand  (false),
    includeInSummary     (true),
-   summaryName          (wxT("Unnamed")),
-//   comment              (wxT("")),
+   summaryName          ("Unnamed"),
+//   comment              (""),
    commandChanged       (false),
    cloneCount           (0),
    epochData            (NULL),
    stateData            (NULL),
    parmData             (NULL)
 {
-   generatingString = wxT("");
+   generatingString = "";
    parameterCount = GmatCommandParamCount;
    objectTypes.push_back(Gmat::COMMAND);
    objectTypeNames.push_back(typeStr);
@@ -174,30 +174,30 @@ GmatCommand::GmatCommand(const wxString &typeStr) :
 GmatCommand::~GmatCommand()
 {
    #ifdef DEBUG_COMMAND_DEALLOCATION
-      wxString nextStr = wxT("NULL");
+      std::string nextStr = "NULL";
       if (next)
          nextStr = next->GetTypeName();
 
-      ShowCommand(wxT(""), wxT("~GmatCommand() this="), this, wxT(", next="), next);
+      ShowCommand("", "~GmatCommand() this=", this, ", next=", next);
       //MessageInterface::ShowMessage
-      //   (wxT("In GmatCommand::~GmatCommand() this=%s, next=%s\n"),
+      //   ("In GmatCommand::~GmatCommand() this=%s, next=%s\n",
       //    this->GetTypeName().c_str(), nextStr.c_str());
    #endif
       
    // We need to clean up summary data, so removed return if BranchEnd (loj: 2008.12.19)
-   if (!this->IsOfType(wxT("BranchEnd")))
+   if (!this->IsOfType("BranchEnd"))
    {      
       // Delete the subsequent GmatCommands
       if (next) {
          #ifdef DEBUG_COMMAND_DEALLOCATION
-         MessageInterface::ShowMessage(wxT("   Deleting (%p)%s\n"), next, 
+         MessageInterface::ShowMessage("   Deleting (%p)%s\n", next, 
                                        next->GetTypeName().c_str());
          #endif
          
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
             (next, next->GetTypeName(), this->GetTypeName() +
-             wxT("::~GmatCommand() deleting child command"));
+             "::~GmatCommand() deleting child command");
          #endif
          delete next;   
       }
@@ -208,8 +208,8 @@ GmatCommand::~GmatCommand()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (epochData, wxT("epochData"), this->GetTypeName() +
-          wxT("::~GmatCommand() deleting epochData"));
+         (epochData, "epochData", this->GetTypeName() +
+          "::~GmatCommand() deleting epochData");
       #endif
       delete [] epochData;
       epochData = NULL;
@@ -218,8 +218,8 @@ GmatCommand::~GmatCommand()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (stateData, wxT("stateData"), this->GetTypeName() +
-          wxT("::~GmatCommand() deleting stateData"));
+         (stateData, "stateData", this->GetTypeName() +
+          "::~GmatCommand() deleting stateData");
       #endif
       delete [] stateData;
       stateData = NULL;
@@ -228,8 +228,8 @@ GmatCommand::~GmatCommand()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (parmData, wxT("parmData"), this->GetTypeName() +
-          wxT("::~GmatCommand() deleting parmData"));
+         (parmData, "parmData", this->GetTypeName() +
+          "::~GmatCommand() deleting parmData");
       #endif
       delete [] parmData;
       parmData = NULL;
@@ -355,7 +355,7 @@ GmatCommand& GmatCommand::operator=(const GmatCommand &c)
 
 
 //------------------------------------------------------------------------------
-//  void SetGeneratingString(const wxString &gs)
+//  void SetGeneratingString(const std::string &gs)
 //------------------------------------------------------------------------------
 /**
  * Method used to store the string that was parsed to build this GmatCommand.
@@ -367,23 +367,23 @@ GmatCommand& GmatCommand::operator=(const GmatCommand &c)
  * @param <gs> The script line that was interpreted to define this GmatCommand.
  */
 //------------------------------------------------------------------------------
-void GmatCommand::SetGeneratingString(const wxString &gs)
+void GmatCommand::SetGeneratingString(const std::string &gs)
 {
    // Drop the leading white space
    UnsignedInt start = 0, end;
-   while ((start < gs.length()) && (gs[start] == wxT(' ')))
+   while ((start < gs.length()) && (gs[start] == ' '))
       ++start;
    generatingString = gs.substr(start);
    
    end = gs.length()-1;
-   while ((end > 0) && (gs[end] == wxT(' ')))
+   while ((end > 0) && (gs[end] == ' '))
       --end;
 
    generatingString = gs.substr(0, end+1);
 }
 
 //------------------------------------------------------------------------------
-//  const wxString& GetGeneratingString()
+//  const std::string& GetGeneratingString()
 //------------------------------------------------------------------------------
 /**
  * Method used to retrieve the string that was parsed to build this GmatCommand.
@@ -404,15 +404,15 @@ void GmatCommand::SetGeneratingString(const wxString &gs)
  * @return The script line that was interpreted to define this GmatCommand.
  */
 //------------------------------------------------------------------------------
-const wxString& GmatCommand::GetGeneratingString(Gmat::WriteMode mode,
-                                            const wxString &prefix,
-                                            const wxString &useName)
+const std::string& GmatCommand::GetGeneratingString(Gmat::WriteMode mode,
+                                            const std::string &prefix,
+                                            const std::string &useName)
 {
-   static wxString empty;
-   if (generatingString == wxT("")) {
-      if (typeName == wxT("NoOp"))
+   static std::string empty;
+   if (generatingString == "") {
+      if (typeName == "NoOp")
          return generatingString;
-      empty = wxT("% Generating string not set for ") + typeName + wxT(" command.");
+      empty = "% Generating string not set for " + typeName + " command.";
       return empty;
    }
    
@@ -420,52 +420,52 @@ const wxString& GmatCommand::GetGeneratingString(Gmat::WriteMode mode,
       return generatingString;
    
    
-   wxString commentLine = GetCommentLine();
-   wxString inlineComment = GetInlineComment();
+   std::string commentLine = GetCommentLine();
+   std::string inlineComment = GetInlineComment();
    
    #if DEBUG_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("GmatCommand::GetGeneratingString() entered, generatingString =\n<%s>\n"),
+      ("GmatCommand::GetGeneratingString() entered, generatingString =\n<%s>\n",
        generatingString.c_str());
    MessageInterface::ShowMessage
-      (wxT("   commentLine = <%s>\n   inlineComment = <%s>\n"),
+      ("   commentLine = <%s>\n   inlineComment = <%s>\n",
        commentLine.c_str(), inlineComment.c_str());   
    #endif
    
    // write preface comment
    if (showPrefaceComment)
    {
-      wxString gen;
-      if (commentLine != wxT(""))
+      std::stringstream gen;
+      if (commentLine != "")
       {
          TextParser tp;
          StringArray textArray = tp.DecomposeBlock(commentLine);
          
-         if (textArray.size() > 0 && textArray[0] != wxT(""))
+         if (textArray.size() > 0 && textArray[0] != "")
          {
             // handle multiple comment lines
             for (UnsignedInt i=0; i<textArray.size(); i++)
             {
                gen << prefix << textArray[i];
-               if (textArray[i].find(wxT("\n")) == commentLine.npos &&
-                   textArray[i].find(wxT("\r")) == commentLine.npos)
-                  gen << wxT("\n");
+               if (textArray[i].find("\n") == commentLine.npos &&
+                   textArray[i].find("\r") == commentLine.npos)
+                  gen << "\n";
             }
          }
       }
       
       InsertCommandName(generatingString);      
-      generatingString = gen + generatingString;
+      generatingString = gen.str() + generatingString;
    }
    
    
    if (showInlineComment)
-      if (inlineComment != wxT(""))
+      if (inlineComment != "")
          generatingString = generatingString + inlineComment;
    
    #if DEBUG_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("===> return\n<%s>\n\n"), generatingString.c_str());
+      ("===> return\n<%s>\n\n", generatingString.c_str());
    #endif
    
    return generatingString;
@@ -497,7 +497,7 @@ void GmatCommand::SetCallingFunction(FunctionManager *fm)
 {
    #ifdef DEBUG_CMD_CALLING_FUNCTION
       MessageInterface::ShowMessage(
-            wxT("NOW setting calling function on command of type %s\n"),
+            "NOW setting calling function on command of type %s\n",
             (GetTypeName()).c_str());
    #endif
    callingFunction = fm;
@@ -513,10 +513,10 @@ const StringArray& GmatCommand::GetWrapperObjectNameArray()
 
 //------------------------------------------------------------------------------
 // bool SetElementWrapper(ElementWrapper* toWrapper,
-//                        const wxString &withName)
+//                        const std::string &withName)
 //------------------------------------------------------------------------------
 bool GmatCommand::SetElementWrapper(ElementWrapper* toWrapper,
-                                    const wxString &withName)
+                                    const std::string &withName)
 {
    return false;
 }
@@ -531,24 +531,24 @@ void GmatCommand::ClearWrappers()
 
 //------------------------------------------------------------------------------
 // void CheckDataType(ElementWrapper* forWrapper, Gmat::ParameterType needType,
-//                    const wxString &cmdName, bool ignoreUnsetReference)
+//                    const std::string &cmdName, bool ignoreUnsetReference)
 //------------------------------------------------------------------------------
 void GmatCommand::CheckDataType(ElementWrapper* forWrapper,
                                 Gmat::ParameterType needType,
-                                const wxString &cmdName,
+                                const std::string &cmdName,
                                 bool ignoreUnsetReference)
 {
    if (forWrapper == NULL)
    {
-      wxString cmdEx = wxT("Reference object not set for command ") + 
+      std::string cmdEx = "Reference object not set for command " + 
                           cmdName;
-      cmdEx += wxT(".\n");
+      cmdEx += ".\n";
       throw CommandException(cmdEx);
    }
    bool typeOK = true;
    Gmat::ParameterType baseType;
-   wxString         baseStr;
-   wxString         desc = forWrapper->GetDescription();
+   std::string         baseStr;
+   std::string         desc = forWrapper->GetDescription();
    try
    {
       baseType = forWrapper->GetDataType();
@@ -565,25 +565,25 @@ void GmatCommand::CheckDataType(ElementWrapper* forWrapper,
       // wrappers on initialization
       if (!ignoreUnsetReference)
       {
-         wxString errmsg = wxT("Reference not set for \"") + desc;
-         errmsg += wxT("\", cannot check for correct data type.");
+         std::string errmsg = "Reference not set for \"" + desc;
+         errmsg += "\", cannot check for correct data type.";
          throw CommandException(errmsg);
       }
    }
    
    if (!typeOK)
    {
-      throw CommandException(wxT("A value of \"") + desc + wxT("\" of base type \"") +
-                  baseStr + wxT("\" on command \"") + cmdName + 
-                  wxT("\" is not an allowed value.\nThe allowed values are:")
-                  wxT(" [ Object Property (Real), Real Number, Variable, Array Element, or Parameter ]. ")); 
+      throw CommandException("A value of \"" + desc + "\" of base type \"" +
+                  baseStr + "\" on command \"" + cmdName + 
+                  "\" is not an allowed value.\nThe allowed values are:"
+                  " [ Object Property (Real), Real Number, Variable, Array Element, or Parameter ]. "); 
    }
 }
 
 
 //------------------------------------------------------------------------------
-//  bool SetObject(const wxString &name, const Gmat::ObjectType type,
-//                 const wxString &associate, 
+//  bool SetObject(const std::string &name, const Gmat::ObjectType type,
+//                 const std::string &associate, 
 //                 const Gmat::ObjectType associateType)
 //------------------------------------------------------------------------------
 /**
@@ -611,9 +611,9 @@ void GmatCommand::CheckDataType(ElementWrapper* forWrapper,
  *       implementation.
  */
 //------------------------------------------------------------------------------
-bool GmatCommand::SetObject(const wxString &name,
+bool GmatCommand::SetObject(const std::string &name,
                         const Gmat::ObjectType type,
-                        const wxString &associate,
+                        const std::string &associate,
                         const Gmat::ObjectType associateType)
 {
    // Check to see if it is already in the object list
@@ -635,7 +635,7 @@ bool GmatCommand::SetObject(const wxString &name,
 
 
 //------------------------------------------------------------------------------
-//  GmatBase* GetObject(const Gmat::ObjectType type, const wxString objName)
+//  GmatBase* GetObject(const Gmat::ObjectType type, const std::string objName)
 //------------------------------------------------------------------------------
 /**
  * Retrieves the objects used by the GmatCommand.
@@ -654,7 +654,7 @@ bool GmatCommand::SetObject(const wxString &name,
  */
 //------------------------------------------------------------------------------
 GmatBase* GmatCommand::GetGmatObject(const Gmat::ObjectType type, 
-                                  const wxString objName)
+                                  const std::string objName)
 {
    return NULL;
 }
@@ -696,7 +696,7 @@ void GmatCommand::SetSolarSystem(SolarSystem *ss)
 {
    #ifdef DEBUG_COMMAND_SET
    MessageInterface::ShowMessage
-      (wxT("GmatCommand::SetSolarSystem() entered, ss=<%p>\n"), ss);
+      ("GmatCommand::SetSolarSystem() entered, ss=<%p>\n", ss);
    #endif
    
    solarSys = ss;
@@ -732,7 +732,7 @@ void GmatCommand::SetInternalCoordSystem(CoordinateSystem *cs)
 {
    #ifdef DEBUG_COMMAND_SET
    MessageInterface::ShowMessage
-      (wxT("GmatCommand::SetInternalCoordSystem() entered, cs=<%p>\n"), cs);
+      ("GmatCommand::SetInternalCoordSystem() entered, cs=<%p>\n", cs);
    #endif
    
    internalCoordSys = cs;
@@ -740,7 +740,7 @@ void GmatCommand::SetInternalCoordSystem(CoordinateSystem *cs)
 
 
 //------------------------------------------------------------------------------
-// virtual void SetSummary(const wxString &csName, bool entireMission = false,
+// virtual void SetSummary(const std::string &csName, bool entireMission = false,
 //                         bool physicsOnly = false)
 //------------------------------------------------------------------------------
 /*
@@ -749,12 +749,12 @@ void GmatCommand::SetInternalCoordSystem(CoordinateSystem *cs)
  *
  */
 //------------------------------------------------------------------------------
-void GmatCommand::SetupSummary(const wxString &csName, bool entireMission, bool physicsOnly)
+void GmatCommand::SetupSummary(const std::string &csName, bool entireMission, bool physicsOnly)
 
 {
    #ifdef DEBUG_COMMAND_SET
    MessageInterface::ShowMessage
-      (wxT("GmatCommand::SetupSummary() entered, cs=<%s>\n"), csName.c_str());
+      ("GmatCommand::SetupSummary() entered, cs=<%s>\n", csName.c_str());
    #endif
 
    summaryCoordSysName     = csName;
@@ -762,19 +762,19 @@ void GmatCommand::SetupSummary(const wxString &csName, bool entireMission, bool 
    missionPhysicsBasedOnly = physicsOnly;
 }
 
-void GmatCommand::SetSummaryName(const wxString &sumName)
+void GmatCommand::SetSummaryName(const std::string &sumName)
 {
    summaryName = sumName;
 }
 
-wxString GmatCommand::GetSummaryName()
+std::string GmatCommand::GetSummaryName()
 {
    return summaryName;
 }
 
 
 //------------------------------------------------------------------------------
-//  void SetObjectMap(std::map<wxString, GmatBase *> *map)
+//  void SetObjectMap(std::map<std::string, GmatBase *> *map)
 //------------------------------------------------------------------------------
 /**
  * Called by the Sandbox to set the local asset store used by the GmatCommand
@@ -782,7 +782,7 @@ wxString GmatCommand::GetSummaryName()
  * @param <map> Pointer to the local object map
  */
 //------------------------------------------------------------------------------
-void GmatCommand::SetObjectMap(std::map<wxString, GmatBase *> *map)
+void GmatCommand::SetObjectMap(std::map<std::string, GmatBase *> *map)
 {
    objectMap = map;
 }
@@ -798,7 +798,7 @@ ObjectMap* GmatCommand::GetObjectMap()
 
 
 //------------------------------------------------------------------------------
-//  void SetGlobalObjectMap(std::map<wxString, GmatBase *> *map)
+//  void SetGlobalObjectMap(std::map<std::string, GmatBase *> *map)
 //------------------------------------------------------------------------------
 /**
  * Called by the Sandbox to set the global asset store used by the GmatCommand
@@ -806,7 +806,7 @@ ObjectMap* GmatCommand::GetObjectMap()
  * @param <map> Pointer to the local object map
  */
 //------------------------------------------------------------------------------
-void GmatCommand::SetGlobalObjectMap(std::map<wxString, GmatBase *> *map)
+void GmatCommand::SetGlobalObjectMap(std::map<std::string, GmatBase *> *map)
 {
    globalObjectMap = map;
 }
@@ -911,7 +911,7 @@ bool GmatCommand::Validate()
 
 
 //------------------------------------------------------------------------------
-//  wxString GetParameterText(const Integer id) const
+//  std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Gets the name of the parameter with the input id.
@@ -921,7 +921,7 @@ bool GmatCommand::Validate()
  * @return The string name of the parameter.
  */
 //------------------------------------------------------------------------------
-wxString GmatCommand::GetParameterText(const Integer id) const
+std::string GmatCommand::GetParameterText(const Integer id) const
 {
    if (id >= GmatBaseParamCount && id < GmatCommandParamCount)
       return PARAMETER_TEXT[id - GmatBaseParamCount];
@@ -931,7 +931,7 @@ wxString GmatCommand::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer GetParameterID(const wxString &str) const
+//  Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * Gets the id corresponding to a named parameter.
@@ -941,7 +941,7 @@ wxString GmatCommand::GetParameterText(const Integer id) const
  * @return The ID.
  */
 //------------------------------------------------------------------------------
-Integer GmatCommand::GetParameterID(const wxString &str) const
+Integer GmatCommand::GetParameterID(const std::string &str) const
 {
    for (Integer i = GmatBaseParamCount; i < GmatCommandParamCount; i++)
    {
@@ -975,7 +975,7 @@ Gmat::ParameterType GmatCommand::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString GetParameterTypeString(const Integer id) const
+//  std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Gets the text description for the type of a parameter.
@@ -985,7 +985,7 @@ Gmat::ParameterType GmatCommand::GetParameterType(const Integer id) const
  * @return The text description of the type of the parameter.
  */
 //------------------------------------------------------------------------------
-wxString GmatCommand::GetParameterTypeString(const Integer id) const
+std::string GmatCommand::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -1029,14 +1029,14 @@ bool GmatCommand::IsParameterReadOnly(const Integer id) const
  *         throws if the parameter is out of the valid range of values.
  */
 //---------------------------------------------------------------------------
-bool GmatCommand::IsParameterReadOnly(const wxString &label) const
+bool GmatCommand::IsParameterReadOnly(const std::string &label) const
 {
    return IsParameterReadOnly(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-//  wxString GetStringParameter(const Integer id) const
+//  std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Retrieve a string parameter.
@@ -1046,7 +1046,7 @@ bool GmatCommand::IsParameterReadOnly(const wxString &label) const
  * @return The string stored for this parameter.
  */
 //------------------------------------------------------------------------------
-wxString GmatCommand::GetStringParameter(const Integer id) const
+std::string GmatCommand::GetStringParameter(const Integer id) const
 {
 //   if (id == COMMENT)
 //   {
@@ -1063,7 +1063,7 @@ wxString GmatCommand::GetStringParameter(const Integer id) const
    if (id == MISSION_SUMMARY)
    {
       // This call is not const, so need to break const-ness here:
-      wxString missionSummary =
+      std::string missionSummary =
          ((GmatCommand*)this)->BuildMissionSummaryString(this);
       return missionSummary;
    }
@@ -1073,7 +1073,7 @@ wxString GmatCommand::GetStringParameter(const Integer id) const
 
    
 //------------------------------------------------------------------------------
-//  wxString GetStringParameter(const Integer id, const Integer index) const
+//  std::string GetStringParameter(const Integer id, const Integer index) const
 //------------------------------------------------------------------------------
 /**
  * Retrieve a string parameter.
@@ -1084,7 +1084,7 @@ wxString GmatCommand::GetStringParameter(const Integer id) const
  * @return The string stored for this parameter.
  */
 //------------------------------------------------------------------------------
-wxString GmatCommand::GetStringParameter(const Integer id, 
+std::string GmatCommand::GetStringParameter(const Integer id, 
                                             const Integer index) const
 {
    return GmatBase::GetStringParameter(id, index);
@@ -1095,7 +1095,7 @@ wxString GmatCommand::GetStringParameter(const Integer id,
 //  Real SetStringParameter(const Integer id, const Real value)
 //------------------------------------------------------------------------------
 /**
- * Sets the value for a wxString parameter.
+ * Sets the value for a std::string parameter.
  * 
  * @param <id>    Integer ID of the parameter.
  * @param <value> New value for the parameter.
@@ -1103,7 +1103,7 @@ wxString GmatCommand::GetStringParameter(const Integer id,
  * @return The value of the parameter.
  */
 //------------------------------------------------------------------------------
-bool GmatCommand::SetStringParameter(const Integer id, const wxString &value)
+bool GmatCommand::SetStringParameter(const Integer id, const std::string &value)
 {
 //   if (id == COMMENT)
 //   {
@@ -1130,7 +1130,7 @@ bool GmatCommand::SetStringParameter(const Integer id, const wxString &value)
 //                          const Integer index)
 //------------------------------------------------------------------------------
 /**
- * Sets the value for a wxString parameter.
+ * Sets the value for a std::string parameter.
  * 
  * @param <id>    Integer ID of the parameter.
  * @param <value> New value for the parameter.
@@ -1139,7 +1139,7 @@ bool GmatCommand::SetStringParameter(const Integer id, const wxString &value)
  * @return The value of the parameter.
  */
 //------------------------------------------------------------------------------
-bool GmatCommand::SetStringParameter(const Integer id, const wxString &value,
+bool GmatCommand::SetStringParameter(const Integer id, const std::string &value,
                                      const Integer index)
 {
    return GmatBase::SetStringParameter(id, value, index);
@@ -1147,7 +1147,7 @@ bool GmatCommand::SetStringParameter(const Integer id, const wxString &value,
 
 
 //------------------------------------------------------------------------------
-//  wxString GetStringParameter(const wxString &label) const
+//  std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Retrieve a string parameter.
@@ -1157,14 +1157,14 @@ bool GmatCommand::SetStringParameter(const Integer id, const wxString &value,
  * @return The string stored for this parameter.
  */
 //------------------------------------------------------------------------------
-wxString GmatCommand::GetStringParameter(const wxString &label) const
+std::string GmatCommand::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-//  wxString GetStringParameter(const wxString &label,
+//  std::string GetStringParameter(const std::string &label,
 //                                 const Integer index) const
 //------------------------------------------------------------------------------
 /**
@@ -1176,7 +1176,7 @@ wxString GmatCommand::GetStringParameter(const wxString &label) const
  * @return The string stored for this parameter.
  */
 //------------------------------------------------------------------------------
-wxString GmatCommand::GetStringParameter(const wxString &label,
+std::string GmatCommand::GetStringParameter(const std::string &label,
                                             const Integer index) const
 {
    return GetStringParameter(GetParameterID(label), index);
@@ -1184,10 +1184,10 @@ wxString GmatCommand::GetStringParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-//  bool SetStringParameter(const wxString &label, const wxString &value)
+//  bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
 /**
- * Sets the value for a wxString parameter.
+ * Sets the value for a std::string parameter.
  *
  * @param <label> The (string) label for the parameter.
  * @param <value> New value for the parameter.
@@ -1195,19 +1195,19 @@ wxString GmatCommand::GetStringParameter(const wxString &label,
  * @return The string stored for this parameter.
  */
 //------------------------------------------------------------------------------
-bool GmatCommand::SetStringParameter(const wxString &label, 
-                                     const wxString &value)
+bool GmatCommand::SetStringParameter(const std::string &label, 
+                                     const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
 
 
 //------------------------------------------------------------------------------
-//  bool SetStringParameter(const wxString &label, const wxString &value,
+//  bool SetStringParameter(const std::string &label, const std::string &value,
 //                          const Integer index)
 //------------------------------------------------------------------------------
 /**
- * Sets the value for a wxString parameter.
+ * Sets the value for a std::string parameter.
  *
  * @param <label> The (string) label for the parameter.
  * @param <value> New value for the parameter.
@@ -1216,8 +1216,8 @@ bool GmatCommand::SetStringParameter(const wxString &label,
  * @return The string stored for this parameter.
  */
 //------------------------------------------------------------------------------
-bool GmatCommand::SetStringParameter(const wxString &label, 
-                                     const wxString &value,
+bool GmatCommand::SetStringParameter(const std::string &label, 
+                                     const std::string &value,
                                      const Integer index)
 {
    return SetStringParameter(GetParameterID(label), value, index);
@@ -1225,9 +1225,9 @@ bool GmatCommand::SetStringParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-//  bool SetCondition(const wxString &lhs, 
-//                    const wxString &operation, 
-//                    const wxString &rhs, 
+//  bool SetCondition(const std::string &lhs, 
+//                    const std::string &operation, 
+//                    const std::string &rhs, 
 //                    Integer atIndex)
 //------------------------------------------------------------------------------
 /**
@@ -1246,16 +1246,16 @@ bool GmatCommand::SetStringParameter(const wxString &label,
  * @note See subclasses for more meaningful implementations.
  */
 //------------------------------------------------------------------------------
-bool GmatCommand::SetCondition(const wxString &lhs, 
-                               const wxString &operation, 
-                               const wxString &rhs, 
+bool GmatCommand::SetCondition(const std::string &lhs, 
+                               const std::string &operation, 
+                               const std::string &rhs, 
                                Integer atIndex)
 {
    return false;
 }
 
 //------------------------------------------------------------------------------
-//  bool SetConditionOperator(const wxString &op, 
+//  bool SetConditionOperator(const std::string &op, 
 //                            Integer atIndex)
 //------------------------------------------------------------------------------
 /**
@@ -1273,7 +1273,7 @@ bool GmatCommand::SetCondition(const wxString &lhs,
  * @note See subclasses for more meaningful implementations.
  */
 //------------------------------------------------------------------------------
-bool GmatCommand::SetConditionOperator(const wxString &op, 
+bool GmatCommand::SetConditionOperator(const std::string &op, 
                                        Integer atIndex)
 {
    return false;
@@ -1340,29 +1340,29 @@ bool GmatCommand::Initialize()
 {
    #if DEBUG_COMMAND_INIT
    MessageInterface::ShowMessage
-      (wxT("GmatCommand::Initialize() %s entering\n   epochData=%p, stateData=%p, ")
-       wxT("parmData=%p, satVector.size()=%d\n"), GetTypeName().c_str(), epochData,
+      ("GmatCommand::Initialize() %s entering\n   epochData=%p, stateData=%p, "
+       "parmData=%p, satVector.size()=%d\n", GetTypeName().c_str(), epochData,
        stateData, parmData, satVector.size());
    #endif
    
    // Check to be sure the basic infrastructure is in place
    if (objectMap == NULL)
    {
-      wxString errorstr(wxT("Object map has not been initialized for "));
+      std::string errorstr("Object map has not been initialized for ");
       errorstr += GetTypeName();
       throw CommandException(errorstr);
    }
    
    if (globalObjectMap == NULL)
    {
-      wxString errorstr(wxT("Global object map has not been initialized for "));
+      std::string errorstr("Global object map has not been initialized for ");
       errorstr += GetTypeName();
       throw CommandException(errorstr);
    }
    
    if (solarSys == NULL)
    {
-      wxString errorstr(wxT("Solar system has not been initialized for "));
+      std::string errorstr("Solar system has not been initialized for ");
       errorstr += GetTypeName();
       throw CommandException(errorstr);
    }
@@ -1375,7 +1375,7 @@ bool GmatCommand::Initialize()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (epochData, wxT("epochData"), this->GetTypeName() + wxT(" deleting epochData"));
+         (epochData, "epochData", this->GetTypeName() + " deleting epochData");
       #endif
       delete [] epochData;
       epochData = NULL;
@@ -1385,7 +1385,7 @@ bool GmatCommand::Initialize()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (stateData, wxT("stateData"), this->GetTypeName() + wxT(" deleting stateData"));
+         (stateData, "stateData", this->GetTypeName() + " deleting stateData");
       #endif
       delete [] stateData;
       stateData = NULL;
@@ -1395,7 +1395,7 @@ bool GmatCommand::Initialize()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (parmData, wxT("parmData"), this->GetTypeName() + wxT(" deleting parmData"));
+         (parmData, "parmData", this->GetTypeName() + " deleting parmData");
       #endif
       delete [] parmData;
       parmData = NULL;
@@ -1406,8 +1406,8 @@ bool GmatCommand::Initialize()
    
    #if DEBUG_COMMAND_INIT
    MessageInterface::ShowMessage
-      (wxT("GmatCommand::Initialize() %s leaving\n   epochData=%p, stateData=%p, ")
-       wxT("parmData=%p, satVector.size()=%d\n"), GetTypeName().c_str(), epochData,
+      ("GmatCommand::Initialize() %s leaving\n   epochData=%p, stateData=%p, "
+       "parmData=%p, satVector.size()=%d\n", GetTypeName().c_str(), epochData,
        stateData, parmData, satVector.size());
    #endif
    
@@ -1450,7 +1450,7 @@ GmatCommand* GmatCommand::GetPrevious()
 //------------------------------------------------------------------------------
 bool GmatCommand::ForceSetNext(GmatCommand *toCmd) // dangerous!
 {
-   //ShowCommand(wxT("GmatCommand::", "ForceSetNext() this = ", this, " toCmd = "), toCmd);
+   //ShowCommand("GmatCommand::", "ForceSetNext() this = ", this, " toCmd = ", toCmd);
    next = toCmd;
    return true;
 }
@@ -1481,17 +1481,17 @@ bool GmatCommand::ForceSetPrevious(GmatCommand *toCmd) // dangerous!
 bool GmatCommand::Append(GmatCommand *cmd)
 {
    #if DEBUG_COMMAND_APPEND > 1
-   ShowCommand(wxT("GmatCommand::"), wxT("Append() this = "), this, wxT(" next = "), next);
-   ShowCommand(wxT("GmatCommand::"), wxT("Append() cmd = "), cmd);
+   ShowCommand("GmatCommand::", "Append() this = ", this, " next = ", next);
+   ShowCommand("GmatCommand::", "Append() cmd = ", cmd);
    #endif
    
    if (cmd == this)
-      throw CommandException(wxT("Attempting to add GmatCommand already in list"));
+      throw CommandException("Attempting to add GmatCommand already in list");
    
    if (next)
    {
       #ifdef DEBUG_COMMAND_APPEND
-      ShowCommand(wxT("GmatCommand::"), wxT(" appending "), cmd, wxT(" to "), next);
+      ShowCommand("GmatCommand::", " appending ", cmd, " to ", next);
       #endif
       next->Append(cmd);
    }
@@ -1501,16 +1501,16 @@ bool GmatCommand::Append(GmatCommand *cmd)
       commandChanged = true;
       
       #ifdef DEBUG_COMMAND_APPEND
-      ShowCommand(wxT("GmatCommand::"), wxT(" Setting next of "), this, wxT(" to "), cmd);
+      ShowCommand("GmatCommand::", " Setting next of ", this, " to ", cmd);
       #endif
       
       next = cmd;
       
       // Do not set previous command if this is branch end 
-      if (!this->IsOfType(wxT("BranchEnd")))
+      if (!this->IsOfType("BranchEnd"))
       {
          #ifdef DEBUG_COMMAND_APPEND
-         ShowCommand(wxT("GmatCommand::"), wxT(" Setting previous of "), cmd, wxT(" to "), this);
+         ShowCommand("GmatCommand::", " Setting previous of ", cmd, " to ", this);
          #endif
          
          cmd->previous = this;
@@ -1536,8 +1536,8 @@ bool GmatCommand::Append(GmatCommand *cmd)
 bool GmatCommand::Insert(GmatCommand *cmd, GmatCommand *prev)
 {
    #ifdef DEBUG_COMMAND_INSERT
-   ShowCommand(wxT("GmatCommand::"), wxT("Insert() this = "), this, wxT(" next = "), next);
-   ShowCommand(wxT("GmatCommand::"), wxT("Insert() cmd = "), cmd, wxT(" prev = "), prev);
+   ShowCommand("GmatCommand::", "Insert() this = ", this, " next = ", next);
+   ShowCommand("GmatCommand::", "Insert() cmd = ", cmd, " prev = ", prev);
    #endif
    
    if (this == prev)
@@ -1548,13 +1548,13 @@ bool GmatCommand::Insert(GmatCommand *cmd, GmatCommand *prev)
          return Append(cmd);
       
       #ifdef DEBUG_COMMAND_APPEND
-      ShowCommand(wxT("GmatCommand::"), wxT(" Setting next of "), this, wxT(" to "), cmd);
+      ShowCommand("GmatCommand::", " Setting next of ", this, " to ", cmd);
       #endif
       
       next = cmd;
       
       #if DEBUG_COMMAND_INSERT
-      ShowCommand(wxT("GmatCommand::"), wxT(" Setting previous of "), cmd, wxT(" to "), prev);
+      ShowCommand("GmatCommand::", " Setting previous of ", cmd, " to ", prev);
       #endif
       
       cmd->previous = prev;
@@ -1584,11 +1584,11 @@ bool GmatCommand::Insert(GmatCommand *cmd, GmatCommand *prev)
 GmatCommand* GmatCommand::Remove(GmatCommand *cmd)
 {
    #ifdef DEBUG_COMMAND_REMOVE
-   ShowCommand(wxT("GmatCommand::"), wxT("Remove() this = "), this, wxT(" cmd = "), cmd);
-   ShowCommand(wxT("GmatCommand::"), wxT("Remove() next = "), next, wxT(" prev = "), previous);
+   ShowCommand("GmatCommand::", "Remove() this = ", this, " cmd = ", cmd);
+   ShowCommand("GmatCommand::", "Remove() next = ", next, " prev = ", previous);
    #endif
    
-   if (this->IsOfType(wxT("BranchEnd")))
+   if (this->IsOfType("BranchEnd"))
    {
       return NULL;
    }
@@ -1607,7 +1607,7 @@ GmatCommand* GmatCommand::Remove(GmatCommand *cmd)
       GmatCommand *temp = next;
       
       #ifdef DEBUG_COMMAND_REMOVE
-      ShowCommand(wxT("GmatCommand::"), wxT(" Setting next of "), this, wxT(" to "), next->GetNext());
+      ShowCommand("GmatCommand::", " Setting next of ", this, " to ", next->GetNext());
       #endif
       
       next = next->GetNext();
@@ -1616,7 +1616,7 @@ GmatCommand* GmatCommand::Remove(GmatCommand *cmd)
       if (next != NULL)
       {
          #ifdef DEBUG_COMMAND_REMOVE
-         ShowCommand(wxT("GmatCommand::"), wxT(" Setting previous of "), next, wxT(" to "), this);
+         ShowCommand("GmatCommand::", " Setting previous of ", next, " to ", this);
          #endif
          
          next->previous = this;
@@ -1812,30 +1812,30 @@ void GmatCommand::RunComplete()
 {
    #if DEBUG_RUN_COMPLETE
    MessageInterface::ShowMessage
-      (wxT("GmatCommand::RunComplete for (%p)%s\n"), this, typeName.c_str());
+      ("GmatCommand::RunComplete for (%p)%s\n", this, typeName.c_str());
    #endif
    
    // Reset stream ID and initialized flag
    streamID = -1;
    initialized = false;
    
-   if (this->IsOfType(wxT("BranchEnd")))
+   if (this->IsOfType("BranchEnd"))
       return;
    
    // By default, just call RunComplete on the next command.
    if (next)
    {
       #if DEBUG_RUN_COMPLETE
-      MessageInterface::ShowMessage(wxT("   Next cmd is a <%p><%s>'%s'\n"), next,
+      MessageInterface::ShowMessage("   Next cmd is a <%p><%s>'%s'\n", next,
                                     (next->GetTypeName()).c_str(), next->GetGeneratingString().c_str());
-      if (next->IsOfType(wxT("BranchEnd")))
+      if (next->IsOfType("BranchEnd"))
          MessageInterface::ShowMessage
-            (wxT("   .. and that cmd is a branchEnd!!!!!!!!! %s\n"),
+            ("   .. and that cmd is a branchEnd!!!!!!!!! %s\n",
              (next->GetTypeName()).c_str());
       #endif
       
       // Branch command ends point back to start; this line prevents looping
-      if (!next->IsOfType(wxT("BranchEnd")))
+      if (!next->IsOfType("BranchEnd"))
          next->RunComplete();
    }
 }
@@ -1856,9 +1856,9 @@ void GmatCommand::BuildCommandSummary(bool commandCompleted)
 {
    #if DEBUG_BUILD_CMD_SUMMARY
    MessageInterface::ShowMessage
-      (wxT("GmatCommand::BuildCommandSummary() %s, commandCompleted=%d, ")
-       wxT("objectMap=%p, globalObjectMap=%p\n    epochData=%p, stateData=%p, parmData=%p, ")
-       wxT("satVector.size()=%d\n"), GetTypeName().c_str(), commandCompleted, objectMap,
+      ("GmatCommand::BuildCommandSummary() %s, commandCompleted=%d, "
+       "objectMap=%p, globalObjectMap=%p\n    epochData=%p, stateData=%p, parmData=%p, "
+       "satVector.size()=%d\n", GetTypeName().c_str(), commandCompleted, objectMap,
        globalObjectMap, epochData, stateData, parmData, satVector.size());
    #endif
    
@@ -1869,31 +1869,31 @@ void GmatCommand::BuildCommandSummary(bool commandCompleted)
       {
          // Build summary data for each spacecraft in the object list
          GmatBase *obj;
-         for (std::map<wxString, GmatBase *>::iterator i =
+         for (std::map<std::string, GmatBase *>::iterator i =
                objectMap->begin(); i != objectMap->end(); ++i)
          {
             #ifdef DEBUG_COMMAND_SUMMARY_LIST
-               MessageInterface::ShowMessage(wxT("Examining %s\n"), i->first.c_str());
+               MessageInterface::ShowMessage("Examining %s\n", i->first.c_str());
             #endif
             obj = i->second;
 
             if (obj == NULL)
                continue;
             
-            if (obj->GetTypeName() == wxT("Spacecraft"))
+            if (obj->GetTypeName() == "Spacecraft")
             {
                satVector.push_back((SpaceObject*)obj);
                if (satEpochID == -1)
                {
-                  satEpochID = obj->GetParameterID(wxT("A1Epoch"));
-                  satCdID = obj->GetParameterID(wxT("Cd"));
-                  satDragAreaID = obj->GetParameterID(wxT("DragArea"));
-                  satCrID = obj->GetParameterID(wxT("Cr"));
-                  satSRPAreaID = obj->GetParameterID(wxT("SRPArea"));
-                  satTankID = obj->GetParameterID(wxT("Tanks"));
-                  satThrusterID = obj->GetParameterID(wxT("Thrusters"));
-                  satDryMassID = obj->GetParameterID(wxT("DryMass"));
-                  satTotalMassID = obj->GetParameterID(wxT("TotalMass"));
+                  satEpochID = obj->GetParameterID("A1Epoch");
+                  satCdID = obj->GetParameterID("Cd");
+                  satDragAreaID = obj->GetParameterID("DragArea");
+                  satCrID = obj->GetParameterID("Cr");
+                  satSRPAreaID = obj->GetParameterID("SRPArea");
+                  satTankID = obj->GetParameterID("Tanks");
+                  satThrusterID = obj->GetParameterID("Thrusters");
+                  satDryMassID = obj->GetParameterID("DryMass");
+                  satTotalMassID = obj->GetParameterID("TotalMass");
                }
 
                ++satsInMaps;
@@ -1904,31 +1904,31 @@ void GmatCommand::BuildCommandSummary(bool commandCompleted)
       {
          // Add summary data for each spacecraft in the global object list
          GmatBase *obj;
-         for (std::map<wxString, GmatBase *>::iterator i =
+         for (std::map<std::string, GmatBase *>::iterator i =
                globalObjectMap->begin(); i != globalObjectMap->end(); ++i)
          {
             #ifdef DEBUG_COMMAND_SUMMARY_LIST
-               MessageInterface::ShowMessage(wxT("Examining %s\n"), i->first.c_str());
+               MessageInterface::ShowMessage("Examining %s\n", i->first.c_str());
             #endif
             obj = i->second;
 
             if (obj == NULL)
                continue;
             
-            if (obj->GetTypeName() == wxT("Spacecraft"))
+            if (obj->GetTypeName() == "Spacecraft")
             {
                satVector.push_back((SpaceObject*)obj);
                if (satEpochID == -1)
                {
-                  satEpochID = obj->GetParameterID(wxT("A1Epoch"));
-                  satCdID = obj->GetParameterID(wxT("Cd"));
-                  satDragAreaID = obj->GetParameterID(wxT("DragArea"));
-                  satCrID = obj->GetParameterID(wxT("Cr"));
-                  satSRPAreaID = obj->GetParameterID(wxT("SRPArea"));
-                  satTankID = obj->GetParameterID(wxT("Tanks"));
-                  satThrusterID = obj->GetParameterID(wxT("Thrusters"));
-                  satDryMassID = obj->GetParameterID(wxT("DryMass"));
-                  satTotalMassID = obj->GetParameterID(wxT("TotalMass"));
+                  satEpochID = obj->GetParameterID("A1Epoch");
+                  satCdID = obj->GetParameterID("Cd");
+                  satDragAreaID = obj->GetParameterID("DragArea");
+                  satCrID = obj->GetParameterID("Cr");
+                  satSRPAreaID = obj->GetParameterID("SRPArea");
+                  satTankID = obj->GetParameterID("Tanks");
+                  satThrusterID = obj->GetParameterID("Thrusters");
+                  satDryMassID = obj->GetParameterID("DryMass");
+                  satTotalMassID = obj->GetParameterID("TotalMass");
                }
 
                ++satsInMaps;
@@ -1941,8 +1941,8 @@ void GmatCommand::BuildCommandSummary(bool commandCompleted)
          {
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Remove
-               (epochData, wxT("epochData"), this->GetTypeName() + wxT("::BuildCommandSummary()"),
-                wxT("deleting epochData"));
+               (epochData, "epochData", this->GetTypeName() + "::BuildCommandSummary()",
+                "deleting epochData");
             #endif
             delete [] epochData;
          }
@@ -1950,8 +1950,8 @@ void GmatCommand::BuildCommandSummary(bool commandCompleted)
          {
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Remove
-               (stateData, wxT("stateData"), this->GetTypeName() + wxT("::BuildCommandSummary()"),
-                wxT("deleting stateData"));
+               (stateData, "stateData", this->GetTypeName() + "::BuildCommandSummary()",
+                "deleting stateData");
             #endif
             delete [] stateData;
          }
@@ -1959,8 +1959,8 @@ void GmatCommand::BuildCommandSummary(bool commandCompleted)
          {
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Remove
-               (parmData, wxT("parmData"), this->GetTypeName() + wxT("::BuildCommandSummary()"),
-                wxT("deleting parmData"));
+               (parmData, "parmData", this->GetTypeName() + "::BuildCommandSummary()",
+                "deleting parmData");
             #endif
             delete [] parmData;
          }
@@ -1969,22 +1969,22 @@ void GmatCommand::BuildCommandSummary(bool commandCompleted)
          parmData = new Real[6*satsInMaps];
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Add
-            (epochData, wxT("epochData"), this->GetTypeName() + wxT("::BuildCommandSummary()"),
-             wxT("epochData = new Real[satsInMaps]"));
+            (epochData, "epochData", this->GetTypeName() + "::BuildCommandSummary()",
+             "epochData = new Real[satsInMaps]");
          MemoryTracker::Instance()->Add
-            (stateData, wxT("stateData"), this->GetTypeName() + wxT("::BuildCommandSummary()"),
-             wxT("stateData = new Real[satsInMaps]"));
+            (stateData, "stateData", this->GetTypeName() + "::BuildCommandSummary()",
+             "stateData = new Real[satsInMaps]");
          MemoryTracker::Instance()->Add
-            (parmData, wxT("parmData"), this->GetTypeName() + wxT("::BuildCommandSummary()"),
-             wxT("parmData = new Real[satsInMaps]"));
+            (parmData, "parmData", this->GetTypeName() + "::BuildCommandSummary()",
+             "parmData = new Real[satsInMaps]");
          #endif
       }
    }
    
    #if DEBUG_BUILD_CMD_SUMMARY
    MessageInterface::ShowMessage
-      (wxT("GmatCommand::BuildCommandSummary() Now fill in data...\n   ")
-       wxT("satsInMaps=%d, satVector.size()=%d\n"), satsInMaps,
+      ("GmatCommand::BuildCommandSummary() Now fill in data...\n   "
+       "satsInMaps=%d, satVector.size()=%d\n", satsInMaps,
        satVector.size());
    #endif
    
@@ -2020,41 +2020,41 @@ void GmatCommand::BuildCommandSummaryString(bool commandCompleted)
 {
    #ifdef DEBUG_COMMAND_SUMMARY_TYPE
       MessageInterface::ShowMessage(
-            wxT("   Now entering BuildCommandSummaryString with commandCompleted = %s, summaryForEntireMission = %s, missionPhysicsBasedOnly = %s, for command %s of type %s which is %s a physics-based command.\n"),
-            (commandCompleted? wxT("true") : wxT("false")),(summaryForEntireMission? wxT("true") : wxT("false")), (missionPhysicsBasedOnly? wxT("true") : wxT("false")), summaryName.c_str(), typeName.c_str(),
-            (physicsBasedCommand? wxT("DEFINITELY") :wxT("NOT")));
+            "   Now entering BuildCommandSummaryString with commandCompleted = %s, summaryForEntireMission = %s, missionPhysicsBasedOnly = %s, for command %s of type %s which is %s a physics-based command.\n",
+            (commandCompleted? "true" : "false"),(summaryForEntireMission? "true" : "false"), (missionPhysicsBasedOnly? "true" : "false"), summaryName.c_str(), typeName.c_str(),
+            (physicsBasedCommand? "DEFINITELY" :"NOT"));
    #endif
-   wxString data;
+   std::stringstream data;
    StateConverter    stateConverter;
 
    /// if we're writing the entire mission summary for only physics-based commands, return if not a physics-based command
    if (summaryForEntireMission && ((missionPhysicsBasedOnly && (!physicsBasedCommand)) || !includeInSummary))
    {
-      data << wxT("");
-      commandSummary = data;
+      data << "";
+      commandSummary = data.str();
       return;
    }
    if (!summaryForEntireMission && (!includeInSummary))
    {
-      data << wxT("No summary data for ") << typeName << wxT(" command ") << summaryName << wxT("\n");
-      commandSummary = data;
+      data << "No summary data for " << typeName << " command " << summaryName << "\n";
+      commandSummary = data.str();
       return;
    }
 
    // Write the separator and the name and type of the command first
    if (summaryForEntireMission)
-      data << wxT("======  ");
-   data << typeName << wxT(" Command: ") << summaryName << wxT("\n");
+      data << "======  ";
+   data << typeName << " Command: " << summaryName << "\n";
 
    if (((objectMap == NULL) && (globalObjectMap == NULL)) ||
        (satVector.size() == 0))
    {
-         data << wxT("No command summary data available\n");
+         data << "No command summary data available\n";
    }
    else
    {
       if (!commandCompleted)
-         data << wxT("Execute the script to generate command summary data\n");
+         data << "Execute the script to generate command summary data\n";
       else
       {
         // data << "-------------------------------------------"
@@ -2091,18 +2091,18 @@ void GmatCommand::BuildCommandSummaryString(bool commandCompleted)
             summaryCoordSys          = (CoordinateSystem*) FindObject(summaryCoordSysName);
             if (summaryCoordSys == NULL)
             {
-               wxString errmsg = wxT("Cannot use coordinate system ");
-               errmsg += summaryCoordSysName + wxT(" to build command summary.\n");
-               errmsg += wxT("Please execute script to make ") + summaryCoordSysName + wxT(" available.\n");
+               std::string errmsg = "Cannot use coordinate system ";
+               errmsg += summaryCoordSysName + " to build command summary.\n";
+               errmsg += "Please execute script to make " + summaryCoordSysName + " available.\n";
                throw CommandException(errmsg);
             }
             cmdOrigin                = summaryCoordSys->GetOrigin();
             if (!cmdOrigin)
-               throw CommandException(wxT("Origin for summary coordinate system is NULL!!!!!\n"));
+               throw CommandException("Origin for summary coordinate system is NULL!!!!!\n");
 
             if (!stateConverter.SetMu(summaryCoordSys))
             {
-               wxString errmsg = wxT("GmatCommand::BuildCommandSummaryString: Error setting mu for StateConverter.");
+               std::string errmsg = "GmatCommand::BuildCommandSummaryString: Error setting mu for StateConverter.";
                throw CommandException(errmsg);
             }
 
@@ -2111,18 +2111,18 @@ void GmatCommand::BuildCommandSummaryString(bool commandCompleted)
             // First convert the cartesian state to the summaryCoordSys
             cc.Convert(a1, cartStateInternal, internalCoordSys, cartState, summaryCoordSys);
             // Need to convert state to all representations
-            kepState        = stateConverter.FromCartesian(cartState, wxT("Keplerian"));
-            modKepState     = stateConverter.FromCartesian(cartState, wxT("ModifiedKeplerian"));
-            sphStateAZFPA   = stateConverter.FromCartesian(cartState, wxT("SphericalAZFPA"));
-            sphStateRADEC   = stateConverter.FromCartesian(cartState, wxT("SphericalRADEC"));
+            kepState        = stateConverter.FromCartesian(cartState, "Keplerian");
+            modKepState     = stateConverter.FromCartesian(cartState, "ModifiedKeplerian");
+            sphStateAZFPA   = stateConverter.FromCartesian(cartState, "SphericalAZFPA");
+            sphStateRADEC   = stateConverter.FromCartesian(cartState, "SphericalRADEC");
 
             #ifdef DEBUG_COMMAND_SUMMARY_STATE
-               MessageInterface::ShowMessage(wxT("Now converting from %s to %s coordinate system.\n"),
+               MessageInterface::ShowMessage("Now converting from %s to %s coordinate system.\n",
                      internalCoordSys->GetName().c_str(), summaryCoordSys->GetName().c_str());
-               MessageInterface::ShowMessage(wxT("epoch = %12.10f\n"), a1.Get());
-               MessageInterface::ShowMessage(wxT("cart state from array    = %s\n"), cartStateInternal.ToString().c_str());
-               MessageInterface::ShowMessage(wxT("cart state in summary CS = %s\n"), cartState.ToString().c_str());
-               MessageInterface::ShowMessage(wxT("keplerian state in summary CS = %s\n"), kepState.ToString().c_str());
+               MessageInterface::ShowMessage("epoch = %12.10f\n", a1.Get());
+               MessageInterface::ShowMessage("cart state from array    = %s\n", cartStateInternal.ToString().c_str());
+               MessageInterface::ShowMessage("cart state in summary CS = %s\n", cartState.ToString().c_str());
+               MessageInterface::ShowMessage("keplerian state in summary CS = %s\n", kepState.ToString().c_str());
             #endif
 
             isEccentric      = false;
@@ -2145,7 +2145,7 @@ void GmatCommand::BuildCommandSummaryString(bool commandCompleted)
                                kepState[1], !isHyperbolic) * GmatMathConstants::DEG_PER_RAD;
 
 
-            if (cmdOrigin->IsOfType(wxT("CelestialBody"))) // This is required to be true, for now
+            if (cmdOrigin->IsOfType("CelestialBody")) // This is required to be true, for now
             {
                originIsCelestialBody    = true;
                originEqRad              = ((CelestialBody*)cmdOrigin)->GetEquatorialRadius();
@@ -2167,25 +2167,25 @@ void GmatCommand::BuildCommandSummaryString(bool commandCompleted)
                originToSun.Normalize();
             }
             #ifdef DEBUG_COMMAND_SUMMARY_REF_DATA
-               MessageInterface::ShowMessage(wxT("----> Spacecraft Origin is %s of type %s\n"),
+               MessageInterface::ShowMessage("----> Spacecraft Origin is %s of type %s\n",
                      objOrigin->GetName().c_str(), objOrigin->GetTypeName().c_str());
-               MessageInterface::ShowMessage(wxT("----> Command Origin is %s of type %s\n"),
+               MessageInterface::ShowMessage("----> Command Origin is %s of type %s\n",
                      cmdOrigin->GetName().c_str(), cmdOrigin->GetTypeName().c_str());
             #endif
 
-            meanMotion       = GmatCalcUtil::CalculateKeplerianData(wxT("MeanMotion"), cartState, originMu);
-            semilatusRectum  = GmatCalcUtil::CalculateAngularData(wxT("SemilatusRectum"), cartState, originMu, originToSun);
-            angularMomentum  = GmatCalcUtil::CalculateAngularData(wxT("HMag"), cartState, originMu, originToSun);
-            betaAngle        = GmatCalcUtil::CalculateAngularData(wxT("BetaAngle"), cartState, originMu, originToSun);
-            orbitEnergy      = GmatCalcUtil::CalculateKeplerianData(wxT("Energy"), cartState, originMu);
-            c3               = GmatCalcUtil::CalculateKeplerianData(wxT("C3Energy"), cartState, originMu);
-            velPeriapsis     = GmatCalcUtil::CalculateKeplerianData(wxT("VelPeriapsis"), cartState, originMu);
+            meanMotion       = GmatCalcUtil::CalculateKeplerianData("MeanMotion", cartState, originMu);
+            semilatusRectum  = GmatCalcUtil::CalculateAngularData("SemilatusRectum", cartState, originMu, originToSun);
+            angularMomentum  = GmatCalcUtil::CalculateAngularData("HMag", cartState, originMu, originToSun);
+            betaAngle        = GmatCalcUtil::CalculateAngularData("BetaAngle", cartState, originMu, originToSun);
+            orbitEnergy      = GmatCalcUtil::CalculateKeplerianData("Energy", cartState, originMu);
+            c3               = GmatCalcUtil::CalculateKeplerianData("C3Energy", cartState, originMu);
+            velPeriapsis     = GmatCalcUtil::CalculateKeplerianData("VelPeriapsis", cartState, originMu);
             periAltitude     = modKepState[0] - originEqRad;
 
             if (isEccentric)
             {
-               orbitPeriod       = GmatCalcUtil::CalculateKeplerianData(wxT("OrbitPeriod"), cartState, originMu);
-               velApoapsis       = GmatCalcUtil::CalculateKeplerianData(wxT("VelApoapsis"), cartState, originMu);
+               orbitPeriod       = GmatCalcUtil::CalculateKeplerianData("OrbitPeriod", cartState, originMu);
+               velApoapsis       = GmatCalcUtil::CalculateKeplerianData("VelApoapsis", cartState, originMu);
             }
             else  // these shouldn't be written anyway
             {
@@ -2196,15 +2196,15 @@ void GmatCommand::BuildCommandSummaryString(bool commandCompleted)
             if (originIsCelestialBody)
             {
                #ifdef DEBUG_COMMAND_SUMMARY_REF_DATA
-                  MessageInterface::ShowMessage(wxT("----> Now creating BodyFixed cs and passing into PlanetData objects.\n"));
+                  MessageInterface::ShowMessage("----> Now creating BodyFixed cs and passing into PlanetData objects.\n");
                #endif
                // Need a origin-centered BodyFixed coordinate system here
-                  CoordinateSystem *originBF = CoordinateSystem::CreateLocalCoordinateSystem(wxT("OriginBodyFixed"), wxT("BodyFixed"),
+                  CoordinateSystem *originBF = CoordinateSystem::CreateLocalCoordinateSystem("OriginBodyFixed", "BodyFixed",
                                                cmdOrigin, NULL, NULL, ((SpacePoint*)obj)->GetJ2000Body(), solarSys);
                if (!originBF)
                {
-                  wxString errmsg = wxT("Error creating BodyFixed Coordinate System for origin ");
-                  errmsg += objOrigin->GetName() + wxT("\n");
+                  std::string errmsg = "Error creating BodyFixed Coordinate System for origin ";
+                  errmsg += objOrigin->GetName() + "\n";
                   throw CommandException(errmsg);
                }
                // Convert to the origin-centered BodyFixed Coordinate System
@@ -2212,25 +2212,25 @@ void GmatCommand::BuildCommandSummaryString(bool commandCompleted)
                cc.Convert(a1, cartStateInternal, internalCoordSys, cartBodyFixed, originBF);
 
 
-               lst                = GmatCalcUtil::CalculatePlanetData(wxT("LST"), cartBodyFixed, originEqRad, originFlattening, originHourAngle);
-               mha                = GmatCalcUtil::CalculatePlanetData(wxT("MHA"), cartBodyFixed, originEqRad, originFlattening, originHourAngle);
-               latitude           = GmatCalcUtil::CalculatePlanetData(wxT("Latitude"), cartBodyFixed, originEqRad, originFlattening, originHourAngle);
-               longitude          = GmatCalcUtil::CalculatePlanetData(wxT("Longitude"), cartBodyFixed, originEqRad, originFlattening, originHourAngle);
-               altitude           = GmatCalcUtil::CalculatePlanetData(wxT("Altitude"), cartBodyFixed, originEqRad, originFlattening, originHourAngle);
+               lst                = GmatCalcUtil::CalculatePlanetData("LST", cartBodyFixed, originEqRad, originFlattening, originHourAngle);
+               mha                = GmatCalcUtil::CalculatePlanetData("MHA", cartBodyFixed, originEqRad, originFlattening, originHourAngle);
+               latitude           = GmatCalcUtil::CalculatePlanetData("Latitude", cartBodyFixed, originEqRad, originFlattening, originHourAngle);
+               longitude          = GmatCalcUtil::CalculatePlanetData("Longitude", cartBodyFixed, originEqRad, originFlattening, originHourAngle);
+               altitude           = GmatCalcUtil::CalculatePlanetData("Altitude", cartBodyFixed, originEqRad, originFlattening, originHourAngle);
                if (isHyperbolic)
                {
                   try
                   {
-                     bDotT            = GmatCalcUtil::CalculateBPlaneData(wxT("BDotR"), cartState, originMu);
-                     bDotR            = GmatCalcUtil::CalculateBPlaneData(wxT("BDotT"), cartState, originMu);
-                     bVectorAngle     = GmatCalcUtil::CalculateBPlaneData(wxT("BVectorAngle"), cartState, originMu);
-                     bVectorMag       = GmatCalcUtil::CalculateBPlaneData(wxT("BVectorMag"), cartState, originMu);
-                     dla              = GmatCalcUtil::CalculateAngularData(wxT("DLA"), cartState, originMu, originToSun);
-                     rla              = GmatCalcUtil::CalculateAngularData(wxT("RLA"), cartState, originMu, originToSun);
+                     bDotT            = GmatCalcUtil::CalculateBPlaneData("BDotR", cartState, originMu);
+                     bDotR            = GmatCalcUtil::CalculateBPlaneData("BDotT", cartState, originMu);
+                     bVectorAngle     = GmatCalcUtil::CalculateBPlaneData("BVectorAngle", cartState, originMu);
+                     bVectorMag       = GmatCalcUtil::CalculateBPlaneData("BVectorMag", cartState, originMu);
+                     dla              = GmatCalcUtil::CalculateAngularData("DLA", cartState, originMu, originToSun);
+                     rla              = GmatCalcUtil::CalculateAngularData("RLA", cartState, originMu, originToSun);
                   }
                   catch (BaseException& be)
                   {
-                     MessageInterface::ShowMessage(wxT("ERROR!! %s\n"), be.GetFullMessage().c_str());
+                     MessageInterface::ShowMessage("ERROR!! %s\n", be.GetFullMessage().c_str());
                   }
                }
                else  // these shouldn't be written anyway
@@ -2265,85 +2265,85 @@ void GmatCommand::BuildCommandSummaryString(bool commandCompleted)
             Real tdbModJulEpoch     = TimeConverterUtil::Convert(epochData[i],
                                       TimeConverterUtil::A1MJD, TimeConverterUtil::TDBMJD,
                                       GmatTimeConstants::JD_JAN_5_1941);
-            wxString utcString   = TimeConverterUtil::ConvertMjdToGregorian(utcModJulEpoch);
-            wxString taiString   = TimeConverterUtil::ConvertMjdToGregorian(taiModJulEpoch);
-            wxString ttString    = TimeConverterUtil::ConvertMjdToGregorian(ttModJulEpoch);
-            wxString tdbString   = TimeConverterUtil::ConvertMjdToGregorian(tdbModJulEpoch);
-//            data.flags(std::ios::left);
-//            data.precision(10);
-//            data.setf(std::ios::fixed,std::ios::floatfield);
-//            data.fill('0');
-//            data.width(20);
+            std::string utcString   = TimeConverterUtil::ConvertMjdToGregorian(utcModJulEpoch);
+            std::string taiString   = TimeConverterUtil::ConvertMjdToGregorian(taiModJulEpoch);
+            std::string ttString    = TimeConverterUtil::ConvertMjdToGregorian(ttModJulEpoch);
+            std::string tdbString   = TimeConverterUtil::ConvertMjdToGregorian(tdbModJulEpoch);
+            data.flags(std::ios::left);
+            data.precision(10);
+            data.setf(std::ios::fixed,std::ios::floatfield);
+            data.fill('0');
+            data.width(20);
 
             // Add a between-spacecraft break
             if (i > 0)
-               data << wxT("\n   =================================================")
-                     wxT("=======================\n\n");
+               data << "\n   ================================================="
+                     "=======================\n\n";
 
             //  Write the epoch data
-            data << wxT("        Spacecraft       : ") << obj->GetName() << wxT("\n")
-                  << wxT("        Coordinate System: ") << summaryCoordSysName <<  wxT("\n\n")
+            data << "        Spacecraft       : " << obj->GetName() << "\n"
+                  << "        Coordinate System: " << summaryCoordSysName <<  "\n\n"
 //                  << "        Coordinate System: EarthMJ2000Eq \n\n"
 
-                 << wxT("        Time System   Gregorian                     ")
-                 << wxT("Modified Julian  \n")
-                 << wxT("        --------------------------------------------")
-                 << wxT("--------------------------    \n")
-                 << wxT("        UTC Epoch:    ") << utcString << wxT("      ") << utcModJulEpoch <<wxT("\n")
-                 << wxT("        TAI Epoch:    ") << taiString << wxT("      ") << taiModJulEpoch <<wxT("\n")
-                 << wxT("        TT  Epoch:    ") << ttString  << wxT("      ") << ttModJulEpoch  <<wxT("\n")
-                 << wxT("        TDB Epoch:    ") << tdbString << wxT("      ") << tdbModJulEpoch <<wxT("\n\n");
+                 << "        Time System   Gregorian                     "
+                 << "Modified Julian  \n"
+                 << "        --------------------------------------------"
+                 << "--------------------------    \n"
+                 << "        UTC Epoch:    " << utcString << "      " << utcModJulEpoch <<"\n"
+                 << "        TAI Epoch:    " << taiString << "      " << taiModJulEpoch <<"\n"
+                 << "        TT  Epoch:    " << ttString  << "      " << ttModJulEpoch  <<"\n"
+                 << "        TDB Epoch:    " << tdbString << "      " << tdbModJulEpoch <<"\n\n";
 
-//            data.unsetf(std::ios::fixed);
-//            data.unsetf(std::ios::floatfield);
-//            data.precision(15);
-//            data.width(20);
+            data.unsetf(std::ios::fixed);
+            data.unsetf(std::ios::floatfield);
+            data.precision(15);
+            data.width(20);
 
-            data << wxT("        Cartesian State                       ")
-                 << wxT("Keplerian State\n")
-                                      << wxT("        ---------------------------           ")
-                                      << wxT("-------------------------------- \n")
-                 << wxT("        X  = ")   << BuildNumber(cartState[0])  << wxT(" km     ")
-                 << wxT("        SMA  = ") << BuildNumber(kepState[0])   << wxT(" km\n")
-                 << wxT("        Y  = ")   << BuildNumber(cartState[1])  << wxT(" km     ")
-                 << wxT("        ECC  = ") << BuildNumber(kepState[1])   << wxT("\n")
-                 << wxT("        Z  = ")   << BuildNumber(cartState[2])  << wxT(" km     ")
-                 << wxT("        INC  = ") << BuildNumber(kepState[2])   << wxT(" deg\n")
-                 << wxT("        VX = ")   << BuildNumber(cartState[3])  << wxT(" km/sec ")
-                 << wxT("        RAAN = ") << BuildNumber(kepState[3])   << wxT(" deg\n")
-                 << wxT("        VY = ")   << BuildNumber(cartState[4])  << wxT(" km/sec ")
-                 << wxT("        AOP  = ") << BuildNumber(kepState[4])   << wxT(" deg\n")
-                 << wxT("        VZ = ")   << BuildNumber(cartState[5])  << wxT(" km/sec ")
-                 << wxT("        TA   = ") << BuildNumber(kepState[5])   << wxT(" deg\n")
-                 << wxT("                                      ")        << wxT("        MA   = ") << BuildNumber(ma) << wxT(" deg\n");
+            data << "        Cartesian State                       "
+                 << "Keplerian State\n"
+                                      << "        ---------------------------           "
+                                      << "-------------------------------- \n"
+                 << "        X  = "   << BuildNumber(cartState[0])  << " km     "
+                 << "        SMA  = " << BuildNumber(kepState[0])   << " km\n"
+                 << "        Y  = "   << BuildNumber(cartState[1])  << " km     "
+                 << "        ECC  = " << BuildNumber(kepState[1])   << "\n"
+                 << "        Z  = "   << BuildNumber(cartState[2])  << " km     "
+                 << "        INC  = " << BuildNumber(kepState[2])   << " deg\n"
+                 << "        VX = "   << BuildNumber(cartState[3])  << " km/sec "
+                 << "        RAAN = " << BuildNumber(kepState[3])   << " deg\n"
+                 << "        VY = "   << BuildNumber(cartState[4])  << " km/sec "
+                 << "        AOP  = " << BuildNumber(kepState[4])   << " deg\n"
+                 << "        VZ = "   << BuildNumber(cartState[5])  << " km/sec "
+                 << "        TA   = " << BuildNumber(kepState[5])   << " deg\n"
+                 << "                                      "        << "        MA   = " << BuildNumber(ma) << " deg\n";
             if (isEccentric)
-               data << wxT("                                      ")     << wxT("        EA   = ") << BuildNumber(ea) << wxT(" deg\n");
+               data << "                                      "     << "        EA   = " << BuildNumber(ea) << " deg\n";
             else if (isHyperbolic)
-               data << wxT("                                      ")     << wxT("        HA   = ") << BuildNumber(ha) << wxT(" deg\n");
-            data << wxT("\n        Spherical State                       ")
-                 << wxT("Other Orbit Data\n")
-                 << wxT("        ---------------------------           ")
-                 << wxT("--------------------------------\n")
-                 << wxT("        RMAG = ")               << BuildNumber(sphStateAZFPA[0])           << wxT(" km   ")
-                 << wxT("        Mean Motion        = ") << BuildNumber(meanMotion, true)           << wxT(" deg/sec\n")
-                 << wxT("        RA   = ")               << BuildNumber(sphStateAZFPA[1])           << wxT(" deg  ")
-                 << wxT("        Orbit Energy       = ") << BuildNumber(orbitEnergy, false)         << wxT(" Km^2/s^2\n")
-                 << wxT("        DEC  = ")               << BuildNumber(sphStateAZFPA[2])           << wxT(" deg  ")
-                 << wxT("        C3                 = ") << BuildNumber(c3, false)                  << wxT(" Km^2/s^2\n")
-                 << wxT("        VMAG = ")               << BuildNumber(sphStateAZFPA[3])           << wxT(" km/s ")
-                 << wxT("        Semilatus Rectum   = ") << BuildNumber(semilatusRectum, false)     << wxT(" km   \n")
-                 << wxT("        AZI  = ")               << BuildNumber(sphStateAZFPA[4])           << wxT(" deg  ")
-                 << wxT("        Angular Momentum   = ") << BuildNumber(angularMomentum, false)     << wxT(" km^2/s\n")
-                 << wxT("        VFPA = ")               << BuildNumber(sphStateAZFPA[5])           << wxT(" deg  ")
-                 << wxT("        Beta Angle         = ") << BuildNumber(betaAngle, false)           << wxT(" deg  \n")
-                 << wxT("        RAV  = ")               << BuildNumber(sphStateRADEC[4])           << wxT(" deg  ")
-                 << wxT("        Periapsis Altitude = ") << BuildNumber(periAltitude, false)        << wxT(" km   \n")
-                 << wxT("        DECV = ")               << BuildNumber(sphStateRADEC[5])           << wxT(" deg  ")
-                 << wxT("        VelPeriapsis       = ") << BuildNumber(velPeriapsis, false)        << wxT(" km/s\n");
+               data << "                                      "     << "        HA   = " << BuildNumber(ha) << " deg\n";
+            data << "\n        Spherical State                       "
+                 << "Other Orbit Data\n"
+                 << "        ---------------------------           "
+                 << "--------------------------------\n"
+                 << "        RMAG = "               << BuildNumber(sphStateAZFPA[0])           << " km   "
+                 << "        Mean Motion        = " << BuildNumber(meanMotion, true)           << " deg/sec\n"
+                 << "        RA   = "               << BuildNumber(sphStateAZFPA[1])           << " deg  "
+                 << "        Orbit Energy       = " << BuildNumber(orbitEnergy, false)         << " Km^2/s^2\n"
+                 << "        DEC  = "               << BuildNumber(sphStateAZFPA[2])           << " deg  "
+                 << "        C3                 = " << BuildNumber(c3, false)                  << " Km^2/s^2\n"
+                 << "        VMAG = "               << BuildNumber(sphStateAZFPA[3])           << " km/s "
+                 << "        Semilatus Rectum   = " << BuildNumber(semilatusRectum, false)     << " km   \n"
+                 << "        AZI  = "               << BuildNumber(sphStateAZFPA[4])           << " deg  "
+                 << "        Angular Momentum   = " << BuildNumber(angularMomentum, false)     << " km^2/s\n"
+                 << "        VFPA = "               << BuildNumber(sphStateAZFPA[5])           << " deg  "
+                 << "        Beta Angle         = " << BuildNumber(betaAngle, false)           << " deg  \n"
+                 << "        RAV  = "               << BuildNumber(sphStateRADEC[4])           << " deg  "
+                 << "        Periapsis Altitude = " << BuildNumber(periAltitude, false)        << " km   \n"
+                 << "        DECV = "               << BuildNumber(sphStateRADEC[5])           << " deg  "
+                 << "        VelPeriapsis       = " << BuildNumber(velPeriapsis, false)        << " km/s\n";
             if (isEccentric)
             {
-               data << wxT("                                       ") << wxT("       VelApoapsis        = ") << BuildNumber(velApoapsis, false) << wxT(" km/s \n")
-                    << wxT("                                       ") << wxT("       Orbit Period       = ") << BuildNumber(orbitPeriod, false) << wxT(" s    \n");
+               data << "                                       " << "       VelApoapsis        = " << BuildNumber(velApoapsis, false) << " km/s \n"
+                    << "                                       " << "       Orbit Period       = " << BuildNumber(orbitPeriod, false) << " s    \n";
             }
             // add planetodetic parameters, if the origin is a Celestial Body
             if (originIsCelestialBody)
@@ -2351,61 +2351,61 @@ void GmatCommand::BuildCommandSummaryString(bool commandCompleted)
                // and include hyperbolic parameters, if appropriate
                if (isHyperbolic)
                {
-                  data << wxT("\n        Planetodetic Properties               ")
-                       << wxT("Hyperbolic Parameters\n")
-                       << wxT("        ---------------------------           ")
-                       << wxT("--------------------------------\n")
-                       << wxT("        LST       = ")      << BuildNumber(lst, false)              << wxT(" deg  ")
-                       << wxT("   BdotT          = ")      << BuildNumber(bDotT, false)            << wxT(" km   \n")
-                       << wxT("        MHA       = ")      << BuildNumber(mha, false)              << wxT(" deg  ")
-                       << wxT("   BdotR          = ")      << BuildNumber(bDotR, false)            << wxT(" km   \n")
-                       << wxT("        Latitude  = ")      << BuildNumber(latitude, false)         << wxT(" deg  ")
-                       << wxT("   B Vector Angle = ")      << BuildNumber(bVectorAngle, false)     << wxT(" deg  \n")
-                       << wxT("        Longitude = ")      << BuildNumber(longitude, false)        << wxT(" deg  ")
-                       << wxT("   B Vector Mag   = ")      << BuildNumber(bVectorMag, false)       << wxT(" km   \n")
-                       << wxT("        Altitude  = ")      << BuildNumber(altitude, false)         << wxT(" km   ")
-                       << wxT("   DLA            = ")      << BuildNumber(dla, false)              << wxT(" deg  \n")
-                       << wxT("                                           ")
-                       << wxT("   RLA            = ")      << BuildNumber(rla, false)              << wxT(" deg  \n");
+                  data << "\n        Planetodetic Properties               "
+                       << "Hyperbolic Parameters\n"
+                       << "        ---------------------------           "
+                       << "--------------------------------\n"
+                       << "        LST       = "      << BuildNumber(lst, false)              << " deg  "
+                       << "   BdotT          = "      << BuildNumber(bDotT, false)            << " km   \n"
+                       << "        MHA       = "      << BuildNumber(mha, false)              << " deg  "
+                       << "   BdotR          = "      << BuildNumber(bDotR, false)            << " km   \n"
+                       << "        Latitude  = "      << BuildNumber(latitude, false)         << " deg  "
+                       << "   B Vector Angle = "      << BuildNumber(bVectorAngle, false)     << " deg  \n"
+                       << "        Longitude = "      << BuildNumber(longitude, false)        << " deg  "
+                       << "   B Vector Mag   = "      << BuildNumber(bVectorMag, false)       << " km   \n"
+                       << "        Altitude  = "      << BuildNumber(altitude, false)         << " km   "
+                       << "   DLA            = "      << BuildNumber(dla, false)              << " deg  \n"
+                       << "                                           "
+                       << "   RLA            = "      << BuildNumber(rla, false)              << " deg  \n";
                }
                else
                {
-                  data << wxT("\n        Planetodetic Properties \n")
-                       << wxT("        ---------------------------\n")
-                       << wxT("        LST       = ") << BuildNumber(lst, false)           << wxT(" deg\n")
-                       << wxT("        MHA       = ") << BuildNumber(mha, false)           << wxT(" deg\n")
-                       << wxT("        Latitude  = ") << BuildNumber(latitude, false)      << wxT(" deg\n")
-                       << wxT("        Longitude = ") << BuildNumber(longitude, false)     << wxT(" deg\n")
-                       << wxT("        Altitude  = ") << BuildNumber(altitude, false)      << wxT(" km\n");
+                  data << "\n        Planetodetic Properties \n"
+                       << "        ---------------------------\n"
+                       << "        LST       = " << BuildNumber(lst, false)           << " deg\n"
+                       << "        MHA       = " << BuildNumber(mha, false)           << " deg\n"
+                       << "        Latitude  = " << BuildNumber(latitude, false)      << " deg\n"
+                       << "        Longitude = " << BuildNumber(longitude, false)     << " deg\n"
+                       << "        Altitude  = " << BuildNumber(altitude, false)      << " km\n";
                }
             }
 
-            data << wxT("\n\n        Spacecraft properties \n")
-                 << wxT("        ------------------------------\n")
-                 << wxT("        Cd                    = ") << BuildNumber(parmData[i*6],   false, 10) << wxT("\n")
-                 << wxT("        Drag area             = ") << BuildNumber(parmData[i*6+1], false, 10) << wxT(" m^2\n")
-                 << wxT("        Cr                    = ") << BuildNumber(parmData[i*6+2], false, 10) << wxT("\n")
-                 << wxT("        Reflective (SRP) area = ") << BuildNumber(parmData[i*6+3], false, 10) << wxT(" m^2\n");
+            data << "\n\n        Spacecraft properties \n"
+                 << "        ------------------------------\n"
+                 << "        Cd                    = " << BuildNumber(parmData[i*6],   false, 10) << "\n"
+                 << "        Drag area             = " << BuildNumber(parmData[i*6+1], false, 10) << " m^2\n"
+                 << "        Cr                    = " << BuildNumber(parmData[i*6+2], false, 10) << "\n"
+                 << "        Reflective (SRP) area = " << BuildNumber(parmData[i*6+3], false, 10) << " m^2\n";
 
-            data << wxT("        Dry mass              = ") << BuildNumber(parmData[i*6+4])            << wxT(" kg\n");
-            data << wxT("        Total mass            = ") << BuildNumber(parmData[i*6+5])            << wxT(" kg\n");
+            data << "        Dry mass              = " << BuildNumber(parmData[i*6+4])            << " kg\n";
+            data << "        Total mass            = " << BuildNumber(parmData[i*6+5])            << " kg\n";
 
             StringArray tanks = obj->GetStringArrayParameter(satTankID);
             if (tanks.size() > 0)
             {
-               data << wxT("\n        Tank masses:\n");
+               data << "\n        Tank masses:\n";
                for (StringArray::iterator i = tanks.begin();
                     i != tanks.end(); ++i)
-                  data << wxT("           ") << (*i) << wxT(":   ")
+                  data << "           " << (*i) << ":   "
                        << BuildNumber(obj->GetRefObject(Gmat::HARDWARE, (*i))->
-                             GetRealParameter(wxT("FuelMass"))) << wxT(" kg\n");
+                             GetRealParameter("FuelMass")) << " kg\n";
             }
-            data << wxT("\n");
+            data << "\n";
          }    // for i 0 -> satsInMaps
       }
    }
 
-   commandSummary = data;
+   commandSummary = data.str();
 }
 
 
@@ -2422,24 +2422,24 @@ void GmatCommand::BuildCommandSummaryString(bool commandCompleted)
  * @param <head> The first command in the summary
  */
 //------------------------------------------------------------------------------
-const wxString GmatCommand::BuildMissionSummaryString(const GmatCommand* head)
+const std::string GmatCommand::BuildMissionSummaryString(const GmatCommand* head)
 {
    #ifdef DEBUG_MISSION_SUMMARY
-      MessageInterface::ShowMessage(wxT("Entering BuildMissionSummaryString for command %s of type %s\n"),
+      MessageInterface::ShowMessage("Entering BuildMissionSummaryString for command %s of type %s\n",
             ((GmatCommand*)head)->GetSummaryName().c_str(), ((GmatCommand*)head)->GetTypeName().c_str());
    #endif
    BuildCommandSummaryString();
-   wxString missionSummary = commandSummary;
+   std::string missionSummary = commandSummary;
 
 
    if (next && (next != head))
    {
       next->SetupSummary(summaryCoordSysName, true, missionPhysicsBasedOnly);
       #ifdef DEBUG_MISSION_SUMMARY
-         MessageInterface::ShowMessage(wxT("... about to ask for summary for command %s of type %s\n"),
+         MessageInterface::ShowMessage("... about to ask for summary for command %s of type %s\n",
                next->GetSummaryName().c_str(), next->GetTypeName().c_str());
       #endif
-      missionSummary += next->GetStringParameter(wxT("MissionSummary"));
+      missionSummary += next->GetStringParameter("MissionSummary");
    }
    
    return missionSummary;
@@ -2447,7 +2447,7 @@ const wxString GmatCommand::BuildMissionSummaryString(const GmatCommand* head)
 
 
 //------------------------------------------------------------------------------
-// const wxString BuildNumber(Real value, Integer length)
+// const std::string BuildNumber(Real value, Integer length)
 //------------------------------------------------------------------------------
 /**
  * Builds a formatted string containing a Real, so the Real can be serialized to
@@ -2459,13 +2459,13 @@ const wxString GmatCommand::BuildMissionSummaryString(const GmatCommand* head)
  * @return The formatted string
  */
 //------------------------------------------------------------------------------
-const wxString GmatCommand::BuildNumber(Real value, bool useExp, Integer length)
+const std::string GmatCommand::BuildNumber(Real value, bool useExp, Integer length)
 {
-   wxString retval = wxT("Invalid number");
+   std::string retval = "Invalid number";
 
    if (length < 100)
    {
-      wxString temp, defstr;
+      char temp[100], defstr[40];
       Integer fraction = 1;
 
       // check for a NaN first
@@ -2474,15 +2474,15 @@ const wxString GmatCommand::BuildNumber(Real value, bool useExp, Integer length)
           GmatMathUtil::IsEqual(value, GmatRealConstants::REAL_UNDEFINED_LARGE)  ||
           GmatMathUtil::IsNaN(value)))
       {
-         defstr.Printf( wxT("%%%ds"), length);
-         temp.Printf( defstr, wxT("NaN"));
+         sprintf(defstr, "%%%ds", length);
+         sprintf(temp, defstr, "NaN");
       }
       else
       {
          if (useExp)
          {
             fraction = length - 8;
-            defstr.Printf( wxT("%%%d.%de"), length, fraction);
+            sprintf(defstr, "%%%d.%de", length, fraction);
          }
          else
          {
@@ -2493,10 +2493,10 @@ const wxString GmatCommand::BuildNumber(Real value, bool useExp, Integer length)
                shift *= 0.1;
             }
             fraction = length - 3 - fraction;
-            defstr.Printf( wxT("%%%d.%dlf"), length, fraction);
+            sprintf(defstr, "%%%d.%dlf", length, fraction);
          }
 
-         temp.Printf(defstr, value);
+         sprintf(temp, defstr, value);
       }
       retval = temp;
    }
@@ -2516,7 +2516,7 @@ const wxString GmatCommand::BuildNumber(Real value, bool useExp, Integer length)
 // * @param <commandCompleted> True if the command ran successfully.
 // */
 ////------------------------------------------------------------------------------
-//wxString GmatCommand::GetCommandSummary()
+//std::string GmatCommand::GetCommandSummary()
 //{
 //   return commandSummary;
 //}
@@ -2619,7 +2619,7 @@ GmatBase* GmatCommand::GetClone(Integer cloneIndex)
 }
 
 //------------------------------------------------------------------------------
-// virtual void InsertCommandName(wxString &genString)
+// virtual void InsertCommandName(std::string &genString)
 //------------------------------------------------------------------------------
 /**
  * Inserts command name in quotes to generatin string. It puts single quotes
@@ -2629,98 +2629,98 @@ GmatBase* GmatCommand::GetClone(Integer cloneIndex)
  * @param  genString  Input/Output generating string to insert command name
  */
 //------------------------------------------------------------------------------
-void GmatCommand::InsertCommandName(wxString &genString)
+void GmatCommand::InsertCommandName(std::string &genString)
 {
-   if (instanceName != wxT(""))
+   if (instanceName != "")
    {
-      wxString::size_type insertPoint = genString.find_first_of(typeName);
-      wxString nameInQuotes = wxT("'") + instanceName + wxT("'");
+      std::string::size_type insertPoint = genString.find_first_of(typeName);
+      std::string nameInQuotes = "'" + instanceName + "'";
       #if DEBUG_GEN_STRING
       MessageInterface::ShowMessage
-         (wxT("   typeName = <%s>, command name = <%s>, insertPoint = %d\n"),
+         ("   typeName = <%s>, command name = <%s>, insertPoint = %d\n",
           typeName.c_str(), instanceName.c_str(), insertPoint);
       #endif
       if (insertPoint != genString.npos)
       {
          insertPoint = insertPoint + typeName.size();
          #if DEBUG_GEN_STRING
-         MessageInterface::ShowMessage(wxT("   insertPoint = %d\n"), insertPoint);
+         MessageInterface::ShowMessage("   insertPoint = %d\n", insertPoint);
          #endif
          genString =
-            genString.insert(insertPoint, wxT(" ") + nameInQuotes);
+            genString.insert(insertPoint, " " + nameInQuotes);
       }
    }
 }
 
 
 //------------------------------------------------------------------------------
-// void ShowCommand(const wxString &prefix = "",
-//                  const wxString &title1, GmatCommand *cmd1,
-//                  const wxString &title2 = "", GmatCommand *cmd2 = NULL)
+// void ShowCommand(const std::string &prefix = "",
+//                  const std::string &title1, GmatCommand *cmd1,
+//                  const std::string &title2 = "", GmatCommand *cmd2 = NULL)
 //------------------------------------------------------------------------------
 /*
  * <static method>
  * Shows command info to message window.
  */
 //------------------------------------------------------------------------------
-void GmatCommand::ShowCommand(const wxString &prefix,
-                              const wxString &title1, GmatCommand *cmd1,
-                              const wxString &title2, GmatCommand *cmd2)
+void GmatCommand::ShowCommand(const std::string &prefix,
+                              const std::string &title1, GmatCommand *cmd1,
+                              const std::string &title2, GmatCommand *cmd2)
 {
-   if (title2 == wxT(""))
+   if (title2 == "")
    {
       MessageInterface::ShowMessage
-         (wxT("%s%s: %s<%p><%s>[%s]\n"), prefix.c_str(), this->GetTypeName().c_str(),
-          title1.c_str(), cmd1, cmd1 ? cmd1->GetTypeName().c_str() : wxT("NULL"),
-          cmd1 ? cmd1->GetGeneratingString(Gmat::NO_COMMENTS).c_str() : wxT("NULL"));
+         ("%s%s: %s<%p><%s>[%s]\n", prefix.c_str(), this->GetTypeName().c_str(),
+          title1.c_str(), cmd1, cmd1 ? cmd1->GetTypeName().c_str() : "NULL",
+          cmd1 ? cmd1->GetGeneratingString(Gmat::NO_COMMENTS).c_str() : "NULL");
    }
    else
    {
       MessageInterface::ShowMessage
-         (wxT("%s%s:\n   %s<%p><%s>[%s]\n   %s<%p><%s>[%s]\n"), prefix.c_str(),
+         ("%s%s:\n   %s<%p><%s>[%s]\n   %s<%p><%s>[%s]\n", prefix.c_str(),
           this->GetTypeName().c_str(), title1.c_str(), cmd1,
-          cmd1 ? cmd1->GetTypeName().c_str() : wxT("NULL"),
-          cmd1 ? cmd1->GetGeneratingString(Gmat::NO_COMMENTS).c_str() : wxT("NULL"),
-          title2.c_str(), cmd2, cmd2 ? cmd2->GetTypeName().c_str() : wxT("NULL"),
-          cmd2 ? cmd2->GetGeneratingString(Gmat::NO_COMMENTS).c_str() : wxT("NULL"));
+          cmd1 ? cmd1->GetTypeName().c_str() : "NULL",
+          cmd1 ? cmd1->GetGeneratingString(Gmat::NO_COMMENTS).c_str() : "NULL",
+          title2.c_str(), cmd2, cmd2 ? cmd2->GetTypeName().c_str() : "NULL",
+          cmd2 ? cmd2->GetGeneratingString(Gmat::NO_COMMENTS).c_str() : "NULL");
    }
 }
 
 
 //------------------------------------------------------------------------------
-// virtual void ShowObjectMaps(const wxString &str)
+// virtual void ShowObjectMaps(const std::string &str)
 //------------------------------------------------------------------------------
-void GmatCommand::ShowObjectMaps(const wxString &str)
+void GmatCommand::ShowObjectMaps(const std::string &str)
 {
    MessageInterface::ShowMessage
-      (wxT("%s\n======================================================================\n"),
+      ("%s\n======================================================================\n",
        str.c_str());
    MessageInterface::ShowMessage
-      (wxT("GmatCommand::ShowObjectMaps() objectMap=<%p>, globalObjectMap=<%p>\n"),
+      ("GmatCommand::ShowObjectMaps() objectMap=<%p>, globalObjectMap=<%p>\n",
        objectMap, globalObjectMap);
    
    if (objectMap)
    {
       MessageInterface::ShowMessage
-         (wxT("Here is the local object map for %s:\n"), this->GetTypeName().c_str());
-      for (std::map<wxString, GmatBase *>::iterator i = objectMap->begin();
+         ("Here is the local object map for %s:\n", this->GetTypeName().c_str());
+      for (std::map<std::string, GmatBase *>::iterator i = objectMap->begin();
            i != objectMap->end(); ++i)
          MessageInterface::ShowMessage
-            (wxT("   %30s  <%p> [%s]\n"), i->first.c_str(), i->second,
-             i->second == NULL ? wxT("NULL") : (i->second)->GetTypeName().c_str());
+            ("   %30s  <%p> [%s]\n", i->first.c_str(), i->second,
+             i->second == NULL ? "NULL" : (i->second)->GetTypeName().c_str());
    }
    if (globalObjectMap)
    {
       MessageInterface::ShowMessage
-         (wxT("Here is the global object map for %s:\n"), this->GetTypeName().c_str());
-      for (std::map<wxString, GmatBase *>::iterator i = globalObjectMap->begin();
+         ("Here is the global object map for %s:\n", this->GetTypeName().c_str());
+      for (std::map<std::string, GmatBase *>::iterator i = globalObjectMap->begin();
            i != globalObjectMap->end(); ++i)
          MessageInterface::ShowMessage
-            (wxT("   %30s  <%p> [%s]\n"), i->first.c_str(), i->second,
-             i->second == NULL ? wxT("NULL") : (i->second)->GetTypeName().c_str());
+            ("   %30s  <%p> [%s]\n", i->first.c_str(), i->second,
+             i->second == NULL ? "NULL" : (i->second)->GetTypeName().c_str());
    }
    MessageInterface::ShowMessage
-      (wxT("======================================================================\n"));
+      ("======================================================================\n");
 }
 
 
@@ -2739,7 +2739,7 @@ void GmatCommand::ShowObjectMaps(const wxString &str)
 StringArray GmatCommand::InterpretPreface()
 {
    #ifdef DEBUG_INTERPRET_PREFACE
-      MessageInterface::ShowMessage(wxT("In GmatCommand::InterpretPreface, generatingString = %s\n"),
+      MessageInterface::ShowMessage("In GmatCommand::InterpretPreface, generatingString = %s\n",
             generatingString.c_str());
    #endif
    parser.EvaluateBlock(generatingString);
@@ -2747,29 +2747,29 @@ StringArray GmatCommand::InterpretPreface()
    StringArray chunks = parser.ChunkLine();
    
    #ifdef DEBUG_INTERPRET_PREFACE
-      MessageInterface::ShowMessage(wxT("   ater call to parser, generatingString = %s\n"),
+      MessageInterface::ShowMessage("   ater call to parser, generatingString = %s\n",
             generatingString.c_str());
-      MessageInterface::ShowMessage(wxT("   and blocks are:\n"));
+      MessageInterface::ShowMessage("   and blocks are:\n");
       for (unsigned int ii = 0; ii < blocks.size(); ii++)
-         MessageInterface::ShowMessage(wxT("      %s\n"), (blocks.at(ii)).c_str());
-      MessageInterface::ShowMessage(wxT("   and chunks are:\n"));
+         MessageInterface::ShowMessage("      %s\n", (blocks.at(ii)).c_str());
+      MessageInterface::ShowMessage("   and chunks are:\n");
       for (unsigned int ii = 0; ii < chunks.size(); ii++)
-         MessageInterface::ShowMessage(wxT("      %s\n"), (chunks.at(ii)).c_str());
+         MessageInterface::ShowMessage("      %s\n", (chunks.at(ii)).c_str());
    #endif
    
    // First comes the command keyword
    // @note "GMAT" keyword is automatically removed
-   if (chunks[0] != typeName && typeName != wxT("GMAT"))
+   if (chunks[0] != typeName && typeName != "GMAT")
       throw CommandException(
-         wxT("Line \"") + generatingString +
-         wxT("\"\n should be a ") + typeName + wxT(" command, but the \"") + typeName +
-         wxT("\" keyword is not the opening token in the line.\n"));
+         "Line \"" + generatingString +
+         "\"\n should be a " + typeName + " command, but the \"" + typeName +
+         "\" keyword is not the opening token in the line.\n");
    
    return chunks;
 }
 
 //------------------------------------------------------------------------------
-// bool IsSettable(const wxString &setDesc)
+// bool IsSettable(const std::string &setDesc)
 //------------------------------------------------------------------------------
 /**
  * Method used to check a string and see if it is local data
@@ -2782,7 +2782,7 @@ StringArray GmatCommand::InterpretPreface()
  * @notes - Original by Darrel Conway
  */
 //------------------------------------------------------------------------------
-bool GmatCommand::IsSettable(const wxString &setDesc)
+bool GmatCommand::IsSettable(const std::string &setDesc)
 {
    if (find(settables.begin(), settables.end(), setDesc) != settables.end())
       return true;
@@ -2791,8 +2791,8 @@ bool GmatCommand::IsSettable(const wxString &setDesc)
 }
 
 //------------------------------------------------------------------------------
-// bool SeparateEquals(const wxString &description, 
-//                     wxString &lhs, wxString &rhs)
+// bool SeparateEquals(const std::string &description, 
+//                     std::string &lhs, std::string &rhs)
 //------------------------------------------------------------------------------
 /**
  * Method used to separate 'lhs = rhs' style strings into a lhs and rhs.
@@ -2809,30 +2809,30 @@ bool GmatCommand::IsSettable(const wxString &setDesc)
  *         piece.  The method throws if more than 2 pieces were found.
  */
 //------------------------------------------------------------------------------
-bool GmatCommand::SeparateEquals(const wxString &description,
-                                 wxString &lhs, wxString &rhs,
+bool GmatCommand::SeparateEquals(const std::string &description,
+                                 std::string &lhs, std::string &rhs,
                                  bool checkOp)
 {
    if (checkOp)
-      if ( (description.find(wxT("=="),0) != description.npos) ||
-           (description.find(wxT(">="),0) != description.npos) ||
-           (description.find(wxT("<="),0) != description.npos) ||
-           (description.find(wxT("=>"),0) != description.npos) ||
-           (description.find(wxT("=<"),0) != description.npos) ||
-           (description.find(wxT("~="),0) != description.npos) ||
-           (description.find(wxT("=~"),0) != description.npos) )
+      if ( (description.find("==",0) != description.npos) ||
+           (description.find(">=",0) != description.npos) ||
+           (description.find("<=",0) != description.npos) ||
+           (description.find("=>",0) != description.npos) ||
+           (description.find("=<",0) != description.npos) ||
+           (description.find("~=",0) != description.npos) ||
+           (description.find("=~",0) != description.npos) )
       {
-         wxString msg = wxT("The string \"") + description;
-         msg += wxT("\" contains a disallowed relational operator for this command: expecting \"=\" ");
+         std::string msg = "The string \"" + description;
+         msg += "\" contains a disallowed relational operator for this command: expecting \"=\" ";
          throw CommandException(msg);
       }
-   StringArray sides = parser.SeparateBy(description, wxT("= "));
+   StringArray sides = parser.SeparateBy(description, "= ");
    #ifdef DEBUG_SEPARATE
-      MessageInterface::ShowMessage(wxT("In SeparateEquals, description = %s\n"),
+      MessageInterface::ShowMessage("In SeparateEquals, description = %s\n",
       description.c_str());
-      MessageInterface::ShowMessage(wxT("----  and sides = \n"));
+      MessageInterface::ShowMessage("----  and sides = \n");
       for (Integer ii = 0; ii < (Integer) sides.size(); ii++)
-         MessageInterface::ShowMessage(wxT("      %s\n"), sides[ii].c_str());    
+         MessageInterface::ShowMessage("      %s\n", sides[ii].c_str());    
    #endif
    lhs = sides[0];
 
@@ -2842,14 +2842,14 @@ bool GmatCommand::SeparateEquals(const wxString &description,
    if (sides.size() == 2)
       rhs = sides[1];
    else
-      rhs = wxT("");
+      rhs = "";
 
    if (sides.size() > 2)
    {
-      wxString msg = wxT("Error decomposing the string \"");
+      std::string msg = "Error decomposing the string \"";
       msg += description;
-      msg += wxT("\"\nTrying to separate into lhs and rhs on \"=\" sign, but found ");
-      msg += wxT("too many pieces or missing separator character(s).\n");
+      msg += "\"\nTrying to separate into lhs and rhs on \"=\" sign, but found ";
+      msg += "too many pieces or missing separator character(s).\n";
       throw CommandException(msg);
    }
 
@@ -2866,8 +2866,8 @@ void GmatCommand::CartToKep(const Rvector6 in, Rvector6 &out)
    GmatBase* earth = FindObject(GmatSolarSystemDefaults::EARTH_NAME);
    if (!earth)
       throw CommandException(
-            wxT("GmatCommand::CartToKep failed to find object named \"") +
-            GmatSolarSystemDefaults::EARTH_NAME + wxT("\" in: \n   \"") + GetGeneratingString(Gmat::NO_COMMENTS) + wxT("\"\n"));
+            "GmatCommand::CartToKep failed to find object named \"" +
+            GmatSolarSystemDefaults::EARTH_NAME + "\" in: \n   \"" + GetGeneratingString(Gmat::NO_COMMENTS) + "\"\n");
 
    Real mu = ((CelestialBody*)earth)->GetGravitationalConstant();
    Real r = sqrt(in[0]*in[0]+in[1]*in[1]+in[2]*in[2]);
@@ -2921,20 +2921,20 @@ void GmatCommand::CartToKep(const Rvector6 in, Rvector6 &out)
 
 
 //------------------------------------------------------------------------------
-// GmatBase* GmatCommand::FindObject(const wxString &name)
+// GmatBase* GmatCommand::FindObject(const std::string &name)
 //------------------------------------------------------------------------------
-GmatBase* GmatCommand::FindObject(const wxString &name)
+GmatBase* GmatCommand::FindObject(const std::string &name)
 {
-   wxString newName = name;
+   std::string newName = name;
    
    // Ignore array indexing of Array
-   wxString::size_type index = name.find(wxT('('));
+   std::string::size_type index = name.find('(');
    if (index != name.npos)
       newName = name.substr(0, index);
    
    #ifdef DEBUG_FIND_OBJECT
    MessageInterface::ShowMessage
-      (wxT("GmatCommand::FindObject() entered, name='%s', newName='%s'\n"), name.c_str(),
+      ("GmatCommand::FindObject() entered, name='%s', newName='%s'\n", name.c_str(),
        newName.c_str());
    #endif
    
@@ -2943,7 +2943,7 @@ GmatBase* GmatCommand::FindObject(const wxString &name)
    #endif
    
    // Check for SolarSystem (loj: 2008.06.25)
-   if (name == wxT("SolarSystem"))
+   if (name == "SolarSystem")
    {
       if (solarSys)
          return solarSys;
@@ -2956,7 +2956,7 @@ GmatBase* GmatCommand::FindObject(const wxString &name)
    {
       #ifdef DEBUG_FIND_OBJECT
       MessageInterface::ShowMessage
-         (wxT("GmatCommand::FindObject() '%s' found in LOS, so returning <%p>\n"),
+         ("GmatCommand::FindObject() '%s' found in LOS, so returning <%p>\n",
           newName.c_str(), (*objectMap)[newName]);
       #endif
       return (*objectMap)[newName];
@@ -2967,7 +2967,7 @@ GmatBase* GmatCommand::FindObject(const wxString &name)
    {
       #ifdef DEBUG_FIND_OBJECT
       MessageInterface::ShowMessage
-         (wxT("GmatCommand::FindObject() '%s' found in GOS, so returning <%p>\n"),
+         ("GmatCommand::FindObject() '%s' found in GOS, so returning <%p>\n",
           newName.c_str(), (*globalObjectMap)[newName]);
       #endif
       return (*globalObjectMap)[newName];
@@ -2978,7 +2978,7 @@ GmatBase* GmatCommand::FindObject(const wxString &name)
    {
       #ifdef DEBUG_FIND_OBJECT
       MessageInterface::ShowMessage
-         (wxT("GmatCommand::FindObject() '%s' found in SolarSystem, so returning <%p>\n"),
+         ("GmatCommand::FindObject() '%s' found in SolarSystem, so returning <%p>\n",
           newName.c_str(), (GmatBase*)(solarSys->GetBody(newName)));
       #endif
       return (GmatBase*)(solarSys->GetBody(newName));
@@ -2986,7 +2986,7 @@ GmatBase* GmatCommand::FindObject(const wxString &name)
    
    #ifdef DEBUG_FIND_OBJECT
    MessageInterface::ShowMessage
-      (wxT("GmatCommand::FindObject() '%s' not found, so returning NULL\n"),
+      ("GmatCommand::FindObject() '%s' not found, so returning NULL\n",
        newName.c_str());
    #endif
    
@@ -3003,46 +3003,46 @@ bool GmatCommand::SetWrapperReferences(ElementWrapper &wrapper)
    {
       #ifdef DEBUG_WRAPPER_CODE
          MessageInterface::ShowMessage
-            (wxT("GmatCommand::SetWrapperReferences() Setting refs for wrapper \"%s\"\n"), 
+            ("GmatCommand::SetWrapperReferences() Setting refs for wrapper \"%s\"\n", 
             wrapper.GetDescription().c_str());
       #endif
       StringArray onames = wrapper.GetRefObjectNames();
       
       for (StringArray::const_iterator j = onames.begin(); j != onames.end(); ++j)
       {
-         wxString name = *j;
+         std::string name = *j;
          #ifdef DEBUG_WRAPPER_CODE
-         MessageInterface::ShowMessage(wxT("      name='%s', now finding object...\n"), name.c_str());
+         MessageInterface::ShowMessage("      name='%s', now finding object...\n", name.c_str());
          #endif
          GmatBase *obj = FindObject(name);
          if (obj == NULL)
          {
-            if (name == wxT(""))
+            if (name == "")
                continue;
             
             throw CommandException(
-                  wxT("GmatCommand::SetWrapperReferences failed to find object named \"") + 
-                  name + wxT("\" in: \n   \"") + GetGeneratingString(Gmat::NO_COMMENTS) + wxT("\"\n"));
+                  "GmatCommand::SetWrapperReferences failed to find object named \"" + 
+                  name + "\" in: \n   \"" + GetGeneratingString(Gmat::NO_COMMENTS) + "\"\n");
          }
          if (wrapper.SetRefObject(obj) == false)
          {
             MessageInterface::ShowMessage
-               (wxT("GmatCommand::SetWrapperReferences failed to set object named \"%s\", ")
-                wxT("name in the map is \"%s\"\n"), name.c_str(), obj->GetName().c_str());
+               ("GmatCommand::SetWrapperReferences failed to set object named \"%s\", "
+                "name in the map is \"%s\"\n", name.c_str(), obj->GetName().c_str());
             return false;
          }
          #ifdef DEBUG_WRAPPER_CODE
-            MessageInterface::ShowMessage(wxT("      Set reference object \"%s\"\n"), 
+            MessageInterface::ShowMessage("      Set reference object \"%s\"\n", 
                name.c_str());
          #endif
       }
    }
    else
-      throw CommandException(wxT("GmatCommand::SetWrapperReferences was passed a ")
-         wxT("NULL object instead of a wrapper in:\n   \"") + generatingString + wxT("\"\n"));
+      throw CommandException("GmatCommand::SetWrapperReferences was passed a "
+         "NULL object instead of a wrapper in:\n   \"" + generatingString + "\"\n");
    
    #ifdef DEBUG_WRAPPER_CODE
-   MessageInterface::ShowMessage(wxT("GmatCommand::SetWrapperReferences() returning true\n"));
+   MessageInterface::ShowMessage("GmatCommand::SetWrapperReferences() returning true\n");
    #endif
    
    return true;
@@ -3065,9 +3065,9 @@ void GmatCommand::CollectOldWrappers(ElementWrapper **wrapper)
 {
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("GmatCommand::CollectOldWrappers() <%p>'%s' entered, wrapper=<%p>\n"),
+      ("GmatCommand::CollectOldWrappers() <%p>'%s' entered, wrapper=<%p>\n",
        this, GetTypeName().c_str(), *wrapper);
-   MessageInterface::ShowMessage(wxT("   There are %d old wrappers\n"), oldWrappers.size());
+   MessageInterface::ShowMessage("   There are %d old wrappers\n", oldWrappers.size());
    #endif
    
    if (*wrapper)
@@ -3081,8 +3081,8 @@ void GmatCommand::CollectOldWrappers(ElementWrapper **wrapper)
    
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("GmatCommand::CollectOldWrappers() <%p>'%s' leaving\n"), this, GetTypeName().c_str());
-   MessageInterface::ShowMessage(wxT("   There are %d old wrappers\n"), oldWrappers.size());
+      ("GmatCommand::CollectOldWrappers() <%p>'%s' leaving\n", this, GetTypeName().c_str());
+   MessageInterface::ShowMessage("   There are %d old wrappers\n", oldWrappers.size());
    #endif
 }
 
@@ -3094,7 +3094,7 @@ void GmatCommand::DeleteOldWrappers()
 {
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("GmatCommand::DeleteOldWrappers() <%p>'%s' entered, has %d old wrappers\n"),
+      ("GmatCommand::DeleteOldWrappers() <%p>'%s' entered, has %d old wrappers\n",
        this, GetTypeName().c_str(), oldWrappers.size());
    #endif
    
@@ -3110,7 +3110,7 @@ void GmatCommand::DeleteOldWrappers()
       {
          wrappersToDelete.push_back(wrapper);
          #ifdef DEBUG_WRAPPER_CODE
-         MessageInterface::ShowMessage(wxT("   <%p> added to wrappersToDelete\n"), wrapper);
+         MessageInterface::ShowMessage("   <%p> added to wrappersToDelete\n", wrapper);
          #endif
       }
    }
@@ -3121,14 +3121,14 @@ void GmatCommand::DeleteOldWrappers()
       wrapper = wrappersToDelete[i];
       #ifdef DEBUG_WRAPPER_CODE
       MessageInterface::ShowMessage
-         (wxT("   wrapper=<%p>'%s'\n", wrapper, wrapper ? wrapper->GetDescription().c_str() : "NULL"));
+         ("   wrapper=<%p>'%s'\n", wrapper, wrapper ? wrapper->GetDescription().c_str() : "NULL");
       #endif
       if (wrapper)
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (wrapper, wrapper->GetDescription(), wxT("GmatCommand::ClearWrappers()"),
-             GetTypeName() + wxT(" deleting wrapper"));
+            (wrapper, wrapper->GetDescription(), "GmatCommand::ClearWrappers()",
+             GetTypeName() + " deleting wrapper");
          #endif
          delete wrapper;
          wrapper = NULL;
@@ -3139,7 +3139,7 @@ void GmatCommand::DeleteOldWrappers()
    
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("GmatCommand::DeleteOldWrappers() <%p>'%s' leaving, has %d old wrappers\n"),
+      ("GmatCommand::DeleteOldWrappers() <%p>'%s' leaving, has %d old wrappers\n",
        this, GetTypeName().c_str(), oldWrappers.size());
    #endif
 }
@@ -3151,8 +3151,8 @@ void GmatCommand::PrepareToPublish(bool publishAll)
 
    if (publishAll)
    {
-      owners.push_back(wxT("All"));
-      elements.push_back(wxT("All.epoch"));
+      owners.push_back("All");
+      elements.push_back("All.epoch");
    }
 
    streamID = publisher->RegisterPublishedData(this, streamID, owners,

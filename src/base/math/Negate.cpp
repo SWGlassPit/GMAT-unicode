@@ -33,8 +33,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Negate::Negate(const wxString &nomme)
-   : MathFunction(wxT("Negate"), nomme)
+Negate::Negate(const std::string &nomme)
+   : MathFunction("Negate", nomme)
 {
 }
 
@@ -90,7 +90,7 @@ void Negate::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
    Integer type1, row1, col1; // Left node
    
    if (!leftNode)
-      throw MathException(wxT("Negate::GetOutputInfo() The left node is NULL"));
+      throw MathException("Negate::GetOutputInfo() The left node is NULL");
    
    // Get the type(Real or Matrix), # rows and # columns of the left node
    leftNode->GetOutputInfo(type1, row1, col1);
@@ -112,7 +112,7 @@ void Negate::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 bool Negate::ValidateInputs()
 {
    if (leftNode == NULL)
-      throw MathException(wxT("Negate() - Missing input arguments.\n"));
+      throw MathException("Negate() - Missing input arguments.\n");
    
    // it can be any type
    return true;

@@ -23,7 +23,7 @@
 #include "MessageInterface.hpp"
 
 //------------------------------------------------------------------------------
-//  MathFunction(wxString typeStr, wxString nomme)
+//  MathFunction(std::string typeStr, std::string nomme)
 //------------------------------------------------------------------------------
 /**
  * Constructs the MathFunction object (default constructor).
@@ -32,13 +32,13 @@
  * @param <nomme>   Name for the object
  */
 //------------------------------------------------------------------------------
-MathFunction::MathFunction(const wxString &typeStr, const wxString &nomme) :
+MathFunction::MathFunction(const std::string &typeStr, const std::string &nomme) :
    MathNode    (typeStr, nomme),
    leftNode    (NULL),
    rightNode   (NULL)
 {
    isFunction = true;
-   objectTypeNames.push_back(wxT("MathFunction"));   
+   objectTypeNames.push_back("MathFunction");   
 }
 
 //------------------------------------------------------------------------------
@@ -52,7 +52,7 @@ MathFunction::~MathFunction()
 {
    // all math nodes are deleted in MathTree destructor (loj: 2008.11.03)
    //MessageInterface::ShowMessage
-   //   (wxT("==> MathFunction::~MathFunction() deleting %s, %s\n"), GetTypeName().c_str(),
+   //   ("==> MathFunction::~MathFunction() deleting %s, %s\n", GetTypeName().c_str(),
    //    GetName().c_str());
    
 //    MathNode *left = GetLeft();
@@ -147,7 +147,7 @@ MathNode* MathFunction::GetRight()
 //------------------------------------------------------------------------------
 Real MathFunction::Evaluate()
 {
-   throw MathException(GetTypeName() + wxT(" cannot return Real"));
+   throw MathException(GetTypeName() + " cannot return Real");
 }
 
 
@@ -156,5 +156,5 @@ Real MathFunction::Evaluate()
 //------------------------------------------------------------------------------
 Rmatrix MathFunction::MatrixEvaluate()
 {
-   throw MathException(GetTypeName() + wxT(" cannot return Matrix"));
+   throw MathException(GetTypeName() + " cannot return Matrix");
 }

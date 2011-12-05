@@ -46,10 +46,10 @@
 //  DCM11
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// DCM11(const wxString &name, GmatBase *obj)
+// DCM11(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-DCM11::DCM11(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("DCM11"), obj, wxT("Direction Cosine Matrix 1,1"), wxT(""))
+DCM11::DCM11(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "DCM11", obj, "Direction Cosine Matrix 1,1", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::RED32;
@@ -103,10 +103,10 @@ GmatBase* DCM11::Clone(void) const
 //  DCM12
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// DCM12(const wxString &name, GmatBase *obj)
+// DCM12(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-DCM12::DCM12(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("DCM12"), obj, wxT("Direction Cosine Matrix 1,2"), wxT(""))
+DCM12::DCM12(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "DCM12", obj, "Direction Cosine Matrix 1,2", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::YELLOW32;
@@ -159,10 +159,10 @@ GmatBase* DCM12::Clone(void) const
 //  DCM13
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// DCM13(const wxString &name, GmatBase *obj)
+// DCM13(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-DCM13::DCM13(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("DCM13"), obj, wxT("Direction Cosine Matrix 1,3"), wxT(""))
+DCM13::DCM13(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "DCM13", obj, "Direction Cosine Matrix 1,3", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::BLUE32;
@@ -215,10 +215,10 @@ GmatBase* DCM13::Clone(void) const
 //  DCM21
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// DCM21(const wxString &name, GmatBase *obj)
+// DCM21(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-DCM21::DCM21(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("DCM21"), obj, wxT("Direction Cosine Matrix 2,1"), wxT(""))
+DCM21::DCM21(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "DCM21", obj, "Direction Cosine Matrix 2,1", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::GREEN32;
@@ -271,10 +271,10 @@ GmatBase* DCM21::Clone(void) const
 //  DCM22
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// DCM22(const wxString &name, GmatBase *obj)
+// DCM22(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-DCM22::DCM22(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("DCM22"), obj, wxT("Direction Cosine Matrix 2,2"), wxT(""))
+DCM22::DCM22(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "DCM22", obj, "Direction Cosine Matrix 2,2", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::ORANGE32;
@@ -327,10 +327,10 @@ GmatBase* DCM22::Clone(void) const
 //  DCM23
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// DCM23(const wxString &name, GmatBase *obj)
+// DCM23(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-DCM23::DCM23(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("DCM23"), obj, wxT("Direction Cosine Matrix 2,3"), wxT(""))
+DCM23::DCM23(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "DCM23", obj, "Direction Cosine Matrix 2,3", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::CHESTNUT;
@@ -383,10 +383,10 @@ GmatBase* DCM23::Clone(void) const
 //  DCM31
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// DCM31(const wxString &name, GmatBase *obj)
+// DCM31(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-DCM31::DCM31(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("DCM31"), obj, wxT("Direction Cosine Matrix 3,1"), wxT(""))
+DCM31::DCM31(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "DCM31", obj, "Direction Cosine Matrix 3,1", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::PURPLE32;
@@ -439,10 +439,10 @@ GmatBase* DCM31::Clone(void) const
 //  DCM32
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// DCM32(const wxString &name, GmatBase *obj)
+// DCM32(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-DCM32::DCM32(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("DCM32"), obj, wxT("Direction Cosine Matrix 3,2"), wxT(""))
+DCM32::DCM32(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "DCM32", obj, "Direction Cosine Matrix 3,2", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::LIME32;
@@ -495,10 +495,10 @@ GmatBase* DCM32::Clone(void) const
 //  DCM33
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// DCM33(const wxString &name, GmatBase *obj)
+// DCM33(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-DCM33::DCM33(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("DCM33"), obj, wxT("Direction Cosine Matrix 3,3"), wxT(""))
+DCM33::DCM33(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "DCM33", obj, "Direction Cosine Matrix 3,3", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::AQUA32;
@@ -556,10 +556,10 @@ GmatBase* DCM33::Clone(void) const
 //  EulerAngle1
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// EulerAngle1::EulerAngle1(const wxString &name, GmatBase *obj)
+// EulerAngle1::EulerAngle1(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-EulerAngle1::EulerAngle1(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("EulerAngle1"), obj, wxT("Euler Angle 1"), wxT("deg"))
+EulerAngle1::EulerAngle1(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "EulerAngle1", obj, "Euler Angle 1", "deg")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::RED32;
@@ -614,10 +614,10 @@ GmatBase* EulerAngle1::Clone(void) const
 //  EulerAngle2
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// EulerAngle2::EulerAngle2(const wxString &name, GmatBase *obj)
+// EulerAngle2::EulerAngle2(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-EulerAngle2::EulerAngle2(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("EulerAngle2"), obj, wxT("Euler Angle 2"), wxT("deg"))
+EulerAngle2::EulerAngle2(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "EulerAngle2", obj, "Euler Angle 2", "deg")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::YELLOW32;
@@ -672,10 +672,10 @@ GmatBase* EulerAngle2::Clone(void) const
 //  EulerAngle3
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// EulerAngle3::EulerAngle3(const wxString &name, GmatBase *obj)
+// EulerAngle3::EulerAngle3(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-EulerAngle3::EulerAngle3(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("EulerAngle3"), obj, wxT("Euler Angle 3"), wxT("deg"))
+EulerAngle3::EulerAngle3(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "EulerAngle3", obj, "Euler Angle 3", "deg")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::BLUE32;
@@ -736,10 +736,10 @@ GmatBase* EulerAngle3::Clone(void) const
 //  MRP1
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// MRP1::MRP1(const wxString &name, GmatBase *obj)
+// MRP1::MRP1(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-MRP1::MRP1(const wxString &name, GmatBase *obj)
-: AttitudeReal(name, wxT("MRP1"), obj, wxT("Mod Rod Param 1"), wxT(""))
+MRP1::MRP1(const std::string &name, GmatBase *obj)
+: AttitudeReal(name, "MRP1", obj, "Mod Rod Param 1", "")
 {
    mColor = GmatColor::RED32;
 }
@@ -791,10 +791,10 @@ GmatBase* MRP1::Clone(void) const
 //  MRP2 - Added by Dunn
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// MRP2::MRP2(const wxString &name, GmatBase *obj)
+// MRP2::MRP2(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-MRP2::MRP2(const wxString &name, GmatBase *obj)
-: AttitudeReal(name, wxT("MRP2"), obj, wxT("Mod Rod Param 2"), wxT(""))
+MRP2::MRP2(const std::string &name, GmatBase *obj)
+: AttitudeReal(name, "MRP2", obj, "Mod Rod Param 2", "")
 {
    mColor = GmatColor::GREEN32;
 }
@@ -846,10 +846,10 @@ GmatBase* MRP2::Clone(void) const
 //  MRP3 - Added by Dunn
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// MRP3::MRP3(const wxString &name, GmatBase *obj)
+// MRP3::MRP3(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-MRP3::MRP3(const wxString &name, GmatBase *obj)
-: AttitudeReal(name, wxT("MRP3"), obj, wxT("Mod Rod Param 3"), wxT(""))
+MRP3::MRP3(const std::string &name, GmatBase *obj)
+: AttitudeReal(name, "MRP3", obj, "Mod Rod Param 3", "")
 {
    mColor = GmatColor::BLUE32;
 }
@@ -908,10 +908,10 @@ GmatBase* MRP3::Clone(void) const
 //  Quat1
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// Quat1(const wxString &name, GmatBase *obj)
+// Quat1(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-Quat1::Quat1(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("Q1"), obj, wxT("Quaternion 1"), wxT(""))
+Quat1::Quat1(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "Q1", obj, "Quaternion 1", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::RED32;
@@ -964,10 +964,10 @@ GmatBase* Quat1::Clone(void) const
 //  Quat2
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// Quat2(const wxString &name, GmatBase *obj)
+// Quat2(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-Quat2::Quat2(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("Q2"), obj, wxT("Quaternion 2"), wxT(""))
+Quat2::Quat2(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "Q2", obj, "Quaternion 2", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::YELLOW32;
@@ -1020,10 +1020,10 @@ GmatBase* Quat2::Clone(void) const
 //  Quat3
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// Quat3(const wxString &name, GmatBase *obj)
+// Quat3(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-Quat3::Quat3(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("Q3"), obj, wxT("Quaternion 3"), wxT(""))
+Quat3::Quat3(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "Q3", obj, "Quaternion 3", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::BLUE32;
@@ -1076,10 +1076,10 @@ GmatBase* Quat3::Clone(void) const
 //  Quat4
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// Quat4::Quat4(const wxString &name, GmatBase *obj)
+// Quat4::Quat4(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-Quat4::Quat4(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("Q4"), obj, wxT("Quaternion 4"), wxT(""))
+Quat4::Quat4(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "Q4", obj, "Quaternion 4", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::GREEN32;
@@ -1138,10 +1138,10 @@ GmatBase* Quat4::Clone(void) const
 //  AngVelX
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// AngVelX::AngVelX(const wxString &name, GmatBase *obj)
+// AngVelX::AngVelX(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-AngVelX::AngVelX(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("AngularVelocityX"), obj, wxT("Angular Velocity X"), wxT("deg/sec"))
+AngVelX::AngVelX(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "AngularVelocityX", obj, "Angular Velocity X", "deg/sec")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::RED32;
@@ -1194,10 +1194,10 @@ GmatBase* AngVelX::Clone(void) const
 //  AngVelY
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// AngVelY::AngVelY(const wxString &name, GmatBase *obj)
+// AngVelY::AngVelY(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-AngVelY::AngVelY(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("AngularVelocityY"), obj, wxT("Angular Velocity Y"), wxT("deg/sec"))
+AngVelY::AngVelY(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "AngularVelocityY", obj, "Angular Velocity Y", "deg/sec")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::YELLOW32;
@@ -1250,10 +1250,10 @@ GmatBase* AngVelY::Clone(void) const
 //  AngVelZ
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// AngVelZ::AngVelZ(const wxString &name, GmatBase *obj)
+// AngVelZ::AngVelZ(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-AngVelZ::AngVelZ(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("AngularVelocityZ"), obj, wxT("Angular Velocity Z"), wxT("deg/sec"))
+AngVelZ::AngVelZ(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "AngularVelocityZ", obj, "Angular Velocity Z", "deg/sec")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::BLUE32;
@@ -1311,10 +1311,10 @@ GmatBase* AngVelZ::Clone(void) const
 //  EulerAngleRate1
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// EulerAngleRate1::EulerAngleRate1(const wxString &name, GmatBase *obj)
+// EulerAngleRate1::EulerAngleRate1(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-EulerAngleRate1::EulerAngleRate1(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("EulerAngleRate1"), obj, wxT("Euler Angle Rate 1"), wxT("deg/sec"))
+EulerAngleRate1::EulerAngleRate1(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "EulerAngleRate1", obj, "Euler Angle Rate 1", "deg/sec")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::RED32;
@@ -1367,10 +1367,10 @@ GmatBase* EulerAngleRate1::Clone(void) const
 //  EulerAngleRate2
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// EulerAngleRate2::EulerAngleRate2(const wxString &name, GmatBase *obj)
+// EulerAngleRate2::EulerAngleRate2(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-EulerAngleRate2::EulerAngleRate2(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("EulerAngleRate2"), obj, wxT("Euler Angle Rate 2"), wxT("deg/sec"))
+EulerAngleRate2::EulerAngleRate2(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "EulerAngleRate2", obj, "Euler Angle Rate 2", "deg/sec")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::YELLOW32;
@@ -1423,10 +1423,10 @@ GmatBase* EulerAngleRate2::Clone(void) const
 //  EulerAngleRate3
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-// EulerAngleRate3::EulerAngleRate3(const wxString &name, GmatBase *obj)
+// EulerAngleRate3::EulerAngleRate3(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-EulerAngleRate3::EulerAngleRate3(const wxString &name, GmatBase *obj)
-   : AttitudeReal(name, wxT("EulerAngleRate3"), obj, wxT("Euler Angle Rate 3"), wxT("deg/sec"))
+EulerAngleRate3::EulerAngleRate3(const std::string &name, GmatBase *obj)
+   : AttitudeReal(name, "EulerAngleRate3", obj, "Euler Angle Rate 3", "deg/sec")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::BLUE32;

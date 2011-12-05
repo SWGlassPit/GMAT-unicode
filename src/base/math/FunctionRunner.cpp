@@ -54,10 +54,10 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-FunctionRunner::FunctionRunner(const wxString &nomme)
-   : MathFunction(wxT("FunctionRunner"), nomme)
+FunctionRunner::FunctionRunner(const std::string &nomme)
+   : MathFunction("FunctionRunner", nomme)
 {
-   objectTypeNames.push_back(wxT("FunctionRunner"));
+   objectTypeNames.push_back("FunctionRunner");
    theObjectMap = NULL;
    theGlobalObjectMap = NULL;
    theFunction = NULL;
@@ -99,7 +99,7 @@ FunctionRunner::FunctionRunner(const FunctionRunner &copy) :
 
 
 //------------------------------------------------------------------------------
-// void SetFunctionName(const wxString &fname)
+// void SetFunctionName(const std::string &fname)
 //------------------------------------------------------------------------------
 /*
  * Sets function name to the FunctionManager.
@@ -107,11 +107,11 @@ FunctionRunner::FunctionRunner(const FunctionRunner &copy) :
  * @param  fname  The function name to set
  */
 //------------------------------------------------------------------------------
-void FunctionRunner::SetFunctionName(const wxString &fname)
+void FunctionRunner::SetFunctionName(const std::string &fname)
 {
    #ifdef DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("FunctionRunner::SetFunctionName() passingArgs='%s', fname='%s'\n"),
+      ("FunctionRunner::SetFunctionName() passingArgs='%s', fname='%s'\n",
        GetName().c_str(), fname.c_str());
    #endif
    
@@ -133,7 +133,7 @@ void FunctionRunner::SetFunction(Function *function)
 {
    #ifdef DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("FunctionRunner::SetFunction() passingArgs='%s', function=%p, name='%s'\n"),
+      ("FunctionRunner::SetFunction() passingArgs='%s', function=%p, name='%s'\n",
        GetName().c_str(), function, function->GetName().c_str());
    #endif
    
@@ -143,7 +143,7 @@ void FunctionRunner::SetFunction(Function *function)
 
 
 //------------------------------------------------------------------------------
-// void AddFunctionInput(const wxString &name)
+// void AddFunctionInput(const std::string &name)
 //------------------------------------------------------------------------------
 /*
  * Adds function input argument name to the input names.
@@ -151,11 +151,11 @@ void FunctionRunner::SetFunction(Function *function)
  * @param  name  The name to add the list
  */
 //------------------------------------------------------------------------------
-void FunctionRunner::AddFunctionInput(const wxString &name)
+void FunctionRunner::AddFunctionInput(const std::string &name)
 {
    #ifdef DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("FunctionRunner::AddFunctionInput() passingArgs='%s', adding name='%s'\n"),
+      ("FunctionRunner::AddFunctionInput() passingArgs='%s', adding name='%s'\n",
        GetName().c_str(), name.c_str());
    #endif
    
@@ -219,7 +219,7 @@ void FunctionRunner::SetFunctionInputs()
 
 
 //------------------------------------------------------------------------------
-// void AddFunctionOutput(const wxString &name)
+// void AddFunctionOutput(const std::string &name)
 //------------------------------------------------------------------------------
 /*
  * Adds function output argument name to the output names.
@@ -227,11 +227,11 @@ void FunctionRunner::SetFunctionInputs()
  * @param  name  The name to add the list
  */
 //------------------------------------------------------------------------------
-void FunctionRunner::AddFunctionOutput(const wxString &name)
+void FunctionRunner::AddFunctionOutput(const std::string &name)
 {
    #ifdef DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("FunctionRunner::AddFunctionOutput() passingArgs='%s', adding name='%s'\n"),
+      ("FunctionRunner::AddFunctionOutput() passingArgs='%s', adding name='%s'\n",
        GetName().c_str(), name.c_str());
    #endif
    
@@ -261,8 +261,8 @@ void FunctionRunner::SetObjectMap(ObjectMap *map)
 {
    #ifdef DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("FunctionRunner::SetObjectMap() entered, theFunctionName='%s', ")
-       wxT("map=<%p>\n"), theFunctionName.c_str(), map);
+      ("FunctionRunner::SetObjectMap() entered, theFunctionName='%s', "
+       "map=<%p>\n", theFunctionName.c_str(), map);
    #endif
 
    theObjectMap = map;
@@ -283,8 +283,8 @@ void FunctionRunner::SetGlobalObjectMap(ObjectMap *map)
 {
    #ifdef DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("FunctionRunner::SetGlobalObjectMap() entered, theFunctionName='%s', ")
-       wxT("map=<%p>\n"), theFunctionName.c_str(), map);
+      ("FunctionRunner::SetGlobalObjectMap() entered, theFunctionName='%s', "
+       "map=<%p>\n", theFunctionName.c_str(), map);
    #endif
    
    theGlobalObjectMap = map;
@@ -294,13 +294,13 @@ void FunctionRunner::SetGlobalObjectMap(ObjectMap *map)
    
    #ifdef DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("   => found the function: <%p><%s>\n"), mapObj,
-       mapObj ? mapObj->GetName().c_str() : wxT("NULL"));
+      ("   => found the function: <%p><%s>\n", mapObj,
+       mapObj ? mapObj->GetName().c_str() : "NULL");
    #endif
    
    if (mapObj == NULL)
    {
-      throw MathException(wxT("FunctionRunner::SetGlobalObjectMap cannot find the Function \"") +
+      throw MathException("FunctionRunner::SetGlobalObjectMap cannot find the Function \"" +
                           theFunctionName);
    }
    else
@@ -312,7 +312,7 @@ void FunctionRunner::SetGlobalObjectMap(ObjectMap *map)
    theFunctionManager.SetGlobalObjectMap(map);
    
    #ifdef DEBUG_FUNCTION
-   MessageInterface::ShowMessage(wxT("FunctionRunner::SetGlobalObjectMap() exiting\n"));
+   MessageInterface::ShowMessage("FunctionRunner::SetGlobalObjectMap() exiting\n");
    #endif
 }
 
@@ -330,14 +330,14 @@ void FunctionRunner::SetSolarSystem(SolarSystem *ss)
 {
    #ifdef DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("FunctionRunner::SetSolarSystem() entered, theFunctionName='%s', ")
-       wxT("ss=<%p>\n"), theFunctionName.c_str(), ss);
+      ("FunctionRunner::SetSolarSystem() entered, theFunctionName='%s', "
+       "ss=<%p>\n", theFunctionName.c_str(), ss);
    #endif
    
    theFunctionManager.SetSolarSystem(ss);
    
    #ifdef DEBUG_FUNCTION
-   MessageInterface::ShowMessage(wxT("FunctionRunner::SetSolarSystem() exiting\n"));
+   MessageInterface::ShowMessage("FunctionRunner::SetSolarSystem() exiting\n");
    #endif
 }
 
@@ -356,15 +356,15 @@ void FunctionRunner::SetInternalCoordSystem(CoordinateSystem *cs)
 {
    #ifdef DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("FunctionRunner::SetInternalCoordSystem() entered, theFunctionName='%s', ")
-       wxT("cs=<%p>\n"), theFunctionName.c_str(), cs);
+      ("FunctionRunner::SetInternalCoordSystem() entered, theFunctionName='%s', "
+       "cs=<%p>\n", theFunctionName.c_str(), cs);
    #endif
    
    internalCS = cs;
    theFunctionManager.SetInternalCoordinateSystem(cs);
    
    #ifdef DEBUG_FUNCTION
-   MessageInterface::ShowMessage(wxT("FunctionRunner::SetInternalCoordSystem() leaving\n"));
+   MessageInterface::ShowMessage("FunctionRunner::SetInternalCoordSystem() leaving\n");
    #endif
 }
 
@@ -382,14 +382,14 @@ void FunctionRunner::SetTransientForces(std::vector<PhysicalModel*> *tf)
 {
    #ifdef DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("FunctionRunner::SetTransientForces() entered, theFunctionName='%s', ")
-       wxT("tf=<%p>\n"), theFunctionName.c_str(), tf);
+      ("FunctionRunner::SetTransientForces() entered, theFunctionName='%s', "
+       "tf=<%p>\n", theFunctionName.c_str(), tf);
    #endif
    
    theFunctionManager.SetTransientForces(tf);
    
    #ifdef DEBUG_FUNCTION
-   MessageInterface::ShowMessage(wxT("FunctionRunner::SetTransientForces() exiting\n"));
+   MessageInterface::ShowMessage("FunctionRunner::SetTransientForces() exiting\n");
    #endif
 }
 
@@ -407,14 +407,14 @@ void FunctionRunner::SetPublisher(Publisher *pub)
 {
    #ifdef DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("FunctionRunner::SetPublisher() entered, theFunctionName='%s', ")
-       wxT("pub=<%p>\n"), theFunctionName.c_str(), pub);
+      ("FunctionRunner::SetPublisher() entered, theFunctionName='%s', "
+       "pub=<%p>\n", theFunctionName.c_str(), pub);
    #endif
    
    theFunctionManager.SetPublisher(pub);
    
    #ifdef DEBUG_FUNCTION
-   MessageInterface::ShowMessage(wxT("FunctionRunner::SetPublisher() exiting\n"));
+   MessageInterface::ShowMessage("FunctionRunner::SetPublisher() exiting\n");
    #endif
 }
 
@@ -427,28 +427,28 @@ void FunctionRunner::GetOutputInfo(Integer &type,
 {
    Function *function = theFunctionManager.GetFunction();
    if (function == NULL)
-      throw MathException(wxT("FunctionRunner::GetOutputInfo() function is NULL"));
+      throw MathException("FunctionRunner::GetOutputInfo() function is NULL");
    
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("FunctionRunner::GetOutputInfo() entered, this=<%p><%s>, function=<%s><%p>\n"),
+      ("FunctionRunner::GetOutputInfo() entered, this=<%p><%s>, function=<%s><%p>\n",
        this, GetName().c_str(), function->GetName().c_str(), function);
    #endif
    
    // check for function output count
    IntegerArray rowCounts, colCounts;
    WrapperTypeArray outputTypes = function->GetOutputTypes(rowCounts, colCounts);
-   wxString errMsg;
+   std::string errMsg;
    
    if (outputTypes.size() == 0)
    {
-      errMsg = wxT("The function \"") + function->GetName() + wxT("\" does not return")
-         wxT(" any value");
+      errMsg = "The function \"" + function->GetName() + "\" does not return"
+         " any value";
    }
    else if (outputTypes.size() > 1)
    {
-      errMsg = wxT("The function \"") + function->GetName() + wxT("\" returns more than ")
-         wxT(" one value");
+      errMsg = "The function \"" + function->GetName() + "\" returns more than "
+         " one value";
    }
    else
    {
@@ -469,15 +469,15 @@ void FunctionRunner::GetOutputInfo(Integer &type,
    
    elementType = type;
    
-   if (errMsg != wxT(""))
-      throw MathException(wxT("FunctionRunner::GetOutputInfo() ") + errMsg);
+   if (errMsg != "")
+      throw MathException("FunctionRunner::GetOutputInfo() " + errMsg);
    
    //======================================================================
    #ifdef __ALLOW_MATH_EXP_NODE__
    //======================================================================
    
    if (leftNode == NULL)
-      throw MathException(wxT("FunctionRunner::GetOutputInfo() The left node is NULL"));
+      throw MathException("FunctionRunner::GetOutputInfo() The left node is NULL");
    
    Integer type1, row1, col1; // Left node
    
@@ -490,8 +490,8 @@ void FunctionRunner::GetOutputInfo(Integer &type,
    {
       if (type1 != Gmat::REAL_TYPE)
          throw MathException
-            (wxT("FunctionRunner::GetOutputInfo() The GmatFunction \"%s\" expecting ")
-             wxT("output type of Real"));
+            ("FunctionRunner::GetOutputInfo() The GmatFunction \"%s\" expecting "
+             "output type of Real");
       
       type = Gmat::REAL_TYPE;
       rowCount = 1;
@@ -501,8 +501,8 @@ void FunctionRunner::GetOutputInfo(Integer &type,
    {
       if (type1 != Gmat::RMATRIX_TYPE)
          throw MathException
-            (wxT("FunctionRunner::GetOutputInfo() The GmatFunction \"%s\" expecting ")
-             wxT("output type of Rmatrix"));
+            ("FunctionRunner::GetOutputInfo() The GmatFunction \"%s\" expecting "
+             "output type of Rmatrix");
       
       type = Gmat::RMATRIX_TYPE;
       rowCount = rowCounts[0];
@@ -516,7 +516,7 @@ void FunctionRunner::GetOutputInfo(Integer &type,
    
    #ifdef DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("FunctionRunner::GetOutputInfo() returning type=%d, rowCount=%d, colCount=%d\n"),
+      ("FunctionRunner::GetOutputInfo() returning type=%d, rowCount=%d, colCount=%d\n",
        type, rowCount, colCount);
    #endif
 }
@@ -534,11 +534,11 @@ bool FunctionRunner::ValidateInputs()
 {
    Function *function = theFunctionManager.GetFunction();
    if (function == NULL)
-      throw MathException(wxT("FunctionRunner::ValidateInputs() function is NULL"));
+      throw MathException("FunctionRunner::ValidateInputs() function is NULL");
    
    #ifdef DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("FunctionRunner::ValidateInputs() entered, this=<%p><%s>, function=<%s><%p>\n"),
+      ("FunctionRunner::ValidateInputs() entered, this=<%p><%s>, function=<%s><%p>\n",
        this, GetName().c_str(), function->GetName().c_str(), function);
    #endif
    
@@ -560,27 +560,27 @@ Real FunctionRunner::Evaluate()
 {
    Function *function = theFunctionManager.GetFunction();
    if (function == NULL)
-      throw MathException(wxT("FunctionRunner::Evaluate() function is NULL"));
+      throw MathException("FunctionRunner::Evaluate() function is NULL");
    
    #ifdef DEBUG_PERFORMANCE
    static Integer callCount = 0;
    callCount++;      
    clock_t t1 = clock();
    MessageInterface::ShowMessage
-      (wxT("=== FunctionRunner::Evaluate() entered, '%s' Count = %d\n"),
+      ("=== FunctionRunner::Evaluate() entered, '%s' Count = %d\n",
        GetName().c_str(), callCount);
    #endif
    
    #ifdef DEBUG_EVALUATE
    MessageInterface::ShowMessage
-      (wxT("FunctionRunner::Evaluate() entered, this=<%p><%s>, function=<%s><%p>, ")
-       wxT("internalCS=<%p>\n"), this, GetName().c_str(), function->GetName().c_str(),
+      ("FunctionRunner::Evaluate() entered, this=<%p><%s>, function=<%s><%p>, "
+       "internalCS=<%p>\n", this, GetName().c_str(), function->GetName().c_str(),
        function, internalCS);
    #endif
    
    if (elementType == Gmat::RMATRIX_TYPE)
       throw MathException
-         (wxT("The function \"") + function->GetName() + wxT("\" returns matrix value"));
+         ("The function \"" + function->GetName() + "\" returns matrix value");
    
    //=======================================================
    #ifdef __ALLOW_MATH_EXP_NODE__
@@ -590,8 +590,8 @@ Real FunctionRunner::Evaluate()
    
    #ifdef DEBUG_EVALUATE
    MessageInterface::ShowMessage
-      (wxT("Calling FunctionManager::Evaluate()\n")
-       wxT("===================================================================\n"));
+      ("Calling FunctionManager::Evaluate()\n"
+       "===================================================================\n");
    #endif
    
    Real result = -9999.9999;
@@ -603,7 +603,7 @@ Real FunctionRunner::Evaluate()
    WrapperArray wrappersToDelete = theFunctionManager.GetWrappersToDelete();
    #ifdef DEBUG_EVALUATE
    MessageInterface::ShowMessage
-      (wxT("FunctionRunner::Evaluate(), there are %d wrappers to delete\n"),
+      ("FunctionRunner::Evaluate(), there are %d wrappers to delete\n",
        wrappersToDelete.size());
    #endif
    
@@ -615,8 +615,8 @@ Real FunctionRunner::Evaluate()
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            ((*ewi), (*ewi)->GetDescription(), wxT("FunctionRunner::Evaluate()"),
-             wxT(" deleting output wrapper"));
+            ((*ewi), (*ewi)->GetDescription(), "FunctionRunner::Evaluate()",
+             " deleting output wrapper");
          #endif
          delete (*ewi);
          (*ewi) = NULL;
@@ -625,13 +625,13 @@ Real FunctionRunner::Evaluate()
    
    #ifdef DEBUG_EVALUATE
    MessageInterface::ShowMessage
-      (wxT("FunctionRunner::Evaluate() returning %f\n"), result);
+      ("FunctionRunner::Evaluate() returning %f\n", result);
    #endif
    
    #ifdef DEBUG_PERFORMANCE
    clock_t t2 = clock();
    MessageInterface::ShowMessage
-      (wxT("=== FunctionRunner::Evaluate() exiting, '%s' Count = %d, Run Time: %f seconds\n"),
+      ("=== FunctionRunner::Evaluate() exiting, '%s' Count = %d, Run Time: %f seconds\n",
        GetName().c_str(), callCount, (Real)(t2-t1)/CLOCKS_PER_SEC);
    #endif
    return result;
@@ -650,26 +650,26 @@ Rmatrix FunctionRunner::MatrixEvaluate()
 {
    Function *function = theFunctionManager.GetFunction();
    if (function == NULL)
-      throw MathException(wxT("FunctionRunner::Evaluate() function is NULL"));
+      throw MathException("FunctionRunner::Evaluate() function is NULL");
    
    #ifdef DEBUG_PERFORMANCE
    static Integer callCount = 0;
    callCount++;      
    clock_t t1 = clock();
    MessageInterface::ShowMessage
-      (wxT("=== FunctionRunner::MatrixEvaluate() entered, '%s' Count = %d\n"),
+      ("=== FunctionRunner::MatrixEvaluate() entered, '%s' Count = %d\n",
        GetName().c_str(), callCount);
    #endif
    
    #ifdef DEBUG_EVALUATE
    MessageInterface::ShowMessage
-      (wxT("FunctionRunner::MatrixEvaluate() entered, this=<%p><%s>, function=<%s><%p>\n"),
+      ("FunctionRunner::MatrixEvaluate() entered, this=<%p><%s>, function=<%s><%p>\n",
        this, GetName().c_str(), function->GetName().c_str(), function);
    #endif
    
    if (elementType == Gmat::REAL_TYPE)
       throw MathException
-         (wxT("The function \"") + function->GetName() + wxT("\" returns Real value"));
+         ("The function \"" + function->GetName() + "\" returns Real value");
    
    Rmatrix rmatResult = theFunctionManager.MatrixEvaluate(callingFunction);
    
@@ -682,8 +682,8 @@ Rmatrix FunctionRunner::MatrixEvaluate()
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            ((*ewi), (*ewi)->GetDescription(), wxT("FunctionRunner::MatrixEvaluate()"),
-             wxT(" deleting output wrapper"));
+            ((*ewi), (*ewi)->GetDescription(), "FunctionRunner::MatrixEvaluate()",
+             " deleting output wrapper");
          #endif
          delete (*ewi);
          (*ewi) = NULL;
@@ -693,7 +693,7 @@ Rmatrix FunctionRunner::MatrixEvaluate()
    #ifdef DEBUG_PERFORMANCE
    clock_t t2 = clock();
    MessageInterface::ShowMessage
-      (wxT("=== FunctionRunner::MatrixEvaluate() exiting, '%s' Count = %d, Run Time: %f seconds\n"),
+      ("=== FunctionRunner::MatrixEvaluate() exiting, '%s' Count = %d, Run Time: %f seconds\n",
        GetName().c_str(), callCount, (Real)(t2-t1)/CLOCKS_PER_SEC);
    #endif
    
@@ -708,7 +708,7 @@ void FunctionRunner::Finalize()
 {
    #ifdef DEBUG_FINALIZE
    MessageInterface::ShowMessage
-      (wxT("FunctionRunner::RunComplete() calling FunctionManager::Finalize()\n"));
+      ("FunctionRunner::RunComplete() calling FunctionManager::Finalize()\n");
    #endif
    theFunctionManager.Finalize();
 }
@@ -731,34 +731,34 @@ GmatBase* FunctionRunner::Clone() const
 
 
 //------------------------------------------------------------------------------
-// GmatBase* FunctionRunner::FindObject(const wxString &name)
+// GmatBase* FunctionRunner::FindObject(const std::string &name)
 //------------------------------------------------------------------------------
-GmatBase* FunctionRunner::FindObject(const wxString &name)
+GmatBase* FunctionRunner::FindObject(const std::string &name)
 {
-   wxString newName = name;
+   std::string newName = name;
    
    // Ignore array indexing of Array
-   wxString::size_type index = name.find(wxT('('));
+   std::string::size_type index = name.find('(');
    if (index != name.npos)
       newName = name.substr(0, index);
    
    #ifdef DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("FunctionRunner::FindObject() theObjectMap=<%p>, theGlobalObjectMap=<%p>, ")
-       wxT("newName='%s'\n"), theObjectMap, theGlobalObjectMap, newName.c_str());
+      ("FunctionRunner::FindObject() theObjectMap=<%p>, theGlobalObjectMap=<%p>, "
+       "newName='%s'\n", theObjectMap, theGlobalObjectMap, newName.c_str());
    if (theObjectMap)
    {
-      MessageInterface::ShowMessage(wxT("Here is the local object map:\n"));
-      for (std::map<wxString, GmatBase *>::iterator i = theObjectMap->begin();
+      MessageInterface::ShowMessage("Here is the local object map:\n");
+      for (std::map<std::string, GmatBase *>::iterator i = theObjectMap->begin();
            i != theObjectMap->end(); ++i)
-         MessageInterface::ShowMessage(wxT("   %s\n"), i->first.c_str());
+         MessageInterface::ShowMessage("   %s\n", i->first.c_str());
    }
    if (theGlobalObjectMap)
    {
-      MessageInterface::ShowMessage(wxT("Here is the global object map:\n"));
-      for (std::map<wxString, GmatBase *>::iterator i = theGlobalObjectMap->begin();
+      MessageInterface::ShowMessage("Here is the global object map:\n");
+      for (std::map<std::string, GmatBase *>::iterator i = theGlobalObjectMap->begin();
            i != theGlobalObjectMap->end(); ++i)
-         MessageInterface::ShowMessage(wxT("   %s\n"), i->first.c_str());
+         MessageInterface::ShowMessage("   %s\n", i->first.c_str());
    }
    #endif
    
@@ -785,56 +785,56 @@ void FunctionRunner::HandlePassingMathExp(Function *function)
 {
    if (leftNode == NULL)
       throw MathException
-         (wxT("The left node of \"") + function->GetName() + wxT("\" is NULL"));
+         ("The left node of \"" + function->GetName() + "\" is NULL");
    
    #ifdef DEBUG_EVALUATE
    MessageInterface::ShowMessage
-      (wxT("   leftNode is%s Function input and %sa MathElement\n"),
-       leftNode->IsFunctionInput() ? wxT("") : wxT(" not"),
-       leftNode->IsOfType(wxT("MathElement")) ? wxT("") : wxT(" not"));
+      ("   leftNode is%s Function input and %sa MathElement\n",
+       leftNode->IsFunctionInput() ? "" : " not",
+       leftNode->IsOfType("MathElement") ? "" : " not");
    MessageInterface::ShowMessage
-      (wxT("Calling FunctionManager::Initialize()\n")
-       wxT("===================================================================\n"));
+      ("Calling FunctionManager::Initialize()\n"
+       "===================================================================\n");
    #endif
    
    theFunctionManager.PrepareObjectMap();
    theFunctionManager.Initialize();
    
    Integer numInputs = theInputNodes.size();
-   MessageInterface::ShowMessage(wxT("..... Has %d inputs\n"), numInputs);
+   MessageInterface::ShowMessage("..... Has %d inputs\n", numInputs);
    
    #ifdef DEBUG_EVALUATE
    MessageInterface::ShowMessage
-      (wxT("Evaluating Function input nodes\n")
-       wxT("===================================================================\n"));
+      ("Evaluating Function input nodes\n"
+       "===================================================================\n");
    #endif
    
    // Evaluate input nodes
    for (Integer i=0; i<numInputs; i++)
    {
       Real result = theInputNodes[i]->Evaluate();
-      MessageInterface::ShowMessage(wxT("   ..... result=%f\n"), result);
+      MessageInterface::ShowMessage("   ..... result=%f\n", result);
       ElementWrapper *ew = theFunctionManager.GetInputWrapper(i);
       if (ew)
       {
          if (ew->GetDataType() == Gmat::REAL_TYPE)
          {
-            MessageInterface::ShowMessage(wxT("..... Just setting value to wrapper\n"));
+            MessageInterface::ShowMessage("..... Just setting value to wrapper\n");
             ew->SetReal(result);
             NumberWrapper *nw = (NumberWrapper*)(theFunctionManager.GetInputWrapper(i));
-            MessageInterface::ShowMessage(wxT("..... got %f form this wrapper\n"), nw->EvaluateReal());
+            MessageInterface::ShowMessage("..... got %f form this wrapper\n", nw->EvaluateReal());
          }
          else
          {
             MessageInterface::ShowMessage
-               (wxT("***> Cannot set value to input wrapper, different data type\n"));
-            MessageInterface::ShowMessage(wxT("..... Creating new NumberWrapper\n"));
+               ("***> Cannot set value to input wrapper, different data type\n");
+            MessageInterface::ShowMessage("..... Creating new NumberWrapper\n");
             ElementWrapper *newWrapper = new NumberWrapper();
             
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Add
-               (newWrapper, newWrapper->GetDescription(), wxT("FunctionRunner::HandlePassingMathExp()"),
-                wxT("*newWrapper = new NumberWrapper()"));
+               (newWrapper, newWrapper->GetDescription(), "FunctionRunner::HandlePassingMathExp()",
+                "*newWrapper = new NumberWrapper()");
             #endif
             
             newWrapper->SetReal(result);
@@ -843,13 +843,13 @@ void FunctionRunner::HandlePassingMathExp(Function *function)
       }
       else
       {
-         MessageInterface::ShowMessage(wxT("..... Creating new NumberWrapper\n"));
+         MessageInterface::ShowMessage("..... Creating new NumberWrapper\n");
          ew = new NumberWrapper();
          
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Add
-            (ew, ew->GetDescription(), wxT("FunctionRunner::HandlePassingMathExp()"),
-             wxT("ew = new NumberWrapper()"));
+            (ew, ew->GetDescription(), "FunctionRunner::HandlePassingMathExp()",
+             "ew = new NumberWrapper()");
          #endif
          
          ew->SetReal(result);
@@ -859,17 +859,17 @@ void FunctionRunner::HandlePassingMathExp(Function *function)
       bool inputAdded = false;
       // depends on return type of theInputNodes[i]->Evaluate(), create Variable or Array
       MessageInterface::ShowMessage
-         (wxT("..... Creating Variable with '%s'\n"), theInputNodes[i]->GetName().c_str());
+         ("..... Creating Variable with '%s'\n", theInputNodes[i]->GetName().c_str());
       Variable *passingInput = new Variable(theInputNodes[i]->GetName());
       
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (passingInput, passingInput->GetName(), wxT("FunctionRunner::HandlePassingMathExp()"),
-          wxT("*passingInput = new Variable(theInputNodes[i]->GetName())"));
+         (passingInput, passingInput->GetName(), "FunctionRunner::HandlePassingMathExp()",
+          "*passingInput = new Variable(theInputNodes[i]->GetName())");
       #endif
       
       passingInput->SetReal(result);
-      MessageInterface::ShowMessage(wxT("..... Calling FunctionManager::SetPassedInput()\n"));
+      MessageInterface::ShowMessage("..... Calling FunctionManager::SetPassedInput()\n");
       theFunctionManager.SetPassedInput(i, (GmatBase*)passingInput, inputAdded);
       if (!inputAdded)
          delete passingInput;

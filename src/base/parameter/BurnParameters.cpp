@@ -39,7 +39,7 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// ImpBurnElements(const wxString &type, const wxString &name, GmatBase *obj)
+// ImpBurnElements(const std::string &type, const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -49,20 +49,20 @@
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-ImpBurnElements::ImpBurnElements(const wxString &type, const wxString &name,
+ImpBurnElements::ImpBurnElements(const std::string &type, const std::string &name,
                                  GmatBase *obj)
    : BurnReal(name, type, Gmat::IMPULSIVE_BURN, obj,
-              wxT("ImpulsiveBurn Element"), wxT("Km/s"), GmatParam::NO_DEP, false)
+              "ImpulsiveBurn Element", "Km/s", GmatParam::NO_DEP, false)
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::RED32;
    #endif
    
-   if (type == wxT("Element1") || type == wxT("V"))
+   if (type == "Element1" || type == "V")
       mElementId = ELEMENT1;
-   else if (type == wxT("Element2") || type == wxT("N"))
+   else if (type == "Element2" || type == "N")
       mElementId = ELEMENT2;
-   else if (type == wxT("Element3") || type == wxT("B"))
+   else if (type == "Element3" || type == "B")
       mElementId = ELEMENT3;
    else
       mElementId = -1;
@@ -137,7 +137,7 @@ bool ImpBurnElements::Evaluate()
 
    #ifdef DEBUG_BURN_EVAL
    MessageInterface::ShowMessage
-      (wxT("ImpBurnElements::Evaluate() mRealValue=%f\n"), mRealValue);
+      ("ImpBurnElements::Evaluate() mRealValue=%f\n", mRealValue);
    #endif
    
    if (mRealValue == BurnData::BURN_REAL_UNDEFINED)

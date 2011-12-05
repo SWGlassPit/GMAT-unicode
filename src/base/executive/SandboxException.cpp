@@ -29,14 +29,14 @@
 #include "SandboxException.hpp" // class's header file
 
 //------------------------------------------------------------------------------
-// SandboxException(wxString details, Gmat::MessageType mt = Gmat::ERROR_);
+// SandboxException(std::string details, Gmat::MessageType mt = Gmat::ERROR_);
 //------------------------------------------------------------------------------
 /**
  * class constructor
  */
 //------------------------------------------------------------------------------
-SandboxException::SandboxException(wxString details, Gmat::MessageType mt) :
-   BaseException(wxT("Sandbox Exception: "), details, mt)
+SandboxException::SandboxException(std::string details, Gmat::MessageType mt) :
+   BaseException("Sandbox Exception: ", details, mt)
 {
 }
 

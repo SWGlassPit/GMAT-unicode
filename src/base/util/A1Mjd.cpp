@@ -34,9 +34,9 @@ using namespace GmatMathUtil;
 //---------------------------------
 // static data
 //---------------------------------
-const wxString A1Mjd::DATA_DESCRIPTIONS[NUM_DATA] = 
+const std::string A1Mjd::DATA_DESCRIPTIONS[NUM_DATA] = 
 {
-   wxT("A1 Modified Julian Date")
+   "A1 Modified Julian Date"
 };
 
 const A1Mjd A1Mjd::J2000      = A1Mjd(A1MJD_OF_J2000);
@@ -426,29 +426,29 @@ Integer A1Mjd::GetNumData() const
 }
 
 //------------------------------------------------------------------------------
-// const wxString* GetDataDescriptions() const
+// const std::string* GetDataDescriptions() const
 //------------------------------------------------------------------------------
 /**
  * @return data description pointer.
  */
 //------------------------------------------------------------------------------
-const wxString* A1Mjd::GetDataDescriptions() const
+const std::string* A1Mjd::GetDataDescriptions() const
 {
    return DATA_DESCRIPTIONS;
 }
 
 //------------------------------------------------------------------------------
-// wxString* ToValueStrings()
+// std::string* ToValueStrings()
 //------------------------------------------------------------------------------
 /**
  * @return data value string pointer.
  */
 //------------------------------------------------------------------------------
-wxString* A1Mjd::ToValueStrings()
+std::string* A1Mjd::ToValueStrings()
 {
-   wxString ss(wxT(""));
+   std::stringstream ss("");
    ss << mMjd;
-   stringValues[0] = ss;
+   stringValues[0] = ss.str();
    return stringValues;   
 }
 

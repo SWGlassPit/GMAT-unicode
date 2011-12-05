@@ -38,7 +38,7 @@ class EventLocator;
 class EventModel: public PhysicalModel
 {
 public:
-   EventModel(const wxString &nomme = wxT(""));
+   EventModel(const std::string &nomme = "");
    virtual ~EventModel();
    EventModel(const EventModel& em);
    EventModel& operator=(const EventModel& em);
@@ -59,7 +59,7 @@ public:
    virtual const StringArray& GetRefObjectNameArray(
          const Gmat::ObjectType type);
    virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-         const wxString &name = wxT(""));
+         const std::string &name = "");
 
    virtual bool GetDerivatives(Real * state, Real dt = 0.0, Integer order = 1,
          const Integer id = -1);

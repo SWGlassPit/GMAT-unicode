@@ -23,7 +23,7 @@
 #include "InterfaceException.hpp" // class's header file
 
 //------------------------------------------------------------------------------
-//  InterfaceException(wxString details)
+//  InterfaceException(std::string details)
 //------------------------------------------------------------------------------
 /**
  * Constructs InterfaceException instance (default constructor).
@@ -31,8 +31,8 @@
  * @param details A message providing the details of the exception. 
  */
 //------------------------------------------------------------------------------
-InterfaceException::InterfaceException(const wxString &details) :
-    BaseException           (wxT("Interface Exception Thrown: "), details)
+InterfaceException::InterfaceException(const std::string &details) :
+    BaseException           ("Interface Exception Thrown: ", details)
 {
 }
 

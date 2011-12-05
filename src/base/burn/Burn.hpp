@@ -34,8 +34,8 @@
 class GMAT_API Burn : public GmatBase
 {
 public:
-   Burn(Gmat::ObjectType type, const wxString &typeStr,
-        const wxString &nomme);
+   Burn(Gmat::ObjectType type, const std::string &typeStr,
+        const std::string &nomme);
    virtual ~Burn();
    Burn(const Burn &b);
    Burn&                operator=(const Burn &b);
@@ -44,29 +44,29 @@ public:
    
    // Inherited (GmatBase) methods
    // for parameters
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    
    virtual bool         IsParameterReadOnly(const Integer id) const;
    
    virtual Real         GetRealParameter(const Integer id) const;
    virtual Real         SetRealParameter(const Integer id,
                                          const Real value);
-   virtual wxString  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
+                                           const std::string &value);
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
    
    // for enumerated strings
    virtual const StringArray&
                         GetPropertyEnumStrings(const Integer id) const;
    virtual const StringArray&
-                        GetPropertyEnumStrings(const wxString &label) const;
+                        GetPropertyEnumStrings(const std::string &label) const;
    
    // for Ref. objects
    virtual const ObjectTypeArray&
@@ -74,10 +74,10 @@ public:
    virtual const StringArray&
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
    // Accessor method used by Maneuver to pass in the spacecraft pointer
    virtual void         SetSpacecraftToManeuver(Spacecraft *sat);
@@ -117,15 +117,15 @@ protected:
    /// Pointer to the spacecraft that maneuvers
    Spacecraft           *spacecraft;
    /// Text description of the GMAT coordinate system, if used
-   wxString          coordSystemName;
+   std::string          coordSystemName;
    /// Name of the Spacepoint used as the origin of the burn
-   wxString          localOriginName;
+   std::string          localOriginName;
    /// Text description of the (internal) coordinate axis type
-   wxString          localAxesName;
+   std::string          localAxesName;
    /// Name of the J2000 body
-   wxString          j2000BodyName;
+   std::string          j2000BodyName;
    /// Name of the Spacecraft that gets maneuvered
-   wxString          satName;
+   std::string          satName;
    /// Orientation vector for maneuver; includes magnitude for impulsive burns
    Real                 deltaV[3];
    /// Orientation vector for maneuver in inertial system
@@ -135,7 +135,7 @@ protected:
    /// String array that holds ref. object names
    StringArray          refObjectNames;
    /// Text description of the vector format (deprecated)
-   wxString          vectorFormat;
+   std::string          vectorFormat;
    /// Flag indicating if local coordinate system is used
    bool                 usingLocalCoordSys;
    /// Flag indicating if axes is MJ2000Eq
@@ -169,7 +169,7 @@ protected:
    };
    
    /// burn parameter labels
-   static const wxString 
+   static const std::string 
       PARAMETER_TEXT[BurnParamCount - GmatBaseParamCount];
    /// burn parameter types
    static const Gmat::ParameterType 

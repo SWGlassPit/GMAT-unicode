@@ -15,7 +15,7 @@
 // Created: 2005/1/7
 //
 /**
- * Implements StringVar class which handles wxString value. The string value
+ * Implements StringVar class which handles std::string value. The string value
  * is stored in Parameter::mExpr.
  */
 //------------------------------------------------------------------------------
@@ -30,10 +30,10 @@
 // static data
 //---------------------------------
 
-const wxString
+const std::string
 StringVar::PARAMETER_TEXT[StringVarParamCount - ParameterParamCount] =
 {
-   wxT("Value"),
+   "Value",
 };
 
 const Gmat::ParameterType
@@ -48,9 +48,9 @@ StringVar::PARAMETER_TYPE[StringVarParamCount - ParameterParamCount] =
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// StringVar(const wxString &name, const wxString &typeStr, 
-//         GmatParam::ParameterKey key, GmatBase *obj, const wxString &desc,
-//         const wxString &unit, GmatParam::DepObject depObj, Gmat::ObjectType,
+// StringVar(const std::string &name, const std::string &typeStr, 
+//         GmatParam::ParameterKey key, GmatBase *obj, const std::string &desc,
+//         const std::string &unit, GmatParam::DepObject depObj, Gmat::ObjectType,
 //         bool isTimeParam)
 //------------------------------------------------------------------------------
 /**
@@ -67,15 +67,15 @@ StringVar::PARAMETER_TYPE[StringVarParamCount - ParameterParamCount] =
  * @param <isTimeParam> true if parameter is time related, false otherwise
  */
 //------------------------------------------------------------------------------
-StringVar::StringVar(const wxString &name, const wxString &typeStr, 
-                     GmatParam::ParameterKey key, GmatBase *obj, const wxString &desc,
-                     const wxString &unit, GmatParam::DepObject depObj,
+StringVar::StringVar(const std::string &name, const std::string &typeStr, 
+                     GmatParam::ParameterKey key, GmatBase *obj, const std::string &desc,
+                     const std::string &unit, GmatParam::DepObject depObj,
                      Gmat::ObjectType ownerType, bool isTimeParam)
    : Parameter(name, typeStr, key, obj, desc, unit, depObj, ownerType, isTimeParam,
                false, false, true)
 {  
    objectTypes.push_back(Gmat::STRING);
-   objectTypeNames.push_back(wxT("String"));
+   objectTypeNames.push_back("String");
    mStringValue = STRING_PARAMETER_UNDEFINED;
    mReturnType = Gmat::STRING_TYPE;
    // Don't set name to expression, but leave it blank if not set (LOJ: 2010.11.29)
@@ -115,7 +115,7 @@ StringVar& StringVar::operator= (const StringVar& right)
    if (this != &right)
    {
       // We don't want to change the name when copy
-      wxString thisName = instanceName;
+      std::string thisName = instanceName;
       
       Parameter::operator=(right);
       mStringValue = right.mStringValue;
@@ -125,7 +125,7 @@ StringVar& StringVar::operator= (const StringVar& right)
       // For example:
       // str1 = 'this is str1'
       // str2 = str1;
-      // We want to write wxT("str2 = str1") instead of "str2 = 'this is str1'
+      // We want to write "str2 = str1" instead of "str2 = 'this is str1'
       mExpr = right.GetName();
       // Set depObjectName so that we can check whether to add quotes when we write (loj: 2008.08.13)
       mDepObjectName = right.GetName();
@@ -183,7 +183,7 @@ bool StringVar::operator!=(const StringVar &right) const
 
 
 //------------------------------------------------------------------------------
-// wxString ToString()
+// std::string ToString()
 //------------------------------------------------------------------------------
 /**
  * Retrieves string value of parameter.
@@ -191,14 +191,14 @@ bool StringVar::operator!=(const StringVar &right) const
  * @return string value of parameter.
  */
 //------------------------------------------------------------------------------
-wxString StringVar::ToString()
+std::string StringVar::ToString()
 {
    return mStringValue;
 }
 
 
 //------------------------------------------------------------------------------
-// const wxString& GetString() const
+// const std::string& GetString() const
 //------------------------------------------------------------------------------
 /**
  * Retrieves string value of parameter.
@@ -206,14 +206,14 @@ wxString StringVar::ToString()
  * @return string value.
  */
 //------------------------------------------------------------------------------
-const wxString& StringVar::GetString() const
+const std::string& StringVar::GetString() const
 {
    return mStringValue;
 }
 
 
 //------------------------------------------------------------------------------
-// const wxString& EvaluateString()
+// const std::string& EvaluateString()
 //------------------------------------------------------------------------------
 /**
  * Retrieves string value of parameter.
@@ -221,7 +221,7 @@ const wxString& StringVar::GetString() const
  * @return string value.
  */
 //------------------------------------------------------------------------------
-const wxString& StringVar::EvaluateString()
+const std::string& StringVar::EvaluateString()
 {
    return mStringValue;
 }
@@ -256,9 +256,9 @@ void StringVar::Copy(const GmatBase* orig)
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer StringVar::GetParameterID(const wxString &str) const
+Integer StringVar::GetParameterID(const std::string &str) const
 {
    for (int i=ParameterParamCount; i<StringVarParamCount; i++)
    {
@@ -271,16 +271,16 @@ Integer StringVar::GetParameterID(const wxString &str) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
-wxString StringVar::GetStringParameter(const Integer id) const
+std::string StringVar::GetStringParameter(const Integer id) const
 {
    switch (id)
    {
    case VALUE:
       #ifdef DEBUG_STRINGVAR
       MessageInterface::ShowMessage
-         (wxT("StringVar::GetStringParameter(%d) returning '%s'\n"), id,
+         ("StringVar::GetStringParameter(%d) returning '%s'\n", id,
           mStringValue.c_str());
       #endif
       return mStringValue;
@@ -291,22 +291,22 @@ wxString StringVar::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString StringVar::GetStringParameter(const wxString &label) const
+std::string StringVar::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
-bool StringVar::SetStringParameter(const Integer id, const wxString &value)
+bool StringVar::SetStringParameter(const Integer id, const std::string &value)
 {
    #ifdef DEBUG_STRINGVAR
    MessageInterface::ShowMessage
-      (wxT("StringVar::SetStringParameter() this=<%p>, id=%d, value='%s'\n"), this,
+      ("StringVar::SetStringParameter() this=<%p>, id=%d, value='%s'\n", this,
        id, value.c_str());
    #endif
    
@@ -317,16 +317,16 @@ bool StringVar::SetStringParameter(const Integer id, const wxString &value)
       mStringValue = value; // set as initial value
       #ifdef DEBUG_STRINGVAR
       MessageInterface::ShowMessage
-         (wxT("StringVar::SetStringParameter() returning true, ")
-          wxT("both mExpr and mStringValue are set to '%s'\n"), value.c_str());
+         ("StringVar::SetStringParameter() returning true, "
+          "both mExpr and mStringValue are set to '%s'\n", value.c_str());
       #endif
       return true;
    case VALUE:
       mStringValue = value;
       #ifdef DEBUG_STRINGVAR
       MessageInterface::ShowMessage
-         (wxT("StringVar::SetStringParameter() returning true, ")
-          wxT("mStringValue is set to '%s'\n"), value.c_str());
+         ("StringVar::SetStringParameter() returning true, "
+          "mStringValue is set to '%s'\n", value.c_str());
       #endif
       return true;
    default:
@@ -336,15 +336,15 @@ bool StringVar::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label,
-//                         const wxString &value)
+// bool SetStringParameter(const std::string &label,
+//                         const std::string &value)
 //------------------------------------------------------------------------------
-bool StringVar::SetStringParameter(const wxString &label,
-                                   const wxString &value)
+bool StringVar::SetStringParameter(const std::string &label,
+                                   const std::string &value)
 {
    #ifdef DEBUG_STRINGVAR
    MessageInterface::ShowMessage
-      (wxT("StringVar::SetStringParameter() label=%s value='%s'\n"),
+      ("StringVar::SetStringParameter() label=%s value='%s'\n",
        label.c_str(), value.c_str());
    #endif
    
@@ -353,7 +353,7 @@ bool StringVar::SetStringParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// const wxString& GetGeneratingString(...)
+// const std::string& GetGeneratingString(...)
 //------------------------------------------------------------------------------
 /**
  * Produces a string, possibly multi-line, containing the text that produces an
@@ -366,45 +366,45 @@ bool StringVar::SetStringParameter(const wxString &label,
  * @return A string containing the text.
  */
 //------------------------------------------------------------------------------
-const wxString& StringVar::GetGeneratingString(Gmat::WriteMode mode,
-                                                  const wxString &prefix,
-                                                  const wxString &useName)
+const std::string& StringVar::GetGeneratingString(Gmat::WriteMode mode,
+                                                  const std::string &prefix,
+                                                  const std::string &useName)
 {
    #ifdef DEBUG_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("StringVar::GetGeneratingString() this=<%p>'%s' entered, mode=%d, prefix='%s', ")
-       wxT("useName='%s'\n"), this, GetName().c_str(), mode, prefix.c_str(), useName.c_str());
+      ("StringVar::GetGeneratingString() this=<%p>'%s' entered, mode=%d, prefix='%s', "
+       "useName='%s'\n", this, GetName().c_str(), mode, prefix.c_str(), useName.c_str());
    MessageInterface::ShowMessage
-      (wxT("   mExpr='%s', mDepObjectName='%s'\n"), mExpr.c_str(), mDepObjectName.c_str());
+      ("   mExpr='%s', mDepObjectName='%s'\n", mExpr.c_str(), mDepObjectName.c_str());
    #endif
    
    // @note
-   // Do not write wxT("Create name") since multiple Strings per line will be written from
+   // Do not write "Create name" since multiple Strings per line will be written from
    // the ScriptInterpreter
    
    // Write value if it is not blank or blank and SHOW_SCRIPT mode
-   if ( mExpr != wxT("") ||
-       (mExpr == wxT("") && mode == Gmat::SHOW_SCRIPT))
+   if ( mExpr != "" ||
+       (mExpr == "" && mode == Gmat::SHOW_SCRIPT))
    {
       // if value is other StringVar object, do not put quotes
-      if (mExpr != wxT("") && mExpr == mDepObjectName)
-         generatingString = wxT("GMAT ") + GetName() + wxT(" = ") + mExpr;
+      if (mExpr != "" && mExpr == mDepObjectName)
+         generatingString = "GMAT " + GetName() + " = " + mExpr;
       else
-         generatingString = wxT("GMAT ") + GetName() + wxT(" = '") + mExpr + wxT("'");
+         generatingString = "GMAT " + GetName() + " = '" + mExpr + "'";
       
       if (mode == Gmat::NO_COMMENTS)
-         generatingString = generatingString + wxT(";\n");
+         generatingString = generatingString + ";\n";
       else
-         generatingString = generatingString + wxT(";") + inlineComment + wxT("\n");
+         generatingString = generatingString + ";" + inlineComment + "\n";
    }
    else
    {
-      generatingString = wxT("");
+      generatingString = "";
    }
    
    #ifdef DEBUG_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("StringVar::GetGeneratingString() returning\n   <%s>\n"), generatingString.c_str());
+      ("StringVar::GetGeneratingString() returning\n   <%s>\n", generatingString.c_str());
    #endif
    
    return generatingString;

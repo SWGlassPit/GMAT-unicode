@@ -24,14 +24,14 @@
 
 LocatedEvent::LocatedEvent() :
    epoch       (0.0),
-   boundary    (wxT("")),
+   boundary    (""),
    isEntry     (false),
-   type        (wxT("")),
+   type        (""),
    eventValue  (999.999),
-   participants(wxT("")),
+   participants(""),
    partner     (NULL),
    duration    (0.0),
-   dataName    (wxT(""))
+   dataName    ("")
 {
 }
 

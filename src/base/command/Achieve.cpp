@@ -43,13 +43,13 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
    Achieve::PARAMETER_TEXT[AchieveParamCount - GmatCommandParamCount] =
    {
-      wxT("TargeterName"),
-      wxT("Goal"),
-      wxT("GoalValue"),
-      wxT("Tolerance")
+      "TargeterName",
+      "Goal",
+      "GoalValue",
+      "Tolerance"
    };
    
 const Gmat::ParameterType
@@ -74,19 +74,19 @@ const Gmat::ParameterType
  */
 //------------------------------------------------------------------------------
 Achieve::Achieve() :
-   GmatCommand             (wxT("Achieve")),
-   targeterName            (wxT("")),
-   goalName                (wxT("")),
+   GmatCommand             ("Achieve"),
+   targeterName            (""),
+   goalName                (""),
    goal                    (NULL),
-   achieveName             (wxT("")),
+   achieveName             (""),
    achieve                 (NULL),
-   toleranceName           (wxT("0.1")),
+   toleranceName           ("0.1"),
    tolerance               (NULL),
    goalId                  (-1),
    targeter                (NULL),
    targeterDataFinalized   (false)
 {
-   settables.push_back(wxT("Tolerance")); 
+   settables.push_back("Tolerance"); 
    parameterCount = AchieveParamCount;
 }
 
@@ -180,7 +180,7 @@ GmatBase* Achieve::Clone() const
 
 //------------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * Renames referenced objects.
@@ -193,8 +193,8 @@ GmatBase* Achieve::Clone() const
  */
 //------------------------------------------------------------------------------
 bool Achieve::RenameRefObject(const Gmat::ObjectType type,
-                              const wxString &oldName,
-                              const wxString &newName)
+                              const std::string &oldName,
+                              const std::string &newName)
 {
    if (type == Gmat::SOLVER)
    {
@@ -270,7 +270,7 @@ const StringArray& Achieve::GetRefObjectNameArray(const Gmat::ObjectType type)
 // Parameter accessors
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -280,7 +280,7 @@ const StringArray& Achieve::GetRefObjectNameArray(const Gmat::ObjectType type)
  * @return parameter text for the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString Achieve::GetParameterText(const Integer id) const
+std::string Achieve::GetParameterText(const Integer id) const
 {
    if (id >= GmatCommandParamCount && id < AchieveParamCount)
       return PARAMETER_TEXT[id - GmatCommandParamCount];
@@ -289,7 +289,7 @@ wxString Achieve::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -299,7 +299,7 @@ wxString Achieve::GetParameterText(const Integer id) const
  * @return ID for the requested parameter.
  */
 //------------------------------------------------------------------------------
-Integer Achieve::GetParameterID(const wxString &str) const
+Integer Achieve::GetParameterID(const std::string &str) const
 {
    for (Integer i = GmatCommandParamCount; i < AchieveParamCount; i++)
    {
@@ -332,7 +332,7 @@ Gmat::ParameterType Achieve::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -342,7 +342,7 @@ Gmat::ParameterType Achieve::GetParameterType(const Integer id) const
  * @return parameter type string of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString Achieve::GetParameterTypeString(const Integer id) const
+std::string Achieve::GetParameterTypeString(const Integer id) const
 {
    return GmatCommand::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -391,7 +391,7 @@ Real Achieve::SetRealParameter(const Integer id, const Real value)
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id) const
+//  std::string  GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -402,7 +402,7 @@ Real Achieve::SetRealParameter(const Integer id, const Real value)
  * @return  string value of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString Achieve::GetStringParameter(const Integer id) const
+std::string Achieve::GetStringParameter(const Integer id) const
 {
    if (id == targeterNameID)
       return targeterName;
@@ -421,7 +421,7 @@ wxString Achieve::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString  SetStringParameter(const Integer id, const wxString value)
+//  std::string  SetStringParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the string parameter value, given the input
@@ -433,11 +433,11 @@ wxString Achieve::GetStringParameter(const Integer id) const
  * @return  success flag.
  */
 //------------------------------------------------------------------------------
-bool Achieve::SetStringParameter(const Integer id, const wxString &value)
+bool Achieve::SetStringParameter(const Integer id, const std::string &value)
 {
    #ifdef DEBUG_ACHIEVE_PARAMS
    MessageInterface::ShowMessage
-      (wxT("Achieve::SetStringParameter() id=%d, value=%s\n"), id, value.c_str());
+      ("Achieve::SetStringParameter() id=%d, value=%s\n", id, value.c_str());
    #endif
    
    if (id == targeterNameID) 
@@ -490,7 +490,7 @@ bool Achieve::SetStringParameter(const Integer id, const wxString &value)
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                                     const wxString &name = "")
+//                                     const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Sets referenced objects.
@@ -503,7 +503,7 @@ bool Achieve::SetStringParameter(const Integer id, const wxString &value)
  */
 //------------------------------------------------------------------------------
 bool Achieve::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                           const wxString &name)
+                           const std::string &name)
 {   
    if (type == Gmat::SOLVER) 
    {
@@ -547,44 +547,44 @@ bool Achieve::InterpretAction()
    StringArray chunks = InterpretPreface();
 
    #ifdef DEBUG_ACHIEVE_PARSE
-      MessageInterface::ShowMessage(wxT("Preface chunks as\n"));
+      MessageInterface::ShowMessage("Preface chunks as\n");
       for (StringArray::iterator i = chunks.begin(); i != chunks.end(); ++i)
-         MessageInterface::ShowMessage(wxT("   \"%s\"\n"), i->c_str());
-      MessageInterface::ShowMessage(wxT("\n"));
+         MessageInterface::ShowMessage("   \"%s\"\n", i->c_str());
+      MessageInterface::ShowMessage("\n");
    #endif
       
    if (chunks.size() <= 1)
-      throw CommandException(wxT("Missing information for Achieve command.\n"));
+      throw CommandException("Missing information for Achieve command.\n");
    
-   if (chunks[1].at(0) == wxT('('))
-      throw CommandException(wxT("Missing solver name for Achieve command.\n"));
+   if (chunks[1].at(0) == '(')
+      throw CommandException("Missing solver name for Achieve command.\n");
       
-   if ((chunks[1].find(wxT("[")) != chunks[1].npos) || (chunks[1].find(wxT("]")) != chunks[1].npos))
-      throw CommandException(wxT("Brackets not allowed in Achieve command"));
+   if ((chunks[1].find("[") != chunks[1].npos) || (chunks[1].find("]") != chunks[1].npos))
+      throw CommandException("Brackets not allowed in Achieve command");
 
-   if (!GmatStringUtil::AreAllBracketsBalanced(chunks[1], wxT("({)}")))
+   if (!GmatStringUtil::AreAllBracketsBalanced(chunks[1], "({)}"))
    {
       throw CommandException
-         (wxT("Parentheses, braces, or brackets are unbalanced or incorrectly placed\n"));
+         ("Parentheses, braces, or brackets are unbalanced or incorrectly placed\n");
    }
    
    // Find and set the solver object name
    // This is the only setting in Achieve that is not in a wrapper
-   StringArray currentChunks = parser.Decompose(chunks[1], wxT("()"), false);
+   StringArray currentChunks = parser.Decompose(chunks[1], "()", false);
    SetStringParameter(targeterNameID, currentChunks[0]);
    #ifdef DEBUG_ACHIEVE_PARSE
-      MessageInterface::ShowMessage(wxT("current chunks as\n"));
+      MessageInterface::ShowMessage("current chunks as\n");
       for (StringArray::iterator i = currentChunks.begin(); i != currentChunks.end(); ++i)
-         MessageInterface::ShowMessage(wxT("   \"%s\"\n"), i->c_str());
-      MessageInterface::ShowMessage(wxT("\n"));
+         MessageInterface::ShowMessage("   \"%s\"\n", i->c_str());
+      MessageInterface::ShowMessage("\n");
    #endif
    
-   wxString noSpaces2     = GmatStringUtil::RemoveAll(currentChunks[1],wxT(' '));
+   std::string noSpaces2     = GmatStringUtil::RemoveAll(currentChunks[1],' ');
    #ifdef DEBUG_ACHIEVE_PARSE
       MessageInterface::ShowMessage(
-         wxT("Achieve: noSpaces2 = %s\n"), noSpaces2.c_str());
+         "Achieve: noSpaces2 = %s\n", noSpaces2.c_str());
    #endif   
-   currentChunks = parser.Decompose(noSpaces2, wxT("()"), true, true);
+   currentChunks = parser.Decompose(noSpaces2, "()", true, true);
    
    #ifdef DEBUG_ACHIEVE_PARSE
       MessageInterface::ShowMessage(
@@ -595,12 +595,12 @@ bool Achieve::InterpretAction()
    #endif
 
    // First chunk is the goal and achieve (target) value
-   wxString lhs, rhs;
+   std::string lhs, rhs;
    if (!SeparateEquals(currentChunks[0], lhs, rhs, true))
    {
-      throw CommandException(wxT("The goal \"") + lhs + 
-         wxT("\" is missing the \"=\" operator or a goal value required for an ") + typeName + 
-         wxT(" command.\n"));
+      throw CommandException("The goal \"" + lhs + 
+         "\" is missing the \"=\" operator or a goal value required for an " + typeName + 
+         " command.\n");
    }
       
    goalName = lhs;
@@ -608,23 +608,23 @@ bool Achieve::InterpretAction()
    
    #ifdef DEBUG_ACHIEVE_PARSE
       MessageInterface::ShowMessage(
-         wxT("Achieve:  setting goalName to %s\n"), goalName.c_str());
+         "Achieve:  setting goalName to %s\n", goalName.c_str());
       MessageInterface::ShowMessage(
-         wxT("Achieve:  setting achieveName to %s\n"), achieveName.c_str());
+         "Achieve:  setting achieveName to %s\n", achieveName.c_str());
    #endif
    
    // if there are no more chunks, just return
    if (currentChunks.size() == (Integer) 1) return true;
    
-   wxString noSpaces     = GmatStringUtil::RemoveAll(currentChunks[1],wxT(' '));
+   std::string noSpaces     = GmatStringUtil::RemoveAll(currentChunks[1],' ');
    // Now deal with the settable parameters
-   currentChunks = parser.SeparateBrackets(noSpaces, wxT("{}"), wxT(","), true);
+   currentChunks = parser.SeparateBrackets(noSpaces, "{}", ",", true);
    
    #ifdef DEBUG_ACHIEVE_PARSE
       MessageInterface::ShowMessage(
-         wxT("Achieve: After SeparateBrackets, current chunks = \n"));
+         "Achieve: After SeparateBrackets, current chunks = \n");
       for (Integer jj = 0; jj < (Integer) currentChunks.size(); jj++)
-         MessageInterface::ShowMessage(wxT("   %s\n"),
+         MessageInterface::ShowMessage("   %s\n",
                                        currentChunks[jj].c_str());
    #endif
    
@@ -635,21 +635,21 @@ bool Achieve::InterpretAction()
    {
       bool isOK = SeparateEquals(*i, lhs, rhs, true);
       #ifdef DEBUG_ACHIEVE_PARSE
-         MessageInterface::ShowMessage(wxT("Setting Achieve properties\n"));
-         MessageInterface::ShowMessage(wxT("   \"%s\" = \"%s\"\n"), lhs.c_str(), rhs.c_str());
+         MessageInterface::ShowMessage("Setting Achieve properties\n");
+         MessageInterface::ShowMessage("   \"%s\" = \"%s\"\n", lhs.c_str(), rhs.c_str());
       #endif
       
       if (!isOK || lhs.empty() || rhs.empty())
-         throw CommandException(wxT("The setting \"") + lhs + 
-            wxT("\" is missing the \"=\" operator or a value required for an ") + typeName + 
-            wxT(" command.\n"));
+         throw CommandException("The setting \"" + lhs + 
+            "\" is missing the \"=\" operator or a value required for an " + typeName + 
+            " command.\n");
       
       if (IsSettable(lhs))
          SetStringParameter(GetParameterID(lhs), rhs);
       else
-         throw CommandException(wxT("The setting \"") + lhs + 
-            wxT("\" is not a valid setting for an ") + typeName + 
-            wxT(" command.\n"));
+         throw CommandException("The setting \"" + lhs + 
+            "\" is not a valid setting for an " + typeName + 
+            " command.\n");
    }
    
    return true;
@@ -678,10 +678,10 @@ const StringArray& Achieve::GetWrapperObjectNameArray()
 
 
 //------------------------------------------------------------------------------
-// bool SetElementWrapper(ElementWrapper *toWrapper, const wxString &withName)
+// bool SetElementWrapper(ElementWrapper *toWrapper, const std::string &withName)
 //------------------------------------------------------------------------------
 bool Achieve::SetElementWrapper(ElementWrapper *toWrapper, 
-              const wxString &withName)
+              const std::string &withName)
 {
    bool retval = false;
 
@@ -689,17 +689,17 @@ bool Achieve::SetElementWrapper(ElementWrapper *toWrapper,
    
    if (toWrapper->GetWrapperType() == Gmat::ARRAY_WT)
    {
-      throw CommandException(wxT("A value of type \"Array\" on command \"") + 
+      throw CommandException("A value of type \"Array\" on command \"" + 
                   typeName + 
-                  wxT("\" is not an allowed value.\nThe allowed values are:")
-                  wxT(" [ Real Number, Variable, Array Element, or Parameter ]. ")); 
+                  "\" is not an allowed value.\nThe allowed values are:"
+                  " [ Real Number, Variable, Array Element, or Parameter ]. "); 
    }
    
-   CheckDataType(toWrapper, Gmat::REAL_TYPE, wxT("Achieve"), true);
+   CheckDataType(toWrapper, Gmat::REAL_TYPE, "Achieve", true);
 
    #ifdef DEBUG_WRAPPER_CODE   
    MessageInterface::ShowMessage(
-               wxT("   Setting wrapper \"%s\" on Achieve command\n"), 
+               "   Setting wrapper \"%s\" on Achieve command\n", 
       withName.c_str());
    #endif
 
@@ -707,18 +707,18 @@ bool Achieve::SetElementWrapper(ElementWrapper *toWrapper,
    {
       if (toWrapper->GetWrapperType() == Gmat::NUMBER_WT)
       {
-         wxString errmsg = wxT("The value of \"") + goalName;
-         errmsg            += wxT("\" for field \"Goal\" on object \"");
-         errmsg            += instanceName + wxT("\" is not an allowed value.\n");
-         errmsg            += wxT("The allowed values are: ");
-         errmsg            += wxT("[ Object Property, Array Element, Variable, ");
-         errmsg            += wxT("or Parameter, excluding numbers].");
+         std::string errmsg = "The value of \"" + goalName;
+         errmsg            += "\" for field \"Goal\" on object \"";
+         errmsg            += instanceName + "\" is not an allowed value.\n";
+         errmsg            += "The allowed values are: ";
+         errmsg            += "[ Object Property, Array Element, Variable, ";
+         errmsg            += "or Parameter, excluding numbers].";
          throw CommandException(errmsg);
       }
       goal = toWrapper;
       #ifdef DEBUG_WRAPPER_CODE   
       MessageInterface::ShowMessage
-         (wxT("   goal set to wrapper <%p>'%s'\n"), toWrapper, withName.c_str());
+         ("   goal set to wrapper <%p>'%s'\n", toWrapper, withName.c_str());
       #endif
       retval = true;
    }
@@ -730,16 +730,16 @@ bool Achieve::SetElementWrapper(ElementWrapper *toWrapper,
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
             (achieve, achieve->GetDescription(),
-             wxT("Achieve::SetElementWrapper()"),
+             "Achieve::SetElementWrapper()",
              GetGeneratingString(Gmat::NO_COMMENTS) +
-             wxT(" deleting achieve ew"));
+             " deleting achieve ew");
          #endif
          delete achieve;
       }
       achieve = toWrapper;
       #ifdef DEBUG_WRAPPER_CODE   
       MessageInterface::ShowMessage
-         (wxT("   achieve set to wrapper <%p>'%s'\n"), toWrapper, withName.c_str());
+         ("   achieve set to wrapper <%p>'%s'\n", toWrapper, withName.c_str());
       #endif
       retval = true;
    }
@@ -751,16 +751,16 @@ bool Achieve::SetElementWrapper(ElementWrapper *toWrapper,
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
             (tolerance, tolerance->GetDescription(),
-             wxT("Achieve::SetElementWrapper()"),
+             "Achieve::SetElementWrapper()",
              GetGeneratingString(Gmat::NO_COMMENTS) +
-             wxT(" deleting tolerance ew"));
+             " deleting tolerance ew");
          #endif
          delete tolerance;
       }
       tolerance = toWrapper;
       #ifdef DEBUG_WRAPPER_CODE   
       MessageInterface::ShowMessage
-         (wxT("   tolerance set to wrapper <%p>'%s'\n"), toWrapper, withName.c_str());
+         ("   tolerance set to wrapper <%p>'%s'\n", toWrapper, withName.c_str());
       #endif
       retval = true;
    }
@@ -803,8 +803,8 @@ void Achieve::ClearWrappers()
       wrapper = temp[i];
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (wrapper, wrapper->GetDescription(), wxT("Achieve::ClearWrappers()"),
-          GetGeneratingString(Gmat::NO_COMMENTS) + wxT(" deleting wrapper"));
+         (wrapper, wrapper->GetDescription(), "Achieve::ClearWrappers()",
+          GetGeneratingString(Gmat::NO_COMMENTS) + " deleting wrapper");
       #endif
       delete wrapper;
    }
@@ -824,45 +824,45 @@ bool Achieve::Initialize()
 {
    #ifdef DEBUG_ACHIEVE_INIT
    MessageInterface::ShowMessage
-      (wxT("Achieve::Initialize() entered, targeter=<%p>\n"), targeter);
+      ("Achieve::Initialize() entered, targeter=<%p>\n", targeter);
    #endif
    
    bool retval = GmatCommand::Initialize();
 
    if (targeter == NULL)
       throw CommandException(
-         wxT("Targeter not initialized for Achieve command\n  \"")
-         + generatingString + wxT("\"\n"));
+         "Targeter not initialized for Achieve command\n  \""
+         + generatingString + "\"\n");
    
-   Integer id = targeter->GetParameterID(wxT("Goals"));
+   Integer id = targeter->GetParameterID("Goals");
    targeter->SetStringParameter(id, goalName);
    
    // Set references for the wrappers   
    #ifdef DEBUG_ACHIEVE_INIT
-      MessageInterface::ShowMessage(wxT("Setting refs for goal\n"));
+      MessageInterface::ShowMessage("Setting refs for goal\n");
    #endif
    if (SetWrapperReferences(*goal) == false)
       return false;
-   CheckDataType(goal, Gmat::REAL_TYPE, wxT("Achieve"));
+   CheckDataType(goal, Gmat::REAL_TYPE, "Achieve");
    #ifdef DEBUG_ACHIEVE_INIT
-      MessageInterface::ShowMessage(wxT("Setting refs for achieve\n"));
+      MessageInterface::ShowMessage("Setting refs for achieve\n");
    #endif
    if (SetWrapperReferences(*achieve) == false)
       return false;
-   CheckDataType(achieve, Gmat::REAL_TYPE, wxT("Achieve"));
+   CheckDataType(achieve, Gmat::REAL_TYPE, "Achieve");
    #ifdef DEBUG_ACHIEVE_INIT
-      MessageInterface::ShowMessage(wxT("Setting refs for tolerance\n"));
+      MessageInterface::ShowMessage("Setting refs for tolerance\n");
    #endif
    if (SetWrapperReferences(*tolerance) == false)
       return false;
-   CheckDataType(tolerance, Gmat::REAL_TYPE, wxT("Achieve"));
+   CheckDataType(tolerance, Gmat::REAL_TYPE, "Achieve");
    
    // The targeter cannot be finalized until all of the loop is initialized
    targeterDataFinalized = false;
    
    #ifdef DEBUG_ACHIEVE_INIT
    MessageInterface::ShowMessage
-      (wxT("Achieve::Initialize() exiting. targeter=<%p>\n"), targeter);
+      ("Achieve::Initialize() exiting. targeter=<%p>\n", targeter);
    #endif
    
    return retval;
@@ -887,14 +887,14 @@ bool Achieve::Execute()
 {
    #ifdef DEBUG_ACHIEVE_EXEC
    MessageInterface::ShowMessage
-      (wxT("Achieve::Execute() targeterDataFinalized=%d\n   targeter=<%p>'%s'\n"),
+      ("Achieve::Execute() targeterDataFinalized=%d\n   targeter=<%p>'%s'\n",
        targeterDataFinalized, targeter, targeter->GetName().c_str());
    MessageInterface::ShowMessage
-      (wxT("   goalName=%s, achieveName=%s\n"), goalName.c_str(), achieveName.c_str());
+      ("   goalName=%s, achieveName=%s\n", goalName.c_str(), achieveName.c_str());
    #endif
 
    if (goal == NULL || achieve == NULL || tolerance == NULL)
-      throw CommandException(wxT("NULL element wrappers found in Achieve command\n"));
+      throw CommandException("NULL element wrappers found in Achieve command\n");
    
    bool retval = true;
    if (!targeterDataFinalized) 
@@ -908,7 +908,7 @@ bool Achieve::Execute()
       
       #ifdef DEBUG_ACHIEVE_EXEC
       MessageInterface::ShowMessage
-         (wxT("   Set goal data '%s' [%f, %f] to targeter<%p>'%s'\n"), goalName.c_str(),
+         ("   Set goal data '%s' [%f, %f] to targeter<%p>'%s'\n", goalName.c_str(),
           goalData[0], goalData[1], targeter, targeter->GetName().c_str());
       #endif
       
@@ -921,7 +921,7 @@ bool Achieve::Execute()
    val = achieve->EvaluateReal();
    #ifdef DEBUG_ACHIEVE_EXEC
    MessageInterface::ShowMessage
-      (wxT("   Setting achieve = %f to targeter<%p>\n"), val, targeter);
+      ("   Setting achieve = %f to targeter<%p>\n", val, targeter);
    #endif
    targeter->UpdateSolverGoal(goalId, val);
    
@@ -929,7 +929,7 @@ bool Achieve::Execute()
    val = goal->EvaluateReal();
    #ifdef DEBUG_ACHIEVE_EXEC
    MessageInterface::ShowMessage
-      (wxT("   Setting goal = %f to targeter<%p>\n"), val, targeter);
+      ("   Setting goal = %f to targeter<%p>\n", val, targeter);
    #endif
    targeter->SetResultValue(goalId, val);
    
@@ -937,7 +937,7 @@ bool Achieve::Execute()
    val = tolerance->EvaluateReal();
    #ifdef DEBUG_ACHIEVE_EXEC
    MessageInterface::ShowMessage
-      (wxT("   Setting tolerance = %f to targeter<%p>\n"), val, targeter);
+      ("   Setting tolerance = %f to targeter<%p>\n", val, targeter);
    #endif
    targeter->UpdateSolverTolerance(goalId, val);
    
@@ -948,7 +948,7 @@ bool Achieve::Execute()
 
 
 //------------------------------------------------------------------------------
-//  const wxString& GetGeneratingString()
+//  const std::string& GetGeneratingString()
 //------------------------------------------------------------------------------
 /**
  * Method used to retrieve the string that was parsed to build this GmatCommand.
@@ -969,15 +969,15 @@ bool Achieve::Execute()
  * @return The script line that, when interpreted, defines this Achieve command.
  */
 //------------------------------------------------------------------------------
-const wxString& Achieve::GetGeneratingString(Gmat::WriteMode mode,
-                                            const wxString &prefix,
-                                            const wxString &useName)
+const std::string& Achieve::GetGeneratingString(Gmat::WriteMode mode,
+                                            const std::string &prefix,
+                                            const std::string &useName)
 {
    // Build the local string
-   wxString gen = prefix + wxT("Achieve ") + targeterName + wxT("(") + goalName +
-                     wxT(" = ") + achieveName + wxT(", {Tolerance = ") + toleranceName;
+   std::string gen = prefix + "Achieve " + targeterName + "(" + goalName +
+                     " = " + achieveName + ", {Tolerance = " + toleranceName;
    
-   generatingString = gen + wxT("});");
+   generatingString = gen + "});";
    
    // Then call the base class method for preface and inline comments
    return GmatCommand::GetGeneratingString(mode, prefix, useName);
@@ -991,8 +991,8 @@ void Achieve::RunComplete()
 {
    #ifdef DEBUG_ACHIEVE_EXEC
       MessageInterface::ShowMessage(
-      wxT("In Achieve::RunComplete, targeterDataFinalized = %s, ... now setting it to false\n"),
-      (targeterDataFinalized? wxT("true") : wxT("false")));
+      "In Achieve::RunComplete, targeterDataFinalized = %s, ... now setting it to false\n",
+      (targeterDataFinalized? "true" : "false"));
    #endif
    targeterDataFinalized = false;
    GmatCommand::RunComplete();
@@ -1006,7 +1006,7 @@ void Achieve::SetTolerance(Real value)
 {
    #ifdef DEBUG_ACHIEVE_PARAM
    MessageInterface::ShowMessage
-      (wxT("Achieve::SetTolerance() entered, value=%f, tolerance=<%p>\n"), value,
+      ("Achieve::SetTolerance() entered, value=%f, tolerance=<%p>\n", value,
        tolerance);
    #endif
    
@@ -1017,7 +1017,7 @@ void Achieve::SetTolerance(Real value)
          tolerance->SetReal(value);
          #ifdef DEBUG_ACHIEVE_PARAM
          MessageInterface::ShowMessage
-            (wxT("   value=%f set to tolerance<%p>\n"), value, tolerance);
+            ("   value=%f set to tolerance<%p>\n", value, tolerance);
          #endif
       }
    }
@@ -1026,13 +1026,13 @@ void Achieve::SetTolerance(Real value)
       CommandException ce;
       ce.SetDetails(errorMessageFormat.c_str(),
                     GmatStringUtil::ToString(value, GetDataPrecision()).c_str(),
-                    wxT("Tolerance"),
-                    wxT("Real Number, Array element, Variable, or Parameter > 0.0"));
+                    "Tolerance",
+                    "Real Number, Array element, Variable, or Parameter > 0.0");
       throw ce;
    }
    
    #ifdef DEBUG_ACHIEVE_PARAM
-   MessageInterface::ShowMessage(wxT("Achieve::SetTolerance() leaving\n"));
+   MessageInterface::ShowMessage("Achieve::SetTolerance() leaving\n");
    #endif
 }
 

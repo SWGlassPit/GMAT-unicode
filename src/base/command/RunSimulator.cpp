@@ -36,7 +36,7 @@
  */
 //------------------------------------------------------------------------------
 RunSimulator::RunSimulator() :
-   RunSolver               (wxT("RunSimulator")),
+   RunSolver               ("RunSimulator"),
    theSimulator            (NULL),
    commandRunning          (false),
    commandComplete         (false)
@@ -117,7 +117,7 @@ GmatBase *RunSimulator::Clone() const
 
 
 //------------------------------------------------------------------------------
-// wxString GetRefObjectName(const Gmat::ObjectType type) const
+// std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
 /**
  * Accesses names for referenced objects.
@@ -127,14 +127,14 @@ GmatBase *RunSimulator::Clone() const
  * @return the referenced object's name.
  */
 //------------------------------------------------------------------------------
-wxString RunSimulator::GetRefObjectName(const Gmat::ObjectType type) const
+std::string RunSimulator::GetRefObjectName(const Gmat::ObjectType type) const
 {
    switch (type)
    {
       case Gmat::SOLVER:
          #ifdef DEBUG_RUN_SIMULATOR
             MessageInterface::ShowMessage
-               (wxT("Getting EndFiniteBurn reference burn names\n"));
+               ("Getting EndFiniteBurn reference burn names\n");
          #endif
          return solverName;
 
@@ -148,7 +148,7 @@ wxString RunSimulator::GetRefObjectName(const Gmat::ObjectType type) const
 
 
 //------------------------------------------------------------------------------
-// bool SetRefObjectName(const Gmat::ObjectType type, const wxString &name)
+// bool SetRefObjectName(const Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets names for referenced objects.
@@ -160,7 +160,7 @@ wxString RunSimulator::GetRefObjectName(const Gmat::ObjectType type) const
  */
 //------------------------------------------------------------------------------
 bool RunSimulator::SetRefObjectName(const Gmat::ObjectType type,
-                                     const wxString &name)
+                                     const std::string &name)
 {
    if (type == Gmat::SOLVER)
    {
@@ -175,7 +175,7 @@ bool RunSimulator::SetRefObjectName(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * Renames referenced objects.
@@ -188,8 +188,8 @@ bool RunSimulator::SetRefObjectName(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool RunSimulator::RenameRefObject(const Gmat::ObjectType type,
-                                    const wxString &oldName,
-                                    const wxString &newName)
+                                    const std::string &oldName,
+                                    const std::string &newName)
 {
    // EndFiniteBurn needs to know about Burn and Spacecraft only
    if (type != Gmat::SOLVER)
@@ -206,7 +206,7 @@ bool RunSimulator::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-//  const wxString GetGeneratingString()
+//  const std::string GetGeneratingString()
 //------------------------------------------------------------------------------
 /**
  * Method used to retrieve the string that was parsed to build this GmatCommand.
@@ -226,11 +226,11 @@ bool RunSimulator::RenameRefObject(const Gmat::ObjectType type,
  * @return The script line that defines this GmatCommand.
  */
 //------------------------------------------------------------------------------
-const wxString& RunSimulator::GetGeneratingString(Gmat::WriteMode mode,
-                                                    const wxString &prefix,
-                                                    const wxString &useName)
+const std::string& RunSimulator::GetGeneratingString(Gmat::WriteMode mode,
+                                                    const std::string &prefix,
+                                                    const std::string &useName)
 {
-   generatingString = prefix + wxT("RunSimulator ") + solverName + wxT(";");
+   generatingString = prefix + "RunSimulator " + solverName + ";";
 
    return RunSolver::GetGeneratingString(mode, prefix, useName);
 }
@@ -259,9 +259,9 @@ bool RunSimulator::Initialize()
    bool retval = false;
 
    // First set the simulator object
-   if (solverName == wxT(""))
-      throw CommandException(wxT("Cannot initialize RunSimulator command -- the ")
-            wxT("simulator name is not specified."));
+   if (solverName == "")
+      throw CommandException("Cannot initialize RunSimulator command -- the "
+            "simulator name is not specified.");
 
    // Clear the old clone if it was set
    if (theSimulator != NULL)
@@ -269,12 +269,12 @@ bool RunSimulator::Initialize()
 
    GmatBase *simObj = FindObject(solverName);
    if (simObj == NULL)
-      throw CommandException(wxT("Cannot initialize RunSimulator command -- the ")
-            wxT("simulator named ") + solverName + wxT(" cannot be found."));
+      throw CommandException("Cannot initialize RunSimulator command -- the "
+            "simulator named " + solverName + " cannot be found.");
 
-   if (!simObj->IsOfType(wxT("Simulator")))
-      throw CommandException(wxT("Cannot initialize RunSimulator command -- the ")
-            wxT("object named ") + solverName + wxT(" is not a simulator."));
+   if (!simObj->IsOfType("Simulator"))
+      throw CommandException("Cannot initialize RunSimulator command -- the "
+            "object named " + solverName + " is not a simulator.");
 
    theSimulator = (Simulator*)(simObj->Clone());
 
@@ -293,7 +293,7 @@ bool RunSimulator::Initialize()
          }
       }
       else
-         throw CommandException(wxT("Did not find the object named ") +
+         throw CommandException("Did not find the object named " +
                streamList[ms]);
    }
 
@@ -301,12 +301,12 @@ bool RunSimulator::Initialize()
    PropSetup *obj = theSimulator->GetPropagator();
 
    #ifdef DEBUG_INITIALIZATION
-      MessageInterface::ShowMessage(wxT("Propagator at address %p "), obj);
+      MessageInterface::ShowMessage("Propagator at address %p ", obj);
       if (obj != NULL)
-         MessageInterface::ShowMessage(wxT("is named %s\n"),
+         MessageInterface::ShowMessage("is named %s\n",
                obj->GetName().c_str());
       else
-         MessageInterface::ShowMessage(wxT("is not yet set\n"));
+         MessageInterface::ShowMessage("is not yet set\n");
    #endif
 
    if (obj != NULL)
@@ -335,17 +335,17 @@ bool RunSimulator::Initialize()
       }
    }
    else
-      throw CommandException(wxT("Cannot initialize RunSimulator command; the ")
-            wxT("propagator pointer in the Simulator ") +
-            theSimulator->GetName() + wxT(" is NULL."));
+      throw CommandException("Cannot initialize RunSimulator command; the "
+            "propagator pointer in the Simulator " +
+            theSimulator->GetName() + " is NULL.");
 
    // Now set the participant list
    MeasurementManager *mm = theSimulator->GetMeasurementManager();
    StringArray participants = mm->GetParticipantList();
 
    #ifdef DEBUG_INITIALIZATION
-      MessageInterface::ShowMessage(wxT("RunSimulator command found %d ")
-            wxT("participants\n"), participants.size());
+      MessageInterface::ShowMessage("RunSimulator command found %d "
+            "participants\n", participants.size());
    #endif
 
    propObjectNames.clear();
@@ -357,8 +357,8 @@ bool RunSimulator::Initialize()
 
    #ifdef DEBUG_INITIALIZATION
       if (retval == false)
-         MessageInterface::ShowMessage(wxT("RunSimulator command failed to ")
-               wxT("initialize; RunSolver::Initialize() call failed.\n"));
+         MessageInterface::ShowMessage("RunSimulator command failed to "
+               "initialize; RunSolver::Initialize() call failed.\n");
    #endif
 
    return retval;
@@ -382,7 +382,7 @@ bool RunSimulator::Initialize()
 bool RunSimulator::Execute()
 {
    #ifdef DEBUG_SIMULATOR_EXECUTION
-      MessageInterface::ShowMessage(wxT("\n\nThe \"%s\" command is running...\n"),
+      MessageInterface::ShowMessage("\n\nThe \"%s\" command is running...\n",
             GetTypeName().c_str());
    #endif
 
@@ -399,7 +399,7 @@ bool RunSimulator::Execute()
    Solver::SolverState state = theSimulator->GetState();
 
    #ifdef DEBUG_SIMULATOR_EXECUTION
-      MessageInterface::ShowMessage(wxT("\nSimulator state is %d\n"), state);
+      MessageInterface::ShowMessage("\nSimulator state is %d\n", state);
    #endif
    switch (state)
    {
@@ -430,8 +430,8 @@ bool RunSimulator::Execute()
          break;
 
       default:
-         throw CommandException(wxT("Unknown state ")
-               wxT(" encountered in the RunSimulator command"));
+         throw CommandException("Unknown state "
+               " encountered in the RunSimulator command");
    }
 
    state = theSimulator->AdvanceState();
@@ -450,7 +450,7 @@ bool RunSimulator::Execute()
 void RunSimulator::RunComplete()
 {
    #ifdef DEBUG_SIMULATOR_EXECUTION
-      MessageInterface::ShowMessage(wxT("Entered RunSimulator::RunComplete()\n"));
+      MessageInterface::ShowMessage("Entered RunSimulator::RunComplete()\n");
    #endif
    commandRunning = false;
 
@@ -459,7 +459,7 @@ void RunSimulator::RunComplete()
 
 
 //------------------------------------------------------------------------------
-// bool TakeAction(const wxString &action, const wxString &actionData)
+// bool TakeAction(const std::string &action, const std::string &actionData)
 //------------------------------------------------------------------------------
 /**
  * Performs actions at prompting from higher level structures
@@ -470,12 +470,12 @@ void RunSimulator::RunComplete()
  * @return true if an action was taken, false if not
  */
 //------------------------------------------------------------------------------
-bool RunSimulator::TakeAction(const wxString &action,
-                              const wxString &actionData)
+bool RunSimulator::TakeAction(const std::string &action,
+                              const std::string &actionData)
 {
-   if (action == wxT("Reset"))
+   if (action == "Reset")
    {
-      theSimulator->TakeAction(wxT("Reset"));
+      theSimulator->TakeAction("Reset");
       commandRunning = false;
       commandComplete = false;
       return true;
@@ -525,13 +525,13 @@ GmatCommand* RunSimulator::GetNext()
 void RunSimulator::PrepareToSimulate()
 {
 #ifdef DEBUG_SIMULATOR_EXECUTION
-   MessageInterface::ShowMessage(wxT("Entered RunSimulator::PrepareToSimulate()\n"));
+   MessageInterface::ShowMessage("Entered RunSimulator::PrepareToSimulate()\n");
 #endif
    // Prep the measurement manager
    MeasurementManager *measman = theSimulator->GetMeasurementManager();
    if (measman->PrepareForProcessing(true) == false)
       throw CommandException(
-            wxT("Measurement Manager was unable to prepare for processing"));
+            "Measurement Manager was unable to prepare for processing");
 
    PrepareToPropagate();
    commandRunning  = true;
@@ -552,7 +552,7 @@ void RunSimulator::PrepareToSimulate()
 void RunSimulator::Propagate()
 {
    #ifdef DEBUG_SIMULATOR_EXECUTION
-      MessageInterface::ShowMessage(wxT("Entered RunSimulator::Propagate()\n"));
+      MessageInterface::ShowMessage("Entered RunSimulator::Propagate()\n");
    #endif
    Real dt = theSimulator->GetTimeStep();
 
@@ -577,7 +577,7 @@ void RunSimulator::Propagate()
 void RunSimulator::Calculate()
 {
 #ifdef DEBUG_SIMULATOR_EXECUTION
-   MessageInterface::ShowMessage(wxT("Entered RunSimulator::Calculate()\n"));
+   MessageInterface::ShowMessage("Entered RunSimulator::Calculate()\n");
 #endif
    // We might not need anything here -- it's all Simulator side work
 }
@@ -593,7 +593,7 @@ void RunSimulator::Calculate()
 void RunSimulator::LocateEvent()
 {
 #ifdef DEBUG_SIMULATOR_EXECUTION
-   MessageInterface::ShowMessage(wxT("Entered RunSimulator::LocateEvent()\n"));
+   MessageInterface::ShowMessage("Entered RunSimulator::LocateEvent()\n");
 #endif
    // We'll figure this out later
 }
@@ -609,7 +609,7 @@ void RunSimulator::LocateEvent()
 void RunSimulator::Simulate()
 {
 #ifdef DEBUG_SIMULATOR_EXECUTION
-   MessageInterface::ShowMessage(wxT("Entered RunSimulator::Simulate()\n"));
+   MessageInterface::ShowMessage("Entered RunSimulator::Simulate()\n");
 #endif
    // We might not need anything here -- it's all Simulator side work
 }
@@ -625,7 +625,7 @@ void RunSimulator::Simulate()
 void RunSimulator::Finalize()
 {
 #ifdef DEBUG_SIMULATOR_EXECUTION
-   MessageInterface::ShowMessage(wxT("Entered RunSimulator::Finalize()\n"));
+   MessageInterface::ShowMessage("Entered RunSimulator::Finalize()\n");
 #endif
    // Do cleanup here
 
@@ -633,7 +633,7 @@ void RunSimulator::Finalize()
    MeasurementManager *measman = theSimulator->GetMeasurementManager();
    if (measman->ProcessingComplete() == false)
       MessageInterface::ShowMessage(
-            wxT("Measurement Manager reported a problem completing processing\n"));
+            "Measurement Manager reported a problem completing processing\n");
 
    commandComplete = true;
    commandRunning  = false;

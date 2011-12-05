@@ -140,8 +140,8 @@ Integer PropagationStateManager::GetCount(Gmat::StateElementId elementType)
    }
    
    #ifdef DEBUG_STATE_ACCESS
-      MessageInterface::ShowMessage(wxT("PropagationStateManager::GetCount found ")
-            wxT("%d objects supporting type %d\n"), count, elementType);
+      MessageInterface::ShowMessage("PropagationStateManager::GetCount found "
+            "%d objects supporting type %d\n", count, elementType);
    #endif
       
    return count;
@@ -163,7 +163,7 @@ Integer PropagationStateManager::GetCount(Gmat::StateElementId elementType)
 bool PropagationStateManager::SetObject(GmatBase* theObject)
 {
    #ifdef DEBUG_STATE_CONSTRUCTION
-      MessageInterface::ShowMessage(wxT("Setting object %s\n"), 
+      MessageInterface::ShowMessage("Setting object %s\n", 
             theObject->GetName().c_str());
    #endif
       
@@ -176,14 +176,14 @@ bool PropagationStateManager::SetObject(GmatBase* theObject)
    objects.push_back(theObject);
    if (theObject->IsOfType(Gmat::FORMATION))
    {
-      Integer id = theObject->GetParameterID(wxT("A1Epoch"));
+      Integer id = theObject->GetParameterID("A1Epoch");
       epochIDs.push_back(id);
    }
    else
    {
-      Integer id = theObject->GetParameterID(wxT("Epoch"));
+      Integer id = theObject->GetParameterID("Epoch");
       if (theObject->GetParameterType(id) != Gmat::REAL_TYPE)
-         id = theObject->GetParameterID(wxT("A1Epoch"));
+         id = theObject->GetParameterID("A1Epoch");
       epochIDs.push_back(id);
    }
    
@@ -193,11 +193,11 @@ bool PropagationStateManager::SetObject(GmatBase* theObject)
    *objectProps = current->GetDefaultPropItems();
    
    #ifdef DEBUG_STATE_CONSTRUCTION
-      MessageInterface::ShowMessage(wxT("Object set; current points to %s\n"), 
+      MessageInterface::ShowMessage("Object set; current points to %s\n", 
          current->GetName().c_str());
-      MessageInterface::ShowMessage(wxT("Managing %d objects:\n"), objects.size());
+      MessageInterface::ShowMessage("Managing %d objects:\n", objects.size());
       for (UnsignedInt i = 0; i < objects.size(); ++i)
-         MessageInterface::ShowMessage(wxT("   %2d: %s with %d prop items\n"), i,
+         MessageInterface::ShowMessage("   %2d: %s with %d prop items\n", i,
                objects[i]->GetName().c_str(),
                objects[i]->GetDefaultPropItems().size());
    #endif
@@ -207,7 +207,7 @@ bool PropagationStateManager::SetObject(GmatBase* theObject)
 
 
 //------------------------------------------------------------------------------
-// bool SetProperty(wxString propName)
+// bool SetProperty(std::string propName)
 //------------------------------------------------------------------------------
 /**
  * Identifies a propagation property for the current object
@@ -218,10 +218,10 @@ bool PropagationStateManager::SetObject(GmatBase* theObject)
  *         (or if there is no current object)
  */
 //------------------------------------------------------------------------------
-bool PropagationStateManager::SetProperty(wxString propName)
+bool PropagationStateManager::SetProperty(std::string propName)
 {
    #ifdef DEBUG_STATE_CONSTRUCTION
-      MessageInterface::ShowMessage(wxT("Entered SetProperty(%s); current = %ld\n"),
+      MessageInterface::ShowMessage("Entered SetProperty(%s); current = %ld\n",
             propName.c_str(), current);
    #endif
    if (current) 
@@ -229,7 +229,7 @@ bool PropagationStateManager::SetProperty(wxString propName)
       // Validate that the property can be propagated
       if (current->SetPropItem(propName) == Gmat::UNKNOWN_STATE)
          throw PropagatorException(propName 
-               + wxT(" is not a known propagation parameter on ") 
+               + " is not a known propagation parameter on " 
                + current->GetName());
       
       // Only add it if it is not yet there
@@ -238,10 +238,10 @@ bool PropagationStateManager::SetProperty(wxString propName)
          elements[current]->push_back(propName);
 
       #ifdef DEBUG_STATE_CONSTRUCTION
-         MessageInterface::ShowMessage(wxT("Current property List:\n"));
+         MessageInterface::ShowMessage("Current property List:\n");
             for (StringArray::iterator i = elements[current]->begin(); 
                   i != elements[current]->end(); ++i)
-               MessageInterface::ShowMessage(wxT("   %s\n"), i->c_str());
+               MessageInterface::ShowMessage("   %s\n", i->c_str());
       #endif
             
       return true;
@@ -252,7 +252,7 @@ bool PropagationStateManager::SetProperty(wxString propName)
 
 
 //------------------------------------------------------------------------------
-// bool SetProperty(wxString propName, Integer index)
+// bool SetProperty(std::string propName, Integer index)
 //------------------------------------------------------------------------------
 /**
  * Identifies a propagation property for an object referenced by index
@@ -264,16 +264,16 @@ bool PropagationStateManager::SetProperty(wxString propName)
  *         (or if there is no current object)
  */
 //------------------------------------------------------------------------------
-bool PropagationStateManager::SetProperty(wxString propName, Integer index)
+bool PropagationStateManager::SetProperty(std::string propName, Integer index)
 {
    #ifdef DEBUG_STATE_CONSTRUCTION
-      MessageInterface::ShowMessage(wxT("Entered SetProperty(%s, %d)\n"),
+      MessageInterface::ShowMessage("Entered SetProperty(%s, %d)\n",
             propName.c_str(), index);
    #endif
 
    if ((index < 0) || (index >= (Integer)objects.size()))
-      throw PropagatorException(wxT("Index out of bounds specifying a prop object ")
-            wxT("in a propagation state manager\n"));
+      throw PropagatorException("Index out of bounds specifying a prop object "
+            "in a propagation state manager\n");
 
    GmatBase *obj = objects[index];
 
@@ -282,17 +282,17 @@ bool PropagationStateManager::SetProperty(wxString propName, Integer index)
       // Validate that the property can be propagated
       if (obj->SetPropItem(propName) == Gmat::UNKNOWN_STATE)
          throw PropagatorException(propName
-               + wxT(" is not a known propagation parameter on ")
+               + " is not a known propagation parameter on "
                + obj->GetName());
       if (find(elements[obj]->begin(), elements[obj]->end(), propName) ==
             elements[obj]->end())
          elements[obj]->push_back(propName);
 
       #ifdef DEBUG_STATE_CONSTRUCTION
-         MessageInterface::ShowMessage(wxT("Current property List:\n"));
+         MessageInterface::ShowMessage("Current property List:\n");
             for (StringArray::iterator i = elements[obj]->begin();
                   i != elements[obj]->end(); ++i)
-               MessageInterface::ShowMessage(wxT("   %s\n"), i->c_str());
+               MessageInterface::ShowMessage("   %s\n", i->c_str());
       #endif
 
       return true;
@@ -303,7 +303,7 @@ bool PropagationStateManager::SetProperty(wxString propName, Integer index)
 
 
 //------------------------------------------------------------------------------
-// bool SetProperty(wxString propName, GmatBase *forObject)
+// bool SetProperty(std::string propName, GmatBase *forObject)
 //------------------------------------------------------------------------------
 /**
  * Adds a propagation parameter associated with an object to the state
@@ -315,34 +315,34 @@ bool PropagationStateManager::SetProperty(wxString propName, Integer index)
  * @return true on success
  */
 //------------------------------------------------------------------------------
-bool PropagationStateManager::SetProperty(wxString propName,
+bool PropagationStateManager::SetProperty(std::string propName,
       GmatBase *forObject)
 {
    #ifdef DEBUG_STATE_CONSTRUCTION
-      MessageInterface::ShowMessage(wxT("Entered SetProperty(%s, %s)\n"),
+      MessageInterface::ShowMessage("Entered SetProperty(%s, %s)\n",
             propName.c_str(), forObject->GetName().c_str());
    #endif
 
    if (find(objects.begin(), objects.end(), forObject) == objects.end())
-      throw PropagatorException(wxT("Prop object ") + forObject->GetName() +
-            wxT(" not found in a propagation state manager\n"));
+      throw PropagatorException("Prop object " + forObject->GetName() +
+            " not found in a propagation state manager\n");
 
    if (forObject)
    {
       // Validate that the property can be propagated
       if (forObject->SetPropItem(propName) == Gmat::UNKNOWN_STATE)
          throw PropagatorException(propName
-               + wxT(" is not a known propagation parameter on ")
+               + " is not a known propagation parameter on "
                + forObject->GetName());
       if (find(elements[forObject]->begin(), elements[forObject]->end(),
             propName) == elements[forObject]->end())
          elements[forObject]->push_back(propName);
 
       #ifdef DEBUG_STATE_CONSTRUCTION
-         MessageInterface::ShowMessage(wxT("Current property List:\n"));
+         MessageInterface::ShowMessage("Current property List:\n");
             for (StringArray::iterator i = elements[forObject]->begin();
                   i != elements[forObject]->end(); ++i)
-               MessageInterface::ShowMessage(wxT("   %s\n"), i->c_str());
+               MessageInterface::ShowMessage("   %s\n", i->c_str());
       #endif
 
       return true;
@@ -365,12 +365,12 @@ bool PropagationStateManager::SetProperty(wxString propName,
 bool PropagationStateManager::BuildState()
 {
    #ifdef DEBUG_STATE_CONSTRUCTION
-      MessageInterface::ShowMessage(wxT("Entered BuildState()\n"));
+      MessageInterface::ShowMessage("Entered BuildState()\n");
 
-      MessageInterface::ShowMessage(wxT("StateMap:\n"));
+      MessageInterface::ShowMessage("StateMap:\n");
       for (Integer index = 0; index < stateSize; ++index)
       {
-         MessageInterface::ShowMessage(wxT("   %s.%s"),
+         MessageInterface::ShowMessage("   %s.%s",
                stateMap[index]->objectName.c_str(),
                stateMap[index]->elementName.c_str());
       }
@@ -379,9 +379,9 @@ bool PropagationStateManager::BuildState()
    // Determine the size of the propagation state vector
    stateSize = SortVector();
    
-   std::map<wxString,Integer> associateMap;
+   std::map<std::string,Integer> associateMap;
    // Build the associate map
-   wxString name;
+   std::string name;
    for (Integer index = 0; index < stateSize; ++index)
    {
       name = stateMap[index]->objectName;
@@ -393,27 +393,27 @@ bool PropagationStateManager::BuildState()
    for (Integer index = 0; index < stateSize; ++index)
    {
       name = stateMap[index]->objectName;
-      wxString sel(wxT(""));
+      std::stringstream sel("");
       sel << stateMap[index]->subelement;
       state.SetElementProperties(index, stateMap[index]->elementID, 
-            name + wxT(".") + stateMap[index]->elementName + wxT(".") + sel, 
+            name + "." + stateMap[index]->elementName + "." + sel.str(), 
             associateMap[stateMap[index]->associateName]);
    }
    
    #ifdef DEBUG_STATE_CONSTRUCTION
       MessageInterface::ShowMessage(
-            wxT("Propagation state vector has %d elements:\n"), stateSize);
+            "Propagation state vector has %d elements:\n", stateSize);
       StringArray props = state.GetElementDescriptions();
       for (Integer index = 0; index < stateSize; ++index)
-         MessageInterface::ShowMessage(wxT("   %d:  %s  --> associate: %d\n"), index,
+         MessageInterface::ShowMessage("   %d:  %s  --> associate: %d\n", index,
                props[index].c_str(), state.GetAssociateIndex(index));
    #endif
    
    #ifdef DUMP_STATE
       MapObjectsToVector();
       for (Integer i = 0; i < stateSize; ++i)
-         MessageInterface::ShowMessage(wxT("State[%02d] = %.12lf, %s %d\n"), i, state[i], 
-               wxT("RefState start ="), state.GetAssociateIndex(i));
+         MessageInterface::ShowMessage("State[%02d] = %.12lf, %s %d\n", i, state[i], 
+               "RefState start =", state.GetAssociateIndex(i));
    #endif   
       
    return true;
@@ -433,7 +433,7 @@ bool PropagationStateManager::BuildState()
 bool PropagationStateManager::MapObjectsToVector()
 {
    #ifdef DEBUG_OBJECT_UPDATES
-      MessageInterface::ShowMessage(wxT("Mapping objects to vector\n"));
+      MessageInterface::ShowMessage("Mapping objects to vector\n");
    #endif
 
    Real value;
@@ -447,18 +447,18 @@ bool PropagationStateManager::MapObjectsToVector()
                           stateMap[index]->parameterID);
 
             if (GmatMathUtil::IsNaN(value))
-               throw PropagatorException(wxT("Value for parameter ") +
+               throw PropagatorException("Value for parameter " +
                      stateMap[index]->object->GetParameterText(
-                     stateMap[index]->parameterID) + wxT(" on object ") +
+                     stateMap[index]->parameterID) + " on object " +
                      stateMap[index]->object->GetName() +
-                     wxT(" is not a number"));
+                     " is not a number");
 
             if (GmatMathUtil::IsInf(value))
-               throw PropagatorException(wxT("Value for parameter ") +
+               throw PropagatorException("Value for parameter " +
                      stateMap[index]->object->GetParameterText(
-                     stateMap[index]->parameterID) + wxT(" on object ") +
+                     stateMap[index]->parameterID) + " on object " +
                      stateMap[index]->object->GetName() +
-                     wxT(" is infinite"));
+                     " is infinite");
 
             state[index] =value;
             break;
@@ -468,18 +468,18 @@ bool PropagationStateManager::MapObjectsToVector()
                   stateMap[index]->parameterID, stateMap[index]->rowIndex);
 
             if (GmatMathUtil::IsNaN(value))
-               throw PropagatorException(wxT("Value for array parameter ") +
+               throw PropagatorException("Value for array parameter " +
                      stateMap[index]->object->GetParameterText(
-                     stateMap[index]->parameterID) + wxT(" on object ") +
+                     stateMap[index]->parameterID) + " on object " +
                      stateMap[index]->object->GetName() +
-                     wxT(" is not a number"));
+                     " is not a number");
 
             if (GmatMathUtil::IsInf(value))
-               throw PropagatorException(wxT("Value for array parameter ") +
+               throw PropagatorException("Value for array parameter " +
                      stateMap[index]->object->GetParameterText(
-                     stateMap[index]->parameterID) + wxT(" on object ") +
+                     stateMap[index]->parameterID) + " on object " +
                      stateMap[index]->object->GetName() +
-                     wxT(" is infinite"));
+                     " is infinite");
 
             state[index] = value;
             break;
@@ -490,29 +490,29 @@ bool PropagationStateManager::MapObjectsToVector()
                   stateMap[index]->colIndex);
 
             if (GmatMathUtil::IsNaN(value))
-               throw PropagatorException(wxT("Value for array parameter ") +
+               throw PropagatorException("Value for array parameter " +
                      stateMap[index]->object->GetParameterText(
-                     stateMap[index]->parameterID) + wxT(" on object ") +
+                     stateMap[index]->parameterID) + " on object " +
                      stateMap[index]->object->GetName() +
-                     wxT(" is not a number"));
+                     " is not a number");
 
             if (GmatMathUtil::IsInf(value))
-               throw PropagatorException(wxT("Value for array parameter ") +
+               throw PropagatorException("Value for array parameter " +
                      stateMap[index]->object->GetParameterText(
-                     stateMap[index]->parameterID) + wxT(" on object ") +
+                     stateMap[index]->parameterID) + " on object " +
                      stateMap[index]->object->GetName() +
-                     wxT(" is infinite"));
+                     " is infinite");
 
             state[index] = value;
             break;
 
          default:
-            wxString sel(wxT(""));
+            std::stringstream sel("");
             sel << stateMap[index]->subelement;
-            wxString label = stateMap[index]->objectName + wxT(".") + 
-                  stateMap[index]->elementName + wxT(".") + sel;
+            std::string label = stateMap[index]->objectName + "." + 
+                  stateMap[index]->elementName + "." + sel.str();
             MessageInterface::ShowMessage(
-                  wxT("%s not set; Element type not handled\n"),label.c_str());
+                  "%s not set; Element type not handled\n",label.c_str());
       }
    }
    
@@ -525,21 +525,21 @@ bool PropagationStateManager::MapObjectsToVector()
       else
          if (theEpoch != objects[i]->GetRealParameter(epochIDs[i]))
             // should throw here
-            MessageInterface::ShowMessage(wxT("Epoch mismatch\n"));
+            MessageInterface::ShowMessage("Epoch mismatch\n");
    }
    state.SetEpoch(theEpoch);
    
    #ifdef DEBUG_OBJECT_UPDATES
       MessageInterface::ShowMessage(
-            wxT("After mapping %d objects to vector, contents are\n")
-            wxT("   Epoch = %.12lf\n"), objects.size(), state.GetEpoch());
+            "After mapping %d objects to vector, contents are\n"
+            "   Epoch = %.12lf\n", objects.size(), state.GetEpoch());
       for (Integer index = 0; index < stateSize; ++index)
       {
-         wxString msg(wxT(""));
+         std::stringstream msg("");
          msg << stateMap[index]->subelement;
-         wxString lbl = stateMap[index]->objectName + wxT(".") + 
-            stateMap[index]->elementName + wxT(".") + msg + wxT(" = ");
-         MessageInterface::ShowMessage(wxT("   %d: %s%.12lf\n"), index, lbl.c_str(), 
+         std::string lbl = stateMap[index]->objectName + "." + 
+            stateMap[index]->elementName + "." + msg.str() + " = ";
+         MessageInterface::ShowMessage("   %d: %s%.12lf\n", index, lbl.c_str(), 
                state[index]);
       }
    #endif
@@ -561,18 +561,18 @@ bool PropagationStateManager::MapObjectsToVector()
 bool PropagationStateManager::MapVectorToObjects()
 {
    #ifdef DEBUG_OBJECT_UPDATES
-      MessageInterface::ShowMessage(wxT("Mapping vector to objects\n")
-            wxT("   Epoch = %.12lf\n"), state.GetEpoch());
+      MessageInterface::ShowMessage("Mapping vector to objects\n"
+            "   Epoch = %.12lf\n", state.GetEpoch());
    #endif
 
    for (Integer index = 0; index < stateSize; ++index)
    {
       #ifdef DEBUG_OBJECT_UPDATES
-         wxString msg(wxT(""));
+         std::stringstream msg("");
          msg << stateMap[index]->subelement;
-         wxString lbl = stateMap[index]->objectName + wxT(".") + 
-            stateMap[index]->elementName + wxT(".") + msg + wxT(" = ");
-         MessageInterface::ShowMessage(wxT("   %d: %s%.12lf\n"), index, lbl.c_str(), 
+         std::string lbl = stateMap[index]->objectName + "." + 
+            stateMap[index]->elementName + "." + msg.str() + " = ";
+         MessageInterface::ShowMessage("   %d: %s%.12lf\n", index, lbl.c_str(), 
                state[index]);
       #endif
 
@@ -596,12 +596,12 @@ bool PropagationStateManager::MapVectorToObjects()
             break;
 
          default:
-            wxString sel(wxT(""));
+            std::stringstream sel("");
             sel << stateMap[index]->subelement;
-            wxString label = stateMap[index]->objectName + wxT(".") + 
-                  stateMap[index]->elementName + wxT(".") + sel;
+            std::string label = stateMap[index]->objectName + "." + 
+                  stateMap[index]->elementName + "." + sel.str();
             MessageInterface::ShowMessage(
-                  wxT("%s not set; Element type not handled\n"),label.c_str());
+                  "%s not set; Element type not handled\n",label.c_str());
       }
    }
    
@@ -625,7 +625,7 @@ bool PropagationStateManager::MapVectorToObjects()
  * and A-Matrix in order to fill in the upper half of the matrices, and (for the
  * STM) to apply \Phi\dot = A \Phi.
  *
- * @return true if a final wxT("completion") step is needed, false if not.
+ * @return true if a final "completion" step is needed, false if not.
  */
 //------------------------------------------------------------------------------
 bool PropagationStateManager::RequiresCompletion()
@@ -699,7 +699,7 @@ Integer PropagationStateManager::SortVector()
 {
    #ifdef DEBUG_STATE_CONSTRUCTION
       MessageInterface::ShowMessage(
-            wxT("Entered PropagationStateManager::SortVector()\n"));
+            "Entered PropagationStateManager::SortVector()\n");
    #endif
 
    StringArray *propList;
@@ -717,18 +717,18 @@ Integer PropagationStateManager::SortVector()
 
 
    #ifdef DEBUG_STATE_CONSTRUCTION
-      MessageInterface::ShowMessage(wxT("Element list:\n"));
+      MessageInterface::ShowMessage("Element list:\n");
       Integer k = 0;
       for (std::map<GmatBase*, StringArray*>::iterator i = elements.begin();
             i != elements.end(); ++i)
       {
          current  = i->first;
          propList = i->second;
-         MessageInterface::ShowMessage(wxT("   %d: %s ->\n"), ++k,
+         MessageInterface::ShowMessage("   %d: %s ->\n", ++k,
                current->GetName().c_str());
          for (UnsignedInt j = 0; j < propList->size(); ++j)
          {
-            MessageInterface::ShowMessage(wxT("      %s\n"), (*propList)[j].c_str());
+            MessageInterface::ShowMessage("      %s\n", (*propList)[j].c_str());
          }
       }
    #endif
@@ -745,13 +745,13 @@ Integer PropagationStateManager::SortVector()
       {
          id = (Gmat::StateElementId)current->SetPropItem(*j);
          if (id == Gmat::UNKNOWN_STATE)
-            throw PropagatorException(wxT("Unknown state element: ") + (*j) +
-                  wxT(" on object ") + current->GetName() + wxT(", a ") +
+            throw PropagatorException("Unknown state element: " + (*j) +
+                  " on object " + current->GetName() + ", a " +
                   current->GetTypeName());
          size = current->GetPropItemSize(id);
          if (size <= 0)
-            throw PropagatorException(wxT("State element ") + (*j) +
-                  wxT(" has size set less than or equal to 0; unable to continue."));
+            throw PropagatorException("State element " + (*j) +
+                  " has size set less than or equal to 0; unable to continue.");
          stateSize += size;
          for (Integer k = 0; k < size; ++k)
          {
@@ -769,8 +769,8 @@ Integer PropagationStateManager::SortVector()
                if (id < val)
                {
                   #ifdef DEBUG_STATE_CONSTRUCTION
-                     MessageInterface::ShowMessage(wxT("Inserting; id = %d, z = %d,")
-                           wxT("  loc = %d\n"), id, (*oLoc), loc);
+                     MessageInterface::ShowMessage("Inserting; id = %d, z = %d,"
+                           "  loc = %d\n", id, (*oLoc), loc);
                   #endif
                      
                   order.insert(oLoc, loc);
@@ -793,13 +793,13 @@ Integer PropagationStateManager::SortVector()
 
    #ifdef DEBUG_STATE_CONSTRUCTION
       MessageInterface::ShowMessage(
-            wxT("State size is %d()\n"), stateSize);
+            "State size is %d()\n", stateSize);
    #endif
    
    for (Integer i = 0; i < stateSize; ++i)
    {
       #ifdef DEBUG_STATE_CONSTRUCTION
-         MessageInterface::ShowMessage(wxT("%d <- %d: %d %s.%s gives "), i, order[i], 
+         MessageInterface::ShowMessage("%d <- %d: %d %s.%s gives ", i, order[i], 
                idList[order[i]], owners[order[i]]->GetName().c_str(), 
                property[order[i]].c_str());
       #endif
@@ -826,7 +826,7 @@ Integer PropagationStateManager::SortVector()
          newItem->parameterID += val - 1;
 
       #ifdef DEBUG_STATE_CONSTRUCTION
-         MessageInterface::ShowMessage(wxT("[%s, %s, %s, %d, %d, %d, %d, %s]\n"),
+         MessageInterface::ShowMessage("[%s, %s, %s, %d, %d, %d, %d, %s]\n",
                newItem->objectName.c_str(),
                newItem->elementName.c_str(),
                newItem->associateName.c_str(),
@@ -834,7 +834,7 @@ Integer PropagationStateManager::SortVector()
                newItem->subelement,
                newItem->parameterID,
                newItem->parameterType,
-               (newItem->dynamicObjectProperty ? wxT("dynamic") : wxT("static")));
+               (newItem->dynamicObjectProperty ? "dynamic" : "static"));
       #endif
 
       if (newItem->parameterType == Gmat::RVECTOR_TYPE)
@@ -855,7 +855,7 @@ Integer PropagationStateManager::SortVector()
          
          #ifdef DEBUG_STATE_CONSTRUCTION
             MessageInterface::ShowMessage(
-                  wxT("RowLen = %d, %d -> row %2d  col %2d\n"), newItem->rowLength, 
+                  "RowLen = %d, %d -> row %2d  col %2d\n", newItem->rowLength, 
                   val, newItem->rowIndex, newItem->colIndex); 
          #endif
       }
@@ -890,15 +890,15 @@ Integer PropagationStateManager::SortVector()
    }
 
    #ifdef DEBUG_STATE_CONSTRUCTION
-      MessageInterface::ShowMessage(wxT("State map contents:\n"));
+      MessageInterface::ShowMessage("State map contents:\n");
       for (std::vector<ListItem*>::iterator i = stateMap.begin(); 
             i != stateMap.end(); ++i)
-         MessageInterface::ShowMessage(wxT("   %s %s %d %d of %d, id = %d\n"), 
+         MessageInterface::ShowMessage("   %s %s %d %d of %d, id = %d\n", 
                (*i)->objectName.c_str(), (*i)->elementName.c_str(),
                (*i)->elementID, (*i)->subelement, (*i)->length, 
                (*i)->parameterID); 
       MessageInterface::ShowMessage(
-            wxT("Finished PropagationStateManager::SortVector()\n"));
+            "Finished PropagationStateManager::SortVector()\n");
    #endif
    
    return stateSize;

@@ -54,7 +54,7 @@
 
 
 //------------------------------------------------------------------------------
-//  BranchCommand(const wxString &typeStr)
+//  BranchCommand(const std::string &typeStr)
 //------------------------------------------------------------------------------
 /**
  * Constructs the BranchCommand command (default constructor).
@@ -62,7 +62,7 @@
  * @param <typeStr> Strinf setting the type name of the command.
  */
 //------------------------------------------------------------------------------
-BranchCommand::BranchCommand(const wxString &typeStr) :
+BranchCommand::BranchCommand(const std::string &typeStr) :
    GmatCommand          (typeStr),
    branch               (1),
    commandComplete      (false),
@@ -76,12 +76,12 @@ BranchCommand::BranchCommand(const wxString &typeStr) :
    depthChange = 1;
    parameterCount = BranchCommandParamCount;
    
-   objectTypeNames.push_back(wxT("BranchCommand"));
+   objectTypeNames.push_back("BranchCommand");
 }
 
 
 //------------------------------------------------------------------------------
-// ~BranchCommand(const wxString &typeStr)
+// ~BranchCommand(const std::string &typeStr)
 //------------------------------------------------------------------------------
 /**
  * Destroys the BranchCommand.
@@ -91,11 +91,11 @@ BranchCommand::~BranchCommand()
 {
    #ifdef DEBUG_BRANCHCOMMAND_DEALLOCATION
       MessageInterface::ShowMessage
-         (wxT("In BranchCommand::~BranchCommand() this=<%p> '%s'\n"), this,
+         ("In BranchCommand::~BranchCommand() this=<%p> '%s'\n", this,
           this->GetTypeName().c_str());
-      MessageInterface::ShowMessage(wxT("branch.size()=%d\n"), branch.size());
-      wxString cmdstr = GmatCommandUtil::GetCommandSeqString(this);
-      MessageInterface::ShowMessage(wxT("%s\n"), cmdstr.c_str());
+      MessageInterface::ShowMessage("branch.size()=%d\n", branch.size());
+      std::string cmdstr = GmatCommandUtil::GetCommandSeqString(this);
+      MessageInterface::ShowMessage("%s\n", cmdstr.c_str());
    #endif
    std::vector<GmatCommand*>::iterator node;
    GmatCommand *current = NULL;
@@ -107,7 +107,7 @@ BranchCommand::~BranchCommand()
       if (current != NULL)
       {
          #ifdef DEBUG_BRANCHCOMMAND_DEALLOCATION
-         ShowCommand(wxT("   "), wxT("current="), current);
+         ShowCommand("   ", "current=", current);
          #endif
          
          // Why I need to add current != current->GetNext() to avoid
@@ -124,7 +124,7 @@ BranchCommand::~BranchCommand()
          if (current)
          {
             #ifdef DEBUG_BRANCHCOMMAND_DEALLOCATION
-               MessageInterface::ShowMessage(wxT("   Removing "), current);
+               MessageInterface::ShowMessage("   Removing ", current);
             #endif
                
             current->Remove(current);
@@ -135,7 +135,7 @@ BranchCommand::~BranchCommand()
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Remove
                ((*node), (*node)->GetTypeName(), (*node)->GetTypeName() +
-                wxT(" deleting child command"));
+                " deleting child command");
             #endif
             delete *node;
             *node = NULL;
@@ -146,7 +146,7 @@ BranchCommand::~BranchCommand()
    }
    
    #ifdef DEBUG_BRANCHCOMMAND_DEALLOCATION
-      MessageInterface::ShowMessage(wxT("Finished BranchCommand::~BranchCommand()\n"));
+      MessageInterface::ShowMessage("Finished BranchCommand::~BranchCommand()\n");
    #endif
 }
 
@@ -260,8 +260,8 @@ void BranchCommand::SetTransientForces(std::vector<PhysicalModel*> *tf)
          currentPtr->SetTransientForces(tf);
          currentPtr = currentPtr->GetNext();
          if (currentPtr == NULL)
-            throw CommandException(wxT("Branch command \"") + generatingString +
-                                   wxT("\" was not terminated!"));
+            throw CommandException("Branch command \"" + generatingString +
+                                   "\" was not terminated!");
       }
    }
 }
@@ -279,7 +279,7 @@ void BranchCommand::SetTransientForces(std::vector<PhysicalModel*> *tf)
 bool BranchCommand::Initialize()
 {
    #ifdef DEBUG_BRANCHCOMMAND_INIT
-   ShowCommand(wxT("BranchCommand::Initialize() entered "), wxT("this="), this);
+   ShowCommand("BranchCommand::Initialize() entered ", "this=", this);
    #endif
    
    GmatCommand::Initialize();
@@ -295,7 +295,7 @@ bool BranchCommand::Initialize()
       while (currentPtr != this)
       {
          #ifdef DEBUG_BRANCHCOMMAND_INIT
-         ShowCommand(wxT("About to initialize child in "), wxT("child="), currentPtr);
+         ShowCommand("About to initialize child in ", "child=", currentPtr);
          #endif
          if (events != NULL)
             currentPtr->SetEventLocators(events);
@@ -303,8 +303,8 @@ bool BranchCommand::Initialize()
                retval = false;
          currentPtr = currentPtr->GetNext();
          if (currentPtr == NULL)
-            throw CommandException(wxT("Branch command \"") + generatingString +
-                                   wxT("\" was not terminated!"));
+            throw CommandException("Branch command \"" + generatingString +
+                                   "\" was not terminated!");
       }
    }
 //   for (UnsignedInt i = 0; i < current.size(); ++i)
@@ -332,9 +332,9 @@ bool BranchCommand::Initialize()
 void BranchCommand::AddBranch(GmatCommand *cmd, Integer which)
 {
    #ifdef DEBUG_BRANCHCOMMAND_ADD
-   ShowCommand(wxT("BranchCommand::"), wxT("AddBranch() cmd = "), cmd);
+   ShowCommand("BranchCommand::", "AddBranch() cmd = ", cmd);
    MessageInterface::ShowMessage
-      (wxT("   which=%d, branch.size=%d\n"), which, branch.size());
+      ("   which=%d, branch.size=%d\n", which, branch.size());
    #endif
    
    // Increase the size of the vector if it's not big enough
@@ -347,7 +347,7 @@ void BranchCommand::AddBranch(GmatCommand *cmd, Integer which)
    if (which == (Integer)(branch.size()))
    {
       #ifdef DEBUG_BRANCHCOMMAND_ADD
-      ShowCommand(wxT("BranchCommand::"), wxT("::AddBranch() Adding to branch "), cmd);
+      ShowCommand("BranchCommand::", "::AddBranch() Adding to branch ", cmd);
       #endif
       
       branch.push_back(cmd);
@@ -357,7 +357,7 @@ void BranchCommand::AddBranch(GmatCommand *cmd, Integer which)
    else if (branch[which] == NULL)
    {
       #ifdef DEBUG_BRANCHCOMMAND_ADD
-      ShowCommand(wxT("BranchCommand::"), wxT(" Setting branch.at(which) to "), cmd);
+      ShowCommand("BranchCommand::", " Setting branch.at(which) to ", cmd);
       #endif
       
       branch.at(which) = cmd;
@@ -368,7 +368,7 @@ void BranchCommand::AddBranch(GmatCommand *cmd, Integer which)
    else
    {
       #ifdef DEBUG_BRANCHCOMMAND_ADD
-      ShowCommand(wxT("BranchCommand::"), wxT(" Appending "), cmd, wxT(" to "), branch.at(which));
+      ShowCommand("BranchCommand::", " Appending ", cmd, " to ", branch.at(which));
       #endif
       
       (branch.at(which))->Append(cmd);
@@ -394,9 +394,9 @@ void BranchCommand::AddToFrontOfBranch(GmatCommand *cmd, Integer which)
 {
    
    #ifdef DEBUG_BRANCHCOMMAND_ADD
-   ShowCommand(wxT("BranchCommand::"), wxT("AddToFrontOfBranch() cmd = "), cmd);
+   ShowCommand("BranchCommand::", "AddToFrontOfBranch() cmd = ", cmd);
    MessageInterface::ShowMessage
-      (wxT("   which=%d, branch.size=%d\n"), which, branch.size());
+      ("   which=%d, branch.size=%d\n", which, branch.size());
    #endif
    
    // Increase the size of the vector if it's not big enough
@@ -406,7 +406,7 @@ void BranchCommand::AddToFrontOfBranch(GmatCommand *cmd, Integer which)
    if (which == (Integer)(branch.size()))
    {
       #ifdef DEBUG_BRANCHCOMMAND_ADD
-      ShowCommand(wxT("BranchCommand::"), wxT("::AddToFrontOfBranch() Adding to branch "), cmd);
+      ShowCommand("BranchCommand::", "::AddToFrontOfBranch() Adding to branch ", cmd);
       #endif
       
       branch.push_back(cmd);
@@ -416,7 +416,7 @@ void BranchCommand::AddToFrontOfBranch(GmatCommand *cmd, Integer which)
    else if (branch.at(which) == NULL)
    {
       #ifdef DEBUG_BRANCHCOMMAND_ADD
-      ShowCommand(wxT("BranchCommand::"), wxT(" Setting branch.at(which) to "), cmd);
+      ShowCommand("BranchCommand::", " Setting branch.at(which) to ", cmd);
       #endif
       
       branch.at(which) = cmd;
@@ -426,13 +426,13 @@ void BranchCommand::AddToFrontOfBranch(GmatCommand *cmd, Integer which)
       GmatCommand *tmp = branch.at(which);
       
       #ifdef DEBUG_BRANCHCOMMAND_ADD
-      ShowCommand(wxT("BranchCommand::"), wxT(" Setting branch.at(which) to "), cmd);
+      ShowCommand("BranchCommand::", " Setting branch.at(which) to ", cmd);
       #endif
       
       branch.at(which) = cmd;
       
       #ifdef DEBUG_BRANCHCOMMAND_ADD
-      ShowCommand(wxT("BranchCommand::"), wxT(" Appending "), tmp, wxT(" to "), cmd);
+      ShowCommand("BranchCommand::", " Appending ", tmp, " to ", cmd);
       #endif
       
       cmd->Append(tmp);
@@ -460,8 +460,8 @@ void BranchCommand::AddToFrontOfBranch(GmatCommand *cmd, Integer which)
 bool BranchCommand::Append(GmatCommand *cmd)
 {
    #ifdef DEBUG_BRANCHCOMMAND_APPEND
-   ShowCommand(wxT("BranchCommand::"), wxT("Append() this = "), this, wxT(" next = "), next);
-   ShowCommand(wxT("BranchCommand::"), wxT("Append() cmd = "), cmd);
+   ShowCommand("BranchCommand::", "Append() this = ", this, " next = ", next);
+   ShowCommand("BranchCommand::", "Append() cmd = ", cmd);
    #endif
    
    // If we are still filling in a branch, append on that branch
@@ -472,7 +472,7 @@ bool BranchCommand::Append(GmatCommand *cmd)
    }
    #ifdef DEBUG_BRANCHCOMMAND_APPEND
       MessageInterface::ShowMessage(
-      wxT("In BranchCommand::Append - not appended to this command.\n"));
+      "In BranchCommand::Append - not appended to this command.\n");
    #endif
       
    // Otherwise, just call the base class method
@@ -498,8 +498,8 @@ bool BranchCommand::Append(GmatCommand *cmd)
 bool BranchCommand::Insert(GmatCommand *cmd, GmatCommand *prev)
 {
    #ifdef DEBUG_BRANCHCOMMAND_INSERT
-   ShowCommand(wxT("BranchCommand::"), wxT("Insert() this = "), this, wxT(" next = "), next);
-   ShowCommand(wxT("BranchCommand::"), wxT("Insert() cmd  = "), cmd, wxT(" prev = "), prev);
+   ShowCommand("BranchCommand::", "Insert() this = ", this, " next = ", next);
+   ShowCommand("BranchCommand::", "Insert() cmd  = ", cmd, " prev = ", prev);
    #endif
    
    GmatCommand *currentOne   = NULL;
@@ -510,9 +510,9 @@ bool BranchCommand::Insert(GmatCommand *cmd, GmatCommand *prev)
    bool        hereOrNested  = false;
    
    // if we're adding a new Else or ElseIf, we will need to add a branch 
-   if ( (this->GetTypeName() == wxT("If")) && 
-        ( (cmd->GetTypeName() == wxT("Else")) || 
-          (cmd->GetTypeName() == wxT("ElseIf")) ) )  newBranch = true;
+   if ( (this->GetTypeName() == "If") && 
+        ( (cmd->GetTypeName() == "Else") || 
+          (cmd->GetTypeName() == "ElseIf") ) )  newBranch = true;
    
    
    // See if we're supposed to put it at the top of the first branch
@@ -528,15 +528,15 @@ bool BranchCommand::Insert(GmatCommand *cmd, GmatCommand *prev)
       }
       
       #ifdef DEBUG_BRANCHCOMMAND_INSERT
-      ShowCommand(wxT("BranchCommand::"), wxT("currentOne = "), currentOne, wxT(" branch[0] = "), branch[0]);
+      ShowCommand("BranchCommand::", "currentOne = ", currentOne, " branch[0] = ", branch[0]);
       #endif
       
       cmd->Append(currentOne);
       foundHere = true;
       
       #ifdef DEBUG_BRANCHCOMMAND_INSERT
-      ShowCommand(wxT("BranchCommand::"), wxT("currentOne->GetPrevious() = "), currentOne->GetPrevious());
-      ShowCommand(wxT("BranchCommand::"), wxT("currentOne->GetNext() = "), currentOne->GetNext());
+      ShowCommand("BranchCommand::", "currentOne->GetPrevious() = ", currentOne->GetPrevious());
+      ShowCommand("BranchCommand::", "currentOne->GetNext() = ", currentOne->GetNext());
       #endif
       
       //return true;
@@ -582,7 +582,7 @@ bool BranchCommand::Insert(GmatCommand *cmd, GmatCommand *prev)
             while((nc != this) && !foundHere)
             {
                 // let a nested If handle it, if it is supposed to go in there
-               if (newBranch && (nc == prev) && (nc->GetTypeName() != wxT("If")))
+               if (newBranch && (nc == prev) && (nc->GetTypeName() != "If"))
                {
                   toShift   = nc->GetNext();
                   brNum     = which;
@@ -606,7 +606,7 @@ bool BranchCommand::Insert(GmatCommand *cmd, GmatCommand *prev)
    
    #ifdef DEBUG_BRANCHCOMMAND_INSERT
    MessageInterface::ShowMessage
-      (wxT("BranchCommand::Insert() newBranch=%d, foundHere=%d, toShift=%p\n"),
+      ("BranchCommand::Insert() newBranch=%d, foundHere=%d, toShift=%p\n",
        newBranch, foundHere, toShift);
    #endif
    
@@ -615,7 +615,7 @@ bool BranchCommand::Insert(GmatCommand *cmd, GmatCommand *prev)
       // make sure the new Else or ElseIf points back to the If command
       
       #ifdef DEBUG_BRANCHCOMMAND_INSERT
-      ShowCommand(wxT("BranchCommand::"), wxT(" Setting next of "), cmd, wxT(" to "), this);
+      ShowCommand("BranchCommand::", " Setting next of ", cmd, " to ", this);
       #endif
       
       cmd->ForceSetNext(this);
@@ -625,7 +625,7 @@ bool BranchCommand::Insert(GmatCommand *cmd, GmatCommand *prev)
       bool isOK = ShiftBranches(toShift, brNum);
       if (!isOK) 
          MessageInterface::ShowMessage
-            (wxT("In BranchCommand::Insert - error adding Else/ElseIf"));
+            ("In BranchCommand::Insert - error adding Else/ElseIf");
    }
    
    if (foundHere || hereOrNested) return true;
@@ -649,8 +649,8 @@ bool BranchCommand::Insert(GmatCommand *cmd, GmatCommand *prev)
 GmatCommand* BranchCommand::Remove(GmatCommand *cmd)
 {
    #ifdef DEBUG_BRANCHCOMMAND_REMOVE
-   ShowCommand(wxT("BranchCommand::"), wxT("Remove() this = "), this, wxT(" cmd = "), cmd);
-   ShowCommand(wxT("BranchCommand::"), wxT("Remove() next = "), next);
+   ShowCommand("BranchCommand::", "Remove() this = ", this, " cmd = ", cmd);
+   ShowCommand("BranchCommand::", "Remove() next = ", next);
    #endif
    
    if (next == cmd)
@@ -673,13 +673,13 @@ GmatCommand* BranchCommand::Remove(GmatCommand *cmd)
          tempNext = current->GetNext();
       
          #ifdef DEBUG_BRANCHCOMMAND_REMOVE
-         ShowCommand(wxT("BranchCommand::"), wxT("Remove() current = "), current, wxT(", tempNext = "), tempNext);
+         ShowCommand("BranchCommand::", "Remove() current = ", current, ", tempNext = ", tempNext);
          #endif
          
          fromBranch = current->Remove(cmd);
          
          #ifdef DEBUG_BRANCHCOMMAND_REMOVE
-         ShowCommand(wxT("BranchCommand::"), wxT("Remove() fromBranch = "), fromBranch);
+         ShowCommand("BranchCommand::", "Remove() fromBranch = ", fromBranch);
          #endif
          
          if (fromBranch == current)
@@ -689,14 +689,14 @@ GmatCommand* BranchCommand::Remove(GmatCommand *cmd)
          {
             // set previous command
             #ifdef DEBUG_BRANCHCOMMAND_REMOVE
-            ShowCommand(wxT("BranchCommand::"), _GT" Setting previous of "), tempNext,
-                        wxT(" to "), fromBranch->GetPrevious());
+            ShowCommand("BranchCommand::", " Setting previous of ", tempNext,
+                        " to ", fromBranch->GetPrevious());
             #endif
             
             tempNext->ForceSetPrevious(fromBranch->GetPrevious());
             
             #ifdef DEBUG_BRANCHCOMMAND_REMOVE
-            MessageInterface::ShowMessage(wxT("   Returning fromBranch\n"));
+            MessageInterface::ShowMessage("   Returning fromBranch\n");
             #endif
             
             return fromBranch;
@@ -707,7 +707,7 @@ GmatCommand* BranchCommand::Remove(GmatCommand *cmd)
    // Not in the branches, so continue with the sequence
    #ifdef DEBUG_BRANCHCOMMAND_REMOVE
    MessageInterface::ShowMessage
-      (wxT("   Not in the branches, so continue with the sequence\n"));
+      ("   Not in the branches, so continue with the sequence\n");
    #endif
    
    return GmatCommand::Remove(cmd);
@@ -727,14 +727,14 @@ GmatCommand* BranchCommand::Remove(GmatCommand *cmd)
 void BranchCommand::BuildCommandSummaryString(bool commandCompleted)
 {
    #ifdef DEBUG_BRANCHCOMMAND_SUMMARY
-      MessageInterface::ShowMessage(wxT("Entering BranchCommand::BuildMissionSummaryString for command %s of type %s\n"),
+      MessageInterface::ShowMessage("Entering BranchCommand::BuildMissionSummaryString for command %s of type %s\n",
             summaryName.c_str(), typeName.c_str());
    #endif
 
    GmatCommand::BuildCommandSummaryString(commandCompleted);
    if (summaryForEntireMission)
    {
-      wxString branchSummary = commandSummary;
+      std::string branchSummary = commandSummary;
       GmatCommand *current = NULL;
 
       // Build Command Summary string for all of the branch nodes
@@ -745,10 +745,10 @@ void BranchCommand::BuildCommandSummaryString(bool commandCompleted)
          {
             current->SetupSummary(summaryCoordSysName, summaryForEntireMission, missionPhysicsBasedOnly);
             #ifdef DEBUG_BRANCHCOMMAND_SUMMARY
-               MessageInterface::ShowMessage(wxT("About to call for MissionSummary for command %s of type %s\n"),
+               MessageInterface::ShowMessage("About to call for MissionSummary for command %s of type %s\n",
                      (current->GetSummaryName()).c_str(), (current->GetTypeName()).c_str());
             #endif
-            branchSummary += current->GetStringParameter(wxT("Summary"));
+            branchSummary += current->GetStringParameter("Summary");
    //         missionSummary += current->GetStringParameter("MissionSummary");
             current = current->GetNext();
          }
@@ -837,7 +837,7 @@ void BranchCommand::SetInternalCoordSystem(CoordinateSystem *cs)
 
 
 //------------------------------------------------------------------------------
-//  void SetObjectMap(std::map<wxString, Asset *> *map)
+//  void SetObjectMap(std::map<std::string, Asset *> *map)
 //------------------------------------------------------------------------------
 /**
  * Called by the Sandbox or Function to set the local asset store used by the Command.  This
@@ -847,7 +847,7 @@ void BranchCommand::SetInternalCoordSystem(CoordinateSystem *cs)
  * @param <map> Pointer to the local asset map
  */
 //------------------------------------------------------------------------------
-void BranchCommand::SetObjectMap(std::map<wxString, GmatBase *> *map)
+void BranchCommand::SetObjectMap(std::map<std::string, GmatBase *> *map)
 {
    GmatCommand::SetObjectMap(map);
    GmatCommand *current = NULL;
@@ -866,7 +866,7 @@ void BranchCommand::SetObjectMap(std::map<wxString, GmatBase *> *map)
 }
 
 //------------------------------------------------------------------------------
-//  void SetGlobalObjectMap(std::map<wxString, Asset *> *map)
+//  void SetGlobalObjectMap(std::map<std::string, Asset *> *map)
 //------------------------------------------------------------------------------
 /**
  * Called by the Sandbox or Function to set the global asset store used by the Command.  This
@@ -876,7 +876,7 @@ void BranchCommand::SetObjectMap(std::map<wxString, GmatBase *> *map)
  * @param <map> Pointer to the local asset map
  */
 //------------------------------------------------------------------------------
-void BranchCommand::SetGlobalObjectMap(std::map<wxString, GmatBase *> *map)
+void BranchCommand::SetGlobalObjectMap(std::map<std::string, GmatBase *> *map)
 {
    GmatCommand::SetGlobalObjectMap(map);
    GmatCommand *current = NULL;
@@ -897,7 +897,7 @@ void BranchCommand::SetGlobalObjectMap(std::map<wxString, GmatBase *> *map)
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /*
  * Renames referenced objects
@@ -910,8 +910,8 @@ void BranchCommand::SetGlobalObjectMap(std::map<wxString, GmatBase *> *map)
  */
 //---------------------------------------------------------------------------
 bool BranchCommand::RenameRefObject(const Gmat::ObjectType type,
-                                    const wxString &oldName,
-                                    const wxString &newName)
+                                    const std::string &oldName,
+                                    const std::string &newName)
 {
    std::vector<GmatCommand*>::iterator node;
    for (node = branch.begin(); node != branch.end(); ++node)
@@ -920,7 +920,7 @@ bool BranchCommand::RenameRefObject(const Gmat::ObjectType type,
       if (current != NULL)
       {
          #ifdef DEBUG_RENAME
-         ShowCommand(wxT("BranchCommand::"), wxT("RenameRefObject() current = "), current);
+         ShowCommand("BranchCommand::", "RenameRefObject() current = ", current);
          #endif
          
          current->RenameRefObject(type, oldName, newName);
@@ -932,7 +932,7 @@ bool BranchCommand::RenameRefObject(const Gmat::ObjectType type,
                break;
             
             #ifdef DEBUG_RENAME
-            ShowCommand(wxT("BranchCommand::"), wxT("RenameRefObject() current = "), current);
+            ShowCommand("BranchCommand::", "RenameRefObject() current = ", current);
             #endif
             
             current->RenameRefObject(type, oldName, newName);            
@@ -947,7 +947,7 @@ bool BranchCommand::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-//  const wxString GetGeneratingString()
+//  const std::string GetGeneratingString()
 //------------------------------------------------------------------------------
 /**
  * Method used to retrieve the string that was parsed to build this GmatCommand.
@@ -962,42 +962,42 @@ bool BranchCommand::RenameRefObject(const Gmat::ObjectType type,
  * @return The script line that defines this GmatCommand.
  */
 //------------------------------------------------------------------------------
-const wxString& BranchCommand::GetGeneratingString(Gmat::WriteMode mode,
-                                                  const wxString &prefix,
-                                                  const wxString &useName)
+const std::string& BranchCommand::GetGeneratingString(Gmat::WriteMode mode,
+                                                  const std::string &prefix,
+                                                  const std::string &useName)
 {
    fullString = prefix + generatingString;
    InsertCommandName(fullString);
    
    // We don't want BranchCommand to indent
    UnsignedInt prefixSize = prefix.size();   
-   if (this->IsOfType(wxT("BranchCommand")) && prefix != wxT(""))
+   if (this->IsOfType("BranchCommand") && prefix != "")
       fullString = fullString.substr(prefixSize);
    
    #ifdef DEBUG_BRANCHCOMMAND_GEN_STRING
-   ShowCommand(wxT("BranchCommand::"), wxT("GetGeneratingString() this = "), this);
+   ShowCommand("BranchCommand::", "GetGeneratingString() this = ", this);
    MessageInterface::ShowMessage
-      (wxT("   mode='%d', prefix='%s', useName='%s'\n"), mode, prefix.c_str(),
+      ("   mode='%d', prefix='%s', useName='%s'\n", mode, prefix.c_str(),
        useName.c_str());
-   MessageInterface::ShowMessage(wxT("   fullString = '%s'\n"), fullString.c_str());
+   MessageInterface::ShowMessage("   fullString = '%s'\n", fullString.c_str());
    #endif
    
-   wxString indent = wxT("   ");
+   std::string indent = "   ";
    
-   wxString commentLine = GetCommentLine();
-   wxString inlineComment = GetInlineComment();
+   std::string commentLine = GetCommentLine();
+   std::string inlineComment = GetInlineComment();
    
    #ifdef DEBUG_BRANCHCOMMAND_GEN_STRING
-   ShowCommand(wxT("BranchCommand::"), wxT("GmatCommand::GetGeneratingString() this = "), this);
+   ShowCommand("BranchCommand::", "GmatCommand::GetGeneratingString() this = ", this);
    MessageInterface::ShowMessage
-      (wxT("===> commentLine=<%s>, inlineComment=<%s>\n"),
+      ("===> commentLine=<%s>, inlineComment=<%s>\n",
        commentLine.c_str(), inlineComment.c_str());
    #endif
    
    // Handle multiple line comments, we want to indent all lines.
-   if (commentLine != wxT(""))
+   if (commentLine != "")
    {
-      wxString gen;
+      std::stringstream gen;
       TextParser tp;
       StringArray textArray = tp.DecomposeBlock(commentLine);
       
@@ -1005,20 +1005,20 @@ const wxString& BranchCommand::GetGeneratingString(Gmat::WriteMode mode,
       for (UnsignedInt i=0; i<textArray.size(); i++)
       {
          gen << prefix << textArray[i];
-         if (textArray[i].find(wxT("\n")) == commentLine.npos &&
-             textArray[i].find(wxT("\r")) == commentLine.npos)
-            gen << wxT("\n");
+         if (textArray[i].find("\n") == commentLine.npos &&
+             textArray[i].find("\r") == commentLine.npos)
+            gen << "\n";
       }
       
-      fullString = gen + fullString;
+      fullString = gen.str() + fullString;
    }
    
    // Handle inline comment
-   if (inlineComment != wxT(""))
+   if (inlineComment != "")
       fullString = fullString + inlineComment;
    
    GmatCommand *current;
-   wxString newPrefix = indent + prefix;   
+   std::string newPrefix = indent + prefix;   
    bool inTextMode = false;
    Integer scriptEventCount = 0;
    
@@ -1030,25 +1030,25 @@ const wxString& BranchCommand::GetGeneratingString(Gmat::WriteMode mode,
       while ((current != NULL) && (current != this))
       {
          #ifdef DEBUG_BRANCHCOMMAND_GEN_STRING
-         ShowCommand(wxT("BranchCommand::"), wxT("GetGeneratingString() current = "), current);
-         MessageInterface::ShowMessage(wxT("   inTextMode=%d\n"), inTextMode);
+         ShowCommand("BranchCommand::", "GetGeneratingString() current = ", current);
+         MessageInterface::ShowMessage("   inTextMode=%d\n", inTextMode);
          #endif
          
          // BeginScript writes its own children, so write if not in TextMode.
          // EndScript is written from BeginScript
          if (!inTextMode)
          {
-            fullString += wxT("\n");
+            fullString += "\n";
             if (current->GetNext() != this)
                fullString += current->GetGeneratingString(mode, newPrefix, useName);
             else // current is the End command for this branch command
                fullString += current->GetGeneratingString(mode, prefix, useName);
          }
          
-         if (current->GetTypeName() == wxT("BeginScript"))
+         if (current->GetTypeName() == "BeginScript")
             scriptEventCount++;
          
-         if (current->GetTypeName() == wxT("EndScript"))
+         if (current->GetTypeName() == "EndScript")
             scriptEventCount--;
          
          inTextMode = (scriptEventCount == 0) ? false : true;
@@ -1059,7 +1059,7 @@ const wxString& BranchCommand::GetGeneratingString(Gmat::WriteMode mode,
    
    #ifdef DEBUG_BRANCHCOMMAND_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("%s::GetGeneratingString() return fullString = \n<%s>\n"),
+      ("%s::GetGeneratingString() return fullString = \n<%s>\n",
        this->GetTypeName().c_str(), fullString.c_str());
    #endif
    
@@ -1068,7 +1068,7 @@ const wxString& BranchCommand::GetGeneratingString(Gmat::WriteMode mode,
 
 
 //------------------------------------------------------------------------------
-// bool TakeAction(const wxString &action, const wxString &actionData)
+// bool TakeAction(const std::string &action, const std::string &actionData)
 //------------------------------------------------------------------------------
 /**
  * Interface used to support user actions.
@@ -1079,15 +1079,15 @@ const wxString& BranchCommand::GetGeneratingString(Gmat::WriteMode mode,
  * @return true if the action was performed, false if not.
  */
 //------------------------------------------------------------------------------
-bool BranchCommand::TakeAction(const wxString &action,
-                           const wxString &actionData)
+bool BranchCommand::TakeAction(const std::string &action,
+                           const std::string &actionData)
 {
    #ifdef DEBUG_BRANCHCOMMAND_ACTIONS
-      MessageInterface::ShowMessage(wxT("%s: Executing the action \"%s\"\n"), 
+      MessageInterface::ShowMessage("%s: Executing the action \"%s\"\n", 
          GetGeneratingString().c_str(), action.c_str());
    #endif
       
-   if (action == wxT("ResetLoopData"))
+   if (action == "ResetLoopData")
    {
       GmatCommand *cmd; 
       for (std::vector<GmatCommand *>::iterator br = branch.begin(); 
@@ -1097,13 +1097,13 @@ bool BranchCommand::TakeAction(const wxString &action,
          while (cmd != this)
          {
             #ifdef DEBUG_BRANCHCOMMAND_ACTIONS
-               MessageInterface::ShowMessage(wxT("   Applying action to \"%s\"\n"), 
+               MessageInterface::ShowMessage("   Applying action to \"%s\"\n", 
                   cmd->GetGeneratingString().c_str());
             #endif
                
-            if ((cmd->GetTypeName() == wxT("Propagate")) || 
-                (cmd->IsOfType(wxT("BranchCommand"))))
-               cmd->TakeAction(wxT("ResetLoopData"));
+            if ((cmd->GetTypeName() == "Propagate") || 
+                (cmd->IsOfType("BranchCommand")))
+               cmd->TakeAction("ResetLoopData");
             cmd = cmd->GetNext();
          }
       }      
@@ -1147,7 +1147,7 @@ bool BranchCommand::ExecuteBranch(Integer which)
 {
    #ifdef DEBUG_BRANCHCOMMAND_EXECUTION
    MessageInterface::ShowMessage
-      (wxT("In BranchCommand (%s) '%s', executing branch %d\n"), typeName.c_str(),
+      ("In BranchCommand (%s) '%s', executing branch %d\n", typeName.c_str(),
        GetGeneratingString(Gmat::NO_COMMENTS).c_str(), which);
    #endif
    bool retval = true;
@@ -1156,20 +1156,20 @@ bool BranchCommand::ExecuteBranch(Integer which)
       current = branch[which];
    
    #ifdef DEBUG_BRANCHCOMMAND_EXECUTION
-   ShowCommand(wxT("In ExecuteBranch:"), wxT("current = "), current, wxT("this    = "), this);
+   ShowCommand("In ExecuteBranch:", "current = ", current, "this    = ", this);
    #endif
    
    if (current == this)
    {
       #ifdef DEBUG_BRANCHCOMMAND_EXECUTION
       MessageInterface::ShowMessage
-         (wxT("In ExecuteBranch (%s) - current = this -> resetting\n"), 
+         ("In ExecuteBranch (%s) - current = this -> resetting\n", 
           typeName.c_str());
       if (next)
          MessageInterface::ShowMessage
-            (wxT("...... and the next one is : %s\n"), (next->GetTypeName()).c_str());
+            ("...... and the next one is : %s\n", (next->GetTypeName()).c_str());
       else
-         MessageInterface::ShowMessage(wxT("...... and the next one is NULL!!!\n"));
+         MessageInterface::ShowMessage("...... and the next one is NULL!!!\n");
       #endif
       
       branchExecuting = false;
@@ -1181,7 +1181,7 @@ bool BranchCommand::ExecuteBranch(Integer which)
    if (current != NULL)
    {
       #ifdef DEBUG_BRANCHCOMMAND_EXECUTION
-      ShowCommand(wxT("   Calling in "), wxT("current = "), current);
+      ShowCommand("   Calling in ", "current = ", current);
       #endif
       
       try
@@ -1196,7 +1196,7 @@ bool BranchCommand::ExecuteBranch(Integer which)
          // check for user interruption here (loj: 2007.05.11 Added)
          if (GmatGlobal::Instance()->GetRunInterrupted())
             throw CommandException
-               (wxT("Branch command \"") + generatingString + wxT("\" interrupted!"));
+               ("Branch command \"" + generatingString + "\" interrupted!");
          
          // Check for NULL pointer here (loj: 2008.09.25 Added)
          // Why current pointer is reset to NULL running recursive function?
@@ -1206,7 +1206,7 @@ bool BranchCommand::ExecuteBranch(Integer which)
          {
             #ifdef __THROW_EXCEPTION__            
             throw CommandException
-               (wxT("Branch command \"") + generatingString + wxT("\" has NULL current pointer!"));
+               ("Branch command \"" + generatingString + "\" has NULL current pointer!");
             #endif
          }
          
@@ -1223,7 +1223,7 @@ bool BranchCommand::ExecuteBranch(Integer which)
          e.GetMessageType();
          #ifdef DEBUG_BRANCHCOMMAND_EXECUTION
          MessageInterface::ShowMessage
-            (wxT("   BranchCommand rethrowing %s\n"), e.GetFullMessage().c_str());
+            ("   BranchCommand rethrowing %s\n", e.GetFullMessage().c_str());
          #endif
          
          throw;
@@ -1231,9 +1231,9 @@ bool BranchCommand::ExecuteBranch(Integer which)
    }
    
    #ifdef DEBUG_BRANCHCOMMAND_EXECUTION
-   ShowCommand(wxT("Exiting ExecuteBranch:"), wxT("current = "), current, wxT("this    = "), this);
+   ShowCommand("Exiting ExecuteBranch:", "current = ", current, "this    = ", this);
    MessageInterface::ShowMessage
-      (wxT("   branchExecuting=%d, commandExecuting=%d, commandComplete=%d\n"),
+      ("   branchExecuting=%d, commandExecuting=%d, commandComplete=%d\n",
        branchExecuting, commandExecuting, commandComplete);
    #endif
    
@@ -1255,14 +1255,14 @@ bool BranchCommand::ExecuteBranch(Integer which)
 void BranchCommand::RunComplete()
 {
    #ifdef DEBUG_RUN_COMPLETE
-   ShowCommand(wxT("BranchCommand::"), wxT("BranchCommand::RunComplete() this = "), this);
+   ShowCommand("BranchCommand::", "BranchCommand::RunComplete() this = ", this);
    #endif
    
    current = NULL;
    
    for (std::vector <GmatCommand *>::iterator i = branch.begin(); i != branch.end(); ++i)
       if (*i != NULL)
-         if (!(*i)->IsOfType(wxT("BranchEnd")))
+         if (!(*i)->IsOfType("BranchEnd"))
             (*i)->RunComplete();
    
    
@@ -1332,15 +1332,15 @@ void BranchCommand::SetPreviousCommand(GmatCommand *cmd, GmatCommand *prev,
 {
    #ifdef DEBUG_BRANCHCOMMAND_PREV_CMD
    ShowCommand
-      (wxT("BranchCommand::SetPreviousCommand()"), wxT(" cmd = "), cmd, wxT(" prev = "), prev);
+      ("BranchCommand::SetPreviousCommand()", " cmd = ", cmd, " prev = ", prev);
    #endif
    
-   if (skipBranchEnd && cmd->IsOfType(wxT("BranchEnd")))
+   if (skipBranchEnd && cmd->IsOfType("BranchEnd"))
    {
       #ifdef DEBUG_BRANCHCOMMAND_PREV_CMD
       MessageInterface::ShowMessage
-         (wxT("   cmd is of type \"BranchEnd\", so previous is not set\n"));
-      ShowCommand(wxT("   "), wxT(" previous of "), cmd, wxT(" is "), cmd->GetPrevious());
+         ("   cmd is of type \"BranchEnd\", so previous is not set\n");
+      ShowCommand("   ", " previous of ", cmd, " is ", cmd->GetPrevious());
       #endif
       
       if (cmd->GetPrevious() == NULL)
@@ -1349,7 +1349,7 @@ void BranchCommand::SetPreviousCommand(GmatCommand *cmd, GmatCommand *prev,
    else
    {
       #ifdef DEBUG_BRANCHCOMMAND_PREV_CMD
-      ShowCommand(wxT("BranchCommand::"), wxT(" Setting previous of "), cmd, wxT(" to "), prev);
+      ShowCommand("BranchCommand::", " Setting previous of ", cmd, " to ", prev);
       #endif
       
       cmd->ForceSetPrevious(prev);
@@ -1362,7 +1362,7 @@ void BranchCommand::SetPreviousCommand(GmatCommand *cmd, GmatCommand *prev,
 const std::vector<GmatCommand*> BranchCommand::GetCommandsWithGmatFunctions()
 {
    #ifdef DEBUG_BRANCHCOMMAND_GMATFUNCTIONS
-      MessageInterface::ShowMessage(wxT("Entering BranchCommand::GetCommandsWithGmatFunctions\n"));
+      MessageInterface::ShowMessage("Entering BranchCommand::GetCommandsWithGmatFunctions\n");
    #endif
    cmdsWithFunctions.clear();
    std::vector<GmatCommand*> tmpArray;
@@ -1376,20 +1376,20 @@ const std::vector<GmatCommand*> BranchCommand::GetCommandsWithGmatFunctions()
       {
          #ifdef DEBUG_BRANCHCOMMAND_GMATFUNCTIONS
             MessageInterface::ShowMessage(
-                  wxT("--- checking a Command of type %s with name %s\n"),
+                  "--- checking a Command of type %s with name %s\n",
                   (subCmd->GetTypeName()).c_str(), (subCmd->GetName()).c_str());
          #endif
          tmpArray.clear();
-         if(subCmd->IsOfType(wxT("BranchCommand")))  
+         if(subCmd->IsOfType("BranchCommand"))  
          {
             tmpArray = ((BranchCommand*)subCmd)->GetCommandsWithGmatFunctions();
          }
-         else if ((subCmd->IsOfType(wxT("CallFunction"))) ||
-                  (subCmd->IsOfType(wxT("Assignment"))))
+         else if ((subCmd->IsOfType("CallFunction")) ||
+                  (subCmd->IsOfType("Assignment")))
          {
             #ifdef DEBUG_BRANCHCOMMAND_GMATFUNCTIONS
                MessageInterface::ShowMessage(
-                     wxT("--- ADDING a Command of type %s with name %s to the list\n"),
+                     "--- ADDING a Command of type %s with name %s to the list\n",
                      (subCmd->GetTypeName()).c_str(), (subCmd->GetName()).c_str());
             #endif
             tmpArray.push_back(subCmd);
@@ -1409,9 +1409,9 @@ bool BranchCommand::HasAFunction()
 {
    #ifdef DEBUG_IS_FUNCTION
       if (!current)
-         MessageInterface::ShowMessage(wxT("In HasAFunction and current is NULL\n"));
+         MessageInterface::ShowMessage("In HasAFunction and current is NULL\n");
       else
-         MessageInterface::ShowMessage(wxT("In HasAFunction and current is of type %s\n"),
+         MessageInterface::ShowMessage("In HasAFunction and current is of type %s\n",
                (current->GetTypeName()).c_str());
    #endif
    std::vector<GmatCommand*>::iterator node;
@@ -1426,8 +1426,8 @@ bool BranchCommand::HasAFunction()
          if (currentPtr->HasAFunction()) return true;
          currentPtr = currentPtr->GetNext();
          if (currentPtr == NULL)
-            throw CommandException(wxT("Branch command \"") + generatingString +
-                                   wxT("\" was not terminated!"));
+            throw CommandException("Branch command \"" + generatingString +
+                                   "\" was not terminated!");
       }
    }
    // otherwise, there are no GmatFunctions in this Branch Command
@@ -1453,8 +1453,8 @@ void BranchCommand::SetCallingFunction(FunctionManager *fm)
          currentPtr->SetCallingFunction(fm);
          currentPtr = currentPtr->GetNext();
          if (currentPtr == NULL)
-            throw CommandException(wxT("Branch command \"") + generatingString +
-                                   wxT("\" was not terminated!"));
+            throw CommandException("Branch command \"" + generatingString +
+                                   "\" was not terminated!");
       }
    }
 }
@@ -1499,13 +1499,13 @@ Integer BranchCommand::GetCloneCount()
          cloneCount += currentPtr->GetCloneCount();
          currentPtr = currentPtr->GetNext();
          if (currentPtr == NULL)
-            throw CommandException(wxT("Branch command \"") + generatingString +
-                                   wxT("\" was not terminated!"));
+            throw CommandException("Branch command \"" + generatingString +
+                                   "\" was not terminated!");
       }
    }
 
    #ifdef DEBUG_CLONE_UPDATES
-      MessageInterface::ShowMessage(wxT("CloneCount for branch command %s = %d\n"),
+      MessageInterface::ShowMessage("CloneCount for branch command %s = %d\n",
             typeName.c_str(), cloneCount);
    #endif
 
@@ -1549,8 +1549,8 @@ GmatBase* BranchCommand::GetClone(Integer cloneIndex)
             currentCount += nodeCount;
             currentPtr = currentPtr->GetNext();
             if (currentPtr == NULL)
-               throw CommandException(wxT("Branch command \"") + generatingString +
-                                      wxT("\" was not terminated!"));
+               throw CommandException("Branch command \"" + generatingString +
+                                      "\" was not terminated!");
          }
       }
    }

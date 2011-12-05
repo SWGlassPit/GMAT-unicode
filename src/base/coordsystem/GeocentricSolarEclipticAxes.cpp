@@ -53,7 +53,7 @@ using namespace GmatTimeConstants;      // for JD offsets, etc.
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-//  GeocentricSolarEclipticAxes(const wxString &itsName);
+//  GeocentricSolarEclipticAxes(const std::string &itsName);
 //------------------------------------------------------------------------------
 /**
  * Constructs base GeocentricSolarEclipticAxes structures
@@ -62,12 +62,12 @@ using namespace GmatTimeConstants;      // for JD offsets, etc.
  * @param itsName Optional name for the object.  Defaults to "".
  */
 //------------------------------------------------------------------------------
-GeocentricSolarEclipticAxes::GeocentricSolarEclipticAxes(const wxString &itsName) :
-ObjectReferencedAxes(wxT("GSE"),itsName)
+GeocentricSolarEclipticAxes::GeocentricSolarEclipticAxes(const std::string &itsName) :
+ObjectReferencedAxes("GSE",itsName)
 {
    primaryName   = SolarSystem::EARTH_NAME;
    secondaryName = SolarSystem::SUN_NAME;
-   objectTypeNames.push_back(wxT("GSE"));
+   objectTypeNames.push_back("GSE");
    parameterCount = GeocentricSolarEclipticAxesParamCount;
 }
 

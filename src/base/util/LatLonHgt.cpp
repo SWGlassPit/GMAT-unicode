@@ -29,26 +29,26 @@
 //---------------------------------
 //  static data
 //---------------------------------
-const wxString LatLonHgt::DATA_DESCRIPTIONS[NUM_DATA] =
+const std::string LatLonHgt::DATA_DESCRIPTIONS[NUM_DATA] =
 {
-   wxT("Latitude"),
-   wxT("Longitude"),
-   wxT("Height"),
-   wxT("Type")
+   "Latitude",
+   "Longitude",
+   "Height",
+   "Type"
 };
 
-const wxString LatLonHgt::TYPE_DESCRIPTIONS[3] =
+const std::string LatLonHgt::TYPE_DESCRIPTIONS[3] =
 {
-   wxT("Geocentric"),
-   wxT("Geodetic"),
-   wxT("Reduced")
+   "Geocentric",
+   "Geodetic",
+   "Reduced"
 };
 
-const wxString LatLonHgt::HEIGHT_DESCRIPTIONS[3] =
+const std::string LatLonHgt::HEIGHT_DESCRIPTIONS[3] =
 {
-   wxT("Ellipsoid"),
-   wxT("Geoid"),
-   wxT("MeanSeaLevel")
+   "Ellipsoid",
+   "Geoid",
+   "MeanSeaLevel"
 };
 
 
@@ -66,8 +66,8 @@ LatLonHgt::LatLonHgt() :
     latitude  (0.0),
     longitude (0.0),
     height (0.0),
-    type (wxString(wxT("Geodetic"))),
-    hgtRef (wxString(wxT("Ellipsoid")))
+    type (std::string("Geodetic")),
+    hgtRef (std::string("Ellipsoid"))
 {
 }
 
@@ -78,8 +78,8 @@ LatLonHgt::LatLonHgt() :
  * Constructs base LatLonHgt structures 
  */
 LatLonHgt::LatLonHgt(const Rvector3 &cartPosition, const Real &equatorialRadius, 
-		     const Real &flattening, const wxString &typ,
-		     const wxString &hgtReference)
+		     const Real &flattening, const std::string &typ,
+		     const std::string &hgtReference)
 {
 
   CartesianToLatLonHgt(cartPosition,equatorialRadius,flattening,typ, hgtReference);
@@ -87,11 +87,11 @@ LatLonHgt::LatLonHgt(const Rvector3 &cartPosition, const Real &equatorialRadius,
 }
 
 //------------------------------------------------------------------------------
-//  LatLonHgt::LatLonHgt(Real lat,  Real lon, Real hgt, wxString typ)
+//  LatLonHgt::LatLonHgt(Real lat,  Real lon, Real hgt, std::string typ)
 //------------------------------------------------------------------------------
 LatLonHgt::LatLonHgt(const Real &lat,  const Real &lon, const Real &hgt, 
-		     const wxString &typ,
-		     const wxString &hgtReference) :
+		     const std::string &typ,
+		     const std::string &hgtReference) :
     latitude  (lat),
     longitude (lon),
     height (hgt),
@@ -152,11 +152,8 @@ std::ostream& operator<<(std::ostream& output, LatLonHgt &llh)
 //------------------------------------------------------------------------------
 std::istream& operator>>(std::istream& input, LatLonHgt &llh)
 {
-    std::string tempString1, tempString2;
     input >> llh.latitude >> llh.longitude 
-          >> llh.height >> tempString1 >> tempString2;
-    llh.type = wxString::FromAscii(tempString1.c_str());
-    llh.hgtRef = wxString::FromAscii(tempString2.c_str()); // ugly hack.  Should refactor to use wxInputStream
+          >> llh.height >> llh.type >> llh.hgtRef;
 
     return input;
 }
@@ -170,9 +167,9 @@ Real LatLonHgt::GetLatitude() const
 }
 
 //------------------------------------------------------------------------------
-// void LatLonHgt::SetLatitude(const Real lat, const wxString typ) 
+// void LatLonHgt::SetLatitude(const Real lat, const std::string typ) 
 //------------------------------------------------------------------------------
-void LatLonHgt::SetLatitude(const Real &lat, const wxString &typ)
+void LatLonHgt::SetLatitude(const Real &lat, const std::string &typ)
 {
         latitude = lat;
 	SetType(typ);
@@ -211,17 +208,17 @@ void LatLonHgt::SetHeight(const Real &hgt)
 }
 
 //------------------------------------------------------------------------------
-// wxString LatLonHgt::GetHeightRef) const
+// std::string LatLonHgt::GetHeightRef) const
 //------------------------------------------------------------------------------
-wxString LatLonHgt::GetHeightRef() const
+std::string LatLonHgt::GetHeightRef() const
 {
         return hgtRef;
 }
 
 //------------------------------------------------------------------------------
-// void LatLonHgt::SetHeightRef(const wxString &hgtReference) 
+// void LatLonHgt::SetHeightRef(const std::string &hgtReference) 
 //------------------------------------------------------------------------------
-void LatLonHgt::SetHeightRef(const wxString &hgtReference) 
+void LatLonHgt::SetHeightRef(const std::string &hgtReference) 
 {
         hgtRef = hgtReference;
 }
@@ -229,15 +226,15 @@ void LatLonHgt::SetHeightRef(const wxString &hgtReference)
 //------------------------------------------------------------------------------
 // Real LatLonHgt::GetType() const
 //------------------------------------------------------------------------------
-wxString LatLonHgt::GetType() const
+std::string LatLonHgt::GetType() const
 {
         return type;
 }
 
 //------------------------------------------------------------------------------
-// void LatLonHgt::SetType(const wxString &typ) 
+// void LatLonHgt::SetType(const std::string &typ) 
 //------------------------------------------------------------------------------
-void LatLonHgt::SetType(const wxString &typ) 
+void LatLonHgt::SetType(const std::string &typ) 
 {
         type = typ;
 }
@@ -245,7 +242,7 @@ void LatLonHgt::SetType(const wxString &typ)
 //------------------------------------------------------------------------------
 // Real LatLonHgt::CartesianToLatLonHgt(const Rvector3& position,
 //                         const Real &equatorialRadius, const Real &flattening,
-//			 const wxString typ)
+//			 const std::string typ)
 //
 // This routine will compute the geodetic latitude, longitude, and height
 // above the reference ellipsoid for a space object in orbit.
@@ -253,8 +250,8 @@ void LatLonHgt::SetType(const wxString &typ)
 //------------------------------------------------------------------------------
 void LatLonHgt::CartesianToLatLonHgt(const Rvector3 &position,
                          const Real &equatorialRadius, const Real &flattening,
-			 const wxString &typ, 
-			 const wxString &hgtReference)
+			 const std::string &typ, 
+			 const std::string &hgtReference)
 {
 
   Real eccentricity = GmatMathUtil::Sqrt(2*flattening-flattening*flattening);
@@ -334,7 +331,7 @@ void LatLonHgt::CartesianToLatLonHgt(const Rvector3 &position,
 
       UtilityException ex;
       
-      ex.SetDetails(wxT("Undefined Latitude Type: %s"), type.c_str());
+      ex.SetDetails("Undefined Latitude Type: %s", type.c_str());
       throw ex;
       
   }  
@@ -403,7 +400,7 @@ Rvector3 LatLonHgt::GetSitePosition(const Real &equatorialRadius, const Real &fl
 
       UtilityException ex;
       
-      ex.SetDetails(wxT("Undefined Latitude Type: %s"), type.c_str());
+      ex.SetDetails("Undefined Latitude Type: %s", type.c_str());
       throw ex;
       
   }  
@@ -435,50 +432,50 @@ Integer LatLonHgt::GetNumData() const
 }
 
 //------------------------------------------------------------------------------
-// const wxString* LatLonHgt::GetDataDescriptions() const
+// const std::string* LatLonHgt::GetDataDescriptions() const
 //------------------------------------------------------------------------------
-const wxString* LatLonHgt::GetDataDescriptions() const
+const std::string* LatLonHgt::GetDataDescriptions() const
 {
    return DATA_DESCRIPTIONS;
 }
 
 //------------------------------------------------------------------------------
-// const wxString* LatLonHgt::GetTypeDescriptions() const
+// const std::string* LatLonHgt::GetTypeDescriptions() const
 //------------------------------------------------------------------------------
-const wxString* LatLonHgt::GetTypeDescriptions() const
+const std::string* LatLonHgt::GetTypeDescriptions() const
 {
    return TYPE_DESCRIPTIONS;
 }
 
 //------------------------------------------------------------------------------
-// const wxString* LatLonHgt::GetHeightDescriptions() const
+// const std::string* LatLonHgt::GetHeightDescriptions() const
 //------------------------------------------------------------------------------
-const wxString* LatLonHgt::GetHeightDescriptions() const
+const std::string* LatLonHgt::GetHeightDescriptions() const
 {
    return HEIGHT_DESCRIPTIONS;
 }
 
 //------------------------------------------------------------------------------
-//  wxString* LatLonHgt::ToValueStrings(void)
+//  std::string* LatLonHgt::ToValueStrings(void)
 //------------------------------------------------------------------------------
-wxString* LatLonHgt::ToValueStrings(void)
+std::string* LatLonHgt::ToValueStrings(void)
 {
-   wxString ss(wxT(""));
+   std::stringstream ss("");
 
    ss << GetLatitude();
-   stringValues[0] = ss;
+   stringValues[0] = ss.str();
    
-   ss.Clear();
+   ss.str("");
    ss << GetLongitude();
-   stringValues[1] = ss;
+   stringValues[1] = ss.str();
    
-   ss.Clear();
+   ss.str("");
    ss << GetHeight();
-   stringValues[2] = ss;
+   stringValues[2] = ss.str();
    
-   ss.Clear();
+   ss.str("");
    ss << GetType();
-   stringValues[3] = ss;
+   stringValues[3] = ss.str();
    
    return stringValues;
 }
@@ -489,17 +486,19 @@ wxString* LatLonHgt::ToValueStrings(void)
 void LatLonHgt::GeocentricToReducedLat( const Real &flattening )
 {
 
-  if (type == wxT("Geocentric")) {
+  if (!strcmp(type.c_str(),"Geocentric")) {
 
     Real eccentricity = GmatMathUtil::Sqrt(2*flattening-flattening*flattening); 
     Real lat = GmatMathUtil::Rad(latitude);
     Real rdlat = GmatMathUtil::ATan2(GmatMathUtil::Tan(lat),GmatMathUtil::Sqrt(1-eccentricity*eccentricity));
     
-    SetLatitude(GmatMathUtil::Deg(rdlat),wxT("Reduced"));
+    SetLatitude(GmatMathUtil::Deg(rdlat),"Reduced");
 
   } else {
 
-    UtilityException ex(wxString::FromAscii("GeocentricToReducedLat: Incorrect latitude type"));
+    UtilityException ex;
+    
+    ex.SetDetails("GeocentricToReducedLat: Incorrect latitude type");
     throw ex;
     
   }
@@ -512,17 +511,19 @@ void LatLonHgt::GeocentricToReducedLat( const Real &flattening )
 void LatLonHgt::GeodeticToReducedLat( const Real &flattening )
 {
 
-  if (type == wxT("Geodetic")) {
+  if (!strcmp(type.c_str(),"Geodetic")) {
 
     Real eccentricity = GmatMathUtil::Sqrt(2*flattening-flattening*flattening);
     Real lat = GmatMathUtil::Rad(latitude);
     Real rdlat = GmatMathUtil::ATan2(GmatMathUtil::Tan(lat)*GmatMathUtil::Sqrt(1-eccentricity*eccentricity),1);
     
-    SetLatitude(GmatMathUtil::Deg(rdlat),wxT("Reduced"));
+    SetLatitude(GmatMathUtil::Deg(rdlat),"Reduced");
 
   } else {
 
-    UtilityException ex(wxT("GeodeticToReducedLat: Incorrect latitude type"));
+    UtilityException ex;
+    
+    ex.SetDetails("GeodeticToReducedLat: Incorrect latitude type");
     throw ex;
 
   }
@@ -535,17 +536,19 @@ void LatLonHgt::GeodeticToReducedLat( const Real &flattening )
 void LatLonHgt::ReducedToGeocentricLat( const Real &flattening )
 {
 
-  if (type == wxT("Reduced")) {
+  if (!strcmp(type.c_str(),"Reduced")) {
 
     Real eccentricity = GmatMathUtil::Sqrt(2*flattening-flattening*flattening); 
     Real lat = GmatMathUtil::Rad(latitude);
     Real gclat =  GmatMathUtil::ATan2(GmatMathUtil::Tan(lat)*GmatMathUtil::Sqrt(1-eccentricity*eccentricity),1);
     
-    SetLatitude(GmatMathUtil::Deg(gclat),wxT("Geocentric"));
+    SetLatitude(GmatMathUtil::Deg(gclat),"Geocentric");
 
   } else {
 
-    UtilityException ex(wxT("ReducedToGeocentricLat: Incorrect latitude type"));
+    UtilityException ex;
+    
+    ex.SetDetails("ReducedToGeocentricLat: Incorrect latitude type");
     throw ex;
 
   }    
@@ -558,17 +561,19 @@ void LatLonHgt::ReducedToGeocentricLat( const Real &flattening )
 void LatLonHgt::ReducedToGeodeticLat( const Real &flattening )
 {
 
-  if (type == wxT("Reduced")) {
+  if (!strcmp(type.c_str(),"Reduced")) {
 
     Real eccentricity = GmatMathUtil::Sqrt(2*flattening-flattening*flattening);
     Real lat = GmatMathUtil::Rad(latitude);
     Real gdlat =  GmatMathUtil::ATan2(GmatMathUtil::Tan(lat),GmatMathUtil::Sqrt(1-eccentricity*eccentricity));
     
-    SetLatitude(GmatMathUtil::Deg(gdlat),wxT("Geodetic"));
+    SetLatitude(GmatMathUtil::Deg(gdlat),"Geodetic");
 
   } else {
 
-    UtilityException ex(wxT("ReducedToGeodeticLat: Incorrect latitude type"));
+    UtilityException ex;
+    
+    ex.SetDetails("ReducedToGeodeticLat: Incorrect latitude type");
     throw ex;
 
   }    
@@ -581,17 +586,19 @@ void LatLonHgt::ReducedToGeodeticLat( const Real &flattening )
 void LatLonHgt::GeodeticToGeocentricLat( const Real &flattening )
 {
 
-  if (type == wxT("Geodetic")) {
+  if (!strcmp(type.c_str(),"Geodetic")) {
 
     Real eccentricity = GmatMathUtil::Sqrt(2*flattening-flattening*flattening);
     Real lat = GmatMathUtil::Rad(latitude);
     Real gclat = GmatMathUtil::ATan2(GmatMathUtil::Tan(lat)*(1-eccentricity*eccentricity),1);
     
-    SetLatitude(GmatMathUtil::Deg(gclat),wxT("Geocentric"));
+    SetLatitude(GmatMathUtil::Deg(gclat),"Geocentric");
     
   } else {
     
-    UtilityException ex(wxT("GeodeticToGeocentricLat: Incorrect latitude type"));
+    UtilityException ex;
+    
+    ex.SetDetails("GeodeticToGeocentricLat: Incorrect latitude type");
     throw ex;
 
   }    
@@ -604,17 +611,19 @@ void LatLonHgt::GeodeticToGeocentricLat( const Real &flattening )
 void LatLonHgt::GeocentricToGeodeticLat( const Real &flattening )
 {
 
-  if (type == wxT("Geocentric")) {
+  if (!strcmp(type.c_str(),"Geocentric")) {
 
     Real eccentricity = GmatMathUtil::Sqrt(2*flattening-flattening*flattening);
     Real lat = GmatMathUtil::Rad(latitude);
     Real gdlat = GmatMathUtil::ATan2(GmatMathUtil::Tan(lat),(1-eccentricity*eccentricity));
     
-    SetLatitude(GmatMathUtil::Deg(gdlat),wxT("Geodetic"));
+    SetLatitude(GmatMathUtil::Deg(gdlat),"Geodetic");
     
   } else {
 
-    UtilityException ex(wxT("GeocentricToGeodeticLat: Incorrect latitude type"));
+    UtilityException ex;
+    
+    ex.SetDetails("GeocentricToGeodeticLat: Incorrect latitude type");
     throw ex;
 
   }    
@@ -688,21 +697,21 @@ Real LatLonHgt::ReducedToGeodeticLat(const Real &rdlat, const Real &flattening )
 }
 
 //------------------------------------------------------------------------------
-// Integer LatLonHgt::GetTypeID(const wxString &label)
+// Integer LatLonHgt::GetTypeID(const std::string &label)
 //------------------------------------------------------------------------------
 /**
  * Code used to obtain the type ID
  */
 //------------------------------------------------------------------------------
-Integer LatLonHgt::GetTypeID(const wxString &label)
+Integer LatLonHgt::GetTypeID(const std::string &label)
 {
    Integer retval = -1;
    
-   if (label == wxT("Geocentric")) {
+   if (!strcmp(label.c_str(),"Geocentric")) {
       return GEOCENTRIC_ID;
-   } else if (label == wxT("Geodetic")) {
+   } else if (!strcmp(label.c_str(),"Geodetic")) {
       return GEODETIC_ID;
-   } else if (label == wxT("Reduced")) {
+   } else if (!strcmp(label.c_str(),"Reduced")) {
       return REDUCED_ID;
    } else
      return retval;
@@ -710,20 +719,20 @@ Integer LatLonHgt::GetTypeID(const wxString &label)
 }
 
 //------------------------------------------------------------------------------
-// wxString LatLonHgt::GetTypeText(const Integer id) const
+// std::string LatLonHgt::GetTypeText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Code used to obtain the type text corresponding to a type ID
  */
 //------------------------------------------------------------------------------
-wxString LatLonHgt::GetTypeText(const Integer &id) const
+std::string LatLonHgt::GetTypeText(const Integer &id) const
 {
    if ((id >= 0) && (id < EndTypeReps))
    {
       return TYPE_DESCRIPTIONS[id];
    }
 
-   return wxT("INVALID");
+   return "INVALID";
 }
 
 //------------------------------------------------------------------------------
@@ -745,21 +754,21 @@ Real LatLonHgt::GetDegree(const Real angle, const Real minAngle,
 }
 
 //------------------------------------------------------------------------------
-// Integer LatLonHgt::GetTypeID(const wxString &label)
+// Integer LatLonHgt::GetTypeID(const std::string &label)
 //------------------------------------------------------------------------------
 /**
  * Code used to obtain the type ID
  */
 //------------------------------------------------------------------------------
-Integer LatLonHgt::GetHeightID(const wxString &label)
+Integer LatLonHgt::GetHeightID(const std::string &label)
 {
    Integer retval = -1;
    
-   if (label == wxT("Ellipsoid")) {
+   if (!strcmp(label.c_str(),"Ellipsoid")) {
       return ELLIPSOID_ID;
-   } else if (label == wxT("Geoid")) {
+   } else if (!strcmp(label.c_str(),"Geoid")) {
       return GEOID_ID;
-   } else if (label == wxT("MeanSeaLevel")) {
+   } else if (!strcmp(label.c_str(),"MeanSeaLevel")) {
       return MEANSEALEVEL_ID;
    } else
      return retval;
@@ -767,18 +776,18 @@ Integer LatLonHgt::GetHeightID(const wxString &label)
 }
 
 //------------------------------------------------------------------------------
-// wxString LatLonHgt::GetHeightText(const Integer id) const
+// std::string LatLonHgt::GetHeightText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Code used to obtain the type text corresponding to a type ID
  */
 //------------------------------------------------------------------------------
-wxString LatLonHgt::GetHeightText(const Integer &id) const
+std::string LatLonHgt::GetHeightText(const Integer &id) const
 {
    if ((id >= 0) && (id < EndHeightReps))
    {
       return HEIGHT_DESCRIPTIONS[id];
    }
 
-   return wxT("INVALID");
+   return "INVALID";
 }

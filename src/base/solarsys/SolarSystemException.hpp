@@ -28,7 +28,7 @@ class GMAT_API SolarSystemException : public BaseException
 {
 public:
 
-   SolarSystemException(wxString details = wxT(""));
+   SolarSystemException(std::string details = "");
 
 protected:
 

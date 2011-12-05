@@ -23,13 +23,13 @@
 #include "InterfaceException.hpp"
 
 //------------------------------------------------------------------------------
-//  Interface(const wxString &type, const wxString &name)
+//  Interface(const std::string &type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Constructs Interface instance (default constructor).
  */
 //------------------------------------------------------------------------------
-Interface::Interface(const wxString &type, const wxString &name) :
+Interface::Interface(const std::string &type, const std::string &name) :
    GmatBase (Gmat::INTERFACE, type, name)
 {
 }
@@ -63,33 +63,33 @@ Interface::~Interface()
 
 
 //------------------------------------------------------------------------------
-// virtual Integer Open(const wxString &name)
+// virtual Integer Open(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Opens interface to other application such as MATLAB
  *
- * @param  name  Name of the interface to be used when opening [wxT("")]
+ * @param  name  Name of the interface to be used when opening [""]
  */
 //------------------------------------------------------------------------------
-Integer Interface::Open(const wxString &name)
+Integer Interface::Open(const std::string &name)
 {
-   throw InterfaceException(wxT("Open() not defined for ") + typeName +
-                            wxT(" named \"") + instanceName + wxT("\"\n"));
+   throw InterfaceException("Open() not defined for " + typeName +
+                            " named \"" + instanceName + "\"\n");
 }
 
 
 //------------------------------------------------------------------------------
-// virtual Integer Close(const wxString &name)
+// virtual Integer Close(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Closes interface to other application such as MATLAB
  *
- * @param  name  Name of the interface to be used when closing [wxT("")]
+ * @param  name  Name of the interface to be used when closing [""]
  */
 //------------------------------------------------------------------------------
-Integer Interface::Close(const wxString &name)
+Integer Interface::Close(const std::string &name)
 {
-   throw InterfaceException(wxT("Close() not defined for ") + typeName +
-                            wxT(" named \"") + instanceName + wxT("\"\n"));
+   throw InterfaceException("Close() not defined for " + typeName +
+                            " named \"" + instanceName + "\"\n");
 }
 

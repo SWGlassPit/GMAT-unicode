@@ -30,13 +30,13 @@ public:
    
    static MemoryTracker* Instance();
    
-   void           SetScript(const wxString &script);
+   void           SetScript(const std::string &script);
    void           SetShowTrace(bool show);
-   void           Add(void *addr, const wxString &objName,
-                      const wxString &funName, const wxString &note = wxT(""),
+   void           Add(void *addr, const std::string &objName,
+                      const std::string &funName, const std::string &note = "",
                       void *from = NULL);
-   void           Remove(void *addr, const wxString &objName,
-                         const wxString &funName, const wxString &note = wxT(""),
+   void           Remove(void *addr, const std::string &objName,
+                         const std::string &funName, const std::string &note = "",
                          void *from = NULL);
    UnsignedInt    GetNumberOfTracks();
    StringArray&   GetTracks(bool clearTracks = false, bool writeScriptName = false);
@@ -47,15 +47,15 @@ private:
    
    struct TrackType
    {
-      wxString preface;
+      std::string preface;
       void *address;
-      wxString objectName;
-      wxString functionName;
-      wxString remark;
-      wxString scriptName;
-      TrackType(const wxString &pref, void* addr, const wxString &objName,
-                const wxString &funName, const wxString &note,
-                const wxString &script)
+      std::string objectName;
+      std::string functionName;
+      std::string remark;
+      std::string scriptName;
+      TrackType(const std::string &pref, void* addr, const std::string &objName,
+                const std::string &funName, const std::string &note,
+                const std::string &script)
          {
             preface = pref;
             address = addr;
@@ -66,7 +66,7 @@ private:
          };
    };
    
-   wxString scriptFile;
+   std::string scriptFile;
    std::vector<TrackType> memoryTracks;
    StringArray allTracks;
    bool showTrace;

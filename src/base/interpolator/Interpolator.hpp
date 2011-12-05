@@ -33,7 +33,7 @@
 class GMAT_API Interpolator : public GmatBase
 {
 public:
-   Interpolator(const wxString &name, const wxString &typestr,
+   Interpolator(const std::string &name, const std::string &typestr,
                 Integer dim = 1);
    virtual ~Interpolator();
    

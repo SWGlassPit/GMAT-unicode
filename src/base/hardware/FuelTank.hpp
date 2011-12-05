@@ -37,42 +37,42 @@ class GMAT_API FuelTank : public Hardware
 {
 public:
 
-   FuelTank(wxString nomme);
+   FuelTank(std::string nomme);
    virtual ~FuelTank();
    FuelTank(const FuelTank& ft);
    FuelTank&            operator=(const FuelTank& ft);
    
    // Parameter access methods - overridden from GmatBase
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual wxString  GetParameterUnit(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual std::string  GetParameterUnit(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    
    virtual bool         IsParameterReadOnly(const Integer id) const;
    
    virtual Real         GetRealParameter(const Integer id) const;
    virtual Real         SetRealParameter(const Integer id,
                                          const Real value);
-   virtual Real         GetRealParameter(const wxString &label) const;
-   virtual Real         SetRealParameter(const wxString &label,
+   virtual Real         GetRealParameter(const std::string &label) const;
+   virtual Real         SetRealParameter(const std::string &label,
                                          const Real value);
    virtual bool         GetBooleanParameter(const Integer id) const;
    virtual bool         SetBooleanParameter(const Integer id,
                                             const bool value);
-   virtual wxString  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value);
-   virtual wxString  GetStringParameter(const wxString &label) const;
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual std::string  GetStringParameter(const std::string &label) const;
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
    
    // for enumerated strings
    virtual const StringArray&
                         GetPropertyEnumStrings(const Integer id) const;
    virtual const StringArray&
-                        GetPropertyEnumStrings(const wxString &label) const;
+                        GetPropertyEnumStrings(const std::string &label) const;
    
    // required method for all subclasses
    virtual GmatBase*    Clone() const;
@@ -122,7 +122,7 @@ protected:
    
    /// Availabel pressure model list
    static StringArray   pressureModelList;
-   //static const wxString pressureModelList[2];
+   //static const std::string pressureModelList[2];
 public:
    /// Published parameters for generic fuel tanks
    enum
@@ -140,7 +140,7 @@ public:
    };
    
    /// Parameter labels
-   static const wxString 
+   static const std::string 
       PARAMETER_TEXT[FuelTankParamCount - HardwareParamCount];
    /// Parameter types
    static const Gmat::ParameterType 

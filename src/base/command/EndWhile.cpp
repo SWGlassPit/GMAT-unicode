@@ -34,9 +34,9 @@
 // EndWhile(void) :
 //------------------------------------------------------------------------------
 EndWhile::EndWhile(void) :
-GmatCommand         (wxT("EndWhile"))
+GmatCommand         ("EndWhile")
 {
-   objectTypeNames.push_back(wxT("BranchEnd"));
+   objectTypeNames.push_back("BranchEnd");
    depthChange = -1;
 }
 
@@ -80,10 +80,10 @@ bool EndWhile::Initialize(void)
    
    // Validate that next points to the owning for command
    if (!next)
-      throw CommandException(wxT("EndWhile Command not properly reconnected"));
+      throw CommandException("EndWhile Command not properly reconnected");
 
-   if (next->GetTypeName() != wxT("While"))
-      throw CommandException(wxT("EndWhile Command not connected to While Command"));
+   if (next->GetTypeName() != "While")
+      throw CommandException("EndWhile Command not connected to While Command");
 
    return true;
 }
@@ -96,9 +96,9 @@ bool EndWhile::Execute(void)
 {
    BuildCommandSummary(true);
    #ifdef DEBUG_ENDWHILE_EXECUTE
-      MessageInterface::ShowMessage(wxT("In EndWhile::Execute, next is a %s\n"),
+      MessageInterface::ShowMessage("In EndWhile::Execute, next is a %s\n",
       (next->GetTypeName()).c_str());
-      MessageInterface::ShowMessage(wxT("---- that is, in EndWhile %p, object While is %p\n"),
+      MessageInterface::ShowMessage("---- that is, in EndWhile %p, object While is %p\n",
       this, next);
    #endif
    return true;
@@ -114,7 +114,7 @@ bool EndWhile::Insert(GmatCommand *cmd, GmatCommand *prev)
    // insert right after the entire If command
    #ifdef DEBUG_ENDWHILE_EXECUTE
       MessageInterface::ShowMessage(
-      wxT("In EndWhile::Insert, calling InsertRightAfter(), next is a %s\n"),
+      "In EndWhile::Insert, calling InsertRightAfter(), next is a %s\n",
       (next->GetTypeName()).c_str());
    #endif
    if (this == prev) return ((BranchCommand*)next)->InsertRightAfter(cmd);
@@ -124,7 +124,7 @@ bool EndWhile::Insert(GmatCommand *cmd, GmatCommand *prev)
 
 //---------------------------------------------------------------------------
 // bool RenameRefObject(const Gmat::ObjectType type,
-//                      const wxString &oldName, const wxString &newName)
+//                      const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /*
  * Renames referenced objects
@@ -137,8 +137,8 @@ bool EndWhile::Insert(GmatCommand *cmd, GmatCommand *prev)
  */
 //---------------------------------------------------------------------------
 bool EndWhile::RenameRefObject(const Gmat::ObjectType type,
-                               const wxString &oldName,
-                               const wxString &newName)
+                               const std::string &oldName,
+                               const std::string &newName)
 {
    // There are no renamealbe objects
    return true;
@@ -162,7 +162,7 @@ GmatBase* EndWhile::Clone(void) const
 
 
 //------------------------------------------------------------------------------
-//  const wxString GetGeneratingString()
+//  const std::string GetGeneratingString()
 //------------------------------------------------------------------------------
 /**
  * Method used to retrieve the string that was parsed to build this GmatCommand.
@@ -182,10 +182,10 @@ GmatBase* EndWhile::Clone(void) const
  * @return The script line that defines this GmatCommand.
  */
 //------------------------------------------------------------------------------
-const wxString& EndWhile::GetGeneratingString(Gmat::WriteMode mode,
-                                                  const wxString &prefix,
-                                                  const wxString &useName)
+const std::string& EndWhile::GetGeneratingString(Gmat::WriteMode mode,
+                                                  const std::string &prefix,
+                                                  const std::string &useName)
 {
-   generatingString = prefix + wxT("EndWhile;");
+   generatingString = prefix + "EndWhile;";
    return GmatCommand::GetGeneratingString(mode, prefix, useName);
 }

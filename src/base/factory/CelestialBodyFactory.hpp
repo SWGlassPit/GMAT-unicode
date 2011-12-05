@@ -28,8 +28,8 @@
 class GMAT_API CelestialBodyFactory : public Factory
 {
 public:
-   CelestialBody*  CreateCelestialBody(const wxString &ofType,
-                                       const wxString &withName = wxT(""));
+   CelestialBody*  CreateCelestialBody(const std::string &ofType,
+                                       const std::string &withName = "");
 
    // default constructor
    CelestialBodyFactory();

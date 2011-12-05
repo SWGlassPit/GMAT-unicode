@@ -32,7 +32,7 @@
 class GMAT_API EventException : public BaseException
 {
 public:
-   EventException(const wxString &details = wxT(""));
+   EventException(const std::string &details = "");
    virtual ~EventException();
    EventException(const EventException &be);
 };

@@ -41,7 +41,7 @@
 //                           : 10/09/2003 - W. Waktola, Missions Applications Branch
 //                              Changes:
 //                                - virtual char* GetParameterName(const int parm) const to
-//                                  virtual wxString GetParameterName(const int parm) const
+//                                  virtual std::string GetParameterName(const int parm) const
 //                                - GetParameterName() from if statements to switch statements
 //                              Additions:
 //                                - GetParameterType()
@@ -84,11 +84,11 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 Propagator::PARAMETER_TEXT[PropagatorParamCount - GmatBaseParamCount] =
 {
-    wxT("InitialStepSize"),
-    wxT("AlwaysUpdateStepsize")
+    "InitialStepSize",
+    "AlwaysUpdateStepsize"
 };
 
 const Gmat::ParameterType
@@ -104,7 +104,7 @@ const Real Propagator::STEP_SIZE_TOLERANCE = 0.0001;   // 0.1 millisec
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// Propagator(const wxString &typeStr, const wxString &nomme)
+// Propagator(const std::string &typeStr, const std::string &nomme)
 //------------------------------------------------------------------------------
 /**
  * Default base class constructor
@@ -118,8 +118,8 @@ const Real Propagator::STEP_SIZE_TOLERANCE = 0.0001;   // 0.1 millisec
  *
  */
 //------------------------------------------------------------------------------
-Propagator::Propagator(const wxString &typeStr,
-                       const wxString &nomme)
+Propagator::Propagator(const std::string &typeStr,
+                       const std::string &nomme)
     : GmatBase(Gmat::PROPAGATOR, typeStr, nomme),
       stepSize            (60.0),
       stepSizeBuffer      (60.0),
@@ -131,14 +131,14 @@ Propagator::Propagator(const wxString &typeStr,
       dimension           (0),
       physicalModel       (NULL),
       finalStep           (false),
-      j2kBodyName         (wxT("Earth")),
+      j2kBodyName         ("Earth"),
       j2kBody             (NULL),
-      centralBody         (wxT("Earth")),
+      centralBody         ("Earth"),
       propOrigin          (NULL)
 {
     // GmatBase data
    objectTypes.push_back(Gmat::PROPAGATOR);
-   objectTypeNames.push_back(wxT("Propagator"));
+   objectTypeNames.push_back("Propagator");
    parameterCount = PropagatorParamCount;
 }
 
@@ -222,7 +222,7 @@ Propagator& Propagator::operator=(const Propagator& p)
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /**
  * Renames reference objects used in this class.
@@ -235,8 +235,8 @@ Propagator& Propagator::operator=(const Propagator& p)
  */
 //---------------------------------------------------------------------------
 bool Propagator::RenameRefObject(const Gmat::ObjectType type,
-                                 const wxString &oldName,
-                                 const wxString &newName)
+                                 const std::string &oldName,
+                                 const std::string &newName)
 {
    // There is nothing to check for now
    return true;
@@ -244,13 +244,13 @@ bool Propagator::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// wxString Propagator::GetParameterText(const Integer id) const
+// std::string Propagator::GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString Propagator::GetParameterText(const Integer id) const
+std::string Propagator::GetParameterText(const Integer id) const
 {
     if (id >= GmatBaseParamCount && id < PropagatorParamCount)
         return PARAMETER_TEXT[id - GmatBaseParamCount];
@@ -259,13 +259,13 @@ wxString Propagator::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// Integer Propagator::GetParameterID(const wxString &str) const
+// Integer Propagator::GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Integer Propagator::GetParameterID(const wxString &str) const
+Integer Propagator::GetParameterID(const std::string &str) const
 {
    for (Integer i = GmatBaseParamCount; i < PropagatorParamCount; ++i)
       if (str == PARAMETER_TEXT[i - GmatBaseParamCount])
@@ -290,13 +290,13 @@ Gmat::ParameterType Propagator::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// wxString Propagator::GetParameterTypeString(const Integer id) const
+// std::string Propagator::GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString Propagator::GetParameterTypeString(const Integer id) const
+std::string Propagator::GetParameterTypeString(const Integer id) const
 {
     if (id >= GmatBaseParamCount && id < PropagatorParamCount)
         return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
@@ -336,7 +336,7 @@ bool Propagator::IsParameterReadOnly(const Integer id) const
  * @return true if the parameter is not scripted, false if it is scripted
  */
 //------------------------------------------------------------------------------
-bool Propagator::IsParameterReadOnly(const wxString &label) const
+bool Propagator::IsParameterReadOnly(const std::string &label) const
 {
    return IsParameterReadOnly(GetParameterID(label));
 }
@@ -360,9 +360,9 @@ Real Propagator::GetRealParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label) const
+// Real GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-Real Propagator::GetRealParameter(const wxString &label) const
+Real Propagator::GetRealParameter(const std::string &label) const
 {
     Integer id = GetParameterID(label);
     
@@ -382,9 +382,9 @@ Real Propagator::SetRealParameter(const Integer id, const Real value)
    {
       if (GmatMathUtil::IsEqual(value, 0.0, STEP_SIZE_TOLERANCE))
       {
-         wxString ss;
-         ss << wxT("Initial Step Size must not be zero (tolerance = ") << STEP_SIZE_TOLERANCE << wxT(" seconds).");
-         throw PropagatorException(ss);
+         std::stringstream ss;
+         ss << "Initial Step Size must not be zero (tolerance = " << STEP_SIZE_TOLERANCE << " seconds).";
+         throw PropagatorException(ss.str());
       }
       stepSizeBuffer = value;
       return stepSizeBuffer;
@@ -393,9 +393,9 @@ Real Propagator::SetRealParameter(const Integer id, const Real value)
 }
 
 //------------------------------------------------------------------------------
-// Real SetRealParameter(const wxString &label, const Real value)
+// Real SetRealParameter(const std::string &label, const Real value)
 //------------------------------------------------------------------------------
-Real Propagator::SetRealParameter(const wxString &label, const Real value)
+Real Propagator::SetRealParameter(const std::string &label, const Real value)
 {
     return SetRealParameter(GetParameterID(label), value);
 }
@@ -517,8 +517,8 @@ bool Propagator::GetBooleanParameter(const Integer id) const
 //------------------------------------------------------------------------------
 bool Propagator::SetBooleanParameter(const Integer id, const bool value)
 {
-   MessageInterface::ShowMessage(wxT("Setting ID %d to %s\n"), id,
-         (value ? wxT("true") : wxT("false")));
+   MessageInterface::ShowMessage("Setting ID %d to %s\n", id,
+         (value ? "true" : "false"));
 
    if (id == AlwaysUpdateStepsize)
    {
@@ -568,7 +568,7 @@ bool Propagator::SetBooleanParameter(const Integer id, const bool value,
 
 
 //------------------------------------------------------------------------------
-// bool GetBooleanParameter(const wxString &label) const
+// bool GetBooleanParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
 * Retrieves Boolean parameters
@@ -578,14 +578,14 @@ bool Propagator::SetBooleanParameter(const Integer id, const bool value,
 * @return The parameter value
  */
 //------------------------------------------------------------------------------
-bool Propagator::GetBooleanParameter(const wxString &label) const
+bool Propagator::GetBooleanParameter(const std::string &label) const
 {
    return GetBooleanParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetBooleanParameter(const wxString &label, const bool value)
+// bool SetBooleanParameter(const std::string &label, const bool value)
 //------------------------------------------------------------------------------
 /**
  * Sets Boolean parameters
@@ -596,13 +596,13 @@ bool Propagator::GetBooleanParameter(const wxString &label) const
  * @return The parameter value
  */
 //------------------------------------------------------------------------------
-bool Propagator::SetBooleanParameter(const wxString &label, const bool value)
+bool Propagator::SetBooleanParameter(const std::string &label, const bool value)
 {
    return SetBooleanParameter(GetParameterID(label), value);
 }
 
 //------------------------------------------------------------------------------
-// bool GetBooleanParameter(const wxString &label, const Integer index) const
+// bool GetBooleanParameter(const std::string &label, const Integer index) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves Boolean parameters from an array of Booleans
@@ -613,14 +613,14 @@ bool Propagator::SetBooleanParameter(const wxString &label, const bool value)
  * @return The parameter value
  */
 //------------------------------------------------------------------------------
-bool Propagator::GetBooleanParameter(const wxString &label,
+bool Propagator::GetBooleanParameter(const std::string &label,
                                  const Integer index) const
 {
    return GetBooleanParameter(GetParameterID(label), index);
 }
 
 //------------------------------------------------------------------------------
-// bool SetBooleanParameter(const wxString &label, const bool value,
+// bool SetBooleanParameter(const std::string &label, const bool value,
 //       const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -633,7 +633,7 @@ bool Propagator::GetBooleanParameter(const wxString &label,
  * @return The parameter value
  */
 //------------------------------------------------------------------------------
-bool Propagator::SetBooleanParameter(const wxString &label, const bool value,
+bool Propagator::SetBooleanParameter(const std::string &label, const bool value,
                                      const Integer index)
 {
    return SetBooleanParameter(GetParameterID(label), value, index);
@@ -661,8 +661,8 @@ bool Propagator::Initialize()
       if (physicalModel != NULL)
       {
          #ifdef DEBUG_INITIALIZATION
-            MessageInterface::ShowMessage(wxT("Propagator::Initialize() calling ")
-                  wxT("physicalModel->Initialize() \n"));
+            MessageInterface::ShowMessage("Propagator::Initialize() calling "
+                  "physicalModel->Initialize() \n");
          #endif
 
          if ( physicalModel->Initialize() )
@@ -670,7 +670,7 @@ bool Propagator::Initialize()
 
          #ifdef DEBUG_INITIALIZATION
             MessageInterface::ShowMessage(
-               wxT("Propagator::Initialize() initialized = %d\n"), initialized);
+               "Propagator::Initialize() initialized = %d\n", initialized);
          #endif
 
          inState  = physicalModel->GetState();
@@ -683,15 +683,15 @@ bool Propagator::Initialize()
          }
       }
       else
-         throw PropagatorException(wxT("Propagator::Initialize -- Force model is ")
-               wxT("not defined"));
+         throw PropagatorException("Propagator::Initialize -- Force model is "
+               "not defined");
    }
    else
       initialized = true;
 
     
     if (!initialized)
-       throw PropagatorException(wxT("Propagator failed to initialize"));
+       throw PropagatorException("Propagator failed to initialize");
 
     return true;
 }
@@ -722,7 +722,7 @@ void Propagator::Update(bool forwards)
    #ifdef DEBUG_PROP_RERUN
       static int count = 0;
       MessageInterface::ShowMessage(
-         wxT("Propagator::Update() called (iteration %d)\n"), ++count);
+         "Propagator::Update() called (iteration %d)\n", ++count);
    #endif
    if (resetInitialData)
    {
@@ -736,7 +736,7 @@ void Propagator::Update(bool forwards)
 
    #ifdef DEBUG_PROP_RERUN
       MessageInterface::ShowMessage(
-         wxT("Propagator::Update() step size = %lf\n"), stepSize);
+         "Propagator::Update() step size = %lf\n", stepSize);
    #endif
 }
 
@@ -1038,7 +1038,7 @@ void Propagator::SetForwardPropagation(bool tf)
 bool Propagator::Step(Real dt)
 {
     #ifdef DEBUG_PROPAGATOR_FLOW
-       MessageInterface::ShowMessage(wxT("^"));
+       MessageInterface::ShowMessage("^");
     #endif
     if (initialized)
     {
@@ -1061,8 +1061,8 @@ bool Propagator::Step(Real dt)
 void Propagator::SetAsFinalStep(bool fs)
 {
    #ifdef DEBUG_PROPAGATOR_FLOW
-      MessageInterface::ShowMessage(wxT("Turning final step flag %s\n"),
-         (fs ? wxT("On") : wxT("Off")));
+      MessageInterface::ShowMessage("Turning final step flag %s\n",
+         (fs ? "On" : "Off"));
    #endif
    
    finalStep = fs;
@@ -1083,7 +1083,7 @@ void Propagator::SetAsFinalStep(bool fs)
 bool Propagator::RawStep(Real dt)
 {
     #ifdef DEBUG_PROPAGATOR_FLOW
-       MessageInterface::ShowMessage(wxT("!"));
+       MessageInterface::ShowMessage("!");
     #endif
     Real ctlstepsize = stepSize;
     stepSize = dt;

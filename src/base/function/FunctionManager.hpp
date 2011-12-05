@@ -59,16 +59,16 @@ public:
    virtual void         SetPublisher(Publisher *pub);
    virtual Publisher*   GetPublisher();
    
-   virtual void         SetObjectMap(std::map<wxString, GmatBase *> *map);
-   virtual void         SetGlobalObjectMap(std::map<wxString, GmatBase *> *map);
+   virtual void         SetObjectMap(std::map<std::string, GmatBase *> *map);
+   virtual void         SetGlobalObjectMap(std::map<std::string, GmatBase *> *map);
    virtual void         SetSolarSystem(SolarSystem *ss);
    virtual void         SetTransientForces(std::vector<PhysicalModel*> *tf);
-   virtual void         SetFunctionName(const wxString &itsName);
-   virtual wxString  GetFunctionName() const;
+   virtual void         SetFunctionName(const std::string &itsName);
+   virtual std::string  GetFunctionName() const;
    virtual void         SetFunction(Function *theFunction);
    virtual Function*    GetFunction() const;
-   virtual void         AddInput(const wxString &withName, Integer atIndex = -999);
-   virtual void         AddOutput(const wxString &withName, Integer atIndex = -999);
+   virtual void         AddInput(const std::string &withName, Integer atIndex = -999);
+   virtual void         AddOutput(const std::string &withName, Integer atIndex = -999);
    virtual void         SetInputs(const StringArray &inputs);
    virtual void         SetOutputs(const StringArray &outputs);
    virtual StringArray  GetOutputs();
@@ -113,7 +113,7 @@ protected:
    std::vector<PhysicalModel *> 
                         *forces;
    /// Name of the function this FunctionManager manages
-   wxString          fName;
+   std::string          fName;
    /// the function that this FunctionManager manages
    Function             *f;
    /// the list of passing input strings for this call of the function
@@ -146,7 +146,7 @@ protected:
    /// Flag indicating whether or not there is one nameless result (i.e. called from FunctionRunner)
    bool                 blankResult;
    /// Which type of output was saved last - real or rmatrix?
-   wxString          outputType;
+   std::string          outputType;
    /// Object needed to initialize the FOS objects
    ObjectInitializer    *objInit;
    /// the internal coordinate system
@@ -169,26 +169,26 @@ protected:
    bool                 CreatePassingArgWrappers();
    void                 RefreshFOS();
    void                 RefreshFormalInputObjects();
-   GmatBase*            FindObject(const wxString &name, bool arrayElementsAllowed = false);
-   GmatBase*            CreateObject(const wxString &fromString);
+   GmatBase*            FindObject(const std::string &name, bool arrayElementsAllowed = false);
+   GmatBase*            CreateObject(const std::string &fromString);
    void                 AssignResult();
    bool                 HandleCallStack();
    void                 SaveLastResult();
    
    void                 Cleanup();
    void                 UnsubscribeSubscribers(ObjectMap *om);
-   bool                 EmptyObjectMap(ObjectMap *om, const wxString &mapID = wxT(""));  
-   bool                 DeleteObjectMap(ObjectMap *om, const wxString &mapID = wxT(""));
+   bool                 EmptyObjectMap(ObjectMap *om, const std::string &mapID = "");  
+   bool                 DeleteObjectMap(ObjectMap *om, const std::string &mapID = "");
    bool                 ClearInOutWrappers();
    bool                 CloneObjectMap(ObjectMap *orig, ObjectMap *cloned);
    bool                 CopyObjectMap(ObjectMap *from, ObjectMap *to);
    bool                 IsOnStack(ObjectMap *om);
    
    // for debug
-   void                 ShowObjectMap(ObjectMap *om, const wxString &mapID = wxT(""));
-   void                 ShowStackContents(ObjectMapStack omStack, const wxString &stackID = wxT(""));
-   void                 ShowCallers(const wxString &label = wxT(""));
-   void                 ShowTrace(Integer count, Integer t1, const wxString &label = wxT(""),
+   void                 ShowObjectMap(ObjectMap *om, const std::string &mapID = "");
+   void                 ShowStackContents(ObjectMapStack omStack, const std::string &stackID = "");
+   void                 ShowCallers(const std::string &label = "");
+   void                 ShowTrace(Integer count, Integer t1, const std::string &label = "",
                                   bool showMemoryTracks = false, bool addEol = false);
 };
 

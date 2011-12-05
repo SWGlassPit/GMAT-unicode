@@ -32,31 +32,29 @@ public:
    static ScriptReadWriter* Instance();
    ~ScriptReadWriter();
    
-   void SetInStream(wxInputStream *is);
-   void SetOutStream(wxOutputStream *os) { outStream = os; }
+   void SetInStream(std::istream *is);
+   void SetOutStream(std::ostream *os) { outStream = os; }
    
    Integer GetLineWidth();
    void SetLineWidth(Integer width);
    
    Integer GetLineNumber();
-   wxString GetCurrentLine() { return currentLine; }
+   std::string GetCurrentLine() { return currentLine; }
    
-   void ReadFirstBlock(wxString &header, wxString &firstBlock,
+   void ReadFirstBlock(std::string &header, std::string &firstBlock,
                        bool skipHeader = false);
-   wxString ReadLogicalBlock();
-   bool WriteText(const wxString &textToWrite);
+   std::string ReadLogicalBlock();
+   bool WriteText(const std::string &textToWrite);
    
 protected:
 
 private:
 
    // These data are not created here
-//   std::istream *inStream;
-//   std::ostream *outStream;
-   wxInputStream *inStream;
-   wxOutputStream *outStream;
+   std::istream *inStream;
+   std::ostream *outStream;
    
-   wxString currentLine;
+   std::string currentLine;
    
    Integer lineWidth;
    Integer currentLineNumber;
@@ -65,16 +63,16 @@ private:
    bool readFirstBlock;
    
    bool Initialize();
-   wxString CrossPlatformGetLine();
-   bool IsComment(const wxString &text);
-   bool IsBlank(const wxString &text);
-   bool HasEllipse(const wxString &text);
-   wxString HandleEllipsis(const wxString &text);
-   wxString HandleComments(const wxString &text);
+   std::string CrossPlatformGetLine();
+   bool IsComment(const std::string &text);
+   bool IsBlank(const std::string &text);
+   bool HasEllipse(const std::string &text);
+   std::string HandleEllipsis(const std::string &text);
+   std::string HandleComments(const std::string &text);
    
    static ScriptReadWriter *instance;   
-   static const wxString sectionDelimiter;
-   static const wxString ellipsis;
+   static const std::string sectionDelimiter;
+   static const std::string ellipsis;
 };
 
 #endif /*SCRIPTREADWRITER_HPP_*/

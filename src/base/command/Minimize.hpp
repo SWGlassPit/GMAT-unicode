@@ -44,8 +44,8 @@ public:
    virtual GmatBase*   Clone() const;
 
    virtual bool        RenameRefObject(const Gmat::ObjectType type,
-                                       const wxString &oldName,
-                                       const wxString &newName);
+                                       const std::string &oldName,
+                                       const std::string &newName);
    virtual const ObjectTypeArray&
                        GetRefObjectTypeArray();
    virtual const StringArray&
@@ -53,44 +53,44 @@ public:
    
    
    // Parameter accessors
-   virtual wxString GetParameterText(const Integer id) const;
-   virtual Integer     GetParameterID(const wxString &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
+   virtual Integer     GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                        GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
 
    virtual Real        GetRealParameter(const Integer id) const;
    virtual Real        SetRealParameter(const Integer id,
                                         const Real value);
-   virtual wxString GetStringParameter(const Integer id) const;
+   virtual std::string GetStringParameter(const Integer id) const;
    virtual bool        SetStringParameter(const Integer id, 
-                                          const wxString &value);
+                                          const std::string &value);
                                            
    virtual bool        SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                    const wxString &name = wxT(""));
+                                    const std::string &name = "");
     
     // Inherited methods overridden from the base class
    virtual bool        InterpretAction();
    virtual const StringArray& 
                        GetWrapperObjectNameArray();
    virtual bool        SetElementWrapper(ElementWrapper* toWrapper,
-                                         const wxString &withName);
+                                         const std::string &withName);
    virtual void        ClearWrappers();
 
    virtual bool        Initialize();
    virtual bool        Execute();
    virtual void        RunComplete();
    
-   virtual const wxString&
+   virtual const std::string&
                        GetGeneratingString(Gmat::WriteMode mode,
-                                           const wxString &prefix,
-                                           const wxString &useName);
+                                           const std::string &prefix,
+                                           const std::string &useName);
     
 protected:
    /// The name of the spacecraft that gets maneuvered
-   wxString         optimizerName;
+   std::string         optimizerName;
    /// Name of the variable to be minimized
-   wxString         objectiveName;
+   std::string         objectiveName;
    // pointer to the Variable that is to be minimized
    //Variable            *objective;
    /// pointer to the wrapper containing the objective 
@@ -116,15 +116,15 @@ protected:
       OBJECTIVE_NAME,
       MinimizeParamCount
    };
-   static const wxString
+   static const std::string
                        PARAMETER_TEXT[MinimizeParamCount - GmatCommandParamCount];
    static const Gmat::ParameterType
                        PARAMETER_TYPE[MinimizeParamCount - GmatCommandParamCount];
 
-   //bool                InterpretParameter(const wxString text,
-   //                                       wxString &paramType,
-   //                                       wxString &paramObj,
-   //                                       wxString &parmSystem);
+   //bool                InterpretParameter(const std::string text,
+   //                                       std::string &paramType,
+   //                                       std::string &paramObj,
+   //                                       std::string &parmSystem);
    //bool                ConstructGoal(const char* str);
 
 };

@@ -68,85 +68,85 @@ class GMAT_API Factory
 {
 public:
    // method to return objects as generic type
-   virtual GmatBase*        CreateObject(const wxString &ofType,
-                                         const wxString &withName = wxT(""));        
+   virtual GmatBase*        CreateObject(const std::string &ofType,
+                                         const std::string &withName = "");        
 
    // methods to return objects of specified types
-   virtual SpaceObject*     CreateSpacecraft(const wxString &ofType,
-                                             const wxString &withName = wxT(""));
-   virtual SpacePoint*      CreateSpacePoint(const wxString &ofType,
-                                             const wxString &withName = wxT(""));        
-   virtual Propagator*      CreatePropagator(const wxString &ofType,
-                                             const wxString &withName = wxT(""));
-   virtual ODEModel*        CreateODEModel(const wxString &ofType,
-                                             const wxString &withName = wxT(""));
-   virtual PhysicalModel*   CreatePhysicalModel(const wxString &ofType,
-                                                const wxString &withName = wxT(""));
-   virtual PropSetup*       CreatePropSetup(const wxString &ofType,
-                                            const wxString &withName = wxT(""));
-   virtual Parameter*       CreateParameter(const wxString &ofType,
-                                            const wxString &withName = wxT(""));
-   virtual Burn*            CreateBurn(const wxString &ofType,
-                                       const wxString &withName = wxT(""));
-   virtual StopCondition*   CreateStopCondition(const wxString &ofType,
-                                                const wxString &withName = wxT(""));
-   virtual CalculatedPoint* CreateCalculatedPoint(const wxString &ofType,
-                                                  const wxString &withName = wxT(""));
-   virtual CelestialBody*   CreateCelestialBody(const wxString &ofType,
-                                                const wxString &withName = wxT(""));
-   virtual SolarSystem*     CreateSolarSystem(const wxString &ofType,
-                                              const wxString &withName = wxT(""));
-   virtual Solver*          CreateSolver(const wxString &ofType,
-                                         const wxString &withName = wxT("")); 
-   virtual Subscriber*      CreateSubscriber(const wxString &ofType,
-                                             const wxString &withName = wxT(""),
-                                             const wxString &fileName = wxT(""));
-   virtual EphemerisFile*   CreateEphemerisFile(const wxString &ofType,
-                                                const wxString &withName = wxT(""));
-   virtual GmatCommand*     CreateCommand(const wxString &ofType,
-                                          const wxString &withName = wxT(""));
-   virtual AtmosphereModel* CreateAtmosphereModel(const wxString &ofType,
-                                                  const wxString &withName = wxT(""),
-                                                  const wxString &forBody = wxT("Earth"));
-   virtual Function*        CreateFunction(const wxString &ofType,
-                                           const wxString &withName = wxT(""));
-   virtual Hardware*        CreateHardware(const wxString &ofType,
-                                           const wxString &withName = wxT(""));
-   virtual AxisSystem*      CreateAxisSystem(const wxString &ofType,
-                                             const wxString &withName = wxT(""));
-   virtual CoordinateSystem* CreateCoordinateSystem(const wxString &ofType,
-                                                    const wxString &withName = wxT(""));
-   virtual MathNode*        CreateMathNode(const wxString &ofType,
-                                           const wxString &withName = wxT(""));
-   virtual Attitude*        CreateAttitude(const wxString &ofType,
-                                           const wxString &withName = wxT(""));
+   virtual SpaceObject*     CreateSpacecraft(const std::string &ofType,
+                                             const std::string &withName = "");
+   virtual SpacePoint*      CreateSpacePoint(const std::string &ofType,
+                                             const std::string &withName = "");        
+   virtual Propagator*      CreatePropagator(const std::string &ofType,
+                                             const std::string &withName = "");
+   virtual ODEModel*        CreateODEModel(const std::string &ofType,
+                                             const std::string &withName = "");
+   virtual PhysicalModel*   CreatePhysicalModel(const std::string &ofType,
+                                                const std::string &withName = "");
+   virtual PropSetup*       CreatePropSetup(const std::string &ofType,
+                                            const std::string &withName = "");
+   virtual Parameter*       CreateParameter(const std::string &ofType,
+                                            const std::string &withName = "");
+   virtual Burn*            CreateBurn(const std::string &ofType,
+                                       const std::string &withName = "");
+   virtual StopCondition*   CreateStopCondition(const std::string &ofType,
+                                                const std::string &withName = "");
+   virtual CalculatedPoint* CreateCalculatedPoint(const std::string &ofType,
+                                                  const std::string &withName = "");
+   virtual CelestialBody*   CreateCelestialBody(const std::string &ofType,
+                                                const std::string &withName = "");
+   virtual SolarSystem*     CreateSolarSystem(const std::string &ofType,
+                                              const std::string &withName = "");
+   virtual Solver*          CreateSolver(const std::string &ofType,
+                                         const std::string &withName = ""); 
+   virtual Subscriber*      CreateSubscriber(const std::string &ofType,
+                                             const std::string &withName = "",
+                                             const std::string &fileName = "");
+   virtual EphemerisFile*   CreateEphemerisFile(const std::string &ofType,
+                                                const std::string &withName = "");
+   virtual GmatCommand*     CreateCommand(const std::string &ofType,
+                                          const std::string &withName = "");
+   virtual AtmosphereModel* CreateAtmosphereModel(const std::string &ofType,
+                                                  const std::string &withName = "",
+                                                  const std::string &forBody = "Earth");
+   virtual Function*        CreateFunction(const std::string &ofType,
+                                           const std::string &withName = "");
+   virtual Hardware*        CreateHardware(const std::string &ofType,
+                                           const std::string &withName = "");
+   virtual AxisSystem*      CreateAxisSystem(const std::string &ofType,
+                                             const std::string &withName = "");
+   virtual CoordinateSystem* CreateCoordinateSystem(const std::string &ofType,
+                                                    const std::string &withName = "");
+   virtual MathNode*        CreateMathNode(const std::string &ofType,
+                                           const std::string &withName = "");
+   virtual Attitude*        CreateAttitude(const std::string &ofType,
+                                           const std::string &withName = "");
    virtual MeasurementModel*
-                            CreateMeasurementModel(const wxString &ofType,
-                                           const wxString &withName = wxT(""));
-   virtual CoreMeasurement* CreateMeasurement(const wxString &ofType,
-                                           const wxString &withName = wxT(""));
-   virtual DataFile*        CreateDataFile(const wxString &ofType,
-                                           const wxString &withName = wxT(""));
-   virtual ObType*          CreateObType(const wxString &ofType,
-                                         const wxString &withName = wxT(""));
-   virtual TrackingSystem*  CreateTrackingSystem(const wxString &ofType,
-                                           const wxString &withName = wxT(""));
-   virtual TrackingData*    CreateTrackingData(const wxString &ofType,
-                                           const wxString &withName = wxT(""));
-   virtual Event*           CreateEvent(const wxString &ofType,
-                                        const wxString &withName = wxT(""));
-   virtual EventLocator*    CreateEventLocator(const wxString &ofType,
-                                        const wxString &withName = wxT(""));
-   virtual Interface*       CreateInterface(const wxString &ofType,
-                                            const wxString &withName = wxT(""));
+                            CreateMeasurementModel(const std::string &ofType,
+                                           const std::string &withName = "");
+   virtual CoreMeasurement* CreateMeasurement(const std::string &ofType,
+                                           const std::string &withName = "");
+   virtual DataFile*        CreateDataFile(const std::string &ofType,
+                                           const std::string &withName = "");
+   virtual ObType*          CreateObType(const std::string &ofType,
+                                         const std::string &withName = "");
+   virtual TrackingSystem*  CreateTrackingSystem(const std::string &ofType,
+                                           const std::string &withName = "");
+   virtual TrackingData*    CreateTrackingData(const std::string &ofType,
+                                           const std::string &withName = "");
+   virtual Event*           CreateEvent(const std::string &ofType,
+                                        const std::string &withName = "");
+   virtual EventLocator*    CreateEventLocator(const std::string &ofType,
+                                        const std::string &withName = "");
+   virtual Interface*       CreateInterface(const std::string &ofType,
+                                            const std::string &withName = "");
    
    // method to return list of types of objects that this factory can create
    virtual StringArray      GetListOfCreatableObjects(
-                                  const wxString &qualifier = wxT("")) const;
+                                  const std::string &qualifier = "") const;
    // method to check if a createable object type matches a subtype
    virtual bool             DoesObjectTypeMatchSubtype(
-                                  const wxString &theType,
-                                  const wxString &theSubtype);
+                                  const std::string &theType,
+                                  const std::string &theSubtype);
    // method to return list of objects that can be viewed via GUI of this factory
    StringArray              GetListOfViewableObjects();
    // method to return list of objects that cannot be viewed via GUI of this factory

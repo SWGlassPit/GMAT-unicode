@@ -49,8 +49,8 @@
 //    RungeKutta      (13, 8)
 //{
 //}
-PrinceDormand78::PrinceDormand78(const wxString &nomme) :
-    RungeKutta      (13, 8, wxT("PrinceDormand78"), nomme)
+PrinceDormand78::PrinceDormand78(const std::string &nomme) :
+    RungeKutta      (13, 8, "PrinceDormand78", nomme)
 {
 }
 

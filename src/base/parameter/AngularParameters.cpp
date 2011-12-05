@@ -32,7 +32,7 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// SemilatusRectum(const wxString &name, GmatBase *obj)
+// SemilatusRectum(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -41,12 +41,12 @@
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-SemilatusRectum::SemilatusRectum(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("SemilatusRectum"), obj, wxT("Semilatus Rectum"), wxT("Km"), GmatParam::ORIGIN)
+SemilatusRectum::SemilatusRectum(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "SemilatusRectum", obj, "Semilatus Rectum", "Km", GmatParam::ORIGIN)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
 }
 
 
@@ -146,7 +146,7 @@ GmatBase* SemilatusRectum::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// AngularMomentumMag(const wxString &name, GmatBase *obj)
+// AngularMomentumMag(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -155,12 +155,12 @@ GmatBase* SemilatusRectum::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-AngularMomentumMag::AngularMomentumMag(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("HMAG"), obj, wxT("Angular Momentum Mag"), wxT("Km^2/s"), GmatParam::ORIGIN)
+AngularMomentumMag::AngularMomentumMag(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "HMAG", obj, "Angular Momentum Mag", "Km^2/s", GmatParam::ORIGIN)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
 }
 
 
@@ -259,7 +259,7 @@ GmatBase* AngularMomentumMag::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// AngularMomentumX(const wxString &name, GmatBase *obj)
+// AngularMomentumX(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -268,10 +268,10 @@ GmatBase* AngularMomentumMag::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-AngularMomentumX::AngularMomentumX(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("HX"), obj, wxT("Angular Momentum X"), wxT("Km^2/s"), GmatParam::COORD_SYS)
+AngularMomentumX::AngularMomentumX(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "HX", obj, "Angular Momentum X", "Km^2/s", GmatParam::COORD_SYS)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
 }
 
@@ -372,7 +372,7 @@ GmatBase* AngularMomentumX::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// AngularMomentumY(const wxString &name, GmatBase *obj)
+// AngularMomentumY(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -381,10 +381,10 @@ GmatBase* AngularMomentumX::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-AngularMomentumY::AngularMomentumY(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("HY"), obj, wxT("Angular Momentum Y"), wxT("Km^2/s"), GmatParam::COORD_SYS)
+AngularMomentumY::AngularMomentumY(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "HY", obj, "Angular Momentum Y", "Km^2/s", GmatParam::COORD_SYS)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
 }
 
@@ -484,7 +484,7 @@ GmatBase* AngularMomentumY::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// AngularMomentumZ(const wxString &name, GmatBase *obj)
+// AngularMomentumZ(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -493,10 +493,10 @@ GmatBase* AngularMomentumY::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-AngularMomentumZ::AngularMomentumZ(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("HZ"), obj, wxT("Angular Momentum Z"), wxT("Km^2/s"), GmatParam::COORD_SYS)
+AngularMomentumZ::AngularMomentumZ(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "HZ", obj, "Angular Momentum Z", "Km^2/s", GmatParam::COORD_SYS)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
 }
 
@@ -598,7 +598,7 @@ GmatBase* AngularMomentumZ::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// BetaAngle(const wxString &name, GmatBase *obj)
+// BetaAngle(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -607,12 +607,12 @@ GmatBase* AngularMomentumZ::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-BetaAngle::BetaAngle(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("BetaAngle"), obj, wxT("Beta Angle"), wxT("deg"), GmatParam::ORIGIN)
+BetaAngle::BetaAngle(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "BetaAngle", obj, "Beta Angle", "deg", GmatParam::ORIGIN)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
 }
 
 
@@ -711,7 +711,7 @@ GmatBase* BetaAngle::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// RLA(const wxString &name, GmatBase *obj)
+// RLA(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -720,10 +720,10 @@ GmatBase* BetaAngle::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-RLA::RLA(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("RLA"), obj, wxT("Right Ascension Outgoing Asymptote"), wxT("deg"), GmatParam::COORD_SYS)
+RLA::RLA(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "RLA", obj, "Right Ascension Outgoing Asymptote", "deg", GmatParam::COORD_SYS)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
 }
 
@@ -822,7 +822,7 @@ GmatBase* RLA::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// DLA(const wxString &name, GmatBase *obj)
+// DLA(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -831,10 +831,10 @@ GmatBase* RLA::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-DLA::DLA(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("DLA"), obj, wxT("Declination Outgoing Asymptote"), wxT("deg"), GmatParam::COORD_SYS)
+DLA::DLA(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "DLA", obj, "Declination Outgoing Asymptote", "deg", GmatParam::COORD_SYS)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
 }
 

@@ -25,7 +25,7 @@
 
 
 //------------------------------------------------------------------------------
-//  Interpolator(const wxString &name, const wxString &typestr,
+//  Interpolator(const std::string &name, const std::string &typestr,
 //               Integer dim)
 //------------------------------------------------------------------------------
 /**
@@ -36,7 +36,7 @@
  * @param <dim>     Dimension of data that gets interpolated (defaults to 1).
  */
 //------------------------------------------------------------------------------
-Interpolator::Interpolator(const wxString &name, const wxString &typestr,
+Interpolator::Interpolator(const std::string &name, const std::string &typestr,
                            Integer dim) :
    GmatBase           (Gmat::INTERPOLATOR, typestr, name),
    independent        (NULL),
@@ -197,8 +197,8 @@ bool Interpolator::AddPoint(const Real ind, const Real *data)
    rangeCalculated = false;
    
 //    MessageInterface::ShowMessage
-//       (wxT("===> Interpolator::AddPoint() ind=%f, data[0]=%f added, latestPoint=%d, ")
-//        wxT("pointCount=%d\n"), ind, data[0], latestPoint, pointCount);
+//       ("===> Interpolator::AddPoint() ind=%f, data[0]=%f added, latestPoint=%d, "
+//        "pointCount=%d\n", ind, data[0], latestPoint, pointCount);
    
    return true;
 }

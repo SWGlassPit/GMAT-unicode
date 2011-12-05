@@ -28,24 +28,24 @@
 class GMAT_API BaseException
 {
 public:
-   virtual wxString GetFullMessage() const;
-   virtual wxString GetDetails() const;
+   virtual std::string GetFullMessage() const;
+   virtual std::string GetDetails() const;
    virtual bool IsFatal() const;
-   virtual void SetMessage(const wxString &message);
-   virtual void SetDetails(const wxString &details, ...);
-//   virtual void SetDetails(const wxString &details);
+   virtual void SetMessage(const std::string &message);
+   virtual void SetDetails(const std::string &details);
    virtual void SetFatal(bool fatal);
+   virtual void SetDetails(const char *details, ...);
    virtual Gmat::MessageType GetMessageType();
    virtual void SetMessageType(Gmat::MessageType mt);
    
-   const BaseException& operator=(const wxString &newMessage);
+   const BaseException& operator=(const std::string &newMessage);
    
    
    static const int MAX_MESSAGE_LENGTH = 3000;
    
 protected:
-   BaseException(const wxString& message = wxT(""),
-         const wxString &details = wxT(""),
+   BaseException(const std::string& message = "",
+         const std::string &details = "",
          // Change to this when the repeated instances are fixed:
 //         Gmat::MessageType mt = Gmat::ERROR_);
          // Change to this if it's problematic:
@@ -55,8 +55,8 @@ protected:
    const BaseException& operator=(const BaseException& be);
    
 private:
-   wxString theMessage;
-   wxString theDetails;
+   std::string theMessage;
+   std::string theDetails;
    Gmat::MessageType msgType;
    bool isFatal;
 };

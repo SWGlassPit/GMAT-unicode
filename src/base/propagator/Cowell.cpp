@@ -22,7 +22,7 @@
 //---------------------------------
 //VC++ error C2466: cannot allocate an array of constant size 0
 // so commented out for possible later use
-//const wxString
+//const std::string
 //Cowell::PARAMETER_TEXT[CowellParamCount - IntegratorParamCount] = {};
 //const Gmat::ParameterType
 //Cowell::PARAMETER_TYPE[CowellParamCount - IntegratorParamCount] = {};
@@ -38,8 +38,8 @@
  * The Cowell constructor
  */
 //------------------------------------------------------------------------------
-Cowell::Cowell(const wxString &typeStr, const wxString &nomme) :
-    PredictorCorrector     (?, ?, wxT("Cowell"), nomme)
+Cowell::Cowell(const std::string &typeStr, const std::string &nomme) :
+    PredictorCorrector     (?, ?, "Cowell", nomme)
 {
     parameterCount = CowellParamCount;
 }
@@ -233,7 +233,7 @@ bool Cowell::AdaptStep(Real maxerror)
 }    
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Helper method used to find the text name for the class parameters.
@@ -246,19 +246,19 @@ bool Cowell::AdaptStep(Real maxerror)
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString Cowell::GetParameterText(const Integer id) const
+std::string Cowell::GetParameterText(const Integer id) const
 {
     return Integrator::GetParameterText(id);
 }
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Integer Cowell::GetParameterID(const wxString &str) const
+Integer Cowell::GetParameterID(const std::string &str) const
 {
     return Integrator::GetParameterID(str);
 }
@@ -276,13 +276,13 @@ Gmat::ParameterType Cowell::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString Cowell::GetParameterTypeString(const Integer id) const
+std::string Cowell::GetParameterTypeString(const Integer id) const
 {
    return Integrator::GetParameterTypeString(id);
 }
@@ -300,9 +300,9 @@ Real Cowell::GetRealParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label) const
+// Real GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-Real Cowell::GetRealParameter(const wxString &label) const
+Real Cowell::GetRealParameter(const std::string &label) const
 {
     Integer id = GetParameterID(label);
 
@@ -331,13 +331,13 @@ Real Cowell::SetRealParameter(const Integer id, const Real value)
 }
 
 //------------------------------------------------------------------------------
-// Real SetRealParameter(const wxString &label, const Real value)
+// Real SetRealParameter(const std::string &label, const Real value)
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Real Cowell::SetRealParameter(const wxString &label, const Real value)
+Real Cowell::SetRealParameter(const std::string &label, const Real value)
 {
     return SetRealParameter(GetParameterID(label), value);
 }

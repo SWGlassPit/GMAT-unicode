@@ -35,12 +35,12 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// OrbitStm(const wxString &name, GmatBase *obj)
+// OrbitStm(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-OrbitStm::OrbitStm(const wxString &name, GmatBase *obj)
-   : OrbitRmat66(name, wxT("OrbitSTM"), obj, wxT("Orbit STM"), wxT(""), GmatParam::COORD_SYS, true)
+OrbitStm::OrbitStm(const std::string &name, GmatBase *obj)
+   : OrbitRmat66(name, "OrbitSTM", obj, "Orbit STM", "", GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::RED32;
@@ -105,12 +105,12 @@ GmatBase* OrbitStm::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// OrbitStmA(const wxString &name, GmatBase *obj)
+// OrbitStmA(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-OrbitStmA::OrbitStmA(const wxString &name, GmatBase *obj)
-   : OrbitRmat33(name, wxT("OrbitSTMA"), obj, wxT("Orbit STM_A"), wxT(""), GmatParam::COORD_SYS, true)
+OrbitStmA::OrbitStmA(const std::string &name, GmatBase *obj)
+   : OrbitRmat33(name, "OrbitSTMA", obj, "Orbit STM_A", "", GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::YELLOW32;
@@ -175,12 +175,12 @@ GmatBase* OrbitStmA::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// OrbitStmB(const wxString &name, GmatBase *obj)
+// OrbitStmB(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-OrbitStmB::OrbitStmB(const wxString &name, GmatBase *obj)
-   : OrbitRmat33(name, wxT("OrbitSTMB"), obj, wxT("Orbit STM_B"), wxT(""), GmatParam::COORD_SYS, true)
+OrbitStmB::OrbitStmB(const std::string &name, GmatBase *obj)
+   : OrbitRmat33(name, "OrbitSTMB", obj, "Orbit STM_B", "", GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::BLUE32;
@@ -245,12 +245,12 @@ GmatBase* OrbitStmB::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// OrbitStmC(const wxString &name, GmatBase *obj)
+// OrbitStmC(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-OrbitStmC::OrbitStmC(const wxString &name, GmatBase *obj)
-   : OrbitRmat33(name, wxT("OrbitSTMC"), obj, wxT("Orbit STM_C"), wxT(""), GmatParam::COORD_SYS, true)
+OrbitStmC::OrbitStmC(const std::string &name, GmatBase *obj)
+   : OrbitRmat33(name, "OrbitSTMC", obj, "Orbit STM_C", "", GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::GREEN32;
@@ -315,12 +315,12 @@ GmatBase* OrbitStmC::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// OrbitStmD(const wxString &name, GmatBase *obj)
+// OrbitStmD(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-OrbitStmD::OrbitStmD(const wxString &name, GmatBase *obj)
-   : OrbitRmat33(name, wxT("OrbitSTMD"), obj, wxT("Orbit STM_D"), wxT(""), GmatParam::COORD_SYS, true)
+OrbitStmD::OrbitStmD(const std::string &name, GmatBase *obj)
+   : OrbitRmat33(name, "OrbitSTMD", obj, "Orbit STM_D", "", GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::ORANGE32;

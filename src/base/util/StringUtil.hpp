@@ -33,126 +33,126 @@ namespace GmatStringUtil
       BOTH = 3,
    };
    
-   GMAT_API wxString RemoveAll(const wxString &str, wxChar ch, Integer start = 0);
-   GMAT_API wxString RemoveLastNumber(const wxString &str, Integer &lastNumber);
-   GMAT_API wxString RemoveLastString(const wxString &str, const wxString &lastStr,
+   GMAT_API std::string RemoveAll(const std::string &str, char ch, Integer start = 0);
+   GMAT_API std::string RemoveLastNumber(const std::string &str, Integer &lastNumber);
+   GMAT_API std::string RemoveLastString(const std::string &str, const std::string &lastStr,
                                 bool removeAll = false);
    
-   GMAT_API wxString RemoveSpaceInBrackets(const wxString &str,
-                                     const wxString &bracketPair);
-   GMAT_API wxString Trim(const wxString &str, StripType stype = BOTH,
+   GMAT_API std::string RemoveSpaceInBrackets(const std::string &str,
+                                     const std::string &bracketPair);
+   GMAT_API std::string Trim(const std::string &str, StripType stype = BOTH,
                     bool removeSemicolon = false, bool removeEol = false);
-   GMAT_API wxString Strip(const wxString &str, StripType stype = BOTH);
-   GMAT_API wxString ToUpper(const wxString &str, bool firstLetterOnly = false);
-   GMAT_API wxString ToLower(const wxString &str, bool firstLetterOnly = false);
-   GMAT_API wxString Capitalize(const wxString &str);
-   GMAT_API wxString Replace(const wxString &str, const wxString &from,
-                       const wxString &to);
-   GMAT_API wxString ReplaceName(const wxString &str, const wxString &from,
-                           const wxString &to);
-   GMAT_API wxString ReplaceNumber(const wxString &str, const wxString &from,
-                           const wxString &to);
+   GMAT_API std::string Strip(const std::string &str, StripType stype = BOTH);
+   GMAT_API std::string ToUpper(const std::string &str, bool firstLetterOnly = false);
+   GMAT_API std::string ToLower(const std::string &str, bool firstLetterOnly = false);
+   GMAT_API std::string Capitalize(const std::string &str);
+   GMAT_API std::string Replace(const std::string &str, const std::string &from,
+                       const std::string &to);
+   GMAT_API std::string ReplaceName(const std::string &str, const std::string &from,
+                           const std::string &to);
+   GMAT_API std::string ReplaceNumber(const std::string &str, const std::string &from,
+                           const std::string &to);
    
-   GMAT_API wxString ToString(const bool &val);
-   GMAT_API wxString ToString(const Real &val, Integer precision, bool showPoint = false,
+   GMAT_API std::string ToString(const bool &val);
+   GMAT_API std::string ToString(const Real &val, Integer precision, bool showPoint = false,
                         Integer width = 1);
-   GMAT_API wxString ToString(const Integer &val, Integer width);
+   GMAT_API std::string ToString(const Integer &val, Integer width);
    
-   GMAT_API wxString ToString(const Real &val, bool useCurrentFormat = true,
+   GMAT_API std::string ToString(const Real &val, bool useCurrentFormat = true,
                         bool scientific = false, bool showPoint = true, 
                         Integer precision = GmatGlobal::DATA_PRECISION,
                         Integer width = GmatGlobal::DATA_WIDTH);
-   GMAT_API wxString ToString(const Integer &val, bool useCurrentFormat = true,
+   GMAT_API std::string ToString(const Integer &val, bool useCurrentFormat = true,
                         Integer width = GmatGlobal::INTEGER_WIDTH);
    
-   GMAT_API wxString RemoveExtraParen(const wxString &str);
-   GMAT_API wxString RemoveOuterString(const wxString &str, const wxString &start,
-                                 const wxString &end);
-   GMAT_API wxString RemoveEnclosingString(const wxString &str, const wxString &enStr);
-   GMAT_API wxString RemoveInlineComment(const wxString &str, const wxString &cmStr);
-   GMAT_API wxString ParseFunctionName(const wxString &str);
-   GMAT_API wxString AddEnclosingString(const wxString &str, const wxString &enStr);
-   GMAT_API wxString GetInvalidNameMessageFormat();
+   GMAT_API std::string RemoveExtraParen(const std::string &str);
+   GMAT_API std::string RemoveOuterString(const std::string &str, const std::string &start,
+                                 const std::string &end);
+   GMAT_API std::string RemoveEnclosingString(const std::string &str, const std::string &enStr);
+   GMAT_API std::string RemoveInlineComment(const std::string &str, const std::string &cmStr);
+   GMAT_API std::string ParseFunctionName(const std::string &str);
+   GMAT_API std::string AddEnclosingString(const std::string &str, const std::string &enStr);
+   GMAT_API std::string GetInvalidNameMessageFormat();
    
-   GMAT_API wxChar GetClosingBracket(const wxChar &openBracket);
+   GMAT_API char GetClosingBracket(const char &openBracket);
    
-   GMAT_API StringArray SeparateBy(const wxString &str, const wxString &delim,
+   GMAT_API StringArray SeparateBy(const std::string &str, const std::string &delim,
                           bool putBracketsTogether = false, bool insertDelim = false,
                           bool insertComma = true);
-   GMAT_API StringArray SeparateByComma(const wxString &str);
-   GMAT_API StringArray SeparateDots(const wxString &str);
-   GMAT_API StringArray DecomposeBy(const wxString &str, const wxString &delim);
+   GMAT_API StringArray SeparateByComma(const std::string &str);
+   GMAT_API StringArray SeparateDots(const std::string &str);
+   GMAT_API StringArray DecomposeBy(const std::string &str, const std::string &delim);
    
-   GMAT_API bool IsNumber(const wxString &str);
-   GMAT_API bool ToReal(const wxString &str, Real *value, bool trimParens = false);
-   GMAT_API bool ToReal(const wxString &str, Real &value, bool trimParens = false);
-   GMAT_API bool ToInteger(const wxString &str, Integer *value, bool trimParens = false);
-   GMAT_API bool ToInteger(const wxString &str, Integer &value, bool trimParens = false);
-   GMAT_API bool ToBoolean(const wxString &str, bool *value, bool trimParens = false);
-   GMAT_API bool ToBoolean(const wxString &str, bool &value, bool trimParens = false);
+   GMAT_API bool IsNumber(const std::string &str);
+   GMAT_API bool ToReal(const std::string &str, Real *value, bool trimParens = false);
+   GMAT_API bool ToReal(const std::string &str, Real &value, bool trimParens = false);
+   GMAT_API bool ToInteger(const std::string &str, Integer *value, bool trimParens = false);
+   GMAT_API bool ToInteger(const std::string &str, Integer &value, bool trimParens = false);
+   GMAT_API bool ToBoolean(const std::string &str, bool *value, bool trimParens = false);
+   GMAT_API bool ToBoolean(const std::string &str, bool &value, bool trimParens = false);
    
-   GMAT_API RealArray ToRealArray(const wxString &str);
-   GMAT_API IntegerArray ToIntegerArray(const wxString &str);
-   GMAT_API UnsignedIntArray ToUnsignedIntArray(const wxString &str);
-   GMAT_API StringArray ToStringArray(const wxString &str);
-   GMAT_API BooleanArray ToBooleanArray(const wxString &str);
+   GMAT_API RealArray ToRealArray(const std::string &str);
+   GMAT_API IntegerArray ToIntegerArray(const std::string &str);
+   GMAT_API UnsignedIntArray ToUnsignedIntArray(const std::string &str);
+   GMAT_API StringArray ToStringArray(const std::string &str);
+   GMAT_API BooleanArray ToBooleanArray(const std::string &str);
    
-   GMAT_API void ParseParameter(const wxString &str, wxString &type,
-                                wxString &owner, wxString &dep);
-   GMAT_API void GetArrayCommaIndex(const wxString &str, Integer &comma,
-                           const wxString &bracketPair = wxT("()"));
-   GMAT_API void GetArrayIndex(const wxString &str, Integer &row, Integer &col,
-                      wxString &name, const wxString &bracketPair = wxT("()"));
-   GMAT_API void GetArrayIndex(const wxString &str, wxString &rowStr,
-                      wxString &colStr, Integer &row, Integer &col,
-                      wxString &name, const wxString &bracketPair = wxT("()"));
-   GMAT_API void GetArrayIndexVar(const wxString &str, wxString &rowStr,
-                         wxString &colStr, wxString &name,
-                         const wxString &bracketPair = wxT("()"));
-   GMAT_API void FindFirstAndLast(const wxString &str, wxChar ch, Integer &first,
+   GMAT_API void ParseParameter(const std::string &str, std::string &type,
+                                std::string &owner, std::string &dep);
+   GMAT_API void GetArrayCommaIndex(const std::string &str, Integer &comma,
+                           const std::string &bracketPair = "()");
+   GMAT_API void GetArrayIndex(const std::string &str, Integer &row, Integer &col,
+                      std::string &name, const std::string &bracketPair = "()");
+   GMAT_API void GetArrayIndex(const std::string &str, std::string &rowStr,
+                      std::string &colStr, Integer &row, Integer &col,
+                      std::string &name, const std::string &bracketPair = "()");
+   GMAT_API void GetArrayIndexVar(const std::string &str, std::string &rowStr,
+                         std::string &colStr, std::string &name,
+                         const std::string &bracketPair = "()");
+   GMAT_API void FindFirstAndLast(const std::string &str, char ch, Integer &first,
                          Integer &last);
-   GMAT_API void FindParenMatch(const wxString &str, Integer &open, Integer &close,
+   GMAT_API void FindParenMatch(const std::string &str, Integer &open, Integer &close,
                        bool &isOuterParen);
-   GMAT_API void FindMatchingParen(const wxString &str, Integer &openParen,
+   GMAT_API void FindMatchingParen(const std::string &str, Integer &openParen,
                           Integer &closeParen, bool &isOuterParen,
                           Integer start = 0);
-   GMAT_API void FindMatchingBracket(const wxString &str, Integer &openBracket,
+   GMAT_API void FindMatchingBracket(const std::string &str, Integer &openBracket,
                             Integer &closeBracket, bool &isOuterBracket,
-                            const wxString &bracket, Integer start = 0);
-   GMAT_API void FindLastParenMatch(const wxString &str, Integer &openParen,
+                            const std::string &bracket, Integer start = 0);
+   GMAT_API void FindLastParenMatch(const std::string &str, Integer &openParen,
                            Integer &closeParen, Integer start = 0);
    
-   GMAT_API bool IsEnclosedWith(const wxString &str, const wxString &enclosingStr);
-   GMAT_API bool IsEnclosedWithExtraParen(const wxString &str, bool checkOps = true);
-   GMAT_API bool IsEnclosedWithBraces(const wxString &str);
-   GMAT_API bool IsEnclosedWithBrackets(const wxString &str);
-   GMAT_API bool IsBracketBalanced(const wxString &str, const wxString &bracketPair);
-   GMAT_API bool IsParenBalanced(const wxString &str);
-   GMAT_API bool AreAllBracketsBalanced(const wxString &str, const wxString &allPairs);
-   GMAT_API bool IsOuterParen(const wxString &str);
-   GMAT_API bool IsCommaPartOfArray(const wxString &str, Integer start = 0);
-   GMAT_API bool IsBracketPartOfArray(const wxString &str, const wxString &bracketPairs,
+   GMAT_API bool IsEnclosedWith(const std::string &str, const std::string &enclosingStr);
+   GMAT_API bool IsEnclosedWithExtraParen(const std::string &str, bool checkOps = true);
+   GMAT_API bool IsEnclosedWithBraces(const std::string &str);
+   GMAT_API bool IsEnclosedWithBrackets(const std::string &str);
+   GMAT_API bool IsBracketBalanced(const std::string &str, const std::string &bracketPair);
+   GMAT_API bool IsParenBalanced(const std::string &str);
+   GMAT_API bool AreAllBracketsBalanced(const std::string &str, const std::string &allPairs);
+   GMAT_API bool IsOuterParen(const std::string &str);
+   GMAT_API bool IsCommaPartOfArray(const std::string &str, Integer start = 0);
+   GMAT_API bool IsBracketPartOfArray(const std::string &str, const std::string &bracketPairs,
                              bool checkOnlyFirst);
-   GMAT_API bool IsParenPartOfArray(const wxString &str);
-   GMAT_API bool IsThereEqualSign(const wxString &str);
-   GMAT_API bool IsThereMathSymbol(const wxString &str);
-   GMAT_API bool HasNoBrackets(const wxString &str, bool parensForArraysAllowed = true);
-   GMAT_API bool IsSingleItem(const wxString &str);
-   GMAT_API bool StartsWith(const wxString &str, const wxString &value);
-   GMAT_API bool EndsWith(const wxString &str, const wxString &value);
-   GMAT_API bool EndsWithPathSeparator(const wxString &str); 
-   GMAT_API bool IsValidNumber(const wxString &str);
-   GMAT_API bool IsValidName(const wxString &str, bool ignoreBracket = false);
-   GMAT_API bool IsBlank(const wxString &str, bool ignoreEol = false);
-   GMAT_API bool HasMissingQuote(const wxString &str, const wxString &quote);
-   GMAT_API bool IsMathEquation(const wxString &str);
+   GMAT_API bool IsParenPartOfArray(const std::string &str);
+   GMAT_API bool IsThereEqualSign(const std::string &str);
+   GMAT_API bool IsThereMathSymbol(const std::string &str);
+   GMAT_API bool HasNoBrackets(const std::string &str, bool parensForArraysAllowed = true);
+   GMAT_API bool IsSingleItem(const std::string &str);
+   GMAT_API bool StartsWith(const std::string &str, const std::string &value);
+   GMAT_API bool EndsWith(const std::string &str, const std::string &value);
+   GMAT_API bool EndsWithPathSeparator(const std::string &str); 
+   GMAT_API bool IsValidNumber(const std::string &str);
+   GMAT_API bool IsValidName(const std::string &str, bool ignoreBracket = false);
+   GMAT_API bool IsBlank(const std::string &str, bool ignoreEol = false);
+   GMAT_API bool HasMissingQuote(const std::string &str, const std::string &quote);
+   GMAT_API bool IsMathEquation(const std::string &str);
    
-   GMAT_API Integer NumberOfOccurrences(const wxString &str, const wxChar c);
+   GMAT_API Integer NumberOfOccurrences(const std::string &str, const char c);
    
-   GMAT_API StringArray GetVarNames(const wxString &str);
+   GMAT_API StringArray GetVarNames(const std::string &str);
    GMAT_API void WriteStringArray(const StringArray &strArray,
-                                  const wxString &desc = wxT(""),
-                                  const wxString &prefix = wxT(""));
+                                  const std::string &desc = "",
+                                  const std::string &prefix = "");
    
 }
 

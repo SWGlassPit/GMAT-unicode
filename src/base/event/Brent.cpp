@@ -38,7 +38,7 @@
  */
 //------------------------------------------------------------------------------
 Brent::Brent() :
-   RootFinder        (wxT("BrentsMethod")),
+   RootFinder        ("BrentsMethod"),
    bisectionUsed     (true),
    epochOfStep       (-1.0),
    step              (0.0),
@@ -126,13 +126,13 @@ Brent & Brent::operator =(const Brent & b)
 bool Brent::Initialize(GmatEpoch t0, Real f0, GmatEpoch t1, Real f1)
 {
    #ifdef DEBUG_BRENT
-   MessageInterface::ShowMessage(wxT("Brent::Initialize(%15.9lf, %12lf, %15.9lf, ")
-         wxT("%12lf) called\n"), t0, f0, t1, f1);
+      MessageInterface::ShowMessage("Brent::Initialize(%15.9lf, %12lf, %15.9lf, "
+            "%12lf) called\n", t0, f0, t1, f1);
    #endif
 
    if (f0 * f1 >= 0.0)
-      throw EventException(wxT("Error initializing Brent's method; the solution is ")
-            wxT("not bracketed"));
+      throw EventException("Error initializing Brent's method; the solution is "
+            "not bracketed");
 
    bool retval = RootFinder::Initialize(t0, f0, t1, f1);
 
@@ -149,8 +149,8 @@ bool Brent::Initialize(GmatEpoch t0, Real f0, GmatEpoch t1, Real f1)
    }
 
    #ifdef DEBUG_BRENT_BUFFER
-      MessageInterface::ShowMessage(wxT("Brent::Buffer Data:\n   %15.9lf  ")
-            wxT("%.12lf\n   %15.9lf  %.12lf\n   %15.9lf  %.12lf\n"), epochBuffer[0],
+      MessageInterface::ShowMessage("Brent::Buffer Data:\n   %15.9lf  "
+            "%.12lf\n   %15.9lf  %.12lf\n   %15.9lf  %.12lf\n", epochBuffer[0],
             buffer[0], epochBuffer[1], buffer[1], epochBuffer[2], buffer[2]);
    #endif
 
@@ -173,10 +173,10 @@ bool Brent::Initialize(GmatEpoch t0, Real f0, GmatEpoch t1, Real f1)
 bool Brent::SetValue(GmatEpoch forEpoch, Real withValue)
 {
    #ifdef DEBUG_BRENT_BUFFER
-      MessageInterface::ShowMessage(wxT("Received data: %15.9lf %.12lf\n"), forEpoch,
+      MessageInterface::ShowMessage("Received data: %15.9lf %.12lf\n", forEpoch,
             withValue);
-      MessageInterface::ShowMessage(wxT("Brent::SetValue Initial Buffer Data:\n   ")
-            wxT("%15.9lf  %.12lf\n   %15.9lf  %.12lf\n   %15.9lf  %.12lf\n"),
+      MessageInterface::ShowMessage("Brent::SetValue Initial Buffer Data:\n   "
+            "%15.9lf  %.12lf\n   %15.9lf  %.12lf\n   %15.9lf  %.12lf\n",
             epochBuffer[0], buffer[0], epochBuffer[1], buffer[1],
             epochBuffer[2], buffer[2]);
    #endif
@@ -202,8 +202,8 @@ bool Brent::SetValue(GmatEpoch forEpoch, Real withValue)
       Swap(0,1);
 
    #ifdef DEBUG_BRENT_BUFFER
-      MessageInterface::ShowMessage(wxT("Brent::SetValue Updated Buffer Data:\n   ")
-            wxT("%15.9lf  %.12lf\n   %15.9lf  %.12lf\n   %15.9lf  %.12lf\n"),
+      MessageInterface::ShowMessage("Brent::SetValue Updated Buffer Data:\n   "
+            "%15.9lf  %.12lf\n   %15.9lf  %.12lf\n   %15.9lf  %.12lf\n",
             epochBuffer[0], buffer[0], epochBuffer[1], buffer[1],
             epochBuffer[2], buffer[2]);
    #endif
@@ -285,8 +285,8 @@ Real Brent::FindStep(const GmatEpoch currentEpoch)
       step = epochOfStep;
 
    #ifdef DEBUG_BRENT
-      MessageInterface::ShowMessage(wxT("Brent's Method: Current Epoch: %15.9lf, ")
-            wxT("Epoch of Step: %15.9lf, step: %15.9lf\n"), currentEpoch, epochOfStep,
+      MessageInterface::ShowMessage("Brent's Method: Current Epoch: %15.9lf, "
+            "Epoch of Step: %15.9lf, step: %15.9lf\n", currentEpoch, epochOfStep,
             step);
    #endif
 

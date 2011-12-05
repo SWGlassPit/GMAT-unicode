@@ -29,7 +29,7 @@
 // public methods
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  PlanetaryEphem(wxString withFileName)
+//  PlanetaryEphem(std::string withFileName)
 //------------------------------------------------------------------------------
 /**
  * This method creates an object of the PlanetaryEphem class
@@ -38,10 +38,10 @@
  * @param <name> parameter indicating the full path name of the File.
  */
 //------------------------------------------------------------------------------
-PlanetaryEphem::PlanetaryEphem(wxString withFileName)
+PlanetaryEphem::PlanetaryEphem(std::string withFileName)
 {
    itsName = withFileName;
-   g_pef_dcb.full_path = withFileName;
+   strcpy(g_pef_dcb.full_path,withFileName.c_str());
    g_pef_dcb.recl           = 0;
    g_pef_dcb.fptr           = NULL;
    jdMjdOffset              = GmatTimeConstants::JD_JAN_5_1941;
@@ -71,10 +71,10 @@ PlanetaryEphem::PlanetaryEphem(const PlanetaryEphem& pef)
 /**
  * Assignment operator for the PlanetaryEphem class.
  *
- * @param <pef> the PlanetaryEphem object whose data to assign to wxT("this")
+ * @param <pef> the PlanetaryEphem object whose data to assign to "this"
  *            File.
  *
- * @return wxT("this") PlanetaryEphem with data of input PlanetaryEphem pef.
+ * @return "this" PlanetaryEphem with data of input PlanetaryEphem pef.
  */
 //------------------------------------------------------------------------------
 PlanetaryEphem& PlanetaryEphem::operator=(const PlanetaryEphem& pef)
@@ -99,7 +99,7 @@ PlanetaryEphem::~PlanetaryEphem()
 }
 
 //------------------------------------------------------------------------------
-//  wxString GetName()
+//  std::string GetName()
 //------------------------------------------------------------------------------
 /**
  * Returns the name of the file (full path name).
@@ -107,7 +107,7 @@ PlanetaryEphem::~PlanetaryEphem()
  * @return the full path name of the file.
  */
 //------------------------------------------------------------------------------
-wxString PlanetaryEphem::GetName() const
+std::string PlanetaryEphem::GetName() const
 {
    return itsName;
 }

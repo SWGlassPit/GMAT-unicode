@@ -45,7 +45,7 @@
  */
 //------------------------------------------------------------------------------
 Target::Target() :
-   SolverBranchCommand(wxT("Target")),
+   SolverBranchCommand("Target"),
 //   targeterName       (""),
    targeterConverged  (false),
    targeterInFunctionInitialized (false),
@@ -54,7 +54,7 @@ Target::Target() :
    targeterInDebugMode(false)
 {
    parameterCount += 1; // 2;
-   objectTypeNames.push_back(wxT("Target"));
+   objectTypeNames.push_back("Target");
 }
 
 
@@ -140,7 +140,7 @@ Target& Target::operator=(const Target& t)
 bool Target::Append(GmatCommand *cmd)
 {
    #ifdef DEBUG_TARGETER_PARSING
-       MessageInterface::ShowMessage(wxT("\nTarget::Append received \"%s\" command"),
+       MessageInterface::ShowMessage("\nTarget::Append received \"%s\" command",
                                      cmd->GetTypeName().c_str());
    #endif
     
@@ -148,13 +148,13 @@ bool Target::Append(GmatCommand *cmd)
         return false;
     
    // If at the end of a targeter branch, point that end back to this comand.
-   if (cmd->GetTypeName() == wxT("EndTarget")) {
+   if (cmd->GetTypeName() == "EndTarget") {
       if ((nestLevel == 0) && (branchToFill != -1))  {
          cmd->Append(this);
          // Targeter loop is complete; -1 pops to the next higher sequence.
          branchToFill = -1;
          #ifdef DEBUG_TARGETER_PARSING
-             MessageInterface::ShowMessage(wxT("\nTarget::Append closing \"%s\""),
+             MessageInterface::ShowMessage("\nTarget::Append closing \"%s\"",
                                            generatingString.c_str());
          #endif
       }
@@ -163,12 +163,12 @@ bool Target::Append(GmatCommand *cmd)
    }
 
    // If it's a nested targeter branch, add to the nest level.
-   if (cmd->GetTypeName() == wxT("Target"))
+   if (cmd->GetTypeName() == "Target")
       ++nestLevel;
 
    #ifdef DEBUG_TARGETER_PARSING
        MessageInterface::ShowMessage(
-             wxT("\nTarget::Append for \"%s\" nest level = %d"),
+             "\nTarget::Append for \"%s\" nest level = %d",
              generatingString.c_str(), nestLevel);
    #endif
 
@@ -192,7 +192,7 @@ GmatBase* Target::Clone() const
 
 
 //------------------------------------------------------------------------------
-//  const wxString GetGeneratingString()
+//  const std::string GetGeneratingString()
 //------------------------------------------------------------------------------
 /**
  * Method used to retrieve the string that was parsed to build this GmatCommand.
@@ -212,23 +212,23 @@ GmatBase* Target::Clone() const
  * @return The script line that defines this GmatCommand.
  */
 //------------------------------------------------------------------------------
-const wxString& Target::GetGeneratingString(Gmat::WriteMode mode,
-                                               const wxString &prefix,
-                                               const wxString &useName)
+const std::string& Target::GetGeneratingString(Gmat::WriteMode mode,
+                                               const std::string &prefix,
+                                               const std::string &useName)
 {
-   generatingString = wxT("");
+   generatingString = "";
    
    if (mode != Gmat::NO_COMMENTS)
    {
       generatingString = prefix;
    }
    
-   generatingString += wxT("Target ") + solverName;
+   generatingString += "Target " + solverName;
    
    // Handle the option strings
    generatingString += GetSolverOptionText();
    
-   generatingString += wxT(";");
+   generatingString += ";";
 
    if (mode == Gmat::NO_COMMENTS)
       return generatingString;
@@ -239,7 +239,7 @@ const wxString& Target::GetGeneratingString(Gmat::WriteMode mode,
 
 //---------------------------------------------------------------------------
 // bool RenameRefObject(const Gmat::ObjectType type,
-//                      const wxString &oldName, const wxString &newName)
+//                      const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /**
  * Renames referenced objects.
@@ -252,8 +252,8 @@ const wxString& Target::GetGeneratingString(Gmat::WriteMode mode,
  */
 //------------------------------------------------------------------------------
 bool Target::RenameRefObject(const Gmat::ObjectType type,
-                             const wxString &oldName,
-                             const wxString &newName)
+                             const std::string &oldName,
+                             const std::string &newName)
 {
    if (type == Gmat::SOLVER)
    {
@@ -269,7 +269,7 @@ bool Target::RenameRefObject(const Gmat::ObjectType type,
 // Parameter access methods
 
 //------------------------------------------------------------------------------
-//  wxString GetParameterText(const Integer id) const
+//  std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Read accessor for parameter names.
@@ -279,17 +279,17 @@ bool Target::RenameRefObject(const Gmat::ObjectType type,
  * @return the text string for the parameter.
  */
 //------------------------------------------------------------------------------
-wxString Target::GetParameterText(const Integer id) const
+std::string Target::GetParameterText(const Integer id) const
 {
    if (id == SOLVER_NAME_ID)
-      return wxT("Targeter");
+      return "Targeter";
     
    return SolverBranchCommand::GetParameterText(id);
 }
 
 
 //------------------------------------------------------------------------------
-//  Integer GetParameterID(const wxString &str) const
+//  Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * Read accessor for parameter IDs.
@@ -299,11 +299,11 @@ wxString Target::GetParameterText(const Integer id) const
  * @return the integer ID for the parameter.
  */
 //------------------------------------------------------------------------------
-Integer Target::GetParameterID(const wxString &str) const
+Integer Target::GetParameterID(const std::string &str) const
 {
-   if (str == wxT("Targeter"))
+   if (str == "Targeter")
       return SOLVER_NAME_ID;
-   if (str == wxT("TargeterConverged"))
+   if (str == "TargeterConverged")
       return TargeterConvergedID;
     
    return SolverBranchCommand::GetParameterID(str);
@@ -333,7 +333,7 @@ Gmat::ParameterType Target::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString GetParameterTypeString(const Integer id) const
+//  std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Read accessor for parameter type data description.
@@ -343,7 +343,7 @@ Gmat::ParameterType Target::GetParameterType(const Integer id) const
  * @return a string describing the type of the parameter.
  */
 //------------------------------------------------------------------------------
-wxString Target::GetParameterTypeString(const Integer id) const
+std::string Target::GetParameterTypeString(const Integer id) const
 {
    if (id == SOLVER_NAME_ID)
       return PARAM_TYPE_STRING[Gmat::STRING_TYPE];
@@ -355,7 +355,7 @@ wxString Target::GetParameterTypeString(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString GetStringParameter(const Integer id) const
+//  std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Read accessor for string parameters.
@@ -365,7 +365,7 @@ wxString Target::GetParameterTypeString(const Integer id) const
  * @return the string contained in the parameter.
  */
 //------------------------------------------------------------------------------
-wxString Target::GetStringParameter(const Integer id) const
+std::string Target::GetStringParameter(const Integer id) const
 {
    if (id == SOLVER_NAME_ID)
       return solverName;
@@ -375,7 +375,7 @@ wxString Target::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  bool SetStringParameter(const Integer id, const wxString &value)
+//  bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Write accessor for string parameters.
@@ -386,7 +386,7 @@ wxString Target::GetStringParameter(const Integer id) const
  * @return true on success, false on failure.
  */
 //------------------------------------------------------------------------------
-bool Target::SetStringParameter(const Integer id, const wxString &value)
+bool Target::SetStringParameter(const Integer id, const std::string &value)
 {
    if (id == SOLVER_NAME_ID) {
       solverName = value;
@@ -422,7 +422,7 @@ bool Target::GetBooleanParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString GetRefObjectName(const Gmat::ObjectType type) const
+//  std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
 /**
  * Retrieve the name of a reference object.
@@ -432,7 +432,7 @@ bool Target::GetBooleanParameter(const Integer id) const
  * @return the object's name.
  */
 //------------------------------------------------------------------------------
-wxString Target::GetRefObjectName(const Gmat::ObjectType type) const
+std::string Target::GetRefObjectName(const Gmat::ObjectType type) const
 {
    if (type == Gmat::SOLVER)
       return solverName;
@@ -441,7 +441,7 @@ wxString Target::GetRefObjectName(const Gmat::ObjectType type) const
 
 
 //------------------------------------------------------------------------------
-// bool SetRefObjectName(const Gmat::ObjectType type, const wxString &name)
+// bool SetRefObjectName(const Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Set the name of a reference object.
@@ -453,7 +453,7 @@ wxString Target::GetRefObjectName(const Gmat::ObjectType type) const
  */
 //------------------------------------------------------------------------------
 bool Target::SetRefObjectName(const Gmat::ObjectType type,
-                              const wxString &name)
+                              const std::string &name)
 {
    if (type == Gmat::SOLVER) {
       solverName = name;
@@ -479,20 +479,20 @@ bool Target::Initialize()
 
    if ((mapObj = FindObject(solverName)) == NULL) 
    {
-      wxString errorString = wxT("Target command cannot find targeter \"");
+      std::string errorString = "Target command cannot find targeter \"";
       errorString += solverName;
-      errorString += wxT("\"");
+      errorString += "\"";
       throw CommandException(errorString, Gmat::ERROR_);
    }
    
    // Clone the targeter for local use
    #ifdef DEBUG_TARGET_INIT
    MessageInterface::ShowMessage
-      (wxT("Target::Initialize() cloning mapObj <%p>'%s'\n"), mapObj,
+      ("Target::Initialize() cloning mapObj <%p>'%s'\n", mapObj,
        mapObj->GetName().c_str());
    MessageInterface::ShowMessage
-      (wxT("mapObj maxIter=%d\n"),
-       mapObj->GetIntegerParameter(mapObj->GetParameterID(wxT("MaximumIterations"))));
+      ("mapObj maxIter=%d\n",
+       mapObj->GetIntegerParameter(mapObj->GetParameterID("MaximumIterations")));
    #endif
    
    // Delete the old cloned solver
@@ -500,8 +500,8 @@ bool Target::Initialize()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (theSolver, wxT("local solver", "Target::Initialize()"),
-          wxT("deleting local cloned solver"));
+         (theSolver, "local solver", "Target::Initialize()",
+          "deleting local cloned solver");
       #endif
       delete theSolver;
    }
@@ -512,21 +512,21 @@ bool Target::Initialize()
 
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Add
-      (theSolver, theSolver->GetName(), wxT("Target::Initialize()"),
-       wxT("theSolver = (Solver *)(mapObj->Clone())"));
+      (theSolver, theSolver->GetName(), "Target::Initialize()",
+       "theSolver = (Solver *)(mapObj->Clone())");
    #endif
    
-   theSolver->TakeAction(wxT("ResetInstanceCount"));
-   mapObj->TakeAction(wxT("ResetInstanceCount"));
+   theSolver->TakeAction("ResetInstanceCount");
+   mapObj->TakeAction("ResetInstanceCount");
    
-   theSolver->TakeAction(wxT("IncrementInstanceCount"));
-   mapObj->TakeAction(wxT("IncrementInstanceCount"));
+   theSolver->TakeAction("IncrementInstanceCount");
+   mapObj->TakeAction("IncrementInstanceCount");
    
-   if (theSolver->GetStringParameter(wxT("ReportStyle")) == wxT("Debug"))
+   if (theSolver->GetStringParameter("ReportStyle") == "Debug")
       targeterInDebugMode = true;
-   theSolver->SetStringParameter(wxT("SolverMode"), 
+   theSolver->SetStringParameter("SolverMode", 
          GetStringParameter(SOLVER_SOLVE_MODE));
-   theSolver->SetStringParameter(wxT("ExitMode"), 
+   theSolver->SetStringParameter("ExitMode", 
          GetStringParameter(SOLVER_EXIT_MODE));
    
    // Set the local copy of the targeter on each node
@@ -545,11 +545,11 @@ bool Target::Initialize()
       {
          #ifdef DEBUG_TARGET_COMMANDS
             MessageInterface::ShowMessage(
-               wxT("   Target Command %d:  %s\n"), ++nodeNum, 
+               "   Target Command %d:  %s\n", ++nodeNum, 
                current->GetTypeName().c_str());       
          #endif
-         if ((current->GetTypeName() == wxT("Vary")) || 
-             (current->GetTypeName() == wxT("Achieve")))
+         if ((current->GetTypeName() == "Vary") || 
+             (current->GetTypeName() == "Achieve"))
             current->SetRefObject(theSolver, Gmat::SOLVER, solverName);
          current = current->GetNext();
       }
@@ -561,9 +561,9 @@ bool Target::Initialize()
       // Targeter specific initialization goes here:
       if (FindObject(solverName) == NULL) 
       {
-         wxString errorString = wxT("Target command cannot find targeter \"");
+         std::string errorString = "Target command cannot find targeter \"";
          errorString += solverName;
-         errorString += wxT("\"");
+         errorString += "\"";
          throw CommandException(errorString);
       }
 
@@ -593,14 +593,14 @@ bool Target::Execute()
 {
    #ifdef DEBUG_TARGET_EXEC
    MessageInterface::ShowMessage
-      (wxT("Target::Execute() entered, theSolver=<%p>'%s'\n"), (GmatBase*)theSolver,
+      ("Target::Execute() entered, theSolver=<%p>'%s'\n", (GmatBase*)theSolver,
        theSolver->GetName().c_str());
    MessageInterface::ShowMessage
-      (wxT("maxIter=%d\n"),
-       theSolver->GetIntegerParameter(theSolver->GetParameterID(wxT("MaximumIterations"))));
+      ("maxIter=%d\n",
+       theSolver->GetIntegerParameter(theSolver->GetParameterID("MaximumIterations")));
    MessageInterface::ShowMessage
-      (wxT("currentFunction=<%p>'%s'\n"),
-       currentFunction, currentFunction ? ((GmatBase*)currentFunction)->GetName().c_str() : wxT("NULL"));
+      ("currentFunction=<%p>'%s'\n",
+       currentFunction, currentFunction ? ((GmatBase*)currentFunction)->GetName().c_str() : "NULL");
    #endif
    
    // If targeting inside a function, we need to reinitialize since the local solver is
@@ -618,12 +618,12 @@ bool Target::Execute()
    Solver::SolverState state = theSolver->GetState();
    
    #ifdef DEBUG_TARGET_COMMANDS
-      MessageInterface::ShowMessage(wxT("TargetExecute(%c%c%c%d)\n"),
-         (commandExecuting?wxT('Y'):wxT('N')),
-         (commandComplete?wxT('Y'):wxT('N')),
-         (branchExecuting?wxT('Y'):wxT('N')),
+      MessageInterface::ShowMessage("TargetExecute(%c%c%c%d)\n",
+         (commandExecuting?'Y':'N'),
+         (commandComplete?'Y':'N'),
+         (branchExecuting?'Y':'N'),
          state);
-      MessageInterface::ShowMessage(wxT("   targeterConverged=%d\n"), 
+      MessageInterface::ShowMessage("   targeterConverged=%d\n", 
             targeterConverged);
    #endif
       
@@ -639,7 +639,7 @@ bool Target::Execute()
    {
       #ifdef DEBUG_TARGET_COMMANDS
           MessageInterface::ShowMessage(
-          wxT("Entered Targeter while command is not executing\n"));
+          "Entered Targeter while command is not executing\n");
       #endif
 
       FreeLoopData();
@@ -649,10 +649,10 @@ bool Target::Execute()
       retval = SolverBranchCommand::Execute();
 
       #ifdef DEBUG_TARGETER
-         MessageInterface::ShowMessage(wxT("Resetting the Differential Corrector\n"));
+         MessageInterface::ShowMessage("Resetting the Differential Corrector\n");
       #endif
 
-      theSolver->TakeAction(wxT("Reset"));
+      theSolver->TakeAction("Reset");
       state = theSolver->GetState();
    }
    
@@ -684,7 +684,7 @@ bool Target::Execute()
          case RUN_INITIAL_GUESS:
             #ifdef DEBUG_START_MODE
                MessageInterface::ShowMessage(
-                     wxT("Running as RUN_INITIAL_GUESS, specialState = %d, currentState = %d\n"),
+                     "Running as RUN_INITIAL_GUESS, specialState = %d, currentState = %d\n",
                      specialState, theSolver->GetState());
             #endif
             switch (specialState) 
@@ -695,9 +695,9 @@ bool Target::Execute()
                   targeterConverged = false;
                   while (currentCmd != this)  
                   {
-                     wxString type = currentCmd->GetTypeName();
-                     if ((type == wxT("Target")) || (type == wxT("Vary")) ||
-                         (type == wxT("Achieve")))
+                     std::string type = currentCmd->GetTypeName();
+                     if ((type == "Target") || (type == "Vary") ||
+                         (type == "Achieve"))
                         currentCmd->Execute();
                      currentCmd = currentCmd->GetNext();
                   }
@@ -742,18 +742,18 @@ bool Target::Execute()
          case RUN_SOLUTION:
             #ifdef DEBUG_START_MODE
                MessageInterface::ShowMessage(
-                     wxT("Running as RUN_SOLUTION, state = %d\n"), state);
+                     "Running as RUN_SOLUTION, state = %d\n", state);
             #endif
             throw SolverException(
-                  wxT("Run Solution is not yet implemented for the Target ")
-                  wxT("command\n"));
+                  "Run Solution is not yet implemented for the Target "
+                  "command\n");
             break;
          
          case RUN_AND_SOLVE:
          default:
             #ifdef DEBUG_START_MODE
                MessageInterface::ShowMessage(
-                     wxT("Running as RUN_AND_SOLVE or default, state = %d\n"), 
+                     "Running as RUN_AND_SOLVE or default, state = %d\n", 
                      state);
             #endif
             switch (state) 
@@ -764,13 +764,13 @@ bool Target::Execute()
                   targeterConverged = false;
                   while (currentCmd != this)  
                   {
-                     wxString type = currentCmd->GetTypeName();
-                     if ((type == wxT("Target")) || (type == wxT("Vary")) ||
-                         (type == wxT("Achieve")))
+                     std::string type = currentCmd->GetTypeName();
+                     if ((type == "Target") || (type == "Vary") ||
+                         (type == "Achieve"))
                      {
                         currentCmd->Execute();
-                        if ((type == wxT("Vary")) && (targeterRunOnce))
-                           currentCmd->TakeAction(wxT("SolverReset"));
+                        if ((type == "Vary") && (targeterRunOnce))
+                           currentCmd->TakeAction("SolverReset");
                      }
                      currentCmd = currentCmd->GetNext();
                   }
@@ -829,7 +829,7 @@ bool Target::Execute()
                case Solver::ITERATING:     // Intentional fall-through
                default:
                   throw CommandException(
-                     wxT("Invalid state in the Targeter state machine"));
+                     "Invalid state in the Targeter state machine");
             }
             break;
       }
@@ -849,11 +849,11 @@ bool Target::Execute()
    // Pass spacecraft data to the targeter for reporting in debug mode
    if (targeterInDebugMode)
    {
-      wxString dbgData = wxT("");
+      std::string dbgData = "";
       for (ObjectArray::iterator i = localStore.begin(); i < localStore.end(); 
            ++i)
       {
-         dbgData += (*i)->GetGeneratingString() + wxT("\n---\n");
+         dbgData += (*i)->GetGeneratingString() + "\n---\n";
       }
       theSolver->SetDebugString(dbgData);
    }
@@ -861,7 +861,7 @@ bool Target::Execute()
    
    #ifdef DEBUG_TARGET_EXEC
    MessageInterface::ShowMessage
-      (wxT("Target::Execute() returning %d, theSolver=<%p>'%s'\n"), retval,
+      ("Target::Execute() returning %d, theSolver=<%p>'%s'\n", retval,
        theSolver, theSolver->GetName().c_str());
    #endif
    

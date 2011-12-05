@@ -44,7 +44,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// PrinceDormand45::PrinceDormand45(const wxString &nomme)
+// PrinceDormand45::PrinceDormand45(const std::string &nomme)
 //------------------------------------------------------------------------------
 /**
  * The constructor
@@ -54,8 +54,8 @@
 //    RungeKutta      (7, 5)
 //{
 //}
-PrinceDormand45::PrinceDormand45(const wxString &nomme) :
-    RungeKutta      (7, 5, wxT("PrinceDormand45"), nomme)
+PrinceDormand45::PrinceDormand45(const std::string &nomme) :
+    RungeKutta      (7, 5, "PrinceDormand45", nomme)
 {
 }
 

@@ -59,45 +59,45 @@ public:
 
    // inherited from GmatBase
    virtual GmatBase*    Clone() const;
-   virtual const wxString&
+   virtual const std::string&
                         GetGeneratingString(Gmat::WriteMode mode = Gmat::SCRIPTING,
-                                            const wxString &prefix = wxT(""),
-                                            const wxString &useName = wxT(""));
+                                            const std::string &prefix = "",
+                                            const std::string &useName = "");
    
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name);
+                                     const std::string &name);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name);
+                                     const std::string &name);
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    virtual const ObjectTypeArray&
                        GetRefObjectTypeArray();
    virtual const StringArray&
                        GetRefObjectNameArray(const Gmat::ObjectType type);
    
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    
    virtual Real         GetRealParameter(const Integer id) const;
    virtual Real         SetRealParameter(const Integer id,
                                          const Real value);
-   virtual Real         GetRealParameter(const wxString &label) const;
-   virtual Real         SetRealParameter(const wxString &label,
+   virtual Real         GetRealParameter(const std::string &label) const;
+   virtual Real         SetRealParameter(const std::string &label,
                                          const Real value);
-   virtual wxString  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
-   virtual wxString  GetStringParameter(const wxString &label) const;
-   virtual bool         SetStringParameter(const wxString &label, 
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual std::string  GetStringParameter(const std::string &label) const;
+   virtual bool         SetStringParameter(const std::string &label, 
+                                           const std::string &value);
    virtual const StringArray& 
                        GetWrapperObjectNameArray();
    virtual bool        SetElementWrapper(ElementWrapper* toWrapper,
-                                         const wxString &withName);
+                                         const std::string &withName);
    virtual void        ClearWrappers();
     
 protected:
@@ -113,7 +113,7 @@ protected:
       ForParamCount
    };
 
-   static const wxString PARAMETER_TEXT[
+   static const std::string PARAMETER_TEXT[
       ForParamCount - BranchCommandParamCount];
 
    static const Gmat::ParameterType PARAMETER_TYPE[
@@ -142,10 +142,10 @@ protected:
    ElementWrapper *endWrapper;
    ElementWrapper *incrWrapper;
    
-   wxString indexName;
-   wxString startName;
-   wxString endName;
-   wxString incrName;
+   std::string indexName;
+   std::string startName;
+   std::string endName;
+   std::string incrName;
    
    // method to evaluate the counter to see if we are still looping
    bool StillLooping();

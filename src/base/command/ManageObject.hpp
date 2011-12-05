@@ -33,32 +33,32 @@
 class GMAT_API ManageObject : public GmatCommand
 {
 public:
-   ManageObject(const wxString &typeStr);
+   ManageObject(const std::string &typeStr);
    virtual          ~ManageObject();
    ManageObject(const ManageObject &mo);
    ManageObject&        operator=(const ManageObject &mo);
    
    // Parameter access methods - overridden from GmatBase
-   virtual wxString    GetParameterText(const Integer id) const;
-   virtual Integer        GetParameterID(const wxString &str) const;
+   virtual std::string    GetParameterText(const Integer id) const;
+   virtual Integer        GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                           GetParameterType(const Integer id) const;
-   virtual wxString    GetParameterTypeString(const Integer id) const;
+   virtual std::string    GetParameterTypeString(const Integer id) const;
 
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const Integer id,
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const Integer id,
                                            const Integer index) const;
-   virtual wxString  GetStringParameter(const wxString &label,
+   virtual std::string  GetStringParameter(const std::string &label,
                                            const Integer index) const;
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label, 
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label, 
+                                           const std::string &value);
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
-   virtual bool         SetStringParameter(const wxString &label, 
-                                           const wxString &value,
+   virtual bool         SetStringParameter(const std::string &label, 
+                                           const std::string &value,
                                            const Integer index);
    virtual const StringArray& 
                         GetStringArrayParameter(const Integer id) const;
@@ -71,14 +71,14 @@ protected:
       OBJECT_NAMES = GmatCommandParamCount, 
       ManageObjectParamCount
    };
-   static const wxString PARAMETER_TEXT[ManageObjectParamCount - GmatCommandParamCount];
+   static const std::string PARAMETER_TEXT[ManageObjectParamCount - GmatCommandParamCount];
 
    static const Gmat::ParameterType PARAMETER_TYPE[ManageObjectParamCount - GmatCommandParamCount];
   
    /// array of names for the objects to manage
    StringArray objectNames;
    
-   bool InsertIntoGOS(GmatBase *obj, const wxString &withName);
+   bool InsertIntoGOS(GmatBase *obj, const std::string &withName);
 
 };
 

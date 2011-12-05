@@ -33,8 +33,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Sinh::Sinh(const wxString &nomme)
-   : MathFunction(wxT("Sinh"), nomme)
+Sinh::Sinh(const std::string &nomme)
+   : MathFunction("Sinh", nomme)
 {
 }
 
@@ -93,7 +93,7 @@ void Sinh::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
    leftNode->GetOutputInfo(type1, row1, col1);
    
    if (type1 != Gmat::REAL_TYPE)
-      throw MathException(wxT("Left is not scalar, so cannot do Sinh().\n"));  
+      throw MathException("Left is not scalar, so cannot do Sinh().\n");  
    else
    {
       type = type1;
@@ -114,7 +114,7 @@ void Sinh::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 bool Sinh::ValidateInputs()
 {
    if (leftNode == NULL)
-      throw MathException(wxT("Sinh() - Missing input arguments.\n"));
+      throw MathException("Sinh() - Missing input arguments.\n");
    
    Integer type1, row1, col1; // Left node
    

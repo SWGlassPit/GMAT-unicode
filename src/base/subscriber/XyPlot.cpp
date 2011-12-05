@@ -35,48 +35,48 @@
 // static data
 //---------------------------------
 
-const wxString
+const std::string
 XyPlot::PARAMETER_TEXT[XyPlotParamCount - SubscriberParamCount] =
 {
-   wxT("XVariable"),
-   wxT("YVariables"),
-   wxT("PlotTitle"),
-   wxT("XAxisTitle"),
-   wxT("YAxisTitle"),
-   wxT("ShowGrid"),
-   wxT("DataCollectFrequency"),
-   wxT("UpdatePlotFrequency"),
-   wxT("ShowPlot"),
-   wxT("UseLines"),
-   wxT("LineWidth"),
-   wxT("UseMarkers"),
-   wxT("MarkerSize"),
-   wxT("Drawing"),
-   wxT("IndVar"),
-   wxT("Add"),
-   wxT("Grid"),
+   "XVariable",
+   "YVariables",
+   "PlotTitle",
+   "XAxisTitle",
+   "YAxisTitle",
+   "ShowGrid",
+   "DataCollectFrequency",
+   "UpdatePlotFrequency",
+   "ShowPlot",
+   "UseLines",
+   "LineWidth",
+   "UseMarkers",
+   "MarkerSize",
+   "Drawing",
+   "IndVar",
+   "Add",
+   "Grid",
 }; 
 
 const Gmat::ParameterType
 XyPlot::PARAMETER_TYPE[XyPlotParamCount - SubscriberParamCount] =
 {
-   Gmat::OBJECT_TYPE,      // wxT("IndVar"),wxT("XVariable")
-   Gmat::OBJECTARRAY_TYPE, // wxT("Add"),wxT("YVariables")
-   Gmat::STRING_TYPE,      // wxT("PlotTitle"),
-   Gmat::STRING_TYPE,      // wxT("XAxisTitle"),
-   Gmat::STRING_TYPE,      // wxT("YAxisTitle"),
-   Gmat::BOOLEAN_TYPE,     // wxT("ShowGrid")
-   Gmat::INTEGER_TYPE,     // wxT("DataCollectFrequency"),
-   Gmat::INTEGER_TYPE,     // wxT("UpdatePlotFrequency"),
-   Gmat::BOOLEAN_TYPE,     // wxT("ShowPlot"),
-   Gmat::BOOLEAN_TYPE,     // wxT("UseLines"),
-   Gmat::INTEGER_TYPE,     // wxT("LineWidth"),
-   Gmat::BOOLEAN_TYPE,     // wxT("UseMarkers"),
-   Gmat::INTEGER_TYPE,     // wxT("MarkerSize"),
-   Gmat::BOOLEAN_TYPE,     // wxT("Drawing")
-   Gmat::OBJECT_TYPE,      // wxT("IndVar"),wxT("XVariable")
-   Gmat::OBJECTARRAY_TYPE, // wxT("Add"),wxT("YVariables")
-   Gmat::ON_OFF_TYPE,      // wxT("Grid"),wxT("ShowGrid")
+   Gmat::OBJECT_TYPE,      // "IndVar","XVariable"
+   Gmat::OBJECTARRAY_TYPE, // "Add","YVariables"
+   Gmat::STRING_TYPE,      // "PlotTitle",
+   Gmat::STRING_TYPE,      // "XAxisTitle",
+   Gmat::STRING_TYPE,      // "YAxisTitle",
+   Gmat::BOOLEAN_TYPE,     // "ShowGrid"
+   Gmat::INTEGER_TYPE,     // "DataCollectFrequency",
+   Gmat::INTEGER_TYPE,     // "UpdatePlotFrequency",
+   Gmat::BOOLEAN_TYPE,     // "ShowPlot",
+   Gmat::BOOLEAN_TYPE,     // "UseLines",
+   Gmat::INTEGER_TYPE,     // "LineWidth",
+   Gmat::BOOLEAN_TYPE,     // "UseMarkers",
+   Gmat::INTEGER_TYPE,     // "MarkerSize",
+   Gmat::BOOLEAN_TYPE,     // "Drawing"
+   Gmat::OBJECT_TYPE,      // "IndVar","XVariable"
+   Gmat::OBJECTARRAY_TYPE, // "Add","YVariables"
+   Gmat::ON_OFF_TYPE,      // "Grid","ShowGrid"
 };
 
 //---------------------------------
@@ -84,25 +84,25 @@ XyPlot::PARAMETER_TYPE[XyPlotParamCount - SubscriberParamCount] =
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// XyPlot(const wxString &name, Parameter *xParam,
-//        Parameter *firstYParam, const wxString &plotTitle,
-//        const wxString &xAxisTitle, const wxString &yAxisTitle,
+// XyPlot(const std::string &name, Parameter *xParam,
+//        Parameter *firstYParam, const std::string &plotTitle,
+//        const std::string &xAxisTitle, const std::string &yAxisTitle,
 //        bool drawGrid)
 //------------------------------------------------------------------------------
-XyPlot::XyPlot(const wxString &name, Parameter *xParam,
-               Parameter *firstYParam, const wxString &plotTitle,
-               const wxString &xAxisTitle, const wxString &yAxisTitle) :
-   Subscriber(wxT("XYPlot"), name)
+XyPlot::XyPlot(const std::string &name, Parameter *xParam,
+               Parameter *firstYParam, const std::string &plotTitle,
+               const std::string &xAxisTitle, const std::string &yAxisTitle) :
+   Subscriber("XYPlot", name)
 {
    // GmatBase data
    objectTypes.push_back(Gmat::XY_PLOT);
-   objectTypeNames.push_back(wxT("XYPlot"));
+   objectTypeNames.push_back("XYPlot");
    parameterCount = XyPlotParamCount;
    
    mDrawGrid = true;
    mNumYParams = 0;
    
-   mXParamName = wxT("");
+   mXParamName = "";
    mNumXParams = 0;
    
    mXParam = xParam;
@@ -221,11 +221,11 @@ XyPlot::~XyPlot()
 }
 
 //------------------------------------------------------------------------------
-// bool SetXParameter(const wxString &paramName)
+// bool SetXParameter(const std::string &paramName)
 //------------------------------------------------------------------------------
-bool XyPlot::SetXParameter(const wxString &paramName)
+bool XyPlot::SetXParameter(const std::string &paramName)
 {
-   if (paramName != wxT(""))
+   if (paramName != "")
    {
       mXParamName = paramName;
       mNumXParams = 1; //loj: only 1 X parameter for now
@@ -237,16 +237,16 @@ bool XyPlot::SetXParameter(const wxString &paramName)
 
 
 //------------------------------------------------------------------------------
-// bool AddYParameter(const wxString &paramName, Integer index)
+// bool AddYParameter(const std::string &paramName, Integer index)
 //------------------------------------------------------------------------------
-bool XyPlot::AddYParameter(const wxString &paramName, Integer index)
+bool XyPlot::AddYParameter(const std::string &paramName, Integer index)
 {
    #if DEBUG_XYPLOT_PARAM
-   MessageInterface::ShowMessage(wxT("XyPlot::AddYParameter() name = %s\n"),
+   MessageInterface::ShowMessage("XyPlot::AddYParameter() name = %s\n",
                                  paramName.c_str());
    #endif
    
-   if (paramName != wxT("") && index == mNumYParams)
+   if (paramName != "" && index == mNumYParams)
    {
       // if paramName not found, add (based on loj fix to XYPlot)
       if (find(mYParamNames.begin(), mYParamNames.end(), paramName) ==
@@ -276,7 +276,7 @@ bool XyPlot::Initialize()
    
    #if DEBUG_XYPLOT_INIT
    MessageInterface::ShowMessage
-      (wxT("XyPlot::Initialize() active=%d, mNumYParams=%d\n"), active, mNumYParams);
+      ("XyPlot::Initialize() active=%d, mNumYParams=%d\n", active, mNumYParams);
    #endif
    
    // Check if there are parameters selected for XyPlot
@@ -287,8 +287,8 @@ bool XyPlot::Initialize()
          active = false;
          MessageInterface::PopupMessage
             (Gmat::WARNING_,
-             wxT("*** WARNING *** The XYPlot named \"%s\" will not be shown.\n")
-             wxT("No parameters were selected for X Axis or Y Axis.\n"),
+             "*** WARNING *** The XYPlot named \"%s\" will not be shown.\n"
+             "No parameters were selected for X Axis or Y Axis.\n",
              GetName().c_str());
          return false;
       }
@@ -298,8 +298,8 @@ bool XyPlot::Initialize()
          active = false;
          MessageInterface::PopupMessage
             (Gmat::WARNING_,
-             wxT("*** WARNING *** The XYPlot named \"%s\" will not be shown.\n")
-             wxT("The first parameter selected for X Axis or Y Axis is NULL\n"),
+             "*** WARNING *** The XYPlot named \"%s\" will not be shown.\n"
+             "The first parameter selected for X Axis or Y Axis is NULL\n",
              GetName().c_str());
          return false;
       }
@@ -318,7 +318,7 @@ bool XyPlot::Initialize()
       // Create XyPlotWindow, if not exist
       #if DEBUG_XYPLOT_INIT
       MessageInterface::ShowMessage
-         (wxT("XyPlot::Initialize() calling CreateXyPlotWindow()\n"));
+         ("XyPlot::Initialize() calling CreateXyPlotWindow()\n");
       #endif
       
       PlotInterface::CreateXyPlotWindow(instanceName, mOldName, mPlotUpperLeft[0], mPlotUpperLeft[1],
@@ -336,16 +336,16 @@ bool XyPlot::Initialize()
       
       #if DEBUG_XYPLOT_INIT
       MessageInterface::ShowMessage
-         (wxT("XyPlot::Initialize() Get curveTitle and penColor\n"));
+         ("XyPlot::Initialize() Get curveTitle and penColor\n");
       #endif
       
       for (int i=0; i<mNumYParams; i++)
       {
-         wxString curveTitle = mYParams[i]->GetName();
-         UnsignedInt penColor = mYParams[i]->GetUnsignedIntParameter(wxT("Color"));
+         std::string curveTitle = mYParams[i]->GetName();
+         UnsignedInt penColor = mYParams[i]->GetUnsignedIntParameter("Color");
             
          #if DEBUG_XYPLOT_INIT
-         MessageInterface::ShowMessage(wxT("XyPlot::Initialize() curveTitle = %s\n"),
+         MessageInterface::ShowMessage("XyPlot::Initialize() curveTitle = %s\n",
                                        curveTitle.c_str());
          #endif
          
@@ -357,7 +357,7 @@ bool XyPlot::Initialize()
       status = true;
       
       #if DEBUG_XYPLOT_INIT
-      MessageInterface::ShowMessage(wxT("XyPlot::Initialize() calling ClearXyPlotData()\n"));
+      MessageInterface::ShowMessage("XyPlot::Initialize() calling ClearXyPlotData()\n");
       #endif
       
       PlotInterface::ClearXyPlotData(instanceName);
@@ -367,14 +367,14 @@ bool XyPlot::Initialize()
    else
    {
       #if DEBUG_XYPLOT_INIT
-      MessageInterface::ShowMessage(wxT("XyPlot::Initialize() DeleteXyPlot()\n"));
+      MessageInterface::ShowMessage("XyPlot::Initialize() DeleteXyPlot()\n");
       #endif
       
       status =  PlotInterface::DeleteXyPlot(instanceName);
    }
    
    #if DEBUG_XYPLOT_INIT
-   MessageInterface::ShowMessage(wxT("XyPlot::Initialize() leaving stauts=%d\n"), status);
+   MessageInterface::ShowMessage("XyPlot::Initialize() leaving stauts=%d\n", status);
    #endif
    
    return status;
@@ -416,7 +416,7 @@ void XyPlot::Copy(const GmatBase* orig)
 
 
 //------------------------------------------------------------------------------
-// bool SetName(const wxString &who, const std;:string &oldName = wxT(""))
+// bool SetName(const std::string &who, const std;:string &oldName = "")
 //------------------------------------------------------------------------------
 /**
  * Set the name for this instance.
@@ -425,13 +425,13 @@ void XyPlot::Copy(const GmatBase* orig)
  *
  */
 //------------------------------------------------------------------------------
-bool XyPlot::SetName(const wxString &who, const wxString &oldName)
+bool XyPlot::SetName(const std::string &who, const std::string &oldName)
 {
    #if DEBUG_RENAME
-   MessageInterface::ShowMessage(wxT("XyPlot::SetName() newName=%s\n"), who.c_str());
+   MessageInterface::ShowMessage("XyPlot::SetName() newName=%s\n", who.c_str());
    #endif
    
-   if (oldName == wxT(""))
+   if (oldName == "")
       mOldName = instanceName;
    else
       mOldName = oldName;
@@ -441,8 +441,8 @@ bool XyPlot::SetName(const wxString &who, const wxString &oldName)
 
 
 //------------------------------------------------------------------------------
-// virtual bool TakeAction(const wxString &action,  
-//                         const wxString &actionData = wxT(""));
+// virtual bool TakeAction(const std::string &action,  
+//                         const std::string &actionData = "");
 //------------------------------------------------------------------------------
 /**
  * This method performs action.
@@ -453,62 +453,60 @@ bool XyPlot::SetName(const wxString &who, const wxString &oldName)
  *
  */
 //------------------------------------------------------------------------------
-bool XyPlot::TakeAction(const wxString &action,
-                        const wxString &actionData)
+bool XyPlot::TakeAction(const std::string &action,
+                        const std::string &actionData)
 {
    #if DEBUG_ACTION_REMOVE
-   MessageInterface::ShowMessage(wxT("XyPlot::TakeAction() action=%s, actionData=%s\n"),
+   MessageInterface::ShowMessage("XyPlot::TakeAction() action=%s, actionData=%s\n",
                                  action.c_str(), actionData.c_str());
    #endif
    
-   if (action == wxT("Clear"))
+   if (action == "Clear")
    {
       return ClearYParameters();
    }
-   else if (action == wxT("Remove"))
+   else if (action == "Remove")
    {
       return RemoveYParameter(actionData);
    }
-   else if (action == wxT("ClearData"))
+   else if (action == "ClearData")
    {
       return ResetYParameters();
    }
-   else if (action == wxT("PenUp"))
+   else if (action == "PenUp")
    {
       return PenUp();
    }
-   else if (action == wxT("PenDown"))
+   else if (action == "PenDown")
    {
       return PenDown();
    }
-   else if (action == wxT("MarkPoint"))
+   else if (action == "MarkPoint")
    {
       return MarkPoint();
    }
-   else if (action == wxT("MarkBreak"))
+   else if (action == "MarkBreak")
    {
       return MarkBreak();
    }
-   else if (action == wxT("ClearFromBreak"))
+   else if (action == "ClearFromBreak")
    {
       return ClearFromBreak();
    }
-   else if (action == wxT("Darken"))
+   else if (action == "Darken")
    {
-      wxString data;
+      std::stringstream data;
       data << actionData;
-      long thefactor;
-      data.ToLong(&thefactor);
-      Integer factor = thefactor;
+      Integer factor;
+      data >> factor;
       return Darken(factor);
    }
-   else if (action == wxT("Lighten"))
+   else if (action == "Lighten")
    {
-      wxString data;
+      std::stringstream data;
       data << actionData;
-      long thefactor;
-      data.ToLong(&thefactor);
-      Integer factor = thefactor;
+      Integer factor;
+      data >> factor;
       return Lighten(factor);
    }
    // Add color change and marker change here(?)
@@ -519,15 +517,15 @@ bool XyPlot::TakeAction(const wxString &action,
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool XyPlot::RenameRefObject(const Gmat::ObjectType type,
-                             const wxString &oldName,
-                             const wxString &newName)
+                             const std::string &oldName,
+                             const std::string &newName)
 {
    #if DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("XyPlot::RenameRefObject() type=%s, oldName=%s, newName=%s\n"),
+      ("XyPlot::RenameRefObject() type=%s, oldName=%s, newName=%s\n",
        GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
    #endif
    
@@ -550,7 +548,7 @@ bool XyPlot::RenameRefObject(const Gmat::ObjectType type,
    }
    else
    {
-      wxString::size_type pos = mXParamName.find(oldName);
+      std::string::size_type pos = mXParamName.find(oldName);
       
       if (pos != mXParamName.npos)
          mXParamName.replace(pos, oldName.size(), newName);
@@ -569,9 +567,9 @@ bool XyPlot::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
-wxString XyPlot::GetParameterText(const Integer id) const
+std::string XyPlot::GetParameterText(const Integer id) const
 {
    if (id >= SubscriberParamCount && id < XyPlotParamCount)
       return PARAMETER_TEXT[id - SubscriberParamCount];
@@ -581,9 +579,9 @@ wxString XyPlot::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer XyPlot::GetParameterID(const wxString &str) const
+Integer XyPlot::GetParameterID(const std::string &str) const
 {
    for (int i=SubscriberParamCount; i<XyPlotParamCount; i++)
    {
@@ -616,9 +614,9 @@ Gmat::ParameterType XyPlot::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
-wxString XyPlot::GetParameterTypeString(const Integer id) const
+std::string XyPlot::GetParameterTypeString(const Integer id) const
 {
    if (id >= SubscriberParamCount && id < XyPlotParamCount)
       return GmatBase::PARAM_TYPE_STRING[GetParameterType(id - SubscriberParamCount)];
@@ -681,9 +679,9 @@ Integer XyPlot::GetIntegerParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// virtual Integer GetIntegerParameter(const wxString &label) const
+// virtual Integer GetIntegerParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-Integer XyPlot::GetIntegerParameter(const wxString &label) const
+Integer XyPlot::GetIntegerParameter(const std::string &label) const
 {
    return GetIntegerParameter(GetParameterID(label));
 }
@@ -715,10 +713,10 @@ Integer XyPlot::SetIntegerParameter(const Integer id, const Integer value)
 
 
 //------------------------------------------------------------------------------
-// virtual Integer SetIntegerParameter(const wxString &label,
+// virtual Integer SetIntegerParameter(const std::string &label,
 //                                     const Integer value)
 //------------------------------------------------------------------------------
-Integer XyPlot::SetIntegerParameter(const wxString &label,
+Integer XyPlot::SetIntegerParameter(const std::string &label,
                                     const Integer value)
 {
    return SetIntegerParameter(GetParameterID(label), value);
@@ -726,18 +724,18 @@ Integer XyPlot::SetIntegerParameter(const wxString &label,
 
 
 //---------------------------------------------------------------------------
-//  wxString GetOnOffParameter(const Integer id) const
+//  std::string GetOnOffParameter(const Integer id) const
 //---------------------------------------------------------------------------
-wxString XyPlot::GetOnOffParameter(const Integer id) const
+std::string XyPlot::GetOnOffParameter(const Integer id) const
 {
    switch (id)
    {
    case DRAW_GRID:
       WriteDeprecatedMessage(id);
       if (mDrawGrid)
-         return wxT("On");
+         return "On";
       else
-         return wxT("Off");
+         return "Off";
    default:
       return Subscriber::GetOnOffParameter(id);
    }
@@ -745,24 +743,24 @@ wxString XyPlot::GetOnOffParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString XyPlot::GetOnOffParameter(const wxString &label) const
+// std::string XyPlot::GetOnOffParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString XyPlot::GetOnOffParameter(const wxString &label) const
+std::string XyPlot::GetOnOffParameter(const std::string &label) const
 {
    return GetOnOffParameter(GetParameterID(label));
 }
 
 
 //---------------------------------------------------------------------------
-//  bool SetOnOffParameter(const Integer id, const wxString &value)
+//  bool SetOnOffParameter(const Integer id, const std::string &value)
 //---------------------------------------------------------------------------
-bool XyPlot::SetOnOffParameter(const Integer id, const wxString &value)
+bool XyPlot::SetOnOffParameter(const Integer id, const std::string &value)
 {
    switch (id)
    {
    case DRAW_GRID:
       WriteDeprecatedMessage(id);
-      mDrawGrid = value == wxT("On");
+      mDrawGrid = value == "On";
       return true;
    default:
       return Subscriber::SetOnOffParameter(id, value);
@@ -771,18 +769,18 @@ bool XyPlot::SetOnOffParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetOnOffParameter(const wxString &label, const wxString &value)
+// bool SetOnOffParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
-bool XyPlot::SetOnOffParameter(const wxString &label, const wxString &value)
+bool XyPlot::SetOnOffParameter(const std::string &label, const std::string &value)
 {
    return SetOnOffParameter(GetParameterID(label), value);
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
-wxString XyPlot::GetStringParameter(const Integer id) const
+std::string XyPlot::GetStringParameter(const Integer id) const
 {
    switch (id)
    {
@@ -803,12 +801,12 @@ wxString XyPlot::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString XyPlot::GetStringParameter(const wxString &label) const
+std::string XyPlot::GetStringParameter(const std::string &label) const
 {
    #if DEBUG_XY_PARAM
-   MessageInterface::ShowMessage(wxT("XyPlot::GetStringParameter() label = %s\n"),
+   MessageInterface::ShowMessage("XyPlot::GetStringParameter() label = %s\n",
                                  label.c_str());
    #endif
    
@@ -817,13 +815,13 @@ wxString XyPlot::GetStringParameter(const wxString &label) const
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
-bool XyPlot::SetStringParameter(const Integer id, const wxString &value)
+bool XyPlot::SetStringParameter(const Integer id, const std::string &value)
 {
    #if DEBUG_XYPLOT_PARAM
-   MessageInterface::ShowMessage(wxT("XyPlot::SetStringParameter() id = %d, ")
-                                 wxT("value = %s \n"), id, value.c_str());
+   MessageInterface::ShowMessage("XyPlot::SetStringParameter() id = %d, "
+                                 "value = %s \n", id, value.c_str());
    #endif
    
    switch (id)
@@ -852,15 +850,15 @@ bool XyPlot::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label,
-//                         const wxString &value)
+// bool SetStringParameter(const std::string &label,
+//                         const std::string &value)
 //------------------------------------------------------------------------------
-bool XyPlot::SetStringParameter(const wxString &label,
-                                const wxString &value)
+bool XyPlot::SetStringParameter(const std::string &label,
+                                const std::string &value)
 {
    #if DEBUG_XYPLOT_PARAM
-   MessageInterface::ShowMessage(wxT("XyPlot::SetStringParameter() label = %s, ")
-                                 wxT("value = %s \n"), label.c_str(), value.c_str());
+   MessageInterface::ShowMessage("XyPlot::SetStringParameter() label = %s, "
+                                 "value = %s \n", label.c_str(), value.c_str());
    #endif
    
    return SetStringParameter(GetParameterID(label), value);
@@ -868,10 +866,10 @@ bool XyPlot::SetStringParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// virtual bool SetStringParameter(const Integer id, const wxString &value,
+// virtual bool SetStringParameter(const Integer id, const std::string &value,
 //                                 const Integer index)
 //------------------------------------------------------------------------------
-bool XyPlot::SetStringParameter(const Integer id, const wxString &value,
+bool XyPlot::SetStringParameter(const Integer id, const std::string &value,
                                 const Integer index)
 {
    switch (id)
@@ -887,17 +885,17 @@ bool XyPlot::SetStringParameter(const Integer id, const wxString &value,
 
 
 //------------------------------------------------------------------------------
-// virtual bool SetStringParameter(const wxString &label,
-//                                 const wxString &value,
+// virtual bool SetStringParameter(const std::string &label,
+//                                 const std::string &value,
 //                                 const Integer index)
 //------------------------------------------------------------------------------
-bool XyPlot::SetStringParameter(const wxString &label,
-                                const wxString &value,
+bool XyPlot::SetStringParameter(const std::string &label,
+                                const std::string &value,
                                 const Integer index)
 {
    #if DEBUG_XYPLOT_PARAM
    MessageInterface::ShowMessage
-      (wxT("XyPlot::SetStringParameter() label=%s, value=%s, index=%d \n"),
+      ("XyPlot::SetStringParameter() label=%s, value=%s, index=%d \n",
        label.c_str(), value.c_str(), index);
    #endif
    
@@ -923,9 +921,9 @@ const StringArray& XyPlot::GetStringArrayParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// StringArray& GetStringArrayParameter(const wxString &label) const
+// StringArray& GetStringArrayParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-const StringArray& XyPlot::GetStringArrayParameter(const wxString &label) const
+const StringArray& XyPlot::GetStringArrayParameter(const std::string &label) const
 {
    return GetStringArrayParameter(GetParameterID(label));
 }
@@ -946,12 +944,12 @@ bool XyPlot::GetBooleanParameter(const Integer id) const
    return Subscriber::GetBooleanParameter(id);
 }
 
-bool XyPlot::GetBooleanParameter(const wxString &label) const
+bool XyPlot::GetBooleanParameter(const std::string &label) const
 {
    return GetBooleanParameter(GetParameterID(label));
 }
 
-bool XyPlot::SetBooleanParameter(const wxString &label, const bool value)
+bool XyPlot::SetBooleanParameter(const std::string &label, const bool value)
 {
    return SetBooleanParameter(GetParameterID(label), value);
 }
@@ -988,10 +986,10 @@ bool XyPlot::SetBooleanParameter(const Integer id, const bool value)
 
 //------------------------------------------------------------------------------
 // virtual GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                                const wxString &name)
+//                                const std::string &name)
 //------------------------------------------------------------------------------
 GmatBase* XyPlot::GetRefObject(const Gmat::ObjectType type,
-                               const wxString &name)
+                               const std::string &name)
 {
    // if name is X parameter
    if (name == mXParamName)
@@ -1008,17 +1006,17 @@ GmatBase* XyPlot::GetRefObject(const Gmat::ObjectType type,
       }
    }
    
-   throw GmatBaseException(wxT("XyPlot::GetRefObject() the object name: ") + name +
-                           wxT("not found\n"));
+   throw GmatBaseException("XyPlot::GetRefObject() the object name: " + name +
+                           "not found\n");
 }
 
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                           const wxString &name = wxT(""))
+//                           const std::string &name = "")
 //------------------------------------------------------------------------------
 bool XyPlot::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                          const wxString &name)
+                          const std::string &name)
 {
    if (type == Gmat::PARAMETER)
    {
@@ -1029,12 +1027,12 @@ bool XyPlot::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
          
          if (!mXParam->IsPlottable())
                throw SubscriberException
-                  (wxT("The X parameter: ") + name + wxT(" of ") + instanceName +
-                   wxT(" is not plottable\n"));
+                  ("The X parameter: " + name + " of " + instanceName +
+                   " is not plottable\n");
          
          #if DEBUG_XYPLOT_OBJECT
          MessageInterface::ShowMessage
-            (wxT("XyPlot::SetRefObject() mXParam:%s successfully set\n"),
+            ("XyPlot::SetRefObject() mXParam:%s successfully set\n",
              obj->GetName().c_str());
          #endif
       }
@@ -1049,13 +1047,13 @@ bool XyPlot::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
             if (!mYParams[i]->IsPlottable())
             {
                throw SubscriberException
-                  (wxT("The Y parameter: ") + name + wxT(" of ") + instanceName +
-                   wxT(" is not plottable\n"));
+                  ("The Y parameter: " + name + " of " + instanceName +
+                   " is not plottable\n");
             }
             
             #if DEBUG_XYPLOT_OBJECT
             MessageInterface::ShowMessage
-               (wxT("XyPlot::SetRefObject() mYParams[%s] successfully set\n"),
+               ("XyPlot::SetRefObject() mYParams[%s] successfully set\n",
                 obj->GetName().c_str());
             #endif
             
@@ -1111,12 +1109,12 @@ const StringArray& XyPlot::GetRefObjectNameArray(const Gmat::ObjectType type)
    case Gmat::UNKNOWN_OBJECT:
    case Gmat::PARAMETER:
       // add x parameter
-      if (mXParamName != wxT(""))
+      if (mXParamName != "")
          mAllParamNames.push_back(mXParamName);
       
       // add y parameters
       for (int i=0; i<mNumYParams; i++)
-         if (mYParamNames[i] != wxT(""))
+         if (mYParamNames[i] != "")
             mAllParamNames.push_back(mYParamNames[i]);
       break;
    default:
@@ -1136,39 +1134,39 @@ const StringArray& XyPlot::GetRefObjectNameArray(const Gmat::ObjectType type)
 void XyPlot::BuildPlotTitle()
 {
    //set X and Y axis title
-   //if (mXAxisTitle == wxT(""))
+   //if (mXAxisTitle == "")
    //{
       if (mXParam)
          mXAxisTitle = mXParam->GetName();
       else {
-         mXAxisTitle = wxT("No X parameters");
-         mYAxisTitle = wxT("empty");
-         mPlotTitle  = wxT("Plot not fully initialized");
+         mXAxisTitle = "No X parameters";
+         mYAxisTitle = "empty";
+         mPlotTitle  = "Plot not fully initialized";
          return;
       }
       //}
       
    #if DEBUG_XYPLOT_INIT
-   MessageInterface::ShowMessage(wxT("XyPlot::BuildPlotTitle() mXAxisTitle = %s\n"),
+   MessageInterface::ShowMessage("XyPlot::BuildPlotTitle() mXAxisTitle = %s\n",
                                  mXAxisTitle.c_str());
    #endif
    
-   mYAxisTitle = wxT("");
+   mYAxisTitle = "";
    for (int i= 0; i<mNumYParams-1; i++)
    {
-      mYAxisTitle += (mYParams[i]->GetName() + wxT(", "));
+      mYAxisTitle += (mYParams[i]->GetName() + ", ");
    }
    mYAxisTitle += mYParams[mNumYParams-1]->GetName();
    
    #if DEBUG_XYPLOT_INIT
-   MessageInterface::ShowMessage(wxT("XyPlot::BuildPlotTitle() mYAxisTitle = %s\n"),
+   MessageInterface::ShowMessage("XyPlot::BuildPlotTitle() mYAxisTitle = %s\n",
                                  mYAxisTitle.c_str());
    #endif
    
-   mPlotTitle = wxT("(") + mXAxisTitle + wxT(")") + wxT(" vs ") + wxT("(") + mYAxisTitle + wxT(")");
+   mPlotTitle = "(" + mXAxisTitle + ")" + " vs " + "(" + mYAxisTitle + ")";
    
    #if DEBUG_XYPLOT_INIT
-   MessageInterface::ShowMessage(wxT("XyPlot::BuildPlotTitle() mPlotTitle = %s\n"),
+   MessageInterface::ShowMessage("XyPlot::BuildPlotTitle() mPlotTitle = %s\n",
                                  mPlotTitle.c_str());
    #endif
 }
@@ -1182,15 +1180,15 @@ bool XyPlot::ClearYParameters()
    mYParams.clear();
    mYParamNames.clear();
    mNumYParams = 0;
-   mPlotTitle = wxT("");
-   mXAxisTitle = wxT("");
-   mYAxisTitle = wxT("");
+   mPlotTitle = "";
+   mXAxisTitle = "";
+   mYAxisTitle = "";
    mIsXyPlotWindowSet = false;
    return true;
 }
 
 //------------------------------------------------------------------------------
-// bool RemoveYParameter(const wxString &name)
+// bool RemoveYParameter(const std::string &name)
 //------------------------------------------------------------------------------
 /*
  * Removes parameter from the Y parameter list
@@ -1201,14 +1199,14 @@ bool XyPlot::ClearYParameters()
  *
  */
 //------------------------------------------------------------------------------
-bool XyPlot::RemoveYParameter(const wxString &name)
+bool XyPlot::RemoveYParameter(const std::string &name)
 {
    #if DEBUG_ACTION_REMOVE
    MessageInterface::ShowMessage
-      (wxT("XyPlot::RemoveYParameter() name=%s\n--- Before remove:\n"), name.c_str());
+      ("XyPlot::RemoveYParameter() name=%s\n--- Before remove:\n", name.c_str());
    for (int i=0; i<mNumYParams; i++)
    {
-      MessageInterface::ShowMessage(wxT("mYParamNames[%d]=%s\n"), i,
+      MessageInterface::ShowMessage("mYParamNames[%d]=%s\n", i,
                                     mYParamNames[i].c_str());
    }
    #endif
@@ -1225,10 +1223,10 @@ bool XyPlot::RemoveYParameter(const wxString &name)
          mNumYParams = mYParamNames.size();
          
          #if DEBUG_ACTION_REMOVE
-         MessageInterface::ShowMessage(wxT("---After remove\n"));
+         MessageInterface::ShowMessage("---After remove\n");
          for (int i=0; i<mNumYParams; i++)
          {
-            MessageInterface::ShowMessage(wxT("mYParamNames[%d]=%s\n"), i,
+            MessageInterface::ShowMessage("mYParamNames[%d]=%s\n", i,
                                           mYParamNames[i].c_str());
          }
          #endif
@@ -1247,7 +1245,7 @@ bool XyPlot::RemoveYParameter(const wxString &name)
    //------------------------------------------
    
    #if DEBUG_ACTION_REMOVE
-   MessageInterface::ShowMessage(wxT("XyPlot::RemoveYParameter() name=%s not found\n"));
+   MessageInterface::ShowMessage("XyPlot::RemoveYParameter() name=%s not found\n");
    #endif
    
    return false;
@@ -1394,14 +1392,14 @@ bool XyPlot::Distribute(const Real * dat, Integer len)
    
    #if DEBUG_XYPLOT_UPDATE > 1
    MessageInterface::ShowMessage
-      (wxT("XyPlot::Distribute() entered. isEndOfReceive=%d, active=%d, runState=%d\n"),
+      ("XyPlot::Distribute() entered. isEndOfReceive=%d, active=%d, runState=%d\n",
        isEndOfReceive, active, runstate);
    #endif
    
    if (isEndOfReceive)
    {
       // if targetting and draw target is None, just return
-      if (mSolverIterations == wxT("None") &&
+      if (mSolverIterations == "None" &&
           ((runstate == Gmat::TARGETING) || (runstate == Gmat::OPTIMIZING) ||
                 (runstate == Gmat::SOLVING)))
          return true;
@@ -1411,7 +1409,7 @@ bool XyPlot::Distribute(const Real * dat, Integer len)
    }
    
    // if targeting and draw target is None, just return
-   if (mSolverIterations == wxT("None") &&
+   if (mSolverIterations == "None" &&
        ((runstate == Gmat::TARGETING) || (runstate == Gmat::OPTIMIZING) ||
              (runstate == Gmat::SOLVING)))
       return true;
@@ -1424,7 +1422,7 @@ bool XyPlot::Distribute(const Real * dat, Integer len)
          Real xval = mXParam->EvaluateReal();
 
          #if DEBUG_XYPLOT_UPDATE
-         MessageInterface::ShowMessage(wxT("XyPlot::Distribute() xval = %f\n"), xval);
+         MessageInterface::ShowMessage("XyPlot::Distribute() xval = %f\n", xval);
          #endif
          
          // get y params
@@ -1437,8 +1435,8 @@ bool XyPlot::Distribute(const Real * dat, Integer len)
             {
                MessageInterface::PopupMessage
                   (Gmat::WARNING_,
-                   wxT("*** WARNING *** The XYPlot named \"%s\" will not be shown.\n")
-                   wxT("The parameter selected for Y Axis is NULL\n"),
+                   "*** WARNING *** The XYPlot named \"%s\" will not be shown.\n"
+                   "The parameter selected for Y Axis is NULL\n",
                    GetName().c_str());
                return true;
             }
@@ -1447,7 +1445,7 @@ bool XyPlot::Distribute(const Real * dat, Integer len)
             
             #if DEBUG_XYPLOT_UPDATE
             MessageInterface::ShowMessage
-               (wxT("XyPlot::Distribute() yvals[%d] = %f\n"), i, yvals[i]);
+               ("XyPlot::Distribute() yvals[%d] = %f\n", i, yvals[i]);
             #endif
          }
          
@@ -1465,7 +1463,7 @@ bool XyPlot::Distribute(const Real * dat, Integer len)
                
                #if DEBUG_XYPLOT_UPDATE > 1
                MessageInterface::ShowMessage
-                  (wxT("XyPlot::Distribute() calling PlotInterface::UpdateXyPlot()\n"));
+                  ("XyPlot::Distribute() calling PlotInterface::UpdateXyPlot()\n");
                #endif
                
                // return flag is ignored here since it needs to return true
@@ -1502,8 +1500,8 @@ void XyPlot::WriteDeprecatedMessage(Integer id) const
       if (writeXVariable)
       {
          MessageInterface::ShowMessage
-            (deprecatedMessageFormat.c_str(), wxT("IndVar"), GetName().c_str(),
-             wxT("XVariable"));
+            (deprecatedMessageFormat.c_str(), "IndVar", GetName().c_str(),
+             "XVariable");
          writeXVariable = false;
       }
       break;
@@ -1511,8 +1509,8 @@ void XyPlot::WriteDeprecatedMessage(Integer id) const
       if (writeYVariables)
       {
          MessageInterface::ShowMessage
-            (deprecatedMessageFormat.c_str(), wxT("Add"), GetName().c_str(),
-             wxT("YVariables"));
+            (deprecatedMessageFormat.c_str(), "Add", GetName().c_str(),
+             "YVariables");
          writeYVariables = false;
       }
       break;
@@ -1520,8 +1518,8 @@ void XyPlot::WriteDeprecatedMessage(Integer id) const
       if (writeShowGrid)
       {
          MessageInterface::ShowMessage
-            (deprecatedMessageFormat.c_str(), wxT("Grid"), GetName().c_str(),
-             wxT("ShowGrid"));
+            (deprecatedMessageFormat.c_str(), "Grid", GetName().c_str(),
+             "ShowGrid");
          writeShowGrid = false;
       }
       break;

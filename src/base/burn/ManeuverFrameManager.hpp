@@ -39,7 +39,7 @@ public:
 	virtual ~ManeuverFrameManager();
 
    StringArray&                GetSupportedFrames();
-   ManeuverFrame*              GetFrameInstance(const wxString &frameType);
+   ManeuverFrame*              GetFrameInstance(const std::string &frameType);
 
 protected:
    /// Table of available frames

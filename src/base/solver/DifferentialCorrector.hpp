@@ -38,7 +38,7 @@
 class GMAT_API DifferentialCorrector : public Solver
 {
 public:
-   DifferentialCorrector(wxString name);
+   DifferentialCorrector(std::string name);
    virtual ~DifferentialCorrector();
    DifferentialCorrector(const DifferentialCorrector &dc);
    DifferentialCorrector& operator=(const DifferentialCorrector& dc);
@@ -51,11 +51,11 @@ public:
    virtual void        Copy(const GmatBase* orig);
    
    // Access methods overriden from the base class
-   virtual wxString GetParameterText(const Integer id) const;
-   virtual Integer     GetParameterID(const wxString &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
+   virtual Integer     GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                        GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
 
    virtual Integer     GetIntegerParameter(const Integer id) const;
    virtual Integer     SetIntegerParameter(const Integer id,
@@ -63,23 +63,23 @@ public:
    virtual bool        GetBooleanParameter(const Integer id) const;
    virtual bool        SetBooleanParameter(const Integer id,
                                            const bool value);
-   virtual wxString GetStringParameter(const Integer id) const;
+   virtual std::string GetStringParameter(const Integer id) const;
    virtual bool        SetStringParameter(const Integer id,
-                                          const wxString &value);
+                                          const std::string &value);
    virtual const StringArray&
                        GetStringArrayParameter(const Integer id) const;
-   virtual bool        TakeAction(const wxString &action,
-                                  const wxString &actionData = wxT(""));
+   virtual bool        TakeAction(const std::string &action,
+                                  const std::string &actionData = "");
 
    // Solver interfaces used to talk to the Vary and Achieve commands
-   //virtual Integer     SetSolverVariables(Real *data, const wxString &name);
+   //virtual Integer     SetSolverVariables(Real *data, const std::string &name);
    //virtual Real        GetSolverVariable(Integer id);
-   virtual Integer     SetSolverResults(Real *data, const wxString &name,
-                                        const wxString &type = wxT(""));
+   virtual Integer     SetSolverResults(Real *data, const std::string &name,
+                                        const std::string &type = "");
    virtual bool        UpdateSolverGoal(Integer id, Real newValue);
    virtual bool        UpdateSolverTolerance(Integer id, Real newValue);
    virtual void        SetResultValue(Integer id, Real value,
-                                      const wxString &resultType = wxT(""));
+                                      const std::string &resultType = "");
 
 protected:
    // Core data members used for the targeter numerics
@@ -108,7 +108,7 @@ protected:
    // Control parameters
 
    /// Text describing how differences should be generated
-   wxString                 derivativeMethod;
+   std::string                 derivativeMethod;
    /// Mode flag for differencing
    Integer                     diffMode; // 1 for forward, -1 for backward,
                                          // 0 for central
@@ -128,7 +128,7 @@ protected:
       DifferentialCorrectorParamCount
    };
 
-   static const wxString    PARAMETER_TEXT[DifferentialCorrectorParamCount -
+   static const std::string    PARAMETER_TEXT[DifferentialCorrectorParamCount -
                                               SolverParamCount];
    static const Gmat::ParameterType
                                PARAMETER_TYPE[DifferentialCorrectorParamCount -
@@ -146,7 +146,7 @@ protected:
    void                        InvertJacobian();
 
    void                        FreeArrays();
-   virtual wxString         GetProgressString();
+   virtual std::string         GetProgressString();
    virtual void                WriteToTextFile(
                                   SolverState stateToUse = UNDEFINED_STATE);
 };

@@ -26,7 +26,7 @@
 class GMAT_API Inverse : public MathFunction
 {
 public:
-   Inverse(const wxString &nomme);
+   Inverse(const std::string &nomme);
    virtual ~Inverse();
    Inverse(const Inverse &copy);
                  

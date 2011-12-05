@@ -23,8 +23,8 @@
 #include "GmatBaseException.hpp"
 
 
-GmatBaseException::GmatBaseException(const wxString &details) :
-   BaseException       (wxT("GmatBase Exception Thrown: "), details)
+GmatBaseException::GmatBaseException(const std::string &details) :
+   BaseException       ("GmatBase Exception Thrown: ", details)
 {}
 
 

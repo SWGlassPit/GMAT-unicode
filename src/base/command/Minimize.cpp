@@ -37,11 +37,11 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
    Minimize::PARAMETER_TEXT[MinimizeParamCount - GmatCommandParamCount] =
    {
-      wxT("OptimizerName"),
-      wxT("ObjectiveName"),
+      "OptimizerName",
+      "ObjectiveName",
    };
    
 const Gmat::ParameterType
@@ -64,9 +64,9 @@ const Gmat::ParameterType
  */
 //------------------------------------------------------------------------------
 Minimize::Minimize() :
-   GmatCommand             (wxT("Minimize")),
-   optimizerName           (wxT("")),
-   objectiveName           (wxT("9.999999e300")),
+   GmatCommand             ("Minimize"),
+   optimizerName           (""),
+   objectiveName           ("9.999999e300"),
    objective               (NULL),
    //objectiveValue          (-999.99),
    optimizer               (NULL),
@@ -78,7 +78,7 @@ Minimize::Minimize() :
    // nothing to add to settables here ...
 
    #ifdef DEBUG_MINIMIZE // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
-      MessageInterface::ShowMessage(wxT("Creating Minimize command ...\n"));
+      MessageInterface::ShowMessage("Creating Minimize command ...\n");
    #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
    parameterCount = MinimizeParamCount;
 }
@@ -106,7 +106,7 @@ Minimize::Minimize(const Minimize& m) :
    interpreted             (false)
 {
    #ifdef DEBUG_MINIMIZE // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
-      MessageInterface::ShowMessage(wxT("Creating (copying) Minimize command ...\n"));
+      MessageInterface::ShowMessage("Creating (copying) Minimize command ...\n");
    #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
    parameterCount = MinimizeParamCount;
 }
@@ -178,7 +178,7 @@ GmatBase* Minimize::Clone() const
 
 //------------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * Renames referenced objects.
@@ -191,8 +191,8 @@ GmatBase* Minimize::Clone() const
  */
 //------------------------------------------------------------------------------
 bool Minimize::RenameRefObject(const Gmat::ObjectType type,
-                               const wxString &oldName,
-                               const wxString &newName)
+                               const std::string &oldName,
+                               const std::string &newName)
 {
    if (type == Gmat::SOLVER)
    {
@@ -262,7 +262,7 @@ const StringArray& Minimize::GetRefObjectNameArray(const Gmat::ObjectType type)
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -272,7 +272,7 @@ const StringArray& Minimize::GetRefObjectNameArray(const Gmat::ObjectType type)
  * @return parameter text for the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString Minimize::GetParameterText(const Integer id) const
+std::string Minimize::GetParameterText(const Integer id) const
 {
    if (id >= GmatCommandParamCount && id < MinimizeParamCount)
       return PARAMETER_TEXT[id - GmatCommandParamCount];
@@ -281,7 +281,7 @@ wxString Minimize::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -291,7 +291,7 @@ wxString Minimize::GetParameterText(const Integer id) const
  * @return ID for the requested parameter.
  */
 //------------------------------------------------------------------------------
-Integer Minimize::GetParameterID(const wxString &str) const
+Integer Minimize::GetParameterID(const std::string &str) const
 {
    for (Integer i = GmatCommandParamCount; i < MinimizeParamCount; i++)
    {
@@ -324,7 +324,7 @@ Gmat::ParameterType Minimize::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -334,7 +334,7 @@ Gmat::ParameterType Minimize::GetParameterType(const Integer id) const
  * @return parameter type string of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString Minimize::GetParameterTypeString(const Integer id) const
+std::string Minimize::GetParameterTypeString(const Integer id) const
 {
    return GmatCommand::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -381,7 +381,7 @@ Real Minimize::SetRealParameter(const Integer id, const Real value)
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id) const
+//  std::string  GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -392,7 +392,7 @@ Real Minimize::SetRealParameter(const Integer id, const Real value)
  * @return  string value of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString Minimize::GetStringParameter(const Integer id) const
+std::string Minimize::GetStringParameter(const Integer id) const
 {
    if (id == OPTIMIZER_NAME)
       return optimizerName;
@@ -405,7 +405,7 @@ wxString Minimize::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString  SetStringParameter(const Integer id, const wxString value)
+//  std::string  SetStringParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the string parameter value, given the input
@@ -417,11 +417,11 @@ wxString Minimize::GetStringParameter(const Integer id) const
  * @return  success flag.
  */
 //------------------------------------------------------------------------------
-bool Minimize::SetStringParameter(const Integer id, const wxString &value)
+bool Minimize::SetStringParameter(const Integer id, const std::string &value)
 {
    #ifdef DEBUG_MINIMIZE_PARAM // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
    MessageInterface::ShowMessage
-      (wxT("Minimize::SetStringParameter() id=%d, value=%s\n"), id, value.c_str());
+      ("Minimize::SetStringParameter() id=%d, value=%s\n", id, value.c_str());
    #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
    
    if (id == OPTIMIZER_NAME) 
@@ -448,7 +448,7 @@ bool Minimize::SetStringParameter(const Integer id, const wxString &value)
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                                   const wxString &name = "")
+//                                   const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Sets referenced objects.
@@ -461,11 +461,11 @@ bool Minimize::SetStringParameter(const Integer id, const wxString &value)
  */
 //------------------------------------------------------------------------------
 bool Minimize::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                            const wxString &name)
+                            const std::string &name)
 {   
    #ifdef DEBUG_MINIMIZE // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
       MessageInterface::ShowMessage(
-      wxT("setting ref obj %s of type %s on Minimize command\n"),
+      "setting ref obj %s of type %s on Minimize command\n",
       (obj->GetName()).c_str(), (obj->GetTypeName()).c_str());
    #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
    if (type == Gmat::SOLVER) 
@@ -510,8 +510,8 @@ bool Minimize::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 bool Minimize::InterpretAction()
 {
    #ifdef DEBUG_MINIMIZE // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
-      MessageInterface::ShowMessage(wxT("Interpreting Minimize command ...\n"));
-      MessageInterface::ShowMessage(wxT("generatingString = %s"),
+      MessageInterface::ShowMessage("Interpreting Minimize command ...\n");
+      MessageInterface::ShowMessage("generatingString = %s",
          generatingString.c_str());
    #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
    /// @todo: Clean up this hack for the Minimize::InterpretAction method
@@ -525,43 +525,43 @@ bool Minimize::InterpretAction()
    StringArray chunks = InterpretPreface();
 
    #ifdef DEBUG_MINIMIZE_PARSING
-      MessageInterface::ShowMessage(wxT("Preface chunks as\n"));
+      MessageInterface::ShowMessage("Preface chunks as\n");
       for (StringArray::iterator i = chunks.begin(); i != chunks.end(); ++i)
-         MessageInterface::ShowMessage(wxT("   \"%s\"\n"), i->c_str());
-      MessageInterface::ShowMessage(wxT("\n"));
+         MessageInterface::ShowMessage("   \"%s\"\n", i->c_str());
+      MessageInterface::ShowMessage("\n");
    #endif
    
    // Find and set the solver object name
    // This is the only setting in Vary that is not in a wrapper
-   StringArray currentChunks = parser.Decompose(chunks[1], wxT("()"), false);
+   StringArray currentChunks = parser.Decompose(chunks[1], "()", false);
    if (!GmatStringUtil::HasNoBrackets(currentChunks.at(0), false))
       throw CommandException(
-            wxT("Solver name for Minimize command may not contain brackets, braces, or parentheses.")); 
+            "Solver name for Minimize command may not contain brackets, braces, or parentheses."); 
       
    SetStringParameter(OPTIMIZER_NAME, currentChunks[0]);
    if (currentChunks.size() < 2)
-      throw CommandException(wxT("Missing field or value for Minimize command."));
+      throw CommandException("Missing field or value for Minimize command.");
  
     // The remaining text in the instruction is the variable definition and 
    // parameters, all contained in currentChunks[1].  Deal with those next.
-   wxString cc = GmatStringUtil::Strip(currentChunks[1]);
+   std::string cc = GmatStringUtil::Strip(currentChunks[1]);
    Integer ccEnd = cc.size() - 1;
-   if ((cc.at(0) != wxT('(')) || (cc.at(ccEnd) != wxT(')')))
+   if ((cc.at(0) != '(') || (cc.at(ccEnd) != ')'))
       throw CommandException(
-           wxT("Missing parentheses, or unexpected characters found, around argument to Minimize command."));
-   if (!GmatStringUtil::IsBracketBalanced(cc, wxT("()")))
-      throw CommandException(wxT("Parentheses unbalanced in Minimize command."));
-   if ((cc.find(wxT('[')) != cc.npos) || (cc.find(wxT(']')) != cc.npos) ||
-       (cc.find(wxT('{')) != cc.npos) || (cc.find(wxT('}')) != cc.npos) )
-      throw CommandException(wxT("Minimize command may not contain brackets or braces."));
-   wxString noSpaces     = GmatStringUtil::RemoveAll(cc,wxT(' '));
-   currentChunks = parser.Decompose(noSpaces, wxT("()"), true, true);
+           "Missing parentheses, or unexpected characters found, around argument to Minimize command.");
+   if (!GmatStringUtil::IsBracketBalanced(cc, "()"))
+      throw CommandException("Parentheses unbalanced in Minimize command.");
+   if ((cc.find('[') != cc.npos) || (cc.find(']') != cc.npos) ||
+       (cc.find('{') != cc.npos) || (cc.find('}') != cc.npos) )
+      throw CommandException("Minimize command may not contain brackets or braces.");
+   std::string noSpaces     = GmatStringUtil::RemoveAll(cc,' ');
+   currentChunks = parser.Decompose(noSpaces, "()", true, true);
    
    #ifdef DEBUG_MINIMIZE_PARSING
       MessageInterface::ShowMessage(
-         wxT("Minimize: after Decompose, current chunks = \n"));
+         "Minimize: after Decompose, current chunks = \n");
       for (Integer jj = 0; jj < (Integer) currentChunks.size(); jj++)
-         MessageInterface::ShowMessage(wxT("   %s\n"),
+         MessageInterface::ShowMessage("   %s\n",
                                        currentChunks[jj].c_str());
    #endif
 
@@ -569,7 +569,7 @@ bool Minimize::InterpretAction()
    objectiveName = currentChunks[0];
       
    #ifdef DEBUG_MINIMIZE_PARSE // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
-      MessageInterface::ShowMessage(wxT("Minimize::InterpretAction() exiting\n"));
+      MessageInterface::ShowMessage("Minimize::InterpretAction() exiting\n");
    #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
       
    interpreted   = true;
@@ -585,7 +585,7 @@ const StringArray& Minimize::GetWrapperObjectNameArray()
    return wrapperObjectNames;
 }
 
-bool Minimize::SetElementWrapper(ElementWrapper *toWrapper, const wxString &withName)
+bool Minimize::SetElementWrapper(ElementWrapper *toWrapper, const std::string &withName)
 {
    bool retval = false;
 
@@ -593,15 +593,15 @@ bool Minimize::SetElementWrapper(ElementWrapper *toWrapper, const wxString &with
    
    if (toWrapper->GetWrapperType() == Gmat::ARRAY_WT)
    {
-      throw CommandException(wxT("A value of type \"Array\" on command \"") + typeName + 
-                  wxT("\" is not an allowed value.\nThe allowed values are:")
-                  wxT(" [ Variable, Array Element, or Parameter ]. ")); 
+      throw CommandException("A value of type \"Array\" on command \"" + typeName + 
+                  "\" is not an allowed value.\nThe allowed values are:"
+                  " [ Variable, Array Element, or Parameter ]. "); 
    }
    if (toWrapper->GetWrapperType() == Gmat::NUMBER_WT)
    {
-      throw CommandException(wxT("A value of type \"Number\" on command \"") + typeName + 
-                  wxT("\" is not an allowed value.\nThe allowed values are:")
-                  wxT(" [ Variable, Array Element, or Parameter ]. ")); 
+      throw CommandException("A value of type \"Number\" on command \"" + typeName + 
+                  "\" is not an allowed value.\nThe allowed values are:"
+                  " [ Variable, Array Element, or Parameter ]. "); 
    }
    //if (toWrapper->GetWrapperType() == Gmat::STRING_OBJECT_WT)
    //{
@@ -611,17 +611,17 @@ bool Minimize::SetElementWrapper(ElementWrapper *toWrapper, const wxString &with
    //}
    
    #ifdef DEBUG_WRAPPER_CODE   
-   MessageInterface::ShowMessage(wxT("   Setting wrapper \"%s\" on Minimize command\n"), 
+   MessageInterface::ShowMessage("   Setting wrapper \"%s\" on Minimize command\n", 
       withName.c_str());
    #endif
    
-   CheckDataType(toWrapper, Gmat::REAL_TYPE, wxT("Minimize"), true);
+   CheckDataType(toWrapper, Gmat::REAL_TYPE, "Minimize", true);
 
    if (objectiveName == withName)
    {
       objective = toWrapper;
       // Reset the generating string so initialization works correctly
-      GetGeneratingString(Gmat::SCRIPTING, wxT(""), wxT(""));
+      GetGeneratingString(Gmat::SCRIPTING, "", "");
       retval = true;
    }
    
@@ -646,8 +646,8 @@ void Minimize::ClearWrappers()
 
 
 //------------------------------------------------------------------------------
-//  bool InterpretParameter(const wxString text, wxString &paramType,
-//                          wxString &paramObj, wxString &parmSystem)
+//  bool InterpretParameter(const std::string text, std::string &paramType,
+//                          std::string &paramObj, std::string &parmSystem)
 //------------------------------------------------------------------------------
 /**
  * Breaks apart a parameter declaration into its component pieces
@@ -663,10 +663,10 @@ void Minimize::ClearWrappers()
  */
 //------------------------------------------------------------------------------
 /*
-bool Minimize::InterpretParameter(const wxString text,
-                                 wxString &paramType, 
-                                 wxString &paramObj, 
-                                 wxString &parmSystem)
+bool Minimize::InterpretParameter(const std::string text,
+                                 std::string &paramType, 
+                                 std::string &paramObj, 
+                                 std::string &parmSystem)
 {
    
    Real rval = 54321.12345;
@@ -675,7 +675,7 @@ bool Minimize::InterpretParameter(const wxString text,
       return true;
    
    Integer start = 0, dotLoc = text.find(".", 0);
-   if (dotLoc == (Integer)wxString::npos)
+   if (dotLoc == (Integer)std::string::npos)
    {
 //      throw CommandException("Minimize::InterpretParameter: Unable to "
 //               "interpret parameter object in the string " +
@@ -689,7 +689,7 @@ bool Minimize::InterpretParameter(const wxString text,
    paramObj = text.substr(start, dotLoc - start);
    start = dotLoc + 1;
    dotLoc = text.find(".", start);
-   if (dotLoc != (Integer)wxString::npos) 
+   if (dotLoc != (Integer)std::string::npos) 
    {
       parmSystem = text.substr(start, dotLoc - start);
       start = dotLoc + 1;
@@ -724,21 +724,21 @@ bool Minimize::Initialize()
 {
    #if DEBUG_MINIMIZE_INIT // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
    MessageInterface::ShowMessage
-      (wxT("Minimize::Initialize() entered. optimizer=%p, objective=%p\n"), 
+      ("Minimize::Initialize() entered. optimizer=%p, objective=%p\n", 
       optimizer, objective);
    #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
 
    if (!interpreted)
       if (!InterpretAction())
          throw CommandException(
-            wxT("Minimize: error interpreting input data\n"));
+            "Minimize: error interpreting input data\n");
    
    bool retval = GmatCommand::Initialize();
 
    if (optimizer == NULL)
       throw CommandException(
-         wxT("Optimizer not initialized for Minimize command\n  \"")
-         + generatingString + wxT("\"\n"));
+         "Optimizer not initialized for Minimize command\n  \""
+         + generatingString + "\"\n");
 
    //Integer id = optimizer->GetParameterID("Goals");  // no clue
    //optimizer->SetStringParameter(id, goalName);
@@ -748,7 +748,7 @@ bool Minimize::Initialize()
    
    //if (obj == NULL) 
    //{
-   //   wxString errorstr = "Could not find variable parameter ";
+   //   std::string errorstr = "Could not find variable parameter ";
    //   errorstr += objectiveName;
    //   throw CommandException(errorstr);
    //}
@@ -758,11 +758,11 @@ bool Minimize::Initialize()
 
    if (SetWrapperReferences(*objective) == false)
       return false;
-   CheckDataType(objective, Gmat::REAL_TYPE, wxT("Minimize"));
+   CheckDataType(objective, Gmat::REAL_TYPE, "Minimize");
    
    #if DEBUG_MINIMIZE_INIT // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
    MessageInterface::ShowMessage
-      (wxT("Minimize::Initialize() exiting. optimizer=%p, objective=%p\n"), 
+      ("Minimize::Initialize() exiting. optimizer=%p, objective=%p\n", 
       optimizer, objective);
    #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
    
@@ -788,12 +788,12 @@ bool Minimize::Execute()
 {
    #ifdef DEBUG_MINIMIZE_EXEC // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
    MessageInterface::ShowMessage
-      (wxT("Minimize::Execute() optimizerDataFinalized=%d\n, optimizer=%s, objective=%p\n"), 
+      ("Minimize::Execute() optimizerDataFinalized=%d\n, optimizer=%s, objective=%p\n", 
        optimizerDataFinalized, optimizer, objective);
    MessageInterface::ShowMessage
-      (wxT("   objectiveName=%s\n"), objectiveName.c_str());
+      ("   objectiveName=%s\n", objectiveName.c_str());
    if (objective)
-      MessageInterface::ShowMessage(wxT("   objective=%s\n"), objective->GetName().c_str());
+      MessageInterface::ShowMessage("   objective=%s\n", objective->GetName().c_str());
    #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
    
    bool retval = true;
@@ -803,7 +803,7 @@ bool Minimize::Execute()
       Real minData[1];
       minData[0] = objective->EvaluateReal(); 
       //minData[1] = tolerance;
-      objId = optimizer->SetSolverResults(minData, objectiveName, wxT("Objective"));
+      objId = optimizer->SetSolverResults(minData, objectiveName, "Objective");
 
       optimizerDataFinalized = true;
       return retval;
@@ -816,21 +816,21 @@ bool Minimize::Execute()
       val = objective->EvaluateReal();
       #ifdef DEBUG_MINIMIZE_EXEC // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
          MessageInterface::ShowMessage
-            (wxT("   objective=%s, %p\n"), objective->GetTypeName().c_str(), objective);
-         MessageInterface::ShowMessage(wxT("   Parameter target: %s val = %lf\n"),
+            ("   objective=%s, %p\n", objective->GetTypeName().c_str(), objective);
+         MessageInterface::ShowMessage("   Parameter target: %s val = %lf\n",
             objective->GetTypeName().c_str(), val);
       #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
-      optimizer->SetResultValue(objId, val, wxT("Objective"));
+      optimizer->SetResultValue(objId, val, "Objective");
    }
    else 
    {  // ERROR ERROR - should I throw an exception here? *********** TBD **************
       MessageInterface::ShowMessage(
-         wxT("Minimize: Warning - objective function is NULL\n")); 
+         "Minimize: Warning - objective function is NULL\n"); 
       val = -999.999;
       //val = goalObject->GetRealParameter(parmId);  // again,no clue
-      optimizer->SetResultValue(objId, val, wxT("Objective"));
+      optimizer->SetResultValue(objId, val, "Objective");
       #ifdef DEBUG_MINIMIZE_EXEC // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
-         MessageInterface::ShowMessage(wxT("   Object target: val = %lf\n"), val);
+         MessageInterface::ShowMessage("   Object target: val = %lf\n", val);
       #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
    }
 
@@ -848,7 +848,7 @@ void Minimize::RunComplete()
 }
 
 //------------------------------------------------------------------------------
-//  const wxString& GetGeneratingString()
+//  const std::string& GetGeneratingString()
 //------------------------------------------------------------------------------
 /**
  * Method used to retrieve the string that was parsed to build this GmatCommand.
@@ -869,16 +869,16 @@ void Minimize::RunComplete()
  * @return The script line that, when interpreted, defines this Minimize command.
  */
 //------------------------------------------------------------------------------
-const wxString& Minimize::GetGeneratingString(Gmat::WriteMode mode,
-                                            const wxString &prefix,
-                                            const wxString &useName)
+const std::string& Minimize::GetGeneratingString(Gmat::WriteMode mode,
+                                            const std::string &prefix,
+                                            const std::string &useName)
 {
    // Build the local string
-   wxString tol;
+   std::stringstream tol;
    //tol << tolerance;
-   wxString gen = prefix + wxT("Minimize ") + optimizerName + wxT("(") + objectiveName;
+   std::string gen = prefix + "Minimize " + optimizerName + "(" + objectiveName;
 
-   generatingString = gen + wxT(");");
+   generatingString = gen + ");";
    // Then call the base class method
    return GmatCommand::GetGeneratingString(mode, prefix, useName);
 }

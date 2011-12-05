@@ -87,10 +87,10 @@ SpiceOrbitKernelReader::SpiceOrbitKernelReader(const SpiceOrbitKernelReader &rea
 /**
  * This method copies the data from the input object to the object.
  *
- * @param <reader> the SpiceOrbitKernelReader object whose data to assign to wxT("this")
+ * @param <reader> the SpiceOrbitKernelReader object whose data to assign to "this"
  *                 SpiceOrbitKernelReader.
  *
- * @return wxT("this") SpiceOrbitKernelReader with data of input SpiceOrbitKernelReader
+ * @return "this" SpiceOrbitKernelReader with data of input SpiceOrbitKernelReader
  *         reader.
  */
 //------------------------------------------------------------------------------
@@ -125,7 +125,7 @@ SpiceOrbitKernelReader::~SpiceOrbitKernelReader()
 /**
  * This method clones the object.
  *
- * @return new object, cloned from wxT("this") object.
+ * @return new object, cloned from "this" object.
  *
  */
 //------------------------------------------------------------------------------
@@ -199,10 +199,10 @@ void  SpiceOrbitKernelReader::GetCoverageStartAndEnd(StringArray       &kernels,
    for (unsigned int ii = 0; ii < kernels.size(); ii++)
    {
       #ifdef DEBUG_SPK_COVERAGE
-         MessageInterface::ShowMessage(wxT("Checking coverage for ID %d on kernel %s\n"),
+         MessageInterface::ShowMessage("Checking coverage for ID %d on kernel %s\n",
                forNaifId, (kernels.at(ii)).c_str());
       #endif
-      kernelName = kernels[ii].char_str();
+      kernelName = kernels[ii].c_str();
       // check the type of kernel
       arch        = aStr;
       kernelType  = kStr;
@@ -214,16 +214,16 @@ void  SpiceOrbitKernelReader::GetCoverageStartAndEnd(StringArray       &kernels,
          //SpiceChar      err[MAX_LONG_MESSAGE_VALUE];
          SpiceChar      *err = new SpiceChar[MAX_LONG_MESSAGE_VALUE];
          getmsg_c(option, numChar, err);
-         wxString errStr(wxString::FromAscii(err));
-         wxString errmsg = wxT("Error determining type of kernel \"");
-         errmsg += kernels.at(ii) + wxT("\".  Message received from CSPICE is: ");
-         errmsg += errStr + wxT("\n");
+         std::string errStr(err);
+         std::string errmsg = "Error determining type of kernel \"";
+         errmsg += kernels.at(ii) + "\".  Message received from CSPICE is: ";
+         errmsg += errStr + "\n";
          reset_c();
          delete [] err;
          throw UtilityException(errmsg);
       }
       #ifdef DEBUG_SPK_COVERAGE
-         MessageInterface::ShowMessage(wxT("Kernel is of type %s\n"),
+         MessageInterface::ShowMessage("Kernel is of type %s\n",
                kernelType);
       #endif
       // only deal with SPK kernels
@@ -235,7 +235,7 @@ void  SpiceOrbitKernelReader::GetCoverageStartAndEnd(StringArray       &kernels,
          {
             objId = SPICE_CELL_ELEM_I(&ids,jj);
             #ifdef DEBUG_SPK_COVERAGE
-               MessageInterface::ShowMessage(wxT("Kernel contains data for object %d\n"),
+               MessageInterface::ShowMessage("Kernel contains data for object %d\n",
                      (Integer) objId);
             #endif
             // look to see if this kernel contains data for the object we're interested in
@@ -249,7 +249,7 @@ void  SpiceOrbitKernelReader::GetCoverageStartAndEnd(StringArray       &kernels,
          if (idOnKernel)
          {
             #ifdef DEBUG_SPK_COVERAGE
-               MessageInterface::ShowMessage(wxT("Checking kernel %s for data for object %d\n"),
+               MessageInterface::ShowMessage("Checking kernel %s for data for object %d\n",
                      (kernels.at(ii)).c_str(), (Integer) objId);
             #endif
             scard_c(0, &cover);   // reset the coverage cell
@@ -261,17 +261,17 @@ void  SpiceOrbitKernelReader::GetCoverageStartAndEnd(StringArray       &kernels,
                //SpiceChar      err[MAX_LONG_MESSAGE_VALUE];
                SpiceChar      *err = new SpiceChar[MAX_LONG_MESSAGE_VALUE];
                getmsg_c(option, numChar, err);
-               wxString errStr(wxString::FromAscii(err));
-               wxString errmsg = wxT("Error determining coverage for SPK kernel \"");
-               errmsg += kernels.at(ii) + wxT("\".  Message received from CSPICE is: ");
-               errmsg += errStr + wxT("\n");
+               std::string errStr(err);
+               std::string errmsg = "Error determining coverage for SPK kernel \"";
+               errmsg += kernels.at(ii) + "\".  Message received from CSPICE is: ";
+               errmsg += errStr + "\n";
                reset_c();
                delete [] err;
                throw UtilityException(errmsg);
             }
             numInt = wncard_c(&cover);
             #ifdef DEBUG_SPK_COVERAGE
-               MessageInterface::ShowMessage(wxT("Number of intervals found =  %d\n"),
+               MessageInterface::ShowMessage("Number of intervals found =  %d\n",
                      (Integer) numInt);
             #endif
             if ((firstInt) && (numInt > 0))
@@ -284,10 +284,10 @@ void  SpiceOrbitKernelReader::GetCoverageStartAndEnd(StringArray       &kernels,
                   //SpiceChar      err[MAX_LONG_MESSAGE_VALUE];
                   SpiceChar      *err = new SpiceChar[MAX_LONG_MESSAGE_VALUE];
                   getmsg_c(option, numChar, err);
-                  wxString errStr(wxString::FromAscii(err));
-                  wxString errmsg = wxT("Error getting interval times for SPK kernel \"");
-                  errmsg += kernels.at(ii) + wxT("\".  Message received from CSPICE is: ");
-                  errmsg += errStr + wxT("\n");
+                  std::string errStr(err);
+                  std::string errmsg = "Error getting interval times for SPK kernel \"";
+                  errmsg += kernels.at(ii) + "\".  Message received from CSPICE is: ";
+                  errmsg += errStr + "\n";
                   reset_c();
                   delete [] err;
                   throw UtilityException(errmsg);
@@ -310,19 +310,19 @@ void  SpiceOrbitKernelReader::GetCoverageStartAndEnd(StringArray       &kernels,
    }
    if (firstInt)
    {
-      wxString errmsg(wxT(""));
-      errmsg << wxT("Error - no data available for body with NAIF ID ") << forNaifId << wxT(" on specified SPK kernels\n");
-      throw UtilityException(errmsg);
+      std::stringstream errmsg("");
+      errmsg << "Error - no data available for body with NAIF ID " << forNaifId << " on specified SPK kernels\n";
+      throw UtilityException(errmsg.str());
    }
 }
 
 
 //------------------------------------------------------------------------------
-//  Rvector6 GetTargetState(const wxString &targetName,
+//  Rvector6 GetTargetState(const std::string &targetName,
 //                          const A1Mjd       &atTime,
-//                          const wxString &observingBodyName,
-//                          const wxString &referenceFrame,
-//                          const wxString &aberration)
+//                          const std::string &observingBodyName,
+//                          const std::string &referenceFrame,
+//                          const std::string &aberration)
 //------------------------------------------------------------------------------
 /**
  * This method returns the state of the target with respect to the observing body
@@ -338,44 +338,44 @@ void  SpiceOrbitKernelReader::GetCoverageStartAndEnd(StringArray       &kernels,
  *
  */
 //------------------------------------------------------------------------------
-Rvector6 SpiceOrbitKernelReader::GetTargetState(const wxString &targetName,
+Rvector6 SpiceOrbitKernelReader::GetTargetState(const std::string &targetName,
                                  const Integer     targetNAIFId,
                                  const A1Mjd       &atTime,
-                                 const wxString &observingBodyName,
-                                 const wxString &referenceFrame,
-                                 const wxString &aberration)
+                                 const std::string &observingBodyName,
+                                 const std::string &referenceFrame,
+                                 const std::string &aberration)
 {
    #ifdef DEBUG_SPK_READING
       MessageInterface::ShowMessage(
-            wxT("Entering SPKReader::GetTargetState with target = %s, naifId = %d, time = %12.10f, observer = %s\n"),
+            "Entering SPKReader::GetTargetState with target = %s, naifId = %d, time = %12.10f, observer = %s\n",
             targetName.c_str(), targetNAIFId, atTime.Get(), observingBodyName.c_str());
       Real start, end;
       GetCoverageStartAndEnd(loadedKernels, targetNAIFId, start, end);
-      MessageInterface::ShowMessage(wxT("   coverage for object %s : %12.10f --> %12.10f\n"),
+      MessageInterface::ShowMessage("   coverage for object %s : %12.10f --> %12.10f\n",
             targetName.c_str(), start, end);
    #endif
-   wxString targetNameToUse = GmatStringUtil::ToUpper(targetName);
-   if (targetNameToUse == wxT("LUNA"))  // We use Luna, instead of Moon, for GMAT
-      targetNameToUse        = wxT("MOON");
-   if (targetNameToUse == wxT("SOLARSYSTEMBARYCENTER"))
-      targetNameToUse = wxT("SSB");
-   objectNameSPICE           = targetNameToUse.char_str();
-   observingBodyNameSPICE    = observingBodyName.char_str();
-   referenceFrameSPICE       = referenceFrame.char_str();
-   aberrationSPICE           = aberration.char_str();
+   std::string targetNameToUse = GmatStringUtil::ToUpper(targetName);
+   if (targetNameToUse == "LUNA")  // We use Luna, instead of Moon, for GMAT
+      targetNameToUse        = "MOON";
+   if (targetNameToUse == "SOLARSYSTEMBARYCENTER")
+      targetNameToUse = "SSB";
+   objectNameSPICE           = targetNameToUse.c_str();
+   observingBodyNameSPICE    = observingBodyName.c_str();
+   referenceFrameSPICE       = referenceFrame.c_str();
+   aberrationSPICE           = aberration.c_str();
    // convert time to Ephemeris Time (TDB)
    etSPICE                   = A1ToSpiceTime(atTime.Get());
    naifIDSPICE               = targetNAIFId;
    boddef_c(objectNameSPICE, naifIDSPICE);        // CSPICE method to set NAIF ID for an object
 
    #ifdef DEBUG_SPK_READING
-      MessageInterface::ShowMessage(wxT("SET NAIF Id for object %s to %d\n"),
+      MessageInterface::ShowMessage("SET NAIF Id for object %s to %d\n",
             targetNameToUse.c_str(), targetNAIFId);
 //      MessageInterface::ShowMessage(
-//            wxT("In SPKReader::Converted (to TBD) time = %12.10f\n"), etMjdAtTime);
-//      MessageInterface::ShowMessage(wxT("  then the full JD = %12.10f\n"),
+//            "In SPKReader::Converted (to TBD) time = %12.10f\n", etMjdAtTime);
+//      MessageInterface::ShowMessage("  then the full JD = %12.10f\n",
 //            (etMjdAtTime + GmatTimeConstants::JD_JAN_5_1941));
-      MessageInterface::ShowMessage(wxT("So time passed to SPICE is %12.14f\n"), (Real) etSPICE);
+      MessageInterface::ShowMessage("So time passed to SPICE is %12.14f\n", (Real) etSPICE);
    #endif
    SpiceDouble state[6];
    SpiceDouble oneWayLightTime;
@@ -386,15 +386,15 @@ Rvector6 SpiceOrbitKernelReader::GetTargetState(const wxString &targetName,
                                TimeConverterUtil::TTMJD, GmatTimeConstants::JD_JAN_5_1941);
 //   Real etJd                 = etMjdAtTime + GmatTimeConstants::JD_JAN_5_1941;
    Real ttJd                 = ttMjdAtTime + GmatTimeConstants::JD_JAN_5_1941;
-   MessageInterface::ShowMessage(wxT("Asking CSPICE for state of body %s, with observer %s, referenceFrame %s, and aberration correction %s\n"),
+   MessageInterface::ShowMessage("Asking CSPICE for state of body %s, with observer %s, referenceFrame %s, and aberration correction %s\n",
          objectNameSPICE, observingBodyNameSPICE, referenceFrameSPICE, aberrationSPICE);
    MessageInterface::ShowMessage(
-         wxT("           Body: %s   TT Time:  %12.10f  TDB Time: %12.10f   state:  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f\n"),
+         "           Body: %s   TT Time:  %12.10f  TDB Time: %12.10f   state:  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f\n",
          targetName.c_str(), ttJd, /*etJd,*/ state[0], state[1], state[2], state[3], state[4], state[5]);
 #endif
    if (failed_c())
    {
-//      ConstSpiceChar option[] = wxT("SHORT"); // retrieve short error message, for now
+//      ConstSpiceChar option[] = "SHORT"; // retrieve short error message, for now
 //      SpiceInt       numChar  = MAX_SHORT_MESSAGE;
 //      SpiceChar      err[MAX_SHORT_MESSAGE];
       ConstSpiceChar option[] = "LONG"; // retrieve long error message, for now
@@ -402,17 +402,17 @@ Rvector6 SpiceOrbitKernelReader::GetTargetState(const wxString &targetName,
       //SpiceChar      err[MAX_LONG_MESSAGE_VALUE];
       SpiceChar      *err = new SpiceChar[MAX_LONG_MESSAGE_VALUE];
       getmsg_c(option, numChar, err);
-      wxString errStr(wxString::FromAscii(err));
-      wxString errmsg = wxT("Error getting state for body \"");
-      errmsg += targetName + wxT("\".  Message received from CSPICE is: ");
-      errmsg += errStr + wxT("\n");
+      std::string errStr(err);
+      std::string errmsg = "Error getting state for body \"";
+      errmsg += targetName + "\".  Message received from CSPICE is: ";
+      errmsg += errStr + "\n";
       reset_c();
       delete [] err;
       throw UtilityException(errmsg);
    }
    #ifdef DEBUG_SPK_READING
       MessageInterface::ShowMessage(
-            wxT("In SPKReader::Called spkezr_c and got state out\n"));
+            "In SPKReader::Called spkezr_c and got state out\n");
    #endif
 
 

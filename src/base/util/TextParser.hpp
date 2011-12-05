@@ -44,9 +44,9 @@ public:
    ~TextParser();
 
    // inline methods
-   wxString GetPrefaceComment() { return prefaceComment; }
-   wxString GetInlineComment() { return inlineComment; }
-   wxString GetInstruction() { return theInstruction; }
+   std::string GetPrefaceComment() { return prefaceComment; }
+   std::string GetInlineComment() { return inlineComment; }
+   std::string GetInstruction() { return theInstruction; }
    
    void Initialize(const StringArray &commandList);
    StringArray& GetChunks() { return theChunks; }
@@ -55,41 +55,41 @@ public:
    void Reset();
    
    // for parsing
-   Gmat::BlockType EvaluateBlock(const wxString &logicalBlock);
-   StringArray DecomposeBlock(const wxString &logicalBlock);
+   Gmat::BlockType EvaluateBlock(const std::string &logicalBlock);
+   StringArray DecomposeBlock(const std::string &logicalBlock);
    StringArray ChunkLine();
    
-   StringArray Decompose(const wxString &chunk,
-                         const wxString &bracketPair,
+   StringArray Decompose(const std::string &chunk,
+                         const std::string &bracketPair,
                          bool checkForArray = true,
                          bool removeOuterBracket = false);
-   StringArray SeparateBrackets(const wxString &chunk,
-                                const wxString &bracketPair,
-                                const wxString &delim,
+   StringArray SeparateBrackets(const std::string &chunk,
+                                const std::string &bracketPair,
+                                const std::string &delim,
                                 bool checkOuterBracket = true);
-   StringArray SeparateAllBrackets(const wxString &chunk,
-                                   const wxString &bracketPair);
-   StringArray SeparateSpaces(const wxString &chunk);
-   StringArray SeparateDots(const wxString &chunk);
-   StringArray SeparateBy(const wxString &chunk, const wxString &delim);
+   StringArray SeparateAllBrackets(const std::string &chunk,
+                                   const std::string &bracketPair);
+   StringArray SeparateSpaces(const std::string &chunk);
+   StringArray SeparateDots(const std::string &chunk);
+   StringArray SeparateBy(const std::string &chunk, const std::string &delim);
    
    
 protected:
       
-   bool IsCommand(const wxString &str);
-   wxChar GetClosingBracket(const wxChar &openBracket);
+   bool IsCommand(const std::string &str);
+   char GetClosingBracket(const char &openBracket);
    
 private:
    
-   wxString prefaceComment;
-   wxString inlineComment;
-   wxString theInstruction;
-   wxString whiteSpace;
+   std::string prefaceComment;
+   std::string inlineComment;
+   std::string theInstruction;
+   std::string whiteSpace;
    StringArray theChunks;
    StringArray theCommandList;
    Gmat::BlockType theBlockType;
    bool isFunctionCall;
-   wxString errorMsg;
+   char errorMsg[1024];
 };
 
 

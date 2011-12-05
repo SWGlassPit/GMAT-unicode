@@ -27,7 +27,7 @@
 #include "gmatdefs.hpp"
 #include "TimeTypes.hpp"
 #include "Date.hpp"
-//#include wxT("UtcDate.hpp")
+//#include "UtcDate.hpp"
 
 class UtcDate;
 
@@ -41,7 +41,7 @@ public:
             Real second);
     A1Date (Integer year, Integer month, Integer day, Real secondsOfDay);
     A1Date(const GmatTimeUtil::CalDate &date);
-    A1Date (const wxString &dateString);      // wxT("YYYYMMDD.hhmmssnnn")
+    A1Date (const std::string &dateString);      // "YYYYMMDD.hhmmssnnn"
     A1Date (const A1Date &a1date);               // copy constructor
     A1Date  operator=  (const A1Date &a1date);
     bool  operator>  (const A1Date &a1date) const;

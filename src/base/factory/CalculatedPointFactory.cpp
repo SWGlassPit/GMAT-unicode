@@ -30,7 +30,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  CreateCalculatedPoint(wxString ofType, wxString withName)
+//  CreateCalculatedPoint(std::string ofType, std::string withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested CalculatedPoint 
@@ -44,12 +44,12 @@
  */
 //------------------------------------------------------------------------------
 CalculatedPoint* CalculatedPointFactory::CreateCalculatedPoint(
-                                         const wxString &ofType,
-                                         const wxString &withName)
+                                         const std::string &ofType,
+                                         const std::string &withName)
 {
-   if (ofType == wxT("LibrationPoint"))
+   if (ofType == "LibrationPoint")
       return new LibrationPoint(withName);
-   else if (ofType == wxT("Barycenter"))
+   else if (ofType == "Barycenter")
       return new Barycenter(withName);
    else
    {
@@ -72,8 +72,8 @@ Factory(Gmat::CALCULATED_POINT)
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("LibrationPoint"));
-      creatables.push_back(wxT("Barycenter"));
+      creatables.push_back("LibrationPoint");
+      creatables.push_back("Barycenter");
    }
 }
 
@@ -93,8 +93,8 @@ Factory(createList,Gmat::CALCULATED_POINT)
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("LibrationPoint"));
-      creatables.push_back(wxT("Barycenter"));
+      creatables.push_back("LibrationPoint");
+      creatables.push_back("Barycenter");
    }
 }
 
@@ -105,7 +105,7 @@ Factory(createList,Gmat::CALCULATED_POINT)
  * This method creates an object of the class CalculatedPointFactory
  * (copy constructor).
  *
- * @param <fact> the factory object to copy to wxT("this") factory.
+ * @param <fact> the factory object to copy to "this" factory.
  */
 //------------------------------------------------------------------------------
 CalculatedPointFactory::CalculatedPointFactory(const CalculatedPointFactory &fact) :
@@ -113,8 +113,8 @@ Factory(fact)
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("LibrationPoint"));
-      creatables.push_back(wxT("Barycenter"));
+      creatables.push_back("LibrationPoint");
+      creatables.push_back("Barycenter");
    }
 }
 
@@ -124,10 +124,10 @@ Factory(fact)
 /**
  * Assignment operator for the CalculatedPointFactory class.
  *
- * @param <fact> the CalculatedPointFactory object whose data to assign to wxT("this")
+ * @param <fact> the CalculatedPointFactory object whose data to assign to "this"
  *               factory.
  *
- * @return wxT("this") CalculatedPointFactory with data of input factory fact.
+ * @return "this" CalculatedPointFactory with data of input factory fact.
  */
 //------------------------------------------------------------------------------
 CalculatedPointFactory& CalculatedPointFactory::operator= (
@@ -137,8 +137,8 @@ CalculatedPointFactory& CalculatedPointFactory::operator= (
    Factory::operator=(fact);
    if (creatables.empty())
    {
-      creatables.push_back(wxT("LibrationPoint"));
-      creatables.push_back(wxT("Barycenter"));
+      creatables.push_back("LibrationPoint");
+      creatables.push_back("Barycenter");
    }
    return *this;
 }

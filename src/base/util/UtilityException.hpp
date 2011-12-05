@@ -27,8 +27,8 @@
 class GMAT_API UtilityException : public BaseException
 {
 public:
-   UtilityException(const wxString& details = wxT("")) 
-      : BaseException(wxT("Utility Exception: "), details) {};
+   UtilityException(const std::string& details = "") 
+      : BaseException("Utility Exception: ", details) {};
 };
 
 
@@ -36,8 +36,8 @@ public:
 class GMAT_API GravityFileException : public BaseException
 {
 public:
-   GravityFileException(const wxString& details = wxT("")) 
-      : BaseException(wxT("Gravity File Exception: "), details) {};
+   GravityFileException(const std::string& details = "") 
+      : BaseException("Gravity File Exception: ", details) {};
 };
 
 
@@ -45,7 +45,7 @@ public:
 class GMAT_API TimeException : public BaseException
 {
 public:
-   TimeException(const wxString& details = wxT("")) 
-      : BaseException(wxT("Time Exception: "), details) {};
+   TimeException(const std::string& details = "") 
+      : BaseException("Time Exception: ", details) {};
 };
 #endif

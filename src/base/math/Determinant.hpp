@@ -25,7 +25,7 @@
 class GMAT_API Determinant : public MathFunction
 {
 public:
-   Determinant(const wxString &nomme);
+   Determinant(const std::string &nomme);
    virtual ~Determinant();
    Determinant(const Determinant &copy);
                  

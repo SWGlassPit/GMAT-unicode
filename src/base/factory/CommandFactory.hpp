@@ -28,8 +28,8 @@
 class GMAT_API CommandFactory : public Factory
 {
 public:
-   GmatCommand*  CreateCommand(const wxString &ofType,
-                               const wxString &withName = wxT(""));
+   GmatCommand*  CreateCommand(const std::string &ofType,
+                               const std::string &withName = "");
 
    // default constructor
    CommandFactory();
@@ -45,7 +45,7 @@ public:
 
    // method to return list of types of objects that this factory can create
    virtual StringArray      GetListOfCreatableObjects(
-                                  const wxString &qualifier = wxT("")) const;
+                                  const std::string &qualifier = "") const;
 
 protected:
    // protected data

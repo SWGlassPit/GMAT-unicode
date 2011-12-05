@@ -26,7 +26,7 @@
 class GMAT_API Tan : public MathFunction
 {
 public:
-   Tan(const wxString &nomme);
+   Tan(const std::string &nomme);
    virtual ~Tan();
    Tan(const Tan &copy);
                  

@@ -36,11 +36,11 @@
 // static data
 //---------------------------------
 
-const wxString
+const std::string
 CoordinateBase::PARAMETER_TEXT[CoordinateBaseParamCount - GmatBaseParamCount] =
 {
-   wxT("Origin"),
-   wxT("J2000Body"),
+   "Origin",
+   "J2000Body",
 };
 
 const Gmat::ParameterType
@@ -56,8 +56,8 @@ CoordinateBase::PARAMETER_TYPE[CoordinateBaseParamCount - GmatBaseParamCount] =
 //------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//  CoordinateBase(Gmat::ObjectType ofType, const wxString &itsType,
-//             const wxString &itsName);
+//  CoordinateBase(Gmat::ObjectType ofType, const std::string &itsType,
+//             const std::string &itsName);
 //---------------------------------------------------------------------------
 /**
  * Constructs base CoordinateBase structures used in derived classes
@@ -72,16 +72,16 @@ CoordinateBase::PARAMETER_TYPE[CoordinateBaseParamCount - GmatBaseParamCount] =
  */
 //---------------------------------------------------------------------------
 CoordinateBase::CoordinateBase(Gmat::ObjectType ofType, 
-                               const wxString &itsType,
-                               const wxString &itsName) :
+                               const std::string &itsType,
+                               const std::string &itsName) :
 GmatBase(ofType,itsType,itsName),
 origin         (NULL),
-originName     (wxT("Earth")),
+originName     ("Earth"),
 j2000Body      (NULL),
-j2000BodyName  (wxT("Earth")),
+j2000BodyName  ("Earth"),
 solar          (NULL)
 {
-   objectTypeNames.push_back(wxT("CoordinateBase"));
+   objectTypeNames.push_back("CoordinateBase");
    parameterCount = CoordinateBaseParamCount;
 }
 
@@ -163,11 +163,11 @@ void CoordinateBase::SetSolarSystem(SolarSystem *ss)
    
    #ifdef DEBUG_SET_SS
    MessageInterface::ShowMessage
-      (wxT("CoordinateBase::SetSolarSystem() entered, this='%s', solar=<%p>, ss=<%p>, ")
-       wxT("originName='%s', j2000BodyName='%s', origin=<%p>'%s', j2000Body=<%p>'%s'\n"),
+      ("CoordinateBase::SetSolarSystem() entered, this='%s', solar=<%p>, ss=<%p>, "
+       "originName='%s', j2000BodyName='%s', origin=<%p>'%s', j2000Body=<%p>'%s'\n",
        GetName().c_str(), solar, ss, originName.c_str(), j2000BodyName.c_str(),
-       origin, origin ? origin->GetName().c_str() : wxT("NULL"), j2000Body,
-       j2000Body ? j2000Body->GetName().c_str() : wxT("NULL"));
+       origin, origin ? origin->GetName().c_str() : "NULL", j2000Body,
+       j2000Body ? j2000Body->GetName().c_str() : "NULL");
    #endif
    
    if (solar != ss)
@@ -180,7 +180,7 @@ void CoordinateBase::SetSolarSystem(SolarSystem *ss)
       {
          #ifdef DEBUG_SET_SS
          MessageInterface::ShowMessage
-            (wxT("   Setting origin to <%p>'%s'\n"), sp, sp->GetName().c_str());
+            ("   Setting origin to <%p>'%s'\n", sp, sp->GetName().c_str());
          #endif
          origin = sp;
       }
@@ -191,7 +191,7 @@ void CoordinateBase::SetSolarSystem(SolarSystem *ss)
       {
          #ifdef DEBUG_SET_SS
          MessageInterface::ShowMessage
-            (wxT("   Setting j2000Body to <%p>'%s'\n"), sp, sp->GetName().c_str());
+            ("   Setting j2000Body to <%p>'%s'\n", sp, sp->GetName().c_str());
          #endif
          j2000Body = sp;
       }
@@ -202,21 +202,21 @@ void CoordinateBase::SetSolarSystem(SolarSystem *ss)
       
       #ifdef DEBUG_SET_SS
       MessageInterface::ShowMessage
-         (wxT("CoordinateBase::SetSolarSystem() leaving, got new SolarSystem <%p>, ")
-          wxT("origin=%p, j2000Body=%p\n"), solar, origin, j2000Body);
+         ("CoordinateBase::SetSolarSystem() leaving, got new SolarSystem <%p>, "
+          "origin=%p, j2000Body=%p\n", solar, origin, j2000Body);
       #endif
    }
 }
 
 //------------------------------------------------------------------------------
-//  void  SetOriginName(const wxString &toName)
+//  void  SetOriginName(const std::string &toName)
 //------------------------------------------------------------------------------
 /**
  * This method sets the origin name for the CoordinateBase class.
  *
  */
 //------------------------------------------------------------------------------
-void CoordinateBase::SetOriginName(const wxString &toName)
+void CoordinateBase::SetOriginName(const std::string &toName)
 {
    originName = toName;
 }
@@ -249,14 +249,14 @@ bool CoordinateBase::RequiresJ2000Body()
 }
 
 //------------------------------------------------------------------------------
-//  void  SetJ2000BodyName(const wxString &toName)
+//  void  SetJ2000BodyName(const std::string &toName)
 //------------------------------------------------------------------------------
 /**
  * This method sets the j2000Body for the CoordinateBase class.
  *
  */
 //------------------------------------------------------------------------------
-void CoordinateBase::SetJ2000BodyName(const wxString &toName)
+void CoordinateBase::SetJ2000BodyName(const std::string &toName)
 {
    j2000BodyName = toName;
 }
@@ -284,7 +284,7 @@ SolarSystem* CoordinateBase::GetSolarSystem() const
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetOriginName() const
+//  std::string  GetOriginName() const
 //------------------------------------------------------------------------------
 /**
  * This method returns the origin name for the CoordinateBase class.
@@ -292,7 +292,7 @@ SolarSystem* CoordinateBase::GetSolarSystem() const
  * @return name of the origin for the CoordinateBase object
  */
 //------------------------------------------------------------------------------
-wxString CoordinateBase::GetOriginName() const
+std::string CoordinateBase::GetOriginName() const
 {
    if (origin) return origin->GetName();
    else        return originName;
@@ -313,7 +313,7 @@ SpacePoint* CoordinateBase::GetOrigin() const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetJ2000BodyName() const
+//  std::string  GetJ2000BodyName() const
 //------------------------------------------------------------------------------
 /**
  * This method returns the origin name for the CoordinateBase class.
@@ -321,7 +321,7 @@ SpacePoint* CoordinateBase::GetOrigin() const
  * @return name of the origin for the CoordinateBase object
  */
 //------------------------------------------------------------------------------
-wxString CoordinateBase::GetJ2000BodyName() const
+std::string CoordinateBase::GetJ2000BodyName() const
 {
    if (j2000Body) return j2000Body->GetName();
    else           return j2000BodyName;
@@ -354,15 +354,15 @@ bool CoordinateBase::Initialize()
 {
    if (!origin)
       throw CoordinateSystemException(
-            wxT("Origin has not been defined for CoordinateBase object ") +
+            "Origin has not been defined for CoordinateBase object " +
             instanceName);
    if (!j2000Body) // ????????????????????????????????
       throw CoordinateSystemException(
-            wxT("j2000Body has not been defined for CoordinateBase object ") +
+            "j2000Body has not been defined for CoordinateBase object " +
             instanceName);
    if (!solar)
       throw CoordinateSystemException(
-            wxT("Solar System has not been defined for CoordinateBase object ") +
+            "Solar System has not been defined for CoordinateBase object " +
             instanceName);
    return true;
 }
@@ -371,7 +371,7 @@ bool CoordinateBase::Initialize()
 // public methods inherited from GmatBase
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -382,7 +382,7 @@ bool CoordinateBase::Initialize()
  *
  */
 //------------------------------------------------------------------------------
-wxString CoordinateBase::GetParameterText(const Integer id) const
+std::string CoordinateBase::GetParameterText(const Integer id) const
 {
    if (id >= GmatBaseParamCount && id < CoordinateBaseParamCount)
       return PARAMETER_TEXT[id - GmatBaseParamCount];
@@ -390,7 +390,7 @@ wxString CoordinateBase::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -401,7 +401,7 @@ wxString CoordinateBase::GetParameterText(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer CoordinateBase::GetParameterID(const wxString &str) const
+Integer CoordinateBase::GetParameterID(const std::string &str) const
 {
    for (Integer i = GmatBaseParamCount; i < CoordinateBaseParamCount; i++)
    {
@@ -433,7 +433,7 @@ Gmat::ParameterType CoordinateBase::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -444,7 +444,7 @@ Gmat::ParameterType CoordinateBase::GetParameterType(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString CoordinateBase::GetParameterTypeString(const Integer id) const
+std::string CoordinateBase::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -472,7 +472,7 @@ bool CoordinateBase::IsParameterReadOnly(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-//  bool IsParameterReadOnly(const wxString &label) const
+//  bool IsParameterReadOnly(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * Checks to see if the requested parameter is read only.
@@ -482,14 +482,14 @@ bool CoordinateBase::IsParameterReadOnly(const Integer id) const
  * @return true if the parameter is read only, false (the default) if not.
  */
 //---------------------------------------------------------------------------
-bool CoordinateBase::IsParameterReadOnly(const wxString &label) const
+bool CoordinateBase::IsParameterReadOnly(const std::string &label) const
 {
    return IsParameterReadOnly(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id) const
+//  std::string  GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -501,7 +501,7 @@ bool CoordinateBase::IsParameterReadOnly(const wxString &label) const
  *
  */
 //------------------------------------------------------------------------------
-wxString CoordinateBase::GetStringParameter(const Integer id) const
+std::string CoordinateBase::GetStringParameter(const Integer id) const
 {
    if (id == ORIGIN_NAME)   
       return originName;
@@ -512,7 +512,7 @@ wxString CoordinateBase::GetStringParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  SetStringParameter(const Integer id, const wxString value)
+//  std::string  SetStringParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the string parameter value, given the input
@@ -527,7 +527,7 @@ wxString CoordinateBase::GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 
  bool CoordinateBase::SetStringParameter(const Integer id, 
-                                         const wxString &value)
+                                         const std::string &value)
 {
     if (id == ORIGIN_NAME) 
     {
@@ -550,7 +550,7 @@ wxString CoordinateBase::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to get a parameter value
@@ -560,13 +560,13 @@ wxString CoordinateBase::GetStringParameter(const Integer id) const
  * @return the value of the parameter
  */
 //------------------------------------------------------------------------------
-wxString CoordinateBase::GetStringParameter(const wxString &label) const
+std::string CoordinateBase::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
 /**
 * Accessor method used to get a parameter value
@@ -576,8 +576,8 @@ wxString CoordinateBase::GetStringParameter(const wxString &label) const
  */
 //------------------------------------------------------------------------------
 
- bool CoordinateBase::SetStringParameter(const wxString &label,
-                                       const wxString &value)
+ bool CoordinateBase::SetStringParameter(const std::string &label,
+                                       const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
@@ -585,7 +585,7 @@ wxString CoordinateBase::GetStringParameter(const wxString &label) const
 
 //------------------------------------------------------------------------------
 //  GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                         const wxString &name)
+//                         const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * This method returns a reference object from the CoordinateBase class.
@@ -598,7 +598,7 @@ wxString CoordinateBase::GetStringParameter(const wxString &label) const
  */
 //------------------------------------------------------------------------------
 GmatBase* CoordinateBase::GetRefObject(const Gmat::ObjectType type,
-                                       const wxString &name)
+                                       const std::string &name)
 {
    switch (type)
    {
@@ -651,7 +651,7 @@ const StringArray& CoordinateBase::GetRefObjectNameArray(const Gmat::ObjectType 
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                    const wxString &name)
+//                    const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * This method sets a reference object for the CoordinateBase class.
@@ -665,14 +665,14 @@ const StringArray& CoordinateBase::GetRefObjectNameArray(const Gmat::ObjectType 
  */
 //------------------------------------------------------------------------------
 bool CoordinateBase::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                  const wxString &name)
+                                  const std::string &name)
 {
    if (obj == NULL)
       return false;
 
    #ifdef DEBUG_SET_REF
    MessageInterface::ShowMessage
-      (wxT("CoordinateBase::SetRefObject() <%s>, obj=%p, name=%s\n"), GetName().c_str(),
+      ("CoordinateBase::SetRefObject() <%s>, obj=%p, name=%s\n", GetName().c_str(),
        obj, name.c_str());
    #endif
    
@@ -703,7 +703,7 @@ bool CoordinateBase::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 // the overloaded versions of the following six methods:
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id, const Integer index) const
+// std::string GetStringParameter(const Integer id, const Integer index) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value from a vector of strings, 
@@ -716,7 +716,7 @@ bool CoordinateBase::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 /*
-wxString CoordinateBase::GetStringParameter(const Integer id, 
+std::string CoordinateBase::GetStringParameter(const Integer id, 
                                            const Integer index) const
 {
    return GmatBase::GetStringParameter(id, index);
@@ -724,7 +724,7 @@ wxString CoordinateBase::GetStringParameter(const Integer id,
 */
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value, 
+// bool SetStringParameter(const Integer id, const std::string &value, 
 //                         const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -740,7 +740,7 @@ wxString CoordinateBase::GetStringParameter(const Integer id,
 //------------------------------------------------------------------------------
 /*
 bool CoordinateBase::SetStringParameter(const Integer id, 
-                                    const wxString &value, 
+                                    const std::string &value, 
                                     const Integer index)
 {
    return GmatBase::SetStringParameter(id, value, index);
@@ -748,7 +748,7 @@ bool CoordinateBase::SetStringParameter(const Integer id,
 
 */
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label, 
+// std::string GetStringParameter(const std::string &label, 
 //                                const Integer index) const
 //------------------------------------------------------------------------------
 /**
@@ -763,7 +763,7 @@ bool CoordinateBase::SetStringParameter(const Integer id,
  */
 //------------------------------------------------------------------------------
 /*
-wxString CoordinateBase::GetStringParameter(const wxString &label, 
+std::string CoordinateBase::GetStringParameter(const std::string &label, 
                                            const Integer index) const
 {
    return GmatBase::GetStringParameter(label, index);
@@ -771,7 +771,7 @@ wxString CoordinateBase::GetStringParameter(const wxString &label,
 */
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value, 
+// bool SetStringParameter(const std::string &label, const std::string &value, 
 //                         const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -787,8 +787,8 @@ wxString CoordinateBase::GetStringParameter(const wxString &label,
  */
 //------------------------------------------------------------------------------
 /*
-bool CoordinateBase::SetStringParameter(const wxString &label, 
-                                    const wxString &value, 
+bool CoordinateBase::SetStringParameter(const std::string &label, 
+                                    const std::string &value, 
                                     const Integer index)
 {
    return GmatBase::SetStringParameter(label, value, index);

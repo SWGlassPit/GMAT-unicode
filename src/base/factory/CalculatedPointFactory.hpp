@@ -28,8 +28,8 @@
 class GMAT_API CalculatedPointFactory : public Factory
 {
 public:
-   CalculatedPoint*  CreateCalculatedPoint(const wxString &ofType,
-                                           const wxString &withName = wxT(""));
+   CalculatedPoint*  CreateCalculatedPoint(const std::string &ofType,
+                                           const std::string &withName = "");
 
    // default constructor
    CalculatedPointFactory();

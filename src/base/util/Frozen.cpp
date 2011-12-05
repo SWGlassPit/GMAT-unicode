@@ -56,13 +56,13 @@ void Frozen::CalculateFrozen(Real ALT, bool altVal, Real INC, bool incVal)
 
    if (!altVal)
    {
-	  errormsg = wxT("Mean ALT must be selected");
+	  errormsg = "Mean ALT must be selected";
 	  isError = true;
       return;
    }
    else if (!incVal)
    {
-	  errormsg = wxT("INC must be selected");
+	  errormsg = "INC must be selected";
 	  isError = true;
       return;
    }
@@ -71,14 +71,14 @@ void Frozen::CalculateFrozen(Real ALT, bool altVal, Real INC, bool incVal)
    {
       isError = true;
       errormsg = 
-	     wxT("Altitude must be greater than or equal to 0");
+	     "Altitude must be greater than or equal to 0";
 	  return;
    }
    else if ((INC < 0) || (INC >180))
    {
       isError = true;
       errormsg = 
-	     wxT("Inclination must be greater than or equal to 0 and less than 180");
+	     "Inclination must be greater than or equal to 0 and less than 180";
 	  return;
    }
 
@@ -128,11 +128,11 @@ void Frozen::CalculateFrozen(Real ALT, bool altVal, Real INC, bool incVal)
    }
 
    if (perigeeAlt <=0)
-      errormsg = wxT("Could not find frozen orbit");
+      errormsg = "Could not find frozen orbit";
    else if (apogeeAlt < perigeeAlt)
-      errormsg = wxT("Could not find frozen orbit");
+      errormsg = "Could not find frozen orbit";
    else if (ecc == -1)
-      errormsg = wxT("Could not find frozen orbit");
+      errormsg = "Could not find frozen orbit";
    else
    {
 	  elements.ECC = ecc;
@@ -178,7 +178,7 @@ bool Frozen::IsError()
 	return isError;
 }
 
-wxString Frozen::GetError()
+std::string Frozen::GetError()
 {
 	return errormsg;
 }

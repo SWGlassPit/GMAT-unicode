@@ -70,8 +70,8 @@ class GMAT_API GmatBase
 {
 public:
    // The usual suspects
-   GmatBase(Gmat::ObjectType typeId, const wxString &typeStr,
-            const wxString &nomme = wxT(""));
+   GmatBase(Gmat::ObjectType typeId, const std::string &typeStr,
+            const std::string &nomme = "");
    virtual ~GmatBase() = 0;
    GmatBase(const GmatBase &a);
    GmatBase&            operator=(const GmatBase &a);
@@ -79,14 +79,14 @@ public:
    // Access methods called on the base class
    virtual Gmat::ObjectType
                         GetType() const;
-   inline wxString   GetTypeName() const;
-   inline wxString   GetName() const;
-   virtual bool         SetName(const wxString &who,
-                                const wxString &oldName = wxT(""));
+   inline std::string   GetTypeName() const;
+   inline std::string   GetName() const;
+   virtual bool         SetName(const std::string &who,
+                                const std::string &oldName = "");
    virtual Integer      GetParameterCount() const;
 
    bool                 IsOfType(Gmat::ObjectType ofType) const;
-   bool                 IsOfType(wxString typeDescription) const;
+   bool                 IsOfType(std::string typeDescription) const;
 
    void                 SetShowPrefaceComment(bool show = true);
    void                 SetShowInlineComment(bool show = true);
@@ -94,48 +94,48 @@ public:
    bool                 GetShowInlineComment();
 
    // Access methods derived classes can override on comments
-   virtual const wxString
+   virtual const std::string
                         GetCommentLine() const;
-   virtual void         SetCommentLine(const wxString &comment);
+   virtual void         SetCommentLine(const std::string &comment);
 
-   virtual const wxString
+   virtual const std::string
                         GetInlineComment() const;
-   virtual void         SetInlineComment(const wxString &comment);
+   virtual void         SetInlineComment(const std::string &comment);
 
-   virtual const wxString
+   virtual const std::string
                         GetAttributeCommentLine(Integer index);
    virtual void         SetAttributeCommentLine(Integer index,
-                                                const wxString &comment);
+                                                const std::string &comment);
 
-   virtual const wxString
+   virtual const std::string
                         GetInlineAttributeComment(Integer index);
    virtual void         SetInlineAttributeComment(Integer index,
-                                                  const wxString &comment);
+                                                  const std::string &comment);
 
    // Access methods derived classes can override on reference objects
-   virtual wxString  GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual std::string  GetRefObjectName(const Gmat::ObjectType type) const;
    virtual bool         HasRefObjectTypeArray();
    virtual const ObjectTypeArray&
                         GetRefObjectTypeArray();
    virtual const StringArray&
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool         SetRefObjectName(const Gmat::ObjectType type,
-                                         const wxString &name);
+                                         const std::string &name);
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name);
+                                     const std::string &name);
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name,
+                                     const std::string &name,
                                      const Integer index);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name,
+                                     const std::string &name,
                                      const Integer index);
    virtual ObjectArray& GetRefObjectArray(const Gmat::ObjectType type);
-   virtual ObjectArray& GetRefObjectArray(const wxString& typeString);
+   virtual ObjectArray& GetRefObjectArray(const std::string& typeString);
 
    virtual bool         IsOwnedObject(Integer id) const;
    virtual Integer      GetOwnedObjectCount();
@@ -147,15 +147,15 @@ public:
    virtual bool         IsObjectCloaked() const;
    virtual bool         SaveAllAsDefault();
    virtual bool         SaveParameterAsDefault(const Integer id);
-   virtual bool         SaveParameterAsDefault(const wxString &label);
+   virtual bool         SaveParameterAsDefault(const std::string &label);
    /// method to determine if a parameter value has been changed from the default - 
    // should be implemented in leaf classes that need to monitor changes to
    // parameter values (currently, SolarSystem and celestial bodies)
    
    virtual bool         ExecuteCallback();
    virtual bool         IsCallbackExecuting();
-   virtual bool         PutCallbackData(wxString &data);
-   virtual wxString  GetCallbackResults();
+   virtual bool         PutCallbackData(std::string &data);
+   virtual std::string  GetCallbackResults();
 
    // required method for all subclasses
    virtual GmatBase*    Clone() const = 0;
@@ -171,23 +171,23 @@ public:
    virtual bool         RequiresJ2000Body();
 
    // Access methods derived classes can override
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual wxString  GetParameterUnit(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual std::string  GetParameterUnit(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
 
    virtual bool         IsParameterReadOnly(const Integer id) const;
-   virtual bool         IsParameterReadOnly(const wxString &label) const;
+   virtual bool         IsParameterReadOnly(const std::string &label) const;
    virtual bool         IsParameterEnabled(const Integer id) const;
-   virtual bool         IsParameterEnabled(const wxString &label) const;
+   virtual bool         IsParameterEnabled(const std::string &label) const;
    virtual bool         IsParameterCloaked(const Integer id) const;
-   virtual bool         IsParameterCloaked(const wxString &label) const;
+   virtual bool         IsParameterCloaked(const std::string &label) const;
    virtual bool         IsParameterEqualToDefault(const Integer id) const;
-   virtual bool         IsParameterEqualToDefault(const wxString &label) const;
+   virtual bool         IsParameterEqualToDefault(const std::string &label) const;
    virtual bool         IsParameterVisible(const Integer id) const;
-   virtual bool         IsParameterVisible(const wxString &label) const;
+   virtual bool         IsParameterVisible(const std::string &label) const;
 
    virtual bool         ParameterAffectsDynamics(const Integer id) const;
    virtual bool         ParameterDvInitializesNonzero(const Integer id,
@@ -201,7 +201,7 @@ public:
    virtual const StringArray&
                         GetPropertyEnumStrings(const Integer id) const;
    virtual const StringArray&
-                        GetPropertyEnumStrings(const wxString &label) const;
+                        GetPropertyEnumStrings(const std::string &label) const;
    
    virtual Real         GetRealParameter(const Integer id) const;
    virtual Real         SetRealParameter(const Integer id,
@@ -254,13 +254,13 @@ public:
                         SetRmatrixParameter(const Integer id,
                                             const Rmatrix &value);
 
-   virtual wxString  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value);
-   virtual wxString  GetStringParameter(const Integer id,
+                                           const std::string &value);
+   virtual std::string  GetStringParameter(const Integer id,
                                            const Integer index) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
    virtual const StringArray&
                         GetStringArrayParameter(const Integer id) const;
@@ -268,9 +268,9 @@ public:
                         GetStringArrayParameter(const Integer id,
                                                 const Integer index) const;
 
-   virtual wxString  GetOnOffParameter(const Integer id) const;
+   virtual std::string  GetOnOffParameter(const Integer id) const;
    virtual bool         SetOnOffParameter(const Integer id,
-                                         const wxString &value);
+                                         const std::string &value);
 
    virtual bool         GetBooleanParameter(const Integer id) const;
    virtual bool         SetBooleanParameter(const Integer id,
@@ -281,112 +281,112 @@ public:
                                             const bool value,
                                             const Integer index);
 
-   virtual Real         GetRealParameter(const wxString &label) const;
-   virtual Real         SetRealParameter(const wxString &label,
+   virtual Real         GetRealParameter(const std::string &label) const;
+   virtual Real         SetRealParameter(const std::string &label,
                                          const Real value);
-   virtual Real         GetRealParameter(const wxString &label,
+   virtual Real         GetRealParameter(const std::string &label,
                                          const Integer index) const;
-   virtual Real         SetRealParameter(const wxString &label,
+   virtual Real         SetRealParameter(const std::string &label,
                                          const Real value,
                                          const Integer index);
-   virtual Real         GetRealParameter(const wxString &label,
+   virtual Real         GetRealParameter(const std::string &label,
                                          const Integer row,
                                          const Integer col) const;
-   virtual Real         SetRealParameter(const wxString &label,
+   virtual Real         SetRealParameter(const std::string &label,
                                          const Real value, const Integer row,
                                          const Integer col);
 
-   virtual Integer      GetIntegerParameter(const wxString &label) const;
-   virtual Integer      SetIntegerParameter(const wxString &label,
+   virtual Integer      GetIntegerParameter(const std::string &label) const;
+   virtual Integer      SetIntegerParameter(const std::string &label,
                                             const Integer value);
-   virtual Integer      GetIntegerParameter(const wxString &label,
+   virtual Integer      GetIntegerParameter(const std::string &label,
                                             const Integer index) const;
-   virtual Integer      SetIntegerParameter(const wxString &label,
+   virtual Integer      SetIntegerParameter(const std::string &label,
                                             const Integer value,
                                             const Integer index);
 
-   virtual UnsignedInt  GetUnsignedIntParameter(const wxString &label) const;
-   virtual UnsignedInt  SetUnsignedIntParameter(const wxString &label,
+   virtual UnsignedInt  GetUnsignedIntParameter(const std::string &label) const;
+   virtual UnsignedInt  SetUnsignedIntParameter(const std::string &label,
                                                 const UnsignedInt value);
-   virtual UnsignedInt  GetUnsignedIntParameter(const wxString &label,
+   virtual UnsignedInt  GetUnsignedIntParameter(const std::string &label,
                                                 const Integer index) const;
-   virtual UnsignedInt  SetUnsignedIntParameter(const wxString &label,
+   virtual UnsignedInt  SetUnsignedIntParameter(const std::string &label,
                                                 const UnsignedInt value,
                                                 const Integer index);
    virtual const UnsignedIntArray&
-                        GetUnsignedIntArrayParameter(const wxString &label) const;
+                        GetUnsignedIntArrayParameter(const std::string &label) const;
 
    virtual const Rvector&
-                        GetRvectorParameter(const wxString &label) const;
+                        GetRvectorParameter(const std::string &label) const;
    virtual const Rvector&
-                        SetRvectorParameter(const wxString &label,
+                        SetRvectorParameter(const std::string &label,
                                             const Rvector &value);
 
    virtual const Rmatrix&
-                        GetRmatrixParameter(const wxString &label) const;
+                        GetRmatrixParameter(const std::string &label) const;
    virtual const Rmatrix&
-                        SetRmatrixParameter(const wxString &label,
+                        SetRmatrixParameter(const std::string &label,
                                             const Rmatrix &value);
 
-   virtual wxString  GetStringParameter(const wxString &label) const;
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
-   virtual wxString  GetStringParameter(const wxString &label,
+   virtual std::string  GetStringParameter(const std::string &label) const;
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
+   virtual std::string  GetStringParameter(const std::string &label,
                                            const Integer index) const;
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value,
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value,
                                            const Integer index);
 
    virtual const StringArray&
-                        GetStringArrayParameter(const wxString &label) const;
+                        GetStringArrayParameter(const std::string &label) const;
    virtual const StringArray&
-                        GetStringArrayParameter(const wxString &label,
+                        GetStringArrayParameter(const std::string &label,
                                                 const Integer index) const;
 
-   virtual bool         GetBooleanParameter(const wxString &label) const;
-   virtual bool         SetBooleanParameter(const wxString &label,
+   virtual bool         GetBooleanParameter(const std::string &label) const;
+   virtual bool         SetBooleanParameter(const std::string &label,
                                             const bool value);
-   virtual bool         GetBooleanParameter(const wxString &label,
+   virtual bool         GetBooleanParameter(const std::string &label,
                                             const Integer index) const;
-   virtual bool         SetBooleanParameter(const wxString &label,
+   virtual bool         SetBooleanParameter(const std::string &label,
                                             const bool value,
                                             const Integer index);
    virtual const BooleanArray&
                         GetBooleanArrayParameter(const Integer id) const;
    virtual const BooleanArray&
-                        GetBooleanArrayParameter(const wxString &label) const;
+                        GetBooleanArrayParameter(const std::string &label) const;
    virtual bool         SetBooleanArrayParameter(const Integer id,
                                                  const BooleanArray &valueArray);
-   virtual bool         SetBooleanArrayParameter(const wxString &label,
+   virtual bool         SetBooleanArrayParameter(const std::string &label,
                                                  const BooleanArray &valueArray);
    
-   virtual wxString  GetOnOffParameter(const wxString &label) const;
-   virtual bool         SetOnOffParameter(const wxString &label,
-                                          const wxString &value);
+   virtual std::string  GetOnOffParameter(const std::string &label) const;
+   virtual bool         SetOnOffParameter(const std::string &label,
+                                          const std::string &value);
 
-   virtual bool         TakeAction(const wxString &action,
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,
+                                   const std::string &actionData = "");
    virtual bool         TakeRequiredAction(const Integer id);
-   virtual bool         TakeRequiredAction(const wxString &label);
+   virtual bool         TakeRequiredAction(const std::string &label);
 
    virtual const ObjectTypeArray& GetTypesForList(const Integer id);
-   virtual const ObjectTypeArray& GetTypesForList(const wxString &label);
+   virtual const ObjectTypeArray& GetTypesForList(const std::string &label);
 
-   virtual const wxString&
+   virtual const std::string&
                         GetGeneratingString(
                            Gmat::WriteMode mode = Gmat::SCRIPTING,
-                           const wxString &prefix = wxT(""),
-                           const wxString &useName = wxT(""));
+                           const std::string &prefix = "",
+                           const std::string &useName = "");
    virtual StringArray  GetGeneratingStringArray(
                            Gmat::WriteMode mode = Gmat::SCRIPTING,
-                           const wxString &prefix = wxT(""),
-                           const wxString &useName = wxT(""));
-   virtual wxString  BuildPropertyName(GmatBase *ownedObj);
+                           const std::string &prefix = "",
+                           const std::string &useName = "");
+   virtual std::string  BuildPropertyName(GmatBase *ownedObj);
    virtual void         FinalizeCreation();
 
-   virtual wxString  GetLastErrorMessage();
-   virtual wxString  GetErrorMessageFormat();
-   virtual void         SetErrorMessageFormat(const wxString &fmt);
+   virtual std::string  GetLastErrorMessage();
+   virtual std::string  GetErrorMessageFormat();
+   virtual void         SetErrorMessageFormat(const std::string &fmt);
 
    /// Return value used if the parameter is not accessible as a Real
    static const Real         REAL_PARAMETER_UNDEFINED;
@@ -395,7 +395,7 @@ public:
    /// Return value used if the parameter is not accessible as an UnsignedInt
    static const UnsignedInt  UNSIGNED_INT_PARAMETER_UNDEFINED;
    /// Return value used if the parameter is not accessible as a String
-   static const wxString  STRING_PARAMETER_UNDEFINED;
+   static const std::string  STRING_PARAMETER_UNDEFINED;
    /// Return value used if the parameter is not accessible as a StringArray
    static const StringArray  STRINGARRAY_PARAMETER_UNDEFINED;
    /// Return value used if the parameter is not accessible as a IntegerArray
@@ -407,33 +407,33 @@ public:
    /// Return value used if the parameter is not accessible as a Rmatrix
    static const Rmatrix      RMATRIX_PARAMETER_UNDEFINED;
    /// String mappings for the GMAT data types
-   static const wxString  PARAM_TYPE_STRING[Gmat::TypeCount];
+   static const std::string  PARAM_TYPE_STRING[Gmat::TypeCount];
    /// String mappings for the GMAT object types
-   static const wxString  OBJECT_TYPE_STRING[Gmat::UNKNOWN_OBJECT - Gmat::SPACECRAFT+1];
+   static const std::string  OBJECT_TYPE_STRING[Gmat::UNKNOWN_OBJECT - Gmat::SPACECRAFT+1];
    static const bool         AUTOMATIC_GLOBAL_FLAGS[Gmat::UNKNOWN_OBJECT - Gmat::SPACECRAFT+1];
 
    /// Method to return the current number of instantiated objects
    static Integer          GetInstanceCount();
    /// Method for getting GMAT object type
-   static Gmat::ObjectType GetObjectType(const wxString &typeString);
+   static Gmat::ObjectType GetObjectType(const std::string &typeString);
    /// Method for getting GMAT object type string
-   static wxString      GetObjectTypeString(Gmat::ObjectType type);
+   static std::string      GetObjectTypeString(Gmat::ObjectType type);
    /// Method for getting data precision
    static Integer          GetDataPrecision();
    /// Method for getting time precision
    static Integer          GetTimePrecision();
 
-   virtual Integer         GetPropItemID(const wxString &whichItem);
-   virtual Integer         SetPropItem(const wxString &propItem);
+   virtual Integer         GetPropItemID(const std::string &whichItem);
+   virtual Integer         SetPropItem(const std::string &propItem);
    virtual StringArray     GetDefaultPropItems();
    virtual Real*           GetPropItem(const Integer item);
    virtual Integer         GetPropItemSize(const Integer item);
    virtual bool            PropItemNeedsFinalUpdate(const Integer item);
    virtual bool            HasAssociatedStateObjects();
-   virtual wxString     GetAssociateName(UnsignedInt val = 0);
+   virtual std::string     GetAssociateName(UnsignedInt val = 0);
 
-   virtual Integer         GetEstimationParameterID(const wxString &param);
-   virtual Integer         SetEstimationParameter(const wxString &param);
+   virtual Integer         GetEstimationParameterID(const std::string &param);
+   virtual Integer         SetEstimationParameter(const std::string &param);
    virtual bool            IsEstimationParameterValid(const Integer id);
    virtual Integer         GetEstimationParameterSize(const Integer id);
    virtual Real*           GetEstimationParameterValue(const Integer id);
@@ -457,7 +457,7 @@ protected:
    /// Spacecraft parameter types
    static const Gmat::ParameterType PARAMETER_TYPE[GmatBaseParamCount];
    /// Spacecraft parameter labels
-   static const wxString PARAMETER_LABEL[GmatBaseParamCount];
+   static const std::string PARAMETER_LABEL[GmatBaseParamCount];
 
 
    /// count of the number of GmatBase objects currently instantiated
@@ -466,15 +466,15 @@ protected:
    /// Count of the accessible parameters
    Integer             parameterCount;
    /// Script string used or this class
-   wxString         typeName;
+   std::string         typeName;
    /// Name of the object -- empty if it is nameless
-   wxString         instanceName;
+   std::string         instanceName;
    /// Enumerated base type of the object
    Gmat::ObjectType    type;
    /// Number of owned objects that belong to this instance
    Integer             ownedObjectCount;
    /// Script string used to build the object
-   wxString         generatingString;
+   std::string         generatingString;
    /// The list of generic types that this class extends.
    ObjectTypeArray     objectTypes;
    /// The list types that this class extends, by name
@@ -493,10 +493,10 @@ protected:
    bool                callbackExecuting;
 
    /// error message and formats
-   wxString         lastErrorMessage;
-   wxString         errorMessageFormat;
-   wxString         errorMessageFormatUnnamed;
-   wxString         deprecatedMessageFormat;
+   std::string         lastErrorMessage;
+   std::string         errorMessageFormat;
+   std::string         errorMessageFormatUnnamed;
+   std::string         deprecatedMessageFormat;
    
    /// flag used to deterine if the current write is in Matlab mode
    bool                inMatlabMode;
@@ -505,9 +505,9 @@ protected:
    /// This array is automatically created if array is empty
    IntegerArray         parameterWriteOrder;
    /// String used to hold the comment line
-   wxString         commentLine;
+   std::string         commentLine;
    /// String used to hold inline comment
-   wxString         inlineComment;
+   std::string         inlineComment;
    /// String array used to hold the attribute comments
    StringArray         attributeCommentLines;
    /// String array used to hold the attribute inline comments
@@ -516,7 +516,7 @@ protected:
    bool                showPrefaceComment;
    /// Flag to indicating whether to show inline comment
    bool                showInlineComment;
-   /// flag indicating whether or not to omit the wxT("Create") line when writing the script
+   /// flag indicating whether or not to omit the "Create" line when writing the script
    bool                cloaking;
    /// Utility array used to return types for objects to be shown on a GUI
    ObjectTypeArray     listedTypes;
@@ -533,10 +533,10 @@ protected:
    // Scripting interfaces
    void                CopyParameters(const GmatBase &a);
    virtual void        WriteParameters(Gmat::WriteMode mode,
-                                       wxString &prefix,
-                                       wxString &stream);
+                                       std::string &prefix,
+                                       std::stringstream &stream);
    void                WriteParameterValue(Integer id,
-                                           wxString &stream);
+                                           std::stringstream &stream);
 
 private:
 
@@ -545,28 +545,28 @@ private:
 
 
 //------------------------------------------------------------------------------
-//  wxString GetTypeName() const
+//  std::string GetTypeName() const
 //------------------------------------------------------------------------------
 /**
  * Retrieves the type name (i.e. the type used in scripting) for the object.
  *
  * @return The type name.
  */
-wxString GmatBase::GetTypeName() const
+std::string GmatBase::GetTypeName() const
 {
    return typeName;
 }
 
 
 //------------------------------------------------------------------------------
-//  wxString GetName() const
+//  std::string GetName() const
 //------------------------------------------------------------------------------
 /**
  * Retrieves the object's name.
  *
  * @return The name.
  */
-wxString GmatBase::GetName() const
+std::string GmatBase::GetName() const
 {
    return instanceName;
 }

@@ -56,7 +56,7 @@ public:
    GmatEpoch         SetEpoch(const GmatEpoch ep);
    
    bool              SetElementProperties(const Integer index, const Integer id, 
-                           const wxString &textId, const Integer associate);
+                           const std::string &textId, const Integer associate);
    const StringArray&
                      GetElementDescriptions();
    Integer           GetAssociateIndex(const Integer id);

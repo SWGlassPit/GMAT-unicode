@@ -38,16 +38,16 @@ public:
    
    virtual GmatBase*    Clone() const;
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name);
+                                     const std::string &name);
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
    virtual bool         Execute();
    
 protected:   
    /// Name of the function
-   wxString          functionName;
+   std::string          functionName;
 };
 
 #endif /* EndFunction_hpp */

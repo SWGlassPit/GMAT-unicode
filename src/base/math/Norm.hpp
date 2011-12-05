@@ -25,7 +25,7 @@
 class GMAT_API Norm : public MathFunction
 {
 public:
-   Norm(const wxString &nomme);
+   Norm(const std::string &nomme);
    virtual ~Norm();
    Norm(const Norm &copy);
                  

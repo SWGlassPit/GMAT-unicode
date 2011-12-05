@@ -30,15 +30,15 @@
 //------------------------------------------------------------------------------
 // A constructor.
 //------------------------------------------------------------------------------
-OrbitDesignerTime::OrbitDesignerTime(wxString epochFormat, wxString epoch,
-	                                 double RAAN, wxString startTime)
+OrbitDesignerTime::OrbitDesignerTime(std::string epochFormat, std::string epoch,
+	                                 double RAAN, std::string startTime)
 {
 }
 
-OrbitDesignerTime::OrbitDesignerTime(wxString epochStr, 
-	                                 wxString epochFormatStr, bool raanVal, 
+OrbitDesignerTime::OrbitDesignerTime(std::string epochStr, 
+	                                 std::string epochFormatStr, bool raanVal, 
 									 Real raan, bool startTimeVal, 
-									 wxString startTimeStr)
+									 std::string startTimeStr)
 {
    epoch = epochStr;
    epochFormat = epochFormatStr;
@@ -49,7 +49,7 @@ OrbitDesignerTime::OrbitDesignerTime(wxString epochStr,
    if (startTimeVal) 
 	  startTime = startTimeStr;
    else 
-	  startTime = wxT("12:00:00.0");
+	  startTime = "12:00:00.0";
 }
 
 //------------------------------------------------------------------------------
@@ -70,30 +70,30 @@ Real OrbitDesignerTime::FindRAAN()
    Real c4 = 0.000026;
    Real mon, day, year, hour, min, sec, epochJD, epochJDN, JD, JDN, D, argJD0;
    Real JD0, H, D0, T, GMST, argGMST, a, y, m;
-   wxString months[12] = 
-      {wxT("Jan"), wxT("Feb"), wxT("Mar"), wxT("Apr"), wxT("May"), wxT("Jun"), 
-	   wxT("Jul"), wxT("Aug"), wxT("Sep"), wxT("Oct"), wxT("Nov"), wxT("Dec")};
-   errormsg = wxT("");
+   std::string months[12] = 
+      {"Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+	   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+   errormsg = "";
    isError = false;
 
-   if ((epochFormat == wxT("TAIModJulian")) || (epochFormat == wxT("UTCModJulian")) || 
-	   (epochFormat == wxT("A1ModJulian")) || (epochFormat == wxT("TTModJulian")))
+   if ((epochFormat == "TAIModJulian") || (epochFormat == "UTCModJulian") || 
+	   (epochFormat == "A1ModJulian") || (epochFormat == "TTModJulian"))
    {
 	  GmatStringUtil::ToReal(epoch,epochJD);
 	  epochJDN = floor(epochJD);
    }
-   else if ((epochFormat == wxT("UTCGregorian")) || (epochFormat == wxT("A1Gregorian")) ||
-	   (epochFormat == wxT("TAIGregorian")) || (epochFormat == wxT("TTGregorian")))
+   else if ((epochFormat == "UTCGregorian") || (epochFormat == "A1Gregorian") ||
+	   (epochFormat == "TAIGregorian") || (epochFormat == "TTGregorian"))
    {
 	  ////////////////////////////////////////////////////
 	  //find epoch in decimal form
 	  ////////////////////////////////////////////////////
-	  //epoch Format = wxT("DD Mon YYYY HH:MM:SS.ss")
+	  //epoch Format = "DD Mon YYYY HH:MM:SS.ss"
 	  //convert date to day, mon, year doubles
-	  wxString epochTemp = epoch;
+	  std::string epochTemp = epoch;
 	  GmatStringUtil::ToReal(epochTemp.substr(0,2),day);
 	  epochTemp.erase(0,3);
-	  wxString monthStr = epochTemp.substr(0,3);
+	  std::string monthStr = epochTemp.substr(0,3);
 	  for (int i=0; i<12; i++)
 	  {
 	     if (monthStr == months[i])
@@ -122,20 +122,20 @@ Real OrbitDesignerTime::FindRAAN()
    /////////////////////////////////////////////////////
    //convert start time into decimal form
    /////////////////////////////////////////////////////
-   //startTimeFormat = wxT("HH:MM:SS.ss")
-   wxString startTimeTemp = startTime;
+   //startTimeFormat = "HH:MM:SS.ss"
+   std::string startTimeTemp = startTime;
    if (GmatStringUtil::IsNumber(startTimeTemp.substr(0,2)))
 	  GmatStringUtil::ToReal(startTimeTemp.substr(0,2),hour);
    else
       isError = true;
-   if (startTimeTemp.substr(2,1) != wxT(":"))
+   if (startTimeTemp.substr(2,1) != ":")
 	  isError = true;
    startTimeTemp.erase(0,3);
    if (GmatStringUtil::IsNumber(startTimeTemp.substr(0,2)))
 	  GmatStringUtil::ToReal(startTimeTemp.substr(0,2),min);
    else
       isError = true;
-   if (startTimeTemp.substr(2,1) != wxT(":"))
+   if (startTimeTemp.substr(2,1) != ":")
 	   isError = true;
    startTimeTemp.erase(0,3);
    if (GmatStringUtil::IsNumber(startTimeTemp.substr(0,2)))
@@ -145,9 +145,9 @@ Real OrbitDesignerTime::FindRAAN()
    if (isError)
    {
 	  errormsg = 
-	     wxT("The value of \"") + startTime + 
-		 wxT("\" for field \"Initial Local Sidereal Time\" is not an allowed value.\n")
-		 + wxT("The allowed values are: [HH:MM:SS.sss]\n");
+	     "The value of \"" + startTime + 
+		 "\" for field \"Initial Local Sidereal Time\" is not an allowed value.\n"
+		 + "The allowed values are: [HH:MM:SS.sss]\n";
 	  return -1;
    }
    JDN = epochJDN;
@@ -181,7 +181,7 @@ Real OrbitDesignerTime::FindRAAN()
 //------------------------------------------------------------------------------
 // FindStartTime()
 //------------------------------------------------------------------------------
-wxString OrbitDesignerTime::FindStartTime(bool flag, Real lon)
+std::string OrbitDesignerTime::FindStartTime(bool flag, Real lon)
 {
    Real GMST, epochJDN, epochJD, JD, JDN, timeArg, mon, day, year, hour;
    Real min, sec, diff = 1, a, y, m, JD0;
@@ -191,28 +191,28 @@ wxString OrbitDesignerTime::FindStartTime(bool flag, Real lon)
    Real c2 = 0.06570982441908;
    Real c3 = 1.00273790935;
    Real c4 = 0.000026;
-   errormsg = wxT("");
+   errormsg = "";
    isError = false;
 
-   wxString months[12] = 
-      {wxT("Jan"), wxT("Feb"), wxT("Mar"), wxT("Apr"), wxT("May"), wxT("Jun"), 
-	   wxT("Jul"), wxT("Aug"), wxT("Sep"), wxT("Oct"), wxT("Nov"), wxT("Dec")};
+   std::string months[12] = 
+      {"Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+	   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
    if (flag)
    {
       if (lon<-180)
 	  {
 	     errormsg = 
-	        wxT("Longitude out of range, please choose longitude greater than or equal to -180");
+	        "Longitude out of range, please choose longitude greater than or equal to -180";
 	     isError = true;
-	     return wxT("-1");
+	     return "-1";
 	  }
 	  else if (lon>180)
 	  {
 	     errormsg = 
-		    wxT("Longitude out of range, please choose longitude less than or equal to 180");
+		    "Longitude out of range, please choose longitude less than or equal to 180";
 	     isError = true;
-	     return wxT("-1");
+	     return "-1";
 	  }
    }
    else
@@ -220,16 +220,16 @@ wxString OrbitDesignerTime::FindStartTime(bool flag, Real lon)
 	  if (RAAN<0)
 	  {
 	     errormsg = 
-		    wxT("RAAN out of range, please choose RAAN than or equal to 0");
+		    "RAAN out of range, please choose RAAN than or equal to 0";
 	     isError = true;
-	     return wxT("-1");
+	     return "-1";
 	  }
 	  else if (RAAN>=360)
 	  {
 	     errormsg = 
-		    wxT("RAAN out of range, please choose RAAN less than 360");
+		    "RAAN out of range, please choose RAAN less than 360";
 	     isError = true;
-	     return wxT("-1");
+	     return "-1";
 	  }
    }
 
@@ -241,24 +241,24 @@ wxString OrbitDesignerTime::FindStartTime(bool flag, Real lon)
    else
       GMST = (RAAN/360)*24;
 
-   if ((epochFormat == wxT("TAIModJulian")) || (epochFormat == wxT("UTCModJulian")) ||
-	   (epochFormat == wxT("A1ModJulian")) || (epochFormat == wxT("TTModJulian")))
+   if ((epochFormat == "TAIModJulian") || (epochFormat == "UTCModJulian") ||
+	   (epochFormat == "A1ModJulian") || (epochFormat == "TTModJulian"))
    {
 	  GmatStringUtil::ToReal(epoch,epochJD);
 	  epochJDN = floor(epochJD);
    }
-   else if ((epochFormat == wxT("UTCGregorian")) || (epochFormat == wxT("A1Gregorian")) ||
-	        (epochFormat == wxT("TAIGregorian")) || (epochFormat == wxT("TTGregorian")))
+   else if ((epochFormat == "UTCGregorian") || (epochFormat == "A1Gregorian") ||
+	        (epochFormat == "TAIGregorian") || (epochFormat == "TTGregorian"))
    {
 	  ////////////////////////////////////////////////////
 	  //find epoch in decimal form
 	  ////////////////////////////////////////////////////
-      //epoch Format = wxT("DD Mon YYYY HH:MM:SS.ss")
+      //epoch Format = "DD Mon YYYY HH:MM:SS.ss"
       //convert date to day, mon, year doubles
-	  wxString epochTemp = epoch;
+	  std::string epochTemp = epoch;
 	  GmatStringUtil::ToReal(epochTemp.substr(0,2),day);
 	  epochTemp.erase(0,3);
-	  wxString monthStr = epochTemp.substr(0,3);
+	  std::string monthStr = epochTemp.substr(0,3);
 	  for (int i=0; i<12; i++)
 	  {
 	     if (monthStr == months[i])
@@ -305,27 +305,27 @@ wxString OrbitDesignerTime::FindStartTime(bool flag, Real lon)
 	  count++;
    }
 
-   startTime = wxT("");
+   startTime = "";
    timeArg = JD-JDN;
    hour = floor(timeArg*24+12);
    if ((hour<10)&&(hour>=0))
-      startTime += wxT("0");
-   wxString hourStr = GmatStringUtil::ToString(hour);
+      startTime += "0";
+   std::string hourStr = GmatStringUtil::ToString(hour);
    hourStr.resize(2);
    startTime += hourStr;
-   startTime += wxT(":");
+   startTime += ":";
    min = floor((timeArg-(hour-12)/24)*1440);
    if (min<10)
-      startTime += wxT("0");
-   wxString minStr = GmatStringUtil::ToString(min);
+      startTime += "0";
+   std::string minStr = GmatStringUtil::ToString(min);
    minStr.resize(2);
    startTime += minStr;
-   startTime += wxT(":");
+   startTime += ":";
    sec = (timeArg - (hour-12)/24 - min/1440)*86400;
-   wxString secStr = GmatStringUtil::ToString(sec);
+   std::string secStr = GmatStringUtil::ToString(sec);
    if (sec <10)
    {
-      startTime += wxT("0");
+      startTime += "0";
       secStr.resize(5);
    }
    else
@@ -342,12 +342,12 @@ void OrbitDesignerTime::SetRAAN(Real val)
    RAAN = val;
 }
 
-void OrbitDesignerTime::SetEpoch(wxString val)
+void OrbitDesignerTime::SetEpoch(std::string val)
 {
    epoch = val;
 }
 
-void OrbitDesignerTime::SetStart(wxString val)
+void OrbitDesignerTime::SetStart(std::string val)
 {
    startTime = val;
 }
@@ -360,17 +360,17 @@ double OrbitDesignerTime::GetRAAN()
    return RAAN;
 }
 
-wxString OrbitDesignerTime::GetStartTime()
+std::string OrbitDesignerTime::GetStartTime()
 {
    return startTime;
 }
 
-wxString OrbitDesignerTime::GetEpoch()
+std::string OrbitDesignerTime::GetEpoch()
 {
    return epoch;
 }
 
-wxString OrbitDesignerTime::GetEpochFormat()
+std::string OrbitDesignerTime::GetEpochFormat()
 {
    return epochFormat;
 }
@@ -380,7 +380,7 @@ bool OrbitDesignerTime::IsError()
    return isError;
 }
 
-wxString OrbitDesignerTime::GetError()
+std::string OrbitDesignerTime::GetError()
 {
    return errormsg;
 }

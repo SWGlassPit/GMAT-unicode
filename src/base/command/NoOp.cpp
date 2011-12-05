@@ -31,7 +31,7 @@
  */
 //------------------------------------------------------------------------------
 NoOp::NoOp() :
-    GmatCommand(wxT("NoOp"))
+    GmatCommand("NoOp")
 {
    includeInSummary = false;
 }

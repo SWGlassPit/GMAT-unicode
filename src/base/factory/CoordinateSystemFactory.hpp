@@ -28,8 +28,8 @@
 class GMAT_API CoordinateSystemFactory : public Factory
 {
 public:
-   CoordinateSystem*  CreateCoordinateSystem(const wxString &ofType,
-                                             const wxString &withName = wxT(""));
+   CoordinateSystem*  CreateCoordinateSystem(const std::string &ofType,
+                                             const std::string &withName = "");
 
    // default constructor
    CoordinateSystemFactory();

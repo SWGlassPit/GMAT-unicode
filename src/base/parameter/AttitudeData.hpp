@@ -44,7 +44,7 @@ public:
    
    // The inherited methods from RefData
    virtual bool ValidateRefObjects(GmatBase *param);
-   virtual const wxString* GetValidObjectList() const;
+   virtual const std::string* GetValidObjectList() const;
    
    const static Real ATTITUDE_REAL_UNDEFINED;
    
@@ -92,7 +92,7 @@ protected:
       AttitudeDataObjectCount
    };
    
-   static const wxString VALID_OBJECT_TYPE_LIST[AttitudeDataObjectCount];
+   static const std::string VALID_OBJECT_TYPE_LIST[AttitudeDataObjectCount];
 };
 
 #endif /*AttitudeData_hpp*/

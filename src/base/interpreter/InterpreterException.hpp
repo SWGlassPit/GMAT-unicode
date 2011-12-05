@@ -33,7 +33,7 @@ class GMAT_API InterpreterException : public BaseException
 {
 public:
    // class constructor
-   InterpreterException(const wxString &details = wxT(""),
+   InterpreterException(const std::string &details = "",
          // Change to this when the repeated instances are fixed:
 //         Gmat::MessageType mt = Gmat::ERROR_);
          // Change to this if it's problematic:

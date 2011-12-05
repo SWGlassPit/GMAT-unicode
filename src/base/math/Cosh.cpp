@@ -33,8 +33,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Cosh::Cosh(const wxString &nomme)
-   : MathFunction(wxT("Cosh"), nomme)
+Cosh::Cosh(const std::string &nomme)
+   : MathFunction("Cosh", nomme)
 {
 }
 
@@ -93,7 +93,7 @@ void Cosh::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
    leftNode->GetOutputInfo(type1, row1, col1);
    
    if (type1 != Gmat::REAL_TYPE)
-      throw MathException(wxT("Left is not scalar, so cannot do Cosh().\n"));  
+      throw MathException("Left is not scalar, so cannot do Cosh().\n");  
    else
    {
       type = type1;
@@ -114,7 +114,7 @@ void Cosh::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 bool Cosh::ValidateInputs()
 {
    if (leftNode == NULL)
-      throw MathException(wxT("Cosh() - Missing input arguments.\n"));
+      throw MathException("Cosh() - Missing input arguments.\n");
    
    Integer type1, row1, col1; // Left node
    
@@ -122,7 +122,7 @@ bool Cosh::ValidateInputs()
    if (leftNode)
       leftNode->GetOutputInfo(type1, row1, col1);
    else
-      throw MathException(wxT("Cosh::ValidateInputs() leftNode is NULL\n"));
+      throw MathException("Cosh::ValidateInputs() leftNode is NULL\n");
    
    if (type1 == Gmat::REAL_TYPE)
       return true;

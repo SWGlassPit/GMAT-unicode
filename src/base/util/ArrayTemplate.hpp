@@ -13,7 +13,7 @@
 //
 // Author: M. Weippert, T. McRoberts, L. Jun, E. Corderman
 // Created: 1995/10/10 for GSS project
-// Modified: 2003/09/15 Linda Jun - Replaced GSSString with wxString
+// Modified: 2003/09/15 Linda Jun - Replaced GSSString with std::string
 //
 /**
  * Ccontains the declarations for the ArrayTemplate array container class
@@ -31,24 +31,24 @@ class GMAT_API ArrayTemplateExceptions
 {
 public:
     class OutOfBounds : public BaseException
-          {public : OutOfBounds(const wxString& message =
-          wxT("ArrayTemplate error : out-of-bounds."))
+          {public : OutOfBounds(const std::string& message =
+          "ArrayTemplate error : out-of-bounds.")
           : BaseException(message) {};  };
     class DimensionError : public BaseException
-          {public : DimensionError(const wxString& message =
-          wxT("ArrayTemplate error : dimension error."))
+          {public : DimensionError(const std::string& message =
+          "ArrayTemplate error : dimension error.")
           : BaseException(message) {};  };
     class UnsizedArray : public BaseException
-          {public : UnsizedArray(const wxString& message =
-          wxT("ArrayTemplate error : unsized array."))
+          {public : UnsizedArray(const std::string& message =
+          "ArrayTemplate error : unsized array.")
           : BaseException(message) {};  };
     class ArrayAlreadySized : public BaseException
-          {public : ArrayAlreadySized(const wxString& message =
-          wxT("ArrayTemplate error : array already sized."))
+          {public : ArrayAlreadySized(const std::string& message =
+          "ArrayTemplate error : array already sized.")
           : BaseException(message) {};  };
     class IllegalSize : public BaseException
-          {public : IllegalSize(const wxString& message =
-          wxT("ArrayTemplate error : illegal size."))
+          {public : IllegalSize(const std::string& message =
+          "ArrayTemplate error : illegal size.")
           : BaseException(message) {};  };
 };
 
@@ -60,7 +60,7 @@ class ArrayTemplate
  * @note
  *  Assumptions about template parameter types:
  *       Type has appropriate initializers and operators
- *       (constructors, wxT("="), wxT("=="), wxT("!=")operators)
+ *       (constructors, "=", "==", "!="operators)
  *  The exceptions are declared in a separate class because the current HP
  *  compiler cannot properly handle exceptions declared a template class 
  *  and thrown in another template class.

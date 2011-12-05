@@ -30,8 +30,8 @@ class GMAT_API AttitudeReal : public RealVar, public AttitudeData
 {
 public:
 
-   AttitudeReal(const wxString &name, const wxString &typeStr, 
-                GmatBase *obj, const wxString &desc, const wxString &unit);
+   AttitudeReal(const std::string &name, const std::string &typeStr, 
+                GmatBase *obj, const std::string &desc, const std::string &unit);
    AttitudeReal(const AttitudeReal &copy);
    AttitudeReal& operator=(const AttitudeReal &right);
    virtual ~AttitudeReal();
@@ -46,17 +46,17 @@ public:
    
    // methods inherited from GmatBase
    virtual bool RenameRefObject(const Gmat::ObjectType type,
-                                const wxString &oldName,
-                                const wxString &newName);
+                                const std::string &oldName,
+                                const std::string &newName);
    
-   virtual wxString GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual std::string GetRefObjectName(const Gmat::ObjectType type) const;
    virtual const StringArray& GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool SetRefObjectName(const Gmat::ObjectType type,
-                                 const wxString &name);
+                                 const std::string &name);
    virtual GmatBase* GetRefObject(const Gmat::ObjectType type,
-                                  const wxString &name);
+                                  const std::string &name);
    virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                             const wxString &name = wxT(""));
+                             const std::string &name = "");
 
 protected:
 

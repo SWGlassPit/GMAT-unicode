@@ -33,19 +33,19 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  LagrangeInterpolator(const wxString &name, Integer dim, Integer ord)
+//  LagrangeInterpolator(const std::string &name, Integer dim, Integer ord)
 //------------------------------------------------------------------------------
 /**
  * Constructs lagrange interpolator (default constructor).
  * 
- * @param <name>  Name for this interpolator (wxT(""))
+ * @param <name>  Name for this interpolator ("")
  * @param <dim>   Dimension of data that gets interpolated (1).
  * @param <order> The order of interpolation (7)
  */
 //------------------------------------------------------------------------------
-LagrangeInterpolator::LagrangeInterpolator(const wxString &name, Integer dim,
+LagrangeInterpolator::LagrangeInterpolator(const std::string &name, Integer dim,
                                            Integer ord) :
-   Interpolator  (name, wxT("LagrangeInterpolator"), dim),
+   Interpolator  (name, "LagrangeInterpolator", dim),
    order         (ord),
    actualSize    (0),
    beginIndex    (0),
@@ -62,7 +62,7 @@ LagrangeInterpolator::LagrangeInterpolator(const wxString &name, Integer dim,
    
    #ifdef DEBUG_LAGRANGE_BUILD
    MessageInterface::ShowMessage
-      (wxT("LagrangeInterpolator() order=%d, requiredPoints=%d, bufferSize=%d\n"),
+      ("LagrangeInterpolator() order=%d, requiredPoints=%d, bufferSize=%d\n",
        order, requiredPoints, bufferSize);
    #endif
    
@@ -161,8 +161,8 @@ Integer LagrangeInterpolator::IsInterpolationFeasible(Real ind)
 {
    #ifdef DEBUG_LAGRANGE_FEASIBLE
    MessageInterface::ShowMessage
-      (wxT("LagrangeInterpolator::IsInterpolationFeasible() ind=%f, pointCount = %d, ")
-       wxT("requiredPoints = %d\n"), ind, pointCount, requiredPoints);
+      ("LagrangeInterpolator::IsInterpolationFeasible() ind=%f, pointCount = %d, "
+       "requiredPoints = %d\n", ind, pointCount, requiredPoints);
    #endif
    
    // If not enough data points, throw an exception
@@ -171,18 +171,18 @@ Integer LagrangeInterpolator::IsInterpolationFeasible(Real ind)
       #if 0
       InterpolatorException ie;
       ie.SetDetails
-         (wxT("There is not enough data to interpolate %f, number of ")
-          wxT("required points is %d, received %d points"), ind, requiredPoints,
+         ("There is not enough data to interpolate %f, number of "
+          "required points is %d, received %d points", ind, requiredPoints,
           pointCount);
       throw ie;
       #else
       #ifdef DEBUG_LAGRANGE_FEASIBLE
       MessageInterface::ShowMessage
-         (wxT("   *** There is not enough data to interpolate %f, number of ")
-          wxT("required points is %d, received %d points\n"), ind, requiredPoints,
+         ("   *** There is not enough data to interpolate %f, number of "
+          "required points is %d, received %d points\n", ind, requiredPoints,
           pointCount);
       MessageInterface::ShowMessage
-         (wxT("LagrangeInterpolator::IsInterpolationFeasible() returning -1\n"));
+         ("LagrangeInterpolator::IsInterpolationFeasible() returning -1\n");
       #endif
       return -1;
       #endif
@@ -192,7 +192,7 @@ Integer LagrangeInterpolator::IsInterpolationFeasible(Real ind)
    
    #ifdef DEBUG_LAGRANGE_FEASIBLE
    MessageInterface::ShowMessage
-      (wxT("   range1 = %f, range2 = %f\n"), range[0], range[1]);
+      ("   range1 = %f, range2 = %f\n", range[0], range[1]);
    #endif
    
    if (ind < range[0])
@@ -200,16 +200,16 @@ Integer LagrangeInterpolator::IsInterpolationFeasible(Real ind)
       #if 0
       InterpolatorException ie;
       ie.SetDetails
-         (wxT("The requested data %f is not within the data range of [%f : %f]"),
+         ("The requested data %f is not within the data range of [%f : %f]",
           ind, range[0],  range[1]);
       throw ie;
       #else
       #ifdef DEBUG_LAGRANGE_FEASIBLE
       MessageInterface::ShowMessage
-         (wxT("   *** The requested data %f is not within the data range of ")
-          wxT("[%f : %f]. It is before the first data\n"), ind, range[0],  range[1]);
+         ("   *** The requested data %f is not within the data range of "
+          "[%f : %f]. It is before the first data\n", ind, range[0],  range[1]);
       MessageInterface::ShowMessage
-         (wxT("LagrangeInterpolator::IsInterpolationFeasible() returning -2\n"));
+         ("LagrangeInterpolator::IsInterpolationFeasible() returning -2\n");
       #endif
       return -2;
       #endif
@@ -221,16 +221,16 @@ Integer LagrangeInterpolator::IsInterpolationFeasible(Real ind)
       #if 0
       InterpolatorException ie;
       ie.SetDetails
-         (wxT("The requested data %f is not within the data range of [%f : %f]"),
+         ("The requested data %f is not within the data range of [%f : %f]",
           ind, range[0],  range[1]);
       throw ie;
       #else
       #ifdef DEBUG_LAGRANGE_FEASIBLE
       MessageInterface::ShowMessage
-         (wxT("   *** The requested data %f is not within the data range of ")
-          wxT("[%f : %f]. It is after the last data\n"), ind, range[0],  range[1]);
+         ("   *** The requested data %f is not within the data range of "
+          "[%f : %f]. It is after the last data\n", ind, range[0],  range[1]);
       MessageInterface::ShowMessage
-         (wxT("LagrangeInterpolator::IsInterpolationFeasible() returning -3\n"));
+         ("LagrangeInterpolator::IsInterpolationFeasible() returning -3\n");
       #endif
       return -3;
       #endif
@@ -238,7 +238,7 @@ Integer LagrangeInterpolator::IsInterpolationFeasible(Real ind)
    
    #ifdef DEBUG_LAGRANGE_FEASIBLE
    MessageInterface::ShowMessage
-      (wxT("LagrangeInterpolator::IsInterpolationFeasible() returning 1\n"));
+      ("LagrangeInterpolator::IsInterpolationFeasible() returning 1\n");
    #endif
    
    return 1;
@@ -278,15 +278,15 @@ bool LagrangeInterpolator::AddPoint(const Real ind, const Real *data)
 {
    #ifdef DEBUG_LAGRANGE_ADD
    MessageInterface::ShowMessage
-      (wxT("LagrangeInterpolator::AddPoint() entered, ind=%f, previousX=%f\n"),
+      ("LagrangeInterpolator::AddPoint() entered, ind=%f, previousX=%f\n",
        ind, previousX);
    #endif
    
    if (ind < previousX)
    {
       InterpolatorException ie;
-      ie.SetDetails(wxT("The independent data provided is not monotonic, current data is %f, ")
-                    wxT("previous data is %f"), ind, previousX);
+      ie.SetDetails("The independent data provided is not monotonic, current data is %f, "
+                    "previous data is %f", ind, previousX);
       throw ie;
    }
    
@@ -313,7 +313,7 @@ bool LagrangeInterpolator::Interpolate(const Real ind, Real *results)
 {
    #ifdef DEBUG_LAGRANGE_INTERPOLATE
    MessageInterface::ShowMessage
-      (wxT("Lagrange::Interpolate() entered, ind=%f, dimension=%d, forceInterpolation=%d\n"),
+      ("Lagrange::Interpolate() entered, ind=%f, dimension=%d, forceInterpolation=%d\n",
        ind, dimension, forceInterpolation);
    #endif
    
@@ -322,7 +322,7 @@ bool LagrangeInterpolator::Interpolate(const Real ind, Real *results)
    {
       #ifdef DEBUG_LAGRANGE_INTERPOLATE
       MessageInterface::ShowMessage
-         (wxT("Lagrange::Interpolate() returnnig false, NOT feasible to interpolate at %f\n"),
+         ("Lagrange::Interpolate() returnnig false, NOT feasible to interpolate at %f\n",
           ind);
       #endif
       return false;
@@ -338,7 +338,7 @@ bool LagrangeInterpolator::Interpolate(const Real ind, Real *results)
       {
          #ifdef DEBUG_LAGRANGE_INTERPOLATE
          MessageInterface::ShowMessage
-            (wxT("Lagrange::Interpolate() returnnig false, %f is NOT in near center\n"),
+            ("Lagrange::Interpolate() returnnig false, %f is NOT in near center\n",
              ind);
          #endif
          return false;
@@ -363,7 +363,7 @@ bool LagrangeInterpolator::Interpolate(const Real ind, Real *results)
          
          #ifdef DEBUG_LAGRANGE_INTERPOLATE_MORE
          MessageInterface::ShowMessage
-            (wxT("  i=%d, products[%d]=%f\n"), i, dim, products[dim]);
+            ("  i=%d, products[%d]=%f\n", i, dim, products[dim]);
          #endif
       }
 
@@ -377,7 +377,7 @@ bool LagrangeInterpolator::Interpolate(const Real ind, Real *results)
                if ((x[i]- x[j] == 0.0))
                {
                   #ifdef DEBUG_LAGRANGE_INTERPOLATE_MORE
-                  MessageInterface::ShowMessage(wxT("   x[%d]- x[%d]=%f\n"), i, j, (x[i]- x[j]));
+                  MessageInterface::ShowMessage("   x[%d]- x[%d]=%f\n", i, j, (x[i]- x[j]));
                   #endif
                }
                products[dim] = products[dim] * (ind - x[j]) / (x[i]- x[j]);
@@ -389,7 +389,7 @@ bool LagrangeInterpolator::Interpolate(const Real ind, Real *results)
       {
          #ifdef DEBUG_LAGRANGE_INTERPOLATE_MORE
          MessageInterface::ShowMessage
-            (wxT("  i=%d, products[%d]=%f\n"), i, dim, products[dim]);
+            ("  i=%d, products[%d]=%f\n", i, dim, products[dim]);
          #endif
          estimates[dim] = estimates[dim] + products[dim];
       }
@@ -406,7 +406,7 @@ bool LagrangeInterpolator::Interpolate(const Real ind, Real *results)
    
    #ifdef DEBUG_LAGRANGE_INTERPOLATE
    MessageInterface::ShowMessage
-      (wxT("Lagrange::Interpolate() returning true, first data = %f\n"), results[0]);
+      ("Lagrange::Interpolate() returning true, first data = %f\n", results[0]);
    #endif
    
    return true;
@@ -512,7 +512,7 @@ void LagrangeInterpolator::CopyArrays(const LagrangeInterpolator &i)
 void LagrangeInterpolator::BuildDataPoints(Real ind)
 {
    #ifdef DEBUG_LAGRANGE_BUILD
-   MessageInterface::ShowMessage(wxT("Lagrange::BuildDataPoints() entered, ind=%f\n"), ind);
+   MessageInterface::ShowMessage("Lagrange::BuildDataPoints() entered, ind=%f\n", ind);
    #endif
    
    Integer i, j, start = 0;
@@ -525,7 +525,7 @@ void LagrangeInterpolator::BuildDataPoints(Real ind)
       actualSize = pointCount;
    
    #ifdef DEBUG_LAGRANGE_BUILD
-   MessageInterface::ShowMessage(wxT("   indData = %f, actualSize=%d\n"), indData, actualSize);
+   MessageInterface::ShowMessage("   indData = %f, actualSize=%d\n", indData, actualSize);
    #endif
    
    for (i = 1; i < actualSize; ++i)
@@ -548,14 +548,14 @@ void LagrangeInterpolator::BuildDataPoints(Real ind)
       
       #ifdef DEBUG_LAGRANGE_BUILD
       MessageInterface::ShowMessage
-         (wxT("   start = %2d, x[%2d] = %f, y[%2d][0] = %f\n"), start, i, x[i],
+         ("   start = %2d, x[%2d] = %f, y[%2d][0] = %f\n", start, i, x[i],
           i, y[i][0]);
       #endif
    }
    
    #ifdef DEBUG_LAGRANGE_BUILD
    MessageInterface::ShowMessage
-      (wxT("LagrangeInterpolator::BuildDataPoints() leaving\n"));
+      ("LagrangeInterpolator::BuildDataPoints() leaving\n");
    #endif
 }
 
@@ -567,7 +567,7 @@ bool LagrangeInterpolator::IsDataNearCenter(Real ind)
 {
    #ifdef DEBUG_LAGRANGE_BUILD
    MessageInterface::ShowMessage
-      (wxT("Lagrange::IsDataNearCenter() entered, ind=%f, actualSize=%d\n"),
+      ("Lagrange::IsDataNearCenter() entered, ind=%f, actualSize=%d\n",
        ind, actualSize);
    #endif
    
@@ -599,10 +599,10 @@ bool LagrangeInterpolator::IsDataNearCenter(Real ind)
    
    #ifdef DEBUG_LAGRANGE_BUILD
    MessageInterface::ShowMessage
-      (wxT("   dataIndex=%d, begin=%d, end=%d, beginIndex=%d\n"),
+      ("   dataIndex=%d, begin=%d, end=%d, beginIndex=%d\n",
        dataIndex, begin, end, beginIndex);
    MessageInterface::ShowMessage
-      (wxT("Lagrange::IsDataNearCenter() returning %d\n"), retval);
+      ("Lagrange::IsDataNearCenter() returning %d\n", retval);
    #endif
    
    return retval;
@@ -620,7 +620,7 @@ bool LagrangeInterpolator::IsDataNearCenter(Real ind)
 Integer LagrangeInterpolator::FindStartingPoint(Real ind)
 {
    #ifdef DEBUG_LAGRANGE_BUILD
-   MessageInterface::ShowMessage(wxT("Lagrange::FindStartingPoint() entered, ind=%f\n"), ind);
+   MessageInterface::ShowMessage("Lagrange::FindStartingPoint() entered, ind=%f\n", ind);
    #endif
    
    // Find the data point near the requested value
@@ -648,14 +648,14 @@ Integer LagrangeInterpolator::FindStartingPoint(Real ind)
       startPoint = actualSize - order;
       #ifdef DEBUG_LAGRANGE_BUILD
       MessageInterface::ShowMessage
-         (wxT("   qMin + order = %d passed the actualSize %d, so adjusted ")
-          wxT("startPoint to %d\n"), qMin+order, actualSize, startPoint);
+         ("   qMin + order = %d passed the actualSize %d, so adjusted "
+          "startPoint to %d\n", qMin+order, actualSize, startPoint);
       #endif
    }
    
    #ifdef DEBUG_LAGRANGE_BUILD
    MessageInterface::ShowMessage
-      (wxT("   beginIndex=%d, qEnd=%d, qMin=%d, startPoint=%d\n"), beginIndex,
+      ("   beginIndex=%d, qEnd=%d, qMin=%d, startPoint=%d\n", beginIndex,
        qEnd, qMin, startPoint);
    #endif
    
@@ -667,7 +667,7 @@ Integer LagrangeInterpolator::FindStartingPoint(Real ind)
    
    #ifdef DEBUG_LAGRANGE_BUILD
    MessageInterface::ShowMessage
-      (wxT("LagrangeInterpolator::FindStartingPoint() returning startPoint = %d\n"),
+      ("LagrangeInterpolator::FindStartingPoint() returning startPoint = %d\n",
        startPoint);
    #endif
    

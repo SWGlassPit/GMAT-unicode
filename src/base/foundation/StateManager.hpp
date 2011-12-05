@@ -30,9 +30,9 @@
 
 struct GMAT_API ListItem
 {
-   wxString objectName;
-   wxString elementName;
-   wxString associateName;
+   std::string objectName;
+   std::string elementName;
+   std::string associateName;
    GmatBase*   object;
    // Gmat::StateElementId
    Integer     elementID;
@@ -88,9 +88,9 @@ public:
    
    // Abstract methods
    virtual bool SetObject(GmatBase* theObject) = 0;
-   virtual bool SetProperty(wxString propName) = 0;
-   virtual bool SetProperty(wxString propName, Integer index) = 0;
-   virtual bool SetProperty(wxString propName, GmatBase *forObject) = 0;
+   virtual bool SetProperty(std::string propName) = 0;
+   virtual bool SetProperty(std::string propName, Integer index) = 0;
+   virtual bool SetProperty(std::string propName, GmatBase *forObject) = 0;
    virtual bool BuildState() = 0;
    virtual bool MapObjectsToVector() = 0;
    virtual bool MapVectorToObjects() = 0;
@@ -105,7 +105,7 @@ public:
    virtual bool GetStateObjects(ObjectArray& pObjects, 
          Gmat::ObjectType type = Gmat::UNKNOWN_OBJECT);
    
-   virtual const StringArray& GetObjectList(wxString ofType = wxT(""));
+   virtual const StringArray& GetObjectList(std::string ofType = "");
    virtual const std::vector<ListItem*>* GetStateMap();
 
 protected:

@@ -29,8 +29,8 @@
 
 //------------------------------------------------------------------------------
 //  Rvector3 BodyFixedStateConverterUtil::Convert(const Rvector3    &origValue,
-//                                                const wxString &fromType,
-//                                                const wxString &toType,
+//                                                const std::string &fromType,
+//                                                const std::string &toType,
 //                                                const Real        flattening,
 //                                                const Real        meanRadius)
 //------------------------------------------------------------------------------
@@ -43,13 +43,13 @@
  * @param <flattening> flattening coefficient for the body
  * @param <meanRadius> mean radius of the body
  *
- * @return Converted state from the specified wxT("to") representation to the
- *         specified wxT("from") representation
+ * @return Converted state from the specified "to" representation to the
+ *         specified "from" representation
  */
 //---------------------------------------------------------------------------
 Rvector3 BodyFixedStateConverterUtil::Convert(const Rvector3    &origValue,
-                                              const wxString &fromType,
-                                              const wxString &toType,
+                                              const std::string &fromType,
+                                              const std::string &toType,
                                               const Real        flattening,
                                               const Real        meanRadius)
 {
@@ -57,35 +57,35 @@ Rvector3 BodyFixedStateConverterUtil::Convert(const Rvector3    &origValue,
    bool     unknownRep = false;
    #ifdef DEBUG_BF_STATE_CONVERTER
       MessageInterface::ShowMessage(
-         wxT("      BodyFixedStateConverterUtil::Converting %.18lf %.18lf %.18lf in %s to %s\n"),
+         "      BodyFixedStateConverterUtil::Converting %.18lf %.18lf %.18lf in %s to %s\n",
          origValue[0], origValue[1], origValue[2],
          fromType.c_str(), toType.c_str());
    #endif
 
    // Call the appropriate method, depending on the from and to types
-   if (fromType == wxT("Cartesian"))
+   if (fromType == "Cartesian")
    {
-      if (toType == wxT("Spherical"))
+      if (toType == "Spherical")
          outState = CartesianToSpherical(origValue, flattening, meanRadius);
-      else if (toType == wxT("Ellipsoid"))
+      else if (toType == "Ellipsoid")
          outState = CartesianToSphericalEllipsoid(origValue, flattening, meanRadius);
       else
          unknownRep = true;
    }
-   else if (fromType == wxT("Spherical"))
+   else if (fromType == "Spherical")
    {
-      if (toType == wxT("Cartesian"))
+      if (toType == "Cartesian")
          outState = SphericalToCartesian(origValue, flattening, meanRadius);
-      else if (toType == wxT("Ellipsoid"))
+      else if (toType == "Ellipsoid")
          outState = SphericalToSphericalEllipsoid(origValue, flattening, meanRadius);
       else
          unknownRep = true;
    }
-   else if (fromType == wxT("Ellipsoid"))
+   else if (fromType == "Ellipsoid")
    {
-      if (toType == wxT("Cartesian"))
+      if (toType == "Cartesian")
          outState = SphericalEllipsoidToCartesian(origValue, flattening, meanRadius);
-      else if (toType == wxT("Spherical"))
+      else if (toType == "Spherical")
          outState = SphericalEllipsoidToSpherical(origValue, flattening, meanRadius);
       else
          unknownRep = true;
@@ -96,14 +96,14 @@ Rvector3 BodyFixedStateConverterUtil::Convert(const Rvector3    &origValue,
    // If one or both of the types are invalid, throw an exception
    if (unknownRep)
    {
-      wxString errmsg = wxT("representation requested is from ");
-      errmsg += fromType + wxT(" to ");
-      errmsg += toType + wxT(".\n");
+      std::string errmsg = "representation requested is from ";
+      errmsg += fromType + " to ";
+      errmsg += toType + ".\n";
       throw InvalidStateRepresentationException(errmsg);
    }
 
    #ifdef DEBUG_BF_STATE_CONVERTER
-      MessageInterface::ShowMessage(wxT("      state in %s  =  %.18lf %.18lf %.18lf\n"),
+      MessageInterface::ShowMessage("      state in %s  =  %.18lf %.18lf %.18lf\n",
          toType.c_str(), outState[0], outState[1], outState[2]);
    #endif
 
@@ -112,10 +112,10 @@ Rvector3 BodyFixedStateConverterUtil::Convert(const Rvector3    &origValue,
 
 //------------------------------------------------------------------------------
 //  Rvector3 BodyFixedStateConverterUtil::Convert(const Rvector3    &origValue,
-//                                                const wxString &fromType,
-//                                                const wxString &fromHorizon,
-//                                                const wxString &toType,
-//                                                const wxString &toHorizon,
+//                                                const std::string &fromType,
+//                                                const std::string &fromHorizon,
+//                                                const std::string &toType,
+//                                                const std::string &toHorizon,
 //                                                const Real        flattening,
 //                                                const Real        meanRadius)
 //------------------------------------------------------------------------------
@@ -130,45 +130,45 @@ Rvector3 BodyFixedStateConverterUtil::Convert(const Rvector3    &origValue,
  * @param <flattening>  flattening coefficient for the body
  * @param <meanRadius>  mean radius of the body
  *
- * @return Converted state from the specified wxT("to") representation to the
- *         specified wxT("from") representation
+ * @return Converted state from the specified "to" representation to the
+ *         specified "from" representation
  */
 //---------------------------------------------------------------------------
 Rvector3 BodyFixedStateConverterUtil::Convert(const Rvector3    &origValue,
-                                              const wxString &fromType,  const wxString &fromHorizon,
-                                              const wxString &toType,    const wxString &toHorizon,
+                                              const std::string &fromType,  const std::string &fromHorizon,
+                                              const std::string &toType,    const std::string &toHorizon,
                                               const Real        flattening, const Real        meanRadius)
 {
    Rvector3 outState;
    #ifdef DEBUG_BF_STATE_CONVERTER
       MessageInterface::ShowMessage(
-         wxT("      BodyFixedStateConverterUtil::Converting %.18lf %.18lf %.18lf in %s (%s) to %s (%s)\n"),
+         "      BodyFixedStateConverterUtil::Converting %.18lf %.18lf %.18lf in %s (%s) to %s (%s)\n",
          origValue[0], origValue[1], origValue[2],
          fromType.c_str(), fromHorizon.c_str(), toType.c_str(), toHorizon.c_str());
    #endif
 
    // If one or both of the types are invalid, throw an exception
-   if (((fromType    != wxT("Cartesian")) && (fromType    != wxT("Spherical"))) ||
-       ((toType      != wxT("Cartesian")) && (toType      != wxT("Spherical"))) ||
-       ((fromHorizon != wxT("Sphere"))    && (fromHorizon != wxT("Ellipsoid"))) ||
-       ((toHorizon   != wxT("Sphere"))    && (toHorizon   != wxT("Ellipsoid"))) )
+   if (((fromType    != "Cartesian") && (fromType    != "Spherical")) ||
+       ((toType      != "Cartesian") && (toType      != "Spherical")) ||
+       ((fromHorizon != "Sphere")    && (fromHorizon != "Ellipsoid")) ||
+       ((toHorizon   != "Sphere")    && (toHorizon   != "Ellipsoid")) )
    {
-      wxString errmsg = wxT("representation requested is from ");
-      errmsg += fromType + wxT("(");
-      errmsg += fromHorizon + wxT(") to ");
-      errmsg += toType + wxT("(");
-      errmsg += toHorizon + wxT(").\n");
+      std::string errmsg = "representation requested is from ";
+      errmsg += fromType + "(";
+      errmsg += fromHorizon + ") to ";
+      errmsg += toType + "(";
+      errmsg += toHorizon + ").\n";
       throw InvalidStateRepresentationException(errmsg);
    }
 
    // Call the appropriate method, depending on the from and to types
-   if (fromType == wxT("Cartesian"))
+   if (fromType == "Cartesian")
    {
-      if (toType == wxT("Cartesian"))
+      if (toType == "Cartesian")
          outState = origValue;
       else  // toType == Spherical
       {
-         if (toHorizon == wxT("Sphere"))
+         if (toHorizon == "Sphere")
             outState = CartesianToSpherical(origValue, flattening, meanRadius);
          else // toHorizon == Ellipsoid
             outState = CartesianToSphericalEllipsoid(origValue, flattening, meanRadius);
@@ -176,26 +176,26 @@ Rvector3 BodyFixedStateConverterUtil::Convert(const Rvector3    &origValue,
    }
    else // fromType == Spherical
    {
-      if (toType == wxT("Spherical"))
+      if (toType == "Spherical")
       {
-         if (fromHorizon == wxT("Sphere"))
+         if (fromHorizon == "Sphere")
          {
-            if (toHorizon == wxT("Sphere"))
+            if (toHorizon == "Sphere")
                outState = origValue;
             else // toHorizon == Ellipsoid
                outState = SphericalToSphericalEllipsoid(origValue, flattening, meanRadius);
          }
          else  // fromHorizon == Ellipsoid
          {
-            if (toHorizon == wxT("Ellipsoid"))
+            if (toHorizon == "Ellipsoid")
                outState = origValue;
             else // toHorizon == Sphere
                outState = SphericalEllipsoidToSpherical(origValue, flattening, meanRadius);
          }
       }
-      else if (toType == wxT("Cartesian"))
+      else if (toType == "Cartesian")
       {
-         if (fromHorizon == wxT("Sphere"))
+         if (fromHorizon == "Sphere")
             outState = SphericalToCartesian(origValue, flattening, meanRadius);
          else // fromHorizon == Ellipsoid
             outState = SphericalEllipsoidToCartesian(origValue, flattening, meanRadius);
@@ -203,7 +203,7 @@ Rvector3 BodyFixedStateConverterUtil::Convert(const Rvector3    &origValue,
    }
 
    #ifdef DEBUG_BF_STATE_CONVERTER
-      MessageInterface::ShowMessage(wxT("      state in %s (%s)  =  %.18lf %.18lf %.18lf\n"),
+      MessageInterface::ShowMessage("      state in %s (%s)  =  %.18lf %.18lf %.18lf\n",
          toType.c_str(), toHorizon.c_str(), outState[0], outState[1], outState[2]);
    #endif
 
@@ -336,9 +336,9 @@ Rvector3 BodyFixedStateConverterUtil::CartesianToSphericalEllipsoid(const Rvecto
                                                                     const Real     meanRadius)
 {
    #ifdef DEBUG_BF_STATE_CONVERTER
-      MessageInterface::ShowMessage(wxT("Entering BFSC::Cart2SphEll, cart = %12.10f  %12.10f  %12.10f\n"),
+      MessageInterface::ShowMessage("Entering BFSC::Cart2SphEll, cart = %12.10f  %12.10f  %12.10f\n",
             cart[0], cart[1], cart[2]);
-      MessageInterface::ShowMessage(wxT("                             flattening = %12.10f,  radius = %12.10f\n"),
+      MessageInterface::ShowMessage("                             flattening = %12.10f,  radius = %12.10f\n",
             flattening, meanRadius);
    #endif
    // Calculate the longitude
@@ -369,7 +369,7 @@ Rvector3 BodyFixedStateConverterUtil::CartesianToSphericalEllipsoid(const Rvecto
       delta       = GmatMathUtil::Abs(latitude - lat2);
    }
    #ifdef DEBUG_BF_STATE_CONVERTER
-      MessageInterface::ShowMessage(wxT("   after lat/long computation, latitude = %12.10f (%12.10f), longitude = %12.10f (%12.10f)\n"),
+      MessageInterface::ShowMessage("   after lat/long computation, latitude = %12.10f (%12.10f), longitude = %12.10f (%12.10f)\n",
             latitude, latitude * GmatMathUtil::DEG_PER_RAD, longitude, longitude * GmatMathUtil::DEG_PER_RAD);
    #endif
 
@@ -385,7 +385,7 @@ Rvector3 BodyFixedStateConverterUtil::CartesianToSphericalEllipsoid(const Rvecto
        height = (cart[2] / GmatMathUtil::Sin(latitude)) - S;
 
    #ifdef DEBUG_BF_STATE_CONVERTER
-      MessageInterface::ShowMessage(wxT("   Exiting BFSC::Cart2SphEll, latitude = %12.10f, longitude = %12.10f,  height = %12.10f\n"),
+      MessageInterface::ShowMessage("   Exiting BFSC::Cart2SphEll, latitude = %12.10f, longitude = %12.10f,  height = %12.10f\n",
             latitude, longitude, height);
    #endif
    return Rvector3(latitude, longitude, height);
@@ -411,12 +411,12 @@ Rvector3 BodyFixedStateConverterUtil::SphericalToSphericalEllipsoid(const Rvecto
                                                                     const Real     meanRadius)
 {
    #ifdef DEBUG_BF_STATE_CONVERTER
-      MessageInterface::ShowMessage(wxT("Entering BFSC::SphericalToSphericalEllipsoid: input = %12.10 f  %12.10f  %12.10f\n"),
+      MessageInterface::ShowMessage("Entering BFSC::SphericalToSphericalEllipsoid: input = %12.10 f  %12.10f  %12.10f\n",
                                    spherical[0], spherical[1], spherical[2]);
    #endif
    Rvector3 sph2cart = SphericalToCartesian(spherical, flattening, meanRadius);
    #ifdef DEBUG_BF_STATE_CONVERTER
-      MessageInterface::ShowMessage(wxT("   intermediate sph2cart = %12.10 f  %12.10f  %12.10f\n"),
+      MessageInterface::ShowMessage("   intermediate sph2cart = %12.10 f  %12.10f  %12.10f\n",
             sph2cart[0], sph2cart[1], sph2cart[2]);
    #endif
    return CartesianToSphericalEllipsoid(sph2cart, flattening, meanRadius);
@@ -447,9 +447,9 @@ Rvector3 BodyFixedStateConverterUtil::SphericalEllipsoidToSpherical(const Rvecto
 
 
 //---------------------------------------------------------------------------
-// bool BodyFixedStateConverterUtil::IsValidStateRepresentation(const wxString &rep)
+// bool BodyFixedStateConverterUtil::IsValidStateRepresentation(const std::string &rep)
 //---------------------------------------------------------------------------
-bool BodyFixedStateConverterUtil::IsValidStateRepresentation(const wxString &rep)
+bool BodyFixedStateConverterUtil::IsValidStateRepresentation(const std::string &rep)
 {
    for (Integer ii = 0; ii < NUM_STATE_REPRESENTATIONS; ii++)
       if (rep == BODY_FIXED_STATE_REPRESENTATION_TEXT[ii]) return true;

@@ -28,11 +28,11 @@ class GMAT_API Rmat33Var : public Parameter
 {
 public:
 
-   Rmat33Var(const wxString &name = wxT(""),
-             const wxString &typeStr = wxT("Rmat33Var"),
+   Rmat33Var(const std::string &name = "",
+             const std::string &typeStr = "Rmat33Var",
              GmatParam::ParameterKey key = GmatParam::USER_PARAM,
-             GmatBase *obj = NULL, const wxString &desc = wxT(""),
-             const wxString &unit = wxT(""),
+             GmatBase *obj = NULL, const std::string &desc = "",
+             const std::string &unit = "",
              GmatParam::DepObject depObj = GmatParam::NO_DEP,
              Gmat::ObjectType ownerType = Gmat::UNKNOWN_OBJECT,
              bool isSettable = false);
@@ -43,7 +43,7 @@ public:
    bool operator==(const Rmat33Var &right) const;
    bool operator!=(const Rmat33Var &right) const;
    
-   virtual wxString ToString();
+   virtual std::string ToString();
    
    virtual const Rmatrix& GetRmatrix() const;
    virtual void  SetRmatrix(const Rmatrix &val);

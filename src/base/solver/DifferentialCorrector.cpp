@@ -45,12 +45,12 @@
 // static data
 //---------------------------------
 
-const wxString
+const std::string
 DifferentialCorrector::PARAMETER_TEXT[DifferentialCorrectorParamCount -
                                       SolverParamCount] =
 {
-   wxT("Goals"),
-   wxT("DerivativeMethod")
+   "Goals",
+   "DerivativeMethod"
 };
 
 const Gmat::ParameterType
@@ -67,10 +67,10 @@ DifferentialCorrector::PARAMETER_TYPE[DifferentialCorrectorParamCount -
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// DifferentialCorrector(wxString name)
+// DifferentialCorrector(std::string name)
 //------------------------------------------------------------------------------
-DifferentialCorrector::DifferentialCorrector(wxString name) :
-   Solver                  (wxT("DifferentialCorrector"), name),
+DifferentialCorrector::DifferentialCorrector(std::string name) :
+   Solver                  ("DifferentialCorrector", name),
    goalCount               (0),
    goal                    (NULL),
    tolerance               (NULL),
@@ -81,16 +81,16 @@ DifferentialCorrector::DifferentialCorrector(wxString name) :
    inverseJacobian         (NULL),
    indx                    (NULL),
    b                       (NULL),
-   derivativeMethod        (wxT("ForwardDifference")),
+   derivativeMethod        ("ForwardDifference"),
    diffMode                (1),
    firstPert               (true),
    incrementPert           (true)
 {
    #if DEBUG_DC_INIT
    MessageInterface::ShowMessage
-      (wxT("DifferentialCorrector::DC(constructor) entered\n"));
+      ("DifferentialCorrector::DC(constructor) entered\n");
    #endif
-   objectTypeNames.push_back(wxT("DifferentialCorrector"));
+   objectTypeNames.push_back("DifferentialCorrector");
    parameterCount = DifferentialCorrectorParamCount;
    
    AllowScaleFactors = false;
@@ -128,7 +128,7 @@ DifferentialCorrector::DifferentialCorrector(const DifferentialCorrector &dc) :
 {
    #if DEBUG_DC_INIT
    MessageInterface::ShowMessage
-      (wxT("DifferentialCorrector::DC(COPY constructor) entered\n"));
+      ("DifferentialCorrector::DC(COPY constructor) entered\n");
    #endif
    goalNames.clear();
 
@@ -193,7 +193,7 @@ void DifferentialCorrector::Copy(const GmatBase* orig)
 // Access methods overriden from the base class
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -203,7 +203,7 @@ void DifferentialCorrector::Copy(const GmatBase* orig)
  * @return parameter text for the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString DifferentialCorrector::GetParameterText(const Integer id) const
+std::string DifferentialCorrector::GetParameterText(const Integer id) const
 {
    if ((id >= SolverParamCount) && (id < DifferentialCorrectorParamCount))
       return PARAMETER_TEXT[id - SolverParamCount];
@@ -212,7 +212,7 @@ wxString DifferentialCorrector::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -222,19 +222,19 @@ wxString DifferentialCorrector::GetParameterText(const Integer id) const
  * @return ID for the requested parameter.
  */
 //------------------------------------------------------------------------------
-Integer DifferentialCorrector::GetParameterID(const wxString &str) const
+Integer DifferentialCorrector::GetParameterID(const std::string &str) const
 {
    // Write deprecated message per GMAT session
    static bool writeDeprecatedMsg = true;
 
    // 1. This part will be removed for a future build:
-   if (str == wxT("UseCentralDifferences"))
+   if (str == "UseCentralDifferences")
    {
       if (writeDeprecatedMsg)
       {
          MessageInterface::ShowMessage
-            (deprecatedMessageFormat.c_str(), wxT("UseCentralDifferences"), GetName().c_str(),
-             wxT("DerivativeMethod"));
+            (deprecatedMessageFormat.c_str(), "UseCentralDifferences", GetName().c_str(),
+             "DerivativeMethod");
          writeDeprecatedMsg = false;
       }
       return derivativeMethodID;
@@ -273,7 +273,7 @@ Gmat::ParameterType DifferentialCorrector::GetParameterType(
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -283,7 +283,7 @@ Gmat::ParameterType DifferentialCorrector::GetParameterType(
  * @return parameter type string of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString DifferentialCorrector::GetParameterTypeString(
+std::string DifferentialCorrector::GetParameterTypeString(
                                       const Integer id) const
 {
    return Solver::PARAM_TYPE_STRING[GetParameterType(id)];
@@ -332,7 +332,7 @@ Integer DifferentialCorrector::SetIntegerParameter(const Integer id,
    //      maxIterations = value;
    //   else
    //      MessageInterface::ShowMessage(
-   //         wxT("Iteration count for %s must be > 0; requested value was %d\n"),
+   //         "Iteration count for %s must be > 0; requested value was %d\n",
    //         instanceName.c_str(), value);
    //   return maxIterations;
    //}
@@ -390,7 +390,7 @@ bool DifferentialCorrector::SetBooleanParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id) const
+//  std::string  GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -401,7 +401,7 @@ bool DifferentialCorrector::SetBooleanParameter(const Integer id,
  * @return  string value of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString DifferentialCorrector::GetStringParameter(const Integer id) const
+std::string DifferentialCorrector::GetStringParameter(const Integer id) const
 {
     //if (id == solverTextFileID)
     //    return solverTextFile;
@@ -414,7 +414,7 @@ wxString DifferentialCorrector::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer SetStringParameter(const Integer id, const wxString &value)
+//  Integer SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * This method sets a string or string array parameter value, given the input
@@ -427,7 +427,7 @@ wxString DifferentialCorrector::GetStringParameter(const Integer id) const
  */
 //------------------------------------------------------------------------------
 bool DifferentialCorrector::SetStringParameter(const Integer id,
-                                               const wxString &value)
+                                               const std::string &value)
 {
    if (id == goalNamesID)
    {
@@ -439,25 +439,25 @@ bool DifferentialCorrector::SetStringParameter(const Integer id,
    {
       bool retval = true;
       //   This is to handle deprecated value UseCentralDifferences = true
-      if (value == wxT("true"))
-         derivativeMethod = wxT("CentralDifference");
+      if (value == "true")
+         derivativeMethod = "CentralDifference";
       //   This is to handle deprecated value UseCentralDifferences = false
-      else if (value == wxT("false"))
-         derivativeMethod = wxT("ForwardDifference");
+      else if (value == "false")
+         derivativeMethod = "ForwardDifference";
       // Allowed values for DerivativeMethod
-      else if (value == wxT("ForwardDifference") || value == wxT("CentralDifference") ||
-               value == wxT("BackwardDifference"))
+      else if (value == "ForwardDifference" || value == "CentralDifference" ||
+               value == "BackwardDifference")
       {
          derivativeMethod = value;
-         if (derivativeMethod == wxT("ForwardDifference"))
+         if (derivativeMethod == "ForwardDifference")
          {
             diffMode = 1;
          }
-         else if(derivativeMethod == wxT("CentralDifference"))
+         else if(derivativeMethod == "CentralDifference")
          {
             diffMode = 0;
          }
-         else if(derivativeMethod == wxT("BackwardDifference"))
+         else if(derivativeMethod == "BackwardDifference")
          {
             diffMode = -1;
          }
@@ -474,7 +474,7 @@ bool DifferentialCorrector::SetStringParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringArrayParameter(const Integer id) const
+//  std::string  GetStringArrayParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -499,13 +499,13 @@ const StringArray& DifferentialCorrector::GetStringArrayParameter(
 
 
 //------------------------------------------------------------------------------
-//  bool TakeAction(const wxString &action, const wxString &actionData)
+//  bool TakeAction(const std::string &action, const std::string &actionData)
 //------------------------------------------------------------------------------
 /**
  * This method performs an action on the instance.
  *
  * TakeAction is a method overridden from GmatBase.  The only action defined for
- * a DifferentialCorrector is wxT("IncrementInstanceCount"), which the Sandbox uses
+ * a DifferentialCorrector is "IncrementInstanceCount", which the Sandbox uses
  * to tell an instance if if it is a reused instance (i.e. a clone) of the
  * configured instance of the DifferentialCorrector.
  *
@@ -515,22 +515,22 @@ const StringArray& DifferentialCorrector::GetStringArrayParameter(
  * @return  The value of the parameter at the completion of the call.
  */
 //------------------------------------------------------------------------------
-bool DifferentialCorrector::TakeAction(const wxString &action,
-                                       const wxString &actionData)
+bool DifferentialCorrector::TakeAction(const std::string &action,
+                                       const std::string &actionData)
 {
-   if (action == wxT("ResetInstanceCount"))
+   if (action == "ResetInstanceCount")
    {
       instanceNumber = 0;
       return true;
    }
 
-   if (action == wxT("IncrementInstanceCount"))
+   if (action == "IncrementInstanceCount")
    {
       ++instanceNumber;
       return true;
    }
 
-   if (action == wxT("Reset"))
+   if (action == "Reset")
    {
       currentState = INITIALIZING;
       // initialized = false;
@@ -541,7 +541,7 @@ bool DifferentialCorrector::TakeAction(const wxString &action,
       }
    }
 
-   if (action == wxT("SetMode"))
+   if (action == "SetMode")
    {
       currentState = INITIALIZING;
       // initialized = false;
@@ -557,7 +557,7 @@ bool DifferentialCorrector::TakeAction(const wxString &action,
 
 
 //------------------------------------------------------------------------------
-// Integer SetSolverResults(Real *data, const wxString &name)
+// Integer SetSolverResults(Real *data, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets up the data fields used for the results of an iteration.
@@ -571,11 +571,11 @@ bool DifferentialCorrector::TakeAction(const wxString &action,
  */
 //------------------------------------------------------------------------------
 Integer DifferentialCorrector::SetSolverResults(Real *data,
-                                                const wxString &name,
-                                                const wxString &type)
+                                                const std::string &name,
+                                                const std::string &type)
 {
     if (goalNames[goalCount] != name)
-        throw SolverException(wxT("Mismatch between parsed and configured goal"));
+        throw SolverException("Mismatch between parsed and configured goal");
     goal[goalCount] = data[0];
     tolerance[goalCount] = data[1];
     ++goalCount;
@@ -601,8 +601,8 @@ bool DifferentialCorrector::UpdateSolverGoal(Integer id, Real newValue)
    if (currentState == NOMINAL) {
       if (id >= goalCount)
          throw SolverException(
-            wxT("DifferentialCorrector member requested a parameter outside the ")
-            wxT("range of the configured goals."));
+            "DifferentialCorrector member requested a parameter outside the "
+            "range of the configured goals.");
 
       goal[id] = newValue;
    }
@@ -628,8 +628,8 @@ bool DifferentialCorrector::UpdateSolverTolerance(Integer id, Real newValue)
    if (currentState == NOMINAL) {
       if (id >= goalCount)
          throw SolverException(
-            wxT("DifferentialCorrector member requested a parameter outside the ")
-            wxT("range of the configured goals."));
+            "DifferentialCorrector member requested a parameter outside the "
+            "range of the configured goals.");
 
       tolerance[id] = newValue;
    }
@@ -648,11 +648,11 @@ bool DifferentialCorrector::UpdateSolverTolerance(Integer id, Real newValue)
  */
 //------------------------------------------------------------------------------
 void DifferentialCorrector::SetResultValue(Integer id, Real value,
-                                           const wxString &resultType)
+                                           const std::string &resultType)
 {
    #ifdef DEBUG_STATE_MACHINE
       MessageInterface::ShowMessage(
-            wxT("   State %d received id %d    value = %.12lf\n"), currentState, id,
+            "   State %d received id %d    value = %.12lf\n", currentState, id,
             value);
    #endif
     if (currentState == NOMINAL)
@@ -685,14 +685,14 @@ bool DifferentialCorrector::Initialize()
 
    #if DEBUG_DC_INIT
    MessageInterface::ShowMessage
-      (wxT("DifferentialCorrector::Initialize() localVariableCount=%d, ")
-       wxT("localGoalCount=%d\n"), localVariableCount, localGoalCount);
+      ("DifferentialCorrector::Initialize() localVariableCount=%d, "
+       "localGoalCount=%d\n", localVariableCount, localGoalCount);
    #endif
 
    if (localVariableCount == 0 || localGoalCount == 0)
    {
-      wxString errorMessage = wxT("Targeter cannot initialize: ");
-      errorMessage += wxT("No goals or variables are set.\n");
+      std::string errorMessage = "Targeter cannot initialize: ";
+      errorMessage += "No goals or variables are set.\n";
       throw SolverException(errorMessage);
    }
 
@@ -729,7 +729,7 @@ bool DifferentialCorrector::Initialize()
 
    #if DEBUG_DC_INIT
       MessageInterface::ShowMessage
-            (wxT("DifferentialCorrector::Initialize() completed\n"));
+            ("DifferentialCorrector::Initialize() completed\n");
    #endif
 
    return true;
@@ -752,14 +752,14 @@ Solver::SolverState DifferentialCorrector::AdvanceState()
       case INITIAL_GUESS:
          #ifdef DEBUG_TARGETING_MODES
             MessageInterface::ShowMessage(
-                  wxT("Running in INITIAL_GUESS mode; state = %d\n"), currentState);
+                  "Running in INITIAL_GUESS mode; state = %d\n", currentState);
          #endif
             switch (currentState)
             {
                case INITIALIZING:
                   #ifdef DEBUG_STATE_MACHINE
                      MessageInterface::ShowMessage(
-                           wxT("Entered state machine; INITIALIZING\n"));
+                           "Entered state machine; INITIALIZING\n");
                   #endif
                   iterationsTaken = 0;
                   WriteToTextFile();
@@ -771,7 +771,7 @@ Solver::SolverState DifferentialCorrector::AdvanceState()
                case NOMINAL:
                   #ifdef DEBUG_STATE_MACHINE
                      MessageInterface::ShowMessage(
-                           wxT("Entered state machine; NOMINAL\n"));
+                           "Entered state machine; NOMINAL\n");
                   #endif
                   WriteToTextFile();
                   currentState = FINISHED;
@@ -782,7 +782,7 @@ Solver::SolverState DifferentialCorrector::AdvanceState()
                default:
                   #ifdef DEBUG_STATE_MACHINE
                      MessageInterface::ShowMessage(
-                           wxT("Entered state machine; FINISHED\n"));
+                           "Entered state machine; FINISHED\n");
                   #endif
                   RunComplete();
                   ReportProgress();
@@ -794,7 +794,7 @@ Solver::SolverState DifferentialCorrector::AdvanceState()
       default:
          #ifdef DEBUG_TARGETING_MODES
             MessageInterface::ShowMessage(
-                  wxT("Running in SOLVE or default mode; state = %d\n"),
+                  "Running in SOLVE or default mode; state = %d\n",
                   currentState);
          #endif
          switch (currentState)
@@ -802,7 +802,7 @@ Solver::SolverState DifferentialCorrector::AdvanceState()
             case INITIALIZING:
                #ifdef DEBUG_STATE_MACHINE
                   MessageInterface::ShowMessage(
-                        wxT("Entered state machine; INITIALIZING\n"));
+                        "Entered state machine; INITIALIZING\n");
                #endif
                iterationsTaken = 0;
                WriteToTextFile();
@@ -814,7 +814,7 @@ Solver::SolverState DifferentialCorrector::AdvanceState()
             case NOMINAL:
                #ifdef DEBUG_STATE_MACHINE
                   MessageInterface::ShowMessage(
-                        wxT("Entered state machine; NOMINAL\n"));
+                        "Entered state machine; NOMINAL\n");
                #endif
                ReportProgress();
                RunNominal();
@@ -825,7 +825,7 @@ Solver::SolverState DifferentialCorrector::AdvanceState()
             case PERTURBING:
                #ifdef DEBUG_STATE_MACHINE
                   MessageInterface::ShowMessage(
-                        wxT("Entered state machine; PERTURBING\n"));
+                        "Entered state machine; PERTURBING\n");
                #endif
                ReportProgress();
                RunPerturbation();
@@ -834,7 +834,7 @@ Solver::SolverState DifferentialCorrector::AdvanceState()
             case CALCULATING:
                #ifdef DEBUG_STATE_MACHINE
                   MessageInterface::ShowMessage(
-                        wxT("Entered state machine; CALCULATING\n"));
+                        "Entered state machine; CALCULATING\n");
                #endif
                ReportProgress();
                CalculateParameters();
@@ -843,16 +843,16 @@ Solver::SolverState DifferentialCorrector::AdvanceState()
             case CHECKINGRUN:
                 #ifdef DEBUG_STATE_MACHINE
                   MessageInterface::ShowMessage(
-                        wxT("Entered state machine; CHECKINGRUN\n"));
+                        "Entered state machine; CHECKINGRUN\n");
                #endif
                CheckCompletion();
                ++iterationsTaken;
                if (iterationsTaken >= maxIterations)
                {
                   MessageInterface::ShowMessage(
-                        wxT("Differential corrector %s %s\n"), instanceName.c_str(),
-                        wxT("has exceeded the maximum number of allowed ")
-                        wxT("iterations."));
+                        "Differential corrector %s %s\n", instanceName.c_str(),
+                        "has exceeded the maximum number of allowed "
+                        "iterations.");
                   currentState = FINISHED;
                }
                break;
@@ -860,7 +860,7 @@ Solver::SolverState DifferentialCorrector::AdvanceState()
             case FINISHED:
                #ifdef DEBUG_STATE_MACHINE
                   MessageInterface::ShowMessage(
-                        wxT("Entered state machine; FINISHED\n"));
+                        "Entered state machine; FINISHED\n");
                #endif
                RunComplete();
                ReportProgress();
@@ -869,11 +869,11 @@ Solver::SolverState DifferentialCorrector::AdvanceState()
             case ITERATING:             // Intentional drop-through
             default:
                #ifdef DEBUG_STATE_MACHINE
-                  MessageInterface::ShowMessage(wxT("Entered state machine; ")
-                     wxT("Bad state for a differential corrector.\n"));
+                  MessageInterface::ShowMessage("Entered state machine; "
+                     "Bad state for a differential corrector.\n");
                #endif
                throw SolverException(
-                     wxT("Solver state not supported for the targeter"));
+                     "Solver state not supported for the targeter");
          }
          break;
    }
@@ -886,7 +886,7 @@ Solver::SolverState DifferentialCorrector::AdvanceState()
 //  void RunNominal()
 //------------------------------------------------------------------------------
 /**
- * Run out the nominal sequence, generating the wxT("current") targeter data.
+ * Run out the nominal sequence, generating the "current" targeter data.
  */
 //------------------------------------------------------------------------------
 void DifferentialCorrector::RunNominal()
@@ -956,10 +956,10 @@ void DifferentialCorrector::RunPerturbation()
       if (diffMode == 0)
       {
          // Warn user that central differencing violates constraint and continue
-         MessageInterface::ShowMessage(wxT("Warning!  Perturbation violates the ")
-               wxT("maximum value for variable %s, but is being applied anyway to ")
-               wxT("perform central differencing in the differential corrector ")
-               wxT("%s\n"), variableNames[pertNumber].c_str(), instanceName.c_str());
+         MessageInterface::ShowMessage("Warning!  Perturbation violates the "
+               "maximum value for variable %s, but is being applied anyway to "
+               "perform central differencing in the differential corrector "
+               "%s\n", variableNames[pertNumber].c_str(), instanceName.c_str());
       }
       else
       {
@@ -973,10 +973,10 @@ void DifferentialCorrector::RunPerturbation()
       if (diffMode == 0)
       {
          // Warn user that central differencing violates constraint and continue
-         MessageInterface::ShowMessage(wxT("Warning!  Perturbation violates the ")
-               wxT("minimum value for variable %s, but is being applied anyway to ")
-               wxT("perform central differencing in the differential corrector ")
-               wxT("%s\n"), variableNames[pertNumber].c_str(), instanceName.c_str());
+         MessageInterface::ShowMessage("Warning!  Perturbation violates the "
+               "minimum value for variable %s, but is being applied anyway to "
+               "perform central differencing in the differential corrector "
+               "%s\n", variableNames[pertNumber].c_str(), instanceName.c_str());
       }
       else
       {
@@ -1026,7 +1026,7 @@ void DifferentialCorrector::CalculateParameters()
    }
 
    #ifdef DEBUG_VARIABLES_CALCS
-      MessageInterface::ShowMessage(wxT("Variable Values; Multiplier = %.15lf\n"),
+      MessageInterface::ShowMessage("Variable Values; Multiplier = %.15lf\n",
             multiplier);
    #endif
 
@@ -1037,12 +1037,12 @@ void DifferentialCorrector::CalculateParameters()
       {
          #ifdef DEBUG_VARIABLES_CALCS
             MessageInterface::ShowMessage(
-                  wxT("   %d:  %.15lf  +  %.15lf  *  %.15lf"), i, variable.at(i),
+                  "   %d:  %.15lf  +  %.15lf  *  %.15lf", i, variable.at(i),
                   delta.at(i), multiplier);
          #endif
          variable.at(i) += delta.at(i) * multiplier;
          #ifdef DEBUG_VARIABLES_CALCS
-            MessageInterface::ShowMessage(wxT("  ->  %.15lf\n"), variable.at(i));
+            MessageInterface::ShowMessage("  ->  %.15lf\n", variable.at(i));
          #endif
 
          // Ensure that variable[i] is in the allowed range
@@ -1053,7 +1053,7 @@ void DifferentialCorrector::CalculateParameters()
       }
       catch(std::exception &)
       {
-         throw SolverException(wxT("Range error in Solver::CalculateParameters\n"));
+         throw SolverException("Range error in Solver::CalculateParameters\n");
       }
    }
 
@@ -1167,7 +1167,7 @@ void DifferentialCorrector::CalculateJacobian()
 void DifferentialCorrector::InvertJacobian()
 {
    #ifdef DEBUG_JACOBIAN
-      MessageInterface::ShowMessage(wxT("Inverting %d by %d Jacobian\n"),
+      MessageInterface::ShowMessage("Inverting %d by %d Jacobian\n",
             variableCount, goalCount);
    #endif
    Rmatrix jac(variableCount, goalCount);
@@ -1175,7 +1175,7 @@ void DifferentialCorrector::InvertJacobian()
       for (Integer j = 0; j < goalCount; ++j)
       {
          #ifdef DEBUG_JACOBIAN
-            MessageInterface::ShowMessage(wxT("   jacobian[%d][%d] = %.14lf\n"), i,
+            MessageInterface::ShowMessage("   jacobian[%d][%d] = %.14lf\n", i,
                   j, jacobian[i][j]);
          #endif
          jac(i,j) = jacobian[i][j];
@@ -1188,17 +1188,17 @@ void DifferentialCorrector::InvertJacobian()
       inv = jac.Pseudoinverse();
 
    #ifdef DEBUG_JACOBIAN
-      MessageInterface::ShowMessage(wxT("Inverse Jacobian is %d by %d\n"),
+      MessageInterface::ShowMessage("Inverse Jacobian is %d by %d\n",
             variableCount, goalCount);
    #endif
 
    #ifdef DEBUG_DC_INVERSIONS
-      wxString preface = wxT("   ");
+      std::string preface = "   ";
       if (variableCount == goalCount)
-         MessageInterface::ShowMessage(wxT("Inverse:\n%s\n"),
+         MessageInterface::ShowMessage("Inverse:\n%s\n",
                (inv.ToString(16, false, preface).c_str()));
       else
-         MessageInterface::ShowMessage(wxT("PseudoInverse:\n%s\n"),
+         MessageInterface::ShowMessage("PseudoInverse:\n%s\n",
                inv.ToString(16, false, preface).c_str());
    #endif
 
@@ -1208,7 +1208,7 @@ void DifferentialCorrector::InvertJacobian()
          inverseJacobian[i][j] = inv(i,j);
          #ifdef DEBUG_JACOBIAN
             MessageInterface::ShowMessage(
-                  wxT("   inverseJacobian[%d][%d] = %.14lf\n"), i, j,
+                  "   inverseJacobian[%d][%d] = %.14lf\n", i, j,
                   inverseJacobian[i][j]);
          #endif
       }
@@ -1293,37 +1293,39 @@ void DifferentialCorrector::FreeArrays()
 
 
 //------------------------------------------------------------------------------
-//  wxString GetProgressString()
+//  std::string GetProgressString()
 //------------------------------------------------------------------------------
 /**
  * Generates a string that reporting the current differential corrector state.
  */
 //------------------------------------------------------------------------------
-wxString DifferentialCorrector::GetProgressString()
+std::string DifferentialCorrector::GetProgressString()
 {
    StringArray::iterator current;
    Integer i;
-   wxString progress;
+   std::stringstream progress;
+   progress.str("");
+   progress.precision(12);
 
    if (initialized)
    {
       switch (currentState)
       {
          case INITIALIZING:
-            // This state is basically a wxT("paused state") used for the Target
+            // This state is basically a "paused state" used for the Target
             // command to finalize the initial data for the variables and
             // goals.  All that is written here is the header information.
             {
                Integer localVariableCount = variableNames.size(),
                        localGoalCount = goalNames.size();
-               progress << wxT("************************************************")
-                        << wxT("********\n")
-                        << wxT("*** Performing Differential Correction ")
-                        << wxT("(using \"") << instanceName << wxT("\")\n");
+               progress << "************************************************"
+                        << "********\n"
+                        << "*** Performing Differential Correction "
+                        << "(using \"" << instanceName << "\")\n";
 
                // Write out the setup data
-               progress << wxT("*** ") << localVariableCount << wxT(" variables; ")
-                        << localGoalCount << wxT(" goals\n   Variables:  ");
+               progress << "*** " << localVariableCount << " variables; "
+                        << localGoalCount << " goals\n   Variables:  ";
 
                // Iterate through the variables and goals, writing them to
                // the file
@@ -1331,54 +1333,54 @@ wxString DifferentialCorrector::GetProgressString()
                     current != variableNames.end(); ++current)
                {
                   if (current != variableNames.begin())
-                     progress << wxT(", ");
+                     progress << ", ";
                   progress << *current;
                }
 
-               progress << wxT("\n   Goals:  ");
+               progress << "\n   Goals:  ";
 
                for (current = goalNames.begin(), i = 0;
                     current != goalNames.end(); ++current)
                {
                   if (current != goalNames.begin())
-                     progress << wxT(", ");
+                     progress << ", ";
                   progress << *current;
                }
 
-               if (solverMode != wxT(""))
-                  progress << wxT("\n   SolverMode:  ")
+               if (solverMode != "")
+                  progress << "\n   SolverMode:  "
                            << solverMode;
 
 
-               progress << wxT("\n****************************")
-                        << wxT("****************************");
+               progress << "\n****************************"
+                        << "****************************";
             }
             break;
 
          case NOMINAL:
-            progress << instanceName << wxT(" Iteration ") << iterationsTaken+1
-                     << wxT("; Nominal Pass\n   Variables:  ");
+            progress << instanceName << " Iteration " << iterationsTaken+1
+                     << "; Nominal Pass\n   Variables:  ";
             // Iterate through the variables, writing them to the string
             for (current = variableNames.begin(), i = 0;
                  current != variableNames.end(); ++current)
             {
                if (current != variableNames.begin())
-                  progress << wxT(", ");
-               progress << *current << wxT(" = ") << unscaledVariable.at(i);
-               if (textFileMode == wxT("Verbose"))
-                  progress << wxT("; targeter scaled value: ") << variable[i];
+                  progress << ", ";
+               progress << *current << " = " << unscaledVariable.at(i);
+               if (textFileMode == "Verbose")
+                  progress << "; targeter scaled value: " << variable[i];
                ++i;
             }
             break;
 
          case PERTURBING:
-            progress << wxT("   Completed iteration ") << iterationsTaken
-                     << wxT(", pert ") << pertNumber+1 << wxT(" (")
-                     << variableNames[pertNumber] << wxT(" = ")
+            progress << "   Completed iteration " << iterationsTaken
+                     << ", pert " << pertNumber+1 << " ("
+                     << variableNames[pertNumber] << " = "
                      << unscaledVariable.at(pertNumber);
-            if (textFileMode == wxT("Verbose"))
-               progress << wxT("; targeter scaled value: ") << variable[pertNumber];
-            progress << wxT(")");
+            if (textFileMode == "Verbose")
+               progress << "; targeter scaled value: " << variable[pertNumber];
+            progress << ")";
             break;
 
          case CALCULATING:
@@ -1387,16 +1389,16 @@ wxString DifferentialCorrector::GetProgressString()
 
          case CHECKINGRUN:
             // Iterate through the goals, writing them to the file
-            progress << wxT("   Goals and achieved values:\n");
+            progress << "   Goals and achieved values:\n";
 
             for (current = goalNames.begin(), i = 0;
                  current != goalNames.end(); ++current)
             {
-               progress << wxT("      ") << *current
-                        << wxT("  Desired: ") << goal[i]
-                        << wxT("  Achieved: ") << nominal[i]
-                        << wxT("  Variance: ") << (goal[i] - nominal[i])
-                        << wxT("\n");
+               progress << "      " << *current
+                        << "  Desired: " << goal[i]
+                        << "  Achieved: " << nominal[i]
+                        << "  Variance: " << (goal[i] - nominal[i])
+                        << "\n";
                ++i;
             }
 
@@ -1406,56 +1408,56 @@ wxString DifferentialCorrector::GetProgressString()
             switch (currentMode)
             {
                case INITIAL_GUESS:
-                  progress << wxT("\n*** Targeting Completed Initial Guess Run\n")
-                           << wxT("***\n   Variable Values:\n");
+                  progress << "\n*** Targeting Completed Initial Guess Run\n"
+                           << "***\n   Variable Values:\n";
                   for (current = variableNames.begin(), i = 0;
                        current != variableNames.end(); ++current)
-                     progress << wxT("      ") << *current
-                              << wxT(" = ") << unscaledVariable.at(i++) << wxT("\n");
-                  progress << wxT("\n   Goal Values:\n");
+                     progress << "      " << *current
+                              << " = " << unscaledVariable.at(i++) << "\n";
+                  progress << "\n   Goal Values:\n";
                   for (current = goalNames.begin(), i = 0;
                        current != goalNames.end(); ++current)
                   {
-                     progress << wxT("      ") << *current
-                              << wxT("  Desired: ") << goal[i]
-                              << wxT("  Achieved: ") << nominal[i]
-                              << wxT("  Variance: ") << (goal[i] - nominal[i])
-                              << wxT("\n");
+                     progress << "      " << *current
+                              << "  Desired: " << goal[i]
+                              << "  Achieved: " << nominal[i]
+                              << "  Variance: " << (goal[i] - nominal[i])
+                              << "\n";
                      ++i;
                   }
                   break;
 
                case SOLVE:
                default:
-                  progress << wxT("\n*** Targeting Completed in ") << iterationsTaken
-                           << wxT(" iterations");
+                  progress << "\n*** Targeting Completed in " << iterationsTaken
+                           << " iterations";
 
                   if (iterationsTaken > maxIterations)
-                     progress << wxT("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                           << wxT("!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
-                           << wxT("!!! WARNING: Targeter did NOT converge!")
-                           << wxT("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                           << wxT("!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                     progress << "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+                           << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
+                           << "!!! WARNING: Targeter did NOT converge!"
+                           << "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+                           << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
 
-                  progress << wxT("\nFinal Variable values:\n");
+                  progress << "\nFinal Variable values:\n";
                   // Iterate through the variables, writing them to the string
                   for (current = variableNames.begin(), i = 0;
                        current != variableNames.end(); ++current)
-                     progress << wxT("   ") << *current << wxT(" = ")
-                              << unscaledVariable.at(i++) << wxT("\n");
+                     progress << "   " << *current << " = "
+                              << unscaledVariable.at(i++) << "\n";
             }
             break;
 
          case ITERATING:     // Intentional fall through
          default:
             throw SolverException(
-               wxT("Solver state not supported for the targeter"));
+               "Solver state not supported for the targeter");
       }
    }
    else
       return Solver::GetProgressString();
 
-   return progress;
+   return progress.str();
 }
 
 
@@ -1470,8 +1472,8 @@ void DifferentialCorrector::WriteToTextFile(SolverState stateToUse)
 {
    #ifdef DEBUG_SOLVER_WRITE
    MessageInterface::ShowMessage
-      (wxT("DC::WriteToTextFile() entered, stateToUse=%d, solverTextFile='%s', ")
-       wxT("textFileOpen=%d, initialized=%d\n"), stateToUse, solverTextFile.c_str(),
+      ("DC::WriteToTextFile() entered, stateToUse=%d, solverTextFile='%s', "
+       "textFileOpen=%d, initialized=%d\n", stateToUse, solverTextFile.c_str(),
        textFile.is_open(), initialized);
    #endif
 
@@ -1488,182 +1490,182 @@ void DifferentialCorrector::WriteToTextFile(SolverState stateToUse)
       switch (currentState)
       {
          case INITIALIZING:
-            // This state is basically a wxT("paused state") used for the Target
+            // This state is basically a "paused state" used for the Target
             // command to finalize the initial data for the variables and
             // goals.  All that is written here is the header information.
             {
                Integer localVariableCount = variableNames.size(),
                        localGoalCount = goalNames.size();
-               textFile << wxT("************************************************")
-                        << wxT("********\n")
-                        << wxT("*** Targeter Text File\n")
-                        << wxT("*** \n")
-                        << wxT("*** Using Differential Correction\n***\n");
+               textFile << "************************************************"
+                        << "********\n"
+                        << "*** Targeter Text File\n"
+                        << "*** \n"
+                        << "*** Using Differential Correction\n***\n";
 
                // Write out the setup data
-               textFile << wxT("*** ") << localVariableCount << wxT(" variables\n*** ")
-                        << localGoalCount << wxT(" goals\n***\n*** ")
-                        << wxT("Variables:\n***    ");
+               textFile << "*** " << localVariableCount << " variables\n*** "
+                        << localGoalCount << " goals\n***\n*** "
+                        << "Variables:\n***    ";
 
                // Iterate through the variables and goals, writing them to
                // the file
                for (current = variableNames.begin(), i = 0;
                     current != variableNames.end(); ++current)
                {
-                  textFile << *current << wxT("\n***    ");
+                  textFile << *current << "\n***    ";
                }
 
-               textFile << wxT("\n*** Goals:\n***    ");
+               textFile << "\n*** Goals:\n***    ";
 
                for (current = goalNames.begin(), i = 0;
                     current != goalNames.end(); ++current)
                {
-                  textFile << *current << wxT("\n***    ");
+                  textFile << *current << "\n***    ";
                }
 
-               if (solverMode != wxT(""))
-                  textFile << wxT("\n*** SolverMode:  ")
+               if (solverMode != "")
+                  textFile << "\n*** SolverMode:  "
                            << solverMode
-                           <<wxT("\n***    ");
+                           <<"\n***    ";
 
-               textFile << wxT("\n****************************")
-                        << wxT("****************************\n")
+               textFile << "\n****************************"
+                        << "****************************\n"
                         << std::endl;
             }
             break;
 
          case NOMINAL:
-            textFile << wxT("Iteration ") << iterationsTaken+1
-                     << wxT("\nRunning Nominal Pass\nVariables:\n   ");
+            textFile << "Iteration " << iterationsTaken+1
+                     << "\nRunning Nominal Pass\nVariables:\n   ";
             // Iterate through the variables, writing them to the file
             for (current = variableNames.begin(), i = 0;
                  current != variableNames.end(); ++current)
             {
-               textFile << *current << wxT(" = ") << unscaledVariable.at(i);
-               if ((textFileMode == wxT("Verbose")) || (textFileMode == wxT("Debug")))
-                     textFile << wxT("; targeter scaled value: ") << variable.at(i);
-               textFile << wxT("\n   ");
+               textFile << *current << " = " << unscaledVariable.at(i);
+               if ((textFileMode == "Verbose") || (textFileMode == "Debug"))
+                     textFile << "; targeter scaled value: " << variable.at(i);
+               textFile << "\n   ";
                ++i;
             }
             textFile << std::endl;
             break;
 
          case PERTURBING:
-            if ((textFileMode == wxT("Verbose")) || (textFileMode == wxT("Debug")))
+            if ((textFileMode == "Verbose") || (textFileMode == "Debug"))
             {
                if (pertNumber != 0)
                {
                   // Iterate through the goals, writing them to the file
-                  textFile << wxT("Goals and achieved values:\n   ");
+                  textFile << "Goals and achieved values:\n   ";
 
                   for (current = goalNames.begin(), i = 0;
                        current != goalNames.end(); ++current)
                   {
-                     textFile << *current << wxT("  Desired: ") << goal[i]
-                              << wxT(" Achieved: ") << achieved[pertNumber-1][i]
-                              << wxT("\n   ");
+                     textFile << *current << "  Desired: " << goal[i]
+                              << " Achieved: " << achieved[pertNumber-1][i]
+                              << "\n   ";
                      ++i;
                   }
                   textFile << std::endl;
                }
-               textFile << wxT("Perturbing with variable values:\n   ");
+               textFile << "Perturbing with variable values:\n   ";
                for (current = variableNames.begin(), i = 0;
                     current != variableNames.end(); ++current)
                {
-                  textFile << *current << wxT(" = ") << unscaledVariable.at(i);
-                  if ((textFileMode == wxT("Verbose")) || (textFileMode == wxT("Debug")))
-                        textFile << wxT("; targeter scaled value: ") << variable.at(i);
-                  textFile << wxT("\n   ");
+                  textFile << *current << " = " << unscaledVariable.at(i);
+                  if ((textFileMode == "Verbose") || (textFileMode == "Debug"))
+                        textFile << "; targeter scaled value: " << variable.at(i);
+                  textFile << "\n   ";
                   ++i;
                }
                textFile << std::endl;
             }
 
-            if (textFileMode == wxT("Debug"))
+            if (textFileMode == "Debug")
             {
-               textFile << wxT("------------------------------------------------\n")
-                        << wxT("Command stream data:\n")
-                        << debugString << wxT("\n")
-                        << wxT("------------------------------------------------\n");
+               textFile << "------------------------------------------------\n"
+                        << "Command stream data:\n"
+                        << debugString << "\n"
+                        << "------------------------------------------------\n";
             }
 
             break;
 
          case CALCULATING:
-            if (textFileMode == wxT("Verbose"))
+            if (textFileMode == "Verbose")
             {
-               textFile << wxT("Calculating") << std::endl;
+               textFile << "Calculating" << std::endl;
 
                // Iterate through the goals, writing them to the file
-               textFile << wxT("Goals and achieved values:\n   ");
+               textFile << "Goals and achieved values:\n   ";
 
                for (current = goalNames.begin(), i = 0;
                     current != goalNames.end(); ++current)
                {
-                   textFile << *current << wxT("  Desired: ") << goal[i]
-                            << wxT(" Achieved: ") << achieved[variableCount-1][i]
-                            << wxT("\n    ");
+                   textFile << *current << "  Desired: " << goal[i]
+                            << " Achieved: " << achieved[variableCount-1][i]
+                            << "\n    ";
                    ++i;
                }
                textFile << std::endl;
             }
 
-            textFile << wxT("\nJacobian (Sensitivity matrix):\n");
+            textFile << "\nJacobian (Sensitivity matrix):\n";
             for (i = 0; i < variableCount; ++i)
             {
                for (j = 0; j < goalCount; ++j)
                {
-                  textFile << wxT("   ") << jacobian[i][j];
+                  textFile << "   " << jacobian[i][j];
                }
-               textFile << wxT("\n");
+               textFile << "\n";
             }
 
-            textFile << wxT("\n\nInverse Jacobian:\n");
+            textFile << "\n\nInverse Jacobian:\n";
             for (i = 0; i < goalCount; ++i)
             {
                for (j = 0; j < variableCount; ++j)
                {
-                  textFile << wxT("   ") << inverseJacobian[i][j];
+                  textFile << "   " << inverseJacobian[i][j];
                }
-               textFile << wxT("\n");
+               textFile << "\n";
             }
 
-            textFile << wxT("\n\nNew scaled variable estimates:\n   ");
+            textFile << "\n\nNew scaled variable estimates:\n   ";
             for (current = variableNames.begin(), i = 0;
                  current != variableNames.end(); ++current)
             {
-               //textFile << *current << wxT(" = ") << variable[i++] << wxT("\n   ");
-               textFile << *current << wxT(" = ") << variable.at(i++) << wxT("\n   ");
+               //textFile << *current << " = " << variable[i++] << "\n   ";
+               textFile << *current << " = " << variable.at(i++) << "\n   ";
             }
             textFile << std::endl;
             break;
 
          case CHECKINGRUN:
             // Iterate through the goals, writing them to the file
-            textFile << wxT("Goals and achieved values:\n   ");
+            textFile << "Goals and achieved values:\n   ";
 
             for (current = goalNames.begin(), i = 0;
                  current != goalNames.end(); ++current)
             {
-               textFile << *current << wxT("  Desired: ") << goal[i]
-                        << wxT(" Achieved: ") << nominal[i]
-                        << wxT("\n   Tolerance: ") << tolerance[i]
-                        << wxT("\n   ");
+               textFile << *current << "  Desired: " << goal[i]
+                        << " Achieved: " << nominal[i]
+                        << "\n   Tolerance: " << tolerance[i]
+                        << "\n   ";
                ++i;
             }
 
-            textFile << wxT("\n*****************************")
-                     << wxT("***************************\n")
+            textFile << "\n*****************************"
+                     << "***************************\n"
                      << std::endl;
             break;
 
          case FINISHED:
-            textFile << wxT("\n****************************")
-                     << wxT("****************************\n")
-                     << wxT("*** Targeting Completed in ") << iterationsTaken
-                     << wxT(" iterations")
-                     << wxT("\n****************************")
-                     << wxT("****************************\n")
+            textFile << "\n****************************"
+                     << "****************************\n"
+                     << "*** Targeting Completed in " << iterationsTaken
+                     << " iterations"
+                     << "\n****************************"
+                     << "****************************\n"
                      << std::endl;
 
             break;
@@ -1671,7 +1673,7 @@ void DifferentialCorrector::WriteToTextFile(SolverState stateToUse)
          case ITERATING:     // Intentional fall through
          default:
             throw SolverException(
-               wxT("Solver state not supported for the targeter"));
+               "Solver state not supported for the targeter");
       }
    }
 }

@@ -29,10 +29,10 @@
 // To use preset colors, uncomment this line:
 //#define USE_PREDEFINED_COLORS
 
-EquinSma::EquinSma(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("Sma"), obj, wxT("Equinoctial Sma"), wxT("?"), GmatParam::COORD_SYS, true)
+EquinSma::EquinSma(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "Sma", obj, "Equinoctial Sma", "?", GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::RED32;
@@ -58,7 +58,7 @@ EquinSma::~EquinSma()
 
 bool EquinSma::Evaluate()
 {
-   //mRealValue = OrbitData::GetEquinReal(wxT("EquinSma"));
+   //mRealValue = OrbitData::GetEquinReal("EquinSma");
    mRealValue = OrbitData::GetEquinReal(SMA);
     
    if (mRealValue == GmatOrbitConstants::ORBIT_REAL_UNDEFINED)
@@ -74,10 +74,10 @@ GmatBase* EquinSma::Clone(void) const
 
 
 
-EquinEy::EquinEy(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("Ey"), obj, wxT("Equinoctial Ey"), wxT("?"), GmatParam::COORD_SYS, true)
+EquinEy::EquinEy(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "Ey", obj, "Equinoctial Ey", "?", GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::GREEN32;
@@ -103,7 +103,7 @@ EquinEy::~EquinEy()
 
 bool EquinEy::Evaluate()
 {
-   //mRealValue = OrbitData::GetEquinReal(wxT("EquinEy"));
+   //mRealValue = OrbitData::GetEquinReal("EquinEy");
    mRealValue = OrbitData::GetEquinReal(EY);
     
    if (mRealValue == GmatOrbitConstants::ORBIT_REAL_UNDEFINED)
@@ -119,10 +119,10 @@ GmatBase* EquinEy::Clone(void) const
 
 
 
-EquinEx::EquinEx(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("Ex"), obj, wxT("Equinoctial Ex"), wxT("?"), GmatParam::COORD_SYS, true)
+EquinEx::EquinEx(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "Ex", obj, "Equinoctial Ex", "?", GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::BLUE32;
@@ -148,7 +148,7 @@ EquinEx::~EquinEx()
 
 bool EquinEx::Evaluate()
 {
-   //mRealValue = OrbitData::GetEquinReal(wxT("EquinEx"));
+   //mRealValue = OrbitData::GetEquinReal("EquinEx");
    mRealValue = OrbitData::GetEquinReal(EX);
     
    if (mRealValue == GmatOrbitConstants::ORBIT_REAL_UNDEFINED)
@@ -164,10 +164,10 @@ GmatBase* EquinEx::Clone(void) const
 
 
 
-EquinNy::EquinNy(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("Ny"), obj, wxT("Equinoctial Ny"), wxT("?"), GmatParam::COORD_SYS, true)
+EquinNy::EquinNy(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "Ny", obj, "Equinoctial Ny", "?", GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::YELLOW32;
@@ -193,7 +193,7 @@ EquinNy::~EquinNy()
 
 bool EquinNy::Evaluate()
 {
-   //mRealValue = OrbitData::GetEquinReal(wxT("EquinNy"));
+   //mRealValue = OrbitData::GetEquinReal("EquinNy");
    mRealValue = OrbitData::GetEquinReal(NY);
     
    if (mRealValue == GmatOrbitConstants::ORBIT_REAL_UNDEFINED)
@@ -209,10 +209,10 @@ GmatBase* EquinNy::Clone(void) const
 
 
 
-EquinNx::EquinNx(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("Nx"), obj, wxT("Equinoctial Nx"), wxT("?"), GmatParam::COORD_SYS, true)
+EquinNx::EquinNx(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "Nx", obj, "Equinoctial Nx", "?", GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::GREEN32;
@@ -238,7 +238,7 @@ EquinNx::~EquinNx()
 
 bool EquinNx::Evaluate()
 {
-   //mRealValue = OrbitData::GetEquinReal(wxT("EquinNx"));
+   //mRealValue = OrbitData::GetEquinReal("EquinNx");
    mRealValue = OrbitData::GetEquinReal(NX);
     
    if (mRealValue == GmatOrbitConstants::ORBIT_REAL_UNDEFINED)
@@ -254,10 +254,10 @@ GmatBase* EquinNx::Clone(void) const
 
 
 
-EquinMlong::EquinMlong(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("Mlong"), obj, wxT("Equinoctial Mlong"), wxT("?"), GmatParam::COORD_SYS, true)
+EquinMlong::EquinMlong(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "Mlong", obj, "Equinoctial Mlong", "?", GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::BLUE32;
@@ -283,7 +283,7 @@ EquinMlong::~EquinMlong()
 
 bool EquinMlong::Evaluate()
 {
-   //mRealValue = OrbitData::GetEquinReal(wxT("EquinMlong"));
+   //mRealValue = OrbitData::GetEquinReal("EquinMlong");
    mRealValue = OrbitData::GetEquinReal(MLONG);
     
    if (mRealValue == GmatOrbitConstants::ORBIT_REAL_UNDEFINED)
@@ -299,12 +299,12 @@ GmatBase* EquinMlong::Clone(void) const
 
 
 
-EquinState::EquinState(const wxString &name, GmatBase *obj)
-   : OrbitRvec6(name, wxT("Equinoctial"), obj, wxT("Equinoctial State Vector"),
-                wxT("Km/s"), GmatParam::COORD_SYS)
+EquinState::EquinState(const std::string &name, GmatBase *obj)
+   : OrbitRvec6(name, "Equinoctial", obj, "Equinoctial State Vector",
+                "Km/s", GmatParam::COORD_SYS)
 {
    // Parameter member data
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    mIsPlottable = false;
 }
@@ -336,7 +336,7 @@ bool EquinState::Evaluate()
    
    #if DEBUG_CARTESIAN_PARAM
    MessageInterface::ShowMessage
-      (wxT("EquinState::Evaluate() mRvec6Value =\n%s\n"),
+      ("EquinState::Evaluate() mRvec6Value =\n%s\n",
        mRvec6Value.ToString().c_str());
    #endif
    

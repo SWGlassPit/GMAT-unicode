@@ -51,7 +51,7 @@ BooleanWrapper::BooleanWrapper() :
  * Constructs base BooleanWrapper structures used in derived classes, by 
  * copying the input instance (copy constructor).
  *
- * @param <copy>  BooleanWrapper instance to copy to create wxT("this") instance.
+ * @param <copy>  BooleanWrapper instance to copy to create "this" instance.
  */
 //------------------------------------------------------------------------------
 BooleanWrapper::BooleanWrapper(const BooleanWrapper &copy) :
@@ -127,7 +127,7 @@ Gmat::ParameterType BooleanWrapper::GetDataType() const
 Real BooleanWrapper::EvaluateReal() const
 {
    throw ParameterException(
-      wxT("EvaluateReal() method not valid for wrapper of Boolean type.\n"));
+      "EvaluateReal() method not valid for wrapper of Boolean type.\n");
 }
 
 
@@ -145,7 +145,7 @@ Real BooleanWrapper::EvaluateReal() const
 bool BooleanWrapper::SetReal(const Real toValue)
 {
    throw ParameterException(
-      wxT("SetReal() method not valid for wrapper of Boolean type.\n"));
+      "SetReal() method not valid for wrapper of Boolean type.\n");
 }
 
 
@@ -198,9 +198,9 @@ void BooleanWrapper::SetupWrapper()
 {
    if (GmatStringUtil::ToBoolean(description, value) == false)
    {
-      wxString errmsg = wxT("For Boolean wrapper \"");
+      std::string errmsg = "For Boolean wrapper \"";
       errmsg += description;
-      errmsg += wxT("\", the description string does not evaluate to Boolean\n"); 
+      errmsg += "\", the description string does not evaluate to Boolean\n"; 
       throw ParameterException(errmsg);
    }
 }

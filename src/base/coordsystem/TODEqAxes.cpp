@@ -39,7 +39,7 @@
 //---------------------------------
 
 /* placeholder - may be needed later
-const wxString
+const std::string
 TODEqAxes::PARAMETER_TEXT[TODEqAxesParamCount - TrueOfDateAxesParamCount] =
 {
    "",
@@ -56,8 +56,8 @@ TODEqAxes::PARAMETER_TYPE[TODEqAxesParamCount - TrueOfDateAxesParamCount] =
 //------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//  TODEqAxes(const wxString &itsType,
-//            const wxString &itsName);
+//  TODEqAxes(const std::string &itsType,
+//            const std::string &itsName);
 //---------------------------------------------------------------------------
 /**
  * Constructs base TODEqAxes structures
@@ -68,10 +68,10 @@ TODEqAxes::PARAMETER_TYPE[TODEqAxesParamCount - TrueOfDateAxesParamCount] =
  *
  */
 //---------------------------------------------------------------------------
-TODEqAxes::TODEqAxes(const wxString &itsName) :
-TrueOfDateAxes(wxT("TODEq"),itsName)
+TODEqAxes::TODEqAxes(const std::string &itsName) :
+TrueOfDateAxes("TODEq",itsName)
 {
-   objectTypeNames.push_back(wxT("TODEqAxes"));
+   objectTypeNames.push_back("TODEqAxes");
    parameterCount = TODEqAxesParamCount;
 }
 
@@ -155,7 +155,7 @@ GmatBase* TODEqAxes::Clone() const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -166,7 +166,7 @@ GmatBase* TODEqAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*wxString TODEqAxes::GetParameterText(const Integer id) const
+/*std::string TODEqAxes::GetParameterText(const Integer id) const
 {
    if (id >= TrueOfDateAxesParamCount && id < TODEqAxesParamCount)
       return PARAMETER_TEXT[id - TrueOfDateAxesParamCount];
@@ -174,7 +174,7 @@ GmatBase* TODEqAxes::Clone() const
 }
 */
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -185,7 +185,7 @@ GmatBase* TODEqAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*Integer TODEqAxes::GetParameterID(const wxString &str) const
+/*Integer TODEqAxes::GetParameterID(const std::string &str) const
 {
    for (Integer i = TrueOfDateAxesParamCount; i < TODEqAxesParamCount; i++)
    {
@@ -217,7 +217,7 @@ GmatBase* TODEqAxes::Clone() const
 }
 */
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -228,7 +228,7 @@ GmatBase* TODEqAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*wxString TODEqAxes::GetParameterTypeString(const Integer id) const
+/*std::string TODEqAxes::GetParameterTypeString(const Integer id) const
 {
    return TrueOfDateAxes::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -254,7 +254,7 @@ void TODEqAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
                                         bool forceComputation)
 {
    #ifdef DEBUG_TODEQ_AXES
-      MessageInterface::ShowMessage(wxT("Entering TODEQ::Calculate with epoch = %.12f\n"),
+      MessageInterface::ShowMessage("Entering TODEQ::Calculate with epoch = %.12f\n",
          (Real) atEpoch.Get());
    #endif
    Real dPsi             = 0.0;
@@ -273,7 +273,7 @@ void TODEqAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
    else                        updateIntervalToUse = updateInterval;
    #ifdef DEBUG_TODEQ_AXES
       MessageInterface::ShowMessage(
-         wxT("In TODEQ::Calculate tTDB = %.12f and updateIntervalToUse = %.12f\n"),
+         "In TODEQ::Calculate tTDB = %.12f and updateIntervalToUse = %.12f\n",
          tTDB, updateIntervalToUse);
    #endif
    
@@ -283,11 +283,11 @@ void TODEqAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
    
    #ifdef DEBUG_TODEQ_AXES
       MessageInterface::ShowMessage(
-         wxT("In TODEQ::Calculate precData = \n%.12f %.12f %.12f\n%.12f %.12f %.12f\n%.12f %.12f %.12f\n"),
+         "In TODEQ::Calculate precData = \n%.12f %.12f %.12f\n%.12f %.12f %.12f\n%.12f %.12f %.12f\n",
          precData[0],precData[1],precData[2],precData[3],precData[4],
          precData[5],precData[6],precData[7],precData[8]);
       MessageInterface::ShowMessage(
-         wxT("In TODEQ::Calculate nutData = \n%.12f %.12f %.12f\n%.12f %.12f %.12f\n%.12f %.12f %.12f\n"),
+         "In TODEQ::Calculate nutData = \n%.12f %.12f %.12f\n%.12f %.12f %.12f\n%.12f %.12f %.12f\n",
          nutData[0],nutData[1],nutData[2],nutData[3],nutData[4],
          nutData[5],nutData[6],nutData[7],nutData[8]);
    #endif

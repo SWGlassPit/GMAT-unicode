@@ -59,7 +59,7 @@ using namespace GmatTimeConstants;      // for JD offsets, etc.
 // static data
 //---------------------------------
 
-//const wxString
+//const std::string
 //BodyFixedAxes::PARAMETER_TEXT[BodyFixedAxesParamCount - DynamicAxesParamCount] =
 //{
 //};
@@ -74,7 +74,7 @@ using namespace GmatTimeConstants;      // for JD offsets, etc.
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-//  BodyFixedAxes(const wxString &itsName);
+//  BodyFixedAxes(const std::string &itsName);
 //------------------------------------------------------------------------------
 /**
  * Constructs base BodyFixedAxes structures
@@ -83,15 +83,15 @@ using namespace GmatTimeConstants;      // for JD offsets, etc.
  * @param itsName Optional name for the object.  Defaults to "".
  */
 //------------------------------------------------------------------------------
-BodyFixedAxes::BodyFixedAxes(const wxString &itsName) :
-DynamicAxes(wxT("BodyFixed"),itsName),
+BodyFixedAxes::BodyFixedAxes(const std::string &itsName) :
+DynamicAxes("BodyFixed",itsName),
 de                       (NULL),
 prevEpoch                (0.0),
 prevUpdateInterval       (-99.9),
 prevOriginUpdateInterval (-99.9),
 prevLunaSrc              (Gmat::RotationDataSrcCount)
 {
-   objectTypeNames.push_back(wxT("BodyFixedAxes"));
+   objectTypeNames.push_back("BodyFixedAxes");
    parameterCount = BodyFixedAxesParamCount;
 }
 
@@ -115,9 +115,9 @@ prevOriginUpdateInterval (bfAxes.prevOriginUpdateInterval),
 prevLunaSrc              (bfAxes.prevLunaSrc)
 {
    #ifdef DEBUG_BF_RECOMPUTE
-      MessageInterface::ShowMessage(wxT("Constructing a new BFA (%p) from the old one (%p)\n"),
+      MessageInterface::ShowMessage("Constructing a new BFA (%p) from the old one (%p)\n",
             this, &bfAxes);
-      MessageInterface::ShowMessage(wxT("   and prevEpoch(old) %12.10f copied to prevEpoch(new) %12.10f\n"),
+      MessageInterface::ShowMessage("   and prevEpoch(old) %12.10f copied to prevEpoch(new) %12.10f\n",
             bfAxes.prevEpoch, prevEpoch);
    #endif
 }
@@ -219,7 +219,7 @@ GmatBase* BodyFixedAxes::Clone() const
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                    const wxString &name)
+//                    const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * This method sets a reference object for the BodyFixedAxes class.  This is
@@ -235,24 +235,24 @@ GmatBase* BodyFixedAxes::Clone() const
  */
 //------------------------------------------------------------------------------
 bool BodyFixedAxes::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                 const wxString &name)
+                                 const std::string &name)
 {
    if (obj == NULL)
       return false;
 
    #ifdef DEBUG_SET_REF
    MessageInterface::ShowMessage
-      (wxT("BodyFixedAxes::SetRefObject() <%s>, obj=%p, name=%s\n"), GetName().c_str(),
+      ("BodyFixedAxes::SetRefObject() <%s>, obj=%p, name=%s\n", GetName().c_str(),
        obj, name.c_str());
    #endif
    if (name == originName)
    {
-      if (!obj->IsOfType(wxT("CelestialBody")))
+      if (!obj->IsOfType("CelestialBody"))
       {
-         CoordinateSystemException cse(wxT(""));
+         CoordinateSystemException cse("");
          cse.SetDetails(errorMessageFormatUnnamed.c_str(),
                         (obj->GetName()).c_str(),
-                       wxT("Origin"), wxT("Celestial Body"));
+                       "Origin", "Celestial Body");
          throw cse;
       }
    }
@@ -260,7 +260,7 @@ bool BodyFixedAxes::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -271,7 +271,7 @@ bool BodyFixedAxes::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  *
  */
 //------------------------------------------------------------------------------
-//wxString BodyFixedAxes::GetParameterText(const Integer id) const
+//std::string BodyFixedAxes::GetParameterText(const Integer id) const
 //{
 //   if (id >= DynamicAxesParamCount && id < BodyFixedAxesParamCount)
 //      return PARAMETER_TEXT[id - DynamicAxesParamCount];
@@ -279,7 +279,7 @@ bool BodyFixedAxes::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 //}
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -290,7 +290,7 @@ bool BodyFixedAxes::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  *
  */
 //------------------------------------------------------------------------------
-//Integer BodyFixedAxes::GetParameterID(const wxString &str) const
+//Integer BodyFixedAxes::GetParameterID(const std::string &str) const
 //{
 //   for (Integer i = DynamicAxesParamCount; i < BodyFixedAxesParamCount; i++)
 //   {
@@ -322,7 +322,7 @@ bool BodyFixedAxes::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 //}
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -333,13 +333,13 @@ bool BodyFixedAxes::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  *
  */
 //------------------------------------------------------------------------------
-//wxString BodyFixedAxes::GetParameterTypeString(const Integer id) const
+//std::string BodyFixedAxes::GetParameterTypeString(const Integer id) const
 //{
 //   return DynamicAxes::PARAM_TYPE_STRING[GetParameterType(id)];
 //}
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id) const
+//  std::string  GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
 * This method returns the string parameter value, given the input
@@ -351,13 +351,13 @@ bool BodyFixedAxes::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  *
  */
 //------------------------------------------------------------------------------
-//wxString BodyFixedAxes::GetStringParameter(const Integer id) const
+//std::string BodyFixedAxes::GetStringParameter(const Integer id) const
 //{
 //   return DynamicAxes::GetStringParameter(id);
 //}
 
 //------------------------------------------------------------------------------
-//  wxString  SetStringParameter(const Integer id, const wxString value)
+//  std::string  SetStringParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
 /**
 * This method sets the string parameter value, given the input
@@ -371,13 +371,13 @@ bool BodyFixedAxes::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 //bool BodyFixedAxes::SetStringParameter(const Integer id, 
-//                                       const wxString &value)
+//                                       const std::string &value)
 //{
 //   return DynamicAxes::SetStringParameter(id, value);
 //}
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
 * Accessor method used to get a parameter value
@@ -387,13 +387,13 @@ bool BodyFixedAxes::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  * @return the value of the parameter
  */
 //------------------------------------------------------------------------------
-//wxString BodyFixedAxes::GetStringParameter(const wxString &label) const
+//std::string BodyFixedAxes::GetStringParameter(const std::string &label) const
 //{
 //   return GetStringParameter(GetParameterID(label));
 //}
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
 /**
 * Accessor method used to get a parameter value
@@ -402,8 +402,8 @@ bool BodyFixedAxes::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  * @param    value  The new value for the parameter
  */
 //------------------------------------------------------------------------------
-//bool BodyFixedAxes::SetStringParameter(const wxString &label,
-//                                        const wxString &value)
+//bool BodyFixedAxes::SetStringParameter(const std::string &label,
+//                                        const std::string &value)
 //{
 //   return SetStringParameter(GetParameterID(label), value);
 //}
@@ -434,17 +434,17 @@ void BodyFixedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
    #ifdef DEBUG_FIRST_CALL
       if (!firstCallFired)
          MessageInterface::ShowMessage(
-            wxT("Calling CalculateRotationMatrix at epoch %lf; "), atEpoch.Get());
+            "Calling CalculateRotationMatrix at epoch %lf; ", atEpoch.Get());
    #endif
    Real theEpoch = atEpoch.Get();
    #ifdef DEBUG_BF_EPOCHS
-      MessageInterface::ShowMessage(wxT("CalculateRotationMatrix(%s)   epoch = %12.10f, prevEpoch = %12.10f ...... "),
+      MessageInterface::ShowMessage("CalculateRotationMatrix(%s)   epoch = %12.10f, prevEpoch = %12.10f ...... ",
             (coordName.c_str()), theEpoch, prevEpoch);
    #endif
    #ifdef DEBUG_BF_RECOMPUTE
-      MessageInterface::ShowMessage(wxT("Entering CalculateRotationMatrix on object %s (%p) of type %s, origin = %s\n"),
+      MessageInterface::ShowMessage("Entering CalculateRotationMatrix on object %s (%p) of type %s, origin = %s\n",
             (coordName.c_str()), this, (GetTypeName()).c_str(), originName.c_str());
-      MessageInterface::ShowMessage(wxT("     epoch = %12.10f, prevEpoch = %12.10f\n"), theEpoch, prevEpoch);
+      MessageInterface::ShowMessage("     epoch = %12.10f, prevEpoch = %12.10f\n", theEpoch, prevEpoch);
 //      if (originName == SolarSystem::MOON_NAME)
 //         MessageInterface::ShowMessage("   Luna source = %d, prevLunaSrc = %d\n",
 //               (Integer) ((CelestialBody*)origin)->GetRotationDataSource(), (Integer) prevLunaSrc);
@@ -469,7 +469,7 @@ void BodyFixedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
        (prevLunaSrc == ((CelestialBody*)origin)->GetRotationDataSource()))
       {
          #ifdef DEBUG_BF_RECOMPUTE
-            MessageInterface::ShowMessage(wxT("Don't need to recompute for Luna at this time!!\n"));
+            MessageInterface::ShowMessage("Don't need to recompute for Luna at this time!!\n");
          #endif
          return;
       }
@@ -485,10 +485,10 @@ void BodyFixedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
           (IsEqual(updateInterval,     prevUpdateInterval))))
       {
          #ifdef DEBUG_BF_EPOCHS
-            MessageInterface::ShowMessage(wxT("NOT recomputing\n"));
+            MessageInterface::ShowMessage("NOT recomputing\n");
          #endif
          #ifdef DEBUG_BF_RECOMPUTE
-            MessageInterface::ShowMessage(wxT("Don't need to recompute for Earth at this time!!\n"));
+            MessageInterface::ShowMessage("Don't need to recompute for Earth at this time!!\n");
          #endif
          return;
       }
@@ -497,11 +497,11 @@ void BodyFixedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
          MessageInterface::ShowMessage("RECOMPUTING!!!\n");
       #endif
       #ifdef DEBUG_BF_RECOMPUTE
-         MessageInterface::ShowMessage(wxT("   RECOMPUTING!!! - body name is EARTH\n"));
+         MessageInterface::ShowMessage("   RECOMPUTING!!! - body name is EARTH\n");
       #endif
       #ifdef DEBUG_FIRST_CALL
          if (!firstCallFired)
-            MessageInterface::ShowMessage(wxT("In BFA, Body is the Earth\n"));
+            MessageInterface::ShowMessage("In BFA, Body is the Earth\n");
       #endif
       Real dPsi             = 0.0;
       Real longAscNodeLunar = 0.0;
@@ -557,14 +557,14 @@ void BodyFixedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
          {
             Real jdUT1    = mjdUT1 + JD_JAN_5_1941; // right?
             MessageInterface::ShowMessage(
-               wxT("   Epoch data[mjdUTC, mjdUT1, jdUT1, tUT1, mjdTT1, jdTT, tTDB] ")
-               wxT("=\n        [%.10lf %.10lf %.10lf %.10lf %.10lf %.10lf %.10lf ]\n"),
+               "   Epoch data[mjdUTC, mjdUT1, jdUT1, tUT1, mjdTT1, jdTT, tTDB] "
+               "=\n        [%.10lf %.10lf %.10lf %.10lf %.10lf %.10lf %.10lf ]\n",
                mjdUTC, mjdUT1, jdUT1, tUT1, mjdTT, jdTT, tTDB);
          }
       #endif
 
       #ifdef DEBUG_BF_ROT_MATRIX
-         MessageInterface::ShowMessage(wxT("   about to figure out update interval ...\n"));
+         MessageInterface::ShowMessage("   about to figure out update interval ...\n");
       #endif
       if (overrideOriginInterval) 
       {
@@ -573,7 +573,7 @@ void BodyFixedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
          #ifdef DEBUG_FIRST_CALL
             if (!firstCallFired)
                MessageInterface::ShowMessage(
-                  wxT("   Overrode origin interval; set to %.12lf\n"), 
+                  "   Overrode origin interval; set to %.12lf\n", 
                   updateIntervalToUse);
          #endif
       }
@@ -584,7 +584,7 @@ void BodyFixedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
          #ifdef DEBUG_FIRST_CALL
             if (!firstCallFired)
                MessageInterface::ShowMessage(
-                  wxT("   Using body's origin interval, %.12lf\n"), 
+                  "   Using body's origin interval, %.12lf\n", 
                   updateIntervalToUse);
          #endif
       }
@@ -592,37 +592,37 @@ void BodyFixedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
       //MessageInterface::ShowMessage("Setting %4.3f as interval \n",
       //                              updateIntervalToUse);
       #ifdef DEBUG_BF_ROT_MATRIX
-         MessageInterface::ShowMessage(wxT("About to call ComputePrecessionMatrix\n"));
+         MessageInterface::ShowMessage("About to call ComputePrecessionMatrix\n");
       #endif
       ComputePrecessionMatrix(tTDB, atEpoch);
       #ifdef DEBUG_BF_ROT_MATRIX
-         MessageInterface::ShowMessage(wxT("About to call ComputeNutationMatrix\n"));
+         MessageInterface::ShowMessage("About to call ComputeNutationMatrix\n");
       #endif
       ComputeNutationMatrix(tTDB, atEpoch, dPsi, longAscNodeLunar, cosEpsbar,
                             forceComputation);
       #ifdef DEBUG_BF_ROT_MATRIX
-         MessageInterface::ShowMessage(wxT("About to call ComputeSiderealTimeRotation\n"));
+         MessageInterface::ShowMessage("About to call ComputeSiderealTimeRotation\n");
       #endif
       ComputeSiderealTimeRotation(jdTT, tUT1, dPsi, longAscNodeLunar, cosEpsbar,
                              cosAst, sinAst);
       #ifdef DEBUG_BF_ROT_MATRIX
-         MessageInterface::ShowMessage(wxT("About to call ComputeSiderealTimeDotRotation\n"));
+         MessageInterface::ShowMessage("About to call ComputeSiderealTimeDotRotation\n");
       #endif
       ComputeSiderealTimeDotRotation(mjdUTC, atEpoch, cosAst, sinAst,
                                      forceComputation);
       #ifdef DEBUG_BF_ROT_MATRIX
-         MessageInterface::ShowMessage(wxT("About to call ComputePolarMotionRotation\n"));
+         MessageInterface::ShowMessage("About to call ComputePolarMotionRotation\n");
       #endif
       ComputePolarMotionRotation(mjdUTC, atEpoch, forceComputation);
       #ifdef DEBUG_BF_ROT_MATRIX
-         MessageInterface::ShowMessage(wxT("DONE calling all computation submethods\n"));
+         MessageInterface::ShowMessage("DONE calling all computation submethods\n");
       #endif
       
    #ifdef DEBUG_BF_MATRICES
-      MessageInterface::ShowMessage(wxT("atEpoch = %12.10f\n"), atEpoch.Get());
-      MessageInterface::ShowMessage(wxT("NUT = %s\n"), NUT.ToString().c_str());
-      MessageInterface::ShowMessage(wxT("STderiv = %s\n"), STderiv.ToString().c_str());
-      MessageInterface::ShowMessage(wxT("PM = %s\n"), PM.ToString().c_str());
+      MessageInterface::ShowMessage("atEpoch = %12.10f\n", atEpoch.Get());
+      MessageInterface::ShowMessage("NUT = %s\n", NUT.ToString().c_str());
+      MessageInterface::ShowMessage("STderiv = %s\n", STderiv.ToString().c_str());
+      MessageInterface::ShowMessage("PM = %s\n", PM.ToString().c_str());
    #endif
 
       Real np[3][3], rot[3][3], tmp[3][3];
@@ -675,7 +675,7 @@ void BodyFixedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
                  rot[0][2] * (rot[1][0] * rot[2][1] - rot[1][1]*rot[2][0]);
          if (Abs(determinant - 1.0) > DETERMINANT_TOLERANCE)
             throw CoordinateSystemException(
-                  wxT("Computed rotation matrix has a determinant not equal to 1.0"));
+                  "Computed rotation matrix has a determinant not equal to 1.0");
       #endif
 
       // NUT * PREC calculated above
@@ -713,35 +713,35 @@ void BodyFixedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
       #ifdef DEBUG_FIRST_CALL
          if (!firstCallFired) 
          {
-            MessageInterface::ShowMessage(wxT("FK5 Components\n   PREC = \n"));
+            MessageInterface::ShowMessage("FK5 Components\n   PREC = \n");
             for (Integer m = 0; m < 3; ++m)
                MessageInterface::ShowMessage(
-                  wxT("          %20.12le %20.12le %20.12le \n"), PREC(m,0), 
+                  "          %20.12le %20.12le %20.12le \n", PREC(m,0), 
                   PREC(m,1), PREC(m,2));
-            MessageInterface::ShowMessage(wxT("\n   NUT = \n"));
+            MessageInterface::ShowMessage("\n   NUT = \n");
             for (Integer m = 0; m < 3; ++m)
                MessageInterface::ShowMessage(
-                  wxT("          %20.12le %20.12le %20.12le \n"), NUT(m,0), 
+                  "          %20.12le %20.12le %20.12le \n", NUT(m,0), 
                   NUT(m,1), NUT(m,2));
-            MessageInterface::ShowMessage(wxT("\n   ST = \n"));
+            MessageInterface::ShowMessage("\n   ST = \n");
             for (Integer m = 0; m < 3; ++m)
                MessageInterface::ShowMessage(
-                  wxT("          %20.12le %20.12le %20.12le \n"), ST(m,0), 
+                  "          %20.12le %20.12le %20.12le \n", ST(m,0), 
                   ST(m,1), ST(m,2));
-            MessageInterface::ShowMessage(wxT("\n   STderiv = \n"));
+            MessageInterface::ShowMessage("\n   STderiv = \n");
             for (Integer m = 0; m < 3; ++m)
                MessageInterface::ShowMessage(
-                  wxT("          %20.12le %20.12le %20.12le \n"), STderiv(m,0), 
+                  "          %20.12le %20.12le %20.12le \n", STderiv(m,0), 
                   STderiv(m,1), STderiv(m,2));
-            MessageInterface::ShowMessage(wxT("\n   PM = \n"));
+            MessageInterface::ShowMessage("\n   PM = \n");
             for (Integer m = 0; m < 3; ++m)
                MessageInterface::ShowMessage(
-                  wxT("          %20.12le %20.12le %20.12le \n"), PM(m,0), 
+                  "          %20.12le %20.12le %20.12le \n", PM(m,0), 
                   PM(m,1), PM(m,2));
-            MessageInterface::ShowMessage(wxT("\n   rotMatrix = \n"));
+            MessageInterface::ShowMessage("\n   rotMatrix = \n");
             for (Integer m = 0; m < 3; ++m)
                MessageInterface::ShowMessage(
-                  wxT("          %20.12le %20.12le %20.12le \n"), rotMatrix(m,0), 
+                  "          %20.12le %20.12le %20.12le \n", rotMatrix(m,0), 
                   rotMatrix(m,1), rotMatrix(m,2));
          }
       #endif
@@ -751,14 +751,14 @@ void BodyFixedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
            (((CelestialBody*)origin)->GetRotationDataSource() == Gmat::DE_405_FILE))
    {
       #ifdef DEBUG_BF_RECOMPUTE
-         MessageInterface::ShowMessage(wxT("   RECOMPUTING!!! - body name is LUNA\n"));
+         MessageInterface::ShowMessage("   RECOMPUTING!!! - body name is LUNA\n");
       #endif
       if (!de)
       {
          de = (DeFile*) ((CelestialBody*)origin)->GetSourceFile();
          if (!de)
          throw CoordinateSystemException(
-               wxT("No DE file specified - cannot get Moon data"));
+               "No DE file specified - cannot get Moon data");
          // De file is initialized in its constructor
       }
       bool override = ((CelestialBody*)origin)->GetOverrideTimeSystem();
@@ -804,17 +804,17 @@ void BodyFixedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
          );
       
        #ifdef DEBUG_MOON_MATRIX
-          MessageInterface::ShowMessage(wxT("angles are: %.17f  %.17f  %.17f\n"),
+          MessageInterface::ShowMessage("angles are: %.17f  %.17f  %.17f\n",
            librationAngles[0], librationAngles[1], librationAngles[2]);
-          MessageInterface::ShowMessage(wxT("rates are: %.17f  %.17f  %.17f\n"),
+          MessageInterface::ShowMessage("rates are: %.17f  %.17f  %.17f\n",
            andRates[0], andRates[1], andRates[2]);
           MessageInterface::ShowMessage(
-          wxT("rotMatrix = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f %.17f  %.17  %.17ff\n"),
+          "rotMatrix = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f %.17f  %.17  %.17ff\n",
            rotMatrix(0,0), rotMatrix(0,1), rotMatrix(0,2), 
            rotMatrix(1,0), rotMatrix(1,1), rotMatrix(1,2), 
            rotMatrix(2,0), rotMatrix(2,1), rotMatrix(2,2));
           MessageInterface::ShowMessage(
-          wxT("rotDotMatrix = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f %.17f  %.17f %.17f\n"),
+          "rotDotMatrix = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f %.17f  %.17f %.17f\n",
            rotDotMatrix(0,0), rotDotMatrix(0,1), rotDotMatrix(0,2), 
            rotDotMatrix(1,0), rotDotMatrix(1,1), rotDotMatrix(1,2), 
            rotDotMatrix(2,0), rotDotMatrix(2,1), rotDotMatrix(2,2));
@@ -823,7 +823,7 @@ void BodyFixedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
    else // compute for other bodies, using IAU data
    {
       #ifdef DEBUG_BF_RECOMPUTE
-         MessageInterface::ShowMessage(wxT("   RECOMPUTING!!! - and the body name is %s\n"), originName.c_str());
+         MessageInterface::ShowMessage("   RECOMPUTING!!! - and the body name is %s\n", originName.c_str());
       #endif
       Real Wderiv[9];
       Real R13[3][3];
@@ -833,7 +833,7 @@ void BodyFixedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
       const Real *cartC = cartCoord.GetDataVector();
       #ifdef DEBUG_FIRST_CALL
          if (!firstCallFired)
-            MessageInterface::ShowMessage(wxT("In BFA, Body is %s\n"), originName.c_str());
+            MessageInterface::ShowMessage("In BFA, Body is %s\n", originName.c_str());
       #endif
       // this method will return alpha (deg), delta (deg), 
       // W (deg), and Wdot (deg/day)
@@ -918,14 +918,14 @@ void BodyFixedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
    // Save the epoch for comparison the next time through
    prevEpoch = theEpoch;
    #ifdef DEBUG_BF_RECOMPUTE
-      MessageInterface::ShowMessage(wxT("at the end, just set prevEpoch to %12.10f\n"), prevEpoch);
+      MessageInterface::ShowMessage("at the end, just set prevEpoch to %12.10f\n", prevEpoch);
    #endif
    if (originName == SolarSystem::MOON_NAME)
       prevLunaSrc = ((CelestialBody*)origin)->GetRotationDataSource();
 
    #ifdef DEBUG_FIRST_CALL
       firstCallFired = true;
-      MessageInterface::ShowMessage(wxT("NOW exiting BFA::CalculateRotationMatrix ...\n"));
+      MessageInterface::ShowMessage("NOW exiting BFA::CalculateRotationMatrix ...\n");
    #endif
 
 }

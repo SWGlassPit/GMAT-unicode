@@ -68,7 +68,7 @@ ObjectPropertyWrapper::ObjectPropertyWrapper() :
  * Constructs base ObjectPropertyWrapper structures used in derived classes, 
  * by copying the input instance (copy constructor).
  *
- * @param <opw>  ObjectPropertyWrapper instance to copy to create wxT("this") 
+ * @param <opw>  ObjectPropertyWrapper instance to copy to create "this" 
  * instance.
  */
 //---------------------------------------------------------------------------
@@ -130,24 +130,24 @@ Gmat::ParameterType ObjectPropertyWrapper::GetDataType() const
 {
    #ifdef DEBUG_OPW
    MessageInterface::ShowMessage
-      (wxT("ObjectPropertyWrapper::GetDataType() entered, propID = %d\n"), propID);
+      ("ObjectPropertyWrapper::GetDataType() entered, propID = %d\n", propID);
    #endif
    
    if (object == NULL)
       throw ParameterException
-         (wxT("ObjectPropertyWrapper::GetDataType() The object is NULL, ")
-          wxT("so cannot get data type"));
+         ("ObjectPropertyWrapper::GetDataType() The object is NULL, "
+          "so cannot get data type");
    
    Gmat::ParameterType propType = object->GetParameterType(propID);
    
    #ifdef DEBUG_OPW
    MessageInterface::ShowMessage
-      (wxT("ObjectPropertyWrapper::GetDataType() returning %d\n"), propType);
+      ("ObjectPropertyWrapper::GetDataType() returning %d\n", propType);
    #endif
    
    #ifdef DEBUG_OPW
    MessageInterface::ShowMessage
-      (wxT("ObjectPropertyWrapper::GetDataType() returning %d\n"), propType);
+      ("ObjectPropertyWrapper::GetDataType() returning %d\n", propType);
    #endif
    
    return propType;
@@ -155,7 +155,7 @@ Gmat::ParameterType ObjectPropertyWrapper::GetDataType() const
 
 
 //------------------------------------------------------------------------------
-// virtual bool SetRefObjectName(const wxString &name, Integer index)
+// virtual bool SetRefObjectName(const std::string &name, Integer index)
 //------------------------------------------------------------------------------
 /**
  * This method sets a reference object name for the ElementWrapper 
@@ -168,7 +168,7 @@ Gmat::ParameterType ObjectPropertyWrapper::GetDataType() const
  *
  */
 //------------------------------------------------------------------------------
-bool ObjectPropertyWrapper::SetRefObjectName(const wxString &name, Integer index)
+bool ObjectPropertyWrapper::SetRefObjectName(const std::string &name, Integer index)
 {
    if (index >= (Integer)refObjectNames.size())
       return false;
@@ -189,13 +189,13 @@ const StringArray& ObjectPropertyWrapper::GetRefObjectNames()
 {
    #ifdef DEBUG_OPW
    MessageInterface::ShowMessage
-      (wxT("ObjectPropertyWrapper::GetRefObjectNames() entered, object=<%p><%s>'%s'\n   ")
-       wxT("description='%s'\n"),  object, object ? object->GetTypeName().c_str() : wxT("NULL"),
-       object ? object->GetName().c_str() : wxT("NULL"), description.c_str());
+      ("ObjectPropertyWrapper::GetRefObjectNames() entered, object=<%p><%s>'%s'\n   "
+       "description='%s'\n",  object, object ? object->GetTypeName().c_str() : "NULL",
+       object ? object->GetName().c_str() : "NULL", description.c_str());
    MessageInterface::ShowMessage
-      (wxT("   returning %d ref object names\n"), refObjectNames.size());
+      ("   returning %d ref object names\n", refObjectNames.size());
    for (UnsignedInt i=0; i<refObjectNames.size(); i++)
-   MessageInterface::ShowMessage(wxT("   '%s'\n"), refObjectNames[i].c_str());
+   MessageInterface::ShowMessage("   '%s'\n", refObjectNames[i].c_str());
    #endif
    
    return refObjectNames;
@@ -203,13 +203,13 @@ const StringArray& ObjectPropertyWrapper::GetRefObjectNames()
 
 
 //------------------------------------------------------------------------------
-//  GmatBase* GetRefObject(const wxString &name = wxT(""))
+//  GmatBase* GetRefObject(const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * @see ElementWrapper
  */
 //------------------------------------------------------------------------------
-GmatBase* ObjectPropertyWrapper::GetRefObject(const wxString &name)
+GmatBase* ObjectPropertyWrapper::GetRefObject(const std::string &name)
 {
    return object;
 }
@@ -231,16 +231,16 @@ bool ObjectPropertyWrapper::SetRefObject(GmatBase *obj)
    {
       #ifdef DEBUG_OPW
       MessageInterface::ShowMessage
-         (wxT("***** In ObjPropWrapper::SetRefObject, the input object is NULL, ")
-          wxT("so returning false\n"));
+         ("***** In ObjPropWrapper::SetRefObject, the input object is NULL, "
+          "so returning false\n");
       #endif
       return false;
    }
    
    #ifdef DEBUG_OPW
    MessageInterface::ShowMessage
-      (wxT("ObjectPropertyWrapper::SetRefObject() entered, obj=<%p><%s><%s>\n   ")
-       wxT("refObjectNames[0]=<%s>, propIDNames[0]=<%s>, ownedObjName=<%s>\n"),
+      ("ObjectPropertyWrapper::SetRefObject() entered, obj=<%p><%s><%s>\n   "
+       "refObjectNames[0]=<%s>, propIDNames[0]=<%s>, ownedObjName=<%s>\n",
        obj, obj->GetTypeName().c_str(), obj->GetName().c_str(),
        refObjectNames[0].c_str(), propIDNames[0].c_str(), ownedObjName.c_str());
    #endif
@@ -249,11 +249,11 @@ bool ObjectPropertyWrapper::SetRefObject(GmatBase *obj)
 //   {
 //
 //      errmsg += object->GetName();
-//      errmsg += wxT("\" was passed into the object property wrapper \"");
+//      errmsg += "\" was passed into the object property wrapper \"";
 //      errmsg += description;
-//      errmsg += wxT("\", but an object named \"");
+//      errmsg += "\", but an object named \"";
 //      errmsg += refObjectNames[0];
-//      errmsg += wxT("\" was expected.\n");
+//      errmsg += "\" was expected.\n";
 //      throw ParameterException(errmsg);
 //   }
    
@@ -279,16 +279,16 @@ bool ObjectPropertyWrapper::SetRefObject(GmatBase *obj)
       }
       #ifdef DEBUG_OPW
          MessageInterface::ShowMessage(
-         wxT("In ObjPropWrapper::SetRefObject, setting to object %s\n"),
+         "In ObjPropWrapper::SetRefObject, setting to object %s\n",
          obj->GetName().c_str());
-         MessageInterface::ShowMessage(wxT("      and propID = %d\n"), propID);
+         MessageInterface::ShowMessage("      and propID = %d\n", propID);
       #endif
       return true;
    }
    #ifdef DEBUG_OPW
    MessageInterface::ShowMessage
-      (wxT("***** In ObjPropWrapper::SetRefObject, object name '%s' does not match with ")
-       wxT("ref object name '%s', so just returning false\n"), obj->GetName().c_str(),
+      ("***** In ObjPropWrapper::SetRefObject, object name '%s' does not match with "
+       "ref object name '%s', so just returning false\n", obj->GetName().c_str(),
        refObjectNames[0].c_str());
    #endif
    
@@ -297,7 +297,7 @@ bool ObjectPropertyWrapper::SetRefObject(GmatBase *obj)
 
 
 //---------------------------------------------------------------------------
-//  bool RenameObject(const wxString &oldName, const wxString &newName)
+//  bool RenameObject(const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /**
  * Method to rename a reference object for the wrapper.
@@ -305,32 +305,32 @@ bool ObjectPropertyWrapper::SetRefObject(GmatBase *obj)
  * @return true if successful; false otherwise.
  */
 //---------------------------------------------------------------------------
-bool ObjectPropertyWrapper::RenameObject(const wxString &oldName, 
-                                         const wxString &newName)
+bool ObjectPropertyWrapper::RenameObject(const std::string &oldName, 
+                                         const std::string &newName)
 {
    ElementWrapper::RenameObject(oldName, newName);
    // now rebuild the description string from the refObjectNames
-   Integer pos = description.find(wxT("."));
-   if (description.find(wxT(".")) != wxString::npos)
+   Integer pos = description.find(".");
+   if (description.find(".") != std::string::npos)
    {
       #ifdef DEBUG_RENAME_OBJ_PROP
          MessageInterface::ShowMessage(
-         wxT("Found a dot at position %d in the description string %s\n"),
+         "Found a dot at position %d in the description string %s\n",
          (Integer) pos, description.c_str());
       #endif
       description.replace(0,pos,refObjectNames[0]);
       #ifdef DEBUG_RENAME_OBJ_PROP
          MessageInterface::ShowMessage(
-         wxT("--- replacing with %s\n"), (refObjectNames[0]).c_str());
+         "--- replacing with %s\n", (refObjectNames[0]).c_str());
          MessageInterface::ShowMessage(
-         wxT("--- and now description is %s\n"), description.c_str());
+         "--- and now description is %s\n", description.c_str());
       #endif
    }
    else // this shouldn't happen, but ...
    {
-      wxString errmsg = 
-         wxT("Expecting a \".\" in the description for object property \"");
-      errmsg += description + wxT(" \"");
+      std::string errmsg = 
+         "Expecting a \".\" in the description for object property \"";
+      errmsg += description + " \"";
       throw ParameterException(errmsg);
    }
    return true;
@@ -350,24 +350,24 @@ Real ObjectPropertyWrapper::EvaluateReal() const
 {
    if (object == NULL)
       throw ParameterException(
-      wxT("Cannot return value of ObjectProperty - object pointer is NULL\n"));
+      "Cannot return value of ObjectProperty - object pointer is NULL\n");
    Real itsValue;
    try
    {
       itsValue = object->GetRealParameter(propID);
       #ifdef DEBUG_OPW
          MessageInterface::ShowMessage(
-         wxT("In ObjPropWrapper::EvaluateReal, value = %.12f\n"), itsValue);
+         "In ObjPropWrapper::EvaluateReal, value = %.12f\n", itsValue);
       #endif
    }
    catch (BaseException &be)
    {
-      wxString errmsg;
-//      errmsg << wxT("Cannot return Real value for id \"") << propID;
-//      errmsg << wxT("\" for object \"") << object->GetName();
-//      errmsg << wxT("\" - exception thrown: ")<< be.GetFullMessage() << std::endl;
-      errmsg << be.GetFullMessage() << wxT("\n");
-      throw ParameterException(errmsg);
+      std::stringstream errmsg;
+//      errmsg << "Cannot return Real value for id \"" << propID;
+//      errmsg << "\" for object \"" << object->GetName();
+//      errmsg << "\" - exception thrown: "<< be.GetFullMessage() << std::endl;
+      errmsg << be.GetFullMessage() << std::endl;
+      throw ParameterException(errmsg.str());
   }
    
    return itsValue;
@@ -386,41 +386,41 @@ bool ObjectPropertyWrapper::SetReal(const Real toValue)
 {
    if (object == NULL)
       throw ParameterException(
-      wxT("Cannot set value of ObjectProperty - object pointer is NULL\n"));
+      "Cannot set value of ObjectProperty - object pointer is NULL\n");
 
    try
    {
       #ifdef DEBUG_OPW
          MessageInterface::ShowMessage(
-         wxT("In ObjPropWrapper::SetReal, about to set value to %.12f\n"), toValue);
+         "In ObjPropWrapper::SetReal, about to set value to %.12f\n", toValue);
       #endif
       object->SetRealParameter(propID, toValue);
       #ifdef DEBUG_OPW
          MessageInterface::ShowMessage(
-         wxT("In ObjPropWrapper::SetReal, value has been set to %.12f\n"), toValue);
+         "In ObjPropWrapper::SetReal, value has been set to %.12f\n", toValue);
       #endif
    }
    catch (BaseException &be)
    {
       #ifdef DEBUG_OPW
          MessageInterface::ShowMessage(
-         wxT("   exception thrown!  msg = %s\n"), (be.GetFullMessage()).c_str());
+         "   exception thrown!  msg = %s\n", (be.GetFullMessage()).c_str());
       #endif
-      wxString errmsg;
-//      errmsg << wxT("Cannot set Real value for id \"") << propID;
-//      errmsg << wxT("\" for object \"") << object->GetName();
-//      errmsg << wxT("\" - exception thrown: ")<< be.GetFullMessage() << std::endl;
-      errmsg << be.GetFullMessage() << wxT("\n");
-      throw ParameterException(errmsg);
+      std::stringstream errmsg;
+//      errmsg << "Cannot set Real value for id \"" << propID;
+//      errmsg << "\" for object \"" << object->GetName();
+//      errmsg << "\" - exception thrown: "<< be.GetFullMessage() << std::endl;
+      errmsg << be.GetFullMessage() << std::endl;
+      throw ParameterException(errmsg.str());
    }
    
    return true;
 }
 
 //---------------------------------------------------------------------------
-// wxString EvaluateString() const
+// std::string EvaluateString() const
 //---------------------------------------------------------------------------
-wxString ObjectPropertyWrapper::EvaluateString() const
+std::string ObjectPropertyWrapper::EvaluateString() const
 {
    Gmat::ParameterType propType = GetDataType();
    if (propType == Gmat::STRING_TYPE || propType == Gmat::ON_OFF_TYPE ||
@@ -428,21 +428,21 @@ wxString ObjectPropertyWrapper::EvaluateString() const
       return object->GetStringParameter(propID);
    else
       throw GmatBaseException
-         (wxT("ObjectPropertyWrapper::EvaluateString() method not valid for ")
-          wxT("wrapper of non-String type.\n"));
+         ("ObjectPropertyWrapper::EvaluateString() method not valid for "
+          "wrapper of non-String type.\n");
 }
 
 //---------------------------------------------------------------------------
-// bool SetString(const wxString &toValue)
+// bool SetString(const std::string &toValue)
 //---------------------------------------------------------------------------
-bool ObjectPropertyWrapper::SetString(const wxString &toValue)
+bool ObjectPropertyWrapper::SetString(const std::string &toValue)
 {
 #ifdef DEBUG_OBJ_PROP_SET_STRING
-   MessageInterface::ShowMessage(wxT("Entering OBWrapper::SetString with toValue = %s\n"),
+   MessageInterface::ShowMessage("Entering OBWrapper::SetString with toValue = %s\n",
          toValue.c_str());
-   MessageInterface::ShowMessage(wxT("   and data type = %d\n"), (Integer) GetDataType());
+   MessageInterface::ShowMessage("   and data type = %d\n", (Integer) GetDataType());
    MessageInterface::ShowMessage
-      (wxT("   object = <%p><%s>'%s'\n"), object, object->GetTypeName().c_str(),
+      ("   object = <%p><%s>'%s'\n", object, object->GetTypeName().c_str(),
        object->GetName().c_str());
 #endif
    Gmat::ParameterType propType = GetDataType();
@@ -450,7 +450,7 @@ bool ObjectPropertyWrapper::SetString(const wxString &toValue)
        propType == Gmat::ENUMERATION_TYPE ||
        propType == Gmat::FILENAME_TYPE ||
        propType == Gmat::STRINGARRAY_TYPE ||
-       propType == Gmat::OBJECT_TYPE) // Added OBJECT_TYPE to handle wxT("DefaultFM.Drag = None;")
+       propType == Gmat::OBJECT_TYPE) // Added OBJECT_TYPE to handle "DefaultFM.Drag = None;"
       return object->SetStringParameter(propID, toValue);
    else if (propType == Gmat::BOOLEANARRAY_TYPE)
    {
@@ -463,33 +463,33 @@ bool ObjectPropertyWrapper::SetString(const wxString &toValue)
       return object->SetStringParameter(propID, toValue);
    else
       throw GmatBaseException
-         (wxT("SetString() method not valid for wrapper of non-String type.\n"));
+         ("SetString() method not valid for wrapper of non-String type.\n");
 }
 
 //---------------------------------------------------------------------------
-// wxString EvaluateOnOff() const
+// std::string EvaluateOnOff() const
 //---------------------------------------------------------------------------
-wxString ObjectPropertyWrapper::EvaluateOnOff() const
+std::string ObjectPropertyWrapper::EvaluateOnOff() const
 {
    Gmat::ParameterType propType = GetDataType();
    if (propType == Gmat::ON_OFF_TYPE)
       return object->GetOnOffParameter(propID);
    else
       throw GmatBaseException
-         (wxT("EvaluateOnOff() method not valid for wrapper of non-OnOff type.\n"));
+         ("EvaluateOnOff() method not valid for wrapper of non-OnOff type.\n");
 }
 
 //---------------------------------------------------------------------------
-// bool SetOnOff(const wxString &toValue)
+// bool SetOnOff(const std::string &toValue)
 //---------------------------------------------------------------------------
-bool ObjectPropertyWrapper::SetOnOff(const wxString &toValue)
+bool ObjectPropertyWrapper::SetOnOff(const std::string &toValue)
 {
    Gmat::ParameterType propType = GetDataType();
    if (propType == Gmat::ON_OFF_TYPE)
       return object->SetOnOffParameter(propID, toValue);
    else
       throw GmatBaseException
-         (wxT("SetOnOff() method not valid for wrapper of non-OnOff type.\n"));
+         ("SetOnOff() method not valid for wrapper of non-OnOff type.\n");
 }
 
 //---------------------------------------------------------------------------
@@ -502,7 +502,7 @@ bool ObjectPropertyWrapper::EvaluateBoolean() const
       return object->GetBooleanParameter(propID);
    else
       throw GmatBaseException
-         (wxT("EvaluateBoolean() method not valid for wrapper of non-Boolean type.\n"));
+         ("EvaluateBoolean() method not valid for wrapper of non-Boolean type.\n");
 }
 
 //---------------------------------------------------------------------------
@@ -515,7 +515,7 @@ bool ObjectPropertyWrapper::SetBoolean(const bool toValue)
       return object->SetBooleanParameter(propID, toValue);
    else
       throw GmatBaseException
-         (wxT("SetBoolean() method not valid for wrapper of non-Boolean type.\n"));
+         ("SetBoolean() method not valid for wrapper of non-Boolean type.\n");
 }
 
 //---------------------------------------------------------------------------
@@ -528,7 +528,7 @@ Integer ObjectPropertyWrapper::EvaluateInteger() const
       return object->GetIntegerParameter(propID);
    else
       throw GmatBaseException
-         (wxT("EvaluateInteger() method not valid for wrapper of non-Integer type.\n"));
+         ("EvaluateInteger() method not valid for wrapper of non-Integer type.\n");
 }
 
 //---------------------------------------------------------------------------
@@ -545,7 +545,7 @@ bool ObjectPropertyWrapper::SetInteger(const Integer toValue)
    }
    else
       throw GmatBaseException
-         (wxT("SetInteger() method not valid for wrapper of non-Integer type.\n"));
+         ("SetInteger() method not valid for wrapper of non-Integer type.\n");
 }
 
 
@@ -563,24 +563,24 @@ bool ObjectPropertyWrapper::SetObject(GmatBase *obj)
 {
    #ifdef DEBUG_OPW
    MessageInterface::ShowMessage
-      (wxT("ObjectPropertyWrapper::SetObject() obj=<%p><%s>'%s'\n   object=<%p><%s>'%s'\n"),
-       obj, obj ? obj->GetTypeName().c_str() : wxT("NULL"),
-       obj ? obj->GetName().c_str() : wxT("NULL"),
-       object, object ? object->GetTypeName().c_str() : wxT("NULL"),
-       object ? object->GetName().c_str() : wxT("NULL"));       
+      ("ObjectPropertyWrapper::SetObject() obj=<%p><%s>'%s'\n   object=<%p><%s>'%s'\n",
+       obj, obj ? obj->GetTypeName().c_str() : "NULL",
+       obj ? obj->GetName().c_str() : "NULL",
+       object, object ? object->GetTypeName().c_str() : "NULL",
+       object ? object->GetName().c_str() : "NULL");       
    #endif
    
    if (obj == NULL)
    {
       throw ParameterException
-         (wxT("Cannot set undefined object to object property \"") +
-          GetDescription() +  wxT("\""));         
+         ("Cannot set undefined object to object property \"" +
+          GetDescription() +  "\"");         
    }
    
    if (object == NULL)
    {
       throw ParameterException
-         (wxT("The object is not set \"") + GetDescription() +  wxT("\""));         
+         ("The object is not set \"" + GetDescription() +  "\"");         
    }
       
    Gmat::ParameterType propType = GetDataType();
@@ -591,7 +591,7 @@ bool ObjectPropertyWrapper::SetObject(GmatBase *obj)
    }
    else
       throw GmatBaseException
-         (wxT("ObjectPropertyWrapper::SetObject() method not valid for wrapper of non-Object type.\n"));
+         ("ObjectPropertyWrapper::SetObject() method not valid for wrapper of non-Object type.\n");
    
    return true;
 }
@@ -628,32 +628,32 @@ bool ObjectPropertyWrapper::TakeRequiredAction() const
 //---------------------------------------------------------------------------
 void ObjectPropertyWrapper::SetupWrapper()
 {
-   wxString type, owner, depobj;
+   std::string type, owner, depobj;
    GmatStringUtil::ParseParameter(description, type, owner, depobj);
    
    #ifdef DEBUG_OPW
    MessageInterface::ShowMessage
-      (wxT("In ObjPropWrapper::SetupWrapper, desc='%s'\n   owner='%s', depobj='%s', ")
-       wxT("type='%s'\n"), description.c_str(), owner.c_str(), depobj.c_str(), type.c_str());
+      ("In ObjPropWrapper::SetupWrapper, desc='%s'\n   owner='%s', depobj='%s', "
+       "type='%s'\n", description.c_str(), owner.c_str(), depobj.c_str(), type.c_str());
    #endif
-   //if (depobj != wxT(""))
+   //if (depobj != "")
    //{
    //   throw ParameterException(
-   //   wxT("Dependent objects not yet supported for the object property wrapper \"") +
-   //   description + wxT("\".\n"));
+   //   "Dependent objects not yet supported for the object property wrapper \"" +
+   //   description + "\".\n");
    //   /// @todo Handle object properties that use dependent objects here
    //}   
-   if (owner == wxT(""))
+   if (owner == "")
    {
       throw ParameterException(
-      wxT("Owner object name is empty for the object property wrapper \"") +
-      description + wxT("\".\n"));
+      "Owner object name is empty for the object property wrapper \"" +
+      description + "\".\n");
    }
-   if (type == wxT(""))
+   if (type == "")
    {
       throw ParameterException(
-      wxT("Property ID string is empty for the object property wrapper \"") +
-      description + wxT("\".\n"));
+      "Property ID string is empty for the object property wrapper \"" +
+      description + "\".\n");
    }
    refObjectNames.push_back(owner);
    propIDNames.push_back(type);   

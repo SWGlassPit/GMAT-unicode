@@ -36,7 +36,7 @@
 //---------------------------------
 // static data
 //---------------------------------
-//const wxString
+//const std::string
 //SpecialCelestialPoint::PARAMETER_TEXT[SpecialCelestialPointParamCount - CelestialBodyParamCount] =
 //{
 //
@@ -53,20 +53,20 @@
 // public methods
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  SpecialCelestialPoint(wxString name)
+//  SpecialCelestialPoint(std::string name)
 //------------------------------------------------------------------------------
 /**
 * This method creates an object of the SpecialCelestialPoint class
  * (default constructor).
  *
  * @param <name> optional parameter indicating the name of the celestial
- *               point (default is wxT("")).
+ *               point (default is "").
  */
 //------------------------------------------------------------------------------
-SpecialCelestialPoint::SpecialCelestialPoint(wxString name) :
-CelestialBody     (wxT("SpecialCelestialPoint"),name)
+SpecialCelestialPoint::SpecialCelestialPoint(std::string name) :
+CelestialBody     ("SpecialCelestialPoint",name)
 {
-   objectTypeNames.push_back(wxT("SpecialCelestialPoint"));
+   objectTypeNames.push_back("SpecialCelestialPoint");
    parameterCount = SpecialCelestialPointParamCount;
 
    bodyType            = Gmat::SPECIAL_CELESTIAL_POINT;
@@ -75,7 +75,7 @@ CelestialBody     (wxT("SpecialCelestialPoint"),name)
 
    // don't need central body, but set default one to avoid error conditions
    centralBodySet      = true;
-   theCentralBodyName  = wxT("Sun");  //    N/A
+   theCentralBodyName  = "Sun";  //    N/A
 
    // special celestial points have no mass of their own
    mu                  = 0.0;
@@ -102,10 +102,10 @@ CelestialBody (copy)
 /**
  * Assignment operator for the SpecialCelestialPoint class.
  *
- * @param <copy> the SpecialCelestialPoint object whose data to assign to wxT("this")
+ * @param <copy> the SpecialCelestialPoint object whose data to assign to "this"
  *            solar system.
  *
- * @return wxT("this") SpecialCelestialPoint with data of input SpecialCelestialPoint copy.
+ * @return "this" SpecialCelestialPoint with data of input SpecialCelestialPoint copy.
  */
 //------------------------------------------------------------------------------
 SpecialCelestialPoint& SpecialCelestialPoint::operator=(const SpecialCelestialPoint &copy)
@@ -171,16 +171,16 @@ bool SpecialCelestialPoint::NeedsOnlyMainSPK()
 //void SpecialCelestialPoint::SetUpBody()
 //{
 //   #ifdef DEBUG_J2000_BODY
-//      MessageInterface::ShowMessage(wxT("Entering SetUpBody for %s, and j2000Body is %s\n"),
+//      MessageInterface::ShowMessage("Entering SetUpBody for %s, and j2000Body is %s\n",
 //            instanceName.c_str(), j2000BodyName.c_str());
-//      MessageInterface::ShowMessage(wxT("Does it require the J2000 body? %s\n"),
-//            (RequiresJ2000Body()? wxT("YES!") : wxT("Nope")));
+//      MessageInterface::ShowMessage("Does it require the J2000 body? %s\n",
+//            (RequiresJ2000Body()? "YES!" : "Nope"));
 //   #endif
 //   // main thing to do for now is to make sure the central body is set
 //   if (!theSolarSystem)
 //   {
-//      wxString errmsg = wxT("Solar System not set for special celestial point \"");
-//      errmsg += instanceName + wxT("\"\n");
+//      std::string errmsg = "Solar System not set for special celestial point \"";
+//      errmsg += instanceName + "\"\n";
 //      throw SolarSystemException(errmsg);
 //   }
 //   if (RequiresJ2000Body() && j2000Body == NULL)
@@ -215,7 +215,7 @@ bool SpecialCelestialPoint::SetSource(Gmat::PosVelSource pvSrc)
 {
    #ifdef DEBUG_EPHEM_SOURCE
    MessageInterface::ShowMessage
-      (wxT("SpecialCelestialPoint::SetSource() <%p> %s, Setting source to %d(%s)\n"), this,
+      ("SpecialCelestialPoint::SetSource() <%p> %s, Setting source to %d(%s)\n", this,
        GetName().c_str(), pvSrc, Gmat::POS_VEL_SOURCE_STRINGS[pvSrc].c_str());
    #endif
 
@@ -224,7 +224,7 @@ bool SpecialCelestialPoint::SetSource(Gmat::PosVelSource pvSrc)
    if (pvSrc == Gmat::TWO_BODY_PROPAGATION)
    {
       MessageInterface::ShowMessage(
-            wxT("Two-Body Propagation not available for built-in SolarSystemBarycenter.  Using DE405 as source.\n"));
+            "Two-Body Propagation not available for built-in SolarSystemBarycenter.  Using DE405 as source.\n");
       posVelSrc = Gmat::DE405;
    }
    else
@@ -248,7 +248,7 @@ bool SpecialCelestialPoint::SetSource(Gmat::PosVelSource pvSrc)
 //{
 //   #ifdef DEBUG_EPHEM_SOURCE
 //   MessageInterface::ShowMessage
-//      (wxT("SpecialCelestialPoint::SetSourceFile() <%p> %s, Setting source file to %p\n"),
+//      ("SpecialCelestialPoint::SetSourceFile() <%p> %s, Setting source file to %p\n",
 //       this, GetName().c_str(), src);
 //   #endif
 //
@@ -280,8 +280,8 @@ Rvector6 SpecialCelestialPoint::ComputeTwoBody(const A1Mjd &forTime)
 {
    Rvector6 dummy;
 
-   wxString errmsg = wxT("Two-Body propagation not defined for ");
-   errmsg += instanceName + wxT("\n");
+   std::string errmsg = "Two-Body propagation not defined for ";
+   errmsg += instanceName + "\n";
    throw SolarSystemException(errmsg);
 
    return dummy;

@@ -27,7 +27,7 @@ class GMAT_API MathException : public BaseException
 {
 public:
    
-   MathException(wxString details = wxT(""));
+   MathException(std::string details = "");
    virtual ~MathException();
    MathException(const MathException &be);
 };

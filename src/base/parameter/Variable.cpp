@@ -46,8 +46,8 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// Variable(const wxString &name, const wxString &valStr = wxT(""),
-//          const wxString &desc = wxT(""), const wxString &unit = wxT(""))
+// Variable(const std::string &name, const std::string &valStr = "",
+//          const std::string &desc = "", const std::string &unit = "")
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -57,13 +57,13 @@
  * @param <unit> unit of the parameter
  */
 //------------------------------------------------------------------------------
-Variable::Variable(const wxString &name, const wxString &valStr,
-                   const wxString &desc, const wxString &unit)
-   : RealVar(name, valStr, wxT("Variable"), GmatParam::USER_PARAM, NULL, desc, unit,
+Variable::Variable(const std::string &name, const std::string &valStr,
+                   const std::string &desc, const std::string &unit)
+   : RealVar(name, valStr, "Variable", GmatParam::USER_PARAM, NULL, desc, unit,
              GmatParam::NO_DEP, Gmat::UNKNOWN_OBJECT, false)
 {
    objectTypes.push_back(Gmat::VARIABLE);
-   objectTypeNames.push_back(wxT("Variable"));
+   objectTypeNames.push_back("Variable");
    
    #ifdef __ALLOW_SIMPLE_VAR_EXP__
    CreateSimpleExpression();
@@ -72,7 +72,7 @@ Variable::Variable(const wxString &name, const wxString &valStr,
    // Initialize real value and expression
    mIsNumber = true;
    mRealValue = 0.0;
-   mExpr = wxT("0");
+   mExpr = "0";
 }
 
 
@@ -90,7 +90,7 @@ Variable::Variable(const Variable &copy)
 {
    #ifdef DEBUG_VARIABLE_CLONE
    MessageInterface::ShowMessage
-      (wxT("Variable copy constructor <%p>'%s' entered\n"), this, GetName().c_str());
+      ("Variable copy constructor <%p>'%s' entered\n", this, GetName().c_str());
    #endif
    
    #ifdef __ALLOW_SIMPLE_VAR_EXP__
@@ -99,7 +99,7 @@ Variable::Variable(const Variable &copy)
    
    #ifdef DEBUG_VARIABLE_CLONE
    MessageInterface::ShowMessage
-      (wxT("Variable copy constructor this=<%p> '%s' leaving, mRealValue=%f\n"),
+      ("Variable copy constructor this=<%p> '%s' leaving, mRealValue=%f\n",
        this, GetName().c_str(), mRealValue);
    #endif
 }
@@ -119,7 +119,7 @@ Variable& Variable::operator=(const Variable &right)
    if (this != &right)
    {
       // We don't want to change the name when copy
-      wxString thisName = GetName();
+      std::string thisName = GetName();
       
       RealVar::operator=(right);
 
@@ -132,7 +132,7 @@ Variable& Variable::operator=(const Variable &right)
    
    #ifdef DEBUG_VARIABLE_ASSIGN
    MessageInterface::ShowMessage
-      (wxT("***** Variable(=) this=<%p> '%s', mRealValue=%f\n"),
+      ("***** Variable(=) this=<%p> '%s', mRealValue=%f\n",
        this, GetName().c_str(), mRealValue);
    #endif
    
@@ -182,7 +182,7 @@ Real Variable::EvaluateReal()
 {
    #ifdef DEBUG_VARIABLE_EVAL
    MessageInterface::ShowMessage
-      (wxT("Variable::EvaluateReal() this=<%p>'%s', mExpr=%s, mIsNumber=%d\n"),
+      ("Variable::EvaluateReal() this=<%p>'%s', mExpr=%s, mIsNumber=%d\n",
        this, GetName().c_str(), mExpr.c_str(), mIsNumber);
    #endif
    
@@ -190,7 +190,7 @@ Real Variable::EvaluateReal()
    {      
       #ifdef DEBUG_VARIABLE_EVAL
       MessageInterface::ShowMessage
-         (wxT("Variable::EvaluateReal() Returning just a number: mRealValue=%f\n"),
+         ("Variable::EvaluateReal() Returning just a number: mRealValue=%f\n",
           mRealValue);
       #endif
       
@@ -208,8 +208,8 @@ Real Variable::EvaluateReal()
          
          #ifdef DEBUG_VARIABLE_EVAL
          MessageInterface::ShowMessage
-            (wxT("Variable::EvaluateReal() Returning expression evaluation: ")
-             wxT("mRealValue=%f\n"), mRealValue);
+            ("Variable::EvaluateReal() Returning expression evaluation: "
+             "mRealValue=%f\n", mRealValue);
          #endif
          
          return mRealValue;
@@ -217,7 +217,7 @@ Real Variable::EvaluateReal()
       catch (BaseException &e)
       {
          throw ParameterException
-            (e.GetFullMessage() + wxT(" for the Variable \"") + GetName() + wxT("\""));
+            (e.GetFullMessage() + " for the Variable \"" + GetName() + "\"");
       }
       //=======================================================
       #endif
@@ -225,8 +225,8 @@ Real Variable::EvaluateReal()
    }
 
    // If you get here, the evaluation failed
-   throw ParameterException(wxT("Variable::EvaluateReal() failed for the Variable \"") + 
-      GetName() + wxT("\""));
+   throw ParameterException("Variable::EvaluateReal() failed for the Variable \"" + 
+      GetName() + "\"");
 }
 
 
@@ -257,7 +257,7 @@ void Variable::Copy(const GmatBase* orig)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Change the value of a string parameter.
@@ -268,11 +268,11 @@ void Variable::Copy(const GmatBase* orig)
  * @return true if the string is stored, throw if the parameter is not stored.
  */
 //------------------------------------------------------------------------------
-bool Variable::SetStringParameter(const Integer id, const wxString &value)
+bool Variable::SetStringParameter(const Integer id, const std::string &value)
 {
    #ifdef DEBUG_VARIABLE_SET
    MessageInterface::ShowMessage
-      (wxT("Variable::SetStringParameter() this=<%p>'%s', id=%d, value='%s'\n"), this,
+      ("Variable::SetStringParameter() this=<%p>'%s', id=%d, value='%s'\n", this,
        GetName().c_str(), id, value.c_str());
    #endif
    
@@ -282,7 +282,7 @@ bool Variable::SetStringParameter(const Integer id, const wxString &value)
       {         
          // if value is blank or number, call Parent class
          Real rval;
-         if (value == wxT("") || GmatStringUtil::ToReal(value, &rval))
+         if (value == "" || GmatStringUtil::ToReal(value, &rval))
          {
             return RealVar::SetStringParameter(id, value);
          }
@@ -294,7 +294,7 @@ bool Variable::SetStringParameter(const Integer id, const wxString &value)
             
             #ifdef DEBUG_VARIABLE_SET
             MessageInterface::ShowMessage
-               (wxT("   Variable expression set to '%s'\n"), value.c_str());
+               ("   Variable expression set to '%s'\n", value.c_str());
             #endif
             return true;
          }
@@ -306,8 +306,8 @@ bool Variable::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label,
-//                         const wxString &value)
+// bool SetStringParameter(const std::string &label,
+//                         const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Change the value of a string parameter.
@@ -318,12 +318,12 @@ bool Variable::SetStringParameter(const Integer id, const wxString &value)
  * @return true if the string is stored, false if not.
  */
 //------------------------------------------------------------------------------
-bool Variable::SetStringParameter(const wxString &label,
-                                 const wxString &value)
+bool Variable::SetStringParameter(const std::string &label,
+                                 const std::string &value)
 {
    #ifdef DEBUG_VARIABLE_SET
    MessageInterface::ShowMessage
-      (wxT("Variable::SetStringParameter() label=%s value=%s\n"),
+      ("Variable::SetStringParameter() label=%s value=%s\n",
        label.c_str(), value.c_str());
    #endif
    
@@ -333,15 +333,15 @@ bool Variable::SetStringParameter(const wxString &label,
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool Variable::RenameRefObject(const Gmat::ObjectType type,
-                               const wxString &oldName,
-                               const wxString &newName)
+                               const std::string &oldName,
+                               const std::string &newName)
 {
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("Variable::RenameRefObject() type=%s, oldName=%s, newName=%s\n"),
+      ("Variable::RenameRefObject() type=%s, oldName=%s, newName=%s\n",
        GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
    #endif
    
@@ -350,8 +350,8 @@ bool Variable::RenameRefObject(const Gmat::ObjectType type,
       return true;
    
    // change expression if it has object name and .
-   wxString tmpOldName = oldName + wxT(".");
-   wxString::size_type pos = mExpr.find(tmpOldName);
+   std::string tmpOldName = oldName + ".";
+   std::string::size_type pos = mExpr.find(tmpOldName);
    if (pos != mExpr.npos)
       mExpr = GmatStringUtil::Replace(mExpr, oldName, newName);
    
@@ -365,7 +365,7 @@ bool Variable::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// virtual wxString GetRefObjectName(const Gmat::ObjectType type) const
+// virtual std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
 /**
  * Calls OrbitData to get reference object name for given type.
@@ -373,26 +373,26 @@ bool Variable::RenameRefObject(const Gmat::ObjectType type,
  * @return reference object name.
  */
 //------------------------------------------------------------------------------
-wxString Variable::GetRefObjectName(const Gmat::ObjectType type) const
+std::string Variable::GetRefObjectName(const Gmat::ObjectType type) const
 {
    if (type != Gmat::PARAMETER)
    {
       throw ParameterException
-         (wxT("Variable::GetRefObjectName() ") + GmatBase::GetObjectTypeString(type) +
-          wxT(" is not valid object type of ") + this->GetTypeName() + wxT("\n"));
+         ("Variable::GetRefObjectName() " + GmatBase::GetObjectTypeString(type) +
+          " is not valid object type of " + this->GetTypeName() + "\n");
    }
    
    #ifdef __ALLOW_SIMPLE_VAR_EXP__
       return mParamDb->GetFirstParameterName();
    #else
-      return wxT("");
+      return "";
    #endif
 }
 
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObjectName(const Gmat::ObjectType type,
-//                               const wxString &name)
+//                               const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets reference object name to given object type.
@@ -403,24 +403,24 @@ wxString Variable::GetRefObjectName(const Gmat::ObjectType type) const
  */
 //------------------------------------------------------------------------------
 bool Variable::SetRefObjectName(const Gmat::ObjectType type,
-                                const wxString &name)
+                                const std::string &name)
 {
    #ifdef DEBUG_VARIABLE_SET
    MessageInterface::ShowMessage
-      (wxT("Variable::SetRefObjectName() this=<%p>'%s', type=%d, name=%s\n"), this,
+      ("Variable::SetRefObjectName() this=<%p>'%s', type=%d, name=%s\n", this,
        GetName().c_str(), type, name.c_str());
    #endif
    
    if (type != Gmat::PARAMETER)
    {
       throw ParameterException
-         (wxT("Variable::SetRefObjectName() ") + GmatBase::GetObjectTypeString(type) +
-          wxT(" is not valid object type of ") + this->GetTypeName() + wxT("\n"));
+         ("Variable::SetRefObjectName() " + GmatBase::GetObjectTypeString(type) +
+          " is not valid object type of " + this->GetTypeName() + "\n");
    }
    
    #ifdef DEBUG_VARIABLE_SET
    MessageInterface::ShowMessage
-      (wxT("   Adding '%s' to '%s' parameter database\n"), name.c_str(), GetName().c_str());
+      ("   Adding '%s' to '%s' parameter database\n", name.c_str(), GetName().c_str());
    #endif
    
    #ifdef __ALLOW_SIMPLE_VAR_EXP__
@@ -433,7 +433,7 @@ bool Variable::SetRefObjectName(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // virtual GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                                const wxString &name)
+//                                const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Calls OrbitData to get object pointer of given type and name
@@ -445,13 +445,13 @@ bool Variable::SetRefObjectName(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 GmatBase* Variable::GetRefObject(const Gmat::ObjectType type,
-                                 const wxString &name)
+                                 const std::string &name)
 {
    if (type != Gmat::PARAMETER)
    {
       throw ParameterException
-         (wxT("Variable::GetRefObject() ") + GmatBase::GetObjectTypeString(type) +
-          wxT(" is not valid object type of ") + this->GetTypeName() + wxT("\n"));
+         ("Variable::GetRefObject() " + GmatBase::GetObjectTypeString(type) +
+          " is not valid object type of " + this->GetTypeName() + "\n");
    }
    
    #ifdef __ALLOW_SIMPLE_VAR_EXP__
@@ -464,7 +464,7 @@ GmatBase* Variable::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                           const wxString &name = wxT(""))
+//                           const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Calls OrbitData to set reference object pointer to given type and name.
@@ -478,13 +478,13 @@ GmatBase* Variable::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool Variable::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                            const wxString &name)
+                            const std::string &name)
 {
    if (type != Gmat::PARAMETER)
    {
       throw ParameterException
-         (wxT("Variable::SetRefObject() ") + GmatBase::GetObjectTypeString(type) +
-          wxT(" is not valid object type of ") + this->GetTypeName() + wxT("\n"));
+         ("Variable::SetRefObject() " + GmatBase::GetObjectTypeString(type) +
+          " is not valid object type of " + this->GetTypeName() + "\n");
    }
    
    #ifdef __ALLOW_SIMPLE_VAR_EXP__
@@ -505,19 +505,19 @@ const StringArray& Variable::GetRefObjectNameArray(const Gmat::ObjectType type)
    //=======================================================
       if (mParamDb == NULL)
          throw ParameterException
-            (wxT("Variable::GetRefObjectNameArray() mParamDb is NULL\n"));
+            ("Variable::GetRefObjectNameArray() mParamDb is NULL\n");
       
       #ifdef DEBUG_REF_OBJ
       MessageInterface::ShowMessage
-         (wxT("Variable::GetRefObjectNameArray() type=%d\n"), type);
+         ("Variable::GetRefObjectNameArray() type=%d\n", type);
       StringArray paramNames = mParamDb->GetNamesOfParameters();
       MessageInterface::ShowMessage
-         (wxT("Variable::GetStringArrayParameter() mParamDb->GetNamesOfParameters() ")
-          wxT("size=%d\n"), paramNames.size());
+         ("Variable::GetStringArrayParameter() mParamDb->GetNamesOfParameters() "
+          "size=%d\n", paramNames.size());
       for (unsigned int i=0; i<paramNames.size(); i++)
          MessageInterface::ShowMessage
-            (wxT("Variable::GetStringArrayParameter() ")
-             wxT("paramNames[%d]=%s\n"), i, paramNames[i].c_str());
+            ("Variable::GetStringArrayParameter() "
+             "paramNames[%d]=%s\n", i, paramNames[i].c_str());
       #endif
       
       return mParamDb->GetNamesOfParameters();
@@ -533,9 +533,9 @@ const StringArray& Variable::GetRefObjectNameArray(const Gmat::ObjectType type)
 
 
 //------------------------------------------------------------------------------
-// const wxString& GetGeneratingString(Gmat::WriteMode mode,
-//                                        const wxString &prefix,
-//                                        const wxString &useName
+// const std::string& GetGeneratingString(Gmat::WriteMode mode,
+//                                        const std::string &prefix,
+//                                        const std::string &useName
 //------------------------------------------------------------------------------
 /**
  * Produces a string, possibly multi-line, containing the text that produces an
@@ -548,14 +548,14 @@ const StringArray& Variable::GetRefObjectNameArray(const Gmat::ObjectType type)
  * @return A string containing the text.
  */
 //------------------------------------------------------------------------------
-const wxString& Variable::GetGeneratingString(Gmat::WriteMode mode,
-                                                 const wxString &prefix,
-                                                 const wxString &useName)
+const std::string& Variable::GetGeneratingString(Gmat::WriteMode mode,
+                                                 const std::string &prefix,
+                                                 const std::string &useName)
 {
    #ifdef DEBUG_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("Variable::GetGeneratingString() this=<%p>'%s', mode=%d, prefix='%s', ")
-       wxT("useName='%s'\n   mExpr='%s', mRealValue=%f, mIsNumber=%d, mValueSet=%d\n"),
+      ("Variable::GetGeneratingString() this=<%p>'%s', mode=%d, prefix='%s', "
+       "useName='%s'\n   mExpr='%s', mRealValue=%f, mIsNumber=%d, mValueSet=%d\n",
        this, GetName().c_str(), mode, prefix.c_str(), useName.c_str(),
        mExpr.c_str(), mRealValue, mIsNumber, mValueSet);
    #endif
@@ -565,7 +565,7 @@ const wxString& Variable::GetGeneratingString(Gmat::WriteMode mode,
    if (mode == Gmat::SHOW_SCRIPT)
    {
       #ifdef DEBUG_GEN_STRING
-      MessageInterface::ShowMessage(wxT("   mode is SHOW_SCRIPT, so generating string\n"));
+      MessageInterface::ShowMessage("   mode is SHOW_SCRIPT, so generating string\n");
       #endif
       generateStr = true;
    }
@@ -580,7 +580,7 @@ const wxString& Variable::GetGeneratingString(Gmat::WriteMode mode,
          {
             #ifdef DEBUG_GEN_STRING
             MessageInterface::ShowMessage
-               (wxT("   '%s' is a non-zero number or set by user, so generating string\n"),
+               ("   '%s' is a non-zero number or set by user, so generating string\n",
                 mExpr.c_str());
             #endif
             generateStr = true;
@@ -590,7 +590,7 @@ const wxString& Variable::GetGeneratingString(Gmat::WriteMode mode,
       {
          #ifdef DEBUG_GEN_STRING
          MessageInterface::ShowMessage
-            (wxT("   '%s' is not a number, so generating string\n"), mExpr.c_str());
+            ("   '%s' is not a number, so generating string\n", mExpr.c_str());
          #endif
          generateStr = true;
       }
@@ -598,15 +598,15 @@ const wxString& Variable::GetGeneratingString(Gmat::WriteMode mode,
    
    if (generateStr)
    {
-      //generatingString = wxT("GMAT ") + GetName() + wxT(" = ") + mExpr + wxT(";");
-      //generatingString = wxT("GMAT ") + GetName() + wxT(" = ") + mInitialValue + wxT(";");
-      generatingString = wxT("GMAT ") + GetName() + wxT(" = ") + GmatStringUtil::ToString(mRealValue, 16, false, 1) + wxT(";");
-      generatingString = generatingString + inlineComment + wxT("\n");
+      //generatingString = "GMAT " + GetName() + " = " + mExpr + ";";
+      //generatingString = "GMAT " + GetName() + " = " + mInitialValue + ";";
+      generatingString = "GMAT " + GetName() + " = " + GmatStringUtil::ToString(mRealValue, 16, false, 1) + ";";
+      generatingString = generatingString + inlineComment + "\n";
    }
    
    #ifdef DEBUG_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("Variable::GetGeneratingString() returning\n<%s>\n"), generatingString.c_str());
+      ("Variable::GetGeneratingString() returning\n<%s>\n", generatingString.c_str());
    #endif
    
    return generatingString;
@@ -622,22 +622,22 @@ void Variable::CreateSimpleExpression()
    mParamDb = new ParameterDatabase();
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Add
-      (mParamDb, name, wxT("Variable::CreateSimpleExpression()"), wxT("mParamDb = new ParameterDatabase()"));
+      (mParamDb, name, "Variable::CreateSimpleExpression()", "mParamDb = new ParameterDatabase()");
    #endif
    
    mExpParser = new ExpressionParser();
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Add
-      (mExpParser, name, wxT("Variable::ParameterDatabase()"), wxT("mExpParser = new ExpressionParser()"));
+      (mExpParser, name, "Variable::ParameterDatabase()", "mExpParser = new ExpressionParser()");
    #endif
    
    // Set parameter database to be used
    mExpParser->SetParameterDatabase(mParamDb);
    
    #ifdef DEBUG_VARIABLE_CREATE
-   MessageInterface::ShowMessage(wxT("Variable::Variable() constructor\n"));
+   MessageInterface::ShowMessage("Variable::Variable() constructor\n");
    MessageInterface::ShowMessage
-      (wxT("   numDBParams = %d\n"), mParamDb->GetNumParameters());
+      ("   numDBParams = %d\n", mParamDb->GetNumParameters());
    #endif
 }
 
@@ -649,32 +649,32 @@ void Variable::CopySimpleExpression(const Variable &copy)
 {
    #ifdef DEBUG_VARIABLE_CLONE
    MessageInterface::ShowMessage
-      (wxT("Variable::CopySimpleExpression() <%p>'%s' entered, mParamDb=<%p>, ")
-       wxT("mExpParser=<%p>\n"), this, GetName().c_str(), mParamDb, mExpParser);
+      ("Variable::CopySimpleExpression() <%p>'%s' entered, mParamDb=<%p>, "
+       "mExpParser=<%p>\n", this, GetName().c_str(), mParamDb, mExpParser);
    #endif
    
    mParamDb = new ParameterDatabase(*copy.mParamDb);
    
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Add
-      (mParamDb, GetName(), wxT("Variable::Variable(copy)"), wxT("mParamDb = new ParameterDatabase()"));
+      (mParamDb, GetName(), "Variable::Variable(copy)", "mParamDb = new ParameterDatabase()");
    #endif
    
    mExpParser = new ExpressionParser();
    
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Add
-      (mExpParser, GetName(), wxT("Variable::Variable(copy)"), wxT("mExpParser = new ExpressionParser()"));
+      (mExpParser, GetName(), "Variable::Variable(copy)", "mExpParser = new ExpressionParser()");
    #endif
    
    mExpParser->SetParameterDatabase(mParamDb);
    
    #ifdef DEBUG_VARIABLE_CLONE
-   MessageInterface::ShowMessage(wxT("Variable::Variable(copy)\n"));
+   MessageInterface::ShowMessage("Variable::Variable(copy)\n");
    MessageInterface::ShowMessage
-      (wxT("   copy.numDBParams = %d\n"), copy.mParamDb->GetNumParameters());
+      ("   copy.numDBParams = %d\n", copy.mParamDb->GetNumParameters());
    MessageInterface::ShowMessage
-      (wxT("   numDBParams = %d\n"), mParamDb->GetNumParameters());
+      ("   numDBParams = %d\n", mParamDb->GetNumParameters());
    #endif
 }
 
@@ -688,7 +688,7 @@ void Variable::AssignSimpleExpression(const Variable &right)
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (mParamDb, GetName(), wxT("Variable::operator="), wxT("deleting mParamDb"));
+         (mParamDb, GetName(), "Variable::operator=", "deleting mParamDb");
       #endif
       delete mParamDb;
    }
@@ -697,14 +697,14 @@ void Variable::AssignSimpleExpression(const Variable &right)
    
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Add
-      (mParamDb, GetName(), wxT("Variable::operator="), wxT("mParamDb = new ParameterDatabase()"));
+      (mParamDb, GetName(), "Variable::operator=", "mParamDb = new ParameterDatabase()");
    #endif
    
    if (mExpParser)
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (mExpParser, GetName(), wxT("Variable::operator="), wxT("deleting mExpParser"));
+         (mExpParser, GetName(), "Variable::operator=", "deleting mExpParser");
       #endif
       delete mExpParser;
    }
@@ -713,7 +713,7 @@ void Variable::AssignSimpleExpression(const Variable &right)
    
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Add
-      (mExpParser, GetName(), wxT("Variable::operator="), wxT("mExpParser = new ExpressionParser()"));
+      (mExpParser, GetName(), "Variable::operator=", "mExpParser = new ExpressionParser()");
    #endif
    
    mExpParser->SetParameterDatabase(mParamDb);
@@ -722,7 +722,7 @@ void Variable::AssignSimpleExpression(const Variable &right)
    // For example:
    // var1 = 123.45;
    // var2 = var1;
-   // We want to write wxT("var2 = var1") instead of wxT("var2 = 123.45")
+   // We want to write "var2 = var1" instead of "var2 = 123.45"
    mExpr = right.GetName();
 }
 
@@ -734,13 +734,13 @@ void Variable::DeleteSimpleExpression()
 {
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Remove
-      (mParamDb, GetName(), wxT("Variable::~Variable()"), wxT("deleting mParamDb"));
+      (mParamDb, GetName(), "Variable::~Variable()", "deleting mParamDb");
    #endif
    delete mParamDb;
    
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Remove
-      (mExpParser, GetName(), wxT("Variable::~Variable()"), wxT("deleting mExpParser"));
+      (mExpParser, GetName(), "Variable::~Variable()", "deleting mExpParser");
    #endif
    delete mExpParser;
 }

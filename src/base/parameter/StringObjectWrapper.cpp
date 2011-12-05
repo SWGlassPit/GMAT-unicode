@@ -53,7 +53,7 @@
 StringObjectWrapper::StringObjectWrapper() :
    ElementWrapper(),
    stringVar     (NULL),
-   stringName    (wxT(""))
+   stringName    ("")
 {
    wrapperType = Gmat::STRING_OBJECT_WT;
 }
@@ -65,7 +65,7 @@ StringObjectWrapper::StringObjectWrapper() :
  * Constructs base StringObjectWrapper structures used in derived classes, 
  * by copying the input instance (copy constructor).
  *
- * @param <sow>  StringObjectWrapper instance to copy to create wxT("this") 
+ * @param <sow>  StringObjectWrapper instance to copy to create "this" 
  * instance.
  */
 //---------------------------------------------------------------------------
@@ -152,9 +152,9 @@ const StringArray& StringObjectWrapper::GetRefObjectNames()
    
           
    #ifdef DEBUG_STRING_WRAPPER
-      MessageInterface::ShowMessage(wxT("StringObjectWrapper:: Returning ref object names:\n"));
+      MessageInterface::ShowMessage("StringObjectWrapper:: Returning ref object names:\n");
       for (Integer ii = 0; ii < (Integer) refObjectNames.size(); ii++)
-         MessageInterface::ShowMessage(wxT("      %s\n"), refObjectNames[ii].c_str());
+         MessageInterface::ShowMessage("      %s\n", refObjectNames[ii].c_str());
    #endif
    
    return refObjectNames;
@@ -173,7 +173,7 @@ const StringArray& StringObjectWrapper::GetRefObjectNames()
 bool StringObjectWrapper::SetRefObject(GmatBase *obj)
 {
    bool isOk   = false;
-   if ( (obj->IsOfType(wxT("String"))) && (obj->GetName() == stringName) )
+   if ( (obj->IsOfType("String")) && (obj->GetName() == stringName) )
    {
       ///@todo
 //       if (stringVar)
@@ -181,7 +181,7 @@ bool StringObjectWrapper::SetRefObject(GmatBase *obj)
 //       stringVar = (StringVar*)((obj)->Clone());
       stringVar = (StringVar*) obj;
       #ifdef DEBUG_STRING_WRAPPER
-         MessageInterface::ShowMessage(wxT("StringObjectWrapper:: Setting stringVar object %s\n"),
+         MessageInterface::ShowMessage("StringObjectWrapper:: Setting stringVar object %s\n",
             stringName.c_str());
       #endif
       isOk = true;
@@ -190,14 +190,14 @@ bool StringObjectWrapper::SetRefObject(GmatBase *obj)
    if (!isOk) return false;
    #ifdef DEBUG_STRING_WRAPPER
       MessageInterface::ShowMessage(
-         wxT("StringObjectWrapper:: Returning true from SetRefObject\n"));
+         "StringObjectWrapper:: Returning true from SetRefObject\n");
    #endif
    
    return true;
 }
 
 //---------------------------------------------------------------------------
-//  bool RenameObject(const wxString &oldName, const wxString &newName)
+//  bool RenameObject(const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /**
  * Method to rename a reference object for the wrapper.
@@ -205,8 +205,8 @@ bool StringObjectWrapper::SetRefObject(GmatBase *obj)
  * @return true if successful; false otherwise.
  */
 //---------------------------------------------------------------------------
-bool StringObjectWrapper::RenameObject(const wxString &oldName, 
-                                       const wxString &newName)
+bool StringObjectWrapper::RenameObject(const std::string &oldName, 
+                                       const std::string &newName)
 {
    ElementWrapper::RenameObject(oldName, newName);
    // now rebuild the description string from the refObjectNames
@@ -232,7 +232,7 @@ bool StringObjectWrapper::RenameObject(const wxString &oldName,
 Real StringObjectWrapper::EvaluateReal() const
 {
    throw GmatBaseException(
-      wxT("EvaluateReal() method not valid for wrapper of String Object type.\n"));
+      "EvaluateReal() method not valid for wrapper of String Object type.\n");
 }
    
 //---------------------------------------------------------------------------
@@ -249,11 +249,11 @@ Real StringObjectWrapper::EvaluateReal() const
 bool StringObjectWrapper::SetReal(const Real toValue)
 {
    throw GmatBaseException(
-      wxT("SetReal() method not valid for wrapper of String Object type.\n"));
+      "SetReal() method not valid for wrapper of String Object type.\n");
 }
 
 //---------------------------------------------------------------------------
-//  wxString EvaluateString() const
+//  std::string EvaluateString() const
 //---------------------------------------------------------------------------
 /**
  * Method to return the String (Rmatrix) value of the wrapped object.
@@ -262,16 +262,16 @@ bool StringObjectWrapper::SetReal(const Real toValue)
  * 
  */
 //---------------------------------------------------------------------------
-wxString StringObjectWrapper::EvaluateString() const
+std::string StringObjectWrapper::EvaluateString() const
 {
    #ifdef DEBUG_STRING_WRAPPER
       MessageInterface::ShowMessage(
-         wxT("StringObjectWrapper::EvaluateString called on stringVar %s\n"), 
+         "StringObjectWrapper::EvaluateString called on stringVar %s\n", 
          stringName.c_str());
    #endif
    if (stringVar == NULL)
       throw ParameterException(
-      wxT("Cannot return value of String - object pointer is NULL\n"));
+      "Cannot return value of String - object pointer is NULL\n");
    return stringVar->EvaluateString();
 }
 
@@ -285,30 +285,30 @@ wxString StringObjectWrapper::EvaluateString() const
  * 
  */
 //---------------------------------------------------------------------------
-bool StringObjectWrapper::SetString(const wxString &toValue)
+bool StringObjectWrapper::SetString(const std::string &toValue)
 {
    #ifdef DEBUG_STRING_WRAPPER
       MessageInterface::ShowMessage(
-         wxT("StringObjectWrapper::SetString called on stringVar %s\n"), 
+         "StringObjectWrapper::SetString called on stringVar %s\n", 
          stringName.c_str());
    #endif
    if (stringVar == NULL)
       throw ParameterException(
-      wxT("Cannot set value of String - object pointer is NULL\n"));
+      "Cannot set value of String - object pointer is NULL\n");
    
    #ifdef DEBUG_STRING_WRAPPER
    MessageInterface::ShowMessage
-      (wxT("   stringVar=<%p>'%s'\n"), stringVar, stringVar->GetName().c_str());
+      ("   stringVar=<%p>'%s'\n", stringVar, stringVar->GetName().c_str());
    #endif
    
    try
    {
-      stringVar->SetStringParameter(wxT("Value"),toValue);
+      stringVar->SetStringParameter("Value",toValue);
    }
    catch (BaseException &be)
    {
-      wxString errmsg = wxT("Error setting String value : ") + be.GetFullMessage();
-      errmsg += wxT("\n");
+      std::string errmsg = "Error setting String value : " + be.GetFullMessage();
+      errmsg += "\n";
       throw ParameterException(errmsg);
    }
    return true;

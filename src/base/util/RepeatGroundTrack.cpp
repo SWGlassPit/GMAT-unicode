@@ -82,7 +82,7 @@ bool RepeatGroundTrack::IsError()
    return isError;
 }
 
-wxString RepeatGroundTrack::GetError()
+std::string RepeatGroundTrack::GetError()
 {
    return errormsg;
 }
@@ -102,13 +102,13 @@ void RepeatGroundTrack::CalculateRepeatGroundTrack(bool eccVal, Real ECC,
 
    if (!eccVal)
    {
-	  errormsg = wxT("ECC must be selected");
+	  errormsg = "ECC must be selected";
 	  isError = true;
       return;
    }
    else if (!incVal)
    {
-	  errormsg = wxT("INC must be selected");
+	  errormsg = "INC must be selected";
 	  isError = true;
       return;
    }
@@ -118,7 +118,7 @@ void RepeatGroundTrack::CalculateRepeatGroundTrack(bool eccVal, Real ECC,
    {
       SMA = -1;
       errormsg = 
-	     wxT("Please do not give Repetition inputs that are less than or equal to zero");
+	     "Please do not give Repetition inputs that are less than or equal to zero";
 	  isError = true;
       return;
    }
@@ -133,7 +133,7 @@ void RepeatGroundTrack::CalculateRepeatGroundTrack(bool eccVal, Real ECC,
    else
    {
       errormsg = 
-	     wxT("Please select two of days to repeat, revs to repeat, and revs per day");
+	     "Please select two of days to repeat, revs to repeat, and revs per day";
       isError = true;
       return;
    }
@@ -142,35 +142,35 @@ void RepeatGroundTrack::CalculateRepeatGroundTrack(bool eccVal, Real ECC,
    if ((ECC<0.0) || (ECC>1.0))
    {
       errormsg = 
-	     wxT("Eccentricity value out of range, please choose e greater than or equal to 0 and less than 1");
+	     "Eccentricity value out of range, please choose e greater than or equal to 0 and less than 1";
 	  isError = true;
 	  return;
    }
    else if ((INC<0.0) || (INC>180.0))
    {
       errormsg = 
-	     wxT("Inclination value out of range, please choose i greater than or equal to 0 and less than 180");
+	     "Inclination value out of range, please choose i greater than or equal to 0 and less than 180";
 	  isError = true;
 	  return;
    }
    else if (revsToRepeat<1)
    {
       errormsg = 
-	     wxT("Revolutions to Repeat value out of range, please choose revolutions to repeat greater than or equal to 1");
+	     "Revolutions to Repeat value out of range, please choose revolutions to repeat greater than or equal to 1";
 	  isError = true;
 	  return;
    }     
    else if (daysToRepeat<1)
    {
       errormsg = 
-	     wxT("Days to Repeat value out of range, please choose days to repeat greater than or equal to 1");
+	     "Days to Repeat value out of range, please choose days to repeat greater than or equal to 1";
 	  isError = true;
 	  return;
    }
    else if (revsPerDay<0)
    {
       errormsg = 
-	     wxT("Revs Per Day value out of range, please choose revolutions per day greater than or equal to 0");
+	     "Revs Per Day value out of range, please choose revolutions per day greater than or equal to 0";
 	  isError = true;
 	  return;
    }
@@ -206,18 +206,18 @@ void RepeatGroundTrack::CalculateRepeatGroundTrack(bool eccVal, Real ECC,
 	  {
          revsToRepeat_low = revsPerDay_low*daysToRepeat;
          errormsg = 
-		    wxT("No repeat ground track orbit exists with those parameters, try revs per day less than ") 
+		    "No repeat ground track orbit exists with those parameters, try revs per day less than " 
 			+ GmatStringUtil::ToString(revsPerDay_low) 
-			+ wxT(", or revs to repeat less than ") 
+			+ ", or revs to repeat less than " 
 			+ GmatStringUtil::ToString(revsToRepeat_low);
 	  }
       else if (rpdVal && dtrVal)
 	  {
          daysToRepeat_high = revsToRepeat/revsPerDay_low;
          errormsg = 
-		    wxT("No repeat ground track orbit exists with those parameters, try revs per day less than ") 
+		    "No repeat ground track orbit exists with those parameters, try revs per day less than " 
 			+ GmatStringUtil::ToString(revsPerDay_low) 
-			+ wxT(", or days to repeat greater than ") 
+			+ ", or days to repeat greater than " 
 			+ GmatStringUtil::ToString(daysToRepeat_high);
 	  }
       else if (rtrVal && dtrVal)
@@ -225,9 +225,9 @@ void RepeatGroundTrack::CalculateRepeatGroundTrack(bool eccVal, Real ECC,
          revsToRepeat_low = revsPerDay_low*daysToRepeat;
          daysToRepeat_low = revsToRepeat_low/revsPerDay;
          errormsg = 
-		    wxT("No repeat ground track orbit exists with those parameters, try revs to repeat less than ") 
+		    "No repeat ground track orbit exists with those parameters, try revs to repeat less than " 
 			+ GmatStringUtil::ToString(revsToRepeat_low) 
-			+ wxT(", or days to repeat greater than ") 
+			+ ", or days to repeat greater than " 
 			+ GmatStringUtil::ToString(daysToRepeat_low);
 	  }
    }

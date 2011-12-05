@@ -33,7 +33,7 @@ class GMAT_API DryMass : public BallisticMassReal
 {
 public:
    
-   DryMass(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   DryMass(const std::string &name = "", GmatBase *obj = NULL);
    DryMass(const DryMass &copy);
    DryMass& operator=(const DryMass &right);
    virtual ~DryMass();
@@ -52,7 +52,7 @@ class GMAT_API DragCoeff : public BallisticMassReal
 {
 public:
 
-   DragCoeff(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   DragCoeff(const std::string &name = "", GmatBase *obj = NULL);
    DragCoeff(const DragCoeff &copy);
    DragCoeff& operator=(const DragCoeff &right);
    virtual ~DragCoeff();
@@ -71,7 +71,7 @@ class GMAT_API ReflectCoeff : public BallisticMassReal
 {
 public:
 
-   ReflectCoeff(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   ReflectCoeff(const std::string &name = "", GmatBase *obj = NULL);
    ReflectCoeff(const ReflectCoeff &copy);
    ReflectCoeff& operator=(const ReflectCoeff &right);
    virtual ~ReflectCoeff();
@@ -90,7 +90,7 @@ class GMAT_API DragArea : public BallisticMassReal
 {
 public:
 
-   DragArea(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   DragArea(const std::string &name = "", GmatBase *obj = NULL);
    DragArea(const DragArea &copy);
    DragArea& operator=(const DragArea &right);
    virtual ~DragArea();
@@ -109,7 +109,7 @@ class GMAT_API SRPArea : public BallisticMassReal
 {
 public:
 
-   SRPArea(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   SRPArea(const std::string &name = "", GmatBase *obj = NULL);
    SRPArea(const SRPArea &copy);
    SRPArea& operator=(const SRPArea &right);
    virtual ~SRPArea();
@@ -128,7 +128,7 @@ class GMAT_API TotalMass : public BallisticMassReal
 {
 public:
 
-   TotalMass(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   TotalMass(const std::string &name = "", GmatBase *obj = NULL);
    TotalMass(const TotalMass &copy);
    TotalMass& operator=(const TotalMass &right);
    virtual ~TotalMass();

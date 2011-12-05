@@ -36,32 +36,32 @@
 StringArray FuelTank::pressureModelList;
 
 /// Labels used for the fuel tank parameters.
-const wxString
+const std::string
 FuelTank::PARAMETER_TEXT[FuelTankParamCount - HardwareParamCount] =
 {
-   wxT("AllowNegativeFuelMass"),
-   wxT("FuelMass"),
-   wxT("Pressure"), 
-   wxT("Temperature"),
-   wxT("RefTemperature"),
-   wxT("Volume"),
-   wxT("FuelDensity"),
-   wxT("PressureModel"),
-   wxT("PressureRegulated"),  // deprecated
+   "AllowNegativeFuelMass",
+   "FuelMass",
+   "Pressure", 
+   "Temperature",
+   "RefTemperature",
+   "Volume",
+   "FuelDensity",
+   "PressureModel",
+   "PressureRegulated",  // deprecated
 };
 
 /// Types of the parameters used by fuel tanks.
 const Gmat::ParameterType
 FuelTank::PARAMETER_TYPE[FuelTankParamCount - HardwareParamCount] =
 {
-   Gmat::BOOLEAN_TYPE,     // wxT("AllowNegativeFuelMass")
-   Gmat::REAL_TYPE,        // wxT("FuelMass"),
-   Gmat::REAL_TYPE,        // wxT("Pressure"), 
-   Gmat::REAL_TYPE,        // wxT("Temperature"),
-   Gmat::REAL_TYPE,        // wxT("RefTemperature"),
-   Gmat::REAL_TYPE,        // wxT("Volume"),
-   Gmat::REAL_TYPE,        // wxT("FuelDensity"),
-   Gmat::ENUMERATION_TYPE, // wxT("PressureModel"),
+   Gmat::BOOLEAN_TYPE,     // "AllowNegativeFuelMass"
+   Gmat::REAL_TYPE,        // "FuelMass",
+   Gmat::REAL_TYPE,        // "Pressure", 
+   Gmat::REAL_TYPE,        // "Temperature",
+   Gmat::REAL_TYPE,        // "RefTemperature",
+   Gmat::REAL_TYPE,        // "Volume",
+   Gmat::REAL_TYPE,        // "FuelDensity",
+   Gmat::ENUMERATION_TYPE, // "PressureModel",
    Gmat::BOOLEAN_TYPE,     // deprecated
 };
 
@@ -75,8 +75,8 @@ FuelTank::PARAMETER_TYPE[FuelTankParamCount - HardwareParamCount] =
  * @param nomme Name for the tank.
  */
 //------------------------------------------------------------------------------
-FuelTank::FuelTank(wxString nomme) :
-   Hardware             (Gmat::FUEL_TANK, wxT("FuelTank"), nomme),
+FuelTank::FuelTank(std::string nomme) :
+   Hardware             (Gmat::FUEL_TANK, "FuelTank", nomme),
    fuelMass             (756.0),       // 0.6 m^3 of fuel
    pressure             (1500.0),
    temperature          (20.0),
@@ -88,15 +88,15 @@ FuelTank::FuelTank(wxString nomme) :
    initialized          (false)
 {
    objectTypes.push_back(Gmat::FUEL_TANK);
-   objectTypeNames.push_back(wxT("FuelTank"));
+   objectTypeNames.push_back("FuelTank");
    
    parameterCount = FuelTankParamCount;
    
    // Available pressure model list
    // Since it is static data, clear it first
    pressureModelList.clear();
-   pressureModelList.push_back(wxT("PressureRegulated"));
-   pressureModelList.push_back(wxT("BlowDown"));
+   pressureModelList.push_back("PressureRegulated");
+   pressureModelList.push_back("BlowDown");
 }
 
 
@@ -178,7 +178,7 @@ FuelTank& FuelTank::operator=(const FuelTank& ft)
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -189,7 +189,7 @@ FuelTank& FuelTank::operator=(const FuelTank& ft)
  *
  */
 //------------------------------------------------------------------------------
-wxString FuelTank::GetParameterText(const Integer id) const
+std::string FuelTank::GetParameterText(const Integer id) const
 {
    if (id >= HardwareParamCount && id < FuelTankParamCount)
       return PARAMETER_TEXT[id - HardwareParamCount];
@@ -198,27 +198,27 @@ wxString FuelTank::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterUnit(const Integer id) const
+//  std::string  GetParameterUnit(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString FuelTank::GetParameterUnit(const Integer id) const
+std::string FuelTank::GetParameterUnit(const Integer id) const
 {
    switch (id)
    {
    case FUEL_MASS:
-      return wxT("kg");
+      return "kg";
    case PRESSURE:
-      return wxT("kPa");
+      return "kPa";
    case TEMPERATURE:
    case REFERENCE_TEMPERATURE:
-      return wxT("C");
+      return "C";
    case VOLUME:
-      return wxT("m^3");
+      return "m^3";
    case FUEL_DENSITY:
-      return wxT("kg/m^3");
+      return "kg/m^3";
    default:
       return Hardware::GetParameterUnit(id);
    }
@@ -226,7 +226,7 @@ wxString FuelTank::GetParameterUnit(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -237,7 +237,7 @@ wxString FuelTank::GetParameterUnit(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer FuelTank::GetParameterID(const wxString &str) const
+Integer FuelTank::GetParameterID(const std::string &str) const
 {
    for (Integer i = HardwareParamCount; i < FuelTankParamCount; i++)
    {
@@ -271,7 +271,7 @@ Gmat::ParameterType FuelTank::GetParameterType(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-//  wxString GetParameterTypeString(const Integer id) const
+//  std::string GetParameterTypeString(const Integer id) const
 //---------------------------------------------------------------------------
 /**
  * Retrieve the string associated with a parameter.
@@ -279,10 +279,10 @@ Gmat::ParameterType FuelTank::GetParameterType(const Integer id) const
  * @param <id> The integer ID for the parameter.
  *
  * @return Text description for the type of the parameter, or the empty
- *         string (wxT("")).
+ *         string ("").
  */
 //---------------------------------------------------------------------------
-wxString FuelTank::GetParameterTypeString(const Integer id) const
+std::string FuelTank::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -373,7 +373,7 @@ Real FuelTank::SetRealParameter(const Integer id, const Real value)
 {
    #ifdef DEBUG_FUELTANK_SET
    MessageInterface::ShowMessage
-      (wxT("FuelTank::SetRealParameter(), id=%d, value=%f\n"), id, value);
+      ("FuelTank::SetRealParameter(), id=%d, value=%f\n", id, value);
    #endif
    
    switch (id)
@@ -389,10 +389,10 @@ Real FuelTank::SetRealParameter(const Integer id, const Real value)
             }
             else
             {
-               HardwareException hwe(wxT(""));
+               HardwareException hwe("");
                hwe.SetDetails(errorMessageFormat.c_str(),
                               GmatStringUtil::ToString(value, 16).c_str(),
-                              wxT("FuelMass"), wxT("Real Number >= 0.0"));
+                              "FuelMass", "Real Number >= 0.0");
                throw hwe;
             }
          }
@@ -403,10 +403,10 @@ Real FuelTank::SetRealParameter(const Integer id, const Real value)
             pressure = value;
          else
          {
-            HardwareException hwe(wxT(""));
+            HardwareException hwe("");
             hwe.SetDetails(errorMessageFormat.c_str(),
                            GmatStringUtil::ToString(value, 16).c_str(),
-                           wxT("Pressure"), wxT("Real Number >= 0.0"));
+                           "Pressure", "Real Number >= 0.0");
             throw hwe;
          }
          initialized = false;
@@ -417,12 +417,12 @@ Real FuelTank::SetRealParameter(const Integer id, const Real value)
             temperature = value;
          else
          {
-            HardwareException hwe(wxT(""));
-            wxString ss(wxT(""));
-            ss << wxT("Real Number > ") << GmatPhysicalConstants::ABSOLUTE_ZERO_C;
+            HardwareException hwe("");
+            std::stringstream ss("");
+            ss << "Real Number > " << GmatPhysicalConstants::ABSOLUTE_ZERO_C;
             hwe.SetDetails(errorMessageFormat.c_str(),
                            GmatStringUtil::ToString(value, 16).c_str(),
-                           wxT("Temperature"), (ss).c_str());
+                           "Temperature", (ss.str()).c_str());
             throw hwe;
          }
          initialized = false;
@@ -433,12 +433,12 @@ Real FuelTank::SetRealParameter(const Integer id, const Real value)
             refTemperature = value;
          else
          {
-            HardwareException hwe(wxT(""));
-            wxString ss(wxT(""));
-            ss << wxT("Real Number > ") << GmatPhysicalConstants::ABSOLUTE_ZERO_C;
+            HardwareException hwe("");
+            std::stringstream ss("");
+            ss << "Real Number > " << GmatPhysicalConstants::ABSOLUTE_ZERO_C;
             hwe.SetDetails(errorMessageFormat.c_str(),
                            GmatStringUtil::ToString(value, 16).c_str(),
-                           wxT("RefTemperature"), (ss).c_str());
+                           "RefTemperature", (ss.str()).c_str());
             throw hwe;
          }
          initialized = false;
@@ -450,10 +450,10 @@ Real FuelTank::SetRealParameter(const Integer id, const Real value)
             volume = value;
          else
          {
-            HardwareException hwe(wxT(""));
+            HardwareException hwe("");
             hwe.SetDetails(errorMessageFormat.c_str(),
                            GmatStringUtil::ToString(value, 16).c_str(),
-                           wxT("Volume"), wxT("Real Number >= 0.0"));
+                           "Volume", "Real Number >= 0.0");
             throw hwe;
          }
          initialized = false;
@@ -465,10 +465,10 @@ Real FuelTank::SetRealParameter(const Integer id, const Real value)
             density = value;
          else
          {
-            HardwareException hwe(wxT(""));
+            HardwareException hwe("");
             hwe.SetDetails(errorMessageFormat.c_str(),
                            GmatStringUtil::ToString(value, 16).c_str(),
-                           wxT("FuelDensity"), wxT("Real Number > 0.0"));
+                           "FuelDensity", "Real Number > 0.0");
             throw hwe;
          }
          initialized = false;
@@ -483,18 +483,18 @@ Real FuelTank::SetRealParameter(const Integer id, const Real value)
 
 
 //---------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label) const
+// Real GetRealParameter(const std::string &label) const
 //---------------------------------------------------------------------------
-Real FuelTank::GetRealParameter(const wxString &label) const
+Real FuelTank::GetRealParameter(const std::string &label) const
 {
    return GetRealParameter(GetParameterID(label));
 }
 
 
 //---------------------------------------------------------------------------
-// Real SetRealParameter(const wxString &label, const Real value)
+// Real SetRealParameter(const std::string &label, const Real value)
 //---------------------------------------------------------------------------
-Real FuelTank::SetRealParameter(const wxString &label, const Real value)
+Real FuelTank::SetRealParameter(const std::string &label, const Real value)
 {
    return SetRealParameter(GetParameterID(label), value);
 }
@@ -517,9 +517,9 @@ bool FuelTank::GetBooleanParameter(const Integer id) const
    if (id == PRESSURE_REGULATED)
    {
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** \"PressureRegulated\" is deprecated and will be ")
-          wxT("removed from a future build; please use \"PressureModel\" ")
-          wxT("instead.\n"));      
+         ("*** WARNING *** \"PressureRegulated\" is deprecated and will be "
+          "removed from a future build; please use \"PressureModel\" "
+          "instead.\n");      
       return true;
    }
    else if (id == ALLOW_NEGATIVE_FUEL_MASS)
@@ -554,9 +554,9 @@ bool FuelTank::SetBooleanParameter(const Integer id, const bool value)
          pressureModel = TPM_BLOW_DOWN;
       
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** \"PressureRegulated\" is deprecated and will be ")
-          wxT("removed from a future build; please use \"PressureModel\" ")
-          wxT("instead.\n"));      
+         ("*** WARNING *** \"PressureRegulated\" is deprecated and will be "
+          "removed from a future build; please use \"PressureModel\" "
+          "instead.\n");      
       return true;
    }
    else if (id == ALLOW_NEGATIVE_FUEL_MASS)
@@ -570,9 +570,9 @@ bool FuelTank::SetBooleanParameter(const Integer id, const bool value)
 
 
 //---------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //---------------------------------------------------------------------------
-wxString FuelTank::GetStringParameter(const Integer id) const
+std::string FuelTank::GetStringParameter(const Integer id) const
 {
    if (id == PRESSURE_MODEL)
       return pressureModelList[pressureModel];
@@ -582,13 +582,13 @@ wxString FuelTank::GetStringParameter(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //---------------------------------------------------------------------------
-bool FuelTank::SetStringParameter(const Integer id, const wxString &value)
+bool FuelTank::SetStringParameter(const Integer id, const std::string &value)
 {
    #ifdef DEBUG_FUELTANK_SET
    MessageInterface::ShowMessage
-      (wxT("FuelTank::SetStringParameter() entered, id=%d, value='%s'\n"), id,
+      ("FuelTank::SetStringParameter() entered, id=%d, value='%s'\n", id,
        value.c_str());
    #endif
    
@@ -605,14 +605,14 @@ bool FuelTank::SetStringParameter(const Integer id, const wxString &value)
       {
          // write one warning per GMAT session
          static bool firstTimeWarning = true;
-         wxString framelist = pressureModelList[0];
+         std::string framelist = pressureModelList[0];
          for (UnsignedInt n = 1; n < pressureModelList.size(); ++n)
-            framelist += wxT(", ") + pressureModelList[n];
+            framelist += ", " + pressureModelList[n];
          
-         wxString msg =
-            wxT("The value of \"") + value + wxT("\" for field \"PressureModel\"")
-            wxT(" on object \"") + instanceName + wxT("\" is not an allowed value.\n")
-            wxT("The allowed values are: [ ") + framelist + wxT(" ]. ");
+         std::string msg =
+            "The value of \"" + value + "\" for field \"PressureModel\""
+            " on object \"" + instanceName + "\" is not an allowed value.\n"
+            "The allowed values are: [ " + framelist + " ]. ";
          
          if (firstTimeWarning)
          {
@@ -629,19 +629,19 @@ bool FuelTank::SetStringParameter(const Integer id, const wxString &value)
 
 
 //---------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //---------------------------------------------------------------------------
-wxString FuelTank::GetStringParameter(const wxString &label) const
+std::string FuelTank::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 
 //---------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //---------------------------------------------------------------------------
-bool FuelTank::SetStringParameter(const wxString &label,
-                                  const wxString &value)
+bool FuelTank::SetStringParameter(const std::string &label,
+                                  const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
@@ -660,9 +660,9 @@ const StringArray& FuelTank::GetPropertyEnumStrings(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-// const StringArray& GetPropertyEnumStrings(const wxString &label) const
+// const StringArray& GetPropertyEnumStrings(const std::string &label) const
 //---------------------------------------------------------------------------
-const StringArray& FuelTank::GetPropertyEnumStrings(const wxString &label) const
+const StringArray& FuelTank::GetPropertyEnumStrings(const std::string &label) const
 {
    return GetPropertyEnumStrings(GetParameterID(label));
 }
@@ -750,8 +750,8 @@ void FuelTank::UpdateTank()
    if (pressureModel != TPM_PRESSURE_REGULATED)
    {
       #ifdef DEBUG_MASS_FLOW
-         MessageInterface::ShowMessage(wxT("Vol = %.12lf, fuelMass = %.12lf, ")
-               wxT("density = %.12lf, P0 = %.12lf, PV = %.12lf"), volume, fuelMass,
+         MessageInterface::ShowMessage("Vol = %.12lf, fuelMass = %.12lf, "
+               "density = %.12lf, P0 = %.12lf, PV = %.12lf", volume, fuelMass,
                density, pressure, pvBase);
       #endif
       if (!initialized)
@@ -761,7 +761,7 @@ void FuelTank::UpdateTank()
       pressure = pvBase / gasVolume;
 
       #ifdef DEBUG_MASS_FLOW
-         MessageInterface::ShowMessage(wxT("Gas Vol = %.12lf, Pf = %.12lf\n"),
+         MessageInterface::ShowMessage("Gas Vol = %.12lf, Pf = %.12lf\n",
                gasVolume, pvBase);
       #endif
    }
@@ -783,8 +783,8 @@ void FuelTank::DepleteFuel(Real dm)
    
    if (fuelMass < 0.0)
       // For now, throw if the fuel goes below 0
-      throw HardwareException(wxT("Fuel in tank ") + instanceName + 
-                              wxT(" completely exhausted.\n"));
+      throw HardwareException("Fuel in tank " + instanceName + 
+                              " completely exhausted.\n");
 }
 
 bool FuelTank::Validate()
@@ -792,7 +792,7 @@ bool FuelTank::Validate()
    if (density <= 0.0)
 	  return false;
    if ((volume - fuelMass / density) < 0.0)
-	  throw HardwareException(wxT("Fuel volume exceeds tank capacity\n"));
+	  throw HardwareException("Fuel volume exceeds tank capacity\n");
    return true;
 }
 

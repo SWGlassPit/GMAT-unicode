@@ -30,7 +30,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  CreateFunction(const wxString &ofType, const wxString &withName)
+//  CreateFunction(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested Function class
@@ -38,12 +38,12 @@
  * @param <ofType> the Function object to create and return.
  */
 //------------------------------------------------------------------------------
-Function* FunctionFactory::CreateFunction(const wxString &ofType,
-         const wxString &withName)
+Function* FunctionFactory::CreateFunction(const std::string &ofType,
+         const std::string &withName)
 {
-   if (ofType == wxT("MatlabFunction"))
+   if (ofType == "MatlabFunction")
       return new MatlabFunction(withName);
-   else if (ofType == wxT("GmatFunction"))
+   else if (ofType == "GmatFunction")
       return new GmatFunction(withName);
    // add more here .......
    else {
@@ -67,8 +67,8 @@ FunctionFactory::FunctionFactory() :
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("MatlabFunction"));
-      creatables.push_back(wxT("GmatFunction"));
+      creatables.push_back("MatlabFunction");
+      creatables.push_back("GmatFunction");
    }
 }
 
@@ -94,7 +94,7 @@ FunctionFactory::FunctionFactory(StringArray createList) :
    * This method creates an object of the class FunctionFactory (called by
    * copy constructors of derived classes).  (copy constructor)
    *
-   * @param <fact> the factory object to copy to wxT("this") factory.
+   * @param <fact> the factory object to copy to "this" factory.
    */
 //------------------------------------------------------------------------------
 FunctionFactory::FunctionFactory(const FunctionFactory& fact) :
@@ -102,8 +102,8 @@ FunctionFactory::FunctionFactory(const FunctionFactory& fact) :
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("MatlabFunction"));
-      creatables.push_back(wxT("GmatFunction"));
+      creatables.push_back("MatlabFunction");
+      creatables.push_back("GmatFunction");
    }
 }
 
@@ -113,9 +113,9 @@ FunctionFactory::FunctionFactory(const FunctionFactory& fact) :
 /**
    * Assignment operator for the FunctionFactory base class.
    *
-   * @param <fact> the FunctionFactory object whose data to assign to wxT("this") factory.
+   * @param <fact> the FunctionFactory object whose data to assign to "this" factory.
    *
-   * @return wxT("this") FunctionFactory with data of input factory fact.
+   * @return "this" FunctionFactory with data of input factory fact.
    */
 //------------------------------------------------------------------------------
 FunctionFactory& FunctionFactory::operator=(const FunctionFactory& fact)

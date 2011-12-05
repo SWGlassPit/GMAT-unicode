@@ -29,7 +29,7 @@ class GMAT_API SpacecraftData : public RefData
 {
 public:
 
-   SpacecraftData(const wxString &name = wxT(""));
+   SpacecraftData(const std::string &name = "");
    SpacecraftData(const SpacecraftData &data);
    SpacecraftData& operator= (const SpacecraftData& right);
    virtual ~SpacecraftData();
@@ -39,7 +39,7 @@ public:
    
    // The inherited methods from RefData
    virtual bool ValidateRefObjects(GmatBase *param);
-   virtual const wxString* GetValidObjectList() const;
+   virtual const std::string* GetValidObjectList() const;
    
    const static Real BALLISTIC_REAL_UNDEFINED;
    
@@ -83,12 +83,12 @@ protected:
       SpacecraftDataObjectCount
    };
    
-   static const wxString VALID_OBJECT_TYPE_LIST[SpacecraftDataObjectCount];
+   static const std::string VALID_OBJECT_TYPE_LIST[SpacecraftDataObjectCount];
    
 private:
    
-   Real GetOwnedObjectProperty(Gmat::ObjectType objType, const wxString &name);
-   Real SetOwnedObjectProperty(Gmat::ObjectType objType, const wxString &name,
+   Real GetOwnedObjectProperty(Gmat::ObjectType objType, const std::string &name);
+   Real SetOwnedObjectProperty(Gmat::ObjectType objType, const std::string &name,
                                Real val);
    
 };

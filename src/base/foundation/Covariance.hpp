@@ -41,9 +41,9 @@ public:
    Real& operator()(const Integer r, const Integer c);
    Real  operator()(const Integer r, const Integer c) const;
 
-   void AddCovarianceElement(const wxString &name, GmatBase* owner);
-   bool ConstructLHS(const wxString& lhs = wxT(""));
-   bool ConstructRHS(const wxString& rhs);
+   void AddCovarianceElement(const std::string &name, GmatBase* owner);
+   bool ConstructLHS(const std::string& lhs = "");
+   bool ConstructRHS(const std::string& rhs);
    bool ConstructRHS(Rvector diagonal, Integer start = 0);
    bool ConstructRHS(Rmatrix data, Integer start = 0);
    bool FillMatrix(const Rmatrix& rhs, bool overrideAndFill);

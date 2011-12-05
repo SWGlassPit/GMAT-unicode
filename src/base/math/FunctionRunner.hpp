@@ -32,23 +32,23 @@ typedef std::vector<MathNode*> MathNodeArray;
 class GMAT_API FunctionRunner : public MathFunction
 {
 public:
-   FunctionRunner(const wxString &nomme);
+   FunctionRunner(const std::string &nomme);
    virtual ~FunctionRunner();
    FunctionRunner(const FunctionRunner &copy);
 
    // for Function
-   void                 SetFunctionName(const wxString &fname);
+   void                 SetFunctionName(const std::string &fname);
    void                 SetFunction(Function *function);
    
    // for Function input
-   void                 AddFunctionInput(const wxString &name);
+   void                 AddFunctionInput(const std::string &name);
    void                 SetFunctionInputs();
    const StringArray&   GetInputs();
    void                 AddInputNode(MathNode *node);
    const MathNodeArray& GetInputNodes();
    
    // for Function output
-   void                 AddFunctionOutput(const wxString &name);
+   void                 AddFunctionOutput(const std::string &name);
    void                 SetFunctionOutputs();
    
    // for calling function
@@ -78,7 +78,7 @@ protected:
    FunctionManager theFunctionManager;
    ObjectMap       *theObjectMap;
    ObjectMap       *theGlobalObjectMap;
-   wxString     theFunctionName;
+   std::string     theFunctionName;
    Function        *theFunction;
    StringArray     theInputNames;
    StringArray     theOutputNames;
@@ -87,7 +87,7 @@ protected:
    
    CoordinateSystem *internalCS;
    
-   GmatBase* FindObject(const wxString &name);
+   GmatBase* FindObject(const std::string &name);
    void      HandlePassingMathExp(Function *function);
 };
 

@@ -25,7 +25,7 @@
 class HarmonicGravityCof : public HarmonicGravity
 {
 public:
-   HarmonicGravityCof(const wxString& filename,
+   HarmonicGravityCof(const std::string& filename,
                       const Real& radius, const Real& mukm);
    virtual ~HarmonicGravityCof();
 

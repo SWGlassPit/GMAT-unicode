@@ -33,10 +33,10 @@ class GMAT_API ObjectReferencedAxes : public DynamicAxes
 public:
 
    // default constructor
-   ObjectReferencedAxes(const wxString &itsName = wxT(""));
+   ObjectReferencedAxes(const std::string &itsName = "");
    // another constructor - for derived classes to call
-   ObjectReferencedAxes(const wxString &itsType,
-                        const wxString &itsName);
+   ObjectReferencedAxes(const std::string &itsType,
+                        const std::string &itsName);
    // copy constructor
    ObjectReferencedAxes(const ObjectReferencedAxes &orAxes);
    // operator = for assignment
@@ -48,14 +48,14 @@ public:
    // (inherited from CoordinateBase)
    virtual void SetPrimaryObject(SpacePoint *prim);
    virtual void SetSecondaryObject(SpacePoint *second);
-   virtual void SetXAxis(const wxString &toValue);
-   virtual void SetYAxis(const wxString &toValue);
-   virtual void SetZAxis(const wxString &toValue);   
+   virtual void SetXAxis(const std::string &toValue);
+   virtual void SetYAxis(const std::string &toValue);
+   virtual void SetZAxis(const std::string &toValue);   
    virtual SpacePoint* GetPrimaryObject() const;
    virtual SpacePoint* GetSecondaryObject() const;
-   virtual wxString GetXAxis() const;
-   virtual wxString GetYAxis() const;
-   virtual wxString GetZAxis() const;
+   virtual std::string GetXAxis() const;
+   virtual std::string GetYAxis() const;
+   virtual std::string GetZAxis() const;
    virtual void        ResetAxes();
    
    virtual GmatCoordinate::ParameterUsage UsesPrimary() const;
@@ -72,26 +72,26 @@ public:
    virtual GmatBase*       Clone() const;
    
    virtual bool RenameRefObject(const Gmat::ObjectType type,
-                                const wxString &oldName,
-                                const wxString &newName);
+                                const std::string &oldName,
+                                const std::string &newName);
    
    // Parameter access methods - overridden from GmatBase
-   virtual wxString     GetParameterText(const Integer id) const;     
-   virtual Integer         GetParameterID(const wxString &str) const; 
+   virtual std::string     GetParameterText(const Integer id) const;     
+   virtual Integer         GetParameterID(const std::string &str) const; 
    virtual Gmat::ParameterType
                            GetParameterType(const Integer id) const;
-   virtual wxString     GetParameterTypeString(const Integer id) const;
-   virtual wxString     GetStringParameter(const Integer id) const;
+   virtual std::string     GetParameterTypeString(const Integer id) const;
+   virtual std::string     GetStringParameter(const Integer id) const;
    virtual bool            SetStringParameter(const Integer id, 
-                                              const wxString &value);
-   virtual wxString     GetStringParameter(const wxString &label) const;
-   virtual bool            SetStringParameter(const wxString &label, 
-                                              const wxString &value);
+                                              const std::string &value);
+   virtual std::string     GetStringParameter(const std::string &label) const;
+   virtual bool            SetStringParameter(const std::string &label, 
+                                              const std::string &value);
    virtual GmatBase*       GetRefObject(const Gmat::ObjectType type,
-                                        const wxString &name);
+                                        const std::string &name);
    const StringArray&      GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool            SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                        const wxString &name = wxT(""));
+                                        const std::string &name = "");
 protected:
 
    // types and data
@@ -105,19 +105,19 @@ protected:
       ObjectReferencedAxesParamCount
    };
    
-   static const wxString PARAMETER_TEXT[ObjectReferencedAxesParamCount - 
+   static const std::string PARAMETER_TEXT[ObjectReferencedAxesParamCount - 
                                            DynamicAxesParamCount];
    
    static const Gmat::ParameterType PARAMETER_TYPE[ObjectReferencedAxesParamCount - 
                                                    DynamicAxesParamCount];
-   wxString primaryName;
-   wxString secondaryName;
+   std::string primaryName;
+   std::string secondaryName;
    SpacePoint  *primary;
    SpacePoint  *secondary;
    
-   wxString xAxis;
-   wxString yAxis;
-   wxString zAxis;
+   std::string xAxis;
+   std::string yAxis;
+   std::string zAxis;
 
    // methods
    // methods to compute the rotation matrix (and its derivative) to transform

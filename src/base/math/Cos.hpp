@@ -26,7 +26,7 @@
 class GMAT_API Cos : public MathFunction
 {
 public:
-   Cos(const wxString &nomme);
+   Cos(const std::string &nomme);
    virtual ~Cos();
    Cos(const Cos &copy);
                  

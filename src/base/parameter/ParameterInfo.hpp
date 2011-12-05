@@ -35,27 +35,27 @@ public:
    Integer GetNumParameters() const;
    const StringArray& GetTypesOfParameters();
    const StringArray& GetNamesOfParameters();
-   Gmat::ObjectType GetObjectType(const wxString &type);
-   GmatParam::DepObject GetDepObjectType(const wxString &name);
-   bool IsPlottable(const wxString &type);
-   bool IsReportable(const wxString &type);
-   bool IsSettable(const wxString &type);
+   Gmat::ObjectType GetObjectType(const std::string &type);
+   GmatParam::DepObject GetDepObjectType(const std::string &name);
+   bool IsPlottable(const std::string &type);
+   bool IsReportable(const std::string &type);
+   bool IsSettable(const std::string &type);
    
-   void Add(const wxString &type, Gmat::ObjectType objectType,
-            const wxString &name, GmatParam::DepObject depType,
+   void Add(const std::string &type, Gmat::ObjectType objectType,
+            const std::string &name, GmatParam::DepObject depType,
             bool isPlottable, bool isReportable, bool isSettable);
-   void Remove(const wxString &name);
+   void Remove(const std::string &name);
    
 protected:
 private:
    
    static ParameterInfo *theInstance;
    
-   std::map<wxString, GmatParam::DepObject> mParamDepObjMap;
-   std::map<wxString, Gmat::ObjectType> mParamObjectTypeMap;
-   std::map<wxString, bool> mParamPlottableMap;
-   std::map<wxString, bool> mParamReportableMap;
-   std::map<wxString, bool> mParamSettableMap;
+   std::map<std::string, GmatParam::DepObject> mParamDepObjMap;
+   std::map<std::string, Gmat::ObjectType> mParamObjectTypeMap;
+   std::map<std::string, bool> mParamPlottableMap;
+   std::map<std::string, bool> mParamReportableMap;
+   std::map<std::string, bool> mParamSettableMap;
    StringArray mParamTypes;
    StringArray mParamNames;
    Integer mNumParams;

@@ -38,53 +38,53 @@
 /// Available show foot print options
 StringArray GroundTrackPlot::footPrintOptions;
 
-const wxString
+const std::string
 GroundTrackPlot::FOOT_PRINT_OPTION_TEXT[FootPrintOptionCount] =
 {
-   wxT("None"), wxT("All"), 
+   "None", "All", 
 };
 
 
-const wxString
+const std::string
 GroundTrackPlot::PARAMETER_TEXT[GroundTrackPlotParamCount - OrbitPlotParamCount] =
 {
-   wxT("CentralBody"),
-   wxT("TextureMap"),
-   wxT("ShowFootPrints"),
+   "CentralBody",
+   "TextureMap",
+   "ShowFootPrints",
 }; 
 
 
 const Gmat::ParameterType
 GroundTrackPlot::PARAMETER_TYPE[GroundTrackPlotParamCount - OrbitPlotParamCount] =
 {
-   Gmat::OBJECT_TYPE,         // wxT("CentralBody")
-   Gmat::FILENAME_TYPE,       // wxT("TextureMap")
-   Gmat::ENUMERATION_TYPE,    // wxT("ShowFootPrints")
+   Gmat::OBJECT_TYPE,         // "CentralBody"
+   Gmat::FILENAME_TYPE,       // "TextureMap"
+   Gmat::ENUMERATION_TYPE,    // "ShowFootPrints"
 };
 
 
 //------------------------------------------------------------------------------
-// GroundTrackPlot(const wxString &type, const wxString &name)
+// GroundTrackPlot(const std::string &type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * The default constructor
  */
 //------------------------------------------------------------------------------
-GroundTrackPlot::GroundTrackPlot(const wxString &name)
-   : OrbitPlot(wxT("GroundTrackPlot"), name)
+GroundTrackPlot::GroundTrackPlot(const std::string &name)
+   : OrbitPlot("GroundTrackPlot", name)
 {
    // GmatBase data
    parameterCount = GroundTrackPlotParamCount;
-   objectTypeNames.push_back(wxT("GroundTrackPlot"));
+   objectTypeNames.push_back("GroundTrackPlot");
    
    centralBody = NULL;
-   centralBodyName = wxT("Earth");
-   mViewCoordSysName = wxT("EarthFixed");
-   footPrints = wxT("None");
+   centralBodyName = "Earth";
+   mViewCoordSysName = "EarthFixed";
+   footPrints = "None";
    
    // Set default texture map file from the startup file through the FileManager
    FileManager *fm = FileManager::Instance();
-   textureMapFileName = fm->GetFullPathname(wxT("EARTH_TEXTURE_FILE"));
+   textureMapFileName = fm->GetFullPathname("EARTH_TEXTURE_FILE");
    
    footPrintOption = FP_NONE;
    
@@ -187,8 +187,8 @@ bool GroundTrackPlot::Initialize()
    
    #if DBGLVL_INIT
    MessageInterface::ShowMessage
-      (wxT("GroundTrackPlot::Initialize() this=<%p>'%s', active=%d, isInitialized=%d, ")
-       wxT("isEndOfReceive=%d, mAllSpCount=%d\n"), this, GetName().c_str(), active,
+      ("GroundTrackPlot::Initialize() this=<%p>'%s', active=%d, isInitialized=%d, "
+       "isEndOfReceive=%d, mAllSpCount=%d\n", this, GetName().c_str(), active,
        isInitialized, isEndOfReceive, mAllSpCount);
    #endif
    
@@ -199,7 +199,7 @@ bool GroundTrackPlot::Initialize()
    {
       #if DBGLVL_INIT
       MessageInterface::ShowMessage
-         (wxT("GroundTrackPlot::Initialize() CreateGlPlotWindow() theSolarSystem=%p\n"),
+         ("GroundTrackPlot::Initialize() CreateGlPlotWindow() theSolarSystem=%p\n",
           theSolarSystem);
       #endif
       
@@ -212,7 +212,7 @@ bool GroundTrackPlot::Initialize()
       {
          #if DBGLVL_INIT
          MessageInterface::ShowMessage
-            (wxT("   mViewPointRefObj=%p, mViewScaleFactor=%f\n"),
+            ("   mViewPointRefObj=%p, mViewScaleFactor=%f\n",
              mViewPointRefObj, mViewScaleFactor);
          #endif
          
@@ -233,17 +233,17 @@ bool GroundTrackPlot::Initialize()
          // Save this in in case we need to use light
          //===========================================================
          // Add Sun to list if it was not added already to enable light source 
-         if (find(mObjectNameArray.begin(), mObjectNameArray.end(), wxT("Sun")) ==
+         if (find(mObjectNameArray.begin(), mObjectNameArray.end(), "Sun") ==
              mObjectNameArray.end())
-            UpdateObjectList(theSolarSystem->GetBody(wxT("Sun")), false);
+            UpdateObjectList(theSolarSystem->GetBody("Sun"), false);
          //===========================================================
                   
          #if DBGLVL_INIT > 1
          MessageInterface::ShowMessage
-            (wxT("   mScNameArray.size=%d, mScOrbitColorArray.size=%d\n"),
+            ("   mScNameArray.size=%d, mScOrbitColorArray.size=%d\n",
              mScNameArray.size(), mScOrbitColorArray.size());
          MessageInterface::ShowMessage
-            (wxT("   mObjectNameArray.size=%d, mOrbitColorArray.size=%d\n"),
+            ("   mObjectNameArray.size=%d, mOrbitColorArray.size=%d\n",
              mObjectNameArray.size(), mOrbitColorArray.size());
          
          bool draw, show;
@@ -252,14 +252,14 @@ bool GroundTrackPlot::Initialize()
             draw = mDrawOrbitArray[i] ? true : false;
             show = mDrawObjectArray[i] ? true : false;
             MessageInterface::ShowMessage
-               (wxT("   mObjectNameArray[%d]=%s, draw=%d, show=%d, color=%d\n"),
+               ("   mObjectNameArray[%d]=%s, draw=%d, show=%d, color=%d\n",
                 i, mObjectNameArray[i].c_str(), draw, show, mOrbitColorArray[i]);
          }
          #endif
          
          #if DBGLVL_INIT
          MessageInterface::ShowMessage
-            (wxT("   calling PlotInterface::SetGlSolarSystem(%p)\n"), theSolarSystem);
+            ("   calling PlotInterface::SetGlSolarSystem(%p)\n", theSolarSystem);
          #endif
          
          // set SolarSystem
@@ -267,10 +267,10 @@ bool GroundTrackPlot::Initialize()
          
          #if DBGLVL_INIT
          MessageInterface::ShowMessage
-            (wxT("   calling PlotInterface::SetGlObject()\n"));
+            ("   calling PlotInterface::SetGlObject()\n");
          for (UnsignedInt i=0; i<mObjectArray.size(); i++)
             MessageInterface::ShowMessage
-               (wxT("      mObjectArray[%d]=<%p>'%s'\n"), i, mObjectArray[i],
+               ("      mObjectArray[%d]=<%p>'%s'\n", i, mObjectArray[i],
                 mObjectArray[i]->GetName().c_str());
          #endif
          
@@ -283,13 +283,13 @@ bool GroundTrackPlot::Initialize()
          //--------------------------------------------------------
          #if DBGLVL_INIT
          MessageInterface::ShowMessage
-            (wxT("   calling PlotInterface::SetGlCoordSystem()\n"));
+            ("   calling PlotInterface::SetGlCoordSystem()\n");
          #endif
 
          if (mViewCoordSystem == NULL)
          {
             mViewCoordSystem = CoordinateSystem::CreateLocalCoordinateSystem
-               (mViewCoordSysName, wxT("BodyFixed"), centralBody, NULL,
+               (mViewCoordSysName, "BodyFixed", centralBody, NULL,
                 NULL, theInternalCoordSystem->GetJ2000Body(), theSolarSystem);
          }
          
@@ -302,7 +302,7 @@ bool GroundTrackPlot::Initialize()
          //--------------------------------------------------------
          #if DBGLVL_INIT
          MessageInterface::ShowMessage
-            (wxT("   calling PlotInterface::SetGlDrawingOption()\n"));
+            ("   calling PlotInterface::SetGlDrawingOption()\n");
          #endif
          
          PlotInterface::SetGl2dDrawingOption(instanceName, centralBodyName,
@@ -313,7 +313,7 @@ bool GroundTrackPlot::Initialize()
          //--------------------------------------------------------
          #if DBGLVL_INIT
          MessageInterface::ShowMessage
-            (wxT("   calling PlotInterface::SetGlViewOption()\n"));
+            ("   calling PlotInterface::SetGlViewOption()\n");
          #endif
          
          PlotInterface::SetGlUpdateFrequency(instanceName, mUpdatePlotFrequency);
@@ -341,8 +341,8 @@ bool GroundTrackPlot::Initialize()
    {
       #if DBGLVL_INIT
       MessageInterface::ShowMessage
-         (wxT("GroundTrackPlot::Initialize() Plot is active and initialized, ")
-          wxT("so calling DeleteGlPlot()\n"));
+         ("GroundTrackPlot::Initialize() Plot is active and initialized, "
+          "so calling DeleteGlPlot()\n");
       #endif
       
       // Why do we want to delete plot if active and initialized?
@@ -354,7 +354,7 @@ bool GroundTrackPlot::Initialize()
    }
    
    #if DBGLVL_INIT
-   MessageInterface::ShowMessage(wxT("GroundTrackPlot::Initialize() returning %d\n"), retval);
+   MessageInterface::ShowMessage("GroundTrackPlot::Initialize() returning %d\n", retval);
    #endif
    
    return retval;
@@ -393,8 +393,8 @@ void GroundTrackPlot::Copy(const GmatBase* orig)
 
 
 //------------------------------------------------------------------------------
-// virtual bool TakeAction(const wxString &action,  
-//                         const wxString &actionData = wxT(""));
+// virtual bool TakeAction(const std::string &action,  
+//                         const std::string &actionData = "");
 //------------------------------------------------------------------------------
 /**
  * This method performs action.
@@ -405,8 +405,8 @@ void GroundTrackPlot::Copy(const GmatBase* orig)
  *
  */
 //------------------------------------------------------------------------------
-bool GroundTrackPlot::TakeAction(const wxString &action,
-                                 const wxString &actionData)
+bool GroundTrackPlot::TakeAction(const std::string &action,
+                                 const std::string &actionData)
 {
    return OrbitPlot::TakeAction(action, actionData);
 }
@@ -414,15 +414,15 @@ bool GroundTrackPlot::TakeAction(const wxString &action,
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool GroundTrackPlot::RenameRefObject(const Gmat::ObjectType type,
-                                      const wxString &oldName,
-                                      const wxString &newName)
+                                      const std::string &oldName,
+                                      const std::string &newName)
 {
    #if DBGLVL_RENAME
    MessageInterface::ShowMessage
-      (wxT("GroundTrackPlot::RenameRefObject() type=%s, oldName=%s, newName=%s\n"),
+      ("GroundTrackPlot::RenameRefObject() type=%s, oldName=%s, newName=%s\n",
        GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
    #endif
    
@@ -460,9 +460,9 @@ bool GroundTrackPlot::IsParameterReadOnly(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
-wxString GroundTrackPlot::GetParameterText(const Integer id) const
+std::string GroundTrackPlot::GetParameterText(const Integer id) const
 {
    if (id >= OrbitPlotParamCount && id < GroundTrackPlotParamCount)
       return PARAMETER_TEXT[id - OrbitPlotParamCount];
@@ -473,9 +473,9 @@ wxString GroundTrackPlot::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer GroundTrackPlot::GetParameterID(const wxString &str) const
+Integer GroundTrackPlot::GetParameterID(const std::string &str) const
 {
    for (int i=OrbitPlotParamCount; i<GroundTrackPlotParamCount; i++)
    {
@@ -500,22 +500,22 @@ Gmat::ParameterType GroundTrackPlot::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
-wxString GroundTrackPlot::GetParameterTypeString(const Integer id) const
+std::string GroundTrackPlot::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
-wxString GroundTrackPlot::GetStringParameter(const Integer id) const
+std::string GroundTrackPlot::GetStringParameter(const Integer id) const
 {
    #if DBGLVL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("GroundTrackPlot::GetStringParameter() id = %d\n"), id);
+      ("GroundTrackPlot::GetStringParameter() id = %d\n", id);
    #endif
    
    switch (id)
@@ -524,7 +524,7 @@ wxString GroundTrackPlot::GetStringParameter(const Integer id) const
       return centralBodyName;
    case TEXTURE_MAP:
       #if DBGLVL_PARAM_STRING
-		MessageInterface::ShowMessage(wxT("   returning '%s'\n"), textureMapFileName.c_str());
+		MessageInterface::ShowMessage("   returning '%s'\n", textureMapFileName.c_str());
 		#endif
       return textureMapFileName;
    case SHOW_FOOT_PRINTS:
@@ -536,13 +536,13 @@ wxString GroundTrackPlot::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString GroundTrackPlot::GetStringParameter(const wxString &label) const
+std::string GroundTrackPlot::GetStringParameter(const std::string &label) const
 {
    #if DBGLVL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("GroundTrackPlot::GetStringParameter() label = %s\n"), label.c_str());
+      ("GroundTrackPlot::GetStringParameter() label = %s\n", label.c_str());
    #endif
    
    return GetStringParameter(GetParameterID(label));
@@ -550,13 +550,13 @@ wxString GroundTrackPlot::GetStringParameter(const wxString &label) const
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
-bool GroundTrackPlot::SetStringParameter(const Integer id, const wxString &value)
+bool GroundTrackPlot::SetStringParameter(const Integer id, const std::string &value)
 {
    #if DBGLVL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("GroundTrackPlot::SetStringParameter() this=<%p>'%s', id=%d<%s>, value='%s'\n"),
+      ("GroundTrackPlot::SetStringParameter() this=<%p>'%s', id=%d<%s>, value='%s'\n",
        this, instanceName.c_str(), id, GetParameterText(id).c_str(), value.c_str());
    #endif
    
@@ -571,11 +571,11 @@ bool GroundTrackPlot::SetStringParameter(const Integer id, const wxString &value
 		{
 			centralBodyName = value;
 			// Since ground track data uses body fixed coordinates, name it here
-			mViewCoordSysName = value + wxT("Fixed");
+			mViewCoordSysName = value + "Fixed";
 			
 			// Get default texture map file for the new body
 			FileManager *fm = FileManager::Instance();
-			wxString mapFile = GmatStringUtil::ToUpper(centralBodyName) + wxT("_TEXTURE_FILE");
+			std::string mapFile = GmatStringUtil::ToUpper(centralBodyName) + "_TEXTURE_FILE";
 			textureMapFileName = fm->GetFullPathname(mapFile);
 		}
       return true;
@@ -601,16 +601,16 @@ bool GroundTrackPlot::SetStringParameter(const Integer id, const wxString &value
             footPrints = value;
             footPrintOption = (FootPrintOption)index;
             #if DBGLVL_PARAM_STRING
-            MessageInterface::ShowMessage(wxT("   footPrintOption = %d\n"), footPrintOption);
+            MessageInterface::ShowMessage("   footPrintOption = %d\n", footPrintOption);
             #endif
             return true;
          }
          else
          {
             SubscriberException se;
-            wxString options;
+            std::string options;
             for (int i = 0; i < FootPrintOptionCount - 1; i++)               
-               options = options + FOOT_PRINT_OPTION_TEXT[i] + wxT(" ,");
+               options = options + FOOT_PRINT_OPTION_TEXT[i] + " ,";
             options = options + FOOT_PRINT_OPTION_TEXT[FootPrintOptionCount - 1];
             
             se.SetDetails(errorMessageFormat.c_str(), value.c_str(),
@@ -626,14 +626,14 @@ bool GroundTrackPlot::SetStringParameter(const Integer id, const wxString &value
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
-bool GroundTrackPlot::SetStringParameter(const wxString &label,
-                                         const wxString &value)
+bool GroundTrackPlot::SetStringParameter(const std::string &label,
+                                         const std::string &value)
 {
    #if DBGLVL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("GroundTrackPlot::SetStringParameter()<%s> label=%s, value=%s \n"),
+      ("GroundTrackPlot::SetStringParameter()<%s> label=%s, value=%s \n",
        instanceName.c_str(), label.c_str(), value.c_str());
    #endif
    
@@ -664,7 +664,7 @@ const ObjectTypeArray& GroundTrackPlot::GetTypesForList(const Integer id)
 }
 
 //------------------------------------------------------------------------------
-// const ObjectTypeArray& GetTypesForList(const wxString &label)
+// const ObjectTypeArray& GetTypesForList(const std::string &label)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a list of types that need to be shown on a GUI for a parameter
@@ -675,15 +675,15 @@ const ObjectTypeArray& GroundTrackPlot::GetTypesForList(const Integer id)
  */
 //------------------------------------------------------------------------------
 const ObjectTypeArray&
-      GroundTrackPlot::GetTypesForList(const wxString &label)
+      GroundTrackPlot::GetTypesForList(const std::string &label)
 {
    return GetTypesForList(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-// virtual wxString GetRefObjectName(const Gmat::ObjectType type) const
+// virtual std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
-wxString GroundTrackPlot::GetRefObjectName(const Gmat::ObjectType type) const
+std::string GroundTrackPlot::GetRefObjectName(const Gmat::ObjectType type) const
 {
    if (type == Gmat::CELESTIAL_BODY)
       return centralBodyName;
@@ -729,7 +729,7 @@ const StringArray& GroundTrackPlot::GetRefObjectNameArray(const Gmat::ObjectType
 {
    #if DBGLVL_OBJ
    MessageInterface::ShowMessage
-      (wxT("GroundTrackPlot::GetRefObjectNameArray() entered, type=%d\n"), type);
+      ("GroundTrackPlot::GetRefObjectNameArray() entered, type=%d\n", type);
    #endif
    
    refObjectNames.clear();
@@ -739,16 +739,16 @@ const StringArray& GroundTrackPlot::GetRefObjectNameArray(const Gmat::ObjectType
        type == Gmat::CELESTIAL_BODY)
    {      
       #if DBGLVL_OBJ
-      MessageInterface::ShowMessage(wxT("   Adding '%s' to array\n"), centralBodyName.c_str());
+      MessageInterface::ShowMessage("   Adding '%s' to array\n", centralBodyName.c_str());
       #endif
       refObjectNames.push_back(centralBodyName);
    }
    
    #if DBGLVL_OBJ
    MessageInterface::ShowMessage
-      (wxT("GroundTrackPlot::GetRefObjectNameArray() returning for type:%d\n"), type);
+      ("GroundTrackPlot::GetRefObjectNameArray() returning for type:%d\n", type);
    for (unsigned int i=0; i<refObjectNames.size(); i++)
-      MessageInterface::ShowMessage(wxT("   %s\n"), refObjectNames[i].c_str());
+      MessageInterface::ShowMessage("   %s\n", refObjectNames[i].c_str());
    #endif
    
    return refObjectNames;
@@ -757,10 +757,10 @@ const StringArray& GroundTrackPlot::GetRefObjectNameArray(const Gmat::ObjectType
 
 //------------------------------------------------------------------------------
 // virtual GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                                const wxString &name)
+//                                const std::string &name)
 //------------------------------------------------------------------------------
 GmatBase* GroundTrackPlot::GetRefObject(const Gmat::ObjectType type,
-                                        const wxString &name)
+                                        const std::string &name)
 {
    // Any ref orbjet declared in this class?
    if (type == Gmat::CELESTIAL_BODY && name == centralBodyName)
@@ -772,7 +772,7 @@ GmatBase* GroundTrackPlot::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                           const wxString &name = wxT(""))
+//                           const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Set reference object pointer.
@@ -783,17 +783,17 @@ GmatBase* GroundTrackPlot::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool GroundTrackPlot::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                   const wxString &name)
+                                   const std::string &name)
 {
    #if DBGLVL_OBJ
    MessageInterface::ShowMessage
-      (wxT("GroundTrackPlot::SetRefObject() this=<%p>'%s', obj=<%p>'%s', type=%d[%s], name='%s'\n"),
+      ("GroundTrackPlot::SetRefObject() this=<%p>'%s', obj=<%p>'%s', type=%d[%s], name='%s'\n",
        this, GetName().c_str(), obj, obj->GetName().c_str(), type,
        obj->GetTypeName().c_str(), name.c_str());
    #endif
    
-   wxString realName = name;
-   if (name == wxT(""))
+   std::string realName = name;
+   if (name == "")
       realName = obj->GetName();
    
    if (obj->IsOfType(Gmat::SPACE_POINT))
@@ -819,8 +819,8 @@ bool GroundTrackPlot::UpdateSolverData()
    int last = size - 1;
    
    #if DBGLVL_SOLVER_CURRENT_ITER
-   MessageInterface::ShowMessage(wxT("===> num buffered data = %d\n"), size);
-   MessageInterface::ShowMessage(wxT("==========> now update solver plot\n"));
+   MessageInterface::ShowMessage("===> num buffered data = %d\n", size);
+   MessageInterface::ShowMessage("==========> now update solver plot\n");
    #endif
    
    if (size == 0)
@@ -838,7 +838,7 @@ bool GroundTrackPlot::UpdateSolverData()
       #if DBGLVL_SOLVER_CURRENT_ITER > 1
       for (int sc=0; sc<mScCount; sc++)
          MessageInterface::ShowMessage
-            (wxT("   i=%d, sc=%d, solver epoch = %f, X,Y,Z = %f, %f, %f\n"), i, sc,
+            ("   i=%d, sc=%d, solver epoch = %f, X,Y,Z = %f, %f, %f\n", i, sc,
              mCurrEpochArray[i], mCurrXArray[i][sc], mCurrYArray[i][sc],
              mCurrZArray[i][sc]);
       #endif
@@ -872,7 +872,7 @@ bool GroundTrackPlot::UpdateSolverData()
    
    if (runstate == Gmat::SOLVING)
    {
-      PlotInterface::TakeGlAction(instanceName, wxT("ClearSolverData"));
+      PlotInterface::TakeGlAction(instanceName, "ClearSolverData");
    }
    return true;
 }
@@ -885,10 +885,10 @@ bool GroundTrackPlot::Distribute(const Real *dat, Integer len)
 {
    #if DBGLVL_UPDATE
    MessageInterface::ShowMessage
-      (wxT("===========================================================================\n")
-       wxT("GroundTrackPlot::Distribute() instanceName=%s, active=%d, isEndOfRun=%d, ")
-       wxT("isEndOfReceive=%d\n   mAllSpCount=%d, mScCount=%d, len=%d, runstate=%d, ")
-       wxT("isDataStateChanged=%d\n"), instanceName.c_str(), active, isEndOfRun, isEndOfReceive,
+      ("===========================================================================\n"
+       "GroundTrackPlot::Distribute() instanceName=%s, active=%d, isEndOfRun=%d, "
+       "isEndOfReceive=%d\n   mAllSpCount=%d, mScCount=%d, len=%d, runstate=%d, "
+       "isDataStateChanged=%d\n", instanceName.c_str(), active, isEndOfRun, isEndOfReceive,
        mAllSpCount, mScCount, len, runstate, isDataStateChanged);
    #endif
    
@@ -900,9 +900,9 @@ bool GroundTrackPlot::Distribute(const Real *dat, Integer len)
    if (isDataStateChanged)
    {
       if (isDataOn)
-         PlotInterface::TakeGlAction(instanceName, wxT("PenDown"));
+         PlotInterface::TakeGlAction(instanceName, "PenDown");
       else
-         PlotInterface::TakeGlAction(instanceName, wxT("PenUp"));
+         PlotInterface::TakeGlAction(instanceName, "PenUp");
       
       isDataStateChanged = false;
    }
@@ -935,10 +935,10 @@ bool GroundTrackPlot::Distribute(const Real *dat, Integer len)
    
    
    #if DBGLVL_DATA
-   MessageInterface::ShowMessage(wxT("%s, len=%d\n"), GetName().c_str(), len);
+   MessageInterface::ShowMessage("%s, len=%d\n", GetName().c_str(), len);
    for (int i=0; i<len; i++)
-      MessageInterface::ShowMessage(wxT("%.11f  "), dat[i]);
-   MessageInterface::ShowMessage(wxT("\n"));
+      MessageInterface::ShowMessage("%.11f  ", dat[i]);
+   MessageInterface::ShowMessage("\n");
    #endif
    
    //------------------------------------------------------------
@@ -948,7 +948,7 @@ bool GroundTrackPlot::Distribute(const Real *dat, Integer len)
    {
       #if DBGLVL_UPDATE > 1
       MessageInterface::ShowMessage
-         (wxT("   Just returning: SolverIterations is %d and runstate is %d\n"),
+         ("   Just returning: SolverIterations is %d and runstate is %d\n",
           mSolverIterOption, runstate);
       #endif
       
@@ -969,9 +969,9 @@ bool GroundTrackPlot::Distribute(const Real *dat, Integer len)
 
 
 //------------------------------------------------------------------------------
-// const wxString* GetFootPrintOptionList()
+// const std::string* GetFootPrintOptionList()
 //------------------------------------------------------------------------------
-const wxString* GroundTrackPlot::GetFootPrintOptionList()
+const std::string* GroundTrackPlot::GetFootPrintOptionList()
 {
    return FOOT_PRINT_OPTION_TEXT;
 }
@@ -1002,9 +1002,9 @@ const StringArray& GroundTrackPlot::GetPropertyEnumStrings(const Integer id) con
 
 
 //---------------------------------------------------------------------------
-// const StringArray& GetPropertyEnumStrings(const wxString &label) const
+// const StringArray& GetPropertyEnumStrings(const std::string &label) const
 //---------------------------------------------------------------------------
-const StringArray& GroundTrackPlot::GetPropertyEnumStrings(const wxString &label) const
+const StringArray& GroundTrackPlot::GetPropertyEnumStrings(const std::string &label) const
 {
    return GetPropertyEnumStrings(GetParameterID(label));
 }

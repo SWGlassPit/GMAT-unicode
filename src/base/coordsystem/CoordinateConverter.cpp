@@ -142,7 +142,7 @@ void CoordinateConverter::Initialize()
 }
 
 //------------------------------------------------------------------------------
-//  void  SetJ2000BodyName(const wxString &toName)
+//  void  SetJ2000BodyName(const std::string &toName)
 //------------------------------------------------------------------------------
 /**
  * This method sets the j2000 body name for the CoordinateConverter object.
@@ -150,13 +150,13 @@ void CoordinateConverter::Initialize()
  * @param toName name to which to set the j2000 body name.
  */
 //------------------------------------------------------------------------------
-//void CoordinateConverter::SetJ2000BodyName(const wxString &toName)
+//void CoordinateConverter::SetJ2000BodyName(const std::string &toName)
 //{
 //   j2000BodyName = toName;
 //}
 
 //------------------------------------------------------------------------------
-//  wxString  GetJ2000BodyName() const
+//  std::string  GetJ2000BodyName() const
 //------------------------------------------------------------------------------
 /**
  * This method returns the j2000 body name for the CoordinateConverter object.
@@ -164,7 +164,7 @@ void CoordinateConverter::Initialize()
  * @return j2000 body name.
  */
 //------------------------------------------------------------------------------
-//wxString CoordinateConverter::GetJ2000BodyName() const
+//std::string CoordinateConverter::GetJ2000BodyName() const
 //{
 //   if (j2000Body) return j2000Body->GetName();
 //   else           return j2000BodyName;
@@ -262,11 +262,11 @@ bool CoordinateConverter::Convert(const A1Mjd &epoch, const Real *inState,
    
    #ifdef DEBUG_TO_FROM
       MessageInterface::ShowMessage
-         (wxT("In Convert, inCoord is %s(%p) and outCoord is %s(%p)\n"),
+         ("In Convert, inCoord is %s(%p) and outCoord is %s(%p)\n",
          (inCoord->GetName()).c_str(), inCoord, (outCoord->GetName()).c_str(),
           outCoord);
       MessageInterface::ShowMessage
-         (wxT("   forceComputation=%d, omitTranslation=%d\n"), forceComputation,
+         ("   forceComputation=%d, omitTranslation=%d\n", forceComputation,
           omitTranslation);
    #endif
    if (inCoord->GetName() == outCoord->GetName())
@@ -281,12 +281,12 @@ bool CoordinateConverter::Convert(const A1Mjd &epoch, const Real *inState,
       if ((firstCallFired == false) || (epoch.Get() == GmatTimeConstants::MJD_OF_J2000))
       {
          MessageInterface::ShowMessage(
-            wxT("Coordinate conversion check:\n   %s --> %s\n"), 
+            "Coordinate conversion check:\n   %s --> %s\n", 
             inCoord->GetName().c_str(), outCoord->GetName().c_str());
          MessageInterface::ShowMessage(
-            wxT("   Epoch: %.12lf\n"), epoch.Get());
+            "   Epoch: %.12lf\n", epoch.Get());
          MessageInterface::ShowMessage(
-            wxT("   input State    = [%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n"),
+            "   input State    = [%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n",
             inState[0], inState[1], inState[2], inState[3], inState[4], 
             inState[5]);
       }
@@ -294,11 +294,11 @@ bool CoordinateConverter::Convert(const A1Mjd &epoch, const Real *inState,
 
    if ((!inCoord) || (!outCoord))
       throw CoordinateSystemException(
-         wxT("Undefined coordinate system - conversion not performed."));
+         "Undefined coordinate system - conversion not performed.");
    
    #ifdef DEBUG_TO_FROM
    MessageInterface::ShowMessage
-      (wxT("   inCoord->GetOrigin=%s(%p), outCoord->GetOrigin=%s(%p)\n"),
+      ("   inCoord->GetOrigin=%s(%p), outCoord->GetOrigin=%s(%p)\n",
        inCoord->GetOrigin()->GetName().c_str(), inCoord->GetOrigin(),
        outCoord->GetOrigin()->GetName().c_str(), outCoord->GetOrigin());
    #endif
@@ -313,31 +313,31 @@ bool CoordinateConverter::Convert(const A1Mjd &epoch, const Real *inState,
    
    #ifdef DEBUG_TO_FROM
    MessageInterface::ShowMessage
-      (wxT("   sameOrigin=%d, omitTranslation=%d, coincident=%d\n"),
+      ("   sameOrigin=%d, omitTranslation=%d, coincident=%d\n",
        sameOrigin, omitTranslation, coincident);
    #endif
    
    inCoord->ToMJ2000Eq(epoch, inState, intState, coincident, forceComputation);
    #ifdef DEBUG_TO_FROM
       MessageInterface::ShowMessage
-         (wxT("In Convert, sameOrigin is %s,and coincident is %s\n"),
-         (sameOrigin? wxT("TRUE") : wxT("FALSE")),
-         (coincident? wxT("TRUE") : wxT("FALSE")));
-      MessageInterface::ShowMessage(wxT("inState = %12.4f   %12.4f   %12.4f\n"),
+         ("In Convert, sameOrigin is %s,and coincident is %s\n",
+         (sameOrigin? "TRUE" : "FALSE"),
+         (coincident? "TRUE" : "FALSE"));
+      MessageInterface::ShowMessage("inState = %12.4f   %12.4f   %12.4f\n",
             inState[0], inState[1], inState[2]);
-      MessageInterface::ShowMessage(wxT("          %12.4f   %12.4f   %12.4f\n"),
+      MessageInterface::ShowMessage("          %12.4f   %12.4f   %12.4f\n",
             inState[3], inState[4], inState[5]);
-      MessageInterface::ShowMessage(wxT("intState = %12.4f   %12.4f   %12.4f\n"),
+      MessageInterface::ShowMessage("intState = %12.4f   %12.4f   %12.4f\n",
             intState[0], intState[1], intState[2]);
-      MessageInterface::ShowMessage(wxT("          %12.4f   %12.4f   %12.4f\n"),
+      MessageInterface::ShowMessage("          %12.4f   %12.4f   %12.4f\n",
             intState[3], intState[4], intState[5]);
    #endif
    outCoord->FromMJ2000Eq(epoch, intState, outState, coincident,
                           forceComputation);
    #ifdef DEBUG_TO_FROM
-      MessageInterface::ShowMessage(wxT("outState = %12.4f   %12.4f   %12.4f\n"),
+      MessageInterface::ShowMessage("outState = %12.4f   %12.4f   %12.4f\n",
             outState[0], outState[1], outState[2]);
-      MessageInterface::ShowMessage(wxT("          %12.4f   %12.4f   %12.4f\n"),
+      MessageInterface::ShowMessage("          %12.4f   %12.4f   %12.4f\n",
             outState[3], outState[4], outState[5]);
    #endif
    
@@ -392,11 +392,11 @@ bool CoordinateConverter::Convert(const A1Mjd &epoch, const Real *inState,
       if ((firstCallFired == false) || (epoch.Get() == GmatTimeConstants::MJD_OF_J2000))
       {
          MessageInterface::ShowMessage(
-            wxT("   internal State = [%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n"),
+            "   internal State = [%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n",
             intState[0], intState[1], intState[2], intState[3], 
             intState[4], intState[5]);
          MessageInterface::ShowMessage(
-            wxT("   output State   = [%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n"),
+            "   output State   = [%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n",
             outState[0], outState[1], outState[2], outState[3], outState[4], 
             outState[5]);
          firstCallFired = true;

@@ -26,8 +26,8 @@
 class GMAT_API StateVectorException : public BaseException
 {
 public:
-   StateVectorException(const wxString& message = 
-                    wxT("Error occurred in StateVector class")) 
+   StateVectorException(const std::string& message = 
+                    "Error occurred in StateVector class") 
       : BaseException(message) {};
 };
 #endif

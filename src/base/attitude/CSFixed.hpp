@@ -46,7 +46,7 @@ class GMAT_API CSFixed : public Kinematic
 {
 public:
    // Constructor
-   CSFixed(const wxString &itsName = wxT(""));
+   CSFixed(const std::string &itsName = "");
    // copy constructor
    CSFixed(const CSFixed& att);
    // operator =
@@ -68,7 +68,7 @@ protected:
    };
    
    // leave these here, in case we need them later
-   //static const wxString PARAMETER_TEXT[CSFixedParamCount - KinematicParamCount];
+   //static const std::string PARAMETER_TEXT[CSFixedParamCount - KinematicParamCount];
    
    //static const Gmat::ParameterType PARAMETER_TYPE[CSFixedParamCount - KinematicParamCount];
 

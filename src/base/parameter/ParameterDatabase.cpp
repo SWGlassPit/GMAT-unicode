@@ -52,14 +52,14 @@ ParameterDatabase::ParameterDatabase()
    mStringParamPtrMap = new StringParamPtrMap;
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Add
-      (mStringParamPtrMap, wxT("mStringParamPtrMap"), wxT("ParameterDatabase::ParameterDatabase()"),
-       wxT("mStringParamPtrMap = new StringParamPtrMap"));
+      (mStringParamPtrMap, "mStringParamPtrMap", "ParameterDatabase::ParameterDatabase()",
+       "mStringParamPtrMap = new StringParamPtrMap");
    #endif
    
    #ifdef DEBUG_PARAMDB
    MessageInterface::ShowMessage
-      (wxT("ParameterDatabase(default) mStringParamPtrMap.size()=%d, ")
-       wxT("mNumParams=%d\n"),  mStringParamPtrMap->size(), mNumParams);
+      ("ParameterDatabase(default) mStringParamPtrMap.size()=%d, "
+       "mNumParams=%d\n",  mStringParamPtrMap->size(), mNumParams);
    #endif
 }
 
@@ -73,8 +73,8 @@ ParameterDatabase::ParameterDatabase(const ParameterDatabase &copy)
    mStringParamPtrMap = new StringParamPtrMap;
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Add
-      (mStringParamPtrMap, wxT("mStringParamPtrMap"), wxT("ParameterDatabase copy constructor"),
-       wxT("mStringParamPtrMap = new StringParamPtrMap"));
+      (mStringParamPtrMap, "mStringParamPtrMap", "ParameterDatabase copy constructor",
+       "mStringParamPtrMap = new StringParamPtrMap");
    #endif
    
    StringParamPtrMap::iterator pos;
@@ -87,8 +87,8 @@ ParameterDatabase::ParameterDatabase(const ParameterDatabase &copy)
    
    #ifdef DEBUG_PARAMDB
    MessageInterface::ShowMessage
-      (wxT("==> ParameterDatabase(copy) mStringParamPtrMap.size()=%d, ")
-       wxT("mNumParams=%d\n"),  mStringParamPtrMap->size(), mNumParams);
+      ("==> ParameterDatabase(copy) mStringParamPtrMap.size()=%d, "
+       "mNumParams=%d\n",  mStringParamPtrMap->size(), mNumParams);
    #endif
 }
 
@@ -107,8 +107,8 @@ ParameterDatabase& ParameterDatabase::operator=(const ParameterDatabase &right)
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (mStringParamPtrMap, wxT("mStringParamPtrMap"), wxT("ParameterDatabase operator="),
-          wxT("deleting old map"));
+         (mStringParamPtrMap, "mStringParamPtrMap", "ParameterDatabase operator=",
+          "deleting old map");
       #endif
       delete mStringParamPtrMap;
    }
@@ -116,8 +116,8 @@ ParameterDatabase& ParameterDatabase::operator=(const ParameterDatabase &right)
    mStringParamPtrMap = new StringParamPtrMap;
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Add
-      (mStringParamPtrMap, wxT("mStringParamPtrMap"), wxT("ParameterDatabase operator="),
-       wxT("mStringParamPtrMap = new StringParamPtrMap"));
+      (mStringParamPtrMap, "mStringParamPtrMap", "ParameterDatabase operator=",
+       "mStringParamPtrMap = new StringParamPtrMap");
    #endif
    
    StringParamPtrMap::iterator pos;
@@ -130,8 +130,8 @@ ParameterDatabase& ParameterDatabase::operator=(const ParameterDatabase &right)
    
    #ifdef DEBUG_PARAMDB
    MessageInterface::ShowMessage
-      (wxT("==> ParameterDatabase(=) mStringParamPtrMap.size()=%d, ")
-       wxT("mNumParams=%d\n"),  mStringParamPtrMap->size(), mNumParams);
+      ("==> ParameterDatabase(=) mStringParamPtrMap.size()=%d, "
+       "mNumParams=%d\n",  mStringParamPtrMap->size(), mNumParams);
    #endif
    
    return *this;
@@ -149,8 +149,8 @@ ParameterDatabase::~ParameterDatabase()
 {
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Remove
-      (mStringParamPtrMap, wxT("mStringParamPtrMap"), wxT("ParameterDatabase destructor"),
-       wxT("deleting old map"));
+      (mStringParamPtrMap, "mStringParamPtrMap", "ParameterDatabase destructor",
+       "deleting old map");
    #endif
    delete mStringParamPtrMap;
    mStringParamPtrMap = NULL;
@@ -189,12 +189,12 @@ const StringArray& ParameterDatabase::GetNamesOfParameters()
 
    if (mStringParamPtrMap == NULL)
       throw ParameterDatabaseException
-         (wxT("ParameterDatabase::GetNamesOfParameters() mStringParamPtrMap is NULL\n"));
+         ("ParameterDatabase::GetNamesOfParameters() mStringParamPtrMap is NULL\n");
 
    #ifdef DEBUG_PARAMDB
    MessageInterface::ShowMessage
-      (wxT("==> ParameterDatabase::GetNamesOfParameters() mStringParamPtrMap.size()=%d, ")
-       wxT("mNumParams=%d\n"),  mStringParamPtrMap->size(), mNumParams);
+      ("==> ParameterDatabase::GetNamesOfParameters() mStringParamPtrMap.size()=%d, "
+       "mNumParams=%d\n",  mStringParamPtrMap->size(), mNumParams);
    #endif
    
    for (pos = mStringParamPtrMap->begin(); pos != mStringParamPtrMap->end(); ++pos)
@@ -228,13 +228,13 @@ ParameterPtrArray ParameterDatabase::GetParameters() const
 
 
 //------------------------------------------------------------------------------
-// bool HasParameter(const wxString &name) const
+// bool HasParameter(const std::string &name) const
 //------------------------------------------------------------------------------
 /**
  * @return true if database has the parameter name, false otherwise
  */
 //------------------------------------------------------------------------------
-bool ParameterDatabase::HasParameter(const wxString &name) const
+bool ParameterDatabase::HasParameter(const std::string &name) const
 {
    bool found = false;
    StringParamPtrMap::iterator pos;
@@ -249,7 +249,7 @@ bool ParameterDatabase::HasParameter(const wxString &name) const
 
 
 //------------------------------------------------------------------------------
-// bool RenameParameter(const wxString &oldName, const wxString &newName)
+// bool RenameParameter(const std::string &oldName, const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * @param <oldName> parameter name to be renamed
@@ -258,19 +258,19 @@ bool ParameterDatabase::HasParameter(const wxString &name) const
  * @return true if parameter is renamed, false otherwise
  */
 //------------------------------------------------------------------------------
-bool ParameterDatabase::RenameParameter(const wxString &oldName,
-                                        const wxString &newName)
+bool ParameterDatabase::RenameParameter(const std::string &oldName,
+                                        const std::string &newName)
 {
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("ParameterDatabase::RenameParameter() oldName=%s, newName=%s\n"),
+      ("ParameterDatabase::RenameParameter() oldName=%s, newName=%s\n",
        oldName.c_str(), newName.c_str());
    #endif
    
    StringArray paramNames = GetNamesOfParameters();
-   wxString::size_type pos;
+   std::string::size_type pos;
    StringParamPtrMap::iterator pos1;
-   wxString newParamName;
+   std::string newParamName;
    
    for (UnsignedInt i=0; i<paramNames.size(); i++)
    {
@@ -298,51 +298,51 @@ bool ParameterDatabase::RenameParameter(const wxString &oldName,
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterCount(const wxString &name) const
+// Integer GetParameterCount(const std::string &name) const
 //------------------------------------------------------------------------------
 /**
  * @return number of data elements of given parameter name
  */
 //------------------------------------------------------------------------------
-Integer ParameterDatabase::GetParameterCount(const wxString &name) const
+Integer ParameterDatabase::GetParameterCount(const std::string &name) const
 {
    StringParamPtrMap::iterator pos;
    
    pos = mStringParamPtrMap->find(name);
    if (pos == mStringParamPtrMap->end())
       throw ParameterDatabaseException
-         (wxT("ParameterDatabase::GetParameterCount() Parameter name ") + name +
-          wxT(" not found in the database"));
+         ("ParameterDatabase::GetParameterCount() Parameter name " + name +
+          " not found in the database");
    else
       return pos->second->GetParameterCount();
 }
 
 
 //------------------------------------------------------------------------------
-// Parameter* GetParameter(const wxString &name) const
+// Parameter* GetParameter(const std::string &name) const
 //------------------------------------------------------------------------------
 /**
  * @return parameter object of given parameter name
  */
 //------------------------------------------------------------------------------
-Parameter* ParameterDatabase::GetParameter(const wxString &name) const
+Parameter* ParameterDatabase::GetParameter(const std::string &name) const
 {
    StringParamPtrMap::iterator pos;
    
    pos = mStringParamPtrMap->find(name);
    if (pos == mStringParamPtrMap->end())
       throw ParameterDatabaseException
-         (wxT("ParameterDatabase::GetParameter() Cannot find Parameter name \"") + name +
-          wxT("\" in the Database"));
+         ("ParameterDatabase::GetParameter() Cannot find Parameter name \"" + name +
+          "\" in the Database");
    else
       return pos->second;
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetFirstParameterName() const
+// std::string GetFirstParameterName() const
 //------------------------------------------------------------------------------
-wxString ParameterDatabase::GetFirstParameterName() const
+std::string ParameterDatabase::GetFirstParameterName() const
 {
    StringParamPtrMap::iterator pos;
    pos = mStringParamPtrMap->begin();
@@ -351,17 +351,17 @@ wxString ParameterDatabase::GetFirstParameterName() const
 
 
 //------------------------------------------------------------------------------
-// bool SetParameter(const wxString &name, Parameter *param)
+// bool SetParameter(const std::string &name, Parameter *param)
 //------------------------------------------------------------------------------
-bool ParameterDatabase::SetParameter(const wxString &name, Parameter *param)
+bool ParameterDatabase::SetParameter(const std::string &name, Parameter *param)
 {
    StringParamPtrMap::iterator pos;
    
    pos = mStringParamPtrMap->find(name);
    if (pos == mStringParamPtrMap->end())
       throw ParameterDatabaseException
-         (wxT("ParameterDatabase::SetParameter() Parameter name ") + name +
-          wxT(" not found in the database\n"));
+         ("ParameterDatabase::SetParameter() Parameter name " + name +
+          " not found in the database\n");
 
    pos->second = param;
    return true;
@@ -379,25 +379,25 @@ void ParameterDatabase::Add(Parameter *param)
 {
    if (param != NULL)
    {
-      wxString name = param->GetName();
+      std::string name = param->GetName();
       Add(name, param);
    }
    else
    {
       throw ParameterDatabaseException
-         (wxT("ParameterDatabase::Add() Cannot add NULL Parameter\n"));
+         ("ParameterDatabase::Add() Cannot add NULL Parameter\n");
    }
 }
 
 
 //------------------------------------------------------------------------------
-// void Add(const wxString &name, Parameter *param = NULL)
+// void Add(const std::string &name, Parameter *param = NULL)
 //------------------------------------------------------------------------------
-void ParameterDatabase::Add(const wxString &name, Parameter *param)
+void ParameterDatabase::Add(const std::string &name, Parameter *param)
 {
    #ifdef DEBUG_PARAMDB_ADD
    MessageInterface::ShowMessage
-      (wxT("ParameterDatabase::Add() <%p> entered, name='%p', param=<%p>'%s'\n"),
+      ("ParameterDatabase::Add() <%p> entered, name='%p', param=<%p>'%s'\n",
        this, name.c_str(), param);
    #endif
    
@@ -411,13 +411,13 @@ void ParameterDatabase::Add(const wxString &name, Parameter *param)
       mStringParamPtrMap->insert(StringParamPtrPair(name, param));
       mNumParams = mStringParamPtrMap->size();
       #ifdef DEBUG_PARAMDB_ADD
-      MessageInterface::ShowMessage(wxT("   '%s' added to the map\n"));
+      MessageInterface::ShowMessage("   '%s' added to the map\n");
       #endif
    }
    else
    {
       #ifdef DEBUG_PARAMDB_ADD
-      MessageInterface::ShowMessage(wxT("   '%s' already in the map, so ignored\n"));
+      MessageInterface::ShowMessage("   '%s' already in the map, so ignored\n");
       #endif
    }
 }
@@ -433,17 +433,17 @@ void ParameterDatabase::Remove(const Parameter *param)
 
 
 //------------------------------------------------------------------------------
-// void Remove(const wxString &name)
+// void Remove(const std::string &name)
 //------------------------------------------------------------------------------
-void ParameterDatabase::Remove(const wxString &name)
+void ParameterDatabase::Remove(const std::string &name)
 {
    StringParamPtrMap::iterator pos;
    
    pos = mStringParamPtrMap->find(name);
    if (pos == mStringParamPtrMap->end())
       throw ParameterDatabaseException
-         (wxT("ParameterDatabase::Remove() Parameter name: ") + name +
-          wxT(" not found in the database\n"));
+         ("ParameterDatabase::Remove() Parameter name: " + name +
+          " not found in the database\n");
    
    mStringParamPtrMap->erase(name);
    mNumParams = mStringParamPtrMap->size();  

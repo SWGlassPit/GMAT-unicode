@@ -33,8 +33,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Acos::Acos(const wxString &nomme)
-   : MathFunction(wxT("Acos"), nomme)
+Acos::Acos(const std::string &nomme)
+   : MathFunction("Acos", nomme)
 {
 }
 
@@ -93,7 +93,7 @@ void Acos::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
    leftNode->GetOutputInfo(type1, row1, col1);
    
    if (type1 != Gmat::REAL_TYPE)
-      throw MathException(wxT("Left is not scalar, so cannot do Acos().\n"));  
+      throw MathException("Left is not scalar, so cannot do Acos().\n");  
    else
    {
       type = type1;
@@ -114,7 +114,7 @@ void Acos::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 bool Acos::ValidateInputs()
 {
    if (leftNode == NULL)
-      throw MathException(wxT("Acos() - Missing input arguments.\n"));
+      throw MathException("Acos() - Missing input arguments.\n");
    
    Integer type1, row1, col1; // Left node
    
@@ -122,7 +122,7 @@ bool Acos::ValidateInputs()
    if (leftNode)
       leftNode->GetOutputInfo(type1, row1, col1);
    else
-      throw MathException(wxT("Acos::ValidateInputs() leftNode is NULL\n"));
+      throw MathException("Acos::ValidateInputs() leftNode is NULL\n");
    
    if (type1 == Gmat::REAL_TYPE)
       return true;

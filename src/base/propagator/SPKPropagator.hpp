@@ -33,47 +33,47 @@
 class SPKPropagator : public EphemerisPropagator
 {
 public:
-   SPKPropagator(const wxString &name = wxT(""));
+   SPKPropagator(const std::string &name = "");
    virtual ~SPKPropagator();
    SPKPropagator(const SPKPropagator& spk);
    SPKPropagator& operator=(const SPKPropagator& spk);
 
    // Access methods for the scriptable parameters
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual wxString  GetParameterUnit(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual std::string  GetParameterUnit(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
 
    virtual bool         IsParameterReadOnly(const Integer id) const;
-   virtual bool         IsParameterReadOnly(const wxString &label) const;
+   virtual bool         IsParameterReadOnly(const std::string &label) const;
 
-   virtual wxString  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value);
-   virtual wxString  GetStringParameter(const Integer id,
+                                           const std::string &value);
+   virtual std::string  GetStringParameter(const Integer id,
                                            const Integer index) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
    virtual const StringArray&
                         GetStringArrayParameter(const Integer id) const;
    virtual const StringArray&
                         GetStringArrayParameter(const Integer id,
                                                 const Integer index) const;
-   virtual wxString  GetStringParameter(const wxString &label) const;
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
-   virtual wxString  GetStringParameter(const wxString &label,
+   virtual std::string  GetStringParameter(const std::string &label) const;
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
+   virtual std::string  GetStringParameter(const std::string &label,
                                            const Integer index) const;
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value,
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value,
                                            const Integer index);
    virtual const StringArray&
-                        GetStringArrayParameter(const wxString &label) const;
+                        GetStringArrayParameter(const std::string &label) const;
    virtual const StringArray&
-                        GetStringArrayParameter(const wxString &label,
+                        GetStringArrayParameter(const std::string &label,
                                                 const Integer index) const;
 
    virtual bool Initialize();
@@ -94,7 +94,7 @@ protected:
    SpiceDouble j2ET;
 
    /// Central body string used by SPK (needed because of Luna/Moon names)
-   wxString spkCentralBody;
+   std::string spkCentralBody;
 
    SpiceOrbitKernelReader *skr;
 
@@ -110,7 +110,7 @@ protected:
    static const Gmat::ParameterType PARAMETER_TYPE[SPKPropagatorParamCount -
                                                    EphemerisPropagatorParamCount];
    /// SPKPropagator parameter labels
-   static const wxString PARAMETER_TEXT[SPKPropagatorParamCount -
+   static const std::string PARAMETER_TEXT[SPKPropagatorParamCount -
                                            EphemerisPropagatorParamCount];
 
    virtual void         UpdateState();

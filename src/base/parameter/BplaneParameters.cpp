@@ -36,7 +36,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// BdotT(const wxString &name, GmatBase *obj)
+// BdotT(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -45,10 +45,10 @@
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-BdotT::BdotT(const wxString &name, GmatBase *obj)
-   : BplaneReal(name, wxT("BdotT"), obj, wxT("B dot T"), wxT(""), GmatParam::COORD_SYS)
+BdotT::BdotT(const std::string &name, GmatBase *obj)
+   : BplaneReal(name, "BdotT", obj, "B dot T", "", GmatParam::COORD_SYS)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
 }
 
@@ -124,8 +124,8 @@ bool BdotT::Evaluate()
 //    {
 //       mRealValue = REAL_PARAMETER_UNDEFINED;
 //       MessageInterface::ShowMessage
-//          (e.GetFullMessage() + wxT(",\n     so setting BdotT parameter value to: ") +
-//           GmatRealUtil::ToString(REAL_PARAMETER_UNDEFINED) + wxT("\n"));
+//          (e.GetFullMessage() + ",\n     so setting BdotT parameter value to: " +
+//           GmatRealUtil::ToString(REAL_PARAMETER_UNDEFINED) + "\n");
 //    }
    
 //    if (mRealValue == REAL_PARAMETER_UNDEFINED)
@@ -165,7 +165,7 @@ GmatBase* BdotT::Clone(void) const
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// BdotR(const wxString &name, GmatBase *obj)
+// BdotR(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -174,10 +174,10 @@ GmatBase* BdotT::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-BdotR::BdotR(const wxString &name, GmatBase *obj)
-   : BplaneReal(name, wxT("BdotR"), obj, wxT("B dot R"), wxT(""), GmatParam::COORD_SYS)
+BdotR::BdotR(const std::string &name, GmatBase *obj)
+   : BplaneReal(name, "BdotR", obj, "B dot R", "", GmatParam::COORD_SYS)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
 }
 
@@ -251,8 +251,8 @@ bool BdotR::Evaluate()
    {
       mRealValue = REAL_PARAMETER_UNDEFINED;
       MessageInterface::ShowMessage
-         (e.GetFullMessage() + wxT(",\n     so settting BdotR parameter value to: ") +
-          GmatRealUtil::ToString(REAL_PARAMETER_UNDEFINED) + wxT("\n"));
+         (e.GetFullMessage() + ",\n     so settting BdotR parameter value to: " +
+          GmatRealUtil::ToString(REAL_PARAMETER_UNDEFINED) + "\n");
    }
    
    if (mRealValue == REAL_PARAMETER_UNDEFINED)
@@ -292,7 +292,7 @@ GmatBase* BdotR::Clone(void) const
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// BVectorMag(const wxString &name, GmatBase *obj)
+// BVectorMag(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -301,10 +301,10 @@ GmatBase* BdotR::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-BVectorMag::BVectorMag(const wxString &name, GmatBase *obj)
-   : BplaneReal(name, wxT("BVectorMag"), obj, wxT("B Vector Magnitude"), wxT(""), GmatParam::COORD_SYS)
+BVectorMag::BVectorMag(const std::string &name, GmatBase *obj)
+   : BplaneReal(name, "BVectorMag", obj, "B Vector Magnitude", "", GmatParam::COORD_SYS)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
 }
 
@@ -378,8 +378,8 @@ bool BVectorMag::Evaluate()
    {
       mRealValue = REAL_PARAMETER_UNDEFINED;
       MessageInterface::ShowMessage
-         (e.GetFullMessage() + wxT(",\n     so settting BVectorMag parameter value to: ") +
-          GmatRealUtil::ToString(REAL_PARAMETER_UNDEFINED) + wxT("\n"));
+         (e.GetFullMessage() + ",\n     so settting BVectorMag parameter value to: " +
+          GmatRealUtil::ToString(REAL_PARAMETER_UNDEFINED) + "\n");
    }
    
    if (mRealValue == REAL_PARAMETER_UNDEFINED)
@@ -419,7 +419,7 @@ GmatBase* BVectorMag::Clone(void) const
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// BVectorAngle(const wxString &name, GmatBase *obj)
+// BVectorAngle(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -428,10 +428,10 @@ GmatBase* BVectorMag::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-BVectorAngle::BVectorAngle(const wxString &name, GmatBase *obj)
-   : BplaneReal(name, wxT("BVectorAngle"), obj, wxT("B Vector Angle"), wxT(""), GmatParam::COORD_SYS)
+BVectorAngle::BVectorAngle(const std::string &name, GmatBase *obj)
+   : BplaneReal(name, "BVectorAngle", obj, "B Vector Angle", "", GmatParam::COORD_SYS)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
 }
 
@@ -505,8 +505,8 @@ bool BVectorAngle::Evaluate()
    {
       mRealValue = REAL_PARAMETER_UNDEFINED;
       MessageInterface::ShowMessage
-         (e.GetFullMessage() + wxT(",\n     so settting BVectorAngle parameter value to: ") +
-          GmatRealUtil::ToString(REAL_PARAMETER_UNDEFINED) + wxT("\n"));
+         (e.GetFullMessage() + ",\n     so settting BVectorAngle parameter value to: " +
+          GmatRealUtil::ToString(REAL_PARAMETER_UNDEFINED) + "\n");
    }
    
    if (mRealValue == REAL_PARAMETER_UNDEFINED)

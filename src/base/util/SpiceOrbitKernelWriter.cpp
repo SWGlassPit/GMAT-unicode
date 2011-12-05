@@ -47,19 +47,19 @@
 //---------------------------------
 
 
-wxString   SpiceOrbitKernelWriter::TMP_TXT_FILE_NAME = wxT("GMATtmpSPKcmmnt");
+std::string   SpiceOrbitKernelWriter::TMP_TXT_FILE_NAME = "GMATtmpSPKcmmnt";
 const Integer SpiceOrbitKernelWriter::MAX_FILE_RENAMES  = 1000; // currently unused
 //---------------------------------
 // public methods
 //---------------------------------
 //------------------------------------------------------------------------------
-//  SpiceOrbitKernelWriter(const wxString       &objName,
-//                         const wxString       &centerName,
+//  SpiceOrbitKernelWriter(const std::string       &objName,
+//                         const std::string       &centerName,
 //                         Integer                 objNAIFId,
 //                         Integer                 centerNAIFId,
-//                         const wxString       &fileName,
+//                         const std::string       &fileName,
 //                         Integer                 deg,
-//                         const wxString       &frame)
+//                         const std::string       &frame)
 //------------------------------------------------------------------------------
 /**
  * This method constructs a SpiceKernelWriter instance.
@@ -71,14 +71,14 @@ const Integer SpiceOrbitKernelWriter::MAX_FILE_RENAMES  = 1000; // currently unu
  * @param    centerNAIFId  NAIF ID for the central body
  * @param    fileName      name of the kernel to generate
  * @param    deg           degree of interpolating polynomials
- * @param    frame         reference frame (default = wxT("J2000"))
+ * @param    frame         reference frame (default = "J2000")
  *
  */
 //------------------------------------------------------------------------------
-SpiceOrbitKernelWriter::SpiceOrbitKernelWriter(const wxString      &objName,   const wxString &centerName,
+SpiceOrbitKernelWriter::SpiceOrbitKernelWriter(const std::string      &objName,   const std::string &centerName,
                                               Integer                 objNAIFId,  Integer           centerNAIFId,
-                                              const wxString       &fileName,  Integer           deg,
-                                              const wxString       &frame) :
+                                              const std::string       &fileName,  Integer           deg,
+                                              const std::string       &frame) :
    SpiceKernelWriter(),
    objectName      (objName),
    centralBodyName (centerName),
@@ -89,19 +89,19 @@ SpiceOrbitKernelWriter::SpiceOrbitKernelWriter(const wxString      &objName,   c
    fm              (NULL)
 {
    #ifdef DEBUG_SPK_WRITING
-      MessageInterface::ShowMessage(wxT("Entering constructor for SPKOrbitWriter with fileName = %s, objectName = %s\n"),
+      MessageInterface::ShowMessage("Entering constructor for SPKOrbitWriter with fileName = %s, objectName = %s\n",
             fileName.c_str(), objName.c_str());
    #endif
    if (GmatMathUtil::IsEven(deg)) // degree must be odd for Data Type 13
    {
-      wxString errmsg = wxT("Error creating SpiceOrbitKernelWriter: degree must be odd for Data Type 13\n");
+      std::string errmsg = "Error creating SpiceOrbitKernelWriter: degree must be odd for Data Type 13\n";
       throw UtilityException(errmsg);
    }
    // Check for the default NAIF ID
    if (objNAIFId == SpiceInterface::DEFAULT_NAIF_ID)
    {
       MessageInterface::ShowMessage(
-            wxT("*** WARNING *** NAIF ID for object %s is set to the default NAIF ID (%d).  Resulting SPK file will contain that value as the object's ID.\n"),
+            "*** WARNING *** NAIF ID for object %s is set to the default NAIF ID (%d).  Resulting SPK file will contain that value as the object's ID.\n",
             objectName.c_str(), objNAIFId);
    }
 
@@ -109,16 +109,16 @@ SpiceOrbitKernelWriter::SpiceOrbitKernelWriter(const wxString      &objName,   c
    fm = FileManager::Instance();
    // Create the temporary text file to hold the meta data
    tmpTxtFileName = fm->GetAbsPathname(FileManager::OUTPUT_PATH);
-   tmpTxtFileName += TMP_TXT_FILE_NAME + objectName + wxT(".txt");
+   tmpTxtFileName += TMP_TXT_FILE_NAME + objectName + ".txt";
    #ifdef DEBUG_SPK_WRITING
-      MessageInterface::ShowMessage(wxT("temporary SPICE file name is: %s\n"), tmpTxtFileName.c_str());
+      MessageInterface::ShowMessage("temporary SPICE file name is: %s\n", tmpTxtFileName.c_str());
    #endif
-   tmpTxtFile = fopen(tmpTxtFileName.char_str(), "w");
+   tmpTxtFile = fopen(tmpTxtFileName.c_str(), "w");
 
    if (!tmpTxtFile)
    {
-      wxString errmsg = wxT("Error creating or opening temporary text file for SPK meta data, for object \"");
-      errmsg += objectName + wxT("\".  No meta data will be added to the file.\n");
+      std::string errmsg = "Error creating or opening temporary text file for SPK meta data, for object \"";
+      errmsg += objectName + "\".  No meta data will be added to the file.\n";
       MessageInterface::PopupMessage(Gmat::WARNING_, errmsg);
       tmpFileOK = false;
    }
@@ -126,7 +126,7 @@ SpiceOrbitKernelWriter::SpiceOrbitKernelWriter(const wxString      &objName,   c
    {
       fclose(tmpTxtFile);
       // remove the temporary text file
-      remove(tmpTxtFileName.char_str());
+      remove(tmpTxtFileName.c_str());
       tmpFileOK = true;
    }
 
@@ -136,19 +136,19 @@ SpiceOrbitKernelWriter::SpiceOrbitKernelWriter(const wxString      &objName,   c
       centralBodyNAIFId = GetNaifID(centralBodyName);
    else
       centralBodyNAIFId = centerNAIFId;
-   kernelNameSPICE   = kernelFileName.char_str();
+   kernelNameSPICE   = kernelFileName.c_str();
    degree            = deg;
-   referenceFrame    = frameName.char_str();
+   referenceFrame    = frameName.c_str();
    handle            = -999;
 
    // @todo - do we need to call boddef_c here to set the NAIF ID for the spacecraft????
 
    // get a file handle here
    SpiceInt        maxChar = MAX_CHAR_COMMENT;
-   wxString     internalFileName = wxT("GMAT-generated SPK file for ") + objectName;
-   ConstSpiceChar  *internalSPKName  = internalFileName.char_str();
+   std::string     internalFileName = "GMAT-generated SPK file for " + objectName;
+   ConstSpiceChar  *internalSPKName  = internalFileName.c_str();
    #ifdef DEBUG_SPK_WRITING
-      MessageInterface::ShowMessage(wxT("... attempting to open SPK file with  fileName = %s\n"),
+      MessageInterface::ShowMessage("... attempting to open SPK file with  fileName = %s\n",
             fileName.c_str());
    #endif
    spkopn_c(kernelNameSPICE, internalSPKName, maxChar, &handle); // CSPICE method to create and open an SPK kernel
@@ -158,15 +158,15 @@ SpiceOrbitKernelWriter::SpiceOrbitKernelWriter(const wxString      &objName,   c
       // append to an existing file - this is the most common error returned from spkopn
       Integer     fileCounter = 0;
       bool        done        = false;
-      wxString fileWithBSP = fileName;
-      wxString fileNoBSP   = fileWithBSP.erase(fileWithBSP.rfind(wxT(".bsp")));
-      wxString fileRename(wxT(""));
+      std::string fileWithBSP = fileName;
+      std::string fileNoBSP   = fileWithBSP.erase(fileWithBSP.rfind(".bsp"));
+      std::stringstream fileRename("");
       Integer     retCode = 0;
       while (!done)
       {
-         fileRename.Clear();
-         fileRename << fileNoBSP << wxT("__") << fileCounter << wxT(".bsp");
-         if (fm->RenameFile(kernelFileName, fileRename, retCode))
+         fileRename.str("");
+         fileRename << fileNoBSP << "__" << fileCounter << ".bsp";
+         if (fm->RenameFile(kernelFileName, fileRename.str(), retCode))
          {
             done = true;
          }
@@ -179,17 +179,17 @@ SpiceOrbitKernelWriter::SpiceOrbitKernelWriter(const wxString      &objName,   c
 //               else
 //               {
 //                  reset_c(); // reset failure flag in SPICE
-//                  wxString errmsg = wxT("Error renaming existing SPK file  \"");
-//                  errmsg += kernelFileName + wxT("\".  Maximum number of renames exceeded.\n");
+//                  std::string errmsg = "Error renaming existing SPK file  \"";
+//                  errmsg += kernelFileName + "\".  Maximum number of renames exceeded.\n";
 //                  throw UtilityException(errmsg);
 //               }
             }
             else
             {
                reset_c(); // reset failure flag in SPICE
-               wxString errmsg =
-                     wxT("Unknown system error occurred when attempting to rename existing SPK file \"");
-               errmsg += kernelFileName + wxT("\".\n");
+               std::string errmsg =
+                     "Unknown system error occurred when attempting to rename existing SPK file \"";
+               errmsg += kernelFileName + "\".\n";
                throw UtilityException(errmsg);
             }
          }
@@ -205,21 +205,21 @@ SpiceOrbitKernelWriter::SpiceOrbitKernelWriter(const wxString      &objName,   c
          //SpiceChar      err[MAX_LONG_MESSAGE_VALUE];
          SpiceChar      *err = new SpiceChar[MAX_LONG_MESSAGE_VALUE];
          getmsg_c(option, numErrChar, err);
-         wxString errStr(wxString::FromAscii(err));
-         wxString errmsg = wxT("Error getting file handle for SPK file \"");
-         errmsg += kernelFileName + wxT("\".  Message received from CSPICE is: ");
-         errmsg += errStr + wxT("\n");
+         std::string errStr(err);
+         std::string errmsg = "Error getting file handle for SPK file \"";
+         errmsg += kernelFileName + "\".  Message received from CSPICE is: ";
+         errmsg += errStr + "\n";
          reset_c();
          delete [] err;
          throw UtilityException(errmsg);
       }
    }
    fileOpen = true;
-   // set up the wxT("basic") meta data here ...
+   // set up the "basic" meta data here ...
    SetBasicMetaData();
 
    // make sure that the NAIF Id is associated with the object name  @todo - need to set center's Id as well sometimes?
-   ConstSpiceChar *itsName = objectName.char_str();
+   ConstSpiceChar *itsName = objectName.c_str();
    boddef_c(itsName, objectNAIFId);        // CSPICE method to set NAIF ID for an object
    if (failed_c())
    {
@@ -228,14 +228,14 @@ SpiceOrbitKernelWriter::SpiceOrbitKernelWriter(const wxString      &objName,   c
       //SpiceChar      err[MAX_LONG_MESSAGE_VALUE];
       SpiceChar      *err = new SpiceChar[MAX_LONG_MESSAGE_VALUE];
       getmsg_c(option, numErrChar, err);
-      wxString errStr(wxString::FromAscii(err));
-      wxString ss(wxT(""));
-      ss << wxT("Unable to set NAIF Id for object \"") << objectName << wxT("\" to the value ");
-      ss << objNAIFId << wxT(".  Message received from CSPICE is: ");
-      ss << errStr << wxT("\n");
+      std::string errStr(err);
+      std::stringstream ss("");
+      ss << "Unable to set NAIF Id for object \"" << objectName << "\" to the value ";
+      ss << objNAIFId << ".  Message received from CSPICE is: ";
+      ss << errStr << std::endl;
       reset_c();
       delete [] err;
-      throw UtilityException(ss);
+      throw UtilityException(ss.str());
    }
 }
 
@@ -267,8 +267,8 @@ SpiceOrbitKernelWriter::SpiceOrbitKernelWriter(const SpiceOrbitKernelWriter &cop
    tmpTxtFile        (copy.tmpTxtFile),
    fm                (copy.fm)// ??
 {
-   kernelNameSPICE  = kernelFileName.char_str();
-   referenceFrame   = frameName.char_str();
+   kernelNameSPICE  = kernelFileName.c_str();
+   referenceFrame   = frameName.c_str();
 }
 
 //------------------------------------------------------------------------------
@@ -276,7 +276,7 @@ SpiceOrbitKernelWriter::SpiceOrbitKernelWriter(const SpiceOrbitKernelWriter &cop
 //------------------------------------------------------------------------------
 /**
  * This method copies data from the input SpiceKernelWriter instance to
- * wxT("this") instance.
+ * "this" instance.
  *
  * @param    copy       object whose data to copy
  *
@@ -301,8 +301,8 @@ SpiceOrbitKernelWriter& SpiceOrbitKernelWriter::operator=(const SpiceOrbitKernel
       tmpTxtFile        = copy.tmpTxtFile; // ??
       fm                = copy.fm;
 
-      kernelNameSPICE   = kernelFileName.char_str();
-      referenceFrame    = frameName.char_str();
+      kernelNameSPICE   = kernelFileName.c_str();
+      referenceFrame    = frameName.c_str();
    }
 
    return *this;
@@ -312,7 +312,7 @@ SpiceOrbitKernelWriter& SpiceOrbitKernelWriter::operator=(const SpiceOrbitKernel
 //  ~SpiceOrbitKernelWriter()
 //------------------------------------------------------------------------------
 /**
- * This method deletes wxT("this") SpiceKernelWriter instance.
+ * This method deletes "this" SpiceKernelWriter instance.
  * (destructor)
  *
  */
@@ -329,7 +329,7 @@ SpiceOrbitKernelWriter::~SpiceOrbitKernelWriter()
 /**
  * This method clones the object.
  *
- * @return new object, cloned from wxT("this") object.
+ * @return new object, cloned from "this" object.
  *
  */
 //------------------------------------------------------------------------------
@@ -360,8 +360,8 @@ void SpiceOrbitKernelWriter::WriteSegment(const A1Mjd &start, const A1Mjd &end,
    SpiceInt numStates = states.size();
    if ((Integer) epochs.size() != (Integer) numStates)
    {
-      wxString errmsg = wxT("Error writing segment to SPK file \"");
-      errmsg += kernelFileName + wxT("\" - size of epoch array does not match size of state array.\n");
+      std::string errmsg = "Error writing segment to SPK file \"";
+      errmsg += kernelFileName + "\" - size of epoch array does not match size of state array.\n";
       throw UtilityException(errmsg);
    }
    // do time conversions here, for start, end, and all epochs
@@ -370,7 +370,7 @@ void SpiceOrbitKernelWriter::WriteSegment(const A1Mjd &start, const A1Mjd &end,
    SpiceDouble  endSPICE = A1ToSpiceTime(end.Get());
 
    #ifdef DEBUG_SPK_WRITING
-      MessageInterface::ShowMessage(wxT("In WriteSegment, epochs are:\n"));
+      MessageInterface::ShowMessage("In WriteSegment, epochs are:\n");
    #endif
    SpiceDouble  *epochArray;     // (deleted at end of method)
    epochArray = new SpiceDouble[numStates];
@@ -378,7 +378,7 @@ void SpiceOrbitKernelWriter::WriteSegment(const A1Mjd &start, const A1Mjd &end,
    {
       epochArray[ii] = A1ToSpiceTime(epochs.at(ii)->Get());
       #ifdef DEBUG_SPK_WRITING
-         MessageInterface::ShowMessage(wxT("epochArray[%d] = %12.10f\n"), ii, (Real) epochArray[ii]);
+         MessageInterface::ShowMessage("epochArray[%d] = %12.10f\n", ii, (Real) epochArray[ii]);
       #endif
    }
 
@@ -395,8 +395,8 @@ void SpiceOrbitKernelWriter::WriteSegment(const A1Mjd &start, const A1Mjd &end,
    }
 
    // create a segment ID
-   wxString         segmentID = wxT("SPK_SEGMENT");
-   ConstSpiceChar      *segmentIDSPICE = segmentID.char_str();
+   std::string         segmentID = "SPK_SEGMENT";
+   ConstSpiceChar      *segmentIDSPICE = segmentID.c_str();
 
    // pass data to CSPICE method that writes a segment to a Data Type 13 kernel
    spkw13_c(handle, objectNAIFId, centralBodyNAIFId, referenceFrame, startSPICE,
@@ -409,10 +409,10 @@ void SpiceOrbitKernelWriter::WriteSegment(const A1Mjd &start, const A1Mjd &end,
       //SpiceChar      err[MAX_LONG_MESSAGE_VALUE];
       SpiceChar      *err = new SpiceChar[MAX_LONG_MESSAGE_VALUE];
       getmsg_c(option, numErrChar, err);
-      wxString errStr(wxString::FromAscii(err));
-      wxString errmsg = wxT("Error writing ephemeris data to SPK file \"");
-      errmsg += kernelFileName + wxT("\".  Message received from CSPICE is: ");
-      errmsg += errStr + wxT("\n");
+      std::string errStr(err);
+      std::string errmsg = "Error writing ephemeris data to SPK file \"";
+      errmsg += kernelFileName + "\".  Message received from CSPICE is: ";
+      errmsg += errStr + "\n";
       reset_c();
       delete [] err;
       throw UtilityException(errmsg);
@@ -422,7 +422,7 @@ void SpiceOrbitKernelWriter::WriteSegment(const A1Mjd &start, const A1Mjd &end,
 }
 
 //------------------------------------------------------------------------------
-//  void AddMetaData(const wxString &line, bool done)
+//  void AddMetaData(const std::string &line, bool done)
 //------------------------------------------------------------------------------
 /**
  * This method writes meta data (comments) to the SPK kernel.
@@ -432,12 +432,12 @@ void SpiceOrbitKernelWriter::WriteSegment(const A1Mjd &start, const A1Mjd &end,
  *                  (if so, file can be finalized)
  */
 //------------------------------------------------------------------------------
-void SpiceOrbitKernelWriter::AddMetaData(const wxString &line, bool done)
+void SpiceOrbitKernelWriter::AddMetaData(const std::string &line, bool done)
 {
    if (!fileOpen)
    {
-      wxString errmsg = wxT("Unable to add meta data to SPK kernel \"");
-      errmsg += kernelFileName + wxT("\".  File has been finalized and closed.\n");
+      std::string errmsg = "Unable to add meta data to SPK kernel \"";
+      errmsg += kernelFileName + "\".  File has been finalized and closed.\n";
       throw UtilityException(errmsg);
    }
    addedMetaData.push_back(line);
@@ -461,8 +461,8 @@ void SpiceOrbitKernelWriter::AddMetaData(const StringArray &lines, bool done)
 {
    if (!fileOpen)
    {
-      wxString errmsg = wxT("Unable to add meta data to SPK kernel \"");
-      errmsg += kernelFileName + wxT("\".  File has been finalized and closed.\n");
+      std::string errmsg = "Unable to add meta data to SPK kernel \"";
+      errmsg += kernelFileName + "\".  File has been finalized and closed.\n";
       throw UtilityException(errmsg);
    }
    unsigned int sz = lines.size();
@@ -494,21 +494,21 @@ void SpiceOrbitKernelWriter::AddMetaData(const StringArray &lines, bool done)
 void SpiceOrbitKernelWriter::SetBasicMetaData()
 {
    basicMetaData.clear();
-   wxString metaDataLine = wxT("--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---\n");
+   std::string metaDataLine = "--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---\n";
    basicMetaData.push_back(metaDataLine);
-   metaDataLine = (wxT("SPK EPHEMERIS kernel for object ") + objectName) + wxT("\n");
+   metaDataLine = ("SPK EPHEMERIS kernel for object " + objectName) + "\n";
    basicMetaData.push_back(metaDataLine);
-   metaDataLine = wxT("Generated on ");
+   metaDataLine = "Generated on ";
    metaDataLine += GmatTimeUtil::FormatCurrentTime();
-   metaDataLine += wxT("\n");
+   metaDataLine += "\n";
    basicMetaData.push_back(metaDataLine);
-   metaDataLine = wxT("Generated by the General Mission Analysis Tool (GMAT) [Build ");
-   metaDataLine += wxT(__DATE__);
-   metaDataLine += wxT(" at ");
-   metaDataLine += wxT(__TIME__);
-   metaDataLine += wxT("]\n");
+   metaDataLine = "Generated by the General Mission Analysis Tool (GMAT) [Build ";
+   metaDataLine += __DATE__;
+   metaDataLine += " at ";
+   metaDataLine += __TIME__;
+   metaDataLine += "]\n";
    basicMetaData.push_back(metaDataLine);
-   metaDataLine = wxT("--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---\n");
+   metaDataLine = "--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---\n";
    basicMetaData.push_back(metaDataLine);
 }
 
@@ -543,17 +543,17 @@ void SpiceOrbitKernelWriter::FinalizeKernel()
 void SpiceOrbitKernelWriter::WriteMetaData()
 {
    // open the temporary file for writing the metadata
-   tmpTxtFile = fopen(tmpTxtFileName.char_str(), "w");
+   tmpTxtFile = fopen(tmpTxtFileName.c_str(), "w");
 
    // write the meta data to the temporary file (according to SPICE documentation, must use regular C routines)
    // close the temporary file, when done
    unsigned int basicSize = basicMetaData.size();
    unsigned int addedSize = addedMetaData.size();
    for (unsigned int ii = 0; ii < basicSize; ii++)
-      fprintf(tmpTxtFile, "%s", (char *)(basicMetaData[ii]).char_str());
+      fprintf(tmpTxtFile, "%s", (basicMetaData[ii]).c_str());
    fprintf(tmpTxtFile,"\n");
    for (unsigned int ii = 0; ii < addedSize; ii++)
-      fprintf(tmpTxtFile, "%s", (char *)(addedMetaData[ii]).char_str());
+      fprintf(tmpTxtFile, "%s", (addedMetaData[ii]).c_str());
    fprintf(tmpTxtFile,"\n");
    fflush(tmpTxtFile);
    fclose(tmpTxtFile);
@@ -579,10 +579,10 @@ void SpiceOrbitKernelWriter::WriteMetaData()
       //SpiceChar      err[MAX_LONG_MESSAGE_VALUE];
       SpiceChar      *err = new SpiceChar[MAX_LONG_MESSAGE_VALUE];
       getmsg_c(option, numErrChar, err);
-      wxString errStr(wxString::FromAscii(err));
-      wxString errmsg = wxT("Error writing meta data to SPK file \"");
-      errmsg += kernelFileName + wxT("\".  Message received from CSPICE is: ");
-      errmsg += errStr + wxT("\n");
+      std::string errStr(err);
+      std::string errmsg = "Error writing meta data to SPK file \"";
+      errmsg += kernelFileName + "\".  Message received from CSPICE is: ";
+      errmsg += errStr + "\n";
       reset_c();
       delete [] err;
       throw UtilityException(errmsg);
@@ -590,7 +590,7 @@ void SpiceOrbitKernelWriter::WriteMetaData()
    // close the text file
    ftncls_c(unit);                         // CSPICE method to close the text file
    // remove the temporary text file
-   remove(tmpTxtFileName.char_str());
+   remove(tmpTxtFileName.c_str());
    delete [] tmpTxt;
 }
 

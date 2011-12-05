@@ -20,9 +20,9 @@
 #include "TextTrajectoryFile.hpp"
 
 //------------------------------------------------------------------------------
-// TextTrajectoryFile(const wxString &fileName)
+// TextTrajectoryFile(const std::string &fileName)
 //------------------------------------------------------------------------------
-TextTrajectoryFile::TextTrajectoryFile(const wxString &fileName)
+TextTrajectoryFile::TextTrajectoryFile(const std::string &fileName)
 {
     mFileName = fileName;
     mDataArray.reserve(GmatTraj::INITIAL_NUM_POINTS);
@@ -38,19 +38,19 @@ TextTrajectoryFile::~TextTrajectoryFile()
 }
 
 //------------------------------------------------------------------------------
-// bool Open(const wxString &fileName)
+// bool Open(const std::string &fileName)
 //------------------------------------------------------------------------------
-bool TextTrajectoryFile::Open(const wxString &fileName)
+bool TextTrajectoryFile::Open(const std::string &fileName)
 {
-    if (mFileName == wxT(""))
+    if (mFileName == "")
         mFileName = fileName;
 
-    if (mFileName != wxT(""))
+    if (mFileName != "")
     {
         if (mInStream.is_open())
             mInStream.close();
         
-        mInStream.open(mFileName.char_str());
+        mInStream.open(mFileName.c_str());
         if (!mInStream.is_open())
             return false; //or throw exception
     }

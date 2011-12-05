@@ -25,14 +25,14 @@
 #include "MessageInterface.hpp"
 
 //------------------------------------------------------------------------------
-// ExponentialAtmosphere(const wxString &name = wxT(""))
+// ExponentialAtmosphere(const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Default constructor.
  */
 //------------------------------------------------------------------------------
-ExponentialAtmosphere::ExponentialAtmosphere(const wxString &name) :
-   AtmosphereModel      (wxT("Exponential"), name),
+ExponentialAtmosphere::ExponentialAtmosphere(const std::string &name) :
+   AtmosphereModel      ("Exponential", name),
    scaleHeight          (NULL),
    refHeight            (NULL),
    refDensity           (NULL),
@@ -87,10 +87,10 @@ smoothDensity        (false)
 /**
  * Assignment operator for the ExponentialAtmosphere class.
  *
- * @param <bary> the ExponentialAtmosphere object whose data to assign to wxT("this")
+ * @param <bary> the ExponentialAtmosphere object whose data to assign to "this"
  *             calculated point.
  *
- * @return wxT("this") ExponentialAtmosphere with data of input ExponentialAtmosphere
+ * @return "this" ExponentialAtmosphere with data of input ExponentialAtmosphere
  *  ea.
  */
 //------------------------------------------------------------------------------
@@ -133,11 +133,11 @@ bool ExponentialAtmosphere::Density(Real *position, Real *density, Real epoch,
       Integer count)
 {
     if (!refDensity || !refHeight || !scaleHeight)
-       throw AtmosphereException(wxT("Exponential atmosphere not initialized"));
+       throw AtmosphereException("Exponential atmosphere not initialized");
     
     if (centralBodyLocation == NULL)
-       throw AtmosphereException(wxT("Exponential atmosphere: Central body vector ")
-             wxT("was not initialized"));
+       throw AtmosphereException("Exponential atmosphere: Central body vector "
+             "was not initialized");
         
     Real loc[3], height;
     Integer i, index;
@@ -149,8 +149,8 @@ bool ExponentialAtmosphere::Density(Real *position, Real *density, Real epoch,
         
         height = CalculateGeodetics(loc, epoch);
         if (height < 0.0)
-            throw AtmosphereException(wxT("Exponential atmosphere: Position vector ")
-                  wxT("is inside central body"));
+            throw AtmosphereException("Exponential atmosphere: Position vector "
+                  "is inside central body");
             
         index = FindBand(height);
         if (smoothDensity)
@@ -183,8 +183,8 @@ void ExponentialAtmosphere::SetConstants(void)
    
    scaleHeight = new Real[altitudeBands];
    if (!scaleHeight)
-      throw AtmosphereException(wxT("Unable to allocate scaleHeight array for ")
-            wxT("ExponentialAtmosphere model"));
+      throw AtmosphereException("Unable to allocate scaleHeight array for "
+            "ExponentialAtmosphere model");
    
    // Delete old array first
    if (refHeight)
@@ -194,8 +194,8 @@ void ExponentialAtmosphere::SetConstants(void)
    if (!refHeight) {
       delete [] scaleHeight;
       scaleHeight = NULL;
-      throw AtmosphereException(wxT("Unable to allocate refHeight array for ")
-            wxT("ExponentialAtmosphere model"));
+      throw AtmosphereException("Unable to allocate refHeight array for "
+            "ExponentialAtmosphere model");
    }
    
    // Delete old array first
@@ -208,8 +208,8 @@ void ExponentialAtmosphere::SetConstants(void)
       scaleHeight = NULL;
       delete [] refHeight;
       refHeight = NULL;
-      throw AtmosphereException(wxT("Unable to allocate refDensity array for ")
-            wxT("ExponentialAtmosphere model"));
+      throw AtmosphereException("Unable to allocate refDensity array for "
+            "ExponentialAtmosphere model");
    }
    
    // The following assignments contain the data in the table in Vallado,
@@ -345,7 +345,7 @@ Integer ExponentialAtmosphere::FindBand(Real height)
 //------------------------------------------------------------------------------
 Real ExponentialAtmosphere::Smooth(Real height, Integer index)
 {
-   throw AtmosphereException(wxT("Smoothing not yet coded for Exponential Drag"));
+   throw AtmosphereException("Smoothing not yet coded for Exponential Drag");
 }
 
 //------------------------------------------------------------------------------
@@ -354,7 +354,7 @@ Real ExponentialAtmosphere::Smooth(Real height, Integer index)
 /**
  * Clone the object (inherited from GmatBase).
  *
- * @return a clone of wxT("this") object.
+ * @return a clone of "this" object.
  */
 //------------------------------------------------------------------------------
 GmatBase* ExponentialAtmosphere::Clone() const

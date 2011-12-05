@@ -60,15 +60,15 @@
 //}
 
 //------------------------------------------------------------------------------
-// RungeKutta89::RungeKutta89(Gmat::ObjectType id, const wxString &typeStr,
-//                            const wxString &nomme)
+// RungeKutta89::RungeKutta89(Gmat::ObjectType id, const std::string &typeStr,
+//                            const std::string &nomme)
 //------------------------------------------------------------------------------
 /**
  * The constructor
  */
 //------------------------------------------------------------------------------
-RungeKutta89::RungeKutta89(const wxString &nomme) :
-    RungeKutta (16, 9, wxT("RungeKutta89"), nomme)
+RungeKutta89::RungeKutta89(const std::string &nomme) :
+    RungeKutta (16, 9, "RungeKutta89", nomme)
 {
 }
 

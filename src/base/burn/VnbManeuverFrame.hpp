@@ -34,7 +34,7 @@ public:
    VnbManeuverFrame(const VnbManeuverFrame& imf);
    VnbManeuverFrame&   operator=(const VnbManeuverFrame& imf);
 
-   virtual wxString GetFrameLabel(Integer id);
+   virtual std::string GetFrameLabel(Integer id);
 
 protected:
    void                CalculateBasis();

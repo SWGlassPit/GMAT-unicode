@@ -69,7 +69,7 @@ class GMAT_API PointMassForce : public PhysicalModel
 {
 public:
     
-   PointMassForce(const wxString &name = wxT(""));
+   PointMassForce(const std::string &name = "");
    virtual ~PointMassForce();
    PointMassForce(const PointMassForce& pmf);
    PointMassForce& operator= (const PointMassForce& pmf);
@@ -81,31 +81,31 @@ public:
    virtual Real EstimateError(Real *diffs, Real *answer) const;
 
    //CelestialBody* GetBody();  // wcs: 2004/06/21 moved to PhysicalModel
-   //wxString GetBodyName(); //loj: 5/7/04 added
+   //std::string GetBodyName(); //loj: 5/7/04 added
 
    //void SetBody(CelestialBody *body);
-   //void SetBodyName(const wxString &name); //loj: 5/7/04 added
+   //void SetBodyName(const std::string &name); //loj: 5/7/04 added
 
    // inherited from GmatBase
    virtual GmatBase* Clone() const;
 
    // inherited methods from GmatBase
-   virtual wxString GetParameterText(const Integer id) const;
-   virtual Integer     GetParameterID(const wxString &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
+   virtual Integer     GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                        GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
    virtual bool        IsParameterReadOnly(const Integer id) const;
 
    virtual Real GetRealParameter(const Integer id) const;
    virtual Real SetRealParameter(const Integer id, const Real value);    
     
-   virtual wxString GetStringParameter(const Integer id) const;
-   virtual wxString GetStringParameter(const wxString &value) const;
+   virtual std::string GetStringParameter(const Integer id) const;
+   virtual std::string GetStringParameter(const std::string &value) const;
    virtual bool        SetStringParameter(const Integer id,
-                                          const wxString &value);
-   virtual bool        SetStringParameter(const wxString &label,
-                                          const wxString &value);
+                                          const std::string &value);
+   virtual bool        SetStringParameter(const std::string &label,
+                                          const std::string &value);
    virtual bool           GetBooleanParameter(const Integer id) const;
    virtual bool           SetBooleanParameter(const Integer id,
                                               const bool value);
@@ -133,7 +133,7 @@ protected:
       PointMassParamCount
    };
 
-   static const wxString PARAMETER_TEXT[PointMassParamCount - PhysicalModelParamCount];
+   static const std::string PARAMETER_TEXT[PointMassParamCount - PhysicalModelParamCount];
    static const Gmat::ParameterType PARAMETER_TYPE[PointMassParamCount - PhysicalModelParamCount];
 
    /// Gravitational constant for the central body (\f$G*M\f$)
@@ -141,7 +141,7 @@ protected:
    /// Type of error estimate to perform
    Real estimationMethod;
    //CelestialBody *theBody; // wcs - 2004/06/21 - exists in PhysicalModel
-   //wxString theBodyName; //loj: 5/6/04 added // wcs - 2004/06/21 - exists in PhysicalModel
+   //std::string theBodyName; //loj: 5/6/04 added // wcs - 2004/06/21 - exists in PhysicalModel
    bool isPrimaryBody;
    
    // Moved here for performance
@@ -152,8 +152,8 @@ protected:
 //   Integer cartIndex;
    
    // for Debug
-   void ShowBodyState(const wxString &header, Real time, Rvector6 &rv);
-   void ShowDerivative(const wxString &header, Real *state, Integer satCount);
+   void ShowBodyState(const std::string &header, Real time, Rvector6 &rv);
+   void ShowDerivative(const std::string &header, Real *state, Integer satCount);
    
 };
 

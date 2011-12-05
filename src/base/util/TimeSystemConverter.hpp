@@ -35,29 +35,29 @@
    class GMAT_API UnimplementedException : public BaseException
    {
       public:
-         UnimplementedException(const wxString &message =
-         wxT("TimeSystemConverter: Conversion not implemented: "))
+         UnimplementedException(const std::string &message =
+         "TimeSystemConverter: Conversion not implemented: ")
          : BaseException(message) {};
    };
    class GMAT_API TimeFileException : public BaseException
    {
       public:
-         TimeFileException(const wxString &message =
-         wxT("TimeSystemConverter: File is unknown: "))
+         TimeFileException(const std::string &message =
+         "TimeSystemConverter: File is unknown: ")
          : BaseException(message) {};
    };
    class GMAT_API TimeFormatException : public BaseException
    {
       public:
-         TimeFormatException(const wxString &message =
-         wxT("TimeSystemConverter: Requested format not implemented: "))
+         TimeFormatException(const std::string &message =
+         "TimeSystemConverter: Requested format not implemented: ")
          : BaseException(message) {};
    };
    class GMAT_API InvalidTimeException : public BaseException
    {
       public:
-         InvalidTimeException(const wxString &message =
-         wxT("TimeSystemConverter: Requested time is invalid: "))
+         InvalidTimeException(const std::string &message =
+         "TimeSystemConverter: Requested time is invalid: ")
          : BaseException(message) {};
    };
 // };
@@ -94,37 +94,37 @@ namespace TimeConverterUtil
       TimeSystemCount
    };
 
-   static const wxString TIME_SYSTEM_TEXT[TimeSystemCount] =
+   static const std::string TIME_SYSTEM_TEXT[TimeSystemCount] =
    {
-      wxT("A1Mjd"),
-      wxT("TaiMjd"),
-      wxT("UtcMjd"),
-      wxT("Ut1Mjd"),
-      wxT("TdbMjd"),
-      wxT("TcbMjd"),
-      wxT("TtMjd"),
+      "A1Mjd",
+      "TaiMjd",
+      "UtcMjd",
+      "Ut1Mjd",
+      "TdbMjd",
+      "TcbMjd",
+      "TtMjd",
       // New entries added by DJC
-      wxT("A1"),
-      wxT("TAI"),
-      wxT("UTC"),
-      wxT("UT1"),
-      wxT("TDB"),
-      wxT("TCB"),
-      wxT("TT"),
+      "A1",
+      "TAI",
+      "UTC",
+      "UT1",
+      "TDB",
+      "TCB",
+      "TT",
    };
 
 /*   Real Convert(const Real origValue,
-                      const wxString &fromType,
-                      const wxString &toType,
+                      const std::string &fromType,
+                      const std::string &toType,
                       Real refJd = GmatTimeConstants::JD_NOV_17_1858);
 
-   Real ConvertToTaiMjd(wxString fromType, Real origValue,
+   Real ConvertToTaiMjd(std::string fromType, Real origValue,
       Real refJd= GmatTimeConstants::JD_NOV_17_1858);
-   Real ConvertFromTaiMjd(wxString toType, Real origValue,
+   Real ConvertFromTaiMjd(std::string toType, Real origValue,
       Real refJd= GmatTimeConstants::JD_NOV_17_1858);
  */
    
-   Integer GMAT_API GetTimeTypeID(wxString &str);
+   Integer GMAT_API GetTimeTypeID(std::string &str);
       
    Real GMAT_API Convert(const Real origValue,
                 const Integer fromType,
@@ -139,17 +139,17 @@ namespace TimeConverterUtil
    void GMAT_API SetEopFile(EopFile *eopFile);
    void GMAT_API SetLeapSecsFileReader(LeapSecsFileReader *leapSecsFileReader);
    
-   void GMAT_API GetTimeSystemAndFormat(const wxString &type, wxString &system,
-                               wxString &format);
+   void GMAT_API GetTimeSystemAndFormat(const std::string &type, std::string &system,
+                               std::string &format);
    
-   wxString GMAT_API ConvertMjdToGregorian(const Real mjd, Integer format = 1);   
-   Real GMAT_API ConvertGregorianToMjd(const wxString &greg);
-   void GMAT_API Convert(const wxString &fromType, Real fromMjd,
-                const wxString &fromStr, const wxString &toType,
-                Real &toMjd, wxString &toStr, Integer format = 1);
+   std::string GMAT_API ConvertMjdToGregorian(const Real mjd, Integer format = 1);   
+   Real GMAT_API ConvertGregorianToMjd(const std::string &greg);
+   void GMAT_API Convert(const std::string &fromType, Real fromMjd,
+                const std::string &fromStr, const std::string &toType,
+                Real &toMjd, std::string &toStr, Integer format = 1);
    
-   bool GMAT_API ValidateTimeSystem(wxString sys);   
-   bool GMAT_API ValidateTimeFormat(const wxString &format, const wxString &value,
+   bool GMAT_API ValidateTimeSystem(std::string sys);   
+   bool GMAT_API ValidateTimeFormat(const std::string &format, const std::string &value,
                            bool checkValue = true);
    StringArray GMAT_API GetValidTimeRepresentations();
 }

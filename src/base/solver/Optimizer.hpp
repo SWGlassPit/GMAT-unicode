@@ -28,7 +28,7 @@
 class GMAT_API Optimizer : public Solver
 {
 public:
-   Optimizer(wxString typeName, wxString name);
+   Optimizer(std::string typeName, std::string name);
    virtual ~Optimizer();
    Optimizer(const Optimizer &opt);
    Optimizer&      operator=(const Optimizer& opt);
@@ -37,26 +37,26 @@ public:
    //virtual SolverState         AdvanceState();  // do I need this?
 
    // Solver interfaces used to talk to the Vary and Minimize commands
-   //virtual Integer     SetSolverVariables(Real *data, const wxString &name);
+   //virtual Integer     SetSolverVariables(Real *data, const std::string &name);
    //virtual Real        GetSolverVariable(Integer id);
-   virtual Integer     SetSolverResults(Real *data, const wxString &name,
-                                        const wxString &type = wxT(""));
+   virtual Integer     SetSolverResults(Real *data, const std::string &name,
+                                        const std::string &type = "");
    virtual void        SetResultValue(Integer id, Real value,
-                                      const wxString &resultType = wxT(""));
+                                      const std::string &resultType = "");
 
-   virtual wxString GetProgressString();
+   virtual std::string GetProgressString();
 
    virtual bool         IsParameterReadOnly(const Integer id) const;
-   virtual bool         IsParameterReadOnly(const wxString &label) const;
+   virtual bool         IsParameterReadOnly(const std::string &label) const;
 
 
    // Access methods overriden from the base class
 
-   virtual wxString GetParameterText(const Integer id) const;
-   virtual Integer     GetParameterID(const wxString &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
+   virtual Integer     GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                        GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
    virtual Real        GetRealParameter(const Integer id) const;
    virtual Real        SetRealParameter(const Integer id,
                                         const Real value);
@@ -67,27 +67,27 @@ public:
    //virtual bool        GetBooleanParameter(const Integer id) const;
    //virtual bool        SetBooleanParameter(const Integer id,
    //                                        const bool value);
-   virtual wxString GetStringParameter(const Integer id) const;
+   virtual std::string GetStringParameter(const Integer id) const;
    virtual bool        SetStringParameter(const Integer id,
-                                          const wxString &value);
+                                          const std::string &value);
    // compiler complained again - so here they are ....
-   virtual wxString GetStringParameter(const wxString &label) const;
-   virtual bool        SetStringParameter(const wxString &label,
-                                          const wxString &value);
-   virtual wxString GetStringParameter(const Integer id,
+   virtual std::string GetStringParameter(const std::string &label) const;
+   virtual bool        SetStringParameter(const std::string &label,
+                                          const std::string &value);
+   virtual std::string GetStringParameter(const Integer id,
                                           const Integer index) const;
    virtual bool        SetStringParameter(const Integer id, 
-                                          const wxString &value,
+                                          const std::string &value,
                                           const Integer index);
-   virtual wxString GetStringParameter(const wxString &label,
+   virtual std::string GetStringParameter(const std::string &label,
                                           const Integer index) const;
-   virtual bool        SetStringParameter(const wxString &label, 
-                                          const wxString &value,
+   virtual bool        SetStringParameter(const std::string &label, 
+                                          const std::string &value,
                                           const Integer index);
    virtual const StringArray&
                        GetStringArrayParameter(const Integer id) const;
-   virtual bool        TakeAction(const wxString &action,
-                                  const wxString &actionData = wxT(""));
+   virtual bool        TakeAction(const std::string &action,
+                                  const std::string &actionData = "");
 
 
 //------------------------------------------------------------------------------
@@ -116,7 +116,7 @@ protected:
    /// Flag that is toggled when a Minimize command registers itself
    bool              objectiveDefined;
    /// name of the objective function
-   wxString       objectiveFnName;
+   std::string       objectiveFnName;
    /// latest value obtained for the objective function
    Real              cost;
    /// tolerance for determining convergence - the optimizer has converged 
@@ -147,7 +147,7 @@ protected:
    /// most recently calculated Jacobian of the inequality constraints
    Rmatrix           ineqConstraintJacobian;  // size of this?
 
-   static const wxString    PARAMETER_TEXT[OptimizerParamCount -
+   static const std::string    PARAMETER_TEXT[OptimizerParamCount -
                                               SolverParamCount];
    static const Gmat::ParameterType
                                PARAMETER_TYPE[OptimizerParamCount -

@@ -29,7 +29,7 @@
 #include "StringUtil.hpp"        // for ToReal()
 #include "MessageInterface.hpp"
 
-#include <sstream>      // for wxStringstream, used to make generating string
+#include <sstream>      // for std::stringstream, used to make generating string
 
 //#define DEBUG_FOR_EXE 1
 //#define DEBUG_FOR_INIT 1
@@ -48,16 +48,16 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 For::PARAMETER_TEXT[ForParamCount - BranchCommandParamCount] =
 {
-   wxT("StartValue"),
-   wxT("EndValue"),
-   wxT("Step"), 
-   wxT("IndexName"),
-   wxT("StartName"),
-   wxT("EndName"),
-   wxT("IncrementName"),
+   "StartValue",
+   "EndValue",
+   "Step", 
+   "IndexName",
+   "StartName",
+   "EndName",
+   "IncrementName",
 };
 
 const Gmat::ParameterType
@@ -85,7 +85,7 @@ const Real For::DEFAULT_INCREMENT   = 1;
  */
 //------------------------------------------------------------------------------
 For::For(void) :
-   BranchCommand   (wxT("For")),
+   BranchCommand   ("For"),
    startValue      (DEFAULT_START),
    endValue        (DEFAULT_END),
    stepSize        (DEFAULT_INCREMENT),
@@ -94,13 +94,13 @@ For::For(void) :
    startWrapper    (NULL),
    endWrapper      (NULL),
    incrWrapper     (NULL),
-   indexName       (wxT("I")),
-   startName       (wxT("1")),
-   endName         (wxT("10")),
-   incrName        (wxT("1"))
+   indexName       ("I"),
+   startName       ("1"),
+   endName         ("10"),
+   incrName        ("1")
 {
    parameterCount = ForParamCount;
-   objectTypeNames.push_back(wxT("For"));
+   objectTypeNames.push_back("For");
 }
 
 //------------------------------------------------------------------------------
@@ -194,7 +194,7 @@ bool For::Append(GmatCommand *cmd)
      return false;
 
    // If at the end of a for branch, point that end back to this comand.
-   if (cmd->GetTypeName() == wxT("EndFor")) 
+   if (cmd->GetTypeName() == "EndFor") 
    {
       if ((nestLevel== 0) && (branchToFill != -1))
       {
@@ -207,7 +207,7 @@ bool For::Append(GmatCommand *cmd)
        --nestLevel;
       }
    }
-   if (cmd->GetTypeName() == wxT("For"))
+   if (cmd->GetTypeName() == "For")
    {
       ++nestLevel;
    }
@@ -229,40 +229,40 @@ bool For::Initialize()
 {
    #if DEBUG_FOR_INIT
    MessageInterface::ShowMessage
-      (wxT("For::Initialize() this=<%p> '%s' entered\n"), this,
+      ("For::Initialize() this=<%p> '%s' entered\n", this,
        GetGeneratingString(Gmat::NO_COMMENTS).c_str());
    #endif   
    // Set references for the wrappers
    #ifdef DEBUG_FOR_PARAMS
-      MessageInterface::ShowMessage(wxT("   Setting refs for indexWrapper\n"));
+      MessageInterface::ShowMessage("   Setting refs for indexWrapper\n");
    #endif
    if (SetWrapperReferences(*indexWrapper) == false)
       return false;
-   CheckDataType(indexWrapper, Gmat::REAL_TYPE, wxT("For"));
+   CheckDataType(indexWrapper, Gmat::REAL_TYPE, "For");
    #ifdef DEBUG_FOR_PARAMS
-      MessageInterface::ShowMessage(wxT("   Setting refs for startWrapper\n"));
+      MessageInterface::ShowMessage("   Setting refs for startWrapper\n");
    #endif
    if (SetWrapperReferences(*startWrapper) == false)
       return false;
-   CheckDataType(startWrapper, Gmat::REAL_TYPE, wxT("For"));
+   CheckDataType(startWrapper, Gmat::REAL_TYPE, "For");
    #ifdef DEBUG_FOR_PARAMS
-      MessageInterface::ShowMessage(wxT("   Setting refs for endWrapper\n"));
+      MessageInterface::ShowMessage("   Setting refs for endWrapper\n");
    #endif
    if (SetWrapperReferences(*endWrapper) == false)
       return false;
-   CheckDataType(endWrapper, Gmat::REAL_TYPE, wxT("For"));
+   CheckDataType(endWrapper, Gmat::REAL_TYPE, "For");
    #ifdef DEBUG_FOR_PARAMS
-      MessageInterface::ShowMessage(wxT("   Setting refs for incrWrapper\n"));
+      MessageInterface::ShowMessage("   Setting refs for incrWrapper\n");
    #endif
    if (SetWrapperReferences(*incrWrapper) == false)
       return false;   
-   CheckDataType(incrWrapper, Gmat::REAL_TYPE, wxT("For"));
+   CheckDataType(incrWrapper, Gmat::REAL_TYPE, "For");
    
    bool retval = BranchCommand::Initialize();
    
    #if DEBUG_FOR_INIT
    MessageInterface::ShowMessage
-      (wxT("For::Initialize() this=<%p> '%s' exiting\n"), this,
+      ("For::Initialize() this=<%p> '%s' exiting\n", this,
        GetGeneratingString(Gmat::NO_COMMENTS).c_str());
    #endif
    return retval;
@@ -284,11 +284,11 @@ bool For::Execute()
 {
    #ifdef DEBUG_FOR_EXE
       MessageInterface::ShowMessage(
-         wxT("For::Execute() status: commandComplete = %s, ")
-         wxT("commandExecuting = %s, branchExecuting = %s\n"),
-         ((commandComplete) ? wxT("true") : wxT("false")),
-         ((commandExecuting) ? wxT("true") : wxT("false")),
-         ((branchExecuting) ? wxT("true") : wxT("false")) );
+         "For::Execute() status: commandComplete = %s, "
+         "commandExecuting = %s, branchExecuting = %s\n",
+         ((commandComplete) ? "true" : "false"),
+         ((commandExecuting) ? "true" : "false"),
+         ((branchExecuting) ? "true" : "false") );
    #endif
    bool retval = true;
 
@@ -296,7 +296,7 @@ bool For::Execute()
    {
       #ifdef DEBUG_FOR_EXE
          MessageInterface::ShowMessage(
-         wxT("... branch still executing -> about to call ExecuteBranch\n"));
+         "... branch still executing -> about to call ExecuteBranch\n");
       #endif
       retval = ExecuteBranch();
       if (!branchExecuting)
@@ -313,7 +313,7 @@ bool For::Execute()
             indexWrapper->SetReal(currentValue);
             #ifdef DEBUG_FOR_EXE
                MessageInterface::ShowMessage(
-               wxT("...... Branch done executing -> currentValue updated to %.4f\n"),
+               "...... Branch done executing -> currentValue updated to %.4f\n",
                currentValue);
             #endif
          }
@@ -321,7 +321,7 @@ bool For::Execute()
          {
             #ifdef DEBUG_FOR_EXE
                MessageInterface::ShowMessage(
-               wxT("...... Branch done executing -> currentValue NOT updated, as value would be > endValue\n"));
+               "...... Branch done executing -> currentValue NOT updated, as value would be > endValue\n");
             #endif
          }
       }
@@ -336,7 +336,7 @@ bool For::Execute()
          branchExecuting = true;
          #ifdef DEBUG_FOR_EXE
             MessageInterface::ShowMessage(
-            wxT("... still looping -> about to call ExecuteBranch\n"));
+            "... still looping -> about to call ExecuteBranch\n");
          #endif
          retval = ExecuteBranch();
       }
@@ -389,7 +389,7 @@ GmatBase* For::Clone(void) const
 }
 
 //------------------------------------------------------------------------------
-//  const wxString& GetGeneratingString()
+//  const std::string& GetGeneratingString()
 //------------------------------------------------------------------------------
 /**
  * Method used to retrieve the string that was parsed to build this GmatCommand.
@@ -409,30 +409,31 @@ GmatBase* For::Clone(void) const
  * @return The script line that, when interpreted, defines this For command.
  */
 //------------------------------------------------------------------------------
-const wxString& For::GetGeneratingString(Gmat::WriteMode mode,
-                                            const wxString &prefix,
-                                            const wxString &useName)
+const std::string& For::GetGeneratingString(Gmat::WriteMode mode,
+                                            const std::string &prefix,
+                                            const std::string &useName)
 {
    #ifdef DEBUG_GEN_STRING
-      MessageInterface::ShowMessage(wxT("Entering For::GetGenStr\n"));
-      MessageInterface::ShowMessage(wxT("... startValue = %.12f\n"), startValue);
-      MessageInterface::ShowMessage(wxT("... stepSize   = %.12f\n"), stepSize);
-      MessageInterface::ShowMessage(wxT("... endValue   = %.12f\n"), endValue);
+      MessageInterface::ShowMessage("Entering For::GetGenStr\n");
+      MessageInterface::ShowMessage("... startValue = %.12f\n", startValue);
+      MessageInterface::ShowMessage("... stepSize   = %.12f\n", stepSize);
+      MessageInterface::ShowMessage("... endValue   = %.12f\n", endValue);
    #endif
-   wxString gen;
+   std::stringstream gen;
+   gen.precision(4);
    
-   gen << indexName << wxT(" = ");
-   gen << startName << wxT(":");
-   gen << incrName  << wxT(":");
+   gen << indexName << " = ";
+   gen << startName << ":";
+   gen << incrName  << ":";
    gen << endName;
    
    if (mode == Gmat::NO_COMMENTS)
    {
-      generatingString = wxT("For ") + gen + wxT(";");
+      generatingString = "For " + gen.str() + ";";
       return generatingString;
    }
    
-   generatingString = prefix + wxT("For ") + gen + wxT(";");
+   generatingString = prefix + "For " + gen.str() + ";";
    
    // Then call the base class method
    return BranchCommand::GetGeneratingString(mode, prefix, useName);
@@ -440,7 +441,7 @@ const wxString& For::GetGeneratingString(Gmat::WriteMode mode,
 
 //------------------------------------------------------------------------------
 //  GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                         const wxString &name) const
+//                         const std::string &name) const
 //------------------------------------------------------------------------------
 /**
  * This method returns a pointer to the Parameter ref object (used as
@@ -451,7 +452,7 @@ const wxString& For::GetGeneratingString(Gmat::WriteMode mode,
  */
 //------------------------------------------------------------------------------
 GmatBase* For::GetRefObject(const Gmat::ObjectType type,
-                            const wxString &name)
+                            const std::string &name)
 {
    // Not handled here -- invoke the next higher GetRefObject call
    return BranchCommand::GetRefObject(type, name);
@@ -459,7 +460,7 @@ GmatBase* For::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(const Gmat::ObjectType type,
-//                    const wxString &name) const
+//                    const std::string &name) const
 //------------------------------------------------------------------------------
 /**
  * This method sets a pointer to the Parameter ref object (used as
@@ -470,7 +471,7 @@ GmatBase* For::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool For::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                       const wxString &name)
+                       const std::string &name)
 {
    // Not handled here -- invoke the next higher SetRefObject call
    return BranchCommand::SetRefObject(obj, type, name);
@@ -479,7 +480,7 @@ bool For::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /*
  * Renames referenced objects
@@ -492,8 +493,8 @@ bool For::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  */
 //---------------------------------------------------------------------------
 bool For::RenameRefObject(const Gmat::ObjectType type,
-                          const wxString &oldName,
-                          const wxString &newName)
+                          const std::string &oldName,
+                          const std::string &newName)
 {
    if (indexWrapper) 
    {
@@ -559,13 +560,13 @@ const StringArray& For::GetRefObjectNameArray(const Gmat::ObjectType type)
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString For::GetParameterText(const Integer id) const
+std::string For::GetParameterText(const Integer id) const
 {
    if ((id >= BranchCommandParamCount) && (id < ForParamCount))
       return PARAMETER_TEXT[id - BranchCommandParamCount];
@@ -573,13 +574,13 @@ wxString For::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Integer For::GetParameterID(const wxString &str) const
+Integer For::GetParameterID(const std::string &str) const
 {
    for (Integer i = BranchCommandParamCount; i < ForParamCount; i++)
    {
@@ -606,13 +607,13 @@ Gmat::ParameterType For::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString For::GetParameterTypeString(const Integer id) const
+std::string For::GetParameterTypeString(const Integer id) const
 {
    return BranchCommand::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -632,8 +633,8 @@ Real For::GetRealParameter(const Integer id) const
    {
       #ifdef DEBUG_FOR_REAL
          MessageInterface::ShowMessage(
-         wxT("Entering For::GetReal with id = %d, "), id);
-         MessageInterface::ShowMessage(wxT("And the value is : %.12f\n"), startValue);
+         "Entering For::GetReal with id = %d, ", id);
+         MessageInterface::ShowMessage("And the value is : %.12f\n", startValue);
       #endif
       return startValue;
    }
@@ -641,8 +642,8 @@ Real For::GetRealParameter(const Integer id) const
    {
       #ifdef DEBUG_FOR_REAL
          MessageInterface::ShowMessage(
-         wxT("Entering For::GetReal with id = %d, "), id);
-         MessageInterface::ShowMessage(wxT("And the value is : %.12f\n"), endValue);
+         "Entering For::GetReal with id = %d, ", id);
+         MessageInterface::ShowMessage("And the value is : %.12f\n", endValue);
       #endif
       return endValue;
    }
@@ -650,8 +651,8 @@ Real For::GetRealParameter(const Integer id) const
    {
       #ifdef DEBUG_FOR_REAL
          MessageInterface::ShowMessage(
-         wxT("Entering For::GetReal with id = %d, "), id);
-         MessageInterface::ShowMessage(wxT("And the value is : %.12f\n"), stepSize);
+         "Entering For::GetReal with id = %d, ", id);
+         MessageInterface::ShowMessage("And the value is : %.12f\n", stepSize);
       #endif
       return stepSize;
    }
@@ -675,7 +676,7 @@ Real For::SetRealParameter(const Integer id, const Real value)
 }
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label) const
+// Real GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to obtain a parameter value
@@ -683,13 +684,13 @@ Real For::SetRealParameter(const Integer id, const Real value)
  * @param label    string ID for the requested parameter
  */
 //------------------------------------------------------------------------------
-Real For::GetRealParameter(const wxString &label) const
+Real For::GetRealParameter(const std::string &label) const
 {
    return GetRealParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-// Real SetRealParameter(const wxString &label, const Real value)
+// Real SetRealParameter(const std::string &label, const Real value)
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to set a parameter value
@@ -698,13 +699,13 @@ Real For::GetRealParameter(const wxString &label) const
  * @param    value    The new value for the parameter
  */
 //------------------------------------------------------------------------------
-Real For::SetRealParameter(const wxString &label, const Real value)
+Real For::SetRealParameter(const std::string &label, const Real value)
 {
    return SetRealParameter(GetParameterID(label), value);
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id) const
+//  std::string  GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -716,7 +717,7 @@ Real For::SetRealParameter(const wxString &label, const Real value)
  *
  */
 //------------------------------------------------------------------------------
-wxString For::GetStringParameter(const Integer id) const
+std::string For::GetStringParameter(const Integer id) const
 {
    if (id == INDEX_NAME)          return indexName;
    else if (id == START_NAME)     return startName;
@@ -727,7 +728,7 @@ wxString For::GetStringParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  SetStringParameter(const Integer id, const wxString value)
+//  std::string  SetStringParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
 /**
 * This method sets the string parameter value, given the input
@@ -740,7 +741,7 @@ wxString For::GetStringParameter(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-bool For::SetStringParameter(const Integer id, const wxString &value)
+bool For::SetStringParameter(const Integer id, const std::string &value)
 {
    bool retVal = false;
    
@@ -753,7 +754,7 @@ bool For::SetStringParameter(const Integer id, const wxString &value)
    {
       #ifdef DEBUG_FOR_REAL
          MessageInterface::ShowMessage(
-         wxT("In For::SetStrP, setting startName to %s\n"), value.c_str());
+         "In For::SetStrP, setting startName to %s\n", value.c_str());
       #endif
       startName = value;
       retVal = true;
@@ -778,7 +779,7 @@ bool For::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
 * Accessor method used to get a parameter value
@@ -788,13 +789,13 @@ bool For::SetStringParameter(const Integer id, const wxString &value)
  * @return the value of the parameter
  */
 //------------------------------------------------------------------------------
-wxString For::GetStringParameter(const wxString &label) const
+std::string For::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
 /**
 * Accessor method used to get a parameter value
@@ -803,8 +804,8 @@ wxString For::GetStringParameter(const wxString &label) const
  * @param    value  The new value for the parameter
  */
 //------------------------------------------------------------------------------
-bool For::SetStringParameter(const wxString &label,
-                                        const wxString &value)
+bool For::SetStringParameter(const std::string &label,
+                                        const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
@@ -835,20 +836,20 @@ const StringArray& For::GetWrapperObjectNameArray()
 
 
 //------------------------------------------------------------------------------
-// bool SetElementWrapper(ElementWrapper *toWrapper, const wxString &withName)
+// bool SetElementWrapper(ElementWrapper *toWrapper, const std::string &withName)
 //------------------------------------------------------------------------------
 bool For::SetElementWrapper(ElementWrapper *toWrapper,
-                            const wxString &withName)
+                            const std::string &withName)
 {
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("For::SetElementWrapper() this=<%p> '%s' entered, toWrapper=<%p>, name='%s'\n")
-       wxT("   currentFunction=<%p> '%s'\n   callingFunction=<%p> '%s'\n"), this,
+      ("For::SetElementWrapper() this=<%p> '%s' entered, toWrapper=<%p>, name='%s'\n"
+       "   currentFunction=<%p> '%s'\n   callingFunction=<%p> '%s'\n", this,
        GetGeneratingString(Gmat::NO_COMMENTS).c_str(), toWrapper, withName.c_str(),
-       currentFunction, currentFunction ? currentFunction->GetFunctionPathAndName().c_str() : wxT("NULL"),
-       callingFunction, callingFunction ? callingFunction->GetFunctionName().c_str() : wxT("NULL"));
+       currentFunction, currentFunction ? currentFunction->GetFunctionPathAndName().c_str() : "NULL",
+       callingFunction, callingFunction ? callingFunction->GetFunctionName().c_str() : "NULL");
    MessageInterface::ShowMessage
-      (wxT("   indexWrapper=<%p>, startWrapper=<%p>, endWrapper=<%p>, incrWrapper=<%p>\n"),
+      ("   indexWrapper=<%p>, startWrapper=<%p>, endWrapper=<%p>, incrWrapper=<%p>\n",
        indexWrapper, startWrapper, endWrapper, incrWrapper);
    #endif
    
@@ -859,17 +860,17 @@ bool For::SetElementWrapper(ElementWrapper *toWrapper,
    // this would be caught by next part, but this message is more meaningful
    if (toWrapper->GetWrapperType() == Gmat::ARRAY_WT)
    {
-      throw CommandException(wxT("A value of type \"Array\" on command \"") + typeName + 
-                  wxT("\" is not an allowed value.\nThe allowed values are:")
-                  wxT(" [ Real Number, Variable, Array Element, or Parameter ]. ")); 
+      throw CommandException("A value of type \"Array\" on command \"" + typeName + 
+                  "\" is not an allowed value.\nThe allowed values are:"
+                  " [ Real Number, Variable, Array Element, or Parameter ]. "); 
    }
    
    // Check for Wrapper data type, it should be REAL_TYPE (loj: 2008.11.20)
-   CheckDataType(toWrapper, Gmat::REAL_TYPE, wxT("For"), true);
+   CheckDataType(toWrapper, Gmat::REAL_TYPE, "For", true);
    
    #ifdef DEBUG_WRAPPER_CODE   
    MessageInterface::ShowMessage
-      (wxT("   Setting wrapper \"%s\" on For command\n"), withName.c_str());
+      ("   Setting wrapper \"%s\" on For command\n", withName.c_str());
    #endif
    
    std::vector<ElementWrapper*> wrappersToDelete;
@@ -878,10 +879,10 @@ bool For::SetElementWrapper(ElementWrapper *toWrapper,
    {
       if (toWrapper->GetWrapperType() != Gmat::VARIABLE_WT)
       {
-         wxString errmsg = wxT("The value of \"") + indexName;
-         errmsg            += wxT("\" for field \"Index Name\" on command \"");
-         errmsg            += GetTypeName() + wxT("\" is not an allowed value.\n");
-         errmsg            += wxT("The allowed values are: [ Variable].");
+         std::string errmsg = "The value of \"" + indexName;
+         errmsg            += "\" for field \"Index Name\" on command \"";
+         errmsg            += GetTypeName() + "\" is not an allowed value.\n";
+         errmsg            += "The allowed values are: [ Variable].";
          throw CommandException(errmsg);
       }
       if (indexWrapper != NULL)
@@ -899,7 +900,7 @@ bool For::SetElementWrapper(ElementWrapper *toWrapper,
             wrappersToDelete.push_back(startWrapper);
             #ifdef DEBUG_WRAPPER_CODE   
             MessageInterface::ShowMessage
-               (wxT("   Added startWrapper<%p> to delete list\n"), startWrapper);
+               ("   Added startWrapper<%p> to delete list\n", startWrapper);
             #endif
          }
       }
@@ -915,7 +916,7 @@ bool For::SetElementWrapper(ElementWrapper *toWrapper,
          wrappersToDelete.push_back(endWrapper);
          #ifdef DEBUG_WRAPPER_CODE   
          MessageInterface::ShowMessage
-            (wxT("   Added endWrapper<%p> to delete list\n"), endWrapper);
+            ("   Added endWrapper<%p> to delete list\n", endWrapper);
          #endif
       }
       endWrapper = toWrapper;
@@ -930,7 +931,7 @@ bool For::SetElementWrapper(ElementWrapper *toWrapper,
          wrappersToDelete.push_back(incrWrapper);
          #ifdef DEBUG_WRAPPER_CODE   
          MessageInterface::ShowMessage
-            (wxT("   Added incrWrapper<%p> to delete list\n"), incrWrapper);
+            ("   Added incrWrapper<%p> to delete list\n", incrWrapper);
          #endif
       }
       incrWrapper = toWrapper;
@@ -944,11 +945,11 @@ bool For::SetElementWrapper(ElementWrapper *toWrapper,
            ewi < wrappersToDelete.end(); ewi++)
       {
          #ifdef DEBUG_WRAPPER_CODE   
-         MessageInterface::ShowMessage(wxT("   About to delete wrapper<%p>\n"), *ewi);
+         MessageInterface::ShowMessage("   About to delete wrapper<%p>\n", *ewi);
          #endif
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            ((*ewi), (*ewi)->GetDescription(), wxT("For::SetElementWrapper()", "deleting wrapper"));
+            ((*ewi), (*ewi)->GetDescription(), "For::SetElementWrapper()", "deleting wrapper");
          #endif
          delete (*ewi);
       }
@@ -956,10 +957,10 @@ bool For::SetElementWrapper(ElementWrapper *toWrapper,
    
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("   indexWrapper=<%p>, startWrapper=<%p>, endWrapper=<%p>, incrWrapper=<%p>\n"),
+      ("   indexWrapper=<%p>, startWrapper=<%p>, endWrapper=<%p>, incrWrapper=<%p>\n",
        indexWrapper, startWrapper, endWrapper, incrWrapper);
    MessageInterface::ShowMessage
-      (wxT("For::SetElementWrapper() this=<%p> '%s' returning %d\n"), this,
+      ("For::SetElementWrapper() this=<%p> '%s' returning %d\n", this,
        GetGeneratingString(Gmat::NO_COMMENTS).c_str(), retval);
    #endif
    
@@ -974,12 +975,12 @@ void For::ClearWrappers()
 {
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("For::ClearWrappers() this=<%p> '%s' entered\n   currentFunction=<%p> '%s'\n")
-       wxT("   callingFunction=<%p> '%s'\n"), this, GetGeneratingString(Gmat::NO_COMMENTS).c_str(),
-       currentFunction, currentFunction ? currentFunction->GetFunctionPathAndName().c_str() : wxT("NULL"),
-       callingFunction, callingFunction ? callingFunction->GetFunctionName().c_str() : wxT("NULL"));
+      ("For::ClearWrappers() this=<%p> '%s' entered\n   currentFunction=<%p> '%s'\n"
+       "   callingFunction=<%p> '%s'\n", this, GetGeneratingString(Gmat::NO_COMMENTS).c_str(),
+       currentFunction, currentFunction ? currentFunction->GetFunctionPathAndName().c_str() : "NULL",
+       callingFunction, callingFunction ? callingFunction->GetFunctionName().c_str() : "NULL");
    MessageInterface::ShowMessage
-      (wxT("   indexWrapper=<%p>, startWrapper=<%p>, endWrapper=<%p>, incrWrapper=<%p>\n"),
+      ("   indexWrapper=<%p>, startWrapper=<%p>, endWrapper=<%p>, incrWrapper=<%p>\n",
        indexWrapper, startWrapper, endWrapper, incrWrapper);
    #endif
    
@@ -1015,12 +1016,12 @@ void For::ClearWrappers()
       if (wrapper)
       {
          #ifdef DEBUG_WRAPPER_CODE   
-         MessageInterface::ShowMessage(wxT("   About to delete wrapper<%p>\n"), wrapper);
+         MessageInterface::ShowMessage("   About to delete wrapper<%p>\n", wrapper);
          #endif
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (wrapper, wrapper->GetDescription(), wxT("For::ClearWrappers()"),
-             GetGeneratingString(Gmat::NO_COMMENTS) + wxT(" deleting wrapper"));
+            (wrapper, wrapper->GetDescription(), "For::ClearWrappers()",
+             GetGeneratingString(Gmat::NO_COMMENTS) + " deleting wrapper");
          #endif
          delete wrapper;
          wrapper = NULL;
@@ -1029,10 +1030,10 @@ void For::ClearWrappers()
    
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("   indexWrapper=<%p>, startWrapper=<%p>, endWrapper=<%p>, incrWrapper=<%p>\n"),
+      ("   indexWrapper=<%p>, startWrapper=<%p>, endWrapper=<%p>, incrWrapper=<%p>\n",
        indexWrapper, startWrapper, endWrapper, incrWrapper);
    MessageInterface::ShowMessage
-      (wxT("For::ClearWrappers() this=<%p> '%s' leaving\n"), this,
+      ("For::ClearWrappers() this=<%p> '%s' leaving\n", this,
        GetGeneratingString(Gmat::NO_COMMENTS).c_str());
    #endif
 }
@@ -1065,7 +1066,7 @@ bool For::StillLooping()
       
       #if DEBUG_FOR_EXE
       MessageInterface::ShowMessage
-         (wxT("For::StillLooping() startValue=%f, stepSize=%f, endValue=%f\n"),
+         ("For::StillLooping() startValue=%f, stepSize=%f, endValue=%f\n",
           startValue, stepSize, endValue);
       #endif
       
@@ -1074,8 +1075,8 @@ bool For::StillLooping()
                   ((stepSize < 0.0) && (startValue < endValue)) )
       {
          //throw CommandException(
-         //      wxT("For loop values incorrect - will result in infinite loop ")
-         //      wxT("in line:\n   \"") + generatingString + wxT("\"\n"));
+         //      "For loop values incorrect - will result in infinite loop "
+         //      "in line:\n   \"" + generatingString + "\"\n");
          commandComplete = true;
          return false;
       }

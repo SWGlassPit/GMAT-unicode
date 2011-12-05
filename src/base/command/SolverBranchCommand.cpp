@@ -40,7 +40,7 @@
 #endif
 
 //------------------------------------------------------------------------------
-//  SolverBranchCommand(const wxString &typeStr)
+//  SolverBranchCommand(const std::string &typeStr)
 //------------------------------------------------------------------------------
 /**
  * Creates a SolverBranchCommand command.  (default constructor)
@@ -48,29 +48,29 @@
  * @param <typeStr> The type name of the SolverBranchCommand.
  */
 //------------------------------------------------------------------------------
-SolverBranchCommand::SolverBranchCommand(const wxString &typeStr) :
+SolverBranchCommand::SolverBranchCommand(const std::string &typeStr) :
    BranchCommand  (typeStr),
-   solverName     (wxT("")),
+   solverName     (""),
    theSolver      (NULL),
    startMode      (RUN_AND_SOLVE),
    exitMode       (DISCARD_AND_CONTINUE),
    specialState   (Solver::INITIALIZING)
 {
    parameterCount = SolverBranchCommandParamCount;
-   objectTypeNames.push_back(wxT("SolverBranchCommand"));
+   objectTypeNames.push_back("SolverBranchCommand");
    
-   solverModes.push_back(wxT("RunInitialGuess"));
-   solverModes.push_back(wxT("Solve"));
+   solverModes.push_back("RunInitialGuess");
+   solverModes.push_back("Solve");
 //   solverModes.push_back("RunCorrected");
    
-   exitModes.push_back(wxT("DiscardAndContinue"));
-   exitModes.push_back(wxT("SaveAndContinue"));
-   exitModes.push_back(wxT("Stop"));
+   exitModes.push_back("DiscardAndContinue");
+   exitModes.push_back("SaveAndContinue");
+   exitModes.push_back("Stop");
 
 }
 
 //------------------------------------------------------------------------------
-//  SolverBranchCommand(const wxString &typeStr)
+//  SolverBranchCommand(const std::string &typeStr)
 //------------------------------------------------------------------------------
 /**
  * Destroys a SolverBranchCommand command.  (destructor)
@@ -82,8 +82,8 @@ SolverBranchCommand::~SolverBranchCommand()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (theSolver, wxT("local solver"), wxT("SolverBranchCommand::~SolverBranchCommand()"),
-          wxT("deleting local solver"));
+         (theSolver, "local solver", "SolverBranchCommand::~SolverBranchCommand()",
+          "deleting local solver");
       #endif
       delete theSolver;
    }
@@ -162,8 +162,8 @@ GmatCommand* SolverBranchCommand::GetNext()
    
    if (((commandExecuting) && (commandComplete)) && (exitMode == STOP))
    {
-      wxString msg = 
-         wxT("Mission interrupted -- Solver is running with ExitMode = \"Stop\"\n");
+      std::string msg = 
+         "Mission interrupted -- Solver is running with ExitMode = \"Stop\"\n";
       throw CommandException(msg);
    }
    
@@ -188,7 +188,7 @@ void SolverBranchCommand::StoreLoopData()
    // Make local copies of all of the objects that may be affected by optimize
    // loop iterations
    // Check the Local Object Store first
-   std::map<wxString, GmatBase *>::iterator pair = objectMap->begin();
+   std::map<std::string, GmatBase *>::iterator pair = objectMap->begin();
    GmatBase *obj = NULL;
    
    // Loop through the object map, looking for objects we'll need to restore.
@@ -198,8 +198,8 @@ void SolverBranchCommand::StoreLoopData()
       
       if (obj == NULL)
          throw CommandException
-            (typeName + wxT("::StoreLoopData() cannot continue ")
-             wxT("due to NULL object pointer in ") + generatingString);
+            (typeName + "::StoreLoopData() cannot continue "
+             "due to NULL object pointer in " + generatingString);
       
       // Save copies of all of the spacecraft
       if (obj->GetType() == Gmat::SPACECRAFT)
@@ -208,21 +208,21 @@ void SolverBranchCommand::StoreLoopData()
          Spacecraft *sc = new Spacecraft(*orig);
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Add
-            ((GmatBase*)sc, wxT("cloned local sc"), wxT("SolverBranchCommand::StoreLoopData()"),
-             wxT("Spacecraft *sc = new Spacecraft(*orig)"));
+            ((GmatBase*)sc, "cloned local sc", "SolverBranchCommand::StoreLoopData()",
+             "Spacecraft *sc = new Spacecraft(*orig)");
          #endif
          // Handle CoordinateSystems
          if (orig->GetInternalCoordSystem() == NULL)
             MessageInterface::ShowMessage(
-               wxT("Internal CS is NULL on spacecraft %s prior to optimizer cloning\n"),
+               "Internal CS is NULL on spacecraft %s prior to optimizer cloning\n",
                orig->GetName().c_str());
-         if (orig->GetRefObject(Gmat::COORDINATE_SYSTEM, wxT("")) == NULL)
+         if (orig->GetRefObject(Gmat::COORDINATE_SYSTEM, "") == NULL)
             MessageInterface::ShowMessage(
-               wxT("Coordinate system is NULL on spacecraft %s prior to optimizer cloning\n"),
+               "Coordinate system is NULL on spacecraft %s prior to optimizer cloning\n",
                orig->GetName().c_str());
          sc->SetInternalCoordSystem(orig->GetInternalCoordSystem());
-         sc->SetRefObject(orig->GetRefObject(Gmat::COORDINATE_SYSTEM, wxT("")),
-            Gmat::COORDINATE_SYSTEM, wxT(""));
+         sc->SetRefObject(orig->GetRefObject(Gmat::COORDINATE_SYSTEM, ""),
+            Gmat::COORDINATE_SYSTEM, "");
          
          localStore.push_back(sc);
       }
@@ -232,8 +232,8 @@ void SolverBranchCommand::StoreLoopData()
          Formation *form  = new Formation(*orig);
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Add
-            ((GmatBase*)form, wxT("cloned local form"), wxT("SolverBranchCommand::StoreLoopData()"),
-             wxT("Formation *form  = new Formation(*orig)"));
+            ((GmatBase*)form, "cloned local form", "SolverBranchCommand::StoreLoopData()",
+             "Formation *form  = new Formation(*orig)");
          #endif
          
          localStore.push_back(form);
@@ -241,7 +241,7 @@ void SolverBranchCommand::StoreLoopData()
       ++pair;
    }
    // Check the Global Object Store next
-   std::map<wxString, GmatBase *>::iterator globalPair = globalObjectMap->begin();
+   std::map<std::string, GmatBase *>::iterator globalPair = globalObjectMap->begin();
     
    // Loop through the object map, looking for objects we'll need to restore.
    while (globalPair != globalObjectMap->end()) 
@@ -254,21 +254,21 @@ void SolverBranchCommand::StoreLoopData()
          Spacecraft *sc = new Spacecraft(*orig);
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Add
-            ((GmatBase*)sc, wxT("cloned local sc"), wxT("SolverBranchCommand::StoreLoopData()"),
-             wxT("Spacecraft *sc = new Spacecraft(*orig)"));
+            ((GmatBase*)sc, "cloned local sc", "SolverBranchCommand::StoreLoopData()",
+             "Spacecraft *sc = new Spacecraft(*orig)");
          #endif
          // Handle CoordinateSystems
          if (orig->GetInternalCoordSystem() == NULL)
             MessageInterface::ShowMessage(
-               wxT("Internal CS is NULL on spacecraft %s prior to optimizer cloning\n"),
+               "Internal CS is NULL on spacecraft %s prior to optimizer cloning\n",
                orig->GetName().c_str());
-         if (orig->GetRefObject(Gmat::COORDINATE_SYSTEM, wxT("")) == NULL)
+         if (orig->GetRefObject(Gmat::COORDINATE_SYSTEM, "") == NULL)
             MessageInterface::ShowMessage(
-               wxT("Coordinate system is NULL on spacecraft %s prior to optimizer cloning\n"),
+               "Coordinate system is NULL on spacecraft %s prior to optimizer cloning\n",
                orig->GetName().c_str());
          sc->SetInternalCoordSystem(orig->GetInternalCoordSystem());
-         sc->SetRefObject(orig->GetRefObject(Gmat::COORDINATE_SYSTEM, wxT("")),
-            Gmat::COORDINATE_SYSTEM, wxT(""));
+         sc->SetRefObject(orig->GetRefObject(Gmat::COORDINATE_SYSTEM, ""),
+            Gmat::COORDINATE_SYSTEM, "");
          
          localStore.push_back(sc);
       }
@@ -278,8 +278,8 @@ void SolverBranchCommand::StoreLoopData()
          Formation *form  = new Formation(*orig);
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Add
-            ((GmatBase*)form, wxT("cloned local form"), wxT("SolverBranchCommand::StoreLoopData()"),
-             wxT("Formation *form  = new Formation(*orig)"));
+            ((GmatBase*)form, "cloned local form", "SolverBranchCommand::StoreLoopData()",
+             "Formation *form  = new Formation(*orig)");
          #endif
          localStore.push_back(form);
       }
@@ -299,7 +299,7 @@ void SolverBranchCommand::ResetLoopData()
 {
    Spacecraft *sc;
    Formation  *fm;
-   wxString name;
+   std::string name;
     
    for (std::vector<GmatBase *>::iterator i = localStore.begin();
         i != localStore.end(); ++i) {
@@ -320,7 +320,7 @@ void SolverBranchCommand::ResetLoopData()
       }
    }
    // Reset the propagators so that propagations run identically loop to loop
-   BranchCommand::TakeAction(wxT("ResetLoopData"));
+   BranchCommand::TakeAction("ResetLoopData");
 //   GmatCommand *cmd = branch[0];
 //   while (cmd != this)
 //   {
@@ -349,8 +349,8 @@ void SolverBranchCommand::FreeLoopData()
       localStore.pop_back();
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (obj, obj->GetName(), wxT("SolverBranchCommand::FreeLoopData()"),
-          wxT("deleting local obj"));
+         (obj, obj->GetName(), "SolverBranchCommand::FreeLoopData()",
+          "deleting local obj");
       #endif
       delete obj;
    }
@@ -388,33 +388,33 @@ bool SolverBranchCommand::InterpretAction()
 {
    #ifdef DEBUG_SOLVERBC_ASSEMBLE
       MessageInterface::ShowMessage
-         (wxT("%s::InterpretAction() genString = \"%s\"\n"), typeName.c_str(),
+         ("%s::InterpretAction() genString = \"%s\"\n", typeName.c_str(),
           generatingString.c_str());
    #endif
    
    StringArray blocks = parser.DecomposeBlock(generatingString);
 
-   StringArray chunks = parser.SeparateBrackets(blocks[0], wxT("{}"), wxT(" "), false);
+   StringArray chunks = parser.SeparateBrackets(blocks[0], "{}", " ", false);
 
    #ifdef DEBUG_PARSING
-      MessageInterface::ShowMessage(wxT("Chunks from \"%s\":\n"), 
+      MessageInterface::ShowMessage("Chunks from \"%s\":\n", 
             blocks[0].c_str());
       for (StringArray::iterator i = chunks.begin(); i != chunks.end(); ++i)
-         MessageInterface::ShowMessage(wxT("   \"%s\"\n"), i->c_str());
+         MessageInterface::ShowMessage("   \"%s\"\n", i->c_str());
    #endif
    
    if (chunks.size() < 2)
-      throw CommandException(typeName + wxT("::InterpretAction() cannot identify ")
-            wxT("the Solver -- is it missing? -- in line\n") + generatingString);
+      throw CommandException(typeName + "::InterpretAction() cannot identify "
+            "the Solver -- is it missing? -- in line\n" + generatingString);
 
    if (chunks.size() > 3)
       throw CommandException(typeName + 
-            wxT("::InterpretAction() found too many components to parse in the ")
-            wxT("line\n") + generatingString);
+            "::InterpretAction() found too many components to parse in the "
+            "line\n" + generatingString);
 
    if (chunks[0] != typeName)
-      throw CommandException(typeName + wxT("::InterpretAction() does not identify ")
-            wxT("the correct Solver type in line\n") + generatingString);
+      throw CommandException(typeName + "::InterpretAction() does not identify "
+            "the correct Solver type in line\n" + generatingString);
    
    solverName = chunks[1];
 
@@ -422,97 +422,97 @@ bool SolverBranchCommand::InterpretAction()
       CheckForOptions(chunks[2]);
 
    #ifdef DEBUG_PARSING
-      MessageInterface::ShowMessage(wxT("%s::InterpretAction for \"%s\", type = %s\n"), 
+      MessageInterface::ShowMessage("%s::InterpretAction for \"%s\", type = %s\n", 
             typeName.c_str(), generatingString.c_str(), typeName.c_str());
-      MessageInterface::ShowMessage(wxT("   Solver name:     \"%s\"\n"), 
+      MessageInterface::ShowMessage("   Solver name:     \"%s\"\n", 
             solverName.c_str());
-      MessageInterface::ShowMessage(wxT("   SolveMode:       %d\n"), startMode);
-      MessageInterface::ShowMessage(wxT("   ExitMode:        %d\n"), exitMode);
+      MessageInterface::ShowMessage("   SolveMode:       %d\n", startMode);
+      MessageInterface::ShowMessage("   ExitMode:        %d\n", exitMode);
    #endif
    
    return true;
 }
 
 
-void SolverBranchCommand::CheckForOptions(wxString &opts)
+void SolverBranchCommand::CheckForOptions(std::string &opts)
 {
-   StringArray chunks = parser.SeparateBrackets(opts, wxT("{}"), wxT(", "), true);
+   StringArray chunks = parser.SeparateBrackets(opts, "{}", ", ", true);
 
    #ifdef DEBUG_PARSING
-      MessageInterface::ShowMessage(wxT("Chunks from \"%s\":\n"), opts.c_str());
+      MessageInterface::ShowMessage("Chunks from \"%s\":\n", opts.c_str());
       for (StringArray::iterator i = chunks.begin(); i != chunks.end(); ++i)
-         MessageInterface::ShowMessage(wxT("   \"%s\"\n"), i->c_str());
+         MessageInterface::ShowMessage("   \"%s\"\n", i->c_str());
    #endif
    
    for (StringArray::iterator i = chunks.begin(); i != chunks.end(); ++i)
    {
-      StringArray option = parser.SeparateBy(*i, wxT("= "));
+      StringArray option = parser.SeparateBy(*i, "= ");
 
       #ifdef DEBUG_PARSING
-         MessageInterface::ShowMessage(wxT("Options from \"%s\":\n"), i->c_str());
+         MessageInterface::ShowMessage("Options from \"%s\":\n", i->c_str());
          for (StringArray::iterator i = option.begin(); i != option.end(); ++i)
-            MessageInterface::ShowMessage(wxT("   \"%s\"\n"), i->c_str());
+            MessageInterface::ShowMessage("   \"%s\"\n", i->c_str());
       #endif
          
       if (option.size() != 2)
-         throw CommandException(typeName + wxT("::InterpretAction() Solver option ")
-               wxT("is not in the form option = value in line\n") + 
+         throw CommandException(typeName + "::InterpretAction() Solver option "
+               "is not in the form option = value in line\n" + 
                generatingString);
          
-      if (option[0] == wxT("SolveMode"))
+      if (option[0] == "SolveMode")
       {
-         if (option[1] == wxT("Solve"))
+         if (option[1] == "Solve")
             startMode = RUN_AND_SOLVE;
-         else if (option[1] == wxT("RunInitialGuess"))
+         else if (option[1] == "RunInitialGuess")
             startMode = RUN_INITIAL_GUESS;
          else
-            throw CommandException(typeName + wxT("::InterpretAction() Solver ")
-                  wxT("SolveMode option ") + option[1] + 
-                  wxT(" is not a recognized value on line\n") + generatingString +
-                  wxT("\nAllowed values are \"Solve\" and \"RunInitialGuess\"\n"));
+            throw CommandException(typeName + "::InterpretAction() Solver "
+                  "SolveMode option " + option[1] + 
+                  " is not a recognized value on line\n" + generatingString +
+                  "\nAllowed values are \"Solve\" and \"RunInitialGuess\"\n");
       }
-      else if (option[0] == wxT("ExitMode"))
+      else if (option[0] == "ExitMode")
       {
-         if (option[1] == wxT("DiscardAndContinue"))
+         if (option[1] == "DiscardAndContinue")
             exitMode = DISCARD_AND_CONTINUE;
-         else if (option[1] == wxT("SaveAndContinue"))
+         else if (option[1] == "SaveAndContinue")
             exitMode = SAVE_AND_CONTINUE;
-         else if (option[1] == wxT("Stop"))
+         else if (option[1] == "Stop")
             exitMode = STOP;
          else
-            throw CommandException(typeName + wxT("::InterpretAction() Solver ")
-                  wxT("ExitMode option ") + option[1] + 
-                  wxT(" is not a recognized value on line\n") + generatingString +
-                  wxT("\nAllowed values are \"DiscardAndContinue\", ")
-                  wxT("\"SaveAndContinue\", and \"Stop\"\n"));
+            throw CommandException(typeName + "::InterpretAction() Solver "
+                  "ExitMode option " + option[1] + 
+                  " is not a recognized value on line\n" + generatingString +
+                  "\nAllowed values are \"DiscardAndContinue\", "
+                  "\"SaveAndContinue\", and \"Stop\"\n");
       }
       else
       {
          throw CommandException(typeName + 
-               wxT("::InterpretAction() Solver option ") + option[0] + 
-               wxT(" is not a recognized option on line\n") + generatingString +
-                                 wxT("\nAllowed options are \"SolveMode\" and ")
-               wxT("\"ExitMode\"\n"));
+               "::InterpretAction() Solver option " + option[0] + 
+               " is not a recognized option on line\n" + generatingString +
+                                 "\nAllowed options are \"SolveMode\" and "
+               "\"ExitMode\"\n");
       }         
    }
 }
 
 
-wxString SolverBranchCommand::GetSolverOptionText()
+std::string SolverBranchCommand::GetSolverOptionText()
 {
    #ifdef DEBUG_OPTIONS
-      MessageInterface::ShowMessage(wxT("Entering GetSolverOptionText with startMode = %d, and exitMode = %d\n"),
+      MessageInterface::ShowMessage("Entering GetSolverOptionText with startMode = %d, and exitMode = %d\n",
             (Integer) startMode, (Integer) exitMode);
    #endif
-   wxString optionString = wxT("");
-   optionString += wxT(" {SolveMode = ");
+   std::string optionString = "";
+   optionString += " {SolveMode = ";
    optionString += GetStringParameter(SOLVER_SOLVE_MODE);
-   optionString += wxT(", ExitMode = ");
+   optionString += ", ExitMode = ";
    optionString += GetStringParameter(SOLVER_EXIT_MODE);
-   optionString += wxT("}");
+   optionString += "}";
 
    #ifdef DEBUG_OPTIONS
-      MessageInterface::ShowMessage(wxT("Exiting GetSolverOptionText and optionString = %s\n"),
+      MessageInterface::ShowMessage("Exiting GetSolverOptionText and optionString = %s\n",
             optionString.c_str());
    #endif
    
@@ -520,19 +520,19 @@ wxString SolverBranchCommand::GetSolverOptionText()
 }
 
 
-bool SolverBranchCommand::TakeAction(const wxString &action, 
-      const wxString &actionData)
+bool SolverBranchCommand::TakeAction(const std::string &action, 
+      const std::string &actionData)
 {
    
-   MessageInterface::ShowMessage(wxT("Taking action %s\n"), action.c_str());
+   MessageInterface::ShowMessage("Taking action %s\n", action.c_str());
    
-   if (action == wxT("ApplyCorrections"))
+   if (action == "ApplyCorrections")
    {
       if (theSolver == NULL)
       {
          MessageInterface::PopupMessage(Gmat::INFO_, 
-               wxT("Please run the mission first.  Corrections cannot be applied ")
-               wxT("until the solver control sequence has been run."));
+               "Please run the mission first.  Corrections cannot be applied "
+               "until the solver control sequence has been run.");
          return true;
       }
       // This action walks through the solver loop and passes the Solver's 
@@ -540,15 +540,15 @@ bool SolverBranchCommand::TakeAction(const wxString &action,
       // initial values for the variables.  The solver must have run once first,
       // though it need not have converged.
       Integer status = theSolver->GetIntegerParameter(
-            theSolver->GetParameterID(wxT("SolverStatus")));
+            theSolver->GetParameterID("SolverStatus"));
       
       if ((status == Solver::CREATED) ||
           (status == Solver::COPIED) ||
           (status == Solver::INITIALIZED))
       {
          MessageInterface::PopupMessage(Gmat::INFO_, 
-               wxT("Please run the mission first.  Corrections cannot be applied ")
-               wxT("until the solver control sequence has been run."));
+               "Please run the mission first.  Corrections cannot be applied "
+               "until the solver control sequence has been run.");
          return true;
       }
       
@@ -564,7 +564,7 @@ bool SolverBranchCommand::TakeAction(const wxString &action,
 // Parameter access methods
 
 //------------------------------------------------------------------------------
-//  wxString GetParameterText(const Integer id) const
+//  std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Read accessor for parameter names.
@@ -574,19 +574,19 @@ bool SolverBranchCommand::TakeAction(const wxString &action,
  * @return the text string for the parameter.
  */
 //------------------------------------------------------------------------------
-wxString SolverBranchCommand::GetParameterText(const Integer id) const
+std::string SolverBranchCommand::GetParameterText(const Integer id) const
 {
    if (id == SOLVER_NAME_ID)
-      return wxT("SolverName");
+      return "SolverName";
    if (id == SOLVER_SOLVE_MODE)
-      return wxT("SolveMode");
+      return "SolveMode";
     
    return BranchCommand::GetParameterText(id);
 }
 
 
 //------------------------------------------------------------------------------
-//  Integer GetParameterID(const wxString &str) const
+//  Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * Read accessor for parameter IDs.
@@ -596,17 +596,17 @@ wxString SolverBranchCommand::GetParameterText(const Integer id) const
  * @return the integer ID for the parameter.
  */
 //------------------------------------------------------------------------------
-Integer SolverBranchCommand::GetParameterID(const wxString &str) const
+Integer SolverBranchCommand::GetParameterID(const std::string &str) const
 {
-   if (str == wxT("SolverName"))
+   if (str == "SolverName")
       return SOLVER_NAME_ID;
-   if (str == wxT("SolveMode"))
+   if (str == "SolveMode")
       return SOLVER_SOLVE_MODE;
-   if (str == wxT("ExitMode"))
+   if (str == "ExitMode")
       return SOLVER_EXIT_MODE;
-   if (str == wxT("SolveModeOptions"))
+   if (str == "SolveModeOptions")
       return SOLVER_SOLVE_MODE_OPTIONS;
-   if (str == wxT("ExitModeOptions"))
+   if (str == "ExitModeOptions")
       return SOLVER_EXIT_MODE_OPTIONS;
     
    return BranchCommand::GetParameterID(str);
@@ -638,7 +638,7 @@ Gmat::ParameterType SolverBranchCommand::GetParameterType(const Integer id) cons
 
 
 //------------------------------------------------------------------------------
-//  wxString GetParameterTypeString(const Integer id) const
+//  std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Read accessor for parameter type data description.
@@ -648,7 +648,7 @@ Gmat::ParameterType SolverBranchCommand::GetParameterType(const Integer id) cons
  * @return a string describing the type of the parameter.
  */
 //------------------------------------------------------------------------------
-wxString SolverBranchCommand::GetParameterTypeString(const Integer id) const
+std::string SolverBranchCommand::GetParameterTypeString(const Integer id) const
 {
    if (id == SOLVER_NAME_ID)
       return PARAM_TYPE_STRING[Gmat::STRING_TYPE];
@@ -662,7 +662,7 @@ wxString SolverBranchCommand::GetParameterTypeString(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  bool SetStringParameter(const Integer id, const wxString &value)
+//  bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Write accessor for string parameters.
@@ -673,7 +673,7 @@ wxString SolverBranchCommand::GetParameterTypeString(const Integer id) const
  * @return true on success, false on failure.
  */
 //------------------------------------------------------------------------------
-bool SolverBranchCommand::SetStringParameter(const Integer id, const wxString &value)
+bool SolverBranchCommand::SetStringParameter(const Integer id, const std::string &value)
 {
    if (id == SOLVER_NAME_ID)
    {
@@ -683,38 +683,38 @@ bool SolverBranchCommand::SetStringParameter(const Integer id, const wxString &v
 
    if (id == SOLVER_SOLVE_MODE) 
    {
-      if (value == wxT("RunInitialGuess"))
+      if (value == "RunInitialGuess")
          startMode = RUN_INITIAL_GUESS;
-      else if (value == wxT("Solve"))
+      else if (value == "Solve")
          startMode = RUN_AND_SOLVE;
-      else if (value == wxT("RunCorrected"))
+      else if (value == "RunCorrected")
          startMode = RUN_SOLUTION;
       else
-         throw CommandException(wxT("Unknown solver mode \"") + value + 
-               wxT("\"; known values are {\"RunInitialGuess\", \"Solve\" ")
-               wxT("\"RunCorrected\"}"));
+         throw CommandException("Unknown solver mode \"" + value + 
+               "\"; known values are {\"RunInitialGuess\", \"Solve\" "
+               "\"RunCorrected\"}");
       return true;
    }
     
    if (id == SOLVER_EXIT_MODE) 
    {
-      if (value == wxT("DiscardAndContinue"))
+      if (value == "DiscardAndContinue")
          exitMode = DISCARD_AND_CONTINUE;
-      else if (value == wxT("SaveAndContinue"))
+      else if (value == "SaveAndContinue")
          exitMode = SAVE_AND_CONTINUE;
-      else if (value == wxT("Stop"))
+      else if (value == "Stop")
          exitMode = STOP;
       else
-         throw CommandException(wxT("Unknown solver exit mode \"") + value + 
-               wxT("\"; known values are {\"DiscardAndContinue\", ")
-               wxT("\"SaveAndContinue\", \"Stop\"}"));
+         throw CommandException("Unknown solver exit mode \"" + value + 
+               "\"; known values are {\"DiscardAndContinue\", "
+               "\"SaveAndContinue\", \"Stop\"}");
       return true;
    }
    
    return BranchCommand::SetStringParameter(id, value);
 }
 
-wxString SolverBranchCommand::GetStringParameter(const Integer id) const
+std::string SolverBranchCommand::GetStringParameter(const Integer id) const
 {
    if (id == SOLVER_NAME_ID)
       return solverName;
@@ -722,28 +722,28 @@ wxString SolverBranchCommand::GetStringParameter(const Integer id) const
    if (id == SOLVER_SOLVE_MODE) 
    {
       if (startMode == RUN_INITIAL_GUESS)
-         return wxT("RunInitialGuess");
+         return "RunInitialGuess";
       if (startMode == RUN_AND_SOLVE)
-         return wxT("Solve");
+         return "Solve";
       if (startMode == RUN_SOLUTION)
-         return wxT("RunCorrected");
+         return "RunCorrected";
    }
    
    if (id == SOLVER_EXIT_MODE) 
    {
       if (exitMode == DISCARD_AND_CONTINUE)
-         return wxT("DiscardAndContinue");
+         return "DiscardAndContinue";
       if (exitMode == SAVE_AND_CONTINUE)
-         return wxT("SaveAndContinue");
+         return "SaveAndContinue";
       if (exitMode == STOP)
-         return wxT("Stop");
+         return "Stop";
    }
    
    return BranchCommand::GetStringParameter(id);
 }
 
 
-wxString SolverBranchCommand::GetStringParameter(const wxString &label) const
+std::string SolverBranchCommand::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
@@ -761,7 +761,7 @@ const StringArray& SolverBranchCommand::GetStringArrayParameter(const Integer id
 }
 
 
-const StringArray& SolverBranchCommand::GetStringArrayParameter(const wxString &label) const
+const StringArray& SolverBranchCommand::GetStringArrayParameter(const std::string &label) const
 {
    return GetStringArrayParameter(GetParameterID(label));
 }
@@ -785,7 +785,7 @@ const StringArray& SolverBranchCommand::GetStringArrayParameter(const wxString &
 bool SolverBranchCommand::NeedsServerStartup()
 {
    if (theSolver == NULL)
-      throw CommandException(wxT("The Solver pointer is not set in command\n") +
+      throw CommandException("The Solver pointer is not set in command\n" +
                GetGeneratingString());
    
    if (theSolver->IsSolverInternal())
@@ -813,7 +813,7 @@ void SolverBranchCommand::ApplySolution()
 
       while ((current != NULL) && (current != this))
       {
-         if (current->GetTypeName() == wxT("Vary"))
+         if (current->GetTypeName() == "Vary")
             ((Vary*)current)->SetInitialValue(theSolver);
          current = current->GetNext();
       }
@@ -842,9 +842,9 @@ void SolverBranchCommand::GetActiveSubscribers()
       if (obj->IsOfType(Gmat::SUBSCRIBER))
       {
          // Here's where we go XY specific
-         if (obj->IsOfType(wxT("XYPlot")))
+         if (obj->IsOfType("XYPlot"))
          {
-            if (obj->GetBooleanParameter(wxT("Drawing")))
+            if (obj->GetBooleanParameter("Drawing"))
                activeSubscribers.push_back((Subscriber*)(obj));
          }
       }
@@ -857,9 +857,9 @@ void SolverBranchCommand::GetActiveSubscribers()
       if (obj->IsOfType(Gmat::SUBSCRIBER))
       {
          // Here's where we go XY specific
-         if (obj->IsOfType(wxT("XYPlot")))
+         if (obj->IsOfType("XYPlot"))
          {
-            if (obj->GetBooleanParameter(wxT("Drawing")))
+            if (obj->GetBooleanParameter("Drawing"))
                activeSubscribers.push_back((Subscriber*)(obj));
          }
       }
@@ -877,7 +877,7 @@ void SolverBranchCommand::GetActiveSubscribers()
 void SolverBranchCommand::PenUpSubscribers()
 {
    for (UnsignedInt i = 0; i < activeSubscribers.size(); ++i)
-      activeSubscribers[i]->TakeAction(wxT("PenUp"));
+      activeSubscribers[i]->TakeAction("PenUp");
 }
 
 
@@ -892,7 +892,7 @@ void SolverBranchCommand::PenDownSubscribers()
 {
    for (UnsignedInt i = 0; i < activeSubscribers.size(); ++i)
    {
-      activeSubscribers[i]->TakeAction(wxT("PenDown"));
+      activeSubscribers[i]->TakeAction("PenDown");
    }
 }
 
@@ -912,10 +912,10 @@ void SolverBranchCommand::DarkenSubscribers(Integer denominator)
 {
 //   MessageInterface::ShowMessage("Darkening by %d\n", denominator);
 
-   wxString factor;
+   std::stringstream factor;
    factor << denominator;
    for (UnsignedInt i = 0; i < activeSubscribers.size(); ++i)
-      activeSubscribers[i]->TakeAction(wxT("Darken"), factor.c_str());
+      activeSubscribers[i]->TakeAction("Darken", factor.str().c_str());
 }
 
 
@@ -932,10 +932,10 @@ void SolverBranchCommand::DarkenSubscribers(Integer denominator)
 //------------------------------------------------------------------------------
 void SolverBranchCommand::LightenSubscribers(Integer denominator)
 {
-   wxString factor;
+   std::stringstream factor;
    factor << denominator;
    for (UnsignedInt i = 0; i < activeSubscribers.size(); ++i)
-      activeSubscribers[i]->TakeAction(wxT("Lighten"), factor.c_str());
+      activeSubscribers[i]->TakeAction("Lighten", factor.str().c_str());
 }
 
 
@@ -949,7 +949,7 @@ void SolverBranchCommand::LightenSubscribers(Integer denominator)
 void SolverBranchCommand::SetSubscriberBreakpoint()
 {
    for (UnsignedInt i = 0; i < activeSubscribers.size(); ++i)
-      activeSubscribers[i]->TakeAction(wxT("MarkBreak"));
+      activeSubscribers[i]->TakeAction("MarkBreak");
 }
 
 //------------------------------------------------------------------------------
@@ -964,10 +964,10 @@ void SolverBranchCommand::SetSubscriberBreakpoint()
 //------------------------------------------------------------------------------
 void SolverBranchCommand::ApplySubscriberBreakpoint(Integer bp)
 {
-   wxString breakpoint;
+   std::stringstream breakpoint;
    breakpoint << bp;
    for (UnsignedInt i = 0; i < activeSubscribers.size(); ++i)
-      activeSubscribers[i]->TakeAction(wxT("ClearFromBreak"), breakpoint);
+      activeSubscribers[i]->TakeAction("ClearFromBreak", breakpoint.str());
 }
 
 
@@ -1020,8 +1020,8 @@ void SolverBranchCommand::PrepareToPublish(bool publishAll)
 
    if (publishAll)
    {
-      owners.push_back(wxT("All"));
-      elements.push_back(wxT("All.epoch"));
+      owners.push_back("All");
+      elements.push_back("All.epoch");
    }
 
    streamID = publisher->RegisterPublishedData(this, streamID, owners,

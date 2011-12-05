@@ -60,7 +60,7 @@ const Real GeocentricSolarMagneticAxes::phiD    = 78.6 * GmatMathConstants::RAD_
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-//  GeocentricSolarMagneticAxes(const wxString &itsName);
+//  GeocentricSolarMagneticAxes(const std::string &itsName);
 //------------------------------------------------------------------------------
 /**
  * Constructs base GeocentricSolarMagneticAxes structures
@@ -69,13 +69,13 @@ const Real GeocentricSolarMagneticAxes::phiD    = 78.6 * GmatMathConstants::RAD_
  * @param itsName Optional name for the object.  Defaults to "".
  */
 //------------------------------------------------------------------------------
-GeocentricSolarMagneticAxes::GeocentricSolarMagneticAxes(const wxString &itsName) :
-ObjectReferencedAxes(wxT("GSM"),itsName)
+GeocentricSolarMagneticAxes::GeocentricSolarMagneticAxes(const std::string &itsName) :
+ObjectReferencedAxes("GSM",itsName)
 {
    primaryName   = SolarSystem::EARTH_NAME;
    secondaryName = SolarSystem::SUN_NAME;
    ComputeDipoleEarthFixed();
-   objectTypeNames.push_back(wxT("GSM"));
+   objectTypeNames.push_back("GSM");
    parameterCount = GeocentricSolarMagneticAxesParamCount;
 }
 
@@ -366,7 +366,7 @@ void GeocentricSolarMagneticAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
               - fixedToMJ2000[1][1]*fixedToMJ2000[0][2]);
    if (Abs(determinant - 1.0) > DETERMINANT_TOLERANCE)
       throw CoordinateSystemException(
-            wxT("Computed rotation matrix has a determinant not equal to 1.0"));
+            "Computed rotation matrix has a determinant not equal to 1.0");
 
    // NUT * PREC calculated above
    // STderiv * (NUT * PREC)
@@ -529,34 +529,34 @@ void GeocentricSolarMagneticAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
       static Integer num = 0;
       if (num == 0)
       {
-         MessageInterface::ShowMessage(wxT("****** BEGIN temporary debug ...........\n"));
-         MessageInterface::ShowMessage(wxT("Sun vector(MJ2000) = %f %f %f\n"), 
+         MessageInterface::ShowMessage("****** BEGIN temporary debug ...........\n");
+         MessageInterface::ShowMessage("Sun vector(MJ2000) = %f %f %f\n", 
          rvSun(0), rvSun(1), rvSun(2));
-         MessageInterface::ShowMessage(wxT("Dipole (fixed) = %f %f %f\n"), 
+         MessageInterface::ShowMessage("Dipole (fixed) = %f %f %f\n", 
          dipoleEF(0), dipoleEF(1), dipoleEF(2));
-         MessageInterface::ShowMessage(wxT("Dipole (MJ2000) = %f %f %f\n"), 
+         MessageInterface::ShowMessage("Dipole (MJ2000) = %f %f %f\n", 
          dipoleFK5(0), dipoleFK5(1), dipoleFK5(2));
-         MessageInterface::ShowMessage(wxT("x = %f %f %f\n"), 
+         MessageInterface::ShowMessage("x = %f %f %f\n", 
          x(0), x(1), x(2));
-         MessageInterface::ShowMessage(wxT("y = %f %f %f\n"), 
+         MessageInterface::ShowMessage("y = %f %f %f\n", 
          y(0), y(1), y(2));
-         MessageInterface::ShowMessage(wxT("z = %f %f %f\n"), 
+         MessageInterface::ShowMessage("z = %f %f %f\n", 
          z(0), z(1), z(2));
-         MessageInterface::ShowMessage(wxT("xDot = %f %f %f\n"), 
+         MessageInterface::ShowMessage("xDot = %f %f %f\n", 
          xDot(0), xDot(1), xDot(2));
-         MessageInterface::ShowMessage(wxT("yDot = %f %f %f\n"), 
+         MessageInterface::ShowMessage("yDot = %f %f %f\n", 
          yDot(0), yDot(1), yDot(2));
-         MessageInterface::ShowMessage(wxT("zDot = %f %f %f\n"), 
+         MessageInterface::ShowMessage("zDot = %f %f %f\n", 
          zDot(0), zDot(1), zDot(2));
-         MessageInterface::ShowMessage(wxT("rotation matrix = \n%f %f %f\n%f %f %f\n%f %f %f\n"),
+         MessageInterface::ShowMessage("rotation matrix = \n%f %f %f\n%f %f %f\n%f %f %f\n",
          rotMatrix(0,0), rotMatrix(0,1), rotMatrix(0,2), rotMatrix(1,0), 
          rotMatrix(1,1), rotMatrix(1,2), rotMatrix(2,0), rotMatrix(2,1), 
          rotMatrix(2,2));
-         MessageInterface::ShowMessage(wxT("rotation matrix (derivative) = \n%f %f %f\n%f %f %f\n%f %f %f\n"),
+         MessageInterface::ShowMessage("rotation matrix (derivative) = \n%f %f %f\n%f %f %f\n%f %f %f\n",
          rotDotMatrix(0,0), rotDotMatrix(0,1), rotDotMatrix(0,2), rotDotMatrix(1,0), 
          rotDotMatrix(1,1), rotDotMatrix(1,2), rotDotMatrix(2,0), rotDotMatrix(2,1), 
          rotDotMatrix(2,2));
-         MessageInterface::ShowMessage(wxT("****** END temporary debug ...........\n"));
+         MessageInterface::ShowMessage("****** END temporary debug ...........\n");
          num++;
       }
    #endif

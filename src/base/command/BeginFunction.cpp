@@ -30,14 +30,14 @@
 #define DEBUG_OBJECT_MAPPING
 
 
-const wxString
+const std::string
 BeginFunction::PARAMETER_TEXT[BeginFunctionParamCount - GmatCommandParamCount] =
 {
-   wxT("FunctionName"),
-   wxT("Input"),
-   wxT("Output"),
-   wxT("CallFunctionInput"),
-   wxT("CallFunctionOutput")
+   "FunctionName",
+   "Input",
+   "Output",
+   "CallFunctionInput",
+   "CallFunctionOutput"
 };
 
 
@@ -55,8 +55,8 @@ BeginFunction::PARAMETER_TYPE[BeginFunctionParamCount - GmatCommandParamCount] =
 
 
 BeginFunction::BeginFunction() :
-   GmatCommand          (wxT("BeginFunction")),
-   functionName         (wxT("")),
+   GmatCommand          ("BeginFunction"),
+   functionName         (""),
    gfun                 (NULL),
    transientForces      (NULL),
    internalCoordSys     (NULL)
@@ -116,7 +116,7 @@ GmatBase* BeginFunction::Clone() const
 
 
 GmatBase* BeginFunction::GetRefObject(const Gmat::ObjectType type,
-                                    const wxString &name)
+                                    const std::string &name)
 {
    if (type == Gmat::UNKNOWN_OBJECT)  // Just find it by name
    {
@@ -143,7 +143,7 @@ GmatBase* BeginFunction::GetRefObject(const Gmat::ObjectType type,
 
 // Function used to put objects in the local onject map
 bool BeginFunction::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                    const wxString &name)
+                                    const std::string &name)
 {
    bool retval = false;
    if (localMap.find(name) == localMap.end())
@@ -154,16 +154,16 @@ bool BeginFunction::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
    else
    {
       MessageInterface::ShowMessage(
-         wxT("Attempted to add the object %s which is already in the ")
-         wxT("GmatFunction %s\n"), name.c_str(), functionName.c_str());
+         "Attempted to add the object %s which is already in the "
+         "GmatFunction %s\n", name.c_str(), functionName.c_str());
    }
 
    return retval;
 }
 
 bool BeginFunction::RenameRefObject(const Gmat::ObjectType type,
-                                    const wxString &oldName,
-                                    const wxString &newName)
+                                    const std::string &oldName,
+                                    const std::string &newName)
 {
    return true;
 }
@@ -171,7 +171,7 @@ bool BeginFunction::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-//  wxString GetParameterText(const Integer id) const
+//  std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Gets the name of the parameter with the input id.
@@ -181,7 +181,7 @@ bool BeginFunction::RenameRefObject(const Gmat::ObjectType type,
  * @return The string name of the parameter.
  */
 //------------------------------------------------------------------------------
-wxString BeginFunction::GetParameterText(const Integer id) const
+std::string BeginFunction::GetParameterText(const Integer id) const
 {
    if ((id >= GmatCommandParamCount) && (id < BeginFunctionParamCount))
       return PARAMETER_TEXT[id - GmatCommandParamCount];
@@ -191,7 +191,7 @@ wxString BeginFunction::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer GetParameterID(const wxString &str) const
+//  Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * Gets the id corresponding to a named parameter.
@@ -201,7 +201,7 @@ wxString BeginFunction::GetParameterText(const Integer id) const
  * @return The ID.
  */
 //------------------------------------------------------------------------------
-Integer BeginFunction::GetParameterID(const wxString &str) const
+Integer BeginFunction::GetParameterID(const std::string &str) const
 {
    for (int i = 0; i < BeginFunctionParamCount - GmatCommandParamCount; ++i)
       if (PARAMETER_TEXT[i] == str)
@@ -233,7 +233,7 @@ Gmat::ParameterType BeginFunction::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString GetParameterTypeString(const Integer id) const
+//  std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Gets the text description for the type of a parameter.
@@ -243,7 +243,7 @@ Gmat::ParameterType BeginFunction::GetParameterType(const Integer id) const
  * @return The text description of the type of the parameter.
  */
 //------------------------------------------------------------------------------
-wxString BeginFunction::GetParameterTypeString(const Integer id) const
+std::string BeginFunction::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -272,7 +272,7 @@ bool BeginFunction::IsParameterReadOnly(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-//  bool IsParameterReadOnly(const wxString &label) const
+//  bool IsParameterReadOnly(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * Checks to see if the requested parameter is read only.
@@ -283,7 +283,7 @@ bool BeginFunction::IsParameterReadOnly(const Integer id) const
  *         throws if the parameter is out of the valid range of values.
  */
 //---------------------------------------------------------------------------
-bool BeginFunction::IsParameterReadOnly(const wxString &label) const
+bool BeginFunction::IsParameterReadOnly(const std::string &label) const
 {
    return IsParameterReadOnly(GetParameterID(label));
 }
@@ -291,17 +291,17 @@ bool BeginFunction::IsParameterReadOnly(const wxString &label) const
 
 
 //------------------------------------------------------------------------------
-//  wxString GetStringParameter(const Integer id) const
+//  std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
- * Gets the value for a wxString parameter.
+ * Gets the value for a std::string parameter.
  *
  * @param <id> Integer ID of the parameter.
  *
  * @return The value of the parameter.
  */
 //------------------------------------------------------------------------------
-wxString BeginFunction::GetStringParameter(const Integer id) const
+std::string BeginFunction::GetStringParameter(const Integer id) const
 {
    if (id == FUNCTION_NAME)
    {
@@ -314,10 +314,10 @@ wxString BeginFunction::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString GetStringParameter(const Integer id, const Integer index) const
+//  std::string GetStringParameter(const Integer id, const Integer index) const
 //------------------------------------------------------------------------------
 /**
- * Gets the value for a wxString parameter.
+ * Gets the value for a std::string parameter.
  *
  * @param <id>    Integer ID of the parameter.
  * @param <index> Index for array parameter values.
@@ -325,7 +325,7 @@ wxString BeginFunction::GetStringParameter(const Integer id) const
  * @return The value of the parameter.
  */
 //------------------------------------------------------------------------------
-wxString BeginFunction::GetStringParameter(const Integer id,
+std::string BeginFunction::GetStringParameter(const Integer id,
                                               const Integer index) const
 {
    return GmatCommand::GetStringParameter(id, index);
@@ -337,7 +337,7 @@ wxString BeginFunction::GetStringParameter(const Integer id,
 //  const StringArray& GetStringArrayParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
- * Gets an array do wxStrings.
+ * Gets an array do std::strings.
  *
  * @param <id> Integer ID of the array.
  *
@@ -373,7 +373,7 @@ const StringArray& BeginFunction::GetStringArrayParameter(const Integer id) cons
 //  bool SetStringParameter(const Integer id, const Real value)
 //------------------------------------------------------------------------------
 /**
- * Sets the value for a wxString parameter.
+ * Sets the value for a std::string parameter.
  *
  * @param <id>    Integer ID of the parameter.
  * @param <value> New value for the parameter.
@@ -382,14 +382,14 @@ const StringArray& BeginFunction::GetStringArrayParameter(const Integer id) cons
  */
 //------------------------------------------------------------------------------
 bool BeginFunction::SetStringParameter(const Integer id,
-                                       const wxString &value)
+                                       const std::string &value)
 {
    bool retval = false;
 
    switch (id)
    {
       case FUNCTION_NAME:
-         if (value != wxT(""))
+         if (value != "")
          {
             functionName = value;
             retval = true;
@@ -397,7 +397,7 @@ bool BeginFunction::SetStringParameter(const Integer id,
          break;
 
       case INPUTS:
-         if ((value != wxT("")) &&
+         if ((value != "") &&
              (find(inputs.begin(), inputs.end(), value) == inputs.end()))
          {
             inputs.push_back(value);
@@ -406,7 +406,7 @@ bool BeginFunction::SetStringParameter(const Integer id,
          break;
 
       case OUTPUTS:
-         if ((value != wxT("")) &&
+         if ((value != "") &&
              (find(outputs.begin(), outputs.end(), value) == outputs.end()))
          {
             outputs.push_back(value);
@@ -415,7 +415,7 @@ bool BeginFunction::SetStringParameter(const Integer id,
          break;
 
       case INPUT_OBJECT_NAMES:
-         if ((value != wxT("")) &&
+         if ((value != "") &&
              (find(inputObjects.begin(), inputObjects.end(), value) ==
               inputObjects.end()))
          {
@@ -425,7 +425,7 @@ bool BeginFunction::SetStringParameter(const Integer id,
          break;
 
       case OUTPUT_OBJECT_NAMES:
-         if ((value != wxT("")) &&
+         if ((value != "") &&
              (find(outputObjects.begin(), outputObjects.end(), value) ==
               outputObjects.end()))
          {
@@ -451,7 +451,7 @@ bool BeginFunction::SetStringParameter(const Integer id,
 //                          const Integer index)
 //------------------------------------------------------------------------------
 /**
- * Sets the value for a wxString parameter in an array.
+ * Sets the value for a std::string parameter in an array.
  *
  * @param <id>    Integer ID of the parameter.
  * @param <value> New value for the parameter.
@@ -461,7 +461,7 @@ bool BeginFunction::SetStringParameter(const Integer id,
  */
 //------------------------------------------------------------------------------
 bool BeginFunction::SetStringParameter(const Integer id,
-                                       const wxString &value,
+                                       const std::string &value,
                                        const Integer index)
 {
    return GmatCommand::SetStringParameter(id, value, index);
@@ -470,17 +470,17 @@ bool BeginFunction::SetStringParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-//  wxString GetStringParameter(const wxString &label) const
+//  std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
- * Gets the value for a wxString parameter.
+ * Gets the value for a std::string parameter.
  *
  * @param <label> String identifier for the parameter.
  *
  * @return The value of the parameter.
  */
 //------------------------------------------------------------------------------
-wxString BeginFunction::GetStringParameter(const wxString &label) const
+std::string BeginFunction::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
@@ -488,10 +488,10 @@ wxString BeginFunction::GetStringParameter(const wxString &label) const
 
 
 //------------------------------------------------------------------------------
-//  wxString GetStringParameter(const wxString &label) const
+//  std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
- * Gets the value for a wxString parameter in an array.
+ * Gets the value for a std::string parameter in an array.
  *
  * @param <label> String identifier for the parameter.
  * @param <index> Index into the array for the parameter.
@@ -499,7 +499,7 @@ wxString BeginFunction::GetStringParameter(const wxString &label) const
  * @return The value of the parameter.
  */
 //------------------------------------------------------------------------------
-wxString BeginFunction::GetStringParameter(const wxString &label,
+std::string BeginFunction::GetStringParameter(const std::string &label,
                                               const Integer index) const
 {
    return GetStringParameter(GetParameterID(label), index);
@@ -511,7 +511,7 @@ wxString BeginFunction::GetStringParameter(const wxString &label,
 //  const StringArray& GetStringArrayParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
- * Gets an array do wxStrings.
+ * Gets an array do std::strings.
  *
  * @param <label> Text name for the array.
  *
@@ -519,17 +519,17 @@ wxString BeginFunction::GetStringParameter(const wxString &label,
  */
 //------------------------------------------------------------------------------
 const StringArray&
-         BeginFunction::GetStringArrayParameter(const wxString &label) const
+         BeginFunction::GetStringArrayParameter(const std::string &label) const
 {
    return BeginFunction::GetStringArrayParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-//  bool SetStringParameter(const wxString &label, const wxString &value)
+//  bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
 /**
- * Sets the value for a wxString parameter.
+ * Sets the value for a std::string parameter.
  *
  * @param <label> String identifier for the parameter.
  * @param <value> New value for the parameter.
@@ -537,8 +537,8 @@ const StringArray&
  * @return The value of the parameter.
  */
 //------------------------------------------------------------------------------
-bool BeginFunction::SetStringParameter(const wxString &label,
-                                       const wxString &value)
+bool BeginFunction::SetStringParameter(const std::string &label,
+                                       const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
@@ -546,11 +546,11 @@ bool BeginFunction::SetStringParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-//  bool SetStringParameter(const wxString &label, const Real value,
+//  bool SetStringParameter(const std::string &label, const Real value,
 //                          const Integer index)
 //------------------------------------------------------------------------------
 /**
- * Sets the value for a wxString parameter in an array.
+ * Sets the value for a std::string parameter in an array.
  *
  * @param <label> String identifier for the parameter.
  * @param <value> New value for the parameter.
@@ -559,8 +559,8 @@ bool BeginFunction::SetStringParameter(const wxString &label,
  * @return The value of the parameter.
  */
 //------------------------------------------------------------------------------
-bool BeginFunction::SetStringParameter(const wxString &label,
-                                       const wxString &value,
+bool BeginFunction::SetStringParameter(const std::string &label,
+                                       const std::string &value,
                                        const Integer index)
 {
    return SetStringParameter(GetParameterID(label), value, index);
@@ -568,26 +568,26 @@ bool BeginFunction::SetStringParameter(const wxString &label,
 
 
 
-bool BeginFunction::TakeAction(const wxString &action,
-                               const wxString &actionData)
+bool BeginFunction::TakeAction(const std::string &action,
+                               const std::string &actionData)
 {
-   if (action == wxT("ClearLocalData"))
+   if (action == "ClearLocalData")
    {
       inputObjects.clear();
       outputObjects.clear();
 //      ClearInputMap();
    }
-   else if (action == wxT("SetReturnObjects"))
+   else if (action == "SetReturnObjects")
    {
       ClearReturnObjects();
 //      GmatBase *obj;
-//      std::map<wxString, GmatBase *>::iterator omi;
+//      std::map<std::string, GmatBase *>::iterator omi;
 //
 ////      for (StringArray::iterator i = outputs.begin();
 ////           i != outputs.end(); ++i)
 //      for (unsigned int i=0; i< outputs.size(); ++i)
 //      {
-//         wxString tmpStr = outputs[i];
+//         std::string tmpStr = outputs[i];
 //         tmpStr = trimIt(tmpStr);
 //         MessageInterface::ShowMessage("******i = '%s'\n", tmpStr.c_str());
 //         for (omi = localMap.begin(); omi != localMap.end(); ++omi)
@@ -613,8 +613,8 @@ bool BeginFunction::TakeAction(const wxString &action,
          (*i) = trimIt(*i);
          if (localMap.find(*i) != localMap.end())
          {
-            MessageInterface::ShowMessage(wxT("Found %s \n"), (*i).c_str());
-            MessageInterface::ShowMessage(wxT("Found %s with value %f\n"), (*i).c_str(),
+            MessageInterface::ShowMessage("Found %s \n", (*i).c_str());
+            MessageInterface::ShowMessage("Found %s with value %f\n", (*i).c_str(),
                   ((Variable *)localMap[(*i).c_str()])->EvaluateReal() );
             GmatBase *outObj = localMap[(*i).c_str()];
             outObj->SetName(outputObjects[index]);
@@ -632,7 +632,7 @@ bool BeginFunction::TakeAction(const wxString &action,
 
 void BeginFunction::ClearInputMap()
 {
-   for (std::map <wxString, GmatBase *>::iterator i = localMap.begin();
+   for (std::map <std::string, GmatBase *>::iterator i = localMap.begin();
         i != localMap.end(); ++i)
    {
       delete i->second;
@@ -678,7 +678,7 @@ void BeginFunction::SetTransientForces(std::vector<PhysicalModel*> *tf)
 bool BeginFunction::Initialize()
 {
    #ifdef DEBUG_OBJECT_MAPPING
-      MessageInterface::ShowMessage(wxT("Initializing function '%s'\n"), 
+      MessageInterface::ShowMessage("Initializing function '%s'\n", 
          functionName.c_str());
    #endif
    
@@ -686,8 +686,8 @@ bool BeginFunction::Initialize()
    GmatBase *mapObj;
    if ((mapObj = FindObject(functionName)) == NULL)
    {
-      //wxString names; // do we need to do al this?  WCS 2008.03.12
-      //for (std::map<wxString, GmatBase*>::iterator i = objectMap->begin();
+      //std::string names; // do we need to do al this?  WCS 2008.03.12
+      //for (std::map<std::string, GmatBase*>::iterator i = objectMap->begin();
       //     i != objectMap->end(); ++i)
       //{
       //   names += "\n   '";
@@ -697,31 +697,31 @@ bool BeginFunction::Initialize()
       //throw CommandException("Error setting up GMAT function '" + functionName +
       //   "'; there is no GmatFunction object with that name.\nHere's the list:" +
       //   names);
-      throw CommandException(wxT("Error setting up GMAT function '") + functionName +
-         wxT("'; there is no GmatFunction object with that name.\n"));
+      throw CommandException("Error setting up GMAT function '" + functionName +
+         "'; there is no GmatFunction object with that name.\n");
    }
    
    gfun = (GmatFunction *) mapObj;
 
-   if (gfun->GetTypeName() != wxT("GmatFunction"))
-      throw CommandException(wxT("Object type Error: The object named '") +
+   if (gfun->GetTypeName() != "GmatFunction")
+      throw CommandException("Object type Error: The object named '" +
          functionName +
-         wxT("' is a ") + gfun->GetTypeName() + wxT(", but a GmatFunction is required."));
+         "' is a " + gfun->GetTypeName() + ", but a GmatFunction is required.");
 
    if (inputObjects.size() != inputs.size())
    {
-      wxString errmsg =
-         wxT("Size mismatch between the inputs and expected inputs to the Gmat ")
-         wxT("function '");
-      errmsg += functionName + wxT("'; \n  Inputs: (");
+      std::string errmsg =
+         "Size mismatch between the inputs and expected inputs to the Gmat "
+         "function '";
+      errmsg += functionName + "'; \n  Inputs: (";
       for (StringArray::iterator i = inputObjects.begin();
            i != inputObjects.end(); ++i)
-         errmsg += (*i) + wxT(", ");
-      errmsg += wxT(")\n  Expected: (");
+         errmsg += (*i) + ", ";
+      errmsg += ")\n  Expected: (";
       for (StringArray::iterator i = inputs.begin();
            i != inputs.end(); ++i)
-         errmsg += (*i) + wxT(", ");
-      errmsg += wxT(")");
+         errmsg += (*i) + ", ";
+      errmsg += ")";
 
 
       throw CommandException(errmsg);
@@ -729,22 +729,22 @@ bool BeginFunction::Initialize()
 
    if (!internalCoordSys)
       throw CommandException(
-         wxT("No reference (internal) coordinate system defined in BeginFunction!"));
+         "No reference (internal) coordinate system defined in BeginFunction!");
 
 
 
    // Fill in the local object array with clones of the expected inputs
    for (UnsignedInt i = 0; i < inputObjects.size(); ++i)
    {
-      MessageInterface::ShowMessage(wxT("Copying object %s to %s\n"),
+      MessageInterface::ShowMessage("Copying object %s to %s\n",
                inputObjects[i].c_str(), inputs[i].c_str());
 
       GmatBase *mapObj;
       if ((mapObj = FindObject(inputObjects[i])) == NULL)
       {
-         wxString errmsg = wxT("Error initializing GmatFunction '");
-         throw CommandException(errmsg + functionName + wxT("': could not find ") +
-            wxT("an object named '") + (inputObjects[i]) + wxT("'"));
+         std::string errmsg = "Error initializing GmatFunction '";
+         throw CommandException(errmsg + functionName + "': could not find " +
+            "an object named '" + (inputObjects[i]) + "'");
       }
       GmatBase *inobj = mapObj;
                
@@ -757,7 +757,7 @@ bool BeginFunction::Initialize()
    // Now pretend like we're a Sandbox!
    GmatBase *obj;
    GmatCommand *cmd;
-   std::map<wxString, GmatBase *>::iterator omi;
+   std::map<std::string, GmatBase *>::iterator omi;
    
    // Init local objects
    for (omi = localMap.begin(); omi != localMap.end(); ++omi)
@@ -766,7 +766,7 @@ bool BeginFunction::Initialize()
       obj->SetSolarSystem(solarSys);
       
       #ifdef DEBUG_OBJECT_MAPPING
-         MessageInterface::ShowMessage(wxT("Solar system set on '%s'\n"), 
+         MessageInterface::ShowMessage("Solar system set on '%s'\n", 
             obj->GetName().c_str());
       #endif
       
@@ -775,7 +775,7 @@ bool BeginFunction::Initialize()
       {
          #ifdef DEBUG_SANDBOX_INIT
             MessageInterface::ShowMessage(
-               wxT("Setting J2000 Body for %s in the Sandbox\n"),
+               "Setting J2000 Body for %s in the Sandbox\n",
                obj->GetName().c_str());
          #endif
          SpacePoint *spObj = (SpacePoint *)obj;
@@ -783,9 +783,9 @@ bool BeginFunction::Initialize()
          if (j2k)
             spObj->SetJ2000Body(j2k);
          else
-            throw CommandException(wxT("GmatFunction did not find the ")
-               wxT("Spacepoint \"") +
-               spObj->GetJ2000BodyName() + wxT("\""));
+            throw CommandException("GmatFunction did not find the "
+               "Spacepoint \"" +
+               spObj->GetJ2000BodyName() + "\"");
       }
    }
 
@@ -801,10 +801,10 @@ bool BeginFunction::Initialize()
       }
       if (obj->IsOfType(Gmat::COORDINATE_SYSTEM))
       {
-         wxString csName = obj->GetName();
-         if ((csName == wxT("EarthMJ2000Eq")) ||
-             (csName == wxT("EarthMJ2000Ec")) ||
-             (csName == wxT("EarthFixed")))
+         std::string csName = obj->GetName();
+         if ((csName == "EarthMJ2000Eq") ||
+             (csName == "EarthMJ2000Ec") ||
+             (csName == "EarthFixed"))
             SetRefObject(obj, obj->GetType(), obj->GetName());
       }
    }
@@ -818,10 +818,10 @@ bool BeginFunction::Initialize()
       }
       if (obj->IsOfType(Gmat::COORDINATE_SYSTEM))
       {
-         wxString csName = obj->GetName();
-         if ((csName == wxT("EarthMJ2000Eq")) ||
-             (csName == wxT("EarthMJ2000Ec")) ||
-             (csName == wxT("EarthFixed")))
+         std::string csName = obj->GetName();
+         if ((csName == "EarthMJ2000Eq") ||
+             (csName == "EarthMJ2000Ec") ||
+             (csName == "EarthFixed"))
             SetRefObject(obj, obj->GetType(), obj->GetName());
       }
    }
@@ -901,7 +901,7 @@ bool BeginFunction::Initialize()
 
       BuildReferences(obj);
       
-      MessageInterface::ShowMessage(wxT("Initializing %s\n"), obj->GetName().c_str());
+      MessageInterface::ShowMessage("Initializing %s\n", obj->GetName().c_str());
       
       obj->Initialize();
 //      MessageInterface::ShowMessage("finished initializing...%s, value = %f\n",
@@ -923,7 +923,7 @@ bool BeginFunction::Initialize()
          //initialize
          obj->SetSolarSystem(solarSys);
          BuildReferences(obj);
-         MessageInterface::ShowMessage(wxT("Initializing %s\n"), obj->GetName().c_str());
+         MessageInterface::ShowMessage("Initializing %s\n", obj->GetName().c_str());
          obj->Initialize();
       }
    }
@@ -960,20 +960,20 @@ bool BeginFunction::Initialize()
 
 
       // Handle nested GmatFunctions
-      if (cmd->GetTypeName() == wxT("CallFunction"))
+      if (cmd->GetTypeName() == "CallFunction")
       {
          // Check to see if it is a GmatFunction
-         wxString funName = cmd->GetStringParameter(wxT("FunctionName"));
+         std::string funName = cmd->GetStringParameter("FunctionName");
          GmatBase *mapObj;
          if ((mapObj = FindObject(funName)) == NULL)
-            throw CommandException(wxT("The GmatFunction '") + functionName +
-               wxT("' references the function '") + funName +
-               wxT("', which cannot be found."));
+            throw CommandException("The GmatFunction '" + functionName +
+               "' references the function '" + funName +
+               "', which cannot be found.");
          GmatFunction *fun = (GmatFunction*) mapObj;
-         if (fun->GetTypeName() == wxT("GmatFunction"))
+         if (fun->GetTypeName() == "GmatFunction")
          {
 //            /// @todo Make the GmatFunction file name handling more robust
-//            wxString pathAndName =
+//            std::string pathAndName =
 //               fun->GetStringParameter(fun->GetParameterID("FunctionPath"));
 //            if (pathAndName == "")
 //               pathAndName = funName + ".gmf";
@@ -982,17 +982,17 @@ bool BeginFunction::Initialize()
 //               moderator->InterpretGmatFunction(pathAndName);
 //            if (!current->SetRefObject(funStream, Gmat::COMMAND, ""))
 //            {
-//               wxString errstr = "Error setting the GmatFunction commands "
+//               std::string errstr = "Error setting the GmatFunction commands "
 //                  "for the script line\n  '";
 //               throw SandboxException(errstr +
 //                  current->GetGeneratingString(Gmat::SCRIPTING) + "'");
 //            }
             throw CommandException(
-               wxT("Nesting is currently disabled for GmatFunctions"));
+               "Nesting is currently disabled for GmatFunctions");
          }
       }
 
-      if (cmd->GetTypeName() == wxT("EndFunction"))
+      if (cmd->GetTypeName() == "EndFunction")
       {
 //         MessageInterface::ShowMessage("End function - outputs:\n");
          // print output and output objects
@@ -1050,7 +1050,7 @@ bool BeginFunction::Execute()
    for (UnsignedInt i = 0; i < inputObjects.size(); ++i)
    {
       #ifdef DEBUG_OBJECT_MAPPING
-         MessageInterface::ShowMessage(wxT("Mapping %s to %s\n"), 
+         MessageInterface::ShowMessage("Mapping %s to %s\n", 
             inputObjects[i].c_str(), inputs[i].c_str());
       #endif
       GmatBase *inObj, *localObj;
@@ -1068,7 +1068,7 @@ bool BeginFunction::Execute()
    }
 
    #ifdef DEBUG_OBJECT_MAPPING
-      MessageInterface::ShowMessage(wxT("reset the objects\n"));
+      MessageInterface::ShowMessage("reset the objects\n");
    #endif
 
    return rv;
@@ -1077,7 +1077,7 @@ bool BeginFunction::Execute()
 
 
 //------------------------------------------------------------------------------
-// SpacePoint* FindSpacePoint(const wxString &spname)
+// SpacePoint* FindSpacePoint(const std::string &spname)
 //------------------------------------------------------------------------------
 /**
  *  Finds a SpacePoint by name.
@@ -1088,7 +1088,7 @@ bool BeginFunction::Execute()
  *          Sandbox.
  */
 //------------------------------------------------------------------------------
-SpacePoint* BeginFunction::FindSpacePoint(const wxString &spName)
+SpacePoint* BeginFunction::FindSpacePoint(const std::string &spName)
 {
    SpacePoint *sp = solarSys->GetBody(spName);
 
@@ -1117,7 +1117,7 @@ SpacePoint* BeginFunction::FindSpacePoint(const wxString &spName)
 //------------------------------------------------------------------------------
 void BeginFunction::BuildReferences(GmatBase *obj)
 {
-   wxString oName;
+   std::string oName;
 
 
    obj->SetSolarSystem(solarSys);
@@ -1131,8 +1131,8 @@ void BeginFunction::BuildReferences(GmatBase *obj)
 
       #ifdef DEBUG_FM_INITIALIZATION
          MessageInterface::ShowMessage(
-            wxT("Initializing force model references for '%s'\n"),
-            (fm->GetName() == wxT("") ? obj->GetName().c_str() :
+            "Initializing force model references for '%s'\n",
+            (fm->GetName() == "" ? obj->GetName().c_str() :
                                    fm->GetName().c_str()) );
       #endif
 
@@ -1156,8 +1156,8 @@ void BeginFunction::BuildReferences(GmatBase *obj)
                // Handle SandboxExceptions first.
                #ifdef DEBUG_SANDBOX_INIT
                   MessageInterface::ShowMessage(
-                     wxT("RefObjectName ") + oName + wxT(" not found; ignoring ") +
-                     ex.GetMessage() + wxT("\n"));
+                     "RefObjectName " + oName + " not found; ignoring " +
+                     ex.GetMessage() + "\n");
                #endif
                //throw ex;
             }
@@ -1169,8 +1169,8 @@ void BeginFunction::BuildReferences(GmatBase *obj)
                // Handle SandboxExceptions first.
                #ifdef DEBUG_SANDBOX_INIT
                   MessageInterface::ShowMessage(
-                     wxT("RefObjectName not found; ignoring ") +
-                     ex.GetMessage() + wxT("\n"));
+                     "RefObjectName not found; ignoring " +
+                     ex.GetMessage() + "\n");
                #endif
             }
          }
@@ -1182,8 +1182,8 @@ void BeginFunction::BuildReferences(GmatBase *obj)
          // Handle SandboxExceptions first.
          #ifdef DEBUG_SANDBOX_INIT
             MessageInterface::ShowMessage(
-               wxT("RefObjectNameArray not found; ignoring ") +
-               ex.GetMessage() + wxT("\n"));
+               "RefObjectNameArray not found; ignoring " +
+               ex.GetMessage() + "\n");
          #endif
          //throw ex;
       }
@@ -1195,8 +1195,8 @@ void BeginFunction::BuildReferences(GmatBase *obj)
          // Post a message and -- otherwise -- ignore the exceptions
          #ifdef DEBUG_SANDBOX_INIT
             MessageInterface::ShowMessage(
-               wxT("RefObjectNameArray not found; ignoring ") +
-               ex.GetMessage() + wxT("\n"));
+               "RefObjectNameArray not found; ignoring " +
+               ex.GetMessage() + "\n");
          #endif
       }
 
@@ -1220,8 +1220,8 @@ void BeginFunction::BuildReferences(GmatBase *obj)
       // Handle SandboxExceptions first.
       // For now, post a message and -- otherwise -- ignore exceptions
       #ifdef DEBUG_SANDBOX_INIT
-         MessageInterface::ShowMessage(wxT("RefObjectName not found; ignoring ") +
-            ex.GetMessage() + wxT("\n"));
+         MessageInterface::ShowMessage("RefObjectName not found; ignoring " +
+            ex.GetMessage() + "\n");
       #endif
       //throw ex;
    }
@@ -1231,8 +1231,8 @@ void BeginFunction::BuildReferences(GmatBase *obj)
       ex.GetMessageType();
       // Post a message and -- otherwise -- ignore the exceptions
       #ifdef DEBUG_SANDBOX_INIT
-         MessageInterface::ShowMessage(wxT("RefObjectName not found; ignoring ") +
-            ex.GetMessage() + wxT("\n"));
+         MessageInterface::ShowMessage("RefObjectName not found; ignoring " +
+            ex.GetMessage() + "\n");
       #endif
    }
 
@@ -1257,8 +1257,8 @@ void BeginFunction::BuildReferences(GmatBase *obj)
             // Handle SandboxExceptions first.
             #ifdef DEBUG_SANDBOX_INIT
                MessageInterface::ShowMessage(
-                  wxT("RefObjectName ") + oName + wxT(" not found; ignoring ") +
-                  ex.GetMessage() + wxT("\n"));
+                  "RefObjectName " + oName + " not found; ignoring " +
+                  ex.GetMessage() + "\n");
             #endif
             //throw ex;
          }
@@ -1270,8 +1270,8 @@ void BeginFunction::BuildReferences(GmatBase *obj)
             // Handle SandboxExceptions first.
             #ifdef DEBUG_SANDBOX_INIT
                MessageInterface::ShowMessage(
-                  wxT("RefObjectName not found; ignoring ") +
-                  ex.GetMessage() + wxT("\n"));
+                  "RefObjectName not found; ignoring " +
+                  ex.GetMessage() + "\n");
             #endif
          }
       }
@@ -1283,8 +1283,8 @@ void BeginFunction::BuildReferences(GmatBase *obj)
       // Handle SandboxExceptions first.
       #ifdef DEBUG_SANDBOX_INIT
          MessageInterface::ShowMessage(
-            wxT("RefObjectNameArray not found; ignoring ") +
-            ex.GetMessage() + wxT("\n"));
+            "RefObjectNameArray not found; ignoring " +
+            ex.GetMessage() + "\n");
       #endif
       //throw ex;
    }
@@ -1295,8 +1295,8 @@ void BeginFunction::BuildReferences(GmatBase *obj)
       // Post a message and -- otherwise -- ignore the exceptions
       #ifdef DEBUG_SANDBOX_INIT
          MessageInterface::ShowMessage(
-            wxT("RefObjectNameArray not found; ignoring ") +
-            ex.GetMessage() + wxT("\n"));
+            "RefObjectNameArray not found; ignoring " +
+            ex.GetMessage() + "\n");
       #endif
    }
 }
@@ -1313,7 +1313,7 @@ void BeginFunction::BuildReferences(GmatBase *obj)
 void BeginFunction::InitializeInternalObjects()
 {
 //   SpacePoint *sp, *j2kBod;
-//   wxString j2kName, oName;
+//   std::string j2kName, oName;
 //
 //   // Set J2000 bodies for solar system objects -- should this happen here?
 //   const StringArray biu = solarSys->GetBodiesInUse();
@@ -1351,7 +1351,7 @@ void BeginFunction::InitializeInternalObjects()
 
 
 //------------------------------------------------------------------------------
-// void SetRefFromName(GmatBase *obj, const wxString &oName)
+// void SetRefFromName(GmatBase *obj, const std::string &oName)
 //------------------------------------------------------------------------------
 /**
  *  Sets a reference object on an object.
@@ -1360,7 +1360,7 @@ void BeginFunction::InitializeInternalObjects()
  *  @param <oName> The name of the reference object.
  */
 //------------------------------------------------------------------------------
-void BeginFunction::SetRefFromName(GmatBase *obj, const wxString &oName)
+void BeginFunction::SetRefFromName(GmatBase *obj, const std::string &oName)
 {
    GmatBase *mapObj;
    if ((mapObj = FindObject(oName)) != NULL)
@@ -1374,7 +1374,7 @@ void BeginFunction::SetRefFromName(GmatBase *obj, const wxString &oName)
 
 
       if (refObj == NULL)
-         throw CommandException(wxT("Unknown object ") + oName + wxT(" requested by ") +
+         throw CommandException("Unknown object " + oName + " requested by " +
                                 obj->GetName());
 
 
@@ -1414,14 +1414,14 @@ void BeginFunction::SetInternalCoordSystem(CoordinateSystem *cs)
 }
 
 
-wxString BeginFunction::trimIt( wxString s ) {
+std::string BeginFunction::trimIt( std::string s ) {
         size_t offset = s.length();
         // Trim leading spaces ???
-        s.erase( 0, s.find_first_not_of( wxT(" \t\n") ) );
+        s.erase( 0, s.find_first_not_of( " \t\n" ) );
         // Trim trailing spaces ???
-        s.erase( s.find_last_not_of( wxT(" \t\n") ) + 1);
+        s.erase( s.find_last_not_of( " \t\n" ) + 1);
         // This line is always displayed
-        if(s.length() == offset){ std::cout << wxT("No Changes") << std::endl;}
+        if(s.length() == offset){ std::cout << "No Changes" << std::endl;}
         return s;
 
 

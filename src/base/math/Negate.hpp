@@ -26,7 +26,7 @@
 class GMAT_API Negate : public MathFunction
 {
 public:
-   Negate(const wxString &nomme);
+   Negate(const std::string &nomme);
    virtual ~Negate();
    Negate(const Negate &copy);
    

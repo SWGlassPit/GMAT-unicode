@@ -20,9 +20,8 @@
 #include "ODEModelException.hpp"
 #include "UtilityException.hpp"
 #include "StringUtil.hpp"       
-#include <wx/wfstream.h>
-#include <wx/sstream.h>
-#include <wx/txtstrm.h>
+#include <fstream>
+#include <sstream>
 #include <stdlib.h>           // For atoi
 
 //------------------------------------------------------------------------------
@@ -31,7 +30,7 @@
 // n/a
 
 //------------------------------------------------------------------------------
-HarmonicGravityGrv::HarmonicGravityGrv(const wxString& filename,
+HarmonicGravityGrv::HarmonicGravityGrv(const std::string& filename,
                                        const Real& radius, const Real& mukm) :
    HarmonicGravity (filename)
 {
@@ -48,69 +47,68 @@ HarmonicGravityGrv::~HarmonicGravityGrv()
 //------------------------------------------------------------------------------
 void HarmonicGravityGrv::Load()
 {
-   wxFFileInputStream inStreamFile(gravityFilename);
-   wxTextInputStream inStream(inStreamFile);
-   if (!inStreamFile.IsOk())
-      throw GravityFileException(wxT("Cannot open GRV gravity file \"") + gravityFilename + wxT("\""));
+   std::ifstream inStream(gravityFilename.c_str());
+   if (!inStream)
+      throw GravityFileException("Cannot open GRV gravity file \"" + gravityFilename + "\"");
 
    #ifdef DEBUG_GRAVITY_GRV_FILE
-   MessageInterface::ShowMessage(wxT("Entered GravityFile::ReadGrvFile\n"));
+   MessageInterface::ShowMessage("Entered GravityFile::ReadGrvFile\n");
    #endif
 
-   wxString isNormalized = wxT("");
-   wxString line;
-   wxString firstStr;
+   std::string isNormalized = "";
+   std::string line;
+   std::string firstStr;
 
    // Read header line
-   line = inStream.ReadLine();
+   getline(inStream, line);
 
-   while (!inStreamFile.Eof())
+   while (!inStream.eof())
    {
-      line = inStream.ReadLine();
+      getline(inStream, line);
 
-      if (line == wxT(""))
+      if (line == "")
          continue;
 
-      wxStringInputStream lineStreamString(line);
-      wxTextInputStream lineStream(lineStreamString);
+      std::istringstream lineStream;
+      lineStream.str(line);
 
       // ignore comment lines
-      if (line[0] != wxT('#'))
+      if (line[0] != '#')
       {
          lineStream >> firstStr;
-         if (firstStr == wxT("END")) break;
+         if (firstStr == "END") break;
 
-         wxString upperString = GmatStringUtil::ToUpper(firstStr);
+         std::string upperString = GmatStringUtil::ToUpper(firstStr);
 
          // ignore the stk version and blank lines
-         if ((upperString == wxT("MODEL")) ||
-             (upperString ==wxT("BEGIN")))
+         if ((upperString == "MODEL") ||
+             (upperString =="BEGIN"))
          {
             // do nothing - we don't need to know this
          }
-         else if (upperString == wxT("DEGREE"))
+         else if (upperString == "DEGREE")
          {
             lineStream >> NN;
          }
-         else if (upperString == wxT("ORDER"))
+         else if (upperString == "ORDER")
          {
             lineStream >> MM;
          }
-         else if (upperString == wxT("GM"))
+         else if (upperString == "GM")
          {
             Real tmpMu = 0.0;
             lineStream >> tmpMu;
             if (tmpMu != 0.0)
                factor = -tmpMu / 1.0e09;     // -> Km^3/sec^2
          }
-         else if (upperString == wxT("REFDISTANCE"))
+         else if (upperString == "REFDISTANCE")
          {
             Real tmpA  = 0.0;
             lineStream >> tmpA;
             if (tmpA != 0.0)
                bodyRadius = tmpA / 1000.0;  // -> Km
          }
-         else if (upperString == wxT("NORMALIZED"))
+         else if (upperString == "NORMALIZED")
          {
             lineStream >> isNormalized;
          }
@@ -123,17 +121,14 @@ void HarmonicGravityGrv::Load()
             Real cnm = 0.0;
             Real snm = 0.0;
             // Ensure that m and n fall in the allowed ranges
-            //n = (Integer) atoi(firstStr.c_str());
-            long tmp;
-            firstStr.ToLong(&tmp);
-            n = (Integer) (tmp);
+            n = (Integer) atoi(firstStr.c_str());
             if ((n > 0) && (n < NN))
             {
                lineStream >> m;
                if ((m >= 0) && (m <= n))
                {
                   lineStream >> cnm >> snm;
-                  if (isNormalized == wxT("No"))
+                  if (isNormalized == "No")
                      {
                      cnm *= V[n][m];
                      snm *= V[n][m];
@@ -146,13 +141,14 @@ void HarmonicGravityGrv::Load()
       }
    }
 
+   inStream.close();
    #ifdef DEBUG_GRAVITY_GRV_FILE
    if (loadcoef)
    {
-      MessageInterface::ShowMessage(wxT("Leaving GravityFile::ReadGrvFile\n"));
-      MessageInterface::ShowMessage(wxT("   cbar[ 2][ 0] = %le   sbar[ 2][ 0] = %le   \n"),
+      MessageInterface::ShowMessage("Leaving GravityFile::ReadGrvFile\n");
+      MessageInterface::ShowMessage("   cbar[ 2][ 0] = %le   sbar[ 2][ 0] = %le   \n",
                                     cbar[2][0], sbar[2][0]);
-      MessageInterface::ShowMessage(wxT("   cbar[20][20] = %le   sbar[20][20] = %le   \n"),
+      MessageInterface::ShowMessage("   cbar[20][20] = %le   sbar[20][20] = %le   \n",
                                     cbar[20][20], sbar[20][20]);
    }
    #endif

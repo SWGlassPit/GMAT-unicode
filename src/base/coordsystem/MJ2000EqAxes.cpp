@@ -36,7 +36,7 @@
 //---------------------------------
 
 /* placeholder - may be needed later
-const wxString
+const std::string
 MJ2000EqAxes::PARAMETER_TEXT[MJ2000EqAxesParamCount - InertialAxesParamCount] =
 {
    "",
@@ -53,8 +53,8 @@ MJ2000EqAxes::PARAMETER_TYPE[MJ2000EqAxesParamCount - InertialAxesParamCount] =
 //------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//  MJ2000EqAxes(const wxString &itsType,
-//               const wxString &itsName);
+//  MJ2000EqAxes(const std::string &itsType,
+//               const std::string &itsName);
 //---------------------------------------------------------------------------
 /**
  * Constructs base MJ2000EqAxes structures
@@ -65,13 +65,13 @@ MJ2000EqAxes::PARAMETER_TYPE[MJ2000EqAxesParamCount - InertialAxesParamCount] =
  *
  */
 //---------------------------------------------------------------------------
-MJ2000EqAxes::MJ2000EqAxes(const wxString &itsName) :
-InertialAxes(wxT("MJ2000Eq"),itsName)
+MJ2000EqAxes::MJ2000EqAxes(const std::string &itsName) :
+InertialAxes("MJ2000Eq",itsName)
 {
-   objectTypeNames.push_back(wxT("MJ2000EqAxes"));
+   objectTypeNames.push_back("MJ2000EqAxes");
    parameterCount = MJ2000EqAxesParamCount;
    #ifdef DEBUG_CONSTRUCTION
-      MessageInterface::ShowMessage(wxT("Now constructing MJ2000Eq with name %s\n"),
+      MessageInterface::ShowMessage("Now constructing MJ2000Eq with name %s\n",
          itsName.c_str());
    #endif
 }
@@ -131,7 +131,7 @@ MJ2000EqAxes::~MJ2000EqAxes()
 bool MJ2000EqAxes::Initialize()
 {
    #ifdef DEBUG_CONSTRUCTION
-      MessageInterface::ShowMessage(wxT("Now entering MJ2000Eq INIT with name %s\n"),
+      MessageInterface::ShowMessage("Now entering MJ2000Eq INIT with name %s\n",
          instanceName.c_str());
    #endif
    InertialAxes::Initialize();
@@ -141,7 +141,7 @@ bool MJ2000EqAxes::Initialize()
    rotMatrix(2,2) = 1.0;
    // rotDotMatrix is still the default zero matrix
    #ifdef DEBUG_CONSTRUCTION
-      MessageInterface::ShowMessage(wxT("Now LEAVING MJ2000Eq INIT with name %s\n"),
+      MessageInterface::ShowMessage("Now LEAVING MJ2000Eq INIT with name %s\n",
          instanceName.c_str());
    #endif
    
@@ -167,7 +167,7 @@ GmatBase* MJ2000EqAxes::Clone() const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -178,7 +178,7 @@ GmatBase* MJ2000EqAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*wxString MJ2000EqAxes::GetParameterText(const Integer id) const
+/*std::string MJ2000EqAxes::GetParameterText(const Integer id) const
 {
    if (id >= InertialAxesParamCount && id < MJ2000EqAxesParamCount)
       return PARAMETER_TEXT[id - InertialAxesParamCount];
@@ -186,7 +186,7 @@ GmatBase* MJ2000EqAxes::Clone() const
 }
 */
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -197,7 +197,7 @@ GmatBase* MJ2000EqAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*Integer MJ2000EqAxes::GetParameterID(const wxString &str) const
+/*Integer MJ2000EqAxes::GetParameterID(const std::string &str) const
 {
    for (Integer i = InertialAxesParamCount; i < MJ2000EqAxesParamCount; i++)
    {
@@ -229,7 +229,7 @@ GmatBase* MJ2000EqAxes::Clone() const
 }
 */
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -240,7 +240,7 @@ GmatBase* MJ2000EqAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*wxString MJ2000EqAxes::GetParameterTypeString(const Integer id) const
+/*std::string MJ2000EqAxes::GetParameterTypeString(const Integer id) const
 {
    return InertialAxes::PARAM_TYPE_STRING[GetParameterType(id)];
 }

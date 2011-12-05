@@ -13,7 +13,7 @@
 //
 // Author: M. Weippert, T. McRoberts, E. Corderman
 // Created: 1995/10/10 for GSS project
-// Modified: 2003/09/15 Linda Jun - Replaced GSSString with wxString.
+// Modified: 2003/09/15 Linda Jun - Replaced GSSString with std::string.
 //
 /**
  * Provides declarations for the TableTemplate template class, representing
@@ -33,24 +33,24 @@ class GMAT_API TableTemplateExceptions
 public:
 
     class DimensionError : public BaseException 
-          {public : DimensionError(const wxString &message =
-          wxT("TableTemplate error : dimension error or mismatch.\n"))
+          {public : DimensionError(const std::string &message =
+          "TableTemplate error : dimension error or mismatch.\n")
           : BaseException(message) {};  };
     class OutOfBounds : public BaseException
-          {public : OutOfBounds(const wxString &message =
-          wxT("TableTemplate error : index out-of-bounds.\n"))
+          {public : OutOfBounds(const std::string &message =
+          "TableTemplate error : index out-of-bounds.\n")
           : BaseException(message) {};  };
     class UnsizedTable : public BaseException 
-          {public : UnsizedTable(const wxString &message =
-          wxT("TableTemplate error : unsized table.\n"))
+          {public : UnsizedTable(const std::string &message =
+          "TableTemplate error : unsized table.\n")
           : BaseException(message) {};  };
     class TableAlreadySized : public BaseException 
-          {public : TableAlreadySized(const wxString &message =
-          wxT("TableTemplate error : table already sized.\n"))
+          {public : TableAlreadySized(const std::string &message =
+          "TableTemplate error : table already sized.\n")
           : BaseException(message) {};  };
     class IllegalSize : public BaseException 
-          {public : IllegalSize(const wxString &message =
-          wxT("TableTemplate error : illegal (negative) size.\n"))
+          {public : IllegalSize(const std::string &message =
+          "TableTemplate error : illegal (negative) size.\n")
           : BaseException(message) {};  };
 
 private:
@@ -63,7 +63,7 @@ class TableTemplate
 /**
  *  Tables are stored in row major order.
  *  Assumptions about template parameter types:
- *      type has appropriate initializers (constructors and wxT("=") operator)
+ *      type has appropriate initializers (constructors and "=" operator)
  *  The exceptions are declared in a separate class because the current HP
  *  compiler cannot properly handle exceptions declared a template class 
  *  and thrown in another template class.

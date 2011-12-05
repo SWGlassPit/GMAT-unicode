@@ -29,13 +29,13 @@
 class GMAT_API OrbitView : public OrbitPlot
 {
 public:
-   OrbitView(const wxString &name);
+   OrbitView(const std::string &name);
    OrbitView(const OrbitView &ogl);
    OrbitView& operator=(const OrbitView&);
    virtual ~OrbitView(void);
    
-   Rvector3             GetVector(const wxString &which);
-   void                 SetVector(const wxString &which, const Rvector3 &value);
+   Rvector3             GetVector(const std::string &which);
+   void                 SetVector(const std::string &which, const Rvector3 &value);
    
    // methods inherited from GmatBase
    virtual bool         Validate();
@@ -44,31 +44,31 @@ public:
    virtual GmatBase*    Clone() const;
    virtual void         Copy(const GmatBase* orig);
    
-   virtual bool         TakeAction(const wxString &action,  
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,  
+                                   const std::string &actionData = "");
    
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
    // methods for parameters
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    virtual bool         IsParameterReadOnly(const Integer id) const;
    
    virtual Integer      GetIntegerParameter(const Integer id) const;
    virtual Integer      SetIntegerParameter(const Integer id, const Integer value);
-   virtual Integer      GetIntegerParameter(const wxString &label) const;
-   virtual Integer      SetIntegerParameter(const wxString &label,
+   virtual Integer      GetIntegerParameter(const std::string &label) const;
+   virtual Integer      SetIntegerParameter(const std::string &label,
                                             const Integer value);
    
    virtual Real         GetRealParameter(const Integer id) const;
    virtual Real         SetRealParameter(const Integer id, const Real value);
-   virtual Real         GetRealParameter(const wxString &label) const;
-   virtual Real         SetRealParameter(const wxString &label, const Real value);
+   virtual Real         GetRealParameter(const std::string &label) const;
+   virtual Real         SetRealParameter(const std::string &label, const Real value);
    
    virtual Real         GetRealParameter(const Integer id,
                                          const Integer index) const;
@@ -79,30 +79,30 @@ public:
    virtual const Rvector& GetRvectorParameter(const Integer id) const;
    virtual const Rvector& SetRvectorParameter(const Integer id,
                                               const Rvector &value);
-   virtual const Rvector& GetRvectorParameter(const wxString &label) const;
-   virtual const Rvector& SetRvectorParameter(const wxString &label,
+   virtual const Rvector& GetRvectorParameter(const std::string &label) const;
+   virtual const Rvector& SetRvectorParameter(const std::string &label,
                                               const Rvector &value);
    
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual bool         SetStringParameter(const Integer id, const wxString &value);
-   virtual wxString  GetStringParameter(const wxString &label) const;
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual bool         SetStringParameter(const Integer id, const std::string &value);
+   virtual std::string  GetStringParameter(const std::string &label) const;
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
    
-   virtual bool         SetStringParameter(const Integer id, const wxString &value,
+   virtual bool         SetStringParameter(const Integer id, const std::string &value,
                                            const Integer index);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value,
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value,
                                            const Integer index);
    
-   virtual wxString  GetOnOffParameter(const Integer id) const;
+   virtual std::string  GetOnOffParameter(const Integer id) const;
    virtual bool         SetOnOffParameter(const Integer id, 
-                                          const wxString &value);
-   virtual wxString  GetOnOffParameter(const wxString &label) const;
-   virtual bool         SetOnOffParameter(const wxString &label, 
-                                          const wxString &value);
+                                          const std::string &value);
+   virtual std::string  GetOnOffParameter(const std::string &label) const;
+   virtual bool         SetOnOffParameter(const std::string &label, 
+                                          const std::string &value);
    
-   virtual wxString  GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual std::string  GetRefObjectName(const Gmat::ObjectType type) const;
    virtual bool         HasRefObjectTypeArray();
    virtual const ObjectTypeArray&
                         GetRefObjectTypeArray();
@@ -110,14 +110,14 @@ public:
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name);
+                                     const std::string &name);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    
 protected:
 
    void     PutRvector3Value(Rvector3 &rvec3, Integer id,
-                             const wxString &sval, Integer index = -1);
+                             const std::string &sval, Integer index = -1);
    void     WriteDeprecatedMessage(Integer id) const;
    bool     UpdateSolverData();
    
@@ -128,23 +128,23 @@ protected:
    SpacePoint *mViewPointObj;
    SpacePoint *mViewDirectionObj;
    
-   wxString mEclipticPlane;
-   wxString mXYPlane;
-   wxString mWireFrame;
-   wxString mOverlapPlot;
-   wxString mUseInitialView;
-   wxString mAxes;
-   wxString mGrid;
-   wxString mSunLine;
+   std::string mEclipticPlane;
+   std::string mXYPlane;
+   std::string mWireFrame;
+   std::string mOverlapPlot;
+   std::string mUseInitialView;
+   std::string mAxes;
+   std::string mGrid;
+   std::string mSunLine;
    
-   wxString mViewPointRefName;
-   wxString mViewPointRefType;
-   wxString mViewPointVecName;
-   wxString mViewPointVecType;
-   wxString mViewDirectionName;
-   wxString mViewDirectionType;
-   wxString mViewUpCoordSysName;
-   wxString mViewUpAxisName;
+   std::string mViewPointRefName;
+   std::string mViewPointRefType;
+   std::string mViewPointVecName;
+   std::string mViewPointVecType;
+   std::string mViewDirectionName;
+   std::string mViewDirectionType;
+   std::string mViewUpCoordSysName;
+   std::string mViewUpAxisName;
    
    Rvector3 mViewPointRefVector;
    Rvector3 mViewPointVecVector;
@@ -153,8 +153,8 @@ protected:
    Real mViewScaleFactor;
 
    // stars
-   wxString mEnableStars;
-   wxString mEnableConstellations;
+   std::string mEnableStars;
+   std::string mEnableConstellations;
    Integer mStarCount;
    
    // FOV - currentrly not used and will be removed later
@@ -197,7 +197,7 @@ protected:
    
    static const Gmat::ParameterType
       PARAMETER_TYPE[OrbitViewParamCount - OrbitPlotParamCount];
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[OrbitViewParamCount - OrbitPlotParamCount];
    
    virtual bool Distribute(Integer len);

@@ -52,7 +52,7 @@ class GMAT_API PlanetaryEphem
 public:
 
    // default constructor
-   PlanetaryEphem(wxString withFileName);
+   PlanetaryEphem(std::string withFileName);
    // copy constructor
    PlanetaryEphem(const PlanetaryEphem& pef);
    // operator=
@@ -61,10 +61,10 @@ public:
    virtual ~PlanetaryEphem();
 
    // method to return the full path name of the planetary ephem file.
-   wxString GetName() const;
+   std::string GetName() const;
 
    //------------------------------------------------------------------------------
-   //  Integer GetBodyID(wxString bodyName)
+   //  Integer GetBodyID(std::string bodyName)
    //------------------------------------------------------------------------------
    /**
     * Returns the body ID number for the specified body.
@@ -74,7 +74,7 @@ public:
     * @return the body ID number for the specified body.
     */
    //------------------------------------------------------------------------------
-   virtual Integer GetBodyID(wxString bodyName) = 0;
+   virtual Integer GetBodyID(std::string bodyName) = 0;
 
    //------------------------------------------------------------------------------
    //  Real* GetPosVel(Integer forBody, A1Mjd atTime)
@@ -114,25 +114,25 @@ protected:
    {
       dcb_type()
    {
-         full_path = wxT("");
+         strcpy(full_path, "\0");
          recl  = 0;
          fptr  = NULL;
    }
       dcb_type(const dcb_type& dcb)
    {
-         full_path = dcb.full_path;
+         strcpy(full_path, dcb.full_path);
          recl  = dcb.recl;
          fptr  = dcb.fptr;
    }
       dcb_type& operator=(const dcb_type dcb)
    {
-         full_path = dcb.full_path;
+         strcpy(full_path, dcb.full_path);
          recl  = dcb.recl;
          fptr  = dcb.fptr;
          return *this;
    }
 //      char  full_path[MAX_PATH_LEN+1];
-      wxString  full_path;
+      char  full_path[261];
       long   recl;
       FILE  *fptr;
 
@@ -140,7 +140,7 @@ protected:
 
    double      jdMjdOffset;
 
-   wxString itsName;
+   std::string itsName;
 
    // file data type
    dcb_type g_pef_dcb;

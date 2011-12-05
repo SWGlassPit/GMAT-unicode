@@ -34,7 +34,7 @@
 //---------------------------------
 // static data
 //---------------------------------
-//const wxString
+//const std::string
 //Comet::PARAMETER_TEXT[CometParamCount - CelestialBodyParamCount] =
 //{
 //  
@@ -51,22 +51,22 @@
 // public methods
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  Comet(wxString name)
+//  Comet(std::string name)
 //------------------------------------------------------------------------------
 /**
 * This method creates an object of the Comet class
  * (default constructor).
  *
  * @param <name> optional parameter indicating the name of the celestial
- *               body (default is wxT("")).
+ *               body (default is "").
  */
 //------------------------------------------------------------------------------
-Comet::Comet(wxString name) :
-CelestialBody     (wxT("Comet"),name)
+Comet::Comet(std::string name) :
+CelestialBody     ("Comet",name)
 {
-//   CelestialBody::InitializeBody(wxT("Comet"));
+//   CelestialBody::InitializeBody("Comet");
    
-   objectTypeNames.push_back(wxT("Comet")); 
+   objectTypeNames.push_back("Comet"); 
    parameterCount = CometParamCount;
    
    theCentralBodyName  = SolarSystem::SUN_NAME; 
@@ -98,7 +98,7 @@ CelestialBody     (wxT("Comet"),name)
 }
 
 //------------------------------------------------------------------------------
-//  Comet(wxString name, const wxString &cBody)
+//  Comet(std::string name, const std::string &cBody)
 //------------------------------------------------------------------------------
 /**
 * This method creates an object of the Comet class
@@ -109,12 +109,12 @@ CelestialBody     (wxT("Comet"),name)
  * @param <cBody> pointer to a central body.
  */
 //------------------------------------------------------------------------------
-Comet::Comet(wxString name, const wxString &cBody) :
-CelestialBody     (wxT("Comet"),name)
+Comet::Comet(std::string name, const std::string &cBody) :
+CelestialBody     ("Comet",name)
 {
-//   CelestialBody::InitializeBody(wxT("Comet"));
+//   CelestialBody::InitializeBody("Comet");
    
-   objectTypeNames.push_back(wxT("Comet"));
+   objectTypeNames.push_back("Comet");
    parameterCount = CometParamCount;
 
    theCentralBodyName  = cBody; 
@@ -150,10 +150,10 @@ CelestialBody (copy)
 /**
  * Assignment operator for the Comet class.
  *
- * @param <copy> the Comet object whose data to assign to wxT("this")
+ * @param <copy> the Comet object whose data to assign to "this"
  *            solar system.
  *
- * @return wxT("this") Comet with data of input Comet copy.
+ * @return "this" Comet with data of input Comet copy.
  */
 //------------------------------------------------------------------------------
 Comet& Comet::operator=(const Comet &copy)

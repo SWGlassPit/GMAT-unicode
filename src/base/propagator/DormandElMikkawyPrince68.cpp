@@ -39,9 +39,9 @@
 #include "DormandElMikkawyPrince68.hpp"
 
 /** \brief The default constructor */
-DormandElMikkawyPrince68::DormandElMikkawyPrince68(const wxString &nomme) :
-    RungeKuttaNystrom           (9, 8, wxT("RungeKutta68")
-          /*wxT("DormandElMikkawyPrince68")*/, nomme)
+DormandElMikkawyPrince68::DormandElMikkawyPrince68(const std::string &nomme) :
+    RungeKuttaNystrom           (9, 8, "RungeKutta68"
+          /*"DormandElMikkawyPrince68"*/, nomme)
 {
     derivativeError = true;
 }
@@ -90,7 +90,7 @@ void DormandElMikkawyPrince68::SetCoefficients()
     if (!initialized || (ai == NULL) || (bij == NULL) || (cj == NULL) ||
         (ee == NULL) || (eeDeriv == NULL) || (cdotj == NULL) || (ki == NULL)) {
         initialized = false;
-        throw PropagatorException(wxT("DormandElMikkawyPrince68 cannot set coefficients"));
+        throw PropagatorException("DormandElMikkawyPrince68 cannot set coefficients");
     }
 
     // Fill in ai, bij, and cj

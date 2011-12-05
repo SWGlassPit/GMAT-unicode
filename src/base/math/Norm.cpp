@@ -35,8 +35,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Norm::Norm(const wxString &nomme)
-   : MathFunction(wxT("Norm"), nomme)
+Norm::Norm(const std::string &nomme)
+   : MathFunction("Norm", nomme)
 {
 }
 
@@ -95,7 +95,7 @@ void Norm::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 
    #ifdef DEBUG_NORM
    MessageInterface::ShowMessage
-      (wxT("Norm::GetOutputInfo() type=%d, rowCount=%d, colCount=%d\n"),
+      ("Norm::GetOutputInfo() type=%d, rowCount=%d, colCount=%d\n",
        type, rowCount, colCount);
    #endif
 }
@@ -114,11 +114,11 @@ bool Norm::ValidateInputs()
    Integer type1, row1, col1; // Left node
    
    if (leftNode == NULL)
-      throw MathException(wxT("Norm() - Missing input arguments"));
+      throw MathException("Norm() - Missing input arguments");
    
    #ifdef DEBUG_NORM
    MessageInterface::ShowMessage
-      (wxT("Norm::ValidateInputs() left=%s, %s\n"),
+      ("Norm::ValidateInputs() left=%s, %s\n",
        leftNode->GetTypeName().c_str(), leftNode->GetName().c_str());
    #endif
    
@@ -128,7 +128,7 @@ bool Norm::ValidateInputs()
    
    #ifdef DEBUG_NORM
    MessageInterface::ShowMessage
-      (wxT("Norm::ValidateInputs() returning true, type=%d, row=%d, col=%d\n"), 
+      ("Norm::ValidateInputs() returning true, type=%d, row=%d, col=%d\n", 
        type1, row1, col1);
    #endif
    
@@ -161,8 +161,8 @@ Real Norm::Evaluate()
       }
       else
          throw MathException(
-            wxT("Norm::Evaluate():: Can only be done on a vector or a scalar.  ")
-            wxT("This is a matrix.\n"));
+            "Norm::Evaluate():: Can only be done on a vector or a scalar.  "
+            "This is a matrix.\n");
    }
    else
    {

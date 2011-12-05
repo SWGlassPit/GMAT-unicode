@@ -40,8 +40,8 @@
 class GMAT_API Spacecraft : public SpaceObject
 {
 public:
-   Spacecraft(const wxString &name,
-      const wxString &typeStr = wxT("Spacecraft"));
+   Spacecraft(const std::string &name,
+      const std::string &typeStr = "Spacecraft");
    Spacecraft(const Spacecraft &a);
    Spacecraft&          operator=(const Spacecraft &a);
 
@@ -53,12 +53,12 @@ public:
    CoordinateSystem*    GetInternalCoordSystem();
 
    void                 SetState(const Rvector6 &cartState);
-   void                 SetState(const wxString &elementType, Real *instate);
+   void                 SetState(const std::string &elementType, Real *instate);
    void                 SetState(const Real s1, const Real s2, const Real s3,
                                  const Real s4, const Real s5, const Real s6);
 
    virtual GmatState&   GetState();
-   virtual Rvector6     GetState(wxString rep);
+   virtual Rvector6     GetState(std::string rep);
    virtual Rvector6     GetState(Integer rep);
    Rvector6             GetCartesianState();
    Rvector6             GetKeplerianState();
@@ -74,7 +74,7 @@ public:
                         GetEulerAngleSequence() const;
    
    // The ID of the model that the spacecraft uses, and the filename as well
-   wxString          modelFile;
+   std::string          modelFile;
    int                  modelID;
 
    
@@ -82,30 +82,30 @@ public:
    virtual GmatBase*    Clone(void) const;
    virtual void         Copy(const GmatBase* orig);
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
 
-   virtual wxString  GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual std::string  GetRefObjectName(const Gmat::ObjectType type) const;
 
    virtual bool         HasRefObjectTypeArray();
    virtual const        ObjectTypeArray& GetRefObjectTypeArray();
    virtual const StringArray&
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool         SetRefObjectName(const Gmat::ObjectType type,
-                                         const wxString &name);
+                                         const std::string &name);
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name);
+                                     const std::string &name);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
 
    virtual ObjectArray& GetRefObjectArray(const Gmat::ObjectType type);
-   virtual ObjectArray& GetRefObjectArray(const wxString& typeString);
+   virtual ObjectArray& GetRefObjectArray(const std::string& typeString);
 
    // Parameter accessor methods -- overridden from GmatBase
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
 
    virtual bool         IsParameterReadOnly(const Integer id) const;
-   virtual bool         IsParameterReadOnly(const wxString &label) const;
+   virtual bool         IsParameterReadOnly(const std::string &label) const;
    virtual bool         ParameterAffectsDynamics(const Integer id) const;
    virtual bool         ParameterDvInitializesNonzero(const Integer id,
                               const Integer r = 0, const Integer c = 0) const;
@@ -113,23 +113,23 @@ public:
                               const Integer r = 0, const Integer c = 0) const;
 
    virtual Real         GetRealParameter(const Integer id) const;
-   virtual Real         GetRealParameter(const wxString &label) const;
+   virtual Real         GetRealParameter(const std::string &label) const;
    virtual Real         SetRealParameter(const Integer id, const Real value);
-   virtual Real         SetRealParameter(const wxString &label, const Real value);
+   virtual Real         SetRealParameter(const std::string &label, const Real value);
    virtual Real         SetRealParameter(const Integer id,
                                          const Real value,
                                          const Integer index);
 
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const wxString &label) const;
-   virtual bool         SetStringParameter(const Integer id, const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const std::string &label) const;
+   virtual bool         SetStringParameter(const Integer id, const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value,
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value,
                                            const Integer index);
 
    virtual const Rmatrix&
@@ -138,54 +138,54 @@ public:
                         SetRmatrixParameter(const Integer id,
                                             const Rmatrix &value);
    virtual const Rmatrix&
-                        GetRmatrixParameter(const wxString &label) const;
+                        GetRmatrixParameter(const std::string &label) const;
    virtual const Rmatrix&
-                        SetRmatrixParameter(const wxString &label,
+                        SetRmatrixParameter(const std::string &label,
                                             const Rmatrix &value);
    virtual Real         GetRealParameter(const Integer id, const Integer row,
                                          const Integer col) const;
-   virtual Real         GetRealParameter(const wxString &label,
+   virtual Real         GetRealParameter(const std::string &label,
                                          const Integer row,
                                          const Integer col) const;
    virtual Real         SetRealParameter(const Integer id, const Real value,
                                          const Integer row, const Integer col);
-   virtual Real         SetRealParameter(const wxString &label,
+   virtual Real         SetRealParameter(const std::string &label,
                                          const Real value, const Integer row,
                                          const Integer col);
 
    const StringArray&   GetStringArrayParameter(const Integer id) const;
    virtual const StringArray&
-                        GetStringArrayParameter(const wxString &label) const;
-   virtual wxString  GetStringParameter(const Integer id, const Integer index) const;           // made changes by Tuan Nguyen
-   virtual wxString  GetStringParameter(const wxString & label, const Integer index) const;  // made changes by Tuan Nguyen
+                        GetStringArrayParameter(const std::string &label) const;
+   virtual std::string  GetStringParameter(const Integer id, const Integer index) const;           // made changes by Tuan Nguyen
+   virtual std::string  GetStringParameter(const std::string & label, const Integer index) const;  // made changes by Tuan Nguyen
 
-   virtual wxString  GetParameterText(const Integer id) const;
+   virtual std::string  GetParameterText(const Integer id) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
 
    virtual bool         Initialize();
 
-   virtual bool         TakeAction(const wxString &action,
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,
+                                   const std::string &actionData = "");
    virtual bool         IsOwnedObject(Integer id) const;
    virtual GmatBase*    GetOwnedObject(Integer whichOne);
 
 
-   virtual const wxString&
+   virtual const std::string&
                         GetGeneratingString(Gmat::WriteMode mode = Gmat::SCRIPTING,
-                                            const wxString &prefix = wxT(""),
-                                            const wxString &useName = wxT(""));
+                                            const std::string &prefix = "",
+                                            const std::string &useName = "");
 
-   wxString GetEpochString();
-   void SetDateFormat(const wxString &dateType);
-   void SetEpoch(const wxString &ep);
-   void SetEpoch(const wxString &type, const wxString &ep, Real a1mjd);
-   void SetState(const wxString &type, const Rvector6 &cartState);
-   void SetAnomaly(const wxString &type, const Anomaly &ta);
+   std::string GetEpochString();
+   void SetDateFormat(const std::string &dateType);
+   void SetEpoch(const std::string &ep);
+   void SetEpoch(const std::string &type, const std::string &ep, Real a1mjd);
+   void SetState(const std::string &type, const Rvector6 &cartState);
+   void SetAnomaly(const std::string &type, const Anomaly &ta);
 
-   virtual Integer         GetPropItemID(const wxString &whichItem);
-   virtual Integer         SetPropItem(const wxString &propItem);
+   virtual Integer         GetPropItemID(const std::string &whichItem);
+   virtual Integer         SetPropItem(const std::string &propItem);
    virtual StringArray     GetDefaultPropItems();
    virtual Real*           GetPropItem(const Integer item);
    virtual Integer         GetPropItemSize(const Integer item);
@@ -304,13 +304,13 @@ protected:
       EndMultipleReps
    };
    // these are the corresponding strings
-   static const wxString MULT_REP_STRINGS[EndMultipleReps - CART_X];
+   static const std::string MULT_REP_STRINGS[EndMultipleReps - CART_X];
 
    /// Spacecraft parameter types
    static const Gmat::ParameterType
                   PARAMETER_TYPE[SpacecraftParamCount - SpaceObjectParamCount];
    /// Spacecraft parameter labels
-   static const wxString
+   static const std::string
                   PARAMETER_LABEL[SpacecraftParamCount - SpaceObjectParamCount];
 
    enum STATE_REPS
@@ -324,7 +324,7 @@ protected:
 
    static const Integer ATTITUDE_ID_OFFSET;
 
-   std::map <wxString, wxString> elementLabelMap;
+   std::map <std::string, std::string> elementLabelMap;
 
    /// State element labels
    StringArray       stateElementLabel;
@@ -334,21 +334,21 @@ protected:
    StringArray       representations;
 
    /// Epoch string, specifying the text form of the epoch
-   wxString       scEpochStr;
+   std::string       scEpochStr;
    Real              dryMass;
    Real              coeffDrag;
    Real              dragArea;
    Real              srpArea;
    Real              reflectCoeff;
    /// String specifying the epoch time system (A1, TAI, UTC, or TT)
-   wxString       epochSystem;
+   std::string       epochSystem;
    /// String specifying the epoch time format (Gregorian or ModJulian)
-   wxString       epochFormat;
+   std::string       epochFormat;
    /// String specifying the epoch system and format used for scEpochStr (TAIModJulian, etc)
-   wxString       epochType;
-   wxString       stateType;
-   wxString       displayStateType;
-   wxString       anomalyType;
+   std::string       epochType;
+   std::string       stateType;
+   std::string       displayStateType;
+   std::string       anomalyType;
    Anomaly           trueAnomaly;
 
    
@@ -368,13 +368,13 @@ protected:
    /// Coordinate system used for the input and output to the GUI
    CoordinateSystem  *coordinateSystem;
 
-   wxString       coordSysName;
+   std::string       coordSysName;
 
    /// coordinate system map to be used for Thrusters for now
-   std::map<wxString, CoordinateSystem*> coordSysMap;
+   std::map<std::string, CoordinateSystem*> coordSysMap;
 
    /// Spacecraft ID Used in estimation, measuremetn data files, etc
-   wxString       spacecraftId;
+   std::string       spacecraftId;
 
    /// Pointer to the object that manages the attitude of the spacecraft
    Attitude          *attitude;
@@ -429,18 +429,18 @@ protected:
    void              AttachTanksToThrusters();
    bool              SetHardware(GmatBase *obj, StringArray &hwNames,
                                  ObjectArray &hwArray);
-   virtual void      WriteParameters(Gmat::WriteMode mode, wxString &prefix,
-                        wxString &stream);
+   virtual void      WriteParameters(Gmat::WriteMode mode, std::string &prefix,
+                        std::stringstream &stream);
 
    virtual void      UpdateElementLabels();
-   Rvector6          GetStateInRepresentation(wxString rep = wxT(""));
+   Rvector6          GetStateInRepresentation(std::string rep = "");
    Rvector6          GetStateInRepresentation(Integer rep = CARTESIAN_ID);
-   void              SetStateFromRepresentation(wxString rep, Rvector6 &st);
+   void              SetStateFromRepresentation(std::string rep, Rvector6 &st);
 
-   Real              GetElement(const wxString &label);
-   bool              SetElement(const wxString &label, const Real &value);
-   Integer           LookUpLabel(const wxString &label, wxString &rep);
-   Integer           LookUpID(const Integer id, wxString &label, wxString &rep);
+   Real              GetElement(const std::string &label);
+   bool              SetElement(const std::string &label, const Real &value);
+   Integer           LookUpLabel(const std::string &label, std::string &rep);
+   Integer           LookUpID(const Integer id, std::string &label, std::string &rep);
    void              BuildElementLabelMap();
    void              RecomputeStateAtEpoch(const GmatEpoch &toEpoch);
 

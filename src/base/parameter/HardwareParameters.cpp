@@ -37,10 +37,10 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// FuelMass(const wxString &name, GmatBase *obj)
+// FuelMass(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-FuelMass::FuelMass(const wxString &name, GmatBase *obj)
-   : HardwareReal(name, wxT("FuelMass"), obj, wxT("Fuel Mass"), wxT(""))
+FuelMass::FuelMass(const std::string &name, GmatBase *obj)
+   : HardwareReal(name, "FuelMass", obj, "Fuel Mass", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::RED32;
@@ -123,10 +123,10 @@ GmatBase* FuelMass::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// Pressure(const wxString &name, GmatBase *obj)
+// Pressure(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-Pressure::Pressure(const wxString &name, GmatBase *obj)
-   : HardwareReal(name, wxT("Pressure"), obj, wxT("Pressure"), wxT(""))
+Pressure::Pressure(const std::string &name, GmatBase *obj)
+   : HardwareReal(name, "Pressure", obj, "Pressure", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::YELLOW32;
@@ -209,10 +209,10 @@ GmatBase* Pressure::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// Temperature(const wxString &name, GmatBase *obj)
+// Temperature(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-Temperature::Temperature(const wxString &name, GmatBase *obj)
-   : HardwareReal(name, wxT("Temperature"), obj, wxT("Temperature"), wxT(""))
+Temperature::Temperature(const std::string &name, GmatBase *obj)
+   : HardwareReal(name, "Temperature", obj, "Temperature", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::BLUE32;
@@ -295,10 +295,10 @@ GmatBase* Temperature::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// RefTemperature(const wxString &name, GmatBase *obj)
+// RefTemperature(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-RefTemperature::RefTemperature(const wxString &name, GmatBase *obj)
-   : HardwareReal(name, wxT("RefTemperature"), obj, wxT("RefTemperature"), wxT(""))
+RefTemperature::RefTemperature(const std::string &name, GmatBase *obj)
+   : HardwareReal(name, "RefTemperature", obj, "RefTemperature", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::BLUE32;
@@ -381,10 +381,10 @@ GmatBase* RefTemperature::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// Volume(const wxString &name, GmatBase *obj)
+// Volume(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-Volume::Volume(const wxString &name, GmatBase *obj)
-   : HardwareReal(name, wxT("Volume"), obj, wxT("Volume"), wxT(""))
+Volume::Volume(const std::string &name, GmatBase *obj)
+   : HardwareReal(name, "Volume", obj, "Volume", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::GREEN32;
@@ -467,10 +467,10 @@ GmatBase* Volume::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// FuelDensity(const wxString &name, GmatBase *obj)
+// FuelDensity(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-FuelDensity::FuelDensity(const wxString &name, GmatBase *obj)
-   : HardwareReal(name, wxT("FuelDensity"), obj, wxT("FuelDensity"), wxT(""))
+FuelDensity::FuelDensity(const std::string &name, GmatBase *obj)
+   : HardwareReal(name, "FuelDensity", obj, "FuelDensity", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::ORANGE32;
@@ -553,10 +553,10 @@ GmatBase* FuelDensity::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// DutyCycle(const wxString &name, GmatBase *obj)
+// DutyCycle(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-DutyCycle::DutyCycle(const wxString &name, GmatBase *obj)
-   : HardwareReal(name, wxT("DutyCycle"), obj, wxT("DutyCycle"), wxT(""))
+DutyCycle::DutyCycle(const std::string &name, GmatBase *obj)
+   : HardwareReal(name, "DutyCycle", obj, "DutyCycle", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::CHESTNUT;
@@ -639,10 +639,10 @@ GmatBase* DutyCycle::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// ThrustScaleFactor(const wxString &name, GmatBase *obj)
+// ThrustScaleFactor(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-ThrustScaleFactor::ThrustScaleFactor(const wxString &name, GmatBase *obj)
-   : HardwareReal(name, wxT("ThrustScaleFactor"), obj, wxT("ThrustScaleFactor"), wxT(""))
+ThrustScaleFactor::ThrustScaleFactor(const std::string &name, GmatBase *obj)
+   : HardwareReal(name, "ThrustScaleFactor", obj, "ThrustScaleFactor", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::CHESTNUT;
@@ -725,10 +725,10 @@ GmatBase* ThrustScaleFactor::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// GravitationalAccel(const wxString &name, GmatBase *obj)
+// GravitationalAccel(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-GravitationalAccel::GravitationalAccel(const wxString &name, GmatBase *obj)
-   : HardwareReal(name, wxT("GravitationalAccel"), obj, wxT("GravitationalAccel"), wxT(""))
+GravitationalAccel::GravitationalAccel(const std::string &name, GmatBase *obj)
+   : HardwareReal(name, "GravitationalAccel", obj, "GravitationalAccel", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::CHESTNUT;
@@ -811,11 +811,11 @@ GmatBase* GravitationalAccel::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// ThrustCoefficients(const wxString &type, const wxString &name, GmatBase *obj)
+// ThrustCoefficients(const std::string &type, const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-ThrustCoefficients::ThrustCoefficients(const wxString &type,
-                                       const wxString &name, GmatBase *obj)
-   : HardwareReal(name, wxT("ThrustCoefficients"), obj, wxT("ThrustCoefficients"), wxT(""))
+ThrustCoefficients::ThrustCoefficients(const std::string &type,
+                                       const std::string &name, GmatBase *obj)
+   : HardwareReal(name, "ThrustCoefficients", obj, "ThrustCoefficients", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::CHESTNUT;
@@ -825,29 +825,29 @@ ThrustCoefficients::ThrustCoefficients(const wxString &type,
    ParameterInfo::Instance()->Add(type, mOwnerType, instanceName, mDepObj,
                                   mIsPlottable, mIsReportable, mIsSettable);
    
-   if      (type == wxT("C1") )  mThrustCoeffId = C1;
-   else if (type == wxT("C2") )  mThrustCoeffId = C2;
-   else if (type == wxT("C3") )  mThrustCoeffId = C3;
-   else if (type == wxT("C4") )  mThrustCoeffId = C4;
-   else if (type == wxT("C5") )  mThrustCoeffId = C5;
-   else if (type == wxT("C6") )  mThrustCoeffId = C6;
-   else if (type == wxT("C7") )  mThrustCoeffId = C7;
-   else if (type == wxT("C8") )  mThrustCoeffId = C8;
-   else if (type == wxT("C9") )  mThrustCoeffId = C9;
-   else if (type == wxT("C10"))  mThrustCoeffId = C10;
-   else if (type == wxT("C11"))  mThrustCoeffId = C11;
-   else if (type == wxT("C12"))  mThrustCoeffId = C12;
-   else if (type == wxT("C13"))  mThrustCoeffId = C13;
-   else if (type == wxT("C14"))  mThrustCoeffId = C14;
-   else if (type == wxT("C15"))  mThrustCoeffId = C15;
-   else if (type == wxT("C16"))  mThrustCoeffId = C16;
+   if      (type == "C1" )  mThrustCoeffId = C1;
+   else if (type == "C2" )  mThrustCoeffId = C2;
+   else if (type == "C3" )  mThrustCoeffId = C3;
+   else if (type == "C4" )  mThrustCoeffId = C4;
+   else if (type == "C5" )  mThrustCoeffId = C5;
+   else if (type == "C6" )  mThrustCoeffId = C6;
+   else if (type == "C7" )  mThrustCoeffId = C7;
+   else if (type == "C8" )  mThrustCoeffId = C8;
+   else if (type == "C9" )  mThrustCoeffId = C9;
+   else if (type == "C10")  mThrustCoeffId = C10;
+   else if (type == "C11")  mThrustCoeffId = C11;
+   else if (type == "C12")  mThrustCoeffId = C12;
+   else if (type == "C13")  mThrustCoeffId = C13;
+   else if (type == "C14")  mThrustCoeffId = C14;
+   else if (type == "C15")  mThrustCoeffId = C15;
+   else if (type == "C16")  mThrustCoeffId = C16;
    else
       mThrustCoeffId = -1;
    
    #ifdef DEBUG_THRUST_COEFF
    MessageInterface::ShowMessage
-      (wxT("ThrustCoefficients::ThrustCoefficients() type='%s', name='%s', ")
-       wxT("mThrustCoeffId=%d\n"), type.c_str(), name.c_str(), mThrustCoeffId);
+      ("ThrustCoefficients::ThrustCoefficients() type='%s', name='%s', "
+       "mThrustCoeffId=%d\n", type.c_str(), name.c_str(), mThrustCoeffId);
    #endif
 }
 
@@ -931,11 +931,11 @@ GmatBase* ThrustCoefficients::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// ImpulseCoefficients(const wxString &type, const wxString &name, GmatBase *obj)
+// ImpulseCoefficients(const std::string &type, const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-ImpulseCoefficients::ImpulseCoefficients(const wxString &type,
-                                         const wxString &name, GmatBase *obj)
-   : HardwareReal(name, wxT("ImpulseCoefficients"), obj, wxT("ImpulseCoefficients"), wxT(""))
+ImpulseCoefficients::ImpulseCoefficients(const std::string &type,
+                                         const std::string &name, GmatBase *obj)
+   : HardwareReal(name, "ImpulseCoefficients", obj, "ImpulseCoefficients", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::CHESTNUT;
@@ -945,29 +945,29 @@ ImpulseCoefficients::ImpulseCoefficients(const wxString &type,
    ParameterInfo::Instance()->Add(type, mOwnerType, instanceName, mDepObj,
                                   mIsPlottable, mIsReportable, mIsSettable);
    
-   if      (type == wxT("K1") )  mImpulseCoeffId = K1;
-   else if (type == wxT("K2") )  mImpulseCoeffId = K2;
-   else if (type == wxT("K3") )  mImpulseCoeffId = K3;
-   else if (type == wxT("K4") )  mImpulseCoeffId = K4;
-   else if (type == wxT("K5") )  mImpulseCoeffId = K5;
-   else if (type == wxT("K6") )  mImpulseCoeffId = K6;
-   else if (type == wxT("K7") )  mImpulseCoeffId = K7;
-   else if (type == wxT("K8") )  mImpulseCoeffId = K8;
-   else if (type == wxT("K9") )  mImpulseCoeffId = K9;
-   else if (type == wxT("K10"))  mImpulseCoeffId = K10;
-   else if (type == wxT("K11"))  mImpulseCoeffId = K11;
-   else if (type == wxT("K12"))  mImpulseCoeffId = K12;
-   else if (type == wxT("K13"))  mImpulseCoeffId = K13;
-   else if (type == wxT("K14"))  mImpulseCoeffId = K14;
-   else if (type == wxT("K15"))  mImpulseCoeffId = K15;
-   else if (type == wxT("K16"))  mImpulseCoeffId = K16;
+   if      (type == "K1" )  mImpulseCoeffId = K1;
+   else if (type == "K2" )  mImpulseCoeffId = K2;
+   else if (type == "K3" )  mImpulseCoeffId = K3;
+   else if (type == "K4" )  mImpulseCoeffId = K4;
+   else if (type == "K5" )  mImpulseCoeffId = K5;
+   else if (type == "K6" )  mImpulseCoeffId = K6;
+   else if (type == "K7" )  mImpulseCoeffId = K7;
+   else if (type == "K8" )  mImpulseCoeffId = K8;
+   else if (type == "K9" )  mImpulseCoeffId = K9;
+   else if (type == "K10")  mImpulseCoeffId = K10;
+   else if (type == "K11")  mImpulseCoeffId = K11;
+   else if (type == "K12")  mImpulseCoeffId = K12;
+   else if (type == "K13")  mImpulseCoeffId = K13;
+   else if (type == "K14")  mImpulseCoeffId = K14;
+   else if (type == "K15")  mImpulseCoeffId = K15;
+   else if (type == "K16")  mImpulseCoeffId = K16;
    else
       mImpulseCoeffId = -1;
    
    #ifdef DEBUG_IMPULSE_COEFF
    MessageInterface::ShowMessage
-      (wxT("ImpulseCoefficients::ImpulseCoefficients() type='%s', name='%s', ")
-       wxT("mImpulseCoeffId=%d\n"), type.c_str(), name.c_str(), mImpulseCoeffId);
+      ("ImpulseCoefficients::ImpulseCoefficients() type='%s', name='%s', "
+       "mImpulseCoeffId=%d\n", type.c_str(), name.c_str(), mImpulseCoeffId);
    #endif
 }
 
@@ -1051,11 +1051,11 @@ GmatBase* ImpulseCoefficients::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// ThrustDirections(const wxString &type, const wxString &name, GmatBase *obj)
+// ThrustDirections(const std::string &type, const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-ThrustDirections::ThrustDirections(const wxString &type,
-                                   const wxString &name, GmatBase *obj)
-   : HardwareReal(name, wxT("ThrustDirection"), obj, wxT("ThrustDirection"), wxT(""))
+ThrustDirections::ThrustDirections(const std::string &type,
+                                   const std::string &name, GmatBase *obj)
+   : HardwareReal(name, "ThrustDirection", obj, "ThrustDirection", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::CHESTNUT;
@@ -1065,19 +1065,19 @@ ThrustDirections::ThrustDirections(const wxString &type,
    ParameterInfo::Instance()->Add(type, mOwnerType, instanceName, mDepObj,
                                   mIsPlottable, mIsReportable, mIsSettable);
    
-   if (type == wxT("ThrustDirection1") )
+   if (type == "ThrustDirection1" )
       mThrustDirectionId = THRUST_DIRECTION1;
-   else if (type == wxT("ThrustDirection2") )
+   else if (type == "ThrustDirection2" )
       mThrustDirectionId = THRUST_DIRECTION2;
-   else if (type == wxT("ThrustDirection3") )
+   else if (type == "ThrustDirection3" )
       mThrustDirectionId = THRUST_DIRECTION3;
    else
       mThrustDirectionId = -1;
    
    #ifdef DEBUG_IMPULSE_COEFF
    MessageInterface::ShowMessage
-      (wxT("ThrustDirections::ThrustDirections() type='%s', name='%s', ")
-       wxT("mThrustDirectionId=%d\n"), type.c_str(), name.c_str(), mThrustDirectionId);
+      ("ThrustDirections::ThrustDirections() type='%s', name='%s', "
+       "mThrustDirectionId=%d\n", type.c_str(), name.c_str(), mThrustDirectionId);
    #endif
 }
 

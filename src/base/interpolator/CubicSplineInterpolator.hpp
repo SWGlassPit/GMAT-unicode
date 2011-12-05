@@ -30,7 +30,7 @@
 class GMAT_API CubicSplineInterpolator : public Interpolator
 {
 public:
-   CubicSplineInterpolator(const wxString &name = wxT(""), Integer dim = 1);
+   CubicSplineInterpolator(const std::string &name = "", Integer dim = 1);
    virtual ~CubicSplineInterpolator();
    CubicSplineInterpolator(const CubicSplineInterpolator &csi);
    CubicSplineInterpolator&    operator=(const CubicSplineInterpolator &csi);

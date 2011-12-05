@@ -39,7 +39,7 @@ class GMAT_API SphRMag : public OrbitReal
 {
 public:
 
-   SphRMag(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   SphRMag(const std::string &name = "", GmatBase *obj = NULL);
    SphRMag(const SphRMag &copy);
    SphRMag& operator=(const SphRMag &right);
    virtual ~SphRMag();
@@ -66,7 +66,7 @@ class GMAT_API SphRA : public OrbitReal
 {
 public:
 
-   SphRA(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   SphRA(const std::string &name = "", GmatBase *obj = NULL);
    SphRA(const SphRA &copy);
    SphRA& operator=(const SphRA &right);
    virtual ~SphRA();
@@ -93,7 +93,7 @@ class GMAT_API SphDec : public OrbitReal
 {
 public:
 
-   SphDec(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   SphDec(const std::string &name = "", GmatBase *obj = NULL);
    SphDec(const SphDec &copy);
    SphDec& operator=(const SphDec &right);
    virtual ~SphDec();
@@ -121,7 +121,7 @@ class GMAT_API SphVMag : public OrbitReal
 {
 public:
 
-   SphVMag(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   SphVMag(const std::string &name = "", GmatBase *obj = NULL);
    SphVMag(const SphVMag &copy);
    SphVMag& operator=(const SphVMag &right);
    virtual ~SphVMag();
@@ -148,7 +148,7 @@ class GMAT_API SphRAV : public OrbitReal
 {
 public:
 
-   SphRAV(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   SphRAV(const std::string &name = "", GmatBase *obj = NULL);
    SphRAV(const SphRAV &copy);
    SphRAV& operator=(const SphRAV &right);
    virtual ~SphRAV();
@@ -175,7 +175,7 @@ class GMAT_API SphDecV : public OrbitReal
 {
 public:
 
-   SphDecV(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   SphDecV(const std::string &name = "", GmatBase *obj = NULL);
    SphDecV(const SphDecV &copy);
    SphDecV& operator=(const SphDecV &right);
    virtual ~SphDecV();
@@ -203,7 +203,7 @@ class GMAT_API SphAzi : public OrbitReal
 {
 public:
 
-   SphAzi(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   SphAzi(const std::string &name = "", GmatBase *obj = NULL);
    SphAzi(const SphAzi &copy);
    SphAzi& operator=(const SphAzi &right);
    virtual ~SphAzi();
@@ -231,7 +231,7 @@ class GMAT_API SphFPA : public OrbitReal
 {
 public:
 
-   SphFPA(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   SphFPA(const std::string &name = "", GmatBase *obj = NULL);
    SphFPA(const SphFPA &copy);
    SphFPA& operator=(const SphFPA &right);
    virtual ~SphFPA();
@@ -260,7 +260,7 @@ class GMAT_API SphRaDecElem : public OrbitRvec6
 {
 public:
 
-   SphRaDecElem(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   SphRaDecElem(const std::string &name = "", GmatBase *obj = NULL);
    SphRaDecElem(const SphRaDecElem &copy);
    SphRaDecElem& operator=(const SphRaDecElem &right);
    virtual ~SphRaDecElem();
@@ -289,7 +289,7 @@ class GMAT_API SphAzFpaElem : public OrbitRvec6
 {
 public:
 
-   SphAzFpaElem(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   SphAzFpaElem(const std::string &name = "", GmatBase *obj = NULL);
    SphAzFpaElem(const SphAzFpaElem &copy);
    SphAzFpaElem& operator=(const SphAzFpaElem &right);
    virtual ~SphAzFpaElem();

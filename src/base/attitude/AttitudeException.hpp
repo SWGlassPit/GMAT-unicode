@@ -28,7 +28,7 @@ class GMAT_API AttitudeException : public BaseException
 {
 public:
 
-   AttitudeException(wxString details = wxT(""));
+   AttitudeException(std::string details = "");
    ~AttitudeException();
 };
 #endif /*AttitudeException_hpp*/

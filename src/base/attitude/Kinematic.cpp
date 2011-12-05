@@ -36,19 +36,19 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-//  Kinematic(const wxString &typeStr, const wxString &itsName)
+//  Kinematic(const std::string &typeStr, const std::string &itsName)
 //------------------------------------------------------------------------------
 /**
  * This method creates an object of the Kinematic class (Constructor).
  * The default value is the (0,0,0,1) quaternion.
  */
 //------------------------------------------------------------------------------
-Kinematic::Kinematic(const wxString &typeStr, const wxString &itsName) : 
+Kinematic::Kinematic(const std::string &typeStr, const std::string &itsName) : 
    Attitude(typeStr, itsName)
 {
    parameterCount = KinematicParamCount;
    //objectTypes.push_back(Gmat::KINEMATIC); - need to add to gmatdefs?
-   objectTypeNames.push_back(wxT("Kinematic"));
+   objectTypeNames.push_back("Kinematic");
  }
  
  //------------------------------------------------------------------------------

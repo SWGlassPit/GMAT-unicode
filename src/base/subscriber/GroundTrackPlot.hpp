@@ -26,7 +26,7 @@
 class GMAT_API GroundTrackPlot : public OrbitPlot
 {
 public:
-   GroundTrackPlot(const wxString &name);
+   GroundTrackPlot(const std::string &name);
    GroundTrackPlot(const GroundTrackPlot &plot);
    GroundTrackPlot& operator=(const GroundTrackPlot &plot);
    virtual ~GroundTrackPlot();
@@ -38,31 +38,31 @@ public:
    virtual GmatBase*    Clone() const;
    virtual void         Copy(const GmatBase* orig);
    
-   virtual bool         TakeAction(const wxString &action,  
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,  
+                                   const std::string &actionData = "");
    
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
    // methods for parameters
    virtual bool         IsParameterReadOnly(const Integer id) const;
    
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual bool         SetStringParameter(const Integer id, const wxString &value);
-   virtual wxString  GetStringParameter(const wxString &label) const;
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual bool         SetStringParameter(const Integer id, const std::string &value);
+   virtual std::string  GetStringParameter(const std::string &label) const;
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
    virtual const ObjectTypeArray& GetTypesForList(const Integer id);
-   virtual const ObjectTypeArray& GetTypesForList(const wxString &label);
+   virtual const ObjectTypeArray& GetTypesForList(const std::string &label);
    
-   virtual wxString  GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual std::string  GetRefObjectName(const Gmat::ObjectType type) const;
    virtual bool         HasRefObjectTypeArray();
    virtual const ObjectTypeArray&
                         GetRefObjectTypeArray();
@@ -70,9 +70,9 @@ public:
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                  const wxString &name);
+                                  const std::string &name);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    
    enum FootPrintOption
    {
@@ -89,9 +89,9 @@ protected:
    virtual bool         Distribute(const Real * dat, Integer len);
    
    CelestialBody *centralBody;
-   wxString centralBodyName;
-   wxString footPrints;
-   wxString textureMapFileName;
+   std::string centralBodyName;
+   std::string footPrints;
+   std::string textureMapFileName;
    FootPrintOption footPrintOption;
    
 public:
@@ -107,7 +107,7 @@ public:
    
    static const Gmat::ParameterType
       PARAMETER_TYPE[GroundTrackPlotParamCount - OrbitPlotParamCount];
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[GroundTrackPlotParamCount - OrbitPlotParamCount];
    
    // for GUI population
@@ -117,14 +117,14 @@ public:
    virtual const StringArray&
                         GetPropertyEnumStrings(const Integer id) const;
    virtual const StringArray&
-                        GetPropertyEnumStrings(const wxString &label) const;
+                        GetPropertyEnumStrings(const std::string &label) const;
    
    static Integer GetFootPrintOptionCount() { return FootPrintOptionCount; }
-   static const wxString* GetFootPrintOptionList();
+   static const std::string* GetFootPrintOptionList();
    
 private:
    
-   static const wxString FOOT_PRINT_OPTION_TEXT[FootPrintOptionCount];
+   static const std::string FOOT_PRINT_OPTION_TEXT[FootPrintOptionCount];
 };
 
 #endif

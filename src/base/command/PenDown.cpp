@@ -35,7 +35,7 @@
  */
 //------------------------------------------------------------------------------
 PenDown::PenDown() :
-   PlotCommand    (wxT("PenDown"))
+   PlotCommand    ("PenDown")
 {
 }
 
@@ -115,7 +115,7 @@ GmatBase* PenDown::Clone() const
 bool PenDown::Initialize()
 {
    #ifdef DEBUG_PENDOWN
-      MessageInterface::ShowMessage(wxT("PenDown::Initialize() entered\n"));
+      MessageInterface::ShowMessage("PenDown::Initialize() entered\n");
    #endif
       
    PlotCommand::Initialize();
@@ -127,30 +127,30 @@ bool PenDown::Initialize()
    {
       if ((sub = FindObject(plotNameList.at(ii))) != NULL) 
       {
-         if (sub->GetTypeName() == wxT("XYPlot") ||
-             sub->GetTypeName() == wxT("OrbitView") ||
-             sub->GetTypeName() == wxT("GroundTrackPlot")) 
+         if (sub->GetTypeName() == "XYPlot" ||
+             sub->GetTypeName() == "OrbitView" ||
+             sub->GetTypeName() == "GroundTrackPlot") 
             thePlotList.push_back((Subscriber*) sub);
          else
             throw CommandException(
-               wxT("Object named \"") + plotNameList.at(ii) +
-               wxT("\" should be an XYPlot, OrbitView or GroundTrackPlot to use the ")
-               wxT("PenDown command for this object, but it is a ") + 
+               "Object named \"" + plotNameList.at(ii) +
+               "\" should be an XYPlot, OrbitView or GroundTrackPlot to use the "
+               "PenDown command for this object, but it is a " + 
                sub->GetTypeName());      
       }
       else 
       {
          MessageInterface::ShowMessage
-            (wxT("PenDown command cannot find Plot \"%s\"; command has no effect.")
-            wxT("\n"), (plotNameList.at(ii)).c_str());
+            ("PenDown command cannot find Plot \"%s\"; command has no effect."
+            "\n", (plotNameList.at(ii)).c_str());
          return false;
       }
    }
    
    #ifdef DEBUG_PENDOWN
       MessageInterface::ShowMessage
-         (wxT("   thePlotList.size()=%d\n"), thePlotList.size());
-      MessageInterface::ShowMessage(wxT("PenDown::Initialize() returning true\n"));
+         ("   thePlotList.size()=%d\n", thePlotList.size());
+      MessageInterface::ShowMessage("PenDown::Initialize() returning true\n");
    #endif
    return true;
 }
@@ -173,17 +173,17 @@ bool PenDown::Execute()
 {
    #ifdef DEBUG_PENDOWN
       MessageInterface::ShowMessage
-         (wxT("PenDown::Execute() thePlotList.size()=%d\n"), thePlotList.size());
+         ("PenDown::Execute() thePlotList.size()=%d\n", thePlotList.size());
    #endif
       
    for (unsigned int ii = 0; ii < thePlotList.size(); ii++)
    {
       if (thePlotList.at(ii))
-         if (!(thePlotList.at(ii)->TakeAction(wxT("PenDown")))) return false;
+         if (!(thePlotList.at(ii)->TakeAction("PenDown"))) return false;
    }
    
    #ifdef DEBUG_PENDOWN
-      MessageInterface::ShowMessage(wxT("PenDown::Execute() returning true\n"));
+      MessageInterface::ShowMessage("PenDown::Execute() returning true\n");
    #endif
    return true;
 }

@@ -25,7 +25,7 @@
 class GMAT_API Add : public MathFunction
 {
 public:
-   Add(const wxString &nomme);
+   Add(const std::string &nomme);
    virtual ~Add();
    Add(const Add &copy);
                  

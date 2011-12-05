@@ -38,7 +38,7 @@ class GMAT_API BdotT : public BplaneReal
 {
 public:
 
-   BdotT(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   BdotT(const std::string &name = "", GmatBase *obj = NULL);
    BdotT(const BdotT &copy);
    const BdotT& operator=(const BdotT &right);
    virtual ~BdotT();
@@ -66,7 +66,7 @@ class GMAT_API BdotR : public BplaneReal
 {
 public:
 
-   BdotR(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   BdotR(const std::string &name = "", GmatBase *obj = NULL);
    BdotR(const BdotR &copy);
    const BdotR& operator=(const BdotR &right);
    virtual ~BdotR();
@@ -94,7 +94,7 @@ class GMAT_API BVectorMag : public BplaneReal
 {
 public:
 
-   BVectorMag(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   BVectorMag(const std::string &name = "", GmatBase *obj = NULL);
    BVectorMag(const BVectorMag &copy);
    const BVectorMag& operator=(const BVectorMag &right);
    virtual ~BVectorMag();
@@ -122,7 +122,7 @@ class GMAT_API BVectorAngle : public BplaneReal
 {
 public:
 
-   BVectorAngle(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   BVectorAngle(const std::string &name = "", GmatBase *obj = NULL);
    BVectorAngle(const BVectorAngle &copy);
    const BVectorAngle& operator=(const BVectorAngle &right);
    virtual ~BVectorAngle();

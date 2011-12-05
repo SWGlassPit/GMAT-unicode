@@ -84,7 +84,7 @@ SpiceKernelWriter::SpiceKernelWriter(const SpiceKernelWriter &copy) :
 //  SpiceKernelWriter& operator=(const SpiceKernelWriter &copy)
 //------------------------------------------------------------------------------
 /**
- * This method sets data on wxT("this") SpiceKernelWriter instance, copying data
+ * This method sets data on "this" SpiceKernelWriter instance, copying data
  * from the input instance.
  *
  */
@@ -103,7 +103,7 @@ SpiceKernelWriter& SpiceKernelWriter::operator=(const SpiceKernelWriter &copy)
 //  ~SpiceKernelWriter()
 //------------------------------------------------------------------------------
 /**
- * This method deletes wxT("this") SpiceKernelWriter instance.
+ * This method deletes "this" SpiceKernelWriter instance.
  * (destructor)
  *
  */

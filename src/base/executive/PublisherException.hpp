@@ -33,7 +33,7 @@ class GMAT_API PublisherException : public BaseException
 {
 	public:
 		// class constructor
-		PublisherException(wxString details);
+		PublisherException(std::string details);
 		// class destructor
 		~PublisherException();
 };

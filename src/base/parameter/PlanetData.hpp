@@ -39,12 +39,12 @@ public:
    virtual ~PlanetData();
    
    Real GetPlanetReal(Integer item);
-   Real GetPlanetReal(const wxString &str);
+   Real GetPlanetReal(const std::string &str);
    void SetInternalCoordSystem(CoordinateSystem *cs);
    
    // The inherited methods from RefData
    virtual bool ValidateRefObjects(GmatBase *param);
-   virtual const wxString* GetValidObjectList() const;
+   virtual const std::string* GetValidObjectList() const;
    
    const static Real PLANET_REAL_UNDEFINED;// = -9876543210.1234;
    
@@ -54,7 +54,7 @@ protected:
    virtual void InitializeRefObjects();
    virtual bool IsValidObjectType(Gmat::ObjectType type);
 
-   wxString mCentralBodyName;
+   std::string mCentralBodyName;
    
    Spacecraft *mSpacecraft;
    SolarSystem *mSolarSystem;
@@ -76,8 +76,8 @@ protected:
       PlanetDataObjectCount
    };
    
-   static const wxString VALID_OBJECT_TYPE_LIST[PlanetDataObjectCount];
-   static const wxString VALID_PLANET_DATA_NAMES[LST_ID - LATITUDE + 1];
+   static const std::string VALID_OBJECT_TYPE_LIST[PlanetDataObjectCount];
+   static const std::string VALID_PLANET_DATA_NAMES[LST_ID - LATITUDE + 1];
 };
 #endif // PlanetData_hpp
 

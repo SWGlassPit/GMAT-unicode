@@ -27,7 +27,7 @@
 class GMAT_API Asinh : public MathFunction
 {
 public:
-   Asinh(const wxString &nomme);
+   Asinh(const std::string &nomme);
    virtual ~Asinh();
    Asinh(const Asinh &copy);
                  

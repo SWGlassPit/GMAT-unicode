@@ -56,14 +56,14 @@ public:
    /// method to return the orientation (attitude) of an instrument or a
    /// spacecraft at the specified time, with respect to the specified frame
    /// (support for planetary bodies' orientation may be added later)
-   void   GetTargetOrientation(const wxString &objectName,
+   void   GetTargetOrientation(const std::string &objectName,
                                Integer           naifID,
                                Integer           forFrameNaifId,
                                const A1Mjd       &atTime,
 //                               Real              tolerance,
                                Rmatrix33         &r33,
                                Rvector3          &angVel,
-                               const wxString &referenceFrame = wxT("J2000"));
+                               const std::string &referenceFrame = "J2000");
 
 
 protected:

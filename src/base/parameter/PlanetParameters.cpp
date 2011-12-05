@@ -32,7 +32,7 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// MHA(const wxString &name, GmatBase *obj)
+// MHA(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -41,14 +41,14 @@
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-MHA::MHA(const wxString &name, GmatBase *obj)
-   : PlanetReal(name, wxT("MHA"), obj, wxT("Greenwich Hour Angle"), wxT("deg"),
+MHA::MHA(const std::string &name, GmatBase *obj)
+   : PlanetReal(name, "MHA", obj, "Greenwich Hour Angle", "deg",
                 Gmat::SPACECRAFT, GmatParam::ORIGIN)
 {
-   mDepObjectName = wxT("Earth");
-   PlanetData::mCentralBodyName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthFixed"));
+   mDepObjectName = "Earth";
+   PlanetData::mCentralBodyName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthFixed");
    mIsAngleParam = true;
    mCycleType = GmatParam::ZERO_360;
 }
@@ -115,7 +115,7 @@ MHA::~MHA()
 //------------------------------------------------------------------------------
 bool MHA::Evaluate()
 {
-   //mRealValue = PlanetData::GetPlanetReal(wxT("MHA"));    
+   //mRealValue = PlanetData::GetPlanetReal("MHA");    
    mRealValue = PlanetData::GetPlanetReal(MHA_ID);
    
    if (mRealValue == PlanetData::PLANET_REAL_UNDEFINED)
@@ -151,7 +151,7 @@ GmatBase* MHA::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// Longitude(const wxString &name, GmatBase *obj)
+// Longitude(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -160,14 +160,14 @@ GmatBase* MHA::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-Longitude::Longitude(const wxString &name, GmatBase *obj)
-   : PlanetReal(name, wxT("Longitude"), obj, wxT("Longitude"), wxT("deg"),
+Longitude::Longitude(const std::string &name, GmatBase *obj)
+   : PlanetReal(name, "Longitude", obj, "Longitude", "deg",
                 Gmat::SPACECRAFT, GmatParam::ORIGIN)
 {
-   mDepObjectName = wxT("Earth");
-   PlanetData::mCentralBodyName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthFixed"));
+   mDepObjectName = "Earth";
+   PlanetData::mCentralBodyName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthFixed");
    mIsAngleParam = true;
    mCycleType = GmatParam::PLUS_MINUS_180;
 }
@@ -234,7 +234,7 @@ Longitude::~Longitude()
 //------------------------------------------------------------------------------
 bool Longitude::Evaluate()
 {
-   //mRealValue = PlanetData::GetPlanetReal(wxT("Longitude"));    
+   //mRealValue = PlanetData::GetPlanetReal("Longitude");    
    mRealValue = PlanetData::GetPlanetReal(LONGITUDE);    
    
    if (mRealValue == PlanetData::PLANET_REAL_UNDEFINED)
@@ -270,7 +270,7 @@ GmatBase* Longitude::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// Altitude(const wxString &name, GmatBase *obj)
+// Altitude(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -279,14 +279,14 @@ GmatBase* Longitude::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-Altitude::Altitude(const wxString &name, GmatBase *obj)
-   : PlanetReal(name, wxT("Altitude"), obj, wxT("Altitude"), wxT("Km"),
+Altitude::Altitude(const std::string &name, GmatBase *obj)
+   : PlanetReal(name, "Altitude", obj, "Altitude", "Km",
                 Gmat::SPACECRAFT, GmatParam::ORIGIN)
 {
-   mDepObjectName = wxT("Earth");
-   PlanetData::mCentralBodyName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthFixed"));
+   mDepObjectName = "Earth";
+   PlanetData::mCentralBodyName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthFixed");
 }
 
 
@@ -351,7 +351,7 @@ Altitude::~Altitude()
 //------------------------------------------------------------------------------
 bool Altitude::Evaluate()
 {
-   //mRealValue = PlanetData::GetPlanetReal(wxT("Altitude"));
+   //mRealValue = PlanetData::GetPlanetReal("Altitude");
    mRealValue = PlanetData::GetPlanetReal(ALTITUDE);
    
    if (mRealValue == PlanetData::PLANET_REAL_UNDEFINED)
@@ -387,7 +387,7 @@ GmatBase* Altitude::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// Latitude(const wxString &name, GmatBase *obj)
+// Latitude(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -396,14 +396,14 @@ GmatBase* Altitude::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-Latitude::Latitude(const wxString &name, GmatBase *obj)
-   : PlanetReal(name, wxT("Latitude"), obj, wxT("Latitude"), wxT("deg"),
+Latitude::Latitude(const std::string &name, GmatBase *obj)
+   : PlanetReal(name, "Latitude", obj, "Latitude", "deg",
                 Gmat::SPACECRAFT, GmatParam::ORIGIN)
 {
-   mDepObjectName = wxT("Earth");
-   PlanetData::mCentralBodyName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthFixed"));
+   mDepObjectName = "Earth";
+   PlanetData::mCentralBodyName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthFixed");
    mIsAngleParam = true;
    mCycleType = GmatParam::ZERO_360;
 }
@@ -470,7 +470,7 @@ Latitude::~Latitude()
 //------------------------------------------------------------------------------
 bool Latitude::Evaluate()
 {
-   //mRealValue = PlanetData::GetPlanetReal(wxT("Latitude"));    
+   //mRealValue = PlanetData::GetPlanetReal("Latitude");    
    mRealValue = PlanetData::GetPlanetReal(LATITUDE);    
    
    if (mRealValue == PlanetData::PLANET_REAL_UNDEFINED)
@@ -506,7 +506,7 @@ GmatBase* Latitude::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// LST(const wxString &name, GmatBase *obj)
+// LST(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -515,14 +515,14 @@ GmatBase* Latitude::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-LST::LST(const wxString &name, GmatBase *obj)
-   : PlanetReal(name, wxT("LST"), obj, wxT("Local Sidereal Time"), wxT("deg"),
+LST::LST(const std::string &name, GmatBase *obj)
+   : PlanetReal(name, "LST", obj, "Local Sidereal Time", "deg",
                 Gmat::SPACECRAFT, GmatParam::ORIGIN)
 {
-   mDepObjectName = wxT("Earth");
-   PlanetData::mCentralBodyName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthFixed"));
+   mDepObjectName = "Earth";
+   PlanetData::mCentralBodyName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthFixed");
    mIsAngleParam = true;
    mCycleType = GmatParam::ZERO_360;
 }
@@ -589,7 +589,7 @@ LST::~LST()
 //------------------------------------------------------------------------------
 bool LST::Evaluate()
 {
-   //mRealValue = PlanetData::GetPlanetReal(wxT("LST"));    
+   //mRealValue = PlanetData::GetPlanetReal("LST");    
    mRealValue = PlanetData::GetPlanetReal(LST_ID);    
    
    if (mRealValue == PlanetData::PLANET_REAL_UNDEFINED)

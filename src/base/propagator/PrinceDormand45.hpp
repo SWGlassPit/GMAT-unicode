@@ -54,7 +54,7 @@ class GMAT_API PrinceDormand45 :
 {
 public:
 //    PrinceDormand45();
-    PrinceDormand45(const wxString &nomme = wxT(""));
+    PrinceDormand45(const std::string &nomme = "");
     virtual ~PrinceDormand45();
 
     PrinceDormand45(const PrinceDormand45&);

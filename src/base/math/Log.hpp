@@ -26,7 +26,7 @@
 class GMAT_API Log : public MathFunction
 {
 public:
-   Log(const wxString &nomme);
+   Log(const std::string &nomme);
    virtual ~Log();
    Log(const Log &copy);
                  

@@ -46,14 +46,14 @@ using namespace GmatMathConstants;
 //---------------------------------
 // static data
 //---------------------------------
-const wxString Keplerian::DATA_DESCRIPTIONS[NUM_DATA] =
+const std::string Keplerian::DATA_DESCRIPTIONS[NUM_DATA] =
 {
-   wxT("Semimajor Axis"),
-   wxT("Eccentricity"),
-   wxT("Inclination"),
-   wxT("RA of Ascending Node"),
-   wxT("Argument of Periapsis"),
-   wxT("True Anomaly")
+   "Semimajor Axis",
+   "Eccentricity",
+   "Inclination",
+   "RA of Ascending Node",
+   "Argument of Periapsis",
+   "True Anomaly"
 };
 
 //---------------------------------
@@ -292,43 +292,43 @@ Integer Keplerian::GetNumData() const
 
 
 //------------------------------------------------------------------------------
-// const wxString* GetDataDescriptions() const
+// const std::string* GetDataDescriptions() const
 //------------------------------------------------------------------------------
-const wxString* Keplerian::GetDataDescriptions() const
+const std::string* Keplerian::GetDataDescriptions() const
 {
    return DATA_DESCRIPTIONS;
 }
 
 
 //------------------------------------------------------------------------------
-// wxString* ToValueStrings()
+// std::string* ToValueStrings()
 //------------------------------------------------------------------------------
-wxString* Keplerian::ToValueStrings()
+std::string* Keplerian::ToValueStrings()
 {
-   wxString ss;
+   std::stringstream ss("");
 
    ss << mSemimajorAxis;
-   stringValues[0] = ss;
+   stringValues[0] = ss.str();
    
-   ss.Clear();
+   ss.str("");
    ss << mEccentricity;
-   stringValues[1] = ss;
+   stringValues[1] = ss.str();
    
-   ss.Clear();
+   ss.str("");
    ss << mInclination;
-   stringValues[2] = ss;
+   stringValues[2] = ss.str();
    
-   ss.Clear();
+   ss.str("");
    ss << mRaOfAscendingNode;
-   stringValues[3] = ss;
+   stringValues[3] = ss.str();
    
-   ss.Clear();
+   ss.str("");
    ss << mArgOfPeriapsis;
-   stringValues[4] = ss;
+   stringValues[4] = ss.str();
    
-   ss.Clear();
+   ss.str("");
    ss << mTrueAnomaly;
-   stringValues[5] = ss;
+   stringValues[5] = ss.str();
 
    return stringValues;
 }
@@ -340,10 +340,10 @@ wxString* Keplerian::ToValueStrings()
 
 //------------------------------------------------------------------------------
 // static Rvector6 KeplerianToCartesian(Real mu, const Rvector6 &state,
-//                                      const wxString &anomalyType = wxT("TA"))
+//                                      const std::string &anomalyType = "TA")
 //------------------------------------------------------------------------------
 Rvector6 Keplerian::KeplerianToCartesian(Real mu, const Rvector6 &state,
-                                         const wxString &anomalyType)
+                                         const std::string &anomalyType)
 {
    Anomaly anomaly;
    anomaly.Set(state[0], state[1], state[5], anomalyType);
@@ -359,7 +359,7 @@ Real Keplerian::CartesianToSMA(Real mu, const Rvector3 &pos,
                                const Rvector3 &vel)
 {
    #if DEBUG_KEPLERIAN_SMA
-   MessageInterface::ShowMessage(wxT("CartesianToSMA() "));
+   MessageInterface::ShowMessage("CartesianToSMA() ");
    #endif
    
    Real rMag = pos.GetMagnitude(); // ||r||
@@ -374,8 +374,8 @@ Real Keplerian::CartesianToSMA(Real mu, const Rvector3 &pos,
    {
      
       throw UtilityException
-         (wxT("Error in conversion from Cartesian to Keplerian state: ")
-          wxT("The state results in an orbit that is nearly parabolic.\n"));
+         ("Error in conversion from Cartesian to Keplerian state: "
+          "The state results in an orbit that is nearly parabolic.\n");
    }
    
    Real sma = -mu/(2*zeta);
@@ -384,13 +384,13 @@ Real Keplerian::CartesianToSMA(Real mu, const Rvector3 &pos,
    if (Abs(sma*(1 - ecc) < .001))
    {
       throw UtilityException
-         (wxT("Error in conversion from Cartesian to Keplerian state: ")
-          wxT("The state results in a singular conic section with radius of periapsis less than 1 m.\n"));
+         ("Error in conversion from Cartesian to Keplerian state: "
+          "The state results in a singular conic section with radius of periapsis less than 1 m.\n");
    }
 
       
    #if DEBUG_KEPLERIAN_SMA
-   MessageInterface::ShowMessage(wxT("returning %f\n"), sma);
+   MessageInterface::ShowMessage("returning %f\n", sma);
    #endif
    
    return sma;
@@ -411,7 +411,7 @@ Rvector3 Keplerian::CartesianToEccVector(Real mu, const Rvector3 &pos,
 
    #ifdef DEBUG_ECC_VEC
    MessageInterface::ShowMessage
-      (wxT("CartesianToEccVector() returning\n   %s\n"), eVec.ToString().c_str());
+      ("CartesianToEccVector() returning\n   %s\n", eVec.ToString().c_str());
    #endif
    
    return eVec;
@@ -426,14 +426,14 @@ Real Keplerian::CartesianToECC(Real mu, const Rvector3 &pos,
                                const Rvector3 &vel)
 {
    #ifdef DEBUG_KEPLERIAN_ECC
-   MessageInterface::ShowMessage(wxT("CartesianToECC() "));
+   MessageInterface::ShowMessage("CartesianToECC() ");
    #endif
    
    Rvector3 eVec = CartesianToEccVector(mu, pos, vel);   
    Real eMag = eVec.GetMagnitude(); // ||e||
    
    #ifdef DEBUG_KEPLERIAN_ECC
-   MessageInterface::ShowMessage(wxT("returning %f\n"), eMag);
+   MessageInterface::ShowMessage("returning %f\n", eMag);
    #endif
    
    return eMag;
@@ -448,7 +448,7 @@ Real Keplerian::CartesianToINC(Real mu, const Rvector3 &pos,
                                const Rvector3 &vel, bool inRadian)
 {
    #if DEBUG_KEPLERIAN_INC
-   MessageInterface::ShowMessage(wxT("CartesianToINC() "));
+   MessageInterface::ShowMessage("CartesianToINC() ");
    #endif
    
    // check if the orbit is near parabolic
@@ -457,8 +457,8 @@ Real Keplerian::CartesianToINC(Real mu, const Rvector3 &pos,
    {
       
       throw UtilityException
-      (wxT("Error in conversion from Cartesian to Keplerian state: ")
-       wxT("The state results in an orbit that is nearly parabolic.\n"));
+      ("Error in conversion from Cartesian to Keplerian state: "
+       "The state results in an orbit that is nearly parabolic.\n");
    }
    
    Rvector3 hVec = Cross(pos, vel);
@@ -469,12 +469,12 @@ Real Keplerian::CartesianToINC(Real mu, const Rvector3 &pos,
    if (inc >= PI - GmatOrbitConstants::KEP_TOL)
    {
       throw UtilityException
-         (wxT("Error in conversion to Keplerian state: ")
-          wxT("GMAT does not currently support orbits with inclination of 180 degrees.\n"));
+         ("Error in conversion to Keplerian state: "
+          "GMAT does not currently support orbits with inclination of 180 degrees.\n");
    } 
    
    #if DEBUG_KEPLERIAN_INC
-   MessageInterface::ShowMessage(wxT("returning %f\n"), inc);
+   MessageInterface::ShowMessage("returning %f\n", inc);
    #endif
       
    if (inRadian)
@@ -503,7 +503,7 @@ Real Keplerian::CartesianToRAAN(Real mu, const Rvector3 &pos,
                                 const Rvector3 &vel, bool inRadian)
 {
    #if DEBUG_KEPLERIAN_RAAN
-   MessageInterface::ShowMessage(wxT("CartesianToRAAN() "));
+   MessageInterface::ShowMessage("CartesianToRAAN() ");
    #endif
    
    Real ecc = CartesianToECC(mu, pos, vel);
@@ -511,8 +511,8 @@ Real Keplerian::CartesianToRAAN(Real mu, const Rvector3 &pos,
    if (inc >= PI - GmatOrbitConstants::KEP_TOL)
    {
       throw UtilityException
-         (wxT("Error in conversion to Keplerian state: ")
-          wxT("GMAT does not currently support orbits with inclination of 180 degrees.\n"));
+         ("Error in conversion to Keplerian state: "
+          "GMAT does not currently support orbits with inclination of 180 degrees.\n");
    } 
    Real raan = 0.0;
    
@@ -552,7 +552,7 @@ Real Keplerian::CartesianToRAAN(Real mu, const Rvector3 &pos,
    }
    
    #if DEBUG_KEPLERIAN_RAAN
-   MessageInterface::ShowMessage(wxT("returning %f\n"), raan);
+   MessageInterface::ShowMessage("returning %f\n", raan);
    #endif
    
    // Convert 2pi to 0
@@ -574,7 +574,7 @@ Real Keplerian::CartesianToAOP(Real mu, const Rvector3 &pos,
                                const Rvector3 &vel, bool inRadian)
 {
    #if DEBUG_KEPLERIAN_AOP
-   MessageInterface::ShowMessage(wxT("CartesianToAOP() "));
+   MessageInterface::ShowMessage("CartesianToAOP() ");
    #endif
    
    Rvector3 eVec = CartesianToEccVector(mu, pos, vel);
@@ -582,8 +582,8 @@ Real Keplerian::CartesianToAOP(Real mu, const Rvector3 &pos,
    if (inc >= PI - GmatOrbitConstants::KEP_TOL)
    {
       throw UtilityException
-         (wxT("Error in conversion to Keplerian state: ")
-          wxT("GMAT does not currently support orbits with inclination of 180 degrees.\n"));
+         ("Error in conversion to Keplerian state: "
+          "GMAT does not currently support orbits with inclination of 180 degrees.\n");
    } 
    Real ecc = eVec.GetMagnitude();
    Real aop = 0.0;
@@ -622,7 +622,7 @@ Real Keplerian::CartesianToAOP(Real mu, const Rvector3 &pos,
    }
    
    #if DEBUG_KEPLERIAN_AOP
-   MessageInterface::ShowMessage(wxT("returning %f\n"), aop);
+   MessageInterface::ShowMessage("returning %f\n", aop);
    #endif
    
    // Convert 2pi to 0
@@ -644,7 +644,7 @@ Real Keplerian::CartesianToTA(Real mu, const Rvector3 &pos,
 {
    #ifdef DEBUG_KEPLERIAN_TA
    MessageInterface::ShowMessage
-      (wxT("CartesianToTA() mu=%f, inRadian=%d\n   pos =%s\n   vel =%s\n"), mu, inRadian,
+      ("CartesianToTA() mu=%f, inRadian=%d\n   pos =%s\n   vel =%s\n", mu, inRadian,
        pos.ToString().c_str(), vel.ToString().c_str());
    #endif
    
@@ -653,8 +653,8 @@ Real Keplerian::CartesianToTA(Real mu, const Rvector3 &pos,
    if (inc >= PI - GmatOrbitConstants::KEP_TOL)
    {
       throw UtilityException
-         (wxT("Error in conversion to Keplerian state: ")
-          wxT("GMAT does not currently support orbits with inclination of 180 degrees.\n"));
+         ("Error in conversion to Keplerian state: "
+          "GMAT does not currently support orbits with inclination of 180 degrees.\n");
    } 
    Real ecc = eVec.GetMagnitude();
    Real rMag = pos.GetMagnitude();
@@ -662,7 +662,7 @@ Real Keplerian::CartesianToTA(Real mu, const Rvector3 &pos,
    
    #if DEBUG_KEPLERIAN_TA > 1
    MessageInterface::ShowMessage
-      (wxT("   eVec=%s,\n   inc=%f, ecc=%f, rMag=%f, ta=%f\n"),
+      ("   eVec=%s,\n   inc=%f, ecc=%f, rMag=%f, ta=%f\n",
        eVec.ToString().c_str(), inc, ecc, rMag, ta);
    #endif
    
@@ -670,15 +670,15 @@ Real Keplerian::CartesianToTA(Real mu, const Rvector3 &pos,
    if ((ecc >= GmatOrbitConstants::KEP_TOL) && (inc >= GmatOrbitConstants::KEP_TOL))
    {      
       #ifdef DEBUG_KEPLERIAN_TA
-      MessageInterface::ShowMessage(wxT("   Case 1:  Non-circular, Inclined Orbit\n"));
+      MessageInterface::ShowMessage("   Case 1:  Non-circular, Inclined Orbit\n");
       #endif
       
       Real temp = (eVec*pos) / (ecc*rMag);
       ta = ACos(temp, GmatOrbitConstants::KEP_TOL);
       
       #if DEBUG_KEPLERIAN_TA > 1
-      MessageInterface::ShowMessage(wxT("   ACos(%+.16f) = %+.16f\n"), temp, ACos(temp, GmatOrbitConstants::KEP_TOL));      
-      MessageInterface::ShowMessage(wxT("   ACos(%+.16f) = %+.16f\n"), temp, ta);
+      MessageInterface::ShowMessage("   ACos(%+.16f) = %+.16f\n", temp, ACos(temp, GmatOrbitConstants::KEP_TOL));      
+      MessageInterface::ShowMessage("   ACos(%+.16f) = %+.16f\n", temp, ta);
       #endif
       
       // Fix quadrant
@@ -686,7 +686,7 @@ Real Keplerian::CartesianToTA(Real mu, const Rvector3 &pos,
       {
          ta = TWO_PI - ta;
          #if DEBUG_KEPLERIAN_TA > 1
-         MessageInterface::ShowMessage(wxT("   after quadrant fix, ta=%f\n"), ta);
+         MessageInterface::ShowMessage("   after quadrant fix, ta=%f\n", ta);
          #endif
       }
    }
@@ -694,7 +694,7 @@ Real Keplerian::CartesianToTA(Real mu, const Rvector3 &pos,
    else if ((ecc >= GmatOrbitConstants::KEP_TOL) && (inc < GmatOrbitConstants::KEP_TOL))
    {
       #ifdef DEBUG_KEPLERIAN_TA
-      MessageInterface::ShowMessage(wxT("   Case 2: Non-circular, Equatorial Orbit\n"));
+      MessageInterface::ShowMessage("   Case 2: Non-circular, Equatorial Orbit\n");
       #endif
       
       //ta = ACos((eVec*pos) / (ecc*rMag));
@@ -708,7 +708,7 @@ Real Keplerian::CartesianToTA(Real mu, const Rvector3 &pos,
    else if ((ecc < GmatOrbitConstants::KEP_TOL) && (inc >= GmatOrbitConstants::KEP_TOL))
    {
       #ifdef DEBUG_KEPLERIAN_TA
-      MessageInterface::ShowMessage(wxT("   Case 3: Circular, Inclined Orbit\n"));
+      MessageInterface::ShowMessage("   Case 3: Circular, Inclined Orbit\n");
       #endif
       
       Rvector3 nVec =  CartesianToDirOfLineOfNode(pos, vel);
@@ -724,7 +724,7 @@ Real Keplerian::CartesianToTA(Real mu, const Rvector3 &pos,
    else if ((ecc < GmatOrbitConstants::KEP_TOL) && (inc < GmatOrbitConstants::KEP_TOL))
    {
       #ifdef DEBUG_KEPLERIAN_TA
-      MessageInterface::ShowMessage(wxT("   Case 4: Circular, Equatorial Orbit\n"));
+      MessageInterface::ShowMessage("   Case 4: Circular, Equatorial Orbit\n");
       #endif
       
       //ta = ACos(pos[0] / rMag);
@@ -739,7 +739,7 @@ Real Keplerian::CartesianToTA(Real mu, const Rvector3 &pos,
    ta = Mod(ta, TWO_PI);
    
    #ifdef DEBUG_KEPLERIAN_TA
-   MessageInterface::ShowMessage(wxT("CartesianToTA() returning %f\n"), ta);
+   MessageInterface::ShowMessage("CartesianToTA() returning %f\n", ta);
    #endif
    
    if (inRadian)
@@ -757,7 +757,7 @@ Real Keplerian::CartesianToEA(Real mu, const Rvector3 &pos,
                               const Rvector3 &vel, bool inRadian)
 {
    #if DEBUG_KEPLERIAN_EA
-   MessageInterface::ShowMessage(wxT("CartesianToEA() "));
+   MessageInterface::ShowMessage("CartesianToEA() ");
    #endif
    
    Real ta = CartesianToTA(mu, pos, vel, true);
@@ -765,7 +765,7 @@ Real Keplerian::CartesianToEA(Real mu, const Rvector3 &pos,
    Real ea = TrueToEccentricAnomaly(ta, ecc);
    
    #if DEBUG_KEPLERIAN_EA
-   MessageInterface::ShowMessage(wxT("returning %f\n"), ea);
+   MessageInterface::ShowMessage("returning %f\n", ea);
    #endif
    
    if (inRadian)
@@ -783,7 +783,7 @@ Real Keplerian::CartesianToHA(Real mu, const Rvector3 &pos,
                               const Rvector3 &vel, bool inRadian)
 {
    #if DEBUG_KEPLERIAN_HA
-   MessageInterface::ShowMessage(wxT("CartesianToHA() "));
+   MessageInterface::ShowMessage("CartesianToHA() ");
    #endif
    
    Real ta = CartesianToTA(mu, pos, vel, true);
@@ -791,7 +791,7 @@ Real Keplerian::CartesianToHA(Real mu, const Rvector3 &pos,
    Real ha = TrueToHyperbolicAnomaly(ta, ecc);
    
    #if DEBUG_KEPLERIAN_HA
-   MessageInterface::ShowMessage(wxT("returning %f\n"), ha);
+   MessageInterface::ShowMessage("returning %f\n", ha);
    #endif
    
    if (inRadian)
@@ -810,7 +810,7 @@ Real Keplerian::CartesianToMA(Real mu, const Rvector3 &pos,
                               const Rvector3 &vel, bool inRadian)
 {
    #ifdef DEBUG_ANOMALY_MA
-   MessageInterface::ShowMessage(wxT("CartesianToMA() "));
+   MessageInterface::ShowMessage("CartesianToMA() ");
    #endif
    
    Real ta = CartesianToTA(mu, pos, vel, true);
@@ -818,7 +818,7 @@ Real Keplerian::CartesianToMA(Real mu, const Rvector3 &pos,
    Real ma = TrueToMeanAnomaly(ta, ecc);
    
    #ifdef DEBUG_ANOMALY_MA
-   MessageInterface::ShowMessage(wxT("returning %f\n"), ma);
+   MessageInterface::ShowMessage("returning %f\n", ma);
    #endif
    
    if (inRadian)
@@ -850,7 +850,7 @@ Rvector6 Keplerian::CartesianToAngularMomentum(Real mu, const Rvector3 &pos,
                                                const Rvector3 &vel)
 {   
    #if DEBUG_KEPLERIAN_AM
-   MessageInterface::ShowMessage(wxT("CartesianToAngularMomentum() "));
+   MessageInterface::ShowMessage("CartesianToAngularMomentum() ");
    #endif
    
    Real vMag = pos.GetMagnitude();
@@ -864,7 +864,7 @@ Rvector6 Keplerian::CartesianToAngularMomentum(Real mu, const Rvector3 &pos,
    Rvector6 h(hVec[0], hVec[1], hVec[2], hMag, vMagSq, orbParam);
    
    #if DEBUG_KEPLERIAN_AM
-   MessageInterface::ShowMessage(wxT("returning %s\n"), h.ToString().c_str());
+   MessageInterface::ShowMessage("returning %s\n", h.ToString().c_str());
    #endif
    
    return h;
@@ -881,8 +881,8 @@ Rvector6 Keplerian::CartesianToKeplerian(Real mu, const Rvector3 &pos,
                                          Anomaly::AnomalyType anomalyType)
 {
    #if DEBUG_KEPLERIAN
-   MessageInterface::ShowMessage(wxT("CartesianToKeplerian() "));
-   MessageInterface::ShowMessage(wxT("                   pos = %s and  vel = %s\n"), pos.ToString().c_str(), vel.ToString().c_str());
+   MessageInterface::ShowMessage("CartesianToKeplerian() ");
+   MessageInterface::ShowMessage("                   pos = %s and  vel = %s\n", pos.ToString().c_str(), vel.ToString().c_str());
    #endif
    
 //   Real sma = CartesianToSMA(mu, pos, vel);
@@ -931,7 +931,7 @@ Rvector6 Keplerian::CartesianToKeplerian(Real mu, const Rvector3 &pos,
    Rvector6 kep(sma, ecc, kepOut[2], kepOut[3], kepOut[4], anomaly);
 
    #if DEBUG_KEPLERIAN
-   MessageInterface::ShowMessage(wxT("returning %s\n"), kep.ToString().c_str());
+   MessageInterface::ShowMessage("returning %s\n", kep.ToString().c_str());
    #endif
    
    return kep;
@@ -941,11 +941,11 @@ Rvector6 Keplerian::CartesianToKeplerian(Real mu, const Rvector3 &pos,
 //------------------------------------------------------------------------------
 // static Rvector6 CartesianToKeplerian(Real mu, const Rvector3 &pos,
 //                                      const Rvector3 &vel,
-//                                      const wxString &anomalyType = wxT("TA"))
+//                                      const std::string &anomalyType = "TA")
 //------------------------------------------------------------------------------
 Rvector6 Keplerian::CartesianToKeplerian(Real mu, const Rvector3 &pos,
                                          const Rvector3 &vel,
-                                         const wxString &anomalyType)
+                                         const std::string &anomalyType)
 {
    Anomaly::AnomalyType type = Anomaly::GetAnomalyType(anomalyType);
    return CartesianToKeplerian(mu, pos, vel, type);
@@ -967,10 +967,10 @@ Rvector6 Keplerian::CartesianToKeplerian(Real mu, const Rvector6 &state,
 
 //------------------------------------------------------------------------------
 // static Rvector6 CartesianToKeplerian(Real mu, const Rvector6 &state
-//                                      const wxString &anomalyType = wxT("TA"))
+//                                      const std::string &anomalyType = "TA")
 //------------------------------------------------------------------------------
 Rvector6 Keplerian::CartesianToKeplerian(Real mu, const Rvector6 &state,
-                                         const wxString &anomalyType)
+                                         const std::string &anomalyType)
 {
    Rvector3 pos(state[0], state[1], state[2]);
    Rvector3 vel(state[3], state[4], state[5]);
@@ -989,7 +989,7 @@ Radians Keplerian::TrueToMeanAnomaly(Radians ta, Real ecc, bool modBy2Pi)
 {
    #ifdef DEBUG_ANOMALY
    MessageInterface::ShowMessage
-      (wxT("TrueToMeanAnomaly() ta=%f, ecc=%f\n"), ta, ecc);
+      ("TrueToMeanAnomaly() ta=%f, ecc=%f\n", ta, ecc);
    #endif
    
    Real ma = 0.0;
@@ -1006,15 +1006,15 @@ Radians Keplerian::TrueToMeanAnomaly(Radians ta, Real ecc, bool modBy2Pi)
    }
    else
    {
-      wxString warn = 
-         wxT("Warning: Orbit is near parabolic in mean anomaly calculation.  ");
-      warn += wxT("Setting MA = 0\n");
+      std::string warn = 
+         "Warning: Orbit is near parabolic in mean anomaly calculation.  ";
+      warn += "Setting MA = 0\n";
       MessageInterface::PopupMessage(Gmat::WARNING_, warn);
       ma = 0.0;
    }
    
    #ifdef DEBUG_ANOMALY
-   MessageInterface::ShowMessage(wxT("TrueToMeanAnomaly() returning %f\n"), ma);
+   MessageInterface::ShowMessage("TrueToMeanAnomaly() returning %f\n", ma);
    #endif
    
    if (ma < 0.0)
@@ -1036,7 +1036,7 @@ Radians Keplerian::TrueToEccentricAnomaly(Radians ta, Real ecc, bool modBy2Pi)
 {
    #if DEBUG_ANOMALY
    MessageInterface::ShowMessage
-      (wxT("TrueToEccentricAnomaly() ta=%f, ecc=%f\n"), ta, ecc);
+      ("TrueToEccentricAnomaly() ta=%f, ecc=%f\n", ta, ecc);
    #endif
    
    Real ea = 0.0;
@@ -1059,7 +1059,7 @@ Radians Keplerian::TrueToEccentricAnomaly(Radians ta, Real ecc, bool modBy2Pi)
    }
    
    #if DEBUG_ANOMALY
-   MessageInterface::ShowMessage(wxT("TrueToEccentricAnomaly() returning %f\n"), ea);
+   MessageInterface::ShowMessage("TrueToEccentricAnomaly() returning %f\n", ea);
    #endif
    
    return ea;
@@ -1073,7 +1073,7 @@ Radians Keplerian::TrueToHyperbolicAnomaly(Radians ta, Real ecc, bool modBy2Pi)
 {
    #if DEBUG_ANOMALY
    MessageInterface::ShowMessage
-      (wxT("TrueToHyperbolicAnomaly() ta=%f, ecc=%f\n"), ta, ecc);
+      ("TrueToHyperbolicAnomaly() ta=%f, ecc=%f\n", ta, ecc);
    #endif
    
    Real ha = 0.0;
@@ -1093,7 +1093,7 @@ Radians Keplerian::TrueToHyperbolicAnomaly(Radians ta, Real ecc, bool modBy2Pi)
    //      ha = ha + TWO_PI;
    
    #if DEBUG_ANOMALY
-   MessageInterface::ShowMessage(wxT("TrueToHyperbolicAnomaly() returning %f\n"), ha);
+   MessageInterface::ShowMessage("TrueToHyperbolicAnomaly() returning %f\n", ha);
    #endif
    if (modBy2Pi)
    {
@@ -1112,7 +1112,7 @@ Real Keplerian::MeanToTrueAnomaly(Real maInDeg, Real ecc, Real tol)
 {
    #if DEBUG_ANOMALY
    MessageInterface::ShowMessage
-      (wxT("MeanToTrueAnomaly() maInDeg=%f, ecc=%f\n"), maInDeg, ecc);
+      ("MeanToTrueAnomaly() maInDeg=%f, ecc=%f\n", maInDeg, ecc);
    #endif
    
    Real ta;
@@ -1124,14 +1124,14 @@ Real Keplerian::MeanToTrueAnomaly(Real maInDeg, Real ecc, Real tol)
    if (ret == 0)
    {
       #if DEBUG_ANOMALY
-      MessageInterface::ShowMessage(wxT("MeanToTrueAnomaly() returning %f\n"), ta);
+      MessageInterface::ShowMessage("MeanToTrueAnomaly() returning %f\n", ta);
       #endif
       
       return ta;
    }
    
-   throw UtilityException(wxT("MeanToTrueAnomaly() Error converting ")
-                          wxT(" Mean Anomaly to True Anomaly\n"));
+   throw UtilityException("MeanToTrueAnomaly() Error converting "
+                          " Mean Anomaly to True Anomaly\n");
 }
 
 
@@ -1276,9 +1276,9 @@ Integer Keplerian::ComputeMeanToTrueAnomaly(Real maInDeg, Real ecc, Real tol,
          if (*iter > 1000)
          {
             throw UtilityException
-               (wxT("ComputeMeanToTrueAnomaly() ")
-                wxT("Caught in infinite loop numerical argument ")
-                wxT("out of domain for sinh() and cosh()\n"));
+               ("ComputeMeanToTrueAnomaly() "
+                "Caught in infinite loop numerical argument "
+                "out of domain for sinh() and cosh()\n");
          }
       }
       

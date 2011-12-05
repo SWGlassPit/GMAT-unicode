@@ -46,10 +46,10 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 Create::PARAMETER_TEXT[CreateParamCount - ManageObjectParamCount] =
 {
-      wxT("ObjectType"),
+      "ObjectType",
 };
 
 const Gmat::ParameterType
@@ -66,7 +66,7 @@ Create::PARAMETER_TYPE[CreateParamCount - ManageObjectParamCount] =
  */
 //------------------------------------------------------------------------------
 Create::Create() :
-   ManageObject(wxT("Create")),
+   ManageObject("Create"),
    refObj       (NULL)
 {
 }
@@ -87,7 +87,7 @@ Create::~Create()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (refObj, refObj->GetName(), wxT("Create::~Create()"), wxT(" deleting refObj"));
+         (refObj, refObj->GetName(), "Create::~Create()", " deleting refObj");
       #endif
       delete refObj;
    }
@@ -143,9 +143,9 @@ Create& Create::operator=(const Create &cr)
 
 // Parameter access methods - overridden from GmatBase
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
-wxString Create::GetParameterText(const Integer id) const
+std::string Create::GetParameterText(const Integer id) const
 {
    if (id >= ManageObjectParamCount && id < CreateParamCount)
       return PARAMETER_TEXT[id - ManageObjectParamCount];
@@ -153,9 +153,9 @@ wxString Create::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer Create::GetParameterID(const wxString &str) const
+Integer Create::GetParameterID(const std::string &str) const
 {
    for (Integer i = ManageObjectParamCount; i < CreateParamCount; i++)
    {
@@ -178,18 +178,18 @@ Gmat::ParameterType Create::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
-wxString Create::GetParameterTypeString(const Integer id) const
+std::string Create::GetParameterTypeString(const Integer id) const
 {
    return ManageObject::PARAM_TYPE_STRING[GetParameterType(id)];
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
-wxString Create::GetStringParameter(const Integer id) const
+std::string Create::GetStringParameter(const Integer id) const
 {
    if (id == OBJECT_TYPE)
    {
@@ -199,24 +199,24 @@ wxString Create::GetStringParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString Create::GetStringParameter(const wxString &label) const
+std::string Create::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 bool Create::SetStringParameter(const Integer id, 
-                                const wxString &value)
+                                const std::string &value)
 {
    if (id == OBJECT_TYPE)
    {
       #ifdef DEBUG_CREATE
          MessageInterface::ShowMessage(
-               wxT("Create::SetStringParameter() setting object type to:  %s\n"),
+               "Create::SetStringParameter() setting object type to:  %s\n",
                value.c_str());
       #endif
       objType = value;
@@ -226,20 +226,20 @@ bool Create::SetStringParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
-bool Create::SetStringParameter(const wxString &label, 
-                                const wxString &value)
+bool Create::SetStringParameter(const std::string &label, 
+                                const std::string &value)
 {
    return SetStringParameter(GetParameterID(label),value);
 }
 
 
 //------------------------------------------------------------------------------
-// GmatBase* GetRefObject(const Gmat::ObjectType type, const wxString &name)
+// GmatBase* GetRefObject(const Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 GmatBase* Create::GetRefObject(const Gmat::ObjectType type,
-                               const wxString &name)
+                               const std::string &name)
 {
    if ((refObj->GetType() == type) &&
        (refObj->GetName() == name))
@@ -249,29 +249,29 @@ GmatBase* Create::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                   const wxString &name)
+//                   const std::string &name)
 //------------------------------------------------------------------------------
 bool Create::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                          const wxString &name)
+                          const std::string &name)
 {
    #ifdef DEBUG_CREATE
-      MessageInterface::ShowMessage(wxT("Create::SetRefObject() entered, and expecting an object of  ")
-            wxT("type: '%s'\n"), obj->GetTypeName().c_str());
-      MessageInterface::ShowMessage(wxT("Create::SetRefObject() entered, with object ")
-            wxT("type: '%s', name: '%s'\n"), obj->GetTypeName().c_str(), name.c_str());
+      MessageInterface::ShowMessage("Create::SetRefObject() entered, and expecting an object of  "
+            "type: '%s'\n", obj->GetTypeName().c_str());
+      MessageInterface::ShowMessage("Create::SetRefObject() entered, with object "
+            "type: '%s', name: '%s'\n", obj->GetTypeName().c_str(), name.c_str());
    #endif
    if ((!GmatStringUtil::IsBlank(objType)) &&
        !(obj->IsOfType(objType)))
       throw CommandException(
-            wxT("Reference object for Create command is not of expected type of \"") +
-            objType + wxT("\""));
+            "Reference object for Create command is not of expected type of \"" +
+            objType + "\"");
    if (refObj)
    {
       throw CommandException(
-            wxT("Reference object for Create command already set.\n")); 
+            "Reference object for Create command already set.\n"); 
    }
    refObj = obj;
-   refObj->TakeAction(wxT("WasMcsCreated"));
+   refObj->TakeAction("WasMcsCreated");
    return true;
 }
 
@@ -307,37 +307,37 @@ bool Create::Initialize()
    callCount++;      
    clock_t t1 = clock();
    MessageInterface::ShowMessage
-      (wxT("=== Create::Initialize() entered, '%s' Count = %d\n"),
+      ("=== Create::Initialize() entered, '%s' Count = %d\n",
        GetGeneratingString(Gmat::NO_COMMENTS).c_str(), callCount);
    #endif
    
    #ifdef DEBUG_CREATE_INIT
-      MessageInterface::ShowMessage(wxT("Create::Initialize() entered, for object type %s\n"),
+      MessageInterface::ShowMessage("Create::Initialize() entered, for object type %s\n",
             objType.c_str());
-      ShowObjectMaps(wxT("object maps at the start"));
-      MessageInterface::ShowMessage(wxT("   Create command has %d objectName(s):\n"), objectNames.size());
+      ShowObjectMaps("object maps at the start");
+      MessageInterface::ShowMessage("   Create command has %d objectName(s):\n", objectNames.size());
       for (unsigned int ii = 0; ii < objectNames.size(); ii++)
-         MessageInterface::ShowMessage(wxT("   ........ %s\n"), (objectNames.at(ii)).c_str());
-      MessageInterface::ShowMessage(wxT("   Create command has %d arrayName(s):\n"), arrayNames.size());
+         MessageInterface::ShowMessage("   ........ %s\n", (objectNames.at(ii)).c_str());
+      MessageInterface::ShowMessage("   Create command has %d arrayName(s):\n", arrayNames.size());
       for (unsigned int ii = 0; ii < arrayNames.size(); ii++)
-         MessageInterface::ShowMessage(wxT("   ........ %s\n"), (arrayNames.at(ii)).c_str());
+         MessageInterface::ShowMessage("   ........ %s\n", (arrayNames.at(ii)).c_str());
    #endif
       
    ManageObject::Initialize();
    
    // throw an exception if the object type or reference object has not been set
    if (GmatStringUtil::IsBlank(objType))
-      throw CommandException(wxT("Object type not set for Create command.\n"));
+      throw CommandException("Object type not set for Create command.\n");
    if (!refObj) 
    {
-      wxString ex = wxT("No reference object of type """) + objType;
-      ex += wxT(""" set for Create command.\n");
+      std::string ex = "No reference object of type """ + objType;
+      ex += """ set for Create command.\n";
       throw CommandException(ex);
    }
    
    //---------------------------------- debug
    #ifdef DEBUG_CREATE_INIT
-   MessageInterface::ShowMessage(wxT("   Create command has a reference object of type %s \n"), 
+   MessageInterface::ShowMessage("   Create command has a reference object of type %s \n", 
          (refObj->GetTypeName()).c_str());
    #endif
    //---------------------------------- debug
@@ -345,7 +345,7 @@ bool Create::Initialize()
    // Clone the reference object to create as many of the requested type of 
    // object as needed (reuse the array names if it is an Array)
    StringArray useNames = objectNames;
-   if (objType == wxT("Array"))
+   if (objType == "Array")
    {
       SetArrayInfo();
       useNames = arrayNames;
@@ -360,33 +360,33 @@ bool Create::Initialize()
       GmatBase *newObj = refObj->Clone();
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (newObj, useNames.at(jj), wxT("Create::Initialize()"), wxT("newObj = refObj->Clone()"));
+         (newObj, useNames.at(jj), "Create::Initialize()", "newObj = refObj->Clone()");
       #endif
       
       newObj->SetName(useNames.at(jj));
-      newObj->TakeAction(wxT("WasMcsCreated"));
+      newObj->TakeAction("WasMcsCreated");
       if (refObj->GetType() == Gmat::COORDINATE_SYSTEM)
          newObj->SetSolarSystem(((CoordinateBase*)refObj)->GetSolarSystem());
       #ifdef DEBUG_CREATE_INIT
-      MessageInterface::ShowMessage(wxT("   Creating object of type %s with name '%s' \n"), 
+      MessageInterface::ShowMessage("   Creating object of type %s with name '%s' \n", 
             (newObj->GetTypeName()).c_str(), (useNames.at(jj)).c_str());
       #endif
-      if (objType == wxT("Array")) 
+      if (objType == "Array") 
          ((Array*) (newObj))->SetSize(rows.at(jj), columns.at(jj));
       InsertIntoObjectStore(newObj, useNames.at(jj));
    }
    
    #ifdef DEBUG_CREATE_INIT
-      MessageInterface::ShowMessage(wxT("Exiting Create::Initialize()\n"));
+      MessageInterface::ShowMessage("Exiting Create::Initialize()\n");
       #ifdef DEBUG_OBJECT_MAP
-      ShowObjectMaps(wxT("object maps at the end"));
+      ShowObjectMaps("object maps at the end");
       #endif
    #endif
    
    #ifdef DEBUG_PERFORMANCE
    clock_t t2 = clock();
    MessageInterface::ShowMessage
-      (wxT("=== Create::Initialize() exiting, '%s' Count = %d, Run Time: %f seconds\n"),
+      ("=== Create::Initialize() exiting, '%s' Count = %d, Run Time: %f seconds\n",
        GetGeneratingString(Gmat::NO_COMMENTS).c_str(), callCount, (Real)(t2-t1)/CLOCKS_PER_SEC);
    #endif
    
@@ -430,16 +430,16 @@ void Create::SetArrayInfo()
    arrayNames.clear();
    rows.clear();
    columns.clear();
-   wxString itsName;
+   std::string itsName;
    Integer r = -99;
    Integer c = -99;
    unsigned int sz = objectNames.size();
    for (unsigned int ii = 0; ii < sz; ii++)
    {
-      GmatStringUtil::GetArrayIndex(objectNames.at(ii), r, c, itsName, wxT("[]"));
+      GmatStringUtil::GetArrayIndex(objectNames.at(ii), r, c, itsName, "[]");
       #ifdef DEBUG_CREATE
          MessageInterface::ShowMessage(
-               wxT("Create::SetArrayInfo() setting array name, row, column to:  %s  %d  %d\n"),
+               "Create::SetArrayInfo() setting array name, row, column to:  %s  %d  %d\n",
                itsName.c_str(), r, c);
       #endif
       arrayNames.push_back(itsName);
@@ -449,16 +449,16 @@ void Create::SetArrayInfo()
 }
 
 //------------------------------------------------------------------------------
-// bool InsertIntoLOS(GmatBase *obj, const wxString &withName)
+// bool InsertIntoLOS(GmatBase *obj, const std::string &withName)
 //------------------------------------------------------------------------------
-bool Create::InsertIntoLOS(GmatBase *obj, const wxString &withName)
+bool Create::InsertIntoLOS(GmatBase *obj, const std::string &withName)
 {
    #ifdef DEBUG_CREATE_INIT
-      MessageInterface::ShowMessage(wxT("   InsertIntoLOS: entered with obj = <%p> ")
-         wxT("and name = %s\n"), obj, withName.c_str());
+      MessageInterface::ShowMessage("   InsertIntoLOS: entered with obj = <%p> "
+         "and name = %s\n", obj, withName.c_str());
    #endif
    GmatBase *mapObj;
-   wxString ex;
+   std::string ex;
    // if it is already in the LOS, make sure the types match
    if (objectMap->find(withName) != objectMap->end())
    {
@@ -467,36 +467,36 @@ bool Create::InsertIntoLOS(GmatBase *obj, const wxString &withName)
       // if mapObj is NULL, throw exception (loj: 2008.09.23)
       if (mapObj == NULL)
       {
-         ex = wxT("Create::InsertIntoLOS() '") + withName +
-            wxT("' has NULL pointer in Local Object Store");
+         ex = "Create::InsertIntoLOS() '" + withName +
+            "' has NULL pointer in Local Object Store";
          throw CommandException(ex);
       }
       else
       {
          if (!mapObj->IsOfType(objType))
          {
-            ex = wxT("Object of name ") + withName;
-            ex += wxT(", but of a different type, already exists in Local Object Store\n");
+            ex = "Object of name """ + withName;
+            ex += """, but of a different type, already exists in Local Object Store\n";
             throw CommandException(ex);
          }
-         if (objType == wxT("Array"))
+         if (objType == "Array")
          {
             Integer r1, r2, c1, c2;
             ((Array*) mapObj)->GetSize(r1, c1);
             ((Array*) obj)->GetSize(r2, c2);
             if ((r1 != r2) || (c1 != c2))
             {
-               ex = wxT("Array of name ") + withName;
-               ex += wxT(", but with different dimensions already exists in Local Object Store\n");
+               ex = "Array of name """ + withName;
+               ex += """, but with different dimensions already exists in Local Object Store\n";
                throw CommandException(ex);
             }
          }
       }
       #ifdef DEBUG_CREATE_INIT
-         MessageInterface::ShowMessage(wxT("   InsertIntoLOS: object '%s' was already ")
-             wxT("in object store ...\n"), withName.c_str());
-         MessageInterface::ShowMessage(wxT("   InsertIntoLOS: pointer for obj = <%p> ")
-             wxT("and pointer for mapObj = <%p>\n"), obj, mapObj);
+         MessageInterface::ShowMessage("   InsertIntoLOS: object '%s' was already "
+             "in object store ...\n", withName.c_str());
+         MessageInterface::ShowMessage("   InsertIntoLOS: pointer for obj = <%p> "
+             "and pointer for mapObj = <%p>\n", obj, mapObj);
       #endif
       // it is already in there, so we do not need to put this one in; clean it up
       if (mapObj != obj)  
@@ -512,8 +512,8 @@ bool Create::InsertIntoLOS(GmatBase *obj, const wxString &withName)
          {
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Remove
-            (mapObj, mapObj->GetName(), wxT("Create::InsertIntoLOS()"),
-             GetGeneratingString(Gmat::NO_COMMENTS) + wxT(" deleting old mapObj"));
+            (mapObj, mapObj->GetName(), "Create::InsertIntoLOS()",
+             GetGeneratingString(Gmat::NO_COMMENTS) + " deleting old mapObj");
             #endif
             delete mapObj;
             (*objectMap)[withName] = obj;
@@ -522,8 +522,8 @@ bool Create::InsertIntoLOS(GmatBase *obj, const wxString &withName)
          else
          {
             #ifdef DEBUG_CREATE_INIT
-            MessageInterface::ShowMessage(wxT("   InsertIntoLOS: returning false, ")
-               wxT("object '%s' is not the same\n"), withName.c_str());
+            MessageInterface::ShowMessage("   InsertIntoLOS: returning false, "
+               "object '%s' is not the same\n", withName.c_str());
             #endif
             return false;
          }
@@ -533,22 +533,22 @@ bool Create::InsertIntoLOS(GmatBase *obj, const wxString &withName)
    {
       #ifdef DEBUG_CREATE_INIT
       MessageInterface::ShowMessage
-         (wxT("   InsertIntoLOS: inserting '%s' into objectMap\n"), withName.c_str());
+         ("   InsertIntoLOS: inserting '%s' into objectMap\n", withName.c_str());
       #endif
       // put it into the LOS
       obj->SetIsLocal(true);
       objectMap->insert(std::make_pair(withName, obj));
    }
    #ifdef DEBUG_CREATE_INIT
-   MessageInterface::ShowMessage(wxT("   InsertIntoLOS: returning true\n"));
+   MessageInterface::ShowMessage("   InsertIntoLOS: returning true\n");
    #endif
    return true;
 }
 
 //------------------------------------------------------------------------------
-// bool InsertIntoObjectStore(GmatBase *obj, const wxString &withName)
+// bool InsertIntoObjectStore(GmatBase *obj, const std::string &withName)
 //------------------------------------------------------------------------------
-bool Create::InsertIntoObjectStore(GmatBase *obj, const wxString &withName)
+bool Create::InsertIntoObjectStore(GmatBase *obj, const std::string &withName)
 {
    // if object is a type of CeletialBody, it goes into SolarSyatem, so
    // ignore here
@@ -560,8 +560,8 @@ bool Create::InsertIntoObjectStore(GmatBase *obj, const wxString &withName)
    if (!isGlobalObj)
    {
       #ifdef DEBUG_CREATE_INIT
-         MessageInterface::ShowMessage(wxT("   InsertIntoObjectStore: object ")
-            wxT("'%s' is NOT global\n"), withName.c_str());
+         MessageInterface::ShowMessage("   InsertIntoObjectStore: object "
+            "'%s' is NOT global\n", withName.c_str());
       #endif
       // insert the object into the LOS; if not successful, delete this object
       // to avoid a memory leak
@@ -569,20 +569,20 @@ bool Create::InsertIntoObjectStore(GmatBase *obj, const wxString &withName)
       {
          #ifdef DEBUG_CREATE_INIT
          MessageInterface::ShowMessage
-            (wxT("   InsertIntoObjectStore: '%s' was not successfully inserted to LOS, so deleting...\n"),
+            ("   InsertIntoObjectStore: '%s' was not successfully inserted to LOS, so deleting...\n",
              withName.c_str());
          #endif
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (obj, obj->GetName(), wxT("Create::InsertIntoObjectStore()"),
-             GetGeneratingString(Gmat::NO_COMMENTS) + wxT(", failed to add to LOS so deleting obj"));
+            (obj, obj->GetName(), "Create::InsertIntoObjectStore()",
+             GetGeneratingString(Gmat::NO_COMMENTS) + ", failed to add to LOS so deleting obj");
          #endif
          delete obj;
       }
       else
       {
          #ifdef DEBUG_CREATE_INIT
-         MessageInterface::ShowMessage(wxT("   InsertIntoObjectStore: '%s' was put into the LOS\n"), 
+         MessageInterface::ShowMessage("   InsertIntoObjectStore: '%s' was put into the LOS\n", 
                (withName).c_str());
          #endif
       }
@@ -590,8 +590,8 @@ bool Create::InsertIntoObjectStore(GmatBase *obj, const wxString &withName)
    else
    {
       #ifdef DEBUG_CREATE_INIT
-         MessageInterface::ShowMessage(wxT("   InsertIntoObjectStore, object ")
-            wxT("'%s' IS global\n"), withName.c_str());
+         MessageInterface::ShowMessage("   InsertIntoObjectStore, object "
+            "'%s' IS global\n", withName.c_str());
       #endif
       // insert the object into the GOS; if not successful, delete this object
       // to avoid a memory leak
@@ -599,27 +599,27 @@ bool Create::InsertIntoObjectStore(GmatBase *obj, const wxString &withName)
       {
          #ifdef DEBUG_CREATE_INIT
          MessageInterface::ShowMessage
-            (wxT("   InsertIntoObjectStore: '%s' was not successfully inserted to GOS, so deleting...\n"),
+            ("   InsertIntoObjectStore: '%s' was not successfully inserted to GOS, so deleting...\n",
              withName.c_str());
          #endif
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (obj, obj->GetName(), wxT("Create::InsertIntoObjectStore()"),
-             GetGeneratingString(Gmat::NO_COMMENTS) + wxT(" deleting obj"));
+            (obj, obj->GetName(), "Create::InsertIntoObjectStore()",
+             GetGeneratingString(Gmat::NO_COMMENTS) + " deleting obj");
          #endif
          delete obj;
       }
       else
       {
          #ifdef DEBUG_CREATE_INIT
-         MessageInterface::ShowMessage(wxT("   InsertIntoObjectStore: '%s' was put into the GOS\n"), 
+         MessageInterface::ShowMessage("   InsertIntoObjectStore: '%s' was put into the GOS\n", 
                (withName).c_str());
          #endif
       }
    }
    
    #ifdef DEBUG_CREATE_INIT
-   MessageInterface::ShowMessage(wxT("   InsertIntoObjectStore: returning true\n"));
+   MessageInterface::ShowMessage("   InsertIntoObjectStore: returning true\n");
    #endif
    return true;
 }

@@ -40,7 +40,7 @@ class GMAT_API Star : public CelestialBody
 {
 public:
    // default constructor, with optional name
-   Star(wxString name = SolarSystem::SUN_NAME);
+   Star(std::string name = SolarSystem::SUN_NAME);
    // copy constructor
    Star(const Star &st);
    // operator=
@@ -55,11 +55,11 @@ public:
    bool SetPhotosphereRadius(Real rad);
 
    // overridden access methods from CelestialBody
-   virtual wxString    GetParameterText(const Integer id) const;
-   virtual Integer        GetParameterID(const wxString &str) const;
+   virtual std::string    GetParameterText(const Integer id) const;
+   virtual Integer        GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
       GetParameterType(const Integer id) const;
-   virtual wxString    GetParameterTypeString(const Integer id) const;
+   virtual std::string    GetParameterTypeString(const Integer id) const;
 
    virtual Real           GetRealParameter(const Integer id) const;
    virtual Real           SetRealParameter(const Integer id,
@@ -91,7 +91,7 @@ protected:
    };
 
 
-   static const wxString PARAMETER_TEXT[
+   static const std::string PARAMETER_TEXT[
       StarParamCount - CelestialBodyParamCount];
 
    static const Gmat::ParameterType PARAMETER_TYPE[

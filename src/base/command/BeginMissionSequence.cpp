@@ -31,9 +31,9 @@
  */
 //------------------------------------------------------------------------------
 BeginMissionSequence::BeginMissionSequence() :
-    GmatCommand(wxT("BeginMissionSequence"))
+    GmatCommand("BeginMissionSequence")
 {
-   objectTypeNames.push_back(wxT("BeginMissionSequence"));
+   objectTypeNames.push_back("BeginMissionSequence");
    includeInSummary = false;
 }
 
@@ -123,27 +123,27 @@ GmatBase* BeginMissionSequence::Clone() const
 
 //------------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //------------------------------------------------------------------------------
 bool BeginMissionSequence::RenameRefObject(const Gmat::ObjectType type,
-                                           const wxString &oldName,
-                                           const wxString &newName)
+                                           const std::string &oldName,
+                                           const std::string &newName)
 {
    return true;
 }
 
 
 //------------------------------------------------------------------------------
-// const wxString& GetGeneratingString(Gmat::WriteMode mode,
-//                                        const wxString &prefix,
-//                                        const wxString &useName)
+// const std::string& GetGeneratingString(Gmat::WriteMode mode,
+//                                        const std::string &prefix,
+//                                        const std::string &useName)
 //------------------------------------------------------------------------------
-const wxString& BeginMissionSequence::GetGeneratingString(
+const std::string& BeginMissionSequence::GetGeneratingString(
                                              Gmat::WriteMode mode,
-                                             const wxString &prefix,
-                                             const wxString &useName)
+                                             const std::string &prefix,
+                                             const std::string &useName)
 {
-   generatingString = prefix + wxT("BeginMissionSequence;");
+   generatingString = prefix + "BeginMissionSequence;";
    return GmatCommand::GetGeneratingString(mode, prefix, useName);
 }
 

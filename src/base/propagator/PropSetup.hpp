@@ -71,7 +71,7 @@ class GMAT_API PropSetup : public GmatBase
 {
 public:
 
-   PropSetup(const wxString &name);
+   PropSetup(const std::string &name);
    PropSetup(const PropSetup &ps);
    PropSetup& operator= (const PropSetup &ps); 
    virtual ~PropSetup();
@@ -92,10 +92,10 @@ public:
    
    // inherited from GmatBase
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    
    virtual GmatBase*    Clone(void) const;
    virtual void         Copy(const GmatBase* orig);
@@ -107,30 +107,30 @@ public:
    virtual GmatBase*    GetOwnedObject(Integer whichOne);
    virtual bool         IsOwnedObject(Integer id) const;
    
-   virtual const wxString*
+   virtual const std::string*
                         GetParameterList() const;   
    virtual Integer      GetParameterCount() const;
    
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual bool         IsParameterReadOnly(const Integer id) const;
-   virtual bool         IsParameterReadOnly(const wxString &label) const;
+   virtual bool         IsParameterReadOnly(const std::string &label) const;
    
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const wxString &label) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const std::string &label) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
    
    virtual Real         GetRealParameter(const Integer id) const;
-   virtual Real         GetRealParameter(const wxString &label) const;
+   virtual Real         GetRealParameter(const std::string &label) const;
    virtual Real         SetRealParameter(const Integer id,
                                          const Real value);
-   virtual Real         SetRealParameter(const wxString &label,
+   virtual Real         SetRealParameter(const std::string &label,
                                          const Real value);
 
    virtual bool         GetBooleanParameter(const Integer id) const;
@@ -141,49 +141,49 @@ public:
    virtual bool         SetBooleanParameter(const Integer id,
                                             const bool value,
                                             const Integer index);
-   virtual bool         GetBooleanParameter(const wxString &label) const;
-   virtual bool         SetBooleanParameter(const wxString &label,
+   virtual bool         GetBooleanParameter(const std::string &label) const;
+   virtual bool         SetBooleanParameter(const std::string &label,
                                             const bool value);
-   virtual bool         GetBooleanParameter(const wxString &label,
+   virtual bool         GetBooleanParameter(const std::string &label,
                                             const Integer index) const;
-   virtual bool         SetBooleanParameter(const wxString &label,
+   virtual bool         SetBooleanParameter(const std::string &label,
                                             const bool value,
                                             const Integer index);
 
-//   virtual wxString  GetStringParameter(const Integer id,
+//   virtual std::string  GetStringParameter(const Integer id,
 //                                           const Integer index) const;
 //   virtual bool         SetStringParameter(const Integer id,
-//                                           const wxString &value,
+//                                           const std::string &value,
 //                                           const Integer index);
-//   virtual wxString  GetStringParameter(const wxString &label,
+//   virtual std::string  GetStringParameter(const std::string &label,
 //                                           const Integer index) const;
-//   virtual bool         SetStringParameter(const wxString &label,
-//                                           const wxString &value,
+//   virtual bool         SetStringParameter(const std::string &label,
+//                                           const std::string &value,
 //                                           const Integer index);
 
    virtual Integer      GetIntegerParameter(const Integer id) const;
-   virtual Integer      GetIntegerParameter(const wxString &label) const;
+   virtual Integer      GetIntegerParameter(const std::string &label) const;
    virtual Integer      SetIntegerParameter(const Integer id,
                                             const Integer value);
-   virtual Integer      SetIntegerParameter(const wxString &label,
+   virtual Integer      SetIntegerParameter(const std::string &label,
                                             const Integer value);
    
    virtual bool         Initialize();
-   virtual bool         TakeAction(const wxString &action,
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,
+                                   const std::string &actionData = "");
    
-   virtual const wxString&
+   virtual const std::string&
                         GetGeneratingString(Gmat::WriteMode mode = Gmat::SCRIPTING,
-                                            const wxString &prefix = wxT(""),
-                                            const wxString &useName = wxT(""));
+                                            const std::string &prefix = "",
+                                            const std::string &useName = "");
    
 private:
    
    bool mInitialized;
    bool mMcsCreated;
    bool includeODEModelInGenString;
-   wxString mPropagatorName;
-   wxString mODEModelName;
+   std::string mPropagatorName;
+   std::string mODEModelName;
    Propagator *mPropagator;
    ODEModel *mODEModel;
    PropagationStateManager psm;
@@ -220,7 +220,7 @@ private:
       PropSetupParamCount
    };
    
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[PropSetupParamCount - GmatBaseParamCount];
    static const Gmat::ParameterType
       PARAMETER_TYPE[PropSetupParamCount - GmatBaseParamCount];

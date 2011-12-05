@@ -32,7 +32,7 @@ class GMAT_API InterfaceException : public BaseException
 {
    public:
       // class constructor
-      InterfaceException(const wxString &details = wxT(""));
+      InterfaceException(const std::string &details = "");
       // class destructor
       ~InterfaceException();
       // Copy constructor

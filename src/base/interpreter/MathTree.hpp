@@ -39,7 +39,7 @@ class GMAT_API MathTree : public GmatBase
 {
 public:
    
-   MathTree(const wxString &typeStr, const wxString &nomme);
+   MathTree(const std::string &typeStr, const std::string &nomme);
    virtual ~MathTree();
    MathTree(const MathTree& mt);
    MathTree& operator=(const MathTree& mt);
@@ -76,8 +76,8 @@ public:
    virtual GmatBase*    Clone(void) const;
    
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    virtual const StringArray&
                         GetRefObjectNameArray(const Gmat::ObjectType type);
 protected:
@@ -111,7 +111,7 @@ protected:
    void SetTransientForcesToRunner(MathNode *node, std::vector<PhysicalModel*> *tf);
    void SetPublisherToRunner(MathNode *node, Publisher *pub);
    bool RenameParameter(MathNode *node, const Gmat::ObjectType type,
-                        const wxString &oldName, const wxString &newName);
+                        const std::string &oldName, const std::string &newName);
    void CreateParameterNameArray(MathNode *node);
    void DeleteNode(MathNode *node);
    

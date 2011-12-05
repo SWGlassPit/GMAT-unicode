@@ -33,8 +33,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Tan::Tan(const wxString &nomme)
-   : MathFunction(wxT("Tan"), nomme)
+Tan::Tan(const std::string &nomme)
+   : MathFunction("Tan", nomme)
 {
 }
 
@@ -93,7 +93,7 @@ void Tan::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
    leftNode->GetOutputInfo(type1, row1, col1);
    
    if (type1 != Gmat::REAL_TYPE)
-      throw MathException(wxT("Left is not scalar, so cannot do Tan().\n"));  
+      throw MathException("Left is not scalar, so cannot do Tan().\n");  
    else
    {
       type = type1;
@@ -114,7 +114,7 @@ void Tan::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 bool Tan::ValidateInputs()
 {
    if (leftNode == NULL)
-      throw MathException(wxT("Tan() - Missing input arguments.\n"));
+      throw MathException("Tan() - Missing input arguments.\n");
    
    Integer type1, row1, col1; // Left node
    

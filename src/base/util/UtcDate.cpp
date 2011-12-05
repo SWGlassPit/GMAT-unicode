@@ -15,7 +15,7 @@
 // Created: 1995/10/18 for GSS project
 // Modified:
 //   2003/09/12 Linda Jun - Added member data: descs, stringValues.
-//              Replaced GSSString with wxString.
+//              Replaced GSSString with std::string.
 //   2004/05/06 J. Gurganus - See UtcDate.hpp for details.
 //
 /**
@@ -28,7 +28,7 @@
 #include "RealUtilities.hpp"   // for Round() 
 #include "A1Mjd.hpp"     // for A1Mjd
 #include "UtcDate.hpp"   // for UtcDate
-//  #include wxT("A1Date.hpp")    // for A1Date
+//  #include "A1Date.hpp"    // for A1Date
 
 using namespace GmatTimeConstants;
 using namespace GmatMathUtil;
@@ -103,15 +103,15 @@ UtcDate::UtcDate (const GmatTimeUtil::CalDate &date)
 }
 
 //------------------------------------------------------------------------------
-//  UtcDate (const wxString& time)
+//  UtcDate (const std::string& time)
 //------------------------------------------------------------------------------
 /**
- * @param <time> Time in wxT("YYMMDD.hhmmssnnn") format
+ * @param <time> Time in "YYMMDD.hhmmssnnn" format
  *
  * @note Assumes input date is in UTC time system.
  */
 //------------------------------------------------------------------------------
-UtcDate::UtcDate (const wxString& time)
+UtcDate::UtcDate (const std::string& time)
   : Date(time)
 {
 }

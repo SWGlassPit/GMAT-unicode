@@ -27,37 +27,37 @@
 class GMAT_API OrbitDesignerTime
 {
 public:
-   OrbitDesignerTime(wxString epochFormat = wxT("UTCGregorian"), 
-                     wxString epoch = wxT("01 Jan 2000 11:59:28.000"), 
+   OrbitDesignerTime(std::string epochFormat = "UTCGregorian", 
+                     std::string epoch = "01 Jan 2000 11:59:28.000", 
                      Real RAAN = 306.6148021947984100,
-                     wxString startTime = wxT("12:00:00.0"));
-   OrbitDesignerTime(wxString epoch, wxString epochFormatStr, 
+                     std::string startTime = "12:00:00.0");
+   OrbitDesignerTime(std::string epoch, std::string epochFormatStr, 
                      bool raanVal, Real RAAN, bool startTimeVal, 
-                     wxString startTime);
+                     std::string startTime);
    ~OrbitDesignerTime();
 
    Real FindRAAN();
-   wxString FindStartTime(bool flag = false, Real lon = 0);
+   std::string FindStartTime(bool flag = false, Real lon = 0);
 
-   void SetEpoch(wxString val);
-   void SetStart(wxString val);
+   void SetEpoch(std::string val);
+   void SetStart(std::string val);
    void SetRAAN(Real val);
 
    //accessor functions
    Real GetRAAN();
-   wxString GetStartTime();
-   wxString GetEpoch();
-   wxString GetEpochFormat();
+   std::string GetStartTime();
+   std::string GetEpoch();
+   std::string GetEpochFormat();
 
    bool IsError();
-   wxString GetError();
+   std::string GetError();
 
 private:
-   wxString epoch;
-   wxString epochFormat;
+   std::string epoch;
+   std::string epochFormat;
    Real RAAN;
-   wxString startTime;
-   wxString errormsg;
+   std::string startTime;
+   std::string errormsg;
    bool isError;
 };
 

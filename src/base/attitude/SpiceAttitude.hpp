@@ -48,7 +48,7 @@ class GMAT_API SpiceAttitude : public Attitude
 {
 public:
    // Constructor
-   SpiceAttitude(const wxString &attName = wxT(""));
+   SpiceAttitude(const std::string &attName = "");
    // copy constructor
    SpiceAttitude(const SpiceAttitude& att);
    // operator =
@@ -63,7 +63,7 @@ public:
    virtual GmatBase* Clone() const;
 
    // Set the object's identifying information
-   virtual void SetObjectID(const wxString &objName, Integer objNaifId, Integer objRefFrameNaifId);
+   virtual void SetObjectID(const std::string &objName, Integer objNaifId, Integer objRefFrameNaifId);
 
    // override these from Attitude class to ensure the value is obtained
    // regardless of the delta time since the last attitude update
@@ -85,19 +85,19 @@ public:
 
 
    // inherited from GmatBase
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
 
-   virtual wxString  GetStringParameter(const Integer id,
+   virtual std::string  GetStringParameter(const Integer id,
                                            const Integer index) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
-   virtual bool         SetStringParameter(const wxString label,
-                                           const wxString &value,
+   virtual bool         SetStringParameter(const std::string label,
+                                           const std::string &value,
                                            const Integer index);
    virtual const StringArray&
                         GetStringArrayParameter(const Integer id) const;
@@ -117,7 +117,7 @@ protected:
    #endif
 
    /// name of the object whose attitude is to be retrieved from the SPICE kernel(s)
-   wxString scName;
+   std::string scName;
    /// NAIF Id for the object
    Integer     naifId;
    /// NAIF Id for the object's reference frame
@@ -130,7 +130,7 @@ protected:
    StringArray fk;
 
    // static text and types for parameters
-   static const wxString PARAMETER_TEXT[SpiceAttitudeParamCount - AttitudeParamCount];
+   static const std::string PARAMETER_TEXT[SpiceAttitudeParamCount - AttitudeParamCount];
 
    static const Gmat::ParameterType PARAMETER_TYPE[SpiceAttitudeParamCount - AttitudeParamCount];
 

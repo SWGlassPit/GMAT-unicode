@@ -42,18 +42,18 @@ public:
    // destructor
    virtual ~ArrayWrapper();
    
-   virtual wxString         ToString();
+   virtual std::string         ToString();
    virtual Gmat::ParameterType GetDataType() const;
    
    virtual const StringArray&  GetRefObjectNames();
-   virtual GmatBase*           GetRefObject(const wxString &name = wxT(""));
+   virtual GmatBase*           GetRefObject(const std::string &name = "");
    virtual bool                SetRefObject(GmatBase *obj);
    virtual Real                EvaluateReal() const;
    virtual bool                SetReal(const Real toValue);
    // need to override this method, to handle the arrayName, rowName,
    // and columnName data members
-   virtual bool                RenameObject(const wxString &oldName, 
-                                           const wxString &newName);
+   virtual bool                RenameObject(const std::string &oldName, 
+                                           const std::string &newName);
    
    virtual const Rmatrix&      EvaluateArray() const;
    virtual bool                SetArray(const Rmatrix &toValue); 
@@ -63,7 +63,7 @@ protected:
    /// pointer to the Array object
    Array          *array;   
    /// name of the array
-   wxString     arrayName;
+   std::string     arrayName;
    
    virtual void         SetupWrapper(); 
 };

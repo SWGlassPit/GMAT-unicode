@@ -50,10 +50,10 @@ public:
    const GravityFile& operator=(const GravityFile &right);
    virtual ~GravityFile();
    
-   GmatFM::GravityFileType GetFileType(const wxString &filename);
-   bool GetFileInfo(const wxString &filename, Integer& degree, Integer& order,
+   GmatFM::GravityFileType GetFileType(const std::string &filename);
+   bool GetFileInfo(const std::string &filename, Integer& degree, Integer& order,
                     Real &mu, Real &radius);
-   bool ReadFile(const wxString &filename, Integer& degree, Integer& order,
+   bool ReadFile(const std::string &filename, Integer& degree, Integer& order,
                  Real &mu, Real &radius, bool readCoeff,
                  Real cbar[][DEG_DIM] = NULL, Real sbar[][DEG_DIM] = NULL,
                  Real dcbar[][DRF_DIM] = NULL, Real dsbar[][DRF_DIM] = NULL,
@@ -62,15 +62,15 @@ public:
    
 protected:
 
-   bool ReadCofFile(const wxString &filename, Integer& degree, Integer& order,
+   bool ReadCofFile(const std::string &filename, Integer& degree, Integer& order,
                     Real &mu, Real &radius, bool readCoeff, Real cbar[][DEG_DIM],
                     Real sbar[][DEG_DIM], Integer maxDegree, Integer maxOrder,
                     Integer maxDriftDegree = 0);
-   bool ReadDatFile(const wxString &filename, Integer& degree, Integer& order,
+   bool ReadDatFile(const std::string &filename, Integer& degree, Integer& order,
                     Real &mu, Real &radius, bool readCoeff, Real cbar[][DEG_DIM],
                     Real sbar[][DEG_DIM], Real dcbar[][DRF_DIM], Real dsbar[][DRF_DIM],
                     Integer maxDegree, Integer maxOrder, Integer maxDriftDegree);
-   bool ReadGrvFile(const wxString &filename, Integer& degree, Integer& order,
+   bool ReadGrvFile(const std::string &filename, Integer& degree, Integer& order,
                     Real &mu, Real &radius, bool readCoeff, Real cbar[][DEG_DIM],
                     Real sbar[][DEG_DIM], Integer maxDegree, Integer maxOrder,
                     Integer maxDriftDegree = 0);

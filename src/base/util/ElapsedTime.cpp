@@ -30,9 +30,9 @@ using namespace GmatMathConstants;  // for Rem(), IsEqual()
 // static variables
 //---------------------------------
 
-const wxString ElapsedTime::DATA_DESCRIPTIONS[NUM_DATA] =
+const std::string ElapsedTime::DATA_DESCRIPTIONS[NUM_DATA] =
 {
-   wxT("Elapsed Time in Seconds")
+   "Elapsed Time in Seconds"
 };
 
 //---------------------------------
@@ -207,22 +207,22 @@ Integer ElapsedTime::GetNumData() const
 }
 
 //------------------------------------------------------------------------------
-// const wxString* ElapsedTime::GetDataDescriptions() const
+// const std::string* ElapsedTime::GetDataDescriptions() const
 //------------------------------------------------------------------------------
-const wxString* ElapsedTime::GetDataDescriptions() const
+const std::string* ElapsedTime::GetDataDescriptions() const
 {
    return DATA_DESCRIPTIONS;
 }
 
 //------------------------------------------------------------------------------
-// wxString* ElapsedTime::ToValueStrings()
+// std::string* ElapsedTime::ToValueStrings()
 //------------------------------------------------------------------------------
-wxString* ElapsedTime::ToValueStrings()
+std::string* ElapsedTime::ToValueStrings()
 {
-   wxString ss(wxT(""));
+   std::stringstream ss("");
 
    ss << seconds;
-   stringValues[0] = ss;
+   stringValues[0] = ss.str();
    return stringValues;
 }
 

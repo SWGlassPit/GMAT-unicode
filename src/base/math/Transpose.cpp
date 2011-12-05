@@ -36,8 +36,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Transpose::Transpose(const wxString &nomme)
-   : MathFunction(wxT("Transpose"), nomme)
+Transpose::Transpose(const std::string &nomme)
+   : MathFunction("Transpose", nomme)
 {
 }
 
@@ -92,13 +92,13 @@ void Transpose::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCoun
 {
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Transpose::GetOutputInfo() exp=%s, leftNode=<%p><%s>, rightNode=<%p><%s>\n"),
-       GetName().c_str(), leftNode, leftNode ? leftNode->GetTypeName().c_str() : wxT("NULL"),
-       rightNode, rightNode ? rightNode->GetTypeName().c_str() : wxT("NULL"));
+      ("Transpose::GetOutputInfo() exp=%s, leftNode=<%p><%s>, rightNode=<%p><%s>\n",
+       GetName().c_str(), leftNode, leftNode ? leftNode->GetTypeName().c_str() : "NULL",
+       rightNode, rightNode ? rightNode->GetTypeName().c_str() : "NULL");
    #endif
    
    if (!leftNode)
-      throw MathException(wxT("Transpose::GetOutputInfo() The left node is NULL"));
+      throw MathException("Transpose::GetOutputInfo() The left node is NULL");
    
    Integer type1, row1, col1; // Left node
    
@@ -107,7 +107,7 @@ void Transpose::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCoun
    
    // Transpose of scalar is allowed. (See Bug 2186)
    //if (type1 != Gmat::RMATRIX_TYPE)
-   //   throw MathException(wxT("Left is not a matrix, so cannot do Transpose().\n"));
+   //   throw MathException("Left is not a matrix, so cannot do Transpose().\n");
    
    // output row and col is transpose of leftNode's row and col
    type = type1;
@@ -116,7 +116,7 @@ void Transpose::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCoun
    
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Transpose::GetOutputInfo() returning type=%d, rowCount=%d, colCount=%d\n"),
+      ("Transpose::GetOutputInfo() returning type=%d, rowCount=%d, colCount=%d\n",
        type, rowCount, colCount);
    #endif
 }
@@ -137,13 +137,13 @@ bool Transpose::ValidateInputs()
    
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Transpose::ValidateInputs() leftNode=%s, %s\n"),
-       leftNode ? leftNode->GetTypeName().c_str() : wxT("NULL"),
-       leftNode ? leftNode->GetName().c_str() : wxT("NULL"));
+      ("Transpose::ValidateInputs() leftNode=%s, %s\n",
+       leftNode ? leftNode->GetTypeName().c_str() : "NULL",
+       leftNode ? leftNode->GetName().c_str() : "NULL");
    #endif
    
    if (leftNode == NULL)
-      throw MathException(wxT("Transpose::ValidateInputs() The left node is NULL"));
+      throw MathException("Transpose::ValidateInputs() The left node is NULL");
    
    // Get the type(Real or Matrix), # rows and # columns of the left node
    leftNode->GetOutputInfo(type1, row1, col1);
@@ -157,7 +157,7 @@ bool Transpose::ValidateInputs()
    
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Transpose::ValidateInputs() returning %d\n"), retval);
+      ("Transpose::ValidateInputs() returning %d\n", retval);
    #endif
    
    return retval;
@@ -176,7 +176,7 @@ Real Transpose::Evaluate()
 {
    #ifdef DEBUG_EVALUATE
    MessageInterface::ShowMessage
-      (wxT("Transpose::Evaluate() '%s' entered\n"), GetName().c_str());
+      ("Transpose::Evaluate() '%s' entered\n", GetName().c_str());
    #endif
    
    Integer type, rowCount, colCount;
@@ -191,13 +191,13 @@ Real Transpose::Evaluate()
          Real result = rmat(0,0);
          #ifdef DEBUG_EVALUATE
          MessageInterface::ShowMessage
-            (wxT("Transpose::Evaluate() '%s' returning 1x1 value %lf\n"),
+            ("Transpose::Evaluate() '%s' returning 1x1 value %lf\n",
              GetName().c_str(), result);
          #endif
          return result;
       }
       else
-         throw MathException(wxT("Transpose() Cannot evaluate \"") + GetName() + wxT("\"\n"));
+         throw MathException("Transpose() Cannot evaluate \"" + GetName() + "\"\n");
    }
    else
    {
@@ -205,7 +205,7 @@ Real Transpose::Evaluate()
       Real result = leftNode->Evaluate();
       #ifdef DEBUG_EVALUATE
       MessageInterface::ShowMessage
-         (wxT("Transpose::Evaluate() '%s' returning scalar value %lf\n"),
+         ("Transpose::Evaluate() '%s' returning scalar value %lf\n",
           GetName().c_str(), result);
       #endif
       return result;
@@ -229,18 +229,18 @@ Rmatrix Transpose::MatrixEvaluate()
 
    Rmatrix rmat = leftNode->MatrixEvaluate();
    MessageInterface::ShowMessage
-      (wxT("Transpose::MatrixEvaluate() = %s\n"), rmat.ToString(12).c_str());
+      ("Transpose::MatrixEvaluate() = %s\n", rmat.ToString(12).c_str());
    try
    {
       Rmatrix result = rmat.Transpose();
       MessageInterface::ShowMessage
-         (wxT("Transpose::MatrixEvaluate() returning\n%s\n"), result.ToString(12).c_str());
+         ("Transpose::MatrixEvaluate() returning\n%s\n", result.ToString(12).c_str());
       return result;
    }
    catch (BaseException &be)
    {
       MessageInterface::ShowMessage
-         (wxT("Transpose::MatrixEvaluate() %s for %s\n"), be.GetFullMessage().c_str(),
+         ("Transpose::MatrixEvaluate() %s for %s\n", be.GetFullMessage().c_str(),
           GetName().c_str());
       throw;
    }

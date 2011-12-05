@@ -36,11 +36,11 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 CalculatedPoint::PARAMETER_TEXT[CalculatedPointParamCount - SpacePointParamCount] =
 {
-   wxT("NumberOfBodies"),
-   wxT("BodyNames"),
+   "NumberOfBodies",
+   "BodyNames",
 };
 
 const Gmat::ParameterType
@@ -54,8 +54,8 @@ CalculatedPoint::PARAMETER_TYPE[CalculatedPointParamCount - SpacePointParamCount
 // public methods
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  CalculatedPoint(const wxString &ptType, 
-//                  const wxString &itsName)
+//  CalculatedPoint(const std::string &ptType, 
+//                  const std::string &itsName)
 //------------------------------------------------------------------------------
 /**
  * This method creates an object of the CalculatedPoint class
@@ -65,13 +65,13 @@ CalculatedPoint::PARAMETER_TYPE[CalculatedPointParamCount - SpacePointParamCount
  * @param <itsName> parameter indicating the name of the CalculatedPoint.
  */
 //------------------------------------------------------------------------------
-CalculatedPoint::CalculatedPoint(const wxString &ptType, 
-                                 const wxString &itsName) :
+CalculatedPoint::CalculatedPoint(const std::string &ptType, 
+                                 const std::string &itsName) :
 SpacePoint(Gmat::CALCULATED_POINT, ptType, itsName),
 numberOfBodies  (0)
 {
    objectTypes.push_back(Gmat::CALCULATED_POINT);
-   objectTypeNames.push_back(wxT("CalculatedPoint"));
+   objectTypeNames.push_back("CalculatedPoint");
    parameterCount = CalculatedPointParamCount;
 }
 
@@ -116,10 +116,10 @@ SpacePoint          (cp)
 /**
  * Assignment operator for the CalculatedPoint class.
  *
- * @param <cp> the CalculatedPoint object whose data to assign to wxT("this")
+ * @param <cp> the CalculatedPoint object whose data to assign to "this"
  *             calculated point.
  *
- * @return wxT("this") CalculatedPoint with data of input CalculatedPoint cp.
+ * @return "this" CalculatedPoint with data of input CalculatedPoint cp.
  */
 //------------------------------------------------------------------------------
 CalculatedPoint& CalculatedPoint::operator=(const CalculatedPoint &cp)
@@ -167,7 +167,7 @@ CalculatedPoint::~CalculatedPoint()
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -178,7 +178,7 @@ CalculatedPoint::~CalculatedPoint()
  *
  */
 //------------------------------------------------------------------------------
-wxString CalculatedPoint::GetParameterText(const Integer id) const
+std::string CalculatedPoint::GetParameterText(const Integer id) const
 {
    if (id >= SpacePointParamCount && id < CalculatedPointParamCount)
       return PARAMETER_TEXT[id - SpacePointParamCount];
@@ -186,7 +186,7 @@ wxString CalculatedPoint::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -197,7 +197,7 @@ wxString CalculatedPoint::GetParameterText(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer     CalculatedPoint::GetParameterID(const wxString &str) const
+Integer     CalculatedPoint::GetParameterID(const std::string &str) const
 {
    for (Integer i = SpacePointParamCount; i < CalculatedPointParamCount; i++)
    {
@@ -205,8 +205,8 @@ Integer     CalculatedPoint::GetParameterID(const wxString &str) const
          return i;
    }
    
-   // Special handler for wxT("Add") - per Steve 2005.05.18
-   if (str == wxT("Add")) return BODY_NAMES;
+   // Special handler for "Add" - per Steve 2005.05.18
+   if (str == "Add") return BODY_NAMES;
    
    return SpacePoint::GetParameterID(str);
 }
@@ -232,7 +232,7 @@ Gmat::ParameterType CalculatedPoint::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -243,7 +243,7 @@ Gmat::ParameterType CalculatedPoint::GetParameterType(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString CalculatedPoint::GetParameterTypeString(const Integer id) const
+std::string CalculatedPoint::GetParameterTypeString(const Integer id) const
 {
    return SpacePoint::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -271,7 +271,7 @@ bool CalculatedPoint::IsParameterReadOnly(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-//  bool IsParameterReadOnly(const wxString &label) const
+//  bool IsParameterReadOnly(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * Checks to see if the requested parameter is read only.
@@ -281,7 +281,7 @@ bool CalculatedPoint::IsParameterReadOnly(const Integer id) const
  * @return true if the parameter is read only, false (the default) if not.
  */
 //---------------------------------------------------------------------------
-bool CalculatedPoint::IsParameterReadOnly(const wxString &label) const
+bool CalculatedPoint::IsParameterReadOnly(const std::string &label) const
 {
    return IsParameterReadOnly(GetParameterID(label));
 }
@@ -307,7 +307,7 @@ Integer     CalculatedPoint::GetIntegerParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetIntegerParameter(const wxString &label) const
+//  Integer  GetIntegerParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the Integer parameter value, given the input
@@ -319,13 +319,13 @@ Integer     CalculatedPoint::GetIntegerParameter(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer     CalculatedPoint::GetIntegerParameter(const wxString &label) const
+Integer     CalculatedPoint::GetIntegerParameter(const std::string &label) const
 {
    return GetIntegerParameter(GetParameterID(label)); 
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id, const Integer index) const
+//  std::string  GetStringParameter(const Integer id, const Integer index) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -338,7 +338,7 @@ Integer     CalculatedPoint::GetIntegerParameter(const wxString &label) const
  *
  */
 //------------------------------------------------------------------------------
-wxString CalculatedPoint::GetStringParameter(const Integer id,
+std::string CalculatedPoint::GetStringParameter(const Integer id,
                                                 const Integer index) const
 {
    if (id == BODY_NAMES)             
@@ -349,7 +349,7 @@ wxString CalculatedPoint::GetStringParameter(const Integer id,
       }
       catch (const std::exception &)
       {
-         throw SolarSystemException(wxT("CalculatedPoint error: index out-of-range."));
+         throw SolarSystemException("CalculatedPoint error: index out-of-range.");
       }
    }
 
@@ -357,7 +357,7 @@ wxString CalculatedPoint::GetStringParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id) const
+//  std::string  GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -372,13 +372,13 @@ wxString CalculatedPoint::GetStringParameter(const Integer id,
  *
  */
 //------------------------------------------------------------------------------
-wxString CalculatedPoint::GetStringParameter(const Integer id) const
+std::string CalculatedPoint::GetStringParameter(const Integer id) const
 {
    return SpacePoint::GetStringParameter(id);
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const wxString &label, 
+//  std::string  GetStringParameter(const std::string &label, 
 //                                  const Integer index) const
 //------------------------------------------------------------------------------
 /**
@@ -392,14 +392,14 @@ wxString CalculatedPoint::GetStringParameter(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString CalculatedPoint::GetStringParameter(const wxString &label,
+std::string CalculatedPoint::GetStringParameter(const std::string &label,
                                                 const Integer index) const
 {
    return GetStringParameter(GetParameterID(label), index);
 }
 
 //------------------------------------------------------------------------------
-//  wxString  SetStringParameter(const Integer id, const wxString value)
+//  std::string  SetStringParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the string parameter value, given the input
@@ -416,19 +416,19 @@ wxString CalculatedPoint::GetStringParameter(const wxString &label,
  */
 //------------------------------------------------------------------------------
 bool CalculatedPoint::SetStringParameter(const Integer id, 
-                                         const wxString &value)
+                                         const std::string &value)
 {
    #ifdef DEBUG_CP_SET_STRING
-      MessageInterface::ShowMessage(wxT("Entering CalculatedPoint::SetString with id = %d (%s), value = %s\n"),
+      MessageInterface::ShowMessage("Entering CalculatedPoint::SetString with id = %d (%s), value = %s\n",
             id, GetParameterText(id).c_str(), value.c_str());
    #endif
    if (id == BODY_NAMES)
    {
-      wxString value1 = GmatStringUtil::Trim(value);
+      std::string value1 = GmatStringUtil::Trim(value);
       if (GmatStringUtil::IsEnclosedWithBraces(value1))
       {
 //         bodyNames.clear();
-         TakeAction(wxT("ClearBodies"));
+         TakeAction("ClearBodies");
          bodyNames = GmatStringUtil::ToStringArray(value1);
       }
       else
@@ -436,7 +436,7 @@ bool CalculatedPoint::SetStringParameter(const Integer id,
          if (find(bodyNames.begin(), bodyNames.end(), value) == bodyNames.end())
          {
             #ifdef DEBUG_CP_OBJECT
-               MessageInterface::ShowMessage(wxT("Adding %s to body name list for object %s\n"),
+               MessageInterface::ShowMessage("Adding %s to body name list for object %s\n",
                      value.c_str(), instanceName.c_str());
             #endif
             bodyNames.push_back(value);
@@ -444,9 +444,9 @@ bool CalculatedPoint::SetStringParameter(const Integer id,
       }
       
       #ifdef DEBUG_CP_SET_STRING
-         MessageInterface::ShowMessage(wxT("Exiting CalculatedPoint::SetString: BodyNames are: \n"));
+         MessageInterface::ShowMessage("Exiting CalculatedPoint::SetString: BodyNames are: \n");
          for (unsigned int ii = 0; ii < bodyNames.size(); ii++)
-            MessageInterface::ShowMessage(wxT("   %d     %s\n"), (Integer) ii, (bodyNames.at(ii)).c_str());
+            MessageInterface::ShowMessage("   %d     %s\n", (Integer) ii, (bodyNames.at(ii)).c_str());
       #endif
       return true;
    }
@@ -455,8 +455,8 @@ bool CalculatedPoint::SetStringParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-//  wxString  SetStringParameter(const wxString &label, 
-//                                  const wxString value)
+//  std::string  SetStringParameter(const std::string &label, 
+//                                  const std::string value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the string parameter value, given the input
@@ -472,14 +472,14 @@ bool CalculatedPoint::SetStringParameter(const Integer id,
  *
  */
 //------------------------------------------------------------------------------
-bool CalculatedPoint::SetStringParameter(const wxString &label, 
-                                         const wxString &value)
+bool CalculatedPoint::SetStringParameter(const std::string &label, 
+                                         const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
 
 //------------------------------------------------------------------------------
-//  bool  SetStringParameter(const Integer id, const wxString value.
+//  bool  SetStringParameter(const Integer id, const std::string value.
 //                           const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -495,12 +495,12 @@ bool CalculatedPoint::SetStringParameter(const wxString &label,
  */
 //------------------------------------------------------------------------------
 bool  CalculatedPoint::SetStringParameter(const Integer id,
-                                          const wxString &value,
+                                          const std::string &value,
                                           const Integer index) 
 {
    #ifdef DEBUG_CP_SET_STRING
       MessageInterface::ShowMessage(
-            wxT("Entering CalculatedPoint::SetString with id = %d (%s), index = %d, and value = %s\n"),
+            "Entering CalculatedPoint::SetString with id = %d (%s), index = %d, and value = %s\n",
             id, GetParameterText(id).c_str(), index, value.c_str());
    #endif
    if (id == BODY_NAMES)
@@ -524,7 +524,7 @@ bool  CalculatedPoint::SetStringParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-//  bool  SetStringParameter(const wxString &label, const wxString value.
+//  bool  SetStringParameter(const std::string &label, const std::string value.
 //                           const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -539,8 +539,8 @@ bool  CalculatedPoint::SetStringParameter(const Integer id,
  *
  */
 //------------------------------------------------------------------------------
-bool  CalculatedPoint::SetStringParameter(const wxString &label,
-                                          const wxString &value,
+bool  CalculatedPoint::SetStringParameter(const std::string &label,
+                                          const std::string &value,
                                           const Integer index) 
 {
    return SetStringParameter(GetParameterID(label),value,index);
@@ -571,7 +571,7 @@ const StringArray& CalculatedPoint::GetStringArrayParameter(const Integer id) co
 }
 
 //------------------------------------------------------------------------------
-//  const StringArray&   GetStringArrayParameter((const wxString &label) 
+//  const StringArray&   GetStringArrayParameter((const std::string &label) 
 //                       const
 //------------------------------------------------------------------------------
 /**
@@ -585,13 +585,13 @@ const StringArray& CalculatedPoint::GetStringArrayParameter(const Integer id) co
  */
 //------------------------------------------------------------------------------
 const StringArray& CalculatedPoint::GetStringArrayParameter(
-                                    const wxString &label) const
+                                    const std::string &label) const
 {   
    return GetStringArrayParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-// GmatBase* GetRefObject(const Gmat::ObjectType type, const wxString &name,
+// GmatBase* GetRefObject(const Gmat::ObjectType type, const std::string &name,
 //                        const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -605,7 +605,7 @@ const StringArray& CalculatedPoint::GetStringArrayParameter(
  */
 //------------------------------------------------------------------------------
 GmatBase* CalculatedPoint::GetRefObject(const Gmat::ObjectType type,
-                                        const wxString &name,
+                                        const std::string &name,
                                         const Integer index)
 {
    if (type == Gmat::SPACE_POINT)
@@ -617,7 +617,7 @@ GmatBase* CalculatedPoint::GetRefObject(const Gmat::ObjectType type,
       catch (const std::exception &)
       {
          throw SolarSystemException(
-               wxT("CalculatedPoint error: index out-of-range."));
+               "CalculatedPoint error: index out-of-range.");
       }
    }
    return SpacePoint::GetRefObject(type, name, index);
@@ -625,7 +625,7 @@ GmatBase* CalculatedPoint::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                   const wxString &name, const Integer index)
+//                   const std::string &name, const Integer index)
 //------------------------------------------------------------------------------
 /**
  * Sets the reference object.
@@ -640,7 +640,7 @@ GmatBase* CalculatedPoint::GetRefObject(const Gmat::ObjectType type,
 //------------------------------------------------------------------------------
 bool CalculatedPoint::SetRefObject(GmatBase *obj, 
                                    const Gmat::ObjectType type,
-                                   const wxString &name)
+                                   const std::string &name)
 {
    if (obj->IsOfType(Gmat::SPACE_POINT))
    {
@@ -651,15 +651,15 @@ bool CalculatedPoint::SetRefObject(GmatBase *obj,
       {
          #ifdef DEBUG_CP_OBJECT
          MessageInterface::ShowMessage
-            (wxT("CalculatedPoint::SetRefObject() the body <%p> '%s' already exist, so ")
-             wxT("returning true\n"), (*pos), name.c_str());
+            ("CalculatedPoint::SetRefObject() the body <%p> '%s' already exist, so "
+             "returning true\n", (*pos), name.c_str());
          #endif
          return true;
       }
       
       // If ref object has the same name, reset it (loj: 2008.10.24)      
       pos = bodyList.begin();
-      wxString bodyName;
+      std::string bodyName;
       bool bodyFound = false;
       while (pos != bodyList.end())
       {
@@ -668,8 +668,8 @@ bool CalculatedPoint::SetRefObject(GmatBase *obj,
          {
             #ifdef DEBUG_CP_OBJECT
             MessageInterface::ShowMessage
-               (wxT("CalculatedPoint::SetRefObject() resetting the pointer of body '%s' <%p> to ")
-                wxT("<%p>\n"), bodyName.c_str(), (*pos), (SpacePoint*)obj);
+               ("CalculatedPoint::SetRefObject() resetting the pointer of body '%s' <%p> to "
+                "<%p>\n", bodyName.c_str(), (*pos), (SpacePoint*)obj);
             #endif
             
             (*pos) = (SpacePoint*)obj;
@@ -683,8 +683,8 @@ bool CalculatedPoint::SetRefObject(GmatBase *obj,
       {
          #ifdef DEBUG_CP_OBJECT
          MessageInterface::ShowMessage
-            (wxT("CalculatedPoint::SetRefObject() this=<%p> '%s', adding <%p> '%s' ")
-             wxT("to bodyList for object %s\n"), this, GetName().c_str(), obj, name.c_str(),
+            ("CalculatedPoint::SetRefObject() this=<%p> '%s', adding <%p> '%s' "
+             "to bodyList for object %s\n", this, GetName().c_str(), obj, name.c_str(),
              instanceName.c_str());
          #endif
          
@@ -701,7 +701,7 @@ bool CalculatedPoint::SetRefObject(GmatBase *obj,
 
 //------------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * Interface used to support user actions.
@@ -714,8 +714,8 @@ bool CalculatedPoint::SetRefObject(GmatBase *obj,
  */
 //------------------------------------------------------------------------------
 bool CalculatedPoint::RenameRefObject(const Gmat::ObjectType type,
-                                      const wxString &oldName,
-                                      const wxString &newName)
+                                      const std::string &oldName,
+                                      const std::string &newName)
 {
    if ((type == Gmat::SPACE_POINT) || (type == Gmat::CALCULATED_POINT))
    {
@@ -792,7 +792,7 @@ const StringArray& CalculatedPoint::GetRefObjectNameArray(const Gmat::ObjectType
 }
 
 //------------------------------------------------------------------------------
-// bool TakeAction(const wxString &action, const wxString &actionData)
+// bool TakeAction(const std::string &action, const std::string &actionData)
 //------------------------------------------------------------------------------
 /**
  * Interface used to support user actions.
@@ -803,15 +803,15 @@ const StringArray& CalculatedPoint::GetRefObjectNameArray(const Gmat::ObjectType
  * @return true if the action was performed, false if not.
  */
 //------------------------------------------------------------------------------
-bool CalculatedPoint::TakeAction(const wxString &action,
-                                 const wxString &actionData)
+bool CalculatedPoint::TakeAction(const std::string &action,
+                                 const std::string &actionData)
 {
    #ifdef DEBUG_CP_ACTION
       MessageInterface::ShowMessage(
-            wxT("Entering CP::TakeAction with action = \"%s\", actionData = \"%s\"\n"),
+            "Entering CP::TakeAction with action = \"%s\", actionData = \"%s\"\n",
             action.c_str(), actionData.c_str());
    #endif
-   if (action == wxT("ClearBodies"))
+   if (action == "ClearBodies")
    {
       bodyNames.clear();
       bodyList.clear();
@@ -838,16 +838,16 @@ bool CalculatedPoint::TakeRequiredAction(const Integer id)
 {
    #ifdef DEBUG_CP_ACTION
       MessageInterface::ShowMessage(
-            wxT("Entering CP::TakeRequiredAction with id = %d (%s)\n"),
+            "Entering CP::TakeRequiredAction with id = %d (%s)\n",
             id, (GetParameterText(id)).c_str());
    #endif
-   if (id == BODY_NAMES) return TakeAction(wxT("ClearBodies"));
+   if (id == BODY_NAMES) return TakeAction("ClearBodies");
    return SpacePoint::TakeRequiredAction(id);
 }
 
 
 //---------------------------------------------------------------------------
-//  void SetDefaultBody(const wxString &defBody)
+//  void SetDefaultBody(const std::string &defBody)
 //---------------------------------------------------------------------------
 /**
  * Method returning the total mass of the celestial bodies included in
@@ -856,12 +856,12 @@ bool CalculatedPoint::TakeRequiredAction(const Integer id)
  * @return total mass of the celestial bodies included in this Barycenter.
  */
 //---------------------------------------------------------------------------
-void CalculatedPoint::SetDefaultBody(const wxString &defBody)
+void CalculatedPoint::SetDefaultBody(const std::string &defBody)
 {
    if (find(defaultBodies.begin(), defaultBodies.end(), defBody) == defaultBodies.end())
    {
       #ifdef DEBUG_CP_BODIES
-         MessageInterface::ShowMessage(wxT("Adding %s to DEFAULT body name list for object %s\n"),
+         MessageInterface::ShowMessage("Adding %s to DEFAULT body name list for object %s\n",
                defBody.c_str(), instanceName.c_str());
       #endif
       defaultBodies.push_back(defBody);

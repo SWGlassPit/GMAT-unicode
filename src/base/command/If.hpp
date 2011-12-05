@@ -52,23 +52,23 @@ public:
    virtual bool         Execute();
    
    // inherited from GmatBase
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    virtual Integer      GetIntegerParameter(const Integer id) const;
    virtual Integer      SetIntegerParameter(const Integer id,
                                             const Integer value);
-   virtual Integer      GetIntegerParameter(const wxString &label) const;
-   virtual Integer      SetIntegerParameter(const wxString &label,
+   virtual Integer      GetIntegerParameter(const std::string &label) const;
+   virtual Integer      SetIntegerParameter(const std::string &label,
                                             const Integer value);
 
    virtual GmatBase*    Clone() const;
-   virtual const wxString&
+   virtual const std::string&
                         GetGeneratingString(Gmat::WriteMode mode,
-                                            const wxString &prefix,
-                                            const wxString &useName);
+                                            const std::string &prefix,
+                                            const std::string &useName);
 
 protected:
    enum
@@ -77,7 +77,7 @@ protected:
       IfParamCount
    };
 
-   static const wxString PARAMETER_TEXT[IfParamCount - ConditionalBranchParamCount];
+   static const std::string PARAMETER_TEXT[IfParamCount - ConditionalBranchParamCount];
    
    static const Gmat::ParameterType PARAMETER_TYPE[IfParamCount - ConditionalBranchParamCount];
    

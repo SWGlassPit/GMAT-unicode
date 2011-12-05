@@ -44,7 +44,7 @@ class GMAT_API Kinematic : public Attitude
 {
 public:
    // Constructor
-   Kinematic(const wxString &typeStr, const wxString &itsName = wxT(""));
+   Kinematic(const std::string &typeStr, const std::string &itsName = "");
    // Copy constructor
    Kinematic(const Kinematic &kin);
    // operator =
@@ -58,7 +58,7 @@ protected:
    };
    
    // leave these here, in case we need them later
-   //static const wxString PARAMETER_TEXT[KinematicParamCount - AttitudeParamCount];
+   //static const std::string PARAMETER_TEXT[KinematicParamCount - AttitudeParamCount];
    //
    //static const Gmat::ParameterType PARAMETER_TYPE
    //             [KinematicParamCount - AttitudeParamCount];

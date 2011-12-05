@@ -24,7 +24,7 @@
 
 
 //------------------------------------------------------------------------------
-//  BurnException(const wxString &details)
+//  BurnException(const std::string &details)
 //------------------------------------------------------------------------------
 /**
  * Constructs BurnException instance (default constructor).
@@ -32,8 +32,8 @@
  * @param <details> A message providing the details of the exception.
  */
 //------------------------------------------------------------------------------
-BurnException::BurnException(const wxString &details) :
-   BaseException           (wxT("Burn Exception Thrown: "), details)
+BurnException::BurnException(const std::string &details) :
+   BaseException           ("Burn Exception Thrown: ", details)
 {
 }
 

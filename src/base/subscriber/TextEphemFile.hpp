@@ -29,8 +29,8 @@
 class GMAT_API TextEphemFile : public ReportFile
 {
 public:
-   TextEphemFile(const wxString &type, const wxString &name,
-                 const wxString &fileName = wxT(""), 
+   TextEphemFile(const std::string &type, const std::string &name,
+                 const std::string &fileName = "", 
                  Parameter *firstVarParam = NULL);
    
    virtual ~TextEphemFile(void);
@@ -42,20 +42,20 @@ public:
    virtual GmatBase* Clone(void) const;
 
    // parameters
-   virtual Integer GetParameterID(const wxString &str) const;
-   virtual wxString GetParameterText(const Integer id) const;
+   virtual Integer GetParameterID(const std::string &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
    virtual Gmat::ParameterType GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
    
    virtual Real GetRealParameter(const Integer id) const;
-   virtual Real GetRealParameter(const wxString &label) const;
+   virtual Real GetRealParameter(const std::string &label) const;
    virtual Real SetRealParameter(const Integer id, const Real value);
-   virtual Real SetRealParameter(const wxString &label, const Real value);
-   virtual wxString GetStringParameter(const Integer id) const;
-   virtual wxString GetStringParameter(const wxString &label) const;
-   virtual bool SetStringParameter(const Integer id, const wxString &value);
-   virtual bool SetStringParameter(const wxString &label,
-                                   const wxString &value);
+   virtual Real SetRealParameter(const std::string &label, const Real value);
+   virtual std::string GetStringParameter(const Integer id) const;
+   virtual std::string GetStringParameter(const std::string &label) const;
+   virtual bool SetStringParameter(const Integer id, const std::string &value);
+   virtual bool SetStringParameter(const std::string &label,
+                                   const std::string &value);
    
 protected:
    
@@ -69,7 +69,7 @@ protected:
       TextEphemFileParamCount  /// Count of the parameters for this class
    };
    
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[TextEphemFileParamCount - ReportFileParamCount];
    static const Gmat::ParameterType
       PARAMETER_TYPE[TextEphemFileParamCount - ReportFileParamCount];
@@ -81,9 +81,9 @@ private:
    
    Interpolator *mInterpolator;
 
-   wxString mHeaderFileName;
-   wxString mEpochFormat;
-   wxString mCoordSysName;
+   std::string mHeaderFileName;
+   std::string mEpochFormat;
+   std::string mCoordSysName;
    Real mIntervalInSec;
    Real mCurrA1Mjd;
    Real mOutputA1Mjd;

@@ -78,13 +78,13 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 PointMassForce::PARAMETER_TEXT[PointMassParamCount - PhysicalModelParamCount] =
 {
-   wxT("GravConst"),
-   wxT("Radius"),
-   wxT("EstimateMethod"),
-   wxT("PrimaryBody"),
+   "GravConst",
+   "Radius",
+   "EstimateMethod",
+   "PrimaryBody",
 };
 
 const Gmat::ParameterType
@@ -101,14 +101,14 @@ PointMassForce::PARAMETER_TYPE[PointMassParamCount - PhysicalModelParamCount] =
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// PointMassForce::PointMassForce(const wxString &name)
+// PointMassForce::PointMassForce(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Constructor for point mass gravitational model
  */
 //------------------------------------------------------------------------------
-PointMassForce::PointMassForce(const wxString &name) :
-   PhysicalModel          (Gmat::PHYSICAL_MODEL, wxT("PointMassForce"), name),
+PointMassForce::PointMassForce(const std::string &name) :
+   PhysicalModel          (Gmat::PHYSICAL_MODEL, "PointMassForce", name),
    mu                     (GmatSolarSystemDefaults::PLANET_MU[GmatSolarSystemDefaults::EARTH]),
    estimationMethod       (1.0),
    isPrimaryBody          (true),
@@ -206,14 +206,14 @@ PointMassForce& PointMassForce::operator= (const PointMassForce& pmf)
 //------------------------------------------------------------------------------
 bool PointMassForce::Initialize()
 {
-   //MessageInterface::ShowMessage(wxT("PointMassForce::Initialize() entered\n"));
+   //MessageInterface::ShowMessage("PointMassForce::Initialize() entered\n");
    
    PhysicalModel::Initialize();
     
    if (solarSystem != NULL)
    {
       //MessageInterface::ShowMessage(
-      //   wxT("PointMassForce::Initialize() bodyName=%s\n"), bodyName.c_str());
+      //   "PointMassForce::Initialize() bodyName=%s\n", bodyName.c_str());
       
       body = solarSystem->GetBody(bodyName); //loj: 5/7/04 added
        
@@ -223,35 +223,35 @@ bool PointMassForce::Initialize()
          
          #if DEBUG_PMF_BODY
              MessageInterface::ShowMessage
-                (wxT("PointMassForce::Initialize() setting mu=%f for type=%s, ")
-                 wxT("name=%s\n"), mu, body->GetTypeName().c_str(), 
+                ("PointMassForce::Initialize() setting mu=%f for type=%s, "
+                 "name=%s\n", mu, body->GetTypeName().c_str(), 
                  body->GetName().c_str());
          #endif
          
          #ifdef DEBUG_FORCE_MODEL
             MessageInterface::ShowMessage(
-               wxT("%s%s%s%16le\n"),
-               wxT("Point mass body "), body->GetName().c_str(),
-               wxT(" has mu = "), mu);
+               "%s%s%s%16le\n",
+               "Point mass body ", body->GetName().c_str(),
+               " has mu = ", mu);
          #endif
       }
       else
       {
          MessageInterface::ShowMessage(
-            wxT("PointMassForce::Initialize() body \"%s\" is not in the solar ")
-            wxT("system\n"), bodyName.c_str());
+            "PointMassForce::Initialize() body \"%s\" is not in the solar "
+            "system\n", bodyName.c_str());
          initialized = false;
-         throw ODEModelException(wxT("PointMassForce::Initialize() body \"") +
-            bodyName + wxT("\" is not in the solar system\n"));
+         throw ODEModelException("PointMassForce::Initialize() body \"" +
+            bodyName + "\" is not in the solar system\n");
       }
    }
    else
    {
       MessageInterface::ShowMessage(
-         wxT("PointMassForce::Initialize() solarSystem is NULL\n"));
+         "PointMassForce::Initialize() solarSystem is NULL\n");
       initialized = false;
       throw ODEModelException(
-         wxT("PointMassForce::Initialize() solarSystem is NULL\n"));
+         "PointMassForce::Initialize() solarSystem is NULL\n");
    }
    
    Integer i6;
@@ -294,9 +294,9 @@ bool PointMassForce::GetDerivatives(Real * state, Real dt, Integer order,
       const Integer id)
 {
    #ifdef DEBUG_PMF_DERV
-      MessageInterface::ShowMessage(wxT("Evaluating PointMassForce; ")
-         wxT("state pointer = %d, time offset = %le, order = %d, id = %d ")
-         wxT("satCount = %d\n"), state, dt, order, id, satCount);
+      MessageInterface::ShowMessage("Evaluating PointMassForce; "
+         "state pointer = %d, time offset = %le, order = %d, id = %d "
+         "satCount = %d\n", state, dt, order, id, satCount);
    #endif
    
    Integer i6, a6;
@@ -307,7 +307,7 @@ bool PointMassForce::GetDerivatives(Real * state, Real dt, Integer order,
          return false;
    
       if ((state == NULL) || (deriv == NULL) || (theState == NULL))
-         // throw(wxT("Arrays not yet initialized -- exiting"));
+         // throw("Arrays not yet initialized -- exiting");
          return false;
    
       Real radius, r3, mu_r, rbb3, mu_rbb, a_indirect[3];
@@ -319,13 +319,13 @@ bool PointMassForce::GetDerivatives(Real * state, Real dt, Integer order,
       orig = forceOrigin->GetState(now);
       
       #ifdef DUMP_PLANET_DATA
-         MessageInterface::ShowMessage(wxT("%s, %17.12lf, %17.12lf, %17.12lf, ")
-            wxT("%17.12lf, %17.16lf, %17.16lf, %17.16lf, %s, %17.12lf, %17.12lf, ")
-            wxT("%17.12lf, %17.12lf, %17.16lf, %17.16lf, %s, %17.12lf, %17.12lf, ")
-            wxT("%17.12lf, %17.12lf, %17.16lf, %17.16lf\n"), 
+         MessageInterface::ShowMessage("%s, %17.12lf, %17.12lf, %17.12lf, "
+            "%17.12lf, %17.16lf, %17.16lf, %17.16lf, %s, %17.12lf, %17.12lf, "
+            "%17.12lf, %17.12lf, %17.16lf, %17.16lf, %s, %17.12lf, %17.12lf, "
+            "%17.12lf, %17.12lf, %17.16lf, %17.16lf\n", 
             body->GetName().c_str(), now.Get(), bodyrv[0], bodyrv[1], bodyrv[2], 
-            bodyrv[3], bodyrv[4], bodyrv[5], wxT("SC_Data"), state[0], state[1], 
-            state[2], state[3], state[4], state[5], wxT("origin"), orig[0], orig[1],
+            bodyrv[3], bodyrv[4], bodyrv[5], "SC_Data", state[0], state[1], 
+            state[2], state[3], state[4], state[5], "origin", orig[0], orig[1],
             orig[2], orig[3], orig[4], orig[5]);
       #endif
    
@@ -352,32 +352,32 @@ bool PointMassForce::GetDerivatives(Real * state, Real dt, Integer order,
    
       #ifdef DEBUG_FORCE_ORIGIN
          MessageInterface::ShowMessage(
-            wxT("Epoch:  %16.11lf\n  Origin:  [%s]\n  J2KBod:  [%s]\n"),
+            "Epoch:  %16.11lf\n  Origin:  [%s]\n  J2KBod:  [%s]\n",
             now.Get(), orig.ToString().c_str(), bodyrv.ToString().c_str());
          MessageInterface::ShowMessage(
-            wxT("Now = %16.11lf rbb3 = %16.11le rv = [%16lf %16lf %16lf]\n"),
+            "Now = %16.11lf rbb3 = %16.11le rv = [%16lf %16lf %16lf]\n",
             now.Get(), rbb3, rv[0], rv[1], rv[2]);
       #endif
 
       #ifdef DEBUG_INDIRECT_TERM
-         MessageInterface::ShowMessage(wxT("Indirect term for %s with mu %.15le:\n"),
+         MessageInterface::ShowMessage("Indirect term for %s with mu %.15le:\n",
                body->GetName().c_str(), mu);
-         MessageInterface::ShowMessage(wxT("   Origin   = [%16le %16le %16le]\n"),
+         MessageInterface::ShowMessage("   Origin   = [%16le %16le %16le]\n",
                orig[0], orig[1], orig[2]);
-         MessageInterface::ShowMessage(wxT("   Position = [%16le %16le %16le]\n"),
+         MessageInterface::ShowMessage("   Position = [%16le %16le %16le]\n",
                bodyrv[0], bodyrv[1], bodyrv[2]);
-         MessageInterface::ShowMessage(wxT("   a_indirect = [%16le %16le %16le]\n"),
+         MessageInterface::ShowMessage("   a_indirect = [%16le %16le %16le]\n",
                body->GetName().c_str(), a_indirect[0],
                a_indirect[1], a_indirect[2]);
       #endif
 
       #if DEBUG_PMF_BODY
-          ShowBodyState(wxT("PointMassForce::GetDerivatives() BEFORE compute ") +
+          ShowBodyState("PointMassForce::GetDerivatives() BEFORE compute " +
                         body->GetName(), now, rv);
       #endif
    
       #if DEBUG_PMF_DERV
-          ShowDerivative(wxT("PointMassForce::GetDerivatives() BEFORE compute"), state,
+          ShowDerivative("PointMassForce::GetDerivatives() BEFORE compute", state,
              satCount);
       #endif
       
@@ -400,12 +400,12 @@ bool PointMassForce::GetDerivatives(Real * state, Real dt, Integer order,
             mu_r = mu / r3;
       
             #ifdef DEBUG_INDIRECT_TERM
-               MessageInterface::ShowMessage(wxT("   Raw acc for sp %d:  "), i);
-               MessageInterface::ShowMessage(wxT("[%16le %16le %16le]\n"),
+               MessageInterface::ShowMessage("   Raw acc for sp %d:  ", i);
+               MessageInterface::ShowMessage("[%16le %16le %16le]\n",
                      relativePosition[0] * mu_r, relativePosition[1] * mu_r,
                      relativePosition[2] * mu_r);
-               MessageInterface::ShowMessage(wxT("   Corrected acc =     [%16le ")
-                     wxT("%16le %16le]\n"),
+               MessageInterface::ShowMessage("   Corrected acc =     [%16le "
+                     "%16le %16le]\n",
                      relativePosition[0] * mu_r - a_indirect[0],
                      relativePosition[1] * mu_r - a_indirect[1],
                      relativePosition[2] * mu_r - a_indirect[2]);
@@ -441,18 +441,18 @@ bool PointMassForce::GetDerivatives(Real * state, Real dt, Integer order,
          }
       }
       #if DEBUG_PMF_DERV
-         ShowDerivative(wxT("PointMassForce::GetDerivatives() AFTER compute"), state, 
+         ShowDerivative("PointMassForce::GetDerivatives() AFTER compute", state, 
             satCount);
       #endif
    
       #ifdef DEBUG_FORCE_MODEL
          MessageInterface::ShowMessage(
-            wxT("%s%s%s%16.10lf%s%16.10lf, %16.10lf, %16.10lf%s%16.10lf, %16.10lf, ")
-            wxT("%16.10lf%s%16.10le, %16.10le, %16.10le]\n"),
-            wxT("Point mass force for "), body->GetName().c_str(), wxT(" at epoch "), 
-            now.Get(), wxT("\n   Sat position:  ["), state[0], state[1], state[2],
-            wxT("]\n   Body position: ["), rv[cartIndex + 0], rv[cartIndex + 1], 
-            rv[cartIndex + 2], wxT("]\n   Acceleration:  ["), deriv[cartIndex + 3], 
+            "%s%s%s%16.10lf%s%16.10lf, %16.10lf, %16.10lf%s%16.10lf, %16.10lf, "
+            "%16.10lf%s%16.10le, %16.10le, %16.10le]\n",
+            "Point mass force for ", body->GetName().c_str(), " at epoch ", 
+            now.Get(), "\n   Sat position:  [", state[0], state[1], state[2],
+            "]\n   Body position: [", rv[cartIndex + 0], rv[cartIndex + 1], 
+            rv[cartIndex + 2], "]\n   Acceleration:  [", deriv[cartIndex + 3], 
             deriv[cartIndex + 4], deriv[cartIndex + 5]);
       #endif
       if (fillSTM || fillAMatrix)
@@ -688,13 +688,13 @@ GmatBase* PointMassForce::Clone() const
 }
 
 //------------------------------------------------------------------------------
-// wxString PointMassForce::GetParameterText(const Integer id) const
+// std::string PointMassForce::GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString PointMassForce::GetParameterText(const Integer id) const
+std::string PointMassForce::GetParameterText(const Integer id) const
 {
    if ((id >= PhysicalModelParamCount) && (id < PointMassParamCount))
       return PARAMETER_TEXT[id - PhysicalModelParamCount];
@@ -702,13 +702,13 @@ wxString PointMassForce::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// Integer PointMassForce::GetParameterID(const wxString &str) const
+// Integer PointMassForce::GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Integer PointMassForce::GetParameterID(const wxString &str) const
+Integer PointMassForce::GetParameterID(const std::string &str) const
 {
    for (Integer i = PhysicalModelParamCount; i < PointMassParamCount; i++)
    {
@@ -733,13 +733,13 @@ Gmat::ParameterType PointMassForce::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// wxString PointMassForce::GetParameterTypeString(const Integer id) const
+// std::string PointMassForce::GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString PointMassForce::GetParameterTypeString(const Integer id) const
+std::string PointMassForce::GetParameterTypeString(const Integer id) const
 {
    if ((id >= PhysicalModelParamCount) && (id < PointMassParamCount))
       return PARAMETER_TEXT[id - PhysicalModelParamCount];
@@ -818,9 +818,9 @@ Real PointMassForce::SetRealParameter(const Integer id, const Real value)
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
-wxString PointMassForce::GetStringParameter(const Integer id) const
+std::string PointMassForce::GetStringParameter(const Integer id) const
 {
 //   switch (id)
 //   {
@@ -832,21 +832,21 @@ wxString PointMassForce::GetStringParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString PointMassForce::GetStringParameter(const wxString &label) const
+std::string PointMassForce::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 bool PointMassForce::SetStringParameter(const Integer id, 
-                                        const wxString &value)
+                                        const std::string &value)
 {
    //MessageInterface::ShowMessage(
-   //   wxT("PointMassForce::SetStringParameter() id = %d, value = %s\n"),
+   //   "PointMassForce::SetStringParameter() id = %d, value = %s\n",
    //   id, value.c_str());
 
 //   switch (id)
@@ -860,11 +860,11 @@ bool PointMassForce::SetStringParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label,
-//                         const wxString &value)
+// bool SetStringParameter(const std::string &label,
+//                         const std::string &value)
 //------------------------------------------------------------------------------
-bool PointMassForce::SetStringParameter(const wxString &label,
-                                        const wxString &value)
+bool PointMassForce::SetStringParameter(const std::string &label,
+                                        const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
@@ -890,7 +890,7 @@ bool PointMassForce::GetBooleanParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  bool  SetBooleanParameter(const Integer id, const wxString value)
+//  bool  SetBooleanParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the bool parameter value, given the input
@@ -927,7 +927,7 @@ bool PointMassForce::SupportsDerivative(Gmat::StateElementId id)
 {
    #ifdef DEBUG_REGISTRATION
       MessageInterface::ShowMessage(
-            wxT("PointMassForce checking for support for id %d\n"), id);
+            "PointMassForce checking for support for id %d\n", id);
    #endif
       
    if (id == Gmat::CARTESIAN_STATE)
@@ -962,8 +962,8 @@ bool PointMassForce::SetStart(Gmat::StateElementId id, Integer index,
                       Integer quantity)
 {
    #ifdef DEBUG_REGISTRATION
-      MessageInterface::ShowMessage(wxT("PointMassForce setting start data for id ")
-            wxT("= %d to index %d; %d objects identified\n"), id, index, quantity);
+      MessageInterface::ShowMessage("PointMassForce setting start data for id "
+            "= %d to index %d; %d objects identified\n", id, index, quantity);
    #endif
    
    bool retval = false;
@@ -1005,9 +1005,9 @@ bool PointMassForce::SetStart(Gmat::StateElementId id, Integer index,
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// void ShowBodyState(const wxString &header, Real time, Rvector6 &rv);
+// void ShowBodyState(const std::string &header, Real time, Rvector6 &rv);
 //------------------------------------------------------------------------------
-void  PointMassForce::ShowBodyState(const wxString &header, Real time,
+void  PointMassForce::ShowBodyState(const std::string &header, Real time,
                                     Rvector6 &rv)
 {
    #if DEBUG_PMF_BODY
@@ -1016,13 +1016,13 @@ void  PointMassForce::ShowBodyState(const wxString &header, Real time,
       
       if (showBodyState)
       {
-         MessageInterface::ShowMessage(wxT("%s\n"), header.c_str());
+         MessageInterface::ShowMessage("%s\n", header.c_str());
          MessageInterface::ShowMessage(
-            wxT(">>>>>=======================================\n"));
-         MessageInterface::ShowMessage(wxT("time=%f  rv=%s\n"), time,
+            ">>>>>=======================================\n");
+         MessageInterface::ShowMessage("time=%f  rv=%s\n", time,
             rv.ToString().c_str());
          MessageInterface::ShowMessage(
-            wxT("=======================================<<<<<\n"));
+            "=======================================<<<<<\n");
          
          debugCount1++;
          if (debugCount1 > 10)
@@ -1033,9 +1033,9 @@ void  PointMassForce::ShowBodyState(const wxString &header, Real time,
 
 
 //------------------------------------------------------------------------------
-// void ShowDerivative(const wxString &header, Real *state, Integer satCount)
+// void ShowDerivative(const std::string &header, Real *state, Integer satCount)
 //------------------------------------------------------------------------------
-void  PointMassForce::ShowDerivative(const wxString &header, Real *state,
+void  PointMassForce::ShowDerivative(const std::string &header, Real *state,
                                      Integer satCount)
 {
    #if DEBUG_PMF_DERV
@@ -1044,9 +1044,9 @@ void  PointMassForce::ShowDerivative(const wxString &header, Real *state,
       
       if (showDeriv)
       {
-         MessageInterface::ShowMessage(wxT("%s\n"), header.c_str());
+         MessageInterface::ShowMessage("%s\n", header.c_str());
          MessageInterface::ShowMessage(
-            wxT(">>>>>=======================================\n"));
+            ">>>>>=======================================\n");
          Integer i6;
          Rvector6 stateVec = Rvector6(state);
       
@@ -1054,14 +1054,14 @@ void  PointMassForce::ShowDerivative(const wxString &header, Real *state,
          {
             i6 = cartIndex + i * 6;
             MessageInterface::ShowMessage
-               (wxT("sc#=%d  state=%s\n"), i, stateVec.ToString().c_str());
+               ("sc#=%d  state=%s\n", i, stateVec.ToString().c_str());
          
             MessageInterface::ShowMessage
-               (wxT("deriv=%f %f %f %f %f %f\n"), deriv[i6], deriv[i6+1], 
+               ("deriv=%f %f %f %f %f %f\n", deriv[i6], deriv[i6+1], 
                 deriv[i6+2], deriv[i6+3], deriv[i6+4], deriv[i6+5]);
          }
          MessageInterface::ShowMessage(
-            wxT("=======================================<<<<<\n"));
+            "=======================================<<<<<\n");
          
          debugCount2++;
          if (debugCount2 > 10)

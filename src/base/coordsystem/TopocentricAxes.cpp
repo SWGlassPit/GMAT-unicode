@@ -52,7 +52,7 @@ using namespace GmatTimeConstants;      // for JD offsets, etc.
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-//  TopocentricAxes(const wxString &itsName);
+//  TopocentricAxes(const std::string &itsName);
 //------------------------------------------------------------------------------
 /**
  * Constructs base TopocentricAxes structures
@@ -61,17 +61,17 @@ using namespace GmatTimeConstants;      // for JD offsets, etc.
  * @param itsName Optional name for the object.  Defaults to "".
  */
 //------------------------------------------------------------------------------
-TopocentricAxes::TopocentricAxes(const wxString &itsName) :
-   DynamicAxes      (wxT("Topocentric"),itsName),
+TopocentricAxes::TopocentricAxes(const std::string &itsName) :
+   DynamicAxes      ("Topocentric",itsName),
    bfPoint          (NULL),
    bfcs             (NULL),
    centralBody      (NULL),
-   itsBodyName      (wxT("")),
-   horizonReference (wxT("Sphere")),
+   itsBodyName      (""),
+   horizonReference ("Sphere"),
    flattening       (-999.99),
    radius           (GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[GmatSolarSystemDefaults::EARTH])
 {
-   objectTypeNames.push_back(wxT("TopocentricAxes"));
+   objectTypeNames.push_back("TopocentricAxes");
    parameterCount = TopocentricAxesParamCount;
 }
 
@@ -147,15 +147,15 @@ TopocentricAxes::~TopocentricAxes()
 bool TopocentricAxes::Initialize()
 {
    #ifdef DEBUG_TOPOCENTRIC_AXES
-      MessageInterface::ShowMessage(wxT("Entering TopocentricAxes::Initialize()"));
+      MessageInterface::ShowMessage("Entering TopocentricAxes::Initialize()");
    #endif
    DynamicAxes::Initialize();
    
    // check to make sure that the Origin is a BodyFixedPoint
-   if (!(origin->IsOfType(wxT("BodyFixedPoint"))))
+   if (!(origin->IsOfType("BodyFixedPoint")))
    {
-      wxString errMsg = wxT("The origin for a Topocentric Coordinate System ");
-      errMsg += wxT("must be a BodyFixedPoint");
+      std::string errMsg = "The origin for a Topocentric Coordinate System ";
+      errMsg += "must be a BodyFixedPoint";
       throw CoordinateSystemException(errMsg);
    }
    bfPoint = (BodyFixedPoint*) origin; 
@@ -204,34 +204,34 @@ void TopocentricAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
                                               bool forceComputation) 
 {   
    // Check to make sure that the central body is a celestial body
-   itsBodyName       = bfPoint->GetStringParameter(wxT("CentralBody"));
+   itsBodyName       = bfPoint->GetStringParameter("CentralBody");
    #ifdef DEBUG_TOPOCENTRIC_AXES
-      MessageInterface::ShowMessage(wxT("Origin's central body is %s\n"),
+      MessageInterface::ShowMessage("Origin's central body is %s\n",
             itsBodyName.c_str());
    #endif
    GmatBase *bodyPtr = bfPoint->GetRefObject(Gmat::CELESTIAL_BODY, itsBodyName);
    if (!bodyPtr)
    {
-      wxString errMsg = wxT("Central Body for a BodyFixedPoint used in a ");
-      errMsg += wxT(" Topocentric Coordinate System is NULL");
+      std::string errMsg = "Central Body for a BodyFixedPoint used in a ";
+      errMsg += " Topocentric Coordinate System is NULL";
       throw CoordinateSystemException(errMsg);
    }
-   if (!(bodyPtr->IsOfType(wxT("CelestialBody"))))
+   if (!(bodyPtr->IsOfType("CelestialBody")))
    {
-      wxString errMsg = wxT("Central Body for a BodyFixedPoint used in a ");
-      errMsg += wxT(" Topocentric Coordinate System must be a Celestial Body");
+      std::string errMsg = "Central Body for a BodyFixedPoint used in a ";
+      errMsg += " Topocentric Coordinate System must be a Celestial Body";
       throw CoordinateSystemException(errMsg);
    }
    centralBody      = (CelestialBody*) bodyPtr;
    flattening       = centralBody->GetFlattening();
    radius           = centralBody->GetEquatorialRadius();
    bfcs             = bfPoint->GetBodyFixedCoordinateSystem();
-   horizonReference = bfPoint->GetStringParameter(wxT("HorizonReference"));
-   if ((horizonReference != wxT("Sphere")) && (horizonReference != wxT("Ellipsoid")))
+   horizonReference = bfPoint->GetStringParameter("HorizonReference");
+   if ((horizonReference != "Sphere") && (horizonReference != "Ellipsoid"))
    {
-      wxString errMsg = wxT("Unexpected horizon reference \"");
-      errMsg += horizonReference + wxT("\" received from BodyFixedPoint \"");
-      errMsg += bfPoint->GetName() + wxT("\"");
+      std::string errMsg = "Unexpected horizon reference \"";
+      errMsg += horizonReference + "\" received from BodyFixedPoint \"";
+      errMsg += bfPoint->GetName() + "\"";
       throw CoordinateSystemException(errMsg);
    }
 
@@ -240,66 +240,66 @@ void TopocentricAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
    Rvector3 newLoc  = bfPoint->GetBodyFixedLocation(atEpoch);
    
    #ifdef DEBUG_TOPOCENTRIC_AXES
-      MessageInterface::ShowMessage(wxT("horizon reference is %s:\n"),
+      MessageInterface::ShowMessage("horizon reference is %s:\n",
             horizonReference.c_str());
-      MessageInterface::ShowMessage(wxT("flattening of %s is %12.17f:\n"),
+      MessageInterface::ShowMessage("flattening of %s is %12.17f:\n",
             itsBodyName.c_str(), flattening);
-      MessageInterface::ShowMessage(wxT("equatorial radius of %s is %12.17f:\n\n"),
+      MessageInterface::ShowMessage("equatorial radius of %s is %12.17f:\n\n",
             itsBodyName.c_str(), radius);
-      MessageInterface::ShowMessage(wxT("bfPoint's old location is:\n"));
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), bfLocation[0]);
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), bfLocation[1]);
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), bfLocation[2]);
-      MessageInterface::ShowMessage(wxT("bfPoint's new location is:\n"));
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), newLoc[0]);
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), newLoc[1]);
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), newLoc[2]);
+      MessageInterface::ShowMessage("bfPoint's old location is:\n");
+      MessageInterface::ShowMessage("%12.17f\n", bfLocation[0]);
+      MessageInterface::ShowMessage("%12.17f\n", bfLocation[1]);
+      MessageInterface::ShowMessage("%12.17f\n", bfLocation[2]);
+      MessageInterface::ShowMessage("bfPoint's new location is:\n");
+      MessageInterface::ShowMessage("%12.17f\n", newLoc[0]);
+      MessageInterface::ShowMessage("%12.17f\n", newLoc[1]);
+      MessageInterface::ShowMessage("%12.17f\n", newLoc[2]);
    #endif
    if (newLoc != bfLocation)
       CalculateRFT(atEpoch, newLoc);
    // save the location
    bfLocation  = newLoc;
    #ifdef DEBUG_TOPOCENTRIC_AXES
-      MessageInterface::ShowMessage(wxT("Now bfLocation is set to:\n"));
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), bfLocation[0]);
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), bfLocation[1]);
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), bfLocation[2]);
+      MessageInterface::ShowMessage("Now bfLocation is set to:\n");
+      MessageInterface::ShowMessage("%12.17f\n", bfLocation[0]);
+      MessageInterface::ShowMessage("%12.17f\n", bfLocation[1]);
+      MessageInterface::ShowMessage("%12.17f\n", bfLocation[2]);
    #endif
    // Determine rotation matrix from body-fixed to inertial
    Rvector bogusIn(6,7000.0,1000.0,6000.0, 0.0, 0.0, 0.0);
    Rvector bogusOut = bfcs->ToMJ2000Eq(atEpoch, bogusIn);
    #ifdef DEBUG_TOPOCENTRIC_AXES
-      MessageInterface::ShowMessage(wxT("bogusIn:\n"));
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), bogusIn[0]);
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), bogusIn[1]);
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), bogusIn[2]);
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), bogusIn[3]);
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), bogusIn[4]);
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), bogusIn[5]);
-      MessageInterface::ShowMessage(wxT("bogusOut:\n"));
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), bogusOut[0]);
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), bogusOut[1]);
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), bogusOut[2]);
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), bogusOut[3]);
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), bogusOut[4]);
-      MessageInterface::ShowMessage(wxT("%12.17f\n"), bogusOut[5]);
+      MessageInterface::ShowMessage("bogusIn:\n");
+      MessageInterface::ShowMessage("%12.17f\n", bogusIn[0]);
+      MessageInterface::ShowMessage("%12.17f\n", bogusIn[1]);
+      MessageInterface::ShowMessage("%12.17f\n", bogusIn[2]);
+      MessageInterface::ShowMessage("%12.17f\n", bogusIn[3]);
+      MessageInterface::ShowMessage("%12.17f\n", bogusIn[4]);
+      MessageInterface::ShowMessage("%12.17f\n", bogusIn[5]);
+      MessageInterface::ShowMessage("bogusOut:\n");
+      MessageInterface::ShowMessage("%12.17f\n", bogusOut[0]);
+      MessageInterface::ShowMessage("%12.17f\n", bogusOut[1]);
+      MessageInterface::ShowMessage("%12.17f\n", bogusOut[2]);
+      MessageInterface::ShowMessage("%12.17f\n", bogusOut[3]);
+      MessageInterface::ShowMessage("%12.17f\n", bogusOut[4]);
+      MessageInterface::ShowMessage("%12.17f\n", bogusOut[5]);
    #endif
    Rmatrix33 RIF    = bfcs->GetLastRotationMatrix();
    Rmatrix33 RIFDot = bfcs->GetLastRotationDotMatrix();
    #ifdef DEBUG_TOPOCENTRIC_AXES
-      MessageInterface::ShowMessage(wxT("last Rotation Matrix (RIF):\n"));
-      MessageInterface::ShowMessage(wxT("%12.17f  %12.17f  %12.17f \n"),
+      MessageInterface::ShowMessage("last Rotation Matrix (RIF):\n");
+      MessageInterface::ShowMessage("%12.17f  %12.17f  %12.17f \n",
             RIF(0,0), RIF(0,1), RIF(0,2));
-      MessageInterface::ShowMessage(wxT("%12.17f  %12.17f  %12.17f \n"),
+      MessageInterface::ShowMessage("%12.17f  %12.17f  %12.17f \n",
             RIF(1,0), RIF(1,1), RIF(1,2));
-      MessageInterface::ShowMessage(wxT("%12.17f  %12.17f  %12.17f \n"),
+      MessageInterface::ShowMessage("%12.17f  %12.17f  %12.17f \n",
             RIF(2,0), RIF(2,1), RIF(2,2));
-      MessageInterface::ShowMessage(wxT("last Rotation Dot Matrix (RIFDot):\n"));
-      MessageInterface::ShowMessage(wxT("%12.17f  %12.17f  %12.17f \n"),
+      MessageInterface::ShowMessage("last Rotation Dot Matrix (RIFDot):\n");
+      MessageInterface::ShowMessage("%12.17f  %12.17f  %12.17f \n",
             RIFDot(0,0), RIFDot(0,1), RIFDot(0,2));
-      MessageInterface::ShowMessage(wxT("%12.17f  %12.17f  %12.17f \n"),
+      MessageInterface::ShowMessage("%12.17f  %12.17f  %12.17f \n",
             RIFDot(1,0), RIFDot(1,1), RIFDot(1,2));
-      MessageInterface::ShowMessage(wxT("%12.17f  %12.17f  %12.17f \n"),
+      MessageInterface::ShowMessage("%12.17f  %12.17f  %12.17f \n",
             RIFDot(2,0), RIFDot(2,1), RIFDot(2,2));
    #endif
    
@@ -312,19 +312,19 @@ void TopocentricAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
 //   rotDotMatrix     = (RIFDot * (RFT * RIF.Transpose())) +
 //                      (RIF * (RFT * RIFDot.Transpose()));
    #ifdef DEBUG_TOPOCENTRIC_AXES
-      MessageInterface::ShowMessage(wxT("rotMatrix:\n"));
-      MessageInterface::ShowMessage(wxT("%12.17f  %12.17f  %12.17f \n"),
+      MessageInterface::ShowMessage("rotMatrix:\n");
+      MessageInterface::ShowMessage("%12.17f  %12.17f  %12.17f \n",
             rotMatrix(0,0), rotMatrix(0,1), rotMatrix(0,2));
-      MessageInterface::ShowMessage(wxT("%12.17f  %12.17f  %12.17f \n"),
+      MessageInterface::ShowMessage("%12.17f  %12.17f  %12.17f \n",
             rotMatrix(1,0), rotMatrix(1,1), rotMatrix(1,2));
-      MessageInterface::ShowMessage(wxT("%12.17f  %12.17f  %12.17f \n"),
+      MessageInterface::ShowMessage("%12.17f  %12.17f  %12.17f \n",
             rotMatrix(2,0), rotMatrix(2,1), rotMatrix(2,2));
-      MessageInterface::ShowMessage(wxT("rotDotMatrix:\n"));
-      MessageInterface::ShowMessage(wxT("%12.17f  %12.17f  %12.17f \n"),
+      MessageInterface::ShowMessage("rotDotMatrix:\n");
+      MessageInterface::ShowMessage("%12.17f  %12.17f  %12.17f \n",
             rotDotMatrix(0,0), rotDotMatrix(0,1), rotDotMatrix(0,2));
-      MessageInterface::ShowMessage(wxT("%12.17f  %12.17f  %12.17f \n"),
+      MessageInterface::ShowMessage("%12.17f  %12.17f  %12.17f \n",
             rotDotMatrix(1,0), rotDotMatrix(1,1), rotDotMatrix(1,2));
-      MessageInterface::ShowMessage(wxT("%12.17f  %12.17f  %12.17f \n"),
+      MessageInterface::ShowMessage("%12.17f  %12.17f  %12.17f \n",
             rotDotMatrix(2,0), rotDotMatrix(2,1), rotDotMatrix(2,2));
    #endif
 }
@@ -348,7 +348,7 @@ void TopocentricAxes::CalculateRFT(const A1Mjd &atEpoch, const Rvector3 newLocat
 {
    #ifdef DEBUG_TOPOCENTRIC_AXES
       MessageInterface::ShowMessage(
-            wxT("Now entering TopocentricAxes::CalculateRTF\n"));
+            "Now entering TopocentricAxes::CalculateRTF\n");
    #endif
    Rvector3 kUnit(0.0,0.0,1.0);
    Rvector3 xUnit, yUnit, zUnit;
@@ -360,8 +360,8 @@ void TopocentricAxes::CalculateRFT(const A1Mjd &atEpoch, const Rvector3 newLocat
    // Check for proximity to a pole
    if (rxy < 1.0e-3)
    {
-      wxString errmsg = wxT("Topocentric Coordinate System ");
-      errmsg += wxT("is undefined due to numerical singularity at the poles\n");
+      std::string errmsg = "Topocentric Coordinate System ";
+      errmsg += "is undefined due to numerical singularity at the poles\n";
       throw CoordinateSystemException(errmsg);
    }
    // Calculate the geocentric latitude to use as an initial guess
@@ -372,7 +372,7 @@ void TopocentricAxes::CalculateRFT(const A1Mjd &atEpoch, const Rvector3 newLocat
 
    #ifdef DEBUG_TOPOCENTRIC_AXES
       MessageInterface::ShowMessage(
-            wxT("rxy = %12.17f      phigd = %12.17f    eSquared = %12.17f  \n"),
+            "rxy = %12.17f      phigd = %12.17f    eSquared = %12.17f  \n",
             rxy, phigd, eSquared);
    #endif
    // Initialize the loop and iterate to find the geodetic latitude
@@ -386,10 +386,10 @@ void TopocentricAxes::CalculateRFT(const A1Mjd &atEpoch, const Rvector3 newLocat
       phigd    = atan(divided);
       #ifdef DEBUG_TOPOCENTRIC_AXES
          MessageInterface::ShowMessage(
-               wxT("In the loop, delta = %12.17f   phiPrime = %12.17f    C = %12.17f\n"),
+               "In the loop, delta = %12.17f   phiPrime = %12.17f    C = %12.17f\n",
                delta, phiPrime, C);
          MessageInterface::ShowMessage(
-               wxT("In the loop, divided = %12.17f   phigd = %12.17f\n"),
+               "In the loop, divided = %12.17f   phigd = %12.17f\n",
                divided, phigd);
       #endif
       delta    = GmatMathUtil::Abs(phigd - phiPrime);
@@ -398,10 +398,10 @@ void TopocentricAxes::CalculateRFT(const A1Mjd &atEpoch, const Rvector3 newLocat
    bfLong = atan2(y,x);
    #ifdef DEBUG_TOPOCENTRIC_AXES
       MessageInterface::ShowMessage(
-            wxT("At the end of the loop, delta = %12.17f\n"),
+            "At the end of the loop, delta = %12.17f\n",
             delta);
       MessageInterface::ShowMessage(
-            wxT("After the loop, bfLong = %12.17f\n"),
+            "After the loop, bfLong = %12.17f\n",
             bfLong);
    #endif
    zUnit[0]    = GmatMathUtil::Cos(phigd) * GmatMathUtil::Cos(bfLong);
@@ -410,7 +410,7 @@ void TopocentricAxes::CalculateRFT(const A1Mjd &atEpoch, const Rvector3 newLocat
 
    #ifdef DEBUG_TOPOCENTRIC_AXES
       MessageInterface::ShowMessage(
-            wxT(" ... computed zUnit = %12.17f  %12.17f  %12.17f  \n"),
+            " ... computed zUnit = %12.17f  %12.17f  %12.17f  \n",
             zUnit[0], zUnit[1], zUnit[2]);
    #endif
 
@@ -418,20 +418,20 @@ void TopocentricAxes::CalculateRFT(const A1Mjd &atEpoch, const Rvector3 newLocat
    yUnit          = Cross(kUnit, zUnit);
    #ifdef DEBUG_TOPOCENTRIC_AXES
       MessageInterface::ShowMessage(
-            wxT(" ... computed yUnit = %12.17f  %12.17f  %12.17f  \n"),
+            " ... computed yUnit = %12.17f  %12.17f  %12.17f  \n",
             yUnit[0], yUnit[1], yUnit[2]);
    #endif
    yUnit          = yUnit.GetUnitVector();
    xUnit          = Cross(yUnit, zUnit);
    #ifdef DEBUG_TOPOCENTRIC_AXES
       MessageInterface::ShowMessage(
-            wxT("After the if/else, zUnit = %12.17f  %12.17f  %12.17f\n"),
+            "After the if/else, zUnit = %12.17f  %12.17f  %12.17f\n",
             zUnit[0], zUnit[1], zUnit[2]);
       MessageInterface::ShowMessage(
-            wxT("After the if/else, yUnit = %12.17f  %12.17f  %12.17f\n"),
+            "After the if/else, yUnit = %12.17f  %12.17f  %12.17f\n",
             yUnit[0], yUnit[1], yUnit[2]);
       MessageInterface::ShowMessage(
-            wxT("After the if/else, xUnit = %12.17f  %12.17f  %12.17f\n"),
+            "After the if/else, xUnit = %12.17f  %12.17f  %12.17f\n",
             xUnit[0], xUnit[1], xUnit[2]);
    #endif
    // Set RFT
@@ -447,13 +447,13 @@ void TopocentricAxes::CalculateRFT(const A1Mjd &atEpoch, const Rvector3 newLocat
       
    #ifdef DEBUG_TOPOCENTRIC_AXES
       MessageInterface::ShowMessage(
-            wxT("After the if/else, RFT = %12.17f  %12.17f  %12.17f\n"),
+            "After the if/else, RFT = %12.17f  %12.17f  %12.17f\n",
             RFT(0,0), RFT(0,1), RFT(0,2));
       MessageInterface::ShowMessage(
-            wxT("                         %12.17f  %12.17f  %12.17f\n"),
+            "                         %12.17f  %12.17f  %12.17f\n",
             RFT(1,0), RFT(1,1), RFT(1,2));
       MessageInterface::ShowMessage(
-            wxT("                         %12.17f  %12.17f  %12.17f\n"),
+            "                         %12.17f  %12.17f  %12.17f\n",
             RFT(2,0), RFT(2,1), RFT(2,2));
    #endif
 }

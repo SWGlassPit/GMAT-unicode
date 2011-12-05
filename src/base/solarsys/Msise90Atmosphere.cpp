@@ -46,16 +46,16 @@ static FILE *logFile;  // Temp log file
 #endif
 
 //------------------------------------------------------------------------------
-//  Msise90Atmosphere(const wxString &name = wxT(""))
+//  Msise90Atmosphere(const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  *  Constructor.
  */
 //------------------------------------------------------------------------------
-Msise90Atmosphere::Msise90Atmosphere(const wxString &name) :
-    AtmosphereModel     (wxT("MSISE90"), name),
+Msise90Atmosphere::Msise90Atmosphere(const std::string &name) :
+    AtmosphereModel     ("MSISE90", name),
     fileData            (false),
-    fluxfilename        (wxT(""))
+    fluxfilename        ("")
 {
     #ifdef DEBUG_MSISE90_ATMOSPHERE
     logFile = NULL;
@@ -102,10 +102,10 @@ mass                (msise.mass)
 /**
  * Assignment operator for the Msise90Atmosphere class.
  *
- * @param <m> the Msise90Atmosphere object whose data to assign to wxT("this")
+ * @param <m> the Msise90Atmosphere object whose data to assign to "this"
  *            AtmosphereModel.
  *
- * @return wxT("this") Msise90Atmosphere with data of input Msise90Atmosphere st.
+ * @return "this" Msise90Atmosphere with data of input Msise90Atmosphere st.
  */
 //------------------------------------------------------------------------------
 Msise90Atmosphere& Msise90Atmosphere::operator=(const Msise90Atmosphere& msise)
@@ -152,12 +152,12 @@ bool Msise90Atmosphere::Density(Real *pos, Real *density, Real epoch,
    Real    den[8], temp[2];
    
    #ifdef DEBUG_MSISE90_ATMOSPHERE
-   logFile = fopen(wxT("GMAT-MSISE90.txt"), wxT("w"));
+   logFile = fopen("GMAT-MSISE90.txt", "w");
    #endif
    
    if (mCentralBody == NULL)
       throw AtmosphereException(
-         wxT("Central body pointer not set in MSISE90 model."));
+         "Central body pointer not set in MSISE90 model.");
 
    Real utcEpoch = TimeConverterUtil::Convert(epoch, TimeConverterUtil::A1MJD,
 		   TimeConverterUtil::UTCMJD, GmatTimeConstants::JD_JAN_5_1941);
@@ -200,24 +200,24 @@ bool Msise90Atmosphere::Density(Real *pos, Real *density, Real epoch,
 
 
       #ifdef DEBUG_GEODETICS
-         MessageInterface::ShowMessage(wxT("Diffs:\n"));
-         MessageInterface::ShowMessage(wxT("   Height:    %.12lf vs %.12lf\n"), geoHeight, alt);
-         MessageInterface::ShowMessage(wxT("   Latitude:  %.12lf vs %.12lf\n"), geoLat, geolat);
-         MessageInterface::ShowMessage(wxT("   Longitude: %.12lf vs %.12lf\n"), geoLong, lon);
+         MessageInterface::ShowMessage("Diffs:\n");
+         MessageInterface::ShowMessage("   Height:    %.12lf vs %.12lf\n", geoHeight, alt);
+         MessageInterface::ShowMessage("   Latitude:  %.12lf vs %.12lf\n", geoLat, geolat);
+         MessageInterface::ShowMessage("   Longitude: %.12lf vs %.12lf\n", geoLong, lon);
       #endif
 
       #ifdef DEBUG_MSISE90_ATMOSPHERE
          MessageInterface::ShowMessage(
-               wxT("   GeodeticLat = %lf\n"), geoLat);
+               "   GeodeticLat = %lf\n", geoLat);
       #endif
       
       #ifdef DEBUG_MSISE90_ATMOSPHERE
          MessageInterface::ShowMessage(
-            wxT("Calculating MSISE90 Density from parameters:\n   ")
-            wxT("yd = %d\n   sod = %.12lf\n   alt = %.12lf\n   lat = %.12lf\n   ")
-            wxT("lon = %.12lf\n   lst = %.12lf\n   f107a = %.12lf\n   ")
-            wxT("f107 = %.12lf\n   ap = [%.12lf %.12lf %.12lf %.12lf %.12lf ")
-            wxT("%.12lf %.12lf]\n   w = [%.12le %.12le %.12le]\n"), yd, sod,
+            "Calculating MSISE90 Density from parameters:\n   "
+            "yd = %d\n   sod = %.12lf\n   alt = %.12lf\n   lat = %.12lf\n   "
+            "lon = %.12lf\n   lst = %.12lf\n   f107a = %.12lf\n   "
+            "f107 = %.12lf\n   ap = [%.12lf %.12lf %.12lf %.12lf %.12lf "
+            "%.12lf %.12lf]\n   w = [%.12le %.12le %.12le]\n", yd, sod,
             geoHeight, geoLat, geoLong, lst, f107a, f107, ap[0], ap[1], ap[2],
             ap[3], ap[4], ap[5], ap[6], angVel[0], angVel[1], angVel[2]);
       #endif
@@ -229,37 +229,37 @@ bool Msise90Atmosphere::Density(Real *pos, Real *density, Real epoch,
       xmass = mass;
 
       #ifdef DEBUG_MSISE90_ATMOSPHERE
-      MessageInterface::ShowMessage(wxT("Writing Pre-GTDS6 MSISE90 data to log file ...\n"));
-      fprintf(logFile, wxT("Pre-GTDS6() \n"));
-      fprintf(logFile, wxT("=========== \n"));
-      fprintf(logFile, wxT("Epoch                  = %le \n"), epoch);
-      fprintf(logFile, wxT("Year & Days            = %d \n"), xyd);
-      fprintf(logFile, wxT("Seconds                = %le \n"), xsod);
-      fprintf(logFile, wxT("Altitude               = %le \n"), xalt);
-      fprintf(logFile, wxT("Latitude               = %le \n"), xlat);
-      fprintf(logFile, wxT("Longitude              = %le \n"), xlon);
-      fprintf(logFile, wxT("Solar Time             = %le \n"), xlst);
-      fprintf(logFile, wxT("F107 Average           = %le \n"), xf107a);
-      fprintf(logFile, wxT("F107                   = %le \n"), xf107);
-      fprintf(logFile, wxT("Geomagnetic index[0]   = %le \n"), xap[0]);
-      fprintf(logFile, wxT("Geomagnetic index[1]   = %le \n"), xap[1]);
-      fprintf(logFile, wxT("Geomagnetic index[2]   = %le \n"), xap[2]);
-      fprintf(logFile, wxT("Geomagnetic index[3]   = %le \n"), xap[3]);
-      fprintf(logFile, wxT("Geomagnetic index[4]   = %le \n"), xap[4]);
-      fprintf(logFile, wxT("Geomagnetic index[5]   = %le \n"), xap[5]);
-      fprintf(logFile, wxT("Geomagnetic index[6]   = %le \n"), xap[6]);
-      fprintf(logFile, wxT("Mass                   = %d \n"), xmass);
-      fprintf(logFile, wxT("HE Number Density      = %le \n"), xden[0]);
-      fprintf(logFile, wxT("O Number Density       = %le \n"), xden[1]);
-      fprintf(logFile, wxT("N2 Number Density      = %le \n"), xden[2]);
-      fprintf(logFile, wxT("O2 Number Density      = %le \n"), xden[3]);
-      fprintf(logFile, wxT("AR Number Density      = %le \n"), xden[4]);
-      fprintf(logFile, wxT("Total Mass Density     = %le \n"), xden[5]);
-      fprintf(logFile, wxT("H Number Density       = %le \n"), xden[7]);
-      fprintf(logFile, wxT("EXOSPHERIC Temperature = %le \n"), xtemp[0]);
-      fprintf(logFile, wxT("Temperature at Alt     = %le \n"), xtemp[1]);
-      fprintf(logFile, wxT("\n"));
-      fprintf(logFile, wxT("\n"));
+      MessageInterface::ShowMessage("Writing Pre-GTDS6 MSISE90 data to log file ...\n");
+      fprintf(logFile, "Pre-GTDS6() \n");
+      fprintf(logFile, "=========== \n");
+      fprintf(logFile, "Epoch                  = %le \n", epoch);
+      fprintf(logFile, "Year & Days            = %d \n", xyd);
+      fprintf(logFile, "Seconds                = %le \n", xsod);
+      fprintf(logFile, "Altitude               = %le \n", xalt);
+      fprintf(logFile, "Latitude               = %le \n", xlat);
+      fprintf(logFile, "Longitude              = %le \n", xlon);
+      fprintf(logFile, "Solar Time             = %le \n", xlst);
+      fprintf(logFile, "F107 Average           = %le \n", xf107a);
+      fprintf(logFile, "F107                   = %le \n", xf107);
+      fprintf(logFile, "Geomagnetic index[0]   = %le \n", xap[0]);
+      fprintf(logFile, "Geomagnetic index[1]   = %le \n", xap[1]);
+      fprintf(logFile, "Geomagnetic index[2]   = %le \n", xap[2]);
+      fprintf(logFile, "Geomagnetic index[3]   = %le \n", xap[3]);
+      fprintf(logFile, "Geomagnetic index[4]   = %le \n", xap[4]);
+      fprintf(logFile, "Geomagnetic index[5]   = %le \n", xap[5]);
+      fprintf(logFile, "Geomagnetic index[6]   = %le \n", xap[6]);
+      fprintf(logFile, "Mass                   = %d \n", xmass);
+      fprintf(logFile, "HE Number Density      = %le \n", xden[0]);
+      fprintf(logFile, "O Number Density       = %le \n", xden[1]);
+      fprintf(logFile, "N2 Number Density      = %le \n", xden[2]);
+      fprintf(logFile, "O2 Number Density      = %le \n", xden[3]);
+      fprintf(logFile, "AR Number Density      = %le \n", xden[4]);
+      fprintf(logFile, "Total Mass Density     = %le \n", xden[5]);
+      fprintf(logFile, "H Number Density       = %le \n", xden[7]);
+      fprintf(logFile, "EXOSPHERIC Temperature = %le \n", xtemp[0]);
+      fprintf(logFile, "Temperature at Alt     = %le \n", xtemp[1]);
+      fprintf(logFile, "\n");
+      fprintf(logFile, "\n");
       MessageInterface::ShowMessage("DONE Writing Pre-GTDS6 MSISE90 data to log file ...\n");
       #endif
       
@@ -282,44 +282,44 @@ bool Msise90Atmosphere::Density(Real *pos, Real *density, Real epoch,
       #endif
       
       #ifdef DEBUG_MSISE90_ATMOSPHERE
-      fprintf(logFile, wxT("Post-GTDS6() \n"));
-      fprintf(logFile, wxT("=========== \n"));
-      fprintf(logFile, wxT("Epoch                  = %le \n"), epoch);
-      fprintf(logFile, wxT("Year & Days            = %d \n"), xyd);
-      fprintf(logFile, wxT("Seconds                = %le \n"), xsod);
-      fprintf(logFile, wxT("Altitude               = %le \n"), xalt);
-      fprintf(logFile, wxT("Latitude               = %le \n"), xlat);
-      fprintf(logFile, wxT("Longitude              = %le \n"), xlon);
-      fprintf(logFile, wxT("Solar Time             = %le \n"), xlst);
-      fprintf(logFile, wxT("F107 Average           = %le \n"), xf107a);
-      fprintf(logFile, wxT("F107                   = %le \n"), xf107);
-      fprintf(logFile, wxT("Geomagnetic index[0]   = %le \n"), xap[0]);
-      fprintf(logFile, wxT("Geomagnetic index[1]   = %le \n"), xap[1]);
-      fprintf(logFile, wxT("Geomagnetic index[2]   = %le \n"), xap[2]);
-      fprintf(logFile, wxT("Geomagnetic index[3]   = %le \n"), xap[3]);
-      fprintf(logFile, wxT("Geomagnetic index[4]   = %le \n"), xap[4]);
-      fprintf(logFile, wxT("Geomagnetic index[5]   = %le \n"), xap[5]);
-      fprintf(logFile, wxT("Geomagnetic index[6]   = %le \n"), xap[6]);
-      fprintf(logFile, wxT("Mass                   = %d \n"), xmass);
-      fprintf(logFile, wxT("HE Number Density      = %le \n"), xden[0]);
-      fprintf(logFile, wxT("O Number Density       = %le \n"), xden[1]);
-      fprintf(logFile, wxT("N2 Number Density      = %le \n"), xden[2]);
-      fprintf(logFile, wxT("O2 Number Density      = %le \n"), xden[3]);
-      fprintf(logFile, wxT("AR Number Density      = %le \n"), xden[4]);
-      fprintf(logFile, wxT("Total Mass Density     = %le \n"), xden[5]);
-      fprintf(logFile, wxT("H Number Density       = %le \n"), xden[6]);
-      fprintf(logFile, wxT("N Number Density       = %le \n"), xden[7]);
-      fprintf(logFile, wxT("EXOSPHERIC Temperature = %le \n"), xtemp[0]);
-      fprintf(logFile, wxT("Temperature at Alt     = %le \n"), xtemp[1]);
-      fprintf(logFile, wxT("\n"));
-      fprintf(logFile, wxT("\n"));
+      fprintf(logFile, "Post-GTDS6() \n");
+      fprintf(logFile, "=========== \n");
+      fprintf(logFile, "Epoch                  = %le \n", epoch);
+      fprintf(logFile, "Year & Days            = %d \n", xyd);
+      fprintf(logFile, "Seconds                = %le \n", xsod);
+      fprintf(logFile, "Altitude               = %le \n", xalt);
+      fprintf(logFile, "Latitude               = %le \n", xlat);
+      fprintf(logFile, "Longitude              = %le \n", xlon);
+      fprintf(logFile, "Solar Time             = %le \n", xlst);
+      fprintf(logFile, "F107 Average           = %le \n", xf107a);
+      fprintf(logFile, "F107                   = %le \n", xf107);
+      fprintf(logFile, "Geomagnetic index[0]   = %le \n", xap[0]);
+      fprintf(logFile, "Geomagnetic index[1]   = %le \n", xap[1]);
+      fprintf(logFile, "Geomagnetic index[2]   = %le \n", xap[2]);
+      fprintf(logFile, "Geomagnetic index[3]   = %le \n", xap[3]);
+      fprintf(logFile, "Geomagnetic index[4]   = %le \n", xap[4]);
+      fprintf(logFile, "Geomagnetic index[5]   = %le \n", xap[5]);
+      fprintf(logFile, "Geomagnetic index[6]   = %le \n", xap[6]);
+      fprintf(logFile, "Mass                   = %d \n", xmass);
+      fprintf(logFile, "HE Number Density      = %le \n", xden[0]);
+      fprintf(logFile, "O Number Density       = %le \n", xden[1]);
+      fprintf(logFile, "N2 Number Density      = %le \n", xden[2]);
+      fprintf(logFile, "O2 Number Density      = %le \n", xden[3]);
+      fprintf(logFile, "AR Number Density      = %le \n", xden[4]);
+      fprintf(logFile, "Total Mass Density     = %le \n", xden[5]);
+      fprintf(logFile, "H Number Density       = %le \n", xden[6]);
+      fprintf(logFile, "N Number Density       = %le \n", xden[7]);
+      fprintf(logFile, "EXOSPHERIC Temperature = %le \n", xtemp[0]);
+      fprintf(logFile, "Temperature at Alt     = %le \n", xtemp[1]);
+      fprintf(logFile, "\n");
+      fprintf(logFile, "\n");
       #endif
       
       density[i] = xden[5] * 1000.0;
 
       #ifdef DEBUG_MSISE90_ATMOSPHERE
          MessageInterface::ShowMessage(
-            wxT("   Density = %15.9le\n"), density[i]);
+            "   Density = %15.9le\n", density[i]);
       #endif
    }
    
@@ -384,7 +384,7 @@ void Msise90Atmosphere::GetInputs(Real epoch)
 /**
  * Clone the object (inherited from GmatBase).
  *
- * @return a clone of wxT("this") object.
+ * @return a clone of "this" object.
  */
 //------------------------------------------------------------------------------
 GmatBase* Msise90Atmosphere::Clone() const

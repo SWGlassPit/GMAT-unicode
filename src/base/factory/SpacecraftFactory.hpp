@@ -28,8 +28,8 @@
 class GMAT_API SpacecraftFactory : public Factory
 {
 public:
-   SpaceObject* CreateSpacecraft(const wxString &ofType,
-                                 const wxString &withName = wxT(""));
+   SpaceObject* CreateSpacecraft(const std::string &ofType,
+                                 const std::string &withName = "");
 
    // default constructor
    SpacecraftFactory();

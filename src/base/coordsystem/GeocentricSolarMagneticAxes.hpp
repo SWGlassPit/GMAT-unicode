@@ -34,7 +34,7 @@ class GMAT_API GeocentricSolarMagneticAxes : public ObjectReferencedAxes
 public:
 
    // default constructor
-   GeocentricSolarMagneticAxes(const wxString &itsName = wxT(""));
+   GeocentricSolarMagneticAxes(const std::string &itsName = "");
    // copy constructor
    GeocentricSolarMagneticAxes(const GeocentricSolarMagneticAxes &gse);
    // operator = for assignment

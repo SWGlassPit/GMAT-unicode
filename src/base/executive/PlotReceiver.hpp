@@ -48,31 +48,31 @@ public:
    void               SetViewType(GmatPlot::ViewType view);
    GmatPlot::ViewType GetViewType();
    
-   virtual bool CreateGlPlotWindow(const wxString &plotName,
-                        const wxString &oldName,
+   virtual bool CreateGlPlotWindow(const std::string &plotName,
+                        const std::string &oldName,
                         Real positionX, Real positionY,
                         Real width, Real height,
                         Integer numPtsToRedraw) = 0;
    
-   virtual void SetGlSolarSystem(const wxString &plotName,
+   virtual void SetGlSolarSystem(const std::string &plotName,
                         SolarSystem *ss) = 0;
    
-   virtual void SetGlObject(const wxString &plotName,
+   virtual void SetGlObject(const std::string &plotName,
                         const StringArray &objNames,
                         const UnsignedIntArray &objOrbitColors,
                         const std::vector<SpacePoint*> &objArray) = 0;
    
-   virtual void SetGlCoordSystem(const wxString &plotName,
+   virtual void SetGlCoordSystem(const std::string &plotName,
                         CoordinateSystem *internalCs,
                         CoordinateSystem *viewCs,
                         CoordinateSystem *viewUpCs) = 0;
    
-   virtual void SetGl2dDrawingOption(const wxString &plotName,
-                        const wxString &centralBodyName,
-                        const wxString &textureMap,
+   virtual void SetGl2dDrawingOption(const std::string &plotName,
+                        const std::string &centralBodyName,
+                        const std::string &textureMap,
                         Integer footPrintOption) = 0;
    
-   virtual void SetGl3dDrawingOption(const wxString &plotName,
+   virtual void SetGl3dDrawingOption(const std::string &plotName,
                         bool drawEcPlane, bool drawEqPlane,
                         bool drawWireFrame, bool drawAxes,
                         bool drawGrid, bool drawSunLine,
@@ -80,31 +80,31 @@ public:
                         bool drawStars, bool drawConstellations,
                         Integer starCount) = 0;
    
-   virtual void SetGl3dViewOption(const wxString &plotName,
+   virtual void SetGl3dViewOption(const std::string &plotName,
                         SpacePoint *vpRefObj, SpacePoint *vpVecObj,
                         SpacePoint *vdObj, Real vsFactor,
                         const Rvector3 &vpRefVec, const Rvector3 &vpVec,
-                        const Rvector3 &vdVec, const wxString &upAxis,
+                        const Rvector3 &vdVec, const std::string &upAxis,
                         bool usevpRefVec, bool usevpVec, bool usevdVec) = 0;
    
-   virtual void SetGlDrawOrbitFlag(const wxString &plotName,
+   virtual void SetGlDrawOrbitFlag(const std::string &plotName,
                         const std::vector<bool> &drawArray) = 0;
    
-   virtual void SetGlShowObjectFlag(const wxString &plotName,
+   virtual void SetGlShowObjectFlag(const std::string &plotName,
                         const std::vector<bool> &showArray) = 0;
    
-   virtual void SetGlUpdateFrequency(const wxString &plotName, 
+   virtual void SetGlUpdateFrequency(const std::string &plotName, 
                         Integer updFreq) = 0;
    
-   virtual bool IsThere(const wxString &plotName) = 0;
+   virtual bool IsThere(const std::string &plotName) = 0;
    
-   virtual bool InitializeGlPlot(const wxString &plotName) = 0;
-   virtual bool RefreshGlPlot(const wxString &plotName) = 0;
-   virtual bool DeleteGlPlot(const wxString &plotName) = 0;
-   virtual bool SetGlEndOfRun(const wxString &plotName) = 0;
+   virtual bool InitializeGlPlot(const std::string &plotName) = 0;
+   virtual bool RefreshGlPlot(const std::string &plotName) = 0;
+   virtual bool DeleteGlPlot(const std::string &plotName) = 0;
+   virtual bool SetGlEndOfRun(const std::string &plotName) = 0;
    
-   virtual bool UpdateGlPlot(const wxString &plotName,
-                        const wxString &oldName,
+   virtual bool UpdateGlPlot(const std::string &plotName,
+                        const std::string &oldName,
                         const StringArray &scNames, const Real &time,
                         const RealArray &posX, const RealArray &posY,
                         const RealArray &posZ, const RealArray &velX,
@@ -113,55 +113,55 @@ public:
                         Integer solverOption, bool updateCanvas,
                         bool drawing, bool inFunction) = 0;
    
-   virtual bool TakeGlAction(const wxString &plotName,
-                        const wxString &action) = 0;
+   virtual bool TakeGlAction(const std::string &plotName,
+                        const std::string &action) = 0;
    
    // for XY plot
-   virtual bool CreateXyPlotWindow(const wxString &plotName,
-                        const wxString &oldName,
+   virtual bool CreateXyPlotWindow(const std::string &plotName,
+                        const std::string &oldName,
                         Real positionX, Real positionY,
                         Real width, Real height,
-                        const wxString &plotTitle,
-                        const wxString &xAxisTitle,
-                        const wxString &yAxisTitle,
+                        const std::string &plotTitle,
+                        const std::string &xAxisTitle,
+                        const std::string &yAxisTitle,
                         bool drawGrid = false,
                         bool canSaveLocation = true) = 0;
-   virtual bool DeleteXyPlot(const wxString &plotName) = 0;
-   virtual bool AddXyPlotCurve(const wxString &plotName, int curveIndex,
+   virtual bool DeleteXyPlot(const std::string &plotName) = 0;
+   virtual bool AddXyPlotCurve(const std::string &plotName, int curveIndex,
                         int yOffset, Real yMin, Real yMax,
-                        const wxString &curveTitle,
+                        const std::string &curveTitle,
                         UnsignedInt penColor) = 0;
-   virtual bool DeleteAllXyPlotCurves(const wxString &plotName,
-                        const wxString &oldName) = 0;
-   virtual bool DeleteXyPlotCurve(const wxString &plotName,
+   virtual bool DeleteAllXyPlotCurves(const std::string &plotName,
+                        const std::string &oldName) = 0;
+   virtual bool DeleteXyPlotCurve(const std::string &plotName,
                         int curveIndex) = 0;
-   virtual void ClearXyPlotData(const wxString &plotName) = 0;
-   virtual void XyPlotPenUp(const wxString &plotName) = 0;
-   virtual void XyPlotPenDown(const wxString &plotName) = 0;
-   virtual void XyPlotDarken(const wxString &plotName, Integer factor,
+   virtual void ClearXyPlotData(const std::string &plotName) = 0;
+   virtual void XyPlotPenUp(const std::string &plotName) = 0;
+   virtual void XyPlotPenDown(const std::string &plotName) = 0;
+   virtual void XyPlotDarken(const std::string &plotName, Integer factor,
                         Integer index = -1, Integer forCurve = -1) = 0;
-   virtual void XyPlotLighten(const wxString &plotName, Integer factor,
+   virtual void XyPlotLighten(const std::string &plotName, Integer factor,
                         Integer index = -1, Integer forCurve = -1) = 0;
 
-   virtual void XyPlotMarkPoint(const wxString &plotName, Integer index = -1,
+   virtual void XyPlotMarkPoint(const std::string &plotName, Integer index = -1,
                         Integer forCurve = -1) = 0;
-   virtual void XyPlotMarkBreak(const wxString &plotName, Integer index = -1,
+   virtual void XyPlotMarkBreak(const std::string &plotName, Integer index = -1,
                         Integer curveNumber = -1) = 0;
-   virtual void XyPlotClearFromBreak(const wxString &plotName,
+   virtual void XyPlotClearFromBreak(const std::string &plotName,
                         Integer breakNumber, Integer index = -1, Integer curveNumber = -1) = 0;
 
-   virtual void XyPlotChangeColor(const wxString &plotName,
+   virtual void XyPlotChangeColor(const std::string &plotName,
                         Integer index = -1, UnsignedInt newColor = 0xffffff,
                         Integer forCurve = -1) = 0;
-   virtual void XyPlotChangeMarker(const wxString &plotName,
+   virtual void XyPlotChangeMarker(const std::string &plotName,
                         Integer index = -1, Integer newMarker = -1, int forCurve = -1) = 0;
-   virtual void XyPlotChangeWidth(const wxString &plotName,
+   virtual void XyPlotChangeWidth(const std::string &plotName,
                         Integer index = -1, Integer newWidth = 1, int forCurve = -1) = 0;
-   virtual void XyPlotChangeStyle(const wxString &plotName,
+   virtual void XyPlotChangeStyle(const std::string &plotName,
                         Integer index = -1, Integer newStyle = 100, int forCurve = -1) = 0;
 
-   virtual void XyPlotRescale(const wxString &plotName) = 0;
-   virtual void XyPlotCurveSettings(const wxString &plotName,
+   virtual void XyPlotRescale(const std::string &plotName) = 0;
+   virtual void XyPlotCurveSettings(const std::string &plotName,
                         bool useLines = true,
                         Integer lineWidth = 1,
                         Integer lineStyle = 100,
@@ -171,27 +171,27 @@ public:
                         bool useHiLow = false,
                         Integer forCurve = -1) = 0;
 
-   virtual void SetXyPlotTitle(const wxString &plotName,
-                        const wxString &plotTitle) = 0;
-   virtual void ShowXyPlotLegend(const wxString &plotName) = 0;
-   virtual bool RefreshXyPlot(const wxString &plotName) = 0;
-   virtual bool UpdateXyPlot(const wxString &plotName,
-                        const wxString &oldName,
+   virtual void SetXyPlotTitle(const std::string &plotName,
+                        const std::string &plotTitle) = 0;
+   virtual void ShowXyPlotLegend(const std::string &plotName) = 0;
+   virtual bool RefreshXyPlot(const std::string &plotName) = 0;
+   virtual bool UpdateXyPlot(const std::string &plotName,
+                        const std::string &oldName,
                         const Real &xval, const Rvector &yvals,
-                        const wxString &plotTitle,
-                        const wxString &xAxisTitle,
-                        const wxString &yAxisTitle,
+                        const std::string &plotTitle,
+                        const std::string &xAxisTitle,
+                        const std::string &yAxisTitle,
                         bool updateCanvas, bool drawGrid) = 0;
-   virtual bool UpdateXyPlotData(const wxString &plotName, const Real &xval,
+   virtual bool UpdateXyPlotData(const std::string &plotName, const Real &xval,
                         const Rvector &yvals, const Rvector *yhis = NULL,
                         const Rvector *ylows = NULL) = 0;
-   virtual bool UpdateXyPlotCurve(const wxString &plotName,
+   virtual bool UpdateXyPlotCurve(const std::string &plotName,
                         const Integer whichCurve, const Real xval,
                         const Real yval, const Real yhi = 0.0,
                         const Real ylow = 0.0) = 0;
 
-   virtual bool DeactivateXyPlot(const wxString &plotName) = 0;
-   virtual bool ActivateXyPlot(const wxString &plotName) = 0;
+   virtual bool DeactivateXyPlot(const std::string &plotName) = 0;
+   virtual bool ActivateXyPlot(const std::string &plotName) = 0;
 
 protected:
    GmatPlot::ViewType currentView;

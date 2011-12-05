@@ -65,7 +65,7 @@ class GMAT_API GmatCommand : public GmatBase
 {
 public:
    // class constructor
-   GmatCommand(const wxString &typeStr);
+   GmatCommand(const std::string &typeStr);
    // class destructor
    virtual ~GmatCommand();
    // Copy constructor
@@ -73,12 +73,12 @@ public:
    // Assignment operator
    GmatCommand&         operator=(const GmatCommand &c);
    
-   void                 SetGeneratingString(const wxString &gs);
-   virtual const wxString&  
+   void                 SetGeneratingString(const std::string &gs);
+   virtual const std::string&  
                         GetGeneratingString(
                            Gmat::WriteMode mode = Gmat::SCRIPTING,
-                           const wxString &prefix = wxT(""),
-                           const wxString &useName = wxT(""));
+                           const std::string &prefix = "",
+                           const std::string &useName = "");
    
    // Methods for function
    virtual void         SetCurrentFunction(Function *function);
@@ -90,33 +90,33 @@ public:
    virtual const StringArray& 
                         GetWrapperObjectNameArray();
    virtual bool         SetElementWrapper(ElementWrapper* toWrapper,
-                        const wxString &withName);
+                        const std::string &withName);
    virtual void         ClearWrappers();
    virtual void         CheckDataType(ElementWrapper* forWrapper,
                                       Gmat::ParameterType needType,
-                                      const wxString &cmdName,
+                                      const std::string &cmdName,
                                       bool ignoreUnsetReference = false);
    
    // Methods used to setup objects
-   virtual bool         SetObject(const wxString &name,
+   virtual bool         SetObject(const std::string &name,
                                   const Gmat::ObjectType type,
-                                  const wxString &associate = wxT(""),
+                                  const std::string &associate = "",
                                   const Gmat::ObjectType associateType =
                                        Gmat::UNKNOWN_OBJECT);
    virtual bool         SetObject(GmatBase *obj,
                                   const Gmat::ObjectType type);
    virtual GmatBase*    GetGmatObject(const Gmat::ObjectType type, 
-                                  const wxString objName = wxT(""));
+                                  const std::string objName = "");
    
    virtual void         SetInternalCoordSystem(CoordinateSystem *cs);
-   virtual void         SetupSummary(const wxString &csName, bool entireMission = false, bool physicsOnly = false);
-   virtual void         SetSummaryName(const wxString &sumName);
-   virtual wxString  GetSummaryName();
+   virtual void         SetupSummary(const std::string &csName, bool entireMission = false, bool physicsOnly = false);
+   virtual void         SetSummaryName(const std::string &sumName);
+   virtual std::string  GetSummaryName();
    virtual void         SetSolarSystem(SolarSystem *ss);
    virtual void         SetTriggerManagers(std::vector<TriggerManager*> *trigs);
-   virtual void         SetObjectMap(std::map<wxString, GmatBase *> *map);
+   virtual void         SetObjectMap(std::map<std::string, GmatBase *> *map);
    virtual ObjectMap*   GetObjectMap();
-   virtual void         SetGlobalObjectMap(std::map<wxString, GmatBase *> *map);
+   virtual void         SetGlobalObjectMap(std::map<std::string, GmatBase *> *map);
    virtual void         SetTransientForces(std::vector<PhysicalModel*> *tf);
    virtual void         SetEventLocators(std::vector<EventLocator*> *els);
    virtual void         SetPublisher(Publisher *p);
@@ -127,40 +127,40 @@ public:
    virtual bool         Validate();
 
    // Access methods inherited from GmatBase
-   virtual wxString GetParameterText(const Integer id) const;
-   virtual Integer     GetParameterID(const wxString &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
+   virtual Integer     GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                        GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
    
    virtual bool        IsParameterReadOnly(const Integer id) const;
-   virtual bool        IsParameterReadOnly(const wxString &label) const;
+   virtual bool        IsParameterReadOnly(const std::string &label) const;
    
-   virtual wxString GetStringParameter(const Integer id) const;
-   virtual wxString GetStringParameter(const Integer id,
+   virtual std::string GetStringParameter(const Integer id) const;
+   virtual std::string GetStringParameter(const Integer id,
                                           const Integer index) const;
    virtual bool        SetStringParameter(const Integer id, 
-                                          const wxString &value);
+                                          const std::string &value);
    virtual bool        SetStringParameter(const Integer id, 
-                                          const wxString &value,
+                                          const std::string &value,
                                           const Integer index);
-   virtual wxString GetStringParameter(const wxString &label) const;
-   virtual wxString GetStringParameter(const wxString &label,
+   virtual std::string GetStringParameter(const std::string &label) const;
+   virtual std::string GetStringParameter(const std::string &label,
                                           const Integer index) const;
-   virtual bool        SetStringParameter(const wxString &label, 
-                                          const wxString &value);
-   virtual bool        SetStringParameter(const wxString &label, 
-                                          const wxString &value,
+   virtual bool        SetStringParameter(const std::string &label, 
+                                          const std::string &value);
+   virtual bool        SetStringParameter(const std::string &label, 
+                                          const std::string &value,
                                           const Integer index);
    
    // methods to set conditions and operators between multiple conditions;
    // atIndex = -999 means add it to the end of the list; otherwise, add/replace
    // the condition at the specified index
-   virtual bool         SetCondition(const wxString &lhs, 
-                                     const wxString &operation, 
-                                     const wxString &rhs, 
+   virtual bool         SetCondition(const std::string &lhs, 
+                                     const std::string &operation, 
+                                     const std::string &rhs, 
                                      Integer atIndex = -999);
-   virtual bool         SetConditionOperator(const wxString &op, 
+   virtual bool         SetConditionOperator(const std::string &op, 
                                              Integer atIndex = -999);
    
    virtual bool         RemoveCondition(Integer atIndex);
@@ -221,7 +221,7 @@ protected:
    };
    
    /// Command parameter labels
-   static const wxString 
+   static const std::string 
                      PARAMETER_TEXT[GmatCommandParamCount - GmatBaseParamCount];
    /// Command parameter types
    static const Gmat::ParameterType 
@@ -247,7 +247,7 @@ protected:
    /// Object store obtained from the Sandbox
    ObjectMap            *objectMap;
    /// Object store obtained from the Sandbox
-   ////std::map<wxString, GmatBase *> *globalObjectMap;
+   ////std::map<std::string, GmatBase *> *globalObjectMap;
    ObjectMap            *globalObjectMap;
    /// Solar System, set by the local Sandbox
    SolarSystem          *solarSys;
@@ -270,9 +270,9 @@ protected:
    /// Flag indicating that the command changes the state vector for propagation
    bool                 commandChangedState;
    /// String used for the command summary data
-   wxString          commandSummary;
+   std::string          commandSummary;
    /// Coordinate System used for the Command Summary display
-   wxString          summaryCoordSysName;
+   std::string          summaryCoordSysName;
    /// Current coordinate system for Command Summary
    CoordinateSystem     *summaryCoordSys;
    /// flag indicating whether or not the summary for the command is part of
@@ -286,10 +286,10 @@ protected:
    /// flag indicating whether or not to include this type of command in a command summary
    bool                 includeInSummary;
    /// node name (on the GUI) for the command
-   wxString          summaryName;
+   std::string          summaryName;
 
 //   /// Optional comment string associated with the command
-//   wxString          comment;
+//   std::string          comment;
    /// Flag indicating that a command has been changed by a user
    bool                 commandChanged;
    
@@ -309,25 +309,25 @@ protected:
    virtual bool         ClearObjects();
    virtual void         BuildCommandSummary(bool commandCompleted = true);
    virtual void         BuildCommandSummaryString(bool commandCompleted = true);
-   virtual const wxString 
+   virtual const std::string 
                         BuildMissionSummaryString(const GmatCommand* head = NULL);
-   virtual const wxString
+   virtual const std::string
                         BuildNumber(Real value, bool useExp = false, Integer length = 17);
    // for command name
-   virtual void         InsertCommandName(wxString &genString);
+   virtual void         InsertCommandName(std::string &genString);
    
    // for Debug
-   virtual void         ShowCommand(const wxString &prefix,
-                                    const wxString &title1, GmatCommand *cmd1,
-                                    const wxString &title2 = wxT(""),
+   virtual void         ShowCommand(const std::string &prefix,
+                                    const std::string &title1, GmatCommand *cmd1,
+                                    const std::string &title2 = "",
                                     GmatCommand *cmd2 = NULL);
-   virtual void         ShowObjectMaps(const wxString &title = wxT(""));
+   virtual void         ShowObjectMaps(const std::string &title = "");
    
    // for the Parameters in Commands updates
    StringArray          InterpretPreface();
-   bool                 IsSettable(const wxString &setDesc);
-   bool                 SeparateEquals(const wxString &description,
-                                       wxString &lhs, wxString &rhs,
+   bool                 IsSettable(const std::string &setDesc);
+   bool                 SeparateEquals(const std::string &description,
+                                       std::string &lhs, std::string &rhs,
                                        bool checkOp = false);
    
    // IDs used to buffer the command summary data
@@ -352,7 +352,7 @@ protected:
 
    // Temporary -- replace when convenient
    void CartToKep(const Rvector6 in, Rvector6 &out);
-   GmatBase* FindObject(const wxString &name);
+   GmatBase* FindObject(const std::string &name);
    
    // Method(s) used for ParametersInCommands
    bool                SetWrapperReferences(ElementWrapper &wrapper);

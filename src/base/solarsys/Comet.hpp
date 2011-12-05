@@ -35,9 +35,9 @@ class GMAT_API Comet : public CelestialBody
 {
 public:
    // default constructor, with optional name
-   Comet(wxString name = wxT(""));
+   Comet(std::string name = "");
    // additional constructor
-   Comet(wxString name, const wxString &cBody);
+   Comet(std::string name, const std::string &cBody);
    // copy constructor
    Comet(const Comet &copy);
    // operator=
@@ -58,7 +58,7 @@ protected:
       
    };
    
-   //static const wxString PARAMETER_TEXT[CometParamCount - CelestialBodyParamCount];
+   //static const std::string PARAMETER_TEXT[CometParamCount - CelestialBodyParamCount];
    
    //static const Gmat::ParameterType 
    //                         PARAMETER_TYPE[CometParamCount - CelestialBodyParamCount];

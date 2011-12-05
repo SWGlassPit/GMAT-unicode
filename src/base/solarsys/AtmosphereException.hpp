@@ -28,7 +28,7 @@ class GMAT_API AtmosphereException : public BaseException
 {
 public:
    //---------------------------------------------------------------------------
-   //  AtmosphereException(const wxString &details)
+   //  AtmosphereException(const std::string &details)
    //---------------------------------------------------------------------------
    /**
     * Constructs an AtmosphereException object (default constructor).
@@ -36,8 +36,8 @@ public:
     * @param <details> Detailed message about why the exception was thrown.
     */
    //---------------------------------------------------------------------------
-   AtmosphereException(const wxString &details) :
-      BaseException  (wxT("Atmosphere model exception: "), details)
+   AtmosphereException(const std::string &details) :
+      BaseException  ("Atmosphere model exception: ", details)
    {
    }
 

@@ -26,7 +26,7 @@
 class GMAT_API PropSetupException : public BaseException
 {
 public:
-   PropSetupException(const wxString& details = wxT("")) 
-      : BaseException(wxT("PropSetup Exception: "), details) {};
+   PropSetupException(const std::string& details = "") 
+      : BaseException("PropSetup Exception: ", details) {};
 };
 #endif

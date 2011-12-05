@@ -26,15 +26,15 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  AssetException(wxString details)
+//  AssetException(std::string details)
 //------------------------------------------------------------------------------
 /**
 * Constructs an AssetException object (default constructor).
  */
 //------------------------------------------------------------------------------
 
-AssetException::AssetException(wxString details) :
-BaseException  (wxT("Asset exception: "), details)
+AssetException::AssetException(std::string details) :
+BaseException  ("Asset exception: ", details)
 {
 
 }

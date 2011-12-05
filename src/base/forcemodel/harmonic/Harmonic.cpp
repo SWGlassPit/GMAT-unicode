@@ -161,7 +161,7 @@ void Harmonic::CalculateField(const Real& jday,  const Real pos[3], const Intege
                               Real  acc[3],      Rmatrix33& gradient) const
 {
    #ifdef DEBUG_CALCULATE_FIELD
-      MessageInterface::ShowMessage(wxT("Entering Harmonic::CalculateField with nn = %d, mm = %d\n"), nn, mm);
+      MessageInterface::ShowMessage("Entering Harmonic::CalculateField with nn = %d, mm = %d\n", nn, mm);
    #endif
    Integer XS = fillgradient ? 2 : 1;
    // calculate vector components ----------------------------------
@@ -188,7 +188,7 @@ void Harmonic::CalculateField(const Real& jday,  const Real pos[3], const Intege
       Im[m] = m==0 ? 0 : s*Im[m-1] + t*Re[m-1]; // imaginary part of (s + i*t)^m
    }
    #ifdef DEBUG_CALCULATE_FIELD
-      MessageInterface::ShowMessage(wxT("      In Harmonic::CalculateField, A, Re, Im have been set\n"));
+      MessageInterface::ShowMessage("      In Harmonic::CalculateField, A, Re, Im have been set\n");
    #endif
 
    // Now do summation ------------------------------------------------
@@ -228,7 +228,7 @@ void Harmonic::CalculateField(const Real& jday,  const Real pos[3], const Intege
       Real sum34 = 0;
       Real sum44 = 0;
 
-      for (Integer m=0;  m <= n && m<=MM && m<=mm;  ++m) // wcs - removed wxT("m<=n")
+      for (Integer m=0;  m <= n && m<=MM && m<=mm;  ++m) // wcs - removed "m<=n"
       {
          Real Cval,Sval;
          Cval = Cnm (jday,n,m);
@@ -258,12 +258,12 @@ void Harmonic::CalculateField(const Real& jday,  const Real pos[3], const Intege
             Real Avv12 = Vnm / V[n+1][m+2] * A[n+1][m+2];
             Real Avv22 = Vnm / V[n+2][m+2] * A[n+2][m+2];
             #ifdef DEBUG_GRADIENT
-               MessageInterface::ShowMessage(wxT("In Harmonic::CalField, fillgradient = %s\n"), (fillgradient? wxT("true") : wxT("false")));
-               MessageInterface::ShowMessage(wxT("************** n = %d   m = %d\n"), n, m);
-               MessageInterface::ShowMessage(wxT("Vnm       = %12.10f\n"), Vnm);
-               MessageInterface::ShowMessage(wxT("Avv02     = %12.10f\n"), Avv02);
-               MessageInterface::ShowMessage(wxT("V[n][m+2] = %12.10f\n"), V[n][m+2]);
-               MessageInterface::ShowMessage(wxT("A[n][m+2] = %12.10f\n"), A[n][m+2]);
+               MessageInterface::ShowMessage("In Harmonic::CalField, fillgradient = %s\n", (fillgradient? "true" : "false"));
+               MessageInterface::ShowMessage("************** n = %d   m = %d\n", n, m);
+               MessageInterface::ShowMessage("Vnm       = %12.10f\n", Vnm);
+               MessageInterface::ShowMessage("Avv02     = %12.10f\n", Avv02);
+               MessageInterface::ShowMessage("V[n][m+2] = %12.10f\n", V[n][m+2]);
+               MessageInterface::ShowMessage("A[n][m+2] = %12.10f\n", A[n][m+2]);
             #endif
             // Pines Equation 36 (Part of)
             sum11 += m*(m-1) * Avv00 * G;
@@ -296,12 +296,12 @@ void Harmonic::CalculateField(const Real& jday,  const Real pos[3], const Intege
          a34 -= rho_np2/bodyRadius/bodyRadius*sum34;
          a44 += rho_np2/bodyRadius/bodyRadius*sum44;
          #ifdef DEBUG_GRADIENT
-         //   MessageInterface::ShowMessage(wxT("In Harmonic::CalField, fillgradient = %s\n"), (fillgradient? wxT("true") : wxT("false")));
-         //   MessageInterface::ShowMessage(wxT("a33   = %12.10f\n"), a33);
-         //   MessageInterface::ShowMessage(wxT("sum33 = %12.10f\n"), sum33);
-         //   MessageInterface::ShowMessage(wxT("u     = %12.10f\n"), u);
-         //   MessageInterface::ShowMessage(wxT("a44   = %12.10f\n"), a44);
-         //   MessageInterface::ShowMessage(wxT("a34   = %12.10f\n"), a34);
+         //   MessageInterface::ShowMessage("In Harmonic::CalField, fillgradient = %s\n", (fillgradient? "true" : "false"));
+         //   MessageInterface::ShowMessage("a33   = %12.10f\n", a33);
+         //   MessageInterface::ShowMessage("sum33 = %12.10f\n", sum33);
+         //   MessageInterface::ShowMessage("u     = %12.10f\n", u);
+         //   MessageInterface::ShowMessage("a44   = %12.10f\n", a44);
+         //   MessageInterface::ShowMessage("a34   = %12.10f\n", a34);
          #endif
       }
    }
@@ -324,11 +324,11 @@ void Harmonic::CalculateField(const Real& jday,  const Real pos[3], const Intege
       gradient(2,1) =  a23 + t*u*a44 + u*a24 + t*a34;
    }
    #ifdef DEBUG_GRADIENT
-      MessageInterface::ShowMessage(wxT("In Harmonic::CalField, fillgradient = %s\n"), (fillgradient? wxT("true") : wxT("false")));
-      MessageInterface::ShowMessage(wxT("gradientHarmonic = %s\n"), gradient.ToString().c_str());
+      MessageInterface::ShowMessage("In Harmonic::CalField, fillgradient = %s\n", (fillgradient? "true" : "false"));
+      MessageInterface::ShowMessage("gradientHarmonic = %s\n", gradient.ToString().c_str());
    #endif
    #ifdef DEBUG_CALCULATE_FIELD
-      MessageInterface::ShowMessage(wxT("Leaving Harmonic::CalculateField\n"));
+      MessageInterface::ShowMessage("Leaving Harmonic::CalculateField\n");
    #endif
 }
 
@@ -364,11 +364,11 @@ void Harmonic::Allocate()
       V[n][0] = sqrt(Real(2*n+1));       // Now set true value
    }
    #ifdef DEBUG_ALLOCATION
-      MessageInterface::ShowMessage(wxT("After Allocation, V = \n"));
+      MessageInterface::ShowMessage("After Allocation, V = \n");
       for (Integer ii = 0; ii < NN + 3; ii++)
       {
          for (Integer jj = 0; jj < NN + 3; jj++)
-            MessageInterface::ShowMessage(wxT("   V[%d][%d] = %12.10f\n"), ii, jj, V[ii][jj]);
+            MessageInterface::ShowMessage("   V[%d][%d] = %12.10f\n", ii, jj, V[ii][jj]);
       }
    #endif
    for (Integer n=0;  n<=NN;  ++n)
@@ -428,12 +428,12 @@ void Harmonic::AllocateArray(Real**& a, const Integer& nn, const Integer& excess
    // Allocate out to full m, regardless of M_FileOrder
    a = new Real*[nn+1+excess];
    if (!a)
-      throw ODEModelException (wxT("Harmonic::AllocateArray failed"));
+      throw ODEModelException ("Harmonic::AllocateArray failed");
    for (Integer n=0;  n<=nn+1+excess-1;  ++n)
    {
       a[n] = new Real[nn+1+excess];   // wcs 2011.06.02 n -> nn
       if (!a[n])
-         throw ODEModelException (wxT("Harmonic::AllocateArray failed"));
+         throw ODEModelException ("Harmonic::AllocateArray failed");
       for (Integer m=0;  m<=nn+1+excess-1;  ++m)   // wcs 2011.06.02  n -> nn
          a[n][m] = 0.0;
    }
@@ -444,7 +444,7 @@ void Harmonic::AllocateArray(Real*& a, const Integer& nn, const Integer& excess)
 {
    a = new Real[nn+1+excess];
    if (!a)
-      throw ODEModelException (wxT("Harmonic::AllocateArray failed"));
+      throw ODEModelException ("Harmonic::AllocateArray failed");
    for (Integer n=0;  n<=nn+1+excess-1;  ++n)
       a[n] = 0.0;
 }

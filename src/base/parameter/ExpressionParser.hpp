@@ -28,7 +28,7 @@
  *              * /
  *              + -
  *
- * Parser Code Reference: wxT("The Complete Reference C++") by Herbert Schildt,
+ * Parser Code Reference: "The Complete Reference C++" by Herbert Schildt,
  *    4th Edition, P963-997
  *
  */
@@ -45,7 +45,7 @@ public:
    ExpressionParser();
    ~ExpressionParser();
    
-   Real EvalExp(const wxString &exp);
+   Real EvalExp(const char *exp);
    void SetParameterDatabase(ParameterDatabase *pdb);
    
 private:
@@ -67,9 +67,9 @@ private:
    };
 
    /// points to the expression
-   wxString mExp;
+   const char *mExp;
    /// holds current token
-   wxString mToken;
+   char mToken[80];
    /// holds token's type
    TokenType mTokenType;
    /// holds variable's values
@@ -83,9 +83,9 @@ private:
    void EvalUnary(Real &result);
    void EvalParenExp(Real &result);
    void GetValue(Real &result);
-   Real EvalVariable(wxString &var);
+   Real EvalVariable(char *var);
    void GetToken();
-   bool IsDelimiter(wxChar c);
+   bool IsDelimiter(char c);
    void HandleSyntaxError(int error);
       
 };

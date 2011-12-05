@@ -36,49 +36,49 @@
 // static data
 //---------------------------------
 
-const wxString
+const std::string
 OwnedPlot::PARAMETER_TEXT[OwnedPlotParamCount - GmatBaseParamCount] =
 {
-   wxT("Add"),
-   wxT("PlotTitle"),
-   wxT("XAxisTitle"),
-   wxT("YAxisTitle"),
-   wxT("Grid"),
-   wxT("DataCollectFrequency"),
-   wxT("UpdatePlotFrequency"),
-   wxT("ShowPlot"),
-   wxT("ShowLegend"),
-   wxT("DefaultColor"),
-   wxT("UseLines"),
-   wxT("LineWidth"),
-   wxT("LineStyle"),
-   wxT("UseMarkers"),
-   wxT("MarkerSize"),
-   wxT("Marker"),
-   wxT("UseHiLow")
+   "Add",
+   "PlotTitle",
+   "XAxisTitle",
+   "YAxisTitle",
+   "Grid",
+   "DataCollectFrequency",
+   "UpdatePlotFrequency",
+   "ShowPlot",
+   "ShowLegend",
+   "DefaultColor",
+   "UseLines",
+   "LineWidth",
+   "LineStyle",
+   "UseMarkers",
+   "MarkerSize",
+   "Marker",
+   "UseHiLow"
 }; 
 
 
 const Gmat::ParameterType
 OwnedPlot::PARAMETER_TYPE[OwnedPlotParamCount - GmatBaseParamCount] =
 {
-   Gmat::OBJECTARRAY_TYPE, // wxT("Add"),
-   Gmat::STRING_TYPE,      // wxT("PlotTitle"),
-   Gmat::STRING_TYPE,      // wxT("XAxisTitle"),
-   Gmat::STRING_TYPE,      // wxT("YAxisTitle"),
-   Gmat::ON_OFF_TYPE,      // wxT("Grid"),
-   Gmat::INTEGER_TYPE,     // wxT("DataCollectFrequency"),
-   Gmat::INTEGER_TYPE,     // wxT("UpdatePlotFrequency"),
-   Gmat::BOOLEAN_TYPE,     // wxT("ShowPlot"),
-   Gmat::BOOLEAN_TYPE,     // wxT("ShowLegend"),
-   Gmat::INTEGER_TYPE,     // wxT("DefaultColor"),  <-- May need to be unsigned
-   Gmat::BOOLEAN_TYPE,     // wxT("UseLines"),
-   Gmat::INTEGER_TYPE,     // wxT("LineWidth"),
-   Gmat::INTEGER_TYPE,     // wxT("LineStyle"),
-   Gmat::BOOLEAN_TYPE,     // wxT("UseMarkers"),
-   Gmat::INTEGER_TYPE,     // wxT("MarkerSize"),
-   Gmat::INTEGER_TYPE,     // wxT("Marker"),        <-- Maybe make a string
-   Gmat::BOOLEAN_TYPE,     // wxT("UseHiLow")
+   Gmat::OBJECTARRAY_TYPE, // "Add",
+   Gmat::STRING_TYPE,      // "PlotTitle",
+   Gmat::STRING_TYPE,      // "XAxisTitle",
+   Gmat::STRING_TYPE,      // "YAxisTitle",
+   Gmat::ON_OFF_TYPE,      // "Grid",
+   Gmat::INTEGER_TYPE,     // "DataCollectFrequency",
+   Gmat::INTEGER_TYPE,     // "UpdatePlotFrequency",
+   Gmat::BOOLEAN_TYPE,     // "ShowPlot",
+   Gmat::BOOLEAN_TYPE,     // "ShowLegend",
+   Gmat::INTEGER_TYPE,     // "DefaultColor",  <-- May need to be unsigned
+   Gmat::BOOLEAN_TYPE,     // "UseLines",
+   Gmat::INTEGER_TYPE,     // "LineWidth",
+   Gmat::INTEGER_TYPE,     // "LineStyle",
+   Gmat::BOOLEAN_TYPE,     // "UseMarkers",
+   Gmat::INTEGER_TYPE,     // "MarkerSize",
+   Gmat::INTEGER_TYPE,     // "Marker",        <-- Maybe make a string
+   Gmat::BOOLEAN_TYPE,     // "UseHiLow"
 };
 
 //---------------------------------
@@ -86,8 +86,8 @@ OwnedPlot::PARAMETER_TYPE[OwnedPlotParamCount - GmatBaseParamCount] =
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// OwnedPlot(const wxString &name, const wxString &plotTitle,
-//       const wxString &xAxisTitle, const wxString &yAxisTitle)
+// OwnedPlot(const std::string &name, const std::string &plotTitle,
+//       const std::string &xAxisTitle, const std::string &yAxisTitle)
 //------------------------------------------------------------------------------
 /**
  * Default constructor
@@ -98,14 +98,14 @@ OwnedPlot::PARAMETER_TYPE[OwnedPlotParamCount - GmatBaseParamCount] =
  * @param yAxisTitle Label for the y-axis
  */
 //------------------------------------------------------------------------------
-OwnedPlot::OwnedPlot(const wxString &name, const wxString &plotTitle,
-               const wxString &xAxisTitle, const wxString &yAxisTitle) :
-   GmatBase(Gmat::XY_PLOT, wxT("OwnedPlot"), name),
+OwnedPlot::OwnedPlot(const std::string &name, const std::string &plotTitle,
+               const std::string &xAxisTitle, const std::string &yAxisTitle) :
+   GmatBase(Gmat::XY_PLOT, "OwnedPlot", name),
    mOldName                (name),
    mPlotTitle              (plotTitle),
    mXAxisTitle             (xAxisTitle),
    mYAxisTitle             (yAxisTitle),
-   mDrawGrid               (wxT("On")),
+   mDrawGrid               ("On"),
    mIsOwnedPlotWindowSet   (false),
    mDataCollectFrequency   (1),
    mUpdatePlotFrequency    (1),
@@ -122,13 +122,13 @@ OwnedPlot::OwnedPlot(const wxString &name, const wxString &plotTitle,
    isEndOfReceive          (false),
    isEndOfRun              (false),
    isInitialized           (false),
-   mSolverIterations       (wxT("All")),
+   mSolverIterations       ("All"),
    runstate                (Gmat::RUNNING)
 {
    // GmatBase data
    objectTypes.push_back(Gmat::XY_PLOT);
-   objectTypeNames.push_back(wxT("XYPlot"));
-   objectTypeNames.push_back(wxT("OwnedPlot"));
+   objectTypeNames.push_back("XYPlot");
+   objectTypeNames.push_back("OwnedPlot");
    parameterCount = OwnedPlotParamCount;
 }
 
@@ -165,7 +165,7 @@ OwnedPlot::OwnedPlot(const OwnedPlot &orig) :
    isEndOfReceive          (false),
    isEndOfRun              (false),
    isInitialized           (false),
-   mSolverIterations       (wxT("All")),
+   mSolverIterations       ("All"),
    runstate                (Gmat::RUNNING)
 {
    curveNames        = orig.curveNames;
@@ -212,7 +212,7 @@ OwnedPlot& OwnedPlot::operator=(const OwnedPlot& orig)
    isEndOfReceive          = false;
    isEndOfRun              = false;
    isInitialized           = false;
-   mSolverIterations       = wxT("All");
+   mSolverIterations       = "All";
    runstate                = Gmat::RUNNING;
    
    curveNames              = orig.curveNames;
@@ -249,7 +249,7 @@ bool OwnedPlot::Initialize()
 {
    #if DEBUG_OwnedPlot_INIT
       MessageInterface::ShowMessage
-            (wxT("OwnedPlot::Initialize() active=%d, mNumYParams=%d\n"), active,
+            ("OwnedPlot::Initialize() active=%d, mNumYParams=%d\n", active,
              mNumYParams);
    #endif
    
@@ -268,11 +268,11 @@ bool OwnedPlot::Initialize()
       // Create OwnedPlotWindow, if not exist
       #if DEBUG_OwnedPlot_INIT
          MessageInterface::ShowMessage
-               (wxT("OwnedPlot::Initialize() calling CreateOwnedPlotWindow()\n"));
+               ("OwnedPlot::Initialize() calling CreateOwnedPlotWindow()\n");
       #endif
       
       PlotInterface::CreateXyPlotWindow(instanceName, mOldName, 0.0, 0.0, 0.0, 0.0, mPlotTitle,
-            mXAxisTitle, mYAxisTitle, (mDrawGrid == wxT("On")), false);
+            mXAxisTitle, mYAxisTitle, (mDrawGrid == "On"), false);
       
       PlotInterface::SetXyPlotTitle(instanceName, mPlotTitle);
       mIsOwnedPlotWindowSet = true;
@@ -285,23 +285,23 @@ bool OwnedPlot::Initialize()
       
       #if DEBUG_OwnedPlot_INIT
          MessageInterface::ShowMessage
-               (wxT("OwnedPlot::Initialize() Get curveTitle and penColor\n"));
+               ("OwnedPlot::Initialize() Get curveTitle and penColor\n");
       #endif
       
       for (UnsignedInt i = 0; i < curveNames.size(); ++i)
       {
          #if DEBUG_OwnedPlot_INIT
-            MessageInterface::ShowMessage(wxT("OwnedPlot::Initialize() ")
-                  wxT("curveTitle = %s\n"), curveNames[i].c_str());
+            MessageInterface::ShowMessage("OwnedPlot::Initialize() "
+                  "curveTitle = %s\n", curveNames[i].c_str());
          #endif
          
          PlotInterface::AddXyPlotCurve(instanceName, i, yOffset, yMin, yMax,
                curveNames[i], curveColor[i]);
 
          #ifdef DEBUG_ERROR_BARS
-            MessageInterface::ShowMessage(wxT("In OwnedPlot::Initialize, ")
-                  wxT("curveUseHiLow[%d] = %s\n"), i,
-                  (curveUseHiLow[i] == true ? wxT("true") : wxT("false")));
+            MessageInterface::ShowMessage("In OwnedPlot::Initialize, "
+                  "curveUseHiLow[%d] = %s\n", i,
+                  (curveUseHiLow[i] == true ? "true" : "false"));
          #endif
 
          PlotInterface::XyPlotCurveSettings(instanceName, curveUseLines[i],
@@ -313,8 +313,8 @@ bool OwnedPlot::Initialize()
       status = true;
       
       #if DEBUG_OwnedPlot_INIT
-         MessageInterface::ShowMessage(wxT("OwnedPlot::Initialize() calling ")
-               wxT("ClearOwnedPlotData()\n"));
+         MessageInterface::ShowMessage("OwnedPlot::Initialize() calling "
+               "ClearOwnedPlotData()\n");
       #endif
       
       PlotInterface::ClearXyPlotData(instanceName);
@@ -322,15 +322,15 @@ bool OwnedPlot::Initialize()
    else
    {
       #if DEBUG_OwnedPlot_INIT
-      MessageInterface::ShowMessage(wxT("OwnedPlot::Initialize() DeleteOwnedPlot()\n"));
+      MessageInterface::ShowMessage("OwnedPlot::Initialize() DeleteOwnedPlot()\n");
       #endif
       
       status =  PlotInterface::DeleteXyPlot(instanceName);
    }
    
    #if DEBUG_OwnedPlot_INIT
-      MessageInterface::ShowMessage(wxT("OwnedPlot::Initialize() leaving ")
-            wxT("status=%d\n"), status);
+      MessageInterface::ShowMessage("OwnedPlot::Initialize() leaving "
+            "status=%d\n", status);
    #endif
    
    return status;
@@ -371,7 +371,7 @@ void OwnedPlot::Copy(const GmatBase* orig)
 
 
 //------------------------------------------------------------------------------
-// bool SetName(const wxString &who, const std;:string &oldName)
+// bool SetName(const std::string &who, const std;:string &oldName)
 //------------------------------------------------------------------------------
 /**
  * Set the name for this instance.
@@ -382,14 +382,14 @@ void OwnedPlot::Copy(const GmatBase* orig)
  * @return true on success, false if initialization failed
  */
 //------------------------------------------------------------------------------
-bool OwnedPlot::SetName(const wxString &who, const wxString &oldName)
+bool OwnedPlot::SetName(const std::string &who, const std::string &oldName)
 {
    #if DEBUG_RENAME
-      MessageInterface::ShowMessage(wxT("OwnedPlot::SetName() newName=%s\n"),
+      MessageInterface::ShowMessage("OwnedPlot::SetName() newName=%s\n",
             who.c_str());
    #endif
    
-   if (oldName == wxT(""))
+   if (oldName == "")
       mOldName = instanceName;
    else
       mOldName = oldName;
@@ -399,8 +399,8 @@ bool OwnedPlot::SetName(const wxString &who, const wxString &oldName)
 
 
 //------------------------------------------------------------------------------
-// virtual bool TakeAction(const wxString &action,  
-//                         const wxString &actionData = wxT(""));
+// virtual bool TakeAction(const std::string &action,  
+//                         const std::string &actionData = "");
 //------------------------------------------------------------------------------
 /**
  * This method performs action.
@@ -411,35 +411,35 @@ bool OwnedPlot::SetName(const wxString &who, const wxString &oldName)
  * @return true if action successfully performed
  */
 //------------------------------------------------------------------------------
-bool OwnedPlot::TakeAction(const wxString &action,
-                        const wxString &actionData)
+bool OwnedPlot::TakeAction(const std::string &action,
+                        const std::string &actionData)
 {
    #if DEBUG_ACTION_REMOVE
-      MessageInterface::ShowMessage(wxT("OwnedPlot::TakeAction() action=%s, ")
-            wxT("actionData=%s\n"), action.c_str(), actionData.c_str());
+      MessageInterface::ShowMessage("OwnedPlot::TakeAction() action=%s, "
+            "actionData=%s\n", action.c_str(), actionData.c_str());
    #endif
    
-   if (action == wxT("Clear"))
+   if (action == "Clear")
    {
       return ClearYParameters();
    }
-   else if (action == wxT("Remove"))
+   else if (action == "Remove")
    {
       return RemoveYParameter(actionData);
    }
-   else if (action == wxT("ClearData"))
+   else if (action == "ClearData")
    {
       return ResetYParameters();
    }
-   else if (action == wxT("PenUp"))
+   else if (action == "PenUp")
    {
       return PenUp();
    }
-   else if (action == wxT("PenDown"))
+   else if (action == "PenDown")
    {
       return PenDown();
    }
-   else if (action == wxT("Rescale"))
+   else if (action == "Rescale")
    {
       return RescaleData();
    }
@@ -449,8 +449,8 @@ bool OwnedPlot::TakeAction(const wxString &action,
 
 
 //------------------------------------------------------------------------------
-// bool RenameRefObject(const Gmat::ObjectType type, const wxString &oldName,
-//       const wxString &newName)
+// bool RenameRefObject(const Gmat::ObjectType type, const std::string &oldName,
+//       const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * Renames reference objects used by this plot
@@ -463,11 +463,11 @@ bool OwnedPlot::TakeAction(const wxString &action,
  */
 //------------------------------------------------------------------------------
 bool OwnedPlot::RenameRefObject(const Gmat::ObjectType type,
-      const wxString &oldName, const wxString &newName)
+      const std::string &oldName, const std::string &newName)
 {
    #if DEBUG_RENAME
       MessageInterface::ShowMessage
-         (wxT("OwnedPlot::RenameRefObject() type=%s, oldName=%s, newName=%s\n"),
+         ("OwnedPlot::RenameRefObject() type=%s, oldName=%s, newName=%s\n",
           GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
    #endif
    
@@ -488,7 +488,7 @@ bool OwnedPlot::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Returns the script string used for the parameter with the input ID
@@ -498,7 +498,7 @@ bool OwnedPlot::RenameRefObject(const Gmat::ObjectType type,
  * @return The parameter's string used in GMAT scripts
  */
 //------------------------------------------------------------------------------
-wxString OwnedPlot::GetParameterText(const Integer id) const
+std::string OwnedPlot::GetParameterText(const Integer id) const
 {
    if (id >= GmatBaseParamCount && id < OwnedPlotParamCount)
       return PARAMETER_TEXT[id - GmatBaseParamCount];
@@ -509,7 +509,7 @@ wxString OwnedPlot::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves the ID for a scriptable string
@@ -519,7 +519,7 @@ wxString OwnedPlot::GetParameterText(const Integer id) const
  * @return The ID matching that string
  */
 //------------------------------------------------------------------------------
-Integer OwnedPlot::GetParameterID(const wxString &str) const
+Integer OwnedPlot::GetParameterID(const std::string &str) const
 {
    for (int i=GmatBaseParamCount; i<OwnedPlotParamCount; i++)
    {
@@ -552,7 +552,7 @@ Gmat::ParameterType OwnedPlot::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves a string describing the parameter type
@@ -562,7 +562,7 @@ Gmat::ParameterType OwnedPlot::GetParameterType(const Integer id) const
  * @return The string description
  */
 //------------------------------------------------------------------------------
-wxString OwnedPlot::GetParameterTypeString(const Integer id) const
+std::string OwnedPlot::GetParameterTypeString(const Integer id) const
 {
    if (id >= GmatBaseParamCount && id < OwnedPlotParamCount)
       return GmatBase::PARAM_TYPE_STRING[GetParameterType(id -
@@ -646,7 +646,7 @@ Integer OwnedPlot::GetIntegerParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetIntegerParameter(const wxString &label) const
+// Integer GetIntegerParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves an integer parameter
@@ -656,7 +656,7 @@ Integer OwnedPlot::GetIntegerParameter(const Integer id) const
  * @return The parameter value
  */
 //------------------------------------------------------------------------------
-Integer OwnedPlot::GetIntegerParameter(const wxString &label) const
+Integer OwnedPlot::GetIntegerParameter(const std::string &label) const
 {
    return GetIntegerParameter(GetParameterID(label));
 }
@@ -713,7 +713,7 @@ Integer OwnedPlot::SetIntegerParameter(const Integer id, const Integer value)
 
 
 //------------------------------------------------------------------------------
-// Integer SetIntegerParameter(const wxString &label, const Integer value)
+// Integer SetIntegerParameter(const std::string &label, const Integer value)
 //------------------------------------------------------------------------------
 /**
  * Sets an integer parameter
@@ -724,7 +724,7 @@ Integer OwnedPlot::SetIntegerParameter(const Integer id, const Integer value)
  * @return The parameter value after the assignment
  */
 //------------------------------------------------------------------------------
-Integer OwnedPlot::SetIntegerParameter(const wxString &label,
+Integer OwnedPlot::SetIntegerParameter(const std::string &label,
                                     const Integer value)
 {
    return SetIntegerParameter(GetParameterID(label), value);
@@ -732,7 +732,7 @@ Integer OwnedPlot::SetIntegerParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// wxString GetOnOffParameter(const Integer id) const
+// std::string GetOnOffParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves a boolean parameter scripted using the words On and Off
@@ -742,7 +742,7 @@ Integer OwnedPlot::SetIntegerParameter(const wxString &label,
  * @return On if the parameter is true, Off if it is false
  */
 //------------------------------------------------------------------------------
-wxString OwnedPlot::GetOnOffParameter(const Integer id) const
+std::string OwnedPlot::GetOnOffParameter(const Integer id) const
 {
    switch (id)
    {
@@ -756,7 +756,7 @@ wxString OwnedPlot::GetOnOffParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetOnOffParameter(const wxString &label) const
+// std::string GetOnOffParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves a boolean parameter scripted using the words On and Off
@@ -766,14 +766,14 @@ wxString OwnedPlot::GetOnOffParameter(const Integer id) const
  * @return On if the parameter is true, Off if it is false
  */
 //------------------------------------------------------------------------------
-wxString OwnedPlot::GetOnOffParameter(const wxString &label) const
+std::string OwnedPlot::GetOnOffParameter(const std::string &label) const
 {
    return GetOnOffParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetOnOffParameter(const Integer id, const wxString &value)
+// bool SetOnOffParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Sets a boolean parameter scripted using the words On and Off
@@ -784,7 +784,7 @@ wxString OwnedPlot::GetOnOffParameter(const wxString &label) const
  * @return true on success, false if the parameter could not be set
  */
 //------------------------------------------------------------------------------
-bool OwnedPlot::SetOnOffParameter(const Integer id, const wxString &value)
+bool OwnedPlot::SetOnOffParameter(const Integer id, const std::string &value)
 {
    switch (id)
    {
@@ -799,8 +799,8 @@ bool OwnedPlot::SetOnOffParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool OwnedPlot::SetOnOffParameter(const wxString &label,
-//       const wxString &value)
+// bool OwnedPlot::SetOnOffParameter(const std::string &label,
+//       const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Sets a boolean parameter scripted using the words On and Off
@@ -811,15 +811,15 @@ bool OwnedPlot::SetOnOffParameter(const Integer id, const wxString &value)
  * @return true on success, false if the parameter could not be set
  */
 //------------------------------------------------------------------------------
-bool OwnedPlot::SetOnOffParameter(const wxString &label,
-      const wxString &value)
+bool OwnedPlot::SetOnOffParameter(const std::string &label,
+      const std::string &value)
 {
    return SetOnOffParameter(GetParameterID(label), value);
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves a string parameter by ID
@@ -829,7 +829,7 @@ bool OwnedPlot::SetOnOffParameter(const wxString &label,
  * @return The parameter
  */
 //------------------------------------------------------------------------------
-wxString OwnedPlot::GetStringParameter(const Integer id) const
+std::string OwnedPlot::GetStringParameter(const Integer id) const
 {
    switch (id)
    {
@@ -849,7 +849,7 @@ wxString OwnedPlot::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves a string parameter by script string
@@ -859,11 +859,11 @@ wxString OwnedPlot::GetStringParameter(const Integer id) const
  * @return The parameter
  */
 //------------------------------------------------------------------------------
-wxString OwnedPlot::GetStringParameter(const wxString &label) const
+std::string OwnedPlot::GetStringParameter(const std::string &label) const
 {
    #if DEBUG_XY_PARAM
-      MessageInterface::ShowMessage(wxT("OwnedPlot::GetStringParameter() ")
-            wxT("label = %s\n"), label.c_str());
+      MessageInterface::ShowMessage("OwnedPlot::GetStringParameter() "
+            "label = %s\n", label.c_str());
    #endif
    
    return GetStringParameter(GetParameterID(label));
@@ -871,7 +871,7 @@ wxString OwnedPlot::GetStringParameter(const wxString &label) const
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Sets a string parameter
@@ -882,11 +882,11 @@ wxString OwnedPlot::GetStringParameter(const wxString &label) const
  * @return true on success, false on failure
  */
 //------------------------------------------------------------------------------
-bool OwnedPlot::SetStringParameter(const Integer id, const wxString &value)
+bool OwnedPlot::SetStringParameter(const Integer id, const std::string &value)
 {
    #if DEBUG_OwnedPlot_PARAM
-      MessageInterface::ShowMessage(wxT("OwnedPlot::SetStringParameter() id = %d, ")
-                                    wxT("value = %s \n"), id, value.c_str());
+      MessageInterface::ShowMessage("OwnedPlot::SetStringParameter() id = %d, "
+                                    "value = %s \n", id, value.c_str());
    #endif
    
    switch (id)
@@ -929,7 +929,7 @@ bool OwnedPlot::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Sets a string parameter
@@ -940,12 +940,12 @@ bool OwnedPlot::SetStringParameter(const Integer id, const wxString &value)
  * @return true on success, false on failure
  */
 //------------------------------------------------------------------------------
-bool OwnedPlot::SetStringParameter(const wxString &label,
-                                const wxString &value)
+bool OwnedPlot::SetStringParameter(const std::string &label,
+                                const std::string &value)
 {
    #if DEBUG_OwnedPlot_PARAM
-      MessageInterface::ShowMessage(wxT("OwnedPlot::SetStringParameter() ")
-            wxT("label = %s, value = %s \n"), label.c_str(), value.c_str());
+      MessageInterface::ShowMessage("OwnedPlot::SetStringParameter() "
+            "label = %s, value = %s \n", label.c_str(), value.c_str());
    #endif
    
    return SetStringParameter(GetParameterID(label), value);
@@ -953,7 +953,7 @@ bool OwnedPlot::SetStringParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value,
+// bool SetStringParameter(const Integer id, const std::string &value,
 //       const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -966,7 +966,7 @@ bool OwnedPlot::SetStringParameter(const wxString &label,
  * @return true on success, false on failure
  */
 //------------------------------------------------------------------------------
-bool OwnedPlot::SetStringParameter(const Integer id, const wxString &value,
+bool OwnedPlot::SetStringParameter(const Integer id, const std::string &value,
                                 const Integer index)
 {
    switch (id)
@@ -1002,7 +1002,7 @@ bool OwnedPlot::SetStringParameter(const Integer id, const wxString &value,
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value,
+// bool SetStringParameter(const std::string &label, const std::string &value,
 //       const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -1015,13 +1015,13 @@ bool OwnedPlot::SetStringParameter(const Integer id, const wxString &value,
  * @return true on success, false on failure
  */
 //------------------------------------------------------------------------------
-bool OwnedPlot::SetStringParameter(const wxString &label,
-                                const wxString &value,
+bool OwnedPlot::SetStringParameter(const std::string &label,
+                                const std::string &value,
                                 const Integer index)
 {
    #if DEBUG_OwnedPlot_PARAM
       MessageInterface::ShowMessage
-         (wxT("OwnedPlot::SetStringParameter() label=%s, value=%s, index=%d \n"),
+         ("OwnedPlot::SetStringParameter() label=%s, value=%s, index=%d \n",
           label.c_str(), value.c_str(), index);
    #endif
    
@@ -1053,7 +1053,7 @@ const StringArray& OwnedPlot::GetStringArrayParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// const StringArray& GetStringArrayParameter(const wxString &label) const
+// const StringArray& GetStringArrayParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves a StringArray parameter
@@ -1064,7 +1064,7 @@ const StringArray& OwnedPlot::GetStringArrayParameter(const Integer id) const
  */
 //------------------------------------------------------------------------------
 const StringArray& OwnedPlot::GetStringArrayParameter(
-      const wxString &label) const
+      const std::string &label) const
 {
    return GetStringArrayParameter(GetParameterID(label));
 }
@@ -1103,7 +1103,7 @@ bool OwnedPlot::GetBooleanParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// bool GetBooleanParameter(const wxString &label) const
+// bool GetBooleanParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves a Boolean parameter
@@ -1113,14 +1113,14 @@ bool OwnedPlot::GetBooleanParameter(const Integer id) const
  * @return The parameter value -- true or false
  */
 //------------------------------------------------------------------------------
-bool OwnedPlot::GetBooleanParameter(const wxString &label) const
+bool OwnedPlot::GetBooleanParameter(const std::string &label) const
 {
    return GetBooleanParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetBooleanParameter(const wxString &label, const bool value)
+// bool SetBooleanParameter(const std::string &label, const bool value)
 //------------------------------------------------------------------------------
 /**
  * Sets a Boolean parameter
@@ -1131,7 +1131,7 @@ bool OwnedPlot::GetBooleanParameter(const wxString &label) const
  * @return The parameter value -- true or false
  */
 //------------------------------------------------------------------------------
-bool OwnedPlot::SetBooleanParameter(const wxString &label, const bool value)
+bool OwnedPlot::SetBooleanParameter(const std::string &label, const bool value)
 {
    return SetBooleanParameter(GetParameterID(label), value);
 }
@@ -1257,8 +1257,8 @@ void OwnedPlot::SetData(std::vector<RealArray*> &dataBlast,
 {
    #if DEBUG_OwnedPlot_UPDATE > 1
       MessageInterface::ShowMessage
-         (wxT("OwnedPlot::SetData() entered. isEndOfReceive=%d, active=%d, ")
-               wxT("runState=%d\n"), isEndOfReceive, active, runstate);
+         ("OwnedPlot::SetData() entered. isEndOfReceive=%d, active=%d, "
+               "runState=%d\n", isEndOfReceive, active, runstate);
    #endif
 
    RealArray *xData = dataBlast[0];
@@ -1266,8 +1266,8 @@ void OwnedPlot::SetData(std::vector<RealArray*> &dataBlast,
    #if DEBUG_OwnedPlot_UPDATE > 1
       RealArray *yData = dataBlast[1];
 
-      MessageInterface::ShowMessage(wxT("   Sample points: 0->[%le %le] ")
-            wxT("5->[%le %le]\n"), (*xData)[0], (*yData)[0], (*xData)[5],
+      MessageInterface::ShowMessage("   Sample points: 0->[%le %le] "
+            "5->[%le %le]\n", (*xData)[0], (*yData)[0], (*xData)[5],
             (*yData)[5]);
    #endif
 
@@ -1306,8 +1306,8 @@ void OwnedPlot::SetData(std::vector<RealArray*> &dataBlast,
  * @param forCurve The index of the curve
  * @param xData The array of independent data for the curve
  * @param yData The array of dependent data for the curve
- * @param yhis The optional wxT("+ sigma") data for error bars
- * @param ylows The optional wxT("- sigma") data for error bars
+ * @param yhis The optional "+ sigma" data for error bars
+ * @param ylows The optional "- sigma" data for error bars
  */
 //------------------------------------------------------------------------------
 void OwnedPlot::SetCurveData(const Integer forCurve, RealArray *xData,
@@ -1315,8 +1315,8 @@ void OwnedPlot::SetCurveData(const Integer forCurve, RealArray *xData,
 {
    #if DEBUG_OwnedPlot_UPDATE > 1
       MessageInterface::ShowMessage
-         (wxT("OwnedPlot::SetData() entered. isEndOfReceive=%d, active=%d, ")
-          wxT("runState=%d\n"), isEndOfReceive, active, runstate);
+         ("OwnedPlot::SetData() entered. isEndOfReceive=%d, active=%d, "
+          "runState=%d\n", isEndOfReceive, active, runstate);
    #endif
 
    Real hi, low;
@@ -1499,12 +1499,12 @@ Integer OwnedPlot::UsesObject(Integer id)
 //------------------------------------------------------------------------------
 void OwnedPlot::BuildPlotTitle()
 {
-   if (mXAxisTitle == wxT(""))
-      mXAxisTitle = wxT("Epoch");
-   if (mYAxisTitle == wxT(""))
-      mYAxisTitle = wxT("Residual");
-   if (mPlotTitle == wxT(""))
-      mPlotTitle  = wxT("Residual data");
+   if (mXAxisTitle == "")
+      mXAxisTitle = "Epoch";
+   if (mYAxisTitle == "")
+      mYAxisTitle = "Residual";
+   if (mPlotTitle == "")
+      mPlotTitle  = "Residual data";
 }
 
 //------------------------------------------------------------------------------
@@ -1520,15 +1520,15 @@ bool OwnedPlot::ClearYParameters()
 {
    DeletePlotCurves();
    curveNames.clear();
-   // mPlotTitle = wxT("");
-   // mXAxisTitle = wxT("");
-   // mYAxisTitle = wxT("");
+   // mPlotTitle = "";
+   // mXAxisTitle = "";
+   // mYAxisTitle = "";
    mIsOwnedPlotWindowSet = false;
    return true;
 }
 
 //------------------------------------------------------------------------------
-// bool RemoveYParameter(const wxString &name)
+// bool RemoveYParameter(const std::string &name)
 //------------------------------------------------------------------------------
 /*
  * Removes curve from the curve list
@@ -1540,15 +1540,15 @@ bool OwnedPlot::ClearYParameters()
  *
  */
 //------------------------------------------------------------------------------
-bool OwnedPlot::RemoveYParameter(const wxString &name)
+bool OwnedPlot::RemoveYParameter(const std::string &name)
 {
    #if DEBUG_ACTION_REMOVE
       MessageInterface::ShowMessage
-         (wxT("OwnedPlot::RemoveYParameter() name=%s\n--- Before remove:\n"),
+         ("OwnedPlot::RemoveYParameter() name=%s\n--- Before remove:\n",
                name.c_str());
       for (int i=0; i<mNumYParams; i++)
       {
-         MessageInterface::ShowMessage(wxT("mYParamNames[%d]=%s\n"), i,
+         MessageInterface::ShowMessage("mYParamNames[%d]=%s\n", i,
                                        mYParamNames[i].c_str());
       }
    #endif
@@ -1562,10 +1562,10 @@ bool OwnedPlot::RemoveYParameter(const wxString &name)
          curveNames.erase(pos1);
 
          #if DEBUG_ACTION_REMOVE
-            MessageInterface::ShowMessage(wxT("---After remove\n"));
+            MessageInterface::ShowMessage("---After remove\n");
             for (UnsignedInt i = 0; i < curveNames.size(); ++i)
             {
-               MessageInterface::ShowMessage(wxT("curveNames[%d] = %s\n"), i,
+               MessageInterface::ShowMessage("curveNames[%d] = %s\n", i,
                      curveNames[i].c_str());
             }
          #endif
@@ -1575,8 +1575,8 @@ bool OwnedPlot::RemoveYParameter(const wxString &name)
    }
 
    #if DEBUG_ACTION_REMOVE
-      MessageInterface::ShowMessage(wxT("OwnedPlot::RemoveYParameter() name = %s ")
-            wxT("not found\n"), name.c_str());
+      MessageInterface::ShowMessage("OwnedPlot::RemoveYParameter() name = %s "
+            "not found\n", name.c_str());
    #endif
 
    return false;

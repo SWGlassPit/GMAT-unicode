@@ -27,7 +27,7 @@
 class GMAT_API LagrangeInterpolator : public Interpolator
 {
 public:
-   LagrangeInterpolator(const wxString &name = wxT(""), Integer dim = 1,
+   LagrangeInterpolator(const std::string &name = "", Integer dim = 1,
                         Integer ord = 7);
    virtual ~LagrangeInterpolator();
    LagrangeInterpolator(const LagrangeInterpolator &li);

@@ -22,7 +22,7 @@
 #include <iostream>
 #include <sstream>
 #include "gmatdefs.hpp"
-//#include wxT("EphemerisUtil.hpp")
+//#include "EphemerisUtil.hpp"
 #include "Keplerian.hpp"
 #include "Cartesian.hpp"
 #include "Rvector3.hpp"
@@ -31,14 +31,14 @@
 //---------------------------------
 //  static data
 //---------------------------------
-const wxString Cartesian::DATA_DESCRIPTIONS[NUM_DATA] =
+const std::string Cartesian::DATA_DESCRIPTIONS[NUM_DATA] =
 {
-   wxT("Position X"),
-   wxT("Position Y"),
-   wxT("Position Z"),
-   wxT("Velocity X"),
-   wxT("Velocity Y"),
-   wxT("Velocity Z")
+   "Position X",
+   "Position Y",
+   "Position Z",
+   "Velocity X",
+   "Velocity Y",
+   "Velocity Z"
 };
 
 const Cartesian Cartesian::ZeroCartesian = Cartesian(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
@@ -248,42 +248,42 @@ Integer Cartesian::GetNumData() const
 }
 
 //------------------------------------------------------------------------------
-// const wxString* GetDataDescriptions() const
+// const std::string* GetDataDescriptions() const
 //------------------------------------------------------------------------------
-const wxString* Cartesian::GetDataDescriptions() const
+const std::string* Cartesian::GetDataDescriptions() const
 {
    return DATA_DESCRIPTIONS;
 }
 
 //------------------------------------------------------------------------------
-//  wxString* ToValueStrings(void)
+//  std::string* ToValueStrings(void)
 //------------------------------------------------------------------------------
-wxString* Cartesian::ToValueStrings(void)
+std::string* Cartesian::ToValueStrings(void)
 {
-   wxString ss(wxT(""));
+   std::stringstream ss("");
 
    ss << positionD[0];
-   stringValues[0] = ss;
+   stringValues[0] = ss.str();
    
-   ss.Clear();
+   ss.str("");
    ss << positionD[1];
-   stringValues[1] = ss;
+   stringValues[1] = ss.str();
    
-   ss.Clear();
+   ss.str("");
    ss << positionD[2];
-   stringValues[2] = ss;
+   stringValues[2] = ss.str();
    
-   ss.Clear();
+   ss.str("");
    ss << velocityD[0];
-   stringValues[3] = ss;
+   stringValues[3] = ss.str();
    
-   ss.Clear();
+   ss.str("");
    ss << velocityD[1];
-   stringValues[4] = ss;
+   stringValues[4] = ss.str();
    
-   ss.Clear();
+   ss.str("");
    ss << velocityD[2];
-   stringValues[5] = ss;
+   stringValues[5] = ss.str();
    
    return stringValues;
 }

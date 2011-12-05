@@ -29,7 +29,7 @@ class GMAT_API GmatBaseException : public BaseException
 {
 public:
 
-   GmatBaseException(const wxString &details = wxT(""));
+   GmatBaseException(const std::string &details = "");
    virtual ~GmatBaseException();
    GmatBaseException(const GmatBaseException &gbe);
 };

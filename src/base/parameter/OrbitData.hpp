@@ -37,7 +37,7 @@ class GMAT_API OrbitData : public RefData
 {
 public:
 
-   OrbitData(const wxString &name = wxT(""));
+   OrbitData(const std::string &name = "");
    OrbitData(const OrbitData &data);
    OrbitData& operator= (const OrbitData& right);
    virtual ~OrbitData();
@@ -53,35 +53,35 @@ public:
    void SetRvector6(const Rvector6 &val);
    
    Real GetCartReal(Integer item);
-   Real GetCartReal(const wxString &str);
+   Real GetCartReal(const std::string &str);
    
    Real GetKepReal(Integer item);
-   Real GetKepReal(const wxString &str);
+   Real GetKepReal(const std::string &str);
    
    Real GetOtherKepReal(Integer item);
-   Real GetOtherKepReal(const wxString &str);
+   Real GetOtherKepReal(const std::string &str);
    
    Real GetSphRaDecReal(Integer item);
-   Real GetSphRaDecReal(const wxString &str);
+   Real GetSphRaDecReal(const std::string &str);
    
    Real GetSphAzFpaReal(Integer item);
-   Real GetSphAzFpaReal(const wxString &str);
+   Real GetSphAzFpaReal(const std::string &str);
    
    Real GetAngularReal(Integer item);
-   Real GetAngularReal(const wxString &str);
+   Real GetAngularReal(const std::string &str);
    
    Real GetOtherAngleReal(Integer item);
-   Real GetOtherAngleReal(const wxString &str);
+   Real GetOtherAngleReal(const std::string &str);
    
    Real GetEquinReal(Integer item);
-   Real GetEquinReal(const wxString &str);
+   Real GetEquinReal(const std::string &str);
    
    const Rmatrix66& GetStmRmat66(Integer item);
    const Rmatrix33& GetStmRmat33(Integer item);
    
    // The inherited methods from RefData
    virtual bool ValidateRefObjects(GmatBase *param);
-   virtual const wxString* GetValidObjectList() const;
+   virtual const std::string* GetValidObjectList() const;
    
 protected:
    
@@ -143,10 +143,10 @@ protected:
       OrbitDataObjectCount
    };
    
-   static const wxString VALID_OBJECT_TYPE_LIST[OrbitDataObjectCount];
+   static const std::string VALID_OBJECT_TYPE_LIST[OrbitDataObjectCount];
    static const Real        ORBIT_DATA_TOLERANCE;
-   static const wxString VALID_ANGLE_PARAM_NAMES[HYPERBOLIC_DLA - SEMILATUS_RECTUM + 1];
-   static const wxString VALID_OTHER_KEPLERIAN_PARAM_NAMES[ENERGY - MM + 1];
+   static const std::string VALID_ANGLE_PARAM_NAMES[HYPERBOLIC_DLA - SEMILATUS_RECTUM + 1];
+   static const std::string VALID_OTHER_KEPLERIAN_PARAM_NAMES[ENERGY - MM + 1];
 };
 #endif // OrbitData_hpp
 

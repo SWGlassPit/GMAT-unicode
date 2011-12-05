@@ -31,9 +31,9 @@
 class GMAT_API XyPlot : public Subscriber 
 {
 public:
-   XyPlot(const wxString &name, Parameter *xParam = NULL,
-          Parameter *firstYParam = NULL, const wxString &plotTitle = wxT(""),
-          const wxString &xAxisTitle = wxT(""), const wxString &yAxisTitle = wxT(""));
+   XyPlot(const std::string &name, Parameter *xParam = NULL,
+          Parameter *firstYParam = NULL, const std::string &plotTitle = "",
+          const std::string &xAxisTitle = "", const std::string &yAxisTitle = "");
    XyPlot(const XyPlot &orig);
    XyPlot& operator=(const XyPlot& orig);
    virtual ~XyPlot(void);
@@ -45,67 +45,67 @@ public:
    virtual GmatBase*    Clone() const;
    virtual void         Copy(const GmatBase* orig);
    
-   virtual bool         SetName(const wxString &who,
-                                const wxString &oldName = wxT(""));
+   virtual bool         SetName(const std::string &who,
+                                const std::string &oldName = "");
    
-   virtual bool         TakeAction(const wxString &action,  
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,  
+                                   const std::string &actionData = "");
    
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    virtual bool         IsParameterReadOnly(const Integer id) const;
    
    virtual Integer      GetIntegerParameter(const Integer id) const;
-   virtual Integer      GetIntegerParameter(const wxString &label) const;
+   virtual Integer      GetIntegerParameter(const std::string &label) const;
    virtual Integer      SetIntegerParameter(const Integer id,
                                             const Integer value);
-   virtual Integer      SetIntegerParameter(const wxString &label,
+   virtual Integer      SetIntegerParameter(const std::string &label,
                                             const Integer value);
    
    virtual bool         GetBooleanParameter(const Integer id) const;
-   virtual bool         GetBooleanParameter(const wxString &label) const;
+   virtual bool         GetBooleanParameter(const std::string &label) const;
    virtual bool         SetBooleanParameter(const Integer id,
                                             const bool value);
-   virtual bool         SetBooleanParameter(const wxString &label,
+   virtual bool         SetBooleanParameter(const std::string &label,
                                             const bool value);
    
-   virtual wxString  GetOnOffParameter(const Integer id) const;
+   virtual std::string  GetOnOffParameter(const Integer id) const;
    virtual bool         SetOnOffParameter(const Integer id, 
-                                          const wxString &value);
-   virtual wxString  GetOnOffParameter(const wxString &label) const;
-   virtual bool         SetOnOffParameter(const wxString &label, 
-                                          const wxString &value);
+                                          const std::string &value);
+   virtual std::string  GetOnOffParameter(const std::string &label) const;
+   virtual bool         SetOnOffParameter(const std::string &label, 
+                                          const std::string &value);
    
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const wxString &label) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const std::string &label) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
    
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value,
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value,
                                            const Integer index);
    
    virtual const StringArray&
                         GetStringArrayParameter(const Integer id) const;
    virtual const StringArray&
-                        GetStringArrayParameter(const wxString &label) const;
+                        GetStringArrayParameter(const std::string &label) const;
    
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name);
+                                     const std::string &name);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    
    virtual bool         HasRefObjectTypeArray();
    virtual const ObjectTypeArray&
@@ -115,11 +115,11 @@ public:
    
 protected:
 
-   bool SetXParameter(const wxString &paramName);
-   bool AddYParameter(const wxString &paramName, Integer index);
+   bool SetXParameter(const std::string &paramName);
+   bool AddYParameter(const std::string &paramName, Integer index);
    void BuildPlotTitle();
    bool ClearYParameters();
-   bool RemoveYParameter(const wxString &name);
+   bool RemoveYParameter(const std::string &name);
    bool ResetYParameters();
    bool PenUp();
    bool PenDown();
@@ -138,14 +138,14 @@ protected:
    Integer mNumXParams;
    Integer mNumYParams;
    
-   wxString mXParamName;
+   std::string mXParamName;
    StringArray mYParamNames;
    StringArray mAllParamNames;
    
-   wxString mOldName;
-   wxString mPlotTitle;
-   wxString mXAxisTitle;
-   wxString mYAxisTitle;
+   std::string mOldName;
+   std::string mPlotTitle;
+   std::string mXAxisTitle;
+   std::string mYAxisTitle;
    bool mDrawGrid;
    bool mIsXyPlotWindowSet;
    
@@ -191,7 +191,7 @@ public:
    
    static const Gmat::ParameterType
       PARAMETER_TYPE[XyPlotParamCount - SubscriberParamCount];
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[XyPlotParamCount - SubscriberParamCount];
 
 };

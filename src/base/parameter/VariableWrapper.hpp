@@ -44,12 +44,12 @@ public:
    
    virtual ElementWrapper*     Clone() const;
    virtual Gmat::ParameterType GetDataType() const;
-   virtual wxString         ToString();  
+   virtual std::string         ToString();  
    
-   virtual GmatBase*           GetRefObject(const wxString &name = wxT(""));
+   virtual GmatBase*           GetRefObject(const std::string &name = "");
    virtual bool                SetRefObject(GmatBase *obj);
-   virtual bool                RenameObject(const wxString &oldName, 
-                                            const wxString &newName);
+   virtual bool                RenameObject(const std::string &oldName, 
+                                            const std::string &newName);
    
    virtual Real                EvaluateReal() const;
    virtual bool                SetReal(const Real toValue);

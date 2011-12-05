@@ -36,7 +36,7 @@
  */
 //------------------------------------------------------------------------------
 MarkPoint::MarkPoint() :
-   PlotCommand(wxT("MarkPoint"))
+   PlotCommand("MarkPoint")
 {
 }
 
@@ -117,7 +117,7 @@ GmatBase* MarkPoint::Clone() const
 bool MarkPoint::Initialize()
 {
    #ifdef DEBUG_MarkPoint
-      MessageInterface::ShowMessage(wxT("MarkPoint::Initialize() entered\n"));
+      MessageInterface::ShowMessage("MarkPoint::Initialize() entered\n");
    #endif
       
    PlotCommand::Initialize();
@@ -129,27 +129,27 @@ bool MarkPoint::Initialize()
    {
       if ((xy = FindObject(plotNameList.at(ii))) != NULL) 
       {
-         if (xy->GetTypeName() == wxT("XYPlot")) 
+         if (xy->GetTypeName() == "XYPlot") 
             thePlotList.push_back((XyPlot*) xy);
          else
             throw CommandException(
-               wxT("Object named \"") + plotNameList.at(ii) + wxT("\" should be an XYPlot to use the ")
-               wxT("MarkPoint command for this object, but it is a ") +
+               "Object named \"" + plotNameList.at(ii) + "\" should be an XYPlot to use the "
+               "MarkPoint command for this object, but it is a " +
                xy->GetTypeName());      
       }
       else 
       {
          MessageInterface::ShowMessage
-            (wxT("MarkPoint command cannot find XY Plot \"%s\"; command has no effect.")
-            wxT("\n"), (plotNameList.at(ii)).c_str());
+            ("MarkPoint command cannot find XY Plot \"%s\"; command has no effect."
+            "\n", (plotNameList.at(ii)).c_str());
          return false;
       }
    }
    
    #ifdef DEBUG_MarkPoint
       MessageInterface::ShowMessage
-         (wxT("   thePlotList.size()=%d\n"), thePlotList.size());
-      MessageInterface::ShowMessage(wxT("MarkPoint::Initialize() returning true\n"));
+         ("   thePlotList.size()=%d\n", thePlotList.size());
+      MessageInterface::ShowMessage("MarkPoint::Initialize() returning true\n");
    #endif
    return true;
 }
@@ -172,17 +172,17 @@ bool MarkPoint::Execute()
 {
    #ifdef DEBUG_MarkPoint
       MessageInterface::ShowMessage
-         (wxT("MarkPoint::Execute() thePlotList.size()=%d\n"), thePlotList.size());
+         ("MarkPoint::Execute() thePlotList.size()=%d\n", thePlotList.size());
    #endif
       
    for (unsigned int ii = 0; ii < thePlotList.size(); ii++)
    {
       if (thePlotList.at(ii))
-         if (!(thePlotList.at(ii)->TakeAction(wxT("MarkPoint")))) return false;
+         if (!(thePlotList.at(ii)->TakeAction("MarkPoint"))) return false;
    }
    
    #ifdef DEBUG_MarkPoint
-      MessageInterface::ShowMessage(wxT("MarkPoint::Execute() returning true\n"));
+      MessageInterface::ShowMessage("MarkPoint::Execute() returning true\n");
    #endif
    return true;
 }

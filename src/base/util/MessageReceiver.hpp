@@ -50,21 +50,24 @@ public:
    // static MessageReceiver*  Instance();
    
    // Derived classes must implement all of the following methods:
-   virtual void ShowMessage(const wxString &msg) = 0;
+   virtual void ShowMessage(const std::string &msg) = 0;
+   virtual void ShowMessage(const char *msg, ...) = 0;
 
-   virtual void PopupMessage(Gmat::MessageType msgType, const wxString &msg) = 0;
+   virtual void PopupMessage(Gmat::MessageType msgType, const std::string &msg) = 0;
+   virtual void PopupMessage(Gmat::MessageType msgType, const char *msg, ...) = 0;
    
-   virtual wxString GetLogFileName() = 0;
+   virtual std::string GetLogFileName() = 0;
    virtual void SetLogEnable(bool flag) = 0;
-   virtual void SetLogPath(const wxString &pathname, bool append = false) = 0;
-   virtual void SetLogFile(const wxString &filename) = 0;
+   virtual void SetLogPath(const std::string &pathname, bool append = false) = 0;
+   virtual void SetLogFile(const std::string &filename) = 0;
 
-   virtual void LogMessage(const wxString &msg) = 0;
+   virtual void LogMessage(const std::string &msg) = 0;
+   virtual void LogMessage(const char *msg, ...) = 0;
 
    virtual void ClearMessage() = 0;
 
-   virtual wxString GetMessage() = 0;
-   virtual void PutMessage(const wxString &msg) = 0;
+   virtual std::string GetMessage() = 0;
+   virtual void PutMessage(const std::string &msg) = 0;
    virtual void ClearMessageQueue() = 0;
    
 protected:

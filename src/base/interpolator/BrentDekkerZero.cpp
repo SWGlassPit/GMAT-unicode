@@ -80,17 +80,17 @@ Real BrentDekkerZero::FindStep(Real lastStep, Real lastEval)
    FindStepParameters();
    
    #ifdef DEBUG_ZERO_FINDER
-      MessageInterface::ShowMessage(wxT("      a = %.12lf, f(a) = %.12lf")
-            wxT("\n      b = %.12lf, f(b) = %.12lf\n"), a, fa, b, fb);
+      MessageInterface::ShowMessage("      a = %.12lf, f(a) = %.12lf"
+            "\n      b = %.12lf, f(b) = %.12lf\n", a, fa, b, fb);
    #endif
 
    if ((fabs(e) < tol) || (fabs(fa) <= fabs(fb)))
    {
       #ifdef DEBUG_ZERO_FINDER
-         MessageInterface::ShowMessage(wxT("   |e|(%.12lf) < tol(%.12lf)? %s\n"),
-               e, tol, ((fabs(e) < tol) ? wxT("true") : wxT("false")));
-         MessageInterface::ShowMessage(wxT("   |fa|(%.12lf) < |fb|(%.12lf)? %s\n"),
-               fa, fb, ((fabs(fa) <= fabs(fb)) ? wxT("true") : wxT("false")));
+         MessageInterface::ShowMessage("   |e|(%.12lf) < tol(%.12lf)? %s\n",
+               e, tol, ((fabs(e) < tol) ? "true" : "false"));
+         MessageInterface::ShowMessage("   |fa|(%.12lf) < |fb|(%.12lf)? %s\n",
+               fa, fb, ((fabs(fa) <= fabs(fb)) ? "true" : "false"));
       #endif
       d = e = m;
    }
@@ -101,7 +101,7 @@ Real BrentDekkerZero::FindStep(Real lastStep, Real lastEval)
       {
          // Linear interpolation
          #ifdef DEBUG_ZERO_FINDER
-            MessageInterface::ShowMessage(wxT("   Using Linear Interp\n"));
+            MessageInterface::ShowMessage("   Using Linear Interp\n");
          #endif
          p = 2 * m * s;
          q = 1 - s;
@@ -110,7 +110,7 @@ Real BrentDekkerZero::FindStep(Real lastStep, Real lastEval)
       {
          // Inverse quadratic interpolation
          #ifdef DEBUG_ZERO_FINDER
-            MessageInterface::ShowMessage(wxT("   Using Inverse Q Interp\n"));
+            MessageInterface::ShowMessage("   Using Inverse Q Interp\n");
          #endif
          q = fa / fc;
          r = fb / fc;
@@ -152,9 +152,9 @@ Real BrentDekkerZero::FindStep(Real lastStep, Real lastEval)
 bool BrentDekkerZero::CheckConvergence()
 {
 #ifdef DEBUG_ZERO_FINDER
-   MessageInterface::ShowMessage(wxT("Convergence Check\n"));
-   MessageInterface::ShowMessage(wxT("      m = %.12le >? tol = %.12le\n      ")
-         wxT("      fb = %.12le\n"), m, tol, fb);
+   MessageInterface::ShowMessage("Convergence Check\n");
+   MessageInterface::ShowMessage("      m = %.12le >? tol = %.12le\n      "
+         "      fb = %.12le\n", m, tol, fb);
 #endif
    
    bool retval = (fabs(m) > tol) && (fabs(fb) != 0.0);
@@ -165,9 +165,9 @@ bool BrentDekkerZero::CheckConvergence()
 Real BrentDekkerZero::TestDriver(Real aVal, Real bVal, Real tVal)
 {
    #ifdef DEBUG_ZERO_FINDER
-      MessageInterface::ShowMessage(wxT("Testing Brent-Dekker Zero\n   Inputs:\n"));
-      MessageInterface::ShowMessage(wxT("      a = %.12lf\n      b = %.12lf\n      ")
-            wxT("tol = %le\n"), aVal, bVal, tVal);
+      MessageInterface::ShowMessage("Testing Brent-Dekker Zero\n   Inputs:\n");
+      MessageInterface::ShowMessage("      a = %.12lf\n      b = %.12lf\n      "
+            "tol = %le\n", aVal, bVal, tVal);
    #endif
    
    Real fa0, fb0;
@@ -175,7 +175,7 @@ Real BrentDekkerZero::TestDriver(Real aVal, Real bVal, Real tVal)
    fb0 = TestFunction(bVal);
 
    #ifdef DEBUG_ZERO_FINDER
-      MessageInterface::ShowMessage(wxT("      fa = %.12lf\n      fb = %.12lf\n"), 
+      MessageInterface::ShowMessage("      fa = %.12lf\n      fb = %.12lf\n", 
             fa0, fb0);
    #endif
    
@@ -187,7 +187,7 @@ Real BrentDekkerZero::TestDriver(Real aVal, Real bVal, Real tVal)
    while (CheckConvergence())
    {
       #ifdef DEBUG_ZERO_FINDER
-         MessageInterface::ShowMessage(wxT("   Iteration %d:\n"), ++count);
+         MessageInterface::ShowMessage("   Iteration %d:\n", ++count);
       #endif
       nextVal = newVal;
       fNext = TestFunction(nextVal);
@@ -195,7 +195,7 @@ Real BrentDekkerZero::TestDriver(Real aVal, Real bVal, Real tVal)
    }
    
    #ifdef DEBUG_ZERO_FINDER
-      MessageInterface::ShowMessage(wxT("   Converged to %.12lf\n"), nextVal);
+      MessageInterface::ShowMessage("   Converged to %.12lf\n", nextVal);
    #endif
 
    return b;
@@ -207,10 +207,10 @@ void BrentDekkerZero::SwapAC()
    fc = fa;
    d = e = b - a;
    #ifdef DEBUG_ZERO_FINDER
-      MessageInterface::ShowMessage(wxT("SwapAC at end: a  = %.12lf b  = %.12lf  ")
-                                    wxT("c = %.12lf\n            fa = %.12lf ")
-                                    wxT("fb = %.12lf fc = %.12lf\n")
-                                    wxT("            d = %.12lf e = %.12lf\n"),
+      MessageInterface::ShowMessage("SwapAC at end: a  = %.12lf b  = %.12lf  "
+                                    "c = %.12lf\n            fa = %.12lf "
+                                    "fb = %.12lf fc = %.12lf\n"
+                                    "            d = %.12lf e = %.12lf\n",
                                     a, b, c, fa, fb, fc, d, e);
    #endif
 }
@@ -219,9 +219,9 @@ void BrentDekkerZero::SwapAC()
 void BrentDekkerZero::FindStepParameters()
 {
    #ifdef DEBUG_ZERO_FINDER
-      MessageInterface::ShowMessage(wxT("FSP: a  = %.12lf b  = %.12lf  c = %.12lf\n")
-                                    wxT("     fa = %.12lf fb = %.12lf ")
-                                    wxT("fc = %.12lf\n"), a, b, c, fa, fb, fc);
+      MessageInterface::ShowMessage("FSP: a  = %.12lf b  = %.12lf  c = %.12lf\n"
+                                    "     fa = %.12lf fb = %.12lf "
+                                    "fc = %.12lf\n", a, b, c, fa, fb, fc);
    #endif
    
    if (fabs(fc) < fabs(fb))
@@ -237,12 +237,12 @@ void BrentDekkerZero::FindStepParameters()
    m = 0.5 * (c - b);
    
    #ifdef DEBUG_ZERO_FINDER
-      MessageInterface::ShowMessage(wxT("FSP at end: a  = %.12lf b  = %.12lf  ")
-                                    wxT("c = %.12lf\n            fa = %.12lf ")
-                                    wxT("fb = %.12lf fc = %.12lf\n"), a, b, c, fa, 
+      MessageInterface::ShowMessage("FSP at end: a  = %.12lf b  = %.12lf  "
+                                    "c = %.12lf\n            fa = %.12lf "
+                                    "fb = %.12lf fc = %.12lf\n", a, b, c, fa, 
                                     fb, fc);
-      MessageInterface::ShowMessage(wxT("            tol = %.12lf  m = %.12lf\n")
-                                    wxT("=================\n"), tol, m);
+      MessageInterface::ShowMessage("            tol = %.12lf  m = %.12lf\n"
+                                    "=================\n", tol, m);
    #endif
 }
 

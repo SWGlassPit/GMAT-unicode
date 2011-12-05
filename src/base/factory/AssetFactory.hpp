@@ -35,8 +35,8 @@ public:
    AssetFactory(const AssetFactory& af);
    AssetFactory& operator=(const AssetFactory& af);
    
-   virtual SpacePoint*      CreateSpacePoint(const wxString &ofType,
-                                             const wxString &withName = wxT(""));        
+   virtual SpacePoint*      CreateSpacePoint(const std::string &ofType,
+                                             const std::string &withName = "");        
 
 };
 

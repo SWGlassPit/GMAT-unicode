@@ -37,11 +37,11 @@ public:
    EnvData& operator= (const EnvData& right);
    virtual ~EnvData();
    
-   Real GetEnvReal(const wxString &str);
+   Real GetEnvReal(const std::string &str);
    
    // The inherited methods from RefData
    virtual bool ValidateRefObjects(GmatBase *param);
-   virtual const wxString* GetValidObjectList() const;
+   virtual const std::string* GetValidObjectList() const;
    
    const static Real ENV_REAL_UNDEFINED;// = -9876543210.1234;
    
@@ -63,7 +63,7 @@ protected:
       EnvDataObjectCount
    };
    
-   static const wxString VALID_OBJECT_TYPE_LIST[EnvDataObjectCount];
+   static const std::string VALID_OBJECT_TYPE_LIST[EnvDataObjectCount];
 };
 #endif // EnvData_hpp
 

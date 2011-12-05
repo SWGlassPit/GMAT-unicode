@@ -33,8 +33,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Cos::Cos(const wxString &nomme)
-   : MathFunction(wxT("Cos"), nomme)
+Cos::Cos(const std::string &nomme)
+   : MathFunction("Cos", nomme)
 {
 }
 
@@ -100,7 +100,7 @@ void Cos::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 
    //if ((type1 != type2) || (row1 != row2) || (col1 != col2))
    if (type1 != Gmat::REAL_TYPE)
-      throw MathException(wxT("Left is not scalar, so cannot do Cos().\n"));    
+      throw MathException("Left is not scalar, so cannot do Cos().\n");    
    else
    {
       type = type1;
@@ -121,7 +121,7 @@ void Cos::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 bool Cos::ValidateInputs()
 {
    if (leftNode == NULL)
-      throw MathException(wxT("Cos() - Missing input arguments.\n"));
+      throw MathException("Cos() - Missing input arguments.\n");
    
    Integer type1, row1, col1; // Left node
    

@@ -55,21 +55,21 @@
 //---------------------------------
 
 /// Labels used for the ground station parameters.
-const wxString
+const std::string
 BodyFixedPoint::PARAMETER_TEXT[BodyFixedPointParamCount - SpacePointParamCount] =
    {
-         wxT("CentralBody"),
-         wxT("StateType"),         // Cartesian or Spherical
-         wxT("HorizonReference"),  // Sphere or Ellipsoid
-         wxT("Location1"),         // X or Latitude value
-         wxT("Location2"),         // Y or Longitude value
-         wxT("Location3"),         // Z or Altitude value
-         wxT("LOCATION_LABEL_1"),  // "X" or "Latitude"
-         wxT("LOCATION_LABEL_2"),  // "Y" or "Longitude"
-         wxT("LOCATION_LABEL_3"),  // "Z" or "Altitude"
-         wxT("LOCATION_UNITS_1"),  // "km" or "deg"
-         wxT("LOCATION_UNITS_2"),  // "km" or "deg"
-         wxT("LOCATION_UNITS_3")   // "km" or "km"
+         "CentralBody",
+         "StateType",         // Cartesian or Spherical
+         "HorizonReference",  // Sphere or Ellipsoid
+         "Location1",         // X or Latitude value
+         "Location2",         // Y or Longitude value
+         "Location3",         // Z or Altitude value
+         "LOCATION_LABEL_1",  // "X" or "Latitude"
+         "LOCATION_LABEL_2",  // "Y" or "Longitude"
+         "LOCATION_LABEL_3"   // "Z" or "Altitude"
+         "LOCATION_UNITS_1",  // "km" or "deg"
+         "LOCATION_UNITS_2",  // "km" or "deg"
+         "LOCATION_UNITS_3"   // "km" or "km"
    };
 
 const Gmat::ParameterType
@@ -94,7 +94,7 @@ BodyFixedPoint::PARAMETER_TYPE[BodyFixedPointParamCount - SpacePointParamCount] 
 
 
 //---------------------------------------------------------------------------
-//  BodyFixedPoint(const wxString &itsName)
+//  BodyFixedPoint(const std::string &itsName)
 //---------------------------------------------------------------------------
 /**
  * Constructs a BodyFixedPoint object (default constructor).
@@ -102,34 +102,34 @@ BodyFixedPoint::PARAMETER_TYPE[BodyFixedPointParamCount - SpacePointParamCount] 
  * @param <itsName> Optional name for the object.  Defaults to "".
  */
 //---------------------------------------------------------------------------
-BodyFixedPoint::BodyFixedPoint(const wxString &itsType, const wxString &itsName,
+BodyFixedPoint::BodyFixedPoint(const std::string &itsType, const std::string &itsName,
       const Gmat::ObjectType objType) :
    SpacePoint           (objType, itsType, itsName),
-   cBodyName            (wxT("Earth")),
+   cBodyName            ("Earth"),
    theBody              (NULL),
    meanEquatorialRadius (GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[GmatSolarSystemDefaults::EARTH]),
    flattening           (GmatSolarSystemDefaults::PLANET_FLATTENING[GmatSolarSystemDefaults::EARTH]),
-   stateType            (wxT("Cartesian")),
-   horizon              (wxT("Sphere")),
+   stateType            ("Cartesian"),
+   horizon              ("Sphere"),
    solarSystem          (NULL),
-   bfcsName             (wxT("")),
+   bfcsName             (""),
    bfcs                 (NULL),
-   mj2kcsName           (wxT("")),
+   mj2kcsName           (""),
    mj2kcs               (NULL)
 {
    objectTypes.push_back(Gmat::BODY_FIXED_POINT);
-   objectTypeNames.push_back(wxT("BodyFixedPoint"));
+   objectTypeNames.push_back("BodyFixedPoint");
    parameterCount = BodyFixedPointParamCount;
 
    // assumes StateType = Cartesian
-   locationLabels.push_back(wxT("X"));
-   locationLabels.push_back(wxT("Y"));
-   locationLabels.push_back(wxT("Z"));
+   locationLabels.push_back("X");
+   locationLabels.push_back("Y");
+   locationLabels.push_back("Z");
 
    // assumes StateType = Cartesian
-   locationUnits.push_back(wxT("km"));
-   locationUnits.push_back(wxT("km"));
-   locationUnits.push_back(wxT("km"));
+   locationUnits.push_back("km");
+   locationUnits.push_back("km");
+   locationUnits.push_back("km");
 
    location[0] = GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[GmatSolarSystemDefaults::EARTH];
    location[1] = 0.0;
@@ -243,29 +243,29 @@ bool BodyFixedPoint::Initialize()
 {
    // Initialize the body data
    if (!theBody)
-      throw AssetException(wxT("Unable to initialize ground station ") +
-            instanceName + wxT("; its origin is not set\n"));
+      throw AssetException("Unable to initialize ground station " +
+            instanceName + "; its origin is not set\n");
 
    // Get required data from the body
-   flattening            = theBody->GetRealParameter(wxT("Flattening"));
-   meanEquatorialRadius  = theBody->GetRealParameter(wxT("EquatorialRadius"));
+   flattening            = theBody->GetRealParameter("Flattening");
+   meanEquatorialRadius  = theBody->GetRealParameter("EquatorialRadius");
 
 
    // Calculate the body-fixed Cartesian position
    // If it was input in Cartesian, we're done
    UpdateBodyFixedLocation();
-//   if (stateType == wxT("Cartesian"))
+//   if (stateType == "Cartesian")
 //   {
 //      bfLocation[0] = location[0];
 //      bfLocation[1] = location[1];
 //      bfLocation[2] = location[2];
 //   }
 //   // Otherwise, convert from input type to Cartesian
-//   else if (stateType == wxT("Spherical"))
+//   else if (stateType == "Spherical")
 //   {
 //      Rvector3 spherical(location[0], location[1], location[2]);
 //      Rvector3 cart;
-//      if (horizon == wxT("Sphere"))
+//      if (horizon == "Sphere")
 //      {
 //         cart = BodyFixedStateConverterUtil::SphericalToCartesian(spherical,
 //                flattening, meanEquatorialRadius);
@@ -273,7 +273,7 @@ bool BodyFixedPoint::Initialize()
 //         bfLocation[1] = cart[1];
 //         bfLocation[2] = cart[2];
 //      }
-//      else if (horizon == wxT("Ellipsoid"))
+//      else if (horizon == "Ellipsoid")
 //      {
 //         cart = BodyFixedStateConverterUtil::SphericalEllipsoidToCartesian(spherical,
 //                flattening, meanEquatorialRadius);
@@ -282,50 +282,50 @@ bool BodyFixedPoint::Initialize()
 //         bfLocation[2] = cart[2];
 //      }
 //      else
-//         throw AssetException(wxT("Unable to initialize ground station \"") +
-//               instanceName + wxT("\"; horizon reference is not a recognized type (known ")
-//                     wxT("types are either \"Sphere\" or \"Ellipsoid\")"));
+//         throw AssetException("Unable to initialize ground station \"" +
+//               instanceName + "\"; horizon reference is not a recognized type (known "
+//                     "types are either \"Sphere\" or \"Ellipsoid\")");
 //   }
 //   else
-//      throw AssetException(wxT("Unable to initialize ground station \"") +
-//            instanceName + wxT("\"; stateType is not a recognized type (known ")
-//                  wxT("types are either \"Cartesian\" or \"Spherical\")"));
+//      throw AssetException("Unable to initialize ground station \"" +
+//            instanceName + "\"; stateType is not a recognized type (known "
+//                  "types are either \"Cartesian\" or \"Spherical\")");
 
    #ifdef DEBUG_INIT
-      MessageInterface::ShowMessage(wxT("...BodyFixedPoint %s Initialized!\n"), instanceName.c_str());
+      MessageInterface::ShowMessage("...BodyFixedPoint %s Initialized!\n", instanceName.c_str());
    #endif
 
    #ifdef TEST_BODYFIXED_POINT
-      MessageInterface::ShowMessage(wxT("For %s, %s %s location [%lf ")
-            wxT("%lf %lf] --> XYZ [%lf %lf %lf]\n"), instanceName.c_str(),
+      MessageInterface::ShowMessage("For %s, %s %s location [%lf "
+            "%lf %lf] --> XYZ [%lf %lf %lf]\n", instanceName.c_str(),
             stateType.c_str(), horizon.c_str(), location[0], location[1],
             location[2], bfLocation[0], bfLocation[1], bfLocation[2]);
       // Check the MJ2000 methods
       if (theBody == NULL)
       {
          MessageInterface::ShowMessage(
-               wxT("Error initializing ground station %s: theBody is not set\n"),
+               "Error initializing ground station %s: theBody is not set\n",
                instanceName.c_str());
          return false;
       }
       if (bfcs == NULL)
       {
          MessageInterface::ShowMessage(
-               wxT("Error initializing ground station %s: bfcs is not set\n"),
+               "Error initializing ground station %s: bfcs is not set\n",
                instanceName.c_str());
          return false;
       }
       if (mj2kcs == NULL)
       {
          MessageInterface::ShowMessage(
-               wxT("Error initializing ground station %s: mj2kcs is not set\n"),
+               "Error initializing ground station %s: mj2kcs is not set\n",
                instanceName.c_str());
          return false;
       }
 
       Rvector6 j2kState = GetMJ2000State(GmatTimeConstants::MJD_OF_J2000);
-      MessageInterface::ShowMessage(wxT("The resulting MJ2000 Cartesian state is ")
-            wxT("\n   [%s]\n"), j2kState.ToString(16).c_str());
+      MessageInterface::ShowMessage("The resulting MJ2000 Cartesian state is "
+            "\n   [%s]\n", j2kState.ToString(16).c_str());
    #endif
    return true;
 }
@@ -348,7 +348,7 @@ void BodyFixedPoint::Copy(const GmatBase* orig)
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -358,7 +358,7 @@ void BodyFixedPoint::Copy(const GmatBase* orig)
  * @return parameter text for the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString BodyFixedPoint::GetParameterText(const Integer id) const
+std::string BodyFixedPoint::GetParameterText(const Integer id) const
 {
    if (id >= SpacePointParamCount && id < BodyFixedPointParamCount)
       return PARAMETER_TEXT[id - SpacePointParamCount];
@@ -366,7 +366,7 @@ wxString BodyFixedPoint::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -376,7 +376,7 @@ wxString BodyFixedPoint::GetParameterText(const Integer id) const
  * @return ID for the requested parameter.
  */
 //------------------------------------------------------------------------------
-Integer BodyFixedPoint::GetParameterID(const wxString &str) const
+Integer BodyFixedPoint::GetParameterID(const std::string &str) const
 {
    // Handle 3 special cases
    if (str == locationLabels[0])
@@ -417,7 +417,7 @@ Gmat::ParameterType BodyFixedPoint::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -427,7 +427,7 @@ Gmat::ParameterType BodyFixedPoint::GetParameterType(const Integer id) const
  * @return parameter type string of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString BodyFixedPoint::GetParameterTypeString(const Integer id) const
+std::string BodyFixedPoint::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -453,7 +453,7 @@ bool BodyFixedPoint::IsParameterReadOnly(const Integer id) const
 }
 
 //---------------------------------------------------------------------------
-//  bool IsParameterReadOnly(const wxString &label) const
+//  bool IsParameterReadOnly(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * Checks to see if the requested parameter is read only.
@@ -463,7 +463,7 @@ bool BodyFixedPoint::IsParameterReadOnly(const Integer id) const
  * @return true if the parameter is read only, false (the default) if not.
  */
 //---------------------------------------------------------------------------
-bool BodyFixedPoint::IsParameterReadOnly(const wxString &label) const
+bool BodyFixedPoint::IsParameterReadOnly(const std::string &label) const
 {
    return IsParameterReadOnly(GetParameterID(label));
 }
@@ -509,13 +509,13 @@ const StringArray& BodyFixedPoint::GetPropertyEnumStrings(const Integer id) cons
    {
    case STATE_TYPE:
       enumStrings.clear();
-      enumStrings.push_back(wxT("Cartesian"));
-      enumStrings.push_back(wxT("Spherical"));
+      enumStrings.push_back("Cartesian");
+      enumStrings.push_back("Spherical");
       return enumStrings;
    case HORIZON_REFERENCE:
       enumStrings.clear();
-      enumStrings.push_back(wxT("Sphere"));
-      enumStrings.push_back(wxT("Ellipsoid"));
+      enumStrings.push_back("Sphere");
+      enumStrings.push_back("Ellipsoid");
       return enumStrings;
    default:
       return SpacePoint::GetPropertyEnumStrings(id);
@@ -524,7 +524,7 @@ const StringArray& BodyFixedPoint::GetPropertyEnumStrings(const Integer id) cons
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id) const
+//  std::string  GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -535,7 +535,7 @@ const StringArray& BodyFixedPoint::GetPropertyEnumStrings(const Integer id) cons
  * @return  string value of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString BodyFixedPoint::GetStringParameter(const Integer id) const
+std::string BodyFixedPoint::GetStringParameter(const Integer id) const
 {
    if (id == CENTRAL_BODY)
    {
@@ -561,7 +561,7 @@ wxString BodyFixedPoint::GetStringParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  SetStringParameter(const Integer id, const wxString value)
+//  std::string  SetStringParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the string parameter value, given the input
@@ -574,26 +574,26 @@ wxString BodyFixedPoint::GetStringParameter(const Integer id) const
  */
 //------------------------------------------------------------------------------
 bool BodyFixedPoint::SetStringParameter(const Integer id,
-                                       const wxString &value)
+                                       const std::string &value)
 {
    if (IsParameterReadOnly(id))
        return false;
 
    static bool firstTimeWarning = true;
    bool        retval           = false;
-   wxString stateTypeList    = wxT("Cartesian, Spherical");
-   wxString horizonList      = wxT("Sphere, Ellipsoid");
-   wxString currentStateType = stateType;
-   wxString currentHorizon   = horizon;
+   std::string stateTypeList    = "Cartesian, Spherical";
+   std::string horizonList      = "Sphere, Ellipsoid";
+   std::string currentStateType = stateType;
+   std::string currentHorizon   = horizon;
 
    if (id == CENTRAL_BODY)
    {
       if (value != SolarSystem::EARTH_NAME)
       {
-         wxString errmsg =
-            wxT("The value of \"") + value + wxT("\" for field \"CentralBody\"")
-            wxT(" on object \"") + instanceName + wxT("\" is not an allowed value.\n")
-            wxT("The allowed values are: [ ") + SolarSystem::EARTH_NAME + wxT(" ]. ");
+         std::string errmsg =
+            "The value of \"" + value + "\" for field \"CentralBody\""
+            " on object \"" + instanceName + "\" is not an allowed value.\n"
+            "The allowed values are: [ " + SolarSystem::EARTH_NAME + " ]. ";
          throw AssetException(errmsg);
       }
       if (theBody)
@@ -603,42 +603,42 @@ bool BodyFixedPoint::SetStringParameter(const Integer id,
    }
    else if (id == STATE_TYPE)
    {
-      wxString v = value;
-      if (v == wxT("Geographical")) // deprecated value
+      std::string v = value;
+      if (v == "Geographical") // deprecated value
       {
-        v = wxT("Spherical");
+        v = "Spherical";
         // write one warning per GMAT session
         if (firstTimeWarning)
         {
-           wxString msg =
-              wxT("The value of \"") + value + wxT("\" for field \"StateType\"")
-              wxT(" on object \"") + instanceName + wxT("\" is not an allowed value.\n")
-              wxT("The allowed values are: [ ") + stateTypeList + wxT(" ]. ");
-           MessageInterface::ShowMessage(wxT("*** WARNING *** ") + msg + wxT("\n"));
+           std::string msg =
+              "The value of \"" + value + "\" for field \"StateType\""
+              " on object \"" + instanceName + "\" is not an allowed value.\n"
+              "The allowed values are: [ " + stateTypeList + " ]. ";
+           MessageInterface::ShowMessage("*** WARNING *** " + msg + "\n");
            firstTimeWarning = false;
         }
       }
 
-      if ((v == wxT("Cartesian")) || (v == wxT("Spherical")))
+      if ((v == "Cartesian") || (v == "Spherical"))
       {
          stateType = v;
-         if (v == wxT("Cartesian"))
+         if (v == "Cartesian")
          {
-            locationLabels[0] = wxT("X");
-            locationLabels[1] = wxT("Y");
-            locationLabels[2] = wxT("Z");
-            locationUnits[0] = wxT("km");
-            locationUnits[1] = wxT("km");
-            locationUnits[2] = wxT("km");
+            locationLabels[0] = "X";
+            locationLabels[1] = "Y";
+            locationLabels[2] = "Z";
+            locationUnits[0] = "km";
+            locationUnits[1] = "km";
+            locationUnits[2] = "km";
          }
          else
          {
-            locationLabels[0] = wxT("Latitude");
-            locationLabels[1] = wxT("Longitude");
-            locationLabels[2] = wxT("Altitude");
-            locationUnits[0] = wxT("deg");
-            locationUnits[1] = wxT("deg");
-            locationUnits[2] = wxT("km");
+            locationLabels[0] = "Latitude";
+            locationLabels[1] = "Longitude";
+            locationLabels[2] = "Altitude";
+            locationUnits[0] = "deg";
+            locationUnits[1] = "deg";
+            locationUnits[2] = "km";
          }
          if (currentStateType != stateType)
          {
@@ -653,16 +653,16 @@ bool BodyFixedPoint::SetStringParameter(const Integer id,
       }
       else
       {
-         wxString errmsg =
-            wxT("The value of \"") + value + wxT("\" for field \"StateType\"")
-            wxT(" on object \"") + instanceName + wxT("\" is not an allowed value.\n")
-            wxT("The allowed values are: [ ") + stateTypeList + wxT(" ]. ");
+         std::string errmsg =
+            "The value of \"" + value + "\" for field \"StateType\""
+            " on object \"" + instanceName + "\" is not an allowed value.\n"
+            "The allowed values are: [ " + stateTypeList + " ]. ";
          throw AssetException(errmsg);
       }
    }
    else if (id == HORIZON_REFERENCE)
    {
-      if ((value == wxT("Sphere")) || (value == wxT("Ellipsoid")))
+      if ((value == "Sphere") || (value == "Ellipsoid"))
       {
          horizon = value;
          if (currentHorizon != horizon)
@@ -678,10 +678,10 @@ bool BodyFixedPoint::SetStringParameter(const Integer id,
       }
       else
       {
-         wxString errmsg =
-            wxT("The value of \"") + value + wxT("\" for field \"HorizonReference\"")
-            wxT(" on object \"") + instanceName + wxT("\" is not an allowed value.\n")
-            wxT("The allowed values are: [ ") + horizonList + wxT(" ]. ");
+         std::string errmsg =
+            "The value of \"" + value + "\" for field \"HorizonReference\""
+            " on object \"" + instanceName + "\" is not an allowed value.\n"
+            "The allowed values are: [ " + horizonList + " ]. ";
          throw AssetException(errmsg);
       }
    }
@@ -692,7 +692,7 @@ bool BodyFixedPoint::SetStringParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to get a parameter value
@@ -702,13 +702,13 @@ bool BodyFixedPoint::SetStringParameter(const Integer id,
  * @return the value of the parameter
  */
 //------------------------------------------------------------------------------
-wxString BodyFixedPoint::GetStringParameter(const wxString &label) const
+std::string BodyFixedPoint::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
 /**
 * Accessor method used to get a parameter value
@@ -717,15 +717,15 @@ wxString BodyFixedPoint::GetStringParameter(const wxString &label) const
  * @param    value The new value for the parameter
  */
 //------------------------------------------------------------------------------
-bool BodyFixedPoint::SetStringParameter(const wxString &label,
-                                           const wxString &value)
+bool BodyFixedPoint::SetStringParameter(const std::string &label,
+                                           const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
 
 //------------------------------------------------------------------------------
 //  GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                         const wxString &name)
+//                         const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * This method returns a reference object from the BodyFixedPoint class.
@@ -737,14 +737,14 @@ bool BodyFixedPoint::SetStringParameter(const wxString &label,
  */
 //------------------------------------------------------------------------------
 GmatBase* BodyFixedPoint::GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name)
+                                     const std::string &name)
 {
    #ifdef TEST_BODYFIXED_POINT
-      MessageInterface::ShowMessage(wxT("Entering BodyFixedPoint::GetRefObject()"));
-      MessageInterface::ShowMessage(wxT("name = %s, cBodyName = %s\n"),
+      MessageInterface::ShowMessage("Entering BodyFixedPoint::GetRefObject()");
+      MessageInterface::ShowMessage("name = %s, cBodyName = %s\n",
             name.c_str(), cBodyName.c_str());
       if (!theBody)
-         MessageInterface::ShowMessage(wxT("The Body is NULL, though!!!\n"));
+         MessageInterface::ShowMessage("The Body is NULL, though!!!\n");
    #endif
    if ((type == Gmat::SPACE_POINT) || (type == Gmat::CELESTIAL_BODY))
       if (name == cBodyName)
@@ -756,7 +756,7 @@ GmatBase* BodyFixedPoint::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                    const wxString &name)
+//                    const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * This method sets a reference object for the SpacePoint class.
@@ -769,14 +769,14 @@ GmatBase* BodyFixedPoint::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool BodyFixedPoint::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                 const wxString &name)
+                                 const std::string &name)
 {
    if (obj == NULL)
       return false;
 
    #ifdef DEBUG_OBJECT_MAPPING
       MessageInterface::ShowMessage
-         (wxT("BodyFixedPoint::SetRefObject() this=%s, obj=<%p><%s>, type=<%d><%s> entered\n"),
+         ("BodyFixedPoint::SetRefObject() this=%s, obj=<%p><%s>, type=<%d><%s> entered\n",
           GetName().c_str(), obj, obj->GetName().c_str(), (Integer) type,
           GetObjectTypeString(type).c_str());
    #endif
@@ -792,7 +792,7 @@ bool BodyFixedPoint::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 
             #ifdef DEBUG_OBJECT_MAPPING
                MessageInterface::ShowMessage
-                  (wxT("BodyFixedPoint::Setting theBody to %s\n"),
+                  ("BodyFixedPoint::Setting theBody to %s\n",
                    theBody->GetName().c_str());
             #endif
 
@@ -803,15 +803,15 @@ bool BodyFixedPoint::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 
       case Gmat::COORDINATE_SYSTEM:
          {
-            if (!(obj->IsOfType(wxT("CoordinateSystem"))))
-               throw AssetException(wxT("BodyFixedPoint expecting a CoordinateSystem\n"));
+            if (!(obj->IsOfType("CoordinateSystem")))
+               throw AssetException("BodyFixedPoint expecting a CoordinateSystem\n");
             CoordinateSystem *tmpCS = (CoordinateSystem*)obj;
             if ((name == bfcsName) &&
                 (tmpCS->GetOriginName() == cBodyName))
             {
                #ifdef DEBUG_OBJECT_MAPPING
                   MessageInterface::ShowMessage
-                     (wxT("BodyFixedPoint::Setting bfcs to %s\n"),
+                     ("BodyFixedPoint::Setting bfcs to %s\n",
                       tmpCS->GetName().c_str());
                #endif
                bfcs = tmpCS;
@@ -822,7 +822,7 @@ bool BodyFixedPoint::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
             {
                #ifdef DEBUG_OBJECT_MAPPING
                   MessageInterface::ShowMessage
-                     (wxT("BodyFixedPoint::Setting mj2kcs to %s\n"),
+                     ("BodyFixedPoint::Setting mj2kcs to %s\n",
                       tmpCS->GetName().c_str());
                #endif
                mj2kcs = tmpCS;
@@ -835,7 +835,7 @@ bool BodyFixedPoint::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
          break;
    }
 
-   MessageInterface::ShowMessage(wxT("BodyFixedPoint::SetRefObject calling base for %s\n"), name.c_str());
+   MessageInterface::ShowMessage("BodyFixedPoint::SetRefObject calling base for %s\n", name.c_str());
 
    // Not handled here -- invoke the next higher SetRefObject call
    return SpacePoint::SetRefObject(obj, type, name);
@@ -846,7 +846,7 @@ Real BodyFixedPoint::GetRealParameter(const Integer id) const
 {
    if ((id >= LOCATION_1) && (id <= LOCATION_3))
    {
-      if ((stateType == wxT("Cartesian")) || (id == LOCATION_3))  // all units are km
+      if ((stateType == "Cartesian") || (id == LOCATION_3))  // all units are km
          return location[id - LOCATION_1];
       // need to return units of degrees for Spherical state latitude and longitude
       else
@@ -861,12 +861,12 @@ Real BodyFixedPoint::SetRealParameter(const Integer id,
                                       const Real value)
 {
    #ifdef DEBUG_BODYFIXED_SET_REAL
-      MessageInterface::ShowMessage(wxT("Entering BFP::SetRealParameter with id = %d (%s) and value = %12.10f\n"),
+      MessageInterface::ShowMessage("Entering BFP::SetRealParameter with id = %d (%s) and value = %12.10f\n",
             id, (GetParameterText(id)).c_str(), value);
-//      MessageInterface::ShowMessage(wxT("stateType = %s and horizon = %s\n"),
+//      MessageInterface::ShowMessage("stateType = %s and horizon = %s\n",
 //            stateType.c_str(), horizon.c_str());
    #endif
-   if (((id == LOCATION_1) || (id == LOCATION_2)) && stateType == wxT("Spherical"))
+   if (((id == LOCATION_1) || (id == LOCATION_2)) && stateType == "Spherical")
    {
       // if Spherical statetype, then check if Latitude/Longitude are in the correct range
       if (id == LOCATION_1) // latitude
@@ -875,10 +875,10 @@ Real BodyFixedPoint::SetRealParameter(const Integer id,
             location[id-LOCATION_1] = value * GmatMathConstants::RAD_PER_DEG;
          else
          {
-            AssetException aException(wxT(""));
+            AssetException aException("");
             aException.SetDetails(errorMessageFormat.c_str(),
                         GmatStringUtil::ToString(value, 16).c_str(),
-                        GetStringParameter(id-LOCATION_1+LOCATION_LABEL_1).c_str(), wxT("Real Number >= -90.0 and <= 90.0"));
+                        GetStringParameter(id-LOCATION_1+LOCATION_LABEL_1).c_str(), "Real Number >= -90.0 and <= 90.0");
             throw aException;
          }
       }
@@ -907,12 +907,12 @@ Real BodyFixedPoint::SetRealParameter(const Integer id,
 //   return SpacePoint::GetRealParameter(id, row, col);
 //}
 
-Real BodyFixedPoint::GetRealParameter(const wxString &label) const
+Real BodyFixedPoint::GetRealParameter(const std::string &label) const
 {
    return GetRealParameter(GetParameterID(label));
 }
 
-Real BodyFixedPoint::SetRealParameter(const wxString &label,
+Real BodyFixedPoint::SetRealParameter(const std::string &label,
                                       const Real value)
 {
    return SetRealParameter(GetParameterID(label), value);
@@ -922,7 +922,7 @@ Real BodyFixedPoint::SetRealParameter(const wxString &label,
 // confused about the overloaded versions of the following six methods:
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id, const Integer index) const
+// std::string GetStringParameter(const Integer id, const Integer index) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value from a vector of strings,
@@ -934,14 +934,14 @@ Real BodyFixedPoint::SetRealParameter(const wxString &label,
  * @return The requested string.
  */
 //------------------------------------------------------------------------------
-wxString BodyFixedPoint::GetStringParameter(const Integer id,
+std::string BodyFixedPoint::GetStringParameter(const Integer id,
                                               const Integer index) const
 {
    return SpacePoint::GetStringParameter(id, index);
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value,
+// bool SetStringParameter(const Integer id, const std::string &value,
 //                         const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -956,14 +956,14 @@ wxString BodyFixedPoint::GetStringParameter(const Integer id,
  */
 //------------------------------------------------------------------------------
 bool BodyFixedPoint::SetStringParameter(const Integer id,
-                                       const wxString &value,
+                                       const std::string &value,
                                        const Integer index)
 {
    return SetStringParameter(id, value, index);
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label,
+// std::string GetStringParameter(const std::string &label,
 //                                const Integer index) const
 //------------------------------------------------------------------------------
 /**
@@ -977,14 +977,14 @@ bool BodyFixedPoint::SetStringParameter(const Integer id,
  * @return The requested string.
  */
 //------------------------------------------------------------------------------
-wxString BodyFixedPoint::GetStringParameter(const wxString &label,
+std::string BodyFixedPoint::GetStringParameter(const std::string &label,
                                            const Integer index) const
 {
    return SpacePoint::GetStringParameter(label,  index);
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value,
+// bool SetStringParameter(const std::string &label, const std::string &value,
 //                         const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -999,8 +999,8 @@ wxString BodyFixedPoint::GetStringParameter(const wxString &label,
  * @return true if successful; otherwise, false.
  */
 //------------------------------------------------------------------------------
-bool BodyFixedPoint::SetStringParameter(const wxString &label,
-                                       const wxString &value,
+bool BodyFixedPoint::SetStringParameter(const std::string &label,
+                                       const std::string &value,
                                        const Integer index)
 {
    return SpacePoint::SetStringParameter(label, value, index);
@@ -1008,7 +1008,7 @@ bool BodyFixedPoint::SetStringParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// GmatBase* GetRefObject(const Gmat::ObjectType type, const wxString &name,
+// GmatBase* GetRefObject(const Gmat::ObjectType type, const std::string &name,
 //                        const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -1023,7 +1023,7 @@ bool BodyFixedPoint::SetStringParameter(const wxString &label,
  */
 //------------------------------------------------------------------------------
 GmatBase* BodyFixedPoint::GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name,
+                                     const std::string &name,
                                      const Integer index)
 {
    return SpacePoint::GetRefObject(type, name, index);
@@ -1031,7 +1031,7 @@ GmatBase* BodyFixedPoint::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                   const wxString &name, const Integer index)
+//                   const std::string &name, const Integer index)
 //------------------------------------------------------------------------------
 /**
  * This method sets a pointer to a reference object in a vector of objects in
@@ -1046,7 +1046,7 @@ GmatBase* BodyFixedPoint::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool BodyFixedPoint::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                  const wxString &name,
+                                  const std::string &name,
                                   const Integer index)
 {
    // Call parent class to add objects to bodyList
@@ -1073,7 +1073,7 @@ bool BodyFixedPoint::HasRefObjectTypeArray()
 /**
  */
 //------------------------------------------------------------------------------
-wxString BodyFixedPoint::GetRefObjectName(const Gmat::ObjectType type) const
+std::string BodyFixedPoint::GetRefObjectName(const Gmat::ObjectType type) const
 {
    return cBodyName;
 }
@@ -1081,7 +1081,7 @@ wxString BodyFixedPoint::GetRefObjectName(const Gmat::ObjectType type) const
 const StringArray& BodyFixedPoint::GetRefObjectNameArray(const Gmat::ObjectType type)
 {
    #ifdef DEBUG_BF_REF
-      MessageInterface::ShowMessage(wxT("In BFP::GetRefObjectNameArray, requesting type %d (%s)\n"),
+      MessageInterface::ShowMessage("In BFP::GetRefObjectNameArray, requesting type %d (%s)\n",
             (Integer) type, (GmatBase::OBJECT_TYPE_STRING[type]).c_str());
    #endif
 
@@ -1133,7 +1133,7 @@ const ObjectTypeArray& BodyFixedPoint::GetRefObjectTypeArray()
 const Rvector6 BodyFixedPoint::GetMJ2000State(const A1Mjd &atTime)
 {
    #ifdef DEBUG_BODYFIXED_STATE
-      MessageInterface::ShowMessage(wxT("In GetMJ2000State for BodyFixedPoint %s\n"),
+      MessageInterface::ShowMessage("In GetMJ2000State for BodyFixedPoint %s\n",
             instanceName.c_str());
    #endif
 
@@ -1148,16 +1148,16 @@ const Rvector6 BodyFixedPoint::GetMJ2000State(const A1Mjd &atTime)
    // assuming you have pointer to coordinate systems mj2k and bfcs,
    // where mj2k is a J2000 system and bfcs is BodyFixed
    #ifdef DEBUG_BODYFIXED_STATE
-      MessageInterface::ShowMessage(wxT("... before call to Convert, epoch = %12.10f\n"),
+      MessageInterface::ShowMessage("... before call to Convert, epoch = %12.10f\n",
             epoch);
-      MessageInterface::ShowMessage(wxT(" ... bfcs = %s  and mj2kcs = %s\n"),
-            (bfcs? wxT("NOT NULL") : wxT("NULL")), (mj2kcs? wxT("NOT NULL") : wxT("NULL")));
-      MessageInterface::ShowMessage(wxT("bf state (in bfcs, cartesian) = %s\n"),
+      MessageInterface::ShowMessage(" ... bfcs = %s  and mj2kcs = %s\n",
+            (bfcs? "NOT NULL" : "NULL"), (mj2kcs? "NOT NULL" : "NULL"));
+      MessageInterface::ShowMessage("bf state (in bfcs, cartesian) = %s\n",
             (bfState.ToString()).c_str());
    #endif
    ccvtr.Convert(epoch, bfState, bfcs, j2000PosVel, mj2kcs);
    #ifdef DEBUG_BODYFIXED_STATE
-      MessageInterface::ShowMessage(wxT("bf state (in mj2kcs, cartesian) = %s\n"),
+      MessageInterface::ShowMessage("bf state (in mj2kcs, cartesian) = %s\n",
             (j2000PosVel.ToString()).c_str());
    #endif
 
@@ -1274,18 +1274,18 @@ void BodyFixedPoint::SetSolarSystem(SolarSystem *ss)
 //------------------------------------------------------------------------------
 void BodyFixedPoint::UpdateBodyFixedLocation()
 {
-   if (stateType == wxT("Cartesian"))
+   if (stateType == "Cartesian")
    {
       bfLocation[0] = location[0];
       bfLocation[1] = location[1];
       bfLocation[2] = location[2];
    }
    // Otherwise, convert from input type to Cartesian
-   else if (stateType == wxT("Spherical"))
+   else if (stateType == "Spherical")
    {
       Rvector3 spherical(location[0], location[1], location[2]);
       Rvector3 cart;
-      if (horizon == wxT("Sphere"))
+      if (horizon == "Sphere")
       {
          cart = BodyFixedStateConverterUtil::SphericalToCartesian(spherical,
                 flattening, meanEquatorialRadius);
@@ -1293,7 +1293,7 @@ void BodyFixedPoint::UpdateBodyFixedLocation()
          bfLocation[1] = cart[1];
          bfLocation[2] = cart[2];
       }
-      else if (horizon == wxT("Ellipsoid"))
+      else if (horizon == "Ellipsoid")
       {
          cart = BodyFixedStateConverterUtil::SphericalEllipsoidToCartesian(spherical,
                 flattening, meanEquatorialRadius);
@@ -1302,15 +1302,15 @@ void BodyFixedPoint::UpdateBodyFixedLocation()
          bfLocation[2] = cart[2];
       }
       else
-         throw AssetException(wxT("Unable to set body fixed location for BodyFixedPoint \"") +
-               instanceName + wxT("\"; horizon reference is not a recognized type (known ")
-                     wxT("types are either \"Sphere\" or \"Ellipsoid\")"));
+         throw AssetException("Unable to set body fixed location for BodyFixedPoint \"" +
+               instanceName + "\"; horizon reference is not a recognized type (known "
+                     "types are either \"Sphere\" or \"Ellipsoid\")");
    }
    else
    {
-      throw AssetException(wxT("Unable to set body fixed location for BodyFixedPoint \"") +
-            instanceName + wxT("\"; state type is not a recognized type (known ")
-                  wxT("types are either \"Cartesian\" or \"Spherical\")"));
+      throw AssetException("Unable to set body fixed location for BodyFixedPoint \"" +
+            instanceName + "\"; state type is not a recognized type (known "
+                  "types are either \"Cartesian\" or \"Spherical\")");
    }
 
 }

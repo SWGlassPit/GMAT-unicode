@@ -42,7 +42,7 @@
 //---------------------------------
 
 /* placeholder - may be needed later
-const wxString
+const std::string
 BodyInertialAxes::PARAMETER_TEXT[BodyInertialAxesParamCount - InertialAxesParamCount] =
 {
    "",
@@ -59,8 +59,8 @@ BodyInertialAxes::PARAMETER_TYPE[BodyInertialAxesParamCount - InertialAxesParamC
 //------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//  BodyInertialAxes(const wxString &itsType,
-//            const wxString &itsName);
+//  BodyInertialAxes(const std::string &itsType,
+//            const std::string &itsName);
 //---------------------------------------------------------------------------
 /**
  * Constructs base BodyInertialAxes structures
@@ -71,10 +71,10 @@ BodyInertialAxes::PARAMETER_TYPE[BodyInertialAxesParamCount - InertialAxesParamC
  *
  */
 //---------------------------------------------------------------------------
-BodyInertialAxes::BodyInertialAxes(const wxString &itsName) :
-InertialAxes(wxT("BodyInertial"),itsName)
+BodyInertialAxes::BodyInertialAxes(const std::string &itsName) :
+InertialAxes("BodyInertial",itsName)
 {
-   objectTypeNames.push_back(wxT("BodyInertialAxes"));
+   objectTypeNames.push_back("BodyInertialAxes");
    parameterCount = BodyInertialAxesParamCount;
    Real TAIModJul   = 2451544.9996274998411 - GmatTimeConstants::JD_JAN_5_1941;
    Real mjdA1       = TimeConverterUtil::Convert(TAIModJul,
@@ -83,7 +83,7 @@ InertialAxes(wxT("BodyInertial"),itsName)
    epoch.Set(mjdA1);     
    
    #ifdef DEBUG_BODY_INERTIAL
-      MessageInterface::ShowMessage(wxT("BodyInertialAxes created with name %s\n"),
+      MessageInterface::ShowMessage("BodyInertialAxes created with name %s\n",
       instanceName.c_str());
    #endif
 }
@@ -103,7 +103,7 @@ BodyInertialAxes::BodyInertialAxes(const BodyInertialAxes &bodyInertial) :
 InertialAxes(bodyInertial)
 {
    #ifdef DEBUG_BODY_INERTIAL
-      MessageInterface::ShowMessage(wxT("BodyInertialAxes created (copied) with name %s\n"),
+      MessageInterface::ShowMessage("BodyInertialAxes created (copied) with name %s\n",
       instanceName.c_str());
    #endif
 }
@@ -125,7 +125,7 @@ const BodyInertialAxes& BodyInertialAxes::operator=(const BodyInertialAxes &body
       return *this;
    InertialAxes::operator=(bodyInertial);   
    #ifdef DEBUG_BODY_INERTIAL
-      MessageInterface::ShowMessage(wxT("BodyInertialAxes created (operator=) with name %s\n"),
+      MessageInterface::ShowMessage("BodyInertialAxes created (operator=) with name %s\n",
       instanceName.c_str());
    #endif
    return *this;
@@ -156,14 +156,14 @@ bool BodyInertialAxes::Initialize()
 {
    InertialAxes::Initialize();
    #ifdef DEBUG_BODY_INERTIAL
-      MessageInterface::ShowMessage(wxT("Initializing BodyInertialAxes with name \"%s\"\n"),
+      MessageInterface::ShowMessage("Initializing BodyInertialAxes with name \"%s\"\n",
       instanceName.c_str());
-      MessageInterface::ShowMessage(wxT("   originName = %s\n"), originName.c_str());
+      MessageInterface::ShowMessage("   originName = %s\n", originName.c_str());
    #endif
    // if origin is not a CelestialBody, there is an error
-   if (!(origin->IsOfType(wxT("CelestialBody"))))
+   if (!(origin->IsOfType("CelestialBody")))
       throw CoordinateSystemException(
-            wxT("Improper origin set for BodyInertialAxes object."));
+            "Improper origin set for BodyInertialAxes object.");
    if (originName == SolarSystem::EARTH_NAME)
    {
       rotMatrix.Set(1.0,0.0,0.0,
@@ -182,7 +182,7 @@ bool BodyInertialAxes::Initialize()
       Rvector   coords(4);
       coords              = ((CelestialBody*)origin)->GetBodyCartographicCoordinates(epoch);
       #ifdef DEBUG_BODY_INERTIAL
-         MessageInterface::ShowMessage(wxT("   Body cartographic coords for body %s are %12.10f   %12.10f   %12.10f   %12.10f\n"),
+         MessageInterface::ShowMessage("   Body cartographic coords for body %s are %12.10f   %12.10f   %12.10f   %12.10f\n",
                (origin->GetName()).c_str(), coords[0], coords[1], coords[2], coords[3]);
       #endif
       Real      a         = GmatMathConstants::PI_OVER_TWO +    // 90 + alpha
@@ -198,8 +198,8 @@ bool BodyInertialAxes::Initialize()
       rotMatrix = R3T * R1T;
    }
    #ifdef DEBUG_BODY_INERTIAL
-      MessageInterface::ShowMessage(wxT("At end of BodyInertialAxes::Initialize, rotMatrix    = %s\n"), (rotMatrix.ToString()).c_str());
-      MessageInterface::ShowMessage(wxT("                                        rotDotMatrix = %s\n"), (rotDotMatrix.ToString()).c_str());
+      MessageInterface::ShowMessage("At end of BodyInertialAxes::Initialize, rotMatrix    = %s\n", (rotMatrix.ToString()).c_str());
+      MessageInterface::ShowMessage("                                        rotDotMatrix = %s\n", (rotDotMatrix.ToString()).c_str());
    #endif
    // rotDotMatrix remains the zero matrix
    return true;
@@ -231,7 +231,7 @@ GmatBase* BodyInertialAxes::Clone() const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -242,7 +242,7 @@ GmatBase* BodyInertialAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*wxString BodyInertialAxes::GetParameterText(const Integer id) const
+/*std::string BodyInertialAxes::GetParameterText(const Integer id) const
 {
    if (id >= InertialAxesParamCount && id < BodyInertialAxesParamCount)
       return PARAMETER_TEXT[id - InertialAxesParamCount];
@@ -250,7 +250,7 @@ GmatBase* BodyInertialAxes::Clone() const
 }
 */
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -261,7 +261,7 @@ GmatBase* BodyInertialAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*Integer BodyInertialAxes::GetParameterID(const wxString &str) const
+/*Integer BodyInertialAxes::GetParameterID(const std::string &str) const
 {
    for (Integer i = InertialAxesParamCount; i < BodyInertialAxesParamCount; i++)
    {
@@ -293,7 +293,7 @@ GmatBase* BodyInertialAxes::Clone() const
 }
 */
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -304,7 +304,7 @@ GmatBase* BodyInertialAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*wxString BodyInertialAxes::GetParameterTypeString(const Integer id) const
+/*std::string BodyInertialAxes::GetParameterTypeString(const Integer id) const
 {
    return InertialAxes::PARAM_TYPE_STRING[GetParameterType(id)];
 }

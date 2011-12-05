@@ -28,8 +28,6 @@
 #include "FileTypes.hpp"           // for GmatFile::MAX_PATH_LEN
 #include <algorithm>               // for set_difference()
 #include <iterator>                // For back_inserter() with VC++ 2010
-#include <wx/wfstream.h>
-#include <wx/txtstrm.h>
 
 #ifndef _MSC_VER  // if not Microsoft Visual C++
 #include <dirent.h>
@@ -46,15 +44,15 @@ using namespace GmatStringUtil;
 //#define DBGLVL_FUNCTION_OUTPUT 2
 
 //------------------------------------------------------------------------------
-// wxString GetPathSeparator()
+// std::string GetPathSeparator()
 //------------------------------------------------------------------------------
 /**
- * @return path separator; wxT("/") or "\\" dependends on the platform
+ * @return path separator; "/" or "\\" dependends on the platform
  */
 //------------------------------------------------------------------------------
-wxString GmatFileUtil::GetPathSeparator()
+std::string GmatFileUtil::GetPathSeparator()
 {
-   wxString sep = wxT("/");
+   std::string sep = "/";
    
    char *buffer;
    buffer = getenv("OS");
@@ -62,13 +60,13 @@ wxString GmatFileUtil::GetPathSeparator()
    {
       #ifdef DEBUG_FILE_UTIL
       MessageInterface::ShowMessage
-         (wxT("GmatFileUtil::GetPathSeparator() Current OS is %s\n"), buffer);
+         ("GmatFileUtil::GetPathSeparator() Current OS is %s\n", buffer);
       #endif
       
-      wxString osStr(wxString::FromAscii(buffer));
+      std::string osStr(buffer);
       
-      if (osStr.find(wxT("Windows")) != osStr.npos)
-         sep = wxT("\\");
+      if (osStr.find("Windows") != osStr.npos)
+         sep = "\\";
    }
    
    return sep;
@@ -76,7 +74,7 @@ wxString GmatFileUtil::GetPathSeparator()
 
 
 //------------------------------------------------------------------------------
-// wxString GetCurrentPath()
+// std::string GetCurrentPath()
 //------------------------------------------------------------------------------
 /*
  * Note: This function calls getcwd() which is defined in <dirent>. There is a
@@ -87,24 +85,24 @@ wxString GmatFileUtil::GetPathSeparator()
  *
  */
 //------------------------------------------------------------------------------
-wxString GmatFileUtil::GetCurrentPath()
+std::string GmatFileUtil::GetCurrentPath()
 {
-   wxString currPath;
+   std::string currPath;
    
 #ifndef _MSC_VER  // if not Microsoft Visual C++
    char buffer[GmatFile::MAX_PATH_LEN];
    // Intentionally get the return and then ignore it to move warning from
-   // system libraries to GMAT code base.  The wxT("unused variable") warning
+   // system libraries to GMAT code base.  The "unused variable" warning
    // here can be safely ignored.
 //   char *ch = getcwd(buffer, GmatFile::MAX_PATH_LEN);
    // This clears a warning message
    if (getcwd(buffer, GmatFile::MAX_PATH_LEN) != buffer)
       ;
-   currPath = wxString::FromAscii(buffer);
+   currPath = buffer;
 #else
    MessageInterface::ShowMessage
-      (wxT("*** WARNING *** GmatFileUtil::GetCurrentPath() \n")
-       wxT("Cannot compile getcwd() with MSVC, so jsut returning empty path\n"));
+      ("*** WARNING *** GmatFileUtil::GetCurrentPath() \n"
+       "Cannot compile getcwd() with MSVC, so jsut returning empty path\n");
 #endif
    
    return currPath;
@@ -113,7 +111,7 @@ wxString GmatFileUtil::GetCurrentPath()
 
 
 //------------------------------------------------------------------------------
-// wxString ParseFirstPathName(const wxString &fullPath, bool appendSep = true)
+// std::string ParseFirstPathName(const std::string &fullPath, bool appendSep = true)
 //------------------------------------------------------------------------------
 /*
  * This function parses first path name from given full path name.
@@ -124,16 +122,16 @@ wxString GmatFileUtil::GetCurrentPath()
  *
  */
 //------------------------------------------------------------------------------
-wxString GmatFileUtil::ParseFirstPathName(const wxString &fullPath,
+std::string GmatFileUtil::ParseFirstPathName(const std::string &fullPath,
                                              bool appendSep)
 {
    #ifdef DEBUG_PARSE_FILENAME
    MessageInterface::ShowMessage
-      (wxT("GmatFileUtil::ParseFirstPathName() fullPath=<%s>\n"), fullPath.c_str());
+      ("GmatFileUtil::ParseFirstPathName() fullPath=<%s>\n", fullPath.c_str());
    #endif
    
-   wxString filePath;
-   wxString::size_type firstSlash = fullPath.find_first_of(wxT("/\\"));
+   std::string filePath;
+   std::string::size_type firstSlash = fullPath.find_first_of("/\\");
    
    if (firstSlash != filePath.npos)
    {
@@ -145,7 +143,7 @@ wxString GmatFileUtil::ParseFirstPathName(const wxString &fullPath,
    
    #ifdef DEBUG_PARSE_FILENAME
    MessageInterface::ShowMessage
-      (wxT("GmatFileUtil::ParseFirstPathName() returning <%s>\n"), filePath.c_str());
+      ("GmatFileUtil::ParseFirstPathName() returning <%s>\n", filePath.c_str());
    #endif
    
    return filePath;
@@ -153,7 +151,7 @@ wxString GmatFileUtil::ParseFirstPathName(const wxString &fullPath,
 
 
 //------------------------------------------------------------------------------
-// wxString ParsePathName(const wxString &fullPath, bool appendSep = true)
+// std::string ParsePathName(const std::string &fullPath, bool appendSep = true)
 //------------------------------------------------------------------------------
 /*
  * This function parses whole path name from given full path name.
@@ -164,16 +162,16 @@ wxString GmatFileUtil::ParseFirstPathName(const wxString &fullPath,
  *
  */
 //------------------------------------------------------------------------------
-wxString GmatFileUtil::ParsePathName(const wxString &fullPath,
+std::string GmatFileUtil::ParsePathName(const std::string &fullPath,
                                         bool appendSep)
 {
    #ifdef DEBUG_PARSE_FILENAME
    MessageInterface::ShowMessage
-      (wxT("GmatFileUtil::ParsePathName() fullPath=<%s>\n"), fullPath.c_str());
+      ("GmatFileUtil::ParsePathName() fullPath=<%s>\n", fullPath.c_str());
    #endif
    
-   wxString filePath;
-   wxString::size_type lastSlash = fullPath.find_last_of(wxT("/\\"));
+   std::string filePath;
+   std::string::size_type lastSlash = fullPath.find_last_of("/\\");
    
    if (lastSlash != filePath.npos)
    {
@@ -185,7 +183,7 @@ wxString GmatFileUtil::ParsePathName(const wxString &fullPath,
    
    #ifdef DEBUG_PARSE_FILENAME
    MessageInterface::ShowMessage
-      (wxT("GmatFileUtil::ParsePathName() returning <%s>\n"), filePath.c_str());
+      ("GmatFileUtil::ParsePathName() returning <%s>\n", filePath.c_str());
    #endif
    
    return filePath;
@@ -193,7 +191,7 @@ wxString GmatFileUtil::ParsePathName(const wxString &fullPath,
 
 
 //------------------------------------------------------------------------------
-// wxString ParseFileName(const wxString &fullPath, bool removeExt = false)
+// std::string ParseFileName(const std::string &fullPath, bool removeExt = false)
 //------------------------------------------------------------------------------
 /*
  * This function parses file name from given full path name.
@@ -204,27 +202,27 @@ wxString GmatFileUtil::ParsePathName(const wxString &fullPath,
  *
  */
 //------------------------------------------------------------------------------
-wxString GmatFileUtil::ParseFileName(const wxString &fullPath, bool removeExt)
+std::string GmatFileUtil::ParseFileName(const std::string &fullPath, bool removeExt)
 {
    #ifdef DEBUG_PARSE_FILENAME
    MessageInterface::ShowMessage
-      (wxT("GmatFileUtil::ParseFileName() fullPath=<%s>\n"), fullPath.c_str());
+      ("GmatFileUtil::ParseFileName() fullPath=<%s>\n", fullPath.c_str());
    #endif
    
-   wxString fileName = fullPath;
+   std::string fileName = fullPath;
    
-   wxString::size_type lastSlash = fileName.find_last_of(wxT("/\\"));
+   std::string::size_type lastSlash = fileName.find_last_of("/\\");
    if (lastSlash != fileName.npos)
       fileName = fileName.substr(lastSlash+1);
    
    #ifdef DEBUG_PARSE_FILENAME
    MessageInterface::ShowMessage
-      (wxT("GmatFileUtil::ParseFileName() returning <%s>\n"), fileName.c_str());
+      ("GmatFileUtil::ParseFileName() returning <%s>\n", fileName.c_str());
    #endif
    
    if (removeExt)
    {
-      wxString::size_type index1 = fileName.find_first_of(wxT("."));
+      std::string::size_type index1 = fileName.find_first_of(".");
       if (index1 != fileName.npos)
          fileName = fileName.substr(0, index1);
    }
@@ -234,7 +232,7 @@ wxString GmatFileUtil::ParseFileName(const wxString &fullPath, bool removeExt)
 
 
 //------------------------------------------------------------------------------
-// wxString ParseFileExtension(const wxString &fullPath, bool prependDot)
+// std::string ParseFileExtension(const std::string &fullPath, bool prependDot)
 //------------------------------------------------------------------------------
 /*
  * This function parses file extension (string after .) from given full path name.
@@ -245,17 +243,17 @@ wxString GmatFileUtil::ParseFileName(const wxString &fullPath, bool removeExt)
  *
  */
 //------------------------------------------------------------------------------
-wxString GmatFileUtil::ParseFileExtension(const wxString &fullPath,
+std::string GmatFileUtil::ParseFileExtension(const std::string &fullPath,
                                              bool prependDot)
 {
    #ifdef DEBUG_PARSE_FILENAME
    MessageInterface::ShowMessage
-      (wxT("GmatFileUtil::ParseFileExtension() fullPath=<%s>\n"), fullPath.c_str());
+      ("GmatFileUtil::ParseFileExtension() fullPath=<%s>\n", fullPath.c_str());
    #endif
    
-   wxString fileExt;
+   std::string fileExt;
    
-   wxString::size_type lastDot = fullPath.find_last_of(wxT("."));
+   std::string::size_type lastDot = fullPath.find_last_of(".");
    if (lastDot != fullPath.npos)
    {
       if (lastDot < fullPath.size())
@@ -263,21 +261,21 @@ wxString GmatFileUtil::ParseFileExtension(const wxString &fullPath,
          fileExt = fullPath.substr(lastDot+1);
          
          #ifdef DEBUG_PARSE_FILENAME
-         MessageInterface::ShowMessage(wxT("   fileExt='%s'\n"), fileExt.c_str());
+         MessageInterface::ShowMessage("   fileExt='%s'\n", fileExt.c_str());
          #endif
          
          // Check for path separator
-         if (fileExt[0] == wxT('/') || fileExt[0] == wxT('\\'))
-            fileExt = wxT("");
+         if (fileExt[0] == '/' || fileExt[0] == '\\')
+            fileExt = "";
       }
    }
    
-   if (fileExt != wxT("") && prependDot)
-      fileExt = wxT(".") + fileExt;
+   if (fileExt != "" && prependDot)
+      fileExt = "." + fileExt;
    
    #ifdef DEBUG_PARSE_FILENAME
    MessageInterface::ShowMessage
-      (wxT("GmatFileUtil::ParseFileExtension() returning <%s>\n"), fileExt.c_str());
+      ("GmatFileUtil::ParseFileExtension() returning <%s>\n", fileExt.c_str());
    #endif
    
    return fileExt;
@@ -285,33 +283,33 @@ wxString GmatFileUtil::ParseFileExtension(const wxString &fullPath,
 
 
 //------------------------------------------------------------------------------
-// wxString GetInvalidFileNameMessage(Integer option = 1)
+// std::string GetInvalidFileNameMessage(Integer option = 1)
 //------------------------------------------------------------------------------
 /**
  * Returns invalid file name message.
  */
 //------------------------------------------------------------------------------
-wxString GmatFileUtil::GetInvalidFileNameMessage(Integer option)
+std::string GmatFileUtil::GetInvalidFileNameMessage(Integer option)
 {
-   wxString msg;
+   std::string msg;
    
    if (option == 1)
-      msg = wxT("Maximum of 232 chars of non-blank name without containing any of ")
-         wxT("the following characters: \\/:*?\"<>| ");
+      msg = "Maximum of 232 chars of non-blank name without containing any of "
+         "the following characters: \\/:*?\"<>| ";
    else if (option == 2)
-      msg = wxT("A file name cannot be blank or contain any of the following characters:\n")
-      wxT("   \\/:*?\"<>|");
+      msg = "A file name cannot be blank or contain any of the following characters:\n"
+      "   \\/:*?\"<>|";
    
    return msg;
 }
 
 
 //------------------------------------------------------------------------------
-// bool GmatFileUtil::IsValidFileName(const wxString &fname, bool blankIsOk = true)
+// bool GmatFileUtil::IsValidFileName(const std::string &fname, bool blankIsOk = true)
 //------------------------------------------------------------------------------
-bool GmatFileUtil::IsValidFileName(const wxString &fname, bool blankIsOk)
+bool GmatFileUtil::IsValidFileName(const std::string &fname, bool blankIsOk)
 {
-   if (fname == wxT(""))
+   if (fname == "")
    {
       if (blankIsOk)
          return true;
@@ -319,11 +317,11 @@ bool GmatFileUtil::IsValidFileName(const wxString &fname, bool blankIsOk)
          return false;
    }
    
-   wxString filename = ParseFileName(fname);
+   std::string filename = ParseFileName(fname);
    bool retval = false;
    
    // Check for invalid characters
-   wxString invalidChars = wxT("\\/:*?\"<>|");
+   std::string invalidChars = "\\/:*?\"<>|";
    if (filename.find_first_of(invalidChars) == filename.npos)
       retval = true;
    else
@@ -341,23 +339,23 @@ bool GmatFileUtil::IsValidFileName(const wxString &fname, bool blankIsOk)
 
 
 //------------------------------------------------------------------------------
-// bool GmatFileUtil::IsSameFileName(const wxString &fname1, const wxString &fname2)
+// bool GmatFileUtil::IsSameFileName(const std::string &fname1, const std::string &fname2)
 //------------------------------------------------------------------------------
 /*
  * @return  true  If two file names are same, false otherwise
  */
 //------------------------------------------------------------------------------
-bool GmatFileUtil::IsSameFileName(const wxString &fname1, const wxString &fname2)
+bool GmatFileUtil::IsSameFileName(const std::string &fname1, const std::string &fname2)
 {
-   if (fname1 == wxT("") || fname2 == wxT(""))
+   if (fname1 == "" || fname2 == "")
       return false;
 
-   wxString name1 = fname1;
-   wxString name2 = fname2;
+   std::string name1 = fname1;
+   std::string name2 = fname2;
    
    // Replace \ with /
-   name1 = GmatStringUtil::Replace(name1, wxT("\\"), wxT("/"));
-   name2 = GmatStringUtil::Replace(name2, wxT("\\"), wxT("/"));
+   name1 = GmatStringUtil::Replace(name1, "\\", "/");
+   name2 = GmatStringUtil::Replace(name2, "\\", "/");
    if (name1 == name2)
       return true;
    else
@@ -366,20 +364,20 @@ bool GmatFileUtil::IsSameFileName(const wxString &fname1, const wxString &fname2
 
 
 //------------------------------------------------------------------------------
-// bool DoesDirectoryExist(const wxString &fullPath, bool blankIsOk = true)
+// bool DoesDirectoryExist(const std::string &fullPath, bool blankIsOk = true)
 //------------------------------------------------------------------------------
 /*
  * @return  true  If directory exist, false otherwise
  */
 //------------------------------------------------------------------------------
-bool GmatFileUtil::DoesDirectoryExist(const wxString &fullPath, bool blankIsOk)
+bool GmatFileUtil::DoesDirectoryExist(const std::string &fullPath, bool blankIsOk)
 {
    #ifdef DEBUG_DIR_EXIST
    MessageInterface::ShowMessage
-      (wxT("GmatFileUtil::DoesDirectoryExist() entered, fullPath='%s'\n"), fullPath.c_str());
+      ("GmatFileUtil::DoesDirectoryExist() entered, fullPath='%s'\n", fullPath.c_str());
    #endif
    
-   if (fullPath == wxT(""))
+   if (fullPath == "")
    {
       if (blankIsOk)
          return true;
@@ -388,19 +386,19 @@ bool GmatFileUtil::DoesDirectoryExist(const wxString &fullPath, bool blankIsOk)
    }
    
    bool dirExist = false;
-   wxString dirName = ParsePathName(fullPath, true);
+   std::string dirName = ParsePathName(fullPath, true);
    
    // empty dir name is OK.
-   if (dirName == wxT(""))
+   if (dirName == "")
       return true;
    
    #ifdef DEBUG_DIR_EXIST
-   MessageInterface::ShowMessage(wxT("   ==> dirName='%s'\n"), dirName.c_str());
+   MessageInterface::ShowMessage("   ==> dirName='%s'\n", dirName.c_str());
    #endif
    
 #ifndef _MSC_VER  // if not Microsoft Visual C++
    DIR *dir = NULL;
-   dir = opendir(dirName.char_str());
+   dir = opendir(dirName.c_str());
    
    if (dir != NULL)
    {
@@ -420,7 +418,7 @@ bool GmatFileUtil::DoesDirectoryExist(const wxString &fullPath, bool blankIsOk)
    
    #ifdef DEBUG_DIR_EXIST
    MessageInterface::ShowMessage
-      (wxT("GmatFileUtil::DoesDirectoryExist() returning %d\n"), dirExist);
+      ("GmatFileUtil::DoesDirectoryExist() returning %d\n", dirExist);
    #endif
    
    return dirExist;
@@ -428,18 +426,18 @@ bool GmatFileUtil::DoesDirectoryExist(const wxString &fullPath, bool blankIsOk)
 
 
 //------------------------------------------------------------------------------
-// bool DoesFileExist(const wxString &filename)
+// bool DoesFileExist(const std::string &filename)
 //------------------------------------------------------------------------------
-bool GmatFileUtil::DoesFileExist(const wxString &filename)
+bool GmatFileUtil::DoesFileExist(const std::string &filename)
 {
    #ifdef DEBUG_FILE_CHECK
    MessageInterface::ShowMessage
-      (wxT("GmatFileUtil::DoesFileExist() filename=<%s>\n"),
+      ("GmatFileUtil::DoesFileExist() filename=<%s>\n",
        filename.c_str());
    #endif
    
    FILE * pFile;
-   pFile = fopen (filename.char_str(), "rt+");
+   pFile = fopen (filename.c_str(), "rt+");
    bool fileExist = false;
    if (pFile!=NULL)
    {
@@ -449,7 +447,7 @@ bool GmatFileUtil::DoesFileExist(const wxString &filename)
    
    #ifdef DEBUG_FILE_CHECK
    MessageInterface::ShowMessage
-      (wxT("GmatFileUtil::DoesFileExist() returning %d\n"), fileExist);
+      ("GmatFileUtil::DoesFileExist() returning %d\n", fileExist);
    #endif
    
    return fileExist;
@@ -457,7 +455,7 @@ bool GmatFileUtil::DoesFileExist(const wxString &filename)
 
 
 //------------------------------------------------------------------------------
-// bool GetLine(std::istream *is, wxString &line)
+// bool GetLine(std::istream *is, std::string &line)
 //------------------------------------------------------------------------------
 /*
  * Reads a platform independent line from the input stream.
@@ -468,15 +466,15 @@ bool GmatFileUtil::DoesFileExist(const wxString &filename)
  * @return  true if a line from the input stream was read successfully.
  */
 //------------------------------------------------------------------------------
-bool GmatFileUtil::GetLine(std::istream *is, wxString &line)
+bool GmatFileUtil::GetLine(std::istream *is, std::string &line)
 {
    if (is == NULL)
       return false;
    
    char ch;
-   wxString result;
+   std::string result;
    
-   while (is->get(ch) && ch != wxT('\r') && ch != wxT('\n') && ch != wxT('\0') &&
+   while (is->get(ch) && ch != '\r' && ch != '\n' && ch != '\0' &&
           !is->eof()) 
       result += ch;
    
@@ -486,7 +484,7 @@ bool GmatFileUtil::GetLine(std::istream *is, wxString &line)
 
 //#define DEBUG_APP_INSTALLATION
 //------------------------------------------------------------------------------
-// bool IsAppInstalled(const wxString &appName)
+// bool IsAppInstalled(const std::string &appName)
 //------------------------------------------------------------------------------
 /**
  * Asks system if requested application is installed
@@ -496,18 +494,18 @@ bool GmatFileUtil::GetLine(std::istream *is, wxString &line)
  * @note GMAT currently checks for only MATLAB installation
  */
 //------------------------------------------------------------------------------
-bool GmatFileUtil::IsAppInstalled(const wxString &appName, wxString &appLoc)
+bool GmatFileUtil::IsAppInstalled(const std::string &appName, std::string &appLoc)
 {
 #ifdef __WIN32__
    #ifdef DEBUG_APP_INSTALLATION
    MessageInterface::ShowMessage
-      (wxT("GmatFileUtil::IsAppInstalled() entered, appName='%s'\n"), appName.c_str());
+      ("GmatFileUtil::IsAppInstalled() entered, appName='%s'\n", appName.c_str());
    #endif
    
-   if (appName != wxT("MATLAB"))
+   if (appName != "MATLAB")
    {
       MessageInterface::ShowMessage
-         (wxT("GMAT currently checks for only MATLAB installation\n"));
+         ("GMAT currently checks for only MATLAB installation\n");
       return false;
    }
    
@@ -521,16 +519,16 @@ bool GmatFileUtil::IsAppInstalled(const wxString &appName, wxString &appLoc)
    // Should we check other versions by querying sub keys?
    // See RegEnumKeyEx(), RegEnumValue() example in
    // http://msdn.microsoft.com/en-us/library/ms724256%28VS.85%29.aspx
-   //wxString ver75 = wxT("7.5"); // 2007b
-   wxString ver79 = wxT("7.9"); // 2009b
+   //std::string ver75 = "7.5"; // 2007b
+   std::string ver79 = "7.9"; // 2009b
    
-   wxString matlabFolder = "Software\\MathWorks\\MATLAB\\";
+   std::string matlabFolder = "Software\\MathWorks\\MATLAB\\";
 
-   wxString folder = matlabFolder + ver79;
-   wxString key = wxT("MATLABROOT");
+   std::string folder = matlabFolder + ver79;
+   std::string key = "MATLABROOT";
    
    #ifdef DEBUG_APP_INSTALLATION
-   MessageInterface::ShowMessage(wxT("   About to open '%s'\n"), folder.c_str());
+   MessageInterface::ShowMessage("   About to open '%s'\n", folder.c_str());
    #endif
    
    // Open location
@@ -539,7 +537,7 @@ bool GmatFileUtil::IsAppInstalled(const wxString &appName, wxString &appLoc)
    {
       #ifdef DEBUG_APP_INSTALLATION
       MessageInterface::ShowMessage
-         (wxT("   Failed on RegOpenKeyEx(), return code is %ld\n"), lRet);
+         ("   Failed on RegOpenKeyEx(), return code is %ld\n", lRet);
       #endif
       
       return false;
@@ -547,7 +545,7 @@ bool GmatFileUtil::IsAppInstalled(const wxString &appName, wxString &appLoc)
    else
    {
       #ifdef DEBUG_APP_INSTALLATION
-      MessageInterface::ShowMessage(wxT("   hKey is %ld\n"), hKey);
+      MessageInterface::ShowMessage("   hKey is %ld\n", hKey);
       #endif
    }
    
@@ -558,13 +556,13 @@ bool GmatFileUtil::IsAppInstalled(const wxString &appName, wxString &appLoc)
    {
       #ifdef DEBUG_APP_INSTALLATION
       MessageInterface::ShowMessage
-         (wxT("   Failed on RegQueryValueEx(), rReturn code is %ld\n"), lRet);
+         ("   Failed on RegQueryValueEx(), rReturn code is %ld\n", lRet);
       #endif
       return false;
    }
    
    #ifdef DEBUG_APP_INSTALLATION
-   MessageInterface::ShowMessage(wxT("   Key value: %s\n"), temp);
+   MessageInterface::ShowMessage("   Key value: %s\n", temp);
    #endif
    
    // Close key
@@ -573,7 +571,7 @@ bool GmatFileUtil::IsAppInstalled(const wxString &appName, wxString &appLoc)
    {
       #ifdef DEBUG_APP_INSTALLATION
       MessageInterface::ShowMessage
-         (wxT("   Failed on RegCloseKey(), return code is %ld\n"), lRet);
+         ("   Failed on RegCloseKey(), return code is %ld\n", lRet);
       #endif
       return false;
    }
@@ -582,7 +580,7 @@ bool GmatFileUtil::IsAppInstalled(const wxString &appName, wxString &appLoc)
    
    // Got this far, then key exists
    #ifdef DEBUG_APP_INSTALLATION
-   MessageInterface::ShowMessage(wxT("GmatFileUtil::IsAppInstalled() returning true\n"));
+   MessageInterface::ShowMessage("GmatFileUtil::IsAppInstalled() returning true\n");
    #endif
    return true;
    
@@ -593,7 +591,7 @@ bool GmatFileUtil::IsAppInstalled(const wxString &appName, wxString &appLoc)
 
 //------------------------------------------------------------------------------
 // WrapperTypeArray GetFunctionOutputTypes(std::istream *inStream,
-//                     const StringArray &outputs, wxString &errMsg,
+//                     const StringArray &outputs, std::string &errMsg,
 //                     IntegerArray &outputRows, IntegerArray &outputCols)
 //------------------------------------------------------------------------------
 /*
@@ -612,27 +610,27 @@ bool GmatFileUtil::IsAppInstalled(const wxString &appName, wxString &appLoc)
 //------------------------------------------------------------------------------
 WrapperTypeArray
 GmatFileUtil::GetFunctionOutputTypes(std::istream *inStream, const StringArray &inputs,
-                                     const StringArray &outputs, wxString &errMsg,
+                                     const StringArray &outputs, std::string &errMsg,
                                      IntegerArray &outputRows, IntegerArray &outputCols)
 {
    UnsignedInt outputSize = outputs.size();
    
    #if DBGLVL_FUNCTION_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("GmatFileUtil::GetFunctionOutputTypes() inputSize = %d, outputSize = %d\n"),
+      ("GmatFileUtil::GetFunctionOutputTypes() inputSize = %d, outputSize = %d\n",
        inputs.size(), outputSize);
    for (UnsignedInt i=0; i<inputs.size(); i++)
-      MessageInterface::ShowMessage(wxT("   inputs[%d]='%s'\n"), i, inputs[i].c_str());
+      MessageInterface::ShowMessage("   inputs[%d]='%s'\n", i, inputs[i].c_str());
    for (UnsignedInt i=0; i<outputs.size(); i++)
-      MessageInterface::ShowMessage(wxT("   outputs[%d]='%s'\n"), i, outputs[i].c_str());
+      MessageInterface::ShowMessage("   outputs[%d]='%s'\n", i, outputs[i].c_str());
    #endif
    
    WrapperTypeArray outputWrapperTypes;
-   wxString line;
+   std::string line;
    StringArray outputTypes, outputNames, outputDefs, multiples, globals;
-   errMsg = wxT("");
-   wxString errMsg1, errMsg2;
-   wxString name;
+   errMsg = "";
+   std::string errMsg1, errMsg2;
+   std::string name;
    Integer row, col;
    
    // if no output, just return
@@ -655,10 +653,10 @@ GmatFileUtil::GetFunctionOutputTypes(std::istream *inStream, const StringArray &
    
    if (multiples.size() > 0)
    {
-      errMsg = wxT("Duplicate output of");
+      errMsg = "Duplicate output of";
       
       for (UnsignedInt i=0; i<multiples.size(); i++)
-         errMsg = errMsg + wxT(" \"") + multiples[i] + wxT("\"");
+         errMsg = errMsg + " \"" + multiples[i] + "\"";
       return outputWrapperTypes;
    }
    
@@ -666,9 +664,9 @@ GmatFileUtil::GetFunctionOutputTypes(std::istream *inStream, const StringArray &
    // Initialize arrays to be used
    for (UnsignedInt i=0; i<outputSize; i++)
    {
-      outputTypes.push_back(wxT(""));;
-      outputNames.push_back(wxT(""));;
-      outputDefs.push_back(wxT(""));;
+      outputTypes.push_back("");;
+      outputNames.push_back("");;
+      outputDefs.push_back("");;
    }
    
    // Go through each line in the function file, ignoring after % inline comment
@@ -677,38 +675,38 @@ GmatFileUtil::GetFunctionOutputTypes(std::istream *inStream, const StringArray &
       if (GetLine(inStream, line))
       {
          // remove inline comments and trim
-         line = GmatStringUtil::RemoveInlineComment(line, wxT("%"));         
+         line = GmatStringUtil::RemoveInlineComment(line, "%");         
          line = GmatStringUtil::Trim(line, GmatStringUtil::BOTH, true, true);
          
          // Skip empty line or comment line
-         if (line[0] == wxT('\0') || line[0] == wxT('%'))
+         if (line[0] == '\0' || line[0] == '%')
             continue;
          
-         StringArray parts = GmatStringUtil::SeparateBy(line, wxT(" ,"), true);
+         StringArray parts = GmatStringUtil::SeparateBy(line, " ,", true);
          
-         if (parts[0] == wxT("Global"))
+         if (parts[0] == "Global")
          {
             #if DBGLVL_FUNCTION_OUTPUT > 1
             for (UnsignedInt i=0; i<parts.size(); i++)
-               MessageInterface::ShowMessage(wxT("   parts[%d]='%s'\n"), i, parts[i].c_str());
+               MessageInterface::ShowMessage("   parts[%d]='%s'\n", i, parts[i].c_str());
             #endif
             
             for (UnsignedInt j=1; j<parts.size(); j++)
                globals.push_back(parts[j]);
             
          }
-         else if (parts[0] == wxT("Create"))
+         else if (parts[0] == "Create")
          {
             #if DBGLVL_FUNCTION_OUTPUT > 1
             for (UnsignedInt i=0; i<parts.size(); i++)
-               MessageInterface::ShowMessage(wxT("   parts[%d]='%s'\n"), i, parts[i].c_str());
+               MessageInterface::ShowMessage("   parts[%d]='%s'\n", i, parts[i].c_str());
             #endif
          
             for (UnsignedInt i=0; i<outputSize; i++)
             {
                for (UnsignedInt j=2; j<parts.size(); j++)
                {
-                  GmatStringUtil::GetArrayIndex(parts[j], row, col, name, wxT("[]"));
+                  GmatStringUtil::GetArrayIndex(parts[j], row, col, name, "[]");
                   
                   if (name == outputs[i])
                   {
@@ -722,7 +720,7 @@ GmatFileUtil::GetFunctionOutputTypes(std::istream *inStream, const StringArray &
                      
                      #if DBGLVL_FUNCTION_OUTPUT > 1
                      MessageInterface::ShowMessage
-                        (wxT("   i=%d, type='%s', name='%s', def='%s'\n"), i, parts[1].c_str(),
+                        ("   i=%d, type='%s', name='%s', def='%s'\n", i, parts[1].c_str(),
                          name.c_str(), parts[j].c_str());
                      #endif                  
                   }
@@ -732,7 +730,7 @@ GmatFileUtil::GetFunctionOutputTypes(std::istream *inStream, const StringArray &
       }
       else
       {
-         errMsg = wxT("Encountered an error reading a file");
+         errMsg = "Encountered an error reading a file";
          return outputWrapperTypes;
       }
    }
@@ -744,10 +742,10 @@ GmatFileUtil::GetFunctionOutputTypes(std::istream *inStream, const StringArray &
    
    #if DBGLVL_FUNCTION_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("   missing.size()=%d, multiples.size()=%d, globals.size()=%d\n"),
+      ("   missing.size()=%d, multiples.size()=%d, globals.size()=%d\n",
        missing.size(), multiples.size(), globals.size());
    for (UnsignedInt i=0; i<globals.size(); i++)
-      MessageInterface::ShowMessage(wxT("   globals[%d] = '%s'\n"), i, globals[i].c_str());
+      MessageInterface::ShowMessage("   globals[%d] = '%s'\n", i, globals[i].c_str());
    #endif
    
    if (missing.size() == 0 && multiples.size() == 0)
@@ -755,19 +753,19 @@ GmatFileUtil::GetFunctionOutputTypes(std::istream *inStream, const StringArray &
       // if all output found, figure out the output wrapper types
       for (UnsignedInt i=0; i<outputSize; i++)
       {
-         if (outputTypes[i] == wxT("Variable"))
+         if (outputTypes[i] == "Variable")
          {
             outputWrapperTypes.push_back(Gmat::VARIABLE_WT);
             outputRows.push_back(-1);
             outputCols.push_back(-1);
          }
-         else if (outputTypes[i] == wxT("Array"))
+         else if (outputTypes[i] == "Array")
          {
-            GmatStringUtil::GetArrayIndex(outputDefs[i], row, col, name, wxT("[]"));
+            GmatStringUtil::GetArrayIndex(outputDefs[i], row, col, name, "[]");
             
             #if DBGLVL_FUNCTION_OUTPUT > 1
             MessageInterface::ShowMessage
-               (wxT("   name='%s', row=%d, col=%d\n"), name.c_str(), row, col);
+               ("   name='%s', row=%d, col=%d\n", name.c_str(), row, col);
             #endif
             
             outputWrapperTypes.push_back(Gmat::ARRAY_WT);
@@ -793,24 +791,24 @@ GmatFileUtil::GetFunctionOutputTypes(std::istream *inStream, const StringArray &
          
          if (reallyMissing.size() > 0)
          {
-            errMsg1 = wxT("Missing output declaration of");
+            errMsg1 = "Missing output declaration of";
             for (UnsignedInt i=0; i<reallyMissing.size(); i++)
-               errMsg1 = errMsg1 + wxT(" \"") + reallyMissing[i] + wxT("\"");
+               errMsg1 = errMsg1 + " \"" + reallyMissing[i] + "\"";
          }
       }
       
       if (multiples.size() > 0)
       {
          for (UnsignedInt i=0; i<multiples.size(); i++)
-            if (multiples[i] != wxT(""))
-               errMsg2 = errMsg2 + wxT(" \"") + multiples[i] + wxT("\"");
+            if (multiples[i] != "")
+               errMsg2 = errMsg2 + " \"" + multiples[i] + "\"";
          
-         if (errMsg2 != wxT(""))
+         if (errMsg2 != "")
          {
-            if (errMsg1 == wxT(""))
-               errMsg2 = wxT("Multiple declaration of") + errMsg2;
+            if (errMsg1 == "")
+               errMsg2 = "Multiple declaration of" + errMsg2;
             else
-               errMsg2 = wxT(" and multiple declaration of") + errMsg2;
+               errMsg2 = " and multiple declaration of" + errMsg2;
          }
       }
       
@@ -820,11 +818,11 @@ GmatFileUtil::GetFunctionOutputTypes(std::istream *inStream, const StringArray &
    
    #if DBGLVL_FUNCTION_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("GmatFileUtil::GetFunctionOutputTypes() returning %d outputWrapperTypes\n"),
+      ("GmatFileUtil::GetFunctionOutputTypes() returning %d outputWrapperTypes\n",
        outputWrapperTypes.size());
    for (UnsignedInt i=0; i<outputWrapperTypes.size(); i++)
       MessageInterface::ShowMessage
-         (wxT("   i=%d, outputWrapperTypes=%d, outputRows=%d, outputCols=%d\n"), i,
+         ("   i=%d, outputWrapperTypes=%d, outputRows=%d, outputCols=%d\n", i,
           outputWrapperTypes[i], outputRows[i], outputCols[i]);
    #endif
    
@@ -833,7 +831,7 @@ GmatFileUtil::GetFunctionOutputTypes(std::istream *inStream, const StringArray &
 
 
 //------------------------------------------------------------------------------
-// StringArray GetFileListFromDirectory(const wxString &dirName, bool addPath)
+// StringArray GetFileListFromDirectory(const std::string &dirName, bool addPath)
 //------------------------------------------------------------------------------
 /*
  * Get list of files from a directory.
@@ -845,22 +843,22 @@ GmatFileUtil::GetFunctionOutputTypes(std::istream *inStream, const StringArray &
  * @return  String array containing file names in the directory
  */
 //------------------------------------------------------------------------------
-StringArray GmatFileUtil::GetFileListFromDirectory(const wxString &dirName,
+StringArray GmatFileUtil::GetFileListFromDirectory(const std::string &dirName,
                                                    bool addPath)
 {
    #ifdef DEBUG_FILELIST
    MessageInterface::ShowMessage
-      (wxT("GmatFileUtil::GetFileListFromDirectory() dirName=<%s>\n"),
+      ("GmatFileUtil::GetFileListFromDirectory() dirName=<%s>\n",
        dirName.c_str());
    #endif
    
-   wxString pathName = ParsePathName(dirName);
-   wxString fileExt = ParseFileExtension(dirName);
-   wxString outFile;
+   std::string pathName = ParsePathName(dirName);
+   std::string fileExt = ParseFileExtension(dirName);
+   std::string outFile;
    StringArray fileList;
    
    MessageInterface::ShowMessage
-      (wxT("==> pathName=<%s>, fileExt=<%s>\n"), pathName.c_str(), fileExt.c_str());
+      ("==> pathName=<%s>, fileExt=<%s>\n", pathName.c_str(), fileExt.c_str());
    
    //-----------------------------------------------------------------
    // for windows
@@ -880,14 +878,14 @@ StringArray GmatFileUtil::GetFileListFromDirectory(const wxString &dirName,
       if (errorCode == ERROR_FILE_NOT_FOUND)
       {
          MessageInterface::ShowMessage
-            (wxT("**** ERROR **** GmatFileUtil::GetFileListFromDirectory() \n")
-             wxT("There are no directory matching \"%s\"\n"), dirName.c_str());
+            ("**** ERROR **** GmatFileUtil::GetFileListFromDirectory() \n"
+             "There are no directory matching \"%s\"\n", dirName.c_str());
       }
       else
       {
          MessageInterface::ShowMessage
-            (wxT("**** ERROR **** GmatFileUtil::GetFileListFromDirectory() \n")
-             wxT("FindFirstFile() returned error code %d\n"), errorCode);
+            ("**** ERROR **** GmatFileUtil::GetFileListFromDirectory() \n"
+             "FindFirstFile() returned error code %d\n", errorCode);
       }
       hasError = true;
    }
@@ -904,7 +902,7 @@ StringArray GmatFileUtil::GetFileListFromDirectory(const wxString &dirName,
          
          #ifdef DEBUG_FILELIST
          MessageInterface::ShowMessage
-            (wxT("   > added %s to file list\n"), findData.cFileName);
+            ("   > added %s to file list\n", findData.cFileName);
          #endif
       }
    }
@@ -922,7 +920,7 @@ StringArray GmatFileUtil::GetFileListFromDirectory(const wxString &dirName,
             
             #ifdef DEBUG_FILELIST
             MessageInterface::ShowMessage
-               (wxT("   > added %s to file list\n"), findData.cFileName);
+               ("   > added %s to file list\n", findData.cFileName);
             #endif
          }
       }
@@ -932,16 +930,16 @@ StringArray GmatFileUtil::GetFileListFromDirectory(const wxString &dirName,
       if (errorCode != ERROR_NO_MORE_FILES)
       {
          MessageInterface::ShowMessage
-            (wxT("**** ERROR **** GmatFileUtil::GetFileListFromDirectory() \n")
-             wxT("FindNextFile() returned error code %d\n"), errorCode);
+            ("**** ERROR **** GmatFileUtil::GetFileListFromDirectory() \n"
+             "FindNextFile() returned error code %d\n", errorCode);
       }
       
       if (!FindClose(hFind))
       {
          errorCode = GetLastError();
          MessageInterface::ShowMessage
-            (wxT("**** ERROR **** GmatFileUtil::GetFileListFromDirectory() \n")
-             wxT("FindClose() returned error code %d\n"), errorCode);
+            ("**** ERROR **** GmatFileUtil::GetFileListFromDirectory() \n"
+             "FindClose() returned error code %d\n", errorCode);
       }
    }
    #else
@@ -950,7 +948,7 @@ StringArray GmatFileUtil::GetFileListFromDirectory(const wxString &dirName,
    
    #ifdef DEBUG_FILELIST
    MessageInterface::ShowMessage
-      (wxT("GmatFileUtil::GetFileListFromDirectory() returning %d files\n"),
+      ("GmatFileUtil::GetFileListFromDirectory() returning %d files\n",
        fileList.size());
    #endif
    
@@ -959,7 +957,7 @@ StringArray GmatFileUtil::GetFileListFromDirectory(const wxString &dirName,
 
 
 //------------------------------------------------------------------------------
-// StringArray GetTextLines(const wxString &fileName)
+// StringArray GetTextLines(const std::string &fileName)
 //------------------------------------------------------------------------------
 /*
  * Reads a text file and returns an array of string.
@@ -968,73 +966,73 @@ StringArray GmatFileUtil::GetFileListFromDirectory(const wxString &dirName,
  * @return  String array containing file names in the directory
  */
 //------------------------------------------------------------------------------
-StringArray GmatFileUtil::GetTextLines(const wxString &fileName)
+StringArray GmatFileUtil::GetTextLines(const std::string &fileName)
 {
    StringArray lines;
    
    // check if file exist
-   wxFileInputStream inFileStream(fileName);
-   wxTextInputStream inFile(inFileStream);
+   std::ifstream inFile(fileName.c_str());
    
-   if (!(inFileStream.IsOk()))
+   if (!(inFile))
    {
       MessageInterface::ShowMessage
-         (wxT("**** ERROR **** GmatFileUtil::GetTextLines() \n")
-          wxT("The file \"") + fileName + wxT("\" does not exist\n"));
+         ("**** ERROR **** GmatFileUtil::GetTextLines() \n"
+          "The file \"" + fileName + "\" does not exist\n");
       return lines;
    }
    
-   wxString oneLine;
+   std::string oneLine;
    
-   while (!inFileStream.Eof())
+   while (!inFile.eof())
    {
       inFile >> oneLine;
       lines.push_back(oneLine);
    }
    
+   inFile.close();
    return lines;
 }
 
 
 //------------------------------------------------------------------------------
-// StringArray& Compare(const wxString &filename1, const wxString &filename2,
+// StringArray& Compare(const std::string &filename1, const std::string &filename2,
 //                      Real tol = 1.0e-4)
 //------------------------------------------------------------------------------
-StringArray& GmatFileUtil::Compare(const wxString &filename1,
-                                   const wxString &filename2,
+StringArray& GmatFileUtil::Compare(const std::string &filename1,
+                                   const std::string &filename2,
                                    const StringArray &colTitles,
                                    Real tol)
 {
    textBuffer.clear();
-   textBuffer.push_back(wxT("\n======================================== Compare Utility\n"));
-   textBuffer.push_back(wxT("filename1=") + filename1 + wxT("\n"));
-   textBuffer.push_back(wxT("filename2=") + filename2 + wxT("\n"));
+   textBuffer.push_back("\n======================================== Compare Utility\n");
+   textBuffer.push_back("filename1=" + filename1 + "\n");
+   textBuffer.push_back("filename2=" + filename2 + "\n");
 
    #if DBGLVL_COMPARE_REPORT
-   MessageInterface::ShowMessage(wxT("\n======================================== Compare Utility\n"));
-   MessageInterface::ShowMessage(wxT("filename1=%s\n"));
-   MessageInterface::ShowMessage(wxT("filename2=%s\n"));
+   MessageInterface::ShowMessage("\n======================================== Compare Utility\n");
+   MessageInterface::ShowMessage("filename1=%s\n");
+   MessageInterface::ShowMessage("filename2=%s\n");
    #endif
    
    // open file
-   std::ifstream in1(filename1.char_str());
-   std::ifstream in2(filename2.char_str());
+   std::ifstream in1(filename1.c_str());
+   std::ifstream in2(filename2.c_str());
    
    if (!in1)
    {
-      textBuffer.push_back(wxT("Cannot open first file: ") +  filename1 + wxT("\n\n"));
+      textBuffer.push_back("Cannot open first file: " +  filename1 + "\n\n");
       return textBuffer;
    }
    
    if (!in2)
    {
-      textBuffer.push_back(wxT("Cannot open second file: ") + filename2 + wxT("\n\n"));
+      textBuffer.push_back("Cannot open second file: " + filename2 + "\n\n");
       return textBuffer;
    }
    
    char buffer[BUFFER_SIZE];
    Real item1, item2, diff;
-   wxString line;
+   std::string line;
    int count = 1;
    int file1Cols = 0, file2Cols = 0;
    StringTokenizer stk;
@@ -1045,13 +1043,13 @@ StringArray& GmatFileUtil::Compare(const wxString &filename1,
    //------------------------------------------
    if (!GmatFileUtil::SkipHeaderLines(in1, tokens1))
    {
-      textBuffer.push_back(wxT("***Cannot compare files: Data record not found on file 1.\n"));
+      textBuffer.push_back("***Cannot compare files: Data record not found on file 1.\n");
       return textBuffer;
    }
    
    if (!GmatFileUtil::SkipHeaderLines(in2, tokens2))
    {
-      textBuffer.push_back(wxT("***Cannot compare files: Data record not found on file 2.\n"));
+      textBuffer.push_back("***Cannot compare files: Data record not found on file 2.\n");
       return textBuffer;
    }
    
@@ -1065,9 +1063,9 @@ StringArray& GmatFileUtil::Compare(const wxString &filename1,
    if (file1Cols != file2Cols)
    {
       textBuffer.push_back
-         (wxT("*** Number of colmuns are different. file1:") + ToString(file1Cols) +
-          wxT(",  file2:") + ToString(file2Cols) + wxT("\n*** Will compare up to") +
-          ToString(numCols) + wxT(" columns\n"));
+         ("*** Number of colmuns are different. file1:" + ToString(file1Cols) +
+          ",  file2:" + ToString(file2Cols) + "\n*** Will compare up to" +
+          ToString(numCols) + " columns\n");
    }
 
    // compare first data line
@@ -1076,8 +1074,8 @@ StringArray& GmatFileUtil::Compare(const wxString &filename1,
    
    for (int i=0; i<numCols; i++)
    {
-      item1 = atof(tokens1[i].char_str());
-      item2 = atof(tokens2[i].char_str());
+      item1 = atof(tokens1[i].c_str());
+      item2 = atof(tokens2[i].c_str());
       diff = GmatMathUtil::Abs(item1 - item2);
       minDiffs.push_back(diff);
       maxDiffs.push_back(diff);
@@ -1086,7 +1084,7 @@ StringArray& GmatFileUtil::Compare(const wxString &filename1,
       
       #if DBGLVL_COMPARE_REPORT > 1
       MessageInterface::ShowMessage
-         (wxT("column=%3d, item1=% e, item2=% e, diff=% e, minDiff=% e, maxDiff=% e\n"),
+         ("column=%3d, item1=% e, item2=% e, diff=% e, minDiff=% e, maxDiff=% e\n",
           i, item1, item1, diff, minDiffs[i], maxDiffs[i]);
       #endif
    }
@@ -1107,18 +1105,18 @@ StringArray& GmatFileUtil::Compare(const wxString &filename1,
       count++;
       
       #if DBGLVL_COMPARE_REPORT > 1
-      MessageInterface::ShowMessage(wxT("============================== line # = %d\n"), count);
+      MessageInterface::ShowMessage("============================== line # = %d\n", count);
       #endif
       
       // file 1
       in1.getline(buffer, BUFFER_SIZE-1);
-      line = wxString::FromAscii(buffer);
+      line = buffer;
       
       #if DBGLVL_COMPARE_REPORT > 2
-      MessageInterface::ShowMessage(wxT("===> file 1: buffer = %s\n"), buffer);
+      MessageInterface::ShowMessage("===> file 1: buffer = %s\n", buffer);
       #endif
       
-      stk.Set(line, wxT(" "));
+      stk.Set(line, " ");
       tokens1 = stk.GetAllTokens();
 
       // check for blank lines in file1
@@ -1127,18 +1125,18 @@ StringArray& GmatFileUtil::Compare(const wxString &filename1,
       
       #if DBGLVL_COMPARE_REPORT > 2
       for (int i=0; i<numCols; i++)
-         MessageInterface::ShowMessage(wxT("tokens1[%d] = %s\n"), i, tokens1[i].c_str());
+         MessageInterface::ShowMessage("tokens1[%d] = %s\n", i, tokens1[i].c_str());
       #endif
       
       // file 2
       in2.getline(buffer, BUFFER_SIZE-1);
-      line = wxString::FromAscii(buffer);
+      line = buffer;
       
       #if DBGLVL_COMPARE_REPORT > 2
-      MessageInterface::ShowMessage(wxT("===> file 2: buffer = %s\n"), buffer);
+      MessageInterface::ShowMessage("===> file 2: buffer = %s\n", buffer);
       #endif
       
-      stk.Set(line, wxT(" "));
+      stk.Set(line, " ");
       tokens2 = stk.GetAllTokens();
       
       // check for blank lines in file1
@@ -1147,13 +1145,13 @@ StringArray& GmatFileUtil::Compare(const wxString &filename1,
       
       #if DBGLVL_COMPARE_REPORT > 2
       for (int i=0; i<file1Cols; i++)
-         MessageInterface::ShowMessage(wxT("tokens2[%d] = %s\n"), i, tokens2[i].c_str());
+         MessageInterface::ShowMessage("tokens2[%d] = %s\n", i, tokens2[i].c_str());
       #endif
       
       for (int i=0; i<numCols; i++)
       {
-         item1 = atof(tokens1[i].char_str());
-         item2 = atof(tokens2[i].char_str());
+         item1 = atof(tokens1[i].c_str());
+         item2 = atof(tokens2[i].c_str());
          diff = GmatMathUtil::Abs(item1 - item2);
             
          if (diff < minDiffs[i])
@@ -1170,7 +1168,7 @@ StringArray& GmatFileUtil::Compare(const wxString &filename1,
             
          #if DBGLVL_COMPARE_REPORT > 1
          MessageInterface::ShowMessage
-            (wxT("column=%3d, item1=% e, item2=% e, diff=% e, minDiff=% e, maxDiff=% e\n"),
+            ("column=%3d, item1=% e, item2=% e, diff=% e, minDiff=% e, maxDiff=% e\n",
              i, item1, item2, diff, minDiffs[i], maxDiffs[i]);
          #endif
       }
@@ -1178,72 +1176,72 @@ StringArray& GmatFileUtil::Compare(const wxString &filename1,
    }
    
    // report the difference summary
-   wxString outLine;
-   outLine = wxT("Total lines compared: ") + ToString(count) + wxT(",   Tolerance: ") +
-      ToString(tol, false, true, true, 7, 6) + wxT("\n\n");
+   std::string outLine;
+   outLine = "Total lines compared: " + ToString(count) + ",   Tolerance: " +
+      ToString(tol, false, true, true, 7, 6) + "\n\n";
    textBuffer.push_back(outLine);
 
    #if DBGLVL_COMPARE_REPORT
-   MessageInterface::ShowMessage(wxT("%s"), outLine.c_str());
+   MessageInterface::ShowMessage("%s", outLine.c_str());
    #endif
 
    if (colTitles.size() == 0)
    {
       outLine =
-         wxT("Column   Minimum Diff.   Line#   Maximum Diff.   Line#   Min>Tol   ")
-         wxT("Max>Tol\n")
-         wxT("------   -------------   -----   -------------   -----   -------   ")
-         wxT("-------\n");
+         "Column   Minimum Diff.   Line#   Maximum Diff.   Line#   Min>Tol   "
+         "Max>Tol\n"
+         "------   -------------   -----   -------------   -----   -------   "
+         "-------\n";
    }
    else
    {
       outLine =
-         wxT("Column   Column Title                     Minimum Diff.   Line#   ")
-         wxT("Maximum Diff.   Line#   Min>Tol   Max>Tol\n")
-         wxT("------   ------------                     -------------   -----   ")
-         wxT("-------------   -----   -------   -------\n");
+         "Column   Column Title                     Minimum Diff.   Line#   "
+         "Maximum Diff.   Line#   Min>Tol   Max>Tol\n"
+         "------   ------------                     -------------   -----   "
+         "-------------   -----   -------   -------\n";
    }
    textBuffer.push_back(outLine);
    
    #if DBGLVL_COMPARE_REPORT
-   MessageInterface::ShowMessage(wxT("%s"), outLine.c_str());
+   MessageInterface::ShowMessage("%s", outLine.c_str());
    #endif
    
-   wxChar minGtTol, maxGtTol;
+   char minGtTol, maxGtTol;
    char title[30] = "";
    
    for (int i=0; i<numCols; i++)
    {
-      minGtTol = wxT(' ');
-      maxGtTol = wxT(' ');
+      minGtTol = ' ';
+      maxGtTol = ' ';
       
       if (minDiffs[i] > tol)
-         minGtTol = wxT('*');
+         minGtTol = '*';
       
       if (maxDiffs[i] > tol)
-         maxGtTol = wxT('*');
+         maxGtTol = '*';
 
       if (colTitles.size() == 0)
       {
-         outLine = ToString(i+1) + wxT("     ") + ToString(minDiffs[i], false, true, true, 7, 6) +
-            wxT("   ") + ToString(minLines[i]) + wxT("    ") +
-            ToString(maxDiffs[i], false, true, true, 7, 6) + wxT("   ") + ToString(maxLines[i]) +
-            wxT("       ") + minGtTol + wxT("         ") + maxGtTol + wxT("\n");
+         outLine = ToString(i+1) + "     " + ToString(minDiffs[i], false, true, true, 7, 6) +
+            "   " + ToString(minLines[i]) + "    " +
+            ToString(maxDiffs[i], false, true, true, 7, 6) + "   " + ToString(maxLines[i]) +
+            "       " + minGtTol + "         " + maxGtTol + "\n";
       }
       else
       {
-         sprintf(title, "%-30.30s", (char *) (colTitles[i].char_str()));
-         outLine = ToString(i+1) + wxT("     ") + wxString::FromAscii(title) + wxT("   ") +
-            ToString(minDiffs[i], false, true, true, 7, 6) + wxT("   ") + ToString(minLines[i]) +
-            wxT("    ") + ToString(maxDiffs[i], false, true, true, 7, 6) + wxT("   ") +
-            ToString(maxLines[i]) + wxT("       ") + minGtTol + wxT("         ") +
-            maxGtTol + wxT("\n");
+         sprintf(title, "%-30.30s", colTitles[i].c_str());
+         outLine = ToString(i+1) + "     " + title + "   " +
+            ToString(minDiffs[i], false, true, true, 7, 6) + "   " + ToString(minLines[i]) +
+            "    " + ToString(maxDiffs[i], false, true, true, 7, 6) + "   " +
+            ToString(maxLines[i]) + "       " + minGtTol + "         " +
+            maxGtTol + "\n";
       }
       
       textBuffer.push_back(outLine);
       
       #if DBGLVL_COMPARE_REPORT
-      MessageInterface::ShowMessage(wxT("%s"), outLine.c_str());
+      MessageInterface::ShowMessage("%s", outLine.c_str());
       #endif
    }
    
@@ -1255,71 +1253,71 @@ StringArray& GmatFileUtil::Compare(const wxString &filename1,
    
    
 //------------------------------------------------------------------------------
-// StringArray& Compare(Integer numDirsToCompare, const wxString &basefilename,
-//                      const wxString &filename1, const wxString &filename2,
-//                      const wxString &filename3,  const StringArray &colTitles,
+// StringArray& Compare(Integer numDirsToCompare, const std::string &basefilename,
+//                      const std::string &filename1, const std::string &filename2,
+//                      const std::string &filename3,  const StringArray &colTitles,
 //                      Real tol = CompareAbsTol);
 //------------------------------------------------------------------------------
-StringArray& GmatFileUtil::Compare(Integer numDirsToCompare, const wxString &basefilename,
-                                   const wxString &filename1, const wxString &filename2,
-                                   const wxString &filename3, const StringArray &colTitles,
+StringArray& GmatFileUtil::Compare(Integer numDirsToCompare, const std::string &basefilename,
+                                   const std::string &filename1, const std::string &filename2,
+                                   const std::string &filename3, const StringArray &colTitles,
                                    Real tol)
 {
    textBuffer.clear();
-   textBuffer.push_back(wxT("\n======================================== Compare Utility\n"));
-   textBuffer.push_back(wxT("basefile =") + basefilename + wxT("\n"));
+   textBuffer.push_back("\n======================================== Compare Utility\n");
+   textBuffer.push_back("basefile =" + basefilename + "\n");
 
-   textBuffer.push_back(wxT("filename1=") + filename1 + wxT("\n"));
-   textBuffer.push_back(wxT("filename2=") + filename2 + wxT("\n"));
+   textBuffer.push_back("filename1=" + filename1 + "\n");
+   textBuffer.push_back("filename2=" + filename2 + "\n");
    
    if (numDirsToCompare == 3)
-      textBuffer.push_back(wxT("filename3=") + filename3 + wxT("\n"));
+      textBuffer.push_back("filename3=" + filename3 + "\n");
 
    #if DBGLVL_COMPARE_REPORT
-   MessageInterface::ShowMessage(wxT("\n======================================== Compare Utility\n"));
-   MessageInterface::ShowMessage(wxT("numDirsToCompare=%3\n"), numDirsToCompare);
-   MessageInterface::ShowMessage(wxT("basefile =%s\n"), basefilename.c_str());
-   MessageInterface::ShowMessage(wxT("filename1=%s\nfilename2=%s\nfilename3=%s\n"),
+   MessageInterface::ShowMessage("\n======================================== Compare Utility\n");
+   MessageInterface::ShowMessage("numDirsToCompare=%3\n", numDirsToCompare);
+   MessageInterface::ShowMessage("basefile =%s\n", basefilename.c_str());
+   MessageInterface::ShowMessage("filename1=%s\nfilename2=%s\nfilename3=%s\n",
                                  filename1.c_str(), filename2.c_str(), filename3.c_str());
    #endif
    
    // open base file
-   std::ifstream baseIn(basefilename.char_str());
+   std::ifstream baseIn(basefilename.c_str());
 
    // open compare files
-   std::ifstream in1(filename1.char_str());
-   std::ifstream in2(filename2.char_str());
-   std::ifstream in3(filename3.char_str());
+   std::ifstream in1(filename1.c_str());
+   std::ifstream in2(filename2.c_str());
+   std::ifstream in3(filename3.c_str());
    
    if (!baseIn)
    {
-      textBuffer.push_back(wxT("Cannot open base file: ") +  basefilename + wxT("\n\n"));
+      textBuffer.push_back("Cannot open base file: " +  basefilename + "\n\n");
       return textBuffer;
    }
    
    if (!in1)
    {
-      textBuffer.push_back(wxT("Cannot open first file: ") + filename1 + wxT("\n\n"));
+      textBuffer.push_back("Cannot open first file: " + filename1 + "\n\n");
       return textBuffer;
    }
    
    if (!in2)
    {
-      textBuffer.push_back(wxT("Cannot open second file: ") + filename2 + wxT("\n\n"));
+      textBuffer.push_back("Cannot open second file: " + filename2 + "\n\n");
       return textBuffer;
    }
 
    if (numDirsToCompare == 3)
       if (!in3)
       {
-         textBuffer.push_back(wxT("Cannot open third file: ") + filename3 + wxT("\n\n"));
+         textBuffer.push_back("Cannot open third file: " + filename3 + "\n\n");
          return textBuffer;
       }
 
    
    char buffer[BUFFER_SIZE];
    Real baseItem, item, diff;
-   wxString line;
+   std::string line;
    int count = 1;
    int baseCols = 99, file1Cols = 99, file2Cols = 99, file3Cols = 99;
    StringTokenizer stk;
@@ -1330,26 +1328,26 @@ StringArray& GmatFileUtil::Compare(Integer numDirsToCompare, const wxString &bas
    //------------------------------------------
    if (!GmatFileUtil::SkipHeaderLines(baseIn, baseTokens))
    {
-      textBuffer.push_back(wxT("***Cannot compare files: Data record not found on base file.\n"));
+      textBuffer.push_back("***Cannot compare files: Data record not found on base file.\n");
       return textBuffer;
    }
    
    if (!GmatFileUtil::SkipHeaderLines(in1, tokens1))
    {
-      textBuffer.push_back(wxT("***Cannot compare files: Data record not found on file 1.\n"));
+      textBuffer.push_back("***Cannot compare files: Data record not found on file 1.\n");
       return textBuffer;
    }
    
    if (!GmatFileUtil::SkipHeaderLines(in2, tokens2))
    {
-      textBuffer.push_back(wxT("***Cannot compare files: Data record not found on file 2.\n"));
+      textBuffer.push_back("***Cannot compare files: Data record not found on file 2.\n");
       return textBuffer;
    }
    
    if (numDirsToCompare == 3)
       if (!GmatFileUtil::SkipHeaderLines(in3, tokens3))
       {
-         textBuffer.push_back(wxT("***Cannot compare files: Data record not found on file 3.\n"));
+         textBuffer.push_back("***Cannot compare files: Data record not found on file 3.\n");
          return textBuffer;
       }
    
@@ -1365,7 +1363,7 @@ StringArray& GmatFileUtil::Compare(Integer numDirsToCompare, const wxString &bas
    
    Integer numCols = baseCols<file1Cols ? baseCols : file1Cols;
    numCols = numCols<file2Cols ? numCols : file2Cols;
-   //MessageInterface::ShowMessage(wxT("===> numCols=%d\n"), numCols);
+   //MessageInterface::ShowMessage("===> numCols=%d\n", numCols);
    
    if (numDirsToCompare == 3)
       numCols = numCols<file3Cols ? numCols : file3Cols;
@@ -1373,9 +1371,9 @@ StringArray& GmatFileUtil::Compare(Integer numDirsToCompare, const wxString &bas
    if (baseCols != file1Cols)
    {
       textBuffer.push_back
-         (wxT("*** Number of colmuns are different. file1:") + ToString(baseCols) +
-          wxT(",  file2:") + ToString(file1Cols) + wxT("\n*** Will compare up to") +
-          ToString(numCols) + wxT(" columns\n"));
+         ("*** Number of colmuns are different. file1:" + ToString(baseCols) +
+          ",  file2:" + ToString(file1Cols) + "\n*** Will compare up to" +
+          ToString(numCols) + " columns\n");
    }
    
    // compare first data line
@@ -1383,25 +1381,25 @@ StringArray& GmatFileUtil::Compare(Integer numDirsToCompare, const wxString &bas
    
    for (int i=0; i<numCols; i++)
    {
-      baseItem = atof(baseTokens[i].char_str());
-      item = atof(tokens1[i].char_str());
+      baseItem = atof(baseTokens[i].c_str());
+      item = atof(tokens1[i].c_str());
       diff = GmatMathUtil::Abs(item - baseItem);
       maxDiffs1.push_back(diff);
       
-      item = atof(tokens2[i].char_str());
+      item = atof(tokens2[i].c_str());
       diff = GmatMathUtil::Abs(item - baseItem);
       maxDiffs2.push_back(diff);
       
       if (numDirsToCompare == 3)
       {
-         item = atof(tokens3[i].char_str());
+         item = atof(tokens3[i].c_str());
          diff = GmatMathUtil::Abs(item - baseItem);
          maxDiffs3.push_back(diff);
       }
       
       #if DBGLVL_COMPARE_REPORT > 1
       MessageInterface::ShowMessage
-         (wxT("column=%3d, baseItem=% e, item=% e, diff=% e, maxDiff=% e\n"),
+         ("column=%3d, baseItem=% e, item=% e, diff=% e, maxDiff=% e\n",
           i, baseItem, baseItem, diff, maxDiffs1[i]);
       #endif
    }
@@ -1426,20 +1424,20 @@ StringArray& GmatFileUtil::Compare(Integer numDirsToCompare, const wxString &bas
       count++;
       
       #if DBGLVL_COMPARE_REPORT > 1
-      MessageInterface::ShowMessage(wxT("============================== line # = %d\n"), count);
+      MessageInterface::ShowMessage("============================== line # = %d\n", count);
       #endif
 
       //----------------------------------------------------
       // base file
       //----------------------------------------------------
       baseIn.getline(buffer, BUFFER_SIZE-1);
-      line = wxString::FromAscii(buffer);
+      line = buffer;
       
       #if DBGLVL_COMPARE_REPORT > 2
-      MessageInterface::ShowMessage(wxT("===> base file: buffer = %s\n"), buffer);
+      MessageInterface::ShowMessage("===> base file: buffer = %s\n", buffer);
       #endif
       
-      stk.Set(line, wxT(" "));
+      stk.Set(line, " ");
       baseTokens = stk.GetAllTokens();
 
       // check for blank lines in base file
@@ -1448,20 +1446,20 @@ StringArray& GmatFileUtil::Compare(Integer numDirsToCompare, const wxString &bas
       
       #if DBGLVL_COMPARE_REPORT > 2
       for (int i=0; i<numCols; i++)
-         MessageInterface::ShowMessage(wxT("baseTokens[%d] = %s\n"), i, baseTokens[i].c_str());
+         MessageInterface::ShowMessage("baseTokens[%d] = %s\n", i, baseTokens[i].c_str());
       #endif
       
       //----------------------------------------------------
       // file 1
       //----------------------------------------------------
       in1.getline(buffer, BUFFER_SIZE-1);
-      line = wxString::FromAscii(buffer);
+      line = buffer;
       
       #if DBGLVL_COMPARE_REPORT > 2
-      MessageInterface::ShowMessage(wxT("===> file 1: buffer = %s\n"), buffer);
+      MessageInterface::ShowMessage("===> file 1: buffer = %s\n", buffer);
       #endif
       
-      stk.Set(line, wxT(" "));
+      stk.Set(line, " ");
       tokens1 = stk.GetAllTokens();
       
       // check for blank lines in file1
@@ -1472,13 +1470,13 @@ StringArray& GmatFileUtil::Compare(Integer numDirsToCompare, const wxString &bas
       // file 2
       //----------------------------------------------------      
       in2.getline(buffer, BUFFER_SIZE-1);
-      line = wxString::FromAscii(buffer);
+      line = buffer;
       
       #if DBGLVL_COMPARE_REPORT > 2
-      MessageInterface::ShowMessage(wxT("===> file 2: buffer = %s\n"), buffer);
+      MessageInterface::ShowMessage("===> file 2: buffer = %s\n", buffer);
       #endif
       
-      stk.Set(line, wxT(" "));
+      stk.Set(line, " ");
       tokens2 = stk.GetAllTokens();
       
       // check for blank lines in file2
@@ -1491,13 +1489,13 @@ StringArray& GmatFileUtil::Compare(Integer numDirsToCompare, const wxString &bas
       if (numDirsToCompare == 3)
       {
          in3.getline(buffer, BUFFER_SIZE-1);
-         line = wxString::FromAscii(buffer);
+         line = buffer;
       
          #if DBGLVL_COMPARE_REPORT > 2
-         MessageInterface::ShowMessage(wxT("===> file 3: buffer = %s\n"), buffer);
+         MessageInterface::ShowMessage("===> file 3: buffer = %s\n", buffer);
          #endif
       
-         stk.Set(line, wxT(" "));
+         stk.Set(line, " ");
          tokens3 = stk.GetAllTokens();
       
          // check for blank lines in file2
@@ -1507,25 +1505,25 @@ StringArray& GmatFileUtil::Compare(Integer numDirsToCompare, const wxString &bas
       
       #if DBGLVL_COMPARE_REPORT > 2
       for (int i=0; i<baseCols; i++)
-         MessageInterface::ShowMessage(wxT("tokens1[%d] = %s\n"), i, tokens1[i].c_str());
+         MessageInterface::ShowMessage("tokens1[%d] = %s\n", i, tokens1[i].c_str());
       #endif
       
       for (int i=0; i<numCols; i++)
       {
-         baseItem = atof(baseTokens[i].char_str());
-         item = atof(tokens1[i].char_str());
+         baseItem = atof(baseTokens[i].c_str());
+         item = atof(tokens1[i].c_str());
          diff = GmatMathUtil::Abs(item - baseItem);
          if (diff > maxDiffs1[i])
             maxDiffs1[i] = diff;
          
-         item = atof(tokens2[i].char_str());
+         item = atof(tokens2[i].c_str());
          diff = GmatMathUtil::Abs(item - baseItem);
          if (diff > maxDiffs2[i])
             maxDiffs2[i] = diff;
          
          if (numDirsToCompare == 3)
          {
-            item = atof(tokens3[i].char_str());
+            item = atof(tokens3[i].c_str());
             diff = GmatMathUtil::Abs(item - baseItem);
             if (diff > maxDiffs3[i])
                maxDiffs3[i] = diff;
@@ -1533,7 +1531,7 @@ StringArray& GmatFileUtil::Compare(Integer numDirsToCompare, const wxString &bas
          
          #if DBGLVL_COMPARE_REPORT > 1
          MessageInterface::ShowMessage
-            (wxT("column=%3d, baseItem=% e, item=% e, diff=% e, maxDiff1=% e\n"),
+            ("column=%3d, baseItem=% e, item=% e, diff=% e, maxDiff1=% e\n",
              i, baseItem, item, diff, maxDiffs1[i]);
          #endif
       }
@@ -1541,71 +1539,71 @@ StringArray& GmatFileUtil::Compare(Integer numDirsToCompare, const wxString &bas
    }
    
    // report the difference summary
-   wxString outLine;
-   outLine = wxT("Total lines compared: ") + ToString(count) + wxT(",   Tolerance: ") +
-      ToString(tol, false, true, true, 7, 6) + wxT("\n\n");
+   std::string outLine;
+   outLine = "Total lines compared: " + ToString(count) + ",   Tolerance: " +
+      ToString(tol, false, true, true, 7, 6) + "\n\n";
    textBuffer.push_back(outLine);
 
    #if DBGLVL_COMPARE_REPORT
-   MessageInterface::ShowMessage(wxT("%s"), outLine.c_str());
+   MessageInterface::ShowMessage("%s", outLine.c_str());
    #endif
 
    
    if (numDirsToCompare == 2)
    {
       outLine =
-         wxT("Column   Maximum Diff1   Max1>Tol   Maximum Diff2   Max2>Tol\n")
-         wxT("------   -------------   -------    -------------   --------\n");
+         "Column   Maximum Diff1   Max1>Tol   Maximum Diff2   Max2>Tol\n"
+         "------   -------------   -------    -------------   --------\n";
    }
    else if (numDirsToCompare == 3)
    {
       outLine =
-         wxT("Column   Maximum Diff1   Max1>Tol   Maximum Diff2   Max2>Tol   Maximum Diff3   Max3>Tol\n")
-         wxT("------   -------------   -------    -------------   --------   -------------   --------\n");
+         "Column   Maximum Diff1   Max1>Tol   Maximum Diff2   Max2>Tol   Maximum Diff3   Max3>Tol\n"
+         "------   -------------   -------    -------------   --------   -------------   --------\n";
    }
    
    textBuffer.push_back(outLine);
    
    #if DBGLVL_COMPARE_REPORT
-   MessageInterface::ShowMessage(wxT("%s"), outLine.c_str());
+   MessageInterface::ShowMessage("%s", outLine.c_str());
    #endif
    
-   wxChar maxGtTol1, maxGtTol2, maxGtTol3;
+   char maxGtTol1, maxGtTol2, maxGtTol3;
    
    for (int i=0; i<numCols; i++)
    {
-      maxGtTol1 = wxT(' ');
-      maxGtTol2 = wxT(' ');
-      maxGtTol3 = wxT(' ');
+      maxGtTol1 = ' ';
+      maxGtTol2 = ' ';
+      maxGtTol3 = ' ';
       
       if (maxDiffs1[i] > tol)
-         maxGtTol1 = wxT('*');
+         maxGtTol1 = '*';
 
       if (maxDiffs2[i] > tol)
-         maxGtTol2 = wxT('*');
+         maxGtTol2 = '*';
 
       if (numDirsToCompare == 3)
          if (maxDiffs3[i] > tol)
-            maxGtTol3 = wxT('*');
+            maxGtTol3 = '*';
       
       if (numDirsToCompare == 2)
       {
-         outLine = ToString(i+1) + wxT("     ") +
-            ToString(maxDiffs1[i], false, true, true, 7, 6) + wxT("      ") + maxGtTol1 + wxT("       ") +
-            ToString(maxDiffs2[i], false, true, true, 7, 6) + wxT("      ") + maxGtTol2 + wxT("\n");
+         outLine = ToString(i+1) + "     " +
+            ToString(maxDiffs1[i], false, true, true, 7, 6) + "      " + maxGtTol1 + "       " +
+            ToString(maxDiffs2[i], false, true, true, 7, 6) + "      " + maxGtTol2 + "\n";
       }
       else if (numDirsToCompare == 3)
       {
-         outLine = ToString(i+1) + wxT("     ") +
-            ToString(maxDiffs1[i], false, true, true, 7, 6) + wxT("      ") + maxGtTol1 + wxT("       ") +
-            ToString(maxDiffs2[i], false, true, true, 7, 6) + wxT("      ") + maxGtTol2 + wxT("       ") +
-            ToString(maxDiffs3[i], false, true, true, 7, 6) + wxT("      ") + maxGtTol3 + wxT("\n");
+         outLine = ToString(i+1) + "     " +
+            ToString(maxDiffs1[i], false, true, true, 7, 6) + "      " + maxGtTol1 + "       " +
+            ToString(maxDiffs2[i], false, true, true, 7, 6) + "      " + maxGtTol2 + "       " +
+            ToString(maxDiffs3[i], false, true, true, 7, 6) + "      " + maxGtTol3 + "\n";
       }
       
       textBuffer.push_back(outLine);
       
       #if DBGLVL_COMPARE_REPORT
-      MessageInterface::ShowMessage(wxT("%s"), outLine.c_str());
+      MessageInterface::ShowMessage("%s", outLine.c_str());
       #endif
    }
    
@@ -1619,74 +1617,74 @@ StringArray& GmatFileUtil::Compare(Integer numDirsToCompare, const wxString &bas
    
    
 //------------------------------------------------------------------------------
-// StringArray& Compare(Integer numDirsToCompare, const wxString &basefilename,
-//                      const wxString &filename1, const wxString &filename2,
+// StringArray& Compare(Integer numDirsToCompare, const std::string &basefilename,
+//                      const std::string &filename1, const std::string &filename2,
 //------------------------------------------------------------------------------
 StringArray& GmatFileUtil::CompareLines(Integer numDirsToCompare,
-                                        const wxString &basefilename,
-                                        const wxString &filename1,
-                                        const wxString &filename2,
-                                        const wxString &filename3,
+                                        const std::string &basefilename,
+                                        const std::string &filename1,
+                                        const std::string &filename2,
+                                        const std::string &filename3,
                                         int &file1DiffCount, int &file2DiffCount,
                                         int &file3DiffCount)
 {
    textBuffer.clear();
-   textBuffer.push_back(wxT("\n======================================== Compare Utility\n"));
-   textBuffer.push_back(wxT("basefile =") + basefilename + wxT("\n"));
+   textBuffer.push_back("\n======================================== Compare Utility\n");
+   textBuffer.push_back("basefile =" + basefilename + "\n");
    
-   textBuffer.push_back(wxT("filename1=") + filename1 + wxT("\n"));
+   textBuffer.push_back("filename1=" + filename1 + "\n");
    
    if (numDirsToCompare >= 2)
-      textBuffer.push_back(wxT("filename2=") + filename2 + wxT("\n"));
+      textBuffer.push_back("filename2=" + filename2 + "\n");
    
    if (numDirsToCompare >= 3)
-      textBuffer.push_back(wxT("filename3=") + filename3 + wxT("\n"));
+      textBuffer.push_back("filename3=" + filename3 + "\n");
    
    #if DBGLVL_COMPARE_REPORT
-   MessageInterface::ShowMessage(wxT("\n======================================== Compare Utility\n"));
-   MessageInterface::ShowMessage(wxT("numDirsToCompare=%3\n"), numDirsToCompare);
-   MessageInterface::ShowMessage(wxT("basefile =%s\n"), basefilename.c_str());
-   MessageInterface::ShowMessage(wxT("filename1=%s\nfilename2=%s\nfilename3=%s\n"),
+   MessageInterface::ShowMessage("\n======================================== Compare Utility\n");
+   MessageInterface::ShowMessage("numDirsToCompare=%3\n", numDirsToCompare);
+   MessageInterface::ShowMessage("basefile =%s\n", basefilename.c_str());
+   MessageInterface::ShowMessage("filename1=%s\nfilename2=%s\nfilename3=%s\n",
                                  filename1.c_str(), filename2.c_str(), filename3.c_str());
    #endif
    
    // open base file
-   std::ifstream baseIn(basefilename.char_str());
+   std::ifstream baseIn(basefilename.c_str());
 
    // open compare files
-   std::ifstream in1(filename1.char_str());
-   std::ifstream in2(filename2.char_str());
-   std::ifstream in3(filename3.char_str());
+   std::ifstream in1(filename1.c_str());
+   std::ifstream in2(filename2.c_str());
+   std::ifstream in3(filename3.c_str());
    
    if (!baseIn)
    {
-      textBuffer.push_back(wxT("Cannot open base file: ") +  basefilename + wxT("\n"));
+      textBuffer.push_back("Cannot open base file: " +  basefilename + "\n");
       return textBuffer;
    }
    
    if (!in1)
    {
-      textBuffer.push_back(wxT("Cannot open first file: ") + filename1 + wxT("\n"));
+      textBuffer.push_back("Cannot open first file: " + filename1 + "\n");
       return textBuffer;
    }
    
    if (numDirsToCompare >= 2)
       if (!in2)
       {
-         textBuffer.push_back(wxT("Cannot open second file: ") + filename2 + wxT("\n"));
+         textBuffer.push_back("Cannot open second file: " + filename2 + "\n");
          return textBuffer;
       }
    
    if (numDirsToCompare >= 3)
       if (!in3)
       {
-         textBuffer.push_back(wxT("Cannot open third file: ") + filename3 + wxT("\n"));
+         textBuffer.push_back("Cannot open third file: " + filename3 + "\n");
          return textBuffer;
       }
 
    
    char buffer[BUFFER_SIZE];
-   wxString line0, line1, line2, line3;
+   std::string line0, line1, line2, line3;
    file1DiffCount = 0;
    file2DiffCount = 0;
    file3DiffCount = 0;
@@ -1709,27 +1707,27 @@ StringArray& GmatFileUtil::CompareLines(Integer numDirsToCompare,
       count++;
       
       #if DBGLVL_COMPARE_REPORT > 1
-      MessageInterface::ShowMessage(wxT("============================== line # = %d\n"), count);
+      MessageInterface::ShowMessage("============================== line # = %d\n", count);
       #endif
       
       //----------------------------------------------------
       // base file
       //----------------------------------------------------
       baseIn.getline(buffer, BUFFER_SIZE-1);
-      line0 = wxString::FromAscii(buffer);
+      line0 = buffer;
       
       #if DBGLVL_COMPARE_REPORT > 2
-      MessageInterface::ShowMessage(wxT("===> base file: buffer = %s\n"), buffer);
+      MessageInterface::ShowMessage("===> base file: buffer = %s\n", buffer);
       #endif
       
       //----------------------------------------------------
       // file 1
       //----------------------------------------------------
       in1.getline(buffer, BUFFER_SIZE-1);
-      line1 = wxString::FromAscii(buffer);
+      line1 = buffer;
       
       #if DBGLVL_COMPARE_REPORT > 2
-      MessageInterface::ShowMessage(wxT("===> file 1: buffer = %s\n"), buffer);
+      MessageInterface::ShowMessage("===> file 1: buffer = %s\n", buffer);
       #endif
 
       if (line0 != line1)
@@ -1741,10 +1739,10 @@ StringArray& GmatFileUtil::CompareLines(Integer numDirsToCompare,
       if (numDirsToCompare >= 2)
       {
          in2.getline(buffer, BUFFER_SIZE-1);
-         line2 = wxString::FromAscii(buffer);
+         line2 = buffer;
       
          #if DBGLVL_COMPARE_REPORT > 2
-         MessageInterface::ShowMessage(wxT("===> file 2: buffer = %s\n"), buffer);
+         MessageInterface::ShowMessage("===> file 2: buffer = %s\n", buffer);
          #endif
 
          if (line0 != line2)
@@ -1757,10 +1755,10 @@ StringArray& GmatFileUtil::CompareLines(Integer numDirsToCompare,
       if (numDirsToCompare >= 3)
       {
          in3.getline(buffer, BUFFER_SIZE-1);
-         line3 = wxString::FromAscii(buffer);
+         line3 = buffer;
       
          #if DBGLVL_COMPARE_REPORT > 2
-         MessageInterface::ShowMessage(wxT("===> file 3: buffer = %s\n"), buffer);
+         MessageInterface::ShowMessage("===> file 3: buffer = %s\n", buffer);
          #endif
          
          if (line0 != line3)
@@ -1769,42 +1767,42 @@ StringArray& GmatFileUtil::CompareLines(Integer numDirsToCompare,
    }
    
    // report the difference summary
-   wxString outLine;
-   outLine = wxT("Total lines compared: ") + ToString(count) + wxT("\n\n");
+   std::string outLine;
+   outLine = "Total lines compared: " + ToString(count) + "\n\n";
    textBuffer.push_back(outLine);
 
    #if DBGLVL_COMPARE_REPORT
-   MessageInterface::ShowMessage(wxT("%s"), outLine.c_str());
+   MessageInterface::ShowMessage("%s", outLine.c_str());
    #endif
    
-   outLine = wxT("File1 - Number of Lines different: ") + ToString(file1DiffCount) + wxT("\n");
+   outLine = "File1 - Number of Lines different: " + ToString(file1DiffCount) + "\n";
    textBuffer.push_back(outLine);
    
    #if DBGLVL_COMPARE_REPORT
-   MessageInterface::ShowMessage(wxT("%s"), outLine.c_str());
+   MessageInterface::ShowMessage("%s", outLine.c_str());
    #endif
    
    if (numDirsToCompare >= 2)
    {
-      outLine = wxT("File2 - Number of Lines different: ") + ToString(file2DiffCount) + wxT("\n");
+      outLine = "File2 - Number of Lines different: " + ToString(file2DiffCount) + "\n";
       textBuffer.push_back(outLine);
       
       #if DBGLVL_COMPARE_REPORT
-      MessageInterface::ShowMessage(wxT("%s"), outLine.c_str());
+      MessageInterface::ShowMessage("%s", outLine.c_str());
       #endif
    }
    
    if (numDirsToCompare >= 3)
    {
-      outLine = wxT("File3 - Number of Lines different: ") + ToString(file3DiffCount) + wxT("\n");
+      outLine = "File3 - Number of Lines different: " + ToString(file3DiffCount) + "\n";
       textBuffer.push_back(outLine);
       
       #if DBGLVL_COMPARE_REPORT
-      MessageInterface::ShowMessage(wxT("%s"), outLine.c_str());
+      MessageInterface::ShowMessage("%s", outLine.c_str());
       #endif
    }
       
-   textBuffer.push_back(wxT("\n"));
+   textBuffer.push_back("\n");
    
    baseIn.close();
    in1.close();
@@ -1827,7 +1825,7 @@ bool GmatFileUtil::SkipHeaderLines(std::ifstream &in, StringArray &tokens)
    int colCount = 0, fileCols = 0;
    char ch;
    StringTokenizer stk;
-   wxString line;
+   std::string line;
    
    while (!dataFound)
    {
@@ -1835,10 +1833,10 @@ bool GmatFileUtil::SkipHeaderLines(std::ifstream &in, StringArray &tokens)
          break;
       
       in.getline(buffer, BUFFER_SIZE-1);
-      line = wxString::FromAscii(buffer);
+      line = buffer;
       
       #if DBGLVL_COMPARE_REPORT > 1
-      MessageInterface::ShowMessage(wxT("file length=%d, line = %s\n"),
+      MessageInterface::ShowMessage("file length=%d, line = %s\n",
                                     line.length(), line.c_str());
       #endif
       
@@ -1852,11 +1850,11 @@ bool GmatFileUtil::SkipHeaderLines(std::ifstream &in, StringArray &tokens)
          ch = line[i];
          
          #if DBGLVL_COMPARE_REPORT > 1
-         MessageInterface::ShowMessage(wxT("%c"), ch);
+         MessageInterface::ShowMessage("%c", ch);
          #endif
          
-         if (!isdigit(ch) && ch != wxT('.') && ch != wxT('e') && ch != wxT('E') && ch != wxT('-') &&
-             ch != wxT(' '))
+         if (!isdigit(ch) && ch != '.' && ch != 'e' && ch != 'E' && ch != '-' &&
+             ch != ' ')
          {
             alphaFound = true;
             break;
@@ -1864,27 +1862,27 @@ bool GmatFileUtil::SkipHeaderLines(std::ifstream &in, StringArray &tokens)
       }
       
       #if DBGLVL_COMPARE_REPORT > 1
-      MessageInterface::ShowMessage(wxT("\n"));
+      MessageInterface::ShowMessage("\n");
       #endif
       
       if (alphaFound)
          continue;
 
-      if (line.find(wxT("--")) != line.npos)
+      if (line.find("--") != line.npos)
          continue;
       
-      stk.Set(line, wxT(" "));
+      stk.Set(line, " ");
       tokens = stk.GetAllTokens();
       fileCols = tokens.size();
 
       colCount = 0;
       for (int i=0; i<fileCols; i++)
       {
-         rval = atof(tokens[i].char_str());
+         rval = atof(tokens[i].c_str());
          colCount++;
          
          #if DBGLVL_COMPARE_REPORT > 1
-         MessageInterface::ShowMessage(wxT("rval=%f\n"), rval);
+         MessageInterface::ShowMessage("rval=%f\n", rval);
          #endif
       }
 

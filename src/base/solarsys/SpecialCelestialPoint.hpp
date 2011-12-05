@@ -40,7 +40,7 @@ class GMAT_API SpecialCelestialPoint : public CelestialBody
 {
 public:
    // default constructor, with optional name
-   SpecialCelestialPoint(wxString name = wxT(""));
+   SpecialCelestialPoint(std::string name = "");
    // copy constructor
    SpecialCelestialPoint(const SpecialCelestialPoint &cp);
    // operator=
@@ -68,7 +68,7 @@ protected:
 
    };
 
-   //static const wxString PARAMETER_TEXT[SpecialCelestialPointParamCount - CelestialBodyParamCount];
+   //static const std::string PARAMETER_TEXT[SpecialCelestialPointParamCount - CelestialBodyParamCount];
 
    //static const Gmat::ParameterType
    //                         PARAMETER_TYPE[SpecialCelestialPointParamCount - CelestialBodyParamCount];

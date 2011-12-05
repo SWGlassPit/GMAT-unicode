@@ -33,9 +33,9 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString Date::DATA_DESCRIPTIONS[NUM_DATA] =
+const std::string Date::DATA_DESCRIPTIONS[NUM_DATA] =
 {
-   wxT("Year"), wxT("Month"), wxT("Day"), wxT("Hour"), wxT("Minute"), wxT("Second")
+   "Year", "Month", "Day", "Hour", "Minute", "Second"
 };
 
 //---------------------------------
@@ -168,24 +168,33 @@ Real Date::ToPackedCalendarReal() const
 }
 
 //------------------------------------------------------------------------------
-//  wxString& ToPackedCalendarString()
+//  std::string& ToPackedCalendarString()
 //------------------------------------------------------------------------------
-wxString& Date::ToPackedCalendarString()
+std::string& Date::ToPackedCalendarString()
 {
-   wxString ss;
-   ss += wxString::Format(wxT("%04d"), yearD);
-   ss += wxString::Format(wxT("%02d"), monthD);
-   ss += wxString::Format(wxT("%02d"), dayD);
-   ss += wxT(".");
-   Integer hour, minute;
-   Real realSecond;
-   ToHMSFromSecondsOfDay( secondsOfDayD, hour, minute, realSecond );
-   Integer intSecond = floor( realSecond * 1000.0 );
-   ss += wxString::Format(wxT("%02d"), hour);
-   ss += wxString::Format(wxT("%02d"), minute);
-   ss += wxString::Format(wxT("%05d"), intSecond);
+   std::ostringstream ss("");
+   ss.precision(9);
+   ss.setf(std::ios::fixed);
 
-   mPackedString = ss;
+   Real ymd;
+   Real hms;
+
+   ToYearMonDayHourMinSec(ymd, hms);
+
+   // Get date in YMD
+   ss << ymd;
+   StringTokenizer stringToken(ss.str(), ".");
+   std::string tempString = stringToken.GetToken(0);
+
+   // Get time in HMS
+   ss.str("");
+   ss << hms;
+   stringToken.Set(ss.str(), ".");
+   tempString = tempString + "." + stringToken.GetToken(1);
+
+//    ss << (ymd + hms);
+//   mPackedString = ss.str();
+   mPackedString = tempString;
 
    return mPackedString;
 }
@@ -250,47 +259,47 @@ Integer Date::GetNumData() const
 }
 
 //------------------------------------------------------------------------------
-// const wxString* GetDataDescriptions() const
+// const std::string* GetDataDescriptions() const
 //------------------------------------------------------------------------------
-const wxString* Date::GetDataDescriptions() const
+const std::string* Date::GetDataDescriptions() const
 {
    return DATA_DESCRIPTIONS;
 }
 
 //------------------------------------------------------------------------------
-// wxString* ToValueStrings()
+// std::string* ToValueStrings()
 //------------------------------------------------------------------------------
-wxString* Date::ToValueStrings()
+std::string* Date::ToValueStrings()
 {
    Integer hour;
    Integer min;
    Real sec;
 
    ToHMSFromSecondsOfDay(secondsOfDayD, hour, min, sec);
-   wxString ss(wxT(""));
+   std::stringstream ss("");
 
    ss << yearD;
-   stringValues[0] = ss;
+   stringValues[0] = ss.str();
 
-   ss.Clear();
+   ss.str("");
    ss << monthD;
-   stringValues[1] = ss;
+   stringValues[1] = ss.str();
 
-   ss.Clear();
+   ss.str("");
    ss << dayD;
-   stringValues[2] = ss;
+   stringValues[2] = ss.str();
 
-   ss.Clear();
+   ss.str("");
    ss << hour;
-   stringValues[3] = ss;
+   stringValues[3] = ss.str();
 
-   ss.Clear();
+   ss.str("");
    ss << min;
-   stringValues[4] = ss;
+   stringValues[4] = ss.str();
 
-   ss.Clear();
+   ss.str("");
    ss << sec;
-   stringValues[5] = ss;
+   stringValues[5] = ss.str();
 
    return stringValues;
 }
@@ -378,30 +387,25 @@ Date::Date(const GmatTimeUtil::CalDate &date)
 }
 
 //------------------------------------------------------------------------------
-//  Date(const wxString& time)
+//  Date(const std::string& time)
 //------------------------------------------------------------------------------
 /**
- * @param <time> time in string form of wxT("YYYYMMDD.hhmmssnnn")
+ * @param <time> time in string form of "YYYYMMDD.hhmmssnnn"
  */
 //------------------------------------------------------------------------------
-Date::Date(const wxString& time)
+Date::Date(const std::string& time)
 {
-   StringTokenizer timeTokens(time, wxT(".")); 
+   const char *tempTime = time.c_str();
    Integer datePart;
    Integer timePart;
    Integer year, month, day, hour, minute;
    Real    second;
-   
-   long tempDate = 0;
-   timeTokens.GetToken(0).ToLong(&tempDate);
-   datePart = tempDate;
 
-   if (timeTokens.CountTokens() == 2)
-   {
-      long tempTime = 0;
-      timeTokens.GetToken(1).ToLong(&tempTime);
-      timePart = tempTime;
-   }
+   datePart = atoi(tempTime);
+   tempTime = strstr(tempTime, ".");
+
+   if (tempTime != NULL)
+      timePart = atoi(tempTime + 1);
    else
       timePart = 1;
 

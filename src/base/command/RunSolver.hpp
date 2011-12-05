@@ -35,7 +35,7 @@
 class GMAT_API RunSolver : public PropagationEnabledCommand
 {
 public:
-   RunSolver(const wxString &typeStr);
+   RunSolver(const std::string &typeStr);
    virtual ~RunSolver();
    RunSolver(const RunSolver& rs);
    RunSolver& operator=(const RunSolver& rs);
@@ -45,12 +45,12 @@ public:
    virtual bool         Initialize();
 //   virtual bool Execute();
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
 
 protected:
    /// Name of a configured Solver to run.  Pointer is set in derived classes.
-   wxString    solverName;
+   std::string    solverName;
 };
 
 #endif /* RunSolver_hpp */

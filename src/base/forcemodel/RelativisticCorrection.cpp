@@ -39,10 +39,10 @@
 //------------------------------------------------------------------------------
 // static data
 //------------------------------------------------------------------------------
-const wxString RelativisticCorrection::PARAMETER_TEXT[RelativisticCorrectionParamCount - PhysicalModelParamCount] =
+const std::string RelativisticCorrection::PARAMETER_TEXT[RelativisticCorrectionParamCount - PhysicalModelParamCount] =
 {
-      wxT("Radius"),
-      wxT("Mu"),
+      "Radius",
+      "Mu",
 };
 const Gmat::ParameterType RelativisticCorrection::PARAMETER_TYPE[RelativisticCorrectionParamCount - PhysicalModelParamCount] =
 {
@@ -56,14 +56,14 @@ const Gmat::ParameterType RelativisticCorrection::PARAMETER_TYPE[RelativisticCor
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// RelativisticCorrection(const wxString &name)
+// RelativisticCorrection(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Constructor for RelativisticCorrection model
  */
 //------------------------------------------------------------------------------
-RelativisticCorrection::RelativisticCorrection(const wxString &name, const wxString &forBodyName) :
-  PhysicalModel          (Gmat::PHYSICAL_MODEL, wxT("RelativisticCorrection"), name),
+RelativisticCorrection::RelativisticCorrection(const std::string &name, const std::string &forBodyName) :
+  PhysicalModel          (Gmat::PHYSICAL_MODEL, "RelativisticCorrection", name),
   bodyRadius             (GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[GmatSolarSystemDefaults::EARTH]),
   bodyMu                 (GmatSolarSystemDefaults::PLANET_MU[GmatSolarSystemDefaults::EARTH]),
   bodySpinRate           (0.0),
@@ -74,7 +74,7 @@ RelativisticCorrection::RelativisticCorrection(const wxString &name, const wxStr
   eop                    (NULL),
   sunMu                  (GmatSolarSystemDefaults::STAR_MU)
 {
-   objectTypeNames.push_back(wxT("RelativisticCorrection"));
+   objectTypeNames.push_back("RelativisticCorrection");
    parameterCount = RelativisticCorrectionParamCount;
    dimension      = 6 * satCount;
    body           = NULL;
@@ -125,7 +125,7 @@ RelativisticCorrection::RelativisticCorrection(const RelativisticCorrection &rc)
    eop            (rc.eop),
    sunMu          (rc.sunMu)
 {
-   objectTypeNames.push_back(wxT("RelativisticCorrection"));
+   objectTypeNames.push_back("RelativisticCorrection");
    parameterCount = RelativisticCorrectionParamCount;
    dimension      = rc.dimension;
    epoch          = rc.epoch;
@@ -180,7 +180,7 @@ bool RelativisticCorrection::Initialize()
    PhysicalModel::Initialize();
 
    if (!eop) throw ODEModelException(
-             wxT("EOP file is undefined for RelativisticCorrection ") + instanceName);
+             "EOP file is undefined for RelativisticCorrection " + instanceName);
 
    if (solarSystem != NULL)
    {
@@ -194,8 +194,8 @@ bool RelativisticCorrection::Initialize()
 
          #ifdef DEBUG_RELATIVISTIC_CORRECTION
              MessageInterface::ShowMessage
-                (wxT("RelativisticCorrection::Initialize() setting mu=%f for type=%s, ")
-                 wxT("name=%s\n"), bodyMu, body->GetTypeName().c_str(),
+                ("RelativisticCorrection::Initialize() setting mu=%f for type=%s, "
+                 "name=%s\n", bodyMu, body->GetTypeName().c_str(),
                  body->GetName().c_str());
          #endif
 
@@ -203,23 +203,23 @@ bool RelativisticCorrection::Initialize()
       else
       {
          initialized = false;
-         throw ODEModelException(wxT("RelativisticCorrection::Initialize() body \"") +
-            bodyName + wxT("\" is not in the solar system\n"));
+         throw ODEModelException("RelativisticCorrection::Initialize() body \"" +
+            bodyName + "\" is not in the solar system\n");
       }
    }
    else
    {
       initialized = false;
       throw ODEModelException(
-         wxT("RelativisticCorrection::Initialize() solarSystem is NULL\n"));
+         "RelativisticCorrection::Initialize() solarSystem is NULL\n");
    }
 
    // Create the coordinate systems needed (Earth only)
    if (body->GetName() == GmatSolarSystemDefaults::EARTH_NAME)
    {
-      bodyInertial = CoordinateSystem::CreateLocalCoordinateSystem(wxT("bodyInertial"), wxT("MJ2000Eq"), body,
+      bodyInertial = CoordinateSystem::CreateLocalCoordinateSystem("bodyInertial", "MJ2000Eq", body,
                                        NULL, NULL, body->GetJ2000Body(), solarSystem);
-      bodyFixed    = CoordinateSystem::CreateLocalCoordinateSystem(wxT("bodyFixed"), wxT("BodyFixed"), body,
+      bodyFixed    = CoordinateSystem::CreateLocalCoordinateSystem("bodyFixed", "BodyFixed", body,
                                        NULL, NULL, body->GetJ2000Body(), solarSystem);
    }
 
@@ -242,7 +242,7 @@ bool RelativisticCorrection::GetDerivatives(Real *state, Real dt, Integer order,
 
    if ((cartesianCount < 1)  && (stmCount < 1) && (aMatrixCount < 1))
       throw ODEModelException(
-         wxT("RelativisticCorrection requires at least one spacecraft."));
+         "RelativisticCorrection requires at least one spacecraft.");
 
    now         = epoch + dt/GmatTimeConstants::SECS_PER_DAY;
 
@@ -300,13 +300,13 @@ bool RelativisticCorrection::GetDerivatives(Real *state, Real dt, Integer order,
          J[2] = RB_IF(2,0)*J1[0] + RB_IF(2,1)*J1[1] + RB_IF(2,2)*J1[2];
 
          #ifdef DEBUG_RELATIVISTIC_CORRECTION
-            MessageInterface::ShowMessage(wxT("posWRTSun = %12.10f   %12.10f   %12.10f\n"), posWRTSun[0], posWRTSun[1], posWRTSun[2]);
-            MessageInterface::ShowMessage(wxT("velWRTSun = %12.10f   %12.10f   %12.10f\n"), velWRTSun[0], velWRTSun[1], velWRTSun[2]);
-            MessageInterface::ShowMessage(wxT("big Omega = %12.10f   %12.10f   %12.10f\n"), omega[0], omega[1], omega[2]);
-            MessageInterface::ShowMessage(wxT("J         = %12.10f   %12.10f   %12.10f\n"), J[0], J[1], J[2]);
-            MessageInterface::ShowMessage(wxT("c         = %12.10f\n"), c);
-            MessageInterface::ShowMessage(wxT("sunMu     = %12.10f\n"), sunMu);
-            MessageInterface::ShowMessage(wxT("bodyMu    = %12.10f\n"), bodyMu);
+            MessageInterface::ShowMessage("posWRTSun = %12.10f   %12.10f   %12.10f\n", posWRTSun[0], posWRTSun[1], posWRTSun[2]);
+            MessageInterface::ShowMessage("velWRTSun = %12.10f   %12.10f   %12.10f\n", velWRTSun[0], velWRTSun[1], velWRTSun[2]);
+            MessageInterface::ShowMessage("big Omega = %12.10f   %12.10f   %12.10f\n", omega[0], omega[1], omega[2]);
+            MessageInterface::ShowMessage("J         = %12.10f   %12.10f   %12.10f\n", J[0], J[1], J[2]);
+            MessageInterface::ShowMessage("c         = %12.10f\n", c);
+            MessageInterface::ShowMessage("sunMu     = %12.10f\n", sunMu);
+            MessageInterface::ShowMessage("bodyMu    = %12.10f\n", bodyMu);
          #endif
       }
       Integer nOffset;
@@ -369,9 +369,9 @@ bool RelativisticCorrection::GetDerivatives(Real *state, Real dt, Integer order,
             ar[2] = schwarzschild[2];
          }
          #ifdef DEBUG_RELATIVISTIC_CORRECTION
-            MessageInterface::ShowMessage(wxT("schwarzschild = %12.10f   %12.10f   %12.10f\n"), schwarzschild[0], schwarzschild[1], schwarzschild[2]);
-            MessageInterface::ShowMessage(wxT("geodesic      = %12.10f   %12.10f   %12.10f\n"), geodesic[0], geodesic[1], geodesic[2]);
-            MessageInterface::ShowMessage(wxT("lenseThirring = %12.10f   %12.10f   %12.10f\n"), lenseThirring[0], lenseThirring[1], lenseThirring[2]);
+            MessageInterface::ShowMessage("schwarzschild = %12.10f   %12.10f   %12.10f\n", schwarzschild[0], schwarzschild[1], schwarzschild[2]);
+            MessageInterface::ShowMessage("geodesic      = %12.10f   %12.10f   %12.10f\n", geodesic[0], geodesic[1], geodesic[2]);
+            MessageInterface::ShowMessage("lenseThirring = %12.10f   %12.10f   %12.10f\n", lenseThirring[0], lenseThirring[1], lenseThirring[2]);
          #endif
 
          // Fill Derivatives
@@ -429,7 +429,7 @@ bool RelativisticCorrection::GetDerivatives(Real *state, Real dt, Integer order,
             {
                element = j * 6 + k;
                #ifdef DEBUG_DERIVATIVES
-                  MessageInterface::ShowMessage(wxT("------ deriv[%d] = %12.10f\n"), (i6+element), aTilde[element]);
+                  MessageInterface::ShowMessage("------ deriv[%d] = %12.10f\n", (i6+element), aTilde[element]);
                #endif
                deriv[i6+element] = aTilde[element];
             }
@@ -465,7 +465,7 @@ bool RelativisticCorrection::GetDerivatives(Real *state, Real dt, Integer order,
             {
                element = j * 6 + k;
                #ifdef DEBUG_DERIVATIVES
-                  MessageInterface::ShowMessage(wxT("------ deriv[%d] = %12.10f\n"), (i6+element), aTilde[element]);
+                  MessageInterface::ShowMessage("------ deriv[%d] = %12.10f\n", (i6+element), aTilde[element]);
                #endif
                deriv[i6+element] = aTilde[element];
             }
@@ -511,13 +511,13 @@ GmatBase* RelativisticCorrection::Clone() const
 }
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString RelativisticCorrection::GetParameterText(const Integer id) const
+std::string RelativisticCorrection::GetParameterText(const Integer id) const
 {
    if ((id >= PhysicalModelParamCount) && (id < RelativisticCorrectionParamCount))
       return PARAMETER_TEXT[id - PhysicalModelParamCount];
@@ -525,13 +525,13 @@ wxString RelativisticCorrection::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Integer RelativisticCorrection::GetParameterID(const wxString &str) const
+Integer RelativisticCorrection::GetParameterID(const std::string &str) const
 {
    for (Integer i = PhysicalModelParamCount; i < RelativisticCorrectionParamCount; i++)
    {
@@ -556,13 +556,13 @@ Gmat::ParameterType RelativisticCorrection::GetParameterType(const Integer id) c
 }
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString RelativisticCorrection::GetParameterTypeString(const Integer id) const
+std::string RelativisticCorrection::GetParameterTypeString(const Integer id) const
 {
    if ((id >= PhysicalModelParamCount) && (id < RelativisticCorrectionParamCount))
       return PARAMETER_TEXT[id - PhysicalModelParamCount];

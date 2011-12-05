@@ -73,10 +73,10 @@ public:
    static void Copy(const Real from[3], Real to[3]);
    
    Integer GetNumData() const;
-   const wxString* GetDataDescriptions() const;
+   const std::string* GetDataDescriptions() const;
    
 private:
    static const Integer NUM_DATA = 3;
-   static const wxString DATA_DESCRIPTIONS[NUM_DATA];
+   static const std::string DATA_DESCRIPTIONS[NUM_DATA];
 };
 #endif // Rvector3_hpp

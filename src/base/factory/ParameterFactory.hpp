@@ -28,8 +28,8 @@
 class GMAT_API ParameterFactory : public Factory
 {
 public:
-   Parameter*  CreateParameter(const wxString &ofType,
-                               const wxString &withName = wxT(""));
+   Parameter*  CreateParameter(const std::string &ofType,
+                               const std::string &withName = "");
 
    // default constructor
    ParameterFactory();

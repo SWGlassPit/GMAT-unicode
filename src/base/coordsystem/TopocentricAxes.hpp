@@ -37,7 +37,7 @@ class GMAT_API TopocentricAxes : public DynamicAxes
 public:
 
    // default constructor
-   TopocentricAxes(const wxString &itsName = wxT(""));
+   TopocentricAxes(const std::string &itsName = "");
    // copy constructor
    TopocentricAxes(const TopocentricAxes &tAxes);
    // operator = for assignment
@@ -63,8 +63,8 @@ protected:
    BodyFixedPoint   *bfPoint;
    CoordinateSystem *bfcs;
    CelestialBody    *centralBody;
-   wxString      itsBodyName;
-   wxString      horizonReference;
+   std::string      itsBodyName;
+   std::string      horizonReference;
    Real             flattening;
    Real             radius;
    Rmatrix33        RFT;

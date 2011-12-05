@@ -31,7 +31,7 @@ class GMAT_API MathNode : public GmatBase
 {
 public:
    
-   MathNode(const wxString &typeStr, const wxString &nomme);
+   MathNode(const std::string &typeStr, const std::string &nomme);
    virtual ~MathNode();
    MathNode(const MathNode &mn);
    MathNode& operator=(const MathNode &mn);
@@ -65,8 +65,8 @@ public:
    
    // Inherited (GmatBase) methods
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
 protected:
    
    bool isNumber;

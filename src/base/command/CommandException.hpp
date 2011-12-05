@@ -32,7 +32,7 @@ class GMAT_API CommandException : public BaseException
 {
 public:
    // class constructor
-   CommandException(const wxString &details = wxT(""),
+   CommandException(const std::string &details = "",
          // Change to this when the repeated strings are fixed:
 //         Gmat::MessageType mt = Gmat::ERROR_);
          // Change to this if it's problematic:

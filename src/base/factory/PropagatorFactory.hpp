@@ -28,10 +28,10 @@
 class GMAT_API PropagatorFactory : public Factory
 {
 public:
-   Propagator*  CreateObject(const wxString &ofType,
-                             const wxString &withName = wxT(""));
-   Propagator*  CreatePropagator(const wxString &ofType,
-                                 const wxString &withName = wxT(""));
+   Propagator*  CreateObject(const std::string &ofType,
+                             const std::string &withName = "");
+   Propagator*  CreatePropagator(const std::string &ofType,
+                                 const std::string &withName = "");
 
    // default constructor
    PropagatorFactory();

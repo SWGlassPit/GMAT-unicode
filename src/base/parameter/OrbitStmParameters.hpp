@@ -33,7 +33,7 @@ class GMAT_API OrbitStm : public OrbitRmat66
 {
 public:
 
-   OrbitStm(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   OrbitStm(const std::string &name = "", GmatBase *obj = NULL);
    OrbitStm(const OrbitStm &copy);
    OrbitStm& operator=(const OrbitStm &right);
    virtual ~OrbitStm();
@@ -56,7 +56,7 @@ class GMAT_API OrbitStmA : public OrbitRmat33
 {
 public:
 
-   OrbitStmA(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   OrbitStmA(const std::string &name = "", GmatBase *obj = NULL);
    OrbitStmA(const OrbitStmA &copy);
    OrbitStmA& operator=(const OrbitStmA &right);
    virtual ~OrbitStmA();
@@ -79,7 +79,7 @@ class GMAT_API OrbitStmB : public OrbitRmat33
 {
 public:
 
-   OrbitStmB(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   OrbitStmB(const std::string &name = "", GmatBase *obj = NULL);
    OrbitStmB(const OrbitStmB &copy);
    OrbitStmB& operator=(const OrbitStmB &right);
    virtual ~OrbitStmB();
@@ -102,7 +102,7 @@ class GMAT_API OrbitStmC : public OrbitRmat33
 {
 public:
 
-   OrbitStmC(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   OrbitStmC(const std::string &name = "", GmatBase *obj = NULL);
    OrbitStmC(const OrbitStmC &copy);
    OrbitStmC& operator=(const OrbitStmC &right);
    virtual ~OrbitStmC();
@@ -125,7 +125,7 @@ class GMAT_API OrbitStmD : public OrbitRmat33
 {
 public:
 
-   OrbitStmD(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   OrbitStmD(const std::string &name = "", GmatBase *obj = NULL);
    OrbitStmD(const OrbitStmD &copy);
    OrbitStmD& operator=(const OrbitStmD &right);
    virtual ~OrbitStmD();

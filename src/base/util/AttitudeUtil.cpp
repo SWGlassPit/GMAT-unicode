@@ -306,18 +306,18 @@ void FloatAttUtil::ToQuat(float q[4], float mat[16])
 
    #if DEBUG_ATT_UTIL
    MessageInterface::ShowMessage
-      (wxT("FloatAttUtil::ToQuat() mat=\n%f, %f, %f, %f\n%f, %f, %f, %f\n")
-       wxT("%f, %f, %f, %f\n%f, %f, %f, %f\n"),
+      ("FloatAttUtil::ToQuat() mat=\n%f, %f, %f, %f\n%f, %f, %f, %f\n"
+       "%f, %f, %f, %f\n%f, %f, %f, %f\n",
        mat[0], mat[1], mat[2], mat[3], mat[4], mat[5], mat[6], mat[8],
        mat[8], mat[9], mat[10], mat[11], mat[12], mat[13], mat[14], mat[15]);
    
    for (int i=0; i<4; i++)
       MessageInterface::ShowMessage
-         (wxT("FloatAttUtil::ToQuat() a=%f, %f, %f, %f\n"), a[i][0], a[i][1],
+         ("FloatAttUtil::ToQuat() a=%f, %f, %f, %f\n", a[i][0], a[i][1],
           a[i][2], a[i][3]);
    
    MessageInterface::ShowMessage
-      (wxT("FloatAttUtil::ToQuat() q=%f, %f, %f, %f\n"), q[0], q[1], q[2], q[3]);
+      ("FloatAttUtil::ToQuat() q=%f, %f, %f, %f\n", q[0], q[1], q[2], q[3]);
    
    #endif
 }

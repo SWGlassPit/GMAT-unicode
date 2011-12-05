@@ -30,7 +30,7 @@ public:
    static Integer JulianDay(YearNumber year, MonthOfYear month,
                             DayOfMonth day);
    
-   static wxString FormatGregorian(YearNumber year, MonthOfYear month,
+   static std::string FormatGregorian(YearNumber year, MonthOfYear month,
                                       DayOfMonth day, Integer hour, Integer minute,
                                       Real second);
    
@@ -63,7 +63,7 @@ public:
                                      Integer& minute, Real& second);
    friend bool GMAT_API IsValidTime(Integer year, Integer month, Integer day, 
                            Integer hour, Integer minute, Real second);
-   static bool IsValidGregorian(const wxString &str, bool checkDate = false);
+   static bool IsValidGregorian(const std::string &str, bool checkDate = false);
    friend bool GMAT_API IsLeapYear(Integer year);
   
 };

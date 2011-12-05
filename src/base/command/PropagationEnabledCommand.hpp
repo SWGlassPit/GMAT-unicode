@@ -50,7 +50,7 @@ typedef std::vector<GmatBase*> PropObjectArray;
 class GMAT_API PropagationEnabledCommand : public GmatCommand
 {
 public:
-   PropagationEnabledCommand(const wxString &typeStr);
+   PropagationEnabledCommand(const std::string &typeStr);
    // Abstract to force a derived class to instantiate
    virtual ~PropagationEnabledCommand() = 0;
    PropagationEnabledCommand(const PropagationEnabledCommand& pec);

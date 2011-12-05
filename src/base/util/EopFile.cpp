@@ -22,9 +22,8 @@
 //------------------------------------------------------------------------------
 
 #include <iostream>
-#include <wx/wfstream.h>
-#include <wx/sstream.h>
-#include <wx/txtstrm.h>
+#include <fstream>
+#include <sstream>
 #include <iomanip>
 #include "gmatdefs.hpp"
 #include "EopFile.hpp"
@@ -47,7 +46,7 @@ const Integer EopFile::MAX_TABLE_SIZE = 50405;  // up to year >= 2100
 //------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//  EopFile(const wxString &fileName, 
+//  EopFile(const std::string &fileName, 
 //          GmatEop::EopFileType eop = GmatEop::EOP_C04);
 //---------------------------------------------------------------------------
 /**
@@ -57,7 +56,7 @@ const Integer EopFile::MAX_TABLE_SIZE = 50405;  // up to year >= 2100
  * @param fileNme  EOP file name.
  */
 //---------------------------------------------------------------------------
-EopFile::EopFile(const wxString &fileName, GmatEop::EopFileType eop) :
+EopFile::EopFile(const std::string &fileName, GmatEop::EopFileType eop) :
 eopFType        (eop),
 eopFileName     (fileName),
 tableSz         (0),
@@ -77,7 +76,7 @@ isInitialized   (false)
  * Constructs base EopFile structures, by copying 
  * the input instance (copy constructor).
  *
- * @param eopF   EopFile instance to copy to create wxT("this") 
+ * @param eopF   EopFile instance to copy to create "this" 
  *               instance.
  */
 //---------------------------------------------------------------------------
@@ -150,49 +149,49 @@ EopFile::~EopFile()
 void EopFile::Initialize()
 {
    #ifdef DEBUG_EOP_INITIALIZE
-      MessageInterface::ShowMessage(wxT("Initializing EopFile: eopFileName = %s\n"), eopFileName.c_str());
+      MessageInterface::ShowMessage("Initializing EopFile: eopFileName = %s\n", eopFileName.c_str());
    #endif
    if (isInitialized) return;
    
-   wxString   line;
-   wxFileInputStream eopInputFile(eopFileName);
-   wxTextInputStream eopFile(eopInputFile);
-   if (!eopInputFile.IsOk())
-      throw UtilityException(wxT("Error opening EopFile ") + 
+   std::string   line;
+   std::ifstream eopFile(eopFileName.c_str());
+   if (!eopFile)
+      throw UtilityException("Error opening EopFile " + 
                              eopFileName);
+   eopFile.setf(std::ios::skipws);
    if (eopFType == GmatEop::EOP_C04)
    {
       // read up to the first data line
       bool startNow = false;
-      wxString   firstWord;
-      while ((!startNow) && (!eopInputFile.Eof()))
+      std::string   firstWord;
+      while ((!startNow) && (!eopFile.eof()))
       {
-         line = eopFile.ReadLine();
-         wxStringInputStream lineStream(line);
-         wxTextInputStream lineStr(lineStream);
+         getline(eopFile,line);
+         std::istringstream lineStr;
+         lineStr.str(line);
          lineStr >> firstWord;
-         if (firstWord == wxT("1962")) startNow = true;
+         if (firstWord == "1962") startNow = true;
       }
       if (startNow == false)
-         throw UtilityException(wxT("Unable to read EopFile."));
+         throw UtilityException("Unable to read EopFile.");
       // now start reading the data
       Integer     year, day, mjd;
-      wxString month;
+      std::string month;
       Real        x, y, ut1_utc, lod; // ignore lod, dPsi, dEpsilon
       bool done = false;
       while (!done)
       {
-         if (!IsBlank(line))
+         if (!IsBlank(line.c_str()))
          {
-            wxStringInputStream lineStream(line);
-            wxTextInputStream lineS(lineStream);
+            std::istringstream lineS;
+            lineS.str(line);
             lineS >> year >> month >> day >> mjd >> x >> y >> ut1_utc >> lod;
             #ifdef DEBUG_EOP_READ
                //MessageInterface::ShowMessage(
-                  //wxT("%d   %s   %d   %d   %.12f   %.12f   %.12f   %.12f\n"),
+                  //"%d   %s   %d   %d   %.12f   %.12f   %.12f   %.12f\n",
                   //year, month.c_str(), day, mjd, x, y, ut1_utc, lod);
                MessageInterface::ShowMessage(
-                  wxT("%d   %.12f   %.12f   %.12f   %.12f\n"),
+                  "%d   %.12f   %.12f   %.12f   %.12f\n",
                   mjd, x, y, ut1_utc, lod);
             #endif
             ut1UtcOffsets->SetElement(tableSz,0,mjd + GmatTimeConstants::JD_NOV_17_1858);
@@ -203,8 +202,8 @@ void EopFile::Initialize()
             polarMotion->SetElement(tableSz,3,lod);
             tableSz++;
          }
-         if (eopInputFile.Eof())   done = true;
-         else                 line = eopFile.ReadLine();
+         if (eopFile.eof())   done = true;
+         else                 getline(eopFile, line);
       }
    }
    else if (eopFType == GmatEop::FINALS)
@@ -214,18 +213,18 @@ void EopFile::Initialize()
       // ignore dutc, lod, dlod, I/P, dPsi ddPsi, dEpsilon, ddEpsilon, Bull. B data?
       Real        dx, dy, dut1_utc;
       bool        done = false;
-      while (!done && (!eopInputFile.Eof()))
+      while (!done && (!eopFile.eof()))
       {
-         line = eopFile.ReadLine();
-         if (!IsBlank(line))
+         getline(eopFile, line);
+         if (!IsBlank(line.c_str()))
          {
-            wxStringInputStream lineStream(line);
-            wxTextInputStream lineS(lineStream);
-            lineStream.SeekI(6);
+            std::istringstream lineS;
+            lineS.str(line);
+            lineS.ignore(6);
             lineS >> mjd >> ipFlag1
                >> x >> dx >> y >> dy >> ipFlag2 >> ut1_utc >> dut1_utc >> lod;
             // We're done when we reach the end of the predicted values
-            if ((ipFlag1 != wxT('I')) && (ipFlag1 != wxT('P'))) 
+            if ((ipFlag1 != 'I') && (ipFlag1 != 'P')) 
             {
                done = true;
             }
@@ -244,8 +243,9 @@ void EopFile::Initialize()
    }
    else
    {
-      throw UtilityException(wxT("Error In EopFile - file type unknown."));
+      throw UtilityException("Error In EopFile - file type unknown.");
    }
+   if (eopFile.is_open())  eopFile.close();
    // set the last value to the end of the file (since we search from back 
    // to front)
    lastUtcJd  = ut1UtcOffsets->GetElement((tableSz-1), 0);
@@ -258,7 +258,7 @@ void EopFile::Initialize()
 }
 
 //---------------------------------------------------------------------------
-//  wxString GetFileName() const
+//  std::string GetFileName() const
 //---------------------------------------------------------------------------
 /**
  * Returns the name of the EOP file.
@@ -266,7 +266,7 @@ void EopFile::Initialize()
  * @return name of the EOp file.  
  */
 //---------------------------------------------------------------------------
-wxString EopFile::GetFileName() const
+std::string EopFile::GetFileName() const
 {
    return eopFileName;
 }
@@ -286,7 +286,7 @@ wxString EopFile::GetFileName() const
 //---------------------------------------------------------------------------
 Real EopFile::GetUt1UtcOffset(const Real utcMjd)
 {
-   //MessageInterface::ShowMessage(wxT("===> GetUt1UtcOffset() utcMjd=%f\n"), utcMjd);
+   //MessageInterface::ShowMessage("===> GetUt1UtcOffset() utcMjd=%f\n", utcMjd);
    
    if (!isInitialized)  Initialize();
    
@@ -300,7 +300,7 @@ Real EopFile::GetUt1UtcOffset(const Real utcMjd)
    /*
    Integer row     = ut1UtcOffsets->GetNumRows();
    MessageInterface::ShowMessage
-      (wxT("===> after ut1UtcOffsets->GetData() tableSz=%d, row=%d, col=%d\n"),
+      ("===> after ut1UtcOffsets->GetData() tableSz=%d, row=%d, col=%d\n",
        tableSz, row, col);
    */
    if (utcJD >= data[(tableSz - 1)*col])
@@ -359,7 +359,7 @@ Real EopFile::GetUt1UtcOffset(const Real utcMjd)
    lastOffset = off;
    #ifdef DEBUG_OFFSET
       MessageInterface::ShowMessage
-         (wxT("===> after completion off=%f, lastUtcJd=%f, lastOffset=%f\n"),
+         ("===> after completion off=%f, lastUtcJd=%f, lastOffset=%f\n",
           off, lastUtcJd, lastOffset);
    #endif
    return off;
@@ -487,7 +487,7 @@ bool EopFile::GetPolarMotionAndLod(Real forUtcMjd, Real &xval, Real  &yval,
 }
 
 //------------------------------------------------------------------------------
-//  bool IsBlank(wxString &aLine)
+//  bool IsBlank(char* aLine)
 //------------------------------------------------------------------------------
 /**
  * This method returns true if the string is empty or is all white space.
@@ -495,10 +495,10 @@ bool EopFile::GetPolarMotionAndLod(Real forUtcMjd, Real &xval, Real  &yval,
  * @return success flag.
  */
 //------------------------------------------------------------------------------
-bool EopFile::IsBlank(const wxString & aLine)
+bool EopFile::IsBlank(const char* aLine)
 {
    Integer i;
-   for (i=0;i<aLine.Length();i++)
+   for (i=0;i<(int)strlen(aLine);i++)
    {
       //loj: 5/18/04 if (!isblank(aLine[i])) return false;
       if (!isspace(aLine[i])) return false;

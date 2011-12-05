@@ -26,15 +26,15 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  FactoryException(wxString details)
+//  FactoryException(std::string details)
 //------------------------------------------------------------------------------
 /**
  * Constructs an FactoryException object (default constructor).
  */
 //------------------------------------------------------------------------------
 
-FactoryException::FactoryException(wxString details) :
-BaseException  (wxT("Factory (sub)class exception: "), details)
+FactoryException::FactoryException(std::string details) :
+BaseException  ("Factory (sub)class exception: ", details)
 {
    
 }

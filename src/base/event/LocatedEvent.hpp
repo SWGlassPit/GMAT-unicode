@@ -41,21 +41,21 @@ public:
    /// The epoch of the data element.
    GmatEpoch epoch;
    /// Identifier for the type of entry/exit represented
-   wxString boundary;
+   std::string boundary;
    /// Flag for entry/exit
    bool isEntry;
    /// The type of the event (Umbra, Contact. etc).
-   wxString type;
+   std::string type;
    /// The event function value at the located event
    Real eventValue;
    /// The participant indicator -- e.g. "Sat - Earth"
-   wxString participants;
+   std::string participants;
    /// The event that opens or closes this one
    LocatedEvent *partner;
    /// Duration of the event (set on both partners; zero until a pair is built
    Real duration;
    /// Name used on the data plots
-   wxString dataName;
+   std::string dataName;
 };
 
 #endif /* LocatedEvent_hpp */

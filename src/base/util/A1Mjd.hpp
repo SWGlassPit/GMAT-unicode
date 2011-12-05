@@ -77,8 +77,8 @@ public:
    UtcMjd ToUtcMjd();
 
    Integer GetNumData() const;
-   const wxString* GetDataDescriptions() const;
-   wxString* ToValueStrings();
+   const std::string* GetDataDescriptions() const;
+   std::string* ToValueStrings();
 
    static const A1Mjd J2000;
 
@@ -99,7 +99,7 @@ private:
    static const Real mTolerance;
 
    static const Integer NUM_DATA = 1;
-   static const wxString DATA_DESCRIPTIONS[NUM_DATA];
-   wxString stringValues[NUM_DATA];
+   static const std::string DATA_DESCRIPTIONS[NUM_DATA];
+   std::string stringValues[NUM_DATA];
 };
 #endif // A1Mjd_hpp

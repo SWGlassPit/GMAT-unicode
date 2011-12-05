@@ -39,17 +39,17 @@ namespace GmatCommandUtil
                     bool callRunComplete = true);
    bool GMAT_API IsAfter(GmatCommand *cmd1, GmatCommand *cmd2);
    bool GMAT_API FindObject(GmatCommand *cmd, Gmat::ObjectType objType,
-                    const wxString &objName, wxString &cmdName);
+                    const std::string &objName, std::string &cmdName);
    bool GMAT_API FindObjectFromSubCommands(GmatCommand *brCmd, Integer level,
                     Gmat::ObjectType objType,
-                    const wxString &objName, wxString &cmdName);
-   wxString GMAT_API GetCommandSeqString(GmatCommand *cmd, bool showAddr = true,
-                    bool showGenStr = false, const wxString &indentStr = wxT("---"));
+                    const std::string &objName, std::string &cmdName);
+   std::string GMAT_API GetCommandSeqString(GmatCommand *cmd, bool showAddr = true,
+                    bool showGenStr = false, const std::string &indentStr = "---");
    void GMAT_API GetSubCommandString(GmatCommand* brCmd, Integer level,
-                    wxString &cmdseq, bool showAddr = true,
-                    bool showGenStr = false, const wxString &indentStr = wxT("---"));
-   void GMAT_API ShowCommand(const wxString &title1, GmatCommand *cmd1,
-                    const wxString &title2 = wxT(""), GmatCommand *cmd2 = NULL);
+                    std::string &cmdseq, bool showAddr = true,
+                    bool showGenStr = false, const std::string &indentStr = "---");
+   void GMAT_API ShowCommand(const std::string &title1, GmatCommand *cmd1,
+                    const std::string &title2 = "", GmatCommand *cmd2 = NULL);
 }
 
 #endif // CommandUtil_hpp

@@ -28,7 +28,7 @@
 
 
 
-RootFinder::RootFinder(wxString finderType) :
+RootFinder::RootFinder(std::string finderType) :
    typeName             (finderType),
    tolerance            (1.0e-5),
    bufferSize           (2),        // Default to 2 point buffers
@@ -112,8 +112,8 @@ bool RootFinder::Initialize(GmatEpoch t0, Real f0, GmatEpoch t1, Real f1)
    bool retval = false;
 
    if (t0 == t1)
-      throw EventException(wxT("Error initializing the ") + typeName +
-            wxT(" root finder; the bounding epochs are identical."));
+      throw EventException("Error initializing the " + typeName +
+            " root finder; the bounding epochs are identical.");
    if (bufferSize > 0)
    {
       if (buffer != NULL)
@@ -312,7 +312,7 @@ void RootFinder::Swap(Integer i1, Integer i2)
 //{
 //   Spacecraft *fromSat = NULL, *toSat = NULL;
 //   Formation *fromForm = NULL, *toForm = NULL;
-//   wxString soName;
+//   std::string soName;
 //
 //   for (std::vector<Spacecraft *>::iterator i = satBuffer.begin();
 //        i != satBuffer.end(); ++i)

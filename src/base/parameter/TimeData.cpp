@@ -36,12 +36,12 @@
 
 //const Real TimeData::MJD_OFFSET = GmatTimeConstants::JD_JAN_5_1941;
 const Real TimeData::TIME_REAL_UNDEFINED = GmatRealConstants::REAL_UNDEFINED_LARGE;
-const wxString TimeData::TIME_STRING_UNDEFINED = wxT("INVALID_TIME");
+const std::string TimeData::TIME_STRING_UNDEFINED = "INVALID_TIME";
 
-const wxString
+const std::string
 TimeData::VALID_OBJECT_TYPE_LIST[TimeDataObjectCount] =
 {
-   wxT("Spacecraft") //loj: use spacecraft to get current time?
+   "Spacecraft" //loj: use spacecraft to get current time?
 }; 
 
 
@@ -50,13 +50,13 @@ TimeData::VALID_OBJECT_TYPE_LIST[TimeDataObjectCount] =
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// TimeData(const wxString &name = wxT(""))
+// TimeData(const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Constructor.
  */
 //------------------------------------------------------------------------------
-TimeData::TimeData(const wxString &name)
+TimeData::TimeData(const std::string &name)
    : RefData(name)
 {
    mInitialEpoch = 0.0;
@@ -144,7 +144,7 @@ Real TimeData::GetInitialEpoch() const
 {
    #ifdef DEBUG_TIMEDATA
    MessageInterface::ShowMessage
-      (wxT("TimeData::GetInitialEpoch() returning %f\n"), mInitialEpoch);
+      ("TimeData::GetInitialEpoch() returning %f\n", mInitialEpoch);
    #endif
    
    return mInitialEpoch;
@@ -165,7 +165,7 @@ void TimeData::SetInitialEpoch(const Real &initialEpoch)
    
    #ifdef DEBUG_TIMEDATA
    MessageInterface::ShowMessage
-      (wxT("TimeData::SetInitialEpoch() mInitialEpoch = %f\n"),
+      ("TimeData::SetInitialEpoch() mInitialEpoch = %f\n",
        mInitialEpoch);
    #endif
 }
@@ -188,7 +188,7 @@ Real TimeData::GetCurrentTimeReal(Integer id)
 
    #ifdef DEBUG_TIMEDATA_GET
    MessageInterface::ShowMessage
-      (wxT("TimeData::GetCurrentTimeReal() mSpacecraft=<%p>'%s', a1mjd=%f\n"),
+      ("TimeData::GetCurrentTimeReal() mSpacecraft=<%p>'%s', a1mjd=%f\n",
        mSpacecraft, mSpacecraft->GetName().c_str(), a1mjd);
    #endif
    
@@ -228,13 +228,13 @@ Real TimeData::GetCurrentTimeReal(Integer id)
       time = a1mjd + GmatTimeConstants::JD_JAN_5_1941;
       break;
    default:
-      throw ParameterException(wxT("TimeData::GetCurrentTimeReal() Unknown parameter id: ") +
+      throw ParameterException("TimeData::GetCurrentTimeReal() Unknown parameter id: " +
                                GmatRealUtil::ToString(id));
    }
    
    #ifdef DEBUG_TIMEDATA_GET
    MessageInterface::ShowMessage
-      (wxT("TimeData::GetCurrentTimeReal() id=%d, a1mjd=%.10f, return time=%.10f\n"),
+      ("TimeData::GetCurrentTimeReal() id=%d, a1mjd=%.10f, return time=%.10f\n",
        id, a1mjd, time);
    #endif
 
@@ -243,13 +243,13 @@ Real TimeData::GetCurrentTimeReal(Integer id)
 
 
 //------------------------------------------------------------------------------
-// wxString GetCurrentTimeString(Integer id)
+// std::string GetCurrentTimeString(Integer id)
 //------------------------------------------------------------------------------
 /**
  * Retrives current time string.
  */
 //------------------------------------------------------------------------------
-wxString TimeData::GetCurrentTimeString(Integer id)
+std::string TimeData::GetCurrentTimeString(Integer id)
 {
    Real time = GetCurrentTimeReal(id);
    
@@ -263,12 +263,12 @@ wxString TimeData::GetCurrentTimeString(Integer id)
    case UTC_MJD:
       #ifdef DEBUG_TIMEDATA
       MessageInterface::ShowMessage
-         (wxT("TimeData::GetCurrentTimeString() id=%d, timeStr = %s\n"), id,
+         ("TimeData::GetCurrentTimeString() id=%d, timeStr = %s\n", id,
           TimeConverterUtil::ConvertMjdToGregorian(time).c_str());
       #endif
       return TimeConverterUtil::ConvertMjdToGregorian(time);
    default:
-      throw ParameterException(wxT("TimeData::GetCurrentTimeString() Unknown parameter id: ") +
+      throw ParameterException("TimeData::GetCurrentTimeString() Unknown parameter id: " +
                                GmatRealUtil::ToString(id));
    }
 }
@@ -296,7 +296,7 @@ Real TimeData::GetElapsedTimeReal(Integer id)
    case SECS:
       return (a1mjd - mInitialEpoch)* GmatTimeConstants::SECS_PER_DAY;
    default:
-      throw ParameterException(wxT("TimeData::GetElapsedTimeReal() Unknown parameter id: ") +
+      throw ParameterException("TimeData::GetElapsedTimeReal() Unknown parameter id: " +
                                GmatRealUtil::ToString(id));
    }
 }
@@ -307,9 +307,9 @@ Real TimeData::GetElapsedTimeReal(Integer id)
 //-------------------------------------
 
 //------------------------------------------------------------------------------
-// virtual const wxString* GetValidObjectList() const
+// virtual const std::string* GetValidObjectList() const
 //------------------------------------------------------------------------------
-const wxString* TimeData::GetValidObjectList() const
+const std::string* TimeData::GetValidObjectList() const
 {
    return VALID_OBJECT_TYPE_LIST;
 }
@@ -336,11 +336,11 @@ bool TimeData::ValidateRefObjects(GmatBase *param)
       else
       {
          Spacecraft *sc = (Spacecraft*)FindFirstObject(VALID_OBJECT_TYPE_LIST[SPACECRAFT]);
-         Real rval = sc->GetRealParameter(wxT("A1Epoch"));
+         Real rval = sc->GetRealParameter("A1Epoch");
 
          if (rval != GmatBase::REAL_PARAMETER_UNDEFINED)
          {
-            mInitialEpoch = sc->GetRealParameter(wxT("A1Epoch"));
+            mInitialEpoch = sc->GetRealParameter("A1Epoch");
             mIsInitialEpochSet = true;
             status = true;
          }
@@ -359,16 +359,16 @@ void TimeData::InitializeRefObjects()
    mSpacecraft = (Spacecraft*)FindFirstObject(VALID_OBJECT_TYPE_LIST[SPACECRAFT]);
    if (mSpacecraft == NULL)
    {
-      wxString scName = GetRefObjectName(Gmat::SPACECRAFT);
+      std::string scName = GetRefObjectName(Gmat::SPACECRAFT);
       #ifdef DEBUG_TIMEDATA
       MessageInterface::ShowMessage
-         (wxT("TimeData::InitializeRefObjects() Cannot find Spacecraft object named ")
-          wxT("\"%s\"\n"), scName.c_str());
+         ("TimeData::InitializeRefObjects() Cannot find Spacecraft object named "
+          "\"%s\"\n", scName.c_str());
       #endif
       
       throw ParameterException
-         (wxT("TimeData::InitializeRefObjects() Cannot find Spacecraft object named \"") + 
-          scName + wxT("\"\n"));
+         ("TimeData::InitializeRefObjects() Cannot find Spacecraft object named \"" + 
+          scName + "\"\n");
    }
    else
    {
@@ -379,7 +379,7 @@ void TimeData::InitializeRefObjects()
          
          #ifdef DEBUG_TIMEDATA
          MessageInterface::ShowMessage
-            (wxT("TimeData::InitializeRefObjects() set mInitialEpoch to %f\n"), mInitialEpoch);
+            ("TimeData::InitializeRefObjects() set mInitialEpoch to %f\n", mInitialEpoch);
          #endif
       }
    }

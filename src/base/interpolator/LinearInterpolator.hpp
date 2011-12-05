@@ -31,7 +31,7 @@
 class GMAT_API LinearInterpolator : public Interpolator
 {
 public:
-    LinearInterpolator(const wxString &name = wxT(""), Integer dim = 1); 
+    LinearInterpolator(const std::string &name = "", Integer dim = 1); 
     ~LinearInterpolator();
     LinearInterpolator(const LinearInterpolator &l);
     LinearInterpolator& operator=(const LinearInterpolator &li);

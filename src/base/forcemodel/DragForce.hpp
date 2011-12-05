@@ -38,7 +38,7 @@ class CoordinateSystem;
 class GMAT_API DragForce : public PhysicalModel
 {
 public:
-   DragForce(const wxString &name = wxT(""));
+   DragForce(const std::string &name = "");
    virtual ~DragForce();
    
    DragForce(const DragForce& df); 
@@ -46,16 +46,16 @@ public:
    
    virtual bool         GetComponentMap(Integer * map, Integer order = 1) const;
    virtual void         SetSatelliteParameter(const Integer i,
-                                              const wxString parmName, 
+                                              const std::string parmName, 
                                               const Real parm,
                                               const Integer parmID = -1);
    virtual void         SetSatelliteParameter(const Integer i,
                                               Integer parmID,
                                               const Real parm);
    virtual void         SetSatelliteParameter(const Integer i,
-                                              const wxString parmName, 
-                                              const wxString parm);
-   virtual void         ClearSatelliteParameters(const wxString parmName = wxT(""));
+                                              const std::string parmName, 
+                                              const std::string parm);
+   virtual void         ClearSatelliteParameters(const std::string parmName = "");
    
    bool                 Initialize();
    virtual bool         GetDerivatives(Real * state, Real dt = 0.0, 
@@ -66,26 +66,26 @@ public:
    virtual GmatBase*    Clone(void) const;
    
    // Parameter accessor methods -- overridden from GmatBase
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    virtual bool         IsParameterReadOnly(const Integer id) const;
-   virtual bool         IsParameterReadOnly(const wxString &label) const;
+   virtual bool         IsParameterReadOnly(const std::string &label) const;
    
    virtual Real         GetRealParameter(const Integer id) const;
-   virtual Real         GetRealParameter(const wxString &label) const;
+   virtual Real         GetRealParameter(const std::string &label) const;
    virtual Real         SetRealParameter(const Integer id, const Real value);
-   virtual Real         SetRealParameter(const wxString &label,
+   virtual Real         SetRealParameter(const std::string &label,
                                          const Real value);
    
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const wxString &label) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const std::string &label) const;
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label, 
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label, 
+                                           const std::string &value);
    virtual Integer      GetIntegerParameter(const Integer id) const;
    virtual Integer      SetIntegerParameter(const Integer id,
                                             const Integer value);
@@ -94,19 +94,19 @@ public:
    virtual Integer      SetIntegerParameter(const Integer id,
                                             const Integer value,
                                             const Integer index);
-   virtual Integer      GetIntegerParameter(const wxString &label) const;
-   virtual Integer      SetIntegerParameter(const wxString &label,
+   virtual Integer      GetIntegerParameter(const std::string &label) const;
+   virtual Integer      SetIntegerParameter(const std::string &label,
                                             const Integer value);
-   virtual Integer      GetIntegerParameter(const wxString &label,
+   virtual Integer      GetIntegerParameter(const std::string &label,
                                             const Integer index) const;
-   virtual Integer      SetIntegerParameter(const wxString &label,
+   virtual Integer      SetIntegerParameter(const std::string &label,
                                             const Integer value,
                                             const Integer index);
 
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name);
+                                     const std::string &name);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    
    virtual Integer      GetOwnedObjectCount();
    virtual GmatBase*    GetOwnedObject(Integer whichOne);
@@ -135,7 +135,7 @@ protected:
    /// Flag to indicate if the atmosphere model is externally owned or internal
    bool                 useExternalAtmosphere;
    /// Name of the atmosphere model we want to use
-   wxString          atmosphereType;
+   std::string          atmosphereType;
    /// Pointer to the atmosphere model used
    AtmosphereModel      *atmos;
    /// Pointer to Internal atmosphere model
@@ -182,11 +182,11 @@ protected:
 
 
    // Optional input parameters used by atmospheric models
-   /// Type of input data -- wxT("File") or wxT("Constant")
-   wxString          dataType;
+   /// Type of input data -- "File" or "Constant"
+   std::string          dataType;
    /// Solar flux file name
-   wxString          fluxFile;
-   /// wxT("Current") value of F10.7
+   std::string          fluxFile;
+   /// "Current" value of F10.7
    Real                 fluxF107;
    /// Running average of the F10.7
    Real                 fluxF107A;
@@ -231,7 +231,7 @@ protected:
       DragForceParamCount
    };
    
-   static const wxString 
+   static const std::string 
       PARAMETER_TEXT[DragForceParamCount - PhysicalModelParamCount];
    static const Gmat::ParameterType 
       PARAMETER_TYPE[DragForceParamCount - PhysicalModelParamCount];

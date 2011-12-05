@@ -34,8 +34,8 @@ class GMAT_API DynamicAxes : public AxisSystem
 public:
 
    // default constructor
-   DynamicAxes(const wxString &itsType,
-               const wxString &itsName = wxT(""));
+   DynamicAxes(const std::string &itsType,
+               const std::string &itsName = "");
    // copy constructor
    DynamicAxes(const DynamicAxes &dyn);
    // operator = for assignment
@@ -52,16 +52,16 @@ public:
 
    // Parameter access methods - overridden from GmatBase
    /*
-   virtual wxString     GetParameterText(const Integer id) const;     
-   virtual Integer         GetParameterID(const wxString &str) const; 
+   virtual std::string     GetParameterText(const Integer id) const;     
+   virtual Integer         GetParameterID(const std::string &str) const; 
    virtual Gmat::ParameterType
                            GetParameterType(const Integer id) const;
-   virtual wxString     GetParameterTypeString(const Integer id) const;
+   virtual std::string     GetParameterTypeString(const Integer id) const;
    virtual Real            GetRealParameter(const Integer id) const;
    virtual Real            SetRealParameter(const Integer id,
                                             const Real value);
-   virtual Real            GetRealParameter(const wxString &label) const;
-   virtual Real            SetRealParameter(const wxString &label,
+   virtual Real            GetRealParameter(const std::string &label) const;
+   virtual Real            SetRealParameter(const std::string &label,
                                             const Real value);
     */
    // need to add (and to GmatBase) GetA1MjdParameter method(s)?????????
@@ -73,7 +73,7 @@ protected:
       DynamicAxesParamCount = AxisSystemParamCount
    };
    
-   //static const wxString PARAMETER_TEXT[DynamicAxesParamCount - 
+   //static const std::string PARAMETER_TEXT[DynamicAxesParamCount - 
    //                                        AxisSystemParamCount];
    
    //static const Gmat::ParameterType PARAMETER_TYPE[DynamicAxesParamCount - 

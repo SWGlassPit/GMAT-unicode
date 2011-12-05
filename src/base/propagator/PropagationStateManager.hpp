@@ -40,9 +40,9 @@ public:
                                Gmat::UNKNOWN_STATE);
 
    virtual bool SetObject(GmatBase* theObject);
-   virtual bool SetProperty(wxString propName);
-   virtual bool SetProperty(wxString propName, Integer index);
-   virtual bool SetProperty(wxString propName, GmatBase *forObject);
+   virtual bool SetProperty(std::string propName);
+   virtual bool SetProperty(std::string propName, Integer index);
+   virtual bool SetProperty(std::string propName, GmatBase *forObject);
    virtual bool BuildState();
    virtual bool MapObjectsToVector();
    virtual bool MapVectorToObjects();

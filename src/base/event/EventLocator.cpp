@@ -36,16 +36,16 @@
 //------------------------------------------------------------------------------
 // Static data
 //------------------------------------------------------------------------------
-const wxString
+const std::string
 EventLocator::PARAMETER_TEXT[EventLocatorParamCount - GmatBaseParamCount] =
 {
-   wxT("Spacecraft"),        // SATNAMES,
-   wxT("Tolerance"),         // TOLERANCE,
-   wxT("Filename"),           // EVENT_FILENAME,
-   wxT("IsActive"),           // IS_ACTIVE
-   wxT("ShowPlot"),           // SHOW_PLOT
-   wxT("Epoch"),             // EPOCH (Read only)
-   wxT("EventFunction")      // EVENT_FUNCTION (Read only)
+   "Spacecraft",        // SATNAMES,
+   "Tolerance",         // TOLERANCE,
+   "Filename",          // EVENT_FILENAME,
+   "IsActive",          // IS_ACTIVE
+   "ShowPlot",          // SHOW_PLOT
+   "Epoch",             // EPOCH (Read only)
+   "EventFunction"      // EVENT_FUNCTION (Read only)
 };
 
 const Gmat::ParameterType
@@ -68,7 +68,7 @@ EventLocator::PARAMETER_TYPE[EventLocatorParamCount - GmatBaseParamCount] =
 
 
 //------------------------------------------------------------------------------
-// EventLocator(const wxString &typeStr, const wxString &nomme) :
+// EventLocator(const std::string &typeStr, const std::string &nomme) :
 //------------------------------------------------------------------------------
 /**
  * Default constructor
@@ -77,10 +77,10 @@ EventLocator::PARAMETER_TYPE[EventLocatorParamCount - GmatBaseParamCount] =
  * @param nomme Name of this instance of the locator
  */
 //------------------------------------------------------------------------------
-EventLocator::EventLocator(const wxString &typeStr,
-      const wxString &nomme) :
+EventLocator::EventLocator(const std::string &typeStr,
+      const std::string &nomme) :
    GmatBase       (Gmat::EVENT_LOCATOR, typeStr, nomme),
-   filename       (wxT("LocatedEvents.txt")),
+   filename       ("LocatedEvents.txt"),
    efCount        (0),
    lastData       (NULL),
    lastEpochs     (NULL),
@@ -90,7 +90,7 @@ EventLocator::EventLocator(const wxString &typeStr,
    solarSys       (NULL)
 {
    objectTypes.push_back(Gmat::EVENT_LOCATOR);
-   objectTypeNames.push_back(wxT("EventLocator"));
+   objectTypeNames.push_back("EventLocator");
 }
 
 
@@ -185,7 +185,7 @@ EventLocator& EventLocator::operator=(const EventLocator& el)
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves the text description of the object parameter with input id
@@ -195,7 +195,7 @@ EventLocator& EventLocator::operator=(const EventLocator& el)
  * @return The string used to script the parameter
  */
 //------------------------------------------------------------------------------
-wxString EventLocator::GetParameterText(const Integer id) const
+std::string EventLocator::GetParameterText(const Integer id) const
 {
    if (id >= GmatBaseParamCount && id < EventLocatorParamCount)
       return PARAMETER_TEXT[id - GmatBaseParamCount];
@@ -204,7 +204,7 @@ wxString EventLocator::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves the parameter ID associated with a string
@@ -214,7 +214,7 @@ wxString EventLocator::GetParameterText(const Integer id) const
  * @return The ID
  */
 //------------------------------------------------------------------------------
-Integer EventLocator::GetParameterID(const wxString &str) const
+Integer EventLocator::GetParameterID(const std::string &str) const
 {
    for (Integer i = GmatBaseParamCount; i < EventLocatorParamCount; i++)
    {
@@ -247,7 +247,7 @@ Gmat::ParameterType EventLocator::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves a text description of the type of a parameter
@@ -257,7 +257,7 @@ Gmat::ParameterType EventLocator::GetParameterType(const Integer id) const
  * @return The parameter's type description
  */
 //------------------------------------------------------------------------------
-wxString EventLocator::GetParameterTypeString(const Integer id) const
+std::string EventLocator::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -284,7 +284,7 @@ bool EventLocator::IsParameterReadOnly(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// bool IsParameterReadOnly(const wxString &label) const
+// bool IsParameterReadOnly(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Determines if the parameter is read only or writable when saved
@@ -294,7 +294,7 @@ bool EventLocator::IsParameterReadOnly(const Integer id) const
  * @return true if the parameter is not writable, false if it is
  */
 //------------------------------------------------------------------------------
-bool EventLocator::IsParameterReadOnly(const wxString &label) const
+bool EventLocator::IsParameterReadOnly(const std::string &label) const
 {
    return IsParameterReadOnly(GetParameterID(label));
 }
@@ -347,7 +347,7 @@ Real EventLocator::SetRealParameter(const Integer id, const Real value)
          eventTolerance = value;
       else
          throw EventException(
-               wxT("Located event tolerance value must be a real number >= 0.0"));
+               "Located event tolerance value must be a real number >= 0.0");
 
       return eventTolerance;
    }
@@ -457,7 +457,7 @@ Real EventLocator::SetRealParameter(const Integer id, const Real value,
 
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label) const
+// Real GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves the value for a real parameter
@@ -467,13 +467,13 @@ Real EventLocator::SetRealParameter(const Integer id, const Real value,
  * @return The parameter value
  */
 //------------------------------------------------------------------------------
-Real EventLocator::GetRealParameter(const wxString &label) const
+Real EventLocator::GetRealParameter(const std::string &label) const
 {
    return GetRealParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-// Real SetRealParameter(const wxString &label, const Real value)
+// Real SetRealParameter(const std::string &label, const Real value)
 //------------------------------------------------------------------------------
 /**
  * Sets the value for a real parameter
@@ -484,14 +484,14 @@ Real EventLocator::GetRealParameter(const wxString &label) const
  * @return The parameter value
  */
 //------------------------------------------------------------------------------
-Real EventLocator::SetRealParameter(const wxString &label,
+Real EventLocator::SetRealParameter(const std::string &label,
                                       const Real value)
 {
    return SetRealParameter(GetParameterID(label), value);
 }
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label, const Integer index) const
+// Real GetRealParameter(const std::string &label, const Integer index) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves the value for a real parameter from a vector of Reals
@@ -502,14 +502,14 @@ Real EventLocator::SetRealParameter(const wxString &label,
  * @return The parameter value
  */
 //------------------------------------------------------------------------------
-Real EventLocator::GetRealParameter(const wxString &label,
+Real EventLocator::GetRealParameter(const std::string &label,
                                       const Integer index) const
 {
    return GetRealParameter(GetParameterID(label), index);
 }
 
 //------------------------------------------------------------------------------
-// Real SetRealParameter(const wxString &label, const Real value,
+// Real SetRealParameter(const std::string &label, const Real value,
 //       const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -522,7 +522,7 @@ Real EventLocator::GetRealParameter(const wxString &label,
  * @return The parameter value
  */
 //------------------------------------------------------------------------------
-Real EventLocator::SetRealParameter(const wxString &label,
+Real EventLocator::SetRealParameter(const std::string &label,
                                       const Real value,
                                       const Integer index)
 {
@@ -530,7 +530,7 @@ Real EventLocator::SetRealParameter(const wxString &label,
 }
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label, const Integer row,
+// Real GetRealParameter(const std::string &label, const Integer row,
 //       const Integer col) const
 //------------------------------------------------------------------------------
 /**
@@ -543,7 +543,7 @@ Real EventLocator::SetRealParameter(const wxString &label,
  * @return The parameter value
  */
 //------------------------------------------------------------------------------
-Real EventLocator::GetRealParameter(const wxString &label,
+Real EventLocator::GetRealParameter(const std::string &label,
                                       const Integer row,
                                       const Integer col) const
 {
@@ -552,7 +552,7 @@ Real EventLocator::GetRealParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// Real SetRealParameter(const wxString &label, const Real value,
+// Real SetRealParameter(const std::string &label, const Real value,
 //       const Integer row, const Integer col)
 //------------------------------------------------------------------------------
 /**
@@ -566,7 +566,7 @@ Real EventLocator::GetRealParameter(const wxString &label,
  * @return The parameter value
  */
 //------------------------------------------------------------------------------
-Real EventLocator::SetRealParameter(const wxString &label,
+Real EventLocator::SetRealParameter(const std::string &label,
                                       const Real value, const Integer row,
                                       const Integer col)
 {
@@ -596,19 +596,19 @@ const Rvector& EventLocator::SetRvectorParameter(const Integer id,
    return GmatBase::SetRvectorParameter(id, value);
 }
 
-const Rvector& EventLocator::GetRvectorParameter(const wxString &label) const
+const Rvector& EventLocator::GetRvectorParameter(const std::string &label) const
 {
    return GetRvectorParameter(GetParameterID(label));
 }
 
-const Rvector& EventLocator::SetRvectorParameter(const wxString &label,
+const Rvector& EventLocator::SetRvectorParameter(const std::string &label,
       const Rvector &value)
 {
    return SetRvectorParameter(GetParameterID(label), value);
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves the value for a string parameter
@@ -618,7 +618,7 @@ const Rvector& EventLocator::SetRvectorParameter(const wxString &label,
  * @return The parameter value
  */
 //------------------------------------------------------------------------------
-wxString EventLocator::GetStringParameter(const Integer id) const
+std::string EventLocator::GetStringParameter(const Integer id) const
 {
    if (id == EVENT_FILENAME)
       return filename;
@@ -628,7 +628,7 @@ wxString EventLocator::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Sets the value for a string parameter
@@ -640,11 +640,11 @@ wxString EventLocator::GetStringParameter(const Integer id) const
  */
 //------------------------------------------------------------------------------
 bool EventLocator::SetStringParameter(const Integer id,
-      const wxString &value)
+      const std::string &value)
 {
    if (id == EVENT_FILENAME)
    {
-      if (value != wxT(""))
+      if (value != "")
       {
          filename = value;
          return true;
@@ -667,7 +667,7 @@ bool EventLocator::SetStringParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id, const Integer index) const
+// std::string GetStringParameter(const Integer id, const Integer index) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves the value for a string parameter from a vector of strings
@@ -678,7 +678,7 @@ bool EventLocator::SetStringParameter(const Integer id,
  * @return The parameter value
  */
 //------------------------------------------------------------------------------
-wxString EventLocator::GetStringParameter(const Integer id,
+std::string EventLocator::GetStringParameter(const Integer id,
       const Integer index) const
 {
    if (id == SATNAMES)
@@ -687,7 +687,7 @@ wxString EventLocator::GetStringParameter(const Integer id,
          return satNames[index];
       else
          throw EventException(
-               wxT("Index out of range when trying to access spacecraft name for ") +
+               "Index out of range when trying to access spacecraft name for " +
                instanceName);
    }
 
@@ -696,7 +696,7 @@ wxString EventLocator::GetStringParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value,
+// bool SetStringParameter(const Integer id, const std::string &value,
 //       const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -710,7 +710,7 @@ wxString EventLocator::GetStringParameter(const Integer id,
  */
 //------------------------------------------------------------------------------
 bool EventLocator::SetStringParameter(const Integer id,
-      const wxString &value, const Integer index)
+      const std::string &value, const Integer index)
 {
    if (id == SATNAMES)
    {
@@ -772,7 +772,7 @@ const StringArray& EventLocator::GetStringArrayParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves the value for a string parameter
@@ -782,14 +782,14 @@ const StringArray& EventLocator::GetStringArrayParameter(const Integer id,
  * @return The parameter value
  */
 //------------------------------------------------------------------------------
-wxString EventLocator::GetStringParameter(const wxString &label) const
+std::string EventLocator::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Sets the value for a string parameter
@@ -800,15 +800,15 @@ wxString EventLocator::GetStringParameter(const wxString &label) const
  * @return true if the string was set, false if not
  */
 //------------------------------------------------------------------------------
-bool EventLocator::SetStringParameter(const wxString &label,
-                                        const wxString &value)
+bool EventLocator::SetStringParameter(const std::string &label,
+                                        const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label,
+// std::string GetStringParameter(const std::string &label,
 //       const Integer index) const
 //------------------------------------------------------------------------------
 /**
@@ -820,7 +820,7 @@ bool EventLocator::SetStringParameter(const wxString &label,
  * @return The parameter value
  */
 //------------------------------------------------------------------------------
-wxString EventLocator::GetStringParameter(const wxString &label,
+std::string EventLocator::GetStringParameter(const std::string &label,
       const Integer index) const
 {
    return GetStringParameter(GetParameterID(label), index);
@@ -828,7 +828,7 @@ wxString EventLocator::GetStringParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value,
+// bool SetStringParameter(const std::string &label, const std::string &value,
 //       const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -841,14 +841,15 @@ wxString EventLocator::GetStringParameter(const wxString &label,
  * @return true if the string was set, false if not
  */
 //------------------------------------------------------------------------------
-bool EventLocator::SetStringParameter(const wxString &label,
-      const wxString &value, const Integer index)
+bool EventLocator::SetStringParameter(const std::string &label,
+      const std::string &value, const Integer index)
 {
    return SetStringParameter(GetParameterID(label), value, index);
 }
 
+
 //------------------------------------------------------------------------------
-// const StringArray& GetStringArrayParameter(const wxString &label) const
+// const StringArray& GetStringArrayParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves the value for a StringArray parameter
@@ -858,13 +859,15 @@ bool EventLocator::SetStringParameter(const wxString &label,
  * @return The parameter value
  */
 //------------------------------------------------------------------------------
-const StringArray& EventLocator::GetStringArrayParameter(const wxString &label) const
+const StringArray& EventLocator::GetStringArrayParameter(
+      const std::string &label) const
 {
    return GetStringArrayParameter(GetParameterID(label));
 }
 
+
 //------------------------------------------------------------------------------
-// const StringArray& GetStringArrayParameter(const wxString &label,
+// const StringArray& GetStringArrayParameter(const std::string &label,
 //       const Integer index) const
 //------------------------------------------------------------------------------
 /**
@@ -876,8 +879,8 @@ const StringArray& EventLocator::GetStringArrayParameter(const wxString &label) 
  * @return The parameter value
  */
 //------------------------------------------------------------------------------
-const StringArray& EventLocator::GetStringArrayParameter(const wxString &label,
-                                             const Integer index) const
+const StringArray& EventLocator::GetStringArrayParameter(
+      const std::string &label, const Integer index) const
 {
    return GetStringArrayParameter(GetParameterID(label), index);
 }
@@ -974,7 +977,7 @@ bool EventLocator::SetBooleanParameter(const Integer id, const bool value,
 
 
 //------------------------------------------------------------------------------
-// bool GetBooleanParameter(const wxString &label) const
+// bool GetBooleanParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves the value for a Boolean parameter
@@ -984,14 +987,14 @@ bool EventLocator::SetBooleanParameter(const Integer id, const bool value,
  * @return The parameter value
  */
 //------------------------------------------------------------------------------
-bool EventLocator::GetBooleanParameter(const wxString &label) const
+bool EventLocator::GetBooleanParameter(const std::string &label) const
 {
    return GetBooleanParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetBooleanParameter(const wxString &label, const bool value)
+// bool SetBooleanParameter(const std::string &label, const bool value)
 //------------------------------------------------------------------------------
 /**
  * Sets the value for a Boolean parameter
@@ -1002,7 +1005,7 @@ bool EventLocator::GetBooleanParameter(const wxString &label) const
  * @return The parameter value
  */
 //------------------------------------------------------------------------------
-bool EventLocator::SetBooleanParameter(const wxString &label,
+bool EventLocator::SetBooleanParameter(const std::string &label,
       const bool value)
 {
    return SetBooleanParameter(GetParameterID(label), value);
@@ -1010,7 +1013,7 @@ bool EventLocator::SetBooleanParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// bool GetBooleanParameter(const wxString &label, const Integer index) const
+// bool GetBooleanParameter(const std::string &label, const Integer index) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves the value for a Boolean parameter from a vector of Booleans
@@ -1021,7 +1024,7 @@ bool EventLocator::SetBooleanParameter(const wxString &label,
  * @return The parameter value
  */
 //------------------------------------------------------------------------------
-bool EventLocator::GetBooleanParameter(const wxString &label,
+bool EventLocator::GetBooleanParameter(const std::string &label,
       const Integer index) const
 {
    return GetBooleanParameter(GetParameterID(label), index);
@@ -1029,7 +1032,7 @@ bool EventLocator::GetBooleanParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// bool SetBooleanParameter(const wxString &label, const bool value,
+// bool SetBooleanParameter(const std::string &label, const bool value,
 //       const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -1042,7 +1045,7 @@ bool EventLocator::GetBooleanParameter(const wxString &label,
  * @return The parameter value
  */
 //------------------------------------------------------------------------------
-bool EventLocator::SetBooleanParameter(const wxString &label,
+bool EventLocator::SetBooleanParameter(const std::string &label,
       const bool value, const Integer index)
 {
    return SetBooleanParameter(GetParameterID(label), value, index);
@@ -1062,12 +1065,12 @@ bool EventLocator::SetBooleanParameter(const wxString &label,
  * @return true on success, false on failure
  */
 //------------------------------------------------------------------------------
-bool EventLocator::TakeAction(const wxString &action,
-      const wxString &actionData)
+bool EventLocator::TakeAction(const std::string &action,
+      const std::string &actionData)
 {
-   if (action == wxT("Clear"))
+   if (action == "Clear")
    {
-      if ((actionData == wxT("Spacecraft")) || (actionData == wxT("")))
+      if ((actionData == "Spacecraft") || (actionData == ""))
       {
          satNames.clear();
          targets.clear();
@@ -1103,7 +1106,7 @@ const ObjectTypeArray& EventLocator::GetTypesForList(const Integer id)
 }
 
 //------------------------------------------------------------------------------
-// const ObjectTypeArray& GetTypesForList(const wxString &label)
+// const ObjectTypeArray& GetTypesForList(const std::string &label)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a list of types that need to be shown on a GUI for a parameter
@@ -1113,7 +1116,7 @@ const ObjectTypeArray& EventLocator::GetTypesForList(const Integer id)
  * @return The list of types
  */
 //------------------------------------------------------------------------------
-const ObjectTypeArray& EventLocator::GetTypesForList(const wxString &label)
+const ObjectTypeArray& EventLocator::GetTypesForList(const std::string &label)
 {
    return GetTypesForList(GetParameterID(label));
 }
@@ -1160,11 +1163,11 @@ const StringArray& EventLocator::GetRefObjectNameArray(
 
       #ifdef DEBUG_EVENTLOCATOR_OBJECT
          MessageInterface::ShowMessage
-            (wxT("EventLocator::GetRefObjectNameArray() this=<%p>'%s' returning %d ")
-             wxT("ref. object names\n"), this, GetName().c_str(),
+            ("EventLocator::GetRefObjectNameArray() this=<%p>'%s' returning %d "
+             "ref. object names\n", this, GetName().c_str(),
              refObjectNames.size());
          for (UnsignedInt i=0; i<refObjectNames.size(); i++)
-            MessageInterface::ShowMessage(wxT("   '%s'\n"),
+            MessageInterface::ShowMessage("   '%s'\n",
                   refObjectNames[i].c_str());
       #endif
 
@@ -1177,7 +1180,7 @@ const StringArray& EventLocator::GetRefObjectNameArray(
 
 //------------------------------------------------------------------------------
 // bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//       const wxString &name)
+//       const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets a reference object on this object
@@ -1190,7 +1193,7 @@ const StringArray& EventLocator::GetRefObjectNameArray(
  */
 //------------------------------------------------------------------------------
 bool EventLocator::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                              const wxString &name)
+                              const std::string &name)
 {
    for (UnsignedInt i = 0; i < satNames.size(); ++i)
    {
@@ -1235,10 +1238,10 @@ bool EventLocator::Initialize()
       retval = true;
    else
    {
-      wxString errorList;
+      std::string errorList;
       for (UnsignedInt i = 0; i < badInits.size(); ++i)
-         errorList = errorList + wxT("   ") + badInits[i] + wxT("\n");
-      throw EventException(wxT("These event functions failed to initialize:\n") +
+         errorList = errorList + "   " + badInits[i] + "\n";
+      throw EventException("These event functions failed to initialize:\n" +
             errorList);
    }
 
@@ -1302,8 +1305,8 @@ Real *EventLocator::Evaluate(GmatEpoch atEpoch, Real *forState)
    Real *vals;
 
    #ifdef DEBUG_EVENTLOCATION
-      MessageInterface::ShowMessage(wxT("Evaluating %d event functions; ")
-            wxT("locator %s\n"), eventFunctions.size(), instanceName.c_str());
+      MessageInterface::ShowMessage("Evaluating %d event functions; "
+            "locator %s\n", eventFunctions.size(), instanceName.c_str());
    #endif
 
    UnsignedInt i3;
@@ -1319,7 +1322,7 @@ Real *EventLocator::Evaluate(GmatEpoch atEpoch, Real *forState)
 
          #ifdef DEBUG_DUMPEVENTDATA
             dumpfile.precision(15);
-            dumpfile << vals[0] << wxT(" ") << vals[1] << wxT(" ") << vals[2] << wxT(" ");
+            dumpfile << vals[0] << " " << vals[1] << " " << vals[2] << " ";
          #endif
       }
       else
@@ -1336,7 +1339,7 @@ Real *EventLocator::Evaluate(GmatEpoch atEpoch, Real *forState)
    }
 
    #ifdef DEBUG_DUMPEVENTDATA
-      dumpfile << wxT("\n");
+      dumpfile << "\n";
    #endif
 
    return lastData;
@@ -1382,8 +1385,8 @@ void EventLocator::BufferEvent(Integer forEventFunction)
    theEvent->isEntry = eventFunctions[forEventFunction]->IsEventEntry();
 
    #ifdef DEBUG_EVENTLOCATION
-      MessageInterface::ShowMessage(wxT("Adding event to event table:\n   ")
-            wxT("%-20s%-30s%-15s%15.9lf\n"), theEvent->type.c_str(),
+      MessageInterface::ShowMessage("Adding event to event table:\n   "
+            "%-20s%-30s%-15s%15.9lf\n", theEvent->type.c_str(),
             theEvent->participants.c_str(), theEvent->boundary.c_str(),
             theEvent->epoch);
    #endif
@@ -1393,7 +1396,7 @@ void EventLocator::BufferEvent(Integer forEventFunction)
 
 
 //------------------------------------------------------------------------------
-// void EventLocator::BufferEvent(Real epoch, wxString type, bool isStart)
+// void EventLocator::BufferEvent(Real epoch, std::string type, bool isStart)
 //------------------------------------------------------------------------------
 /**
  * Saves data for an event boundary in the event table
@@ -1405,10 +1408,10 @@ void EventLocator::BufferEvent(Integer forEventFunction)
  * @note: This method is not used in the current code, and not yet implemented
  */
 //------------------------------------------------------------------------------
-void EventLocator::BufferEvent(Real epoch, wxString type, bool isStart)
+void EventLocator::BufferEvent(Real epoch, std::string type, bool isStart)
 {
-   throw EventException(wxT("BufferEvent(epoch, type, isStart) is not yet ")
-         wxT("supported"));
+   throw EventException("BufferEvent(epoch, type, isStart) is not yet "
+         "supported");
 }
 
 
@@ -1421,18 +1424,18 @@ void EventLocator::BufferEvent(Real epoch, wxString type, bool isStart)
 //------------------------------------------------------------------------------
 void EventLocator::ReportEventData()
 {
-   wxString fullFileName;
+   std::string fullFileName;
 
-   if ((filename.find(wxT('/'), 0) == wxString::npos) &&
-       (filename.find(wxT('\\'), 0) == wxString::npos))
+   if ((filename.find('/', 0) == std::string::npos) &&
+       (filename.find('\\', 0) == std::string::npos))
    {
       FileManager *fm = FileManager::Instance();
-      wxString outPath = fm->GetAbsPathname(FileManager::OUTPUT_PATH);
+      std::string outPath = fm->GetAbsPathname(FileManager::OUTPUT_PATH);
 
       // Check for terminating '/' and add if needed
       Integer len = outPath.length();
-      if ((outPath[len-1] != wxT('/')) && (outPath[len-1] != wxT('\\')))
-         outPath = outPath + wxT("/");
+      if ((outPath.c_str()[len-1] != '/') && (outPath.c_str()[len-1] != '\\'))
+         outPath = outPath + "/";
 
       fullFileName = outPath + filename;
    }
@@ -1454,12 +1457,12 @@ void EventLocator::ReportEventData()
 //------------------------------------------------------------------------------
 void EventLocator::ReportEventStatistics()
 {
-   throw EventException(wxT("ReportEventStatistics() is not yet supported"));
+   throw EventException("ReportEventStatistics() is not yet supported");
 }
 
 
 //------------------------------------------------------------------------------
-// Real* GetEventData(wxString type, Integer whichOne)
+// Real* GetEventData(std::string type, Integer whichOne)
 //------------------------------------------------------------------------------
 /**
  * Retrieves data for a specified event.
@@ -1470,7 +1473,7 @@ void EventLocator::ReportEventStatistics()
  * @return The event data
  */
 //------------------------------------------------------------------------------
-Real* EventLocator::GetEventData(wxString type, Integer whichOne)
+Real* EventLocator::GetEventData(std::string type, Integer whichOne)
 {
    return lastData;
 }
@@ -1487,7 +1490,7 @@ Real* EventLocator::GetEventData(wxString type, Integer whichOne)
 //------------------------------------------------------------------------------
 void EventLocator::UpdateEventTable(SortStyle how)
 {
-   throw EventException(wxT("UpdateEventTable(how) is not yet supported"));
+   throw EventException("UpdateEventTable(how) is not yet supported");
 }
 
 //------------------------------------------------------------------------------
@@ -1514,9 +1517,9 @@ bool EventLocator::HasAssociatedStateObjects()
    return true;
 }
 
-wxString EventLocator::GetAssociateName(UnsignedInt val)
+std::string EventLocator::GetAssociateName(UnsignedInt val)
 {
-   wxString retval = wxT("");
+   std::string retval = "";
    if (val < efCount)
       retval = eventFunctions[val]->GetPrimaryName();
    return retval;
@@ -1524,7 +1527,7 @@ wxString EventLocator::GetAssociateName(UnsignedInt val)
 
 
 //------------------------------------------------------------------------------
-// wxString GetTarget(UnsignedInt forFunction)
+// std::string GetTarget(UnsignedInt forFunction)
 //------------------------------------------------------------------------------
 /**
  * Retrieves the name of the target object
@@ -1534,11 +1537,11 @@ wxString EventLocator::GetAssociateName(UnsignedInt val)
  * @return The name of the target object
  */
 //------------------------------------------------------------------------------
-wxString EventLocator::GetTarget(UnsignedInt forFunction)
+std::string EventLocator::GetTarget(UnsignedInt forFunction)
 {
    if (forFunction > efCount)
-      throw EventException(wxT("Requested event function target is not in the ")
-            wxT("locator named ") + instanceName);
+      throw EventException("Requested event function target is not in the "
+            "locator named " + instanceName);
 
    return eventFunctions[forFunction]->GetPrimaryName();
 }
@@ -1546,13 +1549,13 @@ wxString EventLocator::GetTarget(UnsignedInt forFunction)
 StringArray EventLocator::GetDefaultPropItems()
 {
    StringArray propItems;
-   propItems.push_back(wxT("EventFunction"));
+   propItems.push_back("EventFunction");
    return propItems;
 }
 
-Integer EventLocator::SetPropItem(const wxString &propItem)
+Integer EventLocator::SetPropItem(const std::string &propItem)
 {
-   if (propItem == wxT("EventFunction"))
+   if (propItem == "EventFunction")
       return Gmat::EVENT_FUNCTION_STATE;
 
    return Gmat::UNKNOWN_STATE;
@@ -1582,9 +1585,9 @@ void EventLocator::SetStateIndices(UnsignedInt forFunction, Integer index,
       Integer associate)
 {
    if (forFunction > stateIndices.size())
-      throw EventException(wxT("Event locator ") + instanceName +
-            wxT("does not have the requested event function (has it been ")
-            wxT("initialized?)"));
+      throw EventException("Event locator " + instanceName +
+            "does not have the requested event function (has it been "
+            "initialized?)");
 
    stateIndices[forFunction]     = index;
    associateIndices[forFunction] = associate;

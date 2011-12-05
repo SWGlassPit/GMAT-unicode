@@ -45,7 +45,7 @@ class GMAT_API DeFile : public PlanetaryEphem
 public:
 
    // default constructor
-   DeFile(Gmat::DeFileType ofType, wxString fileName = wxT(""),
+   DeFile(Gmat::DeFileType ofType, std::string fileName = "",
           Gmat::DeFileFormat fmt = Gmat::DE_BINARY);  
    // copy constructor
    DeFile(const DeFile& def);
@@ -60,14 +60,14 @@ public:
    
    
    // method to return the body ID for the requested body
-   Integer  GetBodyID(wxString bodyName);
+   Integer  GetBodyID(std::string bodyName);
 
    // method to return the ASCII file name (unknown if created with
    // BINARY file)
-   wxString GetAsciiFileName() const;
+   std::string GetAsciiFileName() const;
 
    // method to return the BINARY file name
-   wxString GetBinaryFileName() const;
+   std::string GetBinaryFileName() const;
 
    // method to return the type of De File
    Gmat::DeFileType GetDeFileType() const;
@@ -88,7 +88,7 @@ public:
    // method to convert an ASCII file to a binary file; this method assumes that
    // there is  an appropriate header file in the same directory as the
    // ASCII file.  @todo - code this method, as its implementation is currently TBD
-   wxString Convert(wxString deFileNameAscii); 
+   std::string Convert(std::string deFileNameAscii); 
 
 
    // static values for the IDs for each celestial body, as used on teh DE files.
@@ -135,19 +135,18 @@ protected:
    // (from JPL/JSC code - Hoffman)
    // wcs - added constructors, and operator=
 #pragma pack(push, 1)
-   struct GMAT_API recOneData 
-   {
+   struct GMAT_API recOneData {
       recOneData()  // default constructor
-      {
+   {
          int i, j;
          for (i=0;i<3;i++)
          {
-            strcpy(label[i], "\0");
+            strcpy(label[i],"\0");
             timeData[i]  = 0.0;
             libratPtr[i] = 0;
             for (j=0;j<12;j++) coeffPtr[j][i] = 0;
          }
-         for (i=0;i<400;i++)    strcpy(constName[i], "\0");
+         for (i=0;i<400;i++)    strcpy(constName[i],"\0");
          numConst        = 0;
          AU              = 0.0;
          EMRAT           = 0.0;
@@ -156,25 +155,9 @@ protected:
          #else
             DENUM           = (long int) 0;
          #endif
-      }
+   }
       recOneData(const recOneData& r)  // copy constructor
-      {
-         int i, j;
-         for (i=0;i<3;i++)
-         {
-            strcpy(label[i],r.label[i]);
-            timeData[i]  = r.timeData[i];
-            libratPtr[i] = r.libratPtr[i];
-            for (j=0;j<12;j++) coeffPtr[j][i] = r.coeffPtr[j][i];
-         }
-         for (i=0;i<400;i++)    strcpy(constName[i], r.constName[i]);
-         numConst        = r.numConst;
-         AU              = r.AU;
-         EMRAT           = r.EMRAT;
-         DENUM           = r.DENUM;
-      }
-      recOneData& operator=(const recOneData& r) 
-      {
+   {
          int i, j;
          for (i=0;i<3;i++)
          {
@@ -183,13 +166,29 @@ protected:
             libratPtr[i] = r.libratPtr[i];
             for (j=0;j<12;j++) coeffPtr[j][i] = r.coeffPtr[j][i];
          }
-	 for (i=0;i<400;i++)    strcpy(constName[i], r.constName[i]);
+         for (i=0;i<400;i++)    strcpy(constName[i],r.constName[i]);
+         numConst        = r.numConst;
+         AU              = r.AU;
+         EMRAT           = r.EMRAT;
+         DENUM           = r.DENUM;
+   }
+      recOneData& operator=(const recOneData& r) 
+   {
+         int i, j;
+         for (i=0;i<3;i++)
+         {
+            strcpy(label[i], r.label[i]);
+            timeData[i]  = r.timeData[i];
+            libratPtr[i] = r.libratPtr[i];
+            for (j=0;j<12;j++) coeffPtr[j][i] = r.coeffPtr[j][i];
+         }
+         for (i=0;i<400;i++)    strcpy(constName[i],r.constName[i]);
          numConst        = r.numConst;
          AU              = r.AU;
          EMRAT           = r.EMRAT;
          DENUM           = r.DENUM;
          return *this;
-      }
+   }
       // data
       char label[3][84];
       char constName[400][6];
@@ -214,27 +213,26 @@ protected:
       #endif
    };
 
-   struct GMAT_API recTwoData 
-   {
+   struct GMAT_API recTwoData {
       // default constructor
       recTwoData()
-      {
+   {
          int i;
          for (i=0;i<400;i++) constValue[i] = 0.0;
-      }
+   }
       // copy constructor
       recTwoData(const recTwoData& r)
-      {
+   {
          int i;
          for (i=0;i<400;i++) constValue[i] = r.constValue[i];
-      }
+   }
       // operator=
       recTwoData& operator=(const recTwoData& r)
-      {
+   {
          int i;
          for (i=0;i<400;i++) constValue[i] = r.constValue[i];
          return *this;
-      }
+   }
       //data
       double constValue[400];
    };
@@ -244,14 +242,12 @@ protected:
    typedef struct recTwoData recTwoType;
 
    // structs representing the formats of the header records - need ARRAY_SIZE?
-   struct GMAT_API headerOne 
-   {
-      recOneType data;
-      char pad[MAX_ARRAY_SIZE*sizeof(double) - sizeof(recOneType)];  // MAX
-   };
+   struct GMAT_API headerOne {
+         recOneType data;
+         char pad[MAX_ARRAY_SIZE*sizeof(double) - sizeof(recOneType)];  // MAX
+      };
 
-   struct GMAT_API headerTwo 
-   {
+   struct GMAT_API headerTwo {
       recTwoType data;
       char pad[MAX_ARRAY_SIZE*sizeof(double) - sizeof(recTwoType)];  // MAX
    };
@@ -262,15 +258,15 @@ protected:
 
 private:
 
-   wxString theFileName;
+   std::string theFileName;
    Gmat::DeFileFormat theFileFormat;
    
    /// ASCII file name - will be unknown if DeFile created with binary file
-   wxString asciiFileName;
+   std::string asciiFileName;
 
    /// BINARY file name - may be input on cretion, or may be result of
    /// conversion of input ASCIi file; date will be read from this file.
-   wxString binaryFileName; 
+   std::string binaryFileName; 
 
    /// type of DE file
    Gmat::DeFileType defType;
@@ -291,34 +287,90 @@ private:
    /// File beginning in ModJulian format
    double       mA1FileBeg;
 
-   #if (USE_64_BIT_LONGS == 1)
-      int numConst;
-   #else
-      long int numConst;
-   #endif
+      #if (USE_64_BIT_LONGS == 1)
+         int numConst;
+      #else
+         long int numConst;
+      #endif
    
    Integer EPHEMERIS; // caps because of reuse from JPL/JSC code (Hoffman)
 
    
 
    // method to initialize the DeFile - must be done before De file can be read
-   void InitializeDeFile(wxString fName, Gmat::DeFileFormat fileFmt);
+   void InitializeDeFile(std::string fName, Gmat::DeFileFormat fileFmt);
 
 
    // --------------- methods from JPL/JSC code (Hoffman) ______________________
 
 
-   void   Read_Coefficients( double Time );
-   int    Initialize_Ephemeris( char *fileName );
-   void   Interpolate_Libration( double Time, int Target, double Libration[3], double rates[3] );
-   void   Interpolate_Nutation( double Time, int Target, double Nutation[2] );
-   void   Interpolate_Position( double Time, int Target, double Position[3] );
-   void   Interpolate_State( double Time, int Target, stateType *p );
-   double Find_Value( char name[], char name_array[400][6], double value_array[400] );
-   double Gregorian_to_Julian( int year, int month, int day, int hour, int min, double seconds );
-   int    mod( int x, int y );
-   int    Read_File_Line( FILE *inFile, int filter, char lineBuffer[82]);
-   int    Read_Group_Header( FILE *inFile );
+   /*-------------------------------------------------------------------------*/
+   /*  Read_Coefficients      - from JPL/JSC code (Hoffman)                   */
+   /*-------------------------------------------------------------------------*/
+   void Read_Coefficients( double Time );
+
+   /*-------------------------------------------------------------------------*/
+   /*  Initialize_Ephemeris      - from JPL/JSC code (Hoffman)                */
+   /*-------------------------------------------------------------------------*/
+   int Initialize_Ephemeris( char *fileName );
+
+   /*-------------------------------------------------------------------------*/
+   /*  Interpolate_Libration     - from JPL/JSC code (Hoffman)                */
+   /*-------------------------------------------------------------------------*/
+   void Interpolate_Libration( double Time, int Target, 
+                               double Libration[3], double rates[3] );
+
+   /*-------------------------------------------------------------------------*/
+   /*  Interpolate_Nutation     - from JPL/JSC code (Hoffman)                 */
+   /*-------------------------------------------------------------------------*/
+   void Interpolate_Nutation( double Time , int Target , double Nutation[2] );
+
+   /*-------------------------------------------------------------------------*/
+   /*  Interpolate_Position      - from JPL/JSC code (Hoffman)                */
+   /*-------------------------------------------------------------------------*/
+   void Interpolate_Position( double Time , int Target , double Position[3] );
+
+   /*-------------------------------------------------------------------------*/
+   /*  Interpolate_State     - from JPL/JSC code (Hoffman)                    */
+   /*-------------------------------------------------------------------------*/
+   void Interpolate_State( double Time , int Target , stateType *p );
+
+   /*-------------------------------------------------------------------------*/
+   /*  Find_Value     - from JPL/JSC code (Hoffman)                           */
+   /*-------------------------------------------------------------------------*/
+   double Find_Value( char    name[]             ,
+                             char    name_array[400][6] ,
+                             double  value_array[400]   );
+
+   /*-------------------------------------------------------------------------*/
+   /**  Gregorian_to_Julian     - from JPL/JSC code (Hoffman)                 */
+   /*-------------------------------------------------------------------------*/
+   double Gregorian_to_Julian( int     year ,   int     month   ,
+                                      int     day  ,   int     hour    ,
+                                      int     min  ,   double  seconds );
+
+   /*-------------------------------------------------------------------------*/
+   /*  Integer modulo function.     - from JPL/JSC code (Hoffman)             */
+   /*-------------------------------------------------------------------------*/
+   int mod( int x, int y );
+
+   /*-------------------------------------------------------------------------*/
+   /*  Read_File_Line     - from JPL/JSC code (Hoffman)                       */
+   /*-------------------------------------------------------------------------*/
+   int Read_File_Line( FILE *inFile, int filter, char lineBuffer[82]);
+
+   /*-------------------------------------------------------------------------*/
+   /*  Read_Group_Header     - from JPL/JSC code (Hoffman)                    */
+   /*-------------------------------------------------------------------------*/
+   int Read_Group_Header( FILE *inFile );
+
+   /*-------------------------------------------------------------------------*/
+   /*  Warning     - from JPL/JSC code (Hoffman)                              */
+   /*-------------------------------------------------------------------------*/
+
+   //extern void Warning( int errorCode );
+   
+
 
 };
 #endif // DeFile_hpp

@@ -31,7 +31,7 @@
  * The SteepestDescent optimizer is the prototypical optimization method.  While
  * not the most efficient method, it is the simplest to implement, since all it 
  * needs to do is run nominal trajectories, calculate gradients (via finite 
- * differences if no analytic form exists), scan in the wxT("downhill") direction, 
+ * differences if no analytic form exists), scan in the "downhill" direction, 
  * and repeat until the magnitude of the gradient is small enough to declare
  * victory.
  * 
@@ -41,25 +41,25 @@
 class GMAT_API SteepestDescent : public InternalOptimizer
 {
 public:
-	SteepestDescent(const wxString &name);
+	SteepestDescent(const std::string &name);
 	virtual ~SteepestDescent();
    SteepestDescent(const SteepestDescent& sd);
    SteepestDescent& operator=(const SteepestDescent& sd);
    
    virtual Integer      SetSolverResults(Real *data,
-                                        const wxString &name,
-                                        const wxString &type = wxT(""));
+                                        const std::string &name,
+                                        const std::string &type = "");
    virtual void         SetResultValue(Integer id, Real value,
-                                      const wxString &resultType = wxT(""));
+                                      const std::string &resultType = "");
    virtual GmatBase*    Clone() const;
-   virtual bool         TakeAction(const wxString &action,
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,
+                                   const std::string &actionData = "");
    virtual bool         Initialize();
    virtual Solver::SolverState
                         AdvanceState();
    virtual bool         Optimize();
 protected:
-   wxString          objectiveName;
+   std::string          objectiveName;
    Real                 objectiveValue;
    
    Gradient             gradientCalculator;
@@ -75,7 +75,7 @@ protected:
       SteepestDescentParamCount
    };
 
-   static const wxString      PARAMETER_TEXT[SteepestDescentParamCount -
+   static const std::string      PARAMETER_TEXT[SteepestDescentParamCount -
                                               SolverParamCount];
    static const Gmat::ParameterType
                                  PARAMETER_TYPE[SteepestDescentParamCount -

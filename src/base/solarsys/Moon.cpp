@@ -26,7 +26,7 @@
 #include "MessageInterface.hpp"
 #include "RealUtilities.hpp"
 #include "AngleUtil.hpp"
-//#include wxT("FileManager.hpp")
+//#include "FileManager.hpp"
 #include "StringUtil.hpp"
 #include "TimeTypes.hpp"
 
@@ -40,7 +40,7 @@ using namespace GmatMathUtil;
 //---------------------------------
 // static data
 //---------------------------------
-//const wxString
+//const std::string
 //Moon::PARAMETER_TEXT[MoonParamCount - CelestialBodyParamCount] =
 //{
 //  
@@ -57,22 +57,22 @@ using namespace GmatMathUtil;
 // public methods
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  Moon(wxString name)
+//  Moon(std::string name)
 //------------------------------------------------------------------------------
 /**
 * This method creates an object of the Moon class
  * (default constructor).
  *
  * @param <name> optional parameter indicating the name of the celestial
- *               body (default is wxT("Earth")).
+ *               body (default is "Earth").
  */
 //------------------------------------------------------------------------------
-Moon::Moon(wxString name) :
-CelestialBody     (wxT("Moon"),name)
+Moon::Moon(std::string name) :
+CelestialBody     ("Moon",name)
 {
-//   CelestialBody::InitializeBody(wxT("Moon"));
+//   CelestialBody::InitializeBody("Moon");
    
-   objectTypeNames.push_back(wxT("Moon"));
+   objectTypeNames.push_back("Moon");
 //   InitializeMoon(SolarSystem::EARTH_NAME);  
    parameterCount = MoonParamCount;
    
@@ -104,7 +104,7 @@ CelestialBody     (wxT("Moon"),name)
 }
 
 //------------------------------------------------------------------------------
-//  Moon(wxString name, const wxString &cBody)
+//  Moon(std::string name, const std::string &cBody)
 //------------------------------------------------------------------------------
 /**
 * This method creates an object of the Moon class
@@ -115,12 +115,12 @@ CelestialBody     (wxT("Moon"),name)
  * @param <cBody> pointer to a central body.
  */
 //------------------------------------------------------------------------------
-Moon::Moon(wxString name, const wxString &cBody) :
-CelestialBody     (wxT("Moon"),name)
+Moon::Moon(std::string name, const std::string &cBody) :
+CelestialBody     ("Moon",name)
 {
-//   CelestialBody::InitializeBody(wxT("Moon"));
+//   CelestialBody::InitializeBody("Moon");
    
-   objectTypeNames.push_back(wxT("Moon"));
+   objectTypeNames.push_back("Moon");
 //   InitializeMoon(cBody); 
    parameterCount = MoonParamCount;
 
@@ -157,10 +157,10 @@ CelestialBody (m)
 /**
  * Assignment operator for the Moon class.
  *
- * @param <m> the Moon object whose data to assign to wxT("this")
+ * @param <m> the Moon object whose data to assign to "this"
  *            solar system.
  *
- * @return wxT("this") Moon with data of input Moon st.
+ * @return "this" Moon with data of input Moon st.
  */
 //------------------------------------------------------------------------------
 Moon& Moon::operator=(const Moon &m)
@@ -259,13 +259,13 @@ Rvector Moon::GetBodyCartographicCoordinates(const A1Mjd &forTime) const
 //         if (!deFile) // assuming no SLP any more here, only DE405
 //         {
 //            throw  SolarSystemException(
-//               wxT("No DE file specified - cannot get/compute Moon data"));
+//               "No DE file specified - cannot get/compute Moon data");
 //         }
 //         Real librationAngles[3], andRates[3];
 //         deFile->GetAnglesAndRates(forTime, librationAngles, andRates, overrideTime);
 //          // TBD ****************** how to use librationAngles & andRates
-//         wxString errmsg = wxT("Unable to compute cartographic coordinates for ");
-//         errmsg += instanceName + wxT(" - DE_405_FILE not implemented in Moon class.\n");
+//         std::string errmsg = "Unable to compute cartographic coordinates for ";
+//         errmsg += instanceName + " - DE_405_FILE not implemented in Moon class.\n";
 //         throw SolarSystemException(errmsg);
 //      }
    }
@@ -284,7 +284,7 @@ Rvector Moon::GetBodyCartographicCoordinates(const A1Mjd &forTime) const
             W     =  35.06           + 1128.8445850 * d +  8.864 * T * T  
                     - 1.42 * Sin(p1) -    0.78 * Sin(p2);
             Wdot  = 0.0;
-            MessageInterface::ShowMessage(wxT("Wdot not yet computed for Phobos\n"));
+            MessageInterface::ShowMessage("Wdot not yet computed for Phobos\n");
          }
          else  // Deimos
          {
@@ -293,7 +293,7 @@ Rvector Moon::GetBodyCartographicCoordinates(const A1Mjd &forTime) const
             W     =  79.41           +  285.1618970 * d -  0.520 * T * T  
                     - 2.58 * Sin(p3) +    0.19 * Cos(p3);
             Wdot  = 0.0;
-            MessageInterface::ShowMessage(wxT("Wdot not yet computed for Deimos\n"));
+            MessageInterface::ShowMessage("Wdot not yet computed for Deimos\n");
          }
       }
       else if (rotationSrc == Gmat::IAU_SIMPLIFIED)

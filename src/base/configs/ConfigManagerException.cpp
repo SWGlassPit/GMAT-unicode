@@ -24,7 +24,7 @@
 
 
 //------------------------------------------------------------------------------
-// ConfigManagerException(const wxString &details)
+// ConfigManagerException(const std::string &details)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -32,8 +32,8 @@
  * @param details Text string detailing the problem that threw the exception.
  */
 //------------------------------------------------------------------------------
-ConfigManagerException::ConfigManagerException(const wxString &details) :
-    BaseException       (wxT("ConfigManager Exception Thrown: "), details)
+ConfigManagerException::ConfigManagerException(const std::string &details) :
+    BaseException       ("ConfigManager Exception Thrown: ", details)
 {
 }
 

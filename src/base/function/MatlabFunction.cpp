@@ -29,7 +29,7 @@
 
 
 //------------------------------------------------------------------------------
-// MatlabFunction(wxString &name)
+// MatlabFunction(std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -38,12 +38,12 @@
  *
  */
 //------------------------------------------------------------------------------
-MatlabFunction::MatlabFunction(const wxString &name) :
-   Function(wxT("MatlabFunction"), name)
+MatlabFunction::MatlabFunction(const std::string &name) :
+   Function("MatlabFunction", name)
 {
    // for initial function path, use FileManager
    FileManager *fm = FileManager::Instance();
-   wxString pathname;
+   std::string pathname;
    
    try
    {
@@ -62,7 +62,7 @@ MatlabFunction::MatlabFunction(const wxString &name) :
       // see if there is FUNCTION_PATH
       try
       {
-         pathname = fm->GetFullPathname(wxT("FUNCTION_PATH"));
+         pathname = fm->GetFullPathname("FUNCTION_PATH");
          functionPath = pathname;
       }
       catch (GmatBaseException &e)
@@ -77,9 +77,9 @@ MatlabFunction::MatlabFunction(const wxString &name) :
    
    #ifdef DEBUG_MATLAB_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("   Matlab functionPath=<%s>\n"), functionPath.c_str());
+      ("   Matlab functionPath=<%s>\n", functionPath.c_str());
    MessageInterface::ShowMessage
-      (wxT("   Matlab functionName=<%s>\n"), functionName.c_str());
+      ("   Matlab functionName=<%s>\n", functionName.c_str());
    #endif
 }
 
@@ -167,7 +167,7 @@ void MatlabFunction::Copy(const GmatBase* orig)
 //  bool SetStringParameter(const Integer id, const Real value)
 //------------------------------------------------------------------------------
 /**
- * Sets the value for a wxString parameter.
+ * Sets the value for a std::string parameter.
  * 
  * @param <id> Integer ID of the parameter.
  * @param <value> New value for the parameter.
@@ -175,11 +175,11 @@ void MatlabFunction::Copy(const GmatBase* orig)
  * @return If value of the parameter was set.
  */
 //------------------------------------------------------------------------------
-bool MatlabFunction::SetStringParameter(const Integer id, const wxString &value)
+bool MatlabFunction::SetStringParameter(const Integer id, const std::string &value)
 {
    #ifdef DEBUG_FUNCTION_SET
    MessageInterface::ShowMessage
-      (wxT("MatlabFunction::SetStringParameter() entered, id=%d, value=%s\n"), id, value.c_str());
+      ("MatlabFunction::SetStringParameter() entered, id=%d, value=%s\n", id, value.c_str());
    #endif
    
    switch (id)
@@ -188,14 +188,14 @@ bool MatlabFunction::SetStringParameter(const Integer id, const wxString &value)
       {
          // Compose full path if it has relative path.
          // Assuming if first char has '.', it has relative path.
-         wxString temp = GmatStringUtil::Trim(value);
-         if (temp[0] == wxT('.'))
+         std::string temp = GmatStringUtil::Trim(value);
+         if (temp[0] == '.')
          {
             FileManager *fm = FileManager::Instance();
-            wxString currPath = fm->GetCurrentPath();
+            std::string currPath = fm->GetCurrentPath();
             
             #ifdef DEBUG_FUNCTION_SET
-            MessageInterface::ShowMessage(wxT("   currPath=%s\n"), currPath.c_str());
+            MessageInterface::ShowMessage("   currPath=%s\n", currPath.c_str());
             #endif
             
             functionPath = currPath + temp.substr(1);
@@ -210,9 +210,9 @@ bool MatlabFunction::SetStringParameter(const Integer id, const wxString &value)
          
          #ifdef DEBUG_FUNCTION_SET
          MessageInterface::ShowMessage
-            (wxT("   functionPath=<%s>\n"), functionPath.c_str());
+            ("   functionPath=<%s>\n", functionPath.c_str());
          MessageInterface::ShowMessage
-            (wxT("   functionName=<%s>\n"), functionName.c_str());
+            ("   functionName=<%s>\n", functionName.c_str());
          #endif
          
          return true;
@@ -230,10 +230,10 @@ bool MatlabFunction::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
-bool MatlabFunction::SetStringParameter(const wxString &label,
-                                        const wxString &value)
+bool MatlabFunction::SetStringParameter(const std::string &label,
+                                        const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }

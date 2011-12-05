@@ -50,11 +50,11 @@ public:
    virtual bool               SetReal(const Real toValue);
    // need to override this method, to handle the arrayName, rowName,
    // and columnName data members
-   virtual bool               RenameObject(const wxString &oldName, 
-                                           const wxString &newName);
+   virtual bool               RenameObject(const std::string &oldName, 
+                                           const std::string &newName);
    
-   virtual wxString     EvaluateString() const;
-   virtual bool            SetString(const wxString &toValue); 
+   virtual std::string     EvaluateString() const;
+   virtual bool            SetString(const std::string &toValue); 
    
 protected:  
 
@@ -62,7 +62,7 @@ protected:
    StringVar       *stringVar;
    
    /// name of the array
-   wxString     stringName;
+   std::string     stringName;
    
    
    virtual void            SetupWrapper(); 

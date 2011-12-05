@@ -53,9 +53,9 @@ class GMAT_API Planet : public CelestialBody
 {
 public:
    // default constructor, with optional name
-   Planet(wxString name = SolarSystem::EARTH_NAME);
+   Planet(std::string name = SolarSystem::EARTH_NAME);
    // additional constructor
-   Planet(wxString name, const wxString &cBody);
+   Planet(std::string name, const std::string &cBody);
    // copy constructor
    Planet(const Planet &pl);
    // operator=
@@ -83,17 +83,17 @@ public:
    virtual bool      NeedsOnlyMainSPK();
 
    // Parameter access methods - overridden from GmatBase - may need these later??
-   virtual wxString     GetParameterText(const Integer id) const;     
-   virtual Integer         GetParameterID(const wxString &str) const; 
+   virtual std::string     GetParameterText(const Integer id) const;     
+   virtual Integer         GetParameterID(const std::string &str) const; 
    virtual Gmat::ParameterType
                            GetParameterType(const Integer id) const;
-   virtual wxString     GetParameterTypeString(const Integer id) const;
+   virtual std::string     GetParameterTypeString(const Integer id) const;
    virtual bool            IsParameterReadOnly(const Integer id) const;
    virtual Real            GetRealParameter(const Integer id) const;
    virtual Real            SetRealParameter(const Integer id,
                                             const Real value);
-   virtual Real            GetRealParameter(const wxString &label) const;
-   virtual Real            SetRealParameter(const wxString &label,
+   virtual Real            GetRealParameter(const std::string &label) const;
+   virtual Real            SetRealParameter(const std::string &label,
                                             const Real value);
                                             
    virtual bool         IsParameterCloaked(const Integer id) const;
@@ -109,7 +109,7 @@ protected:
       PlanetParamCount
    };
    
-   static const wxString PARAMETER_TEXT[PlanetParamCount - CelestialBodyParamCount];
+   static const std::string PARAMETER_TEXT[PlanetParamCount - CelestialBodyParamCount];
    
    static const Gmat::ParameterType PARAMETER_TYPE[PlanetParamCount - CelestialBodyParamCount];
    

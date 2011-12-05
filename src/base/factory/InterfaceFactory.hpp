@@ -29,8 +29,8 @@
 class InterfaceFactory : public Factory
 {
 public:
-   virtual Interface* CreateInterface(const wxString &ofType,
-                                      const wxString &withName);
+   virtual Interface* CreateInterface(const std::string &ofType,
+                                      const std::string &withName);
    // default constructor
    InterfaceFactory();
    // constructor

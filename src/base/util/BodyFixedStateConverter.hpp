@@ -32,28 +32,28 @@
 class GMAT_API InvalidStateRepresentationException : public BaseException
 {
    public:
-   InvalidStateRepresentationException(const wxString &message =
-      wxT("BodyFixedStateConverter: Conversion to invalid state representation requested: "))
+   InvalidStateRepresentationException(const std::string &message =
+      "BodyFixedStateConverter: Conversion to invalid state representation requested: ")
       : BaseException(message) {};
 };
 
 namespace BodyFixedStateConverterUtil
 {
    static const Integer     NUM_STATE_REPRESENTATIONS = 3;
-   static const wxString BODY_FIXED_STATE_REPRESENTATION_TEXT[NUM_STATE_REPRESENTATIONS] =
+   static const std::string BODY_FIXED_STATE_REPRESENTATION_TEXT[NUM_STATE_REPRESENTATIONS] =
    {
-      wxT("Cartesian"),
-      wxT("Spherical"),
-      wxT("Ellipsoid")
+      "Cartesian",
+      "Spherical",
+      "Ellipsoid"
       // future representations here
    };
 
-   Rvector3 GMAT_API Convert(const Rvector3    &origValue, const wxString &fromType, const wxString &toType,
+   Rvector3 GMAT_API Convert(const Rvector3    &origValue, const std::string &fromType, const std::string &toType,
                     const Real        flattening, const Real        meanRadius);
 
    Rvector3 GMAT_API Convert(const Rvector3    &origValue,
-                    const wxString &fromType,  const wxString &fromHorizon,
-                    const wxString &toType,    const wxString &toHorizon,
+                    const std::string &fromType,  const std::string &fromHorizon,
+                    const std::string &toType,    const std::string &toHorizon,
                     const Real        flattening, const Real        meanRadius);
 
    Rvector3 GMAT_API CartesianToSpherical(const Rvector3 &cart, const Real flattening, const Real meanRadius);
@@ -68,7 +68,7 @@ namespace BodyFixedStateConverterUtil
 
    Rvector3 GMAT_API SphericalEllipsoidToSpherical(const Rvector3 &sphEll, const Real flattening, const Real meanRadius);
 
-   bool GMAT_API IsValidStateRepresentation(const wxString &rep);
+   bool GMAT_API IsValidStateRepresentation(const std::string &rep);
    StringArray GMAT_API GetValidRepresentations();
 
 }

@@ -38,7 +38,7 @@
 class GMAT_API RelativisticCorrection : public PhysicalModel
 {
 public:
-   RelativisticCorrection(const wxString &name = wxT(""), const wxString &forBodyName = wxT(""));
+   RelativisticCorrection(const std::string &name = "", const std::string &forBodyName = "");
    virtual ~RelativisticCorrection();
    RelativisticCorrection(const RelativisticCorrection &rc);
    RelativisticCorrection& operator=(const RelativisticCorrection &rc);
@@ -54,10 +54,10 @@ public:
    virtual GmatBase* Clone() const;
 
    // Parameter access methods - overridden from GmatBase
-   virtual wxString         GetParameterText(const Integer id) const;
-   virtual Integer             GetParameterID(const wxString &str) const;
+   virtual std::string         GetParameterText(const Integer id) const;
+   virtual Integer             GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType GetParameterType(const Integer id) const;
-   virtual wxString         GetParameterTypeString(const Integer id) const;
+   virtual std::string         GetParameterTypeString(const Integer id) const;
    virtual bool                IsParameterReadOnly(const Integer id) const;
 
    virtual Real                GetRealParameter(const Integer id) const;
@@ -119,7 +119,7 @@ private:
       RelativisticCorrectionParamCount  // Count of the parameters for this class
    };
 
-   static const wxString PARAMETER_TEXT[RelativisticCorrectionParamCount - PhysicalModelParamCount];
+   static const std::string PARAMETER_TEXT[RelativisticCorrectionParamCount - PhysicalModelParamCount];
    static const Gmat::ParameterType PARAMETER_TYPE[RelativisticCorrectionParamCount - PhysicalModelParamCount];
 
 };

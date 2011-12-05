@@ -50,7 +50,7 @@
 //                                - GetParameter() to GetRealParameter()
 //                                - virtual char* 
 //                                  GetParameterName(const int parm) const to
-//                                  virtual wxString 
+//                                  virtual std::string 
 //                                  GetParameterName(const int parm) const
 //
 //                           : 10/16/2003 - W. Waktola, 
@@ -118,31 +118,31 @@
 class GMAT_API Integrator : public Propagator
 {
 public:
-    Integrator(const wxString &typeStr, const wxString &nomme = wxT(""));
+    Integrator(const std::string &typeStr, const std::string &nomme = "");
     Integrator(const Integrator&);
     Integrator& operator=(const Integrator& i);
     virtual ~Integrator();
         
     // Parameter accessor methods -- overridden from GmatBase
-    virtual wxString GetParameterText(const Integer id) const;
-    virtual Integer GetParameterID(const wxString &str) const;
+    virtual std::string GetParameterText(const Integer id) const;
+    virtual Integer GetParameterID(const std::string &str) const;
     virtual Gmat::ParameterType GetParameterType(const Integer id) const;
-    virtual wxString GetParameterTypeString(const Integer id) const;
+    virtual std::string GetParameterTypeString(const Integer id) const;
     virtual bool IsParameterReadOnly(const Integer id) const;
 
     virtual Real GetRealParameter(const Integer id) const;
-    virtual Real GetRealParameter(const wxString &label) const;
+    virtual Real GetRealParameter(const std::string &label) const;
     virtual Real SetRealParameter(const Integer id, const Real value);
-    virtual Real SetRealParameter(const wxString &label, const Real value);
+    virtual Real SetRealParameter(const std::string &label, const Real value);
     virtual Integer GetIntegerParameter(const Integer id) const;
-    virtual Integer GetIntegerParameter(const wxString &label) const;
+    virtual Integer GetIntegerParameter(const std::string &label) const;
     virtual Integer SetIntegerParameter(const Integer id, const Integer value);
-    virtual Integer SetIntegerParameter(const wxString &label, const Integer value);
+    virtual Integer SetIntegerParameter(const std::string &label, const Integer value);
     virtual bool    GetBooleanParameter(const Integer id) const;
     virtual bool    SetBooleanParameter(const Integer id, const bool value);
 
-    virtual bool         TakeAction(const wxString &action,
-                                    const wxString &actionData = wxT(""));
+    virtual bool         TakeAction(const std::string &action,
+                                    const std::string &actionData = "");
 
     virtual void SetPhysicalModel(PhysicalModel *pPhysicalModel);
     
@@ -229,12 +229,12 @@ protected:
     };
     
     // Start with the parameter IDs and associates strings
-    static const wxString 
+    static const std::string 
                       PARAMETER_TEXT[IntegratorParamCount - PropagatorParamCount];
     static const Gmat::ParameterType 
                       PARAMETER_TYPE[IntegratorParamCount - PropagatorParamCount];
         
-    /// The level of wxT("acceptable") relative error for the integrator
+    /// The level of "acceptable" relative error for the integrator
     Real tolerance;
     /// Flag used to activate fixed step mode
     bool fixedStep;
@@ -256,7 +256,7 @@ protected:
     /// written, for this integrator, for this run
     bool    accuracyWarningTriggered;
     /// String used to indicate object type in some warning messages
-    wxString typeSource;
+    std::string typeSource;
     /// Actual interval taken by the step
     Real stepTaken;
     /// Remaining time for a specified or fixed timestep

@@ -31,10 +31,10 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 PlotCommand::PARAMETER_TEXT[PlotCommandParamCount - GmatCommandParamCount] =
 {
-   wxT("Subscriber"),
+   "Subscriber",
 };
 
 const Gmat::ParameterType
@@ -51,7 +51,7 @@ PlotCommand::PARAMETER_TYPE[PlotCommandParamCount - GmatCommandParamCount] =
  * Constructor
  */
 //------------------------------------------------------------------------------
-PlotCommand::PlotCommand(const wxString &plotTypeName) :
+PlotCommand::PlotCommand(const std::string &plotTypeName) :
    GmatCommand(plotTypeName)
 {
    plotNameList.clear();
@@ -151,15 +151,15 @@ const StringArray& PlotCommand::GetRefObjectNameArray(const Gmat::ObjectType typ
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool PlotCommand::RenameRefObject(const Gmat::ObjectType type,
-                                const wxString &oldName,
-                                const wxString &newName)
+                                const std::string &oldName,
+                                const std::string &newName)
 {
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("PlotCommand::RenameConfiguredItem() type=%s, oldName=%s, newName=%s\n"),
+      ("PlotCommand::RenameConfiguredItem() type=%s, oldName=%s, newName=%s\n",
        GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
    #endif
    
@@ -177,9 +177,9 @@ bool PlotCommand::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
-wxString PlotCommand::GetParameterText(const Integer id) const
+std::string PlotCommand::GetParameterText(const Integer id) const
 {
    if (id >= GmatCommandParamCount && id < PlotCommandParamCount)
       return PARAMETER_TEXT[id - GmatCommandParamCount];
@@ -189,9 +189,9 @@ wxString PlotCommand::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer PlotCommand::GetParameterID(const wxString &str) const
+Integer PlotCommand::GetParameterID(const std::string &str) const
 {
    for (Integer i = GmatCommandParamCount; i < PlotCommandParamCount; i++)
    {
@@ -216,9 +216,9 @@ Gmat::ParameterType PlotCommand::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
-wxString PlotCommand::GetParameterTypeString(const Integer id) const
+std::string PlotCommand::GetParameterTypeString(const Integer id) const
 {
    if (id >= GmatCommandParamCount && id < PlotCommandParamCount)
       return PlotCommand::PARAM_TYPE_STRING[GetParameterType(id)];
@@ -228,20 +228,20 @@ wxString PlotCommand::GetParameterTypeString(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Adds value to the list if value not found.
  */
 //------------------------------------------------------------------------------
-bool PlotCommand::SetStringParameter(const Integer id, const wxString &value)
+bool PlotCommand::SetStringParameter(const Integer id, const std::string &value)
 {
    #ifdef DEBUG_PLOT_SET
    MessageInterface::ShowMessage
-      (wxT("PlotCommand::SetStringParameter() id=%d, value=%s\n"), id, value.c_str());
+      ("PlotCommand::SetStringParameter() id=%d, value=%s\n", id, value.c_str());
    #endif
    
-   if (value == wxT(""))
+   if (value == "")
       return false;
    
    if (id == SUBSCRIBER)
@@ -257,16 +257,16 @@ bool PlotCommand::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id, const Integer index) const
+// std::string GetStringParameter(const Integer id, const Integer index) const
 //------------------------------------------------------------------------------
-wxString PlotCommand::GetStringParameter(const Integer id,
+std::string PlotCommand::GetStringParameter(const Integer id,
                                             const Integer index) const
 {
    if (id == SUBSCRIBER)
    {
       if (index < 0 || index >= (Integer) plotNameList.size())
          throw CommandException(
-                  wxT("Index out-of-range for subscriber names list for PlotCommand command.\n"));
+                  "Index out-of-range for subscriber names list for PlotCommand command.\n");
       return plotNameList.at(index); 
    }
    return GmatCommand::GetStringParameter(id, index);
@@ -274,21 +274,21 @@ wxString PlotCommand::GetStringParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value,
+// bool SetStringParameter(const Integer id, const std::string &value,
 //                         const Integer index)
 //------------------------------------------------------------------------------
 bool PlotCommand::SetStringParameter(const Integer id, 
-                                     const wxString &value,
+                                     const std::string &value,
                                      const Integer index)
 {
-   if (value == wxT(""))
+   if (value == "")
       return false;
    
    if (id == SUBSCRIBER)
    {
       if (index < 0 || index > (Integer) plotNameList.size())
          throw CommandException(
-                  wxT("Index out-of-range for subscriber names list for PlotCommand command.\n"));
+                  "Index out-of-range for subscriber names list for PlotCommand command.\n");
       else
       {
          if (index == (Integer) plotNameList.size())  plotNameList.push_back(value);
@@ -307,24 +307,24 @@ bool PlotCommand::SetStringParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-// const wxString& GetGeneratingString(Gmat::WriteMode mode, ...)
+// const std::string& GetGeneratingString(Gmat::WriteMode mode, ...)
 //------------------------------------------------------------------------------
-const wxString& PlotCommand::GetGeneratingString(Gmat::WriteMode mode,
-                                                    const wxString &prefix,
-                                                    const wxString &useName)
+const std::string& PlotCommand::GetGeneratingString(Gmat::WriteMode mode,
+                                                    const std::string &prefix,
+                                                    const std::string &useName)
 {
    #ifdef DEBUG_GEN_STR
-   MessageInterface::ShowMessage(wxT("PlotCommand::GetGeneratingString() entered\n"));
+   MessageInterface::ShowMessage("PlotCommand::GetGeneratingString() entered\n");
    #endif
    
-   generatingString = prefix + typeName + wxT(" ");
+   generatingString = prefix + typeName + " ";
    int plotCount = plotNameList.size();
    for (int i = 0; i < plotCount; i++)
    {
       if (i == plotCount-1)
-         generatingString += plotNameList[i] + wxT(";");
+         generatingString += plotNameList[i] + ";";
       else
-         generatingString += plotNameList[i] + wxT(" ");
+         generatingString += plotNameList[i] + " ";
    }
    
    return GmatCommand::GetGeneratingString(mode, prefix, useName);
@@ -337,57 +337,57 @@ const wxString& PlotCommand::GetGeneratingString(Gmat::WriteMode mode,
 bool PlotCommand::InterpretAction()
 {
    #ifdef DEBUG_PLOT_IA
-   MessageInterface::ShowMessage(wxT("PlotCommand::InterpretAction() entered\n"));
+   MessageInterface::ShowMessage("PlotCommand::InterpretAction() entered\n");
    #endif
    
    plotNameList.clear();
    thePlotList.clear();
    
-   wxString genStr = generatingString;
+   std::string genStr = generatingString;
    
    // Trim it first
    genStr = GmatStringUtil::Trim(genStr, GmatStringUtil::BOTH, true, true);
    #ifdef DEBUG_PLOT_IA
-   MessageInterface::ShowMessage(wxT("   genStr = '%s'\n"), genStr.c_str());
+   MessageInterface::ShowMessage("   genStr = '%s'\n", genStr.c_str());
    #endif
    
    Integer loc = genStr.find(typeName, 0) + typeName.size();
-   const char *str = genStr.char_str();
+   const char *str = genStr.c_str();
    while (str[loc] == ' ')
       ++loc;
 
    // this command, for compatability with MATLAB, should not have
    // parentheses (except to indicate array elements), brackets, or braces
-   if (!GmatStringUtil::HasNoBrackets(genStr, false))
+   if (!GmatStringUtil::HasNoBrackets(str, false))
    {
-      wxString msg = 
-         wxT("The PlotCommand command is not allowed to contain brackets, braces, or ")
-         wxT("parentheses");
+      std::string msg = 
+         "The PlotCommand command is not allowed to contain brackets, braces, or "
+         "parentheses";
       throw CommandException(msg);
    }
 
    // Find the Subscriber list
-   wxString sub = genStr.substr(loc, genStr.size()-loc);
-   StringArray parts = GmatStringUtil::SeparateBy(sub,wxT(" "), false);
+   std::string sub = genStr.substr(loc, genStr.size()-loc);
+   StringArray parts = GmatStringUtil::SeparateBy(sub," ", false);
    Integer partsSz = (Integer) parts.size();
    #ifdef DEBUG_PLOT_IA
-      MessageInterface::ShowMessage(wxT("In PlotCommand::InterpretAction, parts = \n"));
+      MessageInterface::ShowMessage("In PlotCommand::InterpretAction, parts = \n");
       for (Integer jj = 0; jj < partsSz; jj++)
-         MessageInterface::ShowMessage(wxT("   %s\n"), parts.at(jj).c_str());
+         MessageInterface::ShowMessage("   %s\n", parts.at(jj).c_str());
    #endif
    if (partsSz < 1) // 'PlotCommand' already found
-      throw CommandException(wxT("Missing field in PlotCommand command"));
+      throw CommandException("Missing field in PlotCommand command");
    for (Integer ii = 0; ii < partsSz; ii++)
       plotNameList.push_back(parts.at(ii));
    
    #ifdef DEBUG_PLOT_IA
-      MessageInterface::ShowMessage(wxT("Plots to be %sed:\n"), typeName.c_str());
+      MessageInterface::ShowMessage("Plots to be %sed:\n", typeName.c_str());
       for (unsigned int ii = 0; ii < plotNameList.size(); ii++)
-         MessageInterface::ShowMessage(wxT("   %s\n"), (plotNameList.at(ii)).c_str());
+         MessageInterface::ShowMessage("   %s\n", (plotNameList.at(ii)).c_str());
    #endif
       
    #ifdef DEBUG_PLOT_IA
-   MessageInterface::ShowMessage(wxT("PlotCommand::InterpretAction() returning true\n"));
+   MessageInterface::ShowMessage("PlotCommand::InterpretAction() returning true\n");
    #endif
    return true;
 }
@@ -406,7 +406,7 @@ bool PlotCommand::Initialize()
 {
    #ifdef DEBUG_PLOT_INIT
    MessageInterface::ShowMessage
-      (wxT("PlotCommand::Initialize() entered for %s\n"), typeName.c_str());
+      ("PlotCommand::Initialize() entered for %s\n", typeName.c_str());
    #endif
    
    GmatCommand::Initialize();
@@ -414,13 +414,13 @@ bool PlotCommand::Initialize()
    if (plotNameList.size() == 0)
    {
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** %s command nas no associated plots; command has no effect.\n"),
+         ("*** WARNING *** %s command nas no associated plots; command has no effect.\n",
           typeName.c_str());
       return false;      
    }
    
    #ifdef DEBUG_PLOT_INIT
-   MessageInterface::ShowMessage(wxT("PlotCommand::Initialize() returning true\n"));
+   MessageInterface::ShowMessage("PlotCommand::Initialize() returning true\n");
    #endif
    return true;
 }

@@ -14,7 +14,7 @@
 // Author: M. Weippert, T. McRoberts, L. Jun, E. Corderman
 // Created: 1995/10/10 for GSS project (originally Vector)
 // Modified:
-//   2003/09/15 Linda Jun - Replaced GSSString with wxString
+//   2003/09/15 Linda Jun - Replaced GSSString with std::string
 //
 /**
  * Declarations for the Rvector class, providing linear algebra operations
@@ -179,7 +179,7 @@ Rvector Rvector::GetUnitRvector() const
    Real mag = GetMagnitude();
 
    if (GmatMathUtil::IsZero(mag))
-      throw ZeroVector(wxT(" from Rvector::GetUnitRvector()\n"));
+      throw ZeroVector(" from Rvector::GetUnitRvector()\n");
    
    Rvector vect(*this);
    
@@ -202,7 +202,7 @@ const Rvector& Rvector::Normalize()
    
    Real mag = GetMagnitude();
    if (GmatMathUtil::IsZero(mag))
-      throw ZeroVector(wxT(" from Rvector::Normalize()\n"));
+      throw ZeroVector(" from Rvector::Normalize()\n");
    
    for (i = 0; i < sizeD; i++)
       elementD[i] /=  mag;
@@ -631,36 +631,35 @@ Real Rvector::Norm()
 
 
 //------------------------------------------------------------------------------
-// wxString ToString(Integer precision, bool horizontal,
-//                      const wxString &prefix) const
+// std::string ToString(Integer precision, bool horizontal,
+//                      const std::string &prefix) const
 //------------------------------------------------------------------------------
 /*
  * Formats Rvector value to String.
  *
  * @param  precision  Precision to be used in formatting
  * @param  horizontal  Format horizontally if true (true)
- * @param  prefix  Prefix to be used in vertical formatting (wxT(""))
+ * @param  prefix  Prefix to be used in vertical formatting ("")
  *
  * @return Formatted Rvector value string
  */
 //------------------------------------------------------------------------------
-wxString Rvector::ToString(Integer precision, bool horizontal,
-                              const wxString &prefix) const
+std::string Rvector::ToString(Integer precision, bool horizontal,
+                              const std::string &prefix) const
 {
    GmatGlobal *global = GmatGlobal::Instance();
    global->SetActualFormat(false, false, precision, 0, horizontal, 1, prefix, false);
    
-   std::stringstream ss;
-   ss.str("");
+   std::stringstream ss("");
    ss << *this;
-   return wxString::FromAscii(ss.str().c_str());
+   return ss.str();
 }
 
 
 //------------------------------------------------------------------------------
-// wxString ToString(bool useCurrentFormat, bool scientific, bool showPoint,
+// std::string ToString(bool useCurrentFormat, bool scientific, bool showPoint,
 //                      Integer precision, Integer width, bool horizontal,
-//                      Integer spacing, const wxString &prefix,
+//                      Integer spacing, const std::string &prefix,
 //                      bool appendEol) const
 //------------------------------------------------------------------------------
 /*
@@ -673,16 +672,16 @@ wxString Rvector::ToString(Integer precision, bool horizontal,
  * @param  width  Width to be used in formatting (global default)
  * @param  horizontal  Format horizontally if true (true)
  * @param  spacing  Spacing to be used in horozontal formatting (1)
- * @param  prefix  Prefix to be used in vertical formatting (wxT(""))
+ * @param  prefix  Prefix to be used in vertical formatting ("")
  * @param  appendEol  Appends eol if true (true)
  *
  * @return Formatted Rvector value
  */
 //------------------------------------------------------------------------------
-wxString Rvector::ToString(bool useCurrentFormat, bool scientific,
+std::string Rvector::ToString(bool useCurrentFormat, bool scientific,
                               bool showPoint, Integer precision, Integer width,
                               bool horizontal, Integer spacing,
-                              const wxString &prefix, bool appendEol) const
+                              const std::string &prefix, bool appendEol) const
 {
    GmatGlobal *global = GmatGlobal::Instance();
    
@@ -690,10 +689,9 @@ wxString Rvector::ToString(bool useCurrentFormat, bool scientific,
       global->SetActualFormat(scientific, showPoint, precision, width, horizontal,
                               spacing, prefix, appendEol);
    
-   std::stringstream ss;
-   ss.str("");
+   std::stringstream ss("");
    ss << *this;
-   return wxString::FromAscii(ss.str().c_str());
+   return ss.str();
 }
 
 

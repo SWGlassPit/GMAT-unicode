@@ -29,7 +29,7 @@
 // static data
 //---------------------------------
 
-/*const wxString
+/*const std::string
 DynamicAxes::PARAMETER_TEXT[DynamicAxesParamCount - AxisSystemParamCount] =
 {
    "Epoch",
@@ -48,8 +48,8 @@ DynamicAxes::PARAMETER_TYPE[DynamicAxesParamCount - AxisSystemParamCount] =
 //------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//  DynamicAxes(const wxString &itsType,
-//              const wxString &itsName);
+//  DynamicAxes(const std::string &itsType,
+//              const std::string &itsName);
 //---------------------------------------------------------------------------
 /**
  * Constructs base DynamicAxes structures used in derived classes
@@ -62,11 +62,11 @@ DynamicAxes::PARAMETER_TYPE[DynamicAxesParamCount - AxisSystemParamCount] =
  *       classes must pass in the typeId and typeStr parameters.
  */
 //---------------------------------------------------------------------------
-DynamicAxes::DynamicAxes(const wxString &itsType,
-                         const wxString &itsName) :
+DynamicAxes::DynamicAxes(const std::string &itsType,
+                         const std::string &itsName) :
 AxisSystem(itsType,itsName)
 {
-   objectTypeNames.push_back(wxT("DynamicAxes"));
+   objectTypeNames.push_back("DynamicAxes");
    parameterCount = DynamicAxesParamCount;
 }
 

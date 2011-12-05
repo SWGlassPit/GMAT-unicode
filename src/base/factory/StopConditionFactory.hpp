@@ -28,8 +28,8 @@
 class GMAT_API StopConditionFactory : public Factory
 {
 public:
-   StopCondition*  CreateStopCondition(const wxString &ofType,
-                                       const wxString &withName = wxT(""));
+   StopCondition*  CreateStopCondition(const std::string &ofType,
+                                       const std::string &withName = "");
 
    // default constructor
    StopConditionFactory();

@@ -65,7 +65,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  MathParser(wxString typeStr, wxString nomme)
+//  MathParser(std::string typeStr, std::string nomme)
 //------------------------------------------------------------------------------
 /**
  * Constructs the MathParser object (default constructor).
@@ -132,7 +132,7 @@ MathParser::~MathParser()
 
 
 //------------------------------------------------------------------------------
-// bool IsEquation(const wxString &str, bool checkMinusSign)
+// bool IsEquation(const std::string &str, bool checkMinusSign)
 //------------------------------------------------------------------------------
 /*
  * Examines if given string is a math equation.
@@ -146,26 +146,26 @@ MathParser::~MathParser()
  *
  */
 //------------------------------------------------------------------------------
-bool MathParser::IsEquation(const wxString &str, bool checkMinusSign)
+bool MathParser::IsEquation(const std::string &str, bool checkMinusSign)
 {
    theEquation = str;
    
    #if DEBUG_PARSE_EQUATION
    MessageInterface::ShowMessage
-      (wxT("=================================================================\n"));
+      ("=================================================================\n");
    MessageInterface::ShowMessage
-      (wxT("MathParser::IsEquation() str=%s\n"), str.c_str());
+      ("MathParser::IsEquation() str=%s\n", str.c_str());
    MessageInterface::ShowMessage
-      (wxT("=================================================================\n"));
+      ("=================================================================\n");
    #endif
    
    bool isEq = false;
-   wxString left, right;
+   std::string left, right;
    Real rval;
-   wxString::size_type opIndex;
+   std::string::size_type opIndex;
    
    // Check if string is enclosed with quotes
-   if (GmatStringUtil::IsEnclosedWith(str, wxT("'")))
+   if (GmatStringUtil::IsEnclosedWith(str, "'"))
    {
       isEq = false;
    }
@@ -179,19 +179,19 @@ bool MathParser::IsEquation(const wxString &str, bool checkMinusSign)
       // build GmatFunction list first
       BuildGmatFunctionList(str);
       
-      if (GetFunctionName(MATH_FUNCTION, str, left) != wxT("") ||
-          GetFunctionName(MATRIX_FUNCTION, str, left) != wxT("") ||
-          GetFunctionName(UNIT_CONVERSION, str, left) != wxT("") ||
-          FindOperatorFrom(str, 0, left, right, opIndex) != wxT("") ||
-          GetFunctionName(GMAT_FUNCTION, str, left) != wxT(""))
+      if (GetFunctionName(MATH_FUNCTION, str, left) != "" ||
+          GetFunctionName(MATRIX_FUNCTION, str, left) != "" ||
+          GetFunctionName(UNIT_CONVERSION, str, left) != "" ||
+          FindOperatorFrom(str, 0, left, right, opIndex) != "" ||
+          GetFunctionName(GMAT_FUNCTION, str, left) != "")
       {
          isEq = true;
 
          if (checkMinusSign)
          {
             // Check for - sign used as string
-            if (GmatStringUtil::NumberOfOccurrences(str, wxT('-')) == 1 &&
-                GmatStringUtil::StartsWith(str, wxT("-")) &&
+            if (GmatStringUtil::NumberOfOccurrences(str, '-') == 1 &&
+                GmatStringUtil::StartsWith(str, "-") &&
                 GmatStringUtil::IsSingleItem(str))
             {
                isEq = false;
@@ -201,14 +201,14 @@ bool MathParser::IsEquation(const wxString &str, bool checkMinusSign)
       else
       {
          // Check ' for matrix transpose and ^(-1) for inverse
-         if (str.find(wxT("'")) != str.npos || str.find(wxT("^(-1)")) != str.npos)
+         if (str.find("'") != str.npos || str.find("^(-1)") != str.npos)
             isEq = true;
       }
    }
    
    #if DEBUG_PARSE_EQUATION
    MessageInterface::ShowMessage
-      (wxT("MathParser::IsEquation(%s) returning %u\n"), str.c_str(), isEq);
+      ("MathParser::IsEquation(%s) returning %u\n", str.c_str(), isEq);
    #endif
    
    return isEq;
@@ -216,7 +216,7 @@ bool MathParser::IsEquation(const wxString &str, bool checkMinusSign)
 
 
 //------------------------------------------------------------------------------
-// wxString FindLowestOperator(const wxString &str, Integer &opIndex,
+// std::string FindLowestOperator(const std::string &str, Integer &opIndex,
 //                                Integer start = 0)
 //------------------------------------------------------------------------------
 /*
@@ -235,58 +235,58 @@ bool MathParser::IsEquation(const wxString &str, bool checkMinusSign)
  * @param  start  Index to start
  *
  * @return  Single operator,
- *          wxT(""), if operator not found
+ *          "", if operator not found
  */
 //------------------------------------------------------------------------------
-wxString MathParser::FindLowestOperator(const wxString &str,
+std::string MathParser::FindLowestOperator(const std::string &str,
                                            Integer &opIndex, Integer start)
 {
    #if DEBUG_FIND_OPERATOR
    MessageInterface::ShowMessage
-      (wxT("=================================================================\n"));
+      ("=================================================================\n");
    MessageInterface::ShowMessage
-      (wxT("FindLowestOperator() entered, str=%s, start=%u, length=%u\n"), str.c_str(),
+      ("FindLowestOperator() entered, str=%s, start=%u, length=%u\n", str.c_str(),
        start, str.size());
    MessageInterface::ShowMessage
-      (wxT("=================================================================\n"));
+      ("=================================================================\n");
    #endif
    
-   Integer firstOpen = str.find_first_of(wxT("("), start);
+   Integer firstOpen = str.find_first_of("(", start);
    Integer start1 = start;
    Integer open1 = -1, close1 = -1;
    Integer length = str.size();
    Integer index = -1;
    bool isOuterParen;
    bool done = false;
-   wxString opStr;
+   std::string opStr;
    IntegerMap opIndexMap;
-   wxString substr;
+   std::string substr;
    IntegerMap::iterator pos;
    
    #if DEBUG_FIND_OPERATOR
-   MessageInterface::ShowMessage(wxT("   firstOpen=%u\n"), firstOpen);
+   MessageInterface::ShowMessage("   firstOpen=%u\n", firstOpen);
    #endif
    
    if (firstOpen == (Integer)str.npos)
       firstOpen = -1;
    
    #if DEBUG_FIND_OPERATOR
-   MessageInterface::ShowMessage(wxT("   firstOpen=%u\n"), firstOpen);
+   MessageInterface::ShowMessage("   firstOpen=%u\n", firstOpen);
    #endif
    
    if (firstOpen > 0)
    {
-      wxString::size_type inverseOp = str.find(wxT("^(-1)"));
+      std::string::size_type inverseOp = str.find("^(-1)");
       // Check for ^(-1) which goes toghether as inverse operator
       if (inverseOp != str.npos)
       {
-         if (str.substr(firstOpen-1, 5) == wxT("^(-1)"))
+         if (str.substr(firstOpen-1, 5) == "^(-1)")
          {
             #if DEBUG_FIND_OPERATOR
-            MessageInterface::ShowMessage(wxT("   found ^(-1)\n"));
+            MessageInterface::ShowMessage("   found ^(-1)\n");
             #endif
             
-            firstOpen = str.find_first_of(wxT("("), firstOpen + 3);
+            firstOpen = str.find_first_of("(", firstOpen + 3);
             if (firstOpen == (Integer)str.npos)
                firstOpen = inverseOp;
          }
@@ -295,8 +295,8 @@ wxString MathParser::FindLowestOperator(const wxString &str,
    
    #if DEBUG_FIND_OPERATOR
    MessageInterface::ShowMessage
-      (wxT("FindLowestOperator() Find operator before first open parenthesis, ")
-       wxT("firstOpen=%d\n"), firstOpen);
+      ("FindLowestOperator() Find operator before first open parenthesis, "
+       "firstOpen=%d\n", firstOpen);
    #endif
    
    //-----------------------------------------------------------------
@@ -306,13 +306,13 @@ wxString MathParser::FindLowestOperator(const wxString &str,
    {
       substr = str.substr(0, firstOpen);
       opStr = FindOperator(substr, index);
-      if (opStr != wxT(""))
+      if (opStr != "")
          opIndexMap[opStr] = index;
    }
    
    #if DEBUG_FIND_OPERATOR
    MessageInterface::ShowMessage
-      (wxT("FindLowestOperator() Find lowest operator before last close parenthesis"));
+      ("FindLowestOperator() Find lowest operator before last close parenthesis");
    #endif
    //-----------------------------------------------------------------
    // find a lowest operator before last close paren
@@ -322,17 +322,17 @@ wxString MathParser::FindLowestOperator(const wxString &str,
       GmatStringUtil::FindMatchingParen(str, open1, close1, isOuterParen, start1);
       
       #if DEBUG_FIND_OPERATOR
-      MessageInterface::ShowMessage(wxT("   open1=%u, close1=%u\n"), open1, close1);
+      MessageInterface::ShowMessage("   open1=%u, close1=%u\n", open1, close1);
       #endif
       
       // find next open parenthesis '('
-      start1 = str.find(wxT('('), close1);
+      start1 = str.find('(', close1);
       
       if (start1 == -1)
       {
          #if DEBUG_FIND_OPERATOR
          MessageInterface::ShowMessage
-            (wxT("   ===> There is no ( found after %d, so exiting while loop\n"), close1);
+            ("   ===> There is no ( found after %d, so exiting while loop\n", close1);
          #endif
          break;
       }
@@ -340,12 +340,12 @@ wxString MathParser::FindLowestOperator(const wxString &str,
       substr = str.substr(close1+1, start1-close1-1);
       
       #if DEBUG_FIND_OPERATOR
-      MessageInterface::ShowMessage(wxT("   substr=%s\n"), substr.c_str());
+      MessageInterface::ShowMessage("   substr=%s\n", substr.c_str());
       #endif
       
       opStr = FindOperator(substr, index);
       
-      if (opStr != wxT(""))
+      if (opStr != "")
          opIndexMap[opStr] = close1 + index + 1;
    }
    
@@ -355,43 +355,43 @@ wxString MathParser::FindLowestOperator(const wxString &str,
    //-----------------------------------------------------------------
    #if DEBUG_FIND_OPERATOR
    MessageInterface::ShowMessage
-      (wxT("FindLowestOperator() Find lowest operator after last close parenthesis"));
+      ("FindLowestOperator() Find lowest operator after last close parenthesis");
    #endif
    if (close1 != length-1)
    {
       #if DEBUG_FIND_OPERATOR
-      MessageInterface::ShowMessage(wxT("   after last close parenthesis\n"));
+      MessageInterface::ShowMessage("   after last close parenthesis\n");
       #endif
       
       substr = str.substr(close1+1);
       opStr = FindOperator(substr, index);
       
-      if (opStr != wxT(""))
+      if (opStr != "")
          opIndexMap[opStr] = close1 + index + 1;
    }
    
    #if DEBUG_FIND_OPERATOR
-   MessageInterface::ShowMessage(wxT("   There are %d operators\n"), opIndexMap.size());
+   MessageInterface::ShowMessage("   There are %d operators\n", opIndexMap.size());
    for (pos = opIndexMap.begin(); pos != opIndexMap.end(); ++pos)
       MessageInterface::ShowMessage
-         (wxT("      op=%s, index=%d\n"), pos->first.c_str(), pos->second);
+         ("      op=%s, index=%d\n", pos->first.c_str(), pos->second);
    #endif
    
    IntegerMap::iterator pos1;
    IntegerMap::iterator pos2;
    Integer index1 = -1;
    Integer index2 = -1;
-   wxString lastOp;
+   std::string lastOp;
    bool opFound = false;
    bool unaryMinusFound = false;
    
    // find + or - first
-   pos1 = opIndexMap.find(wxT("+"));
-   pos2 = opIndexMap.find(wxT("-"));
+   pos1 = opIndexMap.find("+");
+   pos2 = opIndexMap.find("-");
    
    #if DEBUG_FIND_OPERATOR
    MessageInterface::ShowMessage
-      (wxT("   +op index=%d, -op index=%d\n"),
+      ("   +op index=%d, -op index=%d\n",
        pos1 == opIndexMap.end() ? -1 : pos1->second,
        pos2 == opIndexMap.end() ? -1 : pos2->second);
    #endif
@@ -404,7 +404,7 @@ wxString MathParser::FindLowestOperator(const wxString &str,
          index2 = pos2->second;
       
       #if DEBUG_FIND_OPERATOR
-      MessageInterface::ShowMessage(wxT("   index1=%d, index2=%d\n"), index1, index2);
+      MessageInterface::ShowMessage("   index1=%d, index2=%d\n", index1, index2);
       #endif
       
       // Check for unary - operator
@@ -441,14 +441,14 @@ wxString MathParser::FindLowestOperator(const wxString &str,
    
    #if DEBUG_FIND_OPERATOR
    MessageInterface::ShowMessage
-      (wxT("   unaryMinusFound=%d, opFound=%d\n"), unaryMinusFound, opFound);
+      ("   unaryMinusFound=%d, opFound=%d\n", unaryMinusFound, opFound);
    #endif
    
    if (!opFound)
    {
       // find * or /
-      pos1 = opIndexMap.find(wxT("*"));
-      pos2 = opIndexMap.find(wxT("/"));
+      pos1 = opIndexMap.find("*");
+      pos2 = opIndexMap.find("/");
       if (pos1 != opIndexMap.end() || pos2 != opIndexMap.end())
       {
          opStr = GetOperator(pos1, pos2, opIndexMap, index);
@@ -458,14 +458,14 @@ wxString MathParser::FindLowestOperator(const wxString &str,
          if (unaryMinusFound)
          {
             index = 0;
-            opStr = wxT("-");
+            opStr = "-";
          }
          else
          {
             // find ^ and not ^(-1) which is inverse of matrix
             // find ' which is transpose of matrix (LOJ: 2010.07.29)
-            pos1 = opIndexMap.find(wxT("^"));
-            pos2 = opIndexMap.find(wxT("'"));
+            pos1 = opIndexMap.find("^");
+            pos2 = opIndexMap.find("'");
             if (pos1 != opIndexMap.end() || pos2 != opIndexMap.end())
             {
                opStr = GetOperator(pos1, pos2, opIndexMap, index);
@@ -478,7 +478,7 @@ wxString MathParser::FindLowestOperator(const wxString &str,
    
    #if DEBUG_FIND_OPERATOR
    MessageInterface::ShowMessage
-      (wxT("FindLowestOperator() returning opStr=%s, opIndex=%d\n"),
+      ("FindLowestOperator() returning opStr=%s, opIndex=%d\n",
        opStr.c_str(), opIndex);
    #endif
    
@@ -487,7 +487,7 @@ wxString MathParser::FindLowestOperator(const wxString &str,
 
 
 //------------------------------------------------------------------------------
-// MathNode*  Parse(const wxString &str)
+// MathNode*  Parse(const std::string &str)
 //------------------------------------------------------------------------------
 /**
  * Breaks apart the text representation of an equation and uses the compoment
@@ -497,23 +497,23 @@ wxString MathParser::FindLowestOperator(const wxString &str,
  * @return constructed MathTree pointer
  */
 //------------------------------------------------------------------------------
-MathNode* MathParser::Parse(const wxString &str)
+MathNode* MathParser::Parse(const std::string &str)
 {
    originalEquation = str;
    theEquation = str;
    
    #if DEBUG_PARSE
    MessageInterface::ShowMessage
-      (wxT("=================================================================\n"));
+      ("=================================================================\n");
    MessageInterface::ShowMessage
-      (wxT("MathParser::Parse() theEquation=%s\n"), theEquation.c_str());
+      ("MathParser::Parse() theEquation=%s\n", theEquation.c_str());
    MessageInterface::ShowMessage
-      (wxT("=================================================================\n"));
+      ("=================================================================\n");
    #endif
    
    // first remove all blank spaces and semicoln
-   wxString newEq = GmatStringUtil::RemoveAll(theEquation, wxT(' '));
-   wxString::size_type index = newEq.find_first_of(wxT(';'));
+   std::string newEq = GmatStringUtil::RemoveAll(theEquation, ' ');
+   std::string::size_type index = newEq.find_first_of(';');
    if (index != newEq.npos)
       newEq.erase(index);
    
@@ -522,11 +522,11 @@ MathNode* MathParser::Parse(const wxString &str)
    
    // check if parenthesis are balanced
    if (!GmatStringUtil::IsParenBalanced(newEq))
-      throw MathException(wxT("Found unbalanced parenthesis"));
+      throw MathException("Found unbalanced parenthesis");
    
    #if DEBUG_PARSE
    MessageInterface::ShowMessage
-      (wxT("MathParser::Parse() newEq=%s\n"), newEq.c_str());
+      ("MathParser::Parse() newEq=%s\n", newEq.c_str());
    #endif
    
    // build GmatFunction list first
@@ -537,10 +537,10 @@ MathNode* MathParser::Parse(const wxString &str)
    #if DEBUG_PARSE
    WriteNode(topNode, 0);
    MessageInterface::ShowMessage
-      (wxT("MathParser::Parse() returning topNode=<%p><%s>\n"), topNode,
+      ("MathParser::Parse() returning topNode=<%p><%s>\n", topNode,
        topNode->GetTypeName().c_str());
    MessageInterface::ShowMessage
-      (wxT("=================================================================\n"));
+      ("=================================================================\n");
    #endif
    
    return topNode;
@@ -554,9 +554,9 @@ StringArray MathParser::GetGmatFunctionNames()
 {
    #if DEBUG_GMAT_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("MathParser::GetGmatFunctionNames() returning %d names\n"), theGmatFuncCount);
+      ("MathParser::GetGmatFunctionNames() returning %d names\n", theGmatFuncCount);
    for (Integer i=0; i<theGmatFuncCount; i++)
-      MessageInterface::ShowMessage(wxT("   <%s>\n"), gmatFuncList[i].c_str());
+      MessageInterface::ShowMessage("   <%s>\n", gmatFuncList[i].c_str());
    #endif
    
    return gmatFuncList;
@@ -564,56 +564,56 @@ StringArray MathParser::GetGmatFunctionNames()
 
 
 //------------------------------------------------------------------------------
-// MathNode* ParseNode(const wxString &str)
+// MathNode* ParseNode(const std::string &str)
 //------------------------------------------------------------------------------
-MathNode* MathParser::ParseNode(const wxString &str)
+MathNode* MathParser::ParseNode(const std::string &str)
 {
    #if DEBUG_CREATE_NODE
-   MessageInterface::ShowMessage(wxT("MathParser::ParseNode() str='%s'\n"), str.c_str());
+   MessageInterface::ShowMessage("MathParser::ParseNode() str='%s'\n", str.c_str());
    #endif
    
    StringArray items = Decompose(str);
-   wxString op = items[0];
-   wxString left = items[1];
-   wxString right = items[2];
+   std::string op = items[0];
+   std::string left = items[1];
+   std::string right = items[2];
    
    #if DEBUG_CREATE_NODE
-   WriteItems(wxT("MathParser::ParseNode() After Decompose()"), items);
+   WriteItems("MathParser::ParseNode() After Decompose()", items);
    #endif
    
    MathNode *mathNode;
    
    // If operator is empty, create MathElement, create MathFunction otherwise
-   if (op == wxT(""))
+   if (op == "")
    {
       #if DEBUG_CREATE_NODE
       MessageInterface::ShowMessage
-         (wxT("=====> Should create MathElement: '%s'\n"), str.c_str());
+         ("=====> Should create MathElement: '%s'\n", str.c_str());
       #endif
       
       // Remove extra parenthesis before creating a node (LOJ: 2010.07.29)
-      wxString str1 = GmatStringUtil::RemoveExtraParen(str);
+      std::string str1 = GmatStringUtil::RemoveExtraParen(str);
       
       #if DEBUG_CREATE_NODE
       MessageInterface::ShowMessage
-         (wxT("       Creating MathElement with '%s'\n"), str1.c_str());
+         ("       Creating MathElement with '%s'\n", str1.c_str());
       #endif
       
-      if (str1 == wxT(""))
-         throw MathException(wxT("Missing input arguments"));
+      if (str1 == "")
+         throw MathException("Missing input arguments");
       
-      mathNode = CreateNode(wxT("MathElement"), str1);
+      mathNode = CreateNode("MathElement", str1);
    }
    else
    {
       #if DEBUG_CREATE_NODE
       MessageInterface::ShowMessage
-         (wxT("=====> Should create MathNode: %s\n"), op.c_str());
+         ("=====> Should create MathNode: %s\n", op.c_str());
       #endif
       
-      wxString operands = wxT("( ") + left + wxT(", ") + right + wxT(" )");
-      if (right == wxT(""))
-         operands = wxT("( ") + left + wxT(" )");
+      std::string operands = "( " + left + ", " + right + " )";
+      if (right == "")
+         operands = "( " + left + " )";
       
       mathNode = CreateNode(op, operands);
       
@@ -622,9 +622,9 @@ MathNode* MathParser::ParseNode(const wxString &str)
       
       // if node is FunctionRunner, just create left node as MathElement(loj: 2008.08.25)
       // input nodes are created when FunctionRunner is created
-      if (mathNode->IsOfType(wxT("FunctionRunner")))
+      if (mathNode->IsOfType("FunctionRunner"))
       {
-         leftNode = CreateNode(wxT("MathElement"), left);
+         leftNode = CreateNode("MathElement", left);
          mathNode->SetChildren(leftNode, rightNode);
          
          leftNode->SetFunctionInputFlag(true);
@@ -633,35 +633,35 @@ MathNode* MathParser::ParseNode(const wxString &str)
       {
          #if DEBUG_CREATE_NODE
          MessageInterface::ShowMessage
-            (wxT("   left='%s', right='%s'\n"), left.c_str(), right.c_str());
+            ("   left='%s', right='%s'\n", left.c_str(), right.c_str());
          #endif
          
          // check for empty argument for function
-         if (left == wxT(""))
+         if (left == "")
          {
             if (IsMathFunction(op))
-               throw MathException(op + wxT("() - Missing input arguments"));
+               throw MathException(op + "() - Missing input arguments");
          }
          else
          {
             #if DEBUG_CREATE_NODE
             MessageInterface::ShowMessage
-               (wxT("===============> Parse left node: '%s'\n"), left.c_str());
+               ("===============> Parse left node: '%s'\n", left.c_str());
             #endif
             leftNode = ParseNode(left);
          }
          
          // check if two operands are needed
-         if (right == wxT(""))
+         if (right == "")
          {
-            if (op == wxT("Add") || op == wxT("Subtract") || op == wxT("Multiply") || op == wxT("Divide"))
-               throw MathException(op + wxT("() - Not enough input arguments"));
+            if (op == "Add" || op == "Subtract" || op == "Multiply" || op == "Divide")
+               throw MathException(op + "() - Not enough input arguments");
          }
          else
          {
             #if DEBUG_CREATE_NODE
             MessageInterface::ShowMessage
-               (wxT("===============> Parse right node: '%s'\n"), right.c_str());
+               ("===============> Parse right node: '%s'\n", right.c_str());
             #endif
             rightNode = ParseNode(right);
          }
@@ -672,7 +672,7 @@ MathNode* MathParser::ParseNode(const wxString &str)
    
    #if DEBUG_CREATE_NODE
    MessageInterface::ShowMessage
-      (wxT("MathParser::ParseNode() returning <%p><%s>\n"),
+      ("MathParser::ParseNode() returning <%p><%s>\n",
        mathNode, mathNode->GetTypeName().c_str());
    #endif
    
@@ -681,7 +681,7 @@ MathNode* MathParser::ParseNode(const wxString &str)
 
 
 //------------------------------------------------------------------------------
-// MathNode* CreateNode(const wxString &type, const wxString &exp)
+// MathNode* CreateNode(const std::string &type, const std::string &exp)
 //------------------------------------------------------------------------------
 /**
  * Creates MathNode through the Moderator.
@@ -689,27 +689,27 @@ MathNode* MathParser::ParseNode(const wxString &str)
  * @return StringArray of elements
  */
 //------------------------------------------------------------------------------
-MathNode* MathParser::CreateNode(const wxString &type, const wxString &exp)
+MathNode* MathParser::CreateNode(const std::string &type, const std::string &exp)
 {
    #if DEBUG_CREATE_NODE
    MessageInterface::ShowMessage
-      (wxT("MathParser::CreateNode() type=%s, exp=%s\n"), type.c_str(),
+      ("MathParser::CreateNode() type=%s, exp=%s\n", type.c_str(),
        exp.c_str());
    #endif
    
    // check if type is GmatFunction
-   wxString actualType = type;
-   wxString nodeName = exp;
+   std::string actualType = type;
+   std::string nodeName = exp;
    
    // If node is FunctionRunner, add function name to node name (loj: 2008.08.21)
    if (IsGmatFunction(type))
    {
-      actualType = wxT("FunctionRunner");
+      actualType = "FunctionRunner";
       nodeName = type + exp;
    }
    
    #if DEBUG_CREATE_NODE
-   MessageInterface::ShowMessage(wxT("   actualType=%s\n"), actualType.c_str());
+   MessageInterface::ShowMessage("   actualType=%s\n", actualType.c_str());
    #endif
    
    MathNode *node = NULL;
@@ -723,27 +723,27 @@ MathNode* MathParser::CreateNode(const wxString &type, const wxString &exp)
    #endif
    
    if (node == NULL)
-      throw MathException(wxT("Cannot create MathNode of \"") + actualType + wxT("\""));
+      throw MathException("Cannot create MathNode of \"" + actualType + "\"");
    
    #ifdef DEBUG_MORE_MEMORY
    MessageInterface::ShowMessage
-      (wxT("MathParser::CreateNode() node <%p><%s> '%s' created\n"), node, actualType.c_str());
+      ("MathParser::CreateNode() node <%p><%s> '%s' created\n", node, actualType.c_str());
    #endif
    
-   if (actualType == wxT("FunctionRunner"))
+   if (actualType == "FunctionRunner")
    {
       FunctionRunner *fRunner = (FunctionRunner*)node;
       fRunner->SetFunctionName(type);
       
       // add function input arguments
-      wxString exp1 = exp;
-      exp1 = GmatStringUtil::RemoveOuterString(exp1, wxT("("), wxT(")"));
+      std::string exp1 = exp;
+      exp1 = GmatStringUtil::RemoveOuterString(exp1, "(", ")");
       
       #if DEBUG_CREATE_NODE > 1
-      MessageInterface::ShowMessage(wxT("   exp1='%s'\n"), exp1.c_str());
+      MessageInterface::ShowMessage("   exp1='%s'\n", exp1.c_str());
       #endif
       
-      StringArray inputs = GmatStringUtil::SeparateBy(exp1, wxT(","), true);
+      StringArray inputs = GmatStringUtil::SeparateBy(exp1, ",", true);
       for (UnsignedInt i=0; i<inputs.size(); i++)
       {
          //================================================================
@@ -754,19 +754,19 @@ MathNode* MathParser::CreateNode(const wxString &type, const wxString &exp)
          MathNode *node = ParseNode(inputs[i]);
          
          #if DEBUG_CREATE_NODE > 1
-         MessageInterface::ShowMessage(wxT("   inputs[%d] = '%s'\n"), i, inputs[i].c_str());
+         MessageInterface::ShowMessage("   inputs[%d] = '%s'\n", i, inputs[i].c_str());
          MessageInterface::ShowMessage
-            (wxT("------------------------------------------ Create input nodes\n"));
+            ("------------------------------------------ Create input nodes\n");
          #endif
          #if DEBUG_CREATE_NODE > 1
          WriteNode(node, 0);
          MessageInterface::ShowMessage
-            (wxT("-------------------------------------------------------------\n"));
+            ("-------------------------------------------------------------\n");
          #endif
          
          fRunner->AddInputNode(node);
          
-         // If input is GmatFunction or math equation, set wxT("") (loj: 2008.08.22)
+         // If input is GmatFunction or math equation, set "" (loj: 2008.08.22)
          // Should we do this here? Just hold off for now
          if (IsGmatFunction(inputs[i]) || IsEquation(inputs[i], false))
          {
@@ -779,7 +779,7 @@ MathNode* MathParser::CreateNode(const wxString &type, const wxString &exp)
             
             #if DEBUG_CREATE_NODE
             MessageInterface::ShowMessage
-               (wxT("   Setting \"\" to FunctionRunner, input has Function or Equation\n"));
+               ("   Setting \"\" to FunctionRunner, input has Function or Equation\n");
             #endif
          }
          else
@@ -794,8 +794,8 @@ MathNode* MathParser::CreateNode(const wxString &type, const wxString &exp)
          // check if input is math expression
          if (IsGmatFunction(inputs[i]) || IsEquation(inputs[i], false))
             throw MathException
-               (wxT("*** WARNING *** Currently passing math expression to a ")
-                wxT("function is not allowed in \"") + originalEquation + wxT("\""));
+               ("*** WARNING *** Currently passing math expression to a "
+                "function is not allowed in \"" + originalEquation + "\"");
          
          fRunner->AddFunctionInput(inputs[i]);
          
@@ -806,7 +806,7 @@ MathNode* MathParser::CreateNode(const wxString &type, const wxString &exp)
       }
       
       // add function output arguments
-      fRunner->AddFunctionOutput(wxT(""));
+      fRunner->AddFunctionOutput("");
       
       // set function inputs and outputs to FunctionManager through FunctionRunner
       fRunner->SetFunctionInputs();
@@ -815,7 +815,7 @@ MathNode* MathParser::CreateNode(const wxString &type, const wxString &exp)
    
    #if DEBUG_CREATE_NODE
    MessageInterface::ShowMessage
-      (wxT("MathParser::CreateNode() '%s' returning node <%p><%s>\n"), exp.c_str(), node,
+      ("MathParser::CreateNode() '%s' returning node <%p><%s>\n", exp.c_str(), node,
        node->GetTypeName().c_str());
    #endif
    
@@ -824,7 +824,7 @@ MathNode* MathParser::CreateNode(const wxString &type, const wxString &exp)
 
 
 //------------------------------------------------------------------------------
-// StringArray Decompose(const wxString &str)
+// StringArray Decompose(const std::string &str)
 //------------------------------------------------------------------------------
 /**
  * Breaks string into operator, left and right elements.
@@ -842,75 +842,75 @@ MathNode* MathParser::CreateNode(const wxString &type, const wxString &exp)
  * @return StringArray of elements
  */
 //------------------------------------------------------------------------------
-StringArray MathParser::Decompose(const wxString &str)
+StringArray MathParser::Decompose(const std::string &str)
 {
    #if DEBUG_DECOMPOSE
    MessageInterface::ShowMessage
-      (wxT("MathParser::Decompose() entered, str=%s\n"), str.c_str());
+      ("MathParser::Decompose() entered, str=%s\n", str.c_str());
    #endif
    
    StringArray items = ParseParenthesis(str);
    
    #if DEBUG_DECOMPOSE
-   WriteItems(wxT("MathParser::Decompose() after ParseParenthesis() "), items);
+   WriteItems("MathParser::Decompose() after ParseParenthesis() ", items);
    #endif
    
    // if no operator found and left is not empty, decompose again
-   if (items[0] == wxT("") && items[1] != wxT(""))
+   if (items[0] == "" && items[1] != "")
       items = Decompose(items[1]);
    
-   wxString str1;
+   std::string str1;
    str1 = str;
    
-   if (items[0] == wxT("") && str[0] == wxT('(') && str[str.size()-1] == wxT(')'))
+   if (items[0] == "" && str[0] == '(' && str[str.size()-1] == ')')
    {
       if (GmatStringUtil::IsOuterParen(str))
       {
          str1 = str.substr(1, str.size()-2);
          #if DEBUG_DECOMPOSE
          MessageInterface::ShowMessage
-            (wxT("MathParser::Decompose() Found outer parenthesis. str1=%s\n"), str1.c_str());
+            ("MathParser::Decompose() Found outer parenthesis. str1=%s\n", str1.c_str());
          #endif
       }
    }
    
-   if (items[0] == wxT("function"))
-      items[0] = wxT("");
+   if (items[0] == "function")
+      items[0] = "";
    
-   if (items[0] == wxT(""))
+   if (items[0] == "")
    {
       items = ParseAddSubtract(str1);
       
-      if (items[0] == wxT("number"))
+      if (items[0] == "number")
       {
          #if DEBUG_DECOMPOSE
-         WriteItems(wxT("MathParser::Decompose(): It is a number, returning "), items);
+         WriteItems("MathParser::Decompose(): It is a number, returning ", items);
          #endif
-         items[0] = wxT("");
+         items[0] = "";
          return items;
       }
       
-      if (items[0] == wxT(""))
+      if (items[0] == "")
       {
          items = ParseMultDivide(str1);
          
-         if (items[0] == wxT(""))
+         if (items[0] == "")
          {
             items = ParsePower(str1);
             
-            if (items[0] == wxT(""))
+            if (items[0] == "")
             {
                items = ParseUnary(str1);
                         
-               if (items[0] == wxT(""))
+               if (items[0] == "")
                {
                   items = ParseMathFunctions(str1);
                
-                  if (items[0] == wxT(""))
+                  if (items[0] == "")
                   {
                      items = ParseMatrixOps(str1);
                   
-                     if (items[0] == wxT(""))
+                     if (items[0] == "")
                      {
                         items = ParseUnitConversion(str1);
                      
@@ -923,7 +923,7 @@ StringArray MathParser::Decompose(const wxString &str)
    }
    
    #if DEBUG_DECOMPOSE
-   WriteItems(wxT("MathParser::Decompose(): returning "), items);
+   WriteItems("MathParser::Decompose(): returning ", items);
    #endif
    
    return items;
@@ -931,37 +931,37 @@ StringArray MathParser::Decompose(const wxString &str)
 
 
 //------------------------------------------------------------------------------
-// StringArray ParseParenthesis(const wxString &str)
+// StringArray ParseParenthesis(const std::string &str)
 //------------------------------------------------------------------------------
 /**
  * Returns string array of operator, left and right
  */
 //------------------------------------------------------------------------------
-StringArray MathParser::ParseParenthesis(const wxString &str)
+StringArray MathParser::ParseParenthesis(const std::string &str)
 {
    #if DEBUG_PARENTHESIS
    MessageInterface::ShowMessage
-      (wxT("MathParser::ParseParenthesis() entered, str=%s\n"), str.c_str());
+      ("MathParser::ParseParenthesis() entered, str=%s\n", str.c_str());
    #endif
    
    StringArray items;
-   wxString op = wxT("");
-   wxString left = wxT("");
-   wxString right = wxT("");
-   wxString::size_type opIndex;
+   std::string op = "";
+   std::string left = "";
+   std::string right = "";
+   std::string::size_type opIndex;
    
    //-----------------------------------------------------------------
    // if no opening parenthesis '(' found, just return
    //-----------------------------------------------------------------
-   wxString::size_type index1 = str.find(wxT('('));
+   std::string::size_type index1 = str.find('(');
    
    if (index1 == str.npos)
    {
       FillItems(items, op, left, right);
       
       #if DEBUG_PARENTHESIS
-      WriteItems(wxT("MathParser::ParseParenthesis(): open parenthesis not found.")
-                 wxT(" returning "), items);
+      WriteItems("MathParser::ParseParenthesis(): open parenthesis not found."
+                 " returning ", items);
       #endif
       
       return items;
@@ -971,17 +971,17 @@ StringArray MathParser::ParseParenthesis(const wxString &str)
    // if lowest operator is + or - and not negate, just return
    //-----------------------------------------------------------------
    Integer index;
-   wxString opStr1 = FindLowestOperator(str, index);
+   std::string opStr1 = FindLowestOperator(str, index);
    #if DEBUG_PARENTHESIS
-   MessageInterface::ShowMessage(wxT("   lowestOperator found =[%s]\n"), opStr1.c_str());
+   MessageInterface::ShowMessage("   lowestOperator found =[%s]\n", opStr1.c_str());
    #endif
-   if ((opStr1 == wxT("+") || opStr1 == wxT("-")) && index != 0)
+   if ((opStr1 == "+" || opStr1 == "-") && index != 0)
    {
       FillItems(items, op, left, right);
       
       #if DEBUG_PARENTHESIS
-      WriteItems(wxT("MathParser::ParseParenthesis(): lowest + or - found.")
-                 wxT(" returning "), items);
+      WriteItems("MathParser::ParseParenthesis(): lowest + or - found."
+                 " returning ", items);
       #endif
       
       return items;      
@@ -990,7 +990,7 @@ StringArray MathParser::ParseParenthesis(const wxString &str)
    //-----------------------------------------------------------------
    // if lowest operator is * or /, just return with operator
    //-----------------------------------------------------------------
-   if (opStr1 == wxT("*") || opStr1 == wxT("/"))
+   if (opStr1 == "*" || opStr1 == "/")
    {      
       bool opFound1;      
       op = GetOperatorName(opStr1, opFound1);
@@ -1000,8 +1000,8 @@ StringArray MathParser::ParseParenthesis(const wxString &str)
       FillItems(items, op, left, right);
       
       #if DEBUG_PARENTHESIS
-      WriteItems(wxT("MathParser::ParseParenthesis(): lowest * or / found.")
-                 wxT(" returning "), items);
+      WriteItems("MathParser::ParseParenthesis(): lowest * or / found."
+                 " returning ", items);
       #endif
       
       return items;
@@ -1010,7 +1010,7 @@ StringArray MathParser::ParseParenthesis(const wxString &str)
    //-----------------------------------------------------------------
    // if lowest operator is ^, just return with operator
    //-----------------------------------------------------------------
-   if (opStr1 == wxT("^"))
+   if (opStr1 == "^")
    {      
       bool opFound1;      
       op = GetOperatorName(opStr1, opFound1);
@@ -1020,8 +1020,8 @@ StringArray MathParser::ParseParenthesis(const wxString &str)
       FillItems(items, op, left, right);
       
       #if DEBUG_PARENTHESIS
-      WriteItems(wxT("MathParser::ParseParenthesis(): lowest ^ found.")
-                 wxT(" returning "), items);
+      WriteItems("MathParser::ParseParenthesis(): lowest ^ found."
+                 " returning ", items);
       #endif
       
       return items;
@@ -1030,7 +1030,7 @@ StringArray MathParser::ParseParenthesis(const wxString &str)
    //-----------------------------------------------------------------
    // if lowest operator is ', just return with operator
    //-----------------------------------------------------------------
-   if (opStr1 == wxT("'"))
+   if (opStr1 == "'")
    {      
       bool opFound1;      
       op = GetOperatorName(opStr1, opFound1);
@@ -1040,8 +1040,8 @@ StringArray MathParser::ParseParenthesis(const wxString &str)
       FillItems(items, op, left, right);
       
       #if DEBUG_PARENTHESIS
-      WriteItems(wxT("MathParser::ParseParenthesis(): lowest ' found.")
-                 wxT(" returning "), items);
+      WriteItems("MathParser::ParseParenthesis(): lowest ' found."
+                 " returning ", items);
       #endif
       
       return items;
@@ -1050,11 +1050,11 @@ StringArray MathParser::ParseParenthesis(const wxString &str)
    //-----------------------------------------------------------------
    // if ( is part of fuction, just return first parenthesis
    //-----------------------------------------------------------------
-   wxString strBeforeParen = str.substr(0, index1);
+   std::string strBeforeParen = str.substr(0, index1);
    
    #if DEBUG_PARENTHESIS
    MessageInterface::ShowMessage
-      (wxT("   ParseParenthesis() strBeforeParen=%s\n"), strBeforeParen.c_str());
+      ("   ParseParenthesis() strBeforeParen=%s\n", strBeforeParen.c_str());
    #endif
    
    if (IsParenPartOfFunction(strBeforeParen))
@@ -1064,8 +1064,8 @@ StringArray MathParser::ParseParenthesis(const wxString &str)
       
       #if DEBUG_PARENTHESIS
       MessageInterface::ShowMessage
-         (wxT("   ParseParenthesis() Parenthesis is part of function. str=%s, size=%u, ")
-          wxT("index1=%u, index2=%u\n"), str.c_str(), str.size(), index1, index2);
+         ("   ParseParenthesis() Parenthesis is part of function. str=%s, size=%u, "
+          "index1=%u, index2=%u\n", str.c_str(), str.size(), index1, index2);
       #endif
       
       // if last char is ')'
@@ -1073,72 +1073,72 @@ StringArray MathParser::ParseParenthesis(const wxString &str)
       {
          #if DEBUG_PARENTHESIS
          MessageInterface::ShowMessage
-            (wxT("   ParseParenthesis() last char is ) so find function name\n"));
+            ("   ParseParenthesis() last char is ) so find function name\n");
          #endif
          // find math function
          op = GetFunctionName(GMAT_FUNCTION, str, left);
-         if (op == wxT(""))
+         if (op == "")
             op = GetFunctionName(MATH_FUNCTION, str, left);
-         if (op == wxT(""))
+         if (op == "")
             op = GetFunctionName(MATRIX_FUNCTION, str, left);
-         if (op == wxT(""))
+         if (op == "")
             op = GetFunctionName(UNIT_CONVERSION, str, left);
       }
       
       #if DEBUG_PARENTHESIS
-      MessageInterface::ShowMessage(wxT("   ParseParenthesis() op='%s'\n"), op.c_str());
+      MessageInterface::ShowMessage("   ParseParenthesis() op='%s'\n", op.c_str());
       #endif
       
       // See if there is an operator before this function
-      wxString op1, left1, right1;
+      std::string op1, left1, right1;
       op1 = FindOperatorFrom(str, 0, left1, right1, opIndex);
-      if (op1 != wxT("") && opIndex != str.npos)
+      if (op1 != "" && opIndex != str.npos)
       {
          if (opIndex < index1)
          {
             // return blank for next parse
             #if DEBUG_PARENTHESIS
-            MessageInterface::ShowMessage(wxT("found operator before function\n"));
+            MessageInterface::ShowMessage("found operator before function\n");
             #endif
             
-            FillItems(items, wxT(""), wxT(""), wxT(""));
+            FillItems(items, "", "", "");
             return items;
          }
       }
       
       // Handle special atan2(y,x) function
-      if (op == wxT("atan2"))
+      if (op == "atan2")
       {
          StringArray parts = GmatStringUtil::SeparateByComma(str);
 
          #ifdef DEBUG_ATAN2
          for (UnsignedInt i = 0; i < parts.size(); i++)
-            MessageInterface::ShowMessage(wxT("..... (1) %d '%s'\n"), i, parts[i].c_str());
+            MessageInterface::ShowMessage("..... (1) %d '%s'\n", i, parts[i].c_str());
          #endif
          
          bool parsingFailed = true;
          
          if (parts.size() == 1)
          {
-            wxString str1 = str.substr(index1+1, index2-index1-1);
+            std::string str1 = str.substr(index1+1, index2-index1-1);
             parts = GmatStringUtil::SeparateByComma(str1);
 
             #ifdef DEBUG_ATAN2
             for (UnsignedInt i = 0; i < parts.size(); i++)
-               MessageInterface::ShowMessage(wxT("..... (2) %d '%s'\n"), i, parts[i].c_str());
+               MessageInterface::ShowMessage("..... (2) %d '%s'\n", i, parts[i].c_str());
             #endif
             
             if (parts.size() == 2)
             {
                left = parts[0];
                right = parts[1];
-               if (left != wxT("") && right != wxT(""))
+               if (left != "" && right != "")
                   parsingFailed = false;
             }
          }
          
          if (parsingFailed)
-            throw MathException(wxT("Atan2() - Missing or invalid input arguments"));
+            throw MathException("Atan2() - Missing or invalid input arguments");
       }
       else
       {
@@ -1148,8 +1148,8 @@ StringArray MathParser::ParseParenthesis(const wxString &str)
       FillItems(items, op, left, right);
       
       #if DEBUG_PARENTHESIS
-      WriteItems(wxT("MathParser::ParseParenthesis() - parenthesis is part ")
-                 wxT("of function. returning "), items);
+      WriteItems("MathParser::ParseParenthesis() - parenthesis is part "
+                 "of function. returning ", items);
       #endif
       
       return items;
@@ -1159,17 +1159,17 @@ StringArray MathParser::ParseParenthesis(const wxString &str)
    //-----------------------------------------------------------------
    // If it is ^(-1), handle it later in DecomposeMatrixOps()
    //-----------------------------------------------------------------
-   if (str.find(wxT("^(-1)")) != str.npos)
+   if (str.find("^(-1)") != str.npos)
    {
       #if DEBUG_INVERSE_OP
       MessageInterface::ShowMessage
-         (wxT("MathParser::ParseParenthesis() found ^(-1) str=%s\n"), str.c_str());
+         ("MathParser::ParseParenthesis() found ^(-1) str=%s\n", str.c_str());
       #endif
       
       FillItems(items, op, left, right);
       
       #if DEBUG_PARENTHESIS
-      WriteItems(wxT("MathParser::ParseParenthesis() found ^(-1)returning "), items);
+      WriteItems("MathParser::ParseParenthesis() found ^(-1)returning ", items);
       #endif
       
       return items;
@@ -1185,8 +1185,8 @@ StringArray MathParser::ParseParenthesis(const wxString &str)
       FillItems(items, op, left, right);
       
       #if DEBUG_PARENTHESIS
-      WriteItems(wxT("MathParser::ParseParenthesis() complete parenthesis found.")
-                 wxT(" returning "), items);
+      WriteItems("MathParser::ParseParenthesis() complete parenthesis found."
+                 " returning ", items);
       #endif
       
       return items;
@@ -1197,8 +1197,8 @@ StringArray MathParser::ParseParenthesis(const wxString &str)
    //-----------------------------------------------------------------
    // find the lowest operator
    //-----------------------------------------------------------------
-   wxString opStr = FindLowestOperator(str, index2);
-   if (opStr != wxT(""))
+   std::string opStr = FindLowestOperator(str, index2);
+   if (opStr != "")
    {
       bool opFound;      
       op = GetOperatorName(opStr, opFound);
@@ -1208,18 +1208,18 @@ StringArray MathParser::ParseParenthesis(const wxString &str)
          left = str.substr(0, index2);
          right = str.substr(index2+1, str.npos);
          
-         if (op == wxT("Subtract") && left == wxT(""))
+         if (op == "Subtract" && left == "")
          {
-            op = wxT("Negate");
+            op = "Negate";
             left = right;
-            right = wxT("");
+            right = "";
          }
          
          FillItems(items, op, left, right);
          
          #if DEBUG_PARENTHESIS
-         WriteItems(wxT("MathParser::ParseParenthesis() found lowest operator ")
-                    wxT("returning "), items);
+         WriteItems("MathParser::ParseParenthesis() found lowest operator "
+                    "returning ", items);
          #endif
          return items;
       }
@@ -1228,7 +1228,7 @@ StringArray MathParser::ParseParenthesis(const wxString &str)
    {
       #if DEBUG_PARENTHESIS
       MessageInterface::ShowMessage
-         (wxT("   ParseParenthesis() No operator found\n"));
+         ("   ParseParenthesis() No operator found\n");
       #endif
       
       //--------------------------------------------------------------
@@ -1237,11 +1237,11 @@ StringArray MathParser::ParseParenthesis(const wxString &str)
 //       // Check if name before first parenthesis is GmatFunction
 //       if (IsGmatFunction(strBeforeParen))
 //       {
-//          FillItems(items, strBeforeParen, str.substr(index1+1), wxT(""));
+//          FillItems(items, strBeforeParen, str.substr(index1+1), "");
          
 //          #if DEBUG_PARENTHESIS
-//          WriteItems(wxT("MathParser::ParseParenthesis() found lowest operator ")
-//                     wxT("returning "), items);
+//          WriteItems("MathParser::ParseParenthesis() found lowest operator "
+//                     "returning ", items);
 //          #endif
 //          return items;
 //       }
@@ -1252,7 +1252,7 @@ StringArray MathParser::ParseParenthesis(const wxString &str)
    FillItems(items, op, left, right);
    
    #if DEBUG_PARENTHESIS
-   WriteItems(wxT("MathParser::ParseParenthesis() returning "), items);
+   WriteItems("MathParser::ParseParenthesis() returning ", items);
    #endif
    
    return items;
@@ -1260,44 +1260,44 @@ StringArray MathParser::ParseParenthesis(const wxString &str)
 
 
 //------------------------------------------------------------------------------
-// wxString FindOperatorFrom(const wxString &str, wxString::size_type start,
-//                              wxString &left, wxString &right,
-//                              wxString::size_type &opIndex)
+// std::string FindOperatorFrom(const std::string &str, std::string::size_type start,
+//                              std::string &left, std::string &right,
+//                              std::string::size_type &opIndex)
 //------------------------------------------------------------------------------
-wxString MathParser::FindOperatorFrom(const wxString &str, wxString::size_type start,
-                                         wxString &left, wxString &right,
-                                         wxString::size_type &opIndex)
+std::string MathParser::FindOperatorFrom(const std::string &str, std::string::size_type start,
+                                         std::string &left, std::string &right,
+                                         std::string::size_type &opIndex)
 {
    #if DEBUG_FIND_OPERATOR
    MessageInterface::ShowMessage
-      (wxT("MathParser::FindOperatorFrom() entered, str=%s, start=%u\n"), str.c_str(), start);
+      ("MathParser::FindOperatorFrom() entered, str=%s, start=%u\n", str.c_str(), start);
    #endif
    
    StringArray items;
-   wxString op;
-   wxString::size_type index;
-   wxString::size_type index1 = str.find(wxT("+"), start);
-   wxString::size_type index2 = str.find(wxT("-"), start);
+   std::string op;
+   std::string::size_type index;
+   std::string::size_type index1 = str.find("+", start);
+   std::string::size_type index2 = str.find("-", start);
    
    if (index1 == str.npos && index2 == str.npos)
    {
-      index1 = str.find(wxT("*"), start);
-      index2 = str.find(wxT("/"), start);
+      index1 = str.find("*", start);
+      index2 = str.find("/", start);
       
       if (index1 == str.npos && index2 == str.npos)
-         index1 = str.find(wxT("^"), start);
+         index1 = str.find("^", start);
       
       if (index1 != str.npos)
       {
          #if DEBUG_INVERSE_OP
          MessageInterface::ShowMessage
-            (wxT("FindOperatorFrom() found ^ str=%s, index1=%u\n"),
+            ("FindOperatorFrom() found ^ str=%s, index1=%u\n",
              str.c_str(), index1);
          #endif
          
          // try for ^(-1) for inverse
-         if (str.substr(index1, 5) == wxT("^(-1)"))
-            return wxT(""); // handle it later in DecomposeMatrixOps()
+         if (str.substr(index1, 5) == "^(-1)")
+            return ""; // handle it later in DecomposeMatrixOps()
       }
    }
    
@@ -1316,7 +1316,7 @@ wxString MathParser::FindOperatorFrom(const wxString &str, wxString::size_type s
    
    #if DEBUG_FIND_OPERATOR
    MessageInterface::ShowMessage
-      (wxT("MathParser::FindOperatorFrom() returning op=%s, left=%s, right=%s, opIndex=%u\n"),
+      ("MathParser::FindOperatorFrom() returning op=%s, left=%s, right=%s, opIndex=%u\n",
        op.c_str(), left.c_str(), right.c_str(), opIndex);
    #endif
    
@@ -1326,36 +1326,36 @@ wxString MathParser::FindOperatorFrom(const wxString &str, wxString::size_type s
 
 
 //------------------------------------------------------------------------------
-// wxString GetOperatorName(const wxString &op, bool &opFound)
+// std::string GetOperatorName(const std::string &op, bool &opFound)
 //------------------------------------------------------------------------------
-wxString MathParser::GetOperatorName(const wxString &op, bool &opFound)
+std::string MathParser::GetOperatorName(const std::string &op, bool &opFound)
 {
    #if DEBUG_PARENTHESIS
    MessageInterface::ShowMessage
-      (wxT("MathParser::GetOperatorName() op=%s\n"), op.c_str());
+      ("MathParser::GetOperatorName() op=%s\n", op.c_str());
    #endif
    
-   wxString opName = wxT("<") + op + wxT("> :Unknown Operator");
+   std::string opName = "<" + op + "> :Unknown Operator";
    opFound = true;
    
-   if (op == wxT("+"))
-      opName = wxT("Add");
-   else if (op == wxT("-"))
-      opName = wxT("Subtract");
-   else if (op == wxT("*"))
-      opName = wxT("Multiply");
-   else if (op == wxT("/"))
-      opName = wxT("Divide");
-   else if (op == wxT("^"))
-      opName = wxT("Power");
-   else if (op == wxT("'"))
-      opName = wxT("Transpose");
+   if (op == "+")
+      opName = "Add";
+   else if (op == "-")
+      opName = "Subtract";
+   else if (op == "*")
+      opName = "Multiply";
+   else if (op == "/")
+      opName = "Divide";
+   else if (op == "^")
+      opName = "Power";
+   else if (op == "'")
+      opName = "Transpose";
    else
       opFound = false;
    
    #if DEBUG_PARENTHESIS
    MessageInterface::ShowMessage
-      (wxT("MathParser::GetOperatorName() opFound=%u, opName=%s\n"), opFound,
+      ("MathParser::GetOperatorName() opFound=%u, opName=%s\n", opFound,
        opName.c_str());
    #endif
    
@@ -1364,7 +1364,7 @@ wxString MathParser::GetOperatorName(const wxString &op, bool &opFound)
 
 
 //------------------------------------------------------------------------------
-// wxString FindOperator(const wxString &str, Integer &opIndex)
+// std::string FindOperator(const std::string &str, Integer &opIndex)
 //------------------------------------------------------------------------------
 /*
  * Finds the right most lowest operator from the input string.
@@ -1385,36 +1385,36 @@ wxString MathParser::GetOperatorName(const wxString &op, bool &opFound)
  *
  * @return  Single operator,
  *          First operator, if double operator found
- *          wxT(""), if operator not found
+ *          "", if operator not found
  */
 //------------------------------------------------------------------------------
-wxString MathParser::FindOperator(const wxString &str, Integer &opIndex)
+std::string MathParser::FindOperator(const std::string &str, Integer &opIndex)
 {
    #if DEBUG_FIND_OPERATOR
    MessageInterface::ShowMessage
-      (wxT("MathParser::FindOperator() entered, str=[ %s ]\n"), str.c_str());
+      ("MathParser::FindOperator() entered, str=[ %s ]\n", str.c_str());
    #endif
    
-   wxString str1 = str;
+   std::string str1 = str;
    
    // Replace scientific notation e- E- e+ E+
-   str1 = GmatStringUtil::ReplaceNumber(str1, wxT("e-"), wxT("e#"));
-   str1 = GmatStringUtil::ReplaceNumber(str1, wxT("e+"), wxT("e#"));
-   str1 = GmatStringUtil::ReplaceNumber(str1, wxT("E-"), wxT("e#"));
-   str1 = GmatStringUtil::ReplaceNumber(str1, wxT("E+"), wxT("e#"));
+   str1 = GmatStringUtil::ReplaceNumber(str1, "e-", "e#");
+   str1 = GmatStringUtil::ReplaceNumber(str1, "e+", "e#");
+   str1 = GmatStringUtil::ReplaceNumber(str1, "E-", "e#");
+   str1 = GmatStringUtil::ReplaceNumber(str1, "E+", "e#");
    
    StringArray items;
-   wxString op;
-   wxString::size_type index;
-   wxString::size_type index1 = str1.find_last_of(wxT("+"));
-   wxString::size_type index2 = str1.find_last_of(wxT("-"));
-   wxString::size_type index3 = str1.find_first_of(wxT("-"));
+   std::string op;
+   std::string::size_type index;
+   std::string::size_type index1 = str1.find_last_of("+");
+   std::string::size_type index2 = str1.find_last_of("-");
+   std::string::size_type index3 = str1.find_first_of("-");
    bool unaryMinusFound = false;
    bool checkNext = true;
    
    #if DEBUG_FIND_OPERATOR
    MessageInterface::ShowMessage
-      (wxT("FindOperator() for +,- index1=%u, index2=%u, index3=%u\n"), index1, index2, index3);
+      ("FindOperator() for +,- index1=%u, index2=%u, index3=%u\n", index1, index2, index3);
    #endif
    
    if (index1 != str1.npos || index2 != str1.npos)
@@ -1424,100 +1424,100 @@ wxString MathParser::FindOperator(const wxString &str, Integer &opIndex)
    if (index3 != str1.npos)
    {
       #if DEBUG_FIND_OPERATOR
-      MessageInterface::ShowMessage(wxT("   Found unary minus operator\n"));
+      MessageInterface::ShowMessage("   Found unary minus operator\n");
       #endif
       unaryMinusFound = true;
       if (index1 != str1.npos || index2 != str1.npos)
       {
-         wxString::size_type index4;
+         std::string::size_type index4;
          if (index1 != str1.npos && index2 != str1.npos)
             index4 = index1 > index2 ? index1 : index2;
          else
             index4 = index1 == str1.npos ? index2 : index1;
          
          #if DEBUG_FIND_OPERATOR
-         MessageInterface::ShowMessage(wxT("   index4=%u\n"), index4);
+         MessageInterface::ShowMessage("   index4=%u\n", index4);
          #endif
          
          if ((index4 > 0) &&
-             (str[index4-1] == wxT('*') || str[index4-1] == wxT('/')))
+             (str[index4-1] == '*' || str[index4-1] == '/'))
             checkNext = true;
       }
    }
    
    #if DEBUG_FIND_OPERATOR
-   MessageInterface::ShowMessage(wxT("FindOperator() %s *,/\n"), checkNext ? wxT("check") : wxT("skip"));
+   MessageInterface::ShowMessage("FindOperator() %s *,/\n", checkNext ? "check" : "skip");
    #endif
    
    if (checkNext)
    {
-      index1 = str1.find_last_of(wxT("*"));
-      index2 = str1.find_last_of(wxT("/"));
+      index1 = str1.find_last_of("*");
+      index2 = str1.find_last_of("/");
       
       #if DEBUG_FIND_OPERATOR
       MessageInterface::ShowMessage
-         (wxT("FindOperator() for *,/ index1=%u, index2=%u\n"), index1, index2);
+         ("FindOperator() for *,/ index1=%u, index2=%u\n", index1, index2);
       #endif
       
       if (index1 == str1.npos && index2 == str1.npos)
       {
          if (unaryMinusFound)
          {
-            op = wxT("-");
+            op = "-";
             opIndex = 0;
             
             #if DEBUG_FIND_OPERATOR
             MessageInterface::ShowMessage
-               (wxT("FindOperator() returning op=%s, opIndex=%u\n"), op.c_str(), opIndex);
+               ("FindOperator() returning op=%s, opIndex=%u\n", op.c_str(), opIndex);
             #endif
             
             return op;            
          }
          
-         index1 = str1.find_last_of(wxT("^"));
+         index1 = str1.find_last_of("^");
          
          #if DEBUG_FIND_OPERATOR
          MessageInterface::ShowMessage
-            (wxT("FindOperator() for ^ index1=%u\n"), index1);
+            ("FindOperator() for ^ index1=%u\n", index1);
          #endif
          
          if (index1 != str1.npos)
          {
             #if DEBUG_FIND_OPERATOR
             MessageInterface::ShowMessage
-               (wxT("FindOperator() found ^ str=%s, index1=%u\n"),
+               ("FindOperator() found ^ str=%s, index1=%u\n",
                 str1.c_str(), index1);
             #endif
             
             // try for ^(-1) for inverse
-            if (str1.substr(index1, 5) == wxT("^(-1)"))
+            if (str1.substr(index1, 5) == "^(-1)")
             {
                #if DEBUG_FIND_OPERATOR
                MessageInterface::ShowMessage
-                  (wxT("MathParser::FindOperator() found ^(-1) so returning \"\""));
+                  ("MathParser::FindOperator() found ^(-1) so returning \"\"");
                #endif
-               return wxT("");
+               return "";
             }
          }
          else
          {
             // Find ' for transpose
-            index1 = str1.find_last_of(wxT("'"));
+            index1 = str1.find_last_of("'");
             
             if (index1 != str1.npos)
             {
                #if DEBUG_FIND_OPERATOR
                MessageInterface::ShowMessage
-                  (wxT("FindOperator() found ' str=%s, index1=%u\n"), str1.c_str(), index1);
+                  ("FindOperator() found ' str=%s, index1=%u\n", str1.c_str(), index1);
                #endif
             }
             else
             {
                #if DEBUG_FIND_OPERATOR
                MessageInterface::ShowMessage
-                  (wxT("MathParser::FindOperator() returning \"\""));
+                  ("MathParser::FindOperator() returning \"\"");
                #endif
-               return wxT("");
+               return "";
             }
          }
       }
@@ -1532,8 +1532,8 @@ wxString MathParser::FindOperator(const wxString &str, Integer &opIndex)
    
    #if DEBUG_FIND_OPERATOR
    MessageInterface::ShowMessage
-      (wxT("FindOperator() Checking for double operator, index=%u, index1=%u, ")
-       wxT("index2=%u\n"), index, index1, index2);
+      ("FindOperator() Checking for double operator, index=%u, index1=%u, "
+       "index2=%u\n", index, index1, index2);
    #endif
    
    // check for double operator such as *-, /-
@@ -1543,9 +1543,9 @@ wxString MathParser::FindOperator(const wxString &str, Integer &opIndex)
       op = str1.substr(index, 1);
       opIndex = index;
    }
-   else if (str[index-1] == wxT('+') || str[index-1] == wxT('-') ||
-            str[index-1] == wxT('*') || str[index-1] == wxT('/') ||
-            str[index-1] == wxT('^'))
+   else if (str[index-1] == '+' || str[index-1] == '-' ||
+            str[index-1] == '*' || str[index-1] == '/' ||
+            str[index-1] == '^')
    {
       op = str1.substr(index-1, 1);
       opIndex = index-1;
@@ -1557,13 +1557,13 @@ wxString MathParser::FindOperator(const wxString &str, Integer &opIndex)
    }
    else
    {
-      op = wxT("");
+      op = "";
       opIndex = -1;
    }
    
    #if DEBUG_FIND_OPERATOR
    MessageInterface::ShowMessage
-      (wxT("FindOperator() returning op=%s, opIndex=%u\n"), op.c_str(), opIndex);
+      ("FindOperator() returning op=%s, opIndex=%u\n", op.c_str(), opIndex);
    #endif
    
    return op;
@@ -1572,32 +1572,32 @@ wxString MathParser::FindOperator(const wxString &str, Integer &opIndex)
 
 
 //------------------------------------------------------------------------------
-// wxString GetOperator(const IntegerMap::iterator &pos1,
+// std::string GetOperator(const IntegerMap::iterator &pos1,
 //                         const IntegerMap::iterator &pos2,
 //                         const IntegerMap &opIndexMap,
 //                         Integer &opIndex)
 //------------------------------------------------------------------------------
-wxString MathParser::GetOperator(const IntegerMap::iterator &pos1,
+std::string MathParser::GetOperator(const IntegerMap::iterator &pos1,
                                     const IntegerMap::iterator &pos2,
                                     const IntegerMap &opIndexMap,
                                     Integer &opIndex)
 {
    #if DEBUG_FIND_OPERATOR
-   MessageInterface::ShowMessage(wxT("GetOperator() entered\n"));
+   MessageInterface::ShowMessage("GetOperator() entered\n");
    if (pos1 != opIndexMap.end())
       MessageInterface::ShowMessage
-         (wxT("   pos1=<%s><%d>\n"), pos1->first.c_str(), pos1->second);
+         ("   pos1=<%s><%d>\n", pos1->first.c_str(), pos1->second);
    else
-      MessageInterface::ShowMessage(wxT("   pos1 is NULL\n"));
+      MessageInterface::ShowMessage("   pos1 is NULL\n");
    
    if (pos2 != opIndexMap.end())
       MessageInterface::ShowMessage
-         (wxT("   pos2=<%s><%d>\n"), pos2->first.c_str(), pos2->second);
+         ("   pos2=<%s><%d>\n", pos2->first.c_str(), pos2->second);
    else
-      MessageInterface::ShowMessage(wxT("   pos2 is NULL\n"));
+      MessageInterface::ShowMessage("   pos2 is NULL\n");
    #endif
    
-   wxString opStr;
+   std::string opStr;
    Integer index = -1;
    
    if (pos1 != opIndexMap.end() || pos2 != opIndexMap.end())
@@ -1633,7 +1633,7 @@ wxString MathParser::GetOperator(const IntegerMap::iterator &pos1,
    
    #if DEBUG_FIND_OPERATOR
    MessageInterface::ShowMessage
-      (wxT("GetOperator() return opStr='%s', opIndex=%d\n"), opStr.c_str(), opIndex);
+      ("GetOperator() return opStr='%s', opIndex=%d\n", opStr.c_str(), opIndex);
    #endif
    
    return opStr;
@@ -1641,22 +1641,22 @@ wxString MathParser::GetOperator(const IntegerMap::iterator &pos1,
 
 
 //------------------------------------------------------------------------------
-// UnsignedInt FindSubtract(const wxString &str, wxString::size_type start)
+// UnsignedInt FindSubtract(const std::string &str, std::string::size_type start)
 //------------------------------------------------------------------------------
-wxString::size_type MathParser::FindSubtract(const wxString &str,
-                                                wxString::size_type start)
+std::string::size_type MathParser::FindSubtract(const std::string &str,
+                                                std::string::size_type start)
 {
    #if DEBUG_INVERSE_OP
    MessageInterface::ShowMessage
-      (wxT("MathParser::FindSubtract() str=%s, start=%u\n"), str.c_str(), start);
+      ("MathParser::FindSubtract() str=%s, start=%u\n", str.c_str(), start);
    #endif
    
-   wxString::size_type index2 = str.find(wxT('-'), start);
-   wxString::size_type index3 = str.find(wxT("^(-1)"), start);
+   std::string::size_type index2 = str.find('-', start);
+   std::string::size_type index3 = str.find("^(-1)", start);
    
    #if DEBUG_INVERSE_OP
    MessageInterface::ShowMessage
-      (wxT("MathParser::FindSubtract() index2=%u, index3=%u\n"), index2, index3);
+      ("MathParser::FindSubtract() index2=%u, index3=%u\n", index2, index3);
    #endif
    
    // found no ^(-1)
@@ -1664,7 +1664,7 @@ wxString::size_type MathParser::FindSubtract(const wxString &str,
    {
       #if DEBUG_INVERSE_OP
       MessageInterface::ShowMessage
-         (wxT("MathParser::FindSubtract() found no ^(-1) returning index2=%u\n"),
+         ("MathParser::FindSubtract() found no ^(-1) returning index2=%u\n",
           index2);
       #endif
       return index2;
@@ -1675,8 +1675,8 @@ wxString::size_type MathParser::FindSubtract(const wxString &str,
    {
       #if DEBUG_INVERSE_OP
       MessageInterface::ShowMessage
-         (wxT("MathParser::FindSubtract() found - inside of ^(-1) ")
-          wxT("returning str.size()=%u\n"), str.size());
+         ("MathParser::FindSubtract() found - inside of ^(-1) "
+          "returning str.size()=%u\n", str.size());
       #endif
       return str.size();
    }
@@ -1686,8 +1686,8 @@ wxString::size_type MathParser::FindSubtract(const wxString &str,
    {
       #if DEBUG_INVERSE_OP
       MessageInterface::ShowMessage
-         (wxT("MathParser::FindSubtract() found - and ^(-1) ")
-          wxT("returning index2=%u\n"), index2);
+         ("MathParser::FindSubtract() found - and ^(-1) "
+          "returning index2=%u\n", index2);
       #endif
       return index2;
    }
@@ -1695,26 +1695,26 @@ wxString::size_type MathParser::FindSubtract(const wxString &str,
    
    if (index3 != str.npos)
    {
-      // If it has only wxT("^(-1)"), handle it later in DecomposeMatrixOps()
+      // If it has only "^(-1)", handle it later in DecomposeMatrixOps()
       if (index3+5 == str.size())
       {
          #if DEBUG_INVERSE_OP
          MessageInterface::ShowMessage
-            (wxT("MathParser::FindSubtract() found ^(-1) str=%s\n"),
+            ("MathParser::FindSubtract() found ^(-1) str=%s\n",
              str.c_str());
          MessageInterface::ShowMessage
-            (wxT("MathParser::FindSubtract() returning str.size()=%u\n"), str.size());
+            ("MathParser::FindSubtract() returning str.size()=%u\n", str.size());
          #endif
          
          return str.size();
       }
       else
       {
-         wxString::size_type index = FindSubtract(str, index3+5);
+         std::string::size_type index = FindSubtract(str, index3+5);
          
          #if DEBUG_INVERSE_OP
          MessageInterface::ShowMessage
-            (wxT("MathParser::FindSubtract() index=%u, after FindSubtract()\n"),
+            ("MathParser::FindSubtract() index=%u, after FindSubtract()\n",
              index);
          #endif
          
@@ -1726,7 +1726,7 @@ wxString::size_type MathParser::FindSubtract(const wxString &str,
    
    #if DEBUG_INVERSE_OP
    MessageInterface::ShowMessage
-      (wxT("MathParser::FindSubtract() returning str.size()=%u\n"), str.size());
+      ("MathParser::FindSubtract() returning str.size()=%u\n", str.size());
    #endif
    
    return str.size();
@@ -1734,13 +1734,13 @@ wxString::size_type MathParser::FindSubtract(const wxString &str,
 
 
 //------------------------------------------------------------------------------
-// StringArray ParseAddSubtract(const wxString &str)
+// StringArray ParseAddSubtract(const std::string &str)
 //------------------------------------------------------------------------------
-StringArray MathParser::ParseAddSubtract(const wxString &str)
+StringArray MathParser::ParseAddSubtract(const std::string &str)
 {
    #if DEBUG_ADD_SUBTRACT
    MessageInterface::ShowMessage
-      (wxT("MathParser::ParseAddSubtract() str=%s, size=%d\n"), str.c_str(), str.size());
+      ("MathParser::ParseAddSubtract() str=%s, size=%d\n", str.c_str(), str.size());
    #endif
    
    //-----------------------------------------------------------------
@@ -1750,17 +1750,17 @@ StringArray MathParser::ParseAddSubtract(const wxString &str)
    //-----------------------------------------------------------------
    
    StringArray items;
-   wxString op = wxT("");
-   wxString left;
-   wxString right;
+   std::string op = "";
+   std::string left;
+   std::string right;
 
    // find last - or +
-   wxString::size_type index1 = str.find_last_of(wxT('+'));
-   wxString::size_type index2 = str.find_last_of(wxT('-'));
+   std::string::size_type index1 = str.find_last_of('+');
+   std::string::size_type index2 = str.find_last_of('-');
    
    #if DEBUG_ADD_SUBTRACT
    MessageInterface::ShowMessage
-      (wxT("ParseAddSubtract() index1=%u, index2=%u\n"), index1, index2);
+      ("ParseAddSubtract() index1=%u, index2=%u\n", index1, index2);
    #endif
    
    //-------------------------------------------------------
@@ -1768,9 +1768,9 @@ StringArray MathParser::ParseAddSubtract(const wxString &str)
    //-------------------------------------------------------
    if (index1 == str.npos && index2 == str.npos)
    {
-      FillItems(items, wxT(""), wxT(""), wxT(""));
+      FillItems(items, "", "", "");
       #if DEBUG_ADD_SUBTRACT
-      WriteItems(wxT("ParseAddSubtract(): '+' or '-' not found"), items);
+      WriteItems("ParseAddSubtract(): '+' or '-' not found", items);
       #endif
       return items;
    }
@@ -1779,27 +1779,27 @@ StringArray MathParser::ParseAddSubtract(const wxString &str)
    // find lowest operator, expecting + or -
    //-------------------------------------------------------
    Integer index;
-   wxString opStr = FindLowestOperator(str, index);
+   std::string opStr = FindLowestOperator(str, index);
    
    #if DEBUG_ADD_SUBTRACT
    MessageInterface::ShowMessage
-      (wxT("after FindLowestOperator() opStr=%s, index=%d\n"),
+      ("after FindLowestOperator() opStr=%s, index=%d\n",
        opStr.c_str(), index);
    #endif
    
    //-------------------------------------------------------
    // lowest operator is not + or -
    //-------------------------------------------------------
-   if (opStr != wxT("+") && opStr != wxT("-"))
+   if (opStr != "+" && opStr != "-")
    {
       // Check for scientific number
       if (GmatStringUtil::IsNumber(str))
-         FillItems(items, wxT("number"), str, wxT(""));
+         FillItems(items, "number", str, "");
       else
-         FillItems(items, wxT(""), wxT(""), wxT(""));
+         FillItems(items, "", "", "");
       
       #if DEBUG_ADD_SUBTRACT
-      WriteItems(wxT("ParseAddSubtract(): lowest op is not '+' or '-'"), items);
+      WriteItems("ParseAddSubtract(): lowest op is not '+' or '-'", items);
       #endif
       return items;
    }
@@ -1811,7 +1811,7 @@ StringArray MathParser::ParseAddSubtract(const wxString &str)
    {
       #if DEBUG_INVERSE_OP
       MessageInterface::ShowMessage
-         (wxT("MathParser::ParseAddSubtract() found unary str=%s\n"), str.c_str());
+         ("MathParser::ParseAddSubtract() found unary str=%s\n", str.c_str());
       #endif
       
       FillItems(items, op, left, right);
@@ -1826,29 +1826,29 @@ StringArray MathParser::ParseAddSubtract(const wxString &str)
    op = GetOperatorName(opStr, opFound);
    
    // if double operator +- or -+ found
-   if (str[index+1] == wxT('+') || str[index+1] == wxT('-'))
+   if (str[index+1] == '+' || str[index+1] == '-')
    {
       #if DEBUG_ADD_SUBTRACT
       MessageInterface::ShowMessage
-         (wxT("ParseAddSubtract() double operator found, %s\n"),
+         ("ParseAddSubtract() double operator found, %s\n",
           str.substr(index, 2).c_str());
       #endif
       
-      if (opStr == wxT("+") && str[index+1] == wxT('+'))
-         op = wxT("Add");
-      else if (opStr == wxT("+") && str[index+1] == wxT('-'))
-         op = wxT("Subtract");
-      else if (opStr == wxT("-") && str[index+1] == wxT('-'))
-         op = wxT("Add");
-      else if (opStr == wxT("-") && str[index+1] == wxT('+'))
-         op = wxT("Subtract");
+      if (opStr == "+" && str[index+1] == '+')
+         op = "Add";
+      else if (opStr == "+" && str[index+1] == '-')
+         op = "Subtract";
+      else if (opStr == "-" && str[index+1] == '-')
+         op = "Add";
+      else if (opStr == "-" && str[index+1] == '+')
+         op = "Subtract";
       
       indexRight = indexRight + 1;
    }
    
    #if DEBUG_ADD_SUBTRACT
    MessageInterface::ShowMessage
-      (wxT("ParseAddSubtract() indexLeft=%u, indexRight=%u, op=%s\n"),
+      ("ParseAddSubtract() indexLeft=%u, indexRight=%u, op=%s\n",
        indexLeft, indexRight, op.c_str());
    #endif
    
@@ -1857,17 +1857,17 @@ StringArray MathParser::ParseAddSubtract(const wxString &str)
    
    #if DEBUG_ADD_SUBTRACT
    MessageInterface::ShowMessage
-      (wxT("ParseAddSubtract() op=%s, left=%s, right=%s\n"), op.c_str(),
+      ("ParseAddSubtract() op=%s, left=%s, right=%s\n", op.c_str(),
        left.c_str(), right.c_str());
    #endif
    
-   if (right == wxT(""))
-      throw MathException(wxT("Need right side of \"") + op + wxT("\""));
+   if (right == "")
+      throw MathException("Need right side of \"" + op + "\"");
    
    FillItems(items, op, left, right);
    
    #if DEBUG_ADD_SUBTRACT
-   WriteItems(wxT("After ParseAddSubtract()"), items);
+   WriteItems("After ParseAddSubtract()", items);
    #endif
    
    return items;
@@ -1875,17 +1875,17 @@ StringArray MathParser::ParseAddSubtract(const wxString &str)
 
 
 //------------------------------------------------------------------------------
-// StringArray ParseMultDivide(const wxString &str)
+// StringArray ParseMultDivide(const std::string &str)
 //------------------------------------------------------------------------------
-StringArray MathParser::ParseMultDivide(const wxString &str)
+StringArray MathParser::ParseMultDivide(const std::string &str)
 {
    #if DEBUG_MULT_DIVIDE
    MessageInterface::ShowMessage
-      (wxT("MathParser::ParseMultDivide() str=%s\n"), str.c_str());
+      ("MathParser::ParseMultDivide() str=%s\n", str.c_str());
    #endif
    
    StringArray items;
-   wxString op = wxT("");
+   std::string op = "";
 
    //-----------------------------------------------------------------
    // find last * or /
@@ -1893,14 +1893,14 @@ StringArray MathParser::ParseMultDivide(const wxString &str)
    // a * b / c * d
    //-----------------------------------------------------------------
    
-   wxString::size_type index1 = str.find_last_of(wxT('*'));
-   wxString::size_type index2 = str.find_last_of(wxT('/'));
+   std::string::size_type index1 = str.find_last_of('*');
+   std::string::size_type index2 = str.find_last_of('/');
    
    if (index1 == str.npos && index2 == str.npos)
    {
-      FillItems(items, wxT(""), wxT(""), wxT(""));
+      FillItems(items, "", "", "");
       #if DEBUG_MULT_DIVIDE
-      WriteItems(wxT("ParseMultDivide(): No * or / found"), items);
+      WriteItems("ParseMultDivide(): No * or / found", items);
       #endif
       return items;
    }
@@ -1909,54 +1909,54 @@ StringArray MathParser::ParseMultDivide(const wxString &str)
    // find lowest operator, expecting * or /
    //-------------------------------------------------------
    Integer index;
-   wxString opStr = FindLowestOperator(str, index);
+   std::string opStr = FindLowestOperator(str, index);
    
    #if DEBUG_MULT_DIVIDE
    MessageInterface::ShowMessage
-      (wxT("after FindLowestOperator() opStr=%s, index=%d\n"),
+      ("after FindLowestOperator() opStr=%s, index=%d\n",
        opStr.c_str(), index);
    #endif
    
    //-------------------------------------------------------
    // lowest operator is not / or *
    //-------------------------------------------------------
-   if (opStr != wxT("/") && opStr != wxT("*"))
+   if (opStr != "/" && opStr != "*")
    {
-      FillItems(items, wxT(""), wxT(""), wxT(""));
+      FillItems(items, "", "", "");
       #if DEBUG_MULT_DIVIDE
-      WriteItems(wxT("ParseMultDivide(): lowest op is not '/' or '*'"), items);
+      WriteItems("ParseMultDivide(): lowest op is not '/' or '*'", items);
       #endif
       return items;
    }
    
    bool opFound;
    op = GetOperatorName(opStr, opFound);
-   wxString left = str.substr(0, index);
-   wxString right = str.substr(index+1, str.npos);
+   std::string left = str.substr(0, index);
+   std::string right = str.substr(index+1, str.npos);
    
    //-------------------------------------------------------
    // find double operator *+, *-, /+, /-
    //-------------------------------------------------------
-   if (str[index+1] == wxT('+') || str[index+1] == wxT('-'))
+   if (str[index+1] == '+' || str[index+1] == '-')
    {
-      wxString right = str.substr(index+2, str.npos);
+      std::string right = str.substr(index+2, str.npos);
       
       #if DEBUG_MULT_DIVIDE
       MessageInterface::ShowMessage
-         (wxT("combined operator found, %s\n"), str.substr(index, 2).c_str());
+         ("combined operator found, %s\n", str.substr(index, 2).c_str());
       #endif
    }
    
-   if (left == wxT(""))
-      throw MathException(wxT("Need left side of the operator \"") + op + wxT("\""));
+   if (left == "")
+      throw MathException("Need left side of the operator \"" + op + "\"");
    
-   if (right == wxT(""))
-      throw MathException(wxT("Need right side of the operator \"") + op + wxT("\""));
+   if (right == "")
+      throw MathException("Need right side of the operator \"" + op + "\"");
    
    FillItems(items, op, left, right);
 
    #if DEBUG_MULT_DIVIDE
-   WriteItems(wxT("After ParseMultDivide()"), items);
+   WriteItems("After ParseMultDivide()", items);
    #endif
    
    return items;
@@ -1965,77 +1965,77 @@ StringArray MathParser::ParseMultDivide(const wxString &str)
 
 
 //------------------------------------------------------------------------------
-// StringArray ParsePower(const wxString &str)
+// StringArray ParsePower(const std::string &str)
 //------------------------------------------------------------------------------
-StringArray MathParser::ParsePower(const wxString &str)
+StringArray MathParser::ParsePower(const std::string &str)
 {
    #if DEBUG_POWER
    MessageInterface::ShowMessage
-      (wxT("MathParser::ParsePower() str=%s\n"), str.c_str());
+      ("MathParser::ParsePower() str=%s\n", str.c_str());
    #endif
    
    StringArray items;
-   wxString op = wxT("");
+   std::string op = "";
    
    // We should find last ^ insted of first ^ to fix bug 2176 (LOJ: 2010.10.29)
-   wxString::size_type index1 = str.find_last_of(wxT('^'));
+   std::string::size_type index1 = str.find_last_of('^');
    
    if (index1 == str.npos)
    {
-      FillItems(items, wxT(""), wxT(""), wxT(""));
+      FillItems(items, "", "", "");
       return items;
    }
    
    // If it is ^(-1), handle it later in DecomposeMatrixOps()
-   if (str.find(wxT("^(-1)")) != str.npos)
+   if (str.find("^(-1)") != str.npos)
    {
       #if DEBUG_INVERSE_OP
       MessageInterface::ShowMessage
-         (wxT("MathParser::ParsePower() found ^(-1) str=%s\n"), str.c_str());
+         ("MathParser::ParsePower() found ^(-1) str=%s\n", str.c_str());
       #endif
       
-      FillItems(items, wxT(""), wxT(""), wxT(""));
+      FillItems(items, "", "", "");
       return items;
    }
    
    
    // If first unary operator found, handle it later in ParseUnary()
-   if (str.find(wxT("-")) != str.npos)
+   if (str.find("-") != str.npos)
    {
-      UnsignedInt index3 = str.find(wxT("-"));
+      UnsignedInt index3 = str.find("-");
       if (index3 == 0)
       {
          #if DEBUG_UNARY
          MessageInterface::ShowMessage
-            (wxT("MathParser::ParsePower() found - unary str=%s\n"), str.c_str());
+            ("MathParser::ParsePower() found - unary str=%s\n", str.c_str());
          #endif
       
-         FillItems(items, wxT(""), wxT(""), wxT(""));
+         FillItems(items, "", "", "");
          return items;
       }
    }
 
    
-   wxString::size_type index = str.npos;
+   std::string::size_type index = str.npos;
    if (index1 != str.npos)
    {
-      op = wxT("Power");
+      op = "Power";
       index = index1;
    }
    
-   wxString left = str.substr(0, index);
-   wxString right = str.substr(index+1, str.npos);
+   std::string left = str.substr(0, index);
+   std::string right = str.substr(index+1, str.npos);
 
-   if (left == wxT(""))
-      throw MathException(wxT("Need left side of the operator \"") + op + wxT("\""));
+   if (left == "")
+      throw MathException("Need left side of the operator \"" + op + "\"");
    
-   if (right == wxT(""))
-      throw MathException(wxT("Need right side of the operator \"") + op + wxT("\""));
+   if (right == "")
+      throw MathException("Need right side of the operator \"" + op + "\"");
    
    FillItems(items, op, left, right);
    
    #if DEBUG_MATH_PARSER > 1
-   WriteItems(wxT("After ParsePower()"), items);
+   WriteItems("After ParsePower()", items);
    #endif
    
    return items;
@@ -2043,53 +2043,53 @@ StringArray MathParser::ParsePower(const wxString &str)
 
 
 //------------------------------------------------------------------------------
-// StringArray ParseUnary(const wxString &str)
+// StringArray ParseUnary(const std::string &str)
 //------------------------------------------------------------------------------
-StringArray MathParser::ParseUnary(const wxString &str)
+StringArray MathParser::ParseUnary(const std::string &str)
 {
    #if DEBUG_UNARY
    MessageInterface::ShowMessage
-      (wxT("MathParser::ParseUnary() str=%s\n"), str.c_str());
+      ("MathParser::ParseUnary() str=%s\n", str.c_str());
    #endif
    
    StringArray items;
-   wxString op = wxT("");
+   std::string op = "";
    
    // If it is ^(-1), handle it later in DecomposeMatrixOps()
-   if (str.find(wxT("^(-1)")) != str.npos)
+   if (str.find("^(-1)") != str.npos)
    {
       #if DEBUG_INVERSE_OP
       MessageInterface::ShowMessage
-         (wxT("MathParser::ParseUnary() found ^(-1) str=%s\n"), str.c_str());
+         ("MathParser::ParseUnary() found ^(-1) str=%s\n", str.c_str());
       #endif
       
-      FillItems(items, wxT(""), wxT(""), wxT(""));
+      FillItems(items, "", "", "");
       return items;
    }
    
    // find  - or -
-   wxString::size_type index1 = str.find(wxT('-'));
-   wxString::size_type index2 = str.find(wxT('+'));
+   std::string::size_type index1 = str.find('-');
+   std::string::size_type index2 = str.find('+');
    
    if (index1 == str.npos && index2 == str.npos)
    {
-      FillItems(items, wxT(""), wxT(""), wxT(""));
+      FillItems(items, "", "", "");
       return items;
    }
    
    if (index1 != str.npos)
-      op = wxT("Negate");
+      op = "Negate";
    else
-      op = wxT("None");
+      op = "None";
    
-   wxString left;
+   std::string left;
    
    // If power ^ found
-   if (str.find(wxT("^")) != str.npos)
+   if (str.find("^") != str.npos)
    {
       #if DEBUG_POWER
       MessageInterface::ShowMessage
-         (wxT("MathParser::ParseUnary() found ^ str=%s\n"), str.c_str());
+         ("MathParser::ParseUnary() found ^ str=%s\n", str.c_str());
       #endif
       
       left = str.substr(index1+1);
@@ -2099,10 +2099,10 @@ StringArray MathParser::ParseUnary(const wxString &str)
       left = str.substr(index1+1, str.npos);
    }
    
-   FillItems(items, op, left, wxT(""));
+   FillItems(items, op, left, "");
    
    #if DEBUG_UNARY
-   WriteItems(wxT("After ParseUnary()"), items);
+   WriteItems("After ParseUnary()", items);
    #endif
    
    return items;
@@ -2110,40 +2110,40 @@ StringArray MathParser::ParseUnary(const wxString &str)
 
 
 //------------------------------------------------------------------------------
-// StringArray ParseMathFunctions(const wxString &str)
+// StringArray ParseMathFunctions(const std::string &str)
 //------------------------------------------------------------------------------
-StringArray MathParser::ParseMathFunctions(const wxString &str)
+StringArray MathParser::ParseMathFunctions(const std::string &str)
 {
    #if DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("MathParser::ParseMathFunctions() str=%s\n"), str.c_str());
+      ("MathParser::ParseMathFunctions() str=%s\n", str.c_str());
    #endif
    
    StringArray items;
-   wxString left;
+   std::string left;
    
    // find first math function
-   wxString fnName = GetFunctionName(MATH_FUNCTION, str, left);
+   std::string fnName = GetFunctionName(MATH_FUNCTION, str, left);
    
-   if (fnName == wxT(""))
+   if (fnName == "")
    {
       // let's try GmatFunction name
       fnName = GetFunctionName(GMAT_FUNCTION, str, left);
       
-      if (fnName == wxT(""))
+      if (fnName == "")
       {
-         FillItems(items, wxT(""), wxT(""), wxT(""));
+         FillItems(items, "", "", "");
          return items;
       }
    }
    
-   if (left == wxT(""))
-      throw MathException(wxT("Need an argument of the function \"") + fnName + wxT("\""));
+   if (left == "")
+      throw MathException("Need an argument of the function \"" + fnName + "\"");
    
-   FillItems(items, fnName, left, wxT(""));
+   FillItems(items, fnName, left, "");
    
    #if DEBUG_FUNCTION > 1
-   WriteItems(wxT("After ParseMathFunction()"), items);
+   WriteItems("After ParseMathFunction()", items);
    #endif
    
    return items;
@@ -2151,82 +2151,82 @@ StringArray MathParser::ParseMathFunctions(const wxString &str)
 
 
 //------------------------------------------------------------------------------
-// StringArray ParseMatrixOps(const wxString &str)
+// StringArray ParseMatrixOps(const std::string &str)
 //------------------------------------------------------------------------------
-StringArray MathParser::ParseMatrixOps(const wxString &str)
+StringArray MathParser::ParseMatrixOps(const std::string &str)
 {
    #if DEBUG_MATRIX_OPS
    MessageInterface::ShowMessage
-      (wxT("MathParser::ParseMatrixOps() str=%s\n"), str.c_str());
+      ("MathParser::ParseMatrixOps() str=%s\n", str.c_str());
    #endif
    
    StringArray items;
-   wxString left;
+   std::string left;
    
    // find matrix function
-   wxString fnName = GetFunctionName(MATRIX_FUNCTION, str, left);
+   std::string fnName = GetFunctionName(MATRIX_FUNCTION, str, left);
    
    // Check for matrix operator symbol, such as ' for transpose and ^(-1) for inverse
-   if (fnName == wxT(""))
+   if (fnName == "")
    {
       // try matrix op ' for transpose
-      wxString::size_type index1 = str.find(wxT("'"));
+      std::string::size_type index1 = str.find("'");
       
       #if DEBUG_MATRIX_OPS
       MessageInterface::ShowMessage
-         (wxT("MathParser::ParseMatrixOps() find ' for transpose, index1=%u\n"), index1);
+         ("MathParser::ParseMatrixOps() find ' for transpose, index1=%u\n", index1);
       #endif
       
       // if transpose ' not found
       if (index1 == str.npos)
       {
          // try matrix op ^(-1) for inverse
-         index1 = str.find(wxT("^(-1)"));
+         index1 = str.find("^(-1)");
          
          if (index1 == str.npos)
          {
-            FillItems(items, wxT(""), wxT(""), wxT(""));
+            FillItems(items, "", "", "");
          }
          else // ^(-1) found
          {
             left = str.substr(0, index1);
-            fnName = wxT("Inv");
-            FillItems(items, fnName, left, wxT(""));
+            fnName = "Inv";
+            FillItems(items, fnName, left, "");
          }
       }
       else // ' found
       {
          left = str.substr(0, index1);
-         fnName = wxT("Transpose");
-         FillItems(items, fnName, left, wxT(""));
+         fnName = "Transpose";
+         FillItems(items, fnName, left, "");
       }
       
       // Check for invalid operators after matrix ops
-      if (fnName != wxT(""))
+      if (fnName != "")
       {
-         wxString::size_type index2 = index1 + 1;
+         std::string::size_type index2 = index1 + 1;
          
-         if (fnName == wxT("Inv"))
+         if (fnName == "Inv")
             index2 = index1 + 4;
          
          if (str.size() > index2)
          {
-            wxString nextOp = str.substr(index2+1, 1);
+            std::string nextOp = str.substr(index2+1, 1);
             #if DEBUG_MATRIX_OPS
-            MessageInterface::ShowMessage(wxT("   nextOp='%s'\n"), nextOp.c_str());
+            MessageInterface::ShowMessage("   nextOp='%s'\n", nextOp.c_str());
             #endif
-            if (nextOp != wxT("") && !IsValidOperator(nextOp))
-                throw MathException(wxT("Invalid math operator \"") + nextOp + wxT("\" found"));
+            if (nextOp != "" && !IsValidOperator(nextOp))
+                throw MathException("Invalid math operator \"" + nextOp + "\" found");
          }
       }
    }
    else // matrix function name found
    {
-      FillItems(items, fnName, left, wxT(""));
+      FillItems(items, fnName, left, "");
    }
    
    #if DEBUG_MATRIX_OPS
-   WriteItems(wxT("After ParseMatrixOps()"), items);
+   WriteItems("After ParseMatrixOps()", items);
    #endif
    
    return items;
@@ -2234,28 +2234,28 @@ StringArray MathParser::ParseMatrixOps(const wxString &str)
 
 
 //------------------------------------------------------------------------------
-// StringArray ParseUnitConversion(const wxString &str)
+// StringArray ParseUnitConversion(const std::string &str)
 //------------------------------------------------------------------------------
-StringArray MathParser::ParseUnitConversion(const wxString &str)
+StringArray MathParser::ParseUnitConversion(const std::string &str)
 {
    #if DEBUG_MATH_PARSER > 1
    MessageInterface::ShowMessage
-      (wxT("MathParser::ParseUnitConversion() str=%s\n"), str.c_str());
+      ("MathParser::ParseUnitConversion() str=%s\n", str.c_str());
    #endif
    
    StringArray items;
-   wxString left;
+   std::string left;
    
    // find first math function
-   wxString fnName = GetFunctionName(UNIT_CONVERSION, str, left);
+   std::string fnName = GetFunctionName(UNIT_CONVERSION, str, left);
 
-   if (fnName == wxT(""))
-      FillItems(items, wxT(""), wxT(""), wxT(""));
+   if (fnName == "")
+      FillItems(items, "", "", "");
    else
-      FillItems(items, fnName, left, wxT(""));
+      FillItems(items, fnName, left, "");
    
    #if DEBUG_MATH_PARSER > 1
-   WriteItems(wxT("After ParseUnitConversion()"), items);
+   WriteItems("After ParseUnitConversion()", items);
    #endif
    
    return items;
@@ -2263,13 +2263,13 @@ StringArray MathParser::ParseUnitConversion(const wxString &str)
 
 
 //------------------------------------------------------------------------------
-// bool IsMathFunction(const wxString &str)
+// bool IsMathFunction(const std::string &str)
 //------------------------------------------------------------------------------
 /**
  * Tests if input string is any of built-in math functions
  */
 //------------------------------------------------------------------------------
-bool MathParser::IsMathFunction(const wxString &str)
+bool MathParser::IsMathFunction(const std::string &str)
 {
    if (HasFunctionName(str, realFuncList) ||
        HasFunctionName(str, matrixFuncList) ||
@@ -2281,13 +2281,13 @@ bool MathParser::IsMathFunction(const wxString &str)
 
 
 //------------------------------------------------------------------------------
-// bool HasFunctionName(const wxString &str, const StringArray &fnList)
+// bool HasFunctionName(const std::string &str, const StringArray &fnList)
 //------------------------------------------------------------------------------
-bool MathParser::HasFunctionName(const wxString &str, const StringArray &fnList)
+bool MathParser::HasFunctionName(const std::string &str, const StringArray &fnList)
 {
    #if DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("MathParser::HasFunctionName() str=%s\n"), str.c_str());
+      ("MathParser::HasFunctionName() str=%s\n", str.c_str());
    #endif
    
    // Find name from the input function list as is
@@ -2295,25 +2295,25 @@ bool MathParser::HasFunctionName(const wxString &str, const StringArray &fnList)
    {
       #if DEBUG_FUNCTION
       MessageInterface::ShowMessage
-         (wxT("MathParser::HasFunctionName() returning true\n"));
+         ("MathParser::HasFunctionName() returning true\n");
       #endif
       return true;
    }
    
    // Try lower the first letter and find
-   wxString str1 = GmatStringUtil::ToLower(str, true);
+   std::string str1 = GmatStringUtil::ToLower(str, true);
    if (find(fnList.begin(), fnList.end(), str1) != fnList.end())
    {
       #if DEBUG_FUNCTION
       MessageInterface::ShowMessage
-         (wxT("MathParser::HasFunctionName() returning true\n"));
+         ("MathParser::HasFunctionName() returning true\n");
       #endif
       return true;
    }
    
    #if DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("MathParser::HasFunctionName() returning false\n"));
+      ("MathParser::HasFunctionName() returning false\n");
    #endif
    
    return false;
@@ -2321,81 +2321,81 @@ bool MathParser::HasFunctionName(const wxString &str, const StringArray &fnList)
 
 
 //------------------------------------------------------------------------------
-// bool IsParenPartOfFunction(const wxString &str)
+// bool IsParenPartOfFunction(const std::string &str)
 //------------------------------------------------------------------------------
-bool MathParser::IsParenPartOfFunction(const wxString &str)
+bool MathParser::IsParenPartOfFunction(const std::string &str)
 {
    // Check function name in the GmatFunction list first (loj: 2008.08.20)
    #if DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("MathParser::IsParenPartOfFunction() checking for function name '%s'\n"),
+      ("MathParser::IsParenPartOfFunction() checking for function name '%s'\n",
        str.c_str());
    #endif
    
    #if DEBUG_FUNCTION
-   MessageInterface::ShowMessage(wxT("   Checking GmatFunction list...\n"));
+   MessageInterface::ShowMessage("   Checking GmatFunction list...\n");
    #endif
    if (HasFunctionName(str, gmatFuncList))
    {
       #if DEBUG_FUNCTION
       MessageInterface::ShowMessage
-         (wxT("MathParser::IsParenPartOfFunction() returning true, GmatFunction found\n"));
+         ("MathParser::IsParenPartOfFunction() returning true, GmatFunction found\n");
       #endif
       return true;
    }
    
    #if DEBUG_FUNCTION
-   MessageInterface::ShowMessage(wxT("   Checking internal MathFunction list...\n"));
+   MessageInterface::ShowMessage("   Checking internal MathFunction list...\n");
    #endif
    if (HasFunctionName(str, realFuncList))
    {
       #if DEBUG_FUNCTION
       MessageInterface::ShowMessage
-         (wxT("MathParser::IsParenPartOfFunction() returning true, MathFunction found\n"));
+         ("MathParser::IsParenPartOfFunction() returning true, MathFunction found\n");
       #endif
       return true;
    }
    
    #if DEBUG_FUNCTION
-   MessageInterface::ShowMessage(wxT("   Checking internal MatrixFunction list...\n"));
+   MessageInterface::ShowMessage("   Checking internal MatrixFunction list...\n");
    #endif
    if (HasFunctionName(str, matrixFuncList))
    {
       #if DEBUG_FUNCTION
       MessageInterface::ShowMessage
-         (wxT("MathParser::IsParenPartOfFunction() returning true, MatrixFunction found\n"));
+         ("MathParser::IsParenPartOfFunction() returning true, MatrixFunction found\n");
       #endif
       return true;
    }
    
    #if DEBUG_FUNCTION
-   MessageInterface::ShowMessage(wxT("   Checking internal UnitConversionFunction list...\n"));
+   MessageInterface::ShowMessage("   Checking internal UnitConversionFunction list...\n");
    #endif
    if (HasFunctionName(str, unitConvList))
    {
       #if DEBUG_FUNCTION
       MessageInterface::ShowMessage
-         (wxT("MathParser::IsParenPartOfFunction() returning true, UnitConversionFunction found\n"));
+         ("MathParser::IsParenPartOfFunction() returning true, UnitConversionFunction found\n");
       #endif
       return true;
    }
    
    #if DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("MathParser::IsParenPartOfFunction() returning false, no function found\n"));
+      ("MathParser::IsParenPartOfFunction() returning false, no function found\n");
    #endif
    return false;
 }
 
 
 //------------------------------------------------------------------------------
-// bool IsGmatFunction(const wxString &name)
+// bool IsGmatFunction(const std::string &name)
 //------------------------------------------------------------------------------
-bool MathParser::IsGmatFunction(const wxString &name)
+bool MathParser::IsGmatFunction(const std::string &name)
 {
    // if name has open parenthesis, get it up to
-   wxString name1 = name;
-   wxString::size_type index = name1.find(wxT("("));
+   std::string name1 = name;
+   std::string::size_type index = name1.find("(");
    if (index != name1.npos)
       name1 = name1.substr(0, index);
    
@@ -2408,12 +2408,12 @@ bool MathParser::IsGmatFunction(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// bool IsValidOperator(const wxString &str)
+// bool IsValidOperator(const std::string &str)
 //------------------------------------------------------------------------------
-bool MathParser::IsValidOperator(const wxString &str)
+bool MathParser::IsValidOperator(const std::string &str)
 {
-   wxChar op = str[0];
-   if (op == wxT('+') || op == wxT('-') || op == wxT('*') || op == wxT('/') || op == wxT('^') || op == wxT('\''))
+   char op = str[0];
+   if (op == '+' || op == '-' || op == '*' || op == '/' || op == '^' || op == '\'')
       return true;
    else
       return false;
@@ -2421,21 +2421,21 @@ bool MathParser::IsValidOperator(const wxString &str)
 
 
 //------------------------------------------------------------------------------
-// wxString GetFunctionName(UnsignedInt functionType, const wxString &str,
-//                             wxString &left)
+// std::string GetFunctionName(UnsignedInt functionType, const std::string &str,
+//                             std::string &left)
 //------------------------------------------------------------------------------
-wxString MathParser::GetFunctionName(UnsignedInt functionType,
-                                        const wxString &str,
-                                        wxString &left)
+std::string MathParser::GetFunctionName(UnsignedInt functionType,
+                                        const std::string &str,
+                                        std::string &left)
 {
    #if DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("MathParser::GetFunctionName() entered, functionType=%u, str='%s'\n"),
+      ("MathParser::GetFunctionName() entered, functionType=%u, str='%s'\n",
        functionType, str.c_str());
    #endif
 
-   left = wxT("");
-   wxString fnName = wxT("");
+   left = "";
+   std::string fnName = "";
    
    // if string does not start with letter, just return
    if (!isalpha(str[0]))
@@ -2469,7 +2469,7 @@ wxString MathParser::GetFunctionName(UnsignedInt functionType,
    
    #if DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("MathParser::GetFunctionName() leaving, fnName='%s', left='%s'\n"),
+      ("MathParser::GetFunctionName() leaving, fnName='%s', left='%s'\n",
        fnName.c_str(), left.c_str());
    #endif
    
@@ -2478,17 +2478,17 @@ wxString MathParser::GetFunctionName(UnsignedInt functionType,
 
 
 //------------------------------------------------------------------------------
-// void BuildGmatFunctionList(const wxString &str)
+// void BuildGmatFunctionList(const std::string &str)
 //------------------------------------------------------------------------------
 /*
  * Builds GmatFunction list found in the GmatFunction path.
  */
 //------------------------------------------------------------------------------
-void MathParser::BuildGmatFunctionList(const wxString &str)
+void MathParser::BuildGmatFunctionList(const std::string &str)
 {
    #if DEBUG_GMAT_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("MathParser::BuildGmatFunctionList() entered, str='%s'\n"), str.c_str());
+      ("MathParser::BuildGmatFunctionList() entered, str='%s'\n", str.c_str());
    #endif
    
    StringArray names = GmatStringUtil::GetVarNames(str);
@@ -2498,10 +2498,10 @@ void MathParser::BuildGmatFunctionList(const wxString &str)
    {
       #if DEBUG_GMAT_FUNCTION > 1
       MessageInterface::ShowMessage
-         (wxT("   BuildGmatFunctionList() checking '%s'\n"), names[i].c_str());
+         ("   BuildGmatFunctionList() checking '%s'\n", names[i].c_str());
       #endif
       
-      if (fm->GetGmatFunctionPath(names[i]) != wxT(""))
+      if (fm->GetGmatFunctionPath(names[i]) != "")
       {         
          // if GmatFunction not registered, add to the list
          if (find(gmatFuncList.begin(), gmatFuncList.end(), names[i]) == gmatFuncList.end())
@@ -2513,47 +2513,47 @@ void MathParser::BuildGmatFunctionList(const wxString &str)
    
    #if DEBUG_GMAT_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("MathParser::BuildGmatFunctionList() found total of %d GmatFunction(s)\n"),
+      ("MathParser::BuildGmatFunctionList() found total of %d GmatFunction(s)\n",
        theGmatFuncCount);
    for (Integer i=0; i<theGmatFuncCount; i++)
-      MessageInterface::ShowMessage(wxT("   '%s'\n"), gmatFuncList[i].c_str());
+      MessageInterface::ShowMessage("   '%s'\n", gmatFuncList[i].c_str());
    #endif
 }
 
 
 //------------------------------------------------------------------------------
-// void BuildFunction(const wxString &str, const StringArray &fnList,
-//                    wxString &fnName, wxString &left)
+// void BuildFunction(const std::string &str, const StringArray &fnList,
+//                    std::string &fnName, std::string &left)
 //------------------------------------------------------------------------------
-void MathParser::BuildFunction(const wxString &str, const StringArray &fnList,
-                               wxString &fnName, wxString &left)
+void MathParser::BuildFunction(const std::string &str, const StringArray &fnList,
+                               std::string &fnName, std::string &left)
 {
    UnsignedInt count = fnList.size();
-   fnName = wxT("");
-   left = wxT("");
+   fnName = "";
+   left = "";
    
    #if DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("MathParser::BuildFunction() entered, str='%s', function count=%d\n"),
+      ("MathParser::BuildFunction() entered, str='%s', function count=%d\n",
        str.c_str(), count);
    #endif
    
    if (count == 0)
       return;
    
-   wxString::size_type functionIndex = str.npos;
+   std::string::size_type functionIndex = str.npos;
    
    // Check if function name is in the function list
-   wxString fname = GmatStringUtil::ParseFunctionName(str);
+   std::string fname = GmatStringUtil::ParseFunctionName(str);
    
    #if DEBUG_FUNCTION > 1
-   MessageInterface::ShowMessage(wxT("==> fname = '%s'\n"), fname.c_str());
+   MessageInterface::ShowMessage("==> fname = '%s'\n", fname.c_str());
    #endif
    
    if (find(fnList.begin(), fnList.end(), fname) != fnList.end())
    {
       fnName = fname;
-      functionIndex = str.find(fname + wxT("("));
+      functionIndex = str.find(fname + "(");
    }
    else
    {
@@ -2561,44 +2561,44 @@ void MathParser::BuildFunction(const wxString &str, const StringArray &fnList,
       if (isalpha(fname[0]) && isupper(fname[0]))
       {
          // MSVC++ failes to do: fname[0] = tolower(fname[0])
-         wxString fname1 = fname;
+         std::string fname1 = fname;
          fname1[0] = tolower(fname[0]);
          
          #if DEBUG_FUNCTION > 1
          MessageInterface::ShowMessage
-            (wxT("   function name '%s' not found so trying lower case '%s'\n"),
+            ("   function name '%s' not found so trying lower case '%s'\n",
              fname.c_str(), fname1.c_str());
          #endif
          
          if (find(fnList.begin(), fnList.end(), fname1) != fnList.end())
          {
             fnName = fname1;
-            functionIndex = str.find(fname + wxT("("));
+            functionIndex = str.find(fname + "(");
          }
       }
    }
    
    #if DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("MathParser::BuildFunction() fnName='%s', functionIndex=%u\n"),
+      ("MathParser::BuildFunction() fnName='%s', functionIndex=%u\n",
        fnName.c_str(), functionIndex);
    #endif
    
-   if (fnName != wxT(""))
+   if (fnName != "")
    {
-      wxString::size_type index1 = str.find(wxT("("), functionIndex);
+      std::string::size_type index1 = str.find("(", functionIndex);
       
       #if DEBUG_FUNCTION
       MessageInterface::ShowMessage
-         (wxT("MathParser::BuildFunction() calling FindMatchingParen() with start ")
-          wxT("index=%u\n"), index1);
+         ("MathParser::BuildFunction() calling FindMatchingParen() with start "
+          "index=%u\n", index1);
       #endif
       
       UnsignedInt index2 = FindMatchingParen(str, index1);
       
       #if DEBUG_FUNCTION
       MessageInterface::ShowMessage
-         (wxT("MathParser::BuildFunction() matching ) found at %u\n"), index2);
+         ("MathParser::BuildFunction() matching ) found at %u\n", index2);
       #endif
       
       left = str.substr(index1+1, index2-index1-1);
@@ -2606,21 +2606,21 @@ void MathParser::BuildFunction(const wxString &str, const StringArray &fnList,
    
    #if DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("MathParser::BuildFunction() leaving, fnName=%s, left=%s\n"),
+      ("MathParser::BuildFunction() leaving, fnName=%s, left=%s\n",
        fnName.c_str(), left.c_str());
    #endif
 }
 
 
 //------------------------------------------------------------------------------
-// wxString::size_type FindMatchingParen(const wxString &str, size_type start)
+// std::string::size_type FindMatchingParen(const std::string &str, size_type start)
 //------------------------------------------------------------------------------
-wxString::size_type MathParser::FindMatchingParen(const wxString &str,
-                                                     wxString::size_type start)
+std::string::size_type MathParser::FindMatchingParen(const std::string &str,
+                                                     std::string::size_type start)
 {
    #if DEBUG_MATH_PARSER > 1
    MessageInterface::ShowMessage
-      (wxT("MathParser::FindMatchingParen() entered, str='%s', str.size()=%u, start=%u\n"),
+      ("MathParser::FindMatchingParen() entered, str='%s', str.size()=%u, start=%u\n",
        str.c_str(), str.size(), start);
    #endif
    
@@ -2629,10 +2629,10 @@ wxString::size_type MathParser::FindMatchingParen(const wxString &str,
    
    for (UnsignedInt i = start; i < str.size(); i++)
    {
-      if (str[i] == wxT('('))
+      if (str[i] == '(')
          leftCounter++;
 
-      if (str[i] == wxT(')'))
+      if (str[i] == ')')
          rightCounter++;
       
       if (leftCounter == rightCounter)
@@ -2641,19 +2641,19 @@ wxString::size_type MathParser::FindMatchingParen(const wxString &str,
    
    #if DEBUG_MATH_PARSER
    MessageInterface::ShowMessage
-      (wxT("**** ERROR ****  MathParser::FindMatchingParen() Unmatching parenthesis found\n"));
+      ("**** ERROR ****  MathParser::FindMatchingParen() Unmatching parenthesis found\n");
    #endif
    
-   throw MathException(wxT("Unmatching parenthesis found"));
+   throw MathException("Unmatching parenthesis found");
 }
 
 
 //------------------------------------------------------------------------------
-// void FillItems(StringArray &items, const wxString &op,
-//                const wxString &left, const wxString &right)
+// void FillItems(StringArray &items, const std::string &op,
+//                const std::string &left, const std::string &right)
 //------------------------------------------------------------------------------
-void MathParser::FillItems(StringArray &items, const wxString &op,
-                           const wxString &left, const wxString &right)
+void MathParser::FillItems(StringArray &items, const std::string &op,
+                           const std::string &left, const std::string &right)
 {
    items.push_back(op);
    items.push_back(left);
@@ -2662,12 +2662,12 @@ void MathParser::FillItems(StringArray &items, const wxString &op,
 
 
 //------------------------------------------------------------------------------
-// void WriteItems(const wxString &msg, StringArray &items)
+// void WriteItems(const std::string &msg, StringArray &items)
 //------------------------------------------------------------------------------
-void MathParser::WriteItems(const wxString &msg, StringArray &items)
+void MathParser::WriteItems(const std::string &msg, StringArray &items)
 {
    MessageInterface::ShowMessage
-      (wxT("%s items = <%s> <%s> <%s>\n"), msg.c_str(),
+      ("%s items = <%s> <%s> <%s>\n", msg.c_str(),
        items[0].c_str(), items[1].c_str(), items[2].c_str());
 }
 
@@ -2687,30 +2687,30 @@ void MathParser::WriteNode(MathNode *node, UnsignedInt level)
    if (!node->IsFunction())
    {
       for (UnsignedInt i=0; i<level; i++)
-         MessageInterface::ShowMessage(wxT("...."));
+         MessageInterface::ShowMessage("....");
       
       MessageInterface::ShowMessage
-         (wxT("node=%s: %s\n"), node->GetTypeName().c_str(), node->GetName().c_str());
+         ("node=%s: %s\n", node->GetTypeName().c_str(), node->GetName().c_str());
    }
    else
    {
       for (UnsignedInt i=0; i<level; i++)
-         MessageInterface::ShowMessage(wxT("...."));
+         MessageInterface::ShowMessage("....");
 
-      if (node->IsOfType(wxT("FunctionRunner")))
+      if (node->IsOfType("FunctionRunner"))
          MessageInterface::ShowMessage
-            (wxT("node=%s: %s\n"), node->GetTypeName().c_str(), node->GetName().c_str());
+            ("node=%s: %s\n", node->GetTypeName().c_str(), node->GetName().c_str());
       else
          MessageInterface::ShowMessage
-            (wxT("node=%s: %s\n"), node->GetTypeName().c_str(), node->GetName().c_str());
+            ("node=%s: %s\n", node->GetTypeName().c_str(), node->GetName().c_str());
       
       if (node->GetLeft())
       {
          for (UnsignedInt i=0; i<level; i++)
-            MessageInterface::ShowMessage(wxT("...."));
+            MessageInterface::ShowMessage("....");
          
          MessageInterface::ShowMessage
-            (wxT("left=%s: %s\n"), node->GetLeft()->GetTypeName().c_str(),
+            ("left=%s: %s\n", node->GetLeft()->GetTypeName().c_str(),
              node->GetLeft()->GetName().c_str());
          
          WriteNode(node->GetLeft(), level);
@@ -2720,10 +2720,10 @@ void MathParser::WriteNode(MathNode *node, UnsignedInt level)
       if (node->GetRight())
       {
          for (UnsignedInt i=0; i<level; i++)
-            MessageInterface::ShowMessage(wxT("...."));
+            MessageInterface::ShowMessage("....");
          
          MessageInterface::ShowMessage
-            (wxT("right=%s: %s\n"), node->GetRight()->GetTypeName().c_str(),
+            ("right=%s: %s\n", node->GetRight()->GetTypeName().c_str(),
              node->GetRight()->GetName().c_str());
          
          WriteNode(node->GetRight(), level);
@@ -2758,34 +2758,34 @@ void MathParser::BuildAllFunctionList()
    //@todo We should get this list from the MathFactory.
    // Why power (^) is not here? (LOJ: 2010.11.04)
    // Real Function List
-   realFuncList.push_back(wxT("asin"));
-   realFuncList.push_back(wxT("sin"));
-   realFuncList.push_back(wxT("acos"));
-   realFuncList.push_back(wxT("cos"));
-   realFuncList.push_back(wxT("atan2"));
-   realFuncList.push_back(wxT("atan"));
-   realFuncList.push_back(wxT("tan"));
-   realFuncList.push_back(wxT("log10"));
-   realFuncList.push_back(wxT("log"));
-   realFuncList.push_back(wxT("exp"));
-   realFuncList.push_back(wxT("sqrt"));
-   realFuncList.push_back(wxT("abs"));
+   realFuncList.push_back("asin");
+   realFuncList.push_back("sin");
+   realFuncList.push_back("acos");
+   realFuncList.push_back("cos");
+   realFuncList.push_back("atan2");
+   realFuncList.push_back("atan");
+   realFuncList.push_back("tan");
+   realFuncList.push_back("log10");
+   realFuncList.push_back("log");
+   realFuncList.push_back("exp");
+   realFuncList.push_back("sqrt");
+   realFuncList.push_back("abs");
    
    // Matrix Function List
-   matrixFuncList.push_back(wxT("transpose"));
-   matrixFuncList.push_back(wxT("det"));
-   matrixFuncList.push_back(wxT("inv"));
-   matrixFuncList.push_back(wxT("norm"));
+   matrixFuncList.push_back("transpose");
+   matrixFuncList.push_back("det");
+   matrixFuncList.push_back("inv");
+   matrixFuncList.push_back("norm");
    
    // Unit Conversion List
-   unitConvList.push_back(wxT("degToRad"));
-   unitConvList.push_back(wxT("radToDeg"));
-   unitConvList.push_back(wxT("deg2Rad"));
-   unitConvList.push_back(wxT("rad2Deg"));
+   unitConvList.push_back("degToRad");
+   unitConvList.push_back("radToDeg");
+   unitConvList.push_back("deg2Rad");
+   unitConvList.push_back("rad2Deg");
    
    // Matrix Operator List
-   matrixOpList.push_back(wxT("'"));
-   matrixOpList.push_back(wxT("^(-1)"));
+   matrixOpList.push_back("'");
+   matrixOpList.push_back("^(-1)");
    
 }
 

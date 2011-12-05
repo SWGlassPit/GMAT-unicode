@@ -148,7 +148,7 @@ void ObjectInitializer::SetInternalCoordinateSystem(CoordinateSystem* intCS)
 {
    #ifdef DEBUG_OI_SET
    MessageInterface::ShowMessage
-      (wxT("in OI:SetInternalCoordinateSystem(), intCS=<%p>\n"), intCS);
+      ("in OI:SetInternalCoordinateSystem(), intCS=<%p>\n", intCS);
    #endif
    if (intCS != NULL)
       internalCS = intCS;
@@ -177,52 +177,52 @@ bool ObjectInitializer::InitializeObjects(bool registerSubs,
    callCount++;
    clock_t t1 = clock();
    MessageInterface::ShowMessage
-      (wxT("=== ObjectInitializer::InitializeObjects() entered, Count = %d\n"),
+      ("=== ObjectInitializer::InitializeObjects() entered, Count = %d\n",
        callCount);
    #endif
    
    #ifdef DEBUG_OBJECT_MAP
-   ShowObjectMaps(wxT("In InitializeObjects"));
+   ShowObjectMaps("In InitializeObjects");
    #endif
    
    // First check for NULL object pointer in the map to avoid crash down the road
-   std::map<wxString, GmatBase *>::iterator iter;
+   std::map<std::string, GmatBase *>::iterator iter;
    for (iter = LOS->begin(); iter != LOS->end(); ++iter)
    {
       if (iter->second == NULL)
          throw GmatBaseException
-            (wxT("ObjectInitializer::InitializeObjects() cannot continue ")
-             wxT("due to \"") + iter->first + wxT("\" has NULL object pointer in LOS"));
+            ("ObjectInitializer::InitializeObjects() cannot continue "
+             "due to \"" + iter->first + "\" has NULL object pointer in LOS");
    }
    for (iter = GOS->begin(); iter != GOS->end(); ++iter)
    {
       if (iter->second == NULL)
          throw GmatBaseException
-            (wxT("ObjectInitializer::InitializeObjects() cannot continue ")
-             wxT("due to \"") + iter->first + wxT("\" has NULL object pointer in GOS"));
+            ("ObjectInitializer::InitializeObjects() cannot continue "
+             "due to \"" + iter->first + "\" has NULL object pointer in GOS");
    }
    
    registerSubscribers =  registerSubs;
-   std::map<wxString, GmatBase *>::iterator omi;
-   wxString oName;
-   wxString j2kName;
+   std::map<std::string, GmatBase *>::iterator omi;
+   std::string oName;
+   std::string j2kName;
    
    #ifdef DEBUG_INITIALIZE_OBJ
    MessageInterface::ShowMessage
-      (wxT("ObjectInitializer::InitializeObjects() entered, registerSubs = %s\n"),
-       registerSubs ? wxT("true") : wxT("false"));
+      ("ObjectInitializer::InitializeObjects() entered, registerSubs = %s\n",
+       registerSubs ? "true" : "false");
    #endif
    
    if (objType == Gmat::UNKNOWN_OBJECT)
    {
       #ifdef DEBUG_OBJECT_INITIALIZER
-      MessageInterface::ShowMessage(wxT("About to Initialize Internal Objects ...\n"));
+      MessageInterface::ShowMessage("About to Initialize Internal Objects ...\n");
       #endif
       
       InitializeInternalObjects();
       
       #ifdef DEBUG_OBJECT_INITIALIZER
-      MessageInterface::ShowMessage(wxT("Internal Objects Initialized ...\n"));
+      MessageInterface::ShowMessage("Internal Objects Initialized ...\n");
       #endif
    }
    
@@ -230,15 +230,15 @@ bool ObjectInitializer::InitializeObjects(bool registerSubs,
    // NOTE - at this point, everything should be in the SandboxObjectMap,
    // and the GlobalObjectMap should be empty
    #ifdef DEBUG_OBJECT_INITIALIZER
-      std::map<wxString, GmatBase *>::iterator omIter;
-      MessageInterface::ShowMessage(wxT("--- Right before setting the J2000 body ---\n"));
-      MessageInterface::ShowMessage(wxT("The Object Map contains:\n"));
+      std::map<std::string, GmatBase *>::iterator omIter;
+      MessageInterface::ShowMessage("--- Right before setting the J2000 body ---\n");
+      MessageInterface::ShowMessage("The Object Map contains:\n");
       for (omIter = LOS->begin(); omIter != LOS->end(); ++omIter)
-         MessageInterface::ShowMessage(wxT("   %s of type %s\n"),
+         MessageInterface::ShowMessage("   %s of type %s\n",
                (omIter->first).c_str(), ((omIter->second)->GetTypeName()).c_str());
-      MessageInterface::ShowMessage(wxT("The Global Object Map contains:\n"));
+      MessageInterface::ShowMessage("The Global Object Map contains:\n");
       for (omIter = GOS->begin(); omIter != GOS->end(); ++omIter)
-         MessageInterface::ShowMessage(wxT("   %s of type %s\n"),
+         MessageInterface::ShowMessage("   %s of type %s\n",
                (omIter->first).c_str(), ((omIter->second)->GetTypeName()).c_str());
    #endif
       
@@ -248,7 +248,7 @@ bool ObjectInitializer::InitializeObjects(bool registerSubs,
       SetObjectJ2000Body(LOS);
    
    #ifdef DEBUG_OBJECT_INITIALIZER
-      MessageInterface::ShowMessage(wxT("J2000 Body set ...\n"));
+      MessageInterface::ShowMessage("J2000 Body set ...\n");
    #endif
       
    // The initialization order is:
@@ -268,14 +268,14 @@ bool ObjectInitializer::InitializeObjects(bool registerSubs,
    if (objType == Gmat::UNKNOWN_OBJECT || objType == Gmat::COORDINATE_SYSTEM)
    {
       #ifdef DEBUG_INITIALIZE_OBJ
-      MessageInterface::ShowMessage(wxT("--- Initialize CoordinateSystems in LOS\n"));
+      MessageInterface::ShowMessage("--- Initialize CoordinateSystems in LOS\n");
       #endif
       InitializeObjectsInTheMap(LOS, Gmat::COORDINATE_SYSTEM);
       
       if (includeGOS)
       {
          #ifdef DEBUG_INITIALIZE_OBJ
-         MessageInterface::ShowMessage(wxT("--- Initialize CoordinateSystems in GOS\n"));
+         MessageInterface::ShowMessage("--- Initialize CoordinateSystems in GOS\n");
          #endif
          InitializeObjectsInTheMap(GOS, Gmat::COORDINATE_SYSTEM, true, unusedGOL);
       }
@@ -286,14 +286,14 @@ bool ObjectInitializer::InitializeObjects(bool registerSubs,
        objType == Gmat::GROUND_STATION)
    {
       #ifdef DEBUG_INITIALIZE_OBJ
-      MessageInterface::ShowMessage(wxT("--- Initialize Spacecrafts in LOS\n"));
+      MessageInterface::ShowMessage("--- Initialize Spacecrafts in LOS\n");
       #endif
       InitializeObjectsInTheMap(LOS, Gmat::SPACECRAFT);
       InitializeObjectsInTheMap(LOS, Gmat::GROUND_STATION);
       if (includeGOS)
       {
          #ifdef DEBUG_INITIALIZE_OBJ
-         MessageInterface::ShowMessage(wxT("--- Initialize Spacecrafts in GOS\n"));
+         MessageInterface::ShowMessage("--- Initialize Spacecrafts in GOS\n");
          #endif
          InitializeObjectsInTheMap(GOS, Gmat::SPACECRAFT);
          InitializeObjectsInTheMap(GOS, Gmat::GROUND_STATION);
@@ -305,14 +305,14 @@ bool ObjectInitializer::InitializeObjects(bool registerSubs,
    if (objType == Gmat::UNKNOWN_OBJECT || objType == Gmat::MEASUREMENT_MODEL)
    {
       #ifdef DEBUG_INITIALIZE_OBJ
-      MessageInterface::ShowMessage(wxT("--- Initialize MeasurementModels in LOS\n"));
+      MessageInterface::ShowMessage("--- Initialize MeasurementModels in LOS\n");
       #endif
       InitializeObjectsInTheMap(LOS, Gmat::MEASUREMENT_MODEL);
       
       if (includeGOS)
       {
          #ifdef DEBUG_INITIALIZE_OBJ
-         MessageInterface::ShowMessage(wxT("--- Initialize MeasurementModels in GOS\n"));
+         MessageInterface::ShowMessage("--- Initialize MeasurementModels in GOS\n");
          #endif
          InitializeObjectsInTheMap(GOS, Gmat::MEASUREMENT_MODEL);
       }
@@ -323,14 +323,14 @@ bool ObjectInitializer::InitializeObjects(bool registerSubs,
    if (objType == Gmat::UNKNOWN_OBJECT || objType == Gmat::TRACKING_DATA)
    {
       #ifdef DEBUG_INITIALIZE_OBJ
-      MessageInterface::ShowMessage(wxT("--- Initialize TrackingData in LOS\n"));
+      MessageInterface::ShowMessage("--- Initialize TrackingData in LOS\n");
       #endif
       InitializeObjectsInTheMap(LOS, Gmat::TRACKING_DATA);
 
       if (includeGOS)
       {
          #ifdef DEBUG_INITIALIZE_OBJ
-         MessageInterface::ShowMessage(wxT("--- Initialize TrackingData in GOS\n"));
+         MessageInterface::ShowMessage("--- Initialize TrackingData in GOS\n");
          #endif
          InitializeObjectsInTheMap(GOS, Gmat::TRACKING_DATA);
       }
@@ -340,14 +340,14 @@ bool ObjectInitializer::InitializeObjects(bool registerSubs,
    if (objType == Gmat::UNKNOWN_OBJECT || objType == Gmat::TRACKING_SYSTEM)
    {
       #ifdef DEBUG_INITIALIZE_OBJ
-      MessageInterface::ShowMessage(wxT("--- Initialize TrackingSystem in LOS\n"));
+      MessageInterface::ShowMessage("--- Initialize TrackingSystem in LOS\n");
       #endif
       InitializeObjectsInTheMap(LOS, Gmat::TRACKING_SYSTEM);
 
       if (includeGOS)
       {
          #ifdef DEBUG_INITIALIZE_OBJ
-         MessageInterface::ShowMessage(wxT("--- Initialize TrackingSystem in GOS\n"));
+         MessageInterface::ShowMessage("--- Initialize TrackingSystem in GOS\n");
          #endif
          InitializeObjectsInTheMap(GOS, Gmat::TRACKING_SYSTEM);
       }
@@ -357,14 +357,14 @@ bool ObjectInitializer::InitializeObjects(bool registerSubs,
    if (objType == Gmat::UNKNOWN_OBJECT || objType == Gmat::PARAMETER)
    {
       #ifdef DEBUG_INITIALIZE_OBJ
-      MessageInterface::ShowMessage(wxT("--- Initialize Sytem Parameters in LOS\n"));
+      MessageInterface::ShowMessage("--- Initialize Sytem Parameters in LOS\n");
       #endif
       InitializeSystemParameters(LOS);
       
       if (includeGOS)
       {
          #ifdef DEBUG_INITIALIZE_OBJ
-         MessageInterface::ShowMessage(wxT("--- Initialize Sytem Parameters in LOS\n"));
+         MessageInterface::ShowMessage("--- Initialize Sytem Parameters in LOS\n");
          #endif
          InitializeSystemParameters(GOS);
       }
@@ -374,14 +374,14 @@ bool ObjectInitializer::InitializeObjects(bool registerSubs,
    if (objType == Gmat::UNKNOWN_OBJECT || objType == Gmat::VARIABLE )
    {
       #ifdef DEBUG_INITIALIZE_OBJ
-      MessageInterface::ShowMessage(wxT("--- Initialize Variables in LOS\n"));
+      MessageInterface::ShowMessage("--- Initialize Variables in LOS\n");
       #endif
       InitializeObjectsInTheMap(LOS, Gmat::VARIABLE);
       
       if (includeGOS)
       {
          #ifdef DEBUG_INITIALIZE_OBJ
-         MessageInterface::ShowMessage(wxT("--- Initialize Variables in GOS\n"));
+         MessageInterface::ShowMessage("--- Initialize Variables in GOS\n");
          #endif
          InitializeObjectsInTheMap(GOS, Gmat::VARIABLE);
       }
@@ -391,14 +391,14 @@ bool ObjectInitializer::InitializeObjects(bool registerSubs,
    if (objType == Gmat::UNKNOWN_OBJECT || objType == Gmat::STRING)
    {
       #ifdef DEBUG_INITIALIZE_OBJ
-      MessageInterface::ShowMessage(wxT("--- Initialize Strings in LOS\n"));
+      MessageInterface::ShowMessage("--- Initialize Strings in LOS\n");
       #endif
       InitializeObjectsInTheMap(LOS, Gmat::STRING);
       
       if (includeGOS)
       {
          #ifdef DEBUG_INITIALIZE_OBJ
-         MessageInterface::ShowMessage(wxT("--- Initialize String in GOS\n"));
+         MessageInterface::ShowMessage("--- Initialize String in GOS\n");
          #endif
          InitializeObjectsInTheMap(GOS, Gmat::STRING);
       }
@@ -408,7 +408,7 @@ bool ObjectInitializer::InitializeObjects(bool registerSubs,
    if (objType == Gmat::UNKNOWN_OBJECT || objType == Gmat::SUBSCRIBER)
    {
       #ifdef DEBUG_INITIALIZE_OBJ
-      MessageInterface::ShowMessage(wxT("--- Initialize Subscriber in LOS\n"));
+      MessageInterface::ShowMessage("--- Initialize Subscriber in LOS\n");
       #endif
       //InitializeObjectsInTheMap(LOS, Gmat::SUBSCRIBER);
       InitializeSubscribers(LOS);
@@ -416,7 +416,7 @@ bool ObjectInitializer::InitializeObjects(bool registerSubs,
       if (includeGOS)
       {
          #ifdef DEBUG_INITIALIZE_OBJ
-         MessageInterface::ShowMessage(wxT("--- Initialize Subscriber in GOS\n"));
+         MessageInterface::ShowMessage("--- Initialize Subscriber in GOS\n");
          #endif
          //InitializeObjectsInTheMap(GOS, Gmat::SUBSCRIBER);
          InitializeSubscribers(GOS);
@@ -427,27 +427,27 @@ bool ObjectInitializer::InitializeObjects(bool registerSubs,
    if (objType == Gmat::UNKNOWN_OBJECT)
    {
       #ifdef DEBUG_INITIALIZE_OBJ
-      MessageInterface::ShowMessage(wxT("--- Initialize All other objects in LOS\n"));
+      MessageInterface::ShowMessage("--- Initialize All other objects in LOS\n");
       #endif
       InitializeAllOtherObjects(LOS);
       
       if (includeGOS)
       {
          #ifdef DEBUG_INITIALIZE_OBJ
-         MessageInterface::ShowMessage(wxT("--- Initialize All other objects in GOS\n"));
+         MessageInterface::ShowMessage("--- Initialize All other objects in GOS\n");
          #endif
          InitializeAllOtherObjects(GOS);
       }
    }
    
    #ifdef DEBUG_OBJECT_INITIALIZER
-      MessageInterface::ShowMessage(wxT("ObjectInitializer: Objects Initialized ...\n"));
+      MessageInterface::ShowMessage("ObjectInitializer: Objects Initialized ...\n");
    #endif
       
    #ifdef DEBUG_TRACE
    clock_t t2 = clock();
    MessageInterface::ShowMessage
-      (wxT("=== ObjectInitializer::InitializeObjects() Count = %d, Run Time: %f seconds\n"),
+      ("=== ObjectInitializer::InitializeObjects() Count = %d, Run Time: %f seconds\n",
        callCount, (Real)(t2-t1)/CLOCKS_PER_SEC);
    #endif
    
@@ -464,7 +464,7 @@ bool ObjectInitializer::InitializeObjects(bool registerSubs,
 //------------------------------------------------------------------------------
 void ObjectInitializer::SetObjectJ2000Body(ObjectMap *objMap)
 {
-   std::map<wxString, GmatBase *>::iterator omi;
+   std::map<std::string, GmatBase *>::iterator omi;
    for (omi = objMap->begin(); omi != objMap->end(); ++omi)
    {
       GmatBase *obj = omi->second;
@@ -472,7 +472,7 @@ void ObjectInitializer::SetObjectJ2000Body(ObjectMap *objMap)
       {
          #ifdef DEBUG_OBJECT_INITIALIZER
             MessageInterface::ShowMessage(
-               wxT("Setting J2000 Body for %s in the ObjectInitializer\n"),
+               "Setting J2000 Body for %s in the ObjectInitializer\n",
                obj->GetName().c_str());
          #endif
          SpacePoint *spObj = (SpacePoint *)obj;
@@ -483,8 +483,8 @@ void ObjectInitializer::SetObjectJ2000Body(ObjectMap *objMap)
             spObj->SetJ2000Body(j2k);
          }
          else
-            throw GmatBaseException(wxT("ObjectInitializer did not find the Spacepoint \"") +
-               spObj->GetJ2000BodyName() + wxT("\""));
+            throw GmatBaseException("ObjectInitializer did not find the Spacepoint \"" +
+               spObj->GetJ2000BodyName() + "\"");
       }
    }
 }
@@ -506,26 +506,26 @@ void ObjectInitializer::InitializeObjectsInTheMap(ObjectMap *objMap,
                                                   bool usingGOS,
                                                   StringArray *unusedGOL)
 {
-   wxString objTypeStr = GmatBase::GetObjectTypeString(objType).c_str();
+   std::string objTypeStr = GmatBase::GetObjectTypeString(objType).c_str();
    #ifdef DEBUG_INITIALIZE_OBJ
    MessageInterface::ShowMessage
-      (wxT("InitializeObjectsInTheMap() entered, objMap=<%p>, objType=%d, ")
-       wxT("objTypeStr='%s', inFunction=%d\n"), objMap, objType, objTypeStr.c_str(),
+      ("InitializeObjectsInTheMap() entered, objMap=<%p>, objType=%d, "
+       "objTypeStr='%s', inFunction=%d\n", objMap, objType, objTypeStr.c_str(),
        inFunction);
    #endif
    
-   wxString objName;
+   std::string objName;
    
    try
    {
-      std::map<wxString, GmatBase *>::iterator omi;
+      std::map<std::string, GmatBase *>::iterator omi;
       for (omi = objMap->begin(); omi != objMap->end(); ++omi)
       {
          GmatBase *obj = omi->second;
          
          if (obj == NULL)
             throw GmatBaseException
-               (wxT("Cannot initialize NULL pointer of \"") + omi->first + wxT("\" object"));
+               ("Cannot initialize NULL pointer of \"" + omi->first + "\" object");
          
          objName = obj->GetName();
          
@@ -535,7 +535,7 @@ void ObjectInitializer::InitializeObjectsInTheMap(ObjectMap *objMap,
             {
                #ifdef DEBUG_OBJECT_INITIALIZER
                MessageInterface::ShowMessage
-                  (wxT("Initializing <%p><%s>'%s'\n"), obj, obj->GetTypeName().c_str(),
+                  ("Initializing <%p><%s>'%s'\n", obj, obj->GetTypeName().c_str(),
                    obj->GetName().c_str());
                #endif
                if (obj->IsOfType(Gmat::COORDINATE_SYSTEM))
@@ -562,8 +562,8 @@ void ObjectInitializer::InitializeObjectsInTheMap(ObjectMap *objMap,
                {
                   #ifdef DEBUG_SUBSCRIBER
                   MessageInterface::ShowMessage
-                     (wxT("ObjectInitializer registering global subscriber '%s' of type '%s' ")
-                      wxT("to publisher\n"), obj->GetName().c_str(), obj->GetTypeName().c_str());
+                     ("ObjectInitializer registering global subscriber '%s' of type '%s' "
+                      "to publisher\n", obj->GetName().c_str(), obj->GetTypeName().c_str());
                   #endif
                   publisher->Subscribe((Subscriber*)obj);
                }
@@ -585,7 +585,7 @@ void ObjectInitializer::InitializeObjectsInTheMap(ObjectMap *objMap,
          {
             #ifdef DEBUG_OBJECT_INITIALIZER
             MessageInterface::ShowMessage
-               (wxT("==> Ignoring undefined ref obj '%s' in GOS\n"),
+               ("==> Ignoring undefined ref obj '%s' in GOS\n",
                 objName.c_str());
             #endif
          }
@@ -608,14 +608,14 @@ void ObjectInitializer::InitializeObjectsInTheMap(ObjectMap *objMap,
 //------------------------------------------------------------------------------
 void ObjectInitializer::InitializeSystemParameters(ObjectMap *objMap)
 {
-   std::map<wxString, GmatBase *>::iterator omi;
+   std::map<std::string, GmatBase *>::iterator omi;
    for (omi = objMap->begin(); omi != objMap->end(); ++omi)
    {
       GmatBase *obj = omi->second;
       
       if (obj == NULL)
          throw GmatBaseException
-            (wxT("Cannot initialize NULL pointer of \"") + omi->first + wxT("\" object"));
+            ("Cannot initialize NULL pointer of \"" + omi->first + "\" object");
       
       // Treat parameters as a special case -- because system parameters must be
       // initialized before other parameters.
@@ -627,7 +627,7 @@ void ObjectInitializer::InitializeSystemParameters(ObjectMap *objMap)
          {
             #ifdef DEBUG_OBJECT_INITIALIZER
                MessageInterface::ShowMessage(
-                  wxT("ObjectInitializer::Initialize objTypeName = %s, objName = %s\n"),
+                  "ObjectInitializer::Initialize objTypeName = %s, objName = %s\n",
                   obj->GetTypeName().c_str(), obj->GetName().c_str());
             #endif
             
@@ -644,7 +644,7 @@ void ObjectInitializer::InitializeSystemParameters(ObjectMap *objMap)
 void ObjectInitializer::InitializeSubscribers(ObjectMap *objMap)
 {
    #ifdef DEBUG_SUBSCRIBER
-   MessageInterface::ShowMessage(wxT("ObjectInitializer::InitializeSubscribers() entered\n"));
+   MessageInterface::ShowMessage("ObjectInitializer::InitializeSubscribers() entered\n");
    #endif
       
    std::list<Subscriber*>::iterator subiter;
@@ -654,15 +654,15 @@ void ObjectInitializer::InitializeSubscribers(ObjectMap *objMap)
 
    for (subiter = orderedList.begin(); subiter != orderedList.end(); ++subiter)
    {
-      wxString subName = (*subiter)->GetName();      
-      std::map<wxString, GmatBase *>::iterator omi;
+      std::string subName = (*subiter)->GetName();      
+      std::map<std::string, GmatBase *>::iterator omi;
       for (omi = objMap->begin(); omi != objMap->end(); ++omi)
       {
          GmatBase *obj = omi->second;
          
          if (obj == NULL)
             throw GmatBaseException
-               (wxT("Cannot initialize NULL pointer of \"") + omi->first + wxT("\" Object"));
+               ("Cannot initialize NULL pointer of \"" + omi->first + "\" Object");
          
          // Treat subscribers as a special case -- because they need to by initialized
          // in the order they are created. So use initializing order from the Publisher.
@@ -672,7 +672,7 @@ void ObjectInitializer::InitializeSubscribers(ObjectMap *objMap)
             {
                #if defined(DEBUG_OBJECT_INITIALIZER) || defined(DEBUG_SUBSCRIBER)
                MessageInterface::ShowMessage
-                  (wxT("ObjectInitializer::Initialize objTypeName = %s, objName = %s\n"),
+                  ("ObjectInitializer::Initialize objTypeName = %s, objName = %s\n",
                    obj->GetTypeName().c_str(), obj->GetName().c_str());
                #endif
                
@@ -683,7 +683,7 @@ void ObjectInitializer::InitializeSubscribers(ObjectMap *objMap)
    }
    
    #ifdef DEBUG_SUBSCRIBER
-   MessageInterface::ShowMessage(wxT("ObjectInitializer::InitializeSubscribers() leaving\n"));
+   MessageInterface::ShowMessage("ObjectInitializer::InitializeSubscribers() leaving\n");
    #endif
 }
 
@@ -699,17 +699,17 @@ void ObjectInitializer::InitializeAllOtherObjects(ObjectMap *objMap)
 {
    #ifdef DEBUG_INITIALIZE_OBJ
    MessageInterface::ShowMessage
-      (wxT("ObjectInitializer::InitializeAllOtherObjects() entered\n"));
+      ("ObjectInitializer::InitializeAllOtherObjects() entered\n");
    #endif
    
-   std::map<wxString, GmatBase *>::iterator omi;
+   std::map<std::string, GmatBase *>::iterator omi;
    for (omi = objMap->begin(); omi != objMap->end(); ++omi)
    {
       GmatBase *obj = omi->second;
       
       if (obj == NULL)
          throw GmatBaseException
-            (wxT("Cannot initialize NULL pointer of \"") + omi->first + wxT("\" object"));
+            ("Cannot initialize NULL pointer of \"" + omi->first + "\" object");
       
       if ((obj->GetType() != Gmat::COORDINATE_SYSTEM) &&
           (obj->GetType() != Gmat::SPACECRAFT) &&
@@ -720,7 +720,7 @@ void ObjectInitializer::InitializeAllOtherObjects(ObjectMap *objMap)
       {
          #ifdef DEBUG_OBJECT_INITIALIZER
          MessageInterface::ShowMessage
-            (wxT("ObjectInitializer::Initialize objTypeName = %s, objName = %s\n"),
+            ("ObjectInitializer::Initialize objTypeName = %s, objName = %s\n",
              obj->GetTypeName().c_str(), obj->GetName().c_str());
          #endif
          if (obj->GetType() == Gmat::ODE_MODEL)
@@ -740,8 +740,8 @@ void ObjectInitializer::InitializeAllOtherObjects(ObjectMap *objMap)
             if (obj->IsOfType(Gmat::SPACE_POINT)       ||
                 obj->IsOfType(Gmat::BURN)              ||
                 obj->IsOfType(Gmat::HARDWARE)          ||
-                obj->IsOfType(wxT("Estimator"))        ||
-                obj->IsOfType(wxT("Simulator"))        ||
+                obj->IsOfType("Estimator")             ||
+                obj->IsOfType("Simulator")             ||
                 obj->IsOfType(Gmat::EVENT_LOCATOR))
             {
                BuildReferencesAndInitialize(obj);
@@ -762,27 +762,27 @@ void ObjectInitializer::InitializeAllOtherObjects(ObjectMap *objMap)
 void ObjectInitializer::InitializeInternalObjects()
 {
    #ifdef DEBUG_OBJECT_INITIALIZER
-      MessageInterface::ShowMessage(wxT("Entering InitializeInternalObjects ...\n"));
+      MessageInterface::ShowMessage("Entering InitializeInternalObjects ...\n");
    #endif
    SpacePoint *sp, *j2kBod;
-   wxString j2kName, oName;
+   std::string j2kName, oName;
    
    if (ss == NULL)
-      throw GmatBaseException(wxT("ObjectInitializer::InitializeInternalObjects() ")
-                              wxT("The Solar System pointer is NULL"));
+      throw GmatBaseException("ObjectInitializer::InitializeInternalObjects() "
+                              "The Solar System pointer is NULL");
    
    if (internalCS == NULL)
-      throw GmatBaseException(wxT("ObjectInitializer::InitializeInternalObjects() ")
-                              wxT("The Internal Coordinate System pointer is NULL"));
+      throw GmatBaseException("ObjectInitializer::InitializeInternalObjects() "
+                              "The Internal Coordinate System pointer is NULL");
    
    ss->Initialize();
    #ifdef DEBUG_INITIALIZE_OBJ
    MessageInterface::ShowMessage
-      (wxT("--- The object <%p><%s>'%s' initialized\n"),  ss, ss->GetTypeName().c_str(),
+      ("--- The object <%p><%s>'%s' initialized\n",  ss, ss->GetTypeName().c_str(),
        ss->GetName().c_str());
    #endif
    #ifdef DEBUG_OBJECT_INITIALIZER
-      MessageInterface::ShowMessage(wxT(" ... and solar system is initialized  ...\n"));
+      MessageInterface::ShowMessage(" ... and solar system is initialized  ...\n");
    #endif
    
    // Set J2000 bodies for solar system objects -- should this happen here?
@@ -790,10 +790,10 @@ void ObjectInitializer::InitializeInternalObjects()
    for (StringArray::const_iterator i = biu.begin(); i != biu.end(); ++i)
    {
       #ifdef DEBUG_OBJECT_INITIALIZER
-         MessageInterface::ShowMessage(wxT(" ... initializing body %s ...\n"), (*i).c_str());
+         MessageInterface::ShowMessage(" ... initializing body %s ...\n", (*i).c_str());
       #endif
       sp = ss->GetBody(*i);
-      j2kName = sp->GetStringParameter(wxT("J2000BodyName"));
+      j2kName = sp->GetStringParameter("J2000BodyName");
       j2kBod = FindSpacePoint(j2kName);
       sp->SetJ2000Body(j2kBod);
    }
@@ -801,42 +801,42 @@ void ObjectInitializer::InitializeInternalObjects()
    // set ref object for internal coordinate system
    #ifdef DEBUG_OBJECT_INITIALIZER
       MessageInterface::ShowMessage
-         (wxT(" ... solar system about to be set on internalCS <%p> ...\n"), internalCS);
+         (" ... solar system about to be set on internalCS <%p> ...\n", internalCS);
    #endif
    
    internalCS->SetSolarSystem(ss);
    #ifdef DEBUG_OBJECT_INITIALIZER
-      MessageInterface::ShowMessage(wxT(" ... and solar system is set on internalCS  ...\n"));
-      MessageInterface::ShowMessage(wxT(" ... about to call BuildReferences  ...\n"));
+      MessageInterface::ShowMessage(" ... and solar system is set on internalCS  ...\n");
+      MessageInterface::ShowMessage(" ... about to call BuildReferences  ...\n");
    #endif
 
    BuildReferences(internalCS);
 
    // Set reference origin for internal coordinate system.
-   oName = internalCS->GetStringParameter(wxT("Origin"));
+   oName = internalCS->GetStringParameter("Origin");
    sp = FindSpacePoint(oName);
    if (sp == NULL)
-      throw GmatBaseException(wxT("Cannot find SpacePoint named \"") +
-         oName + wxT("\" used for the internal coordinate system origin"));
+      throw GmatBaseException("Cannot find SpacePoint named \"" +
+         oName + "\" used for the internal coordinate system origin");
    internalCS->SetRefObject(sp, Gmat::SPACE_POINT, oName);
 
 
    // Set J2000 body for internal coordinate system
-   oName = internalCS->GetStringParameter(wxT("J2000Body"));
+   oName = internalCS->GetStringParameter("J2000Body");
    sp = FindSpacePoint(oName);
    if (sp == NULL)
-      throw GmatBaseException(wxT("Cannot find SpacePoint named \"") +
-         oName + wxT("\" used for the internal coordinate system J2000 body"));
+      throw GmatBaseException("Cannot find SpacePoint named \"" +
+         oName + "\" used for the internal coordinate system J2000 body");
    internalCS->SetRefObject(sp, Gmat::SPACE_POINT, oName);
 
    #ifdef DEBUG_OBJECT_INITIALIZER
-      MessageInterface::ShowMessage(wxT(" ... about to call Initialize on internalCS  ...\n"));
+      MessageInterface::ShowMessage(" ... about to call Initialize on internalCS  ...\n");
    #endif
       
    internalCS->Initialize();
    #ifdef DEBUG_INITIALIZE_OBJ
    MessageInterface::ShowMessage
-      (wxT("--- The object <%p><%s>'%s' initialized\n"),  internalCS,
+      ("--- The object <%p><%s>'%s' initialized\n",  internalCS,
        internalCS->GetTypeName().c_str(), internalCS->GetName().c_str());
    #endif
 }
@@ -853,7 +853,7 @@ void ObjectInitializer::InitializeCoordinateSystem(GmatBase *obj)
 {
    #ifdef DEBUG_INITIALIZE_CS
    MessageInterface::ShowMessage
-      (wxT("Entering ObjectInitializer::InitializeCoordinateSystem(), obj=<%p><%s>'%s'\n"),
+      ("Entering ObjectInitializer::InitializeCoordinateSystem(), obj=<%p><%s>'%s'\n",
        obj, obj->GetTypeName().c_str(), obj->GetName().c_str() );
    #endif
    
@@ -861,14 +861,14 @@ void ObjectInitializer::InitializeCoordinateSystem(GmatBase *obj)
    {
       #ifdef DEBUG_INITIALIZE_CS
       MessageInterface::ShowMessage
-         (wxT("The object '%s' is not of CoordinateSystem\n"), obj->GetName().c_str());
+         ("The object '%s' is not of CoordinateSystem\n", obj->GetName().c_str());
       #endif
       return;
    }
    
    SpacePoint *sp;
    CoordinateSystem *cs = (CoordinateSystem*)obj;
-   wxString oName;   
+   std::string oName;   
    
    // Set the reference objects for the coordinate system
    BuildReferences(cs);
@@ -878,33 +878,33 @@ void ObjectInitializer::InitializeCoordinateSystem(GmatBase *obj)
    
    if (axes == NULL)
       throw GmatBaseException
-         (wxT("Cannot initialize NULL axes of CoordinateSystem \"") + cs->GetName() + wxT("\""));
+         ("Cannot initialize NULL axes of CoordinateSystem \"" + cs->GetName() + "\"");
    
    BuildReferences(axes);
    
    // Initialize origin of the coordinate system
-   oName = cs->GetStringParameter(wxT("Origin"));
+   oName = cs->GetStringParameter("Origin");
    
    sp = FindSpacePoint(oName);
    if (sp == NULL)
-      throw GmatBaseException(wxT("Cannot find SpacePoint named \"") +
-         oName + wxT("\" used for the coordinate system ") +
-         cs->GetName() + wxT(" origin"));
+      throw GmatBaseException("Cannot find SpacePoint named \"" +
+         oName + "\" used for the coordinate system " +
+         cs->GetName() + " origin");
    
    cs->SetRefObject(sp, Gmat::SPACE_POINT, oName);
    
-   oName = cs->GetStringParameter(wxT("J2000Body"));
+   oName = cs->GetStringParameter("J2000Body");
    
    sp = FindSpacePoint(oName);
    if (sp == NULL)
-      throw GmatBaseException(wxT("Cannot find SpacePoint named \"") +
-         oName + wxT("\" used for the coordinate system ") +
-         cs->GetName() + wxT(" J2000 body"));
+      throw GmatBaseException("Cannot find SpacePoint named \"" +
+         oName + "\" used for the coordinate system " +
+         cs->GetName() + " J2000 body");
    
    cs->SetRefObject(sp, Gmat::SPACE_POINT, oName);
    #ifdef DEBUG_INITIALIZE_CS
    MessageInterface::ShowMessage
-      (wxT("Exiting ObjectInitializer::InitializeCoordinateSystem()\n"));
+      ("Exiting ObjectInitializer::InitializeCoordinateSystem()\n");
    #endif
 }
 
@@ -923,7 +923,7 @@ void ObjectInitializer::BuildReferencesAndInitialize(GmatBase *obj)
    
    #ifdef DEBUG_INITIALIZE_OBJ
    MessageInterface::ShowMessage
-      (wxT("--- The object <%p><%s>'%s' initialized\n"),  obj,
+      ("--- The object <%p><%s>'%s' initialized\n",  obj,
        obj->GetTypeName().c_str(), obj->GetName().c_str());
    #endif
 }
@@ -940,10 +940,10 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
 {
    #ifdef DEBUG_OBJECT_INITIALIZER
       MessageInterface::ShowMessage
-         (wxT("Entering ObjectInitializer::BuildReferences, object type = '%s'\n"),
+         ("Entering ObjectInitializer::BuildReferences, object type = '%s'\n",
           obj->GetTypeName().c_str());
    #endif
-   wxString oName;
+   std::string oName;
    
    obj->SetSolarSystem(ss);
    obj->SetInternalCoordSystem(internalCS);
@@ -953,7 +953,7 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
        (obj->IsOfType(Gmat::ODE_MODEL)))
    {
       #ifdef DEBUG_OBJECT_INITIALIZER
-         MessageInterface::ShowMessage(wxT("--- it is a PropSetup or ODEModel ...\n"));
+         MessageInterface::ShowMessage("--- it is a PropSetup or ODEModel ...\n");
       #endif
 
       bool hasODEModel = true;
@@ -976,13 +976,13 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
          fm->SetSolarSystem(ss);
 
          // Handle the coordinate systems
-         StringArray csList = fm->GetStringArrayParameter(wxT("CoordinateSystemList"));
+         StringArray csList = fm->GetStringArrayParameter("CoordinateSystemList");
 
          #ifdef DEBUG_OBJECT_INITIALIZER
-            MessageInterface::ShowMessage(wxT("Coordinate system list for '%s' <%p>:\n"),
+            MessageInterface::ShowMessage("Coordinate system list for '%s' <%p>:\n",
                fm->GetName().c_str(), fm);
             for (StringArray::iterator i = csList.begin(); i != csList.end(); ++i)
-               MessageInterface::ShowMessage(wxT("   %s\n"), i->c_str());
+               MessageInterface::ShowMessage("   %s\n", i->c_str());
          #endif
          // Set CS's on the objects
          for (StringArray::iterator i = csList.begin(); i != csList.end(); ++i)
@@ -992,9 +992,9 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
             if (LOS->find(*i) != LOS->end())
             {
                GmatBase *ref = (*LOS)[*i];
-               if (ref->IsOfType(wxT("CoordinateSystem")) == false)
-                  throw GmatBaseException(wxT("Object named ") + (*i) +
-                     wxT(" was expected to be a Coordinate System, but it has type ") +
+               if (ref->IsOfType("CoordinateSystem") == false)
+                  throw GmatBaseException("Object named " + (*i) +
+                     " was expected to be a Coordinate System, but it has type " +
                      ref->GetTypeName());
                fixedCS = (CoordinateSystem*)ref;
                fm->SetRefObject(fixedCS, fixedCS->GetType(), *i);
@@ -1002,27 +1002,27 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
             else if (GOS->find(*i) != GOS->end())
             {
                GmatBase *ref = (*GOS)[*i];
-               if (ref->IsOfType(wxT("CoordinateSystem")) == false)
-                  throw GmatBaseException(wxT("Object named ") + (*i) +
-                     wxT(" was expected to be a Coordinate System, but it has type ") +
+               if (ref->IsOfType("CoordinateSystem") == false)
+                  throw GmatBaseException("Object named " + (*i) +
+                     " was expected to be a Coordinate System, but it has type " +
                      ref->GetTypeName());
                fixedCS = (CoordinateSystem*)ref;
                fm->SetRefObject(fixedCS, fixedCS->GetType(), *i);
             }
             else
             {
-               //MessageInterface::ShowMessage(wxT("===> create BodyFixed here\n"));
-               fixedCS = mod->CreateCoordinateSystem(wxT(""), false);
-               AxisSystem *axes = mod->CreateAxisSystem(wxT("BodyFixed"), wxT(""));
+               //MessageInterface::ShowMessage("===> create BodyFixed here\n");
+               fixedCS = mod->CreateCoordinateSystem("", false);
+               AxisSystem *axes = mod->CreateAxisSystem("BodyFixed", "");
                fixedCS->SetName(*i);
-               fixedCS->SetRefObject(axes, Gmat::AXIS_SYSTEM, wxT(""));
-               fixedCS->SetOriginName(fm->GetStringParameter(wxT("CentralBody")));
+               fixedCS->SetRefObject(axes, Gmat::AXIS_SYSTEM, "");
+               fixedCS->SetOriginName(fm->GetStringParameter("CentralBody"));
 
                // Since CoordinateSystem clones AxisSystem, delete it from here
                #ifdef DEBUG_MEMORY
                MemoryTracker::Instance()->Remove
-                  (axes, wxT("localAxes"), wxT("ObjectInitializer::BuildReferences()"),
-                   wxT("deleting localAxes"));
+                  (axes, "localAxes", "ObjectInitializer::BuildReferences()",
+                   "deleting localAxes");
                #endif
                delete axes;
 
@@ -1034,7 +1034,7 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
                fixedCS->Initialize();
                #ifdef DEBUG_INITIALIZE_OBJ
                MessageInterface::ShowMessage
-                  (wxT("--- The object <%p><%s>'%s' initialized\n"),  internalCS,
+                  ("--- The object <%p><%s>'%s' initialized\n",  internalCS,
                    internalCS->GetTypeName().c_str(), internalCS->GetName().c_str());
                #endif
                // if things have already been moved to the globalObjectStore, put it there
@@ -1046,7 +1046,7 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
 
                #ifdef DEBUG_OBJECT_INITIALIZER
                   MessageInterface::ShowMessage(
-                     wxT("Coordinate system %s has body %s\n"),
+                     "Coordinate system %s has body %s\n",
                      fixedCS->GetName().c_str(), fixedCS->GetOriginName().c_str());
                #endif
             }
@@ -1054,8 +1054,8 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
 
          #ifdef DEBUG_OBJECT_INITIALIZER
             MessageInterface::ShowMessage(
-               wxT("Initializing force model references for '%s'\n"),
-               (fm->GetName() == wxT("") ? obj->GetName().c_str() :
+               "Initializing force model references for '%s'\n",
+               (fm->GetName() == "" ? obj->GetName().c_str() :
                                       fm->GetName().c_str()) );
          #endif
 
@@ -1063,9 +1063,9 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
          {
             StringArray fmRefs = fm->GetRefObjectNameArray(Gmat::UNKNOWN_OBJECT);
             #ifdef DEBUG_OBJECT_INITIALIZER
-               MessageInterface::ShowMessage(wxT("fmRefs are:\n"));
+               MessageInterface::ShowMessage("fmRefs are:\n");
                for (unsigned int ii=0; ii < fmRefs.size(); ii++)
-                  MessageInterface::ShowMessage(wxT(" --- %s\n"), (fmRefs.at(ii)).c_str());
+                  MessageInterface::ShowMessage(" --- %s\n", (fmRefs.at(ii)).c_str());
             #endif
             for (StringArray::iterator i = fmRefs.begin(); i != fmRefs.end(); ++i)
             {
@@ -1081,8 +1081,8 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
                   // Handle SandboxExceptions first.
                   #ifdef DEBUG_OBJECT_INITIALIZER_DETAILED
                      MessageInterface::ShowMessage(
-                        wxT("RefObjectName ") + oName + wxT(" not found; ignoring ") +
-                        ex.GetFullMessage() + wxT("\n"));
+                        "RefObjectName " + oName + " not found; ignoring " +
+                        ex.GetFullMessage() + "\n");
                   #endif
                   //throw ex;
                }
@@ -1094,8 +1094,8 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
                   // Handle SandboxExceptions first.
                   #ifdef DEBUG_OBJECT_INITIALIZER_DETAILED
                      MessageInterface::ShowMessage(
-                        wxT("RefObjectName not found; ignoring ") +
-                        ex.GetFullMessage() + wxT("\n"));
+                        "RefObjectName not found; ignoring " +
+                        ex.GetFullMessage() + "\n");
                   #endif
                }
             }
@@ -1107,8 +1107,8 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
             // Handle SandboxExceptions first.
             #ifdef DEBUG_OBJECT_INITIALIZER_DETAILED
                MessageInterface::ShowMessage(
-                  wxT("RefObjectNameArray not found; ignoring ") +
-                  ex.GetFullMessage() + wxT("\n"));
+                  "RefObjectNameArray not found; ignoring " +
+                  ex.GetFullMessage() + "\n");
             #endif
             //throw ex;
          }
@@ -1119,8 +1119,8 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
             // Post a message and -- otherwise -- ignore the exceptions
             #ifdef DEBUG_OBJECT_INITIALIZER_DETAILED
                MessageInterface::ShowMessage(
-                  wxT("RefObjectNameArray not found; ignoring ") +
-                  ex.GetFullMessage() + wxT("\n"));
+                  "RefObjectNameArray not found; ignoring " +
+                  ex.GetFullMessage() + "\n");
             #endif
          }
 
@@ -1135,12 +1135,12 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
       // First set the individual reference objects
       #ifdef DEBUG_OBJECT_INITIALIZER
          MessageInterface::ShowMessage(
-               wxT("Attempting to set individual reference objects ...\n"));
+               "Attempting to set individual reference objects ...\n");
       #endif
       oName = obj->GetRefObjectName(Gmat::UNKNOWN_OBJECT);
       #ifdef DEBUG_OBJECT_INITIALIZER
          MessageInterface::ShowMessage(
-               wxT("Attempting to set individual reference objects with name = %s...\n"),
+               "Attempting to set individual reference objects with name = %s...\n",
                oName.c_str());
       #endif
       SetRefFromName(obj, oName);
@@ -1156,8 +1156,8 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
       // Handle SandboxExceptions first.
       // For now, post a message and -- otherwise -- ignore exceptions
       #ifdef DEBUG_OBJECT_INITIALIZER_DETAILED
-         MessageInterface::ShowMessage(wxT("RefObjectName not found; ignoring ") +
-            ex.GetFullMessage() + wxT("\n"));
+         MessageInterface::ShowMessage("RefObjectName not found; ignoring " +
+            ex.GetFullMessage() + "\n");
       #endif
       //throw ex;
    }
@@ -1167,8 +1167,8 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
       ex.GetMessageType();
       // Post a message and -- otherwise -- ignore the exceptions
       #ifdef DEBUG_OBJECT_INITIALIZER_DETAILED
-         MessageInterface::ShowMessage(wxT("RefObjectName not found; ignoring ") +
-            ex.GetFullMessage() + wxT("\n"));
+         MessageInterface::ShowMessage("RefObjectName not found; ignoring " +
+            ex.GetFullMessage() + "\n");
       #endif
    }
    
@@ -1183,7 +1183,7 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
          oName = *i;
          #ifdef DEBUG_OBJECT_INITIALIZER
             MessageInterface::ShowMessage(
-                  wxT("Attempting to set ARRAY object with name = %s...\n"),
+                  "Attempting to set ARRAY object with name = %s...\n",
                   oName.c_str());
          #endif
          try
@@ -1197,8 +1197,8 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
             // Handle SandboxExceptions first.
             #ifdef DEBUG_OBJECT_INITIALIZER_DETAILED
                MessageInterface::ShowMessage(
-                  wxT("RefObjectName ") + oName + wxT(" not found; ignoring ") +
-                  ex.GetFullMessage() + wxT("\n"));
+                  "RefObjectName " + oName + " not found; ignoring " +
+                  ex.GetFullMessage() + "\n");
             #endif
             //throw ex;
          }
@@ -1214,8 +1214,8 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
             // Handle SandboxExceptions first.
             #ifdef DEBUG_OBJECT_INITIALIZER_DETAILED
                MessageInterface::ShowMessage(
-                  wxT("RefObjectName not found; ignoring ") +
-                  ex.GetFullMessage() + wxT("\n"));
+                  "RefObjectName not found; ignoring " +
+                  ex.GetFullMessage() + "\n");
             #endif
          }
       }
@@ -1227,8 +1227,8 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
       // Handle SandboxExceptions first.
       #ifdef DEBUG_OBJECT_INITIALIZER_DETAILED
          MessageInterface::ShowMessage(
-            wxT("RefObjectNameArray not found; ignoring ") +
-            ex.GetFullMessage() + wxT("\n"));
+            "RefObjectNameArray not found; ignoring " +
+            ex.GetFullMessage() + "\n");
       #endif
       //throw ex;
    }
@@ -1243,19 +1243,19 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
       // Post a message and -- otherwise -- ignore the exceptions
       #ifdef DEBUG_OBJECT_INITIALIZER_DETAILED
          MessageInterface::ShowMessage(
-            wxT("RefObjectNameArray not found; ignoring ") +
-            ex.GetFullMessage() + wxT("\n"));
+            "RefObjectNameArray not found; ignoring " +
+            ex.GetFullMessage() + "\n");
       #endif
    }
    #ifdef DEBUG_OBJECT_INITIALIZER
-      MessageInterface::ShowMessage(wxT("Exiting BuildReferences ...\n"));
+      MessageInterface::ShowMessage("Exiting BuildReferences ...\n");
    #endif
 }
 
 
 
 //------------------------------------------------------------------------------
-// void SetRefFromName(GmatBase *obj, const wxString &oName)
+// void SetRefFromName(GmatBase *obj, const std::string &oName)
 //------------------------------------------------------------------------------
 /**
  *  Sets a reference object on an object.
@@ -1264,10 +1264,10 @@ void ObjectInitializer::BuildReferences(GmatBase *obj)
  *  @param <oName> The name of the reference object.
  */
 //------------------------------------------------------------------------------
-void ObjectInitializer::SetRefFromName(GmatBase *obj, const wxString &oName)
+void ObjectInitializer::SetRefFromName(GmatBase *obj, const std::string &oName)
 {
    #ifdef DEBUG_OBJECT_INITIALIZER
-      MessageInterface::ShowMessage(wxT("Setting reference '%s' on '%s', inFunction=%d\n"), 
+      MessageInterface::ShowMessage("Setting reference '%s' on '%s', inFunction=%d\n", 
          oName.c_str(), obj->GetName().c_str(), inFunction);
    #endif
       
@@ -1280,7 +1280,7 @@ void ObjectInitializer::SetRefFromName(GmatBase *obj, const wxString &oName)
       {
          #ifdef DEBUG_OBJECT_INITIALIZER
          MessageInterface::ShowMessage
-            (wxT("   '%s' is associated hardware of '%s' in function, so skip\n"),
+            ("   '%s' is associated hardware of '%s' in function, so skip\n",
              refObj->GetName().c_str(), obj->GetName().c_str());
          #endif
       }
@@ -1295,7 +1295,7 @@ void ObjectInitializer::SetRefFromName(GmatBase *obj, const wxString &oName)
       refObj = FindSpacePoint(oName);
       
       if (refObj == NULL)
-         throw GmatBaseException(wxT("Unknown object ") + oName + wxT(" requested by ") +
+         throw GmatBaseException("Unknown object " + oName + " requested by " +
                                   obj->GetName());
 
       obj->SetRefObject(refObj, refObj->GetType(), refObj->GetName());
@@ -1325,13 +1325,13 @@ void ObjectInitializer::SetRefFromName(GmatBase *obj, const wxString &oName)
 //------------------------------------------------------------------------------
 void ObjectInitializer::BuildAssociations(GmatBase * obj)
 {
-   wxString objName = obj->GetName();
-   wxString objType = obj->GetTypeName();
+   std::string objName = obj->GetName();
+   std::string objType = obj->GetTypeName();
    
    #ifdef DEBUG_BUILD_ASSOCIATIONS
    MessageInterface::ShowMessage
-      (wxT("ObjectInitializer::BuildAssociations() entered, obj=<%p><%s>'%s', ")
-       wxT("inFunction=%d\n"), obj, objType.c_str(), objName.c_str(), inFunction);
+      ("ObjectInitializer::BuildAssociations() entered, obj=<%p><%s>'%s', "
+       "inFunction=%d\n", obj, objType.c_str(), objName.c_str(), inFunction);
    #endif
    
    // Spacecraft clones associated hardware objects
@@ -1342,14 +1342,14 @@ void ObjectInitializer::BuildAssociations(GmatBase * obj)
       {
          #ifdef DEBUG_BUILD_ASSOCIATIONS
             MessageInterface::ShowMessage
-               (wxT("ObjectInitializer::BuildAssociations() setting \"%s\" on \"%s\"\n"),
+               ("ObjectInitializer::BuildAssociations() setting \"%s\" on \"%s\"\n",
                 i->c_str(), objName.c_str());
          #endif
          
          GmatBase *elem = NULL;
          if ((elem = FindObject(*i)) == NULL)
-            throw GmatBaseException(wxT("ObjectInitializer::BuildAssociations: Cannot find ")
-                                    wxT("hardware element \"") + (*i) + wxT("\"\n"));
+            throw GmatBaseException("ObjectInitializer::BuildAssociations: Cannot find "
+                                    "hardware element \"" + (*i) + "\"\n");
          
          // To handle Spacecraft hardware setting inside the function,
          // all hardware are cloned in the Spacecraft::SetRefObject() method. (LOJ: 2009.07.24)
@@ -1360,7 +1360,7 @@ void ObjectInitializer::BuildAssociations(GmatBase * obj)
          {
             #ifdef DEBUG_BUILD_ASSOCIATIONS
             MessageInterface::ShowMessage
-               (wxT("   ---> '%s' and '%s' are local objects inside a function, so skip\n"),
+               ("   ---> '%s' and '%s' are local objects inside a function, so skip\n",
                 obj->GetName().c_str(), newElem->GetName().c_str());
             #endif
             continue;
@@ -1370,7 +1370,7 @@ void ObjectInitializer::BuildAssociations(GmatBase * obj)
          if (!obj->SetRefObject(newElem, newElem->GetType(), newElem->GetName()))
          {
             MessageInterface::ShowMessage
-               (wxT("ObjectInitializer::BuildAssociations() failed to set %s\n"),
+               ("ObjectInitializer::BuildAssociations() failed to set %s\n",
                 newElem->GetName().c_str());
             // Should we throw an exception here?
          }
@@ -1378,7 +1378,7 @@ void ObjectInitializer::BuildAssociations(GmatBase * obj)
          {
             #ifdef DEBUG_BUILD_ASSOCIATIONS
             MessageInterface::ShowMessage
-               (wxT("ObjectInitializer::BuildAssociations() successfully set <%p>'%s' to '%s'\n"),
+               ("ObjectInitializer::BuildAssociations() successfully set <%p>'%s' to '%s'\n",
                 newElem, newElem->GetName().c_str(), objName.c_str());
             #endif
             
@@ -1389,15 +1389,15 @@ void ObjectInitializer::BuildAssociations(GmatBase * obj)
             {
                newElem->SetSolarSystem(ss);
                newElem->SetRefObject(obj, Gmat::SPACECRAFT, objName);
-               wxString csName = newElem->GetRefObjectName(Gmat::COORDINATE_SYSTEM);
-               if (csName != wxT(""))
+               std::string csName = newElem->GetRefObjectName(Gmat::COORDINATE_SYSTEM);
+               if (csName != "")
                   newElem->SetRefObject(FindObject(csName), Gmat::COORDINATE_SYSTEM, csName);
                newElem->Initialize();
                
                #ifdef DEBUG_BUILD_ASSOCIATIONS
                MessageInterface::ShowMessage
-                  (wxT("ObjectInitializer::BuildAssociations() adding Thruster's CS to ")
-                   wxT("'%s' so that it can set it to cloned Thruster\n"), obj->GetName().c_str());
+                  ("ObjectInitializer::BuildAssociations() adding Thruster's CS to "
+                   "'%s' so that it can set it to cloned Thruster\n", obj->GetName().c_str());
                #endif
                // Now add Thruster's CoordinateSystem to Spacecraft so that it can set it
                // to cloned Thruster
@@ -1407,20 +1407,20 @@ void ObjectInitializer::BuildAssociations(GmatBase * obj)
                   csName = *i;
                   GmatBase *refObj = FindObject(csName);
                   if (refObj == NULL)
-                     throw GmatBaseException(wxT("Unknown object ") + csName + wxT(" requested by ") +
+                     throw GmatBaseException("Unknown object " + csName + " requested by " +
                                              obj->GetName());
-                  obj->TakeAction(wxT("ThrusterSettingMode"), wxT("On"));
+                  obj->TakeAction("ThrusterSettingMode", "On");
                   obj->SetRefObject(refObj, refObj->GetType(), refObj->GetName());                  
-                  obj->TakeAction(wxT("ThrusterSettingMode"), wxT("Off"));
+                  obj->TakeAction("ThrusterSettingMode", "Off");
                }
             }
             
             #ifdef DEBUG_BUILD_ASSOCIATIONS
             MessageInterface::ShowMessage
-               (wxT("ObjectInitializer::BuildAssociations() Calling <%p>'%s'->")
-                wxT("TakeAction(SetupHardware)\n"), obj, objName.c_str());
+               ("ObjectInitializer::BuildAssociations() Calling <%p>'%s'->"
+                "TakeAction(SetupHardware)\n", obj, objName.c_str());
             #endif
-            obj->TakeAction(wxT("SetupHardware"));
+            obj->TakeAction("SetupHardware");
             
          }
       }
@@ -1428,13 +1428,13 @@ void ObjectInitializer::BuildAssociations(GmatBase * obj)
    
    #ifdef DEBUG_BUILD_ASSOCIATIONS
    MessageInterface::ShowMessage
-      (wxT("ObjectInitializer::BuildAssociations() leaving\n"));
+      ("ObjectInitializer::BuildAssociations() leaving\n");
    #endif
 }
 
 
 //------------------------------------------------------------------------------
-// SpacePoint* FindSpacePoint(const wxString &spname)
+// SpacePoint* FindSpacePoint(const std::string &spname)
 //------------------------------------------------------------------------------
 /**
  *  Finds a SpacePoint by name.
@@ -1445,7 +1445,7 @@ void ObjectInitializer::BuildAssociations(GmatBase * obj)
  *          stores.
  */
 //------------------------------------------------------------------------------
-SpacePoint * ObjectInitializer::FindSpacePoint(const wxString &spName)
+SpacePoint * ObjectInitializer::FindSpacePoint(const std::string &spName)
 {
    SpacePoint *sp = ss->GetBody(spName);
 
@@ -1464,7 +1464,7 @@ SpacePoint * ObjectInitializer::FindSpacePoint(const wxString &spName)
 }
 
 //------------------------------------------------------------------------------
-// GmatBase* ObjectInitializer::FindObject(const wxString &name)
+// GmatBase* ObjectInitializer::FindObject(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  *  Finds an object by name, searching through the LOS first,
@@ -1476,10 +1476,10 @@ SpacePoint * ObjectInitializer::FindSpacePoint(const wxString &spName)
  *          object stores.
  */
 //------------------------------------------------------------------------------
-GmatBase* ObjectInitializer::FindObject(const wxString &name)
+GmatBase* ObjectInitializer::FindObject(const std::string &name)
 {
    // Check for special object not in LOS or GOS first (for Bug 2358 fix)
-   if (name == wxT("InternalEarthMJ2000Eq"))
+   if (name == "InternalEarthMJ2000Eq")
       return internalCS;
    
    if (LOS->find(name) == LOS->end())
@@ -1499,36 +1499,36 @@ GmatBase* ObjectInitializer::FindObject(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// virtual void ShowObjectMaps(const wxString &str)
+// virtual void ShowObjectMaps(const std::string &str)
 //------------------------------------------------------------------------------
-void ObjectInitializer::ShowObjectMaps(const wxString &str)
+void ObjectInitializer::ShowObjectMaps(const std::string &str)
 {
    MessageInterface::ShowMessage
-      (wxT("%s\n======================================================================\n"),
+      ("%s\n======================================================================\n",
        str.c_str());
    MessageInterface::ShowMessage
-      (wxT("ObjectInitializer::ShowObjectMaps() LOS=<%p>, GOS=<%p>\n"), LOS, GOS);
+      ("ObjectInitializer::ShowObjectMaps() LOS=<%p>, GOS=<%p>\n", LOS, GOS);
    
    if (LOS)
    {
-      MessageInterface::ShowMessage(wxT("Here is the local object map \n"));
-      for (std::map<wxString, GmatBase *>::iterator i = LOS->begin();
+      MessageInterface::ShowMessage("Here is the local object map \n");
+      for (std::map<std::string, GmatBase *>::iterator i = LOS->begin();
            i != LOS->end(); ++i)
          MessageInterface::ShowMessage
-            (wxT("   %40s  <%p> [%s]\n"), i->first.c_str(), i->second,
-             i->second == NULL ? wxT("NULL") : (i->second)->GetTypeName().c_str());
+            ("   %40s  <%p> [%s]\n", i->first.c_str(), i->second,
+             i->second == NULL ? "NULL" : (i->second)->GetTypeName().c_str());
    }
    if (GOS)
    {
-      MessageInterface::ShowMessage(wxT("Here is the global object map\n"));
-      for (std::map<wxString, GmatBase *>::iterator i = GOS->begin();
+      MessageInterface::ShowMessage("Here is the global object map\n");
+      for (std::map<std::string, GmatBase *>::iterator i = GOS->begin();
            i != GOS->end(); ++i)
          MessageInterface::ShowMessage
-            (wxT("   %40s  <%p> [%s]\n"), i->first.c_str(), i->second,
-             i->second == NULL ? wxT("NULL") : (i->second)->GetTypeName().c_str());
+            ("   %40s  <%p> [%s]\n", i->first.c_str(), i->second,
+             i->second == NULL ? "NULL" : (i->second)->GetTypeName().c_str());
    }
    MessageInterface::ShowMessage
-      (wxT("======================================================================\n"));
+      ("======================================================================\n");
 }
 
 //------------------------------------------------------------------------------
@@ -1539,10 +1539,10 @@ std::list<Subscriber*> ObjectInitializer::GetSubscribersInZOrder(std::list<Subsc
    if (subList.empty()) return subList;
 
    #ifdef DEBUG_Z_ORDER
-      MessageInterface::ShowMessage(wxT("Now checking for a non-zero z-order\n"));
+      MessageInterface::ShowMessage("Now checking for a non-zero z-order\n");
    #endif
    bool noZOrder    = true;
-   Integer zOrderID = (subList.front())->GetParameterID(wxT("RelativeZOrder"));
+   Integer zOrderID = (subList.front())->GetParameterID("RelativeZOrder");
 
    // if we find a relative z-order for any of the subscribers that is non-zero, we
    // know we need to order them all
@@ -1550,7 +1550,7 @@ std::list<Subscriber*> ObjectInitializer::GetSubscribersInZOrder(std::list<Subsc
    for (si = subList.begin(); si != subList.end(); si++)
    {
       #ifdef DEBUG_Z_ORDER
-         MessageInterface::ShowMessage(wxT("Relative z-order for %s is %d\n"), ((*si)->GetName()).c_str(), ((*si)->GetIntegerParameter(zOrderID)));
+         MessageInterface::ShowMessage("Relative z-order for %s is %d\n", ((*si)->GetName()).c_str(), ((*si)->GetIntegerParameter(zOrderID)));
       #endif
       if ((*si)->GetIntegerParameter(zOrderID) != 0)
       {
@@ -1576,7 +1576,7 @@ std::list<Subscriber*> ObjectInitializer::GetSubscribersInZOrder(std::list<Subsc
       {
          Integer zOrder   = (*si)->GetIntegerParameter(zOrderID);
          #ifdef DEBUG_Z_ORDER
-            MessageInterface::ShowMessage(wxT("ORDERING: Relative z-order for %s is %d\n"), ((*si)->GetName()).c_str(), zOrder);
+            MessageInterface::ShowMessage("ORDERING: Relative z-order for %s is %d\n", ((*si)->GetName()).c_str(), zOrder);
          #endif
          if (zOrder < currentZOrder)
          {
@@ -1586,10 +1586,10 @@ std::list<Subscriber*> ObjectInitializer::GetSubscribersInZOrder(std::list<Subsc
       }
       if (hasLowestZOrder == NULL)
       {
-         throw GmatBaseException(wxT("ERROR ordering subscriber list!\n"));
+         throw GmatBaseException("ERROR ordering subscriber list!\n");
       }
       #ifdef DEBUG_Z_ORDER
-         MessageInterface::ShowMessage(wxT("------> ADDING %s to orderedList\n"), (hasLowestZOrder->GetName()).c_str());
+         MessageInterface::ShowMessage("------> ADDING %s to orderedList\n", (hasLowestZOrder->GetName()).c_str());
       #endif
       orderedList.push_back(hasLowestZOrder);
       tmpList.remove(hasLowestZOrder);

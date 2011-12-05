@@ -42,7 +42,7 @@ class GMAT_API LibrationPoint : public CalculatedPoint
 {
 public:
    // default constructor, specifying libration point name
-   LibrationPoint(const wxString &itsName = wxT(""));
+   LibrationPoint(const std::string &itsName = "");
    // copy constructor
    LibrationPoint(const LibrationPoint &lp);
    // operator=
@@ -57,25 +57,25 @@ public:
    virtual const Rvector3 GetMJ2000Velocity(const A1Mjd &atTime);   
    
    // Parameter access methods - overridden from GmatBase
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const; 
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const; 
    virtual Gmat::ParameterType 
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const wxString &label) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const std::string &label) const;
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label, 
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label, 
+                                           const std::string &value);
    // These two added to satisfy GCC, which apparently has trouble finding 
    // the methods inherited from CalculatedPoint
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
-   virtual bool         SetStringParameter(const wxString &label, 
-                                           const wxString &value,
+   virtual bool         SetStringParameter(const std::string &label, 
+                                           const std::string &value,
                                            const Integer index);
    
    virtual const        ObjectTypeArray& GetRefObjectTypeArray();
@@ -83,7 +83,7 @@ public:
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool         SetRefObject(GmatBase *obj, 
                                      const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    
    virtual GmatBase*    Clone() const;
    virtual void         Copy(const GmatBase* orig);
@@ -98,7 +98,7 @@ protected:
       WHICH_POINT,
       LibrationPointParamCount
    };
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[LibrationPointParamCount - CalculatedPointParamCount];
    static const Gmat::ParameterType
       PARAMETER_TYPE[LibrationPointParamCount - CalculatedPointParamCount];
@@ -106,9 +106,9 @@ protected:
    static const Real CONVERGENCE_TOLERANCE;// = 1.0e-8;
    static const Real MAX_ITERATIONS;//        = 2000;
    
-   wxString primaryBodyName;
-   wxString secondaryBodyName;
-   wxString whichPoint;
+   std::string primaryBodyName;
+   std::string secondaryBodyName;
+   std::string whichPoint;
    
    SpacePoint  *primaryBody;
    SpacePoint  *secondaryBody;

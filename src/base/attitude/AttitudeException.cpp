@@ -25,15 +25,15 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  AttitudeException(wxString details)
+//  AttitudeException(std::string details)
 //------------------------------------------------------------------------------
 /**
 * Constructs an AttitudeException object (default constructor).
  */
 //------------------------------------------------------------------------------
 
-AttitudeException::AttitudeException(wxString details) :
-BaseException  (wxT("Attitude exception: "), details)
+AttitudeException::AttitudeException(std::string details) :
+BaseException  ("Attitude exception: ", details)
 {
 
 }

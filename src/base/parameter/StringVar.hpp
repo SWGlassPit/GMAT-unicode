@@ -15,7 +15,7 @@
 // Created: 2005/1/7
 //
 /**
- * Declares StringVar class which handles wxString value. The string value
+ * Declares StringVar class which handles std::string value. The string value
  * is stored in Parameter::mExpr.
  */
 //------------------------------------------------------------------------------
@@ -29,11 +29,11 @@ class GMAT_API StringVar : public Parameter
 {
 public:
 
-   StringVar(const wxString &name = wxT(""),
-             const wxString &typeStr = wxT("String"),
+   StringVar(const std::string &name = "",
+             const std::string &typeStr = "String",
              GmatParam::ParameterKey key = GmatParam::USER_PARAM,
-             GmatBase *obj = NULL, const wxString &desc = wxT(""),
-             const wxString &unit = wxT(""),
+             GmatBase *obj = NULL, const std::string &desc = "",
+             const std::string &unit = "",
              GmatParam::DepObject depObj = GmatParam::NO_DEP,
              Gmat::ObjectType ownerType = Gmat::UNKNOWN_OBJECT,
              bool isTimeParam = false);
@@ -45,25 +45,25 @@ public:
    bool operator!=(const StringVar &right) const;
 
    // methods inherited from Parameter
-   virtual wxString ToString();
-   virtual const wxString& GetString() const;
-   virtual const wxString& EvaluateString();
+   virtual std::string ToString();
+   virtual const std::string& GetString() const;
+   virtual const std::string& EvaluateString();
    
    // methods inherited from GmatBase
    virtual GmatBase* Clone() const;
    virtual void Copy(const GmatBase*);
    
-   virtual Integer GetParameterID(const wxString &str) const;
+   virtual Integer GetParameterID(const std::string &str) const;
    
-   virtual wxString GetStringParameter(const Integer id) const;
-   virtual wxString GetStringParameter(const wxString &label) const;
-   virtual bool SetStringParameter(const Integer id, const wxString &value);
-   virtual bool SetStringParameter(const wxString &label,
-                                   const wxString &value);
+   virtual std::string GetStringParameter(const Integer id) const;
+   virtual std::string GetStringParameter(const std::string &label) const;
+   virtual bool SetStringParameter(const Integer id, const std::string &value);
+   virtual bool SetStringParameter(const std::string &label,
+                                   const std::string &value);
    
-   virtual const wxString& GetGeneratingString(Gmat::WriteMode mode,
-                                                  const wxString &prefix,
-                                                  const wxString &useName);
+   virtual const std::string& GetGeneratingString(Gmat::WriteMode mode,
+                                                  const std::string &prefix,
+                                                  const std::string &useName);
 protected:
    
    enum
@@ -72,12 +72,12 @@ protected:
       StringVarParamCount
    };
    
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[StringVarParamCount - ParameterParamCount];
    static const Gmat::ParameterType
       PARAMETER_TYPE[StringVarParamCount - ParameterParamCount];
    
-   wxString mStringValue;
+   std::string mStringValue;
    
 private:
 

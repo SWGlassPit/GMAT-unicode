@@ -27,9 +27,9 @@
 #include "GmatConstants.hpp"
 #include "UtilityException.hpp"
 
-#include <wx/wfstream.h>
+#include <fstream>
 #include <iostream>
-#include <wx/txtstrm.h>
+#include <sstream>
 #include <iomanip>
 
 #include <cstdlib>			// Required for GCC 4.3
@@ -39,7 +39,7 @@
 // static data
 //---------------------------------
 // hard coded for now - need to allow user to set later
-//wxString LeapSecsFileReader::withFileName = wxT("tai-utc.dat");
+//std::string LeapSecsFileReader::withFileName = "tai-utc.dat";
 
 //---------------------------------
 // public
@@ -51,7 +51,7 @@
  *  Constructor.
  */
 //------------------------------------------------------------------------------
-LeapSecsFileReader::LeapSecsFileReader(const wxString &fileName) :
+LeapSecsFileReader::LeapSecsFileReader(const std::string &fileName) :
 withFileName     (fileName)
 {
    isInitialized = false;
@@ -77,29 +77,31 @@ bool LeapSecsFileReader::Initialize()
    {
       if (!isInitialized)
       {
-         wxFileInputStream inFileStream( withFileName );
-         wxTextInputStream inStream( inFileStream );;
+         std::ifstream instream;
 
-         if (!inFileStream.IsOk())
+         instream.open(withFileName.c_str());
+
+         if (instream == NULL)
          {
-            wxString errMsg = wxT("Unable to locate leap second file ")
-                                 + withFileName + wxT("\n");
+            std::string errMsg = "Unable to locate leap second file "
+                                 + withFileName + "\n";
             throw UtilityException(errMsg);
          }
 
-         while (!inFileStream.Eof())
+         while (!instream.eof())
          {
-            wxString line;
-            line = inStream.ReadLine();
+            std::string line;
+            getline(instream,line);
             Parse(line);
          }
 
+         instream.close();
       }
    }
    catch (...)
    {
       //MessageInterface::PopupMessage(Gmat::WARNING_,
-      //                               wxT("Unknown Error in LeapSecondFileReader"));
+      //                               "Unknown Error in LeapSecondFileReader");
       // re-throw the exception
       throw;
    }
@@ -119,20 +121,20 @@ bool LeapSecsFileReader::Initialize()
  * @return true if the file parses successfully
  */
 //------------------------------------------------------------------------------
-bool LeapSecsFileReader::Parse(wxString line)
+bool LeapSecsFileReader::Parse(std::string line)
 {
-//   MessageInterface::ShowMessage(wxT("LeapSecsFileReader::Parse()\n"));
+//   MessageInterface::ShowMessage("LeapSecsFileReader::Parse()\n");
    Real jDate, off1, off2, off3;
 
-   StringTokenizer stringToken(line,wxT(" "));
+   StringTokenizer stringToken(line," ");
    Integer count = stringToken.CountTokens();
 
    if (count == 15)
    {
-      jDate = atof(stringToken.GetToken(4).char_str());
-      off1 = atof(stringToken.GetToken(6).char_str());
-      off2 = atof(stringToken.GetToken(11).char_str());
-      off3 = atof(stringToken.GetToken(13).char_str());
+      jDate = atof(stringToken.GetToken(4).c_str());
+      off1 = atof(stringToken.GetToken(6).c_str());
+      off2 = atof(stringToken.GetToken(11).c_str());
+      off3 = atof(stringToken.GetToken(13).c_str());
 
       LeapSecondInformation leapSecInfo = {jDate, off1, off2, off3};
       lookUpTable.push_back(leapSecInfo);

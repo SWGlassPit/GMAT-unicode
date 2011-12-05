@@ -35,10 +35,10 @@
 //---------------------------------
 //  static data
 //---------------------------------
-const wxString
+const std::string
 Save::PARAMETER_TEXT[SaveParamCount - GmatCommandParamCount] = 
 {
-   wxT("ObjectNames"),
+   "ObjectNames",
 };
 
 const Gmat::ParameterType
@@ -56,7 +56,7 @@ Save::PARAMETER_TYPE[SaveParamCount - GmatCommandParamCount] =
  */
 //------------------------------------------------------------------------------
 Save::Save() :
-   GmatCommand   (wxT("Save")),
+   GmatCommand   ("Save"),
    appendData    (false),
    wasWritten    (false),
    writeVerbose  (false)
@@ -128,9 +128,9 @@ Save& Save::operator=(const Save& sv)
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
-wxString Save::GetParameterText(const Integer id) const
+std::string Save::GetParameterText(const Integer id) const
 {
    if (id >= GmatCommandParamCount && id < SaveParamCount)
       return PARAMETER_TEXT[id - GmatCommandParamCount];
@@ -140,9 +140,9 @@ wxString Save::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer Save::GetParameterID(const wxString &str) const
+Integer Save::GetParameterID(const std::string &str) const
 {
    for (int i=GmatCommandParamCount; i<SaveParamCount; i++)
    {
@@ -167,9 +167,9 @@ Gmat::ParameterType Save::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
-wxString Save::GetParameterTypeString(const Integer id) const
+std::string Save::GetParameterTypeString(const Integer id) const
 {
    if (id >= GmatCommandParamCount && id < SaveParamCount)
       return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
@@ -179,7 +179,7 @@ wxString Save::GetParameterTypeString(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  bool  SetStringParameter(const Integer id, const wxString value)
+//  bool  SetStringParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the string parameter value, given the input
@@ -194,7 +194,7 @@ wxString Save::GetParameterTypeString(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-bool Save::SetStringParameter(const Integer id, const wxString &value)
+bool Save::SetStringParameter(const Integer id, const std::string &value)
 {
    if (id == OBJECT_NAMES)
    {
@@ -203,8 +203,8 @@ bool Save::SetStringParameter(const Integer id, const wxString &value)
       {
          if (objNameArray[ii] == value)
          {
-            wxString ex = wxT("Attempting to add ");
-            ex += value + wxT(" more than once to list of objects.\n");
+            std::string ex = "Attempting to add """;
+            ex += value + """ more than once to list of objects.\n";
             throw CommandException(ex);
          }
       }
@@ -218,10 +218,10 @@ bool Save::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-//  bool SetStringParameter(const wxString &label, const wxString &value)
+//  bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
 /**
- * Sets the value for a wxString parameter.
+ * Sets the value for a std::string parameter.
  *
  * @param <label> The (string) label for the parameter.
  * @param <value> New value for the parameter.
@@ -229,14 +229,14 @@ bool Save::SetStringParameter(const Integer id, const wxString &value)
  * @return The string stored for this parameter.
  */
 //------------------------------------------------------------------------------
-bool Save::SetStringParameter(const wxString &label, const wxString &value)
+bool Save::SetStringParameter(const std::string &label, const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id, const Integer index)
+//  std::string  GetStringParameter(const Integer id, const Integer index)
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -251,14 +251,14 @@ bool Save::SetStringParameter(const wxString &label, const wxString &value)
  *
  */
 //------------------------------------------------------------------------------
-wxString Save::GetStringParameter(const Integer id,
+std::string Save::GetStringParameter(const Integer id,
                                      const Integer index) const
 {
    if (id == OBJECT_NAMES)
    {
       if ((index < 0) || (index >= ((Integer) objNameArray.size())))
          throw CommandException
-            (wxT("Index out of bounds when attempting to return object name\n"));
+            ("Index out of bounds when attempting to return object name\n");
       return objNameArray.at(index);
    }
    
@@ -267,7 +267,7 @@ wxString Save::GetStringParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-//  wxString GetStringParameter(const wxString &label,
+//  std::string GetStringParameter(const std::string &label,
 //                                 const Integer index) const
 //------------------------------------------------------------------------------
 /**
@@ -279,7 +279,7 @@ wxString Save::GetStringParameter(const Integer id,
  * @return The string stored for this parameter.
  */
 //------------------------------------------------------------------------------
-wxString Save::GetStringParameter(const wxString &label,
+std::string Save::GetStringParameter(const std::string &label,
                                      const Integer index) const
 {
    return GetStringParameter(GetParameterID(label), index);
@@ -319,10 +319,10 @@ const StringArray& Save::GetStringArrayParameter(const Integer id) const
  * @return the name of the object.
  */
 //------------------------------------------------------------------------------
-wxString Save::GetRefObjectName(const Gmat::ObjectType type) const
+std::string Save::GetRefObjectName(const Gmat::ObjectType type) const
 {
    if (objNameArray.size() == 0)
-      return wxT("");
+      return "";
    else
       return objNameArray[0];
 }
@@ -347,7 +347,7 @@ const StringArray& Save::GetRefObjectNameArray(const Gmat::ObjectType type)
 
 
 //------------------------------------------------------------------------------
-// bool SetRefObjectName(const Gmat::ObjectType type, const wxString &name)
+// bool SetRefObjectName(const Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets the reference objects that get saved.
@@ -359,9 +359,9 @@ const StringArray& Save::GetRefObjectNameArray(const Gmat::ObjectType type)
  */
 //------------------------------------------------------------------------------
 bool Save::SetRefObjectName(const Gmat::ObjectType type,
-                            const wxString &name)
+                            const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return false;
       
    // Save works for all types, so we don't check the type parameter
@@ -387,18 +387,18 @@ bool Save::Initialize()
    appendData = false;
    
    FileManager *fm = FileManager::Instance();
-   wxString outPath = fm->GetAbsPathname(FileManager::OUTPUT_PATH);
+   std::string outPath = fm->GetAbsPathname(FileManager::OUTPUT_PATH);
    
    Integer objCount = objNameArray.size();
    
    #ifdef DEBUG_SAVE_INIT
    MessageInterface::ShowMessage
-      (wxT("Save::Initialize() objCount=%d, outPath=%s\n"), objCount, outPath.c_str());
+      ("Save::Initialize() objCount=%d, outPath=%s\n", objCount, outPath.c_str());
    #endif
    
    // throw an exception if no objects to save
    if (objCount == 0)   
-      throw CommandException(wxT("Save command has no objects to save"));
+      throw CommandException("Save command has no objects to save");
    
    #ifndef __USE_SINGLE_FILE__
       for (Integer i=0; i<objCount; i++)
@@ -414,7 +414,7 @@ bool Save::Initialize()
    for (StringArray::iterator i = objNameArray.begin(); i != objNameArray.end(); ++i)
    {
       #ifdef DEBUG_SAVE_INIT
-      MessageInterface::ShowMessage(wxT("   objName=%s\n"), (*i).c_str());
+      MessageInterface::ShowMessage("   objName=%s\n", (*i).c_str());
       #endif
       
       if (FindObject(*i) == NULL)
@@ -422,7 +422,7 @@ bool Save::Initialize()
          if (solarSys)
          {
             // Maybe it's a solar system object     
-            if ((*i) == wxT("SolarSystem"))
+            if ((*i) == "SolarSystem")
             {
                objArray.push_back(solarSys);
                UpdateOutputFileNames(index, *i);
@@ -443,9 +443,9 @@ bool Save::Initialize()
             }
          }
          
-         wxString errorString = wxT("Save command cannot find object \"");
+         std::string errorString = "Save command cannot find object \"";
          errorString += *i;
-         errorString += wxT("\"");
+         errorString += "\"";
          throw CommandException(errorString);
       }
       else
@@ -459,20 +459,20 @@ bool Save::Initialize()
    
    #ifdef __USE_SINGLE_FILE__
       if (objCount > 1)
-         fileNameArray[0] += wxT(".data");
+         fileNameArray[0] += ".data";
       else if (index == objCount)
-         fileNameArray[0] += (wxT(".") + objArray[0]->GetTypeName() + wxT(".data"));
+         fileNameArray[0] += ("." + objArray[0]->GetTypeName() + ".data");
       
       #ifdef DEBUG_SAVE_INIT
       MessageInterface::ShowMessage
-         (wxT("Save::Initialize() fileNameArray[%d]=%s\n"), 0,
+         ("Save::Initialize() fileNameArray[%d]=%s\n", 0,
           fileNameArray[0].c_str());
       #endif
    #endif
    
    #ifdef DEBUG_SAVE_INIT
    MessageInterface::ShowMessage
-      (wxT("Save::Initialize() Saving %d object(s)\n"), objArray.size());
+      ("Save::Initialize() Saving %d object(s)\n", objArray.size());
    #endif
    
    return retval;
@@ -492,16 +492,16 @@ bool Save::Initialize()
 bool Save::Execute()
 {
    #ifdef DEBUG_SAVE_EXEC
-   MessageInterface::ShowMessage(wxT("Save::Execute() entered\n"));
+   MessageInterface::ShowMessage("Save::Execute() entered\n");
    #endif
    
    Integer prec = GmatGlobal::Instance()->GetDataPrecision();
    
    if (objArray.empty())
-      throw CommandException(wxT("Save command has no objects to save"));
+      throw CommandException("Save command has no objects to save");
    
    if (!objArray[0])
-      throw CommandException(wxT("Object not set for Save command"));
+      throw CommandException("Object not set for Save command");
    
    #ifndef __USE_SINGLE_FILE__
    
@@ -523,18 +523,18 @@ bool Save::Execute()
       if (appendData || wasWritten)
       {
          #ifdef DEBUG_SAVE_EXEC
-         MessageInterface::ShowMessage(wxT("   open %s as append\n"), fileNameArray[0].c_str());
+         MessageInterface::ShowMessage("   open %s as append\n", fileNameArray[0].c_str());
          #endif
          
-         fileArray[0].open(fileNameArray[0].char_str(), std::ios::app);
+         fileArray[0].open(fileNameArray[0].c_str(), std::ios::app);
       }
       else
       {
          #ifdef DEBUG_SAVE_EXEC
-         MessageInterface::ShowMessage(wxT("   open %s as new\n"), fileNameArray[0].c_str());
+         MessageInterface::ShowMessage("   open %s as new\n", fileNameArray[0].c_str());
          #endif
          
-         fileArray[0].open(fileNameArray[0].char_str());
+         fileArray[0].open(fileNameArray[0].c_str());
       }
       
       fileArray[0].precision(prec);
@@ -587,7 +587,7 @@ GmatBase* Save::Clone() const
 
 
 //------------------------------------------------------------------------------
-//  const wxString& GetGeneratingString()
+//  const std::string& GetGeneratingString()
 //------------------------------------------------------------------------------
 /**
  * Method used to retrieve the string that was parsed to build this GmatCommand.
@@ -608,15 +608,15 @@ GmatBase* Save::Clone() const
  * @return The script line that, when interpreted, defines this Save command.
  */
 //------------------------------------------------------------------------------
-const wxString& Save::GetGeneratingString(Gmat::WriteMode mode,
-                                            const wxString &prefix,
-                                            const wxString &useName)
+const std::string& Save::GetGeneratingString(Gmat::WriteMode mode,
+                                            const std::string &prefix,
+                                            const std::string &useName)
 {
    // Build the local string
-   generatingString = prefix + wxT("Save");
+   generatingString = prefix + "Save";
    for (StringArray::iterator i = objNameArray.begin(); i != objNameArray.end(); ++i)
-      generatingString += wxT(" ") + *i;
-   generatingString += wxT(";");
+      generatingString += " " + *i;
+   generatingString += ";";
 
    // Then call the base class method
    return GmatCommand::GetGeneratingString(mode, prefix, useName);
@@ -624,8 +624,8 @@ const wxString& Save::GetGeneratingString(Gmat::WriteMode mode,
 
 
 //------------------------------------------------------------------------------
-// virtual bool TakeAction(const wxString &action,  
-//                         const wxString &actionData = "");
+// virtual bool TakeAction(const std::string &action,  
+//                         const std::string &actionData = "");
 //------------------------------------------------------------------------------
 /**
  * This method performs action.
@@ -636,15 +636,15 @@ const wxString& Save::GetGeneratingString(Gmat::WriteMode mode,
  *
  */
 //------------------------------------------------------------------------------
-bool Save::TakeAction(const wxString &action, const wxString &actionData)
+bool Save::TakeAction(const std::string &action, const std::string &actionData)
 {
    #if DEBUG_TAKE_ACTION
    MessageInterface::ShowMessage
-      (wxT("Save::TakeAction() action=%s, actionData=%s\n"),
+      ("Save::TakeAction() action=%s, actionData=%s\n",
        action.c_str(), actionData.c_str());
    #endif
    
-   if (action == wxT("Clear"))
+   if (action == "Clear")
    {
       objNameArray.clear();
       return true;
@@ -656,7 +656,7 @@ bool Save::TakeAction(const wxString &action, const wxString &actionData)
 
 //------------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * This method updates object names when the user changes them.
@@ -669,8 +669,8 @@ bool Save::TakeAction(const wxString &action, const wxString &actionData)
  */
 //------------------------------------------------------------------------------
 bool Save::RenameRefObject(const Gmat::ObjectType type,
-                           const wxString &oldName,
-                           const wxString &newName)
+                           const std::string &oldName,
+                           const std::string &newName)
 {
    for (Integer index = 0; index < (Integer)objNameArray.size(); ++index)
    {
@@ -683,22 +683,22 @@ bool Save::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// void UpdateOutputFileNames(Integer index, const wxString objName)
+// void UpdateOutputFileNames(Integer index, const std::string objName)
 //------------------------------------------------------------------------------
-void Save::UpdateOutputFileNames(Integer index, const wxString objName)
+void Save::UpdateOutputFileNames(Integer index, const std::string objName)
 {
    // If saving multiple objects for single file,
    // we want to append object names.
    #ifdef __USE_SINGLE_FILE__
       if (index > 0)
-         fileNameArray[0] = fileNameArray[0] + wxT("_") + objName;
+         fileNameArray[0] = fileNameArray[0] + "_" + objName;
       
    #else
-      fileNameArray[index] += (wxT(".") + objArray[index]->GetTypeName() + wxT(".data"));
+      fileNameArray[index] += ("." + objArray[index]->GetTypeName() + ".data");
       
       #ifdef DEBUG_SAVE_OUTPUT
       MessageInterface::ShowMessage
-         (wxT("Save::UpdateOutputFileNames() fileNameArray[%d]=%s\n"), index,
+         ("Save::UpdateOutputFileNames() fileNameArray[%d]=%s\n", index,
           fileNameArray[index].c_str());
       #endif
    #endif
@@ -715,13 +715,13 @@ void Save::UpdateOutputFileNames(Integer index, const wxString objName)
 void Save::WriteObject(UnsignedInt i, GmatBase *o)
 {
    #ifdef DEBUG_SAVE_OUTPUT
-      MessageInterface::ShowMessage(wxT("Save: %s <a %s> has %d parameters\n"),
+      MessageInterface::ShowMessage("Save: %s <a %s> has %d parameters\n",
          o->GetName().c_str(), o->GetTypeName().c_str(),
          o->GetParameterCount());
    #endif
    
-   wxString objectname = o->GetName();
-   wxString prefix = wxT("");
+   std::string objectname = o->GetName();
+   std::string prefix = "";
 
    /**
     * @note:
@@ -735,23 +735,23 @@ void Save::WriteObject(UnsignedInt i, GmatBase *o)
    
    // "Create Propagator" creates a PropSetup.  This code handles
    // that special case.
-   //wxString tname = o->GetTypeName();
+   //std::string tname = o->GetTypeName();
    //if (tname == "PropSetup")
    //   tname = "Propagator";   
    //file << "Create " << tname << " " << o->GetName() << "\n";
    
-   if (o->GetTypeName() == wxT("Variable") || o->GetTypeName() == wxT("String"))
-      prefix = wxT("Create ") + o->GetTypeName() + wxT(" ") + o->GetName() + wxT("\n");
+   if (o->GetTypeName() == "Variable" || o->GetTypeName() == "String")
+      prefix = "Create " + o->GetTypeName() + " " + o->GetName() + "\n";
 
    // Do not write comments
    o->SetShowPrefaceComment(false);
    o->SetShowInlineComment(false);
    
    #ifdef __USE_SINGLE_FILE__
-   fileArray[0] << prefix << o->GetGeneratingString(Gmat::SCRIPTING, wxT(""), wxT(""));
+   fileArray[0] << prefix << o->GetGeneratingString(Gmat::SCRIPTING, "", "");
       fileArray[0] << std::endl;
    #else
-      fileArray[i] << prefix << o->GetGeneratingString(Gmat::SCRIPTING, wxT(""), wxT(""));
+      fileArray[i] << prefix << o->GetGeneratingString(Gmat::SCRIPTING, "", "");
       fileArray[i] << std::endl;
    #endif
    
@@ -760,7 +760,7 @@ void Save::WriteObject(UnsignedInt i, GmatBase *o)
    o->SetShowInlineComment(true);
       
    #ifdef DEBUG_SAVE_OUTPUT
-      MessageInterface::ShowMessage(wxT("Save:WriteObject() leaving\n"));
+      MessageInterface::ShowMessage("Save:WriteObject() leaving\n");
    #endif
       
 }

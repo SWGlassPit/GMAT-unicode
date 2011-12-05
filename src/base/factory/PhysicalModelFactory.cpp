@@ -34,7 +34,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  CreatePhysicalModel(const wxString &ofType, const wxString &withName)
+//  CreatePhysicalModel(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested PhysicalModel 
@@ -47,15 +47,15 @@
  *       parameter may be added later.
  */
 //------------------------------------------------------------------------------
-PhysicalModel* PhysicalModelFactory::CreateObject(const wxString &ofType,
-                                                  const wxString &withName)
+PhysicalModel* PhysicalModelFactory::CreateObject(const std::string &ofType,
+                                                  const std::string &withName)
 {
    return CreatePhysicalModel(ofType, withName);
 }
 
 
 //------------------------------------------------------------------------------
-//  CreatePhysicalModel(const wxString &ofType, const wxString &withName)
+//  CreatePhysicalModel(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested PhysicalModel 
@@ -69,19 +69,19 @@ PhysicalModel* PhysicalModelFactory::CreateObject(const wxString &ofType,
  */
 //------------------------------------------------------------------------------
 PhysicalModel* PhysicalModelFactory::CreatePhysicalModel(
-                                     const wxString &ofType,
-                                     const wxString &withName)
+                                     const std::string &ofType,
+                                     const std::string &withName)
 {
-   if (ofType == wxT("PointMassForce"))
+   if (ofType == "PointMassForce")
        return new PointMassForce(withName);
-   else if (ofType == wxT("SolarRadiationPressure"))
+   else if (ofType == "SolarRadiationPressure")
        return new SolarRadiationPressure(withName);
-   else if (ofType == wxT("DragForce"))
+   else if (ofType == "DragForce")
        return new DragForce(withName);
-   else if (ofType == wxT("GravityField"))
-       return new GravityField(withName, wxT("Earth"));
-   else if (ofType == wxT("RelativisticCorrection"))
-       return new RelativisticCorrection(withName, wxT("Earth"));
+   else if (ofType == "GravityField")
+       return new GravityField(withName, "Earth");
+   else if (ofType == "RelativisticCorrection")
+       return new RelativisticCorrection(withName, "Earth");
    return NULL;
 }
 
@@ -102,11 +102,11 @@ PhysicalModelFactory::PhysicalModelFactory()
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("PointMassForce"));
-      creatables.push_back(wxT("GravityField"));
-      creatables.push_back(wxT("SolarRadiationPressure"));
-      creatables.push_back(wxT("DragForce"));
-      creatables.push_back(wxT("RelativisticCorrection"));
+      creatables.push_back("PointMassForce");
+      creatables.push_back("GravityField");
+      creatables.push_back("SolarRadiationPressure");
+      creatables.push_back("DragForce");
+      creatables.push_back("RelativisticCorrection");
    }
 }
 
@@ -134,7 +134,7 @@ PhysicalModelFactory::PhysicalModelFactory(StringArray createList)
  * This method creates an object of the class PhysicalModelFactory
  * (copy constructor).
  *
- * @param <fact> the factory object to copy to wxT("this") factory.
+ * @param <fact> the factory object to copy to "this" factory.
  */
 //------------------------------------------------------------------------------
 PhysicalModelFactory::PhysicalModelFactory(const PhysicalModelFactory &fact) 
@@ -149,10 +149,10 @@ PhysicalModelFactory::PhysicalModelFactory(const PhysicalModelFactory &fact)
 /**
  * Assignment operator for the PhysicalModelFactory class.
  *
- * @param <fact> the PhysicalModelFactory object whose data to assign to wxT("this")
+ * @param <fact> the PhysicalModelFactory object whose data to assign to "this"
  *               factory.
  *
- * @return wxT("this") PhysicalModelFactory with data of input factory fact.
+ * @return "this" PhysicalModelFactory with data of input factory fact.
  */
 //------------------------------------------------------------------------------
 PhysicalModelFactory& PhysicalModelFactory::operator= (

@@ -29,10 +29,10 @@
 class GMAT_API AxisSystemFactory : public Factory
 {
 public:
-   AxisSystem*  CreateObject(const wxString &ofType,
-                             const wxString &withName = wxT(""));
-   AxisSystem*  CreateAxisSystem(const wxString &ofType,
-                                 const wxString &withName = wxT(""));
+   AxisSystem*  CreateObject(const std::string &ofType,
+                             const std::string &withName = "");
+   AxisSystem*  CreateAxisSystem(const std::string &ofType,
+                                 const std::string &withName = "");
  
    // default constructor
    AxisSystemFactory();

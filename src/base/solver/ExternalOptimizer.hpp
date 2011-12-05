@@ -24,7 +24,7 @@
 #define ExternalOptimizer_hpp
 
 #include "Optimizer.hpp"
-//#include wxT("GmatServer.hpp")  
+//#include "GmatServer.hpp"  
 #include "GmatInterface.hpp"  // a singleton
 
 class GmatServer;             // Forward refefence the server
@@ -33,7 +33,7 @@ class GmatServer;             // Forward refefence the server
 class GMAT_API ExternalOptimizer : public Optimizer
 {
 public:
-   ExternalOptimizer(wxString type, wxString name);
+   ExternalOptimizer(std::string type, std::string name);
    virtual ~ExternalOptimizer();
    ExternalOptimizer(const ExternalOptimizer &opt);
    ExternalOptimizer&      operator=(const ExternalOptimizer& opt);
@@ -42,11 +42,11 @@ public:
 
    // Access methods overriden from the base class
    
-   virtual wxString GetParameterText(const Integer id) const;
-   virtual Integer     GetParameterID(const wxString &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
+   virtual Integer     GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                        GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
 
    //virtual Integer     GetIntegerParameter(const Integer id) const;
    //virtual Integer     SetIntegerParameter(const Integer id,
@@ -54,27 +54,27 @@ public:
    //virtual bool        GetBooleanParameter(const Integer id) const;
    //virtual bool        SetBooleanParameter(const Integer id,
    //                                        const bool value);
-   virtual wxString GetStringParameter(const Integer id) const;
+   virtual std::string GetStringParameter(const Integer id) const;
    virtual bool        SetStringParameter(const Integer id,
-                                          const wxString &value);
+                                          const std::string &value);
    // compiler complained again - so here they are ....
-   virtual wxString GetStringParameter(const wxString &label) const;
-   virtual bool        SetStringParameter(const wxString &label,
-                                          const wxString &value);
-   virtual wxString GetStringParameter(const Integer id,
+   virtual std::string GetStringParameter(const std::string &label) const;
+   virtual bool        SetStringParameter(const std::string &label,
+                                          const std::string &value);
+   virtual std::string GetStringParameter(const Integer id,
                                           const Integer index) const;
    virtual bool        SetStringParameter(const Integer id, 
-                                          const wxString &value,
+                                          const std::string &value,
                                           const Integer index);
-   virtual wxString GetStringParameter(const wxString &label,
+   virtual std::string GetStringParameter(const std::string &label,
                                           const Integer index) const;
-   virtual bool        SetStringParameter(const wxString &label, 
-                                          const wxString &value,
+   virtual bool        SetStringParameter(const std::string &label, 
+                                          const std::string &value,
                                           const Integer index);
    //virtual const StringArray&
    //                    GetStringArrayParameter(const Integer id) const;
-   //virtual bool        TakeAction(const wxString &action,
-   //                               const wxString &actionData = wxT(""));
+   //virtual bool        TakeAction(const std::string &action,
+   //                               const std::string &actionData = "");
 
 //------------------------------------------------------------------------------
 //  bool  Optimize()    <pure virtual> <from Optimizer>
@@ -99,13 +99,13 @@ protected:
    
 
    /// Path for function script
-   wxString         functionPath;
+   std::string         functionPath;
    /// array of values for the optimizer - value of the objective funcion;
    /// elements of the gradient (if calculated); values of the constraints
    //std::vector<Real>   costConstraintArray;
    /// type of external interface used (as of 2006.07.13, only MATLAB is 
    /// supported)
-   wxString         sourceType;
+   std::string         sourceType;
    /// flag indicating whether or not the interface was opened successfully
    /// and the supporting structures needed by the interface were found
    bool                sourceReady;
@@ -114,7 +114,7 @@ protected:
    /// Pointer to GmatServer
    GmatServer          *inSourceServer;
    
-   static const wxString    PARAMETER_TEXT[ExternalOptimizerParamCount -
+   static const std::string    PARAMETER_TEXT[ExternalOptimizerParamCount -
                                               OptimizerParamCount];
    static const Gmat::ParameterType
                                PARAMETER_TYPE[ExternalOptimizerParamCount -
@@ -132,7 +132,7 @@ protected:
    //void                        InvertJacobian();
 
    //void                        FreeArrays();
-   //virtual wxString         GetProgressString();
+   //virtual std::string         GetProgressString();
    //virtual void                WriteToTextFile();
    
    virtual bool                  OpenConnection() = 0;

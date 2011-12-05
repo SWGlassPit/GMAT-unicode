@@ -75,17 +75,17 @@
  */
 //------------------------------------------------------------------------------
 Assignment::Assignment  () :
-   GmatCommand          (wxT("GMAT")),
-   lhs                  (wxT("Not_Set")),
-   rhs                  (wxT("Not_Set")),
+   GmatCommand          ("GMAT"),
+   lhs                  ("Not_Set"),
+   rhs                  ("Not_Set"),
    lhsWrapper           (NULL),
    rhsWrapper           (NULL),
    mathTree             (NULL),
    lhsOwner             (NULL),
    lhsOwnerID           (-1)
 {
-   objectTypeNames.push_back(wxT("GMAT"));
-   objectTypeNames.push_back(wxT("Assignment"));
+   objectTypeNames.push_back("GMAT");
+   objectTypeNames.push_back("Assignment");
 
    includeInSummary = false;
 }
@@ -104,7 +104,7 @@ Assignment::~Assignment()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (mathTree, mathTree->GetName(), wxT("Assignment::~Assignment()"), wxT("deleting mathTree"));
+         (mathTree, mathTree->GetName(), "Assignment::~Assignment()", "deleting mathTree");
       #endif
       delete mathTree;
    }
@@ -189,7 +189,7 @@ const StringArray& Assignment::GetGmatFunctionNames()
 {
    #ifdef DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("Assignment::GetGmatFunctionNames() entered\n"));
+      ("Assignment::GetGmatFunctionNames() entered\n");
    #endif
    static StringArray functionNames;
    functionNames.clear();
@@ -199,8 +199,8 @@ const StringArray& Assignment::GetGmatFunctionNames()
       functionNames = mathTree->GetGmatFunctionNames();
       #ifdef DEBUG_FUNCTION
       MessageInterface::ShowMessage
-         (wxT("Assignment::GetGmatFunctionNames() returning %d GmatFunctions ")
-          wxT(" from the MathTree\n"), functionNames.size());
+         ("Assignment::GetGmatFunctionNames() returning %d GmatFunctions "
+          " from the MathTree\n", functionNames.size());
       #endif
       return functionNames;
    }
@@ -208,8 +208,8 @@ const StringArray& Assignment::GetGmatFunctionNames()
    {
       #ifdef DEBUG_FUNCTION
       MessageInterface::ShowMessage
-         (wxT("Assignment::GetGmatFunctionNames() returning 0 GmatFunctions, ")
-          wxT("It's not a MathTree\n"));
+         ("Assignment::GetGmatFunctionNames() returning 0 GmatFunctions, "
+          "It's not a MathTree\n");
       #endif
       return functionNames;
    }
@@ -234,14 +234,14 @@ void Assignment::SetFunction(Function *function)
 {
    #ifdef DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("Assignment::SetFunction() function=%p\n"), function);
+      ("Assignment::SetFunction() function=%p\n", function);
    #endif
    
    if (mathTree)
       mathTree->SetFunction(function);
    
    #ifdef DEBUG_FUNCTION
-   MessageInterface::ShowMessage(wxT("Assignment::SetFunction() returning\n"));
+   MessageInterface::ShowMessage("Assignment::SetFunction() returning\n");
    #endif
 }
 
@@ -276,7 +276,7 @@ void Assignment::SetPublisher(Publisher *pub)
    {
       #ifdef DEBUG_PUBLISHER
       MessageInterface::ShowMessage
-         (wxT("Assignment::SetPublisher() setting publiser <%p> to MathTree\n"));
+         ("Assignment::SetPublisher() setting publiser <%p> to MathTree\n");
       #endif
       mathTree->SetPublisher(pub);
    }
@@ -319,8 +319,8 @@ void Assignment::SetInternalCoordSystem(CoordinateSystem *cs)
    {
       #ifdef DEBUG_ASSIGNMENT_SET
       MessageInterface::ShowMessage
-         (wxT("Assignment::SetInternalCoordSystem() this=<%p>'%s'\n   internalCS=<%p>, ")
-          wxT("mathTree=<%p>\n"), this, GetGeneratingString(Gmat::NO_COMMENTS).c_str(),
+         ("Assignment::SetInternalCoordSystem() this=<%p>'%s'\n   internalCS=<%p>, "
+          "mathTree=<%p>\n", this, GetGeneratingString(Gmat::NO_COMMENTS).c_str(),
           internalCoordSys, mathTree);
       #endif
       mathTree->SetInternalCoordSystem(internalCoordSys);
@@ -379,7 +379,7 @@ void Assignment::SetGlobalObjectMap(ObjectMap *map)
 {
    #ifdef DEBUG_GLOBAL_OBJECT_MAP
    MessageInterface::ShowMessage
-      (wxT("Assignment::SetGlobalObjectMap() entered, map=<%p>\n"), map);
+      ("Assignment::SetGlobalObjectMap() entered, map=<%p>\n", map);
    #endif
    
    GmatCommand::SetGlobalObjectMap(map);
@@ -388,7 +388,7 @@ void Assignment::SetGlobalObjectMap(ObjectMap *map)
       mathTree->SetGlobalObjectMap(map);
    
    #ifdef DEBUG_GLOBAL_OBJECT_MAP
-   MessageInterface::ShowMessage(wxT("Assignment::SetGlobalObjectMap() exiting\n"));
+   MessageInterface::ShowMessage("Assignment::SetGlobalObjectMap() exiting\n");
    #endif
 }
 
@@ -419,7 +419,7 @@ bool Assignment::InterpretAction()
 {
    #ifdef DEBUG_ASSIGNMENT_IA
    MessageInterface::ShowMessage
-      (wxT("\nAssignment::InterpretAction() entered, currentFunction=<%p> '%s'\n"),
+      ("\nAssignment::InterpretAction() entered, currentFunction=<%p> '%s'\n",
        currentFunction,
        currentFunction ? currentFunction->GetFunctionPathAndName().c_str() : "NULL");
    #endif
@@ -427,7 +427,7 @@ bool Assignment::InterpretAction()
    StringArray chunks = InterpretPreface();
    
    #ifdef DEBUG_ASSIGNMENT_IA
-      MessageInterface::ShowMessage(wxT("Preface chunks as\n"));
+      MessageInterface::ShowMessage("Preface chunks as\n");
       for (StringArray::iterator i = chunks.begin(); i != chunks.end(); ++i)
          MessageInterface::ShowMessage("   \"%s\"\n", i->c_str());
    #endif
@@ -436,43 +436,43 @@ bool Assignment::InterpretAction()
    rhs = chunks[1]; 
    
    // check if there is single quote in LHS(loj: 2008.07.22)
-   if (lhs.find(wxT("'")) != lhs.npos)
-      throw CommandException(wxT("An assignment command is not allowed to contain ")
-                             wxT("single quote on the left-hand-side")); 
+   if (lhs.find("'") != lhs.npos)
+      throw CommandException("An assignment command is not allowed to contain "
+                             "single quote on the left-hand-side"); 
    
    if (!GmatStringUtil::HasNoBrackets(lhs,true))
-      throw CommandException(wxT("An assignment command is not allowed to contain ")
-         wxT("brackets, braces, or parentheses (except to indicate an array ")
-         wxT("element) on the left-hand-side"));
+      throw CommandException("An assignment command is not allowed to contain "
+         "brackets, braces, or parentheses (except to indicate an array "
+         "element) on the left-hand-side");
    
    // check for unexpected commas on the left-hand-side
    Integer commaPos = -1;
-   if (lhs.find(wxT(',')) != lhs.npos)
+   if (lhs.find(',') != lhs.npos)
    {
       GmatStringUtil::GetArrayCommaIndex(lhs, commaPos);
       if (commaPos == -1)
-         throw CommandException(wxT("Command contains an unexpected comma on ")
-               wxT("left-hand-side"));
+         throw CommandException("Command contains an unexpected comma on "
+               "left-hand-side");
    }
    
    bool isRhsString = false;
    
    // check for single quotes in rhs and remove before process further (LOJ: 2009.10.09)
    // so that mp.IsEquation() will not think as transpose
-   if (rhs.find(wxT("{")) != rhs.npos || rhs.find(wxT("'")) != rhs.npos)
+   if (rhs.find("{") != rhs.npos || rhs.find("'") != rhs.npos)
    {
       // Single quote is allowed if it is paired, such as {'FuelTank1'}
-      if (GmatStringUtil::StartsWith(rhs, wxT("{")) && GmatStringUtil::EndsWith(rhs, wxT("}")))
+      if (GmatStringUtil::StartsWith(rhs, "{") && GmatStringUtil::EndsWith(rhs, "}"))
       {
          #ifdef DEBUG_ASSIGNMENT_IA
          MessageInterface::ShowMessage
-            (wxT("   Removing single quote from <%s>\n"), rhs.c_str());
+            ("   Removing single quote from <%s>\n", rhs.c_str());
          #endif
-         rhs = GmatStringUtil::RemoveAll(rhs, wxT('\''));
+         rhs = GmatStringUtil::RemoveAll(rhs, '\'');
          
          #ifdef DEBUG_ASSIGNMENT_IA
          MessageInterface::ShowMessage
-            (wxT("   After removing <%s>, Setting isRhsString to true\n"), rhs.c_str());
+            ("   After removing <%s>, Setting isRhsString to true\n", rhs.c_str());
          #endif
          isRhsString = true;
       }
@@ -481,8 +481,8 @@ bool Assignment::InterpretAction()
    {
       // check for common use of ./ (path) in GmatFunction to avoid creating
       // MathTree for divide
-      if (rhs.find(wxT("./")) != rhs.npos ||
-          GmatStringUtil::StartsWith(rhs, wxT("'")) || GmatStringUtil::EndsWith(rhs, wxT("'")))
+      if (rhs.find("./") != rhs.npos ||
+          GmatStringUtil::StartsWith(rhs, "'") || GmatStringUtil::EndsWith(rhs, "'"))
       {
          isRhsString = true;
          
@@ -496,8 +496,8 @@ bool Assignment::InterpretAction()
    }
    
    // it there is still ; then report error since ; should have been removed
-   if (rhs.find(wxT(";")) != rhs.npos)
-      throw CommandException(wxT("Is there a missing \"%\" for inline comment?"));
+   if (rhs.find(";") != rhs.npos)
+      throw CommandException("Is there a missing \"%\" for inline comment?");
    
    // Check if rhs is an equation
    if (!isRhsString)
@@ -508,7 +508,7 @@ bool Assignment::InterpretAction()
          // Parse RHS if equation
          #ifdef DEBUG_EQUATION
          MessageInterface::ShowMessage
-            (wxT("Assignment::InterpretAction() %s is an equation\n"), rhs.c_str());
+            ("Assignment::InterpretAction() %s is an equation\n", rhs.c_str());
          #endif
          
          MathNode *topNode = mp.Parse(rhs);
@@ -516,21 +516,21 @@ bool Assignment::InterpretAction()
          #ifdef DEBUG_EQUATION
          if (topNode)
             MessageInterface::ShowMessage
-               (wxT("   topNode=%s\n"), topNode->GetTypeName().c_str());
+               ("   topNode=%s\n", topNode->GetTypeName().c_str());
          #endif
          
          // check if string has missing start quote (loj: 2008.07.23)
          // it will be an error only if rhs with blank space removed matches with
          // any GmatFunction name without letter case
-         wxString str1 = rhs;
-         if (GmatStringUtil::EndsWith(str1, wxT("'")))
+         std::string str1 = rhs;
+         if (GmatStringUtil::EndsWith(str1, "'"))
          {
             #ifdef DEBUG_EQUATION
-            MessageInterface::ShowMessage(wxT("   <%s> ends with '\n"), str1.c_str());
+            MessageInterface::ShowMessage("   <%s> ends with '\n", str1.c_str());
             #endif
             
-            str1 = GmatStringUtil::RemoveLastString(str1, wxT("'"));
-            str1 = GmatStringUtil::RemoveAll(str1, wxT(' '));
+            str1 = GmatStringUtil::RemoveLastString(str1, "'");
+            str1 = GmatStringUtil::RemoveAll(str1, ' ');
             StringArray gmatFnNames = mp.GetGmatFunctionNames();
             bool isError = false;
             for (UnsignedInt i=0; i<gmatFnNames.size(); i++)
@@ -542,14 +542,14 @@ bool Assignment::InterpretAction()
                }
             }
             if (isError)
-               throw CommandException(wxT("Found missing start quote on the right-hand-side")
-                                      wxT(" of an Assignment command"));
+               throw CommandException("Found missing start quote on the right-hand-side"
+                                      " of an Assignment command");
          }
          
-         mathTree = new MathTree(wxT("MathTree"), rhs);
+         mathTree = new MathTree("MathTree", rhs);
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Add
-            (mathTree, rhs, wxT("Assignment::InterpretAction()"), wxT("mathTree = new MathTree()"));
+            (mathTree, rhs, "Assignment::InterpretAction()", "mathTree = new MathTree()");
          #endif
          
          mathTree->SetTopNode(topNode);
@@ -564,10 +564,10 @@ bool Assignment::InterpretAction()
          //   throw CommandException(
          //      "An assignment command is not allowed to contain brackets on the right-hand side"); 
          //if (!GmatStringUtil::AreAllBracketsBalanced(rhs, "({)}"))
-         if (!GmatStringUtil::AreAllBracketsBalanced(rhs, wxT("[({])}")))
+         if (!GmatStringUtil::AreAllBracketsBalanced(rhs, "[({])}"))
             throw CommandException
-               (wxT("Parentheses or braces are unbalanced on the right-hand-side of ")
-                wxT("an assignment command")); 
+               ("Parentheses or braces are unbalanced on the right-hand-side of "
+                "an assignment command"); 
          
          // We want to allow the following scripts in the Assignment command.
          //    Create Formation Formation1;
@@ -583,7 +583,7 @@ bool Assignment::InterpretAction()
    }
    
    #ifdef DEBUG_ASSIGNMENT_IA
-   MessageInterface::ShowMessage(wxT("Assignment::InterpretAction() returning true\n"));
+   MessageInterface::ShowMessage("Assignment::InterpretAction() returning true\n");
    #endif
    
    return true;
@@ -625,10 +625,10 @@ const StringArray& Assignment::GetObjectList()
    }
 
    #ifdef DEBUG_VALIDATION
-      MessageInterface::ShowMessage(wxT("Assignment::GetObjectList() Found %d ")
-            wxT("object names:\n"), objects.size());
+      MessageInterface::ShowMessage("Assignment::GetObjectList() Found %d "
+            "object names:\n", objects.size());
       for (UnsignedInt i = 0; i < objects.size(); ++i)
-         MessageInterface::ShowMessage(wxT("   %s\n"), objects[i].c_str());
+         MessageInterface::ShowMessage("   %s\n", objects[i].c_str());
    #endif
 
    return objects;
@@ -650,10 +650,10 @@ bool Assignment::Validate()
    bool retval = true;
 
    #ifdef DEBUG_VALIDATION
-      MessageInterface::ShowMessage(wxT("Assignment command has lhs = %s, ")
-            wxT("rhs = %s\n"), lhs.c_str(), rhs.c_str());
-      MessageInterface::ShowMessage(wxT("Validate has ")
-            wxT("lhsWrapper = %p, rhsWrapper = %p\n"), lhsWrapper, rhsWrapper);
+      MessageInterface::ShowMessage("Assignment command has lhs = %s, "
+            "rhs = %s\n", lhs.c_str(), rhs.c_str());
+      MessageInterface::ShowMessage("Validate has "
+            "lhsWrapper = %p, rhsWrapper = %p\n", lhsWrapper, rhsWrapper);
    #endif
    if (lhsWrapper != NULL)
    {
@@ -662,11 +662,11 @@ bool Assignment::Validate()
          if (lhsWrapper->GetWrapperType() != rhsWrapper->GetWrapperType())
          {
             #ifdef DEBUG_VALIDATION
-               MessageInterface::ShowMessage(wxT("Wrapper types don't match:\n"));
-               MessageInterface::ShowMessage(wxT("   lhsWrapper: %d type, \"%s\"\n"),
+               MessageInterface::ShowMessage("Wrapper types don't match:\n");
+               MessageInterface::ShowMessage("   lhsWrapper: %d type, \"%s\"\n",
                      lhsWrapper->GetWrapperType(),
                      lhsWrapper->GetDescription().c_str());
-               MessageInterface::ShowMessage(wxT("   rhsWrapper: %d type, \"%s\"\n"),
+               MessageInterface::ShowMessage("   rhsWrapper: %d type, \"%s\"\n",
                      rhsWrapper->GetWrapperType(),
                      rhsWrapper->GetDescription().c_str());
             #endif
@@ -675,8 +675,8 @@ bool Assignment::Validate()
             Gmat::ParameterType rhsDataType = rhsWrapper->GetDataType();
 
             #ifdef DEBUG_VALIDATION
-               MessageInterface::ShowMessage(wxT("Checking compatibility of %s ")
-                     wxT("with %s\n"), PARAM_TYPE_STRING[lhsDataType].c_str(),
+               MessageInterface::ShowMessage("Checking compatibility of %s "
+                     "with %s\n", PARAM_TYPE_STRING[lhsDataType].c_str(),
                      PARAM_TYPE_STRING[rhsDataType].c_str());
             #endif
             if (lhsDataType != rhsDataType)
@@ -692,8 +692,8 @@ bool Assignment::Validate()
                      retval = false;
                   #ifdef DEBUG_VALIDATION
                   else
-                     MessageInterface::ShowMessage(wxT("Assuming object = string ")
-                           wxT("okay for now\n"));
+                     MessageInterface::ShowMessage("Assuming object = string "
+                           "okay for now\n");
                   #endif
                }
                else if (lhsDataType == Gmat::STRING_TYPE)
@@ -741,8 +741,8 @@ bool Assignment::Validate()
                else
                {
                   #ifdef DEBUG_VALIDATION
-                     MessageInterface::ShowMessage(wxT("Type mismatch in the line ")
-                           wxT("\"%s\"; %d != %d; wrappers are %d and %d\n"),
+                     MessageInterface::ShowMessage("Type mismatch in the line "
+                           "\"%s\"; %d != %d; wrappers are %d and %d\n",
                            GetGeneratingString(Gmat::NO_COMMENTS).c_str(),
                            lhsDataType, rhsDataType,
                            lhsWrapper->GetWrapperType(),
@@ -778,12 +778,12 @@ bool Assignment::Initialize()
 {
    #ifdef DEBUG_ASSIGNMENT_INIT
    MessageInterface::ShowMessage
-      (wxT("Assignment::Initialize() entered for <%s>, It's%s a math equation\n"),
-       generatingString.c_str(), (mathTree == NULL ? wxT(" not") :wxT( "")));
+      ("Assignment::Initialize() entered for <%s>, It's%s a math equation\n",
+       generatingString.c_str(), (mathTree == NULL ? " not" : ""));
    MessageInterface::ShowMessage
-      (wxT(wxT("   lhsWrapper=<%p><%s>\n   rhsWrapper=<%p><%s>\n")),
-       lhsWrapper, lhsWrapper ? lhsWrapper->GetDescription().c_str() : wxT("NULL"),
-       rhsWrapper, rhsWrapper ? rhsWrapper->GetDescription().c_str() : wxT("NULL"));
+      ("   lhsWrapper=<%p><%s>\n   rhsWrapper=<%p><%s>\n",
+       lhsWrapper, lhsWrapper ? lhsWrapper->GetDescription().c_str() : "NULL",
+       rhsWrapper, rhsWrapper ? rhsWrapper->GetDescription().c_str() : "NULL");
    #endif
    #ifdef DEBUG_OBJECT_MAP
    ShowObjectMaps();
@@ -811,15 +811,15 @@ bool Assignment::Initialize()
       if (SetWrapperReferences(*lhsWrapper) == false)
          return false;
       
-      std::map<wxString, ElementWrapper *>::iterator ewi;
+      std::map<std::string, ElementWrapper *>::iterator ewi;
       
       #ifdef DEBUG_ASSIGNMENT_INIT
-      MessageInterface::ShowMessage(wxT("   Calling SetWrapperReferences() for mathWrapperMap\n"));
+      MessageInterface::ShowMessage("   Calling SetWrapperReferences() for mathWrapperMap\n");
       for (ewi = mathWrapperMap.begin(); ewi != mathWrapperMap.end(); ++ewi)
       {
          ElementWrapper *wrapper = ewi->second;
          MessageInterface::ShowMessage
-            (wxT("   name=<%s>, wrapper=<%p>, type=%d\n"), (ewi->first).c_str(), wrapper,
+            ("   name=<%s>, wrapper=<%p>, type=%d\n", (ewi->first).c_str(), wrapper,
              wrapper ? wrapper->GetWrapperType() : -999);
       }
       #endif
@@ -836,15 +836,15 @@ bool Assignment::Initialize()
       
       #ifdef DEBUG_ASSIGNMENT_INIT
       MessageInterface::ShowMessage
-         (wxT("Assignment::Initialize() Initializing topNode=%s, %s\n"),
+         ("Assignment::Initialize() Initializing topNode=%s, %s\n",
           topNode->GetTypeName().c_str(), topNode->GetName().c_str());
       #endif
       
-      wxString fnMsg;
+      std::string fnMsg;
       if (currentFunction != NULL)
       {
          fnMsg = currentFunction->GetFunctionPathAndName();
-         fnMsg = wxT("\n(In Function \"") + fnMsg + wxT("\")");
+         fnMsg = "\n(In Function \"" + fnMsg + "\")";
       }
       
       try
@@ -852,19 +852,19 @@ bool Assignment::Initialize()
          if (mathTree->Initialize(objectMap, globalObjectMap))
          {
             if (!topNode->ValidateInputs())
-               throw CommandException(wxT("Failed to validate equation inputs in\n   \"") +
-                                      generatingString + wxT("\"") + fnMsg);
+               throw CommandException("Failed to validate equation inputs in\n   \"" +
+                                      generatingString + "\"" + fnMsg);
          }
          else
          {
-            throw CommandException(wxT("Failed to initialize equation in\n   \"") +
-                                   generatingString + wxT("\"") + fnMsg);
+            throw CommandException("Failed to initialize equation in\n   \"" +
+                                   generatingString + "\"" + fnMsg);
          }
       }
       catch (BaseException &e)
       {
          CommandException ce;
-         ce.SetDetails(wxT("%s in \n   \"%s\"%s\n"), e.GetDetails().c_str(),
+         ce.SetDetails("%s in \n   \"%s\"%s\n", e.GetDetails().c_str(),
                       generatingString.c_str(), fnMsg.c_str());
          throw ce;
       }
@@ -875,7 +875,7 @@ bool Assignment::Initialize()
       lhsOwnerID = ((ObjectPropertyWrapper*)(lhsWrapper))->GetPropertyId();
 
    #ifdef DEBUG_ASSIGNMENT_INIT
-   MessageInterface::ShowMessage(wxT("Assignment::Initialize() returning true\n"));
+   MessageInterface::ShowMessage("Assignment::Initialize() returning true\n");
    #endif
    
    return true;
@@ -903,26 +903,26 @@ bool Assignment::Execute()
    callCount++;      
    clock_t t1 = clock();
    MessageInterface::ShowMessage
-      (wxT("=== Assignment::Execute() entered, '%s' Count = %d\n"),
+      ("=== Assignment::Execute() entered, '%s' Count = %d\n",
        GetGeneratingString(Gmat::NO_COMMENTS).c_str(), callCount);
    #endif
    
    #ifdef DEBUG_ASSIGNMENT_EXEC
    MessageInterface::ShowMessage
-      (wxT("\nAssignment::Execute() this=<%p> entered, for \"%s\"\n   ")
-       wxT("callingFunction='%s', internalCS=<%p>\n"), this,
+      ("\nAssignment::Execute() this=<%p> entered, for \"%s\"\n   "
+       "callingFunction='%s', internalCS=<%p>\n", this,
        GetGeneratingString(Gmat::NO_COMMENTS).c_str(),
-       callingFunction? (callingFunction->GetFunctionName()).c_str() : wxT("NULL"),
+       callingFunction? (callingFunction->GetFunctionName()).c_str() : "NULL",
        internalCoordSys);
    #endif
    
    if (lhsWrapper == NULL || (rhsWrapper == NULL && mathTree == NULL))
    {
       CommandException ce;
-      ce.SetMessage(wxT(""));
-      wxString msg = wxT("Assignment::Execute() failed, LHS or/and RHS wrappers ")
-            wxT("are NULL");
-      ce.SetDetails(wxT("%s in\n   \"%s\"\n"), msg.c_str(), generatingString.c_str());
+      ce.SetMessage("");
+      std::string msg = "Assignment::Execute() failed, LHS or/and RHS wrappers "
+            "are NULL";
+      ce.SetDetails("%s in\n   \"%s\"\n", msg.c_str(), generatingString.c_str());
       throw ce;
    }
    
@@ -930,7 +930,7 @@ bool Assignment::Execute()
    
    #ifdef DEBUG_CLONE_UPDATES
       GmatBase *ptr = lhsWrapper->GetRefObject();
-      MessageInterface::ShowMessage(wxT("Assignment LHS object is %s <%p>\n"),
+      MessageInterface::ShowMessage("Assignment LHS object is %s <%p>\n",
             ptr->GetName().c_str(), ptr);
    #endif
 
@@ -982,7 +982,7 @@ bool Assignment::Execute()
       else
       {
          #ifdef DEBUG_ASSIGNMENT_EXEC_OBJECT_MAP
-         ShowObjectMaps(wxT("object maps at the start"));
+         ShowObjectMaps("object maps at the start");
          #endif
          
          outWrapper = RunMathTree();
@@ -991,7 +991,7 @@ bool Assignment::Execute()
       }
       
       #ifdef DEBUG_ASSIGNMENT_EXEC
-      MessageInterface::ShowMessage(wxT("   ElementWrapper::SetValue() returned %d\n"), retval);
+      MessageInterface::ShowMessage("   ElementWrapper::SetValue() returned %d\n", retval);
       #endif
       
       if (!retval)
@@ -1003,42 +1003,42 @@ bool Assignment::Execute()
             {
                #ifdef DEBUG_MEMORY
                MemoryTracker::Instance()->Remove
-                  (refObj, refObj->GetName(), wxT("Assignment::Execute()"),
+                  (refObj, refObj->GetName(), "Assignment::Execute()",
                    //GetGeneratingString(Gmat::NO_COMMENTS) + " deleting outWrapper's refObj");
-                   wxT(" deleting outWrapper's refObj"));
+                   " deleting outWrapper's refObj");
                #endif
                delete refObj;
             }
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Remove
-               (outWrapper, outWrapper->GetDescription(), wxT("Assignment::Execute()"),
+               (outWrapper, outWrapper->GetDescription(), "Assignment::Execute()",
                 //GetGeneratingString(Gmat::NO_COMMENTS) + " deleting outWrapper");
-                wxT(" deleting outWrapper"));
+                " deleting outWrapper");
             #endif
             delete outWrapper;
          }
          
-         throw CommandException(wxT("Assignment::Execute() failed"));
+         throw CommandException("Assignment::Execute() failed");
       }
    }
    catch (BaseException &e)
    {
       // To make error message format consistent, just add "Command Exception:"
-      wxString msg = e.GetFullMessage();
-      if (msg.find(wxT("Exception")) == msg.npos && msg.find(wxT("exception")) == msg.npos)
-         msg = wxT("Command Exception: ") + msg;
+      std::string msg = e.GetFullMessage();
+      if (msg.find("Exception") == msg.npos && msg.find("exception") == msg.npos)
+         msg = "Command Exception: " + msg;
       
       if (callingFunction != NULL)
       {
-         wxString funcPath = callingFunction->GetFunction()->GetFunctionPathAndName();
-         msg = msg + wxT("\n(In Function \"") + funcPath + wxT("\")");
-         MessageInterface::ShowMessage(msg + wxT("\n"));
+         std::string funcPath = callingFunction->GetFunction()->GetFunctionPathAndName();
+         msg = msg + "\n(In Function \"" + funcPath + "\")";
+         MessageInterface::ShowMessage(msg + "\n");
          throw;
       }
       
       if (currentFunction != NULL)
       {
-         MessageInterface::ShowMessage(msg + wxT("\n"));
+         MessageInterface::ShowMessage(msg + "\n");
       }
       else
       {
@@ -1051,14 +1051,14 @@ bool Assignment::Execute()
          }
          
          CommandException ce;
-         ce.SetMessage(wxT(""));
-         ce.SetDetails(wxT("%s in\n   \"%s\"\n"), msg.c_str(), generatingString.c_str());
+         ce.SetMessage("");
+         ce.SetDetails("%s in\n   \"%s\"\n", msg.c_str(), generatingString.c_str());
          throw ce;
       }
    }
    
    #ifdef DEBUG_ASSIGNMENT_EXEC
-   MessageInterface::ShowMessage(wxT("Assignment::Execute() returning true\n"));
+   MessageInterface::ShowMessage("Assignment::Execute() returning true\n");
    #endif
    
    if (outWrapper)
@@ -1068,18 +1068,18 @@ bool Assignment::Execute()
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (refObj, refObj->GetName(), wxT("Assignment::Execute()"),
+            (refObj, refObj->GetName(), "Assignment::Execute()",
              //GetGeneratingString(Gmat::NO_COMMENTS) + " deleting outWrapper's refObj");
-             wxT(" deleting outWrapper's refObj"));
+             " deleting outWrapper's refObj");
          #endif
          delete refObj;
          refObj = NULL;
       }
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (outWrapper, outWrapper->GetDescription(), wxT("Assignment::Execute()"),
+         (outWrapper, outWrapper->GetDescription(), "Assignment::Execute()",
           //GetGeneratingString(Gmat::NO_COMMENTS) + " deleting outWrapper");
-          wxT(" deleting outWrapper"));
+          " deleting outWrapper");
       #endif
       delete outWrapper;
       outWrapper = NULL;
@@ -1091,7 +1091,7 @@ bool Assignment::Execute()
    #ifdef DEBUG_TRACE
    clock_t t2 = clock();
    MessageInterface::ShowMessage
-      (wxT("=== Assignment::Execute() exiting, '%s' Count = %d, Run Time: %f seconds\n"),
+      ("=== Assignment::Execute() exiting, '%s' Count = %d, Run Time: %f seconds\n",
        GetGeneratingString(Gmat::NO_COMMENTS).c_str(), callCount,
        (Real)(t2-t1)/CLOCKS_PER_SEC);
    #endif
@@ -1108,7 +1108,7 @@ void Assignment::RunComplete()
    {
       #ifdef DEBUG_RUN_COMPLETE
       MessageInterface::ShowMessage
-         (wxT("Assignment::RunComplete() calling MathTree::Finalize()\n"));
+         ("Assignment::RunComplete() calling MathTree::Finalize()\n");
       #endif
       
       mathTree->Finalize();
@@ -1137,10 +1137,10 @@ bool Assignment::SkipInterrupt()
 void Assignment::SetCallingFunction(FunctionManager *fm)
 {
    #ifdef DEBUG_ASSIGN_CALLING_FUNCTION
-      MessageInterface::ShowMessage(wxT("Assignment::SetCallingFunction - fm is %s NULL\n"),
-            fm? wxT("NOT") : wxT("really"));
-      MessageInterface::ShowMessage(wxT("   and mathTree DOES %s exist\n"),
-            mathTree? wxT("really") : wxT("NOT"));
+      MessageInterface::ShowMessage("Assignment::SetCallingFunction - fm is %s NULL\n",
+            fm? "NOT" : "really");
+      MessageInterface::ShowMessage("   and mathTree DOES %s exist\n",
+            mathTree? "really" : "NOT");
    #endif
    GmatCommand::SetCallingFunction(fm);
    if (mathTree)
@@ -1159,7 +1159,7 @@ const StringArray& Assignment::GetWrapperObjectNameArray()
 {
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("Assignment::GetWrapperObjectNameArray() lhs=<%s>, rhs=<%s>\n"),
+      ("Assignment::GetWrapperObjectNameArray() lhs=<%s>, rhs=<%s>\n",
        lhs.c_str(), rhs.c_str());
    #endif
    
@@ -1168,15 +1168,15 @@ const StringArray& Assignment::GetWrapperObjectNameArray()
    // If rhs is not an equation, just add rhs
    if (mathTree == NULL)
    {
-      if (lhs != wxT("") && rhs != wxT("Not_Set"))
+      if (lhs != "" && rhs != "Not_Set")
       {
          // If LHS has more than 1 dot add to the list and Interpreter::ValidateCommand()
          // will figure out if it is settable Parameter or not.(LOJ: 2009.12.22)
-         if (GmatStringUtil::NumberOfOccurrences(lhs, wxT('.')) > 1)
+         if (GmatStringUtil::NumberOfOccurrences(lhs, '.') > 1)
             wrapperObjectNames.push_back(lhs);
       }
       
-      if (rhs != wxT("") && rhs != wxT("Not_Set"))
+      if (rhs != "" && rhs != "Not_Set")
       {
          wrapperObjectNames.push_back(rhs);
       }
@@ -1190,7 +1190,7 @@ const StringArray& Assignment::GetWrapperObjectNameArray()
                                    tmpArray.begin(), tmpArray.end());
       
       #ifdef DEBUG_WRAPPER_CODE
-      MessageInterface::ShowMessage(wxT("   Got the following from the MathTree:\n"));
+      MessageInterface::ShowMessage("   Got the following from the MathTree:\n");
       #endif
       for (UnsignedInt i=0; i<wrapperObjectNames.size(); i++)
       {
@@ -1198,17 +1198,17 @@ const StringArray& Assignment::GetWrapperObjectNameArray()
          
          #ifdef DEBUG_WRAPPER_CODE
          MessageInterface::ShowMessage
-            (wxT("   Math element %d: '%s'\n"), i, wrapperObjectNames[i].c_str());
+            ("   Math element %d: '%s'\n", i, wrapperObjectNames[i].c_str());
          #endif
       }
    }
    
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("Assignment::GetWrapperObjectNameArray() returning %d wrapper elements\n"),
+      ("Assignment::GetWrapperObjectNameArray() returning %d wrapper elements\n",
        wrapperObjectNames.size());
    for (UnsignedInt i=0; i<wrapperObjectNames.size(); i++)
-      MessageInterface::ShowMessage(wxT("   '%s'\n"), wrapperObjectNames[i].c_str());
+      MessageInterface::ShowMessage("   '%s'\n", wrapperObjectNames[i].c_str());
    #endif
    
    return wrapperObjectNames;
@@ -1217,22 +1217,22 @@ const StringArray& Assignment::GetWrapperObjectNameArray()
 
 
 //------------------------------------------------------------------------------
-// bool SetElementWrapper(ElementWrapper *toWrapper, const wxString &withName)
+// bool SetElementWrapper(ElementWrapper *toWrapper, const std::string &withName)
 //------------------------------------------------------------------------------
 bool Assignment::SetElementWrapper(ElementWrapper *toWrapper, 
-                                   const wxString &withName)
+                                   const std::string &withName)
 {
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("Assignment::SetElementWrapper() toWrapper=<%p>, name='%s'\n   lhs='%s'\n   rhs='%s', ")
-       wxT("mathTree=<%p>\n"), toWrapper,withName.c_str(), lhs.c_str(), rhs.c_str(), mathTree);
+      ("Assignment::SetElementWrapper() toWrapper=<%p>, name='%s'\n   lhs='%s'\n   rhs='%s', "
+       "mathTree=<%p>\n", toWrapper,withName.c_str(), lhs.c_str(), rhs.c_str(), mathTree);
    #endif
    
    if (toWrapper == NULL)
    {
       #ifdef DEBUG_WRAPPER_CODE
       MessageInterface::ShowMessage
-         (wxT("Assignment::SetElementWrapper() returning false, toWrapper is NULL\n"));
+         ("Assignment::SetElementWrapper() returning false, toWrapper is NULL\n");
       #endif
       return false;
    }
@@ -1241,8 +1241,8 @@ bool Assignment::SetElementWrapper(ElementWrapper *toWrapper,
    
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("   Setting wrapper \"%s\" of data type \"%d\" and of wrapper type \"%d\" ")
-       wxT("on Assignment\n      \"%s\"\n"), withName.c_str(), (Integer) (toWrapper->GetDataType()), 
+      ("   Setting wrapper \"%s\" of data type \"%d\" and of wrapper type \"%d\" "
+       "on Assignment\n      \"%s\"\n", withName.c_str(), (Integer) (toWrapper->GetDataType()), 
        (Integer) (toWrapper->GetWrapperType()), GetGeneratingString(Gmat::NO_COMMENTS).c_str());
    #endif
    
@@ -1252,17 +1252,17 @@ bool Assignment::SetElementWrapper(ElementWrapper *toWrapper,
    
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("   lhsWrapper=<%p>, rhsWrapper=<%p>\n"), lhsWrapper, rhsWrapper);
+      ("   lhsWrapper=<%p>, rhsWrapper=<%p>\n", lhsWrapper, rhsWrapper);
    #endif
    
    if (withName == lhs)
    {
       #ifdef DEBUG_WRAPPER_CODE
-      MessageInterface::ShowMessage(wxT("   Checking LHS...\n"));
+      MessageInterface::ShowMessage("   Checking LHS...\n");
       #endif
       // All lhs object property wrapper are settable, so check first
-      if (withName.find(wxT(".")) == withName.npos ||
-          (withName.find(wxT(".")) != withName.npos &&
+      if (withName.find(".") == withName.npos ||
+          (withName.find(".") != withName.npos &&
            toWrapper->GetWrapperType() == Gmat::OBJECT_PROPERTY_WT))
       {
          // to handle Count = Count + 1, old lhsWrapper cannot be deleted here
@@ -1273,7 +1273,7 @@ bool Assignment::SetElementWrapper(ElementWrapper *toWrapper,
          }
          retval = true;
       }
-      else if (withName.find(wxT(".")) != withName.npos)
+      else if (withName.find(".") != withName.npos)
       {
          // Some lhs Parameters are settable such as Sat.Thruster1.FuelMass, so check here
          Parameter *param = (Parameter*)toWrapper->EvaluateObject();
@@ -1291,13 +1291,13 @@ bool Assignment::SetElementWrapper(ElementWrapper *toWrapper,
    
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("   lhsWrapper=<%p>, rhsWrapper=<%p>\n"), lhsWrapper, rhsWrapper);
+      ("   lhsWrapper=<%p>, rhsWrapper=<%p>\n", lhsWrapper, rhsWrapper);
    #endif
    
    if (mathTree == NULL)
    {
       #ifdef DEBUG_WRAPPER_CODE
-      MessageInterface::ShowMessage(wxT("   Checking RHS and it is not a math tree...\n"));
+      MessageInterface::ShowMessage("   Checking RHS and it is not a math tree...\n");
       #endif
       if (withName == rhs)
       {
@@ -1313,32 +1313,32 @@ bool Assignment::SetElementWrapper(ElementWrapper *toWrapper,
    else
    {
       #ifdef DEBUG_WRAPPER_CODE
-      MessageInterface::ShowMessage(wxT("   Checking RHS and it is a math tree...\n"));
-      std::map<wxString, ElementWrapper *>::iterator ewi;
+      MessageInterface::ShowMessage("   Checking RHS and it is a math tree...\n");
+      std::map<std::string, ElementWrapper *>::iterator ewi;
       for (ewi = mathWrapperMap.begin(); ewi != mathWrapperMap.end(); ++ewi)
          if (ewi->second != NULL)
             MessageInterface::ShowMessage
-               (wxT("   name=<%s>, wrapper=<%p>, type=%d\n"), (ewi->first).c_str(), ewi->second,
+               ("   name=<%s>, wrapper=<%p>, type=%d\n", (ewi->first).c_str(), ewi->second,
                 (ewi->second)->GetWrapperType());
          else
             MessageInterface::ShowMessage
-               (wxT("   name=<%s>, wrapper=<%p>\n"), (ewi->first).c_str(), ewi->second);
+               ("   name=<%s>, wrapper=<%p>\n", (ewi->first).c_str(), ewi->second);
       #endif
       // if name found in the math wrapper map
       if (mathWrapperMap.find(withName) != mathWrapperMap.end())
       {
          #ifdef DEBUG_WRAPPER_CODE
-         MessageInterface::ShowMessage(wxT("   name '%s' found in mathWrapperMap\n"), withName.c_str());
+         MessageInterface::ShowMessage("   name '%s' found in mathWrapperMap\n", withName.c_str());
          #endif
          // rhs should always be parameter wrapper, so check first
-         if (withName.find(wxT(".")) == withName.npos ||
-             (withName.find(wxT(".")) != withName.npos &&
+         if (withName.find(".") == withName.npos ||
+             (withName.find(".") != withName.npos &&
               toWrapper->GetWrapperType() == Gmat::PARAMETER_WT))
          {
             if (mathWrapperMap[withName] != toWrapper)
             {
                #ifdef DEBUG_WRAPPER_CODE
-               MessageInterface::ShowMessage(wxT("   now setting rhsNewWrapper to <%p>\n"), toWrapper);
+               MessageInterface::ShowMessage("   now setting rhsNewWrapper to <%p>\n", toWrapper);
                #endif
                rhsOldWrapper = mathWrapperMap[withName];
                rhsNewWrapper = toWrapper;
@@ -1351,9 +1351,9 @@ bool Assignment::SetElementWrapper(ElementWrapper *toWrapper,
    
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("   lhsOldWrapper=<%p>, rhsOldWrapper=<%p>\n"), lhsOldWrapper, rhsOldWrapper);
+      ("   lhsOldWrapper=<%p>, rhsOldWrapper=<%p>\n", lhsOldWrapper, rhsOldWrapper);
    MessageInterface::ShowMessage
-      (wxT("   lhsWrapper=<%p>, rhsWrapper=<%p>, rhsNewWrapper=<%p>\n"),
+      ("   lhsWrapper=<%p>, rhsWrapper=<%p>, rhsNewWrapper=<%p>\n",
        lhsWrapper, rhsWrapper, rhsNewWrapper);
    #endif
    
@@ -1363,9 +1363,9 @@ bool Assignment::SetElementWrapper(ElementWrapper *toWrapper,
       // delete only lhs old wrapper
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (lhsOldWrapper, lhsOldWrapper->GetDescription(), wxT("Assignment::SetElementWrapper()"),
+         (lhsOldWrapper, lhsOldWrapper->GetDescription(), "Assignment::SetElementWrapper()",
           //GetGeneratingString(Gmat::NO_COMMENTS) + " deleting lhsOldWrapper");
-          wxT(" deleting lhsOldWrapper"));
+          " deleting lhsOldWrapper");
       #endif
       delete lhsOldWrapper;
       lhsOldWrapper = NULL;
@@ -1377,9 +1377,9 @@ bool Assignment::SetElementWrapper(ElementWrapper *toWrapper,
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (lhsOldWrapper, lhsOldWrapper->GetDescription(), wxT("Assignment::SetElementWrapper()"),
+            (lhsOldWrapper, lhsOldWrapper->GetDescription(), "Assignment::SetElementWrapper()",
              //GetGeneratingString(Gmat::NO_COMMENTS) + " deleting lhsOldWrapper");
-             wxT(" deleting lhsOldWrapper"));
+             " deleting lhsOldWrapper");
          #endif
          delete lhsOldWrapper;     
          lhsOldWrapper = NULL;
@@ -1390,9 +1390,9 @@ bool Assignment::SetElementWrapper(ElementWrapper *toWrapper,
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (rhsOldWrapper, rhsOldWrapper->GetDescription(), wxT("Assignment::SetElementWrapper()"),
+            (rhsOldWrapper, rhsOldWrapper->GetDescription(), "Assignment::SetElementWrapper()",
              //GetGeneratingString(Gmat::NO_COMMENTS) + " deleting rhsOldWrapper");
-             wxT(" deleting rhsOldWrapper"));
+             " deleting rhsOldWrapper");
          #endif
          delete rhsOldWrapper;
          rhsOldWrapper = NULL;
@@ -1401,7 +1401,7 @@ bool Assignment::SetElementWrapper(ElementWrapper *toWrapper,
    
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("Assignment::SetElementWrapper() returning %d\n"), retval);
+      ("Assignment::SetElementWrapper() returning %d\n", retval);
    #endif
    
    return retval;
@@ -1420,16 +1420,16 @@ void Assignment::ClearWrappers()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (rhsEw, rhsEw->GetDescription(), wxT("Assignment::ClearWrappers()"),
+         (rhsEw, rhsEw->GetDescription(), "Assignment::ClearWrappers()",
           //GetGeneratingString(Gmat::NO_COMMENTS) + " deleting rhs wrapper");
-          wxT(" deleting rhs wrapper"));
+          " deleting rhs wrapper");
       #endif
       delete rhsEw;
       rhsEw = NULL;
    }
    
    // clear rhs math wrapper map
-   std::map<wxString, ElementWrapper *>::iterator ewi;
+   std::map<std::string, ElementWrapper *>::iterator ewi;
    for (ewi = mathWrapperMap.begin(); ewi != mathWrapperMap.end(); ++ewi)
    {
       if (ewi->second != NULL)
@@ -1440,9 +1440,9 @@ void Assignment::ClearWrappers()
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Remove
                (ewi->second, (ewi->second)->GetDescription(),
-                wxT("Assignment::ClearWrappers()"),
+                "Assignment::ClearWrappers()",
                 //GetGeneratingString(Gmat::NO_COMMENTS) + " deleting math node wrapper");
-                wxT(" deleting math node wrapper"));
+                " deleting math node wrapper");
             #endif
             delete ewi->second;
             ewi->second = NULL;
@@ -1454,9 +1454,9 @@ void Assignment::ClearWrappers()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (lhsEw, lhsEw->GetDescription(), wxT("Assignment::ClearWrappers()"),
+         (lhsEw, lhsEw->GetDescription(), "Assignment::ClearWrappers()",
           //GetGeneratingString(Gmat::NO_COMMENTS) + " deleting lhs wrapper");
-          wxT(" deleting lhs wrapper"));
+          " deleting lhs wrapper");
       #endif
       delete lhsEw;
       lhsEw = NULL;
@@ -1471,7 +1471,7 @@ void Assignment::ClearWrappers()
 
 //------------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * Renames referenced objects.
@@ -1484,15 +1484,15 @@ void Assignment::ClearWrappers()
  */
 //------------------------------------------------------------------------------
 bool Assignment::RenameRefObject(const Gmat::ObjectType type,
-                                 const wxString &oldName,
-                                 const wxString &newName)
+                                 const std::string &oldName,
+                                 const std::string &newName)
 {
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("Assignment::RenameRefObject() entered <%s>\n"),
+      ("Assignment::RenameRefObject() entered <%s>\n",
        GetGeneratingString(Gmat::NO_COMMENTS).c_str());
    MessageInterface::ShowMessage
-      (wxT("   type=%s, oldName=%s, newName=%s\n"),
+      ("   type=%s, oldName=%s, newName=%s\n",
        GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
    #endif
    
@@ -1517,20 +1517,20 @@ bool Assignment::RenameRefObject(const Gmat::ObjectType type,
    // Go through mathWrapperMap
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("   Now checking %d wrappers in mathWrapperMap\n"), mathWrapperMap.size());
+      ("   Now checking %d wrappers in mathWrapperMap\n", mathWrapperMap.size());
    #endif
-   std::map<wxString, ElementWrapper *>::iterator ewi;
+   std::map<std::string, ElementWrapper *>::iterator ewi;
    for (ewi = mathWrapperMap.begin(); ewi != mathWrapperMap.end(); ++ewi)
    {
-      wxString wrapperName = ewi->first;
+      std::string wrapperName = ewi->first;
       ElementWrapper *wrapper = ewi->second;
       if (wrapperName.find(oldName) != wrapperName.npos)
       {
          #ifdef DEBUG_RENAME
          MessageInterface::ShowMessage
-            (wxT("   Found '%s' in the mathWrapperMap\n"), wrapperName.c_str());
+            ("   Found '%s' in the mathWrapperMap\n", wrapperName.c_str());
          #endif
-         wxString oldWrapperName = wrapperName;
+         std::string oldWrapperName = wrapperName;
          wrapperName = GmatStringUtil::ReplaceName(wrapperName, oldName, newName);
 
          // If name changed then replace and remove old one
@@ -1538,7 +1538,7 @@ bool Assignment::RenameRefObject(const Gmat::ObjectType type,
          {
             #ifdef DEBUG_RENAME
             MessageInterface::ShowMessage
-               (wxT("   New name is '%s' and setting <%p> to wrapper\n"), wrapperName.c_str(),
+               ("   New name is '%s' and setting <%p> to wrapper\n", wrapperName.c_str(),
                 wrapper);
             #endif
             
@@ -1553,7 +1553,7 @@ bool Assignment::RenameRefObject(const Gmat::ObjectType type,
    
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("Assignment::RenameRefObject() leaving <%s>\n"),
+      ("Assignment::RenameRefObject() leaving <%s>\n",
        GetGeneratingString(Gmat::NO_COMMENTS).c_str());
    #endif
    
@@ -1589,21 +1589,21 @@ GmatBase* Assignment::Clone() const
  * @return The requested StringArray.
  */
 //------------------------------------------------------------------------------
-const wxString& Assignment::GetGeneratingString(Gmat::WriteMode mode,
-                                                   const wxString &prefix,
-                                                   const wxString &useName)
+const std::string& Assignment::GetGeneratingString(Gmat::WriteMode mode,
+                                                   const std::string &prefix,
+                                                   const std::string &useName)
 {
    if (mode == Gmat::NO_COMMENTS)
    {
-      generatingString = lhs + wxT(" = ") + rhs + wxT(";");
+      generatingString = lhs + " = " + rhs + ";";
       return generatingString;
    }
    
    
-   wxString gen = prefix + wxT("GMAT ") + lhs + wxT(" = ") + rhs + wxT(";");
+   std::string gen = prefix + "GMAT " + lhs + " = " + rhs + ";";
    
    #ifdef DEBUG_ASSIGNMENT_SCRIPTING
-   MessageInterface::ShowMessage(wxT("Assignment command generator is \"%s\"\n"),
+   MessageInterface::ShowMessage("Assignment command generator is \"%s\"\n",
                                  gen.c_str());
    #endif
    
@@ -1642,14 +1642,14 @@ ElementWrapper* Assignment::RunMathTree()
    {
       #ifdef DEBUG_EQUATION
       MessageInterface::ShowMessage
-         (wxT("Assignment::RunMathTree() topNode=%s, %s\n"), topNode->GetTypeName().c_str(),
+         ("Assignment::RunMathTree() topNode=%s, %s\n", topNode->GetTypeName().c_str(),
           topNode->GetName().c_str());
       #endif
       
       topNode->GetOutputInfo(returnType, numRow, numCol);
       
       #ifdef DEBUG_ASSIGNMENT_EXEC
-      MessageInterface::ShowMessage(wxT("   returnType=%d\n"), returnType);
+      MessageInterface::ShowMessage("   returnType=%d\n", returnType);
       #endif
       
       if (lhsDataType != returnType)
@@ -1661,9 +1661,9 @@ ElementWrapper* Assignment::RunMathTree()
          }
          else
          {
-            wxString lhsTypeStr = GmatBase::PARAM_TYPE_STRING[lhsDataType];
+            std::string lhsTypeStr = GmatBase::PARAM_TYPE_STRING[lhsDataType];
             CommandException ce;
-            ce.SetDetails(wxT("Cannot set type \"%s\" to type \"%s\""),
+            ce.SetDetails("Cannot set type \"%s\" to type \"%s\"",
                           GmatBase::PARAM_TYPE_STRING[returnType].c_str(),
                           lhsTypeStr.c_str());
             throw ce;
@@ -1677,22 +1677,22 @@ ElementWrapper* Assignment::RunMathTree()
       case Gmat::REAL_TYPE:
          {
             #ifdef DEBUG_ASSIGNMENT_EXEC
-            MessageInterface::ShowMessage(wxT("   Calling topNode->Evaluate()\n"));
+            MessageInterface::ShowMessage("   Calling topNode->Evaluate()\n");
             #endif
             
             Real rval = -9999.9999;
             rval = topNode->Evaluate();
             
             #ifdef DEBUG_ASSIGNMENT_EXEC
-            MessageInterface::ShowMessage(wxT("   Returned %f\n"), rval);
-            MessageInterface::ShowMessage(wxT("   Creating NumberWrapper for output\n"));
+            MessageInterface::ShowMessage("   Returned %f\n", rval);
+            MessageInterface::ShowMessage("   Creating NumberWrapper for output\n");
             #endif
             
             outWrapper = new NumberWrapper();
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Add
-               (outWrapper, GmatStringUtil::ToString(rval), wxT("Assignment::RunMathTree()"),
-                wxT("outWrapper = new NumberWrapper()"));
+               (outWrapper, GmatStringUtil::ToString(rval), "Assignment::RunMathTree()",
+                "outWrapper = new NumberWrapper()");
             #endif
             
             outWrapper->SetDescription(GmatStringUtil::ToString(rval));
@@ -1702,46 +1702,46 @@ ElementWrapper* Assignment::RunMathTree()
       case Gmat::RMATRIX_TYPE:
          {
             #ifdef DEBUG_ASSIGNMENT_EXEC
-            MessageInterface::ShowMessage(wxT("   Calling topNode->MatrixEvaluate()\n"));
+            MessageInterface::ShowMessage("   Calling topNode->MatrixEvaluate()\n");
             #endif
             
             Rmatrix rmat;
             rmat.SetSize(numRow, numCol);
             rmat = topNode->MatrixEvaluate();
             // create Array, this array will be deleted when ArrayWrapper is deleted
-            Array *outArray = new Array(wxT("ArrayOutput"));
+            Array *outArray = new Array("ArrayOutput");
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Add
-               (outArray, wxT("outArray", "Assignment::RunMathTree()"),
-                wxT("outArray = new Array()"));
+               (outArray, "outArray", "Assignment::RunMathTree()",
+                "outArray = new Array()");
             #endif
             outArray->SetSize(numRow, numCol);
             outArray->SetRmatrix(rmat);
             
             #ifdef DEBUG_ASSIGNMENT_EXEC
-            MessageInterface::ShowMessage(wxT("   Creating ArrayWrapper for output\n"));
+            MessageInterface::ShowMessage("   Creating ArrayWrapper for output\n");
             #endif
             
             outWrapper = new ArrayWrapper();
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Add
-               (outWrapper, wxT("outWrapper"), wxT("Assignment::RunMathTree()"),
-                wxT("outWrapper = new ArrayWrapper()"));
+               (outWrapper, "outWrapper", "Assignment::RunMathTree()",
+                "outWrapper = new ArrayWrapper()");
             #endif
-            outWrapper->SetDescription(wxT("ArrayOutput"));
+            outWrapper->SetDescription("ArrayOutput");
             outWrapper->SetRefObject(outArray);
             break;
          }
       default:
          CommandException ce;
-         ce.SetDetails(wxT("Cannot set \"%s\" to \"%s\". The return type of ")
-                       wxT("equation is unknown"), rhs.c_str(), lhs.c_str());
+         ce.SetDetails("Cannot set \"%s\" to \"%s\". The return type of "
+                       "equation is unknown", rhs.c_str(), lhs.c_str());
          throw ce;
       }
    }
    else
    {
-      throw CommandException(wxT("RHS is an equation, but top node is NULL\n"));
+      throw CommandException("RHS is an equation, but top node is NULL\n");
    }
    
    return outWrapper;
@@ -1759,8 +1759,8 @@ void Assignment::HandleScPropertyChange(ElementWrapper *lhsWrapper)
    {
       if (obj->IsOfType(Gmat::SPACECRAFT))
       {
-         publisher->SetScPropertyChanged(this, obj->GetRealParameter(wxT("A1Epoch")),
-                                         obj->GetName(), lhs + wxT(" = ") + rhs);
+         publisher->SetScPropertyChanged(this, obj->GetRealParameter("A1Epoch"),
+                                         obj->GetName(), lhs + " = " + rhs);
       }
    }
 }
@@ -1786,15 +1786,15 @@ void Assignment::PassToClones()
    while ((current != NULL) && (current != this))
    {
       #ifdef DEBUG_CLONE_UPDATES
-         MessageInterface::ShowMessage(wxT("%s: %d clones\n"),
+         MessageInterface::ShowMessage("%s: %d clones\n",
                current->GetTypeName().c_str(), current->GetCloneCount());
       #endif
       for (Integer i = 0; i < current->GetCloneCount(); ++i)
       {
          GmatBase *theClone = current->GetClone(i);
          #ifdef DEBUG_CLONE_UPDATES
-            MessageInterface::ShowMessage(wxT("Clone %d: %s <%p>\n"), i, (theClone == NULL ?
-                  wxT("is NULL") : theClone->GetName().c_str()), theClone);
+            MessageInterface::ShowMessage("Clone %d: %s <%p>\n", i, (theClone == NULL ?
+                  "is NULL" : theClone->GetName().c_str()), theClone);
          #endif
          if (theClone == NULL)
             continue;
@@ -1814,7 +1814,7 @@ void Assignment::PassToClones()
 
       current = current->GetNext();
       #ifdef DEBUG_CLONE_UPDATES
-         MessageInterface::ShowMessage(wxT("current: %p this: %p\n"), current, this);
+         MessageInterface::ShowMessage("current: %p this: %p\n", current, this);
       #endif
    }
 }
@@ -1834,7 +1834,7 @@ void Assignment::PassToClones()
 void Assignment::MatchAttribute(Integer id, GmatBase *owner, GmatBase *receiver)
 {
    #ifdef DEBUG_CLONE_UPDATES
-      MessageInterface::ShowMessage(wxT("   MatchAttribute(%d, %s, %s) called\n"),
+      MessageInterface::ShowMessage("   MatchAttribute(%d, %s, %s) called\n",
             id, owner->GetName().c_str(), receiver->GetName().c_str());
    #endif
 

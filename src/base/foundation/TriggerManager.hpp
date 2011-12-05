@@ -45,7 +45,7 @@ public:
    TriggerManager& operator=(const TriggerManager& tm);
 
    const Integer GetTriggerType();
-   const wxString GetTriggerTypeString();
+   const std::string GetTriggerTypeString();
 
    virtual TriggerManager* Clone() = 0;
    virtual bool CheckForTrigger() = 0;
@@ -56,7 +56,7 @@ public:
 
 protected:
    Integer triggerType;
-   wxString triggerTypeString;
+   std::string triggerTypeString;
 };
 
 #endif /* TriggerManager_hpp */

@@ -31,7 +31,7 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// SphRMag(const wxString &name, GmatBase *obj)
+// SphRMag(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -40,13 +40,13 @@
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-SphRMag::SphRMag(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("RMAG"), obj, wxT("Spherical R mag"), wxT("Km"),
+SphRMag::SphRMag(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "RMAG", obj, "Spherical R mag", "Km",
                GmatParam::ORIGIN, true)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth")); //loj: 4/7/05 Added
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth"); //loj: 4/7/05 Added
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
 }
 
 
@@ -145,7 +145,7 @@ GmatBase* SphRMag::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// SphRA(const wxString &name, GmatBase *obj)
+// SphRA(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -154,11 +154,11 @@ GmatBase* SphRMag::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-SphRA::SphRA(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("RA"), obj, wxT("Sph. Right Ascension"), wxT("Deg"),
+SphRA::SphRA(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "RA", obj, "Sph. Right Ascension", "Deg",
                GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    mIsAngleParam = true;
    mCycleType = GmatParam::PLUS_MINUS_180;
@@ -260,7 +260,7 @@ GmatBase* SphRA::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// SphDec(const wxString &name, GmatBase *obj)
+// SphDec(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -269,11 +269,11 @@ GmatBase* SphRA::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-SphDec::SphDec(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("DEC"), obj, wxT("Sph. Declination"), wxT("Deg"),
+SphDec::SphDec(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "DEC", obj, "Sph. Declination", "Deg",
                GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    mIsAngleParam = true;
    mCycleType = GmatParam::PLUS_MINUS_90;
@@ -375,7 +375,7 @@ GmatBase* SphDec::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// SphVMag(const wxString &name, GmatBase *obj)
+// SphVMag(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -384,11 +384,11 @@ GmatBase* SphDec::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-SphVMag::SphVMag(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("VMAG"), obj, wxT("Sph. Mag of Velocity"), wxT("Km/s"),
+SphVMag::SphVMag(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "VMAG", obj, "Sph. Mag of Velocity", "Km/s",
                GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
 }
 
@@ -488,7 +488,7 @@ GmatBase* SphVMag::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// SphRAV(const wxString &name, GmatBase *obj)
+// SphRAV(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -497,11 +497,11 @@ GmatBase* SphVMag::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-SphRAV::SphRAV(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("RAV"), obj, wxT("Sph. RA of Velocity"), wxT("Deg"),
+SphRAV::SphRAV(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "RAV", obj, "Sph. RA of Velocity", "Deg",
                GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    mIsAngleParam = true;
    mCycleType = GmatParam::PLUS_MINUS_180;
@@ -603,7 +603,7 @@ GmatBase* SphRAV::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// SphDecV(const wxString &name, GmatBase *obj)
+// SphDecV(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -612,11 +612,11 @@ GmatBase* SphRAV::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-SphDecV::SphDecV(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("DECV"), obj, wxT("Sph. Dec of Velocity"), wxT("Deg"),
+SphDecV::SphDecV(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "DECV", obj, "Sph. Dec of Velocity", "Deg",
                GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    mIsAngleParam = true;
    mCycleType = GmatParam::PLUS_MINUS_90;
@@ -716,7 +716,7 @@ GmatBase* SphDecV::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// SphAzi(const wxString &name, GmatBase *obj)
+// SphAzi(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -725,11 +725,11 @@ GmatBase* SphDecV::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-SphAzi::SphAzi(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("AZI"), obj, wxT("Sph. RA of Velocity"), wxT("Deg"),
+SphAzi::SphAzi(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "AZI", obj, "Sph. RA of Velocity", "Deg",
                GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    mIsAngleParam = true;
    mCycleType = GmatParam::PLUS_MINUS_180;
@@ -831,7 +831,7 @@ GmatBase* SphAzi::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// SphFPA(const wxString &name, GmatBase *obj)
+// SphFPA(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -840,11 +840,11 @@ GmatBase* SphAzi::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-SphFPA::SphFPA(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("FPA"), obj, wxT("Sph. Dec of Velocity"), wxT("Deg"),
+SphFPA::SphFPA(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "FPA", obj, "Sph. Dec of Velocity", "Deg",
                GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
 }
 
@@ -944,7 +944,7 @@ GmatBase* SphFPA::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// SphRaDecElem(const wxString &name, GmatBase *obj)
+// SphRaDecElem(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -953,12 +953,12 @@ GmatBase* SphFPA::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-SphRaDecElem::SphRaDecElem(const wxString &name, GmatBase *obj)
-   : OrbitRvec6(name, wxT("SphericalRADEC"), obj, wxT("Spherical Elements"), wxT(" "),
+SphRaDecElem::SphRaDecElem(const std::string &name, GmatBase *obj)
+   : OrbitRvec6(name, "SphericalRADEC", obj, "Spherical Elements", " ",
                 GmatParam::COORD_SYS)
 {
    // Parameter member data
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    mIsPlottable = false;
 }
@@ -1057,7 +1057,7 @@ GmatBase* SphRaDecElem::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// SphAzFpaElem(const wxString &name, GmatBase *obj)
+// SphAzFpaElem(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -1066,12 +1066,12 @@ GmatBase* SphRaDecElem::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-SphAzFpaElem::SphAzFpaElem(const wxString &name, GmatBase *obj)
-   : OrbitRvec6(name, wxT("SphericalAZFPA"), obj, wxT("Spherical Elements"), wxT(" "),
+SphAzFpaElem::SphAzFpaElem(const std::string &name, GmatBase *obj)
+   : OrbitRvec6(name, "SphericalAZFPA", obj, "Spherical Elements", " ",
                 GmatParam::COORD_SYS)
 {
    // Parameter member data
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    mIsPlottable = false;
 }

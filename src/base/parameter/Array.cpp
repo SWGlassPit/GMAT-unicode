@@ -34,17 +34,17 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 Array::PARAMETER_TEXT[ArrayParamCount - ParameterParamCount] =
 {
-   wxT("NumRows"),
-   wxT("NumCols"),
-   wxT("RmatValue"),
-   wxT("SingleValue"),
-   wxT("RowValue"),
-   wxT("ColValue"),
-   wxT("InitialValue"),
-   wxT("InitialValueType"),
+   "NumRows",
+   "NumCols",
+   "RmatValue",
+   "SingleValue",
+   "RowValue",
+   "ColValue",
+   "InitialValue",
+   "InitialValueType",
 }; 
 
 const Gmat::ParameterType
@@ -65,8 +65,8 @@ Array::PARAMETER_TYPE[ArrayParamCount - ParameterParamCount] =
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// Array(const wxString &name = wxT(""), const wxString &desc = wxT(""),
-//       const wxString &unit = wxT(""))
+// Array(const std::string &name = "", const std::string &desc = "",
+//       const std::string &unit = "")
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -76,9 +76,9 @@ Array::PARAMETER_TYPE[ArrayParamCount - ParameterParamCount] =
  * @param <unit> parameter unit
  */
 //------------------------------------------------------------------------------
-Array::Array(const wxString &name, const wxString &desc,
-             const wxString &unit)
-   : Parameter(name, wxT("Array"), GmatParam::USER_PARAM, NULL, desc, unit,
+Array::Array(const std::string &name, const std::string &desc,
+             const std::string &unit)
+   : Parameter(name, "Array", GmatParam::USER_PARAM, NULL, desc, unit,
                GmatParam::NO_DEP, Gmat::UNKNOWN_OBJECT, false, false, false, true)
 {
    mNumRows = 0;
@@ -88,7 +88,7 @@ Array::Array(const wxString &name, const wxString &desc,
    
    // GmatBase data
    objectTypes.push_back(Gmat::ARRAY);
-   objectTypeNames.push_back(wxT("Array"));
+   objectTypeNames.push_back("Array");
    mReturnType = Gmat::RMATRIX_TYPE;
    parameterCount = ArrayParamCount;
 }
@@ -107,7 +107,7 @@ Array::Array(const Array &copy)
    : Parameter(copy)
 {
    // We don't want to change the name when copy
-   wxString thisName = GetName();
+   std::string thisName = GetName();
    
    mNumRows = copy.mNumRows;
    mNumCols = copy.mNumCols;
@@ -135,7 +135,7 @@ Array& Array::operator= (const Array& right)
    if (this != &right)
    {
       // We don't want to change the name when copy
-      wxString thisName = GetName();
+      std::string thisName = GetName();
       
       Parameter::operator=(right);
       mNumRows = right.mNumRows;
@@ -196,7 +196,7 @@ bool Array::SetSize(const Integer row, const Integer col)
 {
    #if DEBUG_ARRAY
    MessageInterface::ShowMessage
-      (wxT("Array::SetSize() row=%d, col=%d\n"), row, col);
+      ("Array::SetSize() row=%d, col=%d\n", row, col);
    #endif
    
    mNumRows = row;
@@ -228,35 +228,35 @@ void Array::SetRmatrix(const Rmatrix &mat)
    }
    else
    {
-      throw ParameterException(wxT("The size has not been set for ") + GetName());
+      throw ParameterException("The size has not been set for " + GetName());
    }
 }
 
 
 //------------------------------------------------------------------------------
-// wxString ToString()
+// std::string ToString()
 //------------------------------------------------------------------------------
 /**
- * @return parameter value converted to wxString.
+ * @return parameter value converted to std::string.
  */
 //------------------------------------------------------------------------------
-wxString Array::ToString()
+std::string Array::ToString()
 {
    // use default global precision to convert to string (loj: 2008.03.05)
    return mRmatValue.ToString(false, false, false, GmatGlobal::DATA_PRECISION, 1,
-                              true, 1, wxT(""), false);
+                              true, 1, "", false);
    
-   //wxString ss(wxT(""));
+   //std::stringstream ss("");
    //ss.precision(10);
    //ss << mRmatValue;
-   //return wxString(ss.str());
+   //return std::string(ss.str());
 }
 
 
 //------------------------------------------------------------------------------
-// virtual const wxString* GetParameterList() const
+// virtual const std::string* GetParameterList() const
 //------------------------------------------------------------------------------
-const wxString* Array::GetParameterList() const
+const std::string* Array::GetParameterList() const
 {
    return PARAMETER_TEXT;
 }
@@ -289,9 +289,9 @@ void Array::Copy(const GmatBase* orig)
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
-wxString Array::GetParameterText(const Integer id) const
+std::string Array::GetParameterText(const Integer id) const
 {
    if (id >= ParameterParamCount && id < ArrayParamCount)
       return PARAMETER_TEXT[id - ParameterParamCount];
@@ -300,9 +300,9 @@ wxString Array::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer Array::GetParameterID(const wxString &str) const
+Integer Array::GetParameterID(const std::string &str) const
 {
    for (int i=ParameterParamCount; i<ArrayParamCount; i++)
    {
@@ -325,9 +325,9 @@ Gmat::ParameterType Array::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
-wxString Array::GetParameterTypeString(const Integer id) const
+std::string Array::GetParameterTypeString(const Integer id) const
 {
    if (id >= ParameterParamCount && id < ArrayParamCount)
       return PARAM_TYPE_STRING[GetParameterType(id - ParameterParamCount)];
@@ -385,13 +385,13 @@ Integer Array::GetIntegerParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// virtual Integer GetIntegerParameter(const wxString &label) const
+// virtual Integer GetIntegerParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Integer Array::GetIntegerParameter(const wxString &label) const
+Integer Array::GetIntegerParameter(const std::string &label) const
 {
    return GetIntegerParameter(GetParameterID(label));
 }
@@ -414,7 +414,7 @@ Integer Array::SetIntegerParameter(const Integer id, const Integer value)
       if (mNumRows == 0)
          mNumRows = value;
       else
-         throw ParameterException(wxT("Row alrealy has been set for ") + GetName());
+         throw ParameterException("Row alrealy has been set for " + GetName());
 
       if (mNumCols > 0 && !mSizeSet)
       {
@@ -426,7 +426,7 @@ Integer Array::SetIntegerParameter(const Integer id, const Integer value)
       if (mNumCols == 0)
          mNumCols = value;
       else
-         throw ParameterException(wxT("Column alrealy has been set for ") + GetName());
+         throw ParameterException("Column alrealy has been set for " + GetName());
       
       if (mNumRows > 0 && !mSizeSet)
       {
@@ -444,13 +444,13 @@ Integer Array::SetIntegerParameter(const Integer id, const Integer value)
 
 
 //------------------------------------------------------------------------------
-// virtual Integer SetIntegerParameter(wxString &label, const Integer value)
+// virtual Integer SetIntegerParameter(std::string &label, const Integer value)
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Integer Array::SetIntegerParameter(const wxString &label, const Integer value)
+Integer Array::SetIntegerParameter(const std::string &label, const Integer value)
 {
    return SetIntegerParameter(GetParameterID(label), value);
 }
@@ -484,20 +484,20 @@ Rvector Array::GetRvectorParameter(const Integer id, const Integer index) const
       }
    default:
       throw ParameterException
-         (wxT("Array::GetRvectorParameter() Unknown Parameter Name") + PARAMETER_TEXT[id]);
+         ("Array::GetRvectorParameter() Unknown Parameter Name" + PARAMETER_TEXT[id]);
       //return Parameter::GetRvectorParameter(id, index);
    }
 }
 
 //------------------------------------------------------------------------------
-// Rvector GetRvectorParameter(const wxString &label,
+// Rvector GetRvectorParameter(const std::string &label,
 //                                    const Integer index) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Rvector Array::GetRvectorParameter(const wxString &label,
+Rvector Array::GetRvectorParameter(const std::string &label,
                                    const Integer index) const
 {
    return GetRvectorParameter(GetParameterID(label), index);
@@ -513,7 +513,7 @@ const Rvector& Array::SetRvectorParameter(const Integer id, const Rvector &value
    
    #if DEBUG_ARRAY
    MessageInterface::ShowMessage
-      (wxT("Array::SetRvectorParameter() index=%d, mNumRows=%d, mNumCols=%d\n"),
+      ("Array::SetRvectorParameter() index=%d, mNumRows=%d, mNumCols=%d\n",
        index, mNumRows, mNumCols);
    #endif
    
@@ -531,7 +531,7 @@ const Rvector& Array::SetRvectorParameter(const Integer id, const Rvector &value
       return value;
    default:
       throw ParameterException
-         (wxT("Array::GetRvectorParameter() Unknown Parameter Name") + PARAMETER_TEXT[id]);
+         ("Array::GetRvectorParameter() Unknown Parameter Name" + PARAMETER_TEXT[id]);
       //return Parameter::SetRvectorParameter(id, value, index);
    }
 }
@@ -544,7 +544,7 @@ const Rvector& Array::SetRvectorParameter(const Integer id, const Rvector &value
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-const Rvector& Array::SetRvectorParameter(const wxString &label,
+const Rvector& Array::SetRvectorParameter(const std::string &label,
                                           const Rvector &value,
                                           const Integer index)
 {
@@ -576,19 +576,19 @@ const Rmatrix& Array::GetRmatrixParameter(const Integer id) const
    }
    else
    {
-      throw ParameterException(wxT("The size has not been set for ") + GetName());
+      throw ParameterException("The size has not been set for " + GetName());
    }
 }
 
 
 //------------------------------------------------------------------------------
-// const Rvector& GetRvectorParameter(const wxString &label) const
+// const Rvector& GetRvectorParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-const Rmatrix& Array::GetRmatrixParameter(const wxString &label) const
+const Rmatrix& Array::GetRmatrixParameter(const std::string &label) const
 {
    return GetRmatrixParameter(GetParameterID(label));
 }
@@ -629,20 +629,20 @@ const Rmatrix& Array::SetRmatrixParameter(const Integer id,
 //    }
 //    else
 //    {
-//       throw ParameterException(wxT("The size has not been set for ") + GetName());
+//       throw ParameterException("The size has not been set for " + GetName());
 //    }
 }
 
 
 //------------------------------------------------------------------------------
-// const Rmatrix& SetRmatrixParameter(const wxString &label,
+// const Rmatrix& SetRmatrixParameter(const std::string &label,
 //                                    const Rmatrix &value)
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-const Rmatrix& Array::SetRmatrixParameter(const wxString &label,
+const Rmatrix& Array::SetRmatrixParameter(const std::string &label,
                                           const Rmatrix &value)
 {
    return SetRmatrixParameter(GetParameterID(label), value);
@@ -660,19 +660,19 @@ Real Array::GetRealParameter(const Integer id, const Integer index) const
       return mRmatValue.GetElement(0, index);
    default:
       throw ParameterException
-         (wxT("Array::GetRealParameter() Unknown Parameter Name") + PARAMETER_TEXT[id]);
+         ("Array::GetRealParameter() Unknown Parameter Name" + PARAMETER_TEXT[id]);
    }
 }
 
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label, const Integer index) const
+// Real GetRealParameter(const std::string &label, const Integer index) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Real Array::GetRealParameter(const wxString &label, const Integer index) const
+Real Array::GetRealParameter(const std::string &label, const Integer index) const
 {
    return GetRealParameter(GetParameterID(label), index);
 }
@@ -687,7 +687,7 @@ Real Array::GetRealParameter(const Integer id, const Integer row,
 {
    #if DEBUG_ARRAY_GET
    MessageInterface::ShowMessage
-      (wxT("Array::GetRealParameter() entered, id=%d, row=%d, col=%d\n"), id,
+      ("Array::GetRealParameter() entered, id=%d, row=%d, col=%d\n", id,
        row, col);
    #endif
    
@@ -697,20 +697,20 @@ Real Array::GetRealParameter(const Integer id, const Integer row,
       return mRmatValue.GetElement(row, col);
    default:
       throw ParameterException
-         (wxT("Array::GetRealParameter() Unknown Parameter Name") + PARAMETER_TEXT[id]);
+         ("Array::GetRealParameter() Unknown Parameter Name" + PARAMETER_TEXT[id]);
       //return Parameter::GetRealParameter(id, row, col);
    }
 }
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label, const Integer row,
+// Real GetRealParameter(const std::string &label, const Integer row,
 //                       const Integer col) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Real Array::GetRealParameter(const wxString &label, const Integer row,
+Real Array::GetRealParameter(const std::string &label, const Integer row,
                              const Integer col) const
 {
    return GetRealParameter(GetParameterID(label), row, col);
@@ -738,14 +738,14 @@ Real Array::SetRealParameter(const Integer id, const Real value,
    case SINGLE_VALUE:
       #ifdef DEBUG_ARRAY_SET
          MessageInterface::ShowMessage(
-         wxT("In Array::SetRealParameter, row = %d, col = %d, value = %.12f\n"),
+         "In Array::SetRealParameter, row = %d, col = %d, value = %.12f\n",
          row, col, value);
       #endif
       mRmatValue.SetElement(row, col, value);
       return value;
    default:
       throw ParameterException
-         (wxT("Array::SetRealParameter() Unknown Parameter Name") + PARAMETER_TEXT[id]);
+         ("Array::SetRealParameter() Unknown Parameter Name" + PARAMETER_TEXT[id]);
       //return Parameter::SetRealParameter(id, value, row, col);
    }
 }
@@ -759,7 +759,7 @@ Real Array::SetRealParameter(const Integer id, const Real value,
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Real Array::SetRealParameter(const wxString &label, const Real value,
+Real Array::SetRealParameter(const std::string &label, const Real value,
                              const Integer row, const Integer col)
 {
    return SetRealParameter(GetParameterID(label), value, row, col);
@@ -767,14 +767,14 @@ Real Array::SetRealParameter(const wxString &label, const Real value,
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /*
  * Override this method to return array declaration string.
  * Such as Arr1[2]
  */
 //------------------------------------------------------------------------------
-wxString Array::GetStringParameter(const Integer id) const
+std::string Array::GetStringParameter(const Integer id) const
 {
    switch (id)
    {
@@ -791,18 +791,18 @@ wxString Array::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString Array::GetStringParameter(const wxString &label) const
+std::string Array::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
-bool Array::SetStringParameter(const Integer id, const wxString &value)
+bool Array::SetStringParameter(const Integer id, const std::string &value)
 {
    switch (id)
    {
@@ -810,16 +810,16 @@ bool Array::SetStringParameter(const Integer id, const wxString &value)
       {
          // Sets initial value of array elements (LOJ: 2010.09.21)
          // value should be in format of Arr(I,J)=Value, so it can be parsed
-         StringArray parts = GmatStringUtil::SeparateBy(value, wxT("="), true);
+         StringArray parts = GmatStringUtil::SeparateBy(value, "=", true);
          if (parts.size() == 2)
          {
-            wxString name, rowStr, colStr;
+            std::string name, rowStr, colStr;
             // parse array name and index
             GmatStringUtil::GetArrayIndexVar(parts[0], rowStr, colStr, name);
-            wxString mapstr = rowStr + wxT(",") + colStr;
+            std::string mapstr = rowStr + "," + colStr;
             #ifdef DEBUG_ARRAY_SET
             MessageInterface::ShowMessage
-               (wxT("Array::SetStringParameter() mapstr='%s', value=%s\n"),
+               ("Array::SetStringParameter() mapstr='%s', value=%s\n",
                 mapstr.c_str(), parts[1].c_str());
             #endif
             initialValueMap[mapstr] = parts[1];
@@ -833,9 +833,9 @@ bool Array::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
-bool Array::SetStringParameter(const wxString &label, const wxString &value)
+bool Array::SetStringParameter(const std::string &label, const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
@@ -843,7 +843,7 @@ bool Array::SetStringParameter(const wxString &label, const wxString &value)
 
 //------------------------------------------------------------------------------
 // StringArray GetGeneratingString(Gmat::WriteMode mode,
-//                const wxString &prefix, const wxString &useName)
+//                const std::string &prefix, const std::string &useName)
 //------------------------------------------------------------------------------
 /**
  * Produces a string, possibly multi-line, containing the text that produces an
@@ -856,18 +856,19 @@ bool Array::SetStringParameter(const wxString &label, const wxString &value)
  * @return A string containing the text.
  */
 //------------------------------------------------------------------------------
-const wxString& Array::GetGeneratingString(Gmat::WriteMode mode,
-                                              const wxString &prefix,
-                                              const wxString &useName)
+const std::string& Array::GetGeneratingString(Gmat::WriteMode mode,
+                                              const std::string &prefix,
+                                              const std::string &useName)
 {
    #ifdef DEBUG_GEN_STRING
-   MessageInterface::ShowMessage(wxT("Array::GetGeneratingString() entered\n"));
+   MessageInterface::ShowMessage("Array::GetGeneratingString() entered\n");
    #endif
    
-   wxString data;
+   std::stringstream data;
    
    // Crank up data precision so we don't lose anything
-   wxString preface = wxT(""), nomme;
+   data.precision(GetDataPrecision()); 
+   std::string preface = "", nomme;
    
    if ((mode == Gmat::SCRIPTING) || (mode == Gmat::OWNED_OBJECT) ||
        (mode == Gmat::SHOW_SCRIPT))
@@ -875,41 +876,41 @@ const wxString& Array::GetGeneratingString(Gmat::WriteMode mode,
    if (mode == Gmat::MATLAB_STRUCT)
       inMatlabMode = true;
    
-   if (useName != wxT(""))
+   if (useName != "")
       nomme = useName;
    else
       nomme = instanceName;
    
    if ((mode == Gmat::SCRIPTING) || (mode == Gmat::SHOW_SCRIPT))
    {
-      wxString tname = typeName;
+      std::string tname = typeName;
 
       // Add comment line (loj: 03/27/07)
-      if (GetCommentLine() != wxT(""))
+      if (GetCommentLine() != "")
          data << GetCommentLine();
       
-      data << wxT("Create ") << tname << wxT(" ") << nomme 
-           << wxT("[") << mNumRows << wxT(",") << mNumCols << wxT("];\n");
+      data << "Create " << tname << " " << nomme 
+           << "[" << mNumRows << "," << mNumCols << "];\n";
       
-      preface = wxT("GMAT ");
+      preface = "GMAT ";
    }
    
-   nomme += wxT(".");
+   nomme += ".";
    
    if (mode == Gmat::OWNED_OBJECT)
    {
       preface = prefix;
-      nomme = wxT("");
+      nomme = "";
    }
    
    preface += nomme;
    
    WriteParameters(mode, preface, data);
-   generatingString = data;
+   generatingString = data.str();
    
    #ifdef DEBUG_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("Array::GetGeneratingString() return\n%s\n"), generatingString.c_str());
+      ("Array::GetGeneratingString() return\n%s\n", generatingString.c_str());
    #endif
    
    return generatingString;
@@ -917,23 +918,23 @@ const wxString& Array::GetGeneratingString(Gmat::WriteMode mode,
 
 
 //------------------------------------------------------------------------------
-// wxString GetArrayDefString() const
+// std::string GetArrayDefString() const
 //------------------------------------------------------------------------------
 /*
  * Returns array declaration string.
  * Such as Arr1[2]
  */
 //------------------------------------------------------------------------------
-wxString Array::GetArrayDefString() const
+std::string Array::GetArrayDefString() const
 {
-   wxString data;
-   data << instanceName << wxT("[") << mNumRows << wxT(",") << mNumCols << wxT("]");
-   return data;
+   std::stringstream data;
+   data << instanceName << "[" << mNumRows << "," << mNumCols << "]";
+   return data.str();
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetInitialValueString(const wxString &prefix)
+// std::string GetInitialValueString(const std::string &prefix)
 //------------------------------------------------------------------------------
 /*
  * Returns array initial value string including inline comments.
@@ -941,17 +942,17 @@ wxString Array::GetArrayDefString() const
  * Such as GMAT Arr1[1,1] = 13.34; %% initialize
  */
 //------------------------------------------------------------------------------
-wxString Array::GetInitialValueString(const wxString &prefix)
+std::string Array::GetInitialValueString(const std::string &prefix)
 {
    #ifdef DEBUG_INITIAL_VALUE
    MessageInterface::ShowMessage
-      (wxT("Array::GetInitialValueString() '%s' entered\n"), GetName().c_str());
+      ("Array::GetInitialValueString() '%s' entered\n", GetName().c_str());
    #endif
    
-   wxString data;
+   std::stringstream data;
    
-   Integer row = GetIntegerParameter(wxT("NumRows"));
-   Integer col = GetIntegerParameter(wxT("NumCols"));
+   Integer row = GetIntegerParameter("NumRows");
+   Integer col = GetIntegerParameter("NumCols");
    
    for (Integer i = 0; i < row; ++i)
    {
@@ -960,7 +961,7 @@ wxString Array::GetInitialValueString(const wxString &prefix)
       {
          Real realVal = GetRealParameter(SINGLE_VALUE, i, j);
          #ifdef DEBUG_INITIAL_VALUE
-         MessageInterface::ShowMessage(wxT("   value = %f\n"), realVal);
+         MessageInterface::ShowMessage("   value = %f\n", realVal);
          #endif
          
          //if (GetRealParameter(SINGLE_VALUE, i, j) != 0.0)
@@ -971,31 +972,31 @@ wxString Array::GetInitialValueString(const wxString &prefix)
             //========================================================
             
             // This writes out actual value
-            data << wxT("GMAT ") << instanceName << wxT("(") << i+1 << wxT(", ") << j+1 <<
-               wxT(") = ") << GetRealParameter(SINGLE_VALUE, i, j) << wxT(";");
-            data << GetInlineComment() + wxT("\n");
+            data << "GMAT " << instanceName << "(" << i+1 << ", " << j+1 <<
+               ") = " << GetRealParameter(SINGLE_VALUE, i, j) << ";";
+            data << GetInlineComment() + "\n";
             
             //========================================================
             #else
             //========================================================
             
             // This writes out initial value string (LOJ: 2010.09.21)
-            wxString mapstr = GmatStringUtil::ToString(i+1, 1) + wxT(",") +
+            std::string mapstr = GmatStringUtil::ToString(i+1, 1) + "," +
                GmatStringUtil::ToString(j+1, 1);
             
             #ifdef DEBUG_INITIAL_VALUE
             MessageInterface::ShowMessage
-               (wxT("Array::GetInitialValueString() mapstr='%s'\n"), mapstr.c_str());
+               ("Array::GetInitialValueString() mapstr='%s'\n", mapstr.c_str());
             #endif
             
-            wxString initialVal = wxT("No Initial Value");
+            std::string initialVal = "No Initial Value";
             bool writeData = false;
             
             if (initialValueMap.find(mapstr) != initialValueMap.end())
                initialVal = initialValueMap[mapstr];
             
             #ifdef DEBUG_INITIAL_VALUE
-            MessageInterface::ShowMessage(wxT("   initialVal='%s'\n"), initialVal.c_str());
+            MessageInterface::ShowMessage("   initialVal='%s'\n", initialVal.c_str());
             #endif
             
             if (GmatStringUtil::IsNumber(initialVal))
@@ -1011,9 +1012,9 @@ wxString Array::GetInitialValueString(const wxString &prefix)
             
             if (writeData)
             {
-               data << prefix << wxT("GMAT ") << instanceName << wxT("(") << i+1 << wxT(", ") << j+1 << wxT(") = ")
+               data << prefix << "GMAT " << instanceName << "(" << i+1 << ", " << j+1 << ") = "
                     << initialVal;
-               data << GetInlineComment() + wxT("\n");
+               data << GetInlineComment() + "\n";
             }
             
             //========================================================
@@ -1023,6 +1024,6 @@ wxString Array::GetInitialValueString(const wxString &prefix)
       }
    }
    
-   return data;
+   return data.str();
 }
 

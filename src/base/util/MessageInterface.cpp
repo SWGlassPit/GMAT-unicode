@@ -80,9 +80,23 @@ MessageReceiver* MessageInterface::GetMessageReceiver()
 }
 
 
+//------------------------------------------------------------------------------
+//  void ShowMessage(const std::string &msgString)
+//------------------------------------------------------------------------------
+/**
+ * Passes an std::string message to the MessageReceiver.
+ *
+ * @param msgString The message that is displayed.
+ */
+//------------------------------------------------------------------------------
+void MessageInterface::ShowMessage(const std::string &msgString)
+{
+   ShowMessage("%s", msgString.c_str());
+}
+
 
 //------------------------------------------------------------------------------
-//  void ShowMessage(const wxString &format, ...)
+//  void ShowMessage(const char *format, ...)
 //------------------------------------------------------------------------------
 /**
  * Passes a variable argument delimited message to the MessageReceiver.
@@ -93,37 +107,66 @@ MessageReceiver* MessageInterface::GetMessageReceiver()
  *                  string.
  */
 //------------------------------------------------------------------------------
-void MessageInterface::ShowMessage(const wxString &format, ...)
+void MessageInterface::ShowMessage(const char *format, ...)
 {
    if (theMessageReceiver != NULL)
    {
       short    ret;
+      short    size;
       va_list  marker;
-      wxString msgBuffer = wxT("");
-      wxString msgStr = wxT("*** WARNING *** Cannot allocate enough memory to show the message.\n");
+      char     *msgBuffer = NULL;
+      std::string msgStr("*** WARNING *** Cannot allocate enough memory to show the message.\n");
       
       // format is vsprintf format
       // actual max message length is MAX_MESSAGE_LENGTH
-      //LogMessage(wxT("strlen(format)=%d, size=%d\n"), strlen(format), size);
+      size = strlen(format) + MAX_MESSAGE_LENGTH;
+      //LogMessage("strlen(format)=%d, size=%d\n", strlen(format), size);
       
-      va_start(marker, format);
-      ret = msgBuffer.PrintfV(format, marker);
-      if (ret < 0)
-         theMessageReceiver->ShowMessage(wxT("Unable to complete messaging"));
+      if( (msgBuffer = (char *)malloc(size)) != NULL )
+      {
+         for (int i=0; i<size; i++)
+            msgBuffer[i] = '\0';
+         va_start(marker, format);
+         ret = vsprintf(msgBuffer, format, marker);
+         if (ret < 0)
+            theMessageReceiver->ShowMessage("Unable to complete messaging");
+         else
+         {
+            va_end(marker);
+            theMessageReceiver->ShowMessage(std::string(msgBuffer));
+         }
+      }
       else
       {
-         theMessageReceiver->ShowMessage(msgBuffer);
+         theMessageReceiver->ShowMessage(msgStr);
+//         msgBuffer = "*** WARNING *** Cannot allocate enough memory to show the message.\n";
       }
-      va_end(marker);
 
-//      theMessageReceiver->ShowMessage(wxString(msgBuffer));
+//      theMessageReceiver->ShowMessage(std::string(msgBuffer));
+      free(msgBuffer);
    }
 } // end ShowMessage()
 
 
+//------------------------------------------------------------------------------
+//  static void PopupMessage(Gmat::MessageType msgType, const std::string &msg)
+//------------------------------------------------------------------------------
+/**
+ * Passes a popup message to the MessageReceiver.
+ *
+ * @param msgType The type of message that is displayed, selected from the set
+ *                   {ERROR_, WARNING_, INFO_} enumerated in the Gmat namespace.
+ * @param msg     The message.
+ */
+//------------------------------------------------------------------------------
+void MessageInterface::PopupMessage(Gmat::MessageType msgType, const std::string &msg)
+{
+   PopupMessage(msgType, "%s", msg.c_str());
+}
+
 
 //------------------------------------------------------------------------------
-//  static void PopupMessage(Gmat::MessageType msgType, const wxString &format, ...)
+//  static void PopupMessage(Gmat::MessageType msgType, const char *format, ...)
 //------------------------------------------------------------------------------
 /**
  * Passes a variable argument delimited popup message to the MessageReceiver.
@@ -136,7 +179,7 @@ void MessageInterface::ShowMessage(const wxString &format, ...)
  *                   string.
  */
 //------------------------------------------------------------------------------
-void MessageInterface::PopupMessage(Gmat::MessageType msgType, const wxString &format,
+void MessageInterface::PopupMessage(Gmat::MessageType msgType, const char *format,
       ...)
 {
    if (theMessageReceiver != NULL)
@@ -144,34 +187,46 @@ void MessageInterface::PopupMessage(Gmat::MessageType msgType, const wxString &f
       short    ret;
       short    size;
       va_list  marker;
-      wxString msgBuffer = wxT("");
-      wxString msgStr(wxT("*** WARNING *** Cannot allocate enough memory to show the message.\n"));
+      char     *msgBuffer = NULL;
+      std::string msgStr("*** WARNING *** Cannot allocate enough memory to show the message.\n");
 
       // format is vsprintf format
       // actual max message length is MAX_MESSAGE_LENGTH
+      size = strlen(format) + MAX_MESSAGE_LENGTH;
       
-      va_start(marker, format);
-      ret = msgBuffer.PrintfV( format, marker);
-      if (ret < 0)
-         theMessageReceiver->PopupMessage(msgType,
-               wxT("Unable to complete messaging"));
+      if ( (msgBuffer = (char *)malloc(size)) != NULL )
+      {
+         for (int i=0; i<size; i++)
+            msgBuffer[i] = '\0';
+         va_start(marker, format);
+         ret = vsprintf(msgBuffer, format, marker);
+         if (ret < 0)
+            theMessageReceiver->PopupMessage(msgType,
+                  "Unable to complete messaging");
+         else
+         {
+            va_end(marker);
+
+            // if no EOL then append it
+            if (msgBuffer[strlen(msgBuffer)-1] != '\n')
+               msgBuffer[strlen(msgBuffer)] = '\n';
+            theMessageReceiver->PopupMessage(msgType, std::string(msgBuffer));
+         }
+      }
       else
       {
-
-         // if no EOL then append it
-         if (msgBuffer.at(msgBuffer.length()-1) != wxT('\n'))
-            msgBuffer.append(1,wxT('\n'));
-         theMessageReceiver->PopupMessage(msgType, wxString(msgBuffer));
+         theMessageReceiver->PopupMessage(msgType, msgStr);
+//         msgBuffer = "*** WARNING *** Cannot allocate enough memory to show the message.\n";
       }
-      va_end(marker);
       
-//      theMessageReceiver->PopupMessage(msgType, wxString(msgBuffer));
+//      theMessageReceiver->PopupMessage(msgType, std::string(msgBuffer));
       
+      free(msgBuffer);
    }
 } // end PopupMessage()
 
 //------------------------------------------------------------------------------
-// wxString GetLogFileName()
+// std::string GetLogFileName()
 //------------------------------------------------------------------------------
 /**
  * Retrieves the fully qualified name of the log file from the MessageReceiver.
@@ -179,10 +234,10 @@ void MessageInterface::PopupMessage(Gmat::MessageType msgType, const wxString &f
  * @return The name of the log file, including path information.
  */
 //------------------------------------------------------------------------------
-wxString MessageInterface::GetLogFileName()
+std::string MessageInterface::GetLogFileName()
 {
    if (theMessageReceiver == NULL)
-      return wxT("");
+      return "";
    return theMessageReceiver->GetLogFileName();
 }
 
@@ -203,38 +258,53 @@ void MessageInterface::SetLogEnable(bool flag)
 }
 
 //------------------------------------------------------------------------------
-// void SetLogPath(const wxString &pathname, bool append = false)
+// void SetLogPath(const std::string &pathname, bool append = false)
 //------------------------------------------------------------------------------
 /*
  * Sends log file path and append state to the MessageReceiver.
  *
- * @param  pathname  log file path name, such as wxT("/newpath/test1/")
+ * @param  pathname  log file path name, such as "/newpath/test1/"
  * @param  append  true if appending log message (false)
  */
 //------------------------------------------------------------------------------
-void MessageInterface::SetLogPath(const wxString &pathname, bool append)
+void MessageInterface::SetLogPath(const std::string &pathname, bool append)
 {
    if (theMessageReceiver != NULL)
       theMessageReceiver->SetLogPath(pathname, append);
 }
 
 //------------------------------------------------------------------------------
-// void SetLogFile(const wxString &filename)
+// void SetLogFile(const std::string &filename)
 //------------------------------------------------------------------------------
 /*
  * Sends the log file path and name to the MessageReceiver.
  *
- * @param  filename  log file name, such as wxT("/newpath/test1/GmatLog.txt")
+ * @param  filename  log file name, such as "/newpath/test1/GmatLog.txt"
  */
 //------------------------------------------------------------------------------
-void MessageInterface::SetLogFile(const wxString &filename)
+void MessageInterface::SetLogFile(const std::string &filename)
 {
    if (theMessageReceiver != NULL)
       theMessageReceiver->SetLogFile(filename);
 }
 
 //------------------------------------------------------------------------------
-//  void LogMessage(const wxString &msg, ...)
+//  void LogMessage(const std::string &msg)
+//------------------------------------------------------------------------------
+/**
+ * Sends a message to the MessageReceiver for logging.
+ *
+ * @param msg The message.
+ */
+//------------------------------------------------------------------------------
+void MessageInterface::LogMessage(const std::string &msg)
+{
+   if (theMessageReceiver != NULL)
+      theMessageReceiver->LogMessage(msg);
+}
+
+//------------------------------------------------------------------------------
+//  void LogMessage(const std::string &msg)
 //------------------------------------------------------------------------------
 /**
  * Sends a variable argument message to the MessageReceiver for logging.
@@ -245,30 +315,44 @@ void MessageInterface::SetLogFile(const wxString &filename)
  *            string.
  */
 //------------------------------------------------------------------------------
-void MessageInterface::LogMessage(const wxString &msg, ...)
+void MessageInterface::LogMessage(const char *msg, ...)
 {
    if (theMessageReceiver != NULL)
    {
       short    ret;
       short    size;
       va_list  marker;
-      wxString msgBuffer = wxT("");
+      char     *msgBuffer = NULL;
+      std::string msgStr("*** WARNING *** Cannot allocate enough memory to show the message.\n");
       
       // msg is vsprintf format
       // actual max message length is MAX_MESSAGE_LENGTH
-      //LogMessage(wxT("strlen(msg)=%d, size=%d\n"), strlen(msg), size);
+      size = strlen(msg) + MAX_MESSAGE_LENGTH;
+      //LogMessage("strlen(msg)=%d, size=%d\n", strlen(msg), size);
       
-      va_start(marker, msg);
-      ret = msgBuffer.PrintfV(msg, marker);
-      if (ret < 0) // vsprintf failed
-         theMessageReceiver->LogMessage(wxT("Unable to complete messaging\n"));
+      if( (msgBuffer = (char *)malloc(size)) != NULL )
+      {
+         for (int i=0; i<size; i++)
+            msgBuffer[i] = '\0';
+         va_start(marker, msg);
+         ret = vsprintf(msgBuffer, msg, marker);
+         if (ret < 0) // vsprintf failed
+            theMessageReceiver->LogMessage("Unable to complete messaging\n");
+         else
+         {
+            va_end(marker);
+            theMessageReceiver->LogMessage(std::string(msgBuffer));
+         }
+      }
       else
       {
-         theMessageReceiver->LogMessage(wxString(msgBuffer));
+         theMessageReceiver->LogMessage(msgStr);
+//         msgBuffer = "*** WARNING *** Cannot allocate enough memory to show "
+//            "the message.\n";
       }
-      va_end(marker);
       
-//      theMessageReceiver->LogMessage(wxString(msgBuffer));
+//      theMessageReceiver->LogMessage(std::string(msgBuffer));
+      free(msgBuffer);
    }
 }
 
@@ -286,28 +370,28 @@ void MessageInterface::ClearMessage()
 }
 
 //------------------------------------------------------------------------------
-// wxString GetQueuedMessage()
+// std::string GetQueuedMessage()
 //------------------------------------------------------------------------------
 /**
  * Tells the MessageReceiver to retrieve all message from the queue.
  */
 //------------------------------------------------------------------------------
-wxString MessageInterface::GetQueuedMessage()
+std::string MessageInterface::GetQueuedMessage()
 {
    if (theMessageReceiver != NULL)
       return theMessageReceiver->GetMessage();
    else
-      return wxT("");
+      return "";
 }
 
 //------------------------------------------------------------------------------
-// void PutMessage(const wxString &msg)
+// void PutMessage(const std::string &msg)
 //------------------------------------------------------------------------------
 /**
  * Tells the MessageReceiver to push the message into queue
  */
 //------------------------------------------------------------------------------
-void MessageInterface::PutMessage(const wxString &msg)
+void MessageInterface::PutMessage(const std::string &msg)
 {
    if (theMessageReceiver != NULL)
       theMessageReceiver->PutMessage(msg);

@@ -33,8 +33,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Abs::Abs(const wxString &nomme)
-   : MathFunction(wxT("Abs"), nomme)
+Abs::Abs(const std::string &nomme)
+   : MathFunction("Abs", nomme)
 {
 }
 
@@ -93,7 +93,7 @@ void Abs::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
    leftNode->GetOutputInfo(type1, row1, col1);
    
    if (type1 != Gmat::REAL_TYPE)
-      throw MathException(wxT("Left is not scalar, so cannot do Abs().\n"));  
+      throw MathException("Left is not scalar, so cannot do Abs().\n");  
    else
    {
       type = type1;
@@ -114,7 +114,7 @@ void Abs::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 bool Abs::ValidateInputs()
 {
    if (leftNode == NULL)
-      throw MathException(wxT("Abs() - Missing input arguments"));
+      throw MathException("Abs() - Missing input arguments");
    
    Integer type1, row1, col1; // Left node
    

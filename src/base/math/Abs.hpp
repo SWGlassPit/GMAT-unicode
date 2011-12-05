@@ -27,7 +27,7 @@
 class GMAT_API Abs : public MathFunction
 {
 public:
-   Abs(const wxString &nomme);
+   Abs(const std::string &nomme);
    virtual ~Abs();
    Abs(const Abs &copy);
                  

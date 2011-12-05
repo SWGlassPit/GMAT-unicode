@@ -43,7 +43,7 @@ using namespace GmatMathConstants;
 
 
 //------------------------------------------------------------------------------
-//  Real  CalculateBPlaneData(const wxString &item, const Rvector6 &state,
+//  Real  CalculateBPlaneData(const std::string &item, const Rvector6 &state,
 //                            const Real originMu)
 //------------------------------------------------------------------------------
 /**
@@ -58,7 +58,7 @@ using namespace GmatMathConstants;
  *
  */
 //------------------------------------------------------------------------------
-Real GmatCalcUtil::CalculateBPlaneData(const wxString &item, const Rvector6 &state,
+Real GmatCalcUtil::CalculateBPlaneData(const std::string &item, const Rvector6 &state,
                                        const Real originMu)
 {
    Rvector3 pos(state[0], state[1], state[2]);
@@ -76,7 +76,7 @@ Real GmatCalcUtil::CalculateBPlaneData(const wxString &item, const Rvector6 &sta
    if (eMag <= 1.0)
       return GmatMathConstants::QUIET_NAN;
 //      throw UtilityException
-//         (wxT("CalculationUtilities::CalculateBPlaneData() : ERROR - eccentricity magnitude is <= 1.0. eMag: ") +
+//         ("CalculationUtilities::CalculateBPlaneData() : ERROR - eccentricity magnitude is <= 1.0. eMag: " +
 //          GmatRealUtil::ToString(eMag));
 
    eVec.Normalize();
@@ -106,33 +106,33 @@ Real GmatCalcUtil::CalculateBPlaneData(const wxString &item, const Rvector6 &sta
    Real bDotT = bVec * tVec;
    Real bDotR = bVec * rVec;
 
-   if (item == wxT("BDotR"))
+   if (item == "BDotR")
    {
       return bDotR;
    }
-   else if (item == wxT("BDotT"))
+   else if (item == "BDotT")
    {
       return bDotT;
    }
-   else if (item == wxT("BVectorMag"))
+   else if (item == "BVectorMag")
    {
       return Sqrt(bDotT*bDotT + bDotR*bDotR);
    }
-   else if (item == wxT("BVectorAngle"))
+   else if (item == "BVectorAngle")
    {
       return ATan(bDotR, bDotT) * GmatMathConstants::DEG_PER_RAD;
    }
    else
    {
       throw UtilityException
-         (wxT("CalculationUtilities::CalculateBPlaneData() Unknown item: ") + item);
+         ("CalculationUtilities::CalculateBPlaneData() Unknown item: " + item);
    }
 
 }
 
 
 //------------------------------------------------------------------------------
-//  Real  CalculateAngularData(const wxString &item, const Rvector6 &state,
+//  Real  CalculateAngularData(const std::string &item, const Rvector6 &state,
 //                             const Real originMu, const Rvector3 &originToSunUnit)
 //------------------------------------------------------------------------------
 /**
@@ -148,7 +148,7 @@ Real GmatCalcUtil::CalculateBPlaneData(const wxString &item, const Rvector6 &sta
  *
  */
 //------------------------------------------------------------------------------
-Real GmatCalcUtil::CalculateAngularData(const wxString &item, const Rvector6 &state,
+Real GmatCalcUtil::CalculateAngularData(const std::string &item, const Rvector6 &state,
                                         const Real &originMu, const Rvector3 &originToSunUnit)
 {
    Rvector3 pos(state[0], state[1], state[2]);
@@ -157,36 +157,36 @@ Real GmatCalcUtil::CalculateAngularData(const wxString &item, const Rvector6 &st
    Rvector3 hVec3 = Cross(pos, vel);
    Real     h     = Sqrt(hVec3 * hVec3);
 
-   if (item == wxT("SemilatusRectum"))
+   if (item == "SemilatusRectum")
    {
       if (h < GmatOrbitConstants::KEP_TOL)
          return 0.0;
       else
          return (h / originMu) * h;
    }
-   else if (item == wxT("HMag"))
+   else if (item == "HMag")
    {
       return h;
    }
-   else if (item == wxT("HX"))
+   else if (item == "HX")
    {
       return hVec3[0];
    }
-   else if (item == wxT("HY"))
+   else if (item == "HY")
    {
       return hVec3[1];
    }
-   else if (item == wxT("HZ"))
+   else if (item == "HZ")
    {
       return hVec3[2];
    }
-   else if (item == wxT("BetaAngle"))
+   else if (item == "BetaAngle")
    {
       hVec3.Normalize();
       Real betaAngle = ASin(hVec3*originToSunUnit) * GmatMathConstants::DEG_PER_RAD;
       return betaAngle;
    }
-   else if ((item == wxT("RLA")) || (item == wxT("DLA")))
+   else if ((item == "RLA") || (item == "DLA"))
    {
       // Compute the eccentricity vector
       Real     r     = pos.GetMagnitude();
@@ -204,7 +204,7 @@ Real GmatCalcUtil::CalculateAngularData(const wxString &item, const Rvector6 &st
       Real     C3    = v * v - (2.0 * originMu) / r;
       Real     s_1   = 1.0 / (1.0 + C3 * (h / originMu) * (h / originMu));
       Rvector3 s     = s_1 * ((Sqrt(C3) / originMu) * Cross(hVec3, e) - e);
-      if (item == wxT("RLA"))
+      if (item == "RLA")
          return ATan2(s[1], s[0]) * GmatMathConstants::DEG_PER_RAD;
       else // DLA
          return ASin(s[2]) * GmatMathConstants::DEG_PER_RAD;
@@ -212,13 +212,13 @@ Real GmatCalcUtil::CalculateAngularData(const wxString &item, const Rvector6 &st
    else
    {
       throw UtilityException
-         (wxT("CalculationUtilities::CalculateAngularData() Unknown item: ") + item);
+         ("CalculationUtilities::CalculateAngularData() Unknown item: " + item);
    }
 
 }
 
 //------------------------------------------------------------------------------
-//  Real  CalculateKeplerianData(const wxString &item, const Rvector6 &state,
+//  Real  CalculateKeplerianData(const std::string &item, const Rvector6 &state,
 //                               const Real originMu)
 //------------------------------------------------------------------------------
 /**
@@ -233,7 +233,7 @@ Real GmatCalcUtil::CalculateAngularData(const wxString &item, const Rvector6 &st
  *
  */
 //------------------------------------------------------------------------------
-Real GmatCalcUtil::CalculateKeplerianData(const wxString &item, const Rvector6 &state,
+Real GmatCalcUtil::CalculateKeplerianData(const std::string &item, const Rvector6 &state,
                                           const Real originMu)
 {
    Rvector3 pos(state[0], state[1], state[2]);
@@ -245,18 +245,18 @@ Real GmatCalcUtil::CalculateKeplerianData(const wxString &item, const Rvector6 &
    if (GmatMathUtil::Abs(1.0 - ecc) <= GmatOrbitConstants::KEP_ECC_TOL)
    {
       throw UtilityException
-         (wxT("In CalculateKeplerianData, Error in conversion to Keplerian state: ")
-          wxT("The state results in an orbit that is nearly parabolic.\n"));
+         ("In CalculateKeplerianData, Error in conversion to Keplerian state: "
+          "The state results in an orbit that is nearly parabolic.\n");
    }
 
   if (sma*(1 - ecc) < .001)
    {
       throw UtilityException
-         (wxT("In CalculateKeplerianData, Error in conversion to Keplerian state: ")
-          wxT("The state results in a singular conic section with radius of periapsis less than 1 m.\n"));
+         ("In CalculateKeplerianData, Error in conversion to Keplerian state: "
+          "The state results in a singular conic section with radius of periapsis less than 1 m.\n");
    }
 
-  if (item == wxT("MeanMotion"))
+  if (item == "MeanMotion")
   {
      if (ecc < (1.0 - GmatOrbitConstants::KEP_ECC_TOL))      // Ellipse
         return Sqrt(originMu / (sma*sma*sma));
@@ -265,58 +265,58 @@ Real GmatCalcUtil::CalculateKeplerianData(const wxString &item, const Rvector6 &
      else
         return 2.0 * Sqrt(originMu); // Parabola
   }
-  else if (item == wxT("VelApoapsis"))
+  else if (item == "VelApoapsis")
   {
      if ( (ecc < 1.0 - GmatOrbitConstants::KEP_ECC_TOL) || (ecc > 1.0 + GmatOrbitConstants::KEP_ECC_TOL))  //Ellipse and Hyperbola
         return Sqrt( (originMu/sma)*((1-ecc)/(1+ecc)) );
      else
         return 0.0; // Parabola
   }
-  else if (item == wxT("VelPeriapsis"))
+  else if (item == "VelPeriapsis")
   {
      return Sqrt( (originMu/sma)*((1+ecc)/(1-ecc)) );
   }
-  else if (item == wxT("OrbitPeriod"))
+  else if (item == "OrbitPeriod")
   {
      if (sma < 0.0)
         return 0.0;
      else
         return GmatMathConstants::TWO_PI * Sqrt((sma * sma * sma)/ originMu);
   }
-  else if (item == wxT("RadApoapsis"))
+  else if (item == "RadApoapsis")
   {
       if ( (ecc < 1.0 - GmatOrbitConstants::KEP_ECC_TOL) || (ecc > 1.0 + GmatOrbitConstants::KEP_ECC_TOL)) //Ellipse and Hyperbola
           return sma * (1.0 + ecc);
       else
           return 0.0;   // Parabola
   }
-  else if (item == wxT("RadPeriapsis"))
+  else if (item == "RadPeriapsis")
   {
      return sma * (1.0 - ecc);
   }
-  else if (item == wxT("C3Energy"))
+  else if (item == "C3Energy")
   {
      return -originMu / sma;
   }
-  else if (item == wxT("Energy"))
+  else if (item == "Energy")
   {
      return -originMu / (2.0 * sma);
   }
   else
   {
      throw UtilityException
-        (wxT("CalculationUtilities::CalculateKeplerianData() Unknown item: ") + item);
+        ("CalculationUtilities::CalculateKeplerianData() Unknown item: " + item);
   }
 }
 
-Real GmatCalcUtil::CalculatePlanetData(const wxString &item, const Rvector6 &state,
+Real GmatCalcUtil::CalculatePlanetData(const std::string &item, const Rvector6 &state,
                                        const Real originRadius, const Real originFlattening, const Real originHourAngle)
 {
-   if (item == wxT("MHA"))
+   if (item == "MHA")
    {
       return originHourAngle;   // is this call even really necessary???
    }
-   else if (item == wxT("Longitude"))
+   else if (item == "Longitude")
    {
       // The input state is in the origin-centered BodyFixed Coordinate System
       Real longitude = ATan(state[1], state[0]) * GmatMathConstants::DEG_PER_RAD;
@@ -324,7 +324,7 @@ Real GmatCalcUtil::CalculatePlanetData(const wxString &item, const Rvector6 &sta
 
       return longitude;
    }
-   else if ((item == wxT("Latitude")) || (item == wxT("Altitude")))
+   else if ((item == "Latitude") || (item == "Altitude"))
    {
 
       // Reworked to match Vallado algorithm 12 (Vallado, 2nd ed, p. 177)
@@ -348,7 +348,7 @@ Real GmatCalcUtil::CalculatePlanetData(const wxString &item, const Rvector6 &sta
          delta   = fabs(geolat - oldlat);
       }
 
-      if (item == wxT("Latitude"))
+      if (item == "Latitude")
       {
          //return geolat * 180.0 / PI;
          // put latitude between -90 and 90
@@ -356,14 +356,14 @@ Real GmatCalcUtil::CalculatePlanetData(const wxString &item, const Rvector6 &sta
          geolat = AngleUtil::PutAngleInDegRange(geolat, -90.0, 90.0);
          return geolat;
       }
-      else  // item == wxT("Altitude")
+      else  // item == "Altitude"
       {
          sinlat = sin(geolat);
          cFactor = originRadius / sqrt(1.0 - ecc2 * sinlat * sinlat);
          return rxy / cos(geolat) - cFactor;
       }
    }
-   else if (item == wxT("LST"))
+   else if (item == "LST")
    {
       // compute Local Sidereal Time (LST = GMST + Longitude)
       // according to Vallado Eq. 3-41
@@ -378,7 +378,7 @@ Real GmatCalcUtil::CalculatePlanetData(const wxString &item, const Rvector6 &sta
    else
    {
       throw UtilityException
-         (wxT("CalculationUtilities::CalculatePlanetData() Unknown item: ") + item);
+         ("CalculationUtilities::CalculatePlanetData() Unknown item: " + item);
    }
 }
 

@@ -40,7 +40,7 @@
 class GMAT_API GroundStation : public BodyFixedPoint
 {
 public:
-   GroundStation(const wxString &itsName);
+   GroundStation(const std::string &itsName);
    virtual ~GroundStation();
    GroundStation(const GroundStation& gs);
    GroundStation& operator=(const GroundStation& gs);
@@ -50,51 +50,51 @@ public:
    virtual void            Copy(const GmatBase* orig);
 
    // Access methods derived classes can override
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual wxString  GetParameterUnit(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual std::string  GetParameterUnit(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
 
    virtual bool         IsParameterReadOnly(const Integer id) const;
-   virtual bool         IsParameterReadOnly(const wxString &label) const;
+   virtual bool         IsParameterReadOnly(const std::string &label) const;
 
-   virtual wxString  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value);
-   virtual wxString  GetStringParameter(const Integer id,
+                                           const std::string &value);
+   virtual std::string  GetStringParameter(const Integer id,
                                            const Integer index) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
-   virtual wxString  GetStringParameter(const wxString &label) const;
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
-   virtual wxString  GetStringParameter(const wxString &label,
+   virtual std::string  GetStringParameter(const std::string &label) const;
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
+   virtual std::string  GetStringParameter(const std::string &label,
                                            const Integer index) const;
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value,
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value,
                                            const Integer index);
 
    // made changes by Tuan Nguyen
    virtual const StringArray&
                         GetStringArrayParameter(const Integer id) const;
    virtual const StringArray&
-                        GetStringArrayParameter(const wxString &label) const;
+                        GetStringArrayParameter(const std::string &label) const;
 
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    virtual const StringArray&
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                        const wxString &name);
+                                        const std::string &name);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                        const wxString &name = wxT(""));
+                                        const std::string &name = "");
 
    virtual ObjectArray& GetRefObjectArray(const Gmat::ObjectType type);
-   virtual ObjectArray& GetRefObjectArray(const wxString& typeString);
+   virtual ObjectArray& GetRefObjectArray(const std::string& typeString);
 
 
    virtual bool         HasRefObjectTypeArray();
@@ -103,17 +103,17 @@ public:
 
    virtual bool         Initialize();
 
-//   virtual Integer         GetEstimationParameterID(const wxString &param);
-//   virtual Integer         SetEstimationParameter(const wxString &param);
+//   virtual Integer         GetEstimationParameterID(const std::string &param);
+//   virtual Integer         SetEstimationParameter(const std::string &param);
    virtual bool            IsEstimationParameterValid(const Integer id);
    virtual Integer         GetEstimationParameterSize(const Integer id);
    virtual Real*           GetEstimationParameterValue(const Integer id);
 
-   virtual bool            IsValidID(const wxString &id);
+   virtual bool            IsValidID(const std::string &id);
 
 protected:
    /// Ground station ID
-   wxString          stationId;
+   std::string          stationId;
 
    // Added hardware of the ground station
    StringArray	         hardwareNames;       // made changes by Tuan Nguyen
@@ -123,13 +123,13 @@ protected:
 //                                 ObjectArray &hwArray);		// made changes by Tuan Nguyen
 
    // Override GetGenString to handle the changeable names for the parameters
-   virtual const wxString&
+   virtual const std::string&
                         GetGeneratingString(
                            Gmat::WriteMode mode = Gmat::SCRIPTING,
-                           const wxString &prefix = wxT(""),
-                           const wxString &useName = wxT(""));
+                           const std::string &prefix = "",
+                           const std::string &useName = "");
    virtual void         WriteParameters(Gmat::WriteMode mode,
-                           wxString &prefix, wxString &stream);
+                           std::string &prefix, std::stringstream &stream);
 
 public:
    /// Published parameters for ground stations
@@ -140,7 +140,7 @@ public:
       GroundStationParamCount,
    };
 
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[GroundStationParamCount - BodyFixedPointParamCount];
    static const Gmat::ParameterType
       PARAMETER_TYPE[GroundStationParamCount - BodyFixedPointParamCount];

@@ -35,7 +35,7 @@
 
 
 //------------------------------------------------------------------------------
-// FiniteThrust(const wxString &name)
+// FiniteThrust(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Constructor for forces from finite burns.
@@ -43,8 +43,8 @@
  * @param name Name of the constructed instance.
  */
 //------------------------------------------------------------------------------
-FiniteThrust::FiniteThrust(const wxString &name) :
-   PhysicalModel        (Gmat::PHYSICAL_MODEL, wxT("FiniteThrust"), name),
+FiniteThrust::FiniteThrust(const std::string &name) :
+   PhysicalModel        (Gmat::PHYSICAL_MODEL, "FiniteThrust", name),
    satCount             (0),
    cartIndex            (-1),
    fillCartesian        (false),
@@ -169,7 +169,7 @@ void FiniteThrust::Clear(const Gmat::ObjectType type)
 
 
 //------------------------------------------------------------------------------
-// bool SetRefObjectName(const Gmat::ObjectType type, const wxString &name)
+// bool SetRefObjectName(const Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets the names for referenced objects.
@@ -184,7 +184,7 @@ void FiniteThrust::Clear(const Gmat::ObjectType type)
  */
 //------------------------------------------------------------------------------
 bool FiniteThrust::SetRefObjectName(const Gmat::ObjectType type,
-                                  const wxString &name)
+                                  const std::string &name)
 {
    if (type == Gmat::SPACECRAFT) 
    {
@@ -227,7 +227,7 @@ const StringArray& FiniteThrust::GetRefObjectNameArray(
 
 //------------------------------------------------------------------------------
 // bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type, 
-//                   const wxString &name)
+//                   const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets referenced object pointers.
@@ -240,13 +240,13 @@ const StringArray& FiniteThrust::GetRefObjectNameArray(
  */
 //------------------------------------------------------------------------------
 bool FiniteThrust::SetRefObject(GmatBase *obj, const Gmat::ObjectType type, 
-                                const wxString &name)
+                                const std::string &name)
 {
    if (type == Gmat::FINITE_BURN) 
    {
-      if (obj->GetTypeName() != wxT("FiniteBurn"))
+      if (obj->GetTypeName() != "FiniteBurn")
          throw ODEModelException(
-            wxT("FiniteThrust::SetRefObject cannot use objects of type ") + 
+            "FiniteThrust::SetRefObject cannot use objects of type " + 
             obj->GetTypeName());
       if (find(burns.begin(), burns.end(), obj) == burns.end())
          burns.push_back((FiniteBurn*)obj);
@@ -258,7 +258,7 @@ bool FiniteThrust::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//       const wxString &name, const Integer index)
+//       const std::string &name, const Integer index)
 //------------------------------------------------------------------------------
 /**
  * Sets referenced object pointers in an object array.
@@ -272,15 +272,15 @@ bool FiniteThrust::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool FiniteThrust::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-      const wxString &name, const Integer index)
+      const std::string &name, const Integer index)
 {
    return PhysicalModel::SetRefObject(obj, type, name, index);
 }
 
 
 //------------------------------------------------------------------------------
-// bool RenameRefObject(const Gmat::ObjectType type, const wxString &oldName,
-//       const wxString &newName)
+// bool RenameRefObject(const Gmat::ObjectType type, const std::string &oldName,
+//       const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * Changes the name for reference objects
@@ -293,7 +293,7 @@ bool FiniteThrust::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool FiniteThrust::RenameRefObject(const Gmat::ObjectType type,
-      const wxString &oldName, const wxString &newName)
+      const std::string &oldName, const std::string &newName)
 {
    if (type == Gmat::FINITE_BURN)
    {
@@ -316,7 +316,7 @@ bool FiniteThrust::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// GmatBase* GetRefObject(const Gmat::ObjectType type, const wxString &name)
+// GmatBase* GetRefObject(const Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a pointer to a reference object
@@ -328,11 +328,11 @@ bool FiniteThrust::RenameRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 GmatBase* FiniteThrust::GetRefObject(const Gmat::ObjectType type,
-      const wxString &name)
+      const std::string &name)
 {
    if (type == Gmat::FINITE_BURN)
    {
-      if ((name == wxT("")) && (burns.size() > 0))
+      if ((name == "") && (burns.size() > 0))
          return burns[0];
 
       for (UnsignedInt i = 0; i < burns.size(); ++i)
@@ -347,9 +347,9 @@ GmatBase* FiniteThrust::GetRefObject(const Gmat::ObjectType type,
 
    if (type == Gmat::SPACECRAFT)
    {
-      MessageInterface::ShowMessage(wxT("Returning spacecrft\n"));
+      MessageInterface::ShowMessage("Returning spacecrft\n");
 
-      if (name == wxT(""))
+      if (name == "")
          if (spacecraft.size() > 0)
             return spacecraft[0];
       for (UnsignedInt i = 0; i < spacecraft.size(); ++i)
@@ -363,7 +363,7 @@ GmatBase* FiniteThrust::GetRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// GmatBase* GetRefObject(const Gmat::ObjectType type, const wxString &name,
+// GmatBase* GetRefObject(const Gmat::ObjectType type, const std::string &name,
 //       const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -377,7 +377,7 @@ GmatBase* FiniteThrust::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 GmatBase* FiniteThrust::GetRefObject(const Gmat::ObjectType type,
-      const wxString &name, const Integer index)
+      const std::string &name, const Integer index)
 {
    return PhysicalModel::GetRefObject(type, name, index);
 }
@@ -426,7 +426,7 @@ void FiniteThrust::SetPropList(ObjectArray *soList)
       spacecraft.push_back(*i);
    
    #ifdef DEBUG_FINITETHRUST_INIT
-      MessageInterface::ShowMessage(wxT("Spacecraft list contains %d objects\n"),
+      MessageInterface::ShowMessage("Spacecraft list contains %d objects\n",
             spacecraft.size());
    #endif
 }
@@ -444,25 +444,25 @@ void FiniteThrust::SetPropList(ObjectArray *soList)
 bool FiniteThrust::Initialize()
 {
    #ifdef DEBUG_FINITETHRUST_INIT
-      MessageInterface::ShowMessage(wxT("FiniteThrust::Initialize entered\n"));
+      MessageInterface::ShowMessage("FiniteThrust::Initialize entered\n");
    #endif
       
    if (!PhysicalModel::Initialize())
-      throw ODEModelException(wxT("Unable to initialize FiniteThrust base"));
+      throw ODEModelException("Unable to initialize FiniteThrust base");
       
    // set up the indices into the state vector that match spacecraft with active 
    // thrusters
    Integer satIndex, stateIndex;
    #ifdef DEBUG_FINITETHRUST_INIT
       MessageInterface::ShowMessage(
-            wxT("   Looping over satNames\n"));
+            "   Looping over satNames\n");
    #endif
    for (StringArray::iterator satName = mySpacecraft.begin(); 
         satName != mySpacecraft.end(); ++satName)
    {
       #ifdef DEBUG_FINITETHRUST_INIT
          MessageInterface::ShowMessage(
-               wxT("      satName = %s\n"), satName->c_str());
+               "      satName = %s\n", satName->c_str());
       #endif
       satIndex = 0;
       stateIndex = 0;
@@ -472,20 +472,20 @@ bool FiniteThrust::Initialize()
       {
          #ifdef DEBUG_FINITETHRUST_INIT
             MessageInterface::ShowMessage(
-                  wxT("      Looking at satIndex %d; stateIndex = %d\n"), satIndex, 
+                  "      Looking at satIndex %d; stateIndex = %d\n", satIndex, 
                   stateIndex);
          #endif
          if ((*propSat)->GetName() == *satName) 
          {
             #ifdef DEBUG_FINITETHRUST_INIT
                MessageInterface::ShowMessage(
-                  wxT("      FiniteThrust::Initialize Matched up %s\n"), 
+                  "      FiniteThrust::Initialize Matched up %s\n", 
                   satName->c_str());
             #endif
          }
          #ifdef DEBUG_FINITETHRUST_INIT
             MessageInterface::ShowMessage(
-                  wxT("      PropSat is \"%s\"\n"), (*satName).c_str());
+                  "      PropSat is \"%s\"\n", (*satName).c_str());
          #endif
          if ((*propSat)->IsOfType(Gmat::SPACEOBJECT))
          {
@@ -497,7 +497,7 @@ bool FiniteThrust::Initialize()
    
    #ifdef DEBUG_FINITETHRUST_INIT
       MessageInterface::ShowMessage(
-            wxT("FiniteThrust::Initialize finished\n"));
+            "FiniteThrust::Initialize finished\n");
    #endif
    
    return true;
@@ -533,8 +533,8 @@ bool FiniteThrust::GetDerivatives(Real * state, Real dt, Integer order,
 {
    #ifdef DEBUG_FINITETHRUST_EXE
       MessageInterface::ShowMessage(
-            wxT("FiniteThrust::GetDerivatives entered; fillCartesian is %s, ")
-            wxT("maneuvering %d spacecraft\n"), (fillCartesian ? wxT("true") : wxT("false")),
+            "FiniteThrust::GetDerivatives entered; fillCartesian is %s, "
+            "maneuvering %d spacecraft\n", (fillCartesian ? "true" : "false"),
             spacecraft.size());
    #endif
 
@@ -569,7 +569,7 @@ bool FiniteThrust::GetDerivatives(Real * state, Real dt, Integer order,
          sat = (SpaceObject*)(*sc);
 
          #ifdef DEBUG_FINITETHRUST_EXE
-            MessageInterface::ShowMessage(wxT("   Checking spacecraft %s\n"), 
+            MessageInterface::ShowMessage("   Checking spacecraft %s\n", 
                sat->GetName().c_str());
          #endif
 
@@ -578,12 +578,12 @@ bool FiniteThrust::GetDerivatives(Real * state, Real dt, Integer order,
          {
 
             #ifdef DEBUG_FINITETHRUST_EXE
-               MessageInterface::ShowMessage(wxT("   Maneuvering\n"));
+               MessageInterface::ShowMessage("   Maneuvering\n");
             #endif
    
             if (sat->GetType() != Gmat::SPACECRAFT)
-               throw ODEModelException(wxT("FiniteThrust::GetDerivatives Finite ")
-               wxT("burns cannot maneuver ") + sat->GetTypeName() + wxT(" objects"));
+               throw ODEModelException("FiniteThrust::GetDerivatives Finite "
+               "burns cannot maneuver " + sat->GetTypeName() + " objects");
             // Start with zero thrust
             mDot = accel[0] = accel[1] = accel[2] = 0.0;
    
@@ -596,42 +596,42 @@ bool FiniteThrust::GetDerivatives(Real * state, Real dt, Integer order,
                if ((*fb)->Fire(burnData, now)) 
                {
                   #ifdef DEBUG_FINITETHRUST_EXE
-                     MessageInterface::ShowMessage(wxT("%s "),(*fb)->GetName().c_str());
+                     MessageInterface::ShowMessage("%s ",(*fb)->GetName().c_str());
                   #endif
                   accel[0] += burnData[0];
                   accel[1] += burnData[1];
                   accel[2] += burnData[2];
                   #ifdef DEBUG_MASS_FLOW
                      MessageInterface::ShowMessage(
-                           wxT("   --> direction = [%.12le %.12le %.12le]"),
+                           "   --> direction = [%.12le %.12le %.12le]",
                            accel[0], accel[1], accel[2]);
                   #endif
                   if ((*fb)->DepletesMass())
                   {
                      if (order != 1)
-                        throw ODEModelException(wxT("Mass depletion cannot be ")
-                              wxT("performed with the selected propagator."));
+                        throw ODEModelException("Mass depletion cannot be "
+                              "performed with the selected propagator.");
                      mDot += burnData[3];
                      #ifdef DEBUG_MASS_FLOW
-                        MessageInterface::ShowMessage(wxT("  mDot =  %.12lf\n"),
+                        MessageInterface::ShowMessage("  mDot =  %.12lf\n",
                               mDot);
                      #endif
                   }
                   #ifdef DEBUG_MASS_FLOW
                   else
-                     MessageInterface::ShowMessage(wxT("  mDot =  0.0\n"));
+                     MessageInterface::ShowMessage("  mDot =  0.0\n");
                   #endif
 
                }
                #ifdef DEBUG_FINITETHRUST_EXE
                   MessageInterface::ShowMessage(
-                     wxT("\n   Acceleration = [%18le  %18le  %18le]; ")
-                     wxT("dm/dt = %.18le"), accel[0], accel[1], accel[2], mDot);
+                     "\n   Acceleration = [%18le  %18le  %18le]; "
+                     "dm/dt = %.18le", accel[0], accel[1], accel[2], mDot);
                #endif
             }
       
             #ifdef DEBUG_FINITETHRUST_EXE
-               MessageInterface::ShowMessage(wxT("\n"));
+               MessageInterface::ShowMessage("\n");
             #endif
             
             // Apply the burns to the state vector
@@ -688,12 +688,12 @@ bool FiniteThrust::GetDerivatives(Real * state, Real dt, Integer order,
    }
    
    #ifdef DEBUG_FINITETHRUST_EXE
-      //ShowDerivative(wxT("FiniteThrust::GetDerivatives() AFTER compute"), state,
+      //ShowDerivative("FiniteThrust::GetDerivatives() AFTER compute", state,
       //               satCount);
       MessageInterface::ShowMessage
-         (wxT("     deriv[1:3] = [%18le %18le %18le]\n     deriv[4:6] = [%18le %18le %18le]\n"),
+         ("     deriv[1:3] = [%18le %18le %18le]\n     deriv[4:6] = [%18le %18le %18le]\n",
           deriv[0], deriv[1], deriv[2], deriv[3], deriv[4], deriv[5]);
-      MessageInterface::ShowMessage(wxT("FiniteThrust::GetDerivatives finished\n"));
+      MessageInterface::ShowMessage("FiniteThrust::GetDerivatives finished\n");
    #endif
    
    return true;
@@ -716,7 +716,7 @@ bool FiniteThrust::SupportsDerivative(Gmat::StateElementId id)
 {
    #ifdef DEBUG_REGISTRATION
       MessageInterface::ShowMessage(
-            wxT("FiniteThrust checking for support for id %d\n"), id);
+            "FiniteThrust checking for support for id %d\n", id);
    #endif
    
    if (id == Gmat::CARTESIAN_STATE)
@@ -728,7 +728,7 @@ bool FiniteThrust::SupportsDerivative(Gmat::StateElementId id)
    if (id == Gmat::MASS_FLOW)
    {
       #ifdef DEBUG_REGISTRATION
-         MessageInterface::ShowMessage(wxT("I support mass flow!\n"));
+         MessageInterface::ShowMessage("I support mass flow!\n");
       #endif
       return true;
    }
@@ -756,8 +756,8 @@ bool FiniteThrust::SetStart(Gmat::StateElementId id, Integer index,
                       Integer quantity)
 {
    #ifdef DEBUG_REGISTRATION
-      MessageInterface::ShowMessage(wxT("FiniteThrust setting start data for id = ")
-            wxT("%d to index %d; %d objects identified\n"), id, index, quantity);
+      MessageInterface::ShowMessage("FiniteThrust setting start data for id = "
+            "%d to index %d; %d objects identified\n", id, index, quantity);
    #endif
    
    bool retval = false;

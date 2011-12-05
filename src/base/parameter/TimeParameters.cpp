@@ -30,7 +30,7 @@
 //==============================================================================
 
 //------------------------------------------------------------------------------
-// CurrA1MJD(const wxString &name, GmatBase *obj)
+// CurrA1MJD(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -39,8 +39,8 @@
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-CurrA1MJD::CurrA1MJD(const wxString &name, GmatBase *obj)
-   : TimeReal(name, wxT("CurrA1MJD"), obj, wxT("A1 Mod. Julian Days"), wxT("day"))
+CurrA1MJD::CurrA1MJD(const std::string &name, GmatBase *obj)
+   : TimeReal(name, "CurrA1MJD", obj, "A1 Mod. Julian Days", "day")
 {
 }
 
@@ -125,7 +125,7 @@ GmatBase* CurrA1MJD::Clone(void) const
 //==============================================================================
 
 //------------------------------------------------------------------------------
-// A1ModJulian(const wxString &name, GmatBase *obj)
+// A1ModJulian(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -134,8 +134,8 @@ GmatBase* CurrA1MJD::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-A1ModJulian::A1ModJulian(const wxString &name, GmatBase *obj)
-   : TimeReal(name, wxT("A1ModJulian"), obj, wxT("A1 Mod. Julian Days"), wxT("day"))
+A1ModJulian::A1ModJulian(const std::string &name, GmatBase *obj)
+   : TimeReal(name, "A1ModJulian", obj, "A1 Mod. Julian Days", "day")
 {
 }
 
@@ -197,7 +197,7 @@ bool A1ModJulian::Evaluate()
 
    #ifdef DEBUG_TIMEPARAM_EVAL
    MessageInterface::ShowMessage
-      (wxT("A1ModJulian::Evaluate() <%p>'%s' evaluated to %f, spacecraft=<%p>'%s'\n"),
+      ("A1ModJulian::Evaluate() <%p>'%s' evaluated to %f, spacecraft=<%p>'%s'\n",
        this, GetName().c_str(), mRealValue, GetSpacecraft(),
        GetSpacecraft()->GetName().c_str());
    #endif
@@ -227,7 +227,7 @@ GmatBase* A1ModJulian::Clone(void) const
 //==============================================================================
 
 //------------------------------------------------------------------------------
-// A1Gregorian(const wxString &name, GmatBase *obj)
+// A1Gregorian(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -236,8 +236,8 @@ GmatBase* A1ModJulian::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-A1Gregorian::A1Gregorian(const wxString &name, GmatBase *obj)
-   : TimeString(name, wxT("A1Gregorian"), obj, wxT("A1 Gregorian Date"), wxT(""))
+A1Gregorian::A1Gregorian(const std::string &name, GmatBase *obj)
+   : TimeString(name, "A1Gregorian", obj, "A1 Gregorian Date", "")
 {
 }
 
@@ -322,7 +322,7 @@ GmatBase* A1Gregorian::Clone(void) const
 //==============================================================================
 
 //------------------------------------------------------------------------------
-// TAIModJulian(const wxString &name, GmatBase *obj)
+// TAIModJulian(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -331,8 +331,8 @@ GmatBase* A1Gregorian::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-TAIModJulian::TAIModJulian(const wxString &name, GmatBase *obj)
-   : TimeReal(name, wxT("TAIModJulian"), obj, wxT("TA1 Mod. Julian Days"), wxT("day"))
+TAIModJulian::TAIModJulian(const std::string &name, GmatBase *obj)
+   : TimeReal(name, "TAIModJulian", obj, "TA1 Mod. Julian Days", "day")
 {
 }
 
@@ -417,7 +417,7 @@ GmatBase* TAIModJulian::Clone(void) const
 //==============================================================================
 
 //------------------------------------------------------------------------------
-// TAIGregorian(const wxString &name, GmatBase *obj)
+// TAIGregorian(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -426,8 +426,8 @@ GmatBase* TAIModJulian::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-TAIGregorian::TAIGregorian(const wxString &name, GmatBase *obj)
-   : TimeString(name, wxT("TAIGregorian"), obj, wxT("TA1 Gregorian Date"), wxT(""))
+TAIGregorian::TAIGregorian(const std::string &name, GmatBase *obj)
+   : TimeString(name, "TAIGregorian", obj, "TA1 Gregorian Date", "")
 {
 }
 
@@ -512,7 +512,7 @@ GmatBase* TAIGregorian::Clone(void) const
 //==============================================================================
 
 //------------------------------------------------------------------------------
-// TTModJulian(const wxString &name, GmatBase *obj)
+// TTModJulian(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -521,8 +521,8 @@ GmatBase* TAIGregorian::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-TTModJulian::TTModJulian(const wxString &name, GmatBase *obj)
-   : TimeReal(name, wxT("TTModJulian"), obj, wxT("TT Mod. Julian Days"), wxT("day"))
+TTModJulian::TTModJulian(const std::string &name, GmatBase *obj)
+   : TimeReal(name, "TTModJulian", obj, "TT Mod. Julian Days", "day")
 {
 }
 
@@ -607,7 +607,7 @@ GmatBase* TTModJulian::Clone(void) const
 //==============================================================================
 
 //------------------------------------------------------------------------------
-// TTGregorian(const wxString &name, GmatBase *obj)
+// TTGregorian(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -616,8 +616,8 @@ GmatBase* TTModJulian::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-TTGregorian::TTGregorian(const wxString &name, GmatBase *obj)
-   : TimeString(name, wxT("TTGregorian"), obj, wxT("TT Gregorian Date"), wxT(""))
+TTGregorian::TTGregorian(const std::string &name, GmatBase *obj)
+   : TimeString(name, "TTGregorian", obj, "TT Gregorian Date", "")
 {
 }
 
@@ -702,7 +702,7 @@ GmatBase* TTGregorian::Clone(void) const
 //==============================================================================
 
 //------------------------------------------------------------------------------
-// TDBModJulian(const wxString &name, GmatBase *obj)
+// TDBModJulian(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -711,8 +711,8 @@ GmatBase* TTGregorian::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-TDBModJulian::TDBModJulian(const wxString &name, GmatBase *obj)
-   : TimeReal(name, wxT("TDBModJulian"), obj, wxT("TDB Mod. Julian Days"), wxT("day"))
+TDBModJulian::TDBModJulian(const std::string &name, GmatBase *obj)
+   : TimeReal(name, "TDBModJulian", obj, "TDB Mod. Julian Days", "day")
 {
 }
 
@@ -799,7 +799,7 @@ GmatBase* TDBModJulian::Clone(void) const
 //==============================================================================
 
 //------------------------------------------------------------------------------
-// TDBGregorian(const wxString &name, GmatBase *obj)
+// TDBGregorian(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -808,8 +808,8 @@ GmatBase* TDBModJulian::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-TDBGregorian::TDBGregorian(const wxString &name, GmatBase *obj)
-   : TimeString(name, wxT("TDBGregorian"), obj, wxT("TDB Gregorian Date"), wxT(""))
+TDBGregorian::TDBGregorian(const std::string &name, GmatBase *obj)
+   : TimeString(name, "TDBGregorian", obj, "TDB Gregorian Date", "")
 {
 }
 
@@ -896,7 +896,7 @@ GmatBase* TDBGregorian::Clone(void) const
 //==============================================================================
 
 //------------------------------------------------------------------------------
-// TCBModJulian(const wxString &name, GmatBase *obj)
+// TCBModJulian(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -905,8 +905,8 @@ GmatBase* TDBGregorian::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-TCBModJulian::TCBModJulian(const wxString &name, GmatBase *obj)
-   : TimeReal(name, wxT("TCBModJulian"), obj, wxT("TCB Mod. Julian Days"), wxT("day"))
+TCBModJulian::TCBModJulian(const std::string &name, GmatBase *obj)
+   : TimeReal(name, "TCBModJulian", obj, "TCB Mod. Julian Days", "day")
 {
 }
 
@@ -994,7 +994,7 @@ GmatBase* TCBModJulian::Clone(void) const
 //==============================================================================
 
 //------------------------------------------------------------------------------
-// TCBGregorian(const wxString &name, GmatBase *obj)
+// TCBGregorian(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -1003,8 +1003,8 @@ GmatBase* TCBModJulian::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-TCBGregorian::TCBGregorian(const wxString &name, GmatBase *obj)
-   : TimeString(name, wxT("TCBGregorian"), obj, wxT("TCB Gregorian Date"), wxT(""))
+TCBGregorian::TCBGregorian(const std::string &name, GmatBase *obj)
+   : TimeString(name, "TCBGregorian", obj, "TCB Gregorian Date", "")
 {
 }
 
@@ -1091,7 +1091,7 @@ GmatBase* TCBGregorian::Clone(void) const
 //==============================================================================
 
 //------------------------------------------------------------------------------
-// UTCModJulian(const wxString &name, GmatBase *obj)
+// UTCModJulian(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -1100,8 +1100,8 @@ GmatBase* TCBGregorian::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-UTCModJulian::UTCModJulian(const wxString &name, GmatBase *obj)
-   : TimeReal(name, wxT("UTCModJulian"), obj, wxT("UTC Mod. Julian Days"), wxT("day"))
+UTCModJulian::UTCModJulian(const std::string &name, GmatBase *obj)
+   : TimeReal(name, "UTCModJulian", obj, "UTC Mod. Julian Days", "day")
 {
 }
 
@@ -1186,7 +1186,7 @@ GmatBase* UTCModJulian::Clone(void) const
 //==============================================================================
 
 //------------------------------------------------------------------------------
-// UTCGregorian(const wxString &name, GmatBase *obj)
+// UTCGregorian(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -1195,8 +1195,8 @@ GmatBase* UTCModJulian::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-UTCGregorian::UTCGregorian(const wxString &name, GmatBase *obj)
-   : TimeString(name, wxT("UTCGregorian"), obj, wxT("UTC Gregorian Date"), wxT(""))
+UTCGregorian::UTCGregorian(const std::string &name, GmatBase *obj)
+   : TimeString(name, "UTCGregorian", obj, "UTC Gregorian Date", "")
 {
 }
 
@@ -1283,10 +1283,10 @@ GmatBase* UTCGregorian::Clone(void) const
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 ElapsedDays::PARAMETER_TEXT[ElapsedDaysParamCount - ParameterParamCount] =
 {
-   wxT("InitialEpoch")
+   "InitialEpoch"
 };
 
 const Gmat::ParameterType
@@ -1300,7 +1300,7 @@ ElapsedDays::PARAMETER_TYPE[ElapsedDaysParamCount - ParameterParamCount] =
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// ElapsedDays(const wxString &name, GmatBase *obj)
+// ElapsedDays(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -1309,8 +1309,8 @@ ElapsedDays::PARAMETER_TYPE[ElapsedDaysParamCount - ParameterParamCount] =
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-ElapsedDays::ElapsedDays(const wxString &name, GmatBase *obj)
-   : TimeReal(name, wxT("ElapsedDays"), obj, wxT("Elapsed Days"), wxT("Day"))
+ElapsedDays::ElapsedDays(const std::string &name, GmatBase *obj)
+   : TimeReal(name, "ElapsedDays", obj, "Elapsed Days", "Day")
 {
    // GmatBase data
    parameterCount = ElapsedDaysParamCount;
@@ -1421,13 +1421,13 @@ Gmat::ParameterType ElapsedDays::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString ElapsedDays::GetParameterTypeString(const Integer id) const
+std::string ElapsedDays::GetParameterTypeString(const Integer id) const
 {
    if (id >= ParameterParamCount && id < ElapsedDaysParamCount)
       return GmatBase::PARAM_TYPE_STRING[GetParameterType(id - ParameterParamCount)];
@@ -1438,13 +1438,13 @@ wxString ElapsedDays::GetParameterTypeString(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString ElapsedDays::GetParameterText(const Integer id) const
+std::string ElapsedDays::GetParameterText(const Integer id) const
 {
    if (id >= ParameterParamCount && id < ElapsedDaysParamCount)
       return PARAMETER_TEXT[id - ParameterParamCount];
@@ -1475,13 +1475,13 @@ bool ElapsedDays::IsParameterReadOnly(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Integer ElapsedDays::GetParameterID(const wxString &str) const
+Integer ElapsedDays::GetParameterID(const std::string &str) const
 {
    for (int i = ParameterParamCount; i < ElapsedDaysParamCount; i++)
    {
@@ -1513,15 +1513,15 @@ Real ElapsedDays::GetRealParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label) const
+// Real GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Real ElapsedDays::GetRealParameter(const wxString &label) const
+Real ElapsedDays::GetRealParameter(const std::string &label) const
 {
-   if (label == wxT("InitialEpoch"))
+   if (label == "InitialEpoch")
       return GetInitialEpoch();
    else
       return TimeReal::GetRealParameter(label);
@@ -1555,9 +1555,9 @@ Real ElapsedDays::SetRealParameter(const Integer id, const Real value)
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Real ElapsedDays::SetRealParameter(const wxString &label, const Real value)
+Real ElapsedDays::SetRealParameter(const std::string &label, const Real value)
 {
-   if (label == wxT("InitialEpoch"))
+   if (label == "InitialEpoch")
    {
       SetInitialEpoch(value);
       return value;
@@ -1576,10 +1576,10 @@ Real ElapsedDays::SetRealParameter(const wxString &label, const Real value)
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 ElapsedDaysFromStart::PARAMETER_TEXT[ElapsedDaysFromStartParamCount - ParameterParamCount] =
 {
-   wxT("InitialEpoch")
+   "InitialEpoch"
 };
 
 const Gmat::ParameterType
@@ -1593,7 +1593,7 @@ ElapsedDaysFromStart::PARAMETER_TYPE[ElapsedDaysFromStartParamCount - ParameterP
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// ElapsedDaysFromStart(const wxString &name, GmatBase *obj)
+// ElapsedDaysFromStart(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -1602,8 +1602,8 @@ ElapsedDaysFromStart::PARAMETER_TYPE[ElapsedDaysFromStartParamCount - ParameterP
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-ElapsedDaysFromStart::ElapsedDaysFromStart(const wxString &name, GmatBase *obj)
-   : TimeReal(name, wxT("ElapsedDaysFromStart"), obj, wxT("Elapsed Days"), wxT("Day"))
+ElapsedDaysFromStart::ElapsedDaysFromStart(const std::string &name, GmatBase *obj)
+   : TimeReal(name, "ElapsedDaysFromStart", obj, "Elapsed Days", "Day")
 {
    // GmatBase data
    parameterCount = ElapsedDaysFromStartParamCount;
@@ -1714,13 +1714,13 @@ Gmat::ParameterType ElapsedDaysFromStart::GetParameterType(const Integer id) con
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString ElapsedDaysFromStart::GetParameterTypeString(const Integer id) const
+std::string ElapsedDaysFromStart::GetParameterTypeString(const Integer id) const
 {
    if (id >= ParameterParamCount && id < ElapsedDaysFromStartParamCount)
       return GmatBase::PARAM_TYPE_STRING[GetParameterType(id - ParameterParamCount)];
@@ -1731,13 +1731,13 @@ wxString ElapsedDaysFromStart::GetParameterTypeString(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString ElapsedDaysFromStart::GetParameterText(const Integer id) const
+std::string ElapsedDaysFromStart::GetParameterText(const Integer id) const
 {
    if (id >= ParameterParamCount && id < ElapsedDaysFromStartParamCount)
       return PARAMETER_TEXT[id - ParameterParamCount];
@@ -1768,13 +1768,13 @@ bool ElapsedDaysFromStart::IsParameterReadOnly(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Integer ElapsedDaysFromStart::GetParameterID(const wxString &str) const
+Integer ElapsedDaysFromStart::GetParameterID(const std::string &str) const
 {
    for (int i = ParameterParamCount; i < ElapsedDaysFromStartParamCount; i++)
    {
@@ -1806,15 +1806,15 @@ Real ElapsedDaysFromStart::GetRealParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label) const
+// Real GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Real ElapsedDaysFromStart::GetRealParameter(const wxString &label) const
+Real ElapsedDaysFromStart::GetRealParameter(const std::string &label) const
 {
-   if (label == wxT("InitialEpoch"))
+   if (label == "InitialEpoch")
       return GetInitialEpoch();
    else
       return TimeReal::GetRealParameter(label);
@@ -1848,9 +1848,9 @@ Real ElapsedDaysFromStart::SetRealParameter(const Integer id, const Real value)
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Real ElapsedDaysFromStart::SetRealParameter(const wxString &label, const Real value)
+Real ElapsedDaysFromStart::SetRealParameter(const std::string &label, const Real value)
 {
-   if (label == wxT("InitialEpoch"))
+   if (label == "InitialEpoch")
    {
       SetInitialEpoch(value);
       return value;
@@ -1869,10 +1869,10 @@ Real ElapsedDaysFromStart::SetRealParameter(const wxString &label, const Real va
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 ElapsedSecs::PARAMETER_TEXT[ElapsedSecsParamCount - ParameterParamCount] =
 {
-   wxT("InitialEpoch")
+   "InitialEpoch"
 };
 
 const Gmat::ParameterType
@@ -1887,7 +1887,7 @@ ElapsedSecs::PARAMETER_TYPE[ElapsedSecsParamCount - ParameterParamCount] =
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// ElapsedSecs(const wxString &name, GmatBase *obj)
+// ElapsedSecs(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -1896,8 +1896,8 @@ ElapsedSecs::PARAMETER_TYPE[ElapsedSecsParamCount - ParameterParamCount] =
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-ElapsedSecs::ElapsedSecs(const wxString &name, GmatBase *obj)
-   : TimeReal(name, wxT("ElapsedSecs"), obj, wxT("Elapsed Seconds"), wxT("s"))
+ElapsedSecs::ElapsedSecs(const std::string &name, GmatBase *obj)
+   : TimeReal(name, "ElapsedSecs", obj, "Elapsed Seconds", "s")
 {
    // GmatBase data
    parameterCount = ElapsedSecsParamCount;
@@ -2008,13 +2008,13 @@ Gmat::ParameterType ElapsedSecs::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString ElapsedSecs::GetParameterTypeString(const Integer id) const
+std::string ElapsedSecs::GetParameterTypeString(const Integer id) const
 {
    if (id >= ParameterParamCount && id < ElapsedSecsParamCount)
       return GmatBase::PARAM_TYPE_STRING[GetParameterType(id - ParameterParamCount)];
@@ -2025,13 +2025,13 @@ wxString ElapsedSecs::GetParameterTypeString(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString ElapsedSecs::GetParameterText(const Integer id) const
+std::string ElapsedSecs::GetParameterText(const Integer id) const
 {
    if (id >= ParameterParamCount && id < ElapsedSecsParamCount)
       return PARAMETER_TEXT[id - ParameterParamCount];
@@ -2062,13 +2062,13 @@ bool ElapsedSecs::IsParameterReadOnly(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Integer ElapsedSecs::GetParameterID(const wxString &str) const
+Integer ElapsedSecs::GetParameterID(const std::string &str) const
 {
    for (int i = ParameterParamCount; i < ElapsedSecsParamCount; i++)
    {
@@ -2100,15 +2100,15 @@ Real ElapsedSecs::GetRealParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label) const
+// Real GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Real ElapsedSecs::GetRealParameter(const wxString &label) const
+Real ElapsedSecs::GetRealParameter(const std::string &label) const
 {
-   if (label == wxT("InitialEpoch"))
+   if (label == "InitialEpoch")
       return GetInitialEpoch();
    else
       return TimeReal::GetRealParameter(label);
@@ -2142,9 +2142,9 @@ Real ElapsedSecs::SetRealParameter(const Integer id, const Real value)
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Real ElapsedSecs::SetRealParameter(const wxString &label, const Real value)
+Real ElapsedSecs::SetRealParameter(const std::string &label, const Real value)
 {
-   if (label == wxT("InitialEpoch"))
+   if (label == "InitialEpoch")
    {
       SetInitialEpoch(value);
       return value;
@@ -2163,10 +2163,10 @@ Real ElapsedSecs::SetRealParameter(const wxString &label, const Real value)
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 ElapsedSecsFromStart::PARAMETER_TEXT[ElapsedSecsFromStartParamCount - ParameterParamCount] =
 {
-   wxT("InitialEpoch")
+   "InitialEpoch"
 };
 
 const Gmat::ParameterType
@@ -2180,7 +2180,7 @@ ElapsedSecsFromStart::PARAMETER_TYPE[ElapsedSecsFromStartParamCount - ParameterP
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// ElapsedSecsFromStart(const wxString &name, GmatBase *obj)
+// ElapsedSecsFromStart(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -2189,8 +2189,8 @@ ElapsedSecsFromStart::PARAMETER_TYPE[ElapsedSecsFromStartParamCount - ParameterP
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-ElapsedSecsFromStart::ElapsedSecsFromStart(const wxString &name, GmatBase *obj)
-   : TimeReal(name, wxT("ElapsedSecsFromStart"), obj, wxT("Elapsed Seconds"), wxT("s"))
+ElapsedSecsFromStart::ElapsedSecsFromStart(const std::string &name, GmatBase *obj)
+   : TimeReal(name, "ElapsedSecsFromStart", obj, "Elapsed Seconds", "s")
 {
    // GmatBase data
    parameterCount = ElapsedSecsFromStartParamCount;
@@ -2301,13 +2301,13 @@ Gmat::ParameterType ElapsedSecsFromStart::GetParameterType(const Integer id) con
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString ElapsedSecsFromStart::GetParameterTypeString(const Integer id) const
+std::string ElapsedSecsFromStart::GetParameterTypeString(const Integer id) const
 {
    if (id >= ParameterParamCount && id < ElapsedSecsFromStartParamCount)
       return GmatBase::PARAM_TYPE_STRING[GetParameterType(id - ParameterParamCount)];
@@ -2318,13 +2318,13 @@ wxString ElapsedSecsFromStart::GetParameterTypeString(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString ElapsedSecsFromStart::GetParameterText(const Integer id) const
+std::string ElapsedSecsFromStart::GetParameterText(const Integer id) const
 {
    if (id >= ParameterParamCount && id < ElapsedSecsFromStartParamCount)
       return PARAMETER_TEXT[id - ParameterParamCount];
@@ -2355,13 +2355,13 @@ bool ElapsedSecsFromStart::IsParameterReadOnly(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Integer ElapsedSecsFromStart::GetParameterID(const wxString &str) const
+Integer ElapsedSecsFromStart::GetParameterID(const std::string &str) const
 {
    for (int i = ParameterParamCount; i < ElapsedSecsFromStartParamCount; i++)
    {
@@ -2393,15 +2393,15 @@ Real ElapsedSecsFromStart::GetRealParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label) const
+// Real GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Real ElapsedSecsFromStart::GetRealParameter(const wxString &label) const
+Real ElapsedSecsFromStart::GetRealParameter(const std::string &label) const
 {
-   if (label == wxT("InitialEpoch"))
+   if (label == "InitialEpoch")
       return GetInitialEpoch();
    else
       return TimeReal::GetRealParameter(label);
@@ -2435,9 +2435,9 @@ Real ElapsedSecsFromStart::SetRealParameter(const Integer id, const Real value)
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Real ElapsedSecsFromStart::SetRealParameter(const wxString &label, const Real value)
+Real ElapsedSecsFromStart::SetRealParameter(const std::string &label, const Real value)
 {
-   if (label == wxT("InitialEpoch"))
+   if (label == "InitialEpoch")
    {
       SetInitialEpoch(value);
       return value;

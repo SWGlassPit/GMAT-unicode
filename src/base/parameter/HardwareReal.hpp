@@ -29,9 +29,9 @@ class GMAT_API HardwareReal : public RealVar, public SpacecraftData
 {
 public:
    
-   HardwareReal(const wxString &name, const wxString &typeStr, 
-                GmatBase *obj, const wxString &desc,
-                const wxString &unit);
+   HardwareReal(const std::string &name, const std::string &typeStr, 
+                GmatBase *obj, const std::string &desc,
+                const std::string &unit);
    HardwareReal(const HardwareReal &copy);
    HardwareReal& operator=(const HardwareReal &right);
    virtual ~HardwareReal();
@@ -46,18 +46,18 @@ public:
    
    // methods inherited from GmatBase
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
-   virtual wxString  GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual std::string  GetRefObjectName(const Gmat::ObjectType type) const;
    virtual const StringArray&
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool         SetRefObjectName(const Gmat::ObjectType type,
-                                         const wxString &name);
+                                         const std::string &name);
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name);
+                                     const std::string &name);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    
 protected:
 

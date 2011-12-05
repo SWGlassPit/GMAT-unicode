@@ -41,7 +41,7 @@ class GMAT_API Barycenter : public CalculatedPoint
 {
 public:
    // default constructor, specifying calculated point type and name
-   Barycenter(const wxString &itsName = wxT(""));
+   Barycenter(const std::string &itsName = "");
    // copy constructor
    Barycenter(const Barycenter &bary);
    // operator=
@@ -61,16 +61,16 @@ public:
    virtual bool            Initialize();
 
    virtual bool         IsBuiltIn();
-   virtual void         SetIsBuiltIn(bool builtIn, const wxString &ofType = wxT("SSB"));
+   virtual void         SetIsBuiltIn(bool builtIn, const std::string &ofType = "SSB");
    virtual StringArray  GetBuiltInNames();
 
    // Parameter access methods - overridden from GmatBase
    /*
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const; 
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const; 
    virtual Gmat::ParameterType 
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    */
 protected:
 
@@ -78,12 +78,12 @@ protected:
    {
       BarycenterParamCount = CalculatedPointParamCount
    };
-   //static const wxString PARAMETER_TEXT[BarycenterParamCount - CalculatedPointParamCount];
+   //static const std::string PARAMETER_TEXT[BarycenterParamCount - CalculatedPointParamCount];
    //static const Gmat::ParameterType PARAMETER_TYPE[BarycenterParamCount - CalculatedPointParamCount];
 
    /// flag indicating whether or not this is a built-in Barycenter
    bool                        isBuiltIn;
-   wxString                 builtInType;
+   std::string                 builtInType;
    SpacePoint                  *builtInSP;
     
 private:

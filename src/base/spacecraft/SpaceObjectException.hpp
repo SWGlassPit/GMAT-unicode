@@ -30,7 +30,7 @@ class GMAT_API SpaceObjectException : public BaseException
 {
 public:
    //---------------------------------------------------------------------------
-   // SpaceObjectException(const wxString &details)
+   // SpaceObjectException(const std::string &details)
    //---------------------------------------------------------------------------
    /**
     * Default constructor.
@@ -38,8 +38,8 @@ public:
     * @param <details> Message explaining why the exception was thrown.
     */
    //---------------------------------------------------------------------------
-   SpaceObjectException(const wxString &details = wxT("")) :
-      BaseException(wxT("SpaceObject Exception Thrown: "), details)
+   SpaceObjectException(const std::string &details = "") :
+      BaseException("SpaceObject Exception Thrown: ", details)
    {
    }
 

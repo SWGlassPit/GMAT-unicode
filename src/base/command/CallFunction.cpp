@@ -58,13 +58,13 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 CallFunction::PARAMETER_TEXT[CallFunctionParamCount - GmatCommandParamCount] =
 {
-   wxT("FunctionName"),
-   wxT("AddInput"),
-   wxT("AddOutput"),
-   wxT("CommandStream"),
+   "FunctionName",
+   "AddInput",
+   "AddOutput",
+   "CommandStream",
 };
 
 
@@ -79,14 +79,14 @@ CallFunction::PARAMETER_TYPE[CallFunctionParamCount - GmatCommandParamCount] =
 
 
 //------------------------------------------------------------------------------
-// CallFunction::CallFunction(const wxString &type)
+// CallFunction::CallFunction(const std::string &type)
 //------------------------------------------------------------------------------
-CallFunction::CallFunction(const wxString &type) :
+CallFunction::CallFunction(const std::string &type) :
    GmatCommand          (type),
    callcmds             (NULL),
    mFunction            (NULL),
-   mFunctionName        (wxT("")),
-   mFunctionPathAndName (wxT("")),
+   mFunctionName        (""),
+   mFunctionPathAndName (""),
    isGmatFunction       (false),
    isMatlabFunction     (false)
 {
@@ -94,7 +94,7 @@ CallFunction::CallFunction(const wxString &type) :
    mNumOutputParams = 0;
    
    parameterCount = CallFunctionParamCount;
-   objectTypeNames.push_back(wxT("CallFunction"));
+   objectTypeNames.push_back("CallFunction");
 }
 
 
@@ -168,39 +168,39 @@ CallFunction& CallFunction::operator=(const CallFunction& cf)
 
 
 //------------------------------------------------------------------------------
-// wxString FormEvalString()
+// std::string FormEvalString()
 //  String format
 //    [Out1, Out2] = FunctionName(In1, In2, In3);
 //------------------------------------------------------------------------------
-wxString CallFunction::FormEvalString()
+std::string CallFunction::FormEvalString()
 {
    #ifdef DEBUG_MATLAB_EVAL
    MessageInterface::ShowMessage
-      (wxT("CallFunction::FormEvalString() entered, mFunction=<%p>'%s'\n"),
-       mFunction, mFunction ? mFunction->GetName().c_str() : wxT("NULL"));
+      ("CallFunction::FormEvalString() entered, mFunction=<%p>'%s'\n",
+       mFunction, mFunction ? mFunction->GetName().c_str() : "NULL");
    #endif
-   wxString evalString = wxT("");
+   std::string evalString = "";
    
    // left hand side of evaluation string and equals (if necessary)
    if (mOutputList.size() > 1)
    {
-      evalString = evalString + wxT("[");
+      evalString = evalString + "[";
       Parameter *param = (Parameter *)mOutputList[0];
       evalString = evalString + param->GetName();
       
       for (unsigned int i=1; i<mOutputList.size(); i++)
       {
          param = (Parameter *)mOutputList[i];
-         evalString = evalString +wxT(", ") + param->GetName();
+         evalString = evalString +", " + param->GetName();
       }
       
-      evalString = evalString + wxT("] = ");
+      evalString = evalString + "] = ";
    }
    else if (mOutputList.size() == 1)
    {
       Parameter *param = (Parameter *)mOutputList[0];
-      evalString = wxT("[") + evalString + param->GetName() + wxT("]");
-      evalString = evalString +wxT(" = ");
+      evalString = "[" + evalString + param->GetName() + "]";
+      evalString = evalString +" = ";
    }
    else if (mOutputList.size() == 0)
    {
@@ -214,7 +214,7 @@ wxString CallFunction::FormEvalString()
    
    // right hand side of evaluation string
    // function name and left parenthesis
-   evalString = evalString + mFunction->GetName().c_str() + wxT("(");
+   evalString = evalString + mFunction->GetName().c_str() + "(";
 
 
    // input parameters
@@ -226,23 +226,23 @@ wxString CallFunction::FormEvalString()
       for (unsigned int i=1; i<mInputList.size(); i++)
       {
          param = (Parameter *)mInputList[i];
-         evalString = evalString + wxT(", ") + param->GetName();
+         evalString = evalString + ", " + param->GetName();
       }
    }
    
    // right parenthesis and semi-colon
-   evalString = evalString + wxT(");");
+   evalString = evalString + ");";
    
    return evalString;
 }
 
 
 //------------------------------------------------------------------------------
-// bool AddInputParameter(const wxString &paramName, Integer index)
+// bool AddInputParameter(const std::string &paramName, Integer index)
 //------------------------------------------------------------------------------
-bool CallFunction::AddInputParameter(const wxString &paramName, Integer index)
+bool CallFunction::AddInputParameter(const std::string &paramName, Integer index)
 {
-   if (paramName != wxT("") && index == mNumInputParams)
+   if (paramName != "" && index == mNumInputParams)
    {
       mInputNames.push_back(paramName);
       mNumInputParams = mInputNames.size();
@@ -256,11 +256,11 @@ bool CallFunction::AddInputParameter(const wxString &paramName, Integer index)
 
 
 //------------------------------------------------------------------------------
-// bool AddOutputParameter(const wxString &paramName, Integer index)
+// bool AddOutputParameter(const std::string &paramName, Integer index)
 //------------------------------------------------------------------------------
-bool CallFunction::AddOutputParameter(const wxString &paramName, Integer index)
+bool CallFunction::AddOutputParameter(const std::string &paramName, Integer index)
 {
-   if (paramName != wxT("") && index == mNumOutputParams)
+   if (paramName != "" && index == mNumOutputParams)
    {
       mOutputNames.push_back(paramName);
       mNumOutputParams = mOutputNames.size();
@@ -274,7 +274,7 @@ bool CallFunction::AddOutputParameter(const wxString &paramName, Integer index)
 
 
 //------------------------------------------------------------------------------
-//  void SetObjectMap(std::map<wxString, GmatBase *> *map)
+//  void SetObjectMap(std::map<std::string, GmatBase *> *map)
 //------------------------------------------------------------------------------
 /**
  * Called by the Sandbox to set the local asset store used by the GmatCommand
@@ -282,7 +282,7 @@ bool CallFunction::AddOutputParameter(const wxString &paramName, Integer index)
  * @param <map> Pointer to the local object map
  */
 //------------------------------------------------------------------------------
-void CallFunction::SetObjectMap(std::map<wxString, GmatBase *> *map)
+void CallFunction::SetObjectMap(std::map<std::string, GmatBase *> *map)
 {
    GmatCommand::SetObjectMap(map);
    fm.SetObjectMap(map);
@@ -290,7 +290,7 @@ void CallFunction::SetObjectMap(std::map<wxString, GmatBase *> *map)
 
 
 //------------------------------------------------------------------------------
-//  void SetGlobalObjectMap(std::map<wxString, GmatBase *> *map)
+//  void SetGlobalObjectMap(std::map<std::string, GmatBase *> *map)
 //------------------------------------------------------------------------------
 /**
  * Called by the Sandbox to set the global asset store used by the GmatCommand
@@ -298,12 +298,12 @@ void CallFunction::SetObjectMap(std::map<wxString, GmatBase *> *map)
  * @param <map> Pointer to the local object map
  */
 //------------------------------------------------------------------------------
-void CallFunction::SetGlobalObjectMap(std::map<wxString, GmatBase *> *map)
+void CallFunction::SetGlobalObjectMap(std::map<std::string, GmatBase *> *map)
 {
    #ifdef DEBUG_GLOBAL_OBJECT_MAP
    MessageInterface::ShowMessage
-      (wxT("CallFunction::SetGlobalObjectMap() entered, mFunctionName='%s', ")
-       wxT("map=<%p>\n"), mFunctionName.c_str(), map);
+      ("CallFunction::SetGlobalObjectMap() entered, mFunctionName='%s', "
+       "map=<%p>\n", mFunctionName.c_str(), map);
    #endif
    
    GmatCommand::SetGlobalObjectMap(map);
@@ -313,15 +313,15 @@ void CallFunction::SetGlobalObjectMap(std::map<wxString, GmatBase *> *map)
    
    #ifdef DEBUG_GLOBAL_OBJECT_MAP
    MessageInterface::ShowMessage
-      (wxT("   mapObj=<%p><%s>'%s'\n"), mapObj,
-       mapObj ? mapObj->GetTypeName().c_str() : wxT("NULL"),
-       mapObj ? mapObj->GetName().c_str() : wxT("NULL"));
+      ("   mapObj=<%p><%s>'%s'\n", mapObj,
+       mapObj ? mapObj->GetTypeName().c_str() : "NULL",
+       mapObj ? mapObj->GetName().c_str() : "NULL");
    #endif
    
    if (mapObj == NULL)
    {
-      //throw CommandException(wxT("CallFunction command cannot find Function ") +
-      //         mFunctionName + wxT("\n"));
+      //throw CommandException("CallFunction command cannot find Function " +
+      //         mFunctionName + "\n");
       ; // leave NULL for now
    }
    else
@@ -330,17 +330,17 @@ void CallFunction::SetGlobalObjectMap(std::map<wxString, GmatBase *> *map)
       
       #ifdef DEBUG_GLOBAL_OBJECT_MAP
       MessageInterface::ShowMessage
-         (wxT("   mFunction=<%p><%s>\n"), mFunction, mFunction->GetName().c_str());
+         ("   mFunction=<%p><%s>\n", mFunction, mFunction->GetName().c_str());
       #endif
       
       // Set only GmatFunction to FunctionManager (loj: 2008.09.03)
-      if (mapObj->GetTypeName() == wxT("GmatFunction"))
+      if (mapObj->GetTypeName() == "GmatFunction")
          fm.SetFunction(mFunction);
    }
    fm.SetGlobalObjectMap(map);
    
    #ifdef DEBUG_GLOBAL_OBJECT_MAP
-   MessageInterface::ShowMessage(wxT("CallFunction::SetGlobalObjectMap() exiting\n"));
+   MessageInterface::ShowMessage("CallFunction::SetGlobalObjectMap() exiting\n");
    #endif
 }
 
@@ -383,12 +383,12 @@ GmatBase* CallFunction::Clone() const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
-wxString CallFunction::GetParameterText(const Integer id) const
+std::string CallFunction::GetParameterText(const Integer id) const
 {
    #ifdef DEBUG_CALL_FUNCTION_PARAM
-      MessageInterface::ShowMessage(wxT("CallFunction::GetParameterText\n"));
+      MessageInterface::ShowMessage("CallFunction::GetParameterText\n");
    #endif
 
    if (id >= GmatCommandParamCount && id < CallFunctionParamCount)
@@ -399,7 +399,7 @@ wxString CallFunction::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  const wxString& GetGeneratingString()
+//  const std::string& GetGeneratingString()
 //------------------------------------------------------------------------------
 /**
  * Method used to retrieve the string that was parsed to build this GmatCommand.
@@ -419,45 +419,45 @@ wxString CallFunction::GetParameterText(const Integer id) const
  * @return The script line that, when interpreted, defines this CallFunction.
  */
 //------------------------------------------------------------------------------
-const wxString& CallFunction::GetGeneratingString(Gmat::WriteMode mode,
-                                                     const wxString &prefix,
-                                                     const wxString &useName)
+const std::string& CallFunction::GetGeneratingString(Gmat::WriteMode mode,
+                                                     const std::string &prefix,
+                                                     const std::string &useName)
 {
-   wxString gen;
+   std::string gen;
    
    // Build the local string
    if (mode != Gmat::NO_COMMENTS)
-      gen = prefix + wxT("GMAT ");
+      gen = prefix + "GMAT ";
    
    if (mOutputNames.size() > 0)
    {
-      gen += wxT("[");
+      gen += "[";
       for (StringArray::iterator i = mOutputNames.begin();
            i != mOutputNames.end(); ++i)
       {
          if (i != mOutputNames.begin())
-            gen += wxT(", ");
+            gen += ", ";
          gen += *i;
       }
-      gen += wxT("] = ");
+      gen += "] = ";
    }
    
    gen += mFunctionName;
    
    if (mInputNames.size() > 0)
    {
-      gen += wxT("(");
+      gen += "(";
       for (StringArray::iterator i = mInputNames.begin();
            i != mInputNames.end(); ++i)
       {
          if (i != mInputNames.begin())
-            gen += wxT(", ");
+            gen += ", ";
          gen += *i;
       }
-      gen += wxT(")");
+      gen += ")";
    }
    
-   generatingString = gen + wxT(";");
+   generatingString = gen + ";";
    
    if (mode == Gmat::NO_COMMENTS)
       return generatingString;
@@ -468,12 +468,12 @@ const wxString& CallFunction::GetGeneratingString(Gmat::WriteMode mode,
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer CallFunction::GetParameterID(const wxString &str) const
+Integer CallFunction::GetParameterID(const std::string &str) const
 {
    #ifdef DEBUG_CALL_FUNCTION_PARAM
-      MessageInterface::ShowMessage(wxT("CallFunction::GetParameterID \n"));
+      MessageInterface::ShowMessage("CallFunction::GetParameterID \n");
    #endif
 
    for (int i=GmatCommandParamCount; i<CallFunctionParamCount; i++)
@@ -492,7 +492,7 @@ Integer CallFunction::GetParameterID(const wxString &str) const
 Gmat::ParameterType CallFunction::GetParameterType(const Integer id) const
 {
    #ifdef DEBUG_CALL_FUNCTION_PARAM
-      MessageInterface::ShowMessage(wxT("CallFunction::GetParameterType\n"));
+      MessageInterface::ShowMessage("CallFunction::GetParameterType\n");
    #endif
 
    if (id >= GmatCommandParamCount && id < CallFunctionParamCount)
@@ -503,12 +503,12 @@ Gmat::ParameterType CallFunction::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
-wxString CallFunction::GetParameterTypeString(const Integer id) const
+std::string CallFunction::GetParameterTypeString(const Integer id) const
 {
    #ifdef DEBUG_CALL_FUNCTION_PARAM
-      MessageInterface::ShowMessage(wxT("CallFunction::GetParameterTypeString\n"));
+      MessageInterface::ShowMessage("CallFunction::GetParameterTypeString\n");
    #endif
 
    if (id >= GmatCommandParamCount && id < CallFunctionParamCount)
@@ -519,12 +519,12 @@ wxString CallFunction::GetParameterTypeString(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
-wxString CallFunction::GetStringParameter(const Integer id) const
+std::string CallFunction::GetStringParameter(const Integer id) const
 {
    #ifdef DEBUG_CALL_FUNCTION_PARAM
-      MessageInterface::ShowMessage(wxT("CallFunction::GetStringParameter\n"));
+      MessageInterface::ShowMessage("CallFunction::GetStringParameter\n");
    #endif
 
    switch (id)
@@ -539,22 +539,22 @@ wxString CallFunction::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString CallFunction::GetStringParameter(const wxString &label) const
+std::string CallFunction::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
-bool CallFunction::SetStringParameter(const Integer id, const wxString &value)
+bool CallFunction::SetStringParameter(const Integer id, const std::string &value)
 {
    #ifdef DEBUG_CALL_FUNCTION_PARAM
       MessageInterface::ShowMessage
-         (wxT("CallFunction::SetStringParameter with id = %d and value = %s\n"),
+         ("CallFunction::SetStringParameter with id = %d and value = %s\n",
           id, value.c_str());
    #endif
       
@@ -576,21 +576,21 @@ bool CallFunction::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label,
-//                         const wxString &value)
+// bool SetStringParameter(const std::string &label,
+//                         const std::string &value)
 //------------------------------------------------------------------------------
-bool CallFunction::SetStringParameter(const wxString &label,
-                                const wxString &value)
+bool CallFunction::SetStringParameter(const std::string &label,
+                                const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
 
 
 //------------------------------------------------------------------------------
-// virtual bool SetStringParameter(const Integer id, const wxString &value,
+// virtual bool SetStringParameter(const Integer id, const std::string &value,
 //                                 const Integer index)
 //------------------------------------------------------------------------------
-bool CallFunction::SetStringParameter(const Integer id, const wxString &value,
+bool CallFunction::SetStringParameter(const Integer id, const std::string &value,
                                 const Integer index)
 {
    switch (id)
@@ -606,12 +606,12 @@ bool CallFunction::SetStringParameter(const Integer id, const wxString &value,
 
 
 //------------------------------------------------------------------------------
-// virtual bool SetStringParameter(const wxString &label,
-//                                 const wxString &value,
+// virtual bool SetStringParameter(const std::string &label,
+//                                 const std::string &value,
 //                                 const Integer index)
 //------------------------------------------------------------------------------
-bool CallFunction::SetStringParameter(const wxString &label,
-                                const wxString &value,
+bool CallFunction::SetStringParameter(const std::string &label,
+                                const std::string &value,
                                 const Integer index)
 {
    return SetStringParameter(GetParameterID(label), value, index);
@@ -636,17 +636,17 @@ const StringArray& CallFunction::GetStringArrayParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// StringArray& GetStringArrayParameter(const wxString &label) const
+// StringArray& GetStringArrayParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-const StringArray& CallFunction::GetStringArrayParameter(const wxString &label) const
+const StringArray& CallFunction::GetStringArrayParameter(const std::string &label) const
 {
    return GetStringArrayParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// virtual bool TakeAction(const wxString &action,
-//                         const wxString &actionData = wxT(""));
+// virtual bool TakeAction(const std::string &action,
+//                         const std::string &actionData = "");
 //------------------------------------------------------------------------------
 /**
  * This method performs action.
@@ -657,20 +657,20 @@ const StringArray& CallFunction::GetStringArrayParameter(const wxString &label) 
  *
  */
 //------------------------------------------------------------------------------
-bool CallFunction::TakeAction(const wxString &action,
-                        const wxString &actionData)
+bool CallFunction::TakeAction(const std::string &action,
+                        const std::string &actionData)
 {
-   if (action == wxT("ClearInput"))
+   if (action == "ClearInput")
    {
       ClearInputParameters();
       return true;
    }
-   else if (action == wxT("ClearOutput"))
+   else if (action == "ClearOutput")
    {
       ClearOutputParameters();
       return true;
    }
-   else if (action == wxT("Clear"))
+   else if (action == "Clear")
    {
       ClearInputParameters();
       ClearOutputParameters();
@@ -706,15 +706,15 @@ const StringArray& CallFunction::GetRefObjectNameArray(const Gmat::ObjectType ty
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool CallFunction::RenameRefObject(const Gmat::ObjectType type,
-                                   const wxString &oldName,
-                                   const wxString &newName)
+                                   const std::string &oldName,
+                                   const std::string &newName)
 {
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("CallFunction::RenameRefObject() type=%d, oldName='%s', newName='%s'\n"),
+      ("CallFunction::RenameRefObject() type=%d, oldName='%s', newName='%s'\n",
        type, oldName.c_str(), newName.c_str());
    #endif
    
@@ -751,12 +751,12 @@ bool CallFunction::RenameRefObject(const Gmat::ObjectType type,
    {
       
       for (UnsignedInt i=0; i<mInputNames.size(); i++)
-         if (mInputNames[i].find(oldName) != wxString::npos)
+         if (mInputNames[i].find(oldName) != std::string::npos)
             mInputNames[i] =
                GmatStringUtil::Replace(mInputNames[i], oldName, newName);
       
       for (UnsignedInt i=0; i<mOutputNames.size(); i++)
-         if (mOutputNames[i].find(oldName) != wxString::npos)
+         if (mOutputNames[i].find(oldName) != std::string::npos)
             mOutputNames[i] =
                GmatStringUtil::Replace(mOutputNames[i], oldName, newName);
    }
@@ -767,10 +767,10 @@ bool CallFunction::RenameRefObject(const Gmat::ObjectType type,
 
 // Reference object accessor methods
 //------------------------------------------------------------------------------
-// GmatBase* GetRefObject(const Gmat::ObjectType type, const wxString &name)
+// GmatBase* GetRefObject(const Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 GmatBase* CallFunction::GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name)
+                                     const std::string &name)
 {
    switch (type)
    {
@@ -787,8 +787,8 @@ GmatBase* CallFunction::GetRefObject(const Gmat::ObjectType type,
                return mOutputList[i];
          }
          
-         throw GmatBaseException(wxT("ReportFile::GetRefObject() the object name: ")
-                           + name + wxT("not found\n"));
+         throw GmatBaseException("ReportFile::GetRefObject() the object name: "
+                           + name + "not found\n");
          
       case Gmat::FUNCTION:
          return mFunction;
@@ -815,12 +815,12 @@ GmatBase* CallFunction::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool CallFunction::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                const wxString &name)
+                                const std::string &name)
 {
    #ifdef DEBUG_CALL_FUNCTION_REF_OBJ
    MessageInterface::ShowMessage
-      (wxT("CallFunction::SetRefObject() entered, obj=<%p><%s>'%s', type=%d, name='%s'\n"),
-       obj, obj ? obj->GetTypeName().c_str() : wxT("NULL"), obj ? obj->GetName().c_str() : wxT("NULL"),
+      ("CallFunction::SetRefObject() entered, obj=<%p><%s>'%s', type=%d, name='%s'\n",
+       obj, obj ? obj->GetTypeName().c_str() : "NULL", obj ? obj->GetName().c_str() : "NULL",
        type, name.c_str());
    #endif
    
@@ -853,7 +853,7 @@ bool CallFunction::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
       {
          mFunction = (Function *)obj;
          mFunctionPathAndName = mFunction->GetFunctionPathAndName();
-         if (mFunction && mFunction->GetTypeName() == wxT("GmatFunction"))
+         if (mFunction && mFunction->GetTypeName() == "GmatFunction")
          {
             fm.SetFunction(mFunction);
             isGmatFunction = true;
@@ -911,16 +911,16 @@ bool CallFunction::Initialize()
 {
    #ifdef DEBUG_CALL_FUNCTION_INIT
       MessageInterface::ShowMessage
-         (wxT("CallFunction::Initialize() this=<%p> entered, command = '%s'\n   ")
-          wxT("function type is '%s', callingFunction is '%s'\n"), this,
+         ("CallFunction::Initialize() this=<%p> entered, command = '%s'\n   "
+          "function type is '%s', callingFunction is '%s'\n", this,
           GetGeneratingString(Gmat::NO_COMMENTS).c_str(), mFunction->GetTypeName().c_str(),
-          callingFunction? (callingFunction->GetFunctionName()).c_str() : wxT("NULL"));
+          callingFunction? (callingFunction->GetFunctionName()).c_str() : "NULL");
    #endif
    
    GmatCommand::Initialize();
    
    #ifdef DEBUG_OBJECT_MAP
-   ShowObjectMaps(wxT("In CallFunction::Initialize()"));
+   ShowObjectMaps("In CallFunction::Initialize()");
    #endif
    
    isGmatFunction = false;
@@ -928,26 +928,26 @@ bool CallFunction::Initialize()
    
    bool rv = true;  // Initialization return value
    if (mFunction == NULL)
-      throw CommandException(wxT("CallFunction::Initialize() the function pointer is NULL"));
+      throw CommandException("CallFunction::Initialize() the function pointer is NULL");
    
-   if (mFunction->GetTypeName() == wxT("GmatFunction"))
+   if (mFunction->GetTypeName() == "GmatFunction")
       isGmatFunction = true;
-   else if (mFunction->GetTypeName() == wxT("MatlabFunction"))
+   else if (mFunction->GetTypeName() == "MatlabFunction")
       isMatlabFunction = true;
    
    if (!isGmatFunction && !isMatlabFunction)
       throw CommandException
-         (wxT("CallFunction::Initialize() the function is neither GmatFunction nor MatlabFunction"));
+         ("CallFunction::Initialize() the function is neither GmatFunction nor MatlabFunction");
    
    mFunctionPathAndName = mFunction->GetFunctionPathAndName();
-   wxString fname = GmatFileUtil::ParseFileName(mFunctionPathAndName);
-   if (fname == wxT(""))
+   std::string fname = GmatFileUtil::ParseFileName(mFunctionPathAndName);
+   if (fname == "")
       mFunctionPathAndName += mFunctionName;
    
    #ifdef DEBUG_CALL_FUNCTION_INIT
    MessageInterface::ShowMessage
-      (wxT("CallFunction::Initialize() returning %d, fname='%s', mFunctionName='%s', ")
-       wxT("mFunctionPathAndName='%s'\n"), rv, fname.c_str(), mFunctionName.c_str(),
+      ("CallFunction::Initialize() returning %d, fname='%s', mFunctionName='%s', "
+       "mFunctionPathAndName='%s'\n", rv, fname.c_str(), mFunctionName.c_str(),
        mFunctionPathAndName.c_str());
    #endif
    
@@ -963,25 +963,25 @@ bool CallFunction::Execute()
    bool status = false;
    
    if (mFunction == NULL)
-      throw CommandException(wxT("Function is not defined for CallFunction"));
+      throw CommandException("Function is not defined for CallFunction");
    
    #ifdef DEBUG_TRACE
    static Integer callCount = 0;
    callCount++;      
    clock_t t1 = clock();
    MessageInterface::ShowMessage
-      (wxT("=== CallFunction::Execute() entered, '%s' Count = %d\n"),
+      ("=== CallFunction::Execute() entered, '%s' Count = %d\n",
        GetGeneratingString(Gmat::NO_COMMENTS).c_str(), callCount);
    #endif
    
    #ifdef DEBUG_CALL_FUNCTION_EXEC
       MessageInterface::ShowMessage
-         (wxT("CallFunction::Execute() this=<%p> entered, command = '%s'\n   ")
-          wxT("function type is '%s', callingFunction is '%s'\n"), this,
+         ("CallFunction::Execute() this=<%p> entered, command = '%s'\n   "
+          "function type is '%s', callingFunction is '%s'\n", this,
           GetGeneratingString(Gmat::NO_COMMENTS).c_str(), mFunction->GetTypeName().c_str(),
-          callingFunction? (callingFunction->GetFunctionName()).c_str() : wxT("NULL"));
+          callingFunction? (callingFunction->GetFunctionName()).c_str() : "NULL");
       #ifdef DEBUG_OBJECT_MAP
-      ShowObjectMaps(wxT("object maps at the start"));
+      ShowObjectMaps("object maps at the start");
       #endif
    #endif
       
@@ -996,15 +996,15 @@ void CallFunction::RunComplete()
 {
    #ifdef DEBUG_RUN_COMPLETE
    MessageInterface::ShowMessage
-      (wxT("CallFunction::RunComplete() entered for this=<%p> '%s',\n   ")
-       wxT("FCS %sfinalized\n"), this, GetGeneratingString(Gmat::NO_COMMENTS).c_str(),
-       fm.IsFinalized() ? wxT("already ") : wxT("NOT "));
+      ("CallFunction::RunComplete() entered for this=<%p> '%s',\n   "
+       "FCS %sfinalized\n", this, GetGeneratingString(Gmat::NO_COMMENTS).c_str(),
+       fm.IsFinalized() ? "already " : "NOT ");
    #endif
    
    if (!fm.IsFinalized())
    {
       #ifdef DEBUG_RUN_COMPLETE
-      MessageInterface::ShowMessage(wxT("   calling FunctionManager::Finalize()\n"));
+      MessageInterface::ShowMessage("   calling FunctionManager::Finalize()\n");
       #endif
       fm.Finalize();
    }
@@ -1066,7 +1066,7 @@ void CallFunction::SetPublisher(Publisher *pub)
 {
    #ifdef DEBUG_PUBLISHER
    MessageInterface::ShowMessage
-      (wxT("CallFunction::SetPublisher() setting publiser <%p> to FunctionManager\n"), pub);
+      ("CallFunction::SetPublisher() setting publiser <%p> to FunctionManager\n", pub);
    #endif
    GmatCommand::SetPublisher(pub);
    fm.SetPublisher(pub);

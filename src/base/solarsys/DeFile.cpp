@@ -94,7 +94,7 @@ const Real DeFile::TT_OFFSET     = GmatTimeConstants::TT_TAI_OFFSET;
 // public methods
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  DeFile(Gmat::DeFileType ofType, wxString fileName = wxT(""),
+//  DeFile(Gmat::DeFileType ofType, std::string fileName = "",
 //         Gmat::DeFileFormat fmt = DE_BINARY)
 //------------------------------------------------------------------------------
 /**
@@ -110,7 +110,7 @@ const Real DeFile::TT_OFFSET     = GmatTimeConstants::TT_TAI_OFFSET;
  *       efficiency.
  */
 //------------------------------------------------------------------------------
-DeFile::DeFile(Gmat::DeFileType ofType, wxString fileName,
+DeFile::DeFile(Gmat::DeFileType ofType, std::string fileName,
                Gmat::DeFileFormat fmt) :
 PlanetaryEphem(fileName)
 {
@@ -166,10 +166,10 @@ PlanetaryEphem(def)
 /**
  * Assignment operator for the SlpFile class.
  *
- * @param <def> the DeFile object whose data to assign to wxT("this")
+ * @param <def> the DeFile object whose data to assign to "this"
  *            DE File.
  *
- * @return wxT("this") DeFile with data of input DeFile def.
+ * @return "this" DeFile with data of input DeFile def.
  */
 //------------------------------------------------------------------------------
 DeFile& DeFile::operator=(const DeFile& def)
@@ -221,7 +221,7 @@ DeFile::~DeFile()
 void DeFile::Initialize()
 {
    #ifdef DEBUG_DEFILE_INIT
-   MessageInterface::ShowMessage(wxT("DeFile::Initialize() entered\n"));
+   MessageInterface::ShowMessage("DeFile::Initialize() entered\n");
    #endif
   
    try
@@ -235,7 +235,7 @@ void DeFile::Initialize()
 }
 
 //------------------------------------------------------------------------------
-//  Integer GetBodyID(wxString bodyName)
+//  Integer GetBodyID(std::string bodyName)
 //------------------------------------------------------------------------------
 /**
 * This method returns the ID for the requested body.
@@ -246,7 +246,7 @@ void DeFile::Initialize()
  *
  */
 //------------------------------------------------------------------------------
-Integer  DeFile::GetBodyID(wxString bodyName)
+Integer  DeFile::GetBodyID(std::string bodyName)
 {
    if (bodyName == SolarSystem::SOLAR_SYSTEM_BARYCENTER_NAME)     return DeFile::SS_BARY_ID;
 
@@ -287,13 +287,13 @@ Real* DeFile::GetPosVel(Integer forBody, A1Mjd atTime, bool overrideTimeSystem)
 {
    #ifdef DEBUG_DEFILE_GET
    MessageInterface::ShowMessage
-      (wxT("DeFile::GetPosVel() entered, forBody=%d, atTime=%f, overrideTimeSystem=%d, reading file %s\n"),
+      ("DeFile::GetPosVel() entered, forBody=%d, atTime=%f, overrideTimeSystem=%d, reading file %s\n",
        forBody, atTime.GetReal(), overrideTimeSystem, itsName.c_str());
    #endif
    
    if (atTime.Get() < mA1FileBeg)
-      throw PlanetaryEphemException(wxT("Attempting to read data for an epoch ")
-            wxT("earlier than the beginning of the current DE File; exiting.\n"));
+      throw PlanetaryEphemException("Attempting to read data for an epoch "
+            "earlier than the beginning of the current DE File; exiting.\n");
 
    static Real      result[6];
    // if we're asking for the Earth state, return 0.0 (since we're
@@ -321,9 +321,9 @@ Real* DeFile::GetPosVel(Integer forBody, A1Mjd atTime, bool overrideTimeSystem)
 
       #ifdef DEBUG_DEFILE_GET
          MessageInterface::ShowMessage
-            (wxT("DeFile::GetPosVel() : mjdTT = %12.10f\n"), mjdTT);
+            ("DeFile::GetPosVel() : mjdTT = %12.10f\n", mjdTT);
          MessageInterface::ShowMessage
-            (wxT("DeFile::GetPosVel() : absJD = %12.10f\n"), absJD);
+            ("DeFile::GetPosVel() : absJD = %12.10f\n", absJD);
       #endif
    }
    else
@@ -336,9 +336,9 @@ Real* DeFile::GetPosVel(Integer forBody, A1Mjd atTime, bool overrideTimeSystem)
 
       #ifdef DEBUG_DEFILE_GET
          MessageInterface::ShowMessage
-            (wxT("DeFile::GetPosVel() : mjdTDB = %12.10f\n"), mjdTDB);
+            ("DeFile::GetPosVel() : mjdTDB = %12.10f\n", mjdTDB);
          MessageInterface::ShowMessage
-            (wxT("DeFile::GetPosVel() : absJD = %12.10f\n"), absJD);
+            ("DeFile::GetPosVel() : absJD = %12.10f\n", absJD);
       #endif
    }
    
@@ -350,7 +350,7 @@ Real* DeFile::GetPosVel(Integer forBody, A1Mjd atTime, bool overrideTimeSystem)
    Interpolate_State(absJD, forBody, &rv);
    #ifdef DEBUG_DEFILE_GET
       MessageInterface::ShowMessage
-         (wxT("DeFile::GetPosVel()  state from DE file = %12.10f  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f\n"),
+         ("DeFile::GetPosVel()  state from DE file = %12.10f  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f\n",
                rv.Position[0], rv.Position[1], rv.Position[2], rv.Velocity[0], rv.Velocity[1], rv.Velocity[2]);
    #endif
 
@@ -376,10 +376,10 @@ Real* DeFile::GetPosVel(Integer forBody, A1Mjd atTime, bool overrideTimeSystem)
    Interpolate_State(absJD,(int)DeFile::MOON_ID, &mrv);
    #ifdef DEBUG_DEFILE_GET
       MessageInterface::ShowMessage
-         (wxT("DeFile::GetPosVel() Earth-Moon barycenter state = %12.10f  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f\n"),
+         ("DeFile::GetPosVel() Earth-Moon barycenter state = %12.10f  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f\n",
                emrv.Position[0], emrv.Position[1], emrv.Position[2], emrv.Velocity[0], emrv.Velocity[1], emrv.Velocity[2]);
       MessageInterface::ShowMessage
-         (wxT("DeFile::GetPosVel() Moon (geocentric) state = %12.10f  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f\n"),
+         ("DeFile::GetPosVel() Moon (geocentric) state = %12.10f  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f\n",
                mrv.Position[0], mrv.Position[1], mrv.Position[2], mrv.Velocity[0], mrv.Velocity[1], mrv.Velocity[2]);
    #endif
 
@@ -408,7 +408,7 @@ Real* DeFile::GetPosVel(Integer forBody, A1Mjd atTime, bool overrideTimeSystem)
 
    #ifdef DEBUG_DEFILE_GET
    MessageInterface::ShowMessage
-      (wxT("DeFile::GetPosVel() returning %f, %f, %f, %f, %f, %f\n"),
+      ("DeFile::GetPosVel() returning %f, %f, %f, %f, %f, %f\n",
        result[0], result[1], result[2], result[3], result[4], result[5]);
    #endif
    
@@ -442,7 +442,7 @@ void  DeFile::GetAnglesAndRates(A1Mjd atTime, Real* angles, Real* rates,
 
    #ifdef DEBUG_DEFILE_LIB
    MessageInterface::ShowMessage
-      (wxT("DeFile::GetAnglesAndRates() Calling Interpolate_Libration(%.9f)\n"), absJD);
+      ("DeFile::GetAnglesAndRates() Calling Interpolate_Libration(%.9f)\n", absJD);
    #endif
    
    Interpolate_Libration(absJD, 12, angles, rates);
@@ -476,7 +476,7 @@ Integer* DeFile::GetStartDayAndYear()
 
 
 //------------------------------------------------------------------------------
-//  wxString Convert(wxString deFileNameAscii)
+//  std::string Convert(std::string deFileNameAscii)
 //------------------------------------------------------------------------------
 /**
  * This method converts the ASCII DE file (input at creation) to a native
@@ -491,7 +491,7 @@ Integer* DeFile::GetStartDayAndYear()
  *        .FMT).
  */
 //------------------------------------------------------------------------------
-wxString DeFile::Convert(wxString deFileNameAscii)
+std::string DeFile::Convert(std::string deFileNameAscii)
 {
    // TBD - call VAL methods?  Recode VAL method(s)?
    return deFileNameAscii;
@@ -510,7 +510,7 @@ wxString DeFile::Convert(wxString deFileNameAscii)
 
 
 //------------------------------------------------------------------------------
-// void InitializeDeFile(wxString name)
+// void InitializeDeFile(std::string name)
 //------------------------------------------------------------------------------
 /**
  * This method initializes the data for the DE file.
@@ -519,11 +519,11 @@ wxString DeFile::Convert(wxString deFileNameAscii)
  *            the DE file.
  */
 //------------------------------------------------------------------------------
-void DeFile::InitializeDeFile(wxString fName, Gmat::DeFileFormat fileFmt)
+void DeFile::InitializeDeFile(std::string fName, Gmat::DeFileFormat fileFmt)
 {
    #ifdef DEBUG_DEFILE_INIT
    MessageInterface::ShowMessage
-      (wxT("DeFile::InitializeDeFile() entered\n   file=%s, fileFormat=%d\n"),
+      ("DeFile::InitializeDeFile() entered\n   file=%s, fileFormat=%d\n",
        fName.c_str(), fileFmt);
    #endif
    
@@ -534,7 +534,7 @@ void DeFile::InitializeDeFile(wxString fName, Gmat::DeFileFormat fileFmt)
    }
    else
    {
-      asciiFileName  = wxT("unknown");
+      asciiFileName  = "unknown";
       binaryFileName = fName;
    }
 
@@ -554,15 +554,15 @@ void DeFile::InitializeDeFile(wxString fName, Gmat::DeFileFormat fileFmt)
    {
       // ERROR!  Other formats not currently supported!!!
    }
-   int worked = Initialize_Ephemeris(binaryFileName.char_str());
+   int worked = Initialize_Ephemeris((char*)binaryFileName.c_str());
    
    if (worked == FAILURE)
    {
-      throw PlanetaryEphemException(wxT("DE file is not of specified format!!")
-                                    wxT("DE file not able to be initialized!"));
+      throw PlanetaryEphemException("DE file is not of specified format!!"
+                                    "DE file not able to be initialized!");
    }
    itsName                             = binaryFileName;
-   g_pef_dcb.full_path = binaryFileName;
+   strcpy(g_pef_dcb.full_path,binaryFileName.c_str());
    g_pef_dcb.recl                      = arraySize;
    if (Ephemeris_File)  g_pef_dcb.fptr = Ephemeris_File;
    jdMjdOffset          = (double) DeFile::JD_MJD_OFFSET;
@@ -572,9 +572,9 @@ void DeFile::InitializeDeFile(wxString fName, Gmat::DeFileFormat fileFmt)
    mA1FileBeg = T_beg;
 
    #ifdef DEBUG_DEFILE_INIT
-   MessageInterface::ShowMessage(wxT("   T_beg=%.9f, addr=%p\n"), T_beg, &T_beg);
-   MessageInterface::ShowMessage(wxT("   T_end=%.9f, addr=%p\n"), T_end, &T_end);
-   MessageInterface::ShowMessage(wxT("DeFile::InitializeDeFile() leaving\n"));
+   MessageInterface::ShowMessage("   T_beg=%.9f, addr=%p\n", T_beg, &T_beg);
+   MessageInterface::ShowMessage("   T_end=%.9f, addr=%p\n", T_end, &T_end);
+   MessageInterface::ShowMessage("DeFile::InitializeDeFile() leaving\n");
    #endif
 }
 
@@ -631,7 +631,7 @@ void DeFile::InitializeDeFile(wxString fName, Gmat::DeFileFormat fileFmt)
 void DeFile::Read_Coefficients( double Time )
 {
    #ifdef DEBUG_DEFILE_READ
-   MessageInterface::ShowMessage(wxT("DeFile::Read_Coefficients() Time=%.9f)\n"), Time);
+   MessageInterface::ShowMessage("DeFile::Read_Coefficients() Time=%.9f)\n", Time);
    #endif
    
   double  T_delta = 0.0;
@@ -639,7 +639,7 @@ void DeFile::Read_Coefficients( double Time )
 
   #ifdef DEBUG_DEFILE_READ
   MessageInterface::ShowMessage
-     (wxT("DeFile::Read_Coefficients() T_beg=%f, T_end=%f\n"), T_beg, T_end);
+     ("DeFile::Read_Coefficients() T_beg=%f, T_end=%f\n", T_beg, T_end);
   #endif
 
   /*--------------------------------------------------------------------------*/
@@ -669,7 +669,7 @@ void DeFile::Read_Coefficients( double Time )
   
   #ifdef DEBUG_DEFILE_READ
   MessageInterface::ShowMessage
-     (wxT("DeFile::Read_Coefficients() Offset=%d\n"), Offset);
+     ("DeFile::Read_Coefficients() Offset=%d\n", Offset);
   #endif
 
   // if time is less than file begin time, do not update time info.
@@ -678,11 +678,11 @@ void DeFile::Read_Coefficients( double Time )
      fseek(Ephemeris_File,(Offset-1)*arraySize*sizeof(double),SEEK_CUR);
 
      // Intentionally get the return and then ignore it to move warning from
-     // system libraries to GMAT code base.  The wxT("unused variable") warning here
+     // system libraries to GMAT code base.  The "unused variable" warning here
      // can be safely ignored.
      size_t len = fread(&Coeff_Array,sizeof(double),arraySize,Ephemeris_File);
      if ((Integer)len != arraySize)
-        throw PlanetaryEphemException(wxT("Requested epoch is not on the DE file"));
+        throw PlanetaryEphemException("Requested epoch is not on the DE file");
 
      T_beg  = Coeff_Array[0] - baseEpoch;
      T_end  = Coeff_Array[1] - baseEpoch;
@@ -695,13 +695,13 @@ void DeFile::Read_Coefficients( double Time )
 
   //if ( Debug ) 
   //   {
-  //     printf(wxT("\n  In: Read_Coefficients \n"));
-  //     printf(wxT("\n      ARRAY_SIZE = %4d"),ARRAY_SIZE);
-  //     printf(wxT("\n      Offset  = %3d"),Offset);
-  //     printf(wxT("\n      T_delta = %7.3f"),T_delta);
-  //     printf(wxT("\n      T_Beg   = %7.3f"),T_beg);
-  //     printf(wxT("\n      T_End   = %7.3f"),T_end);
-  //     printf(wxT("\n      T_Span  = %7.3f\n\n"),T_span);
+  //     printf("\n  In: Read_Coefficients \n");
+  //     printf("\n      ARRAY_SIZE = %4d",ARRAY_SIZE);
+  //     printf("\n      Offset  = %3d",Offset);
+  //     printf("\n      T_delta = %7.3f",T_delta);
+  //     printf("\n      T_Beg   = %7.3f",T_beg);
+  //     printf("\n      T_End   = %7.3f",T_end);
+  //     printf("\n      T_Span  = %7.3f\n\n",T_span);
   //   }
 
 }
@@ -724,9 +724,9 @@ void DeFile::Read_Coefficients( double Time )
 int DeFile::Initialize_Ephemeris( char *fileName )
 {
    #ifdef DEBUG_DEFILE_INIT
-   MessageInterface::ShowMessage(wxT("DeFile::Initialize_Ephemeris() entered\n"));
+   MessageInterface::ShowMessage("DeFile::Initialize_Ephemeris() entered\n");
    MessageInterface::ShowMessage
-      (wxT("   fileName=%s, arraySize=%d\n"), fileName, arraySize);
+      ("   fileName=%s, arraySize=%d\n", fileName, arraySize);
    #endif
    
   int headerID;
@@ -735,7 +735,7 @@ int DeFile::Initialize_Ephemeris( char *fileName )
   /*  Open ephemeris file.                                                    */
   /*--------------------------------------------------------------------------*/
 
-  //loj: Ephemeris_File = fopen(fileName,wxT("r"));
+  //loj: Ephemeris_File = fopen(fileName,"r");
   Ephemeris_File = fopen(fileName,"rb");
 
 
@@ -777,12 +777,12 @@ int DeFile::Initialize_Ephemeris( char *fileName )
 
        //if ( Debug ) 
        //   {
-       //     printf(wxT("\n  In: Initialize_Ephemeris \n"));
-       //     printf(wxT("\n      ARRAY_SIZE = %4d"),ARRAY_SIZE);
-       //     printf(wxT("\n      headerID   = %3d"),headerID);
-       //     printf(wxT("\n      T_Beg      = %7.3f"),T_beg);
-       //     printf(wxT("\n      T_End      = %7.3f"),T_end);
-       //     printf(wxT("\n      T_Span     = %7.3f\n\n"),T_span);
+       //     printf("\n  In: Initialize_Ephemeris \n");
+       //     printf("\n      ARRAY_SIZE = %4d",ARRAY_SIZE);
+       //     printf("\n      headerID   = %3d",headerID);
+       //     printf("\n      T_Beg      = %7.3f",T_beg);
+       //     printf("\n      T_End      = %7.3f",T_end);
+       //     printf("\n      T_Span     = %7.3f\n\n",T_span);
        //   }
 
 #if defined (__UNIT_TEST__)
@@ -852,9 +852,9 @@ void DeFile::Interpolate_Libration( double Time , int Target ,
 
   #ifdef DEBUG_DEFILE_LIB
   MessageInterface::ShowMessage
-     (wxT("DeFile::Interpolate_Libration(%.9f, %d)\n"), Time, Target);
-  MessageInterface::ShowMessage(wxT("   addr T_beg=%p\n"), &T_beg);
-  MessageInterface::ShowMessage(wxT("   addr T_end=%p\n"), &T_end);
+     ("DeFile::Interpolate_Libration(%.9f, %d)\n", Time, Target);
+  MessageInterface::ShowMessage("   addr T_beg=%p\n", &T_beg);
+  MessageInterface::ShowMessage("   addr T_end=%p\n", &T_end);
   #endif
   
   /*--------------------------------------------------------------------------*/
@@ -863,7 +863,7 @@ void DeFile::Interpolate_Libration( double Time , int Target ,
 
   if ( Target != 12 )             /* Also protects against weird input errors */
      {
-      // printf(wxT("\n This function only computes librations.\n"));
+      // printf("\n This function only computes librations.\n");
        return;
      }
  
@@ -884,7 +884,7 @@ void DeFile::Interpolate_Libration( double Time , int Target ,
   {
      #ifdef DEBUG_DEFILE_LIB
      MessageInterface::ShowMessage
-        (wxT("DeFile::Interpolate_Libration() Calling Read_Coefficients(%.9f)\n"),
+        ("DeFile::Interpolate_Libration() Calling Read_Coefficients(%.9f)\n",
          Time);
      #endif
      
@@ -903,11 +903,11 @@ void DeFile::Interpolate_Libration( double Time , int Target ,
     
   //if ( Debug )
   //   {
-  //     printf(wxT("\n  In: Interpolate_Libration\n"));
-  //     printf(wxT("\n  Target = %2d"),Target);
-  //     printf(wxT("\n  C      = %4d (before)"),C);
-  //     printf(wxT("\n  N      = %4d"),N);
-  //     printf(wxT("\n  G      = %4d\n"),G);
+  //     printf("\n  In: Interpolate_Libration\n");
+  //     printf("\n  Target = %2d",Target);
+  //     printf("\n  C      = %4d (before)",C);
+  //     printf("\n  N      = %4d",N);
+  //     printf("\n  G      = %4d\n",G);
   //   }
 
   /*--------------------------------------------------------------------------*/
@@ -918,7 +918,7 @@ void DeFile::Interpolate_Libration( double Time , int Target ,
   /*  to load the coefficients.                                               */
   /*--------------------------------------------------------------------------*/
 
-  //MessageInterface::ShowMessage(wxT("===> Compute the normalized time\n"));
+  //MessageInterface::ShowMessage("===> Compute the normalized time\n");
   if ( G == 1 ) 
      {
        Tc = 2.0*(Time - T_beg) / T_span - 1.0;
@@ -946,29 +946,29 @@ void DeFile::Interpolate_Libration( double Time , int Target ,
      }
   else                                   /* Something has gone terribly wrong */
      {
-       //printf(wxT("\n Number of granules must be >= 1: check header data.\n"));
+       //printf("\n Number of granules must be >= 1: check header data.\n");
      }
 
   /*...................................................Debug print (optional) */
 
   //MessageInterface::ShowMessage
-  //   (wxT("===> C = %4d, offset = %4d, Time = %12.7f, T_sub = %12.7f, T_seg = %12.7f, ")
-  //    wxT("Tc = %12.7f\n"), C, offset, Time, T_sub, T_seg, Tc);
+  //   ("===> C = %4d, offset = %4d, Time = %12.7f, T_sub = %12.7f, T_seg = %12.7f, "
+  //    "Tc = %12.7f\n", C, offset, Time, T_sub, T_seg, Tc);
   
   //if ( Debug )
   //   {
-  //     printf(wxT("\n  C      = %4d (after)"),C);
-  //     printf(wxT("\n  offset = %4d"),offset);
-  //     printf(wxT("\n  Time   = %12.7f"),Time);
-  //     printf(wxT("\n  T_sub  = %12.7f"),T_sub);
-  //     printf(wxT("\n  T_seg  = %12.7f"),T_seg);
-  //     printf(wxT("\n  Tc     = %12.7f\n"),Tc);
-  //     printf(wxT("\n  Array Coefficients:\n"));
+  //     printf("\n  C      = %4d (after)",C);
+  //     printf("\n  offset = %4d",offset);
+  //     printf("\n  Time   = %12.7f",Time);
+  //     printf("\n  T_sub  = %12.7f",T_sub);
+  //     printf("\n  T_seg  = %12.7f",T_seg);
+  //     printf("\n  Tc     = %12.7f\n",Tc);
+  //     printf("\n  Array Coefficients:\n");
   //     for ( i=0 ; i<3*N ; i++ )
   //         {
-  //           printf(wxT("\n  A[%2d] = % 22.15e"),i,A[i]);
+  //           printf("\n  A[%2d] = % 22.15e",i,A[i]);
   //         }
-  //     printf(wxT("\n\n"));
+  //     printf("\n\n");
   //   }
 
   /*..........................................................................*/
@@ -1057,7 +1057,7 @@ void DeFile::Interpolate_Nutation( double Time , int Target , double Nutation[2]
 
   if ( Target != 11 )             /* Also protects against weird input errors */
      {
-      // printf(wxT("\n This function only computes nutations.\n"));
+      // printf("\n This function only computes nutations.\n");
        return;
      }
  
@@ -1088,11 +1088,11 @@ void DeFile::Interpolate_Nutation( double Time , int Target , double Nutation[2]
 
   //if ( Debug )
   //   {
-  //     printf(wxT("\n  In: Interpolate_Nutation\n"));
-  //     printf(wxT("\n  Target = %2d"),Target);
-  //     printf(wxT("\n  C      = %4d (before)"),C);
-  //     printf(wxT("\n  N      = %4d"),N);
-  //     printf(wxT("\n  G      = %4d\n"),G);
+  //     printf("\n  In: Interpolate_Nutation\n");
+  //     printf("\n  Target = %2d",Target);
+  //     printf("\n  C      = %4d (before)",C);
+  //     printf("\n  N      = %4d",N);
+  //     printf("\n  G      = %4d\n",G);
   //   }
 
   /*--------------------------------------------------------------------------*/
@@ -1130,25 +1130,25 @@ void DeFile::Interpolate_Nutation( double Time , int Target , double Nutation[2]
      }
   else                                   /* Something has gone terribly wrong */
      {
-       //printf(wxT("\n Number of granules must be >= 1: check header data.\n"));
+       //printf("\n Number of granules must be >= 1: check header data.\n");
      }
 
   /*...................................................Debug print (optional) */
 
   //if ( Debug )
   //   {
-  //     printf(wxT("\n  C      = %4d (after)"),C);
-  //     printf(wxT("\n  offset = %4d"),offset);
-  //     printf(wxT("\n  Time   = %12.7f"),Time);
-  //     printf(wxT("\n  T_sub  = %12.7f"),T_sub);
-  //     printf(wxT("\n  T_seg  = %12.7f"),T_seg);
-  //     printf(wxT("\n  Tc     = %12.7f\n"),Tc);
-  //     printf(wxT("\n  Array Coefficients:\n"));
+  //     printf("\n  C      = %4d (after)",C);
+  //     printf("\n  offset = %4d",offset);
+  //     printf("\n  Time   = %12.7f",Time);
+  //     printf("\n  T_sub  = %12.7f",T_sub);
+  //     printf("\n  T_seg  = %12.7f",T_seg);
+  //     printf("\n  Tc     = %12.7f\n",Tc);
+  //     printf("\n  Array Coefficients:\n");
   //     for ( i=0 ; i<3*N ; i++ )
   //         {
-  //           printf(wxT("\n  A[%2d] = % 22.15e"),i,A[i]);
+  //           printf("\n  A[%2d] = % 22.15e",i,A[i]);
   //         }
-  //     printf(wxT("\n\n"));
+  //     printf("\n\n");
   //   }
 
   /*..........................................................................*/
@@ -1198,12 +1198,12 @@ void DeFile::Interpolate_Position( double Time , int Target , double Position[3]
   long int  C , G , N , offset = 0;
 
   /*--------------------------------------------------------------------------*/
-  /* This function doesn't wxT("do") nutations or librations.                      */
+  /* This function doesn't "do" nutations or librations.                      */
   /*--------------------------------------------------------------------------*/
 
   if ( Target >= 11 )             /* Also protects against weird input errors */
      {
-       //printf(wxT("\n This function does not compute nutations or librations.\n"));
+       //printf("\n This function does not compute nutations or librations.\n");
        return;
      }
  
@@ -1234,11 +1234,11 @@ void DeFile::Interpolate_Position( double Time , int Target , double Position[3]
 
   //if ( Debug )
   //   {
-  //     printf(wxT("\n  In: Interpolate_Position\n"));
-  //     printf(wxT("\n  Target = %2d"),Target);
-  //     printf(wxT("\n  C      = %4d (before)"),C);
-  //     printf(wxT("\n  N      = %4d"),N);
-  //     printf(wxT("\n  G      = %4d\n"),G);
+  //     printf("\n  In: Interpolate_Position\n");
+  //     printf("\n  Target = %2d",Target);
+  //     printf("\n  C      = %4d (before)",C);
+  //     printf("\n  N      = %4d",N);
+  //     printf("\n  G      = %4d\n",G);
   //   }
 
   /*--------------------------------------------------------------------------*/
@@ -1276,25 +1276,25 @@ void DeFile::Interpolate_Position( double Time , int Target , double Position[3]
      }
   else                                   /* Something has gone terribly wrong */
      {
-      // printf(wxT("\n Number of granules must be >= 1: check header data.\n"));
+      // printf("\n Number of granules must be >= 1: check header data.\n");
      }
 
   /*...................................................Debug print (optional) */
 
   //if ( Debug )
   //   {
-  //     printf(wxT("\n  C      = %4d (after)"),C);
-  //     printf(wxT("\n  offset = %4d"),offset);
-  //     printf(wxT("\n  Time   = %12.7f"),Time);
-  //     printf(wxT("\n  T_sub  = %12.7f"),T_sub);
-  //     printf(wxT("\n  T_seg  = %12.7f"),T_seg);
-  //     printf(wxT("\n  Tc     = %12.7f\n"),Tc);
-  //     printf(wxT("\n  Array Coefficients:\n"));
+  //     printf("\n  C      = %4d (after)",C);
+  //     printf("\n  offset = %4d",offset);
+  //     printf("\n  Time   = %12.7f",Time);
+  //     printf("\n  T_sub  = %12.7f",T_sub);
+  //     printf("\n  T_seg  = %12.7f",T_seg);
+  //     printf("\n  Tc     = %12.7f\n",Tc);
+  //     printf("\n  Array Coefficients:\n");
   //     for ( i=0 ; i<3*N ; i++ )
   //         {
-  //           printf(wxT("\n  A[%2d] = % 22.15e"),i,A[i]);
+  //           printf("\n  A[%2d] = % 22.15e",i,A[i]);
   //         }
-  //     printf(wxT("\n\n"));
+  //     printf("\n\n");
   //   }
 
   /*..........................................................................*/
@@ -1345,13 +1345,13 @@ void DeFile::Interpolate_State(double Time , int Target, stateType *p)
   register stateType X;
 
   /*--------------------------------------------------------------------------*/
-  /* This function doesn't wxT("do") nutations or librations.                      */
+  /* This function doesn't "do" nutations or librations.                      */
   /*--------------------------------------------------------------------------*/
 
 //  if ( Target >= 11 )             /* Also protects against weird input errors */
   if ( Target > 11 )             /* Also protects against weird input errors */
      {
-       //printf(wxT("\n This function does not compute nutations or librations.\n"));
+       //printf("\n This function does not compute nutations or librations.\n");
        return;
      }
 
@@ -1371,16 +1371,16 @@ void DeFile::Interpolate_State(double Time , int Target, stateType *p)
 
   #ifdef DEBUG_DEFILE_INTERPOLATE
   MessageInterface::ShowMessage
-     (wxT("DeFile::Interpolate_State() before Read_Coefficients()\nTime=%f, T_beg=%f, ")
-      wxT("T_end=%f T_span=%f\n"), Time, T_beg, T_end, T_span);
+     ("DeFile::Interpolate_State() before Read_Coefficients()\nTime=%f, T_beg=%f, "
+      "T_end=%f T_span=%f\n", Time, T_beg, T_end, T_span);
   #endif
   
   if (Time < T_beg || Time > T_end)  Read_Coefficients(Time);
   
   #ifdef DEBUG_DEFILE_INTERPOLATE
   MessageInterface::ShowMessage
-     (wxT("DeFile::Interpolate_State() after  Read_Coefficients()\nTime=%f, T_beg=%f, ")
-      wxT("T_end=%f T_span=%f\n"), Time, T_beg, T_end, T_span);
+     ("DeFile::Interpolate_State() after  Read_Coefficients()\nTime=%f, T_beg=%f, "
+      "T_end=%f T_span=%f\n", Time, T_beg, T_end, T_span);
   #endif
   
 
@@ -1396,11 +1396,11 @@ void DeFile::Interpolate_State(double Time , int Target, stateType *p)
 
   //if ( Debug )
   //   {
-  //     printf(wxT("\n  In: Interpolate_State\n"));
-  //     printf(wxT("\n  Target = %2d"),Target);
-  //     printf(wxT("\n  C      = %4ld (before)"),C);
-  //     printf(wxT("\n  N      = %4ld"),N);
-  //     printf(wxT("\n  G      = %4ld\n"),G);
+  //     printf("\n  In: Interpolate_State\n");
+  //     printf("\n  Target = %2d",Target);
+  //     printf("\n  C      = %4ld (before)",C);
+  //     printf("\n  N      = %4ld",N);
+  //     printf("\n  G      = %4ld\n",G);
   //   }
 
   /*--------------------------------------------------------------------------*/
@@ -1436,25 +1436,25 @@ void DeFile::Interpolate_State(double Time , int Target, stateType *p)
      }
   else                                   /* Something has gone terribly wrong */
      {
-       //printf(wxT("\n Number of granules must be >= 1: check header data.\n"));
+       //printf("\n Number of granules must be >= 1: check header data.\n");
      }
 
   /*...................................................Debug print (optional) */
 
   //if ( Debug )
   //   {
-  //     printf(wxT("\n  C      = %4d (after)"),C);
-  //     printf(wxT("\n  offset = %4d"),offset);
-  //     printf(wxT("\n  Time   = %12.7f"),Time);
-  //     printf(wxT("\n  T_sub  = %12.7f"),T_sub);
-  //     printf(wxT("\n  T_seg  = %12.7f"),T_seg);
-  //     printf(wxT("\n  Tc     = %12.7f\n"),Tc);
-  //     printf(wxT("\n  Array Coefficients:\n"));
+  //     printf("\n  C      = %4d (after)",C);
+  //     printf("\n  offset = %4d",offset);
+  //     printf("\n  Time   = %12.7f",Time);
+  //     printf("\n  T_sub  = %12.7f",T_sub);
+  //     printf("\n  T_seg  = %12.7f",T_seg);
+  //     printf("\n  Tc     = %12.7f\n",Tc);
+  //     printf("\n  Array Coefficients:\n");
   //     for ( i=0 ; i<3*N ; i++ )
   //         {
-  //           printf(wxT("\n  A[%2d] = % 22.15e"),i,A[i]);
+  //           printf("\n  A[%2d] = % 22.15e",i,A[i]);
   //         }
-  //     printf(wxT("\n\n"));
+  //     printf("\n\n");
   //   }
 
   /*..........................................................................*/
@@ -1551,7 +1551,7 @@ double DeFile::Find_Value( char    name[],
         /*.....................Convert current name array element to a string */
       
         for ( j=0 ; j<6 ; j++ )  target[j] = name_array[i][j];
-            target[6] = wxT('\0');
+            target[6] = '\0';
       
         /*................................See if it matches the string sought */
       
@@ -1699,15 +1699,15 @@ int DeFile::Read_File_Line( FILE *inFile, int filter, char lineBuffer[82])
   /*  Protect against lines over 80 characters long.                          */
   /*--------------------------------------------------------------------------*/
 
-  if ( (strlen(lineBuffer) == 81) && (lineBuffer[80] != wxT('\n')) )
+  if ( (strlen(lineBuffer) == 81) && (lineBuffer[80] != '\n') )
      {
        // Intentionally get the return and then ignore it to move warning from
-       // system libraries to GMAT code base.  The wxT("unused variable") warning
+       // system libraries to GMAT code base.  The "unused variable" warning
        // here can be safely ignored.
        char* ch = fgets(ignore,40,inFile);      /* Read past next end of line */
        if (ch == NULL)
-          throw PlanetaryEphemException(wxT("Unable to read line from the DE file"));
-       lineBuffer[81] = wxT('\0');
+          throw PlanetaryEphemException("Unable to read line from the DE file");
+       lineBuffer[81] = '\0';
      }
 
   /*--------------------------------------------------------------------------*/
@@ -1718,8 +1718,8 @@ int DeFile::Read_File_Line( FILE *inFile, int filter, char lineBuffer[82])
      {
        for ( i=0 ; i<82 ; i++ )
            {
-             if (lineBuffer[i] == wxT('\0')) break;
-             if (lineBuffer[i] ==  wxT('D')) lineBuffer[i] = wxT('E');
+             if (lineBuffer[i] == '\0') break;
+             if (lineBuffer[i] ==  'D') lineBuffer[i] = 'E';
            }
      }
 
@@ -1764,7 +1764,7 @@ int DeFile::Read_Group_Header(FILE *inFile)
   /* Build the group header string.                                           */
   /*--------------------------------------------------------------------------*/
 
-  headStr[0] = wxT('\0');                               /* Start with empty string */
+  headStr[0] = '\0';                               /* Start with empty string */
 
   do { 
        /*................................................. Read one character */
@@ -1776,12 +1776,12 @@ int DeFile::Read_Group_Header(FILE *inFile)
        if ( isgraph(charIn) )          /* Build sting of non-blank characters */
           {
             appStr[0] = charIn;
-            appStr[1] = wxT('\0');
+            appStr[1] = '\0';
             strcat(headStr,appStr);
           }
        else                                              /* Count line breaks */
           {
-            if (charIn == wxT('\n')) count = count + 1;
+            if (charIn == '\n') count = count + 1;
           }
             
        /*.......................................Protect against strange input */

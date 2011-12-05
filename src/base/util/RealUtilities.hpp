@@ -30,12 +30,12 @@
 struct GMAT_API RealUtilitiesExceptions
 {
    class GMAT_API ArgumentError : public BaseException
-   {public : ArgumentError(const wxString& message = wxT(""))
-       : BaseException(wxT(""), message) {};  };
+   {public : ArgumentError(const std::string& message = "")
+       : BaseException("", message) {};  };
    
    class GMAT_API IllegalTime   : public BaseException
-   {public : IllegalTime(const wxString& message = wxT(""))
-       : BaseException(wxT(""), message) {};  };
+   {public : IllegalTime(const std::string& message = "")
+       : BaseException("", message) {};  };
 };
 
 namespace GmatMathUtil

@@ -33,7 +33,7 @@ class GMAT_API MODEcAxes : public MeanOfDateAxes
 public:
 
    // default constructor
-   MODEcAxes(const wxString &itsName = wxT(""));
+   MODEcAxes(const std::string &itsName = "");
    // copy constructor
    MODEcAxes(const MODEcAxes &mod);
    // operator = for assignment
@@ -50,11 +50,11 @@ public:
 
    // Parameter access methods - overridden from GmatBase
    /* placeholder - may be needed later
-   virtual wxString     GetParameterText(const Integer id) const;     
-   virtual Integer         GetParameterID(const wxString &str) const; 
+   virtual std::string     GetParameterText(const Integer id) const;     
+   virtual Integer         GetParameterID(const std::string &str) const; 
    virtual Gmat::ParameterType
                            GetParameterType(const Integer id) const;
-   virtual wxString     GetParameterTypeString(const Integer id) const;
+   virtual std::string     GetParameterTypeString(const Integer id) const;
     */
    
 protected:
@@ -64,7 +64,7 @@ protected:
       MODEcAxesParamCount = MeanOfDateAxesParamCount,
    };
    
-   //static const wxString PARAMETER_TEXT[MODEcAxesParamCount - 
+   //static const std::string PARAMETER_TEXT[MODEcAxesParamCount - 
    //                                        MeanOfDateAxesParamCount];
    
    //static const Gmat::ParameterType PARAMETER_TYPE[MODEcAxesParamCount - 

@@ -34,7 +34,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  CreateCelestialBody(wxString ofType, wxString withName)
+//  CreateCelestialBody(std::string ofType, std::string withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested CelestialBody 
@@ -48,18 +48,18 @@
  */
 //------------------------------------------------------------------------------
 CelestialBody* CelestialBodyFactory::CreateCelestialBody(
-                                     const wxString &ofType,
-                                     const wxString &withName)
+                                     const std::string &ofType,
+                                     const std::string &withName)
 {
-   if (ofType == wxT("Star"))
+   if (ofType == "Star")
       return new Star(withName);
-   else if (ofType == wxT("Planet"))
+   else if (ofType == "Planet")
       return new Planet(withName);
-   else if (ofType == wxT("Moon"))
+   else if (ofType == "Moon")
       return new Moon(withName);
-   else if (ofType == wxT("Comet"))
+   else if (ofType == "Comet")
       return new Comet(withName);
-   else if (ofType == wxT("Asteroid"))
+   else if (ofType == "Asteroid")
       return new Asteroid(withName);
    // add more here ??  KBOs?  .......
    else
@@ -83,11 +83,11 @@ Factory(Gmat::CELESTIAL_BODY)
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("Star"));
-      creatables.push_back(wxT("Planet"));
-      creatables.push_back(wxT("Moon"));
-      creatables.push_back(wxT("Comet"));
-      creatables.push_back(wxT("Asteroid"));
+      creatables.push_back("Star");
+      creatables.push_back("Planet");
+      creatables.push_back("Moon");
+      creatables.push_back("Comet");
+      creatables.push_back("Asteroid");
    }
 }
 
@@ -107,11 +107,11 @@ Factory(createList,Gmat::CELESTIAL_BODY)
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("Star"));
-      creatables.push_back(wxT("Planet"));
-      creatables.push_back(wxT("Moon"));
-      creatables.push_back(wxT("Comet"));
-      creatables.push_back(wxT("Asteroid"));
+      creatables.push_back("Star");
+      creatables.push_back("Planet");
+      creatables.push_back("Moon");
+      creatables.push_back("Comet");
+      creatables.push_back("Asteroid");
    }
 }
 
@@ -122,7 +122,7 @@ Factory(createList,Gmat::CELESTIAL_BODY)
  * This method creates an object of the class CelestialBodyFactory
  * (copy constructor).
  *
- * @param <fact> the factory object to copy to wxT("this") factory.
+ * @param <fact> the factory object to copy to "this" factory.
  */
 //------------------------------------------------------------------------------
 CelestialBodyFactory::CelestialBodyFactory(const CelestialBodyFactory &fact) :
@@ -130,11 +130,11 @@ Factory(fact)
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("Star"));
-      creatables.push_back(wxT("Planet"));
-      creatables.push_back(wxT("Moon"));
-      creatables.push_back(wxT("Comet"));
-      creatables.push_back(wxT("Asteroid"));
+      creatables.push_back("Star");
+      creatables.push_back("Planet");
+      creatables.push_back("Moon");
+      creatables.push_back("Comet");
+      creatables.push_back("Asteroid");
    }
 }
 
@@ -144,10 +144,10 @@ Factory(fact)
 /**
  * Assignment operator for the CelestialBodyFactory class.
  *
- * @param <fact> the CelestialBodyFactory object whose data to assign to wxT("this")
+ * @param <fact> the CelestialBodyFactory object whose data to assign to "this"
  *               factory.
  *
- * @return wxT("this") CelestialBodyFactory with data of input factory fact.
+ * @return "this" CelestialBodyFactory with data of input factory fact.
  */
 //------------------------------------------------------------------------------
 CelestialBodyFactory& CelestialBodyFactory::operator= (
@@ -157,11 +157,11 @@ CelestialBodyFactory& CelestialBodyFactory::operator= (
    Factory::operator=(fact);
    if (creatables.empty())
    {
-      creatables.push_back(wxT("Star"));
-      creatables.push_back(wxT("Planet"));
-      creatables.push_back(wxT("Moon"));
-      creatables.push_back(wxT("Comet"));
-      creatables.push_back(wxT("Asteroid"));
+      creatables.push_back("Star");
+      creatables.push_back("Planet");
+      creatables.push_back("Moon");
+      creatables.push_back("Comet");
+      creatables.push_back("Asteroid");
    }
    return *this;
 }

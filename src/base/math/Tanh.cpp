@@ -33,8 +33,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Tanh::Tanh(const wxString &nomme)
-   : MathFunction(wxT("Tanh"), nomme)
+Tanh::Tanh(const std::string &nomme)
+   : MathFunction("Tanh", nomme)
 {
 }
 
@@ -93,7 +93,7 @@ void Tanh::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
    leftNode->GetOutputInfo(type1, row1, col1);
    
    if (type1 != Gmat::REAL_TYPE)
-      throw MathException(wxT("Left is not scalar, so cannot do Tanh().\n"));  
+      throw MathException("Left is not scalar, so cannot do Tanh().\n");  
    else
    {
       type = type1;
@@ -114,7 +114,7 @@ void Tanh::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 bool Tanh::ValidateInputs()
 {
    if (leftNode == NULL)
-      throw MathException(wxT("Tanh() - Missing input arguments.\n"));
+      throw MathException("Tanh() - Missing input arguments.\n");
    
    Integer type1, row1, col1; // Left node
    

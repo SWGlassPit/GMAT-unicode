@@ -34,7 +34,7 @@ class GMAT_API GeocentricSolarEclipticAxes : public ObjectReferencedAxes
 public:
 
    // default constructor
-   GeocentricSolarEclipticAxes(const wxString &itsName = wxT(""));
+   GeocentricSolarEclipticAxes(const std::string &itsName = "");
    // copy constructor
    GeocentricSolarEclipticAxes(const GeocentricSolarEclipticAxes &gse);
    // operator = for assignment

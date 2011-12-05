@@ -40,7 +40,7 @@ class GMAT_API ConditionalBranch : public BranchCommand
 {
 public:
    // default constructor
-   ConditionalBranch(const wxString &typeStr);
+   ConditionalBranch(const std::string &typeStr);
    // copy constructor
    ConditionalBranch(const ConditionalBranch &cb);
    // operator =
@@ -49,11 +49,11 @@ public:
    virtual ~ConditionalBranch();
          
    // Method to set up the condition(s) for the conditional branch commands
-   virtual bool         SetCondition(const wxString &lhs, 
-                                     const wxString &operation,
-                                     const wxString &rhs,
+   virtual bool         SetCondition(const std::string &lhs, 
+                                     const std::string &operation,
+                                     const std::string &rhs,
                                      Integer atIndex = -999);
-   virtual bool         SetConditionOperator(const wxString &op,
+   virtual bool         SetConditionOperator(const std::string &op,
                                              Integer atIndex = -999);
    virtual bool         RemoveCondition(Integer atIndex);
    virtual bool         RemoveConditionOperator(Integer atIndex);
@@ -63,49 +63,49 @@ public:
    
    // inherited from GmatBase
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                     const wxString &oldName,
-                                     const wxString &newName);
+                                     const std::string &oldName,
+                                     const std::string &newName);
    virtual const ObjectTypeArray&
                        GetRefObjectTypeArray();
    virtual const StringArray&
                        GetRefObjectNameArray(const Gmat::ObjectType type);
    
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name);
+                                     const std::string &name);
    
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name,
+                                     const std::string &name,
                                      const Integer index);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name,
+                                     const std::string &name,
                                      const Integer index);
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    
    virtual Integer      GetIntegerParameter(const Integer id) const;
-   virtual Integer      GetIntegerParameter(const wxString &label) const;
-   virtual wxString  GetStringParameter(const Integer id,
+   virtual Integer      GetIntegerParameter(const std::string &label) const;
+   virtual std::string  GetStringParameter(const Integer id,
                                            const Integer index) const;
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
-   virtual wxString  GetStringParameter(const wxString &label,
+   virtual std::string  GetStringParameter(const std::string &label,
                                            const Integer index) const;
-   virtual bool         SetStringParameter(const wxString &label, 
-                                           const wxString &value,
+   virtual bool         SetStringParameter(const std::string &label, 
+                                           const std::string &value,
                                            const Integer index);
    virtual const StringArray& 
                         GetStringArrayParameter(const Integer id) const; 
    virtual const StringArray& 
-                        GetStringArrayParameter(const wxString &label) const;
+                        GetStringArrayParameter(const std::string &label) const;
 
    virtual const StringArray& 
                        GetWrapperObjectNameArray();
    virtual bool        SetElementWrapper(ElementWrapper* toWrapper,
-                                         const wxString &withName);
+                                         const std::string &withName);
    virtual void        ClearWrappers();
    
 protected:
@@ -114,10 +114,10 @@ protected:
    virtual bool         EvaluateAllConditions();
    
    virtual bool         SetStringArrayValue(Integer forArray, 
-                                            const wxString &toValue,
+                                            const std::string &toValue,
                                             Integer forIndex);
                                             
-   wxString          GetConditionalString();
+   std::string          GetConditionalString();
    
    enum
    {
@@ -130,7 +130,7 @@ protected:
       ConditionalBranchParamCount
    };
 
-   static const wxString
+   static const std::string
    PARAMETER_TEXT[ConditionalBranchParamCount - BranchCommandParamCount];
    
    static const Gmat::ParameterType
@@ -154,8 +154,8 @@ protected:
       NumberOfLogicalOperators
    };
 
-   static const wxString OPTYPE_TEXT[NumberOfOperators];
-   static const wxString LOGICAL_OPTYPE_TEXT[NumberOfLogicalOperators];
+   static const std::string OPTYPE_TEXT[NumberOfOperators];
+   static const std::string LOGICAL_OPTYPE_TEXT[NumberOfLogicalOperators];
 
    /// Number of conditions for the conditional branch commands
    Integer                    numberOfConditions;

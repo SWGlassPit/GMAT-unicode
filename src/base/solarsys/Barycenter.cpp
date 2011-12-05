@@ -34,10 +34,10 @@
 //---------------------------------
 // static data
 //---------------------------------
-//const wxString
+//const std::string
 //Barycenter::PARAMETER_TEXT[BarycenterParamCount - CalculatedPointParamCount] =
 //{
-//   wxT(""),
+//   "",
 //};
 
 //const Gmat::ParameterType
@@ -50,7 +50,7 @@
 // public methods
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  Barycenter(const wxString &itsName)
+//  Barycenter(const std::string &itsName)
 //------------------------------------------------------------------------------
 /**
  * This method creates an object of the Barycenter class
@@ -59,14 +59,14 @@
  * @param <itsName> parameter indicating the name of the barycenter.
  */
 //------------------------------------------------------------------------------
-Barycenter::Barycenter(const wxString &itsName) :
-   CalculatedPoint(wxT("Barycenter"), itsName),
+Barycenter::Barycenter(const std::string &itsName) :
+   CalculatedPoint("Barycenter", itsName),
    isBuiltIn      (false),
-   builtInType    (wxT("")),
+   builtInType    (""),
    builtInSP      (NULL)
 {
    objectTypes.push_back(Gmat::BARYCENTER);
-   objectTypeNames.push_back(wxT("Barycenter"));
+   objectTypeNames.push_back("Barycenter");
    parameterCount = BarycenterParamCount;
 
 }
@@ -96,10 +96,10 @@ Barycenter::Barycenter(const Barycenter &bary) :
 /**
  * Assignment operator for the Barycenter class.
  *
- * @param <bary> the Barycenter object whose data to assign to wxT("this")
+ * @param <bary> the Barycenter object whose data to assign to "this"
  *             calculated point.
  *
- * @return wxT("this") Barycenter with data of input Barycenter bary.
+ * @return "this" Barycenter with data of input Barycenter bary.
  */
 //------------------------------------------------------------------------------
 Barycenter& Barycenter::operator=(const Barycenter &bary)
@@ -145,7 +145,7 @@ const Rvector6 Barycenter::GetMJ2000State(const A1Mjd &atTime)
    if (isBuiltIn)
    {
       #ifdef DEBUG_BARYCENTER_STATE
-         MessageInterface::ShowMessage(wxT("Computing state for Barycenter %s, whose builtInSP is %s\n"),
+         MessageInterface::ShowMessage("Computing state for Barycenter %s, whose builtInSP is %s\n",
                instanceName.c_str(), (builtInSP->GetName()).c_str());
       #endif
       return builtInSP->GetMJ2000State(atTime);
@@ -153,7 +153,7 @@ const Rvector6 Barycenter::GetMJ2000State(const A1Mjd &atTime)
    // otherwise, sum the masses and states
    CheckBodies();
    #ifdef DEBUG_BARYCENTER
-      MessageInterface::ShowMessage(wxT("Entering BaryCenter;:GetMJ2000EqState at time %12.10f\n"),
+      MessageInterface::ShowMessage("Entering BaryCenter;:GetMJ2000EqState at time %12.10f\n",
             atTime.Get());
    #endif
    Real     bodyMass = 0.0;
@@ -177,16 +177,16 @@ const Rvector6 Barycenter::GetMJ2000State(const A1Mjd &atTime)
       bodyVel     = bodyState.GetV();
       weight      = bodyMass/sumMass;
       #ifdef DEBUG_BARYCENTER
-         MessageInterface::ShowMessage(wxT("Mass (and weight) of body %s = %12.10f (%12.10f)\n"),
+         MessageInterface::ShowMessage("Mass (and weight) of body %s = %12.10f (%12.10f)\n",
                ((bodyList.at(i))->GetName()).c_str(), bodyMass, weight);
-         MessageInterface::ShowMessage(wxT("    pos = %s\n"), (bodyPos.ToString()).c_str());
-         MessageInterface::ShowMessage(wxT("    vel = %s\n"), (bodyVel.ToString()).c_str());
+         MessageInterface::ShowMessage("    pos = %s\n", (bodyPos.ToString()).c_str());
+         MessageInterface::ShowMessage("    vel = %s\n", (bodyVel.ToString()).c_str());
       #endif
       sumMassPos += (weight * bodyPos);
       sumMassVel += (weight * bodyVel);
    }
    #ifdef DEBUG_BARYCENTER
-      MessageInterface::ShowMessage(wxT("sumMassPos = %s\n"),
+      MessageInterface::ShowMessage("sumMassPos = %s\n",
             (sumMassPos.ToString()).c_str());
    #endif
    return Rvector6(sumMassPos(0), sumMassPos(1), sumMassPos(2),
@@ -254,7 +254,7 @@ Real Barycenter::GetMass()
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -265,7 +265,7 @@ Real Barycenter::GetMass()
  *
  */
 //------------------------------------------------------------------------------
-/*wxString Barycenter::GetParameterText(const Integer id) const
+/*std::string Barycenter::GetParameterText(const Integer id) const
 {
    if (id >= CalculatedPointParamCount && id < BarycenterParamCount)
       return PARAMETER_TEXT[id - CalculatedPointParamCount];
@@ -273,7 +273,7 @@ Real Barycenter::GetMass()
 }*/
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -284,7 +284,7 @@ Real Barycenter::GetMass()
  *
  */
 //------------------------------------------------------------------------------
-/*Integer     Barycenter::GetParameterID(const wxString &str) const
+/*Integer     Barycenter::GetParameterID(const std::string &str) const
 {
    for (Integer i = CalculatedPointParamCount; i < BarycenterParamCount; i++)
    {
@@ -316,7 +316,7 @@ Real Barycenter::GetMass()
 }*/
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -327,7 +327,7 @@ Real Barycenter::GetMass()
  *
  */
 //------------------------------------------------------------------------------
-/*wxString Barycenter::GetParameterTypeString(const Integer id) const
+/*std::string Barycenter::GetParameterTypeString(const Integer id) const
 {
    return CalculatedPoint::PARAM_TYPE_STRING[GetParameterType(id)];
 }*/
@@ -360,7 +360,7 @@ GmatBase* Barycenter::Clone() const
 void Barycenter::Copy(const GmatBase* orig)
 {
    // We don't want to copy instanceName
-   wxString name = instanceName;
+   std::string name = instanceName;
    operator=(*((Barycenter *)(orig)));
    instanceName = name;
 }
@@ -378,29 +378,29 @@ void Barycenter::Copy(const GmatBase* orig)
 bool Barycenter::Initialize()
 {
    #ifdef DEBUG_BARYCENTER_BODIES
-      MessageInterface::ShowMessage(wxT("Entering Barycenter::Initialize\n   bodyNames:\n"));
+      MessageInterface::ShowMessage("Entering Barycenter::Initialize\n   bodyNames:\n");
       for (unsigned int ii = 0; ii < bodyNames.size(); ii++)
-         MessageInterface::ShowMessage(wxT("   %d    %s\n"), ii, (bodyNames.at(ii)).c_str());
-      MessageInterface::ShowMessage(wxT("and defaultBodies:\n"));
+         MessageInterface::ShowMessage("   %d    %s\n", ii, (bodyNames.at(ii)).c_str());
+      MessageInterface::ShowMessage("and defaultBodies:\n");
       for (unsigned int ii = 0; ii < defaultBodies.size(); ii++)
-         MessageInterface::ShowMessage(wxT("   %d    %s\n"), ii, (defaultBodies.at(ii)).c_str());
+         MessageInterface::ShowMessage("   %d    %s\n", ii, (defaultBodies.at(ii)).c_str());
    #endif
    if (isBuiltIn)
    {
       // create the builtInSP here
-      if ((builtInType == wxT("SSB")) || (builtInType == GmatSolarSystemDefaults::SOLAR_SYSTEM_BARYCENTER_NAME))
+      if ((builtInType == "SSB") || (builtInType == GmatSolarSystemDefaults::SOLAR_SYSTEM_BARYCENTER_NAME))
       {
          builtInSP = theSolarSystem->GetSpecialPoint(GmatSolarSystemDefaults::SOLAR_SYSTEM_BARYCENTER_NAME);
          if (!builtInSP)
          {
-            wxString errmsg = wxT("No special point \"");
-            errmsg += GmatSolarSystemDefaults::SOLAR_SYSTEM_BARYCENTER_NAME + wxT("\" found in Solar System.\n");
+            std::string errmsg = "No special point \"";
+            errmsg += GmatSolarSystemDefaults::SOLAR_SYSTEM_BARYCENTER_NAME + "\" found in Solar System.\n";
             throw SolarSystemException(errmsg);
          }
       }
       else // no others currently available
       {
-         throw SolarSystemException(wxT("Unknown built-in barycenter\n"));
+         throw SolarSystemException("Unknown built-in barycenter\n");
       }
    }
    else
@@ -412,14 +412,14 @@ bool Barycenter::Initialize()
       }
       if (bodyNames.empty())
       {
-         wxString errmsg = wxT("No celestial body specified for Barycenter ");
-         errmsg += instanceName + wxT("\n");
+         std::string errmsg = "No celestial body specified for Barycenter ";
+         errmsg += instanceName + "\n";
          throw SolarSystemException(errmsg);
       }
       #ifdef DEBUG_BARYCENTER_BODIES
-         MessageInterface::ShowMessage(wxT("at end of Barycenter::Initialize\n   bodyNames:\n"));
+         MessageInterface::ShowMessage("at end of Barycenter::Initialize\n   bodyNames:\n");
          for (unsigned int ii = 0; ii < bodyNames.size(); ii++)
-            MessageInterface::ShowMessage(wxT("   %d    %s\n"), ii, (bodyNames.at(ii)).c_str());
+            MessageInterface::ShowMessage("   %d    %s\n", ii, (bodyNames.at(ii)).c_str());
       #endif
    }
    return CalculatedPoint::Initialize();
@@ -431,7 +431,7 @@ bool Barycenter::IsBuiltIn()
    return isBuiltIn;
 }
 
-void Barycenter::SetIsBuiltIn(bool builtIn, const wxString &ofType)
+void Barycenter::SetIsBuiltIn(bool builtIn, const std::string &ofType)
 {
    isBuiltIn   = builtIn;
    builtInType = ofType;
@@ -440,8 +440,8 @@ void Barycenter::SetIsBuiltIn(bool builtIn, const wxString &ofType)
 StringArray Barycenter::GetBuiltInNames()
 {
    StringArray spNames;
-   if (builtInType ==  wxT("SSB"))
-      spNames.push_back(wxT("SolarSystemBarycenter"));
+   if (builtInType ==  "SSB")
+      spNames.push_back("SolarSystemBarycenter");
    return spNames;
 }
 
@@ -462,12 +462,12 @@ StringArray Barycenter::GetBuiltInNames()
 void Barycenter::CheckBodies()
 {
    if (bodyNames.empty())
-      throw SolarSystemException(wxT("Attempting to use Barycenter with no bodies set ...\n"));
+      throw SolarSystemException("Attempting to use Barycenter with no bodies set ...\n");
 
    for (unsigned int i = 0; i < bodyList.size() ; i++)
       if ((bodyList.at(i))->GetType() != Gmat::CELESTIAL_BODY)
          throw SolarSystemException(
-         wxT("Barycenter defined incorrectly with non-Celestial Body components"));
+         "Barycenter defined incorrectly with non-Celestial Body components");
 }
 
 

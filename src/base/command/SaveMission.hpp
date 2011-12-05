@@ -41,29 +41,29 @@ public:
    virtual bool         InterpretAction();
    virtual GmatBase*    Clone(void) const;
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
    // Parameter accessors
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const wxString &label) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const std::string &label) const;
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label, 
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label, 
+                                           const std::string &value);
    
    // for generating string
-   virtual const wxString&
+   virtual const std::string&
                         GetGeneratingString(
                            Gmat::WriteMode mode = Gmat::SCRIPTING,
-                           const wxString &prefix = wxT(""),
-                           const wxString &useName = wxT(""));
+                           const std::string &prefix = "",
+                           const std::string &useName = "");
    
 protected:
    // Parameter IDs
@@ -73,9 +73,9 @@ protected:
       SaveMissionParamCount
    };
    
-   wxString fileName;
+   std::string fileName;
    
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[SaveMissionParamCount - GmatCommandParamCount];
    static const Gmat::ParameterType
       PARAMETER_TYPE[SaveMissionParamCount - GmatCommandParamCount];

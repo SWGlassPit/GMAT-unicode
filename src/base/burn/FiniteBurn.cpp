@@ -38,12 +38,12 @@
 //---------------------------------
 
 /// Labels used for the finite burn parameters.
-const wxString
+const std::string
 FiniteBurn::PARAMETER_TEXT[FiniteBurnParamCount - BurnParamCount] =
 {
-   wxT("Thrusters"),
-   wxT("Tanks"),
-   wxT("BurnScaleFactor")
+   "Thrusters",
+   "Tanks",
+   "BurnScaleFactor"
 };
 
 /// Types of the parameters used by finite burns.
@@ -61,7 +61,7 @@ FiniteBurn::PARAMETER_TYPE[FiniteBurnParamCount - BurnParamCount] =
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  FiniteBurn(const wxString &nomme)
+//  FiniteBurn(const std::string &nomme)
 //------------------------------------------------------------------------------
 /**
  * FiniteBurn constructor (default constructor).
@@ -69,11 +69,11 @@ FiniteBurn::PARAMETER_TYPE[FiniteBurnParamCount - BurnParamCount] =
  * @param <nomme> Name of the constructed object.
  */
 //------------------------------------------------------------------------------
-FiniteBurn::FiniteBurn(const wxString &nomme) :
-   Burn (Gmat::FINITE_BURN, wxT("FiniteBurn"), nomme)
+FiniteBurn::FiniteBurn(const std::string &nomme) :
+   Burn (Gmat::FINITE_BURN, "FiniteBurn", nomme)
 {
    objectTypes.push_back(Gmat::FINITE_BURN);
-   objectTypeNames.push_back(wxT("FiniteBurn"));
+   objectTypeNames.push_back("FiniteBurn");
    parameterCount = FiniteBurnParamCount;
    
    thrusterNames.clear();
@@ -146,11 +146,11 @@ void FiniteBurn::SetSpacecraftToManeuver(Spacecraft *sat)
 {
    #ifdef DEBUG_FINITEBURN_SET
    MessageInterface::ShowMessage
-      (wxT("FiniteBurn::SetSpacecraftToManeuver() sat=<%p>'%s'\n"), sat,
+      ("FiniteBurn::SetSpacecraftToManeuver() sat=<%p>'%s'\n", sat,
        sat->GetName().c_str());
    Real *state = (sat->GetState()).GetState();
    MessageInterface::ShowMessage
-      (wxT("   state = [%.13f %.13f %.13f %.13f %.13f %.13f]\n"), state[0],
+      ("   state = [%.13f %.13f %.13f %.13f %.13f %.13f]\n", state[0],
        state[1], state[2], state[3], state[4], state[5]);
    #endif
    
@@ -170,7 +170,7 @@ void FiniteBurn::SetSpacecraftToManeuver(Spacecraft *sat)
    
    #ifdef DEBUG_FINITEBURN_SET
    MessageInterface::ShowMessage
-      (wxT("FiniteBurn::SetSpacecraftToManeuver() returning\n"));
+      ("FiniteBurn::SetSpacecraftToManeuver() returning\n");
    #endif
 }
 
@@ -199,32 +199,32 @@ bool FiniteBurn::Fire(Real *burnData, Real epoch)
 {
    #ifdef DEBUG_FINITEBURN_FIRE
       MessageInterface::ShowMessage
-         (wxT("FiniteBurn::Fire() this<%p>'%s' entered, epoch=%f, spacecraft=<%p>'%s'\n"),
+         ("FiniteBurn::Fire() this<%p>'%s' entered, epoch=%f, spacecraft=<%p>'%s'\n",
           this, instanceName.c_str(), epoch, spacecraft,
-          spacecraft ? spacecraft->GetName().c_str() : wxT("NULL"));
+          spacecraft ? spacecraft->GetName().c_str() : "NULL");
    #endif
    
    if (initialized == false)
       Initialize();
    
    if (!spacecraft)
-      throw BurnException(wxT("Maneuver initial state undefined (No spacecraft?)"));
+      throw BurnException("Maneuver initial state undefined (No spacecraft?)");
    
    // Accumulate the individual accelerations from the thrusters
    Real dm = 0.0, tMass, tOverM, *dir, norm;
    deltaV[0] = deltaV[1] = deltaV[2] = 0.0;
    Thruster *current;
    
-   tMass = spacecraft->GetRealParameter(wxT("TotalMass"));
+   tMass = spacecraft->GetRealParameter("TotalMass");
    
    #ifdef DEBUG_BURN_ORIGIN
    Real *satState = spacecraft->GetState().GetState();
    MessageInterface::ShowMessage
-      (wxT("FiniteBurn Vectors:\n   ")
-       wxT("Sat   = [%.15f %.15f %.15f %.15f %.15f %.15f]\n   ")
-       wxT("Frame = [%.15f %.15f %.15f\n   ") 
-       wxT("         %.15f %.15f %.15f\n   ")
-       wxT("         %.15f %.15f %.15f]\n\n"),
+      ("FiniteBurn Vectors:\n   "
+       "Sat   = [%.15f %.15f %.15f %.15f %.15f %.15f]\n   "
+       "Frame = [%.15f %.15f %.15f\n   " 
+       "         %.15f %.15f %.15f\n   "
+       "         %.15f %.15f %.15f]\n\n",
        satState[0], satState[1], satState[2], satState[3], satState[4], satState[5], 
        frameBasis[0][0], frameBasis[0][1], frameBasis[0][2],
        frameBasis[1][0], frameBasis[1][1], frameBasis[1][2],
@@ -236,14 +236,14 @@ bool FiniteBurn::Fire(Real *burnData, Real epoch)
    {
       #ifdef DEBUG_FINITE_BURN
          MessageInterface::ShowMessage
-            (wxT("   Accessing thruster '%s' from spacecraft <%p>'%s'\n"), (*i).c_str(),
+            ("   Accessing thruster '%s' from spacecraft <%p>'%s'\n", (*i).c_str(),
              spacecraft, spacecraft->GetName().c_str());
       #endif
       
       current = (Thruster *)spacecraft->GetRefObject(Gmat::THRUSTER, *i);
       if (!current)
-         throw BurnException(wxT("FiniteBurn::Fire requires thruster named \"") +
-            (*i) + wxT("\" on spacecraft ") + spacecraft->GetName());
+         throw BurnException("FiniteBurn::Fire requires thruster named \"" +
+            (*i) + "\" on spacecraft " + spacecraft->GetName());
       
       // Save current thruster so that GetRefObject() can return it (LOJ: 2009.08.28)
       thrusterMap[current->GetName()] = current;
@@ -256,14 +256,14 @@ bool FiniteBurn::Fire(Real *burnData, Real epoch)
       
       #ifdef DEBUG_FINITE_BURN
          MessageInterface::ShowMessage
-         (wxT("   Thruster Direction: %.15f  %.15f  %.15f\n")
-          wxT("                 norm: %.15f\n"), dir[0], dir[1], dir[2], norm);
+         ("   Thruster Direction: %.15f  %.15f  %.15f\n"
+          "                 norm: %.15f\n", dir[0], dir[1], dir[2], norm);
       #endif
          
       if (norm == 0.0)
-         throw BurnException(wxT("FiniteBurn::Fire thruster ") + (*i) +
-                             wxT(" on spacecraft ") + spacecraft->GetName() +
-                             wxT(" has no direction."));
+         throw BurnException("FiniteBurn::Fire thruster " + (*i) +
+                             " on spacecraft " + spacecraft->GetName() +
+                             " has no direction.");
       
       dm += current->CalculateMassFlow();
       //tOverM = current->thrust / (tMass * norm * 1000.0); //old code
@@ -275,13 +275,13 @@ bool FiniteBurn::Fire(Real *burnData, Real epoch)
       deltaV[2] += dir[2] * tOverM;
       
       #ifdef DEBUG_FINITE_BURN
-         MessageInterface::ShowMessage(wxT("   Thruster %s = %s details:\n"), 
+         MessageInterface::ShowMessage("   Thruster %s = %s details:\n", 
             (*i).c_str(), current->GetName().c_str());
          MessageInterface::ShowMessage(
-            wxT("   thrust   = %.15f\n")
-            wxT("       dM   = %.15e\n      Mass  = %.15f\n")
-            wxT("      TSF   = %.15f\n      |Acc| = %.15e\n      ")
-            wxT("Acc   = [%.15e   %.15e   %.15e]\n"), current->thrust,
+            "   thrust   = %.15f\n"
+            "       dM   = %.15e\n      Mass  = %.15f\n"
+            "      TSF   = %.15f\n      |Acc| = %.15e\n      "
+            "Acc   = [%.15e   %.15e   %.15e]\n", current->thrust,
             dm, tMass, current->thrustScaleFactor, tOverM,
             deltaV[0], deltaV[1], deltaV[2]);
       #endif
@@ -301,8 +301,8 @@ bool FiniteBurn::Fire(Real *burnData, Real epoch)
    
    #ifdef DEBUG_FINITEBURN_FIRE
       MessageInterface::ShowMessage(
-          wxT("FiniteBurn::Fire() this<%p>'%s' returning\n")
-          wxT("   Acceleration:  %.15e  %.15e  %.15e  dm: %.15e\n"), this,
+          "FiniteBurn::Fire() this<%p>'%s' returning\n"
+          "   Acceleration:  %.15e  %.15e  %.15e  dm: %.15e\n", this,
           GetName().c_str(), burnData[0], burnData[1], burnData[2], dm);
    #endif
 
@@ -311,7 +311,7 @@ bool FiniteBurn::Fire(Real *burnData, Real epoch)
 
 
 //------------------------------------------------------------------------------
-//  wxString GetParameterText(const Integer id) const
+//  std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Gets the name of the parameter with the input id.
@@ -321,7 +321,7 @@ bool FiniteBurn::Fire(Real *burnData, Real epoch)
  * @return The string name of the parameter.
  */
 //------------------------------------------------------------------------------
-wxString FiniteBurn::GetParameterText(const Integer id) const
+std::string FiniteBurn::GetParameterText(const Integer id) const
 {
    if (id >= BurnParamCount && id < FiniteBurnParamCount)
       return PARAMETER_TEXT[id - BurnParamCount];
@@ -331,7 +331,7 @@ wxString FiniteBurn::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer GetParameterID(const wxString &str) const
+//  Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * Gets the id corresponding to a named parameter.
@@ -341,46 +341,46 @@ wxString FiniteBurn::GetParameterText(const Integer id) const
  * @return The ID.
  */
 //------------------------------------------------------------------------------
-Integer FiniteBurn::GetParameterID(const wxString &str) const
+Integer FiniteBurn::GetParameterID(const std::string &str) const
 {
    // Check for deprecated parameters
-   if (str == wxT("Tanks"))
+   if (str == "Tanks")
    {
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** \"Tanks\" field of FiniteBurn ")
-          wxT("is deprecated and will be removed from a future build.\n"));
+         ("*** WARNING *** \"Tanks\" field of FiniteBurn "
+          "is deprecated and will be removed from a future build.\n");
       return FUEL_TANK;
    }
    
-   if (str == wxT("BurnScaleFactor"))
+   if (str == "BurnScaleFactor")
    {
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** \"BurnScaleFactor\" field of FiniteBurn ")
-          wxT("is deprecated and will be removed from a future build.\n"));
+         ("*** WARNING *** \"BurnScaleFactor\" field of FiniteBurn "
+          "is deprecated and will be removed from a future build.\n");
       return BURN_SCALE_FACTOR;
    }
    
-   if (str == wxT("CoordinateSystem"))
+   if (str == "CoordinateSystem")
    {
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** \"CoordinateSystem\" field of FiniteBurn ")
-          wxT("is deprecated and will be removed from a future build.\n"));
+         ("*** WARNING *** \"CoordinateSystem\" field of FiniteBurn "
+          "is deprecated and will be removed from a future build.\n");
       return COORDINATESYSTEM;
    }
    
-   if (str == wxT("Origin"))
+   if (str == "Origin")
    {
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** \"Origin\" field of FiniteBurn ")
-          wxT("is deprecated and will be removed from a future build.\n"));
+         ("*** WARNING *** \"Origin\" field of FiniteBurn "
+          "is deprecated and will be removed from a future build.\n");
       return BURNORIGIN;
    }
    
-   if (str == wxT("Axes"))
+   if (str == "Axes")
    {
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** \"Axes\" field of FiniteBurn ")
-          wxT("is deprecated and will be removed from a future build.\n"));
+         ("*** WARNING *** \"Axes\" field of FiniteBurn "
+          "is deprecated and will be removed from a future build.\n");
       return BURNAXES;
    }
    
@@ -415,7 +415,7 @@ Gmat::ParameterType FiniteBurn::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString GetParameterTypeString(const Integer id) const
+//  std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Gets the text description for the type of a parameter.
@@ -425,7 +425,7 @@ Gmat::ParameterType FiniteBurn::GetParameterType(const Integer id) const
  * @return The text description of the type of the parameter.
  */
 //------------------------------------------------------------------------------
-wxString FiniteBurn::GetParameterTypeString(const Integer id) const
+std::string FiniteBurn::GetParameterTypeString(const Integer id) const
 {
    return Burn::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -455,13 +455,13 @@ bool FiniteBurn::IsParameterReadOnly(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString GetStringParameter(const Integer id) const
+//  std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString FiniteBurn::GetStringParameter(const Integer id) const
+std::string FiniteBurn::GetStringParameter(const Integer id) const
 {
    // CoordinateSystem, Origin, Axes are not valid FiniteBurn parameters,
    // so handle here.
@@ -470,7 +470,7 @@ wxString FiniteBurn::GetStringParameter(const Integer id) const
    case COORDINATESYSTEM:
    case BURNORIGIN:
    case BURNAXES:
-      return wxT("Deprecated"); // just to ignore
+      return "Deprecated"; // just to ignore
    default:
       break;
    }
@@ -483,7 +483,7 @@ wxString FiniteBurn::GetStringParameter(const Integer id) const
 //  bool SetStringParameter(const Integer id, const Real value)
 //------------------------------------------------------------------------------
 /**
- * Sets the value for a wxString parameter.
+ * Sets the value for a std::string parameter.
  * 
  * @param <id>    Integer ID of the parameter.
  * @param <value> New value for the parameter.
@@ -491,7 +491,7 @@ wxString FiniteBurn::GetStringParameter(const Integer id) const
  * @return The value of the parameter.
  */
 //------------------------------------------------------------------------------
-bool FiniteBurn::SetStringParameter(const Integer id, const wxString &value)
+bool FiniteBurn::SetStringParameter(const Integer id, const std::string &value)
 {
    // CoordinateSystem, Origin, Axes are not valid FiniteBurn parameters,
    // so handle here.
@@ -523,7 +523,7 @@ bool FiniteBurn::SetStringParameter(const Integer id, const wxString &value)
 //                          const Integer index)
 //------------------------------------------------------------------------------
 /**
- * Sets the value for a specific wxString element in an array.
+ * Sets the value for a specific std::string element in an array.
  *
  * @param <id>    Integer ID of the parameter.
  * @param <value> New value for the parameter.
@@ -532,7 +532,7 @@ bool FiniteBurn::SetStringParameter(const Integer id, const wxString &value)
  * @return true on success
  */
 //------------------------------------------------------------------------------
-bool FiniteBurn::SetStringParameter(const Integer id, const wxString &value,
+bool FiniteBurn::SetStringParameter(const Integer id, const std::string &value,
                                     const Integer index)
 {
    if (id == FUEL_TANK)
@@ -544,14 +544,14 @@ bool FiniteBurn::SetStringParameter(const Integer id, const wxString &value,
    {
       count = thrusterNames.size();
       if (index > count)
-         throw BurnException(wxT("Attempting to write thruster ") + value +
-                  wxT(" past the allowed range for FiniteBurn ") + instanceName);
+         throw BurnException("Attempting to write thruster " + value +
+                  " past the allowed range for FiniteBurn " + instanceName);
       if (find(thrusterNames.begin(), thrusterNames.end(), value) != thrusterNames.end())
       {
          if (thrusterNames[index] == value)
             return true;
-         throw BurnException(wxT("Thruster ") + value +
-                  wxT(" already set for FiniteBurn ") + instanceName);
+         throw BurnException("Thruster " + value +
+                  " already set for FiniteBurn " + instanceName);
       }
       if (index == count)
          thrusterNames.push_back(value);
@@ -682,7 +682,7 @@ const StringArray& FiniteBurn::GetRefObjectNameArray(const Gmat::ObjectType type
 {
    #ifdef DEBUG_FINITEBURN_OBJECT
    MessageInterface::ShowMessage
-      (wxT("FiniteBurn::GetRefObjectNameArray() this=<%p>'%s' entered, type=%d\n"),
+      ("FiniteBurn::GetRefObjectNameArray() this=<%p>'%s' entered, type=%d\n",
        this, GetName().c_str(), type);
    #endif
    
@@ -699,10 +699,10 @@ const StringArray& FiniteBurn::GetRefObjectNameArray(const Gmat::ObjectType type
       
       #ifdef DEBUG_FINITEBURN_OBJECT
       MessageInterface::ShowMessage
-         (wxT("FiniteBurn::GetRefObjectNameArray() this=<%p>'%s' returning %d ")
-          wxT("ref. object names\n"), this, GetName().c_str(), refObjectNames.size());
+         ("FiniteBurn::GetRefObjectNameArray() this=<%p>'%s' returning %d "
+          "ref. object names\n", this, GetName().c_str(), refObjectNames.size());
       for (UnsignedInt i=0; i<refObjectNames.size(); i++)
-         MessageInterface::ShowMessage(wxT("   '%s'\n"), refObjectNames[i].c_str());
+         MessageInterface::ShowMessage("   '%s'\n", refObjectNames[i].c_str());
       #endif
       
       return refObjectNames;
@@ -710,8 +710,8 @@ const StringArray& FiniteBurn::GetRefObjectNameArray(const Gmat::ObjectType type
    
    #ifdef DEBUG_FINITEBURN_OBJECT
    MessageInterface::ShowMessage
-      (wxT("FiniteBurn::GetRefObjectNameArray() this=<%p>'%s' returning ")
-       wxT("Burn::GetRefObjectNameArray()\n"), this, GetName().c_str());
+      ("FiniteBurn::GetRefObjectNameArray() this=<%p>'%s' returning "
+       "Burn::GetRefObjectNameArray()\n", this, GetName().c_str());
    #endif
    
    return Burn::GetRefObjectNameArray(type);
@@ -719,14 +719,14 @@ const StringArray& FiniteBurn::GetRefObjectNameArray(const Gmat::ObjectType type
 
 
 //---------------------------------------------------------------------------
-// GmatBase* GetRefObject(const Gmat::ObjectType type, const wxString &name)
+// GmatBase* GetRefObject(const Gmat::ObjectType type, const std::string &name)
 //---------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
 GmatBase* FiniteBurn::GetRefObject(const Gmat::ObjectType type,
-                                   const wxString &name)
+                                   const std::string &name)
 {
    if (type == Gmat::THRUSTER)
    {
@@ -742,14 +742,14 @@ GmatBase* FiniteBurn::GetRefObject(const Gmat::ObjectType type,
 
 //---------------------------------------------------------------------------
 // bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                   const wxString &name)
+//                   const std::string &name)
 //---------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
 bool FiniteBurn::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                              const wxString &name)
+                              const std::string &name)
 {
    if (type == Gmat::THRUSTER)
    {
@@ -795,7 +795,7 @@ void FiniteBurn::Copy(const GmatBase* orig)
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /**
  * Renames reference object name used in this class.
@@ -808,12 +808,12 @@ void FiniteBurn::Copy(const GmatBase* orig)
  */
 //---------------------------------------------------------------------------
 bool FiniteBurn::RenameRefObject(const Gmat::ObjectType type,
-                                 const wxString &oldName,
-                                 const wxString &newName)
+                                 const std::string &oldName,
+                                 const std::string &newName)
 {
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("FiniteBurn::RenameRefObject() type=%s, oldName=%s, newName=%s\n"),
+      ("FiniteBurn::RenameRefObject() type=%s, oldName=%s, newName=%s\n",
        GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
    #endif
    
@@ -838,11 +838,11 @@ bool FiniteBurn::DepletesMass()
    for (ObjectArray::iterator th = thrusterArray.begin();
         th != thrusterArray.end(); ++th)
    {
-      if ((*th)->GetBooleanParameter(wxT("DecrementMass")))
+      if ((*th)->GetBooleanParameter("DecrementMass"))
       {
          retval = true;
          #ifdef DEBUG_MASS_FLOW
-            MessageInterface::ShowMessage(wxT("Thruster %s decrements mass\n"),
+            MessageInterface::ShowMessage("Thruster %s decrements mass\n",
                   (*th)->GetName().c_str());
          #endif
          // Save the mass depleting thruster pointer(s) for later access?
@@ -866,7 +866,7 @@ bool FiniteBurn::Initialize()
 {
    #ifdef DEBUG_FINITEBURN_INIT
    MessageInterface::ShowMessage
-      (wxT("FiniteBurn::Initialize() <%p>'%s' entered, spacecraft=<%p>\n"), this,
+      ("FiniteBurn::Initialize() <%p>'%s' entered, spacecraft=<%p>\n", this,
        GetName().c_str(), spacecraft);
    #endif
    
@@ -881,7 +881,7 @@ bool FiniteBurn::Initialize()
    
    #ifdef DEBUG_FINITEBURN_INIT
    MessageInterface::ShowMessage
-      (wxT("FiniteBurn::Initialize() <%p>'%s' returning %d\n"), this, GetName().c_str(),
+      ("FiniteBurn::Initialize() <%p>'%s' returning %d\n", this, GetName().c_str(),
        initialized);
    #endif
    
@@ -896,9 +896,9 @@ bool FiniteBurn::SetThrustersFromSpacecraft()
 {
    #ifdef DEBUG_FINITEBURN_SET
    MessageInterface::ShowMessage
-      (wxT("FiniteBurn::SetThrustersFromSpacecraft() entered, spacecraft=<%p>'%s'\n"),
-       spacecraft, spacecraft ? spacecraft->GetName().c_str() : wxT("NULL"));
-   MessageInterface::ShowMessage(wxT("   thrusterNames.size()=%d\n"), thrusterNames.size());
+      ("FiniteBurn::SetThrustersFromSpacecraft() entered, spacecraft=<%p>'%s'\n",
+       spacecraft, spacecraft ? spacecraft->GetName().c_str() : "NULL");
+   MessageInterface::ShowMessage("   thrusterNames.size()=%d\n", thrusterNames.size());
    #endif
    
    // Get thrusters and tanks associated to spacecraft
@@ -915,10 +915,10 @@ bool FiniteBurn::SetThrustersFromSpacecraft()
          // Only act on thrusters assigned to this burn
          if ((*th)->GetName() == *thName)
          {
-            Integer paramId = (*th)->GetParameterID(wxT("Tank"));
+            Integer paramId = (*th)->GetParameterID("Tank");
             StringArray tankNames = (*th)->GetStringArrayParameter(paramId);
             // Setup the tankNames
-            (*th)->TakeAction(wxT("ClearTankNames"));
+            (*th)->TakeAction("ClearTankNames");
             // Loop through each tank for the burn
             for (StringArray::iterator tankName = tankNames.begin();
                  tankName != tankNames.end(); ++tankName)
@@ -930,7 +930,7 @@ bool FiniteBurn::SetThrustersFromSpacecraft()
                   if ((*tnk)->GetName() == *tankName)
                   {
                      // Make the assignment
-                     (*th)->SetStringParameter(wxT("Tank"), *tankName);
+                     (*th)->SetStringParameter("Tank", *tankName);
                      (*th)->SetRefObject(*tnk, (*tnk)->GetType(), 
                                          (*tnk)->GetName());
                      break;
@@ -939,8 +939,8 @@ bool FiniteBurn::SetThrustersFromSpacecraft()
                   ++tnk;
                   if (tnk == tankArray.end())
                      throw BurnException
-                        (wxT("FiniteBurn::Initialize() cannot find tank ") +
-                         (*tankName) + wxT(" for burn ") + instanceName);
+                        ("FiniteBurn::Initialize() cannot find tank " +
+                         (*tankName) + " for burn " + instanceName);
                }
             }
          }
@@ -949,7 +949,7 @@ bool FiniteBurn::SetThrustersFromSpacecraft()
    
    #ifdef DEBUG_FINITEBURN_SET
    MessageInterface::ShowMessage
-      (wxT("FiniteBurn::SetThrustersFromSpacecraft() returning true\n"));
+      ("FiniteBurn::SetThrustersFromSpacecraft() returning true\n");
    #endif
    
    return true;

@@ -33,10 +33,10 @@
 //---------------------------------
 
 /// SPKPropagator parameter labels
-const wxString SPKPropagator::PARAMETER_TEXT[
+const std::string SPKPropagator::PARAMETER_TEXT[
                  SPKPropagatorParamCount - EphemerisPropagatorParamCount] =
 {
-      wxT("SPKFiles")                    //SPKFILENAMES
+      "SPKFiles"                    //SPKFILENAMES
 };
 
 /// SPKPropagator parameter types
@@ -52,7 +52,7 @@ const Gmat::ParameterType SPKPropagator::PARAMETER_TYPE[
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// SPKPropagator(const wxString &name)
+// SPKPropagator(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Default constructor
@@ -60,12 +60,12 @@ const Gmat::ParameterType SPKPropagator::PARAMETER_TYPE[
  * @param name The name of the object that gets constructed
  */
 //------------------------------------------------------------------------------
-SPKPropagator::SPKPropagator(const wxString &name) :
-   EphemerisPropagator        (wxT("SPK"), name),
+SPKPropagator::SPKPropagator(const std::string &name) :
+   EphemerisPropagator        ("SPK", name),
    skr                        (NULL)
 {
    // GmatBase data
-  objectTypeNames.push_back(wxT("SPK"));
+  objectTypeNames.push_back("SPK");
   parameterCount = SPKPropagatorParamCount;
 
   spkCentralBody = centralBody;
@@ -149,7 +149,7 @@ GmatBase* SPKPropagator::Clone() const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves the script string for a parameter
@@ -159,7 +159,7 @@ GmatBase* SPKPropagator::Clone() const
  * @return The string
  */
 //------------------------------------------------------------------------------
-wxString SPKPropagator::GetParameterText(const Integer id) const
+std::string SPKPropagator::GetParameterText(const Integer id) const
 {
    if (id >= EphemerisPropagatorParamCount && id < SPKPropagatorParamCount)
       return PARAMETER_TEXT[id - EphemerisPropagatorParamCount];
@@ -168,7 +168,7 @@ wxString SPKPropagator::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves the ID of a parameter
@@ -178,7 +178,7 @@ wxString SPKPropagator::GetParameterText(const Integer id) const
  * @return The parameter's ID
  */
 //------------------------------------------------------------------------------
-Integer SPKPropagator::GetParameterID(const wxString &str) const
+Integer SPKPropagator::GetParameterID(const std::string &str) const
 {
    for (Integer i = EphemerisPropagatorParamCount;
          i < SPKPropagatorParamCount; ++i)
@@ -211,7 +211,7 @@ Gmat::ParameterType SPKPropagator::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves a string description of a parameter's type
@@ -221,7 +221,7 @@ Gmat::ParameterType SPKPropagator::GetParameterType(const Integer id) const
  * @return The type of the parameter
  */
 //------------------------------------------------------------------------------
-wxString SPKPropagator::GetParameterTypeString(const Integer id) const
+std::string SPKPropagator::GetParameterTypeString(const Integer id) const
 {
    if (id >= EphemerisPropagatorParamCount && id < SPKPropagatorParamCount)
       return EphemerisPropagator::PARAM_TYPE_STRING[GetParameterType(id)];
@@ -230,7 +230,7 @@ wxString SPKPropagator::GetParameterTypeString(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterUnit(const Integer id) const
+// std::string GetParameterUnit(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * retrieves the dimensional units for a parameter
@@ -240,7 +240,7 @@ wxString SPKPropagator::GetParameterTypeString(const Integer id) const
  * @return The unit label
  */
 //------------------------------------------------------------------------------
-wxString SPKPropagator::GetParameterUnit(const Integer id) const
+std::string SPKPropagator::GetParameterUnit(const Integer id) const
 {
    return EphemerisPropagator::GetParameterUnit(id);
 }
@@ -266,7 +266,7 @@ bool SPKPropagator::IsParameterReadOnly(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// bool IsParameterReadOnly(const wxString &label) const
+// bool IsParameterReadOnly(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Reports if a parameter should be hidden from the users
@@ -276,14 +276,14 @@ bool SPKPropagator::IsParameterReadOnly(const Integer id) const
  * @return true if the paameter should be hidden, false if not
  */
 //------------------------------------------------------------------------------
-bool SPKPropagator::IsParameterReadOnly(const wxString &label) const
+bool SPKPropagator::IsParameterReadOnly(const std::string &label) const
 {
    return IsParameterReadOnly(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves a string parameter
@@ -293,14 +293,14 @@ bool SPKPropagator::IsParameterReadOnly(const wxString &label) const
  * @return The parameter's value
  */
 //------------------------------------------------------------------------------
-wxString SPKPropagator::GetStringParameter(const Integer id) const
+std::string SPKPropagator::GetStringParameter(const Integer id) const
 {
    return EphemerisPropagator::GetStringParameter(id);
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Sets a string parameter
@@ -312,12 +312,12 @@ wxString SPKPropagator::GetStringParameter(const Integer id) const
  */
 //------------------------------------------------------------------------------
 bool SPKPropagator::SetStringParameter(const Integer id,
-      const wxString &value)
+      const std::string &value)
 {
 
    if (id == SPKFILENAMES)
    {
-      if (value != wxT(""))
+      if (value != "")
          if (find(spkFileNames.begin(), spkFileNames.end(), value) ==
                spkFileNames.end())
             spkFileNames.push_back(value);
@@ -329,11 +329,11 @@ bool SPKPropagator::SetStringParameter(const Integer id,
    if ((retval = true) && (id == EPHEM_CENTRAL_BODY))
    {
       // Special case code that we may want to remove later
-      if (value == wxT("Moon"))
-         throw PropagatorException(wxT("\"Moon\" is not an allowed central body; ")
-               wxT("try \"Luna\""), Gmat::ERROR_);
-      if (centralBody == wxT("Luna"))
-         spkCentralBody = wxT("Moon");
+      if (value == "Moon")
+         throw PropagatorException("\"Moon\" is not an allowed central body; "
+               "try \"Luna\"", Gmat::ERROR_);
+      if (centralBody == "Luna")
+         spkCentralBody = "Moon";
       else
          spkCentralBody = centralBody;
    }
@@ -343,7 +343,7 @@ bool SPKPropagator::SetStringParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id, const Integer index) const
+// std::string GetStringParameter(const Integer id, const Integer index) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves a string parameter from an array
@@ -354,14 +354,14 @@ bool SPKPropagator::SetStringParameter(const Integer id,
  * @return The parameter's value
  */
 //------------------------------------------------------------------------------
-wxString SPKPropagator::GetStringParameter(const Integer id,
+std::string SPKPropagator::GetStringParameter(const Integer id,
       const Integer index) const
 {
    if (id == SPKFILENAMES)
    {
       if ((index >= 0) && (index < (Integer)spkFileNames.size()))
          return spkFileNames[index];
-      return wxT("");
+      return "";
    }
 
    return EphemerisPropagator::GetStringParameter(id, index);
@@ -369,7 +369,7 @@ wxString SPKPropagator::GetStringParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value,
+// bool SetStringParameter(const Integer id, const std::string &value,
 //       const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -383,7 +383,7 @@ wxString SPKPropagator::GetStringParameter(const Integer id,
  */
 //------------------------------------------------------------------------------
 bool SPKPropagator::SetStringParameter(const Integer id,
-      const wxString &value, const Integer index)
+      const std::string &value, const Integer index)
 {
    if (id == SPKFILENAMES)
    {
@@ -440,7 +440,7 @@ const StringArray& SPKPropagator::GetStringArrayParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves a StringArray parameter
@@ -450,14 +450,14 @@ const StringArray& SPKPropagator::GetStringArrayParameter(const Integer id,
  * @return The StringArray
  */
 //------------------------------------------------------------------------------
-wxString SPKPropagator::GetStringParameter(const wxString &label) const
+std::string SPKPropagator::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Sets a string parameter
@@ -468,15 +468,15 @@ wxString SPKPropagator::GetStringParameter(const wxString &label) const
  * @return true on success, false on failure
  */
 //------------------------------------------------------------------------------
-bool SPKPropagator::SetStringParameter(const wxString &label,
-      const wxString &value)
+bool SPKPropagator::SetStringParameter(const std::string &label,
+      const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label,
+// std::string GetStringParameter(const std::string &label,
 //       const Integer index) const
 //------------------------------------------------------------------------------
 /**
@@ -488,7 +488,7 @@ bool SPKPropagator::SetStringParameter(const wxString &label,
  * @return The parameter's value
  */
 //------------------------------------------------------------------------------
-wxString SPKPropagator::GetStringParameter(const wxString &label,
+std::string SPKPropagator::GetStringParameter(const std::string &label,
       const Integer index) const
 {
    return GetStringParameter(GetParameterID(label), index);
@@ -496,7 +496,7 @@ wxString SPKPropagator::GetStringParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value,
+// bool SetStringParameter(const std::string &label, const std::string &value,
 //       const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -509,15 +509,15 @@ wxString SPKPropagator::GetStringParameter(const wxString &label,
  * @return True on success, false on failure
  */
 //------------------------------------------------------------------------------
-bool SPKPropagator::SetStringParameter(const wxString &label,
-      const wxString &value, const Integer index)
+bool SPKPropagator::SetStringParameter(const std::string &label,
+      const std::string &value, const Integer index)
 {
    return SetStringParameter(GetParameterID(label), value, index);
 }
 
 
 //------------------------------------------------------------------------------
-// const StringArray& GetStringArrayParameter(const wxString &label) const
+// const StringArray& GetStringArrayParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves a StringArray parameter
@@ -528,14 +528,14 @@ bool SPKPropagator::SetStringParameter(const wxString &label,
  */
 //------------------------------------------------------------------------------
 const StringArray& SPKPropagator::GetStringArrayParameter(
-      const wxString &label) const
+      const std::string &label) const
 {
    return GetStringArrayParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// const StringArray& GetStringArrayParameter(const wxString &label,
+// const StringArray& GetStringArrayParameter(const std::string &label,
 //       const Integer index) const
 //------------------------------------------------------------------------------
 /**
@@ -548,7 +548,7 @@ const StringArray& SPKPropagator::GetStringArrayParameter(
  */
 //------------------------------------------------------------------------------
 const StringArray& SPKPropagator::GetStringArrayParameter(
-      const wxString &label, const Integer index) const
+      const std::string &label, const Integer index) const
 {
    return GetStringArrayParameter(GetParameterID(label), index);
 }
@@ -566,8 +566,8 @@ const StringArray& SPKPropagator::GetStringArrayParameter(
 bool SPKPropagator::Initialize()
 {
    #ifdef DEBUG_INITIALIZATION
-      MessageInterface::ShowMessage(wxT("SPKPropagator::Initialize() entered\n"));
-      MessageInterface::ShowMessage(wxT("spkCentralBody is %s\n"), spkCentralBody.c_str());
+      MessageInterface::ShowMessage("SPKPropagator::Initialize() entered\n");
+      MessageInterface::ShowMessage("spkCentralBody is %s\n", spkCentralBody.c_str());
    #endif
 
    bool retval = false;
@@ -582,50 +582,50 @@ bool SPKPropagator::Initialize()
       j2ET = j2000_c();   // CSPICE method to return Julian date of J2000 (TDB)
 
       FileManager *fm = FileManager::Instance();
-      wxString fullPath = fm->GetFullPathname(FileManager::PLANETARY_SPK_FILE);
+      std::string fullPath = fm->GetFullPathname(FileManager::PLANETARY_SPK_FILE);
 
       if (skr->IsLoaded(fullPath) == false)
          skr->LoadKernel(fullPath);
 
       if (propObjects.size() != 1)
-         throw PropagatorException(wxT("SPICE propagators (i.e. \"SPK\" ")
-               wxT("propagators) require exactly one SpaceObject."));
+         throw PropagatorException("SPICE propagators (i.e. \"SPK\" "
+               "propagators) require exactly one SpaceObject.");
       #ifdef DEBUG_INITIALIZATION
-         MessageInterface::ShowMessage(wxT("Clearing %d naifIds\n"), naifIds.size());
+         MessageInterface::ShowMessage("Clearing %d naifIds\n", naifIds.size());
       #endif
       naifIds.clear();
       for (UnsignedInt i = 0; i < propObjects.size(); ++i)
       {
-         Integer id = propObjects[i]->GetIntegerParameter(wxT("NAIFId"));
+         Integer id = propObjects[i]->GetIntegerParameter("NAIFId");
          naifIds.push_back(id);
 
          // Load the SPICE files for each propObject
          StringArray spices;
          if (propObjects[i]->IsOfType(Gmat::SPACECRAFT))
             spices = propObjects[i]->GetStringArrayParameter(
-                  wxT("OrbitSpiceKernelName"));
+                  "OrbitSpiceKernelName");
          else
-            throw PropagatorException(wxT("Spice (SPK) propagators only work for ")
-                  wxT("Spacecraft right now."));
+            throw PropagatorException("Spice (SPK) propagators only work for "
+                  "Spacecraft right now.");
 
          if (spices.size() == 0)
-            throw PropagatorException(wxT("Spice (SPK) propagator requires at ")
-                  wxT("least one orbit SPICE kernel,"));
+            throw PropagatorException("Spice (SPK) propagator requires at "
+                  "least one orbit SPICE kernel,");
 
-         wxString ephemPath = fm->GetPathname(FileManager::EPHEM_PATH);
+         std::string ephemPath = fm->GetPathname(FileManager::EPHEM_PATH);
          for (UnsignedInt j = 0; j < spices.size(); ++j)
          {
             fullPath = spices[j];
 
             // Check to see if this name includes path information
             // If no path designation slash character is found, add the default path
-            if ((fullPath.find(wxT('/')) == wxString::npos) &&
-                (fullPath.find(wxT('\\')) == wxString::npos))
+            if ((fullPath.find('/') == std::string::npos) &&
+                (fullPath.find('\\') == std::string::npos))
             {
                fullPath = ephemPath + fullPath;
             }
             #ifdef DEBUG_INITIALIZATION
-               MessageInterface::ShowMessage(wxT("Checking for kernel %s\n"),
+               MessageInterface::ShowMessage("Checking for kernel %s\n",
                      fullPath.c_str());
             #endif
             if (skr->IsLoaded(fullPath) == false)
@@ -645,7 +645,7 @@ bool SPKPropagator::Initialize()
 
                for (UnsignedInt i = 0; i < propObjects.size(); ++i)
                {
-                  wxString scName = propObjectNames[i];
+                  std::string scName = propObjectNames[i];
                   Integer id = naifIds[i];
 
                   currentEpoch = initialEpoch + timeFromEpoch /
@@ -655,20 +655,21 @@ bool SPKPropagator::Initialize()
                   if ((currentEpoch < ephemStart - 1e-10) ||
                       (currentEpoch > ephemEnd + 1e-10))
                   {
-                     wxString errmsg;
-                     errmsg << wxT("The SPKPropagator ")
+                     std::stringstream errmsg;
+                     errmsg.precision(16);
+                     errmsg << "The SPKPropagator "
                             << instanceName
-                            << wxT(" is attempting to initialize outside of the ")
-                               wxT("timespan  of the ephemeris data; halting.  ");
-                     errmsg << wxT("The current SPICE ephemeris covers the A.1 ")
-                               wxT("modified Julian span ");
-                     errmsg << ephemStart << wxT(" to ") << ephemEnd << wxT(" and the ")
-                              wxT("requested epoch is ") << currentEpoch << wxT(".\n");
-                     throw PropagatorException(errmsg);
+                            << " is attempting to initialize outside of the "
+                               "timespan  of the ephemeris data; halting.  ";
+                     errmsg << "The current SPICE ephemeris covers the A.1 "
+                               "modified Julian span ";
+                     errmsg << ephemStart << " to " << ephemEnd << " and the "
+                              "requested epoch is " << currentEpoch << ".\n";
+                     throw PropagatorException(errmsg.str());
                   }
                   #ifdef DEBUG_INITIALIZATION
-                     MessageInterface::ShowMessage(wxT("Getting target state in %p ")
-                           wxT("for %s (ID = %ld) at epoch %lf and CB %s\n"), this,
+                     MessageInterface::ShowMessage("Getting target state in %p "
+                           "for %s (ID = %ld) at epoch %lf and CB %s\n", this,
                            scName.c_str(), id, currentEpoch,
                            spkCentralBody.c_str());
                   #endif
@@ -696,17 +697,17 @@ bool SPKPropagator::Initialize()
    }
 
    #ifdef DEBUG_INITIALIZATION
-      MessageInterface::ShowMessage(wxT("SPKPropagator::Initialize(): Start state ")
-            wxT("at epoch %.12lf is ["), currentEpoch);
+      MessageInterface::ShowMessage("SPKPropagator::Initialize(): Start state "
+            "at epoch %.12lf is [", currentEpoch);
       for (Integer i = 0; i < dimension; ++i)
       {
-         MessageInterface::ShowMessage(wxT("%.12lf"), state[i]);
+         MessageInterface::ShowMessage("%.12lf", state[i]);
          if (i < dimension-1)
-            MessageInterface::ShowMessage(wxT("   "));
+            MessageInterface::ShowMessage("   ");
          else
-            MessageInterface::ShowMessage(wxT("]\n"));
+            MessageInterface::ShowMessage("]\n");
       }
-      MessageInterface::ShowMessage(wxT("SPKPropagator::Initialize() finished\n"));
+      MessageInterface::ShowMessage("SPKPropagator::Initialize() finished\n");
    #endif
 
    return retval;
@@ -725,9 +726,9 @@ bool SPKPropagator::Initialize()
 bool SPKPropagator::Step()
 {
    #ifdef DEBUG_PROPAGATION
-      MessageInterface::ShowMessage(wxT("SPKPropagator::Step() entered: ")
-            wxT("initialEpoch = %.12lf; stepsize = %.12lf; ")
-            wxT("timeFromEpoch = %.12lf\n"), initialEpoch, ephemStep, timeFromEpoch);
+      MessageInterface::ShowMessage("SPKPropagator::Step() entered: "
+            "initialEpoch = %.12lf; stepsize = %.12lf; "
+            "timeFromEpoch = %.12lf\n", initialEpoch, ephemStep, timeFromEpoch);
    #endif
 
    bool retval = false;
@@ -740,7 +741,7 @@ bool SPKPropagator::Step()
 
          for (UnsignedInt i = 0; i < propObjects.size(); ++i)
          {
-            wxString scName = propObjectNames[i];
+            std::string scName = propObjectNames[i];
             Integer id = naifIds[i];
 
             timeFromEpoch += ephemStep;
@@ -752,16 +753,17 @@ bool SPKPropagator::Step()
             if ((currentEpoch < ephemStart - 1e-10) ||
                 (currentEpoch > ephemEnd + 1e-10))
             {
-               wxString errmsg;
-               errmsg << wxT("The SPKPropagator ")
+               std::stringstream errmsg;
+               errmsg.precision(16);
+               errmsg << "The SPKPropagator "
                       << instanceName
-                      << wxT(" is attempting to step outside of the span of the ")
-                         wxT("ephemeris data; halting.  ");
-               errmsg << wxT("The current SPICE ephemeris covers the A.1 modified ")
-                         wxT("Julian span ");
-               errmsg << ephemStart << wxT(" to ") << ephemEnd << wxT(" and the ")
-                     wxT("requested epoch is ") << currentEpoch << wxT(".\n");
-               throw PropagatorException(errmsg);
+                      << " is attempting to step outside of the span of the "
+                         "ephemeris data; halting.  ";
+               errmsg << "The current SPICE ephemeris covers the A.1 modified "
+                         "Julian span ";
+               errmsg << ephemStart << " to " << ephemEnd << " and the "
+                     "requested epoch is " << currentEpoch << ".\n";
+               throw PropagatorException(errmsg.str());
             }
 
             outState = skr->GetTargetState(scName, id, currentEpoch,
@@ -781,15 +783,15 @@ bool SPKPropagator::Step()
             UpdateSpaceObject(currentEpoch);
 
             #ifdef DEBUG_PROPAGATION
-               MessageInterface::ShowMessage(wxT("(Step for %p) State at epoch ")
-                     wxT("%.12lf is ["), this, currentEpoch);
+               MessageInterface::ShowMessage("(Step for %p) State at epoch "
+                     "%.12lf is [", this, currentEpoch);
                for (Integer i = 0; i < dimension; ++i)
                {
-                  MessageInterface::ShowMessage(wxT("%.12lf"), state[i]);
+                  MessageInterface::ShowMessage("%.12lf", state[i]);
                   if (i < 5)
-                     MessageInterface::ShowMessage(wxT("   "));
+                     MessageInterface::ShowMessage("   ");
                   else
-                     MessageInterface::ShowMessage(wxT("]\n"));
+                     MessageInterface::ShowMessage("]\n");
                }
             #endif
          }
@@ -806,7 +808,7 @@ bool SPKPropagator::Step()
 
    #ifdef DEBUG_PROPAGATION
       else
-         MessageInterface::ShowMessage(wxT("skr was not initialized]\n"));
+         MessageInterface::ShowMessage("skr was not initialized]\n");
    #endif
 
    return retval;
@@ -857,7 +859,7 @@ Real SPKPropagator::GetStepTaken()
 void SPKPropagator::UpdateState()
 {
    #ifdef DEBUG_EXECUTION
-      MessageInterface::ShowMessage(wxT("Updating state to epoch %.12lf\n"),
+      MessageInterface::ShowMessage("Updating state to epoch %.12lf\n",
             currentEpoch);
    #endif
 
@@ -869,23 +871,24 @@ void SPKPropagator::UpdateState()
 
          for (UnsignedInt i = 0; i < propObjects.size(); ++i)
          {
-            wxString scName = propObjectNames[i];
+            std::string scName = propObjectNames[i];
             Integer id = naifIds[i];
 
             // Allow for slop in the last few bits
             if ((currentEpoch < ephemStart - 1e-10) ||
                 (currentEpoch > ephemEnd + 1e-10))
             {
-               wxString errmsg;
-               errmsg << wxT("The SPKPropagator ")
+               std::stringstream errmsg;
+               errmsg.precision(16);
+               errmsg << "The SPKPropagator "
                       << instanceName
-                      << wxT(" is attempting to access state data outside of the ")
-                         wxT("span of the ephemeris data; halting.  ");
-               errmsg << wxT("The current SPICE ephemeris covers the A.1 modified ")
-                         wxT("Julian span ")
-                      << ephemStart << wxT(" to ") << ephemEnd << wxT(" and the ")
-                         wxT("requested epoch is ") << currentEpoch << wxT(".\n");
-               throw PropagatorException(errmsg);
+                      << " is attempting to access state data outside of the "
+                         "span of the ephemeris data; halting.  ";
+               errmsg << "The current SPICE ephemeris covers the A.1 modified "
+                         "Julian span "
+                      << ephemStart << " to " << ephemEnd << " and the "
+                         "requested epoch is " << currentEpoch << ".\n";
+               throw PropagatorException(errmsg.str());
             }
 
             outState = skr->GetTargetState(scName, id, currentEpoch,
@@ -904,15 +907,15 @@ void SPKPropagator::UpdateState()
 //            UpdateSpaceObject(currentEpoch);
 
             #ifdef DEBUG_PROPAGATION
-               MessageInterface::ShowMessage(wxT("(UpdateState for %p) State at ")
-                     wxT("epoch %.12lf is ["), this, currentEpoch);
+               MessageInterface::ShowMessage("(UpdateState for %p) State at "
+                     "epoch %.12lf is [", this, currentEpoch);
                for (Integer i = 0; i < dimension; ++i)
                {
-                  MessageInterface::ShowMessage(wxT("%.12lf"), state[i]);
+                  MessageInterface::ShowMessage("%.12lf", state[i]);
                   if (i < 5)
-                     MessageInterface::ShowMessage(wxT("   "));
+                     MessageInterface::ShowMessage("   ");
                   else
-                     MessageInterface::ShowMessage(wxT("]\n"));
+                     MessageInterface::ShowMessage("]\n");
                }
             #endif
          }
@@ -939,8 +942,8 @@ void SPKPropagator::UpdateState()
 void SPKPropagator::SetEphemSpan(Integer whichOne)
 {
    if (whichOne < 0)
-      throw PropagatorException(wxT("SPKPropagator::SetEphemSpan(Integer whichOne):")
-            wxT(" Invalid index"));
+      throw PropagatorException("SPKPropagator::SetEphemSpan(Integer whichOne):"
+            " Invalid index");
 
    if (skr)
    {
@@ -951,7 +954,7 @@ void SPKPropagator::SetEphemSpan(Integer whichOne)
                ephemEnd);
 
       #ifdef DEBUG_INITIALIZATION
-         MessageInterface::ShowMessage(wxT("EphemSpan is [%.12lf %.12lf]\n"),
+         MessageInterface::ShowMessage("EphemSpan is [%.12lf %.12lf]\n",
                ephemStart, ephemEnd);
       #endif
    }

@@ -51,14 +51,14 @@ public:
    LocatedEventTable& operator=(const LocatedEventTable& let);
 
    void AddEvent(LocatedEvent *theEvent);
-   void AddEvent(GmatEpoch epoch, wxString boundaryType, wxString eventType);
-   Real GetMaxSpan(wxString eventType, wxString parties);
-   Real GetLastSpan(wxString eventType, wxString parties = wxT(""));
-   Real GetAverageSpan(wxString eventType, wxString parties = wxT(""));
+   void AddEvent(GmatEpoch epoch, std::string boundaryType, std::string eventType);
+   Real GetMaxSpan(std::string eventType, std::string parties);
+   Real GetLastSpan(std::string eventType, std::string parties = "");
+   Real GetAverageSpan(std::string eventType, std::string parties = "");
    void SortEvents(SortStyle how, SortStyle secondaryStyle = UNSORTED);
    std::vector<LocatedEvent*> *GetEvents();
 
-   bool WriteToFile(wxString filename);
+   bool WriteToFile(std::string filename);
    void ShowPlot();
 
 protected:
@@ -77,15 +77,15 @@ protected:
    /// Plot of the event data
    OwnedPlot *thePlot;
    /// X Data for plotting
-   std::map<wxString,RealArray> xData;
+   std::map<std::string,RealArray> xData;
    /// Y Data for plotting
-   std::map<wxString,RealArray> yData;
+   std::map<std::string,RealArray> yData;
 
    void BuildAssociations();
    void SortEvents();
    std::string BuildEventSummary();
-   void CollectData(const wxString &forCurve, RealArray &xv, RealArray &yv);
-   void BuildPlot(const wxString &plotName);
+   void CollectData(const std::string &forCurve, RealArray &xv, RealArray &yv);
+   void BuildPlot(const std::string &plotName);
 };
 
 #endif /* LocatedEventTable_hpp */

@@ -27,7 +27,7 @@
 class GMAT_API Sinh : public MathFunction
 {
 public:
-   Sinh(const wxString &nomme);
+   Sinh(const std::string &nomme);
    virtual ~Sinh();
    Sinh(const Sinh &copy);
                  

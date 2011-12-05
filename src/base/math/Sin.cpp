@@ -33,8 +33,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Sin::Sin(const wxString &nomme)
-   : MathFunction(wxT("Sin"), nomme)
+Sin::Sin(const std::string &nomme)
+   : MathFunction("Sin", nomme)
 {
 }
 
@@ -94,7 +94,7 @@ void Sin::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
    
 
    if (type1 != Gmat::REAL_TYPE)
-      throw MathException(wxT("Left is not scalar, so cannot do Sin().\n")); 
+      throw MathException("Left is not scalar, so cannot do Sin().\n"); 
    else
    {
       type = type1;
@@ -115,7 +115,7 @@ void Sin::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 bool Sin::ValidateInputs()
 {
    if (leftNode == NULL)
-      throw MathException(wxT("Sin() - Missing input arguments.\n"));
+      throw MathException("Sin() - Missing input arguments.\n");
    
    Integer type1, row1, col1; // Left node
    

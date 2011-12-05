@@ -45,22 +45,22 @@ using namespace GmatMathUtil;
 
 const Real PlanetData::PLANET_REAL_UNDEFINED = GmatRealConstants::REAL_UNDEFINED_LARGE;
 
-const wxString
+const std::string
 PlanetData::VALID_OBJECT_TYPE_LIST[PlanetDataObjectCount] =
 {
-   wxT("Spacecraft"),
-   wxT("SolarSystem"),
-   wxT("CoordinateSystem"),
-   wxT("SpacePoint")
+   "Spacecraft",
+   "SolarSystem",
+   "CoordinateSystem",
+   "SpacePoint"
 }; 
 
-const wxString PlanetData::VALID_PLANET_DATA_NAMES[LST_ID - LATITUDE + 1] =
+const std::string PlanetData::VALID_PLANET_DATA_NAMES[LST_ID - LATITUDE + 1] =
 {
-   wxT("Latitude"),
-   wxT("Longitude"),
-   wxT("Altitude"),
-   wxT("MHA"),
-   wxT("LST")
+   "Latitude",
+   "Longitude",
+   "Altitude",
+   "MHA",
+   "LST"
 };
 
 
@@ -78,7 +78,7 @@ const wxString PlanetData::VALID_PLANET_DATA_NAMES[LST_ID - LATITUDE + 1] =
 PlanetData::PlanetData()
    : RefData()
 {
-   mCentralBodyName = wxT("");
+   mCentralBodyName = "";
    
    mSpacecraft = NULL;
    mSolarSystem = NULL;
@@ -163,12 +163,12 @@ PlanetData::~PlanetData()
 Real PlanetData::GetPlanetReal(Integer item)
 {
    #ifdef DEBUG_PLANETDATA_RUN
-   MessageInterface::ShowMessage(wxT("PlanetData::GetPlanetReal() item=%d\n"), item);
+   MessageInterface::ShowMessage("PlanetData::GetPlanetReal() item=%d\n", item);
    #endif
    
    if (item < LATITUDE || item > LST_ID)
       throw ParameterException
-         (wxT("PlanetData::GetPlanetReal() Unknown parameter ID: ") +
+         ("PlanetData::GetPlanetReal() Unknown parameter ID: " +
           GmatRealUtil::ToString(item));
    
    if (mSpacecraft == NULL || mSolarSystem == NULL)
@@ -180,45 +180,45 @@ Real PlanetData::GetPlanetReal(Integer item)
    // Call GetHourAngle() on origin
    Real mha = mOrigin->GetHourAngle(a1mjd);
 
-   Real epoch = mSpacecraft->GetRealParameter(wxT("A1Epoch"));
+   Real epoch = mSpacecraft->GetRealParameter("A1Epoch");
    Rvector6 instate = mSpacecraft->GetState().GetState();
    Rvector6 state;
    mCoordConverter.Convert(A1Mjd(epoch), instate, mInternalCoordSystem,
                            state, mOutCoordSystem);
    // get flattening for the body
    Real flatteningFactor =
-      mOrigin->GetRealParameter(mOrigin->GetParameterID(wxT("Flattening")));
+      mOrigin->GetRealParameter(mOrigin->GetParameterID("Flattening"));
 
    Real equatorialRadius =
-      mOrigin->GetRealParameter(mOrigin->GetParameterID(wxT("EquatorialRadius")));
+      mOrigin->GetRealParameter(mOrigin->GetParameterID("EquatorialRadius"));
 
    return GmatCalcUtil::CalculatePlanetData(VALID_PLANET_DATA_NAMES[item - LATITUDE], state, equatorialRadius, flatteningFactor, mha);
 }
 
 
 //------------------------------------------------------------------------------
-// Real GetPlanetReal(const wxString &str)
+// Real GetPlanetReal(const std::string &str)
 //------------------------------------------------------------------------------
 /**
  * Retrieves planet related parameters.
  */
 //------------------------------------------------------------------------------
-Real PlanetData::GetPlanetReal(const wxString &str)
+Real PlanetData::GetPlanetReal(const std::string &str)
 {
-   if (str == wxT("Latitude"))
+   if (str == "Latitude")
       return GetPlanetReal(LATITUDE);
-   else if (str == wxT("Longitude"))
+   else if (str == "Longitude")
       return GetPlanetReal(LONGITUDE);
-   else if (str == wxT("Altitude"))
+   else if (str == "Altitude")
       return GetPlanetReal(ALTITUDE);
-   else if (str == wxT("MHA"))
+   else if (str == "MHA")
       return GetPlanetReal(MHA_ID);
-   else if (str == wxT("LST"))
+   else if (str == "LST")
       return GetPlanetReal(LST_ID);
    else
    {
       throw ParameterException
-         (wxT("PlanetData::GetPlanetReal Unknown parameter name: ") + str);
+         ("PlanetData::GetPlanetReal Unknown parameter name: " + str);
    }
 }
 
@@ -241,9 +241,9 @@ void PlanetData::SetInternalCoordSystem(CoordinateSystem *cs)
 //-------------------------------------
 
 //------------------------------------------------------------------------------
-// virtual const wxString* GetValidObjectList() const
+// virtual const std::string* GetValidObjectList() const
 //------------------------------------------------------------------------------
-const wxString* PlanetData::GetValidObjectList() const
+const std::string* PlanetData::GetValidObjectList() const
 {
    return VALID_OBJECT_TYPE_LIST;
 }
@@ -281,27 +281,27 @@ void PlanetData::InitializeRefObjects()
 
    if (mSpacecraft == NULL)
       throw ParameterException
-         (wxT("PlanetData::InitializeRefObjects() Cannot find Spacecraft object.\n")
-          wxT("Make sure Spacecraft is set.\n"));
+         ("PlanetData::InitializeRefObjects() Cannot find Spacecraft object.\n"
+          "Make sure Spacecraft is set.\n");
    
    mSolarSystem = (SolarSystem*)FindFirstObject(VALID_OBJECT_TYPE_LIST[SOLAR_SYSTEM]);
    if (mSolarSystem == NULL)
       throw ParameterException
-         (wxT("PlanetData::InitializeRefObjects() Cannot find SolarSystem object\n"));
+         ("PlanetData::InitializeRefObjects() Cannot find SolarSystem object\n");
    
    mCentralBody = mSolarSystem->GetBody(mCentralBodyName);
    
    if (!mCentralBody)
-      throw ParameterException(wxT("PlanetData::InitializeRefObjects() Body not found in the ")
-                               wxT("SolarSystem: ") + mCentralBodyName + wxT("\n"));
+      throw ParameterException("PlanetData::InitializeRefObjects() Body not found in the "
+                               "SolarSystem: " + mCentralBodyName + "\n");
    
    if (mInternalCoordSystem == NULL)
       throw ParameterException
-         (wxT("PlanetData::InitializeRefObjects() Cannot find internal ")
-          wxT("CoordinateSystem object\n"));
+         ("PlanetData::InitializeRefObjects() Cannot find internal "
+          "CoordinateSystem object\n");
    #ifdef DEBUG_PLANETDATA_INIT
       MessageInterface::ShowMessage
-         (wxT("PlanetData::InitializeRefObjects() getting output CS pointer.\n"));
+         ("PlanetData::InitializeRefObjects() getting output CS pointer.\n");
    #endif
    
    mOutCoordSystem =
@@ -309,19 +309,19 @@ void PlanetData::InitializeRefObjects()
    
    if (mOutCoordSystem == NULL)
       throw ParameterException
-         (wxT("PlanetData::InitializeRefObjects() Cannot find output ")
-          wxT("CoordinateSystem object\n"));
+         ("PlanetData::InitializeRefObjects() Cannot find output "
+          "CoordinateSystem object\n");
    
    // if dependent body name exist and it is a CelestialBody, set gravity constant
    
-   wxString originName =
+   std::string originName =
       FindFirstObjectName(GmatBase::GetObjectType(VALID_OBJECT_TYPE_LIST[SPACE_POINT]));
    
-   if (originName != wxT(""))
+   if (originName != "")
    {
       #ifdef DEBUG_PLANETDATA_INIT
          MessageInterface::ShowMessage
-            (wxT("PlanetData::InitializeRefObjects() getting originName:%s pointer.\n"),
+            ("PlanetData::InitializeRefObjects() getting originName:%s pointer.\n",
              originName.c_str());
       #endif
          
@@ -331,8 +331,8 @@ void PlanetData::InitializeRefObjects()
       if (!mOrigin)
       {
          throw ParameterException
-            (wxT("PlanetData::InitializeRefObjects() Cannot find Origin object: ") +
-             originName + wxT("\n"));
+            ("PlanetData::InitializeRefObjects() Cannot find Origin object: " +
+             originName + "\n");
       }
 
    }
@@ -352,18 +352,18 @@ bool PlanetData::IsValidObjectType(Gmat::ObjectType type)
 {
 #ifdef DEBUG_PLANETDATA_INIT
    MessageInterface::ShowMessage
-      (wxT("PlanetData::IsValidObjectType() CHECKING type %s.\n"),(GmatBase::GetObjectTypeString(type).c_str()));
+      ("PlanetData::IsValidObjectType() CHECKING type %s.\n",(GmatBase::GetObjectTypeString(type).c_str()));
 #endif
    for (int i=0; i<PlanetDataObjectCount; i++)
    {
 #ifdef DEBUG_PLANETDATA_INIT
    MessageInterface::ShowMessage
-      (wxT("PlanetData::IsValidObjectType() has type %s.\n"),(VALID_OBJECT_TYPE_LIST[i]).c_str());
+      ("PlanetData::IsValidObjectType() has type %s.\n",(VALID_OBJECT_TYPE_LIST[i]).c_str());
 #endif
       if (GmatBase::GetObjectTypeString(type) == VALID_OBJECT_TYPE_LIST[i])
          return true;
       // Special case for CelestialBody origin
-      if ((VALID_OBJECT_TYPE_LIST[i] == wxT("SpacePoint")) && (GmatBase::GetObjectTypeString(type) == wxT("CelestialBody")))
+      if ((VALID_OBJECT_TYPE_LIST[i] == "SpacePoint") && (GmatBase::GetObjectTypeString(type) == "CelestialBody"))
          return true;
    }
    

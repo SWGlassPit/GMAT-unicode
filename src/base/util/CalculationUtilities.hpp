@@ -31,11 +31,11 @@
 
 namespace GmatCalcUtil
 {
-   Real GMAT_API  CalculateBPlaneData(const wxString &item, const Rvector6 &state, const Real originMu);
-   Real GMAT_API  CalculateAngularData(const wxString &item, const Rvector6 &state,
+   Real GMAT_API  CalculateBPlaneData(const std::string &item, const Rvector6 &state, const Real originMu);
+   Real GMAT_API  CalculateAngularData(const std::string &item, const Rvector6 &state,
                                        const Real &originMu, const Rvector3 &originToSunUnit);
-   Real GMAT_API  CalculateKeplerianData(const wxString &item, const Rvector6 &state, const Real originMu);
-   Real GMAT_API  CalculatePlanetData(const wxString &item, const Rvector6 &state,
+   Real GMAT_API  CalculateKeplerianData(const std::string &item, const Rvector6 &state, const Real originMu);
+   Real GMAT_API  CalculatePlanetData(const std::string &item, const Rvector6 &state,
                                       const Real originRadius, const Real originFlattening, const Real originHourAngle);
 }
 

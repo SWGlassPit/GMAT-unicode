@@ -23,7 +23,7 @@
 #include "CommandException.hpp" // class's header file
 
 //------------------------------------------------------------------------------
-//  CommandException(wxString details)
+//  CommandException(std::string details)
 //------------------------------------------------------------------------------
 /**
  * Constructs CommandException instance (default constructor).
@@ -31,9 +31,9 @@
  * @param details A message providing the details of the exception. 
  */
 //------------------------------------------------------------------------------
-CommandException::CommandException(const wxString &details,
+CommandException::CommandException(const std::string &details,
       Gmat::MessageType mt) :
-    BaseException           (wxT("Command Exception: "), details, mt)
+    BaseException           ("Command Exception: ", details, mt)
 {
 }
 

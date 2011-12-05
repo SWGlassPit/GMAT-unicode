@@ -44,7 +44,7 @@ AssetFactory::AssetFactory() :
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("GroundStation"));
+      creatables.push_back("GroundStation");
    }
 }
 
@@ -89,7 +89,7 @@ AssetFactory::AssetFactory(const AssetFactory& af) :
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("GroundStation"));
+      creatables.push_back("GroundStation");
    }
 }
 
@@ -111,8 +111,8 @@ AssetFactory& AssetFactory::operator=(const AssetFactory& af)
 }
 
 //------------------------------------------------------------------------------
-// SpacePoint* AssetFactory::CreateSpacePoint(const wxString &ofType,
-//                                            const wxString &withName)
+// SpacePoint* AssetFactory::CreateSpacePoint(const std::string &ofType,
+//                                            const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested SpacePoint class. 
@@ -123,10 +123,10 @@ AssetFactory& AssetFactory::operator=(const AssetFactory& af)
  * @return A pointer to the created object.
  */
 //------------------------------------------------------------------------------
-SpacePoint* AssetFactory::CreateSpacePoint(const wxString &ofType,
-                                           const wxString &withName)
+SpacePoint* AssetFactory::CreateSpacePoint(const std::string &ofType,
+                                           const std::string &withName)
 {
-   if (ofType == wxT("GroundStation"))
+   if (ofType == "GroundStation")
       return new GroundStation(withName);
     
    return NULL;

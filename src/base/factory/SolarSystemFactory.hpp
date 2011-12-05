@@ -28,8 +28,8 @@
 class GMAT_API SolarSystemFactory : public Factory
 {
 public:
-   SolarSystem*  CreateSolarSystem(const wxString &ofType,
-                                   const wxString &withName = wxT(""));
+   SolarSystem*  CreateSolarSystem(const std::string &ofType,
+                                   const std::string &withName = "");
 
    // default constructor
    SolarSystemFactory();

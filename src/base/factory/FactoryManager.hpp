@@ -78,80 +78,80 @@ public:
 
    // Generic method to create an object
    GmatBase*              CreateObject(const Gmat::ObjectType generalType,
-                                       const wxString &ofType,
-                                       const wxString &withName = wxT(""));
+                                       const std::string &ofType,
+                                       const std::string &withName = "");
    
    // methods to create and return objects of the various types
-   SpaceObject*           CreateSpacecraft(const wxString &ofType,
-                                           const wxString &withName = wxT(""));
-   Parameter*             CreateParameter(const wxString &ofType,
-                                          const wxString &withName = wxT(""));
-   Propagator*            CreatePropagator(const wxString &ofType,
-                                           const wxString &withName = wxT(""));
-   PhysicalModel*         CreatePhysicalModel(const wxString &ofType,
-                                              const wxString &withName = wxT(""));
-   StopCondition*         CreateStopCondition(const wxString &ofType,
-                                              const wxString &withName = wxT(""));
-   CalculatedPoint*       CreateCalculatedPoint(const wxString &ofType,
-                                                const wxString &withName = wxT(""));
-   CelestialBody*         CreateCelestialBody(const wxString &ofType,
-                                              const wxString &withName = wxT(""));
-   Solver*                CreateSolver(const wxString &ofType,
-                                       const wxString &withName = wxT(""));
-   Subscriber*            CreateSubscriber(const wxString &ofType,
-                                           const wxString &withName = wxT(""),
-                                           const wxString &fileName = wxT(""));
-   EphemerisFile*         CreateEphemerisFile(const wxString &ofType,
-                                              const wxString &withName = wxT(""));
-   GmatCommand*           CreateCommand(const wxString &ofType,
-                                        const wxString &withName = wxT(""));
-   Burn*                  CreateBurn(const wxString &ofType,
-                                     const wxString &withName = wxT(""));
-   AtmosphereModel*       CreateAtmosphereModel(const wxString &ofType,
-                                                const wxString &withName = wxT(""),
-                                                const wxString &forBody = wxT("Earth"));
-   Function*              CreateFunction(const wxString &ofType,
-                                         const wxString &withName = wxT(""));
-   Hardware*              CreateHardware(const wxString &ofType,
-                                         const wxString &withName = wxT(""));
-   AxisSystem*            CreateAxisSystem(const wxString &ofType,
-                                           const wxString &withName = wxT(""));
-   MathNode*              CreateMathNode(const wxString &ofType,
-                                         const wxString &withName = wxT(""));
-   Attitude*              CreateAttitude(const wxString &ofType,
-                                         const wxString &withName = wxT(""));
-   SpacePoint*            CreateSpacePoint(const wxString &ofType,
-                                           const wxString &withName = wxT(""));
+   SpaceObject*           CreateSpacecraft(const std::string &ofType,
+                                           const std::string &withName = "");
+   Parameter*             CreateParameter(const std::string &ofType,
+                                          const std::string &withName = "");
+   Propagator*            CreatePropagator(const std::string &ofType,
+                                           const std::string &withName = "");
+   PhysicalModel*         CreatePhysicalModel(const std::string &ofType,
+                                              const std::string &withName = "");
+   StopCondition*         CreateStopCondition(const std::string &ofType,
+                                              const std::string &withName = "");
+   CalculatedPoint*       CreateCalculatedPoint(const std::string &ofType,
+                                                const std::string &withName = "");
+   CelestialBody*         CreateCelestialBody(const std::string &ofType,
+                                              const std::string &withName = "");
+   Solver*                CreateSolver(const std::string &ofType,
+                                       const std::string &withName = "");
+   Subscriber*            CreateSubscriber(const std::string &ofType,
+                                           const std::string &withName = "",
+                                           const std::string &fileName = "");
+   EphemerisFile*         CreateEphemerisFile(const std::string &ofType,
+                                              const std::string &withName = "");
+   GmatCommand*           CreateCommand(const std::string &ofType,
+                                        const std::string &withName = "");
+   Burn*                  CreateBurn(const std::string &ofType,
+                                     const std::string &withName = "");
+   AtmosphereModel*       CreateAtmosphereModel(const std::string &ofType,
+                                                const std::string &withName = "",
+                                                const std::string &forBody = "Earth");
+   Function*              CreateFunction(const std::string &ofType,
+                                         const std::string &withName = "");
+   Hardware*              CreateHardware(const std::string &ofType,
+                                         const std::string &withName = "");
+   AxisSystem*            CreateAxisSystem(const std::string &ofType,
+                                           const std::string &withName = "");
+   MathNode*              CreateMathNode(const std::string &ofType,
+                                         const std::string &withName = "");
+   Attitude*              CreateAttitude(const std::string &ofType,
+                                         const std::string &withName = "");
+   SpacePoint*            CreateSpacePoint(const std::string &ofType,
+                                           const std::string &withName = "");
 
-   CoreMeasurement*       CreateMeasurement(const wxString &ofType,
-                                            const wxString &withName = wxT(""));
+   CoreMeasurement*       CreateMeasurement(const std::string &ofType,
+                                            const std::string &withName = "");
 
-   ObType*                CreateObType(const wxString &ofType,
-                                       const wxString &withName = wxT(""));
+   ObType*                CreateObType(const std::string &ofType,
+                                       const std::string &withName = "");
    
-   Interface*             CreateInterface(const wxString &ofType,
-                                          const wxString &withName = wxT(""));
+   Interface*             CreateInterface(const std::string &ofType,
+                                          const std::string &withName = "");
    
    //----- Just container
-   SolarSystem*           CreateSolarSystem(const wxString &withName = wxT(""));
-   PropSetup*             CreatePropSetup(const wxString &withName = wxT(""));
-   ODEModel*              CreateODEModel(const wxString &ofType,
-                                         const wxString &withName = wxT(""));
-   CoordinateSystem*      CreateCoordinateSystem(const wxString &withName = wxT(""));
+   SolarSystem*           CreateSolarSystem(const std::string &withName = "");
+   PropSetup*             CreatePropSetup(const std::string &withName = "");
+   ODEModel*              CreateODEModel(const std::string &ofType,
+                                         const std::string &withName = "");
+   CoordinateSystem*      CreateCoordinateSystem(const std::string &withName = "");
 
-   MeasurementModel*      CreateMeasurementModel(const wxString &withName);
-   DataFile*              CreateDataFile(const wxString &ofType,
-                                         const wxString &withName);
-   TrackingSystem*        CreateTrackingSystem(const wxString &ofType,
-                                               const wxString &withName);
-   TrackingData*          CreateTrackingData(const wxString &withName = wxT(""));
-   EventLocator*          CreateEventLocator(const wxString &ofType,
-                                             const wxString &withName = wxT(""));
+   MeasurementModel*      CreateMeasurementModel(const std::string &withName);
+   DataFile*              CreateDataFile(const std::string &ofType,
+                                         const std::string &withName);
+   TrackingSystem*        CreateTrackingSystem(const std::string &ofType,
+                                               const std::string &withName);
+   TrackingData*          CreateTrackingData(const std::string &withName = "");
+   EventLocator*          CreateEventLocator(const std::string &ofType,
+                                             const std::string &withName = "");
 
    // method to return a list of strings representing the objects of the input
    // type that may be created in the system
    const StringArray&     GetListOfItems(Gmat::ObjectType byType, 
-                                const wxString &withQualifier = wxT(""));
+                                const std::string &withQualifier = "");
    const StringArray&     GetListOfAllItems();
    const StringArray&     GetListOfAllItemsExcept(const ObjectTypeArray &types);
    const StringArray&     GetListOfViewableItems(Gmat::ObjectType byType);
@@ -159,11 +159,11 @@ public:
    
    bool                   DoesObjectTypeMatchSubtype(
                                 const Gmat::ObjectType coreType,
-                                const wxString &theType,
-                                const wxString &theSubtype);
+                                const std::string &theType,
+                                const std::string &theSubtype);
 
    // method to return the base type for the input string
-   Gmat::ObjectType       GetBaseTypeOf(const wxString &typeName);
+   Gmat::ObjectType       GetBaseTypeOf(const std::string &typeName);
    
 protected:
    StringArray            entireList;
@@ -180,8 +180,8 @@ private:
    static FactoryManager* onlyInstance;
    
    // private methods 
-   Factory*               FindFactory(Gmat::ObjectType ofType, const wxString &forType);
-   const StringArray&     GetList(Gmat::ObjectType ofType, const wxString &withQualifier);
+   Factory*               FindFactory(Gmat::ObjectType ofType, const std::string &forType);
+   const StringArray&     GetList(Gmat::ObjectType ofType, const std::string &withQualifier);
    const StringArray&     GetListOfViewables(Gmat::ObjectType ofType);
    const StringArray&     GetListOfUnviewables(Gmat::ObjectType ofType);
    

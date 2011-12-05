@@ -46,8 +46,8 @@ class GMAT_API CoordinateBase : public GmatBase
 public:
 
    // default constructor
-   CoordinateBase(Gmat::ObjectType ofType, const wxString &itsType,
-                  const wxString &itsName = wxT(""));
+   CoordinateBase(Gmat::ObjectType ofType, const std::string &itsType,
+                  const std::string &itsName = "");
    // copy constructor
    CoordinateBase(const CoordinateBase &coordBase);
    // operator = 
@@ -56,15 +56,15 @@ public:
    virtual ~CoordinateBase();
    
    virtual void                SetSolarSystem(SolarSystem *ss);
-   virtual void                SetOriginName(const wxString &toName);
+   virtual void                SetOriginName(const std::string &toName);
    virtual void                SetOrigin(SpacePoint *originPtr);
    virtual bool                RequiresJ2000Body();
-   virtual void                SetJ2000BodyName(const wxString &toName);
+   virtual void                SetJ2000BodyName(const std::string &toName);
    virtual void                SetJ2000Body(SpacePoint *j2000Ptr);
    virtual SolarSystem*        GetSolarSystem() const;
-   virtual wxString         GetOriginName() const;
+   virtual std::string         GetOriginName() const;
    virtual SpacePoint*         GetOrigin() const;
-   virtual wxString         GetJ2000BodyName() const;
+   virtual std::string         GetJ2000BodyName() const;
    virtual SpacePoint*         GetJ2000Body() const;
    
    virtual Rmatrix33           GetLastRotationMatrix() const = 0;
@@ -85,9 +85,9 @@ public:
    virtual void                  SetPrimaryObject(SpacePoint *prim)      = 0;
    virtual void                  SetSecondaryObject(SpacePoint *second)  = 0;
    virtual void                  SetEpoch(const A1Mjd &toEpoch)          = 0;
-   virtual void                  SetXAxis(const wxString &toValue)    = 0;
-   virtual void                  SetYAxis(const wxString &toValue)    = 0;
-   virtual void                  SetZAxis(const wxString &toValue)    = 0;
+   virtual void                  SetXAxis(const std::string &toValue)    = 0;
+   virtual void                  SetYAxis(const std::string &toValue)    = 0;
+   virtual void                  SetZAxis(const std::string &toValue)    = 0;
    // methods to set the files to use - for those AxisSystems that 
    // need all or part of the FK5 reduction
    virtual void                  SetEopFile(EopFile *eopF)               = 0;
@@ -97,9 +97,9 @@ public:
    virtual SpacePoint*           GetPrimaryObject() const                = 0;
    virtual SpacePoint*           GetSecondaryObject() const              = 0;
    virtual A1Mjd                 GetEpoch() const                        = 0;
-   virtual wxString           GetXAxis() const                        = 0;
-   virtual wxString           GetYAxis() const                        = 0;
-   virtual wxString           GetZAxis() const                        = 0;
+   virtual std::string           GetXAxis() const                        = 0;
+   virtual std::string           GetYAxis() const                        = 0;
+   virtual std::string           GetZAxis() const                        = 0;
    virtual EopFile*              GetEopFile() const                      = 0;
    virtual ItrfCoefficientsFile* GetItrfCoefficientsFile()               = 0;
       
@@ -112,26 +112,26 @@ public:
    //virtual GmatBase*       Clone(void) const;
 
    // Parameter access methods - overridden from GmatBase 
-   virtual wxString     GetParameterText(const Integer id) const;     
-   virtual Integer         GetParameterID(const wxString &str) const; 
+   virtual std::string     GetParameterText(const Integer id) const;     
+   virtual Integer         GetParameterID(const std::string &str) const; 
    virtual Gmat::ParameterType
                            GetParameterType(const Integer id) const;
-   virtual wxString     GetParameterTypeString(const Integer id) const;
+   virtual std::string     GetParameterTypeString(const Integer id) const;
    
    virtual bool            IsParameterReadOnly(const Integer id) const;
-   virtual bool            IsParameterReadOnly(const wxString &label) const;
+   virtual bool            IsParameterReadOnly(const std::string &label) const;
    
-   virtual wxString     GetStringParameter(const Integer id) const;
+   virtual std::string     GetStringParameter(const Integer id) const;
    virtual bool            SetStringParameter(const Integer id, 
-                                              const wxString &value);
-   virtual wxString     GetStringParameter(const wxString &label) const;
-   virtual bool            SetStringParameter(const wxString &label, 
-                                              const wxString &value);
+                                              const std::string &value);
+   virtual std::string     GetStringParameter(const std::string &label) const;
+   virtual bool            SetStringParameter(const std::string &label, 
+                                              const std::string &value);
    virtual GmatBase*       GetRefObject(const Gmat::ObjectType type,
-                                        const wxString &name);
+                                        const std::string &name);
    const StringArray&      GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool            SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                        const wxString &name = wxT(""));
+                                        const std::string &name = "");
    
    
 protected:
@@ -143,7 +143,7 @@ protected:
       CoordinateBaseParamCount
    };
    
-   static const wxString PARAMETER_TEXT[CoordinateBaseParamCount - GmatBaseParamCount];
+   static const std::string PARAMETER_TEXT[CoordinateBaseParamCount - GmatBaseParamCount];
    
    static const Gmat::ParameterType PARAMETER_TYPE[CoordinateBaseParamCount - GmatBaseParamCount];
    
@@ -152,11 +152,11 @@ protected:
    /// Equatorial coordinate system)
    SpacePoint      *origin;  
    /// Name for the origin body
-   wxString     originName;
+   std::string     originName;
    /// j2000Body for the system
    SpacePoint      *j2000Body;  
    /// Name for the origin body
-   wxString     j2000BodyName;
+   std::string     j2000BodyName;
    /// pointer to the solar system
    SolarSystem     *solar;
    

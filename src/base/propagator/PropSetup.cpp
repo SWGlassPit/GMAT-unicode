@@ -62,54 +62,54 @@
  * to find out valid property or not. (LOJ: 2008.06.12)
  */
 
-const wxString
+const std::string
 PropSetup::PARAMETER_TEXT[PropSetupParamCount - GmatBaseParamCount] =
 
 {
-   wxT("FM"),
-   wxT("Type"),
-   wxT("InitialStepSize"),
-   wxT("Accuracy"),
-   wxT("ErrorThreshold"),
-   wxT("SmallestInterval"),
-   wxT("MinStep"),
-   wxT("MaxStep"),
-   wxT("MaxStepAttempts"),
-   wxT("LowerError"),
-   wxT("TargetError"),
-   wxT("StopIfAccuracyIsViolated"),
-   wxT("StepSize"),
-   wxT("CentralBody"),
-   wxT("EpochFormat"),
-   wxT("StartEpoch"),
-   wxT("MinimumReduction"),
-   wxT("MaximumReduction"),
-   wxT("MinimumTolerance")
+   "FM",
+   "Type",
+   "InitialStepSize",
+   "Accuracy",
+   "ErrorThreshold",
+   "SmallestInterval",
+   "MinStep",
+   "MaxStep",
+   "MaxStepAttempts",
+   "LowerError",
+   "TargetError",
+   "StopIfAccuracyIsViolated",
+   "StepSize",
+   "CentralBody",
+   "EpochFormat",
+   "StartEpoch",
+   "MinimumReduction",
+   "MaximumReduction",
+   "MinimumTolerance"
 };
 
 
 const Gmat::ParameterType
 PropSetup::PARAMETER_TYPE[PropSetupParamCount - GmatBaseParamCount] =
 {
-   Gmat::OBJECT_TYPE,  // wxT("FM")
-   Gmat::OBJECT_TYPE,  // wxT("Type")
-   Gmat::REAL_TYPE,    // wxT("InitialStepSize"),
-   Gmat::REAL_TYPE,    // wxT("Accuracy"),
-   Gmat::REAL_TYPE,    // wxT("ErrorThreshold"),
-   Gmat::REAL_TYPE,    // wxT("SmallestInterval"),
-   Gmat::REAL_TYPE,    // wxT("MinStep"),
-   Gmat::REAL_TYPE,    // wxT("MaxStep"),
-   Gmat::INTEGER_TYPE, // wxT("MaxStepAttempts"),
-   Gmat::REAL_TYPE,    // wxT("LowerError"),
-   Gmat::REAL_TYPE,    // wxT("TargetError"),
-   Gmat::BOOLEAN_TYPE, // wxT("StopIfAccuracyIsViolated")
-   Gmat::REAL_TYPE,    // wxT("StepSize"),
-   Gmat::OBJECT_TYPE,  // wxT("CentralBody"),
-   Gmat::STRING_TYPE,  // wxT("EpochFormat"),
-   Gmat::STRING_TYPE,  // wxT("StartEpoch"),
-   Gmat::REAL_TYPE,    // wxT("MinimumReduction"),
-   Gmat::REAL_TYPE,    // wxT("MaximumReduction"),
-   Gmat::REAL_TYPE,    // wxT("MinimumTolerance")
+   Gmat::OBJECT_TYPE,  // "FM"
+   Gmat::OBJECT_TYPE,  // "Type"
+   Gmat::REAL_TYPE,    // "InitialStepSize",
+   Gmat::REAL_TYPE,    // "Accuracy",
+   Gmat::REAL_TYPE,    // "ErrorThreshold",
+   Gmat::REAL_TYPE,    // "SmallestInterval",
+   Gmat::REAL_TYPE,    // "MinStep",
+   Gmat::REAL_TYPE,    // "MaxStep",
+   Gmat::INTEGER_TYPE, // "MaxStepAttempts",
+   Gmat::REAL_TYPE,    // "LowerError",
+   Gmat::REAL_TYPE,    // "TargetError",
+   Gmat::BOOLEAN_TYPE, // "StopIfAccuracyIsViolated"
+   Gmat::REAL_TYPE,    // "StepSize",
+   Gmat::OBJECT_TYPE,  // "CentralBody",
+   Gmat::STRING_TYPE,  // "EpochFormat",
+   Gmat::STRING_TYPE,  // "StartEpoch",
+   Gmat::REAL_TYPE,    // "MinimumReduction",
+   Gmat::REAL_TYPE,    // "MaximumReduction",
+   Gmat::REAL_TYPE,    // "MinimumTolerance"
 };
 
 //---------------------------------
@@ -117,18 +117,18 @@ PropSetup::PARAMETER_TYPE[PropSetupParamCount - GmatBaseParamCount] =
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// PropSetup(const wxString &name)
+// PropSetup(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
  */
 //------------------------------------------------------------------------------
-PropSetup::PropSetup(const wxString &name)
-   : GmatBase(Gmat::PROP_SETUP, wxT("PropSetup"), name)
+PropSetup::PropSetup(const std::string &name)
+   : GmatBase(Gmat::PROP_SETUP, "PropSetup", name)
 {
    // GmatBase data
    objectTypes.push_back(Gmat::PROP_SETUP);
-   objectTypeNames.push_back(wxT("PropSetup"));
+   objectTypeNames.push_back("PropSetup");
    
    parameterCount = PropSetupParamCount;
    // Propagator is named or unnamed owned object which means that Propagator is not
@@ -141,33 +141,33 @@ PropSetup::PropSetup(const wxString &name)
    
    // Name it Internal* so that they can be deleted when new Propagator or ODEModel
    // is set. These names are not actual names but tells whether they can be deleted or not.
-   // When Propagator or ForceModes is cloned these names are set to wxT("") so that they
+   // When Propagator or ForceModes is cloned these names are set to "" so that they
    // can be deleted.
-   mPropagatorName = wxT("InternalPropagator");
-   mODEModelName = wxT("InternalODEModel");
+   mPropagatorName = "InternalPropagator";
+   mODEModelName = "InternalODEModel";
    
    // Create default Integrator and ODEModel
-   mPropagator = new RungeKutta89(wxT("RungeKutta89"));
+   mPropagator = new RungeKutta89("RungeKutta89");
    mODEModel = new ODEModel(mODEModelName);
    PhysicalModel *pmf = new PointMassForce;
    
    #ifdef DEBUG_PROPSETUP   
    MessageInterface::ShowMessage
-      (wxT("PropSetup::PropSetup() adding <%p><PointMassForce> to  ")
-       wxT("<%p><ODEModel>'InternalODEModel\n"), pmf, mODEModel);
+      ("PropSetup::PropSetup() adding <%p><PointMassForce> to  "
+       "<%p><ODEModel>'InternalODEModel\n", pmf, mODEModel);
    #endif
    
    mODEModel->AddForce(pmf);
    
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Add
-      (mPropagator, wxT("RungeKutta89"), wxT("PropSetup::PropSetup()"),
-       wxT("mPropagator = new RungeKutta89()"), this);
+      (mPropagator, "RungeKutta89", "PropSetup::PropSetup()",
+       "mPropagator = new RungeKutta89()", this);
    MemoryTracker::Instance()->Add
-      (mODEModel, mODEModelName, wxT("PropSetup::PropSetup()"),
-       wxT("mODEModel = new ODEModel()"), this);
+      (mODEModel, mODEModelName, "PropSetup::PropSetup()",
+       "mODEModel = new ODEModel()", this);
    MemoryTracker::Instance()->Add
-      (pmf, wxT("Earth"), wxT("PropSetup::PropSetup()"), wxT("*pmf = new PointMassForce"), this);
+      (pmf, "Earth", "PropSetup::PropSetup()", "*pmf = new PointMassForce", this);
    #endif
 }
 
@@ -185,7 +185,7 @@ PropSetup::PropSetup(const PropSetup &ps) :
 {
    #ifdef DEBUG_PROPSETUP
    MessageInterface::ShowMessage
-      (wxT("PropSetup::PropSetup(copy) <%p>'%s' entered, ps.Propagator=<%p>, ps.ODEModel=<%p>\n"),
+      ("PropSetup::PropSetup(copy) <%p>'%s' entered, ps.Propagator=<%p>, ps.ODEModel=<%p>\n",
        this, GetName().c_str(), ps.mPropagator, ps.mODEModel);
    #endif
    
@@ -196,7 +196,7 @@ PropSetup::PropSetup(const PropSetup &ps) :
    mMcsCreated = ps.mMcsCreated;
    includeODEModelInGenString = ps.includeODEModelInGenString;
    mPropagatorName = ps.mPropagatorName;
-   mODEModelName = wxT("");
+   mODEModelName = "";
    mPropagator = NULL;
    mODEModel = NULL;
    
@@ -213,12 +213,12 @@ PropSetup::PropSetup(const PropSetup &ps) :
    
    #ifdef DEBUG_PROPSETUP
    MessageInterface::ShowMessage
-      (wxT("PropSetup::PropSetup(copy) exiting, Propagator=<%p><%s> '%s'\n   ")
-       wxT("ODEModel=<%p><%s> '%s'\n"), mPropagator,
-       mPropagator ? mPropagator->GetTypeName().c_str() : wxT("NULL"),
-       mPropagator ? mPropagator->GetName().c_str() : wxT("NULL"), mODEModel,
-       mODEModel ? mODEModel->GetTypeName().c_str() : wxT("NULL"),
-       mODEModel ? mODEModel->GetName().c_str() : wxT("NULL"));
+      ("PropSetup::PropSetup(copy) exiting, Propagator=<%p><%s> '%s'\n   "
+       "ODEModel=<%p><%s> '%s'\n", mPropagator,
+       mPropagator ? mPropagator->GetTypeName().c_str() : "NULL",
+       mPropagator ? mPropagator->GetName().c_str() : "NULL", mODEModel,
+       mODEModel ? mODEModel->GetTypeName().c_str() : "NULL",
+       mODEModel ? mODEModel->GetName().c_str() : "NULL");
    #endif
 }
 
@@ -233,10 +233,10 @@ PropSetup& PropSetup::operator= (const PropSetup &ps)
 {
    #ifdef DEBUG_PROPSETUP
    MessageInterface::ShowMessage
-      (wxT("PropSetup::operator=() <%p>'%s' entered, Propagator=<%p>, ODEModel=<%p>\n"),
+      ("PropSetup::operator=() <%p>'%s' entered, Propagator=<%p>, ODEModel=<%p>\n",
        this, GetName().c_str(), mPropagator, mODEModel);
    MessageInterface::ShowMessage
-      (wxT("   ps.Propagator=<%p>, ps.ODEModel=<%p>\n"), ps.mPropagator, ps.mODEModel);
+      ("   ps.Propagator=<%p>, ps.ODEModel=<%p>\n", ps.mPropagator, ps.mODEModel);
    #endif
    
    if (this == &ps)
@@ -249,7 +249,7 @@ PropSetup& PropSetup::operator= (const PropSetup &ps)
    mMcsCreated = ps.mMcsCreated;
    includeODEModelInGenString = ps.includeODEModelInGenString;
    mPropagatorName = ps.mPropagatorName;
-   mODEModelName = wxT("");
+   mODEModelName = "";
    
    psm = ps.psm;
    
@@ -266,12 +266,12 @@ PropSetup& PropSetup::operator= (const PropSetup &ps)
    
    #ifdef DEBUG_PROPSETUP
    MessageInterface::ShowMessage
-      (wxT("PropSetup::operator=() exiting, Propagator=<%p><%s> '%s'\n   ")
-       wxT("ODEModel=<%p><%s> '%s'\n"), mPropagator,
-       mPropagator ? mPropagator->GetTypeName().c_str() : wxT("NULL"),
-       mPropagator ? mPropagator->GetName().c_str() : wxT("NULL"), mODEModel,
-       mODEModel ? mODEModel->GetTypeName().c_str() : wxT("NULL"),
-       mODEModel ? mODEModel->GetName().c_str() : wxT("NULL"));
+      ("PropSetup::operator=() exiting, Propagator=<%p><%s> '%s'\n   "
+       "ODEModel=<%p><%s> '%s'\n", mPropagator,
+       mPropagator ? mPropagator->GetTypeName().c_str() : "NULL",
+       mPropagator ? mPropagator->GetName().c_str() : "NULL", mODEModel,
+       mODEModel ? mODEModel->GetTypeName().c_str() : "NULL",
+       mODEModel ? mODEModel->GetName().c_str() : "NULL");
    #endif
    
    return *this;
@@ -288,7 +288,7 @@ PropSetup::~PropSetup()
 {
    #ifdef DEBUG_PROPSETUP
    MessageInterface::ShowMessage
-      (wxT("PropSetup::~PropSetup() entered, Propagator=<%p>, ODEModel=<%p>\n"),
+      ("PropSetup::~PropSetup() entered, Propagator=<%p>, ODEModel=<%p>\n",
        mPropagator, mODEModel);
    #endif
    
@@ -296,7 +296,7 @@ PropSetup::~PropSetup()
    DeleteOwnedObject(ODE_MODEL, true);
    
    #ifdef DEBUG_PROPSETUP
-   MessageInterface::ShowMessage(wxT("PropSetup::~PropSetup() exiting\n"));
+   MessageInterface::ShowMessage("PropSetup::~PropSetup() exiting\n");
    #endif
 }
 
@@ -324,8 +324,8 @@ Propagator* PropSetup::GetPropagator()
 {
    #ifdef DEBUG_PROPSETUP_GET
    MessageInterface::ShowMessage
-      (wxT("PropSetup::GetPropagator() mPropagator=<%p>, name='%s'\n"),
-       mPropagator, (mPropagator == NULL ? wxT("N/A") :
+      ("PropSetup::GetPropagator() mPropagator=<%p>, name='%s'\n",
+       mPropagator, (mPropagator == NULL ? "N/A" :
        mPropagator->GetName().c_str()));
    #endif
    
@@ -343,8 +343,8 @@ ODEModel* PropSetup::GetODEModel()
 {
    #ifdef DEBUG_PROPSETUP_ODEMODEL
    MessageInterface::ShowMessage
-      (wxT("PropSetup::GetODEModel() returning <%p>'%s'\n"), mODEModel,
-       mODEModel ? mODEModel->GetName().c_str() : wxT("NULL"));
+      ("PropSetup::GetODEModel() returning <%p>'%s'\n", mODEModel,
+       mODEModel ? mODEModel->GetName().c_str() : "NULL");
    #endif
    return mODEModel;
 }
@@ -374,28 +374,28 @@ void PropSetup::SetPropagator(Propagator *propagator, bool fromGUI)
 {
    #ifdef DEBUG_PROPSETUP_SET
    MessageInterface::ShowMessage
-      (wxT("PropSetup::SetPropagator() this=<%p> '%s' entered, mPropagator=<%p>, ")
-       wxT("propagator=<%p>\n"), this, GetName().c_str(), mPropagator, propagator);
-   MessageInterface::ShowMessage(wxT("   Prop name is '%s', PropSetup %s\n"),
-         mPropagatorName.c_str(), (mMcsCreated ? wxT("was MCS Created") :
-         wxT("was not MCS Created")));
+      ("PropSetup::SetPropagator() this=<%p> '%s' entered, mPropagator=<%p>, "
+       "propagator=<%p>\n", this, GetName().c_str(), mPropagator, propagator);
+   MessageInterface::ShowMessage("   Prop name is '%s', PropSetup %s\n",
+         mPropagatorName.c_str(), (mMcsCreated ? "was MCS Created" :
+         "was not MCS Created"));
    #endif
    
    if (!fromGUI)
    {
-      if ((mPropagatorName != wxT("InternalPropagator")) && !mMcsCreated)
+      if ((mPropagatorName != "InternalPropagator") && !mMcsCreated)
       {
          if (propagator != NULL)
          {
             if (propagator->GetTypeName() != mPropagator->GetTypeName())
-               throw PropSetupException(wxT("You cannot change the owned Integrator ")
-                     wxT("or Analytic Propagator after setting it once"));
+               throw PropSetupException("You cannot change the owned Integrator "
+                     "or Analytic Propagator after setting it once");
          }
       }
    }
 
    if (propagator == NULL)
-      throw PropSetupException(wxT("SetPropagator() failed: propagator is NULL"));
+      throw PropSetupException("SetPropagator() failed: propagator is NULL");
    
    DeleteOwnedObject(PROPAGATOR, true);
 //   mPropagator = propagator;
@@ -421,8 +421,8 @@ void PropSetup::SetODEModel(ODEModel *odeModel)
 {
    #ifdef DEBUG_PROPSETUP_SET
    MessageInterface::ShowMessage
-      (wxT("PropSetup::SetODEModel() this=<%p> '%s' entered, mODEModel=<%p>, ")
-       wxT("odeModel=<%p> '%s'\n"), this, GetName().c_str(), mODEModel, odeModel,
+      ("PropSetup::SetODEModel() this=<%p> '%s' entered, mODEModel=<%p>, "
+       "odeModel=<%p> '%s'\n", this, GetName().c_str(), mODEModel, odeModel,
        odeModel->GetName().c_str());
    #endif
    
@@ -435,7 +435,7 @@ void PropSetup::SetODEModel(ODEModel *odeModel)
    
    #ifdef DEBUG_PROPSETUP_SET
    MessageInterface::ShowMessage
-      (wxT("PropSetup::SetODEModel() exiting, mODEModel=<%p>\n"), mODEModel);
+      ("PropSetup::SetODEModel() exiting, mODEModel=<%p>\n", mODEModel);
    #endif
 }
 
@@ -479,13 +479,13 @@ Integer PropSetup::GetNumForces()
 }
 
 //------------------------------------------------------------------------------
-// const wxString* GetParameterList() const
+// const std::string* GetParameterList() const
 //------------------------------------------------------------------------------
 /**
  * @return pointer to parameter name list
  */
 //------------------------------------------------------------------------------
-const wxString* PropSetup::GetParameterList() const
+const std::string* PropSetup::GetParameterList() const
 {
    return PARAMETER_TEXT;
 }
@@ -507,7 +507,7 @@ Integer PropSetup::GetParameterCount(void) const
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /**
  * Renames reference objects used in this class.
@@ -520,18 +520,18 @@ Integer PropSetup::GetParameterCount(void) const
  */
 //---------------------------------------------------------------------------
 bool PropSetup::RenameRefObject(const Gmat::ObjectType type,
-                                const wxString &oldName,
-                                const wxString &newName)
+                                const std::string &oldName,
+                                const std::string &newName)
 {
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("PropSetup::RenameRefObject() entered, this=<%p>'%s', type=%d, ")
-       wxT("oldName='%s', newName='%s'\n"), this, GetName().c_str(), type,
+      ("PropSetup::RenameRefObject() entered, this=<%p>'%s', type=%d, "
+       "oldName='%s', newName='%s'\n", this, GetName().c_str(), type,
        oldName.c_str(), newName.c_str());
    MessageInterface::ShowMessage
-      (wxT("   mODEModelName='%s', mODEModel=<%p><%s>'%s'\n"), mODEModelName.c_str(),
-       mODEModel, mODEModel ? mODEModel->GetTypeName().c_str() : wxT("NULL"),
-       mODEModel ? mODEModel->GetName().c_str() : wxT("NULL"));
+      ("   mODEModelName='%s', mODEModel=<%p><%s>'%s'\n", mODEModelName.c_str(),
+       mODEModel, mODEModel ? mODEModel->GetTypeName().c_str() : "NULL",
+       mODEModel ? mODEModel->GetName().c_str() : "NULL");
    #endif
    
    // Rename ODE model name
@@ -543,7 +543,7 @@ bool PropSetup::RenameRefObject(const Gmat::ObjectType type,
    // Rename acutal ODE model name of ODEModel pointer
    if (mODEModel)
    {
-      wxString modelName = mODEModel->GetName();
+      std::string modelName = mODEModel->GetName();
       if (modelName.find(oldName) != modelName.npos)
       {
          modelName = GmatStringUtil::Replace(modelName, oldName, newName);
@@ -553,10 +553,10 @@ bool PropSetup::RenameRefObject(const Gmat::ObjectType type,
    
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("PropSetup::RenameRefObject() returning true, mODEMoedlName='%s', ")
-       wxT("mODEModel=<%p><%s>'%s'\n"), mODEModelName.c_str(), mODEModel,
-       mODEModel ? mODEModel->GetTypeName().c_str() : wxT("NULL"),
-       mODEModel ? mODEModel->GetName().c_str() : wxT("NULL"));
+      ("PropSetup::RenameRefObject() returning true, mODEMoedlName='%s', "
+       "mODEModel=<%p><%s>'%s'\n", mODEModelName.c_str(), mODEModel,
+       mODEModel ? mODEModel->GetTypeName().c_str() : "NULL",
+       mODEModel ? mODEModel->GetName().c_str() : "NULL");
    #endif
    
    return true;
@@ -565,20 +565,20 @@ bool PropSetup::RenameRefObject(const Gmat::ObjectType type,
 
 //---------------------------------------------------------------------------
 // virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                           const wxString &name = wxT(""));
+//                           const std::string &name = "");
 //---------------------------------------------------------------------------
 /*
  * @see GmatBase
  */
 //---------------------------------------------------------------------------
 bool PropSetup::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                             const wxString &name)
+                             const std::string &name)
 {
    #ifdef DEBUG_PROPSETUP_SET
    MessageInterface::ShowMessage
-      (wxT("PropSetup::SetRefObject() entered, obj=<%p><%s> '%s', type=%d, name='%s'\n"),
-       obj, obj ? obj->GetTypeName().c_str() : wxT("NULL"),
-       obj ? obj->GetName().c_str() : wxT("NULL"), type, name.c_str());
+      ("PropSetup::SetRefObject() entered, obj=<%p><%s> '%s', type=%d, name='%s'\n",
+       obj, obj ? obj->GetTypeName().c_str() : "NULL",
+       obj ? obj->GetName().c_str() : "NULL", type, name.c_str());
    #endif
    
    if (obj == NULL)
@@ -592,8 +592,8 @@ bool PropSetup::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
    case Gmat::ODE_MODEL:
       SetODEModel((ODEModel*)obj);
       {  // Manage case statement scoping issues
-         wxString refName = obj->GetName();
-         if ((refName != wxT("")) && (refName != wxT("InternalODEModel")))
+         std::string refName = obj->GetName();
+         if ((refName != "") && (refName != "InternalODEModel"))
             mODEModelName = refName;
       }
       return true;
@@ -664,7 +664,7 @@ GmatBase* PropSetup::Clone(void) const
 void PropSetup::Copy(const GmatBase* orig)
 {
    // We don't want to copy instanceName
-   wxString name = instanceName;
+   std::string name = instanceName;
    operator=(*((PropSetup *)(orig)));
    instanceName = name;
 }
@@ -725,11 +725,11 @@ const ObjectTypeArray& PropSetup::GetRefObjectTypeArray()
 const StringArray& PropSetup::GetRefObjectNameArray(const Gmat::ObjectType type)
 {
    refObjectNames.clear();
-   if (mPropagatorName != wxT("") && mPropagatorName != wxT("InternalPropagator"))
+   if (mPropagatorName != "" && mPropagatorName != "InternalPropagator")
       if (type == Gmat::PROPAGATOR || type == Gmat::UNKNOWN_OBJECT)
          refObjectNames.push_back(mPropagatorName);
-   if (mODEModelName != wxT("") && mODEModelName != wxT("InternalODEModel") &&
-       mODEModelName != wxT("InternalForceModel"))
+   if (mODEModelName != "" && mODEModelName != "InternalODEModel" &&
+       mODEModelName != "InternalForceModel")
       if (type == Gmat::ODE_MODEL || type == Gmat::UNKNOWN_OBJECT)
          refObjectNames.push_back(mODEModelName);
    return refObjectNames;
@@ -752,13 +752,13 @@ Gmat::ParameterType PropSetup::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString PropSetup::GetParameterTypeString(const Integer id) const
+std::string PropSetup::GetParameterTypeString(const Integer id) const
 {
    if (id >= GmatBaseParamCount && id < PropSetupParamCount)
       return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
@@ -767,13 +767,13 @@ wxString PropSetup::GetParameterTypeString(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id)
+// std::string GetParameterText(const Integer id)
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString PropSetup::GetParameterText(const Integer id) const
+std::string PropSetup::GetParameterText(const Integer id) const
 {
    if (id >= GmatBaseParamCount && id < PropSetupParamCount)
       return PARAMETER_TEXT[id - GmatBaseParamCount];
@@ -783,13 +783,13 @@ wxString PropSetup::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString str)
+// Integer GetParameterID(const std::string str)
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Integer PropSetup::GetParameterID(const wxString &str) const
+Integer PropSetup::GetParameterID(const std::string &str) const
 {
    for (int i=GmatBaseParamCount; i<PropSetupParamCount; i++)
    {
@@ -825,7 +825,7 @@ bool PropSetup::IsParameterReadOnly(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-//  bool IsParameterReadOnly(const wxString &label) const
+//  bool IsParameterReadOnly(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * Checks to see if the requested parameter is read only.
@@ -835,44 +835,44 @@ bool PropSetup::IsParameterReadOnly(const Integer id) const
  * @return true if the parameter is read only, false (the default) if not.
  */
 //---------------------------------------------------------------------------
-bool PropSetup::IsParameterReadOnly(const wxString &label) const
+bool PropSetup::IsParameterReadOnly(const std::string &label) const
 {
    return IsParameterReadOnly(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id)
+// std::string GetStringParameter(const Integer id)
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString PropSetup::GetStringParameter(const Integer id) const
+std::string PropSetup::GetStringParameter(const Integer id) const
 {
    #ifdef DEBUG_PROPSETUP_GET
    MessageInterface::ShowMessage
-      (wxT("PropSetup::GetStringParameter() '%s' entered, id=%d\n"),
+      ("PropSetup::GetStringParameter() '%s' entered, id=%d\n",
             GetParameterText(id).c_str(), id);
    #endif
-   wxString name;
+   std::string name;
    switch (id)
    {
    case PROPAGATOR:
       if (mPropagator)
          name = mPropagator->GetName();
       else
-         name = wxT("UndefinedPropagator");
+         name = "UndefinedPropagator";
       break;
    case ODE_MODEL:
       if (mODEModel)
       {
          name = mODEModelName;
-         if (name == wxT(""))
+         if (name == "")
             name = mODEModel->GetName();
       }
       else
-         name = wxT("InternalODEModel");
+         name = "InternalODEModel";
       break;
    case ANALYTIC_CENTRALBODY:
    case ANALYTIC_EPOCHFORMAT:
@@ -887,37 +887,37 @@ wxString PropSetup::GetStringParameter(const Integer id) const
    }
    #ifdef DEBUG_PROPSETUP_GET
    MessageInterface::ShowMessage
-      (wxT("PropSetup::GetStringParameter() '%s' returning '%s'\n"),
+      ("PropSetup::GetStringParameter() '%s' returning '%s'\n",
             GetParameterText(id).c_str(), name.c_str());
    #endif
    return name;
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label)
+// std::string GetStringParameter(const std::string &label)
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString PropSetup::GetStringParameter(const wxString &label) const
+std::string PropSetup::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-bool PropSetup::SetStringParameter(const Integer id, const wxString &value)
+bool PropSetup::SetStringParameter(const Integer id, const std::string &value)
 {
    #ifdef DEBUG_PROPSETUP_SET
    MessageInterface::ShowMessage
-      (wxT("PropSetup::SetStringParameter() '%s', id=%d, value='%s'\n"),
+      ("PropSetup::SetStringParameter() '%s', id=%d, value='%s'\n",
        GetName().c_str(), id, value.c_str());
    #endif
       
@@ -946,14 +946,14 @@ bool PropSetup::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-bool PropSetup::SetStringParameter(const wxString &label, 
-                                   const wxString &value)
+bool PropSetup::SetStringParameter(const std::string &label, 
+                                   const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
@@ -995,9 +995,9 @@ Real PropSetup::GetRealParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// virtual Real GetRealParameter(const wxString &label) const
+// virtual Real GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-Real PropSetup::GetRealParameter(const wxString &label) const
+Real PropSetup::GetRealParameter(const std::string &label) const
 {
    return GetRealParameter(GetParameterID(label));
 }
@@ -1013,8 +1013,8 @@ Real PropSetup::GetRealParameter(const wxString &label) const
 Real PropSetup::SetRealParameter(const Integer id, const Real value)
 {
    #ifdef DEBUG_SET_PROPAGATOR_PARAMETER
-      MessageInterface::ShowMessage(wxT("PropSetup::SetRealParameter(%d <%s>, %lf) ")
-            wxT("called\n"), id, GetParameterText(id).c_str(), value);
+      MessageInterface::ShowMessage("PropSetup::SetRealParameter(%d <%s>, %lf) "
+            "called\n", id, GetParameterText(id).c_str(), value);
    #endif
    switch (id)
    {
@@ -1043,9 +1043,9 @@ Real PropSetup::SetRealParameter(const Integer id, const Real value)
 
 
 //------------------------------------------------------------------------------
-// virtual Real SetRealParameter(const wxString &label, const Real value)
+// virtual Real SetRealParameter(const std::string &label, const Real value)
 //------------------------------------------------------------------------------
-Real PropSetup::SetRealParameter(const wxString &label, const Real value)
+Real PropSetup::SetRealParameter(const std::string &label, const Real value)
 {
    return SetRealParameter(GetParameterID(label), value);
 }
@@ -1071,9 +1071,9 @@ Integer PropSetup::GetIntegerParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// virtual Integer GetIntegerParameter(const wxString &label) const
+// virtual Integer GetIntegerParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-Integer PropSetup::GetIntegerParameter(const wxString &label) const
+Integer PropSetup::GetIntegerParameter(const std::string &label) const
 {
    return GetIntegerParameter(GetParameterID(label));
 }
@@ -1099,9 +1099,9 @@ Integer PropSetup::SetIntegerParameter(const Integer id, const Integer value)
 
 
 //------------------------------------------------------------------------------
-// virtual Integer SetIntegerParameter(const wxString &label, const Integer value)
+// virtual Integer SetIntegerParameter(const std::string &label, const Integer value)
 //------------------------------------------------------------------------------
-Integer PropSetup::SetIntegerParameter(const wxString &label, const Integer value)
+Integer PropSetup::SetIntegerParameter(const std::string &label, const Integer value)
 {
    return SetIntegerParameter(GetParameterID(label), value);
 }
@@ -1202,7 +1202,7 @@ bool PropSetup::SetBooleanParameter(const Integer id, const bool value,
 
 
 //------------------------------------------------------------------------------
-// bool GetBooleanParameter(const wxString &label) const
+// bool GetBooleanParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves a Boolean parameter
@@ -1212,14 +1212,14 @@ bool PropSetup::SetBooleanParameter(const Integer id, const bool value,
  * @return the current value
  */
 //------------------------------------------------------------------------------
-bool PropSetup::GetBooleanParameter(const wxString &label) const
+bool PropSetup::GetBooleanParameter(const std::string &label) const
 {
    return GetBooleanParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetBooleanParameter(const wxString &label, const bool value)
+// bool SetBooleanParameter(const std::string &label, const bool value)
 //------------------------------------------------------------------------------
 /**
  * Sets a Boolean parameter
@@ -1230,7 +1230,7 @@ bool PropSetup::GetBooleanParameter(const wxString &label) const
  * @return the value after setting
  */
 //------------------------------------------------------------------------------
-bool PropSetup::SetBooleanParameter(const wxString &label,
+bool PropSetup::SetBooleanParameter(const std::string &label,
                                          const bool value)
 {
    return SetBooleanParameter(GetParameterID(label), value);
@@ -1238,7 +1238,7 @@ bool PropSetup::SetBooleanParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// bool GetBooleanParameter(const wxString &label,
+// bool GetBooleanParameter(const std::string &label,
 //                                          const Integer index) const
 //------------------------------------------------------------------------------
 /**
@@ -1250,7 +1250,7 @@ bool PropSetup::SetBooleanParameter(const wxString &label,
  * @return the current value
  */
 //------------------------------------------------------------------------------
-bool PropSetup::GetBooleanParameter(const wxString &label,
+bool PropSetup::GetBooleanParameter(const std::string &label,
                                          const Integer index) const
 {
    return GetBooleanParameter(GetParameterID(label), index);
@@ -1258,7 +1258,7 @@ bool PropSetup::GetBooleanParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// bool SetBooleanParameter(const wxString &label, const bool value,
+// bool SetBooleanParameter(const std::string &label, const bool value,
 //       const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -1271,7 +1271,7 @@ bool PropSetup::GetBooleanParameter(const wxString &label,
  * @return the current value
  */
 //------------------------------------------------------------------------------
-bool PropSetup::SetBooleanParameter(const wxString &label, const bool value,
+bool PropSetup::SetBooleanParameter(const std::string &label, const bool value,
       const Integer index)
 {
    return SetBooleanParameter(GetParameterID(label), value, index);
@@ -1289,7 +1289,7 @@ bool PropSetup::SetBooleanParameter(const wxString &label, const bool value,
 bool PropSetup::Initialize()
 {
    #ifdef DEBUG_INITIALIZATION
-      MessageInterface::ShowMessage(wxT("PropSetup::Initialize() entered \n"));
+      MessageInterface::ShowMessage("PropSetup::Initialize() entered \n");
    #endif
    mInitialized = true;
 
@@ -1297,7 +1297,7 @@ bool PropSetup::Initialize()
    {
       #ifdef DEBUG_INITIALIZATION
          MessageInterface::ShowMessage(
-            wxT("PropSetup::Initialize() mPropagator is NULL\n"));
+            "PropSetup::Initialize() mPropagator is NULL\n");
       #endif
       mInitialized = false;
    }
@@ -1306,7 +1306,7 @@ bool PropSetup::Initialize()
    {
       #ifdef DEBUG_INITIALIZATION
          MessageInterface::ShowMessage(
-            wxT("PropSetup::Initialize() mODEModel is NULL\n"));
+            "PropSetup::Initialize() mODEModel is NULL\n");
       #endif
       mInitialized = false;
    }
@@ -1314,14 +1314,14 @@ bool PropSetup::Initialize()
    {
       #ifdef DEBUG_INITIALIZATION
          MessageInterface::ShowMessage(
-            wxT("PropSetup::Initialize() NumForces is 0\n"));
+            "PropSetup::Initialize() NumForces is 0\n");
       #endif
       mInitialized = false;
    }
    
    #ifdef DEBUG_INITIALIZATION
       MessageInterface::ShowMessage(
-         wxT("PropSetup::Initialize() initialized = %d\n"), mInitialized);
+         "PropSetup::Initialize() initialized = %d\n", mInitialized);
    #endif
    
    if (mInitialized == true)
@@ -1329,7 +1329,7 @@ bool PropSetup::Initialize()
       mPropagator->SetPhysicalModel(mODEModel);
       #ifdef DEBUG_INITIALIZATION
          MessageInterface::ShowMessage(
-            wxT("PropSetup::Initialize() after SetPhysicalModel(%s) \n"),
+            "PropSetup::Initialize() after SetPhysicalModel(%s) \n",
             mODEModel->GetName().c_str());
       #endif
 
@@ -1337,7 +1337,7 @@ bool PropSetup::Initialize()
       
       #ifdef DEBUG_INITIALIZATION
          MessageInterface::ShowMessage(
-            wxT("PropSetup::Initialize() after mPropagator->Initialize() \n"));
+            "PropSetup::Initialize() after mPropagator->Initialize() \n");
       #endif
    }
    
@@ -1346,7 +1346,7 @@ bool PropSetup::Initialize()
 
 
 //------------------------------------------------------------------------------
-// bool TakeAction(const wxString &action, const wxString &actionData)
+// bool TakeAction(const std::string &action, const std::string &actionData)
 //------------------------------------------------------------------------------
 /**
  * Applies a user action
@@ -1356,26 +1356,26 @@ bool PropSetup::Initialize()
  * accept properties that otherwise are only settable in object mode.
  */
 //------------------------------------------------------------------------------
-bool PropSetup::TakeAction(const wxString &action,
-      const wxString &actionData)
+bool PropSetup::TakeAction(const std::string &action,
+      const std::string &actionData)
 {
-   if (action == wxT("WasMcsCreated"))
+   if (action == "WasMcsCreated")
    {
       #ifdef DEBUG_FUNCTION_CREATION
-         MessageInterface::ShowMessage(wxT("PropSetup::TakeAction: %s was MCS ")
-               wxT("created for <%p>\n"), instanceName.c_str(), this);
+         MessageInterface::ShowMessage("PropSetup::TakeAction: %s was MCS "
+               "created for <%p>\n", instanceName.c_str(), this);
       #endif
       mMcsCreated = true;
       return true;
    }
    
-   if (action == wxT("IncludeODEModel"))
+   if (action == "IncludeODEModel")
    {
       includeODEModelInGenString = true;
       return true;
    }
    
-   if (action == wxT("ExcludeODEModel"))
+   if (action == "ExcludeODEModel")
    {
       includeODEModelInGenString = false;
       return true;
@@ -1386,8 +1386,8 @@ bool PropSetup::TakeAction(const wxString &action,
 
 
 //------------------------------------------------------------------------------
-// const wxString& GetGeneratingString(Gmat::WriteMode mode,
-//            const wxString &prefix, const wxString &useName)
+// const std::string& GetGeneratingString(Gmat::WriteMode mode,
+//            const std::string &prefix, const std::string &useName)
 //------------------------------------------------------------------------------
 /**
  * Provides special handling for the scripting for PropSetups.
@@ -1399,16 +1399,16 @@ bool PropSetup::TakeAction(const wxString &action,
  * @return A string containing the script used to construct the PropSetup.
  */
 //------------------------------------------------------------------------------
-const wxString& PropSetup::GetGeneratingString(Gmat::WriteMode mode,
-            const wxString &prefix, const wxString &useName)
+const std::string& PropSetup::GetGeneratingString(Gmat::WriteMode mode,
+            const std::string &prefix, const std::string &useName)
 {
    #ifdef DEBUG_PROPSETUP_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("PropSetup::GetGeneratingString() <%p>'%s' entered, mODEModel=<%p> '%s'\n"),
+      ("PropSetup::GetGeneratingString() <%p>'%s' entered, mODEModel=<%p> '%s'\n",
        this, GetName().c_str(), mODEModel,
-       mODEModel ? mODEModel->GetName().c_str() : wxT("NULL"));
+       mODEModel ? mODEModel->GetName().c_str() : "NULL");
    #endif
-   wxString gen, fmName = wxT(""), temp;
+   std::string gen, fmName = "", temp;
    bool showODEModel = false;
    bool propUsesODEModel = true;
 
@@ -1417,15 +1417,15 @@ const wxString& PropSetup::GetGeneratingString(Gmat::WriteMode mode,
    if (mODEModel != NULL)
    {
       temp = mODEModel->GetName();
-      if ((temp == wxT("")) && propUsesODEModel)
+      if ((temp == "") && propUsesODEModel)
       {
-         fmName = instanceName + wxT("_ODEModel");
+         fmName = instanceName + "_ODEModel";
          showODEModel = true;
       }
       else
       {
          fmName = temp;
-         if (fmName != wxT(""))
+         if (fmName != "")
             showODEModel = true;
       }
 
@@ -1435,20 +1435,20 @@ const wxString& PropSetup::GetGeneratingString(Gmat::WriteMode mode,
          showODEModel = true;
       
       #ifdef DEBUG_PROPSETUP_GEN_STRING
-         MessageInterface::ShowMessage(wxT("includeODEModelInGenString = %s, ")
-               wxT("showODEModel = %s, fmName = \"%s\"\n"),
-               (includeODEModelInGenString ? wxT("true") : wxT("false")),
-               (showODEModel ? wxT("true") : wxT("false")), fmName.c_str());
+         MessageInterface::ShowMessage("includeODEModelInGenString = %s, "
+               "showODEModel = %s, fmName = \"%s\"\n",
+               (includeODEModelInGenString ? "true" : "false"),
+               (showODEModel ? "true" : "false"), fmName.c_str());
       #endif
 
       if (showODEModel && includeODEModelInGenString)
       {
-         gen = mODEModel->GetGeneratingString(mode, prefix, fmName) + wxT("\n");
+         gen = mODEModel->GetGeneratingString(mode, prefix, fmName) + "\n";
       }
    }
    
    // Temporarily rename propagator to the type name so the Type field fills
-   wxString pname = mPropagator->GetName();
+   std::string pname = mPropagator->GetName();
    if (mPropagator != NULL)
       mPropagator->SetName(mPropagator->GetTypeName());
 
@@ -1461,7 +1461,7 @@ const wxString& PropSetup::GetGeneratingString(Gmat::WriteMode mode,
 
    #ifdef DEBUG_PROPSETUP_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("PropSetup::GetGeneratingString() <%p>'%s' returning\n%s\n"), this,
+      ("PropSetup::GetGeneratingString() <%p>'%s' returning\n%s\n", this,
        GetName().c_str(), generatingString.c_str());
    #endif
    return generatingString;
@@ -1479,28 +1479,28 @@ void PropSetup::ClonePropagator(Propagator *prop)
 {
    #ifdef DEBUG_PROPSETUP_CLONE
    MessageInterface::ShowMessage
-      (wxT("PropSetup::ClonePropagator() <%p>'%s' entered, prop=<%p>\n"), this,
+      ("PropSetup::ClonePropagator() <%p>'%s' entered, prop=<%p>\n", this,
        GetName().c_str(), prop);
    #endif
    if (prop != NULL)
    {
-      mPropagatorName = wxT("");
+      mPropagatorName = "";
       mPropagator = (Propagator *)(prop->Clone());
       mPropagator->SetName(instanceName);
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (mPropagator, mPropagatorName, wxT("PropSetup::ClonePropagator()"),
-          wxT("mPropagator = prop->Clone()"), this);
+         (mPropagator, mPropagatorName, "PropSetup::ClonePropagator()",
+          "mPropagator = prop->Clone()", this);
       #endif
    }
    else
    {
-      mPropagatorName = wxT("");
+      mPropagatorName = "";
       mPropagator = NULL;
    }
    #ifdef DEBUG_PROPSETUP_CLONE
    MessageInterface::ShowMessage
-      (wxT("PropSetup::ClonePropagator() exiting, mPropagatorName='%s', mPropagator=<%p>\n"),
+      ("PropSetup::ClonePropagator() exiting, mPropagatorName='%s', mPropagator=<%p>\n",
        mPropagatorName.c_str(), mPropagator);
    #endif
 }
@@ -1513,28 +1513,28 @@ void PropSetup::CloneODEModel(ODEModel *fm)
 {
    #ifdef DEBUG_PROPSETUP_CLONE
    MessageInterface::ShowMessage
-      (wxT("PropSetup::CloneODEModel() <%p>'%s' entered, fm=<%p>, mODEModel=<%p>, ")
-       wxT("mODEModelName='%s'\n"), this, GetName().c_str(), fm, mODEModel,
+      ("PropSetup::CloneODEModel() <%p>'%s' entered, fm=<%p>, mODEModel=<%p>, "
+       "mODEModelName='%s'\n", this, GetName().c_str(), fm, mODEModel,
        mODEModelName.c_str());
    #endif
    if (fm != NULL)
    {
-      mODEModelName = wxT("");
+      mODEModelName = "";
       mODEModel = (ODEModel *)(fm->Clone());
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (mODEModel, mODEModelName, wxT("PropSetup::CloneODEModel()"),
-          wxT("mODEModel = fm->Clone()"), this);
+         (mODEModel, mODEModelName, "PropSetup::CloneODEModel()",
+          "mODEModel = fm->Clone()", this);
       #endif
    }
    else
    {
-      mODEModelName = wxT("");
+      mODEModelName = "";
       mODEModel = NULL;
    }
    #ifdef DEBUG_PROPSETUP_CLONE
    MessageInterface::ShowMessage
-      (wxT("PropSetup::CloneODEModel() exiting, mODEModelName='%s', mODEModel=<%p>\n"),
+      ("PropSetup::CloneODEModel() exiting, mODEModelName='%s', mODEModel=<%p>\n",
        mODEModelName.c_str(), mODEModel);
    #endif
 }
@@ -1546,7 +1546,7 @@ void PropSetup::CloneODEModel(ODEModel *fm)
 /**
  * Deletes internal or cloned owned object. Owned objects are named Internal*
  * in the consturctor. When Propagator or ForceModes is cloned their names are
- * set to wxT("") so that those can be deleted.
+ * set to "" so that those can be deleted.
  *
  * @param  id  Id indicating PROPAGATOR or FORCE_MODEL
  * @param  forceDelete  If this is true, it will be deleted without checking (false)
@@ -1556,7 +1556,7 @@ void PropSetup::DeleteOwnedObject(Integer id, bool forceDelete)
 {
    #ifdef DEBUG_PROPSETUP_DELETE
    MessageInterface::ShowMessage
-      (wxT("PropSetup::DeleteOwnedObject() <%p>'%s' entered, id=%d, forceDelete=%d\n"),
+      ("PropSetup::DeleteOwnedObject() <%p>'%s' entered, id=%d, forceDelete=%d\n",
        this, GetName().c_str(), id, forceDelete);
    #endif
    
@@ -1565,29 +1565,29 @@ void PropSetup::DeleteOwnedObject(Integer id, bool forceDelete)
    {
       #ifdef DEBUG_PROPSETUP_DELETE
       MessageInterface::ShowMessage
-         (wxT("   mPropagator=<%p>, mPropagatorName='%s'\n"),
+         ("   mPropagator=<%p>, mPropagatorName='%s'\n",
           mPropagator, mPropagatorName.c_str());
       #endif
       if (mPropagator != NULL)
       {
          if (forceDelete ||
              (!forceDelete &&
-              (mPropagatorName == wxT("") || mPropagatorName == wxT("InternalPropagator"))))
+              (mPropagatorName == "" || mPropagatorName == "InternalPropagator")))
          {
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Remove
-               (mPropagator, mPropagatorName, wxT("PropSetup::DeleteOwnedObject()"),
-                wxT("deleting mPropagator"), this);
+               (mPropagator, mPropagatorName, "PropSetup::DeleteOwnedObject()",
+                "deleting mPropagator", this);
             #endif
             delete mPropagator;
-            mPropagatorName = wxT("");
+            mPropagatorName = "";
             mPropagator = NULL;
          }
          else
          {
             #ifdef DEBUG_PROPSETUP_DELETE
             MessageInterface::ShowMessage
-               (wxT("   =====> mPropagator=<%p> was not deleted\n"), mPropagator);
+               ("   =====> mPropagator=<%p> was not deleted\n", mPropagator);
             #endif
          }
       }
@@ -1596,7 +1596,7 @@ void PropSetup::DeleteOwnedObject(Integer id, bool forceDelete)
    {
       #ifdef DEBUG_PROPSETUP_DELETE
       MessageInterface::ShowMessage
-         (wxT("   mODEModel=<%p>, mODEModelName='%s'\n"),
+         ("   mODEModel=<%p>, mODEModelName='%s'\n",
           mODEModel, mODEModelName.c_str());
       #endif
       if (mODEModel != NULL)
@@ -1604,22 +1604,22 @@ void PropSetup::DeleteOwnedObject(Integer id, bool forceDelete)
          // delete cloned ODEModel 
          if (forceDelete ||
              (!forceDelete &&
-              (mODEModelName == wxT("") || mODEModelName == wxT("InternalODEModel"))))
+              (mODEModelName == "" || mODEModelName == "InternalODEModel")))
          {
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Remove
-               (mODEModel, mODEModelName, wxT("PropSetup::DeleteOwnedObject()"),
-                wxT("deleting mODEModel"), this);
+               (mODEModel, mODEModelName, "PropSetup::DeleteOwnedObject()",
+                "deleting mODEModel", this);
             #endif
             delete mODEModel;
-            mODEModelName = wxT("");
+            mODEModelName = "";
             mODEModel = NULL;
          }
          else
          {
             #ifdef DEBUG_PROPSETUP_DELETE
             MessageInterface::ShowMessage
-               (wxT("   =====> mODEModel=<%p> was not deleted\n"), mODEModel);
+               ("   =====> mODEModel=<%p> was not deleted\n", mODEModel);
             #endif
          }
       }
@@ -1627,7 +1627,7 @@ void PropSetup::DeleteOwnedObject(Integer id, bool forceDelete)
    
    #ifdef DEBUG_PROPSETUP_DELETE
    MessageInterface::ShowMessage
-      (wxT("PropSetup::DeleteOwnedObject() <%p>'%s' exiting\n"), this, GetName().c_str());
+      ("PropSetup::DeleteOwnedObject() <%p>'%s' exiting\n", this, GetName().c_str());
    #endif
 }
 
@@ -1649,19 +1649,19 @@ Integer PropSetup::GetOwnedObjectId(Integer id, Gmat::ObjectType objType) const
       {
          if (mPropagator == NULL)
             throw PropSetupException
-               (wxT("PropSetup::GetOwnedObjectId() failed: Propagator is NULL"));
+               ("PropSetup::GetOwnedObjectId() failed: Propagator is NULL");
          
          actualId = mPropagator->GetParameterID(GetParameterText(id));
 
          #ifdef DEBUG_SET_PROPAGATOR_PARAMETER
-            MessageInterface::ShowMessage(wxT("   Actual ID is %d\n"), actualId);
+            MessageInterface::ShowMessage("   Actual ID is %d\n", actualId);
 			#endif
       }
       else if (objType == Gmat::ODE_MODEL)
       {
          if (mODEModel == NULL)
             throw PropSetupException
-               (wxT("PropSetup::GetOwnedObjectId() failed: ODEModel is NULL"));
+               ("PropSetup::GetOwnedObjectId() failed: ODEModel is NULL");
          
          actualId = mODEModel->GetParameterID(GetParameterText(id));
       }

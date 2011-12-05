@@ -84,7 +84,7 @@ bool SocketServer::RunRequest(SOCKET sock)
 
 	#ifdef DEBUG_SOCKET
 		#ifdef MessageInterface_hpp
-			MessageInterface::ShowMessage(wxT("Client %d: Read message:%s\n"), sock, buf);
+			MessageInterface::ShowMessage("Client %d: Read message:%s\n", sock, buf);
 		#else
 			printf("Client %d: Read message:%s\n", sock, buf);
 		#endif
@@ -95,7 +95,7 @@ bool SocketServer::RunRequest(SOCKET sock)
 	send(sock, buf, len, 0);
 	#ifdef DEBUG_SOCKET
 		#ifdef MessageInterface_hpp
-			MessageInterface::ShowMessage(wxT("Client %d: Echo back:%s\n"), sock, buf);
+			MessageInterface::ShowMessage("Client %d: Echo back:%s\n", sock, buf);
 		#else
 			printf("Client %d: Echo back:%s\n", sock, buf);
 		#endif
@@ -160,7 +160,7 @@ char* SocketServer::OnRequest(char* item)
 {
 	#ifdef DEBUG_SOCKET_SERVICE_REQUEST
 		#ifdef MessageInterface_hpp
-			MessageInterface::ShowMessage(wxT("GmatSocketService::OnRequest() %s\n"), item);
+			MessageInterface::ShowMessage("GmatSocketService::OnRequest() %s\n", item);
 		#else
 			printf("GmatSocketService::OnRequest() %s\n", item);
 		#endif
@@ -184,7 +184,7 @@ char* SocketServer::OnRequest(char* item)
 
 		#ifdef DEBUG_SOCKET_SERVICE_REQUEST
 			#ifdef MessageInterface_hpp
-				MessageInterface::ShowMessage(wxT("GmatSocketService::OnRequest() data=%s\n"), data);
+				MessageInterface::ShowMessage("GmatSocketService::OnRequest() data=%s\n", data);
 			#else
 				printf("GmatSocketService::OnRequest() data=%s\n", data);
 			#endif
@@ -196,7 +196,7 @@ char* SocketServer::OnRequest(char* item)
 
 		#ifdef DEBUG_SOCKET_SERVICE_REQUEST
 			#ifdef MessageInterface_hpp
-				MessageInterface::ShowMessage(wxT("GmatSocketService::OnRequest() data=%s\n"), data);
+				MessageInterface::ShowMessage("GmatSocketService::OnRequest() data=%s\n", data);
 			#else
 				printf("GmatSocketService::OnRequest() data=%s\n", data);
 			#endif
@@ -208,7 +208,7 @@ char* SocketServer::OnRequest(char* item)
 
 		#ifdef DEBUG_SOCKET_SERVICE_REQUEST
 			#ifdef MessageInterface_hpp
-				MessageInterface::ShowMessage(wxT("GmatSocketService::OnRequest() data=%s\n"), data);
+				MessageInterface::ShowMessage("GmatSocketService::OnRequest() data=%s\n", data);
 			#else
 				printf("GmatSocketService::OnRequest() data=%s\n", data);
 			#endif
@@ -246,7 +246,7 @@ bool SocketServer::OnPoke(char* data)
 {
 	#ifdef DEBUG_SOCKET_SERVICE_POKE
 		#ifdef MessageInterface_hpp
-			MessageInterface::ShowMessage(wxT("GmatSocketService::OnPoke() data = %s\n"), data);
+			MessageInterface::ShowMessage("GmatSocketService::OnPoke() data = %s\n", data);
 		#else
 			printf("GmatSocketService::OnPoke() data = %s\n", data);
 		#endif
@@ -290,7 +290,7 @@ bool SocketServer::OnPoke(char* data)
     	std::string callbackData(&data[strlen("CallbackData")]);
 		#ifdef DEBUG_SOCKET_SERVICE_POKE
 			#ifdef MessageInterface_hpp
-				MessageInterface::ShowMessage(wxT("GmatSocketService::callbackData = %s\n"), callbackData);
+				MessageInterface::ShowMessage("GmatSocketService::callbackData = %s\n", callbackData);
 			#else
 				printf("GmatSocketService::callbackData = %s\n", callbackData.c_str());
 			#endif
@@ -356,7 +356,7 @@ void SocketServer::OnAccept(SOCKET sk)
 
 	#ifdef DEBUG_SOCKET
 		#ifdef MessageInterface_hpp
-			MessageInterface::ShowMessage(wxT("number of clients = %d\n"), m_numClients);
+			MessageInterface::ShowMessage("number of clients = %d\n", m_numClients);
 		#else
 			printf("number of clients = %d\n", m_numClients);
 		#endif
@@ -385,7 +385,7 @@ void SocketServer::OnAccept(SOCKET sk)
 
 	#ifdef DEBUG_SOCKET
 		#ifdef MessageInterface_hpp
-			MessageInterface::ShowMessage(wxT("number of clients = %d\n"), m_numClients);
+			MessageInterface::ShowMessage("number of clients = %d\n", m_numClients);
 		#else
 			printf("number of clients = %d\n", m_numClients);
 		#endif
@@ -422,7 +422,7 @@ void SocketServer::RunServer()
 	 {
 		#ifdef DEBUG_SOCKET
 			#ifdef MessageInterface_hpp
-				MessageInterface::ShowMessage(wxT("WSA Initialization failed! STOP!!!\n"));
+				MessageInterface::ShowMessage("WSA Initialization failed! STOP!!!\n");
 			#else
 				printf("WSA Initialization failed! STOP!!!\n");
 			#endif
@@ -435,7 +435,7 @@ void SocketServer::RunServer()
      {
 		#ifdef DEBUG_SOCKET
 			#ifdef MessageInterface_hpp
-				MessageInterface::ShowMessage(wxT("WSA Initialization is successful...\n"));
+				MessageInterface::ShowMessage("WSA Initialization is successful...\n");
 			#else
 				printf("WSA Initialization is successful...\n");
 			#endif
@@ -450,7 +450,7 @@ void SocketServer::RunServer()
      {
 		#ifdef DEBUG_SOCKET
 			#ifdef MessageInterface_hpp
-				MessageInterface::ShowMessage(wxT("Socket creation failed!STOP!!!\n"));
+				MessageInterface::ShowMessage("Socket creation failed!STOP!!!\n");
 			#else
 				printf("Socket creation failed!STOP!!!\n");
 			#endif
@@ -462,7 +462,7 @@ void SocketServer::RunServer()
      {
 		#ifdef DEBUG_SOCKET
 			#ifdef MessageInterface_hpp
-				MessageInterface::ShowMessage(wxT("Socket is created successfully...\n"));
+				MessageInterface::ShowMessage("Socket is created successfully...\n");
 			#else
 				printf("Socket is created successfully...\n");
 			#endif
@@ -503,7 +503,7 @@ void SocketServer::RunServer()
      {
 		 #ifdef DEBUG_SOCKET
 			#ifdef MessageInterface_hpp
-				MessageInterface::ShowMessage(wxT("Attempt to bind failed!STOP!!!\n"));
+				MessageInterface::ShowMessage("Attempt to bind failed!STOP!!!\n");
 			#else
 				printf("Attempt to bind failed!STOP!!!\n");
 			#endif
@@ -515,7 +515,7 @@ void SocketServer::RunServer()
      {
 		 #ifdef DEBUG_SOCKET
 			#ifdef MessageInterface_hpp
-				MessageInterface::ShowMessage(wxT("Bind process is created successfully...\n"));
+				MessageInterface::ShowMessage("Bind process is created successfully...\n");
 			#else
 				printf("Bind process is created successfully...\n");
 			#endif
@@ -528,7 +528,7 @@ void SocketServer::RunServer()
      {
 		 #ifdef DEBUG_SOCKET
 			#ifdef MessageInterface_hpp
-				MessageInterface::ShowMessage(wxT("Error in listening the socket!STOP!!!\n"));
+				MessageInterface::ShowMessage("Error in listening the socket!STOP!!!\n");
 			#else
 				printf("Error in listening the socket!STOP!!!\n");
 			#endif
@@ -540,7 +540,7 @@ void SocketServer::RunServer()
      {
 		 #ifdef DEBUG_SOCKET
 			#ifdef MessageInterface_hpp
-				MessageInterface::ShowMessage(wxT("Listening process is successfully...\n"));
+				MessageInterface::ShowMessage("Listening process is successfully...\n");
 			#else
 				printf("Listening process is successfully...\n");
 			#endif
@@ -552,7 +552,7 @@ void SocketServer::RunServer()
      {
 		 #ifdef DEBUG_SOCKET
 			#ifdef MessageInterface_hpp
-				MessageInterface::ShowMessage(wxT("Server is waiting for a connection ...\n"));
+				MessageInterface::ShowMessage("Server is waiting for a connection ...\n");
 			#else
 				printf("Server is waiting for a connection ...\n");
 			#endif
@@ -602,7 +602,7 @@ void SocketServer::Close()
      {
 		#ifdef DEBUG_SOCKET
 			#ifdef MessageInterface_hpp
-				MessageInterface::ShowMessage(wxT("WSACleanup failed! STOP!!!\n"));
+				MessageInterface::ShowMessage("WSACleanup failed! STOP!!!\n");
 			#else
 				printf("WSACleanup failed! STOP!!!\n");
 			#endif
@@ -615,7 +615,7 @@ void SocketServer::Close()
      {
 		#ifdef DEBUG_SOCKET
 			#ifdef MessageInterface_hpp
-				MessageInterface::ShowMessage(wxT("WSACleanup is successful...\n"));
+				MessageInterface::ShowMessage("WSACleanup is successful...\n");
 			#else
 				printf("WSACleanup is successful...\n");
 			#endif

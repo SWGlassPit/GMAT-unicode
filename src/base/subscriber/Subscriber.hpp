@@ -44,28 +44,28 @@
 class GMAT_API Subscriber : public GmatBase
 {
 public:
-   Subscriber(const wxString &typeStr, const wxString &nomme);
+   Subscriber(const std::string &typeStr, const std::string &nomme);
    Subscriber(const Subscriber &);
    Subscriber& operator=(const Subscriber &);
    virtual ~Subscriber(void);
    
    virtual bool         Initialize();
    virtual bool         IsInitialized();
-   virtual bool         ReceiveData(const wxString &datastream);
-   virtual bool         ReceiveData(const wxString &datastream, const Integer len);
+   virtual bool         ReceiveData(const char * datastream);
+   virtual bool         ReceiveData(const char * datastream, const Integer len);
    virtual bool         ReceiveData(const Real * datastream, const Integer len = 0);
    virtual bool         FlushData(bool endOfDataBlock = true);
    virtual bool         SetEndOfRun();
    virtual void         SetRunState(Gmat::RunState rs);
    void                 SetManeuvering(GmatBase *maneuver, bool flag, Real epoch,
-                                       const wxString &satName,
-                                       const wxString &desc);
+                                       const std::string &satName,
+                                       const std::string &desc);
    void                 SetManeuvering(GmatBase *maneuver, bool flag, Real epoch,
                                        const StringArray &satNames,
-                                       const wxString &desc);
+                                       const std::string &desc);
    void                 SetScPropertyChanged(GmatBase *originator, Real epoch,
-                                             const wxString &satName,
-                                             const wxString &desc);
+                                             const std::string &satName,
+                                             const std::string &desc);
    Subscriber*          Next();
    bool                 Add(Subscriber *s);
    bool                 Remove(Subscriber *s, const bool del);
@@ -88,53 +88,53 @@ public:
    virtual const StringArray&
                         GetWrapperObjectNameArray();
    virtual bool         SetElementWrapper(ElementWrapper* toWrapper,
-                                          const wxString &name);
+                                          const std::string &name);
    virtual void         ClearWrappers();
    
    // for rename reference objects
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
    // methods for parameters
    virtual bool         IsParameterReadOnly(const Integer id) const;
    virtual bool         IsParameterVisible(const Integer id) const;
-   virtual bool         IsParameterVisible(const wxString &label) const;
+   virtual bool         IsParameterVisible(const std::string &label) const;
    
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    
    virtual Integer      GetIntegerParameter(const Integer id) const;
    virtual Integer      SetIntegerParameter(const Integer id,
                                             const Integer value);
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const wxString &label) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const std::string &label) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value,
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value,
                                            const Integer index);
    
    virtual bool         GetBooleanParameter(const Integer id) const;
    virtual bool         SetBooleanParameter(const Integer id,
                                             const bool value);
-   virtual bool         GetBooleanParameter(const wxString &label) const;
-   virtual bool         SetBooleanParameter(const wxString &label,
+   virtual bool         GetBooleanParameter(const std::string &label) const;
+   virtual bool         SetBooleanParameter(const std::string &label,
                                             const bool value);
-   virtual wxString  GetOnOffParameter(const Integer id) const;
+   virtual std::string  GetOnOffParameter(const Integer id) const;
    virtual bool         SetOnOffParameter(const Integer id, 
-                                          const wxString &value);
-   virtual wxString  GetOnOffParameter(const wxString &label) const;
-   virtual bool         SetOnOffParameter(const wxString &label, 
-                                          const wxString &value);
+                                          const std::string &value);
+   virtual std::string  GetOnOffParameter(const std::string &label) const;
+   virtual bool         SetOnOffParameter(const std::string &label, 
+                                          const std::string &value);
    virtual Real         GetRealParameter(const Integer id) const;
    virtual Real         SetRealParameter(const Integer id,
                                          const Real value);
@@ -146,8 +146,8 @@ public:
    virtual const Rvector& GetRvectorParameter(const Integer id) const;
    virtual const Rvector& SetRvectorParameter(const Integer id,
                                               const Rvector &value);
-   virtual const Rvector& GetRvectorParameter(const wxString &label) const;
-   virtual const Rvector& SetRvectorParameter(const wxString &label,
+   virtual const Rvector& GetRvectorParameter(const std::string &label) const;
+   virtual const Rvector& SetRvectorParameter(const std::string &label,
                                               const Rvector &value);
    
    enum SolverIterOption
@@ -160,13 +160,13 @@ public:
    
 protected:
    
-   wxString          mSolverIterations;
+   std::string          mSolverIterations;
    SolverIterOption     mSolverIterOption;
    
    /// Arrays used to track elements for published data
    std::vector<StringArray> theDataLabels;
    
-   wxString             data;
+   const char           *data;
    Subscriber           *next;
    CoordinateSystem     *theInternalCoordSystem;
    CoordinateSystem     *theDataCoordSystem;
@@ -204,10 +204,10 @@ protected:
    // For ElementWrapper
    bool                 CloneWrappers(WrapperArray &toWrappers,
                                       const WrapperArray &fromWrappers);
-   bool                 SetWrapperReference(GmatBase *obj, const wxString &name);
+   bool                 SetWrapperReference(GmatBase *obj, const std::string &name);
    void                 WriteWrappers();
    Integer              FindIndexOfElement(StringArray &labelArray,
-                                           const wxString &label);
+                                           const std::string &label);
    
    // Methods that derived classes can override
    virtual bool         Distribute(Integer len);
@@ -215,13 +215,13 @@ protected:
    virtual void         HandleManeuvering(GmatBase *originator,
                                           bool maneuvering, Real epoch,
                                           const StringArray &satNames,
-                                          const wxString &desc);
+                                          const std::string &desc);
    virtual void         HandleScPropertyChange(GmatBase *originator, Real epoch,
-                                               const wxString &satName,
-                                               const wxString &desc);
+                                               const std::string &satName,
+                                               const std::string &desc);
 
    /// Parses string value such as "[0 127 255]" and converts to unsigned int array for color, position, size, etc.
-   virtual void         PutUnsignedIntValue(Integer id, const wxString &sval);
+   virtual void         PutUnsignedIntValue(Integer id, const std::string &sval);
 
 public:
    enum
@@ -237,7 +237,7 @@ public:
    
    static const Gmat::ParameterType
       PARAMETER_TYPE[SubscriberParamCount - GmatBaseParamCount];
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[SubscriberParamCount - GmatBaseParamCount];
    
    // for GUI population
@@ -245,14 +245,14 @@ public:
    virtual const StringArray&
                         GetPropertyEnumStrings(const Integer id) const;
    virtual const StringArray&
-                        GetPropertyEnumStrings(const wxString &label) const;
+                        GetPropertyEnumStrings(const std::string &label) const;
    static Integer GetSolverIterOptionCount() { return SolverIterOptionCount; }
-   static const wxString* GetSolverIterOptionList();
+   static const std::string* GetSolverIterOptionList();
    
    
 private:
    
-   static const wxString SOLVER_ITER_OPTION_TEXT[SolverIterOptionCount];
+   static const std::string SOLVER_ITER_OPTION_TEXT[SolverIterOptionCount];
    bool    wrappersCopied;
 };
 #endif // Subscribe_hpp

@@ -37,8 +37,8 @@
 class GMAT_API ReportFile : public Subscriber
 {
 public:
-   ReportFile(const wxString &typeName, const wxString &name,
-              const wxString &fileName = wxT(""), 
+   ReportFile(const std::string &typeName, const std::string &name,
+              const std::string &fileName = "", 
               Parameter *firstParam = NULL);
    
    virtual ~ReportFile(void);
@@ -47,11 +47,11 @@ public:
    ReportFile& operator=(const ReportFile&);
    
    // methods for this class
-   wxString          GetDefaultFileName();
-   wxString          GetPathAndFileName();
+   std::string          GetDefaultFileName();
+   std::string          GetPathAndFileName();
    Integer              GetNumParameters();
-   bool                 AddParameter(const wxString &paramName, Integer index);
-   bool                 AddParameterForTitleOnly(const wxString &paramName);
+   bool                 AddParameter(const std::string &paramName, Integer index);
+   bool                 AddParameterForTitleOnly(const std::string &paramName);
    bool                 WriteData(WrapperArray dataArray);
    
    // methods inherited from GmatBase
@@ -60,57 +60,57 @@ public:
    virtual GmatBase*    Clone(void) const;
    virtual void         Copy(const GmatBase* orig);
    
-   virtual bool         TakeAction(const wxString &action,
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,
+                                   const std::string &actionData = "");
    
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    
    virtual bool         GetBooleanParameter(const Integer id) const;
    virtual bool         SetBooleanParameter(const Integer id,
                                             const bool value);
-   virtual bool         GetBooleanParameter(const wxString &label) const;
-   virtual bool         SetBooleanParameter(const wxString &label,
+   virtual bool         GetBooleanParameter(const std::string &label) const;
+   virtual bool         SetBooleanParameter(const std::string &label,
                                             const bool value);
    virtual Integer      GetIntegerParameter(const Integer id) const;
    virtual Integer      SetIntegerParameter(const Integer id,
                                             const Integer value);
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const wxString &label) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const std::string &label) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
    
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value,
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value,
                                            const Integer index);
    virtual const StringArray&
                         GetStringArrayParameter(const Integer id) const;
    virtual const StringArray&
-                        GetStringArrayParameter(const wxString &label) const;
+                        GetStringArrayParameter(const std::string &label) const;
    
-   virtual wxString  GetOnOffParameter(const Integer id) const;
+   virtual std::string  GetOnOffParameter(const Integer id) const;
    virtual bool         SetOnOffParameter(const Integer id, 
-                                          const wxString &value);
-   virtual wxString  GetOnOffParameter(const wxString &label) const;
-   virtual bool         SetOnOffParameter(const wxString &label, 
-                                          const wxString &value);
+                                          const std::string &value);
+   virtual std::string  GetOnOffParameter(const std::string &label) const;
+   virtual bool         SetOnOffParameter(const std::string &label, 
+                                          const std::string &value);
    
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name);
+                                     const std::string &name);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    
    virtual bool         HasRefObjectTypeArray();
    virtual const ObjectTypeArray&
@@ -124,13 +124,13 @@ public:
    
 protected:
    /// Name of the output path
-   wxString          outputPath;
+   std::string          outputPath;
    /// Name of the report file
-   wxString          filename;
+   std::string          filename;
    /// Default file name of the report file when it is not set
-   wxString          defFileName;
+   std::string          defFileName;
    /// Full file name with path
-   wxString          fullPathName;
+   std::string          fullPathName;
    /// Precision for output of real data
    Integer              precision;  
    /// Width of column
@@ -183,7 +183,7 @@ protected:
 
 private:
 
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[ReportFileParamCount - SubscriberParamCount];
    static const Gmat::ParameterType
       PARAMETER_TYPE[ReportFileParamCount - SubscriberParamCount];

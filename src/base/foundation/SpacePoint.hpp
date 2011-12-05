@@ -46,8 +46,8 @@ class GMAT_API SpacePoint : public GmatBase
 public:
 
    // default constructor
-   SpacePoint(Gmat::ObjectType ofType, const wxString &itsType,
-              const wxString &itsName = wxT(""));
+   SpacePoint(Gmat::ObjectType ofType, const std::string &itsType,
+              const std::string &itsName = "");
    // copy constructor
    SpacePoint(const SpacePoint &sp);
    // operator = 
@@ -59,9 +59,9 @@ public:
    
    // methods for accessing the bodyName or body pointer
    virtual bool       RequiresJ2000Body();
-   const wxString  GetJ2000BodyName() const;
+   const std::string  GetJ2000BodyName() const;
    SpacePoint*        GetJ2000Body() const;
-   bool               SetJ2000BodyName(const wxString &toName);
+   bool               SetJ2000BodyName(const std::string &toName);
    void               SetJ2000Body(SpacePoint* toBody);
 
    virtual bool       IsParameterCloaked(const Integer id) const;
@@ -123,58 +123,58 @@ public:
    
    virtual const Rvector3 GetMJ2000Acceleration(const A1Mjd &atTime);
 
-   virtual void           RemoveSpiceKernelName(const wxString &kernelType,
-                                                const wxString &fileName);
+   virtual void           RemoveSpiceKernelName(const std::string &kernelType,
+                                                const std::string &fileName);
 
    // all classes derived from GmatBase must supply this Clone method;
    // this must be implemented in the 'leaf' classes
    //virtual GmatBase*       Clone(void) const;
 
    // Parameter access methods - overridden from GmatBase 
-   virtual wxString     GetParameterText(const Integer id) const;     
-   virtual Integer         GetParameterID(const wxString &str) const; 
+   virtual std::string     GetParameterText(const Integer id) const;     
+   virtual Integer         GetParameterID(const std::string &str) const; 
    virtual Gmat::ParameterType
                            GetParameterType(const Integer id) const;
-   virtual wxString     GetParameterTypeString(const Integer id) const;
+   virtual std::string     GetParameterTypeString(const Integer id) const;
 
    virtual bool            IsParameterReadOnly(const Integer id) const;
-   virtual bool            IsParameterReadOnly(const wxString &label) const;
+   virtual bool            IsParameterReadOnly(const std::string &label) const;
 
    virtual Integer         GetIntegerParameter(const Integer id) const;
-   virtual Integer         GetIntegerParameter(const wxString &label) const;
+   virtual Integer         GetIntegerParameter(const std::string &label) const;
    virtual Integer         SetIntegerParameter(const Integer id,
                                                const Integer value);
 
-   virtual wxString     GetStringParameter(const Integer id) const;
+   virtual std::string     GetStringParameter(const Integer id) const;
    virtual bool            SetStringParameter(const Integer id, 
-                                              const wxString &value);
-   virtual wxString     GetStringParameter(const wxString &label) const;
-   virtual bool            SetStringParameter(const wxString &label, 
-                                              const wxString &value);
+                                              const std::string &value);
+   virtual std::string     GetStringParameter(const std::string &label) const;
+   virtual bool            SetStringParameter(const std::string &label, 
+                                              const std::string &value);
    virtual GmatBase*       GetRefObject(const Gmat::ObjectType type,
-                                        const wxString &name);
+                                        const std::string &name);
    virtual bool            SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                        const wxString &name = wxT(""));
+                                        const std::string &name = "");
    
    // DJC Added, 12/16/04
-   virtual wxString     GetStringParameter(const Integer id, 
+   virtual std::string     GetStringParameter(const Integer id, 
                                               const Integer index) const;
    virtual bool            SetStringParameter(const Integer id, 
-                                              const wxString &value, 
+                                              const std::string &value, 
                                               const Integer index);
-   virtual wxString     GetStringParameter(const wxString &label, 
+   virtual std::string     GetStringParameter(const std::string &label, 
                                               const Integer index) const;
-   virtual bool            SetStringParameter(const wxString &label, 
-                                              const wxString &value, 
+   virtual bool            SetStringParameter(const std::string &label, 
+                                              const std::string &value, 
                                               const Integer index);
    const StringArray&      GetStringArrayParameter(const Integer id) const;
    virtual const StringArray&
-                        GetStringArrayParameter(const wxString &label) const;
+                        GetStringArrayParameter(const std::string &label) const;
    virtual GmatBase*       GetRefObject(const Gmat::ObjectType type,
-                                        const wxString &name, 
+                                        const std::string &name, 
                                         const Integer index);
    virtual bool            SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                        const wxString &name, 
+                                        const std::string &name, 
                                         const Integer index);
    
    
@@ -192,7 +192,7 @@ protected:
       SpacePointParamCount
    };
    
-   static const wxString PARAMETER_TEXT[SpacePointParamCount - GmatBaseParamCount];
+   static const std::string PARAMETER_TEXT[SpacePointParamCount - GmatBaseParamCount];
    
    static const Gmat::ParameterType PARAMETER_TYPE[SpacePointParamCount - GmatBaseParamCount];
    
@@ -210,14 +210,14 @@ protected:
    /// Equatorial coordinate system)
    SpacePoint      *j2000Body;  
    /// Name for the J2000 body
-   wxString     j2000BodyName;
+   std::string     j2000BodyName;
    /// NAIF Id (for SPICE)
    Integer         naifId;
    /// NAIF Id for the body/spacecraft reference frame
    Integer         naifIdRefFrame;
 
    // saved default values
-   wxString     default_j2000BodyName;
+   std::string     default_j2000BodyName;
    /// default value for NAIF ID
    Integer         default_naifId;
    /// default value for NAIF ID for the body/spacecraft reference frame

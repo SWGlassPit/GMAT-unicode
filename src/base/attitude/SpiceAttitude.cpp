@@ -33,12 +33,12 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 SpiceAttitude::PARAMETER_TEXT[SpiceAttitudeParamCount - AttitudeParamCount] =
 {
-   wxT("AttitudeKernelName"),
-   wxT("SCClockKernelName"),
-   wxT("FrameKernelName"),
+   "AttitudeKernelName",
+   "SCClockKernelName",
+   "FrameKernelName",
 };
 
 const Gmat::ParameterType
@@ -57,22 +57,22 @@ const Integer SpiceAttitude::UNDEFINED_NAIF_ID_REF_FRAME = -123456789;
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-//  SpiceAttitude(const wxString &itsName)
+//  SpiceAttitude(const std::string &itsName)
 //------------------------------------------------------------------------------
 /**
  * This method creates an object of the SpiceAttitude class
  * (default Constructor).
  */
 //------------------------------------------------------------------------------
-SpiceAttitude::SpiceAttitude(const wxString &attName) :
-   Attitude(wxT("SpiceAttitude"),attName),
-   scName          (wxT("")),
+SpiceAttitude::SpiceAttitude(const std::string &attName) :
+   Attitude("SpiceAttitude",attName),
+   scName          (""),
    naifId          (UNDEFINED_NAIF_ID),
    refFrameNaifId  (UNDEFINED_NAIF_ID_REF_FRAME)
 {
    parameterCount = SpiceAttitudeParamCount;
-   objectTypeNames.push_back(wxT("SpiceAttitude"));
-   attitudeModelName = wxT("SpiceAttitude");
+   objectTypeNames.push_back("SpiceAttitude");
+   attitudeModelName = "SpiceAttitude";
    #ifdef __USE_SPICE__
       reader = new SpiceAttitudeKernelReader();
    #endif
@@ -174,32 +174,32 @@ SpiceAttitude::~SpiceAttitude()
 bool SpiceAttitude::Initialize()
 {
    #ifdef DEBUG_SPICE_ATTITUDE
-      MessageInterface::ShowMessage(wxT("Entering SpiceAttitude::Initialize\n"));
+      MessageInterface::ShowMessage("Entering SpiceAttitude::Initialize\n");
    #endif
    bool isOK = Attitude::Initialize();
    if (!isOK) return false;
 
-   if (scName == wxT(""))
+   if (scName == "")
    {
-      wxString errmsg = wxT("Error - object name not set on SpiceAttitude object.\n");
+      std::string errmsg = "Error - object name not set on SpiceAttitude object.\n";
       throw AttitudeException(errmsg);
    }
    if (ck.empty())
    {
-      wxString errmsg = wxT("Error - no CK pointing kernel(s) set on SpiceAttitude for object ");
-      errmsg += scName + wxT("\n");
+      std::string errmsg = "Error - no CK pointing kernel(s) set on SpiceAttitude for object ";
+      errmsg += scName + "\n";
       throw AttitudeException(errmsg);
    }
    if (sclk.empty())
     {
-       wxString errmsg = wxT("Error - no SCLK clock kernel(s) set on SpiceAttitude for object ");
-       errmsg += scName + wxT("\n");
+       std::string errmsg = "Error - no SCLK clock kernel(s) set on SpiceAttitude for object ";
+       errmsg += scName + "\n";
        throw AttitudeException(errmsg);
     }
    if (fk.empty())
     {
-      wxString warnmsg = wxT("Warning - no FK frame kernel(s) set on SpiceAttitude for object ");
-      warnmsg += scName + wxT(".  A Frame Kernel may be necessary.");
+      std::string warnmsg = "Warning - no FK frame kernel(s) set on SpiceAttitude for object ";
+      warnmsg += scName + ".  A Frame Kernel may be necessary.";
       MessageInterface::PopupMessage(Gmat::WARNING_, warnmsg);
     }
 
@@ -226,23 +226,23 @@ bool SpiceAttitude::Initialize()
          naifId = reader->GetNaifID(scName);
          #ifdef DEBUG_SPICE_ATTITUDE
             MessageInterface::ShowMessage(
-                  wxT("Retrieved NAIF ID for %s -> %d\n"), scName.c_str(), naifId);
+                  "Retrieved NAIF ID for %s -> %d\n", scName.c_str(), naifId);
          #endif
          if (naifId == 0)
          {
-            wxString errmsg = wxT("Error - NAIF ID not available for object \n");
-            errmsg += scName + wxT("\n");
+            std::string errmsg = "Error - NAIF ID not available for object \n";
+            errmsg += scName + "\n";
             throw AttitudeException(errmsg);
          }
       #else
-         wxString errmsg = wxT("Error - NAIF ID not set on SpiceAttitude object.\n");
+         std::string errmsg = "Error - NAIF ID not set on SpiceAttitude object.\n";
          throw AttitudeException(errmsg);
       #endif
    }
 
    if (refFrameNaifId == UNDEFINED_NAIF_ID_REF_FRAME)
    {
-      wxString errmsg = wxT("Error - NAIF ID for object reference frame not set on SpiceAttitude object.\n");
+      std::string errmsg = "Error - NAIF ID for object reference frame not set on SpiceAttitude object.\n";
       throw AttitudeException(errmsg);
    }
 
@@ -266,7 +266,7 @@ GmatBase* SpiceAttitude::Clone(void) const
 }
 
 //------------------------------------------------------------------------------
-//  void SetObjectID(const wxString &objName, Integer objNaifId)
+//  void SetObjectID(const std::string &objName, Integer objNaifId)
 //------------------------------------------------------------------------------
 /**
  * This method sets the object ID information (name, NAIF ID).
@@ -276,7 +276,7 @@ GmatBase* SpiceAttitude::Clone(void) const
  *
  */
 //------------------------------------------------------------------------------
-void SpiceAttitude::SetObjectID(const wxString &objName, Integer objNaifId, Integer objRefFrameNaifId)
+void SpiceAttitude::SetObjectID(const std::string &objName, Integer objNaifId, Integer objRefFrameNaifId)
 {
    scName         = objName;
    naifId         = objNaifId;
@@ -423,7 +423,7 @@ const Rvector3& SpiceAttitude::GetEulerAngleRates(Real atTime)
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -434,7 +434,7 @@ const Rvector3& SpiceAttitude::GetEulerAngleRates(Real atTime)
  *
  */
 //------------------------------------------------------------------------------
-wxString SpiceAttitude::GetParameterText(const Integer id) const
+std::string SpiceAttitude::GetParameterText(const Integer id) const
 {
    if (id >= AttitudeParamCount && id < SpiceAttitudeParamCount)
       return PARAMETER_TEXT[id - AttitudeParamCount];
@@ -442,7 +442,7 @@ wxString SpiceAttitude::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -453,7 +453,7 @@ wxString SpiceAttitude::GetParameterText(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer SpiceAttitude::GetParameterID(const wxString &str) const
+Integer SpiceAttitude::GetParameterID(const std::string &str) const
 {
    for (Integer i = AttitudeParamCount; i < SpiceAttitudeParamCount; i++)
    {
@@ -485,7 +485,7 @@ Gmat::ParameterType SpiceAttitude::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -496,14 +496,14 @@ Gmat::ParameterType SpiceAttitude::GetParameterType(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString SpiceAttitude::GetParameterTypeString(const Integer id) const
+std::string SpiceAttitude::GetParameterTypeString(const Integer id) const
 {
    return Attitude::PARAM_TYPE_STRING[GetParameterType(id)];
 }
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id, const Integer index) const
+//  std::string  GetStringParameter(const Integer id, const Integer index) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -516,15 +516,15 @@ wxString SpiceAttitude::GetParameterTypeString(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString  SpiceAttitude::GetStringParameter(const Integer id,
+std::string  SpiceAttitude::GetStringParameter(const Integer id,
                                         const Integer index) const
 {
    if (id == ATTITUDE_KERNEL_NAME)
    {
       if ((index < 0) || (index >= (Integer) ck.size()))
       {
-         wxString errmsg = wxT("Error attempting to retrieve CK kernel name for object ");
-         errmsg += scName + wxT(" - index out-of-bounds.\n");
+         std::string errmsg = "Error attempting to retrieve CK kernel name for object ";
+         errmsg += scName + " - index out-of-bounds.\n";
          throw AttitudeException(errmsg);
       }
       return ck.at(index);
@@ -533,8 +533,8 @@ wxString  SpiceAttitude::GetStringParameter(const Integer id,
    {
       if ((index < 0) || (index >= (Integer) sclk.size()))
       {
-         wxString errmsg = wxT("Error attempting to retrieve SCLK kernel name for object ");
-         errmsg += scName + wxT(" - index out-of-bounds.\n");
+         std::string errmsg = "Error attempting to retrieve SCLK kernel name for object ";
+         errmsg += scName + " - index out-of-bounds.\n";
          throw AttitudeException(errmsg);
       }
       return sclk.at(index);
@@ -543,8 +543,8 @@ wxString  SpiceAttitude::GetStringParameter(const Integer id,
    {
       if ((index < 0) || (index >= (Integer) fk.size()))
       {
-         wxString errmsg = wxT("Error attempting to retrieve FK kernel name for object ");
-         errmsg += scName + wxT(" - index out-of-bounds.\n");
+         std::string errmsg = "Error attempting to retrieve FK kernel name for object ";
+         errmsg += scName + " - index out-of-bounds.\n";
          throw AttitudeException(errmsg);
       }
       return fk.at(index);
@@ -553,7 +553,7 @@ wxString  SpiceAttitude::GetStringParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-//  bool  SetStringParameter(const Integer id, const wxString value,
+//  bool  SetStringParameter(const Integer id, const std::string value,
 //                           const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -571,20 +571,20 @@ wxString  SpiceAttitude::GetStringParameter(const Integer id,
  */
 //------------------------------------------------------------------------------
 bool SpiceAttitude::SetStringParameter(const Integer id,
-                                        const wxString &value,
+                                        const std::string &value,
                                         const Integer index)
 {
    #ifdef DEBUG_SPICE_ATTITUDE_GET_SET
       MessageInterface::ShowMessage(
-            wxT("Entering SetStringParameter with id = %d, value = \"%s\", index = %d\n"),
+            "Entering SetStringParameter with id = %d, value = \"%s\", index = %d\n",
             id, value.c_str(), index);
    #endif
    if (id == ATTITUDE_KERNEL_NAME)
    {
       if ((index < 0) || (index > (Integer) ck.size()))
       {
-         wxString errmsg = wxT("Error attempting to set CK kernel name for object ");
-         errmsg += scName +  wxT(" - index out-of-bounds.\n");
+         std::string errmsg = "Error attempting to set CK kernel name for object ";
+         errmsg += scName +  " - index out-of-bounds.\n";
          throw AttitudeException(errmsg);
       }
       if (index == (Integer) ck.size())  ck.push_back(value);
@@ -595,8 +595,8 @@ bool SpiceAttitude::SetStringParameter(const Integer id,
    {
       if ((index < 0) || (index > (Integer) sclk.size()))
       {
-         wxString errmsg = wxT("Error attempting to set SCLK kernel name for object ");
-         errmsg += scName + wxT(" - index out-of-bounds.\n");
+         std::string errmsg = "Error attempting to set SCLK kernel name for object ";
+         errmsg += scName + " - index out-of-bounds.\n";
          throw AttitudeException(errmsg);
       }
       if (index == (Integer) sclk.size())  sclk.push_back(value);
@@ -607,8 +607,8 @@ bool SpiceAttitude::SetStringParameter(const Integer id,
    {
       if ((index < 0) || (index > (Integer) fk.size()))
       {
-         wxString errmsg = wxT("Error attempting to set FK kernel name for object ");
-         errmsg += scName +  wxT(" - index out-of-bounds.\n");
+         std::string errmsg = "Error attempting to set FK kernel name for object ";
+         errmsg += scName +  " - index out-of-bounds.\n";
          throw AttitudeException(errmsg);
       }
       if (index == (Integer) fk.size())  fk.push_back(value);
@@ -618,8 +618,8 @@ bool SpiceAttitude::SetStringParameter(const Integer id,
    return Attitude::SetStringParameter(id, value, index);
 }
 
-bool SpiceAttitude::SetStringParameter(const wxString label,
-                                       const wxString &value,
+bool SpiceAttitude::SetStringParameter(const std::string label,
+                                       const std::string &value,
                                        const Integer index)
 {
    return SetStringParameter(GetParameterID(label), value, index);
@@ -670,7 +670,7 @@ void SpiceAttitude::ComputeCosineMatrixAndAngularVelocity(Real atTime)
    #ifdef __USE_SPICE__
       reader->GetTargetOrientation(scName, naifId, refFrameNaifId, atTime, cosMat, angVel);
    #else
-      wxString errmsg = wxT("Error - attempting to use SpiceAttitude when SPICE is not included in the GMAT build.\n");
+      std::string errmsg = "Error - attempting to use SpiceAttitude when SPICE is not included in the GMAT build.\n";
       throw AttitudeException(errmsg);
    #endif
 

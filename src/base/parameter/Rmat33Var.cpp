@@ -28,9 +28,9 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// Rmat33Var::Rmat33Var(const wxString &name, const wxString &typeStr,
+// Rmat33Var::Rmat33Var(const std::string &name, const std::string &typeStr,
 //                      GmatParam::ParameterKey key, GmatBase *obj,
-//                      const wxString &desc, const wxString &unit,
+//                      const std::string &desc, const std::string &unit,
 //                      GmatParam::DepObject depObj, Gmat::ObjectType ownerType)
 //------------------------------------------------------------------------------
 /**
@@ -49,9 +49,9 @@
  * @exception <ParameterException> thrown if parameter name has blank spaces
  */
 //------------------------------------------------------------------------------
-Rmat33Var::Rmat33Var(const wxString &name, const wxString &typeStr,
+Rmat33Var::Rmat33Var(const std::string &name, const std::string &typeStr,
                      GmatParam::ParameterKey key, GmatBase *obj,
-                     const wxString &desc, const wxString &unit,
+                     const std::string &desc, const std::string &unit,
                      GmatParam::DepObject depObj, Gmat::ObjectType ownerType,
                      bool isSettable)
    : Parameter(name, typeStr, key, obj, desc, unit, depObj, ownerType, false,
@@ -134,15 +134,15 @@ bool Rmat33Var::operator!=(const Rmat33Var &right) const
 }
 
 //------------------------------------------------------------------------------
-// wxString ToString()
+// std::string ToString()
 //------------------------------------------------------------------------------
 /**
- * @return parameter value converted to wxString.
+ * @return parameter value converted to std::string.
  *
  * @exception <ParameterException> thrown if this method is called.
  */
 //------------------------------------------------------------------------------
-wxString Rmat33Var::ToString()
+std::string Rmat33Var::ToString()
 {
    return mRmat33Value.ToString();
 }
@@ -156,7 +156,7 @@ wxString Rmat33Var::ToString()
 //------------------------------------------------------------------------------
 const Rmatrix& Rmat33Var::GetRmatrix() const
 {
-   MessageInterface::ShowMessage(wxT("Rmat33Var::GetRmatrix() entered\n"));
+   MessageInterface::ShowMessage("Rmat33Var::GetRmatrix() entered\n");
    return mRmat33Value;
 }
 
@@ -179,11 +179,11 @@ void Rmat33Var::SetRmatrix(const Rmatrix &val)
 //------------------------------------------------------------------------------
 const Rmatrix& Rmat33Var::EvaluateRmatrix()
 {
-   MessageInterface::ShowMessage(wxT("Rmat33Var::EvaluateRmatrix() entered\n"));
+   MessageInterface::ShowMessage("Rmat33Var::EvaluateRmatrix() entered\n");
    if (mKey == GmatParam::SYSTEM_PARAM)
    {
-      throw ParameterException(wxT("Parameter: EvaluateRmatrix() should be implemented ")
-                               wxT("for Parameter Type:") + GetTypeName());
+      throw ParameterException("Parameter: EvaluateRmatrix() should be implemented "
+                               "for Parameter Type:" + GetTypeName());
    }
    else
    {

@@ -40,20 +40,20 @@
 class GMAT_API EventLocator: public GmatBase
 {
 public:
-   EventLocator(const wxString &typeStr, const wxString &nomme = wxT(""));
+   EventLocator(const std::string &typeStr, const std::string &nomme = "");
    virtual ~EventLocator();
    EventLocator(const EventLocator& el);
    EventLocator& operator=(const EventLocator& el);
 
    // Inherited (GmatBase) methods for parameters
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
 
    virtual bool         IsParameterReadOnly(const Integer id) const;
-   virtual bool         IsParameterReadOnly(const wxString &label) const;
+   virtual bool         IsParameterReadOnly(const std::string &label) const;
 
    virtual Real         GetRealParameter(const Integer id) const;
    virtual Real         SetRealParameter(const Integer id,
@@ -67,18 +67,18 @@ public:
                                          const Integer index);
    virtual Real         SetRealParameter(const Integer id, const Real value,
                                          const Integer row, const Integer col);
-   virtual Real         GetRealParameter(const wxString &label) const;
-   virtual Real         SetRealParameter(const wxString &label,
+   virtual Real         GetRealParameter(const std::string &label) const;
+   virtual Real         SetRealParameter(const std::string &label,
                                          const Real value);
-   virtual Real         GetRealParameter(const wxString &label,
+   virtual Real         GetRealParameter(const std::string &label,
                                          const Integer index) const;
-   virtual Real         SetRealParameter(const wxString &label,
+   virtual Real         SetRealParameter(const std::string &label,
                                          const Real value,
                                          const Integer index);
-   virtual Real         GetRealParameter(const wxString &label,
+   virtual Real         GetRealParameter(const std::string &label,
                                          const Integer row,
                                          const Integer col) const;
-   virtual Real         SetRealParameter(const wxString &label,
+   virtual Real         SetRealParameter(const std::string &label,
                                          const Real value, const Integer row,
                                          const Integer col);
 
@@ -88,36 +88,36 @@ public:
                         SetRvectorParameter(const Integer id,
                                             const Rvector &value);
    virtual const Rvector&
-                        GetRvectorParameter(const wxString &label) const;
+                        GetRvectorParameter(const std::string &label) const;
    virtual const Rvector&
-                        SetRvectorParameter(const wxString &label,
+                        SetRvectorParameter(const std::string &label,
                                             const Rvector &value);
 
-   virtual wxString  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value);
-   virtual wxString  GetStringParameter(const Integer id,
+                                           const std::string &value);
+   virtual std::string  GetStringParameter(const Integer id,
                                            const Integer index) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
    virtual const StringArray&
                         GetStringArrayParameter(const Integer id) const;
    virtual const StringArray&
                         GetStringArrayParameter(const Integer id,
                                                 const Integer index) const;
-   virtual wxString  GetStringParameter(const wxString &label) const;
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
-   virtual wxString  GetStringParameter(const wxString &label,
+   virtual std::string  GetStringParameter(const std::string &label) const;
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
+   virtual std::string  GetStringParameter(const std::string &label,
                                            const Integer index) const;
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value,
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value,
                                            const Integer index);
    virtual const StringArray&
-                        GetStringArrayParameter(const wxString &label) const;
+                        GetStringArrayParameter(const std::string &label) const;
    virtual const StringArray&
-                        GetStringArrayParameter(const wxString &label,
+                        GetStringArrayParameter(const std::string &label,
                                                 const Integer index) const;
 
    virtual bool         GetBooleanParameter(const Integer id) const;
@@ -128,29 +128,29 @@ public:
    virtual bool         SetBooleanParameter(const Integer id,
                                             const bool value,
                                             const Integer index);
-   virtual bool         GetBooleanParameter(const wxString &label) const;
-   virtual bool         SetBooleanParameter(const wxString &label,
+   virtual bool         GetBooleanParameter(const std::string &label) const;
+   virtual bool         SetBooleanParameter(const std::string &label,
                                             const bool value);
-   virtual bool         GetBooleanParameter(const wxString &label,
+   virtual bool         GetBooleanParameter(const std::string &label,
                                             const Integer index) const;
-   virtual bool         SetBooleanParameter(const wxString &label,
+   virtual bool         SetBooleanParameter(const std::string &label,
                                             const bool value,
                                             const Integer index);
 
-   virtual bool         TakeAction(const wxString &action,
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,
+                                   const std::string &actionData = "");
    virtual const ObjectTypeArray& GetTypesForList(const Integer id);
-   virtual const ObjectTypeArray& GetTypesForList(const wxString &label);
+   virtual const ObjectTypeArray& GetTypesForList(const std::string &label);
 
 
 
    virtual void         SetSolarSystem(SolarSystem *ss);
 //   virtual void         SetInternalCoordSystem(CoordinateSystem *cs);
-//   virtual wxString  GetRefObjectName(const Gmat::ObjectType type) const;
+//   virtual std::string  GetRefObjectName(const Gmat::ObjectType type) const;
    virtual const StringArray&
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                              const wxString &name);
+                              const std::string &name);
 
    virtual bool         Initialize();
    virtual Real         GetTolerance();
@@ -160,19 +160,19 @@ public:
 
    UnsignedInt GetFunctionCount();
    void BufferEvent(Integer forEventFunction = 0);
-   void BufferEvent(Real epoch, wxString type, bool isStart);
+   void BufferEvent(Real epoch, std::string type, bool isStart);
    void ReportEventData();
    void ReportEventStatistics();
-   Real *GetEventData(wxString type, Integer whichOne = 0);
+   Real *GetEventData(std::string type, Integer whichOne = 0);
    void UpdateEventTable(SortStyle how);
    virtual GmatEpoch GetLastEpoch(Integer index);
 
    // Methods used in integration
    virtual bool HasAssociatedStateObjects();
-   virtual wxString GetAssociateName(UnsignedInt val = 0);
-   wxString GetTarget(UnsignedInt forFunction);
+   virtual std::string GetAssociateName(UnsignedInt val = 0);
+   std::string GetTarget(UnsignedInt forFunction);
    StringArray GetDefaultPropItems();
-   Integer SetPropItem(const wxString &propItem);
+   Integer SetPropItem(const std::string &propItem);
    Integer GetPropItemSize(const Integer item);
    void SetStateIndices(UnsignedInt forFunction, Integer index,
          Integer associate);
@@ -186,7 +186,8 @@ protected:
    std::vector<Real>lastSpan;
    /// The LocatedEventTable for the EventLocator.
    LocatedEventTable eventTable;
-   wxString filename;
+   /// Name of the event data file
+   std::string filename;
    /// The number of event functions to be processed
    UnsignedInt efCount;
    /// The last data set computed
@@ -227,7 +228,7 @@ protected:
     };
 
     /// burn parameter labels
-    static const wxString
+    static const std::string
        PARAMETER_TEXT[EventLocatorParamCount - GmatBaseParamCount];
     /// burn parameter types
     static const Gmat::ParameterType

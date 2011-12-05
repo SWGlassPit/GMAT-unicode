@@ -54,7 +54,7 @@
 //                                - virtual char* GetParameterName(
 //                                                   const int parm) const
 //                                  to
-//                                  virtual wxString GetParameterName(
+//                                  virtual std::string GetParameterName(
 //                                                   const int parm) const
 //                              Removals:
 //                                - static Real parameterUndefined
@@ -87,8 +87,8 @@
 //                                    PhysicalModel::PhysicalModel(void)
 //                                  to
 //                                    PhysicalModel(Gmat::ObjectType typeId,
-//                                          const wxString &typeStr,
-//                                          const wxString &nomme = wxT(""))
+//                                          const std::string &typeStr,
+//                                          const std::string &nomme = "")
 //                                - Added parameterCount = 1 in constructors
 //
 // **************************************************************************
@@ -127,8 +127,8 @@
 class GMAT_API PhysicalModel : public GmatBase
 {
 public:
-   PhysicalModel(Gmat::ObjectType typeId, const wxString &typeStr,
-                 const wxString &nomme = wxT(""));
+   PhysicalModel(Gmat::ObjectType typeId, const std::string &typeStr,
+                 const std::string &nomme = "");
    virtual ~PhysicalModel(void);
 
    PhysicalModel(const PhysicalModel&);
@@ -137,14 +137,14 @@ public:
    virtual bool Initialize();
 
    virtual CelestialBody* GetBody();
-   virtual wxString    GetBodyName();
+   virtual std::string    GetBodyName();
    virtual Integer        GetDimension();
    virtual Real *         GetState();
    virtual Real*          GetJ2KState();
    const Real *           GetDerivativeArray();
 
-   virtual bool SetBody(const wxString& theBody);
-   virtual void SetBodyName(const wxString& theBody);
+   virtual bool SetBody(const std::string& theBody);
+   virtual void SetBodyName(const std::string& theBody);
    virtual void SetBody(CelestialBody* toBody);
    virtual void SetForceOrigin(CelestialBody* toBody);
    virtual void SetDimension(Integer);
@@ -171,16 +171,16 @@ public:
    
    virtual void SetSolarSystem(SolarSystem *ss);
    virtual void SetSatelliteParameter(const Integer i, 
-                                      const wxString parmName, 
+                                      const std::string parmName, 
                                       const Real parm,
                                       const Integer parmID = -1);
    virtual void SetSatelliteParameter(const Integer i,
                                       Integer parmID,
                                       const Real parm);
    virtual void SetSatelliteParameter(const Integer i, 
-                                      const wxString parmName, 
-                                      const wxString parm);
-   virtual void ClearSatelliteParameters(const wxString parmName = wxT(""));
+                                      const std::string parmName, 
+                                      const std::string parm);
+   virtual void ClearSatelliteParameters(const std::string parmName = "");
    virtual bool StateChanged(bool reset = true);
    
    virtual bool IsTransient();
@@ -195,30 +195,30 @@ public:
    
 
    // Parameter accessor methods -- inherited from GmatBase
-   virtual wxString GetParameterText(const Integer id) const;
-   virtual Integer GetParameterID(const wxString &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
+   virtual Integer GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
    virtual bool IsParameterReadOnly(const Integer id) const;
-   virtual bool IsParameterReadOnly(const wxString &label) const;
+   virtual bool IsParameterReadOnly(const std::string &label) const;
 
    virtual Real GetRealParameter(const Integer id) const;
    virtual Real SetRealParameter(const Integer id, const Real value);
-   virtual wxString GetStringParameter(const Integer id) const;
+   virtual std::string GetStringParameter(const Integer id) const;
    virtual bool        SetStringParameter(const Integer id,
-                                          const wxString &value);
-   virtual wxString GetStringParameter(const wxString &label) const;
-   virtual bool        SetStringParameter(const wxString &label,
-                                          const wxString &value); 
+                                          const std::string &value);
+   virtual std::string GetStringParameter(const std::string &label) const;
+   virtual bool        SetStringParameter(const std::string &label,
+                                          const std::string &value); 
    virtual GmatBase*   GetRefObject(const Gmat::ObjectType type,
-                                    const wxString &name);
+                                    const std::string &name);
    const StringArray&  GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool        SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                    const wxString &name = wxT(""));
+                                    const std::string &name = "");
    virtual bool        SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                              const wxString &name, const Integer index);
+                              const std::string &name, const Integer index);
    virtual GmatBase*   GetRefObject(const Gmat::ObjectType type,
-                              const wxString &name, const Integer index);
+                              const std::string &name, const Integer index);
 
 protected:
       
@@ -227,7 +227,7 @@ protected:
    /// pointer to the origin used in propagation
    CelestialBody *forceOrigin;
    /// name of the body
-   wxString bodyName;
+   std::string bodyName;
    /// Number of parameters being modeled
    Integer dimension;
    /// Flag used to tell the readiness of the model for use
@@ -289,7 +289,7 @@ protected:
       PhysicalModelParamCount
    };
 
-   static const wxString 
+   static const std::string 
       PARAMETER_TEXT[PhysicalModelParamCount - GmatBaseParamCount];
    static const Gmat::ParameterType 
       PARAMETER_TYPE[PhysicalModelParamCount - GmatBaseParamCount];

@@ -29,7 +29,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//GmatBase* CreateObject(const wxString &ofType, const wxString &withName)
+//GmatBase* CreateObject(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Returns a GmatBase object pointer to a new object. 
@@ -43,15 +43,15 @@
  * objects of the requested type.
  */
 //------------------------------------------------------------------------------
-GmatBase* Factory::CreateObject(const wxString &ofType,
-                                const wxString &withName)
+GmatBase* Factory::CreateObject(const std::string &ofType,
+                                const std::string &withName)
 {
-   throw FactoryException(wxT("Generic factory creation method not implemented for ") +
+   throw FactoryException("Generic factory creation method not implemented for " +
                           ofType);
 }
 
 //------------------------------------------------------------------------------
-//  Spacecraft* CreateSpacecraft(const wxString &ofType, const wxString &withName)
+//  Spacecraft* CreateSpacecraft(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Must be implemented by derived classes that create Spacecraft objects -
@@ -68,14 +68,14 @@ GmatBase* Factory::CreateObject(const wxString &ofType,
  * objects of type Spacecraft.
  */
 //------------------------------------------------------------------------------
-SpaceObject* Factory::CreateSpacecraft(const wxString &ofType,
-                                       const wxString &withName)
+SpaceObject* Factory::CreateSpacecraft(const std::string &ofType,
+                                       const std::string &withName)
 {
-   throw FactoryException(wxT("requested object must be of type SpaceObject"));
+   throw FactoryException("requested object must be of type SpaceObject");
 }
 
 //------------------------------------------------------------------------------
-//  SpacePoint* CreateSpacePoint(const wxString &ofType, const wxString &withName)
+//  SpacePoint* CreateSpacePoint(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Must be implemented by derived classes that create SpacePoint objects -
@@ -99,14 +99,14 @@ SpaceObject* Factory::CreateSpacecraft(const wxString &ofType,
  * objects of type SpacePoint.
  */
 //------------------------------------------------------------------------------
-SpacePoint* Factory::CreateSpacePoint(const wxString &ofType,
-                                      const wxString &withName)        
+SpacePoint* Factory::CreateSpacePoint(const std::string &ofType,
+                                      const std::string &withName)        
 {
-   throw FactoryException(wxT("requested object must be of type SpacePoint"));
+   throw FactoryException("requested object must be of type SpacePoint");
 }
 
 //------------------------------------------------------------------------------
-//  GroundStation* CreateGroundStation(const wxString &ofType, const wxString &withName)
+//  GroundStation* CreateGroundStation(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Must be implemented by derived classes that create GroundStation objects -
@@ -123,14 +123,14 @@ SpacePoint* Factory::CreateSpacePoint(const wxString &ofType,
  * objects of type GroundStation.
  */
 //------------------------------------------------------------------------------
-//   GroundStation* Factory::CreateGroundStation(const wxString &ofType,
-//                                                   const wxString &withName);
+//   GroundStation* Factory::CreateGroundStation(const std::string &ofType,
+//                                                   const std::string &withName);
 //{
-//   throw FactoryException(wxT("requested object must be of type GroundStation"));
+//   throw FactoryException("requested object must be of type GroundStation");
 //}
 
 //------------------------------------------------------------------------------
-//  Propagator* CreatePropagator(const wxString &ofType, const wxString &withName)
+//  Propagator* CreatePropagator(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Must be implemented by derived classes that create Propagator objects -
@@ -147,15 +147,15 @@ SpacePoint* Factory::CreateSpacePoint(const wxString &ofType,
  * objects of type Propagator.
  */
 //------------------------------------------------------------------------------
-Propagator* Factory::CreatePropagator(const wxString &ofType,
-                                      const wxString &withName)
+Propagator* Factory::CreatePropagator(const std::string &ofType,
+                                      const std::string &withName)
 {
-   throw FactoryException(wxT("requested object must be of type Propagator"));
+   throw FactoryException("requested object must be of type Propagator");
 }
 
 
 //------------------------------------------------------------------------------
-//  Parameter* CreateParameter(const wxString &ofType, const wxString &withName)
+//  Parameter* CreateParameter(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Must be implemented by derived classes that create Parameter objects -
@@ -172,13 +172,13 @@ Propagator* Factory::CreatePropagator(const wxString &ofType,
  * objects of type Parameter.
  */
 //------------------------------------------------------------------------------
-Burn* Factory::CreateBurn(const wxString &ofType, const wxString &withName)
+Burn* Factory::CreateBurn(const std::string &ofType, const std::string &withName)
 {
-   throw FactoryException(wxT("requested object must be of type Burn"));
+   throw FactoryException("requested object must be of type Burn");
 }
 
 //------------------------------------------------------------------------------
-//  Propagator* CreateParameter(const wxString &ofType, const wxString &withName)
+//  Propagator* CreateParameter(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Must be implemented by derived classes that create Parameter objects -
@@ -195,14 +195,14 @@ Burn* Factory::CreateBurn(const wxString &ofType, const wxString &withName)
  * objects of type Parameter.
  */
 //------------------------------------------------------------------------------
-Parameter* Factory::CreateParameter(const wxString &ofType,
-                                    const wxString &withName)
+Parameter* Factory::CreateParameter(const std::string &ofType,
+                                    const std::string &withName)
 {
-   throw FactoryException(wxT("requested object must be of type Parameter"));
+   throw FactoryException("requested object must be of type Parameter");
 }
 
 //------------------------------------------------------------------------------
-//  ODEModel* CreateODEModel(const wxString &ofType, const wxString &withName)
+//  ODEModel* CreateODEModel(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Must be implemented by derived classes that create  ODEModel objects -
@@ -219,14 +219,14 @@ Parameter* Factory::CreateParameter(const wxString &ofType,
  * objects of type  ODEModel.
  */
 //------------------------------------------------------------------------------
-ODEModel* Factory::CreateODEModel(const wxString &ofType,
-                                      const wxString &withName)
+ODEModel* Factory::CreateODEModel(const std::string &ofType,
+                                      const std::string &withName)
 {
-   throw FactoryException(wxT("requested object must be of type ODEModel"));
+   throw FactoryException("requested object must be of type ODEModel");
 }
 
 //------------------------------------------------------------------------------
-//  PhysicalModel* CreatePhysicalModel(const wxString &ofType, const wxString &withName)
+//  PhysicalModel* CreatePhysicalModel(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Must be implemented by derived classes that create  PhysicalModel objects -
@@ -243,14 +243,14 @@ ODEModel* Factory::CreateODEModel(const wxString &ofType,
  * objects of type PhysicalModel.
  */
 //------------------------------------------------------------------------------
-PhysicalModel* Factory::CreatePhysicalModel(const wxString &ofType,
-                                            const wxString &withName)
+PhysicalModel* Factory::CreatePhysicalModel(const std::string &ofType,
+                                            const std::string &withName)
 {
-   throw FactoryException(wxT("requested object must be of type PhysicalModel"));
+   throw FactoryException("requested object must be of type PhysicalModel");
 }
 
 //------------------------------------------------------------------------------
-//  PropSetup* CreatePropSetup(const wxString &ofType, const wxString &withName)
+//  PropSetup* CreatePropSetup(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Must be implemented by derived classes that create  PropSetup objects -
@@ -267,15 +267,15 @@ PhysicalModel* Factory::CreatePhysicalModel(const wxString &ofType,
  * objects of type  PropSetup.
  */
 //------------------------------------------------------------------------------
-PropSetup* Factory::CreatePropSetup(const wxString &ofType,
-                                    const wxString &withName)
+PropSetup* Factory::CreatePropSetup(const std::string &ofType,
+                                    const std::string &withName)
 {
-   throw FactoryException(wxT("requested object must be of type PropSetup"));
+   throw FactoryException("requested object must be of type PropSetup");
 }
 
 //------------------------------------------------------------------------------
-//  CalculatedParameter* CreateCalculatedParameter(const wxString &ofType,
-//                                                 const wxString &withName)
+//  CalculatedParameter* CreateCalculatedParameter(const std::string &ofType,
+//                                                 const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Must be implemented by derived classes that create  CalculatedParameter
@@ -294,16 +294,16 @@ PropSetup* Factory::CreatePropSetup(const wxString &ofType,
  */
 //------------------------------------------------------------------------------
 //CalculatedParameter* Factory::CreateCalculatedParameter(
-//                                                      const wxString &ofType,
-//                                                      const wxString &withName)
+//                                                      const std::string &ofType,
+//                                                      const std::string &withName)
 //{
 //   throw FactoryException(
-   //                  wxT("requested object must be of type CalculatedParameter"));
+   //                  "requested object must be of type CalculatedParameter");
 //}
 
 //------------------------------------------------------------------------------
-//  StopCondition* CreateStopCondition(const wxString &ofType,
-//                                     const wxString &withName)
+//  StopCondition* CreateStopCondition(const std::string &ofType,
+//                                     const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Must be implemented by derived classes that create  StopCondition objects -
@@ -320,15 +320,15 @@ PropSetup* Factory::CreatePropSetup(const wxString &ofType,
  * objects of type  StopCondition.
  */
 //------------------------------------------------------------------------------
-StopCondition* Factory::CreateStopCondition(const wxString &ofType,
-                                            const wxString &withName)
+StopCondition* Factory::CreateStopCondition(const std::string &ofType,
+                                            const std::string &withName)
 {
-   throw FactoryException(wxT("requested object must be of type StopCondition"));
+   throw FactoryException("requested object must be of type StopCondition");
 }
 
 //------------------------------------------------------------------------------
-//  CalculatedPoint* CreateCalculatedPoint(const wxString &ofType,
-//                                         const wxString &withName)
+//  CalculatedPoint* CreateCalculatedPoint(const std::string &ofType,
+//                                         const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Must be implemented by derived classes that create  CalculatedPoint objects -
@@ -345,16 +345,16 @@ StopCondition* Factory::CreateStopCondition(const wxString &ofType,
  * objects of type  CalculatedPoint.
  */
 //------------------------------------------------------------------------------
-CalculatedPoint* Factory::CreateCalculatedPoint(const wxString &ofType,
-                                                const wxString &withName)
+CalculatedPoint* Factory::CreateCalculatedPoint(const std::string &ofType,
+                                                const std::string &withName)
 {
-   throw FactoryException(wxT("requested object must be of type CalculatedPoint"));
+   throw FactoryException("requested object must be of type CalculatedPoint");
 }
 
 
 //------------------------------------------------------------------------------
-//  CelestialBody* CreateCelestialBody(const wxString &ofType,
-//                                     const wxString &withName)
+//  CelestialBody* CreateCelestialBody(const std::string &ofType,
+//                                     const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Must be implemented by derived classes that create  CelestialBody objects -
@@ -371,15 +371,15 @@ CalculatedPoint* Factory::CreateCalculatedPoint(const wxString &ofType,
  * objects of type  CelestialBody.
  */
 //------------------------------------------------------------------------------
-CelestialBody* Factory::CreateCelestialBody(const wxString &ofType,
-                                            const wxString &withName)
+CelestialBody* Factory::CreateCelestialBody(const std::string &ofType,
+                                            const std::string &withName)
 {
-   throw FactoryException(wxT("requested object must be of type CelestialBody"));
+   throw FactoryException("requested object must be of type CelestialBody");
 }
 
 //------------------------------------------------------------------------------
-//  SolarSystem* CreateSolarSystem(const wxString &ofType,
-//                                 const wxString &withName)
+//  SolarSystem* CreateSolarSystem(const std::string &ofType,
+//                                 const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Must be implemented by derived classes that create  SolarSystem objects -
@@ -396,15 +396,15 @@ CelestialBody* Factory::CreateCelestialBody(const wxString &ofType,
  * objects of type  SolarSystem.
  */
 //------------------------------------------------------------------------------
-SolarSystem* Factory::CreateSolarSystem(const wxString &ofType,
-                                        const wxString &withName)
+SolarSystem* Factory::CreateSolarSystem(const std::string &ofType,
+                                        const std::string &withName)
 {
-   throw FactoryException(wxT("requested object must be of type SolarSystem"));
+   throw FactoryException("requested object must be of type SolarSystem");
 }
 
 //------------------------------------------------------------------------------
-//  Solver* CreateSolver(const wxString &ofType,
-//                       const wxString &withName)
+//  Solver* CreateSolver(const std::string &ofType,
+//                       const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Must be implemented by derived classes that create Solver objects -
@@ -421,16 +421,16 @@ SolarSystem* Factory::CreateSolarSystem(const wxString &ofType,
  * objects of type  Solver.
  */
 //------------------------------------------------------------------------------
-Solver* Factory::CreateSolver(const wxString &ofType,
-                              const wxString &withName)
+Solver* Factory::CreateSolver(const std::string &ofType,
+                              const std::string &withName)
 {
-   throw FactoryException(wxT("requested object must be of type Solver"));
+   throw FactoryException("requested object must be of type Solver");
 }
 
 //------------------------------------------------------------------------------
-//  Subscriber* CreateSubscriber(const wxString &ofType, 
-//                               const wxString &withName,
-//                               const wxString &fileName)
+//  Subscriber* CreateSubscriber(const std::string &ofType, 
+//                               const std::string &withName,
+//                               const std::string &fileName)
 //------------------------------------------------------------------------------
 /**
  * Must be implemented by derived classes that create  Subscriber objects -
@@ -448,16 +448,16 @@ Solver* Factory::CreateSolver(const wxString &ofType,
  * objects of type  Subscriber.
  */
 //------------------------------------------------------------------------------
-Subscriber* Factory::CreateSubscriber(const wxString &ofType,
-                                      const wxString &withName,
-                                      const wxString &fileName)
+Subscriber* Factory::CreateSubscriber(const std::string &ofType,
+                                      const std::string &withName,
+                                      const std::string &fileName)
 {
-   throw FactoryException(wxT("requested object must be of type Subscriber"));
+   throw FactoryException("requested object must be of type Subscriber");
 }
 
 //------------------------------------------------------------------------------
-//  EphemerisFile* CreateEphemerisFile(const wxString &ofType, 
-//                                     const wxString &withName)
+//  EphemerisFile* CreateEphemerisFile(const std::string &ofType, 
+//                                     const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Must be implemented by derived classes that create  EphemerisFile objects -
@@ -474,15 +474,15 @@ Subscriber* Factory::CreateSubscriber(const wxString &ofType,
  * objects of type  EphemerisFile.
  */
 //------------------------------------------------------------------------------
-EphemerisFile* Factory::CreateEphemerisFile(const wxString &ofType,
-                                            const wxString &withName)
+EphemerisFile* Factory::CreateEphemerisFile(const std::string &ofType,
+                                            const std::string &withName)
 {
-   throw FactoryException(wxT("requested object must be of type EphemerisFile"));
+   throw FactoryException("requested object must be of type EphemerisFile");
 }
 
 //------------------------------------------------------------------------------
-//  GmatCommand* CreateCommand(const wxString &ofType,
-//                             const wxString &withName)
+//  GmatCommand* CreateCommand(const std::string &ofType,
+//                             const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Must be implemented by derived classes that create  Command objects -
@@ -499,16 +499,16 @@ EphemerisFile* Factory::CreateEphemerisFile(const wxString &ofType,
  * objects of type  GmatCommand.
  */
 //------------------------------------------------------------------------------
-GmatCommand* Factory::CreateCommand(const wxString &ofType,
-                                    const wxString &withName)
+GmatCommand* Factory::CreateCommand(const std::string &ofType,
+                                    const std::string &withName)
 {
-   throw FactoryException(wxT("requested object must be of type GmatCommand"));
+   throw FactoryException("requested object must be of type GmatCommand");
 }
 
 //------------------------------------------------------------------------------
-//  AtmosphereModel* CreateAtmosphereModel(const wxString &ofType,
-//                                         const wxString &withName,
-//                                         const wxString &forBody)
+//  AtmosphereModel* CreateAtmosphereModel(const std::string &ofType,
+//                                         const std::string &withName,
+//                                         const std::string &forBody)
 //------------------------------------------------------------------------------
 /**
  * Must be implemented by derived classes that create  AtmosphereModel objects -
@@ -526,17 +526,17 @@ GmatCommand* Factory::CreateCommand(const wxString &ofType,
  * objects of type  AtmosphereModel.
  */
 //------------------------------------------------------------------------------
-AtmosphereModel* Factory::CreateAtmosphereModel(const wxString &ofType,
-                                                const wxString &withName,
-                                                const wxString &forBody)
+AtmosphereModel* Factory::CreateAtmosphereModel(const std::string &ofType,
+                                                const std::string &withName,
+                                                const std::string &forBody)
 {
    throw FactoryException
-      (wxT("Factory::CreateAtmosphereModel() must be implemented by AtmosphereFactory()\n"));
+      ("Factory::CreateAtmosphereModel() must be implemented by AtmosphereFactory()\n");
 }
 
 //------------------------------------------------------------------------------
-//  Function* CreateFunction(const wxString &ofType,
-//                           const wxString &withName)
+//  Function* CreateFunction(const std::string &ofType,
+//                           const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Must be implemented by derived classes that create  Function objects -
@@ -553,17 +553,17 @@ AtmosphereModel* Factory::CreateAtmosphereModel(const wxString &ofType,
  * objects of type  Function.
  */
 //------------------------------------------------------------------------------
-Function* Factory::CreateFunction(const wxString &ofType,
-                                  const wxString &withName)
+Function* Factory::CreateFunction(const std::string &ofType,
+                                  const std::string &withName)
 {
    throw FactoryException
-      (wxT("Factory::CreateFunction() must be implemented by FunctionFactory()\n"));
+      ("Factory::CreateFunction() must be implemented by FunctionFactory()\n");
 }
 
 
 //------------------------------------------------------------------------------
-//  Hardware* CreateHardware(const wxString &ofType,
-//                           const wxString &withName)
+//  Hardware* CreateHardware(const std::string &ofType,
+//                           const std::string &withName)
 //------------------------------------------------------------------------------
 /**
 * Creates tanks, thrusters, and other hardware attached to the GMAT spacecraft.
@@ -582,17 +582,17 @@ Function* Factory::CreateFunction(const wxString &ofType,
  *                               objects of type Hardware.
  */
 //------------------------------------------------------------------------------
-Hardware* Factory::CreateHardware(const wxString &ofType,
-                                  const wxString &withName)
+Hardware* Factory::CreateHardware(const std::string &ofType,
+                                  const std::string &withName)
 {
    throw FactoryException
-   (wxT("Factory::CreateHardware() must be implemented by the HardwareFactory\n"));
+   ("Factory::CreateHardware() must be implemented by the HardwareFactory\n");
 }
 
 
 //------------------------------------------------------------------------------
-//  AxisSystem* CreateAxisSystem(const wxString &ofType,
-//                               const wxString &withName)
+//  AxisSystem* CreateAxisSystem(const std::string &ofType,
+//                               const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Creates as AxisSystem object.
@@ -611,17 +611,17 @@ Hardware* Factory::CreateHardware(const wxString &ofType,
  *                               objects of type AxisSystem.
  */
 //------------------------------------------------------------------------------
-AxisSystem* Factory::CreateAxisSystem(const wxString &ofType,
-                                      const wxString &withName)
+AxisSystem* Factory::CreateAxisSystem(const std::string &ofType,
+                                      const std::string &withName)
 {
    throw FactoryException
-   (wxT("Factory::CreateAxisSystem() must be implemented by the AxisSystemFactory\n"));
+   ("Factory::CreateAxisSystem() must be implemented by the AxisSystemFactory\n");
 }
 
 
 //------------------------------------------------------------------------------
-//  CoordinateSystem* CreateCoordinateSystem(const wxString &ofType,
-//                                           const wxString &withName)
+//  CoordinateSystem* CreateCoordinateSystem(const std::string &ofType,
+//                                           const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Creates as CoordinateSystem object.
@@ -640,18 +640,18 @@ AxisSystem* Factory::CreateAxisSystem(const wxString &ofType,
  *                               objects of type CoordinateSystem.
  */
 //------------------------------------------------------------------------------
-CoordinateSystem* Factory::CreateCoordinateSystem(const wxString &ofType,
-                                                  const wxString &withName)
+CoordinateSystem* Factory::CreateCoordinateSystem(const std::string &ofType,
+                                                  const std::string &withName)
 {
    throw FactoryException
-   (wxT("Factory::CreateCoordinateSystem() must be implemented by the ")
-    wxT("CoordinateSystemFactory\n"));
+   ("Factory::CreateCoordinateSystem() must be implemented by the "
+    "CoordinateSystemFactory\n");
 }
 
 
 //------------------------------------------------------------------------------
-//  MathNode* CreateMathNode(const wxString &ofType,
-//                           const wxString &withName)
+//  MathNode* CreateMathNode(const std::string &ofType,
+//                           const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Creates as MathNode object.
@@ -670,16 +670,16 @@ CoordinateSystem* Factory::CreateCoordinateSystem(const wxString &ofType,
  *                               objects of type MathNode.
  */
 //------------------------------------------------------------------------------
-MathNode* Factory::CreateMathNode(const wxString &ofType,
-                                  const wxString &withName)
+MathNode* Factory::CreateMathNode(const std::string &ofType,
+                                  const std::string &withName)
 {
    throw FactoryException
-   (wxT("Factory::CreateMathNode() must be implemented by the MathFactory\n"));
+   ("Factory::CreateMathNode() must be implemented by the MathFactory\n");
 }
 
 //------------------------------------------------------------------------------
-//  Attitude* CreateAttitude(const wxString &ofType,
-//                           const wxString &withName)
+//  Attitude* CreateAttitude(const std::string &ofType,
+//                           const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Creates an Attitude object.
@@ -698,17 +698,17 @@ MathNode* Factory::CreateMathNode(const wxString &ofType,
  *                               objects of type Attitude.
  */
 //------------------------------------------------------------------------------
-Attitude* Factory::CreateAttitude(const wxString &ofType,
-                                  const wxString &withName)
+Attitude* Factory::CreateAttitude(const std::string &ofType,
+                                  const std::string &withName)
 {
    throw FactoryException
-   (wxT("Factory::CreateAttitude() must be implemented by the AttitudeFactory\n"));
+   ("Factory::CreateAttitude() must be implemented by the AttitudeFactory\n");
 }
 
 
 //------------------------------------------------------------------------------
-// MeasurementModel *CreateMeasurementModel(const wxString & ofType,
-//    const wxString & withName)
+// MeasurementModel *CreateMeasurementModel(const std::string & ofType,
+//    const std::string & withName)
 //------------------------------------------------------------------------------
 /**
  * Creates a MeasurementModel object.
@@ -727,18 +727,18 @@ Attitude* Factory::CreateAttitude(const wxString &ofType,
  *                               objects of type MeasurementModel.
  */
 //------------------------------------------------------------------------------
-MeasurementModel* Factory::CreateMeasurementModel(const wxString & ofType,
-                                         const wxString & withName)
+MeasurementModel* Factory::CreateMeasurementModel(const std::string & ofType,
+                                         const std::string & withName)
 {
    throw FactoryException
-   (wxT("Factory::CreateMeasurementModel() must be implemented by a ")
-         wxT("MeasurementModelFactory\n"));
+   ("Factory::CreateMeasurementModel() must be implemented by a "
+         "MeasurementModelFactory\n");
 }
 
 
 //------------------------------------------------------------------------------
-// CoreMeasurement* CreateMeasurement(const wxString & ofType,
-//    const wxString & withName)
+// CoreMeasurement* CreateMeasurement(const std::string & ofType,
+//    const std::string & withName)
 //------------------------------------------------------------------------------
 /**
  * Creates a fundamental measurement object.
@@ -757,17 +757,17 @@ MeasurementModel* Factory::CreateMeasurementModel(const wxString & ofType,
  *                               objects of type CoreMeasurement.
  */
 //------------------------------------------------------------------------------
-CoreMeasurement* Factory::CreateMeasurement(const wxString & ofType,
-                                        const wxString & withName)
+CoreMeasurement* Factory::CreateMeasurement(const std::string & ofType,
+                                        const std::string & withName)
 {
    throw FactoryException
-   (wxT("Factory::CreateMeasurement() must be implemented by a MeasurementFactory\n"));
+   ("Factory::CreateMeasurement() must be implemented by a MeasurementFactory\n");
 }
 
 
 //------------------------------------------------------------------------------
-// DataFile* Factory::CreateDataFile(const wxString & ofType,
-//                                   const wxString & withName)
+// DataFile* Factory::CreateDataFile(const std::string & ofType,
+//                                   const std::string & withName)
 //------------------------------------------------------------------------------
 /**
  * Creates a DataFile object.
@@ -786,16 +786,16 @@ CoreMeasurement* Factory::CreateMeasurement(const wxString & ofType,
  *                               objects of type DataFile.
  */
 //------------------------------------------------------------------------------
-DataFile* Factory::CreateDataFile(const wxString & ofType,
-                                  const wxString & withName)
+DataFile* Factory::CreateDataFile(const std::string & ofType,
+                                  const std::string & withName)
 {
    throw FactoryException
-      (wxT("Factory::CreateDataFile() must be implemented by a DataFileFactory\n"));
+      ("Factory::CreateDataFile() must be implemented by a DataFileFactory\n");
 }
 
 
 //------------------------------------------------------------------------------
-// ObType* CreateObType(const wxString & ofType, const wxString & withName)
+// ObType* CreateObType(const std::string & ofType, const std::string & withName)
 //------------------------------------------------------------------------------
 /**
  * Creates an ObType object.
@@ -814,16 +814,16 @@ DataFile* Factory::CreateDataFile(const wxString & ofType,
  *                               objects of type ObType.
  */
 //------------------------------------------------------------------------------
-ObType* Factory::CreateObType(const wxString & ofType,
-      const wxString & withName)
+ObType* Factory::CreateObType(const std::string & ofType,
+      const std::string & withName)
 {
    throw FactoryException
-   (wxT("Factory::CreateObType() must be implemented by an ObTypeFactory\n"));
+   ("Factory::CreateObType() must be implemented by an ObTypeFactory\n");
 }
 
 
 //------------------------------------------------------------------------------
-// Event* CreateEvent(const wxString &ofType, const wxString &withName)
+// Event* CreateEvent(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Creates an Event object.
@@ -842,15 +842,15 @@ ObType* Factory::CreateObType(const wxString & ofType,
  *                               objects of type Event.
  */
 //------------------------------------------------------------------------------
-Event* Factory::CreateEvent(const wxString &ofType, const wxString &withName)
+Event* Factory::CreateEvent(const std::string &ofType, const std::string &withName)
 {
    throw FactoryException
-         (wxT("Factory::CreateEvent() must be implemented by an EventFactory\n"));
+         ("Factory::CreateEvent() must be implemented by an EventFactory\n");
 }
 
 
 //------------------------------------------------------------------------------
-// Event* CreateEvent(const wxString &ofType, const wxString &withName)
+// Event* CreateEvent(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Creates an EventLocator object.
@@ -869,16 +869,16 @@ Event* Factory::CreateEvent(const wxString &ofType, const wxString &withName)
  *                               objects of type EventLocator.
  */
 //------------------------------------------------------------------------------
-EventLocator* Factory::CreateEventLocator(const wxString &ofType,
-                                     const wxString &withName)
+EventLocator* Factory::CreateEventLocator(const std::string &ofType,
+                                     const std::string &withName)
 {
    throw FactoryException
-         (wxT("Factory::CreateEventLocator() must be implemented by an ")
-               wxT("EventLocatorFactory\n"));
+         ("Factory::CreateEventLocator() must be implemented by an "
+               "EventLocatorFactory\n");
 }
 
 //------------------------------------------------------------------------------
-// Interface* CreateInterface(const wxString &ofType, const wxString &withName)
+// Interface* CreateInterface(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Creates an Interface object.
@@ -897,16 +897,16 @@ EventLocator* Factory::CreateEventLocator(const wxString &ofType,
  *                               objects of type Interface.
  */
 //------------------------------------------------------------------------------
-Interface* Factory::CreateInterface(const wxString &ofType, const wxString &withName)
+Interface* Factory::CreateInterface(const std::string &ofType, const std::string &withName)
 {
    throw FactoryException
-         (wxT("Factory::CreateInterface() must be implemented by an InterfaceFactory\n"));
+         ("Factory::CreateInterface() must be implemented by an InterfaceFactory\n");
 }
 
 
 //------------------------------------------------------------------------------
-// TrackingSystem* Factory::CreateTrackingSystem(const wxString &ofType,
-//                                         const wxString &withName)
+// TrackingSystem* Factory::CreateTrackingSystem(const std::string &ofType,
+//                                         const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Creates a TrackingSystem object.
@@ -925,18 +925,18 @@ Interface* Factory::CreateInterface(const wxString &ofType, const wxString &with
  *                               objects of type TrackingSystem.
  */
 //------------------------------------------------------------------------------
-TrackingSystem* Factory::CreateTrackingSystem(const wxString &ofType,
-         const wxString &withName)
+TrackingSystem* Factory::CreateTrackingSystem(const std::string &ofType,
+         const std::string &withName)
 {
    throw FactoryException
-      (wxT("Factory::CreateTrackingSystem() must be implemented by a ")
-               wxT("TrackingSystemFactory\n"));
+      ("Factory::CreateTrackingSystem() must be implemented by a "
+               "TrackingSystemFactory\n");
 }
 
 
 //------------------------------------------------------------------------------
-// TrackingData* Factory::CreateTrackingData(const wxString &ofType,
-//                                         const wxString &withName)
+// TrackingData* Factory::CreateTrackingData(const std::string &ofType,
+//                                         const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Creates a TrackingData object.
@@ -955,12 +955,12 @@ TrackingSystem* Factory::CreateTrackingSystem(const wxString &ofType,
  *                               objects of type TrackingData.
  */
 //------------------------------------------------------------------------------
-TrackingData* Factory::CreateTrackingData(const wxString &ofType,
-         const wxString &withName)
+TrackingData* Factory::CreateTrackingData(const std::string &ofType,
+         const std::string &withName)
 {
    throw FactoryException
-      (wxT("Factory::CreateTrackingData() must be implemented by a ")
-               wxT("TrackingDataFactory\n"));
+      ("Factory::CreateTrackingData() must be implemented by a "
+               "TrackingDataFactory\n");
 }
 
 //------------------------------------------------------------------------------
@@ -976,17 +976,17 @@ TrackingData* Factory::CreateTrackingData(const wxString &ofType,
  *
  */
 //------------------------------------------------------------------------------
-StringArray Factory::GetListOfCreatableObjects(const wxString &qualifier) const
+StringArray Factory::GetListOfCreatableObjects(const std::string &qualifier) const
 {
-   if (qualifier == wxT(""))
+   if (qualifier == "")
       return creatables;
    return qualifiedCreatables;
 }
 
 
 //------------------------------------------------------------------------------
-// bool DoesObjectTypeMatchSubtype(const wxString &theType,
-//       const wxString &theSubtype)
+// bool DoesObjectTypeMatchSubtype(const std::string &theType,
+//       const std::string &theSubtype)
 //------------------------------------------------------------------------------
 /**
  * Checks if a creatable object type matches a subtype.
@@ -1006,8 +1006,8 @@ StringArray Factory::GetListOfCreatableObjects(const wxString &qualifier) const
  *         not match the subtype
  */
 //------------------------------------------------------------------------------
-bool Factory::DoesObjectTypeMatchSubtype(const wxString &theType,
-      const wxString &theSubtype)
+bool Factory::DoesObjectTypeMatchSubtype(const std::string &theType,
+      const std::string &theSubtype)
 {
    // Default is to return false, meaning objects are not subtyped
    return false;
@@ -1028,8 +1028,8 @@ StringArray Factory::GetListOfViewableObjects()
 {
    #ifdef DEBUG_FACTORY_VIEWABLES
    MessageInterface::ShowMessage
-      (wxT("Factory::GetListOfViewableObjects() entered, there are %d creatables, %d unviewables, ")
-       wxT("%d viewables\n"), creatables.size(), unviewables.size(), viewables.size());
+      ("Factory::GetListOfViewableObjects() entered, there are %d creatables, %d unviewables, "
+       "%d viewables\n", creatables.size(), unviewables.size(), viewables.size());
    #endif
    
    if (viewables.empty())
@@ -1045,8 +1045,8 @@ StringArray Factory::GetListOfViewableObjects()
    
    #ifdef DEBUG_FACTORY_VIEWABLES
    MessageInterface::ShowMessage
-      (wxT("Factory::GetListOfViewableObjects() leaving, there are %d creatables, %d unviewables, ")
-       wxT("%d viewables\n"), creatables.size(), unviewables.size(), viewables.size());
+      ("Factory::GetListOfViewableObjects() leaving, there are %d creatables, %d unviewables, "
+       "%d viewables\n", creatables.size(), unviewables.size(), viewables.size());
    #endif
    
    return viewables;
@@ -1195,7 +1195,7 @@ Factory::Factory(StringArray createList, Gmat::ObjectType ofType)
  * This method creates an object of the base class Factory (called by
  * copy constructors of derived classes).  (copy constructor)
  *
- * @param <fact> the factory object to copy to wxT("this") factory.
+ * @param <fact> the factory object to copy to "this" factory.
  */
 //------------------------------------------------------------------------------
 Factory::Factory(const Factory& fact) :
@@ -1216,9 +1216,9 @@ Factory::Factory(const Factory& fact) :
 /**
  * Assignment operator for the Factory base class.
  *
- * @param <fact> the factory object whose data to assign to wxT("this") factory.
+ * @param <fact> the factory object whose data to assign to "this" factory.
  *
- * @return wxT("this") factory with data of input factory fact.
+ * @return "this" factory with data of input factory fact.
  */
 //------------------------------------------------------------------------------
 Factory& Factory::operator= (const Factory& fact)
@@ -1240,6 +1240,6 @@ Factory& Factory::operator= (const Factory& fact)
 Factory::~Factory()
 {
    // delete creatables;
-   //creatables.~vector<wxString>(); //loj: 4/7/06 commented
+   //creatables.~vector<std::string>(); //loj: 4/7/06 commented
 }
 

@@ -34,7 +34,7 @@ class GMAT_API EquatorAxes : public DynamicAxes
 public:
 
    // default constructor
-   EquatorAxes(const wxString &itsName = wxT(""));
+   EquatorAxes(const std::string &itsName = "");
    // copy constructor
    EquatorAxes(const EquatorAxes &eqAxes);
    // operator = for assignment
@@ -54,11 +54,11 @@ public:
    virtual GmatBase*       Clone(void) const;
 
    // Parameter access methods - overridden from GmatBase
-   //virtual wxString     GetParameterText(const Integer id) const;     
-   //virtual Integer         GetParameterID(const wxString &str) const; 
+   //virtual std::string     GetParameterText(const Integer id) const;     
+   //virtual Integer         GetParameterID(const std::string &str) const; 
    //virtual Gmat::ParameterType
    //                        GetParameterType(const Integer id) const;
-   //virtual wxString     GetParameterTypeString(const Integer id) const;
+   //virtual std::string     GetParameterTypeString(const Integer id) const;
    
 protected:
 
@@ -67,7 +67,7 @@ protected:
       EquatorAxesParamCount = DynamicAxesParamCount,
    };
    
-   //static const wxString PARAMETER_TEXT[EquatorAxesParamCount - 
+   //static const std::string PARAMETER_TEXT[EquatorAxesParamCount - 
    //                                        DynamicAxesParamCount];
    
    //static const Gmat::ParameterType PARAMETER_TYPE[EquatorAxesParamCount - 

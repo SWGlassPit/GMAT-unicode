@@ -43,7 +43,7 @@ public:
    Real GetROA();
    Real GetP();
    bool IsError();
-   wxString GetError();
+   std::string GetError();
 
 private:
    struct orbitElements 
@@ -58,7 +58,7 @@ private:
 
    orbitElements elements;
 
-   wxString errormsg;
+   std::string errormsg;
    bool isError;
 };
 

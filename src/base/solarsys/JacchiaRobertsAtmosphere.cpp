@@ -37,7 +37,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// JacchiaRobertsAtmosphere(const wxString &name = wxT(""))
+// JacchiaRobertsAtmosphere(const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Default constructor
@@ -54,8 +54,8 @@
  * @param name Name of the drag object (optional)
  */
 //------------------------------------------------------------------------------
-JacchiaRobertsAtmosphere::JacchiaRobertsAtmosphere(const wxString &name) :
-   AtmosphereModel      (wxT("JacchiaRoberts"), name),
+JacchiaRobertsAtmosphere::JacchiaRobertsAtmosphere(const std::string &name) :
+   AtmosphereModel      ("JacchiaRoberts", name),
    cbPolarRadius        (6356.766),       // @todo - check effect of using default from GmatDefaults
    cbPolarSquared       (40408473.978756),
    rho_zero             (3.46e-9),
@@ -82,7 +82,7 @@ JacchiaRobertsAtmosphere::~JacchiaRobertsAtmosphere()
       if (fileReader->CloseSolarFluxFile(solarFluxFile))
          fileRead = false;
       else
-         throw AtmosphereException(wxT("Error closing JacchiaRoberts data file.\n"));
+         throw AtmosphereException("Error closing JacchiaRoberts data file.\n");
    }
 }
 
@@ -181,7 +181,7 @@ bool JacchiaRobertsAtmosphere::Density(Real *pos, Real *density, Real epoch,
 {
    #ifdef DEBUG_JR_DRAG
       MessageInterface::ShowMessage
-         (wxT("JacchiaRobertsAtmosphere::Density() epoch=%g, sc count=%d\n"), epoch,
+         ("JacchiaRobertsAtmosphere::Density() epoch=%g, sc count=%d\n", epoch,
           count);
    #endif
    Real height;
@@ -193,7 +193,7 @@ bool JacchiaRobertsAtmosphere::Density(Real *pos, Real *density, Real epoch,
    
    #ifdef DEBUG_JR_DRAG
       MessageInterface::ShowMessage
-         (wxT("   UTC time = %lf\n"), utc_time);
+         ("   UTC time = %lf\n", utc_time);
    #endif
 
    for (Integer i=0; i<count; i++)
@@ -204,7 +204,7 @@ bool JacchiaRobertsAtmosphere::Density(Real *pos, Real *density, Real epoch,
       
       #ifdef DEBUG_JR_DRAG
          MessageInterface::ShowMessage
-            (wxT("   Calculated height = %lf\n"), height);
+            ("   Calculated height = %lf\n", height);
       #endif
       // Obtain density of atmosphere at spacecraft height
 
@@ -225,7 +225,7 @@ bool JacchiaRobertsAtmosphere::Density(Real *pos, Real *density, Real epoch,
 
       #ifdef DEBUG_JR_DRAG
          MessageInterface::ShowMessage
-            (wxT("JRDensity(): sat %d pos = %g, %g, %g, height = %g, density = %g\n"),
+            ("JRDensity(): sat %d pos = %g, %g, %g, height = %g, density = %g\n",
              i, pos[i*6], pos[i*6+1], pos[i*6+2], height, density[i]);
       #endif
    }
@@ -286,10 +286,10 @@ Real JacchiaRobertsAtmosphere::JacchiaRoberts(Real height, Real space_craft[3],
 {
    #ifdef DEBUG_JR_DRAG
       MessageInterface::ShowMessage
-         (wxT("JacchiaRobertsAtmosphere::JacchiaRoberts(%15lf, [%15lf %15lf %15lf],")
-          wxT("\n   [%15lf %15lf %15lf], %15lf, %s\n"),
+         ("JacchiaRobertsAtmosphere::JacchiaRoberts(%15lf, [%15lf %15lf %15lf],"
+          "\n   [%15lf %15lf %15lf], %15lf, %s\n",
           height, space_craft[0], space_craft[1], space_craft[2],
-          sun[0], sun[1], sun[2], a1_time, (new_file ? wxT("true") : wxT("false")) );
+          sun[0], sun[1], sun[2], a1_time, (new_file ? "true" : "false") );
    #endif
 
    GEOPARMS geo;
@@ -312,18 +312,18 @@ Real JacchiaRobertsAtmosphere::JacchiaRoberts(Real height, Real space_craft[3],
             // if values read from file are not accurate.
             if (status != 0)
             {
-                  throw AtmosphereException(wxT("Error loading in JacchiaRoberts data file.")
-                                            wxT("Density has be set to 0.0\n"));
+                  throw AtmosphereException("Error loading in JacchiaRoberts data file."
+                                            "Density has be set to 0.0\n");
                Real dValue = 0.0;
                return dValue; 
             }    
          }
          else
-            throw AtmosphereException(wxT("Error opening JacchiaRoberts data file.\n"));
+            throw AtmosphereException("Error opening JacchiaRoberts data file.\n");
       }       
       #ifdef DEBUG_JR_DRAG
          MessageInterface::ShowMessage
-            (wxT("   Using file\n   K_p     = %15.10le\n   exoTemp = %lf\n"), geo.tkp,
+            ("   Using file\n   K_p     = %15.10le\n   exoTemp = %lf\n", geo.tkp,
              geo.xtemp);
       #endif
    }
@@ -333,8 +333,8 @@ Real JacchiaRobertsAtmosphere::JacchiaRoberts(Real height, Real space_craft[3],
       geo.tkp   = nominalKp;
       #ifdef DEBUG_JR_DRAG
          MessageInterface::ShowMessage
-            (wxT("   Using constant values\n   F10.7   = %lf\n")
-             wxT("   F10.7a  = %lf\n   K_p     = %lf\n   exoTemp = %lf\n"),
+            ("   Using constant values\n   F10.7   = %lf\n"
+             "   F10.7a  = %lf\n   K_p     = %lf\n   exoTemp = %lf\n",
              nominalF107, nominalF107a, geo.tkp, geo.xtemp);
       #endif
    }
@@ -354,8 +354,8 @@ Real JacchiaRobertsAtmosphere::JacchiaRoberts(Real height, Real space_craft[3],
       density = rho_100(height, temperature);
       #ifdef DEBUG_JR_DRAG
          MessageInterface::ShowMessage
-            (wxT("   Evaluating for height < 100\n")
-             wxT("   temp = %lf\n   density = %15.10le\n"),
+            ("   Evaluating for height < 100\n"
+             "   temp = %lf\n   density = %15.10le\n",
              temperature, density);
       #endif
    }
@@ -365,8 +365,8 @@ Real JacchiaRobertsAtmosphere::JacchiaRoberts(Real height, Real space_craft[3],
       density = rho_125(height, temperature);
       #ifdef DEBUG_JR_DRAG
          MessageInterface::ShowMessage
-            (wxT("   Evaluating for 100 < height < 125\n")
-             wxT("   temp = %lf\n   density = %15.10le\n"),
+            ("   Evaluating for 100 < height < 125\n"
+             "   temp = %lf\n   density = %15.10le\n",
              temperature, density);
       #endif
    }
@@ -378,8 +378,8 @@ Real JacchiaRobertsAtmosphere::JacchiaRoberts(Real height, Real space_craft[3],
       density = rho_high(height, temperature, t_500, sun_dec, geo_lat);
       #ifdef DEBUG_JR_DRAG
          MessageInterface::ShowMessage
-            (wxT("   Evaluating for 125 < height < 2500\n")
-             wxT("   temp = %lf\n   t_500 = %lf\n   density = %15.10le\n"),
+            ("   Evaluating for 125 < height < 2500\n"
+             "   temp = %lf\n   t_500 = %lf\n   density = %15.10le\n",
              temperature, t_500, density);
       #endif
    }
@@ -388,14 +388,14 @@ Real JacchiaRobertsAtmosphere::JacchiaRoberts(Real height, Real space_craft[3],
       density = 0.0; 
       #ifdef DEBUG_JR_DRAG
          MessageInterface::ShowMessage
-            (wxT("   Evaluating for height > 2500\n")
-             wxT("   density = %15.10le\n"), density);
+            ("   Evaluating for height > 2500\n"
+             "   density = %15.10le\n", density);
       #endif
    }
    
    #ifdef DEBUG_JR_DRAG
       MessageInterface::ShowMessage
-         (wxT("   Corrected density = %15.10le\n"),
+         ("   Corrected density = %15.10le\n",
           density * rho_cor(height, a1_time, geo_lat, &geo));
    #endif
    return density * rho_cor(height, a1_time, geo_lat, &geo);
@@ -430,9 +430,9 @@ Real JacchiaRobertsAtmosphere::exotherm(Real space_craft[2], Real sun[3],
 {
    #ifdef DEBUG_JR_DRAG
       MessageInterface::ShowMessage
-         (wxT("   JacchiaRobertsAtmosphere::exotherm([%15lf, %15lf],\n")
-          wxT("      [%15lf, %15lf, %15lf], geo = {%15lf, %15lf},\n")
-          wxT("      %15lf, %15lf, %15lf)\n"),
+         ("   JacchiaRobertsAtmosphere::exotherm([%15lf, %15lf],\n"
+          "      [%15lf, %15lf, %15lf], geo = {%15lf, %15lf},\n"
+          "      %15lf, %15lf, %15lf)\n",
           space_craft[0], space_craft[1], sun[0], sun[1], sun[2],
           geo->tkp, geo->xtemp, height, sun_dec, geo_lat);
    #endif
@@ -449,8 +449,8 @@ Real JacchiaRobertsAtmosphere::exotherm(Real space_craft[2], Real sun[3],
    cos_denom = sqrt(space_craft[0]*space_craft[0] + 
          space_craft[1]*space_craft[1]);
    if ((cross_denom < GmatRealConstants::REAL_TOL) || (cos_denom < GmatRealConstants::REAL_TOL))
-      throw AtmosphereException(wxT("Numerical precision error in ")
-            wxT("JacchiaRobertsAtmosphere::exotherm; denominator is too close to 0.0"));
+      throw AtmosphereException("Numerical precision error in "
+            "JacchiaRobertsAtmosphere::exotherm; denominator is too close to 0.0");
 
    hour_angle = ( (sun[0]*space_craft[1]-sun[1]*space_craft[0])/cross_denom)
       *acos((sun[0]*space_craft[0]+sun[1]*space_craft[1])/
@@ -472,11 +472,11 @@ Real JacchiaRobertsAtmosphere::exotherm(Real space_craft[2], Real sun[3],
 
    #ifdef DEBUG_JR_DRAG
       MessageInterface::ShowMessage
-         (wxT("      Calculated data:\n         sun_denom = %15lf\n")
-          wxT("         hour_angle = %15lf\n         theta = %15lf\n")
-          wxT("         eta = %15lf\n")
-          wxT("         tau = %15lf\n         th22 = %15lf\n")
-          wxT("         t1 = %15lf\n         expkp = %15lf\n"),
+         ("      Calculated data:\n         sun_denom = %15lf\n"
+          "         hour_angle = %15lf\n         theta = %15lf\n"
+          "         eta = %15lf\n"
+          "         tau = %15lf\n         th22 = %15lf\n"
+          "         t1 = %15lf\n         expkp = %15lf\n",
           sun_denom, hour_angle, theta, eta, tau, th22, t1, expkp);
    #endif
 
@@ -831,7 +831,7 @@ Real JacchiaRobertsAtmosphere::rho_high(Real height, Real temperature,
 
    #ifdef DEBUG_JR_DRAG
       MessageInterface::ShowMessage
-         (wxT("   Performing rho_high calculations\n"));
+         ("   Performing rho_high calculations\n");
    #endif
 
    for (rho_out = 0.0, i = 0; i <= 5; i++)
@@ -889,7 +889,7 @@ Real JacchiaRobertsAtmosphere::rho_high(Real height, Real temperature,
 
       #ifdef DEBUG_JR_DRAG
          MessageInterface::ShowMessage
-            (wxT("      i = %d, rho_out = %15.10le\n"), i, rho_out);
+            ("      i = %d, rho_out = %15.10le\n", i, rho_out);
       #endif
    }
    return rho_out;
@@ -919,7 +919,7 @@ Real JacchiaRobertsAtmosphere::rho_high(Real height, Real temperature,
  *        the original code on Newton's method described in the
  *        following reference:
  * 
- *        Henrici, P. wxT("ELEMENTS OF NUMERICAL ANALYSIS"), NEW YORK,
+ *        Henrici, P. "ELEMENTS OF NUMERICAL ANALYSIS", NEW YORK,
  *        WILEY, 1965, P. 84.
  * 
  *        Curt Anderson of CSC provided mathematical formulas for

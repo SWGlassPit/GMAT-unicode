@@ -39,9 +39,9 @@
  */
 //------------------------------------------------------------------------------
 BeginScript::BeginScript() :
-   GmatCommand(wxT("BeginScript"))
+   GmatCommand("BeginScript")
 {
-   generatingString = wxT("BeginScript");
+   generatingString = "BeginScript";
 }
 
 
@@ -131,9 +131,9 @@ GmatBase* BeginScript::Clone() const
 
 
 //------------------------------------------------------------------------------
-// const wxString& GetGeneratingString(Gmat::WriteMode mode,
-//                                        const wxString &prefix,
-//                                        const wxString &useName)
+// const std::string& GetGeneratingString(Gmat::WriteMode mode,
+//                                        const std::string &prefix,
+//                                        const std::string &useName)
 //------------------------------------------------------------------------------
 /**
  * This method returns a clone of the BeginScript.
@@ -148,59 +148,59 @@ GmatBase* BeginScript::Clone() const
  * @return The string that reproduces this command.
  */
 //------------------------------------------------------------------------------
-const wxString& BeginScript::GetGeneratingString(Gmat::WriteMode mode,
-                                                    const wxString &prefix,
-                                                    const wxString &useName)
+const std::string& BeginScript::GetGeneratingString(Gmat::WriteMode mode,
+                                                    const std::string &prefix,
+                                                    const std::string &useName)
 {
    //Note: This method is called only once from the ScriptInterpreter::WriteScript()
    // So all nested ScriptEvent generating string should be handled here
    
-   wxString gen;
-   wxString indent;
-   wxString commentLine = GetCommentLine();
-   wxString inlineComment = GetInlineComment();
-   wxString beginPrefix = prefix;
+   std::stringstream gen;
+   std::string indent;
+   std::string commentLine = GetCommentLine();
+   std::string inlineComment = GetInlineComment();
+   std::string beginPrefix = prefix;
 
    if (mode != Gmat::GUI_EDITOR)
    {
       if (mode == Gmat::NO_COMMENTS)
       {
-         gen << prefix << wxT("BeginScript") << wxT("\n");
+         gen << prefix << "BeginScript" << "\n";
       }
       else
       {
          IndentComment(gen, commentLine, prefix);
-         gen << prefix << wxT("BeginScript");   
+         gen << prefix << "BeginScript";   
          
-         if (inlineComment != wxT(""))
-            gen << inlineComment << wxT("\n");
+         if (inlineComment != "")
+            gen << inlineComment << "\n";
          else
-            gen << wxT("\n");
+            gen << "\n";
       }
    }
    
    #if DBGLVL_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("BeginScript::GetGeneratingString() this=(%p)%s, mode=%d, prefix='%s', ")
-       wxT("useName='%s'\n"), this, this->GetTypeName().c_str(), mode, prefix.c_str(),
+      ("BeginScript::GetGeneratingString() this=(%p)%s, mode=%d, prefix='%s', "
+       "useName='%s'\n", this, this->GetTypeName().c_str(), mode, prefix.c_str(),
        useName.c_str());
    #endif
    
    if (mode == Gmat::GUI_EDITOR)
-      indent = wxT("");
+      indent = "";
    else
-      indent = wxT("   ");
+      indent = "   ";
    
    GmatCommand *current = next;
    while (current != NULL)
    {      
       #if DBGLVL_GEN_STRING > 1
       MessageInterface::ShowMessage
-         (wxT("BeginScript::GetGeneratingString() current=(%p)%s\n"), current,
+         ("BeginScript::GetGeneratingString() current=(%p)%s\n", current,
           current->GetTypeName().c_str());
       #endif
       
-      if (current->GetTypeName() != wxT("EndScript"))
+      if (current->GetTypeName() != "EndScript")
       {
          // Indent whole block within Begin/EndScript
          IndentChildString(gen, current, indent, mode, prefix, useName, false);
@@ -222,12 +222,12 @@ const wxString& BeginScript::GetGeneratingString(Gmat::WriteMode mode,
       }
    }
    
-   generatingString = gen;
+   generatingString = gen.str();
    
    #if DBGLVL_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("BeginScript::GetGeneratingString() returnning generatingString\n"));
-   MessageInterface::ShowMessage(wxT("<<<\n%s>>>\n\n"), generatingString.c_str());
+      ("BeginScript::GetGeneratingString() returnning generatingString\n");
+   MessageInterface::ShowMessage("<<<\n%s>>>\n\n", generatingString.c_str());
    #endif
    
    return generatingString;
@@ -235,7 +235,7 @@ const wxString& BeginScript::GetGeneratingString(Gmat::WriteMode mode,
 
 
 //------------------------------------------------------------------------------
-// const wxString BeginScript::GetChildString(const wxString &prefix,
+// const std::string BeginScript::GetChildString(const std::string &prefix,
 //                                               GmatCommand *cmd,
 //                                               GmatCommand *parent)
 //------------------------------------------------------------------------------
@@ -251,16 +251,16 @@ const wxString& BeginScript::GetGeneratingString(Gmat::WriteMode mode,
  * @return The string that reproduces the commands at the child's level.
  */
 //------------------------------------------------------------------------------
-const wxString BeginScript::GetChildString(const wxString &prefix,
+const std::string BeginScript::GetChildString(const std::string &prefix,
                                               GmatCommand *cmd,
                                               GmatCommand *parent)
 {
    #ifdef DEBUG_BEGINSCRIPT
-      MessageInterface::ShowMessage(wxT("BeginScript::GetChildString entered\n"));
+      MessageInterface::ShowMessage("BeginScript::GetChildString entered\n");
    #endif
    
-   wxString sstr;
-   wxString cmdstr;
+   std::stringstream sstr;
+   std::string cmdstr;
    Integer whichOne, start;
    GmatCommand *current = cmd;
    
@@ -268,28 +268,28 @@ const wxString BeginScript::GetChildString(const wxString &prefix,
    {
       cmdstr = current->GetGeneratingString();
       start = 0;
-      while (cmdstr[start] == wxT(' '))
+      while (cmdstr[start] == ' ')
          ++start;
       cmdstr = cmdstr.substr(start);
-      sstr << prefix << cmdstr << wxT("\n");
+      sstr << prefix << cmdstr << "\n";
       whichOne = 0;
       GmatCommand* child = current->GetChildCommand(whichOne);
       while ((child != NULL) && (child != cmd))
       {
-         sstr << GetChildString(prefix + wxT("   "), child, current);
+         sstr << GetChildString(prefix + "   ", child, current);
          ++whichOne;
          child = current->GetChildCommand(whichOne);
       }
       current = current->GetNext();
    }
    
-   return sstr;
+   return sstr.str();
 }
 
 
 //------------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * Renames referenced objects.
@@ -302,8 +302,8 @@ const wxString BeginScript::GetChildString(const wxString &prefix,
  */
 //------------------------------------------------------------------------------
 bool BeginScript::RenameRefObject(const Gmat::ObjectType type,
-                                  const wxString &oldName,
-                                  const wxString &newName)
+                                  const std::string &oldName,
+                                  const std::string &newName)
 {   
    GmatCommand *current = next;
    
@@ -311,11 +311,11 @@ bool BeginScript::RenameRefObject(const Gmat::ObjectType type,
    {
       #if DEBUG_RENAME
       MessageInterface::ShowMessage
-         (wxT("BeginScript::RenameRefObject() current=%s\n"),
+         ("BeginScript::RenameRefObject() current=%s\n",
           current->GetTypeName().c_str());
       #endif
       
-      if (current->GetTypeName() != wxT("EndScript"))
+      if (current->GetTypeName() != "EndScript")
       {
          current->RenameRefObject(type, oldName, newName);
          current = current->GetNext();
@@ -331,28 +331,28 @@ bool BeginScript::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-//void IndentChildString(wxStringstream &gen, GmatCommand* cmd, 
-//                       wxString &indent, Gmat::WriteMode mode,
-//                       const wxString &prefix, const wxString &useName,
+//void IndentChildString(std::stringstream &gen, GmatCommand* cmd, 
+//                       std::string &indent, Gmat::WriteMode mode,
+//                       const std::string &prefix, const std::string &useName,
 //                       bool indentCommentOnly)
 //------------------------------------------------------------------------------
-void BeginScript::IndentChildString(wxString &gen, GmatCommand* cmd, 
-                                    wxString &indent, Gmat::WriteMode mode,
-                                    const wxString &prefix,
-                                    const wxString &useName,
+void BeginScript::IndentChildString(std::stringstream &gen, GmatCommand* cmd, 
+                                    std::string &indent, Gmat::WriteMode mode,
+                                    const std::string &prefix,
+                                    const std::string &useName,
                                     bool indentCommentOnly)
 {
    TextParser tp;
    
    #if DBGLVL_GEN_STRING
-   ShowCommand(wxT(""), wxT("BeginScript::IndentChildString() cmd = "), cmd);
+   ShowCommand("", "BeginScript::IndentChildString() cmd = ", cmd);
    MessageInterface::ShowMessage
-      (wxT("BeginScript::IndentChildString() indent='%s', mode=%d, prefix='%s', ")
-       wxT("useName='%s', indentCommentOnly=%d\n"), indent.c_str(), mode, prefix.c_str(),
+      ("BeginScript::IndentChildString() indent='%s', mode=%d, prefix='%s', "
+       "useName='%s', indentCommentOnly=%d\n", indent.c_str(), mode, prefix.c_str(),
        useName.c_str(), indentCommentOnly);
    #endif
    
-   wxString cmdstr;
+   std::string cmdstr;
    if (indentCommentOnly)
       cmdstr = cmd->GetCommentLine();
    else
@@ -362,10 +362,10 @@ void BeginScript::IndentChildString(wxString &gen, GmatCommand* cmd,
    UnsignedInt size = textArray.size();
    
    #if DBGLVL_GEN_STRING
-   MessageInterface::ShowMessage(wxT("   There are %d text lines\n"), size);
+   MessageInterface::ShowMessage("   There are %d text lines\n", size);
    #endif
    
-   if (size > 0 && textArray[0] != wxT(""))
+   if (size > 0 && textArray[0] != "")
    {
       for (UnsignedInt i=0; i<size; i++)
       {
@@ -374,47 +374,47 @@ void BeginScript::IndentChildString(wxString &gen, GmatCommand* cmd,
          else
             gen << indent << textArray[i];
          
-         if (textArray[i].find(wxT("\n")) == cmdstr.npos &&
-             textArray[i].find(wxT("\r")) == cmdstr.npos)
+         if (textArray[i].find("\n") == cmdstr.npos &&
+             textArray[i].find("\r") == cmdstr.npos)
          {
-            gen << wxT("\n");
+            gen << "\n";
          }
       }
    }
    
    if (indentCommentOnly)
-      gen << prefix << cmd->GetTypeName() << wxT(";");
+      gen << prefix << cmd->GetTypeName() << ";";
 }
 
 
 //------------------------------------------------------------------------------
-//void IndentComment(wxStringstream &gen, wxString &comment,
-//                   const wxString &prefix)
+//void IndentComment(std::stringstream &gen, std::string &comment,
+//                   const std::string &prefix)
 //------------------------------------------------------------------------------
-void BeginScript::IndentComment(wxString &gen, wxString &comment,
-                                const wxString &prefix)
+void BeginScript::IndentComment(std::stringstream &gen, std::string &comment,
+                                const std::string &prefix)
 {
    TextParser tp;
    
    #if DBGLVL_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("BeginScript::IndentComment() comment='%s', prefix='%s'\n"),
+      ("BeginScript::IndentComment() comment='%s', prefix='%s'\n",
        comment.c_str(), prefix.c_str());
    #endif
    
    StringArray textArray = tp.DecomposeBlock(comment);
    UnsignedInt size = textArray.size();
    
-   if (size > 0 && textArray[0] != wxT(""))
+   if (size > 0 && textArray[0] != "")
    {
       for (UnsignedInt i=0; i<size; i++)
       {
          gen << prefix << textArray[i];
          
-         if (textArray[i].find(wxT("\n")) == comment.npos &&
-             textArray[i].find(wxT("\r")) == comment.npos)
+         if (textArray[i].find("\n") == comment.npos &&
+             textArray[i].find("\r") == comment.npos)
          {
-            gen << wxT("\n");
+            gen << "\n";
          }
       }
    }

@@ -22,15 +22,14 @@
 
 #include "RunSolver.hpp"
 
-#include <wx/sstream.h>
-#include <wx/txtstrm.h>
+#include <sstream>
 #include "MessageInterface.hpp"
 
 
 //#define DEBUG_RUNSOLVER_PARSING
 
 
-RunSolver::RunSolver(const wxString &typeStr) :
+RunSolver::RunSolver(const std::string &typeStr) :
    PropagationEnabledCommand  (typeStr)
 {
 }
@@ -80,26 +79,28 @@ bool RunSolver::InterpretAction()
 
    #ifdef DEBUG_RUNSOLVER_PARSING
       MessageInterface::ShowMessage(
-            wxT("RunSolver::InterpretAction() called for string \"%s\"\n"),
+            "RunSolver::InterpretAction() called for string \"%s\"\n",
             generatingString.c_str());
    #endif
 
-   wxStringInputStream stringToParseString (generatingString);
-   wxTextInputStream stringToParse(stringToParseString);
+   std::stringstream stringToParse;
 
-   wxString temp;
+   stringToParse << generatingString;
+
+   std::string temp;
 
    stringToParse >> temp;
+
    #ifdef DEBUG_RUNSOLVER_PARSING
-      MessageInterface::ShowMessage(wxT("   Cmd keyword: \"%s\"\n"), temp.c_str());
+      MessageInterface::ShowMessage("   Cmd keyword: \"%s\"\n", temp.c_str());
    #endif
    stringToParse >> temp;
 
    #ifdef DEBUG_RUNSOLVER_PARSING
-      MessageInterface::ShowMessage(wxT("   Solver Name: \"%s\"\n"), temp.c_str());
+      MessageInterface::ShowMessage("   Solver Name: \"%s\"\n", temp.c_str());
    #endif
 
-   if (temp != wxT(""))
+   if (temp != "")
    {
       solverName = temp;
       retval = true;
@@ -114,8 +115,8 @@ bool RunSolver::Initialize()
    bool retval = PropagationEnabledCommand::Initialize();
 
    #ifdef DEBUG_RUNSOLVER_INITIALIZATION
-      MessageInterface::ShowMessage(wxT("   PEC returned \"%s\"\n"),
-            (retval ? wxT("true") : wxT("false")));
+      MessageInterface::ShowMessage("   PEC returned \"%s\"\n",
+            (retval ? "true" : "false"));
    #endif
 
    return retval;
@@ -123,7 +124,7 @@ bool RunSolver::Initialize()
 
 //------------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * Renames referenced objects.
@@ -139,8 +140,8 @@ bool RunSolver::Initialize()
  */
 //------------------------------------------------------------------------------
 bool RunSolver::RenameRefObject(const Gmat::ObjectType type,
-                                  const wxString &oldName,
-                                  const wxString &newName)
+                                  const std::string &oldName,
+                                  const std::string &newName)
 {
    return true;
 }

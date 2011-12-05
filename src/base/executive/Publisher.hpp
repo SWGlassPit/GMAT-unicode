@@ -40,7 +40,7 @@ public:
    bool UnsubscribeAll();
    
    bool Publish(GmatBase *provider, Integer id, Real *data, Integer count);
-   bool Publish(Integer id, wxString &data, Integer count = 0);
+   bool Publish(Integer id, char *data, Integer count = 0);
    bool Publish(Integer id, Integer *data, Integer count);
    
    bool FlushBuffers(bool endOfDataBlock = true);
@@ -55,7 +55,7 @@ public:
                                               const StringArray& elements);
    void                 UnregisterPublishedData(GmatBase *provider);
    void                 ClearPublishedData();
-   const StringArray&   GetStringArrayParameter(const wxString& type);
+   const StringArray&   GetStringArrayParameter(const std::string& type);
    void                 SetInternalCoordSystem(CoordinateSystem *cs);
    void                 SetDataCoordSystem(CoordinateSystem *cs);
    void                 SetDataMJ2000EqOrigin(CelestialBody *cb);
@@ -65,17 +65,17 @@ public:
    
    void                 SetManeuvering(GmatBase *originator,
                                        bool flag, Real epoch,
-                                       const wxString &satNames,
-                                       const wxString &desc);
+                                       const std::string &satNames,
+                                       const std::string &desc);
    void                 SetManeuvering(GmatBase *originator,
                                        bool flag, Real epoch,
                                        const StringArray &satNames,
-                                       const wxString &desc);
+                                       const std::string &desc);
    bool                 GetManeuvering();
    
    void                 SetScPropertyChanged(GmatBase *originator, Real epoch,
-                                             const wxString &satName,
-                                             const wxString &desc);
+                                             const std::string &satName,
+                                             const std::string &desc);
    
    CoordinateSystem* GetInternalCoordSystem() { return internalCoordSystem; }
    CoordinateSystem* GetDataCoordSystem() { return dataCoordSystem; }
@@ -107,7 +107,7 @@ private:
    /// Origin of MJ2000Eq of data
    CelestialBody            *dataMJ2000EqOrigin;
    /// Map of coordinate system of data
-   std::map<wxString, CoordinateSystem*> coordSysMap;
+   std::map<std::string, CoordinateSystem*> coordSysMap;
    
    /// published data info
    struct DataType

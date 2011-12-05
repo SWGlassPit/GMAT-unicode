@@ -130,7 +130,7 @@ const Real HarmonicGravity::Table63c[Table63cDim1][6] =
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-HarmonicGravity::HarmonicGravity(const wxString& filename) :
+HarmonicGravity::HarmonicGravity(const std::string& filename) :
    Harmonic        (),
    gravityFilename (filename),
    useTideModel    (false)
@@ -188,7 +188,7 @@ HarmonicGravity::~HarmonicGravity()
 }
 
 //------------------------------------------------------------------------------
-wxString HarmonicGravity::GetFilename()
+std::string HarmonicGravity::GetFilename()
 {
    return gravityFilename;
 }
@@ -238,8 +238,8 @@ void HarmonicGravity::CalculatePointField(const Real& jday,         const Real p
          }
    }
    #ifdef DEBUG_GRADIENT
-      MessageInterface::ShowMessage(wxT("In CalPtF, fillgradient = %s\n"), (fillgradient? wxT("true") : wxT("false")));
-      MessageInterface::ShowMessage(wxT("gradientPoint = %s\n"), gradient.ToString().c_str());
+      MessageInterface::ShowMessage("In CalPtF, fillgradient = %s\n", (fillgradient? "true" : "false"));
+      MessageInterface::ShowMessage("gradientPoint = %s\n", gradient.ToString().c_str());
    #endif
 }
 
@@ -269,8 +269,8 @@ void HarmonicGravity::CalculateFullField(const Real& jday,         const Real po
    if (fillgradient)
       gradient = gradientpoint + gradientharmonic;
    #ifdef DEBUG_GRADIENT
-      MessageInterface::ShowMessage(wxT("In CalFullField, fillgradient = %s\n"), (fillgradient? wxT("true") : wxT("false")));
-      MessageInterface::ShowMessage(wxT("gradient = %s\n"), gradient.ToString().c_str());
+      MessageInterface::ShowMessage("In CalFullField, fillgradient = %s\n", (fillgradient? "true" : "false"));
+      MessageInterface::ShowMessage("gradient = %s\n", gradient.ToString().c_str());
    #endif
 }
 
@@ -505,8 +505,8 @@ void HarmonicGravity::PolarToLegendre(const Real polar[3], Real P[5][5])
    }
    catch (BaseException &be)
    {
-      MessageInterface::ShowMessage(wxT("error computing sqrt.  Message is:\n"));
-      MessageInterface::ShowMessage(wxT("%s\n"), (be.GetFullMessage()).c_str());
+      MessageInterface::ShowMessage("error computing sqrt.  Message is:\n");
+      MessageInterface::ShowMessage("%s\n", (be.GetFullMessage()).c_str());
    }
 }
 

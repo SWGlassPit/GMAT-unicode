@@ -45,15 +45,15 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 ConditionalBranch::PARAMETER_TEXT[ConditionalBranchParamCount - BranchCommandParamCount] =
 {
-   wxT("NumberOfConditions"),
-   wxT("NumberOfLogicalOperators"),
-   wxT("LeftHandStrings"),
-   wxT("OperatorStrings"),
-   wxT("RightHandStrings"),
-   wxT("LogicalOperators"),
+   "NumberOfConditions",
+   "NumberOfLogicalOperators",
+   "LeftHandStrings",
+   "OperatorStrings",
+   "RightHandStrings",
+   "LogicalOperators",
 };
 
 const Gmat::ParameterType
@@ -67,37 +67,37 @@ ConditionalBranch::PARAMETER_TYPE[ConditionalBranchParamCount - BranchCommandPar
    Gmat::STRINGARRAY_TYPE,
 };
 
-const wxString
+const std::string
 ConditionalBranch::OPTYPE_TEXT[NumberOfOperators] =
 {
-   wxT("=="),
-   wxT("~="),
-   wxT(">"),
-   wxT("<"),
-   wxT(">="),
-   wxT("<=")
+   "==",
+   "~=",
+   ">",
+   "<",
+   ">=",
+   "<="
 };
 
-const wxString
+const std::string
 ConditionalBranch::LOGICAL_OPTYPE_TEXT[NumberOfLogicalOperators] =
 {
-   wxT("&"),
-   wxT("|")
+   "&",
+   "|"
 };
 
 //------------------------------------------------------------------------------
-//  ConditionalBranch(const wxString &typeStr)
+//  ConditionalBranch(const std::string &typeStr)
 //------------------------------------------------------------------------------
 /**
  * Creates a ConditionalBranch command.  (constructor)
  */
 //------------------------------------------------------------------------------
-ConditionalBranch::ConditionalBranch(const wxString &typeStr) :
+ConditionalBranch::ConditionalBranch(const std::string &typeStr) :
 BranchCommand      (typeStr),
 numberOfConditions (0),
 numberOfLogicalOps (0)
 {
-   objectTypeNames.push_back(wxT("ConditionalBranch"));
+   objectTypeNames.push_back("ConditionalBranch");
    // nothing to add to settables here
 }
 
@@ -190,8 +190,8 @@ ConditionalBranch::~ConditionalBranch()
 
 
 //------------------------------------------------------------------------------
-//  bool SetCondition(const wxString &lhs, const wxString &operation,
-//                    const wxString &rhs, Integer atIndex)
+//  bool SetCondition(const std::string &lhs, const std::string &operation,
+//                    const std::string &rhs, Integer atIndex)
 //------------------------------------------------------------------------------
 /**
  * This method sets a condition for the ConditionalBranch Command.
@@ -200,14 +200,14 @@ ConditionalBranch::~ConditionalBranch()
  *
  */
 //------------------------------------------------------------------------------
-bool ConditionalBranch::SetCondition(const wxString &lhs, 
-                                     const wxString &operation,
-                                     const wxString &rhs,
+bool ConditionalBranch::SetCondition(const std::string &lhs, 
+                                     const std::string &operation,
+                                     const std::string &rhs,
                                      Integer atIndex)
 {
    #if DEBUG_CONDITIONS
    MessageInterface::ShowMessage
-      (wxT("ConditionalBranch::SetCondition() lhs=(%s), operation=(%s), rhs=(%s)\n"),
+      ("ConditionalBranch::SetCondition() lhs=(%s), operation=(%s), rhs=(%s)\n",
        lhs.c_str(), operation.c_str(), rhs.c_str());
    #endif
    
@@ -219,7 +219,7 @@ bool ConditionalBranch::SetCondition(const wxString &lhs,
    {
       #if DEBUG_CONDITIONS
          MessageInterface::ShowMessage
-         (wxT("ConditionalBranch::In loop ...  operation is %s, OPTYPE_TEXT is %s\n"),
+         ("ConditionalBranch::In loop ...  operation is %s, OPTYPE_TEXT is %s\n",
           operation.c_str(), (OPTYPE_TEXT[i]).c_str());
       #endif
       if (operation == OPTYPE_TEXT[i])
@@ -227,7 +227,7 @@ bool ConditionalBranch::SetCondition(const wxString &lhs,
          ot = (OpType) i;
          #if DEBUG_CONDITIONS
             MessageInterface::ShowMessage
-            (wxT("ConditionalBranch::operation is %s, OPTYPE_TEXT is %s\n"),
+            ("ConditionalBranch::operation is %s, OPTYPE_TEXT is %s\n",
              operation.c_str(), (OPTYPE_TEXT[i]).c_str());
          #endif
          break;
@@ -236,11 +236,11 @@ bool ConditionalBranch::SetCondition(const wxString &lhs,
    
    if (ot == NumberOfOperators)
    {
-       wxString errMsg = wxT("The value of \"") + operation + 
-            wxT("\" for the relational operator of conditional \"") 
+       std::string errMsg = "The value of \"" + operation + 
+            "\" for the relational operator of conditional \"" 
             + typeName +
-            wxT("\" is not an allowed value.  The allowed values are: ") +
-            wxT(" [==, ~=, <, >, <=, >=]."); 
+            "\" is not an allowed value.  The allowed values are: " +
+            " [==, ~=, <, >, <=, >=]."; 
        throw CommandException(errMsg);
    }
    
@@ -255,7 +255,7 @@ bool ConditionalBranch::SetCondition(const wxString &lhs,
       rhsWrappers.push_back(NULL); // placeholder for pointer to ElementWrapper
       #if DEBUG_CONDITIONS
          MessageInterface::ShowMessage
-         (wxT("ConditionalBranch::added condition to end of list\n"));
+         ("ConditionalBranch::added condition to end of list\n");
       #endif
       retVal = true;
       numberOfConditions++;
@@ -264,7 +264,7 @@ bool ConditionalBranch::SetCondition(const wxString &lhs,
    else if ((atIndex < 0) || (atIndex > numberOfConditions))
    {
       throw CommandException(
-            wxT("ConditionalCommand error: condition index out of bounds"));
+            "ConditionalCommand error: condition index out of bounds");
    }
    // otherwise, replace an already-existing condition
    else 
@@ -276,7 +276,7 @@ bool ConditionalBranch::SetCondition(const wxString &lhs,
       
       #if DEBUG_CONDITIONS
          MessageInterface::ShowMessage
-         (wxT("ConditionalBranch::inserted condition into list\n"));
+         ("ConditionalBranch::inserted condition into list\n");
       #endif
       retVal = true;
    }
@@ -286,7 +286,7 @@ bool ConditionalBranch::SetCondition(const wxString &lhs,
 
 
 //------------------------------------------------------------------------------
-//  bool SetConditionOperator(const wxString &op, Integer atIndex)
+//  bool SetConditionOperator(const std::string &op, Integer atIndex)
 //------------------------------------------------------------------------------
 /**
  * This method sets a logical operator for the ConditionalBranch Command.
@@ -297,12 +297,12 @@ bool ConditionalBranch::SetCondition(const wxString &lhs,
  *
  */
 //------------------------------------------------------------------------------
-bool ConditionalBranch::SetConditionOperator(const wxString &op, 
+bool ConditionalBranch::SetConditionOperator(const std::string &op, 
                                              Integer atIndex)
 {
    #if DEBUG_CONDITIONS
    MessageInterface::ShowMessage
-      (wxT("ConditionalBranch::SetConditionOperator()op=%s, atIndex\n"),
+      ("ConditionalBranch::SetConditionOperator()op=%s, atIndex\n",
        op.c_str(), atIndex);
    #endif
    
@@ -321,11 +321,11 @@ bool ConditionalBranch::SetConditionOperator(const wxString &op,
    
    if (ot == NumberOfLogicalOperators)
    {
-       wxString errMsg = wxT("The value of \"") + op + 
-            wxT("\" for the logical operator of conditional \"") 
+       std::string errMsg = "The value of \"" + op + 
+            "\" for the logical operator of conditional \"" 
             + typeName +
-            wxT("\" is not an allowed value.  The allowed values are: ") +
-            wxT(" [&,|]."); 
+            "\" is not an allowed value.  The allowed values are: " +
+            " [&,|]."; 
        throw CommandException(errMsg);
    }
    
@@ -340,7 +340,7 @@ bool ConditionalBranch::SetConditionOperator(const wxString &op,
    else if ((atIndex < 0) || (atIndex > numberOfLogicalOps))
    {
       throw CommandException(
-            wxT("ConditionalCommand error: logical operator index out of bounds"));
+            "ConditionalCommand error: logical operator index out of bounds");
    }
    // put it at the end, if requested (and by default)
    // otherwise, replace an already-existing logical operator
@@ -366,15 +366,15 @@ bool ConditionalBranch::RemoveCondition(Integer atIndex)
 {
    if ((atIndex < 0) || (atIndex >= numberOfConditions))
       throw CommandException(
-            wxT("RemoveCondition error - condition index out of bounds."));
+            "RemoveCondition error - condition index out of bounds.");
    ElementWrapper *ew;
    lhsList.erase(lhsList.begin() + atIndex);
    ew = lhsWrappers.at(atIndex);
    lhsWrappers.erase(lhsWrappers.begin() + atIndex);
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Remove
-      (ew, ew->GetDescription(), wxT("ConditionalBranch::RemoveCondition()"),
-       GetGeneratingString(Gmat::NO_COMMENTS) + wxT(" deleting lhsWrapper"));
+      (ew, ew->GetDescription(), "ConditionalBranch::RemoveCondition()",
+       GetGeneratingString(Gmat::NO_COMMENTS) + " deleting lhsWrapper");
    #endif
    delete ew;
    opStrings.erase(opStrings.begin() + atIndex);
@@ -384,8 +384,8 @@ bool ConditionalBranch::RemoveCondition(Integer atIndex)
    rhsWrappers.erase(rhsWrappers.begin() + atIndex);
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Remove
-      (ew, ew->GetDescription(), wxT("ConditionalBranch::RemoveCondition()"),
-       GetGeneratingString(Gmat::NO_COMMENTS) + wxT(" deleting rhsWrapper"));
+      (ew, ew->GetDescription(), "ConditionalBranch::RemoveCondition()",
+       GetGeneratingString(Gmat::NO_COMMENTS) + " deleting rhsWrapper");
    #endif
    delete ew;
    numberOfConditions--;
@@ -405,7 +405,7 @@ bool ConditionalBranch::RemoveConditionOperator(Integer atIndex)
 {
    if ((atIndex < 0) || (atIndex >= numberOfLogicalOps))
       throw CommandException(
-            wxT("RemoveConditionOperator error - condition index out of bounds."));
+            "RemoveConditionOperator error - condition index out of bounds.");
    logicalOpStrings.erase(logicalOpStrings.begin() + atIndex);
    logicalOpList.erase(logicalOpList.begin() + atIndex);
    numberOfLogicalOps--;
@@ -429,7 +429,7 @@ bool ConditionalBranch::Initialize()
    // Set references for the wrappers   
    #ifdef DEBUG_CONDITIONS_INIT
    MessageInterface::ShowMessage
-      (wxT("ConditionalBranch::Initialize() this='%s', Setting refs for %d lhs wrappers\n"),
+      ("ConditionalBranch::Initialize() this='%s', Setting refs for %d lhs wrappers\n",
        GetGeneratingString(Gmat::NO_COMMENTS).c_str(), lhsWrappers.size());
    #endif
    #ifdef DEBUG_OBJECT_MAP
@@ -441,18 +441,18 @@ bool ConditionalBranch::Initialize()
    {
       #ifdef DEBUG_CONDITIONS_INIT
       MessageInterface::ShowMessage
-         (wxT("   wrapper desc = '%s'\n"), (*i)->GetDescription().c_str());
+         ("   wrapper desc = '%s'\n", (*i)->GetDescription().c_str());
       #endif
       
       if (SetWrapperReferences(*(*i)) == false)
          return false;      
       
-      CheckDataType((*i), Gmat::REAL_TYPE, wxT("Conditional Command"));
+      CheckDataType((*i), Gmat::REAL_TYPE, "Conditional Command");
    }
    
    #ifdef DEBUG_CONDITIONS_INIT
    MessageInterface::ShowMessage
-      (wxT("ConditionalBranch::Initialize() Setting refs for %d rhs wrappers\n"),
+      ("ConditionalBranch::Initialize() Setting refs for %d rhs wrappers\n",
        rhsWrappers.size());
    #endif
    
@@ -461,18 +461,18 @@ bool ConditionalBranch::Initialize()
    {
       #ifdef DEBUG_CONDITIONS_INIT
       MessageInterface::ShowMessage
-         (wxT("   wrapper desc = '%s'\n"), (*j)->GetDescription().c_str());
+         ("   wrapper desc = '%s'\n", (*j)->GetDescription().c_str());
       #endif
       
       if (SetWrapperReferences(*(*j)) == false)
          return false;
       
-      CheckDataType((*j), Gmat::REAL_TYPE, wxT("Conditional Command"));
+      CheckDataType((*j), Gmat::REAL_TYPE, "Conditional Command");
    }
    
    #ifdef DEBUG_CONDITIONS_INIT
    MessageInterface::ShowMessage
-      (wxT("ConditionalBranch::Initialize() returning %d\n"), retval);
+      ("ConditionalBranch::Initialize() returning %d\n", retval);
    #endif
    
    return retval;
@@ -481,7 +481,7 @@ bool ConditionalBranch::Initialize()
 
 //---------------------------------------------------------------------------
 // bool RenameRefObject(const Gmat::ObjectType type,
-//                      const wxString &oldName, const wxString &newName)
+//                      const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /*
  * Renames referenced objects
@@ -494,13 +494,13 @@ bool ConditionalBranch::Initialize()
  */
 //---------------------------------------------------------------------------
 bool ConditionalBranch::RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName)
+                                        const std::string &oldName,
+                                        const std::string &newName)
 {
    #if DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("ConditionalBranch::RenameRefObject() type=%d, oldName=%s, ")
-       wxT("newName=%s\n"), type, oldName.c_str(), newName.c_str());
+      ("ConditionalBranch::RenameRefObject() type=%d, oldName=%s, "
+       "newName=%s\n", type, oldName.c_str(), newName.c_str());
    #endif
    for (UnsignedInt i=0; i<lhsList.size(); i++)
    {
@@ -564,7 +564,7 @@ const StringArray& ConditionalBranch::GetRefObjectNameArray(const Gmat::ObjectTy
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                    const wxString &name)
+//                    const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * This method sets a reference object for the ConditionalBranch Command.
@@ -578,7 +578,7 @@ const StringArray& ConditionalBranch::GetRefObjectNameArray(const Gmat::ObjectTy
  */
 //------------------------------------------------------------------------------
 bool ConditionalBranch::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name)
+                                     const std::string &name)
 {
    // Not handled here -- invoke the next higher SetRefObject call
    return BranchCommand::SetRefObject(obj, type, name);
@@ -587,7 +587,7 @@ bool ConditionalBranch::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 //  GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                         const wxString &name,
+//                         const std::string &name,
 //                         const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -602,7 +602,7 @@ bool ConditionalBranch::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 GmatBase* ConditionalBranch::GetRefObject(const Gmat::ObjectType type,
-                                          const wxString &name,
+                                          const std::string &name,
                                           const Integer index)
 {
    // Not handled here -- invoke the next higher GetRefObject call
@@ -612,7 +612,7 @@ GmatBase* ConditionalBranch::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                    const wxString &name, const Integer index)
+//                    const std::string &name, const Integer index)
 //------------------------------------------------------------------------------
 /**
  * This method sets a reference object for the ConditionalBranch Command.
@@ -628,14 +628,14 @@ GmatBase* ConditionalBranch::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool ConditionalBranch::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name, const Integer index)
+                                     const std::string &name, const Integer index)
 {
    // Not handled here -- invoke the next higher SetRefObject call
    return BranchCommand::SetRefObject(obj, type, name, index);
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -646,7 +646,7 @@ bool ConditionalBranch::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  *
  */
 //------------------------------------------------------------------------------
-wxString ConditionalBranch::GetParameterText(const Integer id) const
+std::string ConditionalBranch::GetParameterText(const Integer id) const
 {
    if (id >= BranchCommandParamCount && id < ConditionalBranchParamCount)
       return PARAMETER_TEXT[id - BranchCommandParamCount];
@@ -654,7 +654,7 @@ wxString ConditionalBranch::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -665,7 +665,7 @@ wxString ConditionalBranch::GetParameterText(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer ConditionalBranch::GetParameterID(const wxString &str) const
+Integer ConditionalBranch::GetParameterID(const std::string &str) const
 {
    for (Integer i = BranchCommandParamCount; i < ConditionalBranchParamCount; i++)
    {
@@ -697,7 +697,7 @@ Gmat::ParameterType ConditionalBranch::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -708,7 +708,7 @@ Gmat::ParameterType ConditionalBranch::GetParameterType(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString ConditionalBranch::GetParameterTypeString(const Integer id) const
+std::string ConditionalBranch::GetParameterTypeString(const Integer id) const
 {
    return ConditionalBranch::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -737,7 +737,7 @@ Integer ConditionalBranch::GetIntegerParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer  GetIntegerParameter(const wxString &label) const
+//  Integer  GetIntegerParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the Integer parameter value, given the input
@@ -749,15 +749,15 @@ Integer ConditionalBranch::GetIntegerParameter(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer ConditionalBranch::GetIntegerParameter(const wxString &label) const
+Integer ConditionalBranch::GetIntegerParameter(const std::string &label) const
 {
    return GetIntegerParameter(GetParameterID(label));
 }
 
-//Integer      ConditionalBranch::SetIntegerParameter(const wxString &label, const Integer value);
+//Integer      ConditionalBranch::SetIntegerParameter(const std::string &label, const Integer value);
 
 //------------------------------------------------------------------------------
-//  wxString GetStringParameter(const Integer id, const Integer index) const
+//  std::string GetStringParameter(const Integer id, const Integer index) const
 //------------------------------------------------------------------------------
 /**
  * This method gets a string parameter value of a StringArray, for the input
@@ -771,17 +771,17 @@ Integer ConditionalBranch::GetIntegerParameter(const wxString &label) const
  *
  */
 //------------------------------------------------------------------------------
-wxString ConditionalBranch::GetStringParameter(const Integer id,
+std::string ConditionalBranch::GetStringParameter(const Integer id,
                                                   const Integer index) const
 {
-   wxString errorString = wxT("ConditionalCommand error: Requested index ");
+   std::string errorString = "ConditionalCommand error: Requested index ";
    errorString += index;
-   errorString += wxT(" is out of bounds for ");
+   errorString += " is out of bounds for ";
    if (id == LEFT_HAND_STRINGS)
    {
       if (index < 0 || index >= (Integer) lhsList.size())
       {
-         errorString += wxT("left hand side string list.");
+         errorString += "left hand side string list.";
          throw CommandException(errorString);
       }
       return (lhsList.at(index));
@@ -790,7 +790,7 @@ wxString ConditionalBranch::GetStringParameter(const Integer id,
    {
       if (index < 0 || index >= (Integer) opStrings.size())
       {
-         errorString += wxT("operator string list.");
+         errorString += "operator string list.";
          throw CommandException(errorString);
       }
       return (opStrings.at(index));
@@ -799,7 +799,7 @@ wxString ConditionalBranch::GetStringParameter(const Integer id,
    {
       if (index < 0 || index >= (Integer) rhsList.size())
       {
-         errorString += wxT("right hand side string list.");
+         errorString += "right hand side string list.";
          throw CommandException(errorString);
       }
       return (rhsList.at(index));
@@ -808,7 +808,7 @@ wxString ConditionalBranch::GetStringParameter(const Integer id,
    {
       if (index < 0 || index >= (Integer) logicalOpStrings.size())
       {
-         errorString += wxT("logical operator string list.");
+         errorString += "logical operator string list.";
          throw CommandException(errorString);
       }
       return (logicalOpStrings.at(index));
@@ -818,7 +818,7 @@ wxString ConditionalBranch::GetStringParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-//  bool SetStringParameter(const Integer id, const wxString &value,
+//  bool SetStringParameter(const Integer id, const std::string &value,
 //                          const Integer index) const
 //------------------------------------------------------------------------------
  /**
@@ -834,18 +834,18 @@ wxString ConditionalBranch::GetStringParameter(const Integer id,
  */
 //------------------------------------------------------------------------------
 bool ConditionalBranch::SetStringParameter(const Integer id, 
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index)
 {
-   wxString errorString = wxT("ConditionalCommand error: Requested index ");
+   std::string errorString = "ConditionalCommand error: Requested index ";
    errorString += index;
-   errorString += wxT(" is out of bounds for ");
+   errorString += " is out of bounds for ";
    ElementWrapper *ew;
    if (id == LEFT_HAND_STRINGS)
    {
       if (index < 0 || index >= (Integer) lhsList.size())
       {
-         errorString += wxT("left hand side string list.");
+         errorString += "left hand side string list.";
          throw CommandException(errorString);
       }
       lhsList.at(index) = value;
@@ -853,8 +853,8 @@ bool ConditionalBranch::SetStringParameter(const Integer id,
       lhsWrappers.at(index) = NULL;
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (ew, ew->GetDescription(), wxT("ConditionalBranch::SetStringParameter()"),
-          GetGeneratingString(Gmat::NO_COMMENTS) + wxT(" deleting lhsWrapper"));
+         (ew, ew->GetDescription(), "ConditionalBranch::SetStringParameter()",
+          GetGeneratingString(Gmat::NO_COMMENTS) + " deleting lhsWrapper");
       #endif
       delete ew;
       return true;
@@ -863,7 +863,7 @@ bool ConditionalBranch::SetStringParameter(const Integer id,
    {
       if (index < 0 || index >= (Integer) opStrings.size())
       {
-         errorString += wxT("operator string list.");
+         errorString += "operator string list.";
          throw CommandException(errorString);
       }
       opStrings.at(index) = value;
@@ -873,7 +873,7 @@ bool ConditionalBranch::SetStringParameter(const Integer id,
    {
       if (index < 0 || index >= (Integer) rhsList.size())
       {
-         errorString += wxT("right hand side string list.");
+         errorString += "right hand side string list.";
          throw CommandException(errorString);
       }
       rhsList.at(index) = value;
@@ -881,8 +881,8 @@ bool ConditionalBranch::SetStringParameter(const Integer id,
       rhsWrappers.at(index) = NULL;
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (ew, ew->GetDescription(), wxT("ConditionalBranch::SetStringParameter()"),
-          GetGeneratingString(Gmat::NO_COMMENTS) + wxT(" deleting rhsWrapper"));
+         (ew, ew->GetDescription(), "ConditionalBranch::SetStringParameter()",
+          GetGeneratingString(Gmat::NO_COMMENTS) + " deleting rhsWrapper");
       #endif
       delete ew;
       return true;
@@ -891,7 +891,7 @@ bool ConditionalBranch::SetStringParameter(const Integer id,
    {
       if (index < 0 || index >= (Integer) logicalOpStrings.size())
       {
-         errorString += wxT("logical operator string list.");
+         errorString += "logical operator string list.";
          throw CommandException(errorString);
       }
       logicalOpStrings.at(index) = value;
@@ -902,7 +902,7 @@ bool ConditionalBranch::SetStringParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-//  wxString GetStringParameter(const wxString &label, 
+//  std::string GetStringParameter(const std::string &label, 
 //                                 const Integer index) const
 //------------------------------------------------------------------------------
 /**
@@ -917,14 +917,14 @@ bool ConditionalBranch::SetStringParameter(const Integer id,
  *
  */
 //------------------------------------------------------------------------------
-wxString ConditionalBranch::GetStringParameter(const wxString &label,
+std::string ConditionalBranch::GetStringParameter(const std::string &label,
                                         const Integer index) const
 {
    return GetStringParameter(GetParameterID(label), index);
 }
 
 //------------------------------------------------------------------------------
-//  bool SetStringParameter(const wxString &label, const wxString &value,
+//  bool SetStringParameter(const std::string &label, const std::string &value,
 //                          const Integer index) const
 //------------------------------------------------------------------------------
 /**
@@ -939,8 +939,8 @@ wxString ConditionalBranch::GetStringParameter(const wxString &label,
  *
  */
 //------------------------------------------------------------------------------
-bool ConditionalBranch::SetStringParameter(const wxString &label, 
-                                        const wxString &value,
+bool ConditionalBranch::SetStringParameter(const std::string &label, 
+                                        const std::string &value,
                                         const Integer index)
 {
    return SetStringParameter(GetParameterID(label), value, index);
@@ -971,7 +971,7 @@ ConditionalBranch::GetStringArrayParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  const StringArray&   GetStringArrayParameter(const wxString &label) const
+//  const StringArray&   GetStringArrayParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the StringArray parameter value, given the input
@@ -984,7 +984,7 @@ ConditionalBranch::GetStringArrayParameter(const Integer id) const
  */
 //------------------------------------------------------------------------------
 const StringArray& 
-ConditionalBranch::GetStringArrayParameter(const wxString &label) const
+ConditionalBranch::GetStringArrayParameter(const std::string &label) const
 {
    return GetStringArrayParameter(GetParameterID(label));
 }
@@ -1013,10 +1013,10 @@ const StringArray& ConditionalBranch::GetWrapperObjectNameArray()
    
    #ifdef DEBUG_WRAPPERS
       MessageInterface::ShowMessage
-         (wxT("ConditionalBranch::GetWrapperObjectNameArray() %s wrapper names are:\n"),
+         ("ConditionalBranch::GetWrapperObjectNameArray() %s wrapper names are:\n",
           cmd->GetTypeName().c_str());
       for (Integer ii=0; ii < (Integer) wrapperNames.size(); ii++)
-         MessageInterface::ShowMessage(wxT("      %s\n"), wrapperNames[ii].c_str());
+         MessageInterface::ShowMessage("      %s\n", wrapperNames[ii].c_str());
    #endif
       
    return wrapperObjectNames;
@@ -1024,14 +1024,14 @@ const StringArray& ConditionalBranch::GetWrapperObjectNameArray()
 
 
 //------------------------------------------------------------------------------
-// bool SetElementWrapper(ElementWrapper *toWrapper, const wxString &withName)
+// bool SetElementWrapper(ElementWrapper *toWrapper, const std::string &withName)
 //------------------------------------------------------------------------------
 bool ConditionalBranch::SetElementWrapper(ElementWrapper *toWrapper, 
-                                          const wxString &withName)
+                                          const std::string &withName)
 {
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("ConditionalBranch::SetElementWrapper() this=<%p> '%s' entered\n"),
+      ("ConditionalBranch::SetElementWrapper() this=<%p> '%s' entered\n",
        this, GetGeneratingString(Gmat::NO_COMMENTS).c_str());
    #endif
    
@@ -1042,16 +1042,16 @@ bool ConditionalBranch::SetElementWrapper(ElementWrapper *toWrapper,
    // this would be caught by next part, but this message is more meaningful
    if (toWrapper->GetWrapperType() == Gmat::ARRAY_WT)
    {
-      throw CommandException(wxT("A value of type \"Array\" on command \"") + typeName + 
-                  wxT("\" is not an allowed value.\nThe allowed values are:")
-                  wxT(" [ Real Number, Variable, Array Element, or Parameter ]. ")); 
+      throw CommandException("A value of type \"Array\" on command \"" + typeName + 
+                  "\" is not an allowed value.\nThe allowed values are:"
+                  " [ Real Number, Variable, Array Element, or Parameter ]. "); 
    }
-   CheckDataType(toWrapper, Gmat::REAL_TYPE, wxT("ConditionalBranch"), true);
+   CheckDataType(toWrapper, Gmat::REAL_TYPE, "ConditionalBranch", true);
    
    
    #ifdef DEBUG_WRAPPER_CODE   
    MessageInterface::ShowMessage
-      (wxT("ConditionalBranch::SetElementWrapper() Setting wrapper <%p> '%s'"),
+      ("ConditionalBranch::SetElementWrapper() Setting wrapper <%p> '%s'",
        toWrapper, withName.c_str());
    #endif
    Integer sz = lhsList.size();
@@ -1061,7 +1061,7 @@ bool ConditionalBranch::SetElementWrapper(ElementWrapper *toWrapper,
       {
          #ifdef DEBUG_WRAPPER_CODE   
          MessageInterface::ShowMessage(
-            wxT("   Found wrapper name \"%s\" in lhsList\n"), withName.c_str());
+            "   Found wrapper name \"%s\" in lhsList\n", withName.c_str());
          #endif
          if (lhsWrappers.at(i) != NULL)
          {
@@ -1073,8 +1073,8 @@ bool ConditionalBranch::SetElementWrapper(ElementWrapper *toWrapper,
             {
                #ifdef DEBUG_MEMORY
                MemoryTracker::Instance()->Remove
-                  (ew, ew->GetDescription(), wxT("ConditionalBranch::SetElementWrapper()"),
-                   GetGeneratingString(Gmat::NO_COMMENTS) + wxT(" deleting lhsWrapper"));
+                  (ew, ew->GetDescription(), "ConditionalBranch::SetElementWrapper()",
+                   GetGeneratingString(Gmat::NO_COMMENTS) + " deleting lhsWrapper");
                #endif
                delete ew;
                ew = NULL;
@@ -1091,7 +1091,7 @@ bool ConditionalBranch::SetElementWrapper(ElementWrapper *toWrapper,
       {
          #ifdef DEBUG_WRAPPER_CODE   
          MessageInterface::ShowMessage(
-            wxT("   Found wrapper name \"%s\" in rhsList\n"), withName.c_str());
+            "   Found wrapper name \"%s\" in rhsList\n", withName.c_str());
          #endif
          if (rhsWrappers.at(i) != NULL)
          {
@@ -1103,8 +1103,8 @@ bool ConditionalBranch::SetElementWrapper(ElementWrapper *toWrapper,
             {
                #ifdef DEBUG_MEMORY
                MemoryTracker::Instance()->Remove
-                  (ew, ew->GetDescription(), wxT("ConditionalBranch::SetElementWrapper()"),
-                   GetGeneratingString(Gmat::NO_COMMENTS) + wxT(" deleting rhsWrapper"));
+                  (ew, ew->GetDescription(), "ConditionalBranch::SetElementWrapper()",
+                   GetGeneratingString(Gmat::NO_COMMENTS) + " deleting rhsWrapper");
                #endif
                delete ew;
                ew = NULL;
@@ -1126,7 +1126,7 @@ void ConditionalBranch::ClearWrappers()
 {
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("ConditionalBranch::ClearWrappers() this=<%p> '%s' entered\n"),
+      ("ConditionalBranch::ClearWrappers() this=<%p> '%s' entered\n",
        this, GetGeneratingString(Gmat::NO_COMMENTS).c_str());
    #endif
    
@@ -1166,9 +1166,9 @@ void ConditionalBranch::ClearWrappers()
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (ew, ew->GetDescription(), wxT("ConditionalBranch::ClearWrappers()"),
-             //GetGeneratingString(Gmat::NO_COMMENTS) + wxT(" deleting lhsWrapper"));
-             GetTypeName() + wxT(" deleting lhsWrapper"));
+            (ew, ew->GetDescription(), "ConditionalBranch::ClearWrappers()",
+             //GetGeneratingString(Gmat::NO_COMMENTS) + " deleting lhsWrapper");
+             GetTypeName() + " deleting lhsWrapper");
          #endif
          delete ew;
       }
@@ -1177,7 +1177,7 @@ void ConditionalBranch::ClearWrappers()
    }
    
    #ifdef DEBUG_WRAPPER_CODE
-   MessageInterface::ShowMessage(wxT("ConditionalBranch::ClearWrappers() leaving\n"));
+   MessageInterface::ShowMessage("ConditionalBranch::ClearWrappers() leaving\n");
    #endif
 }
 
@@ -1205,27 +1205,27 @@ bool ConditionalBranch::EvaluateCondition(Integer which)
 {
    #ifdef DEBUG_CONDITIONS
    MessageInterface::ShowMessage
-      (wxT("ConditionalBranch::EvaluateCondition() entered; which = %d\n   ")
-       wxT("Number of Conditions: %d\n"), which, numberOfConditions);      
+      ("ConditionalBranch::EvaluateCondition() entered; which = %d\n   "
+       "Number of Conditions: %d\n", which, numberOfConditions);      
    MessageInterface::ShowMessage
-      (wxT("      lhs wrapper = %s        rhsWrapper = %s\n"), 
+      ("      lhs wrapper = %s        rhsWrapper = %s\n", 
        (lhsList.at(which)).c_str(), (rhsList.at(which)).c_str());
    #endif
    if ((which < 0) || (which >= numberOfConditions))
    {
       #ifdef DEBUG_CONDITIONS
          MessageInterface::ShowMessage(
-         wxT("ConditionalBranch::EvaluateCondition() - returning with FALSE!!!\n"));      
+         "ConditionalBranch::EvaluateCondition() - returning with FALSE!!!\n");      
       
       #endif
       return false;
    }
    if ((lhsWrappers.at(which) == NULL) || (rhsWrappers.at(which) == NULL))
    {
-      wxString errmsg = wxT("Error evaluating condition \"") + lhsList.at(which);
-      errmsg += wxT(" ") + opStrings.at(which);
-      errmsg += wxT(" ") + rhsList.at(which);
-      errmsg += wxT("\" - wrapper is NULL\n");
+      std::string errmsg = "Error evaluating condition \"" + lhsList.at(which);
+      errmsg += " " + opStrings.at(which);
+      errmsg += " " + rhsList.at(which);
+      errmsg += "\" - wrapper is NULL\n";
       throw CommandException(errmsg);
    }
    Real lhsValue = (lhsWrappers.at(which))->EvaluateReal();   
@@ -1233,13 +1233,13 @@ bool ConditionalBranch::EvaluateCondition(Integer which)
    
    #ifdef DEBUG_CONDITIONS
       MessageInterface::ShowMessage(
-         wxT("   lhs = %.18f,  rhs = %.18f\n"), lhsValue, rhsValue);
+         "   lhs = %.18f,  rhs = %.18f\n", lhsValue, rhsValue);
       MessageInterface::ShowMessage(
-         wxT("   lhs - rhs = %.18f\n"), (lhsValue - rhsValue));
+         "   lhs - rhs = %.18f\n", (lhsValue - rhsValue));
       MessageInterface::ShowMessage(
-         wxT("   operator = %d\n"), (Integer) opList.at(which));
+         "   operator = %d\n", (Integer) opList.at(which));
       MessageInterface::ShowMessage(
-         wxT("   operator (as string) = %s\n"), 
+         "   operator (as string) = %s\n", 
          (OPTYPE_TEXT[(Integer) opList.at(which)]).c_str());
    #endif
 
@@ -1257,9 +1257,9 @@ bool ConditionalBranch::EvaluateCondition(Integer which)
       case LESS_THAN:
          #ifdef DEBUG_CONDITIONS
          if (lhsValue < rhsValue)
-            MessageInterface::ShowMessage(wxT("   returning TRUE .......\n"));
+            MessageInterface::ShowMessage("   returning TRUE .......\n");
          else
-            MessageInterface::ShowMessage(wxT("   returning FALSE .......\n"));
+            MessageInterface::ShowMessage("   returning FALSE .......\n");
          #endif
          return (lhsValue < rhsValue);
          break;
@@ -1292,16 +1292,16 @@ bool ConditionalBranch::EvaluateAllConditions()
 {
    #ifdef DEBUG_CONDITIONS
       MessageInterface::ShowMessage(
-         wxT("   Entering EvaluateAllConditions with number of conditons = %d\n"),
+         "   Entering EvaluateAllConditions with number of conditons = %d\n",
          numberOfConditions);
    #endif
    if (numberOfConditions == 0)
       throw CommandException(
-         wxT("Error in conditional statement - no conditions specified."));
+         "Error in conditional statement - no conditions specified.");
    
    if (numberOfConditions != (numberOfLogicalOps + 1))
       throw CommandException(
-         wxT("conditional statement incorrect - too few/many logical operators"));
+         "conditional statement incorrect - too few/many logical operators");
    
    // divide into sets of higher-precedence AND operators, then OR them
    // @todo Create a LogicTree for this type, allowing use of parentheses as well
@@ -1342,7 +1342,7 @@ bool ConditionalBranch::EvaluateAllConditions()
 //   bool soFar = EvaluateCondition(0);
 //   #ifdef DEBUG_CONDITIONS
 //      MessageInterface::ShowMessage(
-//         wxT("   After EvaluateCondition, soFar = %s\n", (soFar? "true" : "false")));
+//         "   After EvaluateCondition, soFar = %s\n", (soFar? "true" : "false"));
 //   #endif
 //
 //
@@ -1359,16 +1359,16 @@ bool ConditionalBranch::EvaluateAllConditions()
 //            break;
 //         default:
 //            throw CommandException(
-//                  wxT("Unknown logical operator in conditional statement."));
+//                  "Unknown logical operator in conditional statement.");
 //            break;
 //      }
 //   }
    
    #ifdef DEBUG_CONDITIONS
    if (soFar)
-      MessageInterface::ShowMessage(wxT("   all are TRUE .......\n"));
+      MessageInterface::ShowMessage("   all are TRUE .......\n");
    else
-      MessageInterface::ShowMessage(wxT("   some are FALSE .......\n"));
+      MessageInterface::ShowMessage("   some are FALSE .......\n");
    #endif
    
    return soFar;
@@ -1377,7 +1377,7 @@ bool ConditionalBranch::EvaluateAllConditions()
 
 // remove this?
 bool ConditionalBranch::SetStringArrayValue(Integer forArray, 
-                                            const wxString &toValue,
+                                            const std::string &toValue,
                                             Integer forIndex)
 {
    return true;  // TEMPORARY
@@ -1385,7 +1385,7 @@ bool ConditionalBranch::SetStringArrayValue(Integer forArray,
 
 
 //------------------------------------------------------------------------------
-//  wxString GetConditionalString()
+//  std::string GetConditionalString()
 //------------------------------------------------------------------------------
 /**
  * This method builds the string that generates the condition list.
@@ -1393,37 +1393,37 @@ bool ConditionalBranch::SetStringArrayValue(Integer forArray,
  * @return The string description of the conditions.
  */
 //------------------------------------------------------------------------------
-wxString ConditionalBranch::GetConditionalString()
+std::string ConditionalBranch::GetConditionalString()
 {
    #ifdef DEBUG_CONDBR_GET_GEN_STRING
-      MessageInterface::ShowMessage(wxT("Entering ConditionalBranch::GetConditionalString\n"));
-      MessageInterface::ShowMessage(wxT("... number of conditions = %d\n"), 
+      MessageInterface::ShowMessage("Entering ConditionalBranch::GetConditionalString\n");
+      MessageInterface::ShowMessage("... number of conditions = %d\n", 
          numberOfConditions);
    #endif
-   wxString cond;
+   std::string cond;
    
    if ((lhsList.size() == 0) || (rhsList.size() == 0))
-      throw CommandException(wxT("Conditional command is missing its conditions!"));
+      throw CommandException("Conditional command is missing its conditions!");
    
    // The first condition
-   cond = lhsList[0] + wxT(" ") + opStrings[0] + wxT(" ") + rhsList[0];
+   cond = lhsList[0] + " " + opStrings[0] + " " + rhsList[0];
    
    for (Integer i = 1; i < numberOfConditions; i++)
    {
    #ifdef DEBUG_CONDBR_GET_GEN_STRING
-      MessageInterface::ShowMessage(wxT("Now adding condition %d to the string\n"), i);
-      MessageInterface::ShowMessage(wxT("The logical operator = \"%s\"\n"), logicalOpStrings[i-1].c_str());
-      MessageInterface::ShowMessage(wxT("The left-hand-side = \"%s\"\n"), lhsList[i].c_str());
-      MessageInterface::ShowMessage(wxT("The operator = \"%s\"\n"), opStrings[i].c_str());
-      MessageInterface::ShowMessage(wxT("The right-hand-side = \"%s\"\n"), rhsList[i].c_str());
+      MessageInterface::ShowMessage("Now adding condition %d to the string\n", i);
+      MessageInterface::ShowMessage("The logical operator = \"%s\"\n", logicalOpStrings[i-1].c_str());
+      MessageInterface::ShowMessage("The left-hand-side = \"%s\"\n", lhsList[i].c_str());
+      MessageInterface::ShowMessage("The operator = \"%s\"\n", opStrings[i].c_str());
+      MessageInterface::ShowMessage("The right-hand-side = \"%s\"\n", rhsList[i].c_str());
    #endif
-      cond += wxT(" ") + logicalOpStrings[i-1] + wxT(" ");
-      cond += lhsList[i] + wxT(" ") + opStrings[i] + wxT(" ") + rhsList[i];
+      cond += " " + logicalOpStrings[i-1] + " ";
+      cond += lhsList[i] + " " + opStrings[i] + " " + rhsList[i];
    }
 
    #ifdef DEBUG_CONDBR_GET_GEN_STRING
-      MessageInterface::ShowMessage(wxT("Exiting ConditionalBranch::GetConditionalString\n"));
-      MessageInterface::ShowMessage(wxT("... returning cond = %s\n"), cond.c_str());
+      MessageInterface::ShowMessage("Exiting ConditionalBranch::GetConditionalString\n");
+      MessageInterface::ShowMessage("... returning cond = %s\n", cond.c_str());
    #endif
    return cond;
 }

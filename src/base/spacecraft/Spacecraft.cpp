@@ -137,104 +137,104 @@ Spacecraft::PARAMETER_TYPE[SpacecraftParamCount - SpaceObjectParamCount] =
       Gmat::REAL_TYPE,        // Model Scale Factor
    };
 
-const wxString
+const std::string
 Spacecraft::PARAMETER_LABEL[SpacecraftParamCount - SpaceObjectParamCount] =
    {
-      wxT("Epoch"),
-      wxT("Element1"),
-      wxT("Element2"),
-      wxT("Element3"),
-      wxT("Element4"),
-      wxT("Element5"),
-      wxT("Element6"),
-      wxT("Element1Units"),
-      wxT("Element2Units"),
-      wxT("Element3Units"),
-      wxT("Element4Units"),
-      wxT("Element5Units"),
-      wxT("Element6Units"),
-      wxT("StateType"),
-      wxT("DisplayStateType"),
-      wxT("AnomalyType"),
-      wxT("CoordinateSystem"),
-      wxT("DryMass"),
-      wxT("DateFormat"),
-      wxT("Cd"),
-      wxT("Cr"),
-      wxT("DragArea"),
-      wxT("SRPArea"),
-      wxT("Tanks"),
-      wxT("Thrusters"),
-      wxT("TotalMass"),
-      wxT("Id"),
-      wxT("Attitude"),
-//      wxT("OrbitSpiceKernelName"),
-//      wxT("AttitudeSpiceKernelName"),
-//      wxT("SCClockSpiceKernelName"),
-//      wxT("FrameSpiceKernelName"),
-      wxT("OrbitSTM"),
-      wxT("OrbitAMatrix"),
-      wxT("UTCGregorian"),
-      wxT("CartesianX"),
-      wxT("CartesianY"),
-      wxT("CartesianZ"),
-      wxT("CartesianVX"),
-      wxT("CartesianVY"),
-      wxT("CartesianVZ"),
-      wxT("MassFlow"),
-      wxT("AddHardware"),                            // made changes by Tuan Nguyen
-      wxT("ModelFile"),
-      wxT("ModelOffsetX"),
-      wxT("ModelOffsetY"),
-      wxT("ModelOffsetZ"),
-      wxT("ModelRotationX"),
-      wxT("ModelRotationY"),
-      wxT("ModelRotationZ"),
-      wxT("ModelScale"),
+      "Epoch",
+      "Element1",
+      "Element2",
+      "Element3",
+      "Element4",
+      "Element5",
+      "Element6",
+      "Element1Units",
+      "Element2Units",
+      "Element3Units",
+      "Element4Units",
+      "Element5Units",
+      "Element6Units",
+      "StateType",
+      "DisplayStateType",
+      "AnomalyType",
+      "CoordinateSystem",
+      "DryMass",
+      "DateFormat",
+      "Cd",
+      "Cr",
+      "DragArea",
+      "SRPArea",
+      "Tanks",
+      "Thrusters",
+      "TotalMass",
+      "Id",
+      "Attitude",
+//      "OrbitSpiceKernelName",
+//      "AttitudeSpiceKernelName",
+//      "SCClockSpiceKernelName",
+//      "FrameSpiceKernelName",
+      "OrbitSTM",
+      "OrbitAMatrix",
+      "UTCGregorian",
+      "CartesianX",
+      "CartesianY",
+      "CartesianZ",
+      "CartesianVX",
+      "CartesianVY",
+      "CartesianVZ",
+      "MassFlow",
+      "AddHardware",                            // made changes by Tuan Nguyen
+      "ModelFile",
+      "ModelOffsetX",
+      "ModelOffsetY",
+      "ModelOffsetZ",
+      "ModelRotationX",
+      "ModelRotationY",
+      "ModelRotationZ",
+      "ModelScale",
 };
 
-const wxString Spacecraft::MULT_REP_STRINGS[EndMultipleReps - CART_X] =
+const std::string Spacecraft::MULT_REP_STRINGS[EndMultipleReps - CART_X] =
 {
    // Cartesian
-   wxT("X"),
-   wxT("Y"),
-   wxT("Z"),
-   wxT("VX"),
-   wxT("VY"),
-   wxT("VZ"),
+   "X",
+   "Y",
+   "Z",
+   "VX",
+   "VY",
+   "VZ",
    // Keplerian
-   wxT("SMA"),
-   wxT("ECC"),
-   wxT("INC"),
-   wxT("RAAN"),
-   wxT("AOP"),
-   wxT("TA"),
-   wxT("EA"),
-   wxT("MA"),
-   wxT("HA"),
+   "SMA",
+   "ECC",
+   "INC",
+   "RAAN",
+   "AOP",
+   "TA",
+   "EA",
+   "MA",
+   "HA",
    // Modified Keplerian
-   wxT("RadPer"),
-   wxT("RadApo"),
+   "RadPer",
+   "RadApo",
    // Speherical AZFPA
-   wxT("RMAG"),
-   wxT("RA"),
-   wxT("DEC"),
-   wxT("VMAG"),
-   wxT("AZI"),
-   wxT("FPA"),
+   "RMAG",
+   "RA",
+   "DEC",
+   "VMAG",
+   "AZI",
+   "FPA",
    // Spherical RADEC
-   wxT("RAV"),
-   wxT("DECV"),
+   "RAV",
+   "DECV",
    // Equinoctial
-//   wxT("PEY"),
-//   wxT("PEX"),
-//   wxT("PNY"),
-//   wxT("PNX"),
-   wxT("EquinoctialH"),
-   wxT("EquinoctialK"),
-   wxT("EquinoctialP"),
-   wxT("EquinoctialQ"),
-   wxT("MLONG"),
+//   "PEY",
+//   "PEX",
+//   "PNY",
+//   "PNX",
+   "EquinoctialH",
+   "EquinoctialK",
+   "EquinoctialP",
+   "EquinoctialQ",
+   "MLONG",
 };
 
 const Integer Spacecraft::ATTITUDE_ID_OFFSET = 20000;
@@ -244,30 +244,30 @@ const Integer Spacecraft::ATTITUDE_ID_OFFSET = 20000;
 //-------------------------------------
 
 //---------------------------------------------------------------------------
-//  Spacecraft(const wxString &name)
+//  Spacecraft(const std::string &name)
 //---------------------------------------------------------------------------
 /**
  * Creates constructors with parameters.
  *
- * @param <name> Optional name for the object.  Defaults to wxT("").
+ * @param <name> Optional name for the object.  Defaults to "".
  *
  */
 //---------------------------------------------------------------------------
-Spacecraft::Spacecraft(const wxString &name, const wxString &typeStr) :
+Spacecraft::Spacecraft(const std::string &name, const std::string &typeStr) :
    SpaceObject          (Gmat::SPACECRAFT, typeStr, name),
-   modelFile            (wxT("")),
+   modelFile            (""),
    modelID              (NO_MODEL),
    dryMass              (850.0),
    coeffDrag            (2.2),
    dragArea             (15.0),
    srpArea              (1.0),
    reflectCoeff         (1.8),
-   epochSystem          (wxT("TAI")),
-   epochFormat          (wxT("ModJulian")),
-   epochType            (wxT("TAIModJulian")),  // Should be A1ModJulian?
-   stateType            (wxT("Cartesian")),
-   displayStateType     (wxT("Cartesian")),
-   anomalyType          (wxT("TA")),
+   epochSystem          ("TAI"),
+   epochFormat          ("ModJulian"),
+   epochType            ("TAIModJulian"),  // Should be A1ModJulian?
+   stateType            ("Cartesian"),
+   displayStateType     ("Cartesian"),
+   anomalyType          ("TA"),
    modelOffsetX         (0),
    modelOffsetY         (0),
    modelOffsetZ         (0),
@@ -278,8 +278,8 @@ Spacecraft::Spacecraft(const wxString &name, const wxString &typeStr) :
    solarSystem          (NULL),
    internalCoordSystem  (NULL),
    coordinateSystem     (NULL),
-   coordSysName         (wxT("EarthMJ2000Eq")),
-   spacecraftId         (wxT("SatId")),
+   coordSysName         ("EarthMJ2000Eq"),
+   spacecraftId         ("SatId"),
    attitude             (NULL),
    totalMass            (850.0),
    initialDisplay       (false),
@@ -291,24 +291,24 @@ Spacecraft::Spacecraft(const wxString &name, const wxString &typeStr) :
 {
    #ifdef DEBUG_SPACECRAFT
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::Spacecraft() <%p>'%s' entered\n"), this, name.c_str());
+      ("Spacecraft::Spacecraft() <%p>'%s' entered\n", this, name.c_str());
    #endif
 
    objectTypes.push_back(Gmat::SPACECRAFT);
-   objectTypeNames.push_back(wxT("Spacecraft"));
+   objectTypeNames.push_back("Spacecraft");
    ownedObjectCount = 0;
 
-   wxString ss(wxT(""));
+   std::stringstream ss("");
    ss << GmatTimeConstants::MJD_OF_J2000;
-   scEpochStr = ss;
+   scEpochStr = ss.str();
 
    Real a1mjd = -999.999;
-   wxString outStr;
+   std::string outStr;
    Real taimjd = GmatTimeConstants::MJD_OF_J2000;
 
    // Internal epoch is in A1ModJulian, so convert
-   TimeConverterUtil::Convert(wxT("TAIModJulian"), taimjd, wxT(""),
-                              wxT("A1ModJulian"), a1mjd, outStr);
+   TimeConverterUtil::Convert("TAIModJulian", taimjd, "",
+                              "A1ModJulian", a1mjd, outStr);
 
    //state.SetEpoch(GmatTimeConstants::MJD_OF_J2000);
    state.SetEpoch(a1mjd);
@@ -320,44 +320,44 @@ Spacecraft::Spacecraft(const wxString &name, const wxString &typeStr) :
    state[4] = 7.35;
    state[5] = 1.0;
 
-   stateElementLabel.push_back(wxT("X"));
-   stateElementLabel.push_back(wxT("Y"));
-   stateElementLabel.push_back(wxT("Z"));
-   stateElementLabel.push_back(wxT("VX"));
-   stateElementLabel.push_back(wxT("VY"));
-   stateElementLabel.push_back(wxT("VZ"));
+   stateElementLabel.push_back("X");
+   stateElementLabel.push_back("Y");
+   stateElementLabel.push_back("Z");
+   stateElementLabel.push_back("VX");
+   stateElementLabel.push_back("VY");
+   stateElementLabel.push_back("VZ");
 
-   stateElementUnits.push_back(wxT("km"));
-   stateElementUnits.push_back(wxT("km"));
-   stateElementUnits.push_back(wxT("km"));
-   stateElementUnits.push_back(wxT("km/s"));
-   stateElementUnits.push_back(wxT("km/s"));
-   stateElementUnits.push_back(wxT("km/s"));
+   stateElementUnits.push_back("km");
+   stateElementUnits.push_back("km");
+   stateElementUnits.push_back("km");
+   stateElementUnits.push_back("km/s");
+   stateElementUnits.push_back("km/s");
+   stateElementUnits.push_back("km/s");
 
-   representations.push_back(wxT("Cartesian"));
-   representations.push_back(wxT("Keplerian"));
-   representations.push_back(wxT("ModifiedKeplerian"));
-   representations.push_back(wxT("SphericalAZFPA"));
-   representations.push_back(wxT("SphericalRADEC"));
-   representations.push_back(wxT("Equinoctial"));
+   representations.push_back("Cartesian");
+   representations.push_back("Keplerian");
+   representations.push_back("ModifiedKeplerian");
+   representations.push_back("SphericalAZFPA");
+   representations.push_back("SphericalRADEC");
+   representations.push_back("Equinoctial");
 
    parameterCount = SpacecraftParamCount;
 
    // Create a default unnamed attitude (LOJ: 2009.03.10)
-   attitude = new CSFixed(wxT(""));
+   attitude = new CSFixed("");
    attitude->SetEpoch(state.GetEpoch());
    ownedObjectCount++;
 
    #ifdef DEBUG_SC_OWNED_OBJECT
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::Spacecraft() <%p>'%s' ownedObjectCount=%d\n"),
+      ("Spacecraft::Spacecraft() <%p>'%s' ownedObjectCount=%d\n",
        this, GetName().c_str(), ownedObjectCount);
    #endif
 
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Add
-      (attitude, wxT("new attitude"), wxT("Spacecraft constructor()"),
-       wxT("attitude = new CSFixed(")wxT(")"), this);
+      (attitude, "new attitude", "Spacecraft constructor()",
+       "attitude = new CSFixed("")", this);
    #endif
 
    BuildElementLabelMap();
@@ -369,20 +369,20 @@ Spacecraft::Spacecraft(const wxString &name, const wxString &typeStr) :
    orbitAMatrix(0,0) = orbitAMatrix(1,1) = orbitAMatrix(2,2) =
    orbitAMatrix(3,3) = orbitAMatrix(4,4) = orbitAMatrix(5,5) = 1.0;
    // Initialize the covariance matrix
-   covariance.AddCovarianceElement(wxT("CartesianState"), this);
+   covariance.AddCovarianceElement("CartesianState", this);
    covariance.ConstructLHS();
    
    covariance(0,0) = covariance(1,1) = covariance(2,2) = 1.0e10;
    covariance(3,3) = covariance(4,4) = covariance(5,5) = 1.0e6;
    
    // Load default model file
-   modelFile = FileManager::Instance()->GetFullPathname(wxT("SPACECRAFT_MODEL_FILE"));
+   modelFile = FileManager::Instance()->GetFullPathname("SPACECRAFT_MODEL_FILE");
    modelScale = 3.0;
    modelID = NO_MODEL;
    
    #ifdef DEBUG_SPACECRAFT
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::Spacecraft() <%p>'%s' exiting\n"), this, name.c_str());
+      ("Spacecraft::Spacecraft() <%p>'%s' exiting\n", this, name.c_str());
    #endif
 }
 
@@ -398,7 +398,7 @@ Spacecraft::~Spacecraft()
 {
    #ifdef DEBUG_SPACECRAFT
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::~Spacecraft() <%p>'%s' entered, attitude=<%p>\n"),
+      ("Spacecraft::~Spacecraft() <%p>'%s' entered, attitude=<%p>\n",
        this, GetName().c_str(), attitude);
    #endif
 
@@ -409,7 +409,7 @@ Spacecraft::~Spacecraft()
 
    #ifdef DEBUG_SPACECRAFT
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::~Spacecraft() <%p>'%s' exiting\n"), this, GetName().c_str());
+      ("Spacecraft::~Spacecraft() <%p>'%s' exiting\n", this, GetName().c_str());
    #endif
 }
 
@@ -468,11 +468,11 @@ Spacecraft::Spacecraft(const Spacecraft &a) :
 {
    #ifdef DEBUG_SPACECRAFT
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::Spacecraft(copy) <%p>'%s' entered\n"), this, GetName().c_str());
+      ("Spacecraft::Spacecraft(copy) <%p>'%s' entered\n", this, GetName().c_str());
    #endif
 
    objectTypes.push_back(Gmat::SPACECRAFT);
-   objectTypeNames.push_back(wxT("Spacecraft"));
+   objectTypeNames.push_back("Spacecraft");
    parameterCount = a.parameterCount;
    ownedObjectCount = 0;
 
@@ -501,7 +501,7 @@ Spacecraft::Spacecraft(const Spacecraft &a) :
 
    #ifdef DEBUG_SPACECRAFT
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::Spacecraft(copy) <%p>'%s' exiting\n"), this, GetName().c_str());
+      ("Spacecraft::Spacecraft(copy) <%p>'%s' exiting\n", this, GetName().c_str());
    #endif
 }
 
@@ -527,7 +527,7 @@ Spacecraft& Spacecraft::operator=(const Spacecraft &a)
 
    #ifdef DEBUG_SPACECRAFT
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::Spacecraft(=) <%p>'%s' entered\n"), this, GetName().c_str());
+      ("Spacecraft::Spacecraft(=) <%p>'%s' entered\n", this, GetName().c_str());
    #endif
 
    SpaceObject::operator=(a);
@@ -571,7 +571,7 @@ Spacecraft& Spacecraft::operator=(const Spacecraft &a)
 
    #ifdef DEBUG_SPACECRAFT
    MessageInterface::ShowMessage
-      (wxT("Anomaly has type %s, copied from %s\n"), trueAnomaly.GetTypeString().c_str(),
+      ("Anomaly has type %s, copied from %s\n", trueAnomaly.GetTypeString().c_str(),
        a.trueAnomaly.GetTypeString().c_str());
    #endif
 
@@ -595,14 +595,14 @@ Spacecraft& Spacecraft::operator=(const Spacecraft &a)
    // delete attached hardware, such as tanks and thrusters
    #ifdef DEBUG_SPACECRAFT
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::Spacecraft(=) about to delete all owned objects\n"));
+      ("Spacecraft::Spacecraft(=) about to delete all owned objects\n");
       #endif
    DeleteOwnedObjects(true, true, true, true);
 
    // then cloned owned objects
    #ifdef DEBUG_SPACECRAFT
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::Spacecraft(=) about to clone all owned objects\n"));
+      ("Spacecraft::Spacecraft(=) about to clone all owned objects\n");
       #endif
    CloneOwnedObjects(a.attitude, a.tanks, a.thrusters);
 
@@ -616,7 +616,7 @@ Spacecraft& Spacecraft::operator=(const Spacecraft &a)
 
    #ifdef DEBUG_SPACECRAFT
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::Spacecraft(=) <%p>'%s' exiting\n"), this, GetName().c_str());
+      ("Spacecraft::Spacecraft(=) <%p>'%s' exiting\n", this, GetName().c_str());
    #endif
 
    return *this;
@@ -630,7 +630,7 @@ void Spacecraft::SetSolarSystem(SolarSystem *ss)
 {
    #ifdef DEBUG_SET_SOLAR_SYSTEM
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::SetSolarSystem() this=<%p>'%s' entered, ss=<%p>\n"), this,
+      ("Spacecraft::SetSolarSystem() this=<%p>'%s' entered, ss=<%p>\n", this,
        GetName().c_str(), ss);
    #endif
    solarSystem = ss;
@@ -644,7 +644,7 @@ void Spacecraft::SetInternalCoordSystem(CoordinateSystem *cs)
 {
    #ifdef DEBUG_SPACECRAFT_CS
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::SetInternalCoordSystem() this=<%p> '%s', setting %s <%p>\n"),
+      ("Spacecraft::SetInternalCoordSystem() this=<%p> '%s', setting %s <%p>\n",
        this, GetName().c_str(), cs->GetName().c_str(), cs);
    #endif
 
@@ -679,9 +679,9 @@ CoordinateSystem* Spacecraft::GetInternalCoordSystem()
 void Spacecraft::SetState(const Rvector6 &cartState)
 {
    #ifdef DEBUG_SPACECRAFT_SET
-      MessageInterface::ShowMessage(wxT("Spacecraft::SetState(Rvector6)\n"));
+      MessageInterface::ShowMessage("Spacecraft::SetState(Rvector6)\n");
       MessageInterface::ShowMessage(
-      wxT("Spacecraft::SetState(Rvector6) cartesianState=%s\n"),
+      "Spacecraft::SetState(Rvector6) cartesianState=%s\n",
        cartState.ToString().c_str());
    #endif
 
@@ -691,7 +691,7 @@ void Spacecraft::SetState(const Rvector6 &cartState)
 
 
 //---------------------------------------------------------------------------
-//  void SetState(const wxString elementType, Real *instate)
+//  void SetState(const std::string elementType, Real *instate)
 //---------------------------------------------------------------------------
 /**
  * Set the elements to Cartesian states.
@@ -701,12 +701,12 @@ void Spacecraft::SetState(const Rvector6 &cartState)
  *
  */
 //---------------------------------------------------------------------------
-void Spacecraft::SetState(const wxString &elementType, Real *instate)
+void Spacecraft::SetState(const std::string &elementType, Real *instate)
 {
    #ifdef DEBUG_SPACECRAFT_SET
       MessageInterface::ShowMessage(
-         wxT("Spacecraft::SetState() elementType = %s, instate =\n")
-         wxT("   %.9lf, %.9lf, %.9lf, %.14lf, %.14lf, %.14lf\n"),
+         "Spacecraft::SetState() elementType = %s, instate =\n"
+         "   %.9lf, %.9lf, %.9lf, %.14lf, %.14lf, %.14lf\n",
          elementType.c_str(), instate[0], instate[1], instate[2], instate[3],
          instate[4], instate[5]);
    #endif
@@ -716,9 +716,9 @@ void Spacecraft::SetState(const wxString &elementType, Real *instate)
    newState.Set(instate[0],instate[1],instate[2],
                 instate[3],instate[4],instate[5]);
 
-   if (elementType != wxT("Cartesian"))
+   if (elementType != "Cartesian")
    {
-      stateType = wxT("Cartesian");  // why not use SetStateFromRepresentation here?? wcs
+      stateType = "Cartesian";  // why not use SetStateFromRepresentation here?? wcs
       newState = stateConverter.Convert(instate, elementType,
          stateType, trueAnomaly);
    }
@@ -759,7 +759,7 @@ void Spacecraft::SetState(const Real s1, const Real s2, const Real s3,
 //  GmatState& GetState()
 //------------------------------------------------------------------------------
 /**
- * wxT("Unhide") the SpaceObject method.
+ * "Unhide" the SpaceObject method.
  *
  * @return the core GmatState.
  */
@@ -770,14 +770,14 @@ GmatState& Spacecraft::GetState()
    Rvector6 stateTmp;
    stateTmp.Set(SpaceObject::GetState().GetState());
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::GetState() '%s' returning\n   %s\n"), GetName().c_str(),
+      ("Spacecraft::GetState() '%s' returning\n   %s\n", GetName().c_str(),
        stateTmp.ToString().c_str());
    #endif
    return SpaceObject::GetState();
 }
 
 //------------------------------------------------------------------------------
-//  Rvector6 GetState(wxString &rep)
+//  Rvector6 GetState(std::string &rep)
 //------------------------------------------------------------------------------
 /**
  * Get the converted Cartesian states from states in different coordinate type.
@@ -785,10 +785,10 @@ GmatState& Spacecraft::GetState()
  * @return converted Cartesian states
  */
 //------------------------------------------------------------------------------
-Rvector6 Spacecraft::GetState(wxString rep)
+Rvector6 Spacecraft::GetState(std::string rep)
 {
    #ifdef DEBUG_STATE_INTERFACE
-      MessageInterface::ShowMessage(wxT("Getting state in representation %s"),
+      MessageInterface::ShowMessage("Getting state in representation %s",
          rep.c_str());
    #endif
    rvState = GetStateInRepresentation(rep);
@@ -797,7 +797,7 @@ Rvector6 Spacecraft::GetState(wxString rep)
 
 
 //------------------------------------------------------------------------------
-//  Rvector6 GetState(wxString &rep)
+//  Rvector6 GetState(std::string &rep)
 //------------------------------------------------------------------------------
 /**
  * Get the converted Cartesian states from states in different coordinate type.
@@ -828,9 +828,9 @@ Rvector6 Spacecraft::GetCartesianState()
 //   for (int i=0; i<6; i++)
 //      rvState[i] = tempState[i];
 //
-   MessageInterface::ShowMessage(wxT("GetCartesianState() is obsolete; ")
-      wxT("use GetState(\"Cartesian\") or GetState(%d) instead.\n"), CARTESIAN_ID);
-   return GetState(wxT("Cartesian"));//rvState;
+   MessageInterface::ShowMessage("GetCartesianState() is obsolete; "
+      "use GetState(\"Cartesian\") or GetState(%d) instead.\n", CARTESIAN_ID);
+   return GetState("Cartesian");//rvState;
 }
 
 //------------------------------------------------------------------------------
@@ -845,12 +845,12 @@ Rvector6 Spacecraft::GetCartesianState()
 Rvector6 Spacecraft::GetKeplerianState()
 {
 //   rvState = stateConverter.Convert(state.GetState(), stateType,
-//                wxT("Keplerian"),trueAnomaly);
+//                "Keplerian",trueAnomaly);
 //
 //   return rvState;
-   MessageInterface::ShowMessage(wxT("GetKeplerianState() is obsolete; ")
-      wxT("use GetState(\"Keplerian\") or GetState(%d) instead.\n"), KEPLERIAN_ID);
-   return GetState(wxT("Keplerian"));
+   MessageInterface::ShowMessage("GetKeplerianState() is obsolete; "
+      "use GetState(\"Keplerian\") or GetState(%d) instead.\n", KEPLERIAN_ID);
+   return GetState("Keplerian");
 }
 
 //------------------------------------------------------------------------------
@@ -866,12 +866,12 @@ Rvector6 Spacecraft::GetKeplerianState()
 Rvector6 Spacecraft::GetModifiedKeplerianState()
 {
 //   rvState = stateConverter.Convert(state.GetState(),stateType,
-//                wxT("ModifiedKeplerian"),trueAnomaly);
+//                "ModifiedKeplerian",trueAnomaly);
 //   return (rvState);
-   MessageInterface::ShowMessage(wxT("GetModifiedKeplerianState() is obsolete; ")
-      wxT("use GetState(\"ModifiedKeplerian\") or GetState(%d) instead.\n"),
+   MessageInterface::ShowMessage("GetModifiedKeplerianState() is obsolete; "
+      "use GetState(\"ModifiedKeplerian\") or GetState(%d) instead.\n",
       MODIFIED_KEPLERIAN_ID);
-   return GetState(wxT("ModifiedKeplerian"));
+   return GetState("ModifiedKeplerian");
 }
 
 
@@ -897,14 +897,14 @@ bool Spacecraft::HasAttitude()
 const Rmatrix33& Spacecraft::GetAttitude(Real a1mjdTime)
 {
    #ifdef DEBUG_SC_ATTITUDE
-      MessageInterface::ShowMessage(wxT("Entering SC::GetAttitude ...\n"));
+      MessageInterface::ShowMessage("Entering SC::GetAttitude ...\n");
    #endif
    if (attitude) return attitude->GetCosineMatrix(a1mjdTime);
    else
    {
-      wxString errmsg =
-         wxT("Error attempting to retrieve Attitude Matrix for spacecraft \"");
-      errmsg += instanceName + wxT("\", for which no attitude has been set.\n");
+      std::string errmsg =
+         "Error attempting to retrieve Attitude Matrix for spacecraft \"";
+      errmsg += instanceName + "\", for which no attitude has been set.\n";
       throw SpaceObjectException(errmsg);
    }
 }
@@ -918,9 +918,9 @@ const Rvector3&  Spacecraft::GetAngularVelocity(Real a1mjdTime) const
    if (attitude) return attitude->GetAngularVelocity(a1mjdTime);
    else
    {
-      wxString errmsg =
-         wxT("Error attempting to retrieve Angular Velocity for spacecraft \"");
-      errmsg += instanceName + wxT("\", for which no attitude has been set.\n");
+      std::string errmsg =
+         "Error attempting to retrieve Angular Velocity for spacecraft \"";
+      errmsg += instanceName + "\", for which no attitude has been set.\n";
       throw SpaceObjectException(errmsg);
    }
 }
@@ -931,12 +931,12 @@ const Rvector3&  Spacecraft::GetAngularVelocity(Real a1mjdTime) const
 const UnsignedIntArray& Spacecraft::GetEulerAngleSequence() const
 {
    if (attitude)
-      return attitude->GetUnsignedIntArrayParameter(wxT("EulerSequenceArray"));
+      return attitude->GetUnsignedIntArrayParameter("EulerSequenceArray");
    else
    {
-      wxString errmsg =
-         wxT("Error attempting to retrieve Euler Angle Sequence for spacecraft \"");
-      errmsg += instanceName + wxT("\", for which no attitude has been set.\n");
+      std::string errmsg =
+         "Error attempting to retrieve Euler Angle Sequence for spacecraft \"";
+      errmsg += instanceName + "\", for which no attitude has been set.\n";
       throw SpaceObjectException(errmsg);
    }
 }
@@ -957,16 +957,16 @@ GmatBase* Spacecraft::Clone() const
 
    #ifdef DEBUG_SPACECRAFT
       MessageInterface::ShowMessage
-         (wxT("Spacecraft::Clone() cloned <%p>'%s' to <%p>'%s'\n"), this,
+         ("Spacecraft::Clone() cloned <%p>'%s' to <%p>'%s'\n", this,
          instanceName.c_str(), clone, clone->GetName().c_str());
    #endif
    #ifdef DEBUG_OBJ_CLONE
       Spacecraft *tmp = (const_cast<Spacecraft*>(this));
       GmatState vec6Orig = tmp->GetState();
       GmatState vec6     = clone->GetState();
-      MessageInterface::ShowMessage(wxT("ORIGINAL spacecraft has state of %12.10f %12.10f %12.10f %12.10f %12.10f %12.10f\n"),
+      MessageInterface::ShowMessage("ORIGINAL spacecraft has state of %12.10f %12.10f %12.10f %12.10f %12.10f %12.10f\n",
             vec6Orig[0], vec6Orig[1], vec6Orig[2], vec6Orig[3], vec6Orig[4], vec6Orig[5]);
-      MessageInterface::ShowMessage(wxT("Cloned spacecraft has state of %12.10f %12.10f %12.10f %12.10f %12.10f %12.10f\n"),
+      MessageInterface::ShowMessage("Cloned spacecraft has state of %12.10f %12.10f %12.10f %12.10f %12.10f %12.10f\n",
             vec6[0], vec6[1], vec6[2], vec6[3], vec6[4], vec6[5]);
    #endif
 
@@ -991,15 +991,15 @@ void Spacecraft::Copy(const GmatBase* orig)
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool Spacecraft::RenameRefObject(const Gmat::ObjectType type,
-                                 const wxString &oldName,
-                                 const wxString &newName)
+                                 const std::string &oldName,
+                                 const std::string &newName)
 {
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::RenameRefObject() type=%s, oldName=%s, newName=%s\n"),
+      ("Spacecraft::RenameRefObject() type=%s, oldName=%s, newName=%s\n",
        GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
    #endif
    
@@ -1048,7 +1048,7 @@ bool Spacecraft::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// wxString GetRefObjectName(const Gmat::ObjectType type) const
+// std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
 /**
  * This method returns a name of the referenced objects.
@@ -1056,13 +1056,13 @@ bool Spacecraft::RenameRefObject(const Gmat::ObjectType type,
  * @return a name of objects of the requested type.
  */
 //------------------------------------------------------------------------------
-wxString Spacecraft::GetRefObjectName(const Gmat::ObjectType type) const
+std::string Spacecraft::GetRefObjectName(const Gmat::ObjectType type) const
 {
    if (type == Gmat::COORDINATE_SYSTEM)
    {
       return coordSysName;
    }
-   if (type == Gmat::ATTITUDE)   return wxT("");   // Attitude objects don't have names
+   if (type == Gmat::ATTITUDE)   return "";   // Attitude objects don't have names
    return SpaceObject::GetRefObjectName(type);
 }
 
@@ -1115,7 +1115,7 @@ Spacecraft::GetRefObjectNameArray(const Gmat::ObjectType type)
 {
    #ifdef DEBUG_SC_REF_OBJECT
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::GetRefObjectNameArray() <%p>'%s' entered, type='%s'\n"),
+      ("Spacecraft::GetRefObjectNameArray() <%p>'%s' entered, type='%s'\n",
        this, GetName().c_str(), GmatBase::GetObjectTypeString(type).c_str());
    #endif
    static StringArray fullList;  // Maintain scope if the full list is requested
@@ -1138,7 +1138,7 @@ Spacecraft::GetRefObjectNameArray(const Gmat::ObjectType type)
       for (ObjectArray::iterator i = thrusters.begin(); i < thrusters.end(); ++i)
       {
          // Add Thruster name
-         if ((*i)->GetName() != wxT(""))
+         if ((*i)->GetName() != "")
             fullList.push_back((*i)->GetName());
 
          // Add Thruster's ref. object name
@@ -1154,16 +1154,16 @@ Spacecraft::GetRefObjectNameArray(const Gmat::ObjectType type)
       fullList.insert(fullList.end(), hardwareNames.begin(), hardwareNames.end());
 
       // Add Attitude's ref. object names
-      wxString attRefObjName = attitude->GetRefObjectName(type);
+      std::string attRefObjName = attitude->GetRefObjectName(type);
       if (find(fullList.begin(), fullList.end(), attRefObjName) == fullList.end())
          fullList.push_back(attRefObjName);
 
       #ifdef DEBUG_SC_REF_OBJECT
       MessageInterface::ShowMessage
-         (wxT("Spacecraft::GetRefObjectNameArray() ALL, thrusters.size()=%d, ")
-          wxT("fullList.size()=%d, returning\n"), thrusters.size(), fullList.size());
+         ("Spacecraft::GetRefObjectNameArray() ALL, thrusters.size()=%d, "
+          "fullList.size()=%d, returning\n", thrusters.size(), fullList.size());
       for (UnsignedInt i=0; i<fullList.size(); i++)
-         MessageInterface::ShowMessage(wxT("   '%s'\n"), fullList[i].c_str());
+         MessageInterface::ShowMessage("   '%s'\n", fullList[i].c_str());
       #endif
       return fullList;
    }
@@ -1205,17 +1205,17 @@ Spacecraft::GetRefObjectNameArray(const Gmat::ObjectType type)
          }
 
          // Add Attitude's CoordinateSystem name
-         wxString attRefObjName = attitude->GetRefObjectName(type);
+         std::string attRefObjName = attitude->GetRefObjectName(type);
 
          if (find(fullList.begin(), fullList.end(), attRefObjName) == fullList.end())
             fullList.push_back(attRefObjName);
 
          #ifdef DEBUG_SC_REF_OBJECT
          MessageInterface::ShowMessage
-            (wxT("Spacecraft::GetRefObjectNameArray() CS, thrusters.size()=%d, ")
-             wxT("fullList.size()=%d, returning\n"), thrusters.size(), fullList.size());
+            ("Spacecraft::GetRefObjectNameArray() CS, thrusters.size()=%d, "
+             "fullList.size()=%d, returning\n", thrusters.size(), fullList.size());
          for (UnsignedInt i=0; i<fullList.size(); i++)
-            MessageInterface::ShowMessage(wxT("   '%s'\n"), fullList[i].c_str());
+            MessageInterface::ShowMessage("   '%s'\n", fullList[i].c_str());
          #endif
 
          return fullList;
@@ -1228,13 +1228,13 @@ Spacecraft::GetRefObjectNameArray(const Gmat::ObjectType type)
 
 // DJC: Not sure if we need this yet...
 //------------------------------------------------------------------------------
-// bool SetRefObjectName(const Gmat::ObjectType type, const wxString &name)
+// bool SetRefObjectName(const Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
-bool Spacecraft::SetRefObjectName(const Gmat::ObjectType type, const wxString &name)
+bool Spacecraft::SetRefObjectName(const Gmat::ObjectType type, const std::string &name)
 {
    #ifdef DEBUG_SC_REF_OBJECT
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::SetRefObjectName() this=<%p>'%s' entered, type=%d, name='%s'\n"),
+      ("Spacecraft::SetRefObjectName() this=<%p>'%s' entered, type=%d, name='%s'\n",
        this, GetName().c_str(), type, name.c_str());
    #endif
 
@@ -1242,8 +1242,8 @@ bool Spacecraft::SetRefObjectName(const Gmat::ObjectType type, const wxString &n
    {
       #ifdef DEBUG_SPACECRAFT_CS
       MessageInterface::ShowMessage
-         (wxT("Spacecraft::SetRefObjectName() About to change CoordSysName ")
-          wxT("'%s' to '%s'\n"), coordSysName.c_str(), name.c_str());
+         ("Spacecraft::SetRefObjectName() About to change CoordSysName "
+          "'%s' to '%s'\n", coordSysName.c_str(), name.c_str());
       #endif
       coordSysName = name;
       return true;
@@ -1254,7 +1254,7 @@ bool Spacecraft::SetRefObjectName(const Gmat::ObjectType type, const wxString &n
 
 
 //---------------------------------------------------------------------------
-// GmatBase* GetRefObject(const Gmat::ObjectType type, const wxString &name)
+// GmatBase* GetRefObject(const Gmat::ObjectType type, const std::string &name)
 //---------------------------------------------------------------------------
 /**
  * Returns the reference object pointer.
@@ -1266,12 +1266,12 @@ bool Spacecraft::SetRefObjectName(const Gmat::ObjectType type, const wxString &n
  */
 //---------------------------------------------------------------------------
 GmatBase* Spacecraft::GetRefObject(const Gmat::ObjectType type,
-                                   const wxString &name)
+                                   const std::string &name)
 {
    #ifdef DEBUG_GET_REF_OBJECT
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::GetRefObject() <%p>'%s' entered, type=%d, name='%s'\n")
-       wxT("tanks.size()=%d, thrusters.size()=%d\n"), this, GetName().c_str(), type,
+      ("Spacecraft::GetRefObject() <%p>'%s' entered, type=%d, name='%s'\n"
+       "tanks.size()=%d, thrusters.size()=%d\n", this, GetName().c_str(), type,
        name.c_str(), tanks.size(), thrusters.size());
    #endif
 
@@ -1285,7 +1285,7 @@ GmatBase* Spacecraft::GetRefObject(const Gmat::ObjectType type,
       case Gmat::ATTITUDE:
          #ifdef DEBUG_SC_ATTITUDE
          MessageInterface::ShowMessage(
-         wxT("In SC::GetRefObject - returning Attitude pointer <%p>\n"), attitude);
+         "In SC::GetRefObject - returning Attitude pointer <%p>\n", attitude);
          #endif
          return attitude;
 
@@ -1310,8 +1310,8 @@ GmatBase* Spacecraft::GetRefObject(const Gmat::ObjectType type,
             {
                #ifdef DEBUG_GET_REF_OBJECT
                MessageInterface::ShowMessage
-                  (wxT("Spacecraft::GetRefObject() Found Thruster named '%s', so ")
-                   wxT("returning <%p>\n"), name.c_str(), (*i));
+                  ("Spacecraft::GetRefObject() Found Thruster named '%s', so "
+                   "returning <%p>\n", name.c_str(), (*i));
                #endif
                return *i;
             }
@@ -1331,23 +1331,23 @@ GmatBase* Spacecraft::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                   const wxString &name)
+//                   const std::string &name)
 //------------------------------------------------------------------------------
 bool Spacecraft::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                              const wxString &name)
+                              const std::string &name)
 {
    #ifdef DEBUG_SC_REF_OBJECT
    MessageInterface::ShowMessage
-      (wxT("Entering SC::SetRefObject <%p>'%s', obj=<%p><%s>'%s'\n"), this, GetName().c_str(),
-       obj, obj ? obj->GetTypeName().c_str() : wxT("NULL"),
-       obj ? obj->GetName().c_str() : wxT("NULL"));
+      ("Entering SC::SetRefObject <%p>'%s', obj=<%p><%s>'%s'\n", this, GetName().c_str(),
+       obj, obj ? obj->GetTypeName().c_str() : "NULL",
+       obj ? obj->GetName().c_str() : "NULL");
    #endif
 
    if (obj == NULL)
       return false;
 
-   wxString objType = obj->GetTypeName();
-   wxString objName = obj->GetName();
+   std::string objType = obj->GetTypeName();
+   std::string objName = obj->GetName();
 
    if (objName == originName)
    {
@@ -1362,20 +1362,20 @@ bool Spacecraft::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
    {
       #ifdef DEBUG_SC_REF_OBJECT
       MessageInterface::ShowMessage
-         (wxT("Spacecraft::SetRefObject() tanks.size()=%d, thrusters.size()=%d\n"),
+         ("Spacecraft::SetRefObject() tanks.size()=%d, thrusters.size()=%d\n",
           tanks.size(), thrusters.size());
       #endif
 
       // set fueltank
-      if (objType == wxT("FuelTank"))
+      if (objType == "FuelTank")
          return SetHardware(obj, tankNames, tanks);
 
       // set thruster
-      if (objType == wxT("Thruster"))
+      if (objType == "Thruster")
          return SetHardware(obj, thrusterNames, thrusters);
 
       // set on hardware                // made changes by Tuan Nguyen
-      if (obj->GetType() == Gmat::HARDWARE)             //(objType == wxT("Hardware"))
+      if (obj->GetType() == Gmat::HARDWARE)             //(objType == "Hardware")
       {
          return SetHardware(obj, hardwareNames, hardwareList);
       }
@@ -1388,7 +1388,7 @@ bool Spacecraft::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 
       #ifdef DEBUG_SPACECRAFT_CS
       MessageInterface::ShowMessage
-         (wxT("Spacecraft::SetRefObject() '%s', coordinateSystem=%s<%p>, cs=%s<%p>\n"),
+         ("Spacecraft::SetRefObject() '%s', coordinateSystem=%s<%p>, cs=%s<%p>\n",
           instanceName.c_str(), coordinateSystem->GetName().c_str(), coordinateSystem,
           cs->GetName().c_str(), cs);
       #endif
@@ -1398,8 +1398,8 @@ bool Spacecraft::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
       coordSysMap[objName] = cs;
       #ifdef DEBUG_SC_REF_OBJECT
       MessageInterface::ShowMessage
-         (wxT("Spacecraft::SetRefObject() Assigned <%p>'%s' to coordSysMap, ")
-          wxT("coordSysMap.size()=%d, isThrusterSettingMode=%d\n"), obj, objName.c_str(),
+         ("Spacecraft::SetRefObject() Assigned <%p>'%s' to coordSysMap, "
+          "coordSysMap.size()=%d, isThrusterSettingMode=%d\n", obj, objName.c_str(),
           coordSysMap.size(), isThrusterSettingMode);
       #endif
 
@@ -1410,7 +1410,7 @@ bool Spacecraft::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
          {
             #ifdef DEBUG_SC_ATTITUDE
             MessageInterface::ShowMessage
-               (wxT("   Setting <%p><%s>'%s' to attitude <%p>\n"), obj,
+               ("   Setting <%p><%s>'%s' to attitude <%p>\n", obj,
                 objType.c_str(), objName.c_str(), attitude);
             #endif
             // Pass objName as name since name can be blank.
@@ -1421,7 +1421,7 @@ bool Spacecraft::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
          {
             #ifdef DEBUG_SC_ATTITUDE
             MessageInterface::ShowMessage(
-               wxT("------ error setting ref object %s on attitude\n"),
+               "------ error setting ref object %s on attitude\n",
                name.c_str());
             #endif
          }
@@ -1431,13 +1431,13 @@ bool Spacecraft::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
       for (ObjectArray::iterator i = thrusters.begin(); i != thrusters.end(); ++i)
       {
          GmatBase *thr = *i;
-         wxString thrCsName = thr->GetRefObjectName(Gmat::COORDINATE_SYSTEM);
+         std::string thrCsName = thr->GetRefObjectName(Gmat::COORDINATE_SYSTEM);
 
          if (thrCsName == name)
          {
             #ifdef DEBUG_SC_REF_OBJECT
             MessageInterface::ShowMessage
-               (wxT("   Setting CoordinateSystem <%p>'%s' to thruster<%p>'%s'\n"),
+               ("   Setting CoordinateSystem <%p>'%s' to thruster<%p>'%s'\n",
                 cs, name.c_str(), thr, thr->GetName().c_str());
             #endif
             thr->SetRefObject(cs, Gmat::COORDINATE_SYSTEM, thrCsName);
@@ -1457,14 +1457,14 @@ bool Spacecraft::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
       {
          #ifdef DEBUG_SPACECRAFT_CS
          MessageInterface::ShowMessage
-            (wxT("   Input coordinateSystem is the same as current one, so ignoring\n"));
+            ("   Input coordinateSystem is the same as current one, so ignoring\n");
          #endif
       }
       else
       {
          #ifdef DEBUG_SPACECRAFT_CS
          MessageInterface::ShowMessage
-            (wxT("   About to convert to new CS '%s'\n"), coordSysName.c_str());
+            ("   About to convert to new CS '%s'\n", coordSysName.c_str());
          #endif
 
          // saved the old CS and added try/catch block to set to old CS
@@ -1477,20 +1477,20 @@ bool Spacecraft::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 
          try
          {
-            TakeAction(wxT("ApplyCoordinateSystem"));
+            TakeAction("ApplyCoordinateSystem");
 
             #ifdef DEBUG_SPACECRAFT_CS
             MessageInterface::ShowMessage
-               (wxT("Spacecraft::SetRefObject() coordinateSystem applied ----------\n"));
+               ("Spacecraft::SetRefObject() coordinateSystem applied ----------\n");
             Rvector6 vec6(state.GetState());
-            MessageInterface::ShowMessage(wxT("   %s\n"), vec6.ToString().c_str());
+            MessageInterface::ShowMessage("   %s\n", vec6.ToString().c_str());
             #endif
          }
          catch (BaseException &)
          {
             #ifdef DEBUG_SPACECRAFT_CS
             MessageInterface::ShowMessage
-               (wxT("Exception thrown: '%s', so setting back to old CS\n"), e.GetFullMessage().c_str());
+               ("Exception thrown: '%s', so setting back to old CS\n", e.GetFullMessage().c_str());
             #endif
             coordinateSystem = oldCS;
             throw;
@@ -1502,21 +1502,21 @@ bool Spacecraft::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
    else if (type == Gmat::ATTITUDE)
    {
       #ifdef DEBUG_SC_ATTITUDE
-         MessageInterface::ShowMessage(wxT("Setting attitude object on spacecraft %s\n"),
+         MessageInterface::ShowMessage("Setting attitude object on spacecraft %s\n",
          instanceName.c_str());
       #endif
       if ((attitude != NULL) && (attitude != (Attitude*) obj))
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (attitude, wxT("attitude"), wxT("Spacecraft::SetRefObject()"),
-             wxT("deleting attitude of ") + GetName(), this);
+            (attitude, "attitude", "Spacecraft::SetRefObject()",
+             "deleting attitude of " + GetName(), this);
          #endif
          delete attitude;
          ownedObjectCount--;
          #ifdef DEBUG_SC_OWNED_OBJECT
          MessageInterface::ShowMessage
-            (wxT("Spacecraft::SetRefObject() <%p>'%s' ownedObjectCount=%d\n"),
+            ("Spacecraft::SetRefObject() <%p>'%s' ownedObjectCount=%d\n",
              this, GetName().c_str(), ownedObjectCount);
          #endif
       }
@@ -1524,15 +1524,15 @@ bool Spacecraft::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
       ownedObjectCount++;
       // set epoch ...
       #ifdef DEBUG_SC_ATTITUDE
-         MessageInterface::ShowMessage(wxT("Setting attitude object on spacecraft %s\n"),
+         MessageInterface::ShowMessage("Setting attitude object on spacecraft %s\n",
          instanceName.c_str());
          MessageInterface::ShowMessage(
-         wxT("Setting epoch on attitude object for spacecraft %s\n"),
+         "Setting epoch on attitude object for spacecraft %s\n",
          instanceName.c_str());
       #endif
       attitude->SetEpoch(state.GetEpoch());
       #ifdef __USE_SPICE__
-         if (attitude->IsOfType(wxT("SpiceAttitude")))
+         if (attitude->IsOfType("SpiceAttitude"))
             ((SpiceAttitude*) attitude)->SetObjectID(instanceName, naifId, naifIdRefFrame);
       #endif
       return true;
@@ -1540,7 +1540,7 @@ bool Spacecraft::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 
    #ifdef DEBUG_SC_REF_OBJECT
    MessageInterface::ShowMessage
-      (wxT("Exiting SC::SetRefObject, Calling SpaceObject::SetRefObject()\n"));
+      ("Exiting SC::SetRefObject, Calling SpaceObject::SetRefObject()\n");
    #endif
 
    return SpaceObject::SetRefObject(obj, type, name);
@@ -1581,20 +1581,20 @@ ObjectArray& Spacecraft::GetRefObjectArray(const Gmat::ObjectType type)
  * @return Reference to the array.
  */
 //---------------------------------------------------------------------------
-ObjectArray& Spacecraft::GetRefObjectArray(const wxString& typeString)
+ObjectArray& Spacecraft::GetRefObjectArray(const std::string& typeString)
 {
-   if (typeString == wxT("Hardware"))        // made changes by Tuan Nguyen
+   if (typeString == "Hardware")        // made changes by Tuan Nguyen
       return hardwareList;
-   if ((typeString == wxT("FuelTank")) || (typeString == wxT("Tanks")))
+   if ((typeString == "FuelTank") || (typeString == "Tanks"))
       return tanks;
-   if ((typeString == wxT("Thruster")) || (typeString == wxT("Thrusters")))
+   if ((typeString == "Thruster") || (typeString == "Thrusters"))
       return thrusters;
    return SpaceObject::GetRefObjectArray(typeString);
 }
 
 
 //---------------------------------------------------------------------------
-//  Integer GetParameterID(const wxString &str) const
+//  Integer GetParameterID(const std::string &str) const
 //---------------------------------------------------------------------------
 /**
  * Retrieve the ID for the parameter given its description.
@@ -1604,24 +1604,24 @@ ObjectArray& Spacecraft::GetRefObjectArray(const wxString& typeString)
  * @return the parameter ID, or -1 if there is no associated ID.
  */
 //---------------------------------------------------------------------------
-Integer Spacecraft::GetParameterID(const wxString &str) const
+Integer Spacecraft::GetParameterID(const std::string &str) const
 {
    #ifdef DEBUG_PARM_PERFORMANCE
-      MessageInterface::ShowMessage(wxT("Spacecraft::GetParameterID(%s)\n"), str.c_str());
+      MessageInterface::ShowMessage("Spacecraft::GetParameterID(%s)\n", str.c_str());
    #endif
    #ifdef DEBUG_GET_REAL
-   MessageInterface::ShowMessage(wxT("In SC::GetParameterID, str = %s\n "),
+   MessageInterface::ShowMessage("In SC::GetParameterID, str = %s\n ",
    str.c_str());
    #endif
 
    try
    {
       // handle AddHardware parameter:
-      if (str == wxT("AddHardware")) // made changes by Tuan Nguyen
+      if (str == "AddHardware") // made changes by Tuan Nguyen
          return ADD_HARDWARE;
 
       // handle special parameter to work in GmatFunction (loj: 2008.06.27)
-      if (str == wxT("UTCGregorian"))
+      if (str == "UTCGregorian")
          return UTC_GREGORIAN;
 
       // first check the multiple reps
@@ -1631,48 +1631,48 @@ Integer Spacecraft::GetParameterID(const wxString &str) const
          {
             #ifdef DEBUG_GET_REAL
             MessageInterface::ShowMessage(
-            wxT("In SC::GetParameterID, multiple reps found!! - str = %s and id = %d\n "),
+            "In SC::GetParameterID, multiple reps found!! - str = %s and id = %d\n ",
             str.c_str(), (ii + CART_X));
             #endif
             return ii + CART_X;
          }
 
       Integer retval = -1;
-      if (str == wxT("Element1") || str == wxT("X") || str == wxT("SMA") || str == wxT("RadPer") ||
-          str == wxT("RMAG"))
+      if (str == "Element1" || str == "X" || str == "SMA" || str == "RadPer" ||
+          str == "RMAG")
          retval =  ELEMENT1_ID;
          //return ELEMENT1_ID;
 
-      else if (str == wxT("Element2") || str == wxT("Y") || str == wxT("ECC") || str == wxT("RadApo") ||
-               str == wxT("RA") || str == wxT("PEY") || str == wxT("EquinoctialH"))
-//            str == wxT("RA") || str == wxT("PECCY"))
+      else if (str == "Element2" || str == "Y" || str == "ECC" || str == "RadApo" ||
+               str == "RA" || str == "PEY" || str == "EquinoctialH")
+//            str == "RA" || str == "PECCY")
          retval =  ELEMENT2_ID;
          //return ELEMENT2_ID;
 
-      else if (str == wxT("Element3") || str == wxT("Z") || str == wxT("INC") || str == wxT("DEC") ||
-               str == wxT("PEX") || str == wxT("EquinoctialK"))
-//            str == wxT("PECCX"))
+      else if (str == "Element3" || str == "Z" || str == "INC" || str == "DEC" ||
+               str == "PEX" || str == "EquinoctialK")
+//            str == "PECCX")
          retval =  ELEMENT3_ID;
          //return ELEMENT3_ID;
 
-      else if (str == wxT("Element4") || str == wxT("VX") || str == wxT("RAAN") || str == wxT("VMAG") ||
-          str == wxT("PNY") || str == wxT("EquinoctialP"))
+      else if (str == "Element4" || str == "VX" || str == "RAAN" || str == "VMAG" ||
+          str == "PNY" || str == "EquinoctialP")
          retval =  ELEMENT4_ID;
          //return ELEMENT4_ID;
 
-      else if (str == wxT("Element5") || str == wxT("VY") || str == wxT("AOP") || str == wxT("AZI") ||
-          str == wxT("RAV") || str == wxT("PNX") || str == wxT("EquinoctialQ"))
+      else if (str == "Element5" || str == "VY" || str == "AOP" || str == "AZI" ||
+          str == "RAV" || str == "PNX" || str == "EquinoctialQ")
          retval =  ELEMENT5_ID;
          //return ELEMENT5_ID;
 
-      else if (str == wxT("Element6") || str == wxT("VZ") || str == wxT("TA") || str == wxT("MA") ||
-          str == wxT("EA") || str == wxT("HA") || str == wxT("FPA") || str == wxT("DECV") || str == wxT("MLONG"))
+      else if (str == "Element6" || str == "VZ" || str == "TA" || str == "MA" ||
+          str == "EA" || str == "HA" || str == "FPA" || str == "DECV" || str == "MLONG")
          retval =  ELEMENT6_ID;
          //return ELEMENT6_ID;
 
       #ifdef DEBUG_GET_REAL
       MessageInterface::ShowMessage(
-      wxT("In SC::GetParameterID, after checking for elements, id = %d\n "),
+      "In SC::GetParameterID, after checking for elements, id = %d\n ",
       retval);
       #endif
       if (retval != -1) return retval;
@@ -1683,36 +1683,36 @@ Integer Spacecraft::GetParameterID(const wxString &str) const
          {
             #ifdef DEBUG_SPACECRAFT_SET
             MessageInterface::ShowMessage(
-            wxT("In SC::GetParameterID, setting id to %d for str = %s\n "),
+            "In SC::GetParameterID, setting id to %d for str = %s\n ",
             i, str.c_str());
             #endif
             return i;
          }
       }
-      if (str == wxT("STM"))
+      if (str == "STM")
          return ORBIT_STM;
 
-      if (str == wxT("AMatrix"))
+      if (str == "AMatrix")
          return ORBIT_A_MATRIX;
-//      if (str == wxT("OrbitSpiceKernelName"))
+//      if (str == "OrbitSpiceKernelName")
 //         return ORBIT_SPICE_KERNEL_NAME;
 //
-//      if (str == wxT("AttitudeSpiceKernelName"))
+//      if (str == "AttitudeSpiceKernelName")
 //         return ATTITUDE_SPICE_KERNEL_NAME;
 //
-//      if (str == wxT("SCClockSpiceKernelName"))
+//      if (str == "SCClockSpiceKernelName")
 //         return SC_CLOCK_SPICE_KERNEL_NAME;
 //
-//      if (str == wxT("FrameSpiceKernelName"))
+//      if (str == "FrameSpiceKernelName")
 //         return FRAME_SPICE_KERNEL_NAME;
 
 
-      if ((str == wxT("CartesianState")) || (str == wxT("CartesianX"))) return CARTESIAN_X;
-      if (str == wxT("CartesianY") )  return CARTESIAN_Y;
-      if (str == wxT("CartesianZ") )  return CARTESIAN_Z;
-      if (str == wxT("CartesianVX"))  return CARTESIAN_VX;
-      if (str == wxT("CartesianVY"))  return CARTESIAN_VY;
-      if (str == wxT("CartesianVZ"))  return CARTESIAN_VZ;
+      if ((str == "CartesianState") || (str == "CartesianX")) return CARTESIAN_X;
+      if (str == "CartesianY" )  return CARTESIAN_Y;
+      if (str == "CartesianZ" )  return CARTESIAN_Z;
+      if (str == "CartesianVX")  return CARTESIAN_VX;
+      if (str == "CartesianVY")  return CARTESIAN_VY;
+      if (str == "CartesianVZ")  return CARTESIAN_VZ;
 
       return SpaceObject::GetParameterID(str);
    }
@@ -1724,10 +1724,10 @@ Integer Spacecraft::GetParameterID(const wxString &str) const
             Integer attId = attitude->GetParameterID(str);
             #ifdef DEBUG_SC_ATTITUDE
             MessageInterface::ShowMessage(
-               wxT("------ Now calling attitude to get id for label %s\n"),
+               "------ Now calling attitude to get id for label %s\n",
                str.c_str());
-            MessageInterface::ShowMessage(wxT(" ------ and the id = %d\n"), attId);
-            MessageInterface::ShowMessage(wxT(" ------ and the id with offset  = %d\n"),
+            MessageInterface::ShowMessage(" ------ and the id = %d\n", attId);
+            MessageInterface::ShowMessage(" ------ and the id with offset  = %d\n",
                                           attId + ATTITUDE_ID_OFFSET);
             #endif
             return attId + ATTITUDE_ID_OFFSET;
@@ -1766,8 +1766,8 @@ bool Spacecraft::IsParameterReadOnly(const Integer id) const
    // We are currently not allowing users to set anomaly other than the
    // True Anomaly ****** to be modified in the future ******
    if ((id == ELEMENT6_ID) &&
-       ((stateElementLabel[5] == wxT("MA")) || (stateElementLabel[5] == wxT("EA")) ||
-        (stateElementLabel[5] == wxT("HA"))))
+       ((stateElementLabel[5] == "MA") || (stateElementLabel[5] == "EA") ||
+        (stateElementLabel[5] == "HA")))
    {
       return true;
    }
@@ -1815,7 +1815,7 @@ bool Spacecraft::IsParameterReadOnly(const Integer id) const
 
    if ((id > MODEL_FILE) && (id < MODEL_MAX))
    {
-      if (modelFile == wxT(""))
+      if (modelFile == "")
          return true;
       else
          return false;
@@ -1834,7 +1834,7 @@ bool Spacecraft::IsParameterReadOnly(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-//  bool IsParameterReadOnly(const wxString &label) const
+//  bool IsParameterReadOnly(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * Checks to see if the requested parameter is read only.
@@ -1844,7 +1844,7 @@ bool Spacecraft::IsParameterReadOnly(const Integer id) const
  * @return true if the parameter is read only, false (the default) if not.
  */
 //---------------------------------------------------------------------------
-bool Spacecraft::IsParameterReadOnly(const wxString &label) const
+bool Spacecraft::IsParameterReadOnly(const std::string &label) const
 {
    return IsParameterReadOnly(GetParameterID(label));
 }
@@ -1933,16 +1933,16 @@ Real Spacecraft::ParameterDvInitialValue(const Integer id, const Integer r,
 }
 
 //---------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //---------------------------------------------------------------------------
 /*
  * @see GmatBase
  */
 //---------------------------------------------------------------------------
-wxString Spacecraft::GetParameterText(const Integer id) const
+std::string Spacecraft::GetParameterText(const Integer id) const
 {
    #ifdef DEBUG_SC_PARAMETER_TEXT
-   MessageInterface::ShowMessage(wxT("SC::GetParameterText - called with id = %d\n"),
+   MessageInterface::ShowMessage("SC::GetParameterText - called with id = %d\n",
    id);
    #endif
 
@@ -1953,7 +1953,7 @@ wxString Spacecraft::GetParameterText(const Integer id) const
    if ((id >= CART_X) && (id < EndMultipleReps))
    {
       #ifdef DEBUG_SC_PARAMETER_TEXT
-      MessageInterface::ShowMessage(wxT("SC::GetParameterText - returning text = %s\n"),
+      MessageInterface::ShowMessage("SC::GetParameterText - returning text = %s\n",
       (MULT_REP_STRINGS[id-CART_X]).c_str());
       #endif
       return MULT_REP_STRINGS[id - CART_X];
@@ -1974,7 +1974,7 @@ wxString Spacecraft::GetParameterText(const Integer id) const
 
    #ifdef DEBUG_SC_PARAMETER_TEXT
    MessageInterface::ShowMessage(
-   wxT("SC::GetParameterText - calling through to base class .....\n"));
+   "SC::GetParameterText - calling through to base class .....\n");
    #endif
    return SpaceObject::GetParameterText(id);
 }
@@ -2001,7 +2001,7 @@ Gmat::ParameterType Spacecraft::GetParameterType(const Integer id) const
       {
          #ifdef DEBUG_SC_ATTITUDE
             MessageInterface::ShowMessage
-               (wxT("Calling attitude to get parameter type ( for %d) - it is %d (%s)\n"),
+               ("Calling attitude to get parameter type ( for %d) - it is %d (%s)\n",
                id, attitude->GetParameterType(id - ATTITUDE_ID_OFFSET),
                (GmatBase::PARAM_TYPE_STRING[(Integer)(attitude->GetParameterType(id - ATTITUDE_ID_OFFSET))]).c_str());
          #endif
@@ -2012,7 +2012,7 @@ Gmat::ParameterType Spacecraft::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString GetParameterTypeString(const Integer id) const
+//  std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Gets the text description for the type of a parameter.
@@ -2022,7 +2022,7 @@ Gmat::ParameterType Spacecraft::GetParameterType(const Integer id) const
  * @return The text description of the type of the parameter.
  */
 //------------------------------------------------------------------------------
-wxString Spacecraft::GetParameterTypeString(const Integer id) const
+std::string Spacecraft::GetParameterTypeString(const Integer id) const
 {
 //    return SpaceObject::PARAM_TYPE_STRING[GetParameterType(id)];
     return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
@@ -2042,12 +2042,12 @@ Real Spacecraft::GetRealParameter(const Integer id) const
 {
    #ifdef DEBUG_GET_REAL
       MessageInterface::ShowMessage(
-      wxT("In SC::GetReal, asking for parameter %d, whose string is \"%s\"\n"),
+      "In SC::GetReal, asking for parameter %d, whose string is \"%s\"\n",
       id, (GetParameterText(id)).c_str());
       //for (Integer i=0; i<6;i++)
-      //   MessageInterface::ShowMessage(wxT("   state(%d) = %.12f\n"),
+      //   MessageInterface::ShowMessage("   state(%d) = %.12f\n",
       //   i, state[i]);
-      //MessageInterface::ShowMessage(wxT("    and stateType = %s\n"),
+      //MessageInterface::ShowMessage("    and stateType = %s\n",
       //   stateType.c_str());
    #endif
 
@@ -2056,7 +2056,7 @@ Real Spacecraft::GetRealParameter(const Integer id) const
    {
       #ifdef DEBUG_GET_REAL
          MessageInterface::ShowMessage(
-         wxT("In SC::GetReal, calling GetElement ....... \n"));
+         "In SC::GetReal, calling GetElement ....... \n");
       #endif
       return (const_cast<Spacecraft*>(this))->GetElement(GetParameterText(id));
    }
@@ -2082,7 +2082,7 @@ Real Spacecraft::GetRealParameter(const Integer id) const
       {
          #ifdef DEBUG_SC_ATTITUDE
          MessageInterface::ShowMessage(
-            wxT("------ Now calling attitude to get real parameter for id =  %d\n"),
+            "------ Now calling attitude to get real parameter for id =  %d\n",
             id);
          #endif
          return attitude->GetRealParameter(id - ATTITUDE_ID_OFFSET);
@@ -2100,7 +2100,7 @@ Real Spacecraft::GetRealParameter(const Integer id) const
 }
 
 //---------------------------------------------------------------------------
-//  Real GetRealParameter(const wxString &label) const
+//  Real GetRealParameter(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * Retrieve the value for a Real parameter.
@@ -2109,15 +2109,15 @@ Real Spacecraft::GetRealParameter(const Integer id) const
  *
  * @return The parameter's value.
  */
-Real Spacecraft::GetRealParameter(const wxString &label) const
+Real Spacecraft::GetRealParameter(const std::string &label) const
 {
    // Performance!
-    if (label == wxT("A1Epoch"))
+    if (label == "A1Epoch")
        return state.GetEpoch();
 
     // First check with anomaly
     /* OLD CODE
-    if (label == wxT("TA") || label == wxT("MA") || label == wxT("EA") || label == wxT("HA"))
+    if (label == "TA" || label == "MA" || label == "EA" || label == "HA")
     {
        //return trueAnomaly.GetValue();
        return trueAnomaly.GetValue(label);
@@ -2143,12 +2143,12 @@ Real Spacecraft::GetRealParameter(const wxString &label) const
 Real Spacecraft::SetRealParameter(const Integer id, const Real value)
 {
    #ifdef DEBUG_SPACECRAFT_SET
-   MessageInterface::ShowMessage(wxT("In SC::SetRealParameter (%s), id = %d (%s) and value = %.12f\n"),
+   MessageInterface::ShowMessage("In SC::SetRealParameter (%s), id = %d (%s) and value = %.12f\n",
    instanceName.c_str(), id, GetParameterText(id).c_str(), value);
    #endif
    if (id >= CART_X && id < EndMultipleReps)
    {
-      wxString idString = MULT_REP_STRINGS[id - CART_X];
+      std::string idString = MULT_REP_STRINGS[id - CART_X];
       return SetRealParameter(idString,value);
    }
    if (id == ELEMENT1_ID) return SetRealParameter(stateElementLabel[0],value);
@@ -2161,32 +2161,32 @@ Real Spacecraft::SetRealParameter(const Integer id, const Real value)
    if (id == DRY_MASS_ID)
    {
       parmsChanged = true;
-      return SetRealParameter(wxT("DryMass"), value);
+      return SetRealParameter("DryMass", value);
    }
 
    if (id == CD_ID)
    {
       parmsChanged = true;
-      return SetRealParameter(wxT("Cd"),value);
+      return SetRealParameter("Cd",value);
    }
    if (id == CR_ID)
    {
       parmsChanged = true;
-      return SetRealParameter(wxT("Cr"),value);
+      return SetRealParameter("Cr",value);
    }
    if (id == DRAG_AREA_ID)
    {
       parmsChanged = true;
-      return SetRealParameter(wxT("DragArea"),value);
+      return SetRealParameter("DragArea",value);
    }
    if (id == SRP_AREA_ID)
    {
       parmsChanged = true;
-      return SetRealParameter(wxT("SRPArea"),value);
+      return SetRealParameter("SRPArea",value);
    }
 
    // We should not allow users to set this one -- it's a calculated parameter
-   if (id == TOTAL_MASS_ID) return SetRealParameter(wxT("TotalMass"),value);
+   if (id == TOTAL_MASS_ID) return SetRealParameter("TotalMass",value);
 
    if (id >= ATTITUDE_ID_OFFSET)
       if (attitude)
@@ -2281,7 +2281,7 @@ Real Spacecraft::SetRealParameter(const Integer id, const Real value)
 }
 
 //------------------------------------------------------------------------------
-//  Real SetRealParameter(const wxString &label, const Real value)
+//  Real SetRealParameter(const std::string &label, const Real value)
 //------------------------------------------------------------------------------
 /**
  * Set the value for a Real parameter.
@@ -2294,11 +2294,11 @@ Real Spacecraft::SetRealParameter(const Integer id, const Real value)
  *         parameter type is not Real.
  */
 //------------------------------------------------------------------------------
-Real Spacecraft::SetRealParameter(const wxString &label, const Real value)
+Real Spacecraft::SetRealParameter(const std::string &label, const Real value)
 {
    #ifdef DEBUG_SPACECRAFT_SET
    MessageInterface::ShowMessage
-      (wxT("In SC::SetRealParameter(label)(%s), label = %s and value = %.12f\n"),
+      ("In SC::SetRealParameter(label)(%s), label = %s and value = %.12f\n",
        instanceName.c_str(), label.c_str(), value);
    #endif
    // first (really) see if it's a parameter for an owned object (i.e. attitude)
@@ -2308,108 +2308,108 @@ Real Spacecraft::SetRealParameter(const wxString &label, const Real value)
 
    // We are currently not allowing users to set anomaly other than the True
    // Anomaly ****** to be modified in the future ******
-   if ((label == wxT("MA")) || (label == wxT("EA")) || (label == wxT("HA")))
+   if ((label == "MA") || (label == "EA") || (label == "HA"))
       throw SpaceObjectException
-         (wxT("ERROR - setting of anomaly of type other than True Anomaly not ")
-          wxT("currently allowed."));
+         ("ERROR - setting of anomaly of type other than True Anomaly not "
+          "currently allowed.");
 
    // First try to set as a state element
    if (SetElement(label, value))
       return value;
 
-   if (label == wxT("A1Epoch"))
+   if (label == "A1Epoch")
    {
       state.SetEpoch(value);
       return value;
    }
 
-   if (label == wxT("DryMass"))
+   if (label == "DryMass")
    {
       if (value >= 0.0)
          dryMass = value;
       else
       {
-         SpaceObjectException soe(wxT(""));
+         SpaceObjectException soe("");
          soe.SetDetails(errorMessageFormat.c_str(),
                         GmatStringUtil::ToString(value, 16).c_str(),
-                        wxT("DryMass"), wxT("Real Number >= 0.0"));
+                        "DryMass", "Real Number >= 0.0");
          throw soe;
       }
       parmsChanged = true;
       return dryMass;
    }
 
-   if (label == wxT("Cd"))
+   if (label == "Cd")
    {
       if (value >= 0.0)
          coeffDrag = value;
       else
       {
-         SpaceObjectException soe(wxT(""));
+         SpaceObjectException soe("");
          soe.SetDetails(errorMessageFormat.c_str(),
                         GmatStringUtil::ToString(value, 16).c_str(),
-                        wxT("Cd"), wxT("Real Number >= 0.0"));
+                        "Cd", "Real Number >= 0.0");
          throw soe;
       }
       parmsChanged = true;
       return coeffDrag;
    }
-   if (label == wxT("DragArea"))
+   if (label == "DragArea")
    {
       if (value >= 0.0)
          dragArea = value;
       else
       {
-         SpaceObjectException soe(wxT(""));
+         SpaceObjectException soe("");
          soe.SetDetails(errorMessageFormat.c_str(),
                         GmatStringUtil::ToString(value, 16).c_str(),
-                        wxT("DragArea"), wxT("Real Number >= 0.0"));
+                        "DragArea", "Real Number >= 0.0");
          throw soe;
       }
       parmsChanged = true;
       return dragArea;
    }
-   if (label == wxT("SRPArea"))
+   if (label == "SRPArea")
    {
       if (value >= 0.0)
          srpArea = value;
       else
       {
-         SpaceObjectException soe(wxT(""));
+         SpaceObjectException soe("");
          soe.SetDetails(errorMessageFormat.c_str(),
                         GmatStringUtil::ToString(value, 16).c_str(),
-                        wxT("SRPArea"), wxT("Real Number >= 0.0"));
+                        "SRPArea", "Real Number >= 0.0");
          throw soe;
       }
       parmsChanged = true;
       return srpArea;
    }
-   if (label == wxT("Cr"))
+   if (label == "Cr")
    {
       if ((value >= 0.0) && (value <= 2.0))
          reflectCoeff = value;
       else
       {
-         SpaceObjectException soe(wxT(""));
+         SpaceObjectException soe("");
          soe.SetDetails(errorMessageFormat.c_str(),
                         GmatStringUtil::ToString(value, 16).c_str(),
-                        wxT("Cr"), wxT("0.0 <= Real Number <= 2.0"));
+                        "Cr", "0.0 <= Real Number <= 2.0");
          throw soe;
       }
       parmsChanged = true;
       return reflectCoeff;
    }
 
-   if (label == wxT("TotalMass"))// return totalMass;    // Don't change the total mass
-      throw SpaceObjectException(wxT("The parameter \"TotalMass\" is a calculated ")
-            wxT("parameter and cannot be set on the spacecraft ") + instanceName);
+   if (label == "TotalMass")// return totalMass;    // Don't change the total mass
+      throw SpaceObjectException("The parameter \"TotalMass\" is a calculated "
+            "parameter and cannot be set on the spacecraft " + instanceName);
 
    return SpaceObject::SetRealParameter(label, value);
 }
 
 
 //------------------------------------------------------------------------------
-//  wxString GetStringParameter(const Integer id) const
+//  std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Retrieve a string parameter.
@@ -2420,7 +2420,7 @@ Real Spacecraft::SetRealParameter(const wxString &label, const Real value)
  *         is no string association.
  */
 //------------------------------------------------------------------------------
-wxString Spacecraft::GetStringParameter(const Integer id) const
+std::string Spacecraft::GetStringParameter(const Integer id) const
 {
     if (id == SC_EPOCH_ID)
     {
@@ -2433,10 +2433,10 @@ wxString Spacecraft::GetStringParameter(const Integer id) const
 
     if (id == STATE_TYPE_ID)
     {
-       MessageInterface::ShowMessage( wxT("\"StateType\" is deprecated as the ")
-          wxT("string specifying the state type for display, and will be ")
-          wxT("removed from a future build; please use \"DisplayStateType\" ")
-          wxT("instead.\n") );
+       MessageInterface::ShowMessage( "\"StateType\" is deprecated as the "
+          "string specifying the state type for display, and will be "
+          "removed from a future build; please use \"DisplayStateType\" "
+          "instead.\n" );
        return displayStateType;
        //return stateType;
     }
@@ -2463,7 +2463,7 @@ wxString Spacecraft::GetStringParameter(const Integer id) const
        {
          #ifdef DEBUG_SC_ATTITUDE
          MessageInterface::ShowMessage(
-            wxT("------ Now calling attitude to get string parameter for id =  %d\n"),
+            "------ Now calling attitude to get string parameter for id =  %d\n",
             id);
          #endif
           return attitude->GetStringParameter(id - ATTITUDE_ID_OFFSET);
@@ -2476,7 +2476,7 @@ wxString Spacecraft::GetStringParameter(const Integer id) const
 }
 
 //---------------------------------------------------------------------------
-//  wxString GetStringParameter(const wxString &label) const
+//  std::string GetStringParameter(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * Retrieve a string parameter.
@@ -2487,15 +2487,15 @@ wxString Spacecraft::GetStringParameter(const Integer id) const
  *         is no string association.
  */
 //---------------------------------------------------------------------------
-wxString Spacecraft::GetStringParameter(const wxString &label) const
+std::string Spacecraft::GetStringParameter(const std::string &label) const
 {
-//   if (label == wxT("StateType"))
+//   if (label == "StateType")
 //      return stateType;
 //
    return GetStringParameter(GetParameterID(label));
 }
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id,
+// std::string GetStringParameter(const Integer id,
 //       const Integer index) const
 //------------------------------------------------------------------------------
 /**
@@ -2506,7 +2506,7 @@ wxString Spacecraft::GetStringParameter(const wxString &label) const
  * @return The parameter
  */
 //------------------------------------------------------------------------------
-wxString Spacecraft::GetStringParameter(const Integer id,
+std::string Spacecraft::GetStringParameter(const Integer id,
                                            const Integer index) const
 {
    // made changes by Tuan Nguyen
@@ -2517,7 +2517,7 @@ wxString Spacecraft::GetStringParameter(const Integer id,
             if ((0 <= index)&(index < (Integer)(hardwareNames.size())))
                return hardwareNames[index];
             else
-               return wxT("");
+               return "";
          }
 
       default:
@@ -2527,7 +2527,7 @@ wxString Spacecraft::GetStringParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString & label,
+// std::string GetStringParameter(const std::string & label,
 //       const Integer index) const
 //------------------------------------------------------------------------------
 /**
@@ -2538,7 +2538,7 @@ wxString Spacecraft::GetStringParameter(const Integer id,
  * @return The parameter
  */
 //------------------------------------------------------------------------------
-wxString Spacecraft::GetStringParameter(const wxString & label,
+std::string Spacecraft::GetStringParameter(const std::string & label,
       const Integer index) const
 {
    return GetStringParameter(GetParameterID(label), index);
@@ -2571,7 +2571,7 @@ const StringArray& Spacecraft::GetStringArrayParameter(const Integer id) const
       {
          #ifdef DEBUG_SC_ATTITUDE
          MessageInterface::ShowMessage(
-            wxT("------ Now calling attitude to SET string parameter for id =  %d\n"),
+            "------ Now calling attitude to SET string parameter for id =  %d\n",
             id);
          #endif
          return attitude->GetStringArrayParameter(id - ATTITUDE_ID_OFFSET);
@@ -2583,7 +2583,7 @@ const StringArray& Spacecraft::GetStringArrayParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// const StringArray& GetStringArrayParameter(const wxString &label) const
+// const StringArray& GetStringArrayParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Accesses lists of tank and thruster (and, eventually, other hardware) names,
@@ -2596,13 +2596,13 @@ const StringArray& Spacecraft::GetStringArrayParameter(const Integer id) const
  */
 //------------------------------------------------------------------------------
 const StringArray& Spacecraft::GetStringArrayParameter(
-      const wxString &label) const
+      const std::string &label) const
 {
    return GetStringArrayParameter(GetParameterID(label));
 }
 
 //---------------------------------------------------------------------------
-//  bool SetStringParameter(const Integer id, const wxString &value)
+//  bool SetStringParameter(const Integer id, const std::string &value)
 //---------------------------------------------------------------------------
 /**
  * Change the value of a string parameter.
@@ -2613,11 +2613,11 @@ const StringArray& Spacecraft::GetStringArrayParameter(
  * @return true if the string is stored, false if not.
  */
 //---------------------------------------------------------------------------
-bool Spacecraft::SetStringParameter(const Integer id, const wxString &value)
+bool Spacecraft::SetStringParameter(const Integer id, const std::string &value)
 {
    #ifdef DEBUG_SC_SET_STRING
       MessageInterface::ShowMessage
-         (wxT("Spacecraft::SetStringParameter() string parameter %d (%s) to %s\n"),
+         ("Spacecraft::SetStringParameter() string parameter %d (%s) to %s\n",
          id, GetParameterText(id).c_str(), value.c_str());
    #endif
 
@@ -2638,8 +2638,8 @@ bool Spacecraft::SetStringParameter(const Integer id, const wxString &value)
       {
          #ifdef DEBUG_SC_ATTITUDE
          MessageInterface::ShowMessage(
-            wxT("------ Now calling attitude to SET string parameter for id =  %d")
-            wxT(" and value = %s\n"), id, value.c_str());
+            "------ Now calling attitude to SET string parameter for id =  %d"
+            " and value = %s\n", id, value.c_str());
          #endif
          return attitude->SetStringParameter(id - ATTITUDE_ID_OFFSET, value);
       }
@@ -2661,34 +2661,34 @@ bool Spacecraft::SetStringParameter(const Integer id, const wxString &value)
    // To handle Epoch.UTCGregorian in GmatFunction Assignment wrapper (loj: 2008.06.27)
    else if (id == UTC_GREGORIAN)
    {
-      SetDateFormat(wxT("UTCGregorian"));
+      SetDateFormat("UTCGregorian");
       SetEpoch(value);
    }
    else if ((id == STATE_TYPE_ID) || (id == DISPLAY_STATE_TYPE_ID))
    {
       if (id == STATE_TYPE_ID)
-          MessageInterface::ShowMessage( wxT("\"StateType\" is deprecated as the ")
-          wxT("string specifying the state type for display, and will be ")
-          wxT("removed from a future build; please use \"DisplayStateType\" ")
-          wxT("instead.\n") );
+          MessageInterface::ShowMessage( "\"StateType\" is deprecated as the "
+          "string specifying the state type for display, and will be "
+          "removed from a future build; please use \"DisplayStateType\" "
+          "instead.\n" );
 
       // Check for invalid input then return unknown value from GmatBase
-      if (value != wxT("Cartesian") && value != wxT("Keplerian") &&
-          value != wxT("ModifiedKeplerian") && value != wxT("SphericalAZFPA") &&
-          value != wxT("SphericalRADEC") && value != wxT("Equinoctial"))
+      if (value != "Cartesian" && value != "Keplerian" &&
+          value != "ModifiedKeplerian" && value != "SphericalAZFPA" &&
+          value != "SphericalRADEC" && value != "Equinoctial")
       {
-         throw SpaceObjectException(wxT("Unknown state element representation: ") +
+         throw SpaceObjectException("Unknown state element representation: " +
             value);
       }
       #ifdef DEBUG_SC_SET_STRING
-      MessageInterface::ShowMessage(wxT("SC::SetString - setting display state type to %s\n"),
+      MessageInterface::ShowMessage("SC::SetString - setting display state type to %s\n",
       value.c_str());
       #endif
 
-      if ((value == wxT("Keplerian")) || (value == wxT("ModifiedKeplerian")))
+      if ((value == "Keplerian") || (value == "ModifiedKeplerian"))
       {
          // Load trueAnomaly with the state data
-         Rvector6 kep = GetStateInRepresentation(wxT("Keplerian"));
+         Rvector6 kep = GetStateInRepresentation("Keplerian");
          trueAnomaly.SetSMA(kep[0]);
          trueAnomaly.SetECC(kep[1]);
          trueAnomaly.SetValue(kep[5]);
@@ -2706,8 +2706,8 @@ bool Spacecraft::SetStringParameter(const Integer id, const wxString &value)
          return GmatBase::SetStringParameter(id, value);
       }
       #ifdef DEBUG_SC_SET_STRING
-          MessageInterface::ShowMessage(wxT("\nSpacecraft::SetStringParamter()...")
-             wxT("\n   Before change, Anomaly info -> a: %f, e: %f, %s: %f\n"),
+          MessageInterface::ShowMessage("\nSpacecraft::SetStringParamter()..."
+             "\n   Before change, Anomaly info -> a: %f, e: %f, %s: %f\n",
              trueAnomaly.GetSMA(),trueAnomaly.GetECC(),trueAnomaly.GetTypeString().c_str(),
              trueAnomaly.GetValue());
       #endif
@@ -2718,20 +2718,20 @@ bool Spacecraft::SetStringParameter(const Integer id, const wxString &value)
 
       #ifdef DEBUG_SC_SET_STRING
           MessageInterface::ShowMessage(
-             wxT("\n   After change, Anomaly info -> a: %lf, e: %lf, %s: %lf\n"),
+             "\n   After change, Anomaly info -> a: %lf, e: %lf, %s: %lf\n",
              trueAnomaly.GetSMA(), trueAnomaly.GetECC(), trueAnomaly.GetTypeString().c_str(),
              trueAnomaly.GetValue());
       #endif
-      if ((stateType == wxT("Keplerian")) ||
-          (stateType == wxT("ModifiedKeplerian")))
+      if ((stateType == "Keplerian") ||
+          (stateType == "ModifiedKeplerian"))
          rvState[5] = trueAnomaly.GetValue();   // @todo: add state[5]?
    }
    else if (id == COORD_SYS_ID)
    {
       #ifdef DEBUG_SPACECRAFT_CS
       MessageInterface::ShowMessage
-         (wxT("Spacecraft::SetStringParameter() About to change CoordSysName ")
-          wxT("'%s' to '%s'\n"), coordSysName.c_str(), value.c_str());
+         ("Spacecraft::SetStringParameter() About to change CoordSysName "
+          "'%s' to '%s'\n", coordSysName.c_str(), value.c_str());
       #endif
       parmsChanged = true;
       coordSysName = value;
@@ -2782,14 +2782,14 @@ bool Spacecraft::SetStringParameter(const Integer id, const wxString &value)
 
    #ifdef DEBUG_SC_SET_STRING
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::SetStringParameter() returning true\n"));
+      ("Spacecraft::SetStringParameter() returning true\n");
    #endif
 
    return true;
 }
 
 //---------------------------------------------------------------------------
-//  bool SetStringParameter(const wxString &label, const wxString &value)
+//  bool SetStringParameter(const std::string &label, const std::string &value)
 //---------------------------------------------------------------------------
 /**
  * Change the value of a string parameter.
@@ -2800,18 +2800,18 @@ bool Spacecraft::SetStringParameter(const Integer id, const wxString &value)
  * @return true if the string is stored, false if not.
  */
 //---------------------------------------------------------------------------
-bool Spacecraft::SetStringParameter(const wxString &label,
-                                    const wxString &value)
+bool Spacecraft::SetStringParameter(const std::string &label,
+                                    const std::string &value)
 {
    #ifdef DEBUG_SPACECRAFT_SET
        MessageInterface::ShowMessage
-          (wxT("\nSpacecraft::SetStringParameter(\"%s\", \"%s\") enters\n"),
+          ("\nSpacecraft::SetStringParameter(\"%s\", \"%s\") enters\n",
            label.c_str(), value.c_str() );
        Integer id = GetParameterID(label);
        MessageInterface::ShowMessage
-          (wxT("GetParameterText: %s\n"), GetParameterText(id).c_str());
+          ("GetParameterText: %s\n", GetParameterText(id).c_str());
        MessageInterface::ShowMessage
-          (wxT("Spacecraft::SetStringParameter exits sooner\n\n"));
+          ("Spacecraft::SetStringParameter exits sooner\n\n");
    #endif
 
    return SetStringParameter(GetParameterID(label),value);
@@ -2819,24 +2819,24 @@ bool Spacecraft::SetStringParameter(const wxString &label,
 
 
 //---------------------------------------------------------------------------
-//  bool SetStringParameter(const Integer id, const wxString &value,
+//  bool SetStringParameter(const Integer id, const std::string &value,
 //                          const Integer index)
 //---------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //---------------------------------------------------------------------------
-bool Spacecraft::SetStringParameter(const Integer id, const wxString &value,
+bool Spacecraft::SetStringParameter(const Integer id, const std::string &value,
                                     const Integer index)
 {
    #ifdef DEBUG_SC_SET_STRING
-      MessageInterface::ShowMessage(wxT("In SC::SetStringParameter, id = %d, value = %s, index = %d\n"),
+      MessageInterface::ShowMessage("In SC::SetStringParameter, id = %d, value = %s, index = %d\n",
             id, value.c_str(), index);
    #endif
    if (index < 0)
    {
       SpaceObjectException ex;
-      ex.SetDetails(wxT("The index %d is out-of-range for field \"%s\""), index,
+      ex.SetDetails("The index %d is out-of-range for field \"%s\"", index,
                     GetParameterText(id).c_str());
       throw ex;
    }
@@ -2847,8 +2847,8 @@ bool Spacecraft::SetStringParameter(const Integer id, const wxString &value,
       {
          #ifdef DEBUG_SC_ATTITUDE
          MessageInterface::ShowMessage(
-            wxT("------ Now calling attitude to SET string parameter for id =  %d")
-            wxT(", index = %d,  and value = %s\n"), id, index, value.c_str());
+            "------ Now calling attitude to SET string parameter for id =  %d"
+            ", index = %d,  and value = %s\n", id, index, value.c_str());
          #endif
          return attitude->SetStringParameter(id - ATTITUDE_ID_OFFSET, value, index);
       }
@@ -2907,15 +2907,15 @@ bool Spacecraft::SetStringParameter(const Integer id, const wxString &value,
 
 
 //---------------------------------------------------------------------------
-//  bool SetStringParameter(const wxString &label, const wxString &value,
+//  bool SetStringParameter(const std::string &label, const std::string &value,
 //                          const Integer index)
 //---------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //---------------------------------------------------------------------------
-bool Spacecraft::SetStringParameter(const wxString &label,
-                                    const wxString &value,
+bool Spacecraft::SetStringParameter(const std::string &label,
+                                    const std::string &value,
                                     const Integer index)
 {
    return SetStringParameter(GetParameterID(label), value, index);
@@ -2967,18 +2967,18 @@ const Rmatrix& Spacecraft::SetRmatrixParameter(const Integer id,
 }
 
 //---------------------------------------------------------------------------
-// const Rmatrix& GetRmatrixParameter(const wxString &label) const
+// const Rmatrix& GetRmatrixParameter(const std::string &label) const
 //---------------------------------------------------------------------------
-const Rmatrix& Spacecraft::GetRmatrixParameter(const wxString &label) const
+const Rmatrix& Spacecraft::GetRmatrixParameter(const std::string &label) const
 {
    return GetRmatrixParameter(GetParameterID(label));
 }
 
 //---------------------------------------------------------------------------
-// const Rmatrix& SetRmatrixParameter(const wxString &label,
+// const Rmatrix& SetRmatrixParameter(const std::string &label,
 //                                    const Rmatrix &value)
 //---------------------------------------------------------------------------
-const Rmatrix& Spacecraft::SetRmatrixParameter(const wxString &label,
+const Rmatrix& Spacecraft::SetRmatrixParameter(const std::string &label,
                                                const Rmatrix &value)
 {
    return SetRmatrixParameter(GetParameterID(label), value);
@@ -3001,10 +3001,10 @@ Real Spacecraft::GetRealParameter(const Integer id, const Integer row,
 }
 
 //---------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label, const Integer row,
+// Real GetRealParameter(const std::string &label, const Integer row,
 //                       const Integer col) const
 //---------------------------------------------------------------------------
-Real Spacecraft::GetRealParameter(const wxString &label,
+Real Spacecraft::GetRealParameter(const std::string &label,
                                   const Integer row,
                                   const Integer col) const
 {
@@ -3034,10 +3034,10 @@ Real Spacecraft::SetRealParameter(const Integer id, const Real value,
 }
 
 //---------------------------------------------------------------------------
-// Real SetRealParameter(const wxString &label, const Real value, const Integer row,
+// Real SetRealParameter(const std::string &label, const Real value, const Integer row,
 //                       const Integer col)
 //---------------------------------------------------------------------------
-Real Spacecraft::SetRealParameter(const wxString &label,
+Real Spacecraft::SetRealParameter(const std::string &label,
                                       const Real value, const Integer row,
                                       const Integer col)
 {
@@ -3071,8 +3071,8 @@ Real Spacecraft::SetRealParameter(const Integer id, const Real value,
          {
             #ifdef DEBUG_SC_ATTITUDE
             MessageInterface::ShowMessage(
-               wxT("------ Now calling attitude to SET real parameter for id =  %d")
-               wxT(", index = %d,  and value = %12.10f\n"), id, index, value);
+               "------ Now calling attitude to SET real parameter for id =  %d"
+               ", index = %d,  and value = %12.10f\n", id, index, value);
             #endif
             return attitude->SetRealParameter(id - ATTITUDE_ID_OFFSET, value, index);
          }
@@ -3086,37 +3086,37 @@ Real Spacecraft::SetRealParameter(const Integer id, const Real value,
 }
 
 //---------------------------------------------------------------------------
-//  bool TakeAction(const wxString &action, const wxString &actionData)
+//  bool TakeAction(const std::string &action, const std::string &actionData)
 //---------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //---------------------------------------------------------------------------
-bool Spacecraft::TakeAction(const wxString &action,
-                            const wxString &actionData)
+bool Spacecraft::TakeAction(const std::string &action,
+                            const std::string &actionData)
 {
    #ifdef DEBUG_SC_REF_OBJECT
    MessageInterface::ShowMessage
-      (wxT("Entering SC<%p>'%s'::TakeAction with action = '%s', and actionData = ")
-       wxT("'%s'\n"), this, GetName().c_str(), action.c_str(), actionData.c_str());
+      ("Entering SC<%p>'%s'::TakeAction with action = '%s', and actionData = "
+       "'%s'\n", this, GetName().c_str(), action.c_str(), actionData.c_str());
    #endif
-   if (action == wxT("SetupHardware"))
+   if (action == "SetupHardware")
    {
       AttachTanksToThrusters();
 
       #ifdef DEBUG_SC_REF_OBJECT
-      MessageInterface::ShowMessage(wxT("Leaviong SC::TakeAction with true\n"));
+      MessageInterface::ShowMessage("Leaviong SC::TakeAction with true\n");
       #endif
       return true;
    }
 
-   if (action == wxT("RequireCartesianStateDynamics"))
+   if (action == "RequireCartesianStateDynamics")
    {
       ++includeCartesianState;
       return true;
    }
 
-   if (action == wxT("ReleaseCartesianStateDynamics"))
+   if (action == "ReleaseCartesianStateDynamics")
    {
       --includeCartesianState;
       if (includeCartesianState < 0)
@@ -3124,15 +3124,15 @@ bool Spacecraft::TakeAction(const wxString &action,
       return true;
    }
 
-   if ((action == wxT("RemoveHardware")) || (action == wxT("RemoveTank")) ||
-       (action == wxT("RemoveThruster")))
+   if ((action == "RemoveHardware") || (action == "RemoveTank") ||
+       (action == "RemoveThruster"))
    {
       bool removeTank = true, removeThruster = true, removeAll = false;
-      if (action == wxT("RemoveTank"))
+      if (action == "RemoveTank")
          removeThruster = false;
-      if (action == wxT("RemoveThruster"))
+      if (action == "RemoveThruster")
          removeTank = false;
-      if (actionData == wxT(""))
+      if (actionData == "")
          removeAll = true;
 
       if (removeThruster)
@@ -3157,8 +3157,8 @@ bool Spacecraft::TakeAction(const wxString &action,
                   thrusters.erase(i);
                   #ifdef DEBUG_MEMORY
                   MemoryTracker::Instance()->Remove
-                     (*i, (*i)->GetName(), wxT("Spacecraft::TakeAction()"),
-                      wxT("deleting cloned Thruster"), this);
+                     (*i, (*i)->GetName(), "Spacecraft::TakeAction()",
+                      "deleting cloned Thruster", this);
                   #endif
                   delete thr;
                }
@@ -3187,8 +3187,8 @@ bool Spacecraft::TakeAction(const wxString &action,
                   tanks.erase(i);
                   #ifdef DEBUG_MEMORY
                   MemoryTracker::Instance()->Remove
-                     (*i, (*i)->GetName(), wxT("Spacecraft::TakeAction()"),
-                      wxT("deleting cloned Tanks"), this);
+                     (*i, (*i)->GetName(), "Spacecraft::TakeAction()",
+                      "deleting cloned Tanks", this);
                   #endif
                   delete tnk;
                }
@@ -3196,23 +3196,23 @@ bool Spacecraft::TakeAction(const wxString &action,
       }
 
       #ifdef DEBUG_SC_REF_OBJECT
-      MessageInterface::ShowMessage(wxT("Leaviong SC::TakeAction with true\n"));
+      MessageInterface::ShowMessage("Leaviong SC::TakeAction with true\n");
       #endif
       return true;
    }
 
-   if (action == wxT("ApplyCoordinateSystem"))
+   if (action == "ApplyCoordinateSystem")
    {
       #ifdef DEBUG_SPACECRAFT_CS
       MessageInterface::ShowMessage
-         (wxT("Spacecraft::TakeAction(ApplyCoordinateSystem) Calling StateConverter::SetMu(%p)\n"),
+         ("Spacecraft::TakeAction(ApplyCoordinateSystem) Calling StateConverter::SetMu(%p)\n",
           coordinateSystem);
       #endif
 
       if (!stateConverter.SetMu(coordinateSystem))
       {
          throw SpaceObjectException(
-            wxT("\nError:  Spacecraft has empty coordinate system\n"));
+            "\nError:  Spacecraft has empty coordinate system\n");
       }
 
       if (csSet == false)
@@ -3220,10 +3220,10 @@ bool Spacecraft::TakeAction(const wxString &action,
          Rvector6 st(state.GetState());
          #ifdef DEBUG_SPACECRAFT_CS
          MessageInterface::ShowMessage
-            (wxT("Spacecraft::TakeAction() Calling SetStateFromRepresentation(%s, cartesianstate), ")
-             wxT("since CS was not set()\n"), stateType.c_str());
+            ("Spacecraft::TakeAction() Calling SetStateFromRepresentation(%s, cartesianstate), "
+             "since CS was not set()\n", stateType.c_str());
          MessageInterface::ShowMessage
-            (wxT(" ... at this point, the state = %s\n"), (st.ToString()).c_str());
+            (" ... at this point, the state = %s\n", (st.ToString()).c_str());
          #endif
          try
          {
@@ -3231,64 +3231,65 @@ bool Spacecraft::TakeAction(const wxString &action,
          }
          catch (BaseException &be)
          {
-            wxString errmsg = wxT("Error applying coordinate system due to errors in spacecraft state. ");
-            errmsg += be.GetFullMessage() + wxT("\n");
+            std::string errmsg = "Error applying coordinate system due to errors in spacecraft state. ";
+            errmsg += be.GetFullMessage() + "\n";
             throw SpaceObjectException(errmsg);
          }
 
          #ifdef DEBUG_SPACECRAFT_CS
          MessageInterface::ShowMessage
-            (wxT("Spacecraft::TakeAction() setting csSet to true ........\n"));
+            ("Spacecraft::TakeAction() setting csSet to true ........\n");
          #endif
          csSet = true;
       }
 
       #ifdef DEBUG_SPACECRAFT_CS
-      MessageInterface::ShowMessage(wxT("Spacecraft::TakeAction() returning true\n"));
+      MessageInterface::ShowMessage("Spacecraft::TakeAction() returning true\n");
       #endif
       return true;
    }
 
    // 6/12/06 - arg: reset scEpochStr to epoch from prop state
-   if (action == wxT("UpdateEpoch"))
+   if (action == "UpdateEpoch")
    {
       Real currEpoch = state.GetEpoch();
 
-      if (epochSystem != wxT(""))
+      if (epochSystem != "")
       {
-         if (epochSystem != wxT("A1"))
+         if (epochSystem != "A1")
             currEpoch = TimeConverterUtil::Convert(currEpoch,
                           TimeConverterUtil::A1,
                           TimeConverterUtil::GetTimeTypeID(epochSystem),
                           GmatTimeConstants::JD_JAN_5_1941);
       }
 
-      if (epochFormat != wxT(""))
+      if (epochFormat != "")
       {
-         if (epochFormat == wxT("Gregorian"))
+         if (epochFormat == "Gregorian")
             scEpochStr = TimeConverterUtil::ConvertMjdToGregorian(currEpoch);
          else
          {
-            wxString timestream;
+            std::stringstream timestream;
+            timestream.precision(GetTimePrecision());
             timestream << currEpoch;
-            scEpochStr = timestream;
+            scEpochStr = timestream.str();
          }
       }
       #ifdef DEBUG_SC_EPOCHSTR
-      MessageInterface::ShowMessage(wxT("In TakeAction, epochSystem = %s\n"),
+      MessageInterface::ShowMessage("In TakeAction, epochSystem = %s\n",
       epochSystem.c_str());
-      MessageInterface::ShowMessage(wxT("In TakeAction, epochFormat = %s\n"),
+      MessageInterface::ShowMessage("In TakeAction, epochFormat = %s\n",
       epochFormat.c_str());
-      MessageInterface::ShowMessage(wxT("In TakeAction, scEpochStr being set to %s\n"),
+      MessageInterface::ShowMessage("In TakeAction, scEpochStr being set to %s\n",
       scEpochStr.c_str());
       #endif
 
       return true;
    }
 
-   if (action == wxT("ThrusterSettingMode"))
+   if (action == "ThrusterSettingMode")
    {
-      if (actionData == wxT("On"))
+      if (actionData == "On")
          isThrusterSettingMode = true;
       else
          isThrusterSettingMode = false;
@@ -3296,7 +3297,7 @@ bool Spacecraft::TakeAction(const wxString &action,
       return true;
    }
 
-   if (action == wxT("ResetSTM"))
+   if (action == "ResetSTM")
    {
       orbitSTM(0,0) = orbitSTM(1,1) = orbitSTM(2,2) =
       orbitSTM(3,3) = orbitSTM(4,4) = orbitSTM(5,5) = 1.0;
@@ -3310,7 +3311,7 @@ bool Spacecraft::TakeAction(const wxString &action,
             = 0.0;
    }
 
-   if (action == wxT("ResetAMatrix"))
+   if (action == "ResetAMatrix")
    {
       orbitAMatrix(0,0) = orbitAMatrix(1,1) = orbitAMatrix(2,2) =
       orbitAMatrix(3,3) = orbitAMatrix(4,4) = orbitAMatrix(5,5) = 1.0;
@@ -3369,13 +3370,13 @@ bool Spacecraft::Initialize()
 {
    #ifdef DEBUG_SPACECRAFT_CS
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::Initialize() entered ---------- this=<%p> '%s'\n   ")
-       wxT("internalCoordSystem=<%p> '%s', coordinateSystem=<%p> '%s'\n"), this,
+      ("Spacecraft::Initialize() entered ---------- this=<%p> '%s'\n   "
+       "internalCoordSystem=<%p> '%s', coordinateSystem=<%p> '%s'\n", this,
        GetName().c_str(), internalCoordSystem,
-       internalCoordSystem ? internalCoordSystem->GetName().c_str() : wxT("NULL"),
-       coordinateSystem, coordinateSystem ? coordinateSystem->GetName().c_str() : wxT("NULL"));
+       internalCoordSystem ? internalCoordSystem->GetName().c_str() : "NULL",
+       coordinateSystem, coordinateSystem ? coordinateSystem->GetName().c_str() : "NULL");
    MessageInterface::ShowMessage
-      (wxT("   stateType=%s, state=\n   %.9f, %.9f, %.9f, %.14f, %.14f, %f.14\n"),
+      ("   stateType=%s, state=\n   %.9f, %.9f, %.9f, %.14f, %.14f, %f.14\n",
        stateType.c_str(), state[0], state[1], state[2], state[3],
        state[4], state[5]);
    #endif
@@ -3384,64 +3385,64 @@ bool Spacecraft::Initialize()
    // Otherwise, discontinue process and send the error message
    if (!stateConverter.SetMu(coordinateSystem))
    {
-      throw SpaceObjectException(wxT("Spacecraft has empty coordinate system"));
+      throw SpaceObjectException("Spacecraft has empty coordinate system");
    }
    if (!attitude)
    {
       #ifdef DEBUG_SC_ATTITUDE
-      MessageInterface::ShowMessage(wxT("Spacecraft %s has no defined attitude object.\n"),
+      MessageInterface::ShowMessage("Spacecraft %s has no defined attitude object.\n",
                      instanceName.c_str());
       #endif
-      throw SpaceObjectException(wxT("Spacecraft has no attitude set."));
+      throw SpaceObjectException("Spacecraft has no attitude set.");
    }
    else
    {
       #ifdef DEBUG_SC_ATTITUDE
          MessageInterface::ShowMessage(
-         wxT("Initializing attitude object for spacecraft %s\n"),
+         "Initializing attitude object for spacecraft %s\n",
          instanceName.c_str());
       #endif
 
 #ifdef __USE_SPICE__
-      if (attitude->IsOfType(wxT("SpiceAttitude")))
+      if (attitude->IsOfType("SpiceAttitude"))
       {
          #ifdef DEBUG_SPICE_KERNELS
-         MessageInterface::ShowMessage(wxT("About to set %d CK kernels on spiceAttitude\n"),
+         MessageInterface::ShowMessage("About to set %d CK kernels on spiceAttitude\n",
                attitudeSpiceKernelNames.size());
-         MessageInterface::ShowMessage(wxT("About to set %d SCLK kernels on spiceAttitude\n"),
+         MessageInterface::ShowMessage("About to set %d SCLK kernels on spiceAttitude\n",
                scClockSpiceKernelNames.size());
-         MessageInterface::ShowMessage(wxT("About to set %d FK kernels on spiceAttitude\n"),
+         MessageInterface::ShowMessage("About to set %d FK kernels on spiceAttitude\n",
                frameSpiceKernelNames.size());
          #endif
          SpiceAttitude *spiceAttitude = (SpiceAttitude*) attitude;
          spiceAttitude->SetObjectID(instanceName, naifId, naifIdRefFrame);
          for (Integer ii = 0; ii < (Integer) attitudeSpiceKernelNames.size(); ii++)
-            spiceAttitude->SetStringParameter(wxT("AttitudeKernelName"), attitudeSpiceKernelNames[ii], ii);
+            spiceAttitude->SetStringParameter("AttitudeKernelName", attitudeSpiceKernelNames[ii], ii);
          for (Integer ii = 0; ii < (Integer) scClockSpiceKernelNames.size(); ii++)
-            spiceAttitude->SetStringParameter(wxT("SCClockKernelName"), scClockSpiceKernelNames[ii], ii);
+            spiceAttitude->SetStringParameter("SCClockKernelName", scClockSpiceKernelNames[ii], ii);
          for (Integer ii = 0; ii < (Integer) frameSpiceKernelNames.size(); ii++)
-            spiceAttitude->SetStringParameter(wxT("FrameKernelName"), frameSpiceKernelNames[ii], ii);
+            spiceAttitude->SetStringParameter("FrameKernelName", frameSpiceKernelNames[ii], ii);
       }
 #endif
       attitude->Initialize();
       #ifdef DEBUG_SC_ATTITUDE
          MessageInterface::ShowMessage(
-         wxT("***Finished initializing attitude object for spacecraft %s\n"),
+         "***Finished initializing attitude object for spacecraft %s\n",
          instanceName.c_str());
       #endif
    }
 
    #ifdef DEBUG_HARDWARE
-      MessageInterface::ShowMessage(wxT("Hardware list names:\n"));
+      MessageInterface::ShowMessage("Hardware list names:\n");
       for (UnsignedInt i = 0; i < hardwareNames.size(); ++i)
       {
-         MessageInterface::ShowMessage(wxT("   %s\n"), hardwareNames[i].c_str());
+         MessageInterface::ShowMessage("   %s\n", hardwareNames[i].c_str());
       }
 
-      MessageInterface::ShowMessage(wxT("Hardware list objects:\n"));
+      MessageInterface::ShowMessage("Hardware list objects:\n");
       for (UnsignedInt i = 0; i < hardwareList.size(); ++i)
       {
-         MessageInterface::ShowMessage(wxT("   %s\n"), hardwareList[i]->GetName().c_str());
+         MessageInterface::ShowMessage("   %s\n", hardwareList[i]->GetName().c_str());
       }
    #endif
 
@@ -3457,7 +3458,7 @@ bool Spacecraft::Initialize()
          for (UnsignedInt j = 0; j < refs.size(); ++j)
          {
             #ifdef DEBUG_HARDWARE
-               MessageInterface::ShowMessage(wxT("Connecting up %s for %s\n"),
+               MessageInterface::ShowMessage("Connecting up %s for %s\n",
                      refs[j].c_str(), current->GetName().c_str());
             #endif
 
@@ -3478,7 +3479,7 @@ bool Spacecraft::Initialize()
            return false;
 
    #ifdef DEBUG_SPACECRAFT_CS
-      MessageInterface::ShowMessage(wxT("Spacecraft::Initialize() exiting ----------\n"));
+      MessageInterface::ShowMessage("Spacecraft::Initialize() exiting ----------\n");
    #endif
 
    return true;
@@ -3486,14 +3487,14 @@ bool Spacecraft::Initialize()
 
 
 //------------------------------------------------------------------------------
-// wxString GetEpochString()
+// std::string GetEpochString()
 //------------------------------------------------------------------------------
-wxString Spacecraft::GetEpochString()
+std::string Spacecraft::GetEpochString()
 {
    Real outMjd = -999.999;
-   wxString outStr;
+   std::string outStr;
 
-   TimeConverterUtil::Convert(wxT("A1ModJulian"), GetEpoch(), wxT(""),
+   TimeConverterUtil::Convert("A1ModJulian", GetEpoch(), "",
                               epochType, outMjd, outStr);
 
    return outStr;
@@ -3501,7 +3502,7 @@ wxString Spacecraft::GetEpochString()
 
 
 //------------------------------------------------------------------------------
-// void SetDateFormat(const wxString &dateType)
+// void SetDateFormat(const std::string &dateType)
 //------------------------------------------------------------------------------
 /**
  * Sets the output date format of epoch.
@@ -3509,11 +3510,11 @@ wxString Spacecraft::GetEpochString()
  * @param <dateType> date type given.
  */
 //------------------------------------------------------------------------------
-void Spacecraft::SetDateFormat(const wxString &dateType)
+void Spacecraft::SetDateFormat(const std::string &dateType)
 {
    #ifdef DEBUG_DATE_FORMAT
-      MessageInterface::ShowMessage(wxT("Spacecraft::SetDateFormat() ")
-         wxT("Setting date format to %s; initial epoch is %s\n"),
+      MessageInterface::ShowMessage("Spacecraft::SetDateFormat() "
+         "Setting date format to %s; initial epoch is %s\n",
          dateType.c_str(), scEpochStr.c_str());
    #endif
 
@@ -3524,7 +3525,7 @@ void Spacecraft::SetDateFormat(const wxString &dateType)
 
 
 //------------------------------------------------------------------------------
-//  void SetEpoch(wxString ep)
+//  void SetEpoch(std::string ep)
 //------------------------------------------------------------------------------
 /**
  * Set the epoch.
@@ -3532,11 +3533,11 @@ void Spacecraft::SetDateFormat(const wxString &dateType)
  * @param <ep> The new epoch.
  */
 //------------------------------------------------------------------------------
-void Spacecraft::SetEpoch(const wxString &ep)
+void Spacecraft::SetEpoch(const std::string &ep)
 {
    #ifdef DEBUG_DATE_FORMAT
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::SetEpoch() Setting epoch  for spacecraft %s to %s\n"),
+      ("Spacecraft::SetEpoch() Setting epoch  for spacecraft %s to %s\n",
        instanceName.c_str(), ep.c_str());
    #endif
 
@@ -3544,9 +3545,9 @@ void Spacecraft::SetEpoch(const wxString &ep)
 
    Real fromMjd = -999.999;
    Real outMjd = -999.999;
-   wxString outStr;
+   std::string outStr;
 
-   TimeConverterUtil::Convert(epochType, fromMjd, ep, wxT("A1ModJulian"), outMjd,
+   TimeConverterUtil::Convert(epochType, fromMjd, ep, "A1ModJulian", outMjd,
                               outStr);
 
    if (outMjd != -999.999)
@@ -3558,7 +3559,7 @@ void Spacecraft::SetEpoch(const wxString &ep)
    else
    {
       #ifdef DEBUG_DATE_FORMAT
-      MessageInterface::ShowMessage(wxT("Spacecraft::SetEpoch() oops!  outMjd = -999.999!!\n"));
+      MessageInterface::ShowMessage("Spacecraft::SetEpoch() oops!  outMjd = -999.999!!\n");
       #endif
    }
 
@@ -3566,7 +3567,7 @@ void Spacecraft::SetEpoch(const wxString &ep)
 
 
 //------------------------------------------------------------------------------
-// void SetEpoch(const wxString &type, const wxString &ep, Real a1mjd)
+// void SetEpoch(const std::string &type, const std::string &ep, Real a1mjd)
 //------------------------------------------------------------------------------
 /*
  * Sets output epoch type, system, format, and epoch.  No conversion is done here.
@@ -3576,10 +3577,10 @@ void Spacecraft::SetEpoch(const wxString &ep)
  * @param  a1mjd  epoch in TAIModJulian format
  */
 //------------------------------------------------------------------------------
-void Spacecraft::SetEpoch(const wxString &type, const wxString &ep, Real a1mjd)
+void Spacecraft::SetEpoch(const std::string &type, const std::string &ep, Real a1mjd)
 {
    #ifdef DEBUG_SC_EPOCHSTR
-   MessageInterface::ShowMessage(wxT("In SC::SetEpoch, type = %s, ep = %s, a1mjd = %.12f\n"),
+   MessageInterface::ShowMessage("In SC::SetEpoch, type = %s, ep = %s, a1mjd = %.12f\n",
    type.c_str(), ep.c_str(), a1mjd);
    #endif
    TimeConverterUtil::GetTimeSystemAndFormat(type, epochSystem, epochFormat);
@@ -3589,14 +3590,14 @@ void Spacecraft::SetEpoch(const wxString &type, const wxString &ep, Real a1mjd)
    state.SetEpoch(a1mjd);
    if (attitude) attitude->SetEpoch(a1mjd);
    #ifdef DEBUG_SC_EPOCHSTR
-   MessageInterface::ShowMessage(wxT("and in SC::SetEpoch, epochSystem = %s, epochFormat = %s\n"),
+   MessageInterface::ShowMessage("and in SC::SetEpoch, epochSystem = %s, epochFormat = %s\n",
    epochSystem.c_str(), epochFormat.c_str());
    #endif
 }
 
 
 //------------------------------------------------------------------------------
-// void  SetState(const wxString &type, const Rvector6 &cartState)
+// void  SetState(const std::string &type, const Rvector6 &cartState)
 //------------------------------------------------------------------------------
 /*
  * Sets output state type and state in cartesian representation. Just set to
@@ -3606,11 +3607,11 @@ void Spacecraft::SetEpoch(const wxString &type, const wxString &ep, Real a1mjd)
  * @param  cartState  cartesian state to set as internal state
  */
 //------------------------------------------------------------------------------
-void Spacecraft::SetState(const wxString &type, const Rvector6 &cartState)
+void Spacecraft::SetState(const std::string &type, const Rvector6 &cartState)
 {
    #ifdef DEBUG_SPACECRAFT_SET
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::SetState() type=%s, cartState=\n   %s\n"), type.c_str(),
+      ("Spacecraft::SetState() type=%s, cartState=\n   %s\n", type.c_str(),
        cartState.ToString().c_str());
    #endif
 
@@ -3623,61 +3624,61 @@ void Spacecraft::SetState(const wxString &type, const Rvector6 &cartState)
 
 
 //------------------------------------------------------------------------------
-// void Spacecraft::SetAnomaly(const wxString &type, const Anomaly &ta)
+// void Spacecraft::SetAnomaly(const std::string &type, const Anomaly &ta)
 //------------------------------------------------------------------------------
 /*
  * Sets anomaly type and input true anomaly to internal true anomaly
  *
- * @param  type  Anomaly type (wxT("TA"), wxT("MA"), wxT("EA, ")HAwxT(" or full name like ")True Anomaly")
+ * @param  type  Anomaly type ("TA", "MA", "EA, "HA" or full name like "True Anomaly")
  * @param  ta    True anomaly to set as internal true anomaly
  */
 //------------------------------------------------------------------------------
-void Spacecraft::SetAnomaly(const wxString &type, const Anomaly &ta)
+void Spacecraft::SetAnomaly(const std::string &type, const Anomaly &ta)
 {
    trueAnomaly = ta;
    anomalyType = Anomaly::GetTypeString(type); // why call a static here?? - wcs
    // wcs 2007.05.18 - don't assume - only set the label if it's appropriate
-   if (displayStateType == wxT("Keplerian") || displayStateType == wxT("ModifiedKeplerian"))
+   if (displayStateType == "Keplerian" || displayStateType == "ModifiedKeplerian")
    stateElementLabel[5] = anomalyType;     // this assumes current display type is Keplerian/ModKep??
 
    #ifdef DEBUG_SPACECRAFT_SET
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::SetAnomaly() anomalyType=%s, value=%f\n"), anomalyType.c_str(),
+      ("Spacecraft::SetAnomaly() anomalyType=%s, value=%f\n", anomalyType.c_str(),
        trueAnomaly.GetValue());
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::SetAnomaly() stateElementLabel[5] = %s\n"),
+      ("Spacecraft::SetAnomaly() stateElementLabel[5] = %s\n",
       stateElementLabel[5].c_str());
    #endif
 }
 
 // todo: comment methods
 //------------------------------------------------------------------------------
-// Integer Spacecraft::GetPropItemID(const wxString &whichItem)
+// Integer Spacecraft::GetPropItemID(const std::string &whichItem)
 //------------------------------------------------------------------------------
-Integer Spacecraft::GetPropItemID(const wxString &whichItem)
+Integer Spacecraft::GetPropItemID(const std::string &whichItem)
 {
-   if (whichItem == wxT("CartesianState"))
+   if (whichItem == "CartesianState")
       return Gmat::CARTESIAN_STATE;
-   if (whichItem == wxT("STM"))
+   if (whichItem == "STM")
       return Gmat::ORBIT_STATE_TRANSITION_MATRIX;
-   if (whichItem == wxT("AMatrix"))
+   if (whichItem == "AMatrix")
       return Gmat::ORBIT_A_MATRIX;
 
    return SpaceObject::GetPropItemID(whichItem);
 }
 
 //------------------------------------------------------------------------------
-// Integer SetPropItem(const wxString &propItem)
+// Integer SetPropItem(const std::string &propItem)
 //------------------------------------------------------------------------------
-Integer Spacecraft::SetPropItem(const wxString &propItem)
+Integer Spacecraft::SetPropItem(const std::string &propItem)
 {
-   if (propItem == wxT("CartesianState"))
+   if (propItem == "CartesianState")
       return Gmat::CARTESIAN_STATE;
-   if (propItem == wxT("STM"))
+   if (propItem == "STM")
       return Gmat::ORBIT_STATE_TRANSITION_MATRIX;
-   if (propItem == wxT("AMatrix"))
+   if (propItem == "AMatrix")
       return Gmat::ORBIT_A_MATRIX;
-   if (propItem == wxT("MassFlow"))
+   if (propItem == "MassFlow")
       if (tanks.size() > 0)
          return Gmat::MASS_FLOW;
 
@@ -3691,7 +3692,7 @@ Integer Spacecraft::SetPropItem(const wxString &propItem)
 StringArray Spacecraft::GetDefaultPropItems()
 {
    StringArray defaults = SpaceObject::GetDefaultPropItems();
-   defaults.push_back(wxT("CartesianState"));
+   defaults.push_back("CartesianState");
    return defaults;
 }
 
@@ -3820,8 +3821,8 @@ Integer Spacecraft::GetEstimationParameterSize(const Integer item)
    Integer id = item - type * ESTIMATION_TYPE_ALLOCATION;
 
    #ifdef DEBUG_ESTIMATION
-      MessageInterface::ShowMessage(wxT("Spacecraft::GetEstimationParameterSize(%d)")
-            wxT(" called; parameter ID is %d\n"), item, id);
+      MessageInterface::ShowMessage("Spacecraft::GetEstimationParameterSize(%d)"
+            " called; parameter ID is %d\n", item, id);
    #endif
 
 
@@ -3887,19 +3888,19 @@ Real Spacecraft::UpdateTotalMass()
 {
    #ifdef DEBUG_UPDATE_TOTAL_MASS
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::UpdateTotalMass() <%p>'%s' entered, dryMass=%f\n"),
+      ("Spacecraft::UpdateTotalMass() <%p>'%s' entered, dryMass=%f\n",
        this, GetName().c_str(), dryMass);
    #endif
 
    totalMass = dryMass;
    for (ObjectArray::iterator i = tanks.begin(); i < tanks.end(); ++i)
    {
-      totalMass += (*i)->GetRealParameter(wxT("FuelMass"));
+      totalMass += (*i)->GetRealParameter("FuelMass");
    }
 
    #ifdef DEBUG_UPDATE_TOTAL_MASS
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::UpdateTotalMass() <%p>'%s' returning %f\n"), this,
+      ("Spacecraft::UpdateTotalMass() <%p>'%s' returning %f\n", this,
        GetName().c_str(), totalMass);
    #endif
 
@@ -3923,20 +3924,20 @@ Real Spacecraft::UpdateTotalMass() const
 {
    #ifdef DEBUG_UPDATE_TOTAL_MASS
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::UpdateTotalMass() const <%p>'%s' entered, dryMass=%f, ")
-       wxT("attached tank count = %d\n"), this, GetName().c_str(), dryMass,
+      ("Spacecraft::UpdateTotalMass() const <%p>'%s' entered, dryMass=%f, "
+       "attached tank count = %d\n", this, GetName().c_str(), dryMass,
        tanks.size());
    #endif
 
    Real tmass = dryMass;
    for (ObjectArray::const_iterator i = tanks.begin(); i < tanks.end(); ++i)
    {
-      tmass += (*i)->GetRealParameter(wxT("FuelMass"));
+      tmass += (*i)->GetRealParameter("FuelMass");
    }
 
    #ifdef DEBUG_UPDATE_TOTAL_MASS
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::UpdateTotalMass() const <%p>'%s' returning %f\n"), this,
+      ("Spacecraft::UpdateTotalMass() const <%p>'%s' returning %f\n", this,
        GetName().c_str(), tmass);
    #endif
 
@@ -3967,7 +3968,7 @@ bool Spacecraft::ApplyTotalMass(Real newMass)
    Real massChange = newMass - UpdateTotalMass();
 
    #ifdef DEBUG_MASS_FLOW
-      MessageInterface::ShowMessage(wxT("Mass change = %.12le; depeting "), massChange);
+      MessageInterface::ShowMessage("Mass change = %.12le; depeting ", massChange);
    #endif
 
    // Find the active thruster(s)
@@ -3976,7 +3977,7 @@ bool Spacecraft::ApplyTotalMass(Real newMass)
    Real        totalFlow = 0.0, rate;
    for (ObjectArray::iterator i = thrusters.begin(); i != thrusters.end(); ++i)
    {
-      if ((*i)->GetBooleanParameter(wxT("IsFiring")))
+      if ((*i)->GetBooleanParameter("IsFiring"))
       {
          active.push_back(*i);
          rate = ((Thruster*)(*i))->CalculateMassFlow();
@@ -3989,10 +3990,11 @@ bool Spacecraft::ApplyTotalMass(Real newMass)
    Real numberFiring = active.size();
    if ((numberFiring <= 0) && (massChange != 0.0))
    {
-      wxString errmsg;
-      errmsg << wxT("Mass update ") << massChange
-             << wxT(" requested but there are no active thrusters");
-      throw SpaceObjectException(errmsg);
+      std::stringstream errmsg;
+      errmsg.precision(15);
+      errmsg << "Mass update " << massChange
+             << " requested but there are no active thrusters";
+      throw SpaceObjectException(errmsg.str());
    }
 
    Real dm;  // = massChange / numberFiring;
@@ -4003,7 +4005,7 @@ bool Spacecraft::ApplyTotalMass(Real newMass)
       dm = massChange * flowrate[i] / totalFlow;
 
       #ifdef DEBUG_MASS_FLOW
-         MessageInterface::ShowMessage(wxT("%.12le from %s = [ "), dm, active[i]->GetName().c_str());
+         MessageInterface::ShowMessage("%.12le from %s = [ ", dm, active[i]->GetName().c_str());
       #endif
 
       Real dmt = dm / usedTanks.size();
@@ -4011,17 +4013,17 @@ bool Spacecraft::ApplyTotalMass(Real newMass)
             j != usedTanks.end(); ++j)
       {
          #ifdef DEBUG_MASS_FLOW
-            MessageInterface::ShowMessage(wxT(" %.12le "), dmt);
+            MessageInterface::ShowMessage(" %.12le ", dmt);
          #endif
-         (*j)->SetRealParameter(wxT("FuelMass"),
-               (*j)->GetRealParameter(wxT("FuelMass")) + dmt);
+         (*j)->SetRealParameter("FuelMass",
+               (*j)->GetRealParameter("FuelMass") + dmt);
       }
       #ifdef DEBUG_MASS_FLOW
-               MessageInterface::ShowMessage(wxT(" ] "));
+               MessageInterface::ShowMessage(" ] ");
       #endif
    }
    #ifdef DEBUG_MASS_FLOW
-      MessageInterface::ShowMessage(wxT("\n"));
+      MessageInterface::ShowMessage("\n");
    #endif
 
    return retval;
@@ -4040,8 +4042,8 @@ void Spacecraft::DeleteOwnedObjects(bool deleteAttitude, bool deleteTanks,
 {
    #ifdef DEBUG_DELETE_OWNED_OBJ
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::DeleteOwnedObjects() <%p>'%s' entered, deleteAttitude=%d, ")
-       wxT("deleteTanks=%d, deleteThrusters=%d, otherHardware=%d\n"), this,
+      ("Spacecraft::DeleteOwnedObjects() <%p>'%s' entered, deleteAttitude=%d, "
+       "deleteTanks=%d, deleteThrusters=%d, otherHardware=%d\n", this,
        GetName().c_str(), deleteAttitude, deleteTanks, deleteThrusters,
        otherHardware);
    #endif
@@ -4053,14 +4055,14 @@ void Spacecraft::DeleteOwnedObjects(bool deleteAttitude, bool deleteTanks,
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (attitude, wxT("attitude"), wxT("Spacecraft::DeleteOwnedObjects()"),
-             wxT("deleting attitude of ") + GetName(), this);
+            (attitude, "attitude", "Spacecraft::DeleteOwnedObjects()",
+             "deleting attitude of " + GetName(), this);
          #endif
          delete attitude;
          ownedObjectCount--;
          #ifdef DEBUG_SC_OWNED_OBJECT
          MessageInterface::ShowMessage
-            (wxT("Spacecraft::DeleteOwnedObjects() <%p>'%s' ownedObjectCount=%d\n"),
+            ("Spacecraft::DeleteOwnedObjects() <%p>'%s' ownedObjectCount=%d\n",
              this, GetName().c_str(), ownedObjectCount);
          #endif
       }
@@ -4073,8 +4075,8 @@ void Spacecraft::DeleteOwnedObjects(bool deleteAttitude, bool deleteTanks,
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (*i, (*i)->GetName(), wxT("Spacecraft::DeleteOwnedObjects()"),
-             wxT("deleting cloned Tank"), this);
+            (*i, (*i)->GetName(), "Spacecraft::DeleteOwnedObjects()",
+             "deleting cloned Tank", this);
          #endif
          delete *i;
       }
@@ -4088,8 +4090,8 @@ void Spacecraft::DeleteOwnedObjects(bool deleteAttitude, bool deleteTanks,
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (*i, (*i)->GetName(), wxT("Spacecraft::DeleteOwnedObjects()"),
-             wxT("deleting cloned Thruster"), this);
+            (*i, (*i)->GetName(), "Spacecraft::DeleteOwnedObjects()",
+             "deleting cloned Thruster", this);
          #endif
          delete *i;
       }
@@ -4104,8 +4106,8 @@ void Spacecraft::DeleteOwnedObjects(bool deleteAttitude, bool deleteTanks,
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (*i, (*i)->GetName(), wxT("Spacecraft::DeleteOwnedObjects()"),
-             wxT("deleting cloned Hardware"), this);
+            (*i, (*i)->GetName(), "Spacecraft::DeleteOwnedObjects()",
+             "deleting cloned Hardware", this);
          #endif
          delete *i;
       }
@@ -4114,8 +4116,8 @@ void Spacecraft::DeleteOwnedObjects(bool deleteAttitude, bool deleteTanks,
 
    #ifdef DEBUG_DELETE_OWNED_OBJ
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::DeleteOwnedObjects() <%p>'%s' leaving, tanks.size()=%d, ")
-       wxT("thrusters.size()=%d, hardwareLise.size()=%d\n"), this, GetName().c_str(),
+      ("Spacecraft::DeleteOwnedObjects() <%p>'%s' leaving, tanks.size()=%d, "
+       "thrusters.size()=%d, hardwareLise.size()=%d\n", this, GetName().c_str(),
        tanks.size(), thrusters.size(), hardwareList.size());
    #endif
 }
@@ -4133,8 +4135,8 @@ void Spacecraft::CloneOwnedObjects(Attitude *att, const ObjectArray &tnks,
 {
    #ifdef DEBUG_OBJ_CLONE
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::CloneOwnedObjects() <%p>'%s' entered, att=<%p>, tank count = %d,")
-       wxT(" thruster count = %d\n"), this, GetName().c_str(), att, tnks.size(), thrs.size());
+      ("Spacecraft::CloneOwnedObjects() <%p>'%s' entered, att=<%p>, tank count = %d,"
+       " thruster count = %d\n", this, GetName().c_str(), att, tnks.size(), thrs.size());
    #endif
 
    attitude = NULL;
@@ -4147,13 +4149,13 @@ void Spacecraft::CloneOwnedObjects(Attitude *att, const ObjectArray &tnks,
       ownedObjectCount++;
       #ifdef DEBUG_SC_OWNED_OBJECT
       MessageInterface::ShowMessage
-         (wxT("Spacecraft::CloneOwnedObjects() <%p>'%s' ownedObjectCount=%d\n"),
+         ("Spacecraft::CloneOwnedObjects() <%p>'%s' ownedObjectCount=%d\n",
           this, GetName().c_str(), ownedObjectCount);
       #endif
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (attitude, wxT("cloned attitude"), wxT("Spacecraft::CloneOwnedObjects()"),
-          wxT("attitude = (Attitude*) att->Clone()"), this);
+         (attitude, "cloned attitude", "Spacecraft::CloneOwnedObjects()",
+          "attitude = (Attitude*) att->Clone()", this);
       #endif
    }
 
@@ -4167,8 +4169,8 @@ void Spacecraft::CloneOwnedObjects(Attitude *att, const ObjectArray &tnks,
          tanks.push_back(clonedTank);
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Add
-            (clonedTank, clonedTank->GetName(), wxT("Spacecraft::CloneOwnedObjects()"),
-             wxT("clonedTank = (tnks[i])->Clone()"), this);
+            (clonedTank, clonedTank->GetName(), "Spacecraft::CloneOwnedObjects()",
+             "clonedTank = (tnks[i])->Clone()", this);
          #endif
       }
    }
@@ -4183,14 +4185,14 @@ void Spacecraft::CloneOwnedObjects(Attitude *att, const ObjectArray &tnks,
          thrusters.push_back(clonedObj);
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Add
-            (clonedObj, clonedObj->GetName(), wxT("Spacecraft::CloneOwnedObjects()"),
-             wxT("clonedObj = (thrs[i])->Clone()"), this);
+            (clonedObj, clonedObj->GetName(), "Spacecraft::CloneOwnedObjects()",
+             "clonedObj = (thrs[i])->Clone()", this);
          #endif
 
          #ifdef DEBUG_OBJ_CLONE
          MessageInterface::ShowMessage
-            (wxT("Spacecraft::CloneOwnedObjects() Setting ref objects to ")
-             wxT("thruster<%p>'%s'\n"), clonedObj, clonedObj->GetName().c_str());
+            ("Spacecraft::CloneOwnedObjects() Setting ref objects to "
+             "thruster<%p>'%s'\n", clonedObj, clonedObj->GetName().c_str());
          #endif
 
          // Set ref. objects to cloned Thruster
@@ -4198,7 +4200,7 @@ void Spacecraft::CloneOwnedObjects(Attitude *att, const ObjectArray &tnks,
          clonedObj->SetRefObject(this, Gmat::SPACECRAFT, GetName());
 
          // Set Thruster's CoordinateSystem
-         wxString thrCsName = clonedObj->GetRefObjectName(Gmat::COORDINATE_SYSTEM);
+         std::string thrCsName = clonedObj->GetRefObjectName(Gmat::COORDINATE_SYSTEM);
          if (coordSysMap.find(thrCsName) != coordSysMap.end())
             clonedObj->SetRefObject(coordSysMap[thrCsName], Gmat::COORDINATE_SYSTEM, thrCsName);
       }
@@ -4208,7 +4210,7 @@ void Spacecraft::CloneOwnedObjects(Attitude *att, const ObjectArray &tnks,
    {
       #ifdef DEBUG_OBJ_CLONE
       MessageInterface::ShowMessage
-         (wxT("Spacecraft::CloneOwnedObjects() calling AttachTanksToThrusters()\n"));
+         ("Spacecraft::CloneOwnedObjects() calling AttachTanksToThrusters()\n");
       #endif
       AttachTanksToThrusters();
    }
@@ -4222,7 +4224,7 @@ void Spacecraft::AttachTanksToThrusters()
 {
    #ifdef DEBUG_SC_REF_OBJECT
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::AttachTanksToThrusters() this=<%p>'%s' entered\n"),
+      ("Spacecraft::AttachTanksToThrusters() this=<%p>'%s' entered\n",
        this, GetName().c_str());
    #endif
 
@@ -4232,16 +4234,16 @@ void Spacecraft::AttachTanksToThrusters()
 
    #ifdef DEBUG_SC_REF_OBJECT
    MessageInterface::ShowMessage
-      (wxT("   tanks.size()=%d, thrusters.size()=%d\n"), tanks.size(), thrusters.size());
+      ("   tanks.size()=%d, thrusters.size()=%d\n", tanks.size(), thrusters.size());
    #endif
 
    for (ObjectArray::iterator i = thrusters.begin(); i < thrusters.end(); ++i)
    {
-      tankNommes = (*i)->GetStringArrayParameter(wxT("Tank"));
+      tankNommes = (*i)->GetStringArrayParameter("Tank");
 
       #ifdef DEBUG_SC_REF_OBJECT
       MessageInterface::ShowMessage
-         (wxT("   go through %d tank(s) in the thruster <%p>'%s'\n"), tankNommes.size(),
+         ("   go through %d tank(s) in the thruster <%p>'%s'\n", tankNommes.size(),
           (*i), (*i)->GetName().c_str());
       #endif
 
@@ -4251,7 +4253,7 @@ void Spacecraft::AttachTanksToThrusters()
          // Look up the tank in the hardware list
          #ifdef DEBUG_SC_REF_OBJECT
          MessageInterface::ShowMessage
-            (wxT("   Checking to see if '%s' is in the spacecraft tank list\n"),
+            ("   Checking to see if '%s' is in the spacecraft tank list\n",
              (*j).c_str());
          #endif
          tank = NULL;
@@ -4266,21 +4268,21 @@ void Spacecraft::AttachTanksToThrusters()
          {
             #ifdef DEBUG_SC_REF_OBJECT
             MessageInterface::ShowMessage
-               (wxT("   Setting the tank <%p>'%s' to the thruster <%p>'%s'\n"),
+               ("   Setting the tank <%p>'%s' to the thruster <%p>'%s'\n",
                 tank, tank->GetName().c_str(), (*i), (*i)->GetName().c_str());
             #endif
             (*i)->SetRefObject(tank, tank->GetType(), tank->GetName());
          }
          else
             throw SpaceObjectException
-               (wxT("Cannot find tank \"") + (*j) + wxT("\" in spacecraft \"") +
-                instanceName + wxT("\"\n"));
+               ("Cannot find tank \"" + (*j) + "\" in spacecraft \"" +
+                instanceName + "\"\n");
       }
    }
 
    #ifdef DEBUG_SC_REF_OBJECT
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::AttachTanksToThrusters() exiting\n"));
+      ("Spacecraft::AttachTanksToThrusters() exiting\n");
    #endif
 }
 
@@ -4291,19 +4293,19 @@ void Spacecraft::AttachTanksToThrusters()
 bool Spacecraft::SetHardware(GmatBase *obj, StringArray &hwNames,
                              ObjectArray &hwArray)
 {
-   wxString objType = obj->GetTypeName();
-   wxString objName = obj->GetName();
+   std::string objType = obj->GetTypeName();
+   std::string objName = obj->GetName();
 
    #ifdef DEBUG_SC_REF_OBJECT
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::SetHardware() <%p>'%s' entered, obj=<%p>'%s'\n"), this,
+      ("Spacecraft::SetHardware() <%p>'%s' entered, obj=<%p>'%s'\n", this,
        GetName().c_str(), obj, objType.c_str(), objName.c_str());
    MessageInterface::ShowMessage
-      (wxT("   There are %d hw name(s) and %d hw pointer(s)\n"), hwNames.size(), hwArray.size());
+      ("   There are %d hw name(s) and %d hw pointer(s)\n", hwNames.size(), hwArray.size());
    for (UnsignedInt i=0; i<hwNames.size(); i++)
-      MessageInterface::ShowMessage(wxT("   hwNames[%d] = '%s'\n"), i, hwNames[i].c_str());
+      MessageInterface::ShowMessage("   hwNames[%d] = '%s'\n", i, hwNames[i].c_str());
    for (UnsignedInt i=0; i<hwArray.size(); i++)
-      MessageInterface::ShowMessage(wxT("   hwArray[%d] = <%p>\n"), i, hwArray[i]);
+      MessageInterface::ShowMessage("   hwArray[%d] = <%p>\n", i, hwArray[i]);
    #endif
 
    // if not adding the same hardware
@@ -4311,7 +4313,7 @@ bool Spacecraft::SetHardware(GmatBase *obj, StringArray &hwNames,
    {
       #ifdef DEBUG_SC_REF_OBJECT
       MessageInterface::ShowMessage
-         (wxT("   Now checking for the hardware name '%s'\n"), objName.c_str());
+         ("   Now checking for the hardware name '%s'\n", objName.c_str());
       #endif
 
       // if hardware name found
@@ -4319,14 +4321,14 @@ bool Spacecraft::SetHardware(GmatBase *obj, StringArray &hwNames,
       {
          #ifdef DEBUG_SC_REF_OBJECT
          MessageInterface::ShowMessage
-            (wxT("      The hardware name '%s' found\n"), objName.c_str());
+            ("      The hardware name '%s' found\n", objName.c_str());
          #endif
 
          for (ObjectArray::iterator i = hwArray.begin(); i != hwArray.end(); ++i)
          {
             #ifdef DEBUG_SC_REF_OBJECT
             MessageInterface::ShowMessage
-               (wxT("      Now Checking if '%s' == '%s'\n"), (*i)->GetName().c_str(), objName.c_str());
+               ("      Now Checking if '%s' == '%s'\n", (*i)->GetName().c_str(), objName.c_str());
             #endif
 
             // check if same name found, delete it first since it was cloned
@@ -4337,8 +4339,8 @@ bool Spacecraft::SetHardware(GmatBase *obj, StringArray &hwNames,
                hwArray.erase(i);
                #ifdef DEBUG_MEMORY
                MemoryTracker::Instance()->Remove
-                  (old, old->GetName(), wxT("Spacecraft::SetHardware()"),
-                   wxT("deleting old cloned ") + objType, this);
+                  (old, old->GetName(), "Spacecraft::SetHardware()",
+                   "deleting old cloned " + objType, this);
                #endif
                delete old;
                old = NULL;
@@ -4350,24 +4352,24 @@ bool Spacecraft::SetHardware(GmatBase *obj, StringArray &hwNames,
          GmatBase *clonedObj = obj->Clone();
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Add
-            (clonedObj, clonedObj->GetName(), wxT("Spacecraft::SetHardware()"),
-             wxT("GmatBase *cloneObj = obj->Clone()"), this);
+            (clonedObj, clonedObj->GetName(), "Spacecraft::SetHardware()",
+             "GmatBase *cloneObj = obj->Clone()", this);
          #endif
 
          hwArray.push_back(clonedObj);
 
          #ifdef DEBUG_SC_REF_OBJECT
          MessageInterface::ShowMessage
-            (wxT("      Added cloned hardware <%p><%s>'%s' to list, ")
-             wxT("hwArray.size()=%d\n"), clonedObj, clonedObj->GetTypeName().c_str(),
+            ("      Added cloned hardware <%p><%s>'%s' to list, "
+             "hwArray.size()=%d\n", clonedObj, clonedObj->GetTypeName().c_str(),
              clonedObj->GetName().c_str(), hwArray.size());
          #endif
 
-         if (clonedObj->IsOfType(wxT("Thruster")))
+         if (clonedObj->IsOfType("Thruster"))
          {
             #ifdef DEBUG_SC_REF_OBJECT
             MessageInterface::ShowMessage
-               (wxT("   Setting ref objects to thruster<%p>'%s'\n"),
+               ("   Setting ref objects to thruster<%p>'%s'\n",
                 clonedObj, clonedObj->GetName().c_str());
             #endif
 
@@ -4375,13 +4377,13 @@ bool Spacecraft::SetHardware(GmatBase *obj, StringArray &hwNames,
             clonedObj->SetSolarSystem(solarSystem);
             clonedObj->SetRefObject(this, Gmat::SPACECRAFT, GetName());
             // Set CoordinateSystem
-            wxString csName;
+            std::string csName;
             csName = clonedObj->GetRefObjectName(Gmat::COORDINATE_SYSTEM);
-            if (csName != wxT("") && coordSysMap.find(csName) != coordSysMap.end())
+            if (csName != "" && coordSysMap.find(csName) != coordSysMap.end())
             {
                #ifdef DEBUG_SC_REF_OBJECT
                MessageInterface::ShowMessage
-                  (wxT("   Setting the CoordinateSystem <%p>'%s' to cloned thruster\n"),
+                  ("   Setting the CoordinateSystem <%p>'%s' to cloned thruster\n",
                   coordSysMap[csName], csName.c_str() );
                #endif
                clonedObj->SetRefObject(coordSysMap[csName], Gmat::COORDINATE_SYSTEM, csName);
@@ -4392,7 +4394,7 @@ bool Spacecraft::SetHardware(GmatBase *obj, StringArray &hwNames,
       {
          #ifdef DEBUG_SC_REF_OBJECT
          MessageInterface::ShowMessage
-            (wxT("   The name '%s' not found in %s list\n"), objName.c_str(),
+            ("   The name '%s' not found in %s list\n", objName.c_str(),
              objType.c_str());
          #endif
       }
@@ -4401,14 +4403,14 @@ bool Spacecraft::SetHardware(GmatBase *obj, StringArray &hwNames,
    {
       #ifdef DEBUG_SC_REF_OBJECT
       MessageInterface::ShowMessage
-         (wxT("   The same %s <%p> found in %s pointer list\n"), objType.c_str(),
+         ("   The same %s <%p> found in %s pointer list\n", objType.c_str(),
           obj, objType.c_str());
       #endif
    }
 
    #ifdef DEBUG_SC_REF_OBJECT
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::SetHardware() <%p>'%s' returning true, total %s count = %d\n"),
+      ("Spacecraft::SetHardware() <%p>'%s' returning true, total %s count = %d\n",
        this, GetName().c_str(), objType.c_str(), hwArray.size());
    #endif
 
@@ -4417,8 +4419,8 @@ bool Spacecraft::SetHardware(GmatBase *obj, StringArray &hwNames,
 
 
 //------------------------------------------------------------------------------
-// const wxString&  GetGeneratingString(Gmat::WriteMode mode,
-//                const wxString &prefix, const wxString &useName)
+// const std::string&  GetGeneratingString(Gmat::WriteMode mode,
+//                const std::string &prefix, const std::string &useName)
 //------------------------------------------------------------------------------
 /**
  * Produces a string, possibly multi-line, containing the text that produces an
@@ -4431,24 +4433,25 @@ bool Spacecraft::SetHardware(GmatBase *obj, StringArray &hwNames,
  * @return A string containing the text.
  */
 //------------------------------------------------------------------------------
-const wxString& Spacecraft::GetGeneratingString(Gmat::WriteMode mode,
-                                                   const wxString &prefix,
-                                                   const wxString &useName)
+const std::string& Spacecraft::GetGeneratingString(Gmat::WriteMode mode,
+                                                   const std::string &prefix,
+                                                   const std::string &useName)
 {
    #ifdef DEBUG_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::GetGeneratingString() <%p><%s>'%s' entered, mode=%d, ")
-       wxT("prefix='%s', useName='%s', \n"), this, GetTypeName().c_str(),
+      ("Spacecraft::GetGeneratingString() <%p><%s>'%s' entered, mode=%d, "
+       "prefix='%s', useName='%s', \n", this, GetTypeName().c_str(),
        GetName().c_str(), mode, prefix.c_str(), useName.c_str());
    MessageInterface::ShowMessage
-      (wxT("   showPrefaceComment=%d, commentLine=<%s>\n   showInlineComment=%d ")
-       wxT("inlineComment=<%s>\n"),  showPrefaceComment, commentLine.c_str(),
+      ("   showPrefaceComment=%d, commentLine=<%s>\n   showInlineComment=%d "
+       "inlineComment=<%s>\n",  showPrefaceComment, commentLine.c_str(),
        showInlineComment, inlineComment.c_str());
    #endif
 
-   wxString data;
+   std::stringstream data;
 
-   wxString preface = wxT(""), nomme;
+   data.precision(GetDataPrecision());   // Crank up data precision so we don't lose anything
+   std::string preface = "", nomme;
 
    if ((mode == Gmat::SCRIPTING) || (mode == Gmat::OWNED_OBJECT) ||
        (mode == Gmat::SHOW_SCRIPT))
@@ -4456,44 +4459,44 @@ const wxString& Spacecraft::GetGeneratingString(Gmat::WriteMode mode,
    if (mode == Gmat::MATLAB_STRUCT || mode == Gmat::EPHEM_HEADER)
       inMatlabMode = true;
 
-   if (useName != wxT(""))
+   if (useName != "")
       nomme = useName;
    else
       nomme = instanceName;
 
    if ((mode == Gmat::SCRIPTING) || (mode == Gmat::SHOW_SCRIPT))
    {
-      wxString tname = typeName;
-      data << wxT("Create ") << tname << wxT(" ") << nomme << wxT(";\n");
-      preface = wxT("GMAT ");
+      std::string tname = typeName;
+      data << "Create " << tname << " " << nomme << ";\n";
+      preface = "GMAT ";
    }
    else if (mode == Gmat::EPHEM_HEADER)
    {
-      data << typeName << wxT(" = ") << wxT("'") << nomme << wxT("';\n");
-      preface = wxT("");
+      data << typeName << " = " << "'" << nomme << "';\n";
+      preface = "";
    }
 
-   nomme += wxT(".");
+   nomme += ".";
 
    if (mode == Gmat::OWNED_OBJECT)
    {
       preface = prefix;
-      nomme = wxT("");
+      nomme = "";
    }
 
    preface += nomme;
    WriteParameters(mode, preface, data);
 
-   generatingString = data;
+   generatingString = data.str();
 
    #ifdef DEBUG_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("==========> <%p>'%s'\n%s\n"), this, GetName().c_str(), generatingString.c_str());
+      ("==========> <%p>'%s'\n%s\n", this, GetName().c_str(), generatingString.c_str());
    #endif
 
    #ifdef DEBUG_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("Spacecraft::GetGeneratingString() <%p><%s>'%s' leaving\n"),
+      ("Spacecraft::GetGeneratingString() <%p><%s>'%s' leaving\n",
        this, GetTypeName().c_str(), GetName().c_str());
    #endif
 
@@ -4508,7 +4511,7 @@ const wxString& Spacecraft::GetGeneratingString(Gmat::WriteMode mode,
 
 
 //------------------------------------------------------------------------------
-// void WriteParameters(wxString &prefix, GmatBase *obj)
+// void WriteParameters(std::string &prefix, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Code that writes the parameter details for an object.
@@ -4517,23 +4520,24 @@ const wxString& Spacecraft::GetGeneratingString(Gmat::WriteMode mode,
  * @param obj The object that is written.
  */
 //------------------------------------------------------------------------------
-void Spacecraft::WriteParameters(Gmat::WriteMode mode, wxString &prefix,
-                                 wxString &stream)
+void Spacecraft::WriteParameters(Gmat::WriteMode mode, std::string &prefix,
+                                 std::stringstream &stream)
 {
    #ifdef DEBUG_WRITE_PARAMETERS
-   MessageInterface::ShowMessage(wxT("--- Entering SC::WriteParameters ...\n"));
-   MessageInterface::ShowMessage(wxT("--- mode = %d, prefix = %s\n"),
+   MessageInterface::ShowMessage("--- Entering SC::WriteParameters ...\n");
+   MessageInterface::ShowMessage("--- mode = %d, prefix = %s\n",
    (Integer) mode, prefix.c_str());
-   MessageInterface::ShowMessage(wxT(" --- stateType = %s, displayStateType = %s\n"),
+   MessageInterface::ShowMessage(" --- stateType = %s, displayStateType = %s\n",
    stateType.c_str(), displayStateType.c_str());
    #endif
    Integer i;
    Gmat::ParameterType parmType;
-   wxString value;
+   std::stringstream value;
+   value.precision(GetDataPrecision());
 
    #ifdef __WRITE_ANOMALY_TYPE__
       bool showAnomaly = false;
-      if (stateType == wxT("Keplerian") || stateType == wxT("ModKeplerian"))
+      if (stateType == "Keplerian" || stateType == "ModKeplerian")
          showAnomaly = true;
    #endif
 
@@ -4588,12 +4592,12 @@ void Spacecraft::WriteParameters(Gmat::WriteMode mode, wxString &prefix,
 
    #ifdef DEBUG_WRITE_PARAMETERS
    MessageInterface::ShowMessage
-      (wxT("   trueAnomaly=%s\n"), trueAnomaly.ToString().c_str());
+      ("   trueAnomaly=%s\n", trueAnomaly.ToString().c_str());
    MessageInterface::ShowMessage
-      (wxT("   stateType=%s, repState=%s\n"), stateType.c_str(),
+      ("   stateType=%s, repState=%s\n", stateType.c_str(),
        repState.ToString().c_str());
    MessageInterface::ShowMessage
-      (wxT("   displayStateType=%s, repState=%s\n"), displayStateType.c_str(),
+      ("   displayStateType=%s, repState=%s\n", displayStateType.c_str(),
        repState.ToString().c_str());
    #endif
 
@@ -4620,24 +4624,26 @@ void Spacecraft::WriteParameters(Gmat::WriteMode mode, wxString &prefix,
                )
             {
                // Fill in the l.h.s.
-               value = wxT("");
+               value.str("");
                if ((parmOrder[i] >= ELEMENT1_ID) &&
                    (parmOrder[i] <= ELEMENT6_ID))
                {
                   #ifdef DEBUG_WRITE_PARAMETERS
-                  MessageInterface::ShowMessage(wxT("--- parmOrder[i] = %d,"),
+                  MessageInterface::ShowMessage("--- parmOrder[i] = %d,",
                   (Integer) parmOrder[i]);
-                  MessageInterface::ShowMessage(wxT(" --- and that is for element %s\n"),
+                  MessageInterface::ShowMessage(" --- and that is for element %s\n",
                   (GetParameterText(parmOrder[i])).c_str());
                   #endif
+                  value.precision(GetDataPrecision());
                   value << repState[parmOrder[i] - ELEMENT1_ID];
+                  value.precision(GetDataPrecision());
                }
                else if (parmOrder[i] == DISPLAY_STATE_TYPE_ID)
                {
                   if (mode != Gmat::MATLAB_STRUCT)
                      value << displayStateType;
                   else
-                     value << wxT("'") << displayStateType << wxT("'");
+                     value << "'" << displayStateType << "'";
                }
                else if (parmOrder[i] == ANOMALY_ID)
                {
@@ -4647,7 +4653,7 @@ void Spacecraft::WriteParameters(Gmat::WriteMode mode, wxString &prefix,
                      if (mode != Gmat::MATLAB_STRUCT)
                         value << anomalyType;
                      else
-                        value << wxT("'") << anomalyType << wxT("'");
+                        value << "'" << anomalyType << "'";
                   }
                   #endif
                }
@@ -4655,18 +4661,18 @@ void Spacecraft::WriteParameters(Gmat::WriteMode mode, wxString &prefix,
                {
                   #ifdef DEBUG_WRITE_PARAMETERS
                   MessageInterface::ShowMessage(
-                  wxT("--- about to call WriteParameterValue with parmOrder[i] = %d\n"),
+                  "--- about to call WriteParameterValue with parmOrder[i] = %d\n",
                   (Integer) parmOrder[i]);
-                  MessageInterface::ShowMessage(wxT("--- and the string associated with it is %s\n"),
+                  MessageInterface::ShowMessage("--- and the string associated with it is %s\n",
                   GetParameterText(parmOrder[i]).c_str());
                   #endif
                   WriteParameterValue(parmOrder[i], value);
                }
 
-               if (value != wxT(""))
+               if (value.str() != "")
                {
                   stream << prefix << GetParameterText(parmOrder[i])
-                         << wxT(" = ") << value << wxT(";\n");
+                         << " = " << value.str() << ";\n";
                }
             }
          }
@@ -4678,18 +4684,18 @@ void Spacecraft::WriteParameters(Gmat::WriteMode mode, wxString &prefix,
             StringArray sar = GetStringArrayParameter(parmOrder[i]);
             if (sar.size() > 0)
             {
-               stream << prefix << GetParameterText(parmOrder[i]) << wxT(" = {");
+               stream << prefix << GetParameterText(parmOrder[i]) << " = {";
                for (StringArray::iterator n = sar.begin(); n != sar.end(); ++n)
                {
                   if (n != sar.begin())
-                     stream << wxT(", ");
+                     stream << ", ";
                   if (writeQuotes)
-                     stream << wxT("'");
+                     stream << "'";
                   stream << (*n);
                   if (writeQuotes)
-                     stream << wxT("'");
+                     stream << "'";
                }
-               stream << wxT("};\n");
+               stream << "};\n";
             }
          }
       }
@@ -4699,25 +4705,25 @@ void Spacecraft::WriteParameters(Gmat::WriteMode mode, wxString &prefix,
          if (attitude)
          {
             if (inMatlabMode)
-               stream << prefix << wxT("Attitude = '") << attitude->GetAttitudeModelName() << wxT("';\n");
+               stream << prefix << "Attitude = '" << attitude->GetAttitudeModelName() << "';\n";
             else
-               stream << prefix << wxT("Attitude = ") << attitude->GetAttitudeModelName() << wxT(";\n");
+               stream << prefix << "Attitude = " << attitude->GetAttitudeModelName() << ";\n";
          }
          else
          {
             MessageInterface::ShowMessage
-               (wxT("*** INTERNAL ERROR *** attitude is NULL\n"));
+               ("*** INTERNAL ERROR *** attitude is NULL\n");
          }
       }
 
    }
 
-   // Prep in case spacecraft wxT("own") the attached hardware
+   // Prep in case spacecraft "own" the attached hardware
    GmatBase *ownedObject;
-   wxString nomme, newprefix;
+   std::string nomme, newprefix;
 
    #ifdef DEBUG_OWNED_OBJECT_STRINGS
-      MessageInterface::ShowMessage(wxT("\"%s\" has %d owned objects\n"),
+      MessageInterface::ShowMessage("\"%s\" has %d owned objects\n",
          instanceName.c_str(), GetOwnedObjectCount());
    #endif
 
@@ -4732,13 +4738,13 @@ void Spacecraft::WriteParameters(Gmat::WriteMode mode, wxString &prefix,
 
       #ifdef DEBUG_OWNED_OBJECT_STRINGS
           MessageInterface::ShowMessage(
-             wxT("   index %d <%p> has type %s and name \"%s\"\n"),
+             "   index %d <%p> has type %s and name \"%s\"\n",
              i, ownedObject, ownedObject->GetTypeName().c_str(),
              ownedObject->GetName().c_str());
       #endif
 
-      if (nomme != wxT(""))
-         newprefix += nomme + wxT(".");
+      if (nomme != "")
+         newprefix += nomme + ".";
       //else if (GetType() == Gmat::FORCE_MODEL)  wcs - why is this here? GetType on s/c?
       //   newprefix += ownedObject->GetTypeName();
       stream << ownedObject->GetGeneratingString(Gmat::OWNED_OBJECT, newprefix);
@@ -4757,126 +4763,126 @@ void Spacecraft::WriteParameters(Gmat::WriteMode mode, wxString &prefix,
 //------------------------------------------------------------------------------
 void Spacecraft::UpdateElementLabels()
 {
-   //if (stateType == wxT("Cartesian"))
-   if (displayStateType == wxT("Cartesian"))
+   //if (stateType == "Cartesian")
+   if (displayStateType == "Cartesian")
    {
-      stateElementLabel[0] = wxT("X");
-      stateElementLabel[1] = wxT("Y");
-      stateElementLabel[2] = wxT("Z");
-      stateElementLabel[3] = wxT("VX");
-      stateElementLabel[4] = wxT("VY");
-      stateElementLabel[5] = wxT("VZ");
+      stateElementLabel[0] = "X";
+      stateElementLabel[1] = "Y";
+      stateElementLabel[2] = "Z";
+      stateElementLabel[3] = "VX";
+      stateElementLabel[4] = "VY";
+      stateElementLabel[5] = "VZ";
 
-      stateElementUnits[0] = wxT("km");
-      stateElementUnits[1] = wxT("km");
-      stateElementUnits[2] = wxT("km");
-      stateElementUnits[3] = wxT("km/s");
-      stateElementUnits[4] = wxT("km/s");
-      stateElementUnits[5] = wxT("km/s");
+      stateElementUnits[0] = "km";
+      stateElementUnits[1] = "km";
+      stateElementUnits[2] = "km";
+      stateElementUnits[3] = "km/s";
+      stateElementUnits[4] = "km/s";
+      stateElementUnits[5] = "km/s";
 
       return;
    }
 
-   //if (stateType == wxT("Keplerian"))
-   if (displayStateType == wxT("Keplerian"))
+   //if (stateType == "Keplerian")
+   if (displayStateType == "Keplerian")
    {
-      stateElementLabel[0] = wxT("SMA");
-      stateElementLabel[1] = wxT("ECC");
-      stateElementLabel[2] = wxT("INC");
-      stateElementLabel[3] = wxT("RAAN");
-      stateElementLabel[4] = wxT("AOP");
+      stateElementLabel[0] = "SMA";
+      stateElementLabel[1] = "ECC";
+      stateElementLabel[2] = "INC";
+      stateElementLabel[3] = "RAAN";
+      stateElementLabel[4] = "AOP";
       stateElementLabel[5] = anomalyType;
 
-      stateElementUnits[0] = wxT("km");
-      stateElementUnits[1] = wxT("");
-      stateElementUnits[2] = wxT("deg");
-      stateElementUnits[3] = wxT("deg");
-      stateElementUnits[4] = wxT("deg");
-      stateElementUnits[5] = wxT("deg");
+      stateElementUnits[0] = "km";
+      stateElementUnits[1] = "";
+      stateElementUnits[2] = "deg";
+      stateElementUnits[3] = "deg";
+      stateElementUnits[4] = "deg";
+      stateElementUnits[5] = "deg";
 
       return;
    }
 
-   //if (stateType == wxT("ModifiedKeplerian"))
-   if (displayStateType == wxT("ModifiedKeplerian"))
+   //if (stateType == "ModifiedKeplerian")
+   if (displayStateType == "ModifiedKeplerian")
    {
-      stateElementLabel[0] = wxT("RadPer");
-      stateElementLabel[1] = wxT("RadApo");
-      stateElementLabel[2] = wxT("INC");
-      stateElementLabel[3] = wxT("RAAN");
-      stateElementLabel[4] = wxT("AOP");
+      stateElementLabel[0] = "RadPer";
+      stateElementLabel[1] = "RadApo";
+      stateElementLabel[2] = "INC";
+      stateElementLabel[3] = "RAAN";
+      stateElementLabel[4] = "AOP";
       stateElementLabel[5] = anomalyType;
 
-      stateElementUnits[0] = wxT("km");
-      stateElementUnits[1] = wxT("km");
-      stateElementUnits[2] = wxT("deg");
-      stateElementUnits[3] = wxT("deg");
-      stateElementUnits[4] = wxT("deg");
-      stateElementUnits[5] = wxT("deg");
+      stateElementUnits[0] = "km";
+      stateElementUnits[1] = "km";
+      stateElementUnits[2] = "deg";
+      stateElementUnits[3] = "deg";
+      stateElementUnits[4] = "deg";
+      stateElementUnits[5] = "deg";
 
       return;
    }
 
-   //if (stateType == wxT("SphericalAZFPA"))
-   if (displayStateType == wxT("SphericalAZFPA"))
+   //if (stateType == "SphericalAZFPA")
+   if (displayStateType == "SphericalAZFPA")
    {
-      stateElementLabel[0] = wxT("RMAG");
-      stateElementLabel[1] = wxT("RA");
-      stateElementLabel[2] = wxT("DEC");
-      stateElementLabel[3] = wxT("VMAG");
-      stateElementLabel[4] = wxT("AZI");
-      stateElementLabel[5] = wxT("FPA");
+      stateElementLabel[0] = "RMAG";
+      stateElementLabel[1] = "RA";
+      stateElementLabel[2] = "DEC";
+      stateElementLabel[3] = "VMAG";
+      stateElementLabel[4] = "AZI";
+      stateElementLabel[5] = "FPA";
 
-      stateElementUnits[0] = wxT("km");
-      stateElementUnits[1] = wxT("deg");
-      stateElementUnits[2] = wxT("deg");
-      stateElementUnits[3] = wxT("km/s");
-      stateElementUnits[4] = wxT("deg");
-      stateElementUnits[5] = wxT("deg");
+      stateElementUnits[0] = "km";
+      stateElementUnits[1] = "deg";
+      stateElementUnits[2] = "deg";
+      stateElementUnits[3] = "km/s";
+      stateElementUnits[4] = "deg";
+      stateElementUnits[5] = "deg";
 
       return;
    }
 
-   //if (stateType == wxT("SphericalRADEC"))
-   if (displayStateType == wxT("SphericalRADEC"))
+   //if (stateType == "SphericalRADEC")
+   if (displayStateType == "SphericalRADEC")
    {
-      stateElementLabel[0] = wxT("RMAG");
-      stateElementLabel[1] = wxT("RA");
-      stateElementLabel[2] = wxT("DEC");
-      stateElementLabel[3] = wxT("VMAG");
-      stateElementLabel[4] = wxT("RAV");
-      stateElementLabel[5] = wxT("DECV");
+      stateElementLabel[0] = "RMAG";
+      stateElementLabel[1] = "RA";
+      stateElementLabel[2] = "DEC";
+      stateElementLabel[3] = "VMAG";
+      stateElementLabel[4] = "RAV";
+      stateElementLabel[5] = "DECV";
 
-      stateElementUnits[0] = wxT("km");
-      stateElementUnits[1] = wxT("deg");
-      stateElementUnits[2] = wxT("deg");
-      stateElementUnits[3] = wxT("km/s");
-      stateElementUnits[4] = wxT("deg");
-      stateElementUnits[5] = wxT("deg");
+      stateElementUnits[0] = "km";
+      stateElementUnits[1] = "deg";
+      stateElementUnits[2] = "deg";
+      stateElementUnits[3] = "km/s";
+      stateElementUnits[4] = "deg";
+      stateElementUnits[5] = "deg";
 
       return;
    }
 
-   //if (stateType == wxT("Equinoctial"))
-   if (displayStateType == wxT("Equinoctial"))
+   //if (stateType == "Equinoctial")
+   if (displayStateType == "Equinoctial")
    {
-      stateElementLabel[0] = wxT("SMA");
-      stateElementLabel[1] = wxT("EquinoctialH");
-      stateElementLabel[2] = wxT("EquinoctialK");
-      stateElementLabel[3] = wxT("EquinoctialP");
-      stateElementLabel[4] = wxT("EquinoctialQ");
-//      stateElementLabel[1] = wxT("h");
-//      stateElementLabel[2] = wxT("k");
-//      stateElementLabel[3] = wxT("p");
-//      stateElementLabel[4] = wxT("q");
-      stateElementLabel[5] = wxT("MLONG");
+      stateElementLabel[0] = "SMA";
+      stateElementLabel[1] = "EquinoctialH";
+      stateElementLabel[2] = "EquinoctialK";
+      stateElementLabel[3] = "EquinoctialP";
+      stateElementLabel[4] = "EquinoctialQ";
+//      stateElementLabel[1] = "h";
+//      stateElementLabel[2] = "k";
+//      stateElementLabel[3] = "p";
+//      stateElementLabel[4] = "q";
+      stateElementLabel[5] = "MLONG";
 
-      stateElementUnits[0] = wxT("km");
-      stateElementUnits[1] = wxT("");
-      stateElementUnits[2] = wxT("");
-      stateElementUnits[3] = wxT("");
-      stateElementUnits[4] = wxT("");
-      stateElementUnits[5] = wxT("deg");
+      stateElementUnits[0] = "km";
+      stateElementUnits[1] = "";
+      stateElementUnits[2] = "";
+      stateElementUnits[3] = "";
+      stateElementUnits[4] = "";
+      stateElementUnits[5] = "deg";
 
       return;
    }
@@ -4886,17 +4892,17 @@ void Spacecraft::UpdateElementLabels()
 
 
 //------------------------------------------------------------------------------
-// Rvector6 GetStateInRepresentation(wxString rep)
+// Rvector6 GetStateInRepresentation(std::string rep)
 //------------------------------------------------------------------------------
 /**
  * Code used to obtain a state in a non-Cartesian representation.
  */
 //------------------------------------------------------------------------------
-Rvector6 Spacecraft::GetStateInRepresentation(wxString rep)
+Rvector6 Spacecraft::GetStateInRepresentation(std::string rep)
 {
    #ifdef DEBUG_STATE_INTERFACE
       MessageInterface::ShowMessage(
-         wxT("Spacecraft::GetStateInRepresentation(string): Constructing %s state\n"),
+         "Spacecraft::GetStateInRepresentation(string): Constructing %s state\n",
          rep.c_str());
    #endif
 
@@ -4916,32 +4922,32 @@ Rvector6 Spacecraft::GetStateInRepresentation(wxString rep)
    }
 
    // Then convert to the desired representation
-   if (rep == wxT(""))
+   if (rep == "")
       rep = stateType;   // do I want displayStateType here?
 
-   if (rep == wxT("Cartesian"))
+   if (rep == "Cartesian")
    {
       finalState = csState;
       #ifdef DEBUG_STATE_INTERFACE
          MessageInterface::ShowMessage(
-            wxT("Spacecraft::GetStateInRepresentation(string): type is Cartesian, so no conversion done\n"));
+            "Spacecraft::GetStateInRepresentation(string): type is Cartesian, so no conversion done\n");
       #endif
    }
    else
    {
       #ifdef DEBUG_STATE_INTERFACE
          MessageInterface::ShowMessage(
-            wxT("Spacecraft::GetStateInRepresentation(string): type is %s, so calling stateConverter to convert\n"),
+            "Spacecraft::GetStateInRepresentation(string): type is %s, so calling stateConverter to convert\n",
             rep.c_str());
       #endif
-      //finalState = stateConverter.Convert(csState, wxT("Cartesian"), rep, trueAnomaly);
-      finalState = stateConverter.Convert(csState, wxT("Cartesian"), rep, anomalyType);
+      //finalState = stateConverter.Convert(csState, "Cartesian", rep, trueAnomaly);
+      finalState = stateConverter.Convert(csState, "Cartesian", rep, anomalyType);
    }
 
    #ifdef DEBUG_STATE_INTERFACE
       MessageInterface::ShowMessage(
-         wxT("Spacecraft::GetStateInRepresentation(string): %s state is ")
-         wxT("[%.9lf %.9lf %.9lf %.14lf %.14lf %.14lf]\n"),
+         "Spacecraft::GetStateInRepresentation(string): %s state is "
+         "[%.9lf %.9lf %.9lf %.14lf %.14lf %.14lf]\n",
          rep.c_str(), finalState[0], finalState[1],
          finalState[2], finalState[3], finalState[4],
          finalState[5]);
@@ -4962,7 +4968,7 @@ Rvector6 Spacecraft::GetStateInRepresentation(Integer rep)
 {
    #ifdef DEBUG_STATE_INTERFACE
       MessageInterface::ShowMessage(
-         wxT("Spacecraft::GetStateInRepresentation(int): Constructing %s state\n"),
+         "Spacecraft::GetStateInRepresentation(int): Constructing %s state\n",
          representations[rep].c_str());
    #endif
    Rvector6 csState;
@@ -4985,14 +4991,14 @@ Rvector6 Spacecraft::GetStateInRepresentation(Integer rep)
       finalState = csState;
    else
    {
-      finalState = stateConverter.Convert(csState, wxT("Cartesian"),
+      finalState = stateConverter.Convert(csState, "Cartesian",
                    representations[rep], anomalyType); //trueAnomaly);
    }
 
    #ifdef DEBUG_STATE_INTERFACE
       MessageInterface::ShowMessage(
-         wxT("Spacecraft::GetStateInRepresentation(int): %s state is ")
-         wxT("[%.9lf %.9lf %.9lf %.14lf %.14lf %.14lf]\n"),
+         "Spacecraft::GetStateInRepresentation(int): %s state is "
+         "[%.9lf %.9lf %.9lf %.14lf %.14lf %.14lf]\n",
          representations[rep].c_str(), finalState[0], finalState[1],
          finalState[2], finalState[3], finalState[4],
          finalState[5]);
@@ -5003,47 +5009,47 @@ Rvector6 Spacecraft::GetStateInRepresentation(Integer rep)
 
 
 //------------------------------------------------------------------------------
-// void SetStateFromRepresentation(wxString rep, Rvector6 &st)
+// void SetStateFromRepresentation(std::string rep, Rvector6 &st)
 //------------------------------------------------------------------------------
 /**
  * Code used to obtain a state in a non-Cartesian representation.
  */
 //------------------------------------------------------------------------------
-void Spacecraft::SetStateFromRepresentation(wxString rep, Rvector6 &st)
+void Spacecraft::SetStateFromRepresentation(std::string rep, Rvector6 &st)
 {
    #ifdef DEBUG_STATE_INTERFACE
       MessageInterface::ShowMessage(
-         wxT("Spacecraft::SetStateFromRepresentation: Setting %s state to %s\n"),
+         "Spacecraft::SetStateFromRepresentation: Setting %s state to %s\n",
          rep.c_str(), st.ToString(16).c_str());
    #endif
 
    // First convert from the representation to Cartesian
    static Rvector6 csState, finalState;
 
-   if (rep == wxT("Cartesian"))
+   if (rep == "Cartesian")
       csState = st;
    else
    {
       #ifdef DEBUG_STATE_INTERFACE
       MessageInterface::ShowMessage
-         (wxT("   rep is not Cartesian, so calling stateConverter.Convert()\n"));
+         ("   rep is not Cartesian, so calling stateConverter.Convert()\n");
       #endif
-      csState = stateConverter.Convert(st, rep, wxT("Cartesian"), anomalyType);
+      csState = stateConverter.Convert(st, rep, "Cartesian", anomalyType);
    }
 
    #ifdef DEBUG_STATE_INTERFACE
       MessageInterface::ShowMessage(
-         wxT("Spacecraft::SetStateFromRepresentation: state has been converted\n"));
+         "Spacecraft::SetStateFromRepresentation: state has been converted\n");
    #endif
 
    if (internalCoordSystem == NULL)
-      throw SpaceObjectException(wxT(" The spacecraft internal coordinate system is not set"));
+      throw SpaceObjectException(" The spacecraft internal coordinate system is not set");
    if (coordinateSystem == NULL)
-      throw SpaceObjectException(wxT(" The spacecraft coordinate system is not set"));
+      throw SpaceObjectException(" The spacecraft coordinate system is not set");
 
    #ifdef DEBUG_STATE_INTERFACE
    MessageInterface::ShowMessage
-      (wxT("   Now convert to internal CS, internalCoordSystem=<%p>, coordinateSystem=<%p>\n"),
+      ("   Now convert to internal CS, internalCoordSystem=<%p>, coordinateSystem=<%p>\n",
        internalCoordSystem, coordinateSystem);
    #endif
 
@@ -5052,7 +5058,7 @@ void Spacecraft::SetStateFromRepresentation(wxString rep, Rvector6 &st)
    {
       #ifdef DEBUG_STATE_INTERFACE
       MessageInterface::ShowMessage
-         (wxT("   cs is not InteralCS, so calling coordConverter.Convert() at epoch %f\n"),
+         ("   cs is not InteralCS, so calling coordConverter.Convert() at epoch %f\n",
           GetEpoch());
       #endif
       coordConverter.Convert(GetEpoch(), csState, coordinateSystem, finalState,
@@ -5066,15 +5072,15 @@ void Spacecraft::SetStateFromRepresentation(wxString rep, Rvector6 &st)
 
    #ifdef DEBUG_STATE_INTERFACE
       MessageInterface::ShowMessage(
-         wxT("Spacecraft::SetStateFromRepresentation: Cartesian State is now\n   ")
-         wxT("%.9lf %.9lf %.9lf %.14lf %.14lf %.14lf\n"), state[0], state[1],
+         "Spacecraft::SetStateFromRepresentation: Cartesian State is now\n   "
+         "%.9lf %.9lf %.9lf %.14lf %.14lf %.14lf\n", state[0], state[1],
          state[2], state[3], state[4], state[5]);
    #endif
 }
 
 
 //------------------------------------------------------------------------------
-// Real Spacecraft::GetElement(const wxString &label)
+// Real Spacecraft::GetElement(const std::string &label)
 //------------------------------------------------------------------------------
 /**
  * Code used to obtain a state element.
@@ -5084,30 +5090,30 @@ void Spacecraft::SetStateFromRepresentation(wxString rep, Rvector6 &st)
  * @return The element's value, or -9999999999.999999 on failure.
  */
 //------------------------------------------------------------------------------
-Real Spacecraft::GetElement(const wxString &label)
+Real Spacecraft::GetElement(const std::string &label)
 {
    #ifdef DEBUG_GET_REAL
       MessageInterface::ShowMessage(
-      wxT("In SC::GetElement, asking for parameter %s\n"), label.c_str());
+      "In SC::GetElement, asking for parameter %s\n", label.c_str());
    #endif
    Integer baseID;
-   wxString rep = wxT("");
+   std::string rep = "";
    baseID = LookUpLabel(label,rep);
    #ifdef DEBUG_GET_REAL
    MessageInterface::ShowMessage(
-   wxT("In SC::GetElement, after LookUpLabel, id = %d, its string = \"%s\",  and rep = \"%s\"\n"),
+   "In SC::GetElement, after LookUpLabel, id = %d, its string = \"%s\",  and rep = \"%s\"\n",
    baseID, (GetParameterText(baseID)).c_str(), rep.c_str());
    #endif
    Rvector6 stateInRep = GetStateInRepresentation(rep);
    #ifdef DEBUG_GET_REAL
       MessageInterface::ShowMessage(
-      wxT("In SC::GetElement, stateInRep = \n"));
+      "In SC::GetElement, stateInRep = \n");
       for (Integer jj=0;jj<6;jj++)
-         MessageInterface::ShowMessage(wxT("    %.12f\n"), stateInRep[jj]);
+         MessageInterface::ShowMessage("    %.12f\n", stateInRep[jj]);
    #endif
    // check for Anomaly data first
-   if (label == wxT("TA") || label == wxT("EA") ||
-       label == wxT("MA") || label == wxT("HA"))
+   if (label == "TA" || label == "EA" ||
+       label == "MA" || label == "HA")
    {
       Anomaly tmpAnomaly;
       tmpAnomaly.SetSMA(stateInRep[0]);
@@ -5130,7 +5136,7 @@ Real Spacecraft::GetElement(const wxString &label)
 
 
 //------------------------------------------------------------------------------
-// bool SetElement(const wxString &label, const Real &value)
+// bool SetElement(const std::string &label, const Real &value)
 //------------------------------------------------------------------------------
 /**
  * Set a state element.
@@ -5141,59 +5147,59 @@ Real Spacecraft::GetElement(const wxString &label)
  * @return true on success, false on failure.
  */
 //------------------------------------------------------------------------------
-bool Spacecraft::SetElement(const wxString &label, const Real &value)
+bool Spacecraft::SetElement(const std::string &label, const Real &value)
 {
    #ifdef DEBUG_SPACECRAFT_SET_ELEMENT
    MessageInterface::ShowMessage
-      (wxT("In SC::SetElement, <%p> '%s', label=%s, value=%.12f\n"), this,
+      ("In SC::SetElement, <%p> '%s', label=%s, value=%.12f\n", this,
        GetName().c_str(), label.c_str(), value);
    #endif
-   wxString rep = wxT("");
+   std::string rep = "";
    Integer id = LookUpLabel(label, rep) - ELEMENT1_ID;
    #ifdef DEBUG_SPACECRAFT_SET_ELEMENT
       MessageInterface::ShowMessage
-         (wxT(" ************ In SC::SetElement, after LookUpLabel, ELEMENT1_ID = %d, id = %d, rep = %s\n"),
+         (" ************ In SC::SetElement, after LookUpLabel, ELEMENT1_ID = %d, id = %d, rep = %s\n",
                ELEMENT1_ID, id, rep.c_str());
    #endif
 
-   if ((rep != wxT("")) && (stateType != rep))
+   if ((rep != "") && (stateType != rep))
    {
-      if ((rep == wxT("Keplerian")) || (rep == wxT("ModifiedKeplerian")))
+      if ((rep == "Keplerian") || (rep == "ModifiedKeplerian"))
       {
          // Load trueAnomaly with the state data
-         Rvector6 kep = GetStateInRepresentation(wxT("Keplerian"));
+         Rvector6 kep = GetStateInRepresentation("Keplerian");
          trueAnomaly.SetSMA(kep[0]);
          trueAnomaly.SetECC(kep[1]);
          trueAnomaly.SetValue(kep[5]);
       }
       // 2007.05.24 - wcs - Bug 875 - because some elements are the same for
       // Keplerian and ModifiedKeplerian, make sure it only changes when it should
-      if ( (stateType == wxT("ModifiedKeplerian")) && (rep == wxT("Keplerian")) &&
-         (label != wxT("SMA")) && (label != wxT("ECC")) )
+      if ( (stateType == "ModifiedKeplerian") && (rep == "Keplerian") &&
+         (label != "SMA") && (label != "ECC") )
       {
          #ifdef DEBUG_SPACECRAFT_SET_ELEMENT
             MessageInterface::ShowMessage
-               (wxT(" ************ In SC::SetElement, leaving stateType as ModifiedKeplerian\n"));
+               (" ************ In SC::SetElement, leaving stateType as ModifiedKeplerian\n");
          #endif
          // leave stateType as ModifiedKeplerian
       }
-      else if ( (stateType == wxT("SphericalRADEC")) && (rep == wxT("SphericalAZFPA")) &&
-               (label != wxT("AZI")) && (label != wxT("FPA")) )
+      else if ( (stateType == "SphericalRADEC") && (rep == "SphericalAZFPA") &&
+               (label != "AZI") && (label != "FPA") )
       {
          #ifdef DEBUG_SPACECRAFT_SET_ELEMENT
             MessageInterface::ShowMessage
-               (wxT(" ************ In SC::SetElement, leaving stateType as SphericalRADEC\n"));
+               (" ************ In SC::SetElement, leaving stateType as SphericalRADEC\n");
          #endif
          // leave it as SphericalRADEC
       }
       /// 2010.03.22 - wcs - SMA could also be Equinoctial
-      else if ( (stateType == wxT("Equinoctial")) && (rep == wxT("Keplerian")) &&
-               (label == wxT("SMA")) )
-//         (label != wxT("SMA")))
+      else if ( (stateType == "Equinoctial") && (rep == "Keplerian") &&
+               (label == "SMA") )
+//         (label != "SMA"))
       {
          #ifdef DEBUG_SPACECRAFT_SET_ELEMENT
             MessageInterface::ShowMessage
-               (wxT(" ************ In SC::SetElement, leaving stateType as Equinoctial\n"));
+               (" ************ In SC::SetElement, leaving stateType as Equinoctial\n");
          #endif
          // leave state as Equinoctial
       }
@@ -5201,7 +5207,7 @@ bool Spacecraft::SetElement(const wxString &label, const Real &value)
       {
          #ifdef DEBUG_SPACECRAFT_SET_ELEMENT
             MessageInterface::ShowMessage
-               (wxT(" ************ In SC::SetElement, MODIFYING stateType from %s to %s\n"),
+               (" ************ In SC::SetElement, MODIFYING stateType from %s to %s\n",
                  stateType.c_str(), rep.c_str());
          #endif
          stateType = rep;
@@ -5211,36 +5217,36 @@ bool Spacecraft::SetElement(const wxString &label, const Real &value)
    #ifdef DEBUG_SPACECRAFT_SET_ELEMENT
    if (id >= 0)
       MessageInterface::ShowMessage
-         (wxT("In SC::SetElement, after LookUpLabel, id+ELEMENT1_ID = %d, its ")
-          wxT("string = \"%s\",  and rep = \"%s\"\n"), id+ELEMENT1_ID,
+         ("In SC::SetElement, after LookUpLabel, id+ELEMENT1_ID = %d, its "
+          "string = \"%s\",  and rep = \"%s\"\n", id+ELEMENT1_ID,
           (GetParameterText(id+ELEMENT1_ID)).c_str(), rep.c_str());
       MessageInterface::ShowMessage
-         (wxT("In SC::SetElement, after LookUpLabel, its label = \"%s\" and its value = %12.10f\n"),
+         ("In SC::SetElement, after LookUpLabel, its label = \"%s\" and its value = %12.10f\n",
                label.c_str(), value);
 
    #endif
 
    // parabolic and hyperbolic orbits not yet supported
-   if ((label == wxT("ECC")) && value == 1.0)
+   if ((label == "ECC") && value == 1.0)
    {
       SpaceObjectException se;
       se.SetDetails(errorMessageFormat.c_str(),
                     GmatStringUtil::ToString(value, GetDataPrecision()).c_str(),
-                    wxT("Eccentricity"), wxT("Real Number != 1.0"));
+                    "Eccentricity", "Real Number != 1.0");
       throw se;
    }
    // Equinoctial elements must be within bounds
-   if (((label == wxT("EquinoctialH")) || (label == wxT("EquinoctialK"))) &&
+   if (((label == "EquinoctialH") || (label == "EquinoctialK")) &&
        ((value < -1.0) || (value > 1.0)))
    {
       #ifdef DEBUG_SPACECRAFT_SET_ELEMENT
          MessageInterface::ShowMessage
-            (wxT("In SC::SetElement, reached where the exception should be thrown!!!!\n"));
+            ("In SC::SetElement, reached where the exception should be thrown!!!!\n");
       #endif
       SpaceObjectException se;
       se.SetDetails(errorMessageFormat.c_str(),
                     GmatStringUtil::ToString(value, GetDataPrecision()).c_str(),
-                    label.c_str(), wxT("-1.0 <= Real Number <= 1.0"));
+                    label.c_str(), "-1.0 <= Real Number <= 1.0");
       throw se;
    }
 
@@ -5252,7 +5258,7 @@ bool Spacecraft::SetElement(const wxString &label, const Real &value)
       if (csSet)
       {
          #ifdef DEBUG_SPACECRAFT_SET_ELEMENT
-            MessageInterface::ShowMessage(wxT("In SC::SetElement, csSet = TRUE\n"));
+            MessageInterface::ShowMessage("In SC::SetElement, csSet = TRUE\n");
          #endif
          Rvector6 tempState = GetStateInRepresentation(rep);
          tempState[id] = value;
@@ -5261,7 +5267,7 @@ bool Spacecraft::SetElement(const wxString &label, const Real &value)
       else
       {
          #ifdef DEBUG_SPACECRAFT_SET_ELEMENT
-            MessageInterface::ShowMessage(wxT("In SC::SetElement, csSet = FALSE\n"));
+            MessageInterface::ShowMessage("In SC::SetElement, csSet = FALSE\n");
          #endif
          Real *tempState = state.GetState();
          tempState[id] = value;
@@ -5270,94 +5276,94 @@ bool Spacecraft::SetElement(const wxString &label, const Real &value)
       #ifdef DEBUG_SPACECRAFT_SET_ELEMENT
       Rvector6 vec6(state.GetState());
       MessageInterface::ShowMessage
-         (wxT("   CS was %sset, state is now\n   %s \n"), (csSet ? wxT("") : wxT("NOT ")),
+         ("   CS was %sset, state is now\n   %s \n", (csSet ? "" : "NOT "),
           vec6.ToString().c_str());
       MessageInterface::ShowMessage
-         (wxT("In SC::SetElement, '%s', returning TRUE\n"), GetName().c_str());
+         ("In SC::SetElement, '%s', returning TRUE\n", GetName().c_str());
       #endif
       return true;
    }
 
    #ifdef DEBUG_SPACECRAFT_SET_ELEMENT
-   MessageInterface::ShowMessage(wxT("In SC::SetElement, returning FALSE\n"));
+   MessageInterface::ShowMessage("In SC::SetElement, returning FALSE\n");
    #endif
    return false;
 }
 
 
 //------------------------------------------------------------------------------
-// void LookUpLabel(wxString rep, Rvector6 &st)
+// void LookUpLabel(std::string rep, Rvector6 &st)
 //------------------------------------------------------------------------------
 /**
  * Code used to obtain a state in a non-Cartesian representation.
  */
 //------------------------------------------------------------------------------
-Integer Spacecraft::LookUpLabel(const wxString &label, wxString &rep)
+Integer Spacecraft::LookUpLabel(const std::string &label, std::string &rep)
 {
    #ifdef DEBUG_LOOK_UP_LABEL
-      MessageInterface::ShowMessage(wxT("Spacecraft::LookUpLabel(%s)called\n"),
+      MessageInterface::ShowMessage("Spacecraft::LookUpLabel(%s)called\n",
          label.c_str());
    #endif
    Integer retval = -1;
 
-   if (label == wxT("Element1"))
+   if (label == "Element1")
    {
       rep = stateType;
       return ELEMENT1_ID;
    }
-   if (label == wxT("Element2"))
+   if (label == "Element2")
    {
       rep = stateType;
       return ELEMENT2_ID;
    }
-   if (label == wxT("Element3"))
+   if (label == "Element3")
    {
       rep = stateType;
       return ELEMENT3_ID;
    }
-   if (label == wxT("Element4"))
+   if (label == "Element4")
    {
       rep = stateType;
       return ELEMENT4_ID;
    }
-   if (label == wxT("Element5"))
+   if (label == "Element5")
    {
       rep = stateType;
       return ELEMENT5_ID;
    }
-   if (label == wxT("Element6"))
+   if (label == "Element6")
    {
       rep = stateType;
       return ELEMENT6_ID;
    }
 
-   if (label == wxT("X") || label == wxT("SMA") || label == wxT("RadPer") || label == wxT("RMAG"))
+   if (label == "X" || label == "SMA" || label == "RadPer" || label == "RMAG")
       retval = ELEMENT1_ID;
 
-   else if (label == wxT("Y") || label == wxT("ECC") || label == wxT("RadApo") || label == wxT("RA") ||
-            label == wxT("PEY") || label == wxT("EquinoctialH"))
+   else if (label == "Y" || label == "ECC" || label == "RadApo" || label == "RA" ||
+            label == "PEY" || label == "EquinoctialH")
       retval = ELEMENT2_ID;
 
-   else if (label == wxT("Z") || label == wxT("INC") || label == wxT("DEC") || label == wxT("PEX") ||
-            label == wxT("EquinoctialK"))
+   else if (label == "Z" || label == "INC" || label == "DEC" || label == "PEX" ||
+            label == "EquinoctialK")
       retval = ELEMENT3_ID;
 
-   else if (label == wxT("VX") || label == wxT("RAAN") || label == wxT("VMAG") || label == wxT("PNY") ||
-            label == wxT("EquinoctialP"))
+   else if (label == "VX" || label == "RAAN" || label == "VMAG" || label == "PNY" ||
+            label == "EquinoctialP")
       retval = ELEMENT4_ID;
 
-   else if (label == wxT("VY") || label == wxT("AOP") || label == wxT("AZI") || label == wxT("RAV") ||
-            label == wxT("PNX") || label == wxT("EquinoctialQ"))
+   else if (label == "VY" || label == "AOP" || label == "AZI" || label == "RAV" ||
+            label == "PNX" || label == "EquinoctialQ")
       retval = ELEMENT5_ID;
 
-   else if (label == wxT("VZ") || !trueAnomaly.IsInvalid(label) ||
-        label == wxT("FPA") || label == wxT("DECV") || label == wxT("MLONG"))
+   else if (label == "VZ" || !trueAnomaly.IsInvalid(label) ||
+        label == "FPA" || label == "DECV" || label == "MLONG")
       retval = ELEMENT6_ID;
 
    rep = elementLabelMap[label];
 
    #ifdef DEBUG_LOOK_UP_LABEL
-      MessageInterface::ShowMessage(wxT("Spacecraft::LookUpLabel(%s..) gives rep %s with retval = %d\n"),
+      MessageInterface::ShowMessage("Spacecraft::LookUpLabel(%s..) gives rep %s with retval = %d\n",
          label.c_str(), rep.c_str(), retval);
    #endif
 
@@ -5365,9 +5371,9 @@ Integer Spacecraft::LookUpLabel(const wxString &label, wxString &rep)
 }
 
 //------------------------------------------------------------------------------
-// Integer LookUpID(const Integer id, wxString &label, wxString &rep)
+// Integer LookUpID(const Integer id, std::string &label, std::string &rep)
 //------------------------------------------------------------------------------
-Integer Spacecraft::LookUpID(const Integer id, wxString &label, wxString &rep)
+Integer Spacecraft::LookUpID(const Integer id, std::string &label, std::string &rep)
 {
    label = GetParameterText(id);
    // if it's not one of the multiple reps IDs, just return the ID
@@ -5391,45 +5397,45 @@ void Spacecraft::BuildElementLabelMap()
 {
    if (elementLabelMap.size() == 0)
    {
-      elementLabelMap[wxT("X")] = wxT("Cartesian");
-      elementLabelMap[wxT("Y")] = wxT("Cartesian");
-      elementLabelMap[wxT("Z")] = wxT("Cartesian");
-      elementLabelMap[wxT("VX")] = wxT("Cartesian");
-      elementLabelMap[wxT("VY")] = wxT("Cartesian");
-      elementLabelMap[wxT("VZ")] = wxT("Cartesian");
+      elementLabelMap["X"] = "Cartesian";
+      elementLabelMap["Y"] = "Cartesian";
+      elementLabelMap["Z"] = "Cartesian";
+      elementLabelMap["VX"] = "Cartesian";
+      elementLabelMap["VY"] = "Cartesian";
+      elementLabelMap["VZ"] = "Cartesian";
 
-      elementLabelMap[wxT("SMA")]  = wxT("Keplerian");
-      elementLabelMap[wxT("ECC")]  = wxT("Keplerian");
-      elementLabelMap[wxT("INC")]  = wxT("Keplerian");
-      elementLabelMap[wxT("RAAN")] = wxT("Keplerian");
-      elementLabelMap[wxT("AOP")]  = wxT("Keplerian");
-      elementLabelMap[wxT("TA")]   = wxT("Keplerian");
-      elementLabelMap[wxT("EA")]   = wxT("Keplerian");
-      elementLabelMap[wxT("MA")]   = wxT("Keplerian");
-      elementLabelMap[wxT("HA")]   = wxT("Keplerian");
+      elementLabelMap["SMA"]  = "Keplerian";
+      elementLabelMap["ECC"]  = "Keplerian";
+      elementLabelMap["INC"]  = "Keplerian";
+      elementLabelMap["RAAN"] = "Keplerian";
+      elementLabelMap["AOP"]  = "Keplerian";
+      elementLabelMap["TA"]   = "Keplerian";
+      elementLabelMap["EA"]   = "Keplerian";
+      elementLabelMap["MA"]   = "Keplerian";
+      elementLabelMap["HA"]   = "Keplerian";
 
-      elementLabelMap[wxT("RadPer")] = wxT("ModifiedKeplerian");
-      elementLabelMap[wxT("RadApo")] = wxT("ModifiedKeplerian");
+      elementLabelMap["RadPer"] = "ModifiedKeplerian";
+      elementLabelMap["RadApo"] = "ModifiedKeplerian";
 
-      elementLabelMap[wxT("RMAG")] = wxT("SphericalAZFPA");
-      elementLabelMap[wxT("RA")]   = wxT("SphericalAZFPA");
-      elementLabelMap[wxT("DEC")]  = wxT("SphericalAZFPA");
-      elementLabelMap[wxT("VMAG")] = wxT("SphericalAZFPA");
-      elementLabelMap[wxT("AZI")]  = wxT("SphericalAZFPA");
-      elementLabelMap[wxT("FPA")]  = wxT("SphericalAZFPA");
+      elementLabelMap["RMAG"] = "SphericalAZFPA";
+      elementLabelMap["RA"]   = "SphericalAZFPA";
+      elementLabelMap["DEC"]  = "SphericalAZFPA";
+      elementLabelMap["VMAG"] = "SphericalAZFPA";
+      elementLabelMap["AZI"]  = "SphericalAZFPA";
+      elementLabelMap["FPA"]  = "SphericalAZFPA";
 
-      elementLabelMap[wxT("RAV")]  = wxT("SphericalRADEC");
-      elementLabelMap[wxT("DECV")] = wxT("SphericalRADEC");
+      elementLabelMap["RAV"]  = "SphericalRADEC";
+      elementLabelMap["DECV"] = "SphericalRADEC";
 
-//      elementLabelMap[wxT("PEY")]    = wxT("Equinoctial");
-//      elementLabelMap[wxT("PEX")]    = wxT("Equinoctial");
-//      elementLabelMap[wxT("PNY")]    = wxT("Equinoctial");
-//      elementLabelMap[wxT("PNX")]    = wxT("Equinoctial");
-      elementLabelMap[wxT("EquinoctialH")]    = wxT("Equinoctial");
-      elementLabelMap[wxT("EquinoctialK")]    = wxT("Equinoctial");
-      elementLabelMap[wxT("EquinoctialP")]    = wxT("Equinoctial");
-      elementLabelMap[wxT("EquinoctialQ")]    = wxT("Equinoctial");
-      elementLabelMap[wxT("MLONG")]  = wxT("Equinoctial");
+//      elementLabelMap["PEY"]    = "Equinoctial";
+//      elementLabelMap["PEX"]    = "Equinoctial";
+//      elementLabelMap["PNY"]    = "Equinoctial";
+//      elementLabelMap["PNX"]    = "Equinoctial";
+      elementLabelMap["EquinoctialH"]    = "Equinoctial";
+      elementLabelMap["EquinoctialK"]    = "Equinoctial";
+      elementLabelMap["EquinoctialP"]    = "Equinoctial";
+      elementLabelMap["EquinoctialQ"]    = "Equinoctial";
+      elementLabelMap["MLONG"]  = "Equinoctial";
    }
 }
 
@@ -5508,7 +5514,7 @@ void Spacecraft::RecomputeStateAtEpoch(const GmatEpoch &toEpoch)
 bool Spacecraft::VerifyAddHardware()
 {
    Gmat::ObjectType type;
-   wxString subTypeName;
+   std::string subTypeName;
    GmatBase* obj;
    
    // 1. Verify all hardware in hardwareList are not NULL:
@@ -5517,7 +5523,7 @@ bool Spacecraft::VerifyAddHardware()
       obj = (*i);
       if (obj == NULL)
       {
-         MessageInterface::ShowMessage(wxT("***Error***:One element of hardwareList = NULL\n"));
+         MessageInterface::ShowMessage("***Error***:One element of hardwareList = NULL\n");
          return false;
       }
    }
@@ -5530,14 +5536,14 @@ bool Spacecraft::VerifyAddHardware()
    {
       obj = (*i);
       subTypeName = obj->GetTypeName();
-      if (subTypeName == wxT("Antenna"))
+      if (subTypeName == "Antenna")
          antennaList.push_back(obj);
    }
    
    // 2.2. Verify primary antenna of Receiver, Transmitter, and Transponder:
    GmatBase* antenna;
    GmatBase* primaryAntenna;
-   wxString primaryAntennaName;
+   std::string primaryAntennaName;
    bool verify = true;
    for(ObjectArray::iterator i= hardwareList.begin(); i != hardwareList.end(); ++i)
    {
@@ -5546,9 +5552,9 @@ bool Spacecraft::VerifyAddHardware()
       if (type == Gmat::HARDWARE)
       {
          subTypeName = obj->GetTypeName();
-         if ((subTypeName == wxT("Transmitter"))||
-             (subTypeName == wxT("Receiver"))||
-             (subTypeName == wxT("Transponder")))
+         if ((subTypeName == "Transmitter")||
+             (subTypeName == "Receiver")||
+             (subTypeName == "Transponder"))
          {
             // Get primary antenna:
             primaryAntennaName = obj->GetRefObjectName(Gmat::HARDWARE);
@@ -5558,7 +5564,7 @@ bool Spacecraft::VerifyAddHardware()
             if (primaryAntenna == NULL)
             {
                MessageInterface::ShowMessage
-                  (wxT("***Error***:primary antenna of %s in %s's AddHardware list is NULL \n"),
+                  ("***Error***:primary antenna of %s in %s's AddHardware list is NULL \n",
                    obj->GetName().c_str(), this->GetName().c_str());
                check = false;
             }
@@ -5577,7 +5583,7 @@ bool Spacecraft::VerifyAddHardware()
                   else if (antenna->GetName() == primaryAntenna->GetName())
                   {
                      MessageInterface::ShowMessage
-                        (wxT("Primary antenna %s of %s is a clone of an antenna in %s's AddHardware\n"),
+                        ("Primary antenna %s of %s is a clone of an antenna in %s's AddHardware\n",
                          primaryAntenna->GetName().c_str(), obj->GetName().c_str(),
                          this->GetName().c_str());
                   }
@@ -5586,7 +5592,7 @@ bool Spacecraft::VerifyAddHardware()
                {
                   // Display error message:
                   MessageInterface::ShowMessage
-                     (wxT("***Error***:primary antenna of %s is not in %s's AddHardware\n"),
+                     ("***Error***:primary antenna of %s is not in %s's AddHardware\n",
                       obj->GetName().c_str(), this->GetName().c_str());
                }
             }

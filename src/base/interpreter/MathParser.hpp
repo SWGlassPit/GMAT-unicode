@@ -42,63 +42,63 @@ public:
    MathParser& operator=(const MathParser &right);
    virtual ~MathParser();
    
-   bool         IsEquation(const wxString &str, bool checkMinusSign);
-   wxString  FindLowestOperator(const wxString &str, Integer &opIndex,
+   bool         IsEquation(const std::string &str, bool checkMinusSign);
+   std::string  FindLowestOperator(const std::string &str, Integer &opIndex,
                                    Integer start = 0);
-   MathNode*    Parse(const wxString &str);
+   MathNode*    Parse(const std::string &str);
    StringArray  GetGmatFunctionNames();
    
 protected:
    
-   MathNode*    ParseNode(const wxString &str);
-   MathNode*    CreateNode(const wxString &type, const wxString &exp);
-   StringArray  Decompose(const wxString &str);
+   MathNode*    ParseNode(const std::string &str);
+   MathNode*    CreateNode(const std::string &type, const std::string &exp);
+   StringArray  Decompose(const std::string &str);
    
 private:
    
-   wxString  originalEquation;
-   wxString  theEquation;
+   std::string  originalEquation;
+   std::string  theEquation;
    Integer      theGmatFuncCount;
    
-   StringArray  ParseParenthesis(const wxString &str);
-   StringArray  ParseAddSubtract(const wxString &str);
-   StringArray  ParseMultDivide(const wxString &str);
-   StringArray  ParseMatrixOps(const wxString &str);
-   StringArray  ParsePower(const wxString &str);
-   StringArray  ParseUnary(const wxString &str);
-   StringArray  ParseMathFunctions(const wxString &str);
-   StringArray  ParseUnitConversion(const wxString &str);
+   StringArray  ParseParenthesis(const std::string &str);
+   StringArray  ParseAddSubtract(const std::string &str);
+   StringArray  ParseMultDivide(const std::string &str);
+   StringArray  ParseMatrixOps(const std::string &str);
+   StringArray  ParsePower(const std::string &str);
+   StringArray  ParseUnary(const std::string &str);
+   StringArray  ParseMathFunctions(const std::string &str);
+   StringArray  ParseUnitConversion(const std::string &str);
    
-   bool         IsMathFunction(const wxString &str);
-   bool         HasFunctionName(const wxString &str, const StringArray &fnList);
-   bool         IsParenPartOfFunction(const wxString &str);
-   bool         IsGmatFunction(const wxString &name);
-   bool         IsValidOperator(const wxString &str);
+   bool         IsMathFunction(const std::string &str);
+   bool         HasFunctionName(const std::string &str, const StringArray &fnList);
+   bool         IsParenPartOfFunction(const std::string &str);
+   bool         IsGmatFunction(const std::string &name);
+   bool         IsValidOperator(const std::string &str);
    
-   wxString  GetFunctionName(UnsignedInt functionType, const wxString &str,
-                                wxString &leftStr);
-   wxString::size_type
-                FindSubtract(const wxString &str, wxString::size_type start);
-   wxString::size_type
-                FindMatchingParen(const wxString &str,
-                                  wxString::size_type start);
-   wxString  FindOperatorFrom(const wxString &str,
-                                 wxString::size_type start,
-                                 wxString &left, wxString &right,
-                                 wxString::size_type &opIndex);
-   wxString  GetOperator(const IntegerMap::iterator &pos1,
+   std::string  GetFunctionName(UnsignedInt functionType, const std::string &str,
+                                std::string &leftStr);
+   std::string::size_type
+                FindSubtract(const std::string &str, std::string::size_type start);
+   std::string::size_type
+                FindMatchingParen(const std::string &str,
+                                  std::string::size_type start);
+   std::string  FindOperatorFrom(const std::string &str,
+                                 std::string::size_type start,
+                                 std::string &left, std::string &right,
+                                 std::string::size_type &opIndex);
+   std::string  GetOperator(const IntegerMap::iterator &pos1,
                             const IntegerMap::iterator &pos2,
                             const IntegerMap &opIndexMap,
                             Integer &opIndex);
-   wxString  FindOperator(const wxString &str, Integer &opIndex);
-   wxString  GetOperatorName(const wxString &op, bool &opFound);
+   std::string  FindOperator(const std::string &str, Integer &opIndex);
+   std::string  GetOperatorName(const std::string &op, bool &opFound);
    void         BuildAllFunctionList();
-   void         BuildGmatFunctionList(const wxString &str);
-   void         BuildFunction(const wxString &str, const StringArray &fnList,
-                              wxString &fnName, wxString &leftStr);
-   void         FillItems(StringArray &items, const wxString &op,
-                          const wxString &left, const wxString &right);
-   void         WriteItems(const wxString &msg, StringArray &items);
+   void         BuildGmatFunctionList(const std::string &str);
+   void         BuildFunction(const std::string &str, const StringArray &fnList,
+                              std::string &fnName, std::string &leftStr);
+   void         FillItems(StringArray &items, const std::string &op,
+                          const std::string &left, const std::string &right);
+   void         WriteItems(const std::string &msg, StringArray &items);
    void         WriteNode(MathNode *node, UnsignedInt level);
    
    enum

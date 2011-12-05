@@ -53,7 +53,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  CreateParameter(const wxString &ofType, const wxString &withName)
+//  CreateParameter(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested Parameter class
@@ -62,320 +62,320 @@
  * @param <withName> the name to give the newly-created Parameter object.
  */
 //------------------------------------------------------------------------------
-Parameter* ParameterFactory::CreateParameter(const wxString &ofType,
-                                             const wxString &withName)
+Parameter* ParameterFactory::CreateParameter(const std::string &ofType,
+                                             const std::string &withName)
 {
    // User defined parameters
-   if (ofType == wxT("Variable"))
+   if (ofType == "Variable")
       return new Variable(withName);
-   if (ofType == wxT("String"))
+   if (ofType == "String")
       return new StringVar(withName);
-   if (ofType == wxT("Array"))
+   if (ofType == "Array")
       return new Array(withName);
    
    // Time parameters
-   if (ofType == wxT("ElapsedDays"))
+   if (ofType == "ElapsedDays")
       return new ElapsedDays(withName);
-   if (ofType == wxT("ElapsedSecs"))
+   if (ofType == "ElapsedSecs")
       return new ElapsedSecs(withName);
-   if (ofType == wxT("CurrA1MJD"))
+   if (ofType == "CurrA1MJD")
       return new CurrA1MJD(withName);
-   if (ofType == wxT("A1ModJulian"))
+   if (ofType == "A1ModJulian")
       return new A1ModJulian(withName);
-   if (ofType == wxT("A1Gregorian"))
+   if (ofType == "A1Gregorian")
       return new A1Gregorian(withName);
-   if (ofType == wxT("TAIModJulian"))
+   if (ofType == "TAIModJulian")
       return new TAIModJulian(withName);
-   if (ofType == wxT("TAIGregorian"))
+   if (ofType == "TAIGregorian")
       return new TAIGregorian(withName);
-   if (ofType == wxT("TTModJulian"))
+   if (ofType == "TTModJulian")
       return new TTModJulian(withName);
-   if (ofType == wxT("TTGregorian"))
+   if (ofType == "TTGregorian")
       return new TTGregorian(withName);
-   if (ofType == wxT("TDBModJulian"))
+   if (ofType == "TDBModJulian")
       return new TDBModJulian(withName);
-   if (ofType == wxT("TDBGregorian"))
+   if (ofType == "TDBGregorian")
       return new TDBGregorian(withName);
-   if (ofType == wxT("TCBModJulian"))
+   if (ofType == "TCBModJulian")
       return new TCBModJulian(withName);
-   if (ofType == wxT("TCBGregorian"))
+   if (ofType == "TCBGregorian")
       return new TCBGregorian(withName);
-   if (ofType == wxT("UTCModJulian"))
+   if (ofType == "UTCModJulian")
       return new UTCModJulian(withName);
-   if (ofType == wxT("UTCGregorian"))
+   if (ofType == "UTCGregorian")
       return new UTCGregorian(withName);
 
    // Cartesian parameters
-   if (ofType == wxT("X"))
+   if (ofType == "X")
       return new CartX(withName);
-   if (ofType == wxT("Y"))
+   if (ofType == "Y")
       return new CartY(withName);
-   if (ofType == wxT("Z"))
+   if (ofType == "Z")
       return new CartZ(withName);
-   if (ofType == wxT("VX"))
+   if (ofType == "VX")
       return new CartVx(withName);
-   if (ofType == wxT("VY"))
+   if (ofType == "VY")
       return new CartVy(withName);
-   if (ofType == wxT("VZ"))
+   if (ofType == "VZ")
       return new CartVz(withName);
-   if (ofType == wxT("Cartesian"))
+   if (ofType == "Cartesian")
       return new CartState(withName);
 
     // Keplerian parameters
-   if (ofType == wxT("SMA"))
+   if (ofType == "SMA")
       return new KepSMA(withName);
-   if (ofType == wxT("ECC"))
+   if (ofType == "ECC")
       return new KepEcc(withName);
-   if (ofType == wxT("INC"))
+   if (ofType == "INC")
       return new KepInc(withName);
-   if (ofType == wxT("RAAN"))
+   if (ofType == "RAAN")
       return new KepRAAN(withName);
-   if (ofType == wxT("RADN"))
+   if (ofType == "RADN")
       return new KepRADN(withName);
-   if (ofType == wxT("AOP"))
+   if (ofType == "AOP")
       return new KepAOP(withName);
-   if (ofType == wxT("TA"))
+   if (ofType == "TA")
       return new KepTA(withName);
-   if (ofType == wxT("MA"))
+   if (ofType == "MA")
       return new KepMA(withName);
-   if (ofType == wxT("EA"))
+   if (ofType == "EA")
       return new KepEA(withName);
-   if (ofType == wxT("HA"))
+   if (ofType == "HA")
       return new KepHA(withName);
-   if (ofType == wxT("MM"))
+   if (ofType == "MM")
       return new KepMM(withName);
-   if (ofType == wxT("Keplerian"))
+   if (ofType == "Keplerian")
       return new KepElem(withName);
-   if (ofType == wxT("ModKeplerian"))
+   if (ofType == "ModKeplerian")
       return new ModKepElem(withName);
 
    // Spherical parameters
-   if (ofType == wxT("RMAG"))
+   if (ofType == "RMAG")
       return new SphRMag(withName);
-   if (ofType == wxT("RA"))
+   if (ofType == "RA")
       return new SphRA(withName);
-   if (ofType == wxT("DEC"))
+   if (ofType == "DEC")
       return new SphDec(withName);
-   if (ofType == wxT("VMAG"))
+   if (ofType == "VMAG")
       return new SphVMag(withName);
-   if (ofType == wxT("RAV"))
+   if (ofType == "RAV")
       return new SphRAV(withName);
-   if (ofType == wxT("DECV"))
+   if (ofType == "DECV")
       return new SphDecV(withName);
-   if (ofType == wxT("AZI"))
+   if (ofType == "AZI")
       return new SphAzi(withName);
-   if (ofType == wxT("FPA"))
+   if (ofType == "FPA")
       return new SphFPA(withName);
-   if (ofType == wxT("SphericalRADEC")) 
+   if (ofType == "SphericalRADEC") 
       return new SphRaDecElem(withName);
-   if (ofType == wxT("SphericalAZFPA")) 
+   if (ofType == "SphericalAZFPA") 
       return new SphAzFpaElem(withName);
-   if (ofType == wxT("Altitude"))
+   if (ofType == "Altitude")
       return new Altitude(withName);
 
    // Equinoctial parameters
-   if (ofType == wxT("EquinoctialH"))
+   if (ofType == "EquinoctialH")
       return new EquinEy(withName);
-   if (ofType == wxT("EquinoctialK"))
+   if (ofType == "EquinoctialK")
       return new EquinEx(withName);
-   if (ofType == wxT("EquinoctialP"))
+   if (ofType == "EquinoctialP")
       return new EquinNy(withName);
-   if (ofType == wxT("EquinoctialQ"))
+   if (ofType == "EquinoctialQ")
       return new EquinNx(withName);
-   if (ofType == wxT("MLONG"))
+   if (ofType == "MLONG")
       return new EquinMlong(withName);
-   if (ofType == wxT("Equinoctial"))
+   if (ofType == "Equinoctial")
       return new EquinState(withName);
 
    // Orbital parameters
-   if (ofType == wxT("VelApoapsis"))
+   if (ofType == "VelApoapsis")
       return new VelApoapsis(withName);
-   if (ofType == wxT("VelPeriapsis"))
+   if (ofType == "VelPeriapsis")
       return new VelPeriapsis(withName);
-   if (ofType == wxT("Apoapsis"))
+   if (ofType == "Apoapsis")
       return new Apoapsis(withName);
-   if (ofType == wxT("Periapsis"))
+   if (ofType == "Periapsis")
       return new Periapsis(withName);
-   if (ofType == wxT("OrbitPeriod"))
+   if (ofType == "OrbitPeriod")
       return new OrbitPeriod(withName);
-   if (ofType == wxT("RadApo"))
+   if (ofType == "RadApo")
       return new RadApoapsis(withName);
-   if (ofType == wxT("RadPer"))
+   if (ofType == "RadPer")
       return new RadPeriapsis(withName);
-   if (ofType == wxT("C3Energy"))
+   if (ofType == "C3Energy")
       return new C3Energy(withName);
-   if (ofType == wxT("Energy"))
+   if (ofType == "Energy")
       return new Energy(withName);
 
    // Angular parameters
-   if (ofType == wxT("SemilatusRectum"))
+   if (ofType == "SemilatusRectum")
       return new SemilatusRectum(withName);
-   if (ofType == wxT("HMAG"))
+   if (ofType == "HMAG")
       return new AngularMomentumMag(withName);
-   if (ofType == wxT("HX"))
+   if (ofType == "HX")
       return new AngularMomentumX(withName);
-   if (ofType == wxT("HY"))
+   if (ofType == "HY")
       return new AngularMomentumY(withName);
-   if (ofType == wxT("HZ"))
+   if (ofType == "HZ")
       return new AngularMomentumZ(withName);
-   if (ofType == wxT("DLA"))
+   if (ofType == "DLA")
       return new DLA(withName);
-   if (ofType == wxT("RLA"))
+   if (ofType == "RLA")
       return new RLA(withName);
 
    // Environmental parameters
-   if (ofType == wxT("AtmosDensity"))
+   if (ofType == "AtmosDensity")
       return new AtmosDensity(withName);
    
    // Planet parameters
-   if (ofType == wxT("MHA"))
+   if (ofType == "MHA")
       return new MHA(withName);
-   if (ofType == wxT("Longitude"))
+   if (ofType == "Longitude")
       return new Longitude(withName);
-   if (ofType == wxT("Latitude"))
+   if (ofType == "Latitude")
       return new Latitude(withName);
-   if (ofType == wxT("LST"))
+   if (ofType == "LST")
       return new LST(withName);
-   if (ofType == wxT("BetaAngle"))
+   if (ofType == "BetaAngle")
       return new BetaAngle(withName);
    
    // B-Plane parameters
-   if (ofType == wxT("BdotT"))
+   if (ofType == "BdotT")
       return new BdotT(withName);
-   if (ofType == wxT("BdotR"))
+   if (ofType == "BdotR")
       return new BdotR(withName);
-   if (ofType == wxT("BVectorMag"))
+   if (ofType == "BVectorMag")
       return new BVectorMag(withName);
-   if (ofType == wxT("BVectorAngle"))
+   if (ofType == "BVectorAngle")
       return new BVectorAngle(withName);
    
    // ImpulsiveBurn parameters
-   if (ofType == wxT("Element1") || ofType == wxT("Element2") || ofType == wxT("Element3"))
+   if (ofType == "Element1" || ofType == "Element2" || ofType == "Element3")
       return new ImpBurnElements(ofType, withName);   
-   if (ofType == wxT("V") || ofType == wxT("N") || ofType == wxT("B"))
+   if (ofType == "V" || ofType == "N" || ofType == "B")
       return new ImpBurnElements(ofType, withName);
    
    // Attitude parameters
-   if (ofType == wxT("DCM11") || ofType == wxT("DirectionCosineMatrix11"))
+   if (ofType == "DCM11" || ofType == "DirectionCosineMatrix11")
       return new DCM11(withName);
-   if (ofType == wxT("DCM12") || ofType == wxT("DirectionCosineMatrix12"))
+   if (ofType == "DCM12" || ofType == "DirectionCosineMatrix12")
       return new DCM12(withName);
-   if (ofType == wxT("DCM13") || ofType == wxT("DirectionCosineMatrix13"))
+   if (ofType == "DCM13" || ofType == "DirectionCosineMatrix13")
       return new DCM13(withName);
-   if (ofType == wxT("DCM21") || ofType == wxT("DirectionCosineMatrix21"))
+   if (ofType == "DCM21" || ofType == "DirectionCosineMatrix21")
       return new DCM21(withName);
-   if (ofType == wxT("DCM22") || ofType == wxT("DirectionCosineMatrix22"))
+   if (ofType == "DCM22" || ofType == "DirectionCosineMatrix22")
       return new DCM22(withName);
-   if (ofType == wxT("DCM23") || ofType == wxT("DirectionCosineMatrix23"))
+   if (ofType == "DCM23" || ofType == "DirectionCosineMatrix23")
       return new DCM23(withName);
-   if (ofType == wxT("DCM31") || ofType == wxT("DirectionCosineMatrix31"))
+   if (ofType == "DCM31" || ofType == "DirectionCosineMatrix31")
       return new DCM31(withName);
-   if (ofType == wxT("DCM32") || ofType == wxT("DirectionCosineMatrix32"))
+   if (ofType == "DCM32" || ofType == "DirectionCosineMatrix32")
       return new DCM32(withName);
-   if (ofType == wxT("DCM33") || ofType == wxT("DirectionCosineMatrix33"))
+   if (ofType == "DCM33" || ofType == "DirectionCosineMatrix33")
       return new DCM33(withName);
-   if (ofType == wxT("EulerAngle1"))
+   if (ofType == "EulerAngle1")
       return new EulerAngle1(withName);
-   if (ofType == wxT("EulerAngle2"))
+   if (ofType == "EulerAngle2")
       return new EulerAngle2(withName);
-   if (ofType == wxT("EulerAngle3"))
+   if (ofType == "EulerAngle3")
       return new EulerAngle3(withName);
-   if (ofType == wxT("MRP1"))  // Dunn Added
+   if (ofType == "MRP1")  // Dunn Added
       return new MRP1(withName);
-   if (ofType == wxT("MRP2"))  // Dunn Added
+   if (ofType == "MRP2")  // Dunn Added
       return new MRP2(withName);
-   if (ofType == wxT("MRP3"))  // Dunn Added
+   if (ofType == "MRP3")  // Dunn Added
       return new MRP3(withName);
-   if (ofType == wxT("Q1") || ofType == wxT("q1"))
+   if (ofType == "Q1" || ofType == "q1")
       return new Quat1(withName);
-   if (ofType == wxT("Q2") || ofType == wxT("q2"))
+   if (ofType == "Q2" || ofType == "q2")
       return new Quat2(withName);
-   if (ofType == wxT("Q3") || ofType == wxT("q3"))
+   if (ofType == "Q3" || ofType == "q3")
       return new Quat3(withName);
-   if (ofType == wxT("Q4") || ofType == wxT("q4"))
+   if (ofType == "Q4" || ofType == "q4")
       return new Quat4(withName);
       
-   if (ofType == wxT("AngularVelocityX") || ofType == wxT("AngVelX"))
+   if (ofType == "AngularVelocityX" || ofType == "AngVelX")
       return new AngVelX(withName);
-   if (ofType == wxT("AngularVelocityY") || ofType == wxT("AngVelY"))
+   if (ofType == "AngularVelocityY" || ofType == "AngVelY")
       return new AngVelY(withName);
-   if (ofType == wxT("AngularVelocityZ") || ofType == wxT("AngVelZ"))
+   if (ofType == "AngularVelocityZ" || ofType == "AngVelZ")
       return new AngVelZ(withName);
-   if (ofType == wxT("EulerAngleRate1"))
+   if (ofType == "EulerAngleRate1")
       return new EulerAngleRate1(withName);
-   if (ofType == wxT("EulerAngleRate2"))
+   if (ofType == "EulerAngleRate2")
       return new EulerAngleRate2(withName);
-   if (ofType == wxT("EulerAngleRate3"))
+   if (ofType == "EulerAngleRate3")
       return new EulerAngleRate3(withName);
    
    // Ballistic/Mass parameters
-   if (ofType == wxT("DryMass"))
+   if (ofType == "DryMass")
       return new DryMass(withName);
-   if (ofType == wxT("Cd"))
+   if (ofType == "Cd")
       return new DragCoeff(withName);
-   if (ofType == wxT("Cr"))
+   if (ofType == "Cr")
       return new ReflectCoeff(withName);
-   if (ofType == wxT("DragArea"))
+   if (ofType == "DragArea")
       return new DragArea(withName);
-   if (ofType == wxT("SRPArea"))
+   if (ofType == "SRPArea")
       return new SRPArea(withName);
-   if (ofType == wxT("TotalMass"))
+   if (ofType == "TotalMass")
       return new TotalMass(withName);
    
    // orbit STM parameters
-   if (ofType == wxT("OrbitSTM"))
+   if (ofType == "OrbitSTM")
       return new OrbitStm(withName);
-   if (ofType == wxT("OrbitSTMA"))
+   if (ofType == "OrbitSTMA")
       return new OrbitStmA(withName);
-   if (ofType == wxT("OrbitSTMB"))
+   if (ofType == "OrbitSTMB")
       return new OrbitStmB(withName);
-   if (ofType == wxT("OrbitSTMC"))
+   if (ofType == "OrbitSTMC")
       return new OrbitStmC(withName);
-   if (ofType == wxT("OrbitSTMD"))
+   if (ofType == "OrbitSTMD")
       return new OrbitStmD(withName);
    
    // FuelTank parameters
-   if (ofType == wxT("FuelMass"))
+   if (ofType == "FuelMass")
       return new FuelMass(withName);
-   if (ofType == wxT("Pressure"))
+   if (ofType == "Pressure")
       return new Pressure(withName);
-   if (ofType == wxT("Temperature"))
+   if (ofType == "Temperature")
       return new Temperature(withName);
-   if (ofType == wxT("RefTemperature"))
+   if (ofType == "RefTemperature")
       return new RefTemperature(withName);
-   if (ofType == wxT("Volume"))
+   if (ofType == "Volume")
       return new Volume(withName);
-   if (ofType == wxT("FuelDensity"))
+   if (ofType == "FuelDensity")
       return new FuelDensity(withName);
    
    // Thruster parameters
-   if (ofType == wxT("DutyCycle"))
+   if (ofType == "DutyCycle")
       return new DutyCycle(withName);
-   if (ofType == wxT("ThrustScaleFactor"))
+   if (ofType == "ThrustScaleFactor")
       return new ThrustScaleFactor(withName);
-   if (ofType == wxT("GravitationalAccel"))
+   if (ofType == "GravitationalAccel")
       return new GravitationalAccel(withName);
    
-   if (ofType == wxT("C1")  || ofType == wxT("C2")  || ofType == wxT("C3")  || ofType == wxT("C4")  ||
-       ofType == wxT("C5")  || ofType == wxT("C6")  || ofType == wxT("C7")  || ofType == wxT("C8")  ||
-       ofType == wxT("C9")  || ofType == wxT("C10") || ofType == wxT("C11") || ofType == wxT("C12") ||
-       ofType == wxT("C13") || ofType == wxT("C14") || ofType == wxT("C15") || ofType == wxT("C16"))
+   if (ofType == "C1"  || ofType == "C2"  || ofType == "C3"  || ofType == "C4"  ||
+       ofType == "C5"  || ofType == "C6"  || ofType == "C7"  || ofType == "C8"  ||
+       ofType == "C9"  || ofType == "C10" || ofType == "C11" || ofType == "C12" ||
+       ofType == "C13" || ofType == "C14" || ofType == "C15" || ofType == "C16")
       return new ThrustCoefficients(ofType, withName);
    
-   if (ofType == wxT("K1")  || ofType == wxT("K2")  || ofType == wxT("K3")  || ofType == wxT("K4")  ||
-       ofType == wxT("K5")  || ofType == wxT("K6")  || ofType == wxT("K7")  || ofType == wxT("K8")  ||
-       ofType == wxT("K9")  || ofType == wxT("K10") || ofType == wxT("K11") || ofType == wxT("K12") ||
-       ofType == wxT("K13") || ofType == wxT("K14") || ofType == wxT("K15") || ofType == wxT("K16"))
+   if (ofType == "K1"  || ofType == "K2"  || ofType == "K3"  || ofType == "K4"  ||
+       ofType == "K5"  || ofType == "K6"  || ofType == "K7"  || ofType == "K8"  ||
+       ofType == "K9"  || ofType == "K10" || ofType == "K11" || ofType == "K12" ||
+       ofType == "K13" || ofType == "K14" || ofType == "K15" || ofType == "K16")
       return new ImpulseCoefficients(ofType, withName);
    
-   if (ofType == wxT("ThrustDirection1") || ofType == wxT("ThrustDirection2") ||
-       ofType == wxT("ThrustDirection3"))
+   if (ofType == "ThrustDirection1" || ofType == "ThrustDirection2" ||
+       ofType == "ThrustDirection3")
       return new ThrustDirections(ofType, withName);
    
    // add others here
    
    MessageInterface::ShowMessage
-      (wxT("**** ERROR **** Cannot create a parameter with unknown type \"%s\"\n"),
+      ("**** ERROR **** Cannot create a parameter with unknown type \"%s\"\n",
        ofType.c_str());
    
    return NULL;
@@ -398,214 +398,214 @@ ParameterFactory::ParameterFactory()
    if (creatables.empty())
    {
       // User defined parameters
-      creatables.push_back(wxT("Variable"));
-      creatables.push_back(wxT("String"));
-      creatables.push_back(wxT("Array"));
+      creatables.push_back("Variable");
+      creatables.push_back("String");
+      creatables.push_back("Array");
       
       // Time parameters
-      creatables.push_back(wxT("ElapsedDays"));
-      creatables.push_back(wxT("ElapsedSecs"));
-      creatables.push_back(wxT("CurrA1MJD"));
-      creatables.push_back(wxT("A1ModJulian"));
-      creatables.push_back(wxT("A1Gregorian"));
-      creatables.push_back(wxT("TAIModJulian"));
-      creatables.push_back(wxT("TAIGregorian"));
-      creatables.push_back(wxT("TTModJulian"));
-      creatables.push_back(wxT("TTGregorian"));
-      creatables.push_back(wxT("TDBModJulian"));
-      creatables.push_back(wxT("TDBGregorian"));
-      creatables.push_back(wxT("TCBModJulian"));
-      creatables.push_back(wxT("TCBGregorian"));
-      creatables.push_back(wxT("UTCModJulian"));
-      creatables.push_back(wxT("UTCGregorian"));
+      creatables.push_back("ElapsedDays");
+      creatables.push_back("ElapsedSecs");
+      creatables.push_back("CurrA1MJD");
+      creatables.push_back("A1ModJulian");
+      creatables.push_back("A1Gregorian");
+      creatables.push_back("TAIModJulian");
+      creatables.push_back("TAIGregorian");
+      creatables.push_back("TTModJulian");
+      creatables.push_back("TTGregorian");
+      creatables.push_back("TDBModJulian");
+      creatables.push_back("TDBGregorian");
+      creatables.push_back("TCBModJulian");
+      creatables.push_back("TCBGregorian");
+      creatables.push_back("UTCModJulian");
+      creatables.push_back("UTCGregorian");
 
       // Cartesian parameters
-      creatables.push_back(wxT("X"));
-      creatables.push_back(wxT("Y"));
-      creatables.push_back(wxT("Z"));
-      creatables.push_back(wxT("VX"));
-      creatables.push_back(wxT("VY"));
-      creatables.push_back(wxT("VZ"));
-      creatables.push_back(wxT("Cartesian"));
+      creatables.push_back("X");
+      creatables.push_back("Y");
+      creatables.push_back("Z");
+      creatables.push_back("VX");
+      creatables.push_back("VY");
+      creatables.push_back("VZ");
+      creatables.push_back("Cartesian");
 
       // Keplerian parameters
-      creatables.push_back(wxT("SMA"));
-      creatables.push_back(wxT("ECC"));
-      creatables.push_back(wxT("INC"));
-      creatables.push_back(wxT("RAAN"));
-      creatables.push_back(wxT("RADN"));
-      creatables.push_back(wxT("AOP"));
-      creatables.push_back(wxT("TA"));
-      creatables.push_back(wxT("MA"));
-      creatables.push_back(wxT("EA"));
-      creatables.push_back(wxT("HA"));
-      creatables.push_back(wxT("MM"));
-      creatables.push_back(wxT("Keplerian"));
-      creatables.push_back(wxT("ModKeplerian"));
+      creatables.push_back("SMA");
+      creatables.push_back("ECC");
+      creatables.push_back("INC");
+      creatables.push_back("RAAN");
+      creatables.push_back("RADN");
+      creatables.push_back("AOP");
+      creatables.push_back("TA");
+      creatables.push_back("MA");
+      creatables.push_back("EA");
+      creatables.push_back("HA");
+      creatables.push_back("MM");
+      creatables.push_back("Keplerian");
+      creatables.push_back("ModKeplerian");
 
       // Spherical parameters
-      creatables.push_back(wxT("RMAG"));
-      creatables.push_back(wxT("RA"));
-      creatables.push_back(wxT("DEC"));
-      creatables.push_back(wxT("VMAG"));
-      creatables.push_back(wxT("RAV"));
-      creatables.push_back(wxT("DECV"));
-      creatables.push_back(wxT("AZI"));
-      creatables.push_back(wxT("FPA"));
-      creatables.push_back(wxT("SphericalRADEC"));
-      creatables.push_back(wxT("SphericalAZFPA"));
-      creatables.push_back(wxT("Altitude"));
+      creatables.push_back("RMAG");
+      creatables.push_back("RA");
+      creatables.push_back("DEC");
+      creatables.push_back("VMAG");
+      creatables.push_back("RAV");
+      creatables.push_back("DECV");
+      creatables.push_back("AZI");
+      creatables.push_back("FPA");
+      creatables.push_back("SphericalRADEC");
+      creatables.push_back("SphericalAZFPA");
+      creatables.push_back("Altitude");
 
       // Equinoctial parameters
-//      creatables.push_back(wxT("h"));
-//      creatables.push_back(wxT("k"));
-//      creatables.push_back(wxT("p"));
-//      creatables.push_back(wxT("q"));
-      creatables.push_back(wxT("EquinoctialH"));
-      creatables.push_back(wxT("EquinoctialK"));
-      creatables.push_back(wxT("EquinoctialP"));
-      creatables.push_back(wxT("EquinoctialQ"));
-      creatables.push_back(wxT("MLONG"));
-      creatables.push_back(wxT("Equinoctial"));
+//      creatables.push_back("h");
+//      creatables.push_back("k");
+//      creatables.push_back("p");
+//      creatables.push_back("q");
+      creatables.push_back("EquinoctialH");
+      creatables.push_back("EquinoctialK");
+      creatables.push_back("EquinoctialP");
+      creatables.push_back("EquinoctialQ");
+      creatables.push_back("MLONG");
+      creatables.push_back("Equinoctial");
 
       // Orbital parameters
-      creatables.push_back(wxT("VelApoapsis"));
-      creatables.push_back(wxT("VelPeriapsis"));
-      creatables.push_back(wxT("Apoapsis"));
-      creatables.push_back(wxT("Periapsis"));
-      creatables.push_back(wxT("OrbitPeriod"));
-      creatables.push_back(wxT("RadApo"));
-      creatables.push_back(wxT("RadPer"));
-      creatables.push_back(wxT("C3Energy"));
-      creatables.push_back(wxT("Energy"));
+      creatables.push_back("VelApoapsis");
+      creatables.push_back("VelPeriapsis");
+      creatables.push_back("Apoapsis");
+      creatables.push_back("Periapsis");
+      creatables.push_back("OrbitPeriod");
+      creatables.push_back("RadApo");
+      creatables.push_back("RadPer");
+      creatables.push_back("C3Energy");
+      creatables.push_back("Energy");
 
       // Angular parameters
-      creatables.push_back(wxT("SemilatusRectum"));
-      creatables.push_back(wxT("HMAG"));
-      creatables.push_back(wxT("HX"));
-      creatables.push_back(wxT("HY"));
-      creatables.push_back(wxT("HZ"));
-      creatables.push_back(wxT("DLA"));
-      creatables.push_back(wxT("RLA"));
+      creatables.push_back("SemilatusRectum");
+      creatables.push_back("HMAG");
+      creatables.push_back("HX");
+      creatables.push_back("HY");
+      creatables.push_back("HZ");
+      creatables.push_back("DLA");
+      creatables.push_back("RLA");
       
       // Environmental parameters
       #ifdef __ENABLE_ATMOS_DENSITY__
-      creatables.push_back(wxT("AtmosDensity"));
+      creatables.push_back("AtmosDensity");
       #endif
       
       // Planet parameters
-      creatables.push_back(wxT("MHA"));
-      creatables.push_back(wxT("Longitude"));
-      creatables.push_back(wxT("Latitude"));
-      creatables.push_back(wxT("LST"));
-      creatables.push_back(wxT("BetaAngle"));
+      creatables.push_back("MHA");
+      creatables.push_back("Longitude");
+      creatables.push_back("Latitude");
+      creatables.push_back("LST");
+      creatables.push_back("BetaAngle");
       
       // B-Plane parameters
-      creatables.push_back(wxT("BdotT"));
-      creatables.push_back(wxT("BdotR"));
-      creatables.push_back(wxT("BVectorMag"));
-      creatables.push_back(wxT("BVectorAngle"));
+      creatables.push_back("BdotT");
+      creatables.push_back("BdotR");
+      creatables.push_back("BVectorMag");
+      creatables.push_back("BVectorAngle");
       
       // Burn parameters
-      creatables.push_back(wxT("Element1"));
-      creatables.push_back(wxT("Element2"));
-      creatables.push_back(wxT("Element3"));
-      creatables.push_back(wxT("V"));
-      creatables.push_back(wxT("N"));
-      creatables.push_back(wxT("B"));
+      creatables.push_back("Element1");
+      creatables.push_back("Element2");
+      creatables.push_back("Element3");
+      creatables.push_back("V");
+      creatables.push_back("N");
+      creatables.push_back("B");
       
       // Attitude parameters
-      creatables.push_back(wxT("DCM11"));
-      creatables.push_back(wxT("DCM12"));
-      creatables.push_back(wxT("DCM13"));
-      creatables.push_back(wxT("DCM21"));
-      creatables.push_back(wxT("DCM22"));
-      creatables.push_back(wxT("DCM23"));
-      creatables.push_back(wxT("DCM31"));
-      creatables.push_back(wxT("DCM32"));
-      creatables.push_back(wxT("DCM33"));
-      creatables.push_back(wxT("EulerAngle1"));
-      creatables.push_back(wxT("EulerAngle2"));
-      creatables.push_back(wxT("EulerAngle3"));
-      creatables.push_back(wxT("MRP1"));  // Dunn Added
-      creatables.push_back(wxT("MRP2"));  // Dunn Added
-      creatables.push_back(wxT("MRP3"));  // Dunn Added
-      creatables.push_back(wxT("Q1"));
-      creatables.push_back(wxT("Q2"));
-      creatables.push_back(wxT("Q3"));
-      creatables.push_back(wxT("Q4"));
-      creatables.push_back(wxT("AngularVelocityX"));
-      creatables.push_back(wxT("AngularVelocityY"));
-      creatables.push_back(wxT("AngularVelocityZ"));
-      creatables.push_back(wxT("EulerAngleRate1"));
-      creatables.push_back(wxT("EulerAngleRate2"));
-      creatables.push_back(wxT("EulerAngleRate3"));
+      creatables.push_back("DCM11");
+      creatables.push_back("DCM12");
+      creatables.push_back("DCM13");
+      creatables.push_back("DCM21");
+      creatables.push_back("DCM22");
+      creatables.push_back("DCM23");
+      creatables.push_back("DCM31");
+      creatables.push_back("DCM32");
+      creatables.push_back("DCM33");
+      creatables.push_back("EulerAngle1");
+      creatables.push_back("EulerAngle2");
+      creatables.push_back("EulerAngle3");
+      creatables.push_back("MRP1");  // Dunn Added
+      creatables.push_back("MRP2");  // Dunn Added
+      creatables.push_back("MRP3");  // Dunn Added
+      creatables.push_back("Q1");
+      creatables.push_back("Q2");
+      creatables.push_back("Q3");
+      creatables.push_back("Q4");
+      creatables.push_back("AngularVelocityX");
+      creatables.push_back("AngularVelocityY");
+      creatables.push_back("AngularVelocityZ");
+      creatables.push_back("EulerAngleRate1");
+      creatables.push_back("EulerAngleRate2");
+      creatables.push_back("EulerAngleRate3");
       
       // Ballistic/Mass parameters
-      creatables.push_back(wxT("DryMass"));
-      creatables.push_back(wxT("Cd"));
-      creatables.push_back(wxT("Cr"));
-      creatables.push_back(wxT("DragArea"));
-      creatables.push_back(wxT("SRPArea"));
-      creatables.push_back(wxT("TotalMass"));
+      creatables.push_back("DryMass");
+      creatables.push_back("Cd");
+      creatables.push_back("Cr");
+      creatables.push_back("DragArea");
+      creatables.push_back("SRPArea");
+      creatables.push_back("TotalMass");
       
       // Orbit STM parameters
-      creatables.push_back(wxT("OrbitSTM"));
-      creatables.push_back(wxT("OrbitSTMA"));
-      creatables.push_back(wxT("OrbitSTMB"));
-      creatables.push_back(wxT("OrbitSTMC"));
-      creatables.push_back(wxT("OrbitSTMD"));
+      creatables.push_back("OrbitSTM");
+      creatables.push_back("OrbitSTMA");
+      creatables.push_back("OrbitSTMB");
+      creatables.push_back("OrbitSTMC");
+      creatables.push_back("OrbitSTMD");
       
       // FuelTank parameters
-      creatables.push_back(wxT("FuelMass"));
-      creatables.push_back(wxT("Pressure"));
-      creatables.push_back(wxT("Temperature"));
-      creatables.push_back(wxT("RefTemperature"));
-      creatables.push_back(wxT("Volume"));
-      creatables.push_back(wxT("FuelDensity"));
+      creatables.push_back("FuelMass");
+      creatables.push_back("Pressure");
+      creatables.push_back("Temperature");
+      creatables.push_back("RefTemperature");
+      creatables.push_back("Volume");
+      creatables.push_back("FuelDensity");
       
       // Thruster parameters
-      creatables.push_back(wxT("DutyCycle"));
-      creatables.push_back(wxT("ThrustScaleFactor"));
-      creatables.push_back(wxT("GravitationalAccel"));
+      creatables.push_back("DutyCycle");
+      creatables.push_back("ThrustScaleFactor");
+      creatables.push_back("GravitationalAccel");
       
-      creatables.push_back(wxT("C1"));
-      creatables.push_back(wxT("C2"));
-      creatables.push_back(wxT("C3"));
-      creatables.push_back(wxT("C4"));
-      creatables.push_back(wxT("C5"));
-      creatables.push_back(wxT("C6"));
-      creatables.push_back(wxT("C7"));
-      creatables.push_back(wxT("C8"));
-      creatables.push_back(wxT("C9"));
-      creatables.push_back(wxT("C10"));
-      creatables.push_back(wxT("C11"));
-      creatables.push_back(wxT("C12"));
-      creatables.push_back(wxT("C13"));
-      creatables.push_back(wxT("C14"));
-      creatables.push_back(wxT("C15"));
-      creatables.push_back(wxT("C16"));
+      creatables.push_back("C1");
+      creatables.push_back("C2");
+      creatables.push_back("C3");
+      creatables.push_back("C4");
+      creatables.push_back("C5");
+      creatables.push_back("C6");
+      creatables.push_back("C7");
+      creatables.push_back("C8");
+      creatables.push_back("C9");
+      creatables.push_back("C10");
+      creatables.push_back("C11");
+      creatables.push_back("C12");
+      creatables.push_back("C13");
+      creatables.push_back("C14");
+      creatables.push_back("C15");
+      creatables.push_back("C16");
       
-      creatables.push_back(wxT("K1"));
-      creatables.push_back(wxT("K2"));
-      creatables.push_back(wxT("K3"));
-      creatables.push_back(wxT("K4"));
-      creatables.push_back(wxT("K5"));
-      creatables.push_back(wxT("K6"));
-      creatables.push_back(wxT("K7"));
-      creatables.push_back(wxT("K8"));
-      creatables.push_back(wxT("K9"));
-      creatables.push_back(wxT("K10"));
-      creatables.push_back(wxT("K11"));
-      creatables.push_back(wxT("K12"));
-      creatables.push_back(wxT("K13"));
-      creatables.push_back(wxT("K14"));
-      creatables.push_back(wxT("K15"));
-      creatables.push_back(wxT("K16"));
+      creatables.push_back("K1");
+      creatables.push_back("K2");
+      creatables.push_back("K3");
+      creatables.push_back("K4");
+      creatables.push_back("K5");
+      creatables.push_back("K6");
+      creatables.push_back("K7");
+      creatables.push_back("K8");
+      creatables.push_back("K9");
+      creatables.push_back("K10");
+      creatables.push_back("K11");
+      creatables.push_back("K12");
+      creatables.push_back("K13");
+      creatables.push_back("K14");
+      creatables.push_back("K15");
+      creatables.push_back("K16");
       
-      creatables.push_back(wxT("ThrustDirection1"));
-      creatables.push_back(wxT("ThrustDirection2"));
-      creatables.push_back(wxT("ThrustDirection3"));
+      creatables.push_back("ThrustDirection1");
+      creatables.push_back("ThrustDirection2");
+      creatables.push_back("ThrustDirection3");
    }
 }
 
@@ -634,7 +634,7 @@ ParameterFactory::ParameterFactory(StringArray createList) :
  * This method creates an object of the class ParameterFactory
  * (copy constructor).
  *
- * @param <fact> the factory object to copy to wxT("this") factory.
+ * @param <fact> the factory object to copy to "this" factory.
  */
 //------------------------------------------------------------------------------
 ParameterFactory::ParameterFactory(const ParameterFactory &fact) :
@@ -649,10 +649,10 @@ ParameterFactory::ParameterFactory(const ParameterFactory &fact) :
 /**
  * Assignment operator for the ParameterFactory base class.
  *
- * @param <fact> the ParameterFactory object whose data to assign to wxT("this")
+ * @param <fact> the ParameterFactory object whose data to assign to "this"
  *  factory.
  *
- * @return wxT("this") ParameterFactory with data of input factory fact.
+ * @return "this" ParameterFactory with data of input factory fact.
  */
 //------------------------------------------------------------------------------
 ParameterFactory& ParameterFactory::operator= (const ParameterFactory &fact)

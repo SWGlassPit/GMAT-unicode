@@ -31,7 +31,7 @@ class GMAT_API TimeData : public RefData
 {
 public:
 
-   TimeData(const wxString &name = wxT(""));
+   TimeData(const std::string &name = "");
    TimeData(const TimeData &td);
    TimeData& operator= (const TimeData& td);
    virtual ~TimeData();
@@ -41,13 +41,13 @@ public:
    void SetInitialEpoch(const Real &initialEpoch);
    
    Real GetCurrentTimeReal(Integer id);
-   wxString GetCurrentTimeString(Integer id);
+   std::string GetCurrentTimeString(Integer id);
    
    Real GetElapsedTimeReal(Integer id);
    
    // The inherited methods from RefData
    virtual bool ValidateRefObjects(GmatBase *param);
-   virtual const wxString* GetValidObjectList() const;
+   virtual const std::string* GetValidObjectList() const;
    
 protected:
     
@@ -60,7 +60,7 @@ protected:
    Spacecraft *mSpacecraft;
    
    const static Real TIME_REAL_UNDEFINED;
-   const static wxString TIME_STRING_UNDEFINED;
+   const static std::string TIME_STRING_UNDEFINED;
    
    enum TimeDataID
    {
@@ -74,7 +74,7 @@ protected:
       TimeDataObjectCount
    };
    
-   static const wxString VALID_OBJECT_TYPE_LIST[TimeDataObjectCount];
+   static const std::string VALID_OBJECT_TYPE_LIST[TimeDataObjectCount];
    
 };
 #endif // TimeData_hpp

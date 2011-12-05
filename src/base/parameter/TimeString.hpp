@@ -31,14 +31,14 @@ class GMAT_API TimeString : public StringVar, public TimeData
 {
 public:
 
-   TimeString(const wxString &name, const wxString &typeStr, 
-            GmatBase *obj, const wxString &desc, const wxString &unit);
+   TimeString(const std::string &name, const std::string &typeStr, 
+            GmatBase *obj, const std::string &desc, const std::string &unit);
    TimeString(const TimeString &copy);
    TimeString& operator=(const TimeString &right);
    virtual ~TimeString();
 
    // methods inherited from Parameter
-   virtual const wxString& EvaluateString();
+   virtual const std::string& EvaluateString();
    
    virtual Integer GetNumRefObjects() const;
    virtual bool Validate();
@@ -47,21 +47,21 @@ public:
    
    // methods inherited from GmatBase
    virtual bool RenameRefObject(const Gmat::ObjectType type,
-                                const wxString &oldName,
-                                const wxString &newName);
+                                const std::string &oldName,
+                                const std::string &newName);
    
-   virtual wxString GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual std::string GetRefObjectName(const Gmat::ObjectType type) const;
    virtual const StringArray& GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool SetRefObjectName(const Gmat::ObjectType type,
-                                 const wxString &name);
+                                 const std::string &name);
    virtual GmatBase* GetRefObject(const Gmat::ObjectType type,
-                                  const wxString &name);
+                                  const std::string &name);
    virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                             const wxString &name = wxT(""));
-   virtual const wxString&
+                             const std::string &name = "");
+   virtual const std::string&
                     GetGeneratingString(Gmat::WriteMode mode = Gmat::SCRIPTING,
-                                        const wxString &prefix = wxT(""),
-                                        const wxString &useName = wxT(""));
+                                        const std::string &prefix = "",
+                                        const std::string &useName = "");
 protected:
    
 

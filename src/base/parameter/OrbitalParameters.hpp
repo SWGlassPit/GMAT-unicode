@@ -39,7 +39,7 @@ class GMAT_API VelApoapsis : public OrbitReal
 {
 public:
 
-   VelApoapsis(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   VelApoapsis(const std::string &name = "", GmatBase *obj = NULL);
    VelApoapsis(const VelApoapsis &copy);
    const VelApoapsis& operator=(const VelApoapsis &right);
    virtual ~VelApoapsis();
@@ -66,7 +66,7 @@ class GMAT_API VelPeriapsis : public OrbitReal
 {
 public:
 
-   VelPeriapsis(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   VelPeriapsis(const std::string &name = "", GmatBase *obj = NULL);
    VelPeriapsis(const VelPeriapsis &copy);
    const VelPeriapsis& operator=(const VelPeriapsis &right);
    virtual ~VelPeriapsis();
@@ -93,7 +93,7 @@ class GMAT_API Apoapsis : public OrbitReal
 {
 public:
 
-   Apoapsis(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   Apoapsis(const std::string &name = "", GmatBase *obj = NULL);
    Apoapsis(const Apoapsis &copy);
    const Apoapsis& operator=(const Apoapsis &right);
    virtual ~Apoapsis();
@@ -120,7 +120,7 @@ class GMAT_API Periapsis : public OrbitReal
 {
 public:
 
-   Periapsis(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   Periapsis(const std::string &name = "", GmatBase *obj = NULL);
    Periapsis(const Periapsis &copy);
    const Periapsis& operator=(const Periapsis &right);
    virtual ~Periapsis();
@@ -147,7 +147,7 @@ class GMAT_API OrbitPeriod : public OrbitReal
 {
 public:
 
-   OrbitPeriod(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   OrbitPeriod(const std::string &name = "", GmatBase *obj = NULL);
    OrbitPeriod(const OrbitPeriod &copy);
    const OrbitPeriod& operator=(const OrbitPeriod &right);
    virtual ~OrbitPeriod();
@@ -174,7 +174,7 @@ class GMAT_API RadApoapsis : public OrbitReal
 {
 public:
 
-   RadApoapsis(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   RadApoapsis(const std::string &name = "", GmatBase *obj = NULL);
    RadApoapsis(const RadApoapsis &copy);
    const RadApoapsis& operator=(const RadApoapsis &right);
    virtual ~RadApoapsis();
@@ -201,7 +201,7 @@ class GMAT_API RadPeriapsis : public OrbitReal
 {
 public:
 
-   RadPeriapsis(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   RadPeriapsis(const std::string &name = "", GmatBase *obj = NULL);
    RadPeriapsis(const RadPeriapsis &copy);
    const RadPeriapsis& operator=(const RadPeriapsis &right);
    virtual ~RadPeriapsis();
@@ -229,7 +229,7 @@ class GMAT_API C3Energy : public OrbitReal
 {
 public:
 
-   C3Energy(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   C3Energy(const std::string &name = "", GmatBase *obj = NULL);
    C3Energy(const C3Energy &copy);
    const C3Energy& operator=(const C3Energy &right);
    virtual ~C3Energy();
@@ -257,7 +257,7 @@ class GMAT_API Energy : public OrbitReal
 {
 public:
 
-   Energy(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   Energy(const std::string &name = "", GmatBase *obj = NULL);
    Energy(const Energy &copy);
    const Energy& operator=(const Energy &right);
    virtual ~Energy();

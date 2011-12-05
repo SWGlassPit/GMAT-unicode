@@ -29,7 +29,7 @@
 class GMAT_API BurnException : public BaseException
 {
 public:
-   BurnException(const wxString &details = wxT(""));
+   BurnException(const std::string &details = "");
    virtual ~BurnException();
    BurnException(const BurnException &be);
 };

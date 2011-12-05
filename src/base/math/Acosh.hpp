@@ -27,7 +27,7 @@
 class GMAT_API Acosh : public MathFunction
 {
 public:
-   Acosh(const wxString &nomme);
+   Acosh(const std::string &nomme);
    virtual ~Acosh();
    Acosh(const Acosh &copy);
                  

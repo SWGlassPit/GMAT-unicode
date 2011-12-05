@@ -79,7 +79,7 @@ SpiceAttitudeKernelReader::SpiceAttitudeKernelReader(const SpiceAttitudeKernelRe
 //  SpiceAttitudeKernelReader& operator=(const SpiceAttitudeKernelReader &reader)
 //---------------------------------------------------------------------------
 /**
- * Copies data from the input SpiceAttitudeKernelReader,into wxT("this") instance.
+ * Copies data from the input SpiceAttitudeKernelReader,into "this" instance.
  *
  * @param reader the input reader whose data to use.
  */
@@ -98,7 +98,7 @@ SpiceAttitudeKernelReader& SpiceAttitudeKernelReader::operator=(const SpiceAttit
 //  ~SpiceAttitudeKernelReader()
 //---------------------------------------------------------------------------
 /**
- * Deletes wxT("this") instance.
+ * Deletes "this" instance.
  *
  * @note This is the destructor.
  */
@@ -111,9 +111,9 @@ SpiceAttitudeKernelReader::~SpiceAttitudeKernelReader()
 //  SpiceAttitudeKernelReader* Clone(void) const
 //---------------------------------------------------------------------------
 /**
- * Creates and returns a clone of wxT("this") instance.
+ * Creates and returns a clone of "this" instance.
  *
- * @return Clone of wxT("this") instance.
+ * @return Clone of "this" instance.
  */
 //---------------------------------------------------------------------------
 SpiceAttitudeKernelReader* SpiceAttitudeKernelReader::Clone(void) const
@@ -191,10 +191,10 @@ void  SpiceAttitudeKernelReader::GetCoverageStartAndEnd(StringArray       &kerne
    for (unsigned int ii = 0; ii < kernels.size(); ii++)
    {
       #ifdef DEBUG_CK_COVERAGE
-         MessageInterface::ShowMessage(wxT("Checking coverage for ID %d on kernel %s\n"),
+         MessageInterface::ShowMessage("Checking coverage for ID %d on kernel %s\n",
                forNaifId, (kernels.at(ii)).c_str());
       #endif
-      kernelName = kernels[ii].char_str();
+      kernelName = kernels[ii].c_str();
       // check the type of kernel
       arch        = aStr;
       kernelType  = kStr;
@@ -205,15 +205,15 @@ void  SpiceAttitudeKernelReader::GetCoverageStartAndEnd(StringArray       &kerne
          SpiceInt       numChar  = MAX_LONG_MESSAGE_VALUE;
          SpiceChar      err[MAX_LONG_MESSAGE_VALUE];
          getmsg_c(option, numChar, err);
-         wxString errStr(wxString::FromAscii( err));
-         wxString errmsg = wxT("Error determining type of kernel \"");
-         errmsg += kernels.at(ii) + wxT("\".  Message received from CSPICE is: ");
-         errmsg += errStr + wxT("\n");
+         std::string errStr(err);
+         std::string errmsg = "Error determining type of kernel \"";
+         errmsg += kernels.at(ii) + "\".  Message received from CSPICE is: ";
+         errmsg += errStr + "\n";
          reset_c();
          throw UtilityException(errmsg);
       }
       #ifdef DEBUG_CK_COVERAGE
-         MessageInterface::ShowMessage(wxT("Kernel is of type %s\n"),
+         MessageInterface::ShowMessage("Kernel is of type %s\n",
                kernelType);
       #endif
       // only deal with CK kernels
@@ -225,7 +225,7 @@ void  SpiceAttitudeKernelReader::GetCoverageStartAndEnd(StringArray       &kerne
          {
             objId = SPICE_CELL_ELEM_I(&ids,jj);
             #ifdef DEBUG_CK_COVERAGE
-               MessageInterface::ShowMessage(wxT("Kernel contains data for object %d\n"),
+               MessageInterface::ShowMessage("Kernel contains data for object %d\n",
                      (Integer) objId);
             #endif
             // look to see if this kernel contains data for the object we're interested in
@@ -246,7 +246,7 @@ void  SpiceAttitudeKernelReader::GetCoverageStartAndEnd(StringArray       &kerne
          if (idOnKernel)
          {
             #ifdef DEBUG_CK_COVERAGE
-               MessageInterface::ShowMessage(wxT("Checking kernel %s for data for object %d\n"),
+               MessageInterface::ShowMessage("Checking kernel %s for data for object %d\n",
                      (kernels.at(ii)).c_str(), (Integer) objId);
             #endif
             scard_c(0, &cover);   // reset the coverage cell
@@ -257,16 +257,16 @@ void  SpiceAttitudeKernelReader::GetCoverageStartAndEnd(StringArray       &kerne
                SpiceInt       numChar  = MAX_LONG_MESSAGE_VALUE;
                SpiceChar      err[MAX_LONG_MESSAGE_VALUE];
                getmsg_c(option, numChar, err);
-               wxString errStr(wxString::FromAscii(err));
-               wxString errmsg = wxT("Error determining coverage for CK kernel \"");
-               errmsg += kernels.at(ii) + wxT("\".  Message received from CSPICE is: ");
-               errmsg += errStr + wxT("\n");
+               std::string errStr(err);
+               std::string errmsg = "Error determining coverage for CK kernel \"";
+               errmsg += kernels.at(ii) + "\".  Message received from CSPICE is: ";
+               errmsg += errStr + "\n";
                reset_c();
                throw UtilityException(errmsg);
             }
             numInt = wncard_c(&cover);
             #ifdef DEBUG_CK_COVERAGE
-               MessageInterface::ShowMessage(wxT("Number of intervals found =  %d\n"),
+               MessageInterface::ShowMessage("Number of intervals found =  %d\n",
                      (Integer) numInt);
             #endif
             if ((firstInt) && (numInt > 0))
@@ -278,10 +278,10 @@ void  SpiceAttitudeKernelReader::GetCoverageStartAndEnd(StringArray       &kerne
                   SpiceInt       numChar  = MAX_LONG_MESSAGE_VALUE;
                   SpiceChar      err[MAX_LONG_MESSAGE_VALUE];
                   getmsg_c(option, numChar, err);
-                  wxString errStr(wxString::FromAscii(err));
-                  wxString errmsg = wxT("Error getting interval times for CK kernel \"");
-                  errmsg += kernels.at(ii) + wxT("\".  Message received from CSPICE is: ");
-                  errmsg += errStr + wxT("\n");
+                  std::string errStr(err);
+                  std::string errmsg = "Error getting interval times for CK kernel \"";
+                  errmsg += kernels.at(ii) + "\".  Message received from CSPICE is: ";
+                  errmsg += errStr + "\n";
                   reset_c();
                   throw UtilityException(errmsg);
                }
@@ -309,24 +309,24 @@ void  SpiceAttitudeKernelReader::GetCoverageStartAndEnd(StringArray       &kerne
       bodc2n_c(naifIDSPICE, 256, itsNameSPICE, &found2);
       if (found2 == SPICEFALSE)
       {
-         wxString errmsg = wxT("Error - unable to find name for body in SPICE kernel pool");
+         std::string errmsg = "Error - unable to find name for body in SPICE kernel pool";
          throw UtilityException(errmsg);
       }
       else
       {
-         wxString nameStr = wxString::FromAscii(itsNameSPICE);
-         wxString errmsg = wxT("Error - no data available for body ");
-         errmsg += nameStr + wxT(" on specified CK kernels");
+         std::string nameStr = itsNameSPICE;
+         std::string errmsg = "Error - no data available for body ";
+         errmsg += nameStr + " on specified CK kernels";
          throw UtilityException(errmsg);
       }
    }
 }
 
 //---------------------------------------------------------------------------
-//  void GetTargetOrientation(const wxString &objectName,
+//  void GetTargetOrientation(const std::string &objectName,
 //                            Integer           naifID,    const A1Mjd       &atTime,
 //                            Rmatrix33         &r33,      Rvector3          &angVel,
-//                            const wxString &referenceFrame = wxT("J2000"))
+//                            const std::string &referenceFrame = "J2000")
 //---------------------------------------------------------------------------
 /**
  * Gets the target orientation (cosine matrix and angular velocity) for the
@@ -337,29 +337,29 @@ void  SpiceAttitudeKernelReader::GetCoverageStartAndEnd(StringArray       &kerne
  * @param   atTime       time for which to obtain the data
  * @param   r33          (output) cosine matrix at time atTime
  * @param   angVel       (output) angular velocity at time atTime
- * @param   referenceFrame reference frame for the data (default wxT("J2000"))
+ * @param   referenceFrame reference frame for the data (default "J2000")
  */
 //---------------------------------------------------------------------------
-void SpiceAttitudeKernelReader::GetTargetOrientation(const wxString &objectName,
+void SpiceAttitudeKernelReader::GetTargetOrientation(const std::string &objectName,
                                                      Integer           naifID,
                                                      Integer           forFrameNaifId,
                                                      const A1Mjd       &atTime,
 //                                                     Real              tolerance,
                                                      Rmatrix33         &r33,
                                                      Rvector3          &angVel,
-                                                     const wxString &referenceFrame)
+                                                     const std::string &referenceFrame)
 {
    #ifdef DEBUG_CK_READING
-      MessageInterface::ShowMessage(wxT("Entering GetTargetOrientation for object %s, with NAIF ID %d, at time %12.10f, with frame = %s\n"),
+      MessageInterface::ShowMessage("Entering GetTargetOrientation for object %s, with NAIF ID %d, at time %12.10f, with frame = %s\n",
          objectName.c_str(), naifID, atTime.Get(), referenceFrame.c_str());
    #endif
-   wxString objectNameToUse = objectName;
+   std::string objectNameToUse = objectName;
 
    objectNameToUse       = GmatStringUtil::ToUpper(objectNameToUse);
-   objectNameSPICE       = objectNameToUse.char_str();
+   objectNameSPICE       = objectNameToUse.c_str();
    naifIDSPICE           = naifID;
    frameNaifIDSPICE      = forFrameNaifId;
-   referenceFrameSPICE   = referenceFrame.char_str();
+   referenceFrameSPICE   = referenceFrame.c_str();
    etSPICE               = A1ToSpiceTime(atTime.Get());
 
 //   boddef_c(objectNameSPICE, naifIDSPICE);        // CSPICE method to set NAIF ID for an object - is this valid for spacecraft?
@@ -373,17 +373,17 @@ void SpiceAttitudeKernelReader::GetTargetOrientation(const wxString &objectName,
       //SpiceChar      err[MAX_LONG_MESSAGE_VALUE];
       SpiceChar      *err = new SpiceChar[MAX_LONG_MESSAGE_VALUE];
       getmsg_c(option, numChar, err);
-      wxString errStr(wxString::FromAscii(err));
-      wxString errmsg = wxT("Error getting spacecraft time (ticks) for object \"");
-      errmsg += objectName + wxT("\".  Message received from CSPICE is: ");
-      errmsg += errStr + wxT("\n");
+      std::string errStr(err);
+      std::string errmsg = "Error getting spacecraft time (ticks) for object \"";
+      errmsg += objectName + "\".  Message received from CSPICE is: ";
+      errmsg += errStr + "\n";
       reset_c();
       delete [] err;
       throw UtilityException(errmsg);
    }
    // get the tolerance in spacecraft clock ticks
-   wxString    tolerance = wxT("01");  // this should probably be user input, or set as a constant
-   ConstSpiceChar *tol = tolerance.char_str();
+   std::string    tolerance = "01";  // this should probably be user input, or set as a constant
+   ConstSpiceChar *tol = tolerance.c_str();
    SpiceDouble    tolTicks;
    sctiks_c(naifIDSPICE, tol, &tolTicks);
    if (failed_c())
@@ -393,16 +393,16 @@ void SpiceAttitudeKernelReader::GetTargetOrientation(const wxString &objectName,
       //SpiceChar      err[MAX_LONG_MESSAGE_VALUE];
       SpiceChar      *err = new SpiceChar[MAX_LONG_MESSAGE_VALUE];
       getmsg_c(option, numChar, err);
-      wxString errStr(wxString::FromAscii(err));
-      wxString errmsg = wxT("Error getting tolerance (ticks) for object \"");
-      errmsg += objectName + wxT("\".  Message received from CSPICE is: ");
-      errmsg += errStr + wxT("\n");
+      std::string errStr(err);
+      std::string errmsg = "Error getting tolerance (ticks) for object \"";
+      errmsg += objectName + "\".  Message received from CSPICE is: ";
+      errmsg += errStr + "\n";
       reset_c();
       delete [] err;
       throw UtilityException(errmsg);
    }
    #ifdef DEBUG_CK_READING
-      MessageInterface::ShowMessage(wxT("First, check for coverage for object \"%s\", with NAIF ID %d\n"),
+      MessageInterface::ShowMessage("First, check for coverage for object \"%s\", with NAIF ID %d\n",
          objectName.c_str(), naifID);
    #endif
    Real beginCov = 0.0;
@@ -415,12 +415,12 @@ void SpiceAttitudeKernelReader::GetTargetOrientation(const wxString &objectName,
    SpiceBoolean   found;
    SpiceDouble    clkout;
    #ifdef DEBUG_CK_READING
-      MessageInterface::ShowMessage(wxT("about to call ckgpav: \n"));
-      MessageInterface::ShowMessage(wxT("   NAIF ID  = %d\n")
-                                    wxT("   etSPICE  = %12.10f\n")
-                                    wxT("   scTime   = %12.10fn")
-                                    wxT("   tolTicks = %12.10f\n")
-                                    wxT("   refFrame = %s\n"),
+      MessageInterface::ShowMessage("about to call ckgpav: \n");
+      MessageInterface::ShowMessage("   NAIF ID  = %d\n"
+                                    "   etSPICE  = %12.10f\n"
+                                    "   scTime   = %12.10fn"
+                                    "   tolTicks = %12.10f\n"
+                                    "   refFrame = %s\n",
          (Integer) naifIDSPICE, (Real) etSPICE, (Real) scTime, (Real) tolTicks,
          referenceFrame.c_str());
    #endif
@@ -433,31 +433,31 @@ void SpiceAttitudeKernelReader::GetTargetOrientation(const wxString &objectName,
       //SpiceChar      err[MAX_LONG_MESSAGE_VALUE];
       SpiceChar      *err = new SpiceChar[MAX_LONG_MESSAGE_VALUE];
       getmsg_c(option, numChar, err);
-      wxString errStr(wxString::FromAscii(err));
-      wxString errmsg = wxT("Error getting C-matrix and/or angular velocity for object \"");
-      errmsg += objectName + wxT("\".  Message received from CSPICE is: ");
-      errmsg += errStr + wxT("\n");
+      std::string errStr(err);
+      std::string errmsg = "Error getting C-matrix and/or angular velocity for object \"";
+      errmsg += objectName + "\".  Message received from CSPICE is: ";
+      errmsg += errStr + "\n";
       reset_c();
       delete [] err;
       throw UtilityException(errmsg);
    }
    if (found == SPICEFALSE)
    {
-      wxString errmsg = wxT("Pointing data for object ");
-      errmsg += objectName + wxT(" not found on loaded CK/SCLK kernels.\n");
+      std::string errmsg = "Pointing data for object ";
+      errmsg += objectName + " not found on loaded CK/SCLK kernels.\n";
       throw UtilityException(errmsg);
    }
    #ifdef DEBUG_CK_READING
-      MessageInterface::ShowMessage(wxT("results from ckgpav: \n"));
-      MessageInterface::ShowMessage(wxT("   cosMat = %12.10f  %12.10f  %12.10f\n")
-                                    wxT("            %12.10f  %12.10f  %12.10f\n")
-                                    wxT("            %12.10f  %12.10f  %12.10f\n"),
+      MessageInterface::ShowMessage("results from ckgpav: \n");
+      MessageInterface::ShowMessage("   cosMat = %12.10f  %12.10f  %12.10f\n"
+                                    "            %12.10f  %12.10f  %12.10f\n"
+                                    "            %12.10f  %12.10f  %12.10f\n",
                                     (Real)cmat[0][0], (Real)cmat[0][1], (Real)cmat[0][2],
                                     (Real)cmat[1][0], (Real)cmat[1][1], (Real)cmat[1][2],
                                     (Real)cmat[2][0], (Real)cmat[2][1], (Real)cmat[2][2]);
-      MessageInterface::ShowMessage(wxT("   angvel = %12.10f  %12.10f  %12.10f\n"),
+      MessageInterface::ShowMessage("   angvel = %12.10f  %12.10f  %12.10f\n",
                                    (Real)av[0], (Real)av[1], (Real)av[2]);
-      MessageInterface::ShowMessage(wxT("   and clkout = %12.10f\n"), (Real) clkout);
+      MessageInterface::ShowMessage("   and clkout = %12.10f\n", (Real) clkout);
    #endif
    // Set output values
    r33.Set(cmat[0][0], cmat[0][1], cmat[0][2],

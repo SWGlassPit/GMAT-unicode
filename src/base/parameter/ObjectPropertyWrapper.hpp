@@ -44,19 +44,19 @@ public:
    virtual Gmat::ParameterType GetDataType() const;
    
    virtual const StringArray&  GetRefObjectNames();
-   virtual bool                SetRefObjectName(const wxString &name,
+   virtual bool                SetRefObjectName(const std::string &name,
                                             Integer index);
-   virtual GmatBase*           GetRefObject(const wxString &name = wxT(""));
+   virtual GmatBase*           GetRefObject(const std::string &name = "");
    virtual bool                SetRefObject(GmatBase *obj);
-   virtual bool                RenameObject(const wxString &oldName, 
-                                        const wxString &newName);
+   virtual bool                RenameObject(const std::string &oldName, 
+                                        const std::string &newName);
    
    virtual Real                EvaluateReal() const;
    virtual bool                SetReal(const Real toValue);
-   virtual wxString         EvaluateString() const;
-   virtual bool                SetString(const wxString &toValue); 
-   virtual wxString         EvaluateOnOff() const;
-   virtual bool                SetOnOff(const wxString &toValue);
+   virtual std::string         EvaluateString() const;
+   virtual bool                SetString(const std::string &toValue); 
+   virtual std::string         EvaluateOnOff() const;
+   virtual bool                SetOnOff(const std::string &toValue);
    virtual bool                EvaluateBoolean() const;
    virtual bool                SetBoolean(const bool toValue); 
    virtual Integer             EvaluateInteger() const;
@@ -76,7 +76,7 @@ protected:
    /// parameter Id for the property of the object
    Integer     propID;
    /// owned object name
-   wxString ownedObjName;
+   std::string ownedObjName;
    
    virtual void            SetupWrapper(); 
    

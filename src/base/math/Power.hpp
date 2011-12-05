@@ -25,7 +25,7 @@
 class GMAT_API Power : public MathFunction
 {
 public:
-   Power(const wxString &nomme);
+   Power(const std::string &nomme);
    virtual ~Power();
    Power(const Power &copy);
                  

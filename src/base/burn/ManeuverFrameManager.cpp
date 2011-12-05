@@ -45,8 +45,8 @@ ManeuverFrameManager::ManeuverFrameManager() :
 {
     // Add the name of each supported frame to this list
 //    frames.push_back("Inertial");
-    frames.push_back(wxT("MJ2000Eq"));
-    frames.push_back(wxT("VNB"));
+    frames.push_back("MJ2000Eq");
+    frames.push_back("VNB");
 }
 
 
@@ -80,7 +80,7 @@ StringArray& ManeuverFrameManager::GetSupportedFrames()
 
 
 //------------------------------------------------------------------------------
-//  ManeuverFrame* GetFrameInstance(const wxString &frameType)
+//  ManeuverFrame* GetFrameInstance(const std::string &frameType)
 //------------------------------------------------------------------------------
 /**
  * Obtains a requested maneuver frame.
@@ -97,7 +97,7 @@ StringArray& ManeuverFrameManager::GetSupportedFrames()
  */
 //------------------------------------------------------------------------------
 ManeuverFrame* ManeuverFrameManager::GetFrameInstance(
-                                        const wxString &frameType)
+                                        const std::string &frameType)
 {
     if (currentFrame)
     {
@@ -107,9 +107,9 @@ ManeuverFrame* ManeuverFrameManager::GetFrameInstance(
     
     // Add constructor calls for the supported frames here
     // For now, keep "Inertial" for backwards compatibility
-    if ((frameType == wxT("Inertial")) || (frameType == wxT("MJ2000Eq")))
+    if ((frameType == "Inertial") || (frameType == "MJ2000Eq"))
         currentFrame = new InertialManeuverFrame;
-    if (frameType == wxT("VNB"))
+    if (frameType == "VNB")
         currentFrame = new VnbManeuverFrame;
 
     return currentFrame;

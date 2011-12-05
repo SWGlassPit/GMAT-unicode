@@ -58,7 +58,7 @@ class GMAT_API SolarSystem : public GmatBase
 public:
    // class default constructor - creates default solar system
    // for Build 2 - this is Sun, Earth, Moon only
-   SolarSystem(wxString withName = wxT(""));
+   SolarSystem(std::string withName = "");
    // copy constructor
    SolarSystem(const SolarSystem &ss);
    // operator=
@@ -74,12 +74,12 @@ public:
    const StringArray& GetPlanetarySourceTypes();
    const StringArray& GetPlanetarySourceNames();
    const StringArray& GetPlanetarySourceTypesInUse();
-   bool  SetPlanetarySourceName(const wxString &sourceType,
-                               const wxString &fileName);
+   bool  SetPlanetarySourceName(const std::string &sourceType,
+                               const std::string &fileName);
    Integer SetPlanetarySourceTypesInUse(const StringArray &sourceTypes); 
-   Integer GetPlanetarySourceId(const wxString &sourceType);
-   wxString GetPlanetarySourceName(const wxString &sourceType);
-   wxString GetCurrentPlanetarySource();
+   Integer GetPlanetarySourceId(const std::string &sourceType);
+   std::string GetPlanetarySourceName(const std::string &sourceType);
+   std::string GetCurrentPlanetarySource();
    void        SetIsSpiceAllowedForDefaultBodies(const bool allowSpice);
    bool        IsSpiceAllowedForDefaultBodies() const;
 
@@ -95,81 +95,81 @@ public:
    // method to add a body to the solar system
    bool                 AddBody(CelestialBody* cb);
    // method to return a body of the solar system, given its name
-   CelestialBody*       GetBody(wxString withName);
+   CelestialBody*       GetBody(std::string withName);
    // method to remove a body from the solar system
-   bool                 DeleteBody(const wxString &withName);
+   bool                 DeleteBody(const std::string &withName);
    /// methods to return a pointer to a specific SpecialCelestialPoint
    SpecialCelestialPoint*
-                        GetSpecialPoint(const wxString &withName);
+                        GetSpecialPoint(const std::string &withName);
    
    // method to return an array of the names of the bodies included in
    // this solar system
    const StringArray&   GetBodiesInUse() const;
    // method to return a flag indicating whether or not the specified
    // body is in use for this solar system
-   bool                 IsBodyInUse(wxString theBody);
+   bool                 IsBodyInUse(std::string theBody);
    const StringArray&   GetDefaultBodies() const;
    const StringArray&   GetUserDefinedBodies() const;
    
    // methods to get the source and analytic model flags
    Gmat::PosVelSource   GetPosVelSource() const;
-   wxString          GetSourceFileName() const;
+   std::string          GetSourceFileName() const;
    bool                 GetOverrideTimeSystem() const;
    Real                 GetEphemUpdateInterval() const;
    StringArray          GetValidModelList(Gmat::ModelType m, 
-                                          const wxString &forBody);
+                                          const std::string &forBody);
    
    // methods to set the source, source file, and analytic method for each
    // of the bodies in use
    bool SetSource(Gmat::PosVelSource pvSrc);
-   bool SetSource(const wxString &pvSrc);
+   bool SetSource(const std::string &pvSrc);
    bool SetSourceFile(PlanetaryEphem *src);
-   bool SetSPKFile(const wxString &spkFile);
-   bool SetLSKFile(const wxString &lskFile);
+   bool SetSPKFile(const std::string &spkFile);
+   bool SetLSKFile(const std::string &lskFile);
    
    bool SetOverrideTimeSystem(bool overrideIt);
    bool SetEphemUpdateInterval(Real intvl);
-   bool AddValidModelName(Gmat::ModelType m, const wxString &forBody,
-                          const wxString &theModel);
-   bool RemoveValidModelName(Gmat::ModelType m, const wxString &forBody,
-                             const wxString &theModel);
+   bool AddValidModelName(Gmat::ModelType m, const std::string &forBody,
+                          const std::string &theModel);
+   bool RemoveValidModelName(Gmat::ModelType m, const std::string &forBody,
+                             const std::string &theModel);
    
    // methods used by internal functions
-   Rvector6 GetCelestialBodyState(const wxString &bodyName, 
+   Rvector6 GetCelestialBodyState(const std::string &bodyName, 
                                   CoordinateSystem *cs, const A1Mjd &epoch);
    
    
    // Parameter access methods
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    
    virtual Integer      GetIntegerParameter(const Integer id) const;
-   virtual Integer      GetIntegerParameter(const wxString &label) const;
+   virtual Integer      GetIntegerParameter(const std::string &label) const;
    virtual Real         GetRealParameter(const Integer id) const;
-   virtual Real         GetRealParameter(const wxString &label) const;
+   virtual Real         GetRealParameter(const std::string &label) const;
    virtual Real         SetRealParameter(const Integer id,
                                          const Real value);
-   virtual Real         SetRealParameter(const wxString &label,
+   virtual Real         SetRealParameter(const std::string &label,
                                          const Real value);
    virtual bool         GetBooleanParameter(const Integer id) const; 
-   virtual bool         GetBooleanParameter(const wxString &label) const; 
+   virtual bool         GetBooleanParameter(const std::string &label) const; 
    virtual bool         SetBooleanParameter(const Integer id,
                                             const bool value);
-   virtual bool         SetBooleanParameter(const wxString &label,
+   virtual bool         SetBooleanParameter(const std::string &label,
                                             const bool value);
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const wxString &label) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const std::string &label) const;
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label, 
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label, 
+                                           const std::string &value);
    virtual const StringArray&
                         GetStringArrayParameter(const Integer id) const;
    virtual const StringArray&
-                        GetStringArrayParameter(const wxString &label) const;
+                        GetStringArrayParameter(const std::string &label) const;
    
    virtual Integer      GetOwnedObjectCount();
    virtual GmatBase*    GetOwnedObject(Integer whichOne);
@@ -187,79 +187,79 @@ public:
    virtual void         Copy(const GmatBase* orig);
    
    /// default names for each of the possible celestial bodies in the solar system
-   static const wxString SOLAR_SYSTEM_BARYCENTER_NAME;
+   static const std::string SOLAR_SYSTEM_BARYCENTER_NAME;
 
 
-   static const wxString SUN_NAME;
+   static const std::string SUN_NAME;
 
-   static const wxString MERCURY_NAME;
+   static const std::string MERCURY_NAME;
    
-   static const wxString VENUS_NAME;
+   static const std::string VENUS_NAME;
    
-   static const wxString EARTH_NAME;
-   static const wxString MOON_NAME;
+   static const std::string EARTH_NAME;
+   static const std::string MOON_NAME;
    
-   static const wxString MARS_NAME;
-   static const wxString PHOBOS_NAME;
-   static const wxString DEIMOS_NAME;
+   static const std::string MARS_NAME;
+   static const std::string PHOBOS_NAME;
+   static const std::string DEIMOS_NAME;
    
-   static const wxString JUPITER_NAME;
-   static const wxString METIS_NAME;
-   static const wxString ADRASTEA_NAME;
-   static const wxString AMALTHEA_NAME;
-   static const wxString THEBE_NAME;
-   static const wxString IO_NAME;
-   static const wxString EUROPA_NAME;
-   static const wxString GANYMEDE_NAME;
-   static const wxString CALLISTO_NAME;
+   static const std::string JUPITER_NAME;
+   static const std::string METIS_NAME;
+   static const std::string ADRASTEA_NAME;
+   static const std::string AMALTHEA_NAME;
+   static const std::string THEBE_NAME;
+   static const std::string IO_NAME;
+   static const std::string EUROPA_NAME;
+   static const std::string GANYMEDE_NAME;
+   static const std::string CALLISTO_NAME;
    
-   static const wxString SATURN_NAME;
-   static const wxString PAN_NAME;
-   static const wxString ATLAS_NAME;
-   static const wxString PROMETHEUS_NAME;
-   static const wxString PANDORA_NAME;
-   static const wxString EPIMETHEUS_NAME;
-   static const wxString JANUS_NAME;
-   static const wxString MIMAS_NAME;
-   static const wxString ENCELADUS_NAME;
-   static const wxString TETHYS_NAME;
-   static const wxString TELESTO_NAME;
-   static const wxString CALYPSO_NAME;
-   static const wxString DIONE_NAME;
-   static const wxString HELENE_NAME;
-   static const wxString RHEA_NAME;
-   static const wxString TITAN_NAME;
-   static const wxString IAPETUS_NAME;
-   static const wxString PHOEBE_NAME;
+   static const std::string SATURN_NAME;
+   static const std::string PAN_NAME;
+   static const std::string ATLAS_NAME;
+   static const std::string PROMETHEUS_NAME;
+   static const std::string PANDORA_NAME;
+   static const std::string EPIMETHEUS_NAME;
+   static const std::string JANUS_NAME;
+   static const std::string MIMAS_NAME;
+   static const std::string ENCELADUS_NAME;
+   static const std::string TETHYS_NAME;
+   static const std::string TELESTO_NAME;
+   static const std::string CALYPSO_NAME;
+   static const std::string DIONE_NAME;
+   static const std::string HELENE_NAME;
+   static const std::string RHEA_NAME;
+   static const std::string TITAN_NAME;
+   static const std::string IAPETUS_NAME;
+   static const std::string PHOEBE_NAME;
    
-   static const wxString URANUS_NAME;
-   static const wxString CORDELIA_NAME;
-   static const wxString OPHELIA_NAME;
-   static const wxString BIANCA_NAME;
-   static const wxString CRESSIDA_NAME;
-   static const wxString DESDEMONA_NAME;
-   static const wxString JULIET_NAME;
-   static const wxString PORTIA_NAME;
-   static const wxString ROSALIND_NAME;
-   static const wxString BELINDA_NAME;
-   static const wxString PUCK_NAME;
-   static const wxString MIRANDA_NAME;
-   static const wxString ARIEL_NAME;
-   static const wxString UMBRIEL_NAME;
-   static const wxString TITANIA_NAME;
-   static const wxString OBERON_NAME;
+   static const std::string URANUS_NAME;
+   static const std::string CORDELIA_NAME;
+   static const std::string OPHELIA_NAME;
+   static const std::string BIANCA_NAME;
+   static const std::string CRESSIDA_NAME;
+   static const std::string DESDEMONA_NAME;
+   static const std::string JULIET_NAME;
+   static const std::string PORTIA_NAME;
+   static const std::string ROSALIND_NAME;
+   static const std::string BELINDA_NAME;
+   static const std::string PUCK_NAME;
+   static const std::string MIRANDA_NAME;
+   static const std::string ARIEL_NAME;
+   static const std::string UMBRIEL_NAME;
+   static const std::string TITANIA_NAME;
+   static const std::string OBERON_NAME;
 
-   static const wxString NEPTUNE_NAME;
-   static const wxString NAIAD_NAME;
-   static const wxString THALASSA_NAME;
-   static const wxString DESPINA_NAME;
-   static const wxString GALATEA_NAME;
-   static const wxString LARISSA_NAME;
-   static const wxString PROTEUS_NAME;
-   static const wxString TRITON_NAME;
+   static const std::string NEPTUNE_NAME;
+   static const std::string NAIAD_NAME;
+   static const std::string THALASSA_NAME;
+   static const std::string DESPINA_NAME;
+   static const std::string GALATEA_NAME;
+   static const std::string LARISSA_NAME;
+   static const std::string PROTEUS_NAME;
+   static const std::string TRITON_NAME;
 
-   static const wxString PLUTO_NAME;
-   static const wxString CHARON_NAME;
+   static const std::string PLUTO_NAME;
+   static const std::string CHARON_NAME;
    
    // add other moons, asteroids, comets, as needed
    // what do we do about libration points??
@@ -281,7 +281,7 @@ protected:
    };
       
 
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[SolarSystemParamCount - GmatBaseParamCount];
    
    static const Gmat::ParameterType
@@ -294,7 +294,7 @@ protected:
 
 private:
    
-   wxString theCurrentPlanetarySource;
+   std::string theCurrentPlanetarySource;
    Integer thePlanetarySourcePriority[Gmat::PosVelSourceCount];
    bool isPlanetarySourceInUse[Gmat::PosVelSourceCount];
    static const Integer HIGHEST_PRIORITY = 10;
@@ -316,7 +316,7 @@ private:
    StringArray userDefinedBodyStrings;
 
    /// map of SpecialCelestialPoints that the SolarSystem knows about
-   std::map<wxString, SpecialCelestialPoint*>  specialPoints;
+   std::map<std::string, SpecialCelestialPoint*>  specialPoints;
 
 #ifdef __USE_SPICE__
    SpiceOrbitKernelReader *planetarySPK;
@@ -326,28 +326,28 @@ private:
    bool        allowSpiceForDefaultBodies;
    bool        spiceAvailable;
    /// name of the SPK file for the default bodies
-   wxString theSPKFilename;
+   std::string theSPKFilename;
    /// name of the leap second kernel
-   wxString lskKernelName;
+   std::string lskKernelName;
    
    // default values for parameters
    StringArray default_planetarySourceTypesInUse;  // deprecated!!
-   wxString default_ephemerisSource;
-   wxString default_DEFilename;
-   wxString default_SPKFilename;
-   wxString default_LSKFilename;
+   std::string default_ephemerisSource;
+   std::string default_DEFilename;
+   std::string default_SPKFilename;
+   std::string default_LSKFilename;
    bool        default_overrideTimeForAll;
    Real        default_ephemUpdateInterval;
    
    // method to find a body in the solar system, given its name
-   CelestialBody* FindBody(wxString withName);
+   CelestialBody* FindBody(std::string withName);
    void SetJ2000Body();
    void CloneBodiesInUse(const SolarSystem &ss, bool cloneSpecialPoints = true);
    void DeleteBodiesInUse(bool deleteSpecialPoints = true);
    
    // methods to create planetary source file
    void SetDefaultPlanetarySource();
-   bool CreateDeFile(const Integer id, const wxString &fileName,
+   bool CreateDeFile(const Integer id, const std::string &fileName,
                      Gmat::DeFileFormat format = Gmat::DE_BINARY);
    
 //   // default values for CelestialBody data
@@ -358,10 +358,10 @@ private:
    static const Integer               PLANET_NUM_ATMOSPHERE_MODELS[GmatSolarSystemDefaults::NumberOfDefaultPlanets];
    static const Integer               PLANET_NUM_MAGNETIC_MODELS[GmatSolarSystemDefaults::NumberOfDefaultPlanets];
    static const Integer               PLANET_NUM_SHAPE_MODELS[GmatSolarSystemDefaults::NumberOfDefaultPlanets];
-   static const wxString           PLANET_GRAVITY_MODELS[];
-   static const wxString           PLANET_ATMOSPHERE_MODELS[];
-   static const wxString           PLANET_MAGNETIC_MODELS[];
-   static const wxString           PLANET_SHAPE_MODELS[]; // @todo add Shape Models
+   static const std::string           PLANET_GRAVITY_MODELS[];
+   static const std::string           PLANET_ATMOSPHERE_MODELS[];
+   static const std::string           PLANET_MAGNETIC_MODELS[];
+   static const std::string           PLANET_SHAPE_MODELS[]; // @todo add Shape Models
    static const Gmat::PosVelSource    MOON_POS_VEL_SOURCE[GmatSolarSystemDefaults::NumberOfDefaultMoons];
    static const Integer               MOON_ORDER[GmatSolarSystemDefaults::NumberOfDefaultMoons];
    static const Integer               MOON_DEGREE[GmatSolarSystemDefaults::NumberOfDefaultMoons];
@@ -369,10 +369,10 @@ private:
    static const Integer               MOON_NUM_ATMOSPHERE_MODELS[GmatSolarSystemDefaults::NumberOfDefaultMoons];
    static const Integer               MOON_NUM_MAGNETIC_MODELS[GmatSolarSystemDefaults::NumberOfDefaultMoons];
    static const Integer               MOON_NUM_SHAPE_MODELS[GmatSolarSystemDefaults::NumberOfDefaultMoons];
-   static const wxString           MOON_GRAVITY_MODELS[];
-   static const wxString           MOON_ATMOSPHERE_MODELS[];
-   static const wxString           MOON_MAGNETIC_MODELS[];
-   static const wxString           MOON_SHAPE_MODELS[]; // @todo add Shape Models
+   static const std::string           MOON_GRAVITY_MODELS[];
+   static const std::string           MOON_ATMOSPHERE_MODELS[];
+   static const std::string           MOON_MAGNETIC_MODELS[];
+   static const std::string           MOON_SHAPE_MODELS[]; // @todo add Shape Models
    static const Gmat::PosVelSource    STAR_POS_VEL_SOURCE;
    static const Integer               STAR_ORDER;
    static const Integer               STAR_DEGREE;
@@ -380,10 +380,10 @@ private:
    static const Integer               STAR_NUM_ATMOSPHERE_MODELS;
    static const Integer               STAR_NUM_MAGNETIC_MODELS;
    static const Integer               STAR_NUM_SHAPE_MODELS;
-   static const wxString           STAR_GRAVITY_MODELS;
-   static const wxString           STAR_ATMOSPHERE_MODELS;
-   static const wxString           STAR_MAGNETIC_MODELS;
-   static const wxString           STAR_SHAPE_MODELS; // @todo add Shape Models
+   static const std::string           STAR_GRAVITY_MODELS;
+   static const std::string           STAR_ATMOSPHERE_MODELS;
+   static const std::string           STAR_MAGNETIC_MODELS;
+   static const std::string           STAR_SHAPE_MODELS; // @todo add Shape Models
 
 };
 

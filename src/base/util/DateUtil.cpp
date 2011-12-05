@@ -397,7 +397,7 @@ bool IsValidTime (Integer year, Integer month, Integer day,
 
 
 //------------------------------------------------------------------------------
-// bool IsValidGregorian(const wxString &str, bool checkDate = false)
+// bool IsValidGregorian(const std::string &str, bool checkDate = false)
 //------------------------------------------------------------------------------
 /**
  * Determines if input date string is valid Gregorian or not.
@@ -410,25 +410,25 @@ bool IsValidTime (Integer year, Integer month, Integer day,
  * @return true if time is in valid Gregorian format; otherwise, false
  */
 //---------------------------------------------------------------------------
-bool DateUtil::IsValidGregorian(const wxString &str, bool checkDate)
+bool DateUtil::IsValidGregorian(const std::string &str, bool checkDate)
 {
-   StringArray parts = GmatStringUtil::SeparateBy(str, wxT(" "));
+   StringArray parts = GmatStringUtil::SeparateBy(str, " ");
    if (parts.size() != 4)
       return false;
 
    #if DEBUG_DATE_VALIDATE
    MessageInterface::ShowMessage
-      (wxT("DateUtil::IsValidGregorian() parts=%s, %s, %s, %s\n"), parts[0].c_str(),
+      ("DateUtil::IsValidGregorian() parts=%s, %s, %s, %s\n", parts[0].c_str(),
        parts[1].c_str(), parts[2].c_str(), parts[3].c_str());
    #endif
 
-   StringArray timeParts = GmatStringUtil::SeparateBy(parts[3], wxT(":"));
+   StringArray timeParts = GmatStringUtil::SeparateBy(parts[3], ":");
    if (timeParts.size() != 3)
       return false;
 
    #if DEBUG_DATE_VALIDATE
    MessageInterface::ShowMessage
-      (wxT("DateUtil::IsValidGregorian() timeParts=%s, %s, %s\n"), timeParts[0].c_str(),
+      ("DateUtil::IsValidGregorian() timeParts=%s, %s, %s\n", timeParts[0].c_str(),
        timeParts[1].c_str(), timeParts[2].c_str());
    #endif
 
@@ -458,8 +458,8 @@ bool DateUtil::IsValidGregorian(const wxString &str, bool checkDate)
 
    #if DEBUG_DATE_VALIDATE
    MessageInterface::ShowMessage
-      (wxT("DateUtil::IsValidGregorian() year=%d, month=%d, day=%d, hour=%d, ")
-       wxT("min=%d, sec=%f\n"), year, month, day, hour, min, sec);
+      ("DateUtil::IsValidGregorian() year=%d, month=%d, day=%d, hour=%d, "
+       "min=%d, sec=%f\n", year, month, day, hour, min, sec);
    #endif
 
    // check for date

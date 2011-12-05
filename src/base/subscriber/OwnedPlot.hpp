@@ -42,9 +42,9 @@
 class GMAT_API OwnedPlot : public GmatBase
 {
 public:
-   OwnedPlot(const wxString &name, const wxString &plotTitle = wxT(""),
-          const wxString &xAxisTitle = wxT(""),
-          const wxString &yAxisTitle = wxT(""));
+   OwnedPlot(const std::string &name, const std::string &plotTitle = "",
+          const std::string &xAxisTitle = "",
+          const std::string &yAxisTitle = "");
    OwnedPlot(const OwnedPlot &orig);
    OwnedPlot& operator=(const OwnedPlot& orig);
    virtual ~OwnedPlot(void);
@@ -56,62 +56,62 @@ public:
    virtual GmatBase*    Clone() const;
    virtual void         Copy(const GmatBase* orig);
    
-   virtual bool         SetName(const wxString &who,
-                                const wxString &oldName = wxT(""));
+   virtual bool         SetName(const std::string &who,
+                                const std::string &oldName = "");
    
-   virtual bool         TakeAction(const wxString &action,  
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,  
+                                   const std::string &actionData = "");
    
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    virtual bool         IsParameterReadOnly(const Integer id) const;
    
    virtual Integer      GetIntegerParameter(const Integer id) const;
-   virtual Integer      GetIntegerParameter(const wxString &label) const;
+   virtual Integer      GetIntegerParameter(const std::string &label) const;
    virtual Integer      SetIntegerParameter(const Integer id,
                                             const Integer value);
-   virtual Integer      SetIntegerParameter(const wxString &label,
+   virtual Integer      SetIntegerParameter(const std::string &label,
                                             const Integer value);
    
    virtual bool         GetBooleanParameter(const Integer id) const;
-   virtual bool         GetBooleanParameter(const wxString &label) const;
+   virtual bool         GetBooleanParameter(const std::string &label) const;
    virtual bool         SetBooleanParameter(const Integer id,
                                             const bool value);
-   virtual bool         SetBooleanParameter(const wxString &label,
+   virtual bool         SetBooleanParameter(const std::string &label,
                                             const bool value);
    
-   virtual wxString  GetOnOffParameter(const Integer id) const;
+   virtual std::string  GetOnOffParameter(const Integer id) const;
    virtual bool         SetOnOffParameter(const Integer id, 
-                                          const wxString &value);
-   virtual wxString  GetOnOffParameter(const wxString &label) const;
-   virtual bool         SetOnOffParameter(const wxString &label, 
-                                          const wxString &value);
+                                          const std::string &value);
+   virtual std::string  GetOnOffParameter(const std::string &label) const;
+   virtual bool         SetOnOffParameter(const std::string &label, 
+                                          const std::string &value);
    
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const wxString &label) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const std::string &label) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
    
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value,
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value,
                                            const Integer index);
    
    virtual const StringArray&
                         GetStringArrayParameter(const Integer id) const;
    virtual const StringArray&
-                        GetStringArrayParameter(const wxString &label) const;
+                        GetStringArrayParameter(const std::string &label) const;
    
    bool                 Activate();
    bool                 Deactivate();
@@ -155,11 +155,11 @@ protected:
    /// Curve by curve useHiLow setting
    std::vector<bool> curveUseHiLow;
 
-   wxString mOldName;
-   wxString mPlotTitle;
-   wxString mXAxisTitle;
-   wxString mYAxisTitle;
-   wxString mDrawGrid;
+   std::string mOldName;
+   std::string mPlotTitle;
+   std::string mXAxisTitle;
+   std::string mYAxisTitle;
+   std::string mDrawGrid;
    bool mIsOwnedPlotWindowSet;
    
    Integer mDataCollectFrequency;
@@ -188,12 +188,12 @@ protected:
    bool                 isEndOfReceive;
    bool                 isEndOfRun;
    bool                 isInitialized;
-   wxString          mSolverIterations;
+   std::string          mSolverIterations;
    Gmat::RunState       runstate;
 
    void BuildPlotTitle();
    bool ClearYParameters();
-   bool RemoveYParameter(const wxString &name);
+   bool RemoveYParameter(const std::string &name);
    bool ResetYParameters();
    bool PenUp();
    bool PenDown();
@@ -225,7 +225,7 @@ protected:
    
    static const Gmat::ParameterType
       PARAMETER_TYPE[OwnedPlotParamCount - GmatBaseParamCount];
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[OwnedPlotParamCount - GmatBaseParamCount];
 };
 

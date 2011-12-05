@@ -36,7 +36,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  CreateObject(const wxString &ofType, const wxString &withName)
+//  CreateObject(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested ODEModel class
@@ -47,15 +47,15 @@
  *
  */
 //------------------------------------------------------------------------------
-Subscriber* SubscriberFactory::CreateObject(const wxString &ofType,
-                                          const wxString &withName)
+Subscriber* SubscriberFactory::CreateObject(const std::string &ofType,
+                                          const std::string &withName)
 {
    return CreateSubscriber(ofType, withName);
 }
 
 //------------------------------------------------------------------------------
-//  CreateSubscriber(const wxString &ofType, const wxString &withName,
-//                   const wxString &fileName)
+//  CreateSubscriber(const std::string &ofType, const std::string &withName,
+//                   const std::string &fileName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested Subscriber class
@@ -66,27 +66,27 @@ Subscriber* SubscriberFactory::CreateObject(const wxString &ofType,
  *
  */
 //------------------------------------------------------------------------------
-Subscriber* SubscriberFactory::CreateSubscriber(const wxString &ofType,
-                                                const wxString &withName,
-                                                const wxString &fileName)
+Subscriber* SubscriberFactory::CreateSubscriber(const std::string &ofType,
+                                                const std::string &withName,
+                                                const std::string &fileName)
 {
-   if (ofType == wxT("ReportFile"))
+   if (ofType == "ReportFile")
       return new ReportFile(ofType, withName, fileName);
-   else if (ofType == wxT("TextEphemFile"))
+   else if (ofType == "TextEphemFile")
       return new TextEphemFile(ofType, withName, fileName);
-   else if (ofType == wxT("MessageWindow"))
+   else if (ofType == "MessageWindow")
       return new MessageWindow(withName);
-   else if (ofType == wxT("XYPlot"))
+   else if (ofType == "XYPlot")
       return new XyPlot(withName);
-   else if (ofType == wxT("EphemerisFile"))
+   else if (ofType == "EphemerisFile")
       return new EphemerisFile(withName);
-   else if (ofType == wxT("OpenGLPlot"))
+   else if (ofType == "OpenGLPlot")
       return new OrbitView(withName);
-   else if (ofType == wxT("Enhanced3DView"))
+   else if (ofType == "Enhanced3DView")
       return new OrbitView(withName);
-   else if (ofType == wxT("OrbitView"))
+   else if (ofType == "OrbitView")
       return new OrbitView(withName);
-   else if (ofType == wxT("GroundTrackPlot"))
+   else if (ofType == "GroundTrackPlot")
       return new GroundTrackPlot(withName);
    
    return NULL;
@@ -108,15 +108,15 @@ Factory(Gmat::SUBSCRIBER)
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("ReportFile"));
-      creatables.push_back(wxT("TextEphemFile"));
-      creatables.push_back(wxT("MessageWindow"));
-      creatables.push_back(wxT("XYPlot"));
-      creatables.push_back(wxT("EphemerisFile"));
-      creatables.push_back(wxT("OpenGLPlot"));
-      creatables.push_back(wxT("Enhanced3DView"));
-      creatables.push_back(wxT("OrbitView"));
-      creatables.push_back(wxT("GroundTrackPlot"));
+      creatables.push_back("ReportFile");
+      creatables.push_back("TextEphemFile");
+      creatables.push_back("MessageWindow");
+      creatables.push_back("XYPlot");
+      creatables.push_back("EphemerisFile");
+      creatables.push_back("OpenGLPlot");
+      creatables.push_back("Enhanced3DView");
+      creatables.push_back("OrbitView");
+      creatables.push_back("GroundTrackPlot");
    }
    
    // Now fill in unviewable subscribers
@@ -124,8 +124,8 @@ Factory(Gmat::SUBSCRIBER)
    if (unviewables.empty())
    {
       // These commands do nothing
-      unviewables.push_back(wxT("OpenGLPlot"));
-      unviewables.push_back(wxT("Enhanced3DView"));
+      unviewables.push_back("OpenGLPlot");
+      unviewables.push_back("Enhanced3DView");
    }
 }
 
@@ -154,7 +154,7 @@ Factory(createList,Gmat::SUBSCRIBER)
  * This method creates an object of the class SubscriberFactory
  * (copy constructor).
  *
- * @param <fact> the factory object to copy to wxT("this") factory.
+ * @param <fact> the factory object to copy to "this" factory.
  */
 //------------------------------------------------------------------------------
 SubscriberFactory::SubscriberFactory(const SubscriberFactory& fact) :
@@ -169,10 +169,10 @@ Factory(fact)
 /**
  * Assignment operator for the SubscriberFactory class.
  *
- * @param <fact> the SubscriberFactory object whose data to assign to wxT("this")
+ * @param <fact> the SubscriberFactory object whose data to assign to "this"
  *               factory.
  *
- * @return wxT("this") SubscriberFactory with data of input factory fact.
+ * @return "this" SubscriberFactory with data of input factory fact.
  */
 //------------------------------------------------------------------------------
 SubscriberFactory& SubscriberFactory::operator= (const SubscriberFactory& fact)

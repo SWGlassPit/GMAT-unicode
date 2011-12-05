@@ -32,7 +32,7 @@
 class GMAT_API PlotCommand : public GmatCommand
 {
 public:
-   PlotCommand(const wxString &plotTypeName);
+   PlotCommand(const std::string &plotTypeName);
    virtual          ~PlotCommand();
    PlotCommand(const PlotCommand &c);
    PlotCommand&      operator=(const PlotCommand &c);
@@ -43,29 +43,29 @@ public:
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
    // Access methods derived classes can override
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value);
-   virtual wxString  GetStringParameter(const Integer id,
+                                           const std::string &value);
+   virtual std::string  GetStringParameter(const Integer id,
                                            const Integer index) const;
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
    
-   virtual const wxString&  
+   virtual const std::string&  
                         GetGeneratingString(
                            Gmat::WriteMode mode = Gmat::SCRIPTING,
-                           const wxString &prefix = wxT(""),
-                           const wxString &useName = wxT(""));
+                           const std::string &prefix = "",
+                           const std::string &useName = "");
    virtual bool         InterpretAction();
    
    virtual bool         Initialize();
@@ -80,7 +80,7 @@ protected:
    StringArray              plotNameList;   
    std::vector<Subscriber*> thePlotList;
    
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[PlotCommandParamCount - GmatCommandParamCount];
    static const Gmat::ParameterType
       PARAMETER_TYPE[PlotCommandParamCount - GmatCommandParamCount];

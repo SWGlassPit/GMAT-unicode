@@ -38,7 +38,7 @@ class CelestialBody;
 class GMAT_API AtmosphereModel : public GmatBase
 {
 public:
-   AtmosphereModel(const wxString &typeStr, const wxString &name = wxT(""));
+   AtmosphereModel(const std::string &typeStr, const std::string &name = "");
    virtual ~AtmosphereModel();
    
    // copy constructor - needed by child classes (for Clone)
@@ -95,18 +95,18 @@ public:
 
 
    // Methods overridden from GmatBase
-   virtual wxString GetParameterText(const Integer id) const;
-   virtual Integer     GetParameterID(const wxString &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
+   virtual Integer     GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                        GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
 
    virtual Real        GetRealParameter(const Integer id) const;
    virtual Real        SetRealParameter(const Integer id,
                                         const Real value);
 
    // Flux file methods
-   void SetSolarFluxFile(const wxString &file);
+   void SetSolarFluxFile(const std::string &file);
    void SetNewFileFlag(bool flag);
    void SetOpenFileFlag(bool flag);
    void CloseFile();
@@ -121,11 +121,11 @@ protected:
    /// Pointer to the binary file
    FILE                    *solarFluxFile;
    /// Solar flux file name
-   wxString             fileName;  // waw: Added 06/29/04
+   std::string             fileName;  // waw: Added 06/29/04
    /// Vector from the central body to the sun
    Real                    *sunVector;
    /// Name of the central body
-   wxString             centralBody;
+   std::string             centralBody;
    /// Location of the central body
    Real                    *centralBodyLocation;
    /// Central body radius
@@ -190,7 +190,7 @@ protected:
       AtmosphereModelParamCount
    };
    
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[AtmosphereModelParamCount - GmatBaseParamCount];
    static const Gmat::ParameterType
       PARAMETER_TYPE[AtmosphereModelParamCount - GmatBaseParamCount];

@@ -51,17 +51,17 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 PredictorCorrector::PARAMETER_TEXT[PredictorCorrectorParamCount - IntegratorParamCount] =
 {
-   wxT("StepCount"),
-   wxT("MaximumError"),
-   wxT("LowerError"),
-   wxT("TargetError"),
-   wxT("StepSign"),
-   wxT("StartupComplete"),
-   wxT("StartupCount"),
-   wxT("InvOrder")
+   "StepCount",
+   "MaximumError",
+   "LowerError",
+   "TargetError",
+   "StepSign",
+   "StartupComplete",
+   "StartupCount",
+   "InvOrder"
 };
 
 const Gmat::ParameterType
@@ -83,7 +83,7 @@ PredictorCorrector::PARAMETER_TYPE[PredictorCorrectorParamCount - IntegratorPara
 
 //------------------------------------------------------------------------------
 // PredictorCorrector::PredictorCorrector(Integer sc, Integer order, 
-//                  const wxString &typeStr, const wxString &nomme)
+//                  const std::string &typeStr, const std::string &nomme)
 //------------------------------------------------------------------------------
 /**
  * The Predictor-Corrector Constructor 
@@ -100,7 +100,7 @@ PredictorCorrector::PARAMETER_TYPE[PredictorCorrectorParamCount - IntegratorPara
  */
 //------------------------------------------------------------------------------
 PredictorCorrector::PredictorCorrector(Integer sc, Integer order, 
-                  const wxString &typeStr, const wxString &nomme) :
+                  const std::string &typeStr, const std::string &nomme) :
     Integrator      (typeStr, nomme),
     stepCount                       (sc),       //ag: changed from sc
     ddt                             (NULL),
@@ -118,7 +118,7 @@ PredictorCorrector::PredictorCorrector(Integer sc, Integer order,
     starter                         (NULL),
     invOrder                        (1.0/order)
 {
-   objectTypeNames.push_back(wxT("PredictorCorrector"));
+   objectTypeNames.push_back("PredictorCorrector");
    parameterCount = PredictorCorrectorParamCount;
    tolerance = 1.0e-10;
 }
@@ -258,12 +258,12 @@ bool PredictorCorrector::Initialize()
 
     // Check the P-C error control tolerances
     if ((lowerError >= targetError) || (targetError >= tolerance))
-       throw PropagatorException(wxT("Setup error in the ") + typeName +
-             wxT(" Propagator; Predictor-Corrector integrators require that the ")
-             wxT("error control settings satisfy the relationship\n\n")
-             wxT("   LowerError < TargetError < Accuracy\n\n")
-             wxT("and work best if the settings differ from one another by at ")
-             wxT("least a factor of 10"), Gmat::ERROR_);
+       throw PropagatorException("Setup error in the " + typeName +
+             " Propagator; Predictor-Corrector integrators require that the "
+             "error control settings satisfy the relationship\n\n"
+             "   LowerError < TargetError < Accuracy\n\n"
+             "and work best if the settings differ from one another by at "
+             "least a factor of 10", Gmat::ERROR_);
 
     if (physicalModel)
     {
@@ -416,14 +416,14 @@ bool PredictorCorrector::Initialize()
         if (fabs(stepSizeBuffer) > maximumStep)
            stepSizeBuffer = maximumStep * stepSign;
 
-        starter->SetRealParameter(wxT("InitialStepSize"), stepSize);
+        starter->SetRealParameter("InitialStepSize", stepSize);
         starter->SetBooleanParameter(STOP_IF_ACCURACY_VIOLATED,
                  stopIfAccuracyViolated);
         starter->SetRealParameter(ACCURACY, tolerance);
         starter->SetRealParameter(MIN_STEP, minimumStep);
         starter->SetRealParameter(MAX_STEP, maximumStep);
-        starter->TakeAction(wxT("ChangeTypeSourceString"),
-              wxT("Starter for Predictor-Corrector"));
+        starter->TakeAction("ChangeTypeSourceString",
+              "Starter for Predictor-Corrector");
         starter->Initialize();
 
         inState  = physicalModel->GetState();
@@ -581,16 +581,16 @@ bool PredictorCorrector::AdaptStep(Real maxError)
     {
        if (stopIfAccuracyViolated)
        {
-          throw PropagatorException(typeSource + wxT(": Accuracy settings will be ")
-                wxT("violated with current step size values.\n"));
+          throw PropagatorException(typeSource + ": Accuracy settings will be "
+                "violated with current step size values.\n");
        }
        else
        {
           if (!accuracyWarningTriggered)
           {
              accuracyWarningTriggered = true;
-             MessageInterface::ShowMessage(wxT("**** Warning **** %s: Accuracy ")
-                   wxT("settings will be violated with current step size values.\n"),
+             MessageInterface::ShowMessage("**** Warning **** %s: Accuracy "
+                   "settings will be violated with current step size values.\n",
                    typeSource.c_str());
           }
           return true;
@@ -614,7 +614,7 @@ bool PredictorCorrector::AdaptStep(Real maxError)
                if (stopIfAccuracyViolated)
                {
                   throw PropagatorException(
-                        wxT("PredictorCorrector: Accuracy settings will be violated with current step size values.\n"));
+                        "PredictorCorrector: Accuracy settings will be violated with current step size values.\n");
                }
                else
                {
@@ -622,7 +622,7 @@ bool PredictorCorrector::AdaptStep(Real maxError)
                   {
                      accuracyWarningTriggered = true;
                      MessageInterface::PopupMessage(Gmat::WARNING_,
-                        wxT("PredictorCorrector: Accuracy settings will be violated with current step size values.\n"));
+                        "PredictorCorrector: Accuracy settings will be violated with current step size values.\n");
                   }
                   return false;
                }
@@ -632,7 +632,7 @@ bool PredictorCorrector::AdaptStep(Real maxError)
         }
         else
         {
-            // Step can be wxT("safely") increased -- but only up to twice old value
+            // Step can be "safely" increased -- but only up to twice old value
             if (newStep >= 2.0 * stepSize)
                 stepSize *= 2.0;
             else
@@ -672,7 +672,7 @@ bool PredictorCorrector::AdaptStep(Real maxError)
     return Reset();
 }
 //------------------------------------------------------------------------------
-// wxString PredictorCorrector::GetParameterText(const int id) const
+// std::string PredictorCorrector::GetParameterText(const int id) const
 //------------------------------------------------------------------------------
 /**
  * Helper method used to find the text name for the class parameters
@@ -685,7 +685,7 @@ bool PredictorCorrector::AdaptStep(Real maxError)
  * @param parm ID of the parameter that needs the text string
  */
 //------------------------------------------------------------------------------
-wxString PredictorCorrector::GetParameterText(const Integer id) const
+std::string PredictorCorrector::GetParameterText(const Integer id) const
 {
     if (id >= STEP_COUNT && id < PredictorCorrectorParamCount)
         return PARAMETER_TEXT[id - IntegratorParamCount];
@@ -694,13 +694,13 @@ wxString PredictorCorrector::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Integer PredictorCorrector::GetParameterID(const wxString &str) const
+Integer PredictorCorrector::GetParameterID(const std::string &str) const
 {
     for (Integer i = STEP_COUNT; i < PredictorCorrectorParamCount; i++)
     {
@@ -727,13 +727,13 @@ Gmat::ParameterType PredictorCorrector::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString PredictorCorrector::GetParameterTypeString(const Integer id) const
+std::string PredictorCorrector::GetParameterTypeString(const Integer id) const
 {
    if (id >= STEP_COUNT && id < PredictorCorrectorParamCount)
       return Integrator::PARAM_TYPE_STRING[GetParameterType(id)];
@@ -763,7 +763,7 @@ bool PredictorCorrector::IsParameterReadOnly(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// bool IsParameterReadOnly(const wxString &label) const
+// bool IsParameterReadOnly(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Method used to determine is a parameter should be hidden when writing scripts
@@ -773,7 +773,7 @@ bool PredictorCorrector::IsParameterReadOnly(const Integer id) const
  * @return true is the parameter should be hidden, false if it is visible.
  */
 //------------------------------------------------------------------------------
-bool PredictorCorrector::IsParameterReadOnly(const wxString &label) const
+bool PredictorCorrector::IsParameterReadOnly(const std::string &label) const
 {
    return IsParameterReadOnly(GetParameterID(label));
 }
@@ -798,9 +798,9 @@ Real PredictorCorrector::GetRealParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label) const
+// Real GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-Real PredictorCorrector::GetRealParameter(const wxString &label) const
+Real PredictorCorrector::GetRealParameter(const std::string &label) const
 {
     Integer id = GetParameterID(label);
 
@@ -855,13 +855,13 @@ Real PredictorCorrector::SetRealParameter(const Integer id, const Real value)
 }
 
 //------------------------------------------------------------------------------
-// Real SetRealParameter(const wxString &label, const Real value)
+// Real SetRealParameter(const std::string &label, const Real value)
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Real PredictorCorrector::SetRealParameter(const wxString &label, const Real value)
+Real PredictorCorrector::SetRealParameter(const std::string &label, const Real value)
 {
     return SetRealParameter(GetParameterID(label), value);
 }
@@ -938,7 +938,7 @@ bool PredictorCorrector::GetBooleanParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  bool SetBooleanParameter(const Integer id, const wxString value)
+//  bool SetBooleanParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
 /**
 * This method sets the bool parameter value, given the input
@@ -1011,7 +1011,7 @@ bool PredictorCorrector::SetBooleanParameter(const Integer id, const bool value)
 //    else if (id == PREDICTORCORRECTOR_TARGETERROR)
 //        targetError = val;
 //    else {
-//        if (id == GetParameterID(wxT("InitialStepSize")))   // ag: was STEP_SIZE_PARAMETER
+//        if (id == GetParameterID("InitialStepSize"))   // ag: was STEP_SIZE_PARAMETER
 //            if (val == 0.0)
 //                return false;
 //        

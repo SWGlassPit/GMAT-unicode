@@ -131,7 +131,7 @@ Integer StateManager::GetCount(Gmat::StateElementId elementType)
 
    #ifdef DEBUG_STATE_ACCESS
       MessageInterface::ShowMessage(
-            wxT("StateManager::GetCount found %d objects supporting type %d\n"),
+            "StateManager::GetCount found %d objects supporting type %d\n",
             count, elementType);
    #endif
       
@@ -215,7 +215,7 @@ bool StateManager::GetStateObjects(ObjectArray& pObjects, Gmat::ObjectType type)
 }
 
 
-const StringArray& StateManager::GetObjectList(wxString ofType)
+const StringArray& StateManager::GetObjectList(std::string ofType)
 {
    return objectNames;
 }

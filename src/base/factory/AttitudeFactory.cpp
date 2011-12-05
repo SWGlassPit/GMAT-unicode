@@ -36,7 +36,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  CreateAttitude(const wxString &ofType, const wxString &withName)
+//  CreateAttitude(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested Attitude class 
@@ -46,17 +46,17 @@
  *
  */
 //------------------------------------------------------------------------------
-Attitude* AttitudeFactory::CreateAttitude(const wxString &ofType,
-                                          const wxString &withName)
+Attitude* AttitudeFactory::CreateAttitude(const std::string &ofType,
+                                          const std::string &withName)
 {
-   if ((ofType == wxT("CSFixed")) || (ofType == wxT("CoordinateSystemFixed")))
+   if ((ofType == "CSFixed") || (ofType == "CoordinateSystemFixed"))
       return new CSFixed(withName);
-   else if (ofType == wxT("Spinner"))
+   else if (ofType == "Spinner")
       return new Spinner(withName);
 //   //else if (ofType == "ThreeAxis")   // TBD
 //   //   return new ThreeAxis(withName);
    #ifdef __USE_SPICE__
-      else if (ofType == wxT("SpiceAttitude"))
+      else if (ofType == "SpiceAttitude")
          return new SpiceAttitude();
    #endif
    else
@@ -81,14 +81,14 @@ Factory(Gmat::ATTITUDE)
 {
    if (creatables.empty())
    {
-      //creatables.push_back(wxT("CSFixed"));
-      creatables.push_back(wxT("CoordinateSystemFixed"));
-      creatables.push_back(wxT("Spinner"));
+      //creatables.push_back("CSFixed");
+      creatables.push_back("CoordinateSystemFixed");
+      creatables.push_back("Spinner");
       #ifdef __USE_SPICE__
-         creatables.push_back(wxT("SpiceAttitude"));
+         creatables.push_back("SpiceAttitude");
       #endif
 
-      //creatables.push_back(wxT("ThreeAxis"));
+      //creatables.push_back("ThreeAxis");
       // others TBD
    }
 }
@@ -109,13 +109,13 @@ Factory(createList,Gmat::ATTITUDE)
 {
    if (creatables.empty())
    {
-      //creatables.push_back(wxT("CSFixed"));
-      creatables.push_back(wxT("CoordinateSystemFixed"));
-      creatables.push_back(wxT("Spinner"));
+      //creatables.push_back("CSFixed");
+      creatables.push_back("CoordinateSystemFixed");
+      creatables.push_back("Spinner");
       #ifdef __USE_SPICE__
-         creatables.push_back(wxT("SpiceAttitude"));
+         creatables.push_back("SpiceAttitude");
       #endif
-      //creatables.push_back(wxT("ThreeAxis"));
+      //creatables.push_back("ThreeAxis");
       // others TBD
    }
 }
@@ -127,7 +127,7 @@ Factory(createList,Gmat::ATTITUDE)
    * This method creates an object of the class AttitudeFactory 
    * (copy constructor).
    *
-   * @param <fact> the factory object to copy to wxT("this") factory.
+   * @param <fact> the factory object to copy to "this" factory.
    */
 //------------------------------------------------------------------------------
 AttitudeFactory::AttitudeFactory(const AttitudeFactory& fact) :
@@ -135,13 +135,13 @@ Factory(fact)
 {
    if (creatables.empty())
    {
-      //creatables.push_back(wxT("CSFixed"));
-      creatables.push_back(wxT("CoordinateSystemFixed"));
-      creatables.push_back(wxT("Spinner"));
+      //creatables.push_back("CSFixed");
+      creatables.push_back("CoordinateSystemFixed");
+      creatables.push_back("Spinner");
       #ifdef __USE_SPICE__
-         creatables.push_back(wxT("SpiceAttitude"));
+         creatables.push_back("SpiceAttitude");
       #endif
-      //creatables.push_back(wxT("ThreeAxis"));
+      //creatables.push_back("ThreeAxis");
       // others TBD
    }
 }
@@ -152,10 +152,10 @@ Factory(fact)
 /**
  * Assignment operator for the AttitudeFactory class.
  *
- * @param <fact> the AttitudeFactory object whose data to assign to wxT("this")
+ * @param <fact> the AttitudeFactory object whose data to assign to "this"
  *               factory.
  *
- * @return wxT("this") AttitudeFactory with data of input factory fact.
+ * @return "this" AttitudeFactory with data of input factory fact.
  */
 //------------------------------------------------------------------------------
 AttitudeFactory& AttitudeFactory::operator= (const AttitudeFactory& fact)
@@ -164,13 +164,13 @@ AttitudeFactory& AttitudeFactory::operator= (const AttitudeFactory& fact)
    Factory::operator=(fact);
    if (creatables.empty())
    {
-      //creatables.push_back(wxT("CSFixed"));
-      creatables.push_back(wxT("CoordinateSystemFixed"));
-      creatables.push_back(wxT("Spinner"));
+      //creatables.push_back("CSFixed");
+      creatables.push_back("CoordinateSystemFixed");
+      creatables.push_back("Spinner");
       #ifdef __USE_SPICE__
-         creatables.push_back(wxT("SpiceAttitude"));
+         creatables.push_back("SpiceAttitude");
       #endif
-      //creatables.push_back(wxT("ThreeAxis"));
+      //creatables.push_back("ThreeAxis");
       // others TBD
    }
    return *this;

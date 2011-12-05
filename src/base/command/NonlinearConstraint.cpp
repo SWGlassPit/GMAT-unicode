@@ -35,14 +35,14 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
    NonlinearConstraint::PARAMETER_TEXT[NonlinearConstraintParamCount - GmatCommandParamCount] =
    {
-      wxT("OptimizerName"),
-      wxT("ConstraintArg1"),
-      wxT("Operator"),
-      wxT("ConstraintArg2"),
-      wxT("Tolerance"),
+      "OptimizerName",
+      "ConstraintArg1",
+      "Operator",
+      "ConstraintArg2",
+      "Tolerance",
    };
    
 const Gmat::ParameterType
@@ -55,12 +55,12 @@ const Gmat::ParameterType
       Gmat::REAL_TYPE,
    };
 
-const wxString // order must match enum Operator 
+const std::string // order must match enum Operator 
    NonlinearConstraint::OP_STRINGS[3] =
    {
-      wxT("<="),
-      wxT(">="),
-      wxT("="),
+      "<=",
+      ">=",
+      "=",
    };
 
 
@@ -76,16 +76,16 @@ const wxString // order must match enum Operator
  */
 //------------------------------------------------------------------------------
 NonlinearConstraint::NonlinearConstraint() :
-   GmatCommand             (wxT("NonlinearConstraint")),
-   optimizerName           (wxT("")),
+   GmatCommand             ("NonlinearConstraint"),
+   optimizerName           (""),
    optimizer               (NULL),
-   arg1Name                (wxT("")),
+   arg1Name                (""),
    arg1                    (NULL),
    constraintValue         (-999.99),
-   arg2Name                (wxT("")),
+   arg2Name                (""),
    arg2                    (NULL),
    isInequality            (false),
-   isIneqString            (wxT("EqConstraint")),
+   isIneqString            ("EqConstraint"),
    desiredValue            (0.0),
    op                      (EQUAL),
    tolerance               (0.0),
@@ -196,7 +196,7 @@ GmatBase* NonlinearConstraint::Clone() const
 
 //------------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * Renames referenced objects.
@@ -209,8 +209,8 @@ GmatBase* NonlinearConstraint::Clone() const
  */
 //------------------------------------------------------------------------------
 bool NonlinearConstraint::RenameRefObject(const Gmat::ObjectType type,
-                               const wxString &oldName,
-                               const wxString &newName)
+                               const std::string &oldName,
+                               const std::string &newName)
 {
    if (type == Gmat::SOLVER)
    {
@@ -279,7 +279,7 @@ const StringArray& NonlinearConstraint::GetRefObjectNameArray(const Gmat::Object
 // Parameter accessors
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -289,7 +289,7 @@ const StringArray& NonlinearConstraint::GetRefObjectNameArray(const Gmat::Object
  * @return parameter text for the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString NonlinearConstraint::GetParameterText(const Integer id) const
+std::string NonlinearConstraint::GetParameterText(const Integer id) const
 {
    if (id >= GmatCommandParamCount && id < NonlinearConstraintParamCount)
       return PARAMETER_TEXT[id - GmatCommandParamCount];
@@ -298,7 +298,7 @@ wxString NonlinearConstraint::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -308,7 +308,7 @@ wxString NonlinearConstraint::GetParameterText(const Integer id) const
  * @return ID for the requested parameter.
  */
 //------------------------------------------------------------------------------
-Integer NonlinearConstraint::GetParameterID(const wxString &str) const
+Integer NonlinearConstraint::GetParameterID(const std::string &str) const
 {
    for (Integer i = GmatCommandParamCount; i < NonlinearConstraintParamCount; i++)
    {
@@ -341,7 +341,7 @@ Gmat::ParameterType NonlinearConstraint::GetParameterType(const Integer id) cons
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -351,7 +351,7 @@ Gmat::ParameterType NonlinearConstraint::GetParameterType(const Integer id) cons
  * @return parameter type string of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString NonlinearConstraint::GetParameterTypeString(const Integer id) const
+std::string NonlinearConstraint::GetParameterTypeString(const Integer id) const
 {
    return GmatCommand::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -410,7 +410,7 @@ Real NonlinearConstraint::SetRealParameter(const Integer id, const Real value)
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id) const
+//  std::string  GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -421,7 +421,7 @@ Real NonlinearConstraint::SetRealParameter(const Integer id, const Real value)
  * @return  string value of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString NonlinearConstraint::GetStringParameter(const Integer id) const
+std::string NonlinearConstraint::GetStringParameter(const Integer id) const
 {
    if (id == OPTIMIZER_NAME)
       return optimizerName;
@@ -442,7 +442,7 @@ wxString NonlinearConstraint::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString  SetStringParameter(const Integer id, const wxString value)
+//  std::string  SetStringParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the string parameter value, given the input
@@ -455,11 +455,11 @@ wxString NonlinearConstraint::GetStringParameter(const Integer id) const
  */
 //------------------------------------------------------------------------------
 bool NonlinearConstraint::SetStringParameter(const Integer id, 
-                                             const wxString &value)
+                                             const std::string &value)
 {
    #ifdef DEBUG_NONLINEAR_CONSTRAINT_PARAM
    MessageInterface::ShowMessage
-      (wxT("NonlinearConstraint::SetStringParameter() id=%d, value=%s\n"), 
+      ("NonlinearConstraint::SetStringParameter() id=%d, value=%s\n", 
          id, value.c_str());
    #endif
    
@@ -492,14 +492,14 @@ bool NonlinearConstraint::SetStringParameter(const Integer id,
    
    if (id == OPERATOR)
    {
-      if (value == wxT("<="))      op = LESS_THAN_OR_EQUAL;
-      else if (value == wxT(">=")) op = GREATER_THAN_OR_EQUAL;
-      else if (value == wxT("="))  op = EQUAL;
+      if (value == "<=")      op = LESS_THAN_OR_EQUAL;
+      else if (value == ">=") op = GREATER_THAN_OR_EQUAL;
+      else if (value == "=")  op = EQUAL;
       else
       {
-         wxString errmsg = wxT("The conditional operator \"") + value;
-         errmsg            += wxT("\" is not allowed in a NonlinearConstraint command.\n");
-         errmsg            += wxT("The allowed values are [=, <=, >=]\n");
+         std::string errmsg = "The conditional operator \"" + value;
+         errmsg            += "\" is not allowed in a NonlinearConstraint command.\n";
+         errmsg            += "The allowed values are [=, <=, >=]\n";
          throw CommandException(errmsg);
       }
       //interpreted   = false;
@@ -511,7 +511,7 @@ bool NonlinearConstraint::SetStringParameter(const Integer id,
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                                   const wxString &name = "")
+//                                   const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Sets referenced objects.
@@ -524,7 +524,7 @@ bool NonlinearConstraint::SetStringParameter(const Integer id,
  */
 //------------------------------------------------------------------------------
 bool NonlinearConstraint::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                            const wxString &name)
+                            const std::string &name)
 {   
    if (type == Gmat::SOLVER) 
    {
@@ -568,134 +568,134 @@ bool NonlinearConstraint::InterpretAction()
    StringArray chunks = InterpretPreface();
 
    #ifdef DEBUG_NLC_PARSING
-      MessageInterface::ShowMessage(wxT("Preface chunks as\n"));
+      MessageInterface::ShowMessage("Preface chunks as\n");
       for (StringArray::iterator i = chunks.begin(); i != chunks.end(); ++i)
-         MessageInterface::ShowMessage(wxT("   \"%s\"\n"), i->c_str());
-      MessageInterface::ShowMessage(wxT("\n"));
+         MessageInterface::ShowMessage("   \"%s\"\n", i->c_str());
+      MessageInterface::ShowMessage("\n");
    #endif
    
    // Find and set the solver object name
    // This is the only setting in Vary that is not in a wrapper
-   StringArray currentChunks = parser.Decompose(chunks[1], wxT("()"), false);
+   StringArray currentChunks = parser.Decompose(chunks[1], "()", false);
    if (!GmatStringUtil::HasNoBrackets(currentChunks.at(0), false))
       throw CommandException(
-            wxT("Solver name for NonlinearConstraint command may not contain brackets, braces, or parentheses.")); 
+            "Solver name for NonlinearConstraint command may not contain brackets, braces, or parentheses."); 
    SetStringParameter(OPTIMIZER_NAME, currentChunks[0]);
    if (currentChunks.size() < 2)
-      throw CommandException(wxT("Missing field or value for NonlinearConstraint command."));
+      throw CommandException("Missing field or value for NonlinearConstraint command.");
    if (currentChunks.size() > 2) tooMuch = true;
-   wxString cc = GmatStringUtil::Strip(currentChunks[1]);
+   std::string cc = GmatStringUtil::Strip(currentChunks[1]);
    Integer ccEnd = cc.size() - 1;
-   if ((tooMuch) || (cc.at(0) != wxT('(')) || (cc.at(ccEnd) != wxT(')')))
+   if ((tooMuch) || (cc.at(0) != '(') || (cc.at(ccEnd) != ')'))
       throw CommandException(
-           wxT("Missing parentheses, or unexpected characters found, around logical expression argument to NonlinearConstraint command."));
-   if (!GmatStringUtil::IsBracketBalanced(cc, wxT("()")))
-      throw CommandException(wxT("Parentheses unbalanced in NonlinearConstraint command."));
+           "Missing parentheses, or unexpected characters found, around logical expression argument to NonlinearConstraint command.");
+   if (!GmatStringUtil::IsBracketBalanced(cc, "()"))
+      throw CommandException("Parentheses unbalanced in NonlinearConstraint command.");
    // @todo - if tolerance allowed later, will need to not check for braces here ...
-   if ((cc.find(wxT('[')) != cc.npos) || (cc.find(wxT(']')) != cc.npos) ||
-       (cc.find(wxT('{')) != cc.npos) || (cc.find(wxT('}')) != cc.npos) )
-      throw CommandException(wxT("NonlinearConstraint command may not contain brackets or braces."));
+   if ((cc.find('[') != cc.npos) || (cc.find(']') != cc.npos) ||
+       (cc.find('{') != cc.npos) || (cc.find('}') != cc.npos) )
+      throw CommandException("NonlinearConstraint command may not contain brackets or braces.");
    
-   wxString noSpaces2     = GmatStringUtil::RemoveAll(cc,wxT(' '));
-   //wxString noSpaces2     = GmatStringUtil::RemoveAll(currentChunks[1],' ');
-   currentChunks = parser.SeparateBrackets(noSpaces2, wxT("()"), wxT(","), false);
+   std::string noSpaces2     = GmatStringUtil::RemoveAll(cc,' ');
+   //std::string noSpaces2     = GmatStringUtil::RemoveAll(currentChunks[1],' ');
+   currentChunks = parser.SeparateBrackets(noSpaces2, "()", ",", false);
    
    #ifdef DEBUG_NLC_PARSING
       MessageInterface::ShowMessage(
-         wxT("NLC:  noSpaces2 = %s\n"), noSpaces2.c_str());
+         "NLC:  noSpaces2 = %s\n", noSpaces2.c_str());
       MessageInterface::ShowMessage(
-         wxT("NLC: after SeparateBrackets, current chunks = \n"));
+         "NLC: after SeparateBrackets, current chunks = \n");
       for (Integer jj = 0; jj < (Integer) currentChunks.size(); jj++)
-         MessageInterface::ShowMessage(wxT("   %s\n"),
+         MessageInterface::ShowMessage("   %s\n",
                                        currentChunks[jj].c_str());
    #endif
    bool testForMore = false;
    if ((Integer) currentChunks.size() > 1) testForMore = true;
    Integer end;
-   wxString constraintStr = currentChunks[0];
+   std::string constraintStr = currentChunks[0];
    Integer opSize = 1;
-   if ((end = constraintStr.find(wxT(">="), 0)) != (Integer) constraintStr.npos)
+   if ((end = constraintStr.find(">=", 0)) != (Integer) constraintStr.npos)
    {
       op = GREATER_THAN_OR_EQUAL;
       isInequality = true;
-      isIneqString = wxT("IneqConstraint");
+      isIneqString = "IneqConstraint";
       opSize       = 2;
       #ifdef DEBUG_NONLINEAR_CONSTRAINT_INIT
-         MessageInterface::ShowMessage(wxT("NLC:InterpretAction: greater_than_or_equal\n"));
+         MessageInterface::ShowMessage("NLC:InterpretAction: greater_than_or_equal\n");
       #endif
    }
-   else if ((end = constraintStr.find(wxT("<="), 0)) != (Integer) constraintStr.npos)
+   else if ((end = constraintStr.find("<=", 0)) != (Integer) constraintStr.npos)
    {
       op = LESS_THAN_OR_EQUAL;
       isInequality = true;
-      isIneqString = wxT("IneqConstraint");
+      isIneqString = "IneqConstraint";
       opSize       = 2;
       #ifdef DEBUG_NONLINEAR_CONSTRAINT_INIT
-         MessageInterface::ShowMessage(wxT("NLC:InterpretAction: less_than_or_equal\n"));
+         MessageInterface::ShowMessage("NLC:InterpretAction: less_than_or_equal\n");
       #endif
    }
-   else if ((end = constraintStr.find(wxT("=>"), 0)) != (Integer) constraintStr.npos)
+   else if ((end = constraintStr.find("=>", 0)) != (Integer) constraintStr.npos)
    {
-      wxString errmsg = wxT("The string \"=>\" is an invalid conditonal operator");
-      errmsg            += wxT(" in a NonlinearConstraint command.\n");
-      errmsg            += wxT("The allowed values are [=, <=, >=]\n");
+      std::string errmsg = "The string \"=>\" is an invalid conditonal operator";
+      errmsg            += " in a NonlinearConstraint command.\n";
+      errmsg            += "The allowed values are [=, <=, >=]\n";
       throw CommandException(errmsg);
    }
-   else if ((end = constraintStr.find(wxT("=<"), 0)) != (Integer) constraintStr.npos)
+   else if ((end = constraintStr.find("=<", 0)) != (Integer) constraintStr.npos)
    {
-      wxString errmsg = wxT("The string \"=<\" is an invalid conditonal operator");
-      errmsg            += wxT(" in a NonlinearConstraint command.\n");
-      errmsg            += wxT("The allowed values are [=, <=, >=]\n");
+      std::string errmsg = "The string \"=<\" is an invalid conditonal operator";
+      errmsg            += " in a NonlinearConstraint command.\n";
+      errmsg            += "The allowed values are [=, <=, >=]\n";
       throw CommandException(errmsg);
    }
-   else if ((end = constraintStr.find(wxT("=="), 0)) != (Integer) constraintStr.npos)
+   else if ((end = constraintStr.find("==", 0)) != (Integer) constraintStr.npos)
    {
-      wxString errmsg = wxT("The string \"==\" is an invalid conditonal operator");
-      errmsg            += wxT(" in a NonlinearConstraint command.\n");
-      errmsg            += wxT("The allowed values are [=, <=, >=]\n");
+      std::string errmsg = "The string \"==\" is an invalid conditonal operator";
+      errmsg            += " in a NonlinearConstraint command.\n";
+      errmsg            += "The allowed values are [=, <=, >=]\n";
       throw CommandException(errmsg);
    }
-   else if ((end = constraintStr.find(wxT("="), 0)) != (Integer) constraintStr.npos)
+   else if ((end = constraintStr.find("=", 0)) != (Integer) constraintStr.npos)
    {
       //end = constraintStr.find("=", 0);
       op = EQUAL;
       isInequality = false;
-      isIneqString = wxT("EqConstraint");
+      isIneqString = "EqConstraint";
       #ifdef DEBUG_NONLINEAR_CONSTRAINT_INIT
-         MessageInterface::ShowMessage(wxT("NLC:InterpretAction: equal\n"));
+         MessageInterface::ShowMessage("NLC:InterpretAction: equal\n");
       #endif
    }
    else
    {
-      wxString errmsg = wxT("The conditional operator is missing or invalid ");
-      errmsg            += wxT(" in a NonlinearConstraint command.\n");
-      errmsg            += wxT("The allowed values are [=, <=, >=]\n");
+      std::string errmsg = "The conditional operator is missing or invalid ";
+      errmsg            += " in a NonlinearConstraint command.\n";
+      errmsg            += "The allowed values are [=, <=, >=]\n";
       throw CommandException(errmsg);
    }
    arg1Name = constraintStr.substr(0,end);
    arg2Name = constraintStr.substr(end+opSize, (constraintStr.npos - end + opSize - 1));
    #ifdef DEBUG_NLC_PARSING
-      MessageInterface::ShowMessage(wxT("... arg1Name = %s\n"), arg1Name.c_str());
-      MessageInterface::ShowMessage(wxT("... operator = %s\n"), OP_STRINGS[(Integer)op].c_str());
-      MessageInterface::ShowMessage(wxT("... arg2Name = %s\n"), arg2Name.c_str());
+      MessageInterface::ShowMessage("... arg1Name = %s\n", arg1Name.c_str());
+      MessageInterface::ShowMessage("... operator = %s\n", OP_STRINGS[(Integer)op].c_str());
+      MessageInterface::ShowMessage("... arg2Name = %s\n", arg2Name.c_str());
    #endif
    // Currently, this should not happen ..... 
    if (testForMore)
    {
-      wxString noSpaces     = GmatStringUtil::RemoveAll(currentChunks[1],wxT(' '));
-      currentChunks = parser.SeparateBrackets(noSpaces, wxT("{}"), wxT(","), false);
+      std::string noSpaces     = GmatStringUtil::RemoveAll(currentChunks[1],' ');
+      currentChunks = parser.SeparateBrackets(noSpaces, "{}", ",", false);
       
       #ifdef DEBUG_NLC_PARSING
          MessageInterface::ShowMessage(
-            wxT("NLC: After SeparateBrackets, current chunks = \n"));
+            "NLC: After SeparateBrackets, current chunks = \n");
          for (Integer jj = 0; jj < (Integer) currentChunks.size(); jj++)
-            MessageInterface::ShowMessage(wxT("   %s\n"),
+            MessageInterface::ShowMessage("   %s\n",
                                           currentChunks[jj].c_str());
       #endif
       
       // currentChunks now holds all of the pieces - no need for more separation  
       
-      wxString lhs, rhs;
+      std::string lhs, rhs;
       for (StringArray::iterator i = currentChunks.begin(); 
            i != currentChunks.end(); ++i)
       {
@@ -705,9 +705,9 @@ bool NonlinearConstraint::InterpretAction()
             SetStringParameter(GetParameterID(lhs), rhs);
          else
          {
-            throw CommandException(wxT("The setting \"") + lhs + 
-               wxT("\" is not a valid setting for a ") + typeName + 
-               wxT(" command.\n"));
+            throw CommandException("The setting \"" + lhs + 
+               "\" is not a valid setting for a " + typeName + 
+               " command.\n");
          }
       }
    }
@@ -736,10 +736,10 @@ const StringArray& NonlinearConstraint::GetWrapperObjectNameArray()
 
 
 //------------------------------------------------------------------------------
-// bool SetElementWrapper(ElementWrapper *toWrapper, const wxString &withName)
+// bool SetElementWrapper(ElementWrapper *toWrapper, const std::string &withName)
 //------------------------------------------------------------------------------
 bool NonlinearConstraint::SetElementWrapper(ElementWrapper *toWrapper,
-                                            const wxString &withName)
+                                            const std::string &withName)
 {
    bool retval = false;
 
@@ -747,9 +747,9 @@ bool NonlinearConstraint::SetElementWrapper(ElementWrapper *toWrapper,
    
    if (toWrapper->GetWrapperType() == Gmat::ARRAY_WT)
    {
-      throw CommandException(wxT("A value of type \"Array\" on command \"") + typeName + 
-                  wxT("\" is not currently an allowed value.\nThe allowed values are:")
-                  wxT(" [ Real Number, Variable, Array Element, or Parameter ]. ")); 
+      throw CommandException("A value of type \"Array\" on command \"" + typeName + 
+                  "\" is not currently an allowed value.\nThe allowed values are:"
+                  " [ Real Number, Variable, Array Element, or Parameter ]. "); 
    }
    //if (toWrapper->GetWrapperType() == Gmat::STRING_OBJECT_WT)
    //{
@@ -757,10 +757,10 @@ bool NonlinearConstraint::SetElementWrapper(ElementWrapper *toWrapper,
    //               "\" is not an allowed value.\nThe allowed values are:"
    //               " [ Real Number, Variable, Array Element, or Parameter ]. "); 
    //}
-   CheckDataType(toWrapper,Gmat::REAL_TYPE, wxT("NonlinearConstraint"), true);
+   CheckDataType(toWrapper,Gmat::REAL_TYPE, "NonlinearConstraint", true);
    
    #ifdef DEBUG_NLC_WRAPPER_CODE   
-   MessageInterface::ShowMessage(wxT("   Setting wrapper \"%s\" on NLC command\n"), 
+   MessageInterface::ShowMessage("   Setting wrapper \"%s\" on NLC command\n", 
       withName.c_str());
    #endif
 
@@ -822,8 +822,8 @@ bool NonlinearConstraint::Initialize()
 {
    #if DEBUG_NONLINEAR_CONSTRAINT_INIT
    MessageInterface::ShowMessage
-      (wxT("NonlinearConstraint::Initialize() entered. interpreted=%d, optimizer=%p, ")
-       wxT("arg1=%p, arg2=%p\n"), interpreted, optimizer, arg1, arg2);
+      ("NonlinearConstraint::Initialize() entered. interpreted=%d, optimizer=%p, "
+       "arg1=%p, arg2=%p\n", interpreted, optimizer, arg1, arg2);
    #endif
 
    // Commented out since this caused crash when this command created
@@ -837,28 +837,28 @@ bool NonlinearConstraint::Initialize()
 
    if (optimizer == NULL)
       throw CommandException(
-         wxT("Optimizer not initialized for NonlinearConstraint command\n  \"")
-         + generatingString + wxT("\"\n"));
+         "Optimizer not initialized for NonlinearConstraint command\n  \""
+         + generatingString + "\"\n");
    
    // Set references for the wrappers   
    #ifdef DEBUG_NONLINEAR_CONSTRAINT_PARAM
-      MessageInterface::ShowMessage(wxT("Setting refs for arg1\n"));
+      MessageInterface::ShowMessage("Setting refs for arg1\n");
    #endif
    if (SetWrapperReferences(*arg1) == false)
       return false;
-   CheckDataType(arg1, Gmat::REAL_TYPE, wxT("NonlinearConstraint"));
+   CheckDataType(arg1, Gmat::REAL_TYPE, "NonlinearConstraint");
    #ifdef DEBUG_NONLINEAR_CONSTRAINT_PARAM
-      MessageInterface::ShowMessage(wxT("Setting refs for arg2\n"));
+      MessageInterface::ShowMessage("Setting refs for arg2\n");
    #endif
    if (SetWrapperReferences(*arg2) == false)
       return false;
-   CheckDataType(arg2, Gmat::REAL_TYPE, wxT("NonlinearConstraint"));
+   CheckDataType(arg2, Gmat::REAL_TYPE, "NonlinearConstraint");
    // The optimizer cannot be finalized until all of the loop is initialized
    optimizerDataFinalized = false;
 
    #if DEBUG_NONLINEAR_CONSTRAINT_INIT
    MessageInterface::ShowMessage
-      (wxT("NonlinearConstraint::Initialize() exiting. optimizer=%p, arg1=%p, arg2 = %p\n"), 
+      ("NonlinearConstraint::Initialize() exiting. optimizer=%p, arg1=%p, arg2 = %p\n", 
       optimizer, arg1, arg2);
    #endif
    
@@ -884,12 +884,12 @@ bool NonlinearConstraint::Execute()
 {
    #ifdef DEBUG_NONLINEAR_CONSTRAINT_EXEC
    MessageInterface::ShowMessage
-      (wxT("NonlinearConstraint::Execute() optimizerDataFinalized=%d\n, optimizer=%s, ")
-       wxT("arg1=%p, arg2=%p\n"), optimizerDataFinalized, optimizer, arg1, arg2);
+      ("NonlinearConstraint::Execute() optimizerDataFinalized=%d\n, optimizer=%s, "
+       "arg1=%p, arg2=%p\n", optimizerDataFinalized, optimizer, arg1, arg2);
    MessageInterface::ShowMessage
-      (wxT("   arg1Name=%s\n"), arg1Name.c_str());
+      ("   arg1Name=%s\n", arg1Name.c_str());
    MessageInterface::ShowMessage
-      (wxT("   arg2Name=%s\n"), arg2Name.c_str());
+      ("   arg2Name=%s\n", arg2Name.c_str());
    #endif
    
    bool retval = true;
@@ -917,9 +917,9 @@ bool NonlinearConstraint::Execute()
       desiredValue    = arg2->EvaluateReal();
       constraintValue = arg1->EvaluateReal();
       #ifdef DEBUG_NLC_VALUES
-         MessageInterface::ShowMessage(wxT("NLC:Execute - desiredValue = %.12f\n"),
+         MessageInterface::ShowMessage("NLC:Execute - desiredValue = %.12f\n",
             desiredValue);
-         MessageInterface::ShowMessage(wxT("NLC:Execute - (1) constraintValue = %.12f\n"),
+         MessageInterface::ShowMessage("NLC:Execute - (1) constraintValue = %.12f\n",
             constraintValue);
       #endif
       switch (op)
@@ -935,14 +935,14 @@ bool NonlinearConstraint::Execute()
             break;
       }
       #ifdef DEBUG_NLC_VALUES
-         MessageInterface::ShowMessage(wxT("NLC:Execute - (2) constraintValue now = %.12f\n"),
+         MessageInterface::ShowMessage("NLC:Execute - (2) constraintValue now = %.12f\n",
             constraintValue);
       #endif
       optimizer->SetResultValue(constraintId, constraintValue, isIneqString);
       #ifdef DEBUG_NONLINEAR_CONSTRAINT_EXEC
          MessageInterface::ShowMessage
-            (wxT("   constraint=%s, %p\n"), constraint->GetTypeName().c_str(), constraint);
-         MessageInterface::ShowMessage(wxT("   Parameter target: %s constraintValue = %lf\n"),
+            ("   constraint=%s, %p\n", constraint->GetTypeName().c_str(), constraint);
+         MessageInterface::ShowMessage("   Parameter target: %s constraintValue = %lf\n",
             constraint->GetTypeName().c_str(), constraintValue);
       #endif
    }
@@ -953,7 +953,7 @@ bool NonlinearConstraint::Execute()
       //constraintValue = constraintObject->GetRealParameter(parmId);  // again,no clue
       optimizer->SetResultValue(constraintId, constraintValue, isIneqString);
       #ifdef DEBUG_NONLINEAR_CONSTRAINT_EXEC
-         MessageInterface::ShowMessage(wxT("   Object target: constraintValue = %lf\n"), 
+         MessageInterface::ShowMessage("   Object target: constraintValue = %lf\n", 
          constraintValue);
       #endif
    }
@@ -971,15 +971,15 @@ void NonlinearConstraint::RunComplete()
 {
    #ifdef DEBUG_NLC_EXECUTE
       MessageInterface::ShowMessage(
-      wxT("In NLC::RunComplete, optimizerDataFinalized = %s, ... now setting it to false\n"),
-      (solverDataFinalized? wxT("true") : wxT("false")));
+      "In NLC::RunComplete, optimizerDataFinalized = %s, ... now setting it to false\n",
+      (solverDataFinalized? "true" : "false"));
    #endif
    optimizerDataFinalized = false;
    GmatCommand::RunComplete();
 }
 
 //------------------------------------------------------------------------------
-//  const wxString& GetGeneratingString()
+//  const std::string& GetGeneratingString()
 //------------------------------------------------------------------------------
 /**
  * Method used to retrieve the string that was parsed to build this GmatCommand.
@@ -1000,24 +1000,24 @@ void NonlinearConstraint::RunComplete()
  * @return The script line that, when interpreted, defines this NonlinearConstraint command.
  */
 //------------------------------------------------------------------------------
-const wxString& NonlinearConstraint::GetGeneratingString(Gmat::WriteMode mode,
-                                            const wxString &prefix,
-                                            const wxString &useName)
+const std::string& NonlinearConstraint::GetGeneratingString(Gmat::WriteMode mode,
+                                            const std::string &prefix,
+                                            const std::string &useName)
 {
    // Build the local string
-   //wxStringstream tol;  // may need tolerance in the future
+   //std::stringstream tol;  // may need tolerance in the future
    //tol << tolerance;
-   wxString opString = OP_STRINGS[(Integer)op];
+   std::string opString = OP_STRINGS[(Integer)op];
    //if (op == EQUAL)                   opString = "=";
    //else if (op == LESS_THAN_OR_EQUAL) opString = "<=";
    //else                               opString = ">=";
-   //wxString gen = prefix + "NonlinearConstraint " + optimizerName + "(" + 
+   //std::string gen = prefix + "NonlinearConstraint " + optimizerName + "(" + 
    //                  constraintName +  opString + nlcParmName + 
    //                  ", {Tolerance = " + tol.str() + "}";
-   wxString gen = prefix + wxT("NonlinearConstraint ") + optimizerName + wxT("(") + 
+   std::string gen = prefix + "NonlinearConstraint " + optimizerName + "(" + 
                      arg1Name +  opString + arg2Name; 
  
-   generatingString = gen + wxT(");");
+   generatingString = gen + ");";
    // Then call the base class method
    return GmatCommand::GetGeneratingString(mode, prefix, useName);
 }

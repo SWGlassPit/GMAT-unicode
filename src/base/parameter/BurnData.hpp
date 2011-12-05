@@ -44,7 +44,7 @@ public:
    
    // The inherited methods from RefData
    virtual bool ValidateRefObjects(GmatBase *param);
-   virtual const wxString* GetValidObjectList() const;
+   virtual const std::string* GetValidObjectList() const;
    
    const static Real BURN_REAL_UNDEFINED;
    const static Real BURN_TOL;
@@ -80,7 +80,7 @@ protected:
       BurnDataObjectCount
    };
    
-   static const wxString VALID_OBJECT_TYPE_LIST[BurnDataObjectCount];
+   static const std::string VALID_OBJECT_TYPE_LIST[BurnDataObjectCount];
 };
 #endif // BurnData_hpp
 

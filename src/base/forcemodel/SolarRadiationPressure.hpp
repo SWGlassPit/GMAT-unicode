@@ -70,7 +70,7 @@
 class GMAT_API SolarRadiationPressure : public PhysicalModel
 {
 public:
-   SolarRadiationPressure(const wxString &name = wxT("")); //loj: 5/28/04 added default
+   SolarRadiationPressure(const std::string &name = ""); //loj: 5/28/04 added default
    virtual ~SolarRadiationPressure();
    SolarRadiationPressure(const SolarRadiationPressure &srp);
    SolarRadiationPressure& operator=(const SolarRadiationPressure &srp);
@@ -84,10 +84,10 @@ public:
    virtual GmatBase* Clone() const;
 
    // Parameter access methods - overridden from GmatBase
-   virtual wxString         GetParameterText(const Integer id) const;
-   virtual Integer             GetParameterID(const wxString &str) const;
+   virtual std::string         GetParameterText(const Integer id) const;
+   virtual Integer             GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType GetParameterType(const Integer id) const;
-   virtual wxString         GetParameterTypeString(const Integer id) const;
+   virtual std::string         GetParameterTypeString(const Integer id) const;
    virtual bool                IsParameterReadOnly(const Integer id) const;
 
    virtual Real                GetRealParameter(const Integer id) const;
@@ -98,13 +98,13 @@ public:
    virtual Integer             SetIntegerParameter(const Integer id, const Integer value);
    
    virtual void SetSatelliteParameter(const Integer i, 
-                                      const wxString parmName, 
+                                      const std::string parmName, 
                                       const Real parm,
                                       const Integer parmID = -1);
    virtual void SetSatelliteParameter(const Integer i,
                                       Integer parmID,
                                       const Real parm);
-   virtual void ClearSatelliteParameters(const wxString parmName = wxT(""));
+   virtual void ClearSatelliteParameters(const std::string parmName = "");
    
    // Methods used by the ODEModel to set the state indexes, etc
    virtual bool SupportsDerivative(Gmat::StateElementId id);
@@ -230,7 +230,7 @@ private:
       SRPParamCount  // Count of the parameters for this class
    };
    
-   static const wxString PARAMETER_TEXT[SRPParamCount - PhysicalModelParamCount];
+   static const std::string PARAMETER_TEXT[SRPParamCount - PhysicalModelParamCount];
    static const Gmat::ParameterType PARAMETER_TYPE[SRPParamCount - PhysicalModelParamCount];
 
 };

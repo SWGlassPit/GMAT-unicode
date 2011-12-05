@@ -34,8 +34,8 @@ public:
    
     // exception(s)
     class TimeRangeError : public BaseException
-          { public:  TimeRangeError(const wxString& message =
-           wxT("Date error: date or time out of specified range"))
+          { public:  TimeRangeError(const std::string& message =
+           "Date error: date or time out of specified range")
            : BaseException(message) {}; };
    
     Integer GetYear() const;
@@ -52,7 +52,7 @@ public:
     GmatTimeConstants::MonthName GetMonthName() const;
 
     Real ToPackedCalendarReal() const;
-    wxString& ToPackedCalendarString();  // wxT("YYYYMMDD.hhmmssnnn")
+    std::string& ToPackedCalendarString();  // "YYYYMMDD.hhmmssnnn"
     
     void ToYearDOYHourMinSec(Integer& year, Integer& dayOfYear, Integer& hour, 
                              Integer& minute, Real& second) const;
@@ -63,8 +63,8 @@ public:
     bool IsValid() const;
 
     Integer GetNumData() const;
-    const wxString* GetDataDescriptions() const;
-    wxString* ToValueStrings();
+    const std::string* GetDataDescriptions() const;
+    std::string* ToValueStrings();
 
 protected:
    
@@ -75,7 +75,7 @@ protected:
              Real second);
     Date(Integer year, Integer month, Integer day, Real secondsOfDay);
     Date(const GmatTimeUtil::CalDate &date);
-    Date(const wxString &time); // wxT("YYYYMMDD.hhmmssnnn")
+    Date(const std::string &time); // "YYYYMMDD.hhmmssnnn"
     Date(const Date &date);
     ~Date();
 
@@ -87,11 +87,11 @@ protected:
     Integer  dayD;
     Real     secondsOfDayD;
 
-    wxString mPackedString;
+    std::string mPackedString;
     
     static const Integer NUM_DATA = 6;
-    static const wxString DATA_DESCRIPTIONS[NUM_DATA];
-    wxString stringValues[NUM_DATA];
+    static const std::string DATA_DESCRIPTIONS[NUM_DATA];
+    std::string stringValues[NUM_DATA];
 
 private:
 };

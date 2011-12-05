@@ -32,7 +32,7 @@
 class GMAT_API ImpulsiveBurn : public Burn
 {
 public:
-   ImpulsiveBurn(const wxString &nomme = wxT(""));
+   ImpulsiveBurn(const std::string &nomme = "");
    virtual ~ImpulsiveBurn();
    ImpulsiveBurn(const ImpulsiveBurn &copy);
    ImpulsiveBurn&       operator=(const ImpulsiveBurn &orig);
@@ -45,13 +45,13 @@ public:
    virtual bool         Initialize();
    virtual GmatBase*    Clone() const;
    virtual void         Copy(const GmatBase* orig);
-   virtual bool         TakeAction(const wxString &action,  
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,  
+                                   const std::string &actionData = "");
    
    // for parameters
    virtual bool         IsParameterReadOnly(const Integer id) const;
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
    
@@ -61,11 +61,11 @@ public:
    virtual Real         GetRealParameter(const Integer id) const;
    virtual Real         SetRealParameter(const Integer id,
                                          const Real value);
-   virtual wxString  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
+                                           const std::string &value);
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
    virtual const StringArray&
                         GetStringArrayParameter(const Integer id) const;
@@ -77,10 +77,10 @@ public:
    virtual const StringArray&
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
 protected:
    void                 TransformDeltaVToJ2kFrame(Real *deltaV, Real epoch);
@@ -118,7 +118,7 @@ protected:
    };
    
    /// Parameter labels
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[ImpulsiveBurnParamCount - BurnParamCount];
    /// Parameter types
    static const Gmat::ParameterType 

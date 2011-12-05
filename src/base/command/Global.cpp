@@ -29,7 +29,7 @@
 //---------------------------------
 // static data
 //---------------------------------
-//const wxString
+//const std::string
 //Global::PARAMETER_TEXT[GlobalParamCount - ManageObjectParamCount] =
 //{
 //};
@@ -47,7 +47,7 @@
  */
 //------------------------------------------------------------------------------
 Global::Global() :
-   ManageObject(wxT("Global"))
+   ManageObject("Global")
 {
 }
 
@@ -129,7 +129,7 @@ GmatBase* Global::Clone() const
 bool Global::Initialize()
 {
    #ifdef DEBUG_GLOBAL
-      MessageInterface::ShowMessage(wxT("Global::Initialize() entered\n"));
+      MessageInterface::ShowMessage("Global::Initialize() entered\n");
    #endif
       
    ManageObject::Initialize();
@@ -151,10 +151,10 @@ bool Global::Initialize()
 bool Global::Execute()
 {
    #ifdef DEBUG_GLOBAL
-      MessageInterface::ShowMessage(wxT("Global::Execute() entered\n"));
+      MessageInterface::ShowMessage("Global::Execute() entered\n");
    #endif
    GmatBase    *mapObj;
-   wxString ex;
+   std::string ex;
    Integer     sz = objectNames.size();
    for (Integer ii=0; ii<sz; ii++)
    {
@@ -172,8 +172,8 @@ bool Global::Execute()
       }
       else
       {
-         ex = wxT("Global::Execute - object of name \"") + objectNames.at(ii);
-         ex += wxT("\" not found.\n");
+         ex = "Global::Execute - object of name \"" + objectNames.at(ii);
+         ex += "\" not found.\n";
          throw CommandException(ex);
       }
    }

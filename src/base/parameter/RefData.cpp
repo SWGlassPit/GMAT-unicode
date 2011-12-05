@@ -37,13 +37,13 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// RefData(const wxString &name = wxT(""))
+// RefData(const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Constructor.
  */
 //------------------------------------------------------------------------------
-RefData::RefData(const wxString &name)
+RefData::RefData(const std::string &name)
 {
    mName = name;
    mRefObjList.clear();
@@ -101,7 +101,7 @@ RefData& RefData::operator= (const RefData& right)
 //------------------------------------------------------------------------------
 RefData::~RefData()
 {
-   //MessageInterface::ShowMessage(wxT("==> RefData::~RefData()\n"));
+   //MessageInterface::ShowMessage("==> RefData::~RefData()\n");
    mRefObjList.clear();
 }
 
@@ -135,15 +135,15 @@ GmatBase* RefData::GetSpacecraft()
 
 
 //------------------------------------------------------------------------------
-// wxString GetRefObjectName(const Gmat::ObjectType type) const
+// std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
-wxString RefData::GetRefObjectName(const Gmat::ObjectType type) const
+std::string RefData::GetRefObjectName(const Gmat::ObjectType type) const
 {
    for (int i=0; i<mNumRefObjects; i++)
    {
       #if DEBUG_REFDATA_OBJECT > 1
       MessageInterface::ShowMessage
-         (wxT("RefData::GetRefObjectName() mRefObjList[i].objType=%d\n"),
+         ("RefData::GetRefObjectName() mRefObjList[i].objType=%d\n",
           mRefObjList[i].objType);
       #endif
       
@@ -152,7 +152,7 @@ wxString RefData::GetRefObjectName(const Gmat::ObjectType type) const
          //Notes: will return first object name.
          #if DEBUG_REFDATA_OBJECT > 1
          MessageInterface::ShowMessage
-            (wxT("RefData::GetRefObjectName() type=%d returning: %s\n"), type,
+            ("RefData::GetRefObjectName() type=%d returning: %s\n", type,
              mRefObjList[i].objName.c_str());
          #endif
          
@@ -162,12 +162,12 @@ wxString RefData::GetRefObjectName(const Gmat::ObjectType type) const
    
    #if DEBUG_REFDATA_OBJECT
    MessageInterface::ShowMessage
-      (wxT("RefData::GetRefObjectName() '%s', type=%d, throwing exception ")
-       wxT("INVALID_OBJECT_TYPE\n"), mName.c_str(), type);
+      ("RefData::GetRefObjectName() '%s', type=%d, throwing exception "
+       "INVALID_OBJECT_TYPE\n", mName.c_str(), type);
    #endif
    
-   //return wxT("RefData::GetRefObjectName(): INVALID_OBJECT_TYPE");
-   throw ParameterException(wxT("RefData::GetRefObjectName(): INVALID_OBJECT_TYPE"));
+   //return "RefData::GetRefObjectName(): INVALID_OBJECT_TYPE";
+   throw ParameterException("RefData::GetRefObjectName(): INVALID_OBJECT_TYPE");
 }
 
 
@@ -188,12 +188,12 @@ const StringArray& RefData::GetRefObjectNameArray(const Gmat::ObjectType type)
 
    #if DEBUG_REFDATA_OBJECT_GET
    MessageInterface::ShowMessage
-      (wxT("RefData::GetRefObjectNameArray() '%s', type=%d\n   there are %d ref ")
-       wxT("objects\n"), mName.c_str(), type, mNumRefObjects);
+      ("RefData::GetRefObjectNameArray() '%s', type=%d\n   there are %d ref "
+       "objects\n", mName.c_str(), type, mNumRefObjects);
    for (int i=0; i<mNumRefObjects; i++)
    {
       MessageInterface::ShowMessage
-         (wxT("   objType=%d, name='%s'\n"), mRefObjList[i].objType,
+         ("   objType=%d, name='%s'\n", mRefObjList[i].objType,
           mRefObjList[i].objName.c_str());
    }
    #endif
@@ -219,7 +219,7 @@ const StringArray& RefData::GetRefObjectNameArray(const Gmat::ObjectType type)
 
 
 //------------------------------------------------------------------------------
-// bool SetRefObjectName(Gmat::ObjectType type, const wxString &name)
+// bool SetRefObjectName(Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Adds type and name to reference object list.
@@ -231,15 +231,15 @@ const StringArray& RefData::GetRefObjectNameArray(const Gmat::ObjectType type)
  *
  */
 //------------------------------------------------------------------------------
-bool RefData::SetRefObjectName(Gmat::ObjectType type, const wxString &name)
+bool RefData::SetRefObjectName(Gmat::ObjectType type, const std::string &name)
 {
    #if DEBUG_REFDATA_OBJECT
    MessageInterface::ShowMessage
-      (wxT("RefData::SetRefObjectName() '%s' entered, type=%d(%s), name=%s\n"),
+      ("RefData::SetRefObjectName() '%s' entered, type=%d(%s), name=%s\n",
        mName.c_str(), type,  GmatBase::OBJECT_TYPE_STRING[type - Gmat::SPACECRAFT].c_str(), name.c_str());
    #endif
    
-   if (FindFirstObjectName(type) != wxT(""))
+   if (FindFirstObjectName(type) != "")
    {
       for (int i=0; i<mNumRefObjects; i++)
       {
@@ -258,16 +258,16 @@ bool RefData::SetRefObjectName(Gmat::ObjectType type, const wxString &name)
 
 //------------------------------------------------------------------------------
 // GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                        const wxString &name = wxT(""));
+//                        const std::string &name = "");
 //------------------------------------------------------------------------------
 GmatBase* RefData::GetRefObject(const Gmat::ObjectType type,
-                                const wxString &name)
+                                const std::string &name)
 {
    for (int i=0; i<mNumRefObjects; i++)
    {
       if (mRefObjList[i].objType == type)
       {
-         if (name == wxT("")) //if name is wxT(""), return first object
+         if (name == "") //if name is "", return first object
             return mRefObjList[i].obj;
          
          if (mRefObjList[i].objName == name)
@@ -283,7 +283,7 @@ GmatBase* RefData::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                   const wxString &name = wxT(""))
+//                   const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Sets object which is used in evaluation.
@@ -292,13 +292,13 @@ GmatBase* RefData::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool RefData::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                           const wxString &name)
+                           const std::string &name)
 {
    bool status = false;
    #if DEBUG_REFDATA_OBJECT_SET
    MessageInterface::ShowMessage
-      (wxT("RefData::SetRefObject() <%p>'%s' entered\n   numRefObjects=%d, type=%d, ")
-       wxT("obj=<%p>'%s'\n"), this, mName.c_str(), mNumRefObjects, type, obj, name.c_str());
+      ("RefData::SetRefObject() <%p>'%s' entered\n   numRefObjects=%d, type=%d, "
+       "obj=<%p>'%s'\n", this, mName.c_str(), mNumRefObjects, type, obj, name.c_str());
    #endif
    
    // Since Sandbox calls SetRefObject() with obj->GetType(), I need to
@@ -317,7 +317,7 @@ bool RefData::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
             mRefObjList[i].obj = obj;
             #if DEBUG_REFDATA_OBJECT_SET > 1
             MessageInterface::ShowMessage
-               (wxT("   The object pointer <%p> set to '%s'\n"), obj, name.c_str());
+               ("   The object pointer <%p> set to '%s'\n", obj, name.c_str());
             #endif
             status = true;
             break;
@@ -329,7 +329,7 @@ bool RefData::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
    for (int i=0; i<mNumRefObjects; i++)
    {
       MessageInterface::ShowMessage
-         (wxT("   type=%d, obj=<%p>, name='%s'\n"), mRefObjList[i].objType,
+         ("   type=%d, obj=<%p>, name='%s'\n", mRefObjList[i].objType,
           mRefObjList[i].obj, mRefObjList[i].objName.c_str());
    }   
    #endif
@@ -338,14 +338,14 @@ bool RefData::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
    {
       #if DEBUG_REFDATA_OBJECT_SET
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** RefData::SetRefObject() Cannot find '%s' of type '%s'\n"),
+         ("*** WARNING *** RefData::SetRefObject() Cannot find '%s' of type '%s'\n",
           name.c_str(), GmatBase::GetObjectTypeString(actualType).c_str());
       #endif
    }
    
    #if DEBUG_REFDATA_OBJECT_SET
    MessageInterface::ShowMessage
-      (wxT("RefData::SetRefObject() <%p>'%s' returning %d\n"), this, mName.c_str(), status);
+      ("RefData::SetRefObject() <%p>'%s' returning %d\n", this, mName.c_str(), status);
    #endif
    
    return status;
@@ -354,7 +354,7 @@ bool RefData::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /*
  * This method renames Parameter object used in the Parameter, such as Sat in
@@ -363,14 +363,14 @@ bool RefData::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  */
 //---------------------------------------------------------------------------
 bool RefData::RenameRefObject(const Gmat::ObjectType type,
-                              const wxString &oldName,
-                              const wxString &newName)
+                              const std::string &oldName,
+                              const std::string &newName)
 {
    #if DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("RefData::RenameRefObject() '%s' entered, type=%d, oldName='%s', ")
-       wxT("newName='%s'\n"), mName.c_str(), type, oldName.c_str(), newName.c_str());
-   MessageInterface::ShowMessage(wxT("   mNumRefObjects=%d\n"), mNumRefObjects);
+      ("RefData::RenameRefObject() '%s' entered, type=%d, oldName='%s', "
+       "newName='%s'\n", mName.c_str(), type, oldName.c_str(), newName.c_str());
+   MessageInterface::ShowMessage("   mNumRefObjects=%d\n", mNumRefObjects);
    #endif
    
    // Check for allowed object types for rename
@@ -381,18 +381,18 @@ bool RefData::RenameRefObject(const Gmat::ObjectType type,
    {
       #if DEBUG_RENAME
       MessageInterface::ShowMessage
-         (wxT("RefData::RenameRefObject() '%s' returning true, there are no allowed types\n"),
+         ("RefData::RenameRefObject() '%s' returning true, there are no allowed types\n",
           mName.c_str());
       #endif
       return true;
    }
    
    // Change instance name
-   wxString ownerStr, typeStr, depStr;
+   std::string ownerStr, typeStr, depStr;
    GmatStringUtil::ParseParameter(mName, typeStr, ownerStr, depStr);
    #if DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("   mName='%s', owner='%s', dep='%s', type='%s'\n"),
+      ("   mName='%s', owner='%s', dep='%s', type='%s'\n",
        mName.c_str(), ownerStr.c_str(), depStr.c_str(), typeStr.c_str());
    #endif
    // Check for depStr for hardware parameter such as Sat.Thruster1.DutyCycle
@@ -401,7 +401,7 @@ bool RefData::RenameRefObject(const Gmat::ObjectType type,
       mName = GmatStringUtil::ReplaceName(mName, oldName, newName);
       #if DEBUG_RENAME
       MessageInterface::ShowMessage
-         (wxT("   instance name changed to '%s'\n"), mName.c_str());
+         ("   instance name changed to '%s'\n", mName.c_str());
       #endif
    }
    
@@ -416,7 +416,7 @@ bool RefData::RenameRefObject(const Gmat::ObjectType type,
             numRenamed++;
             #if DEBUG_RENAME
             MessageInterface::ShowMessage
-               (wxT("   '%s' renamed to '%s'\n"), oldName.c_str(),
+               ("   '%s' renamed to '%s'\n", oldName.c_str(),
                 mRefObjList[i].objName.c_str());
             #endif
          }
@@ -425,7 +425,7 @@ bool RefData::RenameRefObject(const Gmat::ObjectType type,
    
    #if DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("RefData::RenameRefObject() '%s' returning true, %d ref objects renamed!\n"),
+      ("RefData::RenameRefObject() '%s' returning true, %d ref objects renamed!\n",
        mName.c_str(), numRenamed);
    #endif
    return true;
@@ -433,9 +433,9 @@ bool RefData::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// virtual const wxString* GetValidObjectList() const
+// virtual const std::string* GetValidObjectList() const
 //------------------------------------------------------------------------------
-const wxString* RefData::GetValidObjectList() const
+const std::string* RefData::GetValidObjectList() const
 {
    return NULL;
 }
@@ -446,7 +446,7 @@ const wxString* RefData::GetValidObjectList() const
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// bool AddRefObject(const Gmat::ObjectType type, const wxString &name,
+// bool AddRefObject(const Gmat::ObjectType type, const std::string &name,
 //                   GmatBase *obj = NULL, bool replaceName = false)
 //------------------------------------------------------------------------------
 /**
@@ -455,13 +455,13 @@ const wxString* RefData::GetValidObjectList() const
  * @return true if the object has been added.
  */
 //------------------------------------------------------------------------------
-bool RefData::AddRefObject(const Gmat::ObjectType type, const wxString &name,
+bool RefData::AddRefObject(const Gmat::ObjectType type, const std::string &name,
                            GmatBase *obj, bool replaceName)
 {
    #if DEBUG_REFDATA_ADD
    MessageInterface::ShowMessage
-      (wxT("==> RefData::AddRefObject() '%s' entered, mNumRefObjects=%d, type=%d, ")
-       wxT("name=%s, obj=%p, replaceName=%d\n"), mName.c_str(), mNumRefObjects, type,
+      ("==> RefData::AddRefObject() '%s' entered, mNumRefObjects=%d, type=%d, "
+       "name=%s, obj=%p, replaceName=%d\n", mName.c_str(), mNumRefObjects, type,
        name.c_str(), obj, replaceName);
    #endif
    
@@ -471,7 +471,7 @@ bool RefData::AddRefObject(const Gmat::ObjectType type, const wxString &name,
 
    if (IsValidObjectType(actualType))
    {
-      if (FindFirstObjectName(actualType) == wxT(""))
+      if (FindFirstObjectName(actualType) == "")
       {
          RefObjType newObj(actualType, name, obj);
          mRefObjList.push_back(newObj);
@@ -491,8 +491,8 @@ bool RefData::AddRefObject(const Gmat::ObjectType type, const wxString &name,
    
    #if DEBUG_REFDATA_ADD
    MessageInterface::ShowMessage
-      (wxT("RefData::AddRefObject() '%s' does NOT have a valid object type so returning ")
-       wxT("false\n"), name.c_str());
+      ("RefData::AddRefObject() '%s' does NOT have a valid object type so returning "
+       "false\n", name.c_str());
    #endif
    
    return false;
@@ -501,7 +501,7 @@ bool RefData::AddRefObject(const Gmat::ObjectType type, const wxString &name,
 
 //------------------------------------------------------------------------------
 // bool SetRefObjectWithNewName(GmatBase *obj, const Gmat::ObjectType type,
-//                              const wxString &name = wxT(""))
+//                              const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Sets object pointer with new name which is used in evaluation.
@@ -510,19 +510,19 @@ bool RefData::AddRefObject(const Gmat::ObjectType type, const wxString &name,
  */
 //------------------------------------------------------------------------------
 bool RefData::SetRefObjectWithNewName(GmatBase *obj, const Gmat::ObjectType type,
-                                      const wxString &name)
+                                      const std::string &name)
 {
    #if DEBUG_REFDATA_OBJECT
    MessageInterface::ShowMessage
-      (wxT("RefData::SetRefObjectWithNewName() numRefObjects=%d, type=%d, name=%s ")
-       wxT("obj addr=%p\n"), mNumRefObjects, type, name.c_str(), obj);
+      ("RefData::SetRefObjectWithNewName() numRefObjects=%d, type=%d, name=%s "
+       "obj addr=%p\n", mNumRefObjects, type, name.c_str(), obj);
    #endif
    
    #if DEBUG_REFDATA_OBJECT > 1
    for (int i=0; i<mNumRefObjects; i++)
    {
       MessageInterface::ShowMessage
-         (wxT("type=%d, name=%s, obj=%d\n"), mRefObjList[i].objType,
+         ("type=%d, name=%s, obj=%d\n", mRefObjList[i].objType,
           mRefObjList[i].objName.c_str(), mRefObjList[i].obj);
    }   
    #endif
@@ -536,7 +536,7 @@ bool RefData::SetRefObjectWithNewName(GmatBase *obj, const Gmat::ObjectType type
          
          #if DEBUG_REFDATA_OBJECT > 1
          MessageInterface::ShowMessage
-            (wxT("RefData::SetRefObjectWithName() set %s to %p\n"),
+            ("RefData::SetRefObjectWithName() set %s to %p\n",
              mRefObjList[i].objName.c_str(), obj);
          #endif
          return true;
@@ -545,7 +545,7 @@ bool RefData::SetRefObjectWithNewName(GmatBase *obj, const Gmat::ObjectType type
 
    #if DEBUG_REFDATA_OBJECT
    MessageInterface::ShowMessage
-      (wxT("*** Warning *** RefData::SetRefObjectWithName() Cannot find type=%s\n"),
+      ("*** Warning *** RefData::SetRefObjectWithName() Cannot find type=%s\n",
        GmatBase::GetObjectTypeString(type).c_str());
    #endif
    
@@ -563,13 +563,13 @@ void RefData::InitializeRefObjects()
 
 
 //------------------------------------------------------------------------------
-// bool HasObjectType(const wxString &type) const
+// bool HasObjectType(const std::string &type) const
 //------------------------------------------------------------------------------
 /**
  * @return true if it has the given object type, false otherwise
  */
 //------------------------------------------------------------------------------
-bool RefData::HasObjectType(const wxString &type) const
+bool RefData::HasObjectType(const std::string &type) const
 {
 
    for (int i=0; i<mNumRefObjects; i++)
@@ -583,13 +583,13 @@ bool RefData::HasObjectType(const wxString &type) const
 
 
 //------------------------------------------------------------------------------
-// GmatBase* FindFirstObject(const wxString &typeName) const
+// GmatBase* FindFirstObject(const std::string &typeName) const
 //------------------------------------------------------------------------------
 /**
  * @return first object found for given object type name.
  */
 //------------------------------------------------------------------------------
-GmatBase* RefData::FindFirstObject(const wxString &typeName) const
+GmatBase* RefData::FindFirstObject(const std::string &typeName) const
 {   
    return FindFirstObject(GmatBase::GetObjectType(typeName));
 }
@@ -606,7 +606,7 @@ GmatBase* RefData::FindFirstObject(const Gmat::ObjectType type) const
 {
    #if DEBUG_REFDATA_FIND
    MessageInterface::ShowMessage
-      (wxT("RefData::FindFirstObject() type=%d mNumRefObjects=%d\n"),
+      ("RefData::FindFirstObject() type=%d mNumRefObjects=%d\n",
        type, mNumRefObjects);
    #endif
    
@@ -614,7 +614,7 @@ GmatBase* RefData::FindFirstObject(const Gmat::ObjectType type) const
    {
       #if DEBUG_REFDATA_FIND
       MessageInterface::ShowMessage
-         (wxT("RefData::FindFirstObject() i=%d, type=%d, name=%s, obj=%p\n"), i,
+         ("RefData::FindFirstObject() i=%d, type=%d, name=%s, obj=%p\n", i,
           mRefObjList[i].objType, mRefObjList[i].objName.c_str(), mRefObjList[i].obj);
       #endif
       
@@ -622,7 +622,7 @@ GmatBase* RefData::FindFirstObject(const Gmat::ObjectType type) const
       {
          #if DEBUG_REFDATA_FIND
          MessageInterface::ShowMessage
-            (wxT("RefData::FindFirstObject() returning %p\n"), mRefObjList[i].obj);
+            ("RefData::FindFirstObject() returning %p\n", mRefObjList[i].obj);
          #endif
          
          return mRefObjList[i].obj;
@@ -631,7 +631,7 @@ GmatBase* RefData::FindFirstObject(const Gmat::ObjectType type) const
    
    #if DEBUG_REFDATA_FIND
    MessageInterface::ShowMessage
-      (wxT("RefData::FindFirstObject() returning NULL\n"));
+      ("RefData::FindFirstObject() returning NULL\n");
    #endif
    
    return NULL;
@@ -639,19 +639,19 @@ GmatBase* RefData::FindFirstObject(const Gmat::ObjectType type) const
 
 
 //------------------------------------------------------------------------------
-// wxString FindFirstObjectName(const Gmat::ObjectType type) const
+// std::string FindFirstObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
 /**
  * @return first object name found for given object type.
  */
 //------------------------------------------------------------------------------
-wxString RefData::FindFirstObjectName(const Gmat::ObjectType type) const
+std::string RefData::FindFirstObjectName(const Gmat::ObjectType type) const
 {
    for (int i=0; i<mNumRefObjects; i++)
    {
       #if DEBUG_REFDATA_OBJECT > 1
       MessageInterface::ShowMessage
-         (wxT("RefData::FindFirstObjectName() mRefObjList[%d].objType=%d, objName=%s\n"),
+         ("RefData::FindFirstObjectName() mRefObjList[%d].objType=%d, objName=%s\n",
           i, mRefObjList[i].objType, mRefObjList[i].objName.c_str());
       #endif
       
@@ -659,6 +659,6 @@ wxString RefData::FindFirstObjectName(const Gmat::ObjectType type) const
          return mRefObjList[i].objName;
    }
    
-   return wxT("");
+   return "";
 }
 

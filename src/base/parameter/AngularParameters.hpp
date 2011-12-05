@@ -37,7 +37,7 @@ class GMAT_API SemilatusRectum : public OrbitReal
 {
 public:
 
-   SemilatusRectum(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   SemilatusRectum(const std::string &name = "", GmatBase *obj = NULL);
    SemilatusRectum(const SemilatusRectum &copy);
    const SemilatusRectum& operator=(const SemilatusRectum &right);
    virtual ~SemilatusRectum();
@@ -64,7 +64,7 @@ class GMAT_API AngularMomentumMag : public OrbitReal
 {
 public:
 
-   AngularMomentumMag(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   AngularMomentumMag(const std::string &name = "", GmatBase *obj = NULL);
    AngularMomentumMag(const AngularMomentumMag &copy);
    const AngularMomentumMag& operator=(const AngularMomentumMag &right);
    virtual ~AngularMomentumMag();
@@ -92,7 +92,7 @@ class GMAT_API AngularMomentumX : public OrbitReal
 {
 public:
 
-   AngularMomentumX(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   AngularMomentumX(const std::string &name = "", GmatBase *obj = NULL);
    AngularMomentumX(const AngularMomentumX &copy);
    const AngularMomentumX& operator=(const AngularMomentumX &right);
    virtual ~AngularMomentumX();
@@ -120,7 +120,7 @@ class GMAT_API AngularMomentumY : public OrbitReal
 {
 public:
 
-   AngularMomentumY(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   AngularMomentumY(const std::string &name = "", GmatBase *obj = NULL);
    AngularMomentumY(const AngularMomentumY &copy);
    const AngularMomentumY& operator=(const AngularMomentumY &right);
    virtual ~AngularMomentumY();
@@ -148,7 +148,7 @@ class GMAT_API AngularMomentumZ : public OrbitReal
 {
 public:
 
-   AngularMomentumZ(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   AngularMomentumZ(const std::string &name = "", GmatBase *obj = NULL);
    AngularMomentumZ(const AngularMomentumZ &copy);
    const AngularMomentumZ& operator=(const AngularMomentumZ &right);
    virtual ~AngularMomentumZ();
@@ -177,7 +177,7 @@ class GMAT_API BetaAngle : public OrbitReal
 {
 public:
 
-   BetaAngle(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   BetaAngle(const std::string &name = "", GmatBase *obj = NULL);
    BetaAngle(const BetaAngle &copy);
    const BetaAngle& operator=(const BetaAngle &right);
    virtual ~BetaAngle();
@@ -205,7 +205,7 @@ class GMAT_API RLA : public OrbitReal
 {
 public:
 
-   RLA(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   RLA(const std::string &name = "", GmatBase *obj = NULL);
    RLA(const RLA &copy);
    const RLA& operator=(const RLA &right);
    virtual ~RLA();
@@ -233,7 +233,7 @@ class GMAT_API DLA : public OrbitReal
 {
 public:
 
-   DLA(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   DLA(const std::string &name = "", GmatBase *obj = NULL);
    DLA(const DLA &copy);
    const DLA& operator=(const DLA &right);
    virtual ~DLA();

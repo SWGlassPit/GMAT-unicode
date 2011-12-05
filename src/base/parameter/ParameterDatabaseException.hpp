@@ -26,8 +26,8 @@
 class GMAT_API ParameterDatabaseException : public BaseException
 {
    public:
-      ParameterDatabaseException(const wxString& message = 
-                                 wxT("Error occurred in ParameterDabase class")) 
+      ParameterDatabaseException(const std::string& message = 
+                                 "Error occurred in ParameterDabase class") 
          : BaseException(message) {};
 };
 #endif

@@ -42,7 +42,7 @@ public:
    
    // The inherited methods from RefData
    virtual bool ValidateRefObjects(GmatBase *param);
-   virtual const wxString* GetValidObjectList() const;
+   virtual const std::string* GetValidObjectList() const;
    
 protected:
 
@@ -88,8 +88,8 @@ protected:
       BplaneDataObjectCount
    };
    
-   static const wxString VALID_OBJECT_TYPE_LIST[BplaneDataObjectCount];
-   static const wxString VALID_PARAM_NAMES[BplaneParamEnd - BplaneParamBegin - 1];
+   static const std::string VALID_OBJECT_TYPE_LIST[BplaneDataObjectCount];
+   static const std::string VALID_PARAM_NAMES[BplaneParamEnd - BplaneParamBegin - 1];
 };
 #endif // BplaneData_hpp
 

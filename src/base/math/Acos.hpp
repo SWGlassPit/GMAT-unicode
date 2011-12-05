@@ -26,7 +26,7 @@
 class GMAT_API Acos : public MathFunction
 {
 public:
-   Acos(const wxString &nomme);
+   Acos(const std::string &nomme);
    virtual ~Acos();
    Acos(const Acos &copy);
                  

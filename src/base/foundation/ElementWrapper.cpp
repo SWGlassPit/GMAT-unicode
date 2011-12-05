@@ -53,7 +53,7 @@ const Real ElementWrapper::UNDEFINED_REAL = -999.99;
  */
 //---------------------------------------------------------------------------
 ElementWrapper::ElementWrapper() :
-   description  (wxT("")),
+   description  (""),
    wrapperType  (Gmat::NUMBER_WT)
 {
 }
@@ -65,7 +65,7 @@ ElementWrapper::ElementWrapper() :
  * Constructs base ElementWrapper structures used in derived classes, by copying 
  * the input instance (copy constructor).
  *
- * @param <er>  ElementWrapper instance to copy to create wxT("this") instance.
+ * @param <er>  ElementWrapper instance to copy to create "this" instance.
  */
 //---------------------------------------------------------------------------
 ElementWrapper::ElementWrapper(const ElementWrapper &er) :
@@ -111,20 +111,20 @@ ElementWrapper::~ElementWrapper()
 }
 
 //------------------------------------------------------------------------------
-// wxString ToString()
+// std::string ToString()
 //------------------------------------------------------------------------------
 /**
- * @return ElementWrapper value converted to wxString.
+ * @return ElementWrapper value converted to std::string.
  *
  * @exception <GmatBaseException> thrown if this method is called.
  */
 //------------------------------------------------------------------------------
-wxString ElementWrapper::ToString()
+std::string ElementWrapper::ToString()
 {
    GmatBaseException be;
    be.SetDetails
-      (wxT("ElementWrapper::ToString() has not been implemented for wrapper ")
-       wxT("type %d, description of \"%s\""), wrapperType, description.c_str());
+      ("ElementWrapper::ToString() has not been implemented for wrapper "
+       "type %d, description of \"%s\"", wrapperType, description.c_str());
    throw be;
 }
 
@@ -139,19 +139,19 @@ ElementWrapper* ElementWrapper::Clone() const
 {
    GmatBaseException be;
    be.SetDetails
-      (wxT("ElementWrapper::Clone() has not been implemented for wrapper ")
-       wxT("type %d, description of \"%s\""), wrapperType, description.c_str());
+      ("ElementWrapper::Clone() has not been implemented for wrapper "
+       "type %d, description of \"%s\"", wrapperType, description.c_str());
    throw be;
 }
 
 //------------------------------------------------------------------------------
-//  void SetDescription(const wxString &str)
+//  void SetDescription(const std::string &str)
 //------------------------------------------------------------------------------
 /**
  * Sets the description for the ElementWrapper object.
  */
 //------------------------------------------------------------------------------
-void ElementWrapper::SetDescription(const wxString &str)
+void ElementWrapper::SetDescription(const std::string &str)
 {
    description = str;
    SetupWrapper();
@@ -159,7 +159,7 @@ void ElementWrapper::SetDescription(const wxString &str)
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetDescription() const
+//  std::string  GetDescription() const
 //------------------------------------------------------------------------------
 /**
  * This method returns the description for the ElementWrapper object.
@@ -168,7 +168,7 @@ void ElementWrapper::SetDescription(const wxString &str)
  *
  */
 //------------------------------------------------------------------------------
-wxString ElementWrapper::GetDescription() const
+std::string ElementWrapper::GetDescription() const
 {
    return description;
 }
@@ -194,7 +194,7 @@ Gmat::WrapperDataType ElementWrapper::GetWrapperType() const
 void ElementWrapper::ClearRefObjectNames()
 {
    #ifdef DEBUG_EW_SET_VALUE
-      MessageInterface::ShowMessage(wxT("Clearing reference object names\n"));
+      MessageInterface::ShowMessage("Clearing reference object names\n");
    #endif
    refObjectNames.clear();
 }
@@ -218,7 +218,7 @@ const StringArray& ElementWrapper::GetRefObjectNames()
 
 
 //------------------------------------------------------------------------------
-// virtual bool SetRefObjectName(const wxString &name, Integer index)
+// virtual bool SetRefObjectName(const std::string &name, Integer index)
 //------------------------------------------------------------------------------
 /**
  * This method sets a reference object name for the ElementWrapper 
@@ -231,14 +231,14 @@ const StringArray& ElementWrapper::GetRefObjectNames()
  *
  */
 //------------------------------------------------------------------------------
-bool ElementWrapper::SetRefObjectName(const wxString &name, Integer index)
+bool ElementWrapper::SetRefObjectName(const std::string &name, Integer index)
 {
    return false;
 }
 
 
 //------------------------------------------------------------------------------
-//  GmatBase* GetRefObject(const wxString &name = wxT(""))
+//  GmatBase* GetRefObject(const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * This method retrives a reference object for the wrapper name
@@ -249,7 +249,7 @@ bool ElementWrapper::SetRefObjectName(const wxString &name, Integer index)
  *
  */
 //------------------------------------------------------------------------------
-GmatBase* ElementWrapper::GetRefObject(const wxString &name)
+GmatBase* ElementWrapper::GetRefObject(const std::string &name)
 {
    return NULL;
 }
@@ -275,7 +275,7 @@ bool ElementWrapper::SetRefObject(GmatBase *obj)
 
 
 //---------------------------------------------------------------------------
-//  bool RenameObject(const wxString &oldName, const wxString &newName)
+//  bool RenameObject(const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /**
  * Method to rename a reference object for the wrapper.
@@ -283,12 +283,12 @@ bool ElementWrapper::SetRefObject(GmatBase *obj)
  * @return true if successful; false otherwise.
  */
 //---------------------------------------------------------------------------
-bool ElementWrapper::RenameObject(const wxString &oldName, 
-                                  const wxString &newName)
+bool ElementWrapper::RenameObject(const std::string &oldName, 
+                                  const std::string &newName)
 {
    #ifdef DEBUG_RENAME
       MessageInterface::ShowMessage(
-      wxT("Now entering EW::RenameObject with oldName = %s\n and newName = %s\n"),
+      "Now entering EW::RenameObject with oldName = %s\n and newName = %s\n",
       oldName.c_str(), newName.c_str());
    #endif
    // replace the old name with the new name in the list of ref objects
@@ -299,7 +299,7 @@ bool ElementWrapper::RenameObject(const wxString &oldName,
       {
          #ifdef DEBUG_RENAME
          MessageInterface::ShowMessage
-            (wxT("   old refObjectNames[%d]=<%s>\n"), j, refObjectNames[j].c_str());
+            ("   old refObjectNames[%d]=<%s>\n", j, refObjectNames[j].c_str());
          #endif
          
          refObjectNames[j] =
@@ -307,7 +307,7 @@ bool ElementWrapper::RenameObject(const wxString &oldName,
          
          #ifdef DEBUG_RENAME
          MessageInterface::ShowMessage
-            (wxT("   new refObjectNames[%d]=<%s>\n"), j, refObjectNames[j].c_str());
+            ("   new refObjectNames[%d]=<%s>\n", j, refObjectNames[j].c_str());
          #endif
       }
    }
@@ -326,7 +326,7 @@ bool ElementWrapper::TakeRequiredAction() const
 const Rmatrix& ElementWrapper::EvaluateArray() const
 {
    throw GmatBaseException(
-      wxT("In ElementWrapper, EvaluateArray() method not valid for wrapper of non-Array type.\n"));
+      "In ElementWrapper, EvaluateArray() method not valid for wrapper of non-Array type.\n");
 }
 
 //---------------------------------------------------------------------------
@@ -335,43 +335,43 @@ const Rmatrix& ElementWrapper::EvaluateArray() const
 bool ElementWrapper::SetArray(const Rmatrix &toValue)
 {
    throw GmatBaseException(
-      wxT("In ElementWrapper, SetArray() method not valid for wrapper of non-Array type.\n"));
+      "In ElementWrapper, SetArray() method not valid for wrapper of non-Array type.\n");
 }
 
 //---------------------------------------------------------------------------
-// wxString EvaluateString() const
+// std::string EvaluateString() const
 //---------------------------------------------------------------------------
-wxString ElementWrapper::EvaluateString() const
+std::string ElementWrapper::EvaluateString() const
 {
    throw GmatBaseException(
-      wxT("In ElementWrapper, EvaluateString() method not valid for wrapper of non-String type.\n"));
+      "In ElementWrapper, EvaluateString() method not valid for wrapper of non-String type.\n");
 }
 
 //---------------------------------------------------------------------------
-// bool SetString(const wxString &toValue)
+// bool SetString(const std::string &toValue)
 //---------------------------------------------------------------------------
-bool ElementWrapper::SetString(const wxString &toValue)
+bool ElementWrapper::SetString(const std::string &toValue)
 {
    throw GmatBaseException(
-      wxT("In ElementWrapper, SetString() method not valid for wrapper of non-String type.\n"));
+      "In ElementWrapper, SetString() method not valid for wrapper of non-String type.\n");
 }
 
 //---------------------------------------------------------------------------
-// wxString EvaluateOnOff() const
+// std::string EvaluateOnOff() const
 //---------------------------------------------------------------------------
-wxString ElementWrapper::EvaluateOnOff() const
+std::string ElementWrapper::EvaluateOnOff() const
 {
    throw GmatBaseException(
-      wxT("In ElementWrapper, EvaluateOnOff() method not valid for wrapper of non-OnOff type.\n"));
+      "In ElementWrapper, EvaluateOnOff() method not valid for wrapper of non-OnOff type.\n");
 }
 
 //---------------------------------------------------------------------------
-// bool SetOnOff(const wxString &toValue)
+// bool SetOnOff(const std::string &toValue)
 //---------------------------------------------------------------------------
-bool ElementWrapper::SetOnOff(const wxString &toValue)
+bool ElementWrapper::SetOnOff(const std::string &toValue)
 {
    throw GmatBaseException(
-      wxT("In ElementWrapper, SetOnOff() method not valid for wrapper of non-OnOff type.\n"));
+      "In ElementWrapper, SetOnOff() method not valid for wrapper of non-OnOff type.\n");
 }
 
 //---------------------------------------------------------------------------
@@ -380,7 +380,7 @@ bool ElementWrapper::SetOnOff(const wxString &toValue)
 bool ElementWrapper::EvaluateBoolean() const
 {
    throw GmatBaseException(
-      wxT("In ElementWrapper, EvaluateBoolean() method not valid for wrapper of non-Boolean type.\n"));
+      "In ElementWrapper, EvaluateBoolean() method not valid for wrapper of non-Boolean type.\n");
 }
 
 //---------------------------------------------------------------------------
@@ -389,7 +389,7 @@ bool ElementWrapper::EvaluateBoolean() const
 bool ElementWrapper::SetBoolean(const bool toValue)
 {
    throw GmatBaseException(
-      wxT("In ElementWrapper, SetBoolean() method not valid for wrapper of non-Boolean type.\n"));
+      "In ElementWrapper, SetBoolean() method not valid for wrapper of non-Boolean type.\n");
 }
 
 //---------------------------------------------------------------------------
@@ -398,7 +398,7 @@ bool ElementWrapper::SetBoolean(const bool toValue)
 Integer ElementWrapper::EvaluateInteger() const
 {
    throw GmatBaseException(
-      wxT("In ElementWrapper, EvaluateInteger() method not valid for wrapper of non-Integer type.\n"));
+      "In ElementWrapper, EvaluateInteger() method not valid for wrapper of non-Integer type.\n");
 }
 
 //---------------------------------------------------------------------------
@@ -407,7 +407,7 @@ Integer ElementWrapper::EvaluateInteger() const
 bool ElementWrapper::SetInteger(const Integer toValue)
 {
    throw GmatBaseException(
-      wxT("In ElementWrapper, SetInteger() method not valid for wrapper of non-Integer type.\n"));
+      "In ElementWrapper, SetInteger() method not valid for wrapper of non-Integer type.\n");
 }
 
 //---------------------------------------------------------------------------
@@ -416,7 +416,7 @@ bool ElementWrapper::SetInteger(const Integer toValue)
 GmatBase* ElementWrapper::EvaluateObject() const
 {
    throw GmatBaseException(
-      wxT("In ElementWrapper, EvaluateObject() method not valid for wrapper of non-Object type.\n"));
+      "In ElementWrapper, EvaluateObject() method not valid for wrapper of non-Object type.\n");
 }
 
 
@@ -426,7 +426,7 @@ GmatBase* ElementWrapper::EvaluateObject() const
 bool ElementWrapper::SetObject(GmatBase *obj)
 {
    throw GmatBaseException(
-      wxT("In ElementWrapper, SetObject() method not valid for wrapper of non-Object type.\n"));
+      "In ElementWrapper, SetObject() method not valid for wrapper of non-Object type.\n");
 }
 
 
@@ -445,40 +445,40 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
 {
    #ifdef DEBUG_EW_SET_VALUE
    MessageInterface::ShowMessage
-      (wxT("ElemementWrapper::SetValue() entered, lhsWrapper=<%p>, rhsWrapper=<%p>\n   ")
-       wxT("solarSys=<%p> objMap=<%p>, globalObjMap=<%p>, setRefObj=%d\n"), lhsWrapper,
+      ("ElemementWrapper::SetValue() entered, lhsWrapper=<%p>, rhsWrapper=<%p>\n   "
+       "solarSys=<%p> objMap=<%p>, globalObjMap=<%p>, setRefObj=%d\n", lhsWrapper,
        rhsWrapper, solarSys, objMap, globalObjMap, setRefObj);
    #endif
    
    if (lhsWrapper == NULL || rhsWrapper == NULL)
       return false;
    
-   wxString lhs = lhsWrapper->GetDescription();
-   wxString rhs = rhsWrapper->GetDescription();
+   std::string lhs = lhsWrapper->GetDescription();
+   std::string rhs = rhsWrapper->GetDescription();
    
    #ifdef DEBUG_EW_SET_VALUE
-   MessageInterface::ShowMessage(wxT("   lhs=\"%s\"\n   rhs=\"%s\"\n"), lhs.c_str(), rhs.c_str());
+   MessageInterface::ShowMessage("   lhs=\"%s\"\n   rhs=\"%s\"\n", lhs.c_str(), rhs.c_str());
    #endif
    
    Real rval = -99999.999;
    Integer ival = -99999;
    bool bval = false;
-   wxString sval = wxT("UnknownValue");
+   std::string sval = "UnknownValue";
    Rmatrix rmat;
    GmatBase *rhsObj = NULL;
    
    Gmat::ParameterType lhsDataType = lhsWrapper->GetDataType();
    Gmat::ParameterType rhsDataType = Gmat::UNKNOWN_PARAMETER_TYPE;
-   wxString lhsTypeStr = wxT("UnknownDataType");
+   std::string lhsTypeStr = "UnknownDataType";
    if (lhsDataType != Gmat::UNKNOWN_PARAMETER_TYPE)
       lhsTypeStr = GmatBase::PARAM_TYPE_STRING[lhsDataType];
-   wxString rhsTypeStr = wxT("UnknownDataType");
+   std::string rhsTypeStr = "UnknownDataType";
    Gmat::WrapperDataType lhsWrapperType = lhsWrapper->GetWrapperType();
    Gmat::WrapperDataType rhsWrapperType = Gmat::UNKNOWN_WRAPPER_TYPE;
    
    #ifdef DEBUG_EW_SET_VALUE
    MessageInterface::ShowMessage
-      (wxT("   lhsWrapperType=%2d, lhsDataType=%s\n"), lhsWrapperType, lhsTypeStr.c_str());
+      ("   lhsWrapperType=%2d, lhsDataType=%s\n", lhsWrapperType, lhsTypeStr.c_str());
    #endif
    
    try
@@ -491,7 +491,7 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
 
       #ifdef DEBUG_EW_SET_VALUE
       MessageInterface::ShowMessage
-         (wxT("   rhsWrapperType=%2d, rhsDataType=%s\n"), rhsWrapperType, rhsTypeStr.c_str());
+         ("   rhsWrapperType=%2d, rhsDataType=%s\n", rhsWrapperType, rhsTypeStr.c_str());
       #endif
       
       // If lhs is a String, it must be String Object and STRING_OBJECT_WT,
@@ -499,10 +499,10 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
       if (lhsDataType == Gmat::STRING_TYPE && lhsWrapperType == Gmat::STRING_WT)
       {
          GmatBaseException ex;
-         //ex.SetDetails(wxT("ElementWrapper::SetValue() Cannot set \"%s\" to unknown ")
-         //              wxT("object \"%s\""), rhs.c_str(), lhs.c_str());
-         ex.SetDetails(wxT("ElementWrapper::SetValue() Cannot set unknown object \"%s\" to ")
-                       wxT("\"%s\""), lhs.c_str(), rhs.c_str());
+         //ex.SetDetails("ElementWrapper::SetValue() Cannot set \"%s\" to unknown "
+         //              "object \"%s\"", rhs.c_str(), lhs.c_str());
+         ex.SetDetails("ElementWrapper::SetValue() Cannot set unknown object \"%s\" to "
+                       "\"%s\"", lhs.c_str(), rhs.c_str());
          throw ex;
       }
       
@@ -517,7 +517,7 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
       case Gmat::REAL_TYPE:
          rval = rhsWrapper->EvaluateReal();
          #ifdef DEBUG_EW_SET_VALUE
-         MessageInterface::ShowMessage(wxT("   REAL_TYPE rhs rval=%f\n"), rval);
+         MessageInterface::ShowMessage("   REAL_TYPE rhs rval=%f\n", rval);
          #endif
          break;
       case Gmat::RMATRIX_TYPE:
@@ -527,7 +527,7 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
       case Gmat::ENUMERATION_TYPE:
       case Gmat::FILENAME_TYPE:
          sval = rhsWrapper->EvaluateString();
-         sval = GmatStringUtil::RemoveEnclosingString(sval, wxT("'"));
+         sval = GmatStringUtil::RemoveEnclosingString(sval, "'");
          break;
       case Gmat::ON_OFF_TYPE:
          sval = rhsWrapper->EvaluateOnOff();
@@ -537,12 +537,12 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
          break;
       default:
          throw GmatBaseException
-            (wxT("ElementWrapper::SetValue() RHS type is unknown for \"") + rhs + wxT("\""));
+            ("ElementWrapper::SetValue() RHS type is unknown for \"" + rhs + "\"");
       }
       
       #ifdef DEBUG_EW_SET_VALUE
       MessageInterface::ShowMessage
-         (wxT("   ==> Now assign \"%s\" to \"%s\", rhsObj=<%p>, sval='%s'\n"),
+         ("   ==> Now assign \"%s\" to \"%s\", rhsObj=<%p>, sval='%s'\n",
           rhs.c_str(), lhs.c_str(), rhsObj, sval.c_str());
       #endif
       
@@ -560,7 +560,7 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
                lhsWrapper->SetString(rhs);
             else
                throw GmatBaseException
-                  (wxT("ElementWrapper::SetValue() Cannot set \"") + lhs + wxT("\" to ") + rhs + wxT("\""));
+                  ("ElementWrapper::SetValue() Cannot set \"" + lhs + "\" to " + rhs + "\"");
             break;
          }
       case Gmat::INTEGER_TYPE:
@@ -574,12 +574,12 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
             else if (rhsDataType == Gmat::REAL_TYPE)
             {
                Integer itempval;
-               wxString desc = rhs;
+               std::string desc = rhs;
                if (GmatStringUtil::ToInteger(desc, itempval))
                   lhsWrapper->SetInteger(itempval);
                else
                   throw GmatBaseException
-                     (wxT("ElementWrapper::SetValue() Cannot set \"") + lhs + wxT("\" to ") + rhs + wxT("\""));
+                     ("ElementWrapper::SetValue() Cannot set \"" + lhs + "\" to " + rhs + "\"");
             }
             break;
          }
@@ -589,7 +589,7 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
                lhsWrapper->SetString(rhs);
             else
                throw GmatBaseException
-                  (wxT("ElementWrapper::SetValue() Cannot set \"") + lhs + wxT("\" to ") + rhs + wxT("\""));
+                  ("ElementWrapper::SetValue() Cannot set \"" + lhs + "\" to " + rhs + "\"");
             break;
          }
       case Gmat::RVECTOR_TYPE:
@@ -598,13 +598,13 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
                lhsWrapper->SetString(rhs);
             else
                throw GmatBaseException
-                  (wxT("ElementWrapper::SetValue() Cannot set \"") + lhs + wxT("\" to ") + rhs + wxT("\""));
+                  ("ElementWrapper::SetValue() Cannot set \"" + lhs + "\" to " + rhs + "\"");
             break;
          }
       case Gmat::REAL_TYPE:
          {
             #ifdef DEBUG_EW_SET_VALUE
-            MessageInterface::ShowMessage(wxT("   setting rhs rval=%f to lhs\n"), rval);
+            MessageInterface::ShowMessage("   setting rhs rval=%f to lhs\n", rval);
             #endif
             bool valueSet = false;
             if (rval != -99999.999)
@@ -625,7 +625,7 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
             if (!valueSet)
             {
                throw GmatBaseException
-                  (wxT("ElementWrapper::SetValue() Cannot set \"") + lhs + wxT("\" to ") + rhs + wxT("\""));
+                  ("ElementWrapper::SetValue() Cannot set \"" + lhs + "\" to " + rhs + "\"");
             }
             break;
          }
@@ -663,7 +663,7 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
                sval = GmatStringUtil::ToString(rval, 16);
                #ifdef DEBUG_EW_SET_VALUE
                MessageInterface::ShowMessage
-                  (wxT("   %f converted to string '%s'\n"), rval, sval.c_str());
+                  ("   %f converted to string '%s'\n", rval, sval.c_str());
                #endif
                lhsWrapper->SetString(sval);
                break;
@@ -673,7 +673,7 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
                sval = GmatStringUtil::ToString(ival);
                #ifdef DEBUG_EW_SET_VALUE
                MessageInterface::ShowMessage
-                  (wxT("   %d converted to string '%s'\n"), ival, sval.c_str());
+                  ("   %d converted to string '%s'\n", ival, sval.c_str());
                #endif
                lhsWrapper->SetString(sval);
                break;
@@ -683,7 +683,7 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
                sval = GmatStringUtil::ToString(bval);
                #ifdef DEBUG_EW_SET_VALUE
                MessageInterface::ShowMessage
-                  (wxT("   %s converted to string '%s'\n"), bval ? wxT("true") : wxT("false"),
+                  ("   %s converted to string '%s'\n", bval ? "true" : "false",
                    sval.c_str());
                #endif
                lhsWrapper->SetString(sval);
@@ -693,16 +693,16 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
             {
                GmatBaseException ex;
                if (rhsObj != NULL)
-                  ex.SetDetails(wxT("ElementWrapper::SetValue() Cannot set undefined object ")
-                                wxT("\"%s\" to object \"%s\""), lhs.c_str(),
+                  ex.SetDetails("ElementWrapper::SetValue() Cannot set undefined object "
+                                "\"%s\" to object \"%s\"", lhs.c_str(),
                                 rhsObj->GetTypeName().c_str());
                else if (lhsWrapperType == Gmat::STRING_OBJECT_WT &&
                         rhsWrapperType == Gmat::VARIABLE_WT)
-                  ex.SetDetails(wxT("ElementWrapper::SetValue() Cannot set String \"%s\" to ")
-                                wxT("Variable \"%s\""), lhs.c_str(), rhs.c_str());
+                  ex.SetDetails("ElementWrapper::SetValue() Cannot set String \"%s\" to "
+                                "Variable \"%s\"", lhs.c_str(), rhs.c_str());
                else
-                  ex.SetDetails(wxT("ElementWrapper::SetValue() Cannot set undefined object ")
-                                wxT("\"%s\" to \"%s\""), lhs.c_str(), rhs.c_str());
+                  ex.SetDetails("ElementWrapper::SetValue() Cannot set undefined object "
+                                "\"%s\" to \"%s\"", lhs.c_str(), rhs.c_str());
                throw ex;
             }
          }
@@ -713,11 +713,11 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
       case Gmat::OBJECT_TYPE:
          if (rhsObj == NULL)
          {
-            // Handle special case for wxT("DefaultFM.Drag = None;")
+            // Handle special case for "DefaultFM.Drag = None;"
             if (rhsDataType == Gmat::STRING_TYPE)
             {
                #ifdef DEBUG_EW_SET_VALUE
-               MessageInterface::ShowMessage(wxT("   calling lhsWrapper->SetString(rhs)\n"));
+               MessageInterface::ShowMessage("   calling lhsWrapper->SetString(rhs)\n");
                #endif
                
                // Show more meaningful message
@@ -731,15 +731,15 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
                   throw;
                }
             }
-            // Handle case like wxT("XYPlot1.IndVar = sat.A1ModJulian;")
+            // Handle case like "XYPlot1.IndVar = sat.A1ModJulian;"
             else if (rhsWrapperType == Gmat::PARAMETER_WT)
             {
                lhsWrapper->SetObject(rhsWrapper->GetRefObject());
             }
             else
                throw GmatBaseException
-                  (wxT("ElementWrapper::SetValue() Cannot set object \"") + lhs +
-                   wxT("\" to non-object type \"") + rhs + wxT("\""));
+                  ("ElementWrapper::SetValue() Cannot set object \"" + lhs +
+                   "\" to non-object type \"" + rhs + "\"");
          }
          else
          {            
@@ -747,14 +747,14 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
             if (setRefObj)
             {
                #ifdef DEBUG_EW_SET_VALUE
-               MessageInterface::ShowMessage(wxT("   calling lhsWrapper->SetObject(rhsObj)\n"));
+               MessageInterface::ShowMessage("   calling lhsWrapper->SetObject(rhsObj)\n");
                #endif
                lhsWrapper->SetObject(rhsObj);
             }
             else
             {
                #ifdef DEBUG_EW_SET_VALUE
-               MessageInterface::ShowMessage(wxT("   calling lhsWrapper->SetString(rhsObjName)\n"));
+               MessageInterface::ShowMessage("   calling lhsWrapper->SetString(rhsObjName)\n");
                #endif
                lhsWrapper->SetString(rhsObj->GetName());
             }
@@ -764,23 +764,23 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
          if (rhsObj != NULL)
          {
             #ifdef DEBUG_EW_SET_VALUE
-            MessageInterface::ShowMessage(wxT("   calling lhsWrapper->SetString(rhsObj->GetName())\n"));
+            MessageInterface::ShowMessage("   calling lhsWrapper->SetString(rhsObj->GetName())\n");
             #endif
             lhsWrapper->SetString(rhsObj->GetName());
          }
          else
          {
             #ifdef DEBUG_EW_SET_VALUE
-            MessageInterface::ShowMessage(wxT("   calling lhsWrapper->SetString(rhs or sval)\n"));
+            MessageInterface::ShowMessage("   calling lhsWrapper->SetString(rhs or sval)\n");
             #endif
-            if (sval == wxT("UnknownValue"))
+            if (sval == "UnknownValue")
                lhsWrapper->SetString(rhs);
             else
                lhsWrapper->SetString(sval);
             
             // Commented out to handle SolarSystem.Ephemeris = {SLP} (loj: 2008.07.16)            
             //GmatBaseException ex;
-            //ex.SetDetails(wxT("ElementWrapper::SetValue() Cannot set \"%s\" to \"%s\""),
+            //ex.SetDetails("ElementWrapper::SetValue() Cannot set \"%s\" to \"%s\"",
             //              rhs.c_str(), lhs.c_str());
             //throw ex;
          }
@@ -793,31 +793,31 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
          {
             bool errorCond = true;
             
-            // Handle case like wxT("GMAT XYPlot1.Add = {sat.X sat.Y};")
+            // Handle case like "GMAT XYPlot1.Add = {sat.X sat.Y};"
             // Set individually if RHS has more than one object
             StringArray rhsValues;
             TextParser tp;
-            rhsValues = tp.SeparateBrackets(rhs, wxT("{}"), wxT(" ,"), false);
+            rhsValues = tp.SeparateBrackets(rhs, "{}", " ,", false);
             
             #ifdef DEBUG_EW_SET_VALUE
-            MessageInterface::ShowMessage(wxT("   rhs {} has %d items\n"), rhsValues.size());
+            MessageInterface::ShowMessage("   rhs {} has %d items\n", rhsValues.size());
             #endif
             
-            wxString firstTypeStr, currTypeStr;
+            std::string firstTypeStr, currTypeStr;
             for (UnsignedInt i=0; i<rhsValues.size(); i++)
             {
                #ifdef DEBUG_EW_SET_VALUE
-               MessageInterface::ShowMessage(wxT("   rhsValues[%d]=<%s>\n"), i, rhsValues[i].c_str());
+               MessageInterface::ShowMessage("   rhsValues[%d]=<%s>\n", i, rhsValues[i].c_str());
                #endif
                
                // Remove enclosing single quotes (LOJ: 2009.10.09)
-               rhsValues[i] = GmatStringUtil::RemoveEnclosingString(rhsValues[i], wxT("'"));
+               rhsValues[i] = GmatStringUtil::RemoveEnclosingString(rhsValues[i], "'");
                
                GmatBase *obj = FindObject(rhsValues[i], solarSys, objMap, globalObjMap);
                
                #ifdef DEBUG_EW_SET_VALUE
                MessageInterface::ShowMessage
-                  (wxT("   obj=<%p><%s>'%s'\n"), obj, obj->GetTypeName().c_str(), obj->GetName().c_str());
+                  ("   obj=<%p><%s>'%s'\n", obj, obj->GetTypeName().c_str(), obj->GetName().c_str());
                #endif
                
                if (obj == NULL)
@@ -828,7 +828,7 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
                
                #ifdef DEBUG_EW_SET_VALUE
                MessageInterface::ShowMessage
-                  (wxT("   calling lhsWrapper->SetObject(obj), wrapperType=%d\n"),
+                  ("   calling lhsWrapper->SetObject(obj), wrapperType=%d\n",
                    lhsWrapper->GetWrapperType());
                #endif
                
@@ -841,7 +841,7 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
             {
                GmatBaseException ex;
                ex.SetDetails
-                  (wxT("ElementWrapper::SetValue() Cannot set \"%s\" to \"%s\""),
+                  ("ElementWrapper::SetValue() Cannot set \"%s\" to \"%s\"",
                    lhs.c_str(), rhs.c_str());
                throw ex;
             }
@@ -849,11 +849,11 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
          break;
       default:
          throw GmatBaseException
-            (wxT("ElementWrapper::SetValue() LHS type is unknown for \"") + lhs + wxT("\""));
+            ("ElementWrapper::SetValue() LHS type is unknown for \"" + lhs + "\"");
       }
       
       #ifdef DEBUG_EW_SET_VALUE
-      MessageInterface::ShowMessage(wxT("ElemementWrapper::SetValue() (1)returning true\n"));
+      MessageInterface::ShowMessage("ElemementWrapper::SetValue() (1)returning true\n");
       #endif
       return true;
    }
@@ -864,7 +864,7 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
    }
    
    #ifdef DEBUG_EW_SET_VALUE
-   MessageInterface::ShowMessage(wxT("ElemementWrapper::SetValue() (2)returning true\n"));
+   MessageInterface::ShowMessage("ElemementWrapper::SetValue() (2)returning true\n");
    #endif
    
    return true;
@@ -872,22 +872,22 @@ bool ElementWrapper::SetValue(ElementWrapper *lhsWrapper, ElementWrapper *rhsWra
 
 
 //---------------------------------------------------------------------------
-// static GmatBase* FindObject(const wxString &name, SolarSystem *solarSys,
+// static GmatBase* FindObject(const std::string &name, SolarSystem *solarSys,
 //                             ObjectMap *objMap, ObjectMap *globalObjMap)
 //---------------------------------------------------------------------------
-GmatBase* ElementWrapper::FindObject(const wxString &name, SolarSystem *solarSys,
+GmatBase* ElementWrapper::FindObject(const std::string &name, SolarSystem *solarSys,
                                      ObjectMap *objMap, ObjectMap *globalObjMap)
 {
-   wxString newName = name;
+   std::string newName = name;
    
    // Ignore array indexing of Array
-   wxString::size_type index = name.find(wxT('('));
+   std::string::size_type index = name.find('(');
    if (index != name.npos)
       newName = name.substr(0, index);
    
    #ifdef DEBUG_FIND_OBJECT
    MessageInterface::ShowMessage
-      (wxT("ElementWrapper::FindObject() entered, name='%s', newName='%s'\n"), name.c_str(),
+      ("ElementWrapper::FindObject() entered, name='%s', newName='%s'\n", name.c_str(),
        newName.c_str());
    #endif
    
@@ -917,26 +917,26 @@ GmatBase* ElementWrapper::FindObject(const wxString &name, SolarSystem *solarSys
 void ElementWrapper::ShowObjectMaps(ObjectMap *objMap, ObjectMap *globalObjMap)
 {
    MessageInterface::ShowMessage
-      (wxT("ElementWrapper::ShowObjectMaps() objMap=<%p>, globalObjMap=<%p>\n"),
+      ("ElementWrapper::ShowObjectMaps() objMap=<%p>, globalObjMap=<%p>\n",
        objMap, globalObjMap);
    
    if (objMap)
    {
-      MessageInterface::ShowMessage(wxT("Here is the local object map:\n"));
-      for (std::map<wxString, GmatBase *>::iterator i = objMap->begin();
+      MessageInterface::ShowMessage("Here is the local object map:\n");
+      for (std::map<std::string, GmatBase *>::iterator i = objMap->begin();
            i != objMap->end(); ++i)
          MessageInterface::ShowMessage
-            (wxT("   %30s  <%p><%s>\n"), i->first.c_str(), i->second,
-             i->second == NULL ? wxT("NULL") : (i->second)->GetTypeName().c_str());
+            ("   %30s  <%p><%s>\n", i->first.c_str(), i->second,
+             i->second == NULL ? "NULL" : (i->second)->GetTypeName().c_str());
    }
    if (globalObjMap)
    {
-      MessageInterface::ShowMessage(wxT("Here is the global object map:\n"));
-      for (std::map<wxString, GmatBase *>::iterator i = globalObjMap->begin();
+      MessageInterface::ShowMessage("Here is the global object map:\n");
+      for (std::map<std::string, GmatBase *>::iterator i = globalObjMap->begin();
            i != globalObjMap->end(); ++i)
          MessageInterface::ShowMessage
-            (wxT("   %30s  <%p><%s>\n"), i->first.c_str(), i->second,
-             i->second == NULL ? wxT("NULL") : (i->second)->GetTypeName().c_str());
+            ("   %30s  <%p><%s>\n", i->first.c_str(), i->second,
+             i->second == NULL ? "NULL" : (i->second)->GetTypeName().c_str());
    }
 }
 

@@ -74,7 +74,7 @@
 class GMAT_API HarmonicField : public PhysicalModel
 {
 public:
-    HarmonicField(const wxString &name, const wxString &typeName = wxT("HarmonicField"),
+    HarmonicField(const std::string &name, const std::string &typeName = "HarmonicField",
                  Integer maxDeg = HF_MAX_DEGREE, Integer maxOrd = HF_MAX_ORDER);
     virtual ~HarmonicField(void);
 
@@ -83,33 +83,33 @@ public:
 
     virtual bool            Initialize(void);
     virtual bool            SetDegreeOrder(Integer degree, Integer order);
-    virtual bool            SetFilename(const wxString &fn);
+    virtual bool            SetFilename(const std::string &fn);
     virtual void            SetEopFile(EopFile *eopF);
 
    // inherited from GmatBase
-    virtual wxString GetParameterText(const Integer id) const;
-    virtual Integer     GetParameterID(const wxString &str) const;
+    virtual std::string GetParameterText(const Integer id) const;
+    virtual Integer     GetParameterID(const std::string &str) const;
     virtual Gmat::ParameterType
        GetParameterType(const Integer id) const;
-    virtual wxString GetParameterTypeString(const Integer id) const;
+    virtual std::string GetParameterTypeString(const Integer id) const;
 
     virtual Integer     GetIntegerParameter(const Integer id) const;
     virtual Integer     SetIntegerParameter(const Integer id,
                                             const Integer value);
-    virtual Integer     GetIntegerParameter(const wxString &label) const;
-    virtual Integer     SetIntegerParameter(const wxString &label,
+    virtual Integer     GetIntegerParameter(const std::string &label) const;
+    virtual Integer     SetIntegerParameter(const std::string &label,
                                             const Integer value);
-    virtual wxString GetStringParameter(const Integer id) const;
+    virtual std::string GetStringParameter(const Integer id) const;
     virtual bool        SetStringParameter(const Integer id,
-                                           const wxString &value);
-    virtual wxString GetStringParameter(const wxString &label) const;
-    virtual bool        SetStringParameter(const wxString &label,
-                                           const wxString &value);
+                                           const std::string &value);
+    virtual std::string GetStringParameter(const std::string &label) const;
+    virtual bool        SetStringParameter(const std::string &label,
+                                           const std::string &value);
     virtual GmatBase*   GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name);
+                                     const std::string &name);
     const StringArray&  GetRefObjectNameArray(const Gmat::ObjectType type);
     virtual bool        SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
     virtual void        SetForceOrigin(CelestialBody* toBody);
                                      
     bool                IsParameterReadOnly(const Integer id) const;
@@ -133,7 +133,7 @@ protected:
       HarmonicFieldParamCount
    };
 
-   static const wxString PARAMETER_TEXT[
+   static const std::string PARAMETER_TEXT[
       HarmonicFieldParamCount - PhysicalModelParamCount];
 
    static const Gmat::ParameterType PARAMETER_TYPE[
@@ -152,7 +152,7 @@ protected:
    /// transformed spherical coordinates
    Real                    r,s,t,u;
    /// The name of the potential file
-   wxString             filename;
+   std::string             filename;
 
    /// has the file been read?
    bool                    fileRead;
@@ -161,10 +161,10 @@ protected:
    bool                    isFirstTimeDefault;
 
 
-   wxString             inputCSName;
-   wxString             fixedCSName;
-   wxString             targetCSName;
-   wxString             potPath;
+   std::string             inputCSName;
+   std::string             fixedCSName;
+   std::string             targetCSName;
+   std::string             potPath;
    
    CoordinateSystem        *inputCS;
    CoordinateSystem        *fixedCS;

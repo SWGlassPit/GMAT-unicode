@@ -33,8 +33,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Exp::Exp(const wxString &nomme)
-   : MathFunction(wxT("Exp"), nomme)
+Exp::Exp(const std::string &nomme)
+   : MathFunction("Exp", nomme)
 {
 }
 
@@ -93,7 +93,7 @@ void Exp::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
    leftNode->GetOutputInfo(type1, row1, col1);
    
    if (type1 != Gmat::REAL_TYPE)
-      throw MathException(wxT("Left is not scalar, so cannot do Exp().\n"));  
+      throw MathException("Left is not scalar, so cannot do Exp().\n");  
    else
    {
       type = type1;
@@ -114,7 +114,7 @@ void Exp::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 bool Exp::ValidateInputs()
 {
    if (leftNode == NULL)
-      throw MathException(wxT("Exp() - Missing input arguments.\n"));
+      throw MathException("Exp() - Missing input arguments.\n");
    
    Integer type1, row1, col1; // Left node
    

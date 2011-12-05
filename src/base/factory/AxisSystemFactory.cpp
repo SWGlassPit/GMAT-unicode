@@ -47,7 +47,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  CreateObject(const wxString &ofType, const wxString &withName)
+//  CreateObject(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested ODEModel class
@@ -58,14 +58,14 @@
  *
  */
 //------------------------------------------------------------------------------
-AxisSystem* AxisSystemFactory::CreateObject(const wxString &ofType,
-                                            const wxString &withName)
+AxisSystem* AxisSystemFactory::CreateObject(const std::string &ofType,
+                                            const std::string &withName)
 {
    return CreateAxisSystem(ofType, withName);
 }
 
 //------------------------------------------------------------------------------
-// AxisSystem* CreateAxisSystem(wxString ofType, wxString withName)
+// AxisSystem* CreateAxisSystem(std::string ofType, std::string withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an AxisSystem object of the requested 
@@ -77,75 +77,75 @@ AxisSystem* AxisSystemFactory::CreateObject(const wxString &ofType,
  */
 //------------------------------------------------------------------------------
 AxisSystem*
-AxisSystemFactory::CreateAxisSystem(const wxString &ofType,
-                                    const wxString &withName)
+AxisSystemFactory::CreateAxisSystem(const std::string &ofType,
+                                    const std::string &withName)
 {
    AxisSystem *withAxes = NULL;
-   if (ofType == wxT("MJ2000Eq"))
+   if (ofType == "MJ2000Eq")
    {
       withAxes = new MJ2000EqAxes(withName);
    }
-   else if (ofType == wxT("MJ2000Ec"))
+   else if (ofType == "MJ2000Ec")
    {
       withAxes = new MJ2000EcAxes(withName);
    }
-   else if (ofType == wxT("TOEEq"))
+   else if (ofType == "TOEEq")
    {
       withAxes = new TOEEqAxes(withName);
    }
-   else if (ofType == wxT("TOEEc"))
+   else if (ofType == "TOEEc")
    {
       withAxes = new TOEEcAxes(withName);
    }
-   else if (ofType == wxT("MOEEq"))
+   else if (ofType == "MOEEq")
    {
       withAxes = new MOEEqAxes(withName);
    }
-   else if (ofType == wxT("MOEEc"))
+   else if (ofType == "MOEEc")
    {
       withAxes = new MOEEcAxes(withName);
    }
-   else if (ofType == wxT("TODEq"))
+   else if (ofType == "TODEq")
    {
       withAxes = new TODEqAxes(withName);
    }
-   else if (ofType == wxT("TODEc"))
+   else if (ofType == "TODEc")
    {
       withAxes = new TODEcAxes(withName);
    }
-   else if (ofType == wxT("MODEq"))
+   else if (ofType == "MODEq")
    {
       withAxes = new MODEqAxes(withName);
    }
-   else if (ofType == wxT("MODEc"))
+   else if (ofType == "MODEc")
    {
       withAxes = new MODEcAxes(withName);
    }
-   else if (ofType == wxT("ObjectReferenced"))  
+   else if (ofType == "ObjectReferenced")  
    {
       withAxes = new ObjectReferencedAxes(withName);
    }
-   else if (ofType == wxT("Equator"))
+   else if (ofType == "Equator")
    {
       withAxes = new EquatorAxes(withName);
    }
-   else if (ofType == wxT("BodyFixed"))
+   else if (ofType == "BodyFixed")
    {
       withAxes = new BodyFixedAxes(withName);
    }
-   else if (ofType == wxT("BodyInertial"))
+   else if (ofType == "BodyInertial")
    {
       withAxes = new BodyInertialAxes(withName);
    }
-   else if ((ofType == wxT("GSE")) || (ofType == wxT("GeocentricSolarEcliptic")))
+   else if ((ofType == "GSE") || (ofType == "GeocentricSolarEcliptic"))
    {
       withAxes = new GeocentricSolarEclipticAxes(withName);
    }
-   else if ((ofType == wxT("GSM")) || (ofType == wxT("GeocentricSolarMagnetic")))
+   else if ((ofType == "GSM") || (ofType == "GeocentricSolarMagnetic"))
    {
       withAxes = new GeocentricSolarMagneticAxes(withName);
    }
-   else if (ofType == wxT("Topocentric"))
+   else if (ofType == "Topocentric")
    {
       withAxes = new TopocentricAxes(withName);
    }
@@ -168,23 +168,23 @@ Factory(Gmat::AXIS_SYSTEM) //loj: 1/19/05 Changed from ATMOSPHERE
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("MJ2000Eq"));
-      creatables.push_back(wxT("MJ2000Ec"));
-      creatables.push_back(wxT("TOEEq"));
-      creatables.push_back(wxT("TOEEc"));
-      creatables.push_back(wxT("MOEEq"));
-      creatables.push_back(wxT("MOEEc"));
-      creatables.push_back(wxT("TODEq"));
-      creatables.push_back(wxT("TODEc"));
-      creatables.push_back(wxT("MODEq"));
-      creatables.push_back(wxT("MODEc"));
-      creatables.push_back(wxT("ObjectReferenced"));
-      creatables.push_back(wxT("Equator"));
-      creatables.push_back(wxT("BodyFixed"));
-      creatables.push_back(wxT("BodyInertial"));
-      creatables.push_back(wxT("GSE"));
-      creatables.push_back(wxT("GSM"));
-      creatables.push_back(wxT("Topocentric"));
+      creatables.push_back("MJ2000Eq");
+      creatables.push_back("MJ2000Ec");
+      creatables.push_back("TOEEq");
+      creatables.push_back("TOEEc");
+      creatables.push_back("MOEEq");
+      creatables.push_back("MOEEc");
+      creatables.push_back("TODEq");
+      creatables.push_back("TODEc");
+      creatables.push_back("MODEq");
+      creatables.push_back("MODEc");
+      creatables.push_back("ObjectReferenced");
+      creatables.push_back("Equator");
+      creatables.push_back("BodyFixed");
+      creatables.push_back("BodyInertial");
+      creatables.push_back("GSE");
+      creatables.push_back("GSM");
+      creatables.push_back("Topocentric");
    }
 }
 
@@ -211,7 +211,7 @@ Factory(createList,Gmat::AXIS_SYSTEM)
  * This method creates an object of the class AxisSystemFactory
  * (copy constructor).
  *
- * @param <fact> the factory object to copy to wxT("this") factory.
+ * @param <fact> the factory object to copy to "this" factory.
  */
 //------------------------------------------------------------------------------
 AxisSystemFactory::AxisSystemFactory(const AxisSystemFactory& fact) :
@@ -225,10 +225,10 @@ Factory(fact)
 /**
  * Assignment operator for the AxisSystemFactory class.
  *
- * @param <fact> the AxisSystemFactory object whose data to assign to wxT("this")
+ * @param <fact> the AxisSystemFactory object whose data to assign to "this"
  *               factory.
  *
- * @return wxT("this") AxisSystemFactory with data of input factory fact.
+ * @return "this" AxisSystemFactory with data of input factory fact.
  */
 //------------------------------------------------------------------------------
 AxisSystemFactory& AxisSystemFactory::operator= (

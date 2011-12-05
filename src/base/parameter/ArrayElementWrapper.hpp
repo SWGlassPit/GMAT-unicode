@@ -45,18 +45,18 @@ public:
    virtual Gmat::ParameterType GetDataType() const;
    
    virtual const StringArray& GetRefObjectNames();
-   virtual GmatBase*          GetRefObject(const wxString &name = wxT(""));
+   virtual GmatBase*          GetRefObject(const std::string &name = "");
    virtual bool               SetRefObject(GmatBase *obj);
    virtual Real               EvaluateReal() const;
    virtual bool               SetReal(const Real toValue);
    // need to override this method, to handle the arrayName, rowName,
    // and columnName data members
-   virtual bool               RenameObject(const wxString &oldName, 
-                                           const wxString &newName);
+   virtual bool               RenameObject(const std::string &oldName, 
+                                           const std::string &newName);
    
    /// additioanl methods needed to handle the row and column elements
-   virtual wxString        GetRowName();
-   virtual wxString        GetColumnName();
+   virtual std::string        GetRowName();
+   virtual std::string        GetColumnName();
    
    virtual bool               SetRow(ElementWrapper* toWrapper);
    virtual bool               SetColumn(ElementWrapper* toWrapper);
@@ -70,11 +70,11 @@ protected:
    ElementWrapper *column;   
    
    /// name of the array
-   wxString     arrayName;
+   std::string     arrayName;
    
    // names (description strings) for those row and column wrappers
-   wxString     rowName;
-   wxString     columnName;
+   std::string     rowName;
+   std::string     columnName;
    
    virtual void            SetupWrapper(); 
 };

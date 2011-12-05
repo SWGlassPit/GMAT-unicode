@@ -30,12 +30,12 @@
 //---------------------------------
 
 /// Labels used for the hardware element parameters.
-const wxString
+const std::string
 Hardware::PARAMETER_TEXT[HardwareParamCount - GmatBaseParamCount] =
 {
-   wxT("X_Direction"),
-   wxT("Y_Direction"), 
-   wxT("Z_Direction")
+   "X_Direction",
+   "Y_Direction", 
+   "Z_Direction"
 };
 
 
@@ -51,8 +51,8 @@ Hardware::PARAMETER_TYPE[HardwareParamCount - GmatBaseParamCount] =
 
 
 //------------------------------------------------------------------------------
-//  Hardware(Gmat::ObjectType typeId, const wxString &typeStr, 
-//           const wxString &nomme)
+//  Hardware(Gmat::ObjectType typeId, const std::string &typeStr, 
+//           const std::string &nomme)
 //------------------------------------------------------------------------------
 /**
  * Hardware base class constructor.
@@ -62,12 +62,12 @@ Hardware::PARAMETER_TYPE[HardwareParamCount - GmatBaseParamCount] =
  * @param nomme Name of the component.
  */
 //------------------------------------------------------------------------------
-Hardware::Hardware(Gmat::ObjectType typeId, const wxString &typeStr, 
-                   const wxString &nomme) :
+Hardware::Hardware(Gmat::ObjectType typeId, const std::string &typeStr, 
+                   const std::string &nomme) :
    GmatBase(typeId, typeStr, nomme)
 {
    objectTypes.push_back(Gmat::HARDWARE);
-   objectTypeNames.push_back(wxT("Hardware"));
+   objectTypeNames.push_back("Hardware");
 
    direction[0] = 1.0;
    direction[1] = 0.0;
@@ -155,7 +155,7 @@ Hardware& Hardware::operator=(const Hardware& hw)
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -166,7 +166,7 @@ Hardware& Hardware::operator=(const Hardware& hw)
  *
  */
 //------------------------------------------------------------------------------
-wxString Hardware::GetParameterText(const Integer id) const
+std::string Hardware::GetParameterText(const Integer id) const
 {
    if (id >= GmatBaseParamCount && id < HardwareParamCount)
       return PARAMETER_TEXT[id - GmatBaseParamCount];
@@ -174,7 +174,7 @@ wxString Hardware::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -185,7 +185,7 @@ wxString Hardware::GetParameterText(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer Hardware::GetParameterID(const wxString &str) const
+Integer Hardware::GetParameterID(const std::string &str) const
 {
    for (Integer i = GmatBaseParamCount; i < HardwareParamCount; i++)
    {
@@ -219,7 +219,7 @@ Gmat::ParameterType Hardware::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -230,7 +230,7 @@ Gmat::ParameterType Hardware::GetParameterType(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString Hardware::GetParameterTypeString(const Integer id) const
+std::string Hardware::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -290,7 +290,7 @@ Real Hardware::SetRealParameter(const Integer id, const Real value)
          
       case DIRECTION_Z:
 //         if (value < 0) {
-//            throw HardwareException(wxT("Z_Direction must be >= 0")); 
+//            throw HardwareException("Z_Direction must be >= 0"); 
 //         }
          return direction[2] = value;
       default:
@@ -314,7 +314,7 @@ Real Hardware::SetRealParameter(const Integer id, const Real value)
  * @return The parameter's value.
  */
 //------------------------------------------------------------------------------
-Real Hardware::GetRealParameter(const wxString &label) const
+Real Hardware::GetRealParameter(const std::string &label) const
 {
    return GetRealParameter(GetParameterID(label));
 }
@@ -333,7 +333,7 @@ Real Hardware::GetRealParameter(const wxString &label) const
  *         if the parameter id is invalid or the parameter type is not Real.
  */
 //------------------------------------------------------------------------------
-Real Hardware::SetRealParameter(const wxString &label, const Real value)
+Real Hardware::SetRealParameter(const std::string &label, const Real value)
 {
    return SetRealParameter(GetParameterID(label), value);
 }
@@ -345,9 +345,9 @@ Real Hardware::SetRealParameter(const wxString &label, const Real value)
 // or not.
 //------------------------------------------------------------------------
 /*
-bool Hardware::VerifyRefObject(wxString subTypeName, GmatBase* obj)
+bool Hardware::VerifyRefObject(std::string subTypeName, GmatBase* obj)
 {
-	MessageInterface::ShowMessage(wxT("Hardware::VerifyRefObject \n"));
+	MessageInterface::ShowMessage("Hardware::VerifyRefObject \n");
 	return true;
 }
 */

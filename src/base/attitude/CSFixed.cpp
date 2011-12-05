@@ -39,19 +39,19 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-//  CSFixed(const wxString &itsName)
+//  CSFixed(const std::string &itsName)
 //------------------------------------------------------------------------------
 /**
  * This method creates an object of the CSFixed class (Constructor).
  * The default value is the (0,0,0,1) quaternion.
  */
 //------------------------------------------------------------------------------
-CSFixed::CSFixed(const wxString &itsName) : 
-   Kinematic(wxT("CoordinateSystemFixed"),itsName)
+CSFixed::CSFixed(const std::string &itsName) : 
+   Kinematic("CoordinateSystemFixed",itsName)
 {
    parameterCount = CSFixedParamCount;
-   objectTypeNames.push_back(wxT("CoordinateSystemFixed"));
-   attitudeModelName = wxT("CoordinateSystemFixed");
+   objectTypeNames.push_back("CoordinateSystemFixed");
+   attitudeModelName = "CoordinateSystemFixed";
  }
  
  //------------------------------------------------------------------------------
@@ -155,7 +155,7 @@ void CSFixed::ComputeCosineMatrixAndAngularVelocity(Real atTime)
    if (isInitialized && needsReinit)  Initialize();
    #ifdef DEBUG_CSFIXED
    MessageInterface::ShowMessage(
-   wxT("Entering CSFixed::Compute ... angVel = %.12f %.12f %.12f\n"),
+   "Entering CSFixed::Compute ... angVel = %.12f %.12f %.12f\n",
    angVel[0] * GmatMathUtil::DEG_PER_RAD, angVel[1] * GmatMathUtil::DEG_PER_RAD, 
    angVel[2] * GmatMathUtil::DEG_PER_RAD);
    #endif
@@ -178,7 +178,7 @@ void CSFixed::ComputeCosineMatrixAndAngularVelocity(Real atTime)
    angVel(2)   = wxIBB(1,0);
    #ifdef DEBUG_CSFIXED
    MessageInterface::ShowMessage(
-   wxT("EXITING CSFixed::Compute ... angVel = %.12f %.12f %.12f\n"),
+   "EXITING CSFixed::Compute ... angVel = %.12f %.12f %.12f\n",
    angVel[0] * GmatMathUtil::DEG_PER_RAD, angVel[1] * GmatMathUtil::DEG_PER_RAD, 
    angVel[2] * GmatMathUtil::DEG_PER_RAD);
    #endif

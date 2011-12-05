@@ -31,8 +31,8 @@
 class SolverFactory : public Factory
 {
 public:
-   virtual Solver* CreateSolver(const wxString &ofType,
-                                const wxString &withName /* = wxT("") */);
+   virtual Solver* CreateSolver(const std::string &ofType,
+                                const std::string &withName /* = "" */);
    
    // default constructor
    SolverFactory();
@@ -45,8 +45,8 @@ public:
 
    virtual ~SolverFactory();
    
-   virtual bool DoesObjectTypeMatchSubtype(const wxString &theType,
-                                           const wxString &theSubtype);
+   virtual bool DoesObjectTypeMatchSubtype(const std::string &theType,
+                                           const std::string &theSubtype);
 };
 
 #endif // SolverFactory_hpp

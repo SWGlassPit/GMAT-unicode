@@ -64,12 +64,12 @@ namespace GmatRealUtil
    std::istream& operator>> (std::istream &input, Rmatrix &a);
    std::ostream& operator<< (std::ostream &output, const Rmatrix &a); 
    
-   wxString ToString(const Real &rval, bool useCurrentFormat = true,
+   std::string ToString(const Real &rval, bool useCurrentFormat = true,
                         bool scientific = false, bool showPoint = false,
                         Integer precision = GmatGlobal::DATA_PRECISION,
                         Integer width = GmatGlobal::DATA_WIDTH);
    
-   wxString ToString(const Integer &ival, bool useCurrentFormat = true,
+   std::string ToString(const Integer &ival, bool useCurrentFormat = true,
                         Integer width = GmatGlobal::INTEGER_WIDTH);
 }
 #endif // Linear_hpp

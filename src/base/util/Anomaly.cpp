@@ -38,14 +38,14 @@ using namespace GmatMathConstants;
 //---------------------------------
 // static data
 //---------------------------------
-const wxString Anomaly::ANOMALY_LONG_TEXT[AnomalyTypeCount] =
+const std::string Anomaly::ANOMALY_LONG_TEXT[AnomalyTypeCount] =
 {
-   wxT("True Anomaly"), wxT("Mean Anomaly"), wxT("Eccentric Anomaly"), wxT("Hyperbolic Anomaly"),
+   "True Anomaly", "Mean Anomaly", "Eccentric Anomaly", "Hyperbolic Anomaly",
 };
 
-const wxString Anomaly::ANOMALY_SHORT_TEXT[AnomalyTypeCount] =
+const std::string Anomaly::ANOMALY_SHORT_TEXT[AnomalyTypeCount] =
 {
-   wxT("TA"), wxT("MA"), wxT("EA"), wxT("HA"),
+   "TA", "MA", "EA", "HA",
 };
 
 
@@ -89,17 +89,17 @@ Anomaly::Anomaly(Real sma, Real ecc, Real value, AnomalyType type,
    
    #ifdef DEBUG_ANOMALY
    MessageInterface::ShowMessage
-      (wxT("Anomaly::Anomaly() mEcc=%f, mAnomalyInRad=%f, mType=%d (%s)\n"),
+      ("Anomaly::Anomaly() mEcc=%f, mAnomalyInRad=%f, mType=%d (%s)\n",
        mEcc, mAnomalyInRad, mType, GetTypeString().c_str());
    #endif
 }
 
 
 //------------------------------------------------------------------------------
-// Anomaly(Real sma, Real ecc, Real value, const wxString &type = wxT("TA"),
+// Anomaly(Real sma, Real ecc, Real value, const std::string &type = "TA",
 //         bool valueInRadians = false)
 //------------------------------------------------------------------------------
-Anomaly::Anomaly(Real sma, Real ecc, Real value, const wxString &type,
+Anomaly::Anomaly(Real sma, Real ecc, Real value, const std::string &type,
                  bool valueInRadians)
 {
    Anomaly(sma, ecc, value, GetType(type), valueInRadians);
@@ -190,7 +190,7 @@ void Anomaly::Set(Real sma, Real ecc, Real value, AnomalyType type,
 
 
 //------------------------------------------------------------------------------
-// void Set(Real sma, Real ecc, Real value, const wxString &type,
+// void Set(Real sma, Real ecc, Real value, const std::string &type,
 //          bool valueInRadians = false)
 //------------------------------------------------------------------------------
 /**
@@ -203,11 +203,11 @@ void Anomaly::Set(Real sma, Real ecc, Real value, AnomalyType type,
  * @param <valueInRadians>  true if value is in radians
  */
 //------------------------------------------------------------------------------
-void Anomaly::Set(Real sma, Real ecc, Real value, const wxString &type,
+void Anomaly::Set(Real sma, Real ecc, Real value, const std::string &type,
                   bool valueInRadians)
 {
    #ifdef DEBUG_ANOMALY
-      MessageInterface::ShowMessage(wxT("Anomaly::Set called with AnomalyType = %s\n"),
+      MessageInterface::ShowMessage("Anomaly::Set called with AnomalyType = %s\n",
             type.c_str());
    #endif
    Set(sma, ecc, value, GetType(type), valueInRadians);
@@ -234,7 +234,7 @@ Real Anomaly::GetValue(bool inRadians) const
 
    #ifdef DEBUG_ANOMALY
    MessageInterface::ShowMessage
-      (wxT("Anomaly::GetValue() returning %.18f\n"), value);
+      ("Anomaly::GetValue() returning %.18f\n", value);
    #endif
    
    return value;
@@ -256,7 +256,7 @@ Real Anomaly::GetValue(AnomalyType type, bool inRadians) const
 {
    #ifdef DEBUG_ANOMALY
    MessageInterface::ShowMessage
-      (wxT("Anomaly::GetValue() type=%d, inRadians=%d, mType=%d, mAnomalyInRad=%f\n"),
+      ("Anomaly::GetValue() type=%d, inRadians=%d, mType=%d, mAnomalyInRad=%f\n",
        type, inRadians, mType, mAnomalyInRad);
    #endif
    
@@ -265,7 +265,7 @@ Real Anomaly::GetValue(AnomalyType type, bool inRadians) const
 
 
 //------------------------------------------------------------------------------
-// Real GetValue(const wxString &type, bool valueInRadians = false) const
+// Real GetValue(const std::string &type, bool valueInRadians = false) const
 //------------------------------------------------------------------------------
 /** 
  * Gets anomaly value from the given anomaly type.
@@ -275,7 +275,7 @@ Real Anomaly::GetValue(AnomalyType type, bool inRadians) const
  * @return Anomaly value.
  */
 //------------------------------------------------------------------------------
-Real Anomaly::GetValue(const wxString &type, bool valueInRadians) const
+Real Anomaly::GetValue(const std::string &type, bool valueInRadians) const
 {
    return GetValue(GetType(type), valueInRadians);
 }
@@ -301,29 +301,29 @@ void Anomaly::SetValue(Real value, bool valueInRadians)
 
 
 //------------------------------------------------------------------------------
-// AnomalyType GetType(const wxString &typeStr) const
+// AnomalyType GetType(const std::string &typeStr) const
 //------------------------------------------------------------------------------
 /** 
  * @return  AnomalyType of input type string.
  */
 //------------------------------------------------------------------------------
-Anomaly::AnomalyType Anomaly::GetType(const wxString &typeStr) const
+Anomaly::AnomalyType Anomaly::GetType(const std::string &typeStr) const
 {
    return GetAnomalyType(typeStr);
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetTypeString() const
+// std::string GetTypeString() const
 //------------------------------------------------------------------------------
 /*
  * Returns internal type in string
  */
 //------------------------------------------------------------------------------
-wxString Anomaly::GetTypeString() const
+std::string Anomaly::GetTypeString() const
 {
    #ifdef DEBUG_ANOMALY
-      MessageInterface::ShowMessage(wxT("Entering GetTypeString and mType = %d\n"),
+      MessageInterface::ShowMessage("Entering GetTypeString and mType = %d\n",
             (Integer) mType);
    #endif
    return ANOMALY_SHORT_TEXT[mType];
@@ -331,7 +331,7 @@ wxString Anomaly::GetTypeString() const
 
 
 //------------------------------------------------------------------------------
-// void SetType(const wxString &type)
+// void SetType(const std::string &type)
 //------------------------------------------------------------------------------
 /** 
  * Sets anomaly type.
@@ -339,7 +339,7 @@ wxString Anomaly::GetTypeString() const
  * @param <type> Anomaly type string.
  */
 //------------------------------------------------------------------------------
-void Anomaly::SetType(const wxString &type)
+void Anomaly::SetType(const std::string &type)
 {
    SetType(GetType(type));
 }
@@ -359,7 +359,7 @@ Real Anomaly::GetTrueAnomaly(bool inRadians) const
 {
    #if DEBUG_ANOMALY
    MessageInterface::ShowMessage
-      (wxT("Anomaly::GetTrueAnomaly() mEcc=%f, mAnomalyInRad=%f\n"), mEcc, mAnomalyInRad);
+      ("Anomaly::GetTrueAnomaly() mEcc=%f, mAnomalyInRad=%f\n", mEcc, mAnomalyInRad);
    #endif
    
    Real ta = mAnomalyInRad;
@@ -372,7 +372,7 @@ Real Anomaly::GetTrueAnomaly(bool inRadians) const
       }
       catch(UtilityException &ue)
       {
-         wxString msg = wxT("Anomaly::GetTrueAnomaly - ") + ue.GetFullMessage();
+         std::string msg = "Anomaly::GetTrueAnomaly - " + ue.GetFullMessage();
          throw UtilityException(msg); 
       }
    }
@@ -380,12 +380,12 @@ Real Anomaly::GetTrueAnomaly(bool inRadians) const
    {
       if (mSma >= 0.0 && mEcc <= 1.0)
       {
-         wxString typeStr = GetTypeString();
+         std::string typeStr = GetTypeString();
          
          throw UtilityException
-            (wxT("Anomaly Type: \"") + typeStr + wxT("\", SMA: \"") +
-             GmatStringUtil::ToString(mSma) + wxT("\",  and ECC: \"") +
-             GmatStringUtil::ToString(mEcc) + wxT("\" are incompatible."));
+            ("Anomaly Type: \"" + typeStr + "\", SMA: \"" +
+             GmatStringUtil::ToString(mSma) + "\",  and ECC: \"" +
+             GmatStringUtil::ToString(mEcc) + "\" are incompatible.");
       }
       
       ta = Keplerian::MeanToTrueAnomaly(mAnomalyInRad * DEG_PER_RAD, mEcc) * RAD_PER_DEG;
@@ -395,7 +395,7 @@ Real Anomaly::GetTrueAnomaly(bool inRadians) const
       ta = ta * DEG_PER_RAD;
    
    #if DEBUG_ANOMALY
-   MessageInterface::ShowMessage(wxT("Anomaly::GetTrueAnomaly() returning %f\n"), ta);
+   MessageInterface::ShowMessage("Anomaly::GetTrueAnomaly() returning %f\n", ta);
    #endif
    
    return ta;
@@ -427,7 +427,7 @@ Real Anomaly::GetMeanAnomaly(bool inRadians) const
       ma = ma * DEG_PER_RAD;
    
    #if DEBUG_ANOMALY
-   MessageInterface::ShowMessage(wxT("Anomaly::GetMeanAnomaly() returning %f\n"), ma);
+   MessageInterface::ShowMessage("Anomaly::GetMeanAnomaly() returning %f\n", ma);
    #endif
 
    return ma;
@@ -459,7 +459,7 @@ Real Anomaly::GetEccentricAnomaly(bool inRadians) const
       ea = ea * DEG_PER_RAD;
    
    #if DEBUG_ANOMALY
-   MessageInterface::ShowMessage(wxT("Anomaly::GetEccentricAnomaly() returning %f\n"), ea);
+   MessageInterface::ShowMessage("Anomaly::GetEccentricAnomaly() returning %f\n", ea);
    #endif
    
    return ea;
@@ -490,7 +490,7 @@ Real Anomaly::GetHyperbolicAnomaly(bool inRadians) const
       ha = ha * DEG_PER_RAD;
    
    #if DEBUG_ANOMALY
-   MessageInterface::ShowMessage(wxT("Anomaly::GetHyperbolicAnomaly() returning %f\n"), ha);
+   MessageInterface::ShowMessage("Anomaly::GetHyperbolicAnomaly() returning %f\n", ha);
    #endif
    
    return ha;
@@ -498,7 +498,7 @@ Real Anomaly::GetHyperbolicAnomaly(bool inRadians) const
 
 
 //------------------------------------------------------------------------------
-// bool IsInvalid(const wxString &typeStr) const
+// bool IsInvalid(const std::string &typeStr) const
 //------------------------------------------------------------------------------
 /** 
  * Determines if the anomlay type is invalid.
@@ -506,7 +506,7 @@ Real Anomaly::GetHyperbolicAnomaly(bool inRadians) const
  * @return   true if invalid, false it is valid.
  */
 //------------------------------------------------------------------------------
-bool Anomaly::IsInvalid(const wxString &typeStr) const
+bool Anomaly::IsInvalid(const std::string &typeStr) const
 {
    for (int i=0; i<AnomalyTypeCount; i++)
    {
@@ -540,7 +540,7 @@ Real Anomaly::Convert(AnomalyType toType, bool inRadians) const
 {
    #ifdef DEBUG_ANOMALY
    MessageInterface::ShowMessage
-      (wxT("Anomaly::Convert() toType=%d, inRadians=%d, mType=%d, mAnomalyInRad=%f\n"),
+      ("Anomaly::Convert() toType=%d, inRadians=%d, mType=%d, mAnomalyInRad=%f\n",
        toType, inRadians, mType, mAnomalyInRad);
    #endif
    
@@ -557,13 +557,13 @@ Real Anomaly::Convert(AnomalyType toType, bool inRadians) const
    else if (toType == HA)
       value = GetHyperbolicAnomaly(true);
    else
-      throw UtilityException(wxT("Anomaly::Convert() - invalid input type"));
+      throw UtilityException("Anomaly::Convert() - invalid input type");
    
    if (!inRadians)
       value = value * DEG_PER_RAD;
    
    #ifdef DEBUG_ANOMALY
-   MessageInterface::ShowMessage(wxT("Anomaly::Convert() returning %f\n"), value);
+   MessageInterface::ShowMessage("Anomaly::Convert() returning %f\n", value);
    #endif
    
    return value;
@@ -571,7 +571,7 @@ Real Anomaly::Convert(AnomalyType toType, bool inRadians) const
 
 
 //------------------------------------------------------------------------------
-// Real Convert(const wxString &toType, bool inRadians = false) const
+// Real Convert(const std::string &toType, bool inRadians = false) const
 //------------------------------------------------------------------------------
 /** 
  * Converts anomaly value.
@@ -582,7 +582,7 @@ Real Anomaly::Convert(AnomalyType toType, bool inRadians) const
  * @return Converted anomaly type 
  */
 //------------------------------------------------------------------------------
-Real Anomaly::Convert(const wxString &toType,  bool inRadians) const
+Real Anomaly::Convert(const std::string &toType,  bool inRadians) const
 {
    return Convert(GetType(toType), inRadians);
 }
@@ -608,7 +608,7 @@ Anomaly Anomaly::ConvertToAnomaly(AnomalyType toType, bool inRadians)
 
 
 //------------------------------------------------------------------------------
-// Anomaly ConvertToAnomaly(const wxString &toType, bool inRadians = false)
+// Anomaly ConvertToAnomaly(const std::string &toType, bool inRadians = false)
 //------------------------------------------------------------------------------
 /*
  * Converts internal anomaly using toType and returns new Anomaly.
@@ -617,29 +617,30 @@ Anomaly Anomaly::ConvertToAnomaly(AnomalyType toType, bool inRadians)
  * @param <inRadians>  true if output value in radians is requested
  */
 //------------------------------------------------------------------------------
-Anomaly Anomaly::ConvertToAnomaly(const wxString &toType, bool inRadians)
+Anomaly Anomaly::ConvertToAnomaly(const std::string &toType, bool inRadians)
 {
    return ConvertToAnomaly(GetType(toType), inRadians);
 }
 
 
 //------------------------------------------------------------------------------
-//  wxString ToString(Integer precision = GmatIO::DATA_PRECISION)
+//  std::string ToString(Integer precision = GmatIO::DATA_PRECISION)
 //------------------------------------------------------------------------------
 /**
  * @return data value string
  */
 //------------------------------------------------------------------------------
-wxString Anomaly::ToString(Integer precision)
+std::string Anomaly::ToString(Integer precision)
 {
-   wxString ss(wxT(""));
+   std::stringstream ss("");
+   ss.precision(precision);
    
-   ss << wxT("Anomaly Type: ") << GetTypeString();
-   ss << wxT(", SMA: ") << mSma;
-   ss << wxT(", ECC: ") << mEcc;
-   ss << wxT(", Value: ") << GetValue();
+   ss << "Anomaly Type: " << GetTypeString();
+   ss << ", SMA: " << mSma;
+   ss << ", ECC: " << mEcc;
+   ss << ", Value: " << GetValue();
       
-   return ss;
+   return ss.str();
 }
 
 //---------------------------------
@@ -647,16 +648,16 @@ wxString Anomaly::ToString(Integer precision)
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// AnomalyType GetAnomalyType(const wxString &typeStr)
+// AnomalyType GetAnomalyType(const std::string &typeStr)
 //------------------------------------------------------------------------------
 /** 
  * @return  AnomalyType of input type string.
  */
 //------------------------------------------------------------------------------
-Anomaly::AnomalyType Anomaly::GetAnomalyType(const wxString &typeStr)
+Anomaly::AnomalyType Anomaly::GetAnomalyType(const std::string &typeStr)
 {
    #ifdef DEBUG_ANOMALY
-      MessageInterface::ShowMessage(wxT("GetAnomalyType (%s) called.\n"), typeStr.c_str());
+      MessageInterface::ShowMessage("GetAnomalyType (%s) called.\n", typeStr.c_str());
    #endif
    for (int i=0; i<AnomalyTypeCount; i++)
    {
@@ -671,68 +672,68 @@ Anomaly::AnomalyType Anomaly::GetAnomalyType(const wxString &typeStr)
    }
    
    throw UtilityException
-      (wxT("Invalid Anomaly Type \"") + typeStr + wxT("\"\nAllowed ")
-       wxT("are \"TA\", \"MA\", \"EA\", \"HA\" or \n\"True Anomaly\", ")
-       wxT("\"Mean Anomaly\", \"Eccentric Anomaly\", \"Hyperbolic Anomaly\""));
+      ("Invalid Anomaly Type \"" + typeStr + "\"\nAllowed "
+       "are \"TA\", \"MA\", \"EA\", \"HA\" or \n\"True Anomaly\", "
+       "\"Mean Anomaly\", \"Eccentric Anomaly\", \"Hyperbolic Anomaly\"");
 }
 
 
 //------------------------------------------------------------------------------
-// static wxString GetTypeString(const wxString &type)
+// static std::string GetTypeString(const std::string &type)
 //------------------------------------------------------------------------------
 /*
  * Returns matching short type string of input type string.
  */
 //------------------------------------------------------------------------------
-wxString Anomaly::GetTypeString(const wxString &type)
+std::string Anomaly::GetTypeString(const std::string &type)
 {
-   if (type == wxT("True Anomaly") || type == wxT("TA"))
-      return wxT("TA");
-   else if (type == wxT("Mean Anomaly") || type == wxT("MA")) 
-      return wxT("MA");
-   else if (type == wxT("Eccentric Anomaly") || type == wxT("EA"))
-      return wxT("EA");
-   else if (type == wxT("Hyperbolic Anomaly") || type == wxT("HA"))
-      return wxT("HA");
+   if (type == "True Anomaly" || type == "TA")
+      return "TA";
+   else if (type == "Mean Anomaly" || type == "MA") 
+      return "MA";
+   else if (type == "Eccentric Anomaly" || type == "EA")
+      return "EA";
+   else if (type == "Hyperbolic Anomaly" || type == "HA")
+      return "HA";
    else
       throw UtilityException
-         (wxT("Invalid Anomaly Type \"") + type + wxT("\"\nAllowed ")
-          wxT("are \"TA\", \"MA\", \"EA\", \"HA\" or \n\"True Anomaly\", ")
-          wxT("\"Mean Anomaly\", \"Eccentric Anomaly\", \"Hyperbolic Anomaly\""));
+         ("Invalid Anomaly Type \"" + type + "\"\nAllowed "
+          "are \"TA\", \"MA\", \"EA\", \"HA\" or \n\"True Anomaly\", "
+          "\"Mean Anomaly\", \"Eccentric Anomaly\", \"Hyperbolic Anomaly\"");
    
 }
 
 
 //------------------------------------------------------------------------------
-// static wxString GetLongTypeString(const wxString &type)
+// static std::string GetLongTypeString(const std::string &type)
 //------------------------------------------------------------------------------
 /*
  * Returns matching long type string of input type string.
  */
 //------------------------------------------------------------------------------
-wxString Anomaly::GetLongTypeString(const wxString &type)
+std::string Anomaly::GetLongTypeString(const std::string &type)
 {
-   if (type == wxT("True Anomaly") || type == wxT("TA"))
-      return wxT("True Anomaly");
-   else if (type == wxT("Mean Anomaly") || type == wxT("MA")) 
-      return wxT("Mean Anomaly");
-   else if (type == wxT("Eccentric Anomaly") || type == wxT("EA"))
-      return wxT("Eccentric Anomaly");
-   else if (type == wxT("Hyperbolic Anomaly") || type == wxT("HA"))
-      return wxT("Hyperbolic Anomaly");
+   if (type == "True Anomaly" || type == "TA")
+      return "True Anomaly";
+   else if (type == "Mean Anomaly" || type == "MA") 
+      return "Mean Anomaly";
+   else if (type == "Eccentric Anomaly" || type == "EA")
+      return "Eccentric Anomaly";
+   else if (type == "Hyperbolic Anomaly" || type == "HA")
+      return "Hyperbolic Anomaly";
    else
       throw UtilityException
-         (wxT("Invalid Anomaly Type \"") + type + wxT("\"\nAllowed ")
-          wxT("are \"TA\", \"MA\", \"EA\", \"HA\" or \n\"True Anomaly\", ")
-          wxT("\"Mean Anomaly\", \"Eccentric Anomaly\", \"Hyperbolic Anomaly\""));
+         ("Invalid Anomaly Type \"" + type + "\"\nAllowed "
+          "are \"TA\", \"MA\", \"EA\", \"HA\" or \n\"True Anomaly\", "
+          "\"Mean Anomaly\", \"Eccentric Anomaly\", \"Hyperbolic Anomaly\"");
    
 }
 
 
 //------------------------------------------------------------------------------
-// static const wxString* GetLongTypeNameList()
+// static const std::string* GetLongTypeNameList()
 //------------------------------------------------------------------------------
-const wxString* Anomaly::GetLongTypeNameList()
+const std::string* Anomaly::GetLongTypeNameList()
 {
    return ANOMALY_LONG_TEXT;
 }

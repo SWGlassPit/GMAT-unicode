@@ -51,7 +51,7 @@ using namespace GmatTimeConstants;      // for JD offsets, etc.
 // static data
 //---------------------------------
 
-//const wxString
+//const std::string
 //EquatorAxes::PARAMETER_TEXT[EquatorAxesParamCount - DynamicAxesParamCount] =
 //{
 //};
@@ -66,7 +66,7 @@ using namespace GmatTimeConstants;      // for JD offsets, etc.
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-//  EquatorAxes(const wxString &itsName);
+//  EquatorAxes(const std::string &itsName);
 //------------------------------------------------------------------------------
 /**
  * Constructs base EquatorAxes structures
@@ -75,10 +75,10 @@ using namespace GmatTimeConstants;      // for JD offsets, etc.
  * @param itdName name of the EquatorAxes object.
  */
 //------------------------------------------------------------------------------
-EquatorAxes::EquatorAxes(const wxString &itsName) :
-DynamicAxes(wxT("Equator"),itsName)
+EquatorAxes::EquatorAxes(const std::string &itsName) :
+DynamicAxes("Equator",itsName)
 {
-   objectTypeNames.push_back(wxT("EquatorAxes"));
+   objectTypeNames.push_back("EquatorAxes");
    parameterCount = EquatorAxesParamCount;
    theDeFile = NULL;
 }
@@ -192,7 +192,7 @@ GmatBase* EquatorAxes::Clone() const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -203,7 +203,7 @@ GmatBase* EquatorAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-//wxString EquatorAxes::GetParameterText(const Integer id) const
+//std::string EquatorAxes::GetParameterText(const Integer id) const
 //{
 //   if (id >= DynamicAxesParamCount && id < EquatorAxesParamCount)
 //      return PARAMETER_TEXT[id - DynamicAxesParamCount];
@@ -211,7 +211,7 @@ GmatBase* EquatorAxes::Clone() const
 //}
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -222,7 +222,7 @@ GmatBase* EquatorAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-//Integer EquatorAxes::GetParameterID(const wxString &str) const
+//Integer EquatorAxes::GetParameterID(const std::string &str) const
 //{
 //   for (Integer i = DynamicAxesParamCount; i < EquatorAxesParamCount; i++)
 //   {
@@ -254,7 +254,7 @@ GmatBase* EquatorAxes::Clone() const
 //}
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -265,7 +265,7 @@ GmatBase* EquatorAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-//wxString EquatorAxes::GetParameterTypeString(const Integer id) const
+//std::string EquatorAxes::GetParameterTypeString(const Integer id) const
 //{
 //   return DynamicAxes::PARAM_TYPE_STRING[GetParameterType(id)];
 //}
@@ -293,7 +293,7 @@ void EquatorAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
                                           bool forceComputation) 
 {
    #ifdef DEBUG_EQUATOR_AXES
-      MessageInterface::ShowMessage(wxT("Entering Equator::Calculate with epoch = %.12f\n"),
+      MessageInterface::ShowMessage("Entering Equator::Calculate with epoch = %.12f\n",
          (Real) atEpoch.Get());
    #endif
    if (originName == SolarSystem::EARTH_NAME)
@@ -314,7 +314,7 @@ void EquatorAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
       else                        updateIntervalToUse = updateInterval;
       #ifdef DEBUG_EQUATOR_AXES
          MessageInterface::ShowMessage(
-            wxT("In Equator::Calculate tTDB = %.12f and updateIntervalToUse = %.12f\n"),
+            "In Equator::Calculate tTDB = %.12f and updateIntervalToUse = %.12f\n",
             tTDB, updateIntervalToUse);
       #endif
       
@@ -331,11 +331,11 @@ void EquatorAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
 
       #ifdef DEBUG_EQUATOR_AXES
          MessageInterface::ShowMessage(
-            wxT("In Equator::Calculate precData = \n%.12f %.12f %.12f\n%.12f %.12f %.12f\n%.12f %.12f %.12f\n"),
+            "In Equator::Calculate precData = \n%.12f %.12f %.12f\n%.12f %.12f %.12f\n%.12f %.12f %.12f\n",
             precData[0],precData[1],precData[2],precData[3],precData[4],
             precData[5],precData[6],precData[7],precData[8]);
          MessageInterface::ShowMessage(
-            wxT("In Equator::Calculate nutData = \n%.12f %.12f %.12f\n%.12f %.12f %.12f\n%.12f %.12f %.12f\n"),
+            "In Equator::Calculate nutData = \n%.12f %.12f %.12f\n%.12f %.12f %.12f\n%.12f %.12f %.12f\n",
             nutData[0],nutData[1],nutData[2],nutData[3],nutData[4],
             nutData[5],nutData[6],nutData[7],nutData[8]);
       #endif
@@ -358,7 +358,7 @@ void EquatorAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
       
       #ifdef DEBUG_EQUATOR_AXES
          MessageInterface::ShowMessage(
-            wxT("In Equator::rotMatrix is set to = \n%.12f %.12f %.12f\n%.12f %.12f %.12f\n%.12f %.12f %.12f\n"),
+            "In Equator::rotMatrix is set to = \n%.12f %.12f %.12f\n%.12f %.12f %.12f\n%.12f %.12f %.12f\n",
             rotMatrix(0,0),rotMatrix(0,1),rotMatrix(0,2),
             rotMatrix(1,0),rotMatrix(1,1),rotMatrix(1,2),
             rotMatrix(2,0),rotMatrix(2,1),rotMatrix(2,2));
@@ -372,7 +372,7 @@ void EquatorAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
    {
       #ifdef DEBUG_EQ_LUNA // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
          MessageInterface::ShowMessage(
-         wxT("Entering Luna Equator calculations (DE file is source)\n"));
+         "Entering Luna Equator calculations (DE file is source)\n");
       #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
       if (!theDeFile)
       {
@@ -380,7 +380,7 @@ void EquatorAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
          if (!theDeFile)
          {
             throw CoordinateSystemException(
-               wxT("No DE file specified - cannot get Moon data"));
+               "No DE file specified - cannot get Moon data");
             // should we automatically switch to IAU data here?
             // De file is initialized in its constructor
          }
@@ -390,13 +390,13 @@ void EquatorAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
       theDeFile->GetAnglesAndRates(atEpoch, librationAngles, andRates, override);
       
       #ifdef DEBUG_EQ_LUNA // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
-         MessageInterface::ShowMessage(wxT("Luna Equator: override flag = %s\n"),
-         (override? wxT("true") : wxT("false")));
+         MessageInterface::ShowMessage("Luna Equator: override flag = %s\n",
+         (override? "true" : "false"));
          MessageInterface::ShowMessage(
-         wxT("Luna Equator: libration angles from DE are: %.16f  %.16f  %.16f\n"),
+         "Luna Equator: libration angles from DE are: %.16f  %.16f  %.16f\n",
          librationAngles[0], librationAngles[1], librationAngles[2]);
          MessageInterface::ShowMessage(
-         wxT("Luna Equator: rates from DE are: %.16f  %.16f  %.16f\n"),
+         "Luna Equator: rates from DE are: %.16f  %.16f  %.16f\n",
          andRates[0], andRates[1], andRates[2]);
       #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
       Real ca1    = GmatMathUtil::Cos(librationAngles[0]);
@@ -470,7 +470,7 @@ void EquatorAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
    else  // use IAU data for all other bodies, and Luna (if DE file not selected)
    {
       #ifdef DEBUG_EQ_LUNA // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
-         MessageInterface::ShowMessage(wxT("Equator for body %s with NO DE_405_FILE source ...\n"),
+         MessageInterface::ShowMessage("Equator for body %s with NO DE_405_FILE source ...\n",
          originName.c_str());
       #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
       // this method will return alpha (deg), delta (deg), 

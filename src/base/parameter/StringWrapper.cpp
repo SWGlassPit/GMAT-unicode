@@ -38,7 +38,7 @@
 StringWrapper::StringWrapper() :
    ElementWrapper()
 {
-   value       = wxT("");
+   value       = "";
    wrapperType = Gmat::STRING_WT;
 }
 
@@ -50,7 +50,7 @@ StringWrapper::StringWrapper() :
  * Constructs base StringWrapper structures used in derived classes, by 
  * copying the input instance (copy constructor).
  *
- * @param <copy>  StringWrapper instance to copy to create wxT("this") instance.
+ * @param <copy>  StringWrapper instance to copy to create "this" instance.
  */
 //------------------------------------------------------------------------------
 StringWrapper::StringWrapper(const StringWrapper &copy) :
@@ -126,7 +126,7 @@ Gmat::ParameterType StringWrapper::GetDataType() const
 Real StringWrapper::EvaluateReal() const
 {
    throw ParameterException(
-      wxT("EvaluateReal() method not valid for wrapper of String type.\n"));
+      "EvaluateReal() method not valid for wrapper of String type.\n");
 }
 
 
@@ -144,7 +144,7 @@ Real StringWrapper::EvaluateReal() const
 bool StringWrapper::SetReal(const Real toValue)
 {
    throw ParameterException(
-      wxT("SetReal() method not valid for wrapper of String type.\n"));
+      "SetReal() method not valid for wrapper of String type.\n");
 }
 
 
@@ -158,23 +158,23 @@ bool StringWrapper::SetReal(const Real toValue)
  * 
  */
 //------------------------------------------------------------------------------
-wxString StringWrapper::EvaluateString() const
+std::string StringWrapper::EvaluateString() const
 {
    return value;
 }
 
 
 //------------------------------------------------------------------------------
-//  bool SetString(const wxString &val)
+//  bool SetString(const std::string &val)
 //------------------------------------------------------------------------------
 /**
- * Method to set the wxString value of the wrapped object.
+ * Method to set the std::string value of the wrapped object.
  *
  * @param <val> The string value to set
  * @return true if successful; false otherwise.
  */
 //------------------------------------------------------------------------------
-bool StringWrapper::SetString(const wxString &val)
+bool StringWrapper::SetString(const std::string &val)
 {
    value = val;
    return true;

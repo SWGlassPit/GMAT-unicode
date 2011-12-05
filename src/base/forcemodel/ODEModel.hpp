@@ -90,15 +90,15 @@ public:
    //--------------------------------------------------------------------------------
    // static methods
    //--------------------------------------------------------------------------------
-   static void          SetScriptAlias(const wxString& alias,
-                                       const wxString& typeName);
-   static wxString&  GetScriptAlias(const wxString& alias);
+   static void          SetScriptAlias(const std::string& alias,
+                                       const std::string& typeName);
+   static std::string&  GetScriptAlias(const std::string& alias);
 
    //--------------------------------------------------------------------------------
    // class methods
    //--------------------------------------------------------------------------------
-   ODEModel(const wxString &nomme = wxT(""), 
-            const wxString typeNomme = wxT("ODEModel"));
+   ODEModel(const std::string &nomme = "", 
+            const std::string typeNomme = "ODEModel");
    virtual ~ODEModel();
    ODEModel(const ODEModel& fdf);
    ODEModel&   operator=(const ODEModel& fdf);
@@ -116,14 +116,14 @@ public:
       
    void AddForce(PhysicalModel *pPhysicalModel);
    
-   void DeleteForce(const wxString &name);
+   void DeleteForce(const std::string &name);
    void DeleteForce(PhysicalModel *pPhyscialModel);
-   bool HasForce(const wxString &name);
+   bool HasForce(const std::string &name);
    Integer GetNumForces();
    StringArray& GetForceTypeNames();
-   wxString GetForceTypeName(Integer index);
+   std::string GetForceTypeName(Integer index);
    PhysicalModel* GetForce(Integer index) const;
-   const PhysicalModel* GetForce(wxString forcetype,
+   const PhysicalModel* GetForce(std::string forcetype,
                                  Integer whichOne = 0) const;
    void UpdateSpaceObject(Real newEpoch = -1.0);
    void UpdateFromSpaceObject();
@@ -142,66 +142,66 @@ public:
 //   virtual void SetTime(Real t);
    
    // Take action method inherited from GmatBase
-   virtual bool         TakeAction(const wxString &action,
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,
+                                   const std::string &actionData = "");
    
    // Parameter definition and accessor methods inherited from GmatBase
    virtual Integer      GetParameterCount() const;
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    virtual bool         HasRefObjectTypeArray();
    virtual const        ObjectTypeArray& GetRefObjectTypeArray();
    virtual const StringArray&
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    
    
    // Access methods derived classes can override
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    
    virtual bool         IsParameterReadOnly(const Integer id) const;
-   virtual bool         IsParameterReadOnly(const wxString &label) const;
+   virtual bool         IsParameterReadOnly(const std::string &label) const;
    
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const wxString &value) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const std::string &value) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
    
-   virtual wxString  GetOnOffParameter(const Integer id) const;
+   virtual std::string  GetOnOffParameter(const Integer id) const;
    virtual bool         SetOnOffParameter(const Integer id, 
-                                          const wxString &value);
-   virtual wxString  GetOnOffParameter(const wxString &label) const;
-   virtual bool         SetOnOffParameter(const wxString &label, 
-                                          const wxString &value);
+                                          const std::string &value);
+   virtual std::string  GetOnOffParameter(const std::string &label) const;
+   virtual bool         SetOnOffParameter(const std::string &label, 
+                                          const std::string &value);
    virtual const StringArray&
                         GetStringArrayParameter(const Integer id) const;
    virtual const StringArray&
-                        GetStringArrayParameter(const wxString &label) const;
+                        GetStringArrayParameter(const std::string &label) const;
    
    virtual Integer      GetIntegerParameter(const Integer id) const;
-   virtual Integer      GetIntegerParameter(const wxString &label) const;
+   virtual Integer      GetIntegerParameter(const std::string &label) const;
    virtual Integer      SetIntegerParameter(const Integer id,
                                             const Integer value);
-   virtual Integer      SetIntegerParameter(const wxString &label,
+   virtual Integer      SetIntegerParameter(const std::string &label,
                                             const Integer value);
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name);
+                                     const std::string &name);
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name,
+                                     const std::string &name,
                                      const Integer index);
-   virtual ObjectArray& GetRefObjectArray(const wxString& typeString);
+   virtual ObjectArray& GetRefObjectArray(const std::string& typeString);
    
    virtual Integer      GetOwnedObjectCount();
    virtual GmatBase*    GetOwnedObject(Integer whichOne);
-   virtual wxString  BuildPropertyName(GmatBase *ownedObj);
+   virtual std::string  BuildPropertyName(GmatBase *ownedObj);
    
    void                 UpdateInitialData(bool dynamicOnly = false);
    void                 ReportEpochData();
@@ -249,7 +249,7 @@ protected:
    bool parametersSetOnce;
    
    /// Name of the force model origin; actual body is the inherited forceOrigin
-   wxString centralBodyName;
+   std::string centralBodyName;
    /// Flag used to prevent unnecessary initialization calls
    bool forceMembersNotInitialized;
    
@@ -275,9 +275,9 @@ protected:
 
 
    /// Mapping between script descriptions and force names.
-   static std::map<wxString, wxString> scriptAliases;
+   static std::map<std::string, std::string> scriptAliases;
    
-   const StringArray&  BuildBodyList(wxString type) const;
+   const StringArray&  BuildBodyList(std::string type) const;
    const StringArray&  BuildCoordinateList() const;
    const StringArray&  BuildUserForceList() const;
    
@@ -285,15 +285,15 @@ protected:
 //                                           PhysicalModel *pm, Integer i);
    void                UpdateTransientForces();
    
-   wxString         BuildForceNameString(PhysicalModel *force);
+   std::string         BuildForceNameString(PhysicalModel *force);
    void                ClearForceList(bool deleteTransient = false);
    void                ClearInternalCoordinateSystems();
-   void                SetInternalCoordinateSystem(const wxString csId,
+   void                SetInternalCoordinateSystem(const std::string csId,
                                                    PhysicalModel *currentPm);
    
    // Pieces for prop with origin code
    /// Name of the common J2000 body that the state providers all use
-   wxString               j2kBodyName;
+   std::string               j2kBodyName;
    /// Pointer to the J2000 body
    CelestialBody             *j2kBody;
    
@@ -339,7 +339,7 @@ protected:
 //   std::ofstream             epochFile;
    
    /// map of mu values for SpacePoints
-   std::map<wxString, Real>    muMap;
+   std::map<std::string, Real>    muMap;
 
    enum
    {
@@ -389,7 +389,7 @@ protected:
       L2_DIFFERENCES
    };
    
-   static const wxString 
+   static const std::string 
       PARAMETER_TEXT[ODEModelParamCount - PhysicalModelParamCount];
    static const Gmat::ParameterType 
       PARAMETER_TYPE[ODEModelParamCount - PhysicalModelParamCount];

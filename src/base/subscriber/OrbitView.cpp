@@ -46,106 +46,106 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 OrbitView::PARAMETER_TEXT[OrbitViewParamCount - OrbitPlotParamCount] =
 {
-//    wxT("CoordinateSystem"),
-   wxT("ViewPointRef"),
-   wxT("ViewPointReference"),
-   wxT("ViewPointRefType"),
-   wxT("ViewPointRefVector"),
-   wxT("ViewPointVector"),
-   wxT("ViewPointVectorType"),
-   wxT("ViewPointVectorVector"),
-   wxT("ViewDirection"),
-   wxT("ViewDirectionType"),
-   wxT("ViewDirectionVector"),
-   wxT("ViewScaleFactor"),
-   wxT("ViewUpCoordinateSystem"),
-   wxT("ViewUpAxis"),
-   wxT("CelestialPlane"),
-   wxT("XYPlane"),
-   wxT("WireFrame"),
-   wxT("Axes"),
-   wxT("Grid"),
-   wxT("EarthSunLines"),
-   wxT("SunLine"),
-   wxT("Overlap"),
-   wxT("UseInitialView"),
-   wxT("StarCount"),
-   wxT("EnableStars"),
-   wxT("EnableConstellations"),
-   wxT("MinFOV"),
-   wxT("MaxFOV"),
-   wxT("InitialFOV"),
+//    "CoordinateSystem",
+   "ViewPointRef",
+   "ViewPointReference",
+   "ViewPointRefType",
+   "ViewPointRefVector",
+   "ViewPointVector",
+   "ViewPointVectorType",
+   "ViewPointVectorVector",
+   "ViewDirection",
+   "ViewDirectionType",
+   "ViewDirectionVector",
+   "ViewScaleFactor",
+   "ViewUpCoordinateSystem",
+   "ViewUpAxis",
+   "CelestialPlane",
+   "XYPlane",
+   "WireFrame",
+   "Axes",
+   "Grid",
+   "EarthSunLines",
+   "SunLine",
+   "Overlap",
+   "UseInitialView",
+   "StarCount",
+   "EnableStars",
+   "EnableConstellations",
+   "MinFOV",
+   "MaxFOV",
+   "InitialFOV",
 }; 
 
 
 const Gmat::ParameterType
 OrbitView::PARAMETER_TYPE[OrbitViewParamCount - OrbitPlotParamCount] =
 {
-//    Gmat::OBJECT_TYPE,            //wxT("CoordinateSystem")
-   Gmat::OBJECT_TYPE,            //wxT("ViewPointRef"),
-   Gmat::OBJECT_TYPE,            //wxT("ViewPointReference"),
-   Gmat::STRING_TYPE,            //wxT("ViewPointRefType")
-   Gmat::RVECTOR_TYPE,           //wxT("ViewPointRefVector"),
-   Gmat::OBJECT_TYPE,            //wxT("ViewPointVector"),
-   Gmat::STRING_TYPE,            //wxT("ViewPointVectorType"),
-   Gmat::RVECTOR_TYPE,           //wxT("ViewPointVectorVector"),
-   Gmat::OBJECT_TYPE,            //wxT("ViewDirection"),
-   Gmat::STRING_TYPE,            //wxT("ViewDirectionType"),
-   Gmat::RVECTOR_TYPE,           //wxT("ViewDirectionVector"),
-   Gmat::REAL_TYPE,              //wxT("ViewScaleFactor"),
-   Gmat::OBJECT_TYPE,            //wxT("ViewUpCoordinaetSystem")
-   Gmat::ENUMERATION_TYPE,       //wxT("ViewUpAxis")
+//    Gmat::OBJECT_TYPE,            //"CoordinateSystem"
+   Gmat::OBJECT_TYPE,            //"ViewPointRef",
+   Gmat::OBJECT_TYPE,            //"ViewPointReference",
+   Gmat::STRING_TYPE,            //"ViewPointRefType"
+   Gmat::RVECTOR_TYPE,           //"ViewPointRefVector",
+   Gmat::OBJECT_TYPE,            //"ViewPointVector",
+   Gmat::STRING_TYPE,            //"ViewPointVectorType",
+   Gmat::RVECTOR_TYPE,           //"ViewPointVectorVector",
+   Gmat::OBJECT_TYPE,            //"ViewDirection",
+   Gmat::STRING_TYPE,            //"ViewDirectionType",
+   Gmat::RVECTOR_TYPE,           //"ViewDirectionVector",
+   Gmat::REAL_TYPE,              //"ViewScaleFactor",
+   Gmat::OBJECT_TYPE,            //"ViewUpCoordinaetSystem"
+   Gmat::ENUMERATION_TYPE,       //"ViewUpAxis"
    
-   Gmat::ON_OFF_TYPE,            //wxT("CelestialPlane")
-   Gmat::ON_OFF_TYPE,            //wxT("XYPlane")
-   Gmat::ON_OFF_TYPE,            //wxT("WireFrame")
-   Gmat::ON_OFF_TYPE,            //wxT("Axes")
-   Gmat::ON_OFF_TYPE,            //wxT("Grid")
-   Gmat::ON_OFF_TYPE,            //wxT("EarthSunLines")   
-   Gmat::ON_OFF_TYPE,            //wxT("SunLine")   
-   Gmat::ON_OFF_TYPE,            //wxT("Overlap")
-   Gmat::ON_OFF_TYPE,            //wxT("LockView")
+   Gmat::ON_OFF_TYPE,            //"CelestialPlane"
+   Gmat::ON_OFF_TYPE,            //"XYPlane"
+   Gmat::ON_OFF_TYPE,            //"WireFrame"
+   Gmat::ON_OFF_TYPE,            //"Axes"
+   Gmat::ON_OFF_TYPE,            //"Grid"
+   Gmat::ON_OFF_TYPE,            //"EarthSunLines"   
+   Gmat::ON_OFF_TYPE,            //"SunLine"   
+   Gmat::ON_OFF_TYPE,            //"Overlap"
+   Gmat::ON_OFF_TYPE,            //"LockView"
    
-   Gmat::INTEGER_TYPE,           //wxT("StarCount")
-   Gmat::ON_OFF_TYPE,            //wxT("EnableStars")
-   Gmat::ON_OFF_TYPE,            //wxT("EnableConstellations")
+   Gmat::INTEGER_TYPE,           //"StarCount"
+   Gmat::ON_OFF_TYPE,            //"EnableStars"
+   Gmat::ON_OFF_TYPE,            //"EnableConstellations"
    
-   Gmat::INTEGER_TYPE,           //wxT("MinFOV")
-   Gmat::INTEGER_TYPE,           //wxT("MaxFOV")
-   Gmat::INTEGER_TYPE,           //wxT("InitialFOV")
+   Gmat::INTEGER_TYPE,           //"MinFOV"
+   Gmat::INTEGER_TYPE,           //"MaxFOV"
+   Gmat::INTEGER_TYPE,           //"InitialFOV"
 };
 
 
 //------------------------------------------------------------------------------
-// OrbitView(const wxString &name)
+// OrbitView(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * The default constructor
  */
 //------------------------------------------------------------------------------
-OrbitView::OrbitView(const wxString &name)
-   : OrbitPlot(wxT("OrbitView"), name)
+OrbitView::OrbitView(const std::string &name)
+   : OrbitPlot("OrbitView", name)
 {
    // GmatBase data
    parameterCount = OrbitViewParamCount;
    objectTypes.push_back(Gmat::ORBIT_VIEW);
-   objectTypeNames.push_back(wxT("OrbitView"));
+   objectTypeNames.push_back("OrbitView");
    
-   mEclipticPlane = wxT("Off");
-   mXYPlane = wxT("On");
-   mWireFrame = wxT("Off");
-   mAxes = wxT("On");
-   mGrid = wxT("Off");
-   mSunLine = wxT("Off");
-   mOverlapPlot = wxT("Off");
-   mUseInitialView = wxT("On");
+   mEclipticPlane = "Off";
+   mXYPlane = "On";
+   mWireFrame = "Off";
+   mAxes = "On";
+   mGrid = "Off";
+   mSunLine = "Off";
+   mOverlapPlot = "Off";
+   mUseInitialView = "On";
    
    // stars
-   mEnableStars = wxT("On");
-   mEnableConstellations = wxT("On");
+   mEnableStars = "On";
+   mEnableConstellations = "On";
    mStarCount = 7000;
    
    // FOV - currentrly not used and will be removed later
@@ -153,16 +153,16 @@ OrbitView::OrbitView(const wxString &name)
    mMaxFOV = 90;
    mInitialFOV = 45;
    
-   mViewUpCoordSysName = wxT("EarthMJ2000Eq");
-   mViewUpAxisName = wxT("Z");
+   mViewUpCoordSysName = "EarthMJ2000Eq";
+   mViewUpAxisName = "Z";
    
    // viewpoint
-   mViewPointRefName = wxT("Earth");
-   mViewPointRefType = wxT("Object");
-   mViewPointVecName = wxT("[ 0 0 30000 ]");
-   mViewPointVecType = wxT("Vector");
-   mViewDirectionName = wxT("Earth");
-   mViewDirectionType= wxT("Object");
+   mViewPointRefName = "Earth";
+   mViewPointRefType = "Object";
+   mViewPointVecName = "[ 0 0 30000 ]";
+   mViewPointVecType = "Vector";
+   mViewDirectionName = "Earth";
+   mViewDirectionType= "Object";
    mViewScaleFactor = 1.0;
    mViewPointRefVector.Set(0.0, 0.0, 0.0);
    mViewPointVecVector.Set(0.0, 0.0, 30000.0);
@@ -298,45 +298,45 @@ OrbitView& OrbitView::operator=(const OrbitView& ov)
 //------------------------------------------------------------------------------
 OrbitView::~OrbitView()
 {
-   PlotInterface::TakeGlAction(instanceName, wxT("ClearObjects"));
+   PlotInterface::TakeGlAction(instanceName, "ClearObjects");
 }
 
 
 //------------------------------------------------------------------------------
-// Rvector3 GetVector(const wxString &which)
+// Rvector3 GetVector(const std::string &which)
 //------------------------------------------------------------------------------
-Rvector3 OrbitView::GetVector(const wxString &which)
+Rvector3 OrbitView::GetVector(const std::string &which)
 {
-   if (which == wxT("ViewPointReference"))
+   if (which == "ViewPointReference")
       return mViewPointRefVector;
-   else if (which == wxT("ViewPointVector"))
+   else if (which == "ViewPointVector")
       return mViewPointVecVector;
-   else if (which == wxT("ViewDirection"))
+   else if (which == "ViewDirection")
       return mViewDirectionVector;
    else
-      throw SubscriberException(which + wxT(" is unknown OrbitView parameter\n"));
+      throw SubscriberException(which + " is unknown OrbitView parameter\n");
 }
 
 
 //------------------------------------------------------------------------------
-// void SetVector(const wxString &which, const Rvector3 &value)
+// void SetVector(const std::string &which, const Rvector3 &value)
 //------------------------------------------------------------------------------
-void OrbitView::SetVector(const wxString &which, const Rvector3 &value)
+void OrbitView::SetVector(const std::string &which, const Rvector3 &value)
 {
    #if DBGLVL_SET
    MessageInterface::ShowMessage
-      (wxT("OrbitView::SetVector() which=%s, value=%s\n"), which.c_str(),
+      ("OrbitView::SetVector() which=%s, value=%s\n", which.c_str(),
        value.ToString().c_str());
    #endif
    
-   if (which == wxT("ViewPointReference"))
+   if (which == "ViewPointReference")
       mViewPointRefVector = value;
-   else if (which == wxT("ViewPointVector"))
+   else if (which == "ViewPointVector")
       mViewPointVecVector = value;
-   else if (which == wxT("ViewDirection"))
+   else if (which == "ViewDirection")
       mViewDirectionVector = value;
    else
-      throw SubscriberException(which + wxT(" is unknown OrbitView parameter\n"));
+      throw SubscriberException(which + " is unknown OrbitView parameter\n");
 }
 
 
@@ -381,15 +381,15 @@ bool OrbitView::Initialize()
    {
       active = false;
       MessageInterface::PopupMessage
-         (Gmat::WARNING_, wxT("*** WARNING *** The 3DView named \"%s\" will be turned off. ")
-          wxT("It has a NULL internal coordinate system pointer.\n"), GetName().c_str());
+         (Gmat::WARNING_, "*** WARNING *** The 3DView named \"%s\" will be turned off. "
+          "It has a NULL internal coordinate system pointer.\n", GetName().c_str());
       return false;
    }
    
    #if DBGLVL_INIT
    MessageInterface::ShowMessage
-      (wxT("OrbitView::Initialize() this=<%p>'%s', active=%d, isInitialized=%d, ")
-       wxT("isEndOfReceive=%d, mAllSpCount=%d\n"), this, GetName().c_str(), active,
+      ("OrbitView::Initialize() this=<%p>'%s', active=%d, isInitialized=%d, "
+       "isEndOfReceive=%d, mAllSpCount=%d\n", this, GetName().c_str(), active,
        isInitialized, isEndOfReceive, mAllSpCount);
    #endif
    
@@ -402,7 +402,7 @@ bool OrbitView::Initialize()
    {
       #if DBGLVL_INIT
       MessageInterface::ShowMessage
-         (wxT("OrbitView::Initialize() CreateGlPlotWindow() theSolarSystem=%p\n"),
+         ("OrbitView::Initialize() CreateGlPlotWindow() theSolarSystem=%p\n",
           theSolarSystem);
       #endif
       
@@ -415,7 +415,7 @@ bool OrbitView::Initialize()
       {
          #if DBGLVL_INIT
          MessageInterface::ShowMessage
-            (wxT("   mViewPointRefObj=%p, mViewScaleFactor=%f\n"),
+            ("   mViewPointRefObj=%p, mViewScaleFactor=%f\n",
              mViewPointRefObj, mViewScaleFactor);
          #endif
          
@@ -437,13 +437,13 @@ bool OrbitView::Initialize()
          // included in the non-spacecraft list
          if (mViewCoordSystem == NULL)
             throw SubscriberException
-               (wxT("OrbitView::Initialize() CoordinateSystem: ") + mViewCoordSysName +
-                wxT(" not set\n"));
+               ("OrbitView::Initialize() CoordinateSystem: " + mViewCoordSysName +
+                " not set\n");
          
          if (mViewUpCoordSystem == NULL)
             throw SubscriberException
-               (wxT("OrbitView::Initialize() CoordinateSystem: ") + mViewUpCoordSysName +
-                wxT(" not set\n"));               
+               ("OrbitView::Initialize() CoordinateSystem: " + mViewUpCoordSysName +
+                " not set\n");               
          
          // Get View CoordinateSystem Origin pointer
          mViewCoordSysOrigin = mViewCoordSystem->GetOrigin();
@@ -470,16 +470,16 @@ bool OrbitView::Initialize()
             UpdateObjectList(mViewDirectionObj);
          
          // Add Sun to list if it was not added already to enable light source (LOJ: 2010.11.22)
-         if (find(mObjectNameArray.begin(), mObjectNameArray.end(), wxT("Sun")) ==
+         if (find(mObjectNameArray.begin(), mObjectNameArray.end(), "Sun") ==
              mObjectNameArray.end())
-            UpdateObjectList(theSolarSystem->GetBody(wxT("Sun")), false);
+            UpdateObjectList(theSolarSystem->GetBody("Sun"), false);
          
          #if DBGLVL_INIT > 1
          MessageInterface::ShowMessage
-            (wxT("   mScNameArray.size=%d, mScOrbitColorArray.size=%d\n"),
+            ("   mScNameArray.size=%d, mScOrbitColorArray.size=%d\n",
              mScNameArray.size(), mScOrbitColorArray.size());
          MessageInterface::ShowMessage
-            (wxT("   mObjectNameArray.size=%d, mOrbitColorArray.size=%d\n"),
+            ("   mObjectNameArray.size=%d, mOrbitColorArray.size=%d\n",
              mObjectNameArray.size(), mOrbitColorArray.size());
          
          bool draw, show;
@@ -488,14 +488,14 @@ bool OrbitView::Initialize()
             draw = mDrawOrbitArray[i] ? true : false;
             show = mDrawObjectArray[i] ? true : false;
             MessageInterface::ShowMessage
-               (wxT("   mObjectNameArray[%d]=%s, draw=%d, show=%d, color=%d\n"),
+               ("   mObjectNameArray[%d]=%s, draw=%d, show=%d, color=%d\n",
                 i, mObjectNameArray[i].c_str(), draw, show, mOrbitColorArray[i]);
          }
          #endif
          
          #if DBGLVL_INIT
          MessageInterface::ShowMessage
-            (wxT("   calling PlotInterface::SetGlSolarSystem(%p)\n"), theSolarSystem);
+            ("   calling PlotInterface::SetGlSolarSystem(%p)\n", theSolarSystem);
          #endif
          
          // set SolarSystem
@@ -503,10 +503,10 @@ bool OrbitView::Initialize()
          
          #if DBGLVL_INIT
          MessageInterface::ShowMessage
-            (wxT("   calling PlotInterface::SetGlObject()\n"));
+            ("   calling PlotInterface::SetGlObject()\n");
          for (UnsignedInt i=0; i<mObjectArray.size(); i++)
             MessageInterface::ShowMessage
-               (wxT("      mObjectArray[%d]=<%p>'%s'\n"), i, mObjectArray[i],
+               ("      mObjectArray[%d]=<%p>'%s'\n", i, mObjectArray[i],
                 mObjectArray[i]->GetName().c_str());
          #endif
          
@@ -519,13 +519,13 @@ bool OrbitView::Initialize()
          //--------------------------------------------------------
          #if DBGLVL_INIT
          MessageInterface::ShowMessage
-            (wxT("   theInternalCoordSystem = <%p>, origin = <%p>'%s'\n")
-             wxT("   theDataCoordSystem     = <%p>, origin = <%p>'%s'\n")
-             wxT("   mViewCoordSystem       = <%p>, origin = <%p>'%s'\n")
-             wxT("   mViewUpCoordSystem     = <%p>, origin = <%p>'%s'\n")
-             wxT("   mViewPointRefObj       = <%p>'%s'\n")
-             wxT("   mViewPointObj          = <%p>'%s'\n")
-             wxT("   mViewDirectionObj      = <%p>'%s'\n"),
+            ("   theInternalCoordSystem = <%p>, origin = <%p>'%s'\n"
+             "   theDataCoordSystem     = <%p>, origin = <%p>'%s'\n"
+             "   mViewCoordSystem       = <%p>, origin = <%p>'%s'\n"
+             "   mViewUpCoordSystem     = <%p>, origin = <%p>'%s'\n"
+             "   mViewPointRefObj       = <%p>'%s'\n"
+             "   mViewPointObj          = <%p>'%s'\n"
+             "   mViewDirectionObj      = <%p>'%s'\n",
              theInternalCoordSystem, theInternalCoordSystem->GetOrigin(),
              theInternalCoordSystem->GetOriginName().c_str(),
              theDataCoordSystem, theDataCoordSystem->GetOrigin(),
@@ -535,14 +535,14 @@ bool OrbitView::Initialize()
              mViewUpCoordSystem, mViewUpCoordSystem->GetOrigin(),
              mViewUpCoordSystem->GetOriginName().c_str(),
              mViewPointRefObj,
-             mViewPointRefObj ? mViewPointRefObj->GetName().c_str() : wxT("NULL"),
+             mViewPointRefObj ? mViewPointRefObj->GetName().c_str() : "NULL",
              mViewPointObj,
-             mViewPointObj ? mViewPointObj->GetName().c_str() : wxT("NULL"),
+             mViewPointObj ? mViewPointObj->GetName().c_str() : "NULL",
              mViewDirectionObj,
-             mViewDirectionObj ? mViewDirectionObj->GetName().c_str() : wxT("NULL"));
+             mViewDirectionObj ? mViewDirectionObj->GetName().c_str() : "NULL");
          
          MessageInterface::ShowMessage
-            (wxT("   calling PlotInterface::SetGlCoordSystem()\n"));
+            ("   calling PlotInterface::SetGlCoordSystem()\n");
          #endif
          
          PlotInterface::SetGlCoordSystem(instanceName, theInternalCoordSystem,
@@ -553,29 +553,29 @@ bool OrbitView::Initialize()
          //--------------------------------------------------------
          #if DBGLVL_INIT
          MessageInterface::ShowMessage
-            (wxT("   calling PlotInterface::SetGlDrawingOption()\n"));
+            ("   calling PlotInterface::SetGlDrawingOption()\n");
          #endif
          
          PlotInterface::SetGl3dDrawingOption
-            (instanceName, (mEclipticPlane == wxT("On")), (mXYPlane == wxT("On")),
-             (mWireFrame == wxT("On")), (mAxes == wxT("On")), (mGrid == wxT("On")),
-             (mSunLine == wxT("On")), (mOverlapPlot == wxT("On")), (mUseInitialView == wxT("On")),
-             (mEnableStars == wxT("On")), (mEnableConstellations == wxT("On")), mStarCount);
+            (instanceName, (mEclipticPlane == "On"), (mXYPlane == "On"),
+             (mWireFrame == "On"), (mAxes == "On"), (mGrid == "On"),
+             (mSunLine == "On"), (mOverlapPlot == "On"), (mUseInitialView == "On"),
+             (mEnableStars == "On"), (mEnableConstellations == "On"), mStarCount);
          
          //--------------------------------------------------------
          // set viewpoint info
          //--------------------------------------------------------
          #if DBGLVL_INIT
          MessageInterface::ShowMessage
-            (wxT("   calling PlotInterface::SetGlViewOption()\n"));
+            ("   calling PlotInterface::SetGlViewOption()\n");
          #endif
          
          PlotInterface::SetGl3dViewOption
             (instanceName, mViewPointRefObj, mViewPointObj,
              mViewDirectionObj, mViewScaleFactor, mViewPointRefVector,
              mViewPointVecVector, mViewDirectionVector, mViewUpAxisName,
-             (mViewPointRefType == wxT("Vector")), (mViewPointVecType == wxT("Vector")),
-             (mViewDirectionType == wxT("Vector")));
+             (mViewPointRefType == "Vector"), (mViewPointVecType == "Vector"),
+             (mViewDirectionType == "Vector"));
          
          PlotInterface::SetGlUpdateFrequency(instanceName, mUpdatePlotFrequency);
          
@@ -602,8 +602,8 @@ bool OrbitView::Initialize()
    {
       #if DBGLVL_INIT
       MessageInterface::ShowMessage
-         (wxT("OrbitView::Initialize() Plot is active and initialized, ")
-          wxT("so calling DeleteGlPlot()\n"));
+         ("OrbitView::Initialize() Plot is active and initialized, "
+          "so calling DeleteGlPlot()\n");
       #endif
       
       // Why do we want to delete plot if active and initialized?
@@ -615,7 +615,7 @@ bool OrbitView::Initialize()
    }
    
    #if DBGLVL_INIT
-   MessageInterface::ShowMessage(wxT("OrbitView::Initialize() exiting\n"));
+   MessageInterface::ShowMessage("OrbitView::Initialize() exiting\n");
    #endif
    
    return retval;
@@ -654,8 +654,8 @@ void OrbitView::Copy(const GmatBase* orig)
 
 
 //------------------------------------------------------------------------------
-// virtual bool TakeAction(const wxString &action,  
-//                         const wxString &actionData = wxT(""));
+// virtual bool TakeAction(const std::string &action,  
+//                         const std::string &actionData = "");
 //------------------------------------------------------------------------------
 /**
  * This method performs action.
@@ -666,8 +666,8 @@ void OrbitView::Copy(const GmatBase* orig)
  *
  */
 //------------------------------------------------------------------------------
-bool OrbitView::TakeAction(const wxString &action,
-                           const wxString &actionData)
+bool OrbitView::TakeAction(const std::string &action,
+                           const std::string &actionData)
 {
    return OrbitPlot::TakeAction(action, actionData);
 }
@@ -675,15 +675,15 @@ bool OrbitView::TakeAction(const wxString &action,
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool OrbitView::RenameRefObject(const Gmat::ObjectType type,
-                                const wxString &oldName,
-                                const wxString &newName)
+                                const std::string &oldName,
+                                const std::string &newName)
 {
    #if DBGLVL_RENAME
    MessageInterface::ShowMessage
-      (wxT("OrbitView::RenameRefObject() type=%s, oldName=%s, newName=%s\n"),
+      ("OrbitView::RenameRefObject() type=%s, oldName=%s, newName=%s\n",
        GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
    #endif
    
@@ -711,9 +711,9 @@ bool OrbitView::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
-wxString OrbitView::GetParameterText(const Integer id) const
+std::string OrbitView::GetParameterText(const Integer id) const
 {
    if (id >= OrbitPlotParamCount && id < OrbitViewParamCount)
       return PARAMETER_TEXT[id - OrbitPlotParamCount];
@@ -724,12 +724,12 @@ wxString OrbitView::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer OrbitView::GetParameterID(const wxString &str) const
+Integer OrbitView::GetParameterID(const std::string &str) const
 {
-   if (str == wxT("PerspectiveMode") || str == wxT("UseFixedFov") || str == wxT("FixedFovAngle") ||
-       str == wxT("MinFOV") || str == wxT("MaxFOV") || str == wxT("InitialFOV"))
+   if (str == "PerspectiveMode" || str == "UseFixedFov" || str == "FixedFovAngle" ||
+       str == "MinFOV" || str == "MaxFOV" || str == "InitialFOV")
       return Gmat::PARAMETER_REMOVED;
    
    for (int i=OrbitPlotParamCount; i<OrbitViewParamCount; i++)
@@ -755,9 +755,9 @@ Gmat::ParameterType OrbitView::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
-wxString OrbitView::GetParameterTypeString(const Integer id) const
+std::string OrbitView::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -811,9 +811,9 @@ Integer OrbitView::GetIntegerParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// virtual Integer GetIntegerParameter(const wxString &label) const
+// virtual Integer GetIntegerParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-Integer OrbitView::GetIntegerParameter(const wxString &label) const
+Integer OrbitView::GetIntegerParameter(const std::string &label) const
 {
    return GetIntegerParameter(GetParameterID(label));
 }
@@ -837,7 +837,7 @@ Integer OrbitView::SetIntegerParameter(const Integer id, const Integer value)
          SubscriberException se;
          se.SetDetails(errorMessageFormat.c_str(),
                        GmatStringUtil::ToString(value, 1).c_str(),
-                       wxT("StarCount"), wxT("Integer Value >= 0"));
+                       "StarCount", "Integer Value >= 0");
       }
    case MIN_FOV:
       mMinFOV = value;
@@ -855,10 +855,10 @@ Integer OrbitView::SetIntegerParameter(const Integer id, const Integer value)
 
 
 //------------------------------------------------------------------------------
-// virtual Integer SetIntegerParameter(const wxString &label,
+// virtual Integer SetIntegerParameter(const std::string &label,
 //                                     const Integer value)
 //------------------------------------------------------------------------------
-Integer OrbitView::SetIntegerParameter(const wxString &label,
+Integer OrbitView::SetIntegerParameter(const std::string &label,
                                        const Integer value)
 {
    return SetIntegerParameter(GetParameterID(label), value);
@@ -881,13 +881,13 @@ Real OrbitView::GetRealParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// virtual Real GetRealParameter(const wxString &label) const
+// virtual Real GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-Real OrbitView::GetRealParameter(const wxString &label) const
+Real OrbitView::GetRealParameter(const std::string &label) const
 {
    #if DBGLVL_PARAM
      MessageInterface::ShowMessage
-        (wxT("OrbitView::GetRealParameter() label = %s\n"), label.c_str());
+        ("OrbitView::GetRealParameter() label = %s\n", label.c_str());
    #endif
    
    return GetRealParameter(GetParameterID(label));
@@ -911,13 +911,13 @@ Real OrbitView::SetRealParameter(const Integer id, const Real value)
 
 
 //------------------------------------------------------------------------------
-// virtual Real SetRealParameter(const wxString &label, const Real value)
+// virtual Real SetRealParameter(const std::string &label, const Real value)
 //------------------------------------------------------------------------------
-Real OrbitView::SetRealParameter(const wxString &label, const Real value)
+Real OrbitView::SetRealParameter(const std::string &label, const Real value)
 {
    #if DBGLVL_PARAM
       MessageInterface::ShowMessage
-         (wxT("OrbitView::SetRealParameter() label = %s, value = %f \n"),
+         ("OrbitView::SetRealParameter() label = %s, value = %f \n",
           label.c_str(), value);
    #endif
    
@@ -995,7 +995,7 @@ const Rvector& OrbitView::GetRvectorParameter(const Integer id) const
          #if DBGLVL_PARAM
          Rvector vec = mViewPointVecVector;
          MessageInterface::ShowMessage
-            (wxT("OrbitView::GetRvectorParameter() returning = %s\n"),
+            ("OrbitView::GetRvectorParameter() returning = %s\n",
              vec.ToString().c_str());
          #endif
          return mViewPointVecVector;
@@ -1010,13 +1010,13 @@ const Rvector& OrbitView::GetRvectorParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// virtual const Rvector& GetRvectorParameter(const wxString &label) const
+// virtual const Rvector& GetRvectorParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-const Rvector& OrbitView::GetRvectorParameter(const wxString &label) const
+const Rvector& OrbitView::GetRvectorParameter(const std::string &label) const
 {
    #if DBGLVL_PARAM
    MessageInterface::ShowMessage
-      (wxT("OrbitView::GetRvectorParameter() label = %s\n"), label.c_str());
+      ("OrbitView::GetRvectorParameter() label = %s\n", label.c_str());
    #endif
    
    return GetRvectorParameter(GetParameterID(label));
@@ -1059,17 +1059,17 @@ const Rvector& OrbitView::SetRvectorParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-// virtual const Rvector& SetRvectorParameter(const wxString &label,
+// virtual const Rvector& SetRvectorParameter(const std::string &label,
 //                                            const Rvector &value)
 //------------------------------------------------------------------------------
-const Rvector& OrbitView::SetRvectorParameter(const wxString &label,
+const Rvector& OrbitView::SetRvectorParameter(const std::string &label,
                                               const Rvector &value)
 {
    #if DBGLVL_PARAM
    Rvector val = value;
    MessageInterface::ShowMessage
-      (wxT("OrbitView::SetRvectorParameter() label = %s, ")
-       wxT("value = %s \n"), label.c_str(), val.ToString().c_str());
+      ("OrbitView::SetRvectorParameter() label = %s, "
+       "value = %s \n", label.c_str(), val.ToString().c_str());
    #endif
    
    return SetRvectorParameter(GetParameterID(label), value);
@@ -1077,13 +1077,13 @@ const Rvector& OrbitView::SetRvectorParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
-wxString OrbitView::GetStringParameter(const Integer id) const
+std::string OrbitView::GetStringParameter(const Integer id) const
 {
    #if DBGLVL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("OrbitView::GetStringParameter()<%s> id=%d<%s>\n"),
+      ("OrbitView::GetStringParameter()<%s> id=%d<%s>\n",
        instanceName.c_str(), id, GetParameterText(id).c_str());
    #endif
    
@@ -1093,27 +1093,27 @@ wxString OrbitView::GetStringParameter(const Integer id) const
 //       return mViewCoordSysName;
    case VIEWPOINT_REF:      
       WriteDeprecatedMessage(id);
-      if (mViewPointRefType == wxT("Vector"))
-         return (wxT("[ ") + mViewPointRefVector.ToString(16) + wxT(" ]"));
+      if (mViewPointRefType == "Vector")
+         return ("[ " + mViewPointRefVector.ToString(16) + " ]");
       else
          return mViewPointRefName;
    case VIEWPOINT_REFERENCE:      
-      if (mViewPointRefType == wxT("Vector"))         
-         return (wxT("[ ") + mViewPointRefVector.ToString(16) + wxT(" ]"));
+      if (mViewPointRefType == "Vector")         
+         return ("[ " + mViewPointRefVector.ToString(16) + " ]");
       else
          return mViewPointRefName;
    case VIEWPOINT_REF_TYPE:
       return mViewPointRefType;
    case VIEWPOINT_VECTOR:
-      if (mViewPointVecType == wxT("Vector"))
-         return (wxT("[ ") + mViewPointVecVector.ToString(16) + wxT(" ]"));
+      if (mViewPointVecType == "Vector")
+         return ("[ " + mViewPointVecVector.ToString(16) + " ]");
       else
          return mViewPointVecName;
    case VIEWPOINT_VECTOR_TYPE:
       return mViewPointVecType;
    case VIEW_DIRECTION:
-      if (mViewDirectionType == wxT("Vector"))
-         return (wxT("[ ") + mViewDirectionVector.ToString(16) + wxT(" ]"));
+      if (mViewDirectionType == "Vector")
+         return ("[ " + mViewDirectionVector.ToString(16) + " ]");
       else
          return mViewDirectionName;
    case VIEW_DIRECTION_TYPE:
@@ -1129,13 +1129,13 @@ wxString OrbitView::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString OrbitView::GetStringParameter(const wxString &label) const
+std::string OrbitView::GetStringParameter(const std::string &label) const
 {
    #if DBGLVL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("OrbitView::GetStringParameter() label = %s\n"), label.c_str());
+      ("OrbitView::GetStringParameter() label = %s\n", label.c_str());
    #endif
    
    return GetStringParameter(GetParameterID(label));
@@ -1143,13 +1143,13 @@ wxString OrbitView::GetStringParameter(const wxString &label) const
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
-bool OrbitView::SetStringParameter(const Integer id, const wxString &value)
+bool OrbitView::SetStringParameter(const Integer id, const std::string &value)
 {
    #if DBGLVL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("OrbitView::SetStringParameter() this=<%p>'%s', id=%d<%s>, value='%s'\n"),
+      ("OrbitView::SetStringParameter() this=<%p>'%s', id=%d<%s>, value='%s'\n",
        this, instanceName.c_str(), id, GetParameterText(id).c_str(), value.c_str());
    #endif
    
@@ -1161,46 +1161,46 @@ bool OrbitView::SetStringParameter(const Integer id, const wxString &value)
    case VIEWPOINT_REF:
       WriteDeprecatedMessage(id);
       mViewPointRefName = value;
-      mViewPointRefType = wxT("Object");
+      mViewPointRefType = "Object";
       
-      // Handle deprecated value wxT("Vector")
-      if (value == wxT("Vector") || GmatStringUtil::IsNumber(value))
-         mViewPointRefType = wxT("Vector");
+      // Handle deprecated value "Vector"
+      if (value == "Vector" || GmatStringUtil::IsNumber(value))
+         mViewPointRefType = "Vector";
       
-      if (value[0] == wxT('['))
+      if (value[0] == '[')
       {
          PutRvector3Value(mViewPointRefVector, id, value);
-         mViewPointRefType = wxT("Vector");
+         mViewPointRefType = "Vector";
       }
       return true;
    case VIEWPOINT_REFERENCE:
       mViewPointRefName = value;
-      mViewPointRefType = wxT("Object");
+      mViewPointRefType = "Object";
       
-      // Handle deprecated value wxT("Vector")
-      if (value == wxT("Vector") || GmatStringUtil::IsNumber(value))
-         mViewPointRefType = wxT("Vector");
+      // Handle deprecated value "Vector"
+      if (value == "Vector" || GmatStringUtil::IsNumber(value))
+         mViewPointRefType = "Vector";
       
-      if (value[0] == wxT('['))
+      if (value[0] == '[')
       {
          PutRvector3Value(mViewPointRefVector, id, value);
-         mViewPointRefType = wxT("Vector");
+         mViewPointRefType = "Vector";
       }
    case VIEWPOINT_REF_TYPE:
       mViewPointRefType = value;
       return true;
    case VIEWPOINT_VECTOR:
       mViewPointVecName = value;
-      mViewPointVecType = wxT("Object");
+      mViewPointVecType = "Object";
       
-      // Handle deprecated value wxT("Vector")
-      if (value == wxT("Vector") || GmatStringUtil::IsNumber(value))
-         mViewPointVecType = wxT("Vector");
+      // Handle deprecated value "Vector"
+      if (value == "Vector" || GmatStringUtil::IsNumber(value))
+         mViewPointVecType = "Vector";
       
-      if (value[0] == wxT('['))
+      if (value[0] == '[')
       {
          PutRvector3Value(mViewPointVecVector, id, value);
-         mViewPointVecType = wxT("Vector");
+         mViewPointVecType = "Vector";
       }
       return true;
    case VIEWPOINT_VECTOR_TYPE:
@@ -1208,16 +1208,16 @@ bool OrbitView::SetStringParameter(const Integer id, const wxString &value)
       return true;
    case VIEW_DIRECTION:
       mViewDirectionName = value;
-      mViewDirectionType = wxT("Object");
+      mViewDirectionType = "Object";
       
-      // Handle deprecated value wxT("Vector")
-      if (value == wxT("Vector") || GmatStringUtil::IsNumber(value))
-         mViewDirectionType = wxT("Vector");
+      // Handle deprecated value "Vector"
+      if (value == "Vector" || GmatStringUtil::IsNumber(value))
+         mViewDirectionType = "Vector";
       
-      if (value[0] == wxT('['))
+      if (value[0] == '[')
       {
          PutRvector3Value(mViewDirectionVector, id, value);
-         mViewDirectionType = wxT("Vector");
+         mViewDirectionType = "Vector";
       }
       return true;
    case VIEW_DIRECTION_TYPE:
@@ -1236,14 +1236,14 @@ bool OrbitView::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
-bool OrbitView::SetStringParameter(const wxString &label,
-                                   const wxString &value)
+bool OrbitView::SetStringParameter(const std::string &label,
+                                   const std::string &value)
 {
    #if DBGLVL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("OrbitView::SetStringParameter()<%s> label=%s, value=%s \n"),
+      ("OrbitView::SetStringParameter()<%s> label=%s, value=%s \n",
        instanceName.c_str(), label.c_str(), value.c_str());
    #endif
    
@@ -1252,15 +1252,15 @@ bool OrbitView::SetStringParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// virtual bool SetStringParameter(const Integer id, const wxString &value,
+// virtual bool SetStringParameter(const Integer id, const std::string &value,
 //                                 const Integer index)
 //------------------------------------------------------------------------------
-bool OrbitView::SetStringParameter(const Integer id, const wxString &value,
+bool OrbitView::SetStringParameter(const Integer id, const std::string &value,
                                    const Integer index)
 {
    #if DBGLVL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("OrbitView::SetStringParameter()<%s> id=%d<%s>, value=%s, index= %d\n"),
+      ("OrbitView::SetStringParameter()<%s> id=%d<%s>, value=%s, index= %d\n",
        instanceName.c_str(), id, GetParameterText(id).c_str(), value.c_str(), index);
    #endif
    
@@ -1268,19 +1268,19 @@ bool OrbitView::SetStringParameter(const Integer id, const wxString &value,
    {
    case VIEWPOINT_REF:
       WriteDeprecatedMessage(id);
-      mViewPointRefType = wxT("Vector");
+      mViewPointRefType = "Vector";
       PutRvector3Value(mViewPointRefVector, id, value, index);
       return true;
    case VIEWPOINT_REFERENCE:
-      mViewPointRefType = wxT("Vector");
+      mViewPointRefType = "Vector";
       PutRvector3Value(mViewPointRefVector, id, value, index);
       return true;
    case VIEWPOINT_VECTOR:
-      mViewPointVecType = wxT("Vector");
+      mViewPointVecType = "Vector";
       PutRvector3Value(mViewPointVecVector, id, value, index);
       return true;
    case VIEW_DIRECTION:
-      mViewDirectionType = wxT("Vector");
+      mViewDirectionType = "Vector";
       PutRvector3Value(mViewDirectionVector, id, value, index);
       return true;
    default:
@@ -1290,17 +1290,17 @@ bool OrbitView::SetStringParameter(const Integer id, const wxString &value,
 
 
 //------------------------------------------------------------------------------
-// virtual bool SetStringParameter(const wxString &label,
-//                                 const wxString &value,
+// virtual bool SetStringParameter(const std::string &label,
+//                                 const std::string &value,
 //                                 const Integer index)
 //------------------------------------------------------------------------------
-bool OrbitView::SetStringParameter(const wxString &label,
-                                   const wxString &value,
+bool OrbitView::SetStringParameter(const std::string &label,
+                                   const std::string &value,
                                    const Integer index)
 {
    #if DBGLVL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("OrbitView::SetStringParameter() label = %s, value = %s, index = %d\n"),
+      ("OrbitView::SetStringParameter() label = %s, value = %s, index = %d\n",
        label.c_str(), value.c_str(), index);
    #endif
    
@@ -1309,9 +1309,9 @@ bool OrbitView::SetStringParameter(const wxString &label,
 
 
 //---------------------------------------------------------------------------
-//  wxString GetOnOffParameter(const Integer id) const
+//  std::string GetOnOffParameter(const Integer id) const
 //---------------------------------------------------------------------------
-wxString OrbitView::GetOnOffParameter(const Integer id) const
+std::string OrbitView::GetOnOffParameter(const Integer id) const
 {
    switch (id)
    {
@@ -1344,18 +1344,18 @@ wxString OrbitView::GetOnOffParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString OrbitView::GetOnOffParameter(const wxString &label) const
+// std::string OrbitView::GetOnOffParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString OrbitView::GetOnOffParameter(const wxString &label) const
+std::string OrbitView::GetOnOffParameter(const std::string &label) const
 {
    return GetOnOffParameter(GetParameterID(label));
 }
 
 
 //---------------------------------------------------------------------------
-//  bool SetOnOffParameter(const Integer id, const wxString &value)
+//  bool SetOnOffParameter(const Integer id, const std::string &value)
 //---------------------------------------------------------------------------
-bool OrbitView::SetOnOffParameter(const Integer id, const wxString &value)
+bool OrbitView::SetOnOffParameter(const Integer id, const std::string &value)
 {
    switch (id)
    {
@@ -1400,23 +1400,23 @@ bool OrbitView::SetOnOffParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetOnOffParameter(const wxString &label, const wxString &value)
+// bool SetOnOffParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
-bool OrbitView::SetOnOffParameter(const wxString &label, 
-                                  const wxString &value)
+bool OrbitView::SetOnOffParameter(const std::string &label, 
+                                  const std::string &value)
 {
    return SetOnOffParameter(GetParameterID(label), value);
 }
 
 
 //------------------------------------------------------------------------------
-// virtual wxString GetRefObjectName(const Gmat::ObjectType type) const
+// virtual std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
-wxString OrbitView::GetRefObjectName(const Gmat::ObjectType type) const
+std::string OrbitView::GetRefObjectName(const Gmat::ObjectType type) const
 {
    #if DBGLVL_OBJ
    MessageInterface::ShowMessage
-      (wxT("OrbitView::GetRefObjectName() type: %s\n"),
+      ("OrbitView::GetRefObjectName() type: %s\n",
        GmatBase::GetObjectTypeString(type).c_str());
    #endif
    
@@ -1426,9 +1426,9 @@ wxString OrbitView::GetRefObjectName(const Gmat::ObjectType type) const
 //    }
    
    #if DBGLVL_OBJ
-   wxString msg = wxT("type: ") + GmatBase::GetObjectTypeString(type) + wxT(" not found");
+   std::string msg = "type: " + GmatBase::GetObjectTypeString(type) + " not found";
    MessageInterface::ShowMessage
-      (wxT("OrbitView::GetRefObjectName() %s\n"), msg.c_str());
+      ("OrbitView::GetRefObjectName() %s\n", msg.c_str());
    #endif
    
    return OrbitPlot::GetRefObjectName(type);
@@ -1477,10 +1477,10 @@ const StringArray& OrbitView::GetRefObjectNameArray(const Gmat::ObjectType type)
    refObjectNames = OrbitPlot::GetRefObjectNameArray(type);
    
    // if Draw Earth-Sun lines is on, add Earth and Sun
-   if (mSunLine == wxT("On"))
+   if (mSunLine == "On")
    {
-      AddSpacePoint(wxT("Earth"), mAllSpCount, false);
-      AddSpacePoint(wxT("Sun"), mAllSpCount, false);
+      AddSpacePoint("Earth", mAllSpCount, false);
+      AddSpacePoint("Sun", mAllSpCount, false);
    }
    
    if (type == Gmat::COORDINATE_SYSTEM)
@@ -1492,21 +1492,21 @@ const StringArray& OrbitView::GetRefObjectNameArray(const Gmat::ObjectType type)
    {
       //refObjectNames = mAllSpNameArray;
       
-      if (mViewPointRefType != wxT("Vector"))
+      if (mViewPointRefType != "Vector")
       {
          if (find(refObjectNames.begin(), refObjectNames.end(),
                   mViewPointRefName) == refObjectNames.end())
             refObjectNames.push_back(mViewPointRefName);
       }
       
-      if (mViewPointVecType != wxT("Vector"))
+      if (mViewPointVecType != "Vector")
       {
          if (find(refObjectNames.begin(), refObjectNames.end(),
                   mViewPointVecName) == refObjectNames.end())
             refObjectNames.push_back(mViewPointVecName);
       }
       
-      if (mViewDirectionType != wxT("Vector"))
+      if (mViewDirectionType != "Vector")
       {
          if (find(refObjectNames.begin(), refObjectNames.end(),
                   mViewDirectionName) == refObjectNames.end())
@@ -1517,7 +1517,7 @@ const StringArray& OrbitView::GetRefObjectNameArray(const Gmat::ObjectType type)
    {
       #ifdef DEBUG_OBJ
       MessageInterface::ShowMessage
-         (wxT("mViewPointRefType=%s, mViewPointVecType=%s, mViewDirectionType=%s\n"),
+         ("mViewPointRefType=%s, mViewPointVecType=%s, mViewDirectionType=%s\n",
           mViewPointRefType.c_str(), mViewPointVecType.c_str(), mViewDirectionType.c_str());
       #endif
       
@@ -1530,21 +1530,21 @@ const StringArray& OrbitView::GetRefObjectNameArray(const Gmat::ObjectType type)
       if (mViewCoordSysName != mViewUpCoordSysName)
          refObjectNames.push_back(mViewUpCoordSysName);
       
-      if (mViewPointRefType != wxT("Vector"))
+      if (mViewPointRefType != "Vector")
       {
          if (find(refObjectNames.begin(), refObjectNames.end(),
                   mViewPointRefName) == refObjectNames.end())
             refObjectNames.push_back(mViewPointRefName);
       }
       
-      if (mViewPointVecType != wxT("Vector"))
+      if (mViewPointVecType != "Vector")
       {
          if (find(refObjectNames.begin(), refObjectNames.end(),
                   mViewPointVecName) == refObjectNames.end())
             refObjectNames.push_back(mViewPointVecName);
       }
       
-      if (mViewDirectionType != wxT("Vector"))
+      if (mViewDirectionType != "Vector")
       {
          if (find(refObjectNames.begin(), refObjectNames.end(),
                   mViewDirectionName) == refObjectNames.end())
@@ -1554,9 +1554,9 @@ const StringArray& OrbitView::GetRefObjectNameArray(const Gmat::ObjectType type)
    
    #if DBGLVL_OBJ
    MessageInterface::ShowMessage
-      (wxT("OrbitView::GetRefObjectNameArray() returning for type:%d\n"), type);
+      ("OrbitView::GetRefObjectNameArray() returning for type:%d\n", type);
    for (unsigned int i=0; i<refObjectNames.size(); i++)
-      MessageInterface::ShowMessage(wxT("   %s\n"), refObjectNames[i].c_str());
+      MessageInterface::ShowMessage("   %s\n", refObjectNames[i].c_str());
    #endif
    
    return refObjectNames;
@@ -1565,10 +1565,10 @@ const StringArray& OrbitView::GetRefObjectNameArray(const Gmat::ObjectType type)
 
 //------------------------------------------------------------------------------
 // virtual GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                                const wxString &name)
+//                                const std::string &name)
 //------------------------------------------------------------------------------
 GmatBase* OrbitView::GetRefObject(const Gmat::ObjectType type,
-                                  const wxString &name)
+                                  const std::string &name)
 {
    if (type == Gmat::COORDINATE_SYSTEM)
    {
@@ -1593,7 +1593,7 @@ GmatBase* OrbitView::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                           const wxString &name = wxT(""))
+//                           const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Set reference object pointer.
@@ -1604,17 +1604,17 @@ GmatBase* OrbitView::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool OrbitView::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                             const wxString &name)
+                             const std::string &name)
 {
    #if DBGLVL_OBJ
    MessageInterface::ShowMessage
-      (wxT("OrbitView::SetRefObject() this=<%p>'%s', obj=<%p>'%s', type=%d[%s], name='%s'\n"),
+      ("OrbitView::SetRefObject() this=<%p>'%s', obj=<%p>'%s', type=%d[%s], name='%s'\n",
        this, GetName().c_str(), obj, obj->GetName().c_str(), type,
        obj->GetTypeName().c_str(), name.c_str());
    #endif
    
-   wxString realName = name;
-   if (name == wxT(""))
+   std::string realName = name;
+   if (name == "")
       realName = obj->GetName();
    
    if (type == Gmat::COORDINATE_SYSTEM)
@@ -1631,7 +1631,7 @@ bool OrbitView::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
    if (obj->IsOfType(Gmat::SPACE_POINT))
    {
       #if DBGLVL_OBJ
-      MessageInterface::ShowMessage(wxT("   Setting View information...\n"));
+      MessageInterface::ShowMessage("   Setting View information...\n");
       #endif
       
       // ViewPoint info
@@ -1646,8 +1646,8 @@ bool OrbitView::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
       
       #if DBGLVL_OBJ
       MessageInterface::ShowMessage
-         (wxT("OrbitView::SetRefObject() mViewPointRefObj=<%p>, mViewPointObj=<%p>, ")
-          wxT("mViewDirectionObj=<%p>\n"), mViewPointRefObj, mViewPointObj,
+         ("OrbitView::SetRefObject() mViewPointRefObj=<%p>, mViewPointObj=<%p>, "
+          "mViewDirectionObj=<%p>\n", mViewPointRefObj, mViewPointObj,
           mViewDirectionObj);
       #endif
    }
@@ -1662,7 +1662,7 @@ bool OrbitView::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // void PutRvector3Value(Rvector3 &rvec3, Integer id,
-//                       const wxString &sval, Integer index = -1);
+//                       const std::string &sval, Integer index = -1);
 //------------------------------------------------------------------------------
 /*
  * Converts input string to Real and store as Rvector3 element at idnex.
@@ -1672,21 +1672,21 @@ bool OrbitView::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  * @param sval   input string value
  * @param index  input index to be used for storing a Rvector3 element
  *               if index is -1, whole 3 elements are converted and stored
- *               from a string format of wxT("[element1 element2 element3]")
+ *               from a string format of "[element1 element2 element3]"
  */
 //------------------------------------------------------------------------------
 void OrbitView::PutRvector3Value(Rvector3 &rvec3, Integer id,
-                                  const wxString &sval, Integer index)
+                                  const std::string &sval, Integer index)
 {
    #if DBGLVL_PARAM_RVEC3
    MessageInterface::ShowMessage
-      (wxT("OrbitView::PutRvector3Value() id=%d, sval=%s, index=%d\n"),
+      ("OrbitView::PutRvector3Value() id=%d, sval=%s, index=%d\n",
        id, sval.c_str(), index);
    #endif
    
-   wxString badVal;
+   std::string badVal;
    bool isValid = true;
-   wxString field = GetParameterText(id);
+   std::string field = GetParameterText(id);
    
    // Check index, throw exception if out of bound
    if (index < -1 || index > 2)
@@ -1712,12 +1712,12 @@ void OrbitView::PutRvector3Value(Rvector3 &rvec3, Integer id,
       else if (index == -1)
       {
          StringArray valArray;
-         wxString svalue = sval;
+         std::string svalue = sval;
          svalue = GmatStringUtil::Trim(svalue);
-         wxString::size_type index1 = svalue.find_first_of(wxT("["));
+         std::string::size_type index1 = svalue.find_first_of("[");
          if (index1 != svalue.npos)
          {
-            wxString::size_type index2 = svalue.find_last_of(wxT("]"));
+            std::string::size_type index2 = svalue.find_last_of("]");
             if (index2 != svalue.npos)
             {
                svalue = svalue.substr(index1+1, index2-index1-1);
@@ -1729,7 +1729,7 @@ void OrbitView::PutRvector3Value(Rvector3 &rvec3, Integer id,
             }
          }
          
-         valArray = GmatStringUtil::SeparateBy(svalue, wxT(" ,"));         
+         valArray = GmatStringUtil::SeparateBy(svalue, " ,");         
          int arraySize = valArray.size();
          
          if (arraySize == 3)
@@ -1765,8 +1765,8 @@ void OrbitView::PutRvector3Value(Rvector3 &rvec3, Integer id,
    {
       SubscriberException se;
       se.SetDetails(errorMessageFormat.c_str(), badVal.c_str(), field.c_str(),
-                    wxT("SpacecraftName, CelestialBodyName, LibrationPointName, ")
-                    wxT("BarycenterName, or a 3-vector of numerical values"));
+                    "SpacecraftName, CelestialBodyName, LibrationPointName, "
+                    "BarycenterName, or a 3-vector of numerical values");
       throw se;
    }
 }
@@ -1790,9 +1790,9 @@ void OrbitView::WriteDeprecatedMessage(Integer id) const
       if (writeEarthSunLines)
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** \"EarthSunLines\" is deprecated and will be ")
-             wxT("removed from a future build; please use \"SunLine\" ")
-             wxT("instead.\n"));
+            ("*** WARNING *** \"EarthSunLines\" is deprecated and will be "
+             "removed from a future build; please use \"SunLine\" "
+             "instead.\n");
          writeEarthSunLines = false;
       }
       break;
@@ -1800,9 +1800,9 @@ void OrbitView::WriteDeprecatedMessage(Integer id) const
       if (writeViewpointRef)
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** \"ViewPointRef\" is deprecated and will be ")
-             wxT("removed from a future build; please use \"ViewPointReference\" ")
-             wxT("instead.\n"));
+            ("*** WARNING *** \"ViewPointRef\" is deprecated and will be "
+             "removed from a future build; please use \"ViewPointReference\" "
+             "instead.\n");
          writeViewpointRef = false;
       }
       break;
@@ -1810,8 +1810,8 @@ void OrbitView::WriteDeprecatedMessage(Integer id) const
       if (writeViewpointRefVector)
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** \"ViewPointRefVector\" is deprecated and will be ")
-             wxT("removed from a future build.\n"));
+            ("*** WARNING *** \"ViewPointRefVector\" is deprecated and will be "
+             "removed from a future build.\n");
          writeViewpointRefVector = false;
       }
       break;
@@ -1819,8 +1819,8 @@ void OrbitView::WriteDeprecatedMessage(Integer id) const
       if (writeViewpointVectorVector)
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** \"ViewPointVectorVector\" is deprecated and will be ")
-             wxT("removed from a future build.\n"));
+            ("*** WARNING *** \"ViewPointVectorVector\" is deprecated and will be "
+             "removed from a future build.\n");
          writeViewpointVectorVector = false;
       }
       break;
@@ -1828,8 +1828,8 @@ void OrbitView::WriteDeprecatedMessage(Integer id) const
       if (writeViewDirectionVector)
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** \"ViewDirectionVector\" is deprecated and will be ")
-             wxT("removed from a future build.\n"));
+            ("*** WARNING *** \"ViewDirectionVector\" is deprecated and will be "
+             "removed from a future build.\n");
          writeViewDirectionVector = false;
       }
       break;
@@ -1848,8 +1848,8 @@ bool OrbitView::UpdateSolverData()
    int last = size - 1;
    
    #if DBGLVL_SOLVER_CURRENT_ITER
-   MessageInterface::ShowMessage(wxT("===> num buffered data = %d\n"), size);
-   MessageInterface::ShowMessage(wxT("==========> now update solver plot\n"));
+   MessageInterface::ShowMessage("===> num buffered data = %d\n", size);
+   MessageInterface::ShowMessage("==========> now update solver plot\n");
    #endif
    
    if (size == 0)
@@ -1867,7 +1867,7 @@ bool OrbitView::UpdateSolverData()
       #if DBGLVL_SOLVER_CURRENT_ITER > 1
       for (int sc=0; sc<mScCount; sc++)
          MessageInterface::ShowMessage
-            (wxT("   i=%d, sc=%d, solver epoch = %f, X,Y,Z = %f, %f, %f\n"), i, sc,
+            ("   i=%d, sc=%d, solver epoch = %f, X,Y,Z = %f, %f, %f\n", i, sc,
              mCurrEpochArray[i], mCurrXArray[i][sc], mCurrYArray[i][sc],
              mCurrZArray[i][sc]);
       #endif
@@ -1900,7 +1900,7 @@ bool OrbitView::UpdateSolverData()
    mCurrVzArray.clear();
    
    if (runstate == Gmat::SOLVING)
-      PlotInterface::TakeGlAction(instanceName, wxT("ClearSolverData"));
+      PlotInterface::TakeGlAction(instanceName, "ClearSolverData");
    
    return true;
 }
@@ -1927,10 +1927,10 @@ bool OrbitView::Distribute(const Real *dat, Integer len)
 {
    #if DBGLVL_UPDATE
    MessageInterface::ShowMessage
-      (wxT("===========================================================================\n")
-       wxT("OrbitView::Distribute() instanceName=%s, active=%d, isEndOfRun=%d, ")
-       wxT("isEndOfReceive=%d\n   mAllSpCount=%d, mScCount=%d, len=%d, runstate=%d, ")
-       wxT("isDataStateChanged=%d\n"), instanceName.c_str(), active, isEndOfRun, isEndOfReceive,
+      ("===========================================================================\n"
+       "OrbitView::Distribute() instanceName=%s, active=%d, isEndOfRun=%d, "
+       "isEndOfReceive=%d\n   mAllSpCount=%d, mScCount=%d, len=%d, runstate=%d, "
+       "isDataStateChanged=%d\n", instanceName.c_str(), active, isEndOfRun, isEndOfReceive,
        mAllSpCount, mScCount, len, runstate, isDataStateChanged);
    #endif
    
@@ -1942,9 +1942,9 @@ bool OrbitView::Distribute(const Real *dat, Integer len)
    if (isDataStateChanged)
    {
       if (isDataOn)
-         PlotInterface::TakeGlAction(instanceName, wxT("PenDown"));
+         PlotInterface::TakeGlAction(instanceName, "PenDown");
       else
-         PlotInterface::TakeGlAction(instanceName, wxT("PenUp"));
+         PlotInterface::TakeGlAction(instanceName, "PenUp");
       
       isDataStateChanged = false;
    }
@@ -1975,10 +1975,10 @@ bool OrbitView::Distribute(const Real *dat, Integer len)
    
    
    #if DBGLVL_DATA
-   MessageInterface::ShowMessage(wxT("%s, len=%d\n"), GetName().c_str(), len);
+   MessageInterface::ShowMessage("%s, len=%d\n", GetName().c_str(), len);
    for (int i=0; i<len; i++)
-      MessageInterface::ShowMessage(wxT("%.11f  "), dat[i]);
-   MessageInterface::ShowMessage(wxT("\n"));
+      MessageInterface::ShowMessage("%.11f  ", dat[i]);
+   MessageInterface::ShowMessage("\n");
    #endif
    
    //------------------------------------------------------------
@@ -1988,7 +1988,7 @@ bool OrbitView::Distribute(const Real *dat, Integer len)
    {
       #if DBGLVL_UPDATE > 1
       MessageInterface::ShowMessage
-         (wxT("   Just returning: SolverIterations is %d and runstate is %d\n"),
+         ("   Just returning: SolverIterations is %d and runstate is %d\n",
           mSolverIterOption, runstate);
       #endif
       

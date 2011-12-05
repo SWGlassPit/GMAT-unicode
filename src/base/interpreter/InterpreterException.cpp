@@ -27,9 +27,9 @@
 #include "InterpreterException.hpp" // class's header file
 
 // class constructor
-InterpreterException::InterpreterException(const wxString &details,
+InterpreterException::InterpreterException(const std::string &details,
       Gmat::MessageType mt) :
-    BaseException       (wxT("Interpreter Exception: "), details, mt)
+    BaseException       ("Interpreter Exception: ", details, mt)
 {
 }
 

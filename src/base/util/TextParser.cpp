@@ -47,7 +47,7 @@ using namespace GmatStringUtil;
 //-------------------------------------------------------------------------------
 TextParser::TextParser()
 {
-   whiteSpace = wxT(" \t");
+   whiteSpace = " \t";
 }
 
 
@@ -78,15 +78,15 @@ void TextParser::Initialize(const StringArray &commandList)
 //-------------------------------------------------------------------------------
 void TextParser::Reset()
 {
-   prefaceComment = wxT("");
-   inlineComment  = wxT("");
-   theInstruction = wxT("");
+   prefaceComment = "";
+   inlineComment  = "";
+   theInstruction = "";
    isFunctionCall = false;
 }
 
 
 //-------------------------------------------------------------------------------
-// StringArray DecomposeBlock(const wxString &logicalBlock)
+// StringArray DecomposeBlock(const std::string &logicalBlock)
 //-------------------------------------------------------------------------------
 /*
  * Decomposes logical block into string array of lines.
@@ -94,17 +94,17 @@ void TextParser::Reset()
  * for \n or \r.
  */
 //-------------------------------------------------------------------------------
-StringArray TextParser::DecomposeBlock(const wxString &logicalBlock)
+StringArray TextParser::DecomposeBlock(const std::string &logicalBlock)
 {
    Integer length = logicalBlock.size();
 
    #if DEBUG_TP_DECOMPOSE_BLOCK
    MessageInterface::ShowMessage
-      (wxT("TextParser::DecomposeBlock() length=%d\n"), length);
+      ("TextParser::DecomposeBlock() length=%d\n", length);
    #endif
 
-   wxString str = logicalBlock;
-   wxString block;
+   std::string str = logicalBlock;
+   std::string block;
    Integer lastPos = 0;
    Integer lineCounter = 0;
    StringArray lines;
@@ -114,10 +114,10 @@ StringArray TextParser::DecomposeBlock(const wxString &logicalBlock)
    {
       #if DEBUG_TP_DECOMPOSE_BLOCK > 1
       MessageInterface::ShowMessage
-         (wxT("   ===> TextParser::DecomposeBlock() str[%d]=%c, %d\n"), i, str[i], str[i]);
+         ("   ===> TextParser::DecomposeBlock() str[%d]=%c, %d\n", i, str[i], str[i]);
       #endif
 
-      if (str[i] == wxT('\n') || str[i] == wxT('\r'))
+      if (str[i] == '\n' || str[i] == '\r')
       {
          // Remove end-of-line character
          block = str.substr(lastPos, i-lastPos+1);
@@ -125,7 +125,7 @@ StringArray TextParser::DecomposeBlock(const wxString &logicalBlock)
 
          #if DEBUG_TP_DECOMPOSE_BLOCK > 1
          MessageInterface::ShowMessage
-            (wxT("   ===> TextParser::DecomposeBlock() i=%d, lastPos=%d, block=%s\n"),
+            ("   ===> TextParser::DecomposeBlock() i=%d, lastPos=%d, block=%s\n",
              i, lastPos, block.c_str());
          #endif
 
@@ -145,7 +145,7 @@ StringArray TextParser::DecomposeBlock(const wxString &logicalBlock)
 
 
 //-------------------------------------------------------------------------------
-// Gmat::BlockType EvaluateBlock(const wxString &logicalBlock)
+// Gmat::BlockType EvaluateBlock(const std::string &logicalBlock)
 //-------------------------------------------------------------------------------
 /*
  * Breaks the logical block into three pieces: preface comments, instruction,
@@ -159,29 +159,29 @@ StringArray TextParser::DecomposeBlock(const wxString &logicalBlock)
  * @return BlockType of the logical block.
  *
  * The instruction of object definition block is in the following format:
- *       <wxT("Create")  ObjectType  Name1 [Name2 ...]>
+ *       <"Create"  ObjectType  Name1 [Name2 ...]>
  *
  * The instruction of command definition block is in the following format:
  *       <Command CommandExpression>
  *
  * The instruction of assignment block is in the following format:
  *       <Left = Right>
- *       <wxT("") = Right>         <-- for call function returning no output
+ *       <"" = Right>         <-- for call function returning no output
  *
  */
 //-------------------------------------------------------------------------------
-Gmat::BlockType TextParser::EvaluateBlock(const wxString &logicalBlock)
+Gmat::BlockType TextParser::EvaluateBlock(const std::string &logicalBlock)
 {
    Integer length = logicalBlock.size();
 
    #if DEBUG_TP_EVAL_BLOCK
    MessageInterface::ShowMessage
-      (wxT("TextParser::EvaluateBlock() length=%d\n"), length);
+      ("TextParser::EvaluateBlock() length=%d\n", length);
    #endif
 
    #if DEBUG_TP_EVAL_BLOCK > 1
    MessageInterface::ShowMessage
-      (wxT("TextParser::EvaluateBlock() logicalBlock=\n<<<%s>>>\n"), logicalBlock.c_str());
+      ("TextParser::EvaluateBlock() logicalBlock=\n<<<%s>>>\n", logicalBlock.c_str());
    #endif
 
    // first break into string array
@@ -191,19 +191,19 @@ Gmat::BlockType TextParser::EvaluateBlock(const wxString &logicalBlock)
 
    #if DEBUG_TP_EVAL_BLOCK
    MessageInterface::ShowMessage
-      (wxT("TextParser::EvaluateBlock() count=%d\n"), count);
+      ("TextParser::EvaluateBlock() count=%d\n", count);
    #endif
 
    Integer commentCounter = 0;
    Integer noCommentLine = -1;
-   wxString str, keyword, substr;
-   wxString::size_type index1, index2, index3, index4;
+   std::string str, keyword, substr;
+   std::string::size_type index1, index2, index3, index4;
 
    Reset();
 
    #if DEBUG_TP_EVAL_BLOCK > 1
    for (int i=0; i<count; i++)
-      MessageInterface::ShowMessage(wxT("   lines[%d]=<%s>\n"), i, lines[i].c_str());
+      MessageInterface::ShowMessage("   lines[%d]=<%s>\n", i, lines[i].c_str());
    #endif
 
    // first find block type
@@ -216,7 +216,7 @@ Gmat::BlockType TextParser::EvaluateBlock(const wxString &logicalBlock)
       str = GmatStringUtil::Trim(str, GmatStringUtil::LEADING);
 
       // Remove GMAT keyword
-      index1 = str.find(wxT("GMAT "));
+      index1 = str.find("GMAT ");
       if (index1 == 0)
       {
          index2 = str.find_first_of(whiteSpace, index1);
@@ -227,7 +227,7 @@ Gmat::BlockType TextParser::EvaluateBlock(const wxString &logicalBlock)
       index1 = str.find_first_not_of(whiteSpace);
       if (index1 != str.npos)
       {
-         if (str[index1] == wxT('%') || str[index1] == wxT('\n') || str[index1] == wxT('\r'))
+         if (str[index1] == '%' || str[index1] == '\n' || str[index1] == '\r')
          {
             prefaceComment = prefaceComment + str;
             commentCounter++;
@@ -240,7 +240,7 @@ Gmat::BlockType TextParser::EvaluateBlock(const wxString &logicalBlock)
          //If white space found (Added for VC++)
          if (index2 != str.npos)
          {
-            if (str[index2-1] == wxT(';'))
+            if (str[index2-1] == ';')
                keyword = str.substr(index1, index2-index1-1);
             else
                keyword = str.substr(index1, index2-index1);
@@ -254,18 +254,18 @@ Gmat::BlockType TextParser::EvaluateBlock(const wxString &logicalBlock)
          keyword = GmatStringUtil::Trim(keyword, GmatStringUtil::BOTH, true, true);
 
          // make sure keyword is before open parenthesis
-         wxString::size_type openIndex = keyword.find(wxT("("));
+         std::string::size_type openIndex = keyword.find("(");
          if (openIndex != keyword.npos)
             keyword = keyword.substr(0, openIndex);
 
-         // check for wxT("function")
-         if (keyword == wxT("function"))
+         // check for "function"
+         if (keyword == "function")
          {
             theBlockType = Gmat::FUNCTION_BLOCK;
             noCommentLine = i;
          }
-         // check for wxT("Create") or Commands
-         else if (keyword == wxT("Create"))
+         // check for "Create" or Commands
+         else if (keyword == "Create")
          {
             theBlockType = Gmat::DEFINITION_BLOCK;
             noCommentLine = i;
@@ -283,16 +283,16 @@ Gmat::BlockType TextParser::EvaluateBlock(const wxString &logicalBlock)
             // check for CallFunction
             // ex) [a b c] = function(d, e, f);
 
-            //if (str.find(wxT("[")) != str.npos) // Is this checking enough?
+            //if (str.find("[") != str.npos) // Is this checking enough?
 
             // check for RVECTOR_TYPE or UNSIGNED_INTARRAY_TYPE setting
             // ex) opengl.OrbitColor = [100 200 300 ];
             //     opengl.ViewPointVectorVector = [0, 0, 50000];
 
-            wxString::size_type index1 = str.find(wxT("["));
+            std::string::size_type index1 = str.find("[");
             if (index1 != str.npos)
             {
-               wxString::size_type index2 = str.find(wxT("="));
+               std::string::size_type index2 = str.find("=");
                if (index2 == str.npos || index2 > index1)
                {
                   theBlockType = Gmat::COMMAND_BLOCK;
@@ -303,8 +303,8 @@ Gmat::BlockType TextParser::EvaluateBlock(const wxString &logicalBlock)
             /// @todo: This is a work around for a call function with
             /// without any return parameters.  It should be updated in
             /// the design to handle this situation.
-            wxString::size_type commentPos = str.find(wxT("%"));
-            wxString noInline = str;
+            std::string::size_type commentPos = str.find("%");
+            std::string noInline = str;
             if (commentPos != str.npos)
                noInline = str.substr(0, commentPos);
 
@@ -322,11 +322,11 @@ Gmat::BlockType TextParser::EvaluateBlock(const wxString &logicalBlock)
          if (noCommentLine >= 0)
          {
             // if % found in the no-comment line, it is inline comment
-            index3 = str.find(wxT("%"), index2);
+            index3 = str.find("%", index2);
 
             #if DEBUG_TP_EVAL_BLOCK
             MessageInterface::ShowMessage
-            (wxT("   index1=%d, index2=%u, index3=%u\n"), index1, index2, index3);
+            ("   index1=%d, index2=%u, index3=%u\n", index1, index2, index3);
             #endif
 
             // if inline comment
@@ -349,7 +349,7 @@ Gmat::BlockType TextParser::EvaluateBlock(const wxString &logicalBlock)
       }
    }
 
-   //MessageInterface::ShowMessage(wxT("===> theInstruction=%s\n"), theInstruction.c_str());
+   //MessageInterface::ShowMessage("===> theInstruction=%s\n", theInstruction.c_str());
 
    if (commentCounter == count)
       theBlockType = Gmat::COMMENT_BLOCK;
@@ -365,10 +365,10 @@ Gmat::BlockType TextParser::EvaluateBlock(const wxString &logicalBlock)
 
    #if DEBUG_TP_EVAL_BLOCK
    MessageInterface::ShowMessage
-      (wxT("   keyword=<%s>, blockType=%d, isFunctionCall=%d\n"), keyword.c_str(),
+      ("   keyword=<%s>, blockType=%d, isFunctionCall=%d\n", keyword.c_str(),
        theBlockType, isFunctionCall);
    MessageInterface::ShowMessage
-      (wxT("   prefaceComment=<%s>\n   inlineComment=<%s>\n   theInstruction=<%s>\n"),
+      ("   prefaceComment=<%s>\n   inlineComment=<%s>\n   theInstruction=<%s>\n",
        prefaceComment.c_str(), inlineComment.c_str(), theInstruction.c_str());
    #endif
 
@@ -389,7 +389,7 @@ Gmat::BlockType TextParser::EvaluateBlock(const wxString &logicalBlock)
  *
  * @return array of constituent parts.
  *    The object definition instructions returns in the following format:
- *       <wxT("Create")> <ObjectType> <Name1> [<Name2> ...]
+ *       <"Create"> <ObjectType> <Name1> [<Name2> ...]
 
  *    The command definition instructions returns in the following format:
  *       <Command> <CommandExpression>   <-- command, EndFiniteBurn
@@ -399,7 +399,7 @@ Gmat::BlockType TextParser::EvaluateBlock(const wxString &logicalBlock)
  *       <Left> <Right>
  *
  *    The function definition instructions returns in the following format:
- *       <wxT("CallFunction")> <out> <FunctionName> <in>
+ *       <"CallFunction"> <out> <FunctionName> <in>
  *
  * @exception <InterpreterException> thrown if no object type or name found
  *
@@ -469,13 +469,13 @@ StringArray TextParser::ChunkLine()
 {
    #if DEBUG_TP_CHUNK_LINE
    MessageInterface::ShowMessage
-      (wxT("TextParser::ChunkLine() theInstruction=<%s>\n   theBlockType=%d, ")
-       wxT("isFunctionCall=%d\n"), theInstruction.c_str(), theBlockType, isFunctionCall);
+      ("TextParser::ChunkLine() theInstruction=<%s>\n   theBlockType=%d, "
+       "isFunctionCall=%d\n", theInstruction.c_str(), theBlockType, isFunctionCall);
    #endif
 
-   wxString str = theInstruction;
-   wxString space;
-   wxString::size_type index1, index2, index3 = 123456;
+   std::string str = theInstruction;
+   std::string space;
+   std::string::size_type index1, index2, index3 = 123456;
 
    Integer length = str.size();
    StringArray chunks;
@@ -486,16 +486,16 @@ StringArray TextParser::ChunkLine()
    if (theBlockType == Gmat::DEFINITION_BLOCK)
    {
       // find keyword Create
-      index1 = str.find(wxT("Create"));
+      index1 = str.find("Create");
       if (index1 == str.npos)
       {
          #if DEBUG_TP_CHUNK_LINE
-         errorMsg.Printf(wxT("TextParser::ChunkLine() keyword \"Create\" not ")
-                 wxT("found in the definition block\n   \"%s\"\n"), str.c_str());
-         MessageInterface::ShowMessage(wxT("%s"), errorMsg.c_str());
+         sprintf(errorMsg, "TextParser::ChunkLine() keyword \"Create\" not "
+                 "found in the definition block\n   \"%s\"\n", str.c_str());
+         MessageInterface::ShowMessage("%s", errorMsg);
          #endif
 
-         errorMsg = wxT("The keyword \"Create\" not found in the definition block");
+         sprintf(errorMsg, "The keyword \"Create\" not found in the definition block");
          throw UtilityException(errorMsg);
       }
       else
@@ -509,12 +509,12 @@ StringArray TextParser::ChunkLine()
          if (index1 == str.npos)
          {
             #if DEBUG_TP_CHUNK_LINE
-            errorMsg.Printf( wxT("TextParser::ChunkLine() object type not ")
-                    wxT("found in the definition block\n   \"%s\"\n"), str.c_str());
-            MessageInterface::ShowMessage(wxT("%s"), errorMsg.c_str());
+            sprintf(errorMsg, "TextParser::ChunkLine() object type not "
+                    "found in the definition block\n   \"%s\"\n", str.c_str());
+            MessageInterface::ShowMessage("%s", errorMsg);
             #endif
 
-            errorMsg = wxT("Object type not found in the definition block");
+            sprintf(errorMsg, "Object type not found in the definition block");
             throw UtilityException(errorMsg);
          }
          else
@@ -527,12 +527,12 @@ StringArray TextParser::ChunkLine()
             if (index1 == str.npos)
             {
                #if DEBUG_TP_CHUNK_LINE
-               errorMsg.Printf(wxT("TextParser::ChunkLine() object name not ")
-                       wxT("found in the definition block\n   \"%s\"\n"), str.c_str());
-               MessageInterface::ShowMessage(wxT("%s"), errorMsg.c_str());
+               sprintf(errorMsg, "TextParser::ChunkLine() object name not "
+                       "found in the definition block\n   \"%s\"\n", str.c_str());
+               MessageInterface::ShowMessage("%s", errorMsg);
                #endif
 
-               errorMsg = wxT("Object name not found in the definition block");
+               sprintf(errorMsg, "Object name not found in the definition block");
                throw UtilityException(errorMsg);
             }
             else
@@ -551,12 +551,12 @@ StringArray TextParser::ChunkLine()
       if (index1 == str.npos)
       {
          #if DEBUG_TP_CHUNK_LINE
-         errorMsg.Printf(wxT("TextParser::ChunkLine() command name not found ")
-                 wxT("in the command block\n   \"%s\"\n"), str.c_str());
-         MessageInterface::ShowMessage(wxT("%s"), errorMsg.c_str());
+         sprintf(errorMsg, "TextParser::ChunkLine() command name not found "
+                 "in the command block\n   \"%s\"\n", str.c_str());
+         MessageInterface::ShowMessage("%s", errorMsg);
          #endif
 
-         errorMsg = wxT("Command name not found in the command block");
+         sprintf(errorMsg, "Command name not found in the command block");
          throw UtilityException(errorMsg);
       }
       else
@@ -589,22 +589,22 @@ StringArray TextParser::ChunkLine()
       if (index1 == str.npos)
       {
          #if DEBUG_TP_CHUNK_LINE
-         errorMsg.Printf(wxT("TextParser::ChunkLine() no assignment expression ")
-                 wxT("found in the assignment block\n   \"%s\"\n"), str.c_str());
-         MessageInterface::ShowMessage(wxT("%s"), errorMsg.c_str());
+         sprintf(errorMsg, "TextParser::ChunkLine() no assignment expression "
+                 "found in the assignment block\n   \"%s\"\n", str.c_str());
+         MessageInterface::ShowMessage("%s", errorMsg);
          #endif
 
-         errorMsg = wxT("No assignment expression found in the assignment block");
+         sprintf(errorMsg, "No assignment expression found in the assignment block");
          throw UtilityException(errorMsg);
       }
       else
       {
-         index2 = str.find_first_of(wxT("="), index1);
+         index2 = str.find_first_of("=", index1);
 
          if (index2 == str.npos)
          {
-            // set wxT("") to lhs
-            chunks.push_back(wxT(""));
+            // set "" to lhs
+            chunks.push_back("");
             chunks.push_back(str);
          }
          else
@@ -613,18 +613,18 @@ StringArray TextParser::ChunkLine()
                index3 = str.find_last_not_of(whiteSpace, index2-1);
 
             #if DEBUG_TP_CHUNK_LINE
-            MessageInterface::ShowMessage(wxT("   index3=%u, index2=%u\n"), index3, index2);
+            MessageInterface::ShowMessage("   index3=%u, index2=%u\n", index3, index2);
             #endif
 
             if (index3 == str.npos || index2 == 0)
             {
                #if DEBUG_TP_CHUNK_LINE
-               errorMsg.Printf(wxT("TextParser::ChunkLine() LHS of = not found in ")
-                       wxT("the assignment block\n   \"%s\"\n"), str.c_str());
-               MessageInterface::ShowMessage(wxT("%s"), errorMsg.c_str());
+               sprintf(errorMsg, "TextParser::ChunkLine() LHS of = not found in "
+                       "the assignment block\n   \"%s\"\n", str.c_str());
+               MessageInterface::ShowMessage("%s", errorMsg);
                #endif
 
-               errorMsg = wxT("LHS of \"=\" not found in the assignment block");
+               sprintf(errorMsg, "LHS of \"=\" not found in the assignment block");
                throw UtilityException(errorMsg);
             }
             else
@@ -636,12 +636,12 @@ StringArray TextParser::ChunkLine()
                if (index1 == str.npos)
                {
                   #if DEBUG_TP_CHUNK_LINE
-                  errorMsg.Printf(wxT("TextParser::ChunkLine() RHS of = not found in ")
-                          wxT("the assignment block\n   \"%s\"\n"), str.c_str());
-                  MessageInterface::ShowMessage(wxT("%s"), errorMsg.c_str());
+                  sprintf(errorMsg, "TextParser::ChunkLine() RHS of = not found in "
+                          "the assignment block\n   \"%s\"\n", str.c_str());
+                  MessageInterface::ShowMessage("%s", errorMsg);
                   #endif
 
-                  errorMsg = wxT("RHS of \"=\" not found in the assignment block");
+                  sprintf(errorMsg, "RHS of \"=\" not found in the assignment block");
                   throw UtilityException(errorMsg);
                }
                else
@@ -654,9 +654,9 @@ StringArray TextParser::ChunkLine()
    }
 
    #if DEBUG_TP_CHUNK_LINE
-   MessageInterface::ShowMessage(wxT("   Returning:\n"));
+   MessageInterface::ShowMessage("   Returning:\n");
    for (unsigned int i=0; i<chunks.size(); i++)
-      MessageInterface::ShowMessage(wxT("   chunks[%d]=%s\n"), i, chunks[i].c_str());
+      MessageInterface::ShowMessage("   chunks[%d]=%s\n", i, chunks[i].c_str());
    #endif
 
    return chunks;
@@ -664,7 +664,7 @@ StringArray TextParser::ChunkLine()
 
 
 //-------------------------------------------------------------------------------
-// StringArray Decompose(const wxString &chunk, const wxString &bracketPair
+// StringArray Decompose(const std::string &chunk, const std::string &bracketPair
 //                       bool checkForArray = true, bool removeOuterBracket = false)
 //-------------------------------------------------------------------------------
 /*
@@ -676,27 +676,27 @@ StringArray TextParser::ChunkLine()
  * @param  removeOuterBracket  true if requesting outer bracket to be removed (false)
  *
  * For example:
- * string = wxT("BeginFiniteBurn burn1(sat1 sat2)")
+ * string = "BeginFiniteBurn burn1(sat1 sat2)"
  * Decomose(string, false, false) will return
  *    <burn1> <sat1 sat2>
  *
- * string = wxT("DC(DefaultSC.SMA=6500,{Pert=1,MaxStep=1000,Lower=6000,Upper=100000})")
+ * string = "DC(DefaultSC.SMA=6500,{Pert=1,MaxStep=1000,Lower=6000,Upper=100000})"
  * Decompose(string, true, true) will return
  *    <DC> <(DefaultSC.SMA=6500,{Pert=1,MaxStep=1000,Lower=6000,Upper=100000})
  *
- * string = wxT("DC(DefaultSC.SMA=Vec(3),{Pert=1,MaxStep=1000,Lower=6000,Upper=100000})")
+ * string = "DC(DefaultSC.SMA=Vec(3),{Pert=1,MaxStep=1000,Lower=6000,Upper=100000})"
  * Decompose(string, true, true) will return
  *    <DC> <(DefaultSC.SMA=Vec(3),{Pert=1,MaxStep=1000,Lower=6000,Upper=100000})
  *
- * string = wxT("(DefaultSC.SMA=6500,{Pert=1,MaxStep=1000,Lower=6000,Upper=100000})")
+ * string = "(DefaultSC.SMA=6500,{Pert=1,MaxStep=1000,Lower=6000,Upper=100000})"
  * Decompose(string, true, true) will return
  *    <DefaultSC.SMA=6500> <{Pert=1,MaxStep=1000,Lower=6000,Upper=100000}>
  *
- * string = wxT("(DefaultSC.SMA=Vec(3),{Pert=1,MaxStep=1000,Lower=6000,Upper=100000})")
+ * string = "(DefaultSC.SMA=Vec(3),{Pert=1,MaxStep=1000,Lower=6000,Upper=100000})"
  * Decompose(string, true, true) will return
  *    <DefaultSC.SMA=Vec(3)> <{Pert=1,MaxStep=1000,Lower=6000,Upper=100000}>
  *
- * string = wxT("(DefaultSC.SMA=G(1,1),{Pert=P(1,1),MaxStep=M(1,1),Lower=L(1,1),Upper=U(1,1)})")
+ * string = "(DefaultSC.SMA=G(1,1),{Pert=P(1,1),MaxStep=M(1,1),Lower=L(1,1),Upper=U(1,1)})"
  * Decompose(string, true, true) will return
  *    <DefaultSC.SMA=G(1,1)> <{Pert=P(1,1),MaxStep=M(1,1),Lower=L(1,1),Upper=U(1,1)}>
  *
@@ -706,26 +706,26 @@ StringArray TextParser::ChunkLine()
  * @param <removeOuterBracket>  Removes outer bracket if it is true
  */
 //-------------------------------------------------------------------------------
-StringArray TextParser::Decompose(const wxString &chunk,
-                                  const wxString &bracketPair,
+StringArray TextParser::Decompose(const std::string &chunk,
+                                  const std::string &bracketPair,
                                   bool checkForArray,
                                   bool removeOuterBracket)
 {
    #if DEBUG_TP_DECOMPOSE
    MessageInterface::ShowMessage
-      (wxT("TextParser::Decompose() chunk='%s', bracketPair='%s', checkForArray=%d, ")
-       wxT("removeOuterBracket=%d\n"), chunk.c_str(), bracketPair.c_str(), checkForArray,
+      ("TextParser::Decompose() chunk='%s', bracketPair='%s', checkForArray=%d, "
+       "removeOuterBracket=%d\n", chunk.c_str(), bracketPair.c_str(), checkForArray,
        removeOuterBracket);
    #endif
    
-   wxString str1 = chunk;
+   std::string str1 = chunk;
 
    // If checking for array, first remove blank spaces inside array bracket
    if (checkForArray && chunk[0] != bracketPair[0])
       str1 = RemoveSpaceInBrackets(chunk, bracketPair);
 
    int length = str1.size();
-   wxString::size_type openBracketIndex;
+   std::string::size_type openBracketIndex;
    Integer open, close;
    bool isOuterBracket = false;
    
@@ -738,7 +738,7 @@ StringArray TextParser::Decompose(const wxString &chunk,
 
       #if DEBUG_TP_DECOMPOSE
       MessageInterface::ShowMessage
-         (wxT("   open=%d, close=%d, isOuterBracket=%d\n"), open, close,
+         ("   open=%d, close=%d, isOuterBracket=%d\n", open, close,
           isOuterBracket);
       #endif
 
@@ -747,22 +747,22 @@ StringArray TextParser::Decompose(const wxString &chunk,
          str1 = str1.substr(1, length-2);
 
          #if DEBUG_TP_DECOMPOSE
-         MessageInterface::ShowMessage(wxT("   str1=%s\n"), str1.c_str());
+         MessageInterface::ShowMessage("   str1=%s\n", str1.c_str());
          #endif
       }
    }
    
    StringArray parts;
-   wxString::size_type openBrace = str1.find_first_of(wxT("{"));
-   wxString::size_type closeBrace = str1.find_last_of(wxT("}"));
+   std::string::size_type openBrace = str1.find_first_of("{");
+   std::string::size_type closeBrace = str1.find_last_of("}");
    
    //-----------------------------------------------------------------
    // check for brace first to simplify decompose
    //-----------------------------------------------------------------
    if (openBrace != str1.npos && closeBrace != str1.npos)
    {
-      UnsignedInt firstComma = str1.find_last_of(wxT(","), openBrace);
-      ////loj:UnsignedInt firstComma = str1.find_last_of(wxT(", "), openBrace);
+      UnsignedInt firstComma = str1.find_last_of(",", openBrace);
+      ////loj:UnsignedInt firstComma = str1.find_last_of(", ", openBrace);
       
       if (closeBrace == str1.size()-1)
       {
@@ -774,10 +774,10 @@ StringArray TextParser::Decompose(const wxString &chunk,
          parts.push_back(str1.substr(openBrace));
          
          #if DEBUG_TP_DECOMPOSE
-         MessageInterface::ShowMessage(wxT("   Returning:\n"));
+         MessageInterface::ShowMessage("   Returning:\n");
          for (unsigned int i=0; i<parts.size(); i++)
             MessageInterface::ShowMessage
-               (wxT("   parts[%d] = %s\n"), i, parts[i].c_str());
+               ("   parts[%d] = %s\n", i, parts[i].c_str());
          #endif
          
          return parts;
@@ -788,7 +788,7 @@ StringArray TextParser::Decompose(const wxString &chunk,
    //-----------------------------------------------------------------
    // now separate by space and comma and put brackets together
    //-----------------------------------------------------------------
-   wxString openBrackets = wxT("([{");
+   std::string openBrackets = "([{";
    openBracketIndex = str1.find_first_of(openBrackets);
 
    bool hasOpenBracket = false;
@@ -806,21 +806,21 @@ StringArray TextParser::Decompose(const wxString &chunk,
 
       #if DEBUG_TP_DECOMPOSE > 1
       MessageInterface::ShowMessage
-         (wxT("   open=%d, close=%d, isOuterBracket=%d\n"), open, close, isOuterBracket);
+         ("   open=%d, close=%d, isOuterBracket=%d\n", open, close, isOuterBracket);
       #endif
 
       if (checkForArray)
       {
          if (open == -1 && close == -1)
             isBracketPartOfArray =
-               IsBracketPartOfArray(str1.substr(openBracketIndex), wxT("([)]"), true);
+               IsBracketPartOfArray(str1.substr(openBracketIndex), "([)]", true);
          else
             isBracketPartOfArray =
-               IsBracketPartOfArray(str1.substr(open, close-open+1), wxT("([)]"), true);
+               IsBracketPartOfArray(str1.substr(open, close-open+1), "([)]", true);
       }
 
       #if DEBUG_TP_DECOMPOSE > 1
-      MessageInterface::ShowMessage(wxT("   isBracketPartOfArray=%d\n"), isBracketPartOfArray);
+      MessageInterface::ShowMessage("   isBracketPartOfArray=%d\n", isBracketPartOfArray);
       #endif
 
       if (!isBracketPartOfArray)
@@ -829,19 +829,19 @@ StringArray TextParser::Decompose(const wxString &chunk,
 
    #if DEBUG_TP_DECOMPOSE > 1
    MessageInterface::ShowMessage
-      (wxT("   hasOpenBracket=%d, isArray=%d\n"), hasOpenBracket, isArray);
+      ("   hasOpenBracket=%d, isArray=%d\n", hasOpenBracket, isArray);
    #endif
 
    // if no Array found, just separate by comma and space
    if (!hasOpenBracket && !isArray)
    {
-      parts = GmatStringUtil::SeparateBy(str1, wxT(", "), true);
+      parts = GmatStringUtil::SeparateBy(str1, ", ", true);
    }
    else if (hasOpenBracket && !isArray)
    {
       if (openBracketIndex != 0)
       {
-         wxString str2 = str1.substr(0, openBracketIndex);
+         std::string str2 = str1.substr(0, openBracketIndex);
          str2 = GmatStringUtil::Trim(str2);
          parts.push_back(str2);
       }
@@ -851,13 +851,13 @@ StringArray TextParser::Decompose(const wxString &chunk,
    }
    else
    {
-      parts = GmatStringUtil::SeparateBy(str1, wxT(" "), true);
+      parts = GmatStringUtil::SeparateBy(str1, " ", true);
    }
 
    #if DEBUG_TP_DECOMPOSE
-   MessageInterface::ShowMessage(wxT("   Returning: %d parts\n"), parts.size());
+   MessageInterface::ShowMessage("   Returning: %d parts\n", parts.size());
    for (unsigned int i=0; i<parts.size(); i++)
-      MessageInterface::ShowMessage(wxT("   parts[%d] = %s\n"), i, parts[i].c_str());
+      MessageInterface::ShowMessage("   parts[%d] = %s\n", i, parts[i].c_str());
    #endif
 
    return parts;
@@ -865,9 +865,9 @@ StringArray TextParser::Decompose(const wxString &chunk,
 
 
 //-------------------------------------------------------------------------------
-// StringArray SeparateBrackets(const wxString &chunk,
-//                              const wxString &bracketPair,
-//                              const wxString &delim,
+// StringArray SeparateBrackets(const std::string &chunk,
+//                              const std::string &bracketPair,
+//                              const std::string &delim,
 //                              bool checkOuterBracket)
 //-------------------------------------------------------------------------------
 /*
@@ -875,8 +875,8 @@ StringArray TextParser::Decompose(const wxString &chunk,
  * except outer most brackets.
  *
  * For example:
- * string = wxT("{Pert=P(1,1),MaxStep=M(1,1),Lower=L(1,1),Upper=U(1,1)}")
- * SeparateBrackets(string, wxT("{}"), wxT(","), false) will return
+ * string = "{Pert=P(1,1),MaxStep=M(1,1),Lower=L(1,1),Upper=U(1,1)}"
+ * SeparateBrackets(string, "{}", ",", false) will return
  *    <Pert=P(1,1)> <MaxStep=M(1,1)> <Lower=L(1,1)> <Upper=U(1,1)>
  *
  * @param <chunk> input chunk to be break apart
@@ -888,26 +888,26 @@ StringArray TextParser::Decompose(const wxString &chunk,
  *    If checkOuterBracket is set to true, and there is no matching bracket pair
  */
 //-------------------------------------------------------------------------------
-StringArray TextParser::SeparateBrackets(const wxString &chunk,
-                                         const wxString &bracketPair,
-                                         const wxString &delim,
+StringArray TextParser::SeparateBrackets(const std::string &chunk,
+                                         const std::string &bracketPair,
+                                         const std::string &delim,
                                          bool checkOuterBracket)
 {
    #if DEBUG_TP_SEP_BRACKETS
    MessageInterface::ShowMessage
-      (wxT("TextParser::SeparateBrackets() chunk='%s', bracketPair='%s', delim='%s', ")
-       wxT("checkOuterBracket=%d\n"), chunk.c_str(), bracketPair.c_str(), delim.c_str(),
+      ("TextParser::SeparateBrackets() chunk='%s', bracketPair='%s', delim='%s', "
+       "checkOuterBracket=%d\n", chunk.c_str(), bracketPair.c_str(), delim.c_str(),
        checkOuterBracket);
    #endif
    
-   wxString str1 = chunk;
+   std::string str1 = chunk;
    
    // First remove blank spaces inside array bracket
    if (chunk[0] != bracketPair[0])
       str1 = RemoveSpaceInBrackets(chunk, bracketPair);
    
    #if DEBUG_TP_SEP_BRACKETS
-   MessageInterface::ShowMessage(wxT("   str1=%s\n"), str1.c_str());
+   MessageInterface::ShowMessage("   str1=%s\n", str1.c_str());
    #endif
    
    UnsignedInt firstOpen, lastClose;
@@ -920,20 +920,20 @@ StringArray TextParser::SeparateBrackets(const wxString &chunk,
       bracketFound = false;
       if (checkOuterBracket)
       {
-         errorMsg.Printf(wxT("TextParser::SeparateBrackets() \"%s\" is not enclosed ")
-                 wxT("with \"%s\""), str1.c_str(), bracketPair.c_str());
+         sprintf(errorMsg, "TextParser::SeparateBrackets() \"%s\" is not enclosed "
+                 "with \"%s\"", str1.c_str(), bracketPair.c_str());
 
          #if DEBUG_TP_SEP_BRACKETS
-         MessageInterface::ShowMessage(wxT("%s\n"), errorMsg.c_str());
+         MessageInterface::ShowMessage("%s\n", errorMsg);
          #endif
 
-         errorMsg.Printf(wxT("\"%s\" is not enclosed with \"%s\""), str1.c_str(),
+         sprintf(errorMsg, "\"%s\" is not enclosed with \"%s\"", str1.c_str(),
                  bracketPair.c_str());
          throw UtilityException(errorMsg);
       }
    }
    
-   wxString str;
+   std::string str;
    
    if (bracketFound)
       str = str1.substr(firstOpen+1, lastClose-firstOpen-1);
@@ -941,7 +941,7 @@ StringArray TextParser::SeparateBrackets(const wxString &chunk,
       str = str1.substr(firstOpen, lastClose-firstOpen+1);
    
    #if DEBUG_TP_SEP_BRACKETS
-   MessageInterface::ShowMessage(wxT("   str=%s\n"), str.c_str());
+   MessageInterface::ShowMessage("   str=%s\n", str.c_str());
    #endif
    
    
@@ -949,10 +949,10 @@ StringArray TextParser::SeparateBrackets(const wxString &chunk,
    parts = GmatStringUtil::SeparateBy(str, delim, true);
    
    #if DEBUG_TP_SEP_BRACKETS
-   MessageInterface::ShowMessage(wxT("   Returning:\n"));
+   MessageInterface::ShowMessage("   Returning:\n");
    for (unsigned int i=0; i<parts.size(); i++)
       MessageInterface::ShowMessage
-         (wxT("   parts[%d] = %s\n"), i, parts[i].c_str());
+         ("   parts[%d] = %s\n", i, parts[i].c_str());
    #endif
    
    return parts;
@@ -960,20 +960,20 @@ StringArray TextParser::SeparateBrackets(const wxString &chunk,
 
 
 //-------------------------------------------------------------------------------
-// StringArray SeparateAllBrackets(const wxString &chunk)
+// StringArray SeparateAllBrackets(const std::string &chunk)
 //-------------------------------------------------------------------------------
-StringArray TextParser::SeparateAllBrackets(const wxString &chunk,
-                                            const wxString &bracketPair)
+StringArray TextParser::SeparateAllBrackets(const std::string &chunk,
+                                            const std::string &bracketPair)
 {
    #if DEBUG_TP_SEP_BRACKETS
    MessageInterface::ShowMessage
-      (wxT("TextParser::SeparateAllBrackets() chunk='%s', bracketPair='%s'\n"),
+      ("TextParser::SeparateAllBrackets() chunk='%s', bracketPair='%s'\n",
        chunk.c_str(), bracketPair.c_str());
    #endif
    
-   wxString str1 = chunk;
-   wxString parenPair = wxT("()");
-   wxString openBracket, closeBracket;
+   std::string str1 = chunk;
+   std::string parenPair = "()";
+   std::string openBracket, closeBracket;
    openBracket = bracketPair[0];
    if (bracketPair.size() > 1)
       closeBracket = bracketPair[1];
@@ -983,27 +983,27 @@ StringArray TextParser::SeparateAllBrackets(const wxString &chunk,
       str1 = RemoveSpaceInBrackets(chunk, parenPair);
    
    #if DEBUG_TP_SEP_BRACKETS
-   MessageInterface::ShowMessage(wxT("   str1=%s\n"), str1.c_str());
+   MessageInterface::ShowMessage("   str1=%s\n", str1.c_str());
    #endif
    
    StringArray parts, parts1, parts2;
-   parts1 = GmatStringUtil::SeparateBy(str1, wxT("}"), false, true);
+   parts1 = GmatStringUtil::SeparateBy(str1, "}", false, true);
    
    for (Integer i = 0; i < (Integer)parts1.size(); i++)
    {
       #if DEBUG_TP_SEP_BRACKETS
       MessageInterface::ShowMessage
-         (wxT("   parts1[%d] = %s\n"), i, parts1[i].c_str());
+         ("   parts1[%d] = %s\n", i, parts1[i].c_str());
       #endif
-      parts2 = GmatStringUtil::SeparateBy(parts1[i], wxT("{"), false, false);
+      parts2 = GmatStringUtil::SeparateBy(parts1[i], "{", false, false);
       for (unsigned int j=0; j<parts2.size(); j++)
       {
          #if DEBUG_TP_SEP_BRACKETS
          MessageInterface::ShowMessage
-            (wxT("   parts2[%d] = %s\n"), j, parts2[j].c_str());
+            ("   parts2[%d] = %s\n", j, parts2[j].c_str());
          #endif
          // If closeBracket found at the end, insert openBracket back if not found
-         if ((parts2[j][0] != wxT('{')) &&
+         if ((parts2[j][0] != '{') &&
              (parts2[j].find(closeBracket) == parts2[j].size()-1))
             parts2[j].insert(0, openBracket);
       }
@@ -1012,10 +1012,10 @@ StringArray TextParser::SeparateAllBrackets(const wxString &chunk,
    
    #if DEBUG_TP_SEP_BRACKETS
    MessageInterface::ShowMessage
-      (wxT("TextParser::SeparateAllBrackets() returning %d parts:\n"), parts.size());
+      ("TextParser::SeparateAllBrackets() returning %d parts:\n", parts.size());
    for (unsigned int i=0; i<parts.size(); i++)
       MessageInterface::ShowMessage
-         (wxT("   parts[%d]  = %s\n"), i, parts[i].c_str());
+         ("   parts[%d]  = %s\n", i, parts[i].c_str());
    #endif
    
    return parts;
@@ -1023,7 +1023,7 @@ StringArray TextParser::SeparateAllBrackets(const wxString &chunk,
 
 
 //-------------------------------------------------------------------------------
-// StringArray SeparateSpaces(const wxString &chunk)
+// StringArray SeparateSpaces(const std::string &chunk)
 //-------------------------------------------------------------------------------
 /*
  * Breaks string by space or comma.
@@ -1033,15 +1033,15 @@ StringArray TextParser::SeparateAllBrackets(const wxString &chunk,
  * @return string array of parts
  */
 //-------------------------------------------------------------------------------
-StringArray TextParser::SeparateSpaces(const wxString &chunk)
+StringArray TextParser::SeparateSpaces(const std::string &chunk)
 {
-   StringTokenizer st(chunk, wxT(" ,\t"));
+   StringTokenizer st(chunk, " ,\t");
    StringArray parts = st.GetAllTokens();
 
    #if DEBUG_SEP_SPACE
    for (UnsignedInt i=0; i<parts.size(); i++)
       MessageInterface::ShowMessage
-         (wxT("   parts[%d]=%s\n"), i, parts[i].c_str());
+         ("   parts[%d]=%s\n", i, parts[i].c_str());
    #endif
 
    return parts;
@@ -1049,7 +1049,7 @@ StringArray TextParser::SeparateSpaces(const wxString &chunk)
 
 
 //-------------------------------------------------------------------------------
-// StringArray SeparateDots(const wxString &chunk)
+// StringArray SeparateDots(const std::string &chunk)
 //-------------------------------------------------------------------------------
 /*
  * Breaks string by dots, but keep decimal point number together.
@@ -1059,7 +1059,7 @@ StringArray TextParser::SeparateSpaces(const wxString &chunk)
  * @return string array of parts
  */
 //-------------------------------------------------------------------------------
-StringArray TextParser::SeparateDots(const wxString &chunk)
+StringArray TextParser::SeparateDots(const std::string &chunk)
 {
    Real rval;
    StringArray parts;
@@ -1071,14 +1071,14 @@ StringArray TextParser::SeparateDots(const wxString &chunk)
    }
    else
    {
-      StringTokenizer st(chunk, wxT("."));
+      StringTokenizer st(chunk, ".");
       parts = st.GetAllTokens();
    }
 
    #if DEBUG_SEP_DOTS
    for (UnsignedInt i=0; i<parts.size(); i++)
       MessageInterface::ShowMessage
-         (wxT("   parts[%d]=%s\n"), i, parts[i].c_str());
+         ("   parts[%d]=%s\n", i, parts[i].c_str());
    #endif
 
    return parts;
@@ -1086,7 +1086,7 @@ StringArray TextParser::SeparateDots(const wxString &chunk)
 
 
 //-------------------------------------------------------------------------------
-// StringArray SeparateBy(const wxString &chunk, const wxString &delim)
+// StringArray SeparateBy(const std::string &chunk, const std::string &delim)
 //-------------------------------------------------------------------------------
 /*
  * Breaks string by input delimiter. Removes leading and trailing spaces.
@@ -1097,11 +1097,11 @@ StringArray TextParser::SeparateDots(const wxString &chunk)
  * @return string array of parts
  */
 //-------------------------------------------------------------------------------
-StringArray TextParser::SeparateBy(const wxString &chunk, const wxString &delim)
+StringArray TextParser::SeparateBy(const std::string &chunk, const std::string &delim)
 {
    #ifdef GMAT_TP_SEPARATEBY
    MessageInterface::ShowMessage
-      (wxT("TextParser::SeparateBy() chunk='%s', delim='%s'\n"), chunk.c_str(), delim.c_str());
+      ("TextParser::SeparateBy() chunk='%s', delim='%s'\n", chunk.c_str(), delim.c_str());
    #endif
    
    StringTokenizer st(chunk, delim);
@@ -1113,10 +1113,10 @@ StringArray TextParser::SeparateBy(const wxString &chunk, const wxString &delim)
    
    #ifdef GMAT_TP_SEPARATEBY
    MessageInterface::ShowMessage
-      (wxT("TextParser::SeparateBy() returning:\n"));
+      ("TextParser::SeparateBy() returning:\n");
    for (int i=0; i<count; i++)
       MessageInterface::ShowMessage
-         (wxT("   parts[%d]=%s\n"), i, parts[i].c_str());
+         ("   parts[%d]=%s\n", i, parts[i].c_str());
    #endif
    
    return parts;
@@ -1124,9 +1124,9 @@ StringArray TextParser::SeparateBy(const wxString &chunk, const wxString &delim)
 
 
 //-------------------------------------------------------------------------------
-// bool IsCommand(const wxString &str)
+// bool IsCommand(const std::string &str)
 //-------------------------------------------------------------------------------
-bool TextParser::IsCommand(const wxString &str)
+bool TextParser::IsCommand(const std::string &str)
 {
    bool found = false;
 
@@ -1139,23 +1139,23 @@ bool TextParser::IsCommand(const wxString &str)
 
 
 //-------------------------------------------------------------------------------
-// wxChar GetClosingBracket(const wxChar &openBracket)
+// char GetClosingBracket(const char &openBracket)
 //-------------------------------------------------------------------------------
-wxChar TextParser::GetClosingBracket(const wxChar &openBracket)
+char TextParser::GetClosingBracket(const char &openBracket)
 {
    switch (openBracket)
    {
-   case wxT('('):
-      return wxT(')');
-   case wxT('['):
-      return wxT(']');
-   case wxT('{'):
-      return wxT('}');
-   case wxT('<'):
+   case '(':
+      return ')';
+   case '[':
+      return ']';
+   case '{':
+      return '}';
+   case '<':
       return '>';
 
    default:
-      errorMsg.Printf(wxT("TextParser found unknown open bracket: %c"), openBracket);
+      sprintf(errorMsg, "TextParser found unknown open bracket: %c", openBracket);
       throw UtilityException(errorMsg);
    }
 }

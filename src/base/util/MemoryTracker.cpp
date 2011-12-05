@@ -41,9 +41,9 @@ MemoryTracker* MemoryTracker::Instance()
 
 
 //------------------------------------------------------------------------------
-// void SetScript(const wxString &script)
+// void SetScript(const std::string &script)
 //------------------------------------------------------------------------------
-void MemoryTracker::SetScript(const wxString &script)
+void MemoryTracker::SetScript(const std::string &script)
 {
    scriptFile = script;
 }
@@ -59,11 +59,11 @@ void MemoryTracker::SetShowTrace(bool show)
 
 
 //------------------------------------------------------------------------------
-// void Add(void *addr, const wxString &objName, const wxString &funName,
-//          const wxString &note, void *from)
+// void Add(void *addr, const std::string &objName, const std::string &funName,
+//          const std::string &note, void *from)
 //------------------------------------------------------------------------------
-void MemoryTracker::Add(void *addr, const wxString &objName,
-                        const wxString &funName, const wxString &note,
+void MemoryTracker::Add(void *addr, const std::string &objName,
+                        const std::string &funName, const std::string &note,
                         void *from)
 {
    if (showTrace)
@@ -71,28 +71,28 @@ void MemoryTracker::Add(void *addr, const wxString &objName,
       if (from == NULL)
       {
          MessageInterface::ShowMessage
-            (wxT("+++ Creating <%p> %-20s in %s  %s\n"), addr, objName.c_str(),
+            ("+++ Creating <%p> %-20s in %s  %s\n", addr, objName.c_str(),
              funName.c_str(), note.c_str());
       }
       else
       {
          MessageInterface::ShowMessage
-            (wxT("+++ Creating <%p> %-20s in %s  %s from <%p>\n"), addr, objName.c_str(),
+            ("+++ Creating <%p> %-20s in %s  %s from <%p>\n", addr, objName.c_str(),
              funName.c_str(), note.c_str(), from);
       }
    }
    
-   TrackType track(wxT("+++"), addr, objName, funName, note, scriptFile);
+   TrackType track("+++", addr, objName, funName, note, scriptFile);
    memoryTracks.push_back(track);
 }
 
 
 //------------------------------------------------------------------------------
-// void Remove(void *addr, const wxString &objName, const wxString &funName,
-//             const wxString &note, void *from)
+// void Remove(void *addr, const std::string &objName, const std::string &funName,
+//             const std::string &note, void *from)
 //------------------------------------------------------------------------------
-void MemoryTracker::Remove(void *addr, const wxString &objName,
-                           const wxString &funName, const wxString &note,
+void MemoryTracker::Remove(void *addr, const std::string &objName,
+                           const std::string &funName, const std::string &note,
                            void *from)
 {
    if (showTrace)
@@ -100,13 +100,13 @@ void MemoryTracker::Remove(void *addr, const wxString &objName,
       if (from == NULL)
       {
          MessageInterface::ShowMessage
-            (wxT("--- Deleting <%p> %-20s in %s %s\n"), addr, objName.c_str(),
+            ("--- Deleting <%p> %-20s in %s %s\n", addr, objName.c_str(),
              funName.c_str(), note.c_str());
       }
       else
       {
          MessageInterface::ShowMessage
-            (wxT("--- Deleting <%p> %-20s in %s %s from <%p>\n"), addr, objName.c_str(),
+            ("--- Deleting <%p> %-20s in %s %s from <%p>\n", addr, objName.c_str(),
              funName.c_str(), note.c_str(), from);
       }
    }
@@ -127,7 +127,7 @@ void MemoryTracker::Remove(void *addr, const wxString &objName,
    
    if (!trackFound)
    {
-      TrackType track(wxT("---"), addr, objName, funName, note, scriptFile);
+      TrackType track("---", addr, objName, funName, note, scriptFile);
       memoryTracks.push_back(track);
    }
    
@@ -157,22 +157,22 @@ StringArray& MemoryTracker::GetTracks(bool clearTracks, bool writeScriptName)
 {
    allTracks.clear();
    std::vector<TrackType>::iterator track = memoryTracks.begin();
-   static wxString text;
+   static char text[400];
    Integer trackCount = 0;
 
    #ifdef DEBUG_GET_TRACKS
    MessageInterface::ShowMessage
-      (wxT("===> MemoryTracker::GetTracks() There are %d memory tracks\n"),
+      ("===> MemoryTracker::GetTracks() There are %d memory tracks\n",
        memoryTracks.size());
    #endif
    
    while (track != memoryTracks.end() && trackCount < 1000)
    {
       trackCount++;
-      wxString script = wxT("");
+      std::string script = "";
       if (writeScriptName)
          script = (*track).scriptName;
-      text.Printf(wxT("%s <%p> %-20s %-s  %s %s"), ((*track).preface).c_str(), (*track).address,
+      sprintf(text, "%s <%p> %-20s %-s  %s %s", ((*track).preface).c_str(), (*track).address,
               ((*track).objectName).c_str(), ((*track).functionName).c_str(),
               ((*track).remark).c_str(), script.c_str());
       allTracks.push_back(text);
@@ -184,7 +184,7 @@ StringArray& MemoryTracker::GetTracks(bool clearTracks, bool writeScriptName)
    
    #ifdef DEBUG_GET_TRACKS
    MessageInterface::ShowMessage
-      (wxT("===> MemoryTracker::GetTracks() returning %d memory tracks\n"), allTracks.size());
+      ("===> MemoryTracker::GetTracks() returning %d memory tracks\n", allTracks.size());
    #endif
    
    return allTracks;

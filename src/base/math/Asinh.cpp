@@ -33,8 +33,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Asinh::Asinh(const wxString &nomme)
-   : MathFunction(wxT("Asinh"), nomme)
+Asinh::Asinh(const std::string &nomme)
+   : MathFunction("Asinh", nomme)
 {
 }
 
@@ -93,7 +93,7 @@ void Asinh::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
    leftNode->GetOutputInfo(type1, row1, col1);
    
    if (type1 != Gmat::REAL_TYPE)
-      throw MathException(wxT("Left is not scalar, so cannot do Asinh().\n"));  
+      throw MathException("Left is not scalar, so cannot do Asinh().\n");  
    else
    {
       type = type1;
@@ -114,7 +114,7 @@ void Asinh::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 bool Asinh::ValidateInputs()
 {
    if (leftNode == NULL)
-      throw MathException(wxT("RadToDeg() - Missing input arguments.\n"));
+      throw MathException("RadToDeg() - Missing input arguments.\n");
    
    Integer type1, row1, col1; // Left node
    

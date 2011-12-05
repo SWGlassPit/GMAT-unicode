@@ -41,28 +41,28 @@
 class GMAT_API EventFunction //: public GmatBase
 {
 public:
-   EventFunction(const wxString &typeStr);
+   EventFunction(const std::string &typeStr);
    virtual ~EventFunction();
    EventFunction(const EventFunction& ef);
    EventFunction& operator=(const EventFunction& ef);
 
    // Methods used to identify the EventFunction
-   wxString GetTypeName();
-   wxString GetName();
-   wxString GetPrimaryName();
+   std::string GetTypeName();
+   std::string GetName();
+   std::string GetPrimaryName();
 
    virtual bool SetPrimary(SpaceObject *so);
    virtual bool Initialize();
    virtual Real* Evaluate(GmatEpoch atEpoch = -1.0, Real* forState = NULL) = 0;
    Real* GetData();
-   virtual wxString GetBoundaryType();
+   virtual std::string GetBoundaryType();
    virtual bool IsEventEntry();
 
 protected:
    /// Event function type
-   wxString       typeName;
+   std::string       typeName;
    /// Event function descriptor
-   wxString       instanceName;
+   std::string       instanceName;
    /// Current/most recently evaluated epoch, event value, derivative
    Real              *eventData;
    /// Size of the event data array
@@ -70,7 +70,7 @@ protected:
    /// SpaceObject that plays the role of “target” in the event computations.
    SpaceObject       *primary;
    /// Event boundary type; defaults to "Entry" or "Exit"
-   wxString       boundaryType;
+   std::string       boundaryType;
    /// Boolean indicating is the boundary is an entry or exit
    bool              isStart;
 };

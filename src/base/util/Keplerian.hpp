@@ -62,12 +62,12 @@ public :
                Radians ta);
    
    Integer GetNumData() const;
-   const wxString* GetDataDescriptions() const;
-   wxString* ToValueStrings();
+   const std::string* GetDataDescriptions() const;
+   std::string* ToValueStrings();
    
    // conversion to Cartesian
    static Rvector6 KeplerianToCartesian(Real mu, const Rvector6 &state,
-                                        const wxString &anomalyType = wxT("TA"));
+                                        const std::string &anomalyType = "TA");
    
    // computing keplerian elements
    static Real CartesianToSMA(Real mu, const Rvector3 &pos,
@@ -91,11 +91,11 @@ public :
                                         Anomaly::AnomalyType anomalyType);
    static Rvector6 CartesianToKeplerian(Real mu, const Rvector3 &pos,
                                         const Rvector3 &vel,
-                                        const wxString &anomalyType = wxT("TA"));
+                                        const std::string &anomalyType = "TA");
    static Rvector6 CartesianToKeplerian(Real mu, const Rvector6 &state,
                                         Anomaly::AnomalyType anomalyType);
    static Rvector6 CartesianToKeplerian(Real mu, const Rvector6 &state,
-                                        const wxString &anomalyType = wxT("TA"));
+                                        const std::string &anomalyType = "TA");
    
    // anomaly conversion
    static Real CartesianToTA(Real mu, const Rvector3 &pos,
@@ -132,8 +132,8 @@ private :
    Radians mMeanAnomaly;
    
    static const Integer NUM_DATA = 6;
-   static const wxString DATA_DESCRIPTIONS[NUM_DATA];
-   wxString stringValues[NUM_DATA];
+   static const std::string DATA_DESCRIPTIONS[NUM_DATA];
+   std::string stringValues[NUM_DATA];
 
 };
 #endif // Keplerian_hpp

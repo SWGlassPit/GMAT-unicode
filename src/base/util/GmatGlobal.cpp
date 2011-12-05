@@ -98,9 +98,9 @@ Integer GmatGlobal::GetIntegerWidth()
 
 
 //------------------------------------------------------------------------------
-// wxString GetOutputPath()
+// std::string GetOutputPath()
 //------------------------------------------------------------------------------
-wxString GmatGlobal::GetOutputPath()
+std::string GmatGlobal::GetOutputPath()
 {
    return currentSetting.mOutputPath;
 }
@@ -146,25 +146,25 @@ void GmatGlobal::SetIntegerWidth(Integer w)
 }
 
 //------------------------------------------------------------------------------
-// void SetOutputPath(const wxString &path)
+// void SetOutputPath(const std::string &path)
 //------------------------------------------------------------------------------
-void GmatGlobal::SetOutputPath(const wxString &path)
+void GmatGlobal::SetOutputPath(const std::string &path)
 {
    currentSetting.mOutputPath = path;
 }
 
 //------------------------------------------------------------------------------
-// void SetMatlabFuncNameExt(const wxString &ext)
+// void SetMatlabFuncNameExt(const std::string &ext)
 //------------------------------------------------------------------------------
-void GmatGlobal::SetMatlabFuncNameExt(const wxString &ext)
+void GmatGlobal::SetMatlabFuncNameExt(const std::string &ext)
 {
    matlabExt = ext;
 }
 
 //------------------------------------------------------------------------------
-// wxString GetMatlabFuncNameExt()
+// std::string GetMatlabFuncNameExt()
 //------------------------------------------------------------------------------
-wxString GmatGlobal::GetMatlabFuncNameExt()
+std::string GmatGlobal::GetMatlabFuncNameExt()
 {
    return matlabExt;
 }
@@ -433,9 +433,9 @@ void GmatGlobal::SetSpacing(Integer sp)
 }
 
 //------------------------------------------------------------------------------
-// void SetPrefix(const wxString &prefix)
+// void SetPrefix(const std::string &prefix)
 //------------------------------------------------------------------------------
-void GmatGlobal::SetPrefix(const wxString &prefix)
+void GmatGlobal::SetPrefix(const std::string &prefix)
 {
    actualFormat.mPrefix = prefix;
 }
@@ -470,7 +470,7 @@ void GmatGlobal::SetDefaultFormat()
    defaultFormat.mPrecision = DATA_PRECISION;
    defaultFormat.mHorizontal = true;
    defaultFormat.mSpacing = 1;
-   defaultFormat.mPrefix = wxT("");
+   defaultFormat.mPrefix = "";
    defaultFormat.mAppendEol = true;
    defaultFormat.mBinaryIn = false;
    defaultFormat.mBinaryOut = false;
@@ -480,7 +480,7 @@ void GmatGlobal::SetDefaultFormat()
 //------------------------------------------------------------------------------
 // void SetCurrentFormat(bool scientific, bool showPoint, Integer width,
 //                       Integer precision, bool horizontal, Integer spacing,
-//                       const wxString &prefix, bool appendEol,
+//                       const std::string &prefix, bool appendEol,
 //                       bool binaryIn, bool binaryOut)
 //------------------------------------------------------------------------------
 /*
@@ -499,7 +499,7 @@ void GmatGlobal::SetDefaultFormat()
 //------------------------------------------------------------------------------
 void GmatGlobal::SetCurrentFormat(bool scientific, bool showPoint, Integer width,
                                   Integer precision, bool horizontal, Integer spacing,
-                                  const wxString &prefix, bool appendEol,
+                                  const std::string &prefix, bool appendEol,
                                   bool binaryIn, bool binaryOut)
 {
    currentFormat.mScientific = scientific;
@@ -518,12 +518,12 @@ void GmatGlobal::SetCurrentFormat(bool scientific, bool showPoint, Integer width
 //------------------------------------------------------------------------------
 // void GetActualFormat(bool &scientific, bool &showPoint, Integer &precision,
 //                      Integer &width, bool &horizontal, Integer &spacing,
-//                      wxString &prefix, bool &appendEol)
+//                      std::string &prefix, bool &appendEol)
 //------------------------------------------------------------------------------
 void GmatGlobal::GetActualFormat(bool &scientific, bool &showPoint,
                                  Integer &precision, Integer &width,
                                  bool &horizontal, Integer &spacing,
-                                 wxString &prefix, bool &appendEol)
+                                 std::string &prefix, bool &appendEol)
 {
    scientific = actualFormat.mScientific;
    showPoint = actualFormat.mShowPoint;
@@ -539,11 +539,11 @@ void GmatGlobal::GetActualFormat(bool &scientific, bool &showPoint,
 //------------------------------------------------------------------------------
 // void SetActualFormat(bool scientific, bool showPoint, Integer precision,
 //                      Integer width, bool horizontal = false, Integer spacing = 1,
-//                      const wxString &prefix = wxT(""), bool appendEol = true)
+//                      const std::string &prefix = "", bool appendEol = true)
 //------------------------------------------------------------------------------
 void GmatGlobal::SetActualFormat(bool scientific, bool showPoint, Integer precision,
                                  Integer width, bool horizontal, Integer spacing,
-                                 const wxString &prefix, bool appendEol)
+                                 const std::string &prefix, bool appendEol)
 {
    actualFormat.mScientific = scientific;
    actualFormat.mShowPoint = showPoint;
@@ -629,7 +629,7 @@ GmatGlobal::GmatGlobal()
    guiMode = NORMAL_GUI;
    plotMode = NORMAL_PLOT;
    matlabMode = SHARED;
-   matlabExt = wxT("__m__");
+   matlabExt = "__m__";
 }
 
 

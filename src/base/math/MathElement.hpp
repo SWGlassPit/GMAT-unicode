@@ -34,13 +34,13 @@
 class GMAT_API MathElement : public MathNode
 {
 public:
-   MathElement(const wxString &typeStr, const wxString &nomme);
+   MathElement(const std::string &typeStr, const std::string &nomme);
    virtual ~MathElement();
    MathElement(const MathElement &me);
    MathElement& operator=(const MathElement &me);
    
    // for math elemement wrappers
-   ////void                 SetMathWrappers(std::map<wxString, ElementWrapper*> *wrapperMap);
+   ////void                 SetMathWrappers(std::map<std::string, ElementWrapper*> *wrapperMap);
    virtual void         SetMathWrappers(WrapperMap *wrapperMap);
    
    // Inherited (MathNode) methods
@@ -57,16 +57,16 @@ public:
    
    // Inherited (GmatBase) methods
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);   
+                                        const std::string &oldName,
+                                        const std::string &newName);   
    virtual GmatBase*    Clone(void) const; 
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name);
+                                     const std::string &name);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
-   virtual wxString  GetRefObjectName(const Gmat::ObjectType type) const;
+                                     const std::string &name = "");
+   virtual std::string  GetRefObjectName(const Gmat::ObjectType type) const;
    virtual bool         SetRefObjectName(const Gmat::ObjectType type,
-                                         const wxString &name);
+                                         const std::string &name);
    virtual const StringArray&
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    
@@ -77,17 +77,17 @@ protected:
    Parameter* refObject;
    
    /// Holds the name of the GMAT object that is accessed by this node
-   wxString refObjectName;    
-   wxString refObjectType;
+   std::string refObjectName;    
+   std::string refObjectType;
    
    /// The list of names of Wrapper objects
    StringArray wrapperObjectNames;
    /// Wrapper name and ElementWrapper pointer Map for RHS math element
    WrapperMap *theWrapperMap;
    
-   void SetWrapperObjectNames(const wxString &name);
-   void SetWrapperObject(GmatBase *obj, const wxString &name);
-   ElementWrapper* FindWrapper(const wxString &name);
+   void SetWrapperObjectNames(const std::string &name);
+   void SetWrapperObject(GmatBase *obj, const std::string &name);
+   ElementWrapper* FindWrapper(const std::string &name);
 };
 
 #endif //MathElement_hpp

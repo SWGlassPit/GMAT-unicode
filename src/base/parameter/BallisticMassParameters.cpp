@@ -35,10 +35,10 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// DryMass(const wxString &name, GmatBase *obj)
+// DryMass(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-DryMass::DryMass(const wxString &name, GmatBase *obj)
-   : BallisticMassReal(name, wxT("DryMass"), obj, wxT("Dry Mass"), wxT(""))
+DryMass::DryMass(const std::string &name, GmatBase *obj)
+   : BallisticMassReal(name, "DryMass", obj, "Dry Mass", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::RED32;
@@ -108,10 +108,10 @@ GmatBase* DryMass::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// DragCoeff(const wxString &name, GmatBase *obj)
+// DragCoeff(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-DragCoeff::DragCoeff(const wxString &name, GmatBase *obj)
-   : BallisticMassReal(name, wxT("Cd"), obj, wxT("Drag Coefficient"), wxT(""))
+DragCoeff::DragCoeff(const std::string &name, GmatBase *obj)
+   : BallisticMassReal(name, "Cd", obj, "Drag Coefficient", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::YELLOW32;
@@ -180,10 +180,10 @@ GmatBase* DragCoeff::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// ReflectCoeff(const wxString &name, GmatBase *obj)
+// ReflectCoeff(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-ReflectCoeff::ReflectCoeff(const wxString &name, GmatBase *obj)
-   : BallisticMassReal(name, wxT("Cr"), obj, wxT("Reflectivity Coefficient"), wxT(""))
+ReflectCoeff::ReflectCoeff(const std::string &name, GmatBase *obj)
+   : BallisticMassReal(name, "Cr", obj, "Reflectivity Coefficient", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::BLUE32;
@@ -252,10 +252,10 @@ GmatBase* ReflectCoeff::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// DragArea(const wxString &name, GmatBase *obj)
+// DragArea(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-DragArea::DragArea(const wxString &name, GmatBase *obj)
-   : BallisticMassReal(name, wxT("DragArea"), obj, wxT("Drag Area"), wxT(""))
+DragArea::DragArea(const std::string &name, GmatBase *obj)
+   : BallisticMassReal(name, "DragArea", obj, "Drag Area", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::GREEN32;
@@ -324,10 +324,10 @@ GmatBase* DragArea::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// SRPArea(const wxString &name, GmatBase *obj)
+// SRPArea(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-SRPArea::SRPArea(const wxString &name, GmatBase *obj)
-   : BallisticMassReal(name, wxT("SRPArea"), obj, wxT("SRP Area"), wxT(""))
+SRPArea::SRPArea(const std::string &name, GmatBase *obj)
+   : BallisticMassReal(name, "SRPArea", obj, "SRP Area", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::ORANGE32;
@@ -396,10 +396,10 @@ GmatBase* SRPArea::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// TotalMass(const wxString &name, GmatBase *obj)
+// TotalMass(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
-TotalMass::TotalMass(const wxString &name, GmatBase *obj)
-   : BallisticMassReal(name, wxT("TotalMass"), obj, wxT("Total Mass"), wxT(""))
+TotalMass::TotalMass(const std::string &name, GmatBase *obj)
+   : BallisticMassReal(name, "TotalMass", obj, "Total Mass", "")
 {
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::CHESTNUT;

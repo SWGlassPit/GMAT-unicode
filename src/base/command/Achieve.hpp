@@ -45,8 +45,8 @@ public:
    virtual GmatBase* Clone() const;
 
    virtual bool        RenameRefObject(const Gmat::ObjectType type,
-                                       const wxString &oldName,
-                                       const wxString &newName);
+                                       const std::string &oldName,
+                                       const std::string &newName);
    
    virtual const ObjectTypeArray&
                        GetRefObjectTypeArray();
@@ -54,52 +54,52 @@ public:
                        GetRefObjectNameArray(const Gmat::ObjectType type);
    
    // Parameter accessors
-   virtual wxString GetParameterText(const Integer id) const;
-   virtual Integer     GetParameterID(const wxString &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
+   virtual Integer     GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                        GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
 
    virtual Real        GetRealParameter(const Integer id) const;
    virtual Real        SetRealParameter(const Integer id,
                                         const Real value);
-   virtual wxString GetStringParameter(const Integer id) const;
+   virtual std::string GetStringParameter(const Integer id) const;
    virtual bool        SetStringParameter(const Integer id, 
-                                          const wxString &value);
+                                          const std::string &value);
                                            
    virtual bool        SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                    const wxString &name = wxT(""));
+                                    const std::string &name = "");
     
     // Inherited methods overridden from the base class
    virtual bool        InterpretAction();
    virtual const StringArray& 
                        GetWrapperObjectNameArray();
    virtual bool        SetElementWrapper(ElementWrapper* toWrapper,
-                                         const wxString &withName);
+                                         const std::string &withName);
    virtual void        ClearWrappers();
 
    virtual bool        Initialize();
    virtual bool        Execute();
    virtual void        RunComplete();
    
-   virtual const wxString&
+   virtual const std::string&
                        GetGeneratingString(Gmat::WriteMode mode,
-                                           const wxString &prefix = wxT(""),
-                                           const wxString &useName = wxT(""));
+                                           const std::string &prefix = "",
+                                           const std::string &useName = "");
     
 protected:
    /// The name of the targeter
-   wxString         targeterName;
+   std::string         targeterName;
    /// Name of the goal
-   wxString         goalName;
+   std::string         goalName;
    /// Target value for the goal
    ElementWrapper      *goal;   // can be any kind of wrapper except a NumberWrapper
    /// String form of target value for the goal
-   wxString         achieveName;  // arg1
+   std::string         achieveName;  // arg1
    /// Parameter used for floating end point goals
    ElementWrapper      *achieve;   // arg1
    /// Accuracy needed for the goal
-   wxString         toleranceName;
+   std::string         toleranceName;
    /// the tolerance object
    ElementWrapper      *tolerance;
    /// Targeter ID for the goal 
@@ -119,7 +119,7 @@ protected:
       toleranceID,
       AchieveParamCount
    };
-   static const wxString
+   static const std::string
                      PARAMETER_TEXT[AchieveParamCount - GmatCommandParamCount];
    static const Gmat::ParameterType
                      PARAMETER_TYPE[AchieveParamCount - GmatCommandParamCount];

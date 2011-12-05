@@ -28,11 +28,11 @@ class GMAT_API RealVar : public Parameter
 {
 public:
 
-   RealVar(const wxString &name = wxT(""), const wxString &valStr = wxT(""),
-           const wxString &typeStr = wxT("RealVar"),
+   RealVar(const std::string &name = "", const std::string &valStr = "",
+           const std::string &typeStr = "RealVar",
            GmatParam::ParameterKey key = GmatParam::USER_PARAM,
-           GmatBase *obj = NULL, const wxString &desc = wxT(""),
-           const wxString &unit = wxT(""),
+           GmatBase *obj = NULL, const std::string &desc = "",
+           const std::string &unit = "",
            GmatParam::DepObject depObj = GmatParam::NO_DEP,
            Gmat::ObjectType ownerType = Gmat::UNKNOWN_OBJECT,
            bool isTimeParam = false, bool isSettable = false);
@@ -45,22 +45,22 @@ public:
    
    // methods inherited from Parameter
    virtual bool Initialize();
-   virtual wxString ToString();
+   virtual std::string ToString();
    
    virtual Real GetReal() const;
    virtual void SetReal(Real val);
    
-   virtual Integer GetParameterID(const wxString &str) const;
+   virtual Integer GetParameterID(const std::string &str) const;
    
    virtual Real GetRealParameter(const Integer id) const;
-   virtual Real GetRealParameter(const wxString &label) const;
+   virtual Real GetRealParameter(const std::string &label) const;
    
    virtual Real SetRealParameter(const Integer id, const Real value);
-   virtual Real SetRealParameter(const wxString &label, const Real value);
+   virtual Real SetRealParameter(const std::string &label, const Real value);
    
-   virtual bool SetStringParameter(const Integer id, const wxString &value);
-   virtual bool SetStringParameter(const wxString &label,
-                                   const wxString &value);
+   virtual bool SetStringParameter(const Integer id, const std::string &value);
+   virtual bool SetStringParameter(const std::string &label,
+                                   const std::string &value);
 protected:
 
    enum
@@ -71,7 +71,7 @@ protected:
    
    static const Gmat::ParameterType
       PARAMETER_TYPE[RealVarParamCount - ParameterParamCount];
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[RealVarParamCount - ParameterParamCount];
    
    bool mValueSet;

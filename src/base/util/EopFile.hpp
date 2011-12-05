@@ -40,7 +40,7 @@ class GMAT_API EopFile
 {
 public:
    // default constructor
-   EopFile(const wxString &fileName = wxT("eopc04.62-now"), 
+   EopFile(const std::string &fileName = "eopc04.62-now", 
            GmatEop::EopFileType eop = GmatEop::EOP_C04);
    // copy constructor
    EopFile(const EopFile &eopF);
@@ -54,7 +54,7 @@ public:
    virtual void Initialize();
    
    // method to return the name of the EOP file
-   virtual wxString GetFileName() const;
+   virtual std::string GetFileName() const;
    
    // method to return the UT1-UTC offset for the given UTCMjd - use UtcMjd???
    virtual Real    GetUt1UtcOffset(const Real utcMjd);
@@ -70,7 +70,7 @@ protected:
    static const Integer MAX_TABLE_SIZE;
 
    GmatEop::EopFileType eopFType;
-   wxString          eopFileName;
+   std::string          eopFileName;
    Integer              tableSz;
 
    /// table of polar motion data : MJD, X, Y, LOD
@@ -84,7 +84,7 @@ protected:
    
    bool isInitialized;
    
-   bool IsBlank(const wxString &aLine);
+   bool IsBlank(const char* aLine);
    
    // Performance code
    Integer              previousIndex;

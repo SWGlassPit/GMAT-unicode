@@ -36,7 +36,7 @@
  */
 //------------------------------------------------------------------------------
 ClearPlot::ClearPlot() :
-   PlotCommand    (wxT("ClearPlot"))
+   PlotCommand    ("ClearPlot")
 {
 }
 
@@ -117,7 +117,7 @@ GmatBase* ClearPlot::Clone() const
 bool ClearPlot::Initialize()
 {
    #ifdef DEBUG_CLEARPLOT
-      MessageInterface::ShowMessage(wxT("ClearPlot::Initialize() entered\n"));
+      MessageInterface::ShowMessage("ClearPlot::Initialize() entered\n");
    #endif
       
    PlotCommand::Initialize();
@@ -129,19 +129,19 @@ bool ClearPlot::Initialize()
    {
       if ((xy = FindObject(plotNameList.at(ii))) != NULL) 
       {
-         if (xy->GetTypeName() == wxT("XYPlot")) 
+         if (xy->GetTypeName() == "XYPlot") 
             thePlotList.push_back((XyPlot*) xy);
          else
             throw CommandException(
-               wxT("Object named \"") + plotNameList.at(ii) + wxT("\" should be an XYPlot to use the ")
-               wxT("ClearPlot command for this object, but it is a ") + 
+               "Object named \"" + plotNameList.at(ii) + "\" should be an XYPlot to use the "
+               "ClearPlot command for this object, but it is a " + 
                xy->GetTypeName());      
       }
       else 
       {
          MessageInterface::ShowMessage
-            (wxT("ClearPlot command cannot find XY Plot \"%s\"; command has no effect.")
-            wxT("\n"), (plotNameList.at(ii)).c_str());
+            ("ClearPlot command cannot find XY Plot \"%s\"; command has no effect."
+            "\n", (plotNameList.at(ii)).c_str());
          return false;
       }
    }
@@ -171,7 +171,7 @@ bool ClearPlot::Execute()
    for (unsigned int ii = 0; ii < thePlotList.size(); ii++)
    {
       if (thePlotList.at(ii))
-         if (!(thePlotList.at(ii)->TakeAction(wxT("ClearData")))) return false;
+         if (!(thePlotList.at(ii)->TakeAction("ClearData"))) return false;
    }
    return true;
 }

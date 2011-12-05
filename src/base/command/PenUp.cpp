@@ -35,7 +35,7 @@
  */
 //------------------------------------------------------------------------------
 PenUp::PenUp() :
-   PlotCommand    (wxT("PenUp"))
+   PlotCommand    ("PenUp")
 {
 }
 
@@ -116,7 +116,7 @@ GmatBase* PenUp::Clone() const
 bool PenUp::Initialize()
 {
    #ifdef DEBUG_PENUP
-      MessageInterface::ShowMessage(wxT("PenUp::Initialize() entered\n"));
+      MessageInterface::ShowMessage("PenUp::Initialize() entered\n");
    #endif
       
    PlotCommand::Initialize();
@@ -128,22 +128,22 @@ bool PenUp::Initialize()
    {
       if ((sub = FindObject(plotNameList.at(ii))) != NULL) 
       {
-         if (sub->GetTypeName() == wxT("XYPlot") ||
-             sub->GetTypeName() == wxT("OrbitView") ||
-             sub->GetTypeName() == wxT("GroundTrackPlot"))
+         if (sub->GetTypeName() == "XYPlot" ||
+             sub->GetTypeName() == "OrbitView" ||
+             sub->GetTypeName() == "GroundTrackPlot")
             thePlotList.push_back((Subscriber*) sub);
          else
             throw CommandException(
-               wxT("Object named \"") + plotNameList.at(ii) +
-               wxT("\" should be an XYPlot, OrbitView or GroundTrackPlot to use the ")
-               wxT("PenUp command for this object, but it is a ") + 
+               "Object named \"" + plotNameList.at(ii) +
+               "\" should be an XYPlot, OrbitView or GroundTrackPlot to use the "
+               "PenUp command for this object, but it is a " + 
                sub->GetTypeName());      
       }
       else 
       {
          MessageInterface::ShowMessage
-            (wxT("PenUp command cannot find Plot \"%s\"; command has no effect.")
-            wxT("\n"), (plotNameList.at(ii)).c_str());
+            ("PenUp command cannot find Plot \"%s\"; command has no effect."
+            "\n", (plotNameList.at(ii)).c_str());
          return false;
       }
    }
@@ -170,7 +170,7 @@ bool PenUp::Execute()
    for (unsigned int ii = 0; ii < thePlotList.size(); ii++)
    {
       if (thePlotList.at(ii))
-         if (!(thePlotList.at(ii)->TakeAction(wxT("PenUp")))) return false;
+         if (!(thePlotList.at(ii)->TakeAction("PenUp"))) return false;
    }
    return true;
 }

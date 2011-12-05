@@ -48,14 +48,14 @@ static Integer visitCount = 0;
 // static data
 //---------------------------------
 
-const wxString
+const std::string
 ObjectReferencedAxes::PARAMETER_TEXT[ObjectReferencedAxesParamCount - DynamicAxesParamCount] =
 {
-   wxT("XAxis"),
-   wxT("YAxis"),
-   wxT("ZAxis"),
-   wxT("Primary"),
-   wxT("Secondary"),
+   "XAxis",
+   "YAxis",
+   "ZAxis",
+   "Primary",
+   "Secondary",
 };
 
 const Gmat::ParameterType
@@ -73,7 +73,7 @@ ObjectReferencedAxes::PARAMETER_TYPE[ObjectReferencedAxesParamCount - DynamicAxe
 //------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//  ObjectReferencedAxes(const wxString &itsName);
+//  ObjectReferencedAxes(const std::string &itsName);
 //---------------------------------------------------------------------------
 /**
  * Constructs base ObjectReferencedAxes structures
@@ -83,23 +83,23 @@ ObjectReferencedAxes::PARAMETER_TYPE[ObjectReferencedAxesParamCount - DynamicAxe
  *
  */
 //---------------------------------------------------------------------------
-ObjectReferencedAxes::ObjectReferencedAxes(const wxString &itsName) :
-DynamicAxes(wxT("ObjectReferenced"),itsName),
-primaryName   (wxT("Earth")),
-secondaryName (wxT("Luna")),
+ObjectReferencedAxes::ObjectReferencedAxes(const std::string &itsName) :
+DynamicAxes("ObjectReferenced",itsName),
+primaryName   ("Earth"),
+secondaryName ("Luna"),
 primary       (NULL),
 secondary     (NULL),
-xAxis         (wxT("")),
-yAxis         (wxT("")),
-zAxis         (wxT(""))
+xAxis         (""),
+yAxis         (""),
+zAxis         ("")
 {
-   objectTypeNames.push_back(wxT("ObjectReferencedAxes"));
+   objectTypeNames.push_back("ObjectReferencedAxes");
    parameterCount = ObjectReferencedAxesParamCount;
 }
 
 //---------------------------------------------------------------------------
-//  ObjectReferencedAxes(const wxString &itsType,
-//                       const wxString &itsName);
+//  ObjectReferencedAxes(const std::string &itsType,
+//                       const std::string &itsName);
 //---------------------------------------------------------------------------
 /**
  * Constructs base ObjectReferencedAxes structures
@@ -109,18 +109,18 @@ zAxis         (wxT(""))
  * @param itsName Name for the object.
  */
 //---------------------------------------------------------------------------
-ObjectReferencedAxes::ObjectReferencedAxes(const wxString &itsType,
-                                           const wxString &itsName) :
+ObjectReferencedAxes::ObjectReferencedAxes(const std::string &itsType,
+                                           const std::string &itsName) :
 DynamicAxes(itsType,itsName),
-primaryName   (wxT("")),
-secondaryName (wxT("")),
+primaryName   (""),
+secondaryName (""),
 primary       (NULL),
 secondary     (NULL),
-xAxis         (wxT("")),
-yAxis         (wxT("")),
-zAxis         (wxT(""))
+xAxis         (""),
+yAxis         (""),
+zAxis         ("")
 {
-   objectTypeNames.push_back(wxT("ObjectReferencedAxes"));
+   objectTypeNames.push_back("ObjectReferencedAxes");
    parameterCount = ObjectReferencedAxesParamCount;
 }
 
@@ -244,7 +244,7 @@ void ObjectReferencedAxes::SetSecondaryObject(SpacePoint *second)
 }
 
 //------------------------------------------------------------------------------
-//  void SetXAxis(const wxString &toValue)
+//  void SetXAxis(const std::string &toValue)
 //------------------------------------------------------------------------------
 /**
  * Method to set the X-Axis for this system.
@@ -254,19 +254,19 @@ void ObjectReferencedAxes::SetSecondaryObject(SpacePoint *second)
  *
  */
 //------------------------------------------------------------------------------
-void ObjectReferencedAxes::SetXAxis(const wxString &toValue)
+void ObjectReferencedAxes::SetXAxis(const std::string &toValue)
 {
-   if ((toValue !=  wxT("R")) && (toValue !=  wxT("V")) && (toValue !=  wxT("N")) &&
-       (toValue != wxT("-R")) && (toValue != wxT("-V")) && (toValue != wxT("-N")) &&
-       (toValue !=  wxT("r")) && (toValue !=  wxT("v")) && (toValue !=  wxT("n")) &&
-       (toValue != wxT("-r")) && (toValue != wxT("-v")) && (toValue != wxT("-n")) && (toValue !=  wxT("")) )
+   if ((toValue !=  "R") && (toValue !=  "V") && (toValue !=  "N") &&
+       (toValue != "-R") && (toValue != "-V") && (toValue != "-N") &&
+       (toValue !=  "r") && (toValue !=  "v") && (toValue !=  "n") &&
+       (toValue != "-r") && (toValue != "-v") && (toValue != "-n") && (toValue !=  "") )
       throw CoordinateSystemException(
-            wxT("ObjectReferencedAxes - Invalid value for X-Axis"));
+            "ObjectReferencedAxes - Invalid value for X-Axis");
    xAxis = toValue;
 }
 
 //------------------------------------------------------------------------------
-//  void SetYAxis(const wxString &toValue)
+//  void SetYAxis(const std::string &toValue)
 //------------------------------------------------------------------------------
 /**
  * Method to set the Y-Axis for this system.
@@ -276,19 +276,19 @@ void ObjectReferencedAxes::SetXAxis(const wxString &toValue)
  *
  */
 //------------------------------------------------------------------------------
-void ObjectReferencedAxes::SetYAxis(const wxString &toValue)
+void ObjectReferencedAxes::SetYAxis(const std::string &toValue)
 {
-   if ((toValue !=  wxT("R")) && (toValue !=  wxT("V")) && (toValue !=  wxT("N")) &&
-       (toValue != wxT("-R")) && (toValue != wxT("-V")) && (toValue != wxT("-N")) &&
-       (toValue !=  wxT("r")) && (toValue !=  wxT("v")) && (toValue !=  wxT("n")) &&
-       (toValue != wxT("-r")) && (toValue != wxT("-v")) && (toValue != wxT("-n")) && (toValue !=  wxT("")) )
+   if ((toValue !=  "R") && (toValue !=  "V") && (toValue !=  "N") &&
+       (toValue != "-R") && (toValue != "-V") && (toValue != "-N") &&
+       (toValue !=  "r") && (toValue !=  "v") && (toValue !=  "n") &&
+       (toValue != "-r") && (toValue != "-v") && (toValue != "-n") && (toValue !=  "") )
       throw CoordinateSystemException(
-            wxT("ObjectReferencedAxes - Invalid value for Y-Axis"));
+            "ObjectReferencedAxes - Invalid value for Y-Axis");
    yAxis = toValue;
 }
 
 //------------------------------------------------------------------------------
-//  void SetZAxis(const wxString &toValue)
+//  void SetZAxis(const std::string &toValue)
 //------------------------------------------------------------------------------
 /**
  * Method to set the Z-Axis for this system.
@@ -298,14 +298,14 @@ void ObjectReferencedAxes::SetYAxis(const wxString &toValue)
  *
  */
 //------------------------------------------------------------------------------
-void ObjectReferencedAxes::SetZAxis(const wxString &toValue)
+void ObjectReferencedAxes::SetZAxis(const std::string &toValue)
 {
-   if ((toValue !=  wxT("R")) && (toValue !=  wxT("V")) && (toValue !=  wxT("N")) &&
-       (toValue != wxT("-R")) && (toValue != wxT("-V")) && (toValue != wxT("-N")) &&
-       (toValue !=  wxT("r")) && (toValue !=  wxT("v")) && (toValue !=  wxT("n")) &&
-       (toValue != wxT("-r")) && (toValue != wxT("-v")) && (toValue != wxT("-n")) && (toValue !=  wxT("")) )
+   if ((toValue !=  "R") && (toValue !=  "V") && (toValue !=  "N") &&
+       (toValue != "-R") && (toValue != "-V") && (toValue != "-N") &&
+       (toValue !=  "r") && (toValue !=  "v") && (toValue !=  "n") &&
+       (toValue != "-r") && (toValue != "-v") && (toValue != "-n") && (toValue !=  "") )
       throw CoordinateSystemException(
-            wxT("ObjectReferencedAxes - Invalid value for Z-Axis"));
+            "ObjectReferencedAxes - Invalid value for Z-Axis");
    zAxis = toValue;
 }
 
@@ -319,26 +319,26 @@ SpacePoint* ObjectReferencedAxes::GetSecondaryObject() const
    return secondary;
 }
 
-wxString ObjectReferencedAxes::GetXAxis() const
+std::string ObjectReferencedAxes::GetXAxis() const
 {
    return xAxis;
 }
 
-wxString ObjectReferencedAxes::GetYAxis() const
+std::string ObjectReferencedAxes::GetYAxis() const
 {
    return yAxis;
 }
 
-wxString ObjectReferencedAxes::GetZAxis() const
+std::string ObjectReferencedAxes::GetZAxis() const
 {
    return zAxis;
 }
 
 void ObjectReferencedAxes::ResetAxes()
 {
-   xAxis = wxT("");
-   yAxis = wxT("");
-   zAxis = wxT("");
+   xAxis = "";
+   yAxis = "";
+   zAxis = "";
 }
 
 
@@ -369,8 +369,8 @@ bool ObjectReferencedAxes::Initialize()
    
    #ifdef DEBUG_ORA_INIT
    MessageInterface::ShowMessage
-      (wxT("ObjectReferencedAxes::Initialize() this=<%p>, xAxis='%s', yAxis='%s', ")
-       wxT("zAxis='%s'\n"), this, xAxis.c_str(), yAxis.c_str(), zAxis.c_str());
+      ("ObjectReferencedAxes::Initialize() this=<%p>, xAxis='%s', yAxis='%s', "
+       "zAxis='%s'\n", this, xAxis.c_str(), yAxis.c_str(), zAxis.c_str());
    #endif
    
    return true;
@@ -397,15 +397,15 @@ GmatBase* ObjectReferencedAxes::Clone() const
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool ObjectReferencedAxes::RenameRefObject(const Gmat::ObjectType type,
-                                           const wxString &oldName,
-                                           const wxString &newName)
+                                           const std::string &oldName,
+                                           const std::string &newName)
 {
    #if DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("ObjectReferencedAxes::RenameRefObject() type=%s, oldName=%s, newName=%s\n"),
+      ("ObjectReferencedAxes::RenameRefObject() type=%s, oldName=%s, newName=%s\n",
        GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
    #endif
 
@@ -423,7 +423,7 @@ bool ObjectReferencedAxes::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -434,7 +434,7 @@ bool ObjectReferencedAxes::RenameRefObject(const Gmat::ObjectType type,
  *
  */
 //------------------------------------------------------------------------------
-wxString ObjectReferencedAxes::GetParameterText(const Integer id) const
+std::string ObjectReferencedAxes::GetParameterText(const Integer id) const
 {
    if (id >= DynamicAxesParamCount && id < ObjectReferencedAxesParamCount)
       return PARAMETER_TEXT[id - DynamicAxesParamCount];
@@ -442,7 +442,7 @@ wxString ObjectReferencedAxes::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -453,7 +453,7 @@ wxString ObjectReferencedAxes::GetParameterText(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer ObjectReferencedAxes::GetParameterID(const wxString &str) const
+Integer ObjectReferencedAxes::GetParameterID(const std::string &str) const
 {
    for (Integer i = DynamicAxesParamCount; i < ObjectReferencedAxesParamCount; i++)
    {
@@ -485,7 +485,7 @@ Gmat::ParameterType ObjectReferencedAxes::GetParameterType(const Integer id) con
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -496,13 +496,13 @@ Gmat::ParameterType ObjectReferencedAxes::GetParameterType(const Integer id) con
  *
  */
 //------------------------------------------------------------------------------
-wxString ObjectReferencedAxes::GetParameterTypeString(const Integer id) const
+std::string ObjectReferencedAxes::GetParameterTypeString(const Integer id) const
 {
    return DynamicAxes::PARAM_TYPE_STRING[GetParameterType(id)];
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id) const
+//  std::string  GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -514,7 +514,7 @@ wxString ObjectReferencedAxes::GetParameterTypeString(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString ObjectReferencedAxes::GetStringParameter(const Integer id) const
+std::string ObjectReferencedAxes::GetStringParameter(const Integer id) const
 {
    if (id == X_AXIS)                return xAxis;
    if (id == Y_AXIS)                return yAxis;
@@ -526,7 +526,7 @@ wxString ObjectReferencedAxes::GetStringParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  SetStringParameter(const Integer id, const wxString value)
+//  std::string  SetStringParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the string parameter value, given the input
@@ -540,11 +540,11 @@ wxString ObjectReferencedAxes::GetStringParameter(const Integer id) const
  */
 //------------------------------------------------------------------------------
 bool ObjectReferencedAxes::SetStringParameter(const Integer id,
-                                              const wxString &value)
+                                              const std::string &value)
 {
    #ifdef DEBUG_ORA_SET
    MessageInterface::ShowMessage
-      (wxT("ObjectReferencedAxes::SetStringParameter() entered, id=%d, value='%s'\n"),
+      ("ObjectReferencedAxes::SetStringParameter() entered, id=%d, value='%s'\n",
        id, value.c_str());
    #endif
    bool OK = false;
@@ -580,7 +580,7 @@ bool ObjectReferencedAxes::SetStringParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to get a parameter value
@@ -590,14 +590,14 @@ bool ObjectReferencedAxes::SetStringParameter(const Integer id,
  * @return the value of the parameter
  */
 //------------------------------------------------------------------------------
-wxString ObjectReferencedAxes::GetStringParameter(
-                                  const wxString &label) const
+std::string ObjectReferencedAxes::GetStringParameter(
+                                  const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to get a parameter value
@@ -607,8 +607,8 @@ wxString ObjectReferencedAxes::GetStringParameter(
  */
 //------------------------------------------------------------------------------
 
-bool ObjectReferencedAxes::SetStringParameter(const wxString &label,
-                                              const wxString &value)
+bool ObjectReferencedAxes::SetStringParameter(const std::string &label,
+                                              const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
@@ -616,7 +616,7 @@ bool ObjectReferencedAxes::SetStringParameter(const wxString &label,
 
 //------------------------------------------------------------------------------
 //  GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                         const wxString &name)
+//                         const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * This method returns a reference object from the ObjectReferencedAxes class.
@@ -629,7 +629,7 @@ bool ObjectReferencedAxes::SetStringParameter(const wxString &label,
  */
 //------------------------------------------------------------------------------
 GmatBase* ObjectReferencedAxes::GetRefObject(const Gmat::ObjectType type,
-                                             const wxString &name)
+                                             const std::string &name)
 {
    switch (type)
    {
@@ -677,9 +677,9 @@ const StringArray& ObjectReferencedAxes::GetRefObjectNameArray(const Gmat::Objec
          refs.push_back(j2000BodyName);
 
       #ifdef DEBUG_REFERENCE_SETTING
-         MessageInterface::ShowMessage(wxT("+++ReferenceObjects:\n"));
+         MessageInterface::ShowMessage("+++ReferenceObjects:\n");
          for (StringArray::iterator i = refs.begin(); i != refs.end(); ++i)
-            MessageInterface::ShowMessage(wxT("   %s\n"), i->c_str());
+            MessageInterface::ShowMessage("   %s\n", i->c_str());
       #endif
 
       return refs;
@@ -692,7 +692,7 @@ const StringArray& ObjectReferencedAxes::GetRefObjectNameArray(const Gmat::Objec
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                    const wxString &name)
+//                    const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * This method sets a reference object for the ObjectReferencedAxes class.
@@ -707,7 +707,7 @@ const StringArray& ObjectReferencedAxes::GetRefObjectNameArray(const Gmat::Objec
 //------------------------------------------------------------------------------
 bool ObjectReferencedAxes::SetRefObject(GmatBase *obj,
                                         const Gmat::ObjectType type,
-                                        const wxString &name)
+                                        const std::string &name)
 {
    // DJC changed from case to IsOfType 5/13/05.  Definitely Friday the 13th!
 //   switch (type)
@@ -719,7 +719,7 @@ bool ObjectReferencedAxes::SetRefObject(GmatBase *obj,
          if (name == primaryName)
          {
             #ifdef DEBUG_REFERENCE_SETTING
-               MessageInterface::ShowMessage(wxT("Setting %s as primary for %s\n"),
+               MessageInterface::ShowMessage("Setting %s as primary for %s\n",
                   name.c_str(), instanceName.c_str());
             #endif
             primary = (SpacePoint*) obj;
@@ -727,7 +727,7 @@ bool ObjectReferencedAxes::SetRefObject(GmatBase *obj,
          if (name == secondaryName)
          {
             #ifdef DEBUG_REFERENCE_SETTING
-               MessageInterface::ShowMessage(wxT("Setting %s as secondary for %s\n"),
+               MessageInterface::ShowMessage("Setting %s as secondary for %s\n",
                   name.c_str(), instanceName.c_str());
             #endif
             secondary = (SpacePoint*) obj;
@@ -738,7 +738,7 @@ bool ObjectReferencedAxes::SetRefObject(GmatBase *obj,
          if (name == originName)
          {
             #ifdef DEBUG_REFERENCE_SETTING
-               MessageInterface::ShowMessage(wxT("Setting %s as origin for %s\n"),
+               MessageInterface::ShowMessage("Setting %s as origin for %s\n",
                   name.c_str(), instanceName.c_str());
             #endif
             origin = (SpacePoint*) obj;
@@ -746,7 +746,7 @@ bool ObjectReferencedAxes::SetRefObject(GmatBase *obj,
          if (name == j2000BodyName)
          {
              #ifdef DEBUG_REFERENCE_SETTING
-               MessageInterface::ShowMessage(wxT("Setting %s as J2000body for %s\n"),
+               MessageInterface::ShowMessage("Setting %s as J2000body for %s\n",
                   name.c_str(), instanceName.c_str());
             #endif
            j2000Body = (SpacePoint*) obj;
@@ -781,28 +781,28 @@ void ObjectReferencedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
                                                    bool forceComputation)
 {
    if (!primary)
-      throw CoordinateSystemException(wxT("Primary \"") + primaryName +
-         wxT("\" is not yet set in object referenced coordinate system!"));
+      throw CoordinateSystemException("Primary \"" + primaryName +
+         "\" is not yet set in object referenced coordinate system!");
 
    if (!secondary)
-      throw CoordinateSystemException(wxT("Secondary \"") + secondaryName +
-         wxT("\" is not yet set in object referenced coordinate system!"));
+      throw CoordinateSystemException("Secondary \"" + secondaryName +
+         "\" is not yet set in object referenced coordinate system!");
 
    
    if ((xAxis == yAxis) || (xAxis == zAxis) || (yAxis == zAxis))
    {
       CoordinateSystemException cse;
-      cse.SetDetails(wxT("For object referenced axes, axes are improperly ")
-                     wxT("defined.\nXAxis = '%s', YAxis = '%s', ZAxis = '%s'"),
+      cse.SetDetails("For object referenced axes, axes are improperly "
+                     "defined.\nXAxis = '%s', YAxis = '%s', ZAxis = '%s'",
                      xAxis.c_str(), yAxis.c_str(), zAxis.c_str());
       throw cse;
    }
    
-   if ((xAxis != wxT("")) && (yAxis != wxT("")) && (zAxis != wxT("")))
+   if ((xAxis != "") && (yAxis != "") && (zAxis != ""))
    {
       CoordinateSystemException cse;
-      cse.SetDetails(wxT("For object referenced axes, too many axes are defined.\n")
-                     wxT("XAxis = '%s', YAxis = '%s', ZAxis = '%s'"),
+      cse.SetDetails("For object referenced axes, too many axes are defined.\n"
+                     "XAxis = '%s', YAxis = '%s', ZAxis = '%s'",
                      xAxis.c_str(), yAxis.c_str(), zAxis.c_str());
       throw cse;
    }
@@ -814,7 +814,7 @@ void ObjectReferencedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
    #ifdef DEBUG_ROT_MATRIX
       if (visitCount == 0)
       {
-         MessageInterface::ShowMessage(wxT(" ------------ rv Primary to Secondary = %s\n"),
+         MessageInterface::ShowMessage(" ------------ rv Primary to Secondary = %s\n",
                rv.ToString().c_str());
          visitCount++;
       }
@@ -823,12 +823,12 @@ void ObjectReferencedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
    #ifdef DEBUG_ROT_MATRIX
       if (visitCount == 0)
       {
-         wxStringstream ss;
+         std::stringstream ss;
          ss.precision(30);
-         ss << wxT(" ----------------- rv Earth to Moon (truncated)    = ")
+         ss << " ----------------- rv Earth to Moon (truncated)    = "
               << rv << std::endl;
 
-         MessageInterface::ShowMessage(wxT("%s\n"), ss.str().c_str());
+         MessageInterface::ShowMessage("%s\n", ss.str().c_str());
          visitCount++;
       }
    #endif
@@ -852,32 +852,32 @@ void ObjectReferencedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
    bool     xUsed = true, yUsed = true, zUsed = true;
 
    // determine the x-axis
-   if ((xAxis == wxT("R")) || (xAxis == wxT("r")))
+   if ((xAxis == "R") || (xAxis == "r"))
    {
       xUnit = rUnit;
       xDot  = rDot;
    }
-   else if ((xAxis == wxT("-R")) || (xAxis == wxT("-r")))
+   else if ((xAxis == "-R") || (xAxis == "-r"))
    {
       xUnit = -rUnit;
       xDot  = -rDot;
    }
-   else if ((xAxis == wxT("V")) || (xAxis == wxT("v")))
+   else if ((xAxis == "V") || (xAxis == "v"))
    {
       xUnit = vUnit;
       xDot  = vDot;
    }
-   else if ((xAxis == wxT("-V")) || (xAxis == wxT("-v")))
+   else if ((xAxis == "-V") || (xAxis == "-v"))
    {
       xUnit = -vUnit;
       xDot  = -vDot;
    }
-   else if ((xAxis == wxT("N")) || (xAxis == wxT("n")))
+   else if ((xAxis == "N") || (xAxis == "n"))
    {
       xUnit = nUnit;
       xDot  = nDot;
    }
-   else if ((xAxis == wxT("-N")) || (xAxis == wxT("-n")))
+   else if ((xAxis == "-N") || (xAxis == "-n"))
    {
       xUnit = -nUnit;
       xDot  = -nDot;
@@ -887,32 +887,32 @@ void ObjectReferencedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
       xUsed = false;
    }
    // determine the y-axis
-   if ((yAxis == wxT("R")) || (yAxis == wxT("r")))
+   if ((yAxis == "R") || (yAxis == "r"))
    {
       yUnit = rUnit;
       yDot  = rDot;
    }
-   else if ((yAxis == wxT("-R")) || (yAxis == wxT("-r")))
+   else if ((yAxis == "-R") || (yAxis == "-r"))
    {
       yUnit = -rUnit;
       yDot  = -rDot;
    }
-   else if ((yAxis == wxT("V")) || (yAxis == wxT("v")))
+   else if ((yAxis == "V") || (yAxis == "v"))
    {
       yUnit = vUnit;
       yDot  = vDot;
    }
-   else if ((yAxis == wxT("-V")) || (yAxis == wxT("-v")))
+   else if ((yAxis == "-V") || (yAxis == "-v"))
    {
       yUnit = -vUnit;
       yDot  = -vDot;
    }
-   else if ((yAxis == wxT("N")) || (yAxis == wxT("n")))
+   else if ((yAxis == "N") || (yAxis == "n"))
    {
       yUnit = nUnit;
       yDot  = nDot;
    }
-   else if ((yAxis == wxT("-N")) || (yAxis == wxT("-n")))
+   else if ((yAxis == "-N") || (yAxis == "-n"))
    {
       yUnit = -nUnit;
       yDot  = -nDot;
@@ -922,32 +922,32 @@ void ObjectReferencedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
       yUsed = false;
    }
    // determine the z-axis
-   if ((zAxis == wxT("R")) || (zAxis == wxT("r")))
+   if ((zAxis == "R") || (zAxis == "r"))
    {
       zUnit = rUnit;
       zDot  = rDot;
    }
-   else if ((zAxis == wxT("-R")) || (zAxis == wxT("-r")))
+   else if ((zAxis == "-R") || (zAxis == "-r"))
    {
       zUnit = -rUnit;
       zDot  = -rDot;
    }
-   else if ((zAxis == wxT("V")) || (zAxis == wxT("v")))
+   else if ((zAxis == "V") || (zAxis == "v"))
    {
       zUnit = vUnit;
       zDot  = vDot;
    }
-   else if ((zAxis == wxT("-V")) || (zAxis == wxT("-v")))
+   else if ((zAxis == "-V") || (zAxis == "-v"))
    {
       zUnit = -vUnit;
       zDot  = -vDot;
    }
-   else if ((zAxis == wxT("N")) || (zAxis == wxT("n")))
+   else if ((zAxis == "N") || (zAxis == "n"))
    {
       zUnit = nUnit;
       zDot  = nDot;
    }
-   else if ((zAxis == wxT("-N")) || (zAxis == wxT("-n")))
+   else if ((zAxis == "-N") || (zAxis == "-n"))
    {
       zUnit = -nUnit;
       zDot  = -nDot;
@@ -975,7 +975,7 @@ void ObjectReferencedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
    else
    {
       throw CoordinateSystemException(
-            wxT("Object referenced axes are improperly defined."));
+            "Object referenced axes are improperly defined.");
    }
    // Compute the rotation matrix
    rotMatrix(0,0) = xUnit(0);
@@ -1001,26 +1001,26 @@ void ObjectReferencedAxes::CalculateRotationMatrix(const A1Mjd &atEpoch,
 
    #ifdef DEBUG_ROT_MATRIX
       MessageInterface::ShowMessage
-         (wxT("rotMatrix=%s\n"), rotMatrix.ToString().c_str());
+         ("rotMatrix=%s\n", rotMatrix.ToString().c_str());
 
-      wxString ss;
+      std::stringstream ss;
 
       ss.setf(std::ios::fixed);
       ss.precision(30);
-      ss << wxT(" ----------------- rotMatrix    = ") << rotMatrix << std::endl;
+      ss << " ----------------- rotMatrix    = " << rotMatrix << std::endl;
       ss.setf(std::ios::scientific);
-      ss << wxT(" ----------------- rotDotMatrix = ") << rotDotMatrix << std::endl;
+      ss << " ----------------- rotDotMatrix = " << rotDotMatrix << std::endl;
 
-      MessageInterface::ShowMessage(wxT("%s\n"), ss.str().c_str());
+      MessageInterface::ShowMessage("%s\n", ss.str().c_str());
    #endif
 
 //      if (!rotMatrix.IsOrthogonal(1.0e-14))
    if (!rotMatrix.IsOrthonormal(1.0e-14))   // switch to orthonormal per S. Hughes 2010.02.12 wcs
    {
-      wxString errmsg;
-      errmsg << wxT("Object referenced axes definition does not result in an orthonormal system ");
-      errmsg << wxT("(tolerance on orthonormality is 1e-14).  \n");
-      errmsg << wxT("The rotation matrix is : \n") <<rotMatrix.ToString(16, 20) << wxT("\n");
-      throw CoordinateSystemException(errmsg);
+      std::stringstream errmsg("");
+      errmsg << "Object referenced axes definition does not result in an orthonormal system ";
+      errmsg << "(tolerance on orthonormality is 1e-14).  " << std::endl;
+      errmsg << "The rotation matrix is : " <<std::endl << rotMatrix.ToString(16, 20) << std::endl;
+      throw CoordinateSystemException(errmsg.str());
    }
 }

@@ -166,7 +166,7 @@ Integer SolarFluxFileReader::LoadSolarFluxFile(Real a1_time, FILE *tkptr,
                            for (i = 0; i < 21; ++i)
                               // Intentionally get the return and then ignore it
                               // to move warning from system libraries to GMAT
-                              // code base.  The wxT("unused variable") warning here
+                              // code base.  The "unused variable" warning here
                               // can be safely ignored.
                               size_t len = fread((void *)&kp1[i][j], sizeof(Integer), (size_t)1, tkptr);
                         if(fread((void *)tc, sizeof(Real), (size_t)20, tkptr) == 20)
@@ -226,7 +226,7 @@ Integer SolarFluxFileReader::LoadSolarFluxFile(Real a1_time, FILE *tkptr,
 }
 
 //------------------------------------------------------------------------------
-//  OpenSolarFluxFile(wxString filename)
+//  OpenSolarFluxFile(std::string filename)
 //------------------------------------------------------------------------------
 /**
  *  Open solar flux file.
@@ -234,11 +234,11 @@ Integer SolarFluxFileReader::LoadSolarFluxFile(Real a1_time, FILE *tkptr,
  *  @return true if successful, false otherwise
  */
 //------------------------------------------------------------------------------
-FILE* SolarFluxFileReader::OpenSolarFluxFile(wxString filename)
+FILE* SolarFluxFileReader::OpenSolarFluxFile(std::string filename)
 {
    FILE *file;
    
-   file = fopen(filename.char_str(), "rb");
+   file = fopen(filename.c_str(), "rb");
    
    if (file != NULL)
       return file;

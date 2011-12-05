@@ -31,12 +31,12 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 Star::PARAMETER_TEXT[StarParamCount - CelestialBodyParamCount] =
 {
-   wxT("RadiantPower"),
-   wxT("ReferenceDistance"),
-   wxT("PhotosphereRadius")
+   "RadiantPower",
+   "ReferenceDistance",
+   "PhotosphereRadius"
 };
 
 const Gmat::ParameterType
@@ -51,20 +51,20 @@ Star::PARAMETER_TYPE[StarParamCount - CelestialBodyParamCount] =
 // public methods
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  Star(wxString name)
+//  Star(std::string name)
 //------------------------------------------------------------------------------
 /**
  * This method creates an object of the Star class
  * (default constructor).
  *
  * @param <name> optional parameter indicating the name of the celestial
- *               body (default is wxT("Sun")).
+ *               body (default is "Sun").
  */
 //------------------------------------------------------------------------------
-Star::Star(wxString name) :
-CelestialBody       (wxT("Star"),name)
+Star::Star(std::string name) :
+CelestialBody       ("Star",name)
 {
-   objectTypeNames.push_back(wxT("Star"));
+   objectTypeNames.push_back("Star");
    parameterCount = StarParamCount;
    
    bodyType            = Gmat::STAR;
@@ -116,10 +116,10 @@ photosphereRadius   (st.photosphereRadius)
 /**
  * Assignment operator for the Star class.
  *
- * @param <st> the Star object whose data to assign to wxT("this")
+ * @param <st> the Star object whose data to assign to "this"
  *            solar system.
  *
- * @return wxT("this") Star with data of input Star st.
+ * @return "this" Star with data of input Star st.
  */
 //------------------------------------------------------------------------------
 Star& Star::operator=(const Star &st)
@@ -277,7 +277,7 @@ bool Star::NeedsOnlyMainSPK()
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -288,7 +288,7 @@ bool Star::NeedsOnlyMainSPK()
  *
  */
 //------------------------------------------------------------------------------
-wxString Star::GetParameterText(const Integer id) const
+std::string Star::GetParameterText(const Integer id) const
 {
    if ((id >= CelestialBodyParamCount) && (id < StarParamCount))
       return PARAMETER_TEXT[id - CelestialBodyParamCount];
@@ -296,7 +296,7 @@ wxString Star::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -307,7 +307,7 @@ wxString Star::GetParameterText(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer     Star::GetParameterID(const wxString &str) const
+Integer     Star::GetParameterID(const std::string &str) const
 {
    for (Integer i = CelestialBodyParamCount; i < StarParamCount; i++)
    {
@@ -339,7 +339,7 @@ Gmat::ParameterType Star::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -350,7 +350,7 @@ Gmat::ParameterType Star::GetParameterType(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString Star::GetParameterTypeString(const Integer id) const
+std::string Star::GetParameterTypeString(const Integer id) const
 {
    return CelestialBody::PARAM_TYPE_STRING[GetParameterType(id)];
 }

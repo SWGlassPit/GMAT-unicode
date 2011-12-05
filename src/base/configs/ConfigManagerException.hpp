@@ -32,7 +32,7 @@ class GMAT_API ConfigManagerException : public BaseException
 {
 	public:
 		// class constructor
-		ConfigManagerException(const wxString &details);
+		ConfigManagerException(const std::string &details);
 		// class destructor
 		~ConfigManagerException();
 };

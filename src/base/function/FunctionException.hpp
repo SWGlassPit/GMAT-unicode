@@ -26,7 +26,7 @@
 class GMAT_API FunctionException : public BaseException
 {
 public:
-   FunctionException(wxString details = wxT(""));
+   FunctionException(std::string details = "");
    virtual ~FunctionException();
    FunctionException(const FunctionException &be);
 };

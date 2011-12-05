@@ -56,31 +56,31 @@ public:
    
    void HandleCcsdsEphemerisFile(ObjectMap *objMap, bool deleteOld = false);
    
-   ElementWrapper* CreateElementWrapper(const wxString &desc,
+   ElementWrapper* CreateElementWrapper(const std::string &desc,
                                         bool parametersFirst = false,
                                         Integer manage = 1);
    const StringArray& GetErrorList();
    
-   GmatBase* FindObject(const wxString &name, 
-                        const wxString &ofType = wxT(""));
-   Parameter* GetParameter(const wxString name);
-   Parameter* CreateParameter(const wxString &type,
-                              const wxString &name,
-                              const wxString &ownerName = wxT(""),
-                              const wxString &depName = wxT(""),
+   GmatBase* FindObject(const std::string &name, 
+                        const std::string &ofType = "");
+   Parameter* GetParameter(const std::string name);
+   Parameter* CreateParameter(const std::string &type,
+                              const std::string &name,
+                              const std::string &ownerName = "",
+                              const std::string &depName = "",
                               Integer manage = 1);
-   Parameter* CreateAutoParameter(const wxString &type,
-                                  const wxString &name,
+   Parameter* CreateAutoParameter(const std::string &type,
+                                  const std::string &name,
                                   bool &alreadyManaged,
-                                  const wxString &ownerName = wxT(""),
-                                  const wxString &depName = wxT(""),
+                                  const std::string &ownerName = "",
+                                  const std::string &depName = "",
                                   Integer manage = 1);
-   Parameter* CreateArray( const wxString &arrayStr, Integer manage = 1);   
-   Parameter* CreateSystemParameter(bool &paramCreated, const wxString &str,
+   Parameter* CreateArray( const std::string &arrayStr, Integer manage = 1);   
+   Parameter* CreateSystemParameter(bool &paramCreated, const std::string &str,
                                     Integer manage = 1);
-   AxisSystem* CreateAxisSystem(wxString type, GmatBase *owner);
+   AxisSystem* CreateAxisSystem(std::string type, GmatBase *owner);
    
-   bool IsParameterType(const wxString &desc);
+   bool IsParameterType(const std::string &desc);
    bool ValidateParameter(const StringArray &refNames, GmatBase *obj);
    bool ValidateSaveCommand(GmatBase *obj);
    
@@ -88,39 +88,39 @@ private:
 
    bool CreateAssignmentWrappers(GmatCommand *cmd, Integer manage);
    
-   ElementWrapper* CreateSolarSystemWrapper(GmatBase *obj, const wxString &owner,
-                                            const wxString &depobj,
-                                            const wxString &type,
+   ElementWrapper* CreateSolarSystemWrapper(GmatBase *obj, const std::string &owner,
+                                            const std::string &depobj,
+                                            const std::string &type,
                                             Integer manage = 1);
-   ElementWrapper* CreateForceModelWrapper(GmatBase *obj, const wxString &owner,
-                                           const wxString &depobj,
-                                           const wxString &type,
+   ElementWrapper* CreateForceModelWrapper(GmatBase *obj, const std::string &owner,
+                                           const std::string &depobj,
+                                           const std::string &type,
                                            Integer manage = 1);
    ElementWrapper* CreateWrapperWithDot(bool parametersFirst, Integer manage = 1);
    ElementWrapper* CreateValidWrapperWithDot(GmatBase *obj,
-                                             const wxString &type,
-                                             const wxString &owner,
-                                             const wxString &depobj,
+                                             const std::string &type,
+                                             const std::string &owner,
+                                             const std::string &depobj,
                                              bool parametersFirst,
                                              Integer manage);
    ElementWrapper* CreateOtherWrapper(Integer manage = 1);
    ElementWrapper* CreateParameterWrapper(Parameter *param,
                                           Gmat::WrapperDataType &itsType);
-   ElementWrapper* CreatePropertyWrapper(GmatBase *obj, const wxString &type,
+   ElementWrapper* CreatePropertyWrapper(GmatBase *obj, const std::string &type,
                                          Integer manage, bool checkSubProp = true);
    ElementWrapper* CreateSubPropertyWrapper(GmatBase *obj,
-                                            const wxString &type,
+                                            const std::string &type,
                                             Integer manage);
    
    bool ValidateSubCommand(GmatCommand *cmd, Integer level, Integer manage = 1);
-   bool CreateCoordSystemProperty(GmatBase *obj, const wxString &prop,
-                                  const wxString &value);
-   bool CreatePropSetupProperty(GmatBase *obj, const wxString &prop,
-                                const wxString &value);
-   bool CreateForceModelProperty(GmatBase *obj, const wxString &prop,
-                                 const wxString &value);
+   bool CreateCoordSystemProperty(GmatBase *obj, const std::string &prop,
+                                  const std::string &value);
+   bool CreatePropSetupProperty(GmatBase *obj, const std::string &prop,
+                                const std::string &value);
+   bool CreateForceModelProperty(GmatBase *obj, const std::string &prop,
+                                 const std::string &value);
    bool HandleError(bool addFunction = true);
-   void ShowObjectMap(const wxString &label = wxT(""));
+   void ShowObjectMap(const std::string &label = "");
    
    Interpreter     *theInterpreter;
    Moderator       *theModerator;
@@ -130,7 +130,7 @@ private:
    ObjectMap       *theObjectMap;
    StringArray     theParameterList;
    
-   wxString     theDescription;
+   std::string     theDescription;
    /// If object not found, it will automatically create StringWrapper
    /// This flag indicates whether or not to create default StringWrapper
    bool            createDefaultStringWrapper;
@@ -138,7 +138,7 @@ private:
    /// Error handling data
    bool            continueOnError;
    StringArray     theErrorList;
-   wxString     theErrorMsg;
+   std::string     theErrorMsg;
    
    static Validator *instance;
    Validator();

@@ -30,7 +30,7 @@
 class GMAT_API NotAKnotInterpolator : public Interpolator
 {
 public:
-   NotAKnotInterpolator(const wxString &name = wxT(""), Integer dim = 1);
+   NotAKnotInterpolator(const std::string &name = "", Integer dim = 1);
    virtual ~NotAKnotInterpolator();
    NotAKnotInterpolator(const NotAKnotInterpolator &csi);
    NotAKnotInterpolator&    operator=(const NotAKnotInterpolator &csi);

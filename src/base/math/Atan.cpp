@@ -33,8 +33,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Atan::Atan(const wxString &nomme)
-   : MathFunction(wxT("Atan"), nomme)
+Atan::Atan(const std::string &nomme)
+   : MathFunction("Atan", nomme)
 {
 }
 
@@ -93,7 +93,7 @@ void Atan::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
    leftNode->GetOutputInfo(type1, row1, col1);
    
    if (type1 != Gmat::REAL_TYPE)
-      throw MathException(wxT("Left is not scalar, so cannot do Atan().\n"));  
+      throw MathException("Left is not scalar, so cannot do Atan().\n");  
    else
    {
       type = type1;
@@ -114,7 +114,7 @@ void Atan::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 bool Atan::ValidateInputs()
 {
    if (leftNode == NULL)
-      throw MathException(wxT("Atan() - Missing input arguments.\n"));
+      throw MathException("Atan() - Missing input arguments.\n");
    
    Integer type1, row1, col1; // Left node
    

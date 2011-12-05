@@ -28,8 +28,8 @@
 class GMAT_API AttitudeFactory : public Factory
 {
 public:
-   Attitude*  CreateAttitude(const wxString &ofType,
-                             const wxString &withName = wxT(""));
+   Attitude*  CreateAttitude(const std::string &ofType,
+                             const std::string &withName = "");
 
    // default constructor
    AttitudeFactory();

@@ -33,8 +33,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Asin::Asin(const wxString &nomme)
-   : MathFunction(wxT("Asin"), nomme)
+Asin::Asin(const std::string &nomme)
+   : MathFunction("Asin", nomme)
 {
 }
 
@@ -93,7 +93,7 @@ void Asin::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
    leftNode->GetOutputInfo(type1, row1, col1);
    
    if (type1 != Gmat::REAL_TYPE)
-      throw MathException(wxT("Left is not scalar, so cannot do Asin().\n"));  
+      throw MathException("Left is not scalar, so cannot do Asin().\n");  
    else
    {
       type = type1;
@@ -114,7 +114,7 @@ void Asin::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 bool Asin::ValidateInputs()
 {
    if (leftNode == NULL)
-      throw MathException(wxT("Asin() - Missing input arguments.\n"));
+      throw MathException("Asin() - Missing input arguments.\n");
    
    Integer type1, row1, col1; // Left node
    

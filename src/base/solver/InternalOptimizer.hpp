@@ -31,7 +31,7 @@
 class GMAT_API InternalOptimizer : public Optimizer
 {
 public:
-	InternalOptimizer(wxString type, wxString name);
+	InternalOptimizer(std::string type, std::string name);
 	virtual ~InternalOptimizer();
    InternalOptimizer(const InternalOptimizer &opt);
    InternalOptimizer&      operator=(const InternalOptimizer& opt);

@@ -36,8 +36,8 @@
 //------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//  MeanOfDateAxes(const wxString &itsType,
-//                 const wxString &itsName);
+//  MeanOfDateAxes(const std::string &itsType,
+//                 const std::string &itsName);
 //---------------------------------------------------------------------------
 /**
  * Constructs base MeanOfDateAxes structures used in derived classes
@@ -50,11 +50,11 @@
  *       classes must pass in the typeId and typeStr parameters.
  */
 //---------------------------------------------------------------------------
-MeanOfDateAxes::MeanOfDateAxes(const wxString &itsType,
-                               const wxString &itsName) :
+MeanOfDateAxes::MeanOfDateAxes(const std::string &itsType,
+                               const std::string &itsName) :
 DynamicAxes(itsType,itsName)
 {
-   objectTypeNames.push_back(wxT("MeanOfDateAxes"));
+   objectTypeNames.push_back("MeanOfDateAxes");
    parameterCount = MeanOfDateAxesParamCount;
 }
 

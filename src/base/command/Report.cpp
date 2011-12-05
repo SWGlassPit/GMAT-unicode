@@ -44,11 +44,11 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 Report::PARAMETER_TEXT[ReportParamCount - GmatCommandParamCount] =
 {
-   wxT("ReportFile"),
-   wxT("Add"),
+   "ReportFile",
+   "Add",
 };
 
 const Gmat::ParameterType
@@ -71,15 +71,15 @@ Report::PARAMETER_TYPE[ReportParamCount - GmatCommandParamCount] =
  */
 //------------------------------------------------------------------------------
 Report::Report() :
-   GmatCommand  (wxT("Report")),
-   rfName       (wxT("")),
+   GmatCommand  ("Report"),
+   rfName       (""),
    reporter     (NULL),
    reportID     (-1),
    numParams    (0),
    needsHeaders (true)
 {
    // GmatBase data
-   objectTypeNames.push_back(wxT("Report"));
+   objectTypeNames.push_back("Report");
 }
 
 
@@ -154,9 +154,9 @@ Report& Report::operator=(const Report &rep)
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer Report::GetParameterID(const wxString &str) const
+Integer Report::GetParameterID(const std::string &str) const
 {
    for (Integer i = GmatCommandParamCount; i < ReportParamCount; i++)
    {
@@ -169,9 +169,9 @@ Integer Report::GetParameterID(const wxString &str) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
-wxString Report::GetStringParameter(const Integer id) const
+std::string Report::GetStringParameter(const Integer id) const
 {
    if (id == REPORTFILE)
       return rfName;
@@ -181,18 +181,18 @@ wxString Report::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString Report::GetStringParameter(const wxString &label) const
+std::string Report::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
-bool Report::SetStringParameter(const Integer id, const wxString &value)
+bool Report::SetStringParameter(const Integer id, const std::string &value)
 {
    switch (id)
    {
@@ -202,7 +202,7 @@ bool Report::SetStringParameter(const Integer id, const wxString &value)
    case ADD:
       #ifdef DEBUG_REPORT_SET
       MessageInterface::ShowMessage
-         (wxT("Report::SetStringParameter() Adding parameter '%s'\n"), value.c_str());
+         ("Report::SetStringParameter() Adding parameter '%s'\n", value.c_str());
       #endif
       return AddParameter(value, numParams);
    default:
@@ -212,21 +212,21 @@ bool Report::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label,
-//                         const wxString &value)
+// bool SetStringParameter(const std::string &label,
+//                         const std::string &value)
 //------------------------------------------------------------------------------
-bool Report::SetStringParameter(const wxString &label,
-                                const wxString &value)
+bool Report::SetStringParameter(const std::string &label,
+                                const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
 
 
 //------------------------------------------------------------------------------
-// virtual bool SetStringParameter(const Integer id, const wxString &value,
+// virtual bool SetStringParameter(const Integer id, const std::string &value,
 //                                 const Integer index)
 //------------------------------------------------------------------------------
-bool Report::SetStringParameter(const Integer id, const wxString &value,
+bool Report::SetStringParameter(const Integer id, const std::string &value,
                                 const Integer index)
 {
    switch (id)
@@ -240,12 +240,12 @@ bool Report::SetStringParameter(const Integer id, const wxString &value,
 
 
 //------------------------------------------------------------------------------
-// virtual bool SetStringParameter(const wxString &label,
-//                                 const wxString &value,
+// virtual bool SetStringParameter(const std::string &label,
+//                                 const std::string &value,
 //                                 const Integer index)
 //------------------------------------------------------------------------------
-bool Report::SetStringParameter(const wxString &label,
-                                const wxString &value,
+bool Report::SetStringParameter(const std::string &label,
+                                const std::string &value,
                                 const Integer index)
 {
    return SetStringParameter(GetParameterID(label), value, index);
@@ -259,8 +259,8 @@ const StringArray& Report::GetStringArrayParameter(const Integer id) const
 {
    #ifdef DEBUG_REPORTFILE_GET
    MessageInterface::ShowMessage
-      (wxT("Report::GetStringArrayParameter() id=%d, actualParmNames.size()=%d, ")
-       wxT("numParams=%d\n"), id, actualParmNames.size(), numParams);
+      ("Report::GetStringArrayParameter() id=%d, actualParmNames.size()=%d, "
+       "numParams=%d\n", id, actualParmNames.size(), numParams);
    #endif
    
    switch (id)
@@ -274,9 +274,9 @@ const StringArray& Report::GetStringArrayParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// StringArray& GetStringArrayParameter(const wxString &label) const
+// StringArray& GetStringArrayParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-const StringArray& Report::GetStringArrayParameter(const wxString &label) const
+const StringArray& Report::GetStringArrayParameter(const std::string &label) const
 {
    return GetStringArrayParameter(GetParameterID(label));
 }
@@ -295,15 +295,15 @@ const StringArray& Report::GetWrapperObjectNameArray()
 
 
 //------------------------------------------------------------------------------
-// bool SetElementWrapper(ElementWrapper *toWrapper, const wxString &withName)
+// bool SetElementWrapper(ElementWrapper *toWrapper, const std::string &withName)
 //------------------------------------------------------------------------------
 bool Report::SetElementWrapper(ElementWrapper *toWrapper,
-                               const wxString &withName)
+                               const std::string &withName)
 {
    #ifdef DEBUG_WRAPPER_CODE   
    MessageInterface::ShowMessage
-      (wxT("Report::SetElementWrapper() this=<%p> '%s' entered, toWrapper=<%p>, ")
-       wxT("withName='%s'\n"), this, GetGeneratingString(Gmat::NO_COMMENTS).c_str(),
+      ("Report::SetElementWrapper() this=<%p> '%s' entered, toWrapper=<%p>, "
+       "withName='%s'\n", this, GetGeneratingString(Gmat::NO_COMMENTS).c_str(),
        toWrapper, withName.c_str());
    #endif
    
@@ -322,9 +322,9 @@ bool Report::SetElementWrapper(ElementWrapper *toWrapper,
    //-------------------------------------------------------
    #ifdef DEBUG_WRAPPER_CODE   
    MessageInterface::ShowMessage
-      (wxT("   Checking %d Parameters\n"), actualParmNames.size());
+      ("   Checking %d Parameters\n", actualParmNames.size());
    for (UnsignedInt i=0; i<actualParmNames.size(); i++)
-      MessageInterface::ShowMessage(wxT("      %s\n"), actualParmNames[i].c_str());
+      MessageInterface::ShowMessage("      %s\n", actualParmNames[i].c_str());
    #endif
    
    Integer sz = actualParmNames.size();
@@ -334,7 +334,7 @@ bool Report::SetElementWrapper(ElementWrapper *toWrapper,
       {
          #ifdef DEBUG_WRAPPER_CODE   
          MessageInterface::ShowMessage
-            (wxT("   Found wrapper name \"%s\" in actualParmNames\n"), withName.c_str());
+            ("   Found wrapper name \"%s\" in actualParmNames\n", withName.c_str());
          #endif
          if (parmWrappers.at(i) != NULL)
          {
@@ -356,7 +356,7 @@ bool Report::SetElementWrapper(ElementWrapper *toWrapper,
    
    #ifdef DEBUG_WRAPPER_CODE   
    MessageInterface::ShowMessage
-      (wxT("   There are %d wrappers to delete\n"), wrappersToDelete.size());
+      ("   There are %d wrappers to delete\n", wrappersToDelete.size());
    #endif
    
    // Delete old ElementWrappers (loj: 2008.11.20)
@@ -365,8 +365,8 @@ bool Report::SetElementWrapper(ElementWrapper *toWrapper,
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         ((*ewi), (*ewi)->GetDescription(), wxT("Report::SetElementWrapper()"),
-          GetGeneratingString(Gmat::NO_COMMENTS) + wxT(" deleting wrapper"));
+         ((*ewi), (*ewi)->GetDescription(), "Report::SetElementWrapper()",
+          GetGeneratingString(Gmat::NO_COMMENTS) + " deleting wrapper");
       #endif
       delete (*ewi);
       (*ewi) = NULL;
@@ -374,7 +374,7 @@ bool Report::SetElementWrapper(ElementWrapper *toWrapper,
    
    #ifdef DEBUG_WRAPPER_CODE   
    MessageInterface::ShowMessage
-      (wxT("Report::SetElementWrapper() exiting with %d\n"), retval);
+      ("Report::SetElementWrapper() exiting with %d\n", retval);
    #endif
    
    return retval;
@@ -388,8 +388,8 @@ void Report::ClearWrappers()
 {
    #ifdef DEBUG_WRAPPER_CODE   
    MessageInterface::ShowMessage
-      (wxT("Report::ClearWrappers() this=<%p> '%s' entered\n   There are %d wrappers ")
-       wxT("allocated, these will be deleted if not NULL\n"), this,
+      ("Report::ClearWrappers() this=<%p> '%s' entered\n   There are %d wrappers "
+       "allocated, these will be deleted if not NULL\n", this,
        GetGeneratingString(Gmat::NO_COMMENTS).c_str(), parmWrappers.size());
    #endif
    
@@ -410,14 +410,14 @@ void Report::ClearWrappers()
    
    #ifdef DEBUG_WRAPPER_CODE   
    MessageInterface::ShowMessage
-      (wxT("   There are %d wrappers to delete\n"), wrappersToDelete.size());
+      ("   There are %d wrappers to delete\n", wrappersToDelete.size());
    #endif
 }
 
 
 //------------------------------------------------------------------------------
-// virtual bool TakeAction(const wxString &action,  
-//                         const wxString &actionData = "");
+// virtual bool TakeAction(const std::string &action,  
+//                         const std::string &actionData = "");
 //------------------------------------------------------------------------------
 /**
  * This method performs action.
@@ -428,15 +428,15 @@ void Report::ClearWrappers()
  *
  */
 //------------------------------------------------------------------------------
-bool Report::TakeAction(const wxString &action, const wxString &actionData)
+bool Report::TakeAction(const std::string &action, const std::string &actionData)
 {
    #if DEBUG_TAKE_ACTION
    MessageInterface::ShowMessage
-      (wxT("Report::TakeAction() action=%s, actionData=%s\n"),
+      ("Report::TakeAction() action=%s, actionData=%s\n",
        action.c_str(), actionData.c_str());
    #endif
    
-   if (action == wxT("Clear"))
+   if (action == "Clear")
    {
       parmNames.clear();
       actualParmNames.clear();
@@ -463,7 +463,7 @@ bool Report::TakeAction(const wxString &action, const wxString &actionData)
  * @return the name of the object.
  */
 //------------------------------------------------------------------------------
-wxString Report::GetRefObjectName(const Gmat::ObjectType type) const
+std::string Report::GetRefObjectName(const Gmat::ObjectType type) const
 {
    switch (type)
    {
@@ -472,7 +472,7 @@ wxString Report::GetRefObjectName(const Gmat::ObjectType type) const
       
    case Gmat::PARAMETER:
       if (parmNames.size() == 0)
-         return wxT("");
+         return "";
       else
          return parmNames[0];
    default:
@@ -512,7 +512,7 @@ const StringArray& Report::GetRefObjectNameArray(const Gmat::ObjectType type)
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                    const wxString &name, const Integer index)
+//                    const std::string &name, const Integer index)
 //------------------------------------------------------------------------------
 /**
  * Sets the ReportFile and Parameter objects used bt the Report command.
@@ -534,23 +534,23 @@ const StringArray& Report::GetRefObjectNameArray(const Gmat::ObjectType type)
  */
 //------------------------------------------------------------------------------
 bool Report::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                          const wxString &name, const Integer index)
+                          const std::string &name, const Integer index)
 {
    #ifdef DEBUG_REPORT_OBJ
       MessageInterface::ShowMessage(
-         wxT("Report::SetRefObject received a %s named '%s', index=%d\n"), 
+         "Report::SetRefObject received a %s named '%s', index=%d\n", 
          obj->GetTypeName().c_str(), obj->GetName().c_str(), index);
    #endif
 
    if (type == Gmat::SUBSCRIBER)
    {
-      if (obj->GetTypeName() != wxT("ReportFile"))
-         throw CommandException(wxT("Report command must have a ReportFile name ")
-            wxT("as the first parameter.\n"));
+      if (obj->GetTypeName() != "ReportFile")
+         throw CommandException("Report command must have a ReportFile name "
+            "as the first parameter.\n");
       
       rfName = name;
       // Tell the ReportFile object that a command has requested its services
-      obj->TakeAction(wxT("PassedToReport"));
+      obj->TakeAction("PassedToReport");
       reporter = (ReportFile*)obj;
       
       // Why we need to clear? (loj: 2007.12.19 commented out)
@@ -560,13 +560,13 @@ bool Report::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
    else if (type == Gmat::PARAMETER)
    {
       #ifdef DEBUG_REPORT_OBJ
-         MessageInterface::ShowMessage(wxT("   Received %s as a Parameter\n"), name.c_str());
+         MessageInterface::ShowMessage("   Received %s as a Parameter\n", name.c_str());
       #endif
          
       // All remaining refs should point to Parameter objects
-      if (!obj->IsOfType(wxT("Parameter")))
-         throw CommandException(wxT("Report command can only have Parameters ")
-            wxT("in the list of reported values.\n"));
+      if (!obj->IsOfType("Parameter"))
+         throw CommandException("Report command can only have Parameters "
+            "in the list of reported values.\n");
       
       AddParameter(name, index, (Parameter*)obj);
       
@@ -575,12 +575,12 @@ bool Report::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
       if (reporter)
          reporter->AddParameterForTitleOnly(name);
       else
-         throw CommandException(wxT("Report command has undefined ReportFile object.\n"));
+         throw CommandException("Report command has undefined ReportFile object.\n");
       #endif
    }
    
    #ifdef DEBUG_REPORT_OBJ
-   MessageInterface::ShowMessage(wxT("Report::SetRefObject() returning true\n"));
+   MessageInterface::ShowMessage("Report::SetRefObject() returning true\n");
    #endif
    
    return true;
@@ -589,7 +589,7 @@ bool Report::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 
 //---------------------------------------------------------------------------
 // bool RenameRefObject(const Gmat::ObjectType type,
-//                      const wxString &oldName, const wxString &newName)
+//                      const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /*
  * Renames referenced objects
@@ -602,12 +602,12 @@ bool Report::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  */
 //---------------------------------------------------------------------------
 bool Report::RenameRefObject(const Gmat::ObjectType type,
-                             const wxString &oldName,
-                             const wxString &newName)
+                             const std::string &oldName,
+                             const std::string &newName)
 {
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("Report::RenameRefObject() type=%s, oldName=%s, newName=%s\n"),
+      ("Report::RenameRefObject() type=%s, oldName=%s, newName=%s\n",
        GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
    #endif
    
@@ -634,11 +634,11 @@ bool Report::RenameRefObject(const Gmat::ObjectType type,
             type == Gmat::HARDWARE)
    {
       for (UnsignedInt i=0; i<parmNames.size(); i++)
-         if (parmNames[i].find(oldName) != wxString::npos)
+         if (parmNames[i].find(oldName) != std::string::npos)
             parmNames[i] = GmatStringUtil::Replace(parmNames[i], oldName, newName);
       
       for (UnsignedInt i=0; i<actualParmNames.size(); i++)
-         if (actualParmNames[i].find(oldName) != wxString::npos)
+         if (actualParmNames[i].find(oldName) != std::string::npos)
             actualParmNames[i] =
                GmatStringUtil::Replace(actualParmNames[i], oldName, newName);
       
@@ -647,14 +647,14 @@ bool Report::RenameRefObject(const Gmat::ObjectType type,
       {
          #ifdef DEBUG_RENAME
          MessageInterface::ShowMessage
-            (wxT("   before rename, wrapper desc = '%s'\n"), (*i)->GetDescription().c_str());
+            ("   before rename, wrapper desc = '%s'\n", (*i)->GetDescription().c_str());
          #endif
          
          (*i)->RenameObject(oldName, newName);
          
          #ifdef DEBUG_RENAME
          MessageInterface::ShowMessage
-            (wxT("   after  rename, wrapper desc = '%s'\n"), (*i)->GetDescription().c_str());
+            ("   after  rename, wrapper desc = '%s'\n", (*i)->GetDescription().c_str());
          #endif
       }
       
@@ -682,27 +682,27 @@ GmatBase* Report::Clone() const
 
 
 //------------------------------------------------------------------------------
-// const wxString& GetGeneratingString(Gmat::WriteMode mode,
-//                                        const wxString &prefix,
-//                                        const wxString &useName)
+// const std::string& GetGeneratingString(Gmat::WriteMode mode,
+//                                        const std::string &prefix,
+//                                        const std::string &useName)
 //------------------------------------------------------------------------------
-const wxString& Report::GetGeneratingString(Gmat::WriteMode mode,
-                                               const wxString &prefix,
-                                               const wxString &useName)
+const std::string& Report::GetGeneratingString(Gmat::WriteMode mode,
+                                               const std::string &prefix,
+                                               const std::string &useName)
 {
    #ifdef DEBUG_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("Report::GetGeneratingString() rfName='%s', has %d parameters to write\n"),
+      ("Report::GetGeneratingString() rfName='%s', has %d parameters to write\n",
        rfName.c_str(), actualParmNames.size());
    #endif
    
-   wxString gen = prefix + wxT("Report ") + rfName + wxT(" ");
+   std::string gen = prefix + "Report " + rfName + " ";
    UnsignedInt numElem = actualParmNames.size();
    
    if (numElem > 1)
    {
       for (UnsignedInt i=0; i<numElem-1; i++)
-         gen += actualParmNames[i] + wxT(" ");
+         gen += actualParmNames[i] + " ";
       
       gen += actualParmNames[numElem-1];
    }
@@ -711,11 +711,11 @@ const wxString& Report::GetGeneratingString(Gmat::WriteMode mode,
       gen += actualParmNames[0];
    }
    
-   generatingString = gen + wxT(";");
+   generatingString = gen + ";";
    
    #ifdef DEBUG_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("   generatingString=<%s>, \n   now returning GmatCommand::GetGeneratingString()\n"),
+      ("   generatingString=<%s>, \n   now returning GmatCommand::GetGeneratingString()\n",
        generatingString.c_str());
    #endif
    
@@ -739,7 +739,7 @@ bool Report::Initialize()
 
    #ifdef DEBUG_REPORT_INIT
    MessageInterface::ShowMessage
-      (wxT("Report::Initialize() entered, has %d parameter names\n"), parmNames.size());
+      ("Report::Initialize() entered, has %d parameter names\n", parmNames.size());
    #endif
    #ifdef DEBUG_OBJECT_MAP
    ShowObjectMaps();
@@ -750,44 +750,44 @@ bool Report::Initialize()
    
    if ((mapObj = FindObject(rfName)) == NULL)
       throw CommandException(
-         wxT("Report command cannot find ReportFile named \"") + (rfName) +
-         wxT("\"\n"));
+         "Report command cannot find ReportFile named \"" + (rfName) +
+         "\"\n");
    
    reporter = (ReportFile *)mapObj;
-   if (reporter->GetTypeName() != wxT("ReportFile"))
+   if (reporter->GetTypeName() != "ReportFile")
       throw CommandException(
-         wxT("Object named \"") + rfName +
-         wxT("\" is not a ReportFile; Report command cannot execute\n"));
+         "Object named \"" + rfName +
+         "\" is not a ReportFile; Report command cannot execute\n");
    
    // Tell the ReportFile object that a command has requested its services
    // Added this here so that ReportFile::Initialize() doesn't throw exception
    // when there is no paramters to report (loj: 2008.06.11)
-   reporter->TakeAction(wxT("PassedToReport"));
+   reporter->TakeAction("PassedToReport");
    
    needsHeaders =
-      reporter->GetOnOffParameter(reporter->GetParameterID(wxT("WriteHeaders"))) == wxT("On");
+      reporter->GetOnOffParameter(reporter->GetParameterID("WriteHeaders")) == "On";
    
    for (StringArray::iterator i = parmNames.begin(); i != parmNames.end(); ++i)
    {
       #ifdef DEBUG_REPORT_INIT
-      MessageInterface::ShowMessage(wxT("   Now find object for '%s'\n"), (*i).c_str());
+      MessageInterface::ShowMessage("   Now find object for '%s'\n", (*i).c_str());
       #endif
       
       mapObj = FindObject(*i);
       if (mapObj == NULL)
       {
-         wxString msg = wxT("Object named \"") + (*i) +
-            wxT("\" cannot be found for the Report command '") +
-            GetGeneratingString(Gmat::NO_COMMENTS) + wxT("'");
+         std::string msg = "Object named \"" + (*i) +
+            "\" cannot be found for the Report command '" +
+            GetGeneratingString(Gmat::NO_COMMENTS) + "'";
          #ifdef DEBUG_REPORT_INIT
-         MessageInterface::ShowMessage(wxT("**** ERROR **** %s\n"), msg.c_str());
+         MessageInterface::ShowMessage("**** ERROR **** %s\n", msg.c_str());
          #endif
          //return false;
          throw CommandException(msg);
       }
       
-      if (!mapObj->IsOfType(wxT("Parameter")))
-         throw CommandException(wxT("Parameter type mismatch for ") + 
+      if (!mapObj->IsOfType("Parameter"))
+         throw CommandException("Parameter type mismatch for " + 
             mapObj->GetName());
       parms.push_back((Parameter *)mapObj);
    }
@@ -798,7 +798,7 @@ bool Report::Initialize()
    {
       #ifdef DEBUG_REPORT_INIT
       MessageInterface::ShowMessage
-         (wxT("   wrapper desc = '%s'\n"), (*i)->GetDescription().c_str());
+         ("   wrapper desc = '%s'\n", (*i)->GetDescription().c_str());
       #endif
       
       if (SetWrapperReferences(*(*i)) == false)
@@ -806,7 +806,7 @@ bool Report::Initialize()
    }
    
    #ifdef DEBUG_REPORT_INIT
-   MessageInterface::ShowMessage(wxT("Report::Initialize() returning true.\n"));
+   MessageInterface::ShowMessage("Report::Initialize() returning true.\n");
    #endif
    
    return true;
@@ -826,46 +826,53 @@ bool Report::Initialize()
 bool Report::Execute()
 {
    if (parms.empty())
-      throw CommandException(wxT("Report command has no parameters to write\n"));
+      throw CommandException("Report command has no parameters to write\n");
    if (reporter == NULL)
-      throw CommandException(wxT("Reporter is not yet set\n"));
+      throw CommandException("Reporter is not yet set\n");
    
    #ifdef DEBUG_REPORT_EXEC
    MessageInterface::ShowMessage
-      (wxT("Report::Execute() this=<%p> '%s' entered, reporter <%s> '%s' has %d Parameters\n"),
+      ("Report::Execute() this=<%p> '%s' entered, reporter <%s> '%s' has %d Parameters\n",
        this, GetGeneratingString(Gmat::NO_COMMENTS).c_str(),
        reporter->GetName().c_str(), reporter->GetFileName().c_str(), parms.size());
    #endif
    
    // Build the data as a string
-   wxString datastream;
+   std::stringstream datastream;
    
    // Set the stream to use the settings in the ReportFile
    // Note that this is done here, rather than during initialization, in case
    // the user has changed the values during the run.
-   Integer prec = reporter->GetIntegerParameter(reporter->GetParameterID(wxT("Precision")));
+   Integer prec = reporter->GetIntegerParameter(reporter->GetParameterID("Precision"));
+   datastream.precision(prec);
    
    bool leftJustify = false;
-   if (reporter->GetOnOffParameter(reporter->GetParameterID(wxT("LeftJustify"))) == wxT("On"))
+   if (reporter->GetOnOffParameter(reporter->GetParameterID("LeftJustify")) == "On")
       leftJustify = true;
    
    bool zeroFill = false;
-   if (reporter->GetOnOffParameter(reporter->GetParameterID(wxT("ZeroFill"))) == wxT("On"))
+   if (reporter->GetOnOffParameter(reporter->GetParameterID("ZeroFill")) == "On")
       zeroFill = true;
    
-   int colWidth = reporter->GetIntegerParameter(reporter->GetParameterID(wxT("ColumnWidth")));
+   int colWidth = reporter->GetIntegerParameter(reporter->GetParameterID("ColumnWidth"));
    
+   if (leftJustify)
+      datastream.setf(std::ios::left);
    
    if (needsHeaders &&
-       reporter->GetOnOffParameter(reporter->GetParameterID(wxT("WriteHeaders"))) == wxT("On"))
+       reporter->GetOnOffParameter(reporter->GetParameterID("WriteHeaders")) == "On")
       WriteHeaders(datastream, colWidth);
    
+   // if zero fill, show decimal point
+   // showing decimal point automatically filles zero
+   if (zeroFill)
+      datastream.setf(std::ios::showpoint);
    
    // Write to report file using ReportFile::WriateData().
    // This method takes ElementWrapper array to write data to stream
-   reporter->TakeAction(wxT("ActivateForReport"), wxT("On"));
+   reporter->TakeAction("ActivateForReport", "On");
    bool retval = reporter->WriteData(parmWrappers);
-   reporter->TakeAction(wxT("ActivateForReport"), wxT("Off"));
+   reporter->TakeAction("ActivateForReport", "Off");
    BuildCommandSummary(true);
    return retval;   
 }
@@ -878,7 +885,7 @@ void Report::RunComplete()
 {
    #ifdef DEBUG_RUN_COMPLETE
    MessageInterface::ShowMessage
-      (wxT("Report::RunComplete() this=<%p> '%s' entered\n"), this,
+      ("Report::RunComplete() this=<%p> '%s' entered\n", this,
        GetGeneratingString(Gmat::NO_COMMENTS).c_str());
    #endif
    
@@ -887,42 +894,43 @@ void Report::RunComplete()
 
 
 //------------------------------------------------------------------------------
-// void WriteHeaders(wxStringstream &datastream, Integer colWidth)
+// void WriteHeaders(std::stringstream &datastream, Integer colWidth)
 //------------------------------------------------------------------------------
-void Report::WriteHeaders(wxString &datastream, Integer colWidth)
+void Report::WriteHeaders(std::stringstream &datastream, Integer colWidth)
 {
-   reporter->TakeAction(wxT("ActivateForReport"), wxT("On"));
+   reporter->TakeAction("ActivateForReport", "On");
    for (StringArray::iterator i = actualParmNames.begin();
         i != actualParmNames.end(); ++i)
    {
+      datastream.width(colWidth);
       datastream << (*i);
-      datastream << wxT("   ");
+      datastream << "   ";
    }
    
-   wxString header = datastream;
-   reporter->ReceiveData(header, header.length());
-   datastream = wxT("");
+   std::string header = datastream.str();
+   reporter->ReceiveData(header.c_str(), header.length());
+   datastream.str("");
    needsHeaders = false;
 }
 
 
 //------------------------------------------------------------------------------
-// bool AddParameter(const wxString &paramName, Integer index, Parameter *param)
+// bool AddParameter(const std::string &paramName, Integer index, Parameter *param)
 //------------------------------------------------------------------------------
-bool Report::AddParameter(const wxString &paramName, Integer index,
+bool Report::AddParameter(const std::string &paramName, Integer index,
                           Parameter *param)
 {
    #ifdef DEBUG_REPORT_SET
    MessageInterface::ShowMessage
-      (wxT("Report::AddParameter() this=<%p>, Adding parameter '%s', index=%d, ")
-       wxT("param=<%p>, numParams=%d\n"), this, paramName.c_str(), index, param, numParams);
+      ("Report::AddParameter() this=<%p>, Adding parameter '%s', index=%d, "
+       "param=<%p>, numParams=%d\n", this, paramName.c_str(), index, param, numParams);
    #endif
    
-   if (paramName == wxT(""))
+   if (paramName == "")
    {
       #ifdef DEBUG_REPORT_SET
       MessageInterface::ShowMessage
-         (wxT("Report::AddParameter() returning false, input paramName is blank\n"));
+         ("Report::AddParameter() returning false, input paramName is blank\n");
       #endif
       return false;
    }
@@ -931,7 +939,7 @@ bool Report::AddParameter(const wxString &paramName, Integer index,
    {
       #ifdef DEBUG_REPORT_SET
       MessageInterface::ShowMessage
-         (wxT("Report::AddParameter() returning false, the index %d is less than 0\n"));
+         ("Report::AddParameter() returning false, the index %d is less than 0\n");
       #endif
       return false;
    }
@@ -943,8 +951,8 @@ bool Report::AddParameter(const wxString &paramName, Integer index,
    {
       #ifdef DEBUG_REPORT_SET
       MessageInterface::ShowMessage
-         (wxT("Report::AddParameter() returning false, the index %d is out of bounds, ")
-          wxT("it must be between 0 and %d\n"), index, param ? numParams + 1 : numParams);
+         ("Report::AddParameter() returning false, the index %d is out of bounds, "
+          "it must be between 0 and %d\n", index, param ? numParams + 1 : numParams);
       #endif
       return false;
    }
@@ -953,7 +961,7 @@ bool Report::AddParameter(const wxString &paramName, Integer index,
    {
       #ifdef DEBUG_REPORT_SET
       MessageInterface::ShowMessage
-         (wxT("   Set <%p>'%s' to index %d\n"), param, paramName.c_str(), index);
+         ("   Set <%p>'%s' to index %d\n", param, paramName.c_str(), index);
       #endif
       parms[index] = param;
    }
@@ -968,7 +976,7 @@ bool Report::AddParameter(const wxString &paramName, Integer index,
       #endif
          // Handle Array indexing
          Integer row, col;
-         wxString newName;      
+         std::string newName;      
          GmatStringUtil::GetArrayIndex(paramName, row, col, newName);
          
          parmNames.push_back(newName);
@@ -981,7 +989,7 @@ bool Report::AddParameter(const wxString &paramName, Integer index,
          
          #ifdef DEBUG_REPORT_SET
          MessageInterface::ShowMessage
-            (wxT("   Added '%s', size=%d\n"), paramName.c_str(), numParams);
+            ("   Added '%s', size=%d\n", paramName.c_str(), numParams);
          #endif
          
          return true;
@@ -1002,8 +1010,8 @@ void Report::DeleteParameters()
 {
    #ifdef DEBUG_WRAPPER_CODE   
    MessageInterface::ShowMessage
-      (wxT("Report::DeleteParameters() this=<%p> '%s' entered\n   There are %d wrappers ")
-       wxT("allocated, these will be deleted if not NULL\n"), this,
+      ("Report::DeleteParameters() this=<%p> '%s' entered\n   There are %d wrappers "
+       "allocated, these will be deleted if not NULL\n", this,
        GetGeneratingString(Gmat::NO_COMMENTS).c_str(), parmWrappers.size());
    #endif
    
@@ -1024,7 +1032,7 @@ void Report::DeleteParameters()
    
    #ifdef DEBUG_WRAPPER_CODE   
    MessageInterface::ShowMessage
-      (wxT("   There are %d wrappers to delete\n"), wrappersToDelete.size());
+      ("   There are %d wrappers to delete\n", wrappersToDelete.size());
    #endif
    
    // delete wrappers (loj: 2008.11.20)
@@ -1033,8 +1041,8 @@ void Report::DeleteParameters()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         ((*ewi), (*ewi)->GetDescription(), wxT("Report::DeleteParameters()"),
-          GetGeneratingString(Gmat::NO_COMMENTS) + wxT(" deleting wrapper"));
+         ((*ewi), (*ewi)->GetDescription(), "Report::DeleteParameters()",
+          GetGeneratingString(Gmat::NO_COMMENTS) + " deleting wrapper");
       #endif
       delete (*ewi);
       (*ewi) = NULL;

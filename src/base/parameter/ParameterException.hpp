@@ -26,14 +26,14 @@
 class GMAT_API ParameterException : public BaseException
 {
    public:
-      ParameterException(const wxString& message = wxT("")) 
+      ParameterException(const std::string& message = "") 
          : BaseException(message) {};
 };
 
 class InvalidDependencyException : public BaseException
 {
    public:
-      InvalidDependencyException(const wxString& message = wxT("")) 
+      InvalidDependencyException(const std::string& message = "") 
          : BaseException(message) {};
 };
 

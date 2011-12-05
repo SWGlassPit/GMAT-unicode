@@ -30,7 +30,7 @@
 class GMAT_API FunctionFactory : public Factory
 {
 public:
-   Function* CreateFunction(const wxString &ofType, const wxString &withName = wxT(""));
+   Function* CreateFunction(const std::string &ofType, const std::string &withName = "");
 
    FunctionFactory();
    virtual ~FunctionFactory();

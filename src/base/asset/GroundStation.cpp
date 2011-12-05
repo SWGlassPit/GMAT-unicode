@@ -44,11 +44,11 @@
 //---------------------------------
 
 /// Labels used for the ground station parameters.
-const wxString
+const std::string
 GroundStation::PARAMETER_TEXT[GroundStationParamCount - BodyFixedPointParamCount] =
    {
-      wxT("Id"),
-      wxT("AddHardware"),				// made changes by Tuan Nguyen
+      "Id",
+      "AddHardware",				// made changes by Tuan Nguyen
    };
 
 const Gmat::ParameterType
@@ -66,24 +66,24 @@ GroundStation::PARAMETER_TYPE[GroundStationParamCount - BodyFixedPointParamCount
 
 
 //---------------------------------------------------------------------------
-//  GroundStation(const wxString &itsName)
+//  GroundStation(const std::string &itsName)
 //---------------------------------------------------------------------------
 /**
  * Constructs a GroundStation object (default constructor).
  *
- * @param <itsName> Optional name for the object.  Defaults to wxT("").
+ * @param <itsName> Optional name for the object.  Defaults to "".
  */
 //---------------------------------------------------------------------------
-GroundStation::GroundStation(const wxString &itsName) :
-   BodyFixedPoint    (wxT("GroundStation"), itsName, Gmat::GROUND_STATION),
-   stationId         (wxT("StationId"))
+GroundStation::GroundStation(const std::string &itsName) :
+   BodyFixedPoint    ("GroundStation", itsName, Gmat::GROUND_STATION),
+   stationId         ("StationId")
 {
    objectTypes.push_back(Gmat::GROUND_STATION);
-   objectTypeNames.push_back(wxT("GroundStation"));
+   objectTypeNames.push_back("GroundStation");
    parameterCount = GroundStationParamCount;
 
-   bfcsName   = wxT("EarthFixed");
-   mj2kcsName = wxT("EarthMJ2000Eq");
+   bfcsName   = "EarthFixed";
+   mj2kcsName = "EarthMJ2000Eq";
 }
 
 //---------------------------------------------------------------------------
@@ -177,7 +177,7 @@ GmatBase* GroundStation::Clone() const
 
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -187,7 +187,7 @@ GmatBase* GroundStation::Clone() const
  * @return ID for the requested parameter.
  */
 //------------------------------------------------------------------------------
-Integer GroundStation::GetParameterID(const wxString & str) const
+Integer GroundStation::GetParameterID(const std::string & str) const
 {
    for (Integer i = BodyFixedPointParamCount; i < GroundStationParamCount; i++)
    {
@@ -202,7 +202,7 @@ Integer GroundStation::GetParameterID(const wxString & str) const
 // public methods inherited from GmatBase
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -212,7 +212,7 @@ Integer GroundStation::GetParameterID(const wxString & str) const
  * @return parameter text for the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString GroundStation::GetParameterText(const Integer id) const
+std::string GroundStation::GetParameterText(const Integer id) const
 {
    if (id >= BodyFixedPointParamCount && id < GroundStationParamCount)
       return PARAMETER_TEXT[id - BodyFixedPointParamCount];
@@ -221,7 +221,7 @@ wxString GroundStation::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -231,13 +231,13 @@ wxString GroundStation::GetParameterText(const Integer id) const
  * @return parameter type string of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString GroundStation::GetParameterTypeString(const Integer id) const
+std::string GroundStation::GetParameterTypeString(const Integer id) const
 {
    return BodyFixedPoint::PARAM_TYPE_STRING[GetParameterType(id)];
 }
 
 //---------------------------------------------------------------------------
-//  wxString GetParameterUnit(const Integer id) const
+//  std::string GetParameterUnit(const Integer id) const
 //---------------------------------------------------------------------------
 /**
  * Retrieve the unit for the parameter.
@@ -247,7 +247,7 @@ wxString GroundStation::GetParameterTypeString(const Integer id) const
  * @return unit for the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString GroundStation::GetParameterUnit(const Integer id) const
+std::string GroundStation::GetParameterUnit(const Integer id) const
 {
    return BodyFixedPoint::GetParameterUnit(id);
 }
@@ -290,7 +290,7 @@ bool GroundStation::IsParameterReadOnly(const Integer id) const
 }
 
 //---------------------------------------------------------------------------
-//  bool IsParameterReadOnly(const wxString &label) const
+//  bool IsParameterReadOnly(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * Checks to see if the requested parameter is read only.
@@ -300,13 +300,13 @@ bool GroundStation::IsParameterReadOnly(const Integer id) const
  * @return true if the parameter is read only, false (the default) if not.
  */
 //---------------------------------------------------------------------------
-bool GroundStation::IsParameterReadOnly(const wxString & label) const
+bool GroundStation::IsParameterReadOnly(const std::string & label) const
 {
    return IsParameterReadOnly(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method retrieves a string parameter
@@ -316,7 +316,7 @@ bool GroundStation::IsParameterReadOnly(const wxString & label) const
  * @return The string parameter
  */
 //------------------------------------------------------------------------------
-wxString GroundStation::GetStringParameter(const Integer id) const
+std::string GroundStation::GetStringParameter(const Integer id) const
 {
    if (id == STATION_ID)
       return stationId;
@@ -325,7 +325,7 @@ wxString GroundStation::GetStringParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString & value)
+// bool SetStringParameter(const Integer id, const std::string & value)
 //------------------------------------------------------------------------------
 /**
  * This method sets a string parameter
@@ -337,7 +337,7 @@ wxString GroundStation::GetStringParameter(const Integer id) const
  */
 //------------------------------------------------------------------------------
 bool GroundStation::SetStringParameter(const Integer id,
-      const wxString & value)
+      const std::string & value)
 {
    if (id == STATION_ID)
    {
@@ -350,7 +350,7 @@ bool GroundStation::SetStringParameter(const Integer id,
       {
          AssetException ae;
          ae.SetDetails(errorMessageFormat.c_str(),
-                       value.c_str(), wxT("Id"), wxT("Must begin with a letter; may contain letters, integers, dashes, underscores"));
+                       value.c_str(), "Id", "Must begin with a letter; may contain letters, integers, dashes, underscores");
          throw ae;
       }
    }
@@ -371,7 +371,7 @@ bool GroundStation::SetStringParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString & label) const
+// std::string GetStringParameter(const std::string & label) const
 //------------------------------------------------------------------------------
 /**
  * This method retrieves a string parameter
@@ -381,13 +381,13 @@ bool GroundStation::SetStringParameter(const Integer id,
  * @return The parameter
  */
 //------------------------------------------------------------------------------
-wxString GroundStation::GetStringParameter(const wxString & label) const
+std::string GroundStation::GetStringParameter(const std::string & label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString & label, const wxString & value)
+// bool SetStringParameter(const std::string & label, const std::string & value)
 //------------------------------------------------------------------------------
 /**
  * This method sets a string parameter
@@ -398,14 +398,14 @@ wxString GroundStation::GetStringParameter(const wxString & label) const
  * @return true on success, false on failure
  */
 //------------------------------------------------------------------------------
-bool GroundStation::SetStringParameter(const wxString & label,
-      const wxString & value)
+bool GroundStation::SetStringParameter(const std::string & label,
+      const std::string & value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id,
+// std::string GetStringParameter(const Integer id,
 //       const Integer index) const
 //------------------------------------------------------------------------------
 /**
@@ -416,14 +416,14 @@ bool GroundStation::SetStringParameter(const wxString & label,
  * @return The parameter
  */
 //------------------------------------------------------------------------------
-wxString GroundStation::GetStringParameter(const Integer id,
+std::string GroundStation::GetStringParameter(const Integer id,
       const Integer index) const
 {
-//   MessageInterface::PopupMessage(Gmat::WARNING_, wxT("GroundStation::GetStringParameter(id, index)"));
+//   MessageInterface::PopupMessage(Gmat::WARNING_, "GroundStation::GetStringParameter(id, index)");
    if (index < 0)
    {
       AssetException ex;
-      ex.SetDetails(wxT("The index %d is out-of-range for field \"%s\""), index,
+      ex.SetDetails("The index %d is out-of-range for field \"%s\"", index,
                     GetParameterText(id).c_str());
       throw ex;
    }
@@ -436,7 +436,7 @@ wxString GroundStation::GetStringParameter(const Integer id,
             if ((0 <= index)&&(index < (Integer)hardwareNames.size()))
 			   return hardwareNames[index];
 			else
-			   return wxT("");
+			   return "";
 		 }
       default:
          break;      // intentional drop through
@@ -446,7 +446,7 @@ wxString GroundStation::GetStringParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString & label,
+// std::string GetStringParameter(const std::string & label,
 //       const Integer index) const
 //------------------------------------------------------------------------------
 /**
@@ -457,30 +457,30 @@ wxString GroundStation::GetStringParameter(const Integer id,
  * @return The parameter
  */
 //------------------------------------------------------------------------------
-wxString GroundStation::GetStringParameter(const wxString & label,
+std::string GroundStation::GetStringParameter(const std::string & label,
       const Integer index) const
 {
    return GetStringParameter(GetParameterID(label), index);
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString & label,
-//       const wxString & value, const Integer index)
+// bool SetStringParameter(const std::string & label,
+//       const std::string & value, const Integer index)
 //------------------------------------------------------------------------------
 /**
  * This method calls the base class method.  It is provided for overload
  * compatibility.  See the base class description for a full description.
  */
 //------------------------------------------------------------------------------
-bool GroundStation::SetStringParameter(const wxString & label,
-      const wxString & value, const Integer index)
+bool GroundStation::SetStringParameter(const std::string & label,
+      const std::string & value, const Integer index)
 {
    return SetStringParameter(GetParameterID(label), value, index);
 }
 
 //------------------------------------------------------------------------------
 // bool SetStringParameter(const Integer id,
-//       const wxString & value, const Integer index)
+//       const std::string & value, const Integer index)
 //------------------------------------------------------------------------------
 /**
  * Sets a specific string in a StringArray
@@ -499,12 +499,12 @@ bool GroundStation::SetStringParameter(const wxString & label,
  */
 //------------------------------------------------------------------------------
 bool GroundStation::SetStringParameter(const Integer id,
-      const wxString & value, const Integer index)
+      const std::string & value, const Integer index)
 {
    if (index < 0)
    {
       AssetException ex;
-      ex.SetDetails(wxT("The index %d is out-of-range for field \"%s\""), index,
+      ex.SetDetails("The index %d is out-of-range for field \"%s\"", index,
                     GetParameterText(id).c_str());
       throw ex;
    }
@@ -550,7 +550,7 @@ const StringArray& GroundStation::GetStringArrayParameter(const Integer id) cons
 
 
 //------------------------------------------------------------------------------
-// const StringArray& GetStringArrayParameter(const wxString &label) const
+// const StringArray& GetStringArrayParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Accesses StringArray parameters.
@@ -562,7 +562,7 @@ const StringArray& GroundStation::GetStringArrayParameter(const Integer id) cons
  */
 //------------------------------------------------------------------------------
 const StringArray& GroundStation::GetStringArrayParameter(
-      const wxString &label) const
+      const std::string &label) const
 {
    return GetStringArrayParameter(GetParameterID(label));
 }
@@ -570,11 +570,11 @@ const StringArray& GroundStation::GetStringArrayParameter(
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool GroundStation::RenameRefObject(const Gmat::ObjectType type,
-                                 const wxString &oldName,
-                                 const wxString &newName)
+                                 const std::string &oldName,
+                                 const std::string &newName)
 {
    if (type == Gmat::HARDWARE)
    {
@@ -611,7 +611,7 @@ const StringArray&
 GroundStation::GetRefObjectNameArray(const Gmat::ObjectType type)
 {
    #ifdef DEBUG_INIT
-      MessageInterface::ShowMessage(wxT("GroundStation::GetRefObjectNameArray(%d)"),
+      MessageInterface::ShowMessage("GroundStation::GetRefObjectNameArray(%d)",
             type);
    #endif
 
@@ -636,9 +636,9 @@ GroundStation::GetRefObjectNameArray(const Gmat::ObjectType type)
       retval.push_back(baseNames[i]);
 
    #ifdef DEBUG_INIT
-      MessageInterface::ShowMessage(wxT("Groundstation Ref Object Name Array:\n"));
+      MessageInterface::ShowMessage("Groundstation Ref Object Name Array:\n");
       for (UnsignedInt i = 0; i < retval.size(); ++i)
-         MessageInterface::ShowMessage(wxT("   %s\n"), retval[i].c_str());
+         MessageInterface::ShowMessage("   %s\n", retval[i].c_str());
    #endif
 
    return retval;
@@ -647,7 +647,7 @@ GroundStation::GetRefObjectNameArray(const Gmat::ObjectType type)
 
 //------------------------------------------------------------------------------
 // GmatBase* GroundStation::GetRefObject(const Gmat::ObjectType type,
-//                                     const wxString &name)
+//                                     const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Gets the referenced object specified by type and its name.
@@ -659,7 +659,7 @@ GroundStation::GetRefObjectNameArray(const Gmat::ObjectType type)
  */
 //------------------------------------------------------------------------------
 GmatBase* GroundStation::GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name)
+                                     const std::string &name)
 {
    switch (type)
    {
@@ -681,7 +681,7 @@ GmatBase* GroundStation::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // bool GroundStation::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                                     const wxString &name = wxT(""))
+//                                     const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Sets the referenced object to a given object specified by type and its name.
@@ -694,11 +694,11 @@ GmatBase* GroundStation::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool GroundStation::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name)
+                                     const std::string &name)
 {
    #ifdef DEBUG_INIT
-      MessageInterface::ShowMessage(wxT("GroundStation::SetRefObject(obj, ")
-            wxT("type, name):  obj.name = %s  type = %d  name = %s\n"),
+      MessageInterface::ShowMessage("GroundStation::SetRefObject(obj, "
+            "type, name):  obj.name = %s  type = %d  name = %s\n",
             obj->GetName().c_str(), type, name.c_str());
    #endif
 
@@ -747,9 +747,9 @@ ObjectArray& GroundStation::GetRefObjectArray(const Gmat::ObjectType type)
 }
 
 
-ObjectArray& GroundStation::GetRefObjectArray(const wxString& typeString)
+ObjectArray& GroundStation::GetRefObjectArray(const std::string& typeString)
 {
-	if (typeString == wxT("Hardware"))
+	if (typeString == "Hardware")
 	{
 		return hardwareList;
 	}
@@ -800,7 +800,7 @@ const ObjectTypeArray& GroundStation::GetRefObjectTypeArray()
 bool GroundStation::VerifyAddHardware()
 {
    Gmat::ObjectType type;
-   wxString subTypeName;
+   std::string subTypeName;
    GmatBase* obj;
 
    // 1. Verify all hardware in hardwareList are not NULL:
@@ -809,7 +809,7 @@ bool GroundStation::VerifyAddHardware()
 	   obj = (*i);
 	   if (obj == NULL)
 	   {
-		   MessageInterface::ShowMessage(wxT("***Error***:One element of hardwareList = NULL\n"));
+		   MessageInterface::ShowMessage("***Error***:One element of hardwareList = NULL\n");
 		   return false;
 	   }
    }
@@ -822,14 +822,14 @@ bool GroundStation::VerifyAddHardware()
    {
 	  obj = (*i);
       subTypeName = obj->GetTypeName();
-	  if (subTypeName == wxT("Antenna"))
+	  if (subTypeName == "Antenna")
 		 antennaList.push_back(obj);
    }
 
    // 2.2. Verify primary antenna of Receiver, Transmitter, and Transponder:
    GmatBase* antenna;
    GmatBase* primaryAntenna;
-   wxString primaryAntennaName;
+   std::string primaryAntennaName;
    bool verify = true;
    for(ObjectArray::iterator i= hardwareList.begin(); i != hardwareList.end(); ++i)
    {
@@ -838,9 +838,9 @@ bool GroundStation::VerifyAddHardware()
 	  if (type == Gmat::HARDWARE)
 	  {
          subTypeName = obj->GetTypeName();
-         if ((subTypeName == wxT("Transmitter"))||
-        	 (subTypeName == wxT("Receiver"))||
-        	 (subTypeName == wxT("Transponder")))
+         if ((subTypeName == "Transmitter")||
+        	 (subTypeName == "Receiver")||
+        	 (subTypeName == "Transponder"))
          {
     		 // Get primary antenna:
     		 primaryAntennaName = obj->GetRefObjectName(Gmat::HARDWARE);
@@ -849,7 +849,7 @@ bool GroundStation::VerifyAddHardware()
     		 bool check;
     		 if (primaryAntenna == NULL)
     		 {
-    			 MessageInterface::ShowMessage(wxT("***Error***:primary antenna of %s in %s's AddHardware list is NULL \n"),obj->GetName().c_str(), this->GetName().c_str());
+    			 MessageInterface::ShowMessage("***Error***:primary antenna of %s in %s's AddHardware list is NULL \n",obj->GetName().c_str(), this->GetName().c_str());
     			 check = false;
     		 }
     		 else
@@ -866,13 +866,13 @@ bool GroundStation::VerifyAddHardware()
     				 }
     				 else if (antenna->GetName() == primaryAntenna->GetName())
     				 {
-    					 MessageInterface::ShowMessage(wxT("Primary antenna %s of %s is a clone of an antenna in %s's AddHardware\n"),primaryAntenna->GetName().c_str(), obj->GetName().c_str(), this->GetName().c_str());
+    					 MessageInterface::ShowMessage("Primary antenna %s of %s is a clone of an antenna in %s's AddHardware\n",primaryAntenna->GetName().c_str(), obj->GetName().c_str(), this->GetName().c_str());
     				 }
     			 }
             	 if (check == false)
             	 {
             		 // Display error message:
-            		 MessageInterface::ShowMessage(wxT("***Error***:primary antenna of %s is not in %s's AddHardware\n"), obj->GetName().c_str(), this->GetName().c_str());
+            		 MessageInterface::ShowMessage("***Error***:primary antenna of %s is not in %s's AddHardware\n", obj->GetName().c_str(), this->GetName().c_str());
             	 }
 
         	 }
@@ -893,7 +893,7 @@ bool GroundStation::VerifyAddHardware()
 bool GroundStation::Initialize()
 {
    #ifdef DEBUG_INIT
-      MessageInterface::ShowMessage(wxT("GroundStation::Initializing %s\n"), instanceName.c_str());
+      MessageInterface::ShowMessage("GroundStation::Initializing %s\n", instanceName.c_str());
    #endif
 
    // Call the parent class to initialize its data
@@ -901,16 +901,16 @@ bool GroundStation::Initialize()
 
    // Initialize hardware data
    #ifdef DEBUG_HARDWARE
-      MessageInterface::ShowMessage(wxT("Hardware list names:\n"));
+      MessageInterface::ShowMessage("Hardware list names:\n");
       for (UnsignedInt i = 0; i < hardwareNames.size(); ++i)
       {
-         MessageInterface::ShowMessage(wxT("   %s\n"), hardwareNames[i].c_str());
+         MessageInterface::ShowMessage("   %s\n", hardwareNames[i].c_str());
       }
 
-      MessageInterface::ShowMessage(wxT("Hardware list objects:\n"));
+      MessageInterface::ShowMessage("Hardware list objects:\n");
       for (UnsignedInt i = 0; i < hardwareList.size(); ++i)
       {
-         MessageInterface::ShowMessage(wxT("   %s\n"), hardwareList[i]->GetName().c_str());
+         MessageInterface::ShowMessage("   %s\n", hardwareList[i]->GetName().c_str());
       }
    #endif
 
@@ -926,7 +926,7 @@ bool GroundStation::Initialize()
          for (UnsignedInt j = 0; j < refs.size(); ++j)
          {
             #ifdef DEBUG_HARDWARE
-               MessageInterface::ShowMessage(wxT("Connecting up %s for %s\n"),
+               MessageInterface::ShowMessage("Connecting up %s for %s\n",
                      refs[j].c_str(), current->GetName().c_str());
             #endif
 
@@ -981,7 +981,7 @@ Real* GroundStation::GetEstimationParameterValue(const Integer item)
 }
 
 //------------------------------------------------------------------------------
-// bool  IsValidID(const wxString &id)
+// bool  IsValidID(const std::string &id)
 //------------------------------------------------------------------------------
 /**
  * Checks to see if the input string represents a valid station ID.
@@ -997,7 +997,7 @@ Real* GroundStation::GetEstimationParameterValue(const Integer item)
  * @return true if input is a valid ID; false otherwise.
  */
 //------------------------------------------------------------------------------
-bool GroundStation::IsValidID(const wxString &id)
+bool GroundStation::IsValidID(const std::string &id)
 {
    // first character must be a letter
    if (!isalpha(id[0]))  return false;
@@ -1005,14 +1005,14 @@ bool GroundStation::IsValidID(const wxString &id)
    // each character must be a letter, an integer, a dash, or an underscore
    unsigned int sz = id.size();
    for (unsigned int ii = 0; ii < sz; ii++)
-      if (!isalnum(id[ii]) && id[ii] != wxT('-') && id[ii] != wxT('_')) return false;
+      if (!isalnum(id[ii]) && id[ii] != '-' && id[ii] != '_') return false;
 
    return true;
 }
 
 //------------------------------------------------------------------------------
-// const wxString&  GetGeneratingString(Gmat::WriteMode mode,
-//                const wxString &prefix, const wxString &useName)
+// const std::string&  GetGeneratingString(Gmat::WriteMode mode,
+//                const std::string &prefix, const std::string &useName)
 //------------------------------------------------------------------------------
 /**
  * Produces a string, containing the text that produces a GroundStation object.
@@ -1027,15 +1027,14 @@ bool GroundStation::IsValidID(const wxString &id)
  * @return A string containing the text.
  */
 //------------------------------------------------------------------------------
-const wxString& GroundStation::GetGeneratingString(Gmat::WriteMode mode,
-                        const wxString &prefix, const wxString &useName)
+const std::string& GroundStation::GetGeneratingString(Gmat::WriteMode mode,
+                        const std::string &prefix, const std::string &useName)
 {
-   wxString data;
+   std::stringstream data;
 
    // Crank up data precision so we don't lose anything
-   // data.precision(GetDataPrecision());
-   // TODO: fix this with wxString::Printf
-   wxString preface = _(""), nomme;
+   data.precision(GetDataPrecision());
+   std::string preface = "", nomme;
 
    if ((mode == Gmat::SCRIPTING) || (mode == Gmat::OWNED_OBJECT) ||
        (mode == Gmat::SHOW_SCRIPT))
@@ -1043,35 +1042,35 @@ const wxString& GroundStation::GetGeneratingString(Gmat::WriteMode mode,
    if (mode == Gmat::MATLAB_STRUCT || mode == Gmat::EPHEM_HEADER)
       inMatlabMode = true;
 
-   if (useName != wxT(""))
+   if (useName != "")
       nomme = useName;
    else
       nomme = instanceName;
 
    if ((mode == Gmat::SCRIPTING) || (mode == Gmat::SHOW_SCRIPT))
    {
-      wxString tname = typeName;
-      data << wxT("Create ") << tname << wxT(" ") << nomme << wxT(";\n");
-      preface = wxT("GMAT ");
+      std::string tname = typeName;
+      data << "Create " << tname << " " << nomme << ";\n";
+      preface = "GMAT ";
    }
    else if (mode == Gmat::EPHEM_HEADER)
    {
-      data << typeName << wxT(" = ") << wxT("'") << nomme << wxT("';\n");
-      preface = wxT("");
+      data << typeName << " = " << "'" << nomme << "';\n";
+      preface = "";
    }
 
-   nomme += wxT(".");
+   nomme += ".";
 
    if (mode == Gmat::OWNED_OBJECT)
    {
       preface = prefix;
-      nomme = wxT("");
+      nomme = "";
    }
 
    preface += nomme;
    WriteParameters(mode, preface, data);
 
-   generatingString = data;
+   generatingString = data.str();
 
    // Then call the parent class method for preface and inline comments
    return BodyFixedPoint::GetGeneratingString(mode, prefix, useName);
@@ -1079,7 +1078,7 @@ const wxString& GroundStation::GetGeneratingString(Gmat::WriteMode mode,
 
 
 //------------------------------------------------------------------------------
-// void WriteParameters(wxString &prefix, GmatBase *obj)
+// void WriteParameters(std::string &prefix, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Code that writes the parameter details for an object.
@@ -1088,14 +1087,13 @@ const wxString& GroundStation::GetGeneratingString(Gmat::WriteMode mode,
  * @param obj The object that is written.
  */
 //------------------------------------------------------------------------------
-void GroundStation::WriteParameters(Gmat::WriteMode mode, wxString &prefix,
-                                 wxString &stream)
+void GroundStation::WriteParameters(Gmat::WriteMode mode, std::string &prefix,
+                                 std::stringstream &stream)
 {
    Integer i;
    Gmat::ParameterType parmType;
-   wxString value;
-   //value.precision(GetDataPrecision());
-   //TODO: Fix this with wxString::Printf
+   std::stringstream value;
+   value.precision(GetDataPrecision());
 
    for (i = 0; i < parameterCount; ++i)
    {
@@ -1110,18 +1108,18 @@ void GroundStation::WriteParameters(Gmat::WriteMode mode, wxString &prefix,
              (parmType != Gmat::UNKNOWN_PARAMETER_TYPE) )
          {
             // Fill in the l.h.s.
-            value = wxT("");
+            value.str("");
             WriteParameterValue(i, value);
-            if (value != wxT(""))
+            if (value.str() != "")
             {
                if ((i >= LOCATION_1) && (i <= LOCATION_3))
                {
                   stream << prefix << GetStringParameter(i+3)
-                         << wxT(" = ") << value << wxT(";\n");
+                         << " = " << value.str() << ";\n";
                }
                else
                   stream << prefix << GetParameterText(i)
-                         << wxT(" = ") << value << wxT(";\n");
+                         << " = " << value.str() << ";\n";
             }
          }
       }

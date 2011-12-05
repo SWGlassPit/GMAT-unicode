@@ -26,7 +26,7 @@
 class GMAT_API DegToRad : public MathFunction
 {
 public:
-   DegToRad(const wxString &nomme);
+   DegToRad(const std::string &nomme);
    virtual ~DegToRad();
    DegToRad(const DegToRad &copy);
                  

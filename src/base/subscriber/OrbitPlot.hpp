@@ -29,7 +29,7 @@
 class GMAT_API OrbitPlot : public Subscriber
 {
 public:
-   OrbitPlot(const wxString &type, const wxString &name);
+   OrbitPlot(const std::string &type, const std::string &name);
    OrbitPlot(const OrbitPlot &op);
    OrbitPlot& operator=(const OrbitPlot&);
    virtual ~OrbitPlot();
@@ -38,11 +38,11 @@ public:
    const StringArray&   GetSpacecraftList();
    const StringArray&   GetNonSpacecraftList();
    
-   UnsignedInt          GetColor(const wxString &item, const wxString &objName);
-   bool                 SetColor(const wxString &item, const wxString &objName,
+   UnsignedInt          GetColor(const std::string &item, const std::string &objName);
+   bool                 SetColor(const std::string &item, const std::string &objName,
                                  UnsignedInt value);
-   bool                 GetShowObject(const wxString &name);
-   void                 SetShowObject(const wxString &name, bool value);
+   bool                 GetShowObject(const std::string &name);
+   void                 SetShowObject(const std::string &name, bool value);
    
    // methods inherited from Subscriber
    virtual void         Activate(bool state = true);
@@ -54,39 +54,39 @@ public:
    virtual GmatBase*    Clone() const;
    virtual void         Copy(const GmatBase* orig);
    
-   virtual bool         SetName(const wxString &who,
-                                const wxString &oldName = wxT(""));
+   virtual bool         SetName(const std::string &who,
+                                const std::string &oldName = "");
    
-   virtual bool         TakeAction(const wxString &action,  
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,  
+                                   const std::string &actionData = "");
    
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
    // methods for parameters
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    
    virtual Integer      GetIntegerParameter(const Integer id) const;
    virtual Integer      SetIntegerParameter(const Integer id, const Integer value);
-   virtual Integer      GetIntegerParameter(const wxString &label) const;
-   virtual Integer      SetIntegerParameter(const wxString &label,
+   virtual Integer      GetIntegerParameter(const std::string &label) const;
+   virtual Integer      SetIntegerParameter(const std::string &label,
                                             const Integer value);
    
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual bool         SetStringParameter(const Integer id, const wxString &value);
-   virtual wxString  GetStringParameter(const wxString &label) const;
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual bool         SetStringParameter(const Integer id, const std::string &value);
+   virtual std::string  GetStringParameter(const std::string &label) const;
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
    
-   virtual bool         SetStringParameter(const Integer id, const wxString &value,
+   virtual bool         SetStringParameter(const Integer id, const std::string &value,
                                            const Integer index);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value,
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value,
                                            const Integer index);
    
    virtual UnsignedInt  SetUnsignedIntParameter(const Integer id,
@@ -99,22 +99,22 @@ public:
                         GetStringArrayParameter(const Integer id) const;
    
    virtual bool         GetBooleanParameter(const Integer id) const;
-   virtual bool         GetBooleanParameter(const wxString &label) const;
+   virtual bool         GetBooleanParameter(const std::string &label) const;
    virtual bool         SetBooleanParameter(const Integer id,
                                             const bool value);
-   virtual bool         SetBooleanParameter(const wxString &label,
+   virtual bool         SetBooleanParameter(const std::string &label,
                                             const bool value);
    
    virtual const BooleanArray&
                         GetBooleanArrayParameter(const Integer id) const;
    virtual const BooleanArray&
-                        GetBooleanArrayParameter(const wxString &label) const;
+                        GetBooleanArrayParameter(const std::string &label) const;
    virtual bool         SetBooleanArrayParameter(const Integer id,
                                                  const BooleanArray &valueArray);
-   virtual bool         SetBooleanArrayParameter(const wxString &label,
+   virtual bool         SetBooleanArrayParameter(const std::string &label,
                                                  const BooleanArray &valueArray);
    
-   virtual wxString  GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual std::string  GetRefObjectName(const Gmat::ObjectType type) const;
    virtual bool         HasRefObjectTypeArray();
    virtual const ObjectTypeArray&
                         GetRefObjectTypeArray();
@@ -122,9 +122,9 @@ public:
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                  const wxString &name);
+                                  const std::string &name);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    
    // for GUI population
    virtual Gmat::ObjectType
@@ -134,8 +134,8 @@ protected:
    
    CoordinateSystem *mViewCoordSystem;
    
-   wxString mOldName;
-   wxString mViewCoordSysName;
+   std::string mOldName;
+   std::string mViewCoordSysName;
    
    // object names and arrays
    std::vector<SpacePoint*> mObjectArray;
@@ -188,10 +188,10 @@ protected:
    std::vector<RealArray> mCurrVzArray;
    
    // maps for object and color
-   std::map<wxString, UnsignedInt> mOrbitColorMap;
-   std::map<wxString, UnsignedInt> mTargetColorMap;
-   std::map<wxString, bool> mDrawOrbitMap;
-   std::map<wxString, bool> mShowObjectMap;
+   std::map<std::string, UnsignedInt> mOrbitColorMap;
+   std::map<std::string, UnsignedInt> mTargetColorMap;
+   std::map<std::string, bool> mDrawOrbitMap;
+   std::map<std::string, bool> mShowObjectMap;
    
    /// Calls PlotInterface for plotting non-solver data  
    virtual bool         UpdateData(const Real *dat, Integer len);
@@ -203,15 +203,15 @@ protected:
    virtual Integer      BufferOrbitData(const Real *dat, Integer len);
    
    /// Adds Spacecraft and other objects to object arrays and color maps
-   bool                 AddSpacePoint(const wxString &name, Integer index,
+   bool                 AddSpacePoint(const std::string &name, Integer index,
                                       bool show = true);
-   /// Clears all object arrays and color maps, called from TakeAction(wxT("Clear"))
+   /// Clears all object arrays and color maps, called from TakeAction("Clear")
    bool                 ClearSpacePointList();
-   /// Removes SpacePoint object from the object and color array, called from TakeAction(wxT("Remove"))
-   bool                 RemoveSpacePoint(const wxString &name);
+   /// Removes SpacePoint object from the object and color array, called from TakeAction("Remove")
+   bool                 RemoveSpacePoint(const std::string &name);
    /// Finds the index of the element label from the element label array.
    Integer              FindIndexOfElement(StringArray &labelArray,
-                                           const wxString &label);
+                                           const std::string &label);
    /// Builds dynamic arrays to pass to plotting canvas
    void                 BuildDynamicArrays();
    /// Clears dynamic arrays such as object name array, color array, etc.
@@ -235,7 +235,7 @@ protected:
    
    static const Gmat::ParameterType
       PARAMETER_TYPE[OrbitPlotParamCount - SubscriberParamCount];
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[OrbitPlotParamCount - SubscriberParamCount];
    
    const static int MAX_SP_COLOR = 15;

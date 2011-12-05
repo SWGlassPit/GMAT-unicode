@@ -72,8 +72,8 @@
  * @param order Order of the expansion used for the integrator
  */
 //------------------------------------------------------------------------------
-RungeKutta::RungeKutta(Integer st, Integer order, const wxString &typeStr,
-                                           const wxString &nomme) :
+RungeKutta::RungeKutta(Integer st, Integer order, const std::string &typeStr,
+                                           const std::string &nomme) :
     Integrator      (typeStr, nomme),
     stages          (st),
     ki              (NULL),
@@ -277,7 +277,7 @@ bool RungeKutta::Initialize()
 bool RungeKutta::Step()
 {
     #ifdef DEBUG_PROPAGATOR_FLOW
-       MessageInterface::ShowMessage(wxT("."));
+       MessageInterface::ShowMessage(".");
     #endif
 
     // Force epoch updates at every step (a test, but left in place in case
@@ -286,7 +286,7 @@ bool RungeKutta::Step()
 
     if (!initialized)
     {
-       MessageInterface::ShowMessage(wxT("RK not initialized\n"));
+       MessageInterface::ShowMessage("RK not initialized\n");
        return false;
     }
 
@@ -319,7 +319,7 @@ bool RungeKutta::Step()
 
         if (stepAttempts >= maxStepAttempts)
         {
-           MessageInterface::ShowMessage(wxT("%d step attempts taken; max is %d\n"),
+           MessageInterface::ShowMessage("%d step attempts taken; max is %d\n",
                  stepAttempts, maxStepAttempts);
            return false;
         }
@@ -339,7 +339,7 @@ bool RungeKutta::Step()
 bool RungeKutta::RawStep()
 {
    #ifdef DEBUG_PROPAGATOR_FLOW
-      MessageInterface::ShowMessage(wxT("*"));
+      MessageInterface::ShowMessage("*");
    #endif
 
    Integer i, j, k;
@@ -350,10 +350,10 @@ bool RungeKutta::RawStep()
       memcpy(inState, physicalModel->GetState(), sizeof(Real) * dimension);
 
    #ifdef DEBUG_RAW_STEP_STATE
-      MessageInterface::ShowMessage(wxT("inState: ["));
+      MessageInterface::ShowMessage("inState: [");
       for (Integer q = 0; q < dimension-1; ++q)
-        MessageInterface::ShowMessage(wxT("%le, "), inState[q]);
-      MessageInterface::ShowMessage(wxT("%le]\n"), inState[dimension-1]);
+        MessageInterface::ShowMessage("%le, ", inState[q]);
+      MessageInterface::ShowMessage("%le]\n", inState[dimension-1]);
    #endif
 
    // Calculate the stages
@@ -362,14 +362,14 @@ bool RungeKutta::RawStep()
       memcpy(stageState, inState, sizeof(Real) * dimension);
 
       #ifdef DEBUG_RAW_STEP_STATE
-         MessageInterface::ShowMessage(wxT("inState[%d]: ["), i);
+         MessageInterface::ShowMessage("inState[%d]: [", i);
          for (Integer q = 0; q < dimension-1; ++q)
-                MessageInterface::ShowMessage(wxT("%le, "), inState[q]);
-         MessageInterface::ShowMessage(wxT("%le]\n"), inState[dimension-1]);
-         MessageInterface::ShowMessage(wxT("stageState: ["));
+                MessageInterface::ShowMessage("%le, ", inState[q]);
+         MessageInterface::ShowMessage("%le]\n", inState[dimension-1]);
+         MessageInterface::ShowMessage("stageState: [");
          for (Integer q = 0; q < dimension-1; ++q)
-                MessageInterface::ShowMessage(wxT("%le, "), stageState[q]);
-         MessageInterface::ShowMessage(wxT("%le]\n"), stageState[dimension-1]);
+                MessageInterface::ShowMessage("%le, ", stageState[q]);
+         MessageInterface::ShowMessage("%le]\n", stageState[dimension-1]);
       #endif
 
       // Built the accumulated state if this is not the initial step
@@ -388,14 +388,14 @@ bool RungeKutta::RawStep()
       }
 
       #ifdef DEBUG_RAW_STEP_STATE
-         MessageInterface::ShowMessage(wxT("ddt data: ["));
+         MessageInterface::ShowMessage("ddt data: [");
          for (Integer q = 0; q < dimension-1; ++q)
-                MessageInterface::ShowMessage(wxT("%le, "), ddt[q]);
-         MessageInterface::ShowMessage(wxT("%le]\n"), ddt[dimension-1]);
-         MessageInterface::ShowMessage(wxT("++ After GetDerivatives,  stageState: ["));
+                MessageInterface::ShowMessage("%le, ", ddt[q]);
+         MessageInterface::ShowMessage("%le]\n", ddt[dimension-1]);
+         MessageInterface::ShowMessage("++ After GetDerivatives,  stageState: [");
          for (Integer q = 0; q < dimension-1; ++q)
-            MessageInterface::ShowMessage(wxT("%le, "), stageState[q]);
-         MessageInterface::ShowMessage(wxT("%le]\n"), stageState[dimension-1]);
+            MessageInterface::ShowMessage("%le, ", stageState[q]);
+         MessageInterface::ShowMessage("%le]\n", stageState[dimension-1]);
       #endif
 
       for (j = 0; j < dimension; j++)
@@ -413,10 +413,10 @@ bool RungeKutta::RawStep()
    }
 
    #ifdef DEBUG_RAW_STEP_STATE
-      MessageInterface::ShowMessage(wxT("candidateState: ["));
+      MessageInterface::ShowMessage("candidateState: [");
       for (Integer q = 0; q < dimension-1; ++q)
-         MessageInterface::ShowMessage(wxT("%le, "), candidateState[q]);
-      MessageInterface::ShowMessage(wxT("%le]\n"), candidateState[dimension-1]);
+         MessageInterface::ShowMessage("%le, ", candidateState[q]);
+      MessageInterface::ShowMessage("%le]\n", candidateState[dimension-1]);
    #endif
 
 //   delete [] inState;
@@ -443,8 +443,8 @@ bool RungeKutta::Step(Real dt)
         if (attemptsTaken > maxStepAttempts)
         {
            MessageInterface::ShowMessage(
-              wxT("    Integrator attempted too many steps! (%d attempts ")
-              wxT("taken)\n"), attemptsTaken);
+              "    Integrator attempted too many steps! (%d attempts "
+              "taken)\n", attemptsTaken);
            return false;
         }
         if (!Propagator::Step(timeleft))
@@ -535,17 +535,17 @@ bool RungeKutta::AdaptStep(Real maxerror)
         {
            if (stopIfAccuracyViolated)
            {
-              throw PropagatorException(typeSource + wxT(": Accuracy settings will ")
-                    wxT("be violated with current step size values.\n"));
+              throw PropagatorException(typeSource + ": Accuracy settings will "
+                    "be violated with current step size values.\n");
            }
            else
            {
               if (!accuracyWarningTriggered) // so only write the warning once per propagation command
               {
                  accuracyWarningTriggered = true;
-                 MessageInterface::ShowMessage(wxT("**** Warning **** %s: Accuracy ")
-                       wxT("settings will be violated with current step size ")
-                       wxT("values.\n"), typeSource.c_str());
+                 MessageInterface::ShowMessage("**** Warning **** %s: Accuracy "
+                       "settings will be violated with current step size "
+                       "values.\n", typeSource.c_str());
               }
                // Do this if the step was at the minimum stepSize
               memcpy(outState, candidateState, dimension*sizeof(Real));

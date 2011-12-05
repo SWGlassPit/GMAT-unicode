@@ -37,7 +37,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// VelApoapsis(const wxString &name, GmatBase *obj)
+// VelApoapsis(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -46,13 +46,13 @@
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-VelApoapsis::VelApoapsis(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("VelApoapsis"), obj, wxT("Velocity at Apoapsis"), wxT("Km/s"),
+VelApoapsis::VelApoapsis(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "VelApoapsis", obj, "Velocity at Apoapsis", "Km/s",
                GmatParam::ORIGIN)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
 }
 
 
@@ -158,7 +158,7 @@ GmatBase* VelApoapsis::Clone(void) const
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// VelPeriapsis(const wxString &name, GmatBase *obj)
+// VelPeriapsis(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -167,13 +167,13 @@ GmatBase* VelApoapsis::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-VelPeriapsis::VelPeriapsis(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("VelPeriapsis"), obj, wxT("Velocity at Periapsis"), wxT("Km/s"),
+VelPeriapsis::VelPeriapsis(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "VelPeriapsis", obj, "Velocity at Periapsis", "Km/s",
                GmatParam::ORIGIN)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
 }
 
 
@@ -280,7 +280,7 @@ GmatBase* VelPeriapsis::Clone(void) const
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// Apoapsis(const wxString &name, GmatBase *obj)
+// Apoapsis(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -289,12 +289,12 @@ GmatBase* VelPeriapsis::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-Apoapsis::Apoapsis(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("Apoapsis"), obj, wxT("Apoapsis"), wxT(" "), GmatParam::ORIGIN)
+Apoapsis::Apoapsis(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "Apoapsis", obj, "Apoapsis", " ", GmatParam::ORIGIN)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
    mIsPlottable = false;
 }
 
@@ -380,7 +380,7 @@ bool Apoapsis::Evaluate()
    if (mRealValue == 0.0)
       mRealValue = -1.0e-40;
    
-   //MessageInterface::ShowMessage(wxT("Apoapsis::Evaluate() r=%f,%f,%f, v=%f,%f,%f, r.v=%f\n"),
+   //MessageInterface::ShowMessage("Apoapsis::Evaluate() r=%f,%f,%f, v=%f,%f,%f, r.v=%f\n",
    //                              R[0], R[1], R[2], V[0], V[1], V[2], rdotv);
    return true;
 }
@@ -416,7 +416,7 @@ GmatBase* Apoapsis::Clone(void) const
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// Periapsis(const wxString &name, GmatBase *obj)
+// Periapsis(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
 * Constructor.
@@ -425,12 +425,12 @@ GmatBase* Apoapsis::Clone(void) const
 * @param <obj> reference object pointer
 */
 //------------------------------------------------------------------------------
-Periapsis::Periapsis(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("Periapsis"), obj, wxT("Periapsis"), wxT(" "), GmatParam::ORIGIN)
+Periapsis::Periapsis(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "Periapsis", obj, "Periapsis", " ", GmatParam::ORIGIN)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
    mIsPlottable = false;
 }
 
@@ -478,7 +478,7 @@ Periapsis::operator=(const Periapsis &right)
 //------------------------------------------------------------------------------
 Periapsis::~Periapsis()
 {
-   //MessageInterface::ShowMessage(wxT("==> Periapsis::~Periapsis()\n"));
+   //MessageInterface::ShowMessage("==> Periapsis::~Periapsis()\n");
 }
 
 //-------------------------------------
@@ -502,7 +502,7 @@ bool Periapsis::Evaluate()
    Rvector6 cartState = OrbitData::GetRelativeCartState(mOrigin);
    
    //MessageInterface::ShowMessage
-   //   (wxT("===> Periapsis::Evaluate() mOrigin=%s, cartState=%s\n"),
+   //   ("===> Periapsis::Evaluate() mOrigin=%s, cartState=%s\n",
    //    mOrigin->GetName().c_str(), cartState.ToString().c_str());
    
    if (cartState == Rvector6::RVECTOR6_UNDEFINED)
@@ -557,7 +557,7 @@ GmatBase* Periapsis::Clone(void) const
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// OrbitPeriod(const wxString &name, GmatBase *obj)
+// OrbitPeriod(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
 * Constructor.
@@ -566,12 +566,12 @@ GmatBase* Periapsis::Clone(void) const
 * @param <obj> reference object pointer
 */
 //------------------------------------------------------------------------------
-OrbitPeriod::OrbitPeriod(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("OrbitPeriod"), obj, wxT("Orbit Period"), wxT("s"), GmatParam::ORIGIN)
+OrbitPeriod::OrbitPeriod(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "OrbitPeriod", obj, "Orbit Period", "s", GmatParam::ORIGIN)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
 }
 
 
@@ -674,7 +674,7 @@ GmatBase* OrbitPeriod::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// RadApoapsis(const wxString &name, GmatBase *obj)
+// RadApoapsis(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -683,13 +683,13 @@ GmatBase* OrbitPeriod::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-RadApoapsis::RadApoapsis(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("RadApo"), obj, wxT("Radius at Apoapsis"), wxT("Km"),
+RadApoapsis::RadApoapsis(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "RadApo", obj, "Radius at Apoapsis", "Km",
                GmatParam::ORIGIN, true)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
 }
 
 
@@ -792,7 +792,7 @@ GmatBase* RadApoapsis::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// RadPeriapsis(const wxString &name, GmatBase *obj)
+// RadPeriapsis(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -801,13 +801,13 @@ GmatBase* RadApoapsis::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-RadPeriapsis::RadPeriapsis(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("RadPer"), obj, wxT("Radius at Periapsis"), wxT("Km"),
+RadPeriapsis::RadPeriapsis(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "RadPer", obj, "Radius at Periapsis", "Km",
                GmatParam::ORIGIN, true)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
 }
 
 
@@ -910,7 +910,7 @@ GmatBase* RadPeriapsis::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// C3Energy(const wxString &name, GmatBase *obj)
+// C3Energy(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -919,12 +919,12 @@ GmatBase* RadPeriapsis::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-C3Energy::C3Energy(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("C3Energy"), obj, wxT("C-3 Energy"), wxT("Km^2/s^2"), GmatParam::ORIGIN)
+C3Energy::C3Energy(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "C3Energy", obj, "C-3 Energy", "Km^2/s^2", GmatParam::ORIGIN)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
 }
 
 
@@ -1027,7 +1027,7 @@ GmatBase* C3Energy::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// Energy(const wxString &name, GmatBase *obj)
+// Energy(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -1036,12 +1036,12 @@ GmatBase* C3Energy::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-Energy::Energy(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("Energy"), obj, wxT("Energy"), wxT("Km^2/s^2"), GmatParam::ORIGIN)
+Energy::Energy(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "Energy", obj, "Energy", "Km^2/s^2", GmatParam::ORIGIN)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth"));
-   SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth");
+   SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
 }
 
 

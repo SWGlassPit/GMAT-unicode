@@ -28,30 +28,30 @@ class GMAT_API StringTokenizer
 {
 public:
    StringTokenizer();
-   StringTokenizer(const wxString &str, const wxString &delim);
-   StringTokenizer(const wxString &str, const wxString &delim,
+   StringTokenizer(const std::string &str, const std::string &delim);
+   StringTokenizer(const std::string &str, const std::string &delim,
                    bool insertDelim);
    ~StringTokenizer();
    
    // inline methods
-   void SetDelimiters(const wxString &delim) { delimiters = delim; }
-   wxString GetDelimiters() { return delimiters; }
+   void SetDelimiters(const std::string &delim) { delimiters = delim; }
+   std::string GetDelimiters() { return delimiters; }
    
    Integer CountTokens() const; 
-   wxString GetToken(const Integer loc) const;
+   std::string GetToken(const Integer loc) const;
    const StringArray& GetAllTokens() const;
    
-   void Set(const wxString &str, const wxString &delim);
-   void Set(const wxString &str, const wxString &delim, bool insertDelim);
+   void Set(const std::string &str, const std::string &delim);
+   void Set(const std::string &str, const std::string &delim, bool insertDelim);
    
 private:
    
    StringArray  stringTokens;
-   wxString  delimiters;
+   std::string  delimiters;
    Integer      countTokens;
    
-   void Parse(const wxString &str);
-   void Parse(const wxString &str, bool insertDelim);
+   void Parse(const std::string &str);
+   void Parse(const std::string &str, bool insertDelim);
    
 };
 

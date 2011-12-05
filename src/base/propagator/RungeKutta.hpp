@@ -122,7 +122,7 @@
  *  implementation provides a mechanism for specifying a maximum allowed step.
  *
  *  Sometimes it is convenient to request steps of a specified size, regardless
- *  of the stepsize control algorithm or the calculation of the wxT("best step")
+ *  of the stepsize control algorithm or the calculation of the "best step"
  *  described above.  This implementation accomplishes that task by taking
  *  multiple error controlled steps is necessary to step across the requested
  *  interval.
@@ -141,8 +141,8 @@
 class GMAT_API RungeKutta : public Integrator
 {
 public:
-    RungeKutta(Integer st, Integer order, const wxString &typeStr,
-                           const wxString &nomme = wxT(""));
+    RungeKutta(Integer st, Integer order, const std::string &typeStr,
+                           const std::string &nomme = "");
     virtual ~RungeKutta();
     RungeKutta(const RungeKutta&);
     RungeKutta & operator=(const RungeKutta&);

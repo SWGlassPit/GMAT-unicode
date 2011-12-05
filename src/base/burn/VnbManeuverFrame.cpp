@@ -100,14 +100,14 @@ VnbManeuverFrame& VnbManeuverFrame::operator=(const VnbManeuverFrame& vmf)
 void VnbManeuverFrame::CalculateBasis()
 {
    if (!position || !velocity)
-      throw BurnException(wxT("VNB frame undefined -- no position/velocity data."));
+      throw BurnException("VNB frame undefined -- no position/velocity data.");
         
    // "X" direction is towards velocity
    Real temp[3], mag;
    memcpy(temp, velocity, 3*sizeof(Real));
    mag = sqrt(temp[0]*temp[0] + temp[1]*temp[1] + temp[2]*temp[2]);
    if (mag == 0.0)
-      throw BurnException(wxT("VNB frame undefined for velocity = 0.0."));
+      throw BurnException("VNB frame undefined for velocity = 0.0.");
    basisMatrix[0][0] = temp[0] / mag;
    basisMatrix[1][0] = temp[1] / mag;
    basisMatrix[2][0] = temp[2] / mag;
@@ -118,7 +118,7 @@ void VnbManeuverFrame::CalculateBasis()
    temp[2] = position[0]*velocity[1] - position[1]*velocity[0];
    mag = sqrt(temp[0]*temp[0] + temp[1]*temp[1] + temp[2]*temp[2]);
    if (mag == 0.0)
-      throw BurnException(wxT("VNB frame undefined for |r x v| = 0.0."));
+      throw BurnException("VNB frame undefined for |r x v| = 0.0.");
    basisMatrix[0][1] = temp[0] / mag;
    basisMatrix[1][1] = temp[1] / mag;
    basisMatrix[2][1] = temp[2] / mag;
@@ -132,7 +132,7 @@ void VnbManeuverFrame::CalculateBasis()
              basisMatrix[1][0]*basisMatrix[0][1];
    mag = sqrt(temp[0]*temp[0] + temp[1]*temp[1] + temp[2]*temp[2]);
    if (mag == 0.0)
-      throw BurnException(wxT("VNB frame undefined for |v x n| = 0.0."));
+      throw BurnException("VNB frame undefined for |v x n| = 0.0.");
    basisMatrix[0][2] = temp[0] / mag;
    basisMatrix[1][2] = temp[1] / mag;
    basisMatrix[2][2] = temp[2] / mag;
@@ -140,7 +140,7 @@ void VnbManeuverFrame::CalculateBasis()
 
 
 //------------------------------------------------------------------------------
-//  wxString GetFrameLabel(Integer id)
+//  std::string GetFrameLabel(Integer id)
 //------------------------------------------------------------------------------
 /**
  * Gets the label for the maneuver frame principal axes.
@@ -150,18 +150,18 @@ void VnbManeuverFrame::CalculateBasis()
  * @return The label for the corresponding reference vector.
  */
 //------------------------------------------------------------------------------
-wxString VnbManeuverFrame::GetFrameLabel(Integer id)
+std::string VnbManeuverFrame::GetFrameLabel(Integer id)
 {
    switch (id)
    {
       case 1:
-         return wxT("V");
+         return "V";
       case 2:
-         return wxT("N");
+         return "N";
       case 3:
-         return wxT("B");
+         return "B";
       default:
          ;
    }
-   return wxT("Undefined");
+   return "Undefined";
 }

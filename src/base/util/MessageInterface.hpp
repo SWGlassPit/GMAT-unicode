@@ -38,21 +38,24 @@ public:
    static bool SetMessageReceiver(MessageReceiver *mr);
    static MessageReceiver* GetMessageReceiver();
 
-   static void ShowMessage(const wxString &format, ...);
+   static void ShowMessage(const std::string &msg);
+   static void ShowMessage(const char *format, ...);
 
-   static void PopupMessage(Gmat::MessageType msgType, const wxString &format, ...);
+   static void PopupMessage(Gmat::MessageType msgType, const std::string &msg);
+   static void PopupMessage(Gmat::MessageType msgType, const char *format, ...);
    
-   static wxString GetLogFileName();
+   static std::string GetLogFileName();
    static void SetLogEnable(bool flag);
-   static void SetLogPath(const wxString &pathname, bool append = false);
-   static void SetLogFile(const wxString &filename);
+   static void SetLogPath(const std::string &pathname, bool append = false);
+   static void SetLogFile(const std::string &filename);
 
-   static void LogMessage(const wxString &msg, ...);
+   static void LogMessage(const std::string &msg);
+   static void LogMessage(const char *msg, ...);
 
    static void ClearMessage();
    
-   static wxString GetQueuedMessage();
-   static void PutMessage(const wxString &msg);
+   static std::string GetQueuedMessage();
+   static void PutMessage(const std::string &msg);
    static void ClearMessageQueue();
    
 private:

@@ -33,7 +33,7 @@ class GMAT_API MOEEcAxes : public InertialAxes
 public:
 
    // default constructor
-   MOEEcAxes(const wxString &itsName = wxT(""));
+   MOEEcAxes(const std::string &itsName = "");
    // copy constructor
    MOEEcAxes(const MOEEcAxes &moe);
    // operator = for assignment
@@ -54,11 +54,11 @@ public:
 
    // Parameter access methods - overridden from GmatBase
    /* placeholder - may be needed later
-   virtual wxString     GetParameterText(const Integer id) const;     
-   virtual Integer         GetParameterID(const wxString &str) const; 
+   virtual std::string     GetParameterText(const Integer id) const;     
+   virtual Integer         GetParameterID(const std::string &str) const; 
    virtual Gmat::ParameterType
                            GetParameterType(const Integer id) const;
-   virtual wxString     GetParameterTypeString(const Integer id) const;
+   virtual std::string     GetParameterTypeString(const Integer id) const;
     */
    
 protected:
@@ -68,7 +68,7 @@ protected:
       MOEEcAxesParamCount = InertialAxesParamCount,
    };
    
-   //static const wxString PARAMETER_TEXT[MOEEcAxesParamCount - 
+   //static const std::string PARAMETER_TEXT[MOEEcAxesParamCount - 
    //                                        InertialAxesParamCount];
    
    //static const Gmat::ParameterType PARAMETER_TYPE[MOEEcAxesParamCount - 

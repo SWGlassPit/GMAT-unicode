@@ -24,19 +24,19 @@
 #include "EventException.hpp"
 
 //------------------------------------------------------------------------------
-// EventFunction(const wxString &typeStr)
+// EventFunction(const std::string &typeStr)
 //------------------------------------------------------------------------------
 /**
  * Default constructor
  */
 //------------------------------------------------------------------------------
-EventFunction::EventFunction(const wxString &typeStr) :
+EventFunction::EventFunction(const std::string &typeStr) :
    typeName          (typeStr),
-   instanceName      (wxT("Base EventFunction (Name not set)")),
+   instanceName      ("Base EventFunction (Name not set)"),
    eventData         (NULL),
    dataSize          (3),
    primary           (NULL),
-   boundaryType      (wxT("Undetermined")),
+   boundaryType      ("Undetermined"),
    isStart           (false)
 {
 }
@@ -114,7 +114,7 @@ EventFunction& EventFunction::operator=(const EventFunction& ef)
 
 
 //------------------------------------------------------------------------------
-// wxString GetTypeName()
+// std::string GetTypeName()
 //------------------------------------------------------------------------------
 /**
  * Retrieves the type name assigned to the event function.
@@ -125,14 +125,14 @@ EventFunction& EventFunction::operator=(const EventFunction& ef)
  * @return String name for the event type
  */
 //------------------------------------------------------------------------------
-wxString EventFunction::GetTypeName()
+std::string EventFunction::GetTypeName()
 {
    return typeName;
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetName()
+// std::string GetName()
 //------------------------------------------------------------------------------
 /**
  * Retrieves the instance specific string describing the event.
@@ -142,14 +142,14 @@ wxString EventFunction::GetTypeName()
  * @note This method is not currently used.
  */
 //------------------------------------------------------------------------------
-wxString EventFunction::GetName()
+std::string EventFunction::GetName()
 {
    return instanceName;
 }
 
-wxString EventFunction::GetPrimaryName()
+std::string EventFunction::GetPrimaryName()
 {
-   wxString retval = wxT("");
+   std::string retval = "";
 
    if (primary != NULL)
       retval = primary->GetName();
@@ -191,8 +191,8 @@ bool EventFunction::SetPrimary(SpaceObject *so)
 bool EventFunction::Initialize()
 {
    if (primary == NULL)
-      throw EventException(wxT("Unable to initialize the ") + typeName +
-            wxT(" EventFunction; the primary is not set."));
+      throw EventException("Unable to initialize the " + typeName +
+            " EventFunction; the primary is not set.");
 
    // (Re)allocate the data array
    if (eventData != NULL)
@@ -220,7 +220,7 @@ Real* EventFunction::GetData()
 
 
 //------------------------------------------------------------------------------
-// wxString EventFunction::GetBoundaryType()
+// std::string EventFunction::GetBoundaryType()
 //------------------------------------------------------------------------------
 /**
  * Retrieves a string describing the type of boundary encountered
@@ -228,13 +228,13 @@ Real* EventFunction::GetData()
  * @return The description, typically "Entry", "Exit", "Rise", or "Set"
  */
 //------------------------------------------------------------------------------
-wxString EventFunction::GetBoundaryType()
+std::string EventFunction::GetBoundaryType()
 {
    // Default: slope positive at entry
    if (eventData[2] > 0.0)
-      boundaryType = wxT("Entry");
+      boundaryType = "Entry";
    else
-      boundaryType = wxT("Exit");
+      boundaryType = "Exit";
 
    return boundaryType;
 }

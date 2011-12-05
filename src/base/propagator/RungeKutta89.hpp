@@ -50,7 +50,7 @@ class GMAT_API RungeKutta89 : public RungeKutta
 {
 public:
 //      RungeKutta89();
-    RungeKutta89(const wxString &nomme = wxT(""));
+    RungeKutta89(const std::string &nomme = "");
     virtual ~RungeKutta89();
 
     RungeKutta89(const RungeKutta89&);

@@ -22,8 +22,8 @@
 
 #include "HardwareException.hpp"
 
-HardwareException::HardwareException(wxString details) :
-    BaseException           (wxT("Hardware Exception Thrown: "), details)
+HardwareException::HardwareException(std::string details) :
+    BaseException           ("Hardware Exception Thrown: ", details)
 {}
 
 

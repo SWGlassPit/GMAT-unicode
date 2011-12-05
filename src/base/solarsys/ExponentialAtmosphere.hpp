@@ -56,7 +56,7 @@
 class GMAT_API ExponentialAtmosphere : public AtmosphereModel
 {
 public:
-   ExponentialAtmosphere(const wxString &name = wxT(""));
+   ExponentialAtmosphere(const std::string &name = "");
    virtual ~ExponentialAtmosphere();
    ExponentialAtmosphere(const ExponentialAtmosphere& atm);
    ExponentialAtmosphere&  operator=(const ExponentialAtmosphere& atm);
@@ -74,7 +74,7 @@ protected:
    Real                    *refDensity;
    /// Number of altitude bands used in the model.
    Integer                 altitudeBands;
-   /// Flag indicating if the altitude is wxT("at") a boundary
+   /// Flag indicating if the altitude is "at" a boundary
    bool                    smoothDensity;
     
    virtual void            SetConstants(void);

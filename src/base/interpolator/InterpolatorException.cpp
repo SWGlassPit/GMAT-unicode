@@ -19,8 +19,8 @@
 #include "InterpolatorException.hpp"
 
 // class constructor
-InterpolatorException::InterpolatorException(wxString details) :
-   BaseException(wxT("Interpolator Exception: "), details)
+InterpolatorException::InterpolatorException(std::string details) :
+   BaseException("Interpolator Exception: ", details)
 {
 }
 

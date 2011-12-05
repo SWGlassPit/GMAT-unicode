@@ -63,9 +63,9 @@ ArrayElementWrapper::ArrayElementWrapper() :
    array         (NULL),
    row           (NULL),
    column        (NULL),
-   arrayName     (wxT("")),
-   rowName       (wxT("")),
-   columnName    (wxT(""))
+   arrayName     (""),
+   rowName       (""),
+   columnName    ("")
 {
    wrapperType = Gmat::ARRAY_ELEMENT_WT;
 }
@@ -77,7 +77,7 @@ ArrayElementWrapper::ArrayElementWrapper() :
  * Constructs base ArrayElementWrapper structures used in derived classes, 
  * by copying the input instance (copy constructor).
  *
- * @param <aew>  ArrayElementWrapper instance to copy to create wxT("this") 
+ * @param <aew>  ArrayElementWrapper instance to copy to create "this" 
  * instance.
  */
 //---------------------------------------------------------------------------
@@ -133,8 +133,8 @@ ArrayElementWrapper::~ArrayElementWrapper()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (row, row->GetDescription(), wxT("ArrayElementWrapper::~ArrayElementWrapper()"),
-          wxT("deleting row"));
+         (row, row->GetDescription(), "ArrayElementWrapper::~ArrayElementWrapper()",
+          "deleting row");
       #endif
       delete row;
    }
@@ -143,8 +143,8 @@ ArrayElementWrapper::~ArrayElementWrapper()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (column, column->GetDescription(), wxT("ArrayElementWrapper::~ArrayElementWrapper()"),
-          wxT("deleting column"));
+         (column, column->GetDescription(), "ArrayElementWrapper::~ArrayElementWrapper()",
+          "deleting column");
       #endif
       delete column;
    }
@@ -197,16 +197,16 @@ const StringArray& ArrayElementWrapper::GetRefObjectNames()
           refObjectNames.push_back(*j);
           
    #ifdef DEBUG_AE_WRAPPER
-      MessageInterface::ShowMessage(wxT("AEWrapper:: Returning ref object names:\n"));
+      MessageInterface::ShowMessage("AEWrapper:: Returning ref object names:\n");
       for (Integer ii = 0; ii < (Integer) refObjectNames.size(); ii++)
-         MessageInterface::ShowMessage(wxT("      %s\n"), refObjectNames[ii].c_str());
+         MessageInterface::ShowMessage("      %s\n", refObjectNames[ii].c_str());
    #endif
    
    return refObjectNames;
 }
 
 //------------------------------------------------------------------------------
-//  GmatBase* GetRefObject(const wxString &name = wxT(""))
+//  GmatBase* GetRefObject(const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * This method retrives a reference object for the wrapper name
@@ -217,7 +217,7 @@ const StringArray& ArrayElementWrapper::GetRefObjectNames()
  *
  */
 //------------------------------------------------------------------------------
-GmatBase* ArrayElementWrapper::GetRefObject(const wxString &name)
+GmatBase* ArrayElementWrapper::GetRefObject(const std::string &name)
 {
    return array;
 }
@@ -237,11 +237,11 @@ bool ArrayElementWrapper::SetRefObject(GmatBase *obj)
    bool isOk   = false;
    bool setRow = false;
    bool setCol = false;
-   if ( (obj->IsOfType(wxT("Array"))) && (obj->GetName() == arrayName) )
+   if ( (obj->IsOfType("Array")) && (obj->GetName() == arrayName) )
    {
       array = (Array*) obj;
       #ifdef DEBUG_AE_WRAPPER
-         MessageInterface::ShowMessage(wxT("AEWrapper:: Setting array object %s\n"),
+         MessageInterface::ShowMessage("AEWrapper:: Setting array object %s\n",
             arrayName.c_str());
       #endif
       isOk = true;
@@ -252,14 +252,14 @@ bool ArrayElementWrapper::SetRefObject(GmatBase *obj)
    if (!isOk && !setRow && !setCol) return false;
    #ifdef DEBUG_AE_WRAPPER
       MessageInterface::ShowMessage(
-         wxT("AEWrapper:: Returning true from SetRefObject\n"));
+         "AEWrapper:: Returning true from SetRefObject\n");
    #endif
    
    return true;
 }
 
 //---------------------------------------------------------------------------
-//  bool RenameObject(const wxString &oldName, const wxString &newName)
+//  bool RenameObject(const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /**
  * Method to rename a reference object for the wrapper.
@@ -267,8 +267,8 @@ bool ArrayElementWrapper::SetRefObject(GmatBase *obj)
  * @return true if successful; false otherwise.
  */
 //---------------------------------------------------------------------------
-bool ArrayElementWrapper::RenameObject(const wxString &oldName, 
-                                       const wxString &newName)
+bool ArrayElementWrapper::RenameObject(const std::string &oldName, 
+                                       const std::string &newName)
 {
    ElementWrapper::RenameObject(oldName, newName);
    // now rebuild the description string from the refObjectNames
@@ -279,9 +279,9 @@ bool ArrayElementWrapper::RenameObject(const wxString &oldName,
    columnName  = column->GetDescription();
    // then put it all back together
    arrayName   = refObjectNames[0];
-   description = arrayName + wxT("(");
-   description += rowName + wxT(",");
-   description += columnName + wxT(");");
+   description = arrayName + "(";
+   description += rowName + ",";
+   description += columnName + ");";
    return true;
 }
 
@@ -299,15 +299,15 @@ Real ArrayElementWrapper::EvaluateReal() const
 {
    #ifdef DEBUG_AE_WRAPPER
       MessageInterface::ShowMessage(
-         wxT("AEWrapper::EvaluateReal called on array %s\n"), 
+         "AEWrapper::EvaluateReal called on array %s\n", 
          arrayName.c_str());
    #endif
    if (array == NULL)
       throw ParameterException(
-      wxT("Cannot return value of ArrayElement - object pointer is NULL\n"));
+      "Cannot return value of ArrayElement - object pointer is NULL\n");
    if ((row == NULL) || (column == NULL))
       throw ParameterException(
-      wxT("Cannot return value of ArrayElement - row or column element is NULL\n"));
+      "Cannot return value of ArrayElement - row or column element is NULL\n");
    Real itsValue;
    Integer rowInt    = -99;
    Integer columnInt = -99;
@@ -318,13 +318,13 @@ Real ArrayElementWrapper::EvaluateReal() const
       Real rowNearestInt = GmatMathUtil::NearestInt(rowVal);
       #ifdef DEBUG_AE_WRAPPER
          MessageInterface::ShowMessage(
-            wxT("AEWrapper::EvalReal(%s) - row evaluates to %d\n"), 
+            "AEWrapper::EvalReal(%s) - row evaluates to %d\n", 
             arrayName.c_str(),(Integer) rowNearestInt);
       #endif
       if ((GmatMathUtil::Mod(rowVal, rowNearestInt) != 0.0))
       {
-         wxString errmsg =  wxT("Cannot evaluate ArrayElement - ");
-         errmsg += wxT("row Element evaluates to a non-Integer value\n");
+         std::string errmsg =  "Cannot evaluate ArrayElement - ";
+         errmsg += "row Element evaluates to a non-Integer value\n";
          throw ParameterException(errmsg);
       }
       rowInt = (Integer) rowNearestInt - 1;
@@ -333,31 +333,31 @@ Real ArrayElementWrapper::EvaluateReal() const
       Real colNearestInt = GmatMathUtil::NearestInt(colVal);
       #ifdef DEBUG_AE_WRAPPER
          MessageInterface::ShowMessage(
-            wxT("AEWrapper::EvalReal(%s) - column evaluates to %d\n"), 
+            "AEWrapper::EvalReal(%s) - column evaluates to %d\n", 
             arrayName.c_str(),(Integer) colNearestInt);
       #endif
       if ((GmatMathUtil::Mod(colVal, colNearestInt) != 0.0))
       {
-         wxString errmsg = wxT("Cannot evaluate ArrayElement - ");
-         errmsg += wxT("column Element evaluates to a non-Integer value\n");
+         std::string errmsg = "Cannot evaluate ArrayElement - ";
+         errmsg += "column Element evaluates to a non-Integer value\n";
          throw ParameterException(errmsg);
       }
       columnInt = (Integer) colNearestInt - 1;
       
-      itsValue = array->GetRealParameter(wxT("SingleValue"), rowInt, columnInt);
+      itsValue = array->GetRealParameter("SingleValue", rowInt, columnInt);
       #ifdef DEBUG_AE_WRAPPER
          MessageInterface::ShowMessage(
-            wxT("AEWrapper::EvalReal(%s) - itsValue evaluates to %.12f\n"), 
+            "AEWrapper::EvalReal(%s) - itsValue evaluates to %.12f\n", 
             arrayName.c_str(),itsValue);
       #endif
    }
    catch (BaseException &be)
    {
-      wxString errmsg = wxT("Cannot return Real value for array ") + 
+      std::string errmsg = "Cannot return Real value for array " + 
                             array->GetName(); 
-      errmsg += wxT(" with row ") + rowInt;
-      errmsg += wxT(" and column ") + columnInt;
-      errmsg += wxT(" - exception thrown: ") + be.GetFullMessage();
+      errmsg += " with row " + rowInt;
+      errmsg += " and column " + columnInt;
+      errmsg += " - exception thrown: " + be.GetFullMessage();
       throw ParameterException(errmsg);
    }
          
@@ -377,15 +377,15 @@ bool ArrayElementWrapper::SetReal(const Real toValue)
 {
    #ifdef DEBUG_AE_WRAPPER
       MessageInterface::ShowMessage(
-         wxT("AEWrapper::SetReal called on array %s with input %.12f\n"), 
+         "AEWrapper::SetReal called on array %s with input %.12f\n", 
          arrayName.c_str(), toValue);
    #endif
    if (array == NULL)
       throw ParameterException(
-      wxT("Cannot set value of ArrayElement - object pointer is NULL\n"));
+      "Cannot set value of ArrayElement - object pointer is NULL\n");
    if ((row == NULL) || (column == NULL))
       throw ParameterException(
-      wxT("Cannot return value of ArrayElement - row or column element is NULL\n"));
+      "Cannot return value of ArrayElement - row or column element is NULL\n");
    Integer rowInt    = -99;
    Integer columnInt = -99;
 
@@ -394,25 +394,25 @@ bool ArrayElementWrapper::SetReal(const Real toValue)
    Real rowNearestInt = GmatMathUtil::NearestInt(rowVal);
    #ifdef DEBUG_AE_WRAPPER
       MessageInterface::ShowMessage(
-         wxT("AEWrapper::SetReal(%s) - rowVal and rowNearestInt evaluate to %d and %d\n"),
+         "AEWrapper::SetReal(%s) - rowVal and rowNearestInt evaluate to %d and %d\n",
          arrayName.c_str(), (Integer) rowVal, (Integer) rowNearestInt);
    #endif
    if (rowNearestInt == 0)
    {
-      wxString errmsg = wxT("Cannot evaluate ArrayElement - ");
-      errmsg += wxT("row Element evaluates to zero\n");
+      std::string errmsg = "Cannot evaluate ArrayElement - ";
+      errmsg += "row Element evaluates to zero\n";
       throw ParameterException(errmsg);
    }
    if ((GmatMathUtil::Mod(rowVal, rowNearestInt) != 0.0))
    {
-      wxString errmsg = wxT("Cannot evaluate ArrayElement - ");
-      errmsg += wxT("row Element evaluates to a non-Integer value\n");
+      std::string errmsg = "Cannot evaluate ArrayElement - ";
+      errmsg += "row Element evaluates to a non-Integer value\n";
       throw ParameterException(errmsg);
    }
    rowInt = (Integer) rowNearestInt - 1;
    #ifdef DEBUG_AE_WRAPPER
       MessageInterface::ShowMessage(
-         wxT("AEWrapper::SetReal(%s) - and then rowInt evaluates to %d\n"),
+         "AEWrapper::SetReal(%s) - and then rowInt evaluates to %d\n",
          arrayName.c_str(),(Integer) rowInt);
    #endif
    // get the column value
@@ -420,50 +420,50 @@ bool ArrayElementWrapper::SetReal(const Real toValue)
    Real colNearestInt = GmatMathUtil::NearestInt(colVal);
    #ifdef DEBUG_AE_WRAPPER
       MessageInterface::ShowMessage(
-         wxT("AEWrapper::SetReal(%s) - colVal and colNearestInt evaluate to %d and %dn"),
+         "AEWrapper::SetReal(%s) - colVal and colNearestInt evaluate to %d and %dn",
          arrayName.c_str(), (Integer) colVal, (Integer) colNearestInt);
    #endif
    if (colNearestInt == 0)
    {
-      wxString errmsg = wxT("Cannot evaluate ArrayElement - ");
-      errmsg += wxT("column Element evaluates to zero\n");
+      std::string errmsg = "Cannot evaluate ArrayElement - ";
+      errmsg += "column Element evaluates to zero\n";
       throw ParameterException(errmsg);
    }
    if ((GmatMathUtil::Mod(colVal, colNearestInt) != 0.0))
    {
-      wxString errmsg = wxT("Cannot evaluate ArrayElement - ");
-      errmsg += wxT("column Element evaluates to a non-Integer value\n");
+      std::string errmsg = "Cannot evaluate ArrayElement - ";
+      errmsg += "column Element evaluates to a non-Integer value\n";
       throw ParameterException(errmsg);
    }
    columnInt = (Integer) colNearestInt - 1;
    #ifdef DEBUG_AE_WRAPPER
       MessageInterface::ShowMessage(
-         wxT("AEWrapper::SetReal(%s) - and then columnInt evaluates to %d\n"),
+         "AEWrapper::SetReal(%s) - and then columnInt evaluates to %d\n",
          arrayName.c_str(),(Integer) columnInt);
    #endif
    try
    {
 
-      array->SetRealParameter(wxT("SingleValue"), toValue, rowInt, columnInt);
+      array->SetRealParameter("SingleValue", toValue, rowInt, columnInt);
    }
    catch (BaseException &be)
    {
-      wxString errmsg(wxT(""));
-      errmsg << wxT("Cannot set Real value for array ") << array->GetName();
-      errmsg << wxT(" with row ") << rowInt << wxT(" and column ") << columnInt;
-      errmsg << wxT(" - exception thrown: ") << be.GetFullMessage() << wxT("\n");
-      throw ParameterException(errmsg);
+      std::stringstream errmsg("");
+      errmsg << "Cannot set Real value for array " << array->GetName();
+      errmsg << " with row " << rowInt << " and column " << columnInt;
+      errmsg << " - exception thrown: " << be.GetFullMessage() << std::endl;
+      throw ParameterException(errmsg.str());
    }
          
    return true;
 }
 
-wxString ArrayElementWrapper::GetRowName()
+std::string ArrayElementWrapper::GetRowName()
 {
    return rowName;
 }
 
-wxString ArrayElementWrapper::GetColumnName()
+std::string ArrayElementWrapper::GetColumnName()
 {
    return columnName;
 }
@@ -498,18 +498,18 @@ void ArrayElementWrapper::SetupWrapper()
    }
    catch (UtilityException &)
    {
-      wxString errmsg = wxT("Unable to set up ArrayElementWrapper \"") +
+      std::string errmsg = "Unable to set up ArrayElementWrapper \"" +
                            description;
-      errmsg += wxT("\" - does not parse correctly as an array.\n");
+      errmsg += "\" - does not parse correctly as an array.\n";
       throw ParameterException(errmsg);
    }
    #ifdef DEBUG_AE_WRAPPER
       MessageInterface::ShowMessage(
-         wxT("AEWrapper::SetupWrapper for array named '%s' \n"), arrayName.c_str());
-      MessageInterface::ShowMessage(wxT("   description = %s\n"), description.c_str());
-      MessageInterface::ShowMessage(wxT("   rowName     = %s\n"), rowName.c_str());
-      MessageInterface::ShowMessage(wxT("   columnName  = %s\n"), columnName.c_str());
-      MessageInterface::ShowMessage(wxT("   arrayName   = %s\n"), arrayName.c_str());
+         "AEWrapper::SetupWrapper for array named '%s' \n", arrayName.c_str());
+      MessageInterface::ShowMessage("   description = %s\n", description.c_str());
+      MessageInterface::ShowMessage("   rowName     = %s\n", rowName.c_str());
+      MessageInterface::ShowMessage("   columnName  = %s\n", columnName.c_str());
+      MessageInterface::ShowMessage("   arrayName   = %s\n", arrayName.c_str());
    #endif
    // for now, put the array name in the list of reference objects - add
    // all the other stuff when GetRefObjectNames is called

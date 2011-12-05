@@ -61,7 +61,7 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 	                           bool eVal, Real e, bool iVal, Real i, bool ropVal, 
 							   Real RoP, bool roaVal, Real RoA, bool pVal, Real P)
 {
-   errormsg = wxT("");
+   errormsg = "";
    isError = false;
 
    //check if 2 inputs given
@@ -69,7 +69,7 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
    {
 	  a = -1;
 	  isError = true;
-	  errormsg = wxT("Minimum of 2 inputs necessary");
+	  errormsg = "Minimum of 2 inputs necessary";
 	  return;
    }
 
@@ -80,7 +80,7 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 		  (a>(GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]+2000.0))) 
 	  {
 	     isError = true;
-		 errormsg = wxT("SMA out of bounds, 6478.1363 < SMA < 8378.1363");
+		 errormsg = "SMA out of bounds, 6478.1363 < SMA < 8378.1363";
 		 return;
 	  }
    }
@@ -89,7 +89,7 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 	  if ((alt<100.0) || (alt>2000.0)) 
 	  {
 	     isError = true;
-		 errormsg = wxT("ALT out of bounds, 100 < ALT < 2000");
+		 errormsg = "ALT out of bounds, 100 < ALT < 2000";
 		 return;
 	  }
    }
@@ -98,7 +98,7 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
       if ((e<0.0) || (e>=1.0))
 	  {
 	     isError = true;
-		 errormsg = wxT("ECC out of bounds, 0 < ECC < 1");
+		 errormsg = "ECC out of bounds, 0 < ECC < 1";
 		 return;
 	  }
    }
@@ -107,7 +107,7 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
       if ((i<90.0) || (i>110.0))
 	  {
 	     isError = true;
-		 errormsg = wxT("INC out of bounds, 90 < INC < 110");
+		 errormsg = "INC out of bounds, 90 < INC < 110";
 		 return;
 	  }
    }
@@ -117,7 +117,7 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 		  (RoP>(GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]+2000)))
 	  {
 	     isError = true;
-		 errormsg = wxT("RP out of bounds, 6478.1363 < RP < 8378.1363");
+		 errormsg = "RP out of bounds, 6478.1363 < RP < 8378.1363";
 		 return;
 	  }
    }
@@ -128,7 +128,7 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 		   - (GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]+100))))
 	  {
 	     isError = true;
-		 errormsg = wxT("RA out of bounds, 6478.1363 < RA < 10278.1363");
+		 errormsg = "RA out of bounds, 6478.1363 < RA < 10278.1363";
 		 return;
 	  }
    }
@@ -137,7 +137,7 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
       if (P<=0 || P>(GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]+2000))
 	  {
 	     isError = true;
-		 errormsg = wxT("P out of bounds, 0 < P < 8378.1363");
+		 errormsg = "P out of bounds, 0 < P < 8378.1363";
 		 return;
 	  }
    }
@@ -157,7 +157,7 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 	     if (RoA<RoP)
 		 {
 		    isError = true;
-		    errormsg = wxT("RA must be greater than RP");
+		    errormsg = "RA must be greater than RP";
 			return;
 		 }
          e = (RoA - RoP)/(RoA+RoP);
@@ -167,16 +167,16 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 		 {
 			isError = true;
 			errormsg = 
-			   wxT("No sun synchronous orbit can be found with those parameters, try with ")
+			   "No sun synchronous orbit can be found with those parameters, try with "
 			   + GmatStringUtil::Trim(GmatStringUtil::ToString((GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]+100.0)*(1+e)))
-			   + wxT(" < RA < ") +  
+			   + " < RA < " +  
 			   GmatStringUtil::Trim(GmatStringUtil::ToString((GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]+2000.0)*(1+e)));
 			return;
 		 }*/
 		 if ((e>=1)||(e<0))
 		 {
 		    isError = true;
-			errormsg = wxT("No sun synchronous orbit can be found with those parameters");
+			errormsg = "No sun synchronous orbit can be found with those parameters";
 			return;
 		 }
 	  }
@@ -187,7 +187,7 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 		 {
 		    isError = true;
 		    errormsg = 
-			   wxT("Alt must be less than ") + 
+			   "Alt must be less than " + 
 			   GmatStringUtil::Trim(GmatStringUtil::ToString(RoA - 
 			   GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]));
 			return;
@@ -195,14 +195,14 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 		 if (RoA<a)
 		 {
 		    isError = true;
-		    errormsg = wxT("RA must be greater than SMA");
+		    errormsg = "RA must be greater than SMA";
 			return;
 		 }
          e = -1 + (RoA/a);
 		 if ((e>=1)||(e<0))
 		 {
 		    isError = true;
-			errormsg = wxT("No sun synchronous orbit can be found with those parameters");
+			errormsg = "No sun synchronous orbit can be found with those parameters";
 			return;
 		 }
       }
@@ -214,9 +214,9 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 		 {
 			isError = true;
 			errormsg = 
-			   wxT("No sun synchronous orbit can be found with those parameters, try with ")
+			   "No sun synchronous orbit can be found with those parameters, try with "
 			   + GmatStringUtil::Trim(GmatStringUtil::ToString((GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]+100.0)*(1+e)))
-			   + wxT(" < RA < ") +  
+			   + " < RA < " +  
 			   GmatStringUtil::Trim(GmatStringUtil::ToString((GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]+2000.0)*(1+e)));
 			return;
 		 }
@@ -226,7 +226,7 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 		 if (RoA<P)
 		 {
 		    isError = true;
-		    errormsg = wxT("RA must be greater than P");
+		    errormsg = "RA must be greater than P";
 			return;
 		 }
 		 e = 1 - (P/RoA);
@@ -234,7 +234,7 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 		 if ((e>=1)||(e<0))
 		 {
 		    isError = true;
-			errormsg = wxT("No sun synchronous orbit can be found with those parameters");
+			errormsg = "No sun synchronous orbit can be found with those parameters";
 			return;
 		 }
 		 /*if ((a<(GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]+100.0)) || 
@@ -242,9 +242,9 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 		 {
 			isError = true;
 			errormsg = 
-			   wxT("No sun synchronous orbit can be found with those parameters, try with ")
+			   "No sun synchronous orbit can be found with those parameters, try with "
 			   + GmatStringUtil::Trim(GmatStringUtil::ToString((GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]+100.0)*(1+e)))
-			   + wxT(" < RA < ") +  
+			   + " < RA < " +  
 			   GmatStringUtil::Trim(GmatStringUtil::ToString((GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]+2000.0)*(1+e)));
 			return;
 		 }*/
@@ -258,7 +258,7 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 			 ((alt+GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])<RoP))
 		 {
 		    isError = true;
-		    errormsg = wxT("Alt must be greater than ") + 
+		    errormsg = "Alt must be greater than " + 
 			   GmatStringUtil::Trim(GmatStringUtil::ToString(RoP - 
 			   GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]));
 			return;
@@ -266,14 +266,14 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 		 if (RoP>a)
 		 {
 		    isError = true;
-		    errormsg = wxT("RP must be less than SMA");
+		    errormsg = "RP must be less than SMA";
 			return;
 		 }
          e = 1 - (RoP/a);
 		 if ((e>=1)||(e<0))
 		 {
 		    isError = true;
-			errormsg = wxT("No sun synchronous orbit can be found with those parameters");
+			errormsg = "No sun synchronous orbit can be found with those parameters";
 			return;
 		 }
 	  }
@@ -285,10 +285,10 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 		 {
 			isError = true;
 			errormsg = 
-			   wxT("No sun synchronous orbit can be found with those parameters, try with RP < ") 
+			   "No sun synchronous orbit can be found with those parameters, try with RP < " 
 			   + GmatStringUtil::Trim(GmatStringUtil::ToString(
 			   (GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]+2000.0)*(1-e))) + 
-			   wxT(", or with ECC < ") + GmatStringUtil::Trim(GmatStringUtil::ToString(1-
+			   ", or with ECC < " + GmatStringUtil::Trim(GmatStringUtil::ToString(1-
 			   (RoP/(GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]+2000.0))));
 		 }
 	  }
@@ -297,7 +297,7 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 		 if (RoP>P)
 		 {
 		    isError = true;
-			errormsg = wxT("RP must be less than P");
+			errormsg = "RP must be less than P";
 			return;
 		 }
 		 e = (P/RoP)-1;
@@ -305,8 +305,8 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 		 if ((e>=1)||(e<0))
 		 {
 		    isError = true;
-			errormsg = wxT("No sun synchronous orbit can be found with those parameters, try with RP > ")
-				        + GmatStringUtil::Trim(GmatStringUtil::ToString(P/2)) +  wxT(", or with P < ")
+			errormsg = "No sun synchronous orbit can be found with those parameters, try with RP > "
+				        + GmatStringUtil::Trim(GmatStringUtil::ToString(P/2)) +  ", or with P < "
 						+ GmatStringUtil::Trim(GmatStringUtil::ToString(RoP*2));
 			return;
 		 }
@@ -314,9 +314,9 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 		     (a>(GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]+2000.0))) 
 		 {
 			isError = true;
-			errormsg = wxT("No sun synchronous orbit can be found with those parameters, try with RP > ")
+			errormsg = "No sun synchronous orbit can be found with those parameters, try with RP > "
 			   + GmatStringUtil::Trim(GmatStringUtil::ToString((GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]
-			   +2000.0)*(1-e))) +  wxT(", or with P < ")
+			   +2000.0)*(1-e))) +  ", or with P < "
 			   + GmatStringUtil::Trim(GmatStringUtil::ToString((GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]
 			   +2000.0)*(1-pow(e,2))));
 			return;
@@ -330,14 +330,14 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 		 if ((P/a)>1)
 		 {
 		    isError = true;
-			errormsg = wxT("P cannot be greater than SMA");
+			errormsg = "P cannot be greater than SMA";
 			return;
 		 }
          e = sqrt(1-(P/a));
 		 if ((e>=1)||(e<0))
 		 {
 		    isError = true;
-			errormsg = wxT("No sun synchronous orbit can be found with those parameters");
+			errormsg = "No sun synchronous orbit can be found with those parameters";
 			return;
 		 }
 	  }
@@ -348,7 +348,7 @@ void SunSync::CalculateSunSync(bool aVal, Real a, bool altVal, Real alt,
 		     (a>(GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]+2000.0))) 
 		 {
 			isError = true;
-			errormsg = wxT("No sun synchronous orbit can be found with those parameters");
+			errormsg = "No sun synchronous orbit can be found with those parameters";
 			return;
 		 }
 	  }
@@ -480,7 +480,7 @@ bool SunSync::IsError()
    return isError;
 }
 
-wxString SunSync::GetError()
+std::string SunSync::GetError()
 {
 	return errormsg;
 }
@@ -560,27 +560,27 @@ Real SunSync::SolveA(Real e, Real i, bool flag)
 	  {
 	     if ((e>e_low)&&(e<e_high))
 		    errormsg = 
-	           wxT("No sun synchronous orbit can be found with those parameters");
+	           "No sun synchronous orbit can be found with those parameters";
 		 else
             errormsg = 
-	           wxT("No sun synchronous orbit can be found with those parameters, try with ") 
-		       + GmatStringUtil::Trim(GmatStringUtil::ToString(e_low)) + wxT(" < ECC < ") + 
+	           "No sun synchronous orbit can be found with those parameters, try with " 
+		       + GmatStringUtil::Trim(GmatStringUtil::ToString(e_low)) + " < ECC < " + 
 		       GmatStringUtil::Trim(GmatStringUtil::ToString(e_high));
 	  }
 	  else if ((e>e_low)&&(e<e_high))
 	  {
          errormsg = 
-	        wxT("No sun synchronous orbit can be found with those parameters, try with ") 
-		    + GmatStringUtil::Trim(GmatStringUtil::ToString(i_low)) + wxT(" < INC < ") + 
+	        "No sun synchronous orbit can be found with those parameters, try with " 
+		    + GmatStringUtil::Trim(GmatStringUtil::ToString(i_low)) + " < INC < " + 
 		    GmatStringUtil::Trim(GmatStringUtil::ToString(i_high));
 	  }
 	  else
 	  {
 	     errormsg = 
-	        wxT("No sun synchronous orbit can be found with those parameters, try with ") 
-		    + GmatStringUtil::Trim(GmatStringUtil::ToString(e_low)) + wxT(" < ECC < ") + 
-		    GmatStringUtil::Trim(GmatStringUtil::ToString(e_high)) + wxT(", or try ") + 
-		    GmatStringUtil::Trim(GmatStringUtil::ToString(i_low)) + wxT(" < INC < ") + 
+	        "No sun synchronous orbit can be found with those parameters, try with " 
+		    + GmatStringUtil::Trim(GmatStringUtil::ToString(e_low)) + " < ECC < " + 
+		    GmatStringUtil::Trim(GmatStringUtil::ToString(e_high)) + ", or try " + 
+		    GmatStringUtil::Trim(GmatStringUtil::ToString(i_low)) + " < INC < " + 
 		    GmatStringUtil::Trim(GmatStringUtil::ToString(i_high));
 	  }
       isError = true;
@@ -603,7 +603,7 @@ Real SunSync::SolveE(Real a, Real i, bool flag, bool altFlag)
    if (check < 0)
    {
       errormsg = 
-	     wxT("No sun synchronous orbit can be found with those parameters, try with 90 < INC < 110");
+	     "No sun synchronous orbit can be found with those parameters, try with 90 < INC < 110";
 	  isError = true;
       e = -1;
 	  return e;
@@ -625,36 +625,36 @@ Real SunSync::SolveE(Real a, Real i, bool flag, bool altFlag)
 	  {
 	     if ((i*180/GmatMathConstants::PI)<i_high)
 	        errormsg = 
-	           wxT("No sun synchronous orbit can be found with those parameters");
+	           "No sun synchronous orbit can be found with those parameters";
 		 else
 		    errormsg = 
-	           wxT("No sun synchronous orbit can be found with those parameters, try with INC < ")
+	           "No sun synchronous orbit can be found with those parameters, try with INC < "
 		       + GmatStringUtil::Trim(GmatStringUtil::ToString(i_high));
 	  }
 	  else if ((i*180/GmatMathConstants::PI)<i_high)
 	  {
 		 if (altFlag)
 			errormsg = 
-	           wxT("No sun synchronous orbit can be found with those parameters, try with ALT < ")
+	           "No sun synchronous orbit can be found with those parameters, try with ALT < "
 		       + GmatStringUtil::Trim(GmatStringUtil::ToString(a_high - 
 			   GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]));
 		 else
 	        errormsg = 
-	           wxT("No sun synchronous orbit can be found with those parameters, try with SMA < ")
+	           "No sun synchronous orbit can be found with those parameters, try with SMA < "
 		       + GmatStringUtil::Trim(GmatStringUtil::ToString(a_high));
 	  }
 	  else
 	  {
 		 if (altFlag)
 			errormsg = 
-	           wxT("No sun synchronous orbit can be found with those parameters, try with ALT < ")
+	           "No sun synchronous orbit can be found with those parameters, try with ALT < "
 		       + GmatStringUtil::Trim(GmatStringUtil::ToString(a_high - 
-			   GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])) + wxT(" or with INC < ") 
+			   GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])) + " or with INC < " 
 		       + GmatStringUtil::Trim(GmatStringUtil::ToString(i_high));
 		 else
             errormsg = 
-	           wxT("No sun synchronous orbit can be found with those parameters, try with SMA < ")
-		       + GmatStringUtil::Trim(GmatStringUtil::ToString(a_high)) + wxT(" or with INC < ") 
+	           "No sun synchronous orbit can be found with those parameters, try with SMA < "
+		       + GmatStringUtil::Trim(GmatStringUtil::ToString(a_high)) + " or with INC < " 
 		       + GmatStringUtil::Trim(GmatStringUtil::ToString(i_high));
 	  }
 	  isError = true;
@@ -692,45 +692,45 @@ Real SunSync::SolveE(Real a, Real i, bool flag, bool altFlag)
 	  {
 	     if (((i*180/GmatMathConstants::PI)>i_low)&&((i*180/GmatMathConstants::PI)<i_high))
 		    errormsg = 
-	           wxT("No sun synchronous orbit can be found with those parameters");
+	           "No sun synchronous orbit can be found with those parameters";
 		 else
 		    errormsg = 
-	           wxT("No sun synchronous orbit can be found with those parameters, try with ")
-		       + GmatStringUtil::Trim(GmatStringUtil::ToString(i_low)) + wxT(" < INC < ") 
+	           "No sun synchronous orbit can be found with those parameters, try with "
+		       + GmatStringUtil::Trim(GmatStringUtil::ToString(i_low)) + " < INC < " 
 		       + GmatStringUtil::Trim(GmatStringUtil::ToString(i_high));
 	  }
 	  else if (((i*180/GmatMathConstants::PI)>i_low)&&((i*180/GmatMathConstants::PI)<i_high))
 	  {
 		 if (altFlag)
 			errormsg = 
-	           wxT("No sun synchronous orbit can be found with those parameters, try with ")
+	           "No sun synchronous orbit can be found with those parameters, try with "
 		       + GmatStringUtil::Trim(GmatStringUtil::Trim(GmatStringUtil::ToString(a_low - 
 			   GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])))
-			   + wxT(" < ALT < ") + GmatStringUtil::Trim(GmatStringUtil::ToString(a_high - 
+			   + " < ALT < " + GmatStringUtil::Trim(GmatStringUtil::ToString(a_high - 
 			   GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]));
 		 else
 	        errormsg = 
-	           wxT("No sun synchronous orbit can be found with those parameters, try with ")
+	           "No sun synchronous orbit can be found with those parameters, try with "
 		       + GmatStringUtil::Trim(GmatStringUtil::Trim(GmatStringUtil::ToString(a_low)))
-			   + wxT(" < SMA < ") + GmatStringUtil::Trim(GmatStringUtil::ToString(a_high));
+			   + " < SMA < " + GmatStringUtil::Trim(GmatStringUtil::ToString(a_high));
 	  }
 	  else
 	  {
 		 if (altFlag)
 			errormsg = 
-	           wxT("No sun synchronous orbit can be found with those parameters, try with ")
+	           "No sun synchronous orbit can be found with those parameters, try with "
 		       + GmatStringUtil::Trim(GmatStringUtil::ToString(a_low - 
-			   GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])) + wxT(" < ALT < ") 
+			   GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])) + " < ALT < " 
 		       + GmatStringUtil::Trim(GmatStringUtil::ToString(a_high - 
-			   GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])) + wxT(", or try ") 
-		       + GmatStringUtil::Trim(GmatStringUtil::ToString(i_low)) + wxT(" < INC < ") 
+			   GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])) + ", or try " 
+		       + GmatStringUtil::Trim(GmatStringUtil::ToString(i_low)) + " < INC < " 
 		       + GmatStringUtil::Trim(GmatStringUtil::ToString(i_high));
 		 else
             errormsg = 
-	           wxT("No sun synchronous orbit can be found with those parameters, try with ")
-		       + GmatStringUtil::Trim(GmatStringUtil::ToString(a_low)) + wxT(" < SMA < ") 
-		       + GmatStringUtil::Trim(GmatStringUtil::ToString(a_high)) + wxT(", or try ") 
-		       + GmatStringUtil::Trim(GmatStringUtil::ToString(i_low)) + wxT(" < INC < ") 
+	           "No sun synchronous orbit can be found with those parameters, try with "
+		       + GmatStringUtil::Trim(GmatStringUtil::ToString(a_low)) + " < SMA < " 
+		       + GmatStringUtil::Trim(GmatStringUtil::ToString(a_high)) + ", or try " 
+		       + GmatStringUtil::Trim(GmatStringUtil::ToString(i_low)) + " < INC < " 
 		       + GmatStringUtil::Trim(GmatStringUtil::ToString(i_high));
 	  }
 	  isError = true;
@@ -756,7 +756,7 @@ Real SunSync::SolveI(Real a, Real e, bool flag, bool roaFlag, bool ropFlag,
    if ((check < -1) || (check >1))
    {
       errormsg = 
-	     wxT("No sun synchronous orbit can be found with those parameters");
+	     "No sun synchronous orbit can be found with those parameters";
 	  isError = true;
       i = -1;
 	  return i;
@@ -802,7 +802,7 @@ Real SunSync::SolveI(Real a, Real e, bool flag, bool roaFlag, bool ropFlag,
 	  if (ropFlag && roaFlag)
 	  {
 		 errormsg = 
-	        wxT("No sun synchronous orbit can be found with those parameters");
+	        "No sun synchronous orbit can be found with those parameters";
 		 if (a>(GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]+2000))
 		 {
 			roaHigh = 2*(GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]+2000) 
@@ -812,10 +812,10 @@ Real SunSync::SolveI(Real a, Real e, bool flag, bool roaFlag, bool ropFlag,
 				      - (a*(1+e));
 			ropLow = GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]+100;
 		    errormsg = 
-	           wxT("No sun synchronous orbit can be found with those parameters, try with ")
-			   + GmatStringUtil::Trim(GmatStringUtil::ToString(roaLow)) + wxT(" < RA < ")
-			   + GmatStringUtil::Trim(GmatStringUtil::ToString(roaHigh)) + wxT(", or with ")
-			   + GmatStringUtil::Trim(GmatStringUtil::ToString(ropLow)) + wxT(" < RP < ")
+	           "No sun synchronous orbit can be found with those parameters, try with "
+			   + GmatStringUtil::Trim(GmatStringUtil::ToString(roaLow)) + " < RA < "
+			   + GmatStringUtil::Trim(GmatStringUtil::ToString(roaHigh)) + ", or with "
+			   + GmatStringUtil::Trim(GmatStringUtil::ToString(ropLow)) + " < RP < "
 			   + GmatStringUtil::Trim(GmatStringUtil::ToString(ropHigh)); 
 		 }
 	  }
@@ -831,12 +831,12 @@ Real SunSync::SolveI(Real a, Real e, bool flag, bool roaFlag, bool ropFlag,
 			eLow = 0;
 		    if ((((a*(1-e))>ropLow)&&(ropHigh<(a*(1-e))))||((e>eLow)&&(e<eHigh)))
 			   errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters");
+	              "No sun synchronous orbit can be found with those parameters";
 		    else
 	           errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters, try with ?")
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(ropLow)) + wxT(" < RP, or try ") 
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eLow)) + wxT(" < ECC < ") 
+	              "No sun synchronous orbit can be found with those parameters, try with ?"
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(ropLow)) + " < RP, or try " 
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eLow)) + " < ECC < " 
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eHigh));
 		 }
 		 else if (aFlag)
@@ -845,20 +845,20 @@ Real SunSync::SolveI(Real a, Real e, bool flag, bool roaFlag, bool ropFlag,
 			ropLow = a*(1-eHigh);
 		    if (((a>aLow)&&(a<aHigh))||(((a*(1-e))>ropLow)&&(ropHigh<(a*(1-e)))))
 			   errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters");
+	              "No sun synchronous orbit can be found with those parameters";
 		    else if (altFlag)
 	           errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters, try with ")
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(ropLow)) + wxT(" < RP, or try ") 
+	              "No sun synchronous orbit can be found with those parameters, try with "
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(ropLow)) + " < RP, or try " 
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aLow - 
-				  GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])) + wxT(" < ALT < ") 
+				  GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])) + " < ALT < " 
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aHigh - 
 				  GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]));
 			else
 			   errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters, try with ")
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(ropLow)) + wxT(" < RP, or try ") 
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aLow)) + wxT(" < SMA < ") 
+	              "No sun synchronous orbit can be found with those parameters, try with "
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(ropLow)) + " < RP, or try " 
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aLow)) + " < SMA < " 
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aHigh));
 		 }
 		 else if (pFlag)
@@ -873,13 +873,13 @@ Real SunSync::SolveI(Real a, Real e, bool flag, bool roaFlag, bool ropFlag,
 
 		    if (((a>aLow)&&(a<aHigh))||((e>eLow)&&(e<eHigh)))
 			   errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters");
+	              "No sun synchronous orbit can be found with those parameters";
 		    else
 	           errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters, try with ")
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(pLow)) + wxT(" < P < ") 
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(pHigh)) + wxT(", or try ") 
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(ropLow)) + wxT(" < RP < ") 
+	              "No sun synchronous orbit can be found with those parameters, try with "
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(pLow)) + " < P < " 
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(pHigh)) + ", or try " 
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(ropLow)) + " < RP < " 
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(ropHigh));
 			
 		 }
@@ -898,23 +898,23 @@ Real SunSync::SolveI(Real a, Real e, bool flag, bool roaFlag, bool ropFlag,
 
 			if (((a*(1+e))>roaLow)&&(roaHigh<(a*(1+e))))
                errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters, try with ")
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eLow)) + wxT(" < ECC < ") 
+	              "No sun synchronous orbit can be found with those parameters, try with "
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eLow)) + " < ECC < " 
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eHigh));
 			else if ((e>eLow)&&(e<eHigh))
                errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters, try with ")
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(roaLow)) + wxT(" < RA < ") 
+	              "No sun synchronous orbit can be found with those parameters, try with "
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(roaLow)) + " < RA < " 
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(roaHigh));
 			else if (((((a*(1+e))>roaLow)&&(roaHigh<(a*(1+e)))))||((e>eLow)&&(e<eHigh)))
 			   errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters");
+	              "No sun synchronous orbit can be found with those parameters";
 		    else
 	           errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters, try with ")
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(roaLow)) + wxT(" < RA < ") 
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(roaHigh)) + wxT(", or try ") 
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eLow)) + wxT(" < ECC < ") 
+	              "No sun synchronous orbit can be found with those parameters, try with "
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(roaLow)) + " < RA < " 
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(roaHigh)) + ", or try " 
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eLow)) + " < ECC < " 
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eHigh));
 		 }
 		 else if (aFlag)
@@ -932,22 +932,22 @@ Real SunSync::SolveI(Real a, Real e, bool flag, bool roaFlag, bool ropFlag,
 
 			if (((a>aLow)&&(a<aHigh))||((a*(1+e))<roaLow)&&(roaHigh<(a*(1+e))))
 			   errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters");
+	              "No sun synchronous orbit can be found with those parameters";
 		    else if (altFlag)
 			   errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters, try with ")
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(roaLow)) + wxT(" < RA < ") 
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(roaHigh)) + wxT(", or try ") 
+	              "No sun synchronous orbit can be found with those parameters, try with "
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(roaLow)) + " < RA < " 
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(roaHigh)) + ", or try " 
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aLow - 
-				  GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])) + wxT(" < ALT < ") 
+				  GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])) + " < ALT < " 
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aHigh - 
 				  GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]));
 			else
 	           errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters, try with ")
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(roaLow)) + wxT(" < RA < ") 
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(roaHigh)) + wxT(", or try ") 
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aLow)) + wxT(" < SMA < ") 
+	              "No sun synchronous orbit can be found with those parameters, try with "
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(roaLow)) + " < RA < " 
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(roaHigh)) + ", or try " 
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aLow)) + " < SMA < " 
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aHigh));
 		 }
 		 else if (pFlag)
@@ -986,13 +986,13 @@ Real SunSync::SolveI(Real a, Real e, bool flag, bool roaFlag, bool ropFlag,
 
 		    if (((a>aLow)&&(a<aHigh))||((e>eLow)&&(e<eHigh)))
 			   errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters");
+	              "No sun synchronous orbit can be found with those parameters";
 		    else
 	           errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters, try with ")
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(pLow)) + wxT(" < P < ") 
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(pHigh)) + wxT(", or try ") 
-				  + GmatStringUtil::Trim(GmatStringUtil::ToString(roaLow)) +wxT(" < RA < ") 
+	              "No sun synchronous orbit can be found with those parameters, try with "
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(pLow)) + " < P < " 
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(pHigh)) + ", or try " 
+				  + GmatStringUtil::Trim(GmatStringUtil::ToString(roaLow)) +" < RA < " 
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(roaHigh));
 		 }
 	  }
@@ -1014,13 +1014,13 @@ Real SunSync::SolveI(Real a, Real e, bool flag, bool roaFlag, bool ropFlag,
 
 			if ((((a*(1-pow(e,2)))>pLow)&&((a*(1-pow(e,2)))<pHigh)) || ((e>eLow)&&(e<eHigh)))
 			   errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters");
+	              "No sun synchronous orbit can be found with those parameters";
 			else
 	           errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters, try with ")
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(pLow)) + wxT(" < P < ") 
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(pHigh)) + wxT(", or try ") 
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eLow)) + wxT(" < ECC < ") 
+	              "No sun synchronous orbit can be found with those parameters, try with "
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(pLow)) + " < P < " 
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(pHigh)) + ", or try " 
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eLow)) + " < ECC < " 
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eHigh));
 		 }
 		 else if (aFlag)
@@ -1042,31 +1042,31 @@ Real SunSync::SolveI(Real a, Real e, bool flag, bool roaFlag, bool ropFlag,
 
 			if ((((a*(1-pow(e,2)))>pLow)&&((a*(1-pow(e,2)))<pHigh)) || ((e>eLow)&&(e<eHigh)))
 			   errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters");
+	              "No sun synchronous orbit can be found with those parameters";
 			else if (altFlag)
 			   errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters, try with ")
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(pLow)) + wxT(" < P < ") 
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(pHigh)) + wxT(", or try ") 
+	              "No sun synchronous orbit can be found with those parameters, try with "
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(pLow)) + " < P < " 
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(pHigh)) + ", or try " 
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aLow - 
-				  GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])) + wxT(" < ALT < ") 
+				  GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])) + " < ALT < " 
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aHigh - 
 				  GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]));
 		    else
 	           errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters, try with ")
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(pLow)) + wxT(" < P < ") 
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(pHigh)) + wxT(", or try ") 
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aLow)) + wxT(" < SMA < ") 
+	              "No sun synchronous orbit can be found with those parameters, try with "
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(pLow)) + " < P < " 
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(pHigh)) + ", or try " 
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aLow)) + " < SMA < " 
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aHigh));
-			MessageInterface::ShowMessage(wxT("e: %f\n"), e);
-		 MessageInterface::ShowMessage(wxT("a: %f\n"), a);
-		 MessageInterface::ShowMessage(wxT("i: %f\n"), i);
-		 MessageInterface::ShowMessage(wxT("eHigh: %f\n"), eHigh);
-		 MessageInterface::ShowMessage(wxT("aHigh: %f\n"), aHigh);
-		 MessageInterface::ShowMessage(wxT("pHigh: %f\n"), pHigh);
-		 MessageInterface::ShowMessage(wxT("aLow: %f\n"), aLow);
-		 MessageInterface::ShowMessage(wxT("pLow: %f\n"), pLow);
+			MessageInterface::ShowMessage("e: %f\n", e);
+		 MessageInterface::ShowMessage("a: %f\n", a);
+		 MessageInterface::ShowMessage("i: %f\n", i);
+		 MessageInterface::ShowMessage("eHigh: %f\n", eHigh);
+		 MessageInterface::ShowMessage("aHigh: %f\n", aHigh);
+		 MessageInterface::ShowMessage("pHigh: %f\n", pHigh);
+		 MessageInterface::ShowMessage("aLow: %f\n", aLow);
+		 MessageInterface::ShowMessage("pLow: %f\n", pLow);
 		 }
 	  }
 	  else
@@ -1075,53 +1075,53 @@ Real SunSync::SolveI(Real a, Real e, bool flag, bool roaFlag, bool ropFlag,
 	     {
 	        if ((e>eLow)&&(e<eHigh))
 		       errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters");
+	              "No sun synchronous orbit can be found with those parameters";
 		    else
 		       errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters, try with ")
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eLow)) + wxT(" < ECC < ") 
+	              "No sun synchronous orbit can be found with those parameters, try with "
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eLow)) + " < ECC < " 
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eHigh));
 	     }
 	     else if ((e>eLow)&&(e<eHigh))
 	     {
 			if (altFlag)
 			   errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters, try with ")
+	              "No sun synchronous orbit can be found with those parameters, try with "
 		          + GmatStringUtil::Trim(GmatStringUtil::Trim(GmatStringUtil::ToString(aLow - 
 				  GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])))
-			      + wxT(" < ALT < ") + GmatStringUtil::Trim(GmatStringUtil::ToString(aHigh - 
+			      + " < ALT < " + GmatStringUtil::Trim(GmatStringUtil::ToString(aHigh - 
 				  GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]));
 			else
 			   if (altFlag)
 				  errormsg = 
-	                 wxT("No sun synchronous orbit can be found with those parameters, try with ")
+	                 "No sun synchronous orbit can be found with those parameters, try with "
 		             + GmatStringUtil::Trim(GmatStringUtil::Trim(GmatStringUtil::ToString(aLow- 
 				     GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])))
-			         + wxT(" < ALT < ") + GmatStringUtil::Trim(GmatStringUtil::ToString(aHigh- 
+			         + " < ALT < " + GmatStringUtil::Trim(GmatStringUtil::ToString(aHigh- 
 				     GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]));
 			   else
 	              errormsg = 
-	                 wxT("No sun synchronous orbit can be found with those parameters, try with ")
+	                 "No sun synchronous orbit can be found with those parameters, try with "
 		             + GmatStringUtil::Trim(GmatStringUtil::Trim(GmatStringUtil::ToString(aLow)))
-			         + wxT(" < SMA < ") + GmatStringUtil::Trim(GmatStringUtil::ToString(aHigh));
+			         + " < SMA < " + GmatStringUtil::Trim(GmatStringUtil::ToString(aHigh));
 	     }
 	     else
 	     {
 			if (altFlag)
 			   errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters, try with ")
+	              "No sun synchronous orbit can be found with those parameters, try with "
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aLow - 
-				  GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])) + wxT(" < ALT < ") 
+				  GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])) + " < ALT < " 
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aHigh - 
-				  GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])) + wxT(", or try ") 
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eLow)) + wxT(" < ECC < ") 
+				  GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2])) + ", or try " 
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eLow)) + " < ECC < " 
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eHigh));
 			else
                errormsg = 
-	              wxT("No sun synchronous orbit can be found with those parameters, try with ")
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aLow)) + wxT(" < SMA < ") 
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aHigh)) + wxT(", or try ") 
-		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eLow)) + wxT(" < ECC < ") 
+	              "No sun synchronous orbit can be found with those parameters, try with "
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aLow)) + " < SMA < " 
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(aHigh)) + ", or try " 
+		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eLow)) + " < ECC < " 
 		          + GmatStringUtil::Trim(GmatStringUtil::ToString(eHigh));
 	     }
 	  }
@@ -1182,27 +1182,27 @@ void SunSync::SolvePAE(Real P, Real i, Real &a, Real &e)
 	  {
 	     if ((P>P_low)&&(P<P_high))
 		    errormsg = 
-	           wxT("No sun synchronous orbit can be found with those parameters");
+	           "No sun synchronous orbit can be found with those parameters";
 		 else
             errormsg = 
-	           wxT("No sun synchronous orbit can be found with those parameters, try with ") 
-		       + GmatStringUtil::Trim(GmatStringUtil::ToString(P_low)) + wxT(" < P < ") + 
+	           "No sun synchronous orbit can be found with those parameters, try with " 
+		       + GmatStringUtil::Trim(GmatStringUtil::ToString(P_low)) + " < P < " + 
 		       GmatStringUtil::Trim(GmatStringUtil::ToString(P_high));
 	  }
 	  else if ((P>P_low)&&(P<P_high))
 	  {
          errormsg = 
-	        wxT("No sun synchronous orbit can be found with those parameters, try with ") 
-		    + GmatStringUtil::Trim(GmatStringUtil::ToString(i_low)) + wxT(" < INC < ") + 
+	        "No sun synchronous orbit can be found with those parameters, try with " 
+		    + GmatStringUtil::Trim(GmatStringUtil::ToString(i_low)) + " < INC < " + 
 		    GmatStringUtil::Trim(GmatStringUtil::ToString(i_high));
 	  }
 	  else
 	  {
 	     errormsg = 
-	        wxT("No sun synchronous orbit can be found with those parameters, try with ") 
-		    + GmatStringUtil::Trim(GmatStringUtil::ToString(P_low)) + wxT(" < P < ") + 
-		    GmatStringUtil::Trim(GmatStringUtil::ToString(P_high)) + wxT(", or try ") + 
-		    GmatStringUtil::Trim(GmatStringUtil::ToString(i_low)) + wxT(" < INC < ") + 
+	        "No sun synchronous orbit can be found with those parameters, try with " 
+		    + GmatStringUtil::Trim(GmatStringUtil::ToString(P_low)) + " < P < " + 
+		    GmatStringUtil::Trim(GmatStringUtil::ToString(P_high)) + ", or try " + 
+		    GmatStringUtil::Trim(GmatStringUtil::ToString(i_low)) + " < INC < " + 
 		    GmatStringUtil::Trim(GmatStringUtil::ToString(i_high));
 	  }
 	  isError = true;
@@ -1250,27 +1250,27 @@ void SunSync::SolvePAE(Real P, Real i, Real &a, Real &e)
 	  {
 	     if ((P>P_low)&&(P<P_high))
 		    errormsg = 
-	           wxT("No sun synchronous orbit can be found with those parameters");
+	           "No sun synchronous orbit can be found with those parameters";
 		 else
             errormsg = 
-	           wxT("No sun synchronous orbit can be found with those parameters, try with ") 
-		       + GmatStringUtil::Trim(GmatStringUtil::ToString(P_low)) + wxT(" < P < ") + 
+	           "No sun synchronous orbit can be found with those parameters, try with " 
+		       + GmatStringUtil::Trim(GmatStringUtil::ToString(P_low)) + " < P < " + 
 		       GmatStringUtil::Trim(GmatStringUtil::ToString(P_high));
 	  }
 	  else if ((P>P_low)&&(P<P_high))
 	  {
          errormsg = 
-	        wxT("No sun synchronous orbit can be found with those parameters, try with ") 
-		    + GmatStringUtil::Trim(GmatStringUtil::ToString(i_low)) + wxT(" < INC < ") + 
+	        "No sun synchronous orbit can be found with those parameters, try with " 
+		    + GmatStringUtil::Trim(GmatStringUtil::ToString(i_low)) + " < INC < " + 
 		    GmatStringUtil::Trim(GmatStringUtil::ToString(i_high));
 	  }
 	  else
 	  {
 	     errormsg = 
-	        wxT("No sun synchronous orbit can be found with those parameters, try with ") 
-		    + GmatStringUtil::Trim(GmatStringUtil::ToString(P_low)) + wxT(" < ECC < ") + 
-		    GmatStringUtil::Trim(GmatStringUtil::ToString(P_high)) + wxT(", or try ") + 
-		    GmatStringUtil::Trim(GmatStringUtil::ToString(i_low)) + wxT(" < INC < ") + 
+	        "No sun synchronous orbit can be found with those parameters, try with " 
+		    + GmatStringUtil::Trim(GmatStringUtil::ToString(P_low)) + " < ECC < " + 
+		    GmatStringUtil::Trim(GmatStringUtil::ToString(P_high)) + ", or try " + 
+		    GmatStringUtil::Trim(GmatStringUtil::ToString(i_low)) + " < INC < " + 
 		    GmatStringUtil::Trim(GmatStringUtil::ToString(i_high));
 	  }
 	  isError = true;
@@ -1330,22 +1330,22 @@ void SunSync::SolveRoAAE(Real RoA, Real i, Real &a, Real &e)
 	  if ((RoA>RoA_low)&&(RoA<RoA_high))
 	  {
 	     if (i<i_high)
-		    errormsg = wxT("No sun synchronous orbit can be found");
+		    errormsg = "No sun synchronous orbit can be found";
 		 else
-			errormsg = wxT("No sun synchronous orbit can be found, try with INC < ") + 
+			errormsg = "No sun synchronous orbit can be found, try with INC < " + 
 		       GmatStringUtil::Trim(GmatStringUtil::ToString(i_high));
 	  }
 	  else if (i<i_high)
 	  {
-	     errormsg = wxT("No sun synchronous orbit can be found, try ") + 
-		    GmatStringUtil::Trim(GmatStringUtil::ToString(RoA_low)) + wxT(" < RA < ") + 
+	     errormsg = "No sun synchronous orbit can be found, try " + 
+		    GmatStringUtil::Trim(GmatStringUtil::ToString(RoA_low)) + " < RA < " + 
 		    GmatStringUtil::Trim(GmatStringUtil::ToString(RoA_high));
 	  }
 	  else
 	  {
-         errormsg = wxT("No sun synchronous orbit can be found, try ") + 
-		    GmatStringUtil::Trim(GmatStringUtil::ToString(RoA_low)) + wxT(" < RA < ") + 
-		    GmatStringUtil::Trim(GmatStringUtil::ToString(RoA_high)) + wxT(" or INC > ") + 
+         errormsg = "No sun synchronous orbit can be found, try " + 
+		    GmatStringUtil::Trim(GmatStringUtil::ToString(RoA_low)) + " < RA < " + 
+		    GmatStringUtil::Trim(GmatStringUtil::ToString(RoA_high)) + " or INC > " + 
 		    GmatStringUtil::Trim(GmatStringUtil::ToString(i_high));
 	  }
 	  isError = true;
@@ -1401,22 +1401,22 @@ void SunSync::SolveRoPAE(Real RoP, Real i, Real &a, Real &e)
       if ((RoP>RoP_low)&&(RoP<RoP_high))
 	  {
 	     if ((i*180/GmatMathConstants::PI)<i_high)
-		    errormsg = wxT("No sun synchronous orbit can be found");
+		    errormsg = "No sun synchronous orbit can be found";
 		 else
-			errormsg = wxT("No sun synchronous orbit can be found, try with INC > ") + 
-		       GmatStringUtil::Trim(GmatStringUtil::ToString(i_high)) + wxT("\n");
+			errormsg = "No sun synchronous orbit can be found, try with INC > " + 
+		       GmatStringUtil::Trim(GmatStringUtil::ToString(i_high)) + "\n";
 	  }
 	  else if ((i*180/GmatMathConstants::PI)<i_high)
 	  {
-	     errormsg = wxT("No sun synchronous orbit can be found, try ") + 
-		    GmatStringUtil::Trim(GmatStringUtil::ToString(RoP_low)) + wxT(" < RP < ") + 
+	     errormsg = "No sun synchronous orbit can be found, try " + 
+		    GmatStringUtil::Trim(GmatStringUtil::ToString(RoP_low)) + " < RP < " + 
 		    GmatStringUtil::Trim(GmatStringUtil::ToString(RoP_high));
 	  }
 	  else
 	  {
-         errormsg = wxT("No sun synchronous orbit can be found, try ") + 
-		    GmatStringUtil::Trim(GmatStringUtil::ToString(RoP_low)) + wxT(" < RP < ") + 
-		    GmatStringUtil::Trim(GmatStringUtil::ToString(RoP_high)) + wxT(" or INC > ") + 
+         errormsg = "No sun synchronous orbit can be found, try " + 
+		    GmatStringUtil::Trim(GmatStringUtil::ToString(RoP_low)) + " < RP < " + 
+		    GmatStringUtil::Trim(GmatStringUtil::ToString(RoP_high)) + " or INC > " + 
 		    GmatStringUtil::Trim(GmatStringUtil::ToString(i_high));
 	  }
 	  isError = true;

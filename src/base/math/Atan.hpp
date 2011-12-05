@@ -26,7 +26,7 @@
 class GMAT_API Atan : public MathFunction
 {
 public:
-   Atan(const wxString &nomme);
+   Atan(const std::string &nomme);
    virtual ~Atan();
    Atan(const Atan &copy);
                  

@@ -31,12 +31,12 @@
 struct GMAT_API RefObjType
 {
    Gmat::ObjectType objType;
-   wxString objName;
+   std::string objName;
    GmatBase *obj;
 
    // Constructor -- default values required for the DevStudio export issues 
    RefObjType(Gmat::ObjectType refType = Gmat::UNKNOWN_OBJECT, 
-      const wxString &refName = wxT(""), GmatBase *ref = NULL)
+      const std::string &refName = "", GmatBase *ref = NULL)
       {
          objType = refType;
          objName = refName;
@@ -61,7 +61,7 @@ struct GMAT_API RefObjType
     // of the members of the listed classes. It exports them from the DLL 
     // and imports them into the .exe file.
 
-    // This fixes wxString:
+    // This fixes std::string:
     EXPIMP_TEMPLATE template class DECLSPECIFIER std::allocator<RefObjType>;
     EXPIMP_TEMPLATE template class DECLSPECIFIER std::vector<RefObjType>;
 
@@ -71,7 +71,7 @@ class GMAT_API RefData
 {
 public:
 
-   RefData(const wxString &name = wxT(""));
+   RefData(const std::string &name = "");
    RefData(const RefData &rd);
    RefData& operator= (const RefData &rd);
    virtual ~RefData();
@@ -80,31 +80,31 @@ public:
    
    Integer GetNumRefObjects() const;
    
-   wxString GetRefObjectName(const Gmat::ObjectType type) const;
+   std::string GetRefObjectName(const Gmat::ObjectType type) const;
    const StringArray& GetRefObjectNameArray(const Gmat::ObjectType type);
    
    bool SetRefObjectName(const Gmat::ObjectType type,
-                         const wxString &name);
+                         const std::string &name);
    GmatBase* GetRefObject(const Gmat::ObjectType type,
-                          const wxString &name = wxT(""));
+                          const std::string &name = "");
    bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                     const wxString &name = wxT(""));
+                     const std::string &name = "");
 
    bool RenameRefObject(const Gmat::ObjectType type,
-                        const wxString &oldName,
-                        const wxString &newName);
+                        const std::string &oldName,
+                        const std::string &newName);
    
    virtual bool ValidateRefObjects(GmatBase *param) = 0;
-   virtual const wxString* GetValidObjectList() const;
+   virtual const std::string* GetValidObjectList() const;
 
 protected:
 
    //struct RefObjType
    //{
    //   Gmat::ObjectType objType;
-   //   wxString objName;
+   //   std::string objName;
    //   GmatBase *obj;
-   //   RefObjType(Gmat::ObjectType refType, const wxString &refName, GmatBase *ref)
+   //   RefObjType(Gmat::ObjectType refType, const std::string &refName, GmatBase *ref)
    //      {
    //         objType = refType;
    //         objName = refName;
@@ -121,7 +121,7 @@ protected:
    //      };
    //};
    
-   wxString mName;
+   std::string mName;
    std::vector<RefObjType> mRefObjList;
    
    StringArray mObjectTypeNames;
@@ -129,16 +129,16 @@ protected:
    Integer mNumRefObjects;
    
    bool AddRefObject(const Gmat::ObjectType type,
-                     const wxString &name, GmatBase *obj = NULL,
+                     const std::string &name, GmatBase *obj = NULL,
                      bool replaceName = false);
    
    bool SetRefObjectWithNewName(GmatBase *obj, const Gmat::ObjectType type,
-                                const wxString &name);
+                                const std::string &name);
    
-   bool HasObjectType(const wxString &type) const;
-   GmatBase* FindFirstObject(const wxString &type) const;
+   bool HasObjectType(const std::string &type) const;
+   GmatBase* FindFirstObject(const std::string &type) const;
    GmatBase* FindFirstObject(const Gmat::ObjectType type) const;
-   wxString FindFirstObjectName(const Gmat::ObjectType type) const;
+   std::string FindFirstObjectName(const Gmat::ObjectType type) const;
    
    virtual void InitializeRefObjects();
    virtual bool IsValidObjectType(Gmat::ObjectType type) = 0;

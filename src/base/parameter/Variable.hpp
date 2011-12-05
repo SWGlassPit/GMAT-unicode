@@ -30,8 +30,8 @@ class GMAT_API Variable : public RealVar
 {
 public:
 
-   Variable(const wxString &name, const wxString &valStr = wxT(""),
-            const wxString &desc = wxT(""), const wxString &unit = wxT(""));
+   Variable(const std::string &name, const std::string &valStr = "",
+            const std::string &desc = "", const std::string &unit = "");
    Variable(const Variable &copy);
    Variable& operator=(const Variable &right);
    virtual ~Variable();
@@ -44,27 +44,27 @@ public:
    virtual GmatBase* Clone() const;
    virtual void Copy(const GmatBase*);
    
-   virtual bool SetStringParameter(const Integer id, const wxString &value);
-   virtual bool SetStringParameter(const wxString &label,
-                                   const wxString &value);
+   virtual bool SetStringParameter(const Integer id, const std::string &value);
+   virtual bool SetStringParameter(const std::string &label,
+                                   const std::string &value);
    
    virtual bool RenameRefObject(const Gmat::ObjectType type,
-                                const wxString &oldName,
-                                const wxString &newName);
+                                const std::string &oldName,
+                                const std::string &newName);
    
-   virtual wxString GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual std::string GetRefObjectName(const Gmat::ObjectType type) const;
    virtual bool SetRefObjectName(const Gmat::ObjectType type,
-                                 const wxString &name);
+                                 const std::string &name);
    virtual GmatBase* GetRefObject(const Gmat::ObjectType type,
-                                  const wxString &name);
+                                  const std::string &name);
    virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                             const wxString &name = wxT(""));
+                             const std::string &name = "");
    
    virtual const StringArray& GetRefObjectNameArray(const Gmat::ObjectType type);
    
-   virtual const wxString& GetGeneratingString(Gmat::WriteMode mode,
-                                                  const wxString &prefix,
-                                                  const wxString &useName);
+   virtual const std::string& GetGeneratingString(Gmat::WriteMode mode,
+                                                  const std::string &prefix,
+                                                  const std::string &useName);
 protected:
    
    // Currently simple math expression (+-*/^) is no longer allowed in object mode.

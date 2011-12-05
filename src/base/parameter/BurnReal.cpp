@@ -31,9 +31,9 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// BurnReal(const wxString &name, const wxString &typeStr, 
-//          GmatBase *obj, const wxString &desc,
-//          const wxString &unit, GmatParam::DepObject depObj)
+// BurnReal(const std::string &name, const std::string &typeStr, 
+//          GmatBase *obj, const std::string &desc,
+//          const std::string &unit, GmatParam::DepObject depObj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -46,11 +46,11 @@
  * @param <depObj> object which parameter is dependent on (COORD_SYS, ORIGIN, NO_DEP)
  */
 //------------------------------------------------------------------------------
-BurnReal::BurnReal(const wxString &name, const wxString &typeStr,
+BurnReal::BurnReal(const std::string &name, const std::string &typeStr,
                    Gmat::ObjectType ownerType, GmatBase *obj,
-                   const wxString &desc, const wxString &unit,
+                   const std::string &desc, const std::string &unit,
                    GmatParam::DepObject depObj, bool isSettable)
-   : RealVar(name, wxT(""), typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit,
+   : RealVar(name, "", typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit,
              depObj, ownerType, false, isSettable)
 {
    mNeedCoordSystem = true;
@@ -144,7 +144,7 @@ void BurnReal::SetSolarSystem(SolarSystem *ss)
 {
    #if DEBUG_BURNREAL
       MessageInterface::ShowMessage
-         (wxT("BurnReal::SetSolarSystem() ss=%s to %s\n"), ss->GetTypeName().c_str(),
+         ("BurnReal::SetSolarSystem() ss=%s to %s\n", ss->GetTypeName().c_str(),
           this->GetName().c_str());
    #endif
    
@@ -168,7 +168,7 @@ void BurnReal::SetInternalCoordSystem(CoordinateSystem *cs)
 {
    #if DEBUG_BURNREAL
       MessageInterface::ShowMessage
-         (wxT("BurnReal::SetInternalCoordSystem() cs=%s to %s\n"), cs->GetTypeName().c_str(),
+         ("BurnReal::SetInternalCoordSystem() cs=%s to %s\n", cs->GetTypeName().c_str(),
           this->GetName().c_str());
    #endif
    
@@ -210,7 +210,7 @@ bool BurnReal::AddRefObject(GmatBase *obj, bool replaceName)
 
       #if DEBUG_BURNREAL
       MessageInterface::ShowMessage
-         (wxT("BurnReal::AddRefObject() obj->GetName()=%s, type=%d\n"),
+         ("BurnReal::AddRefObject() obj->GetName()=%s, type=%d\n",
           obj->GetName().c_str(), obj->GetType());
       #endif
       
@@ -261,8 +261,8 @@ bool BurnReal::Initialize()
    catch(BaseException &e)
    {
       throw GmatBaseException
-         (wxT("BurnReal::Initialize() Fail to initialize Parameter:") +
-          this->GetTypeName() + wxT("\n") + e.GetFullMessage());
+         ("BurnReal::Initialize() Fail to initialize Parameter:" +
+          this->GetTypeName() + "\n" + e.GetFullMessage());
    }
    
    return true;
@@ -275,18 +275,18 @@ bool BurnReal::Initialize()
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool BurnReal::RenameRefObject(const Gmat::ObjectType type,
-                               const wxString &oldName,
-                               const wxString &newName)
+                               const std::string &oldName,
+                               const std::string &newName)
 {
    return BurnData::RenameRefObject(type, oldName, newName);
 }
 
 
 //------------------------------------------------------------------------------
-// virtual wxString GetRefObjectName(const Gmat::ObjectType type) const
+// virtual std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
 /**
  * Calls BurnData to get reference object name for given type.
@@ -294,15 +294,15 @@ bool BurnReal::RenameRefObject(const Gmat::ObjectType type,
  * @return reference object name.
  */
 //------------------------------------------------------------------------------
-wxString BurnReal::GetRefObjectName(const Gmat::ObjectType type) const
+std::string BurnReal::GetRefObjectName(const Gmat::ObjectType type) const
 {
-   wxString objName = BurnData::GetRefObjectName(type);
+   std::string objName = BurnData::GetRefObjectName(type);
    
-   if (objName == wxT("INVALID_OBJECT_TYPE"))
+   if (objName == "INVALID_OBJECT_TYPE")
    {
       throw ParameterException
-         (wxT("BurnReal::GetRefObjectName() ") + GmatBase::GetObjectTypeString(type) +
-          wxT(" is not valid object type of ") + this->GetTypeName() + wxT("\n"));
+         ("BurnReal::GetRefObjectName() " + GmatBase::GetObjectTypeString(type) +
+          " is not valid object type of " + this->GetTypeName() + "\n");
    }
    
    return objName;
@@ -328,7 +328,7 @@ const StringArray& BurnReal::GetRefObjectNameArray(const Gmat::ObjectType type)
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObjectName(const Gmat::ObjectType type,
-//                               const wxString &name)
+//                               const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets reference object name to given object type.
@@ -339,14 +339,14 @@ const StringArray& BurnReal::GetRefObjectNameArray(const Gmat::ObjectType type)
  */
 //------------------------------------------------------------------------------
 bool BurnReal::SetRefObjectName(const Gmat::ObjectType type,
-                                const wxString &name)
+                                const std::string &name)
 {
    bool ret = BurnData::SetRefObjectName(type, name);
    
    if (!ret)
       MessageInterface::ShowMessage
-         (wxT("*** Warning *** BurnReal::SetRefObjectName() RefObjType:%s is not valid ")
-          wxT("for ParameterName:%s\n"), GmatBase::GetObjectTypeString(type).c_str(),
+         ("*** Warning *** BurnReal::SetRefObjectName() RefObjType:%s is not valid "
+          "for ParameterName:%s\n", GmatBase::GetObjectTypeString(type).c_str(),
           this->GetName().c_str());
    
    return ret;
@@ -355,7 +355,7 @@ bool BurnReal::SetRefObjectName(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // virtual GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                                const wxString &name)
+//                                const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Calls BurnData to get object pointer of given type and name
@@ -367,15 +367,15 @@ bool BurnReal::SetRefObjectName(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 GmatBase* BurnReal::GetRefObject(const Gmat::ObjectType type,
-                                 const wxString &name)
+                                 const std::string &name)
 {
    GmatBase *obj = BurnData::GetRefObject(type, name);
    
    if (obj == NULL)
    {
       throw ParameterException
-         (wxT("BurnReal::GetRefObject() Cannot find ref. object of type:") +
-          GmatBase::GetObjectTypeString(type) + wxT(", name:") + name + wxT(" in ") +
+         ("BurnReal::GetRefObject() Cannot find ref. object of type:" +
+          GmatBase::GetObjectTypeString(type) + ", name:" + name + " in " +
           this->GetName());
    }
    
@@ -385,7 +385,7 @@ GmatBase* BurnReal::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                           const wxString &name = wxT(""))
+//                           const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Calls BurnData to set reference object pointer to given type and name.
@@ -399,11 +399,11 @@ GmatBase* BurnReal::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool BurnReal::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                            const wxString &name)
+                            const std::string &name)
 {
    #if DEBUG_BURNREAL
    MessageInterface::ShowMessage
-      (wxT("BurnReal::SetRefObject() setting type=%d, name=%s to %s\n"),
+      ("BurnReal::SetRefObject() setting type=%d, name=%s to %s\n",
        type, name.c_str(), this->GetName().c_str());
    #endif
    

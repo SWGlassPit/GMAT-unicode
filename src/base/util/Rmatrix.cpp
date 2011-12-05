@@ -380,7 +380,7 @@ Rmatrix Rmatrix::operator*(const Rmatrix &m) const
 {
    #ifdef DEBUG_MULTIPLY
    MessageInterface::ShowMessage
-      (wxT("Rmatrix::operator*() entered this=%s, m=%s\n"), this->ToString().c_str(),
+      ("Rmatrix::operator*() entered this=%s, m=%s\n", this->ToString().c_str(),
        m.ToString().c_str());
    #endif
    
@@ -393,7 +393,7 @@ Rmatrix Rmatrix::operator*(const Rmatrix &m) const
    
    #ifdef DEBUG_MULTIPLY
    MessageInterface::ShowMessage
-      (wxT("   rowsD=%d, colsD=%d, m.rowsD=%d, m.colsD=%d\n"), rowsD, colsD, m.rowsD, m.colsD);
+      ("   rowsD=%d, colsD=%d, m.rowsD=%d, m.colsD=%d\n", rowsD, colsD, m.rowsD, m.colsD);
    #endif
    
    if (colsD != m.rowsD)
@@ -408,7 +408,7 @@ Rmatrix Rmatrix::operator*(const Rmatrix &m) const
    
    #ifdef DEBUG_MULTIPLY
    MessageInterface::ShowMessage
-      (wxT("   oneByOneTimesMatrix=%d, matrixTimesOneByOne=%d\n"),
+      ("   oneByOneTimesMatrix=%d, matrixTimesOneByOne=%d\n",
        oneByOneTimesMatrix, matrixTimesOneByOne);
    #endif
    
@@ -423,7 +423,7 @@ Rmatrix Rmatrix::operator*(const Rmatrix &m) const
       
       #ifdef DEBUG_MULTIPLY
       MessageInterface::ShowMessage
-         (wxT("Rmatrix::operator*() returning OneByOne*Matrix %s\n"), prod.ToString().c_str());
+         ("Rmatrix::operator*() returning OneByOne*Matrix %s\n", prod.ToString().c_str());
       #endif
       return prod;
    }
@@ -438,7 +438,7 @@ Rmatrix Rmatrix::operator*(const Rmatrix &m) const
       
       #ifdef DEBUG_MULTIPLY
       MessageInterface::ShowMessage
-         (wxT("Rmatrix::operator*() returning Matrix*OneByOne %s\n"), prod.ToString().c_str());
+         ("Rmatrix::operator*() returning Matrix*OneByOne %s\n", prod.ToString().c_str());
       #endif
       return prod;
    }
@@ -453,7 +453,7 @@ Rmatrix Rmatrix::operator*(const Rmatrix &m) const
       
       #ifdef DEBUG_MULTIPLY
       MessageInterface::ShowMessage
-         (wxT("Rmatrix::operator*() returning %s\n"), prod.ToString().c_str());
+         ("Rmatrix::operator*() returning %s\n", prod.ToString().c_str());
       #endif
       return prod;
    }
@@ -480,7 +480,7 @@ Rmatrix Rmatrix::operator/( const Rmatrix &m) const
 { 
    #ifdef DEBUG_DIVIDE
    MessageInterface::ShowMessage
-      (wxT("Rmatrix::operator/() entered this=%s, m=%s\n"), this->ToString().c_str(),
+      ("Rmatrix::operator/() entered this=%s, m=%s\n", this->ToString().c_str(),
        m.ToString().c_str());
    #endif
    
@@ -492,7 +492,7 @@ Rmatrix Rmatrix::operator/( const Rmatrix &m) const
    
    #ifdef DEBUG_DIVIDE
    MessageInterface::ShowMessage
-      (wxT("   rowsD=%d, colsD=%d, m.rowsD=%d, m.colsD=%d\n"), rowsD, colsD, m.rowsD, m.colsD);
+      ("   rowsD=%d, colsD=%d, m.rowsD=%d, m.colsD=%d\n", rowsD, colsD, m.rowsD, m.colsD);
    #endif
    
    if (rowsD == 1 && colsD == 1)
@@ -502,7 +502,7 @@ Rmatrix Rmatrix::operator/( const Rmatrix &m) const
    
    #ifdef DEBUG_DIVIDE
    MessageInterface::ShowMessage
-      (wxT("   oneByOneDivideMatrix=%d, matrixDivideOneByOne=%d\n"),
+      ("   oneByOneDivideMatrix=%d, matrixDivideOneByOne=%d\n",
        oneByOneDivideMatrix, matrixDivideOneByOne);
    #endif
    
@@ -517,7 +517,7 @@ Rmatrix Rmatrix::operator/( const Rmatrix &m) const
       
       #ifdef DEBUG_DIVIDE
       MessageInterface::ShowMessage
-         (wxT("Rmatrix::operator/() returning OneByOne/Matrix %s\n"), div.ToString().c_str());
+         ("Rmatrix::operator/() returning OneByOne/Matrix %s\n", div.ToString().c_str());
       #endif
       return div;
    }
@@ -532,7 +532,7 @@ Rmatrix Rmatrix::operator/( const Rmatrix &m) const
       
       #ifdef DEBUG_DIVIDE
       MessageInterface::ShowMessage
-         (wxT("Rmatrix::operator/() returning Matrix/OneByOne %s\n"), div.ToString().c_str());
+         ("Rmatrix::operator/() returning Matrix/OneByOne %s\n", div.ToString().c_str());
       #endif
       return div;
    }
@@ -763,7 +763,7 @@ Real Rmatrix::Trace() const
 Real Rmatrix::Determinant() const
 {
    #ifdef DEBUG_DETERMINANT
-      MessageInterface::ShowMessage(wxT("Entering Determinant with rowsD = %d and colsD = %d\n"), rowsD, colsD);
+      MessageInterface::ShowMessage("Entering Determinant with rowsD = %d and colsD = %d\n", rowsD, colsD);
    #endif
    if (isSizedD == false)
    {
@@ -777,21 +777,21 @@ Real Rmatrix::Determinant() const
    if (rowsD == 1)
    {
       #ifdef DEBUG_DETERMINANT
-         MessageInterface::ShowMessage(wxT("Entering Determinant rowsD == 1 clause\n"));
+         MessageInterface::ShowMessage("Entering Determinant rowsD == 1 clause\n");
       #endif
       D = elementD[0];
    }
    else if (rowsD == 2)
    {
       #ifdef DEBUG_DETERMINANT
-         MessageInterface::ShowMessage(wxT("Entering Determinant rowsD == 2 clause\n"));
+         MessageInterface::ShowMessage("Entering Determinant rowsD == 2 clause\n");
       #endif
       D = elementD[0]*elementD[3] - elementD[1]*elementD[2];
    }
    else if (rowsD == 3)
    {
       #ifdef DEBUG_DETERMINANT
-         MessageInterface::ShowMessage(wxT("Entering Determinant rowsD == 3 clause\n"));
+         MessageInterface::ShowMessage("Entering Determinant rowsD == 3 clause\n");
       #endif
       D = elementD[0]*elementD[4]*elementD[8] +
          elementD[1]*elementD[5]*elementD[6] +
@@ -805,12 +805,12 @@ Real Rmatrix::Determinant() const
       // Currently limited by inefficiencies in the algorithm
       if (rowsD > 9)
       {
-         wxString errmsg = wxT("GMAT Determinant method not yet optimized.  ");
-         errmsg += wxT("Currently limited to matrices of size 9x9 or smaller.");
+         std::string errmsg = "GMAT Determinant method not yet optimized.  ";
+         errmsg += "Currently limited to matrices of size 9x9 or smaller.";
          throw UtilityException(errmsg);
       }
       #ifdef DEBUG_DETERMINANT
-         MessageInterface::ShowMessage(wxT("Entering Determinant else clause\n"));
+         MessageInterface::ShowMessage("Entering Determinant else clause\n");
       #endif
       D = 0.0;
       int i;
@@ -818,15 +818,15 @@ Real Rmatrix::Determinant() const
       {
          Real c = Cofactor(0,i);
          #ifdef DEBUG_DETERMINANT
-            MessageInterface::ShowMessage(wxT("Cofactor(0,%d) = %12.10f\n"), (Integer) i, c);
-            MessageInterface::ShowMessage(wxT("   now multiplying by element[%d] (%12.10f) to get %12.10f\n"),
+            MessageInterface::ShowMessage("Cofactor(0,%d) = %12.10f\n", (Integer) i, c);
+            MessageInterface::ShowMessage("   now multiplying by element[%d] (%12.10f) to get %12.10f\n",
                   (Integer) i, elementD[i], (elementD[i] * c));
          #endif
          D += elementD[i] * c;
 //         D += elementD[i]*Cofactor(0,i);
       }
       #ifdef DEBUG_DETERMINANT
-         MessageInterface::ShowMessage(wxT("... at end of summation, D = %12.10f\n"), D);
+         MessageInterface::ShowMessage("... at end of summation, D = %12.10f\n", D);
       #endif
    }
    
@@ -840,8 +840,8 @@ Real Rmatrix::Determinant() const
 Real Rmatrix::Cofactor(int r, int c) const
 {
    #ifdef DEBUG_DETERMINANT
-      MessageInterface::ShowMessage(wxT("Entering Cofactor with r     = %d and c     = %d\n"), r, c);
-      MessageInterface::ShowMessage(wxT("                   and rowsD = %d and colsD = %d\n"), rowsD, colsD);
+      MessageInterface::ShowMessage("Entering Cofactor with r     = %d and c     = %d\n", r, c);
+      MessageInterface::ShowMessage("                   and rowsD = %d and colsD = %d\n", rowsD, colsD);
    #endif
    if (isSizedD == false)
    {
@@ -852,8 +852,8 @@ Real Rmatrix::Cofactor(int r, int c) const
       throw Rmatrix::NotSquare();
    if (rowsD > 9)
    {
-      wxString errmsg = wxT("GMAT Cofactor method not yet optimized.  ");
-      errmsg += wxT("Currently limited to matrices of size 9x9 or smaller.");
+      std::string errmsg = "GMAT Cofactor method not yet optimized.  ";
+      errmsg += "Currently limited to matrices of size 9x9 or smaller.";
       throw UtilityException(errmsg);
    }
    Rmatrix Minor(rowsD - 1, colsD - 1);
@@ -877,7 +877,7 @@ Real Rmatrix::Cofactor(int r, int c) const
       } // if (i != r)
    } // for (i = ...
    #ifdef DEBUG_DETERMINANT
-      MessageInterface::ShowMessage(wxT("about to call Determinant on minor: \n%s\n"), (Minor.ToString()).c_str());
+      MessageInterface::ShowMessage("about to call Determinant on minor: \n%s\n", (Minor.ToString()).c_str());
    #endif
 
    Cof = Minor.Determinant();
@@ -1260,14 +1260,15 @@ Rvector Rmatrix::GetColumn(int c) const
 const StringArray& Rmatrix::GetStringVals(Integer p, Integer w)
 {
    stringVals.clear();
-   wxString ss(wxT(""));
+   std::stringstream ss("");
    
+   ss.setf(std::ios::right);
    
    for (int i=0; i<rowsD*colsD; i++)
    {
-      ss.Clear();
-      ss << elementD[i];
-      stringVals.push_back(ss);
+      ss.str("");
+      ss << std::setw(w) << std::setprecision(p) << elementD[i];
+      stringVals.push_back(ss.str());
    }
 
    return stringVals;
@@ -1275,8 +1276,8 @@ const StringArray& Rmatrix::GetStringVals(Integer p, Integer w)
 
 
 //------------------------------------------------------------------------------
-// wxString ToString(Integer precision, Integer width, bool horizontal,
-//                      const wxString &prefix, bool appendEol) const
+// std::string ToString(Integer precision, Integer width, bool horizontal,
+//                      const std::string &prefix, bool appendEol) const
 //------------------------------------------------------------------------------
 /*
  * Formats Rmatrix value to String.
@@ -1284,32 +1285,30 @@ const StringArray& Rmatrix::GetStringVals(Integer p, Integer w)
  * @param  precision   Precision to be used in formatting
  * @param  width       Width to be used in formatting (1)
  * @param  horizontal  Format horizontally if true (false)
- * @param  prefix      Prefix to be used in vertical formatting (wxT(""))
+ * @param  prefix      Prefix to be used in vertical formatting ("")
  * @param  appendEol   Appends eol if true (true)
  *
  * @return Formatted Rmatrix value string
  */
 //------------------------------------------------------------------------------
-wxString Rmatrix::ToString(Integer precision, Integer width, bool horizontal,
-                              const wxString &prefix, bool appendEol) const
+std::string Rmatrix::ToString(Integer precision, Integer width, bool horizontal,
+                              const std::string &prefix, bool appendEol) const
 {
    GmatGlobal *global = GmatGlobal::Instance();
    global->SetActualFormat(false, false, precision, width, horizontal, 1, prefix,
                            appendEol);
    
-   std::stringstream ss;
-   ss.str("");
+   std::stringstream ss("");
    ss << *this;
-   wxString ssOut = wxString::FromAscii(ss.str().c_str());
-   return ssOut;
+   return ss.str();
 }
 
 
 //------------------------------------------------------------------------------
-// wxString ToString(bool useCurrentFormat, bool scientific,
+// std::string ToString(bool useCurrentFormat, bool scientific,
 //                      bool showPoint, Integer precision, Integer width,
 //                      bool horizontal, Integer spacing,
-//                      const wxString &prefix, bool appendEol) const
+//                      const std::string &prefix, bool appendEol) const
 //------------------------------------------------------------------------------
 /*
  * Formats Rmatrix value to String.
@@ -1326,10 +1325,10 @@ wxString Rmatrix::ToString(Integer precision, Integer width, bool horizontal,
  * @return Formatted Rmatrix value string
  */
 //------------------------------------------------------------------------------
-wxString Rmatrix::ToString(bool useCurrentFormat, bool scientific,
+std::string Rmatrix::ToString(bool useCurrentFormat, bool scientific,
                               bool showPoint, Integer precision, Integer width,
                               bool horizontal, Integer spacing,
-                              const wxString &prefix, bool appendEol) const
+                              const std::string &prefix, bool appendEol) const
 {
    GmatGlobal *global = GmatGlobal::Instance();
    
@@ -1337,16 +1336,14 @@ wxString Rmatrix::ToString(bool useCurrentFormat, bool scientific,
       global->SetActualFormat(scientific, showPoint, precision, width, horizontal,
                               spacing, prefix, appendEol);
    
-   std::stringstream ss;
-   ss.str("");
+   std::stringstream ss("");
    ss << *this;
-   wxString ssOut = wxString::FromAscii(ss.str().c_str());
-   return ssOut;
+   return ss.str();
 }
 
 
 //------------------------------------------------------------------------------
-// wxString ToRowString(Integer row, Integer precision, Integer width,
+// std::string ToRowString(Integer row, Integer precision, Integer width,
 //                         bool showPoint)
 //------------------------------------------------------------------------------
 /*
@@ -1360,12 +1357,12 @@ wxString Rmatrix::ToString(bool useCurrentFormat, bool scientific,
  * @return Formatted Rmatrix value string
  */
 //------------------------------------------------------------------------------
-wxString Rmatrix::ToRowString(Integer row, Integer precision, Integer width,
+std::string Rmatrix::ToRowString(Integer row, Integer precision, Integer width,
                                  bool showPoint) const
 {
    #ifdef DEBUG_TO_ROW_STRING
    MessageInterface::ShowMessage
-      (wxT("Rmatrix::ToRowString() row=%d, prec=%d, width=%d, showPoint=%d\n"),
+      ("Rmatrix::ToRowString() row=%d, prec=%d, width=%d, showPoint=%d\n",
        row, precision, width, showPoint);
    #endif
    
@@ -1384,7 +1381,7 @@ wxString Rmatrix::ToRowString(Integer row, Integer precision, Integer width,
    
    Rvector rowVec = GetRow(row);
    Integer size = rowVec.GetSize();
-   wxString ss(wxT(""));
+   std::stringstream ss("");
    
    for (int i=0; i<size; i++)
    {
@@ -1395,29 +1392,29 @@ wxString Rmatrix::ToRowString(Integer row, Integer precision, Integer width,
       // ex) 1.23456e-015 to 1.23456e-15
       //ss << buffer;
       
-      wxString sval = wxString::FromAscii(buffer);
-      if ((sval.find(wxT("e-0")) != sval.npos) && (sval.size() - sval.find(wxT("e-0"))) == 5)
-         sval = GmatStringUtil::Replace(sval, wxT("e-0"), wxT("e-"));
-      if ((sval.find(wxT("e+0")) != sval.npos) && (sval.size() - sval.find(wxT("e+0"))) == 5)
-         sval = GmatStringUtil::Replace(sval, wxT("e+0"), wxT("e+"));
+      std::string sval = buffer;
+      if ((sval.find("e-0") != sval.npos) && (sval.size() - sval.find("e-0")) == 5)
+         sval = GmatStringUtil::Replace(sval, "e-0", "e-");
+      if ((sval.find("e+0") != sval.npos) && (sval.size() - sval.find("e+0")) == 5)
+         sval = GmatStringUtil::Replace(sval, "e+0", "e+");
       
       ss << sval;
-      ss << wxT(" ");
+      ss << " ";
    }
    
-   return ss;
+   return ss.str();
    
    //-----------------------------------------------------------------
    #else
    //-----------------------------------------------------------------
    
    GmatGlobal *global = GmatGlobal::Instance();
-   global->SetActualFormat(false, showPoint, precision, width, true, 1, wxT(""), false);
+   global->SetActualFormat(false, showPoint, precision, width, true, 1, "", false);
    Rvector rowVec = GetRow(row);
-   wxString ss(wxT(""));
-   ss << rowVec << wxT(" ");
+   std::stringstream ss("");
+   ss << rowVec << " ";
    
-   return ss;
+   return ss.str();
    
    //-----------------------------------------------------------------
    #endif

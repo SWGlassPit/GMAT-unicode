@@ -92,9 +92,9 @@ public:
    friend Rmatrix33  TransposeTimesTranspose(const Rmatrix33& m1,
                                              const Rmatrix33& m2); 
    
-   const wxString* GetDataDescriptions() const;
+   const std::string* GetDataDescriptions() const;
          
 private:
-   static const wxString descs[9];
+   static const std::string descs[9];
 };
 #endif // Rmatrix33_hpp

@@ -42,15 +42,15 @@ public:
     class TimeConverterException : public BaseException
     {
        public: 
-          TimeConverterException(const wxString &message = 
-           wxT("TimeConverterException: Can't convert due to invalid date"))
+          TimeConverterException(const std::string &message = 
+           "TimeConverterException: Can't convert due to invalid date")
            : BaseException(message) {};
     };
 
     // Default constructor
     TimeConverter();
-    TimeConverter(const wxString &name);
-    TimeConverter(const wxString &typeStr, const wxString &name);
+    TimeConverter(const std::string &name);
+    TimeConverter(const std::string &typeStr, const std::string &name);
     // Copy constructor
     TimeConverter(const TimeConverter &timeConverter);
     // Assignment operator
@@ -60,13 +60,13 @@ public:
     virtual ~TimeConverter();
 
     // public method 
-    wxString Convert(const wxString &time, 
-                        const wxString &fromDateFormat,
-                        const wxString &toDateFormat);
+    std::string Convert(const std::string &time, 
+                        const std::string &fromDateFormat,
+                        const std::string &toDateFormat);
 
 protected:
-   wxString          ModJulianToGregorian(const Real mjTime);
-   Real                 GregorianToModJulian(const wxString greg);
+   std::string          ModJulianToGregorian(const Real mjTime);
+   Real                 GregorianToModJulian(const std::string greg);
 
 private:
 

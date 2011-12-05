@@ -132,8 +132,8 @@ bool Jacobian::Initialize(UnsignedInt varCount, UnsignedInt componentCount)
    
    #ifdef DEBUG_JACOBIAN
       MessageInterface::ShowMessage(
-         wxT("Jacobian initialized in mode %d with %d variables and %d components ")
-         wxT("giving %d entries\n"), calcMode, varCount, componentCount, 
+         "Jacobian initialized in mode %d with %d variables and %d components "
+         "giving %d entries\n", calcMode, varCount, componentCount, 
          elementCount);
    #endif
 
@@ -167,7 +167,7 @@ void Jacobian::Achieved(Integer pertNumber, Integer componentId,
    {
       #ifdef DEBUG_JACOBIAN
          MessageInterface::ShowMessage(
-               wxT("   Nominal data[%d], gives %.12lf\n"), componentId, 
+               "   Nominal data[%d], gives %.12lf\n", componentId, 
                value);
       #endif
 
@@ -208,11 +208,11 @@ bool Jacobian::Calculate(std::vector<Real> &jac)
    {
       if (pert[i] == 0.0)
          throw SolverException(
-               wxT("Perturbation of size 0.0 found in Jacobian calculation"));
+               "Perturbation of size 0.0 found in Jacobian calculation");
 
       #ifdef DEBUG_JACOBIAN
          MessageInterface::ShowMessage(
-            wxT("   Finding Jacobian in mode %d\n"), calcMode);
+            "   Finding Jacobian in mode %d\n", calcMode);
       #endif
          
       for (UnsignedInt j = 0; j < numComponents; ++j)
@@ -226,7 +226,7 @@ bool Jacobian::Calculate(std::vector<Real> &jac)
 
                #ifdef DEBUG_JACOBIAN_DETAILS      
                   MessageInterface::ShowMessage(
-                     wxT("         FD[%d]: (%.12lf - %.12lf) / %.12lf = %.12lf\n"), 
+                     "         FD[%d]: (%.12lf - %.12lf) / %.12lf = %.12lf\n", 
                      rowStart+i, plusPertEffect[rowStart+i], nominal[j], 
                      pert[i], jacobian[rowStart+i]);
                #endif
@@ -240,7 +240,7 @@ bool Jacobian::Calculate(std::vector<Real> &jac)
 
                #ifdef DEBUG_JACOBIAN_DETAILS      
                   MessageInterface::ShowMessage(
-                     wxT("         CD[%d]: (%.12lf - %.12lf) / 2 * %.12lf = %.12lf\n"), 
+                     "         CD[%d]: (%.12lf - %.12lf) / 2 * %.12lf = %.12lf\n", 
                      rowStart+i, plusPertEffect[rowStart+i], 
                      minusPertEffect[rowStart+i], pert[i], 
                      jacobian[rowStart+i]);
@@ -255,7 +255,7 @@ bool Jacobian::Calculate(std::vector<Real> &jac)
 
                #ifdef DEBUG_JACOBIAN_DETAILS      
                   MessageInterface::ShowMessage(
-                     wxT("         CD[%d]: (%.12lf - %.12lf) / %.12lf = %.12lf\n"), 
+                     "         CD[%d]: (%.12lf - %.12lf) / %.12lf = %.12lf\n", 
                      rowStart+i, minusPertEffect[rowStart+i], 
                      nominal[j], pert[i], 
                      jacobian[rowStart+i]);
@@ -266,26 +266,26 @@ bool Jacobian::Calculate(std::vector<Real> &jac)
             case USER_SUPPLIED:
             default:
                throw SolverException(
-                     wxT("Jacobian differencing mode is not available"));
+                     "Jacobian differencing mode is not available");
          }
       }
    }
 
    #ifdef DEBUG_JACOBIAN
-      MessageInterface::ShowMessage(wxT("      Jacobian = \n"));
+      MessageInterface::ShowMessage("      Jacobian = \n");
       for (UnsignedInt i = 0; i < compSize; ++i)
       {
          MessageInterface::ShowMessage(
-            wxT("                 ["));
+            "                 [");
          for (UnsignedInt j = 0; j < pertSize; ++j)
          {
-            MessageInterface::ShowMessage(wxT("%.12lf"), jacobian[i * pertSize + j]);
+            MessageInterface::ShowMessage("%.12lf", jacobian[i * pertSize + j]);
             if (j < pertSize - 1)
-               MessageInterface::ShowMessage(wxT(", "));
+               MessageInterface::ShowMessage(", ");
          }
-         MessageInterface::ShowMessage(wxT("]\n"));
+         MessageInterface::ShowMessage("]\n");
       }
-      MessageInterface::ShowMessage(wxT("\n"));
+      MessageInterface::ShowMessage("\n");
    #endif
 
    jac = jacobian;

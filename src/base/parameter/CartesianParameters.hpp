@@ -38,7 +38,7 @@ class GMAT_API CartX : public OrbitReal
 {
 public:
 
-   CartX(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   CartX(const std::string &name = "", GmatBase *obj = NULL);
    CartX(const CartX &copy);
    CartX& operator=(const CartX &right);
    virtual ~CartX();
@@ -66,7 +66,7 @@ class GMAT_API CartY : public OrbitReal
 {
 public:
 
-   CartY(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   CartY(const std::string &name = "", GmatBase *obj = NULL);
    CartY(const CartY &copy);
    CartY& operator=(const CartY &right);
    virtual ~CartY();
@@ -94,7 +94,7 @@ class GMAT_API CartZ : public OrbitReal
 {
 public:
 
-   CartZ(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   CartZ(const std::string &name = "", GmatBase *obj = NULL);
    CartZ(const CartZ &copy);
    CartZ& operator=(const CartZ &right);
    virtual ~CartZ();
@@ -122,7 +122,7 @@ class GMAT_API CartVx : public OrbitReal
 {
 public:
 
-   CartVx(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   CartVx(const std::string &name = "", GmatBase *obj = NULL);
    CartVx(const CartVx &copy);
    CartVx& operator=(const CartVx &right);
    virtual ~CartVx();
@@ -150,7 +150,7 @@ class GMAT_API CartVy : public OrbitReal
 {
 public:
 
-   CartVy(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   CartVy(const std::string &name = "", GmatBase *obj = NULL);
    CartVy(const CartVy &copy);
    CartVy& operator=(const CartVy &right);
    virtual ~CartVy();
@@ -178,7 +178,7 @@ class GMAT_API CartVz : public OrbitReal
 {
 public:
 
-   CartVz(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   CartVz(const std::string &name = "", GmatBase *obj = NULL);
    CartVz(const CartVz &copy);
    CartVz& operator=(const CartVz &right);
    virtual ~CartVz();
@@ -207,7 +207,7 @@ class GMAT_API CartState : public OrbitRvec6
 {
 public:
 
-   CartState(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   CartState(const std::string &name = "", GmatBase *obj = NULL);
    CartState(const CartState &copy);
    CartState& operator=(const CartState &right);
    virtual ~CartState();

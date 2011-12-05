@@ -40,10 +40,10 @@ public:
 
    // inherited from GmatBase
    virtual GmatBase*       Clone() const;
-   virtual const wxString&
+   virtual const std::string&
                            GetGeneratingString(Gmat::WriteMode mode,
-                                               const wxString &prefix,
-                                               const wxString &useName);
+                                               const std::string &prefix,
+                                               const std::string &useName);
 protected:
 
    enum
@@ -52,7 +52,7 @@ protected:
    };
 
    // save for possible later use
-   //static const wxString
+   //static const std::string
    //PARAMETER_TEXT[EndOptimizeParamCount - GmatCommandParamCount];   
    //static const Gmat::ParameterType
    //PARAMETER_TYPE[EndOptimizeParamCount - GmatCommandParamCount];

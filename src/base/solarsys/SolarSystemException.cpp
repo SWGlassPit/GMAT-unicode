@@ -26,15 +26,15 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  SolarSystemException(wxString details)
+//  SolarSystemException(std::string details)
 //------------------------------------------------------------------------------
 /**
 * Constructs an SolarSystemException object (default constructor).
  */
 //------------------------------------------------------------------------------
 
-SolarSystemException::SolarSystemException(wxString details) :
-BaseException  (wxT("SolarSystem exception: "), details)
+SolarSystemException::SolarSystemException(std::string details) :
+BaseException  ("SolarSystem exception: ", details)
 {
 
 }

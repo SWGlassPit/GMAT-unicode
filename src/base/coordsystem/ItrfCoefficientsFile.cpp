@@ -23,9 +23,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <wx/wfstream.h>
-#include <wx/sstream.h>
-#include <wx/txtstrm.h>
 #include <sstream>
 #include <iomanip>
 #include "gmatdefs.hpp"
@@ -43,12 +40,12 @@ using namespace GmatMathUtil; // for trig functions, angle conversions
 //------------------------------------------------------------------------------
 // static data
 //------------------------------------------------------------------------------
-const wxString ItrfCoefficientsFile::FIRST_NUT_PHRASE_1980  = wxT("1980 IAU");
-const wxString ItrfCoefficientsFile::FIRST_NUT_PHRASE_1996  = wxT("1996 IAU");
-const wxString ItrfCoefficientsFile::FIRST_NUT_PHRASE_2000  = wxT("2000 IAU");
-const wxString ItrfCoefficientsFile::FIRST_PLAN_PHRASE_1980 = wxT("1980 IAU");
-const wxString ItrfCoefficientsFile::FIRST_PLAN_PHRASE_1996 = wxT("1996 IAU");
-const wxString ItrfCoefficientsFile::FIRST_PLAN_PHRASE_2000 = wxT("unknown"); // ????
+const std::string ItrfCoefficientsFile::FIRST_NUT_PHRASE_1980  = "1980 IAU";
+const std::string ItrfCoefficientsFile::FIRST_NUT_PHRASE_1996  = "1996 IAU";
+const std::string ItrfCoefficientsFile::FIRST_NUT_PHRASE_2000  = "2000 IAU";
+const std::string ItrfCoefficientsFile::FIRST_PLAN_PHRASE_1980 = "1980 IAU";
+const std::string ItrfCoefficientsFile::FIRST_PLAN_PHRASE_1996 = "1996 IAU";
+const std::string ItrfCoefficientsFile::FIRST_PLAN_PHRASE_2000 = "unknown"; // ????
 
 const Integer ItrfCoefficientsFile::MAX_1980_NUT_TERMS         = 106;
 const Real    ItrfCoefficientsFile::MULT_1980_NUT              = 1.0e-04;
@@ -68,7 +65,7 @@ const Real    ItrfCoefficientsFile::MULT_2000_PLANET      = 1.0e-04;        // ?
 //------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//  ItrfCoefficientsFile(const wxString &fileName 
+//  ItrfCoefficientsFile(const std::string &fileName 
 //                       Integer nutTerms  = REDEX96_MAX_NUT_TERMS,
 //                       Integer planTerms = MAX_PLANET_TERMS);
 //---------------------------------------------------------------------------
@@ -79,8 +76,8 @@ const Real    ItrfCoefficientsFile::MULT_2000_PLANET      = 1.0e-04;        // ?
  * @param fileNme  EOP file name.
  */
 //---------------------------------------------------------------------------
-ItrfCoefficientsFile::ItrfCoefficientsFile(const wxString &nutFileName,
-                      const wxString planFileName,
+ItrfCoefficientsFile::ItrfCoefficientsFile(const std::string &nutFileName,
+                      const std::string planFileName,
                       GmatItrf::NutationTerms  nutTerms,
                       GmatItrf::PlanetaryTerms planTerms) :
 nutation              (nutTerms),
@@ -234,44 +231,44 @@ void ItrfCoefficientsFile::Initialize()
    
    //Integer a1, a2, a3, a4, a5;
    //Integer ap1, ap2, ap3, ap4, ap5, ap6, ap7, ap8, ap9, ap10;
-   wxString   line;
+   std::string   line;
    // read the nutation file and put the coefficient data into the arrays
-   wxFFileInputStream itrfNutFileInput(nutationFileName);
-   wxTextInputStream itrfNutFile(itrfNutFileInput);
-   if (!itrfNutFileInput.IsOk())
-      throw UtilityException(wxT("Error opening ItrfCoefficientsFile (nutation) ") + 
+   std::ifstream itrfNutFile(nutationFileName.c_str());
+   if (!itrfNutFile)
+      throw UtilityException("Error opening ItrfCoefficientsFile (nutation) " + 
                              nutationFileName);
+   itrfNutFile.setf(std::ios::skipws);
    // read until the requested data set is found
    bool startNow = false;
-   while ((!startNow) && (!itrfNutFileInput.Eof()))
+   while ((!startNow) && (!itrfNutFile.eof()))
    {
-      line = itrfNutFile.ReadLine();
+      getline(itrfNutFile,line);
       #ifdef DEBUG_ITRF_FILE
-         MessageInterface::ShowMessage(wxT("Itrf Line (0): ") + line + wxT("\n"));
+         MessageInterface::ShowMessage("Itrf Line (0): " + line + "\n");
       #endif
-      if (line.find(firstNutPhrase) != wxString::npos)   startNow = true;
+      if (line.find(firstNutPhrase) != std::string::npos)   startNow = true;
    }
    if (startNow == false)
-      throw UtilityException(wxT("Unable to read nutation ItrfCoefficientsFile."));
+      throw UtilityException("Unable to read nutation ItrfCoefficientsFile.");
    // skip line with column headings
-   line = itrfNutFile.ReadLine();
+   getline(itrfNutFile, line);
    #ifdef DEBUG_ITRF_FILE
-      MessageInterface::ShowMessage(wxT("Itrf Line(1): ") + line + wxT("\n"));
+      MessageInterface::ShowMessage("Itrf Line(1): " + line + "\n");
    #endif
-   if (line.find(wxT("a2")) == wxString::npos)
-      throw UtilityException(wxT("Itrf nutation file not in expected format."));
+   if (line.find("a2") == std::string::npos)
+      throw UtilityException("Itrf nutation file not in expected format.");
    Integer i;
    for (i = 0; i < nut; i++)
    {
-      if (itrfNutFileInput.Eof())
+      if (itrfNutFile.eof())
           throw UtilityException(
-               wxT("Itrf nutation file does not contain all expected values."));
-      line = itrfNutFile.ReadLine();
+               "Itrf nutation file does not contain all expected values.");
+      getline(itrfNutFile,line);
       #ifdef DEBUG_ITRF_FILE
-         MessageInterface::ShowMessage(wxT("Itrf Line(n): ") + line + wxT("\n"));
+         MessageInterface::ShowMessage("Itrf Line(n): " + line + "\n");
       #endif
-      wxStringInputStream lineStream(line);
-      wxTextInputStream lineStr(lineStream);
+      std::istringstream lineStr;
+      lineStr.str(line);
       lineStr >> (a.at(0)).at(i) >> (a.at(1)).at(i) >> (a.at(2)).at(i) 
               >> (a.at(3)).at(i) >> (a.at(4)).at(i);
       if (nutation == GmatItrf::NUTATION_1980)  // no E or F terms
@@ -284,7 +281,7 @@ void ItrfCoefficientsFile::Initialize()
                  >> (*E)(i) >> (*F)(i);
       }        
       #ifdef DEBUG_ITRF_FILE
-         MessageInterface::ShowMessage(wxT("A(%d) = %f\n"), i, (*A)(i));
+         MessageInterface::ShowMessage("A(%d) = %f\n", i, (*A)(i));
       #endif
    }
    (*A) *= nutMult;
@@ -294,36 +291,37 @@ void ItrfCoefficientsFile::Initialize()
    (*E) *= nutMult;
    (*F) *= nutMult;
  
+   if (itrfNutFile.is_open())  itrfNutFile.close();
    
    if (planetary == GmatItrf::PLANETARY_1996)
    {
       // read the planetary file and put the coefficient data into the arrays
-      wxFFileInputStream itrfPlanFileInput(planetaryFileName);
-      wxTextInputStream itrfPlanFile(itrfPlanFileInput);
-      if (!itrfPlanFileInput.IsOk())
-         throw UtilityException(wxT("Error opening ItrfCoefficientsFile (planetary) ") + 
+      std::ifstream itrfPlanFile(planetaryFileName.c_str());
+      if (!itrfPlanFile)
+         throw UtilityException("Error opening ItrfCoefficientsFile (planetary) " + 
                                 planetaryFileName);
+      itrfPlanFile.setf(std::ios::skipws);
       // read until the requested data set is found
       startNow = false;
-      while ((!startNow) && (!itrfPlanFileInput.Eof()))
+      while ((!startNow) && (!itrfPlanFile.eof()))
       {
-         line = itrfPlanFile.ReadLine();
-         if (line.find(firstPlanPhrase) != wxString::npos)   startNow = true;
+         getline(itrfPlanFile,line);
+         if (line.find(firstPlanPhrase) != std::string::npos)   startNow = true;
       }
       if (startNow == false)
-         throw UtilityException(wxT("Unable to read planetary ItrfCoefficientsFile."));
+         throw UtilityException("Unable to read planetary ItrfCoefficientsFile.");
       // skip line with column headings
-      line = itrfPlanFile.ReadLine();
-      if (line.find(wxT("a2")) == wxString::npos)
-         throw UtilityException(wxT("Itrf planetary file not in expected format."));
+      getline(itrfPlanFile, line);
+      if (line.find("a2") == std::string::npos)
+         throw UtilityException("Itrf planetary file not in expected format.");
       for (i = 0; i < nutpl; i++)
       {
-         if (itrfPlanFileInput.Eof())
+         if (itrfPlanFile.eof())
             throw UtilityException(
-                  wxT("Itrf planetary file does not contain all expected values."));
-         line = itrfPlanFile.ReadLine();
-         wxStringInputStream lineStream(line);
-         wxTextInputStream lineStr(lineStream);
+                  "Itrf planetary file does not contain all expected values.");
+         getline(itrfPlanFile,line);
+         std::istringstream lineStr;
+         lineStr.str(line);
          lineStr >> (ap.at(0)).at(i) >> (ap.at(1)).at(i) >> (ap.at(2)).at(i) 
                  >> (ap.at(3)).at(i) >> (ap.at(4)).at(i) >> (ap.at(5)).at(i)
                  >> (ap.at(6)).at(i) >> (ap.at(7)).at(i) >> (ap.at(8)).at(i) 
@@ -334,6 +332,7 @@ void ItrfCoefficientsFile::Initialize()
       (*Bp) *= planMult;
       (*Cp) *= planMult;
       (*Dp) *= planMult;
+      if (itrfPlanFile.is_open()) itrfPlanFile.close();
    }
    
     filesAreInitialized = true;
@@ -350,12 +349,12 @@ GmatItrf::PlanetaryTerms ItrfCoefficientsFile::GetPlanetaryTermsSource() const
     return planetary;
 }
 
-wxString ItrfCoefficientsFile::GetNutationFileName() const
+std::string ItrfCoefficientsFile::GetNutationFileName() const
 {
    return nutationFileName;
 }
 
-wxString ItrfCoefficientsFile::GetPlanetaryFileName() const
+std::string ItrfCoefficientsFile::GetPlanetaryFileName() const
 {
    return planetaryFileName;
 }
@@ -500,7 +499,7 @@ bool ItrfCoefficientsFile::InitializeArrays(GmatItrf::NutationTerms nutT,
     
    #ifdef DEBUG_ITRF_FILE
       MessageInterface::ShowMessage(
-      wxT("In ITRF::InitializeArrays, nut terms = %d, plan terms = %d\n"),
+      "In ITRF::InitializeArrays, nut terms = %d, plan terms = %d\n",
       nut, nutpl);
    #endif
       
@@ -542,13 +541,13 @@ bool ItrfCoefficientsFile::InitializeArrays(GmatItrf::NutationTerms nutT,
      
    #ifdef DEBUG_ITRF_FILE
       MessageInterface::ShowMessage(
-      wxT("In ITRF::InitializeArrays, initialization is complete\n"));
+      "In ITRF::InitializeArrays, initialization is complete\n");
    #endif
    return true;
 }
 
 //------------------------------------------------------------------------------
-//  bool IsBlank(wxString& aLine)
+//  bool IsBlank(char* aLine)
 //------------------------------------------------------------------------------
 /**
  * This method returns true if the string is empty or is all white space.
@@ -556,10 +555,10 @@ bool ItrfCoefficientsFile::InitializeArrays(GmatItrf::NutationTerms nutT,
  * @return success flag.
  */
 //------------------------------------------------------------------------------
-bool ItrfCoefficientsFile::IsBlank(const wxString& aLine)
+bool ItrfCoefficientsFile::IsBlank(const char* aLine)
 {
    Integer i;
-   for (i=0;i<aLine.Length();i++)
+   for (i=0;i<(int)strlen(aLine);i++)
    {
       //loj: 5/18/04 if (!isblank(aLine[i])) return false;
       if (!isspace(aLine[i])) return false;

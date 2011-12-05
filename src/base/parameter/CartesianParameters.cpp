@@ -37,7 +37,7 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// CartX(const wxString &name, GmatBase *obj)
+// CartX(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -46,10 +46,10 @@
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-CartX::CartX(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("X"), obj, wxT("Cartesian X"), wxT("Km"), GmatParam::COORD_SYS, true)
+CartX::CartX(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "X", obj, "Cartesian X", "Km", GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::RED32;
@@ -167,7 +167,7 @@ GmatBase* CartX::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// CartY(const wxString &name, GmatBase *obj)
+// CartY(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -176,10 +176,10 @@ GmatBase* CartX::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-CartY::CartY(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("Y"), obj, wxT("Cartesian Y"), wxT("Km"), GmatParam::COORD_SYS, true)
+CartY::CartY(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "Y", obj, "Cartesian Y", "Km", GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::GREEN32;
@@ -297,7 +297,7 @@ GmatBase* CartY::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// CartZ(const wxString &name, GmatBase *obj)
+// CartZ(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -306,10 +306,10 @@ GmatBase* CartY::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-CartZ::CartZ(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("Z"), obj, wxT("Cartesian Z"), wxT("Km"), GmatParam::COORD_SYS, true)
+CartZ::CartZ(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "Z", obj, "Cartesian Z", "Km", GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::BLUE32;
@@ -426,7 +426,7 @@ GmatBase* CartZ::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// CartVx(const wxString &name, GmatBase *obj)
+// CartVx(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -435,10 +435,10 @@ GmatBase* CartZ::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-CartVx::CartVx(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("VX"), obj, wxT("Cartesian VX"), wxT("Km/s"), GmatParam::COORD_SYS, true)
+CartVx::CartVx(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "VX", obj, "Cartesian VX", "Km/s", GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::RED32;
@@ -556,7 +556,7 @@ GmatBase* CartVx::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// CartVy(const wxString &name, GmatBase *obj)
+// CartVy(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -565,10 +565,10 @@ GmatBase* CartVx::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-CartVy::CartVy(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("VY"), obj, wxT("Cartesian Y"), wxT("Km/s"), GmatParam::COORD_SYS, true)
+CartVy::CartVy(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "VY", obj, "Cartesian Y", "Km/s", GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::GREEN32;
@@ -686,7 +686,7 @@ GmatBase* CartVy::Clone(void) const
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// CartVz(const wxString &name, GmatBase *obj)
+// CartVz(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -695,10 +695,10 @@ GmatBase* CartVy::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-CartVz::CartVz(const wxString &name, GmatBase *obj)
-   : OrbitReal(name, wxT("VZ"), obj, wxT("Cartesian VZ"), wxT("Km/s"), GmatParam::COORD_SYS, true)
+CartVz::CartVz(const std::string &name, GmatBase *obj)
+   : OrbitReal(name, "VZ", obj, "Cartesian VZ", "Km/s", GmatParam::COORD_SYS, true)
 {
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    #ifdef USE_PREDEFINED_COLORS
       mColor = GmatColor::BLUE32;
@@ -818,7 +818,7 @@ GmatBase* CartVz::Clone(void) const
 
 
 //------------------------------------------------------------------------------
-// CartState(const wxString &name, GmatBase *obj)
+// CartState(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -827,12 +827,12 @@ GmatBase* CartVz::Clone(void) const
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-CartState::CartState(const wxString &name, GmatBase *obj)
-   : OrbitRvec6(name, wxT("Cartesian"), obj, wxT("Cartesian State Vector"),
-                wxT("Km/s"), GmatParam::COORD_SYS)
+CartState::CartState(const std::string &name, GmatBase *obj)
+   : OrbitRvec6(name, "Cartesian", obj, "Cartesian State Vector",
+                "Km/s", GmatParam::COORD_SYS)
 {
    // Parameter member data
-   mDepObjectName = wxT("EarthMJ2000Eq");
+   mDepObjectName = "EarthMJ2000Eq";
    SetRefObjectName(Gmat::COORDINATE_SYSTEM, mDepObjectName);
    mIsPlottable = false;
 }
@@ -902,7 +902,7 @@ bool CartState::Evaluate()
    
    #if DEBUG_CARTESIAN_PARAM
    MessageInterface::ShowMessage
-      (wxT("CartState::Evaluate() mRvec6Value =\n%s\n"),
+      ("CartState::Evaluate() mRvec6Value =\n%s\n",
        mRvec6Value.ToString().c_str());
    #endif
    

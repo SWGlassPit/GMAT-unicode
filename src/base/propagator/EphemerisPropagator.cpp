@@ -34,13 +34,13 @@
 //------------------------------------------------------------------------------
 
 /// EphemerisPropagator parameter labels
-const wxString
+const std::string
 EphemerisPropagator::PARAMETER_TEXT[EphemerisPropagatorParamCount - PropagatorParamCount] =
 {
-      wxT("StepSize"),       // EPHEM_STEP_SIZE
-      wxT("CentralBody"),    // EPHEM_CENTRAL_BODY
-      wxT("EpochFormat"),    // EPHEM_EPOCH_FORMAT
-      wxT("StartEpoch")      // EPHEM_START_EPOCH
+      "StepSize",       // EPHEM_STEP_SIZE
+      "CentralBody",    // EPHEM_CENTRAL_BODY
+      "EpochFormat",    // EPHEM_EPOCH_FORMAT
+      "StartEpoch"      // EPHEM_START_EPOCH
 };
 
 /// EphemerisPropagator parameter types
@@ -59,7 +59,7 @@ EphemerisPropagator::PARAMETER_TYPE[EphemerisPropagatorParamCount - PropagatorPa
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// EphemerisPropagator(const wxString & typeStr, const wxString & name)
+// EphemerisPropagator(const std::string & typeStr, const std::string & name)
 //------------------------------------------------------------------------------
 /**
  * Default constructor
@@ -68,11 +68,11 @@ EphemerisPropagator::PARAMETER_TYPE[EphemerisPropagatorParamCount - PropagatorPa
  * @param name Name of the constructed object
  */
 //------------------------------------------------------------------------------
-EphemerisPropagator::EphemerisPropagator(const wxString & typeStr,
-      const wxString & name) :
+EphemerisPropagator::EphemerisPropagator(const std::string & typeStr,
+      const std::string & name) :
    Propagator           (typeStr, name),
    ephemStep            (300.0),
-   epochFormat          (wxT("A1ModJulian")),
+   epochFormat          ("A1ModJulian"),
    initialEpoch         (-987654321.0),
    currentEpoch         (-987654321.0),
    timeFromEpoch        (0.0),
@@ -86,12 +86,12 @@ EphemerisPropagator::EphemerisPropagator(const wxString & typeStr,
    stepDirection        (1.0),
    solarSystem          (NULL)
 {
-   objectTypeNames.push_back(wxT("EphemerisPropagator"));
+   objectTypeNames.push_back("EphemerisPropagator");
    parameterCount = EphemerisPropagatorParamCount;
 
-   wxString epochString(wxT(""));
+   std::stringstream epochString("");
    epochString << GmatTimeConstants::MJD_OF_J2000;
-   startEpoch = epochString;
+   startEpoch = epochString.str();
 }
 
 
@@ -190,7 +190,7 @@ EphemerisPropagator& EphemerisPropagator::operator=(
 
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -200,7 +200,7 @@ EphemerisPropagator& EphemerisPropagator::operator=(
  * @return ID for the requested parameter.
  */
 //------------------------------------------------------------------------------
-Integer EphemerisPropagator::GetParameterID(const wxString &str) const
+Integer EphemerisPropagator::GetParameterID(const std::string &str) const
 {
    for (Integer i = PropagatorParamCount;
          i < EphemerisPropagatorParamCount; ++i)
@@ -214,7 +214,7 @@ Integer EphemerisPropagator::GetParameterID(const wxString &str) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -224,7 +224,7 @@ Integer EphemerisPropagator::GetParameterID(const wxString &str) const
  * @return parameter text for the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString EphemerisPropagator::GetParameterText(const Integer id) const
+std::string EphemerisPropagator::GetParameterText(const Integer id) const
 {
    if (id >= PropagatorParamCount && id < EphemerisPropagatorParamCount)
       return PARAMETER_TEXT[id - PropagatorParamCount];
@@ -233,7 +233,7 @@ wxString EphemerisPropagator::GetParameterText(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-//  wxString GetParameterUnit(const Integer id) const
+//  std::string GetParameterUnit(const Integer id) const
 //---------------------------------------------------------------------------
 /**
  * Retrieve the unit for the parameter.
@@ -243,7 +243,7 @@ wxString EphemerisPropagator::GetParameterText(const Integer id) const
  * @return unit for the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString EphemerisPropagator::GetParameterUnit(const Integer id) const
+std::string EphemerisPropagator::GetParameterUnit(const Integer id) const
 {
    return Propagator::GetParameterUnit(id);
 }
@@ -271,7 +271,7 @@ Gmat::ParameterType EphemerisPropagator::GetParameterType(
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -281,7 +281,7 @@ Gmat::ParameterType EphemerisPropagator::GetParameterType(
  * @return parameter type string of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString EphemerisPropagator::GetParameterTypeString(const Integer id) const
+std::string EphemerisPropagator::GetParameterTypeString(const Integer id) const
 {
    if (id >= PropagatorParamCount && id < EphemerisPropagatorParamCount)
       return Propagator::PARAM_TYPE_STRING[GetParameterType(id)];
@@ -310,7 +310,7 @@ bool EphemerisPropagator::IsParameterReadOnly(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-//  bool IsParameterReadOnly(const wxString &label) const
+//  bool IsParameterReadOnly(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * Checks to see if the requested parameter is read only.
@@ -320,7 +320,7 @@ bool EphemerisPropagator::IsParameterReadOnly(const Integer id) const
  * @return true if the parameter is read only, false (the default) if not.
  */
 //---------------------------------------------------------------------------
-bool EphemerisPropagator::IsParameterReadOnly(const wxString &label) const
+bool EphemerisPropagator::IsParameterReadOnly(const std::string &label) const
 {
    return IsParameterReadOnly(GetParameterID(label));
 }
@@ -363,7 +363,7 @@ Real EphemerisPropagator::GetRealParameter(const Integer id) const
 Real EphemerisPropagator::SetRealParameter(const Integer id, const Real value)
 {
    #ifdef DEBUG_SET_PROPAGATOR_PARAMETER
-   	MessageInterface::ShowMessage(wxT("EphemProp %p setting ID %d to %lf\n"), this,
+   	MessageInterface::ShowMessage("EphemProp %p setting ID %d to %lf\n", this,
       	   id, value);
    #endif
    if (id == EPHEM_STEP_SIZE)
@@ -386,7 +386,7 @@ Real EphemerisPropagator::SetRealParameter(const Integer id, const Real value)
    }
 
    #ifdef DEBUG_SET_PROPAGATOR_PARAMETER
-      MessageInterface::ShowMessage(wxT("   ---> <%p> has ephem step %lf\n"), this, ephemStep);
+      MessageInterface::ShowMessage("   ---> <%p> has ephem step %lf\n", this, ephemStep);
    #endif
    
    return Propagator::SetRealParameter(id, value);
@@ -477,7 +477,7 @@ Real EphemerisPropagator::SetRealParameter(const Integer id, const Real value,
 
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label) const
+// Real GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves a Real parameter from then object
@@ -487,14 +487,14 @@ Real EphemerisPropagator::SetRealParameter(const Integer id, const Real value,
  * @return The parameter's value
  */
 //------------------------------------------------------------------------------
-Real EphemerisPropagator::GetRealParameter(const wxString &label) const
+Real EphemerisPropagator::GetRealParameter(const std::string &label) const
 {
    return GetRealParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// Real SetRealParameter(const wxString &label, const Real value)
+// Real SetRealParameter(const std::string &label, const Real value)
 //------------------------------------------------------------------------------
 /**
  * Sets the value for a Real parameter
@@ -505,7 +505,7 @@ Real EphemerisPropagator::GetRealParameter(const wxString &label) const
  * @return The parameter's value at the end of the call
  */
 //------------------------------------------------------------------------------
-Real EphemerisPropagator::SetRealParameter(const wxString &label,
+Real EphemerisPropagator::SetRealParameter(const std::string &label,
       const Real value)
 {
    return SetRealParameter(GetParameterID(label), value);
@@ -513,7 +513,7 @@ Real EphemerisPropagator::SetRealParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label, const Integer index) const
+// Real GetRealParameter(const std::string &label, const Integer index) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves a Real parameter value from a RealArray
@@ -524,7 +524,7 @@ Real EphemerisPropagator::SetRealParameter(const wxString &label,
  * @return The parameter's value
  */
 //------------------------------------------------------------------------------
-Real EphemerisPropagator::GetRealParameter(const wxString &label,
+Real EphemerisPropagator::GetRealParameter(const std::string &label,
       const Integer index) const
 {
    return GetRealParameter(GetParameterID(label), index);
@@ -532,7 +532,7 @@ Real EphemerisPropagator::GetRealParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// Real EphemerisPropagator::SetRealParameter(const wxString &label,
+// Real EphemerisPropagator::SetRealParameter(const std::string &label,
 //       const Real value, const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -545,7 +545,7 @@ Real EphemerisPropagator::GetRealParameter(const wxString &label,
  * @return The parameter's value
  */
 //------------------------------------------------------------------------------
-Real EphemerisPropagator::SetRealParameter(const wxString &label,
+Real EphemerisPropagator::SetRealParameter(const std::string &label,
       const Real value, const Integer index)
 {
    return SetRealParameter(GetParameterID(label), value, index);
@@ -553,7 +553,7 @@ Real EphemerisPropagator::SetRealParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label, const Integer row,
+// Real GetRealParameter(const std::string &label, const Integer row,
 //       const Integer col) const
 //------------------------------------------------------------------------------
 /**
@@ -566,7 +566,7 @@ Real EphemerisPropagator::SetRealParameter(const wxString &label,
  * @return The parameter's value
  */
 //------------------------------------------------------------------------------
-Real EphemerisPropagator::GetRealParameter(const wxString &label,
+Real EphemerisPropagator::GetRealParameter(const std::string &label,
       const Integer row, const Integer col) const
 {
    return GetRealParameter(GetParameterID(label), row, col);
@@ -574,7 +574,7 @@ Real EphemerisPropagator::GetRealParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// Real SetRealParameter(const wxString &label, const Real value,
+// Real SetRealParameter(const std::string &label, const Real value,
 //       const Integer row, const Integer col))
 //------------------------------------------------------------------------------
 /**
@@ -588,7 +588,7 @@ Real EphemerisPropagator::GetRealParameter(const wxString &label,
  * @return The parameter's value
  */
 //------------------------------------------------------------------------------
-Real EphemerisPropagator::SetRealParameter(const wxString &label,
+Real EphemerisPropagator::SetRealParameter(const std::string &label,
       const Real value, const Integer row, const Integer col)
 {
    return SetRealParameter(GetParameterID(label), value, row, col);
@@ -596,7 +596,7 @@ Real EphemerisPropagator::SetRealParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves string parameters
@@ -606,7 +606,7 @@ Real EphemerisPropagator::SetRealParameter(const wxString &label,
  * @return The string
  */
 //------------------------------------------------------------------------------
-wxString  EphemerisPropagator::GetStringParameter(const Integer id) const
+std::string  EphemerisPropagator::GetStringParameter(const Integer id) const
 {
    switch (id)
    {
@@ -628,7 +628,7 @@ wxString  EphemerisPropagator::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Sets the value for a parameter
@@ -640,7 +640,7 @@ wxString  EphemerisPropagator::GetStringParameter(const Integer id) const
  */
 //------------------------------------------------------------------------------
 bool EphemerisPropagator::SetStringParameter(const Integer id,
-      const wxString &value)
+      const std::string &value)
 {
    switch (id)
    {
@@ -654,9 +654,9 @@ bool EphemerisPropagator::SetStringParameter(const Integer id,
 
       case EPHEM_START_EPOCH:
          startEpoch = value;
-         if (startEpoch == wxT("FromSpacecraft"))
+         if (startEpoch == "FromSpacecraft")
             startEpochSource = FROM_SPACECRAFT;
-         else if (startEpoch == wxT("EphemStart"))
+         else if (startEpoch == "EphemStart")
             startEpochSource = FROM_EPHEM;
          else
             startEpochSource = FROM_SCRIPT;
@@ -671,7 +671,7 @@ bool EphemerisPropagator::SetStringParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id, const Integer index) const
+// std::string GetStringParameter(const Integer id, const Integer index) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves string parameters from a StringArray
@@ -682,7 +682,7 @@ bool EphemerisPropagator::SetStringParameter(const Integer id,
  * @return The string
  */
 //------------------------------------------------------------------------------
-wxString EphemerisPropagator::GetStringParameter(const Integer id,
+std::string EphemerisPropagator::GetStringParameter(const Integer id,
       const Integer index) const
 {
    return Propagator::GetStringParameter(id, index);
@@ -690,7 +690,7 @@ wxString EphemerisPropagator::GetStringParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value,
+// bool SetStringParameter(const Integer id, const std::string &value,
 //       const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -704,14 +704,14 @@ wxString EphemerisPropagator::GetStringParameter(const Integer id,
  */
 //------------------------------------------------------------------------------
 bool EphemerisPropagator::SetStringParameter(const Integer id,
-      const wxString &value, const Integer index)
+      const std::string &value, const Integer index)
 {
    return Propagator::SetStringParameter(id, value, index);
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves string parameters
@@ -721,15 +721,15 @@ bool EphemerisPropagator::SetStringParameter(const Integer id,
  * @return The string
  */
 //------------------------------------------------------------------------------
-wxString EphemerisPropagator::GetStringParameter(
-      const wxString &label) const
+std::string EphemerisPropagator::GetStringParameter(
+      const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Sets the value for a parameter
@@ -740,15 +740,15 @@ wxString EphemerisPropagator::GetStringParameter(
  * @return true on success, false on failure
  */
 //------------------------------------------------------------------------------
-bool EphemerisPropagator::SetStringParameter(const wxString &label,
-      const wxString &value)
+bool EphemerisPropagator::SetStringParameter(const std::string &label,
+      const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label,
+// std::string GetStringParameter(const std::string &label,
 //       const Integer index) const
 //------------------------------------------------------------------------------
 /**
@@ -760,7 +760,7 @@ bool EphemerisPropagator::SetStringParameter(const wxString &label,
  * @return The string
  */
 //------------------------------------------------------------------------------
-wxString EphemerisPropagator::GetStringParameter(const wxString &label,
+std::string EphemerisPropagator::GetStringParameter(const std::string &label,
       const Integer index) const
 {
    return GetStringParameter(GetParameterID(label), index);
@@ -768,7 +768,7 @@ wxString EphemerisPropagator::GetStringParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value,
+// bool SetStringParameter(const std::string &label, const std::string &value,
 //       const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -781,8 +781,8 @@ wxString EphemerisPropagator::GetStringParameter(const wxString &label,
  * @return true on success, false on failure
  */
 //------------------------------------------------------------------------------
-bool EphemerisPropagator::SetStringParameter(const wxString &label,
-      const wxString &value, const Integer index)
+bool EphemerisPropagator::SetStringParameter(const std::string &label,
+      const std::string &value, const Integer index)
 {
    return SetStringParameter(GetParameterID(label), value, index);
 }
@@ -802,34 +802,34 @@ bool EphemerisPropagator::SetStringParameter(const wxString &label,
 void EphemerisPropagator::SetSolarSystem(SolarSystem *ss)
 {
    if (ss == NULL)
-      MessageInterface::ShowMessage(wxT("Setting NULL solar system on %s\n"),
+      MessageInterface::ShowMessage("Setting NULL solar system on %s\n",
          instanceName.c_str());
    else
    {
       solarSystem = ss;
 
-      // wxT("Moon") no longer allowed
-//      wxString bName = centralBody;
-//      if (bName == wxT("Moon"))
-//         bName = wxT("Luna");
+      // "Moon" no longer allowed
+//      std::string bName = centralBody;
+//      if (bName == "Moon")
+//         bName = "Luna";
       propOrigin = solarSystem->GetBody(centralBody);
 
       if (propOrigin == NULL)
          throw ODEModelException(
-            wxT("Ephemeris propagator origin (") + centralBody +
-            wxT(") was not found in the solar system"));
+            "Ephemeris propagator origin (" + centralBody +
+            ") was not found in the solar system");
 
-      // wxT("Moon") no longer allowed
+      // "Moon" no longer allowed
 //      bName = j2kBodyName;
-//      if (bName == wxT("Moon"))
-//         bName = wxT("Luna");
+//      if (bName == "Moon")
+//         bName = "Luna";
       j2kBody = solarSystem->GetBody(j2kBodyName);
    }
 }
 
 
 //------------------------------------------------------------------------------
-// wxString  GetRefObjectName(const Gmat::ObjectType type) const
+// std::string  GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves the name of a reference object of the specified type
@@ -839,7 +839,7 @@ void EphemerisPropagator::SetSolarSystem(SolarSystem *ss)
  * @return The object's name
  */
 //------------------------------------------------------------------------------
-wxString  EphemerisPropagator::GetRefObjectName(
+std::string  EphemerisPropagator::GetRefObjectName(
       const Gmat::ObjectType type) const
 {
       return Propagator::GetRefObjectName(type);
@@ -861,8 +861,8 @@ const StringArray& EphemerisPropagator::GetRefObjectNameArray(
       const Gmat::ObjectType type)
 {
    #ifdef DEBUG_REF_OBJ
-      MessageInterface::ShowMessage(wxT("EphemerisPropagator::")
-            wxT("GetRefObjectNameArray(%d) called\n"), type);
+      MessageInterface::ShowMessage("EphemerisPropagator::"
+            "GetRefObjectNameArray(%d) called\n", type);
    #endif
 
    if ((type == Gmat::SPACECRAFT) || (type == Gmat::SPACEOBJECT) ||
@@ -874,7 +874,7 @@ const StringArray& EphemerisPropagator::GetRefObjectNameArray(
 
 
 //------------------------------------------------------------------------------
-// bool SetRefObjectName(const Gmat::ObjectType type, const wxString &name)
+// bool SetRefObjectName(const Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Passes in the name of a reference object for use during initialization
@@ -886,7 +886,7 @@ const StringArray& EphemerisPropagator::GetRefObjectNameArray(
  */
 //------------------------------------------------------------------------------
 bool EphemerisPropagator::SetRefObjectName(const Gmat::ObjectType type,
-      const wxString &name)
+      const std::string &name)
 {
    bool retval = false;
 
@@ -905,8 +905,8 @@ bool EphemerisPropagator::SetRefObjectName(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// bool RenameRefObject(const Gmat::ObjectType type, const wxString &oldName,
-//       const wxString &newName)
+// bool RenameRefObject(const Gmat::ObjectType type, const std::string &oldName,
+//       const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * Changes the name of a previously set reference object.
@@ -923,7 +923,7 @@ bool EphemerisPropagator::SetRefObjectName(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool EphemerisPropagator::RenameRefObject(const Gmat::ObjectType type,
-      const wxString &oldName, const wxString &newName)
+      const std::string &oldName, const std::string &newName)
 {
    bool retval = false;
 
@@ -942,7 +942,7 @@ bool EphemerisPropagator::RenameRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//       const wxString &name)
+//       const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Passes reference objects in to the propagator
@@ -955,14 +955,14 @@ bool EphemerisPropagator::RenameRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool EphemerisPropagator::SetRefObject(GmatBase *obj,
-      const Gmat::ObjectType type, const wxString &name)
+      const Gmat::ObjectType type, const std::string &name)
 {
    #ifdef DEBUG_REF_OBJ
          MessageInterface::ShowMessage
-               (wxT("EphemerisPropagator::SetRefObject() <%s> entered, obj=<%p><%s>")
-                wxT("<%s>, type=%d, name='%s'\n"), GetName().c_str(), obj,
-                (obj ? obj->GetTypeName().c_str() : wxT("NULL")),
-                (obj ? obj->GetName().c_str() : wxT("NULL")), type, name.c_str());
+               ("EphemerisPropagator::SetRefObject() <%s> entered, obj=<%p><%s>"
+                "<%s>, type=%d, name='%s'\n", GetName().c_str(), obj,
+                (obj ? obj->GetTypeName().c_str() : "NULL"),
+                (obj ? obj->GetName().c_str() : "NULL"), type, name.c_str());
    #endif
 
    bool retval = false;
@@ -989,7 +989,7 @@ bool EphemerisPropagator::SetRefObject(GmatBase *obj,
 
 //------------------------------------------------------------------------------
 // bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//       const wxString &name, const Integer index)
+//       const std::string &name, const Integer index)
 //------------------------------------------------------------------------------
 /**
  * Passes reference objects in to the propagator for use in an object array
@@ -1003,12 +1003,12 @@ bool EphemerisPropagator::SetRefObject(GmatBase *obj,
  */
 //------------------------------------------------------------------------------
 bool EphemerisPropagator::SetRefObject(GmatBase *obj,
-      const Gmat::ObjectType type, const wxString &name, const Integer index)
+      const Gmat::ObjectType type, const std::string &name, const Integer index)
 {
    bool retval = false;
 
    #ifdef DEBUG_INITIALIZATION
-      MessageInterface::ShowMessage(wxT("Setting object named %s at index %d\n"),
+      MessageInterface::ShowMessage("Setting object named %s at index %d\n",
             name.c_str(), index);
    #endif
 
@@ -1089,10 +1089,10 @@ bool EphemerisPropagator::Initialize()
       }
 
       #ifdef DEBUG_INITIALIZATION
-         MessageInterface::ShowMessage(wxT("State epoch %s from spacecraft\n"),
-               ((startEpochSource == FROM_SPACECRAFT) ? wxT("is") : wxT("is not")));
-         MessageInterface::ShowMessage(wxT("State epoch %s from ephemeris\n"),
-               ((startEpochSource == FROM_EPHEM) ? wxT("is") : wxT("is not")));
+         MessageInterface::ShowMessage("State epoch %s from spacecraft\n",
+               ((startEpochSource == FROM_SPACECRAFT) ? "is" : "is not"));
+         MessageInterface::ShowMessage("State epoch %s from ephemeris\n",
+               ((startEpochSource == FROM_EPHEM) ? "is" : "is not"));
       #endif
       switch (startEpochSource)
       {
@@ -1104,8 +1104,8 @@ bool EphemerisPropagator::Initialize()
                initialEpoch = ((SpaceObject*)(propObjects[0]))->GetEpoch();
                timeFromEpoch = 0.0;
                #ifdef DEBUG_INITIALIZATION
-                  MessageInterface::ShowMessage(wxT("From spacecraft epoch = %lf, ")
-                        wxT("elapsed time = %lf\n"), initialEpoch, timeFromEpoch);
+                  MessageInterface::ShowMessage("From spacecraft epoch = %lf, "
+                        "elapsed time = %lf\n", initialEpoch, timeFromEpoch);
                #endif
             }
             break;
@@ -1141,9 +1141,9 @@ bool EphemerisPropagator::Initialize()
       }
 
       #ifdef DEBUG_INITIALIZATION
-         MessageInterface::ShowMessage(wxT("Initial epoch set to %.12lf\n"),
+         MessageInterface::ShowMessage("Initial epoch set to %.12lf\n",
                initialEpoch);
-         MessageInterface::ShowMessage(wxT("Current epoch set to %.12lf\n"),
+         MessageInterface::ShowMessage("Current epoch set to %.12lf\n",
                currentEpoch);
       #endif
 
@@ -1171,7 +1171,7 @@ bool EphemerisPropagator::Initialize()
 bool EphemerisPropagator::Step(Real dt)
 {
    #ifdef DEBUG_EXECUTION
-      MessageInterface::ShowMessage(wxT("Stepping by %.12lf\n"), dt);
+      MessageInterface::ShowMessage("Stepping by %.12lf\n", dt);
    #endif
 
    bool retval = false;
@@ -1251,7 +1251,7 @@ void EphemerisPropagator::UpdateSpaceObject(Real newEpoch)
 {
    #ifdef DEBUG_EXECUTION
       MessageInterface::ShowMessage(
-            wxT("EphemerisPropagator::UpdateSpaceObject(%.12lf) called\n"), newEpoch);
+            "EphemerisPropagator::UpdateSpaceObject(%.12lf) called\n", newEpoch);
    #endif
 
    if (psm)
@@ -1287,8 +1287,8 @@ void EphemerisPropagator::UpdateSpaceObject(Real newEpoch)
 
       #ifdef DEBUG_EXECUTION
          MessageInterface::ShowMessage
-               (wxT("EphemerisPropagator::UpdateSpaceObject() on \"%s\" ")
-                wxT("currentEpoch = %f, passed in epoch = %f\n"), GetName().c_str(),
+               ("EphemerisPropagator::UpdateSpaceObject() on \"%s\" "
+                "currentEpoch = %f, passed in epoch = %f\n", GetName().c_str(),
                 currentEpoch, newEpoch);
       #endif
    }
@@ -1329,7 +1329,7 @@ void EphemerisPropagator::RevertSpaceObject()
 {
    #ifdef DEBUG_ODEMODEL_EXE
       MessageInterface::ShowMessage
-         (wxT("ODEModel::RevertSpacecraft() prevElapsedTime=%f elapsedTime=%f\n"),
+         ("ODEModel::RevertSpacecraft() prevElapsedTime=%f elapsedTime=%f\n",
           prevElapsedTime, elapsedTime);
    #endif
 
@@ -1393,8 +1393,8 @@ void EphemerisPropagator::SetTime(Real t)
 
 
 //------------------------------------------------------------------------------
-// Real ConvertToRealEpoch(const wxString &theEpoch,
-//                         const wxString &theFormat)
+// Real ConvertToRealEpoch(const std::string &theEpoch,
+//                         const std::string &theFormat)
 //------------------------------------------------------------------------------
 /**
  * Converts an epoch string is a specified format into
@@ -1405,19 +1405,19 @@ void EphemerisPropagator::SetTime(Real t)
  * @return
  */
 //------------------------------------------------------------------------------
-GmatEpoch EphemerisPropagator::ConvertToRealEpoch(const wxString &theEpoch,
-                                   const wxString &theFormat)
+GmatEpoch EphemerisPropagator::ConvertToRealEpoch(const std::string &theEpoch,
+                                   const std::string &theFormat)
 {
    Real fromMjd = -999.999;
    Real retval = -999.999;
-   wxString outStr;
+   std::string outStr;
 
-   TimeConverterUtil::Convert(theFormat, fromMjd, theEpoch, wxT("A1ModJulian"),
+   TimeConverterUtil::Convert(theFormat, fromMjd, theEpoch, "A1ModJulian",
          retval, outStr);
 
    if (retval == -999.999)
-      throw PropagatorException(wxT("Error converting the time string \"") +
-            theEpoch + wxT("\"; please check the format for the input string."));
+      throw PropagatorException("Error converting the time string \"" +
+            theEpoch + "\"; please check the format for the input string.");
    return retval;
 }
 
@@ -1435,10 +1435,10 @@ GmatEpoch EphemerisPropagator::ConvertToRealEpoch(const wxString &theEpoch,
 void EphemerisPropagator::SetEphemSpan(const GmatEpoch start, const GmatEpoch end)
 {
    if (end <= start)
-      throw PropagatorException(wxT("The ephemeris propagator ") + instanceName +
-            wxT(" was passed an invalid span in the call to ")
-            wxT("EphemerisPropagator::SetEphemSpan(const GmatEpoch start, ")
-            wxT("const GmatEpoch end): start >= end"));
+      throw PropagatorException("The ephemeris propagator " + instanceName +
+            " was passed an invalid span in the call to "
+            "EphemerisPropagator::SetEphemSpan(const GmatEpoch start, "
+            "const GmatEpoch end): start >= end");
    ephemStart = start;
    ephemEnd   = end;
 }
@@ -1455,8 +1455,8 @@ void EphemerisPropagator::SetEphemSpan(const GmatEpoch start, const GmatEpoch en
 //------------------------------------------------------------------------------
 void EphemerisPropagator::SetEphemSpan(Integer whichOne)
 {
-   throw PropagatorException(wxT("EphemerisPropagator::SetEphemSpan() is not ")
-         wxT("implemented for the ") + instanceName + wxT("ephemeris propagator"));
+   throw PropagatorException("EphemerisPropagator::SetEphemSpan() is not "
+         "implemented for the " + instanceName + "ephemeris propagator");
 }
 
 
@@ -1493,24 +1493,24 @@ bool EphemerisPropagator::IsValidEpoch(GmatEpoch time)
 void EphemerisPropagator::MoveToOrigin(Real newEpoch)
 {
    #ifdef DEBUG_REORIGIN
-      MessageInterface::ShowMessage(wxT("ODEModel::MoveToOrigin entered\n"));
+      MessageInterface::ShowMessage("ODEModel::MoveToOrigin entered\n");
    #endif
 
    #ifdef DEBUG_REORIGIN
       MessageInterface::ShowMessage(
-            wxT("SatCount = %d, dimension = %d, stateSize = %d\n"),cartObjCount,
+            "SatCount = %d, dimension = %d, stateSize = %d\n",cartObjCount,
             dimension, stateSize);
       MessageInterface::ShowMessage(
-            wxT("StatePointers: rawState = %p, modelState = %p\n"), rawState,
+            "StatePointers: rawState = %p, modelState = %p\n", rawState,
             modelState);
       MessageInterface::ShowMessage(
-          wxT("ODEModel::MoveToOrigin()\n   Input state: [ "));
+          "ODEModel::MoveToOrigin()\n   Input state: [ ");
       for (Integer i = 0; i < dimension; ++i)
-         MessageInterface::ShowMessage(wxT("%lf "), rawState[i]);
-      MessageInterface::ShowMessage(wxT("]\n   model state: [ "));
+         MessageInterface::ShowMessage("%lf ", rawState[i]);
+      MessageInterface::ShowMessage("]\n   model state: [ ");
       for (Integer i = 0; i < dimension; ++i)
-         MessageInterface::ShowMessage(wxT("%lf "), modelState[i]);
-      MessageInterface::ShowMessage(wxT("]\n\n"));
+         MessageInterface::ShowMessage("%lf ", modelState[i]);
+      MessageInterface::ShowMessage("]\n\n");
    #endif
 
    memcpy(state, j2kState, dimension*sizeof(Real));
@@ -1539,12 +1539,12 @@ void EphemerisPropagator::MoveToOrigin(Real newEpoch)
 
          #ifdef DEBUG_REORIGIN
             MessageInterface::ShowMessage(
-                wxT("ODEModel::MoveToOrigin()\n")
-                wxT("   Input state: [%lf %lf %lf %lf %lf %lf]\n")
-                wxT("   j2k state:   [%lf %lf %lf %lf %lf %lf]\n")
-                wxT("   cb state:    [%lf %lf %lf %lf %lf %lf]\n")
-                wxT("   delta:       [%lf %lf %lf %lf %lf %lf]\n")
-                wxT("   model state: [%lf %lf %lf %lf %lf %lf]\n\n"),
+                "ODEModel::MoveToOrigin()\n"
+                "   Input state: [%lf %lf %lf %lf %lf %lf]\n"
+                "   j2k state:   [%lf %lf %lf %lf %lf %lf]\n"
+                "   cb state:    [%lf %lf %lf %lf %lf %lf]\n"
+                "   delta:       [%lf %lf %lf %lf %lf %lf]\n"
+                "   model state: [%lf %lf %lf %lf %lf %lf]\n\n",
                 rawState[i6], rawState[i6+1], rawState[i6+2], rawState[i6+3],
                 rawState[i6+4], rawState[i6+5],
                 mj2kState[0], mj2kState[1], mj2kState[2], mj2kState[3],
@@ -1560,15 +1560,15 @@ void EphemerisPropagator::MoveToOrigin(Real newEpoch)
 
    #ifdef DEBUG_REORIGIN
       MessageInterface::ShowMessage(
-          wxT("   Move Complete\n   Input state: [ "));
+          "   Move Complete\n   Input state: [ ");
       for (Integer i = 0; i < dimension; ++i)
-         MessageInterface::ShowMessage(wxT("%lf "), rawState[i]);
-      MessageInterface::ShowMessage(wxT("]\n   model state: [ "));
+         MessageInterface::ShowMessage("%lf ", rawState[i]);
+      MessageInterface::ShowMessage("]\n   model state: [ ");
       for (Integer i = 0; i < dimension; ++i)
-         MessageInterface::ShowMessage(wxT("%lf "), modelState[i]);
-      MessageInterface::ShowMessage(wxT("]\n\n"));
+         MessageInterface::ShowMessage("%lf ", modelState[i]);
+      MessageInterface::ShowMessage("]\n\n");
 
-      MessageInterface::ShowMessage(wxT("ODEModel::MoveToOrigin Finished\n"));
+      MessageInterface::ShowMessage("ODEModel::MoveToOrigin Finished\n");
    #endif
 }
 
@@ -1587,12 +1587,12 @@ void EphemerisPropagator::ReturnFromOrigin(Real newEpoch)
 {
    if ((j2kBody == NULL) || (propOrigin == NULL))
    {
-      MessageInterface::ShowMessage(wxT("Cannot reorigin; j2kBody = %p, ")
-            wxT("propOrigin = %p\n"), j2kBody, propOrigin);
+      MessageInterface::ShowMessage("Cannot reorigin; j2kBody = %p, "
+            "propOrigin = %p\n", j2kBody, propOrigin);
       return;
    }
    #ifdef DEBUG_REORIGIN
-      MessageInterface::ShowMessage(wxT("ODEModel::ReturnFromOrigin entered\n"));
+      MessageInterface::ShowMessage("ODEModel::ReturnFromOrigin entered\n");
    #endif
 
    memcpy(j2kState, state, dimension*sizeof(Real));
@@ -1619,11 +1619,11 @@ void EphemerisPropagator::ReturnFromOrigin(Real newEpoch)
             j2kState[i6+j] -= delta[j];
             #ifdef DEBUG_REORIGIN
                MessageInterface::ShowMessage(
-                   wxT("ODEModel::ReturnFromOrigin()\n   Input (model) state: [%lf %lf %lf %lf %lf")
-                   wxT(" %lf]\n   j2k state:   [%lf %lf %lf %lf %lf %lf]\n")
-                   wxT("   cb state:    [%lf %lf %lf %lf %lf %lf]\n")
-                   wxT("   delta:       [%lf %lf %lf %lf %lf %lf]\n")
-                   wxT("   raw state: [%lf %lf %lf %lf %lf %lf]\n\n"),
+                   "ODEModel::ReturnFromOrigin()\n   Input (model) state: [%lf %lf %lf %lf %lf"
+                   " %lf]\n   j2k state:   [%lf %lf %lf %lf %lf %lf]\n"
+                   "   cb state:    [%lf %lf %lf %lf %lf %lf]\n"
+                   "   delta:       [%lf %lf %lf %lf %lf %lf]\n"
+                   "   raw state: [%lf %lf %lf %lf %lf %lf]\n\n",
                    modelState[0], modelState[1], modelState[2], modelState[3], modelState[4],
                    modelState[5],
                    j2kState[0], j2kState[1], j2kState[2], j2kState[3], j2kState[4],

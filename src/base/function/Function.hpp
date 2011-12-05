@@ -36,7 +36,7 @@
 class GMAT_API Function : public GmatBase
 {
 public:
-   Function(const wxString &typeStr, const wxString &nomme);
+   Function(const std::string &typeStr, const std::string &nomme);
    virtual ~Function();
    Function(const Function &f);
    Function&            operator=(const Function &f);
@@ -52,7 +52,7 @@ public:
    virtual void         Finalize();
    virtual bool         IsFcsFinalized();
    virtual void         SetObjectMap(ObjectMap *objMap);
-   virtual void         SetGlobalObjectMap(std::map<wxString, GmatBase *> *map);
+   virtual void         SetGlobalObjectMap(std::map<std::string, GmatBase *> *map);
    virtual void         SetSolarSystem(SolarSystem *ss);
    virtual void         SetInternalCoordSystem(CoordinateSystem *cs);
    virtual void         SetTransientForces(std::vector<PhysicalModel*> *tf);
@@ -61,50 +61,50 @@ public:
    virtual bool         IsFunctionControlSequenceSet();
    virtual bool         SetFunctionControlSequence(GmatCommand *cmd);
    virtual GmatCommand* GetFunctionControlSequence();
-   virtual wxString  GetFunctionPathAndName();
+   virtual std::string  GetFunctionPathAndName();
    
-   virtual bool         SetInputElementWrapper(const wxString &forName,
+   virtual bool         SetInputElementWrapper(const std::string &forName,
                                                ElementWrapper *wrapper);
    virtual ElementWrapper* GetOutputArgument(Integer argNumber);
-   virtual ElementWrapper* GetOutputArgument(const wxString &byName);
+   virtual ElementWrapper* GetOutputArgument(const std::string &byName);
    virtual WrapperArray&   GetWrappersToDelete();
    virtual void         ClearInOutArgMaps(bool deleteInputs, bool deleteOutputs);
    
    // methods to set/get the automatic objects
    virtual void         ClearAutomaticObjects();
-   virtual void         AddAutomaticObject(const wxString &withName, GmatBase *obj,
+   virtual void         AddAutomaticObject(const std::string &withName, GmatBase *obj,
                                            bool alreadyManaged);
-   virtual GmatBase*    FindAutomaticObject(const wxString &name);
+   virtual GmatBase*    FindAutomaticObject(const std::string &name);
    virtual ObjectMap&   GetAutomaticObjects();
    
    // Inherited (GmatBase) methods
-   virtual bool         TakeAction(const wxString &action,
-                                      const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,
+                                      const std::string &actionData = "");
    
    virtual bool         IsParameterReadOnly(const Integer id) const;
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const wxString &label) const;
-   virtual wxString  GetStringParameter(const Integer id,
+   virtual std::string  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const std::string &label) const;
+   virtual std::string  GetStringParameter(const Integer id,
                                            const Integer index) const;
-   virtual wxString  GetStringParameter(const wxString &label,
+   virtual std::string  GetStringParameter(const std::string &label,
                                            const Integer index) const;
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
    virtual const StringArray&
                         GetStringArrayParameter(const Integer id) const;
    
 protected:
    /// Fully-qualified path for function script
-   wxString          functionPath;
+   std::string          functionPath;
    /// Function name
-   wxString          functionName;
+   std::string          functionName;
    /// Function input names
    StringArray          inputNames;
    /// Function output names
@@ -163,17 +163,17 @@ protected:
       FunctionParamCount  /// Count of the parameters for this class
    };
    
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[FunctionParamCount - GmatBaseParamCount];
    static const Gmat::ParameterType
       PARAMETER_TYPE[FunctionParamCount - GmatBaseParamCount];
    
-   GmatBase* FindObject(const wxString &name);
+   GmatBase* FindObject(const std::string &name);
    
    // for debug
-   void ShowObjectMap(ObjectMap *objMap, const wxString &title = wxT(""),
-                      const wxString &mapName = wxT(""));
-   void ShowObjects(const wxString &title);
+   void ShowObjectMap(ObjectMap *objMap, const std::string &title = "",
+                      const std::string &mapName = "");
+   void ShowObjects(const std::string &title);
 };
 
 

@@ -63,18 +63,18 @@ public:
    
    virtual SpiceInterface* Clone() const = 0;
 
-   virtual bool        LoadKernel(const wxString &fileName);
+   virtual bool        LoadKernel(const std::string &fileName);
    virtual bool        LoadKernels(const StringArray &fileNames);
-   virtual bool        UnloadKernel(const wxString &fileName);
+   virtual bool        UnloadKernel(const std::string &fileName);
    virtual bool        UnloadKernels(const StringArray &fileNames);
    virtual bool        UnloadAllKernels();
-   virtual bool        IsLoaded(const wxString &fileName);
+   virtual bool        IsLoaded(const std::string &fileName);
    
    virtual StringArray GetValidAberrationCorrectionFlags();
    virtual StringArray GetValidFrames();
-   virtual void        SetLeapSecondKernel(const wxString &lsk);
+   virtual void        SetLeapSecondKernel(const std::string &lsk);
    
-   virtual Integer     GetNaifID(const wxString &forBody, bool popupMsg = true);
+   virtual Integer     GetNaifID(const std::string &forBody, bool popupMsg = true);
    
    virtual Real        SpiceTimeToA1(SpiceDouble spiceTime);
    virtual SpiceDouble A1ToSpiceTime(Real a1Time);
@@ -89,9 +89,9 @@ protected:
    /// the kernel name
    ConstSpiceChar  *kernelNameSPICE;
    
-   static const wxString VALID_ABERRATION_FLAGS[9];
+   static const std::string VALID_ABERRATION_FLAGS[9];
    static const Integer     NUM_VALID_FRAMES;
-   static const wxString VALID_FRAMES[12];
+   static const std::string VALID_FRAMES[12];
    /// maximum number of characters for short, explanation of short, or
    /// long error message requested when calling CSPICE method getmsg_c
    static const Integer     MAX_SHORT_MESSAGE;
@@ -104,7 +104,7 @@ protected:
    /// counter of number of instances created
    static Integer        numInstances;
    /// the name (full path) of the leap second kernel to use
-   static wxString lsKernel;
+   static std::string lsKernel;
 
    //   static void InitializeReader();
    static void InitializeInterface();

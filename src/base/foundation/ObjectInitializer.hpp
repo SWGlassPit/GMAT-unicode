@@ -78,12 +78,12 @@ protected:
    void InitializeCoordinateSystem(GmatBase *obj);
    void BuildReferencesAndInitialize(GmatBase *obj);
    void BuildReferences(GmatBase *obj);
-   void SetRefFromName(GmatBase *obj, const wxString &oName);
+   void SetRefFromName(GmatBase *obj, const std::string &oName);
    void BuildAssociations(GmatBase * obj);
    
-   SpacePoint* FindSpacePoint(const wxString &spName);
-   GmatBase*   FindObject(const wxString &name);
-   void        ShowObjectMaps(const wxString &title = wxT(""));
+   SpacePoint* FindSpacePoint(const std::string &spName);
+   GmatBase*   FindObject(const std::string &name);
+   void        ShowObjectMaps(const std::string &title = "");
    
    std::list<Subscriber*> GetSubscribersInZOrder(std::list<Subscriber*> subList);
 

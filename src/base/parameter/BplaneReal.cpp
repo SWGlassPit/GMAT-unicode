@@ -32,9 +32,9 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// BplaneReal(const wxString &name, const wxString &typeStr, 
-//            GmatBase *obj, const wxString &desc,
-//            const wxString &unit, GmatParam::DepObject depObj)
+// BplaneReal(const std::string &name, const std::string &typeStr, 
+//            GmatBase *obj, const std::string &desc,
+//            const std::string &unit, GmatParam::DepObject depObj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -47,10 +47,10 @@
  * @param <depObj> object which parameter is dependent on (COORD_SYS, ORIGIN, NO_DEP)
  */
 //------------------------------------------------------------------------------
-BplaneReal::BplaneReal(const wxString &name, const wxString &typeStr, 
-                       GmatBase *obj, const wxString &desc,
-                       const wxString &unit, GmatParam::DepObject depObj)
-   : RealVar(name, wxT(""), typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit,
+BplaneReal::BplaneReal(const std::string &name, const std::string &typeStr, 
+                       GmatBase *obj, const std::string &desc,
+                       const std::string &unit, GmatParam::DepObject depObj)
+   : RealVar(name, "", typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit,
              depObj, Gmat::SPACECRAFT, false, false)
 {
    mNeedCoordSystem = true;
@@ -72,7 +72,7 @@ BplaneReal::BplaneReal(const BplaneReal &copy)
 {
    #if DEBUG_BPLANE_REAL
    MessageInterface::ShowMessage
-      (wxT("===> BplaneReal::BplaneReal() copy constructor called on %s\n"),
+      ("===> BplaneReal::BplaneReal() copy constructor called on %s\n",
        instanceName.c_str());
    #endif
 }
@@ -149,7 +149,7 @@ void BplaneReal::SetSolarSystem(SolarSystem *ss)
 {
    #if DEBUG_BPLANE_REAL
    MessageInterface::ShowMessage
-      (wxT("==> BplaneReal::SetSolarSystem() ss=%s addr=%p to %s\n"), ss->GetTypeName().c_str(),
+      ("==> BplaneReal::SetSolarSystem() ss=%s addr=%p to %s\n", ss->GetTypeName().c_str(),
        ss, this->GetName().c_str());
    #endif
    
@@ -173,7 +173,7 @@ void BplaneReal::SetInternalCoordSystem(CoordinateSystem *cs)
 {
    #if DEBUG_BPLANE_REAL
       MessageInterface::ShowMessage
-         (wxT("BplaneReal::SetInternalCoordSystem() cs=%s to %s\n"), cs->GetTypeName().c_str(),
+         ("BplaneReal::SetInternalCoordSystem() cs=%s to %s\n", cs->GetTypeName().c_str(),
           this->GetName().c_str());
    #endif
    
@@ -211,7 +211,7 @@ bool BplaneReal::AddRefObject(GmatBase *obj, bool replaceName)
    {
       #if DEBUG_BPLANE_REAL
       MessageInterface::ShowMessage
-         (wxT("BplaneReal::AddRefObject() obj->GetName()=%s, type=%d\n"),
+         ("BplaneReal::AddRefObject() obj->GetName()=%s, type=%d\n",
           obj->GetName().c_str(), obj->GetType());
       #endif
       
@@ -255,7 +255,7 @@ bool BplaneReal::Initialize()
 {
    #if DEBUG_BPLANE_REAL_INIT
    MessageInterface::ShowMessage
-      (wxT("BplaneReal::Initialize() %s\n"), this->GetTypeName().c_str());
+      ("BplaneReal::Initialize() %s\n", this->GetTypeName().c_str());
    #endif
    
    try
@@ -265,8 +265,8 @@ bool BplaneReal::Initialize()
    catch(BaseException &e)
    {
       throw ParameterException
-         (wxT("BplaneReal::Initialize() Fail to initialize Parameter:") +
-          this->GetTypeName() + wxT("\n") + e.GetFullMessage());
+         ("BplaneReal::Initialize() Fail to initialize Parameter:" +
+          this->GetTypeName() + "\n" + e.GetFullMessage());
    }
    
    return true;
@@ -280,18 +280,18 @@ bool BplaneReal::Initialize()
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool BplaneReal::RenameRefObject(const Gmat::ObjectType type,
-                                const wxString &oldName,
-                                const wxString &newName)
+                                const std::string &oldName,
+                                const std::string &newName)
 {
    return BplaneData::RenameRefObject(type, oldName, newName);
 }
 
 
 //------------------------------------------------------------------------------
-// virtual wxString GetRefObjectName(const Gmat::ObjectType type) const
+// virtual std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
 /**
  * Calls BplaneData to get reference object name for given type.
@@ -299,15 +299,15 @@ bool BplaneReal::RenameRefObject(const Gmat::ObjectType type,
  * @return reference object name.
  */
 //------------------------------------------------------------------------------
-wxString BplaneReal::GetRefObjectName(const Gmat::ObjectType type) const
+std::string BplaneReal::GetRefObjectName(const Gmat::ObjectType type) const
 {
-   wxString objName = BplaneData::GetRefObjectName(type);
+   std::string objName = BplaneData::GetRefObjectName(type);
    
-   if (objName == wxT("INVALID_OBJECT_TYPE"))
+   if (objName == "INVALID_OBJECT_TYPE")
    {
       throw ParameterException
-         (wxT("BplaneReal::GetRefObjectName() ") + GmatBase::GetObjectTypeString(type) +
-          wxT(" is not valid object type of ") + this->GetTypeName() + wxT("\n"));
+         ("BplaneReal::GetRefObjectName() " + GmatBase::GetObjectTypeString(type) +
+          " is not valid object type of " + this->GetTypeName() + "\n");
    }
    
    return objName;
@@ -333,7 +333,7 @@ const StringArray& BplaneReal::GetRefObjectNameArray(const Gmat::ObjectType type
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObjectName(const Gmat::ObjectType type,
-//                               const wxString &name)
+//                               const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets reference object name to given object type.
@@ -344,7 +344,7 @@ const StringArray& BplaneReal::GetRefObjectNameArray(const Gmat::ObjectType type
  */
 //------------------------------------------------------------------------------
 bool BplaneReal::SetRefObjectName(const Gmat::ObjectType type,
-                                 const wxString &name)
+                                 const std::string &name)
 {
    return BplaneData::SetRefObjectName(type, name);
 }
@@ -352,7 +352,7 @@ bool BplaneReal::SetRefObjectName(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // virtual GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                                const wxString &name)
+//                                const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Calls BplaneData to get object pointer of given type and name
@@ -364,15 +364,15 @@ bool BplaneReal::SetRefObjectName(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 GmatBase* BplaneReal::GetRefObject(const Gmat::ObjectType type,
-                                  const wxString &name)
+                                  const std::string &name)
 {
    GmatBase *obj = BplaneData::GetRefObject(type, name);
    
    if (obj == NULL)
    {
       throw ParameterException
-         (wxT("BplaneReal::GetRefObject() Cannot find ref. object of type:") +
-          GmatBase::GetObjectTypeString(type) + wxT(", name:") + name + wxT(" in ") +
+         ("BplaneReal::GetRefObject() Cannot find ref. object of type:" +
+          GmatBase::GetObjectTypeString(type) + ", name:" + name + " in " +
           this->GetName());
    }
    
@@ -382,7 +382,7 @@ GmatBase* BplaneReal::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                           const wxString &name = wxT(""))
+//                           const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Calls BplaneData to set reference object pointer to given type and name.
@@ -396,11 +396,11 @@ GmatBase* BplaneReal::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool BplaneReal::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                             const wxString &name)
+                             const std::string &name)
 {
    #if DEBUG_BPLANE_REAL
    MessageInterface::ShowMessage
-      (wxT("BplaneReal::SetRefObject() setting type=%d, name=%s to %s\n"),
+      ("BplaneReal::SetRefObject() setting type=%d, name=%s to %s\n",
        type, name.c_str(), this->GetName().c_str());
    #endif
    

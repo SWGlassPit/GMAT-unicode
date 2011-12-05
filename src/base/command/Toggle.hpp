@@ -45,34 +45,34 @@ public:
    
    // inherited from GmatBase
    virtual GmatBase*   Clone(void) const;
-   virtual bool TakeAction(const wxString &action,  
-                           const wxString &actionData = wxT(""));
+   virtual bool TakeAction(const std::string &action,  
+                           const std::string &actionData = "");
    virtual const ObjectTypeArray&
                        GetRefObjectTypeArray();
    virtual const StringArray&
                        GetRefObjectNameArray(const Gmat::ObjectType type);
-   const wxString&  GetGeneratingString(Gmat::WriteMode mode,
-                                           const wxString &prefix,
-                                           const wxString &useName);
+   const std::string&  GetGeneratingString(Gmat::WriteMode mode,
+                                           const std::string &prefix,
+                                           const std::string &useName);
 
    virtual bool RenameRefObject(const Gmat::ObjectType type,
-                                const wxString &oldName,
-                                const wxString &newName);
+                                const std::string &oldName,
+                                const std::string &newName);
    
    // Access methods derived classes can override
-   virtual wxString GetParameterText(const Integer id) const;
-   virtual Integer     GetParameterID(const wxString &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
+   virtual Integer     GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                        GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
 
-   virtual wxString GetStringParameter(const Integer id) const;
+   virtual std::string GetStringParameter(const Integer id) const;
    virtual bool        SetStringParameter(const Integer id,
-                                          const wxString &value);
-   virtual wxString GetStringParameter(const Integer id,
+                                          const std::string &value);
+   virtual std::string GetStringParameter(const Integer id,
                                           const Integer index) const;
    virtual bool        SetStringParameter(const Integer id, 
-                                          const wxString &value,
+                                          const std::string &value,
                                           const Integer index);
 
    // Methods used to run the command

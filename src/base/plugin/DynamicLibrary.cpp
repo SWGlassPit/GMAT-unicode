@@ -49,7 +49,7 @@
 #endif
 
 //------------------------------------------------------------------------------
-// DynamicLibrary(const wxString &name, const wxString &path)
+// DynamicLibrary(const std::string &name, const std::string &path)
 //------------------------------------------------------------------------------
 /**
  * Default constructor.  Dynamic libraries MUST specify the library name.
@@ -58,8 +58,8 @@
  * @param path File path for the library.  If unspecified, ./ is used.
  */
 //------------------------------------------------------------------------------
-DynamicLibrary::DynamicLibrary(const wxString &name,
-      const wxString &path) :
+DynamicLibrary::DynamicLibrary(const std::string &name,
+      const std::string &path) :
    libName          (name),
    libPath          (path),
    libHandle        (NULL)
@@ -134,7 +134,7 @@ DynamicLibrary& DynamicLibrary::operator=(const DynamicLibrary& dlib)
 //------------------------------------------------------------------------------
 bool DynamicLibrary::LoadDynamicLibrary()
 {
-   wxString nameWithPath;
+   std::string nameWithPath;
 
    nameWithPath = libPath + libName;
 
@@ -144,16 +144,16 @@ bool DynamicLibrary::LoadDynamicLibrary()
          if (libHandle == NULL)
          {
             Integer retcode = GetLastError();
-            MessageInterface::ShowMessage(wxT("Library load call returned %d\n"), retcode);
+            MessageInterface::ShowMessage("Library load call returned %d\n", retcode);
             return false;
          }
       #endif
    #else
-      nameWithPath += wxT(UNIX_EXTENSION);
-      libHandle = dlopen(nameWithPath.char_str(), RTLD_LAZY);
+      nameWithPath += UNIX_EXTENSION;
+      libHandle = dlopen(nameWithPath.c_str(), RTLD_LAZY);
 
       if (libHandle == NULL)
-         MessageInterface::ShowMessage(wxT("\n%s\n"), (wxString::FromAscii(dlerror())).c_str());
+         MessageInterface::ShowMessage("\n%s\n", dlerror());
    #endif
 
    // Set the MessageReceiver if the Library needs it
@@ -161,7 +161,7 @@ bool DynamicLibrary::LoadDynamicLibrary()
    {
       void (*SetMR)(MessageReceiver*) = NULL;
 
-      SetMR = (void (*)(MessageReceiver*))GetFunction(wxT("SetMessageReceiver"));
+      SetMR = (void (*)(MessageReceiver*))GetFunction("SetMessageReceiver");
       MessageReceiver* mr = MessageInterface::GetMessageReceiver();
       SetMR(mr);
    }
@@ -178,7 +178,7 @@ bool DynamicLibrary::LoadDynamicLibrary()
 
 
 //------------------------------------------------------------------------------
-// void (*GetFunction(const wxString &funName))()
+// void (*GetFunction(const std::string &funName))()
 //------------------------------------------------------------------------------
 /**
  * Retrieves the function pointer for a specified function.
@@ -190,25 +190,25 @@ bool DynamicLibrary::LoadDynamicLibrary()
  *         the function is not found.
  */
 //------------------------------------------------------------------------------
-void (*DynamicLibrary::GetFunction(const wxString &funName))()
+void (*DynamicLibrary::GetFunction(const std::string &funName))()
 {
    if (libHandle == NULL)
-      throw GmatBaseException(wxT("Library ") + libName +
-            wxT(" has not been opened successfully; cannot search for function \"") +
-            funName + wxT("\"\n"));
+      throw GmatBaseException("Library " + libName +
+            " has not been opened successfully; cannot search for function \"" +
+            funName + "\"\n");
 
    void (*func)() = NULL;
 
    #ifdef __WIN32__
       func = (void(*)())GetProcAddress((HINSTANCE)libHandle, funName.c_str());
    #else
-      func = (void(*)())dlsym(libHandle, funName.char_str());
+      func = (void(*)())dlsym(libHandle, funName.c_str());
    #endif
 
    if (func == NULL)
-      throw GmatBaseException(wxT("Library ") + libName +
-            wxT(" cannot locate the function \"") +
-            funName + wxT("\"\n"));
+      throw GmatBaseException("Library " + libName +
+            " cannot locate the function \"" +
+            funName + "\"\n");
 
    return func;
 }
@@ -226,14 +226,14 @@ void (*DynamicLibrary::GetFunction(const wxString &funName))()
 Integer DynamicLibrary::GetFactoryCount()
 {
    if (libHandle == NULL)
-      throw GmatBaseException(wxT("Library ") + libName + wxT(" has not been opened ")
-            wxT("successfully; cannot search for factories \n"));
+      throw GmatBaseException("Library " + libName + " has not been opened "
+            "successfully; cannot search for factories \n");
 
    Integer (*FactoryCount)() = NULL;
 
    try
    {
-      FactoryCount = (Integer(*)())GetFunction(wxT("GetFactoryCount"));
+      FactoryCount = (Integer(*)())GetFunction("GetFactoryCount");
    }
    catch (GmatBaseException&)
    {
@@ -258,16 +258,16 @@ Integer DynamicLibrary::GetFactoryCount()
 Factory* DynamicLibrary::GetGmatFactory(Integer index)
 {
    if (libHandle == NULL)
-      throw GmatBaseException(wxT("Library ") + libName + wxT(" has not been opened ")
-            wxT("successfully; cannot search for factories\n"));
+      throw GmatBaseException("Library " + libName + " has not been opened "
+            "successfully; cannot search for factories\n");
 
    Factory* (*GetFactory)(Integer) = NULL;
-   GetFactory = (Factory*(*)(Integer))GetFunction(wxT("GetFactoryPointer"));
+   GetFactory = (Factory*(*)(Integer))GetFunction("GetFactoryPointer");
 
    Factory *theFactory = GetFactory(index);
    if (theFactory == NULL)
       MessageInterface::ShowMessage(
-            wxT("Cannot access factory #%d in the \"%s\" library\n"), index,
+            "Cannot access factory #%d in the \"%s\" library\n", index,
             libName.c_str());
 
    return theFactory;
@@ -291,7 +291,7 @@ Integer DynamicLibrary::GetTriggerManagerCount()
    try
    {
       Integer (*tmCount)() = NULL;
-      tmCount = (Integer (*)())GetFunction(wxT("GetTriggerManagerCount"));
+      tmCount = (Integer (*)())GetFunction("GetTriggerManagerCount");
       if (tmCount != NULL)  // There may be TriggerManagers
          triggerCount = tmCount();
    }
@@ -318,16 +318,16 @@ Integer DynamicLibrary::GetTriggerManagerCount()
 TriggerManager* DynamicLibrary::GetTriggerManager(Integer index)
 {
    if (libHandle == NULL)
-      throw GmatBaseException(wxT("Library ") + libName + wxT(" has not been opened ")
-            wxT("successfully; cannot search for TriggerManagers\n"));
+      throw GmatBaseException("Library " + libName + " has not been opened "
+            "successfully; cannot search for TriggerManagers\n");
 
    TriggerManager* (*GetTM)(Integer) = NULL;
-   GetTM = (TriggerManager* (*)(Integer))GetFunction(wxT("GetTriggerManager"));
+   GetTM = (TriggerManager* (*)(Integer))GetFunction("GetTriggerManager");
 
    TriggerManager *theTM = GetTM(index);
    if (theTM == NULL)
       MessageInterface::ShowMessage(
-            wxT("Cannot access TriggerManager #%d in the \"%s\" library\n"), index,
+            "Cannot access TriggerManager #%d in the \"%s\" library\n", index,
             libName.c_str());
 
    return theTM;
@@ -351,7 +351,7 @@ Integer DynamicLibrary::GetMenuEntryCount()
    try
    {
       Integer (*meCount)() = NULL;
-      meCount = (Integer (*)())GetFunction(wxT("GetMenuEntryCount"));
+      meCount = (Integer (*)())GetFunction("GetMenuEntryCount");
       if (meCount != NULL)  // There may be TriggerManagers
          menuEntryCount = meCount();
    }
@@ -379,20 +379,20 @@ Integer DynamicLibrary::GetMenuEntryCount()
 Gmat::PluginResource *DynamicLibrary::GetMenuEntry(Integer index)
 {
    if (libHandle == NULL)
-      throw GmatBaseException(wxT("Library ") + libName + wxT(" has not been opened ")
-            wxT("successfully; cannot search for GUI menu entries\n"));
+      throw GmatBaseException("Library " + libName + " has not been opened "
+            "successfully; cannot search for GUI menu entries\n");
 
    // Test to see if there is a TriggerManager count function
    try
    {
       Gmat::PluginResource* (*GetMenuEntry)(Integer) = NULL;
       GetMenuEntry = (Gmat::PluginResource* (*)(Integer))
-            GetFunction(wxT("GetMenuEntry"));
+            GetFunction("GetMenuEntry");
 
       Gmat::PluginResource *res = GetMenuEntry(index);
       if (res == NULL)
          MessageInterface::ShowMessage(
-               wxT("Cannot access PluginResource #%d in the \"%s\" library\n"),
+               "Cannot access PluginResource #%d in the \"%s\" library\n",
                index, libName.c_str());
 
       return res;

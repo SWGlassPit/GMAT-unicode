@@ -34,15 +34,15 @@ class Publisher;
 class GMAT_API CallFunction : public GmatCommand
 {
 public:
-   CallFunction(const wxString &type);
+   CallFunction(const std::string &type);
    virtual ~CallFunction();
    
    CallFunction(const CallFunction& cf);
    CallFunction&        operator=(const CallFunction& cf);
    
-   wxString          FormEvalString();
-   bool                 AddInputParameter(const wxString &paramName, Integer index);
-   bool                 AddOutputParameter(const wxString &paramName, Integer index);
+   std::string          FormEvalString();
+   bool                 AddInputParameter(const std::string &paramName, Integer index);
+   bool                 AddOutputParameter(const std::string &paramName, Integer index);
    
    // override GmatCommand methods
    virtual bool         Initialize();
@@ -52,53 +52,53 @@ public:
    
    // override these to set on FunctionManager (and find function object in GOS)
    virtual void         SetPublisher(Publisher *pub);
-   virtual void         SetObjectMap(std::map<wxString, GmatBase *> *map);
-   virtual void         SetGlobalObjectMap(std::map<wxString, GmatBase *> *map);
+   virtual void         SetObjectMap(std::map<std::string, GmatBase *> *map);
+   virtual void         SetGlobalObjectMap(std::map<std::string, GmatBase *> *map);
    virtual bool         HasAFunction();
    virtual bool         IsMatlabFunctionCall();
    
    // override GmatBase methods
    virtual GmatBase*    Clone() const;
-   virtual const wxString&
+   virtual const std::string&
                         GetGeneratingString(Gmat::WriteMode mode,
-                                            const wxString &prefix = wxT(""),
-                                            const wxString &useName = wxT(""));
+                                            const std::string &prefix = "",
+                                            const std::string &useName = "");
    
-   virtual bool         TakeAction(const wxString &action,
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,
+                                   const std::string &actionData = "");
    
    virtual const StringArray&
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name);
+                                     const std::string &name);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    virtual ObjectArray& GetRefObjectArray(const Gmat::ObjectType type);
    
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const wxString &label) const;
-   virtual bool         SetStringParameter(const Integer id, const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const Integer id, const wxString &value,
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const std::string &label) const;
+   virtual bool         SetStringParameter(const Integer id, const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const Integer id, const std::string &value,
                                            const Integer index);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value,
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value,
                                            const Integer index);
    virtual const StringArray&
                         GetStringArrayParameter(const Integer id) const;
    virtual const StringArray&
-                        GetStringArrayParameter(const wxString &label) const;
+                        GetStringArrayParameter(const std::string &label) const;
 
 protected:
 
@@ -114,8 +114,8 @@ protected:
    Integer mNumOutputParams;
    
    Function *mFunction;
-   wxString mFunctionName;
-   wxString mFunctionPathAndName;
+   std::string mFunctionName;
+   std::string mFunctionPathAndName;
    
    /// the manager for the Function
    FunctionManager fm;
@@ -136,7 +136,7 @@ protected:
    };
    
    
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[CallFunctionParamCount - GmatCommandParamCount];
    static const Gmat::ParameterType
       PARAMETER_TYPE[CallFunctionParamCount - GmatCommandParamCount];

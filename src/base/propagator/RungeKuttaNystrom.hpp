@@ -84,8 +84,8 @@ class GMAT_API RungeKuttaNystrom : public RungeKutta
 {
 public:
 //    RungeKuttaNystrom(int st, int order);
-    RungeKuttaNystrom(Integer st, Integer order, const wxString &typeStr,
-                           const wxString &nomme = wxT(""));
+    RungeKuttaNystrom(Integer st, Integer order, const std::string &typeStr,
+                           const std::string &nomme = "");
     virtual ~RungeKuttaNystrom(void);
 
     RungeKuttaNystrom(const RungeKuttaNystrom& rkn);

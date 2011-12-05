@@ -33,9 +33,9 @@ class GMAT_API StateVector
 public:
    // Default constructor
    StateVector();
-   StateVector(const wxString &type);
+   StateVector(const std::string &type);
    StateVector(const Rvector6 stateVector);
-   StateVector(const wxString &type, const Rvector6 stateVector);
+   StateVector(const std::string &type, const Rvector6 stateVector);
 
    // Copy constructor
    StateVector(const StateVector &sv);
@@ -47,28 +47,28 @@ public:
 
    // public methods
    Rvector6    GetValue() const;
-   Rvector6    GetValue(const wxString &type) const;
-   bool        SetValue(const wxString &type);
+   Rvector6    GetValue(const std::string &type) const;
+   bool        SetValue(const std::string &type);
    bool        SetValue(Rvector6 state);
-   bool        SetValue(const wxString &type, Rvector6 state);
+   bool        SetValue(const std::string &type, Rvector6 state);
 
    Real        GetElement(const Integer id) const;
-   Real        GetElement(const wxString &label) const;
+   Real        GetElement(const std::string &label) const;
    bool        SetElement(const Integer id, const Real value);
-   bool        SetElement(const wxString &label, const Real value); 
+   bool        SetElement(const std::string &label, const Real value); 
 
-   wxString GetType() const;
-   bool        SetType(const wxString &type);
+   std::string GetType() const;
+   bool        SetType(const std::string &type);
 
-   bool        IsValidType(const wxString &label) const;
+   bool        IsValidType(const std::string &label) const;
 
-   bool        IsElement(const Integer id, const wxString &label) const;
-   bool        IsElement(const wxString &label) const;
-   wxString GetLabel(const Integer id) const;
+   bool        IsElement(const Integer id, const std::string &label) const;
+   bool        IsElement(const std::string &label) const;
+   std::string GetLabel(const Integer id) const;
 
-   bool        SetAnomaly(const Rvector6 kepl,const wxString &type);
-   wxString GetAnomalyType() const;
-   bool        SetAnomalyType(const wxString &type);
+   bool        SetAnomaly(const Rvector6 kepl,const std::string &type);
+   std::string GetAnomalyType() const;
+   bool        SetAnomalyType(const std::string &type);
 
    bool        SetCoordSys(const CoordinateSystem *cs);
 
@@ -85,11 +85,11 @@ protected:
         EXTRA_ELEMENT1, EXTRA_ELEMENT2, ElementTypeCount
    };
           
-   static const wxString ELEMENT_LIST[StateTypeCount][ElementTypeCount];
-   static const wxString STATE_LIST[StateTypeCount];
+   static const std::string ELEMENT_LIST[StateTypeCount][ElementTypeCount];
+   static const std::string STATE_LIST[StateTypeCount];
    
 private:
-   wxString             mStateType;
+   std::string             mStateType;
    Rvector6                mState;
    Anomaly                 mAnomaly;
    mutable StateConverter  mStateConverter;
@@ -97,8 +97,8 @@ private:
    // private methods
    void        DefineDefault();
    void        InitializeDataMethod(const StateVector &s);
-   wxString FindType(const wxString &label) const;
-   UnsignedInt GetElementID(const wxString &label) const;
+   std::string FindType(const std::string &label) const;
+   UnsignedInt GetElementID(const std::string &label) const;
 
 };
 

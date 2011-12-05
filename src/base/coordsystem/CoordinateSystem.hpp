@@ -35,8 +35,8 @@ class GMAT_API CoordinateSystem : public CoordinateBase
 {
 public:
    // default constructor
-   CoordinateSystem(const wxString &itsType,
-                    const wxString &itsName = wxT(""));
+   CoordinateSystem(const std::string &itsType,
+                    const std::string &itsName = "");
    // copy constructor
    CoordinateSystem(const CoordinateSystem &coordSys);
    // operator = for assignment
@@ -63,9 +63,9 @@ public:
    virtual void                  SetPrimaryObject(SpacePoint *prim);
    virtual void                  SetSecondaryObject(SpacePoint *second);
    virtual void                  SetEpoch(const A1Mjd &toEpoch);
-   virtual void                  SetXAxis(const wxString &toValue);
-   virtual void                  SetYAxis(const wxString &toValue);
-   virtual void                  SetZAxis(const wxString &toValue);
+   virtual void                  SetXAxis(const std::string &toValue);
+   virtual void                  SetYAxis(const std::string &toValue);
+   virtual void                  SetZAxis(const std::string &toValue);
    virtual void                  SetEopFile(EopFile *eopF);
    virtual void                  SetCoefficientsFile(
                                     ItrfCoefficientsFile *itrfF);
@@ -73,16 +73,16 @@ public:
    virtual SpacePoint*           GetPrimaryObject() const;
    virtual SpacePoint*           GetSecondaryObject() const;
    virtual A1Mjd                 GetEpoch() const;
-   virtual wxString           GetXAxis() const;
-   virtual wxString           GetYAxis() const;
-   virtual wxString           GetZAxis() const;
+   virtual std::string           GetXAxis() const;
+   virtual std::string           GetYAxis() const;
+   virtual std::string           GetZAxis() const;
    virtual EopFile*              GetEopFile() const;
    virtual ItrfCoefficientsFile* GetItrfCoefficientsFile();
    virtual Rmatrix33             GetLastRotationMatrix() const;
    virtual void                  GetLastRotationMatrix(Real *mat) const;
    virtual Rmatrix33             GetLastRotationDotMatrix() const;
    virtual void                  GetLastRotationDotMatrix(Real *mat) const;
-   virtual bool                  AreAxesOfType(const wxString &ofType) const;
+   virtual bool                  AreAxesOfType(const std::string &ofType) const;
    
    
    // initializes the CoordinateSystem
@@ -110,38 +110,38 @@ public:
    virtual void         Copy(const GmatBase* orig);
    
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
    // Parameter access methods - overridden from GmatBase 
    virtual bool         IsParameterReadOnly(const Integer id) const;
-   virtual bool         IsParameterReadOnly(const wxString &label) const;
-   virtual wxString  GetParameterText(const Integer id) const;     
-   virtual Integer      GetParameterID(const wxString &str) const; 
+   virtual bool         IsParameterReadOnly(const std::string &label) const;
+   virtual std::string  GetParameterText(const Integer id) const;     
+   virtual Integer      GetParameterID(const std::string &str) const; 
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    virtual Real         GetRealParameter(const Integer id) const;
    virtual Real         SetRealParameter(const Integer id,
                                          const Real value);
-   virtual Real         GetRealParameter(const wxString &label) const;
-   virtual Real         SetRealParameter(const wxString &label,
+   virtual Real         GetRealParameter(const std::string &label) const;
+   virtual Real         SetRealParameter(const std::string &label,
                                          const Real value);
-   wxString          GetStringParameter(const Integer id) const;
-   wxString          GetStringParameter(const wxString &label) const;
+   std::string          GetStringParameter(const Integer id) const;
+   std::string          GetStringParameter(const std::string &label) const;
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label, 
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label, 
+                                           const std::string &value);
    virtual bool         GetBooleanParameter(const Integer id) const; 
-   virtual bool         GetBooleanParameter(const wxString &label) const; 
+   virtual bool         GetBooleanParameter(const std::string &label) const; 
    virtual bool         SetBooleanParameter(const Integer id,
                                             const bool value); 
-   virtual bool         SetBooleanParameter(const wxString &label,
+   virtual bool         SetBooleanParameter(const std::string &label,
                                             const bool value);
    
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name);
+                                     const std::string &name);
    virtual bool         IsOwnedObject(Integer id) const;
    virtual GmatBase*    GetOwnedObject(Integer whichOne);
    virtual bool         HasRefObjectTypeArray();
@@ -150,10 +150,10 @@ public:
    virtual const StringArray&
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    
    static CoordinateSystem* CreateLocalCoordinateSystem(
-                            const wxString &csName, const wxString &axesType,
+                            const std::string &csName, const std::string &axesType,
                             SpacePoint *origin, SpacePoint *primary,
                             SpacePoint *secondary, SpacePoint *j2000Body,
                             SolarSystem *solarSystem);
@@ -172,7 +172,7 @@ protected:
       CoordinateSystemParamCount
    };
    
-   static const wxString PARAMETER_TEXT[
+   static const std::string PARAMETER_TEXT[
       CoordinateSystemParamCount - CoordinateBaseParamCount];
    
    static const Gmat::ParameterType PARAMETER_TYPE[

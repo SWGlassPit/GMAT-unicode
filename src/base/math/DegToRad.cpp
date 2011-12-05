@@ -33,8 +33,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-DegToRad::DegToRad(const wxString &nomme)
-   : MathFunction(wxT("DegToRad"), nomme)
+DegToRad::DegToRad(const std::string &nomme)
+   : MathFunction("DegToRad", nomme)
 {
 }
 
@@ -104,7 +104,7 @@ void DegToRad::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount
 bool DegToRad::ValidateInputs()
 {
    if (leftNode == NULL)
-      throw MathException(wxT("DegToRad() - Missing input arguments.\n"));
+      throw MathException("DegToRad() - Missing input arguments.\n");
    
    Integer type1, row1, col1; // Left node
    
@@ -153,5 +153,5 @@ Real DegToRad::Evaluate()
 //------------------------------------------------------------------------------
 Rmatrix DegToRad::MatrixEvaluate()
 {
-   throw MathException(wxT("MatrixEvaluate()::DegToRad returns a real value.\n"));    
+   throw MathException("MatrixEvaluate()::DegToRad returns a real value.\n");    
 }

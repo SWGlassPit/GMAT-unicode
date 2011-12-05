@@ -93,20 +93,20 @@ public:
    //------------------------------------------------------------------------------
    virtual bool Build(Gmat::WriteMode mode) = 0;
    
-   virtual Parameter* CreateSystemParameter(const wxString &str);
-   virtual Parameter* CreateParameter(const wxString &type,
-                                      const wxString &name,
-                                      const wxString &ownerName = wxT(""),
-                                      const wxString &depName = wxT(""));
+   virtual Parameter* CreateSystemParameter(const std::string &str);
+   virtual Parameter* CreateParameter(const std::string &type,
+                                      const std::string &name,
+                                      const std::string &ownerName = "",
+                                      const std::string &depName = "");
    
    const StringArray& GetListOfObjects(Gmat::ObjectType type);
-   const StringArray& GetListOfObjects(const wxString &typeName);
+   const StringArray& GetListOfObjects(const std::string &typeName);
    const StringArray& GetListOfViewableSubtypesOf(Gmat::ObjectType type);
    const StringArray& GetListOfViewableCommands();
    
-   GmatBase* GetConfiguredObject(const wxString &name);
-   GmatBase* FindObject(const wxString &name, const wxString &ofType = wxT(""));
-   GmatBase* CreateObject(const wxString &type, const wxString &name,
+   GmatBase* GetConfiguredObject(const std::string &name);
+   GmatBase* FindObject(const std::string &name, const std::string &ofType = "");
+   GmatBase* CreateObject(const std::string &type, const std::string &name,
                           Integer manage = 1, bool createDefault = false);
    
    void SetConfiguredObjectMap();
@@ -118,38 +118,38 @@ public:
    Function* GetFunction();
    
    const StringArray& GetErrorList() { return errorList; }
-   void SetHeaderComment(const wxString &comment){headerComment = comment;}
-   void SetFooterComment(const wxString &comment){footerComment = comment;}
+   void SetHeaderComment(const std::string &comment){headerComment = comment;}
+   void SetFooterComment(const std::string &comment){footerComment = comment;}
    
-   bool IsObjectType(const wxString &type);
-   Gmat::ObjectType GetObjectType(const wxString &type);
+   bool IsObjectType(const std::string &type);
+   Gmat::ObjectType GetObjectType(const std::string &type);
    
    // to check commands
    bool ValidateCommand(GmatCommand *cmd);
    // to check subscriber
    bool ValidateSubscriber(GmatBase *obj);
    
-   bool SetForceModelProperty(GmatBase *obj, const wxString &prop,
-                              const wxString &value, GmatBase *fromObj);
-   bool SetDragForceProperty(GmatBase *obj, const wxString &pmType,
-                             const wxString &pmField, const wxString &value);
-   bool SetMeasurementModelProperty(GmatBase *obj, const wxString &prop,
-                              const wxString &value);
-   bool SetTrackingDataProperty(GmatBase *obj, const wxString &prop,
-                              const wxString &value);
-   bool SetTrackingSystemProperty(GmatBase *obj, const wxString &prop,
-                              const wxString &value);
-   bool SetDataStreamProperty(GmatBase *obj, const wxString &property,
-                              const wxString &value);
-   bool FindOwnedObject(GmatBase *owner, const wxString toProp,
+   bool SetForceModelProperty(GmatBase *obj, const std::string &prop,
+                              const std::string &value, GmatBase *fromObj);
+   bool SetDragForceProperty(GmatBase *obj, const std::string &pmType,
+                             const std::string &pmField, const std::string &value);
+   bool SetMeasurementModelProperty(GmatBase *obj, const std::string &prop,
+                              const std::string &value);
+   bool SetTrackingDataProperty(GmatBase *obj, const std::string &prop,
+                              const std::string &value);
+   bool SetTrackingSystemProperty(GmatBase *obj, const std::string &prop,
+                              const std::string &value);
+   bool SetDataStreamProperty(GmatBase *obj, const std::string &property,
+                              const std::string &value);
+   bool FindOwnedObject(GmatBase *owner, const std::string toProp,
                         GmatBase **ownedObj, Integer &id, Gmat::ParameterType &type);
    
-   bool FindPropertyID(GmatBase *obj, const wxString &chunk, GmatBase **owner,
+   bool FindPropertyID(GmatBase *obj, const std::string &chunk, GmatBase **owner,
                        Integer &id, Gmat::ParameterType &type);
    
    void BuildCreatableObjectMaps();
    StringArray GetCreatableList(Gmat::ObjectType type,
-                                const wxString subType = wxT(""));
+                                const std::string subType = "");
    
    virtual void SetInputFocus();
    virtual void NotifyRunCompleted();
@@ -193,145 +193,145 @@ protected:
    StringArray  delayedBlockLineNumbers;
    
    /// Block type and comments
-   wxString  headerComment;
-   wxString  footerComment;
-   wxString  currentBlock;
-   wxString  currentLine;
-   wxString  lineNumber;
+   std::string  headerComment;
+   std::string  footerComment;
+   std::string  currentBlock;
+   std::string  currentLine;
+   std::string  lineNumber;
    Gmat::BlockType currentBlockType;
    
    /// Error handling data
    bool        continueOnError;
-   wxString errorMsg1;
-   wxString errorMsg2;
-   wxString debugMsg;
+   std::string errorMsg1;
+   std::string errorMsg2;
+   std::string debugMsg;
    StringArray errorList;
    
    void Initialize();
    void RegisterAliases();
    
-   Parameter* GetArrayIndex(const wxString &arrayStr,
+   Parameter* GetArrayIndex(const std::string &arrayStr,
                             Integer &row, Integer &col);
    
-   AxisSystem* CreateAxisSystem(wxString type, GmatBase *owner);
+   AxisSystem* CreateAxisSystem(std::string type, GmatBase *owner);
    
    // for commands
-   bool         IsCommandType(const wxString &type);
-   void         ParseAndSetCommandName(GmatCommand *cmd, const wxString &cmdType,
-                                       const wxString &desc, wxString &newDesc);
-   GmatCommand* CreateCommand(const wxString &type, const wxString &desc,
+   bool         IsCommandType(const std::string &type);
+   void         ParseAndSetCommandName(GmatCommand *cmd, const std::string &cmdType,
+                                       const std::string &desc, std::string &newDesc);
+   GmatCommand* CreateCommand(const std::string &type, const std::string &desc,
                               bool &retFlag, GmatCommand *inCmd = NULL);
-   GmatCommand* AppendCommand(const wxString &type, bool &retFlag,
+   GmatCommand* AppendCommand(const std::string &type, bool &retFlag,
                               GmatCommand *inCmd = NULL);
-   GmatCommand* CreateAssignmentCommand(const wxString &lhs,
-                                        const wxString &rhs, bool &retFlag,
+   GmatCommand* CreateAssignmentCommand(const std::string &lhs,
+                                        const std::string &rhs, bool &retFlag,
                                         GmatCommand *inCmd = NULL);
    
-   bool AssembleCommand(GmatCommand *cmd, const wxString &desc);
-   bool AssembleCallFunctionCommand(GmatCommand *cmd, const wxString &desc);
-   bool AssembleConditionalCommand(GmatCommand *cmd, const wxString &desc);
-   bool AssembleForCommand(GmatCommand *cmd, const wxString &desc);
-   bool AssembleGeneralCommand(GmatCommand *cmd, const wxString &desc);
-   bool AssembleTargetCommand(GmatCommand *cmd, const wxString &desc);
-   bool AssembleOptimizeCommand(GmatCommand *cmd, const wxString &desc);
-   bool AssembleFiniteBurnCommand(GmatCommand *cmd, const wxString &desc);
-   bool AssembleReportCommand(GmatCommand *cmd, const wxString &desc);
-   bool AssembleCreateCommand(GmatCommand *cmd, const wxString &desc);
-   bool SetCommandRefObjects(GmatCommand *cmd, const wxString &desc);
+   bool AssembleCommand(GmatCommand *cmd, const std::string &desc);
+   bool AssembleCallFunctionCommand(GmatCommand *cmd, const std::string &desc);
+   bool AssembleConditionalCommand(GmatCommand *cmd, const std::string &desc);
+   bool AssembleForCommand(GmatCommand *cmd, const std::string &desc);
+   bool AssembleGeneralCommand(GmatCommand *cmd, const std::string &desc);
+   bool AssembleTargetCommand(GmatCommand *cmd, const std::string &desc);
+   bool AssembleOptimizeCommand(GmatCommand *cmd, const std::string &desc);
+   bool AssembleFiniteBurnCommand(GmatCommand *cmd, const std::string &desc);
+   bool AssembleReportCommand(GmatCommand *cmd, const std::string &desc);
+   bool AssembleCreateCommand(GmatCommand *cmd, const std::string &desc);
+   bool SetCommandRefObjects(GmatCommand *cmd, const std::string &desc);
    
    // for assignment
-   GmatBase* MakeAssignment(const wxString &lhs, const wxString &rhs);
+   GmatBase* MakeAssignment(const std::string &lhs, const std::string &rhs);
    
    // for setting whole object
-   bool SetObjectToObject(GmatBase *toObj, GmatBase *fromObj, const wxString &rhs);
+   bool SetObjectToObject(GmatBase *toObj, GmatBase *fromObj, const std::string &rhs);
    bool SetObjectToProperty(GmatBase *toObj, GmatBase *fromOwner,
-                            const wxString &fromProp);
-   bool SetObjectToArray(GmatBase *toObj, const wxString &fromArray);
-   bool SetObjectToValue(GmatBase *toObj, const wxString &value);
+                            const std::string &fromProp);
+   bool SetObjectToArray(GmatBase *toObj, const std::string &fromArray);
+   bool SetObjectToValue(GmatBase *toObj, const std::string &value);
    
    // for setting property
-   bool SetPropertyToObject(GmatBase *toOwner, const wxString &toProp,
+   bool SetPropertyToObject(GmatBase *toOwner, const std::string &toProp,
                             GmatBase *fromObj);
-   bool SetPropertyToProperty(GmatBase *toOwner, const wxString &toProp,
-                              GmatBase *fromOwner, const wxString &fromProp);
-   bool SetPropertyToArray(GmatBase *toOwner, const wxString &toProp,
-                           const wxString &fromArray);
-   bool SetPropertyToValue(GmatBase *toOwner, const wxString &toProp,
-                           const wxString &value);
+   bool SetPropertyToProperty(GmatBase *toOwner, const std::string &toProp,
+                              GmatBase *fromOwner, const std::string &fromProp);
+   bool SetPropertyToArray(GmatBase *toOwner, const std::string &toProp,
+                           const std::string &fromArray);
+   bool SetPropertyToValue(GmatBase *toOwner, const std::string &toProp,
+                           const std::string &value);
    
    // for setting array
-   bool SetArrayToObject(GmatBase *toArrObj, const wxString &toArray,
+   bool SetArrayToObject(GmatBase *toArrObj, const std::string &toArray,
                          GmatBase *fromObj);
-   bool SetArrayToProperty(GmatBase *toArrObj, const wxString &toArray,
-                           GmatBase *fromOwner, const wxString &fromProp);
-   bool SetArrayToArray(GmatBase *toArrObj, const wxString &toArray,
-                        GmatBase *fromArrObj, const wxString &fromArray);
-   bool SetArrayToValue(GmatBase *toArrObj, const wxString &toArray,
-                        const wxString &value);
+   bool SetArrayToProperty(GmatBase *toArrObj, const std::string &toArray,
+                           GmatBase *fromOwner, const std::string &fromProp);
+   bool SetArrayToArray(GmatBase *toArrObj, const std::string &toArray,
+                        GmatBase *fromArrObj, const std::string &fromArray);
+   bool SetArrayToValue(GmatBase *toArrObj, const std::string &toArray,
+                        const std::string &value);
    
    // for setting/getting property value
    bool SetPropertyValue(GmatBase *obj, const Integer id,
                          const Gmat::ParameterType type,
-                         const wxString &value,
+                         const std::string &value,
                          const Integer index = -1, const Integer colIndex = -1);
    bool SetPropertyObjectValue(GmatBase *obj, const Integer id,
                                const Gmat::ParameterType type,
-                               const wxString &value,
+                               const std::string &value,
                                const Integer index = -1);
    bool SetPropertyStringValue(GmatBase *obj, const Integer id,
                                const Gmat::ParameterType type,
-                               const wxString &value,
+                               const std::string &value,
                                const Integer index = -1);
    
-   wxString GetPropertyValue(GmatBase *obj, const Integer id);
+   std::string GetPropertyValue(GmatBase *obj, const Integer id);
    
    bool SetProperty(GmatBase *obj, const Integer id,
-                    const Gmat::ParameterType type, const wxString &value);
+                    const Gmat::ParameterType type, const std::string &value);
    
-   bool SetComplexProperty(GmatBase *obj, const wxString &prop,
-                           const wxString &value);
-   bool SetSolarSystemProperty(GmatBase *obj, const wxString &prop,
-                               const wxString &value);
+   bool SetComplexProperty(GmatBase *obj, const std::string &prop,
+                           const std::string &value);
+   bool SetSolarSystemProperty(GmatBase *obj, const std::string &prop,
+                               const std::string &value);
    
    // for setting/getting array value
-   Real GetArrayValue(const wxString &arrayStr, Integer &row, Integer &col);
-   bool IsArrayElement(const wxString &str);
+   Real GetArrayValue(const std::string &arrayStr, Integer &row, Integer &col);
+   bool IsArrayElement(const std::string &str);
    
    // for Variable expression
-   bool ParseVariableExpression(Parameter *var, const wxString &exp);
+   bool ParseVariableExpression(Parameter *var, const std::string &exp);
    
    // for error handling
    void HandleError(const BaseException &e, bool writeLine = true, bool warning = false);
-   void HandleErrorMessage(const BaseException &e, const wxString &lineNumber,
-                           const wxString &line, bool writeLine = true,
+   void HandleErrorMessage(const BaseException &e, const std::string &lineNumber,
+                           const std::string &line, bool writeLine = true,
                            bool warning = false);
    
    // for branch command checking
-   bool IsBranchCommand(const wxString &str);
+   bool IsBranchCommand(const std::string &str);
    bool CheckBranchCommands(const IntegerArray &lineNumbers,
                             const StringArray &lines);
    
    // for setting object inside branch command
-   void SetObjectInBranchCommand(GmatCommand *brCmd, const wxString &branchType,
-                                 const wxString &childType,
-                                 const wxString &objName);
+   void SetObjectInBranchCommand(GmatCommand *brCmd, const std::string &branchType,
+                                 const std::string &childType,
+                                 const std::string &objName);
    
    // Final setting of reference object pointers needed by the GUI
    bool FinalPass();
    
    // for debug
-   void WriteStringArray(const wxString &title1, const wxString &title2,
+   void WriteStringArray(const std::string &title1, const std::string &title2,
                          const StringArray &parts);
    void WriteForceModel(GmatBase *obj);
    
    // for GamtFunction handling
-   bool CheckFunctionDefinition(const wxString &funcPathAndName,
+   bool CheckFunctionDefinition(const std::string &funcPathAndName,
                                 GmatBase *function, bool fullCheck = true);
-   bool BuildFunctionDefinition(const wxString &str);
+   bool BuildFunctionDefinition(const std::string &str);
    void ClearTempObjectNames();
    
    bool ValidateMcsCommands(GmatCommand *first, GmatCommand *parent = NULL,
-         StringArray *missingObjects = NULL, wxString
+         StringArray *missingObjects = NULL, std::string
          *accumulatedErrors = NULL);
 
 private:
@@ -364,13 +364,13 @@ private:
    
    static StringArray   allObjectTypeList;
    static StringArray   viewableCommandList;
-   static std::map<wxString, Gmat::ObjectType> objectTypeMap;
-   bool IsParameterType(const wxString &desc);
-   bool CheckForSpecialCase(GmatBase *obj, Integer id, wxString &value);
+   static std::map<std::string, Gmat::ObjectType> objectTypeMap;
+   bool IsParameterType(const std::string &desc);
+   bool CheckForSpecialCase(GmatBase *obj, Integer id, std::string &value);
    bool CheckUndefinedReference(GmatBase *obj, bool writeLine = true);
    bool HandleMathTree(GmatCommand *cmd);
 
-   static const wxString defaultIndicator;
+   static const std::string defaultIndicator;
 };
 
 #endif // INTERPRETER_HPP

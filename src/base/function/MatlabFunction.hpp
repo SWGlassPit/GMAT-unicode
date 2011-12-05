@@ -28,7 +28,7 @@
 class GMAT_API MatlabFunction : public Function
 {
 public:
-   MatlabFunction(const wxString &nomme);
+   MatlabFunction(const std::string &nomme);
    virtual ~MatlabFunction();
    MatlabFunction(const MatlabFunction &copy);
    MatlabFunction& operator=(const MatlabFunction &right);
@@ -38,9 +38,9 @@ public:
    virtual void         Copy(const GmatBase* orig);
    
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
    
 };
 

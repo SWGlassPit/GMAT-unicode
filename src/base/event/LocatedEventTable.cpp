@@ -124,8 +124,8 @@ void LocatedEventTable::AddEvent(LocatedEvent *theEvent)
 
 
 //------------------------------------------------------------------------------
-// void AddEvent(GmatEpoch epoch, wxString boundaryType,
-//       wxString eventType)
+// void AddEvent(GmatEpoch epoch, std::string boundaryType,
+//       std::string eventType)
 //------------------------------------------------------------------------------
 /**
  * Adds a new event entry to the table of events.
@@ -137,8 +137,8 @@ void LocatedEventTable::AddEvent(LocatedEvent *theEvent)
  * @note This method is deprecated  by the version above
  */
 //------------------------------------------------------------------------------
-void LocatedEventTable::AddEvent(GmatEpoch epoch, wxString boundaryType,
-      wxString eventType)
+void LocatedEventTable::AddEvent(GmatEpoch epoch, std::string boundaryType,
+      std::string eventType)
 {
    // Build a LocatedEvent for the supplied data
    LocatedEvent *theEvent = new LocatedEvent;
@@ -153,7 +153,7 @@ void LocatedEventTable::AddEvent(GmatEpoch epoch, wxString boundaryType,
 
 
 //------------------------------------------------------------------------------
-// Real GetMaxSpan(wxString eventType, wxString parties)
+// Real GetMaxSpan(std::string eventType, std::string parties)
 //------------------------------------------------------------------------------
 /**
  * Returns longest duration for the detected events of the specified type.
@@ -164,7 +164,7 @@ void LocatedEventTable::AddEvent(GmatEpoch epoch, wxString boundaryType,
  * @return The duration found.
  */
 //------------------------------------------------------------------------------
-Real LocatedEventTable::GetMaxSpan(wxString eventType, wxString parties)
+Real LocatedEventTable::GetMaxSpan(std::string eventType, std::string parties)
 {
    Real retval = 0.0;
 
@@ -185,7 +185,7 @@ Real LocatedEventTable::GetMaxSpan(wxString eventType, wxString parties)
 
 
 //------------------------------------------------------------------------------
-// Real GetLastSpan(wxString eventType, wxString parties)
+// Real GetLastSpan(std::string eventType, std::string parties)
 //------------------------------------------------------------------------------
 /**
  * Returns duration of the most recent detected event of the specified type.
@@ -199,7 +199,7 @@ Real LocatedEventTable::GetMaxSpan(wxString eventType, wxString parties)
  *         exit, or an exit with no entry, it is skipped.
  */
 //------------------------------------------------------------------------------
-Real LocatedEventTable::GetLastSpan(wxString eventType, wxString parties)
+Real LocatedEventTable::GetLastSpan(std::string eventType, std::string parties)
 {
    Real retval = 0.0;
 
@@ -216,7 +216,7 @@ Real LocatedEventTable::GetLastSpan(wxString eventType, wxString parties)
       if ((events[i]->type == eventType) &&
           (events[i]->partner != NULL))
       {
-         if (parties != wxT(""))
+         if (parties != "")
          {
             if (events[i]->participants == parties)
                checkMe = true;
@@ -238,7 +238,7 @@ Real LocatedEventTable::GetLastSpan(wxString eventType, wxString parties)
 
 
 //------------------------------------------------------------------------------
-// Real GetAverageSpan(wxString eventType, wxString parties)
+// Real GetAverageSpan(std::string eventType, std::string parties)
 //------------------------------------------------------------------------------
 /**
  * Returns average duration for the detected events of the specified type.
@@ -252,8 +252,8 @@ Real LocatedEventTable::GetLastSpan(wxString eventType, wxString parties)
  *         exit, or an exit with no entry, it is skipped.
  */
 //------------------------------------------------------------------------------
-Real LocatedEventTable::GetAverageSpan(wxString eventType,
-      wxString parties)
+Real LocatedEventTable::GetAverageSpan(std::string eventType,
+      std::string parties)
 {
    Real retval = 0.0;
 
@@ -268,7 +268,7 @@ Real LocatedEventTable::GetAverageSpan(wxString eventType,
       if ((events[i]->type == eventType) &&
           (events[i]->partner != NULL))
       {
-         if (parties != wxT(""))
+         if (parties != "")
          {
             if (events[i]->participants == parties)
             {
@@ -311,7 +311,7 @@ void LocatedEventTable::SortEvents(SortStyle how, SortStyle secondaryStyle)
 
 
 //------------------------------------------------------------------------------
-// bool WriteToFile(wxString filename)
+// bool WriteToFile(std::string filename)
 //------------------------------------------------------------------------------
 /**
  * Writes the event data to an event data file with the specified name.
@@ -321,14 +321,14 @@ void LocatedEventTable::SortEvents(SortStyle how, SortStyle secondaryStyle)
  * @return true if the file was written, false if not
  */
 //------------------------------------------------------------------------------
-bool LocatedEventTable::WriteToFile(wxString filename)
+bool LocatedEventTable::WriteToFile(std::string filename)
 {
    bool retval = false;
 
    if (events.size() > 0)
    {
       std::ofstream theFile;
-      theFile.open(filename.char_str());
+      theFile.open(filename.c_str());
       // Write the header labels
       theFile << "Type        Participants              Duration (sec)   "
                  "UTC Start Time             UTC End Time\n"
@@ -348,40 +348,40 @@ bool LocatedEventTable::WriteToFile(wxString filename)
          partner = current->partner;
 
          // Used to build the UTC strings
-         wxString instr, startstr, endstr;
+         std::string instr, startstr, endstr;
          Real outval;
 
          if (current->isEntry)
          {
-            sprintf(pass, "%-11s %-25s ", (char *)(current->type.char_str()),
-                  (char *)(current->participants.char_str()));
+            sprintf(pass, "%-11s %-25s ", current->type.c_str(),
+                  current->participants.c_str());
             start = current->epoch;
-            TimeConverterUtil::Convert(wxT("A1ModJulian"), start, instr,
-                  wxT("UTCGregorian"), outval, startstr, 1);
+            TimeConverterUtil::Convert("A1ModJulian", start, instr,
+                  "UTCGregorian", outval, startstr, 1);
 
             if (partner != NULL)
             {
-               TimeConverterUtil::Convert(wxT("A1ModJulian"), partner->epoch, instr,
-                     wxT("UTCGregorian"), outval, endstr, 1);
+               TimeConverterUtil::Convert("A1ModJulian", partner->epoch, instr,
+                     "UTCGregorian", outval, endstr, 1);
 
                sprintf(pass, "%s%-12.6lf     %24s   %24s\n", pass,
-                     current->duration, (char *)(startstr.char_str()), (char *)(endstr.char_str()));
+                     current->duration, startstr.c_str(), endstr.c_str());
             }
             else
             {
                sprintf(pass, "%sUndefined        %24s   --------------------"
-                     "----\n", pass, (char *)(startstr.char_str()));
+                     "----\n", pass, startstr.c_str());
             }
          }
          else
          {
-            sprintf(pass, "%-11s %-25s ", (char *)(current->type.char_str()),
-                  (char *)(current->participants.char_str()));
+            sprintf(pass, "%-11s %-25s ", current->type.c_str(),
+                  current->participants.c_str());
             start = current->epoch;
-            TimeConverterUtil::Convert(wxT("A1ModJulian"), start, instr,
-                  wxT("UTCGregorian"), outval, endstr, 1);
+            TimeConverterUtil::Convert("A1ModJulian", start, instr,
+                  "UTCGregorian", outval, endstr, 1);
             sprintf(pass, "%sUndefined        ------------------------   "
-                  "%24s\n", pass, (char *)(endstr.char_str()));
+                  "%24s\n", pass, endstr.c_str());
          }
 
          theFile << pass;
@@ -442,7 +442,7 @@ void LocatedEventTable::BuildAssociations()
    // Build the links
    for (UnsignedInt i = 0; i < events.size(); ++i)
    {
-      events[i]->dataName = events[i]->type + wxT("-") + events[i]->participants;
+      events[i]->dataName = events[i]->type + "-" + events[i]->participants;
       if (events[i]->isEntry)
       {
          Integer mate = -1;
@@ -481,19 +481,19 @@ void LocatedEventTable::BuildAssociations()
       for (UnsignedInt i = 0; i < events.size(); ++i)
       {
          if (events[i]->partner != NULL)
-            MessageInterface::ShowMessage(wxT("%s %s %16.10lf %s %s %s %16.10lf\n"),
+            MessageInterface::ShowMessage("%s %s %16.10lf %s %s %s %16.10lf\n",
                   events[i]->type.c_str(), events[i]->participants.c_str(),
                   events[i]->epoch,
-                  (events[i]->isEntry ? wxT("starts for") : wxT("closes for")),
+                  (events[i]->isEntry ? "starts for" : "closes for"),
                   events[i]->partner->type.c_str(),
                   events[i]->partner->participants.c_str(),
                   events[i]->partner->epoch
                   );
          else
-            MessageInterface::ShowMessage(wxT("%s %s %16.10lf %s no partner\n"),
+            MessageInterface::ShowMessage("%s %s %16.10lf %s no partner\n",
                   events[i]->type.c_str(), events[i]->participants.c_str(),
                   events[i]->epoch,
-                  (events[i]->isEntry ? wxT("starts for") : wxT("closes for"))
+                  (events[i]->isEntry ? "starts for" : "closes for")
                   );
       }
    #endif
@@ -557,7 +557,7 @@ std::string LocatedEventTable::BuildEventSummary()
 
    Integer count;
    char data[256], sub[128];
-   wxString parties;
+   std::string parties;
    Real span;
 
    // Find maxima, type by type
@@ -565,7 +565,7 @@ std::string LocatedEventTable::BuildEventSummary()
    {
       eventNames.clear();
       span = 0.0;
-      sprintf(sub, "  Max %s Duration", (char *)(eventTypes[i].char_str()));
+      sprintf(sub, "  Max %s Duration", eventTypes[i].c_str());
       for (UnsignedInt j = 0; j < events.size(); ++j)
       {
          if ((events[j]->isEntry) && (events[j]->partner != NULL) &&
@@ -579,7 +579,7 @@ std::string LocatedEventTable::BuildEventSummary()
             {
                eventTypesWithNames.push_back(events[j]->dataName);
                sprintf(data, "%-34s: %12.3lf s (%s)\n", sub, span,
-                     (char *)(parties.char_str()));
+                     parties.c_str());
                summary += data;
                sprintf(sub, " ");
             }
@@ -599,7 +599,7 @@ std::string LocatedEventTable::BuildEventSummary()
              (events[j]->type == eventTypes[i]))
             ++count;
       }
-      sprintf(sub, "  Number of %s Events", (char *)(eventTypes[i].c_str()));
+      sprintf(sub, "  Number of %s Events", eventTypes[i].c_str());
       sprintf(data, "%-34s: %d\n", sub, count);
       summary += data;
    }
@@ -610,11 +610,11 @@ std::string LocatedEventTable::BuildEventSummary()
 
 void LocatedEventTable::ShowPlot()
 {
-   BuildPlot(wxT("Event Data"));
+   BuildPlot("Event Data");
 }
 
 //------------------------------------------------------------------------------
-// void BuildPlot(const wxString &plotName,
+// void BuildPlot(const std::string &plotName,
 //       const StringArray &measurementNames)
 //------------------------------------------------------------------------------
 /**
@@ -626,20 +626,20 @@ void LocatedEventTable::ShowPlot()
  *                         for the residuals being plotted
  */
 //------------------------------------------------------------------------------
-void LocatedEventTable::BuildPlot(const wxString &plotName)
+void LocatedEventTable::BuildPlot(const std::string &plotName)
 {
    // Commented out for stability
 
    thePlot = new OwnedPlot(plotName);
 
-   thePlot->SetStringParameter(wxT("PlotTitle"), plotName);
-   thePlot->SetStringParameter(wxT("XAxisTitle"), wxT("A.1 Epoch"));
-   thePlot->SetStringParameter(wxT("YAxisTitle"), wxT("Duration (sec)"));
-   thePlot->SetBooleanParameter(wxT("UseLines"), false);
-   thePlot->SetBooleanParameter(wxT("UseHiLow"), false);
+   thePlot->SetStringParameter("PlotTitle", plotName);
+   thePlot->SetStringParameter("XAxisTitle", "A.1 Epoch");
+   thePlot->SetStringParameter("YAxisTitle", "Duration (sec)");
+   thePlot->SetBooleanParameter("UseLines", false);
+   thePlot->SetBooleanParameter("UseHiLow", false);
 
    // Turn on automatic marker colors
-   thePlot->SetIntegerParameter(thePlot->GetParameterID(wxT("DefaultColor")), 0);
+   thePlot->SetIntegerParameter(thePlot->GetParameterID("DefaultColor"), 0);
 
    eventTypesWithNames.clear();
    for (UnsignedInt i = 0; i < events.size(); ++i)
@@ -649,8 +649,8 @@ void LocatedEventTable::BuildPlot(const wxString &plotName)
 
    for (UnsignedInt i = 0; i < eventTypesWithNames.size(); ++i)
    {
-      wxString curveName = eventTypesWithNames[i];
-      thePlot->SetStringParameter(wxT("Add"), curveName);
+      std::string curveName = eventTypesWithNames[i];
+      thePlot->SetStringParameter("Add", curveName);
    }
 
    thePlot->Initialize();
@@ -668,7 +668,7 @@ void LocatedEventTable::BuildPlot(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-// void CollectData(const wxString &forCurve, RealArray &xv, RealArray &yv)
+// void CollectData(const std::string &forCurve, RealArray &xv, RealArray &yv)
 //------------------------------------------------------------------------------
 /**
  * Collects data for an event plot curve
@@ -678,7 +678,7 @@ void LocatedEventTable::BuildPlot(const wxString &plotName)
  * @param yv The container for the Y data
  */
 //------------------------------------------------------------------------------
-void LocatedEventTable::CollectData(const wxString &forCurve, RealArray &xv,
+void LocatedEventTable::CollectData(const std::string &forCurve, RealArray &xv,
       RealArray &yv)
 {
    xv.clear();

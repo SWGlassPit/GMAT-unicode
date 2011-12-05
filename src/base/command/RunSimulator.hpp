@@ -51,19 +51,19 @@ public:
 
    virtual GmatBase* Clone() const;
 
-   virtual wxString GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual std::string GetRefObjectName(const Gmat::ObjectType type) const;
    virtual bool SetRefObjectName(const Gmat::ObjectType type,
-         const wxString &name);
+         const std::string &name);
    virtual bool RenameRefObject(const Gmat::ObjectType type,
-         const wxString &oldName, const wxString &newName);
-   virtual const wxString& GetGeneratingString(Gmat::WriteMode mode,
-         const wxString &prefix, const wxString &useName);
+         const std::string &oldName, const std::string &newName);
+   virtual const std::string& GetGeneratingString(Gmat::WriteMode mode,
+         const std::string &prefix, const std::string &useName);
 
    virtual bool Initialize();
    virtual bool Execute();
    virtual void RunComplete();
-   virtual bool TakeAction(const wxString &action,
-                           const wxString &actionData = wxT(""));
+   virtual bool TakeAction(const std::string &action,
+                           const std::string &actionData = "");
 
    virtual GmatCommand* GetNext();
 

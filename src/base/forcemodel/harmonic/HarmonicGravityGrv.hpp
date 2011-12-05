@@ -24,7 +24,7 @@
 class HarmonicGravityGrv : public HarmonicGravity
 {
 public:
-   HarmonicGravityGrv(const wxString& filename, const Real& radius, const Real& mukm);
+   HarmonicGravityGrv(const std::string& filename, const Real& radius, const Real& mukm);
    virtual ~HarmonicGravityGrv();
 
 protected:

@@ -62,25 +62,25 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 SolarRadiationPressure::PARAMETER_TEXT[SRPParamCount - PhysicalModelParamCount] =
 {
-    wxT("UseAnalytic"),
-    wxT("ShadowModel"),
-    wxT("VectorModel"),
-    wxT("BodyRadius"),
-    wxT("SunRadius"),
-    wxT("HasMoons"),
-    wxT("CR"),
-    wxT("Area"),
-    wxT("Mass"),
-    wxT("Flux"),
-    wxT("Flux_Pressure"),
-    wxT("Sun_Distance"),
-    wxT("Nominal_Sun"),
-    wxT("PSunRad"),
-    wxT("PCBrad"),
-    wxT("PercentSun"),
+    "UseAnalytic",
+    "ShadowModel",
+    "VectorModel",
+    "BodyRadius",
+    "SunRadius",
+    "HasMoons",
+    "CR",
+    "Area",
+    "Mass",
+    "Flux",
+    "Flux_Pressure",
+    "Sun_Distance",
+    "Nominal_Sun",
+    "PSunRad",
+    "PCBrad",
+    "PercentSun",
 };
 
 const Gmat::ParameterType
@@ -109,14 +109,14 @@ SolarRadiationPressure::PARAMETER_TYPE[SRPParamCount - PhysicalModelParamCount] 
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// SolarRadiationPressure::SolarRadiationPressure(const wxString &name)
+// SolarRadiationPressure::SolarRadiationPressure(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * 
  */
 //------------------------------------------------------------------------------
-SolarRadiationPressure::SolarRadiationPressure(const wxString &name) :
-   PhysicalModel       (Gmat::PHYSICAL_MODEL, wxT("SolarRadiationPressure"), name),   
+SolarRadiationPressure::SolarRadiationPressure(const std::string &name) :
+   PhysicalModel       (Gmat::PHYSICAL_MODEL, "SolarRadiationPressure", name),   
    theSun              (NULL),
    useAnalytic         (true),
    shadowModel         (CONICAL_MODEL),
@@ -256,13 +256,13 @@ GmatBase* SolarRadiationPressure::Clone(void) const
 }
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString SolarRadiationPressure::GetParameterText(const Integer id) const
+std::string SolarRadiationPressure::GetParameterText(const Integer id) const
 {
    if (id >= USE_ANALYTIC && id < SRPParamCount)
       return SolarRadiationPressure::PARAMETER_TEXT[id - PhysicalModelParamCount];
@@ -271,13 +271,13 @@ wxString SolarRadiationPressure::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString str) const
+// Integer GetParameterID(const std::string str) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Integer SolarRadiationPressure::GetParameterID(const wxString &str) const
+Integer SolarRadiationPressure::GetParameterID(const std::string &str) const
 {
    for (int i = USE_ANALYTIC; i < SRPParamCount; i++)
    {
@@ -303,13 +303,13 @@ Gmat::ParameterType SolarRadiationPressure::GetParameterType(const Integer id) c
 }
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString SolarRadiationPressure::GetParameterTypeString(const Integer id) const
+std::string SolarRadiationPressure::GetParameterTypeString(const Integer id) const
 {
    if (id >= USE_ANALYTIC && id < SRPParamCount)
       return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
@@ -344,22 +344,22 @@ Real SolarRadiationPressure::GetRealParameter(const Integer id) const
 //         return cr[0];
 //      else
 //         throw ODEModelException(
-//            wxT("Attempting to access C_r for SRP force before any spacecraft ")
-//            wxT("parameters were set."));
+//            "Attempting to access C_r for SRP force before any spacecraft "
+//            "parameters were set.");
 //   if (id == AREA)
 //      if (area.size() > 0)
 //         return area[0];
 //      else
 //         throw ODEModelException(
-//            wxT("Attempting to access area for SRP force before any spacecraft ")
-//            wxT("parameters were set."));
+//            "Attempting to access area for SRP force before any spacecraft "
+//            "parameters were set.");
 //   if (id == MASS)
 //      if (mass.size() > 0)
 //         return mass[0];
 //      else
 //         throw ODEModelException(
-//            wxT("Attempting to access mass for SRP force before any spacecraft ")
-//            wxT("parameters were set."));
+//            "Attempting to access mass for SRP force before any spacecraft "
+//            "parameters were set.");
    if (id == FLUX)
       return flux;
    if (id == FLUX_PRESSURE)
@@ -530,8 +530,8 @@ bool SolarRadiationPressure::Initialize()
    bool retval = PhysicalModel::Initialize();
 
    #ifdef DEBUG_SOLAR_RADIATION_PRESSURE
-      MessageInterface::ShowMessage(wxT("Flux = %.12le, Flux Pressure = %.12le, ")
-            wxT("c = %16.3lf or %16.3lf\n"), flux, fluxPressure,
+      MessageInterface::ShowMessage("Flux = %.12le, Flux Pressure = %.12le, "
+            "c = %16.3lf or %16.3lf\n", flux, fluxPressure,
             GmatPhysicalConstants::c, flux/fluxPressure);
    #endif
 
@@ -544,7 +544,7 @@ bool SolarRadiationPressure::Initialize()
       sunRadius = theSun->GetEquatorialRadius();;
       
       if (!theSun)
-         throw ODEModelException(wxT("Solar system does not contain the Sun for SRP force."));
+         throw ODEModelException("Solar system does not contain the Sun for SRP force.");
 
       // Set the body to the force model origin, or Earth if origin isn't set
       if (forceOrigin)
@@ -553,14 +553,14 @@ bool SolarRadiationPressure::Initialize()
          body = solarSystem->GetBody(SolarSystem::EARTH_NAME);
    
       #ifdef DEBUG_SRP_ORIGIN
-         MessageInterface::ShowMessage(wxT("SRP body is %s\n"), 
+         MessageInterface::ShowMessage("SRP body is %s\n", 
             body->GetName().c_str());
       #endif
 
       if (!body)
-         throw ODEModelException(wxT("Central body not set for SRP force."));
+         throw ODEModelException("Central body not set for SRP force.");
 
-      if (body->GetName() == wxT("Sun"))         
+      if (body->GetName() == "Sun")         
          bodyIsTheSun = true;
       else
          bodyIsTheSun = false;
@@ -596,12 +596,12 @@ bool SolarRadiationPressure::Initialize()
 bool SolarRadiationPressure::SetCentralBody()
 {
    if (!solarSystem)
-      throw ODEModelException(wxT("Solar system not set in call to SRP::SetCentralBody."));
+      throw ODEModelException("Solar system not set in call to SRP::SetCentralBody.");
    
    theSun = solarSystem->GetBody(SolarSystem::SUN_NAME);
    
    if (!theSun)
-      throw ODEModelException(wxT("Solar system does not contain the Sun for SRP force."));
+      throw ODEModelException("Solar system does not contain the Sun for SRP force.");
    
    // Set the body to the force model origin, or Earth if origin isn't set
    if (forceOrigin)
@@ -610,17 +610,17 @@ bool SolarRadiationPressure::SetCentralBody()
       body = solarSystem->GetBody(SolarSystem::EARTH_NAME);
 
    #ifdef DEBUG_SRP_ORIGIN
-      MessageInterface::ShowMessage(wxT("SRP body is %s\n"), 
+      MessageInterface::ShowMessage("SRP body is %s\n", 
          body->GetName().c_str());
    #endif
 
    if (!body)
-      throw ODEModelException(wxT("Central body not set for SRP force."));
+      throw ODEModelException("Central body not set for SRP force.");
 
    bodyRadius = body->GetEquatorialRadius();
 
    #ifdef DEBUG_SRP_ORIGIN
-      MessageInterface::ShowMessage(wxT("SRP central body set to %s\n"), 
+      MessageInterface::ShowMessage("SRP central body set to %s\n", 
          body->GetName().c_str());
       shadowModel = 0;  // CONICAL_MODEL
    #endif
@@ -649,38 +649,38 @@ bool SolarRadiationPressure::GetDerivatives(Real *state, Real dt, Integer order,
       return false;
         
    if (!theSun)
-      throw ODEModelException(wxT("The Sun is not set in SRP::GetDerivatives"));
+      throw ODEModelException("The Sun is not set in SRP::GetDerivatives");
 
    if (!body)
       throw ODEModelException(
-         wxT("The central body is not set in SRP::GetDerivatives"));
+         "The central body is not set in SRP::GetDerivatives");
     
    if (!cbSunVector)
       throw ODEModelException(
-         wxT("The sun vector is not initialized in SRP::GetDerivatives"));
+         "The sun vector is not initialized in SRP::GetDerivatives");
 
    if ((Integer)cr.size() != satCount)
    {
-      wxString msg;
-      msg << wxT("Mismatch between satellite count (") << satCount 
-          << wxT(") and radiation coefficient count (") << cr.size() << wxT(")"); 
-      throw ODEModelException(msg);
+      std::stringstream msg;
+      msg << "Mismatch between satellite count (" << satCount 
+          << ") and radiation coefficient count (" << cr.size() << ")"; 
+      throw ODEModelException(msg.str());
    }
 
    if ((Integer)area.size() != satCount)
    {
-      wxString msg;
-      msg << wxT("Mismatch between satellite count (") << satCount   
-          << wxT(") and area count (") << area.size() << wxT(")"); 
-      throw ODEModelException(msg);
+      std::stringstream msg;
+      msg << "Mismatch between satellite count (" << satCount   
+          << ") and area count (" << area.size() << ")"; 
+      throw ODEModelException(msg.str());
    }
 
    if ((Integer)mass.size() != satCount)
    {
-      wxString msg;
-      msg << wxT("Mismatch between satellite count (") << satCount   
-          << wxT(") and mass count (") << mass.size() << wxT(")"); 
-      throw ODEModelException(msg);
+      std::stringstream msg;
+      msg << "Mismatch between satellite count (" << satCount   
+          << ") and mass count (" << mass.size() << ")"; 
+      throw ODEModelException(msg.str());
    }
 
    Real distancefactor = 1.0, mag, sSquared;
@@ -709,7 +709,7 @@ bool SolarRadiationPressure::GetDerivatives(Real *state, Real dt, Integer order,
       bool showData = false;
       if (shadowModel == 0) 
       {
-         MessageInterface::ShowMessage(wxT("SRP[%s] Sun Position: %lf %lf %lf\n"), 
+         MessageInterface::ShowMessage("SRP[%s] Sun Position: %lf %lf %lf\n", 
             body->GetName().c_str(), cbSunVector[0], cbSunVector[1], 
             cbSunVector[2]);
          showData = true;
@@ -728,7 +728,7 @@ bool SolarRadiationPressure::GetDerivatives(Real *state, Real dt, Integer order,
       {
          #ifdef DEBUG_DERIVATIVE
             MessageInterface::ShowMessage(
-                  wxT("Filling Cartesian state for spacecraft %d\n"), i);
+                  "Filling Cartesian state for spacecraft %d\n", i);
          #endif
          i6 = cartesianStart + i*6;
 
@@ -807,7 +807,7 @@ bool SolarRadiationPressure::GetDerivatives(Real *state, Real dt, Integer order,
       for (Integer i = 0; i < stmCount; ++i)
       {
          #ifdef DEBUG_STM_MATRIX
-            MessageInterface::ShowMessage(wxT("Filling STM for spacecraft %d\n"), i);
+            MessageInterface::ShowMessage("Filling STM for spacecraft %d\n", i);
          #endif
          i6 = stmStart + i * 36;
          associate = theState->GetAssociateIndex(i6);
@@ -897,7 +897,7 @@ bool SolarRadiationPressure::GetDerivatives(Real *state, Real dt, Integer order,
       {
          #ifdef DEBUG_A_MATRIX
             MessageInterface::ShowMessage(
-                  wxT("Filling A-matrix for spacecraft %d\n"), i);
+                  "Filling A-matrix for spacecraft %d\n", i);
          #endif
          i6 = aMatrixStart + i * 36;
          associate = theState->GetAssociateIndex(i6);
@@ -976,7 +976,7 @@ bool SolarRadiationPressure::GetDerivatives(Real *state, Real dt, Integer order,
 
          #ifdef DEBUG_A_MATRIX
             MessageInterface::ShowMessage(
-                  wxT("A-Matrix contribution[%d] from SRP:\n"), i);
+                  "A-Matrix contribution[%d] from SRP:\n", i);
          #endif
          for (Integer j = 0; j < 6; ++j)
          {
@@ -985,11 +985,11 @@ bool SolarRadiationPressure::GetDerivatives(Real *state, Real dt, Integer order,
                element = j * 6 + k;
                deriv[i6+element] = aTilde[element];
                #ifdef DEBUG_A_MATRIX
-                  MessageInterface::ShowMessage(wxT("  %le  "), deriv[i6+element]);
+                  MessageInterface::ShowMessage("  %le  ", deriv[i6+element]);
                #endif
             }
             #ifdef DEBUG_A_MATRIX
-               MessageInterface::ShowMessage(wxT("\n"));
+               MessageInterface::ShowMessage("\n");
             #endif
          }
       }
@@ -997,30 +997,30 @@ bool SolarRadiationPressure::GetDerivatives(Real *state, Real dt, Integer order,
     
    #ifdef DEBUG_SOLAR_RADIATION_PRESSURE    
       MessageInterface::ShowMessage(
-         wxT("SRP Parameters:\n   SunVec = [%16le %16le %16le]\n   posVec = ")
-         wxT("[%16le %16le %16le]\n"), cbSunVector[0], cbSunVector[1], 
+         "SRP Parameters:\n   SunVec = [%16le %16le %16le]\n   posVec = "
+         "[%16le %16le %16le]\n", cbSunVector[0], cbSunVector[1], 
          cbSunVector[2], state[0], state[1], state[2]);
       MessageInterface::ShowMessage(
-         wxT("   epoch = %16le\n   nomSun = %16le\n   sunDist = %16le\n   %16le percent\n"),
+         "   epoch = %16le\n   nomSun = %16le\n   sunDist = %16le\n   %16le percent\n",
          ep, nominalSun, sunDistance, percentSun);
    #endif
    
    #ifdef DEBUG_SOLAR_RADIATION_PRESSURE_TIMESHADOW    
-      MessageInterface::ShowMessage(wxT("   %16.12le      %16.12le\n"), ep, percentSun);
+      MessageInterface::ShowMessage("   %16.12le      %16.12le\n", ep, percentSun);
    #endif
 
    #ifdef DEBUG_SRP_ORIGIN
       if (showData)
       {
          MessageInterface::ShowMessage(
-            wxT("SRP Parameters at %s:\n   SunVec = [%16le %16le %16le]\n   posVec")
-            wxT(" = [%16le %16le %16le]\n"), body->GetName().c_str(), cbSunVector[0], 
+            "SRP Parameters at %s:\n   SunVec = [%16le %16le %16le]\n   posVec"
+            " = [%16le %16le %16le]\n", body->GetName().c_str(), cbSunVector[0], 
             cbSunVector[1], cbSunVector[2], state[0], state[1], state[2]);
          MessageInterface::ShowMessage(
-            wxT("   epoch = %16le\n   nomSun = %16le\n   sunDist = %16le\n   ")
-            wxT("percent = %16le\n   cr = %16le\n   fluxP = %16le\n   area = %16le")
-            wxT("\n   mass = %16le\n   distFac = %16le\n   forceVector = [%16le ")
-            wxT("%16le %16le]\n   magnitude = %16le\n\n"), ep, nominalSun, 
+            "   epoch = %16le\n   nomSun = %16le\n   sunDist = %16le\n   "
+            "percent = %16le\n   cr = %16le\n   fluxP = %16le\n   area = %16le"
+            "\n   mass = %16le\n   distFac = %16le\n   forceVector = [%16le "
+            "%16le %16le]\n   magnitude = %16le\n\n", ep, nominalSun, 
             sunDistance, percentSun, cr[0], fluxPressure, area[0], mass[0], 
             distancefactor, forceVector[0], forceVector[1], forceVector[2], 
             mag);
@@ -1198,7 +1198,7 @@ Real SolarRadiationPressure::ShadowFunction(Real * state)
 
 
 //------------------------------------------------------------------------------
-// void SetSatelliteParameter(const Integer i, const wxString parmName, 
+// void SetSatelliteParameter(const Integer i, const std::string parmName, 
 //                            const Real parm)
 //------------------------------------------------------------------------------
 /**
@@ -1210,20 +1210,20 @@ Real SolarRadiationPressure::ShadowFunction(Real * state)
  */
 //------------------------------------------------------------------------------
 void SolarRadiationPressure::SetSatelliteParameter(const Integer i, 
-                                          const wxString parmName, 
+                                          const std::string parmName, 
                                           const Real parm,
                                           const Integer parmID)
 {
     unsigned parmNumber = (unsigned)(i);
 
     #ifdef DEBUG_SOLAR_RADIATION_PRESSURE
-         wxString msg;
-         msg << wxT("Setting satellite parameter ") << parmName << wxT(" for Spacecraft ") 
-             << i << wxT(" to ") << parm << wxT("\n");
+         std::stringstream msg;
+         msg << "Setting satellite parameter " << parmName << " for Spacecraft " 
+             << i << " to " << parm << "\n";
          MessageInterface::ShowMessage(msg.str());
     #endif
     
-    if (parmName == wxT("Mass"))
+    if (parmName == "Mass")
     {
         if (parmNumber < mass.size())
             mass[i] = parm;
@@ -1232,7 +1232,7 @@ void SolarRadiationPressure::SetSatelliteParameter(const Integer i,
         if (parmID >= 0)
            massID = parmID;
     }
-    if (parmName == wxT("Cr"))
+    if (parmName == "Cr")
     {
         if (parmNumber < cr.size())
             cr[i] = parm;
@@ -1241,7 +1241,7 @@ void SolarRadiationPressure::SetSatelliteParameter(const Integer i,
         if (parmID >= 0)
            crID = parmID;
     }
-    if (parmName == wxT("SRPArea"))
+    if (parmName == "SRPArea")
     {
        if (parmNumber < area.size())
             area[i] = parm;
@@ -1269,9 +1269,9 @@ void SolarRadiationPressure::SetSatelliteParameter(const Integer i,
    unsigned parmNumber = (unsigned)(i);
 
    #ifdef DEBUG_SOLAR_RADIATION_PRESSURE
-        wxString msg;
-        msg << wxT("Setting satellite parameter ") << parmName << wxT(" for Spacecraft ")
-            << i << wxT(" to ") << parm << wxT("\n");
+        std::stringstream msg;
+        msg << "Setting satellite parameter " << parmName << " for Spacecraft "
+            << i << " to " << parm << "\n";
         MessageInterface::ShowMessage(msg.str());
    #endif
 
@@ -1300,7 +1300,7 @@ void SolarRadiationPressure::SetSatelliteParameter(const Integer i,
 
 
 //------------------------------------------------------------------------------
-// void ClearSatelliteParameters(const wxString parmName)
+// void ClearSatelliteParameters(const std::string parmName)
 //------------------------------------------------------------------------------
 /**
  * Resets the PhysicalModel to receive a new set of satellite parameters.
@@ -1310,18 +1310,18 @@ void SolarRadiationPressure::SetSatelliteParameter(const Integer i,
  */
 //------------------------------------------------------------------------------
 void SolarRadiationPressure::ClearSatelliteParameters(
-                                                   const wxString parmName)
+                                                   const std::string parmName)
 {
    #ifdef DEBUG_SOLAR_RADIATION_PRESSURE
-      wxString msg;
-      msg << wxT("Clearing satellite parameter ") << parmName << wxT("\n");
+      std::stringstream msg;
+      msg << "Clearing satellite parameter " << parmName << "\n";
       MessageInterface::ShowMessage(msg.str());
    #endif
-   if ((parmName == wxT("DryMass")) || (parmName == wxT("")))
+   if ((parmName == "DryMass") || (parmName == ""))
       mass.clear();
-   if ((parmName == wxT("Cr")) || (parmName == wxT("")))
+   if ((parmName == "Cr") || (parmName == ""))
       cr.clear();
-   if ((parmName == wxT("SRPArea")) || (parmName == wxT("")))
+   if ((parmName == "SRPArea") || (parmName == ""))
       area.clear();
 }
 
@@ -1342,7 +1342,7 @@ bool SolarRadiationPressure::SupportsDerivative(Gmat::StateElementId id)
 {
    #ifdef DEBUG_REGISTRATION
       MessageInterface::ShowMessage(
-            wxT("SolarRadiationPressure checking for support for id %d\n"), id);
+            "SolarRadiationPressure checking for support for id %d\n", id);
    #endif
       
    if (id == Gmat::CARTESIAN_STATE)
@@ -1377,8 +1377,8 @@ bool SolarRadiationPressure::SetStart(Gmat::StateElementId id, Integer index,
                       Integer quantity)
 {
    #ifdef DEBUG_REGISTRATION
-      MessageInterface::ShowMessage(wxT("SolarRadiationPressure setting start data ")
-            wxT("for id = %d to index %d; %d objects identified\n"), id, index, 
+      MessageInterface::ShowMessage("SolarRadiationPressure setting start data "
+            "for id = %d to index %d; %d objects identified\n", id, index, 
             quantity);
    #endif
    

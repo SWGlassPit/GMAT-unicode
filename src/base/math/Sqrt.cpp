@@ -33,8 +33,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Sqrt::Sqrt(const wxString &nomme)
-   : MathFunction(wxT("Sqrt"), nomme)
+Sqrt::Sqrt(const std::string &nomme)
+   : MathFunction("Sqrt", nomme)
 {
 }
 
@@ -93,7 +93,7 @@ void Sqrt::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
    leftNode->GetOutputInfo(type1, row1, col1);
    
    if (type1 != Gmat::REAL_TYPE)
-      throw MathException(wxT("Left is not scalar, so cannot do Sqrt().\n"));  
+      throw MathException("Left is not scalar, so cannot do Sqrt().\n");  
    else
    {
       type = type1;
@@ -114,7 +114,7 @@ void Sqrt::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 bool Sqrt::ValidateInputs()
 {
    if (leftNode == NULL)
-      throw MathException(wxT("Sqrt() - Missing input arguments.\n"));
+      throw MathException("Sqrt() - Missing input arguments.\n");
    
    Integer type1, row1, col1; // Left node
    

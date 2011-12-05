@@ -87,10 +87,10 @@ SpiceKernelReader::SpiceKernelReader(const SpiceKernelReader &reader) :
 /**
  * This method copies the data from the input object to the object.
  *
- * @param <reader> the SpiceKernelReader object whose data to assign to wxT("this")
+ * @param <reader> the SpiceKernelReader object whose data to assign to "this"
  *                 SpiceKernelReader.
  *
- * @return wxT("this") SpiceKernelReader with data of input SpiceKernelReader reader.
+ * @return "this" SpiceKernelReader with data of input SpiceKernelReader reader.
  */
 //------------------------------------------------------------------------------
 SpiceKernelReader& SpiceKernelReader::operator=(const SpiceKernelReader &reader)

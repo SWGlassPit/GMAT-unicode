@@ -34,16 +34,16 @@
  */
 //------------------------------------------------------------------------------
 EndFiniteBurn::EndFiniteBurn() :
-   GmatCommand        (wxT("EndFiniteBurn")),
-   thrustName         (wxT("")),
+   GmatCommand        ("EndFiniteBurn"),
+   thrustName         (""),
    burnForce          (NULL),
-   burnName           (wxT("")),
+   burnName           (""),
    maneuver           (NULL),
    transientForces    (NULL),
    firstTimeExecution (true)
 {
-   if (instanceName == wxT(""))
-      instanceName = wxT("EndFiniteBurn");
+   if (instanceName == "")
+      instanceName = "EndFiniteBurn";
    physicsBasedCommand = true;
 }
 
@@ -118,8 +118,8 @@ EndFiniteBurn& EndFiniteBurn::operator=(const EndFiniteBurn& endman)
 
 
 //------------------------------------------------------------------------------
-// virtual bool TakeAction(const wxString &action,  
-//                         const wxString &actionData = wxT(""));
+// virtual bool TakeAction(const std::string &action,  
+//                         const std::string &actionData = "");
 //------------------------------------------------------------------------------
 /**
  * This method performs action.
@@ -130,16 +130,16 @@ EndFiniteBurn& EndFiniteBurn::operator=(const EndFiniteBurn& endman)
  *
  */
 //------------------------------------------------------------------------------
-bool EndFiniteBurn::TakeAction(const wxString &action,
-                                 const wxString &actionData)
+bool EndFiniteBurn::TakeAction(const std::string &action,
+                                 const std::string &actionData)
 {
    #if DEBUG_TAKE_ACTION
    MessageInterface::ShowMessage
-      (wxT("EndFiniteBurn::TakeAction() action=%s, actionData=%s\n"),
+      ("EndFiniteBurn::TakeAction() action=%s, actionData=%s\n",
        action.c_str(), actionData.c_str());
    #endif
    
-   if (action == wxT("Clear"))
+   if (action == "Clear")
    {
       satNames.clear();
       return true;
@@ -150,7 +150,7 @@ bool EndFiniteBurn::TakeAction(const wxString &action,
 
 
 //------------------------------------------------------------------------------
-// wxString GetRefObjectName(const Gmat::ObjectType type) const
+// std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
 /**
  * Accesses names for referenced objects.
@@ -160,14 +160,14 @@ bool EndFiniteBurn::TakeAction(const wxString &action,
  * @return the referenced object's name.
  */
 //------------------------------------------------------------------------------
-wxString EndFiniteBurn::GetRefObjectName(const Gmat::ObjectType type) const
+std::string EndFiniteBurn::GetRefObjectName(const Gmat::ObjectType type) const
 {
    switch (type)
    {
       case Gmat::FINITE_BURN:
          #ifdef DEBUG_END_MANEUVER
             MessageInterface::ShowMessage
-               (wxT("Getting EndFiniteBurn reference burn names\n"));
+               ("Getting EndFiniteBurn reference burn names\n");
          #endif
          return burnName;
          
@@ -232,7 +232,7 @@ const StringArray& EndFiniteBurn::GetRefObjectNameArray(
       case Gmat::SPACECRAFT:
          #ifdef DEBUG_END_MANEUVER
             MessageInterface::ShowMessage
-               (wxT("Getting EndFiniteBurn reference spacecraft list\n"));
+               ("Getting EndFiniteBurn reference spacecraft list\n");
          #endif
          return satNames;
       
@@ -246,7 +246,7 @@ const StringArray& EndFiniteBurn::GetRefObjectNameArray(
 
 
 //------------------------------------------------------------------------------
-// bool SetRefObjectName(const Gmat::ObjectType type, const wxString &name)
+// bool SetRefObjectName(const Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets names for referenced objects.
@@ -258,14 +258,14 @@ const StringArray& EndFiniteBurn::GetRefObjectNameArray(
  */
 //------------------------------------------------------------------------------
 bool EndFiniteBurn::SetRefObjectName(const Gmat::ObjectType type, 
-                                     const wxString &name)
+                                     const std::string &name)
 {
    switch (type)
    {
       case Gmat::SPACECRAFT:
          #ifdef DEBUG_END_MANEUVER
             MessageInterface::ShowMessage
-               (wxT("Setting EndFiniteBurn reference spacecraft \"%s\"\n"), 
+               ("Setting EndFiniteBurn reference spacecraft \"%s\"\n", 
                 name.c_str());
          #endif
          satNames.push_back(name);
@@ -274,7 +274,7 @@ bool EndFiniteBurn::SetRefObjectName(const Gmat::ObjectType type,
       case Gmat::FINITE_BURN:
          #ifdef DEBUG_END_MANEUVER
             MessageInterface::ShowMessage
-               (wxT("Setting EndFiniteBurn reference burn \"%s\"\n"), name.c_str());
+               ("Setting EndFiniteBurn reference burn \"%s\"\n", name.c_str());
          #endif
          burnName = name;
          return true;
@@ -282,7 +282,7 @@ bool EndFiniteBurn::SetRefObjectName(const Gmat::ObjectType type,
       default:
          #ifdef DEBUG_END_MANEUVER
             MessageInterface::ShowMessage
-               (wxT("EndFiniteBurn reference object \"%s\" not set!\n"), 
+               ("EndFiniteBurn reference object \"%s\" not set!\n", 
                 name.c_str());
          #endif
          ;
@@ -309,7 +309,7 @@ GmatBase* EndFiniteBurn::Clone() const
 
 //------------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * Renames referenced objects.
@@ -322,8 +322,8 @@ GmatBase* EndFiniteBurn::Clone() const
  */
 //------------------------------------------------------------------------------
 bool EndFiniteBurn::RenameRefObject(const Gmat::ObjectType type,
-                                    const wxString &oldName,
-                                    const wxString &newName)
+                                    const std::string &oldName,
+                                    const std::string &newName)
 {
    // EndFiniteBurn needs to know about Burn and Spacecraft only
    if (type != Gmat::FINITE_BURN && type != Gmat::SPACECRAFT)
@@ -341,7 +341,7 @@ bool EndFiniteBurn::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-//  const wxString GetGeneratingString()
+//  const std::string GetGeneratingString()
 //------------------------------------------------------------------------------
 /**
  * Method used to retrieve the string that was parsed to build this GmatCommand.
@@ -361,20 +361,20 @@ bool EndFiniteBurn::RenameRefObject(const Gmat::ObjectType type,
  * @return The script line that defines this GmatCommand.
  */
 //------------------------------------------------------------------------------
-const wxString& EndFiniteBurn::GetGeneratingString(Gmat::WriteMode mode,
-                                                    const wxString &prefix,
-                                                    const wxString &useName)
+const std::string& EndFiniteBurn::GetGeneratingString(Gmat::WriteMode mode,
+                                                    const std::string &prefix,
+                                                    const std::string &useName)
 {
-   generatingString = prefix + wxT("EndFiniteBurn ") + burnName + wxT("(");
+   generatingString = prefix + "EndFiniteBurn " + burnName + "(";
    for (StringArray::iterator satIt = satNames.begin();
         satIt != satNames.end(); ++satIt)
    {
       if (satIt != satNames.begin())
-         generatingString += wxT(", ");
+         generatingString += ", ";
       generatingString += *satIt;
    }
 
-   generatingString += wxT(");");
+   generatingString += ");";
 
    return GmatCommand::GetGeneratingString(mode, prefix, useName);
 }
@@ -414,9 +414,9 @@ bool EndFiniteBurn::Initialize()
    {
       // Look up the maneuver object
       if ((mapObj = FindObject(burnName)) == NULL) 
-         throw CommandException(wxT("EndFiniteBurn: Unknown finite burn \"") + burnName + wxT("\""));
-      if (mapObj->GetTypeName() != wxT("FiniteBurn"))
-         throw CommandException(wxT("EndFiniteBurn: ") + (burnName) + wxT(" is not a FiniteBurn"));
+         throw CommandException("EndFiniteBurn: Unknown finite burn \"" + burnName + "\"");
+      if (mapObj->GetTypeName() != "FiniteBurn")
+         throw CommandException("EndFiniteBurn: " + (burnName) + " is not a FiniteBurn");
       maneuver = (FiniteBurn*)mapObj;
       
       // find all of the spacecraft
@@ -427,10 +427,10 @@ bool EndFiniteBurn::Initialize()
       for (scName = satNames.begin(); scName != satNames.end(); ++scName)
       {
          if ((mapObj = FindObject(*scName)) == NULL) 
-            throw CommandException(wxT("EndFiniteBurn: Unknown SpaceObject \"") + (*scName) + wxT("\""));
+            throw CommandException("EndFiniteBurn: Unknown SpaceObject \"" + (*scName) + "\"");
          
          if (mapObj->GetType() != Gmat::SPACECRAFT)
-            throw CommandException(wxT("EndFiniteBurn: ") + (*scName) + wxT(" is not a Spacecraft"));
+            throw CommandException("EndFiniteBurn: " + (*scName) + " is not a Spacecraft");
          sc = (Spacecraft*)mapObj;
          sats.push_back(sc);
       }
@@ -440,10 +440,10 @@ bool EndFiniteBurn::Initialize()
       //ValidateThrusters();
    }
    
-   thrustName = burnName + wxT("_FiniteThrust");
+   thrustName = burnName + "_FiniteThrust";
    #ifdef DEBUG_END_MANEUVER
       MessageInterface::ShowMessage
-         (wxT("EndFiniteBurn initialized with thrust force named \"%s\"\n"), 
+         ("EndFiniteBurn initialized with thrust force named \"%s\"\n", 
           thrustName.c_str());
    #endif
    
@@ -481,16 +481,16 @@ bool EndFiniteBurn::Execute()
       Thruster *th = *i;
       #ifdef DEBUG_END_MANEUVER_EXE
          MessageInterface::ShowMessage
-            (wxT("EndFiniteBurn::Execute() Deactivating engine <%p>'%s'\n"), th,
+            ("EndFiniteBurn::Execute() Deactivating engine <%p>'%s'\n", th,
              th->GetName().c_str());
       #endif
-      th->SetBooleanParameter(th->GetParameterID(wxT("IsFiring")), false);
+      th->SetBooleanParameter(th->GetParameterID("IsFiring"), false);
 
       #ifdef DEBUG_END_MANEUVER_EXE
          MessageInterface::ShowMessage
-            (wxT("Checking to see if engine is inactive: returned %s\n"), 
-             (th->GetBooleanParameter(th->GetParameterID(wxT("IsFiring"))) ? 
-              wxT("true") : wxT("false")));
+            ("Checking to see if engine is inactive: returned %s\n", 
+             (th->GetBooleanParameter(th->GetParameterID("IsFiring")) ? 
+              "true" : "false"));
       #endif      
    }
    
@@ -500,7 +500,7 @@ bool EndFiniteBurn::Execute()
    {
       /// todo: Be sure that no other maneuver has the spacecraft maneuvering
       (*s)->IsManeuvering(false);
-//      (*current)->TakeAction(wxT("ReleaseCartesianStateDynamics"));
+//      (*current)->TakeAction("ReleaseCartesianStateDynamics");
    }
    
    // Remove the force from the list of transient forces
@@ -511,7 +511,7 @@ bool EndFiniteBurn::Execute()
       {
          #ifdef DEBUG_TRANSIENT_FORCES
          MessageInterface::ShowMessage
-            (wxT("EndFiniteBurn::Execute() Removing burnForce<%p>'%s' from transientForces\n"),
+            ("EndFiniteBurn::Execute() Removing burnForce<%p>'%s' from transientForces\n",
              burnForce, burnForce->GetName().c_str());
          #endif
          transientForces->erase(j);
@@ -523,14 +523,14 @@ bool EndFiniteBurn::Execute()
    if (!sats.empty())
    {
       Real epoch = sats[0]->GetEpoch();
-      publisher->SetManeuvering(this, false, epoch, satNames, wxT("end of finite maneuver"));
+      publisher->SetManeuvering(this, false, epoch, satNames, "end of finite maneuver");
    }
    
    #ifdef DEBUG_END_MANEUVER_EXE
-      MessageInterface::ShowMessage(wxT("EndFiniteBurn::Execute() Current TransientForces list:\n"));
+      MessageInterface::ShowMessage("EndFiniteBurn::Execute() Current TransientForces list:\n");
       for (std::vector<PhysicalModel*>::iterator j = transientForces->begin();
            j != transientForces->end(); ++j)
-         MessageInterface::ShowMessage(wxT("   %s\n"), (*j)->GetName().c_str());
+         MessageInterface::ShowMessage("   %s\n", (*j)->GetName().c_str());
    #endif
    
    BuildCommandSummary(true);
@@ -553,18 +553,18 @@ void EndFiniteBurn::ValidateThrusters()
    {
       #ifdef DEBUG_EFB_THRUSTER
       MessageInterface::ShowMessage
-         (wxT("EndFiniteBurn::ValidateThrusters() entered, checking Spacecraft ")
-          wxT("<%p>'%s' for Thrusters\n"), *current, (*current)->GetName().c_str());
+         ("EndFiniteBurn::ValidateThrusters() entered, checking Spacecraft "
+          "<%p>'%s' for Thrusters\n", *current, (*current)->GetName().c_str());
       #endif
       
       StringArray thrusterNames = (*current)->GetStringArrayParameter(
-                                  (*current)->GetParameterID(wxT("Thrusters")));
+                                  (*current)->GetParameterID("Thrusters"));
       StringArray engines = (maneuver)->GetStringArrayParameter(
-                            (maneuver)->GetParameterID(wxT("Thrusters")));
+                            (maneuver)->GetParameterID("Thrusters"));
       
       #ifdef DEBUG_EFB_THRUSTER
       MessageInterface::ShowMessage
-         (wxT("   Spacecraft has %d Thrusters and FiniteBurn has %d thrusters\n"),
+         ("   Spacecraft has %d Thrusters and FiniteBurn has %d thrusters\n",
           thrusterNames.size(), engines.size());
       #endif
       
@@ -574,9 +574,9 @@ void EndFiniteBurn::ValidateThrusters()
              thrusterNames.end())
          {
             thrusters.clear();
-            throw CommandException(wxT("EndFiniteBurn: Spacecraft ") + (*current)->GetName() +
-                                   wxT(" does not have a thruster named \"") +
-                                   (*i) + wxT("\""));
+            throw CommandException("EndFiniteBurn: Spacecraft " + (*current)->GetName() +
+                                   " does not have a thruster named \"" +
+                                   (*i) + "\"");
          }
          
          Thruster* th = 
@@ -586,24 +586,24 @@ void EndFiniteBurn::ValidateThrusters()
          {
             #ifdef DEBUG_EFB_THRUSTER
             MessageInterface::ShowMessage
-               (wxT("EndFiniteBurn::ValidateThrusters() addding the Thruster <%p>'%s' ")
-                wxT("to thrusters\n"), th, th->GetName().c_str());
+               ("EndFiniteBurn::ValidateThrusters() addding the Thruster <%p>'%s' "
+                "to thrusters\n", th, th->GetName().c_str());
             #endif
             thrusters.push_back(th);
          }
          else
          {
             thrusters.clear();
-            throw CommandException(wxT("EndFiniteBurn: Thruster object \"") + (*i) +
-                                   wxT("\" was not set on Spacecraft \"") 
-                                   + (*current)->GetName() + wxT("\""));
+            throw CommandException("EndFiniteBurn: Thruster object \"" + (*i) +
+                                   "\" was not set on Spacecraft \"" 
+                                   + (*current)->GetName() + "\"");
          }
       }
    }
    
    #ifdef DEBUG_EFB_THRUSTER
    MessageInterface::ShowMessage
-      (wxT("EndFiniteBurn::ValidateThrusters() leaving\n"));
+      ("EndFiniteBurn::ValidateThrusters() leaving\n");
    #endif
 }
 

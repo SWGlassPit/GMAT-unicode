@@ -28,11 +28,11 @@
 class GMAT_API SubscriberFactory : public Factory
 {
 public:
-   Subscriber*  CreateObject(const wxString &ofType,
-                             const wxString &withName = wxT(""));
-   Subscriber*  CreateSubscriber(const wxString &ofType,
-                                 const wxString &withName = wxT(""),
-                                 const wxString &fileName = wxT(""));
+   Subscriber*  CreateObject(const std::string &ofType,
+                             const std::string &withName = "");
+   Subscriber*  CreateSubscriber(const std::string &ofType,
+                                 const std::string &withName = "",
+                                 const std::string &fileName = "");
    
    // default constructor
    SubscriberFactory();

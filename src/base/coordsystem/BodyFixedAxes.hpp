@@ -40,7 +40,7 @@ class GMAT_API BodyFixedAxes : public DynamicAxes
 public:
 
    // default constructor
-   BodyFixedAxes(const wxString &itsName = wxT(""));
+   BodyFixedAxes(const std::string &itsName = "");
    // copy constructor
    BodyFixedAxes(const BodyFixedAxes &bfAxes);
    // operator = for assignment
@@ -67,21 +67,21 @@ public:
    // We need to override this method from CoordinateBase
    // to check for a CelestialBody origin only
    virtual bool            SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                        const wxString &name = wxT(""));
+                                        const std::string &name = "");
 
    // Parameter access methods - overridden from GmatBase
    /*
-   virtual wxString     GetParameterText(const Integer id) const;     
-   virtual Integer         GetParameterID(const wxString &str) const; 
+   virtual std::string     GetParameterText(const Integer id) const;     
+   virtual Integer         GetParameterID(const std::string &str) const; 
    virtual Gmat::ParameterType
                            GetParameterType(const Integer id) const;
-   virtual wxString     GetParameterTypeString(const Integer id) const;
-   virtual wxString     GetStringParameter(const Integer id) const;
+   virtual std::string     GetParameterTypeString(const Integer id) const;
+   virtual std::string     GetStringParameter(const Integer id) const;
    virtual bool            SetStringParameter(const Integer id, 
-                                              const wxString &value);
-   virtual wxString     GetStringParameter(const wxString &label) const;
-   virtual bool            SetStringParameter(const wxString &label, 
-                                              const wxString &value);
+                                              const std::string &value);
+   virtual std::string     GetStringParameter(const std::string &label) const;
+   virtual bool            SetStringParameter(const std::string &label, 
+                                              const std::string &value);
     */
 
 protected:
@@ -91,7 +91,7 @@ protected:
       BodyFixedAxesParamCount = DynamicAxesParamCount,
    };
    
-   //static const wxString PARAMETER_TEXT[BodyFixedAxesParamCount - 
+   //static const std::string PARAMETER_TEXT[BodyFixedAxesParamCount - 
    //                                        DynamicAxesParamCount];
    
    //static const Gmat::ParameterType PARAMETER_TYPE[BodyFixedAxesParamCount - 

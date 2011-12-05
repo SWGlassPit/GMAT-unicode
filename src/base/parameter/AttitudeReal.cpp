@@ -23,13 +23,13 @@
 #include "MessageInterface.hpp"
 
 //------------------------------------------------------------------------------
-// AttitudeReal(const wxString &name, const wxString &typeStr, 
-//              GmatBase *obj, const wxString &desc, const wxString &unit)
+// AttitudeReal(const std::string &name, const std::string &typeStr, 
+//              GmatBase *obj, const std::string &desc, const std::string &unit)
 //------------------------------------------------------------------------------
-AttitudeReal::AttitudeReal(const wxString &name, const wxString &typeStr, 
-                           GmatBase *obj, const wxString &desc,
-                           const wxString &unit)
-   : RealVar(name, wxT(""), typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit,
+AttitudeReal::AttitudeReal(const std::string &name, const std::string &typeStr, 
+                           GmatBase *obj, const std::string &desc,
+                           const std::string &unit)
+   : RealVar(name, "", typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit,
              GmatParam::NO_DEP, Gmat::SPACECRAFT)
 {
    AddRefObject(obj);
@@ -96,7 +96,7 @@ bool AttitudeReal::AddRefObject(GmatBase *obj, bool replaceName)
    {
       #if DEBUG_ATTITUDEREAL
       MessageInterface::ShowMessage
-         (wxT("AttitudeReal::AddRefObject() obj->GetName()=%s, type=%d\n"),
+         ("AttitudeReal::AddRefObject() obj->GetName()=%s, type=%d\n",
           obj->GetName().c_str(), obj->GetType());
       #endif
       
@@ -130,8 +130,8 @@ bool AttitudeReal::Initialize()
    catch(BaseException &e)
    {
       throw GmatBaseException
-         (wxT("AttitudeReal::Initialize() Fail to initialize Parameter:") +
-          this->GetTypeName() + wxT("\n") + e.GetFullMessage());
+         ("AttitudeReal::Initialize() Fail to initialize Parameter:" +
+          this->GetTypeName() + "\n" + e.GetFullMessage());
    }
    
    return true;
@@ -139,29 +139,29 @@ bool AttitudeReal::Initialize()
 
 
 //------------------------------------------------------------------------------
-// bool RenameRefObject(const Gmat::ObjectType type, const wxString &oldName,
-//                      const wxString &newName)
+// bool RenameRefObject(const Gmat::ObjectType type, const std::string &oldName,
+//                      const std::string &newName)
 //------------------------------------------------------------------------------
 bool AttitudeReal::RenameRefObject(const Gmat::ObjectType type,
-                                   const wxString &oldName,
-                                   const wxString &newName)
+                                   const std::string &oldName,
+                                   const std::string &newName)
 {
    return AttitudeData::RenameRefObject(type, oldName, newName);
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetRefObjectName(const Gmat::ObjectType type) const
+// std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
-wxString AttitudeReal::GetRefObjectName(const Gmat::ObjectType type) const
+std::string AttitudeReal::GetRefObjectName(const Gmat::ObjectType type) const
 {
-   wxString objName = AttitudeData::GetRefObjectName(type);
+   std::string objName = AttitudeData::GetRefObjectName(type);
    
-   if (objName == wxT("INVALID_OBJECT_TYPE"))
+   if (objName == "INVALID_OBJECT_TYPE")
    {
       throw ParameterException
-         (wxT("AttitudeReal::GetRefObjectName() ") + GmatBase::GetObjectTypeString(type) +
-          wxT(" is not valid object type of ") + this->GetTypeName() + wxT("\n"));
+         ("AttitudeReal::GetRefObjectName() " + GmatBase::GetObjectTypeString(type) +
+          " is not valid object type of " + this->GetTypeName() + "\n");
    }
    
    return objName;
@@ -178,17 +178,17 @@ const StringArray& AttitudeReal::GetRefObjectNameArray(const Gmat::ObjectType ty
 
 
 //------------------------------------------------------------------------------
-// bool SetRefObjectName(const Gmat::ObjectType type, const wxString &name)
+// bool SetRefObjectName(const Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 bool AttitudeReal::SetRefObjectName(const Gmat::ObjectType type,
-                                    const wxString &name)
+                                    const std::string &name)
 {
    bool ret = AttitudeData::SetRefObjectName(type, name);
    
    if (!ret)
       MessageInterface::ShowMessage
-         (wxT("*** Warning *** AttitudeReal::SetRefObjectName() RefObjType:%s is not valid ")
-          wxT("for ParameterName:%s\n"), GmatBase::GetObjectTypeString(type).c_str(),
+         ("*** Warning *** AttitudeReal::SetRefObjectName() RefObjType:%s is not valid "
+          "for ParameterName:%s\n", GmatBase::GetObjectTypeString(type).c_str(),
           this->GetName().c_str());
    
    return ret;
@@ -196,18 +196,18 @@ bool AttitudeReal::SetRefObjectName(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// GmatBase* GetRefObject(const Gmat::ObjectType type, const wxString &name)
+// GmatBase* GetRefObject(const Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 GmatBase* AttitudeReal::GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name)
+                                     const std::string &name)
 {
    GmatBase *obj = AttitudeData::GetRefObject(type, name);
    
    if (obj == NULL)
    {
       throw ParameterException
-         (wxT("AttitudeReal::GetRefObject() Cannot find ref. object of type:") +
-          GmatBase::GetObjectTypeString(type) + wxT(", name:") + name + wxT(" in ") +
+         ("AttitudeReal::GetRefObject() Cannot find ref. object of type:" +
+          GmatBase::GetObjectTypeString(type) + ", name:" + name + " in " +
           this->GetName());
    }
    
@@ -217,14 +217,14 @@ GmatBase* AttitudeReal::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                   const wxString &name)
+//                   const std::string &name)
 //------------------------------------------------------------------------------
 bool AttitudeReal::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                const wxString &name)
+                                const std::string &name)
 {
    #if DEBUG_ATTITUDEREAL
    MessageInterface::ShowMessage
-      (wxT("AttitudeReal::SetRefObject() setting type=%d, name=%s to %s\n"),
+      ("AttitudeReal::SetRefObject() setting type=%d, name=%s to %s\n",
        type, name.c_str(), this->GetName().c_str());
    #endif
    

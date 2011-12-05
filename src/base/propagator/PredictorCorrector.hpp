@@ -73,7 +73,7 @@
 
 #include "gmatdefs.hpp"
 #include "Integrator.hpp"
-//#include wxT("TwoBodyProp.hpp")
+//#include "TwoBodyProp.hpp"
 #include "RungeKutta89.hpp"
 
 #ifdef DEBUG_STEP_CONTROL
@@ -83,8 +83,8 @@
 class GMAT_API PredictorCorrector : public Integrator
 {
 public:
-   PredictorCorrector(Integer sc, Integer order, const wxString &typeStr,
-                           const wxString &nomme = wxT(""));
+   PredictorCorrector(Integer sc, Integer order, const std::string &typeStr,
+                           const std::string &nomme = "");
    virtual ~PredictorCorrector(void);
 
    PredictorCorrector(const PredictorCorrector&);
@@ -92,7 +92,7 @@ public:
 
 //    virtual GmatBase* Clone(void) const;
     
-//    virtual wxString GetParameterName(const Integer parm) const;
+//    virtual std::string GetParameterName(const Integer parm) const;
 //    virtual Real GetParameter(const int id) const;
 //    virtual bool SetParameter(const int id, const Real val);
 
@@ -102,18 +102,18 @@ public:
    virtual bool  RawStep(void);
     
    // Parameter accessor methods -- overridden from GmatBase
-   virtual wxString      GetParameterText(const Integer id) const;
-   virtual Integer          GetParameterID(const wxString &str) const;
+   virtual std::string      GetParameterText(const Integer id) const;
+   virtual Integer          GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType 
                             GetParameterType(const Integer id) const;
-   virtual wxString      GetParameterTypeString(const Integer id) const;
+   virtual std::string      GetParameterTypeString(const Integer id) const;
    virtual bool             IsParameterReadOnly(const Integer id) const;
-   virtual bool             IsParameterReadOnly(const wxString &label) const;
+   virtual bool             IsParameterReadOnly(const std::string &label) const;
     
    virtual Real    GetRealParameter(const Integer id) const;
-   virtual Real    GetRealParameter(const wxString &label) const;
+   virtual Real    GetRealParameter(const std::string &label) const;
    virtual Real    SetRealParameter(const Integer id, const Real value);
-   virtual Real    SetRealParameter(const wxString &label, const Real value);
+   virtual Real    SetRealParameter(const std::string &label, const Real value);
    virtual Integer GetIntegerParameter(const Integer id) const;
    virtual Integer SetIntegerParameter(const Integer id, const Integer value);
         virtual bool    GetBooleanParameter(const Integer id) const; 
@@ -222,7 +222,7 @@ private:
       PredictorCorrectorParamCount  /// Count of the parameters for this class
    };
     
-   static const wxString 
+   static const std::string 
             PARAMETER_TEXT[PredictorCorrectorParamCount - IntegratorParamCount];
    static const Gmat::ParameterType 
             PARAMETER_TYPE[PredictorCorrectorParamCount - IntegratorParamCount];

@@ -150,10 +150,10 @@ namespace GmatTimeConstants
    enum MonthName {JANUARY = 1, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST,
                    SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER};
 
-   static const wxString MONTH_NAME_TEXT[12] =
+   static const std::string MONTH_NAME_TEXT[12] =
    {
-      wxT("Jan"),  wxT("Feb"),  wxT("Mar"),  wxT("Apr"),  wxT("May"),  wxT("Jun"),
-      wxT("Jul"),  wxT("Aug"),  wxT("Sep"),  wxT("Oct"),  wxT("Nov"),  wxT("Dec")
+      "Jan",  "Feb",  "Mar",  "Apr",  "May",  "Jun",
+      "Jul",  "Aug",  "Sep",  "Oct",  "Nov",  "Dec"
    };
 } // GmatTimeConstants
 

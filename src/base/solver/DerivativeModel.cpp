@@ -143,7 +143,7 @@ bool DerivativeModel::Initialize(UnsignedInt varCount,
    
    if (elementCount == 0)
       throw SolverException(
-            wxT("DerivativeModel cannot initialize because elementCount == 0"));
+            "DerivativeModel cannot initialize because elementCount == 0");
    
    variableCount = varCount;
    
@@ -163,7 +163,7 @@ bool DerivativeModel::Initialize(UnsignedInt varCount,
    
    #ifdef DEBUG_DERIVMODEL
       MessageInterface::ShowMessage(
-         wxT("Derivative Model initialized in mode %d with %d elements\n"), 
+         "Derivative Model initialized in mode %d with %d elements\n", 
          calcMode, elementCount);
    #endif
 
@@ -198,18 +198,18 @@ void DerivativeModel::Achieved(Integer pertNumber, Integer componentId, Real dx,
 {
    if (pertNumber == -1)
       throw SolverException(
-         wxT("Setting a nominal value in the DerivativeModel base class Achieved() ")
-         wxT("method is not allowed."));
+         "Setting a nominal value in the DerivativeModel base class Achieved() "
+         "method is not allowed.");
    else
    {
       if (pertNumber >= (Integer)pert.size())
          throw SolverException(
-               wxT("Invalid pert element when setting an achieved value."));
+               "Invalid pert element when setting an achieved value.");
 
       #ifdef DEBUG_DERIVMODEL
          MessageInterface::ShowMessage(
-            wxT("   %s perturbation #%d, size %.12lf gives %.12lf for id %d\n"), 
-            (plusEffect ? wxT("Positive") : wxT("Negative")), pertNumber, dx, value, 
+            "   %s perturbation #%d, size %.12lf gives %.12lf for id %d\n", 
+            (plusEffect ? "Positive" : "Negative"), pertNumber, dx, value, 
             componentId);
       #endif
       

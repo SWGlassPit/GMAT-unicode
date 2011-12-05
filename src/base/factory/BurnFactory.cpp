@@ -31,7 +31,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  CreateBurn(const wxString &ofType, const wxString &withName)
+//  CreateBurn(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested Burn class 
@@ -42,12 +42,12 @@
  * @return The new object.
  */
 //------------------------------------------------------------------------------
-Burn* BurnFactory::CreateBurn(const wxString &ofType,
-                              const wxString &withName)
+Burn* BurnFactory::CreateBurn(const std::string &ofType,
+                              const std::string &withName)
 {
-   if (ofType == wxT("ImpulsiveBurn"))
+   if (ofType == "ImpulsiveBurn")
       return new ImpulsiveBurn(withName);
-   else if (ofType == wxT("FiniteBurn"))
+   else if (ofType == "FiniteBurn")
       return new FiniteBurn(withName);
    // add more here .......
 
@@ -68,8 +68,8 @@ BurnFactory::BurnFactory() :
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("ImpulsiveBurn"));  
-      creatables.push_back(wxT("FiniteBurn")); 
+      creatables.push_back("ImpulsiveBurn");  
+      creatables.push_back("FiniteBurn"); 
    }
 }
 
@@ -94,7 +94,7 @@ BurnFactory::BurnFactory(StringArray createList) :
  * This method creates an object of the class BurnFactory (called by
  * copy constructors of derived classes).  (copy constructor)
  *
- * @param <fact> the factory object to copy to wxT("this") factory.
+ * @param <fact> the factory object to copy to "this" factory.
  */
 //------------------------------------------------------------------------------
 BurnFactory::BurnFactory(const BurnFactory &fact) :
@@ -102,8 +102,8 @@ BurnFactory::BurnFactory(const BurnFactory &fact) :
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("ImpulsiveBurn"));
-      creatables.push_back(wxT("FiniteBurn"));
+      creatables.push_back("ImpulsiveBurn");
+      creatables.push_back("FiniteBurn");
    }
 }
 
@@ -113,9 +113,9 @@ BurnFactory::BurnFactory(const BurnFactory &fact) :
 /**
  * Assignment operator for the BurnFactory base class.
  *
- * @param <fact> the BurnFactory object whose data to assign to wxT("this") factory.
+ * @param <fact> the BurnFactory object whose data to assign to "this" factory.
  *
- * @return wxT("this") BurnFactory with data of input factory fact.
+ * @return "this" BurnFactory with data of input factory fact.
  */
 //------------------------------------------------------------------------------
 BurnFactory& BurnFactory::operator=(const BurnFactory &fact)

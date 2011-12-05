@@ -31,10 +31,10 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 RealVar::PARAMETER_TEXT[RealVarParamCount - ParameterParamCount] =
 {
-   wxT("Value")
+   "Value"
 };
 
 const Gmat::ParameterType
@@ -48,9 +48,9 @@ RealVar::PARAMETER_TYPE[RealVarParamCount - ParameterParamCount] =
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// RealVar(const wxString &name, const wxString &valStr,
-//         const wxString &typeStr, GmatParam::ParameterKey key, GmatBase *obj,
-//         const wxString &desc, const wxString &unit, GmatParam::DepObject depObj,
+// RealVar(const std::string &name, const std::string &valStr,
+//         const std::string &typeStr, GmatParam::ParameterKey key, GmatBase *obj,
+//         const std::string &desc, const std::string &unit, GmatParam::DepObject depObj,
 //         Gmat::ObjectType, bool isTimeParam)
 //------------------------------------------------------------------------------
 /**
@@ -68,9 +68,9 @@ RealVar::PARAMETER_TYPE[RealVarParamCount - ParameterParamCount] =
  * @param <isTimeParam> true if parameter is time related, false otherwise
  */
 //------------------------------------------------------------------------------
-RealVar::RealVar(const wxString &name, const wxString &valStr,
-                 const wxString &typeStr, GmatParam::ParameterKey key,
-                 GmatBase *obj, const wxString &desc, const wxString &unit,
+RealVar::RealVar(const std::string &name, const std::string &valStr,
+                 const std::string &typeStr, GmatParam::ParameterKey key,
+                 GmatBase *obj, const std::string &desc, const std::string &unit,
                  GmatParam::DepObject depObj, Gmat::ObjectType ownerType,
                  bool isTimeParam, bool isSettable)
    : Parameter(name, typeStr, key, obj, desc, unit, depObj, ownerType, isTimeParam,
@@ -79,7 +79,7 @@ RealVar::RealVar(const wxString &name, const wxString &valStr,
    mValueSet = false;
    mIsNumber = true;
    mRealValue = 0.0;
-   mExpr = wxT("0");
+   mExpr = "0";
    
    Real rval;
    if (GmatStringUtil::ToReal(valStr, &rval))
@@ -147,7 +147,7 @@ RealVar& RealVar::operator= (const RealVar& right)
 //------------------------------------------------------------------------------
 RealVar::~RealVar()
 {
-   //MessageInterface::ShowMessage(wxT("==> RealVar::~RealVar()\n"));
+   //MessageInterface::ShowMessage("==> RealVar::~RealVar()\n");
 }
 
 //------------------------------------------------------------------------------
@@ -193,24 +193,24 @@ bool RealVar::Initialize()
 
 
 //------------------------------------------------------------------------------
-// wxString ToString()
+// std::string ToString()
 //------------------------------------------------------------------------------
 /**
  * Converts parameter real value to string.
  *
- * @return parameter value converted to wxString.
+ * @return parameter value converted to std::string.
  */
 //------------------------------------------------------------------------------
-wxString RealVar::ToString()
+std::string RealVar::ToString()
 {
    // use default global precision to convert to string (loj: 2008.03.05)
    return GmatStringUtil::ToString(mRealValue, false, false, false, 
                                    GmatGlobal::DATA_PRECISION, 1);
    
-   //wxString ss(wxT(""));
+   //std::stringstream ss("");
    //ss.precision(10);
    //ss << mRealValue;
-   //return wxString(ss.str());
+   //return std::string(ss.str());
 }
 
 
@@ -227,7 +227,7 @@ Real RealVar::GetReal() const
 {
    #if DEBUG_REAL_VAR
    MessageInterface::ShowMessage
-      (wxT("RealVar::GetReal() name=%s, returning val=%.18f\n"), GetName().c_str(), 
+      ("RealVar::GetReal() name=%s, returning val=%.18f\n", GetName().c_str(), 
       mRealValue);
    #endif
    return mRealValue;
@@ -245,7 +245,7 @@ void RealVar::SetReal(Real val)
 {
    #if DEBUG_REAL_VAR
    MessageInterface::ShowMessage
-      (wxT("RealVar::SetReal(Real val) name=%s, mExpr='%s', mIsNumber=%d, val=%.18f\n"),
+      ("RealVar::SetReal(Real val) name=%s, mExpr='%s', mIsNumber=%d, val=%.18f\n",
        GetName().c_str(), mExpr.c_str(), mIsNumber, val);
    #endif
    
@@ -259,7 +259,7 @@ void RealVar::SetReal(Real val)
       
       #if DEBUG_REAL_VAR
       MessageInterface::ShowMessage
-         (wxT("RealVar::SetReal(Real val) mExpr=%s\n"), mExpr.c_str());
+         ("RealVar::SetReal(Real val) mExpr=%s\n", mExpr.c_str());
       #endif
    }
 }
@@ -269,9 +269,9 @@ void RealVar::SetReal(Real val)
 //------------------------------------
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer RealVar::GetParameterID(const wxString &str) const
+Integer RealVar::GetParameterID(const std::string &str) const
 {
    for (int i=ParameterParamCount; i<RealVarParamCount; i++)
    {
@@ -299,9 +299,9 @@ Real RealVar::GetRealParameter(const Integer id) const
 
 
 //-------------------------------------------------------------------------------
-// virtual Real GetRealParameter(const wxString &label) const
+// virtual Real GetRealParameter(const std::string &label) const
 //-------------------------------------------------------------------------------
-Real RealVar::GetRealParameter(const wxString &label) const
+Real RealVar::GetRealParameter(const std::string &label) const
 {
    return GetRealParameter(GetParameterID(label));
 }
@@ -325,16 +325,16 @@ Real RealVar::SetRealParameter(const Integer id, const Real value)
 
 
 //-------------------------------------------------------------------------------
-// virtual Real SetRealParameter(const wxString &label, const Real value)
+// virtual Real SetRealParameter(const std::string &label, const Real value)
 //-------------------------------------------------------------------------------
-Real RealVar::SetRealParameter(const wxString &label, const Real value)
+Real RealVar::SetRealParameter(const std::string &label, const Real value)
 {
    return SetRealParameter(GetParameterID(label), value);
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Change the value of a string parameter.
@@ -345,11 +345,11 @@ Real RealVar::SetRealParameter(const wxString &label, const Real value)
  * @return true if the string is stored, throw if the parameter is not stored.
  */
 //------------------------------------------------------------------------------
-bool RealVar::SetStringParameter(const Integer id, const wxString &value)
+bool RealVar::SetStringParameter(const Integer id, const std::string &value)
 {
    #if DEBUG_REAL_VAR
    MessageInterface::ShowMessage
-      (wxT("RealVar::SetStringParameter() name='%s', id=%d, value='%s'\n"),
+      ("RealVar::SetStringParameter() name='%s', id=%d, value='%s'\n",
        GetName().c_str(), id, value.c_str());
    #endif
    
@@ -359,7 +359,7 @@ bool RealVar::SetStringParameter(const Integer id, const wxString &value)
       {
          mValueSet = true;
          // if value is blank, initialize expression to 0
-         if (value != wxT(""))
+         if (value != "")
          {
             // if value is just a number, convert and set to real value
             Real rval;
@@ -368,7 +368,7 @@ bool RealVar::SetStringParameter(const Integer id, const wxString &value)
                mRealValue = rval;
                
                #if DEBUG_REAL_VAR
-               MessageInterface::ShowMessage(wxT("mRealValue set to %f\n"), mRealValue);
+               MessageInterface::ShowMessage("mRealValue set to %f\n", mRealValue);
                #endif
             }
             
@@ -383,8 +383,8 @@ bool RealVar::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label,
-//                         const wxString &value)
+// bool SetStringParameter(const std::string &label,
+//                         const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Change the value of a string parameter.
@@ -395,11 +395,11 @@ bool RealVar::SetStringParameter(const Integer id, const wxString &value)
  * @return true if the string is stored, false if not.
  */
 //------------------------------------------------------------------------------
-bool RealVar::SetStringParameter(const wxString &label,
-                                 const wxString &value)
+bool RealVar::SetStringParameter(const std::string &label,
+                                 const std::string &value)
 {
    #if DEBUG_REAL_VAR
-   MessageInterface::ShowMessage(wxT("RealVar::SetStringParameter() label=%s value=%s\n"),
+   MessageInterface::ShowMessage("RealVar::SetStringParameter() label=%s value=%s\n",
                                  label.c_str(), value.c_str());
    #endif
    

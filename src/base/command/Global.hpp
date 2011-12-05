@@ -47,7 +47,7 @@ protected:
    {
       GlobalParamCount = ManageObjectParamCount, 
    };
-   //static const wxString PARAMETER_TEXT[GlobalParamCount - ManageObjectParamCount];
+   //static const std::string PARAMETER_TEXT[GlobalParamCount - ManageObjectParamCount];
 
    //static const Gmat::ParameterType PARAMETER_TYPE[GlobalParamCount - ManageObjectParamCount];
 

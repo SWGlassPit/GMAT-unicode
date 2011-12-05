@@ -65,28 +65,28 @@
 /// Available show foot print options
 StringArray Subscriber::solverIterOptions;
 
-const wxString
+const std::string
 Subscriber::SOLVER_ITER_OPTION_TEXT[SolverIterOptionCount] =
 {
-   wxT("All"), wxT("Current"), wxT("None"),
+   "All", "Current", "None",
 };
 
-const wxString
+const std::string
 Subscriber::PARAMETER_TEXT[SubscriberParamCount - GmatBaseParamCount] =
 {
-   wxT("SolverIterations"),
-   wxT("TargetStatus"),
-   wxT("UpperLeft"),
-   wxT("Size"),
-   wxT("RelativeZOrder"),
-   wxT("Minimized"),
+   "SolverIterations",
+   "TargetStatus",
+   "UpperLeft",
+   "Size",
+   "RelativeZOrder",
+   "Minimized",
 };
 
 const Gmat::ParameterType
 Subscriber::PARAMETER_TYPE[SubscriberParamCount - GmatBaseParamCount] =
 {
-   Gmat::ENUMERATION_TYPE,         // wxT("SolverIterations")
-   Gmat::ON_OFF_TYPE,              // wxT("TargetStatus")
+   Gmat::ENUMERATION_TYPE,         // "SolverIterations"
+   Gmat::ON_OFF_TYPE,              // "TargetStatus"
    Gmat::RVECTOR_TYPE,   //"Position",
    Gmat::RVECTOR_TYPE,   //"Size",
    Gmat::INTEGER_TYPE,   // "RelativeZOrder"
@@ -99,10 +99,11 @@ Subscriber::PARAMETER_TYPE[SubscriberParamCount - GmatBaseParamCount] =
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// Subscriber(const wxString &typeStr, const wxString &nomme)
+// Subscriber(const std::string &typeStr, const std::string &nomme)
 //------------------------------------------------------------------------------
-Subscriber::Subscriber(const wxString &typeStr, const wxString &nomme) :
+Subscriber::Subscriber(const std::string &typeStr, const std::string &nomme) :
    GmatBase (Gmat::SUBSCRIBER, typeStr, nomme),
+   data                  (NULL),
    next                  (NULL),
    theInternalCoordSystem(NULL),
    theDataCoordSystem    (NULL),
@@ -123,9 +124,9 @@ Subscriber::Subscriber(const wxString &typeStr, const wxString &nomme) :
    currProviderId        (0)
 {
    objectTypes.push_back(Gmat::SUBSCRIBER);
-   objectTypeNames.push_back(wxT("Subscriber"));
+   objectTypeNames.push_back("Subscriber");
    
-   mSolverIterations = wxT("Current");
+   mSolverIterations = "Current";
    mSolverIterOption = SI_CURRENT;
    
    wrappersCopied = false;
@@ -145,6 +146,7 @@ Subscriber::Subscriber(const wxString &typeStr, const wxString &nomme) :
 //------------------------------------------------------------------------------
 Subscriber::Subscriber(const Subscriber &copy) :
    GmatBase(copy),
+   data                  (NULL),
    next                  (NULL),
    theInternalCoordSystem(copy.theInternalCoordSystem),
    theDataCoordSystem    (copy.theDataCoordSystem),
@@ -183,7 +185,7 @@ Subscriber::Subscriber(const Subscriber &copy) :
    depParamWrappers = copy.depParamWrappers;
    paramWrappers = copy.paramWrappers;
    #ifdef DEBUG_WRAPPER_CODE
-   MessageInterface::ShowMessage(wxT("Subscriber(copy) copied wrappers\n"));
+   MessageInterface::ShowMessage("Subscriber(copy) copied wrappers\n");
    WriteWrappers();
    #endif
 #endif
@@ -246,7 +248,7 @@ Subscriber& Subscriber::operator=(const Subscriber& rhs)
    depParamWrappers = rhs.depParamWrappers;
    paramWrappers = rhs.paramWrappers;
    #ifdef DEBUG_WRAPPER_CODE
-   MessageInterface::ShowMessage(wxT("Subscriber(=) copied wrappers\n"));
+   MessageInterface::ShowMessage("Subscriber(=) copied wrappers\n");
    WriteWrappers();
    #endif
 #endif
@@ -265,7 +267,7 @@ Subscriber::~Subscriber()
 #else
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("~Subscriber() <%p>'%s' entered, wrappersCopied = %d\n"), this, GetName().c_str(),
+      ("~Subscriber() <%p>'%s' entered, wrappersCopied = %d\n", this, GetName().c_str(),
        wrappersCopied);
    #endif
    
@@ -311,9 +313,9 @@ bool Subscriber::IsInitialized()
 
 
 //------------------------------------------------------------------------------
-// bool ReceiveData(const wxString &datastream)
+// bool ReceiveData(const char *datastream)
 //------------------------------------------------------------------------------
-bool Subscriber::ReceiveData(const wxString &datastream)
+bool Subscriber::ReceiveData(const char *datastream)
 {
    if (!active)        // Not currently processing data
       return true;
@@ -324,21 +326,21 @@ bool Subscriber::ReceiveData(const wxString &datastream)
 
 
 //------------------------------------------------------------------------------
-// bool ReceiveData(const wxString &datastream,  const int len)
+// bool ReceiveData(const char *datastream,  const int len)
 //------------------------------------------------------------------------------
-bool Subscriber::ReceiveData(const wxString &datastream,  const int len)
+bool Subscriber::ReceiveData(const char *datastream,  const int len)
 {
    #ifdef DEBUG_RECEIVE_DATA
    MessageInterface::ShowMessage
-      (wxT("Subscriber::ReceiveData(char*, int) <%p>'%s' entered, active=%d, len=%d\n")
-       wxT("data='%s'\n"), this, GetName().c_str(), active, len, datastream);
+      ("Subscriber::ReceiveData(char*, int) <%p>'%s' entered, active=%d, len=%d\n"
+       "data='%s'\n", this, GetName().c_str(), active, len, datastream);
    #endif
    
    if (!active)        // Not currently processing data
    {
       #ifdef DEBUG_RECEIVE_DATA
       MessageInterface::ShowMessage
-         (wxT("Subscriber::ReceiveData() '%s' is not active, so just returning true\n"),
+         ("Subscriber::ReceiveData() '%s' is not active, so just returning true\n",
           GetName().c_str());
       #endif
       return true;
@@ -347,20 +349,20 @@ bool Subscriber::ReceiveData(const wxString &datastream,  const int len)
    data = datastream;
    if (!Distribute(len))
    {
-      data.Clear();
+      data = NULL;
       #ifdef DEBUG_RECEIVE_DATA
       MessageInterface::ShowMessage
-         (wxT("Subscriber::ReceiveData() '%s' failed to distribute, so just returning false\n"),
+         ("Subscriber::ReceiveData() '%s' failed to distribute, so just returning false\n",
           GetName().c_str());
       #endif
       return false;
    }
    
-   data.Clear();
+   data = NULL;
    
    #ifdef DEBUG_RECEIVE_DATA
    MessageInterface::ShowMessage
-      (wxT("Subscriber::ReceiveData() '%s' was successful, returning true\n"),
+      ("Subscriber::ReceiveData() '%s' was successful, returning true\n",
        GetName().c_str());
    #endif
    
@@ -375,17 +377,17 @@ bool Subscriber::ReceiveData(const double *datastream, const int len)
 {
    #ifdef DEBUG_RECEIVE_DATA
    MessageInterface::ShowMessage
-      (wxT("Subscriber::ReceiveData(double*) <%p>'%s' entered, active=%d, len=%d\n"),
+      ("Subscriber::ReceiveData(double*) <%p>'%s' entered, active=%d, len=%d\n",
        this, GetName().c_str(), active, len);
    if (len > 0)
-      MessageInterface::ShowMessage(wxT("   data[0]=%f\n"), datastream[0]);
+      MessageInterface::ShowMessage("   data[0]=%f\n", datastream[0]);
    #endif
    
    if (!active)        // Not currently processing data
    {
       #ifdef DEBUG_RECEIVE_DATA
       MessageInterface::ShowMessage
-         (wxT("Subscriber::ReceiveData() '%s' is not active, so just returning true\n"),
+         ("Subscriber::ReceiveData() '%s' is not active, so just returning true\n",
           GetName().c_str());
       #endif
       return true;
@@ -452,7 +454,7 @@ void Subscriber::SetRunState(Gmat::RunState rs)
 
 //------------------------------------------------------------------------------
 // void SetManeuvering(GmatBase *originator, bool flag, Real epoch,
-//                     const wxString &satName, const wxString &desc)
+//                     const std::string &satName, const std::string &desc)
 //------------------------------------------------------------------------------
 /**
  * Sets spacecraft maneuvering flag.
@@ -465,8 +467,8 @@ void Subscriber::SetRunState(Gmat::RunState rs)
  */
 //------------------------------------------------------------------------------
 void Subscriber::SetManeuvering(GmatBase *originator, bool flag, Real epoch,
-                                const wxString &satName,
-                                const wxString &desc)
+                                const std::string &satName,
+                                const std::string &desc)
 {
    static StringArray satNames;
    satNames.clear();
@@ -478,7 +480,7 @@ void Subscriber::SetManeuvering(GmatBase *originator, bool flag, Real epoch,
 
 //------------------------------------------------------------------------------
 // void SetManeuvering(GmatBase *originator, bool flag, Real epoch,
-//                     const StringArray &satNames, const wxString &desc)
+//                     const StringArray &satNames, const std::string &desc)
 //------------------------------------------------------------------------------
 /**
  * Sets spacecraft maneuvering flag.
@@ -492,7 +494,7 @@ void Subscriber::SetManeuvering(GmatBase *originator, bool flag, Real epoch,
 //------------------------------------------------------------------------------
 void Subscriber::SetManeuvering(GmatBase *originator, bool flag, Real epoch,
                                 const StringArray &satNames,
-                                const wxString &desc)
+                                const std::string &desc)
 {
    isManeuvering = flag;
    HandleManeuvering(originator, flag, epoch, satNames, desc);
@@ -501,7 +503,7 @@ void Subscriber::SetManeuvering(GmatBase *originator, bool flag, Real epoch,
 
 //------------------------------------------------------------------------------
 // void SetScPropertyChanged(GmatBase *originator, Real epoch,
-//                           const wxString &satName, const wxString &desc)
+//                           const std::string &satName, const std::string &desc)
 //------------------------------------------------------------------------------
 /**
  * Sets spacecraft property change.
@@ -513,8 +515,8 @@ void Subscriber::SetManeuvering(GmatBase *originator, bool flag, Real epoch,
  */
 //------------------------------------------------------------------------------
 void Subscriber::SetScPropertyChanged(GmatBase *originator, Real epoch,
-                                      const wxString &satName,
-                                      const wxString &desc)
+                                      const std::string &satName,
+                                      const std::string &desc)
 {
    HandleScPropertyChange(originator, epoch, satName, desc);
 }
@@ -567,8 +569,8 @@ void Subscriber::Activate(bool state)
 {
    #ifdef DEBUG_SUBSCRIBER
    MessageInterface::ShowMessage
-      (wxT("Subscriber::Activate() entered, state=%d, active=%d, isDataOn=%d, ")
-       wxT("isDataStateChanged=%d, isInitialized=%d\n"), state, active, isDataOn,
+      ("Subscriber::Activate() entered, state=%d, active=%d, isDataOn=%d, "
+       "isDataStateChanged=%d, isInitialized=%d\n", state, active, isDataOn,
        isDataStateChanged, isInitialized);
    #endif
    
@@ -582,8 +584,8 @@ void Subscriber::Activate(bool state)
    
    #ifdef DEBUG_SUBSCRIBER
    MessageInterface::ShowMessage
-      (wxT("Subscriber::Activate() leaving, state=%d, active=%d, isDataOn=%d, ")
-       wxT("isDataStateChanged=%d, isInitialized=%d\n"), state, active, isDataOn,
+      ("Subscriber::Activate() leaving, state=%d, active=%d, isDataOn=%d, "
+       "isDataStateChanged=%d, isInitialized=%d\n", state, active, isDataOn,
        isDataStateChanged, isInitialized);
    #endif
    
@@ -606,7 +608,7 @@ void Subscriber::SetProviderId(Integer id)
 {
    #ifdef DEBUG_SUBSCRIBER_PROVIDER
    MessageInterface::ShowMessage
-      (wxT("Subscriber::SetProviderId() <%s> entered, id=%d\n"), GetName().c_str(), id);
+      ("Subscriber::SetProviderId() <%s> entered, id=%d\n", GetName().c_str(), id);
    #endif
    
    currProviderId = id;
@@ -636,7 +638,7 @@ void Subscriber::SetDataLabels(const StringArray& elements)
 {
    #ifdef DEBUG_SUBSCRIBER_SET_LABELS
    MessageInterface::ShowMessage
-      (wxT("==> Subscriber::SetDataLabels() Using new Publisher code\n"));
+      ("==> Subscriber::SetDataLabels() Using new Publisher code\n");
    #endif
    
    // Publisher new code always sets current labels
@@ -647,8 +649,8 @@ void Subscriber::SetDataLabels(const StringArray& elements)
    
    #ifdef DEBUG_SUBSCRIBER_DATA
    MessageInterface::ShowMessage
-      (wxT("Subscriber::SetDataLabels() <%s> leaving, theDataLabels.size()=%d, ")
-       wxT("first label is '%s'\n"), GetName().c_str(), theDataLabels.size(),
+      ("Subscriber::SetDataLabels() <%s> leaving, theDataLabels.size()=%d, "
+       "first label is '%s'\n", GetName().c_str(), theDataLabels.size(),
        elements[0].c_str());
    #endif
 }
@@ -660,7 +662,7 @@ void Subscriber::SetDataLabels(const StringArray& elements)
 void Subscriber::ClearDataLabels()
 {
    #ifdef DEBUG_SUBSCRIBER_DATA
-   MessageInterface::ShowMessage(wxT("Subscriber::ClearDataLabels() entered\n"));
+   MessageInterface::ShowMessage("Subscriber::ClearDataLabels() entered\n");
    #endif
    
    theDataLabels.clear();
@@ -689,7 +691,7 @@ void Subscriber::SetDataCoordSystem(CoordinateSystem *cs)
 {
    //#ifdef DEBUG_SUBSCRIBER
    MessageInterface::ShowMessage
-      (wxT("Subscriber::SetDataCoordSystem()<%s> set to %s<%p>\n"),
+      ("Subscriber::SetDataCoordSystem()<%s> set to %s<%p>\n",
        instanceName.c_str(), cs->GetName().c_str(), cs);
    //#endif
    
@@ -725,10 +727,10 @@ const StringArray& Subscriber::GetWrapperObjectNameArray()
 
 
 //------------------------------------------------------------------------------
-// bool SetElementWrapper(ElementWrapper* toWrapper, const wxString &name)
+// bool SetElementWrapper(ElementWrapper* toWrapper, const std::string &name)
 //------------------------------------------------------------------------------
 bool Subscriber::SetElementWrapper(ElementWrapper* toWrapper,
-                                   const wxString &name)
+                                   const std::string &name)
 {
    ElementWrapper *ew;
    
@@ -737,7 +739,7 @@ bool Subscriber::SetElementWrapper(ElementWrapper* toWrapper,
    
    #ifdef DEBUG_WRAPPER_CODE   
    MessageInterface::ShowMessage
-      (wxT("Subscriber::SetElementWrapper() <%p>'%s' entered, toWrapper=<%p>, name='%s'\n"),
+      ("Subscriber::SetElementWrapper() <%p>'%s' entered, toWrapper=<%p>, name='%s'\n",
        this, GetName().c_str(), toWrapper, name.c_str());
    #endif
    
@@ -748,7 +750,7 @@ bool Subscriber::SetElementWrapper(ElementWrapper* toWrapper,
       {
          #ifdef DEBUG_WRAPPER_CODE   
          MessageInterface::ShowMessage
-            (wxT("   Found wrapper name \"%s\", wrapper=%p\n"), name.c_str(), paramWrappers.at(i));
+            ("   Found wrapper name \"%s\", wrapper=%p\n", name.c_str(), paramWrappers.at(i));
          #endif
          
          if (paramWrappers.at(i) != NULL)
@@ -757,8 +759,8 @@ bool Subscriber::SetElementWrapper(ElementWrapper* toWrapper,
             paramWrappers.at(i) = toWrapper;
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Remove
-               (ew, ew->GetDescription(), wxT("Subscriber::SetElementWrapper"),
-                wxT("deleting old wrapper"));
+               (ew, ew->GetDescription(), "Subscriber::SetElementWrapper",
+                "deleting old wrapper");
             #endif
             delete ew;
          }
@@ -769,7 +771,7 @@ bool Subscriber::SetElementWrapper(ElementWrapper* toWrapper,
          
          #ifdef DEBUG_WRAPPER_CODE   
          MessageInterface::ShowMessage
-            (wxT("   Set wrapper name \"%s\" to wrapper=%p\n"), name.c_str(), paramWrappers.at(i));
+            ("   Set wrapper name \"%s\" to wrapper=%p\n", name.c_str(), paramWrappers.at(i));
          #endif
          
          return true;
@@ -791,7 +793,7 @@ void Subscriber::ClearWrappers()
 {
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("Subscriber::ClearWrappers() <%p>'%s' entered\n"), this, GetName().c_str());
+      ("Subscriber::ClearWrappers() <%p>'%s' entered\n", this, GetName().c_str());
    WriteWrappers();
    #endif
    
@@ -807,13 +809,13 @@ void Subscriber::ClearWrappers()
           paramWrappers.end())
       {
          #ifdef DEBUG_WRAPPER_CODE
-         MessageInterface::ShowMessage(wxT("   deleting depParamWrapper = <%p>\n"), wrapper);
+         MessageInterface::ShowMessage("   deleting depParamWrapper = <%p>\n", wrapper);
          #endif
          
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (wrapper, wrapper->GetDescription(), wxT("Subscriber::ClearWrappers()"),
-             wxT("deleting old dep wrapper"));
+            (wrapper, wrapper->GetDescription(), "Subscriber::ClearWrappers()",
+             "deleting old dep wrapper");
          #endif
          delete wrapper;
          wrapper = NULL;
@@ -827,15 +829,15 @@ void Subscriber::ClearWrappers()
       wrapper = paramWrappers[i];
       
       #ifdef DEBUG_WRAPPER_CODE
-      MessageInterface::ShowMessage(wxT("   deleting paramWrapper = <%p>\n"), wrapper);
+      MessageInterface::ShowMessage("   deleting paramWrapper = <%p>\n", wrapper);
       #endif
       
       if (wrapper != NULL)
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (wrapper, wrapper->GetDescription(), wxT("Subscriber::ClearWrappers()"),
-             wxT("deleting old wrapper"));
+            (wrapper, wrapper->GetDescription(), "Subscriber::ClearWrappers()",
+             "deleting old wrapper");
          #endif
          delete wrapper;
          wrapper = NULL;
@@ -849,23 +851,23 @@ void Subscriber::ClearWrappers()
    
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("Subscriber::ClearWrappers() <%p>'%s' leaving\n"), this, GetName().c_str());
+      ("Subscriber::ClearWrappers() <%p>'%s' leaving\n", this, GetName().c_str());
    #endif
 }
 
 
 //---------------------------------------------------------------------------
 // virtual bool RenameRefObject(const Gmat::ObjectType type,
-//                              const wxString &oldName,
-//                              const wxString &newName)
+//                              const std::string &oldName,
+//                              const std::string &newName)
 //---------------------------------------------------------------------------
 bool Subscriber::RenameRefObject(const Gmat::ObjectType type,
-                                 const wxString &oldName,
-                                 const wxString &newName)
+                                 const std::string &oldName,
+                                 const std::string &newName)
 {
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("Subscriber::RenameRefObject() type=%d, oldName=<%s>, newName=<%s>\n"),
+      ("Subscriber::RenameRefObject() type=%d, oldName=<%s>, newName=<%s>\n",
        type, oldName.c_str(), newName.c_str());
    #endif
    
@@ -873,10 +875,10 @@ bool Subscriber::RenameRefObject(const Gmat::ObjectType type,
    Integer sz = wrapperObjectNames.size();
    for (Integer i = 0; i < sz; i++)
    {
-      wxString name = wrapperObjectNames[i];
+      std::string name = wrapperObjectNames[i];
       
       #ifdef DEBUG_RENAME
-      MessageInterface::ShowMessage(wxT("   old name=<%s>\n"), name.c_str());
+      MessageInterface::ShowMessage("   old name=<%s>\n", name.c_str());
       #endif
       
       if (name == oldName)
@@ -893,7 +895,7 @@ bool Subscriber::RenameRefObject(const Gmat::ObjectType type,
    #ifdef DEBUG_RENAME
    for (Integer i = 0; i < sz; i++)
       MessageInterface::ShowMessage
-         (wxT("   new name=<%s>\n"), wrapperObjectNames[i].c_str());
+         ("   new name=<%s>\n", wrapperObjectNames[i].c_str());
    #endif
    
    // now go through wrappers
@@ -902,14 +904,14 @@ bool Subscriber::RenameRefObject(const Gmat::ObjectType type,
    {
       if (paramWrappers[i] == NULL)
          throw SubscriberException
-            (wxT("Subscriber::SetWrapperReference() \"") + GetName() +
-             wxT("\" failed to set reference for object named \"") + oldName +
-             wxT(".\" The wrapper is NULL.\n"));
+            ("Subscriber::SetWrapperReference() \"" + GetName() +
+             "\" failed to set reference for object named \"" + oldName +
+             ".\" The wrapper is NULL.\n");
       
-      wxString desc = paramWrappers[i]->GetDescription();
+      std::string desc = paramWrappers[i]->GetDescription();
       
       #ifdef DEBUG_RENAME
-      MessageInterface::ShowMessage(wxT("   old desc=<%s>\n"), desc.c_str());
+      MessageInterface::ShowMessage("   old desc=<%s>\n", desc.c_str());
       #endif
       
       if (desc == oldName)
@@ -926,9 +928,9 @@ bool Subscriber::RenameRefObject(const Gmat::ObjectType type,
    #ifdef DEBUG_RENAME
    for (Integer i = 0; i < sz; i++)
       MessageInterface::ShowMessage
-         (wxT("   new desc=<%s>\n"), paramWrappers[i]->GetDescription().c_str());
+         ("   new desc=<%s>\n", paramWrappers[i]->GetDescription().c_str());
    MessageInterface::ShowMessage
-      (wxT("Subscriber::RenameRefObject() returning true\n"));
+      ("Subscriber::RenameRefObject() returning true\n");
    #endif
    
    return true;
@@ -970,18 +972,18 @@ bool Subscriber::IsParameterVisible(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-// bool IsParameterVisible(const wxString &label) const
+// bool IsParameterVisible(const std::string &label) const
 //---------------------------------------------------------------------------
-bool Subscriber::IsParameterVisible(const wxString &label) const
+bool Subscriber::IsParameterVisible(const std::string &label) const
 {
    return IsParameterVisible(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
-wxString Subscriber::GetParameterText(const Integer id) const
+std::string Subscriber::GetParameterText(const Integer id) const
 {
    if (id >= GmatBaseParamCount && id < SubscriberParamCount)
       return PARAMETER_TEXT[id - GmatBaseParamCount];
@@ -992,9 +994,9 @@ wxString Subscriber::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer Subscriber::GetParameterID(const wxString &str) const
+Integer Subscriber::GetParameterID(const std::string &str) const
 {
    for (int i=GmatBaseParamCount; i<SubscriberParamCount; i++)
    {
@@ -1019,9 +1021,9 @@ Gmat::ParameterType Subscriber::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
-wxString Subscriber::GetParameterTypeString(const Integer id) const
+std::string Subscriber::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -1074,9 +1076,9 @@ Integer Subscriber::SetIntegerParameter(const Integer id, const Integer value)
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
-wxString Subscriber::GetStringParameter(const Integer id) const
+std::string Subscriber::GetStringParameter(const Integer id) const
 {
    switch (id)
    {
@@ -1089,13 +1091,13 @@ wxString Subscriber::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString Subscriber::GetStringParameter(const wxString &label) const
+std::string Subscriber::GetStringParameter(const std::string &label) const
 {
    #ifdef DEBUG_SUBSCRIBER_PARAM
    MessageInterface::ShowMessage
-      (wxT("Subscriber::GetStringParameter() label = %s\n"), label.c_str());
+      ("Subscriber::GetStringParameter() label = %s\n", label.c_str());
    #endif
    
    return GetStringParameter(GetParameterID(label));
@@ -1103,13 +1105,13 @@ wxString Subscriber::GetStringParameter(const wxString &label) const
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
-bool Subscriber::SetStringParameter(const Integer id, const wxString &value)
+bool Subscriber::SetStringParameter(const Integer id, const std::string &value)
 {
    #ifdef DEBUG_SUBSCRIBER_PARAM
    MessageInterface::ShowMessage
-      (wxT("Subscriber::SetStringParameter() id = %d, value = %s \n"), id,
+      ("Subscriber::SetStringParameter() id = %d, value = %s \n", id,
        value.c_str());
    #endif
    
@@ -1140,28 +1142,28 @@ bool Subscriber::SetStringParameter(const Integer id, const wxString &value)
             SubscriberException se;
             se.SetDetails(errorMessageFormat.c_str(), value.c_str(),
                           PARAMETER_TEXT[id - GmatBaseParamCount].c_str(),
-                          wxT("All, Current, None"));
+                          "All, Current, None");
             
-            if (value == wxT("On") || value == wxT("Off"))
+            if (value == "On" || value == "Off")
             {
                MessageInterface::ShowMessage
-                  (wxT("*** WARNING *** %s.\n"), se.GetFullMessage().c_str());
+                  ("*** WARNING *** %s.\n", se.GetFullMessage().c_str());
                
-               if (value == wxT("On"))
+               if (value == "On")
                {
-                  mSolverIterations = wxT("All");
+                  mSolverIterations = "All";
                   mSolverIterOption = SI_ALL;
                   MessageInterface::ShowMessage
-                     (wxT("The value \"On\" has automatically switched to \"All\" but ")
-                      wxT("this will cause an error in a future build.\n\n"));
+                     ("The value \"On\" has automatically switched to \"All\" but "
+                      "this will cause an error in a future build.\n\n");
                }
                else
                {
-                  mSolverIterations = wxT("None");
+                  mSolverIterations = "None";
                   mSolverIterOption = SI_NONE;
                   MessageInterface::ShowMessage
-                     (wxT("The value \"Off\" has automatically switched to \"None\" but ")
-                      wxT("this will cause an error in a future build.\n\n"));
+                     ("The value \"Off\" has automatically switched to \"None\" but "
+                      "this will cause an error in a future build.\n\n");
                }
                
                return true;
@@ -1184,14 +1186,14 @@ bool Subscriber::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
-bool Subscriber::SetStringParameter(const wxString &label,
-                                    const wxString &value)
+bool Subscriber::SetStringParameter(const std::string &label,
+                                    const std::string &value)
 {
    #ifdef DEBUG_SUBSCRIBER_PARAM
    MessageInterface::ShowMessage
-      (wxT("Subscriber::SetStringParameter() label = %s, value = %s \n"),
+      ("Subscriber::SetStringParameter() label = %s, value = %s \n",
        label.c_str(), value.c_str());
    #endif
    
@@ -1200,15 +1202,15 @@ bool Subscriber::SetStringParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// virtual bool SetStringParameter(const Integer id, const wxString &value,
+// virtual bool SetStringParameter(const Integer id, const std::string &value,
 //                                 const Integer index)
 //------------------------------------------------------------------------------
-bool Subscriber::SetStringParameter(const Integer id, const wxString &value,
+bool Subscriber::SetStringParameter(const Integer id, const std::string &value,
                                     const Integer index)
 {
    #ifdef DEBUG_SUBSCRIBER_PARAM
    MessageInterface::ShowMessage
-      (wxT("Subscriber::SetStringParameter() id = %d, value = %s, index = %d\n"),
+      ("Subscriber::SetStringParameter() id = %d, value = %s, index = %d\n",
        id, value.c_str(), index);
    #endif
    
@@ -1217,17 +1219,17 @@ bool Subscriber::SetStringParameter(const Integer id, const wxString &value,
 
 
 //------------------------------------------------------------------------------
-// virtual bool SetStringParameter(const wxString &label,
-//                                 const wxString &value,
+// virtual bool SetStringParameter(const std::string &label,
+//                                 const std::string &value,
 //                                 const Integer index)
 //------------------------------------------------------------------------------
-bool Subscriber::SetStringParameter(const wxString &label,
-                                    const wxString &value,
+bool Subscriber::SetStringParameter(const std::string &label,
+                                    const std::string &value,
                                     const Integer index)
 {
    #ifdef DEBUG_SUBSCRIBER_PARAM
    MessageInterface::ShowMessage
-      (wxT("Subscriber::SetStringParameter() label = %s, value = %s, index = %d\n"),
+      ("Subscriber::SetStringParameter() label = %s, value = %s, index = %d\n",
        label.c_str(), value.c_str(), index);
    #endif
    
@@ -1276,20 +1278,20 @@ bool Subscriber::SetBooleanParameter(const Integer id, const bool value)
    return GmatBase::SetBooleanParameter(id, value);
 }
 
-bool Subscriber::GetBooleanParameter(const wxString &label) const
+bool Subscriber::GetBooleanParameter(const std::string &label) const
 {
    return GetBooleanParameter(GetParameterID(label));
 }
 
-bool Subscriber::SetBooleanParameter(const wxString &label, const bool value)
+bool Subscriber::SetBooleanParameter(const std::string &label, const bool value)
 {
    return SetBooleanParameter(GetParameterID(label), value);
 }
 
 //---------------------------------------------------------------------------
-//  wxString GetOnOffParameter(const Integer id) const
+//  std::string GetOnOffParameter(const Integer id) const
 //---------------------------------------------------------------------------
-wxString Subscriber::GetOnOffParameter(const Integer id) const
+std::string Subscriber::GetOnOffParameter(const Integer id) const
 {
    switch (id)
    {
@@ -1302,22 +1304,22 @@ wxString Subscriber::GetOnOffParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString Subscriber::GetOnOffParameter(const wxString &label) const
+// std::string Subscriber::GetOnOffParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString Subscriber::GetOnOffParameter(const wxString &label) const
+std::string Subscriber::GetOnOffParameter(const std::string &label) const
 {
    return GetOnOffParameter(GetParameterID(label));
 }
 
 
 //---------------------------------------------------------------------------
-//  bool SetOnOffParameter(const Integer id, const wxString &value)
+//  bool SetOnOffParameter(const Integer id, const std::string &value)
 //---------------------------------------------------------------------------
-bool Subscriber::SetOnOffParameter(const Integer id, const wxString &value)
+bool Subscriber::SetOnOffParameter(const Integer id, const std::string &value)
 {
    #ifdef DEBUG_SUBSCRIBER_PARAM
    MessageInterface::ShowMessage
-      (wxT("Subscriber::SetOnOffParameter() id = %d, value = %s \n"), id,
+      ("Subscriber::SetOnOffParameter() id = %d, value = %s \n", id,
        value.c_str());
    #endif
    
@@ -1330,20 +1332,20 @@ bool Subscriber::SetOnOffParameter(const Integer id, const wxString &value)
       if (writeTargetStatus)
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** \"TargetStatus\" is deprecated and will be ")
-             wxT("removed from a future build; please use \"SolverIterations\" ")
-             wxT("instead.\n"));
+            ("*** WARNING *** \"TargetStatus\" is deprecated and will be "
+             "removed from a future build; please use \"SolverIterations\" "
+             "instead.\n");
          writeTargetStatus = false;
       }
       
-      if (value == wxT("On"))
+      if (value == "On")
       {
-         mSolverIterations = wxT("All");
+         mSolverIterations = "All";
          mSolverIterOption = SI_ALL;
       }
       else
       {
-         mSolverIterations = wxT("None");
+         mSolverIterations = "None";
          mSolverIterOption = SI_NONE;
       }
       
@@ -1356,10 +1358,10 @@ bool Subscriber::SetOnOffParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetOnOffParameter(const wxString &label, const wxString &value)
+// bool SetOnOffParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
-bool Subscriber::SetOnOffParameter(const wxString &label, 
-                                   const wxString &value)
+bool Subscriber::SetOnOffParameter(const std::string &label, 
+                                   const std::string &value)
 {
    return SetOnOffParameter(GetParameterID(label), value);
 }
@@ -1378,8 +1380,8 @@ Real Subscriber::GetRealParameter(const Integer id, const Integer index) const
 {
    if ((index < 0) || (index > 1))
    {
-      wxString errmsg = wxT("Index is out-of-bounds for upper left or size for plot ");
-      errmsg += instanceName + wxT(".\n");
+      std::string errmsg = "Index is out-of-bounds for upper left or size for plot ";
+      errmsg += instanceName + ".\n";
       throw SubscriberException(errmsg);
    }
    switch (id)
@@ -1398,7 +1400,7 @@ Real Subscriber::SetRealParameter(const Integer id, const Real value, const Inte
 {
    if (index < 0 || (index > 1))
       throw SubscriberException
-         (wxT("index out of bounds for ") + GetParameterText(id));
+         ("index out of bounds for " + GetParameterText(id));
 
    switch (id)
    {
@@ -1434,7 +1436,7 @@ const Rvector& Subscriber::SetRvectorParameter(const Integer id, const Rvector &
 {
    if (value.GetSize() != 2)
       throw SubscriberException
-         (wxT("incorrect size vector for ") + GetParameterText(id));
+         ("incorrect size vector for " + GetParameterText(id));
    switch (id)
    {
    case UPPER_LEFT:
@@ -1452,20 +1454,20 @@ const Rvector& Subscriber::SetRvectorParameter(const Integer id, const Rvector &
    }
 }
 
-const Rvector& Subscriber::GetRvectorParameter(const wxString &label) const
+const Rvector& Subscriber::GetRvectorParameter(const std::string &label) const
 {
    return GetRvectorParameter(GetParameterID(label));
 }
 
-const Rvector& Subscriber::SetRvectorParameter(const wxString &label, const Rvector &value)
+const Rvector& Subscriber::SetRvectorParameter(const std::string &label, const Rvector &value)
 {
    return SetRvectorParameter(GetParameterID(label), value);
 }
 
 //------------------------------------------------------------------------------
-// const wxString* GetSolverIterOptionList()
+// const std::string* GetSolverIterOptionList()
 //------------------------------------------------------------------------------
-const wxString* Subscriber::GetSolverIterOptionList()
+const std::string* Subscriber::GetSolverIterOptionList()
 {
    return SOLVER_ITER_OPTION_TEXT;
 }
@@ -1483,7 +1485,7 @@ bool Subscriber::CloneWrappers(WrapperArray &toWrappers,
 {
    #ifdef DEBUG_WRAPPER_CODE
    MessageInterface::ShowMessage
-      (wxT("Subscriber::CloneWrappers() <%p>'%s' entered\n"), this, GetName().c_str());
+      ("Subscriber::CloneWrappers() <%p>'%s' entered\n", this, GetName().c_str());
    #endif
    for (UnsignedInt i=0; i<fromWrappers.size(); i++)
    {
@@ -1493,8 +1495,8 @@ bool Subscriber::CloneWrappers(WrapperArray &toWrappers,
          toWrappers.push_back(ew);
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Add
-            (ew, ew->GetDescription(), wxT("Subscriber::CloneWrappers()"),
-             wxT("ew = fromWrappers[i]->Clone()"));
+            (ew, ew->GetDescription(), "Subscriber::CloneWrappers()",
+             "ew = fromWrappers[i]->Clone()");
          #endif         
       }
    }
@@ -1504,18 +1506,18 @@ bool Subscriber::CloneWrappers(WrapperArray &toWrappers,
 
 
 //------------------------------------------------------------------------------
-// bool SetWrapperReference(GmatBase *obj, const wxString &name)
+// bool SetWrapperReference(GmatBase *obj, const std::string &name)
 //------------------------------------------------------------------------------
-bool Subscriber::SetWrapperReference(GmatBase *obj, const wxString &name)
+bool Subscriber::SetWrapperReference(GmatBase *obj, const std::string &name)
 {
    Integer sz = paramWrappers.size();
-   wxString refname, desc;
+   std::string refname, desc;
    Gmat::WrapperDataType wrapperType;
    bool nameFound = false;
    
    #ifdef DEBUG_WRAPPER_CODE   
    MessageInterface::ShowMessage
-      (wxT("Subscriber::SetWrapperReference() obj=<%p>'%s', name='%s', size=%d\n"),
+      ("Subscriber::SetWrapperReference() obj=<%p>'%s', name='%s', size=%d\n",
        obj, obj->GetName().c_str(), name.c_str(), sz);
    #endif
    
@@ -1523,13 +1525,13 @@ bool Subscriber::SetWrapperReference(GmatBase *obj, const wxString &name)
    {
       if (paramWrappers[i] == NULL)
          throw SubscriberException
-            (wxT("Subscriber::SetWrapperReference() \"") + GetName() +
-             wxT("\" failed to set reference for object named \"") + name +
-             wxT(".\" The wrapper is NULL.\n"));
+            ("Subscriber::SetWrapperReference() \"" + GetName() +
+             "\" failed to set reference for object named \"" + name +
+             ".\" The wrapper is NULL.\n");
       
       refname = paramWrappers[i]->GetDescription();
       if (paramWrappers[i]->GetWrapperType() == Gmat::ARRAY_ELEMENT_WT)
-         refname = refname.substr(0, refname.find(wxT('(')));
+         refname = refname.substr(0, refname.find('('));
       if (refname == name)
       {
          nameFound = true;
@@ -1539,11 +1541,11 @@ bool Subscriber::SetWrapperReference(GmatBase *obj, const wxString &name)
    
    if (!nameFound)
       throw SubscriberException
-         (wxT("Subscriber::SetWrapperReference() \"") + GetName() +
-          wxT("\" failed to find object named \"") +  name + wxT("\"\n"));
+         ("Subscriber::SetWrapperReference() \"" + GetName() +
+          "\" failed to find object named \"" +  name + "\"\n");
    
    #ifdef DEBUG_WRAPPER_CODE   
-   MessageInterface::ShowMessage(wxT("   setting ref object of wrappers\n"));
+   MessageInterface::ShowMessage("   setting ref object of wrappers\n");
    #endif
    
    // set ref object of wrappers
@@ -1554,7 +1556,7 @@ bool Subscriber::SetWrapperReference(GmatBase *obj, const wxString &name)
       
       #ifdef DEBUG_WRAPPER_CODE   
       MessageInterface::ShowMessage
-         (wxT("   paramWrappers[%d]=\"%s\", wrapperType=%d\n"), i, desc.c_str(),
+         ("   paramWrappers[%d]=\"%s\", wrapperType=%d\n", i, desc.c_str(),
           wrapperType);
       #endif
       
@@ -1577,7 +1579,7 @@ bool Subscriber::SetWrapperReference(GmatBase *obj, const wxString &name)
       case Gmat::ARRAY_ELEMENT_WT:
          // for array element, we need to go through all array elements set
          // ref object, so break insted of return
-         refname = refname.substr(0, refname.find(wxT('(')));
+         refname = refname.substr(0, refname.find('('));
          if (refname == name)
             paramWrappers[i]->SetRefObject(obj);
          break;
@@ -1587,7 +1589,7 @@ bool Subscriber::SetWrapperReference(GmatBase *obj, const wxString &name)
          {
             #ifdef DEBUG_WRAPPER_CODE   
             MessageInterface::ShowMessage
-               (wxT("   Found wrapper name \"%s\" in SetWrapperReference\n"), name.c_str());
+               ("   Found wrapper name \"%s\" in SetWrapperReference\n", name.c_str());
             #endif
             
             paramWrappers[i]->SetRefObject(obj);
@@ -1598,7 +1600,7 @@ bool Subscriber::SetWrapperReference(GmatBase *obj, const wxString &name)
    
    #ifdef DEBUG_WRAPPER_CODE   
    MessageInterface::ShowMessage
-      (wxT("Subscriber::SetWrapperReference() ArrayElement set. Leaving\n"));
+      ("Subscriber::SetWrapperReference() ArrayElement set. Leaving\n");
    #endif
    
    return true;
@@ -1611,8 +1613,8 @@ bool Subscriber::SetWrapperReference(GmatBase *obj, const wxString &name)
 void Subscriber::WriteWrappers()
 {
    MessageInterface::ShowMessage
-      (wxT("Subscriber::WriteWrappers() <%p>'%s' has %d depParamWrappers and %d ")
-       wxT("paramWrappers\n"), this, GetName().c_str(), depParamWrappers.size(),
+      ("Subscriber::WriteWrappers() <%p>'%s' has %d depParamWrappers and %d "
+       "paramWrappers\n", this, GetName().c_str(), depParamWrappers.size(),
        paramWrappers.size());
    
    ElementWrapper *wrapper;
@@ -1620,25 +1622,25 @@ void Subscriber::WriteWrappers()
    {
       wrapper = depParamWrappers[i];
       MessageInterface::ShowMessage
-         (wxT("   depPaWrapper = <%p> '%s'\n"), wrapper, wrapper->GetDescription().c_str());
+         ("   depPaWrapper = <%p> '%s'\n", wrapper, wrapper->GetDescription().c_str());
    }
    
    for (UnsignedInt i = 0; i < paramWrappers.size(); ++i)
    {
       wrapper = paramWrappers[i];
       MessageInterface::ShowMessage
-         (wxT("   paramWrapper = <%p> '%s'\n"), wrapper, wrapper->GetDescription().c_str());
+         ("   paramWrapper = <%p> '%s'\n", wrapper, wrapper->GetDescription().c_str());
    }
 }
 
 
 //------------------------------------------------------------------------------
-// Integer FindIndexOfElement(StringArray &labelArray, const wxString &label)
+// Integer FindIndexOfElement(StringArray &labelArray, const std::string &label)
 //------------------------------------------------------------------------------
 Integer Subscriber::FindIndexOfElement(StringArray &labelArray,
-                                       const wxString &label)
+                                       const std::string &label)
 {
-   std::vector<wxString>::iterator pos;
+   std::vector<std::string>::iterator pos;
    pos = find(labelArray.begin(), labelArray.end(),  label);
    if (pos == labelArray.end())
       return -1;
@@ -1669,7 +1671,7 @@ bool Subscriber::Distribute(const Real *dat, Integer len)
 //------------------------------------------------------------------------------
 // virtual void HandleManeuvering(GmatBase *originator, bool maneuvering, Real epoch,
 //                                const StringArray &satNames,
-//                                const wxString &desc)
+//                                const std::string &desc)
 //------------------------------------------------------------------------------
 /**
  * Handles maneuvering on or off.
@@ -1683,7 +1685,7 @@ bool Subscriber::Distribute(const Real *dat, Integer len)
 //------------------------------------------------------------------------------
 void Subscriber::HandleManeuvering(GmatBase *originator, bool maneuvering,
                                    Real epoch, const StringArray &satNames,
-                                   const wxString &desc)
+                                   const std::string &desc)
 {
    // do nothing here
 }
@@ -1691,7 +1693,7 @@ void Subscriber::HandleManeuvering(GmatBase *originator, bool maneuvering,
 
 //------------------------------------------------------------------------------
 // void HandleScPropertyChange(GmatBase *originator, Real epoch,
-//                             const wxString &satName, const wxString &desc)
+//                             const std::string &satName, const std::string &desc)
 //------------------------------------------------------------------------------
 /**
  * Handles spacecraft property change.
@@ -1703,17 +1705,17 @@ void Subscriber::HandleManeuvering(GmatBase *originator, bool maneuvering,
  */
 //------------------------------------------------------------------------------
 void Subscriber::HandleScPropertyChange(GmatBase *originator, Real epoch,
-                                        const wxString &satName,
-                                        const wxString &desc)
+                                        const std::string &satName,
+                                        const std::string &desc)
 {
    // do nothing here
 }
 
 
 //------------------------------------------------------------------------------
-// void PutUnsignedIntValue(Integer id, const wxString &sval)
+// void PutUnsignedIntValue(Integer id, const std::string &sval)
 //------------------------------------------------------------------------------
-void Subscriber::PutUnsignedIntValue(Integer id, const wxString &sval)
+void Subscriber::PutUnsignedIntValue(Integer id, const std::string &sval)
 {
    #ifdef DEBUG_SUBSCRIBER_PUT
    MessageInterface::ShowMessage
@@ -1739,9 +1741,9 @@ const StringArray& Subscriber::GetPropertyEnumStrings(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-// const StringArray& GetPropertyEnumStrings(const wxString &label) const
+// const StringArray& GetPropertyEnumStrings(const std::string &label) const
 //---------------------------------------------------------------------------
-const StringArray& Subscriber::GetPropertyEnumStrings(const wxString &label) const
+const StringArray& Subscriber::GetPropertyEnumStrings(const std::string &label) const
 {
    return GetPropertyEnumStrings(GetParameterID(label));
 }

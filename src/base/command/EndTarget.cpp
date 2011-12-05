@@ -33,9 +33,9 @@
  */
 //------------------------------------------------------------------------------
 EndTarget::EndTarget() :
-   GmatCommand         (wxT("EndTarget"))
+   GmatCommand         ("EndTarget")
 {
-   objectTypeNames.push_back(wxT("BranchEnd"));
+   objectTypeNames.push_back("BranchEnd");
    depthChange = -1;
 }
 
@@ -102,10 +102,10 @@ bool EndTarget::Initialize()
    
    // Validate that next points to the owning Target command
    if (!next)
-      throw CommandException(wxT("EndTarget Command not properly reconnected"));
+      throw CommandException("EndTarget Command not properly reconnected");
     
-   if (next->GetTypeName() != wxT("Target"))
-      throw CommandException(wxT("EndTarget Command not connected to Target Command"));
+   if (next->GetTypeName() != "Target")
+      throw CommandException("EndTarget Command not connected to Target Command");
     
    return true;
 }
@@ -128,10 +128,10 @@ bool EndTarget::Execute()
    #ifdef DEBUG_TARGET_COMMANDS
       if (next)
          MessageInterface::ShowMessage(
-            wxT("End Target points to a %s command\n"), next->GetTypeName().c_str());
+            "End Target points to a %s command\n", next->GetTypeName().c_str());
       else
          MessageInterface::ShowMessage(
-            wxT("EndTarget does not reconnect to Target comamnd\n"));
+            "EndTarget does not reconnect to Target comamnd\n");
    #endif
    
    BuildCommandSummary(true);
@@ -163,7 +163,7 @@ bool EndTarget::Insert(GmatCommand *cmd, GmatCommand *prev)
 
 //---------------------------------------------------------------------------
 // bool RenameRefObject(const Gmat::ObjectType type,
-//                      const wxString &oldName, const wxString &newName)
+//                      const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /*
  * Renames referenced objects
@@ -176,8 +176,8 @@ bool EndTarget::Insert(GmatCommand *cmd, GmatCommand *prev)
  */
 //---------------------------------------------------------------------------
 bool EndTarget::RenameRefObject(const Gmat::ObjectType type,
-                                const wxString &oldName,
-                                const wxString &newName)
+                                const std::string &oldName,
+                                const std::string &newName)
 {
    // There are no renamealbe objects
    return true;
@@ -201,7 +201,7 @@ GmatBase* EndTarget::Clone() const
 
 
 //------------------------------------------------------------------------------
-//  const wxString GetGeneratingString()
+//  const std::string GetGeneratingString()
 //------------------------------------------------------------------------------
 /**
  * Method used to retrieve the string that was parsed to build this GmatCommand.
@@ -221,29 +221,29 @@ GmatBase* EndTarget::Clone() const
  * @return The script line that defines this GmatCommand.
  */
 //------------------------------------------------------------------------------
-const wxString& EndTarget::GetGeneratingString(Gmat::WriteMode mode,
-                                                  const wxString &prefix,
-                                                  const wxString &useName)
+const std::string& EndTarget::GetGeneratingString(Gmat::WriteMode mode,
+                                                  const std::string &prefix,
+                                                  const std::string &useName)
 {
    if (mode == Gmat::NO_COMMENTS)
    {
-      generatingString = wxT("EndTarget;");
+      generatingString = "EndTarget;";
       return generatingString;
    }
    
    // Build the local string
-   generatingString = prefix + wxT("EndTarget;");
-   if ((next) && (next->GetTypeName() == wxT("Target")))
+   generatingString = prefix + "EndTarget;";
+   if ((next) && (next->GetTypeName() == "Target"))
    {
       // To avoid keep appending, check for empty inline comment
-      if (GetInlineComment() == wxT(""))
+      if (GetInlineComment() == "")
       {
-         generatingString += wxT("  % For targeter ");
+         generatingString += "  % For targeter ";
          generatingString += next->GetRefObjectName(Gmat::SOLVER);
       }
    }
    
    // Then call the base class method for preface and inline comments
    // We want preface comment to be indented
-   return GmatCommand::GetGeneratingString(mode, prefix + wxT("   "), useName);
+   return GmatCommand::GetGeneratingString(mode, prefix + "   ", useName);
 }

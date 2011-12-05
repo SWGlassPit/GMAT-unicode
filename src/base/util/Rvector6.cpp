@@ -38,10 +38,10 @@ Rvector6::RVECTOR6_UNDEFINED = Rvector6(UTIL_REAL_UNDEFINED, UTIL_REAL_UNDEFINED
                                         UTIL_REAL_UNDEFINED, UTIL_REAL_UNDEFINED,
                                         UTIL_REAL_UNDEFINED, UTIL_REAL_UNDEFINED);
 
-const wxString Rvector6::DATA_DESCRIPTIONS[NUM_DATA] =
+const std::string Rvector6::DATA_DESCRIPTIONS[NUM_DATA] =
 {
-   wxT("Element 1"), wxT("Element 2"), wxT("Element 3"),
-   wxT("Element 4"), wxT("Element 5"), wxT("Element 6")
+   "Element 1", "Element 2", "Element 3",
+   "Element 4", "Element 5", "Element 6"
 };
 
 //---------------------------------
@@ -467,13 +467,13 @@ Integer Rvector6::GetNumData() const
 
 
 //------------------------------------------------------------------------------
-// const wxString* GetDataDescriptions() const
+// const std::string* GetDataDescriptions() const
 //------------------------------------------------------------------------------
 /**
  * @return data description pointer.
  */
 //------------------------------------------------------------------------------
-const wxString* Rvector6::GetDataDescriptions() const
+const std::string* Rvector6::GetDataDescriptions() const
 {
    return DATA_DESCRIPTIONS;
 }

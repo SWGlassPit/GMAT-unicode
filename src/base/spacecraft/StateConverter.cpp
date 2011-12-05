@@ -21,13 +21,13 @@
 
 #include "StateConverter.hpp"
 #include "SpacePoint.hpp"
-//#include wxT("Equinoctial.hpp")
+//#include "Equinoctial.hpp"
 #include "CoordUtil.hpp"
 #include "Keplerian.hpp"
 #include "ModKeplerian.hpp"
-//#include wxT("Equinoctial.hpp")
-//#include wxT("SphericalAZFPA.hpp")
-//#include wxT("SphericalRADEC.hpp")
+//#include "Equinoctial.hpp"
+//#include "SphericalAZFPA.hpp"
+//#include "SphericalRADEC.hpp"
 #include "MessageInterface.hpp"
 #include "UtilityException.hpp"
 #include "GmatConstants.hpp"
@@ -45,14 +45,14 @@ using namespace GmatMathConstants;
 //------------------------------------------------------------------------------
 
 const Real StateConverter::DEFAULT_MU = GmatSolarSystemDefaults::PLANET_MU[GmatSolarSystemDefaults::EARTH];
-const wxString StateConverter::STATE_TYPE_TEXT[StateTypeCount] =
+const std::string StateConverter::STATE_TYPE_TEXT[StateTypeCount] =
 {
-   wxT("Cartesian"),
-   wxT("Keplerian"),
-   wxT("ModifiedKeplerian"),
-   wxT("SphericalAZFPA"),
-   wxT("SphericalRADEC"),
-   wxT("Equinoctial"),
+   "Cartesian",
+   "Keplerian",
+   "ModifiedKeplerian",
+   "SphericalAZFPA",
+   "SphericalRADEC",
+   "Equinoctial",
 };
 
 const bool StateConverter::REQUIRES_CB_ORIGIN[StateTypeCount] =
@@ -82,7 +82,7 @@ StateConverter::StateConverter()
 
 
 //---------------------------------------------------------------------------
-//  StateConverter(const wxString &newTtype)
+//  StateConverter(const std::string &newTtype)
 //---------------------------------------------------------------------------
 /**
  * Creates constructors with parameters.
@@ -91,14 +91,14 @@ StateConverter::StateConverter()
  *
  */
 //---------------------------------------------------------------------------
-StateConverter::StateConverter(const wxString &newType) 
+StateConverter::StateConverter(const std::string &newType) 
 {
    mMu = DEFAULT_MU;
 }
 
 
 //---------------------------------------------------------------------------
-//  StateConverter(const wxString &newTtype, const Real newMu)
+//  StateConverter(const std::string &newTtype, const Real newMu)
 //---------------------------------------------------------------------------
 /**
  * Creates constructors with parameters.
@@ -107,7 +107,7 @@ StateConverter::StateConverter(const wxString &newType)
  *
  */
 //---------------------------------------------------------------------------
-StateConverter::StateConverter(const wxString &newType, const Real newMu) 
+StateConverter::StateConverter(const std::string &newType, const Real newMu) 
 {
    mMu = newMu;
 }
@@ -175,7 +175,7 @@ StateConverter& StateConverter::operator=(const StateConverter &converter)
 bool StateConverter::SetMu(const CoordinateSystem *coordSys)
 {
    #ifdef DEBUG_STATE_CONVERTER
-      MessageInterface::ShowMessage(wxT("\nStateConverter::SetMu(cs) enters...\n"));
+      MessageInterface::ShowMessage("\nStateConverter::SetMu(cs) enters...\n");
    #endif
       
    // Check for empty coordinate system then stop process
@@ -186,14 +186,14 @@ bool StateConverter::SetMu(const CoordinateSystem *coordSys)
    SpacePoint *origin = coordSys->GetOrigin();
    
    #ifdef DEBUG_STATE_CONVERTER
-      wxString typeName = origin->GetTypeName();
-      MessageInterface::ShowMessage(wxT("...Origin type is '%s'."), typeName.c_str());
+      std::string typeName = origin->GetTypeName();
+      MessageInterface::ShowMessage("...Origin type is '%s'.", typeName.c_str());
       
       if (origin->IsOfType(Gmat::CELESTIAL_BODY))
-         MessageInterface::ShowMessage(wxT("It is CelestialBody.\n"));
+         MessageInterface::ShowMessage("It is CelestialBody.\n");
       else
          MessageInterface::ShowMessage(
-            wxT("CoordSys origin is not a CelestialBody.\n "));
+            "CoordSys origin is not a CelestialBody.\n ");
    #endif
       
    // Check if it is Celestial Body then get the mu; 
@@ -204,8 +204,8 @@ bool StateConverter::SetMu(const CoordinateSystem *coordSys)
       mMu = 0.0;
    
    #ifdef DEBUG_STATE_CONVERTER
-      MessageInterface::ShowMessage(wxT("...mMu = %f before ")
-        wxT("StateConverter::SetMu() exits\n\n"), mMu);
+      MessageInterface::ShowMessage("...mMu = %f before "
+        "StateConverter::SetMu() exits\n\n", mMu);
    #endif
       
    return true;
@@ -213,17 +213,17 @@ bool StateConverter::SetMu(const CoordinateSystem *coordSys)
 
 
 //---------------------------------------------------------------------------
-// Rvector6 FromCartesian(const Rvector6 &state, const wxString &toType,
-//                        const wxString &anomalyType = wxT("TA"))
+// Rvector6 FromCartesian(const Rvector6 &state, const std::string &toType,
+//                        const std::string &anomalyType = "TA")
 //---------------------------------------------------------------------------
 Rvector6 StateConverter::FromCartesian(const Rvector6 &state,
-                                       const wxString &toType,
-                                       const wxString &anomalyType)
+                                       const std::string &toType,
+                                       const std::string &anomalyType)
 {
    #ifdef DEBUG_STATE_CONVERTER
    MessageInterface::ShowMessage
-      (wxT("StateConverter::FromCartesian() toType=%s, anomalyType=%s\n")
-       wxT("   state=%s\n"), toType.c_str(), anomalyType.c_str(),
+      ("StateConverter::FromCartesian() toType=%s, anomalyType=%s\n"
+       "   state=%s\n", toType.c_str(), anomalyType.c_str(),
        state.ToString(13).c_str());
    #endif
 
@@ -232,37 +232,37 @@ Rvector6 StateConverter::FromCartesian(const Rvector6 &state,
    
    Rvector6 outState;
    
-   if (toType == wxT("Keplerian") || toType == wxT("ModifiedKeplerian")) 
+   if (toType == "Keplerian" || toType == "ModifiedKeplerian") 
    {
       Rvector6 kepl = Keplerian::CartesianToKeplerian(mMu, state, anomalyType);
       
-      if (toType == wxT("ModifiedKeplerian"))
+      if (toType == "ModifiedKeplerian")
          outState = KeplerianToModKeplerian(kepl);
       else
          outState = kepl; 
    }
-   else if (toType == wxT("SphericalAZFPA"))
+   else if (toType == "SphericalAZFPA")
    {
       outState = CartesianToSphericalAZFPA(state);
    }
-   else if (toType == wxT("SphericalRADEC"))
+   else if (toType == "SphericalRADEC")
    {
       outState = CartesianToSphericalRADEC(state);
    }
-   else if (toType == wxT("Equinoctial"))
+   else if (toType == "Equinoctial")
    {
       outState = CartesianToEquinoctial(state, mMu);
    }
    else
    {
       throw UtilityException
-         (wxT("Cannot convert the state from \"Cartesian\" to \"") + toType +
-          wxT("\". \"") + toType + wxT("\" is Unknown State Type\n"));
+         ("Cannot convert the state from \"Cartesian\" to \"" + toType +
+          "\". \"" + toType + "\" is Unknown State Type\n");
    }
    
    #ifdef DEBUG_STATE_CONVERTER
    MessageInterface::ShowMessage
-      (wxT("StateConverter::FromCartesian() returning (%s)\n   %s\n"),
+      ("StateConverter::FromCartesian() returning (%s)\n   %s\n",
        toType.c_str(), outState.ToString(13).c_str());
    #endif
 
@@ -271,17 +271,17 @@ Rvector6 StateConverter::FromCartesian(const Rvector6 &state,
 
 
 //---------------------------------------------------------------------------
-// Rvector6 FromKeplerian(const Rvector6 &state, const wxString &toType,
-//                        const wxString &anomalyType = wxT("TA"))
+// Rvector6 FromKeplerian(const Rvector6 &state, const std::string &toType,
+//                        const std::string &anomalyType = "TA")
 //---------------------------------------------------------------------------
 Rvector6 StateConverter::FromKeplerian(const Rvector6 &state,
-                                       const wxString &toType,
-                                       const wxString &anomalyType)
+                                       const std::string &toType,
+                                       const std::string &anomalyType)
 {
    #ifdef DEBUG_STATE_CONVERTER
    MessageInterface::ShowMessage
-      (wxT("StateConverter::FromKeplerian() toType=%s, anomalyType=%s\n")
-       wxT("   state=%s\n"), toType.c_str(), anomalyType.c_str(),
+      ("StateConverter::FromKeplerian() toType=%s, anomalyType=%s\n"
+       "   state=%s\n", toType.c_str(), anomalyType.c_str(),
        state.ToString(13).c_str());
    #endif
    
@@ -292,21 +292,21 @@ Rvector6 StateConverter::FromKeplerian(const Rvector6 &state,
    anomaly.Set(state[0], state[1], state[5], anomalyType);
    Rvector6 outState;
    
-   if (toType == wxT("Cartesian"))
+   if (toType == "Cartesian")
    {
       //outState = CoordUtil::KeplerianToCartesian(state, mMu, anomaly);
       outState = Keplerian::KeplerianToCartesian(mMu, state, anomalyType);
    }
-   else if (toType == wxT("ModifiedKeplerian"))
+   else if (toType == "ModifiedKeplerian")
    {
       outState = KeplerianToModKeplerian(state); 
    }
-   else if (toType == wxT("SphericalAZFPA"))
+   else if (toType == "SphericalAZFPA")
    {
       Rvector6 cartesian = Keplerian::KeplerianToCartesian(mMu, state, anomalyType);
       outState           = CartesianToSphericalAZFPA(cartesian);
    }
-   else if (toType == wxT("SphericalRADEC"))
+   else if (toType == "SphericalRADEC")
    {
       Rvector6 cartesian = Keplerian::KeplerianToCartesian(mMu, state, anomalyType);
       outState           = CartesianToSphericalRADEC(cartesian);
@@ -314,13 +314,13 @@ Rvector6 StateConverter::FromKeplerian(const Rvector6 &state,
    else
    {
       throw UtilityException
-         (wxT("Cannot convert the state from \"Keperian\" to \"") + toType +
-          wxT("\". \"") + toType + wxT(" is Unknown State Type\n"));
+         ("Cannot convert the state from \"Keperian\" to \"" + toType +
+          "\". \"" + toType + " is Unknown State Type\n");
    }
    
    #ifdef DEBUG_STATE_CONVERTER
    MessageInterface::ShowMessage
-      (wxT("StateConverter::FromKeplerian() returning \n   %s\n"),
+      ("StateConverter::FromKeplerian() returning \n   %s\n",
        outState.ToString(13).c_str());
    #endif
    
@@ -329,17 +329,17 @@ Rvector6 StateConverter::FromKeplerian(const Rvector6 &state,
 
 
 //---------------------------------------------------------------------------
-// Rvector6 FromModKeplerian(const Rvector6 &state, const wxString &toType,
-//                           const wxString &anomalyType = wxT("TA"))
+// Rvector6 FromModKeplerian(const Rvector6 &state, const std::string &toType,
+//                           const std::string &anomalyType = "TA")
 //---------------------------------------------------------------------------
 Rvector6 StateConverter::FromModKeplerian(const Rvector6 &state,
-                                          const wxString &toType,
-                                          const wxString &anomalyType)
+                                          const std::string &toType,
+                                          const std::string &anomalyType)
 {
    #ifdef DEBUG_STATE_CONVERTER
    MessageInterface::ShowMessage
-      (wxT("StateConverter::FromModKeplerian() toType=%s, anomalyType=%s\n")
-       wxT("   state=%s\n"), toType.c_str(), anomalyType.c_str(),
+      ("StateConverter::FromModKeplerian() toType=%s, anomalyType=%s\n"
+       "   state=%s\n", toType.c_str(), anomalyType.c_str(),
        state.ToString(13).c_str());
    #endif
    
@@ -350,22 +350,22 @@ Rvector6 StateConverter::FromModKeplerian(const Rvector6 &state,
    anomaly.Set(state[0], state[1], state[5], anomalyType);
    Rvector6 outState;
    
-   if (toType == wxT("Cartesian"))
+   if (toType == "Cartesian")
    {
       Rvector6 keplerian = ModKeplerianToKeplerian(state);
       outState = CoordUtil::KeplerianToCartesian(keplerian, mMu, anomaly);
    }
-   else if (toType == wxT("Keplerian"))
+   else if (toType == "Keplerian")
    {
       outState = ModKeplerianToKeplerian(state); 
    }
-   else if (toType == wxT("SphericalAZFPA"))
+   else if (toType == "SphericalAZFPA")
    {
       Rvector6 keplerian = ModKeplerianToKeplerian(state);
       Rvector6 cartesian = Keplerian::KeplerianToCartesian(mMu, keplerian, anomalyType);
       outState           = CartesianToSphericalAZFPA(cartesian);
    }
-   else if (toType == wxT("SphericalRADEC"))
+   else if (toType == "SphericalRADEC")
    {
       Rvector6 keplerian = ModKeplerianToKeplerian(state);
       Rvector6 cartesian = Keplerian::KeplerianToCartesian(mMu, keplerian, anomalyType);
@@ -374,13 +374,13 @@ Rvector6 StateConverter::FromModKeplerian(const Rvector6 &state,
    else
    {
       throw UtilityException
-         (wxT("Cannot convert the state from \"ModKeplerian\" to \"") + toType +
-          wxT("\". \"") + toType + wxT(" is Unknown State Type\n"));
+         ("Cannot convert the state from \"ModKeplerian\" to \"" + toType +
+          "\". \"" + toType + " is Unknown State Type\n");
    }
    
    #ifdef DEBUG_STATE_CONVERTER
    MessageInterface::ShowMessage
-      (wxT("StateConverter::FromModKeplerian() returning \n   %s\n"),
+      ("StateConverter::FromModKeplerian() returning \n   %s\n",
        outState.ToString(13).c_str());
    #endif
    
@@ -389,17 +389,17 @@ Rvector6 StateConverter::FromModKeplerian(const Rvector6 &state,
 
 
 //---------------------------------------------------------------------------
-// Rvector6 FromSphericalAZFPA(const Rvector6 &state, const wxString &toType,
-//                             const wxString &anomalyType = wxT("TA"))
+// Rvector6 FromSphericalAZFPA(const Rvector6 &state, const std::string &toType,
+//                             const std::string &anomalyType = "TA")
 //---------------------------------------------------------------------------
 Rvector6 StateConverter::FromSphericalAZFPA(const Rvector6 &state,
-                                            const wxString &toType,
-                                            const wxString &anomalyType)
+                                            const std::string &toType,
+                                            const std::string &anomalyType)
 {
    #ifdef DEBUG_STATE_CONVERTER
    MessageInterface::ShowMessage
-      (wxT("StateConverter::FromSphericalAZFPA() toType=%s, anomalyType=%s\n")
-       wxT("   state=%s\n"), toType.c_str(), anomalyType.c_str(),
+      ("StateConverter::FromSphericalAZFPA() toType=%s, anomalyType=%s\n"
+       "   state=%s\n", toType.c_str(), anomalyType.c_str(),
        state.ToString(13).c_str());
    #endif
    
@@ -410,23 +410,23 @@ Rvector6 StateConverter::FromSphericalAZFPA(const Rvector6 &state,
    anomaly.Set(state[0], state[1], state[5], anomalyType);
    Rvector6 outState;
       
-   if (toType == wxT("Cartesian"))
+   if (toType == "Cartesian")
    {
       outState = SphericalAZFPAToCartesian(state);
    }
-   else if (toType == wxT("Keplerian"))
+   else if (toType == "Keplerian")
    {
       Rvector6 cartesian = SphericalAZFPAToCartesian(state);
       outState           = Keplerian::CartesianToKeplerian(mMu, cartesian, anomalyType);
    }
-   else if (toType == wxT("ModifiedKeplerian"))
+   else if (toType == "ModifiedKeplerian")
    {
       Rvector6 cartesian = SphericalAZFPAToCartesian(state);
       Rvector6 keplerian = Keplerian::CartesianToKeplerian(mMu, cartesian, anomalyType);
 //      Rvector6 keplerian = SphericalAZFPAToKeplerian(state, mMu, anomaly);
       outState           = KeplerianToModKeplerian(keplerian);
    }
-   else if (toType == wxT("SphericalRADEC"))
+   else if (toType == "SphericalRADEC")
    {
       Rvector6 cartesian = SphericalAZFPAToCartesian(state);
       outState           = CartesianToSphericalRADEC(cartesian);
@@ -435,13 +435,13 @@ Rvector6 StateConverter::FromSphericalAZFPA(const Rvector6 &state,
    else
    {
       throw UtilityException
-         (wxT("Cannot convert the state from \"SphericalAZFPA\" to \"") + toType +
-          wxT("\". \"") + toType + wxT(" is Unknown State Type\n"));
+         ("Cannot convert the state from \"SphericalAZFPA\" to \"" + toType +
+          "\". \"" + toType + " is Unknown State Type\n");
    }
    
    #ifdef DEBUG_STATE_CONVERTER
    MessageInterface::ShowMessage
-      (wxT("StateConverter::FromSphericalAZFPA() returning \n   %s\n"),
+      ("StateConverter::FromSphericalAZFPA() returning \n   %s\n",
        outState.ToString(13).c_str());
    #endif
    
@@ -450,17 +450,17 @@ Rvector6 StateConverter::FromSphericalAZFPA(const Rvector6 &state,
 
 
 //---------------------------------------------------------------------------
-// Rvector6 FromSphericalRADEC(const Rvector6 &state, const wxString &toType,
-//                             const wxString &anomalyType = wxT("TA"))
+// Rvector6 FromSphericalRADEC(const Rvector6 &state, const std::string &toType,
+//                             const std::string &anomalyType = "TA")
 //---------------------------------------------------------------------------
 Rvector6 StateConverter::FromSphericalRADEC(const Rvector6 &state,
-                                            const wxString &toType,
-                                            const wxString &anomalyType)
+                                            const std::string &toType,
+                                            const std::string &anomalyType)
 {
    #ifdef DEBUG_STATE_CONVERTER
    MessageInterface::ShowMessage
-      (wxT("StateConverter::FromSphericalRADEC() toType=%s, anomalyType=%s\n")
-       wxT("   state=%s\n"), toType.c_str(), anomalyType.c_str(),
+      ("StateConverter::FromSphericalRADEC() toType=%s, anomalyType=%s\n"
+       "   state=%s\n", toType.c_str(), anomalyType.c_str(),
        state.ToString(13).c_str());
    #endif
    
@@ -471,17 +471,17 @@ Rvector6 StateConverter::FromSphericalRADEC(const Rvector6 &state,
    anomaly.Set(state[0], state[1], state[5], anomalyType);
    Rvector6 outState;
    
-   if (toType == wxT("Cartesian"))
+   if (toType == "Cartesian")
    {
       outState = SphericalRADECToCartesian(state);
    }
-   else if (toType == wxT("Keplerian"))
+   else if (toType == "Keplerian")
    {
       Rvector6 cartesian = SphericalRADECToCartesian(state);
       outState           = Keplerian::CartesianToKeplerian(mMu, cartesian, anomalyType);
 //      outState = SphericalRADECToKeplerian(state, mMu, anomaly);
    }
-   else if (toType == wxT("ModifiedKeplerian"))
+   else if (toType == "ModifiedKeplerian")
    {
       Rvector6 cartesian = SphericalRADECToCartesian(state);
       Rvector6 keplerian = Keplerian::CartesianToKeplerian(mMu, cartesian, anomalyType);
@@ -489,7 +489,7 @@ Rvector6 StateConverter::FromSphericalRADEC(const Rvector6 &state,
 //      Rvector6 keplerian = SphericalRADECToKeplerian(state, mMu, anomaly);
 //      outState = KeplerianToModKeplerian(keplerian);
    }
-   else if (toType == wxT("SphericalAZFPA"))
+   else if (toType == "SphericalAZFPA")
    {
       Rvector6 cartesian = SphericalRADECToCartesian(state);
       outState           = CartesianToSphericalAZFPA(cartesian);
@@ -498,13 +498,13 @@ Rvector6 StateConverter::FromSphericalRADEC(const Rvector6 &state,
    else
    {
       throw UtilityException
-         (wxT("Cannot convert the state from \"SphericalRADEC\" to \"") + toType +
-          wxT("\". \"") + toType + wxT(" is Unknown State Type\n"));
+         ("Cannot convert the state from \"SphericalRADEC\" to \"" + toType +
+          "\". \"" + toType + " is Unknown State Type\n");
    }
    
    #ifdef DEBUG_STATE_CONVERTER
    MessageInterface::ShowMessage
-      (wxT("StateConverter::FromSphericalRADEC() returning \n   %s\n"),
+      ("StateConverter::FromSphericalRADEC() returning \n   %s\n",
        outState.ToString(13).c_str());
    #endif
    
@@ -513,17 +513,17 @@ Rvector6 StateConverter::FromSphericalRADEC(const Rvector6 &state,
 
 
 //---------------------------------------------------------------------------
-// Rvector6 FromEquinoctial(const Rvector6 &state, const wxString &toType,
-//                          const wxString &anomalyType = wxT("TA"))
+// Rvector6 FromEquinoctial(const Rvector6 &state, const std::string &toType,
+//                          const std::string &anomalyType = "TA")
 //---------------------------------------------------------------------------
 Rvector6 StateConverter::FromEquinoctial(const Rvector6 &state,
-                                         const wxString &toType,
-                                         const wxString &anomalyType)
+                                         const std::string &toType,
+                                         const std::string &anomalyType)
 {
    #ifdef DEBUG_STATE_CONVERTER
    MessageInterface::ShowMessage
-      (wxT("StateConverter::FromEquinoctial() toType=%s, anomalyType=%s\n")
-       wxT("   state=%s\n"), toType.c_str(), anomalyType.c_str(),
+      ("StateConverter::FromEquinoctial() toType=%s, anomalyType=%s\n"
+       "   state=%s\n", toType.c_str(), anomalyType.c_str(),
        state.ToString(13).c_str());
    #endif
    
@@ -536,38 +536,38 @@ Rvector6 StateConverter::FromEquinoctial(const Rvector6 &state,
    Rvector6 cartState = EquinoctialToCartesian(state, mMu);
    Rvector6 outState;
    
-   if (toType == wxT("Cartesian"))
+   if (toType == "Cartesian")
    {
       outState = cartState;
    }
-   else if (toType == wxT("Keplerian") || toType == wxT("ModifiedKeplerian")) 
+   else if (toType == "Keplerian" || toType == "ModifiedKeplerian") 
    {
       Rvector6 kepl =
          CoordUtil::CartesianToKeplerian(cartState, mMu, anomaly);
       
-      if (toType == wxT("ModifiedKeplerian"))
+      if (toType == "ModifiedKeplerian")
          outState =  KeplerianToModKeplerian(kepl);
       else
          outState = kepl; 
    } 
-   else if (toType == wxT("SphericalAZFPA"))
+   else if (toType == "SphericalAZFPA")
    {
       outState =  CartesianToSphericalAZFPA(cartState);
    }
-   else if (toType == wxT("SphericalRADEC"))
+   else if (toType == "SphericalRADEC")
    {
       outState = CartesianToSphericalRADEC(cartState);
    }
    else
    {
       throw UtilityException
-         (wxT("Cannot convert the state from \"Equinoctial\" to \"") + toType +
-          wxT("\". \"") + toType + wxT(" is Unknown State Type\n"));
+         ("Cannot convert the state from \"Equinoctial\" to \"" + toType +
+          "\". \"" + toType + " is Unknown State Type\n");
    }
 
    #ifdef DEBUG_STATE_CONVERTER
    MessageInterface::ShowMessage
-      (wxT("StateConverter::FromEquinoctial() returning \n   %s\n"),
+      ("StateConverter::FromEquinoctial() returning \n   %s\n",
        outState.ToString(13).c_str());
    #endif
    
@@ -577,9 +577,9 @@ Rvector6 StateConverter::FromEquinoctial(const Rvector6 &state,
 
 
 //---------------------------------------------------------------------------
-//  Rvector6 Convert(const Rvector6 &state, const wxString &fromType,
-//                   const wxString &toType,
-//                   const wxString &anomalyType = wxT("TA"))
+//  Rvector6 Convert(const Rvector6 &state, const std::string &fromType,
+//                   const std::string &toType,
+//                   const std::string &anomalyType = "TA")
 //---------------------------------------------------------------------------
 /**
  * Converts state from fromType to toType.
@@ -593,14 +593,14 @@ Rvector6 StateConverter::FromEquinoctial(const Rvector6 &state,
  */
 //---------------------------------------------------------------------------
 Rvector6 StateConverter::Convert(const Rvector6 &state,   
-                                 const wxString &fromType,
-                                 const wxString &toType,
-                                 const wxString &anomalyType)
+                                 const std::string &fromType,
+                                 const std::string &toType,
+                                 const std::string &anomalyType)
 {
    #ifdef DEBUG_STATE_CONVERTER
    MessageInterface::ShowMessage
-      (wxT("StateConverter::Convert() fromType=%s, toType=%s, anomalyType=%s\n")
-       wxT("   state=%s\n"), fromType.c_str(), toType.c_str(), anomalyType.c_str(),
+      ("StateConverter::Convert() fromType=%s, toType=%s, anomalyType=%s\n"
+       "   state=%s\n", fromType.c_str(), toType.c_str(), anomalyType.c_str(),
        state.ToString(13).c_str());
    #endif
    
@@ -612,36 +612,36 @@ Rvector6 StateConverter::Convert(const Rvector6 &state,
    try
    {
       // Determine the input of state type
-      if (fromType == wxT("Cartesian")) 
+      if (fromType == "Cartesian") 
       {
          outState = FromCartesian(state, toType, anomalyType);
       }
-      else if (fromType == wxT("Keplerian"))
+      else if (fromType == "Keplerian")
       {       
          outState = FromKeplerian(state, toType, anomalyType);
       }
-      else if (fromType == wxT("ModifiedKeplerian"))
+      else if (fromType == "ModifiedKeplerian")
       {
          outState = FromModKeplerian(state, toType, anomalyType);
       }
-      else if (fromType == wxT("SphericalAZFPA"))
+      else if (fromType == "SphericalAZFPA")
       {
          outState = FromSphericalAZFPA(state, toType, anomalyType);
       }
-      else if (fromType == wxT("SphericalRADEC"))
+      else if (fromType == "SphericalRADEC")
       {       
          outState = FromSphericalRADEC(state, toType, anomalyType);
       }
-      else if (fromType == wxT("Equinoctial"))
+      else if (fromType == "Equinoctial")
       {
          outState = FromEquinoctial(state, toType, anomalyType);
       }
       else
       {
          throw UtilityException
-            (wxT("StateConverter::Convert() Cannot convert the state \"") +
-             fromType + wxT("\" to \"") + toType + wxT("\". \"") + fromType +
-             wxT(" is Unknown State Type\n"));
+            ("StateConverter::Convert() Cannot convert the state \"" +
+             fromType + "\" to \"" + toType + "\". \"" + fromType +
+             " is Unknown State Type\n");
       }
    }
    catch(UtilityException &ue)
@@ -651,7 +651,7 @@ Rvector6 StateConverter::Convert(const Rvector6 &state,
 
    #ifdef DEBUG_STATE_CONVERTER
    MessageInterface::ShowMessage
-      (wxT("StateConverter::Convert() returning \n   %s\n"), outState.ToString(13).c_str());
+      ("StateConverter::Convert() returning \n   %s\n", outState.ToString(13).c_str());
    #endif
    
    return outState;
@@ -659,8 +659,8 @@ Rvector6 StateConverter::Convert(const Rvector6 &state,
 
 
 //---------------------------------------------------------------------------
-// Rvector6 Convert(const Rvector6 &state, const wxString &fromType,
-//                  const wxString &toType, Anomaly &anomaly)
+// Rvector6 Convert(const Rvector6 &state, const std::string &fromType,
+//                  const std::string &toType, Anomaly &anomaly)
 //---------------------------------------------------------------------------
 /**
  * Assignment operator for StateConverter structures.
@@ -674,16 +674,16 @@ Rvector6 StateConverter::Convert(const Rvector6 &state,
  */
 //---------------------------------------------------------------------------
 Rvector6 StateConverter::Convert(const Rvector6 &state,   
-                                 const wxString &fromType,
-                                 const wxString &toType,
+                                 const std::string &fromType,
+                                 const std::string &toType,
                                  Anomaly &anomaly)
 {
    #ifdef DEBUG_STATE_CONVERTER
    MessageInterface::ShowMessage
-       (wxT("StateConverter::Convert() fromType=%s, toType=%s, state=\n%s\n"),
+       ("StateConverter::Convert() fromType=%s, toType=%s, state=\n%s\n",
         fromType.c_str(), toType.c_str(), state.ToString(13).c_str());
    MessageInterface::ShowMessage
-       (wxT("Anomaly info-> a: %f, e: %f, type:%s, value: %f\n"),
+       ("Anomaly info-> a: %f, e: %f, type:%s, value: %f\n",
         anomaly.GetSMA(),anomaly.GetECC(), anomaly.GetTypeString().c_str(),
         anomaly.GetValue());
    #endif
@@ -692,7 +692,7 @@ Rvector6 StateConverter::Convert(const Rvector6 &state,
    if (fromType == toType)
       return state;
    
-   wxString anomalyType = anomaly.GetTypeString();
+   std::string anomalyType = anomaly.GetTypeString();
    return Convert(state, fromType, toType, anomalyType);
    
 }
@@ -700,8 +700,8 @@ Rvector6 StateConverter::Convert(const Rvector6 &state,
 
 //---------------------------------------------------------------------------
 //  Rvector6 StateConverter::Convert(Real *state,   
-//                                   const wxString &fromType,
-//                                   const wxString &toType,
+//                                   const std::string &fromType,
+//                                   const std::string &toType,
 //                                   Anomaly &anomaly)
 //---------------------------------------------------------------------------
 /**
@@ -716,8 +716,8 @@ Rvector6 StateConverter::Convert(const Rvector6 &state,
  */
 //---------------------------------------------------------------------------
 Rvector6 StateConverter::Convert(const Real *state,   
-                                 const wxString &fromType,
-                                 const wxString &toType,
+                                 const std::string &fromType,
+                                 const std::string &toType,
                                  Anomaly &anomaly)
 {
    Rvector6 newState;
@@ -726,23 +726,23 @@ Rvector6 StateConverter::Convert(const Real *state,
    if (fromType == toType)
       return newState;
    
-   wxString anomalyType = anomaly.GetTypeString();
+   std::string anomalyType = anomaly.GetTypeString();
    return Convert(newState, fromType, toType, anomalyType);
 }
 
 
 //------------------------------------------------------------------------------
-// static const wxString* GetStateTypeList()
+// static const std::string* GetStateTypeList()
 //------------------------------------------------------------------------------
-const wxString* StateConverter::GetStateTypeList()
+const std::string* StateConverter::GetStateTypeList()
 {
    return STATE_TYPE_TEXT;
 }
 
 //------------------------------------------------------------------------------
-// bool RequiresCelestialBodyOrigin(const wxString &type)
+// bool RequiresCelestialBodyOrigin(const std::string &type)
 //------------------------------------------------------------------------------
-bool StateConverter::RequiresCelestialBodyOrigin(const wxString &type)
+bool StateConverter::RequiresCelestialBodyOrigin(const std::string &type)
 {
    for (unsigned int ii = 0; ii < StateTypeCount; ii++)
    {
@@ -775,8 +775,8 @@ Rvector6 StateConverter::CartesianToEquinoctial(const Rvector6& cartesian, const
    // Check for a near parabolic or hyperbolic orbit.
    if ( e > 1.0 - GmatOrbitConstants::KEP_ECC_TOL)
    {
-      wxString errmsg = 
-            wxT("Error: Cannot convert to Equinoctial elements because the orbit is either parabolic or hyperbolic.\n");
+      std::string errmsg = 
+            "Error: Cannot convert to Equinoctial elements because the orbit is either parabolic or hyperbolic.\n";
       throw UtilityException(errmsg);
    }
 
@@ -788,11 +788,11 @@ Rvector6 StateConverter::CartesianToEquinoctial(const Rvector6& cartesian, const
    {
       #ifdef DEBUG_EQUINOCTIAL
          MessageInterface::ShowMessage(
-               wxT("Equinoctial ... failing check for singular conic section ... e = %12.10f, sma = %12,10f\n"),
+               "Equinoctial ... failing check for singular conic section ... e = %12.10f, sma = %12,10f\n",
                e, sma);
       #endif
-      wxString errmsg =
-            wxT("Error: The state results in a singular conic section with radius of periapsis less than 1 m.\n");
+      std::string errmsg =
+            "Error: The state results in a singular conic section with radius of periapsis less than 1 m.\n";
       throw UtilityException(errmsg);
    }
 
@@ -801,8 +801,8 @@ Rvector6 StateConverter::CartesianToEquinoctial(const Rvector6& cartesian, const
    if (inc >= PI - GmatOrbitConstants::KEP_TOL)
    {
       throw UtilityException
-         (wxT("Error in conversion to Equinoctial elements: ")
-          wxT("GMAT does not currently support orbits with inclination of 180 degrees.\n"));
+         ("Error in conversion to Equinoctial elements: "
+          "GMAT does not currently support orbits with inclination of 180 degrees.\n");
    } 
 
    Integer j = 1;  // always 1, unless inclination is exactly 180 degrees
@@ -826,8 +826,8 @@ Rvector6 StateConverter::CartesianToEquinoctial(const Rvector6& cartesian, const
    Real X1      = pos * f;
    Real Y1      = pos * g;
    #ifdef DEBUG_STATE_CONVERTER_SQRT
-      MessageInterface::ShowMessage(wxT("About to call Sqrt from CartesianToEquinoctial\n"));
-      MessageInterface::ShowMessage(wxT("h = %12.10f,  k = %12.10f\n"), h, k);
+      MessageInterface::ShowMessage("About to call Sqrt from CartesianToEquinoctial\n");
+      MessageInterface::ShowMessage("h = %12.10f,  k = %12.10f\n", h, k);
    #endif
    Real tmpSqrt = Sqrt(1.0 - (h * h) - (k * k));
    Real beta    = 1.0 / (1.0 + tmpSqrt);
@@ -869,8 +869,8 @@ Rvector6 StateConverter::EquinoctialToCartesian(const Rvector6& equinoctial, con
    while (F < 0) F += TWO_PI;
 
    #ifdef DEBUG_STATE_CONVERTER_SQRT
-      MessageInterface::ShowMessage(wxT("About to call Sqrt from EquinoctialToCartesian\n"));
-      MessageInterface::ShowMessage(wxT("h = %12.10f,  k = %12.10f\n"), h, k);
+      MessageInterface::ShowMessage("About to call Sqrt from EquinoctialToCartesian\n");
+      MessageInterface::ShowMessage("h = %12.10f,  k = %12.10f\n", h, k);
    #endif
       Real tmpSqrt;
    try
@@ -879,15 +879,15 @@ Rvector6 StateConverter::EquinoctialToCartesian(const Rvector6& equinoctial, con
    }
    catch (UtilityException &ue)
    {
-      wxString errmsg = wxT("Error converting from Equinoctial to Cartesian.  Message received from Utility is: ");
-      errmsg += ue.GetFullMessage() + wxT("\n");
+      std::string errmsg = "Error converting from Equinoctial to Cartesian.  Message received from Utility is: ";
+      errmsg += ue.GetFullMessage() + "\n";
       throw UtilityException(errmsg);
    }
    Real beta    = 1.0 / (1.0 + tmpSqrt);
 
    #ifdef DEBUG_STATE_CONVERTER_SQRT
-      MessageInterface::ShowMessage(wxT("About to call Sqrt from EquinoctialToCartesian (2)\n"));
-      MessageInterface::ShowMessage(wxT("mu = %12.10f,  sma = %12.10f\n"), mu, sma);
+      MessageInterface::ShowMessage("About to call Sqrt from EquinoctialToCartesian (2)\n");
+      MessageInterface::ShowMessage("mu = %12.10f,  sma = %12.10f\n", mu, sma);
    #endif
    Real n    = Sqrt(mu/(sma * sma * sma));
    Real cosF = Cos(F);
@@ -1031,7 +1031,7 @@ Rvector6 StateConverter::SphericalRADECToCartesian(const Rvector6& spherical)
 
    #ifdef DEBUG_STATE_CONVERTER
       MessageInterface::ShowMessage(
-            wxT("Entering SphericalRADECToCartesian with state %12.10f  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f\n"),
+            "Entering SphericalRADECToCartesian with state %12.10f  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f\n",
             spherical[0],spherical[1],spherical[2],spherical[3],spherical[4],spherical[5]);
    #endif
    // Compute the position
@@ -1047,7 +1047,7 @@ Rvector6 StateConverter::SphericalRADECToCartesian(const Rvector6& spherical)
 
    #ifdef DEBUG_STATE_CONVERTER
       MessageInterface::ShowMessage(
-            wxT("Exiting SphericalRADECToCartesian and returning state %12.10f  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f\n"),
+            "Exiting SphericalRADECToCartesian and returning state %12.10f  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f\n",
             pos[0],pos[1],pos[2],vel[0],vel[1],vel[2]);
    #endif
    return Rvector6(pos, vel);

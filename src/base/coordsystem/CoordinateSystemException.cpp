@@ -26,15 +26,15 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  CoordinateSystemException(wxString details)
+//  CoordinateSystemException(std::string details)
 //------------------------------------------------------------------------------
 /**
 * Constructs an CoordinateSystemException object (default constructor).
  */
 //------------------------------------------------------------------------------
 
-CoordinateSystemException::CoordinateSystemException(wxString details) :
-BaseException  (wxT("CoordinateSystem exception: "), details)
+CoordinateSystemException::CoordinateSystemException(std::string details) :
+BaseException  ("CoordinateSystem exception: ", details)
 {
 
 }

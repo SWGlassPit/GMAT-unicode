@@ -38,7 +38,7 @@
 //                           : 10/09/2003 - W. Waktola, Missions Applications Branch
 //                              Changes:
 //                                - virtual char* GetParameterName(const int parm) const to
-//                                  virtual wxString GetParameterName(const int parm) const
+//                                  virtual std::string GetParameterName(const int parm) const
 //                              Additions:
 //                                - GetParameterType()
 //                                - GetParameterText()
@@ -78,29 +78,29 @@
 class GMAT_API Propagator : public GmatBase
 {
 public:
-   Propagator(const wxString &typeStr,
-              const wxString &nomme = wxT(""));
+   Propagator(const std::string &typeStr,
+              const std::string &nomme = "");
    virtual ~Propagator(void);
 
    Propagator(const Propagator&);
    Propagator& operator=(const Propagator&);
 
    virtual bool RenameRefObject(const Gmat::ObjectType type,
-                                const wxString &oldName,
-                                const wxString &newName);
+                                const std::string &oldName,
+                                const std::string &newName);
 
    // Parameter accessor methods -- overridden from GmatBase
-   virtual wxString GetParameterText(const Integer id) const;
-   virtual Integer GetParameterID(const wxString &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
+   virtual Integer GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
    virtual bool IsParameterReadOnly(const Integer id) const;
-   virtual bool IsParameterReadOnly(const wxString &label) const;
+   virtual bool IsParameterReadOnly(const std::string &label) const;
 
    virtual Real GetRealParameter(const Integer id) const;
-   virtual Real GetRealParameter(const wxString &label) const;
+   virtual Real GetRealParameter(const std::string &label) const;
    virtual Real SetRealParameter(const Integer id, const Real value);
-   virtual Real SetRealParameter(const wxString &label, const Real value);
+   virtual Real SetRealParameter(const std::string &label, const Real value);
 
    virtual Real GetRealParameter(const Integer id, const Integer index) const;
    virtual Real GetRealParameter(const Integer id, const Integer row,
@@ -115,11 +115,11 @@ public:
    virtual bool GetBooleanParameter(const Integer id, const Integer index) const;
    virtual bool SetBooleanParameter(const Integer id, const bool value,
                                     const Integer index);
-   virtual bool GetBooleanParameter(const wxString &label) const;
-   virtual bool SetBooleanParameter(const wxString &label, const bool value);
-   virtual bool GetBooleanParameter(const wxString &label,
+   virtual bool GetBooleanParameter(const std::string &label) const;
+   virtual bool SetBooleanParameter(const std::string &label, const bool value);
+   virtual bool GetBooleanParameter(const std::string &label,
                                     const Integer index) const;
-   virtual bool SetBooleanParameter(const wxString &label, const bool value,
+   virtual bool SetBooleanParameter(const std::string &label, const bool value,
                                     const Integer index);
 
    virtual bool Initialize();
@@ -196,7 +196,7 @@ public:
 protected:
 
    // Start with the parameter IDs and associated strings
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[PropagatorParamCount - GmatBaseParamCount];
    static const Gmat::ParameterType
       PARAMETER_TYPE[PropagatorParamCount - GmatBaseParamCount];
@@ -226,11 +226,11 @@ protected:
 
    // Pieces for prop with origin code
    /// Name of the common J2000 body that the state providers all use
-   wxString               j2kBodyName;
+   std::string               j2kBodyName;
    /// Pointer to the J2000 body
    CelestialBody             *j2kBody;
    /// Name of the central body
-   wxString                centralBody;
+   std::string                centralBody;
    /// Pointer to the central body
    SpacePoint                *propOrigin;
 

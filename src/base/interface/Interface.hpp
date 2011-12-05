@@ -26,12 +26,12 @@
 class GMAT_API Interface : public GmatBase
 {
 public:
-   Interface(const wxString &type, const wxString &name);
+   Interface(const std::string &type, const std::string &name);
    Interface(const Interface &interf);
    virtual ~Interface();
    
-   virtual Integer      Open(const wxString &name = wxT(""));
-   virtual Integer      Close(const wxString &name = wxT(""));
+   virtual Integer      Open(const std::string &name = "");
+   virtual Integer      Close(const std::string &name = "");
    
    // Parameter IDs
    enum

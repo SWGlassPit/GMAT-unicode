@@ -31,7 +31,7 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// AtmosDensity(const wxString &name, GmatBase *obj)
+// AtmosDensity(const std::string &name, GmatBase *obj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -40,12 +40,12 @@
  * @param <obj> reference object pointer
  */
 //------------------------------------------------------------------------------
-AtmosDensity::AtmosDensity(const wxString &name, GmatBase *obj)
-   : EnvReal(name, wxT("AtmosDensity"), obj, wxT("Atmospheric Density"), wxT("Kg/m^3"),
+AtmosDensity::AtmosDensity(const std::string &name, GmatBase *obj)
+   : EnvReal(name, "AtmosDensity", obj, "Atmospheric Density", "Kg/m^3",
              Gmat::SPACECRAFT, GmatParam::ORIGIN)
 {
-   mDepObjectName = wxT("Earth");
-   SetRefObjectName(Gmat::SPACE_POINT, wxT("Earth")); //loj: 4/7/05 Added
+   mDepObjectName = "Earth";
+   SetRefObjectName(Gmat::SPACE_POINT, "Earth"); //loj: 4/7/05 Added
 }
 
 
@@ -92,7 +92,7 @@ AtmosDensity::operator=(const AtmosDensity &right)
 //------------------------------------------------------------------------------
 AtmosDensity::~AtmosDensity()
 {
-   //MessageInterface::ShowMessage(wxT("==> AtmosDensity::~AtmosDensity()\n"));
+   //MessageInterface::ShowMessage("==> AtmosDensity::~AtmosDensity()\n");
 }
 
 
@@ -111,7 +111,7 @@ AtmosDensity::~AtmosDensity()
 //------------------------------------------------------------------------------
 bool AtmosDensity::Evaluate()
 {
-   mRealValue = EnvData::GetEnvReal(wxT("AtmosDensity"));    
+   mRealValue = EnvData::GetEnvReal("AtmosDensity");    
    
    if (mRealValue == EnvData::ENV_REAL_UNDEFINED)
       return false;

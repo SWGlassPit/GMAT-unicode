@@ -99,11 +99,11 @@
 // static data
 //---------------------------------
 
-StringArray Interpreter::allObjectTypeList = StringArray(1, wxT(""));
-StringArray Interpreter::viewableCommandList = StringArray(1, wxT(""));
-std::map<wxString, Gmat::ObjectType> Interpreter::objectTypeMap;
+StringArray Interpreter::allObjectTypeList = StringArray(1, "");
+StringArray Interpreter::viewableCommandList = StringArray(1, "");
+std::map<std::string, Gmat::ObjectType> Interpreter::objectTypeMap;
 
-const wxString Interpreter::defaultIndicator = wxT("DFLT__");
+const std::string Interpreter::defaultIndicator = "DFLT__";
 
 
 //------------------------------------------------------------------------------
@@ -147,14 +147,14 @@ Interpreter::Interpreter(SolarSystem *ss, ObjectMap *objMap)
       theValidator->SetObjectMap(objMap);
       #ifdef DEBUG_OBJECT_MAP
       MessageInterface::ShowMessage
-         (wxT("Interpreter setting object map <%p> to Validator\n"), theObjectMap);
+         ("Interpreter setting object map <%p> to Validator\n", theObjectMap);
       #endif
    }
    
    #ifdef DEBUG_INTERP
    MessageInterface::ShowMessage
-      (wxT("Interpreter::Interpreter() initialized=%d, theModerator=%p, theReadWriter=%p, ")
-       wxT("theValidator=%p\n"), initialized, theModerator, theReadWriter, theValidator);
+      ("Interpreter::Interpreter() initialized=%d, theModerator=%p, theReadWriter=%p, "
+       "theValidator=%p\n", initialized, theModerator, theReadWriter, theValidator);
    #endif
 }
 
@@ -182,7 +182,7 @@ void Interpreter::Initialize()
 {
    #ifdef DEBUG_INIT
    MessageInterface::ShowMessage
-      (wxT("Interpreter::Initialize() entered, initialized=%d\n"), initialized);
+      ("Interpreter::Initialize() entered, initialized=%d\n", initialized);
    #endif
    
    errorList.clear();
@@ -196,7 +196,7 @@ void Interpreter::Initialize()
    {
       #ifdef DEBUG_INIT
       MessageInterface::ShowMessage
-         (wxT("Interpreter::Initialize() already initialized so just returning\n"));
+         ("Interpreter::Initialize() already initialized so just returning\n");
       #endif
       return;
    }
@@ -213,7 +213,7 @@ void Interpreter::Initialize()
    initialized = true;
    
    #ifdef DEBUG_INIT
-   MessageInterface::ShowMessage(wxT("Interpreter::Initialize() leaving\n"));
+   MessageInterface::ShowMessage("Interpreter::Initialize() leaving\n");
    #endif
 }
 
@@ -238,19 +238,19 @@ void Interpreter::BuildCreatableObjectMaps()
    copy(cmds.begin(), cmds.end(), back_inserter(commandList));
    
    #ifdef DEBUG_INIT
-   MessageInterface::ShowMessage(wxT("\nNumber of commands = %d\n"), cmds.size());
+   MessageInterface::ShowMessage("\nNumber of commands = %d\n", cmds.size());
    #endif
    
    #ifdef DEBUG_COMMAND_LIST
-      std::vector<wxString>::iterator pos1;
-      MessageInterface::ShowMessage(wxT("Commands:\n"));      
+      std::vector<std::string>::iterator pos1;
+      MessageInterface::ShowMessage("Commands:\n");      
       for (pos1 = cmds.begin(); pos1 != cmds.end(); ++pos1)
-         MessageInterface::ShowMessage(wxT("   ") + *pos1 + wxT("\n"));
+         MessageInterface::ShowMessage("   " + *pos1 + "\n");
    #endif
       
    if (cmds.size() == 0)
    {
-      throw InterpreterException(wxT("Command list is empty."));
+      throw InterpreterException("Command list is empty.");
    }
    
    // Build a mapping for all viewable commands via GUI
@@ -259,14 +259,14 @@ void Interpreter::BuildCreatableObjectMaps()
    copy(cmds.begin(), cmds.end(), back_inserter(viewableCommandList));
    
    #ifdef DEBUG_INIT
-   MessageInterface::ShowMessage(wxT("\nNumber of viewable commands = %d\n"), cmds.size());
+   MessageInterface::ShowMessage("\nNumber of viewable commands = %d\n", cmds.size());
    #endif
    
    #ifdef DEBUG_COMMAND_LIST
-   std::vector<wxString>::iterator pos;
-   MessageInterface::ShowMessage(wxT("Viewable Commands:\n"));      
+   std::vector<std::string>::iterator pos;
+   MessageInterface::ShowMessage("Viewable Commands:\n");      
    for (pos = cmds.begin(); pos != cmds.end(); ++pos)
-      MessageInterface::ShowMessage(wxT("   ") + *pos + wxT("\n"));   
+      MessageInterface::ShowMessage("   " + *pos + "\n");   
    #endif
    
    // Build a mapping for all of the defined objects
@@ -434,96 +434,96 @@ void Interpreter::BuildCreatableObjectMaps()
       objectTypeMap.insert(std::make_pair(eventLocatorList[i], Gmat::EVENT_LOCATOR));
 
    #ifdef DEBUG_OBJECT_LIST
-      std::vector<wxString>::iterator pos;
+      std::vector<std::string>::iterator pos;
       
-      MessageInterface::ShowMessage(wxT("\nSpacecraft:\n   "));
+      MessageInterface::ShowMessage("\nSpacecraft:\n   ");
       for (pos = scs.begin(); pos != scs.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
       
-      MessageInterface::ShowMessage(wxT("\nAtmosphereModel:\n   "));
+      MessageInterface::ShowMessage("\nAtmosphereModel:\n   ");
       for (pos = atms.begin(); pos != atms.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
 
-      MessageInterface::ShowMessage(wxT("\nAttitudes:\n   "));
+      MessageInterface::ShowMessage("\nAttitudes:\n   ");
       for (pos = atts.begin(); pos != atts.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
 
-      MessageInterface::ShowMessage(wxT("\nAxisSystems:\n   "));
+      MessageInterface::ShowMessage("\nAxisSystems:\n   ");
       for (pos = axes.begin(); pos != axes.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
       
-      MessageInterface::ShowMessage(wxT("\nBurns:\n   "));
+      MessageInterface::ShowMessage("\nBurns:\n   ");
       for (pos = burns.begin(); pos != burns.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
       
-      MessageInterface::ShowMessage(wxT("\nCalculatedPoints:\n   "));
+      MessageInterface::ShowMessage("\nCalculatedPoints:\n   ");
       for (pos = cals.begin(); pos != cals.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
       
-      MessageInterface::ShowMessage(wxT("\nDataFiles:\n   "));
+      MessageInterface::ShowMessage("\nDataFiles:\n   ");
       for (pos = dfs.begin(); pos != dfs.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
       
-      MessageInterface::ShowMessage(wxT("\nEphemerisFiles:\n   "));
+      MessageInterface::ShowMessage("\nEphemerisFiles:\n   ");
       for (pos = ephems.begin(); pos != ephems.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
       
-      MessageInterface::ShowMessage(wxT("\nFunctions:\n   "));
+      MessageInterface::ShowMessage("\nFunctions:\n   ");
       for (pos = fns.begin(); pos != fns.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
       
-      MessageInterface::ShowMessage(wxT("\nHardwares:\n   "));
+      MessageInterface::ShowMessage("\nHardwares:\n   ");
       for (pos = hws.begin(); pos != hws.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
       
-      MessageInterface::ShowMessage(wxT("\nODEModels:\n   "));
+      MessageInterface::ShowMessage("\nODEModels:\n   ");
       for (pos = odes.begin(); pos != odes.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
       
-      MessageInterface::ShowMessage(wxT("\nPhysicalModels:\n   "));
+      MessageInterface::ShowMessage("\nPhysicalModels:\n   ");
       for (pos = forces.begin(); pos != forces.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
       
-      MessageInterface::ShowMessage(wxT("\nParameters:\n   "));
+      MessageInterface::ShowMessage("\nParameters:\n   ");
       for (pos = parms.begin();  pos != parms.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
       
-      MessageInterface::ShowMessage(wxT("\nPropagators:\n   "));
-      for (std::vector<wxString>::iterator pos = props.begin();
+      MessageInterface::ShowMessage("\nPropagators:\n   ");
+      for (std::vector<std::string>::iterator pos = props.begin();
            pos != props.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
       
-      MessageInterface::ShowMessage(wxT("\nMeasurements:\n   "));
+      MessageInterface::ShowMessage("\nMeasurements:\n   ");
       for (pos = measurements.begin();
             pos != measurements.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
       
-      MessageInterface::ShowMessage(wxT("\nObservations:\n   "));
+      MessageInterface::ShowMessage("\nObservations:\n   ");
       for (pos = obs.begin();
             pos != obs.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
       
-      MessageInterface::ShowMessage(wxT("\nSolvers:\n   "));
+      MessageInterface::ShowMessage("\nSolvers:\n   ");
       for (pos = solvers.begin(); pos != solvers.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
       
-      MessageInterface::ShowMessage(wxT("\nStopConds:\n   "));
+      MessageInterface::ShowMessage("\nStopConds:\n   ");
       for (pos = stops.begin(); pos != stops.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
       
-      MessageInterface::ShowMessage(wxT("\nSubscribers:\n   "));
+      MessageInterface::ShowMessage("\nSubscribers:\n   ");
       for (pos = subs.begin(); pos != subs.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
       
-      MessageInterface::ShowMessage(wxT("\nTrackingSystems:\n   "));
+      MessageInterface::ShowMessage("\nTrackingSystems:\n   ");
       for (pos = tsl.begin(); pos != tsl.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
       
-      MessageInterface::ShowMessage(wxT("\nOther SpacePoints:\n   "));
+      MessageInterface::ShowMessage("\nOther SpacePoints:\n   ");
       for (pos = spl.begin(); pos != spl.end(); ++pos)
-         MessageInterface::ShowMessage(*pos + wxT("\n   "));
+         MessageInterface::ShowMessage(*pos + "\n   ");
       
-      MessageInterface::ShowMessage(wxT("\n"));
+      MessageInterface::ShowMessage("\n");
    #endif
    
 }
@@ -552,7 +552,7 @@ void Interpreter::BuildCreatableObjectMaps()
  */
 //------------------------------------------------------------------------------
 StringArray Interpreter::GetCreatableList(Gmat::ObjectType type, 
-      const wxString subType)
+      const std::string subType)
 {
    StringArray clist;
    
@@ -673,12 +673,12 @@ StringArray Interpreter::GetCreatableList(Gmat::ObjectType type,
          break;
    }
    
-   if (subType != wxT(""))
+   if (subType != "")
    {
       #ifdef DEBUG_SUBTYPES
-         MessageInterface::ShowMessage(wxT("List has %d members:\n"), clist.size());
+         MessageInterface::ShowMessage("List has %d members:\n", clist.size());
          for (UnsignedInt j = 0; j < clist.size(); ++j)
-            MessageInterface::ShowMessage(wxT("   %s\n"), clist[j].c_str());
+            MessageInterface::ShowMessage("   %s\n", clist[j].c_str());
       #endif
 
       StringArray temp;
@@ -691,9 +691,9 @@ StringArray Interpreter::GetCreatableList(Gmat::ObjectType type,
       clist = temp;
 
       #ifdef DEBUG_SUBTYPES
-         MessageInterface::ShowMessage(wxT("Revised list has %d members:\n"), clist.size());
+         MessageInterface::ShowMessage("Revised list has %d members:\n", clist.size());
          for (UnsignedInt j = 0; j < clist.size(); ++j)
-            MessageInterface::ShowMessage(wxT("   %s\n"), clist[j].c_str());
+            MessageInterface::ShowMessage("   %s\n", clist[j].c_str());
       #endif
    }
 
@@ -768,7 +768,7 @@ void Interpreter::CloseCurrentProject()
 void Interpreter::StartMatlabServer()
 {
    throw InterpreterException(
-         wxT("This Interpreter cannot start the external server"));
+         "This Interpreter cannot start the external server");
 }
 
 //------------------------------------------------------------------------------
@@ -806,11 +806,11 @@ bool Interpreter::CloseMatlabEngine()
 //------------------------------------------------------------------------------
 void Interpreter::RegisterAliases()
 {
-   ODEModel::SetScriptAlias(wxT("PrimaryBodies"), wxT("GravityField"));
-   ODEModel::SetScriptAlias(wxT("Gravity"), wxT("GravityField"));
-   ODEModel::SetScriptAlias(wxT("PointMasses"), wxT("PointMassForce"));
-   ODEModel::SetScriptAlias(wxT("Drag"), wxT("DragForce"));
-   ODEModel::SetScriptAlias(wxT("SRP"), wxT("SolarRadiationPressure"));
+   ODEModel::SetScriptAlias("PrimaryBodies", "GravityField");
+   ODEModel::SetScriptAlias("Gravity", "GravityField");
+   ODEModel::SetScriptAlias("PointMasses", "PointMassForce");
+   ODEModel::SetScriptAlias("Drag", "DragForce");
+   ODEModel::SetScriptAlias("SRP", "SolarRadiationPressure");
 }
 
 
@@ -832,7 +832,7 @@ const StringArray& Interpreter::GetListOfObjects(Gmat::ObjectType type)
 
 
 //------------------------------------------------------------------------------
-// const StringArray& GetListOfObjects(const wxString &typeName)
+// const StringArray& GetListOfObjects(const std::string &typeName)
 //------------------------------------------------------------------------------
 /**
  * Returns names of all configured items of given object type name.
@@ -842,7 +842,7 @@ const StringArray& Interpreter::GetListOfObjects(Gmat::ObjectType type)
  * @return array of configured item names; return empty array if none
  */
 //------------------------------------------------------------------------------
-const StringArray& Interpreter::GetListOfObjects(const wxString &typeName)
+const StringArray& Interpreter::GetListOfObjects(const std::string &typeName)
 {
    return theModerator->GetListOfObjects(typeName);
 }
@@ -872,16 +872,16 @@ const StringArray& Interpreter::GetListOfViewableSubtypesOf(Gmat::ObjectType typ
 
 
 //------------------------------------------------------------------------------
-// GmatBase* GetConfiguredObject(const wxString &name)
+// GmatBase* GetConfiguredObject(const std::string &name)
 //------------------------------------------------------------------------------
-GmatBase* Interpreter::GetConfiguredObject(const wxString &name)
+GmatBase* Interpreter::GetConfiguredObject(const std::string &name)
 {
    return theModerator->GetConfiguredObject(name);
 }
 
 
 //------------------------------------------------------------------------------
-// GmatBase* CreateObject(const wxString &type, const wxString &name,
+// GmatBase* CreateObject(const std::string &type, const std::string &name,
 //                        Integer manage, bool createDefault)
 //------------------------------------------------------------------------------
 /**
@@ -897,26 +897,26 @@ GmatBase* Interpreter::GetConfiguredObject(const wxString &name)
  * @return object pointer on success, NULL on failure.
  */
 //------------------------------------------------------------------------------
-GmatBase* Interpreter::CreateObject(const wxString &type,
-                                    const wxString &name,
+GmatBase* Interpreter::CreateObject(const std::string &type,
+                                    const std::string &name,
                                     Integer manage, bool createDefault)
 {
    #ifdef DEBUG_CREATE_OBJECT
    MessageInterface::ShowMessage
-      (wxT("Interpreter::CreateObject() type=<%s>, name=<%s>, manage=%d, createDefault=%d\n"),
+      ("Interpreter::CreateObject() type=<%s>, name=<%s>, manage=%d, createDefault=%d\n",
        type.c_str(), name.c_str(), manage, createDefault);
    #endif
    
-   debugMsg = wxT("In CreateObject()");
+   debugMsg = "In CreateObject()";
    GmatBase *obj = NULL;
    
    // if object to be managed and has non-blank name, and name is not valid, handle error
-   if (manage == 1 && name != wxT(""))
+   if (manage == 1 && name != "")
    {
       bool isValid = false;
       
       // if type is Array, set flag to ignore bracket
-      if (type == wxT("Array"))
+      if (type == "Array")
          isValid = GmatStringUtil::IsValidName(name, true);
       else
          isValid = GmatStringUtil::IsValidName(name, false);
@@ -925,23 +925,23 @@ GmatBase* Interpreter::CreateObject(const wxString &type,
       {
          #ifdef DEBUG_CREATE_OBJECT
          MessageInterface::ShowMessage
-            (wxT("Object name %s is NOT valid\n"), name.c_str());
+            ("Object name %s is NOT valid\n", name.c_str());
          #endif
          InterpreterException ex
-            (type + wxT(" object can not be named to \"") + name + wxT("\""));
+            (type + " object can not be named to \"" + name + "\"");
          HandleError(ex);
          return NULL;
       }
    }
    
    // Go through more checking if name is not blank
-   if (name != wxT(""))
+   if (name != "")
    {
       // object name cannot be any of command names
       if (IsCommandType(name))
       {
          InterpreterException ex
-            (type + wxT(" object can not be named to Command \"") + name + wxT("\""));
+            (type + " object can not be named to Command \"" + name + "\"");
          HandleError(ex);
          return NULL;
       }
@@ -951,7 +951,7 @@ GmatBase* Interpreter::CreateObject(const wxString &type,
       if (IsObjectType(name))
       {
          InterpreterException ex
-            (type + wxT(" object can not be named to Object Type \"") + name + wxT("\""));
+            (type + " object can not be named to Object Type \"" + name + "\"");
          HandleError(ex);
          return NULL;
       }
@@ -960,19 +960,19 @@ GmatBase* Interpreter::CreateObject(const wxString &type,
       // If object to be managed, give warning if name already exist
       if (manage == 1)
       {
-         if ((name != wxT("EarthMJ2000Eq")) && 
-             (name != wxT("EarthMJ2000Ec")) && 
-             (name != wxT("EarthFixed")))
+         if ((name != "EarthMJ2000Eq") && 
+             (name != "EarthMJ2000Ec") && 
+             (name != "EarthFixed"))
          {
             obj = FindObject(name);
             // Since System Parameters are created automatically as they are referenced,
             // do not give warning if creating a system parameter
             if (obj != NULL && ((obj->GetType() != Gmat::PARAMETER) ||
                                 (obj->GetType() == Gmat::PARAMETER &&
-                                 (!obj->IsOfType(wxT("SystemParameter"))))))
+                                 (!obj->IsOfType("SystemParameter")))))
             {
-               InterpreterException ex(wxT(""));
-               ex.SetDetails(wxT("%s object named \"%s\" already exists"),
+               InterpreterException ex("");
+               ex.SetDetails("%s object named \"%s\" already exists",
                              type.c_str(), name.c_str());
                HandleError(ex, true, true);
                return obj;
@@ -982,7 +982,7 @@ GmatBase* Interpreter::CreateObject(const wxString &type,
    }
    #ifdef DEBUG_CREATE_CELESTIAL_BODY
    MessageInterface::ShowMessage
-      (wxT("In CreateObject, about to set object manage option %d\n"), manage);
+      ("In CreateObject, about to set object manage option %d\n", manage);
    #endif
    
    // Set manage option to Moderator
@@ -999,11 +999,11 @@ GmatBase* Interpreter::CreateObject(const wxString &type,
    //======================================================================
    
    // Handle container or special object type creation
-   if (type == wxT("PropSetup"))
+   if (type == "PropSetup")
       obj = (GmatBase*)theModerator->CreatePropSetup(name);
    
    // Handle Spacecraft
-   else if (type == wxT("Spacecraft") || type == wxT("Formation"))
+   else if (type == "Spacecraft" || type == "Formation")
       obj = (GmatBase*)theModerator->CreateSpacecraft(type, name);
    
    // Handle AxisSystem
@@ -1017,7 +1017,7 @@ GmatBase* Interpreter::CreateObject(const wxString &type,
       obj = (GmatBase*)theModerator->CreateBurn(type, name, createDefault);
    
    // Handle CoordinateSystem
-   else if (type == wxT("CoordinateSystem"))
+   else if (type == "CoordinateSystem")
       obj = (GmatBase*)theModerator->CreateCoordinateSystem(name, false, false, manage);
    
    // Handle CelestialBody
@@ -1033,7 +1033,7 @@ GmatBase* Interpreter::CreateObject(const wxString &type,
    // Handle Parameters
    else if (find(parameterList.begin(), parameterList.end(), type) != 
             parameterList.end())
-      obj = (GmatBase*)CreateParameter(type, name, wxT(""), wxT(""));
+      obj = (GmatBase*)CreateParameter(type, name, "", "");
    
    // Handle Subscribers
    else if (find(subscriberList.begin(), subscriberList.end(), type) != 
@@ -1068,7 +1068,7 @@ GmatBase* Interpreter::CreateObject(const wxString &type,
    if (obj != NULL)
    {
       MessageInterface::ShowMessage
-         (wxT("Interpreter::CreateObject() type=<%s>, name=<%s> successfully created\n"),
+         ("Interpreter::CreateObject() type=<%s>, name=<%s> successfully created\n",
           obj->GetTypeName().c_str(), obj->GetName().c_str());
    }
    #endif
@@ -1079,35 +1079,35 @@ GmatBase* Interpreter::CreateObject(const wxString &type,
    #else
    //======================================================================
    
-   if (type == wxT("Spacecraft")) 
+   if (type == "Spacecraft") 
       obj = (GmatBase*)theModerator->CreateSpacecraft(type, name);
    
-   else if (type == wxT("Formation")) 
+   else if (type == "Formation") 
       obj = (GmatBase*)theModerator->CreateSpacecraft(type, name);
    
-   else if (type == wxT("PropSetup")) 
+   else if (type == "PropSetup") 
       obj = (GmatBase*)theModerator->CreatePropSetup(name);
    
-   else if (type == wxT("MeasurementModel"))
+   else if (type == "MeasurementModel")
       obj = (GmatBase*)theModerator->CreateMeasurementModel(name);
 
-   else if (type == wxT("TrackingData"))
+   else if (type == "TrackingData")
       obj = (GmatBase*)theModerator->CreateTrackingData(name);
    
-   else if (type == wxT("DataFile"))
+   else if (type == "DataFile")
       obj = (GmatBase*)theModerator->CreateDataFile(type, name);
    
-   else if (type == wxT("CoordinateSystem")) 
+   else if (type == "CoordinateSystem") 
       //obj = (GmatBase*)theModerator->CreateCoordinateSystem(name, true);
       obj = (GmatBase*)theModerator->CreateCoordinateSystem(name, false, false, manage);
    
    else
    {
       #ifdef DEBUG_CREATE_CELESTIAL_BODY
-      MessageInterface::ShowMessage(wxT("In CreateObject, type = %s\n"), type.c_str());
-      MessageInterface::ShowMessage(wxT("In CreateObject, list of celestial body types are: \n"));
+      MessageInterface::ShowMessage("In CreateObject, type = %s\n", type.c_str());
+      MessageInterface::ShowMessage("In CreateObject, list of celestial body types are: \n");
       for (unsigned int ii = 0; ii < celestialBodyList.size(); ii++)
-         MessageInterface::ShowMessage(wxT(" ... %s\n"), (celestialBodyList.at(ii)).c_str());
+         MessageInterface::ShowMessage(" ... %s\n", (celestialBodyList.at(ii)).c_str());
       #endif
       // Handle Propagator
       if (find(propagatorList.begin(), propagatorList.end(), type) != 
@@ -1178,7 +1178,7 @@ GmatBase* Interpreter::CreateObject(const wxString &type,
       // Handle Parameters
       else if (find(parameterList.begin(), parameterList.end(), type) != 
                parameterList.end())
-         obj = (GmatBase*)CreateParameter(type, name, wxT(""), wxT(""));
+         obj = (GmatBase*)CreateParameter(type, name, "", "");
       
       // Handle PhysicalModel
       else if (find(physicalModelList.begin(), physicalModelList.end(), type) != 
@@ -1225,7 +1225,7 @@ GmatBase* Interpreter::CreateObject(const wxString &type,
    if (obj != NULL)
    {
       MessageInterface::ShowMessage
-         (wxT("Interpreter::CreateObject() type=<%s>, name=<%s> successfully created\n"),
+         ("Interpreter::CreateObject() type=<%s>, name=<%s> successfully created\n",
           obj->GetTypeName().c_str(), obj->GetName().c_str());
    }
    #endif
@@ -1263,7 +1263,7 @@ void Interpreter::SetSolarSystemInUse(SolarSystem *ss)
 {
    #ifdef DEBUG_SET_SOLAR_SYS
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetSolarSystemInUse() ss=<%p>\n"), ss);
+      ("Interpreter::SetSolarSystemInUse() ss=<%p>\n", ss);
    #endif
    
    if (ss != NULL)
@@ -1303,7 +1303,7 @@ void Interpreter::SetObjectMap(ObjectMap *objMap, bool forFunction)
 {
    #ifdef DEBUG_OBJECT_MAP
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetObjectMap() objMap=<%p>, forFunction=%d\n"), objMap,
+      ("Interpreter::SetObjectMap() objMap=<%p>, forFunction=%d\n", objMap,
        forFunction);
    #endif
    
@@ -1313,14 +1313,14 @@ void Interpreter::SetObjectMap(ObjectMap *objMap, bool forFunction)
       {
          #ifdef DEBUG_OBJECT_MAP
          MessageInterface::ShowMessage
-            (wxT("Interpreter::SetObjectMap() Here is the current object map <%p>, ")
-             wxT("it has %d objects\n"), objMap, objMap->size());
-         for (std::map<wxString, GmatBase *>::iterator i = objMap->begin();
+            ("Interpreter::SetObjectMap() Here is the current object map <%p>, "
+             "it has %d objects\n", objMap, objMap->size());
+         for (std::map<std::string, GmatBase *>::iterator i = objMap->begin();
               i != objMap->end(); ++i)
          {
             MessageInterface::ShowMessage
-               (wxT("   %30s  <%p><%s>\n"), i->first.c_str(), i->second,
-                i->second == NULL ? wxT("NULL") : (i->second)->GetTypeName().c_str());
+               ("   %30s  <%p><%s>\n", i->first.c_str(), i->second,
+                i->second == NULL ? "NULL" : (i->second)->GetTypeName().c_str());
          }
          #endif
       }
@@ -1357,8 +1357,8 @@ void Interpreter::SetFunction(Function *func)
 {
    #ifdef DEBUG_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetFunction() function=<%p>'%s'\n"), func,
-       func ? func->GetName().c_str() : wxT("NULL"));
+      ("Interpreter::SetFunction() function=<%p>'%s'\n", func,
+       func ? func->GetName().c_str() : "NULL");
    #endif
    
    currentFunction = func;
@@ -1392,7 +1392,7 @@ Function* Interpreter::GetFunction()
 //------------------------------------------------------------------------------
 bool Interpreter::CheckUndefinedReference(GmatBase *obj, bool writeLine)
 {
-   debugMsg = wxT("In CheckUndefinedReference()");
+   debugMsg = "In CheckUndefinedReference()";
    bool isValid = theValidator->CheckUndefinedReference(obj, continueOnError);
    
    // Handle error messages here
@@ -1421,17 +1421,17 @@ bool Interpreter::ValidateCommand(GmatCommand *cmd)
 {
    #ifdef DEBUG_VALIDATE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("Interpreter::ValidateCommand() cmd=<%p><%s>, inFunctionMode=%d\n"), cmd,
+      ("Interpreter::ValidateCommand() cmd=<%p><%s>, inFunctionMode=%d\n", cmd,
        cmd->GetTypeName().c_str(), inFunctionMode);
    #endif
    
-   debugMsg = wxT("In ValidateCommand()");
+   debugMsg = "In ValidateCommand()";
    
    // Check if any Parameters need to be created
    StringArray names = cmd->GetWrapperObjectNameArray();
    
    #ifdef DEBUG_VALIDATE_COMMAND
-   WriteStringArray(wxT("RefParameterNames for "), cmd->GetTypeName(), names);
+   WriteStringArray("RefParameterNames for ", cmd->GetTypeName(), names);
    #endif
    
    // Create Parameters
@@ -1442,7 +1442,7 @@ bool Interpreter::ValidateCommand(GmatCommand *cmd)
    // automatic store at this time. It will be added during function initialization.
    #ifdef DEBUG_VALIDATE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("   Calling CreateSystemParameter() for each ref. names\n"));
+      ("   Calling CreateSystemParameter() for each ref. names\n");
    #endif
    for (UnsignedInt i=0; i<names.size(); i++)
    {
@@ -1455,7 +1455,7 @@ bool Interpreter::ValidateCommand(GmatCommand *cmd)
    {
       #ifdef DEBUG_VALIDATE_COMMAND
       MessageInterface::ShowMessage
-         (wxT("Interpreter::ValidateCommand() in function mode, so just returning true\n"));
+         ("Interpreter::ValidateCommand() in function mode, so just returning true\n");
       #endif
       return true;
    }
@@ -1472,7 +1472,7 @@ bool Interpreter::ValidateCommand(GmatCommand *cmd)
    
    #ifdef DEBUG_VALIDATE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("Interpreter::ValidateCommand() returning %d\n"), isValid);
+      ("Interpreter::ValidateCommand() returning %d\n", isValid);
    #endif
    
    return isValid;
@@ -1493,16 +1493,16 @@ bool Interpreter::ValidateCommand(GmatCommand *cmd)
 bool Interpreter::ValidateSubscriber(GmatBase *obj)
 {
    if (obj == NULL)
-      throw InterpreterException(wxT("The subscriber object to be validated is NULL"));
+      throw InterpreterException("The subscriber object to be validated is NULL");
    
    // Now continue validation
    #ifdef DEBUG_WRAPPERS
    MessageInterface::ShowMessage
-      (wxT("Interpreter::ValidateSubscriber() entered, obj=<%p><%s>\n"), obj,
+      ("Interpreter::ValidateSubscriber() entered, obj=<%p><%s>\n", obj,
        obj->GetName().c_str());
    #endif
    
-   debugMsg = wxT("In ValidateSubscriber()");
+   debugMsg = "In ValidateSubscriber()";
    
    // This method can be called from other than Interpreter, so check if
    // object is SUBSCRIBER type
@@ -1510,8 +1510,8 @@ bool Interpreter::ValidateSubscriber(GmatBase *obj)
    if (!obj->IsOfType(Gmat::SUBSCRIBER))
    {
       InterpreterException ex
-         (wxT("ElementWrapper for \"") + obj->GetName() + wxT("\" of type \"") +
-          obj->GetTypeName() + wxT("\" cannot be created."));
+         ("ElementWrapper for \"" + obj->GetName() + "\" of type \"" +
+          obj->GetTypeName() + "\" cannot be created.");
       HandleError(ex);
       return false;
    }
@@ -1525,9 +1525,9 @@ bool Interpreter::ValidateSubscriber(GmatBase *obj)
    
    #ifdef DEBUG_WRAPPERS
    MessageInterface::ShowMessage
-      (wxT("In ValidateSubscriber, has %d wrapper names:\n"), wrapperNames.size());
+      ("In ValidateSubscriber, has %d wrapper names:\n", wrapperNames.size());
    for (Integer ii=0; ii < (Integer) wrapperNames.size(); ii++)
-      MessageInterface::ShowMessage(wxT("   %s\n"), wrapperNames[ii].c_str());
+      MessageInterface::ShowMessage("   %s\n", wrapperNames[ii].c_str());
    #endif
    
    for (StringArray::const_iterator i = wrapperNames.begin();
@@ -1540,8 +1540,8 @@ bool Interpreter::ValidateSubscriber(GmatBase *obj)
          if (sub->SetElementWrapper(ew, *i) == false)
          {
             InterpreterException ex
-               (wxT("ElementWrapper for \"") + (*i) +
-                wxT("\" cannot be created for the Subscriber \"") + obj->GetName() + wxT("\""));
+               ("ElementWrapper for \"" + (*i) +
+                "\" cannot be created for the Subscriber \"" + obj->GetName() + "\"");
             HandleError(ex, false);
             return false;
          }
@@ -1563,7 +1563,7 @@ bool Interpreter::ValidateSubscriber(GmatBase *obj)
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// bool FindPropertyID(GmatBase *obj, const wxString &chunk, GmatBase **owner,
+// bool FindPropertyID(GmatBase *obj, const std::string &chunk, GmatBase **owner,
 //                     Integer &id, Gmat::ParameterType &type)
 //------------------------------------------------------------------------------
 /*
@@ -1579,18 +1579,18 @@ bool Interpreter::ValidateSubscriber(GmatBase *obj)
  *
  * @return true if property found
  *
- * For example, From wxT("FM.Gravity.Earth.Model")
- *   obj is FM pointer, chunk is wxT("Gravity.Earth.Model")
+ * For example, From "FM.Gravity.Earth.Model"
+ *   obj is FM pointer, chunk is "Gravity.Earth.Model"
  */
 //------------------------------------------------------------------------------
-bool Interpreter::FindPropertyID(GmatBase *obj, const wxString &chunk,
+bool Interpreter::FindPropertyID(GmatBase *obj, const std::string &chunk,
                                  GmatBase **owner, Integer &id,
                                  Gmat::ParameterType &type)
 {
    #ifdef DEBUG_FIND_PROP_ID
    MessageInterface::ShowMessage
-      (wxT("Interpreter::FindPropertyID() obj=<%p><%s>, chunk=<%s>\n"), obj,
-       (obj == NULL ? wxT("NULL") : obj->GetName().c_str()), chunk.c_str());
+      ("Interpreter::FindPropertyID() obj=<%p><%s>, chunk=<%s>\n", obj,
+       (obj == NULL ? "NULL" : obj->GetName().c_str()), chunk.c_str());
    #endif
    
    if (obj == NULL)
@@ -1599,10 +1599,10 @@ bool Interpreter::FindPropertyID(GmatBase *obj, const wxString &chunk,
    bool retval = false;
    StringArray parts = theTextParser.SeparateDots(chunk);
    Integer count = parts.size();
-   wxString prop = parts[count-1];
+   std::string prop = parts[count-1];
    
    #ifdef DEBUG_FIND_PROP_ID
-   MessageInterface::ShowMessage(wxT("   property=<%s>\n"), prop.c_str());
+   MessageInterface::ShowMessage("   property=<%s>\n", prop.c_str());
    #endif
    
    // Set initial output id and type
@@ -1633,7 +1633,7 @@ bool Interpreter::FindPropertyID(GmatBase *obj, const wxString &chunk,
          {
             StringArray refObjNames = obj->GetRefObjectNameArray(Gmat::HARDWARE);
             #ifdef DEBUG_FIND_PROP_ID
-            WriteStringArray(wxT("Hardware objects "), obj->GetName(), refObjNames);
+            WriteStringArray("Hardware objects ", obj->GetName(), refObjNames);
             #endif
             
             GmatBase *refObj = NULL;
@@ -1652,9 +1652,9 @@ bool Interpreter::FindPropertyID(GmatBase *obj, const wxString &chunk,
    
    #ifdef DEBUG_FIND_PROP_ID
    MessageInterface::ShowMessage
-      (wxT("Interpreter::FindPropertyID() returning owner=<%p><%s><%s>, retval=%d\n"),
-       *owner, ((*owner) == NULL ? wxT("NULL") : (*owner)->GetTypeName().c_str()),
-       ((*owner) == NULL ? wxT("NULL") : (*owner)->GetName().c_str()), retval);
+      ("Interpreter::FindPropertyID() returning owner=<%p><%s><%s>, retval=%d\n",
+       *owner, ((*owner) == NULL ? "NULL" : (*owner)->GetTypeName().c_str()),
+       ((*owner) == NULL ? "NULL" : (*owner)->GetName().c_str()), retval);
    #endif
    
    return retval;
@@ -1662,7 +1662,7 @@ bool Interpreter::FindPropertyID(GmatBase *obj, const wxString &chunk,
 
 
 //------------------------------------------------------------------------------
-// GmatBase* FindObject(const wxString &name, const wxString &ofType = wxT(""))
+// GmatBase* FindObject(const std::string &name, const std::string &ofType = "")
 //------------------------------------------------------------------------------
 /**
  * Finds the object from the current object map.
@@ -1674,21 +1674,21 @@ bool Interpreter::FindPropertyID(GmatBase *obj, const wxString &chunk,
  * @return  object pointer found
  */
 //------------------------------------------------------------------------------
-GmatBase* Interpreter::FindObject(const wxString &name, 
-                                  const wxString &ofType)
+GmatBase* Interpreter::FindObject(const std::string &name, 
+                                  const std::string &ofType)
 {
    return theValidator->FindObject(name, ofType);
 }
 
 
 //------------------------------------------------------------------------------
-// bool IsCommandType(const wxString &type)
+// bool IsCommandType(const std::string &type)
 //------------------------------------------------------------------------------
 /*
  * Returns true if input string is one of Command type that can be created.
  */
 //------------------------------------------------------------------------------
-bool Interpreter::IsCommandType(const wxString &type)
+bool Interpreter::IsCommandType(const std::string &type)
 {
    if (find(commandList.begin(), commandList.end(), type) == commandList.end())
       return false;
@@ -1698,7 +1698,7 @@ bool Interpreter::IsCommandType(const wxString &type)
 
 
 //------------------------------------------------------------------------------
-// void ParseAndSetCommandName(GmatCommand *cmd, const wxString &cmdType, ...)
+// void ParseAndSetCommandName(GmatCommand *cmd, const std::string &cmdType, ...)
 //------------------------------------------------------------------------------
 /**
  * Parses command name from the command descriptoin, such as Propagate 'name' ...
@@ -1711,33 +1711,33 @@ bool Interpreter::IsCommandType(const wxString &type)
  *              with single quote; false otherwise
  */
 //------------------------------------------------------------------------------
-void Interpreter::ParseAndSetCommandName(GmatCommand *cmd, const wxString &cmdType,
-                                         const wxString &desc, wxString &newDesc)
+void Interpreter::ParseAndSetCommandName(GmatCommand *cmd, const std::string &cmdType,
+                                         const std::string &desc, std::string &newDesc)
 {
    #ifdef DEBUG_CREATE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("ParseAndSetCommandName() entered, cmdType='%s', desc=<%s>\n"), cmdType.c_str(),
+      ("ParseAndSetCommandName() entered, cmdType='%s', desc=<%s>\n", cmdType.c_str(),
        desc.c_str());
    #endif
-   if (desc.find(wxT("'")) != desc.npos)
+   if (desc.find("'") != desc.npos)
    {
-      if (desc[0] == wxT('\''))
+      if (desc[0] == '\'')
       {
          // if matching quote found, continue
-         if (desc.find(wxT('\''), 1) != desc.npos)
+         if (desc.find('\'', 1) != desc.npos)
          {
-            StringArray parts = GmatStringUtil::SeparateBy(newDesc, wxT("'"));
+            StringArray parts = GmatStringUtil::SeparateBy(newDesc, "'");
             #ifdef DEBUG_CREATE_COMMAND
-            WriteStringArray(wxT("   --->command parts"), wxT(""), parts);
+            WriteStringArray("   --->command parts", "", parts);
             #endif
             
-            //wxString cmdName = wxT("'") + parts[0] + wxT("'");
-            wxString cmdName = parts[0];
+            //std::string cmdName = "'" + parts[0] + "'";
+            std::string cmdName = parts[0];
             // Set command name
             if (parts.size() == 1)
             {
                cmd->SetName(cmdName);
-               newDesc = wxT("");
+               newDesc = "";
             }
             else if (parts.size() >= 2)
             {
@@ -1748,47 +1748,47 @@ void Interpreter::ParseAndSetCommandName(GmatCommand *cmd, const wxString &cmdTy
          else
          {
             InterpreterException ex
-               (wxT("Found invalid syntax for \"") + cmdType +
-                wxT("\" command, possible missing single quote for the command name"));
+               ("Found invalid syntax for \"" + cmdType +
+                "\" command, possible missing single quote for the command name");
             HandleError(ex);
          }
       }
    }
    #ifdef DEBUG_CREATE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("ParseAndSetCommandName() leaving, newDesc=<%s>\n"), newDesc.c_str());
+      ("ParseAndSetCommandName() leaving, newDesc=<%s>\n", newDesc.c_str());
    #endif
 }
 
 
 //------------------------------------------------------------------------------
-// GmatCommand* CreateCommand(const wxString &type, const wxString &desc)
+// GmatCommand* CreateCommand(const std::string &type, const std::string &desc)
 //------------------------------------------------------------------------------
-GmatCommand* Interpreter::CreateCommand(const wxString &type,
-                                        const wxString &desc, bool &retFlag,
+GmatCommand* Interpreter::CreateCommand(const std::string &type,
+                                        const std::string &desc, bool &retFlag,
                                         GmatCommand *inCmd)
 {
    #ifdef DEBUG_CREATE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("Interpreter::CreateCommand() type=<%s>, inCmd=<%p>, \n   desc=<%s>\n"),
+      ("Interpreter::CreateCommand() type=<%s>, inCmd=<%p>, \n   desc=<%s>\n",
        type.c_str(), inCmd, desc.c_str());
    MessageInterface::ShowMessage
-      (wxT("   inFunctionMode=%d, hasFunctionDefinition=%d\n"), inFunctionMode,
+      ("   inFunctionMode=%d, hasFunctionDefinition=%d\n", inFunctionMode,
        hasFunctionDefinition);
    #endif
    
    GmatCommand *cmd = NULL;
-   wxString type1 = type;
-   wxString desc1 = desc;
-   wxString cmdStr = type + wxT(" ") + desc;
+   std::string type1 = type;
+   std::string desc1 = desc;
+   std::string cmdStr = type + " " + desc;
    
-   wxString realDesc; // Command description after name removed
+   std::string realDesc; // Command description after name removed
    bool commandFound = false;
    
    // handle blank type
-   if (type == wxT(""))
+   if (type == "")
    {
-      wxString::size_type index = desc.find(wxT("("));
+      std::string::size_type index = desc.find("(");
       type1 = desc.substr(0, index);
    }
    
@@ -1797,113 +1797,113 @@ GmatCommand* Interpreter::CreateCommand(const wxString &type,
    
    #ifdef DEBUG_CREATE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("   type1='%s', commandFound=%d\n"), type1.c_str(), commandFound);
+      ("   type1='%s', commandFound=%d\n", type1.c_str(), commandFound);
    #endif
    
    // Check for CallFunction
-   if (type1[0] == wxT('['))
+   if (type1[0] == '[')
    {
       #ifdef DEBUG_CREATE_COMMAND
       MessageInterface::ShowMessage
-         (wxT("Interpreter::CreateCommand() detected [ and creating CallFunction ...\n"));
+         ("Interpreter::CreateCommand() detected [ and creating CallFunction ...\n");
       #endif
 
-      type1 = wxT("CallFunction");
+      type1 = "CallFunction";
       
       // Figure out if which CallFunction to be created.
-      wxString funcName = GmatStringUtil::ParseFunctionName(desc);
-      if (funcName != wxT(""))
+      std::string funcName = GmatStringUtil::ParseFunctionName(desc);
+      if (funcName != "")
       {
          GmatBase *func = FindObject(funcName);
-         if (func != NULL && func->IsOfType(wxT("MatlabFunction")))
-            type1 = wxT("CallMatlabFunction");
+         if (func != NULL && func->IsOfType("MatlabFunction"))
+            type1 = "CallMatlabFunction";
          else
-            type1 = wxT("CallGmatFunction");
+            type1 = "CallGmatFunction";
       }
       
       #ifdef DEBUG_CREATE_CALLFUNCTION
       MessageInterface::ShowMessage
-         (wxT("   1 Now creating <%s> command and setting GenString to <%s>\n"),
-          type1.c_str(), wxString(type1 + wxT(" ") + desc).c_str());
+         ("   1 Now creating <%s> command and setting GenString to <%s>\n",
+          type1.c_str(), std::string(type1 + " " + desc).c_str());
       #endif
       
       // Create CallFunction command and append to command sequence
       cmd = AppendCommand(type1, retFlag, inCmd);
-      desc1 = type1 +  wxT("=") + desc;
+      desc1 = type1 +  "=" + desc;
       if (cmd != NULL)
          cmd->SetGeneratingString(desc1);
    }
    /// @TODO: This is a work around for a call function
    /// without any return parameters.  It should be updated in
    /// the design to handle this situation.
-   else if ((desc1.find(wxT("=")) == desc1.npos) && (desc != wxT(""))
+   else if ((desc1.find("=") == desc1.npos) && (desc != "")
             && (!commandFound))
    {
       StringArray parts = theTextParser.SeparateSpaces(desc1);
       
       #ifdef DEBUG_CREATE_CALLFUNCTION
-      WriteStringArray(wxT("Calling IsObjectType()"), wxT(""), parts);
+      WriteStringArray("Calling IsObjectType()", "", parts);
       #endif
       
       if (IsObjectType(parts[0]))
       {
-         InterpreterException ex(wxT("Found invalid command \"") + type1 + wxT("\""));
+         InterpreterException ex("Found invalid command \"" + type1 + "\"");
          HandleError(ex);
       }
       else if (!GmatStringUtil::IsValidName(type1 + desc, true))
       {
          InterpreterException ex
-            (wxT("Found invalid function name \"") + type1 + desc + wxT("\""));
+            ("Found invalid function name \"" + type1 + desc + "\"");
          HandleError(ex);
       }
       else
       {
-         type1 = wxT("CallFunction");
+         type1 = "CallFunction";
          
-         wxString funcName = GmatStringUtil::ParseFunctionName(desc);
-         if (funcName != wxT(""))
+         std::string funcName = GmatStringUtil::ParseFunctionName(desc);
+         if (funcName != "")
          {
             GmatBase *func = FindObject(funcName);
-            if (func != NULL && func->IsOfType(wxT("MatlabFunction")))
-               type1 = wxT("CallMatlabFunction");
+            if (func != NULL && func->IsOfType("MatlabFunction"))
+               type1 = "CallMatlabFunction";
             else
-               type1 = wxT("CallGmatFunction");
+               type1 = "CallGmatFunction";
          }
          
          #ifdef DEBUG_CREATE_CALLFUNCTION
          MessageInterface::ShowMessage
-            (wxT("   2 Now creating <%s> command and setting GenString to <%s>\n"),
-             type1.c_str(), wxString(type1 + wxT(" ") + desc).c_str());
+            ("   2 Now creating <%s> command and setting GenString to <%s>\n",
+             type1.c_str(), std::string(type1 + " " + desc).c_str());
          #endif
          
          // Create command and append to command sequence
          cmd = AppendCommand(type1, retFlag, inCmd);
-         desc1 = wxT("[] =") + type1 + desc;
+         desc1 = "[] =" + type1 + desc;
          if (cmd != NULL)
             cmd->SetGeneratingString(desc1);
       }
    }
    else
    {
-      if (type1 == wxT("CallFunction"))
+      if (type1 == "CallFunction")
       {
-         wxString funcName = GmatStringUtil::ParseFunctionName(desc);
+         std::string funcName = GmatStringUtil::ParseFunctionName(desc);
          
          #ifdef DEBUG_CREATE_CALLFUNCTION
-         MessageInterface::ShowMessage(wxT("   funcName = '%s'\n"), funcName.c_str());
+         MessageInterface::ShowMessage("   funcName = '%s'\n", funcName.c_str());
          #endif
          
-         if (funcName != wxT(""))
+         if (funcName != "")
          {
             GmatBase *funcPtr = FindObject(funcName);
             
             #ifdef DEBUG_CREATE_CALLFUNCTION
-            MessageInterface::ShowMessage(wxT("   funcPtr=<%p>\n"), funcPtr);
+            MessageInterface::ShowMessage("   funcPtr=<%p>\n", funcPtr);
             MessageInterface::ShowMessage
-               (wxT("   matlabFunctionNames.size()=%d\n"), matlabFunctionNames.size());
+               ("   matlabFunctionNames.size()=%d\n", matlabFunctionNames.size());
             for (UnsignedInt ii = 0; ii < matlabFunctionNames.size(); ii++)
                MessageInterface::ShowMessage
-                  (wxT("      '%s'\n"), matlabFunctionNames[ii].c_str());
+                  ("      '%s'\n", matlabFunctionNames[ii].c_str());
             #endif
             
             // If function name found in matlabFunctionNames, create
@@ -1911,27 +1911,27 @@ GmatCommand* Interpreter::CreateCommand(const wxString &type,
             if (find(matlabFunctionNames.begin(), matlabFunctionNames.end(),
                      funcName) != matlabFunctionNames.end())
             {
-               type1 = wxT("CallMatlabFunction");
+               type1 = "CallMatlabFunction";
             }
             else
             {
-               if (funcPtr != NULL && funcPtr->IsOfType(wxT("MatlabFunction")))
-                  type1 = wxT("CallMatlabFunction");
+               if (funcPtr != NULL && funcPtr->IsOfType("MatlabFunction"))
+                  type1 = "CallMatlabFunction";
                else
-                  type1 = wxT("CallGmatFunction");
+                  type1 = "CallGmatFunction";
             }
          }
       }
       
       // How do we detect MatlabFunction inside a GmatFunction?
-      if (desc.find(wxT("MatlabFunction")) != desc.npos)
+      if (desc.find("MatlabFunction") != desc.npos)
       {
-         StringArray parts = GmatStringUtil::SeparateBy(desc, wxT(" "));
+         StringArray parts = GmatStringUtil::SeparateBy(desc, " ");
          if (parts.size() == 2)
          {
             #ifdef DEBUG_CREATE_CALLFUNCTION
             MessageInterface::ShowMessage
-               (wxT("   Adding '%s' to matlabFunctionNames\n"), parts[1].c_str());
+               ("   Adding '%s' to matlabFunctionNames\n", parts[1].c_str());
             #endif
             matlabFunctionNames.push_back(parts[1]);
          }
@@ -1939,11 +1939,11 @@ GmatCommand* Interpreter::CreateCommand(const wxString &type,
       
 //       #if defined (DEBUG_CREATE_COMMAND) || defined (DEBUG_CREATE_CALLFUNCTION)      
 //       MessageInterface::ShowMessage
-//          (wxT("   3 Now creating <%s> command and setting GenString to <%s>\n"),
-//           type1.c_str(), wxString(type1 + wxT(" ") + desc).c_str());
+//          ("   3 Now creating <%s> command and setting GenString to <%s>\n",
+//           type1.c_str(), std::string(type1 + " " + desc).c_str());
 //       #endif
       #if defined (DEBUG_CREATE_COMMAND) || defined (DEBUG_CREATE_CALLFUNCTION)      
-      MessageInterface::ShowMessage(wxT("   3 Now creating <%s> command\n"), type1.c_str());
+      MessageInterface::ShowMessage("   3 Now creating <%s> command\n", type1.c_str());
       #endif
       
       // Create a command and append to command sequence
@@ -1951,14 +1951,14 @@ GmatCommand* Interpreter::CreateCommand(const wxString &type,
       realDesc = desc;
       
       // If command is not call function, parse command name
-      if (cmd != NULL && !cmd->IsOfType(wxT("CallFunction")))
+      if (cmd != NULL && !cmd->IsOfType("CallFunction"))
          ParseAndSetCommandName(cmd, type1, desc, realDesc);
       
       #if defined (DEBUG_CREATE_COMMAND) || defined (DEBUG_CREATE_CALLFUNCTION)      
       MessageInterface::ShowMessage
-         (wxT("   Setting GenString to <%s>\n"), wxString(type1 + wxT(" ") + realDesc).c_str());
+         ("   Setting GenString to <%s>\n", std::string(type1 + " " + realDesc).c_str());
       #endif
-      cmd->SetGeneratingString(type1 + wxT(" ") + realDesc);
+      cmd->SetGeneratingString(type1 + " " + realDesc);
    }
    
    if (cmd == NULL)
@@ -1966,7 +1966,7 @@ GmatCommand* Interpreter::CreateCommand(const wxString &type,
       retFlag = false;
       #ifdef DEBUG_CREATE_COMMAND
       MessageInterface::ShowMessage
-         (wxT("CreateCommand() returning NULL for '%s', retFlag=%d\n"), type1.c_str(),
+         ("CreateCommand() returning NULL for '%s', retFlag=%d\n", type1.c_str(),
           retFlag);
       #endif
       return NULL;
@@ -1975,13 +1975,13 @@ GmatCommand* Interpreter::CreateCommand(const wxString &type,
    #ifdef DEBUG_CREATE_COMMAND
    if (inCmd == NULL)
       MessageInterface::ShowMessage
-         (wxT("   => '%s' created.\n"), cmd->GetTypeName().c_str());
+         ("   => '%s' created.\n", cmd->GetTypeName().c_str());
    else
       MessageInterface::ShowMessage
-         (wxT("   => '%s' created and appended to '%s'.\n"),
+         ("   => '%s' created and appended to '%s'.\n",
           cmd->GetTypeName().c_str(), inCmd->GetTypeName().c_str());
    MessageInterface::ShowMessage
-      (wxT("   desc     = <%s>\n     desc1    = <%s>\n     realDesc = <%s>\n"),
+      ("   desc     = <%s>\n     desc1    = <%s>\n     realDesc = <%s>\n",
        desc.c_str(), desc1.c_str(), realDesc.c_str());
    #endif
    
@@ -1990,7 +1990,7 @@ GmatCommand* Interpreter::CreateCommand(const wxString &type,
    {
       #ifdef DEBUG_CREATE_COMMAND
       MessageInterface::ShowMessage
-         (wxT("   => Now calling %s->InterpretAction()\n"), type1.c_str());
+         ("   => Now calling %s->InterpretAction()\n", type1.c_str());
       #endif
       
       // Set current function to command 
@@ -2000,18 +2000,18 @@ GmatCommand* Interpreter::CreateCommand(const wxString &type,
       if (cmd->InterpretAction())
       {
          // if command is Assignment, check if GmatFunction needs to be created
-         if (type1 == wxT("GMAT") && ((Assignment*)cmd)->GetMathTree() != NULL)
+         if (type1 == "GMAT" && ((Assignment*)cmd)->GetMathTree() != NULL)
             HandleMathTree(cmd);
          
          #ifdef DEBUG_CREATE_COMMAND
-         MessageInterface::ShowMessage(wxT("   => Now calling ValidateCommand()\n"));
+         MessageInterface::ShowMessage("   => Now calling ValidateCommand()\n");
          #endif
          retFlag  = ValidateCommand(cmd);
          
          #ifdef DEBUG_CREATE_COMMAND
-         MessageInterface::ShowMessage(wxT("   ===> %s has own InterpretAction()\n"), type1.c_str());
+         MessageInterface::ShowMessage("   ===> %s has own InterpretAction()\n", type1.c_str());
          MessageInterface::ShowMessage
-            (wxT("CreateCommand() leaving creating '%s', cmd=<%p>, retFlag=%d\n"), type1.c_str(),
+            ("CreateCommand() leaving creating '%s', cmd=<%p>, retFlag=%d\n", type1.c_str(),
              cmd, retFlag);
          #endif
          return cmd;
@@ -2020,7 +2020,7 @@ GmatCommand* Interpreter::CreateCommand(const wxString &type,
       {
          #ifdef DEBUG_CREATE_COMMAND
          MessageInterface::ShowMessage
-            (wxT("   ===> %s does not have own InterpretAction()\n"), type1.c_str());
+            ("   ===> %s does not have own InterpretAction()\n", type1.c_str());
          #endif
       }
    }
@@ -2031,7 +2031,7 @@ GmatCommand* Interpreter::CreateCommand(const wxString &type,
       
       #ifdef DEBUG_CREATE_COMMAND
       MessageInterface::ShowMessage
-         (wxT("CreateCommand() leaving creating '%s', cmd=<%p>, retFlag=%d\n"), type1.c_str(),
+         ("CreateCommand() leaving creating '%s', cmd=<%p>, retFlag=%d\n", type1.c_str(),
           cmd, retFlag);
       #endif
       
@@ -2041,7 +2041,7 @@ GmatCommand* Interpreter::CreateCommand(const wxString &type,
    
    
    // Assemble commands those don't have InterpretAction()
-   if (realDesc != wxT(""))
+   if (realDesc != "")
    {
       bool retval3 = true;
       bool retval1  = AssembleCommand(cmd, realDesc);
@@ -2050,7 +2050,7 @@ GmatCommand* Interpreter::CreateCommand(const wxString &type,
          retval3 = ValidateCommand(cmd);
       else
       {
-         InterpreterException ex(wxT("Failed to parse ") + cmdStr);
+         InterpreterException ex("Failed to parse " + cmdStr);
          HandleError(ex);
       }
       
@@ -2060,13 +2060,13 @@ GmatCommand* Interpreter::CreateCommand(const wxString &type,
    else
    {
       #ifdef DEBUG_CREATE_COMMAND
-      MessageInterface::ShowMessage(wxT("   There is no command descriptions to assemble\n"));
+      MessageInterface::ShowMessage("   There is no command descriptions to assemble\n");
       #endif
    }
    
    #ifdef DEBUG_CREATE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("CreateCommand() leaving creating '%s', cmd=<%p>, retFlag=%d\n"), type1.c_str(),
+      ("CreateCommand() leaving creating '%s', cmd=<%p>, retFlag=%d\n", type1.c_str(),
        cmd, retFlag);
    #endif
    
@@ -2075,44 +2075,44 @@ GmatCommand* Interpreter::CreateCommand(const wxString &type,
 
 
 //------------------------------------------------------------------------------
-//GmatCommand* AppendCommand(const wxString &type, bool &retFlag,
+//GmatCommand* AppendCommand(const std::string &type, bool &retFlag,
 //                           GmatCommand *inCmd)
 //------------------------------------------------------------------------------
-GmatCommand* Interpreter::AppendCommand(const wxString &type, bool &retFlag,
+GmatCommand* Interpreter::AppendCommand(const std::string &type, bool &retFlag,
                                         GmatCommand *inCmd)
 {
    #ifdef DEBUG_CREATE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("AppendCommand() type=<%s>, inCmd=<%p>\n"), type.c_str(), inCmd);
+      ("AppendCommand() type=<%s>, inCmd=<%p>\n", type.c_str(), inCmd);
    #endif
    
    GmatCommand *cmd = NULL;
    
    if (inCmd == NULL)
    {
-      cmd = theModerator->AppendCommand(type, wxT(""), retFlag);
+      cmd = theModerator->AppendCommand(type, "", retFlag);
       
       #ifdef DEBUG_CREATE_COMMAND
       MessageInterface::ShowMessage
-         (wxT("===> Appending command <%s> to the last command\n"),
+         ("===> Appending command <%s> to the last command\n",
           cmd->GetTypeName().c_str());
       #endif
    }
    else
    {
-      cmd = theModerator->CreateCommand(type, wxT(""), retFlag);
+      cmd = theModerator->CreateCommand(type, "", retFlag);
       inCmd->Append(cmd);
       
       #ifdef DEBUG_CREATE_COMMAND
       MessageInterface::ShowMessage
-         (wxT("===> Appending command <%s> to <%s>\n"), cmd->GetTypeName().c_str(),
+         ("===> Appending command <%s> to <%s>\n", cmd->GetTypeName().c_str(),
           inCmd->GetTypeName().c_str());
       #endif
    }
    
    #ifdef DEBUG_CREATE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("AppendCommand() returning <%p>, retFlag=%d\n"), cmd, retFlag);
+      ("AppendCommand() returning <%p>, retFlag=%d\n", cmd, retFlag);
    #endif
    
    return cmd;
@@ -2120,31 +2120,31 @@ GmatCommand* Interpreter::AppendCommand(const wxString &type, bool &retFlag,
 
 
 //------------------------------------------------------------------------------
-//bool AssembleCommand(GmatCommand *cmd, const wxString &desc)
+//bool AssembleCommand(GmatCommand *cmd, const std::string &desc)
 //------------------------------------------------------------------------------
-bool Interpreter::AssembleCommand(GmatCommand *cmd, const wxString &desc)
+bool Interpreter::AssembleCommand(GmatCommand *cmd, const std::string &desc)
 {
    bool retval = false;
-   wxString type = cmd->GetTypeName();
+   std::string type = cmd->GetTypeName();
    
    #ifdef DEBUG_ASSEMBLE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("Interpreter::AssembleCommand() cmd='%s'\n   desc=<%s>\n"),
+      ("Interpreter::AssembleCommand() cmd='%s'\n   desc=<%s>\n",
        type.c_str(), desc.c_str());
    #endif
    
-   if (cmd->IsOfType(wxT("For")))
+   if (cmd->IsOfType("For"))
       retval = AssembleForCommand(cmd, desc);
-   else if (cmd->IsOfType(wxT("CallFunction")))
+   else if (cmd->IsOfType("CallFunction"))
       retval = AssembleCallFunctionCommand(cmd, desc);
-   else if (cmd->IsOfType(wxT("ConditionalBranch")))
+   else if (cmd->IsOfType("ConditionalBranch"))
       retval = AssembleConditionalCommand(cmd, desc);
    else
       retval = AssembleGeneralCommand(cmd, desc);
    
    #ifdef DEBUG_ASSEMBLE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("AssembleCommand() leaving assembling %s, retval=%d\n"),
+      ("AssembleCommand() leaving assembling %s, retval=%d\n",
        type.c_str(), retval);
    #endif
    
@@ -2153,42 +2153,42 @@ bool Interpreter::AssembleCommand(GmatCommand *cmd, const wxString &desc)
 
 
 //------------------------------------------------------------------------------
-//bool AssembleCallFunctionCommand(GmatCommand *cmd, const wxString &desc)
+//bool AssembleCallFunctionCommand(GmatCommand *cmd, const std::string &desc)
 //------------------------------------------------------------------------------
 bool Interpreter::AssembleCallFunctionCommand(GmatCommand *cmd,
-                                              const wxString &desc)
+                                              const std::string &desc)
 {
    #ifdef DEBUG_ASSEMBLE_CALL_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("Interpreter::AssembleCallFunctionCommand() cmd='%s'\n   desc=<%s>\n"),
+      ("Interpreter::AssembleCallFunctionCommand() cmd='%s'\n   desc=<%s>\n",
        cmd->GetTypeName().c_str(), desc.c_str());
    #endif
    
-   debugMsg = wxT("In AssembleCallFunctionCommand()");
+   debugMsg = "In AssembleCallFunctionCommand()";
    bool retval = true;
    
    // Output
-   wxString::size_type index1 = 0;
-   wxString lhs;
+   std::string::size_type index1 = 0;
+   std::string lhs;
    StringArray outArray;
    
    // get output arguments if there was an equal sign
    if (GmatStringUtil::IsThereEqualSign(desc))
    {
-      index1 = desc.find(wxT("="));
+      index1 = desc.find("=");
       lhs = desc.substr(0, index1);
-      outArray = theTextParser.SeparateBrackets(lhs, wxT("[]"), wxT(" ,"), true);
+      outArray = theTextParser.SeparateBrackets(lhs, "[]", " ,", true);
       index1 = index1 + 1;
    }
    
    // Function Name, Input
    StringArray inArray;
-   wxString funcName;
-   wxString::size_type index2 = desc.find(wxT("("), index1);
+   std::string funcName;
+   std::string::size_type index2 = desc.find("(", index1);
    
    #ifdef DEBUG_ASSEMBLE_CALL_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("   Starting index=%u, open parenthesis index=%u\n"), index1, index2);
+      ("   Starting index=%u, open parenthesis index=%u\n", index1, index2);
    #endif
    
    if (index2 == desc.npos)
@@ -2198,18 +2198,18 @@ bool Interpreter::AssembleCallFunctionCommand(GmatCommand *cmd,
    else
    {
       funcName = desc.substr(index1, index2-index1);
-      wxString rhs = desc.substr(index2);
-      rhs = GmatStringUtil::RemoveOuterString(rhs, wxT("("), wxT(")"));
+      std::string rhs = desc.substr(index2);
+      rhs = GmatStringUtil::RemoveOuterString(rhs, "(", ")");
       
       #ifdef DEBUG_ASSEMBLE_CALL_FUNCTION
-      MessageInterface::ShowMessage(wxT("   rhs=\"%s\"\n"), rhs.c_str());
+      MessageInterface::ShowMessage("   rhs=\"%s\"\n", rhs.c_str());
       #endif
       
       // check if single quote found
       inArray = GmatStringUtil::SeparateByComma(rhs);
       
       #ifdef DEBUG_ASSEMBLE_CALL_FUNCTION
-      MessageInterface::ShowMessage(wxT("   inArray.size()=%d\n"), inArray.size());
+      MessageInterface::ShowMessage("   inArray.size()=%d\n", inArray.size());
       #endif
    }
    
@@ -2217,13 +2217,13 @@ bool Interpreter::AssembleCallFunctionCommand(GmatCommand *cmd,
    
    #ifdef DEBUG_ASSEMBLE_CALL_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("   Checking function name '%s'\n"), funcName.c_str());
+      ("   Checking function name '%s'\n", funcName.c_str());
    #endif
    
    // Check for blank name
-   if (funcName == wxT(""))
+   if (funcName == "")
    {
-      InterpreterException ex(wxT("Found blank function name"));
+      InterpreterException ex("Found blank function name");
       HandleError(ex);
       return false;
    }
@@ -2231,19 +2231,19 @@ bool Interpreter::AssembleCallFunctionCommand(GmatCommand *cmd,
    // Check for valid name
    if (!GmatStringUtil::IsValidName(funcName))
    {
-      InterpreterException ex(wxT("Found invalid function name \"") + funcName + wxT("\""));
+      InterpreterException ex("Found invalid function name \"" + funcName + "\"");
       HandleError(ex);
       return false;
    }
    
    #ifdef DEBUG_ASSEMBLE_CALL_FUNCTION
-   MessageInterface::ShowMessage(wxT("   Setting funcName '%s'\n"), funcName.c_str());
+   MessageInterface::ShowMessage("   Setting funcName '%s'\n", funcName.c_str());
    #endif
    
    // Special case for MatlabFunction
    // If in functin mode and function name is found from tempObjectNames,
    // add an extension
-   wxString newFuncName = funcName;
+   std::string newFuncName = funcName;
    
    if (inFunctionMode)
    {
@@ -2255,18 +2255,18 @@ bool Interpreter::AssembleCallFunctionCommand(GmatCommand *cmd,
          
          #ifdef DEBUG_ASSEMBLE_CALL_FUNCTION
          MessageInterface::ShowMessage
-            (wxT("   '%s' found in tempObjectNames, so setting '%s' as function ")
-             wxT("name\n"), funcName.c_str(), newFuncName.c_str());
+            ("   '%s' found in tempObjectNames, so setting '%s' as function "
+             "name\n", funcName.c_str(), newFuncName.c_str());
          #endif
       }
    }
    
    // Set function name to CallFunction
-   retval = cmd->SetStringParameter(wxT("FunctionName"), newFuncName);
+   retval = cmd->SetStringParameter("FunctionName", newFuncName);
    
    #ifdef DEBUG_ASSEMBLE_CALL_FUNCTION
-   MessageInterface::ShowMessage(wxT("   Setting input\n"));
-   WriteStringArray(wxT("CallFunction Input"), wxT(""), inArray);
+   MessageInterface::ShowMessage("   Setting input\n");
+   WriteStringArray("CallFunction Input", "", inArray);
    #endif
    
    // Set input to CallFunction
@@ -2278,13 +2278,13 @@ bool Interpreter::AssembleCallFunctionCommand(GmatCommand *cmd,
    
    for (UnsignedInt i=0; i<inArray.size(); i++)
    {            
-      // If input is single item, set it to CallFunction, otherwise set wxT("") (loj: 2008.08.22)
+      // If input is single item, set it to CallFunction, otherwise set "" (loj: 2008.08.22)
       // Should we do this here? Just hold off for now
       //==============================================================
       // The old way
       //==============================================================
       #if 0
-      retval = cmd->SetStringParameter(wxT("AddInput"), inArray[i]);
+      retval = cmd->SetStringParameter("AddInput", inArray[i]);
       #endif
       //==============================================================
       
@@ -2293,19 +2293,19 @@ bool Interpreter::AssembleCallFunctionCommand(GmatCommand *cmd,
       // The new way
       //==============================================================
       #if 1
-      wxString input = inArray[i];
-      if (GmatStringUtil::IsEnclosedWith(inArray[i], wxT("'")))
-         retval = cmd->SetStringParameter(wxT("AddInput"), input);
+      std::string input = inArray[i];
+      if (GmatStringUtil::IsEnclosedWith(inArray[i], "'"))
+         retval = cmd->SetStringParameter("AddInput", input);
       else
       {
          StringArray varNames = GmatStringUtil::GetVarNames(input);
          if (varNames.size() > 1)
-            input = wxT("");
+            input = "";
          #ifdef DEBUG_ASSEMBLE_CALL_FUNCTION
          MessageInterface::ShowMessage
-            (wxT("   Setting <%s> as input to CallFunction\n"), input.c_str());
+            ("   Setting <%s> as input to CallFunction\n", input.c_str());
          #endif      
-         retval = cmd->SetStringParameter(wxT("AddInput"), input);
+         retval = cmd->SetStringParameter("AddInput", input);
       }
       #endif
       //==============================================================
@@ -2317,7 +2317,7 @@ bool Interpreter::AssembleCallFunctionCommand(GmatCommand *cmd,
       // This fixes Bug1903 (Failed to pass number and literal to a function)
       
       // String literal
-      if (GmatStringUtil::IsEnclosedWith(inArray[i], wxT("'")))
+      if (GmatStringUtil::IsEnclosedWith(inArray[i], "'"))
       {
          validInput = true;
       }
@@ -2327,7 +2327,7 @@ bool Interpreter::AssembleCallFunctionCommand(GmatCommand *cmd,
          validInput = true;
       }
       // Parameter or object property
-      else if (inArray[i].find(wxT('.')) != wxString::npos)
+      else if (inArray[i].find('.') != std::string::npos)
       {
          // if input parameter is a system Parameter then create
          if (IsParameterType(inArray[i]))
@@ -2347,7 +2347,7 @@ bool Interpreter::AssembleCallFunctionCommand(GmatCommand *cmd,
       
       #ifdef DEBUG_ASSEMBLE_CALL_FUNCTION
       MessageInterface::ShowMessage
-         (wxT("   <%s> is %svalid input\n"), inArray[i].c_str(), validInput ? wxT("") : wxT("not "));
+         ("   <%s> is %svalid input\n", inArray[i].c_str(), validInput ? "" : "not ");
       #endif
       
       // if in function mode, ignore invalid parameter
@@ -2358,8 +2358,8 @@ bool Interpreter::AssembleCallFunctionCommand(GmatCommand *cmd,
       if (!validInput)
       {
          InterpreterException ex
-            (wxT("Nonexistent or disallowed CallFunction Input Parameter: \"") +
-             inArray[i] +  wxT("\""));
+            ("Nonexistent or disallowed CallFunction Input Parameter: \"" +
+             inArray[i] +  "\"");
          HandleError(ex);
          return false;
       }
@@ -2369,28 +2369,28 @@ bool Interpreter::AssembleCallFunctionCommand(GmatCommand *cmd,
    {
       #ifdef DEBUG_ASSEMBLE_CALL_FUNCTION
       MessageInterface::ShowMessage
-         (wxT("Interpreter::AssembleCallFunctionCommand() returning false, ")
-          wxT("retval=%d, validInput=%d\n"), retval, validInput);
+         ("Interpreter::AssembleCallFunctionCommand() returning false, "
+          "retval=%d, validInput=%d\n", retval, validInput);
       #endif
       return false;
    }
    
    // Set output to CallFunction
    #ifdef DEBUG_ASSEMBLE_CALL_FUNCTION
-   MessageInterface::ShowMessage(wxT("   Setting output\n"));
-   WriteStringArray(wxT("CallFunction Output"), wxT(""), outArray);
+   MessageInterface::ShowMessage("   Setting output\n");
+   WriteStringArray("CallFunction Output", "", outArray);
    #endif
    
    for (UnsignedInt i=0; i<outArray.size(); i++)
-      retval = cmd->SetStringParameter(wxT("AddOutput"), outArray[i]);
+      retval = cmd->SetStringParameter("AddOutput", outArray[i]);
    
    // if in function mode, just return retval
    if (inFunctionMode)
    {
       #ifdef DEBUG_ASSEMBLE_CALL_FUNCTION
       MessageInterface::ShowMessage
-         (wxT("Interpreter::AssembleCallFunctionCommand() returning %d, it's in ")
-          wxT("function mode\n"), retval);
+         ("Interpreter::AssembleCallFunctionCommand() returning %d, it's in "
+          "function mode\n", retval);
       #endif
       return retval;
    }
@@ -2399,14 +2399,14 @@ bool Interpreter::AssembleCallFunctionCommand(GmatCommand *cmd,
    // before mission sequence, if not, create as GmatFunction.
    GmatBase *func = FindObject(funcName);
    if (func == NULL)
-      func = CreateObject(wxT("GmatFunction"), funcName);
+      func = CreateObject("GmatFunction", funcName);
    
    // Set function pointer to CallFunction command
    cmd->SetRefObject(func, Gmat::FUNCTION, funcName);
    
    #ifdef DEBUG_ASSEMBLE_CALL_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("Interpreter::AssembleCallFunctionCommand() returning %d\n"), retval);
+      ("Interpreter::AssembleCallFunctionCommand() returning %d\n", retval);
    #endif
    
    return retval;
@@ -2414,29 +2414,29 @@ bool Interpreter::AssembleCallFunctionCommand(GmatCommand *cmd,
 
 
 //------------------------------------------------------------------------------
-//bool AssembleConditionalCommand(GmatCommand *cmd, const wxString &desc)
+//bool AssembleConditionalCommand(GmatCommand *cmd, const std::string &desc)
 //------------------------------------------------------------------------------
 bool Interpreter::AssembleConditionalCommand(GmatCommand *cmd,
-                                             const wxString &desc)
+                                             const std::string &desc)
 {
    #ifdef DEBUG_ASSEMBLE_CONDITION
    MessageInterface::ShowMessage
-      (wxT("Interpreter::AssembleConditionalCommand() cmd=<%p>'%s', desc='%s'\n"),
+      ("Interpreter::AssembleConditionalCommand() cmd=<%p>'%s', desc='%s'\n",
        cmd, cmd->GetTypeName().c_str(), desc.c_str());
    #endif
    
-   debugMsg = wxT("In AssembleConditionalCommand()");
+   debugMsg = "In AssembleConditionalCommand()";
    bool retval = true;
-   wxString type = cmd->GetTypeName();
-   wxString opStr = wxT("~<=>&|");
+   std::string type = cmd->GetTypeName();
+   std::string opStr = "~<=>&|";
    
    // conditional commands, for compatibility with MATLAB, should not have
    // parentheses (except to indicate array elements), brackets, or braces
    if (!GmatStringUtil::HasNoBrackets(desc))
    {
-      wxString msg = 
-         wxT("A conditional command is not allowed to contain brackets, braces, or ")
-         wxT("parentheses (except to indicate an array element)");
+      std::string msg = 
+         "A conditional command is not allowed to contain brackets, braces, or "
+         "parentheses (except to indicate an array element)";
       InterpreterException ex(msg);
       HandleError(ex);
       return false;
@@ -2445,8 +2445,8 @@ bool Interpreter::AssembleConditionalCommand(GmatCommand *cmd,
    // This really becomes moot ...  wcs 2007.09.12
    // Remove enclosed parenthesis first
    Integer length = desc.size();
-   wxString str1 = desc;
-   if (desc[0] == wxT('(') && desc[length-1] == wxT(')'))
+   std::string str1 = desc;
+   if (desc[0] == '(' && desc[length-1] == ')')
    {
       str1 = desc.substr(1, length-2);
    }
@@ -2454,18 +2454,18 @@ bool Interpreter::AssembleConditionalCommand(GmatCommand *cmd,
    {
       if (!GmatStringUtil::IsParenBalanced(desc))
       {
-         InterpreterException ex(wxT("The Command has unbalanced parentheses"));
+         InterpreterException ex("The Command has unbalanced parentheses");
          HandleError(ex);
          return false;
       }
    }
    
-   wxString::size_type start = 0;
-   wxString::size_type right = 0;
-   wxString::size_type op = 0;
+   std::string::size_type start = 0;
+   std::string::size_type right = 0;
+   std::string::size_type op = 0;
    bool done = false;
    StringArray parts;
-   wxString str2;
+   std::string str2;
    
    // Parse conditions
    while (!done)
@@ -2475,7 +2475,7 @@ bool Interpreter::AssembleConditionalCommand(GmatCommand *cmd,
       {
          // Add final right of operator, if not blank
          str2 = GmatStringUtil::Trim(str1.substr(start));
-         if (str2 != wxT(""))
+         if (str2 != "")
             parts.push_back(str2);
          break;
       }
@@ -2498,7 +2498,7 @@ bool Interpreter::AssembleConditionalCommand(GmatCommand *cmd,
    }
    
    #ifdef DEBUG_ASSEMBLE_CONDITION
-   WriteStringArray(wxT("After parsing conditions()"), wxT(""), parts);
+   WriteStringArray("After parsing conditions()", "", parts);
    #endif
    
    Integer count = parts.size();
@@ -2506,20 +2506,20 @@ bool Interpreter::AssembleConditionalCommand(GmatCommand *cmd,
    {
       if (GmatStringUtil::IsBlank(parts.at(ii)))
       {
-         InterpreterException ex(wxT("Missing field or operator in command"));
+         InterpreterException ex("Missing field or operator in command");
          HandleError(ex);
          return false;
       }
-      wxString strUpper = GmatStringUtil::ToUpper(parts.at(ii));         
-      if (strUpper.find(wxT(" OR ")) != strUpper.npos)
+      std::string strUpper = GmatStringUtil::ToUpper(parts.at(ii));         
+      if (strUpper.find(" OR ") != strUpper.npos)
       {
-         InterpreterException ex(wxT("\"OR\" is not a valid relational operator"));
+         InterpreterException ex("\"OR\" is not a valid relational operator");
          HandleError(ex);
          return false;
       }
-      if (strUpper.find(wxT(" AND ")) != strUpper.npos)
+      if (strUpper.find(" AND ") != strUpper.npos)
       {
-         InterpreterException ex(wxT("\"AND\" is not a valid relational operator"));
+         InterpreterException ex("\"AND\" is not a valid relational operator");
          HandleError(ex);
          return false;
       }
@@ -2528,7 +2528,7 @@ bool Interpreter::AssembleConditionalCommand(GmatCommand *cmd,
    // assuming there is no boolean argument
    if (count < 3 || ((count-3)%4) != 0)
    {
-      InterpreterException ex(wxT("The Command has an invalid number of conditions"));
+      InterpreterException ex("The Command has an invalid number of conditions");
       HandleError(ex);
       return false;
    }
@@ -2542,16 +2542,16 @@ bool Interpreter::AssembleConditionalCommand(GmatCommand *cmd,
       {
          #ifdef DEBUG_ASSEMBLE_CONDITION
          MessageInterface::ShowMessage
-            (wxT("   lhs:<%s>, op:<%s>, rhs:<%s>\n"), parts[i].c_str(), parts[i+1].c_str(),
+            ("   lhs:<%s>, op:<%s>, rhs:<%s>\n", parts[i].c_str(), parts[i+1].c_str(),
              parts[i+2].c_str());
          #endif
          
          // Try to create a parameter first if system parameter
-         wxString type, ownerName, depObj;
+         std::string type, ownerName, depObj;
          GmatStringUtil::ParseParameter(parts[i], type, ownerName, depObj);
          #ifdef DEBUG_ASSEMBLE_CONDITION // ---------------------------- debug ----
          MessageInterface::ShowMessage
-            (wxT("   lhs: type = %s, ownerName = %s, depObj = %s\n"), 
+            ("   lhs: type = %s, ownerName = %s, depObj = %s\n", 
              type.c_str(), ownerName.c_str(), depObj.c_str());
          #endif // ------------------------------------------------- end debug ----
          
@@ -2566,7 +2566,7 @@ bool Interpreter::AssembleConditionalCommand(GmatCommand *cmd,
          GmatStringUtil::ParseParameter(parts[i+2], type, ownerName, depObj);
          #ifdef DEBUG_ASSEMBLE_CONDITION // ---------------------------- debug ----
          MessageInterface::ShowMessage
-            (wxT("   rhs: type = %s, ownerName = %s, depObj = %s\n"), 
+            ("   rhs: type = %s, ownerName = %s, depObj = %s\n", 
              type.c_str(), ownerName.c_str(), depObj.c_str());
          #endif // ------------------------------------------------- end debug ----
          
@@ -2583,7 +2583,7 @@ bool Interpreter::AssembleConditionalCommand(GmatCommand *cmd,
          if (count > i+3)
          {
             #ifdef DEBUG_ASSEMBLE_CONDITION
-            MessageInterface::ShowMessage(wxT("   logOp=<%s>\n"), parts[i+3].c_str());
+            MessageInterface::ShowMessage("   logOp=<%s>\n", parts[i+3].c_str());
             #endif
             
             cb->SetConditionOperator(parts[i+3]);
@@ -2602,83 +2602,83 @@ bool Interpreter::AssembleConditionalCommand(GmatCommand *cmd,
 
 
 //------------------------------------------------------------------------------
-//bool AssembleForCommand(GmatCommand *cmd, const wxString &desc)
+//bool AssembleForCommand(GmatCommand *cmd, const std::string &desc)
 //------------------------------------------------------------------------------
 /* Parses For loop control expression
  *    It's syntax is 
  *       For index = start:increment:end
  */
 //------------------------------------------------------------------------------
-bool Interpreter::AssembleForCommand(GmatCommand *cmd, const wxString &desc)
+bool Interpreter::AssembleForCommand(GmatCommand *cmd, const std::string &desc)
 {
    #ifdef DEBUG_ASSEMBLE_FOR
    MessageInterface::ShowMessage
-      (wxT("Interpreter::AssembleForCommand() desc=<%s>\n"), desc.c_str());
+      ("Interpreter::AssembleForCommand() desc=<%s>\n", desc.c_str());
    #endif
    
-   debugMsg = wxT("In AssembleForCommand()");
+   debugMsg = "In AssembleForCommand()";
    
    // For loop commands, for compatability with MATLAB, should not have
    // parentheses (except to indicate array elements), brackets, or braces
    if (!GmatStringUtil::HasNoBrackets(desc))
    {
-      wxString msg = 
-         wxT("A For command is not allowed to contain brackets, braces, or ")
-         wxT("parentheses (except to indicate an array element)");
+      std::string msg = 
+         "A For command is not allowed to contain brackets, braces, or "
+         "parentheses (except to indicate an array element)";
       InterpreterException ex(msg);
       HandleError(ex);
       return false;
    }
    
    bool retval = true;
-   wxString::size_type equalSign = desc.find(wxT("="));
+   std::string::size_type equalSign = desc.find("=");
    
    if (equalSign == desc.npos)
    {
-      InterpreterException ex(wxT("Cannot find equal sign (=) for For loop control"));
+      InterpreterException ex("Cannot find equal sign (=) for For loop control");
       HandleError(ex);
       return false;
    }
    
-   wxString index = desc.substr(0, equalSign);
+   std::string index = desc.substr(0, equalSign);
    index = GmatStringUtil::Trim(index);
    
-   wxString substr = desc.substr(equalSign+1);
-   if (substr.find(wxT(':')) == substr.npos)
+   std::string substr = desc.substr(equalSign+1);
+   if (substr.find(':') == substr.npos)
    {
-      InterpreterException ex(wxT("Missing colon (:) for For loop control"));
+      InterpreterException ex("Missing colon (:) for For loop control");
       HandleError(ex);
       return false;
    }
    
-   StringArray parts = theTextParser.SeparateBy(substr, wxT(":"));
+   StringArray parts = theTextParser.SeparateBy(substr, ":");
    int count = parts.size();
    Integer numColons = 0;
    for (unsigned int ii = 0; ii < substr.size(); ii++)
-      if (substr.at(ii) == wxT(':')) numColons++;
+      if (substr.at(ii) == ':') numColons++;
    if (numColons >= (Integer) count)
    {
-      InterpreterException ex(wxT("Too many colons (:) for For loop control"));
+      InterpreterException ex("Too many colons (:) for For loop control");
       HandleError(ex);
       return false;
    }
    #ifdef DEBUG_ASSEMBLE_FOR
    MessageInterface::ShowMessage
-      (wxT("Interpreter::AssembleForCommand() After SeparateBy, parts = \n"));
+      ("Interpreter::AssembleForCommand() After SeparateBy, parts = \n");
    for (Integer ii=0;ii<count;ii++)
-      MessageInterface::ShowMessage(wxT("   <%s>\n"), parts[ii].c_str());
+      MessageInterface::ShowMessage("   <%s>\n", parts[ii].c_str());
    #endif
    
    if (count < 2)
    {
-      InterpreterException ex(wxT("Missing field, colon (:), or equal sign (=) for For loop control"));
+      InterpreterException ex("Missing field, colon (:), or equal sign (=) for For loop control");
       HandleError(ex);
       return false;
    }
    
-   wxString start = parts[0];
-   wxString end = parts[1];
-   wxString step = wxT("1");
+   std::string start = parts[0];
+   std::string end = parts[1];
+   std::string step = "1";
    
    if (count > 2)
    {
@@ -2689,18 +2689,18 @@ bool Interpreter::AssembleForCommand(GmatCommand *cmd, const wxString &desc)
    
    #ifdef DEBUG_ASSEMBLE_FOR
    MessageInterface::ShowMessage
-      (wxT("Interpreter::AssembleForCommand() index=<%s>, start=<%s>, end=<%s>, ")
-       wxT("step=<%s>\n"), index.c_str(), start.c_str(), end.c_str(), step.c_str());
+      ("Interpreter::AssembleForCommand() index=<%s>, start=<%s>, end=<%s>, "
+       "step=<%s>\n", index.c_str(), start.c_str(), end.c_str(), step.c_str());
    #endif
    
-   cmd->SetStringParameter(wxT("IndexName"), index);
-   cmd->SetStringParameter(wxT("StartName"), start);
-   cmd->SetStringParameter(wxT("EndName"), end);
-   cmd->SetStringParameter(wxT("IncrementName"), step);
+   cmd->SetStringParameter("IndexName", index);
+   cmd->SetStringParameter("StartName", start);
+   cmd->SetStringParameter("EndName", end);
+   cmd->SetStringParameter("IncrementName", step);
    
    #ifdef DEBUG_ASSEMBLE_FOR
    MessageInterface::ShowMessage
-      (wxT("Interpreter::AssembleForCommand() returning %d\n"), retval);
+      ("Interpreter::AssembleForCommand() returning %d\n", retval);
    #endif
    
    return retval;
@@ -2708,44 +2708,44 @@ bool Interpreter::AssembleForCommand(GmatCommand *cmd, const wxString &desc)
 
 
 //------------------------------------------------------------------------------
-//bool AssembleGeneralCommand(GmatCommand *cmd, const wxString &desc)
+//bool AssembleGeneralCommand(GmatCommand *cmd, const std::string &desc)
 //------------------------------------------------------------------------------
 bool Interpreter::AssembleGeneralCommand(GmatCommand *cmd,
-                                         const wxString &desc)
+                                         const std::string &desc)
 {
    bool retval = true;
-   wxString type = cmd->GetTypeName();
+   std::string type = cmd->GetTypeName();
    
    #ifdef DEBUG_ASSEMBLE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("AssembleGeneralCommand() cmd='%s', desc=<%s>\n"), cmd->GetTypeName().c_str(),
+      ("AssembleGeneralCommand() cmd='%s', desc=<%s>\n", cmd->GetTypeName().c_str(),
        desc.c_str());
    #endif
    
-   if (type == wxT("Target") || type == wxT("Report") || type == wxT("BeginFiniteBurn") ||
-       type == wxT("EndFiniteBurn") || type == wxT("Optimize"))
+   if (type == "Target" || type == "Report" || type == "BeginFiniteBurn" ||
+       type == "EndFiniteBurn" || type == "Optimize")
    {
       // first item is ref. object name
       
-      if (type == wxT("Target"))
+      if (type == "Target")
          retval = AssembleTargetCommand(cmd, desc);
-      else if (type == wxT("Optimize"))
+      else if (type == "Optimize")
          retval = AssembleOptimizeCommand(cmd, desc);
-      else if (type == wxT("Report"))
+      else if (type == "Report")
          retval = AssembleReportCommand(cmd, desc);
       else
          retval = AssembleFiniteBurnCommand(cmd, desc);
    }
-   else if (type == wxT("Create"))
+   else if (type == "Create")
       retval = AssembleCreateCommand(cmd, desc);
-   else if (type == wxT("Save") || type == wxT("Global"))
+   else if (type == "Save" || type == "Global")
       retval = SetCommandRefObjects(cmd, desc);
    else
       retval = false;
    
    #ifdef DEBUG_ASSEMBLE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("AssembleGeneralCommand() leaving assemblilng %s, retval=%d\n"),
+      ("AssembleGeneralCommand() leaving assemblilng %s, retval=%d\n",
        type.c_str(), retval);
    #endif
    
@@ -2754,33 +2754,33 @@ bool Interpreter::AssembleGeneralCommand(GmatCommand *cmd,
 
 
 //------------------------------------------------------------------------------
-// bool AssembleTargetCommand(GmatCommand *cmd, const wxString &desc)
+// bool AssembleTargetCommand(GmatCommand *cmd, const std::string &desc)
 //------------------------------------------------------------------------------
-bool Interpreter::AssembleTargetCommand(GmatCommand *cmd, const wxString &desc)
+bool Interpreter::AssembleTargetCommand(GmatCommand *cmd, const std::string &desc)
 {
-   debugMsg = wxT("In AssembleTargetCommand()");
+   debugMsg = "In AssembleTargetCommand()";
    
    // This command, for compatability with MATLAB, should not have
    // parentheses (except to indicate array elements), brackets, or braces
    if (!GmatStringUtil::HasNoBrackets(desc, false))
    {
-      wxString msg = 
-         wxT("The Target command is not allowed to contain brackets, braces, or ")
-         wxT("parentheses");
+      std::string msg = 
+         "The Target command is not allowed to contain brackets, braces, or "
+         "parentheses";
       InterpreterException ex(msg);
       HandleError(ex);
       return false;
    }
    
    bool retval = true;
-   StringArray parts = theTextParser.Decompose(desc, wxT("()"));
+   StringArray parts = theTextParser.Decompose(desc, "()");
    cmd->SetRefObjectName(Gmat::SOLVER, parts[0]);
    
    // Make sure there is only one thing on the line
    if (parts.size() > 1)
    {
       InterpreterException ex
-         (wxT("Unexpected text at end of Target command"));
+         ("Unexpected text at end of Target command");
       HandleError(ex);
       retval = false;
    }
@@ -2788,11 +2788,11 @@ bool Interpreter::AssembleTargetCommand(GmatCommand *cmd, const wxString &desc)
    // Check if the Solver exist if not in Function mode
    if (!inFunctionMode)
    {
-      GmatBase *obj = FindObject(parts[0], wxT("Solver"));
+      GmatBase *obj = FindObject(parts[0], "Solver");
       if (obj == NULL)
       {
          InterpreterException ex
-            (wxT("Cannot find the Solver \"") + parts[0] + wxT("\""));
+            ("Cannot find the Solver \"" + parts[0] + "\"");
          HandleError(ex);
          retval = false;
       }
@@ -2803,33 +2803,33 @@ bool Interpreter::AssembleTargetCommand(GmatCommand *cmd, const wxString &desc)
 
 
 //------------------------------------------------------------------------------
-// bool AssembleOptimizeCommand(GmatCommand *cmd, const wxString &desc)
+// bool AssembleOptimizeCommand(GmatCommand *cmd, const std::string &desc)
 //------------------------------------------------------------------------------
-bool Interpreter::AssembleOptimizeCommand(GmatCommand *cmd, const wxString &desc)
+bool Interpreter::AssembleOptimizeCommand(GmatCommand *cmd, const std::string &desc)
 {
-   debugMsg = wxT("In AssembleOptimizeCommand()");
+   debugMsg = "In AssembleOptimizeCommand()";
    
    // This command, for compatability with MATLAB, should not have
    // parentheses (except to indicate array elements), brackets, or braces
    if (!GmatStringUtil::HasNoBrackets(desc, false))
    {
-      wxString msg = 
-         wxT("The Optimize command is not allowed to contain brackets, braces, or ")
-         wxT("parentheses");
+      std::string msg = 
+         "The Optimize command is not allowed to contain brackets, braces, or "
+         "parentheses";
       InterpreterException ex(msg);
       HandleError(ex);
       return false;
    }
    
    bool retval = true;
-   StringArray parts = theTextParser.Decompose(desc, wxT("()"));
+   StringArray parts = theTextParser.Decompose(desc, "()");
    cmd->SetRefObjectName(Gmat::SOLVER, parts[0]);
    
    // Make sure there is only one thing on the line
    if (parts.size() > 1)
    {
       InterpreterException ex
-         (wxT("Unexpected text at end of Optimize command"));
+         ("Unexpected text at end of Optimize command");
       HandleError(ex);
       retval = false;
    }
@@ -2837,11 +2837,11 @@ bool Interpreter::AssembleOptimizeCommand(GmatCommand *cmd, const wxString &desc
    // Check if the Solver exist if not in Function mode
    if (!inFunctionMode)
    {
-      GmatBase *obj = FindObject(parts[0], wxT("Solver"));
+      GmatBase *obj = FindObject(parts[0], "Solver");
       if (obj == NULL)
       {
          InterpreterException ex
-            (wxT("Cannot find the Solver \"") + parts[0] + wxT("\""));
+            ("Cannot find the Solver \"" + parts[0] + "\"");
          HandleError(ex);
          retval = false;
       }
@@ -2852,49 +2852,49 @@ bool Interpreter::AssembleOptimizeCommand(GmatCommand *cmd, const wxString &desc
 
 
 //------------------------------------------------------------------------------
-// bool AssembleFiniteBurnCommand(GmatCommand *cmd, const wxString &desc)
+// bool AssembleFiniteBurnCommand(GmatCommand *cmd, const std::string &desc)
 //------------------------------------------------------------------------------
-bool Interpreter::AssembleFiniteBurnCommand(GmatCommand *cmd, const wxString &desc)
+bool Interpreter::AssembleFiniteBurnCommand(GmatCommand *cmd, const std::string &desc)
 {
    #ifdef DEBUG_ASSEMBLE_COMMAND
-   MessageInterface::ShowMessage(wxT("Begin/EndFiniteBurn being processed ...\n"));
+   MessageInterface::ShowMessage("Begin/EndFiniteBurn being processed ...\n");
    #endif
    
    bool retval = true;
-   debugMsg = wxT("In AssembleFiniteBurnCommand()");
+   debugMsg = "In AssembleFiniteBurnCommand()";
    
    // Note:
    // Begin/EndFiniteBurn has the syntax: BeginFiniteBurn burn1(sat1 sat2)
    // First, check for errors in brackets
-   if ((desc.find(wxT("[")) != desc.npos) || (desc.find(wxT("]")) != desc.npos))
+   if ((desc.find("[") != desc.npos) || (desc.find("]") != desc.npos))
    {
       InterpreterException ex
-         (wxT("Brackets not allowed in ") + cmd->GetTypeName()+ wxT(" command"));
+         ("Brackets not allowed in " + cmd->GetTypeName()+ " command");
       HandleError(ex);
       retval = false;
    }
    
-   if (!GmatStringUtil::AreAllBracketsBalanced(desc, wxT("({)}")))
+   if (!GmatStringUtil::AreAllBracketsBalanced(desc, "({)}"))
    {
       InterpreterException ex
-         (wxT("Parentheses, braces, or brackets are unbalanced or incorrectly placed"));
+         ("Parentheses, braces, or brackets are unbalanced or incorrectly placed");
       HandleError(ex);
       retval = false;
    }
    
    // Get FiniteBurn name
-   StringArray parts = theTextParser.Decompose(desc, wxT("()"), false);
+   StringArray parts = theTextParser.Decompose(desc, "()", false);
    
    #ifdef DEBUG_ASSEMBLE_COMMAND
-   wxString type = cmd->GetTypeName();
-   WriteStringArray(type, wxT(""), parts);
+   std::string type = cmd->GetTypeName();
+   WriteStringArray(type, "", parts);
    #endif
    
    if (parts.size() < 2)
    {
       InterpreterException ex
-         (wxT("Missing ") + cmd->GetTypeName() + wxT(" parameter. Expecting ")
-          wxT("\"FiniteBurnName(SpacecraftName)\""));
+         ("Missing " + cmd->GetTypeName() + " parameter. Expecting "
+          "\"FiniteBurnName(SpacecraftName)\"");
       HandleError(ex);
       retval = false;
    }
@@ -2903,25 +2903,25 @@ bool Interpreter::AssembleFiniteBurnCommand(GmatCommand *cmd, const wxString &de
       cmd->SetRefObjectName(Gmat::FINITE_BURN, parts[0]);
       
       // Get Spacecraft names
-      StringArray subParts = theTextParser.SeparateBrackets(parts[1], wxT("()"), wxT(","));
+      StringArray subParts = theTextParser.SeparateBrackets(parts[1], "()", ",");
       
       #ifdef DEBUG_ASSEMBLE_COMMAND
-      WriteStringArray(type, wxT(""), subParts);
+      WriteStringArray(type, "", subParts);
       #endif
       
       Integer count = subParts.size();
       if (count == 0)
       {
          InterpreterException ex
-            (cmd->GetTypeName() + wxT(" command must contain at least one spacecraft name"));
+            (cmd->GetTypeName() + " command must contain at least one spacecraft name");
          HandleError(ex);
          retval = false;
       }
-      Integer numCommas = GmatStringUtil::NumberOfOccurrences(parts[1],wxT(','));
+      Integer numCommas = GmatStringUtil::NumberOfOccurrences(parts[1],',');
       if (count != (numCommas + 1))
       {
          InterpreterException ex
-            (wxT("Missing spacecraft name in ") + cmd->GetTypeName() + wxT(" command"));
+            ("Missing spacecraft name in " + cmd->GetTypeName() + " command");
          HandleError(ex);
          retval = false;
       }
@@ -2930,7 +2930,7 @@ bool Interpreter::AssembleFiniteBurnCommand(GmatCommand *cmd, const wxString &de
          if (GmatStringUtil::IsBlank(subParts[i]))
          {
             InterpreterException ex
-               (wxT("Missing spacecraft name in ") + cmd->GetTypeName() + wxT(" command"));
+               ("Missing spacecraft name in " + cmd->GetTypeName() + " command");
             HandleError(ex);
             retval = false;
          }
@@ -2943,26 +2943,26 @@ bool Interpreter::AssembleFiniteBurnCommand(GmatCommand *cmd, const wxString &de
 
 
 //------------------------------------------------------------------------------
-// bool AssembleReportCommand(GmatCommand *cmd, const wxString &desc)
+// bool AssembleReportCommand(GmatCommand *cmd, const std::string &desc)
 //------------------------------------------------------------------------------
-bool Interpreter::AssembleReportCommand(GmatCommand *cmd, const wxString &desc)
+bool Interpreter::AssembleReportCommand(GmatCommand *cmd, const std::string &desc)
 {
    #ifdef DEBUG_ASSEMBLE_REPORT_COMMAND
    MessageInterface::ShowMessage
-      (wxT("AssembleReportCommand() cmd='%s', desc=<%s>\n"), cmd->GetTypeName().c_str(),
+      ("AssembleReportCommand() cmd='%s', desc=<%s>\n", cmd->GetTypeName().c_str(),
        desc.c_str());
    #endif
    
-   debugMsg = wxT("In AssembleReportCommand()");
+   debugMsg = "In AssembleReportCommand()";
    bool retval = true;
    
    // This command, for compatability with MATLAB, should not have
    // parentheses (except to indicate array elements), brackets, or braces
    if (!GmatStringUtil::HasNoBrackets(desc, true))
    {
-      wxString msg = 
-         wxT("The Report command is not allowed to contain brackets, braces, or ")
-         wxT("parentheses (except to indicate array elements)");
+      std::string msg = 
+         "The Report command is not allowed to contain brackets, braces, or "
+         "parentheses (except to indicate array elements)";
       InterpreterException ex(msg);
       HandleError(ex);
       return false;
@@ -2970,27 +2970,27 @@ bool Interpreter::AssembleReportCommand(GmatCommand *cmd, const wxString &desc)
    
    // we only want to separate by spaces - commas are not allowed, 
    // not even in arrays (for this command)
-   StringArray parts = GmatStringUtil::SeparateBy(desc, wxT(" "), true);
+   StringArray parts = GmatStringUtil::SeparateBy(desc, " ", true);
    Integer count = parts.size();
    
    #ifdef DEBUG_ASSEMBLE_REPORT_COMMAND 
-   WriteStringArray(wxT("Parsing Report"), wxT(""), parts);
+   WriteStringArray("Parsing Report", "", parts);
    #endif
    
    // checking items to report
    if (count < 2)
    {
-      InterpreterException ex (wxT("There are no ReportFile or items to Report"));
+      InterpreterException ex ("There are no ReportFile or items to Report");
       HandleError(ex);
       return false;
    }
    
    // Set ReportFile name
-   cmd->SetStringParameter(wxT("ReportFile"), parts[0]);
+   cmd->SetStringParameter("ReportFile", parts[0]);
    
    // Set reporting Parameter names
    for (int i=1; i<count; i++)
-      cmd->SetStringParameter(wxT("Add"), parts[i]);
+      cmd->SetStringParameter("Add", parts[i]);
    
    GmatBase *obj = NULL;
    
@@ -3003,7 +3003,7 @@ bool Interpreter::AssembleReportCommand(GmatCommand *cmd, const wxString &desc)
       if (obj == NULL)
       {
          InterpreterException ex
-            (wxT("Cannot find the ReportFile \"") + parts[0] + wxT("\""));
+            ("Cannot find the ReportFile \"" + parts[0] + "\"");
          HandleError(ex);
          return false;
       }
@@ -3026,8 +3026,8 @@ bool Interpreter::AssembleReportCommand(GmatCommand *cmd, const wxString &desc)
          else
          {
             InterpreterException ex
-               (wxT("Nonexistent or disallowed Report Variable: \"") + parts[i] +
-                wxT("\";\nIt will not be added to Report"));
+               ("Nonexistent or disallowed Report Variable: \"" + parts[i] +
+                "\";\nIt will not be added to Report");
             HandleError(ex);
             retval = false;
          }
@@ -3035,7 +3035,7 @@ bool Interpreter::AssembleReportCommand(GmatCommand *cmd, const wxString &desc)
    }
    
    #ifdef DEBUG_ASSEMBLE_REPORT_COMMAND 
-   MessageInterface::ShowMessage(wxT("AssembleReportCommand() returning %d\n"), retval);
+   MessageInterface::ShowMessage("AssembleReportCommand() returning %d\n", retval);
    #endif
    
    return retval;
@@ -3043,31 +3043,31 @@ bool Interpreter::AssembleReportCommand(GmatCommand *cmd, const wxString &desc)
 
 
 //------------------------------------------------------------------------------
-// bool AssembleCreateCommand(GmatCommand *cmd, const wxString &desc)
+// bool AssembleCreateCommand(GmatCommand *cmd, const std::string &desc)
 //------------------------------------------------------------------------------
-bool Interpreter::AssembleCreateCommand(GmatCommand *cmd, const wxString &desc)
+bool Interpreter::AssembleCreateCommand(GmatCommand *cmd, const std::string &desc)
 {   
    #ifdef DEBUG_ASSEMBLE_CREATE
    MessageInterface::ShowMessage
-      (wxT("AssembleCreateCommand() Create command desc=<%s>\n"), desc.c_str());
+      ("AssembleCreateCommand() Create command desc=<%s>\n", desc.c_str());
    #endif
    
-   debugMsg = wxT("In AssembleCreateCommand()");
-   wxString::size_type typeIndex = desc.find_first_of(wxT(" "));
-   wxString objTypeStr = desc.substr(0, typeIndex);
-   wxString objNameStr = desc.substr(typeIndex+1);
+   debugMsg = "In AssembleCreateCommand()";
+   std::string::size_type typeIndex = desc.find_first_of(" ");
+   std::string objTypeStr = desc.substr(0, typeIndex);
+   std::string objNameStr = desc.substr(typeIndex+1);
    
    #ifdef DEBUG_ASSEMBLE_CREATE
-   MessageInterface::ShowMessage(wxT("   Create object type=<%s>\n"), objTypeStr.c_str());
-   MessageInterface::ShowMessage(wxT("   Create object name=<%s>\n"), objNameStr.c_str());
+   MessageInterface::ShowMessage("   Create object type=<%s>\n", objTypeStr.c_str());
+   MessageInterface::ShowMessage("   Create object name=<%s>\n", objNameStr.c_str());
    #endif
    
    // check if object type is valid
    if (!IsObjectType(objTypeStr))
    {
       InterpreterException ex
-         (wxT("Unknown object type \"") + objTypeStr + wxT("\" found in ") +
-          cmd->GetTypeName() + wxT(" command"));
+         ("Unknown object type \"" + objTypeStr + "\" found in " +
+          cmd->GetTypeName() + " command");
       HandleError(ex);
       return false;
    }
@@ -3077,45 +3077,45 @@ bool Interpreter::AssembleCreateCommand(GmatCommand *cmd, const wxString &desc)
    //-----------------------------------------------------------------
    #ifdef __DISALLOW_COMMA_IN_CREATE__
    // check for comma, if comman is not allowed in Create command
-   if (objNameStr.find(wxT(",")) != objNameStr.npos)
+   if (objNameStr.find(",") != objNameStr.npos)
    {
       InterpreterException ex
-         (wxT("Comma is not allowed in ") + cmd->GetTypeName() + wxT(" command"));
+         ("Comma is not allowed in " + cmd->GetTypeName() + " command");
       HandleError(ex);
       return false;
    }
-   StringArray objNames = GmatStringUtil::SeparateBy(objNameStr, wxT(" "), true);
+   StringArray objNames = GmatStringUtil::SeparateBy(objNameStr, " ", true);
    #else
-   StringArray objNames = GmatStringUtil::SeparateBy(objNameStr, wxT(", "), true);
+   StringArray objNames = GmatStringUtil::SeparateBy(objNameStr, ", ", true);
    #endif
    
    
    #ifdef DEBUG_ASSEMBLE_CREATE
-   WriteStringArray(wxT("Create object names"), wxT(""), objNames);
+   WriteStringArray("Create object names", "", objNames);
    #endif
    
    if (objNames.size() == 0)
    {
       InterpreterException ex
-         (wxT("Missing object name found in ") + cmd->GetTypeName() + wxT(" command"));
+         ("Missing object name found in " + cmd->GetTypeName() + " command");
       HandleError(ex);
       return false;
    }
    
-   wxString objTypeStrToUse = objTypeStr;
+   std::string objTypeStrToUse = objTypeStr;
    // Special case for Propagator and OpenGLPlot
-   if (objTypeStr == wxT("Propagator"))
-      objTypeStrToUse = wxT("PropSetup");
-   else if (objTypeStr == wxT("OpenGLPlot"))
-      objTypeStrToUse = wxT("OrbitView");
+   if (objTypeStr == "Propagator")
+      objTypeStrToUse = "PropSetup";
+   else if (objTypeStr == "OpenGLPlot")
+      objTypeStrToUse = "OrbitView";
    
    try
    {
       // if object is MatlabFunction make sure we add .m extenstion to avoid
       // automatically creating GmatFunction in the Sandbox::HandleGmatFunction()
-      cmd->SetStringParameter(wxT("ObjectType"), objTypeStrToUse);
+      cmd->SetStringParameter("ObjectType", objTypeStrToUse);
       for (UnsignedInt i=0; i<objNames.size(); i++)
-         cmd->SetStringParameter(wxT("ObjectNames"), objNames[i]);
+         cmd->SetStringParameter("ObjectNames", objNames[i]);
    }
    catch (BaseException &e)
    {
@@ -3130,17 +3130,17 @@ bool Interpreter::AssembleCreateCommand(GmatCommand *cmd, const wxString &desc)
    // Just give warning for now (LOJ: 2010.12.16)
    //----------------------------------------------------------------------
    bool globalObjFound = false;
-   wxString globalObjNames;
+   std::string globalObjNames;
    StringArray defaultCSNames = theModerator->GetDefaultCoordinateSystemNames();
    
    for (UnsignedInt i = 0; i < objNames.size(); i++)
    {
-      wxString name1 = objNames[i];
+      std::string name1 = objNames[i];
       if (find(defaultCSNames.begin(), defaultCSNames.end(), name1) != defaultCSNames.end())
       {
-         wxString msg = 
-            wxT("The default CoordinateSystem \"") + name1 + wxT("\" is automatic ")
-            wxT("global object and was already created, so ignoring");
+         std::string msg = 
+            "The default CoordinateSystem \"" + name1 + "\" is automatic "
+            "global object and was already created, so ignoring";
          InterpreterException ex(msg);
          HandleError(ex, true, true);
       }
@@ -3150,15 +3150,15 @@ bool Interpreter::AssembleCreateCommand(GmatCommand *cmd, const wxString &desc)
          if (obj1 != NULL && obj1->GetIsGlobal())
          {
             globalObjFound = true;
-            globalObjNames = globalObjNames + name1 + wxT(" ");
+            globalObjNames = globalObjNames + name1 + " ";
          }
       }
    }
    
    if (globalObjFound)
    {
-      wxString msg = 
-         wxT("The following automatic global objects are already created, so ignoring: ") + globalObjNames;
+      std::string msg = 
+         "The following automatic global objects are already created, so ignoring: " + globalObjNames;
       InterpreterException ex(msg);
       HandleError(ex, true, true);
       //return false;
@@ -3171,17 +3171,17 @@ bool Interpreter::AssembleCreateCommand(GmatCommand *cmd, const wxString &desc)
    //       but we need name for Array for syntax checking, so pass name
    //       and set false to unmanage Array objects
    //-------------------------------------------------------------------
-   wxString name;
+   std::string name;
    // We also need named object for celetial body, so it can be added to the
    // solar system in use with name (LOJ: 2010.04.30)
-   if ((objTypeStrToUse == wxT("Variable") || objTypeStrToUse == wxT("Array")) ||
+   if ((objTypeStrToUse == "Variable" || objTypeStrToUse == "Array") ||
        (find(celestialBodyList.begin(), celestialBodyList.end(), objTypeStrToUse) != 
         celestialBodyList.end()))
       name = objNames[0];
    
    #ifdef DEBUG_ASSEMBLE_CREATE
    MessageInterface::ShowMessage
-      (wxT("   About to create reference object of '%s' for Create command\n"),
+      ("   About to create reference object of '%s' for Create command\n",
        objTypeStrToUse.c_str());
    #endif
    
@@ -3189,13 +3189,13 @@ bool Interpreter::AssembleCreateCommand(GmatCommand *cmd, const wxString &desc)
    GmatBase *obj = CreateObject(objTypeStrToUse, name, 0);
    
    #ifdef DEBUG_ASSEMBLE_CREATE
-   MessageInterface::ShowMessage(wxT("   %s created\n"), obj->GetTypeName().c_str());
+   MessageInterface::ShowMessage("   %s created\n", obj->GetTypeName().c_str());
    #endif
    
    if (obj == NULL)
    {
       #ifdef DEBUG_ASSEMBLE_CREATE
-         MessageInterface::ShowMessage(wxT("Reference object for Create command is NULL??\n"));
+         MessageInterface::ShowMessage("Reference object for Create command is NULL??\n");
       #endif
       return false;
    }
@@ -3210,27 +3210,27 @@ bool Interpreter::AssembleCreateCommand(GmatCommand *cmd, const wxString &desc)
    // proper functions. Add the name to tempObjectNames so that when creating
    // CallFunction or Assignment command, it can look in the array to figure out
    // whether it is MatlabFunction or not.
-   if (objTypeStrToUse == wxT("MatlabFunction"))
+   if (objTypeStrToUse == "MatlabFunction")
    {
       for (UnsignedInt i=0; i<objNames.size(); i++)
       {
          #ifdef DEBUG_ASSEMBLE_CREATE
          MessageInterface::ShowMessage
-            (wxT("   Adding '%s' to tempObjectNames\n"), objNames[i].c_str());
+            ("   Adding '%s' to tempObjectNames\n", objNames[i].c_str());
          #endif
          tempObjectNames.push_back(objNames[i]);
       }
       
       #ifdef DEBUG_ASSEMBLE_CREATE
       MessageInterface::ShowMessage
-         (wxT("   tempObjectNames.size()=%d\n"), tempObjectNames.size());
+         ("   tempObjectNames.size()=%d\n", tempObjectNames.size());
       #endif
    }
    
    #ifdef DEBUG_ASSEMBLE_CREATE
    MessageInterface::ShowMessage
-      (wxT("AssembleCreateCommand() returning true, created obj=<%p>, objType=<%s>, ")
-       wxT("objName=<%s>\n"), obj, obj->GetTypeName().c_str(), obj->GetName().c_str());
+      ("AssembleCreateCommand() returning true, created obj=<%p>, objType=<%s>, "
+       "objName=<%s>\n", obj, obj->GetTypeName().c_str(), obj->GetName().c_str());
    #endif
    
    return true;
@@ -3238,26 +3238,26 @@ bool Interpreter::AssembleCreateCommand(GmatCommand *cmd, const wxString &desc)
 
 
 //------------------------------------------------------------------------------
-// bool SetCommandRefObjects(GmatCommand *cmd, const wxString &desc)
+// bool SetCommandRefObjects(GmatCommand *cmd, const std::string &desc)
 //------------------------------------------------------------------------------
-bool Interpreter::SetCommandRefObjects(GmatCommand *cmd, const wxString &desc)
+bool Interpreter::SetCommandRefObjects(GmatCommand *cmd, const std::string &desc)
 {
    #ifdef DEBUG_ASSEMBLE_COMMAND   
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetCommandRefObjects() cmd=<%s>, desc=<%s>\n"),
+      ("Interpreter::SetCommandRefObjects() cmd=<%s>, desc=<%s>\n",
        cmd->GetTypeName().c_str(), desc.c_str());
    #endif
 
-   debugMsg = wxT("In SetCommandRefObjects()");
+   debugMsg = "In SetCommandRefObjects()";
    
    // Save, Global commands, for compatability with MATLAB, should not have
    // parentheses (except to indicate array elements), brackets, or braces.
-   // Since Create command can have wxT("Create Array vec[3,1]"), so do not check.
+   // Since Create command can have "Create Array vec[3,1]", so do not check.
    if (!GmatStringUtil::HasNoBrackets(desc, false))
    {
-      wxString msg = 
-         wxT("The ") + cmd->GetTypeName() + wxT(" command is not allowed to contain ")
-         wxT("brackets, braces, or parentheses");
+      std::string msg = 
+         "The " + cmd->GetTypeName() + " command is not allowed to contain "
+         "brackets, braces, or parentheses";
       InterpreterException ex(msg);
       HandleError(ex);
       return false;
@@ -3265,46 +3265,46 @@ bool Interpreter::SetCommandRefObjects(GmatCommand *cmd, const wxString &desc)
    
    // we only want to separate by spaces - commas are not allowed, 
    // not even in arrays (for this command)
-   StringArray parts = GmatStringUtil::SeparateBy(desc, wxT(" "), true);
+   StringArray parts = GmatStringUtil::SeparateBy(desc, " ", true);
    unsigned int numParts = parts.size();
    bool isOk = true;
    
    if (numParts == 0)
    {
-      wxString msg = 
-         wxT("The ") + cmd->GetTypeName() + wxT(" command has missing object names");
+      std::string msg = 
+         "The " + cmd->GetTypeName() + " command has missing object names";
       InterpreterException ex(msg);
       HandleError(ex);
       return false;
    }
    
    #ifdef DEBUG_ASSEMBLE_COMMAND   
-   WriteStringArray(wxT("object name parts"), wxT(""), parts);
+   WriteStringArray("object name parts", "", parts);
    #endif
    
    for (unsigned int i=0; i<numParts; i++)
    {
-      if (parts[i].find(wxT(',')) != parts[i].npos)
+      if (parts[i].find(',') != parts[i].npos)
       {
-         wxString msg = 
-            wxT("The ") + cmd->GetTypeName() + wxT(" command is not allowed to contain commas - ")
-            wxT("separate objects by spaces");
+         std::string msg = 
+            "The " + cmd->GetTypeName() + " command is not allowed to contain commas - "
+            "separate objects by spaces";
          InterpreterException ex(msg);
          HandleError(ex);
          isOk = false;
       }
       else if (!GmatStringUtil::IsValidName(parts[i]))
       {
-         wxString msg = 
-            wxT("\"") + parts[i] + wxT("\" is an invalid object name in ") +
-            cmd->GetTypeName() + wxT(" command");
+         std::string msg = 
+            "\"" + parts[i] + "\" is an invalid object name in " +
+            cmd->GetTypeName() + " command";
          InterpreterException ex(msg);
          HandleError(ex);
          isOk = false;
       }
       else
       {
-         cmd->SetStringParameter(wxT("ObjectNames"), parts[i]);
+         cmd->SetStringParameter("ObjectNames", parts[i]);
       }
    }
    
@@ -3313,50 +3313,50 @@ bool Interpreter::SetCommandRefObjects(GmatCommand *cmd, const wxString &desc)
 
 
 //------------------------------------------------------------------------------
-//GmatCommand* CreateAssignmentCommand(const wxString &lhs,
-//                                     const wxString &rhs, bool &retFlag,
+//GmatCommand* CreateAssignmentCommand(const std::string &lhs,
+//                                     const std::string &rhs, bool &retFlag,
 //                                     GmatCommand *inCmd)
 //------------------------------------------------------------------------------
-GmatCommand* Interpreter::CreateAssignmentCommand(const wxString &lhs,
-                                                  const wxString &rhs,
+GmatCommand* Interpreter::CreateAssignmentCommand(const std::string &lhs,
+                                                  const std::string &rhs,
                                                   bool &retFlag, GmatCommand *inCmd)
 {
    #ifdef DEBUG_CREATE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("Interpreter::CreateAssignmentCommand() lhs=<%s>, rhs=<%s>\n"), lhs.c_str(),
+      ("Interpreter::CreateAssignmentCommand() lhs=<%s>, rhs=<%s>\n", lhs.c_str(),
        rhs.c_str());
    #endif
    
-   debugMsg = wxT("In CreateAssignmentCommand()");
+   debugMsg = "In CreateAssignmentCommand()";
    
    // First check if it is really assignment by checking blank in the lhs.
    // (The lhs must be Variable, String, Array, or object property and this is
    //  validated in the Assignment command)
-   wxString::size_type index = lhs.find_last_of(wxT(" "));
+   std::string::size_type index = lhs.find_last_of(" ");
    if (index != lhs.npos)
    {
-      wxString cmd = lhs.substr(0, index);
+      std::string cmd = lhs.substr(0, index);
       
       // See if it is an Array since array index can have blanks
-      index = lhs.find(wxT("("));
+      index = lhs.find("(");
       if (index != lhs.npos)
       {
          if (!IsArrayElement(lhs))
          {
-            InterpreterException ex(wxT("\"") + cmd + wxT("\" is not a valid Command"));
+            InterpreterException ex("\"" + cmd + "\" is not a valid Command");
             HandleError(ex);
             return NULL;
          }
       }
    }
    
-   wxString desc = lhs + wxT(" = ") + rhs;
-   return CreateCommand(wxT("GMAT"), desc, retFlag, inCmd);
+   std::string desc = lhs + " = " + rhs;
+   return CreateCommand("GMAT", desc, retFlag, inCmd);
 }
 
 
 //------------------------------------------------------------------------------
-// Parameter* CreateSystemParameter(const wxString &name)
+// Parameter* CreateSystemParameter(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Creates a system Parameter from the input parameter name. If the name contains
@@ -3371,11 +3371,11 @@ GmatCommand* Interpreter::CreateAssignmentCommand(const wxString &lhs,
  *
  */
 //------------------------------------------------------------------------------
-Parameter* Interpreter::CreateSystemParameter(const wxString &str)
+Parameter* Interpreter::CreateSystemParameter(const std::string &str)
 {
    #ifdef DEBUG_CREATE_PARAM
    MessageInterface::ShowMessage
-      (wxT("Interpreter::CreateSystemParameter() entered, str='%s', inFunctionMode=%d\n"),
+      ("Interpreter::CreateSystemParameter() entered, str='%s', inFunctionMode=%d\n",
        str.c_str(), inFunctionMode);
    #endif
    
@@ -3389,11 +3389,11 @@ Parameter* Interpreter::CreateSystemParameter(const wxString &str)
    
    #ifdef DEBUG_CREATE_PARAM
    MessageInterface::ShowMessage
-      (wxT("   Parameter '%s'%screated\n"), str.c_str(), paramCreated ? wxT(" ") : wxT(" NOT "));
+      ("   Parameter '%s'%screated\n", str.c_str(), paramCreated ? " " : " NOT ");
    MessageInterface::ShowMessage
-      (wxT("Interpreter::CreateSystemParameter() returning <%p><%s>'%s'\n"), param,
-       (param == NULL) ? wxT("NULL") : param->GetTypeName().c_str(),
-       (param == NULL) ? wxT("NULL") : param->GetName().c_str());
+      ("Interpreter::CreateSystemParameter() returning <%p><%s>'%s'\n", param,
+       (param == NULL) ? "NULL" : param->GetTypeName().c_str(),
+       (param == NULL) ? "NULL" : param->GetName().c_str());
    #endif
    
    return param;
@@ -3401,29 +3401,29 @@ Parameter* Interpreter::CreateSystemParameter(const wxString &str)
 
 
 //------------------------------------------------------------------------------
-// Parameter* CreateParameter(const wxString &type, const wxString &name,
-//                            const wxString &ownerName, const wxString &depName)
+// Parameter* CreateParameter(const std::string &type, const std::string &name,
+//                            const std::string &ownerName, const std::string &depName)
 //------------------------------------------------------------------------------
 /**
  * Calls the Moderator to create a Parameter.
  * 
  * @param  type       Type of parameter requested
  * @param  name       Name for the parameter.
- * @param  ownerName  object name of parameter requested (wxT(""))
- * @param  depName    Dependent object name of parameter requested (wxT(""))
+ * @param  ownerName  object name of parameter requested ("")
+ * @param  depName    Dependent object name of parameter requested ("")
  * 
  * @return Pointer to the constructed Parameter.
  */
 //------------------------------------------------------------------------------
-Parameter* Interpreter::CreateParameter(const wxString &type, 
-                                        const wxString &name,
-                                        const wxString &ownerName,
-                                        const wxString &depName)
+Parameter* Interpreter::CreateParameter(const std::string &type, 
+                                        const std::string &name,
+                                        const std::string &ownerName,
+                                        const std::string &depName)
 {
    #ifdef DEBUG_CREATE_PARAM
    MessageInterface::ShowMessage
-      (wxT("Interpreter::CreateParameter() type='%s', name='%s', ownerName='%s', ")
-       wxT("depName='%s', inFunctionMode=%d\n"), type.c_str(), name.c_str(),
+      ("Interpreter::CreateParameter() type='%s', name='%s', ownerName='%s', "
+       "depName='%s', inFunctionMode=%d\n", type.c_str(), name.c_str(),
        ownerName.c_str(), depName.c_str(), inFunctionMode);
    #endif
    
@@ -3436,7 +3436,7 @@ Parameter* Interpreter::CreateParameter(const wxString &type,
 
 
 //------------------------------------------------------------------------------
-// Parameter* GetArrayIndex(const wxString &arrayStr, Integer &row, Integer &col)
+// Parameter* GetArrayIndex(const std::string &arrayStr, Integer &row, Integer &col)
 //------------------------------------------------------------------------------
 /**
  * Retrives array index from the configured array.
@@ -3446,23 +3446,23 @@ Parameter* Interpreter::CreateParameter(const wxString &type,
  * @note Array name must be created and configured before acces.
  */
 //------------------------------------------------------------------------------
-Parameter* Interpreter::GetArrayIndex(const wxString &arrayStr,
+Parameter* Interpreter::GetArrayIndex(const std::string &arrayStr,
                                       Integer &row, Integer &col)
 {
-   debugMsg = wxT("In GetArrayIndex()");
-   wxString name, rowStr, colStr;
+   debugMsg = "In GetArrayIndex()";
+   std::string name, rowStr, colStr;
    
    // parse array name and index
    GmatStringUtil::GetArrayIndex(arrayStr, rowStr, colStr, row, col, name);
    
    // Remove - sign from the name
-   if (name[0] == wxT('-'))
+   if (name[0] == '-')
       name = name.substr(1);
    
    #ifdef DEBUG_ARRAY_GET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::GetArrayIndex() arrayStr=<%s>, name=<%s>, rowStr=<%s>, ")
-       wxT("colStr=<%s>, row=%d, col=%d\n"), arrayStr.c_str(), name.c_str(),
+      ("Interpreter::GetArrayIndex() arrayStr=<%s>, name=<%s>, rowStr=<%s>, "
+       "colStr=<%s>, row=%d, col=%d\n", arrayStr.c_str(), name.c_str(),
        rowStr.c_str(), colStr.c_str(), row, col);
    #endif
    
@@ -3474,33 +3474,33 @@ Parameter* Interpreter::GetArrayIndex(const wxString &arrayStr,
    
    if (param == NULL)
    {
-      InterpreterException ex(wxT("Array named \"") + name + wxT("\" is undefined"));
+      InterpreterException ex("Array named \"" + name + "\" is undefined");
       HandleError(ex);
    }
    else
    {
-      if (param->GetTypeName() != wxT("Array"))
+      if (param->GetTypeName() != "Array")
       {
-         InterpreterException ex(wxT("\"") + name + wxT("\" is not an Array"));
+         InterpreterException ex("\"" + name + "\" is not an Array");
          HandleError(ex);
          return NULL;
       }
       
-      if (rowStr == wxT("0") || colStr == wxT("0") ||rowStr == wxT("-1") || colStr == wxT("-1"))
+      if (rowStr == "0" || colStr == "0" ||rowStr == "-1" || colStr == "-1")
       {
-         InterpreterException ex(wxT("Index exceeds matrix dimensions"));
+         InterpreterException ex("Index exceeds matrix dimensions");
          HandleError(ex);
          return NULL;
       }
       
       // get row value
-      if (row == -1 && rowStr != wxT("-1"))
+      if (row == -1 && rowStr != "-1")
       {
          Parameter *rowParam = (Parameter*)FindObject(rowStr);
          if (rowParam == NULL)
          {
             InterpreterException ex
-               (wxT("Array row index named \"") + rowStr + wxT("\" is undefined"));
+               ("Array row index named \"" + rowStr + "\" is undefined");
             HandleError(ex);
          }
          else
@@ -3512,20 +3512,20 @@ Parameter* Interpreter::GetArrayIndex(const wxString &arrayStr,
             else
             {
                InterpreterException ex
-                  (wxT("Cannot handle row index of Array named \"") + name + wxT("\""));
+                  ("Cannot handle row index of Array named \"" + name + "\"");
                HandleError(ex);
             }
          }
       }
       
       // get column value
-      if (col == -1 && colStr != wxT("-1"))
+      if (col == -1 && colStr != "-1")
       {
          Parameter *colParam = (Parameter*)FindObject(colStr);
          if (colParam == NULL)
          {
             InterpreterException ex
-               (wxT("Column index named \"") + colStr + wxT("\" is undefined"));
+               ("Column index named \"" + colStr + "\" is undefined");
             HandleError(ex);
          }
          else
@@ -3537,7 +3537,7 @@ Parameter* Interpreter::GetArrayIndex(const wxString &arrayStr,
             else
             {
                InterpreterException ex
-                  (wxT("Cannot handle column index of Array named \"") + name + wxT("\""));
+                  ("Cannot handle column index of Array named \"" + name + "\"");
                HandleError(ex);
             }
          }
@@ -3546,7 +3546,7 @@ Parameter* Interpreter::GetArrayIndex(const wxString &arrayStr,
    
    #ifdef DEBUG_ARRAY_GET
    MessageInterface::ShowMessage
-      (wxT("   GetArrayIndex() row=%d, col=%d\n"), row, col);
+      ("   GetArrayIndex() row=%d, col=%d\n", row, col);
    #endif
    
    if (param == NULL || row == -1 || col == -1)
@@ -3557,7 +3557,7 @@ Parameter* Interpreter::GetArrayIndex(const wxString &arrayStr,
 
 
 //------------------------------------------------------------------------------
-// GmatBase* MakeAssignment(const wxString &lhs, const wxString &rhs)
+// GmatBase* MakeAssignment(const std::string &lhs, const std::string &rhs)
 //------------------------------------------------------------------------------
 /*
  * Sets rhs to lhs.
@@ -3568,17 +3568,17 @@ Parameter* Interpreter::GetArrayIndex(const wxString &arrayStr,
  * @return return LHS object pointer
  */
 //------------------------------------------------------------------------------
-GmatBase* Interpreter::MakeAssignment(const wxString &lhs, const wxString &rhs)
+GmatBase* Interpreter::MakeAssignment(const std::string &lhs, const std::string &rhs)
 {
    #ifdef DEBUG_MAKE_ASSIGNMENT
    MessageInterface::ShowMessage
-      (wxT("Interpreter::MakeAssignment() lhs=<%s>, rhs=<%s>\n"), lhs.c_str(), rhs.c_str());
+      ("Interpreter::MakeAssignment() lhs=<%s>, rhs=<%s>\n", lhs.c_str(), rhs.c_str());
    MessageInterface::ShowMessage
-      (wxT("   inFunctionMode=%d, hasFunctionDefinition=%d\n"), inFunctionMode,
+      ("   inFunctionMode=%d, hasFunctionDefinition=%d\n", inFunctionMode,
        hasFunctionDefinition);
    #endif
 
-   debugMsg = wxT("In MakeAssignment()");
+   debugMsg = "In MakeAssignment()";
    bool retval = false;
    
    // Separate dots
@@ -3586,9 +3586,9 @@ GmatBase* Interpreter::MakeAssignment(const wxString &lhs, const wxString &rhs)
    Integer lhsPartCount = lhsParts.size();
    StringArray rhsParts = theTextParser.SeparateDots(rhs);
    Integer rhsPartCount = rhsParts.size();
-   wxString::size_type dot;
-   wxString lhsObjName, rhsObjName;
-   wxString lhsPropName, rhsPropName;
+   std::string::size_type dot;
+   std::string lhsObjName, rhsObjName;
+   std::string lhsPropName, rhsPropName;
    GmatBase *lhsObj = NULL;
    GmatBase *rhsObj = NULL;
    bool isLhsObject = false;
@@ -3601,11 +3601,11 @@ GmatBase* Interpreter::MakeAssignment(const wxString &lhs, const wxString &rhs)
    bool isRhsString = false;
    bool isRhsNumber = false;
    
-   currentBlock = lhs + wxT(" = ") + rhs;
+   currentBlock = lhs + " = " + rhs;
    
    #ifdef DEBUG_MAKE_ASSIGNMENT
-   WriteStringArray(wxT("lhs parts"), wxT(""), lhsParts);
-   WriteStringArray(wxT("rhs parts"), wxT(""), rhsParts);
+   WriteStringArray("lhs parts", "", lhsParts);
+   WriteStringArray("rhs parts", "", rhsParts);
    #endif
    
    // check LHS
@@ -3616,21 +3616,21 @@ GmatBase* Interpreter::MakeAssignment(const wxString &lhs, const wxString &rhs)
       
       if (lhsObj == NULL)
       {
-         if (lhs == wxT(""))
+         if (lhs == "")
          {
-            InterpreterException ex(wxT("Object field assignment is incomplete"));
+            InterpreterException ex("Object field assignment is incomplete");
             HandleError(ex);
          }
          else
          {
             InterpreterException ex
-               (wxT("Cannot find LHS object named \"") + lhsObjName + wxT("\""));
+               ("Cannot find LHS object named \"" + lhsObjName + "\"");
             HandleError(ex);
          }
          return NULL;
       }
       
-      dot = lhs.find(wxT('.'));
+      dot = lhs.find('.');
       if (dot == lhs.npos)
          lhsPropName = lhsParts[1];
       else
@@ -3647,21 +3647,21 @@ GmatBase* Interpreter::MakeAssignment(const wxString &lhs, const wxString &rhs)
          else
             isLhsObject = true;
          
-         if (lhsObj->IsOfType(wxT("Variable")))
+         if (lhsObj->IsOfType("Variable"))
             isLhsVariable = true;
-         else if (lhsObj->IsOfType(wxT("String")))
+         else if (lhsObj->IsOfType("String"))
             isLhsString = true;
       }
       else
       {
-         if (lhs == wxT(""))
+         if (lhs == "")
          {
-            InterpreterException ex(wxT("Missing equal sign in object field assignment"));
+            InterpreterException ex("Missing equal sign in object field assignment");
             HandleError(ex);
          }
          else
          {
-            InterpreterException ex(wxT("Cannot find LHS object named \"") + lhs + wxT("\""));
+            InterpreterException ex("Cannot find LHS object named \"" + lhs + "\"");
             HandleError(ex);
          }
          return NULL;
@@ -3670,29 +3670,29 @@ GmatBase* Interpreter::MakeAssignment(const wxString &lhs, const wxString &rhs)
    
    #ifdef DEBUG_MAKE_ASSIGNMENT
    MessageInterface::ShowMessage
-      (wxT("   isLhsObject=%d, isLhsArray=%d, isLhsVariable=%d, isLhsString=%d, ")
-       wxT("lhsPropName=<%s>, lhsObj=<%p><%s>\n"), isLhsObject, isLhsArray,
+      ("   isLhsObject=%d, isLhsArray=%d, isLhsVariable=%d, isLhsString=%d, "
+       "lhsPropName=<%s>, lhsObj=<%p><%s>\n", isLhsObject, isLhsArray,
        isLhsVariable, isLhsString, lhsPropName.c_str(), lhsObj,
-       (lhsObj == NULL) ? wxT("NULL") : lhsObj->GetName().c_str() );
+       (lhsObj == NULL) ? "NULL" : lhsObj->GetName().c_str() );
    #endif
    
    // check RHS
    if (rhsPartCount > 1)
    {
       rhsObjName = rhsParts[0];
-      wxString objTypeStr = wxT("");
+      std::string objTypeStr = "";
       // Check if RHS has open paren, then it should be an Array (loj: 2008.08.15)
-      if (rhsObjName.find_first_of(wxT("(")) != rhsObjName.npos)
-         objTypeStr = wxT("Array");
+      if (rhsObjName.find_first_of("(") != rhsObjName.npos)
+         objTypeStr = "Array";
       rhsObj = FindObject(rhsObjName, objTypeStr);
       
       if (rhsObj == NULL)
       {
-         //throw InterpreterException(wxT("Cannot find RHS object: ") + rhsObjName + wxT("\n"));
+         //throw InterpreterException("Cannot find RHS object: " + rhsObjName + "\n");
          
          #ifdef DEBUG_MAKE_ASSIGNMENT
          MessageInterface::ShowMessage
-            (wxT("   Cannot find RHS object '%s' of type <%s>. It may be a string value\n"),
+            ("   Cannot find RHS object '%s' of type <%s>. It may be a string value\n",
              rhsObjName.c_str(), objTypeStr.c_str());
          #endif
       }
@@ -3703,19 +3703,19 @@ GmatBase* Interpreter::MakeAssignment(const wxString &lhs, const wxString &rhs)
          
          #ifdef DEBUG_MAKE_ASSIGNMENT
          MessageInterface::ShowMessage
-            (wxT("   Found rhs object <%s>'%s', now checking for dot\n"),
+            ("   Found rhs object <%s>'%s', now checking for dot\n",
              rhsObj->GetTypeName().c_str(), rhsObj->GetName().c_str());
          #endif
          
          // Check if it is CallFunction first
-         dot = rhs.find(wxT('.'));
+         dot = rhs.find('.');
          if (dot == rhs.npos)
          {
             rhsPropName = rhsParts[1];
          }
          else
          {
-            wxString afterDot = rhs.substr(dot+1);
+            std::string afterDot = rhs.substr(dot+1);
             // Check if rhs is a Parameter first
             // This will fix Bug 1669 (LOJ: 2009.12.08)
             if (theValidator->IsParameterType(rhs))
@@ -3738,21 +3738,21 @@ GmatBase* Interpreter::MakeAssignment(const wxString &lhs, const wxString &rhs)
    }
    else
    {
-      // If firist RHS char is wxT("-") sign, use without it in finding name.
+      // If firist RHS char is "-" sign, use without it in finding name.
       // This is due to backward propagation. For example,
       // Propagate -prop(Sat1, Sat2, {Sat1.Periapsis})
-      wxString newName = rhs;
+      std::string newName = rhs;
       
-      if (rhs[0] == wxT('-'))
+      if (rhs[0] == '-')
          newName = rhs.substr(1);
       
       rhsObj = FindObject(newName);
       
       if (rhsObj)
       {
-         if (rhsObj->IsOfType(wxT("Variable")))
+         if (rhsObj->IsOfType("Variable"))
             isRhsVariable = true;
-         else if (rhsObj->IsOfType(wxT("String")))
+         else if (rhsObj->IsOfType("String"))
             isRhsString = true;
          
          if (IsArrayElement(rhs))
@@ -3779,11 +3779,11 @@ GmatBase* Interpreter::MakeAssignment(const wxString &lhs, const wxString &rhs)
    
    #ifdef DEBUG_MAKE_ASSIGNMENT
    MessageInterface::ShowMessage
-      (wxT("   isRhsObject=%d, isRhsArray=%d, isRhsVariable=%d, isRhsString=%d, ")
-       wxT("isRhsNumber=%d, rhsPropName=<%s>, rhsObj=<%p><%s>\n"),
+      ("   isRhsObject=%d, isRhsArray=%d, isRhsVariable=%d, isRhsString=%d, "
+       "isRhsNumber=%d, rhsPropName=<%s>, rhsObj=<%p><%s>\n",
        isRhsObject, isRhsArray, isRhsVariable, isRhsString, isRhsNumber,
        rhsPropName.c_str(), rhsObj,
-       (rhsObj == NULL) ? wxT("NULL") : rhsObj->GetName().c_str() );
+       (rhsObj == NULL) ? "NULL" : rhsObj->GetName().c_str() );
    #endif
    
    if (isLhsObject)
@@ -3801,21 +3801,21 @@ GmatBase* Interpreter::MakeAssignment(const wxString &lhs, const wxString &rhs)
       if (!isAllowed)
       {
          InterpreterException ex
-            (wxT("Setting \"") + lhs + wxT("\" to \"") + rhs + wxT("\" is not allowed before BeginMissionSequence"));
+            ("Setting \"" + lhs + "\" to \"" + rhs + "\" is not allowed before BeginMissionSequence");
          HandleError(ex);
          return false;
       }
       
       if (isRhsObject)
          retval = SetObjectToObject(lhsObj, rhsObj, rhs);
-      else if (rhsPropName != wxT(""))
+      else if (rhsPropName != "")
          retval = SetObjectToProperty(lhsObj, rhsObj, rhsPropName);
       else if (isRhsArray)
          retval = SetObjectToArray(lhsObj, rhs);
       else
          retval = SetObjectToValue(lhsObj, rhs);
    }
-   else if (lhsPropName != wxT("")) // LHS is object property
+   else if (lhsPropName != "") // LHS is object property
    {
       bool isAllowed = true;
       GmatBase *toObj = NULL;
@@ -3834,7 +3834,7 @@ GmatBase* Interpreter::MakeAssignment(const wxString &lhs, const wxString &rhs)
          
          // Setting object property to other property is not allowed(Bug 2043)
          // excluding FILENAME_TYPE which can have dots.
-         if (isAllowed && rhsPropName != wxT("") && toType != Gmat::FILENAME_TYPE)
+         if (isAllowed && rhsPropName != "" && toType != Gmat::FILENAME_TYPE)
          {
             isAllowed = false;
          }
@@ -3843,14 +3843,14 @@ GmatBase* Interpreter::MakeAssignment(const wxString &lhs, const wxString &rhs)
       if (!isAllowed)
       {
          InterpreterException ex
-            (wxT("Setting \"") + lhs + wxT("\" to \"") + rhs + wxT("\" is not allowed before BeginMissionSequence"));
+            ("Setting \"" + lhs + "\" to \"" + rhs + "\" is not allowed before BeginMissionSequence");
          HandleError(ex);
          return false;
       }
       
       if (isRhsObject)
          retval = SetPropertyToObject(lhsObj, lhsPropName, rhsObj);
-      else if (rhsPropName != wxT(""))
+      else if (rhsPropName != "")
          retval = SetPropertyToProperty(lhsObj, lhsPropName, rhsObj, rhsPropName);
       else if (isRhsArray)
          retval = SetPropertyToArray(lhsObj, lhsPropName, rhs);
@@ -3862,14 +3862,14 @@ GmatBase* Interpreter::MakeAssignment(const wxString &lhs, const wxString &rhs)
       if (!isRhsNumber)
       {
          InterpreterException ex
-            (wxT("Setting \"") + lhs + wxT("\" to \"") + rhs + wxT("\" is not allowed before BeginMissionSequence"));
+            ("Setting \"" + lhs + "\" to \"" + rhs + "\" is not allowed before BeginMissionSequence");
          HandleError(ex);
          return false;
       }
       
       if (isRhsObject)
          retval = SetArrayToObject(lhsObj, lhs, rhsObj);
-      else if (rhsPropName != wxT(""))
+      else if (rhsPropName != "")
          retval = SetArrayToProperty(lhsObj, lhs, rhsObj, rhsPropName);
       else if (isRhsArray)
          retval = SetArrayToArray(lhsObj, lhs, rhsObj, rhs);
@@ -3879,13 +3879,13 @@ GmatBase* Interpreter::MakeAssignment(const wxString &lhs, const wxString &rhs)
    else
    {
       InterpreterException ex
-         (wxT("Interpreter::MakeAssignment() Internal error if it reached here."));
+         ("Interpreter::MakeAssignment() Internal error if it reached here.");
       HandleError(ex);
    }
    
    #ifdef DEBUG_MAKE_ASSIGNMENT
    MessageInterface::ShowMessage
-      (wxT("Interpreter::MakeAssignment() returning lhsObj=%p\n"), lhsObj);
+      ("Interpreter::MakeAssignment() returning lhsObj=%p\n", lhsObj);
    #endif
    
    if (retval)
@@ -3896,18 +3896,18 @@ GmatBase* Interpreter::MakeAssignment(const wxString &lhs, const wxString &rhs)
 
 
 //-------------------------------------------------------------------------------
-// bool SetObjectToObject(GmatBase *toObj, GmatBase *fromObj, const wxString &rhs)
+// bool SetObjectToObject(GmatBase *toObj, GmatBase *fromObj, const std::string &rhs)
 //-------------------------------------------------------------------------------
 bool Interpreter::SetObjectToObject(GmatBase *toObj, GmatBase *fromObj,
-                                    const wxString &rhs)
+                                    const std::string &rhs)
 {
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetObjectToObject() to=%s, from=%s, rhs='%s'\n"),
+      ("Interpreter::SetObjectToObject() to=%s, from=%s, rhs='%s'\n",
        toObj->GetName().c_str(), fromObj->GetName().c_str(), rhs.c_str());
    #endif
    
-   debugMsg = wxT("In SetObjectToObject()");
+   debugMsg = "In SetObjectToObject()";
    
    // Copy object
    if (toObj->GetTypeName() == fromObj->GetTypeName())
@@ -3916,27 +3916,27 @@ bool Interpreter::SetObjectToObject(GmatBase *toObj, GmatBase *fromObj,
    }
    else
    {
-      InterpreterException ex(wxT("Object type of LHS and RHS are not the same."));
+      InterpreterException ex("Object type of LHS and RHS are not the same.");
       HandleError(ex);
       return false;
    }
    
    // More handling for Variable
-   if (toObj->IsOfType(wxT("Variable")))
+   if (toObj->IsOfType("Variable"))
    {
       // If first char is - sign, negate the value
-      if (rhs[0] == wxT('-'))
+      if (rhs[0] == '-')
       {
-         Real rval = toObj->GetRealParameter(wxT("Value")) * -1;
-         toObj->SetRealParameter(wxT("Value"), rval);
+         Real rval = toObj->GetRealParameter("Value") * -1;
+         toObj->SetRealParameter("Value", rval);
       }
       // Set Variable's InitialValue so when it is written out, it will have original string value (LOJ: 2010.09.21)
-      toObj->SetStringParameter(wxT("InitialValue"), rhs);
+      toObj->SetStringParameter("InitialValue", rhs);
    }
    
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetObjectToObject() returning true\n"));
+      ("Interpreter::SetObjectToObject() returning true\n");
    #endif
    
    return true;
@@ -3945,28 +3945,28 @@ bool Interpreter::SetObjectToObject(GmatBase *toObj, GmatBase *fromObj,
 
 //-------------------------------------------------------------------------------
 // bool SetObjectToProperty(GmatBase *toObj, GmatBase *fromOwner,
-//                          const wxString &fromProp)
+//                          const std::string &fromProp)
 //-------------------------------------------------------------------------------
 bool Interpreter::SetObjectToProperty(GmatBase *toObj, GmatBase *fromOwner,
-                                      const wxString &fromProp)
+                                      const std::string &fromProp)
 {
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("SetObjectToProperty() toObj=%s, fromOwner=%s, fromProp=%s\n"),
+      ("SetObjectToProperty() toObj=%s, fromOwner=%s, fromProp=%s\n",
        toObj->GetName().c_str(), fromOwner->GetName().c_str(), fromProp.c_str());
    #endif
    
-   debugMsg = wxT("In SetObjectToProperty()");
-   wxString rhs = fromOwner->GetName() + wxT(".") + fromProp;
+   debugMsg = "In SetObjectToProperty()";
+   std::string rhs = fromOwner->GetName() + "." + fromProp;
    Integer fromId = -1;
    Gmat::ParameterType fromType = Gmat::UNKNOWN_PARAMETER_TYPE;
    Parameter *rhsParam = NULL;
    
-   if (toObj->GetTypeName() != wxT("Variable") && toObj->GetTypeName() != wxT("String"))
+   if (toObj->GetTypeName() != "Variable" && toObj->GetTypeName() != "String")
    {
       InterpreterException ex
-         (wxT("Setting an object \"") + toObj->GetName() + wxT("\" to ") + fromProp +
-          wxT("\" is not allowed"));
+         ("Setting an object \"" + toObj->GetName() + "\" to " + fromProp +
+          "\" is not allowed");
       HandleError(ex);
       return false;
    }
@@ -4000,7 +4000,7 @@ bool Interpreter::SetObjectToProperty(GmatBase *toObj, GmatBase *fromOwner,
       
       #ifdef DEBUG_SET
       MessageInterface::ShowMessage
-         (wxT("SetObjectToProperty() rhs:%s is a parameter\n"), rhs.c_str());
+         ("SetObjectToProperty() rhs:%s is a parameter\n", rhs.c_str());
       #endif
    }
    
@@ -4014,7 +4014,7 @@ bool Interpreter::SetObjectToProperty(GmatBase *toObj, GmatBase *fromOwner,
          // LHS is a Variable or String, RHS is a Parameter
          if (toType == Gmat::STRING_TYPE || toType == Gmat::ENUMERATION_TYPE ||
              toType == Gmat::FILENAME_TYPE)
-            toObj->SetStringParameter(wxT("Value"), rhsParam->GetString());
+            toObj->SetStringParameter("Value", rhsParam->GetString());
          else if (toType == Gmat::REAL_TYPE)
             ParseVariableExpression(toParam, rhs);
       }
@@ -4023,7 +4023,7 @@ bool Interpreter::SetObjectToProperty(GmatBase *toObj, GmatBase *fromOwner,
          // LHS is a Variable or String, RHS is an ObjectProperty
          if (toType == Gmat::STRING_TYPE || toType == Gmat::ENUMERATION_TYPE ||
              toType == Gmat::FILENAME_TYPE)
-            toObj->SetStringParameter(wxT("Value"), fromOwner->GetStringParameter(fromId));
+            toObj->SetStringParameter("Value", fromOwner->GetStringParameter(fromId));
          else if (toType == Gmat::REAL_TYPE)
          {
             // Check to see if fromProp is also a system Parameter, (loj: 2008.08.06)
@@ -4034,18 +4034,18 @@ bool Interpreter::SetObjectToProperty(GmatBase *toObj, GmatBase *fromOwner,
                ParseVariableExpression(toParam, rhs);
             }
             else
-               toObj->SetRealParameter(wxT("Value"), fromOwner->GetRealParameter(fromId));
+               toObj->SetRealParameter("Value", fromOwner->GetRealParameter(fromId));
          }
       }
    }
    else
    {
       //InterpreterException ex
-      //   (wxT("Setting an object \"") + toObj->GetName() + wxT("\" to ") + fromProp +
-      //    wxT("\" is not allowed"));
+      //   ("Setting an object \"" + toObj->GetName() + "\" to " + fromProp +
+      //    "\" is not allowed");
       InterpreterException ex
-         (wxT("Setting \"") + fromProp + wxT("\" to an object \"") + toObj->GetName() +
-          wxT("\" is not allowed"));
+         ("Setting \"" + fromProp + "\" to an object \"" + toObj->GetName() +
+          "\" is not allowed");
       HandleError(ex);
       return false;
    }
@@ -4055,26 +4055,26 @@ bool Interpreter::SetObjectToProperty(GmatBase *toObj, GmatBase *fromOwner,
 
 
 //-------------------------------------------------------------------------------
-// bool SetObjectToArray(GmatBase *toObj, const wxString &fromArray)
+// bool SetObjectToArray(GmatBase *toObj, const std::string &fromArray)
 //-------------------------------------------------------------------------------
-bool Interpreter::SetObjectToArray(GmatBase *toObj, const wxString &fromArray)
+bool Interpreter::SetObjectToArray(GmatBase *toObj, const std::string &fromArray)
 {
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetObjectToArray() toObj=%s, fromArray=%s\n"),
+      ("Interpreter::SetObjectToArray() toObj=%s, fromArray=%s\n",
        toObj->GetName().c_str(), fromArray.c_str());
    #endif
    
-   debugMsg = wxT("In SetObjectToArray()");
+   debugMsg = "In SetObjectToArray()";
    
-   if (toObj->GetTypeName() != wxT("Variable"))
+   if (toObj->GetTypeName() != "Variable")
    {
       //InterpreterException ex
-      //   (wxT("Setting \"") + fromArray + wxT("\" to an object \"") + toObj->GetName() +
-      //    wxT("\" is not allowed"));
+      //   ("Setting \"" + fromArray + "\" to an object \"" + toObj->GetName() +
+      //    "\" is not allowed");
       InterpreterException ex
-         (wxT("Setting \"") + toObj->GetName() + wxT("\" to an array \"") + fromArray +
-          wxT("\" is not allowed"));
+         ("Setting \"" + toObj->GetName() + "\" to an array \"" + fromArray +
+          "\" is not allowed");
       HandleError(ex);
       return false;
    }
@@ -4086,13 +4086,13 @@ bool Interpreter::SetObjectToArray(GmatBase *toObj, const wxString &fromArray)
    
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("   SetObjectToArray() row=%d, col=%d\n"), row, col);
+      ("   SetObjectToArray() row=%d, col=%d\n", row, col);
    #endif
    
    // Check for array index
    if (row == -1 || col == -1)
    {
-      InterpreterException ex(wxT("Invalid array index: ") + fromArray);
+      InterpreterException ex("Invalid array index: " + fromArray);
       HandleError(ex);
       return false;
    }
@@ -4100,15 +4100,15 @@ bool Interpreter::SetObjectToArray(GmatBase *toObj, const wxString &fromArray)
    Real rval = GetArrayValue(fromArray, row, col);
    
    #ifdef DEBUG_SET
-   MessageInterface::ShowMessage(wxT("   SetObjectToArray() rval=%f\n"), rval);
+   MessageInterface::ShowMessage("   SetObjectToArray() rval=%f\n", rval);
    #endif
 
    try
    {
       // Handle minus sign
-      if (fromArray[0] == wxT('-'))
+      if (fromArray[0] == '-')
          rval = -rval;
-      toObj->SetRealParameter(wxT("Value"), rval);
+      toObj->SetRealParameter("Value", rval);
    }
    catch (BaseException &e)
    {
@@ -4117,63 +4117,63 @@ bool Interpreter::SetObjectToArray(GmatBase *toObj, const wxString &fromArray)
    }
    
    // Set Variable's InitialValue so when it is written out, it will have original string value (LOJ: 2010.09.21)
-   toObj->SetStringParameter(wxT("InitialValue"), fromArray);
+   toObj->SetStringParameter("InitialValue", fromArray);
    
    return true;
 }
 
 
 //-------------------------------------------------------------------------------
-// bool SetObjectToValue(GmatBase *toObj, const wxString &value)
+// bool SetObjectToValue(GmatBase *toObj, const std::string &value)
 //-------------------------------------------------------------------------------
-bool Interpreter::SetObjectToValue(GmatBase *toObj, const wxString &value)
+bool Interpreter::SetObjectToValue(GmatBase *toObj, const std::string &value)
 {
-   debugMsg = wxT("In SetObjectToValue()");
-   wxString toObjType = toObj->GetTypeName();
+   debugMsg = "In SetObjectToValue()";
+   std::string toObjType = toObj->GetTypeName();
    
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetObjectToValue() toObjType=<%s>, toObjName=%s, value=<%s>\n"),
+      ("Interpreter::SetObjectToValue() toObjType=<%s>, toObjName=%s, value=<%s>\n",
        toObjType.c_str(), toObj->GetName().c_str(), value.c_str());
    #endif
    
-   if (toObjType != wxT("Variable") && toObjType != wxT("String"))
+   if (toObjType != "Variable" && toObjType != "String")
    {
       //InterpreterException ex
-      //   (wxT("Setting a String value \"") + value + wxT("\" to an object \"") + toObj->GetName() +
-      //    wxT("\" of type \"") + toObjType + wxT("\" is not allowed"));
+      //   ("Setting a String value \"" + value + "\" to an object \"" + toObj->GetName() +
+      //    "\" of type \"" + toObjType + "\" is not allowed");
       InterpreterException ex
-         (wxT("Setting an object \"") + toObj->GetName() + wxT("\" of type \"") + toObjType +
-          wxT("\" to a value \"") + value + wxT("\" is not allowed"));
+         ("Setting an object \"" + toObj->GetName() + "\" of type \"" + toObjType +
+          "\" to a value \"" + value + "\" is not allowed");
       HandleError(ex);
       return false;
    }
    
-   if (toObjType == wxT("String"))
+   if (toObjType == "String")
    {
       // check for unpaired single quotes
-      if (GmatStringUtil::HasMissingQuote(value, wxT("'")))
+      if (GmatStringUtil::HasMissingQuote(value, "'"))
       {
-         InterpreterException ex(wxT("The string \"") + value + wxT("\" has missing single quote"));
+         InterpreterException ex("The string \"" + value + "\" has missing single quote");
          HandleError(ex);
          return false;
       }
       
-      wxString valueToUse = GmatStringUtil::RemoveEnclosingString(value, wxT("'"));
+      std::string valueToUse = GmatStringUtil::RemoveEnclosingString(value, "'");
       
       #ifdef DEBUG_SET
       MessageInterface::ShowMessage
-         (wxT("   Calling %s->SetStringParameter(Expression, %s)\n"), toObj->GetName().c_str(),
+         ("   Calling %s->SetStringParameter(Expression, %s)\n", toObj->GetName().c_str(),
           valueToUse.c_str());
       MessageInterface::ShowMessage
-         (wxT("   Calling %s->SetStringParameter(Value, %s)\n"), toObj->GetName().c_str(),
+         ("   Calling %s->SetStringParameter(Value, %s)\n", toObj->GetName().c_str(),
           valueToUse.c_str());
       #endif
       
-      toObj->SetStringParameter(wxT("Expression"), valueToUse);
-      toObj->SetStringParameter(wxT("Value"), valueToUse);
+      toObj->SetStringParameter("Expression", valueToUse);
+      toObj->SetStringParameter("Value", valueToUse);
    }
-   else if (toObjType == wxT("Variable"))
+   else if (toObjType == "Variable")
    {
       Real rval;
 
@@ -4182,10 +4182,10 @@ bool Interpreter::SetObjectToValue(GmatBase *toObj, const wxString &value)
          if (GmatStringUtil::ToReal(value, rval, true))
          {      
             #ifdef DEBUG_SET
-            MessageInterface::ShowMessage(wxT("   SetObjectToValue() rval=%f\n"), rval);
+            MessageInterface::ShowMessage("   SetObjectToValue() rval=%f\n", rval);
             #endif
             
-            toObj->SetRealParameter(wxT("Value"), rval);
+            toObj->SetRealParameter("Value", rval);
          }
          else
          {
@@ -4193,11 +4193,11 @@ bool Interpreter::SetObjectToValue(GmatBase *toObj, const wxString &value)
             //if (!ParseVariableExpression((Parameter*)toObj, value))
             //{
             //InterpreterException ex
-            //(wxT("Setting \"") + value + wxT("\" to a Variable \"") + toObj->GetName() +
-            //wxT("\" is not allowed"));
+            //("Setting \"" + value + "\" to a Variable \"" + toObj->GetName() +
+            //"\" is not allowed");
             InterpreterException ex
-               (wxT("Setting an object \"") + toObj->GetName() + wxT("\" of type \"") + toObjType +
-                wxT("\" to a value \"") + value + wxT("\" is not allowed"));
+               ("Setting an object \"" + toObj->GetName() + "\" of type \"" + toObjType +
+                "\" to a value \"" + value + "\" is not allowed");
             HandleError(ex);
             return false;
             //}
@@ -4211,36 +4211,36 @@ bool Interpreter::SetObjectToValue(GmatBase *toObj, const wxString &value)
    }
    
    // Set Variable's InitialValue so when it is written out, it will have original string value (LOJ: 2010.09.21)
-   toObj->SetStringParameter(wxT("InitialValue"), value);
+   toObj->SetStringParameter("InitialValue", value);
    return true;
 }
 
 
 //-------------------------------------------------------------------------------
-// bool SetPropertyToObject(GmatBase *toOwner, const wxString &toProp,
+// bool SetPropertyToObject(GmatBase *toOwner, const std::string &toProp,
 //                          GmatBase *fromObj)
 //-------------------------------------------------------------------------------
-bool Interpreter::SetPropertyToObject(GmatBase *toOwner, const wxString &toProp,
+bool Interpreter::SetPropertyToObject(GmatBase *toOwner, const std::string &toProp,
                                       GmatBase *fromObj)
 {
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetPropertyToObject() ownerType=%s, toOwner=%s, toProp=%s, ")
-       wxT("fromObj=%s\n"), toOwner->GetTypeName().c_str(), toOwner->GetName().c_str(),
+      ("Interpreter::SetPropertyToObject() ownerType=%s, toOwner=%s, toProp=%s, "
+       "fromObj=%s\n", toOwner->GetTypeName().c_str(), toOwner->GetName().c_str(),
        toProp.c_str(), fromObj->GetName().c_str());
    #endif
    
-   debugMsg = wxT("In SetPropertyToObject()");
+   debugMsg = "In SetPropertyToObject()";
    
    if (toOwner->GetType() == Gmat::ODE_MODEL)
    {
-      wxString objName = fromObj->GetName();
+      std::string objName = fromObj->GetName();
       bool retval = SetForceModelProperty(toOwner, toProp, objName, fromObj);
       if (!retval)
       {
          InterpreterException ex
-            (wxT("The value of \"") + objName + wxT("\" for field \"") + toProp +
-             wxT("\" on ForceModel \"") + toOwner->GetName() + wxT("\" is not an allowed value"));
+            ("The value of \"" + objName + "\" for field \"" + toProp +
+             "\" on ForceModel \"" + toOwner->GetName() + "\" is not an allowed value");
          HandleError(ex);
          return false;
       }
@@ -4262,19 +4262,19 @@ bool Interpreter::SetPropertyToObject(GmatBase *toOwner, const wxString &toProp,
          if (parsingDelayedBlock)
          {
             InterpreterException ex
-               (wxT("The field name \"") + toProp + wxT("\" on object ") + toOwner->GetName() +
-                wxT(" is not permitted"));
+               ("The field name \"" + toProp + "\" on object " + toOwner->GetName() +
+                " is not permitted");
             HandleErrorMessage(ex, lineNumber, currentLine, true);
             return false;
          }
          
          delayedBlocks.push_back(currentBlock);
-         wxString lineNumStr = GmatStringUtil::ToString(theReadWriter->GetLineNumber());
+         std::string lineNumStr = GmatStringUtil::ToString(theReadWriter->GetLineNumber());
          delayedBlockLineNumbers.push_back(lineNumStr);
          
          #ifdef DEBUG_SET
          MessageInterface::ShowMessage
-            (wxT("   ===> added to delayed blocks: line:%s, %s\n"), lineNumStr.c_str(),
+            ("   ===> added to delayed blocks: line:%s, %s\n", lineNumStr.c_str(),
              currentBlock.c_str());
          #endif
          
@@ -4290,7 +4290,7 @@ bool Interpreter::SetPropertyToObject(GmatBase *toOwner, const wxString &toProp,
       
       #ifdef DEBUG_SET
       MessageInterface::ShowMessage
-         (wxT("   ===> added to delayed blocks: %s\n"), currentBlock.c_str());
+         ("   ===> added to delayed blocks: %s\n", currentBlock.c_str());
       #endif
       
       return true;
@@ -4304,7 +4304,7 @@ bool Interpreter::SetPropertyToObject(GmatBase *toOwner, const wxString &toProp,
    
    try
    {
-      wxString fromTypeName = fromObj->GetTypeName();
+      std::string fromTypeName = fromObj->GetTypeName();
       
       if (fromObj->GetType() == Gmat::PARAMETER)
       {
@@ -4312,33 +4312,33 @@ bool Interpreter::SetPropertyToObject(GmatBase *toOwner, const wxString &toProp,
          
          #ifdef DEBUG_SET
          MessageInterface::ShowMessage
-            (wxT("   From object is a Parameter, toId=%d, fromType=%d, toType=%d\n"),
+            ("   From object is a Parameter, toId=%d, fromType=%d, toType=%d\n",
              toId, fromType, toType);
          #endif
          
          if (fromType == toType)
          {
             if (toType == Gmat::STRING_TYPE)
-               toObj->SetStringParameter(toId, fromObj->GetStringParameter(wxT("Value")));
+               toObj->SetStringParameter(toId, fromObj->GetStringParameter("Value"));
             else if (toType == Gmat::REAL_TYPE)
-               toObj->SetRealParameter(toId, fromObj->GetRealParameter(wxT("Value")));
+               toObj->SetRealParameter(toId, fromObj->GetRealParameter("Value"));
          }
          else
          {
             bool errorCond = false;
-            if (fromTypeName == wxT("String"))
+            if (fromTypeName == "String")
             {
                if (toType == Gmat::STRING_TYPE || toType == Gmat::STRINGARRAY_TYPE)
-                  toObj->SetStringParameter(toId, fromObj->GetStringParameter(wxT("Value")));
+                  toObj->SetStringParameter(toId, fromObj->GetStringParameter("Value"));
                else if (toType == Gmat::OBJECT_TYPE || toType == Gmat::OBJECTARRAY_TYPE)
                   toObj->SetStringParameter(toId, fromObj->GetName());               
                else
                   errorCond = true;
             }
-            else if (fromTypeName == wxT("Variable"))
+            else if (fromTypeName == "Variable")
             {
                if (toType == Gmat::REAL_TYPE)
-                  toObj->SetRealParameter(toId, fromObj->GetRealParameter(wxT("Value")));
+                  toObj->SetRealParameter(toId, fromObj->GetRealParameter("Value"));
                // Added to fix GMAT XYPlot1.IndVar = Var; (loj: 2008.08.01)
                else if (toType == Gmat::OBJECT_TYPE && toObj->IsOfType(Gmat::XY_PLOT))
                   toObj->SetStringParameter(toId, fromObj->GetName());
@@ -4356,8 +4356,8 @@ bool Interpreter::SetPropertyToObject(GmatBase *toOwner, const wxString &toProp,
             if (errorCond)
             {
                InterpreterException ex
-                  (wxT("The value of \"") + fromObj->GetName() + wxT("\" for field \"") + toProp +
-                   wxT("\" on object ") + wxT("\"") + toOwner->GetName() + wxT("\" is not an allowed value"));
+                  ("The value of \"" + fromObj->GetName() + "\" for field \"" + toProp +
+                   "\" on object " + "\"" + toOwner->GetName() + "\" is not an allowed value");
                HandleError(ex);
                return false;
             }
@@ -4367,7 +4367,7 @@ bool Interpreter::SetPropertyToObject(GmatBase *toOwner, const wxString &toProp,
       {
          #ifdef DEBUG_SET
          MessageInterface::ShowMessage
-            (wxT("   Setting objType=%s, objName=%s\n"), fromTypeName.c_str(),
+            ("   Setting objType=%s, objName=%s\n", fromTypeName.c_str(),
              fromObj->GetName().c_str());
          #endif
          
@@ -4382,8 +4382,8 @@ bool Interpreter::SetPropertyToObject(GmatBase *toOwner, const wxString &toProp,
             {
                #ifdef DEBUG_MEMORY
                MemoryTracker::Instance()->Remove
-                  (fromObj, wxT("oldLocalAxes"), wxT("Interpreter::SetPropertyToObject()"),
-                   wxT("deleting oldLocalAxes"));
+                  (fromObj, "oldLocalAxes", "Interpreter::SetPropertyToObject()",
+                   "deleting oldLocalAxes");
                #endif
                delete fromObj;
                fromObj = NULL;
@@ -4399,7 +4399,7 @@ bool Interpreter::SetPropertyToObject(GmatBase *toOwner, const wxString &toProp,
    
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetPropertyToObject() returning true\n"));
+      ("Interpreter::SetPropertyToObject() returning true\n");
    #endif
    
    return true;
@@ -4407,34 +4407,34 @@ bool Interpreter::SetPropertyToObject(GmatBase *toOwner, const wxString &toProp,
 
 
 //-------------------------------------------------------------------------------
-// bool SetPropertyToProperty(GmatBase *toOwner, const wxString &toProp,
-//                            GmatBase *fromOwner, const wxString &fromProp)
+// bool SetPropertyToProperty(GmatBase *toOwner, const std::string &toProp,
+//                            GmatBase *fromOwner, const std::string &fromProp)
 //-------------------------------------------------------------------------------
-bool Interpreter::SetPropertyToProperty(GmatBase *toOwner, const wxString &toProp,
-                                        GmatBase *fromOwner, const wxString &fromProp)
+bool Interpreter::SetPropertyToProperty(GmatBase *toOwner, const std::string &toProp,
+                                        GmatBase *fromOwner, const std::string &fromProp)
 {
-   debugMsg = wxT("In SetPropertyToProperty()");
+   debugMsg = "In SetPropertyToProperty()";
    bool retval = true;
-   errorMsg1 = wxT("");
-   errorMsg2 = wxT("");
+   errorMsg1 = "";
+   errorMsg2 = "";
    
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("SetPropertyToProperty() toOwner=%s<%s>, toProp=<%s>, fromOwner=<%s>, fromProp=<%s>\n"),
+      ("SetPropertyToProperty() toOwner=%s<%s>, toProp=<%s>, fromOwner=<%s>, fromProp=<%s>\n",
        toOwner->GetName().c_str(), toOwner->GetTypeName().c_str(), toProp.c_str(),
        fromOwner->GetName().c_str(), fromProp.c_str());
    #endif
    
    Integer toId = -1;
    Gmat::ParameterType toType = Gmat::UNKNOWN_PARAMETER_TYPE;
-   wxString lhs = toOwner->GetName() + wxT(".") + toProp;
-   wxString rhs = fromOwner->GetName() + wxT(".") + fromProp;
-   wxString value;
+   std::string lhs = toOwner->GetName() + "." + toProp;
+   std::string rhs = fromOwner->GetName() + "." + fromProp;
+   std::string value;
    Parameter *lhsParam = NULL;
    Parameter *rhsParam = NULL;
    
    #ifdef DEBUG_SET
-   MessageInterface::ShowMessage(wxT("   lhs=%s, rhs=%s\n"), lhs.c_str(), rhs.c_str());
+   MessageInterface::ShowMessage("   lhs=%s, rhs=%s\n", lhs.c_str(), rhs.c_str());
    #endif
 
    //-----------------------------------
@@ -4450,7 +4450,7 @@ bool Interpreter::SetPropertyToProperty(GmatBase *toOwner, const wxString &toPro
    {
       #ifdef DEBUG_SET
       MessageInterface::ShowMessage
-         (wxT("   Parameter ID of '%s' not found. So create a parameter '%s'\n"),
+         ("   Parameter ID of '%s' not found. So create a parameter '%s'\n",
           toProp.c_str(), lhs.c_str());
       #endif
       lhsParam = CreateSystemParameter(lhs);
@@ -4481,7 +4481,7 @@ bool Interpreter::SetPropertyToProperty(GmatBase *toOwner, const wxString &toPro
    
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("   toId=%d, toType=%d, fromId=%d, fromType=%d, lhsParam=%p, rhsParam=%p\n"),
+      ("   toId=%d, toType=%d, fromId=%d, fromType=%d, lhsParam=%p, rhsParam=%p\n",
        toId, toType, fromId, fromType, lhsParam, rhsParam);
    #endif
    
@@ -4545,18 +4545,18 @@ bool Interpreter::SetPropertyToProperty(GmatBase *toOwner, const wxString &toPro
    
    if (!retval)
    {
-      if (errorMsg1 == wxT(""))
+      if (errorMsg1 == "")
       {
          InterpreterException ex
-            (wxT("The field name \"") + fromProp + wxT("\" on object ") + toOwner->GetName() +
-             wxT(" is not permitted"));
+            ("The field name \"" + fromProp + "\" on object " + toOwner->GetName() +
+             " is not permitted");
          HandleError(ex);
       }
       else
       {
          InterpreterException ex
-            (errorMsg1 + wxT("field \"") + toProp + wxT("\" on object ") + wxT("\"") +
-             toOwner->GetName() + wxT("\" is not an allowed value.") + errorMsg2);
+            (errorMsg1 + "field \"" + toProp + "\" on object " + "\"" +
+             toOwner->GetName() + "\" is not an allowed value." + errorMsg2);
          HandleError(ex);
       }
    }
@@ -4566,19 +4566,19 @@ bool Interpreter::SetPropertyToProperty(GmatBase *toOwner, const wxString &toPro
 
 
 //-------------------------------------------------------------------------------
-// bool SetPropertyToArray(GmatBase *toOwner, const wxString &toProp,
-//                         const wxString &fromArray)
+// bool SetPropertyToArray(GmatBase *toOwner, const std::string &toProp,
+//                         const std::string &fromArray)
 //-------------------------------------------------------------------------------
-bool Interpreter::SetPropertyToArray(GmatBase *toOwner, const wxString &toProp,
-                                     const wxString &fromArray)
+bool Interpreter::SetPropertyToArray(GmatBase *toOwner, const std::string &toProp,
+                                     const std::string &fromArray)
 {
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetPropertyToArray() toOwner=%s, toProp=%s, fromArray=%s\n"),
+      ("Interpreter::SetPropertyToArray() toOwner=%s, toProp=%s, fromArray=%s\n",
        toOwner->GetName().c_str(), toProp.c_str(), fromArray.c_str());
    #endif
    
-   debugMsg = wxT("In SetPropertyToArray()");
+   debugMsg = "In SetPropertyToArray()";
    Integer toId = -1;
    Gmat::ParameterType toType = Gmat::UNKNOWN_PARAMETER_TYPE;
    
@@ -4598,8 +4598,8 @@ bool Interpreter::SetPropertyToArray(GmatBase *toOwner, const wxString &toProp,
    if (toType != Gmat::REAL_TYPE)
    {
       InterpreterException ex
-         (wxT("The value of \"") + fromArray + wxT("\" for field \"") + toProp +
-          wxT("\" on object ") + wxT("\"") + toOwner->GetName() + wxT("\" is not an allowed value"));
+         ("The value of \"" + fromArray + "\" for field \"" + toProp +
+          "\" on object " + "\"" + toOwner->GetName() + "\" is not an allowed value");
       HandleError(ex);
       return false;
    }
@@ -4620,7 +4620,7 @@ bool Interpreter::SetPropertyToArray(GmatBase *toOwner, const wxString &toProp,
    
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetPropertyToArray() exiting. rval=%f, row=%d, col=%d, \n"),
+      ("Interpreter::SetPropertyToArray() exiting. rval=%f, row=%d, col=%d, \n",
        rval, row, col);
    #endif
    
@@ -4629,21 +4629,21 @@ bool Interpreter::SetPropertyToArray(GmatBase *toOwner, const wxString &toProp,
 
 
 //-------------------------------------------------------------------------------
-// bool SetPropertyToValue(GmatBase *toOwner, const wxString &toProp,
-//                         const wxString &value)
+// bool SetPropertyToValue(GmatBase *toOwner, const std::string &toProp,
+//                         const std::string &value)
 //-------------------------------------------------------------------------------
-bool Interpreter::SetPropertyToValue(GmatBase *toOwner, const wxString &toProp,
-                                     const wxString &value)
+bool Interpreter::SetPropertyToValue(GmatBase *toOwner, const std::string &toProp,
+                                     const std::string &value)
 {
-   debugMsg = wxT("In SetPropertyToValue()");
+   debugMsg = "In SetPropertyToValue()";
    bool retval = false;
-   errorMsg1 = wxT("");
-   errorMsg2 = wxT("");
+   errorMsg1 = "";
+   errorMsg2 = "";
    
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetPropertyToValue() objType=%s, objName=%s, toProp=%s, ")
-       wxT("value=%s\n"), toOwner->GetTypeName().c_str(), toOwner->GetName().c_str(),
+      ("Interpreter::SetPropertyToValue() objType=%s, objName=%s, toProp=%s, "
+       "value=%s\n", toOwner->GetTypeName().c_str(), toOwner->GetName().c_str(),
        toProp.c_str(), value.c_str());
    #endif
    
@@ -4684,8 +4684,8 @@ bool Interpreter::SetPropertyToValue(GmatBase *toOwner, const wxString &toProp,
          if (toId == Gmat::PARAMETER_REMOVED)
          {
             InterpreterException ex
-               (wxT("The field name \"") + toProp + wxT("\" on object ") + wxT("\"") +
-                toOwner->GetName() + wxT("\" is no longer in use"));
+               ("The field name \"" + toProp + "\" on object " + "\"" +
+                toOwner->GetName() + "\" is no longer in use");
             HandleError(ex, true, true);
             ignoreError = true;
             return false;
@@ -4696,19 +4696,19 @@ bool Interpreter::SetPropertyToValue(GmatBase *toOwner, const wxString &toProp,
             if (parsingDelayedBlock)
             {
                InterpreterException ex
-                  (wxT("The field name \"") + toProp + wxT("\" on object \"") + toOwner->GetName() +
-                   wxT("\" is not permitted"));
+                  ("The field name \"" + toProp + "\" on object \"" + toOwner->GetName() +
+                   "\" is not permitted");
                HandleErrorMessage(ex, lineNumber, currentLine, true);
                return false;
             }
             
             delayedBlocks.push_back(currentBlock);
-            wxString lineNumStr = GmatStringUtil::ToString(theReadWriter->GetLineNumber());
+            std::string lineNumStr = GmatStringUtil::ToString(theReadWriter->GetLineNumber());
             delayedBlockLineNumbers.push_back(lineNumStr);
             
             #ifdef DEBUG_SET
             MessageInterface::ShowMessage
-               (wxT("   ===> added to delayed blocks: line:%s, %s\n"), lineNumStr.c_str(),
+               ("   ===> added to delayed blocks: line:%s, %s\n", lineNumStr.c_str(),
                 currentBlock.c_str());
             #endif
             
@@ -4721,18 +4721,18 @@ bool Interpreter::SetPropertyToValue(GmatBase *toOwner, const wxString &toProp,
    
    if (retval == false && !ignoreError)
    {
-      if (errorMsg1 == wxT(""))
+      if (errorMsg1 == "")
       {
          InterpreterException ex
-            (wxT("The value of \"") + value + wxT("\" for field \"") + toProp + wxT("\" on object ") + wxT("\"") +
-             toOwner->GetName() + wxT("\" is not permitted"));
+            ("The value of \"" + value + "\" for field \"" + toProp + "\" on object " + "\"" +
+             toOwner->GetName() + "\" is not permitted");
          HandleError(ex);
       }
       else
       {
          InterpreterException ex
-            (errorMsg1 + wxT("field \"") + toProp + wxT("\" on object ") + wxT("\"") +
-             toOwner->GetName() + wxT("\" is not an allowed value.") + errorMsg2);
+            (errorMsg1 + "field \"" + toProp + "\" on object " + "\"" +
+             toOwner->GetName() + "\" is not an allowed value." + errorMsg2);
          HandleError(ex);
       }
    }
@@ -4742,7 +4742,7 @@ bool Interpreter::SetPropertyToValue(GmatBase *toOwner, const wxString &toProp,
    
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetPropertyToValue() returning retval=%d\n"), retval);
+      ("Interpreter::SetPropertyToValue() returning retval=%d\n", retval);
    #endif
    
    return retval;
@@ -4750,35 +4750,35 @@ bool Interpreter::SetPropertyToValue(GmatBase *toOwner, const wxString &toProp,
 
 
 //-------------------------------------------------------------------------------
-// bool SetArrayToObject(GmatBase *toArrObj, const wxString &toArray,
+// bool SetArrayToObject(GmatBase *toArrObj, const std::string &toArray,
 //                       GmatBase *fromObj)
 //-------------------------------------------------------------------------------
-bool Interpreter::SetArrayToObject(GmatBase *toArrObj, const wxString &toArray,
+bool Interpreter::SetArrayToObject(GmatBase *toArrObj, const std::string &toArray,
                                    GmatBase *fromObj)
 {
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetArrayToObject() toArrObj=%s, toArray=%s, fromObj=%s\n"),
+      ("Interpreter::SetArrayToObject() toArrObj=%s, toArray=%s, fromObj=%s\n",
        toArrObj->GetName().c_str(), toArray.c_str(), fromObj->GetName().c_str());
    #endif
    
-   debugMsg = wxT("In SetArrayToObject()");
+   debugMsg = "In SetArrayToObject()";
    
-   if (fromObj->GetTypeName() != wxT("Variable"))
+   if (fromObj->GetTypeName() != "Variable")
    {
       //InterpreterException ex
-      //   (wxT("Cannot set object other than Variable or Array element."));
+      //   ("Cannot set object other than Variable or Array element.");
       //InterpreterException ex
-      //   (wxT("Setting object \"") + fromObj->GetName() + wxT("\" to an array \"") + toArray +
-      //    wxT("\" is not permitted."));
+      //   ("Setting object \"" + fromObj->GetName() + "\" to an array \"" + toArray +
+      //    "\" is not permitted.");
       InterpreterException ex
-         (wxT("Setting an array \"") + toArray + wxT("\" to an object \"") + fromObj->GetName() + 
-          wxT("\" is not permitted."));
+         ("Setting an array \"" + toArray + "\" to an object \"" + fromObj->GetName() + 
+          "\" is not permitted.");
       HandleError(ex);
       return false;
    }
    
-   Real rval = fromObj->GetRealParameter(wxT("Value"));
+   Real rval = fromObj->GetRealParameter("Value");
    
    Integer row, col;
    Parameter *param = GetArrayIndex(toArray, row, col);
@@ -4787,12 +4787,12 @@ bool Interpreter::SetArrayToObject(GmatBase *toArrObj, const wxString &toArray,
    
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("   SetArrayToObject()rval=%f, row=%d, col=%d\n"), rval, row, col);
+      ("   SetArrayToObject()rval=%f, row=%d, col=%d\n", rval, row, col);
    #endif
    
    try
    {
-      toArrObj->SetRealParameter(wxT("SingleValue"), rval, row, col);
+      toArrObj->SetRealParameter("SingleValue", rval, row, col);
    }
    catch (BaseException &e)
    {
@@ -4801,26 +4801,26 @@ bool Interpreter::SetArrayToObject(GmatBase *toArrObj, const wxString &toArray,
    }
    
    // Set InitialValue so when it is written out, it will have original string value (LOJ: 2010.09.21)
-   toArrObj->SetStringParameter(wxT("InitialValue"), toArray + wxT("=") + fromObj->GetName());
+   toArrObj->SetStringParameter("InitialValue", toArray + "=" + fromObj->GetName());
    return true;
 }
 
 
 //-------------------------------------------------------------------------------
-// bool SetArrayToProperty(GmatBase *toArrObj, const wxString &toArray,
-//                         GmatBase *fromOwner, const wxString &fromProp)
+// bool SetArrayToProperty(GmatBase *toArrObj, const std::string &toArray,
+//                         GmatBase *fromOwner, const std::string &fromProp)
 //-------------------------------------------------------------------------------
-bool Interpreter::SetArrayToProperty(GmatBase *toArrObj, const wxString &toArray,
-                                     GmatBase *fromOwner, const wxString &fromProp)
+bool Interpreter::SetArrayToProperty(GmatBase *toArrObj, const std::string &toArray,
+                                     GmatBase *fromOwner, const std::string &fromProp)
 {
    #ifdef DEBGU_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetArrayToProperty() toArrObj=%s, toArray=%s, fromOwner=%s, ")
-       wxT("fromProp=%s\n"), toArrObj->GetName().c_str(), toArray.c_str(),
+      ("Interpreter::SetArrayToProperty() toArrObj=%s, toArray=%s, fromOwner=%s, "
+       "fromProp=%s\n", toArrObj->GetName().c_str(), toArray.c_str(),
        fromOwner->GetName().c_str(), fromProp.c_str());
    #endif
    
-   debugMsg = wxT("In SetArrayToProperty()");
+   debugMsg = "In SetArrayToProperty()";
    
    // get object parameter id
    Integer fromId = fromOwner->GetParameterID(fromProp);
@@ -4828,11 +4828,11 @@ bool Interpreter::SetArrayToProperty(GmatBase *toArrObj, const wxString &toArray
    if (fromOwner->GetParameterType(fromId) != Gmat::REAL_TYPE)
    {
       //InterpreterException ex
-      //   (wxT("Setting non-Real type of \"") + fromProp + wxT("\" to an Array element \"") +
-      //    toArray + wxT("\" is not allowed"));
+      //   ("Setting non-Real type of \"" + fromProp + "\" to an Array element \"" +
+      //    toArray + "\" is not allowed");
       InterpreterException ex
-         (wxT("Setting an array element \"") + toArray + wxT("\" to \"") + fromProp +
-          wxT("\" is not allowed"));
+         ("Setting an array element \"" + toArray + "\" to \"" + fromProp +
+          "\" is not allowed");
       HandleError(ex);
       return false;
    }
@@ -4846,12 +4846,12 @@ bool Interpreter::SetArrayToProperty(GmatBase *toArrObj, const wxString &toArray
    
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("   SetArrayToProperty()rval=%f, row=%d, col=%d\n"), rval, row, col);
+      ("   SetArrayToProperty()rval=%f, row=%d, col=%d\n", rval, row, col);
    #endif
 
    try
    {
-      toArrObj->SetRealParameter(wxT("SingleValue"), rval, row, col);
+      toArrObj->SetRealParameter("SingleValue", rval, row, col);
    }
    catch (BaseException &e)
    {
@@ -4860,30 +4860,30 @@ bool Interpreter::SetArrayToProperty(GmatBase *toArrObj, const wxString &toArray
    }
    
    // Set InitialValue so when it is written out, it will have original string value (LOJ: 2010.09.21)
-   toArrObj->SetStringParameter(wxT("InitialValue"), toArray + wxT("=") + fromProp);
+   toArrObj->SetStringParameter("InitialValue", toArray + "=" + fromProp);
    return true;
 }
 
 
 //-------------------------------------------------------------------------------
-// bool SetArrayToArray(GmatBase *toArrObj, const wxString &toArray,
-//                      GmatBase *fromArrObj, const wxString &fromArray)
+// bool SetArrayToArray(GmatBase *toArrObj, const std::string &toArray,
+//                      GmatBase *fromArrObj, const std::string &fromArray)
 //-------------------------------------------------------------------------------
 /**
  * Sets Array to Array, such as toArray = fromArray
  */
 //-------------------------------------------------------------------------------
-bool Interpreter::SetArrayToArray(GmatBase *toArrObj, const wxString &toArray,
-                                  GmatBase *fromArrObj, const wxString &fromArray)
+bool Interpreter::SetArrayToArray(GmatBase *toArrObj, const std::string &toArray,
+                                  GmatBase *fromArrObj, const std::string &fromArray)
 {
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetArrayToArray() toArrObj=%s, toArray=%s, ")
-       wxT("fromArrObj=%s, fromArray=%s\n"), toArrObj->GetName().c_str(),
+      ("Interpreter::SetArrayToArray() toArrObj=%s, toArray=%s, "
+       "fromArrObj=%s, fromArray=%s\n", toArrObj->GetName().c_str(),
        toArray.c_str(), fromArrObj->GetName().c_str(), fromArray.c_str());
    #endif
    
-   debugMsg = wxT("In SetArrayToArray()");
+   debugMsg = "In SetArrayToArray()";
    Integer rowFrom, colFrom;
    Integer rowTo, colTo;
    
@@ -4899,18 +4899,18 @@ bool Interpreter::SetArrayToArray(GmatBase *toArrObj, const wxString &toArray,
    
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("   SetArrayToArray() rval=%f, rowFrom=%d, colFrom=%d, \n"),
+      ("   SetArrayToArray() rval=%f, rowFrom=%d, colFrom=%d, \n",
        rval, rowFrom, colFrom);
    MessageInterface::ShowMessage
-      (wxT("   SetArrayToArray() rowTo=%d, colTo=%d\n"), rowTo, colTo);
+      ("   SetArrayToArray() rowTo=%d, colTo=%d\n", rowTo, colTo);
    #endif
    
    try
    {
-      if (fromArray[0] == wxT('-'))
-         toArrObj->SetRealParameter(wxT("SingleValue"), -rval, rowTo, colTo);
+      if (fromArray[0] == '-')
+         toArrObj->SetRealParameter("SingleValue", -rval, rowTo, colTo);
       else   
-         toArrObj->SetRealParameter(wxT("SingleValue"), rval, rowTo, colTo);
+         toArrObj->SetRealParameter("SingleValue", rval, rowTo, colTo);
    }
    catch (BaseException &e)
    {
@@ -4919,25 +4919,25 @@ bool Interpreter::SetArrayToArray(GmatBase *toArrObj, const wxString &toArray,
    }
    
    // Set InitialValue so when it is written out, it will have original string value (LOJ: 2010.09.21)
-   toArrObj->SetStringParameter(wxT("InitialValue"), toArray + wxT("=") + fromArray);
+   toArrObj->SetStringParameter("InitialValue", toArray + "=" + fromArray);
    return true;
 }
 
 
 //-------------------------------------------------------------------------------
-// bool SetArrayToValue(GmatBase *array, const wxString &toArray,
-//                      const wxString &value)
+// bool SetArrayToValue(GmatBase *array, const std::string &toArray,
+//                      const std::string &value)
 //-------------------------------------------------------------------------------
-bool Interpreter::SetArrayToValue(GmatBase *array, const wxString &toArray,
-                                  const wxString &value)
+bool Interpreter::SetArrayToValue(GmatBase *array, const std::string &toArray,
+                                  const std::string &value)
 {
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetArrayToValue() array=%s, toArray=%s, value=%s\n"),
+      ("Interpreter::SetArrayToValue() array=%s, toArray=%s, value=%s\n",
        array->GetName().c_str(), toArray.c_str(), value.c_str());
    #endif
    
-   debugMsg = wxT("In SetArrayToValue()");
+   debugMsg = "In SetArrayToValue()";
    Integer row, col;
    Real rval;
    
@@ -4949,16 +4949,16 @@ bool Interpreter::SetArrayToValue(GmatBase *array, const wxString &toArray,
    {
       #ifdef DEBUG_SET
       MessageInterface::ShowMessage
-         (wxT("   SetArrayToValue() rval=%f, row=%d, col=%d\n"), rval, row, col);
+         ("   SetArrayToValue() rval=%f, row=%d, col=%d\n", rval, row, col);
       #endif
 
       try
       {
-         array->SetRealParameter(wxT("SingleValue"), rval, row, col);
+         array->SetRealParameter("SingleValue", rval, row, col);
       }
       catch (BaseException &)
       {
-         InterpreterException ex(wxT("Index exceeds matrix dimensions"));
+         InterpreterException ex("Index exceeds matrix dimensions");
          HandleError(ex);
          return false;
       }
@@ -4966,17 +4966,17 @@ bool Interpreter::SetArrayToValue(GmatBase *array, const wxString &toArray,
    else
    {
       //InterpreterException ex
-      //   (wxT("Setting \"") + value + wxT("\" to an object \"") + toArray +
-      //    wxT("\" is not allowed"));
+      //   ("Setting \"" + value + "\" to an object \"" + toArray +
+      //    "\" is not allowed");
       InterpreterException ex
-         (wxT("Setting an object \"") + toArray + wxT("\" to \"") + value +
-          wxT("\" is not allowed"));
+         ("Setting an object \"" + toArray + "\" to \"" + value +
+          "\" is not allowed");
       HandleError(ex);
       return false;
    }
    
    // Set InitialValue so when it is written out, it will have original string value (LOJ: 2010.09.21)
-   array->SetStringParameter(wxT("InitialValue"), toArray + wxT("=") + value);
+   array->SetStringParameter("InitialValue", toArray + "=" + value);
    return true;
 }
 
@@ -4984,7 +4984,7 @@ bool Interpreter::SetArrayToValue(GmatBase *array, const wxString &toArray,
 //------------------------------------------------------------------------------
 // bool SetPropertyValue(GmatBase *obj, const Integer id,
 //                       const Gmat::ParameterType type,
-//                       const wxString &value, const Integer index)
+//                       const std::string &value, const Integer index)
 //------------------------------------------------------------------------------
 /**
  * Sets parameters on GMAT objects.
@@ -5000,24 +5000,24 @@ bool Interpreter::SetArrayToValue(GmatBase *array, const wxString &toArray,
 //------------------------------------------------------------------------------
 bool Interpreter::SetPropertyValue(GmatBase *obj, const Integer id,
                                    const Gmat::ParameterType type,
-                                   const wxString &value,
+                                   const std::string &value,
                                    const Integer index, const Integer colIndex)
 {
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetPropertyValue() obj=<%s>, id=%d, type=%d, value=<%s>, index=%d\n"),
+      ("Interpreter::SetPropertyValue() obj=<%s>, id=%d, type=%d, value=<%s>, index=%d\n",
        obj->GetName().c_str(), id, type, value.c_str(), index);
    #endif
    
-   debugMsg = wxT("In SetPropertyValue()");
+   debugMsg = "In SetPropertyValue()";
    bool retval = false;
-   wxString valueToUse = value;
+   std::string valueToUse = value;
    CheckForSpecialCase(obj, id, valueToUse);
    
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("   propertyType=%s\n"),
-       type == -1 ? wxT("UNKNOWN_TYPE") : GmatBase::PARAM_TYPE_STRING[type].c_str());
+      ("   propertyType=%s\n",
+       type == -1 ? "UNKNOWN_TYPE" : GmatBase::PARAM_TYPE_STRING[type].c_str());
    #endif
    
    if (type == -1)
@@ -5045,7 +5045,7 @@ bool Interpreter::SetPropertyValue(GmatBase *obj, const Integer id,
          {
             #ifdef DEBUG_SET
             MessageInterface::ShowMessage
-               (wxT("   Calling '%s'->SetIntegerParameter(%d, %d)\n"),
+               ("   Calling '%s'->SetIntegerParameter(%d, %d)\n",
                 obj->GetName().c_str(), id, ival);
             #endif
             
@@ -5054,8 +5054,8 @@ bool Interpreter::SetPropertyValue(GmatBase *obj, const Integer id,
          }
          else
          {
-            errorMsg1 = errorMsg1 + wxT("The value of \"") + valueToUse + wxT("\" for ");
-            errorMsg2 = wxT(" Only integer number is allowed");
+            errorMsg1 = errorMsg1 + "The value of \"" + valueToUse + "\" for ";
+            errorMsg2 = " Only integer number is allowed";
          }
          break;
       }
@@ -5066,7 +5066,7 @@ bool Interpreter::SetPropertyValue(GmatBase *obj, const Integer id,
          {
             #ifdef DEBUG_SET
             MessageInterface::ShowMessage
-               (wxT("   Calling '%s'->SetUnsignedIntParameter(%d, %d, %d)\n"),
+               ("   Calling '%s'->SetUnsignedIntParameter(%d, %d, %d)\n",
                 obj->GetName().c_str(), id, ival, index);
             #endif
             
@@ -5075,8 +5075,8 @@ bool Interpreter::SetPropertyValue(GmatBase *obj, const Integer id,
          }
          else
          {
-            errorMsg1 = errorMsg1 + wxT("The value of \"") + valueToUse + wxT("\" for ");
-            errorMsg2 = wxT(" Only integer number is allowed");
+            errorMsg1 = errorMsg1 + "The value of \"" + valueToUse + "\" for ";
+            errorMsg2 = " Only integer number is allowed";
          }
          break;
       }
@@ -5087,10 +5087,10 @@ bool Interpreter::SetPropertyValue(GmatBase *obj, const Integer id,
          if (GmatStringUtil::ToReal(valueToUse, rval, true))
          {
             #ifdef DEBUG_SET
-            wxString rvalStr =
+            std::string rvalStr =
                GmatStringUtil::ToString(rval, false, false, true, 17, 16);
             MessageInterface::ShowMessage
-               (wxT("   Calling <%s>'%s'->SetRealParameter(%d, %s)\n"), obj->GetTypeName().c_str(),
+               ("   Calling <%s>'%s'->SetRealParameter(%d, %s)\n", obj->GetTypeName().c_str(),
                 obj->GetName().c_str(), id, rvalStr.c_str());
             #endif
             
@@ -5103,16 +5103,16 @@ bool Interpreter::SetPropertyValue(GmatBase *obj, const Integer id,
          }
          else
          {
-            errorMsg1 = errorMsg1 + wxT("The value of \"") + valueToUse + wxT("\" for ");
-            errorMsg2 = wxT(" The allowed value is Real number");
+            errorMsg1 = errorMsg1 + "The value of \"" + valueToUse + "\" for ";
+            errorMsg2 = " The allowed value is Real number";
          }
          break;
       }
    case Gmat::RMATRIX_TYPE:
       {
          #ifdef DEBUG_SET
-            MessageInterface::ShowMessage(wxT("Setting Rmatrix[%d, %d] from the data")
-                  wxT(" \"%s\" with ID %d\n"), index, colIndex, value.c_str(), id);
+            MessageInterface::ShowMessage("Setting Rmatrix[%d, %d] from the data"
+                  " \"%s\" with ID %d\n", index, colIndex, value.c_str(), id);
          #endif
          Real rval;
          if (GmatStringUtil::ToReal(valueToUse, rval, true))
@@ -5129,7 +5129,7 @@ bool Interpreter::SetPropertyValue(GmatBase *obj, const Integer id,
          {
             #ifdef DEBUG_SET
             MessageInterface::ShowMessage
-               (wxT("   Calling '%s'->SetBooleanParameter(%d, %d)\n"),
+               ("   Calling '%s'->SetBooleanParameter(%d, %d)\n",
                 obj->GetName().c_str(), id, tf);
             #endif
             
@@ -5138,8 +5138,8 @@ bool Interpreter::SetPropertyValue(GmatBase *obj, const Integer id,
          }
          else
          {
-            errorMsg1 = errorMsg1 + wxT("The value of \"") + valueToUse + wxT("\" for ");
-            errorMsg2 = wxT(" The allowed values are: [true false]");
+            errorMsg1 = errorMsg1 + "The value of \"" + valueToUse + "\" for ";
+            errorMsg2 = " The allowed values are: [true false]";
          }
          break;
       }
@@ -5150,7 +5150,7 @@ bool Interpreter::SetPropertyValue(GmatBase *obj, const Integer id,
          {
             #ifdef DEBUG_SET
             MessageInterface::ShowMessage
-               (wxT("   Calling %s->SetBooleanParameter(%d, %s, %d) (for BooleanArray)\n"), 
+               ("   Calling %s->SetBooleanParameter(%d, %s, %d) (for BooleanArray)\n", 
                 obj->GetName().c_str(), id, valueToUse.c_str(), index);
             #endif
             
@@ -5158,8 +5158,8 @@ bool Interpreter::SetPropertyValue(GmatBase *obj, const Integer id,
          }
          else
          {
-            errorMsg1 = errorMsg1 + wxT("The value of \"") + valueToUse + wxT("\" for ");
-            errorMsg2 = wxT(" The allowed values are: [true false]");
+            errorMsg1 = errorMsg1 + "The value of \"" + valueToUse + "\" for ";
+            errorMsg2 = " The allowed values are: [true false]";
          }
          break;
       }
@@ -5167,31 +5167,31 @@ bool Interpreter::SetPropertyValue(GmatBase *obj, const Integer id,
       {
          #ifdef DEBUG_SET
          MessageInterface::ShowMessage
-            (wxT("   Calling '%s'->SetOnOffParameter(%d, %s)\n"),
+            ("   Calling '%s'->SetOnOffParameter(%d, %s)\n",
              obj->GetName().c_str(), id, valueToUse.c_str());
          #endif
          
-         if (valueToUse == wxT("On") || valueToUse == wxT("Off"))
+         if (valueToUse == "On" || valueToUse == "Off")
          {
             retval = obj->SetOnOffParameter(id, valueToUse);
          }
          else
          {
-            errorMsg1 = errorMsg1 + wxT("The value of \"") + valueToUse + wxT("\" for ");
-            errorMsg2 = wxT(" The allowed values are: [On Off]");
+            errorMsg1 = errorMsg1 + "The value of \"" + valueToUse + "\" for ";
+            errorMsg2 = " The allowed values are: [On Off]";
          }
          break;
       }
    default:
       InterpreterException ex
-         (wxT("Interpreter::SetPropertyValue() Cannot handle the type: ") +
-          GmatBase::PARAM_TYPE_STRING[type] + wxT(" yet.\n"));
+         ("Interpreter::SetPropertyValue() Cannot handle the type: " +
+          GmatBase::PARAM_TYPE_STRING[type] + " yet.\n");
       HandleError(ex);
    }
    
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetPropertyValue() returning retval=%d\n"), retval);
+      ("Interpreter::SetPropertyValue() returning retval=%d\n", retval);
    #endif
    
    return retval;
@@ -5203,22 +5203,22 @@ bool Interpreter::SetPropertyValue(GmatBase *obj, const Integer id,
 //------------------------------------------------------------------------------
 bool Interpreter::SetPropertyObjectValue(GmatBase *obj, const Integer id,
                                          const Gmat::ParameterType type,
-                                         const wxString &value,
+                                         const std::string &value,
                                          const Integer index)
 {
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetPropertyObjectValue() obj=<%s> '%s', id=%d, type=%d, value='%s', ")
-       wxT("index=%d\n"), obj->GetTypeName().c_str(), obj->GetName().c_str(), id, type,
+      ("Interpreter::SetPropertyObjectValue() obj=<%s> '%s', id=%d, type=%d, value='%s', "
+       "index=%d\n", obj->GetTypeName().c_str(), obj->GetName().c_str(), id, type,
        value.c_str(), index);
    #endif
    
-   debugMsg = wxT("In SetPropertyObjectValue()");
+   debugMsg = "In SetPropertyObjectValue()";
    Parameter *param = NULL;
 
    // Remove enclosing single quotes first (LOJ: 2009.06.08)
-   wxString valueToUse = value;
-   valueToUse = GmatStringUtil::RemoveEnclosingString(valueToUse, wxT("'"));
+   std::string valueToUse = value;
+   valueToUse = GmatStringUtil::RemoveEnclosingString(valueToUse, "'");
    
    // Try creating Parameter first if it is not ObjectType
    if (!IsObjectType(valueToUse))
@@ -5229,7 +5229,7 @@ bool Interpreter::SetPropertyObjectValue(GmatBase *obj, const Integer id,
       #ifdef DEBUG_SET
       if (param)
          MessageInterface::ShowMessage
-            (wxT("   param=(%p)%s type=%s returnType=%d\n"), param,
+            ("   param=(%p)%s type=%s returnType=%d\n", param,
              param->GetName().c_str(), param->GetTypeName().c_str(),
              param->GetReturnType());
       #endif
@@ -5240,7 +5240,7 @@ bool Interpreter::SetPropertyObjectValue(GmatBase *obj, const Integer id,
       param = theModerator->GetParameter(valueToUse);
       #ifdef DEBUG_SET
       MessageInterface::ShowMessage
-         (wxT("   theModerator->GetParameter() returned %p\n"), param);
+         ("   theModerator->GetParameter() returned %p\n", param);
       #endif
    }
    
@@ -5254,7 +5254,7 @@ bool Interpreter::SetPropertyObjectValue(GmatBase *obj, const Integer id,
          {
             #ifdef DEBUG_SET
             MessageInterface::ShowMessage
-               (wxT("   Calling '%s'->SetStringParameter(%d, %s)\n"),
+               ("   Calling '%s'->SetStringParameter(%d, %s)\n",
                 obj->GetName().c_str(), id, valueToUse.c_str());
             #endif
             
@@ -5263,8 +5263,8 @@ bool Interpreter::SetPropertyObjectValue(GmatBase *obj, const Integer id,
          }
          else
          {
-            errorMsg1 = errorMsg1 + wxT("The value of \"") + valueToUse + wxT("\" for ");
-            errorMsg2 = wxT("  The allowed value is Object Name");
+            errorMsg1 = errorMsg1 + "The value of \"" + valueToUse + "\" for ";
+            errorMsg2 = "  The allowed value is Object Name";
             return false;
          }
       }
@@ -5278,7 +5278,7 @@ bool Interpreter::SetPropertyObjectValue(GmatBase *obj, const Integer id,
          {
             #ifdef DEBUG_SET
             MessageInterface::ShowMessage
-               (wxT("   '%s' is a Real or Integer value\n"), valueToUse.c_str());
+               ("   '%s' is a Real or Integer value\n", valueToUse.c_str());
             #endif
             
             // Handle special case for OrbitView.
@@ -5290,8 +5290,8 @@ bool Interpreter::SetPropertyObjectValue(GmatBase *obj, const Integer id,
             }
             else
             {
-               errorMsg1 = errorMsg1 + wxT("The value of \"") + valueToUse + wxT("\" for ");
-               errorMsg2 = wxT("  The allowed value is Object Name");
+               errorMsg1 = errorMsg1 + "The value of \"" + valueToUse + "\" for ";
+               errorMsg2 = "  The allowed value is Object Name";
                return false;
             }
          }
@@ -5315,7 +5315,7 @@ bool Interpreter::SetPropertyObjectValue(GmatBase *obj, const Integer id,
          {
             #ifdef DEBUG_SET
             MessageInterface::ShowMessage
-               (wxT("   Found the object type of %s\n"), configObj->GetTypeName().c_str());
+               ("   Found the object type of %s\n", configObj->GetTypeName().c_str());
             #endif
             
             // Set as String parameter, so it can be validated in FinalPass()
@@ -5324,7 +5324,7 @@ bool Interpreter::SetPropertyObjectValue(GmatBase *obj, const Integer id,
             {
                #ifdef DEBUG_SET
                MessageInterface::ShowMessage
-                  (wxT("   Calling '%s'->SetStringParameter(%d, %s, %d)\n"),
+                  ("   Calling '%s'->SetStringParameter(%d, %s, %d)\n",
                    obj->GetName().c_str(), id, valueToUse.c_str(), index);
                #endif
                
@@ -5336,7 +5336,7 @@ bool Interpreter::SetPropertyObjectValue(GmatBase *obj, const Integer id,
             {
                #ifdef DEBUG_SET
                MessageInterface::ShowMessage
-                  (wxT("   Calling '%s'->SetStringParameter(%d, %s)\n"),
+                  ("   Calling '%s'->SetStringParameter(%d, %s)\n",
                    obj->GetName().c_str(), id, valueToUse.c_str());
                #endif
                
@@ -5347,7 +5347,7 @@ bool Interpreter::SetPropertyObjectValue(GmatBase *obj, const Integer id,
          {
             #ifdef DEBUG_SET
             MessageInterface::ShowMessage
-               (wxT("   Object not found, so try creating owned object\n"));
+               ("   Object not found, so try creating owned object\n");
             #endif
             
             // Create Owned Object, if it is valid owned object type
@@ -5357,11 +5357,11 @@ bool Interpreter::SetPropertyObjectValue(GmatBase *obj, const Integer id,
             {
                // Handle named owned Propagator object for PropSetup
                // since Integrator is not created by Create command
-               wxString ownedName = wxT("");
+               std::string ownedName = "";
                if (obj->IsOfType(Gmat::PROP_SETUP))
                {
                   ownedName = valueToUse;
-                  if (obj->GetParameterText(id) == wxT("FM"))
+                  if (obj->GetParameterText(id) == "FM")
                   {
                      obj->SetStringParameter(id, ownedName);
                      skipCreate = true;
@@ -5372,8 +5372,8 @@ bool Interpreter::SetPropertyObjectValue(GmatBase *obj, const Integer id,
                   ownedObj = CreateObject(valueToUse, ownedName, 0);
                   if (ownedObj == NULL)
                      MessageInterface::ShowMessage
-                        (wxT("*** WARNING *** Owned object %s was not created for ")
-                         wxT("'%s'; using default\n"), ownedName.c_str(),
+                        ("*** WARNING *** Owned object %s was not created for "
+                         "'%s'; using default\n", ownedName.c_str(),
                          obj->GetName().c_str());
                }
             }
@@ -5381,14 +5381,14 @@ bool Interpreter::SetPropertyObjectValue(GmatBase *obj, const Integer id,
             #ifdef DEBUG_SET
             if (ownedObj)
                MessageInterface::ShowMessage
-                  (wxT("   Created ownedObjType: %s\n"), ownedObj->GetTypeName().c_str());
+                  ("   Created ownedObjType: %s\n", ownedObj->GetTypeName().c_str());
             #endif
             
             if (ownedObj)
             {
                #ifdef DEBUG_SET
                MessageInterface::ShowMessage
-                  (wxT("   Calling '%s'->SetRefObject(%s(%p), %d)\n"), obj->GetName().c_str(),
+                  ("   Calling '%s'->SetRefObject(%s(%p), %d)\n", obj->GetName().c_str(),
                    ownedObj->GetTypeName().c_str(), ownedObj, ownedObj->GetType());
                #endif
                
@@ -5404,8 +5404,8 @@ bool Interpreter::SetPropertyObjectValue(GmatBase *obj, const Integer id,
                {
                   #ifdef DEBUG_MEMORY
                   MemoryTracker::Instance()->Remove
-                     (ownedObj, ownedObj->GetName(), wxT("Interpreter::SetPropertyObjectValue()"),
-                      wxT("deleting oldOwnedObject"));
+                     (ownedObj, ownedObj->GetName(), "Interpreter::SetPropertyObjectValue()",
+                      "deleting oldOwnedObject");
                   #endif
                   delete ownedObj;
                   ownedObj = NULL;
@@ -5418,9 +5418,9 @@ bool Interpreter::SetPropertyObjectValue(GmatBase *obj, const Integer id,
                // create it here (loj: 2008.11.06)
                if (!skipCreate)
                {
-                  if (valueToUse == wxT("InternalODEModel"))
+                  if (valueToUse == "InternalODEModel")
                   {
-                     ownedObj = CreateObject(wxT("ForceModel"), valueToUse);
+                     ownedObj = CreateObject("ForceModel", valueToUse);
                      obj->SetRefObject(ownedObj, ownedObj->GetType(), valueToUse);
                   }
                   else
@@ -5428,8 +5428,8 @@ bool Interpreter::SetPropertyObjectValue(GmatBase *obj, const Integer id,
                      // Set as String parameter, so it can be caught in FinalPass()
                      #ifdef DEBUG_SET
                      MessageInterface::ShowMessage
-                        (wxT("   Calling '%s'->SetStringParameter(%d, %s) so it can be ")
-                         wxT("caught in FinalPass()\n"),
+                        ("   Calling '%s'->SetStringParameter(%d, %s) so it can be "
+                         "caught in FinalPass()\n",
                          obj->GetName().c_str(), id, valueToUse.c_str());
                      #endif
 
@@ -5442,7 +5442,7 @@ bool Interpreter::SetPropertyObjectValue(GmatBase *obj, const Integer id,
       
       #ifdef DEBUG_SET
       MessageInterface::ShowMessage
-         (wxT("Interpreter::SetPropertyObjectValue() returning true\n"));
+         ("Interpreter::SetPropertyObjectValue() returning true\n");
       #endif
       
       return true;
@@ -5454,7 +5454,7 @@ bool Interpreter::SetPropertyObjectValue(GmatBase *obj, const Integer id,
       
       #ifdef DEBUG_SET
       MessageInterface::ShowMessage
-         (wxT("Interpreter::SetPropertyObjectValue() returning false\n"));
+         ("Interpreter::SetPropertyObjectValue() returning false\n");
       #endif
       
       return false;
@@ -5467,18 +5467,18 @@ bool Interpreter::SetPropertyObjectValue(GmatBase *obj, const Integer id,
 //------------------------------------------------------------------------------
 bool Interpreter::SetPropertyStringValue(GmatBase *obj, const Integer id,
                                          const Gmat::ParameterType type,
-                                         const wxString &value,
+                                         const std::string &value,
                                          const Integer index)
 {
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetPropertyStringValue() obj=%s, id=%d, type=%d, value=%s, ")
-       wxT("index=%d\n"), obj->GetName().c_str(), id, type, value.c_str(), index);
+      ("Interpreter::SetPropertyStringValue() obj=%s, id=%d, type=%d, value=%s, "
+       "index=%d\n", obj->GetName().c_str(), id, type, value.c_str(), index);
    #endif
    
-   debugMsg = wxT("In SetPropertyStringValue()");
+   debugMsg = "In SetPropertyStringValue()";
    bool retval = true;
-   wxString valueToUse = value;
+   std::string valueToUse = value;
    
    switch (type)
    {
@@ -5487,7 +5487,7 @@ bool Interpreter::SetPropertyStringValue(GmatBase *obj, const Integer id,
    case Gmat::STRING_TYPE:
       {
          // remove enclosing quotes if used
-         valueToUse = GmatStringUtil::RemoveEnclosingString(valueToUse, wxT("'"));
+         valueToUse = GmatStringUtil::RemoveEnclosingString(valueToUse, "'");
          
          try
          {
@@ -5495,7 +5495,7 @@ bool Interpreter::SetPropertyStringValue(GmatBase *obj, const Integer id,
             {
                #ifdef DEBUG_SET
                MessageInterface::ShowMessage
-                  (wxT("   Calling %s->SetStringParameter(%d, %s, %d)\n"),
+                  ("   Calling %s->SetStringParameter(%d, %s, %d)\n",
                    obj->GetName().c_str(), id, valueToUse.c_str(), index);
                #endif
                
@@ -5505,7 +5505,7 @@ bool Interpreter::SetPropertyStringValue(GmatBase *obj, const Integer id,
             {
                #ifdef DEBUG_SET
                MessageInterface::ShowMessage
-                  (wxT("   Calling %s->SetStringParameter(%d, %s)\n"),
+                  ("   Calling %s->SetStringParameter(%d, %s)\n",
                    obj->GetName().c_str(), id, valueToUse.c_str());
                #endif
                
@@ -5525,10 +5525,10 @@ bool Interpreter::SetPropertyStringValue(GmatBase *obj, const Integer id,
          try
          {
             // remove enclosing quotes if used
-            valueToUse = GmatStringUtil::RemoveEnclosingString(valueToUse, wxT("'"));
+            valueToUse = GmatStringUtil::RemoveEnclosingString(valueToUse, "'");
             #ifdef DEBUG_SET
             MessageInterface::ShowMessage
-               (wxT("   Calling %s->SetStringParameter(%d, %s) (for StringArray)\n"),
+               ("   Calling %s->SetStringParameter(%d, %s) (for StringArray)\n",
                 obj->GetName().c_str(), id, valueToUse.c_str());
             #endif
             
@@ -5538,7 +5538,7 @@ bool Interpreter::SetPropertyStringValue(GmatBase *obj, const Integer id,
          {
             #ifdef DEBUG_SET
             MessageInterface::ShowMessage
-               (wxT("   Calling %s->SetStringParameter(%d, %s, %d) (for StringArray)\n"), 
+               ("   Calling %s->SetStringParameter(%d, %s, %d) (for StringArray)\n", 
                      obj->GetName().c_str(), id,
                      valueToUse.c_str(), index);
             #endif
@@ -5554,7 +5554,7 @@ bool Interpreter::SetPropertyStringValue(GmatBase *obj, const Integer id,
    
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetPropertyStringValue() returning %d\n"), retval);
+      ("Interpreter::SetPropertyStringValue() returning %d\n", retval);
    #endif
    
    return retval;
@@ -5562,11 +5562,11 @@ bool Interpreter::SetPropertyStringValue(GmatBase *obj, const Integer id,
 
 
 //------------------------------------------------------------------------------
-// wxString GetPropertyValue(GmatBase *obj, const Integer id)
+// std::string GetPropertyValue(GmatBase *obj, const Integer id)
 //------------------------------------------------------------------------------
-wxString Interpreter::GetPropertyValue(GmatBase *obj, const Integer id)
+std::string Interpreter::GetPropertyValue(GmatBase *obj, const Integer id)
 {
-   wxString sval;
+   std::string sval;
    
    Gmat::ParameterType type = obj->GetParameterType(id);
    
@@ -5602,9 +5602,9 @@ wxString Interpreter::GetPropertyValue(GmatBase *obj, const Integer id)
    else if (type == Gmat::BOOLEAN_TYPE)
    {
       if (obj->GetBooleanParameter(id))
-         sval = wxT("true");
+         sval = "true";
       else
-         sval = wxT("false");
+         sval = "false";
    }
    else if (type == Gmat::ON_OFF_TYPE)
    {
@@ -5617,7 +5617,7 @@ wxString Interpreter::GetPropertyValue(GmatBase *obj, const Integer id)
 
 //------------------------------------------------------------------------------
 // bool SetProperty(GmatBase *obj, const Integer id, const Gmat::ParameterType type
-//                  const wxString &value)
+//                  const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Sets parameters on GMAT objects.
@@ -5632,72 +5632,72 @@ wxString Interpreter::GetPropertyValue(GmatBase *obj, const Integer id)
 //------------------------------------------------------------------------------
 bool Interpreter::SetProperty(GmatBase *obj, const Integer id,
                               const Gmat::ParameterType type,
-                              const wxString &value)
+                              const std::string &value)
 {
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetProperty() obj=%s, id=%d, type=%d, value=%s\n"),
+      ("Interpreter::SetProperty() obj=%s, id=%d, type=%d, value=%s\n",
        obj->GetName().c_str(), id, type, value.c_str());
    #endif
    
    bool retval = false;
    
-   wxString valueToUse = value;
+   std::string valueToUse = value;
    CheckForSpecialCase(obj, id, valueToUse);
 
    // require the object to take its prerequisite action before setting the value
    obj->TakeRequiredAction(id);
 
    #ifdef DEBUG_SET
-   MessageInterface::ShowMessage(wxT("   propertyType=%d\n"), obj->GetParameterType(id));
+   MessageInterface::ShowMessage("   propertyType=%d\n", obj->GetParameterType(id));
    #endif
    
    StringArray rhsValues;
    Integer count = 0;
    
    // if value has braces or brackets, setting multiple values
-   if (value.find(wxT("{")) != value.npos || value.find(wxT("}")) != value.npos)
+   if (value.find("{") != value.npos || value.find("}") != value.npos)
    {
       // first, check to see if it is a list of strings (e.g. file names);
       // in that case, we do not want to remove spaces inside the strings
       // or use space as a delimiter
-      if (value.find(wxT("\'")) != value.npos)
+      if (value.find("\'") != value.npos)
       {
-         wxString trimmed = GmatStringUtil::Trim(value);
-         wxString inside  = GmatStringUtil::RemoveOuterString(trimmed, wxT("{"), wxT("}"));
+         std::string trimmed = GmatStringUtil::Trim(value);
+         std::string inside  = GmatStringUtil::RemoveOuterString(trimmed, "{", "}");
          #ifdef DEBUG_SET
-         MessageInterface::ShowMessage(wxT("------> found single quotes in %s\n"), value.c_str());
-         MessageInterface::ShowMessage(wxT("------> trimmed =  %s\n"), trimmed.c_str());
-         MessageInterface::ShowMessage(wxT("------> inside  =  %s\n"), inside.c_str());
+         MessageInterface::ShowMessage("------> found single quotes in %s\n", value.c_str());
+         MessageInterface::ShowMessage("------> trimmed =  %s\n", trimmed.c_str());
+         MessageInterface::ShowMessage("------> inside  =  %s\n", inside.c_str());
          #endif
          rhsValues = GmatStringUtil::SeparateByComma(inside);
       }
       else
       {
-         rhsValues = theTextParser.SeparateBrackets(value, wxT("{}"), wxT(" ,"));
+         rhsValues = theTextParser.SeparateBrackets(value, "{}", " ,");
       }
    }
-   else if (value.find(wxT("[")) != value.npos || value.find(wxT("]")) != value.npos)
+   else if (value.find("[") != value.npos || value.find("]") != value.npos)
    {
       // first, check to see if it is a list of strings (e.g. file names);
       // in that case, we do not want to remove spaces inside the strings
       // or use space as a delimiter
-      if (value.find(wxT("\'")) != value.npos)
+      if (value.find("\'") != value.npos)
       {
-         wxString trimmed = GmatStringUtil::Trim(value);
-         wxString inside = GmatStringUtil::RemoveOuterString(trimmed, wxT("["), wxT("]"));
+         std::string trimmed = GmatStringUtil::Trim(value);
+         std::string inside = GmatStringUtil::RemoveOuterString(trimmed, "[", "]");
          rhsValues = GmatStringUtil::SeparateByComma(inside);
       }
       else
       {
-         rhsValues = theTextParser.SeparateBrackets(value, wxT("[]"), wxT(" ,"));
+         rhsValues = theTextParser.SeparateBrackets(value, "[]", " ,");
       }
    }
    
    count = rhsValues.size();
    
    #ifdef DEBUG_SET
-   MessageInterface::ShowMessage(wxT("   count=%d\n"), count);
+   MessageInterface::ShowMessage("   count=%d\n", count);
    #endif
    
    // If rhs value is an array type, call method for setting whole array
@@ -5737,7 +5737,7 @@ bool Interpreter::SetProperty(GmatBase *obj, const Integer id,
    
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetProperty() returning retval=%d\n"), retval);
+      ("Interpreter::SetProperty() returning retval=%d\n", retval);
    #endif
    
    return retval;
@@ -5745,17 +5745,17 @@ bool Interpreter::SetProperty(GmatBase *obj, const Integer id,
 
 
 //------------------------------------------------------------------------------
-// bool SetComplexProperty(GmatBase *obj, const wxString &prop,
-//                         const wxString &value)
+// bool SetComplexProperty(GmatBase *obj, const std::string &prop,
+//                         const std::string &value)
 //------------------------------------------------------------------------------
-bool Interpreter::SetComplexProperty(GmatBase *obj, const wxString &prop,
-                                     const wxString &value)
+bool Interpreter::SetComplexProperty(GmatBase *obj, const std::string &prop,
+                                     const std::string &value)
 {
    bool retval = true;
 
    #ifdef DEBUG_SET
       MessageInterface::ShowMessage
-         (wxT("Interpreter::SetComplexProperty() prop=%s, value=%s\n"),
+         ("Interpreter::SetComplexProperty() prop=%s, value=%s\n",
           prop.c_str(), value.c_str());
    #endif
    
@@ -5765,23 +5765,23 @@ bool Interpreter::SetComplexProperty(GmatBase *obj, const wxString &prop,
    {
       Spacecraft *sc = (Spacecraft*)obj;
       
-      if (parts[0] == wxT("Epoch"))
+      if (parts[0] == "Epoch")
       {
          sc->SetDateFormat(parts[1]);
          sc->SetEpoch(value);
       }
       else
       {
-         if (parts[0] != wxT("Covariance"))
+         if (parts[0] != "Covariance")
             retval = false;
       }
    }
 
 
-   if (parts[0] == wxT("Covariance"))
+   if (parts[0] == "Covariance")
    {
       #ifdef DEBUG_SET
-         MessageInterface::ShowMessage(wxT("Setting covariance elements:\n"));
+         MessageInterface::ShowMessage("Setting covariance elements:\n");
       #endif
 
       Covariance* covariance = obj->GetCovariance();
@@ -5790,7 +5790,7 @@ bool Interpreter::SetComplexProperty(GmatBase *obj, const wxString &prop,
          Integer parmID = obj->GetParameterID(parts[i]);
          Integer covSize = obj->HasParameterCovariances(parmID);
          #ifdef DEBUG_SET
-            MessageInterface::ShowMessage(wxT("   %s, with size %d\n"),
+            MessageInterface::ShowMessage("   %s, with size %d\n",
                   parts[i].c_str(), covSize);
          #endif
 
@@ -5802,35 +5802,35 @@ bool Interpreter::SetComplexProperty(GmatBase *obj, const wxString &prop,
 
       // Check the size of the inputs -- MUST be a square matrix
       StringArray rhsRows;
-      if ((value.find(wxT("[")) == value.npos) || (value.find(wxT("]")) == value.npos))
-         throw GmatBaseException(wxT("Covariance matrix definition is missing ")
-               wxT("square brackets"));
+      if ((value.find("[") == value.npos) || (value.find("]") == value.npos))
+         throw GmatBaseException("Covariance matrix definition is missing "
+               "square brackets");
 
-      rhsRows = theTextParser.SeparateBrackets(value, wxT("[]"), wxT(";"));
+      rhsRows = theTextParser.SeparateBrackets(value, "[]", ";");
       UnsignedInt rowCount = rhsRows.size();
 
       StringArray cells = theTextParser.SeparateSpaces(rhsRows[0]);
       UnsignedInt colCount = cells.size();
 
       if ((Integer)colCount > covariance->GetDimension())
-         throw GmatBaseException(wxT("Input covariance matrix is larger than the ")
-               wxT("matrix built from the input array"));
+         throw GmatBaseException("Input covariance matrix is larger than the "
+               "matrix built from the input array");
 
       for (UnsignedInt i = 1; i < rowCount; ++i)
       {
          cells = theTextParser.SeparateSpaces(rhsRows[i]);
        #ifdef DEBUG_SET
-            MessageInterface::ShowMessage(wxT("   Found  %d columns in row %d\n"),
+            MessageInterface::ShowMessage("   Found  %d columns in row %d\n",
                   cells.size(), i+1);
        #endif
 
          if (cells.size() != rowCount)
-            throw InterpreterException(wxT("Row/Column mismatch in the Covariance ")
-                  wxT("matrix for ") + obj->GetName());
+            throw InterpreterException("Row/Column mismatch in the Covariance "
+                  "matrix for " + obj->GetName());
       }
 
       #ifdef DEBUG_SET
-         MessageInterface::ShowMessage(wxT("Found %d rows and %d columns\n"),
+         MessageInterface::ShowMessage("Found %d rows and %d columns\n",
                rowCount, colCount);
       #endif
 
@@ -5847,20 +5847,20 @@ bool Interpreter::SetComplexProperty(GmatBase *obj, const wxString &prop,
             else
                // If a single row, it's the diagonal
                if (rowCount == 1)
-                  SetPropertyValue(obj, id, type, wxT("0.0"), i, j);
+                  SetPropertyValue(obj, id, type, "0.0", i, j);
                // Otherwise it's cell[j]
                else
                   SetPropertyValue(obj, id, type, cells[j], i, j);
       }
 
       #ifdef DEBUG_SET
-         MessageInterface::ShowMessage(wxT("Covariance matrix set to:\n"));
+         MessageInterface::ShowMessage("Covariance matrix set to:\n");
          for (UnsignedInt i = 0; i < colCount; ++i)
          {
-            MessageInterface::ShowMessage(wxT("   ["));
+            MessageInterface::ShowMessage("   [");
             for (UnsignedInt j = 0; j < colCount; ++j)
-               MessageInterface::ShowMessage(wxT(" %.12lf "), (*obj->GetCovariance())(i,j));
-            MessageInterface::ShowMessage(wxT("]\n"));
+               MessageInterface::ShowMessage(" %.12lf ", (*obj->GetCovariance())(i,j));
+            MessageInterface::ShowMessage("]\n");
          }
       #endif
    }
@@ -5870,8 +5870,8 @@ bool Interpreter::SetComplexProperty(GmatBase *obj, const wxString &prop,
 
 
 //------------------------------------------------------------------------------
-// bool SetForceModelProperty(GmatBase *obj, const wxString &prop,
-//                            const wxString &value, GmatBase *fromObj)
+// bool SetForceModelProperty(GmatBase *obj, const std::string &prop,
+//                            const std::string &value, GmatBase *fromObj)
 //------------------------------------------------------------------------------
 /**
  * Configures properties for an ODEModel
@@ -5889,21 +5889,21 @@ bool Interpreter::SetComplexProperty(GmatBase *obj, const wxString &prop,
  * @return true if the property is set, false if not set
  */
 //------------------------------------------------------------------------------
-bool Interpreter::SetForceModelProperty(GmatBase *obj, const wxString &prop,
-                                  const wxString &value, GmatBase *fromObj)
+bool Interpreter::SetForceModelProperty(GmatBase *obj, const std::string &prop,
+                                  const std::string &value, GmatBase *fromObj)
 {
    #ifdef DEBUG_SET_FORCE_MODEL
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetForceModelProperty() entered, obj=<%p><%s>'%s', prop=%s, ")
-       wxT("value=%s, fromObj=<%p>\n"), obj, obj->GetTypeName().c_str(), obj->GetName().c_str(),
+      ("Interpreter::SetForceModelProperty() entered, obj=<%p><%s>'%s', prop=%s, "
+       "value=%s, fromObj=<%p>\n", obj, obj->GetTypeName().c_str(), obj->GetName().c_str(),
        prop.c_str(), value.c_str(), fromObj);
    #endif
    
-   debugMsg = wxT("In SetForceModelProperty()");
+   debugMsg = "In SetForceModelProperty()";
    bool retval = false;
    StringArray parts = theTextParser.SeparateDots(prop);
    Integer dotCount = parts.size();
-   wxString pmType = parts[dotCount-1];
+   std::string pmType = parts[dotCount-1];
    Integer id;
    Gmat::ParameterType type;
    
@@ -5933,20 +5933,20 @@ bool Interpreter::SetForceModelProperty(GmatBase *obj, const wxString &prop,
    //      FM.SRP.ShadowBodies = {Earth,Moon}
    
    ODEModel *forceModel = (ODEModel*)obj;
-   wxString forceType = ODEModel::GetScriptAlias(pmType);
-   wxString centralBodyName = forceModel->GetStringParameter(wxT("CentralBody"));
+   std::string forceType = ODEModel::GetScriptAlias(pmType);
+   std::string centralBodyName = forceModel->GetStringParameter("CentralBody");
    
    #ifdef DEBUG_SET_FORCE_MODEL
    MessageInterface::ShowMessage
-      (wxT("   pmType=%s, forceType=%s\n"), pmType.c_str(), forceType.c_str());
+      ("   pmType=%s, forceType=%s\n", pmType.c_str(), forceType.c_str());
    #endif
    
    //------------------------------------------------------------
    // Set ForceModel CentralBody
    //------------------------------------------------------------
-   if (pmType == wxT("CentralBody"))
+   if (pmType == "CentralBody")
    {
-      id = obj->GetParameterID(wxT("CentralBody"));
+      id = obj->GetParameterID("CentralBody");
       type = obj->GetParameterType(id);
       retval = SetPropertyValue(obj, id, type, value);
       return retval;
@@ -5956,35 +5956,35 @@ bool Interpreter::SetForceModelProperty(GmatBase *obj, const wxString &prop,
    // Create ForceModel owned PhysicalModel
    //------------------------------------------------------------
    
-   else if (pmType == wxT("PrimaryBodies") || pmType == wxT("PointMasses"))
+   else if (pmType == "PrimaryBodies" || pmType == "PointMasses")
    {
       retval = true;
-      StringArray bodies = theTextParser.SeparateBrackets(value, wxT("{}"), wxT(" ,"));
+      StringArray bodies = theTextParser.SeparateBrackets(value, "{}", " ,");
       
       for (UnsignedInt i=0; i<bodies.size(); i++)
       {
          #ifdef DEBUG_SET_FORCE_MODEL
-         MessageInterface::ShowMessage(wxT("   bodies[%d]=%s\n"), i, bodies[i].c_str());
+         MessageInterface::ShowMessage("   bodies[%d]=%s\n", i, bodies[i].c_str());
          #endif
          
          // We don't want to configure PhysicalModel, so set name after create
-         ////PhysicalModel *pm = (PhysicalModel*)CreateObject(forceType, wxT(""));
-         wxString forceName = forceType + wxT(".") + bodies[i];
-         PhysicalModel *pm = (PhysicalModel*)CreateObject(forceType, wxT("0.")+forceName, 0);
+         ////PhysicalModel *pm = (PhysicalModel*)CreateObject(forceType, "");
+         std::string forceName = forceType + "." + bodies[i];
+         PhysicalModel *pm = (PhysicalModel*)CreateObject(forceType, "0."+forceName, 0);
          if (pm)
          {
-            ////pm->SetName(forceType + wxT(".") + bodies[i]);
+            ////pm->SetName(forceType + "." + bodies[i]);
             pm->SetName(forceName);
             
-            if (!pm->SetStringParameter(wxT("BodyName"), bodies[i]))
+            if (!pm->SetStringParameter("BodyName", bodies[i]))
             {
-               InterpreterException ex(wxT("Unable to set body for force ") + bodies[i]);
+               InterpreterException ex("Unable to set body for force " + bodies[i]);
                HandleError(ex);
             }
             
             #ifdef DEBUG_SET_FORCE_MODEL
             MessageInterface::ShowMessage
-               (wxT("   Adding type:<%s> name:<%s> to ForceModel:<%s>\n"),
+               ("   Adding type:<%s> name:<%s> to ForceModel:<%s>\n",
                 pm->GetTypeName().c_str(), pm->GetName().c_str(),
                 forceModel->GetName().c_str());
             #endif
@@ -5992,104 +5992,104 @@ bool Interpreter::SetForceModelProperty(GmatBase *obj, const wxString &prop,
             // Since default GravityField is created when ForceModel is created
             // We need to empty the ForceModel before adding new force. (LOJ: 2010.09.01)
             // Add force to ForceModel
-            forceModel->TakeAction(wxT("ClearDefaultForce"));
+            forceModel->TakeAction("ClearDefaultForce");
             forceModel->AddForce(pm);
             
             // Use JGM2 for default Earth gravity file, in case it is not
             // specified in the script
-            if (pmType == wxT("PrimaryBodies") && bodies[i] == wxT("Earth"))
+            if (pmType == "PrimaryBodies" && bodies[i] == "Earth")
             {
-               id = pm->GetParameterID(wxT("Model"));
+               id = pm->GetParameterID("Model");
                type = pm->GetParameterType(id);
-               retval = SetPropertyValue(pm, id, type, wxT("JGM2"));
+               retval = SetPropertyValue(pm, id, type, "JGM2");
             }
-            if (pmType == wxT("PrimaryBodies") && bodies[i] == wxT("Luna"))
+            if (pmType == "PrimaryBodies" && bodies[i] == "Luna")
             {
-               id = pm->GetParameterID(wxT("Model"));
+               id = pm->GetParameterID("Model");
                type = pm->GetParameterType(id);
-               retval = SetPropertyValue(pm, id, type, wxT("LP165P"));
+               retval = SetPropertyValue(pm, id, type, "LP165P");
             }
-            if (pmType == wxT("PrimaryBodies") && bodies[i] == wxT("Venus"))
+            if (pmType == "PrimaryBodies" && bodies[i] == "Venus")
             {
-               id = pm->GetParameterID(wxT("Model"));
+               id = pm->GetParameterID("Model");
                type = pm->GetParameterType(id);
-               retval = SetPropertyValue(pm, id, type, wxT("MGNP180U"));
+               retval = SetPropertyValue(pm, id, type, "MGNP180U");
             }
-            if (pmType == wxT("PrimaryBodies") && bodies[i] == wxT("Mars"))
+            if (pmType == "PrimaryBodies" && bodies[i] == "Mars")
             {
-               id = pm->GetParameterID(wxT("Model"));
+               id = pm->GetParameterID("Model");
                type = pm->GetParameterType(id);
-               retval = SetPropertyValue(pm, id, type, wxT("MARS50C"));
+               retval = SetPropertyValue(pm, id, type, "MARS50C");
             }
          }
       }
       
       #ifdef DEBUG_SET_FORCE_MODEL
       MessageInterface::ShowMessage
-         (wxT("Interpreter::SetForceModelProperty() returning %d\n"), retval);
+         ("Interpreter::SetForceModelProperty() returning %d\n", retval);
       #endif
       return retval;
    }
-   else if (pmType == wxT("Drag") || pmType == wxT("AtmosphereModel"))
+   else if (pmType == "Drag" || pmType == "AtmosphereModel")
    {
       // Write deprecated message, now we olny use Drag.AtmosphereModel to specify model name
-      if (pmType == wxT("Drag") && value != wxT("None"))
+      if (pmType == "Drag" && value != "None")
       {
          InterpreterException ex
-            (wxT("The field \"Drag\" of ForceModel \"") + obj->GetName() +
-             wxT("\" will not be permitted in a future build; ")
-             wxT("please use \"Drag.AtmosphereModel\" instead"));
+            ("The field \"Drag\" of ForceModel \"" + obj->GetName() +
+             "\" will not be permitted in a future build; "
+             "please use \"Drag.AtmosphereModel\" instead");
          HandleError(ex, true, true);
       }
       
       // If value is None, do not create DragForce
-      if (value == wxT("None"))
+      if (value == "None")
          return true;
       
       // Special handling for Drag
       // If field is AtmosphereModel, create DragForce and then AtmosphereModel.
       // It will also handle old script such as FM.Drag = JacchiaRoberts
-      return SetDragForceProperty(obj, wxT("Drag"), pmType, value);
+      return SetDragForceProperty(obj, "Drag", pmType, value);
    }
-   else if (pmType == wxT("SRP") || pmType == wxT("RelativisticCorrection"))
+   else if (pmType == "SRP" || pmType == "RelativisticCorrection")
    {
-      if (pmType == wxT("SRP"))
+      if (pmType == "SRP")
       {
-         id = obj->GetParameterID(wxT("SRP"));
+         id = obj->GetParameterID("SRP");
          type = obj->GetParameterType(id);
          retval = SetPropertyValue(obj, id, type, value);
          
-         if (retval && value != wxT("On"))
+         if (retval && value != "On")
             return true;
          else if (!retval)
             return false;
       }
       
-      if (pmType == wxT("RelativisticCorrection"))
+      if (pmType == "RelativisticCorrection")
       {
-         id = obj->GetParameterID(wxT("RelativisticCorrection"));
+         id = obj->GetParameterID("RelativisticCorrection");
          type = obj->GetParameterType(id);
          retval = SetPropertyValue(obj, id, type, value);
 
-         if (retval && value != wxT("On"))
+         if (retval && value != "On")
             return true;
          else if (!retval)
             return false;
       }
       
       // Create PhysicalModel
-      wxString forceName = pmType + wxT(".") + centralBodyName;
+      std::string forceName = pmType + "." + centralBodyName;
       //@note 0.ForceName indicates unmanaged internal forcename.
       // Added name for debugging purpose only
-      PhysicalModel *pm = (PhysicalModel*)CreateObject(forceType, wxT("0.")+forceName, 0);
+      PhysicalModel *pm = (PhysicalModel*)CreateObject(forceType, "0."+forceName, 0);
       pm->SetName(forceName);
       
       // Should we set SRP on ForceModel central body?
-      pm->SetStringParameter(wxT("BodyName"), centralBodyName);
+      pm->SetStringParameter("BodyName", centralBodyName);
       
       #ifdef DEBUG_SET_FORCE_MODEL
       MessageInterface::ShowMessage
-         (wxT("   Adding PhysicalModel <%p><%s>'%s' to ForceModel:<%s>\n"), pm,
+         ("   Adding PhysicalModel <%p><%s>'%s' to ForceModel:<%s>\n", pm,
           pm->GetTypeName().c_str(), pm->GetName().c_str(),
           forceModel->GetName().c_str());
       #endif
@@ -6098,24 +6098,24 @@ bool Interpreter::SetForceModelProperty(GmatBase *obj, const wxString &prop,
       forceModel->AddForce(pm);
       
       #ifdef DEBUG_SET_FORCE_MODEL
-      MessageInterface::ShowMessage(wxT("Interpreter::SetForceModelProperty() returning true\n"));
+      MessageInterface::ShowMessage("Interpreter::SetForceModelProperty() returning true\n");
       #endif
       return true;
    }
    // User defined forces
-   else if (pmType == wxT("UserDefined"))
+   else if (pmType == "UserDefined")
    {
-      StringArray udForces = theTextParser.SeparateBrackets(value, wxT("{}"), wxT(" ,"));
+      StringArray udForces = theTextParser.SeparateBrackets(value, "{}", " ,");
       
       for (UnsignedInt i=0; i<udForces.size(); i++)
       {
          #ifdef DEBUG_SET_FORCE_MODEL
-            MessageInterface::ShowMessage(wxT("   User defined force[%d] = %s\n"), 
+            MessageInterface::ShowMessage("   User defined force[%d] = %s\n", 
                   i, udForces[i].c_str());
          #endif
          
          // We don't want to configure PhysicalModel, so set name after create
-         ////PhysicalModel *pm = (PhysicalModel*)CreateObject(udForces[i], wxT(""));
+         ////PhysicalModel *pm = (PhysicalModel*)CreateObject(udForces[i], "");
          PhysicalModel *pm = (PhysicalModel*)CreateObject(udForces[i], udForces[i], 0);
          if (pm)
          {
@@ -6124,7 +6124,7 @@ bool Interpreter::SetForceModelProperty(GmatBase *obj, const wxString &prop,
          }
          else
             throw InterpreterException
-               (wxT("User defined force \"") + udForces[i] +  wxT("\" cannot be created\n"));
+               ("User defined force \"" + udForces[i] +  "\" cannot be created\n");
       }
    }
    
@@ -6135,11 +6135,11 @@ bool Interpreter::SetForceModelProperty(GmatBase *obj, const wxString &prop,
    
    pmType = parts[0];
    forceType = ODEModel::GetScriptAlias(pmType);
-   wxString propName = parts[dotCount-1];
+   std::string propName = parts[dotCount-1];
    
    #ifdef DEBUG_SET_FORCE_MODEL
    MessageInterface::ShowMessage
-      (wxT("   Setting pmType=%s, forceType=%s, propName=%s\n"), pmType.c_str(),
+      ("   Setting pmType=%s, forceType=%s, propName=%s\n", pmType.c_str(),
        forceType.c_str(), propName.c_str());
    #endif
    
@@ -6172,14 +6172,14 @@ bool Interpreter::SetForceModelProperty(GmatBase *obj, const wxString &prop,
    
    #ifdef DEBUG_SET_FORCE_MODEL
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetForceModelProperty() returning %d\n"), retval);
+      ("Interpreter::SetForceModelProperty() returning %d\n", retval);
    #endif
    return retval;
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetDragForceProperty(GmatBase *obj, const wxString &pmType, ...)
+// bool SetDragForceProperty(GmatBase *obj, const std::string &pmType, ...)
 //------------------------------------------------------------------------------
 /**
  * Creates DragForce and AtmosphereModel objects and adds to ODEModel.
@@ -6189,55 +6189,55 @@ bool Interpreter::SetForceModelProperty(GmatBase *obj, const wxString &prop,
  */
 //------------------------------------------------------------------------------
 bool Interpreter::SetDragForceProperty(GmatBase *obj,
-                                       const wxString &pmType,
-                                       const wxString &propName,
-                                       const wxString &value)
+                                       const std::string &pmType,
+                                       const std::string &propName,
+                                       const std::string &value)
 {
    ODEModel *forceModel = (ODEModel*)obj;
-   wxString forceType = ODEModel::GetScriptAlias(pmType);
-   wxString centralBodyName = forceModel->GetStringParameter(wxT("CentralBody"));
+   std::string forceType = ODEModel::GetScriptAlias(pmType);
+   std::string centralBodyName = forceModel->GetStringParameter("CentralBody");
    
    #ifdef DEBUG_SET_FORCE_MODEL
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetDragForceProperty() entered, forceType=%s, pmType=%s, ")
-       wxT("propName=%s, value=%s, centralBodyName=%s\n"), forceType.c_str(), pmType.c_str(),
+      ("Interpreter::SetDragForceProperty() entered, forceType=%s, pmType=%s, "
+       "propName=%s, value=%s, centralBodyName=%s\n", forceType.c_str(), pmType.c_str(),
        propName.c_str(), value.c_str(), centralBodyName.c_str());
    #endif
    
    // Create DragForce
    //@note 0.ForceName indicates unmanaged internal forcename.
    // Added name for debugging purpose only
-   wxString forceName = pmType + wxT(".") + centralBodyName;
-   PhysicalModel *pm = (PhysicalModel*)CreateObject(forceType, wxT("0.")+forceName, 0);
+   std::string forceName = pmType + "." + centralBodyName;
+   PhysicalModel *pm = (PhysicalModel*)CreateObject(forceType, "0."+forceName, 0);
    pm->SetName(forceName);
    
    #ifdef DEBUG_SET_FORCE_MODEL
    MessageInterface::ShowMessage
-      (wxT("   PhysicalModel <%p><%s>'%s' created\n"), pm, pm->GetTypeName().c_str(),
+      ("   PhysicalModel <%p><%s>'%s' created\n", pm, pm->GetTypeName().c_str(),
        pm->GetName().c_str());
    #endif
    
-   if (!pm->SetStringParameter(wxT("AtmosphereModel"), value))
+   if (!pm->SetStringParameter("AtmosphereModel", value))
    {
       InterpreterException ex
-         (wxT("Unable to set AtmosphereModel for drag force"));
+         ("Unable to set AtmosphereModel for drag force");
       HandleError(ex);
       ignoreError = true;
       return false;
    }
    
    // Create AtmosphereModel for the primary body
-   if (value != wxT("BodyDefault"))
+   if (value != "BodyDefault")
    {
-      wxString valueToUse = GmatStringUtil::RemoveEnclosingString(value, wxT("'"));
+      std::string valueToUse = GmatStringUtil::RemoveEnclosingString(value, "'");
       
       #ifdef DEBUG_SET_FORCE_MODEL
       MessageInterface::ShowMessage
-         (wxT("   Creating AtmosphereModel of type '%s'\n"), valueToUse.c_str());
+         ("   Creating AtmosphereModel of type '%s'\n", valueToUse.c_str());
       #endif
       
-      pm->SetStringParameter(wxT("BodyName"), centralBodyName);
-      pm->SetStringParameter(wxT("AtmosphereBody"), centralBodyName);
+      pm->SetStringParameter("BodyName", centralBodyName);
+      pm->SetStringParameter("AtmosphereBody", centralBodyName);
       GmatBase *am = CreateObject(valueToUse, valueToUse, 0);
       if (am)
       {
@@ -6246,7 +6246,7 @@ bool Interpreter::SetDragForceProperty(GmatBase *obj,
       else
       {
          InterpreterException ex
-            (wxT("Unable to create AtmosphereModel \"") + valueToUse + wxT("\" for drag force"));
+            ("Unable to create AtmosphereModel \"" + valueToUse + "\" for drag force");
          HandleError(ex);
          ignoreError = true;
          return false;
@@ -6255,7 +6255,7 @@ bool Interpreter::SetDragForceProperty(GmatBase *obj,
    
    #ifdef DEBUG_SET_FORCE_MODEL
    MessageInterface::ShowMessage
-      (wxT("   Adding PhysicalModel <%p><%s>'%s' to ForceModel:<%s>\n"), pm,
+      ("   Adding PhysicalModel <%p><%s>'%s' to ForceModel:<%s>\n", pm,
        pm->GetTypeName().c_str(), pm->GetName().c_str(),
        forceModel->GetName().c_str());
    #endif
@@ -6264,7 +6264,7 @@ bool Interpreter::SetDragForceProperty(GmatBase *obj,
    forceModel->AddForce(pm);
    
    #ifdef DEBUG_SET_FORCE_MODEL
-   MessageInterface::ShowMessage(wxT("Interpreter::SetDragForceProperty() returning true\n"));
+   MessageInterface::ShowMessage("Interpreter::SetDragForceProperty() returning true\n");
    #endif
    return true;
 }
@@ -6273,7 +6273,7 @@ bool Interpreter::SetDragForceProperty(GmatBase *obj,
 
 //------------------------------------------------------------------------------
 // bool Interpreter::SetMeasurementModelProperty(GmatBase *obj,
-//          const wxString &property, const wxString &value)
+//          const std::string &property, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * This method configures properties on a MeasurementModel
@@ -6289,32 +6289,32 @@ bool Interpreter::SetDragForceProperty(GmatBase *obj,
  */
 //------------------------------------------------------------------------------
 bool Interpreter::SetMeasurementModelProperty(GmatBase *obj,
-         const wxString &property, const wxString &value)
+         const std::string &property, const std::string &value)
 {
-   debugMsg = wxT("In SetMeasurementModelProperty()");
+   debugMsg = "In SetMeasurementModelProperty()";
    bool retval = false;
    StringArray parts = theTextParser.SeparateDots(property);
    Integer count = parts.size();
-   wxString propName = parts[count-1];
+   std::string propName = parts[count-1];
 
    #ifdef DEBUG_SET_MEASUREMENT_MODEL
       MessageInterface::ShowMessage
-         (wxT("Interpreter::SetMeasurementModelProperty() mModel=%s, prop=%s, ")
-          wxT("value=%s\n"), obj->GetName().c_str(), propName.c_str(),
+         ("Interpreter::SetMeasurementModelProperty() mModel=%s, prop=%s, "
+          "value=%s\n", obj->GetName().c_str(), propName.c_str(),
           value.c_str());
    #endif
 
-   if (propName == wxT("Type"))
+   if (propName == "Type")
    {
-      GmatBase* model = CreateObject(value, wxT(""), 0, false);
+      GmatBase* model = CreateObject(value, "", 0, false);
       if (model != NULL)
       {
          if (model->IsOfType(Gmat::CORE_MEASUREMENT))
-            retval = obj->SetRefObject(model, Gmat::CORE_MEASUREMENT, wxT(""));
+            retval = obj->SetRefObject(model, Gmat::CORE_MEASUREMENT, "");
       }
       else
-         throw InterpreterException(wxT("Failed to create a ") + value +
-               wxT(" core measurement"));
+         throw InterpreterException("Failed to create a " + value +
+               " core measurement");
    }
    else
    {
@@ -6332,15 +6332,15 @@ bool Interpreter::SetMeasurementModelProperty(GmatBase *obj,
 
       id = obj->GetParameterID(property);
       type = obj->GetParameterType(id);
-      if (property == wxT("Covariance"))
+      if (property == "Covariance")
       {
          // Check the size of the inputs -- MUST be a square matrix
          StringArray rhsRows;
-         if ((value.find(wxT("[")) == value.npos) || (value.find(wxT("]")) == value.npos))
-            throw GmatBaseException(wxT("Covariance matrix definition is missing ")
-                  wxT("square brackets"));
+         if ((value.find("[") == value.npos) || (value.find("]") == value.npos))
+            throw GmatBaseException("Covariance matrix definition is missing "
+                  "square brackets");
 
-         rhsRows = theTextParser.SeparateBrackets(value, wxT("[]"), wxT(";"));
+         rhsRows = theTextParser.SeparateBrackets(value, "[]", ";");
          UnsignedInt rowCount = rhsRows.size();
 
          StringArray cells = theTextParser.SeparateSpaces(rhsRows[0]);
@@ -6349,30 +6349,30 @@ bool Interpreter::SetMeasurementModelProperty(GmatBase *obj,
          Covariance *covariance = obj->GetCovariance();
 
          #ifdef DEBUG_SET
-            MessageInterface::ShowMessage(wxT("%s covariance has dim %d, ")
-                  wxT("row count = %d, colCount = %d\n"), obj->GetName().c_str(),
+            MessageInterface::ShowMessage("%s covariance has dim %d, "
+                  "row count = %d, colCount = %d\n", obj->GetName().c_str(),
                   covariance->GetDimension(), rowCount, colCount);
          #endif
 
          if ((Integer)colCount > covariance->GetDimension())
-            throw GmatBaseException(wxT("Input covariance matrix is larger than the ")
-                  wxT("matrix built from the input array"));
+            throw GmatBaseException("Input covariance matrix is larger than the "
+                  "matrix built from the input array");
 
          for (UnsignedInt i = 1; i < rowCount; ++i)
          {
             cells = theTextParser.SeparateSpaces(rhsRows[i]);
           #ifdef DEBUG_SET
-               MessageInterface::ShowMessage(wxT("   Found  %d columns in row %d\n"),
+               MessageInterface::ShowMessage("   Found  %d columns in row %d\n",
                      cells.size(), i+1);
           #endif
 
             if (cells.size() != rowCount)
-               throw InterpreterException(wxT("Row/Column mismatch in the Covariance ")
-                     wxT("matrix for ") + obj->GetName());
+               throw InterpreterException("Row/Column mismatch in the Covariance "
+                     "matrix for " + obj->GetName());
          }
 
          #ifdef DEBUG_SET
-            MessageInterface::ShowMessage(wxT("Found %d rows and %d columns\n"),
+            MessageInterface::ShowMessage("Found %d rows and %d columns\n",
                   rowCount, colCount);
          #endif
 
@@ -6386,7 +6386,7 @@ bool Interpreter::SetMeasurementModelProperty(GmatBase *obj,
                else
                   // If a single row, it's the diagonal
                   if (rowCount == 1)
-                     SetPropertyValue(obj, id, type, wxT("0.0"), i, j);
+                     SetPropertyValue(obj, id, type, "0.0", i, j);
                   // Otherwise it's cell[j]
                   else
                      SetPropertyValue(obj, id, type, cells[j], i, j);
@@ -6402,8 +6402,8 @@ bool Interpreter::SetMeasurementModelProperty(GmatBase *obj,
 }
 
 //------------------------------------------------------------------------------
-// bool SetTrackingDataProperty(GmatBase *obj, const wxString &prop,
-//                              const wxString &value)
+// bool SetTrackingDataProperty(GmatBase *obj, const std::string &prop,
+//                              const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * This method...
@@ -6414,32 +6414,32 @@ bool Interpreter::SetMeasurementModelProperty(GmatBase *obj,
  */
 //------------------------------------------------------------------------------
 bool Interpreter::SetTrackingDataProperty(GmatBase *obj,
-         const wxString &property, const wxString &value)
+         const std::string &property, const std::string &value)
 {
-   debugMsg = wxT("In SetTrackingDataProperty()");
+   debugMsg = "In SetTrackingDataProperty()";
    bool retval = false;
    StringArray parts = theTextParser.SeparateDots(property);
    Integer count = parts.size();
-   wxString propName = parts[count-1];
+   std::string propName = parts[count-1];
 
    #ifdef DEBUG_SET_MEASUREMENT_MODEL
       MessageInterface::ShowMessage
-         (wxT("Interpreter::SetTrackingDataProperty() mModel=%s, prop=%s, ")
-          wxT("value=%s\n"), obj->GetName().c_str(), propName.c_str(),
+         ("Interpreter::SetTrackingDataProperty() mModel=%s, prop=%s, "
+          "value=%s\n", obj->GetName().c_str(), propName.c_str(),
           value.c_str());
    #endif
 
-   if (propName == wxT("Type"))
+   if (propName == "Type")
    {
-      GmatBase* model = CreateObject(value, wxT(""), 0, false);
+      GmatBase* model = CreateObject(value, "", 0, false);
       if (model != NULL)
       {
          if (model->IsOfType(Gmat::CORE_MEASUREMENT))
-            retval = obj->SetRefObject(model, Gmat::CORE_MEASUREMENT, wxT(""));
+            retval = obj->SetRefObject(model, Gmat::CORE_MEASUREMENT, "");
       }
       else
-         throw InterpreterException(wxT("Failed to create a ") + value +
-               wxT(" core measurement"));
+         throw InterpreterException("Failed to create a " + value +
+               " core measurement");
    }
    else
    {
@@ -6457,15 +6457,15 @@ bool Interpreter::SetTrackingDataProperty(GmatBase *obj,
 
       id = obj->GetParameterID(property);
       type = obj->GetParameterType(id);
-      if (property == wxT("Covariance"))
+      if (property == "Covariance")
       {
          // Check the size of the inputs -- MUST be a square matrix
          StringArray rhsRows;
-         if ((value.find(wxT("[")) == value.npos) || (value.find(wxT("]")) == value.npos))
-            throw GmatBaseException(wxT("Covariance matrix definition is missing ")
-                  wxT("square brackets"));
+         if ((value.find("[") == value.npos) || (value.find("]") == value.npos))
+            throw GmatBaseException("Covariance matrix definition is missing "
+                  "square brackets");
 
-         rhsRows = theTextParser.SeparateBrackets(value, wxT("[]"), wxT(";"));
+         rhsRows = theTextParser.SeparateBrackets(value, "[]", ";");
          UnsignedInt rowCount = rhsRows.size();
 
          StringArray cells = theTextParser.SeparateSpaces(rhsRows[0]);
@@ -6474,30 +6474,30 @@ bool Interpreter::SetTrackingDataProperty(GmatBase *obj,
          Covariance *covariance = obj->GetCovariance();
 
          #ifdef DEBUG_SET
-            MessageInterface::ShowMessage(wxT("%s covariance has dim %d, ")
-                  wxT("row count = %d, colCount = %d\n"), obj->GetName().c_str(),
+            MessageInterface::ShowMessage("%s covariance has dim %d, "
+                  "row count = %d, colCount = %d\n", obj->GetName().c_str(),
                   covariance->GetDimension(), rowCount, colCount);
          #endif
 
          if ((Integer)colCount > covariance->GetDimension())
-            throw GmatBaseException(wxT("Input covariance matrix is larger than the ")
-                  wxT("matrix built from the input array"));
+            throw GmatBaseException("Input covariance matrix is larger than the "
+                  "matrix built from the input array");
 
          for (UnsignedInt i = 1; i < rowCount; ++i)
          {
             cells = theTextParser.SeparateSpaces(rhsRows[i]);
           #ifdef DEBUG_SET
-               MessageInterface::ShowMessage(wxT("   Found  %d columns in row %d\n"),
+               MessageInterface::ShowMessage("   Found  %d columns in row %d\n",
                      cells.size(), i+1);
           #endif
 
             if (cells.size() != rowCount)
-               throw InterpreterException(wxT("Row/Column mismatch in the Covariance ")
-                     wxT("matrix for ") + obj->GetName());
+               throw InterpreterException("Row/Column mismatch in the Covariance "
+                     "matrix for " + obj->GetName());
          }
 
          #ifdef DEBUG_SET
-            MessageInterface::ShowMessage(wxT("Found %d rows and %d columns\n"),
+            MessageInterface::ShowMessage("Found %d rows and %d columns\n",
                   rowCount, colCount);
          #endif
 
@@ -6511,7 +6511,7 @@ bool Interpreter::SetTrackingDataProperty(GmatBase *obj,
                else
                   // If a single row, it's the diagonal
                   if (rowCount == 1)
-                     SetPropertyValue(obj, id, type, wxT("0.0"), i, j);
+                     SetPropertyValue(obj, id, type, "0.0", i, j);
                   // Otherwise it's cell[j]
                   else
                      SetPropertyValue(obj, id, type, cells[j], i, j);
@@ -6528,8 +6528,8 @@ bool Interpreter::SetTrackingDataProperty(GmatBase *obj,
 
 
 //------------------------------------------------------------------------------
-// bool SetTrackingSystemProperty(GmatBase *obj, const wxString &prop,
-//          const wxString &value)
+// bool SetTrackingSystemProperty(GmatBase *obj, const std::string &prop,
+//          const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * This method...
@@ -6540,9 +6540,9 @@ bool Interpreter::SetTrackingDataProperty(GmatBase *obj,
  */
 //------------------------------------------------------------------------------
 bool Interpreter::SetTrackingSystemProperty(GmatBase *obj,
-         const wxString &prop, const wxString &value)
+         const std::string &prop, const std::string &value)
 {
-   debugMsg = wxT("In SetTrackingSystemProperty()");
+   debugMsg = "In SetTrackingSystemProperty()";
    bool retval = false;
    StringArray parts = theTextParser.SeparateDots(prop);
 
@@ -6565,7 +6565,7 @@ bool Interpreter::SetTrackingSystemProperty(GmatBase *obj,
 
 //------------------------------------------------------------------------------
 // bool Interpreter::SetDataStreamProperty(GmatBase *obj,
-//          const wxString &property, const wxString &value)
+//          const std::string &property, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * This method configures properties on a DataStream
@@ -6581,32 +6581,32 @@ bool Interpreter::SetTrackingSystemProperty(GmatBase *obj,
  */
 //------------------------------------------------------------------------------
 bool Interpreter::SetDataStreamProperty(GmatBase *obj,
-         const wxString &property, const wxString &value)
+         const std::string &property, const std::string &value)
 {
-   debugMsg = wxT("In SetDataStreamProperty()");
+   debugMsg = "In SetDataStreamProperty()";
    bool retval = false;
    StringArray parts = theTextParser.SeparateDots(property);
    Integer count = parts.size();
-   wxString propName = parts[count-1];
+   std::string propName = parts[count-1];
 
    #ifdef DEBUG_SET_MEASUREMENT_MODEL
       MessageInterface::ShowMessage
-         (wxT("Interpreter::SetDataStreamProperty() mModel=%s, prop=%s, ")
-          wxT("value=%s\n"), obj->GetName().c_str(), propName.c_str(),
+         ("Interpreter::SetDataStreamProperty() mModel=%s, prop=%s, "
+          "value=%s\n", obj->GetName().c_str(), propName.c_str(),
           value.c_str());
    #endif
 
-   if (propName == wxT("Format"))
+   if (propName == "Format")
    {
-      GmatBase* obs = CreateObject(value, wxT(""), 0, false);
+      GmatBase* obs = CreateObject(value, "", 0, false);
       if (obs != NULL)
       {
          if (obs->IsOfType(Gmat::OBTYPE))
             retval = obj->SetRefObject(obs, Gmat::OBTYPE);
       }
       else
-         throw InterpreterException(wxT("Failed to create a ") + value +
-               wxT(" observation type"));
+         throw InterpreterException("Failed to create a " + value +
+               " observation type");
    }
    else
    {
@@ -6624,19 +6624,19 @@ bool Interpreter::SetDataStreamProperty(GmatBase *obj,
 
 
 //------------------------------------------------------------------------------
-// bool SetSolarSystemProperty(GmatBase *obj, const wxString &prop,
-//                            const wxString &value)
+// bool SetSolarSystemProperty(GmatBase *obj, const std::string &prop,
+//                            const std::string &value)
 //------------------------------------------------------------------------------
-bool Interpreter::SetSolarSystemProperty(GmatBase *obj, const wxString &prop,
-                                         const wxString &value)
+bool Interpreter::SetSolarSystemProperty(GmatBase *obj, const std::string &prop,
+                                         const std::string &value)
 {
    #ifdef DEBUG_SET_SOLAR_SYS
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetSolarSystemProperty() type=%s, name=%s, prop=%s, value=%s\n"),
+      ("Interpreter::SetSolarSystemProperty() type=%s, name=%s, prop=%s, value=%s\n",
        obj->GetTypeName().c_str(), obj->GetName().c_str(), prop.c_str(), value.c_str());
    #endif
    
-   debugMsg = wxT("In SetSolarSystemProperty()");
+   debugMsg = "In SetSolarSystemProperty()";
    bool retval = false;
    StringArray parts = theTextParser.SeparateDots(prop);
    Integer count = parts.size();
@@ -6644,13 +6644,13 @@ bool Interpreter::SetSolarSystemProperty(GmatBase *obj, const wxString &prop,
    
    if (count == 1)
    {
-//      if (prop == wxT("Ephemeris"))
+//      if (prop == "Ephemeris")
 //      {
-//         StringArray ephems = theTextParser.SeparateBrackets(value, wxT("{}"), wxT(" ,"));
+//         StringArray ephems = theTextParser.SeparateBrackets(value, "{}", " ,");
 //      
 //         #ifdef DEBUG_SET_SOLAR_SYS
 //         for (StringArray::iterator i = ephems.begin(); i != ephems.end(); ++i)
-//            MessageInterface::ShowMessage(wxT("   Source = %s\n"), i->c_str());
+//            MessageInterface::ShowMessage("   Source = %s\n", i->c_str());
 //         #endif
 //         
 //         theModerator->SetPlanetarySourceTypesInUse(ephems);
@@ -6673,12 +6673,12 @@ bool Interpreter::SetSolarSystemProperty(GmatBase *obj, const wxString &prop,
       // GMAT SolarSystem.Earth.InitalEpoch = 21544.500371
       // GMAT SolarSystem.Earth.SMA         = 149653978.978377
       
-      wxString bodyName = parts[0];
-      wxString newProp = parts[count-1];
+      std::string bodyName = parts[0];
+      std::string newProp = parts[count-1];
       
       #ifdef DEBUG_SET_SOLAR_SYS
       MessageInterface::ShowMessage
-         (wxT("   bodyName=%s, newProp=%s\n"), bodyName.c_str(), newProp.c_str());
+         ("   bodyName=%s, newProp=%s\n", bodyName.c_str(), newProp.c_str());
       #endif
       
       // Cannot use FindPropertyID() because SolarSystem bodies have the
@@ -6688,7 +6688,7 @@ bool Interpreter::SetSolarSystemProperty(GmatBase *obj, const wxString &prop,
       if (body == NULL)
       {
          InterpreterException ex
-            (wxT("Body: ") + bodyName + wxT(" not found in the SolarSystem\n"));
+            ("Body: " + bodyName + " not found in the SolarSystem\n");
          HandleError(ex);
       }
       
@@ -6706,7 +6706,7 @@ bool Interpreter::SetSolarSystemProperty(GmatBase *obj, const wxString &prop,
    
    #ifdef DEBUG_SET_SOLAR_SYS
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetSolarSystemProperty() prop=%s, retval=%d\n"),
+      ("Interpreter::SetSolarSystemProperty() prop=%s, retval=%d\n",
        prop.c_str(), retval);
    #endif
    
@@ -6715,7 +6715,7 @@ bool Interpreter::SetSolarSystemProperty(GmatBase *obj, const wxString &prop,
 
 
 //------------------------------------------------------------------------------
-// bool FindOwnedObject(GmatBase *owner, const wxString toProp,
+// bool FindOwnedObject(GmatBase *owner, const std::string toProp,
 //                      GmatBase **ownedObj, Integer &id, Gmat::OBJECT_TYPE &type)
 //------------------------------------------------------------------------------
 /*
@@ -6730,17 +6730,17 @@ bool Interpreter::SetSolarSystemProperty(GmatBase *obj, const wxString &prop,
  * @return  true if property found from the owned object
  */
 //------------------------------------------------------------------------------
-bool Interpreter::FindOwnedObject(GmatBase *owner, const wxString toProp,
+bool Interpreter::FindOwnedObject(GmatBase *owner, const std::string toProp,
                                   GmatBase **ownedObj, Integer &id,
                                   Gmat::ParameterType &type)
 {
    #ifdef DEBUG_FIND_OBJECT
    MessageInterface::ShowMessage
-      (wxT("Interpreter::FindOwnedObject() owner=<%s>, toProp=<%s>\n"),
+      ("Interpreter::FindOwnedObject() owner=<%s>, toProp=<%s>\n",
        owner->GetName().c_str(), toProp.c_str());
    #endif
    
-   debugMsg = wxT("In FindOwnedObject()");
+   debugMsg = "In FindOwnedObject()";
    bool retval = false;
    Integer ownedObjCount = owner->GetOwnedObjectCount();
    Integer errorCount = 0;
@@ -6752,7 +6752,7 @@ bool Interpreter::FindOwnedObject(GmatBase *owner, const wxString toProp,
    type = Gmat::UNKNOWN_PARAMETER_TYPE;
    
    #ifdef DEBUG_FIND_OBJECT
-   MessageInterface::ShowMessage(wxT("   ownedObjCount=%d\n"), ownedObjCount);
+   MessageInterface::ShowMessage("   ownedObjCount=%d\n", ownedObjCount);
    #endif
    
    if (ownedObjCount > 0)
@@ -6764,7 +6764,7 @@ bool Interpreter::FindOwnedObject(GmatBase *owner, const wxString toProp,
          {
             #ifdef DEBUG_FIND_OBJECT
             MessageInterface::ShowMessage
-               (wxT("   i=%d, ownedObj type=<%s>, name=<%s>\n"), i,
+               ("   i=%d, ownedObj type=<%s>, name=<%s>\n", i,
                 tempObj->GetTypeName().c_str(), tempObj->GetName().c_str());
             #endif
             
@@ -6794,11 +6794,11 @@ bool Interpreter::FindOwnedObject(GmatBase *owner, const wxString toProp,
             // Currently SolarSystem parameter is handled by the Moderator,
             // so it is an exceptional case.
             // Eventually we want to move parameter handling to SolarSyatem.
-            if (owner->GetName() != wxT("SolarSystem"))
+            if (owner->GetName() != "SolarSystem")
             {
                InterpreterException ex
-                  (wxT("The field name \"") + toProp + wxT("\" on object ") + owner->GetName() +
-                   wxT(" is not permitted"));
+                  ("The field name \"" + toProp + "\" on object " + owner->GetName() +
+                   " is not permitted");
                HandleErrorMessage(ex, lineNumber, currentLine, true);
             }
          }
@@ -6807,7 +6807,7 @@ bool Interpreter::FindOwnedObject(GmatBase *owner, const wxString toProp,
    
    #ifdef DEBUG_FIND_OBJECT
    MessageInterface::ShowMessage
-      (wxT("   FindOwnedObject() returning retval=%d, ownedObj=<%p>\n"), retval, *ownedObj);
+      ("   FindOwnedObject() returning retval=%d, ownedObj=<%p>\n", retval, *ownedObj);
    #endif
    
    return retval;
@@ -6815,7 +6815,7 @@ bool Interpreter::FindOwnedObject(GmatBase *owner, const wxString toProp,
 
 
 //------------------------------------------------------------------------------
-// Real GetArrayValue(const wxString &arrayStr, Integer &row, Integer &col)
+// Real GetArrayValue(const std::string &arrayStr, Integer &row, Integer &col)
 //------------------------------------------------------------------------------
 /**
  * Retrives configured array value by row and col.
@@ -6825,22 +6825,22 @@ bool Interpreter::FindOwnedObject(GmatBase *owner, const wxString toProp,
  * @note Array name must be created and configured before access.
  */
 //------------------------------------------------------------------------------
-Real Interpreter::GetArrayValue(const wxString &arrayStr,
+Real Interpreter::GetArrayValue(const std::string &arrayStr,
                                 Integer &row, Integer &col)
 {
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::GetArrayValue arrayStr=%s\n"), arrayStr.c_str());
+      ("Interpreter::GetArrayValue arrayStr=%s\n", arrayStr.c_str());
    #endif
    
-   debugMsg = wxT("In GetArrayValue()");
+   debugMsg = "In GetArrayValue()";
    Parameter *param = GetArrayIndex(arrayStr, row, col);
    
    if (row != -1 && col != -1)
-      return param->GetRealParameter(wxT("SingleValue"), row, col);
+      return param->GetRealParameter("SingleValue", row, col);
    else
    {
-      InterpreterException ex(wxT("Invalid row and column index\n"));
+      InterpreterException ex("Invalid row and column index\n");
       HandleError(ex);
    }
    return 0.0;
@@ -6848,15 +6848,15 @@ Real Interpreter::GetArrayValue(const wxString &arrayStr,
 
 
 //------------------------------------------------------------------------------
-// bool IsArrayElement(const wxString &str)
+// bool IsArrayElement(const std::string &str)
 //------------------------------------------------------------------------------
-bool Interpreter::IsArrayElement(const wxString &str)
+bool Interpreter::IsArrayElement(const std::string &str)
 {
    bool retval = false;
    
-   if (str.find(wxT("[")) != str.npos)
+   if (str.find("[") != str.npos)
    {
-      InterpreterException ex(wxT("\"") + str + wxT("\" is not a valid Array element"));
+      InterpreterException ex("\"" + str + "\" is not a valid Array element");
       HandleError(ex);
    }
    
@@ -6864,7 +6864,7 @@ bool Interpreter::IsArrayElement(const wxString &str)
 
    #ifdef DEBUG_ARRAY_GET
    MessageInterface::ShowMessage
-      (wxT("Interpreter::IsArrayElement() str=%s, array=%d\n"), str.c_str(), retval);
+      ("Interpreter::IsArrayElement() str=%s, array=%d\n", str.c_str(), retval);
    #endif
    
    return retval;
@@ -6872,40 +6872,40 @@ bool Interpreter::IsArrayElement(const wxString &str)
 
 
 //------------------------------------------------------------------------------
-// bool ParseVariableExpression(Parameter *var, const wxString &exp)
+// bool ParseVariableExpression(Parameter *var, const std::string &exp)
 //------------------------------------------------------------------------------
-bool Interpreter::ParseVariableExpression(Parameter *var, const wxString &exp)
+bool Interpreter::ParseVariableExpression(Parameter *var, const std::string &exp)
 {
    if (var == NULL)
    {
       InterpreterException ex
-         (wxT("Interpreter::ParseVariableExpression() The variable is NULL\n"));
+         ("Interpreter::ParseVariableExpression() The variable is NULL\n");
       HandleError(ex);
       return false;
    }
    
    #ifdef DEBUG_VAR_EXPRESSION
    MessageInterface::ShowMessage
-      (wxT("Interpreter::ParseVariableExpression() entered, var=<%p>'%s', exp='%s'\n"),
+      ("Interpreter::ParseVariableExpression() entered, var=<%p>'%s', exp='%s'\n",
        var, var->GetName().c_str(), exp.c_str());
    #endif
    
    // Check for invalid starting name such as 1(x) should give an error (loj: 2008.08.15)
-   if (exp.find_first_of(wxT("(")) != exp.npos)
+   if (exp.find_first_of("(") != exp.npos)
    {
       if (!GmatStringUtil::IsValidName(exp, true))
       {
          #ifdef DEBUG_VAR_EXPRESSION
          MessageInterface::ShowMessage
-            (wxT("Interpreter::ParseVariableExpression() returning false, '%s' is not ")
-             wxT("a valid name\n"), exp.c_str());
+            ("Interpreter::ParseVariableExpression() returning false, '%s' is not "
+             "a valid name\n", exp.c_str());
          #endif
          return false;
       }
    }
    
    // Parse the Parameter
-   StringTokenizer st(exp, wxT("()*/+-^ "));
+   StringTokenizer st(exp, "()*/+-^ ");
    StringArray tokens = st.GetAllTokens();
    Real rval;
    
@@ -6913,14 +6913,14 @@ bool Interpreter::ParseVariableExpression(Parameter *var, const wxString &exp)
    for (unsigned int i=0; i<tokens.size(); i++)
    {
       #ifdef DEBUG_VAR_EXPRESSION
-      MessageInterface::ShowMessage(wxT("   token:<%s> \n"), tokens[i].c_str());
+      MessageInterface::ShowMessage("   token:<%s> \n", tokens[i].c_str());
       #endif
       
       if (!GmatStringUtil::ToReal(tokens[i], rval))
       {
          #ifdef DEBUG_VAR_EXPRESSION
          MessageInterface::ShowMessage
-            (wxT("   It is not a number, so trying to create a Parameter\n"));
+            ("   It is not a number, so trying to create a Parameter\n");
          #endif
          
          Parameter *param = CreateSystemParameter(tokens[i]);
@@ -6928,8 +6928,8 @@ bool Interpreter::ParseVariableExpression(Parameter *var, const wxString &exp)
          {
             #ifdef DEBUG_VAR_EXPRESSION
             MessageInterface::ShowMessage
-               (wxT("   The Parameter '%s' found or created, so setting it to '%s' ")
-                wxT("as ref object name\n"),  param->GetName().c_str(), var->GetName().c_str());
+               ("   The Parameter '%s' found or created, so setting it to '%s' "
+                "as ref object name\n",  param->GetName().c_str(), var->GetName().c_str());
             #endif
             // set parameter names used in expression
             var->SetRefObjectName(Gmat::PARAMETER, tokens[i]);
@@ -6938,33 +6938,33 @@ bool Interpreter::ParseVariableExpression(Parameter *var, const wxString &exp)
          {
             #ifdef DEBUG_VAR_EXPRESSION
             MessageInterface::ShowMessage
-               (wxT("Interpreter::ParseVariableExpression() returning false ")
-                wxT("since '%s' is not allowed in the expression\n"), tokens[i].c_str());
+               ("Interpreter::ParseVariableExpression() returning false "
+                "since '%s' is not allowed in the expression\n", tokens[i].c_str());
             #endif
             
             //InterpreterException ex
-            //   (wxT("The Variable \"") + tokens[i] + wxT("\" does not exist. ")
-            //    wxT("It must be created first"));
+            //   ("The Variable \"" + tokens[i] + "\" does not exist. "
+            //    "It must be created first");
             //HandleError(ex);
             return false;
          }
       }
    }
    
-   var->SetStringParameter(wxT("Expression"), exp);
+   var->SetStringParameter("Expression", exp);
    
    return true;
 }
 
 
 //------------------------------------------------------------------------------
-// AxisSystem* CreateAxisSystem(wxString type, GmatBase *owner)
+// AxisSystem* CreateAxisSystem(std::string type, GmatBase *owner)
 //------------------------------------------------------------------------------
-AxisSystem* Interpreter::CreateAxisSystem(wxString type, GmatBase *owner)
+AxisSystem* Interpreter::CreateAxisSystem(std::string type, GmatBase *owner)
 {
    #ifdef DEBUG_AXIS_SYSTEM
    MessageInterface::ShowMessage
-      (wxT("Interpreter::CreateAxisSystem() type = '%s'\n"), type.c_str());
+      ("Interpreter::CreateAxisSystem() type = '%s'\n", type.c_str());
    #endif
    
    AxisSystem *axis = theValidator->CreateAxisSystem(type, owner);
@@ -6979,7 +6979,7 @@ AxisSystem* Interpreter::CreateAxisSystem(wxString type, GmatBase *owner)
    
    #ifdef DEBUG_AXIS_SYSTEM
    MessageInterface::ShowMessage
-      (wxT("Interpreter::CreateAxisSystem() returning <%p>\n"), axis);
+      ("Interpreter::CreateAxisSystem() returning <%p>\n", axis);
    #endif
    
    return axis;
@@ -6999,7 +6999,7 @@ void Interpreter::HandleError(const BaseException &e, bool writeLine, bool warni
 
       #ifdef DEBUG_HANDLE_ERROR
       MessageInterface::ShowMessage
-         (wxT("Interpreter::HandleError(), inScriptEvent=%d, lineNum=%d\n"),
+         ("Interpreter::HandleError(), inScriptEvent=%d, lineNum=%d\n",
           inScriptEvent, lineNum);
       #endif
       
@@ -7010,43 +7010,43 @@ void Interpreter::HandleError(const BaseException &e, bool writeLine, bool warni
    }
    else
    {
-      HandleErrorMessage(e, wxT(""), wxT(""), writeLine, warning);
+      HandleErrorMessage(e, "", "", writeLine, warning);
    }
 }
 
 
 //------------------------------------------------------------------------------
-// void HandleErrorMessage(const BaseException &e, const wxString &lineNumber...)
+// void HandleErrorMessage(const BaseException &e, const std::string &lineNumber...)
 //------------------------------------------------------------------------------
 void Interpreter::HandleErrorMessage(const BaseException &e,
-                                     const wxString &lineNumber,
-                                     const wxString &line,
+                                     const std::string &lineNumber,
+                                     const std::string &line,
                                      bool writeLine, bool warning)
 {
-   wxString currMsg = wxT("");
-   wxString msgKind = wxT("**** ERROR **** ");
+   std::string currMsg = "";
+   std::string msgKind = "**** ERROR **** ";
    if (warning)
-      msgKind = wxT("*** WARNING *** ");
+      msgKind = "*** WARNING *** ";
    
    // Added function name in the message (loj: 2008.08.29)
-   wxString fnMsg;
+   std::string fnMsg;
    if (currentFunction != NULL)
    {
       fnMsg = currentFunction->GetFunctionPathAndName();
-      fnMsg = wxT("(In Function \"") + fnMsg + wxT("\")\n");
+      fnMsg = "(In Function \"" + fnMsg + "\")\n";
       if (!writeLine)
-         fnMsg = wxT("\n") + fnMsg;
+         fnMsg = "\n" + fnMsg;
    }
    
    if (writeLine)
-      currMsg = wxT(" in line:\n") + fnMsg + wxT("   \"") + lineNumber + wxT(": ") + line + wxT("\"\n");
+      currMsg = " in line:\n" + fnMsg + "   \"" + lineNumber + ": " + line + "\"\n";
    else
       currMsg = fnMsg;
    
-   wxString msg = msgKind + e.GetFullMessage() + currMsg;
+   std::string msg = msgKind + e.GetFullMessage() + currMsg;
    
    #ifdef DEBUG_HANDLE_ERROR
-   MessageInterface::ShowMessage(wxT("%s, continueOnError=%d\n"), debugMsg.c_str(), continueOnError);
+   MessageInterface::ShowMessage("%s, continueOnError=%d\n", debugMsg.c_str(), continueOnError);
    #endif
    
    if (continueOnError)
@@ -7054,7 +7054,7 @@ void Interpreter::HandleErrorMessage(const BaseException &e,
       errorList.push_back(msg);
       
       #ifdef DEBUG_HANDLE_ERROR
-      MessageInterface::ShowMessage(msg + wxT("\n"));
+      MessageInterface::ShowMessage(msg + "\n");
       #endif
    }
    else
@@ -7064,7 +7064,7 @@ void Interpreter::HandleErrorMessage(const BaseException &e,
       else
       {
          // remove duplicate message
-         msg = GmatStringUtil::Replace(msg, wxT("**** ERROR **** Interpreter Exception: "), wxT(""));
+         msg = GmatStringUtil::Replace(msg, "**** ERROR **** Interpreter Exception: ", "");
          throw InterpreterException(msg);
       }
    }
@@ -7072,18 +7072,18 @@ void Interpreter::HandleErrorMessage(const BaseException &e,
 
 
 //------------------------------------------------------------------------------
-// bool IsBranchCommand(const wxString &str)
+// bool IsBranchCommand(const std::string &str)
 //------------------------------------------------------------------------------
-bool Interpreter::IsBranchCommand(const wxString &str)
+bool Interpreter::IsBranchCommand(const std::string &str)
 {
    StringArray parts = theTextParser.SeparateSpaces(str);
    
-   if (parts[0] == wxT("If") || parts[0] == wxT("EndIf") ||
-       parts[0] == wxT("For") || parts[0] == wxT("EndFor") ||
-       parts[0] == wxT("While") || parts[0] == wxT("EndWhile") ||
-       parts[0] == wxT("Target") || parts[0] == wxT("EndTarget") ||
-       parts[0] == wxT("Optimize") || parts[0] == wxT("EndOptimize") ||
-       parts[0] == wxT("BeginScript") || parts[0] == wxT("EndScript"))
+   if (parts[0] == "If" || parts[0] == "EndIf" ||
+       parts[0] == "For" || parts[0] == "EndFor" ||
+       parts[0] == "While" || parts[0] == "EndWhile" ||
+       parts[0] == "Target" || parts[0] == "EndTarget" ||
+       parts[0] == "Optimize" || parts[0] == "EndOptimize" ||
+       parts[0] == "BeginScript" || parts[0] == "EndScript")
       return true;
    else
       return false;
@@ -7105,20 +7105,20 @@ bool Interpreter::CheckBranchCommands(const IntegerArray &lineNumbers,
                                       const StringArray &lines)
 {
    #ifdef DEBUG_CHECK_BRANCH
-   MessageInterface::ShowMessage(wxT("Interpreter::CheckBranchCommands()\n"));
+   MessageInterface::ShowMessage("Interpreter::CheckBranchCommands()\n");
    for (UnsignedInt i=0; i<lines.size(); i++)
-      MessageInterface::ShowMessage(wxT("%d: %s\n"), lineNumbers[i], lines[i].c_str());
+      MessageInterface::ShowMessage("%d: %s\n", lineNumbers[i], lines[i].c_str());
    #endif
    
    // Check for unbalaced branch commands
    
-   debugMsg = wxT("In CheckBranchCommands()");
-   std::stack<wxString> controlStack;
-   wxString expEndStr, str, str1;
+   debugMsg = "In CheckBranchCommands()";
+   std::stack<std::string> controlStack;
+   std::string expEndStr, str, str1;
    bool retval = true;
    
    #ifdef DEBUG_CHECK_BRANCH
-   MessageInterface::ShowMessage(wxT("   Now start checking\n"));
+   MessageInterface::ShowMessage("   Now start checking\n");
    #endif
    
    for (UnsignedInt i=0; i<lines.size(); i++)
@@ -7127,14 +7127,14 @@ bool Interpreter::CheckBranchCommands(const IntegerArray &lineNumbers,
       
       #ifdef DEBUG_CHECK_BRANCH
       MessageInterface::ShowMessage
-         (wxT("   line=%d, str=%s\n"), lineNumbers[i], str.c_str());
+         ("   line=%d, str=%s\n", lineNumbers[i], str.c_str());
       #endif
       
-      if (GmatStringUtil::StartsWith(str, wxT("End")))
+      if (GmatStringUtil::StartsWith(str, "End"))
       {
          if (controlStack.empty())
          {
-            InterpreterException ex(wxT("Found too many \"") + str + wxT("\""));
+            InterpreterException ex("Found too many \"" + str + "\"");
             HandleErrorMessage(ex, GmatStringUtil::ToString(lineNumbers[i]), str);
             retval = false;
             break;
@@ -7143,15 +7143,15 @@ bool Interpreter::CheckBranchCommands(const IntegerArray &lineNumbers,
          str1 = controlStack.top();
          controlStack.pop();
          
-         if (str1 == wxT("BeginScript"))
-            expEndStr = wxT("EndScript");
+         if (str1 == "BeginScript")
+            expEndStr = "EndScript";
          else
-            expEndStr = wxT("End") + str1;
+            expEndStr = "End" + str1;
          
          if (expEndStr != str)
          {
             InterpreterException ex
-               (wxT("Expecting \"") + expEndStr + wxT("\" but found \"") + str + wxT("\""));
+               ("Expecting \"" + expEndStr + "\" but found \"" + str + "\"");
             HandleErrorMessage(ex, GmatStringUtil::ToString(lineNumbers[i]), str);
             retval = false;
             break;
@@ -7169,8 +7169,8 @@ bool Interpreter::CheckBranchCommands(const IntegerArray &lineNumbers,
       if (!controlStack.empty())
       {
          InterpreterException ex
-            (wxT("Matching \"End") + controlStack.top() + wxT("\" not found for \"") +
-             controlStack.top() + wxT("\""));
+            ("Matching \"End" + controlStack.top() + "\" not found for \"" +
+             controlStack.top() + "\"");
          HandleError(ex, false);
          retval = false;
       }
@@ -7178,7 +7178,7 @@ bool Interpreter::CheckBranchCommands(const IntegerArray &lineNumbers,
    
    #ifdef DEBUG_CHECK_BRANCH
    MessageInterface::ShowMessage
-      (wxT("Interpreter::CheckBranchCommands() returning %d\n"), retval);
+      ("Interpreter::CheckBranchCommands() returning %d\n", retval);
    #endif
 
    return retval;
@@ -7202,15 +7202,15 @@ bool Interpreter::CheckBranchCommands(const IntegerArray &lineNumbers,
 bool Interpreter::FinalPass()
 {
    #if DBGLVL_FINAL_PASS
-   MessageInterface::ShowMessage(wxT("Interpreter::FinalPass() entered\n"));
+   MessageInterface::ShowMessage("Interpreter::FinalPass() entered\n");
    #endif
    
-   debugMsg = wxT("In FinalPass()");
+   debugMsg = "In FinalPass()";
    bool retval = true;
    GmatBase *obj = NULL;
    GmatBase *refObj;
    StringArray refNameList;
-   wxString objName;
+   std::string objName;
    StringArray objList;
    
    objList = theModerator->GetListOfObjects(Gmat::UNKNOWN_OBJECT);
@@ -7224,9 +7224,9 @@ bool Interpreter::FinalPass()
 
    
    #if DBGLVL_FINAL_PASS > 0 //------------------------------ debug ----
-   MessageInterface::ShowMessage(wxT("FinalPass:: All object list =\n"));
+   MessageInterface::ShowMessage("FinalPass:: All object list =\n");
    for (Integer ii = 0; ii < (Integer) objList.size(); ii++)
-      MessageInterface::ShowMessage(wxT("   %s\n"), (objList.at(ii)).c_str());
+      MessageInterface::ShowMessage("   %s\n", (objList.at(ii)).c_str());
    #endif //------------------------------------------- end debug ----
    
    //----------------------------------------------------------------------
@@ -7238,19 +7238,19 @@ bool Interpreter::FinalPass()
       
       #if DBGLVL_FINAL_PASS > 1
       MessageInterface::ShowMessage
-         (wxT("Checking ref. object on %s:%s\n"), obj->GetTypeName().c_str(),
+         ("Checking ref. object on %s:%s\n", obj->GetTypeName().c_str(),
           obj->GetName().c_str());
       #endif
       
       // check System Parameters separately since it follows certain naming
-      // convention.  wxT("owner.dep.type") where owner can be either Spacecraft
+      // convention.  "owner.dep.type" where owner can be either Spacecraft
       // or Burn for now
       if (obj == NULL)
-         throw InterpreterException(wxT("The object ") + (*i) + wxT(" does not exist"));
+         throw InterpreterException("The object " + (*i) + " does not exist");
       
       if (obj->GetType() == Gmat::PARAMETER)
       {
-         wxString type, owner, depObj;
+         std::string type, owner, depObj;
          Parameter *param = (Parameter*)obj;
          
          if (param->GetKey() == GmatParam::SYSTEM_PARAM)
@@ -7260,22 +7260,22 @@ bool Interpreter::FinalPass()
             
             // Since we can create a system parameter as: Create A1ModJulian Time,
             // we don't want to check if owner is blank.
-            if (owner != wxT(""))
+            if (owner != "")
             {
                refObj = FindObject(owner);
                if (refObj == NULL)
                {
                   InterpreterException ex
-                     (wxT("Nonexistent object \"") + owner + wxT("\" referenced in \"") +
-                      obj->GetName() + wxT("\""));
+                     ("Nonexistent object \"" + owner + "\" referenced in \"" +
+                      obj->GetName() + "\"");
                   HandleError(ex, false);
                   retval = false;
                }
                else if (param->GetOwnerType() != refObj->GetType())
                {
                   InterpreterException ex
-                     (wxT("\"") + type + wxT("\" is not property of \"") +
-                      refObj->GetTypeName() + wxT("\""));
+                     ("\"" + type + "\" is not property of \"" +
+                      refObj->GetTypeName() + "\"");
                   HandleError(ex, false);
                   retval = false;
                }
@@ -7292,12 +7292,12 @@ bool Interpreter::FinalPass()
       {
          // If GmatFunction, see if function file exist and the function name
          // matches the file name
-         if (obj->GetTypeName() == wxT("GmatFunction"))
+         if (obj->GetTypeName() == "GmatFunction")
          {
-            wxString funcPath = obj->GetStringParameter(wxT("FunctionPath"));
+            std::string funcPath = obj->GetStringParameter("FunctionPath");
             #if DBGLVL_FUNCTION_DEF > 0
             MessageInterface::ShowMessage
-               (wxT("Interpreter::FinalPass() calling CheckFunctionDefinition()\n"));
+               ("Interpreter::FinalPass() calling CheckFunctionDefinition()\n");
             #endif
             bool retval1 = CheckFunctionDefinition(funcPath, obj, false);
             retval = retval && retval1;
@@ -7327,7 +7327,7 @@ bool Interpreter::FinalPass()
                {
                   retval = retval && false;
                   InterpreterException ex
-                     (obj->GetLastErrorMessage() + wxT(" in \"") + obj->GetName() + wxT("\""));
+                     (obj->GetLastErrorMessage() + " in \"" + obj->GetName() + "\"");
                   HandleError(ex, false);
                }
             }
@@ -7352,12 +7352,12 @@ bool Interpreter::FinalPass()
                {
                   #if DBGLVL_FINAL_PASS > 1
                   MessageInterface::ShowMessage
-                     (wxT("   refNameList[%d]=%s\n"), j, refNameList[j].c_str());
+                     ("   refNameList[%d]=%s\n", j, refNameList[j].c_str());
                   #endif
                   
                   InterpreterException ex
-                     (wxT("Nonexistent SpacePoint \"") + refNameList[j] +
-                      wxT("\" referenced in \"") + obj->GetName() + wxT("\""));
+                     ("Nonexistent SpacePoint \"" + refNameList[j] +
+                      "\" referenced in \"" + obj->GetName() + "\"");
                   HandleError(ex, false);
                   retval = false;
                }
@@ -7389,9 +7389,9 @@ bool Interpreter::FinalPass()
    objList = theModerator->GetListOfObjects(Gmat::CALCULATED_POINT);
    
    #if DBGLVL_FINAL_PASS > 1
-   MessageInterface::ShowMessage(wxT("FinalPass:: CalculatedPoint list =\n"));
+   MessageInterface::ShowMessage("FinalPass:: CalculatedPoint list =\n");
    for (Integer ii = 0; ii < (Integer) objList.size(); ii++)
-      MessageInterface::ShowMessage(wxT("   %s\n"), (objList.at(ii)).c_str());
+      MessageInterface::ShowMessage("   %s\n", (objList.at(ii)).c_str());
    #endif
    
    for (StringArray::iterator i = objList.begin(); i != objList.end(); ++i)
@@ -7399,21 +7399,21 @@ bool Interpreter::FinalPass()
       obj = FindObject(*i);
       refNameList = obj->GetRefObjectNameArray(Gmat::SPACE_POINT);
       
-      if (obj->GetTypeName() == wxT("LibrationPoint"))
+      if (obj->GetTypeName() == "LibrationPoint")
       {
-         wxString primary = obj->GetStringParameter(wxT("Primary"));
-         wxString secondary = obj->GetStringParameter(wxT("Secondary"));
+         std::string primary = obj->GetStringParameter("Primary");
+         std::string secondary = obj->GetStringParameter("Secondary");
          
          #if DBGLVL_FINAL_PASS > 1
          MessageInterface::ShowMessage
-            (wxT("   primary=%s, secondary=%s\n"), primary.c_str(), secondary.c_str());
+            ("   primary=%s, secondary=%s\n", primary.c_str(), secondary.c_str());
          #endif
          
          if (primary == secondary)
          {
             InterpreterException ex
-               (wxT("The Primary and Secondary bodies cannot be the same in the ")
-                wxT("LibrationPoint \"") + obj->GetName() + wxT("\""));
+               ("The Primary and Secondary bodies cannot be the same in the "
+                "LibrationPoint \"" + obj->GetName() + "\"");
             HandleError(ex, false);
             retval = false;
          }
@@ -7425,13 +7425,13 @@ bool Interpreter::FinalPass()
       
       #if DBGLVL_FINAL_PASS > 1
       MessageInterface::ShowMessage
-         (wxT("   Setting RefObject on obj=%s\n"), obj->GetName().c_str());
+         ("   Setting RefObject on obj=%s\n", obj->GetName().c_str());
       #endif
       for (UnsignedInt j = 0; j < refNameList.size(); j++)
       {
          #if DBGLVL_FINAL_PASS > 1
          MessageInterface::ShowMessage
-            (wxT("   refNameList[%d]=%s\n"), j, refNameList[j].c_str());
+            ("   refNameList[%d]=%s\n", j, refNameList[j].c_str());
          #endif
          
          refObj = FindObject(refNameList[j]);
@@ -7443,9 +7443,9 @@ bool Interpreter::FinalPass()
    // Update the owned ODE models based on the fully scripted original
    objList = theModerator->GetListOfObjects(Gmat::PROP_SETUP);
    #if DBGLVL_FINAL_PASS > 1
-   MessageInterface::ShowMessage(wxT("FinalPass:: PropSetup list =\n"));
+   MessageInterface::ShowMessage("FinalPass:: PropSetup list =\n");
    for (Integer ii = 0; ii < (Integer) objList.size(); ii++)
-      MessageInterface::ShowMessage(wxT("   %s\n"), (objList.at(ii)).c_str());
+      MessageInterface::ShowMessage("   %s\n", (objList.at(ii)).c_str());
    #endif
    for (StringArray::iterator i = objList.begin(); i != objList.end(); ++i)
    {
@@ -7454,13 +7454,13 @@ bool Interpreter::FinalPass()
       {
          if (((PropSetup*)obj)->GetPropagator()->UsesODEModel())
          {
-            wxString refName = obj->GetStringParameter(wxT("FM"));
+            std::string refName = obj->GetStringParameter("FM");
             GmatBase *configuredOde = FindObject(refName);
 //            ODEModel *ode = ((PropSetup*)obj)->GetODEModel();
             
             #if DBGLVL_FINAL_PASS > 1
             MessageInterface::ShowMessage
-               (wxT("   OdeModel='%s', configuredOde=<%p>\n"), refName.c_str(), configuredOde);
+               ("   OdeModel='%s', configuredOde=<%p>\n", refName.c_str(), configuredOde);
             #endif
             
             if (configuredOde != NULL)
@@ -7468,21 +7468,21 @@ bool Interpreter::FinalPass()
                if (configuredOde->IsOfType(Gmat::ODE_MODEL))
                   ((PropSetup*)obj)->SetODEModel(((ODEModel*)configuredOde));
                else
-                  throw InterpreterException(wxT("The object named \"") +
-                        refName + wxT("\", referenced by the Propagator \"") +
-                        obj->GetName() + wxT("\" as an ODE model is the wrong ")
-                              wxT("type; it is a ") + configuredOde->GetTypeName());
+                  throw InterpreterException("The object named \"" +
+                        refName + "\", referenced by the Propagator \"" +
+                        obj->GetName() + "\" as an ODE model is the wrong "
+                              "type; it is a " + configuredOde->GetTypeName());
             }
             else
             {
-               if ((refName != wxT("InternalODEModel")) &&
-                   (refName != wxT("InternalForceModel")))
-                  throw InterpreterException(wxT("The ODEModel named \"") +
-                        refName + wxT("\", referenced by the Propagator \"") +
-                        obj->GetName() + wxT("\" cannot be found"));
+               if ((refName != "InternalODEModel") &&
+                   (refName != "InternalForceModel"))
+                  throw InterpreterException("The ODEModel named \"" +
+                        refName + "\", referenced by the Propagator \"" +
+                        obj->GetName() + "\" cannot be found");
 
                // Create default ODE model
-               configuredOde = CreateObject(wxT("ODEModel"), refName, 1);
+               configuredOde = CreateObject("ODEModel", refName, 1);
                obj->SetRefObject(configuredOde, configuredOde->GetType(),
                      configuredOde->GetName());
             }
@@ -7496,9 +7496,9 @@ bool Interpreter::FinalPass()
    objList = theModerator->GetListOfObjects(Gmat::COORDINATE_SYSTEM);
    
    #if DBGLVL_FINAL_PASS > 1//------------------------------ debug ----
-   MessageInterface::ShowMessage(wxT("FinalPass:: CoordinateSystem list =\n"));
+   MessageInterface::ShowMessage("FinalPass:: CoordinateSystem list =\n");
    for (Integer ii = 0; ii < (Integer) objList.size(); ii++)
-      MessageInterface::ShowMessage(wxT("    %s\n"), (objList.at(ii)).c_str());
+      MessageInterface::ShowMessage("    %s\n", (objList.at(ii)).c_str());
    #endif //------------------------------------------- end debug ----
    
    objList = theModerator->GetListOfObjects(Gmat::COORDINATE_SYSTEM);
@@ -7506,7 +7506,7 @@ bool Interpreter::FinalPass()
    {
       CoordinateSystem *cs = (CoordinateSystem*)FindObject(*i);
       #if DBGLVL_FINAL_PASS > 1
-      MessageInterface::ShowMessage(wxT("Initializing CoordinateSystem '%s'\n"),
+      MessageInterface::ShowMessage("Initializing CoordinateSystem '%s'\n",
                                     i->c_str());
       #endif
       refNameList = cs->GetRefObjectNameArray(Gmat::SPACE_POINT);
@@ -7514,7 +7514,7 @@ bool Interpreter::FinalPass()
       {
          #if DBGLVL_FINAL_PASS > 1
          MessageInterface::ShowMessage
-            (wxT("   refNameList[%d]=%s\n"), j, refNameList[j].c_str());
+            ("   refNameList[%d]=%s\n", j, refNameList[j].c_str());
          #endif
          
          refObj = FindObject(refNameList[j]);
@@ -7523,8 +7523,8 @@ bool Interpreter::FinalPass()
             // Checking for undefined ref objects already done for CoordinateSystem
             // so commented out to avoid duplicated message (LOJ: 2009.12.17)
             //InterpreterException ex
-            //   (wxT("Nonexistent SpacePoint \"") + refNameList[j] +
-            //    wxT("\" referenced in the CoordinateSystem \"") + cs->GetName() + wxT("\""));
+            //   ("Nonexistent SpacePoint \"" + refNameList[j] +
+            //    "\" referenced in the CoordinateSystem \"" + cs->GetName() + "\"");
             //HandleError(ex, false);
             retval = false;
          }
@@ -7542,14 +7542,14 @@ bool Interpreter::FinalPass()
    // addition, we need to pass the pointer to the central body.
    //-------------------------------------------------------------------
    #if DBGLVL_FINAL_PASS > 1
-      MessageInterface::ShowMessage(wxT("FinalPass:: about to get BodyFixedPoint list\n"));
+      MessageInterface::ShowMessage("FinalPass:: about to get BodyFixedPoint list\n");
    #endif
    objList = theModerator->GetListOfObjects(Gmat::BODY_FIXED_POINT);
 
    #if DBGLVL_FINAL_PASS > 1
-   MessageInterface::ShowMessage(wxT("FinalPass:: BodyFixedPoint list =\n"));
+   MessageInterface::ShowMessage("FinalPass:: BodyFixedPoint list =\n");
    for (Integer ii = 0; ii < (Integer) objList.size(); ii++)
-   MessageInterface::ShowMessage(wxT("   %s\n"), (objList.at(ii)).c_str());
+   MessageInterface::ShowMessage("   %s\n", (objList.at(ii)).c_str());
    #endif
 
    for (StringArray::iterator i = objList.begin(); i != objList.end(); ++i)
@@ -7568,15 +7568,15 @@ bool Interpreter::FinalPass()
 
          #if DBGLVL_FINAL_PASS > 1
                MessageInterface::ShowMessage
-               (wxT("   Calling '%s'->SetRefObject(%s(%p), %d)\n"), obj->GetName().c_str(),
+               ("   Calling '%s'->SetRefObject(%s(%p), %d)\n", obj->GetName().c_str(),
                 csObj->GetName().c_str(), csObj, csObj->GetType());
          #endif
 
          if (csObj->GetType() != Gmat::COORDINATE_SYSTEM)
          {
             InterpreterException ex
-            (wxT("The BodyFixedPoint \"") + obj->GetName() + wxT("\" failed to set ")
-             wxT("\"CoordinateSystem\" to \"") + *csName + wxT("\""));
+            ("The BodyFixedPoint \"" + obj->GetName() + "\" failed to set "
+             "\"CoordinateSystem\" to \"" + *csName + "\"");
             HandleError(ex, false);
             retval = false;
             continue;
@@ -7589,27 +7589,27 @@ bool Interpreter::FinalPass()
          catch (BaseException &e)
          {
             InterpreterException ex
-            (wxT("The BodyFixedPoint \"") + obj->GetName() + wxT("\" failed to set ")
-             wxT("CoordinateSystem: ") + e.GetFullMessage());
+            ("The BodyFixedPoint \"" + obj->GetName() + "\" failed to set "
+             "CoordinateSystem: " + e.GetFullMessage());
             HandleError(ex, false);
             retval = false;
             continue;
          }
       }
-      wxString cbName = obj->GetRefObjectName(Gmat::CELESTIAL_BODY);
+      std::string cbName = obj->GetRefObjectName(Gmat::CELESTIAL_BODY);
       GmatBase *cbObj = FindObject(cbName);
 
       #if DBGLVL_FINAL_PASS > 1
          MessageInterface::ShowMessage
-         (wxT("   Calling '%s'->SetRefObject(%s(%p), %d)\n"), obj->GetName().c_str(),
+         ("   Calling '%s'->SetRefObject(%s(%p), %d)\n", obj->GetName().c_str(),
           cbObj->GetName().c_str(), cbObj, cbObj->GetType());
       #endif
 
       if ((cbObj == NULL) || (cbObj->GetType() != Gmat::CELESTIAL_BODY))
       {
          InterpreterException ex
-         (wxT("The BodyFixedPoint \"") + obj->GetName() + wxT("\" failed to set ")
-          wxT("\"CelestialBody\" to \"") + cbName + wxT("\""));
+         ("The BodyFixedPoint \"" + obj->GetName() + "\" failed to set "
+          "\"CelestialBody\" to \"" + cbName + "\"");
          HandleError(ex, false);
          retval = false;
          continue;
@@ -7622,8 +7622,8 @@ bool Interpreter::FinalPass()
       catch (BaseException &e)
       {
          InterpreterException ex
-         (wxT("The BodyFixedPoint \"") + obj->GetName() + wxT("\" failed to set ")
-          wxT("CelestialBody: ") + e.GetFullMessage());
+         ("The BodyFixedPoint \"" + obj->GetName() + "\" failed to set "
+          "CelestialBody: " + e.GetFullMessage());
          HandleError(ex, false);
          retval = false;
          continue;
@@ -7639,9 +7639,9 @@ bool Interpreter::FinalPass()
    objList = theModerator->GetListOfObjects(Gmat::SPACECRAFT);
 
    #if DBGLVL_FINAL_PASS > 1
-   MessageInterface::ShowMessage(wxT("FinalPass:: Spacecraft list =\n"));
+   MessageInterface::ShowMessage("FinalPass:: Spacecraft list =\n");
    for (Integer ii = 0; ii < (Integer) objList.size(); ii++)
-      MessageInterface::ShowMessage(wxT("   %s\n"), (objList.at(ii)).c_str());
+      MessageInterface::ShowMessage("   %s\n", (objList.at(ii)).c_str());
    #endif
 
    for (StringArray::iterator i = objList.begin(); i != objList.end(); ++i)
@@ -7651,7 +7651,7 @@ bool Interpreter::FinalPass()
       // Now we have more than one CoordinateSystem from Spacecraft.
       // In additions to Spacecraft's CS, it has to handle CS from Thrusters
       // and Attitude. (LOJ: 2009.09.24)
-      //wxString csName = obj->GetRefObjectName(Gmat::COORDINATE_SYSTEM);
+      //std::string csName = obj->GetRefObjectName(Gmat::COORDINATE_SYSTEM);
       StringArray csNames = obj->GetRefObjectNameArray(Gmat::COORDINATE_SYSTEM);
       for (StringArray::iterator csName = csNames.begin();
            csName != csNames.end(); ++csName)
@@ -7664,15 +7664,15 @@ bool Interpreter::FinalPass()
 
          #if DBGLVL_FINAL_PASS > 1
          MessageInterface::ShowMessage
-            (wxT("   Calling '%s'->SetRefObject(%s(%p), %d)\n"), obj->GetName().c_str(),
+            ("   Calling '%s'->SetRefObject(%s(%p), %d)\n", obj->GetName().c_str(),
              csObj->GetName().c_str(), csObj, csObj->GetType());
          #endif
 
          if (csObj->GetType() != Gmat::COORDINATE_SYSTEM)
          {
             InterpreterException ex
-               (wxT("The Spacecraft \"") + obj->GetName() + wxT("\" failed to set ")
-                wxT("\"CoordinateSystem\" to \"") + *csName + wxT("\""));
+               ("The Spacecraft \"" + obj->GetName() + "\" failed to set "
+                "\"CoordinateSystem\" to \"" + *csName + "\"");
             HandleError(ex, false);
             retval = false;
             continue;
@@ -7685,8 +7685,8 @@ bool Interpreter::FinalPass()
          catch (BaseException &e)
          {
             InterpreterException ex
-               (wxT("The Spacecraft \"") + obj->GetName() + wxT("\" failed to set ")
-                wxT("CoordinateSystem: ") + e.GetFullMessage());
+               ("The Spacecraft \"" + obj->GetName() + "\" failed to set "
+                "CoordinateSystem: " + e.GetFullMessage());
             HandleError(ex, false);
             retval = false;
             continue;
@@ -7707,8 +7707,8 @@ bool Interpreter::FinalPass()
    while (current != NULL)
    {
       if ((current->GetChildCommand(0)) != NULL)
-         SetObjectInBranchCommand(current, wxT("SolverBranchCommand"), wxT("Vary"),
-                                  wxT("SolverName"));
+         SetObjectInBranchCommand(current, "SolverBranchCommand", "Vary",
+                                  "SolverName");
       
       current = current->GetNext();
    }
@@ -7727,7 +7727,7 @@ bool Interpreter::FinalPass()
 
 
    #if DBGLVL_FINAL_PASS
-   MessageInterface::ShowMessage(wxT("Interpreter::FinalPass() returning %d\n"), retval);
+   MessageInterface::ShowMessage("Interpreter::FinalPass() returning %d\n", retval);
    #endif
    
    return retval;
@@ -7752,7 +7752,7 @@ bool Interpreter::FinalPass()
  */
 //------------------------------------------------------------------------------
 bool Interpreter::ValidateMcsCommands(GmatCommand *first, GmatCommand *parent,
-      StringArray *missingObjects, wxString *accumulatedErrors)
+      StringArray *missingObjects, std::string *accumulatedErrors)
 {
    bool retval = true, cleanMissingObj = false, cleanAccError = false;
    GmatCommand *current = first;
@@ -7769,7 +7769,7 @@ bool Interpreter::ValidateMcsCommands(GmatCommand *first, GmatCommand *parent,
       theObjects.push_back(theSSBodies[i]);
    #ifdef DEBUG_ALL_OBJECTS
       for (unsigned int ii = 0; ii < theObjects.size(); ii++)
-         MessageInterface::ShowMessage(wxT(" Obj %d :  %s\n"), (Integer) ii,
+         MessageInterface::ShowMessage(" Obj %d :  %s\n", (Integer) ii,
                (theObjects.at(ii)).c_str());
    #endif
 
@@ -7782,7 +7782,7 @@ bool Interpreter::ValidateMcsCommands(GmatCommand *first, GmatCommand *parent,
    }
    if (accumulatedErrors == NULL)
    {
-      accumulatedErrors = new wxString;
+      accumulatedErrors = new std::string;
       cleanAccError = true;
    }
 
@@ -7798,23 +7798,23 @@ bool Interpreter::ValidateMcsCommands(GmatCommand *first, GmatCommand *parent,
       if (current)
       {
          #ifdef DEBUG_COMMAND_VALIDATION
-            MessageInterface::ShowMessage(wxT("Checking \"%s\"; refs:\n"), current->
-                  GetGeneratingString(Gmat::NO_COMMENTS, wxT(""), wxT("")).c_str());
+            MessageInterface::ShowMessage("Checking \"%s\"; refs:\n", current->
+                  GetGeneratingString(Gmat::NO_COMMENTS, "", "").c_str());
          #endif
 
          errorCount = 0;
          refs = current->GetObjectList();
          #ifdef DEBUG_COMMAND_VALIDATION
             for (UnsignedInt i = 0; i < refs.size(); ++i)
-               MessageInterface::ShowMessage(wxT("   %s\n"), refs[i].c_str());
+               MessageInterface::ShowMessage("   %s\n", refs[i].c_str());
          #endif
 
-         wxString missing;
+         std::string missing;
 
          for (UnsignedInt i = 0; i < refs.size(); ++i)
          {
             #ifdef DEBUG_COMMAND_VALIDATION
-               MessageInterface::ShowMessage(wxT("   Looking for %s..."),
+               MessageInterface::ShowMessage("   Looking for %s...",
                      refs[i].c_str());
             #endif
             // Check to see if each referenced object exists
@@ -7823,37 +7823,37 @@ bool Interpreter::ValidateMcsCommands(GmatCommand *first, GmatCommand *parent,
             {
                if (missing.length() == 0)
                {
-                  missing = wxT("      \"");
+                  missing = "      \"";
                   missing += current->GetGeneratingString(Gmat::NO_COMMENTS);
-                  missing += wxT("\" references missing object(s):");
+                  missing += "\" references missing object(s):";
                   ++errorCount;
                   retval = false;
                }
                if (errorCount == 1)
-                  missing += wxT("  ") + refs[i];
+                  missing += "  " + refs[i];
                else
-                  missing += wxT(", ") + refs[i];
+                  missing += ", " + refs[i];
                #ifdef DEBUG_COMMAND_VALIDATION
-                  MessageInterface::ShowMessage(wxT("missing\n"));
+                  MessageInterface::ShowMessage("missing\n");
                #endif
             }
             #ifdef DEBUG_COMMAND_VALIDATION
                else
-                  MessageInterface::ShowMessage(wxT("Found!\n"));
+                  MessageInterface::ShowMessage("Found!\n");
             #endif
          }
 
          if (missing.length() > 0)
          {
-            wxString msg;
-            msg << errorCount << wxT(": ") << missing;
+            std::stringstream msg;
+            msg << errorCount << ": " << missing;
             missingObjects->push_back(missing);
          }
       }
 
       try
       {
-         if (current->IsOfType(wxT("BranchCommand")))
+         if (current->IsOfType("BranchCommand"))
          {
             retval &= ValidateMcsCommands(current->GetChildCommand(0), current,
                   missingObjects, accumulatedErrors);
@@ -7868,13 +7868,13 @@ bool Interpreter::ValidateMcsCommands(GmatCommand *first, GmatCommand *parent,
       if (current->Validate() == false)
       {
          #ifdef DEBUG_COMMAND_VALIDATION
-            MessageInterface::ShowMessage(wxT("The command \"%s\" failed ")
-                  wxT("validation\n"),
+            MessageInterface::ShowMessage("The command \"%s\" failed "
+                  "validation\n",
                   current->GetGeneratingString(Gmat::NO_COMMENTS).c_str());
          #endif
-         (*accumulatedErrors) += wxT("   The command \"") +
+         (*accumulatedErrors) += "   The command \"" +
                current->GetGeneratingString(Gmat::NO_COMMENTS) +
-               wxT("\" failed validation.\n");
+               "\" failed validation.\n";
          ++validationErrorCount;
          retval = false;
       }
@@ -7883,25 +7883,25 @@ bool Interpreter::ValidateMcsCommands(GmatCommand *first, GmatCommand *parent,
    }
    while ((current != NULL) && (current != first) && (current != parent));
 
-   wxString exceptionError = (*accumulatedErrors);
+   std::string exceptionError = (*accumulatedErrors);
 
    if ((missingObjects->size() > 0) || (validationErrorCount > 0) ||
        (beginMCSCount > 1))  // for now -- use this when BMS is REQUIRED:
 //       (beginMCSCount != 1))
    {
       #ifdef DEBUG_VALIDATION
-         MessageInterface::ShowMessage(wxT("\n   Missing objects:\n"));
+         MessageInterface::ShowMessage("\n   Missing objects:\n");
       #endif
       if (missingObjects->size() > 0)
       {
-         exceptionError += wxT("   Possible missing objects referenced:\n");
+         exceptionError += "   Possible missing objects referenced:\n";
          for (UnsignedInt i = 0; i < missingObjects->size(); ++i)
          {
             #ifdef DEBUG_VALIDATION
-               MessageInterface::ShowMessage(wxT("      %s\n"),
+               MessageInterface::ShowMessage("      %s\n",
                      missingObjects[i].c_str());
             #endif
-            exceptionError += (*missingObjects)[i] + wxT("\n");
+            exceptionError += (*missingObjects)[i] + "\n";
          }
       }
 
@@ -7911,15 +7911,15 @@ bool Interpreter::ValidateMcsCommands(GmatCommand *first, GmatCommand *parent,
          delete accumulatedErrors;
 
       if (beginMCSCount > 1)
-         exceptionError += wxT("Too many Mission Sequence start ")
-               wxT("commands (from the list [") + 
-               theModerator->GetStarterStringList() + wxT("]) were found");
+         exceptionError += "Too many Mission Sequence start "
+               "commands (from the list [" + 
+               theModerator->GetStarterStringList() + "]) were found";
 
       if (beginMCSCount == 0)
-         exceptionError += wxT("No Mission Sequence starter commands (from the ")
-         wxT("list [") + theModerator->GetStarterStringList() + wxT("]) were found");
+         exceptionError += "No Mission Sequence starter commands (from the "
+         "list [" + theModerator->GetStarterStringList() + "]) were found";
 
-      throw InterpreterException(wxT("\n") + exceptionError);
+      throw InterpreterException("\n" + exceptionError);
    }
 
    if (cleanMissingObj)
@@ -7932,18 +7932,18 @@ bool Interpreter::ValidateMcsCommands(GmatCommand *first, GmatCommand *parent,
 
 //------------------------------------------------------------------------------
 // void SetObjectInBranchCommand(GmatCommand *brCmd,
-//       const wxString &branchType, const wxString childType,
-//       const wxString &objName)
+//       const std::string &branchType, const std::string childType,
+//       const std::string &objName)
 //------------------------------------------------------------------------------
 void Interpreter::SetObjectInBranchCommand(GmatCommand *brCmd,
-                                           const wxString &branchType,
-                                           const wxString &childType,
-                                           const wxString &objName)
+                                           const std::string &branchType,
+                                           const std::string &childType,
+                                           const std::string &objName)
 {
    #ifdef DEBUG_BRANCH_COMMAND_OBJECT
    MessageInterface::ShowMessage
-      (wxT("Interpreter::SetObjectInBranchCommand() entered, brCmd=<%p><%s>, branchType='%s', ")
-       wxT("childType='%s'\n"), brCmd, brCmd->GetTypeName().c_str(), branchType.c_str(),
+      ("Interpreter::SetObjectInBranchCommand() entered, brCmd=<%p><%s>, branchType='%s', "
+       "childType='%s'\n", brCmd, brCmd->GetTypeName().c_str(), branchType.c_str(),
        childType.c_str());
    #endif
    
@@ -7952,13 +7952,13 @@ void Interpreter::SetObjectInBranchCommand(GmatCommand *brCmd,
    GmatCommand* nextInBranch;
    GmatCommand* child;
    GmatBase *solver = NULL;
-   wxString solverName;
+   std::string solverName;
    
    if (brCmd->IsOfType(branchType))
    {
       #ifdef DEBUG_BRANCH_COMMAND_OBJECT
       MessageInterface::ShowMessage
-         (wxT("==> found type of '%s'\n"), brCmd, brCmd->GetTypeName().c_str());
+         ("==> found type of '%s'\n", brCmd, brCmd->GetTypeName().c_str());
       #endif
       
       solverName = brCmd->GetStringParameter(objName);
@@ -7966,8 +7966,8 @@ void Interpreter::SetObjectInBranchCommand(GmatCommand *brCmd,
       
       #ifdef DEBUG_BRANCH_COMMAND_OBJECT
       MessageInterface::ShowMessage
-         (wxT("   Found solver <%p><%s>'%s'\n"), solver, solver ? solver->GetTypeName().c_str() :
-          wxT("NULL"), solver ? solver->GetName().c_str() : wxT("NULL"));
+         ("   Found solver <%p><%s>'%s'\n", solver, solver ? solver->GetTypeName().c_str() :
+          "NULL", solver ? solver->GetName().c_str() : "NULL");
       #endif
    }
    
@@ -7979,15 +7979,15 @@ void Interpreter::SetObjectInBranchCommand(GmatCommand *brCmd,
       {
          #ifdef DEBUG_BRANCH_COMMAND_OBJECT
          MessageInterface::ShowMessage
-            (wxT("   nextInBranch=<%p><%s>\n"), nextInBranch, nextInBranch->GetTypeName().c_str());
+            ("   nextInBranch=<%p><%s>\n", nextInBranch, nextInBranch->GetTypeName().c_str());
          #endif
          
          if (nextInBranch->GetTypeName() == childType)
          {
             #ifdef DEBUG_BRANCH_COMMAND_OBJECT
             MessageInterface::ShowMessage
-               (wxT("   found '%s', setting <%p>'%s' to <%p><%s>\n"), childType.c_str(),
-                solver, solver ? solver->GetName().c_str() : wxT("NULL"), nextInBranch,
+               ("   found '%s', setting <%p>'%s' to <%p><%s>\n", childType.c_str(),
+                solver, solver ? solver->GetName().c_str() : "NULL", nextInBranch,
                 nextInBranch->GetTypeName().c_str());
             #endif
             
@@ -8007,30 +8007,30 @@ void Interpreter::SetObjectInBranchCommand(GmatCommand *brCmd,
 
 
 //------------------------------------------------------------------------------
-// bool IsObjectType(const wxString &type)
+// bool IsObjectType(const std::string &type)
 //------------------------------------------------------------------------------
 /*
  * Returns true if input string is one of Object type that can be created.
  */
 //------------------------------------------------------------------------------
-bool Interpreter::IsObjectType(const wxString &type)
+bool Interpreter::IsObjectType(const std::string &type)
 {
-   if (type == wxT("Spacecraft")) 
+   if (type == "Spacecraft") 
       return true;
    
-   if (type == wxT("Formation")) 
+   if (type == "Formation") 
       return true;
    
-   if (type == wxT("Propagator")) 
+   if (type == "Propagator") 
       return true;
    
-   if (type == wxT("ForceModel")) 
+   if (type == "ForceModel") 
       return true;
    
-   if (type == wxT("CoordinateSystem")) 
+   if (type == "CoordinateSystem") 
       return true;
    
-   if (type == wxT("TrackingData"))
+   if (type == "TrackingData")
       return true;
 
    if (theSolarSystem->IsBodyInUse(type))
@@ -8045,14 +8045,14 @@ bool Interpreter::IsObjectType(const wxString &type)
 
 
 //------------------------------------------------------------------------------
-// Gmat::ObjectType GetObjectType(const wxString &type)
+// Gmat::ObjectType GetObjectType(const std::string &type)
 //------------------------------------------------------------------------------
 /*
  * Returns corresponding Gmat::ObjectType, or Gmat::UNKNOWN_OBJECT if type is
  * not valid object type name.
  */
 //------------------------------------------------------------------------------
-Gmat::ObjectType Interpreter::GetObjectType(const wxString &type)
+Gmat::ObjectType Interpreter::GetObjectType(const std::string &type)
 {
    if (objectTypeMap.find(type) != objectTypeMap.end())
       return objectTypeMap[type];
@@ -8065,7 +8065,7 @@ Gmat::ObjectType Interpreter::GetObjectType(const wxString &type)
 //----------------------------------
 
 //------------------------------------------------------------------------------
-// bool IsParameterType(const wxString &desc)
+// bool IsParameterType(const std::string &desc)
 //------------------------------------------------------------------------------
 /*
  * Checks if input description is a Parameter.
@@ -8076,14 +8076,14 @@ Gmat::ObjectType Interpreter::GetObjectType(const wxString &type)
  * @return  true  if type is a Parameter type
  */
 //------------------------------------------------------------------------------
-bool Interpreter::IsParameterType(const wxString &desc)
+bool Interpreter::IsParameterType(const std::string &desc)
 {
    return theValidator->IsParameterType(desc);
 }
 
 
 //------------------------------------------------------------------------------
-// bool CheckForSpecialCase(GmatBase *obj, Integer id, wxString &value)
+// bool CheckForSpecialCase(GmatBase *obj, Integer id, std::string &value)
 //------------------------------------------------------------------------------
 /**
  * Handles special alias for gravity field type.
@@ -8095,24 +8095,24 @@ bool Interpreter::IsParameterType(const wxString &desc)
  */
 //------------------------------------------------------------------------------
 bool Interpreter::CheckForSpecialCase(GmatBase *obj, Integer id, 
-                                     wxString &value)
+                                     std::string &value)
 {
    bool retval = false;
-   wxString val = value;
+   std::string val = value;
    
    #ifdef DEBUG_SPECIAL_CASE
    MessageInterface::ShowMessage
-      (wxT("Entered CheckForSpecialCase with \"") + value +
-       wxT("\" being set on parameter \"") + obj->GetParameterText(id) + 
-       wxT("\" for a \"") + obj->GetTypeName() + wxT("\" object\n"));
+      ("Entered CheckForSpecialCase with \"" + value +
+       "\" being set on parameter \"" + obj->GetParameterText(id) + 
+       "\" for a \"" + obj->GetTypeName() + "\" object\n");
    #endif
    
    // JGM2, JGM3, EGM96, LP165P, etc.  are special strings in GMAT; handle them here
-   if ((obj->GetTypeName() == wxT("GravityField")) &&
-       (obj->GetParameterText(id) == wxT("PotentialFile")))
+   if ((obj->GetTypeName() == "GravityField") &&
+       (obj->GetParameterText(id) == "PotentialFile"))
    {
       val = theModerator->GetPotentialFileName(value);
-      if (val.find(wxT("Unknown Potential File Type")) == wxString::npos)
+      if (val.find("Unknown Potential File Type") == std::string::npos)
       {
          // Adding a default indicator to the string here, so that the HarmonicField object
          // can tell when it is reading a default file vs. one the user specified
@@ -8123,7 +8123,7 @@ bool Interpreter::CheckForSpecialCase(GmatBase *obj, Integer id,
    
    #ifdef DEBUG_SPECIAL_CASE
    MessageInterface::ShowMessage
-      (wxT("Leaving CheckForSpecialCase() value=%s, retval=%d\n"), value.c_str(),
+      ("Leaving CheckForSpecialCase() value=%s, retval=%d\n", value.c_str(),
        retval);
    #endif
    
@@ -8132,18 +8132,18 @@ bool Interpreter::CheckForSpecialCase(GmatBase *obj, Integer id,
 
 
 //------------------------------------------------------------------------------
-// void WriteStringArray(const wxString &title1, const wxString &title2,
+// void WriteStringArray(const std::string &title1, const std::string &title2,
 //                       const StringArray &parts)
 //------------------------------------------------------------------------------
-void Interpreter::WriteStringArray(const wxString &title1,
-                                   const wxString &title2,
+void Interpreter::WriteStringArray(const std::string &title1,
+                                   const std::string &title2,
                                    const StringArray &parts)
 {
-   MessageInterface::ShowMessage(wxT("   ========== %s%s, has %d parts\n"),
+   MessageInterface::ShowMessage("   ========== %s%s, has %d parts\n",
                                  title1.c_str(), title2.c_str(), parts.size());
    for (UnsignedInt i=0; i<parts.size(); i++)
-      MessageInterface::ShowMessage(wxT("   %d: '%s'\n"), i, parts[i].c_str());
-   MessageInterface::ShowMessage(wxT("\n"));
+      MessageInterface::ShowMessage("   %d: '%s'\n", i, parts[i].c_str());
+   MessageInterface::ShowMessage("\n");
 }
 
 
@@ -8155,19 +8155,19 @@ void Interpreter::WriteForceModel(GmatBase *obj)
    ODEModel *fm = (ODEModel*)obj;
    Integer numForces = fm->GetNumForces();
    MessageInterface::ShowMessage
-      (wxT("   ODEModel '%s' has %d forces\n"), fm->GetName().c_str(), numForces);
+      ("   ODEModel '%s' has %d forces\n", fm->GetName().c_str(), numForces);
    for (int i = 0; i < numForces; i++)
    {
       const PhysicalModel* force = fm->GetForce(i);
       MessageInterface::ShowMessage
-         (wxT("      force[%d] = <%p><%s>'%s'\n"), i, force, force->GetTypeName().c_str(),
+         ("      force[%d] = <%p><%s>'%s'\n", i, force, force->GetTypeName().c_str(),
           force->GetName().c_str());
    }
 }
 
 
 //------------------------------------------------------------------------------
-// bool CheckFunctionDefinition(const wxString &funcPath, GmatBase *function,
+// bool CheckFunctionDefinition(const std::string &funcPath, GmatBase *function,
 //                              bool fullCheck)
 //------------------------------------------------------------------------------
 /*
@@ -8179,23 +8179,23 @@ void Interpreter::WriteForceModel(GmatBase *obj)
  *
  */
 //------------------------------------------------------------------------------
-bool Interpreter::CheckFunctionDefinition(const wxString &funcPath,
+bool Interpreter::CheckFunctionDefinition(const std::string &funcPath,
                                           GmatBase *function, bool fullCheck)
 {
    #if DBGLVL_FUNCTION_DEF > 0
    MessageInterface::ShowMessage
-      (wxT("Interpreter::CheckFunctionDefinition() function=<%p>, fullCheck=%d\n   ")
-       wxT("funcPath=<%s>\n"), function, fullCheck, funcPath.c_str());
+      ("Interpreter::CheckFunctionDefinition() function=<%p>, fullCheck=%d\n   "
+       "funcPath=<%s>\n", function, fullCheck, funcPath.c_str());
    #endif
    
-   debugMsg = wxT("In CheckFunctionDefinition()");
+   debugMsg = "In CheckFunctionDefinition()";
    bool retval = true;
    
    if (function == NULL)
    {
       MessageInterface::ShowMessage
-         (wxT("** INTERNAL ERROR ** Cannot check function definition. ")
-          wxT("function pointer is NULL\n"));
+         ("** INTERNAL ERROR ** Cannot check function definition. "
+          "function pointer is NULL\n");
       retval = false;;
    }
    
@@ -8203,20 +8203,20 @@ bool Interpreter::CheckFunctionDefinition(const wxString &funcPath,
    if (!GmatFileUtil::DoesFileExist(funcPath))
    {
       InterpreterException ex
-         (wxT("Nonexistent GmatFunction file \"") + funcPath +
-          wxT("\" referenced in \"") + function->GetName() + wxT("\"\n"));
+         ("Nonexistent GmatFunction file \"" + funcPath +
+          "\" referenced in \"" + function->GetName() + "\"\n");
       HandleError(ex, false);
       retval = false;
    }
    
    // check for no extension of .gmf or wrong extension
-   StringArray parts = GmatStringUtil::SeparateBy(funcPath, wxT("."));
+   StringArray parts = GmatStringUtil::SeparateBy(funcPath, ".");
    if ((parts.size() == 1) ||
-       (parts.size() == 2 && parts[1] != wxT("gmf")))
+       (parts.size() == 2 && parts[1] != "gmf"))
    {
       InterpreterException ex
-         (wxT("The GmatFunction file \"") + funcPath + wxT("\" has no or incorrect file ")
-          wxT("extension referenced in \"") + function->GetName() + wxT("\"\n"));
+         ("The GmatFunction file \"" + funcPath + "\" has no or incorrect file "
+          "extension referenced in \"" + function->GetName() + "\"\n");
       HandleError(ex, false);
       retval = false;
    }
@@ -8225,15 +8225,15 @@ bool Interpreter::CheckFunctionDefinition(const wxString &funcPath,
    {
       #if DBGLVL_FUNCTION_DEF > 0
       MessageInterface::ShowMessage
-         (wxT("Interpreter::CheckFunctionDefinition() returning %d, fullCheck=%d\n"),
+         ("Interpreter::CheckFunctionDefinition() returning %d, fullCheck=%d\n",
           retval, fullCheck);
       #endif
       return retval;
    }
    
    // check function declaration
-   std::ifstream inStream(funcPath.char_str());
-   wxString line;
+   std::ifstream inStream(funcPath.c_str());
+   std::string line;
    StringArray inputArgs;
    StringArray outputArgs;
    
@@ -8243,53 +8243,53 @@ bool Interpreter::CheckFunctionDefinition(const wxString &funcPath,
       if (!GmatFileUtil::GetLine(&inStream, line))
       {
          InterpreterException ex
-            (wxT("Error reading the GmatFunction file \"") +
-             funcPath + wxT("\" referenced in \"") + function->GetName() + wxT("\"\n"));
+            ("Error reading the GmatFunction file \"" +
+             funcPath + "\" referenced in \"" + function->GetName() + "\"\n");
          HandleError(ex, false);
          retval = false;
          break;
       }
       
       #if DBGLVL_FUNCTION_DEF > 1
-      MessageInterface::ShowMessage(wxT("   line=<%s>\n"), line.c_str());
+      MessageInterface::ShowMessage("   line=<%s>\n", line.c_str());
       #endif
       
       line = GmatStringUtil::Trim(line, GmatStringUtil::BOTH, true, true);
       
       // Skip empty line or comment line
-      if (line[0] == wxT('\0') || line[0] == wxT('%'))
+      if (line[0] == '\0' || line[0] == '%')
          continue;
       
       //------------------------------------------------------
       // Parse function definition line
       //------------------------------------------------------
       bool hasOutput = false;
-      if (line.find(wxT("=")) != line.npos)
+      if (line.find("=") != line.npos)
          hasOutput = true;
       
       StringArray parts;
       if (hasOutput)
-         parts = GmatStringUtil::SeparateBy(line, wxT("="), true);
+         parts = GmatStringUtil::SeparateBy(line, "=", true);
       else
-         parts = GmatStringUtil::SeparateBy(line, wxT(" "), true);
+         parts = GmatStringUtil::SeparateBy(line, " ", true);
       
       StringArray::size_type numParts = parts.size();
       
       #if DBGLVL_FUNCTION_DEF > 1
-      WriteStringArray(wxT("GmatFunction parts"), wxT(""), parts);
+      WriteStringArray("GmatFunction parts", "", parts);
       #endif
          
       StringArray lhsParts;
       
       try
       {
-         lhsParts = theTextParser.Decompose(parts[0], wxT("[]"), false);
+         lhsParts = theTextParser.Decompose(parts[0], "[]", false);
       }
       catch (BaseException &)
       {
          InterpreterException ex
-            (wxT("Invalid output argument list found in the GmatFunction file \"") +
-             funcPath + wxT("\" referenced in \"") + function->GetName() + wxT("\"\n"));
+            ("Invalid output argument list found in the GmatFunction file \"" +
+             funcPath + "\" referenced in \"" + function->GetName() + "\"\n");
          HandleError(ex, false);
          retval = false;
          break;
@@ -8298,21 +8298,21 @@ bool Interpreter::CheckFunctionDefinition(const wxString &funcPath,
       StringArray::size_type numLeft = lhsParts.size();
       
       #if DBGLVL_FUNCTION_DEF > 1
-      WriteStringArray(wxT("GmatFunction lhsParts"), wxT(""), lhsParts);
+      WriteStringArray("GmatFunction lhsParts", "", lhsParts);
       #endif
       
       //------------------------------------------------------
-      // Check if first part is wxT("function")
+      // Check if first part is "function"
       //------------------------------------------------------
       #if DBGLVL_FUNCTION_DEF > 0
-      MessageInterface::ShowMessage(wxT("   Check if first part is function\n"));
+      MessageInterface::ShowMessage("   Check if first part is function\n");
       #endif
       
-      if (numLeft > 0 && lhsParts[0] != wxT("function"))
+      if (numLeft > 0 && lhsParts[0] != "function")
       {
          InterpreterException ex
-            (wxT("The \"function\" is missing in the GmatFunction file \"") +
-             funcPath + wxT("\" referenced in \"") + function->GetName() + wxT("\"\n"));
+            ("The \"function\" is missing in the GmatFunction file \"" +
+             funcPath + "\" referenced in \"" + function->GetName() + "\"\n");
          HandleError(ex, false);
          retval = false;
          break;
@@ -8322,7 +8322,7 @@ bool Interpreter::CheckFunctionDefinition(const wxString &funcPath,
       // Check for valid output arguments
       //------------------------------------------------------
       #if DBGLVL_FUNCTION_DEF > 0
-      MessageInterface::ShowMessage(wxT("   Check for output arguments\n"));
+      MessageInterface::ShowMessage("   Check for output arguments\n");
       #endif
       
       if (hasOutput)
@@ -8330,17 +8330,17 @@ bool Interpreter::CheckFunctionDefinition(const wxString &funcPath,
          try
          {
             outputArgs =
-               theTextParser.SeparateBrackets(lhsParts[1], wxT("[]"), wxT(","));
+               theTextParser.SeparateBrackets(lhsParts[1], "[]", ",");
             
             #if DBGLVL_FUNCTION_DEF > 1
-            WriteStringArray(wxT("GmatFunction outputArgs"), wxT(""), outputArgs);
+            WriteStringArray("GmatFunction outputArgs", "", outputArgs);
             #endif
          }
          catch (BaseException &)
          {
             InterpreterException ex
-               (wxT("Invalid output argument list found in the GmatFunction file \"") +
-                funcPath + wxT("\" referenced in \"") + function->GetName() + wxT("\"\n"));
+               ("Invalid output argument list found in the GmatFunction file \"" +
+                funcPath + "\" referenced in \"" + function->GetName() + "\"\n");
             HandleError(ex, false);
             retval = false;
             break;
@@ -8350,8 +8350,8 @@ bool Interpreter::CheckFunctionDefinition(const wxString &funcPath,
          if (outputArgs.size() == 0)
          {
             InterpreterException ex
-               (wxT("The output argument list is empty in the GmatFunction file \"") +
-                funcPath + wxT("\" referenced in \"") + function->GetName() + wxT("\"\n"));
+               ("The output argument list is empty in the GmatFunction file \"" +
+                funcPath + "\" referenced in \"" + function->GetName() + "\"\n");
             HandleError(ex, false);
             retval = false;
             break;
@@ -8362,16 +8362,16 @@ bool Interpreter::CheckFunctionDefinition(const wxString &funcPath,
       // Check for missing function name
       //------------------------------------------------------
       #if DBGLVL_FUNCTION_DEF > 0
-      MessageInterface::ShowMessage(wxT("   Check for missing function name\n"));
-      MessageInterface::ShowMessage(wxT("   hasOutput=%d, numLeft=%d, numParts=%d\n"),
+      MessageInterface::ShowMessage("   Check for missing function name\n");
+      MessageInterface::ShowMessage("   hasOutput=%d, numLeft=%d, numParts=%d\n",
                                     hasOutput, numLeft, numParts);
       #endif
       
       if (numParts <= 1)
       {
          InterpreterException ex
-            (wxT("The function name not found in the GmatFunction file \"") +
-             funcPath + wxT("\" referenced in \"") + function->GetName() + wxT("\"\n"));
+            ("The function name not found in the GmatFunction file \"" +
+             funcPath + "\" referenced in \"" + function->GetName() + "\"\n");
          HandleError(ex, false);
          retval = false;
          break;
@@ -8381,23 +8381,23 @@ bool Interpreter::CheckFunctionDefinition(const wxString &funcPath,
       // check function name and input arguments
       //------------------------------------------------------
       #if DBGLVL_FUNCTION_DEF > 0
-      MessageInterface::ShowMessage(wxT("   Check for input arguments\n"));
+      MessageInterface::ShowMessage("   Check for input arguments\n");
       #endif
       
       StringArray rhsParts;
       try
       {
-         rhsParts = theTextParser.Decompose(parts[1], wxT("()"), false);
+         rhsParts = theTextParser.Decompose(parts[1], "()", false);
          
          #if DBGLVL_FUNCTION_DEF > 1
-         WriteStringArray(wxT("GmatFunction rhsParts"), wxT(""), rhsParts);
+         WriteStringArray("GmatFunction rhsParts", "", rhsParts);
          #endif         
       }
       catch (BaseException &)
       {
          InterpreterException ex
-            (wxT("The invalid input argument list found in the GmatFunction file \"") +
-             funcPath + wxT("\" referenced in \"") + function->GetName() + wxT("\"\n"));
+            ("The invalid input argument list found in the GmatFunction file \"" +
+             funcPath + "\" referenced in \"" + function->GetName() + "\"\n");
          HandleError(ex, false);
          retval = false;
          break;
@@ -8407,23 +8407,23 @@ bool Interpreter::CheckFunctionDefinition(const wxString &funcPath,
       // Check if function name matches the file name
       //------------------------------------------------------
       #if DBGLVL_FUNCTION_DEF > 0
-      MessageInterface::ShowMessage(wxT("   Check if file has matching function name\n"));
+      MessageInterface::ShowMessage("   Check if file has matching function name\n");
       #endif
       
-      wxString fileFuncName = rhsParts[0];
-      wxString funcName = function->GetStringParameter(wxT("FunctionName"));
+      std::string fileFuncName = rhsParts[0];
+      std::string funcName = function->GetStringParameter("FunctionName");
       
       #if DBGLVL_FUNCTION_DEF > 0
       MessageInterface::ShowMessage
-         (wxT("   fileFuncName = %s', funcName = '%s'\n\n"), fileFuncName.c_str(), funcName.c_str());
+         ("   fileFuncName = %s', funcName = '%s'\n\n", fileFuncName.c_str(), funcName.c_str());
       #endif
       
       if (fileFuncName != funcName)
       {
          InterpreterException ex
-            (wxT("The function name \"") + fileFuncName + wxT("\" does not match with the ")
-             wxT("GmatFunction file name \"") + funcPath + wxT("\" referenced in \"") +
-             function->GetName() + wxT("\"\n"));
+            ("The function name \"" + fileFuncName + "\" does not match with the "
+             "GmatFunction file name \"" + funcPath + "\" referenced in \"" +
+             function->GetName() + "\"\n");
          HandleError(ex, false);
          retval = false;
       }
@@ -8432,24 +8432,24 @@ bool Interpreter::CheckFunctionDefinition(const wxString &funcPath,
       // Check for valid input arguments
       //------------------------------------------------------
       #if DBGLVL_FUNCTION_DEF > 0
-      MessageInterface::ShowMessage(wxT("   Check for input arguments\n"));
+      MessageInterface::ShowMessage("   Check for input arguments\n");
       #endif
       if (rhsParts.size() > 1)
       {
          try
          {
             inputArgs =
-               theTextParser.SeparateBrackets(rhsParts[1], wxT("()"), wxT(","));
+               theTextParser.SeparateBrackets(rhsParts[1], "()", ",");
             
             #if DBGLVL_FUNCTION_DEF > 1
-            WriteStringArray(wxT("GmatFunction inputArgs"), wxT(""), inputArgs);
+            WriteStringArray("GmatFunction inputArgs", "", inputArgs);
             #endif
          }
          catch (BaseException &)
          {
             InterpreterException ex
-               (wxT("Invalid input argument list found in the GmatFunction file \"") +
-                funcPath + wxT("\" referenced in \"") + function->GetName() + wxT("\"\n"));
+               ("Invalid input argument list found in the GmatFunction file \"" +
+                funcPath + "\" referenced in \"" + function->GetName() + "\"\n");
             HandleError(ex, false);
             retval = false;
             break;
@@ -8458,8 +8458,8 @@ bool Interpreter::CheckFunctionDefinition(const wxString &funcPath,
          if (inputArgs.size() == 0)
          {
             InterpreterException ex
-               (wxT("The input argument list is empty in the GmatFunction file \"") +
-                funcPath + wxT("\" referenced in \"") + function->GetName() + wxT("\"\n"));
+               ("The input argument list is empty in the GmatFunction file \"" +
+                funcPath + "\" referenced in \"" + function->GetName() + "\"\n");
             HandleError(ex, false);
             retval = false;
             break;
@@ -8467,7 +8467,7 @@ bool Interpreter::CheckFunctionDefinition(const wxString &funcPath,
          
          // check for duplicate input list
          #if DBGLVL_FUNCTION_DEF > 0
-         MessageInterface::ShowMessage(wxT("   Check for duplicate input arguments\n"));
+         MessageInterface::ShowMessage("   Check for duplicate input arguments\n");
          #endif
          if (inputArgs.size() > 1)
          {
@@ -8488,14 +8488,14 @@ bool Interpreter::CheckFunctionDefinition(const wxString &funcPath,
             
             if (multiples.size() > 0)
             {
-               wxString errMsg = wxT("Duplicate input of");
+               std::string errMsg = "Duplicate input of";
                
                for (UnsignedInt i=0; i<multiples.size(); i++)
-                  errMsg = errMsg + wxT(" \"") + multiples[i] + wxT("\"");
+                  errMsg = errMsg + " \"" + multiples[i] + "\"";
                
                InterpreterException ex
-                  (errMsg + wxT(" found in the GmatFunction file \"") +
-                   funcPath + wxT("\" referenced in \"") + function->GetName() + wxT("\"\n"));
+                  (errMsg + " found in the GmatFunction file \"" +
+                   funcPath + "\" referenced in \"" + function->GetName() + "\"\n");
                HandleError(ex, false);
                retval = false;
                break;
@@ -8506,32 +8506,32 @@ bool Interpreter::CheckFunctionDefinition(const wxString &funcPath,
       break;
    }
    
-   if (line == wxT(""))
+   if (line == "")
    {
       InterpreterException ex
-         (wxT("The GmatFunction file \"") + funcPath + wxT("\" referenced in \"") +
-          function->GetName() + wxT("\" is empty\n"));
+         ("The GmatFunction file \"" + funcPath + "\" referenced in \"" +
+          function->GetName() + "\" is empty\n");
       HandleError(ex, false);
       retval = false;
    }
    
    // if function definition has been validated, check if all outputs are declared
    #if DBGLVL_FUNCTION_DEF > 0
-   MessageInterface::ShowMessage(wxT("   Check for output declaration\n"));
+   MessageInterface::ShowMessage("   Check for output declaration\n");
    #endif
    if (retval && outputArgs.size() > 0)
    {
-      wxString errMsg;
+      std::string errMsg;
       IntegerArray rowCounts, colCounts;
       WrapperTypeArray outputTypes =
          GmatFileUtil::GetFunctionOutputTypes(&inStream, inputArgs, outputArgs, errMsg,
                                               rowCounts, colCounts);
       
-      if (errMsg != wxT(""))
+      if (errMsg != "")
       {
          InterpreterException ex
-            (errMsg + wxT(" found in the GmatFunction file \"") +
-             funcPath + wxT("\" referenced in \"") + function->GetName() + wxT("\"\n"));
+            (errMsg + " found in the GmatFunction file \"" +
+             funcPath + "\" referenced in \"" + function->GetName() + "\"\n");
          HandleError(ex, false);
          retval = false;
       }
@@ -8546,7 +8546,7 @@ bool Interpreter::CheckFunctionDefinition(const wxString &funcPath,
    
    #if DBGLVL_FUNCTION_DEF > 0
    MessageInterface::ShowMessage
-      (wxT("Interpreter::CheckFunctionDefinition() returning true\n"));
+      ("Interpreter::CheckFunctionDefinition() returning true\n");
    #endif
    
    return retval;
@@ -8555,7 +8555,7 @@ bool Interpreter::CheckFunctionDefinition(const wxString &funcPath,
 
 
 //------------------------------------------------------------------------------
-// bool BuildFunctionDefinition(const wxString &str)
+// bool BuildFunctionDefinition(const std::string &str)
 //------------------------------------------------------------------------------
 /*
  * Sets function inputs and output to function from valid function definition
@@ -8565,25 +8565,25 @@ bool Interpreter::CheckFunctionDefinition(const wxString &funcPath,
  *       validation check
  */
 //------------------------------------------------------------------------------
-bool Interpreter::BuildFunctionDefinition(const wxString &str)
+bool Interpreter::BuildFunctionDefinition(const std::string &str)
 {
    #if DBGLVL_FUNCTION_DEF > 0
    MessageInterface::ShowMessage
-      (wxT("Interpreter::BuildFunctionDefinition() str=<%s>\n"), str.c_str());
+      ("Interpreter::BuildFunctionDefinition() str=<%s>\n", str.c_str());
    #endif
    
-   wxString lhs;
-   wxString rhs;
-   StringArray parts = theTextParser.SeparateBy(str, wxT("="));
+   std::string lhs;
+   std::string rhs;
+   StringArray parts = theTextParser.SeparateBy(str, "=");
    
    #if DBGLVL_FUNCTION_DEF > 1
-   WriteStringArray(wxT("parts"), wxT(""), parts);
+   WriteStringArray("parts", "", parts);
    #endif
    
    // if function has no output
    if (parts.size() == 1)
    {
-      wxString::size_type index = str.find_first_of(wxT(" "));
+      std::string::size_type index = str.find_first_of(" ");
       lhs = str.substr(0, index);
       rhs = str.substr(index+1);
    }
@@ -8593,17 +8593,17 @@ bool Interpreter::BuildFunctionDefinition(const wxString &str)
       rhs = parts[1];
    }
    
-   StringArray lhsParts = theTextParser.Decompose(lhs, wxT("[]"), false);
-   StringArray rhsParts = theTextParser.Decompose(rhs, wxT("()"), false);
+   StringArray lhsParts = theTextParser.Decompose(lhs, "[]", false);
+   StringArray rhsParts = theTextParser.Decompose(rhs, "()", false);
    
    #if DBGLVL_FUNCTION_DEF > 1
-   WriteStringArray(wxT("lhsParts"), wxT(""), lhsParts);
-   WriteStringArray(wxT("rhsParts"), wxT(""), rhsParts);
+   WriteStringArray("lhsParts", "", lhsParts);
+   WriteStringArray("rhsParts", "", rhsParts);
    #endif
    
-   wxString funcName;
+   std::string funcName;
    
-   if (lhsParts[0] != wxT("function"))
+   if (lhsParts[0] != "function")
       return false;
    
    if (!GmatStringUtil::IsValidName(rhsParts[0], false))
@@ -8615,15 +8615,15 @@ bool Interpreter::BuildFunctionDefinition(const wxString &str)
    // parse inputs
    //------------------------------------------------------
    #if DBGLVL_FUNCTION_DEF > 0
-   MessageInterface::ShowMessage(wxT("   parse inputs\n"));
+   MessageInterface::ShowMessage("   parse inputs\n");
    #endif
    
    if (rhsParts.size() > 1)
    {
-      inputs = theTextParser.SeparateBy(rhsParts[1], wxT(", ()"));
+      inputs = theTextParser.SeparateBy(rhsParts[1], ", ()");
       
       #if DBGLVL_FUNCTION_DEF > 1
-      WriteStringArray(wxT("function inputs"), wxT(""), inputs);
+      WriteStringArray("function inputs", "", inputs);
       #endif
    }
    
@@ -8631,20 +8631,20 @@ bool Interpreter::BuildFunctionDefinition(const wxString &str)
    // parse outputs
    //------------------------------------------------------
    #if DBGLVL_FUNCTION_DEF > 0
-   MessageInterface::ShowMessage(wxT("   parse outputs\n"));
+   MessageInterface::ShowMessage("   parse outputs\n");
    #endif
    if (lhsParts.size() > 1)
    {
-      outputs = theTextParser.SeparateBy(lhsParts[1], wxT(", []"));
+      outputs = theTextParser.SeparateBy(lhsParts[1], ", []");
       
       #if DBGLVL_FUNCTION_DEF > 1
-      WriteStringArray(wxT("function outputs"), wxT(""), outputs);
+      WriteStringArray("function outputs", "", outputs);
       #endif
    }
    
    #if DBGLVL_FUNCTION_DEF > 0
    MessageInterface::ShowMessage
-      (wxT("   inFunctionMode=%d, currentFunction=<%p>\n"), inFunctionMode,
+      ("   inFunctionMode=%d, currentFunction=<%p>\n", inFunctionMode,
        currentFunction);
    #endif
    
@@ -8654,17 +8654,17 @@ bool Interpreter::BuildFunctionDefinition(const wxString &str)
    if (inFunctionMode && currentFunction != NULL)
    {
       for (UnsignedInt i=0; i<inputs.size(); i++)
-         currentFunction->SetStringParameter(wxT("Input"), inputs[i]);
+         currentFunction->SetStringParameter("Input", inputs[i]);
 
       for (UnsignedInt i=0; i<outputs.size(); i++)
-         currentFunction->SetStringParameter(wxT("Output"), outputs[i]);
+         currentFunction->SetStringParameter("Output", outputs[i]);
    }
    
    hasFunctionDefinition = true;
    
    #if DBGLVL_FUNCTION_DEF > 0
    MessageInterface::ShowMessage
-      (wxT("Interpreter::BuildFunctionDefinition() returning true\n"));
+      ("Interpreter::BuildFunctionDefinition() returning true\n");
    #endif
    
    return true;
@@ -8679,19 +8679,19 @@ bool Interpreter::HandleMathTree(GmatCommand *cmd)
 {
    #ifdef DEBUG_MATH_TREE
    MessageInterface::ShowMessage
-      (wxT("Interpreter::HandleMathTree() '%s', It is a math equation\n"),
+      ("Interpreter::HandleMathTree() '%s', It is a math equation\n",
        cmd->GetGeneratingString(Gmat::NO_COMMENTS).c_str());
    #endif
    
    Assignment *equation = (Assignment*)cmd;
-   wxString lhs = equation->GetLHS();
-   wxString rhs = equation->GetRHS();
+   std::string lhs = equation->GetLHS();
+   std::string rhs = equation->GetRHS();
    
    // Handle GmatFunction in math
    StringArray gmatFuns = equation->GetGmatFunctionNames();
    
    #ifdef DEBUG_MATH_TREE
-   MessageInterface::ShowMessage(wxT("   Found %d GmatFunctions\n"), gmatFuns.size());
+   MessageInterface::ShowMessage("   Found %d GmatFunctions\n", gmatFuns.size());
    #endif
    
    for (UnsignedInt i=0; i<gmatFuns.size(); i++)
@@ -8704,11 +8704,11 @@ bool Interpreter::HandleMathTree(GmatCommand *cmd)
          manage = 0;
       
       if (func == NULL)
-         func = CreateObject(wxT("GmatFunction"), gmatFuns[i], manage);
+         func = CreateObject("GmatFunction", gmatFuns[i], manage);
       
       #ifdef DEBUG_MATH_TREE
       MessageInterface::ShowMessage
-         (wxT("   Setting GmatFunction '%s'<%p> to equation<%p>\n"),
+         ("   Setting GmatFunction '%s'<%p> to equation<%p>\n",
           func->GetName().c_str(), func, equation);
       #endif
       
@@ -8716,7 +8716,7 @@ bool Interpreter::HandleMathTree(GmatCommand *cmd)
    }
    
    #ifdef DEBUG_MATH_TREE
-   MessageInterface::ShowMessage(wxT("Interpreter::HandleMathTree() returning true\n"));
+   MessageInterface::ShowMessage("Interpreter::HandleMathTree() returning true\n");
    #endif
    
    return true;

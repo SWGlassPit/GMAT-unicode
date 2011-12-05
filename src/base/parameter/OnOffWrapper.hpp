@@ -37,13 +37,13 @@ public:
    virtual Real         EvaluateReal() const;
    virtual bool         SetReal(const Real val);
    
-   virtual wxString  EvaluateOnOff() const;
-   virtual bool         SetOnOff(const wxString &val);
+   virtual std::string  EvaluateOnOff() const;
+   virtual bool         SetOnOff(const std::string &val);
    
 protected:  
 
-   // the string value of wxT("On") or wxT("Off")
-   wxString value;
+   // the string value of "On" or "Off"
+   std::string value;
    
    virtual void         SetupWrapper();
 };

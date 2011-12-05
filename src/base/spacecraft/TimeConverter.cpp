@@ -35,12 +35,12 @@
  *
  */
 TimeConverter::TimeConverter() :
-   Converter(wxT("ModifiedJulian"))
+   Converter("ModifiedJulian")
 {
 }
 
 //---------------------------------------------------------------------------
-//  TimeConverter(const wxString &type)
+//  TimeConverter(const std::string &type)
 //---------------------------------------------------------------------------
 /**
  * Creates constructors with parameters.
@@ -48,7 +48,7 @@ TimeConverter::TimeConverter() :
  * @param <typeStr> GMAT script string associated with this type of object.
  *
  */
-TimeConverter::TimeConverter(const wxString &type) :
+TimeConverter::TimeConverter(const std::string &type) :
    Converter(type)
 {
 }
@@ -98,8 +98,8 @@ TimeConverter& TimeConverter::operator=(const TimeConverter &timeConverter)
 
 //---------------------------------------------------------------------------
 //  Real TimeConverter::Convert(const Real time,
-//                              const wxString &fromDateFormat,
-//                              const wxString &toDateFormat)
+//                              const std::string &fromDateFormat,
+//                              const std::string &toDateFormat)
 //---------------------------------------------------------------------------
 /**
  * Assignment operator for TimeConverter structures.
@@ -110,99 +110,101 @@ TimeConverter& TimeConverter::operator=(const TimeConverter &timeConverter)
  *
  * @return Converted time from the specific data format
  */
-wxString TimeConverter::Convert(const wxString &time,
-                                   const wxString &fromDateFormat,
-                                   const wxString &toDateFormat)
+std::string TimeConverter::Convert(const std::string &time,
+                                   const std::string &fromDateFormat,
+                                   const std::string &toDateFormat)
 {
-   Real inTime, outTime;
-   time.ToDouble(&inTime);
-   wxString newTime = time;
+   Real inTime = atof(time.c_str()), outTime;
+   std::string newTime = time;
 
-   wxString timeBuffer;
+   std::ostringstream timeBuffer;
+   timeBuffer.precision(11);
+   timeBuffer.setf(std::ios::fixed);
+   timeBuffer.str("");
 
    // Determine the input of date format
-   if (fromDateFormat == wxT("TAIModJulian") && toDateFormat != wxT("TAIModJulian"))
+   if (fromDateFormat == "TAIModJulian" && toDateFormat != "TAIModJulian")
    {
-      if (toDateFormat == wxT("TAIGregorian"))
+      if (toDateFormat == "TAIGregorian")
          return ModJulianToGregorian(inTime);
 
     // 20.02.06 - arg: changed to use enum types instead of strings
-//      outTime = TimeConverterUtil::Convert(inTime, wxT("A1Mjd"), wxT("UtcMjd"),
+//      outTime = TimeConverterUtil::Convert(inTime, "A1Mjd", "UtcMjd",
 //         GmatTimeConstants::JD_JAN_5_1941);
       outTime = TimeConverterUtil::Convert(inTime, TimeConverterUtil::A1MJD,
          TimeConverterUtil::UTCMJD, GmatTimeConstants::JD_JAN_5_1941);
 
-      if (toDateFormat == wxT("UTCModJulian"))
+      if (toDateFormat == "UTCModJulian")
       {
          timeBuffer << outTime;
-         newTime = timeBuffer;
+         newTime = timeBuffer.str();
       }
-      else if (toDateFormat == wxT("UTCGregorian"))
+      else if (toDateFormat == "UTCGregorian")
          newTime = ModJulianToGregorian(outTime);
    }
-   else if (fromDateFormat == wxT("TAIGregorian") && toDateFormat != wxT("TAIGregorian"))
+   else if (fromDateFormat == "TAIGregorian" && toDateFormat != "TAIGregorian")
    {
       inTime = GregorianToModJulian(time);
-      if (toDateFormat == wxT("TAIModJulian"))
+      if (toDateFormat == "TAIModJulian")
       {
          timeBuffer << inTime;
-         return(timeBuffer);
+         return(timeBuffer.str());
       }
 
     // 20.02.06 - arg: changed to use enum types instead of strings
-//      outTime = TimeConverterUtil::Convert(inTime, wxT("A1Mjd"), wxT("UtcMjd"),
+//      outTime = TimeConverterUtil::Convert(inTime, "A1Mjd", "UtcMjd",
 //         GmatTimeConstants::JD_JAN_5_1941);
       outTime = TimeConverterUtil::Convert(inTime, TimeConverterUtil::A1MJD,
          TimeConverterUtil::UTCMJD, GmatTimeConstants::JD_JAN_5_1941);
 
-      if (toDateFormat == wxT("UTCGregorian"))
+      if (toDateFormat == "UTCGregorian")
          newTime = ModJulianToGregorian(outTime);
-      else if (toDateFormat == wxT("UTCModJulian"))
+      else if (toDateFormat == "UTCModJulian")
       {
          timeBuffer << outTime;
-         return(timeBuffer);
+         return(timeBuffer.str());
       }
    }
-   else if (fromDateFormat == wxT("UTCModJulian") && toDateFormat != wxT("UTCModJulian"))
+   else if (fromDateFormat == "UTCModJulian" && toDateFormat != "UTCModJulian")
    {
-      if (toDateFormat == wxT("UTCGregorian"))
+      if (toDateFormat == "UTCGregorian")
          return ModJulianToGregorian(inTime);
 
     // 20.02.06 - arg: changed to use enum types instead of strings
-//      outTime = TimeConverterUtil::Convert(inTime, wxT("UtcMjd"), wxT("A1Mjd"),
+//      outTime = TimeConverterUtil::Convert(inTime, "UtcMjd", "A1Mjd",
 //         GmatTimeConstants::JD_JAN_5_1941);
       outTime = TimeConverterUtil::Convert(inTime, TimeConverterUtil::UTCMJD,
          TimeConverterUtil::A1MJD, GmatTimeConstants::JD_JAN_5_1941);
 
-      if (toDateFormat == wxT("TAIGregorian"))
+      if (toDateFormat == "TAIGregorian")
          newTime = ModJulianToGregorian(outTime);
-      else if (toDateFormat == wxT("TAIModJulian"))
+      else if (toDateFormat == "TAIModJulian")
       {
          timeBuffer << outTime;
-         return timeBuffer;
+         return timeBuffer.str();
       }
    }
-   else if (fromDateFormat == wxT("UTCGregorian") && toDateFormat != wxT("UTCGregorian"))
+   else if (fromDateFormat == "UTCGregorian" && toDateFormat != "UTCGregorian")
    {
       inTime = GregorianToModJulian(time);
-      if (toDateFormat == wxT("UTCModJulian"))
+      if (toDateFormat == "UTCModJulian")
       {
          timeBuffer << inTime;
-         return timeBuffer;
+         return timeBuffer.str();
       }
 
     // 20.02.06 - arg: changed to use enum types instead of strings
-//      outTime = TimeConverterUtil::Convert(inTime, wxT("UtcMjd"), wxT("A1Mjd"),
+//      outTime = TimeConverterUtil::Convert(inTime, "UtcMjd", "A1Mjd",
 //         GmatTimeConstants::JD_JAN_5_1941);
       outTime = TimeConverterUtil::Convert(inTime, TimeConverterUtil::UTCMJD,
          TimeConverterUtil::A1MJD, GmatTimeConstants::JD_JAN_5_1941);
 
-      if (toDateFormat == wxT("TAIModJulian"))
+      if (toDateFormat == "TAIModJulian")
       {
          timeBuffer << outTime;
-         return timeBuffer;
+         return timeBuffer.str();
       }
-      else if (toDateFormat == wxT("TAIGregorian"))
+      else if (toDateFormat == "TAIGregorian")
          newTime = ModJulianToGregorian(outTime);
    }
 
@@ -210,7 +212,7 @@ wxString TimeConverter::Convert(const wxString &time,
 }
 
 
-wxString TimeConverter::ModJulianToGregorian(const Real mjTime)
+std::string TimeConverter::ModJulianToGregorian(const Real mjTime)
 {
    A1Mjd a1Mjd(mjTime);
    A1Date a1Date = a1Mjd.ToA1Date();
@@ -219,7 +221,7 @@ wxString TimeConverter::ModJulianToGregorian(const Real mjTime)
 }
 
 
-Real TimeConverter::GregorianToModJulian(const wxString greg)
+Real TimeConverter::GregorianToModJulian(const std::string greg)
 {
    GregorianDate gregorianDate(greg);
    Real jules;

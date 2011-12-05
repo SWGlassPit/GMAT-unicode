@@ -29,7 +29,7 @@
 class GMAT_API ODEModelException : public BaseException
 {
 public:
-   ODEModelException(const wxString &details = wxT(""));
+   ODEModelException(const std::string &details = "");
    virtual ~ODEModelException();
    ODEModelException(const ODEModelException &fme);
 };

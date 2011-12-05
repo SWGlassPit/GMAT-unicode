@@ -28,8 +28,8 @@
 class GMAT_API Formation : public SpaceObject
 {
 public:
-   Formation(Gmat::ObjectType typeId, const wxString &typeStr, 
-             const wxString &instName);
+   Formation(Gmat::ObjectType typeId, const std::string &typeStr, 
+             const std::string &instName);
    virtual ~Formation();
    Formation(const Formation& orig);
    Formation&           operator=(const Formation& orig);
@@ -37,70 +37,70 @@ public:
    virtual const Rvector6 GetMJ2000State(const A1Mjd &atTime);
    
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    virtual GmatBase*    Clone() const;
    virtual void         Copy(const GmatBase* orig);
    virtual void         ParametersHaveChanged(bool flag);
    
    // Access methods derived classes can override
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    virtual bool         IsParameterReadOnly(const Integer id) const;
    
    virtual bool         GetBooleanParameter(const Integer id) const;
-   virtual bool         GetBooleanParameter(const wxString &label) const;
+   virtual bool         GetBooleanParameter(const std::string &label) const;
    virtual bool         SetBooleanParameter(const Integer id, const bool value);
-   virtual bool         SetBooleanParameter(const wxString &label,
+   virtual bool         SetBooleanParameter(const std::string &label,
                                             const bool value);
    
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const Integer id,
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const Integer id,
                                            const Integer index) const;
    
    
    virtual Real         GetRealParameter(const Integer id) const;
-   virtual Real         GetRealParameter(const wxString &label) const;
+   virtual Real         GetRealParameter(const std::string &label) const;
    virtual Real         SetRealParameter(const Integer id, const Real value);
-   virtual Real         SetRealParameter(const wxString &label, 
+   virtual Real         SetRealParameter(const std::string &label, 
                                          const Real value);
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
+                                           const std::string &value);
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
    virtual const StringArray& 
                         GetStringArrayParameter(const Integer id) const;
    virtual const StringArray& 
-                        GetStringArrayParameter(const wxString &label) const;
+                        GetStringArrayParameter(const std::string &label) const;
    
    virtual const StringArray&
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name,
+                                     const std::string &name,
                                      const Integer index);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name,
+                                     const std::string &name,
                                      const Integer index);
    virtual ObjectArray& GetRefObjectArray(const Gmat::ObjectType type);
-   virtual ObjectArray& GetRefObjectArray(const wxString& typeString);
+   virtual ObjectArray& GetRefObjectArray(const std::string& typeString);
    
    virtual void         BuildState();
    virtual void         UpdateElements();
    virtual void         UpdateState();
-   virtual bool         TakeAction(const wxString &action,
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,
+                                   const std::string &actionData = "");
    virtual void         ClearLastStopTriggered();
-   // virtual void SetLastStopTriggered(const wxString &stopCondName);
-   // virtual bool WasLastStopTriggered(const wxString &stopCondName);
+   // virtual void SetLastStopTriggered(const std::string &stopCondName);
+   // virtual bool WasLastStopTriggered(const std::string &stopCondName);
    
-//   virtual Integer         GetPropItemID(const wxString &whichItem);
-   virtual Integer         SetPropItem(const wxString &propItem);
+//   virtual Integer         GetPropItemID(const std::string &whichItem);
+   virtual Integer         SetPropItem(const std::string &propItem);
    virtual StringArray     GetDefaultPropItems();
    virtual Real*           GetPropItem(const Integer item);
    virtual Integer         GetPropItemSize(const Integer item);
@@ -127,14 +127,14 @@ protected:
    };
    
    /// Array of supported parameters
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[FormationParamCount - SpaceObjectParamCount];
    /// Array of parameter types
    static const Gmat::ParameterType
       PARAMETER_TYPE[FormationParamCount - SpaceObjectParamCount];
    
    bool                 ClearSpacecraftList();
-   bool                 RemoveSpacecraft(const wxString &name);
+   bool                 RemoveSpacecraft(const std::string &name);
 };
 
 #endif // Formation_hpp

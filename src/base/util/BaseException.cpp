@@ -28,23 +28,23 @@
 
 
 //------------------------------------------------------------------------------
-// wxString GetFullMessage() const 
+// std::string GetFullMessage() const 
 //------------------------------------------------------------------------------
-wxString BaseException::GetFullMessage() const 
+std::string BaseException::GetFullMessage() const 
 {
-   wxString preface = wxT("");
+   std::string preface = "";
 
    if (msgType == Gmat::ERROR_)
-      preface = wxT("**** ERROR **** ");
+      preface = "**** ERROR **** ";
    if (msgType == Gmat::WARNING_)
-      preface = wxT("**** WARNING **** ");
+      preface = "**** WARNING **** ";
    return preface + theMessage + theDetails;
 }
 
 //------------------------------------------------------------------------------
-// wxString GetDetails() const 
+// std::string GetDetails() const 
 //------------------------------------------------------------------------------
-wxString BaseException::GetDetails() const 
+std::string BaseException::GetDetails() const 
 {
    return theDetails;
 }
@@ -58,20 +58,20 @@ bool BaseException::IsFatal() const
 }
 
 //------------------------------------------------------------------------------
-// void BaseException::SetMessage(const wxString &message)  
+// void BaseException::SetMessage(const std::string &message)  
 //------------------------------------------------------------------------------
-void BaseException::SetMessage(const wxString &message)  
+void BaseException::SetMessage(const std::string &message)  
 {
    theMessage = message;
 }
 
 //------------------------------------------------------------------------------
-// void SetDetails(const wxString &details)  
+// void SetDetails(const std::string &details)  
 //------------------------------------------------------------------------------
-//void BaseException::SetDetails(const wxString &details)  
-//{
-//   theDetails = details;
-//}
+void BaseException::SetDetails(const std::string &details)  
+{
+   theDetails = details;
+}
 
 //------------------------------------------------------------------------------
 // void SetFatal(bool fatal)
@@ -98,46 +98,50 @@ void BaseException::SetMessageType(Gmat::MessageType mt)
 }
 
 //------------------------------------------------------------------------------
-// const BaseException& operator=(const wxString &newMessage) 
+// const BaseException& operator=(const std::string &newMessage) 
 //------------------------------------------------------------------------------
-const BaseException& BaseException::operator=(const wxString &newMessage) 
+const BaseException& BaseException::operator=(const std::string &newMessage) 
 {
    theMessage = newMessage;
    return *this;
 }
 
 //------------------------------------------------------------------------------
-// void SetDetails(const wxString &details, ...)
+// void SetDetails(const char *details, ...)
 //------------------------------------------------------------------------------
 /**
  * constructor taking variable arguments
  */
 //------------------------------------------------------------------------------
-void BaseException::SetDetails(const wxString &details, ...)
+void BaseException::SetDetails(const char *details, ...)
 {
    short    ret;
    short    size;
    va_list  marker;
-   wxString msgBuffer;
+   char     *msgBuffer;
 
+   size = strlen(details) + MAX_MESSAGE_LENGTH;
 
-   va_start(marker, details);
+   if ( (msgBuffer = (char *)malloc(size)) != NULL )
+   {
+      va_start(marker, details);
 
-//      Compiler quirks should be implementation details for wxString library
-//      #ifdef _MSC_VER  // Microsoft Visual C++
-//      // _vscprintf doesn't count terminating '\0'
-//      int len = _vscprintf( details, marker ) + 1;
-//     ret = vsprintf_s(msgBuffer, len, details, marker);
-//      #else
-   ret = msgBuffer.Printf(details, marker);
-//      #endif
+      #ifdef _MSC_VER  // Microsoft Visual C++
+      // _vscprintf doesn't count terminating '\0'
+      int len = _vscprintf( details, marker ) + 1;
+      ret = vsprintf_s(msgBuffer, len, details, marker);
+      #else
+      ret = vsprintf(msgBuffer, details, marker);
+      #endif
 
       if (ret < 0)
          ;   // Neg number means the call failed; should we do anything?
 
-   va_end(marker);
+      va_end(marker);
+   }
 
-   theDetails = wxString(msgBuffer);
+   theDetails = std::string(msgBuffer);
+   free(msgBuffer);
 }
 
 //---------------------------------
@@ -145,10 +149,10 @@ void BaseException::SetDetails(const wxString &details, ...)
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// BaseException(const wxString& message = wxT(""), const wxString &details = wxT("")) 
+// BaseException(const std::string& message = "", const std::string &details = "") 
 //------------------------------------------------------------------------------
-BaseException::BaseException(const wxString& message,
-      const wxString &details, Gmat::MessageType mt)
+BaseException::BaseException(const std::string& message,
+      const std::string &details, Gmat::MessageType mt)
 {
    theMessage = message;
    theDetails = details;

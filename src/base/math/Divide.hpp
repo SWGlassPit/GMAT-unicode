@@ -25,7 +25,7 @@
 class GMAT_API Divide : public MathFunction
 {
 public:
-   Divide(const wxString &nomme);
+   Divide(const std::string &nomme);
    virtual ~Divide();
    Divide(const Divide &copy);
                  

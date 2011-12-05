@@ -37,8 +37,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Subtract::Subtract(const wxString &nomme)
-   : MathFunction(wxT("Subtract"), nomme)
+Subtract::Subtract(const std::string &nomme)
+   : MathFunction("Subtract", nomme)
 {
 }
 
@@ -93,7 +93,7 @@ void Subtract::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount
 {
    #if DEBUG_SUBTRACT
    MessageInterface::ShowMessage
-      (wxT("Subtract::GetOutputInfo() this=<%p><%s><%s>\n"), this, GetTypeName().c_str(),
+      ("Subtract::GetOutputInfo() this=<%p><%s><%s>\n", this, GetTypeName().c_str(),
        GetName().c_str());
    #endif
    
@@ -108,8 +108,8 @@ void Subtract::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount
    
    #if DEBUG_SUBTRACT
    MessageInterface::ShowMessage
-      (wxT("Subtract::GetOutputInfo() type1=%d, row1=%d, col1=%d, type2=%d, ")
-       wxT("row2=%d, col2=%d\n"), type1, row1, col1, type2, row2, col2);
+      ("Subtract::GetOutputInfo() type1=%d, row1=%d, col1=%d, type2=%d, "
+       "row2=%d, col2=%d\n", type1, row1, col1, type2, row2, col2);
    #endif
    
    if ((type1 != type2) || (row1 != row2) || (col1 != col2))
@@ -128,7 +128,7 @@ void Subtract::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount
          colCount = col1;
       }
       else
-         throw MathException(wxT("Matrixes are not the same can not subtract.\n"));
+         throw MathException("Matrixes are not the same can not subtract.\n");
    }
    else
    {
@@ -151,7 +151,7 @@ bool Subtract::ValidateInputs()
 {
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("\nSubtract::ValidateInputs() '%s' entered\n"), GetName().c_str());
+      ("\nSubtract::ValidateInputs() '%s' entered\n", GetName().c_str());
    #endif
    
    Integer type1, row1, col1; // Left node
@@ -159,7 +159,7 @@ bool Subtract::ValidateInputs()
    bool retval = false;
    
    if (!leftNode)
-      throw MathException(wxT("Subtract() - Missing input arguments"));
+      throw MathException("Subtract() - Missing input arguments");
    
    // Get the type(Real or Matrix), # rows and # columns of the left node
    leftNode->GetOutputInfo(type1, row1, col1);
@@ -169,8 +169,8 @@ bool Subtract::ValidateInputs()
    
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Subtract::ValidateInputs() type1=%d, row1=%d, col1=%d, ")
-       wxT("type2=%d, row2=%d, col2=%d\n"), type1, row1, col1, type2, row2, col2);
+      ("Subtract::ValidateInputs() type1=%d, row1=%d, col1=%d, "
+       "type2=%d, row2=%d, col2=%d\n", type1, row1, col1, type2, row2, col2);
    #endif
    
    // If any one side is 1x1, then it is valid, so check first
@@ -186,7 +186,7 @@ bool Subtract::ValidateInputs()
    
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Subtract::ValidateInputs() returning %d\n"), retval);
+      ("Subtract::ValidateInputs() returning %d\n", retval);
    #endif
    
    return retval;
@@ -204,13 +204,13 @@ bool Subtract::ValidateInputs()
 Real Subtract::Evaluate()
 {
    #ifdef DEBUG_EVALUATE
-   MessageInterface::ShowMessage(wxT("Subtract::Evaluate() '%s' entered\n"), GetName().c_str());
+   MessageInterface::ShowMessage("Subtract::Evaluate() '%s' entered\n", GetName().c_str());
    #endif
    
    if (ValidateInputs())
       return leftNode->Evaluate() - rightNode->Evaluate();
    else
-      throw MathException(wxT("Subtract::Both operands should be of type Real.\n"));    
+      throw MathException("Subtract::Both operands should be of type Real.\n");    
 }
 
 
@@ -225,12 +225,12 @@ Real Subtract::Evaluate()
 Rmatrix Subtract::MatrixEvaluate()
 {
    #ifdef DEBUG_EVALUATE
-   MessageInterface::ShowMessage(wxT("Subtract::MatrixEvaluate() '%s' entered\n"), GetName().c_str());
+   MessageInterface::ShowMessage("Subtract::MatrixEvaluate() '%s' entered\n", GetName().c_str());
    #endif
    
    if (ValidateInputs())
       return leftNode->MatrixEvaluate() - rightNode->MatrixEvaluate();
    else
-      throw MathException(wxT("Subtract::Operands are not of the same type or same ")
-                          wxT("dimension.\n"));    
+      throw MathException("Subtract::Operands are not of the same type or same "
+                          "dimension.\n");    
 }

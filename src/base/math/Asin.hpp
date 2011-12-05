@@ -26,7 +26,7 @@
 class GMAT_API Asin : public MathFunction
 {
 public:
-   Asin(const wxString &nomme);
+   Asin(const std::string &nomme);
    virtual ~Asin();
    Asin(const Asin &copy);
                  

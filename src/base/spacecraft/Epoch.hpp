@@ -32,16 +32,16 @@ public:
     class EpochException : public BaseException
     {
        public:
-          EpochException(const wxString &message =
-           wxT("EpochException: Can't convert due to invalid date format"))
+          EpochException(const std::string &message =
+           "EpochException: Can't convert due to invalid date format")
            : BaseException(message) {};
     };
 
 
    // Default constructor
    Epoch();
-   Epoch(const wxString &mFormat);
-   Epoch(const wxString &mFormat, const wxString &mValue);
+   Epoch(const std::string &mFormat);
+   Epoch(const std::string &mFormat, const std::string &mValue);
 
    // Copy constructor
    Epoch(const Epoch &e);
@@ -52,23 +52,23 @@ public:
    virtual ~Epoch(void);
 
    // public methods
-   wxString GetValue() const;
-   wxString GetValue(const wxString &mFormat) const;
-   bool        SetValue(const wxString &mFormat);
-   bool        SetValue(const wxString &mFormat, const wxString &mValue);
+   std::string GetValue() const;
+   std::string GetValue(const std::string &mFormat) const;
+   bool        SetValue(const std::string &mFormat);
+   bool        SetValue(const std::string &mFormat, const std::string &mValue);
    bool        SetValue(const Real e);
 
    Real        GetRealValue();
-   Real        GetRealValue(const wxString &mFormat);
+   Real        GetRealValue(const std::string &mFormat);
   
    bool        UpdateValue(Real e);
 
-   wxString GetFormat() const;
-   bool        SetFormat(const wxString &mFormat);
+   std::string GetFormat() const;
+   bool        SetFormat(const std::string &mFormat);
 
-   bool        IsValidFormat(const wxString &label) const;
+   bool        IsValidFormat(const std::string &label) const;
 
-   wxString GetLabel() const;
+   std::string GetLabel() const;
 
 protected:
    // Epoch's date format list
@@ -77,16 +77,16 @@ protected:
         TAI_MJD, TAI_GREGORIAN, UTC_MJD, UTC_GREGORIAN, DateFormatCount
    };
           
-   static const wxString FORMAT[DateFormatCount];
+   static const std::string FORMAT[DateFormatCount];
    
 private:
-   wxString             format;
-   wxString             value;
+   std::string             format;
+   std::string             value;
    mutable TimeConverter   timeConverter;
 
    // private methods
    void        DefineDefault();
-   wxString GetFormatTrim(const wxString &mFormat) const;
+   std::string GetFormatTrim(const std::string &mFormat) const;
 };
 
 #endif // Epoch_hpp

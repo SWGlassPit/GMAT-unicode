@@ -29,7 +29,7 @@
 class GMAT_API MathFunction : public MathNode
 {
 public:
-   MathFunction(const wxString &typeStr, const wxString &nomme);
+   MathFunction(const std::string &typeStr, const std::string &nomme);
    virtual ~MathFunction();
    MathFunction(const MathFunction &mf);
    MathFunction& operator=(const MathFunction &mf);

@@ -24,13 +24,13 @@
 
 
 //------------------------------------------------------------------------------
-// BallisticMassReal(const wxString &name, const wxString &typeStr, 
-//              GmatBase *obj, const wxString &desc, const wxString &unit)
+// BallisticMassReal(const std::string &name, const std::string &typeStr, 
+//              GmatBase *obj, const std::string &desc, const std::string &unit)
 //------------------------------------------------------------------------------
-BallisticMassReal::BallisticMassReal(const wxString &name, const wxString &typeStr, 
-                                     GmatBase *obj, const wxString &desc,
-                                     const wxString &unit)
-   : RealVar(name, wxT(""), typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit,
+BallisticMassReal::BallisticMassReal(const std::string &name, const std::string &typeStr, 
+                                     GmatBase *obj, const std::string &desc,
+                                     const std::string &unit)
+   : RealVar(name, "", typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit,
              GmatParam::NO_DEP, Gmat::SPACECRAFT),
      SpacecraftData(name)
 {
@@ -98,7 +98,7 @@ bool BallisticMassReal::AddRefObject(GmatBase *obj, bool replaceName)
    {
       #if DEBUG_ATTITUDEREAL
       MessageInterface::ShowMessage
-         (wxT("BallisticMassReal::AddRefObject() obj->GetName()=%s, type=%d\n"),
+         ("BallisticMassReal::AddRefObject() obj->GetName()=%s, type=%d\n",
           obj->GetName().c_str(), obj->GetType());
       #endif
       
@@ -132,8 +132,8 @@ bool BallisticMassReal::Initialize()
    catch(BaseException &e)
    {
       throw GmatBaseException
-         (wxT("BallisticMassReal::Initialize() Fail to initialize Parameter:") +
-          this->GetTypeName() + wxT("\n") + e.GetFullMessage());
+         ("BallisticMassReal::Initialize() Fail to initialize Parameter:" +
+          this->GetTypeName() + "\n" + e.GetFullMessage());
    }
    
    return true;
@@ -141,29 +141,29 @@ bool BallisticMassReal::Initialize()
 
 
 //------------------------------------------------------------------------------
-// bool RenameRefObject(const Gmat::ObjectType type, const wxString &oldName,
-//                      const wxString &newName)
+// bool RenameRefObject(const Gmat::ObjectType type, const std::string &oldName,
+//                      const std::string &newName)
 //------------------------------------------------------------------------------
 bool BallisticMassReal::RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName)
+                                        const std::string &oldName,
+                                        const std::string &newName)
 {
    return SpacecraftData::RenameRefObject(type, oldName, newName);
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetRefObjectName(const Gmat::ObjectType type) const
+// std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
-wxString BallisticMassReal::GetRefObjectName(const Gmat::ObjectType type) const
+std::string BallisticMassReal::GetRefObjectName(const Gmat::ObjectType type) const
 {
-   wxString objName = SpacecraftData::GetRefObjectName(type);
+   std::string objName = SpacecraftData::GetRefObjectName(type);
    
-   if (objName == wxT("INVALID_OBJECT_TYPE"))
+   if (objName == "INVALID_OBJECT_TYPE")
    {
       throw ParameterException
-         (wxT("BallisticMassReal::GetRefObjectName() ") + GmatBase::GetObjectTypeString(type) +
-          wxT(" is not valid object type of ") + this->GetTypeName() + wxT("\n"));
+         ("BallisticMassReal::GetRefObjectName() " + GmatBase::GetObjectTypeString(type) +
+          " is not valid object type of " + this->GetTypeName() + "\n");
    }
    
    return objName;
@@ -180,17 +180,17 @@ const StringArray& BallisticMassReal::GetRefObjectNameArray(const Gmat::ObjectTy
 
 
 //------------------------------------------------------------------------------
-// bool SetRefObjectName(const Gmat::ObjectType type, const wxString &name)
+// bool SetRefObjectName(const Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 bool BallisticMassReal::SetRefObjectName(const Gmat::ObjectType type,
-                                         const wxString &name)
+                                         const std::string &name)
 {
    bool ret = SpacecraftData::SetRefObjectName(type, name);
    
    if (!ret)
       MessageInterface::ShowMessage
-         (wxT("*** Warning *** BallisticMassReal::SetRefObjectName() RefObjType:%s is not valid ")
-          wxT("for ParameterName:%s\n"), GmatBase::GetObjectTypeString(type).c_str(),
+         ("*** Warning *** BallisticMassReal::SetRefObjectName() RefObjType:%s is not valid "
+          "for ParameterName:%s\n", GmatBase::GetObjectTypeString(type).c_str(),
           this->GetName().c_str());
    
    return ret;
@@ -198,18 +198,18 @@ bool BallisticMassReal::SetRefObjectName(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// GmatBase* GetRefObject(const Gmat::ObjectType type, const wxString &name)
+// GmatBase* GetRefObject(const Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 GmatBase* BallisticMassReal::GetRefObject(const Gmat::ObjectType type,
-                                          const wxString &name)
+                                          const std::string &name)
 {
    GmatBase *obj = SpacecraftData::GetRefObject(type, name);
    
    if (obj == NULL)
    {
       throw ParameterException
-         (wxT("BallisticMassReal::GetRefObject() Cannot find ref. object of type:") +
-          GmatBase::GetObjectTypeString(type) + wxT(", name:") + name + wxT(" in ") +
+         ("BallisticMassReal::GetRefObject() Cannot find ref. object of type:" +
+          GmatBase::GetObjectTypeString(type) + ", name:" + name + " in " +
           this->GetName());
    }
    
@@ -219,14 +219,14 @@ GmatBase* BallisticMassReal::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                   const wxString &name)
+//                   const std::string &name)
 //------------------------------------------------------------------------------
 bool BallisticMassReal::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name)
+                                     const std::string &name)
 {
    #if DEBUG_ATTITUDEREAL
    MessageInterface::ShowMessage
-      (wxT("BallisticMassReal::SetRefObject() setting type=%d, name=%s to %s\n"),
+      ("BallisticMassReal::SetRefObject() setting type=%d, name=%s to %s\n",
        type, name.c_str(), this->GetName().c_str());
    #endif
    

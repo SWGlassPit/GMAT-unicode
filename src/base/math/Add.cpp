@@ -37,8 +37,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Add::Add(const wxString &nomme)
-   : MathFunction(wxT("Add"), nomme)
+Add::Add(const std::string &nomme)
+   : MathFunction("Add", nomme)
 {
 }
 
@@ -93,17 +93,17 @@ void Add::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 {
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Add::GetOutputInfo() exp=%s, leftNode=<%p><%s>, rightNode=<%p><%s>\n"),
-       GetName().c_str(), leftNode, leftNode ? leftNode->GetTypeName().c_str() : wxT("NULL"),
-       rightNode, rightNode ? rightNode->GetTypeName().c_str() : wxT("NULL"));
+      ("Add::GetOutputInfo() exp=%s, leftNode=<%p><%s>, rightNode=<%p><%s>\n",
+       GetName().c_str(), leftNode, leftNode ? leftNode->GetTypeName().c_str() : "NULL",
+       rightNode, rightNode ? rightNode->GetTypeName().c_str() : "NULL");
    #endif
    
    // leftNode can be NULL for unaraty operator +, so commented out (LOJ: 2010.10.26)
    // if (!leftNode)
-   //    throw MathException(wxT("Add::GetOutputInfo() The left node is NULL"));
+   //    throw MathException("Add::GetOutputInfo() The left node is NULL");
    
    if (!rightNode)
-      throw MathException(wxT("Add::GetOutputInfo() The right node is NULL"));
+      throw MathException("Add::GetOutputInfo() The right node is NULL");
    
    Integer type1, row1, col1; // Left node
    Integer type2, row2, col2; // Right node
@@ -125,8 +125,8 @@ void Add::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
    
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Add::GetOutputInfo() type1=%d, row1=%d, col1=%d, type2=%d, ")
-       wxT("row2=%d, col2=%d\n"), type1, row1, col1, type2, row2, col2);
+      ("Add::GetOutputInfo() type1=%d, row1=%d, col1=%d, type2=%d, "
+       "row2=%d, col2=%d\n", type1, row1, col1, type2, row2, col2);
    #endif
    
    if ((type1 != type2) || (row1 != row2) || (col1 != col2))
@@ -145,7 +145,7 @@ void Add::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
          colCount = col1;
       }
       else
-         throw MathException(wxT("Dimentions are not the same, can not add.\n"));    
+         throw MathException("Dimentions are not the same, can not add.\n");    
    }
    else
    {
@@ -156,7 +156,7 @@ void Add::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
    
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Add::GetOutputInfo() returning type=%d, rowCount=%d, colCount=%d\n"),
+      ("Add::GetOutputInfo() returning type=%d, rowCount=%d, colCount=%d\n",
        type, rowCount, colCount);
    #endif
 }
@@ -174,11 +174,11 @@ bool Add::ValidateInputs()
 {
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Add::ValidateInputs() '%s' entered\n"), GetName().c_str());
+      ("Add::ValidateInputs() '%s' entered\n", GetName().c_str());
    #endif
    
    if (rightNode == NULL)
-      throw MathException(wxT("Add() - Not enough input arguments"));
+      throw MathException("Add() - Not enough input arguments");
    
    Integer type1, row1, col1; // Left node
    Integer type2, row2, col2; // Right node
@@ -223,8 +223,8 @@ bool Add::ValidateInputs()
    
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Add::ValidateInputs() '%s' returning %s\n"), GetName().c_str(),
-       retval ? wxT("true") : wxT("false"));
+      ("Add::ValidateInputs() '%s' returning %s\n", GetName().c_str(),
+       retval ? "true" : "false");
    #endif
    
    return retval;
@@ -243,8 +243,8 @@ Real Add::Evaluate()
 {
    #if DEBUG_EVLAUATE
    MessageInterface::ShowMessage
-      (wxT("Add::Evaluate() left=%s, right=%s\n"),
-       leftNode ? leftNode->Evaluate().ToString().c_str() : wxT("NULL"),
+      ("Add::Evaluate() left=%s, right=%s\n",
+       leftNode ? leftNode->Evaluate().ToString().c_str() : "NULL",
        rightNode->Evaluate().ToString().c_str());
    #endif
    
@@ -268,8 +268,8 @@ Rmatrix Add::MatrixEvaluate()
 {
    #if DEBUG_EVLAUATE
    MessageInterface::ShowMessage
-      (wxT("Add::MatrixEvaluate() left=%s, right=%s\n"),
-       leftNode ? leftNode->MatrixEvaluate().ToString().c_str() : wxT("NULL"),
+      ("Add::MatrixEvaluate() left=%s, right=%s\n",
+       leftNode ? leftNode->MatrixEvaluate().ToString().c_str() : "NULL",
        rightNode->MatrixEvaluate().ToString().c_str());
    #endif
    

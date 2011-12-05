@@ -39,7 +39,6 @@
 #include "RealUtilities.hpp"
 #include "MessageInterface.hpp"
 #include "StringUtil.hpp"
-#include "Linear.hpp"
 
 //#define DEBUG_REF_SETTING
 //#define DEBUG_ATTITUDE_GEN_STRING
@@ -55,39 +54,39 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 Attitude::PARAMETER_TEXT[AttitudeParamCount - GmatBaseParamCount] =
 {
-   wxT("AttitudeDisplayStateType"),
-   wxT("AttitudeRateDisplayStateType"),
-   wxT("AttitudeCoordinateSystem"),
-   wxT("Epoch"),
-   wxT("Q1"),
-   wxT("Q2"),
-   wxT("Q3"),
-   wxT("Q4"),
-   wxT("EulerAngleSequence"),
-   wxT("EulerAngle1"),
-   wxT("EulerAngle2"),
-   wxT("EulerAngle3"),
-   wxT("DCM11"),
-   wxT("DCM12"),
-   wxT("DCM13"),
-   wxT("DCM21"),
-   wxT("DCM22"),
-   wxT("DCM23"),
-   wxT("DCM31"),
-   wxT("DCM32"),
-   wxT("DCM33"),
-   wxT("MRP1"),  // Dunn Added
-   wxT("MRP2"),  // Dunn Added
-   wxT("MRP3"),  // Dunn Added
-   wxT("EulerAngleRate1"),
-   wxT("EulerAngleRate2"),
-   wxT("EulerAngleRate3"),
-   wxT("AngularVelocityX"),
-   wxT("AngularVelocityY"),
-   wxT("AngularVelocityZ"),
+   "AttitudeDisplayStateType",
+   "AttitudeRateDisplayStateType",
+   "AttitudeCoordinateSystem",
+   "Epoch",
+   "Q1",
+   "Q2",
+   "Q3",
+   "Q4",
+   "EulerAngleSequence",
+   "EulerAngle1",
+   "EulerAngle2",
+   "EulerAngle3",
+   "DCM11",
+   "DCM12",
+   "DCM13",
+   "DCM21",
+   "DCM22",
+   "DCM23",
+   "DCM31",
+   "DCM32",
+   "DCM33",
+   "MRP1",  // Dunn Added
+   "MRP2",  // Dunn Added
+   "MRP3",  // Dunn Added
+   "EulerAngleRate1",
+   "EulerAngleRate2",
+   "EulerAngleRate3",
+   "AngularVelocityX",
+   "AngularVelocityY",
+   "AngularVelocityZ",
 };
 
 const Gmat::ParameterType
@@ -125,17 +124,17 @@ Attitude::PARAMETER_TYPE[AttitudeParamCount - GmatBaseParamCount] =
    Gmat::REAL_TYPE,
 };
 
-const wxString
+const std::string
 Attitude::OTHER_REP_TEXT[EndOtherReps - 7000] =
 {
-   wxT("EulerSequenceList"),
-   wxT("EulerSequenceArray"),     // was "InitialEulerSequence",
-   wxT("EulerAngles"),            // was "InitialEulerAngles",
-   wxT("EulerAngleRates"),        // was "InitialEulerAngleRates",
-   wxT("Quaternion"),             // was "InitialQuaternion",
-   wxT("MRPs"),                   // Dunn Added
-   wxT("DirectionCosineMatrix"),  // was "InitialDirectionCosineMatrix",
-   wxT("AngularVelocity"),        // was "InitialAngularVelocity",
+   "EulerSequenceList",
+   "EulerSequenceArray",     // was "InitialEulerSequence",
+   "EulerAngles",            // was "InitialEulerAngles",
+   "EulerAngleRates",        // was "InitialEulerAngleRates",
+   "Quaternion",             // was "InitialQuaternion",
+   "MRPs",                   // Dunn Added
+   "DirectionCosineMatrix",  // was "InitialDirectionCosineMatrix",
+   "AngularVelocity",        // was "InitialAngularVelocity",
 };
 
 const Gmat::ParameterType
@@ -151,20 +150,20 @@ Attitude::OTHER_REP_TYPE[EndOtherReps - 7000] =
    Gmat::RVECTOR_TYPE,
 };
 
-const wxString Attitude::EULER_SEQ_LIST[12] = 
+const std::string Attitude::EULER_SEQ_LIST[12] = 
 {
-   wxT("123"),
-   wxT("231"),
-   wxT("312"),
-   wxT("132"),
-   wxT("321"),
-   wxT("213"),
-   wxT("121"),
-   wxT("232"),
-   wxT("313"),
-   wxT("131"),
-   wxT("323"),
-   wxT("212")
+   "123",
+   "231",
+   "312",
+   "132",
+   "321",
+   "213",
+   "121",
+   "232",
+   "313",
+   "131",
+   "323",
+   "212"
 };
 
 const Real    Attitude::TESTACCURACY                 = 1.19209290E-07;
@@ -193,21 +192,21 @@ const Real    Attitude::DCM_ORTHONORMALITY_TOLERANCE = 1.0e-14;
 Rmatrix33 Attitude::ToCosineMatrix(const Rvector &quat1)
 {
    #ifdef DEBUG_TO_DCM
-   MessageInterface::ShowMessage(wxT("ENTERING ToDCM(q) ... %.12f  %.12f  %.12f  %.12f\n"),
+   MessageInterface::ShowMessage("ENTERING ToDCM(q) ... %.12f  %.12f  %.12f  %.12f\n",
    quat1[0], quat1[1], quat1[2], quat1[3]);
    #endif
    // check for proper size and magnitude
    if (quat1.GetSize() != 4)
    {
       throw AttitudeException(
-            wxT("Quaternion error : the quaternion must have 4 elements.\n"));
+            "Quaternion error : the quaternion must have 4 elements.\n");
    }
    if (quat1.GetMagnitude() < QUAT_MIN_MAG)
    {
-      wxString errmsg;
-      errmsg << wxT("Quaternion error : the quaternion must have a magnitude greater than ");
-      errmsg << QUAT_MIN_MAG << wxT('\n');
-      throw AttitudeException(errmsg);
+      std::ostringstream errmsg;
+      errmsg << "Quaternion error : the quaternion must have a magnitude greater than ";
+      errmsg << QUAT_MIN_MAG << std::endl;
+      throw AttitudeException(errmsg.str());
    }
 
    Rmatrix33 I3;  // identity matrix, by default
@@ -243,12 +242,12 @@ Rmatrix33 Attitude::ToCosineMatrix(const Rvector3 &eulerAngles,
                                    Integer        seq3)
 {
    #ifdef DEBUG_TO_DCM
-   MessageInterface::ShowMessage(wxT("ENTERING ToDCM(eulerangles) ... %.12f  %.12f  %.12f\n"),
+   MessageInterface::ShowMessage("ENTERING ToDCM(eulerangles) ... %.12f  %.12f  %.12f\n",
    eulerAngles[0], eulerAngles[1], eulerAngles[2]);
    #endif
    if ((seq1 == 0) | (seq2 == 0) | (seq3 == 0))
       throw AttitudeException(
-         wxT("Euler sequence ill-defined for conversion to cosine matrix."));
+         "Euler sequence ill-defined for conversion to cosine matrix.");
    Real s1 = GmatMathUtil::Sin(eulerAngles(0));
    Real s2 = GmatMathUtil::Sin(eulerAngles(1));
    Real s3 = GmatMathUtil::Sin(eulerAngles(2));
@@ -355,7 +354,7 @@ Rmatrix33 Attitude::ToCosineMatrix(const Rvector3 &eulerAngles,
    }  // seq1 == 3
      
    if (!validSequence) throw AttitudeException(
-      wxT("Invalid euler sequence - cannot convert to cosine matrix."));
+      "Invalid euler sequence - cannot convert to cosine matrix.");
    // return zero matrix - it should never reach this point, though
    return Rmatrix33(false);
          
@@ -384,7 +383,7 @@ Rmatrix33 Attitude::ToCosineMatrix(const Real *eulerAngles,
 {
    if ((seq1 == 0) | (seq2 == 0) | (seq3 == 0))
       throw AttitudeException(
-         wxT("Euler sequence ill-defined for conversion to cosine matrix."));
+         "Euler sequence ill-defined for conversion to cosine matrix.");
    Real s1 = GmatMathUtil::Sin(eulerAngles[0]);
    Real s2 = GmatMathUtil::Sin(eulerAngles[1]);
    Real s3 = GmatMathUtil::Sin(eulerAngles[2]);
@@ -491,7 +490,7 @@ Rmatrix33 Attitude::ToCosineMatrix(const Real *eulerAngles,
    }  // seq1 == 3
      
    if (!validSequence) throw AttitudeException(
-      wxT("Invalid euler sequence - cannot convert to cosine matrix."));
+      "Invalid euler sequence - cannot convert to cosine matrix.");
    // return zero matrix - it should never reach this point, though
    return Rmatrix33(false);
          
@@ -662,7 +661,7 @@ Rvector3 Attitude::ToEulerAngles(const Rmatrix33 &cosMat,
    }
    else
       throw AttitudeException(
-      wxT("Invalid Euler sequence - cannot convert cosine matrix to euler angles."));
+      "Invalid Euler sequence - cannot convert cosine matrix to euler angles.");
 }
                                         
 //------------------------------------------------------------------------------
@@ -855,12 +854,12 @@ Rvector3 Attitude::ToEulerAngleRates(const Rvector3 &angularVel,
 {
    #ifdef DEBUG_EULER_ANGLE_RATES
       MessageInterface::ShowMessage(
-            wxT("Computing Euler Angle Rates from angular velocity %12.10f  %12.10f  %12.10f\n"),
+            "Computing Euler Angle Rates from angular velocity %12.10f  %12.10f  %12.10f\n",
             angularVel[0], angularVel[1], angularVel[2]);
-      MessageInterface::ShowMessage(wxT("and Euler Angles %12.10f  %12.10f  %12.10f\n"),
+      MessageInterface::ShowMessage("and Euler Angles %12.10f  %12.10f  %12.10f\n",
             eulerAngles[0] * GmatMathConstants::DEG_PER_RAD, eulerAngles[1] * GmatMathConstants::DEG_PER_RAD,
             eulerAngles[2] * GmatMathConstants::DEG_PER_RAD);
-      MessageInterface::ShowMessage(wxT("with sequence %d  %d  %d\n"), seq1, seq2, seq3);
+      MessageInterface::ShowMessage("with sequence %d  %d  %d\n", seq1, seq2, seq3);
    #endif
    bool      singularity = false;
    Real      s2          = GmatMathUtil::Sin(eulerAngles(1));
@@ -870,7 +869,7 @@ Rvector3 Attitude::ToEulerAngleRates(const Rvector3 &angularVel,
    Rmatrix33 Si;
    #ifdef DEBUG_EULER_ANGLE_RATES
       MessageInterface::ShowMessage(
-            wxT("s2 = %12.10f,   c2 = %12.10f,   s3 = %12.10f,   c3 = %12.10f\n"), s2, c2, s3, c3);
+            "s2 = %12.10f,   c2 = %12.10f,   s3 = %12.10f,   c3 = %12.10f\n", s2, c2, s3, c3);
    #endif
    
    if ((seq1 == 1) && (seq2 == 2) && (seq3 == 3))        // 1-2-3
@@ -957,7 +956,7 @@ Rvector3 Attitude::ToEulerAngleRates(const Rvector3 &angularVel,
    {
       #ifdef DEBUG_EULER_ANGLE_RATES
          MessageInterface::ShowMessage(
-               wxT("in 2-1-2 calculations\n"));
+               "in 2-1-2 calculations\n");
       #endif
       if (s2 == 0.0)   singularity = true;
       else
@@ -999,26 +998,26 @@ Rvector3 Attitude::ToEulerAngleRates(const Rvector3 &angularVel,
    }
    else
        throw AttitudeException(
-      wxT("Invalid Euler sequence - cannot compute euler angle rates."));
+      "Invalid Euler sequence - cannot compute euler angle rates.");
    if (singularity)
    {
       #ifdef DEBUG_EULER_ANGLE_RATES
          MessageInterface::ShowMessage(
-               wxT("...... singularity found!!!\n"));
+               "...... singularity found!!!\n");
       #endif
-      wxString errmsg;
-      errmsg << wxT("Error: the attitude defined by the euler angles (");
-      errmsg << (eulerAngles(0) * GmatMathConstants::DEG_PER_RAD) << wxT(", ")
-             << (eulerAngles(1) * GmatMathConstants::DEG_PER_RAD) << wxT(", ")
+      std::stringstream errmsg;
+      errmsg << "Error: the attitude defined by the euler angles (";
+      errmsg << (eulerAngles(0) * GmatMathConstants::DEG_PER_RAD) << ", "
+             << (eulerAngles(1) * GmatMathConstants::DEG_PER_RAD) << ", "
              << (eulerAngles(2) * GmatMathConstants::DEG_PER_RAD);
-      errmsg << wxT(") is near a singularity.") << wxT('\n');
-      throw AttitudeException(errmsg);
+      errmsg << ") is near a singularity." << std::endl;
+      throw AttitudeException(errmsg.str());
    }
    #ifdef DEBUG_EULER_ANGLE_RATES
       MessageInterface::ShowMessage(
-            wxT("After computation, Si =  %12.10f  %12.10f  %12.10f\n")
-            wxT("                         %12.10f  %12.10f  %12.10f\n")
-            wxT("                         %12.10f  %12.10f  %12.10f\n"),
+            "After computation, Si =  %12.10f  %12.10f  %12.10f\n"
+            "                         %12.10f  %12.10f  %12.10f\n"
+            "                         %12.10f  %12.10f  %12.10f\n",
             Si(0,0), Si(0,1), Si(0,2), Si(1,0), Si(1,1), Si(1,2), Si(2,0), Si(2,1), Si(2,2));
    #endif
 
@@ -1132,7 +1131,7 @@ Rvector3 Attitude::ToAngularVelocity(const Rvector3 &eulerRates,
    }
    else
        throw AttitudeException(
-      wxT("Invalid Euler sequence - cannot compute euler angle rates."));
+      "Invalid Euler sequence - cannot compute euler angle rates.");
    
    return S * eulerRates;
 }
@@ -1151,7 +1150,7 @@ StringArray Attitude::GetEulerSequenceStrings()
 }
 
 //------------------------------------------------------------------------------
-//  UnsignedIntArray  ExtractEulerSequence(const wxString &seqStr)
+//  UnsignedIntArray  ExtractEulerSequence(const std::string &seqStr)
 //------------------------------------------------------------------------------
 /**
  * This method sets the state data for the euler sequence array, given
@@ -1163,24 +1162,25 @@ StringArray Attitude::GetEulerSequenceStrings()
  *
  */
 //------------------------------------------------------------------------------
-UnsignedIntArray Attitude::ExtractEulerSequence(const wxString &seqStr)
+UnsignedIntArray Attitude::ExtractEulerSequence(const std::string &seqStr)
 {
    UnsignedIntArray intSeq;
-   if (seqStr[0] == wxT('1'))      intSeq.push_back(1);
-   else if (seqStr[0] == wxT('2')) intSeq.push_back(2);
-   else if (seqStr[0] == wxT('3')) intSeq.push_back(3);
+   const char *tmpStr = seqStr.c_str();
+   if (tmpStr[0] == '1')      intSeq.push_back(1);
+   else if (tmpStr[0] == '2') intSeq.push_back(2);
+   else if (tmpStr[0] == '3') intSeq.push_back(3);
    else
-   throw AttitudeException(wxT("Invalid character in euler sequence string."));
-   if (seqStr[1] == wxT('1'))      intSeq.push_back(1);
-   else if (seqStr[1] == wxT('2')) intSeq.push_back(2);
-   else if (seqStr[1] == wxT('3')) intSeq.push_back(3);
+   throw AttitudeException("Invalid character in euler sequence string.");
+   if (tmpStr[1] == '1')      intSeq.push_back(1);
+   else if (tmpStr[1] == '2') intSeq.push_back(2);
+   else if (tmpStr[1] == '3') intSeq.push_back(3);
    else
-   throw AttitudeException(wxT("Invalid character in euler sequence string."));
-   if (seqStr[2] == wxT('1'))      intSeq.push_back(1);
-   else if (seqStr[2] == wxT('2')) intSeq.push_back(2);
-   else if (seqStr[2] == wxT('3')) intSeq.push_back(3);
+   throw AttitudeException("Invalid character in euler sequence string.");
+   if (tmpStr[2] == '1')      intSeq.push_back(1);
+   else if (tmpStr[2] == '2') intSeq.push_back(2);
+   else if (tmpStr[2] == '3') intSeq.push_back(3);
    else
-   throw AttitudeException(wxT("Invalid character in euler sequence string."));
+   throw AttitudeException("Invalid character in euler sequence string.");
    return intSeq;
 }
 
@@ -1256,32 +1256,32 @@ void Attitude::DCMToEulerAxisAndAngle(const Rmatrix33 &cosMat,
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-//  Attitude(const wxString &typeStr, const wxString &itsName)
+//  Attitude(const std::string &typeStr, const std::string &itsName)
 //------------------------------------------------------------------------------
 /**
  * This method creates an object of the Attitude class (Constructor).
  * The default value is the (0,0,0,1) quaternion.
  */
 //------------------------------------------------------------------------------
-Attitude::Attitude(const wxString &typeStr, const wxString &itsName) :
+Attitude::Attitude(const std::string &typeStr, const std::string &itsName) :
    GmatBase(Gmat::ATTITUDE, typeStr, itsName),
    inputAttitudeType       (GmatAttitude::EULER_ANGLES_AND_SEQUENCE_TYPE),
    inputAttitudeRateType   (GmatAttitude::ANGULAR_VELOCITY_TYPE),
-   attitudeDisplayType     (wxT("Quaternion")),
-   attitudeRateDisplayType (wxT("AngularVelocity")),
+   attitudeDisplayType     ("Quaternion"),
+   attitudeRateDisplayType ("AngularVelocity"),
    isInitialized           (false),
    needsReinit             (false),
    epoch                   (0.0),
-   refCSName               (wxT("EarthMJ2000Eq")),
+   refCSName               ("EarthMJ2000Eq"),
    refCS                   (NULL),
-   eulerSequence           (wxT("321")),  // Dunn Changed from 312 to 321
+   eulerSequence           ("321"),  // Dunn Changed from 312 to 321
    attitudeTime            (0.0),
    quaternion              (Rvector(4,0.0,0.0,0.0,1.0)),
-   attitudeModelName       (wxT(""))
+   attitudeModelName       ("")
 {
    parameterCount = AttitudeParamCount;
    objectTypes.push_back(Gmat::ATTITUDE);
-   objectTypeNames.push_back(wxT("Attitude"));
+   objectTypeNames.push_back("Attitude");
 
    // push the default sequence to the array
    unsigned int defSeq[3] = {3, 2, 1};  // Dunn Changed from 312 to 321
@@ -1399,14 +1399,14 @@ bool Attitude::Initialize()
 {
    #ifdef DEBUG_ATTITUDE_INIT
    MessageInterface::ShowMessage
-      (wxT("Attitude::Initialize() this=<%p>'%s' entered, refCS=<%p>\n"),
+      ("Attitude::Initialize() this=<%p>'%s' entered, refCS=<%p>\n",
        this, GetName().c_str(), refCS);
    #endif
    
    if (isInitialized && !needsReinit) return true;
    GmatBase::Initialize();
-   wxString attEx  = wxT("Reference coordinate system not defined for attitude of type \"");
-   attEx             += typeName + wxT("\"");
+   std::string attEx  = "Reference coordinate system not defined for attitude of type \"";
+   attEx             += typeName + "\"";
    if (!refCS) throw AttitudeException(attEx);
     
    // compute cosine matrix and angular velocity from inputs and synchronize all 
@@ -1499,7 +1499,7 @@ void Attitude::SetEpoch(Real toEpoch)
 
 //---------------------------------------------------------------------------
 //  bool    SetReferenceCoordinateSystemName(
-//          const wxString &refName) const
+//          const std::string &refName) const
 //---------------------------------------------------------------------------
  /**
  * sets the name of the reference coordinate system for the Attitude object.
@@ -1509,7 +1509,7 @@ void Attitude::SetEpoch(Real toEpoch)
  * @return success flag.  
  */
 //---------------------------------------------------------------------------
-bool Attitude::SetReferenceCoordinateSystemName(const wxString &refName)
+bool Attitude::SetReferenceCoordinateSystemName(const std::string &refName)
 {
    refCSName     = refName;
    needsReinit   = true;
@@ -1573,14 +1573,14 @@ const Rvector3&  Attitude::GetEulerAngles(Real atTime)
    if (isInitialized && needsReinit)
    {
       #ifdef DEBUG_ATT_GET_EULER_ANGLES
-         MessageInterface::ShowMessage(wxT("In GetEulerAngles, about to call Initialize\n"));
+         MessageInterface::ShowMessage("In GetEulerAngles, about to call Initialize\n");
       #endif
       Initialize();
    }
    #ifdef DEBUG_ATT_GET_EULER_ANGLES
    else
    {
-      MessageInterface::ShowMessage(wxT("In GetEulerAngles, NOT about to call Initialize\n"));
+      MessageInterface::ShowMessage("In GetEulerAngles, NOT about to call Initialize\n");
    }
    #endif
 
@@ -1647,8 +1647,8 @@ const Rvector3&  Attitude::GetEulerAngles(Real atTime,  Integer seq1,
 const Rmatrix33& Attitude::GetCosineMatrix(Real atTime)
 {
    #ifdef DEBUG_ATTITUDE_GET
-      MessageInterface::ShowMessage(wxT("Entering Attitude::GetCosineMatrix ...\n"));
-      MessageInterface::ShowMessage(wxT(" ... atTime = %12.10f     attitudeTime = %12.10f\n"),
+      MessageInterface::ShowMessage("Entering Attitude::GetCosineMatrix ...\n");
+      MessageInterface::ShowMessage(" ... atTime = %12.10f     attitudeTime = %12.10f\n",
             atTime, attitudeTime);
    #endif
    if (isInitialized && needsReinit) Initialize();
@@ -1659,7 +1659,7 @@ const Rmatrix33& Attitude::GetCosineMatrix(Real atTime)
       attitudeTime = atTime;
    }
    #ifdef DEBUG_ATTITUDE_GET
-      MessageInterface::ShowMessage(wxT(" ... returning cosine matrix: %s\n"),
+      MessageInterface::ShowMessage(" ... returning cosine matrix: %s\n",
             (cosMat.ToString()).c_str());
    #endif
 
@@ -1706,9 +1706,9 @@ const Rvector3& Attitude::GetAngularVelocity(Real atTime)
 const Rvector3& Attitude::GetEulerAngleRates(Real atTime)
 {
    #ifdef DEBUG_EULER_ANGLE_RATES
-   MessageInterface::ShowMessage(wxT("Entering Attitude::GetEulerAngleRates ...\n"));
+   MessageInterface::ShowMessage("Entering Attitude::GetEulerAngleRates ...\n");
    MessageInterface::ShowMessage(
-   wxT("   with atTime = %.12f, and attitudeTime = %.12f\n"),
+   "   with atTime = %.12f, and attitudeTime = %.12f\n",
    atTime, attitudeTime);
    #endif
    if (isInitialized && needsReinit) Initialize();
@@ -1729,7 +1729,7 @@ const Rvector3& Attitude::GetEulerAngleRates(Real atTime)
 
 
 //---------------------------------------------------------------------------
-//  wxString   GetAttitudeModelName()
+//  std::string   GetAttitudeModelName()
 //---------------------------------------------------------------------------
  /**
  * Returns the name of the attitude model.
@@ -1737,13 +1737,13 @@ const Rvector3& Attitude::GetEulerAngleRates(Real atTime)
  * @return the name of the attitude model (e.g. "Spinner").  
  */
 //---------------------------------------------------------------------------
-wxString Attitude::GetAttitudeModelName() const
+std::string Attitude::GetAttitudeModelName() const
 {
    return attitudeModelName;
 }
 
 //------------------------------------------------------------------------------
-//   wxString GetRefObjectName(const Gmat::ObjectType type) const
+//   std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
 /**
  * Returns the name of the reference object. (Derived classes should implement
@@ -1754,7 +1754,7 @@ wxString Attitude::GetAttitudeModelName() const
  * @return The name of the reference object.
  */
 //------------------------------------------------------------------------------
-wxString Attitude::GetRefObjectName(const Gmat::ObjectType type) const
+std::string Attitude::GetRefObjectName(const Gmat::ObjectType type) const
 {
    if ((type == Gmat::UNKNOWN_OBJECT) ||
        (type == Gmat::COORDINATE_SYSTEM))
@@ -1769,7 +1769,7 @@ wxString Attitude::GetRefObjectName(const Gmat::ObjectType type) const
 
 //------------------------------------------------------------------------------
 //   bool SetRefObjectName(const Gmat::ObjectType type,
-//                         const wxString &name) 
+//                         const std::string &name) 
 //------------------------------------------------------------------------------
 /**
  * Sets the name of the reference object. (Derived classes should implement
@@ -1782,7 +1782,7 @@ wxString Attitude::GetRefObjectName(const Gmat::ObjectType type) const
  */
 //------------------------------------------------------------------------------
 bool Attitude::SetRefObjectName(const Gmat::ObjectType type,
-                                const wxString &name)
+                                const std::string &name)
 {
    if ((type == Gmat::UNKNOWN_OBJECT) ||
        (type == Gmat::COORDINATE_SYSTEM))
@@ -1798,8 +1798,8 @@ bool Attitude::SetRefObjectName(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName,
-//                       const wxString &newName)
+//                       const std::string &oldName,
+//                       const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * Renames a reference object. 
@@ -1812,8 +1812,8 @@ bool Attitude::SetRefObjectName(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool Attitude::RenameRefObject(const Gmat::ObjectType type,
-                               const wxString &oldName,
-                               const wxString &newName)
+                               const std::string &oldName,
+                               const std::string &newName)
 {
    bool success = false;
    if (type == Gmat::COORDINATE_SYSTEM)
@@ -1830,7 +1830,7 @@ bool Attitude::RenameRefObject(const Gmat::ObjectType type,
                                
 //------------------------------------------------------------------------------
 //  GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                         const wxString &name)
+//                         const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Returns a pointer to a reference object with the input name. 
@@ -1842,7 +1842,7 @@ bool Attitude::RenameRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 GmatBase* Attitude::GetRefObject(const Gmat::ObjectType type,
-                                 const wxString      &name)
+                                 const std::string      &name)
 {
    switch (type)
    {
@@ -1859,7 +1859,7 @@ GmatBase* Attitude::GetRefObject(const Gmat::ObjectType type,
                                     
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                    const wxString &name)
+//                    const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Returns a pointer to a reference object with the input name. 
@@ -1873,36 +1873,36 @@ GmatBase* Attitude::GetRefObject(const Gmat::ObjectType type,
 //------------------------------------------------------------------------------
 bool Attitude::SetRefObject(GmatBase *obj,
                             const Gmat::ObjectType type,
-                            const wxString &name)
+                            const std::string &name)
 {
    #ifdef DEBUG_REF_SETTING
    MessageInterface::ShowMessage
-      (wxT("Attitude::SetRefObject() this=<%p>'%s' entered, refCSName='%s', name='%s', ")
-       wxT("obj=<%p><%s>'%s'\n"), this, GetName().c_str(), refCSName.c_str(),
-       name.c_str(), obj, obj ? obj->GetTypeName().c_str() : wxT("NULL"),
-       obj ? obj->GetName().c_str() : wxT("NULL"));
+      ("Attitude::SetRefObject() this=<%p>'%s' entered, refCSName='%s', name='%s', "
+       "obj=<%p><%s>'%s'\n", this, GetName().c_str(), refCSName.c_str(),
+       name.c_str(), obj, obj ? obj->GetTypeName().c_str() : "NULL",
+       obj ? obj->GetName().c_str() : "NULL");
    #endif
    
    if (obj == NULL)
       return false;
    
-   if (obj->IsOfType(wxT("CoordinateSystem")))
+   if (obj->IsOfType("CoordinateSystem"))
    {
       if (name == refCSName)
       {
          #ifdef DEBUG_REF_SETTING
          if (refCS != NULL)
             MessageInterface::ShowMessage(
-               wxT("   The reference coordinate system for attitude is %s\n"),
+               "   The reference coordinate system for attitude is %s\n",
                (refCS->GetName()).c_str());
          else
-            MessageInterface::ShowMessage(wxT("   refCS == NULL!\n"));
+            MessageInterface::ShowMessage("   refCS == NULL!\n");
          #endif
          if (refCS != (CoordinateSystem*) obj)
          {
             #ifdef DEBUG_REF_SETTING
                MessageInterface::ShowMessage(
-                  wxT("   Setting <%p>'%s' as reference coordinate system for attitude '%s'\n"),
+                  "   Setting <%p>'%s' as reference coordinate system for attitude '%s'\n",
                   obj, name.c_str(), instanceName.c_str());
             #endif
             refCS = (CoordinateSystem*) obj;
@@ -1911,7 +1911,7 @@ bool Attitude::SetRefObject(GmatBase *obj,
       }
       #ifdef DEBUG_REF_SETTING
       MessageInterface::ShowMessage
-         (wxT("Attitude::SetRefObject() this=<%p>'%s' returning true\n"), this,
+         ("Attitude::SetRefObject() this=<%p>'%s' returning true\n", this,
           GetName().c_str());
       #endif
       return true;
@@ -1924,7 +1924,7 @@ bool Attitude::SetRefObject(GmatBase *obj,
 
 // methods to get/set parameter values
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -1935,7 +1935,7 @@ bool Attitude::SetRefObject(GmatBase *obj,
  *
  */
 //------------------------------------------------------------------------------
-wxString Attitude::GetParameterText(const Integer id) const
+std::string Attitude::GetParameterText(const Integer id) const
 {
    if (id >= GmatBaseParamCount && id < AttitudeParamCount)
       return PARAMETER_TEXT[id - GmatBaseParamCount];
@@ -1945,7 +1945,7 @@ wxString Attitude::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -1956,7 +1956,7 @@ wxString Attitude::GetParameterText(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer Attitude::GetParameterID(const wxString &str) const
+Integer Attitude::GetParameterID(const std::string &str) const
 {
    for (Integer i = GmatBaseParamCount; i < AttitudeParamCount; i++)
    {
@@ -1990,11 +1990,11 @@ Gmat::ParameterType
             Attitude::GetParameterType(const Integer id) const
 {
    #ifdef DEBUG_ATTITUDE_PARAM_TYPE
-      MessageInterface::ShowMessage(wxT("Asking for Attitude parameter type for parameter %d (%s)\n"),
+      MessageInterface::ShowMessage("Asking for Attitude parameter type for parameter %d (%s)\n",
           id, (GetParameterText(id)).c_str());
-      MessageInterface::ShowMessage(wxT("GmatBaseParamCount = %d, AttitudeParamCount = %d\n"),
+      MessageInterface::ShowMessage("GmatBaseParamCount = %d, AttitudeParamCount = %d\n",
             GmatBaseParamCount, AttitudeParamCount);
-      MessageInterface::ShowMessage(wxT("OTHER_REPS_OFFSET = %d, EndOtherReps = %d\n"),
+      MessageInterface::ShowMessage("OTHER_REPS_OFFSET = %d, EndOtherReps = %d\n",
             OTHER_REPS_OFFSET, EndOtherReps);
    #endif
    if (id >= GmatBaseParamCount && id < AttitudeParamCount)
@@ -2002,21 +2002,21 @@ Gmat::ParameterType
    else if (id >= OTHER_REPS_OFFSET && id < EndOtherReps)
    {
       #ifdef DEBUG_ATTITUDE_PARAM_TYPE
-         MessageInterface::ShowMessage(wxT("About to get type for ID = %d\n"), (id - OTHER_REPS_OFFSET));
-         MessageInterface::ShowMessage(wxT("   So returning type ID = %d\n"),
+         MessageInterface::ShowMessage("About to get type for ID = %d\n", (id - OTHER_REPS_OFFSET));
+         MessageInterface::ShowMessage("   So returning type ID = %d\n",
                OTHER_REP_TYPE[id - OTHER_REPS_OFFSET]);
       #endif
       return OTHER_REP_TYPE[id - OTHER_REPS_OFFSET];
    }
    #ifdef DEBUG_ATTITUDE_PARAM_TYPE
-      MessageInterface::ShowMessage(wxT("SHOULD NOT get to this code for a valid attitude ID!!!\n"));
+      MessageInterface::ShowMessage("SHOULD NOT get to this code for a valid attitude ID!!!\n");
    #endif
       
    return GmatBase::GetParameterType(id);
 }
             
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -2027,7 +2027,7 @@ Gmat::ParameterType
  *
  */
 //------------------------------------------------------------------------------
-wxString Attitude::GetParameterTypeString(const Integer id) const
+std::string Attitude::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -2048,7 +2048,7 @@ bool Attitude::IsParameterReadOnly(const Integer id) const
 {
    #ifdef DEBUG_ATTITUDE_READ_ONLY
    MessageInterface::ShowMessage(
-   wxT("Entering Attitude::ReadOnly with id = %d (%s)\n"), id,
+   "Entering Attitude::ReadOnly with id = %d (%s)\n", id,
    GetParameterText(id).c_str());
    #endif
    if (id == EULER_SEQUENCE_LIST)
@@ -2056,11 +2056,11 @@ bool Attitude::IsParameterReadOnly(const Integer id) const
    if (id == EPOCH)
       return true;
 
-   if (attitudeDisplayType == wxT("Quaternion"))
+   if (attitudeDisplayType == "Quaternion")
    {
    #ifdef DEBUG_ATTITUDE_READ_ONLY
    MessageInterface::ShowMessage(
-   wxT(" ....... Attitude::ReadOnly in quaternion section\n"));
+   " ....... Attitude::ReadOnly in quaternion section\n");
    #endif
       if ((id == EULER_ANGLE_1) || 
           (id == EULER_ANGLE_2) ||
@@ -2071,11 +2071,11 @@ bool Attitude::IsParameterReadOnly(const Integer id) const
           (id == DCM_31)        || (id == DCM_32)   || (id == DCM_33))
          return true;
    }
-   else if (attitudeDisplayType == wxT("DirectionCosineMatrix"))
+   else if (attitudeDisplayType == "DirectionCosineMatrix")
    {
    #ifdef DEBUG_ATTITUDE_READ_ONLY
    MessageInterface::ShowMessage(
-   wxT(" ....... Attitude::ReadOnly in cosMat section\n"));
+   " ....... Attitude::ReadOnly in cosMat section\n");
    #endif
       if ((id == Q_1) || (id == Q_2) || (id == Q_3) || (id == Q_4)    ||
           (id == MRP_1)         || (id == MRP_2)    || (id == MRP_3)  || // Dunn Added
@@ -2083,11 +2083,11 @@ bool Attitude::IsParameterReadOnly(const Integer id) const
           (id == EULER_ANGLE_3))
          return true;
    }
-   else if (attitudeDisplayType == wxT("MRPs")) // Dunn Added
+   else if (attitudeDisplayType == "MRPs") // Dunn Added
    {
    #ifdef DEBUG_ATTITUDE_READ_ONLY
          MessageInterface::ShowMessage(
-            wxT(" ....... Attitude::ReadOnly in MRPs section\n"));
+            " ....... Attitude::ReadOnly in MRPs section\n");
    #endif
       if ((id == EULER_ANGLE_1) || 
           (id == EULER_ANGLE_2) ||
@@ -2102,7 +2102,7 @@ bool Attitude::IsParameterReadOnly(const Integer id) const
    {
    #ifdef DEBUG_ATTITUDE_READ_ONLY
    MessageInterface::ShowMessage(
-   wxT(" ....... Attitude::ReadOnly in euler angles section\n"));
+   " ....... Attitude::ReadOnly in euler angles section\n");
    #endif
       if ((id == Q_1) || (id == Q_2) || (id == Q_3) || (id == Q_4)    ||
           (id == MRP_1)         || (id == MRP_2)    || (id == MRP_3)  || // Dunn Added
@@ -2113,11 +2113,11 @@ bool Attitude::IsParameterReadOnly(const Integer id) const
    }
    
 
-   if (attitudeRateDisplayType == wxT("AngularVelocity"))
+   if (attitudeRateDisplayType == "AngularVelocity")
    {
    #ifdef DEBUG_ATTITUDE_READ_ONLY
    MessageInterface::ShowMessage(
-   wxT(" ....... Attitude::ReadOnly in angular velocity section\n"));
+   " ....... Attitude::ReadOnly in angular velocity section\n");
    #endif
       if ((id == EULER_ANGLE_RATE_1) || (id == EULER_ANGLE_RATE_2) ||
           (id == EULER_ANGLE_RATE_3))
@@ -2127,7 +2127,7 @@ bool Attitude::IsParameterReadOnly(const Integer id) const
    {
    #ifdef DEBUG_ATTITUDE_READ_ONLY
    MessageInterface::ShowMessage(
-   wxT(" ....... Attitude::ReadOnly in euler angle rates section\n"));
+   " ....... Attitude::ReadOnly in euler angle rates section\n");
    #endif
       if ((id == ANGULAR_VELOCITY_X) || (id == ANGULAR_VELOCITY_Y) ||
           (id == ANGULAR_VELOCITY_Z))
@@ -2135,14 +2135,14 @@ bool Attitude::IsParameterReadOnly(const Integer id) const
    }
    #ifdef DEBUG_ATTITUDE_READ_ONLY
    MessageInterface::ShowMessage(
-   wxT(" ....... Attitude::ReadOnly calling GmatBase::IsParameterReadOnly\n"));
+   " ....... Attitude::ReadOnly calling GmatBase::IsParameterReadOnly\n");
    #endif
 
    return GmatBase::IsParameterReadOnly(id);
 }
 
 //---------------------------------------------------------------------------
-//  bool IsParameterReadOnly(const wxString &label) const
+//  bool IsParameterReadOnly(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * Checks to see if the requested parameter is read only.
@@ -2152,7 +2152,7 @@ bool Attitude::IsParameterReadOnly(const Integer id) const
  * @return true if the parameter is read only, false (the default) if not.
  */
 //---------------------------------------------------------------------------
-bool Attitude::IsParameterReadOnly(const wxString &label) const
+bool Attitude::IsParameterReadOnly(const std::string &label) const
 {
    return IsParameterReadOnly(GetParameterID(label));
 }
@@ -2177,7 +2177,7 @@ Real Attitude::GetRealParameter(const Integer id) const
 {
    #ifdef DEBUG_ATTITUDE_GET_REAL
    MessageInterface::ShowMessage(
-   wxT("Entering Attitude::GetReal with id = %d (%s)\n"), id,
+   "Entering Attitude::GetReal with id = %d (%s)\n", id,
    (GetParameterText(id)).c_str());
    #endif
    // re-initialize, if some input has changed
@@ -2187,53 +2187,53 @@ Real Attitude::GetRealParameter(const Integer id) const
 
    if (id == Q_1)
    {
-      (const_cast<Attitude*>(this))->UpdateState(wxT("Quaternion"));
+      (const_cast<Attitude*>(this))->UpdateState("Quaternion");
       return quaternion(0);
    }
    if (id == Q_2)
    {   
-      (const_cast<Attitude*>(this))->UpdateState(wxT("Quaternion"));
+      (const_cast<Attitude*>(this))->UpdateState("Quaternion");
       return quaternion(1);
    }   
    if (id == Q_3)
    {
-      (const_cast<Attitude*>(this))->UpdateState(wxT("Quaternion"));
+      (const_cast<Attitude*>(this))->UpdateState("Quaternion");
       return quaternion(2);
    }
    if (id == Q_4)
    {
-      (const_cast<Attitude*>(this))->UpdateState(wxT("Quaternion"));
+      (const_cast<Attitude*>(this))->UpdateState("Quaternion");
       return quaternion(3);
    }
    if (id == EULER_ANGLE_1)  
    {              
-      (const_cast<Attitude*>(this))->UpdateState(wxT("EulerAngles"));
+      (const_cast<Attitude*>(this))->UpdateState("EulerAngles");
       return eulerAngles(0) * GmatMathConstants::DEG_PER_RAD;
    }
    if (id == EULER_ANGLE_2)
    {              
-      (const_cast<Attitude*>(this))->UpdateState(wxT("EulerAngles"));
+      (const_cast<Attitude*>(this))->UpdateState("EulerAngles");
       return eulerAngles(1) * GmatMathConstants::DEG_PER_RAD;
    }
    if (id == EULER_ANGLE_3)
    {              
-      (const_cast<Attitude*>(this))->UpdateState(wxT("EulerAngles"));
+      (const_cast<Attitude*>(this))->UpdateState("EulerAngles");
       return eulerAngles(2) * GmatMathConstants::DEG_PER_RAD;
    }
    // Dunn Added MRPs Here
    if (id == MRP_1)
    {              
-      (const_cast<Attitude*>(this))->UpdateState(wxT("MRPs"));
+      (const_cast<Attitude*>(this))->UpdateState("MRPs");
       return mrps(0);
    }
    if (id == MRP_2)
    {              
-      (const_cast<Attitude*>(this))->UpdateState(wxT("MRPs"));
+      (const_cast<Attitude*>(this))->UpdateState("MRPs");
       return mrps(1);
    }
    if (id == MRP_3)
    {              
-      (const_cast<Attitude*>(this))->UpdateState(wxT("MRPs"));
+      (const_cast<Attitude*>(this))->UpdateState("MRPs");
       return mrps(2);
    }
 
@@ -2249,17 +2249,17 @@ Real Attitude::GetRealParameter(const Integer id) const
    if (id == DCM_33)             return cosMat(2,2);
    if (id == EULER_ANGLE_RATE_1)
    {
-      (const_cast<Attitude*>(this))->UpdateState(wxT("EulerAngleRates"));
+      (const_cast<Attitude*>(this))->UpdateState("EulerAngleRates");
       return eulerAngleRates(0) * GmatMathConstants::DEG_PER_RAD;
    }
    if (id == EULER_ANGLE_RATE_2)
    {
-      (const_cast<Attitude*>(this))->UpdateState(wxT("EulerAngleRates"));
+      (const_cast<Attitude*>(this))->UpdateState("EulerAngleRates");
       return eulerAngleRates(1) * GmatMathConstants::DEG_PER_RAD;
    }
    if (id == EULER_ANGLE_RATE_3)
    {
-      (const_cast<Attitude*>(this))->UpdateState(wxT("EulerAngleRates"));
+      (const_cast<Attitude*>(this))->UpdateState("EulerAngleRates");
       return eulerAngleRates(2) * GmatMathConstants::DEG_PER_RAD;
    }
    // angVel is always kept up-to-date, after initialization
@@ -2269,7 +2269,7 @@ Real Attitude::GetRealParameter(const Integer id) const
 
    #ifdef DEBUG_ATTITUDE_GET_REAL
    MessageInterface::ShowMessage(
-   wxT("Exiting Attitude::GetReal - calling parent ...\n"));
+   "Exiting Attitude::GetReal - calling parent ...\n");
    #endif
    
    return GmatBase::GetRealParameter(id);
@@ -2277,7 +2277,7 @@ Real Attitude::GetRealParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label) const
+// Real GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to obtain a parameter value
@@ -2285,7 +2285,7 @@ Real Attitude::GetRealParameter(const Integer id) const
  * @param label    string ID for the requested parameter
  */
 //------------------------------------------------------------------------------
-Real Attitude::GetRealParameter(const wxString &label) const
+Real Attitude::GetRealParameter(const std::string &label) const
 {
    return GetRealParameter(GetParameterID(label));
 }
@@ -2312,7 +2312,7 @@ Real Attitude::SetRealParameter(const Integer id,
 {
    #ifdef DEBUG_ATTITUDE_SET_REAL
    MessageInterface::ShowMessage(
-   wxT("ENTERING Att::SetReal with id = %d (%s) and value = %.12f\n"), id,
+   "ENTERING Att::SetReal with id = %d (%s) and value = %.12f\n", id,
    GetParameterText(id).c_str(), value);
    #endif
    if (id == EPOCH)  // this should be an A1Mjd time
@@ -2328,9 +2328,9 @@ Real Attitude::SetRealParameter(const Integer id,
    {
       if (isInitialized)
       {
-         wxString errmsg = wxT("Error: Quaternion must be input as entire vector ");
-         errmsg += wxT("inside the mission sequence to avoid ");
-         errmsg += wxT("normalization and/or conversion errors.\n");
+         std::string errmsg = "Error: Quaternion must be input as entire vector ";
+         errmsg += "inside the mission sequence to avoid ";
+         errmsg += "normalization and/or conversion errors.\n";
          throw AttitudeException(errmsg);
       }
       // Set the value, but quaternion is not verified or normalized until initialization
@@ -2340,7 +2340,7 @@ Real Attitude::SetRealParameter(const Integer id,
       }
       else
       {
-         (const_cast<Attitude*>(this))->UpdateState(wxT("Quaternion"));
+         (const_cast<Attitude*>(this))->UpdateState("Quaternion");
          quaternion[0] = value;
          ValidateQuaternion(quaternion);
       }
@@ -2352,9 +2352,9 @@ Real Attitude::SetRealParameter(const Integer id,
    {
       if (isInitialized)
       {
-         wxString errmsg = wxT("Error: Quaternion must be input as entire vector ");
-         errmsg += wxT("inside the mission sequence to avoid ");
-         errmsg += wxT("normalization and/or conversion errors.\n");
+         std::string errmsg = "Error: Quaternion must be input as entire vector ";
+         errmsg += "inside the mission sequence to avoid ";
+         errmsg += "normalization and/or conversion errors.\n";
          throw AttitudeException(errmsg);
       }
       // Set the value, but quaternion is not verified or normalized until initialization
@@ -2364,7 +2364,7 @@ Real Attitude::SetRealParameter(const Integer id,
       }
       else
       {
-         (const_cast<Attitude*>(this))->UpdateState(wxT("Quaternion"));
+         (const_cast<Attitude*>(this))->UpdateState("Quaternion");
          quaternion[1] = value;
          ValidateQuaternion(quaternion);
       }
@@ -2376,9 +2376,9 @@ Real Attitude::SetRealParameter(const Integer id,
    {
       if (isInitialized)
       {
-         wxString errmsg = wxT("Error: Quaternion must be input as entire vector ");
-         errmsg += wxT("inside the mission sequence to avoid ");
-         errmsg += wxT("normalization and/or conversion errors.\n");
+         std::string errmsg = "Error: Quaternion must be input as entire vector ";
+         errmsg += "inside the mission sequence to avoid ";
+         errmsg += "normalization and/or conversion errors.\n";
          throw AttitudeException(errmsg);
       }
       // Set the value, but quaternion is not verified or normalized until initialization
@@ -2388,7 +2388,7 @@ Real Attitude::SetRealParameter(const Integer id,
       }
       else
       {
-         (const_cast<Attitude*>(this))->UpdateState(wxT("Quaternion"));
+         (const_cast<Attitude*>(this))->UpdateState("Quaternion");
          quaternion[2] = value;
          ValidateQuaternion(quaternion);
       }
@@ -2400,9 +2400,9 @@ Real Attitude::SetRealParameter(const Integer id,
    {
       if (isInitialized)
       {
-         wxString errmsg = wxT("Error: Quaternion must be input as entire vector ");
-                     errmsg += wxT("inside the mission sequence to avoid ");
-                     errmsg += wxT("normalization and/or conversion errors.\n");
+         std::string errmsg = "Error: Quaternion must be input as entire vector ";
+                     errmsg += "inside the mission sequence to avoid ";
+                     errmsg += "normalization and/or conversion errors.\n";
          throw AttitudeException(errmsg);
       }
       // Set the value, but quaternion is not verified or normalized until initialization
@@ -2412,7 +2412,7 @@ Real Attitude::SetRealParameter(const Integer id,
       }
       else
       {
-         (const_cast<Attitude*>(this))->UpdateState(wxT("Quaternion"));
+         (const_cast<Attitude*>(this))->UpdateState("Quaternion");
          quaternion[3] = value;
          ValidateQuaternion(quaternion);
       }
@@ -2422,7 +2422,7 @@ Real Attitude::SetRealParameter(const Integer id,
    }
    if (id == EULER_ANGLE_1)
    {
-      (const_cast<Attitude*>(this))->UpdateState(wxT("EulerAngles"));
+      (const_cast<Attitude*>(this))->UpdateState("EulerAngles");
       eulerAngles(0) = value * GmatMathConstants::RAD_PER_DEG;
       cosMat = Attitude::ToCosineMatrix(eulerAngles,
                        eulerSequenceArray.at(0),
@@ -2432,7 +2432,7 @@ Real Attitude::SetRealParameter(const Integer id,
       if (isInitialized) needsReinit = true;
       #ifdef DEBUG_ATTITUDE_SET_REAL
       MessageInterface::ShowMessage(
-      wxT("   and now euler angles = %.12f   %.12f   %.12f\n"), eulerAngles[0], eulerAngles[1], eulerAngles[2]);
+      "   and now euler angles = %.12f   %.12f   %.12f\n", eulerAngles[0], eulerAngles[1], eulerAngles[2]);
       #endif
       return eulerAngles(0) * GmatMathConstants::DEG_PER_RAD;
    }
@@ -2443,25 +2443,25 @@ Real Attitude::SetRealParameter(const Integer id,
       if ((eulerSequenceArray.at(0) == eulerSequenceArray.at(2)) &&
           (GmatMathUtil::Abs(GmatMathUtil::Sin(angle2)) < EULER_ANGLE_TOLERANCE))
       {
-         wxString errmsg;
-         errmsg << wxT("Error: the attitude defined by the input euler angles (");
-         errmsg << (eulerAngles(0) * GmatMathConstants::DEG_PER_RAD) << wxT(", ")
-                << value << wxT(", ") << (eulerAngles(2) * GmatMathConstants::DEG_PER_RAD);
-         errmsg << wxT(") is near a singularity.") << wxT('\n');
-         throw AttitudeException(errmsg);
+         std::ostringstream errmsg;
+         errmsg << "Error: the attitude defined by the input euler angles (";
+         errmsg << (eulerAngles(0) * GmatMathConstants::DEG_PER_RAD) << ", "
+                << value << ", " << (eulerAngles(2) * GmatMathConstants::DEG_PER_RAD);
+         errmsg << ") is near a singularity." << std::endl;
+         throw AttitudeException(errmsg.str());
       }
       // check for a nearly singular attitude, for non-symmetric sequences
       else if ((eulerSequenceArray.at(0) != eulerSequenceArray.at(2)) &&
                (GmatMathUtil::Abs(GmatMathUtil::Cos(angle2)) < EULER_ANGLE_TOLERANCE))
       {
-         wxString errmsg;
-         errmsg << wxT("Error: the attitude defined by the input euler angles (");
-         errmsg << (eulerAngles(0) * GmatMathConstants::DEG_PER_RAD) << wxT(", ")
-                << value << wxT(", ") << (eulerAngles(2) * GmatMathConstants::DEG_PER_RAD);
-         errmsg << wxT(") is near a singularity.") << wxT('\n');
-         throw AttitudeException(errmsg);
+         std::ostringstream errmsg;
+         errmsg << "Error: the attitude defined by the input euler angles (";
+         errmsg << (eulerAngles(0) * GmatMathConstants::DEG_PER_RAD) << ", "
+                << value << ", " << (eulerAngles(2) * GmatMathConstants::DEG_PER_RAD);
+         errmsg << ") is near a singularity." << std::endl;
+         throw AttitudeException(errmsg.str());
       }
-      (const_cast<Attitude*>(this))->UpdateState(wxT("EulerAngles"));
+      (const_cast<Attitude*>(this))->UpdateState("EulerAngles");
       eulerAngles(1) = value * GmatMathConstants::RAD_PER_DEG;
       cosMat = Attitude::ToCosineMatrix(eulerAngles,
                        eulerSequenceArray.at(0),
@@ -2471,13 +2471,13 @@ Real Attitude::SetRealParameter(const Integer id,
       if (isInitialized) needsReinit = true;
       #ifdef DEBUG_ATTITUDE_SET_REAL
       MessageInterface::ShowMessage(
-      wxT("   and now euler angles = %.12f   %.12f   %.12f\n"), eulerAngles[0], eulerAngles[1], eulerAngles[2]);
+      "   and now euler angles = %.12f   %.12f   %.12f\n", eulerAngles[0], eulerAngles[1], eulerAngles[2]);
       #endif
       return eulerAngles(1) * GmatMathConstants::DEG_PER_RAD;
    }
    if (id == EULER_ANGLE_3)
    {
-      (const_cast<Attitude*>(this))->UpdateState(wxT("EulerAngles"));
+      (const_cast<Attitude*>(this))->UpdateState("EulerAngles");
       eulerAngles(2) = value * GmatMathConstants::RAD_PER_DEG;
       cosMat = Attitude::ToCosineMatrix(eulerAngles,
                        eulerSequenceArray.at(0),
@@ -2487,14 +2487,14 @@ Real Attitude::SetRealParameter(const Integer id,
       if (isInitialized) needsReinit = true;
       #ifdef DEBUG_ATTITUDE_SET_REAL
       MessageInterface::ShowMessage(
-      wxT("   and now euler angles = %.12f   %.12f   %.12f\n"), eulerAngles[0], eulerAngles[1], eulerAngles[2]);
+      "   and now euler angles = %.12f   %.12f   %.12f\n", eulerAngles[0], eulerAngles[1], eulerAngles[2]);
       #endif
       return eulerAngles(2) * GmatMathConstants::DEG_PER_RAD;
    }
    // Dunn Added MRPs
    if (id == MRP_1)
    {
-      (const_cast<Attitude*>(this))->UpdateState(wxT("MRPs"));
+      (const_cast<Attitude*>(this))->UpdateState("MRPs");
       mrps(0) = value;
       inputAttitudeType = GmatAttitude::MODIFIED_RODRIGUES_PARAMETERS_TYPE;
       if (isInitialized) needsReinit = true;
@@ -2502,7 +2502,7 @@ Real Attitude::SetRealParameter(const Integer id,
    }
    if (id == MRP_2)
    {
-      (const_cast<Attitude*>(this))->UpdateState(wxT("MRPs"));
+      (const_cast<Attitude*>(this))->UpdateState("MRPs");
       mrps(1) = value;
       inputAttitudeType = GmatAttitude::MODIFIED_RODRIGUES_PARAMETERS_TYPE;
       if (isInitialized) needsReinit = true;
@@ -2510,7 +2510,7 @@ Real Attitude::SetRealParameter(const Integer id,
    }
    if (id == MRP_3)
    {
-      (const_cast<Attitude*>(this))->UpdateState(wxT("MRPs"));
+      (const_cast<Attitude*>(this))->UpdateState("MRPs");
       mrps(2) = value;
       inputAttitudeType = GmatAttitude::MODIFIED_RODRIGUES_PARAMETERS_TYPE;
       if (isInitialized) needsReinit = true;
@@ -2520,13 +2520,13 @@ Real Attitude::SetRealParameter(const Integer id,
    {
       if ((value < -1.0) || (value > 1.0))
       {
-         AttitudeException ae(wxT(""));
+         AttitudeException ae("");
          ae.SetDetails(errorMessageFormatUnnamed.c_str(),
                        GmatStringUtil::ToString(value, 16).c_str(),
-                       wxT("DCM11"), wxT("-1.0 <= Real Number <= 1.0"));
+                       "DCM11", "-1.0 <= Real Number <= 1.0");
          throw ae;
       }
-      (const_cast<Attitude*>(this))->UpdateState(wxT("DirectionCosineMatrix"));
+      (const_cast<Attitude*>(this))->UpdateState("DirectionCosineMatrix");
       cosMat(0,0) = value;
       inputAttitudeType = GmatAttitude::DIRECTION_COSINE_MATRIX_TYPE;
       if (isInitialized) needsReinit = true;
@@ -2536,13 +2536,13 @@ Real Attitude::SetRealParameter(const Integer id,
    {
       if ((value < -1.0) || (value > 1.0))
       {
-         AttitudeException ae(wxT(""));
+         AttitudeException ae("");
          ae.SetDetails(errorMessageFormatUnnamed.c_str(),
                        GmatStringUtil::ToString(value, 16).c_str(),
-                       wxT("DCM12"), wxT("-1.0 <= Real Number <= 1.0"));
+                       "DCM12", "-1.0 <= Real Number <= 1.0");
          throw ae;
       }
-      (const_cast<Attitude*>(this))->UpdateState(wxT("DirectionCosineMatrix"));
+      (const_cast<Attitude*>(this))->UpdateState("DirectionCosineMatrix");
       cosMat(0,1) = value;
       inputAttitudeType = GmatAttitude::DIRECTION_COSINE_MATRIX_TYPE;
       if (isInitialized) needsReinit = true;
@@ -2552,13 +2552,13 @@ Real Attitude::SetRealParameter(const Integer id,
    {
       if ((value < -1.0) || (value > 1.0))
       {
-         AttitudeException ae(wxT(""));
+         AttitudeException ae("");
          ae.SetDetails(errorMessageFormatUnnamed.c_str(),
                        GmatStringUtil::ToString(value, 16).c_str(),
-                       wxT("DCM13"), wxT("-1.0 <= Real Number <= 1.0"));
+                       "DCM13", "-1.0 <= Real Number <= 1.0");
          throw ae;
       }
-      (const_cast<Attitude*>(this))->UpdateState(wxT("DirectionCosineMatrix"));
+      (const_cast<Attitude*>(this))->UpdateState("DirectionCosineMatrix");
       cosMat(0,2) = value;
       inputAttitudeType = GmatAttitude::DIRECTION_COSINE_MATRIX_TYPE;
       if (isInitialized) needsReinit = true;
@@ -2568,13 +2568,13 @@ Real Attitude::SetRealParameter(const Integer id,
    {
       if ((value < -1.0) || (value > 1.0))
       {
-         AttitudeException ae(wxT(""));
+         AttitudeException ae("");
          ae.SetDetails(errorMessageFormatUnnamed.c_str(),
                        GmatStringUtil::ToString(value, 16).c_str(),
-                       wxT("DCM21"), wxT("-1.0 <= Real Number <= 1.0"));
+                       "DCM21", "-1.0 <= Real Number <= 1.0");
          throw ae;
       }
-      (const_cast<Attitude*>(this))->UpdateState(wxT("DirectionCosineMatrix"));
+      (const_cast<Attitude*>(this))->UpdateState("DirectionCosineMatrix");
       cosMat(1,0) = value;
       inputAttitudeType = GmatAttitude::DIRECTION_COSINE_MATRIX_TYPE;
       if (isInitialized) needsReinit = true;
@@ -2584,13 +2584,13 @@ Real Attitude::SetRealParameter(const Integer id,
    {
       if ((value < -1.0) || (value > 1.0))
       {
-         AttitudeException ae(wxT(""));
+         AttitudeException ae("");
          ae.SetDetails(errorMessageFormatUnnamed.c_str(),
                        GmatStringUtil::ToString(value, 16).c_str(),
-                       wxT("DCM22"), wxT("-1.0 <= Real Number <= 1.0"));
+                       "DCM22", "-1.0 <= Real Number <= 1.0");
          throw ae;
       }
-      (const_cast<Attitude*>(this))->UpdateState(wxT("DirectionCosineMatrix"));
+      (const_cast<Attitude*>(this))->UpdateState("DirectionCosineMatrix");
       cosMat(1,1) = value;
       inputAttitudeType = GmatAttitude::DIRECTION_COSINE_MATRIX_TYPE;
       if (isInitialized) needsReinit = true;
@@ -2600,13 +2600,13 @@ Real Attitude::SetRealParameter(const Integer id,
    {
       if ((value < -1.0) || (value > 1.0))
       {
-         AttitudeException ae(wxT(""));
+         AttitudeException ae("");
          ae.SetDetails(errorMessageFormatUnnamed.c_str(),
                        GmatStringUtil::ToString(value, 16).c_str(),
-                       wxT("DCM23"),wxT("-1.0 <= Real Number <= 1.0"));
+                       "DCM23", "-1.0 <= Real Number <= 1.0");
          throw ae;
       }
-      (const_cast<Attitude*>(this))->UpdateState(wxT("DirectionCosineMatrix"));
+      (const_cast<Attitude*>(this))->UpdateState("DirectionCosineMatrix");
       cosMat(1,2) = value;
       inputAttitudeType = GmatAttitude::DIRECTION_COSINE_MATRIX_TYPE;
       if (isInitialized) needsReinit = true;
@@ -2616,13 +2616,13 @@ Real Attitude::SetRealParameter(const Integer id,
    {
       if ((value < -1.0) || (value > 1.0))
       {
-         AttitudeException ae(wxT(""));
+         AttitudeException ae("");
          ae.SetDetails(errorMessageFormatUnnamed.c_str(),
                        GmatStringUtil::ToString(value, 16).c_str(),
-                       wxT("DCM31"), wxT("-1.0 <= Real Number <= 1.0"));
+                       "DCM31", "-1.0 <= Real Number <= 1.0");
          throw ae;
       }
-      (const_cast<Attitude*>(this))->UpdateState(wxT("DirectionCosineMatrix"));
+      (const_cast<Attitude*>(this))->UpdateState("DirectionCosineMatrix");
       cosMat(2,0) = value;
       inputAttitudeType = GmatAttitude::DIRECTION_COSINE_MATRIX_TYPE;
       if (isInitialized) needsReinit = true;
@@ -2632,13 +2632,13 @@ Real Attitude::SetRealParameter(const Integer id,
    {
       if ((value < -1.0) || (value > 1.0))
       {
-         AttitudeException ae(wxT(""));
+         AttitudeException ae("");
          ae.SetDetails(errorMessageFormatUnnamed.c_str(),
                        GmatStringUtil::ToString(value, 16).c_str(),
-                       wxT("DCM32"), wxT("-1.0 <= Real Number <= 1.0"));
+                       "DCM32", "-1.0 <= Real Number <= 1.0");
          throw ae;
       }
-      (const_cast<Attitude*>(this))->UpdateState(wxT("DirectionCosineMatrix"));
+      (const_cast<Attitude*>(this))->UpdateState("DirectionCosineMatrix");
       cosMat(2,1) = value;
       inputAttitudeType = GmatAttitude::DIRECTION_COSINE_MATRIX_TYPE;
       if (isInitialized) needsReinit = true;
@@ -2648,13 +2648,13 @@ Real Attitude::SetRealParameter(const Integer id,
    {
       if ((value < -1.0) || (value > 1.0))
       {
-         AttitudeException ae(wxT(""));
+         AttitudeException ae("");
          ae.SetDetails(errorMessageFormatUnnamed.c_str(),
                        GmatStringUtil::ToString(value, 16).c_str(),
-                       wxT("DCM33"), wxT("-1.0 <= Real Number <= 1.0"));
+                       "DCM33", "-1.0 <= Real Number <= 1.0");
          throw ae;
       }
-      (const_cast<Attitude*>(this))->UpdateState(wxT("DirectionCosineMatrix"));
+      (const_cast<Attitude*>(this))->UpdateState("DirectionCosineMatrix");
       cosMat(2,2) = value;
       inputAttitudeType = GmatAttitude::DIRECTION_COSINE_MATRIX_TYPE;
       if (isInitialized) needsReinit = true;
@@ -2662,7 +2662,7 @@ Real Attitude::SetRealParameter(const Integer id,
    }
    if (id == EULER_ANGLE_RATE_1)
    {
-      (const_cast<Attitude*>(this))->UpdateState(wxT("EulerAngleRates"));
+      (const_cast<Attitude*>(this))->UpdateState("EulerAngleRates");
       eulerAngleRates(0) = value * GmatMathConstants::RAD_PER_DEG;
       angVel = Attitude::ToAngularVelocity(eulerAngleRates,eulerAngles,
                         eulerSequenceArray.at(0),
@@ -2674,7 +2674,7 @@ Real Attitude::SetRealParameter(const Integer id,
    }
    if (id == EULER_ANGLE_RATE_2)
    {
-      (const_cast<Attitude*>(this))->UpdateState(wxT("EulerAngleRates"));
+      (const_cast<Attitude*>(this))->UpdateState("EulerAngleRates");
       eulerAngleRates(1) = value * GmatMathConstants::RAD_PER_DEG;
       angVel = Attitude::ToAngularVelocity(eulerAngleRates,eulerAngles,
                         eulerSequenceArray.at(0),
@@ -2686,7 +2686,7 @@ Real Attitude::SetRealParameter(const Integer id,
    }
    if (id == EULER_ANGLE_RATE_3)
    {
-      (const_cast<Attitude*>(this))->UpdateState(wxT("EulerAngleRates"));
+      (const_cast<Attitude*>(this))->UpdateState("EulerAngleRates");
       eulerAngleRates(2) = value * GmatMathConstants::RAD_PER_DEG;
       angVel = Attitude::ToAngularVelocity(eulerAngleRates,eulerAngles,
                         eulerSequenceArray.at(0),
@@ -2698,7 +2698,7 @@ Real Attitude::SetRealParameter(const Integer id,
    }
    if (id == ANGULAR_VELOCITY_X)
    {
-      (const_cast<Attitude*>(this))->UpdateState(wxT("AngularVelocity"));
+      (const_cast<Attitude*>(this))->UpdateState("AngularVelocity");
       angVel(0) = value * GmatMathConstants::RAD_PER_DEG;
       inputAttitudeRateType = GmatAttitude::ANGULAR_VELOCITY_TYPE;
       if (isInitialized) needsReinit = true;
@@ -2706,7 +2706,7 @@ Real Attitude::SetRealParameter(const Integer id,
    }
    if (id == ANGULAR_VELOCITY_Y)
    {
-      UpdateState(wxT("AngularVelocity"));
+      UpdateState("AngularVelocity");
       angVel(1) = value * GmatMathConstants::RAD_PER_DEG;
       inputAttitudeRateType = GmatAttitude::ANGULAR_VELOCITY_TYPE;
       if (isInitialized) needsReinit = true;
@@ -2714,7 +2714,7 @@ Real Attitude::SetRealParameter(const Integer id,
    }
    if (id == ANGULAR_VELOCITY_Z)
    {
-      (const_cast<Attitude*>(this))->UpdateState(wxT("AngularVelocity"));
+      (const_cast<Attitude*>(this))->UpdateState("AngularVelocity");
       angVel(2) = value * GmatMathConstants::RAD_PER_DEG;
       inputAttitudeRateType = GmatAttitude::ANGULAR_VELOCITY_TYPE;
       if (isInitialized) needsReinit = true;
@@ -2726,7 +2726,7 @@ Real Attitude::SetRealParameter(const Integer id,
 
                                 
 //------------------------------------------------------------------------------
-// Real SetRealParameter(const wxString &label, const Real value)
+// Real SetRealParameter(const std::string &label, const Real value)
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to set a parameter value
@@ -2735,7 +2735,7 @@ Real Attitude::SetRealParameter(const Integer id,
  * @param    value    The new value for the parameter
  */
 //------------------------------------------------------------------------------
-Real Attitude::SetRealParameter(const wxString &label,
+Real Attitude::SetRealParameter(const std::string &label,
                                 const Real        value)
 {
    return SetRealParameter(GetParameterID(label), value);
@@ -2761,14 +2761,14 @@ Real Attitude::SetRealParameter(const Integer id, const Real value,
                                 const Integer index)
 {
    #ifdef DEBUG_ATTITUDE_SET_REAL
-      MessageInterface::ShowMessage(wxT("Entering SetReal with id = %d (%s), value = %12.10f, index= %d\n"),
+      MessageInterface::ShowMessage("Entering SetReal with id = %d (%s), value = %12.10f, index= %d\n",
             id, GetParameterText(id).c_str(), value, index);
    #endif
    if (id == EULER_ANGLES)
    {
       if ((index < 0) || (index > 2))
       {
-         throw AttitudeException(wxT("Error: the Euler Angle index is out-of-range\n"));
+         throw AttitudeException("Error: the Euler Angle index is out-of-range\n");
       }
       if (index == 1) // second angle
       {
@@ -2777,21 +2777,21 @@ Real Attitude::SetRealParameter(const Integer id, const Real value,
          if ((eulerSequenceArray.at(0) == eulerSequenceArray.at(2)) &&
              (GmatMathUtil::Abs(GmatMathUtil::Sin(angle2)) < EULER_ANGLE_TOLERANCE))
          {
-            wxString errmsg;
-            errmsg << wxT("Error: the attitude defined by the input euler angles (");
-            errmsg << eulerAngles(0) << wxT(", ") << value << wxT(", ") << eulerAngles(2);
-            errmsg << wxT(") is near a singularity.") << wxT('\n');
-            throw AttitudeException(errmsg);
+            std::ostringstream errmsg;
+            errmsg << "Error: the attitude defined by the input euler angles (";
+            errmsg << eulerAngles(0) << ", " << value << ", " << eulerAngles(2);
+            errmsg << ") is near a singularity." << std::endl;
+            throw AttitudeException(errmsg.str());
          }
          // check for a nearly singular attitude, for non-symmetric sequences
          else if ((eulerSequenceArray.at(0) != eulerSequenceArray.at(2)) &&
                   (GmatMathUtil::Abs(GmatMathUtil::Cos(angle2)) < EULER_ANGLE_TOLERANCE))
          {
-            wxString errmsg;
-            errmsg << wxT("Error: the attitude defined by the input euler angles (");
-            errmsg << eulerAngles(0) << wxT(", ") << value << wxT(", ") << eulerAngles(2);
-            errmsg << wxT(") is near a singularity.") << wxT('\n');
-            throw AttitudeException(errmsg);
+            std::ostringstream errmsg;
+            errmsg << "Error: the attitude defined by the input euler angles (";
+            errmsg << eulerAngles(0) << ", " << value << ", " << eulerAngles(2);
+            errmsg << ") is near a singularity." << std::endl;
+            throw AttitudeException(errmsg.str());
          }
       }
       eulerAngles(index) = value * GmatMathConstants::RAD_PER_DEG;
@@ -2807,14 +2807,14 @@ Real Attitude::SetRealParameter(const Integer id, const Real value,
    {
       if ((index < 0) || (index > 3))
       {
-         throw AttitudeException(wxT("Error: the Quaternion index is out-of-range\n"));
+         throw AttitudeException("Error: the Quaternion index is out-of-range\n");
       }
       quaternion(index) = value;
       inputAttitudeType = GmatAttitude::QUATERNION_TYPE;
       #ifdef DEBUG_ATTITUDE_SET_REAL
-         MessageInterface::ShowMessage(wxT(" ... set quaternion[%d] = %12.10f\n"),
+         MessageInterface::ShowMessage(" ... set quaternion[%d] = %12.10f\n",
                index, value);
-         MessageInterface::ShowMessage(wxT(" ...     quaternion = %s\n"),
+         MessageInterface::ShowMessage(" ...     quaternion = %s\n",
                quaternion.ToString().c_str());
       #endif
       if (isInitialized) needsReinit = true;
@@ -2826,14 +2826,14 @@ Real Attitude::SetRealParameter(const Integer id, const Real value,
    {
       if ((index < 0) || (index > 2))
       {
-         throw AttitudeException(wxT("Error: the MRPs index is out-of-range\n"));
+         throw AttitudeException("Error: the MRPs index is out-of-range\n");
       }
       mrps(index) = value;
       inputAttitudeType = GmatAttitude::MODIFIED_RODRIGUES_PARAMETERS_TYPE;
       #ifdef DEBUG_ATTITUDE_SET_REAL
-            MessageInterface::ShowMessage(wxT(" ... set MRP[%d] = %12.10f\n"),
+            MessageInterface::ShowMessage(" ... set MRP[%d] = %12.10f\n",
                index, value);
-            MessageInterface::ShowMessage(wxT(" ...     MRP = %s\n"),
+            MessageInterface::ShowMessage(" ...     MRP = %s\n",
                quaternion.ToString().c_str());
       #endif
       if (isInitialized) needsReinit = true;
@@ -2844,7 +2844,7 @@ Real Attitude::SetRealParameter(const Integer id, const Real value,
    {
       if ((index < 0) || (index > 2))
       {
-         throw AttitudeException(wxT("Error: the Euler Angle Rate index is out-of-range\n"));
+         throw AttitudeException("Error: the Euler Angle Rate index is out-of-range\n");
       }
       eulerAngleRates(index) = value * GmatMathConstants::RAD_PER_DEG;
       angVel = Attitude::ToAngularVelocity(eulerAngleRates, eulerAngles,
@@ -2859,7 +2859,7 @@ Real Attitude::SetRealParameter(const Integer id, const Real value,
    {
       if ((index < 0) || (index > 2))
       {
-         throw AttitudeException(wxT("Error: the Angular Velocity index is out-of-range\n"));
+         throw AttitudeException("Error: the Angular Velocity index is out-of-range\n");
       }
       angVel(index) = value * GmatMathConstants::RAD_PER_DEG;
       inputAttitudeRateType = GmatAttitude::ANGULAR_VELOCITY_TYPE;
@@ -2891,7 +2891,7 @@ const UnsignedIntArray&
 
 //------------------------------------------------------------------------------
 //  const UnsignedIntArray&
-//        GetUnsignedIntArrayParameter(const wxString &label) const
+//        GetUnsignedIntArrayParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the UnsignedIntArray parameter value, 
@@ -2905,7 +2905,7 @@ const UnsignedIntArray&
 //------------------------------------------------------------------------------
 const UnsignedIntArray&
             Attitude::GetUnsignedIntArrayParameter(
-            const wxString &label) const
+            const std::string &label) const
 {
    return GetUnsignedIntArrayParameter(GetParameterID(label));
 }
@@ -2932,31 +2932,31 @@ const Rvector&    Attitude::GetRvectorParameter(const Integer id) const
 
    if (id == QUATERNION)
    {          
-      (const_cast<Attitude*>(this))->UpdateState(wxT("Quaternion"));
+      (const_cast<Attitude*>(this))->UpdateState("Quaternion");
       vec4 = quaternion;
       return vec4;
    }
    if (id == MRPS) // Dunn Added
    {     
-      (const_cast<Attitude*>(this))->UpdateState(wxT("MRPs"));
+      (const_cast<Attitude*>(this))->UpdateState("MRPs");
       vec3 = mrps;
       return vec3;
    }
    if (id == EULER_ANGLES)   
    {     
-      (const_cast<Attitude*>(this))->UpdateState(wxT("EulerAngles"));
+      (const_cast<Attitude*>(this))->UpdateState("EulerAngles");
       vec3 =  (eulerAngles * GmatMathConstants::DEG_PER_RAD);
       return vec3;
    }
    if (id == ANGULAR_VELOCITY) 
    {  
-      (const_cast<Attitude*>(this))->UpdateState(wxT("AngularVelocity"));
+      (const_cast<Attitude*>(this))->UpdateState("AngularVelocity");
       vec3 = angVel * GmatMathConstants::DEG_PER_RAD;
       return vec3;
    }
    if (id == EULER_ANGLE_RATES) 
    {  
-      (const_cast<Attitude*>(this))->UpdateState(wxT("EulerAngleRates"));
+      (const_cast<Attitude*>(this))->UpdateState("EulerAngleRates");
       vec3 = eulerAngleRates * GmatMathConstants::DEG_PER_RAD;
       return vec3;
       //return (eulerAngleRates * GmatMathConstants::DEG_PER_RAD);
@@ -2966,7 +2966,7 @@ const Rvector&    Attitude::GetRvectorParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  const Rvector&  GetRvectorParameter(const wxString &label)
+//  const Rvector&  GetRvectorParameter(const std::string &label)
 //------------------------------------------------------------------------------
 /**
  * This method gets the Rvector parameter value, given the input
@@ -2978,7 +2978,7 @@ const Rvector&    Attitude::GetRvectorParameter(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-const Rvector& Attitude::GetRvectorParameter(const wxString &label) const
+const Rvector& Attitude::GetRvectorParameter(const std::string &label) const
 {
    return GetRvectorParameter(GetParameterID(label));
 }
@@ -3002,9 +3002,9 @@ const Rvector& Attitude::SetRvectorParameter(const Integer id,
                                              const Rvector &value)
 {
    #ifdef DEBUG_ATTITUDE_SET
-      MessageInterface::ShowMessage(wxT("Entering Attitude::SetRvector with id = %d and value =  %s\n"),
+      MessageInterface::ShowMessage("Entering Attitude::SetRvector with id = %d and value =  %s\n",
             id, (value.ToString()).c_str());
-      MessageInterface::ShowMessage(wxT("  and Euler sequence is %d %d %d\n"), eulerSequenceArray.at(0),
+      MessageInterface::ShowMessage("  and Euler sequence is %d %d %d\n", eulerSequenceArray.at(0),
             eulerSequenceArray.at(1), eulerSequenceArray.at(2));
    #endif
    Integer sz = value.GetSize();
@@ -3013,27 +3013,27 @@ const Rvector& Attitude::SetRvectorParameter(const Integer id,
    if (id == EULER_ANGLES)
    {
       if (sz != 3) throw AttitudeException(
-                  wxT("Incorrectly sized Rvector passed in for euler angles."));
+                  "Incorrectly sized Rvector passed in for euler angles.");
       Real angle2 = value(1) * GmatMathConstants::RAD_PER_DEG;
       // check for a nearly singular attitude, for symmetric sequences
       if ((eulerSequenceArray.at(0) == eulerSequenceArray.at(2)) &&
           (GmatMathUtil::Abs(GmatMathUtil::Sin(angle2)) < EULER_ANGLE_TOLERANCE))
       {
-         wxString errmsg;
-         errmsg << wxT("Error: the attitude defined by the input euler angles (");
-         errmsg << value(0) << wxT(", ") << value(1) << wxT(", ") << value(2);
-         errmsg << wxT(") is near a singularity.") << '\n';
-         throw AttitudeException(errmsg);
+         std::ostringstream errmsg;
+         errmsg << "Error: the attitude defined by the input euler angles (";
+         errmsg << value(0) << ", " << value(1) << ", " << value(2);
+         errmsg << ") is near a singularity." << std::endl;
+         throw AttitudeException(errmsg.str());
       }
       // check for a nearly singular attitude, for non-symmetric sequences
       else if ((eulerSequenceArray.at(0) != eulerSequenceArray.at(2)) &&
                (GmatMathUtil::Abs(GmatMathUtil::Cos(angle2)) < EULER_ANGLE_TOLERANCE))
       {
-         wxString errmsg;
-         errmsg << wxT("Error: the attitude defined by the input euler angles (");
-         errmsg << value(0) << wxT(", ") << value(1) << wxT(", ") << value(2);
-         errmsg << wxT(") is near a singularity.") << '\n';
-         throw AttitudeException(errmsg);
+         std::ostringstream errmsg;
+         errmsg << "Error: the attitude defined by the input euler angles (";
+         errmsg << value(0) << ", " << value(1) << ", " << value(2);
+         errmsg << ") is near a singularity." << std::endl;
+         throw AttitudeException(errmsg.str());
       }
       for (i=0;i<3;i++) 
          eulerAngles(i) = value(i) * GmatMathConstants::RAD_PER_DEG;
@@ -3048,14 +3048,14 @@ const Rvector& Attitude::SetRvectorParameter(const Integer id,
    if (id == QUATERNION)
    {
       #ifdef DEBUG_ATTITUDE_SET
-         MessageInterface::ShowMessage(wxT("In Attitude::SetRvector, setting quaternion\n"));
+         MessageInterface::ShowMessage("In Attitude::SetRvector, setting quaternion\n");
       #endif
       ValidateQuaternion(value);
       for (i=0;i<4;i++) 
          quaternion(i) = value(i);
       quaternion.Normalize();
       #ifdef DEBUG_ATTITUDE_SET
-         MessageInterface::ShowMessage(wxT("In Attitude::SetRvector, normalized quaternion = %s\n"),
+         MessageInterface::ShowMessage("In Attitude::SetRvector, normalized quaternion = %s\n",
                (quaternion.ToString()).c_str());
       #endif
       cosMat = Attitude::ToCosineMatrix(quaternion);
@@ -3066,10 +3066,10 @@ const Rvector& Attitude::SetRvectorParameter(const Integer id,
    if (id == MRPS) // Dunn Added
    {
       #ifdef DEBUG_ATTITUDE_SET
-            MessageInterface::ShowMessage(wxT("In Attitude::SetRvector, setting MRPs\n"));
+            MessageInterface::ShowMessage("In Attitude::SetRvector, setting MRPs\n");
       #endif
       if (sz != 3) throw AttitudeException(
-         wxT("Incorrectly sized Rvector passed in for MRPs."));
+         "Incorrectly sized Rvector passed in for MRPs.");
       ValidateMRPs(value);
       for (i=0;i<3;i++) 
          mrps(i) = value(i);
@@ -3082,7 +3082,7 @@ const Rvector& Attitude::SetRvectorParameter(const Integer id,
    if (id == EULER_ANGLE_RATES)
    {
       if (sz != 3) throw AttitudeException(
-                  wxT("Incorrectly sized Rvector passed in for euler angle rates."));
+                  "Incorrectly sized Rvector passed in for euler angle rates.");
       for (i=0;i<3;i++) 
          eulerAngleRates(i) = value(i) * GmatMathConstants::RAD_PER_DEG;
       angVel = Attitude::ToAngularVelocity(eulerAngleRates,
@@ -3097,7 +3097,7 @@ const Rvector& Attitude::SetRvectorParameter(const Integer id,
    if (id == ANGULAR_VELOCITY)
    {
       if (sz != 3) throw AttitudeException(
-                  wxT("Incorrectly sized Rvector passed in for angular velocity."));
+                  "Incorrectly sized Rvector passed in for angular velocity.");
       for (i=0;i<3;i++) 
          angVel(i) = value(i) * GmatMathConstants::RAD_PER_DEG;
       inputAttitudeRateType = GmatAttitude::ANGULAR_VELOCITY_TYPE;
@@ -3110,7 +3110,7 @@ const Rvector& Attitude::SetRvectorParameter(const Integer id,
 
                                                  
 //------------------------------------------------------------------------------
-//  const Rvector&  SetRvectorParameter(const wxString &label, 
+//  const Rvector&  SetRvectorParameter(const std::string &label, 
 //                                      const Rvector& value)
 //------------------------------------------------------------------------------
 /**
@@ -3124,7 +3124,7 @@ const Rvector& Attitude::SetRvectorParameter(const Integer id,
  *
  */
 //------------------------------------------------------------------------------
-const Rvector& Attitude::SetRvectorParameter(const wxString &label,
+const Rvector& Attitude::SetRvectorParameter(const std::string &label,
                                              const Rvector     &value)
 {
    return SetRvectorParameter(GetParameterID(label), value);
@@ -3150,7 +3150,7 @@ const Rmatrix& Attitude::GetRmatrixParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  const Rmatrix&  GetRmatrixParameter(const wxString &label)
+//  const Rmatrix&  GetRmatrixParameter(const std::string &label)
 //------------------------------------------------------------------------------
 /**
  * This method gets the Rmatrix parameter value, given the input
@@ -3162,7 +3162,7 @@ const Rmatrix& Attitude::GetRmatrixParameter(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-const Rmatrix& Attitude::GetRmatrixParameter(const wxString &label) const
+const Rmatrix& Attitude::GetRmatrixParameter(const std::string &label) const
 {
    return GetRmatrixParameter(GetParameterID(label));
 }
@@ -3190,7 +3190,7 @@ const Rmatrix& Attitude::SetRmatrixParameter(const Integer id,
       value.GetSize(r,c);
       if ((r != 3) || (c != 3))
          throw AttitudeException(
-         wxT("Incorrectly sized Rmatrix passed in for direction cosine matrix."));
+         "Incorrectly sized Rmatrix passed in for direction cosine matrix.");
       Rmatrix33 inValue;
       for (Integer i = 0; i < 3; i++) // compiler didn't like op=here ???
          for (Integer j = 0; j < 3; j++)
@@ -3207,7 +3207,7 @@ const Rmatrix& Attitude::SetRmatrixParameter(const Integer id,
                                                  
                                                  
 //------------------------------------------------------------------------------
-//  const Rmatrix&  SetRmatrixParameter(const wxString &label,
+//  const Rmatrix&  SetRmatrixParameter(const std::string &label,
 //                                      const Rmatrix& value)
 //------------------------------------------------------------------------------
 /**
@@ -3221,7 +3221,7 @@ const Rmatrix& Attitude::SetRmatrixParameter(const Integer id,
  *
  */
 //------------------------------------------------------------------------------
-const Rmatrix&    Attitude::SetRmatrixParameter(const wxString &label,
+const Rmatrix&    Attitude::SetRmatrixParameter(const std::string &label,
                                                  const Rmatrix &value)
 {
    return SetRmatrixParameter(GetParameterID(label), value);
@@ -3229,7 +3229,7 @@ const Rmatrix&    Attitude::SetRmatrixParameter(const wxString &label,
 
                                                  
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter given the input parameter ID. 
@@ -3239,7 +3239,7 @@ const Rmatrix&    Attitude::SetRmatrixParameter(const wxString &label,
  * @return The requested string.
  */
 //------------------------------------------------------------------------------
-wxString Attitude::GetStringParameter(const Integer id) const
+std::string Attitude::GetStringParameter(const Integer id) const
 {
    if (id == ATTITUDE_DISPLAY_STATE_TYPE)      return attitudeDisplayType;
    if (id == ATTITUDE_RATE_DISPLAY_STATE_TYPE) return attitudeRateDisplayType;
@@ -3250,7 +3250,7 @@ wxString Attitude::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter given the input parameter label. 
@@ -3260,13 +3260,13 @@ wxString Attitude::GetStringParameter(const Integer id) const
  * @return The requested string.
  */
 //------------------------------------------------------------------------------
-wxString Attitude::GetStringParameter(const wxString &label) const
+std::string Attitude::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * This method sets a value on a string parameter given the input parameter ID, 
@@ -3279,22 +3279,22 @@ wxString Attitude::GetStringParameter(const wxString &label) const
  */
 //------------------------------------------------------------------------------
 bool Attitude::SetStringParameter(const Integer     id,
-                                  const wxString &value)
+                                  const std::string &value)
 {
    #ifdef DEBUG_ATTITUDE_SET
    MessageInterface::ShowMessage(
-   wxT("ENTERING Att::SetString with id = %d (%s) and value = %s\n"), id,
+   "ENTERING Att::SetString with id = %d (%s) and value = %s\n", id,
    GetParameterText(id).c_str(), value.c_str());
    #endif
    if (id == ATTITUDE_DISPLAY_STATE_TYPE)
    {
-      if ((value != wxT("Quaternion")) && (value != wxT("DirectionCosineMatrix")) &&
-          (value != wxT("EulerAngles")) && (value != wxT("MRPs"))) // Dunn Added MRPs
+      if ((value != "Quaternion") && (value != "DirectionCosineMatrix") &&
+          (value != "EulerAngles") && (value != "MRPs")) // Dunn Added MRPs
       {
          AttitudeException ae;
          ae.SetDetails(errorMessageFormatUnnamed.c_str(),
             value.c_str(), GetParameterText(id).c_str(),
-            wxT("\"Quaternion\" \"DirectionCosineMatrix\" \"EulerAngles\" \"MRPs\"")); // Dunn Added MRPs
+            "\"Quaternion\" \"DirectionCosineMatrix\" \"EulerAngles\" \"MRPs\""); // Dunn Added MRPs
          throw ae;
       }
       attitudeDisplayType = value;
@@ -3302,12 +3302,12 @@ bool Attitude::SetStringParameter(const Integer     id,
    }
    if (id == ATTITUDE_RATE_DISPLAY_STATE_TYPE)
    {
-      if ((value != wxT("AngularVelocity")) && (value != wxT("EulerAngleRates")))
+      if ((value != "AngularVelocity") && (value != "EulerAngleRates"))
       {
          AttitudeException ae;
          ae.SetDetails(errorMessageFormatUnnamed.c_str(),
             value.c_str(), GetParameterText(id).c_str(),
-            wxT("\"AngularVelocity\"  \"EulerAngleRates\""));
+            "\"AngularVelocity\"  \"EulerAngleRates\"");
          throw ae;
       }
       attitudeRateDisplayType = value;
@@ -3322,22 +3322,22 @@ bool Attitude::SetStringParameter(const Integer     id,
    {
       ValidateEulerSequence(value);
       UnsignedIntArray newSeq = Attitude::ExtractEulerSequence(value);
-      (const_cast<Attitude*>(this))->UpdateState(wxT("EulerAngleRates")); // updates euler angles and euler angle rates
+      (const_cast<Attitude*>(this))->UpdateState("EulerAngleRates"); // updates euler angles and euler angle rates
       #ifdef DEBUG_ATTITUDE_SET
-         MessageInterface::ShowMessage(wxT("*** Current euler angles are : %12.10f  %12.10f  %12.10f\n"),
+         MessageInterface::ShowMessage("*** Current euler angles are : %12.10f  %12.10f  %12.10f\n",
                eulerAngles[0], eulerAngles[1], eulerAngles[2]);
-         MessageInterface::ShowMessage(wxT("*** Now setting sequence to %d  %d  %d\n"),
+         MessageInterface::ShowMessage("*** Now setting sequence to %d  %d  %d\n",
                (Integer) newSeq[0], (Integer) newSeq[1], (Integer) newSeq[2]);
       #endif
       eulerSequence         = value;
       eulerSequenceArray.clear();
       eulerSequenceArray    = newSeq;
       // update the DCM and angVel
-      (const_cast<Attitude*>(this))->UpdateState(wxT("DirectionCosineMatrix"));
-      (const_cast<Attitude*>(this))->UpdateState(wxT("AngularVelocity"));
+      (const_cast<Attitude*>(this))->UpdateState("DirectionCosineMatrix");
+      (const_cast<Attitude*>(this))->UpdateState("AngularVelocity");
       if (isInitialized) needsReinit = true;
       #ifdef DEBUG_ATTITUDE_SET
-         MessageInterface::ShowMessage(wxT("****** After updating, euler angles are : %12.10f  %12.10f  %12.10f\n"),
+         MessageInterface::ShowMessage("****** After updating, euler angles are : %12.10f  %12.10f  %12.10f\n",
                eulerAngles[0], eulerAngles[1], eulerAngles[2]);
       #endif
 
@@ -3355,7 +3355,7 @@ bool Attitude::SetStringParameter(const Integer     id,
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * This method sets a value on a string parameter given the input parameter 
@@ -3367,14 +3367,14 @@ bool Attitude::SetStringParameter(const Integer     id,
  * @return true if successful; otherwise, false.
  */
 //------------------------------------------------------------------------------
-bool Attitude::SetStringParameter(const wxString &label, 
-                                  const wxString &value)
+bool Attitude::SetStringParameter(const std::string &label, 
+                                  const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id, const Integer index)
+// std::string GetStringParameter(const Integer id, const Integer index)
 //------------------------------------------------------------------------------
 /**
  * This method returns the specified string array value at the given index.
@@ -3385,14 +3385,14 @@ bool Attitude::SetStringParameter(const wxString &label,
  * @return The requested string.
  */
 //------------------------------------------------------------------------------
-wxString  Attitude::GetStringParameter(const Integer id,
+std::string  Attitude::GetStringParameter(const Integer id,
                                           const Integer index) const
 {
    return GmatBase::GetStringParameter(id, index);
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id,const wxString &value,
+// bool SetStringParameter(const Integer id,const std::string &value,
 //                         const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -3406,7 +3406,7 @@ wxString  Attitude::GetStringParameter(const Integer id,
  */
 //------------------------------------------------------------------------------
 bool Attitude::SetStringParameter(const Integer     id,
-                                  const wxString &value,
+                                  const std::string &value,
                                   const Integer     index)
 {
    return GmatBase::SetStringParameter(id, value, index);
@@ -3431,7 +3431,7 @@ const StringArray&
 }
 
 //------------------------------------------------------------------------------
-// const StringArray& GetStringArrayParameter(const wxString &label) const
+// const StringArray& GetStringArrayParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string array given the input parameter label. 
@@ -3442,14 +3442,14 @@ const StringArray&
  */
 //------------------------------------------------------------------------------
 const StringArray& 
-            Attitude::GetStringArrayParameter(const wxString &label) const
+            Attitude::GetStringArrayParameter(const std::string &label) const
 {
    return GetStringArrayParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
 // StringArray GetGeneratingString(Gmat::WriteMode mode,
-//                const wxString &prefix, const wxString &useName)
+//                const std::string &prefix, const std::string &useName)
 //------------------------------------------------------------------------------
 /**
  * Produces a string, possibly multi-line, containing the text that produces an
@@ -3463,19 +3463,20 @@ const StringArray&
  *
  */
 //------------------------------------------------------------------------------
-const wxString& Attitude::GetGeneratingString(Gmat::WriteMode   mode,
-                                                 const wxString &prefix,
-                                                 const wxString &useName)
+const std::string& Attitude::GetGeneratingString(Gmat::WriteMode   mode,
+                                                 const std::string &prefix,
+                                                 const std::string &useName)
 {
    #ifdef DEBUG_ATTITUDE_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("Attitude::GetGeneratingString() this=%p, mode=%d, prefix=%s, ")
-       wxT("useName=%s\n"), this, mode, prefix, useName);
+      ("Attitude::GetGeneratingString() this=%p, mode=%d, prefix=%s, "
+       "useName=%s\n", this, mode, prefix.c_str(), useName.c_str());
    #endif
    
-   wxString data;
+   std::stringstream data;
 
-   wxString preface = wxT(""), nomme;
+   data.precision(18);   // Crank up data precision so we don't lose anything
+   std::string preface = "", nomme;
 
    if ((mode == Gmat::SCRIPTING) || (mode == Gmat::OWNED_OBJECT) ||
        (mode == Gmat::SHOW_SCRIPT))
@@ -3483,29 +3484,29 @@ const wxString& Attitude::GetGeneratingString(Gmat::WriteMode   mode,
    if (mode == Gmat::MATLAB_STRUCT || mode == Gmat::EPHEM_HEADER)
       inMatlabMode = true;
 
-   if (useName != wxT(""))
+   if (useName != "")
       nomme = useName;
    else
       nomme = instanceName;
-   nomme += wxT(".");
+   nomme += ".";
 
    if (mode == Gmat::OWNED_OBJECT) {
       preface = prefix;
-      nomme = wxT("");
+      nomme = "";
    }
 
    preface += nomme;
    #ifdef DEBUG_ATTITUDE_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("Attitude::GetGeneratingString() about to call WriteParameters ...\n"));
+      ("Attitude::GetGeneratingString() about to call WriteParameters ...\n");
    #endif
    WriteParameters(mode, preface, data);
    #ifdef DEBUG_ATTITUDE_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("Attitude::GetGeneratingString() DONE calling WriteParameters ...\n"));
+      ("Attitude::GetGeneratingString() DONE calling WriteParameters ...\n");
    #endif
 
-   generatingString = data;
+   generatingString = data.str();
    return generatingString;
 }
  
@@ -3545,32 +3546,32 @@ bool Attitude::ValidateCosineMatrix(const Rmatrix33 &mat)
    if (elementOutOfRange || notOrthonormal)
    {
       AttitudeException attex;
-      wxString matS;
-      matS = wxT("");
-      matS << wxT("[");
+      std::ostringstream matS;
+      matS.str("");
+      matS << "[";
       for (Integer ii = 0; ii < 3; ii++)
          for (Integer jj = 0; jj < 3; jj++)
          {
             matS << mat(ii,jj) ;
-            if (!(ii ==3 && jj==3))  matS << wxT(" ");
+            if (!(ii ==3 && jj==3))  matS << " ";
          }
-      matS << wxT("]");
-      wxString errMsg = wxT("The value of \"") + matS;
-      errMsg += wxT("\" for field \"") + OTHER_REP_TEXT[DIRECTION_COSINE_MATRIX - OTHER_REPS_OFFSET];
-      errMsg += wxT("\" on an object of type \"") + typeName;
-      errMsg += wxT("\" is not an allowed value.\n");
+      matS << "]";
+      std::string errMsg = "The value of \"" + matS.str();
+      errMsg += "\" for field \"" + OTHER_REP_TEXT[DIRECTION_COSINE_MATRIX - OTHER_REPS_OFFSET];
+      errMsg += "\" on an object of type \"" + typeName;
+      errMsg += "\" is not an allowed value.\n";
       if (elementOutOfRange)
       {
-         wxString outofrange;
-         outofrange << wxT("The allowed values are: [-1.0 <= each element <= 1.0].");
-         errMsg += outofrange;
+         std::stringstream outofrange;
+         outofrange << "The allowed values are: [-1.0 <= each element <= 1.0].";
+         errMsg += outofrange.str();
       }
       else // not orthonormal
       {
-         wxString ortho;
-         ortho << wxT("The allowed values are: [orthogonal matrix]. The tolerance on orthonormality is ")
-               << DCM_ORTHONORMALITY_TOLERANCE << wxT(".");
-         errMsg += ortho;
+         std::stringstream ortho;
+         ortho << "The allowed values are: [orthogonal matrix]. The tolerance on orthonormality is "
+               << DCM_ORTHONORMALITY_TOLERANCE << ".";
+         errMsg += ortho.str();
       }
       attex.SetDetails(errMsg);
       throw attex;
@@ -3579,7 +3580,7 @@ bool Attitude::ValidateCosineMatrix(const Rmatrix33 &mat)
 }
 
 //------------------------------------------------------------------------------
-//  bool  ValidateEulerSequence(const wxString &seq)
+//  bool  ValidateEulerSequence(const std::string &seq)
 //------------------------------------------------------------------------------
 /**
  * This method validates the euler angle sequence.
@@ -3590,19 +3591,19 @@ bool Attitude::ValidateCosineMatrix(const Rmatrix33 &mat)
  *
  */
 //------------------------------------------------------------------------------
-bool Attitude::ValidateEulerSequence(const wxString &seq)
+bool Attitude::ValidateEulerSequence(const std::string &seq)
 {
    for (Integer i=0; i<12; i++)
       if (seq == EULER_SEQ_LIST[i])  return true;
    AttitudeException ae;
-   wxString eulSeqs;
-   eulSeqs << wxT("One of ");
+   std::ostringstream eulSeqs;
+   eulSeqs << "One of ";
    for (Integer i=0; i<12; i++)
-      eulSeqs << wxT(" ") << EULER_SEQ_LIST[i];
-   ae.SetDetails(errorMessageFormatUnnamed,
+      eulSeqs << " " << EULER_SEQ_LIST[i];
+   ae.SetDetails(errorMessageFormatUnnamed.c_str(),
                  seq.c_str(),
-                 wxT("EulerAngleSequence"), 
-                 eulSeqs.c_str());
+                 "EulerAngleSequence", 
+                 (eulSeqs.str()).c_str());
    throw ae;
 }
 
@@ -3622,10 +3623,10 @@ bool Attitude::ValidateEulerSequence(const UnsignedIntArray &eulAng)
 {
    if (eulAng.size()  != 3)
       throw AttitudeException(
-         wxT("Euler Sequence contains too few/many components - cannot convert input\n"));
-   wxString        eulStr;
-   wxString eulS;
-   eulS = eulStr; 
+         "Euler Sequence contains too few/many components - cannot convert input\n");
+   std::string        eulStr;
+   std::ostringstream eulS;
+   eulS.str(eulStr); 
    eulS << eulAng[0] << eulAng[1] << eulAng[2];
    return ValidateEulerSequence(eulStr);
 }
@@ -3647,11 +3648,11 @@ bool Attitude::ValidateQuaternion(const Rvector &quat)
    if (quat.GetSize() != 4)
    {
       throw AttitudeException(
-            wxT("The quaternion must have 4 elements.\n"));
+            "The quaternion must have 4 elements.\n");
    }
    if (quat.GetMagnitude() < QUAT_MIN_MAG)
    {
-      wxString errmsg = wxT("The quaternion magnitude must be greater than 1e-10.\n");
+      std::string errmsg = "The quaternion magnitude must be greater than 1e-10.\n";
       throw AttitudeException(errmsg);
    }
    return true;
@@ -3676,14 +3677,14 @@ bool Attitude::ValidateMRPs(const Rvector &mrps)
    if (mrps.GetSize() != 3)
    {
       throw AttitudeException(
-         wxT("The MRP vector must have 3 elements.\n"));
+         "The MRP vector must have 3 elements.\n");
    }
    return true;
 }
 
 
 //------------------------------------------------------------------------------
-//  void  UpdateState(const wxString &rep)
+//  void  UpdateState(const std::string &rep)
 //------------------------------------------------------------------------------
 /**
  * This method updates the attitude in the representation specified.
@@ -3692,9 +3693,9 @@ bool Attitude::ValidateMRPs(const Rvector &mrps)
  *
  */
 //------------------------------------------------------------------------------
-void Attitude::UpdateState(const wxString &rep)
+void Attitude::UpdateState(const std::string &rep)
 {
-   if (rep == wxT("Quaternion"))
+   if (rep == "Quaternion")
    {
       if (inputAttitudeType == GmatAttitude::DIRECTION_COSINE_MATRIX_TYPE)
          quaternion       = Attitude::ToQuaternion(cosMat);
@@ -3707,7 +3708,7 @@ void Attitude::UpdateState(const wxString &rep)
                             (Integer) eulerSequenceArray.at(2));
       // else it's already the up-to-date quaternion (as input)
    }
-   else if (rep == wxT("EulerAngles"))
+   else if (rep == "EulerAngles")
    {
       if (inputAttitudeType == GmatAttitude::DIRECTION_COSINE_MATRIX_TYPE)
          eulerAngles = Attitude::ToEulerAngles(cosMat,
@@ -3727,7 +3728,7 @@ void Attitude::UpdateState(const wxString &rep)
                        (Integer) eulerSequenceArray.at(2));
       // else it is already the up-to-date euler angles (as input)
    }
-   else if (rep == wxT("DirectionCosineMatrix"))
+   else if (rep == "DirectionCosineMatrix")
    {
       if (inputAttitudeType == GmatAttitude::QUATERNION_TYPE)
          cosMat = ToCosineMatrix(quaternion);
@@ -3741,7 +3742,7 @@ void Attitude::UpdateState(const wxString &rep)
                   (Integer) eulerSequenceArray.at(2));
       // else it is already the up-to-date DCM (as input OR as kept up-to-date internally)
    }
-   else if (rep == wxT("MRPs")) // Dunn Added
+   else if (rep == "MRPs") // Dunn Added
    {
       if (inputAttitudeType == GmatAttitude::QUATERNION_TYPE)
          mrps = ToMRPs(quaternion);
@@ -3757,11 +3758,11 @@ void Attitude::UpdateState(const wxString &rep)
          mrps = ToMRPs(quaternion); }
 
    }
-   else if (rep == wxT("EulerAngleRates"))
+   else if (rep == "EulerAngleRates")
    {
       if (inputAttitudeRateType == GmatAttitude::ANGULAR_VELOCITY_TYPE)
       {
-         (const_cast<Attitude*>(this))->UpdateState(wxT("EulerAngles"));
+         (const_cast<Attitude*>(this))->UpdateState("EulerAngles");
          eulerAngleRates   = Attitude::ToEulerAngleRates(angVel,
                              eulerAngles,
                              (Integer) eulerSequenceArray.at(0),
@@ -3770,11 +3771,11 @@ void Attitude::UpdateState(const wxString &rep)
       }
       // else it is already the up-to-date euler angle rates (as input)
    }
-   else if (rep == wxT("AngularVelocity"))
+   else if (rep == "AngularVelocity")
    {
       if (inputAttitudeRateType == GmatAttitude::EULER_ANGLE_RATES_TYPE)
       {
-         (const_cast<Attitude*>(this))->UpdateState(wxT("EulerAngleRates"));
+         (const_cast<Attitude*>(this))->UpdateState("EulerAngleRates");
          angVel            = Attitude::ToAngularVelocity(eulerAngles, eulerAngleRates,
                              (Integer) eulerSequenceArray.at(0),
                              (Integer) eulerSequenceArray.at(1),
@@ -3786,15 +3787,15 @@ void Attitude::UpdateState(const wxString &rep)
 //      ; // do nothing - cosMat and angVel are kept up-to-date
 }
 
-void Attitude::SetRealArrayFromString(Integer id, const wxString &sval)
+void Attitude::SetRealArrayFromString(Integer id, const std::string &sval)
 {
    #ifdef DEBUG_ATTITUDE_SET_REAL
-      MessageInterface::ShowMessage(wxT("Entering SetRealArrayFromString with id = %d (%s) and string = %s\n"),
+      MessageInterface::ShowMessage("Entering SetRealArrayFromString with id = %d (%s) and string = %s\n",
             id, GetParameterText(id).c_str(), sval.c_str());
    #endif
    if (id == DIRECTION_COSINE_MATRIX)
    {
-      wxString errmsg = wxT("ERROR - setting DCM from string not yet implemented \n");
+      std::string errmsg = "ERROR - setting DCM from string not yet implemented \n";
       throw AttitudeException(errmsg);
    }
    try
@@ -3802,8 +3803,8 @@ void Attitude::SetRealArrayFromString(Integer id, const wxString &sval)
       RealArray vals = GmatStringUtil::ToRealArray(sval);
       if (vals.empty())
       {
-         wxString errmsg = wxT("ERROR attempting to set Attitude or Angular Velocity from string \"");
-         errmsg += sval + wxT("\"\n");
+         std::string errmsg = "ERROR attempting to set Attitude or Angular Velocity from string \"";
+         errmsg += sval + "\"\n";
          throw AttitudeException(errmsg);
       }
       for (UnsignedInt i=0; i<vals.size(); i++)
@@ -3811,8 +3812,8 @@ void Attitude::SetRealArrayFromString(Integer id, const wxString &sval)
    }
    catch (BaseException &)
    {
-      wxString errmsg = wxT("ERROR attempting to set Attitude or Angular Velocity from string \"");
-      errmsg += sval + wxT("\"\n");
+      std::string errmsg = "ERROR attempting to set Attitude or Angular Velocity from string \"";
+      errmsg += sval + "\"\n";
       throw AttitudeException(errmsg);
    }
 }

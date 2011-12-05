@@ -31,7 +31,7 @@
 
 //VC++ error C2466: cannot allocate an array of constant size 0
 // so commented out for possible later use
-//const wxString
+//const std::string
 //EndOptimize::PARAMETER_TEXT[EndOptimizeParamCount - GmatCommandParamCount] = {};
 //const Gmat::ParameterType
 //EndOptimize::PARAMETER_TYPE[EndOptimizeParamCount - GmatCommandParamCount] = {};
@@ -44,9 +44,9 @@
 // constructor
 //------------------------------------------------------------------------------
 EndOptimize::EndOptimize() :
-   GmatCommand         (wxT("EndOptimize"))
+   GmatCommand         ("EndOptimize")
 {
-   objectTypeNames.push_back(wxT("BranchEnd"));
+   objectTypeNames.push_back("BranchEnd");
    depthChange = -1;
    parameterCount = EndOptimizeParamCount;
 }
@@ -89,10 +89,10 @@ bool EndOptimize::Initialize()
    
    // Validate that next points to the owning Optimize command
    if (!next)
-      throw CommandException(wxT("EndOptimize Command not properly reconnected"));
+      throw CommandException("EndOptimize Command not properly reconnected");
     
-   if (next->GetTypeName() != wxT("Optimize"))
-      throw CommandException(wxT("EndOptimize Command not connected to Optimize Command"));
+   if (next->GetTypeName() != "Optimize")
+      throw CommandException("EndOptimize Command not connected to Optimize Command");
     
    return true;
 }
@@ -105,10 +105,10 @@ bool EndOptimize::Execute()
    #ifdef DEBUG_OPTIMIZER_COMMANDS
       if (next)
          MessageInterface::ShowMessage(
-            wxT("End Optimize points to a %s command\n"), next->GetTypeName().c_str());
+            "End Optimize points to a %s command\n", next->GetTypeName().c_str());
       else
          MessageInterface::ShowMessage(
-            wxT("EndOptimize does not reconnect to Optimize comamnd\n"));
+            "EndOptimize does not reconnect to Optimize comamnd\n");
    #endif
    
    BuildCommandSummary(true);
@@ -138,22 +138,22 @@ GmatBase* EndOptimize::Clone() const
 //------------------------------------------------------------------------------
 // GetGeneratingString
 //------------------------------------------------------------------------------
-const wxString& EndOptimize::GetGeneratingString(Gmat::WriteMode mode,
-                                                    const wxString &prefix,
-                                                    const wxString &useName)
+const std::string& EndOptimize::GetGeneratingString(Gmat::WriteMode mode,
+                                                    const std::string &prefix,
+                                                    const std::string &useName)
 {
-   generatingString = prefix + wxT("EndOptimize;");
+   generatingString = prefix + "EndOptimize;";
    if (mode == Gmat::NO_COMMENTS)
       return generatingString;
    
-   if ((next) && (next->GetTypeName() == wxT("Optimize")))
+   if ((next) && (next->GetTypeName() == "Optimize"))
    {
       if (showInlineComment)
       {
          // To avoid keep appending, check for empty inline comment
-         if (GetInlineComment() == wxT(""))
+         if (GetInlineComment() == "")
          {
-            generatingString += wxT("  % For optimizer ");
+            generatingString += "  % For optimizer ";
             generatingString += next->GetRefObjectName(Gmat::SOLVER);
          }
       }

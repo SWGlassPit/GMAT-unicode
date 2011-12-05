@@ -30,7 +30,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  CreateSpacecraft(wxString ofType, wxString withName)
+//  CreateSpacecraft(std::string ofType, std::string withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested Spacecraft class 
@@ -42,13 +42,13 @@
  *       parameter may be added later.
  */
 //------------------------------------------------------------------------------
-SpaceObject* SpacecraftFactory::CreateSpacecraft(const wxString &ofType,
-                                                 const wxString &withName)
+SpaceObject* SpacecraftFactory::CreateSpacecraft(const std::string &ofType,
+                                                 const std::string &withName)
 {
-   if (ofType == wxT("Spacecraft"))
+   if (ofType == "Spacecraft")
       return new Spacecraft(withName);
-   if (ofType == wxT("Formation"))
-      return new Formation(Gmat::FORMATION, wxT("Formation"), withName);
+   if (ofType == "Formation")
+      return new Formation(Gmat::FORMATION, "Formation", withName);
    return NULL;   
 }
 
@@ -67,8 +67,8 @@ SpacecraftFactory::SpacecraftFactory()
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("Spacecraft"));
-      creatables.push_back(wxT("Formation"));
+      creatables.push_back("Spacecraft");
+      creatables.push_back("Formation");
    }
 }
 
@@ -88,8 +88,8 @@ SpacecraftFactory::SpacecraftFactory(StringArray createList)
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("Spacecraft"));
-      creatables.push_back(wxT("Formation"));
+      creatables.push_back("Spacecraft");
+      creatables.push_back("Formation");
    }
 }
 
@@ -100,7 +100,7 @@ SpacecraftFactory::SpacecraftFactory(StringArray createList)
    * This method creates an object of the (base) class SpacecraftFactory 
    * (copy constructor).
    *
-   * @param <fact> the factory object to copy to wxT("this") factory.
+   * @param <fact> the factory object to copy to "this" factory.
    */
 //------------------------------------------------------------------------------
 SpacecraftFactory::SpacecraftFactory(const SpacecraftFactory &fact) :
@@ -108,8 +108,8 @@ Factory(fact)
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("Spacecraft"));
-      creatables.push_back(wxT("Formation"));
+      creatables.push_back("Spacecraft");
+      creatables.push_back("Formation");
    }
 }
 
@@ -120,9 +120,9 @@ Factory(fact)
    * Assignment operator for the SpacecraftFactory base class.
    *
    * @param <fact> the SpacecraftFactory object whose data to assign
-   *                 to wxT("this") factory.
+   *                 to "this" factory.
    *
-   * @return wxT("this") SpacecraftFactory with data of input factory fact.
+   * @return "this" SpacecraftFactory with data of input factory fact.
    */
 //------------------------------------------------------------------------------
 SpacecraftFactory& SpacecraftFactory::operator= (const SpacecraftFactory &fact)
@@ -130,8 +130,8 @@ SpacecraftFactory& SpacecraftFactory::operator= (const SpacecraftFactory &fact)
    Factory::operator=(fact);
    if (creatables.empty())
    {
-      creatables.push_back(wxT("Spacecraft"));
-      creatables.push_back(wxT("Formation"));
+      creatables.push_back("Spacecraft");
+      creatables.push_back("Formation");
    }
    return *this;
 }

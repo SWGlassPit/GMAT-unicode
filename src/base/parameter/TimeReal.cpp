@@ -30,8 +30,8 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// TimeReal(const wxString &name, const wxString &typeStr, 
-//          GmatBase *obj, const wxString &desc, const wxString &unit)
+// TimeReal(const std::string &name, const std::string &typeStr, 
+//          GmatBase *obj, const std::string &desc, const std::string &unit)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -43,10 +43,10 @@
  * @param <unit> unit of the parameter
  */
 //------------------------------------------------------------------------------
-TimeReal::TimeReal(const wxString &name, const wxString &typeStr, 
-                   GmatBase *obj, const wxString &desc,
-                   const wxString &unit)
-   : RealVar(name, wxT(""), typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit,
+TimeReal::TimeReal(const std::string &name, const std::string &typeStr, 
+                   GmatBase *obj, const std::string &desc,
+                   const std::string &unit)
+   : RealVar(name, "", typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit,
              GmatParam::NO_DEP, Gmat::SPACECRAFT, true),
      TimeData(name)
 {
@@ -191,12 +191,12 @@ bool TimeReal::Initialize()
    {
       #if DEBUG_TIMEREAL
       MessageInterface::ShowMessage
-         (wxT("TimeReal::Initialize() Fail to initialize Parameter:%s\n"),
+         ("TimeReal::Initialize() Fail to initialize Parameter:%s\n",
           this->GetName().c_str());
       #endif
       
       throw ParameterException
-         (wxT("WARNING:  ") + e.GetFullMessage() + wxT(" in ") + GetName() + wxT("\n"));
+         ("WARNING:  " + e.GetFullMessage() + " in " + GetName() + "\n");
    }
    
    return true;
@@ -209,18 +209,18 @@ bool TimeReal::Initialize()
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool TimeReal::RenameRefObject(const Gmat::ObjectType type,
-                               const wxString &oldName,
-                               const wxString &newName)
+                               const std::string &oldName,
+                               const std::string &newName)
 {
    return TimeData::RenameRefObject(type, oldName, newName);
 }
 
 
 //------------------------------------------------------------------------------
-// virtual wxString GetRefObjectName(const Gmat::ObjectType type) const
+// virtual std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
 /**
  * Calls TimeData to get reference object name for given type.
@@ -228,7 +228,7 @@ bool TimeReal::RenameRefObject(const Gmat::ObjectType type,
  * @return reference object name.
  */
 //------------------------------------------------------------------------------
-wxString TimeReal::GetRefObjectName(const Gmat::ObjectType type) const
+std::string TimeReal::GetRefObjectName(const Gmat::ObjectType type) const
 {
    return TimeData::GetRefObjectName(type);
 }
@@ -253,7 +253,7 @@ const StringArray& TimeReal::GetRefObjectNameArray(const Gmat::ObjectType type)
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObjectName(const Gmat::ObjectType type,
-//                               const wxString &name)
+//                               const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets reference object name to given object type.
@@ -264,7 +264,7 @@ const StringArray& TimeReal::GetRefObjectNameArray(const Gmat::ObjectType type)
  */
 //------------------------------------------------------------------------------
 bool TimeReal::SetRefObjectName(const Gmat::ObjectType type,
-                                 const wxString &name)
+                                 const std::string &name)
 {
    return TimeData::SetRefObjectName(type, name);
 }
@@ -272,7 +272,7 @@ bool TimeReal::SetRefObjectName(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // virtual GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                                const wxString &name)
+//                                const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Calls TimeData to get object pointer of given type and name
@@ -284,7 +284,7 @@ bool TimeReal::SetRefObjectName(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 GmatBase* TimeReal::GetRefObject(const Gmat::ObjectType type,
-                                  const wxString &name)
+                                  const std::string &name)
 {
    return TimeData::GetRefObject(type, name);
 }
@@ -292,7 +292,7 @@ GmatBase* TimeReal::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                           const wxString &name = wxT(""))
+//                           const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Calls TimeData to set reference object pointer to given type and name.
@@ -306,7 +306,7 @@ GmatBase* TimeReal::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool TimeReal::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                             const wxString &name)
+                             const std::string &name)
 {
    return TimeData::SetRefObject(obj, type, name);
 }

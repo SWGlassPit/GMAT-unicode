@@ -31,8 +31,8 @@
 class GMAT_API SpaceObject : public SpacePoint
 {
 public:
-   SpaceObject(Gmat::ObjectType typeId, const wxString &typeStr,
-               const wxString &instName);
+   SpaceObject(Gmat::ObjectType typeId, const std::string &typeStr,
+               const std::string &instName);
    virtual ~SpaceObject();
    SpaceObject(const SpaceObject& so);
    SpaceObject&         operator=(const SpaceObject& so);
@@ -45,20 +45,20 @@ public:
    virtual bool         ParametersHaveChanged();
    virtual void         ParametersHaveChanged(bool flag);
    
-   virtual Integer GetParameterID(const wxString &str) const;
+   virtual Integer GetParameterID(const std::string &str) const;
    virtual Real GetRealParameter(const Integer id) const;
-   virtual Real GetRealParameter(const wxString &label) const;
+   virtual Real GetRealParameter(const std::string &label) const;
    virtual Real SetRealParameter(const Integer id, const Real value);
-   virtual Real SetRealParameter(const wxString &label, const Real value);
+   virtual Real SetRealParameter(const std::string &label, const Real value);
    
    virtual Real         GetRealParameter(const Integer id, const Integer row,
                                          const Integer col) const;
-   virtual Real         GetRealParameter(const wxString &label, 
+   virtual Real         GetRealParameter(const std::string &label, 
                                          const Integer row, 
                                          const Integer col) const;
    virtual Real         SetRealParameter(const Integer id, const Real value,
                                          const Integer row, const Integer col);
-   virtual Real         SetRealParameter(const wxString &label,
+   virtual Real         SetRealParameter(const std::string &label,
                                          const Real value, const Integer row,
                                          const Integer col);
    virtual Real         SetRealParameter(const Integer id,
@@ -66,8 +66,8 @@ public:
                                          const Integer index);
 
    /// @todo Waiting for CoordinateSystems in Spacecraft, then see if needed
-   virtual void SetOriginName(wxString cbName);
-   virtual const wxString GetOriginName();
+   virtual void SetOriginName(std::string cbName);
+   virtual const std::string GetOriginName();
    virtual void SetOrigin(SpacePoint *cb);
    virtual SpacePoint* GetOrigin();
    
@@ -75,15 +75,15 @@ public:
    virtual const Rvector3 GetMJ2000Position(const A1Mjd &atTime);
    virtual const Rvector3 GetMJ2000Velocity(const A1Mjd &atTime);
    
-   virtual wxString GetParameterText(const Integer id) const;
+   virtual std::string GetParameterText(const Integer id) const;
    virtual Gmat::ParameterType
                        GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
 
    virtual void ClearLastStopTriggered();
-   virtual void SetLastStopTriggered(const wxString &stopCondName);
-   virtual const wxString GetLastStopTriggered();
-   virtual bool WasLastStopTriggered(const wxString &stopCondName);
+   virtual void SetLastStopTriggered(const std::string &stopCondName);
+   virtual const std::string GetLastStopTriggered();
+   virtual bool WasLastStopTriggered(const std::string &stopCondName);
    
    bool HasEphemPropagated();
    void HasEphemPropagated(bool tf);
@@ -102,7 +102,7 @@ protected:
    /// true when a finite burn needs to be applied to this SpaceObject
    bool              isManeuvering;
    /// Reference SpacePoint for the data
-   wxString       originName;
+   std::string       originName;
    /// Reference SpacePoint for the data
    SpacePoint        *origin;
    /// Flag indicating if the force model parms have changed
@@ -121,7 +121,7 @@ protected:
        SpaceObjectParamCount
    };
    /// Array of supported parameters
-   static const wxString PARAMETER_TEXT[SpaceObjectParamCount - 
+   static const std::string PARAMETER_TEXT[SpaceObjectParamCount - 
                                            SpacePointParamCount];
    /// Array of parameter types
    static const Gmat::ParameterType PARAMETER_TYPE[SpaceObjectParamCount - 

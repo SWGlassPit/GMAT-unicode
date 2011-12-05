@@ -52,12 +52,12 @@ public:
 
    /// method to return the state (position, velocity) of a planetary body or
    /// spacecraft at the specified time, with respect to the specified frame
-   Rvector6  GetTargetState(const wxString &targetName,
+   Rvector6  GetTargetState(const std::string &targetName,
                             const Integer     targetNAIFId,
                             const A1Mjd       &atTime,
-                            const wxString &observingBodyName,
-                            const wxString &referenceFrame = wxT("J2000"),
-                            const wxString &aberration = wxT("NONE"));
+                            const std::string &observingBodyName,
+                            const std::string &referenceFrame = "J2000",
+                            const std::string &aberration = "NONE");
 
 
 

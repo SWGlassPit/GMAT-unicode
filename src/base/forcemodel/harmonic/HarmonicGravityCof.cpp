@@ -21,9 +21,8 @@
 #include "UtilityException.hpp"
 #include "StringUtil.hpp"
 #include "MessageInterface.hpp"
-#include <wx/wfstream.h>
-#include <wx/sstream.h>
-#include <wx/txtstrm.h>
+#include <fstream>
+#include <sstream>
 
 //#define DEBUG_GRAVITY_COF_FILE
 //#define DEBUG_GRAVITY_DESTRUCT
@@ -33,7 +32,7 @@
 // n/a
 
 //------------------------------------------------------------------------------
-HarmonicGravityCof::HarmonicGravityCof(const wxString& filename,
+HarmonicGravityCof::HarmonicGravityCof(const std::string& filename,
                                        const Real& radius, const Real& mukm) :
    HarmonicGravity (filename)
 {
@@ -53,36 +52,36 @@ HarmonicGravityCof::~HarmonicGravityCof()
 //------------------------------------------------------------------------------
 void HarmonicGravityCof::Load()
 {
-   wxFFileInputStream inStreamFile (gravityFilename);
-   wxTextInputStream inStream( inStreamFile );
-   if (!inStreamFile.IsOk())
-      throw GravityFileException(wxT("Cannot open COF gravity file \"") + gravityFilename + wxT("\""));
+   std::ifstream inStream (gravityFilename.c_str());
+   if (!inStream)
+      throw GravityFileException("Cannot open COF gravity file \"" + gravityFilename + "\"");
 
    Integer       cbflag = -1;  // 0 = earth
    Real          normalizedflag = -1;
 
    #ifdef DEBUG_GRAVITY_COF_FILE
-   MessageInterface::ShowMessage(wxT("Entered GravityFile::ReadCofFile for file %s\n"), gravityFilename.c_str());
+   MessageInterface::ShowMessage("Entered GravityFile::ReadCofFile for file %s\n", gravityFilename.c_str());
    #endif
 
-   wxString line;
-   wxString firstStr;
-   wxString degStr, ordStr;
-   wxString nStr, mStr, cnmStr, snmStr;
+   std::string line;
+   std::string firstStr;
+   std::string degStr, ordStr;
+   std::string nStr, mStr, cnmStr, snmStr;
 
-   while (!inStreamFile.Eof())
+   while (!inStream.eof())
    {
-      line = inStream.ReadLine();
+      getline(inStream, line);
+      std::istringstream lineStream;
 
       // ignore comment lines
-      if (line[0] != wxT('C'))
+      if (line[0] != 'C')
       {
          firstStr = line.substr(0, 8);
          firstStr = GmatStringUtil::Trim(firstStr);
 
-         if (firstStr == wxT("END")) break;
-         if (firstStr == wxT("99999")) break;  // sometimes this is EOF marker
-         if (firstStr == wxT("POTFIELD"))
+         if (firstStr == "END") break;
+         if (firstStr == "99999") break;  // sometimes this is EOF marker
+         if (firstStr == "POTFIELD")
          {
             degStr = line.substr(8, 3);
             ordStr = line.substr(11, 3);
@@ -90,8 +89,7 @@ void HarmonicGravityCof::Load()
             if ((GmatStringUtil::ToInteger(degStr, NN)) &&
                 (GmatStringUtil::ToInteger(ordStr, MM)))
             {
-               wxStringInputStream lineStreamString(line.substr(14));
-               wxTextInputStream lineStream( lineStreamString );
+               lineStream.str(line.substr(14));
                Real tmpMu = 0;
                Real tmpA = 0;
                lineStream >> cbflag >> tmpMu >> tmpA >> normalizedflag;
@@ -106,10 +104,10 @@ void HarmonicGravityCof::Load()
             else
             {
                throw GravityFileException
-                  (wxT("File \"") + gravityFilename + wxT("\" has error in \n   \"") + line + wxT("\""));
+                  ("File \"" + gravityFilename + "\" has error in \n   \"" + line + "\"");
             }
          }
-         else if (firstStr == wxT("RECOEF"))
+         else if (firstStr == "RECOEF")
          {
             Integer n = -1;
             Integer m = -1;
@@ -118,14 +116,13 @@ void HarmonicGravityCof::Load()
             nStr = line.substr(8, 3);
             mStr = line.substr(11, 3);
             cnmStr = line.substr(17, 21);
-            wxStringInputStream lineStreamString( line.substr(38, 21));
-            wxTextInputStream lineStream( lineStreamString );
+            lineStream.str(line.substr(38, 21));
             lineStream >> snmStr;
             snmStr = GmatStringUtil::Trim(snmStr);
             if ((GmatStringUtil::ToInteger(nStr, n)) &&
                 (GmatStringUtil::ToInteger(mStr, m)) &&
                 (GmatStringUtil::ToReal(cnmStr, cnm)) &&
-                ((snmStr == wxT("")) ||
+                ((snmStr == "") ||
                  (GmatStringUtil::ToReal(snmStr, snm))))
             {
                if ( n <= NN && m <= MM )
@@ -135,37 +132,38 @@ void HarmonicGravityCof::Load()
 //                     cnm /= V[n][m];
 //                     snm /= V[n][m];
 //                     #ifdef DEBUG_GRAVITY_COF_FILE
-//                        MessageInterface::ShowMessage(wxT("NORMALIZING cnm and snm -----------\n"));
+//                        MessageInterface::ShowMessage("NORMALIZING cnm and snm -----------\n");
 //                     #endif
 //                  }
                   C[n][m] = cnm;
                   S[n][m] = snm;
                   #ifdef DEBUG_GRAVITY_COF_FILE
-                     if (cnm != 0.0) MessageInterface::ShowMessage(wxT("Cbar[%d][%d] = %12.10f\n"), n, m, cnm);
-                     if (snm != 0.0) MessageInterface::ShowMessage(wxT("Sbar[%d][%d] = %12.10f\n"), n, m, snm);
+                     if (cnm != 0.0) MessageInterface::ShowMessage("Cbar[%d][%d] = %12.10f\n", n, m, cnm);
+                     if (snm != 0.0) MessageInterface::ShowMessage("Sbar[%d][%d] = %12.10f\n", n, m, snm);
                   #endif
                }
             }
             else
             {
                throw GravityFileException
-                  (wxT("File \"") + gravityFilename + wxT("\" has error in \n   \"") + line + wxT("\""));
+                  ("File \"" + gravityFilename + "\" has error in \n   \"" + line + "\"");
             }
-            snmStr = wxT("");
+            snmStr = "";
             snm = 0.0;
          }
       }
    }
 
    #ifdef DEBUG_GRAVITY_COF_FILE
-   MessageInterface::ShowMessage(wxT("   \"%s\" successfully read\n"), gravityFilename.c_str());
+   MessageInterface::ShowMessage("   \"%s\" successfully read\n", gravityFilename.c_str());
    MessageInterface::ShowMessage
-      (wxT("   NN=%d, MM=%d, factor=%f, bodyRadius=%f\n"), NN, MM,
+      ("   NN=%d, MM=%d, factor=%f, bodyRadius=%f\n", NN, MM,
             factor, bodyRadius);
    MessageInterface::ShowMessage
-      (wxT("   last nStr=%s, mStr=%s, cnmStr=%s, snmStr=%s\n"),
+      ("   last nStr=%s, mStr=%s, cnmStr=%s, snmStr=%s\n",
        nStr.c_str(), mStr.c_str(), cnmStr.c_str(), snmStr.c_str());
    #endif
 
+   inStream.close();
 }
 

@@ -45,31 +45,31 @@ public:
    // inherited from GmatBase
    // Method to execute a callback from an external function
    virtual bool        ExecuteCallback();
-   virtual bool        PutCallbackData(wxString &data);
-   virtual wxString GetCallbackResults();
+   virtual bool        PutCallbackData(std::string &data);
+   virtual std::string GetCallbackResults();
    virtual GmatBase*   Clone() const;
-   const wxString&  GetGeneratingString(Gmat::WriteMode mode,
-                                           const wxString &prefix,
-                                           const wxString &useName);
+   const std::string&  GetGeneratingString(Gmat::WriteMode mode,
+                                           const std::string &prefix,
+                                           const std::string &useName);
 
    virtual bool        RenameRefObject(const Gmat::ObjectType type,
-                                       const wxString &oldName,
-                                       const wxString &newName);
+                                       const std::string &oldName,
+                                       const std::string &newName);
    
    // Parameter access methods
-   virtual wxString GetParameterText(const Integer id) const;
-   virtual Integer     GetParameterID(const wxString &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
+   virtual Integer     GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                        GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
    
-   virtual wxString GetStringParameter(const Integer id) const;
+   virtual std::string GetStringParameter(const Integer id) const;
    virtual bool        SetStringParameter(const Integer id, 
-                                          const wxString &value);
+                                          const std::string &value);
    virtual bool        GetBooleanParameter(const Integer id) const;
-   virtual wxString GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual std::string GetRefObjectName(const Gmat::ObjectType type) const;
    virtual bool        SetRefObjectName(const Gmat::ObjectType type,
-                                        const wxString &name);
+                                        const std::string &name);
     
 
 protected:
@@ -85,7 +85,7 @@ protected:
    };
 
    // save for possible later use
-   static const wxString
+   static const std::string
           PARAMETER_TEXT[OptimizeParamCount - SolverBranchCommandParamCount];
    
    static const Gmat::ParameterType
@@ -99,7 +99,7 @@ protected:
    bool                optimizerInFunctionInitialized;
    
    StringArray         callbackResults;
-   wxString         callbackData;
+   std::string         callbackData;
     
    bool                optimizerInDebugMode;
 

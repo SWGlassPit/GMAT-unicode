@@ -10,11 +10,11 @@ C        NEW FEATURES:
 C          *Extensive satellite drag database used in model generation
 C          *Revised O2 (and O) in lower thermosphere
 C          *Additional nonlinear solar activity term
-C          *wxT("ANOMALOUS OXYGEN") NUMBER DENSITY, OUTPUT D(9)
+C          *"ANOMALOUS OXYGEN" NUMBER DENSITY, OUTPUT D(9)
 C           At high altitudes (> 500 km), hot atomic oxygen or ionized
 C           oxygen can become appreciable for some ranges of subroutine
 C           inputs, thereby affecting drag on satellites and debris. We
-C           group these species under the term wxT("anomalous oxygen,") since
+C           group these species under the term "anomalous oxygen," since
 C           their individual variations are not presently separable with
 C           the drag data used to define this model component.
 C
@@ -24,8 +24,8 @@ C        HIGH ALTITUDE DRAG: EFFECTIVE TOTAL MASS DENSITY
 C        (SUBROUTINE GTD7D, OUTPUT D(6))
 C           For atmospheric drag calculations at altitudes above 500 km,
 C           call SUBROUTINE GTD7D to compute the "effective total mass
-C           densitywxT(" by including contributions from ")anomalous oxygen."
-C           See wxT("NOTES ON OUTPUT VARIABLES") below on D(6).
+C           density" by including contributions from "anomalous oxygen."
+C           See "NOTES ON OUTPUT VARIABLES" below on D(6).
 C
 C        PRESSURE GRID (SUBROUTINE GHP7)
 C          See subroutine GHP7 to specify outputs at a pressure level

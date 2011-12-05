@@ -30,9 +30,9 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// OrbitRvec6(const wxString &name, const wxString &typeStr, 
-//            GmatBase *obj, const wxString &desc,
-//            const wxString &unit, DepObject depObj)
+// OrbitRvec6(const std::string &name, const std::string &typeStr, 
+//            GmatBase *obj, const std::string &desc,
+//            const std::string &unit, DepObject depObj)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -44,9 +44,9 @@
  * @param <unit> unit of the parameter
  */
 //------------------------------------------------------------------------------
-OrbitRvec6::OrbitRvec6(const wxString &name, const wxString &typeStr, 
-                       GmatBase *obj, const wxString &desc,
-                       const wxString &unit, GmatParam::DepObject depObj)
+OrbitRvec6::OrbitRvec6(const std::string &name, const std::string &typeStr, 
+                       GmatBase *obj, const std::string &desc,
+                       const std::string &unit, GmatParam::DepObject depObj)
    : Rvec6Var(name, typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit, depObj,
               Gmat::SPACECRAFT)
 {
@@ -139,7 +139,7 @@ void OrbitRvec6::SetSolarSystem(SolarSystem *ss)
 {
    #if DEBUG_ORBITRVEC6
    MessageInterface::ShowMessage
-      (wxT("OrbitRvec6::SetSolarSystem() ss=%s"), ss->GetTypeName().c_str());
+      ("OrbitRvec6::SetSolarSystem() ss=%s", ss->GetTypeName().c_str());
    #endif
    
    if (OrbitData::GetRefObject(Gmat::SOLAR_SYSTEM, ss->GetName()) == NULL)
@@ -161,7 +161,7 @@ void OrbitRvec6::SetInternalCoordSystem(CoordinateSystem *cs)
 {
    #if DEBUG_ORBITREAL
    MessageInterface::ShowMessage
-      (wxT("OrbitRvec6::SetInternalCoordSystem() cs=%s to %s\n"), cs->GetTypeName().c_str(),
+      ("OrbitRvec6::SetInternalCoordSystem() cs=%s to %s\n", cs->GetTypeName().c_str(),
        this->GetName().c_str());
    #endif
    
@@ -222,17 +222,17 @@ bool OrbitRvec6::Initialize()
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool OrbitRvec6::RenameRefObject(const Gmat::ObjectType type,
-                                 const wxString &oldName,
-                                 const wxString &newName)
+                                 const std::string &oldName,
+                                 const std::string &newName)
 {
    return OrbitData::RenameRefObject(type, oldName, newName);
 }
 
 //------------------------------------------------------------------------------
-// virtual wxString GetRefObjectName(const Gmat::ObjectType type) const
+// virtual std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
 /**
  * Calls OrbitData to get reference object name for given type.
@@ -240,14 +240,14 @@ bool OrbitRvec6::RenameRefObject(const Gmat::ObjectType type,
  * @return reference object name.
  */
 //------------------------------------------------------------------------------
-wxString OrbitRvec6::GetRefObjectName(const Gmat::ObjectType type) const
+std::string OrbitRvec6::GetRefObjectName(const Gmat::ObjectType type) const
 {
    return OrbitData::GetRefObjectName(type);
 }
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObjectName(const Gmat::ObjectType type,
-//                               const wxString &name)
+//                               const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets reference object name to given object type.
@@ -258,14 +258,14 @@ wxString OrbitRvec6::GetRefObjectName(const Gmat::ObjectType type) const
  */
 //------------------------------------------------------------------------------
 bool OrbitRvec6::SetRefObjectName(const Gmat::ObjectType type,
-                                 const wxString &name)
+                                 const std::string &name)
 {
    return OrbitData::SetRefObjectName(type, name);
 }
 
 //------------------------------------------------------------------------------
 // virtual GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                                const wxString &name)
+//                                const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Calls OrbitData to get object pointer of given type and name
@@ -277,14 +277,14 @@ bool OrbitRvec6::SetRefObjectName(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 GmatBase* OrbitRvec6::GetRefObject(const Gmat::ObjectType type,
-                                  const wxString &name)
+                                  const std::string &name)
 {
    return OrbitData::GetRefObject(type, name);
 }
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                           const wxString &name = wxT(""))
+//                           const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Calls OrbitData to set reference object pointer to given type and name.
@@ -298,7 +298,7 @@ GmatBase* OrbitRvec6::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool OrbitRvec6::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                             const wxString &name)
+                             const std::string &name)
 {
    return OrbitData::SetRefObject(obj, type, name);
 }

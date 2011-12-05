@@ -26,13 +26,13 @@
 //#define DEBUG_ORBITRMAT66_SET
 
 //------------------------------------------------------------------------------
-// OrbitRmat66(const wxString &name, const wxString &typeStr, 
-//             GmatBase *obj, const wxString &desc, const wxString &unit,
+// OrbitRmat66(const std::string &name, const std::string &typeStr, 
+//             GmatBase *obj, const std::string &desc, const std::string &unit,
 //             GmatParam::DepObject depObj, bool isSettable)
 //------------------------------------------------------------------------------
-OrbitRmat66::OrbitRmat66(const wxString &name, const wxString &typeStr, 
-                         GmatBase *obj, const wxString &desc,
-                         const wxString &unit, GmatParam::DepObject depObj,
+OrbitRmat66::OrbitRmat66(const std::string &name, const std::string &typeStr, 
+                         GmatBase *obj, const std::string &desc,
+                         const std::string &unit, GmatParam::DepObject depObj,
                          bool isSettable)
    : Rmat66Var(name, typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit,
                depObj, Gmat::SPACECRAFT, isSettable)
@@ -104,7 +104,7 @@ void OrbitRmat66::SetSolarSystem(SolarSystem *ss)
 {
    #ifdef DEBUG_ORBITRMAT66_SET
    MessageInterface::ShowMessage
-      (wxT("OrbitRmat66::SetSolarSystem() '%s' entered, ss=<%p>'%s'\n"),
+      ("OrbitRmat66::SetSolarSystem() '%s' entered, ss=<%p>'%s'\n",
        GetName().c_str(), ss, ss->GetTypeName().c_str());
    #endif
    
@@ -128,7 +128,7 @@ void OrbitRmat66::SetInternalCoordSystem(CoordinateSystem *cs)
 {
    #ifdef DEBUG_ORBITRMAT66_SET
    MessageInterface::ShowMessage
-      (wxT("OrbitRmat33::SetInternalCoordSystem() '%s' entered, cs=<%p>'%s'\n"),
+      ("OrbitRmat33::SetInternalCoordSystem() '%s' entered, cs=<%p>'%s'\n",
        GetName().c_str(), cs, cs->GetTypeName().c_str());
    #endif
    
@@ -154,7 +154,7 @@ bool OrbitRmat66::AddRefObject(GmatBase *obj, bool replaceName)
    {
       #ifdef DEBUG_ORBITRMAT66_REFOBJ
       MessageInterface::ShowMessage
-         (wxT("OrbitRmat66::AddRefObject() obj->GetName()=%s, type=%d\n"),
+         ("OrbitRmat66::AddRefObject() obj->GetName()=%s, type=%d\n",
           obj->GetName().c_str(), obj->GetType());
       #endif
       
@@ -188,8 +188,8 @@ bool OrbitRmat66::Initialize()
    catch(BaseException &e)
    {
       throw GmatBaseException
-         (wxT("OrbitRmat66::Initialize() Fail to initialize Parameter:") +
-          this->GetTypeName() + wxT("\n") + e.GetFullMessage());
+         ("OrbitRmat66::Initialize() Fail to initialize Parameter:" +
+          this->GetTypeName() + "\n" + e.GetFullMessage());
    }
    
    return true;
@@ -197,29 +197,29 @@ bool OrbitRmat66::Initialize()
 
 
 //------------------------------------------------------------------------------
-// bool RenameRefObject(const Gmat::ObjectType type, const wxString &oldName,
-//                      const wxString &newName)
+// bool RenameRefObject(const Gmat::ObjectType type, const std::string &oldName,
+//                      const std::string &newName)
 //------------------------------------------------------------------------------
 bool OrbitRmat66::RenameRefObject(const Gmat::ObjectType type,
-                                  const wxString &oldName,
-                                  const wxString &newName)
+                                  const std::string &oldName,
+                                  const std::string &newName)
 {
    return OrbitData::RenameRefObject(type, oldName, newName);
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetRefObjectName(const Gmat::ObjectType type) const
+// std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
-wxString OrbitRmat66::GetRefObjectName(const Gmat::ObjectType type) const
+std::string OrbitRmat66::GetRefObjectName(const Gmat::ObjectType type) const
 {
-   wxString objName = OrbitData::GetRefObjectName(type);
+   std::string objName = OrbitData::GetRefObjectName(type);
    
-   if (objName == wxT("INVALID_OBJECT_TYPE"))
+   if (objName == "INVALID_OBJECT_TYPE")
    {
       throw ParameterException
-         (wxT("OrbitRmat66::GetRefObjectName() ") + GmatBase::GetObjectTypeString(type) +
-          wxT(" is not valid object type of ") + this->GetTypeName() + wxT("\n"));
+         ("OrbitRmat66::GetRefObjectName() " + GmatBase::GetObjectTypeString(type) +
+          " is not valid object type of " + this->GetTypeName() + "\n");
    }
    
    return objName;
@@ -236,17 +236,17 @@ const StringArray& OrbitRmat66::GetRefObjectNameArray(const Gmat::ObjectType typ
 
 
 //------------------------------------------------------------------------------
-// bool SetRefObjectName(const Gmat::ObjectType type, const wxString &name)
+// bool SetRefObjectName(const Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 bool OrbitRmat66::SetRefObjectName(const Gmat::ObjectType type,
-                                         const wxString &name)
+                                         const std::string &name)
 {
    bool ret = OrbitData::SetRefObjectName(type, name);
    
    if (!ret)
       MessageInterface::ShowMessage
-         (wxT("*** Warning *** OrbitRmat66::SetRefObjectName() RefObjType:%s is not valid ")
-          wxT("for ParameterName:%s\n"), GmatBase::GetObjectTypeString(type).c_str(),
+         ("*** Warning *** OrbitRmat66::SetRefObjectName() RefObjType:%s is not valid "
+          "for ParameterName:%s\n", GmatBase::GetObjectTypeString(type).c_str(),
           this->GetName().c_str());
    
    return ret;
@@ -254,18 +254,18 @@ bool OrbitRmat66::SetRefObjectName(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// GmatBase* GetRefObject(const Gmat::ObjectType type, const wxString &name)
+// GmatBase* GetRefObject(const Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 GmatBase* OrbitRmat66::GetRefObject(const Gmat::ObjectType type,
-                                    const wxString &name)
+                                    const std::string &name)
 {
    GmatBase *obj = OrbitData::GetRefObject(type, name);
    
    if (obj == NULL)
    {
       throw ParameterException
-         (wxT("OrbitRmat66::GetRefObject() Cannot find ref. object of type:") +
-          GmatBase::GetObjectTypeString(type) + wxT(", name:") + name + wxT(" in ") +
+         ("OrbitRmat66::GetRefObject() Cannot find ref. object of type:" +
+          GmatBase::GetObjectTypeString(type) + ", name:" + name + " in " +
           this->GetName());
    }
    
@@ -275,14 +275,14 @@ GmatBase* OrbitRmat66::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                   const wxString &name)
+//                   const std::string &name)
 //------------------------------------------------------------------------------
 bool OrbitRmat66::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                               const wxString &name)
+                               const std::string &name)
 {
    #ifdef DEBUG_ORBITRMAT66_REFOBJ
    MessageInterface::ShowMessage
-      (wxT("OrbitRmat66::SetRefObject() setting type=%d, name=%s to %s\n"),
+      ("OrbitRmat66::SetRefObject() setting type=%d, name=%s to %s\n",
        type, name.c_str(), this->GetName().c_str());
    #endif
    

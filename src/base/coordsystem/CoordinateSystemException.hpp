@@ -28,7 +28,7 @@ class GMAT_API CoordinateSystemException : public BaseException
 {
 public:
 
-   CoordinateSystemException(wxString details = wxT(""));
+   CoordinateSystemException(std::string details = "");
 
 protected:
 

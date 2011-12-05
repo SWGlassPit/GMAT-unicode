@@ -41,10 +41,10 @@ using namespace GmatMathUtil;
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 Planet::PARAMETER_TEXT[PlanetParamCount - CelestialBodyParamCount] =
 {
-   wxT("NutationUpdateInterval"),
+   "NutationUpdateInterval",
 };
 
 const Gmat::ParameterType
@@ -59,21 +59,21 @@ Planet::PARAMETER_TYPE[PlanetParamCount - CelestialBodyParamCount] =
 // public methods
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  Planet(wxString name)
+//  Planet(std::string name)
 //------------------------------------------------------------------------------
 /**
  * This method creates an object of the Planet class
  * (default constructor).
  *
  * @param <name> optional parameter indicating the name of the celestial
- *               body (default is wxT("Sun")).
+ *               body (default is "Sun").
  */
 //------------------------------------------------------------------------------
-Planet::Planet(wxString name) :
-   CelestialBody     (wxT("Planet"),name),
+Planet::Planet(std::string name) :
+   CelestialBody     ("Planet",name),
    nutationUpdateInterval    (60.0)
 {   
-   objectTypeNames.push_back(wxT("Planet"));
+   objectTypeNames.push_back("Planet");
    parameterCount = PlanetParamCount;
 
    theCentralBodyName  = SolarSystem::SUN_NAME;
@@ -107,7 +107,7 @@ Planet::Planet(wxString name) :
 }
 
 //------------------------------------------------------------------------------
-//  Planet(wxString name, const wxString &cBody)
+//  Planet(std::string name, const std::string &cBody)
 //------------------------------------------------------------------------------
 /**
  * This method creates an object of the Planet class
@@ -118,11 +118,11 @@ Planet::Planet(wxString name) :
  * @param <cBody> pointer to a central body.
  */
 //------------------------------------------------------------------------------
-Planet::Planet(wxString name, const wxString &cBody) :
-   CelestialBody     (wxT("Planet"),name),
+Planet::Planet(std::string name, const std::string &cBody) :
+   CelestialBody     ("Planet",name),
    nutationUpdateInterval    (60.0)
 {
-   objectTypeNames.push_back(wxT("Planet"));
+   objectTypeNames.push_back("Planet");
    parameterCount = PlanetParamCount;
    
    theCentralBodyName  = cBody;
@@ -162,10 +162,10 @@ Planet::Planet(const Planet &pl) :
 /**
  * Assignment operator for the Planet class.
  *
- * @param <pl> the Planet object whose data to assign to wxT("this")
+ * @param <pl> the Planet object whose data to assign to "this"
  *            solar system.
  *
- * @return wxT("this") Planet with data of input Planet st.
+ * @return "this" Planet with data of input Planet st.
  */
 //------------------------------------------------------------------------------
 Planet& Planet::operator=(const Planet &pl)
@@ -230,8 +230,8 @@ Rvector Planet::GetBodyCartographicCoordinates(const A1Mjd &forTime) const
       }
       else
       {
-         wxString errmsg = wxT("Error computing cartographic coordinates for Neptune - ");
-         errmsg += wxT("unknown or invalid rotation data source\n");
+         std::string errmsg = "Error computing cartographic coordinates for Neptune - ";
+         errmsg += "unknown or invalid rotation data source\n";
          throw SolarSystemException(errmsg);
       }
    }
@@ -310,7 +310,7 @@ bool Planet::SetTwoBodyEpoch(const A1Mjd &toTime)
 {
    #ifdef DEBUG_PLANET_TWO_BODY
       MessageInterface::ShowMessage(
-      wxT("In Planet::SetTwoBodyEpoch with time = %.12f\n"), toTime.Get());
+      "In Planet::SetTwoBodyEpoch with time = %.12f\n", toTime.Get());
    #endif
    if (!CelestialBody::SetTwoBodyEpoch(toTime)) return false;
    bool OK = true;
@@ -318,11 +318,11 @@ bool Planet::SetTwoBodyEpoch(const A1Mjd &toTime)
    if (instanceName == SolarSystem::EARTH_NAME)
    {
       if (!theCentralBody) 
-         throw SolarSystemException(wxT("Central body must be set for ") 
+         throw SolarSystemException("Central body must be set for " 
                                     + instanceName);
       #ifdef DEBUG_PLANET_TWO_BODY
          MessageInterface::ShowMessage(
-         wxT("-------- and setting central body's epoch time to %.12f\n"), 
+         "-------- and setting central body's epoch time to %.12f\n", 
          toTime.Get());
       #endif
       OK = theCentralBody->SetTwoBodyEpoch(toTime);
@@ -346,7 +346,7 @@ bool Planet::SetTwoBodyElements(const Rvector6 &kepl)
 {
    #ifdef DEBUG_PLANET_TWO_BODY
       MessageInterface::ShowMessage(
-      wxT("In Planet::SetTwoBodyElements, kepl = \n%.12f %.12f %.12f %.12f %.12f %.12f\n"), 
+      "In Planet::SetTwoBodyElements, kepl = \n%.12f %.12f %.12f %.12f %.12f %.12f\n", 
       kepl[0], kepl[1], kepl[2], kepl[3], kepl[4], kepl[5]);
    #endif
    if (!CelestialBody::SetTwoBodyElements(kepl)) return false;
@@ -355,7 +355,7 @@ bool Planet::SetTwoBodyElements(const Rvector6 &kepl)
    if (instanceName == SolarSystem::EARTH_NAME)
    {
       if (!theCentralBody) 
-         throw SolarSystemException(wxT("Central body must be set for ") 
+         throw SolarSystemException("Central body must be set for " 
                                     + instanceName);
       Real     ma;
       Real     totalMu = mu + theCentralBody->GetGravitationalConstant();
@@ -365,7 +365,7 @@ bool Planet::SetTwoBodyElements(const Rvector6 &kepl)
 
       #ifdef DEBUG_PLANET_TWO_BODY
          MessageInterface::ShowMessage(
-         wxT("-------- and setting central body's elements to \n %.12f %.12f %.12f %.12f %.12f %.12f\n"), 
+         "-------- and setting central body's elements to \n %.12f %.12f %.12f %.12f %.12f %.12f\n", 
          sunKepl[0], sunKepl[1], sunKepl[2], 
          sunKepl[3], sunKepl[4], sunKepl[5]);
       #endif
@@ -383,7 +383,7 @@ Real Planet::GetNutationUpdateInterval() const
 bool Planet::SetNutationUpdateInterval(Real val)
 {
    #ifdef DEBUG_PLANET_NUTATION_INTERVAL
-      MessageInterface::ShowMessage(wxT("Setting nutation interval for body %s to %12.10f\n"),
+      MessageInterface::ShowMessage("Setting nutation interval for body %s to %12.10f\n",
             instanceName.c_str(), val);
    #endif
    if (val < 0.0)
@@ -391,7 +391,7 @@ bool Planet::SetNutationUpdateInterval(Real val)
       SolarSystemException sse;
       sse.SetDetails(errorMessageFormat.c_str(),
                      GmatStringUtil::ToString(val, GetDataPrecision()).c_str(),
-                     wxT("NutationUpdateInterval"), wxT("Real Number >= 0.0"));
+                     "NutationUpdateInterval", "Real Number >= 0.0");
       throw sse;
    }
    
@@ -447,7 +447,7 @@ bool Planet::NeedsOnlyMainSPK()
 // public methods inherited from GmatBase
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
 * This method returns the parameter text, given the input parameter ID.
@@ -458,7 +458,7 @@ bool Planet::NeedsOnlyMainSPK()
  *
  */
 //------------------------------------------------------------------------------
-wxString Planet::GetParameterText(const Integer id) const
+std::string Planet::GetParameterText(const Integer id) const
 {
    if (id >= CelestialBodyParamCount && id < PlanetParamCount)
       return PARAMETER_TEXT[id - CelestialBodyParamCount];
@@ -466,7 +466,7 @@ wxString Planet::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
 * This method returns the parameter ID, given the input parameter string.
@@ -477,7 +477,7 @@ wxString Planet::GetParameterText(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer Planet::GetParameterID(const wxString &str) const
+Integer Planet::GetParameterID(const std::string &str) const
 {
    for (Integer i = CelestialBodyParamCount; i < PlanetParamCount; i++)
    {
@@ -509,7 +509,7 @@ Gmat::ParameterType Planet::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
 * This method returns the parameter type string, given the input parameter ID.
@@ -520,7 +520,7 @@ Gmat::ParameterType Planet::GetParameterType(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString Planet::GetParameterTypeString(const Integer id) const
+std::string Planet::GetParameterTypeString(const Integer id) const
 {
    return CelestialBody::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -582,7 +582,7 @@ Real Planet::SetRealParameter(const Integer id, const Real value)
 }
 
 //------------------------------------------------------------------------------
-//  Real  GetRealParameter(const wxString &label) const
+//  Real  GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
 * This method returns the real value, given the input parameter label.
@@ -593,13 +593,13 @@ Real Planet::SetRealParameter(const Integer id, const Real value)
  *
  */
 //------------------------------------------------------------------------------
-Real Planet::GetRealParameter(const wxString &label) const
+Real Planet::GetRealParameter(const std::string &label) const
 {
    return GetRealParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-//  Real  SetRealParameter(const wxString &label, const Real value) 
+//  Real  SetRealParameter(const std::string &label, const Real value) 
 //------------------------------------------------------------------------------
 /**
 * This method sets the real value, given the input parameter label.
@@ -611,7 +611,7 @@ Real Planet::GetRealParameter(const wxString &label) const
  *
  */
 //------------------------------------------------------------------------------
-Real Planet::SetRealParameter(const wxString &label, const Real value)
+Real Planet::SetRealParameter(const std::string &label, const Real value)
 {
    return SetRealParameter(GetParameterID(label), value);
 }

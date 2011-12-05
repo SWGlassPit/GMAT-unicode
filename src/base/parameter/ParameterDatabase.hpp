@@ -39,17 +39,17 @@ public:
    const StringArray& GetNamesOfParameters();
    ParameterPtrArray GetParameters() const;
    
-   bool HasParameter(const wxString &name) const;
-   bool RenameParameter(const wxString &oldName, const wxString &newName);
-   Integer GetParameterCount(const wxString &name) const;
+   bool HasParameter(const std::string &name) const;
+   bool RenameParameter(const std::string &oldName, const std::string &newName);
+   Integer GetParameterCount(const std::string &name) const;
    
-   Parameter* GetParameter(const wxString &name) const;
-   wxString GetFirstParameterName() const;
-   bool SetParameter(const wxString &name, Parameter *param);
+   Parameter* GetParameter(const std::string &name) const;
+   std::string GetFirstParameterName() const;
+   bool SetParameter(const std::string &name, Parameter *param);
    
-   void Add(const wxString &name, Parameter *param = NULL);
+   void Add(const std::string &name, Parameter *param = NULL);
    void Add(Parameter *param);
-   void Remove(const wxString &name);
+   void Remove(const std::string &name);
    void Remove(const Parameter *param);
    
 protected:

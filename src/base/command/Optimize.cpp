@@ -19,8 +19,7 @@
  */
 //------------------------------------------------------------------------------
 
-#include <wx/sstream.h>
-#include <wx/txtstrm.h>
+#include <sstream>
 #include "Optimize.hpp"
 #include "MessageInterface.hpp"
 
@@ -49,11 +48,11 @@ static GmatInterface *gmatInt = GmatInterface::Instance();
 //------------------------------------------------------------------------------
 // static data
 //------------------------------------------------------------------------------
-const wxString
+const std::string
 Optimize::PARAMETER_TEXT[OptimizeParamCount - SolverBranchCommandParamCount] =
 {
-   wxT("OptimizerName"),
-   wxT("OptimizerConverged"),
+   "OptimizerName",
+   "OptimizerConverged",
 };
 
 const Gmat::ParameterType
@@ -71,7 +70,7 @@ Optimize::PARAMETER_TYPE[OptimizeParamCount - SolverBranchCommandParamCount] =
 // constructor
 //------------------------------------------------------------------------------
 Optimize::Optimize() :
-   SolverBranchCommand              (wxT("Optimize")),
+   SolverBranchCommand              ("Optimize"),
    optimizerConverged               (false),
    optimizerRunOnce                 (false),
    optimizerInFunctionInitialized   (false),
@@ -79,10 +78,10 @@ Optimize::Optimize() :
    minimizeCount                    (0)
 {
    #ifdef DEBUG_OPTIMIZE_CONSTRUCTION
-      MessageInterface::ShowMessage(wxT("NOW creating Optimize command ..."));
+      MessageInterface::ShowMessage("NOW creating Optimize command ...");
    #endif
    parameterCount = OptimizeParamCount;
-   objectTypeNames.push_back(wxT("Optimize"));
+   objectTypeNames.push_back("Optimize");
 }
 
 //------------------------------------------------------------------------------
@@ -98,7 +97,7 @@ Optimize::Optimize(const Optimize& o) :
 {
    //parameterCount = OptimizeParamCount;  // this is set in GmatBase copy constructor
    #ifdef DEBUG_OPTIMIZE_CONSTRUCTION
-      MessageInterface::ShowMessage(wxT("NOW creating (copying) Optimize command ..."));
+      MessageInterface::ShowMessage("NOW creating (copying) Optimize command ...");
    #endif
    localStore.clear();
 }
@@ -137,7 +136,7 @@ Optimize::~Optimize()
 bool Optimize::Append(GmatCommand *cmd)
 {
    #ifdef DEBUG_OPTIMIZE_PARSING
-       MessageInterface::ShowMessage(wxT("\nOptimize::Append received \"%s\" command"),
+       MessageInterface::ShowMessage("\nOptimize::Append received \"%s\" command",
                                      cmd->GetTypeName().c_str());
    #endif
     
@@ -145,7 +144,7 @@ bool Optimize::Append(GmatCommand *cmd)
         return false;
     
    // If at the end of a optimizer branch, point that end back to this command.
-   if (cmd->GetTypeName() == wxT("EndOptimize")) 
+   if (cmd->GetTypeName() == "EndOptimize") 
    {
       if ((nestLevel == 0) && (branchToFill != -1))  
       {
@@ -153,7 +152,7 @@ bool Optimize::Append(GmatCommand *cmd)
          // Optimizer loop is complete; -1 pops to the next higher sequence.
          branchToFill = -1;
          #ifdef DEBUG_OPTIMIZE_PARSING
-             MessageInterface::ShowMessage(wxT("\nOptimize::Append closing \"%s\""),
+             MessageInterface::ShowMessage("\nOptimize::Append closing \"%s\"",
                                            generatingString.c_str());
          #endif
       }
@@ -167,27 +166,27 @@ bool Optimize::Append(GmatCommand *cmd)
 
    // If it's a nested optimizer branch, add to the nest level.
    // 2006.09.13 wcs - as of today, nested optimizers are not allowed
-   if (cmd->GetTypeName() == wxT("Optimize"))
+   if (cmd->GetTypeName() == "Optimize")
       ++nestLevel;
 
-   if (cmd->GetTypeName() == wxT("Minimize"))
+   if (cmd->GetTypeName() == "Minimize")
    {
       // Code for nesting, currently disabled
       // if (solverName == cmd->GetStringParameter("OptimizerName"))
       {
          #ifdef DEBUG_OPTIMIZE_PARSING
-            MessageInterface::ShowMessage(wxT("MinCount: %d     nest level: %d\n"),
+            MessageInterface::ShowMessage("MinCount: %d     nest level: %d\n",
                   minimizeCount, nestLevel);
          #endif
          ++minimizeCount;
          if (minimizeCount > nestLevel + 1)
-            throw CommandException(wxT("Optimization control sequences are only ")
-                  wxT("allowed one Minimize command"));
+            throw CommandException("Optimization control sequences are only "
+                  "allowed one Minimize command");
       }
    }
 
    #ifdef DEBUG_OPTIMIZE_PARSING
-       MessageInterface::ShowMessage(wxT("\nOptimize::Append for \"%s\" nest level = %d"),
+       MessageInterface::ShowMessage("\nOptimize::Append for \"%s\" nest level = %d",
                                      generatingString.c_str(), nestLevel);
    #endif
 
@@ -205,23 +204,23 @@ GmatBase* Optimize::Clone() const
 //------------------------------------------------------------------------------
 // GetGeneratingString
 //------------------------------------------------------------------------------
-const wxString& Optimize::GetGeneratingString(Gmat::WriteMode mode,
-                                                 const wxString &prefix,
-                                                 const wxString &useName)
+const std::string& Optimize::GetGeneratingString(Gmat::WriteMode mode,
+                                                 const std::string &prefix,
+                                                 const std::string &useName)
 {
-   generatingString = wxT("");
+   generatingString = "";
    
    if (mode != Gmat::NO_COMMENTS)
    {
       generatingString = prefix;
    }
    
-   generatingString += wxT("Optimize ") + solverName;
+   generatingString += "Optimize " + solverName;
    
    // Handle the option strings
    generatingString += GetSolverOptionText();
    
-   generatingString += wxT(";");
+   generatingString += ";";
 
    if (mode == Gmat::NO_COMMENTS)
       return generatingString;
@@ -233,8 +232,8 @@ const wxString& Optimize::GetGeneratingString(Gmat::WriteMode mode,
 // RenameRefObject
 //------------------------------------------------------------------------------
 bool Optimize::RenameRefObject(const Gmat::ObjectType type,
-                               const wxString &oldName,
-                               const wxString &newName)
+                               const std::string &oldName,
+                               const std::string &newName)
 {
    if (type == Gmat::SOLVER)
    {
@@ -248,7 +247,7 @@ bool Optimize::RenameRefObject(const Gmat::ObjectType type,
 //------------------------------------------------------------------------------
 // GetParameterText
 //------------------------------------------------------------------------------
-wxString Optimize::GetParameterText(const Integer id) const
+std::string Optimize::GetParameterText(const Integer id) const
 {
    if (id >= SolverBranchCommandParamCount && id < OptimizeParamCount)
       return PARAMETER_TEXT[id - SolverBranchCommandParamCount];
@@ -259,7 +258,7 @@ wxString Optimize::GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 // GetParameterID
 //------------------------------------------------------------------------------
-Integer Optimize::GetParameterID(const wxString &str) const
+Integer Optimize::GetParameterID(const std::string &str) const
 {
    for (Integer i = SolverBranchCommandParamCount; i < OptimizeParamCount; i++)
    {
@@ -284,7 +283,7 @@ Gmat::ParameterType Optimize::GetParameterType(const Integer id) const
 //------------------------------------------------------------------------------
 // GetParameterTypeString
 //------------------------------------------------------------------------------
-wxString Optimize::GetParameterTypeString(const Integer id) const
+std::string Optimize::GetParameterTypeString(const Integer id) const
 {    
    return SolverBranchCommand::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -292,7 +291,7 @@ wxString Optimize::GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 // GetStringParameter
 //------------------------------------------------------------------------------
-wxString Optimize::GetStringParameter(const Integer id) const
+std::string Optimize::GetStringParameter(const Integer id) const
 {
    if (id == OPTIMIZER_NAME)
       return solverName;
@@ -303,7 +302,7 @@ wxString Optimize::GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 // SetStringParameter
 //------------------------------------------------------------------------------
-bool Optimize::SetStringParameter(const Integer id, const wxString &value)
+bool Optimize::SetStringParameter(const Integer id, const std::string &value)
 {
    if (id == OPTIMIZER_NAME) 
    {
@@ -328,7 +327,7 @@ bool Optimize::GetBooleanParameter(const Integer id) const
 //------------------------------------------------------------------------------
 // GetRefObjectName
 //------------------------------------------------------------------------------
-wxString Optimize::GetRefObjectName(const Gmat::ObjectType type) const
+std::string Optimize::GetRefObjectName(const Gmat::ObjectType type) const
 {
    if (type == Gmat::SOLVER)
       return solverName;
@@ -339,7 +338,7 @@ wxString Optimize::GetRefObjectName(const Gmat::ObjectType type) const
 // SetRefObjectName
 //------------------------------------------------------------------------------
 bool Optimize::SetRefObjectName(const Gmat::ObjectType type,
-                                const wxString &name)
+                                const std::string &name)
 {
    if (type == Gmat::SOLVER) 
    {
@@ -355,30 +354,30 @@ bool Optimize::SetRefObjectName(const Gmat::ObjectType type,
 bool Optimize::Initialize()
 {
    #ifdef DEBUG_OPTIMIZE_INIT
-   ShowCommand(wxT(""), wxT("Initialize() this = "), this);
+   ShowCommand("", "Initialize() this = ", this);
    #endif
    
    GmatBase *mapObj = NULL;
    if ((mapObj = FindObject(solverName)) == NULL) 
    {
-      wxString errorString = wxT("Optimize command cannot find optimizer \"");
+      std::string errorString = "Optimize command cannot find optimizer \"";
       errorString += solverName;
-      errorString += wxT("\"");
+      errorString += "\"";
       throw CommandException(errorString);
    }
    
-   if (mapObj->IsOfType(wxT("Optimizer")) == false)
-      throw CommandException(wxT("The object ") + solverName +
-            wxT(" is not an Optimizer, so the Optimize command cannot proceed ")
-            wxT("with initialization."));
+   if (mapObj->IsOfType("Optimizer") == false)
+      throw CommandException("The object " + solverName +
+            " is not an Optimizer, so the Optimize command cannot proceed "
+            "with initialization.");
 
    // Delete the old cloned solver
    if (theSolver)
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (theSolver, wxT("local solver"), wxT("Optimize::Initialize()"),
-          wxT("deleting local cloned solver"));
+         (theSolver, "local solver", "Optimize::Initialize()",
+          "deleting local cloned solver");
       #endif
       delete theSolver;
    }
@@ -387,17 +386,17 @@ bool Optimize::Initialize()
    theSolver = (Solver *)(mapObj->Clone());
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Add
-      (theSolver, theSolver->GetName(), wxT("Optimize::Initialize()"),
-       wxT("theSolver = (Solver *)(mapObj->Clone())"));
+      (theSolver, theSolver->GetName(), "Optimize::Initialize()",
+       "theSolver = (Solver *)(mapObj->Clone())");
    #endif
    
-   theSolver->TakeAction(wxT("ResetInstanceCount"));
-   mapObj->TakeAction(wxT("ResetInstanceCount"));
+   theSolver->TakeAction("ResetInstanceCount");
+   mapObj->TakeAction("ResetInstanceCount");
    
-   theSolver->TakeAction(wxT("IncrementInstanceCount"));
-   mapObj->TakeAction(wxT("IncrementInstanceCount"));
+   theSolver->TakeAction("IncrementInstanceCount");
+   mapObj->TakeAction("IncrementInstanceCount");
    
-   if (theSolver->GetStringParameter(wxT("ReportStyle")) == wxT("Debug"))
+   if (theSolver->GetStringParameter("ReportStyle") == "Debug")
       optimizerInDebugMode = true;      
     
    // Set the local copy of the optimizer on each node
@@ -417,29 +416,29 @@ bool Optimize::Initialize()
       {
          #ifdef DEBUG_OPTIMIZE_COMMANDS
             MessageInterface::ShowMessage(
-               wxT("   Optimize Command %d:  %s\n"), ++nodeNum, 
+               "   Optimize Command %d:  %s\n", ++nodeNum, 
                currentCmd->GetTypeName().c_str());       
          #endif
          
-         if ((currentCmd->GetTypeName() == wxT("Vary")) || 
-             (currentCmd->GetTypeName() == wxT("Minimize")) ||
-             (currentCmd->GetTypeName() == wxT("NonlinearConstraint")))
+         if ((currentCmd->GetTypeName() == "Vary") || 
+             (currentCmd->GetTypeName() == "Minimize") ||
+             (currentCmd->GetTypeName() == "NonlinearConstraint"))
          {
             currentCmd->SetRefObject(theSolver, Gmat::SOLVER, solverName);
             if (theSolver->IsSolverInternal())
             {
-               if (currentCmd->GetTypeName() == wxT("Minimize"))
+               if (currentCmd->GetTypeName() == "Minimize")
                   ++objectiveCount;
-               if (currentCmd->GetTypeName() == wxT("NonlinearConstraint"))
+               if (currentCmd->GetTypeName() == "NonlinearConstraint")
                {
                   ++constraintCount;
                }
-               if (currentCmd->GetTypeName() == wxT("Vary"))
+               if (currentCmd->GetTypeName() == "Vary")
                   ++variableCount;
                
                #ifdef DEBUG_OPTIMIZE_EXEC
                   MessageInterface::ShowMessage(
-                     wxT("   *** COUNTS: %d Costs, %d Variables, %d Constraints ***\n"),
+                     "   *** COUNTS: %d Costs, %d Variables, %d Constraints ***\n",
                      objectiveCount, variableCount, constraintCount);
                #endif
             }               
@@ -456,21 +455,21 @@ bool Optimize::Initialize()
       if (theSolver->IsSolverInternal())
       {
          theSolver->SetIntegerParameter(
-               theSolver->GetParameterID(wxT("RegisteredVariables")), variableCount);
+               theSolver->GetParameterID("RegisteredVariables"), variableCount);
          theSolver->SetIntegerParameter(
-               theSolver->GetParameterID(wxT("RegisteredComponents")), 
+               theSolver->GetParameterID("RegisteredComponents"), 
                constraintCount);
       }
       retval = theSolver->Initialize();
    }
    
    // Register callbacks for external optimizers
-   if (theSolver->IsOfType(wxT("ExternalOptimizer")))
+   if (theSolver->IsOfType("ExternalOptimizer"))
    {
       // NOTE that in the future we may have a callback to/from a non_MATLAB
       // external optimizer
       if (GmatGlobal::Instance()->IsMatlabAvailable())
-         if (theSolver->GetStringParameter(wxT("SourceType")) == wxT("MATLAB"))
+         if (theSolver->GetStringParameter("SourceType") == "MATLAB")
             gmatInt->RegisterCallbackServer(this);
    }
    
@@ -484,7 +483,7 @@ bool Optimize::Initialize()
 bool Optimize::Execute()
 {
    #ifdef DEBUG_OPTIMIZE_EXEC
-   MessageInterface::ShowMessage(wxT("Optimize::Execute() <%p> entered\n"), this);
+   MessageInterface::ShowMessage("Optimize::Execute() <%p> entered\n", this);
    #endif
    
    // We need to re-initialize since only one MatlabEngine is running per GMAT
@@ -507,9 +506,9 @@ bool Optimize::Execute()
    Solver::SolverState state = theSolver->GetState();
    
    #ifdef DEBUG_OPTIMIZE_EXEC
-      MessageInterface::ShowMessage(wxT("Optimize::Execute(%s, %s, solver state is %d)\n"),
-         (commandExecuting ? wxT("command executing") :wxT("command NOT executing")),
-         (commandComplete ? wxT("command complete") : wxT("command NOT complete")), state);
+      MessageInterface::ShowMessage("Optimize::Execute(%s, %s, solver state is %d)\n",
+         (commandExecuting ? "command executing" :"command NOT executing"),
+         (commandComplete ? "command complete" : "command NOT complete"), state);
    #endif
    
    // Attempt to reset if recalled   
@@ -524,7 +523,7 @@ bool Optimize::Execute()
    {
       #ifdef DEBUG_OPTIMIZE_EXEC
          MessageInterface::ShowMessage(
-         wxT("Entered Optimizer while command is not executing\n"));
+         "Entered Optimizer while command is not executing\n");
       #endif
 
       FreeLoopData();
@@ -533,10 +532,10 @@ bool Optimize::Execute()
       retval = SolverBranchCommand::Execute();
 
       #ifdef DEBUG_OPTIMIZE_EXEC
-         MessageInterface::ShowMessage(wxT("Resetting the Optimizer\n"));
+         MessageInterface::ShowMessage("Resetting the Optimizer\n");
       #endif
 
-      theSolver->TakeAction(wxT("Reset"));
+      theSolver->TakeAction("Reset");
       state = theSolver->GetState();
       
    }
@@ -552,7 +551,7 @@ bool Optimize::Execute()
    {
       #ifdef DEBUG_OPTIMIZE_EXEC
          MessageInterface::ShowMessage(
-            wxT("Optimize::Execute - about to advance the state\n"));
+            "Optimize::Execute - about to advance the state\n");
       #endif
       theSolver->AdvanceState();
 
@@ -566,10 +565,10 @@ bool Optimize::Execute()
    // Pass spacecraft data to the optimizer for reporting in debug mode
    if (optimizerInDebugMode)
    {
-      wxString dbgData = wxT("");
+      std::string dbgData = "";
       for (ObjectArray::iterator i = localStore.begin(); i < localStore.end(); ++i)
       {
-         dbgData += (*i)->GetGeneratingString() + wxT("\n---\n");
+         dbgData += (*i)->GetGeneratingString() + "\n---\n";
       }
       theSolver->SetDebugString(dbgData);
    }
@@ -578,7 +577,7 @@ bool Optimize::Execute()
    
    #ifdef DEBUG_OPTIMIZE_EXEC
    MessageInterface::ShowMessage
-      (wxT("Optimize::Execute() <%p> returning %d\n"), this, retval);
+      ("Optimize::Execute() <%p> returning %d\n", this, retval);
    #endif
    
    return retval;
@@ -606,44 +605,43 @@ void Optimize::RunComplete()
 bool Optimize::ExecuteCallback()
 {
    #ifdef DEBUG_CALLBACK
-      MessageInterface::ShowMessage(wxT("Entering Optimize::ExecuteCallback\n"));
+      MessageInterface::ShowMessage("Entering Optimize::ExecuteCallback\n");
    #endif
    // NOTE that in the future we may have a callback to/from a non_MATLAB
    // external optimizer
 
    #ifdef __USE_EXTERNAL_OPTIMIZER__
    if (!optimizer || 
-      (!(theSolver->IsOfType(wxT("ExternalOptimizer")))) || 
-      (((ExternalOptimizer*)optimizer)->GetStringParameter(wxT("SourceType"))
-      != wxT("MATLAB")))
+      (!(theSolver->IsOfType("ExternalOptimizer"))) || 
+      (((ExternalOptimizer*)optimizer)->GetStringParameter("SourceType")
+      != "MATLAB"))
    {
       throw CommandException(
-      wxT("Optimize::ExecuteCallback not yet implemented for non_MATLAB optimizers"));
+      "Optimize::ExecuteCallback not yet implemented for non_MATLAB optimizers");
    }
    #endif
    
    // Source type is MATLAB
    if (!GmatGlobal::Instance()->IsMatlabAvailable())
-      throw CommandException(wxT("Optimize: ERROR - MATLAB required for Callback"));
+      throw CommandException("Optimize: ERROR - MATLAB required for Callback");
    
    callbackExecuting = true;
    // ask Matlab for the value of X
    Integer     n = theSolver->GetIntegerParameter(
-                   theSolver->GetParameterID(wxT("NumberOfVariables")));
+                   theSolver->GetParameterID("NumberOfVariables"));
    
    //Real X[n];
+   Real *X = new Real[n];
    
    // read X values from the callback data string here
-   wxStringInputStream insString(callbackData);
-   wxTextInputStream ins(insString);
-   std::vector<Real> vars;
+   std::stringstream ins(callbackData.c_str());
    for (Integer i=0; i<n; i++)
-   {
-      double X;
-      ins >> X;
-      vars.push_back(X);
-   }
+      ins >> X[i];
+   std::vector<Real> vars;
+   for (Integer i=0;i<n;i++)
+      vars.push_back(X[i]);
    
+   delete [] X;
    
    // get the state of the Optimizer
    Solver::SolverState nState = theSolver->GetNestedState(); 
@@ -651,7 +649,7 @@ bool Optimize::ExecuteCallback()
    {
       #ifdef DEBUG_CALLBACK
       MessageInterface::ShowMessage(
-         wxT("Optimize::ExecuteCallback - state is INITIALIZING\n"));
+         "Optimize::ExecuteCallback - state is INITIALIZING\n");
       #endif
       StoreLoopData();
       // advance to NOMINAL
@@ -660,12 +658,12 @@ bool Optimize::ExecuteCallback()
    }
    if (nState != Solver::NOMINAL)
       throw CommandException(
-         wxT("Optimize::ExecuteCallback - error in optimizer state"));
+         "Optimize::ExecuteCallback - error in optimizer state");
 
    // this call should just advance the state to CALCULATING
    #ifdef DEBUG_CALLBACK
       MessageInterface::ShowMessage(
-         wxT("Optimize::ExecuteCallback - state is NOMINAL\n"));
+         "Optimize::ExecuteCallback - state is NOMINAL\n");
    #endif
    callbackResults = theSolver->AdvanceNestedState(vars);
    ResetLoopData();
@@ -676,7 +674,7 @@ bool Optimize::ExecuteCallback()
       while (branchExecuting) 
       {
          if (!ExecuteBranch())
-            throw CommandException(wxT("Optimize: ERROR executing branch"));
+            throw CommandException("Optimize: ERROR executing branch");
       } 
    }
    catch (BaseException &be)
@@ -684,7 +682,7 @@ bool Optimize::ExecuteCallback()
       // Use exception to remove Visual C++ warning
       be.GetMessageType();
       //Just rethrow since message is getting too long (loj: 2007.05.11)
-      //wxString errorStr = "Optimize:ExecuteCallback: ERROR - " +
+      //std::string errorStr = "Optimize:ExecuteCallback: ERROR - " +
       //   be.GetFullMessage() + "\n";
       //throw CommandException(errorStr);
       throw;
@@ -694,18 +692,18 @@ bool Optimize::ExecuteCallback()
    // and return results
    #ifdef DEBUG_CALLBACK
       MessageInterface::ShowMessage(
-         wxT("Optimize::ExecuteCallback - about to CALCULATE\n"));
+         "Optimize::ExecuteCallback - about to CALCULATE\n");
       MessageInterface::ShowMessage(
-         wxT("Optimize::ExecuteCallback - calling AdvanceNestedState with vars:\n"));
+         "Optimize::ExecuteCallback - calling AdvanceNestedState with vars:\n");
          for (Integer ii=0;ii<(Integer)vars.size();ii++)
-            MessageInterface::ShowMessage(wxT("--- vars[%d] = %.15f\n"),
+            MessageInterface::ShowMessage("--- vars[%d] = %.15f\n",
                ii, vars.at(ii));
    #endif
    callbackResults = theSolver->AdvanceNestedState(vars); 
    #ifdef DEBUG_CALLBACK
-      MessageInterface::ShowMessage(wxT("after CALCULATING, data from callback are: \n"));
+      MessageInterface::ShowMessage("after CALCULATING, data from callback are: \n");
       for (Integer ii = 0; ii < (Integer) callbackResults.size(); ii++)
-         MessageInterface::ShowMessage(wxT("(%d) -> %s\n"),
+         MessageInterface::ShowMessage("(%d) -> %s\n",
             ii, (callbackResults.at(ii)).c_str());
    #endif
       
@@ -714,33 +712,33 @@ bool Optimize::ExecuteCallback()
 }
 
 //------------------------------------------------------------------------------
-// bool PutCallbackData(wxString &data)
+// bool PutCallbackData(std::string &data)
 //------------------------------------------------------------------------------
-bool Optimize::PutCallbackData(wxString &data)
+bool Optimize::PutCallbackData(std::string &data)
 {
    callbackData = data;
    #ifdef DEBUG_CALLBACK
-      MessageInterface::ShowMessage(wxT("Entering Optimize::PutCallbackData\n"));
-      MessageInterface::ShowMessage(wxT("-- callback data are: %s\n"), data.c_str());
+      MessageInterface::ShowMessage("Entering Optimize::PutCallbackData\n");
+      MessageInterface::ShowMessage("-- callback data are: %s\n", data.c_str());
    #endif
    return true;
 }
 
 //------------------------------------------------------------------------------
-// wxString GetCallbackResults()
+// std::string GetCallbackResults()
 //------------------------------------------------------------------------------
-wxString Optimize::GetCallbackResults()
+std::string Optimize::GetCallbackResults()
 {
-   wxString allResults;
+   std::string allResults;
 
    for (Integer i=0; i < (Integer) callbackResults.size(); ++i)
    {
-      allResults += callbackResults.at(i) + wxT(";");
+      allResults += callbackResults.at(i) + ";";
    }
    
    #ifdef DEBUG_CALLBACK
-      MessageInterface::ShowMessage(wxT("Exiting Optimize::GetCallbackResults\n"));
-      MessageInterface::ShowMessage(wxT("-- callback results are: %s\n"),
+      MessageInterface::ShowMessage("Exiting Optimize::GetCallbackResults\n");
+      MessageInterface::ShowMessage("-- callback results are: %s\n",
       allResults.c_str());
    #endif
    return allResults;
@@ -754,8 +752,8 @@ bool Optimize::RunInternalSolver(Solver::SolverState state)
 {
    #ifdef DEBUG_OPTIMIZE_EXEC
    MessageInterface::ShowMessage
-      (wxT("Optimize::RunInternalSolver() entered, branch %s executing\n"),
-       branchExecuting ? wxT("is") : wxT("is not"));
+      ("Optimize::RunInternalSolver() entered, branch %s executing\n",
+       branchExecuting ? "is" : "is not");
    #endif
    
    bool retval = true;
@@ -781,7 +779,7 @@ bool Optimize::RunInternalSolver(Solver::SolverState state)
    {
       #ifdef DEBUG_OPTIMIZE_EXEC
       MessageInterface::ShowMessage
-         (wxT("Executing the Internal Optimizer %s\n"), theSolver->GetName().c_str());
+         ("Executing the Internal Optimizer %s\n", theSolver->GetName().c_str());
       #endif
       
       GmatCommand *currentCmd;
@@ -793,22 +791,22 @@ bool Optimize::RunInternalSolver(Solver::SolverState state)
       case RUN_INITIAL_GUESS:
          #ifdef DEBUG_OPTIMIZE_EXEC
          MessageInterface::ShowMessage
-            (wxT("Running as RUN_INITIAL_GUESS, specialState = %d\n"), specialState);
+            ("Running as RUN_INITIAL_GUESS, specialState = %d\n", specialState);
          #endif
          switch (specialState) 
          {
             case Solver::INITIALIZING:
                #ifdef DEBUG_STATE_TRANSITIONS
-               MessageInterface::ShowMessage(wxT("Mode: %d  State: %d  Special state: INITIALIZING (%d)"),
+               MessageInterface::ShowMessage("Mode: %d  State: %d  Special state: INITIALIZING (%d)",
                      startMode, state, specialState);
                #endif
                currentCmd = branch[0];
                optimizerConverged = false;
                while (currentCmd != this)
                {
-                  wxString type = currentCmd->GetTypeName();
-                  if ((type == wxT("Optimize")) || (type == wxT("Vary")) ||
-                      (type == wxT("Minimize")) || (type == wxT("NonlinearConstraint")))
+                  std::string type = currentCmd->GetTypeName();
+                  if ((type == "Optimize") || (type == "Vary") ||
+                      (type == "Minimize") || (type == "NonlinearConstraint"))
                      currentCmd->Execute();
                   currentCmd = currentCmd->GetNext();
                }
@@ -817,15 +815,15 @@ bool Optimize::RunInternalSolver(Solver::SolverState state)
 //               specialState = Solver::RUNSPECIAL;
 
                #ifdef DEBUG_STATE_TRANSITIONS
-               MessageInterface::ShowMessage(wxT(" -> Mode: %d  Special state: ")
-                     wxT("(%d)\n"), startMode, specialState);
+               MessageInterface::ShowMessage(" -> Mode: %d  Special state: "
+                     "(%d)\n", startMode, specialState);
                #endif
                break;
 
             case Solver::NOMINAL:
                #ifdef DEBUG_STATE_TRANSITIONS
-               MessageInterface::ShowMessage(wxT("Mode: %d  State: %d  Special ")
-                     wxT("state: NOMINAL (%d)"), startMode, state, specialState);
+               MessageInterface::ShowMessage("Mode: %d  State: %d  Special "
+                     "state: NOMINAL (%d)", startMode, state, specialState);
                #endif
                // Execute the nominal sequence
                if (!commandComplete) {
@@ -834,26 +832,26 @@ bool Optimize::RunInternalSolver(Solver::SolverState state)
                }
                specialState = Solver::RUNSPECIAL;
                #ifdef DEBUG_STATE_TRANSITIONS
-               MessageInterface::ShowMessage(wxT(" -> Mode: %d  Special state: ")
-                     wxT("(%d)\n"), startMode, specialState);
+               MessageInterface::ShowMessage(" -> Mode: %d  Special state: "
+                     "(%d)\n", startMode, specialState);
                #endif
                break;
 
             case Solver::RUNSPECIAL:
                #ifdef DEBUG_STATE_TRANSITIONS
-               MessageInterface::ShowMessage(wxT("Mode: %d  State: %d  Special ")
-                     wxT("state: RUNSPECIAL (%d)"), startMode, state, specialState);
+               MessageInterface::ShowMessage("Mode: %d  State: %d  Special "
+                     "state: RUNSPECIAL (%d)", startMode, state, specialState);
                #endif
                #ifdef DEBUG_OPTIMIZE_EXEC
                MessageInterface::ShowMessage
-                  (wxT("Optimize::Execute - internal solver in RUNSPECIAL state\n"));
+                  ("Optimize::Execute - internal solver in RUNSPECIAL state\n");
                #endif
                // Run once more to publish the data from the converged state
                if (!commandComplete)
                {
                   #ifdef DEBUG_OPTIMIZE_EXEC
                   MessageInterface::ShowMessage
-                     (wxT("Optimize::Execute - internal solver setting publisher with SOLVEDPASS\n"));
+                     ("Optimize::Execute - internal solver setting publisher with SOLVEDPASS\n");
                   #endif
                   ResetLoopData();
                   branchExecuting = true;
@@ -865,28 +863,28 @@ bool Optimize::RunInternalSolver(Solver::SolverState state)
                // Final clean-up
                optimizerConverged = true;
                #ifdef DEBUG_STATE_TRANSITIONS
-               MessageInterface::ShowMessage(wxT(" -> Mode: %d  Special state: ")
-                     wxT("(%d)\n"), startMode, specialState);
+               MessageInterface::ShowMessage(" -> Mode: %d  Special state: "
+                     "(%d)\n", startMode, specialState);
                #endif
                break;
 
             case Solver::FINISHED:
                #ifdef DEBUG_STATE_TRANSITIONS
-               MessageInterface::ShowMessage(wxT("Mode: %d  State: %d  Special ")
-                     wxT("state: FINISHED (%d)"), startMode, state, specialState);
+               MessageInterface::ShowMessage("Mode: %d  State: %d  Special "
+                     "state: FINISHED (%d)", startMode, state, specialState);
                #endif
                commandComplete = true;
                #ifdef DEBUG_OPTIMIZE_EXEC
                MessageInterface::ShowMessage
-                  (wxT("Optimize::Execute - internal solver in FINISHED state\n"));
+                  ("Optimize::Execute - internal solver in FINISHED state\n");
                #endif
                optimizerConverged = true;
 //               branchExecuting = true;
 
                specialState = Solver::INITIALIZING;
                #ifdef DEBUG_STATE_TRANSITIONS
-               MessageInterface::ShowMessage(wxT(" -> Mode: %d  Special state: ")
-                     wxT("(%d)\n"), startMode, specialState);
+               MessageInterface::ShowMessage(" -> Mode: %d  Special state: "
+                     "(%d)\n", startMode, specialState);
                #endif
                break;
 
@@ -898,17 +896,17 @@ bool Optimize::RunInternalSolver(Solver::SolverState state)
       case RUN_SOLUTION:
          #ifdef DEBUG_OPTIMIZE_EXEC
          MessageInterface::ShowMessage
-            (wxT("Running as RUN_SOLUTION, state = %d\n"), state);
+            ("Running as RUN_SOLUTION, state = %d\n", state);
          #endif
          throw SolverException
-            (wxT("Run Solution is not yet implemented for the Optimize command\n"));
+            ("Run Solution is not yet implemented for the Optimize command\n");
          break;
          
       case RUN_AND_SOLVE:
       default:
          #ifdef DEBUG_OPTIMIZE_EXEC
          MessageInterface::ShowMessage
-            (wxT("Running as RUN_AND_SOLVE or default, state = %d\n"), state);
+            ("Running as RUN_AND_SOLVE or default, state = %d\n", state);
          #endif
          
          // Here is the usual state machine for the optimizer   
@@ -917,19 +915,19 @@ bool Optimize::RunInternalSolver(Solver::SolverState state)
          case Solver::INITIALIZING:
             #ifdef DEBUG_OPTIMIZE_EXEC
             MessageInterface::ShowMessage
-               (wxT("Optimize::Execute - internal solver in INITIALIZING state\n"));
+               ("Optimize::Execute - internal solver in INITIALIZING state\n");
             #endif
             currentCmd = branch[0];
             optimizerConverged = false;
             while (currentCmd != this)  
             {
-               wxString type = currentCmd->GetTypeName();
-               if ((type == wxT("Optimize")) || (type == wxT("Vary")) ||
-                   (type == wxT("Minimize")) || (type == wxT("NonlinearConstraint")))
+               std::string type = currentCmd->GetTypeName();
+               if ((type == "Optimize") || (type == "Vary") ||
+                   (type == "Minimize") || (type == "NonlinearConstraint"))
                {
                   currentCmd->Execute();
-                  if ((type == wxT("Vary")) && (optimizerRunOnce))
-                     currentCmd->TakeAction(wxT("SolverReset"));
+                  if ((type == "Vary") && (optimizerRunOnce))
+                     currentCmd->TakeAction("SolverReset");
                }
                currentCmd = currentCmd->GetNext();
             }
@@ -941,7 +939,7 @@ bool Optimize::RunInternalSolver(Solver::SolverState state)
          case Solver::NOMINAL:
             #ifdef DEBUG_OPTIMIZE_EXEC
             MessageInterface::ShowMessage
-               (wxT("Optimize::Execute - internal solver in NOMINAL state\n"));
+               ("Optimize::Execute - internal solver in NOMINAL state\n");
             #endif
             // Execute the nominal sequence
             if (!commandComplete)
@@ -957,7 +955,7 @@ bool Optimize::RunInternalSolver(Solver::SolverState state)
          case Solver::PERTURBING:
             #ifdef DEBUG_OPTIMIZE_EXEC
             MessageInterface::ShowMessage
-               (wxT("Optimize::Execute - internal solver in PERTURBING state\n"));
+               ("Optimize::Execute - internal solver in PERTURBING state\n");
             #endif
             branchExecuting = true;
 //            ApplySubscriberBreakpoint();
@@ -969,21 +967,21 @@ bool Optimize::RunInternalSolver(Solver::SolverState state)
          case Solver::CALCULATING:
             #ifdef DEBUG_OPTIMIZE_EXEC
             MessageInterface::ShowMessage
-               (wxT("Optimize::Execute - internal solver in CALCULATING state\n"));
+               ("Optimize::Execute - internal solver in CALCULATING state\n");
             #endif
             break;
             
          case Solver::CHECKINGRUN:
             #ifdef DEBUG_OPTIMIZE_EXEC
             MessageInterface::ShowMessage
-               (wxT("Optimize::Execute - internal solver in CHECKINGRUN state\n"));
+               ("Optimize::Execute - internal solver in CHECKINGRUN state\n");
             #endif
             break;
             
          case Solver::FINISHED:
             #ifdef DEBUG_OPTIMIZE_EXEC
             MessageInterface::ShowMessage
-               (wxT("Optimize::Execute - internal solver in FINISHED state\n"));
+               ("Optimize::Execute - internal solver in FINISHED state\n");
             #endif
             // Final clean-up
             // Commented out to run once more below (LOJ: 2010.01.08)
@@ -996,7 +994,7 @@ bool Optimize::RunInternalSolver(Solver::SolverState state)
             {
                #ifdef DEBUG_OPTIMIZE_EXEC
                MessageInterface::ShowMessage
-                  (wxT("Optimize::Execute - internal solver setting publisher with SOLVEDPASS\n"));
+                  ("Optimize::Execute - internal solver setting publisher with SOLVEDPASS\n");
                #endif
                ResetLoopData();
                branchExecuting = true;
@@ -1008,7 +1006,7 @@ bool Optimize::RunInternalSolver(Solver::SolverState state)
             break;
             
          default:
-            MessageInterface::ShowMessage(wxT("Optimize::invalid state %d\n"), state);
+            MessageInterface::ShowMessage("Optimize::invalid state %d\n", state);
             branchExecuting = false;
             commandComplete  = true;
             optimizerConverged = true;
@@ -1019,8 +1017,8 @@ bool Optimize::RunInternalSolver(Solver::SolverState state)
    
    #ifdef DEBUG_OPTIMIZE_EXEC
    MessageInterface::ShowMessage
-      (wxT("Optimize::RunInternalSolver() returning %d, branch %s executing\n"), retval,
-       branchExecuting ? wxT("is") : wxT("is not"));
+      ("Optimize::RunInternalSolver() returning %d, branch %s executing\n", retval,
+       branchExecuting ? "is" : "is not");
    #endif
    
    return retval;
@@ -1034,8 +1032,8 @@ bool Optimize::RunExternalSolver(Solver::SolverState state)
 {
    #ifdef DEBUG_OPTIMIZE_EXEC
    MessageInterface::ShowMessage
-      (wxT("Optimize::RunExternalSolver() entered, branch %s executing\n"),
-       branchExecuting ? wxT("is") : wxT("is not"));
+      ("Optimize::RunExternalSolver() entered, branch %s executing\n",
+       branchExecuting ? "is" : "is not");
    #endif
    
    bool retval = true;
@@ -1052,7 +1050,7 @@ bool Optimize::RunExternalSolver(Solver::SolverState state)
    {
       #ifdef DEBUG_OPTIMIZE_EXEC
       MessageInterface::ShowMessage
-         (wxT("Executing the External Optimizer %s\n"), theSolver->GetName().c_str());
+         ("Executing the External Optimizer %s\n", theSolver->GetName().c_str());
       #endif
       
       GmatCommand *currentCmd;
@@ -1064,15 +1062,15 @@ bool Optimize::RunExternalSolver(Solver::SolverState state)
          // Finalize initialization of the optimizer data
          #ifdef DEBUG_OPTIMIZE_EXEC
          MessageInterface::ShowMessage
-            (wxT("Optimize::Execute - external solver in INITIALIZING state\n"));
+            ("Optimize::Execute - external solver in INITIALIZING state\n");
          #endif
          currentCmd = branch[0];
          optimizerConverged = false;
          while (currentCmd != this)  
          {
-            wxString type = currentCmd->GetTypeName();
-            if ((type == wxT("Optimize")) || (type == wxT("Vary")) ||
-                (type == wxT("Minimize")) || (type == wxT("NonlinearConstraint")))
+            std::string type = currentCmd->GetTypeName();
+            if ((type == "Optimize") || (type == "Vary") ||
+                (type == "Minimize") || (type == "NonlinearConstraint"))
                currentCmd->Execute();
             currentCmd = currentCmd->GetNext();
          }
@@ -1082,7 +1080,7 @@ bool Optimize::RunExternalSolver(Solver::SolverState state)
       case Solver::RUNEXTERNAL:
          #ifdef DEBUG_OPTIMIZE_EXEC
          MessageInterface::ShowMessage
-            (wxT("Optimize::Execute - external solver in RUNEXTERNAL state\n"));
+            ("Optimize::Execute - external solver in RUNEXTERNAL state\n");
          #endif
          break;
          
@@ -1092,7 +1090,7 @@ bool Optimize::RunExternalSolver(Solver::SolverState state)
          //commandComplete = true;
          #ifdef DEBUG_OPTIMIZE_EXEC
          MessageInterface::ShowMessage
-            (wxT("Optimize::Execute - external solver in FINISHED state\n"));
+            ("Optimize::Execute - external solver in FINISHED state\n");
          #endif
          optimizerConverged = true;
          
@@ -1101,7 +1099,7 @@ bool Optimize::RunExternalSolver(Solver::SolverState state)
          {
             #ifdef DEBUG_OPTIMIZE_EXEC
             MessageInterface::ShowMessage
-               (wxT("Optimize::Execute - external solver setting publisher with SOLVEDPASS\n"));
+               ("Optimize::Execute - external solver setting publisher with SOLVEDPASS\n");
             #endif
             ResetLoopData();
             branchExecuting = true;
@@ -1110,14 +1108,14 @@ bool Optimize::RunExternalSolver(Solver::SolverState state)
          break;
          
       default:
-         MessageInterface::ShowMessage(wxT("Optimize::invalid state %d\n"),state);
+         MessageInterface::ShowMessage("Optimize::invalid state %d\n",state);
       }
    }
    
    #ifdef DEBUG_OPTIMIZE_EXEC
    MessageInterface::ShowMessage
-      (wxT("Optimize::RunExternalSolver() returning %d, branch %s executing\n"), retval,
-       branchExecuting ? wxT("is") : wxT("is not"));
+      ("Optimize::RunExternalSolver() returning %d, branch %s executing\n", retval,
+       branchExecuting ? "is" : "is not");
    #endif
    
    return retval;

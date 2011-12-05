@@ -25,7 +25,7 @@
 class GMAT_API Sqrt : public MathFunction
 {
 public:
-   Sqrt(const wxString &nomme);
+   Sqrt(const std::string &nomme);
    virtual ~Sqrt();
    Sqrt(const Sqrt &copy);
                  

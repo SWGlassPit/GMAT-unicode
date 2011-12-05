@@ -56,28 +56,28 @@
 // static data
 //---------------------------------
 
-const wxString
+const std::string
 SpacePoint::PARAMETER_TEXT[SpacePointParamCount - GmatBaseParamCount] =
 {
-   wxT("J2000BodyName"),
-   wxT("NAIFId"),
-   wxT("NAIFIdReferenceFrame"),
-   wxT("OrbitSpiceKernelName"),
-   wxT("AttitudeSpiceKernelName"),
-   wxT("SCClockSpiceKernelName"),
-   wxT("FrameSpiceKernelName"),
+   "J2000BodyName",
+   "NAIFId",
+   "NAIFIdReferenceFrame",
+   "OrbitSpiceKernelName",
+   "AttitudeSpiceKernelName",
+   "SCClockSpiceKernelName",
+   "FrameSpiceKernelName",
 };
 
 const Gmat::ParameterType
 SpacePoint::PARAMETER_TYPE[SpacePointParamCount - GmatBaseParamCount] =
 {
-   Gmat::STRING_TYPE,       // wxT("J2000BodyName")
-   Gmat::INTEGER_TYPE,      // wxT("NAIFId")
-   Gmat::INTEGER_TYPE,      // wxT("NAIFIdReferenceFrame")
-   Gmat::STRINGARRAY_TYPE,  // wxT("OrbitSpiceKernelName")
-   Gmat::STRINGARRAY_TYPE,  // wxT("AttitudeSpiceKernelName")
-   Gmat::STRINGARRAY_TYPE,  // wxT("SCClockSpiceKernelName")
-   Gmat::STRINGARRAY_TYPE,  // wxT("FrameSpiceKernelName")
+   Gmat::STRING_TYPE,       // "J2000BodyName"
+   Gmat::INTEGER_TYPE,      // "NAIFId"
+   Gmat::INTEGER_TYPE,      // "NAIFIdReferenceFrame"
+   Gmat::STRINGARRAY_TYPE,  // "OrbitSpiceKernelName"
+   Gmat::STRINGARRAY_TYPE,  // "AttitudeSpiceKernelName"
+   Gmat::STRINGARRAY_TYPE,  // "SCClockSpiceKernelName"
+   Gmat::STRINGARRAY_TYPE,  // "FrameSpiceKernelName"
 };
 
 #ifdef __USE_SPICE__
@@ -94,8 +94,8 @@ SpacePoint::PARAMETER_TYPE[SpacePointParamCount - GmatBaseParamCount] =
 //------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//  SpacePoint(Gmat::ObjectType ofType, const wxString &itsType,
-//             const wxString &itsName);
+//  SpacePoint(Gmat::ObjectType ofType, const std::string &itsType,
+//             const std::string &itsName);
 //---------------------------------------------------------------------------
 /**
  * Constructs base SpacePoint structures used in derived classes
@@ -103,27 +103,27 @@ SpacePoint::PARAMETER_TYPE[SpacePointParamCount - GmatBaseParamCount] =
  *
  * @param <ofType>  Gmat::ObjectTypes enumeration for the object.
  * @param <itsType> GMAT script string associated with this type of object.
- * @param <itsName> Optional name for the object.  Defaults to wxT("").
+ * @param <itsName> Optional name for the object.  Defaults to "".
  *
  * @note There is no parameter free constructor for SpacePoint.  Derived 
  *       classes must pass in the typeId and typeStr parameters.
  */
 //---------------------------------------------------------------------------
-SpacePoint::SpacePoint(Gmat::ObjectType ofType, const wxString &itsType,
-                       const wxString &itsName) :
+SpacePoint::SpacePoint(Gmat::ObjectType ofType, const std::string &itsType,
+                       const std::string &itsName) :
 GmatBase(ofType,itsType,itsName),
 theSolarSystem (NULL),
 inertialCS     (NULL),
 bodyFixedCS    (NULL),
 j2000Body      (NULL),
-j2000BodyName  (wxT("Earth")),
+j2000BodyName  ("Earth"),
 naifId         (UNDEFINED_NAIF_ID),
 naifIdRefFrame (UNDEFINED_NAIF_ID),
 spiceSetupDone (false),
 hasAttitude    (false)
 {
    objectTypes.push_back(Gmat::SPACE_POINT);
-   objectTypeNames.push_back(wxT("SpacePoint"));
+   objectTypeNames.push_back("SpacePoint");
    SaveAllAsDefault();
 }
 
@@ -134,7 +134,7 @@ hasAttitude    (false)
  * Constructs base SpacePoint structures used in derived classes, by copying 
  * the input instance (copy constructor).
  *
- * @param <sp>  SpacePoint instance to copy to create wxT("this") instance.
+ * @param <sp>  SpacePoint instance to copy to create "this" instance.
  */
 //---------------------------------------------------------------------------
 SpacePoint::SpacePoint(const SpacePoint &sp) :
@@ -203,8 +203,8 @@ SpacePoint::~SpacePoint()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (inertialCS, inertialCS->GetTypeName(), wxT("SpacePoint::~SpacePoint()"),
-          wxT("deleting inertialCS"));
+         (inertialCS, inertialCS->GetTypeName(), "SpacePoint::~SpacePoint()",
+          "deleting inertialCS");
       #endif
       delete inertialCS;
    }
@@ -213,8 +213,8 @@ SpacePoint::~SpacePoint()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (bodyFixedCS, bodyFixedCS->GetTypeName(), wxT("SpacePoint::~SpacePoint()"),
-          wxT("deleting bodyFixedCS"));
+         (bodyFixedCS, bodyFixedCS->GetTypeName(), "SpacePoint::~SpacePoint()",
+          "deleting bodyFixedCS");
       #endif
       delete bodyFixedCS;
    }
@@ -245,7 +245,7 @@ bool SpacePoint::RequiresJ2000Body()
 
 // methods for accessing the bodyName or body pointer
 //------------------------------------------------------------------------------
-//  const wxString  GetJ2000BodyName() const
+//  const std::string  GetJ2000BodyName() const
 //------------------------------------------------------------------------------
 /**
  * This method returns the j2000 Body name.
@@ -254,7 +254,7 @@ bool SpacePoint::RequiresJ2000Body()
  *
  */
 //------------------------------------------------------------------------------
-const wxString SpacePoint::GetJ2000BodyName() const
+const std::string SpacePoint::GetJ2000BodyName() const
 {
    if (j2000Body) return j2000Body->GetName();
    else           return j2000BodyName;
@@ -265,7 +265,7 @@ SpacePoint* SpacePoint::GetJ2000Body() const
    return j2000Body;
 }
 
-bool SpacePoint::SetJ2000BodyName(const wxString &toName)
+bool SpacePoint::SetJ2000BodyName(const std::string &toName)
 {
    j2000BodyName = toName;
    return true;
@@ -275,10 +275,10 @@ void SpacePoint::SetJ2000Body(SpacePoint* toBody)
 {
    #ifdef DEBUG_J2000_STATE
       if (toBody)
-         MessageInterface::ShowMessage(wxT("Setting J2000 body to %s for %s\n"),
+         MessageInterface::ShowMessage("Setting J2000 body to %s for %s\n",
             toBody->GetName().c_str(), instanceName.c_str());
       else
-         MessageInterface::ShowMessage(wxT("Setting J2000 body to NULL for %s\n"),
+         MessageInterface::ShowMessage("Setting J2000 body to NULL for %s\n",
             instanceName.c_str());
    #endif
    
@@ -286,14 +286,14 @@ void SpacePoint::SetJ2000Body(SpacePoint* toBody)
 
    #ifdef DEBUG_J2000_STATE
       if (j2000Body)
-         MessageInterface::ShowMessage(wxT("J2000 body is now set\n"));
+         MessageInterface::ShowMessage("J2000 body is now set\n");
    #endif
 }
 
 bool SpacePoint::IsParameterCloaked(const Integer id) const
 {
    #ifdef DEBUG_SPACE_POINT_CLOAKING
-      MessageInterface::ShowMessage(wxT("In SpacePoint:IsParameterCloaked with id = %d %s)\n"),
+      MessageInterface::ShowMessage("In SpacePoint:IsParameterCloaked with id = %d %s)\n",
             id, (GetParameterText(id)).c_str());
    #endif
    if (!cloaking) return false;
@@ -380,8 +380,8 @@ const Rmatrix33& SpacePoint::GetAttitude(Real a1mjdTime)
 {
    #ifdef DEBUG_ATTITUDE
    MessageInterface::ShowMessage
-      (wxT("SpacePoint::GetAttitude() '%s' entered, epoch=%f, theSolarSystem=<%p>, ")
-       wxT("j2000Body=<%p>\n   inertialCS=<%p>, bodyFixedCS=<%p>\n"), GetName().c_str(),
+      ("SpacePoint::GetAttitude() '%s' entered, epoch=%f, theSolarSystem=<%p>, "
+       "j2000Body=<%p>\n   inertialCS=<%p>, bodyFixedCS=<%p>\n", GetName().c_str(),
        a1mjdTime, theSolarSystem, j2000Body, inertialCS, bodyFixedCS);
    #endif
    
@@ -396,22 +396,22 @@ const Rmatrix33& SpacePoint::GetAttitude(Real a1mjdTime)
       
       #ifdef DEBUG_ATTITUDE
       MessageInterface::ShowMessage
-         (wxT("   currState=%s\n"), currState.ToString(16).c_str());
+         ("   currState=%s\n", currState.ToString(16).c_str());
       #endif
       
       if (inertialCS == NULL && bodyFixedCS == NULL)
       {
          inertialCS =
             CoordinateSystem::
-            CreateLocalCoordinateSystem(wxT("Sp_Inertial"), wxT("MJ2000Eq"), this,
+            CreateLocalCoordinateSystem("Sp_Inertial", "MJ2000Eq", this,
                                         NULL, NULL, j2000Body, theSolarSystem);
          bodyFixedCS =
             CoordinateSystem::
-            CreateLocalCoordinateSystem(wxT("Sp_BodyFixed"), wxT("BodyFixed"), this,
+            CreateLocalCoordinateSystem("Sp_BodyFixed", "BodyFixed", this,
                                         NULL, NULL, j2000Body, theSolarSystem);
          #ifdef DEBUG_ATTITUDE
          MessageInterface::ShowMessage
-            (wxT("   inertialCS=<%p>, bodyFixedCS=<%p>\n"), inertialCS, bodyFixedCS);
+            ("   inertialCS=<%p>, bodyFixedCS=<%p>\n", inertialCS, bodyFixedCS);
          #endif
          
          // if coordinate systems are still NULL, just return identity matrix
@@ -429,9 +429,9 @@ const Rmatrix33& SpacePoint::GetAttitude(Real a1mjdTime)
       
       #ifdef DEBUG_ATTITUDE
       MessageInterface::ShowMessage
-         (wxT("   outState =%s\n"), outState.ToString(16).c_str());
+         ("   outState =%s\n", outState.ToString(16).c_str());
       MessageInterface::ShowMessage
-         (wxT("   rotMat   =\n%s"), rotMat.ToString(16, 25, false, wxT("      ")).c_str());
+         ("   rotMat   =\n%s", rotMat.ToString(16, 25, false, "      ").c_str());
       #endif
       
       cosineMat = rotMat;
@@ -441,8 +441,8 @@ const Rmatrix33& SpacePoint::GetAttitude(Real a1mjdTime)
    {
       hasAttitude = false;
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** SpacePoint::GetAttitude() Cannot compute attitude at epoch %f, ")
-          wxT("SolarSystem or J2000Body is NULL\n"), a1mjdTime);
+         ("*** WARNING *** SpacePoint::GetAttitude() Cannot compute attitude at epoch %f, "
+          "SolarSystem or J2000Body is NULL\n", a1mjdTime);
    }
    
    return cosineMat;
@@ -454,28 +454,28 @@ const Rvector3 SpacePoint::GetMJ2000Acceleration(const A1Mjd &atTime)
    return Rvector3(0.0,0.0,0.0);
 }
 
-void SpacePoint::RemoveSpiceKernelName(const wxString &kernelType,
-                                       const wxString &fileName)
+void SpacePoint::RemoveSpiceKernelName(const std::string &kernelType,
+                                       const std::string &fileName)
 {
-   if (kernelType == wxT("Orbit"))
+   if (kernelType == "Orbit")
    {
       StringArray::iterator i;
       i = find(orbitSpiceKernelNames.begin(), orbitSpiceKernelNames.end(), fileName);
       if (i != orbitSpiceKernelNames.end())  orbitSpiceKernelNames.erase(i);
    }
-   else if (kernelType == wxT("Attitude"))
+   else if (kernelType == "Attitude")
    {
       StringArray::iterator i;
       i = find(attitudeSpiceKernelNames.begin(), attitudeSpiceKernelNames.end(), fileName);
       if (i != attitudeSpiceKernelNames.end())  attitudeSpiceKernelNames.erase(i);
    }
-   else if (kernelType == wxT("SCClock"))
+   else if (kernelType == "SCClock")
    {
       StringArray::iterator i;
       i = find(scClockSpiceKernelNames.begin(), scClockSpiceKernelNames.end(), fileName);
       if (i != scClockSpiceKernelNames.end())  scClockSpiceKernelNames.erase(i);
    }
-   else if (kernelType == wxT("Frame"))
+   else if (kernelType == "Frame")
    {
       StringArray::iterator i;
       i = find(frameSpiceKernelNames.begin(), frameSpiceKernelNames.end(), fileName);
@@ -489,7 +489,7 @@ void SpacePoint::RemoveSpiceKernelName(const wxString &kernelType,
 // public methods inherited from GmatBase
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -500,7 +500,7 @@ void SpacePoint::RemoveSpiceKernelName(const wxString &kernelType,
  *
  */
 //------------------------------------------------------------------------------
-wxString SpacePoint::GetParameterText(const Integer id) const
+std::string SpacePoint::GetParameterText(const Integer id) const
 {
    if (id >= GmatBaseParamCount && id < SpacePointParamCount)
       return PARAMETER_TEXT[id - GmatBaseParamCount];
@@ -508,7 +508,7 @@ wxString SpacePoint::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -519,7 +519,7 @@ wxString SpacePoint::GetParameterText(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer SpacePoint::GetParameterID(const wxString &str) const
+Integer SpacePoint::GetParameterID(const std::string &str) const
 {
    for (Integer i = GmatBaseParamCount; i < SpacePointParamCount; i++)
    {
@@ -551,7 +551,7 @@ Gmat::ParameterType SpacePoint::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -562,7 +562,7 @@ Gmat::ParameterType SpacePoint::GetParameterType(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString SpacePoint::GetParameterTypeString(const Integer id) const
+std::string SpacePoint::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -608,7 +608,7 @@ bool SpacePoint::IsParameterReadOnly(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-//  bool IsParameterReadOnly(const wxString &label) const
+//  bool IsParameterReadOnly(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * Checks to see if the requested parameter is read only.
@@ -618,7 +618,7 @@ bool SpacePoint::IsParameterReadOnly(const Integer id) const
  * @return true if the parameter is read only, false (the default) if not.
  */
 //---------------------------------------------------------------------------
-bool SpacePoint::IsParameterReadOnly(const wxString &label) const
+bool SpacePoint::IsParameterReadOnly(const std::string &label) const
 {
    return IsParameterReadOnly(GetParameterID(label));
 }
@@ -646,13 +646,13 @@ Integer SpacePoint::GetIntegerParameter(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-//  Integer GetIntegerParameter(const wxString &label) const
+//  Integer GetIntegerParameter(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //---------------------------------------------------------------------------
-Integer SpacePoint::GetIntegerParameter(const wxString &label) const
+Integer SpacePoint::GetIntegerParameter(const std::string &label) const
 {
    return GetIntegerParameter(GetParameterID(label));
 }
@@ -676,7 +676,7 @@ Integer SpacePoint::SetIntegerParameter(const Integer id,
                                         const Integer value)
 {
    #ifdef DEBUG_SPICE_KERNEL
-      MessageInterface::ShowMessage(wxT("SpacePoint: setting %s to %d\n"),
+      MessageInterface::ShowMessage("SpacePoint: setting %s to %d\n",
             GetParameterText(id).c_str(), value);
    #endif
    if (id == NAIF_ID)
@@ -696,7 +696,7 @@ Integer SpacePoint::SetIntegerParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id) const
+//  std::string  GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -708,7 +708,7 @@ Integer SpacePoint::SetIntegerParameter(const Integer id,
  *
  */
 //------------------------------------------------------------------------------
-wxString SpacePoint::GetStringParameter(const Integer id) const
+std::string SpacePoint::GetStringParameter(const Integer id) const
 {
    if (id == J2000_BODY_NAME)   
    {
@@ -718,45 +718,45 @@ wxString SpacePoint::GetStringParameter(const Integer id) const
 
    // return entire brace-enclosed array for the kernel name arrays
    // (needed so that assignments will work inside of GmatFunctions) wcs 2010.05.19
-   wxString kernelArrayString = wxT("{");
+   std::string kernelArrayString = "{";
    if (id == ORBIT_SPICE_KERNEL_NAME)
    {
       for (unsigned int ii = 0; ii < orbitSpiceKernelNames.size(); ii++)
       {
-         if (ii != 0) kernelArrayString += wxT(",");
+         if (ii != 0) kernelArrayString += ",";
          kernelArrayString              += orbitSpiceKernelNames.at(ii);
       }
-      kernelArrayString += wxT("}");
+      kernelArrayString += "}";
       return kernelArrayString;
    }
    if (id == ATTITUDE_SPICE_KERNEL_NAME)
    {
       for (unsigned int ii = 0; ii < attitudeSpiceKernelNames.size(); ii++)
       {
-         if (ii != 0) kernelArrayString += wxT(",");
+         if (ii != 0) kernelArrayString += ",";
          kernelArrayString              += attitudeSpiceKernelNames.at(ii);
       }
-      kernelArrayString += wxT("}");
+      kernelArrayString += "}";
       return kernelArrayString;
    }
    if (id == SC_CLOCK_SPICE_KERNEL_NAME)
    {
       for (unsigned int ii = 0; ii < scClockSpiceKernelNames.size(); ii++)
       {
-         if (ii != 0) kernelArrayString += wxT(",");
+         if (ii != 0) kernelArrayString += ",";
          kernelArrayString              += scClockSpiceKernelNames.at(ii);
       }
-      kernelArrayString += wxT("}");
+      kernelArrayString += "}";
       return kernelArrayString;
    }
    if (id == FRAME_SPICE_KERNEL_NAME)
    {
       for (unsigned int ii = 0; ii < frameSpiceKernelNames.size(); ii++)
       {
-         if (ii != 0) kernelArrayString += wxT(",");
+         if (ii != 0) kernelArrayString += ",";
          kernelArrayString              += frameSpiceKernelNames.at(ii);
       }
-      kernelArrayString += wxT("}");
+      kernelArrayString += "}";
       return kernelArrayString;
    }
 
@@ -764,7 +764,7 @@ wxString SpacePoint::GetStringParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  SetStringParameter(const Integer id, const wxString value)
+//  std::string  SetStringParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the string parameter value, given the input
@@ -779,7 +779,7 @@ wxString SpacePoint::GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 
  bool SpacePoint::SetStringParameter(const Integer id, 
-                                    const wxString &value)
+                                    const std::string &value)
 {
    if (id == J2000_BODY_NAME) 
    {
@@ -791,20 +791,20 @@ wxString SpacePoint::GetStringParameter(const Integer id) const
    if (id == ORBIT_SPICE_KERNEL_NAME)
    {
       #ifdef DEBUG_SPACE_POINT_ORBIT_KERNELS
-          MessageInterface::ShowMessage(wxT("Entering SP::SetString with value = %s\n"),
+          MessageInterface::ShowMessage("Entering SP::SetString with value = %s\n",
              value.c_str());
       #endif
       // if it is the whole StringArray of kernel names, handle that here
       // (needed so that assignments will work inside of GmatFunctions) wcs 2010.05.18
-      wxString value1 = GmatStringUtil::Trim(value);
+      std::string value1 = GmatStringUtil::Trim(value);
       if (GmatStringUtil::IsEnclosedWithBraces(value1))
       {
          orbitSpiceKernelNames.clear();
          orbitSpiceKernelNames = GmatStringUtil::ToStringArray(value1);
          #ifdef DEBUG_SPACE_POINT_ORBIT_KERNELS
-             MessageInterface::ShowMessage(wxT("In SP::SetString value IS enclosed with braces and values are:\n"));
+             MessageInterface::ShowMessage("In SP::SetString value IS enclosed with braces and values are:\n");
              for (unsigned int ii = 0; ii < orbitSpiceKernelNames.size(); ii++)
-                MessageInterface::ShowMessage(wxT("   (%d)   %s\n"), (Integer) ii,
+                MessageInterface::ShowMessage("   (%d)   %s\n", (Integer) ii,
                       (orbitSpiceKernelNames.at(ii)).c_str());
          #endif
       }
@@ -821,7 +821,7 @@ wxString SpacePoint::GetStringParameter(const Integer id) const
    {
       // if it is the whole StringArray of kernel names, handle that here
       // (needed so that assignments will work inside of GmatFunctions) wcs 2010.05.18
-      wxString value1 = GmatStringUtil::Trim(value);
+      std::string value1 = GmatStringUtil::Trim(value);
       if (GmatStringUtil::IsEnclosedWithBraces(value1))
       {
          attitudeSpiceKernelNames.clear();
@@ -840,7 +840,7 @@ wxString SpacePoint::GetStringParameter(const Integer id) const
    {
       // if it is the whole StringArray of kernel names, handle that here
       // (needed so that assignments will work inside of GmatFunctions) wcs 2010.05.18
-      wxString value1 = GmatStringUtil::Trim(value);
+      std::string value1 = GmatStringUtil::Trim(value);
       if (GmatStringUtil::IsEnclosedWithBraces(value1))
       {
          scClockSpiceKernelNames.clear();
@@ -859,7 +859,7 @@ wxString SpacePoint::GetStringParameter(const Integer id) const
    {
       // if it is the whole StringArray of kernel names, handle that here
       // (needed so that assignments will work inside of GmatFunctions) wcs 2010.05.18
-      wxString value1 = GmatStringUtil::Trim(value);
+      std::string value1 = GmatStringUtil::Trim(value);
       if (GmatStringUtil::IsEnclosedWithBraces(value1))
       {
          frameSpiceKernelNames.clear();
@@ -881,7 +881,7 @@ wxString SpacePoint::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to get a parameter value
@@ -891,13 +891,13 @@ wxString SpacePoint::GetStringParameter(const Integer id) const
  * @return the value of the parameter
  */
 //------------------------------------------------------------------------------
-wxString SpacePoint::GetStringParameter(const wxString &label) const
+std::string SpacePoint::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
 /**
 * Accessor method used to get a parameter value
@@ -907,8 +907,8 @@ wxString SpacePoint::GetStringParameter(const wxString &label) const
  */
 //------------------------------------------------------------------------------
 
-bool SpacePoint::SetStringParameter(const wxString &label,
-                                       const wxString &value)
+bool SpacePoint::SetStringParameter(const std::string &label,
+                                       const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
@@ -938,7 +938,7 @@ const StringArray& SpacePoint::GetStringArrayParameter(const Integer id) const
    return GmatBase::GetStringArrayParameter(id);
 }
 
-const StringArray& SpacePoint::GetStringArrayParameter(const wxString &label) const
+const StringArray& SpacePoint::GetStringArrayParameter(const std::string &label) const
 {
    return GetStringArrayParameter(GetParameterID(label));
 }
@@ -946,7 +946,7 @@ const StringArray& SpacePoint::GetStringArrayParameter(const wxString &label) co
 
 //------------------------------------------------------------------------------
 //  GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                         const wxString &name)
+//                         const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * This method returns a reference object from the SpacePoint class.
@@ -959,7 +959,7 @@ const StringArray& SpacePoint::GetStringArrayParameter(const wxString &label) co
  */
 //------------------------------------------------------------------------------
 GmatBase* SpacePoint::GetRefObject(const Gmat::ObjectType type,
-                                   const wxString &name)
+                                   const std::string &name)
 {
    switch (type)
    {
@@ -975,7 +975,7 @@ GmatBase* SpacePoint::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                    const wxString &name)
+//                    const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * This method sets a reference object for the SpacePoint class.
@@ -989,7 +989,7 @@ GmatBase* SpacePoint::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool SpacePoint::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                              const wxString &name)
+                              const std::string &name)
 {
    
    switch (type)
@@ -1015,7 +1015,7 @@ bool SpacePoint::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 // need to be implemented
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id, const Integer index) const
+// std::string GetStringParameter(const Integer id, const Integer index) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value from a vector of strings, 
@@ -1027,7 +1027,7 @@ bool SpacePoint::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  * @return The requested string.
  */
 //------------------------------------------------------------------------------
-wxString SpacePoint::GetStringParameter(const Integer id,
+std::string SpacePoint::GetStringParameter(const Integer id,
                                            const Integer index) const
 {
    switch (id)
@@ -1037,28 +1037,28 @@ wxString SpacePoint::GetStringParameter(const Integer id,
          if ((index >= 0) && (index < (Integer) orbitSpiceKernelNames.size()))
             return orbitSpiceKernelNames[index];
          else
-            throw GmatBaseException(wxT("Index into array of SPK kernels is out-of-bounds.\n"));
+            throw GmatBaseException("Index into array of SPK kernels is out-of-bounds.\n");
       }
    case ATTITUDE_SPICE_KERNEL_NAME:
       {
          if ((index >= 0) && (index < (Integer) attitudeSpiceKernelNames.size()))
             return attitudeSpiceKernelNames[index];
          else
-            throw GmatBaseException(wxT("Index into array of CK kernels is out-of-bounds.\n"));
+            throw GmatBaseException("Index into array of CK kernels is out-of-bounds.\n");
      }
    case SC_CLOCK_SPICE_KERNEL_NAME:
       {
          if ((index >= 0) && (index < (Integer) scClockSpiceKernelNames.size()))
             return scClockSpiceKernelNames[index];
          else
-            throw GmatBaseException(wxT("Index into array of SCLK kernels is out-of-bounds.\n"));
+            throw GmatBaseException("Index into array of SCLK kernels is out-of-bounds.\n");
       }
    case FRAME_SPICE_KERNEL_NAME:
       {
          if ((index >= 0) && (index < (Integer) frameSpiceKernelNames.size()))
             return frameSpiceKernelNames[index];
          else
-            throw GmatBaseException(wxT("Index into array of FK kernels is out-of-bounds.\n"));
+            throw GmatBaseException("Index into array of FK kernels is out-of-bounds.\n");
      }
 
       default:
@@ -1070,7 +1070,7 @@ wxString SpacePoint::GetStringParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value, 
+// bool SetStringParameter(const Integer id, const std::string &value, 
 //                         const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -1085,18 +1085,18 @@ wxString SpacePoint::GetStringParameter(const Integer id,
  */
 //------------------------------------------------------------------------------
 bool SpacePoint::SetStringParameter(const Integer id, 
-                                    const wxString &value, 
+                                    const std::string &value, 
                                     const Integer index)
 {
 #ifdef DEBUG_SPICE_KERNEL
    MessageInterface::ShowMessage(
-         wxT("Entering SpacePoint::SetStringParameter with id = %d, value = %s, and index = %d\n"),
+         "Entering SpacePoint::SetStringParameter with id = %d, value = %s, and index = %d\n",
          id, value.c_str(), index);
 #endif
    if (index < 0)
    {
       GmatBaseException ex;
-      ex.SetDetails(wxT("The index %d is out-of-range for field \"%s\""), index,
+      ex.SetDetails("The index %d is out-of-range for field \"%s\"", index,
                     GetParameterText(id).c_str());
       throw ex;
    }
@@ -1156,7 +1156,7 @@ bool SpacePoint::SetStringParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label, 
+// std::string GetStringParameter(const std::string &label, 
 //                                const Integer index) const
 //------------------------------------------------------------------------------
 /**
@@ -1170,7 +1170,7 @@ bool SpacePoint::SetStringParameter(const Integer id,
  * @return The requested string.
  */
 //------------------------------------------------------------------------------
-wxString SpacePoint::GetStringParameter(const wxString &label, 
+std::string SpacePoint::GetStringParameter(const std::string &label, 
                                            const Integer index) const
 {
    Integer id = GetParameterID(label);
@@ -1179,7 +1179,7 @@ wxString SpacePoint::GetStringParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value, 
+// bool SetStringParameter(const std::string &label, const std::string &value, 
 //                         const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -1194,8 +1194,8 @@ wxString SpacePoint::GetStringParameter(const wxString &label,
  * @return true if successful; otherwise, false.
  */
 //------------------------------------------------------------------------------
-bool SpacePoint::SetStringParameter(const wxString &label, 
-                                    const wxString &value, 
+bool SpacePoint::SetStringParameter(const std::string &label, 
+                                    const std::string &value, 
                                     const Integer index)
 {
    Integer id = GetParameterID(label);
@@ -1204,7 +1204,7 @@ bool SpacePoint::SetStringParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// GmatBase* GetRefObject(const Gmat::ObjectType type, const wxString &name, 
+// GmatBase* GetRefObject(const Gmat::ObjectType type, const std::string &name, 
 //                        const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -1219,7 +1219,7 @@ bool SpacePoint::SetStringParameter(const wxString &label,
  */
 //------------------------------------------------------------------------------
 GmatBase* SpacePoint::GetRefObject(const Gmat::ObjectType type,
-                                   const wxString &name, 
+                                   const std::string &name, 
                                    const Integer index)
 {
    return GmatBase::GetRefObject(type, name, index);
@@ -1228,7 +1228,7 @@ GmatBase* SpacePoint::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                   const wxString &name, const Integer index)
+//                   const std::string &name, const Integer index)
 //------------------------------------------------------------------------------
 /**
  * This method sets a pointer to a reference object in a vector of objects in 
@@ -1243,7 +1243,7 @@ GmatBase* SpacePoint::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool SpacePoint::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                              const wxString &name, const Integer index)
+                              const std::string &name, const Integer index)
 {
    return GmatBase::SetRefObject(obj, type, name, index);
 }

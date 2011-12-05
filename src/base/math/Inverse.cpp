@@ -34,8 +34,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Inverse::Inverse(const wxString &nomme)
-   : MathFunction(wxT("Inverse"), nomme)
+Inverse::Inverse(const std::string &nomme)
+   : MathFunction("Inverse", nomme)
 {
 }
 
@@ -107,7 +107,7 @@ void Inverse::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 bool Inverse::ValidateInputs()
 {
    if (leftNode == NULL)
-      throw MathException(wxT("Inverse() - Missing input arguments.\n"));
+      throw MathException("Inverse() - Missing input arguments.\n");
    
    Integer type, row, col;
    
@@ -150,18 +150,18 @@ Rmatrix Inverse::MatrixEvaluate()
    
    Rmatrix rmat = leftNode->MatrixEvaluate();
    MessageInterface::ShowMessage
-      (wxT("Inverse::MatrixEvaluate() left node =\n%s\n"), rmat.ToString(12).c_str());
+      ("Inverse::MatrixEvaluate() left node =\n%s\n", rmat.ToString(12).c_str());
    try
    {
       Rmatrix result = rmat.Inverse();
       MessageInterface::ShowMessage
-         (wxT("Inverse::MatrixEvaluate() returning\n%s\n"), result.ToString(12).c_str());
+         ("Inverse::MatrixEvaluate() returning\n%s\n", result.ToString(12).c_str());
       return result;
    }
    catch (BaseException &be)
    {
       MessageInterface::ShowMessage
-         (wxT("Inverse::MatrixEvaluate() %s for %s\n"), be.GetFullMessage().c_str(),
+         ("Inverse::MatrixEvaluate() %s for %s\n", be.GetFullMessage().c_str(),
           GetName().c_str());
       throw;
    }

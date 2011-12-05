@@ -61,7 +61,7 @@ GmatState::GmatState(Integer size) :
       Zero();
       dataIDs = new Integer[stateSize];
       associatedElements = new Integer[stateSize];
-      dataTypes.assign(stateSize, wxT(""));
+      dataTypes.assign(stateSize, "");
    }
 }
 
@@ -113,7 +113,7 @@ GmatState::GmatState(const GmatState& gs) :
       memcpy(dataIDs, gs.dataIDs, stateSize * sizeof(Integer));
       memcpy(associatedElements, gs.associatedElements, stateSize * sizeof(Integer));
       
-      dataTypes.assign(stateSize, wxT(""));
+      dataTypes.assign(stateSize, "");
       for (Integer i = 0; i < stateSize; ++i)
          dataTypes[i] = gs.dataTypes[i];
    }
@@ -159,7 +159,7 @@ GmatState& GmatState::operator=(const GmatState& gs)
          memcpy(dataIDs, gs.dataIDs, stateSize * sizeof(Integer));
          memcpy(associatedElements, gs.associatedElements, stateSize * sizeof(Integer));
          
-         dataTypes.assign(stateSize, wxT(""));
+         dataTypes.assign(stateSize, "");
          for (Integer i = 0; i < stateSize; ++i)
             dataTypes[i] = gs.dataTypes[i];
       }
@@ -186,7 +186,7 @@ GmatState& GmatState::operator=(const GmatState& gs)
 Real& GmatState::operator[](const Integer index)
 {
    if ((index < 0 ) || (index >= stateSize))
-      throw GmatBaseException(wxT("GmatState array index out of bounds"));
+      throw GmatBaseException("GmatState array index out of bounds");
    
    return theData[index];
 }
@@ -204,7 +204,7 @@ Real& GmatState::operator[](const Integer index)
 Real GmatState::operator[](const Integer index) const
 {
    if ((index < 0 ) || (index >= stateSize))
-      throw GmatBaseException(wxT("GmatState array index out of bounds"));
+      throw GmatBaseException("GmatState array index out of bounds");
    
    return theData[index];
 }
@@ -226,8 +226,8 @@ void GmatState::SetSize(const Integer size)
    if (size > 0)
       Resize(size);
    else
-      throw GmatBaseException(wxT("State resizing to a value less than or equal ")
-            wxT("to zero is not allowed"));
+      throw GmatBaseException("State resizing to a value less than or equal "
+            "to zero is not allowed");
 }
 
 
@@ -267,10 +267,10 @@ bool GmatState::SetState(const Real *data, const Integer size,
 {
    if (start < 0)
       throw GmatBaseException(
-            wxT("Cannot set state data -- starting index is out of range"));
+            "Cannot set state data -- starting index is out of range");
    if (start + size > stateSize)
       throw GmatBaseException(
-            wxT("Cannot set state data -- data span is out of range"));
+            "Cannot set state data -- data span is out of range");
    
    memcpy(&(theData[start]), data, size*sizeof(Real));
    
@@ -304,18 +304,18 @@ GmatEpoch GmatState::SetEpoch(const GmatEpoch ep)
 
 
 bool GmatState::SetElementProperties(const Integer index, const Integer id, 
-                                     const wxString &textId, 
+                                     const std::string &textId, 
                                      const Integer associate)
 {
    #ifdef DEBUG_STATE_LOADING
       MessageInterface::ShowMessage(
-            wxT("Setting element %d, id = %d, desc = %s, assoc = %d\n"), index, id, 
+            "Setting element %d, id = %d, desc = %s, assoc = %d\n", index, id, 
             textId.c_str(), associate);
    #endif
       
    if ((index < 0) || (index >= stateSize))
-      throw GmatBaseException(wxT("Cannot set state element properties: ")
-                  wxT("index out of range."));
+      throw GmatBaseException("Cannot set state element properties: "
+                  "index out of range.");
    
    dataIDs[index] = id;
    dataTypes[index] = textId;
@@ -345,13 +345,13 @@ void GmatState::Resize(Integer newSize, bool withCopy)
    }
    
    if (newSize <= 0)
-      throw GmatBaseException(wxT("GmatState Resize requested an invalid size"));
+      throw GmatBaseException("GmatState Resize requested an invalid size");
    
    Real *newData = new Real[newSize];
    Integer *newIDs = new Integer[newSize];
    Integer *newAssociates = new Integer[newSize];
    StringArray newTypes;
-   newTypes.assign(newSize, wxT(""));
+   newTypes.assign(newSize, "");
 
    Integer start = 0;
 
@@ -376,11 +376,11 @@ void GmatState::Resize(Integer newSize, bool withCopy)
    theData = newData;
    dataIDs = newIDs;
    associatedElements = newAssociates;
-   dataTypes.assign(newSize, wxT(""));
+   dataTypes.assign(newSize, "");
    dataTypes = newTypes;
 
    #ifdef DEBUG_STATE_LOADING
-      MessageInterface::ShowMessage(wxT("dataType size is %d\n"), dataTypes.size());
+      MessageInterface::ShowMessage("dataType size is %d\n", dataTypes.size());
    #endif
       
    // Zero the unset entries in the state data
@@ -408,11 +408,11 @@ void GmatState::Zero(Integer begin, UnsignedInt length)
 {
    if ((begin < 0) || ((Integer)(begin + length) > stateSize))
    {
-      wxString errmsg;
-      errmsg << wxT("GmatState request to zero ") << length
-             << wxT(" elements starting at element ") << begin 
-             << wxT(" exceeds the state size, which is ") << stateSize;
-      throw GmatBaseException(errmsg);
+      std::stringstream errmsg;
+      errmsg << "GmatState request to zero " << length
+             << " elements starting at element " << begin 
+             << " exceeds the state size, which is " << stateSize;
+      throw GmatBaseException(errmsg.str());
    }
    
    for (Integer i = begin; i < (Integer)(begin + length); ++i)

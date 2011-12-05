@@ -29,11 +29,11 @@
 //---------------------------------
 //  static data
 //---------------------------------
-const wxString Rvector3::DATA_DESCRIPTIONS[NUM_DATA] =
+const std::string Rvector3::DATA_DESCRIPTIONS[NUM_DATA] =
 {
-   wxT("Element 1"),
-   wxT("Element 2"),
-   wxT("Element 3")
+   "Element 1",
+   "Element 2",
+   "Element 3"
 };
 
 //---------------------------------
@@ -108,7 +108,7 @@ Rvector3 Rvector3::GetUnitVector() const
    Real mag = GetMagnitude();
 
    if (GmatMathUtil::IsZero(mag))
-      throw ZeroVector(wxT(" from Rvector3::GetUnitVector()\n"));
+      throw ZeroVector(" from Rvector3::GetUnitVector()\n");
    
    return Rvector3(elementD[0]/mag, elementD[1]/mag, elementD[2]/mag);
 }
@@ -122,7 +122,7 @@ const Rvector3& Rvector3::Normalize()
    Real mag = GetMagnitude();
    
    if (GmatMathUtil::IsZero(mag))
-      throw ZeroVector(wxT(" from Rvector3::Normalize()\n"));
+      throw ZeroVector(" from Rvector3::Normalize()\n");
    
    elementD[0] /= mag;
    elementD[1] /= mag;
@@ -416,9 +416,9 @@ Integer Rvector3::GetNumData() const
 
 
 //------------------------------------------------------------------------------
-// const wxString* GetDataDescriptions() const
+// const std::string* GetDataDescriptions() const
 //------------------------------------------------------------------------------
-const wxString* Rvector3::GetDataDescriptions() const
+const std::string* Rvector3::GetDataDescriptions() const
 {
    return DATA_DESCRIPTIONS;
 }

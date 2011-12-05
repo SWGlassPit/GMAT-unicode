@@ -29,7 +29,7 @@ class GMAT_API HardwareException : public BaseException
 {
 public:
 
-	HardwareException(wxString details = wxT(""));
+	HardwareException(std::string details = "");
 	virtual ~HardwareException();
    HardwareException(const HardwareException &soe);
 };

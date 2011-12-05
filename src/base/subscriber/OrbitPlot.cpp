@@ -46,33 +46,33 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 OrbitPlot::PARAMETER_TEXT[OrbitPlotParamCount - SubscriberParamCount] =
 {
-   wxT("Add"),
-   wxT("CoordinateSystem"),
-   wxT("DrawObject"),
-   wxT("OrbitColor"),
-   wxT("TargetColor"),
-   wxT("DataCollectFrequency"),
-   wxT("UpdatePlotFrequency"),
-   wxT("NumPointsToRedraw"),
-   wxT("ShowPlot"),
+   "Add",
+   "CoordinateSystem",
+   "DrawObject",
+   "OrbitColor",
+   "TargetColor",
+   "DataCollectFrequency",
+   "UpdatePlotFrequency",
+   "NumPointsToRedraw",
+   "ShowPlot",
 }; 
 
 
 const Gmat::ParameterType
 OrbitPlot::PARAMETER_TYPE[OrbitPlotParamCount - SubscriberParamCount] =
 {
-   Gmat::OBJECTARRAY_TYPE,       //wxT("Add")
-   Gmat::OBJECT_TYPE,            //wxT("CoordinateSystem")
-   Gmat::BOOLEANARRAY_TYPE,      //wxT("DrawObject")
-   Gmat::UNSIGNED_INTARRAY_TYPE, //wxT("OrbitColor"),
-   Gmat::UNSIGNED_INTARRAY_TYPE, //wxT("TargetColor"),
-   Gmat::INTEGER_TYPE,           //wxT("DataCollectFrequency")
-   Gmat::INTEGER_TYPE,           //wxT("UpdatePlotFrequency")
-   Gmat::INTEGER_TYPE,           //wxT("NumPointsToRedraw")
-   Gmat::BOOLEAN_TYPE,           //wxT("ShowPlot")
+   Gmat::OBJECTARRAY_TYPE,       //"Add"
+   Gmat::OBJECT_TYPE,            //"CoordinateSystem"
+   Gmat::BOOLEANARRAY_TYPE,      //"DrawObject"
+   Gmat::UNSIGNED_INTARRAY_TYPE, //"OrbitColor",
+   Gmat::UNSIGNED_INTARRAY_TYPE, //"TargetColor",
+   Gmat::INTEGER_TYPE,           //"DataCollectFrequency"
+   Gmat::INTEGER_TYPE,           //"UpdatePlotFrequency"
+   Gmat::INTEGER_TYPE,           //"NumPointsToRedraw"
+   Gmat::BOOLEAN_TYPE,           //"ShowPlot"
 };
 
 
@@ -88,23 +88,23 @@ OrbitPlot::DEFAULT_ORBIT_COLOR[MAX_SP_COLOR] =
 
 
 //------------------------------------------------------------------------------
-// OrbitPlot(const wxString &type, const wxString &name)
+// OrbitPlot(const std::string &type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * The default constructor
  */
 //------------------------------------------------------------------------------
-OrbitPlot::OrbitPlot(const wxString &type, const wxString &name)
+OrbitPlot::OrbitPlot(const std::string &type, const std::string &name)
    : Subscriber(type, name)
 {
    // GmatBase data
    parameterCount = OrbitPlotParamCount;
-   objectTypeNames.push_back(wxT("OrbitPlot"));
+   objectTypeNames.push_back("OrbitPlot");
    
    mViewCoordSystem = NULL;
    
    mOldName = instanceName;
-   mViewCoordSysName = wxT("EarthMJ2000Eq");
+   mViewCoordSysName = "EarthMJ2000Eq";
    
    mDataCollectFrequency = 1;
    mUpdatePlotFrequency = 50;
@@ -143,17 +143,17 @@ OrbitPlot::OrbitPlot(const wxString &type, const wxString &name)
    mNonStdBodyCount = 0;
    
    // default planet color
-   mOrbitColorMap[wxT("Earth")] = GmatColor::GREEN32;
-   mOrbitColorMap[wxT("Luna")] = GmatColor::SILVER32;
-   mOrbitColorMap[wxT("Sun")] = GmatColor::ORANGE32;
-   mOrbitColorMap[wxT("Mercury")] = GmatColor::GRAY32;
-   mOrbitColorMap[wxT("Venus")] = GmatColor::BEIGE32;
-   mOrbitColorMap[wxT("Mars")] = GmatColor::L_GRAY32;
-   mOrbitColorMap[wxT("Jupiter")] = GmatColor::L_BROWN32;
-   mOrbitColorMap[wxT("Saturn")] = GmatColor::D_BROWN32;
-   mOrbitColorMap[wxT("Uranus")] = GmatColor::BLUE32;
-   mOrbitColorMap[wxT("Neptune")] = GmatColor::NAVY32;
-   mOrbitColorMap[wxT("Pluto")] = GmatColor::PURPLE32;
+   mOrbitColorMap["Earth"] = GmatColor::GREEN32;
+   mOrbitColorMap["Luna"] = GmatColor::SILVER32;
+   mOrbitColorMap["Sun"] = GmatColor::ORANGE32;
+   mOrbitColorMap["Mercury"] = GmatColor::GRAY32;
+   mOrbitColorMap["Venus"] = GmatColor::BEIGE32;
+   mOrbitColorMap["Mars"] = GmatColor::L_GRAY32;
+   mOrbitColorMap["Jupiter"] = GmatColor::L_BROWN32;
+   mOrbitColorMap["Saturn"] = GmatColor::D_BROWN32;
+   mOrbitColorMap["Uranus"] = GmatColor::BLUE32;
+   mOrbitColorMap["Neptune"] = GmatColor::NAVY32;
+   mOrbitColorMap["Pluto"] = GmatColor::PURPLE32;
    
 }
 
@@ -309,23 +309,23 @@ const StringArray& OrbitPlot::GetNonSpacecraftList()
 
 
 //------------------------------------------------------------------------------
-// UnsignedInt GetColor(const wxString &item, const wxString &name)
+// UnsignedInt GetColor(const std::string &item, const std::string &name)
 //------------------------------------------------------------------------------
-UnsignedInt OrbitPlot::GetColor(const wxString &item,
-                                const wxString &name)
+UnsignedInt OrbitPlot::GetColor(const std::string &item,
+                                const std::string &name)
 {
    #if DBGLVL_PARAM
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::GetColor() item=%s, name=%s\n"),
+      ("OrbitPlot::GetColor() item=%s, name=%s\n",
        item.c_str(), name.c_str());
    #endif
    
-   if (item == wxT("Orbit"))
+   if (item == "Orbit")
    {
       if (mOrbitColorMap.find(name) != mOrbitColorMap.end())
          return mOrbitColorMap[name];
    }
-   else if (item == wxT("Target"))
+   else if (item == "Target")
    {
       if (mTargetColorMap.find(name) != mTargetColorMap.end())
          return mTargetColorMap[name];
@@ -336,19 +336,19 @@ UnsignedInt OrbitPlot::GetColor(const wxString &item,
 
 
 //------------------------------------------------------------------------------
-// bool SetColor(const wxString &item, const wxString &name,
+// bool SetColor(const std::string &item, const std::string &name,
 //               UnsignedInt value)
 //------------------------------------------------------------------------------
-bool OrbitPlot::SetColor(const wxString &item, const wxString &name,
+bool OrbitPlot::SetColor(const std::string &item, const std::string &name,
                          UnsignedInt value)
 {
    #if DBGLVL_PARAM
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::SetColor() item=%s, name=%s, value=%u\n"),
+      ("OrbitPlot::SetColor() item=%s, name=%s, value=%u\n",
        item.c_str(), name.c_str(), value);
    #endif
    
-   if (item == wxT("Orbit"))
+   if (item == "Orbit")
    {
       if (mOrbitColorMap.find(name) != mOrbitColorMap.end())
       {
@@ -361,7 +361,7 @@ bool OrbitPlot::SetColor(const wxString &item, const wxString &name,
          return true;
       }
    }
-   else if (item == wxT("Target"))
+   else if (item == "Target")
    {
       if (mTargetColorMap.find(name) != mTargetColorMap.end())
       {
@@ -380,13 +380,13 @@ bool OrbitPlot::SetColor(const wxString &item, const wxString &name,
 
 
 //------------------------------------------------------------------------------
-// bool GetShowObject(const wxString &name)
+// bool GetShowObject(const std::string &name)
 //------------------------------------------------------------------------------
-bool OrbitPlot::GetShowObject(const wxString &name)
+bool OrbitPlot::GetShowObject(const std::string &name)
 {
    #if DBGLVL_PARAM
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::GetShowObject() name=%s returning %d\n"),
+      ("OrbitPlot::GetShowObject() name=%s returning %d\n",
        name.c_str(), mDrawOrbitMap[name]);
    #endif
    
@@ -395,13 +395,13 @@ bool OrbitPlot::GetShowObject(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// void SetShowObject(const wxString &name, bool value)
+// void SetShowObject(const std::string &name, bool value)
 //------------------------------------------------------------------------------
-void OrbitPlot::SetShowObject(const wxString &name, bool value)
+void OrbitPlot::SetShowObject(const std::string &name, bool value)
 {
    #if DBGLVL_PARAM
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::SetShowObject() name=%s setting %d\n"), name.c_str(), value);
+      ("OrbitPlot::SetShowObject() name=%s setting %d\n", name.c_str(), value);
    #endif
    
    mShowObjectMap[name] = value;
@@ -434,7 +434,7 @@ void OrbitPlot::Activate(bool state)
 {
    #ifdef DEBUG_ACTIVATE
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::Activate() this=<%p>'%s' entered, state=%d, isInitialized=%d\n"),
+      ("OrbitPlot::Activate() this=<%p>'%s' entered, state=%d, isInitialized=%d\n",
        this, GetName().c_str(), state, isInitialized);
    #endif
    
@@ -463,8 +463,8 @@ bool OrbitPlot::Validate()
    //
    //if (mDrawObjectArray.size() != objCount)
    //{
-   //   lastErrorMessage = wxT("There are missing or extra values in \"DrawObject\" field. Expecting ") +
-   //      GmatStringUtil::ToString(objCount, 1) + wxT(" values");
+   //   lastErrorMessage = "There are missing or extra values in \"DrawObject\" field. Expecting " +
+   //      GmatStringUtil::ToString(objCount, 1) + " values";
    //   return false;
    //}
    
@@ -484,8 +484,8 @@ bool OrbitPlot::Initialize()
    
    #if DBGLVL_INIT
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::Initialize() this=<%p>'%s', active=%d, isInitialized=%d, ")
-       wxT("isEndOfReceive=%d, mAllSpCount=%d\n"), this, GetName().c_str(), active,
+      ("OrbitPlot::Initialize() this=<%p>'%s', active=%d, isInitialized=%d, "
+       "isEndOfReceive=%d, mAllSpCount=%d\n", this, GetName().c_str(), active,
        isInitialized, isEndOfReceive, mAllSpCount);
    #endif
    
@@ -497,8 +497,8 @@ bool OrbitPlot::Initialize()
    {
       active = false;
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** The %s named \"%s\" will be turned off. ")
-          wxT("No SpacePoints were added to plot.\n"), GetTypeName().c_str(), GetName().c_str());
+         ("*** WARNING *** The %s named \"%s\" will be turned off. "
+          "No SpacePoints were added to plot.\n", GetTypeName().c_str(), GetName().c_str());
       return false;
    }
    
@@ -507,7 +507,7 @@ bool OrbitPlot::Initialize()
    {
       #if DBGLVL_INIT > 1
       MessageInterface::ShowMessage
-         (wxT("OrbitPlot::Initialize() mAllSpNameArray[%d]=<%p>'%s'\n"),
+         ("OrbitPlot::Initialize() mAllSpNameArray[%d]=<%p>'%s'\n",
           i, mAllSpArray[i], mAllSpNameArray[i].c_str());
       #endif
       
@@ -527,8 +527,8 @@ bool OrbitPlot::Initialize()
    {
       active = false;
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** The %s named \"%s\" will be turned off.  ")
-          wxT("%d SpaceObjects have NULL pointers.\n"), GetTypeName().c_str(),
+         ("*** WARNING *** The %s named \"%s\" will be turned off.  "
+          "%d SpaceObjects have NULL pointers.\n", GetTypeName().c_str(),
           GetName().c_str(), nullCounter);
       return false;
    }
@@ -537,13 +537,13 @@ bool OrbitPlot::Initialize()
    {
       active = false;
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** The %s named \"%s\" will be turned off. ")
-          wxT("No Spacecraft was added to plot.\n"), GetTypeName().c_str(), GetName().c_str());
+         ("*** WARNING *** The %s named \"%s\" will be turned off. "
+          "No Spacecraft was added to plot.\n", GetTypeName().c_str(), GetName().c_str());
       return false;
    }
    
    #if DBGLVL_INIT
-   MessageInterface::ShowMessage(wxT("OrbitPlot::Initialize() exiting\n"));
+   MessageInterface::ShowMessage("OrbitPlot::Initialize() exiting\n");
    #endif
    
    return retval;
@@ -582,7 +582,7 @@ void OrbitPlot::Copy(const GmatBase* orig)
 
 
 //------------------------------------------------------------------------------
-// bool SetName(const wxString &who, const std;:string &oldName = wxT(""))
+// bool SetName(const std::string &who, const std;:string &oldName = "")
 //------------------------------------------------------------------------------
 /**
  * Set the name for this instance.
@@ -590,15 +590,15 @@ void OrbitPlot::Copy(const GmatBase* orig)
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-bool OrbitPlot::SetName(const wxString &who, const wxString &oldName)
+bool OrbitPlot::SetName(const std::string &who, const std::string &oldName)
 {
    #if DBGLVL_RENAME
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::SetName() newName=%s, oldName=%s\n"), who.c_str(),
+      ("OrbitPlot::SetName() newName=%s, oldName=%s\n", who.c_str(),
        oldName.c_str());
    #endif
    
-   if (oldName == wxT(""))
+   if (oldName == "")
       mOldName = instanceName;
    else
       mOldName = oldName;
@@ -608,8 +608,8 @@ bool OrbitPlot::SetName(const wxString &who, const wxString &oldName)
 
 
 //------------------------------------------------------------------------------
-// virtual bool TakeAction(const wxString &action,  
-//                         const wxString &actionData = wxT(""));
+// virtual bool TakeAction(const std::string &action,  
+//                         const std::string &actionData = "");
 //------------------------------------------------------------------------------
 /**
  * This method performs action.
@@ -620,33 +620,33 @@ bool OrbitPlot::SetName(const wxString &who, const wxString &oldName)
  *
  */
 //------------------------------------------------------------------------------
-bool OrbitPlot::TakeAction(const wxString &action,
-                           const wxString &actionData)
+bool OrbitPlot::TakeAction(const std::string &action,
+                           const std::string &actionData)
 {
    #if DBGLVL_TAKE_ACTION
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::TakeAction() '%s' entered, action='%s', actionData='%s'\n"),
+      ("OrbitPlot::TakeAction() '%s' entered, action='%s', actionData='%s'\n",
        GetName().c_str(), action.c_str(), actionData.c_str());
    #endif
    
-   if (action == wxT("Clear"))
+   if (action == "Clear")
    {
       return ClearSpacePointList();
    }
-   else if (action == wxT("Remove"))
+   else if (action == "Remove")
    {
       return RemoveSpacePoint(actionData);
    }
-   else if (action == wxT("Finalize"))
+   else if (action == "Finalize")
    {
       PlotInterface::DeleteGlPlot(instanceName);
    }
-   else if (action == wxT("PenUp"))
+   else if (action == "PenUp")
    {
       isDataOn = false;
       return true;
    }
-   else if (action == wxT("PenDown"))
+   else if (action == "PenDown")
    {
       isDataOn = true;
       return true;
@@ -658,15 +658,15 @@ bool OrbitPlot::TakeAction(const wxString &action,
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool OrbitPlot::RenameRefObject(const Gmat::ObjectType type,
-                                const wxString &oldName,
-                                const wxString &newName)
+                                const std::string &oldName,
+                                const std::string &newName)
 {
    #if DBGLVL_RENAME
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::RenameRefObject() type=%s, oldName=%s, newName=%s\n"),
+      ("OrbitPlot::RenameRefObject() type=%s, oldName=%s, newName=%s\n",
        GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
    #endif
    
@@ -682,8 +682,8 @@ bool OrbitPlot::RenameRefObject(const Gmat::ObjectType type,
       // color map, I can't change the key name, so it is
       // removed and inserted with new name
       //----------------------------------------------------
-      std::map<wxString, UnsignedInt>::iterator orbColorPos, targColorPos;
-      std::map<wxString, bool>::iterator drawOrbitPos, showObjectPos;
+      std::map<std::string, UnsignedInt>::iterator orbColorPos, targColorPos;
+      std::map<std::string, bool>::iterator drawOrbitPos, showObjectPos;
       orbColorPos = mOrbitColorMap.find(oldName);
       targColorPos = mTargetColorMap.find(oldName);
       drawOrbitPos = mDrawOrbitMap.find(oldName);
@@ -703,12 +703,12 @@ bool OrbitPlot::RenameRefObject(const Gmat::ObjectType type,
          mShowObjectMap.erase(showObjectPos);
          
          #if DBGLVL_RENAME
-         MessageInterface::ShowMessage(wxT("---After rename\n"));
+         MessageInterface::ShowMessage("---After rename\n");
          for (orbColorPos = mOrbitColorMap.begin();
               orbColorPos != mOrbitColorMap.end(); ++orbColorPos)
          {
             MessageInterface::ShowMessage
-               (wxT("sc=%s, color=%d\n"), orbColorPos->first.c_str(), orbColorPos->second);
+               ("sc=%s, color=%d\n", orbColorPos->first.c_str(), orbColorPos->second);
          }
          #endif
       }
@@ -724,9 +724,9 @@ bool OrbitPlot::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
-wxString OrbitPlot::GetParameterText(const Integer id) const
+std::string OrbitPlot::GetParameterText(const Integer id) const
 {
    if (id >= SubscriberParamCount && id < OrbitPlotParamCount)
       return PARAMETER_TEXT[id - SubscriberParamCount];
@@ -737,9 +737,9 @@ wxString OrbitPlot::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer OrbitPlot::GetParameterID(const wxString &str) const
+Integer OrbitPlot::GetParameterID(const std::string &str) const
 {
    for (int i=SubscriberParamCount; i<OrbitPlotParamCount; i++)
    {
@@ -764,9 +764,9 @@ Gmat::ParameterType OrbitPlot::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
-wxString OrbitPlot::GetParameterTypeString(const Integer id) const
+std::string OrbitPlot::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -792,9 +792,9 @@ Integer OrbitPlot::GetIntegerParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// virtual Integer GetIntegerParameter(const wxString &label) const
+// virtual Integer GetIntegerParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-Integer OrbitPlot::GetIntegerParameter(const wxString &label) const
+Integer OrbitPlot::GetIntegerParameter(const std::string &label) const
 {
    return GetIntegerParameter(GetParameterID(label));
 }
@@ -818,7 +818,7 @@ Integer OrbitPlot::SetIntegerParameter(const Integer id, const Integer value)
          SubscriberException se;
          se.SetDetails(errorMessageFormat.c_str(),
                        GmatStringUtil::ToString(value, 1).c_str(),
-                       wxT("DataCollectFrequency"), wxT("Integer Number > 0"));
+                       "DataCollectFrequency", "Integer Number > 0");
          throw se;
       }
    case UPDATE_PLOT_FREQUENCY:
@@ -832,7 +832,7 @@ Integer OrbitPlot::SetIntegerParameter(const Integer id, const Integer value)
          SubscriberException se;
          se.SetDetails(errorMessageFormat.c_str(),
                        GmatStringUtil::ToString(value, 1).c_str(),
-                       wxT("UpdatePlotFrequency"), wxT("Integer Number > 0"));
+                       "UpdatePlotFrequency", "Integer Number > 0");
          throw se;
       }
    case NUM_POINTS_TO_REDRAW:
@@ -846,7 +846,7 @@ Integer OrbitPlot::SetIntegerParameter(const Integer id, const Integer value)
          SubscriberException se;
          se.SetDetails(errorMessageFormat.c_str(),
                        GmatStringUtil::ToString(value, 1).c_str(),
-                       wxT("NumPointsToRedraw"), wxT("Integer Number >= 0"));
+                       "NumPointsToRedraw", "Integer Number >= 0");
          throw se;
       }
    default:
@@ -856,10 +856,10 @@ Integer OrbitPlot::SetIntegerParameter(const Integer id, const Integer value)
 
 
 //------------------------------------------------------------------------------
-// virtual Integer SetIntegerParameter(const wxString &label,
+// virtual Integer SetIntegerParameter(const std::string &label,
 //                                     const Integer value)
 //------------------------------------------------------------------------------
-Integer OrbitPlot::SetIntegerParameter(const wxString &label,
+Integer OrbitPlot::SetIntegerParameter(const std::string &label,
                                        const Integer value)
 {
    return SetIntegerParameter(GetParameterID(label), value);
@@ -867,12 +867,12 @@ Integer OrbitPlot::SetIntegerParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
-wxString OrbitPlot::GetStringParameter(const Integer id) const
+std::string OrbitPlot::GetStringParameter(const Integer id) const
 {
    #if DBGLVL_PARAM_STRING
-   MessageInterface::ShowMessage(wxT("OrbitPlot::GetStringParameter() id = %d\n"), id);
+   MessageInterface::ShowMessage("OrbitPlot::GetStringParameter() id = %d\n", id);
    #endif
    
    switch (id)
@@ -880,15 +880,15 @@ wxString OrbitPlot::GetStringParameter(const Integer id) const
    case ADD:
       {
          Integer objCount = mAllSpNameArray.size();
-         wxString objList = wxT("{ ");
+         std::string objList = "{ ";
          for (Integer i = 0; i < objCount; i++)
          {
             if (i == objCount - 1)
                objList += mAllSpNameArray[i];
             else
-               objList += mAllSpNameArray[i] + wxT(", ");
+               objList += mAllSpNameArray[i] + ", ";
          }
-         objList += wxT(" }");
+         objList += " }";
          return objList;
       }
    case COORD_SYSTEM:
@@ -900,13 +900,13 @@ wxString OrbitPlot::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString OrbitPlot::GetStringParameter(const wxString &label) const
+std::string OrbitPlot::GetStringParameter(const std::string &label) const
 {
    #if DBGLVL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::GetStringParameter() label = %s\n"), label.c_str());
+      ("OrbitPlot::GetStringParameter() label = %s\n", label.c_str());
    #endif
    
    return GetStringParameter(GetParameterID(label));
@@ -914,13 +914,13 @@ wxString OrbitPlot::GetStringParameter(const wxString &label) const
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
-bool OrbitPlot::SetStringParameter(const Integer id, const wxString &value)
+bool OrbitPlot::SetStringParameter(const Integer id, const std::string &value)
 {
    #if DBGLVL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::SetStringParameter() this=<%p>'%s', id=%d<%s>, value='%s'\n"),
+      ("OrbitPlot::SetStringParameter() this=<%p>'%s', id=%d<%s>, value='%s'\n",
        this, instanceName.c_str(), id, GetParameterText(id).c_str(), value.c_str());
    #endif
    
@@ -931,13 +931,13 @@ bool OrbitPlot::SetStringParameter(const Integer id, const wxString &value)
       return true;
    case ADD:
       {
-         if (value[0] == wxT('{'))
+         if (value[0] == '{')
          {
             try
             {
                TextParser tp;
                ClearSpacePointList();
-               StringArray spList = tp.SeparateBrackets(value, wxT("{}"), wxT(","));
+               StringArray spList = tp.SeparateBrackets(value, "{}", ",");
                for (UnsignedInt i = 0; i < spList.size(); i++)
                   AddSpacePoint(spList[i], mAllSpCount);
                return true;
@@ -946,7 +946,7 @@ bool OrbitPlot::SetStringParameter(const Integer id, const wxString &value)
             {
                SubscriberException se;
                se.SetDetails(errorMessageFormat.c_str(), value.c_str(),
-                             wxT("Add"), wxT("Valid CelestialBody list"));
+                             "Add", "Valid CelestialBody list");
                throw se;
             }
          }
@@ -957,7 +957,7 @@ bool OrbitPlot::SetStringParameter(const Integer id, const wxString &value)
       }
    case ORBIT_COLOR:
    case TARGET_COLOR:
-      if (value[0] == wxT('['))
+      if (value[0] == '[')
          PutUnsignedIntValue(id, value);
       return true;
    default:
@@ -967,14 +967,14 @@ bool OrbitPlot::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
-bool OrbitPlot::SetStringParameter(const wxString &label,
-                                   const wxString &value)
+bool OrbitPlot::SetStringParameter(const std::string &label,
+                                   const std::string &value)
 {
    #if DBGLVL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::SetStringParameter()<%s> label=%s, value=%s \n"),
+      ("OrbitPlot::SetStringParameter()<%s> label=%s, value=%s \n",
        instanceName.c_str(), label.c_str(), value.c_str());
    #endif
    
@@ -983,15 +983,15 @@ bool OrbitPlot::SetStringParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// virtual bool SetStringParameter(const Integer id, const wxString &value,
+// virtual bool SetStringParameter(const Integer id, const std::string &value,
 //                                 const Integer index)
 //------------------------------------------------------------------------------
-bool OrbitPlot::SetStringParameter(const Integer id, const wxString &value,
+bool OrbitPlot::SetStringParameter(const Integer id, const std::string &value,
                                    const Integer index)
 {
    #if DBGLVL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::SetStringParameter()<%s> id=%d<%s>, value=%s, index= %d\n"),
+      ("OrbitPlot::SetStringParameter()<%s> id=%d<%s>, value=%s, index= %d\n",
        instanceName.c_str(), id, GetParameterText(id).c_str(), value.c_str(), index);
    #endif
    
@@ -1006,17 +1006,17 @@ bool OrbitPlot::SetStringParameter(const Integer id, const wxString &value,
 
 
 //------------------------------------------------------------------------------
-// virtual bool SetStringParameter(const wxString &label,
-//                                 const wxString &value,
+// virtual bool SetStringParameter(const std::string &label,
+//                                 const std::string &value,
 //                                 const Integer index)
 //------------------------------------------------------------------------------
-bool OrbitPlot::SetStringParameter(const wxString &label,
-                                   const wxString &value,
+bool OrbitPlot::SetStringParameter(const std::string &label,
+                                   const std::string &value,
                                    const Integer index)
 {
    #if DBGLVL_PARAM_STRING
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::SetStringParameter() label = %s, value = %s, index = %d\n"),
+      ("OrbitPlot::SetStringParameter() label = %s, value = %s, index = %d\n",
        label.c_str(), value.c_str(), index);
    #endif
    
@@ -1054,8 +1054,8 @@ UnsignedInt OrbitPlot::SetUnsignedIntParameter(const Integer id,
 {
    #if DBGLVL_PARAM
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::SetUnsignedIntParameter() this=%s\n   id=%d, value=%u<%08x>, index=%d, ")
-       wxT("mAllSpCount=%d, mOrbitColorArray.size()=%d, mTargetColorArray.size()=%d\n"),
+      ("OrbitPlot::SetUnsignedIntParameter() this=%s\n   id=%d, value=%u<%08x>, index=%d, "
+       "mAllSpCount=%d, mOrbitColorArray.size()=%d, mTargetColorArray.size()=%d\n",
        instanceName.c_str(), id, value, value, index, mAllSpCount, mOrbitColorArray.size(),
        mTargetColorArray.size());
    #endif
@@ -1067,7 +1067,7 @@ UnsignedInt OrbitPlot::SetUnsignedIntParameter(const Integer id,
          Integer size = mAllSpNameArray.size();
          if (index >= size)
             throw SubscriberException
-               (wxT("index out of bounds for ") + GetParameterText(id));
+               ("index out of bounds for " + GetParameterText(id));
          
          for (int i=0; i<size; i++)
          {
@@ -1086,7 +1086,7 @@ UnsignedInt OrbitPlot::SetUnsignedIntParameter(const Integer id,
          Integer size = mAllSpNameArray.size();
          if (index >= size)
             throw SubscriberException
-               (wxT("index out of bounds for ") + GetParameterText(id));
+               ("index out of bounds for " + GetParameterText(id));
          
          for (int i=0; i<size; i++)
          {
@@ -1133,9 +1133,9 @@ bool OrbitPlot::GetBooleanParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// bool GetBooleanParameter(const wxString &label) const
+// bool GetBooleanParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-bool OrbitPlot::GetBooleanParameter(const wxString &label) const
+bool OrbitPlot::GetBooleanParameter(const std::string &label) const
 {
    return GetBooleanParameter(GetParameterID(label));
 }
@@ -1148,7 +1148,7 @@ bool OrbitPlot::SetBooleanParameter(const Integer id, const bool value)
 {
    #if DBGLVL_PARAM
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::SetBooleanParameter()<%s> id=%d, value=%d\n"),
+      ("OrbitPlot::SetBooleanParameter()<%s> id=%d, value=%d\n",
        instanceName.c_str(), id, value);
    #endif
    
@@ -1163,9 +1163,9 @@ bool OrbitPlot::SetBooleanParameter(const Integer id, const bool value)
 
 
 //------------------------------------------------------------------------------
-// bool SetBooleanParameter(const wxString &label, const bool value)
+// bool SetBooleanParameter(const std::string &label, const bool value)
 //------------------------------------------------------------------------------
-bool OrbitPlot::SetBooleanParameter(const wxString &label, const bool value)
+bool OrbitPlot::SetBooleanParameter(const std::string &label, const bool value)
 {
    return SetBooleanParameter(GetParameterID(label), value);
 }
@@ -1189,13 +1189,13 @@ const BooleanArray& OrbitPlot::GetBooleanArrayParameter(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-//const BooleanArray& GetBooleanArrayParameter(const wxString &label) const
+//const BooleanArray& GetBooleanArrayParameter(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-const BooleanArray& OrbitPlot::GetBooleanArrayParameter(const wxString &label) const
+const BooleanArray& OrbitPlot::GetBooleanArrayParameter(const std::string &label) const
 {
    Integer id = GetParameterID(label);
    return GetBooleanArrayParameter(id);
@@ -1214,21 +1214,21 @@ bool OrbitPlot::SetBooleanArrayParameter(const Integer id,
 {
    #if DBGLVL_PARAM
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::SetBooleanArrayParameter() '%s' entered, id=%d, ")
-       wxT("valueArray.size()=%d\n"), GetName().c_str(), id, valueArray.size());
+      ("OrbitPlot::SetBooleanArrayParameter() '%s' entered, id=%d, "
+       "valueArray.size()=%d\n", GetName().c_str(), id, valueArray.size());
    #endif
    
    if (id == DRAW_OBJECT)
    {
       #if DBGLVL_PARAM
       MessageInterface::ShowMessage
-         (wxT("   mAllSpNameArray.size()=%d\n"), mAllSpNameArray.size());
+         ("   mAllSpNameArray.size()=%d\n", mAllSpNameArray.size());
       #endif
       
       // Check size of arrays in Initialize() or Interpreter::FinalPass()?
       //if (mAllSpNameArray.size() != valueArray.size())
       //   throw SubscriberException
-      //      (wxT("The count doesn't match with added objects") + GetParameterText(id));
+      //      ("The count doesn't match with added objects" + GetParameterText(id));
       
       mDrawObjectArray = valueArray;
       Integer minCount = mAllSpNameArray.size() < mDrawObjectArray.size() ?
@@ -1240,7 +1240,7 @@ bool OrbitPlot::SetBooleanArrayParameter(const Integer id,
          bool tf = mDrawObjectArray[i];
          #if DBGLVL_PARAM > 1
          MessageInterface::ShowMessage
-            (wxT("      mDrawObjectArray[%d]=%s\n"), i, tf ? wxT("true") : wxT("false"));
+            ("      mDrawObjectArray[%d]=%s\n", i, tf ? "true" : "false");
          #endif
          mShowObjectMap[mAllSpNameArray[i]] = tf;
       }
@@ -1251,14 +1251,14 @@ bool OrbitPlot::SetBooleanArrayParameter(const Integer id,
 
 
 //---------------------------------------------------------------------------
-//  bool SetBooleanArrayParameter(const wxString &label,
+//  bool SetBooleanArrayParameter(const std::string &label,
 //                                const BooleanArray &valueArray)
 //---------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-bool OrbitPlot::SetBooleanArrayParameter(const wxString &label,
+bool OrbitPlot::SetBooleanArrayParameter(const std::string &label,
                                          const BooleanArray &valueArray)
 {
    Integer id = GetParameterID(label);
@@ -1267,9 +1267,9 @@ bool OrbitPlot::SetBooleanArrayParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-// virtual wxString GetRefObjectName(const Gmat::ObjectType type) const
+// virtual std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
-wxString OrbitPlot::GetRefObjectName(const Gmat::ObjectType type) const
+std::string OrbitPlot::GetRefObjectName(const Gmat::ObjectType type) const
 {
    if (type == Gmat::COORDINATE_SYSTEM)
    {
@@ -1317,8 +1317,8 @@ const StringArray& OrbitPlot::GetRefObjectNameArray(const Gmat::ObjectType type)
 {
    #ifdef DBGLVL_OBJ
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::GetRefObjectNameArray() '%s' entered, refObjectNames.size()=%d, ")
-       wxT("mAllSpNameArray.size()=%d\n"), GetName().c_str(), refObjectNames.size(),
+      ("OrbitPlot::GetRefObjectNameArray() '%s' entered, refObjectNames.size()=%d, "
+       "mAllSpNameArray.size()=%d\n", GetName().c_str(), refObjectNames.size(),
        mAllSpNameArray.size());
    #endif
    
@@ -1335,10 +1335,10 @@ const StringArray& OrbitPlot::GetRefObjectNameArray(const Gmat::ObjectType type)
    
    #if DBGLVL_OBJ
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::GetRefObjectNameArray() returning %d names for type:%d\n"),
+      ("OrbitPlot::GetRefObjectNameArray() returning %d names for type:%d\n",
        refObjectNames.size(), type);
    for (unsigned int i=0; i<refObjectNames.size(); i++)
-      MessageInterface::ShowMessage(wxT("   %s\n"), refObjectNames[i].c_str());
+      MessageInterface::ShowMessage("   %s\n", refObjectNames[i].c_str());
    #endif
    
    return refObjectNames;
@@ -1347,10 +1347,10 @@ const StringArray& OrbitPlot::GetRefObjectNameArray(const Gmat::ObjectType type)
 
 //------------------------------------------------------------------------------
 // virtual GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                                const wxString &name)
+//                                const std::string &name)
 //------------------------------------------------------------------------------
 GmatBase* OrbitPlot::GetRefObject(const Gmat::ObjectType type,
-                                  const wxString &name)
+                                  const std::string &name)
 {
    if (type == Gmat::COORDINATE_SYSTEM)
    {
@@ -1364,7 +1364,7 @@ GmatBase* OrbitPlot::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                           const wxString &name = wxT(""))
+//                           const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Set reference object pointer.
@@ -1375,37 +1375,37 @@ GmatBase* OrbitPlot::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool OrbitPlot::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                             const wxString &name)
+                             const std::string &name)
 {
    #if DBGLVL_OBJ
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::SetRefObject() this=<%p>'%s', obj=<%p>'%s', type=%d[%s], name='%s'\n"),
+      ("OrbitPlot::SetRefObject() this=<%p>'%s', obj=<%p>'%s', type=%d[%s], name='%s'\n",
        this, GetName().c_str(), obj, obj->GetName().c_str(), type,
        obj->GetTypeName().c_str(), name.c_str());
    #endif
    
-   wxString realName = name;
-   if (name == wxT(""))
+   std::string realName = name;
+   if (name == "")
       realName = obj->GetName();
    
    if (obj->IsOfType(Gmat::SPACE_POINT))
    {
       #if DBGLVL_OBJ
-      MessageInterface::ShowMessage(wxT("   mAllSpCount=%d\n"), mAllSpCount);
+      MessageInterface::ShowMessage("   mAllSpCount=%d\n", mAllSpCount);
       #endif
       
       for (Integer i=0; i<mAllSpCount; i++)
       {
          #if DBGLVL_OBJ
          MessageInterface::ShowMessage
-            (wxT("   mAllSpNameArray[%d]='%s'\n"), i, mAllSpNameArray[i].c_str());
+            ("   mAllSpNameArray[%d]='%s'\n", i, mAllSpNameArray[i].c_str());
          #endif
          
          if (mAllSpNameArray[i] == realName)
          {
             #if DBGLVL_OBJ > 1
             MessageInterface::ShowMessage
-               (wxT("   Setting object to '%s'\n"), mAllSpNameArray[i].c_str());
+               ("   Setting object to '%s'\n", mAllSpNameArray[i].c_str());
             #endif
             
             mAllSpArray[i] = (SpacePoint*)(obj);
@@ -1444,13 +1444,13 @@ Gmat::ObjectType OrbitPlot::GetPropertyObjectType(const Integer id) const
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// bool AddSpacePoint(const wxString &name, Integer index, bool show = true)
+// bool AddSpacePoint(const std::string &name, Integer index, bool show = true)
 //------------------------------------------------------------------------------
-bool OrbitPlot::AddSpacePoint(const wxString &name, Integer index, bool show)
+bool OrbitPlot::AddSpacePoint(const std::string &name, Integer index, bool show)
 {
    #if DBGLVL_ADD
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::AddSpacePoint()<%s> name=%s, index=%d, show=%d, mAllSpCount=%d\n"),
+      ("OrbitPlot::AddSpacePoint()<%s> name=%s, index=%d, show=%d, mAllSpCount=%d\n",
        instanceName.c_str(), name.c_str(), index, show, mAllSpCount);
    #endif
    
@@ -1462,8 +1462,8 @@ bool OrbitPlot::AddSpacePoint(const wxString &name, Integer index, bool show)
       // OrbitPlot.Add = {DefaultSC, Earth};
       // OrbitPlot.Add = {Sun};
       // If yes, we should not check for index. Just commenting out for now (LOJ: 2011.01.14)
-      //if (name != wxT("") && index == mAllSpCount)
-      if (name != wxT(""))
+      //if (name != "" && index == mAllSpCount)
+      if (name != "")
       {
          mAllSpNameArray.push_back(name);
          mAllSpArray.push_back(NULL);
@@ -1478,7 +1478,7 @@ bool OrbitPlot::AddSpacePoint(const wxString &name, Integer index, bool show)
          
          UnsignedInt targetColor = GmatColor::TEAL32;
          // Make lighter target color for ground track plot since it draws on the texture map
-         if (GetTypeName() == wxT("GroundTrackPlot"))
+         if (GetTypeName() == "GroundTrackPlot")
             targetColor = GmatColor::WHITE32;
          
          if (mAllSpCount < MAX_SP_COLOR)
@@ -1510,18 +1510,18 @@ bool OrbitPlot::AddSpacePoint(const wxString &name, Integer index, bool show)
    }
    
    #if DBGLVL_ADD   
-   wxString objName;
+   std::string objName;
    MessageInterface::ShowMessage
-      (wxT("mAllSpNameArray.size()=%d, mAllSpCount=%d\n"), mAllSpNameArray.size(), mAllSpCount);
+      ("mAllSpNameArray.size()=%d, mAllSpCount=%d\n", mAllSpNameArray.size(), mAllSpCount);
    for (int i=0; i<mAllSpCount; i++)
    {
       objName = mAllSpNameArray[i];
       MessageInterface::ShowMessage
-         (wxT("   mAllSpNameArray[%d]=%s, draw=%d, show=%d ")
-          wxT("orbColor=%u, targColor=%u\n"), i, objName.c_str(), mDrawOrbitMap[objName],
+         ("   mAllSpNameArray[%d]=%s, draw=%d, show=%d "
+          "orbColor=%u, targColor=%u\n", i, objName.c_str(), mDrawOrbitMap[objName],
           mShowObjectMap[objName], mOrbitColorMap[objName], mTargetColorMap[objName]);
       MessageInterface::ShowMessage
-         (wxT("   mOrbitColorArray[%d]=%u, mTargetColorArray[%d]=%u\n"), i, mOrbitColorArray[i],
+         ("   mOrbitColorArray[%d]=%u, mTargetColorArray[%d]=%u\n", i, mOrbitColorArray[i],
           i, mTargetColorArray[i]);
    }
    #endif
@@ -1535,7 +1535,7 @@ bool OrbitPlot::AddSpacePoint(const wxString &name, Integer index, bool show)
 //------------------------------------------------------------------------------
 bool OrbitPlot::ClearSpacePointList()
 {
-   //MessageInterface::ShowMessage(wxT("OrbitPlot::ClearSpacePointList()\n"));
+   //MessageInterface::ShowMessage("OrbitPlot::ClearSpacePointList()\n");
    
    mAllSpNameArray.clear();
    mAllSpArray.clear();
@@ -1565,7 +1565,7 @@ bool OrbitPlot::ClearSpacePointList()
 
 
 //------------------------------------------------------------------------------
-// bool RemoveSpacePoint(const wxString &name)
+// bool RemoveSpacePoint(const std::string &name)
 //------------------------------------------------------------------------------
 /*
  * Removes spacecraft from the spacecraft list
@@ -1576,7 +1576,7 @@ bool OrbitPlot::ClearSpacePointList()
  *
  */
 //------------------------------------------------------------------------------
-bool OrbitPlot::RemoveSpacePoint(const wxString &name)
+bool OrbitPlot::RemoveSpacePoint(const std::string &name)
 {
    //-----------------------------------------------------------------
    #ifdef __REMOVE_OBJ_BY_SETTING_FLAG__
@@ -1606,13 +1606,13 @@ bool OrbitPlot::RemoveSpacePoint(const wxString &name)
    //-------------------------------------------------------
    #if DBGLVL_REMOVE_SP
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::RemoveSpacePoint() name=%s\n--- Before remove from ")
-       wxT("mScNameArray:\n"), name.c_str());
-   MessageInterface::ShowMessage(wxT("mScCount=%d\n"), mScCount);
+      ("OrbitPlot::RemoveSpacePoint() name=%s\n--- Before remove from "
+       "mScNameArray:\n", name.c_str());
+   MessageInterface::ShowMessage("mScCount=%d\n", mScCount);
    for (int i=0; i<mScCount; i++)
    {
       MessageInterface::ShowMessage
-         (wxT("mScNameArray[%d]=%s\n"), i, mScNameArray[i].c_str());
+         ("mScNameArray[%d]=%s\n", i, mScNameArray[i].c_str());
    }
    #endif
    
@@ -1621,7 +1621,7 @@ bool OrbitPlot::RemoveSpacePoint(const wxString &name)
    
    if (scPos != mScNameArray.end())
    {
-      MessageInterface::ShowMessage(wxT("sc to be erased=%s\n"), (*scPos).c_str());
+      MessageInterface::ShowMessage("sc to be erased=%s\n", (*scPos).c_str());
       
       // erase given spacecraft from the arrays
       mScNameArray.erase(scPos);
@@ -1646,12 +1646,12 @@ bool OrbitPlot::RemoveSpacePoint(const wxString &name)
       }
       
       #if DBGLVL_REMOVE_SP
-      MessageInterface::ShowMessage(wxT("---After remove from mScNameArray:\n"));
-      MessageInterface::ShowMessage(wxT("mScCount=%d\n"), mScCount);
+      MessageInterface::ShowMessage("---After remove from mScNameArray:\n");
+      MessageInterface::ShowMessage("mScCount=%d\n", mScCount);
       for (int i=0; i<mScCount; i++)
       {
          MessageInterface::ShowMessage
-            (wxT("mScNameArray[%d]=%s\n"), i, mScNameArray[i].c_str());
+            ("mScNameArray[%d]=%s\n", i, mScNameArray[i].c_str());
       }
       #endif
       
@@ -1665,13 +1665,13 @@ bool OrbitPlot::RemoveSpacePoint(const wxString &name)
    //-------------------------------------------------------
    #if DBGLVL_REMOVE_SP
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::RemoveSpacePoint() name=%s\n--- Before remove from ")
-       wxT("mAllSpNameArray:\n"), name.c_str());
-   MessageInterface::ShowMessage(wxT("mAllSpCount=%d\n"), mAllSpCount);
+      ("OrbitPlot::RemoveSpacePoint() name=%s\n--- Before remove from "
+       "mAllSpNameArray:\n", name.c_str());
+   MessageInterface::ShowMessage("mAllSpCount=%d\n", mAllSpCount);
    for (int i=0; i<mAllSpCount; i++)
    {
       MessageInterface::ShowMessage
-         (wxT("mAllSpNameArray[%d]=%s\n"), i, mAllSpNameArray[i].c_str());
+         ("mAllSpNameArray[%d]=%s\n", i, mAllSpNameArray[i].c_str());
    }
    #endif
    
@@ -1682,7 +1682,7 @@ bool OrbitPlot::RemoveSpacePoint(const wxString &name)
    
    if (spPos != mAllSpNameArray.end() && objPos != mObjectNameArray.end())
    {
-      std::map<wxString, UnsignedInt>::iterator orbColorPos, targColorPos;
+      std::map<std::string, UnsignedInt>::iterator orbColorPos, targColorPos;
       orbColorPos = mOrbitColorMap.find(name);
       targColorPos = mTargetColorMap.find(name);
       
@@ -1709,12 +1709,12 @@ bool OrbitPlot::RemoveSpacePoint(const wxString &name)
          }
          
          #if DBGLVL_REMOVE_SP
-         MessageInterface::ShowMessage(wxT("---After remove from mAllSpNameArray\n"));
-         MessageInterface::ShowMessage(wxT("mAllSpCount=%d\n"), mAllSpCount);
+         MessageInterface::ShowMessage("---After remove from mAllSpNameArray\n");
+         MessageInterface::ShowMessage("mAllSpCount=%d\n", mAllSpCount);
          for (int i=0; i<mAllSpCount; i++)
          {
             MessageInterface::ShowMessage
-               (wxT("mAllSpNameArray[%d]=%s\n"), i, mAllSpNameArray[i].c_str());
+               ("mAllSpNameArray[%d]=%s\n", i, mAllSpNameArray[i].c_str());
          }
          #endif
          
@@ -1727,16 +1727,16 @@ bool OrbitPlot::RemoveSpacePoint(const wxString &name)
    //-------------------------------------------------------
    #if DBGLVL_REMOVE_SP
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::RemoveSpacePoint() name=%s\n--- Before remove from ")
-       wxT("mObjectArray:\n"), name.c_str());
-   MessageInterface::ShowMessage(wxT("size=%d\n"), mObjectArray.size());
+      ("OrbitPlot::RemoveSpacePoint() name=%s\n--- Before remove from "
+       "mObjectArray:\n", name.c_str());
+   MessageInterface::ShowMessage("size=%d\n", mObjectArray.size());
    #endif
    
    for (std::vector<SpacePoint*>::iterator objptPos = mObjectArray.begin();
         objptPos != mObjectArray.end(); ++objptPos)
    {
       MessageInterface::ShowMessage
-         (wxT("mObjectArray=%s\n"), (*objptPos)->GetName().c_str());
+         ("mObjectArray=%s\n", (*objptPos)->GetName().c_str());
       if ((*objptPos)->GetName() == name)
       {
          mObjectArray.erase(objptPos);
@@ -1746,9 +1746,9 @@ bool OrbitPlot::RemoveSpacePoint(const wxString &name)
    
    #if DBGLVL_REMOVE_SP
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::RemoveSpacePoint() name=%s\n--- After remove from ")
-       wxT("mObjectArray:\n"), name.c_str());
-   MessageInterface::ShowMessage(wxT("size=%d\n"), mObjectArray.size());
+      ("OrbitPlot::RemoveSpacePoint() name=%s\n--- After remove from "
+       "mObjectArray:\n", name.c_str());
+   MessageInterface::ShowMessage("size=%d\n", mObjectArray.size());
    #endif
    
    if (removedFromScArray && removedFromAllSpArray)
@@ -1763,7 +1763,7 @@ bool OrbitPlot::RemoveSpacePoint(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// Integer FindIndexOfElement(StringArray &labelArray, const wxString &label)
+// Integer FindIndexOfElement(StringArray &labelArray, const std::string &label)
 //------------------------------------------------------------------------------
 /*
  * Finds the index of the element label from the element label array.
@@ -1773,9 +1773,9 @@ bool OrbitPlot::RemoveSpacePoint(const wxString &name)
  */
 //------------------------------------------------------------------------------
 Integer OrbitPlot::FindIndexOfElement(StringArray &labelArray,
-                                       const wxString &label)
+                                       const std::string &label)
 {
-   std::vector<wxString>::iterator pos;
+   std::vector<std::string>::iterator pos;
    pos = find(labelArray.begin(), labelArray.end(),  label);
    if (pos == labelArray.end())
       return -1;
@@ -1791,8 +1791,8 @@ void OrbitPlot::BuildDynamicArrays()
 {
    #if DBGLVL_INIT
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::BuildDynamicArrays() entered, mAllSpNameArray.size()=%d, ")
-       wxT("mAllSpArray.size()=%d\n"), mAllSpNameArray.size(), mAllSpArray.size());
+      ("OrbitPlot::BuildDynamicArrays() entered, mAllSpNameArray.size()=%d, "
+       "mAllSpArray.size()=%d\n", mAllSpNameArray.size(), mAllSpArray.size());
    #endif
    
    // add non-spacecraft plot objects to the list
@@ -1800,7 +1800,7 @@ void OrbitPlot::BuildDynamicArrays()
    {
       #if DBGLVL_INIT > 1
       MessageInterface::ShowMessage
-         (wxT("OrbitPlot::BuildDynamicArrays() mAllSpNameArray[%d]=%s, addr=%d\n"),
+         ("OrbitPlot::BuildDynamicArrays() mAllSpNameArray[%d]=%s, addr=%d\n",
           i, mAllSpNameArray[i].c_str(), mAllSpArray[i]);
       #endif
       
@@ -1830,8 +1830,8 @@ void OrbitPlot::BuildDynamicArrays()
       else
       {
          MessageInterface::ShowMessage
-            (wxT("The SpacePoint name: %s has NULL pointer.\n It will be removed ")
-             wxT("from the 3DView.\n"), mAllSpNameArray[i].c_str());
+            ("The SpacePoint name: %s has NULL pointer.\n It will be removed "
+             "from the 3DView.\n", mAllSpNameArray[i].c_str());
       }
    }
    
@@ -1874,12 +1874,12 @@ void OrbitPlot::UpdateObjectList(SpacePoint *sp, bool show)
 {
    #if DBGLVL_INIT > 1
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::UpdateObjectList() <%p>'%s' entered, sp=<%p>'%s', show=%d\n"),
-       this, GetName().c_str(), sp, sp ? sp->GetName().c_str() : wxT("NULL"), show);
+      ("OrbitPlot::UpdateObjectList() <%p>'%s' entered, sp=<%p>'%s', show=%d\n",
+       this, GetName().c_str(), sp, sp ? sp->GetName().c_str() : "NULL", show);
    #endif
    
    // Add all spacepoint objects
-   wxString name = sp->GetName();
+   std::string name = sp->GetName();
    StringArray::iterator pos = 
       find(mObjectNameArray.begin(), mObjectNameArray.end(), name);
    
@@ -1900,13 +1900,13 @@ void OrbitPlot::UpdateObjectList(SpacePoint *sp, bool show)
    #if DBGLVL_INIT > 1
    Integer draw, showObj;
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::UpdateObjectList() instanceName=%s\n"), instanceName.c_str());
+      ("OrbitPlot::UpdateObjectList() instanceName=%s\n", instanceName.c_str());
    for (int i=0; i<mObjectCount; i++)
    {
       draw = mDrawOrbitArray[i] ? 1 : 0;
       showObj = mDrawObjectArray[i] ? 1 : 0;
       MessageInterface::ShowMessage
-         (wxT("   mObjectNameArray[%d]=%s, draw=%d, show=%d, color=%d\n"), i,
+         ("   mObjectNameArray[%d]=%s, draw=%d, show=%d, color=%d\n", i,
           mObjectNameArray[i].c_str(), draw, showObj, mOrbitColorArray[i]);
    }
    #endif
@@ -1925,7 +1925,7 @@ bool OrbitPlot::UpdateData(const Real *dat, Integer len)
    
    #if DBGLVL_UPDATE > 1
    MessageInterface::ShowMessage
-      (wxT("   mNumData=%d, mDataCollectFrequency=%d, currentProvider=<%p>\n"),
+      ("   mNumData=%d, mDataCollectFrequency=%d, currentProvider=<%p>\n",
        mNumData, mDataCollectFrequency, currentProvider);
    #endif
    
@@ -1938,7 +1938,7 @@ bool OrbitPlot::UpdateData(const Real *dat, Integer len)
          return true;
       
       #if DBGLVL_UPDATE > 0
-      MessageInterface::ShowMessage(wxT("==========> Updating plot data\n"));
+      MessageInterface::ShowMessage("==========> Updating plot data\n");
       #endif
       
       bool solving = false;
@@ -1950,7 +1950,7 @@ bool OrbitPlot::UpdateData(const Real *dat, Integer len)
       }
       
       bool inFunction = false;
-      if (currentProvider && currentProvider->TakeAction(wxT("IsInFunction")))
+      if (currentProvider && currentProvider->TakeAction("IsInFunction"))
          inFunction = true;
       
       bool update = (mNumCollected % mUpdatePlotFrequency) == 0;
@@ -1978,8 +1978,8 @@ bool OrbitPlot::UpdateSolverData()
    int last = size - 1;
    
    #if DBGLVL_SOLVER_CURRENT_ITER
-   MessageInterface::ShowMessage(wxT("===> num buffered data = %d\n"), size);
-   MessageInterface::ShowMessage(wxT("==========> now update solver plot\n"));
+   MessageInterface::ShowMessage("===> num buffered data = %d\n", size);
+   MessageInterface::ShowMessage("==========> now update solver plot\n");
    #endif
    
    if (size == 0)
@@ -1997,7 +1997,7 @@ bool OrbitPlot::UpdateSolverData()
       #if DBGLVL_SOLVER_CURRENT_ITER > 1
       for (int sc=0; sc<mScCount; sc++)
          MessageInterface::ShowMessage
-            (wxT("   i=%d, sc=%d, solver epoch = %f, X,Y,Z = %f, %f, %f\n"), i, sc,
+            ("   i=%d, sc=%d, solver epoch = %f, X,Y,Z = %f, %f, %f\n", i, sc,
              mCurrEpochArray[i], mCurrXArray[i][sc], mCurrYArray[i][sc],
              mCurrZArray[i][sc]);
       #endif
@@ -2030,7 +2030,7 @@ bool OrbitPlot::UpdateSolverData()
    mCurrVzArray.clear();
    
    if (runstate == Gmat::SOLVING)
-      PlotInterface::TakeGlAction(instanceName, wxT("ClearSolverData"));
+      PlotInterface::TakeGlAction(instanceName, "ClearSolverData");
    
    return true;
 }
@@ -2048,7 +2048,7 @@ Integer OrbitPlot::BufferOrbitData(const Real *dat, Integer len)
 {
    #if DBGLVL_DATA
    MessageInterface::ShowMessage
-      (wxT("OrbitPlot::BufferOrbitData() '%s' entered\n")), GetName().c_str());
+      ("OrbitPlot::BufferOrbitData() '%s' entered\n"), GetName().c_str());
    #endif
    
    //------------------------------------------------------------
@@ -2061,16 +2061,16 @@ Integer OrbitPlot::BufferOrbitData(const Real *dat, Integer len)
    
    #if DBGLVL_DATA > 1
    MessageInterface::ShowMessage
-      (wxT("   mNumData=%d, mDataCollectFrequency=%d, currentProvider=<%p>\n"),
+      ("   mNumData=%d, mDataCollectFrequency=%d, currentProvider=<%p>\n",
        mNumData, mDataCollectFrequency, currentProvider);
    MessageInterface::ShowMessage
-      (wxT("theDataCoordSystem=<%p><%s>'%s', mViewCoordSystem=<%p><%s>'%s'\n"),
+      ("theDataCoordSystem=<%p><%s>'%s', mViewCoordSystem=<%p><%s>'%s'\n",
        theDataCoordSystem,
-       theDataCoordSystem ? theDataCoordSystem->GetTypeName().c_str() : wxT("NULL"),
-       theDataCoordSystem ? theDataCoordSystem->GetName().c_str() : wxT("NULL"),
+       theDataCoordSystem ? theDataCoordSystem->GetTypeName().c_str() : "NULL",
+       theDataCoordSystem ? theDataCoordSystem->GetName().c_str() : "NULL",
        mViewCoordSystem,
-       mViewCoordSystem ? mViewCoordSystem->GetTypeName().c_str() : wxT("NULL"),
-       mViewCoordSystem ? mViewCoordSystem->GetName().c_str() : wxT("NULL"));
+       mViewCoordSystem ? mViewCoordSystem->GetTypeName().c_str() : "NULL",
+       mViewCoordSystem ? mViewCoordSystem->GetName().c_str() : "NULL");
    #endif
    
    mNumData = 0;
@@ -2078,7 +2078,7 @@ Integer OrbitPlot::BufferOrbitData(const Real *dat, Integer len)
    
    #if DBGLVL_DATA > 1
    MessageInterface::ShowMessage
-      (wxT("   currentProvider=%d, theDataLabels.size()=%d\n"),
+      ("   currentProvider=%d, theDataLabels.size()=%d\n",
        currentProvider, theDataLabels.size());
    #endif
    
@@ -2090,10 +2090,10 @@ Integer OrbitPlot::BufferOrbitData(const Real *dat, Integer len)
    StringArray dataLabels = theDataLabels[0];
    
    #if DBGLVL_DATA_LABELS
-   MessageInterface::ShowMessage(wxT("   Data labels for %s =\n   "), GetName().c_str());
+   MessageInterface::ShowMessage("   Data labels for %s =\n   ", GetName().c_str());
    for (int j=0; j<(int)dataLabels.size(); j++)
-      MessageInterface::ShowMessage(wxT("%s "), dataLabels[j].c_str());
-   MessageInterface::ShowMessage(wxT("\n"));
+      MessageInterface::ShowMessage("%s ", dataLabels[j].c_str());
+   MessageInterface::ShowMessage("\n");
    #endif
    
    Integer idX, idY, idZ;
@@ -2102,17 +2102,17 @@ Integer OrbitPlot::BufferOrbitData(const Real *dat, Integer len)
    
    for (int i=0; i<mScCount; i++)
    {
-      idX = FindIndexOfElement(dataLabels, mScNameArray[i]+wxT(".X"));
-      idY = FindIndexOfElement(dataLabels, mScNameArray[i]+wxT(".Y"));
-      idZ = FindIndexOfElement(dataLabels, mScNameArray[i]+wxT(".Z"));
+      idX = FindIndexOfElement(dataLabels, mScNameArray[i]+".X");
+      idY = FindIndexOfElement(dataLabels, mScNameArray[i]+".Y");
+      idZ = FindIndexOfElement(dataLabels, mScNameArray[i]+".Z");
       
-      idVx = FindIndexOfElement(dataLabels, mScNameArray[i]+wxT(".Vx"));
-      idVy = FindIndexOfElement(dataLabels, mScNameArray[i]+wxT(".Vy"));
-      idVz = FindIndexOfElement(dataLabels, mScNameArray[i]+wxT(".Vz"));
+      idVx = FindIndexOfElement(dataLabels, mScNameArray[i]+".Vx");
+      idVy = FindIndexOfElement(dataLabels, mScNameArray[i]+".Vy");
+      idVz = FindIndexOfElement(dataLabels, mScNameArray[i]+".Vz");
       
       #if DBGLVL_DATA_LABELS
       MessageInterface::ShowMessage
-         (wxT("   mScNameArray[%d]=%s, idX=%d, idY=%d, idZ=%d, idVx=%d, idVy=%d, idVz=%d\n"),
+         ("   mScNameArray[%d]=%s, idX=%d, idY=%d, idZ=%d, idVx=%d, idVy=%d, idVz=%d\n",
           i, mScNameArray[i].c_str(), idX, idY, idZ, idVx, idVy, idVz);
       #endif
       
@@ -2134,7 +2134,7 @@ Integer OrbitPlot::BufferOrbitData(const Real *dat, Integer len)
          
          #if DBGLVL_DATA
          MessageInterface::ShowMessage
-            (wxT("   %s, %.11f, X,Y,Z = %f, %f, %f\n"), GetName().c_str(), dat[0],
+            ("   %s, %.11f, X,Y,Z = %f, %f, %f\n", GetName().c_str(), dat[0],
              dat[idX], dat[idY], dat[idZ]);
          #endif
          
@@ -2169,13 +2169,13 @@ Integer OrbitPlot::BufferOrbitData(const Real *dat, Integer len)
          
          #if DBGLVL_DATA
          MessageInterface::ShowMessage
-            (wxT("   after buffering, scNo=%d, scIndex=%d, X,Y,Z = %f, %f, %f\n"),
+            ("   after buffering, scNo=%d, scIndex=%d, X,Y,Z = %f, %f, %f\n",
              i, scIndex, mScXArray[scIndex], mScYArray[scIndex], mScZArray[scIndex]);
          #endif
          
          #if DBGLVL_DATA > 1
          MessageInterface::ShowMessage
-            (wxT("   Vx,Vy,Vz = %f, %f, %f\n"),
+            ("   Vx,Vy,Vz = %f, %f, %f\n",
              mScVxArray[scIndex], mScVyArray[scIndex], mScVzArray[scIndex]);
          #endif
       }
@@ -2201,7 +2201,7 @@ Integer OrbitPlot::BufferOrbitData(const Real *dat, Integer len)
       {
          #if DBGLVL_DATA
          MessageInterface::ShowMessage
-            (wxT("=====> num buffered = %d\n"), mCurrEpochArray.size());
+            ("=====> num buffered = %d\n", mCurrEpochArray.size());
          #endif
          return 2;
       }

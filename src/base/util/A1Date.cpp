@@ -106,17 +106,17 @@ A1Date::A1Date(const GmatTimeUtil::CalDate &date)
 }
 
 //------------------------------------------------------------------------------
-//  A1Date (const wxString& date)
+//  A1Date (const std::string& date)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
  *
- * @param <time> Time in wxT("YYMMDD.hhmmssnnn") format
+ * @param <time> Time in "YYMMDD.hhmmssnnn" format
  *
  * @note Assumes input date is in A1 time system.
  */
 //------------------------------------------------------------------------------
-A1Date::A1Date (const wxString& dateString)
+A1Date::A1Date (const std::string& dateString)
   : Date(dateString)
 {
 }

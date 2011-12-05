@@ -255,7 +255,7 @@ std::ostream& GmatRealUtil::operator<< (std::ostream &output, const Rvector &a)
    Integer size = a.GetSize();
    Integer p, w, spacing;
    bool scientific, showPoint, horizontal, appendEol;
-   wxString prefix;
+   std::string prefix;
    global->GetActualFormat(scientific, showPoint, p, w, horizontal, spacing, prefix,
                            appendEol);
    
@@ -274,14 +274,14 @@ std::ostream& GmatRealUtil::operator<< (std::ostream &output, const Rvector &a)
    {      
       if (horizontal)
       {
-         wxString spaces;
-         spaces.append(spacing, wxT(' '));
+         std::string spaces;
+         spaces.append(spacing, ' ');
          
          for (int i=0; i<size; i++)
          {
             // Use ToString() for consistent formatting
             //output << setw(w) << setprecision(p) << a[i];
-            wxString sval = ToString(a[i], false, scientific, showPoint, p, w);
+            std::string sval = ToString(a[i], false, scientific, showPoint, p, w);
             output << sval;
             if (i < size-1)
                output << spaces;
@@ -297,7 +297,7 @@ std::ostream& GmatRealUtil::operator<< (std::ostream &output, const Rvector &a)
             // Use ToString() for consistent formatting
             //output << setw(w) << setprecision(p) << prefix << a[i];
             output << prefix;
-            wxString sval = ToString(a[i], false, scientific, showPoint, p, w);
+            std::string sval = ToString(a[i], false, scientific, showPoint, p, w);
             output << sval;
             if (appendEol)
                if (i < size-1)
@@ -366,7 +366,7 @@ std::ostream& GmatRealUtil::operator<< (std::ostream &output, const Rmatrix &a)
    int column = a.GetNumColumns();
    Integer p, w, spacing;
    bool scientific, showPoint, horizontal, appendEol;
-   wxString prefix;
+   std::string prefix;
    global->GetActualFormat(scientific, showPoint, p, w, horizontal, spacing, prefix,
                            appendEol);
    
@@ -386,8 +386,8 @@ std::ostream& GmatRealUtil::operator<< (std::ostream &output, const Rmatrix &a)
    }
    else
    {      
-      wxString spaces;
-      spaces.append(spacing, wxT(' '));
+      std::string spaces;
+      spaces.append(spacing, ' ');
       
       if (horizontal) 
       {
@@ -396,7 +396,7 @@ std::ostream& GmatRealUtil::operator<< (std::ostream &output, const Rmatrix &a)
             {
                // Use ToString() for consistent formatting
                //output << setw(w) << setprecision(p) << a.GetElement(i,j) << spaces;
-               wxString sval = ToString(a.GetElement(i,j), false, scientific, showPoint, p, w);
+               std::string sval = ToString(a.GetElement(i,j), false, scientific, showPoint, p, w);
                output << sval << spaces;
             }
          if (appendEol)
@@ -412,7 +412,7 @@ std::ostream& GmatRealUtil::operator<< (std::ostream &output, const Rmatrix &a)
             {
                // Use ToString() for consistent formatting
                //output << setw(w) << setprecision(p) << a.GetElement(i,j) << spaces;
-               wxString sval = ToString(a.GetElement(i,j), false, scientific, showPoint, p, w);
+               std::string sval = ToString(a.GetElement(i,j), false, scientific, showPoint, p, w);
                output << sval << spaces;
             }
             
@@ -434,7 +434,7 @@ std::ostream& GmatRealUtil::operator<< (std::ostream &output, const Rmatrix &a)
 
 
 //------------------------------------------------------------------------------
-// wxString ToString(const Real &rval, bool useCurrentFormat = true,
+// std::string ToString(const Real &rval, bool useCurrentFormat = true,
 //                      bool scientific = false, bool showPoint = false,
 //                      Integer precision = GmatGlobal::DATA_PRECISION,
 //                      Integer width = GmatGlobal::INTEGER_WIDTH)
@@ -450,7 +450,7 @@ std::ostream& GmatRealUtil::operator<< (std::ostream &output, const Rmatrix &a)
  * @param  width  Width to be used in formatting
  */
 //------------------------------------------------------------------------------
-wxString GmatRealUtil::ToString(const Real &rval, bool useCurrentFormat,
+std::string GmatRealUtil::ToString(const Real &rval, bool useCurrentFormat,
                                    bool scientific, bool showPoint,
                                    Integer precision, Integer width)
 {
@@ -467,25 +467,19 @@ wxString GmatRealUtil::ToString(const Real &rval, bool useCurrentFormat,
       isScientific = global->IsScientific();
       isShowPointSet = global->ShowPoint();
    }
-
    
-   wxString formatStr = wxT("%");
+   std::stringstream ss("");
+   ss.width(w);
+   ss.precision(p);
+   ss.setf(std::ios::left);
    
    if (isShowPointSet)
-      formatStr += wxT("#");
-   
-   formatStr += wxString::Format(wxT("%i"), w);
-   formatStr += wxT(".");
-   formatStr += wxString::Format(wxT("%i"), p);
+      ss.setf(std::ios::showpoint);
    
    if (isScientific)
-      formatStr += wxT("e");
-   else
-      formatStr += wxT("f");
+      ss.setf(std::ios::scientific);
 
-   wxString ss = wxString::Format(formatStr, rval);
-   
-
+   ss << rval;
    //return ss.str();
    
    // How do I specify 2 digints of the exponent? (LOJ: 2010.05.03)
@@ -499,18 +493,18 @@ wxString GmatRealUtil::ToString(const Real &rval, bool useCurrentFormat,
    // So manually remove extra 0 in the exponent of scientific notation.
    // ex) 1.23456e-015 to 1.23456e-15
    
-   wxString sval = ss;
-   if ((sval.find(wxT("e-0")) != sval.npos) && (sval.size() - sval.find(wxT("e-0"))) == 5)
-      sval = GmatStringUtil::Replace(sval, wxT("e-0"), wxT("e-"));
-   if ((sval.find(wxT("e+0")) != sval.npos) && (sval.size() - sval.find(wxT("e+0"))) == 5)
-      sval = GmatStringUtil::Replace(sval, wxT("e+0"), wxT("e+"));
+   std::string sval = ss.str();
+   if ((sval.find("e-0") != sval.npos) && (sval.size() - sval.find("e-0")) == 5)
+      sval = GmatStringUtil::Replace(sval, "e-0", "e-");
+   if ((sval.find("e+0") != sval.npos) && (sval.size() - sval.find("e+0")) == 5)
+      sval = GmatStringUtil::Replace(sval, "e+0", "e+");
    
    return sval;
 }
 
 
 //------------------------------------------------------------------------------
-// wxString ToString(const Integer &ival, bool useCurrentFormat = true,
+// std::string ToString(const Integer &ival, bool useCurrentFormat = true,
 //                      Integer width = GmatGlobal::INTEGER_WIDTH)
 //------------------------------------------------------------------------------
 /*
@@ -521,7 +515,7 @@ wxString GmatRealUtil::ToString(const Real &rval, bool useCurrentFormat,
  * @param  width  Width to be used in formatting
  */
 //------------------------------------------------------------------------------
-wxString GmatRealUtil::ToString(const Integer &ival, bool useCurrentFormat,
+std::string GmatRealUtil::ToString(const Integer &ival, bool useCurrentFormat,
                                    Integer width)
 {
    Integer w = width;
@@ -529,7 +523,8 @@ wxString GmatRealUtil::ToString(const Integer &ival, bool useCurrentFormat,
    if (useCurrentFormat)
       w = GmatGlobal::Instance()->GetIntegerWidth();
    
-   wxString ss;
+   std::stringstream ss("");
+   ss.width(w);
    ss << ival;
-   return ss;
+   return ss.str();
 }

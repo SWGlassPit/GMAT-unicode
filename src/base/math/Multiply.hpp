@@ -25,7 +25,7 @@
 class GMAT_API Multiply : public MathFunction
 {
 public:
-   Multiply(const wxString &nomme);
+   Multiply(const std::string &nomme);
    virtual ~Multiply();
    Multiply(const Multiply &copy);
                  

@@ -13,7 +13,7 @@
 //
 // Created: 1996/06/30 for GSS project (originally Matrix)
 // Modified:
-//   2003/09/15 Linda Jun - Replaced GSSString with wxString.
+//   2003/09/15 Linda Jun - Replaced GSSString with std::string.
 //
 /**
  * Declares Matrix operations.
@@ -38,16 +38,16 @@ public:
    
    // exceptions
    class NotSquare : public BaseException 
-   { public:  NotSquare(const wxString &message =
-                        wxT("Rmatrix error: matrix not square\n"))
+   { public:  NotSquare(const std::string &message =
+                        "Rmatrix error: matrix not square\n")
         : BaseException(message) {}; };
    class IsSingular : public BaseException
-   { public:  IsSingular(const wxString &message =
-                         wxT("Rmatrix error: matrix is singular\n"))
+   { public:  IsSingular(const std::string &message =
+                         "Rmatrix error: matrix is singular\n")
         : BaseException(message) {}; };
    class DivideByZero : public BaseException
-   { public:  DivideByZero(const wxString &message =
-                           wxT("Rmatrix error: attempt to divide by zero\n"))
+   { public:  DivideByZero(const std::string &message =
+                           "Rmatrix error: attempt to divide by zero\n")
         : BaseException(message) {}; };
    
    Rmatrix();
@@ -117,20 +117,20 @@ public:
    const StringArray& GetStringVals(Integer p = GmatGlobal::DATA_PRECISION,
                                     Integer w = GmatGlobal::DATA_WIDTH);
    
-   virtual wxString ToString(Integer precision, Integer width = 1,
+   virtual std::string ToString(Integer precision, Integer width = 1,
                                 bool horizontal = false,
-                                const wxString &prefix = wxT(""),
+                                const std::string &prefix = "",
                                 bool appendEol = true) const;
    
-   virtual wxString ToString(bool useCurrentFormat = true,
+   virtual std::string ToString(bool useCurrentFormat = true,
                                 bool scientific = false, bool showPoint = false,
                                 Integer precision = GmatGlobal::DATA_PRECISION,
                                 Integer width = GmatGlobal::DATA_WIDTH,
                                 bool horizontal = true, Integer spacing = 1,
-                                const wxString &prefix = wxT(""),
+                                const std::string &prefix = "",
                                 bool appendEol = true) const;
    
-   virtual wxString ToRowString(Integer row, Integer precision,
+   virtual std::string ToRowString(Integer row, Integer precision,
                                    Integer width = 1, bool zeroFill = false) const;
    
 protected:   

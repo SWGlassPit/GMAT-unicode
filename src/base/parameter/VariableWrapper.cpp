@@ -72,7 +72,7 @@ VariableWrapper::VariableWrapper() :
  * Constructs base VariableWrapper structures used in derived classes, by 
  * copying the input instance (copy constructor).
  *
- * @param <vw>  VariableWrapper instance to copy to create wxT("this") instance.
+ * @param <vw>  VariableWrapper instance to copy to create "this" instance.
  */
 //---------------------------------------------------------------------------
 VariableWrapper::VariableWrapper(const VariableWrapper &vw) :
@@ -84,8 +84,8 @@ VariableWrapper::VariableWrapper(const VariableWrapper &vw) :
       var = (Variable*)((vw.var)->Clone());
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (var, var->GetName(), wxT("VariableWrapper copy constructor"),
-          wxT("var = (Variable*)((vw.var)->Clone())"));
+         (var, var->GetName(), "VariableWrapper copy constructor",
+          "var = (Variable*)((vw.var)->Clone())");
       #endif
    }
 }
@@ -112,7 +112,7 @@ const VariableWrapper& VariableWrapper::operator=(const VariableWrapper &vw)
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (var, var->GetName(), wxT("VariableWrapper operator="), wxT("deleting old var"));
+         (var, var->GetName(), "VariableWrapper operator=", "deleting old var");
       #endif
       delete var;
    }
@@ -124,8 +124,8 @@ const VariableWrapper& VariableWrapper::operator=(const VariableWrapper &vw)
       var = (Variable*)((vw.var)->Clone());
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (var, var->GetName(), wxT("VariableWrapper operator="),
-          wxT("var = (Variable*)((vw.var)->Clone())"));
+         (var, var->GetName(), "VariableWrapper operator=",
+          "var = (Variable*)((vw.var)->Clone())");
       #endif
    }
    
@@ -148,7 +148,7 @@ VariableWrapper::~VariableWrapper()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (var, var->GetName(), wxT("VariableWrapper destructor"), wxT("deleting var"));
+         (var, var->GetName(), "VariableWrapper destructor", "deleting var");
       #endif
       delete var;
    }
@@ -184,22 +184,22 @@ Gmat::ParameterType VariableWrapper::GetDataType() const
 }
 
 //------------------------------------------------------------------------------
-// wxString ToString()
+// std::string ToString()
 //------------------------------------------------------------------------------
 /**
- * @return VariableWrapper value converted to wxString.
+ * @return VariableWrapper value converted to std::string.
  *
  * @exception <GmatBaseException> thrown if this method is called.
  */
 //------------------------------------------------------------------------------
-wxString VariableWrapper::ToString()
+std::string VariableWrapper::ToString()
 {
    return var->ToString();
 }
 
 
 //------------------------------------------------------------------------------
-// GmatBase* GetRefObject(const wxString &name = wxT(""))
+// GmatBase* GetRefObject(const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * This method retrives a reference object for the wrapper name
@@ -210,7 +210,7 @@ wxString VariableWrapper::ToString()
  *
  */
 //------------------------------------------------------------------------------
-GmatBase* VariableWrapper::GetRefObject(const wxString &name)
+GmatBase* VariableWrapper::GetRefObject(const std::string &name)
 {
    return var;
 }
@@ -233,26 +233,26 @@ bool VariableWrapper::SetRefObject(GmatBase *obj)
    
    #ifdef DEBUG_REF_OBJ
    MessageInterface::ShowMessage
-      (wxT("VariableWrapper::SetRefObject() <%p>'%s' entered, obj=<%p><%s>'%s', ")
-       wxT("var=<%p>\n"), this, description.c_str(), obj, obj->GetTypeName().c_str(),
+      ("VariableWrapper::SetRefObject() <%p>'%s' entered, obj=<%p><%s>'%s', "
+       "var=<%p>\n", this, description.c_str(), obj, obj->GetTypeName().c_str(),
        obj->GetName().c_str(), var);
    #endif
    
 //   if ( (obj->GetName() != refObjectNames[0]) ||
-//        (obj->GetTypeName() != wxT("Variable")) )
+//        (obj->GetTypeName() != "Variable") )
 //   {
-//      wxString errmsg = wxT("Referenced variable \"");
+//      std::string errmsg = "Referenced variable \"";
 //      errmsg += obj->GetName();
-//      errmsg += (wxT("\" of type \"") + obj->GetTypeName());
-//      errmsg += wxT("\" was passed into the variable wrapper \"");
+//      errmsg += ("\" of type \"" + obj->GetTypeName());
+//      errmsg += "\" was passed into the variable wrapper \"";
 //      errmsg += description;
-//      errmsg += wxT("\", but an object named \"");
+//      errmsg += "\", but an object named \"";
 //      errmsg += refObjectNames[0];
-//      errmsg += wxT("\" was expected.\n");
+//      errmsg += "\" was expected.\n";
 //      throw ParameterException(errmsg);
 //   }
    
-   if ((obj->GetName() == refObjectNames[0]) && (obj->IsOfType(wxT("Variable"))) )
+   if ((obj->GetName() == refObjectNames[0]) && (obj->IsOfType("Variable")) )
    {
       ///@todo if we clone the ref. Variable, math in script does not work,
       // such as RouttineTests/APT_Cart2KepMathTest.script.
@@ -266,21 +266,21 @@ bool VariableWrapper::SetRefObject(GmatBase *obj)
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (var, var->GetName(), wxT("VariableWrapper::SetRefObject()"),
-             wxT("deleting old var"));
+            (var, var->GetName(), "VariableWrapper::SetRefObject()",
+             "deleting old var");
          #endif
          delete var;
       }
       
       #ifdef DEBUG_REF_OBJ
-      MessageInterface::ShowMessage(wxT("   Now cloning obj and setting to var\n"));
+      MessageInterface::ShowMessage("   Now cloning obj and setting to var\n");
       #endif
       
       var = (Variable*)(obj->Clone());
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (var, var->GetName(), wxT("VariableWrapper::SetRefObject()"),
-          wxT("var = (Variable*)(obj->Clone()"));
+         (var, var->GetName(), "VariableWrapper::SetRefObject()",
+          "var = (Variable*)(obj->Clone()");
       #endif
 
 #else
@@ -289,7 +289,7 @@ bool VariableWrapper::SetRefObject(GmatBase *obj)
       
       #ifdef DEBUG_REF_OBJ
       MessageInterface::ShowMessage
-         (wxT("VariableWrapper::SetRefObject() Set var to <%p>, returning true\n"), var);
+         ("VariableWrapper::SetRefObject() Set var to <%p>, returning true\n", var);
       #endif
       return true;
    }
@@ -297,7 +297,7 @@ bool VariableWrapper::SetRefObject(GmatBase *obj)
 }
 
 //---------------------------------------------------------------------------
-//  bool RenameObject(const wxString &oldName, const wxString &newName)
+//  bool RenameObject(const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /**
  * Method to rename a reference object for the wrapper.
@@ -305,8 +305,8 @@ bool VariableWrapper::SetRefObject(GmatBase *obj)
  * @return true if successful; false otherwise.
  */
 //---------------------------------------------------------------------------
-bool VariableWrapper::RenameObject(const wxString &oldName, 
-                                   const wxString &newName)
+bool VariableWrapper::RenameObject(const std::string &oldName, 
+                                   const std::string &newName)
 {
    ElementWrapper::RenameObject(oldName, newName);
    // now rebuild the description string from the refObjectNames
@@ -329,11 +329,11 @@ Real VariableWrapper::EvaluateReal() const
 {
    if (var == NULL)
       throw ParameterException(
-      wxT("Cannot return value of Variable - pointer is NULL\n"));
+      "Cannot return value of Variable - pointer is NULL\n");
    
    #ifdef DEBUG_VAR_WRAPPER_EVAL
    MessageInterface::ShowMessage
-      (wxT("In VarWrapper::EvalReal() <%p>'%s', var=<%p>'%s' - value is %.12f\n"),
+      ("In VarWrapper::EvalReal() <%p>'%s', var=<%p>'%s' - value is %.12f\n",
        this, description.c_str(), var, var->GetName().c_str(), (var->EvaluateReal()));
    #endif
    
@@ -353,12 +353,12 @@ bool VariableWrapper::SetReal(const Real toValue)
 {
    #ifdef DEBUG_VAR_WRAPPER_SET
    MessageInterface::ShowMessage
-      (wxT("In VarWrapper::SetReal() <%p>'%s', var=<%p>'%s' - setting to %.12f\n"),
-       this, description.c_str(), var, var ? var->GetName().c_str() : wxT("NULL"), toValue);
+      ("In VarWrapper::SetReal() <%p>'%s', var=<%p>'%s' - setting to %.12f\n",
+       this, description.c_str(), var, var ? var->GetName().c_str() : "NULL", toValue);
    #endif
    if (var == NULL)
       throw ParameterException(
-      wxT("Cannot set value of Variable - pointer is NULL\n"));
+      "Cannot set value of Variable - pointer is NULL\n");
    var->SetReal(toValue);
    return true;
 }

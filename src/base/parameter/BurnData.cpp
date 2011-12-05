@@ -37,13 +37,13 @@ using namespace GmatMathUtil;
 // static data
 //---------------------------------
 
-const wxString
+const std::string
 BurnData::VALID_OBJECT_TYPE_LIST[BurnDataObjectCount] =
 {
-   wxT("ImpulsiveBurn"),
-   wxT("SolarSystem"),
-   wxT("CoordinateSystem"),
-   wxT("Spacecraft")
+   "ImpulsiveBurn",
+   "SolarSystem",
+   "CoordinateSystem",
+   "Spacecraft"
 }; 
 
 const Real BurnData::BURN_REAL_UNDEFINED = GmatRealConstants::REAL_UNDEFINED_LARGE;
@@ -151,20 +151,20 @@ Real BurnData::GetReal(Integer item)
    if (mImpBurn == NULL)
    {
       MessageInterface::ShowMessage
-         (wxT("Cannot find Burn object so returning %f\n"), BURN_REAL_UNDEFINED);
+         ("Cannot find Burn object so returning %f\n", BURN_REAL_UNDEFINED);
       return BURN_REAL_UNDEFINED;
    }
    
    switch (item)
    {
    case ELEMENT1:
-      return mImpBurn->GetRealParameter(mImpBurn->GetParameterID(wxT("Element1")));
+      return mImpBurn->GetRealParameter(mImpBurn->GetParameterID("Element1"));
    case ELEMENT2:
-      return mImpBurn->GetRealParameter(mImpBurn->GetParameterID(wxT("Element2")));
+      return mImpBurn->GetRealParameter(mImpBurn->GetParameterID("Element2"));
    case ELEMENT3:
-      return mImpBurn->GetRealParameter(mImpBurn->GetParameterID(wxT("Element3")));
+      return mImpBurn->GetRealParameter(mImpBurn->GetParameterID("Element3"));
    default:
-      throw ParameterException(wxT("BurnData::GetReal() Unknown ELEMENT id: ") +
+      throw ParameterException("BurnData::GetReal() Unknown ELEMENT id: " +
                                GmatRealUtil::ToString(item));
    }
 }
@@ -177,7 +177,7 @@ void BurnData::SetReal(Integer item, Real rval)
 {
    #if DEBUG_BURNDATA_SET
    MessageInterface::ShowMessage
-      (wxT("BurnData::SetReal() item=%d, rval=%f\n"), item, rval);
+      ("BurnData::SetReal() item=%d, rval=%f\n", item, rval);
    #endif
    
    ///@todo convert internal DeltaV to Parameter CoordinateSystem.
@@ -187,22 +187,22 @@ void BurnData::SetReal(Integer item, Real rval)
    if (mImpBurn == NULL)
    {
       MessageInterface::ShowMessage
-         (wxT("Cannot find Burn object so returning %f\n"), BURN_REAL_UNDEFINED);
+         ("Cannot find Burn object so returning %f\n", BURN_REAL_UNDEFINED);
    }
    
    switch (item)
    {
    case ELEMENT1:
-      mImpBurn->SetRealParameter(mImpBurn->GetParameterID(wxT("Element1")), rval);
+      mImpBurn->SetRealParameter(mImpBurn->GetParameterID("Element1"), rval);
       break;
    case ELEMENT2:
-      mImpBurn->SetRealParameter(mImpBurn->GetParameterID(wxT("Element2")), rval);
+      mImpBurn->SetRealParameter(mImpBurn->GetParameterID("Element2"), rval);
       break;
    case ELEMENT3:
-      mImpBurn->SetRealParameter(mImpBurn->GetParameterID(wxT("Element3")), rval);
+      mImpBurn->SetRealParameter(mImpBurn->GetParameterID("Element3"), rval);
       break;
    default:
-      throw ParameterException(wxT("BurnData::SetReal() Unknown ELEMENT id: ") +
+      throw ParameterException("BurnData::SetReal() Unknown ELEMENT id: " +
                                GmatRealUtil::ToString(item));
    }
 }
@@ -213,9 +213,9 @@ void BurnData::SetReal(Integer item, Real rval)
 //-------------------------------------
 
 //------------------------------------------------------------------------------
-// virtual const wxString* GetValidObjectList() const
+// virtual const std::string* GetValidObjectList() const
 //------------------------------------------------------------------------------
-const wxString* BurnData::GetValidObjectList() const
+const std::string* BurnData::GetValidObjectList() const
 {
    return VALID_OBJECT_TYPE_LIST;
 }
@@ -254,7 +254,7 @@ void BurnData::InitializeRefObjects()
 {
    #if DEBUG_BURNDATA_INIT
    MessageInterface::ShowMessage
-      (wxT("BurnData::InitializeRefObjects() entered.\n"));
+      ("BurnData::InitializeRefObjects() entered.\n");
    #endif
    
    mImpBurn = (ImpulsiveBurn*)FindFirstObject(VALID_OBJECT_TYPE_LIST[IMPULSIVE_BURN]);
@@ -264,11 +264,11 @@ void BurnData::InitializeRefObjects()
       // just write a message
       #if DEBUG_BURNDATA_INIT
       MessageInterface::ShowMessage
-         (wxT("BurnData::InitializeRefObjects() Cannot find Burn object.\n"));
+         ("BurnData::InitializeRefObjects() Cannot find Burn object.\n");
       #endif
       
       //throw ParameterException
-      //   (wxT("BurnData::InitializeRefObjects() Cannot find Burn object.\n"));
+      //   ("BurnData::InitializeRefObjects() Cannot find Burn object.\n");
    }
    
    //-------------------------------------------------------
@@ -279,40 +279,40 @@ void BurnData::InitializeRefObjects()
    
 //    if (mSolarSystem == NULL)
 //       throw ParameterException
-//          (wxT("BurnData::InitializeRefObjects() Cannot find SolarSystem object\n"));
+//          ("BurnData::InitializeRefObjects() Cannot find SolarSystem object\n");
    
 //    if (mInternalCoordSystem == NULL)
 //       throw ParameterException
-//          (wxT("BurnData::InitializeRefObjects() Cannot find internal ")
-//           wxT("CoordinateSystem object\n"));
+//          ("BurnData::InitializeRefObjects() Cannot find internal "
+//           "CoordinateSystem object\n");
    
 //    mOutCoordSystem =
 //       (CoordinateSystem*)FindFirstObject(VALID_OBJECT_TYPE_LIST[COORD_SYSTEM]);
    
 //    if (mOutCoordSystem == NULL)
 //       throw ParameterException
-//          (wxT("BurnData::InitializeRefObjects() Cannot find output ")
-//           wxT("CoordinateSystem object\n"));
+//          ("BurnData::InitializeRefObjects() Cannot find output "
+//           "CoordinateSystem object\n");
 
 //    // get Burn CoordinateSystem
-//    wxString csName = mImpBurn->GetRefObjectName(Gmat::COORDINATE_SYSTEM);   
+//    std::string csName = mImpBurn->GetRefObjectName(Gmat::COORDINATE_SYSTEM);   
 //    CoordinateSystem *cs = (CoordinateSystem*)mImpBurn->
 //       GetRefObject(Gmat::COORDINATE_SYSTEM, csName);
    
 //    if (!cs)
 //       throw ParameterException
-//          (wxT("BurnData::InitializeRefObjects() spacecraft CoordinateSystem not ")
-//           wxT("found: ") + csName + wxT("\n"));
+//          ("BurnData::InitializeRefObjects() spacecraft CoordinateSystem not "
+//           "found: " + csName + "\n");
 
 //    // get origin
-//    wxString originName =
+//    std::string originName =
 //       FindFirstObjectName(GmatBase::GetObjectType(VALID_OBJECT_TYPE_LIST[SPACE_POINT]));
    
-//    if (originName != wxT(""))
+//    if (originName != "")
 //    {
 //       #if DEBUG_BURNDATA_INIT
 //       MessageInterface::ShowMessage
-//          (wxT("BurnData::InitializeRefObjects() getting originName:%s pointer.\n"),
+//          ("BurnData::InitializeRefObjects() getting originName:%s pointer.\n",
 //           originName.c_str());
 //       #endif
       
@@ -321,19 +321,19 @@ void BurnData::InitializeRefObjects()
 
 //       if (!mOrigin)
 //          throw ParameterException
-//             (wxT("BurnData::InitializeRefObjects() Cannot find Origin object: ") +
-//              originName + wxT("\n"));
+//             ("BurnData::InitializeRefObjects() Cannot find Origin object: " +
+//              originName + "\n");
       
 //    }
 //    else
 //    {
 //       throw ParameterException
-//          (wxT("BurnData::InitializeRefObjects() Burn Origin not specified\n"));
+//          ("BurnData::InitializeRefObjects() Burn Origin not specified\n");
 //    }
    
    #if DEBUG_BURNDATA_INIT
    MessageInterface::ShowMessage
-      (wxT("BurnData::InitializeRefObjects() mImpBurn=%s(%p)\n"),
+      ("BurnData::InitializeRefObjects() mImpBurn=%s(%p)\n",
        mImpBurn->GetName().c_str(), mImpBurn);
    #endif
 }

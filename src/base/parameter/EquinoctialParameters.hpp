@@ -30,7 +30,7 @@ class GMAT_API EquinSma : public OrbitReal
 {
 public:
 
-   EquinSma(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   EquinSma(const std::string &name = "", GmatBase *obj = NULL);
    EquinSma(const EquinSma &copy);
    EquinSma& operator=(const EquinSma &right);
    virtual ~EquinSma();
@@ -50,7 +50,7 @@ class GMAT_API EquinEy : public OrbitReal
 {
 public:
 
-   EquinEy(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   EquinEy(const std::string &name = "", GmatBase *obj = NULL);
    EquinEy(const EquinEy &copy);
    EquinEy& operator=(const EquinEy &right);
    virtual ~EquinEy();
@@ -70,7 +70,7 @@ class GMAT_API EquinEx : public OrbitReal
 {
 public:
 
-   EquinEx(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   EquinEx(const std::string &name = "", GmatBase *obj = NULL);
    EquinEx(const EquinEx &copy);
    EquinEx& operator=(const EquinEx &right);
    virtual ~EquinEx();
@@ -90,7 +90,7 @@ class GMAT_API EquinNy : public OrbitReal
 {
 public:
 
-   EquinNy(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   EquinNy(const std::string &name = "", GmatBase *obj = NULL);
    EquinNy(const EquinNy &copy);
    EquinNy& operator=(const EquinNy &right);
    virtual ~EquinNy();
@@ -110,7 +110,7 @@ class GMAT_API EquinNx : public OrbitReal
 {
 public:
 
-   EquinNx(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   EquinNx(const std::string &name = "", GmatBase *obj = NULL);
    EquinNx(const EquinNx &copy);
    EquinNx& operator=(const EquinNx &right);
    virtual ~EquinNx();
@@ -130,7 +130,7 @@ class GMAT_API EquinMlong : public OrbitReal
 {
 public:
 
-   EquinMlong(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   EquinMlong(const std::string &name = "", GmatBase *obj = NULL);
    EquinMlong(const EquinMlong &copy);
    EquinMlong& operator=(const EquinMlong &right);
    virtual ~EquinMlong();
@@ -150,7 +150,7 @@ class GMAT_API EquinState : public OrbitRvec6
 {
 public:
 
-   EquinState(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   EquinState(const std::string &name = "", GmatBase *obj = NULL);
    EquinState(const EquinState &copy);
    EquinState& operator=(const EquinState &right);
    virtual ~EquinState();

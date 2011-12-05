@@ -31,9 +31,9 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// PlanetReal(const wxString &name, const wxString &typeStr, 
-//            GmatBase *obj, const wxString &desc,
-//            const wxString &unit, Gmat::ObjectType ownerType,
+// PlanetReal(const std::string &name, const std::string &typeStr, 
+//            GmatBase *obj, const std::string &desc,
+//            const std::string &unit, Gmat::ObjectType ownerType,
 //            GmatParam::DepObject depObj)
 //------------------------------------------------------------------------------
 /**
@@ -48,11 +48,11 @@
  * @param <depObj> object which parameter is dependent on (COORD_SYS, ORIGIN, NO_DEP)
  */
 //------------------------------------------------------------------------------
-PlanetReal::PlanetReal(const wxString &name, const wxString &typeStr, 
-                       GmatBase *obj, const wxString &desc,
-                       const wxString &unit, Gmat::ObjectType ownerType,
+PlanetReal::PlanetReal(const std::string &name, const std::string &typeStr, 
+                       GmatBase *obj, const std::string &desc,
+                       const std::string &unit, Gmat::ObjectType ownerType,
                        GmatParam::DepObject depObj)
-   : RealVar(name, wxT(""), typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit, depObj,
+   : RealVar(name, "", typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit, depObj,
              ownerType, false, false)
 {
    mNeedCoordSystem = false;
@@ -136,7 +136,7 @@ void PlanetReal::SetSolarSystem(SolarSystem *ss)
 {
    #if DEBUG_PLANET_REAL
    MessageInterface::ShowMessage
-      (wxT("PlanetReal::SetSolarSystem() ss=%s to %s\n"), ss->GetTypeName().c_str(),
+      ("PlanetReal::SetSolarSystem() ss=%s to %s\n", ss->GetTypeName().c_str(),
        this->GetName().c_str());
    #endif
    
@@ -160,7 +160,7 @@ void PlanetReal::SetInternalCoordSystem(CoordinateSystem *cs)
 {
    #if DEBUG_PLANET_REAL
    MessageInterface::ShowMessage
-      (wxT("PlanetReal::SetInternalCoordSystem() cs=%s to %s\n"), cs->GetTypeName().c_str(),
+      ("PlanetReal::SetInternalCoordSystem() cs=%s to %s\n", cs->GetTypeName().c_str(),
        this->GetName().c_str());
    #endif
    
@@ -229,7 +229,7 @@ bool PlanetReal::Initialize()
    {
       #if DEBUG_PLANET_REAL
       MessageInterface::ShowMessage
-         (wxT("===> PlanetReal::Initialize() calling InitializeRefObjects() on %s\n"),
+         ("===> PlanetReal::Initialize() calling InitializeRefObjects() on %s\n",
           instanceName.c_str());
       #endif
       
@@ -239,24 +239,24 @@ bool PlanetReal::Initialize()
    {
       #if DEBUG_PLANET_REAL
       MessageInterface::ShowMessage
-         (wxT("PlanetReal::Initialize() Fail to initialize Parameter: %s\n"),
+         ("PlanetReal::Initialize() Fail to initialize Parameter: %s\n",
           this->GetName().c_str());
       #endif
       
       throw ParameterException
-         (wxT("Incorrect parameter dependency: ") + GetName() + wxT(".\n") +
-          this->GetTypeName() + e.GetFullMessage() + wxT("\n"));
+         ("Incorrect parameter dependency: " + GetName() + ".\n" +
+          this->GetTypeName() + e.GetFullMessage() + "\n");
    }
    catch(BaseException &e)
    {
       #if DEBUG_PLANET_REAL
       MessageInterface::ShowMessage
-         (wxT("OrbitReal::Initialize() Fail to initialize Parameter: %s\n"),
+         ("OrbitReal::Initialize() Fail to initialize Parameter: %s\n",
           this->GetName().c_str());
       #endif
       
       throw ParameterException
-         (e.GetFullMessage() + wxT(" in ") + GetName() + wxT("\n"));
+         (e.GetFullMessage() + " in " + GetName() + "\n");
    }
    
    return true;
@@ -268,17 +268,17 @@ bool PlanetReal::Initialize()
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool PlanetReal::RenameRefObject(const Gmat::ObjectType type,
-                                 const wxString &oldName,
-                                 const wxString &newName)
+                                 const std::string &oldName,
+                                 const std::string &newName)
 {
    return PlanetData::RenameRefObject(type, oldName, newName);
 }
 
 //------------------------------------------------------------------------------
-// virtual wxString GetRefObjectName(const Gmat::ObjectType type) const
+// virtual std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
 /**
  * Calls PlanetData to get reference object name for given type.
@@ -286,15 +286,15 @@ bool PlanetReal::RenameRefObject(const Gmat::ObjectType type,
  * @return reference object name.
  */
 //------------------------------------------------------------------------------
-wxString PlanetReal::GetRefObjectName(const Gmat::ObjectType type) const
+std::string PlanetReal::GetRefObjectName(const Gmat::ObjectType type) const
 {
-   wxString objName = PlanetData::GetRefObjectName(type);
+   std::string objName = PlanetData::GetRefObjectName(type);
    
-   if (objName == wxT("INVALID_OBJECT_TYPE"))
+   if (objName == "INVALID_OBJECT_TYPE")
    {
       throw ParameterException
-         (wxT("PlanetReal::GetRefObjectName() ") + GmatBase::GetObjectTypeString(type) +
-          wxT(" is not valid object type of ") + this->GetTypeName() + wxT("\n"));
+         ("PlanetReal::GetRefObjectName() " + GmatBase::GetObjectTypeString(type) +
+          " is not valid object type of " + this->GetTypeName() + "\n");
    }
    
    return objName;
@@ -316,7 +316,7 @@ const StringArray& PlanetReal::GetRefObjectNameArray(const Gmat::ObjectType type
 {
    #if DEBUG_PLANET_REAL
    MessageInterface::ShowMessage
-      (wxT("===> PlanetReal::GetRefObjectNameArray() calling PlanetData::GetRefObjectNameArray() on %s\n"),
+      ("===> PlanetReal::GetRefObjectNameArray() calling PlanetData::GetRefObjectNameArray() on %s\n",
        instanceName.c_str());
    #endif
    
@@ -326,7 +326,7 @@ const StringArray& PlanetReal::GetRefObjectNameArray(const Gmat::ObjectType type
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObjectName(const Gmat::ObjectType type,
-//                               const wxString &name)
+//                               const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets reference object name to given object type.
@@ -337,11 +337,11 @@ const StringArray& PlanetReal::GetRefObjectNameArray(const Gmat::ObjectType type
  */
 //------------------------------------------------------------------------------
 bool PlanetReal::SetRefObjectName(const Gmat::ObjectType type,
-                                  const wxString &name)
+                                  const std::string &name)
 {
    #ifdef DEBUG_PLANET_REAL
    MessageInterface::ShowMessage
-      (wxT("PlanetReal::SetRefObjectName() this='%s', type=%d, name='%s'\n"),
+      ("PlanetReal::SetRefObjectName() this='%s', type=%d, name='%s'\n",
        GetName().c_str(), type, name.c_str());
    #endif
    
@@ -349,8 +349,8 @@ bool PlanetReal::SetRefObjectName(const Gmat::ObjectType type,
    bool ret = PlanetData::SetRefObjectName(type, name);
    if (!ret)
       MessageInterface::ShowMessage
-         (wxT("*** Warning *** PlanetReal::SetRefObjectName() RefObjType:%s is not valid ")
-          wxT("for ParameterName:%s\n"), GmatBase::GetObjectTypeString(type).c_str(),
+         ("*** Warning *** PlanetReal::SetRefObjectName() RefObjType:%s is not valid "
+          "for ParameterName:%s\n", GmatBase::GetObjectTypeString(type).c_str(),
           this->GetName().c_str());
    
    return ret;
@@ -360,7 +360,7 @@ bool PlanetReal::SetRefObjectName(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // virtual GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                                const wxString &name)
+//                                const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Calls PlanetData to get object pointer of given type and name
@@ -372,7 +372,7 @@ bool PlanetReal::SetRefObjectName(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 GmatBase* PlanetReal::GetRefObject(const Gmat::ObjectType type,
-                                const wxString &name)
+                                const std::string &name)
 {
    return PlanetData::GetRefObject(type, name);
 }
@@ -380,7 +380,7 @@ GmatBase* PlanetReal::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                           const wxString &name = wxT(""))
+//                           const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Calls PlanetData to set reference object pointer to given type and name.
@@ -394,7 +394,7 @@ GmatBase* PlanetReal::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool PlanetReal::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                const wxString &name)
+                                const std::string &name)
 {
    return PlanetData::SetRefObject(obj, type, name);
 }

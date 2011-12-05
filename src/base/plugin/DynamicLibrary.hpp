@@ -75,10 +75,10 @@
  * The PluginResource returned from this function provides four pieces of
  * information used to manage objects in the user interface:
  *
- *      wxString nodeName;         // Identifier for the resource
- *      wxString parentNodeName;   // Optional owning type identifier
+ *      std::string nodeName;         // Identifier for the resource
+ *      std::string parentNodeName;   // Optional owning type identifier
  *      Gmat::ObjectType type;        // Core type
- *      wxString subtype;          // Optional subtype off of the core
+ *      std::string subtype;          // Optional subtype off of the core
  *
  * The nodeName and type enumeration are required parameters.  If the new tree
  * node should appear at the resource level in the tree, the parentNodeName
@@ -90,7 +90,7 @@
  * Boundary Value Solvers and Optimizers.  If a new type of solver is added
  * through a plugin, the scripted subtype parameter is set in the subtype
  * field.  So, for example, a simulator subtype would set this field to the
- * string wxT("Simulator").  The subtype field should be set to the empty string if
+ * string "Simulator".  The subtype field should be set to the empty string if
  * it is not needed.
  *
  * If these functions are not implemented, the library will load but no
@@ -101,13 +101,13 @@
 class GMAT_API DynamicLibrary
 {
 public:
-   DynamicLibrary(const wxString &name, const wxString &path = wxT("./"));
+   DynamicLibrary(const std::string &name, const std::string &path = "./");
    virtual ~DynamicLibrary();
    DynamicLibrary(const DynamicLibrary& dlib);
    DynamicLibrary& operator=(const DynamicLibrary& dlib);
 
    bool                 LoadDynamicLibrary();
-   void                 (*GetFunction(const wxString &funName))();
+   void                 (*GetFunction(const std::string &funName))();
 
    Integer              GetFactoryCount();
    Factory*             GetGmatFactory(Integer index = 0);
@@ -119,8 +119,8 @@ public:
    Gmat::PluginResource* GetMenuEntry(Integer index);
 
 protected:
-   wxString          libName;
-   wxString          libPath;
+   std::string          libName;
+   std::string          libPath;
    void *               libHandle;
 };
 

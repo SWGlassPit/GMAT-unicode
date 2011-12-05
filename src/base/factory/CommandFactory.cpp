@@ -75,8 +75,8 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  GmatCommand* CreateCommand(const wxString &ofType, 
-//                             const wxString &withName)
+//  GmatCommand* CreateCommand(const std::string &ofType, 
+//                             const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested command class 
@@ -90,89 +90,89 @@
  *       parameter may be added later.
  */
 //------------------------------------------------------------------------------
-GmatCommand* CommandFactory::CreateCommand(const wxString &ofType,
-                                           const wxString &withName)
+GmatCommand* CommandFactory::CreateCommand(const std::string &ofType,
+                                           const std::string &withName)
 {
-    if (ofType == wxT("NoOp"))
+    if (ofType == "NoOp")
         return new NoOp;
-    if (ofType == wxT("BeginMissionSequence"))
+    if (ofType == "BeginMissionSequence")
         return new BeginMissionSequence;
-    else if (ofType == wxT("Propagate"))
+    else if (ofType == "Propagate")
         return new Propagate;
-    else if (ofType == wxT("Toggle"))
+    else if (ofType == "Toggle")
         return new Toggle;
-    else if (ofType == wxT("Maneuver"))
+    else if (ofType == "Maneuver")
         return new Maneuver;
-    else if (ofType == wxT("Target"))
+    else if (ofType == "Target")
         return new Target;
-    else if (ofType == wxT("Vary"))
+    else if (ofType == "Vary")
         return new Vary;
-    else if (ofType == wxT("Achieve"))
+    else if (ofType == "Achieve")
         return new Achieve;
-    else if (ofType == wxT("EndTarget"))
+    else if (ofType == "EndTarget")
         return new EndTarget;
-    else if (ofType == wxT("For"))
+    else if (ofType == "For")
         return new For;
-    else if (ofType == wxT("EndFor"))
+    else if (ofType == "EndFor")
         return new EndFor;
-    else if (ofType == wxT("While"))
+    else if (ofType == "While")
         return new While;
-    else if (ofType == wxT("EndWhile"))
+    else if (ofType == "EndWhile")
         return new EndWhile;
-    else if (ofType == wxT("If"))
+    else if (ofType == "If")
         return new If;
-    else if (ofType == wxT("Else"))
+    else if (ofType == "Else")
         return new Else;
 #ifdef __INCLUDE_ELSEIF__
-    else if (ofType == wxT("ElseIf"))
+    else if (ofType == "ElseIf")
         return new ElseIf;
 #endif
-    else if (ofType == wxT("EndIf"))
+    else if (ofType == "EndIf")
         return new EndIf;
-    else if (ofType == wxT("GMAT") || ofType == wxT("Equation") || ofType == wxT("Assignment"))
+    else if (ofType == "GMAT" || ofType == "Equation" || ofType == "Assignment")
         return new Assignment;
-    else if (ofType == wxT("Report"))
+    else if (ofType == "Report")
         return new Report;
-    else if (ofType == wxT("Save"))
+    else if (ofType == "Save")
         return new Save;
-    else if (ofType == wxT("SaveMission"))
+    else if (ofType == "SaveMission")
         return new SaveMission;
     // Actual creating of CallFunction is not allowed, but it should
     // be added to allowed creatables so that Interpreter can continue
     // with creating proper CallGmatFunction
-    //else if (ofType == wxT("CallFunction"))
+    //else if (ofType == "CallFunction")
     //   return new CallFunction;
-    else if (ofType == wxT("CallGmatFunction"))
+    else if (ofType == "CallGmatFunction")
         return new CallGmatFunction;
-    else if (ofType == wxT("BeginFiniteBurn"))
+    else if (ofType == "BeginFiniteBurn")
         return new BeginFiniteBurn;
-    else if (ofType == wxT("EndFiniteBurn"))
+    else if (ofType == "EndFiniteBurn")
          return new EndFiniteBurn;
-    else if (ofType == wxT("BeginScript"))
+    else if (ofType == "BeginScript")
         return new BeginScript;
-    else if (ofType == wxT("EndScript"))
+    else if (ofType == "EndScript")
          return new EndScript;
-    else if (ofType == wxT("Stop"))
+    else if (ofType == "Stop")
         return new Stop;
-    else if (ofType == wxT("Optimize"))
+    else if (ofType == "Optimize")
         return new Optimize;
-    else if (ofType == wxT("EndOptimize"))
+    else if (ofType == "EndOptimize")
         return new EndOptimize;
-    else if (ofType == wxT("Minimize"))
+    else if (ofType == "Minimize")
         return new Minimize;
-    else if (ofType == wxT("NonlinearConstraint"))
+    else if (ofType == "NonlinearConstraint")
         return new NonlinearConstraint;
-    else if (ofType == wxT("ClearPlot"))
+    else if (ofType == "ClearPlot")
         return new ClearPlot;
-    else if (ofType == wxT("PenUp"))
+    else if (ofType == "PenUp")
         return new PenUp;
-    else if (ofType == wxT("PenDown"))
+    else if (ofType == "PenDown")
         return new PenDown;
-    else if (ofType == wxT("MarkPoint"))
+    else if (ofType == "MarkPoint")
         return new MarkPoint;
-    else if (ofType == wxT("Global"))
+    else if (ofType == "Global")
         return new Global;
-    else if (ofType == wxT("Create"))
+    else if (ofType == "Create")
         return new Create;
    // add more here .......
    else 
@@ -197,50 +197,50 @@ CommandFactory::CommandFactory() :
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("Achieve"));
-      creatables.push_back(wxT("Assignment"));
-      creatables.push_back(wxT("BeginFiniteBurn"));
-      creatables.push_back(wxT("BeginMissionSequence"));
-      sequenceStarters.push_back(wxT("BeginMissionSequence"));
-      creatables.push_back(wxT("BeginScript"));
-      creatables.push_back(wxT("CallFunction"));
-      creatables.push_back(wxT("CallGmatFunction"));
-      creatables.push_back(wxT("ClearPlot"));
-      creatables.push_back(wxT("Create"));
-      creatables.push_back(wxT("Else"));
+      creatables.push_back("Achieve");
+      creatables.push_back("Assignment");
+      creatables.push_back("BeginFiniteBurn");
+      creatables.push_back("BeginMissionSequence");
+      sequenceStarters.push_back("BeginMissionSequence");
+      creatables.push_back("BeginScript");
+      creatables.push_back("CallFunction");
+      creatables.push_back("CallGmatFunction");
+      creatables.push_back("ClearPlot");
+      creatables.push_back("Create");
+      creatables.push_back("Else");
 #ifdef __INCLUDE_ELSEIF__
-      creatables.push_back(wxT("ElseIf"));
+      creatables.push_back("ElseIf");
 #endif
-      creatables.push_back(wxT("EndFor"));
-      creatables.push_back(wxT("EndIf"));
-      creatables.push_back(wxT("EndOptimize"));
-      creatables.push_back(wxT("EndTarget"));
-      creatables.push_back(wxT("EndWhile"));
-      creatables.push_back(wxT("EndScript"));
-      creatables.push_back(wxT("EndFiniteBurn"));
-      creatables.push_back(wxT("Equation"));
-      creatables.push_back(wxT("For"));
-      creatables.push_back(wxT("If"));
-      creatables.push_back(wxT("GMAT"));
-      creatables.push_back(wxT("Global"));
-      creatables.push_back(wxT("Maneuver"));
-      creatables.push_back(wxT("MarkPoint"));
-      creatables.push_back(wxT("Minimize"));
-      creatables.push_back(wxT("NonlinearConstraint"));
-      creatables.push_back(wxT("NoOp"));
-      creatables.push_back(wxT("Optimize"));
-      creatables.push_back(wxT("PenUp"));
-      creatables.push_back(wxT("PenDown"));
-      creatables.push_back(wxT("Propagate"));
-      creatables.push_back(wxT("Report"));
-      creatables.push_back(wxT("Save"));
-      creatables.push_back(wxT("SaveMission"));
-      creatables.push_back(wxT("ScriptEvent"));
-      creatables.push_back(wxT("Stop"));
-      creatables.push_back(wxT("Target"));
-      creatables.push_back(wxT("Toggle"));
-      creatables.push_back(wxT("Vary"));
-      creatables.push_back(wxT("While"));
+      creatables.push_back("EndFor");
+      creatables.push_back("EndIf");
+      creatables.push_back("EndOptimize");
+      creatables.push_back("EndTarget");
+      creatables.push_back("EndWhile");
+      creatables.push_back("EndScript");
+      creatables.push_back("EndFiniteBurn");
+      creatables.push_back("Equation");
+      creatables.push_back("For");
+      creatables.push_back("If");
+      creatables.push_back("GMAT");
+      creatables.push_back("Global");
+      creatables.push_back("Maneuver");
+      creatables.push_back("MarkPoint");
+      creatables.push_back("Minimize");
+      creatables.push_back("NonlinearConstraint");
+      creatables.push_back("NoOp");
+      creatables.push_back("Optimize");
+      creatables.push_back("PenUp");
+      creatables.push_back("PenDown");
+      creatables.push_back("Propagate");
+      creatables.push_back("Report");
+      creatables.push_back("Save");
+      creatables.push_back("SaveMission");
+      creatables.push_back("ScriptEvent");
+      creatables.push_back("Stop");
+      creatables.push_back("Target");
+      creatables.push_back("Toggle");
+      creatables.push_back("Vary");
+      creatables.push_back("While");
    }
    
    // Now fill in unviewable commands
@@ -248,40 +248,40 @@ CommandFactory::CommandFactory() :
    if (unviewables.empty())
    {
       // These commands do nothing
-      unviewables.push_back(wxT("NoOp"));
-      unviewables.push_back(wxT("BeginMissionSequence"));
+      unviewables.push_back("NoOp");
+      unviewables.push_back("BeginMissionSequence");
       
       // These commands show as Equation in the MissionTree menu
-      unviewables.push_back(wxT("Assignment"));
-      unviewables.push_back(wxT("GMAT"));
+      unviewables.push_back("Assignment");
+      unviewables.push_back("GMAT");
       
       // These commands show as ScriptEvent in the MissionTree menu
-      unviewables.push_back(wxT("BeginScript"));
+      unviewables.push_back("BeginScript");
       
       // These commands only works in object setup mode and inside a GmatFunction
-      unviewables.push_back(wxT("Create"));
+      unviewables.push_back("Create");
       
       // CallFunction is parent command of CallGmatFunction and CallMatlabFunction
-      unviewables.push_back(wxT("CallFunction"));
+      unviewables.push_back("CallFunction");
       
       // These commands are only viewable under Target or Optimize
-      unviewables.push_back(wxT("Achieve"));
-      unviewables.push_back(wxT("Minimize"));
-      unviewables.push_back(wxT("NonlinearConstraint"));
-      unviewables.push_back(wxT("Vary"));
+      unviewables.push_back("Achieve");
+      unviewables.push_back("Minimize");
+      unviewables.push_back("NonlinearConstraint");
+      unviewables.push_back("Vary");
       
       // These commands are automatically created via GUI
-      unviewables.push_back(wxT("For"));
-      unviewables.push_back(wxT("If"));
-      unviewables.push_back(wxT("Else"));
-      unviewables.push_back(wxT("ElseIf"));
-      unviewables.push_back(wxT("While"));
-      unviewables.push_back(wxT("EndFor"));
-      unviewables.push_back(wxT("EndIf"));
-      unviewables.push_back(wxT("EndOptimize"));
-      unviewables.push_back(wxT("EndTarget"));
-      unviewables.push_back(wxT("EndWhile"));
-      unviewables.push_back(wxT("EndScript"));
+      unviewables.push_back("For");
+      unviewables.push_back("If");
+      unviewables.push_back("Else");
+      unviewables.push_back("ElseIf");
+      unviewables.push_back("While");
+      unviewables.push_back("EndFor");
+      unviewables.push_back("EndIf");
+      unviewables.push_back("EndOptimize");
+      unviewables.push_back("EndTarget");
+      unviewables.push_back("EndWhile");
+      unviewables.push_back("EndScript");
    }
 }
 
@@ -307,7 +307,7 @@ CommandFactory::CommandFactory(StringArray createList) :
  * This method creates an object of the (base) class CommandFactory (called by
  * copy constructors of derived classes).  (copy constructor)
  *
- * @param <fact> the factory object to copy to wxT("this") factory.
+ * @param <fact> the factory object to copy to "this" factory.
  */
 //------------------------------------------------------------------------------
 CommandFactory::CommandFactory(const CommandFactory& fact) :
@@ -321,9 +321,9 @@ CommandFactory::CommandFactory(const CommandFactory& fact) :
 /**
  * Assignment operator for the CommandFactory base class.
  *
- * @param <fact> the CommandFactory object whose data to assign to wxT("this") factory.
+ * @param <fact> the CommandFactory object whose data to assign to "this" factory.
  *
- * @return wxT("this") CommandFactory with data of input factory fact.
+ * @return "this" CommandFactory with data of input factory fact.
  */
 //------------------------------------------------------------------------------
 CommandFactory& CommandFactory::operator= (const CommandFactory& fact)
@@ -346,7 +346,7 @@ CommandFactory::~CommandFactory()
 
 
 //------------------------------------------------------------------------------
-// StringArray GetListOfCreatableObjects(const wxString &qualifier) const
+// StringArray GetListOfCreatableObjects(const std::string &qualifier) const
 //------------------------------------------------------------------------------
 /**
  * Retrieves a list of creatable objects
@@ -360,11 +360,11 @@ CommandFactory::~CommandFactory()
  */
 //------------------------------------------------------------------------------
 StringArray CommandFactory::GetListOfCreatableObjects(
-                                  const wxString &qualifier) const
+                                  const std::string &qualifier) const
 {
-   if (qualifier != wxT(""))
+   if (qualifier != "")
    {
-      if (qualifier == wxT("SequenceStarters"))
+      if (qualifier == "SequenceStarters")
          return sequenceStarters;
    }
 

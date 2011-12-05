@@ -45,27 +45,27 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 Function::PARAMETER_TEXT[FunctionParamCount - GmatBaseParamCount] =
 {
-   wxT("FunctionPath"),
-   wxT("FunctionName"),
-   wxT("Input"),
-   wxT("Output")
+   "FunctionPath",
+   "FunctionName",
+   "Input",
+   "Output"
 };
 
 const Gmat::ParameterType
 Function::PARAMETER_TYPE[FunctionParamCount - GmatBaseParamCount] =
 {
-   Gmat::FILENAME_TYPE,       // wxT("FunctionPath"),
-   Gmat::STRING_TYPE,         // wxT("FunctionName"),
-   Gmat::STRINGARRAY_TYPE,    // wxT("Input"),
-   Gmat::STRINGARRAY_TYPE,    // wxT("Output")
+   Gmat::FILENAME_TYPE,       // "FunctionPath",
+   Gmat::STRING_TYPE,         // "FunctionName",
+   Gmat::STRINGARRAY_TYPE,    // "Input",
+   Gmat::STRINGARRAY_TYPE,    // "Output"
 };
 
 
 //------------------------------------------------------------------------------
-//  Function(wxString typeStr, wxString name)
+//  Function(std::string typeStr, std::string name)
 //------------------------------------------------------------------------------
 /**
  * Constructs the Function object (default constructor).
@@ -74,10 +74,10 @@ Function::PARAMETER_TYPE[FunctionParamCount - GmatBaseParamCount] =
  * @param <name>   Name for the object
  */
 //------------------------------------------------------------------------------
-Function::Function(const wxString &typeStr, const wxString &name) :
+Function::Function(const std::string &typeStr, const std::string &name) :
    GmatBase           (Gmat::FUNCTION, typeStr, name),
-   functionPath       (wxT("")),
-   functionName       (wxT("")),
+   functionPath       (""),
+   functionName       (""),
    objectStore        (NULL),
    globalObjectStore  (NULL),
    solarSys           (NULL),
@@ -91,7 +91,7 @@ Function::Function(const wxString &typeStr, const wxString &name) :
 {
    objectTypes.push_back(Gmat::FUNCTION);
    objectTypeNames.push_back(typeStr);
-   objectTypeNames.push_back(wxT("Function"));
+   objectTypeNames.push_back("Function");
    parameterCount = FunctionParamCount;
 }
 
@@ -212,7 +212,7 @@ void Function::SetOutputTypes(WrapperTypeArray &outputTypes,
 {
    #ifdef DEBUG_FUNCTION_SET
    MessageInterface::ShowMessage
-      (wxT("Function::SetOutputTypes() setting %d outputTypes\n"), outputTypes.size());
+      ("Function::SetOutputTypes() setting %d outputTypes\n", outputTypes.size());
    #endif
    
    outputWrapperTypes = outputTypes;
@@ -262,15 +262,15 @@ bool Function::IsFcsFinalized()
 void Function::SetObjectMap(ObjectMap *objMap)
 {
    #ifdef DEBUG_OBJECT_MAP
-   ShowObjectMap(objMap, wxT("In Function::SetObjectMap"), wxT("Input Object Map"));
+   ShowObjectMap(objMap, "In Function::SetObjectMap", "Input Object Map");
    #endif
    objectStore = objMap;
 }
 
 //------------------------------------------------------------------------------
-// void SetGlobalObjectMap(std::map<wxString, GmatBase *> *map)
+// void SetGlobalObjectMap(std::map<std::string, GmatBase *> *map)
 //------------------------------------------------------------------------------
-void Function::SetGlobalObjectMap(std::map<wxString, GmatBase *> *map)
+void Function::SetGlobalObjectMap(std::map<std::string, GmatBase *> *map)
 {
    globalObjectStore = map;
 }
@@ -282,7 +282,7 @@ void Function::SetSolarSystem(SolarSystem *ss)
 {
    #ifdef DEBUG_FUNCTION_SET
    MessageInterface::ShowMessage
-      (wxT("Function::SetSolarSystem() entered, this='%s', ss=<%p>\n"),
+      ("Function::SetSolarSystem() entered, this='%s', ss=<%p>\n",
        GetName().c_str(), ss);
    #endif
    
@@ -296,7 +296,7 @@ void Function::SetInternalCoordSystem(CoordinateSystem *cs)
 {
    #ifdef DEBUG_FUNCTION_SET
    MessageInterface::ShowMessage
-      (wxT("Function::SetInternalCoordSystem() entered, this='%s', cs=<%p>\n"),
+      ("Function::SetInternalCoordSystem() entered, this='%s', cs=<%p>\n",
        GetName().c_str(), cs);
    #endif
    
@@ -344,13 +344,13 @@ bool Function::IsFunctionControlSequenceSet()
 bool Function::SetFunctionControlSequence(GmatCommand *cmd)
 {
    #ifdef DEBUG_FUNCTION_SET
-      if (!cmd) MessageInterface::ShowMessage(wxT("Trying to set FCS on %s, but it is NULL!!!\n"),
+      if (!cmd) MessageInterface::ShowMessage("Trying to set FCS on %s, but it is NULL!!!\n",
             functionName.c_str());
       else
       {
-         MessageInterface::ShowMessage(wxT("Setting FCS for function %s with FCS pointer = %p\n"),
+         MessageInterface::ShowMessage("Setting FCS for function %s with FCS pointer = %p\n",
                functionName.c_str(), cmd);  
-         MessageInterface::ShowMessage(wxT("First command is a %s\n"), (cmd->GetTypeName()).c_str());
+         MessageInterface::ShowMessage("First command is a %s\n", (cmd->GetTypeName()).c_str());
       }
    #endif
    fcs = cmd;
@@ -366,28 +366,28 @@ GmatCommand* Function::GetFunctionControlSequence()
 }
 
 //------------------------------------------------------------------------------
-// wxString GetFunctionPathAndName()
+// std::string GetFunctionPathAndName()
 //------------------------------------------------------------------------------
-wxString Function::GetFunctionPathAndName()
+std::string Function::GetFunctionPathAndName()
 {
    return functionPath;
 }
 
 //------------------------------------------------------------------------------
-// bool SetInputElementWrapper(const wxString &forName, ElementWrapper *wrapper)
+// bool SetInputElementWrapper(const std::string &forName, ElementWrapper *wrapper)
 //------------------------------------------------------------------------------
-bool Function::SetInputElementWrapper(const wxString &forName, ElementWrapper *wrapper)
+bool Function::SetInputElementWrapper(const std::string &forName, ElementWrapper *wrapper)
 {
    #ifdef DEBUG_FUNCTION_SET
    MessageInterface::ShowMessage
-      (wxT("Function::SetInputElementWrapper - for wrapper name \"%s\"\n"), forName.c_str());
+      ("Function::SetInputElementWrapper - for wrapper name \"%s\"\n", forName.c_str());
    MessageInterface::ShowMessage
-      (wxT("   wrapper=<%p>, wrapper type = %d\n"), wrapper, wrapper->GetWrapperType());
+      ("   wrapper=<%p>, wrapper type = %d\n", wrapper, wrapper->GetWrapperType());
    #endif
    if (inputArgMap.find(forName) == inputArgMap.end())
    {
-      wxString errMsg = wxT("Unknown input argument \"") + forName;
-      errMsg += wxT("\" for function \"") + functionName + wxT("\"");
+      std::string errMsg = "Unknown input argument \"" + forName;
+      errMsg += "\" for function \"" + functionName + "\"";
       throw FunctionException(errMsg);
    }
    
@@ -404,7 +404,7 @@ bool Function::SetInputElementWrapper(const wxString &forName, ElementWrapper *w
 //------------------------------------------------------------------------------
 /*
  * Implements GMAT FUNCTIONS design 27.2.2.3 GmatFunction Execution
- * step 4 of wxT("Steps Performed on the Firstexecution")
+ * step 4 of "Steps Performed on the Firstexecution"
  */
 //------------------------------------------------------------------------------
 ElementWrapper* Function::GetOutputArgument(Integer argNumber)
@@ -412,28 +412,28 @@ ElementWrapper* Function::GetOutputArgument(Integer argNumber)
    if ((argNumber < 0) || (argNumber > (Integer) outputNames.size()) ||
        (argNumber> (Integer) outputArgMap.size()))
    {
-      wxString errMsg = wxT("Function error: argument number out-of-range\n");
+      std::string errMsg = "Function error: argument number out-of-range\n";
       throw FunctionException(errMsg);
    }
-   wxString argName = outputNames.at(argNumber);
+   std::string argName = outputNames.at(argNumber);
    return GetOutputArgument(argName);
 }
 
 
 //------------------------------------------------------------------------------
-// ElementWrapper* GetOutputArgument(const wxString &byName)
+// ElementWrapper* GetOutputArgument(const std::string &byName)
 //------------------------------------------------------------------------------
-ElementWrapper* Function::GetOutputArgument(const wxString &byName)
+ElementWrapper* Function::GetOutputArgument(const std::string &byName)
 {
    #ifdef DEBUG_FUNCTION_IN_OUT
-      MessageInterface::ShowMessage(wxT("Function::GetOutputArgument - asking for  \"%s\"\n"),
+      MessageInterface::ShowMessage("Function::GetOutputArgument - asking for  \"%s\"\n",
             byName.c_str());
    #endif
    if (outputArgMap.find(byName) == outputArgMap.end())
    {
-      wxString errMsg = wxT("Function error: output \"") + byName;
-      errMsg += wxT("\" from function \"") + functionName;
-      errMsg += wxT("\" does not exist.\n");
+      std::string errMsg = "Function error: output \"" + byName;
+      errMsg += "\" from function \"" + functionName;
+      errMsg += "\" does not exist.\n";
       throw FunctionException(errMsg);
    }
    
@@ -441,7 +441,7 @@ ElementWrapper* Function::GetOutputArgument(const wxString &byName)
    
    #ifdef DEBUG_FUNCTION_IN_OUT
    MessageInterface::ShowMessage
-      (wxT("Function::GetOutputArgument(%s) returning <%p>, type=%d\n"), byName.c_str(),
+      ("Function::GetOutputArgument(%s) returning <%p>, type=%d\n", byName.c_str(),
        ew, ew->GetDataType());
    #endif
    
@@ -459,7 +459,7 @@ WrapperArray& Function::GetWrappersToDelete()
 
 
 //------------------------------------------------------------------------------
-// void AddAutomaticObject(const wxString &withName, GmatBase *obj,
+// void AddAutomaticObject(const std::string &withName, GmatBase *obj,
 //                         bool alreadyManaged)
 //------------------------------------------------------------------------------
 /*
@@ -477,13 +477,13 @@ WrapperArray& Function::GetWrappersToDelete()
  * @note Make sure that old automatic objects are deleted properly
  */
 //------------------------------------------------------------------------------
-void Function::AddAutomaticObject(const wxString &withName, GmatBase *obj,
+void Function::AddAutomaticObject(const std::string &withName, GmatBase *obj,
                                   bool alreadyManaged)
 {
    #ifdef DEBUG_AUTO_OBJ
    MessageInterface::ShowMessage
-      (wxT("Function::AddAutomaticObject() <%p>'%s' entered, name='%s', obj=<%p> '%s', ")
-       wxT("alreadyManaged=%d, objectStore=<%p>\n"), this, GetName().c_str(),
+      ("Function::AddAutomaticObject() <%p>'%s' entered, name='%s', obj=<%p> '%s', "
+       "alreadyManaged=%d, objectStore=<%p>\n", this, GetName().c_str(),
        withName.c_str(), obj, obj->GetName().c_str(), alreadyManaged, objectStore);
    #endif
    
@@ -491,23 +491,23 @@ void Function::AddAutomaticObject(const wxString &withName, GmatBase *obj,
    // (LOJ: 2009.03.25)
    if (objectStore != NULL)
    {
-      wxString type, ownerName, dep;
+      std::string type, ownerName, dep;
       GmatStringUtil::ParseParameter(withName, type, ownerName, dep);
       GmatBase *owner = FindObject(ownerName);
       #ifdef DEBUG_AUTO_OBJ
       MessageInterface::ShowMessage
-         (wxT("Function::AddAutomaticObject(), ownerName='%s', owner=<%p><%s>'%s'\n"),
-          ownerName.c_str(), owner, owner ? owner->GetTypeName().c_str() : wxT("NULL"),
-          owner ? owner->GetName().c_str() : wxT("NULL"));
+         ("Function::AddAutomaticObject(), ownerName='%s', owner=<%p><%s>'%s'\n",
+          ownerName.c_str(), owner, owner ? owner->GetTypeName().c_str() : "NULL",
+          owner ? owner->GetName().c_str() : "NULL");
          #ifdef DEBUG_OBJECT_MAP
-         ShowObjectMap(objectStore, wxT("In Function::AddAutomaticObject"), wxT("objectStore"));
+         ShowObjectMap(objectStore, "In Function::AddAutomaticObject", "objectStore");
          #endif
       #endif
       if (owner == NULL)
       {
          FunctionException fe;;
-         fe.SetDetails(wxT("Cannot find the object named \"%s\" in the function ")
-                       wxT("object store"), ownerName.c_str());
+         fe.SetDetails("Cannot find the object named \"%s\" in the function "
+                       "object store", ownerName.c_str());
          throw fe;
       }
       
@@ -515,12 +515,12 @@ void Function::AddAutomaticObject(const wxString &withName, GmatBase *obj,
       if (owner != refObj)
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** The ref object \"%s\" of the Parameter \"%s\"")
-             wxT("does not points to object in object store"), ownerName.c_str(),
+            ("*** WARNING *** The ref object \"%s\" of the Parameter \"%s\""
+             "does not points to object in object store", ownerName.c_str(),
              withName.c_str());
          FunctionException fe;;
-         fe.SetDetails(wxT("The ref object \"%s\" of the Parameter \"%s\"")
-                       wxT("does not points to object in object store"), ownerName.c_str(),
+         fe.SetDetails("The ref object \"%s\" of the Parameter \"%s\""
+                       "does not points to object in object store", ownerName.c_str(),
                        withName.c_str());
          throw fe;
       }
@@ -534,7 +534,7 @@ void Function::AddAutomaticObject(const wxString &withName, GmatBase *obj,
       {
          #ifdef DEBUG_AUTO_OBJ
          MessageInterface::ShowMessage
-            (wxT("   Adding <%p>'%s' to sandboxObjects\n"), obj, obj->GetName().c_str());
+            ("   Adding <%p>'%s' to sandboxObjects\n", obj, obj->GetName().c_str());
          #endif
          sandboxObjects.push_back(obj);
       }
@@ -546,9 +546,9 @@ void Function::AddAutomaticObject(const wxString &withName, GmatBase *obj,
       GmatBase *oldObj = automaticObjectMap[withName];
       #ifdef DEBUG_AUTO_OBJ
       MessageInterface::ShowMessage
-         (wxT("   Found oldObj=<%p><%s> '%s'\n"), oldObj, oldObj ?
-          oldObj->GetTypeName().c_str() : wxT("NULL"),
-          oldObj ? oldObj->GetName().c_str() : wxT("NULL"));
+         ("   Found oldObj=<%p><%s> '%s'\n", oldObj, oldObj ?
+          oldObj->GetTypeName().c_str() : "NULL",
+          oldObj ? oldObj->GetName().c_str() : "NULL");
       #endif
       
       // if old object is not in the sandboxObjects add it to delete list,
@@ -562,7 +562,7 @@ void Function::AddAutomaticObject(const wxString &withName, GmatBase *obj,
              objectsToDelete.end())
          {
             #ifdef DEBUG_AUTO_OBJ
-            MessageInterface::ShowMessage(wxT("   Adding to objectsToDelete\n"));
+            MessageInterface::ShowMessage("   Adding to objectsToDelete\n");
             #endif
             objectsToDelete.push_back(oldObj);
          }
@@ -572,22 +572,22 @@ void Function::AddAutomaticObject(const wxString &withName, GmatBase *obj,
    
    #ifdef DEBUG_AUTO_OBJ
    MessageInterface::ShowMessage
-      (wxT("Function::AddAutomaticObject() <%p>'%s' leaving, <%p>'%s' inserted to ")
-       wxT("automaticObjectMap\n"), this, GetName().c_str(), obj, withName.c_str());
+      ("Function::AddAutomaticObject() <%p>'%s' leaving, <%p>'%s' inserted to "
+       "automaticObjectMap\n", this, GetName().c_str(), obj, withName.c_str());
    #endif
    
    automaticObjectMap.insert(std::make_pair(withName,obj));
    
    #ifdef DEBUG_AUTO_OBJ
-   ShowObjectMap(&automaticObjectMap, wxT("In AddAutomaticObject()"), wxT("automaticObjectMap"));
+   ShowObjectMap(&automaticObjectMap, "In AddAutomaticObject()", "automaticObjectMap");
    #endif
 }
 
 
 //------------------------------------------------------------------------------
-// GmatBase* FindAutomaticObject(const wxString &name)
+// GmatBase* FindAutomaticObject(const std::string &name)
 //------------------------------------------------------------------------------
-GmatBase* Function::FindAutomaticObject(const wxString &name)
+GmatBase* Function::FindAutomaticObject(const std::string &name)
 {
    if (automaticObjectMap.find(name) != automaticObjectMap.end())
       return automaticObjectMap[name];
@@ -605,31 +605,31 @@ ObjectMap& Function::GetAutomaticObjects()
 }
 
 //------------------------------------------------------------------------------
-// virtual bool TakeAction(const wxString &action,
-//                         const wxString &actionData = wxT(""))
+// virtual bool TakeAction(const std::string &action,
+//                         const std::string &actionData = "")
 //------------------------------------------------------------------------------
 /**
  * This method performs action.
  *
  * @param <action> action to perform
- * @param <actionData> action data associated with action (wxT(""))
+ * @param <actionData> action data associated with action ("")
  * @return true if action successfully performed
  *
  */
 //------------------------------------------------------------------------------
-bool Function::TakeAction(const wxString &action,
-                          const wxString &actionData)
+bool Function::TakeAction(const std::string &action,
+                          const std::string &actionData)
 {
    #ifdef DEBUG_FUNCTION_ACTION
    MessageInterface::ShowMessage
-      (wxT("Function::TakeAction() action=%s, actionData=%s\n"), action.c_str(),
+      ("Function::TakeAction() action=%s, actionData=%s\n", action.c_str(),
        actionData.c_str());
    #endif
    
-   if (action == wxT("Clear"))
+   if (action == "Clear")
    {
       #ifdef DEBUG_FUNCTION_ACTION
-      MessageInterface::ShowMessage(wxT("   Clearing input and output argument list\n"));
+      MessageInterface::ShowMessage("   Clearing input and output argument list\n");
       #endif
       
       // Do we need to also delete input/output ElementWrappers here? 
@@ -669,7 +669,7 @@ bool Function::IsParameterReadOnly(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString GetParameterText(const Integer id) const
+//  std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Gets the name of the parameter with the input id.
@@ -679,7 +679,7 @@ bool Function::IsParameterReadOnly(const Integer id) const
  * @return The string name of the parameter.
  */
 //------------------------------------------------------------------------------
-wxString Function::GetParameterText(const Integer id) const
+std::string Function::GetParameterText(const Integer id) const
 {
    if (id >= FUNCTION_PATH && id < FunctionParamCount)
       return PARAMETER_TEXT[id - GmatBaseParamCount];
@@ -689,7 +689,7 @@ wxString Function::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer GetParameterID(const wxString &str) const
+//  Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * Gets the id corresponding to a named parameter.
@@ -699,7 +699,7 @@ wxString Function::GetParameterText(const Integer id) const
  * @return The ID.
  */
 //------------------------------------------------------------------------------
-Integer Function::GetParameterID(const wxString &str) const
+Integer Function::GetParameterID(const std::string &str) const
 {
    for (Integer i = FUNCTION_PATH; i < FunctionParamCount; i++)
    {
@@ -732,7 +732,7 @@ Gmat::ParameterType Function::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString GetParameterTypeString(const Integer id) const
+//  std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Gets the text description for the type of a parameter.
@@ -742,7 +742,7 @@ Gmat::ParameterType Function::GetParameterType(const Integer id) const
  * @return The text description of the type of the parameter.
  */
 //------------------------------------------------------------------------------
-wxString Function::GetParameterTypeString(const Integer id) const
+std::string Function::GetParameterTypeString(const Integer id) const
 {
    if (id >= FUNCTION_PATH&& id < FunctionParamCount)
       return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
@@ -752,17 +752,17 @@ wxString Function::GetParameterTypeString(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString GetStringParameter(const Integer id) const
+//  std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
- * Gets the value for a wxString parameter.
+ * Gets the value for a std::string parameter.
  * 
  * @param <id> Integer ID of the parameter.
  * 
  * @return The value of the parameter.
  */
 //------------------------------------------------------------------------------
-wxString Function::GetStringParameter(const Integer id) const
+std::string Function::GetStringParameter(const Integer id) const
 {
    if (id == FUNCTION_PATH)
       return functionPath;
@@ -774,16 +774,16 @@ wxString Function::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString Function::GetStringParameter(const wxString &label) const
+std::string Function::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 
 //---------------------------------------------------------------------------
-//  wxString GetStringParameter(const Integer id, const Integer index) const
+//  std::string GetStringParameter(const Integer id, const Integer index) const
 //---------------------------------------------------------------------------
 /**
  * Retrieve a string parameter.
@@ -796,7 +796,7 @@ wxString Function::GetStringParameter(const wxString &label) const
  *         is no string association.
  */
 //---------------------------------------------------------------------------
-wxString Function::GetStringParameter(const Integer id, 
+std::string Function::GetStringParameter(const Integer id, 
                                          const Integer index) const
 {
    switch (id)
@@ -805,8 +805,8 @@ wxString Function::GetStringParameter(const Integer id,
       if (index >= (Integer)inputNames.size())
       {
          FunctionException fe;
-         fe.SetDetails(wxT("The index of %d for field \"%s\" is out of bounds for the ")
-                       wxT("object named \"%s\""), index, GetParameterText(id).c_str(),
+         fe.SetDetails("The index of %d for field \"%s\" is out of bounds for the "
+                       "object named \"%s\"", index, GetParameterText(id).c_str(),
                        GetName().c_str());
          throw fe;
       }
@@ -817,8 +817,8 @@ wxString Function::GetStringParameter(const Integer id,
       if (index >= (Integer)outputNames.size())
       {
          FunctionException fe;
-         fe.SetDetails(wxT("The index of %d for field \"%s\" is out of bounds for the ")
-                       wxT("object named \"%s\""), index, GetParameterText(id).c_str(),
+         fe.SetDetails("The index of %d for field \"%s\" is out of bounds for the "
+                       "object named \"%s\"", index, GetParameterText(id).c_str(),
                        GetName().c_str());
          throw fe;
       }
@@ -832,7 +832,7 @@ wxString Function::GetStringParameter(const Integer id,
 
 
 //---------------------------------------------------------------------------
-//  wxString GetStringParameter(const wxString &label,
+//  std::string GetStringParameter(const std::string &label,
 //                                 const Integer index) const
 //---------------------------------------------------------------------------
 /**
@@ -845,7 +845,7 @@ wxString Function::GetStringParameter(const Integer id,
  *         is no string association.
  */
 //---------------------------------------------------------------------------
-wxString Function::GetStringParameter(const wxString &label,
+std::string Function::GetStringParameter(const std::string &label,
                                          const Integer index) const
 {
    return GetStringParameter(GetParameterID(label), index);
@@ -882,7 +882,7 @@ const StringArray& Function::GetStringArrayParameter(const Integer id) const
 //  bool SetStringParameter(const Integer id, const Real value)
 //------------------------------------------------------------------------------
 /**
- * Sets the value for a wxString parameter.
+ * Sets the value for a std::string parameter.
  * 
  * @param <id> Integer ID of the parameter.
  * @param <value> New value for the parameter.
@@ -890,11 +890,11 @@ const StringArray& Function::GetStringArrayParameter(const Integer id) const
  * @return If value of the parameter was set.
  */
 //------------------------------------------------------------------------------
-bool Function::SetStringParameter(const Integer id, const wxString &value)
+bool Function::SetStringParameter(const Integer id, const std::string &value)
 {
    #ifdef DEBUG_FUNCTION_SET
    MessageInterface::ShowMessage
-      (wxT("Function::SetStringParameter() entered, id=%d, value=%s\n"), id, value.c_str());
+      ("Function::SetStringParameter() entered, id=%d, value=%s\n", id, value.c_str());
    #endif
    
    switch (id)
@@ -908,8 +908,8 @@ bool Function::SetStringParameter(const Integer id, const wxString &value)
          }
          else
             throw FunctionException
-               (wxT("In function file \"") + functionPath + wxT("\": ")
-                wxT("The input argument \"") + value + wxT("\" already exists"));
+               ("In function file \"" + functionPath + "\": "
+                "The input argument \"" + value + "\" already exists");
          
          return true;
       }
@@ -922,8 +922,8 @@ bool Function::SetStringParameter(const Integer id, const wxString &value)
          }
          else
             throw FunctionException
-               (wxT("In function file \"") + functionPath + wxT("\": ")
-                wxT("The output argument \"") + value + wxT("\" already exists"));
+               ("In function file \"" + functionPath + "\": "
+                "The output argument \"" + value + "\" already exists");
          
          return true;
       }
@@ -934,24 +934,24 @@ bool Function::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
-bool Function::SetStringParameter(const wxString &label,
-                                  const wxString &value)
+bool Function::SetStringParameter(const std::string &label,
+                                  const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
 
 
 //------------------------------------------------------------------------------
-// GmatBase* FindObject(const wxString &name)
+// GmatBase* FindObject(const std::string &name)
 //------------------------------------------------------------------------------
-GmatBase* Function::FindObject(const wxString &name)
+GmatBase* Function::FindObject(const std::string &name)
 {
-   wxString newName = name;
+   std::string newName = name;
    
    // Ignore array indexing of Array
-   wxString::size_type index = name.find(wxT('('));
+   std::string::size_type index = name.find('(');
    if (index != name.npos)
       newName = name.substr(0, index);
    
@@ -978,15 +978,15 @@ void Function::ClearInOutArgMaps(bool deleteInputs, bool deleteOutputs)
 {
    #ifdef DEBUG_ARG_MAP
    MessageInterface::ShowMessage
-      (wxT("Function::ClearInOutArgMaps() this=<%p> '%s' entered\n"), this,
+      ("Function::ClearInOutArgMaps() this=<%p> '%s' entered\n", this,
        GetName().c_str());
    MessageInterface::ShowMessage
-      (wxT("inputArgMap.size()=%d, outputArgMap.size()=%d\n"), inputArgMap.size(),
+      ("inputArgMap.size()=%d, outputArgMap.size()=%d\n", inputArgMap.size(),
        outputArgMap.size());
    #endif
    
    std::vector<ElementWrapper *> wrappersToDelete;
-   std::map<wxString, ElementWrapper *>::iterator ewi;
+   std::map<std::string, ElementWrapper *>::iterator ewi;
    
    if (deleteInputs)
    {
@@ -1018,7 +1018,7 @@ void Function::ClearInOutArgMaps(bool deleteInputs, bool deleteOutputs)
    
    #ifdef DEBUG_WRAPPER_CODE   
    MessageInterface::ShowMessage
-      (wxT("   There are %d wrappers to delete\n"), wrappersToDelete.size());
+      ("   There are %d wrappers to delete\n", wrappersToDelete.size());
    #endif
    
    // Delete old ElementWrappers (loj: 2008.11.20)
@@ -1027,8 +1027,8 @@ void Function::ClearInOutArgMaps(bool deleteInputs, bool deleteOutputs)
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         ((*ewi), (*ewi)->GetDescription(), wxT("Function::ClearInOutArgMaps()"),
-          wxT("deleting wrapper"));
+         ((*ewi), (*ewi)->GetDescription(), "Function::ClearInOutArgMaps()",
+          "deleting wrapper");
       #endif
       delete (*ewi);
       (*ewi) = NULL;
@@ -1046,9 +1046,9 @@ void Function::ClearAutomaticObjects()
 {
    #ifdef DEBUG_AUTO_OBJ
    MessageInterface::ShowMessage
-      (wxT("Function::ClearAutomaticObjects() this=<%p> '%s' entered\n   ")
-       wxT("automaticObjectMap.size()=%d, sandboxObjects.size()=%d, ")
-       wxT("objectsToDelete.size()=%d\n"), this, GetName().c_str(),
+      ("Function::ClearAutomaticObjects() this=<%p> '%s' entered\n   "
+       "automaticObjectMap.size()=%d, sandboxObjects.size()=%d, "
+       "objectsToDelete.size()=%d\n", this, GetName().c_str(),
        automaticObjectMap.size(), sandboxObjects.size(), objectsToDelete.size());
    #endif
    
@@ -1058,7 +1058,7 @@ void Function::ClearAutomaticObjects()
    {
       #ifdef DEBUG_AUTO_OBJ
       MessageInterface::ShowMessage
-         (wxT("Checking if <%p> '%s' can be deleted\n"), omi->second,
+         ("Checking if <%p> '%s' can be deleted\n", omi->second,
           (omi->first).c_str());
       #endif
       if (omi->second != NULL &&
@@ -1074,14 +1074,14 @@ void Function::ClearAutomaticObjects()
              objectsToDelete.end())
          {
             #ifdef DEBUG_AUTO_OBJ
-            MessageInterface::ShowMessage(wxT("   Added to objectsToDelete\n"));
+            MessageInterface::ShowMessage("   Added to objectsToDelete\n");
             #endif
             objectsToDelete.push_back(omi->second);
          }
          else
          {
             #ifdef DEBUG_AUTO_OBJ
-            MessageInterface::ShowMessage(wxT("   Already in the objectsToDelete\n"));
+            MessageInterface::ShowMessage("   Already in the objectsToDelete\n");
             #endif
          }
          
@@ -1096,8 +1096,8 @@ void Function::ClearAutomaticObjects()
             #ifdef DEBUG_MEMORY
             GmatBase *obj = omi->second;
             MemoryTracker::Instance()->Remove
-               (obj, obj->GetName(), wxT("Function::ClearAutomaticObjects()"),
-                wxT("deleting autoObj"));
+               (obj, obj->GetName(), "Function::ClearAutomaticObjects()",
+                "deleting autoObj");
             #endif
             delete omi->second;
             omi->second = NULL;
@@ -1109,7 +1109,7 @@ void Function::ClearAutomaticObjects()
       else
       {
          #ifdef DEBUG_AUTO_OBJ
-         MessageInterface::ShowMessage(wxT("   Skipped since sandbox object\n"));
+         MessageInterface::ShowMessage("   Skipped since sandbox object\n");
          #endif
       }
       toDelete.push_back(omi->first); 
@@ -1122,7 +1122,7 @@ void Function::ClearAutomaticObjects()
    // delete old automatic objects collected if not already deleted
    #ifdef DEBUG_AUTO_OBJ
    MessageInterface::ShowMessage
-      (wxT("   There are %d automatic objects to delete\n"), objectsToDelete.size());
+      ("   There are %d automatic objects to delete\n", objectsToDelete.size());
    #endif
    
    ObjectArray::iterator oai;
@@ -1130,7 +1130,7 @@ void Function::ClearAutomaticObjects()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         ((*oai), (*oai)->GetName(), wxT("Function::ClearAutomaticObjects()"), wxT("deleting old object"));
+         ((*oai), (*oai)->GetName(), "Function::ClearAutomaticObjects()", "deleting old object");
       #endif
       delete (*oai);
       (*oai) = NULL;
@@ -1140,66 +1140,66 @@ void Function::ClearAutomaticObjects()
    
    #ifdef DEBUG_AUTO_OBJ
    MessageInterface::ShowMessage
-      (wxT("Function::ClearAutomaticObjects() this=<%p> '%s' leaving\n"),
+      ("Function::ClearAutomaticObjects() this=<%p> '%s' leaving\n",
        this, GetName().c_str());
    #endif
 }
 
 
 //------------------------------------------------------------------------------
-// void ShowObjectMap(ObjectMap *objMap, const wxString &title,
-//                    const wxString &mapName)
+// void ShowObjectMap(ObjectMap *objMap, const std::string &title,
+//                    const std::string &mapName)
 //------------------------------------------------------------------------------
-void Function::ShowObjectMap(ObjectMap *objMap, const wxString &title,
-                             const wxString &mapName)
+void Function::ShowObjectMap(ObjectMap *objMap, const std::string &title,
+                             const std::string &mapName)
 {
-   MessageInterface::ShowMessage(wxT("%s\n"), title.c_str());
-   MessageInterface::ShowMessage(wxT("this=<%p>, functionName='%s'\n"), this, functionName.c_str());
+   MessageInterface::ShowMessage("%s\n", title.c_str());
+   MessageInterface::ShowMessage("this=<%p>, functionName='%s'\n", this, functionName.c_str());
    if (objMap == NULL)
    {
-      MessageInterface::ShowMessage(wxT("ObjectMap is NULL\n"));
+      MessageInterface::ShowMessage("ObjectMap is NULL\n");
       return;
    }
    
-   wxString objMapName = mapName;
-   if (objMapName == wxT(""))
-      objMapName = wxT("object map");
+   std::string objMapName = mapName;
+   if (objMapName == "")
+      objMapName = "object map";
    
-   MessageInterface::ShowMessage(wxT("========================================\n"));
+   MessageInterface::ShowMessage("========================================\n");
    MessageInterface::ShowMessage
-      (wxT("Here is %s <%p>, it has %d objects\n"), objMapName.c_str(), objMap, objMap->size());
+      ("Here is %s <%p>, it has %d objects\n", objMapName.c_str(), objMap, objMap->size());
    for (ObjectMap::iterator i = objMap->begin(); i != objMap->end(); ++i)
       MessageInterface::ShowMessage
-         (wxT("   %40s  <%p><%s>\n"), i->first.c_str(), i->second,
-          i->second == NULL ? wxT("NULL") : (i->second)->GetTypeName().c_str());
+         ("   %40s  <%p><%s>\n", i->first.c_str(), i->second,
+          i->second == NULL ? "NULL" : (i->second)->GetTypeName().c_str());
 }
 
 
 //------------------------------------------------------------------------------
-// void ShowObjects(const wxString &title)
+// void ShowObjects(const std::string &title)
 //------------------------------------------------------------------------------
-void Function::ShowObjects(const wxString &title)
+void Function::ShowObjects(const std::string &title)
 {
-   MessageInterface::ShowMessage(wxT("%s\n"), title.c_str());
-   MessageInterface::ShowMessage(wxT("this=<%p>, functionName='%s'\n"), this, functionName.c_str());
-   MessageInterface::ShowMessage(wxT("========================================\n"));
-   MessageInterface::ShowMessage(wxT("solarSys         = <%p>\n"), solarSys);
-   MessageInterface::ShowMessage(wxT("internalCoordSys = <%p>\n"), internalCoordSys);
-   MessageInterface::ShowMessage(wxT("forces           = <%p>\n"), forces);
+   MessageInterface::ShowMessage("%s\n", title.c_str());
+   MessageInterface::ShowMessage("this=<%p>, functionName='%s'\n", this, functionName.c_str());
+   MessageInterface::ShowMessage("========================================\n");
+   MessageInterface::ShowMessage("solarSys         = <%p>\n", solarSys);
+   MessageInterface::ShowMessage("internalCoordSys = <%p>\n", internalCoordSys);
+   MessageInterface::ShowMessage("forces           = <%p>\n", forces);
    MessageInterface::ShowMessage
-      (wxT("Here is objectStore <%p>, it has %d objects\n"), objectStore,
+      ("Here is objectStore <%p>, it has %d objects\n", objectStore,
        objectStore->size());
    for (ObjectMap::iterator i = objectStore->begin(); i != objectStore->end(); ++i)
       MessageInterface::ShowMessage
-         (wxT("   %30s  <%p><%s>\n"), i->first.c_str(), i->second,
-          i->second == NULL ? wxT("NULL") : (i->second)->GetTypeName().c_str());
+         ("   %30s  <%p><%s>\n", i->first.c_str(), i->second,
+          i->second == NULL ? "NULL" : (i->second)->GetTypeName().c_str());
    MessageInterface::ShowMessage
-      (wxT("Here is globalObjectStore <%p>, it has %d objects\n"), globalObjectStore,
+      ("Here is globalObjectStore <%p>, it has %d objects\n", globalObjectStore,
        globalObjectStore->size());
    for (ObjectMap::iterator i = globalObjectStore->begin(); i != globalObjectStore->end(); ++i)
       MessageInterface::ShowMessage
-         (wxT("   %30s  <%p><%s>\n"), i->first.c_str(), i->second,
-          i->second == NULL ? wxT("NULL") : (i->second)->GetTypeName().c_str());
-   MessageInterface::ShowMessage(wxT("========================================\n"));   
+         ("   %30s  <%p><%s>\n", i->first.c_str(), i->second,
+          i->second == NULL ? "NULL" : (i->second)->GetTypeName().c_str());
+   MessageInterface::ShowMessage("========================================\n");   
 }
 

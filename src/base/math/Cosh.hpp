@@ -27,7 +27,7 @@
 class GMAT_API Cosh : public MathFunction
 {
 public:
-   Cosh(const wxString &nomme);
+   Cosh(const std::string &nomme);
    virtual ~Cosh();
    Cosh(const Cosh &copy);
                  

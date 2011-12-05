@@ -30,12 +30,12 @@
 // static data
 //------------------------------------------------------------------------------
 
-const wxString
+const std::string
 SteepestDescent::PARAMETER_TEXT[SteepestDescentParamCount - SolverParamCount] =
 {
-   wxT("Objective"),
-//   wxT("Constraint"),
-   wxT("UseCentralDifferences")
+   "Objective",
+//   "Constraint",
+   "UseCentralDifferences"
 };
 
 const Gmat::ParameterType
@@ -52,12 +52,12 @@ SteepestDescent::PARAMETER_TYPE[SteepestDescentParamCount - SolverParamCount] =
 // public methods
 //------------------------------------------------------------------------------
 
-SteepestDescent::SteepestDescent(const wxString &name) :
-   InternalOptimizer       (wxT("SteepestDescent"), name),
+SteepestDescent::SteepestDescent(const std::string &name) :
+   InternalOptimizer       ("SteepestDescent", name),
    objectiveValue          (0.0)
 {
-   objectTypeNames.push_back(wxT("SteepestDescent"));
-   objectiveFnName = wxT("SDObjective");
+   objectTypeNames.push_back("SteepestDescent");
+   objectiveFnName = "SDObjective";
    tolerance       = 1.0e-5;
    maxIterations   = 200;
 }
@@ -100,13 +100,13 @@ GmatBase* SteepestDescent::Clone() const
 
 
 //------------------------------------------------------------------------------
-//  bool TakeAction(const wxString &action, const wxString &actionData)
+//  bool TakeAction(const std::string &action, const std::string &actionData)
 //------------------------------------------------------------------------------
 /**
  * This method performs an action on the instance.
  *
  * TakeAction is a method overridden from GmatBase.  The only action defined for
- * a DifferentialCorrector is wxT("IncrementInstanceCount"), which the Sandbox uses
+ * a DifferentialCorrector is "IncrementInstanceCount", which the Sandbox uses
  * to tell an instance if if it is a reused instance (i.e. a clone) of the
  * configured instance of the DifferentialCorrector.
  *
@@ -116,16 +116,16 @@ GmatBase* SteepestDescent::Clone() const
  * @return  The value of the parameter at the completion of the call.
  */
 //------------------------------------------------------------------------------
-bool SteepestDescent::TakeAction(const wxString &action,
-                                       const wxString &actionData)
+bool SteepestDescent::TakeAction(const std::string &action,
+                                       const std::string &actionData)
 {
-//   if (action == wxT("IncrementInstanceCount"))
+//   if (action == "IncrementInstanceCount")
 //   {
 //      ++instanceCount;
 //      return true;
 //   }
  
-   if (action == wxT("Reset"))
+   if (action == "Reset")
    {
       currentState = INITIALIZING;
       return true;
@@ -136,7 +136,7 @@ bool SteepestDescent::TakeAction(const wxString &action,
 
 
 //------------------------------------------------------------------------------
-// Integer SetSolverResults(Real *data, const wxString &name)
+// Integer SetSolverResults(Real *data, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Implements the steepest descent state machine.
@@ -151,8 +151,8 @@ Solver::SolverState  SteepestDescent::AdvanceState()
    {
       case INITIALIZING:
          #ifdef SD_DEBUG_STATE_MACHINE
-            MessageInterface::ShowMessage(wxT("Entered state machine; ")
-                  wxT("INITIALIZING\n"));
+            MessageInterface::ShowMessage("Entered state machine; "
+                  "INITIALIZING\n");
          #endif
          iterationsTaken = 0;
          WriteToTextFile();
@@ -161,22 +161,22 @@ Solver::SolverState  SteepestDescent::AdvanceState()
       
          #ifdef SD_DEBUG_STATE_MACHINE
             MessageInterface::ShowMessage(
-               wxT("SteepestDescent State Transitions from %d to %d\n"), 
+               "SteepestDescent State Transitions from %d to %d\n", 
                INITIALIZING, currentState);
          #endif
          break;
       
       case NOMINAL:
          #ifdef SD_DEBUG_STATE_MACHINE
-            MessageInterface::ShowMessage(wxT("Entered state machine; ")
-                  wxT("NOMINAL\n"));
+            MessageInterface::ShowMessage("Entered state machine; "
+                  "NOMINAL\n");
          #endif
 //         ReportProgress();
          RunNominal();
 //         ReportProgress();
          #ifdef SD_DEBUG_STATE_MACHINE
             MessageInterface::ShowMessage(
-               wxT("SteepestDescent State Transitions from %d to %d\n"), NOMINAL,
+               "SteepestDescent State Transitions from %d to %d\n", NOMINAL,
                currentState);
          #endif
          // ReportProgress();
@@ -184,13 +184,13 @@ Solver::SolverState  SteepestDescent::AdvanceState()
    
       case PERTURBING:
          #ifdef SD_DEBUG_STATE_MACHINE
-            MessageInterface::ShowMessage(wxT("Entered state machine; ")
-                  wxT("PERTURBING\n"));
+            MessageInterface::ShowMessage("Entered state machine; "
+                  "PERTURBING\n");
          #endif
          RunPerturbation();
          #ifdef SD_DEBUG_STATE_MACHINE
             MessageInterface::ShowMessage(
-               wxT("SteepestDescent State Transitions from %d to %d\n"), PERTURBING,
+               "SteepestDescent State Transitions from %d to %d\n", PERTURBING,
                currentState);
          #endif
          // ReportProgress();
@@ -198,27 +198,27 @@ Solver::SolverState  SteepestDescent::AdvanceState()
    
       case Solver::CALCULATING:
          #ifdef SD_DEBUG_STATE_MACHINE
-            MessageInterface::ShowMessage(wxT("Entered state machine; ")
-                  wxT("CALCULATING\n"));
+            MessageInterface::ShowMessage("Entered state machine; "
+                  "CALCULATING\n");
          #endif
 //         ReportProgress();
          CalculateParameters();
          #ifdef SD_DEBUG_STATE_MACHINE
             MessageInterface::ShowMessage(
-               wxT("SteepestDescent State Transitions from %d to %d\n"), CALCULATING,
+               "SteepestDescent State Transitions from %d to %d\n", CALCULATING,
                currentState);
          #endif
          break;
             
       case CHECKINGRUN:
          #ifdef SD_DEBUG_STATE_MACHINE
-            MessageInterface::ShowMessage(wxT("Entered state machine; ")
-                  wxT("CHECKINGRUN\n"));
+            MessageInterface::ShowMessage("Entered state machine; "
+                  "CHECKINGRUN\n");
          #endif
          CheckCompletion();
          #ifdef SD_DEBUG_STATE_MACHINE
             MessageInterface::ShowMessage(
-               wxT("SteepestDescent State Transitions from %d to %d\n"), CHECKINGRUN,
+               "SteepestDescent State Transitions from %d to %d\n", CHECKINGRUN,
                currentState);
          #endif
          // ReportProgress();
@@ -226,13 +226,13 @@ Solver::SolverState  SteepestDescent::AdvanceState()
    
       case FINISHED:
          #ifdef SD_DEBUG_STATE_MACHINE
-            MessageInterface::ShowMessage(wxT("Entered state machine; ")
-                  wxT("FINISHED\n"));
+            MessageInterface::ShowMessage("Entered state machine; "
+                  "FINISHED\n");
          #endif
          RunComplete();
          #ifdef SD_DEBUG_STATE_MACHINE
             MessageInterface::ShowMessage(
-               wxT("SteepestDescent State Transitions from %d to %d\n"), FINISHED,
+               "SteepestDescent State Transitions from %d to %d\n", FINISHED,
                currentState);
          #endif
          // ReportProgress();
@@ -240,8 +240,8 @@ Solver::SolverState  SteepestDescent::AdvanceState()
          
       default:
          throw SolverException(
-                  wxT("Steepest Descent Solver \"") + instanceName + 
-                  wxT("\" encountered an unexpected state."));
+                  "Steepest Descent Solver \"" + instanceName + 
+                  "\" encountered an unexpected state.");
    }
       
    return currentState;
@@ -260,7 +260,7 @@ bool SteepestDescent::Optimize()
 
 
 //------------------------------------------------------------------------------
-// Integer SetSolverResults(Real *data, const wxString &name)
+// Integer SetSolverResults(Real *data, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets up the data fields used for the results of an iteration.
@@ -274,15 +274,15 @@ bool SteepestDescent::Optimize()
  */
 //------------------------------------------------------------------------------
 Integer SteepestDescent::SetSolverResults(Real *data,
-                                          const wxString &name,
-                                          const wxString &type)
+                                          const std::string &name,
+                                          const std::string &type)
 {
    #ifdef DEBUG_STEEPESTDESCENT
-      MessageInterface::ShowMessage(wxT("*** Setting Results for '%s' of type '%s'\n"),
+      MessageInterface::ShowMessage("*** Setting Results for '%s' of type '%s'\n",
             name.c_str(), type.c_str());
    #endif
 
-   if (type == wxT("Objective"))
+   if (type == "Objective")
       objectiveName = name;
  
    return InternalOptimizer::SetSolverResults(data, name, type);
@@ -300,15 +300,15 @@ Integer SteepestDescent::SetSolverResults(Real *data,
  */
 //------------------------------------------------------------------------------
 void SteepestDescent::SetResultValue(Integer id, Real value,
-                                           const wxString &resultType)
+                                           const std::string &resultType)
 {
 #ifdef DEBUG_STEEPESTDESCENT
-   MessageInterface::ShowMessage(wxT("Setting SD result for id = %d, type = %s\n"), 
+   MessageInterface::ShowMessage("Setting SD result for id = %d, type = %s\n", 
          id, resultType.c_str());
 #endif
    
    // Gradients use the objective function
-   if (resultType == wxT("Objective"))
+   if (resultType == "Objective")
    {
       if (currentState == NOMINAL) 
       {
@@ -326,7 +326,7 @@ void SteepestDescent::SetResultValue(Integer id, Real value,
    {
       // build the correct ID number
       Integer idToUse;
-      if (resultType == wxT("EqConstraint"))
+      if (resultType == "EqConstraint")
          idToUse = id - 1000;
       else
          idToUse = id - 2000 + eqConstraintCount;
@@ -373,7 +373,7 @@ bool SteepestDescent::Initialize()
    
    #ifdef DEBUG_SD_INIT
    MessageInterface::ShowMessage
-      (wxT("SteepestDescent::Initialize() completed; %d variables and %d constraints\n"),
+      ("SteepestDescent::Initialize() completed; %d variables and %d constraints\n",
        registeredVariableCount, registeredComponentCount);
    #endif
 

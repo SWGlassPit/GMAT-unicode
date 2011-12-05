@@ -103,12 +103,12 @@ static bool firstCallFired = false;
 std::vector<HarmonicGravity*> GravityField::cache;
 GravityFile*                  GravityField::gravFile = NULL;
 
-const wxString
+const std::string
 GravityField::PARAMETER_TEXT[GravityFieldParamCount - HarmonicFieldParamCount] =
 {
-   wxT("Mu"),
-   wxT("A"),
-   wxT("EarthTideModel"),
+   "Mu",
+   "A",
+   "EarthTideModel",
 };
 
 const Gmat::ParameterType
@@ -123,7 +123,7 @@ GravityField::PARAMETER_TYPE[GravityFieldParamCount - HarmonicFieldParamCount] =
 // public methods
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  GravityField(const wxString &name, const wxString &bodyName,
+//  GravityField(const std::string &name, const std::string &bodyName,
 //               Integer deg, Integer ord)
 //------------------------------------------------------------------------------
 /**
@@ -135,12 +135,12 @@ GravityField::PARAMETER_TYPE[GravityFieldParamCount - HarmonicFieldParamCount] =
  * @param <ord>  maximum order of the polynomials.
  */
 //------------------------------------------------------------------------------
-GravityField::GravityField(const wxString &name, const wxString &forBodyName,
+GravityField::GravityField(const std::string &name, const std::string &forBodyName,
                            Integer maxDeg, Integer maxOrd) :
-   HarmonicField          (name, wxT("GravityField"), maxDeg, maxOrd),
+   HarmonicField          (name, "GravityField", maxDeg, maxOrd),
    mu                     (GmatSolarSystemDefaults::PLANET_MU[GmatSolarSystemDefaults::EARTH]),
    a                      (GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[GmatSolarSystemDefaults::EARTH]),
-   earthTideModel         (wxT("None")),
+   earthTideModel         ("None"),
    defaultMu              (GmatSolarSystemDefaults::PLANET_MU[GmatSolarSystemDefaults::EARTH]),
    defaultA               (GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[GmatSolarSystemDefaults::EARTH]),
    gfInitialized          (false),
@@ -148,7 +148,7 @@ GravityField::GravityField(const wxString &name, const wxString &forBodyName,
    degreeTruncateReported (false),
    gravityModel           (NULL)
 {
-   objectTypeNames.push_back(wxT("GravityField"));
+   objectTypeNames.push_back("GravityField");
    bodyName = forBodyName;
    parameterCount = GravityFieldParamCount;
 
@@ -199,7 +199,7 @@ GravityField::GravityField(const GravityField &gf) :
     trv                    (gf.trv),
     now                    (gf.now)
 {
-   objectTypeNames.push_back(wxT("GravityField"));
+   objectTypeNames.push_back("GravityField");
    bodyName = gf.bodyName;
 
 
@@ -236,7 +236,7 @@ GravityField& GravityField::operator=(const GravityField &gf)
    gfInitialized          = false;  // is that what I want to do?
    orderTruncateReported  = gf.orderTruncateReported;
    degreeTruncateReported = gf.degreeTruncateReported;
-//   if ((gravityModel) && (gravityModel->GetFilename() == wxT(""))) delete gravityModel;  // delete only Body ones
+//   if ((gravityModel) && (gravityModel->GetFilename() == "")) delete gravityModel;  // delete only Body ones
    gravityModel           = gf.gravityModel;
 //   gravityModel           = NULL;
    frv                    = gf.frv;
@@ -262,7 +262,7 @@ bool GravityField::Initialize()
    if (!HarmonicField::Initialize())
    {
       throw ODEModelException(
-            wxT("GravityField: Legendre Polynomial initialization failed!"));
+            "GravityField: Legendre Polynomial initialization failed!");
    }
 
    degreeTruncateReported = false;
@@ -276,12 +276,12 @@ bool GravityField::Initialize()
    if (!body)
    {
       body = solarSystem->GetBody(bodyName);
-      if (!body) throw ODEModelException(wxT("Body \"") + bodyName + wxT("\" undefined for Gravity Field."));
+      if (!body) throw ODEModelException("Body \"" + bodyName + "\" undefined for Gravity Field.");
    }
    
    if (body->GetName() != fixedCS->GetOriginName()) // ********** is this the right CS to use???
-      throw ODEModelException(wxT("Full field gravity is only supported for ")
-                              wxT("the force model origin in current GMAT builds."));
+      throw ODEModelException("Full field gravity is only supported for "
+                              "the force model origin in current GMAT builds.");
    if ((!fileRead) || (!gravityModel))
    {
       Integer fileDegree = 0;
@@ -290,27 +290,27 @@ bool GravityField::Initialize()
       a  = body->GetEquatorialRadius();
       if (IsBlank(filename.c_str()))
       {
-         wxString errmsg = wxT("There is no gravity file specified for GravityField ");
-         errmsg += instanceName + wxT("\n");
+         std::string errmsg = "There is no gravity file specified for GravityField ";
+         errmsg += instanceName + "\n";
          throw ODEModelException(errmsg);
       }
       else
       {
          #ifdef DEBUG_GRAVITY_FILE_READ
-            MessageInterface::ShowMessage(wxT("Now getting HarmonicGravity with filename = %s, a = %12.10f, mu = %12.10f\n"),
+            MessageInterface::ShowMessage("Now getting HarmonicGravity with filename = %s, a = %12.10f, mu = %12.10f\n",
                   filename.c_str(), a, mu);
          #endif
          gravityModel = GetGravityFile(filename,a,mu);
          if (!gravityModel)
          {
-            wxString errmsg = wxT("Gravity file ");
-            errmsg += filename + wxT(" cannot be opened or read.\n");
+            std::string errmsg = "Gravity file ";
+            errmsg += filename + " cannot be opened or read.\n";
             throw ODEModelException(errmsg);
          }
          else
          {
             #ifdef DEBUG_GRAVITY_FILE_READ
-               MessageInterface::ShowMessage(wxT("--- HarmonicGravity object retrieved is <%p>\n"), gravityModel);
+               MessageInterface::ShowMessage("--- HarmonicGravity object retrieved is <%p>\n", gravityModel);
             #endif
             fileDegree =   gravityModel->GetNN();
             fileOrder  =   gravityModel->GetMM();
@@ -320,41 +320,41 @@ bool GravityField::Initialize()
       }
       // truncate the degree and/or order, if necessary
       #ifdef DEBUG_DEGREE_ORDER
-         MessageInterface::ShowMessage(wxT("for body %s, fileDegree = %d, degree = %d\n"),
+         MessageInterface::ShowMessage("for body %s, fileDegree = %d, degree = %d\n",
                (body->GetName()).c_str(), fileDegree, degree);
-         MessageInterface::ShowMessage(wxT("for body %s, fileOrder  = %d, order  = %d\n"),
+         MessageInterface::ShowMessage("for body %s, fileOrder  = %d, order  = %d\n",
                (body->GetName()).c_str(), fileDegree, degree);
       #endif
       if (fileDegree < degree)   // for now, do not truncate ...
       {
-         wxString ss(wxT(""));
-         ss << wxT("In GravityField ") << instanceName << wxT(", requested degree (");
-         ss << degree << wxT(") is greater than degree (") << fileDegree;
-         ss << wxT(") on file ") << filename << wxT("\n");
-         throw ODEModelException(ss);
+         std::stringstream ss("");
+         ss << "In GravityField " << instanceName << ", requested degree (";
+         ss << degree << ") is greater than degree (" << fileDegree;
+         ss << ") on file " << filename << std::endl;
+         throw ODEModelException(ss.str());
       }
       if (fileOrder < order)
       {
-         wxString ss(wxT(""));
-         ss << wxT("In GravityField ") << instanceName << wxT(", requested order (");
-         ss << order << wxT(") is greater than order (") << fileOrder;
-         ss << wxT(") on file ") << filename << wxT("\n");
-         throw ODEModelException(ss);
+         std::stringstream ss("");
+         ss << "In GravityField " << instanceName << ", requested order (";
+         ss << order << ") is greater than order (" << fileOrder;
+         ss << ") on file " << filename << std::endl;
+         throw ODEModelException(ss.str());
       }
       if (order > degree)
       {
          order = degree;
-         MessageInterface::ShowMessage(wxT("In GravityField(%s), order is greater than degree - truncating to order = %d\n"),
+         MessageInterface::ShowMessage("In GravityField(%s), order is greater than degree - truncating to order = %d\n",
                (body->GetName()).c_str(), order);
       }
       if (degree < 0)
-         throw ODEModelException(wxT("Invalid degree in GravityField: Degree < 0\n"));
+         throw ODEModelException("Invalid degree in GravityField: Degree < 0\n");
       if (order < 0)
-         throw ODEModelException(wxT("Invalid order in GravityField: Degree < 0\n"));
+         throw ODEModelException("Invalid order in GravityField: Degree < 0\n");
       fileRead = true;
    }
    #ifdef DEBUG_BODY_DATA
-      MessageInterface::ShowMessage(wxT("for body %s, mu = %12.10f, a = %12.10f\n"),
+      MessageInterface::ShowMessage("for body %s, mu = %12.10f, a = %12.10f\n",
                                    (body->GetName()).c_str(), mu, a);
    #endif
 
@@ -381,9 +381,9 @@ bool GravityField::GetDerivatives(Real * state, Real dt, Integer dvorder,
       if (firstCallFired == false)
       {
          MessageInterface::ShowMessage(
-            wxT("GravityField(%s) inputs:\n")
-            wxT("   state = [%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n")
-            wxT("   dt = %.10lf\n   dvorder = %d\n"),
+            "GravityField(%s) inputs:\n"
+            "   state = [%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n"
+            "   dt = %.10lf\n   dvorder = %d\n",
             instanceName.c_str(), state[0], state[1], state[2], state[3],
             state[4], state[5], dt, dvorder);
       }
@@ -393,15 +393,15 @@ bool GravityField::GetDerivatives(Real * state, Real dt, Integer dvorder,
       return false;
 
    #ifdef DEBUG_GRAVITY_FIELD
-      MessageInterface::ShowMessage(wxT("%s %d %s %le %s  %le %le %le %le %le %le\n"),
-          wxT("Entered GravityField::GetDerivatives with order"), dvorder, wxT("dt = "),
-          dt, wxT("and state\n"),
+      MessageInterface::ShowMessage("%s %d %s %le %s  %le %le %le %le %le %le\n",
+          "Entered GravityField::GetDerivatives with order", dvorder, "dt = ",
+          dt, "and state\n",
           state[0], state[1], state[2], state[3], state[4], state[5]);
-      MessageInterface::ShowMessage(wxT("cartesianCount = %d, stmCount = %d, aMatrixCount = %d\n"),
+      MessageInterface::ShowMessage("cartesianCount = %d, stmCount = %d, aMatrixCount = %d\n",
             cartesianCount, stmCount, aMatrixCount);
-      MessageInterface::ShowMessage(wxT("fillCartesian = %s, fillSTM = %s, fillAMatrix = %s\n"),
-            (fillCartesian? wxT("true") : wxT("false")), (fillSTM? wxT("true") : wxT("false")), (fillAMatrix? wxT("true") : wxT("false")));
-      MessageInterface::ShowMessage(wxT("cartesianStart = %d, stmStart = %d, aMatrixStart = %d\n"),
+      MessageInterface::ShowMessage("fillCartesian = %s, fillSTM = %s, fillAMatrix = %s\n",
+            (fillCartesian? "true" : "false"), (fillSTM? "true" : "false"), (fillAMatrix? "true" : "false"));
+      MessageInterface::ShowMessage("cartesianStart = %d, stmStart = %d, aMatrixStart = %d\n",
             cartesianStart, stmStart, aMatrixStart);
    #endif
 
@@ -410,7 +410,7 @@ bool GravityField::GetDerivatives(Real * state, Real dt, Integer dvorder,
 
    if ((cartesianCount < 1)  && (stmCount < 1) && (aMatrixCount < 1))
       throw ODEModelException(
-         wxT("GravityField requires at least one spacecraft."));
+         "GravityField requires at least one spacecraft.");
 
    // todo: Move into header; this flag is used to decide if the velocity terms
    // are copied into the position derivatives for first order integrators, so
@@ -423,10 +423,10 @@ bool GravityField::GetDerivatives(Real * state, Real dt, Integer dvorder,
 
    #ifdef DEBUG_GRAV_COORD_SYSTEM
        MessageInterface::ShowMessage(
-         wxT("------ body = %s\n------ inputCS = %s\n------ targetCS = %s")
-         wxT("\n------ fixedCS = %s\n"),
-         body->GetName().c_str(),     (inputCS == NULL? wxT("NULL") : inputCS->GetName().c_str()),
-         (targetCS == NULL? wxT("NULL") : targetCS->GetName().c_str()), (fixedCS == NULL? wxT("NULL") : fixedCS->GetName().c_str()));
+         "------ body = %s\n------ inputCS = %s\n------ targetCS = %s"
+         "\n------ fixedCS = %s\n",
+         body->GetName().c_str(),     (inputCS == NULL? "NULL" : inputCS->GetName().c_str()),
+         (targetCS == NULL? "NULL" : targetCS->GetName().c_str()), (fixedCS == NULL? "NULL" : fixedCS->GetName().c_str()));
    #endif
 
 
@@ -437,12 +437,12 @@ bool GravityField::GetDerivatives(Real * state, Real dt, Integer dvorder,
     	 CelestialBody *targetBody = (CelestialBody*) targetCS->GetOrigin();
     	 CelestialBody *fixedBody  = (CelestialBody*) fixedCS->GetOrigin();
          MessageInterface::ShowMessage(
-            wxT("   Epoch = %.12lf\n   targetBody = %s\n   fixedBody = %s\n"),
+            "   Epoch = %.12lf\n   targetBody = %s\n   fixedBody = %s\n",
             now.Get(), targetBody->GetName().c_str(),
             fixedBody->GetName().c_str());
          MessageInterface::ShowMessage(
-            wxT("------ body = %s\n------ inputCS = %s\n------ targetCS = %s\n")
-            wxT("------ fixedCS = %s\n"),
+            "------ body = %s\n------ inputCS = %s\n------ targetCS = %s\n"
+            "------ fixedCS = %s\n",
             body->GetName().c_str(),     inputCS->GetName().c_str(),
             targetCS->GetName().c_str(), fixedCS->GetName().c_str());
       }
@@ -454,7 +454,7 @@ bool GravityField::GetDerivatives(Real * state, Real dt, Integer dvorder,
       // See assumption 1, above
       if ((cartesianCount < stmCount) || (cartesianCount < aMatrixCount))
       {
-         throw ODEModelException(wxT("GetDerivatives: cartesianCount < stmCount or aMatrixCount\n"));
+         throw ODEModelException("GetDerivatives: cartesianCount < stmCount or aMatrixCount\n");
       }
       Real originacc[3] = { 0.0,0.0,0.0 };  // JPD code
       Rmatrix33 origingrad (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0);
@@ -465,7 +465,7 @@ bool GravityField::GetDerivatives(Real * state, Real dt, Integer dvorder,
          Real originstate[6] = { 0.0,0.0,0.0,0.0,0.0,0.0 };
          Calculate(dt,originstate,originacc,origingrad);
 #ifdef DEBUG_DERIVATIVES
-      MessageInterface::ShowMessage(wxT("---------> origingrad = %s\n"), origingrad.ToString().c_str());
+      MessageInterface::ShowMessage("---------> origingrad = %s\n", origingrad.ToString().c_str());
 #endif
       }
 
@@ -484,11 +484,11 @@ bool GravityField::GetDerivatives(Real * state, Real dt, Integer dvorder,
                accnew[i] -= originacc[i];
             gradnew -= origingrad;
 #ifdef DEBUG_DERIVATIVES
-      MessageInterface::ShowMessage(wxT("---------> body not equal to forceOrigin\n"));
+      MessageInterface::ShowMessage("---------> body not equal to forceOrigin\n");
 #endif
          }
 #ifdef DEBUG_DERIVATIVES
-      MessageInterface::ShowMessage(wxT("---------> gradnew (%d) = %s\n"), n, gradnew.ToString().c_str());
+      MessageInterface::ShowMessage("---------> gradnew (%d) = %s\n", n, gradnew.ToString().c_str());
 #endif
          
          // Fill Derivatives
@@ -515,7 +515,7 @@ bool GravityField::GetDerivatives(Real * state, Real dt, Integer dvorder,
 
 #ifdef DEBUG_DERIVATIVES
          for (Integer ii = 0 + nOffset; ii < 6+nOffset; ii++)
-                     MessageInterface::ShowMessage(wxT("------ deriv[%d] = %12.10f\n"), ii, deriv[ii]);
+                     MessageInterface::ShowMessage("------ deriv[%d] = %12.10f\n", ii, deriv[ii]);
 #endif
          if (fillSTM)
          {
@@ -555,7 +555,7 @@ bool GravityField::GetDerivatives(Real * state, Real dt, Integer dvorder,
                   {
                      element = j * 6 + k;
 #ifdef DEBUG_DERIVATIVES
-                     MessageInterface::ShowMessage(wxT("------ deriv[%d] = %12.10f\n"), (i6+element), aTilde[element]);
+                     MessageInterface::ShowMessage("------ deriv[%d] = %12.10f\n", (i6+element), aTilde[element]);
 #endif
                      deriv[i6+element] = aTilde[element];
                   }
@@ -601,7 +601,7 @@ bool GravityField::GetDerivatives(Real * state, Real dt, Integer dvorder,
                   {
                      element = j * 6 + k;
 #ifdef DEBUG_DERIVATIVES
-                     MessageInterface::ShowMessage(wxT("------ deriv[%d] = %12.10f\n"), (i6+element), aTilde[element]);
+                     MessageInterface::ShowMessage("------ deriv[%d] = %12.10f\n", (i6+element), aTilde[element]);
 #endif
                      deriv[i6+element] = aTilde[element];
                   }
@@ -615,11 +615,11 @@ bool GravityField::GetDerivatives(Real * state, Real dt, Integer dvorder,
    #ifdef DEBUG_FIRST_CALL
       if (firstCallFired == false)
       {
-         if (body->GetName() == wxT("Mars"))
+         if (body->GetName() == "Mars")
          {
          MessageInterface::ShowMessage(
-            wxT("   GravityField[%s <> %s] --> mu = %lf, origin = %s, [%.10lf %.10lf ")
-            wxT("%.10lf %.16lf %.16lf %.16lf]\n"),
+            "   GravityField[%s <> %s] --> mu = %lf, origin = %s, [%.10lf %.10lf "
+            "%.10lf %.16lf %.16lf %.16lf]\n",
             instanceName.c_str(), body->GetName().c_str(), mu,
             targetCS->GetOriginName().c_str(),
             deriv[0], deriv[1], deriv[2], deriv[3], deriv[4], deriv[5]);
@@ -633,7 +633,7 @@ bool GravityField::GetDerivatives(Real * state, Real dt, Integer dvorder,
 
 
 //------------------------------------------------------------------------------
-//  bool GetBodyAndMu(wxString &itsName, Real &itsMu)
+//  bool GetBodyAndMu(std::string &itsName, Real &itsMu)
 //------------------------------------------------------------------------------
 /**
 * This method returns the body name and mu value (from the gravity file).
@@ -641,7 +641,7 @@ bool GravityField::GetDerivatives(Real * state, Real dt, Integer dvorder,
  * @return success flag.
  */
 //------------------------------------------------------------------------------
-bool GravityField::GetBodyAndMu(wxString &itsName, Real &itsMu)
+bool GravityField::GetBodyAndMu(std::string &itsName, Real &itsMu)
 {
    itsName = bodyName;
    itsMu   = mu;
@@ -667,13 +667,13 @@ GmatBase* GravityField::Clone(void) const
 }
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
 * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString GravityField::GetParameterText(const Integer id) const
+std::string GravityField::GetParameterText(const Integer id) const
 {
    if ((id >= HarmonicFieldParamCount) && (id < GravityFieldParamCount))
       return PARAMETER_TEXT[id - HarmonicFieldParamCount];
@@ -681,13 +681,13 @@ wxString GravityField::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
 * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Integer     GravityField::GetParameterID(const wxString &str) const
+Integer     GravityField::GetParameterID(const std::string &str) const
 {
    for (Integer i = HarmonicFieldParamCount; i < GravityFieldParamCount; i++)
    {
@@ -713,13 +713,13 @@ GravityField::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
 * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString GravityField::GetParameterTypeString(const Integer id) const
+std::string GravityField::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -776,7 +776,7 @@ Real        GravityField::SetRealParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label) const
+// Real GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
 * Accessor method used to obtain a parameter value
@@ -784,14 +784,14 @@ Real        GravityField::SetRealParameter(const Integer id,
  * @param label    string ID for the requested parameter
  */
 //------------------------------------------------------------------------------
-Real        GravityField::GetRealParameter(const wxString &label) const
+Real        GravityField::GetRealParameter(const std::string &label) const
 {
    Integer id = GetParameterID(label);
    return GetRealParameter(id);
 }
 
 //------------------------------------------------------------------------------
-// Real SetRealParameter(const wxString &label, const Real value)
+// Real SetRealParameter(const std::string &label, const Real value)
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to set a parameter value
@@ -800,7 +800,7 @@ Real        GravityField::GetRealParameter(const wxString &label) const
  * @param    value    The new value for the parameter
  */
 //------------------------------------------------------------------------------
-Real GravityField::SetRealParameter(const wxString &label,
+Real GravityField::SetRealParameter(const std::string &label,
                                     const Real value)
 {
    Integer id = GetParameterID(label);
@@ -808,7 +808,7 @@ Real GravityField::SetRealParameter(const wxString &label,
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to obtain a parameter value
@@ -816,14 +816,14 @@ Real GravityField::SetRealParameter(const wxString &label,
  * @param id    Integer ID for the requested parameter
  */
 //------------------------------------------------------------------------------
-wxString GravityField::GetStringParameter(const Integer id) const
+std::string GravityField::GetStringParameter(const Integer id) const
 {
    if (id == EARTH_TIDE_MODEL) return earthTideModel;
    return HarmonicField::GetStringParameter(id);
 }
 
 //------------------------------------------------------------------------------
-// Real SetStringParameter(const Integer id, const wxString value)
+// Real SetStringParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to set a parameter value
@@ -833,16 +833,16 @@ wxString GravityField::GetStringParameter(const Integer id) const
  */
 //------------------------------------------------------------------------------
 bool GravityField::SetStringParameter(const Integer id,
-                                      const wxString &value)
+                                      const std::string &value)
 {
    if (id == EARTH_TIDE_MODEL)
    {
-      if ((GmatStringUtil::ToUpper(value) != wxT("NONE")) &&      // Currently, these are the only valid strings ...
-          (GmatStringUtil::ToUpper(value) != wxT("SOLIDANDPOLE")))
+      if ((GmatStringUtil::ToUpper(value) != "NONE") &&      // Currently, these are the only valid strings ...
+          (GmatStringUtil::ToUpper(value) != "SOLIDANDPOLE"))
       {
          ODEModelException ome;
          ome.SetDetails(errorMessageFormat.c_str(),
-                        value.c_str(), wxT("EarthTideModel"), wxT("\'None\' or \'SolidAndPole\'"));
+                        value.c_str(), "EarthTideModel", "\'None\' or \'SolidAndPole\'");
          throw ome;
       }
       earthTideModel = value;
@@ -852,7 +852,7 @@ bool GravityField::SetStringParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to obtain a parameter value
@@ -860,14 +860,14 @@ bool GravityField::SetStringParameter(const Integer id,
  * @param label    string ID for the requested parameter
  */
 //------------------------------------------------------------------------------
-wxString GravityField::GetStringParameter(const wxString &label) const
+std::string GravityField::GetStringParameter(const std::string &label) const
 {
    Integer id = GetParameterID(label);
    return GetStringParameter(id);
 }
 
 //------------------------------------------------------------------------------
-// wxString SetStringParameter(const wxString &label, const wxString value)
+// std::string SetStringParameter(const std::string &label, const std::string value)
 //------------------------------------------------------------------------------
 /**
  * Accessor method used to set a parameter value
@@ -876,8 +876,8 @@ wxString GravityField::GetStringParameter(const wxString &label) const
  * @param    value    The new value for the parameter
  */
 //------------------------------------------------------------------------------
-bool GravityField::SetStringParameter(const wxString &label,
-                                      const wxString &value)
+bool GravityField::SetStringParameter(const std::string &label,
+                                      const std::string &value)
 {
    Integer id = GetParameterID(label);
    return SetStringParameter(id, value);
@@ -900,7 +900,7 @@ bool GravityField::SupportsDerivative(Gmat::StateElementId id)
 {
    #ifdef DEBUG_REGISTRATION
       MessageInterface::ShowMessage(
-            wxT("GravityField checking for support for id %d\n"), id);
+            "GravityField checking for support for id %d\n", id);
    #endif
 
    if (id == Gmat::CARTESIAN_STATE)
@@ -935,8 +935,8 @@ bool GravityField::SetStart(Gmat::StateElementId id, Integer index,
                       Integer quantity)
 {
    #ifdef DEBUG_REGISTRATION
-      MessageInterface::ShowMessage(wxT("GravityFiels setting start data for id = ")
-            wxT("%d to index %d; %d objects identified\n"), id, index, quantity);
+      MessageInterface::ShowMessage("GravityFiels setting start data for id = "
+            "%d to index %d; %d objects identified\n", id, index, quantity);
    #endif
 
    bool retval = false;
@@ -979,7 +979,7 @@ bool GravityField::SetStart(Gmat::StateElementId id, Integer index,
 
 
 //------------------------------------------------------------------------------
-//  bool IsBlank(wxString & aLine)
+//  bool IsBlank(char* aLine)
 //------------------------------------------------------------------------------
 /**
  * This method returns true if the string is empty or is all white space.
@@ -987,7 +987,18 @@ bool GravityField::SetStart(Gmat::StateElementId id, Integer index,
  * @return success flag.
  */
 //------------------------------------------------------------------------------
-bool GravityField::IsBlank(const wxString &aLine)
+bool GravityField::IsBlank(char* aLine)
+{
+   Integer i;
+   for (i=0;i<(int)strlen(aLine);i++)
+   {
+      //loj: 5/18/04 if (!isblank(aLine[i])) return false;
+      if (!isspace(aLine[i])) return false;
+   }
+   return true;
+}
+
+bool GravityField::IsBlank(const std::string &aLine)
 {
    Integer i;
    for (i=0;i<(int)aLine.length();i++)
@@ -1022,9 +1033,9 @@ void GravityField::Calculate (Real dt, Real state[6],
 {
    #ifdef DEBUG_CALCULATE
       MessageInterface::ShowMessage(
-            wxT("Entering Calculate with dt = %12.10f, state = %12.10f  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f\n"),
+            "Entering Calculate with dt = %12.10f, state = %12.10f  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f\n",
             dt, state[0], state[1], state[2], state[3], state[4], state[5]);
-      MessageInterface::ShowMessage(wxT("   acc = %12.10f  %12.10f  %12.10f\n"), acc[0], acc[1], acc[2]);
+      MessageInterface::ShowMessage("   acc = %12.10f  %12.10f  %12.10f\n", acc[0], acc[1], acc[2]);
    #endif
    Real jday = epoch + GmatTimeConstants::JD_JAN_5_1941 +
                dt/GmatTimeConstants::SECS_PER_DAY;
@@ -1035,12 +1046,12 @@ void GravityField::Calculate (Real dt, Real state[6],
    cc.Convert(now, state, inputCS, tmpState, fixedCS);  // which CSs to use here???
    #ifdef DEBUG_CALCULATE
       MessageInterface::ShowMessage(
-            wxT("After Convert, jday = %12.10f, now = %12.10f, and tmpState = %12.10f  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f\n"),
+            "After Convert, jday = %12.10f, now = %12.10f, and tmpState = %12.10f  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f\n",
             jday, now, tmpState[0], tmpState[1], tmpState[2], tmpState[3], tmpState[4], tmpState[5]);
    #endif
    Rmatrix33 rotMatrix = cc.GetLastRotationMatrix();
 #ifdef DEBUG_DERIVATIVES
-   MessageInterface::ShowMessage(wxT("---->>>> rotMatrix = %s\n"), rotMatrix.ToString().c_str());
+   MessageInterface::ShowMessage("---->>>> rotMatrix = %s\n", rotMatrix.ToString().c_str());
 #endif
    // calculate sun and moon pos
    Real sunpos[3]   = {0.0,0.0,0.0};
@@ -1051,14 +1062,14 @@ void GravityField::Calculate (Real dt, Real state[6],
    Real      rotacc[3];
    Rmatrix33 rotgrad;
    bool      useTides;
-   // for now, wxT("None") and wxT("SolidAndPole") are the only valid EarthTideModel values
-   if ((bodyName == GmatSolarSystemDefaults::EARTH_NAME) && (GmatStringUtil::ToUpper(earthTideModel) == wxT("SOLIDANDPOLE")))
+   // for now, "None" and "SolidAndPole" are the only valid EarthTideModel values
+   if ((bodyName == GmatSolarSystemDefaults::EARTH_NAME) && (GmatStringUtil::ToUpper(earthTideModel) == "SOLIDANDPOLE"))
    {
       Real ep = epoch + dt / GmatTimeConstants::SECS_PER_DAY;  // isn't this the same as now?
       CelestialBody* theSun  = solarSystem->GetBody(SolarSystem::SUN_NAME);
       CelestialBody* theMoon = solarSystem->GetBody(SolarSystem::MOON_NAME);
       if (!theSun || !theMoon)
-         throw ODEModelException(wxT("Solar system does not contain the Sun or Moon for Tide model."));
+         throw ODEModelException("Solar system does not contain the Sun or Moon for Tide model.");
       Rvector6 sunstateinertial  = theSun->GetState(ep);
       Rvector6 moonstateinertial = theMoon->GetState(ep);
       
@@ -1076,8 +1087,8 @@ void GravityField::Calculate (Real dt, Real state[6],
    else
       useTides = false;
    #ifdef DEBUG_GRAVITY_EARTH_TIDE
-      MessageInterface::ShowMessage(wxT("Calling gravityModel->CalculateFullField with useTides = %s\n"),
-            (useTides? wxT("true") : wxT("false")));
+      MessageInterface::ShowMessage("Calling gravityModel->CalculateFullField with useTides = %s\n",
+            (useTides? "true" : "false"));
    #endif
    // Get xp and yp from the EOP file
    Real xp, yp, lod;
@@ -1089,20 +1100,20 @@ void GravityField::Calculate (Real dt, Real state[6],
    gravityModel->CalculateFullField(jday, tmpState, degree, order, useTides, sunpos, moonpos, sunMass, moonMass,
                                     xp, yp, computeMatrix, rotacc, rotgrad);
 #ifdef DEBUG_DERIVATIVES
-   MessageInterface::ShowMessage(wxT("after CalculateFullField, rotgrad = %s\n"), rotgrad.ToString().c_str());
+   MessageInterface::ShowMessage("after CalculateFullField, rotgrad = %s\n", rotgrad.ToString().c_str());
 #endif
    /*
     MessageInterface::ShowMessage
-    (wxT("HarmonicField::Calculate pos= %20.14f %20.14f %20.14f\n"),
+    ("HarmonicField::Calculate pos= %20.14f %20.14f %20.14f\n",
     tmpState[0],tmpState[1],tmpState[2]);
     MessageInterface::ShowMessage
-    (wxT("HarmonicField::Calculate grad= %20.14e %20.14e %20.14e\n"),
+    ("HarmonicField::Calculate grad= %20.14e %20.14e %20.14e\n",
     rotgrad(0,0),rotgrad(0,1),rotgrad(0,2));
     MessageInterface::ShowMessage
-    (wxT("HarmonicField::Calculate grad= %20.14e %20.14e %20.14e\n"),
+    ("HarmonicField::Calculate grad= %20.14e %20.14e %20.14e\n",
     rotgrad(1,0),rotgrad(1,1),rotgrad(1,2));
     MessageInterface::ShowMessage
-    (wxT("HarmonicField::Calculate grad= %20.14e %20.14e %20.14e\n"),
+    ("HarmonicField::Calculate grad= %20.14e %20.14e %20.14e\n",
     rotgrad(2,0),rotgrad(2,1),rotgrad(2,2));
     */
    
@@ -1110,13 +1121,13 @@ void GravityField::Calculate (Real dt, Real state[6],
    InverseRotate (rotMatrix,rotacc,acc);
    grad = rotMatrix.Transpose() * rotgrad * rotMatrix;
 #ifdef DEBUG_DERIVATIVES
-   MessageInterface::ShowMessage(wxT("at end of Calculate, after rotation, grad = %s\n"), grad.ToString().c_str());
+   MessageInterface::ShowMessage("at end of Calculate, after rotation, grad = %s\n", grad.ToString().c_str());
 #endif
 }
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-HarmonicGravity* GravityField::GetGravityFile(const wxString &filename,
+HarmonicGravity* GravityField::GetGravityFile(const std::string &filename,
                                               const Real &radius, const Real &mukm)
 {
    if (!gravFile) gravFile = new GravityFile();
@@ -1141,7 +1152,7 @@ HarmonicGravity* GravityField::GetGravityFile(const wxString &filename,
          break;
       case GmatFM::GFT_UNKNOWN:
          throw ODEModelException
-            (wxT("GravityField::Create file not found or incorrect type\n"));
+            ("GravityField::Create file not found or incorrect type\n");
       default:
          return NULL;
    }
@@ -1151,12 +1162,12 @@ HarmonicGravity* GravityField::GetGravityFile(const wxString &filename,
       cache.push_back(newOne);
    }
    #ifdef DEBUG_CREATE_DELETE
-      MessageInterface::ShowMessage(wxT(">>>> Just created a HarmonicGravity file object <%p> for filename %s\n"),
+      MessageInterface::ShowMessage(">>>> Just created a HarmonicGravity file object <%p> for filename %s\n",
             newOne, filename.c_str());
-      MessageInterface::ShowMessage(wxT("cache pointers and filenames are: \n"));
+      MessageInterface::ShowMessage("cache pointers and filenames are: \n");
       for (unsigned int ii = 0; ii < cache.size(); ii++)
       {
-         MessageInterface::ShowMessage(wxT("    <%p>     %s\n"), cache.at(ii), ((cache.at(ii))->GetFilename()).c_str());
+         MessageInterface::ShowMessage("    <%p>     %s\n", cache.at(ii), ((cache.at(ii))->GetFilename()).c_str());
       }
    #endif
    return newOne;

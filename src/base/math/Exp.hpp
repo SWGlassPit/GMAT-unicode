@@ -25,7 +25,7 @@
 class GMAT_API Exp : public MathFunction
 {
 public:
-   Exp(const wxString &nomme);
+   Exp(const std::string &nomme);
    virtual ~Exp();
    Exp(const Exp &copy);
                  

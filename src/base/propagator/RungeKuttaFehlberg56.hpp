@@ -56,7 +56,7 @@ class GMAT_API RungeKuttaFehlberg56 :
 {
 public:
 //    RungeKuttaFehlberg56();
-    RungeKuttaFehlberg56(const wxString &nomme = wxT(""));
+    RungeKuttaFehlberg56(const std::string &nomme = "");
     virtual ~RungeKuttaFehlberg56();
 
     RungeKuttaFehlberg56(const RungeKuttaFehlberg56&);

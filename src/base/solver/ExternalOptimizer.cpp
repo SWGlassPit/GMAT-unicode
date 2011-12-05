@@ -31,11 +31,11 @@
 // static data
 //------------------------------------------------------------------------------
 
-const wxString
+const std::string
 ExternalOptimizer::PARAMETER_TEXT[ExternalOptimizerParamCount -OptimizerParamCount] =
 {
-   wxT("FunctionPath"),
-   wxT("SourceType"),
+   "FunctionPath",
+   "SourceType",
 };
 
 const Gmat::ParameterType
@@ -50,17 +50,17 @@ ExternalOptimizer::PARAMETER_TYPE[ExternalOptimizerParamCount - OptimizerParamCo
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// ExternalOptimizer(wxString type, wxString name)
+// ExternalOptimizer(std::string type, std::string name)
 //------------------------------------------------------------------------------
-ExternalOptimizer::ExternalOptimizer(wxString type, wxString name) :
+ExternalOptimizer::ExternalOptimizer(std::string type, std::string name) :
    Optimizer               (type, name), 
-   functionPath            (wxT("")),
-   sourceType              (wxT("MATLAB")),
+   functionPath            (""),
+   sourceType              ("MATLAB"),
    sourceReady             (false),
    inSource                (NULL),
    inSourceServer          (NULL)
  {
-   objectTypeNames.push_back(wxT("ExternalOptimizer"));
+   objectTypeNames.push_back("ExternalOptimizer");
    parameterCount = ExternalOptimizerParamCount;
    
    isInternal = false;
@@ -119,15 +119,15 @@ bool ExternalOptimizer::Initialize()
 
    // function path
    FileManager *fm = FileManager::Instance();
-   wxString pathname;
+   std::string pathname;
    
    try
    {
-      if (functionPath == wxT(""))
+      if (functionPath == "")
       {
          // matlab uses directory path
-         if (sourceType == wxT("MATLAB"))
-            pathname = fm->GetFullPathname(wxT("MATLAB_FUNCTION_PATH"));
+         if (sourceType == "MATLAB")
+            pathname = fm->GetFullPathname("MATLAB_FUNCTION_PATH");
          
          functionPath = pathname;
       }
@@ -137,7 +137,7 @@ bool ExternalOptimizer::Initialize()
       try
       {
          // see if there is FUNCTION_PATH
-         pathname = fm->GetFullPathname(wxT("FUNCTION_PATH"));
+         pathname = fm->GetFullPathname("FUNCTION_PATH");
          functionPath = pathname;
       }
       catch (GmatBaseException &)
@@ -148,13 +148,13 @@ bool ExternalOptimizer::Initialize()
    
    #ifdef DEBUG_MATLAB_PATH
    MessageInterface::ShowMessage
-      (wxT("ExternalOptimizer::Initialize() functionPath='%s'\n"), functionPath.c_str());
+      ("ExternalOptimizer::Initialize() functionPath='%s'\n", functionPath.c_str());
    #endif
    return true;
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -164,7 +164,7 @@ bool ExternalOptimizer::Initialize()
  * @return parameter text for the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString ExternalOptimizer::GetParameterText(const Integer id) const
+std::string ExternalOptimizer::GetParameterText(const Integer id) const
 {
    if ((id >= OptimizerParamCount) && (id < ExternalOptimizerParamCount))
       return PARAMETER_TEXT[id - OptimizerParamCount];
@@ -173,7 +173,7 @@ wxString ExternalOptimizer::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -183,7 +183,7 @@ wxString ExternalOptimizer::GetParameterText(const Integer id) const
  * @return ID for the requested parameter.
  */
 //------------------------------------------------------------------------------
-Integer ExternalOptimizer::GetParameterID(const wxString &str) const
+Integer ExternalOptimizer::GetParameterID(const std::string &str) const
 {
    for (Integer i = OptimizerParamCount; i < ExternalOptimizerParamCount; ++i)
    {
@@ -217,7 +217,7 @@ Gmat::ParameterType ExternalOptimizer::GetParameterType(
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -227,14 +227,14 @@ Gmat::ParameterType ExternalOptimizer::GetParameterType(
  * @return parameter type string of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString ExternalOptimizer::GetParameterTypeString(
+std::string ExternalOptimizer::GetParameterTypeString(
                                       const Integer id) const
 {
    return Optimizer::PARAM_TYPE_STRING[GetParameterType(id)];
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id) const
+//  std::string  GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -245,7 +245,7 @@ wxString ExternalOptimizer::GetParameterTypeString(
  * @return  string value of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString ExternalOptimizer::GetStringParameter(const Integer id) const
+std::string ExternalOptimizer::GetStringParameter(const Integer id) const
 {
     if (id == FUNCTION_PATH)
         return functionPath;
@@ -257,7 +257,7 @@ wxString ExternalOptimizer::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer SetStringParameter(const Integer id, const wxString &value)
+//  Integer SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * This method sets a string or string array parameter value, given the input
@@ -270,7 +270,7 @@ wxString ExternalOptimizer::GetStringParameter(const Integer id) const
  */
 //------------------------------------------------------------------------------
 bool ExternalOptimizer::SetStringParameter(const Integer id,
-                                           const wxString &value)
+                                           const std::string &value)
 {
     if (id == FUNCTION_PATH) 
     {
@@ -287,36 +287,36 @@ bool ExternalOptimizer::SetStringParameter(const Integer id,
     return Optimizer::SetStringParameter(id, value);
 }
 // compiler complained again - so here they are ....
-wxString ExternalOptimizer::GetStringParameter(const wxString& label) const
+std::string ExternalOptimizer::GetStringParameter(const std::string& label) const
 {
    return Optimizer::GetStringParameter(label);
 }
-bool ExternalOptimizer::SetStringParameter(const wxString& label,
-                                           const wxString &value)
+bool ExternalOptimizer::SetStringParameter(const std::string& label,
+                                           const std::string &value)
 {
    return Optimizer::SetStringParameter(label, value);
 }
-wxString ExternalOptimizer::GetStringParameter(const Integer id,
+std::string ExternalOptimizer::GetStringParameter(const Integer id,
                                                   const Integer index) const
 {
    return Optimizer::GetStringParameter(id, index);
 }
 
 bool ExternalOptimizer::SetStringParameter(const Integer id, 
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index)
 {
    return Optimizer::SetStringParameter(id, value, index);
 }
 
-wxString ExternalOptimizer::GetStringParameter(const wxString &label,
+std::string ExternalOptimizer::GetStringParameter(const std::string &label,
                                                   const Integer index) const
 {
    return Optimizer::GetStringParameter(label, index);
 }
 
-bool ExternalOptimizer::SetStringParameter(const wxString &label, 
-                                           const wxString &value,
+bool ExternalOptimizer::SetStringParameter(const std::string &label, 
+                                           const std::string &value,
                                            const Integer index)
 {
    return Optimizer::SetStringParameter(label, value, index);
@@ -324,7 +324,7 @@ bool ExternalOptimizer::SetStringParameter(const wxString &label,
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringArrayParameter(const Integer id) const
+//  std::string  GetStringArrayParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input

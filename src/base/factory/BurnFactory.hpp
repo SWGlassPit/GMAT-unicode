@@ -30,8 +30,8 @@
 class GMAT_API BurnFactory : public Factory
 {
 public:
-   Burn* CreateBurn(const wxString &ofType,
-                    const wxString &withName = wxT(""));
+   Burn* CreateBurn(const std::string &ofType,
+                    const std::string &withName = "");
 
    BurnFactory();
    virtual ~BurnFactory();

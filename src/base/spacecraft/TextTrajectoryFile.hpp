@@ -58,16 +58,16 @@ typedef std::vector<GmatTraj::DataType> TrajectoryArray;
 class GMAT_API TextTrajectoryFile
 {
 public:
-    TextTrajectoryFile(const wxString &fileName = wxT(""));
+    TextTrajectoryFile(const std::string &fileName = "");
     ~TextTrajectoryFile();
-    bool Open(const wxString &fileName = wxT(""));
+    bool Open(const std::string &fileName = "");
     void Close();
     TrajectoryArray& GetData();
     
 protected:
     bool ReadLine();
     
-    wxString mFileName;
+    std::string mFileName;
     std::ifstream mInStream;  // input data stream
     Real mTempData[GmatTraj::NUM_ITEM_IN_LINE];
     GmatTraj::DataType mTrajData;

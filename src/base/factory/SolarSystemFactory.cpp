@@ -29,7 +29,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  CreateSolarSystem(const wxString &ofType, const wxString &withName)
+//  CreateSolarSystem(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested SolarSystem class
@@ -41,8 +41,8 @@
  *       Use of this parameter may be added later.
  */
 //------------------------------------------------------------------------------
-SolarSystem* SolarSystemFactory::CreateSolarSystem(const wxString &ofType,
-                                                   const wxString &withName)
+SolarSystem* SolarSystemFactory::CreateSolarSystem(const std::string &ofType,
+                                                   const std::string &withName)
 {
    return new SolarSystem(withName);
 }
@@ -62,7 +62,7 @@ SolarSystemFactory::SolarSystemFactory() :
 Factory(Gmat::SOLAR_SYSTEM)
 {
    if (creatables.empty())
-      creatables.push_back(wxT("SolarSystem"));
+      creatables.push_back("SolarSystem");
 }
 
 //------------------------------------------------------------------------------
@@ -80,7 +80,7 @@ SolarSystemFactory::SolarSystemFactory(StringArray createList) :
 Factory(createList,Gmat::SOLAR_SYSTEM)
 {
    if (creatables.empty())
-      creatables.push_back(wxT("SolarSystem"));
+      creatables.push_back("SolarSystem");
 }
 
 //------------------------------------------------------------------------------
@@ -90,14 +90,14 @@ Factory(createList,Gmat::SOLAR_SYSTEM)
  * This method creates an object of the class SolarSystemFactory
  * (copy constructor).
  *
- * @param <fact> the factory object to copy to wxT("this") factory.
+ * @param <fact> the factory object to copy to "this" factory.
  */
 //------------------------------------------------------------------------------
 SolarSystemFactory::SolarSystemFactory(const SolarSystemFactory& fact) :
 Factory(fact)
 {
    if (creatables.empty())
-      creatables.push_back(wxT("SolarSystem"));
+      creatables.push_back("SolarSystem");
 }
 
 //------------------------------------------------------------------------------
@@ -106,10 +106,10 @@ Factory(fact)
 /**
  * Assignment operator for the SolarSystemFactory class.
  *
- * @param <fact> the SolarSystemFactory object whose data to assign to wxT("this")
+ * @param <fact> the SolarSystemFactory object whose data to assign to "this"
  *               factory.
  *
- * @return wxT("this") SolarSystemFactory with data of input factory fact.
+ * @return "this" SolarSystemFactory with data of input factory fact.
  */
 //------------------------------------------------------------------------------
 SolarSystemFactory& SolarSystemFactory::operator= (
@@ -117,7 +117,7 @@ SolarSystemFactory& SolarSystemFactory::operator= (
 {
    Factory::operator=(fact);
    if (creatables.empty())
-      creatables.push_back(wxT("SolarSystem"));
+      creatables.push_back("SolarSystem");
    return *this;
 }
 

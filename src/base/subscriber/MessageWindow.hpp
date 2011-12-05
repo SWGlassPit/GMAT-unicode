@@ -27,18 +27,18 @@
 class GMAT_API MessageWindow : public Subscriber
 {
 public:
-   MessageWindow(const wxString &name);
+   MessageWindow(const std::string &name);
    MessageWindow(const MessageWindow &mw);
    virtual ~MessageWindow(void);
    
    // inherited from GmatBase
    virtual GmatBase* Clone() const;
    
-   virtual wxString GetParameterText(const Integer id) const;
-   virtual Integer     GetParameterID(const wxString &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
+   virtual Integer     GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                        GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
    virtual bool        IsParameterReadOnly(const Integer id) const;
    
    virtual Integer     GetIntegerParameter(const Integer id) const;
@@ -57,13 +57,13 @@ protected:
    
    static const Gmat::ParameterType
       PARAMETER_TYPE[MessageWindowParamCount - SubscriberParamCount];
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[MessageWindowParamCount - SubscriberParamCount];
    
    virtual bool Distribute(Integer len);
    virtual bool Distribute(const Real * dat, Integer len);
    
-   wxString dstream;
+   std::stringstream dstream;
 };
 
 #endif

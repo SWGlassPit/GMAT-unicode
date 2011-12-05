@@ -30,7 +30,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  CreateStopCondition(const wxString &ofType, const wxString &withName)
+//  CreateStopCondition(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested StopCondition class
@@ -42,10 +42,10 @@
  *       parameter may be added later.
  */
 //------------------------------------------------------------------------------
-StopCondition* StopConditionFactory::CreateStopCondition(const wxString &ofType,
-                                                         const wxString &withName)
+StopCondition* StopConditionFactory::CreateStopCondition(const std::string &ofType,
+                                                         const std::string &withName)
 {
-    if (ofType == wxT("StopCondition"))
+    if (ofType == "StopCondition")
         return new StopCondition(withName);
     return NULL;
 }
@@ -66,7 +66,7 @@ Factory(Gmat::STOP_CONDITION)
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("StopCondition"));
+      creatables.push_back("StopCondition");
    }
 }
 
@@ -93,7 +93,7 @@ Factory(createList,Gmat::STOP_CONDITION)
  * This method creates an object of the class StopConditionFactory
  * (copy constructor).
  *
- * @param <fact> the factory object to copy to wxT("this") factory.
+ * @param <fact> the factory object to copy to "this" factory.
  */
 //------------------------------------------------------------------------------
 StopConditionFactory::StopConditionFactory(const StopConditionFactory& fact) :
@@ -107,10 +107,10 @@ Factory(fact)
 /**
  * Assignment operator for the StopConditionFactory class.
  *
- * @param <fact> the StopConditionFactory object whose data to assign to wxT("this")
+ * @param <fact> the StopConditionFactory object whose data to assign to "this"
  *               factory.
  *
- * @return wxT("this") StopConditionFactory with data of input factory fact.
+ * @return "this" StopConditionFactory with data of input factory fact.
  */
 //------------------------------------------------------------------------------
 StopConditionFactory& StopConditionFactory::operator= (

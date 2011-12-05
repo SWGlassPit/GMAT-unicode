@@ -63,7 +63,7 @@ ParameterWrapper::ParameterWrapper() :
  * Constructs base ParameterWrapper structures used in derived classes, by 
  * copying the input instance (copy constructor).
  *
- * @param <pw>  ParameterWrapper instance to copy to create wxT("this") instance.
+ * @param <pw>  ParameterWrapper instance to copy to create "this" instance.
  */
 //---------------------------------------------------------------------------
 ParameterWrapper::ParameterWrapper(const ParameterWrapper &pw) :
@@ -105,8 +105,8 @@ ParameterWrapper::~ParameterWrapper()
 {
    #ifdef DEBUG_PW_REFOBJ
    MessageInterface::ShowMessage
-      (wxT("ParameterWrapper::~ParameterWrapper() <%p>'%s' entered, param=<%p><%s>\n"),
-       this, description.c_str(), param, param ? param->GetName().c_str() : wxT("NULL"));
+      ("ParameterWrapper::~ParameterWrapper() <%p>'%s' entered, param=<%p><%s>\n",
+       this, description.c_str(), param, param ? param->GetName().c_str() : "NULL");
    #endif
 }
 
@@ -143,7 +143,7 @@ Gmat::ParameterType ParameterWrapper::GetDataType() const
 }
 
 //------------------------------------------------------------------------------
-//  GmatBase* GetRefObject(const wxString &name = wxT(""))
+//  GmatBase* GetRefObject(const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * This method retrives a reference object for the wrapper name
@@ -154,7 +154,7 @@ Gmat::ParameterType ParameterWrapper::GetDataType() const
  *
  */
 //------------------------------------------------------------------------------
-GmatBase* ParameterWrapper::GetRefObject(const wxString &name)
+GmatBase* ParameterWrapper::GetRefObject(const std::string &name)
 {
    // We don't need to check for the name since only one Parameter
    return (GmatBase*)param;
@@ -174,23 +174,23 @@ bool ParameterWrapper::SetRefObject(GmatBase *obj)
 {
    #ifdef DEBUG_PW_REFOBJ
    MessageInterface::ShowMessage
-      (wxT("ParameterWrapper::SetRefObject() obj=<%p><%s>\n"), obj,
-       obj ? obj->GetName().c_str() : wxT("NULL"));
+      ("ParameterWrapper::SetRefObject() obj=<%p><%s>\n", obj,
+       obj ? obj->GetName().c_str() : "NULL");
    #endif
    
 //   if ( (obj->GetName() != refObjectNames[0]) ||
-//        (!obj->IsOfType(wxT("Parameter"))) )
+//        (!obj->IsOfType("Parameter")) )
 //   {
-//      wxString errmsg = wxT("Referenced object \"");
+//      std::string errmsg = "Referenced object \"";
 //      errmsg += obj->GetName();
-//      errmsg += wxT("\" was passed into the parameter wrapper \"");
+//      errmsg += "\" was passed into the parameter wrapper \"";
 //      errmsg += description;
-//      errmsg += wxT("\", but an object named \"");
+//      errmsg += "\", but an object named \"";
 //      errmsg += refObjectNames[0];
-//      errmsg += wxT("\" was expected.\n");
+//      errmsg += "\" was expected.\n";
 //      throw ParameterException(errmsg);
 //   }
-   if ( (obj->GetName() == refObjectNames[0]) || (obj->IsOfType(wxT("Parameter"))) )
+   if ( (obj->GetName() == refObjectNames[0]) || (obj->IsOfType("Parameter")) )
    {
       param = (Parameter*) obj;
       return true;
@@ -212,10 +212,10 @@ Real ParameterWrapper::EvaluateReal() const
 {
    if (param == NULL)
       throw ParameterException(
-      wxT("Cannot return value of Parameter - pointer is NULL\n"));
+      "Cannot return value of Parameter - pointer is NULL\n");
    #ifdef DEBUG_PW
       MessageInterface::ShowMessage(
-      wxT("In ParameterWrapper::EvalReal, value is %.12f\n"), param->EvaluateReal());
+      "In ParameterWrapper::EvalReal, value is %.12f\n", param->EvaluateReal());
    #endif
    return param->EvaluateReal();
 }
@@ -233,7 +233,7 @@ bool ParameterWrapper::SetReal(const Real toValue)
 {
    if (param == NULL)
       throw ParameterException(
-      wxT("Cannot set value of Parameter - pointer is NULL\n"));
+      "Cannot set value of Parameter - pointer is NULL\n");
    param->SetReal(toValue);
    return true;
 }
@@ -253,10 +253,10 @@ const Rmatrix& ParameterWrapper::EvaluateArray() const
 {
    if (param == NULL)
       throw ParameterException(
-      wxT("Cannot return value of Parameter - pointer is NULL\n"));
+      "Cannot return value of Parameter - pointer is NULL\n");
    #ifdef DEBUG_PW
       MessageInterface::ShowMessage(
-      wxT("In ParameterWrapper::EvaluateArray, value is %.12f\n"), param->EvaluateRmatrix());
+      "In ParameterWrapper::EvaluateArray, value is %.12f\n", param->EvaluateRmatrix());
    #endif
    return param->EvaluateRmatrix();
 }
@@ -275,7 +275,7 @@ bool ParameterWrapper::SetArray(const Rmatrix &toValue)
 {
    if (param == NULL)
       throw ParameterException(
-      wxT("Cannot set value of Parameter - pointer is NULL\n"));
+      "Cannot set value of Parameter - pointer is NULL\n");
    param->SetRmatrix(toValue);
    return true;
 }
@@ -312,11 +312,11 @@ bool ParameterWrapper::SetObject(const GmatBase *obj)
    if (obj == NULL)
    {
       if (param == NULL)
-         throw ParameterException(wxT("Cannot set undefined object to undefined object"));
+         throw ParameterException("Cannot set undefined object to undefined object");
       else
          throw ParameterException
-            (wxT("Cannot set undefined object to object of type \"") +
-             param->GetTypeName() +  wxT("\""));
+            ("Cannot set undefined object to object of type \"" +
+             param->GetTypeName() +  "\"");
    }
    
    if (param != NULL)
@@ -326,7 +326,7 @@ bool ParameterWrapper::SetObject(const GmatBase *obj)
       {
          #ifdef DEBUG_PARAMETER_WRAPPER
          MessageInterface::ShowMessage
-            (wxT("ParameterWrapper::SetObject() fromType=%s, toType=%s\n"),
+            ("ParameterWrapper::SetObject() fromType=%s, toType=%s\n",
              obj->GetTypeName().c_str(), param->GetTypeName().c_str());
          #endif
          
@@ -335,15 +335,15 @@ bool ParameterWrapper::SetObject(const GmatBase *obj)
       else
       {
          ParameterException pe;
-         pe.SetDetails(wxT("Cannot set object of type \"%s\" to object of type \"%s\""),
+         pe.SetDetails("Cannot set object of type \"%s\" to object of type \"%s\"",
                        obj->GetTypeName().c_str(), param->GetTypeName().c_str());
          throw pe;
       }
    }
    else
    {
-      throw ParameterException(wxT("Cannot set Parameter \"") + obj->GetName() +
-                               wxT("\" to an undefined object"));
+      throw ParameterException("Cannot set Parameter \"" + obj->GetName() +
+                               "\" to an undefined object");
    }
    
    return true;
@@ -351,7 +351,7 @@ bool ParameterWrapper::SetObject(const GmatBase *obj)
 
 
 //---------------------------------------------------------------------------
-//  bool RenameObject(const wxString &oldName, const wxString &newName)
+//  bool RenameObject(const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /**
  * Method to rename a reference object for the wrapper.
@@ -359,8 +359,8 @@ bool ParameterWrapper::SetObject(const GmatBase *obj)
  * @return true if successful; false otherwise.
  */
 //---------------------------------------------------------------------------
-bool ParameterWrapper::RenameObject(const wxString &oldName, 
-                                    const wxString &newName)
+bool ParameterWrapper::RenameObject(const std::string &oldName, 
+                                    const std::string &newName)
 {
    ElementWrapper::RenameObject(oldName, newName);
    description = refObjectNames[0];  

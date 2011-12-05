@@ -40,7 +40,7 @@
 //---------------------------------
 
 /* placeholder - may be needed later
-const wxString
+const std::string
 TOEEqAxes::PARAMETER_TEXT[TOEEqAxesParamCount - InertialAxesParamCount] =
 {
    "",
@@ -57,8 +57,8 @@ TOEEqAxes::PARAMETER_TYPE[TOEEqAxesParamCount - InertialAxesParamCount] =
 //------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//  TOEEqAxes(const wxString &itsType,
-//            const wxString &itsName);
+//  TOEEqAxes(const std::string &itsType,
+//            const std::string &itsName);
 //---------------------------------------------------------------------------
 /**
  * Constructs base TOEEqAxes structures
@@ -69,10 +69,10 @@ TOEEqAxes::PARAMETER_TYPE[TOEEqAxesParamCount - InertialAxesParamCount] =
  *
  */
 //---------------------------------------------------------------------------
-TOEEqAxes::TOEEqAxes(const wxString &itsName) :
-InertialAxes(wxT("TOEEq"),itsName)
+TOEEqAxes::TOEEqAxes(const std::string &itsName) :
+InertialAxes("TOEEq",itsName)
 {
-   objectTypeNames.push_back(wxT("TOEEqAxes"));
+   objectTypeNames.push_back("TOEEqAxes");
    parameterCount = TOEEqAxesParamCount;
 }
 
@@ -131,12 +131,12 @@ TOEEqAxes::~TOEEqAxes()
 bool TOEEqAxes::Initialize()
 {
    #ifdef DEBUG_TOEEQ
-      MessageInterface::ShowMessage(wxT("Entering TOEEq::Initialize ..........\n"));
+      MessageInterface::ShowMessage("Entering TOEEq::Initialize ..........\n");
    #endif
    InertialAxes::Initialize();
    InitializeFK5();
    #ifdef DEBUG_TOEEQ
-      MessageInterface::ShowMessage(wxT("Completed IA:Init and InitFK5  ..........\n"));
+      MessageInterface::ShowMessage("Completed IA:Init and InitFK5  ..........\n");
    #endif
    
    Real dPsi             = 0.0;
@@ -164,32 +164,32 @@ bool TOEEqAxes::Initialize()
 //                                                longAscNodeLunar, cosEpsbar);
    
    #ifdef DEBUG_TOEEQ
-      MessageInterface::ShowMessage(wxT("About to call ComputePrecession/Nutation ..........\n"));
+      MessageInterface::ShowMessage("About to call ComputePrecession/Nutation ..........\n");
    #endif
    ComputePrecessionMatrix(tTDB, epoch);
    #ifdef DEBUG_TOEEQ
-      MessageInterface::ShowMessage(wxT("Called ComputePrecession ..........\n"));
+      MessageInterface::ShowMessage("Called ComputePrecession ..........\n");
    #endif
    ComputeNutationMatrix(tTDB, epoch, dPsi, longAscNodeLunar, cosEpsbar, true);
    #ifdef DEBUG_TOEEQ
-      MessageInterface::ShowMessage(wxT("Called ComputeNutation ..........\n"));
+      MessageInterface::ShowMessage("Called ComputeNutation ..........\n");
       if (precData == NULL)
-         MessageInterface::ShowMessage(wxT("precData is NULL!!!!\n"));
+         MessageInterface::ShowMessage("precData is NULL!!!!\n");
       if (nutData == NULL)
-         MessageInterface::ShowMessage(wxT("nutData is NULL!!!!\n"));
+         MessageInterface::ShowMessage("nutData is NULL!!!!\n");
    #endif
    
    Real PrecT[9] = {precData[0], precData[3], precData[6],
                     precData[1], precData[4], precData[7],
                     precData[2], precData[5], precData[8]};
    #ifdef DEBUG_TOEEQ
-      MessageInterface::ShowMessage(wxT("PrecT omputed  ..........\n"));
+      MessageInterface::ShowMessage("PrecT omputed  ..........\n");
    #endif
    Real NutT[9] =  {nutData[0], nutData[3], nutData[6],
                     nutData[1], nutData[4], nutData[7],
                     nutData[2], nutData[5], nutData[8]};
    #ifdef DEBUG_TOEEQ
-      MessageInterface::ShowMessage(wxT("NutT computed  ..........\n"));
+      MessageInterface::ShowMessage("NutT computed  ..........\n");
    #endif
 
    Integer p3 = 0;
@@ -205,7 +205,7 @@ bool TOEEqAxes::Initialize()
       }
    }     
    #ifdef DEBUG_TOEEQ
-      MessageInterface::ShowMessage(wxT("About to set rotMatrix ..........\n"));
+      MessageInterface::ShowMessage("About to set rotMatrix ..........\n");
    #endif
    rotMatrix.Set(res[0][0],res[0][1],res[0][2],
                  res[1][0],res[1][1],res[1][2],
@@ -217,7 +217,7 @@ bool TOEEqAxes::Initialize()
    // rotDotMatrix is still the default zero matrix
    
    #ifdef DEBUG_TOEEQ
-      MessageInterface::ShowMessage(wxT("EXITing TOEEq::Initialize ..........\n"));
+      MessageInterface::ShowMessage("EXITing TOEEq::Initialize ..........\n");
    #endif
    return true;
 }
@@ -266,7 +266,7 @@ GmatBase* TOEEqAxes::Clone() const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -277,7 +277,7 @@ GmatBase* TOEEqAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*wxString TOEEqAxes::GetParameterText(const Integer id) const
+/*std::string TOEEqAxes::GetParameterText(const Integer id) const
 {
    if (id >= InertialAxesParamCount && id < TOEEqAxesParamCount)
       return PARAMETER_TEXT[id - InertialAxesParamCount];
@@ -285,7 +285,7 @@ GmatBase* TOEEqAxes::Clone() const
 }
 */
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -296,7 +296,7 @@ GmatBase* TOEEqAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*Integer TOEEqAxes::GetParameterID(const wxString &str) const
+/*Integer TOEEqAxes::GetParameterID(const std::string &str) const
 {
    for (Integer i = InertialAxesParamCount; i < TOEEqAxesParamCount; i++)
    {
@@ -328,7 +328,7 @@ GmatBase* TOEEqAxes::Clone() const
 }
 */
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -339,7 +339,7 @@ GmatBase* TOEEqAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*wxString TOEEqAxes::GetParameterTypeString(const Integer id) const
+/*std::string TOEEqAxes::GetParameterTypeString(const Integer id) const
 {
    return InertialAxes::PARAM_TYPE_STRING[GetParameterType(id)];
 }

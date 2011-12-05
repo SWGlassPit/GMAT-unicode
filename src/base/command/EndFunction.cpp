@@ -25,8 +25,8 @@
 
 
 EndFunction::EndFunction() :
-   GmatCommand    (wxT("EndFunction")),
-   functionName         (wxT(""))
+   GmatCommand    ("EndFunction"),
+   functionName         ("")
 {
 }
 
@@ -54,7 +54,7 @@ EndFunction& EndFunction::operator=(const EndFunction& ef)
 }
  
 GmatBase* EndFunction::GetRefObject(const Gmat::ObjectType type,
-                                    const wxString &name)
+                                    const std::string &name)
 {
    if (type == Gmat::UNKNOWN_OBJECT)  // Just find it by name
    {
@@ -66,8 +66,8 @@ GmatBase* EndFunction::GetRefObject(const Gmat::ObjectType type,
 
    
 bool EndFunction::RenameRefObject(const Gmat::ObjectType type,
-                                  const wxString &oldName,
-                                  const wxString &newName)
+                                  const std::string &oldName,
+                                  const std::string &newName)
 {
    return true;
 }

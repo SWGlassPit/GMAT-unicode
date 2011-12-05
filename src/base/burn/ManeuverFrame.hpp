@@ -38,16 +38,16 @@ public:
 
    void                SetState(Real *pos, Real *vel = NULL);
    void                CalculateBasis(Real basis[3][3]);
-   virtual wxString GetFrameLabel(Integer id);
+   virtual std::string GetFrameLabel(Integer id);
 
 protected:
    /// Matrix of the basis vectors -- Internal buffer used for efficiency
    Real                basisMatrix[3][3];
 
    /// Central body for the frame
-   wxString         centralBody;
+   std::string         centralBody;
    /// Reference body for the frame
-   wxString         referenceBody;
+   std::string         referenceBody;
    /// Position vector used to calculate the basis
    Real                *position;
    /// Velocity vector used to calculate the basis

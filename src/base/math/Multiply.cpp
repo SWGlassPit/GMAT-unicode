@@ -35,8 +35,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Multiply::Multiply(const wxString &nomme)
-   : MathFunction(wxT("Multiply"), nomme)
+Multiply::Multiply(const std::string &nomme)
+   : MathFunction("Multiply", nomme)
 {
 }
 
@@ -91,7 +91,7 @@ void Multiply::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount
 {
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Multiply::GetOutputInfo() '%s' entered\n"), GetName().c_str());
+      ("Multiply::GetOutputInfo() '%s' entered\n", GetName().c_str());
    #endif
    
    Integer type1, row1, col1; // Left node
@@ -101,20 +101,20 @@ void Multiply::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount
    if (leftNode)
       leftNode->GetOutputInfo(type1, row1, col1);
    else
-      throw MathException(wxT("Left node is NULL in ") + GetTypeName() +
-                          wxT("::GetOutputInfo()\n"));
+      throw MathException("Left node is NULL in " + GetTypeName() +
+                          "::GetOutputInfo()\n");
    
    // Get the type(Real or Matrix), # rows and # columns of the right node
    if (rightNode)
       rightNode->GetOutputInfo(type2, row2, col2);
    else
-      throw MathException(wxT("Right node is NULL in ") + GetTypeName() +
-                          wxT("::GetOutputInfo()\n"));
+      throw MathException("Right node is NULL in " + GetTypeName() +
+                          "::GetOutputInfo()\n");
    
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Multiply::GetOutputInfo() type1=%d, row1=%d, col1=%d, type2=%d, ")
-       wxT("row2=%d, col2=%d\n"), type1, row1, col1, type2, row2, col2);
+      ("Multiply::GetOutputInfo() type1=%d, row1=%d, col1=%d, type2=%d, "
+       "row2=%d, col2=%d\n", type1, row1, col1, type2, row2, col2);
    #endif
    
    type = type1;
@@ -143,7 +143,7 @@ void Multiply::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount
          }
          else
             throw MathException
-               (GetName() + wxT(":Inner matrix dimensions must agree to multiply.\n"));
+               (GetName() + ":Inner matrix dimensions must agree to multiply.\n");
       }
    }
    else if (type2 == Gmat::RMATRIX_TYPE)
@@ -155,7 +155,7 @@ void Multiply::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount
    
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Multiply::GetOutputInfo() '%s' leaving, type=%d, rowCount=%d, colCount=%d\n"),
+      ("Multiply::GetOutputInfo() '%s' leaving, type=%d, rowCount=%d, colCount=%d\n",
        GetName().c_str(), type, rowCount, colCount);
    #endif
 }
@@ -173,14 +173,14 @@ bool Multiply::ValidateInputs()
 {
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("\nMultiply::ValidateInputs() '%s' entered\n"), GetName().c_str());
+      ("\nMultiply::ValidateInputs() '%s' entered\n", GetName().c_str());
    #endif
    
    if (leftNode == NULL)
-      throw MathException(wxT("Multiply() - Missing input arguments"));
+      throw MathException("Multiply() - Missing input arguments");
    
    if (rightNode == NULL)
-      throw MathException(wxT("Multiply() - Not enough input arguments"));
+      throw MathException("Multiply() - Not enough input arguments");
    
    Integer type1, row1, col1; // Left node
    Integer type2, row2, col2; // Right node
@@ -194,8 +194,8 @@ bool Multiply::ValidateInputs()
    
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Multiply::ValidateInputs() type1=%d, row1=%d, col1=%d, ")
-       wxT("type2=%d, row2=%d, col2=%d\n"), type1, row1, col1, type2, row2, col2);
+      ("Multiply::ValidateInputs() type1=%d, row1=%d, col1=%d, "
+       "type2=%d, row2=%d, col2=%d\n", type1, row1, col1, type2, row2, col2);
    #endif
    
    if ((type1 == Gmat::REAL_TYPE) && (type2 == Gmat::REAL_TYPE))
@@ -212,7 +212,7 @@ bool Multiply::ValidateInputs()
    
    #ifdef DEBUG_INPUT_OUTPUT
    MessageInterface::ShowMessage
-      (wxT("Multiply::ValidateInputs() '%s' returning %d\n"), GetName().c_str(), retval);
+      ("Multiply::ValidateInputs() '%s' returning %d\n", GetName().c_str(), retval);
    #endif
    
    return retval;
@@ -248,7 +248,7 @@ Real Multiply::Evaluate()
    else
    {
       throw MathException
-         (wxT("Multiply::Evaluate() row:%d * col:%d does not produce scalar\n"));
+         ("Multiply::Evaluate() row:%d * col:%d does not produce scalar\n");
    }
 }
 

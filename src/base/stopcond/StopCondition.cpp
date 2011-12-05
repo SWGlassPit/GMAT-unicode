@@ -60,26 +60,26 @@ using namespace GmatMathUtil;
 //---------------------------------
 const Real StopCondition::STOP_COND_TOL = 1.0e-11;
 
-const wxString
+const std::string
 StopCondition::PARAMETER_TEXT[StopConditionParamCount - GmatBaseParamCount] =
 {
-   wxT("BaseEpoch"),
-   wxT("Epoch"),
-   wxT("EpochVar"),
-   wxT("StopVar"),
-   wxT("Goal"),
-   wxT("Repeat"),
+   "BaseEpoch",
+   "Epoch",
+   "EpochVar",
+   "StopVar",
+   "Goal",
+   "Repeat",
 };
 
 const Gmat::ParameterType
 StopCondition::PARAMETER_TYPE[StopConditionParamCount - GmatBaseParamCount] =
 {
-   Gmat::REAL_TYPE,    //wxT("BaseEpoch"),
-   Gmat::REAL_TYPE,    //wxT("Epoch"),
-   Gmat::STRING_TYPE,  //wxT("EpochVar"),
-   Gmat::STRING_TYPE,  //wxT("StopVar"),
-   Gmat::STRING_TYPE,  //wxT("Goal"),
-   Gmat::INTEGER_TYPE, //wxT("Repeat"),
+   Gmat::REAL_TYPE,    //"BaseEpoch",
+   Gmat::REAL_TYPE,    //"Epoch",
+   Gmat::STRING_TYPE,  //"EpochVar",
+   Gmat::STRING_TYPE,  //"StopVar",
+   Gmat::STRING_TYPE,  //"Goal",
+   Gmat::INTEGER_TYPE, //"Repeat",
 };
 
 //---------------------------------
@@ -87,7 +87,7 @@ StopCondition::PARAMETER_TYPE[StopConditionParamCount - GmatBaseParamCount] =
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// StopCondition(const wxString &name, const wxString &desc,
+// StopCondition(const std::string &name, const std::string &desc,
 //               Parameter *epochParam, Parameter *stopParam, const Real &goal
 //               const Real &tol, const Integer repeatCount,
 //               Interpolator *interp)
@@ -96,12 +96,12 @@ StopCondition::PARAMETER_TYPE[StopConditionParamCount - GmatBaseParamCount] =
  * Constructor.
  */
 //------------------------------------------------------------------------------
-StopCondition::StopCondition(const wxString &name, const wxString &desc,
+StopCondition::StopCondition(const std::string &name, const std::string &desc,
                              Parameter *epochParam, Parameter *stopParam,
                              const Real &goal, const Real &tol,
                              const Integer repeatCount,
                              Interpolator *interp)
-   : GmatBase(Gmat::STOP_CONDITION, wxT("StopCondition"), name),
+   : GmatBase(Gmat::STOP_CONDITION, "StopCondition", name),
      mBaseEpoch           (0.0),
      internalEpoch        (0.0),
      currentGoalValue     (goal),
@@ -109,11 +109,11 @@ StopCondition::StopCondition(const wxString &name, const wxString &desc,
      mSolarSystem         (NULL),
      mInterpolator        (interp),
      mDescription         (desc),
-     mStopParamType       (wxT("")),
-     mStopParamName       (wxT("")),
-     mEpochParamName      (wxT("")),
-     lhsString            (wxT("")),
-     rhsString            (wxT("0.0")),
+     mStopParamType       (""),
+     mStopParamName       (""),
+     mEpochParamName      (""),
+     lhsString            (""),
+     rhsString            ("0.0"),
      mStopParam           (stopParam),
      mGoalParam           (NULL),
      mEpochParam          (epochParam),
@@ -143,10 +143,10 @@ StopCondition::StopCondition(const wxString &name, const wxString &desc,
      lhsCycleType         (GmatParam::NOT_CYCLIC),
      rhsCycleType         (GmatParam::NOT_CYCLIC)
 {
-   objectTypeNames.push_back(wxT("StopCondition"));
+   objectTypeNames.push_back("StopCondition");
 
    objectTypes.push_back(Gmat::STOP_CONDITION);
-   objectTypeNames.push_back(wxT("StopCondition"));
+   objectTypeNames.push_back("StopCondition");
    
    if (mStopParam != NULL)
    {
@@ -160,11 +160,11 @@ StopCondition::StopCondition(const wxString &name, const wxString &desc,
    // Create default Interpolator
    if (mInterpolator == NULL)
    {
-      mInterpolator = new NotAKnotInterpolator(wxT("InternalInterpolator"));
+      mInterpolator = new NotAKnotInterpolator("InternalInterpolator");
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (mInterpolator, mInterpolator->GetName(), wxT("StopCondition::StopCondition()"),
-          wxT("mInterpolator = (new NotAKnotInterpolator()"));
+         (mInterpolator, mInterpolator->GetName(), "StopCondition::StopCondition()",
+          "mInterpolator = (new NotAKnotInterpolator()");
       #endif
    }
 }
@@ -187,7 +187,7 @@ StopCondition::StopCondition(const StopCondition &copy)
      mDescription         (copy.mDescription),
      mStopParamType       (copy.mStopParamType),
      mStopParamName       (copy.mStopParamName),
-     mEpochParamName      (wxT("")),
+     mEpochParamName      (""),
      lhsString            (copy.lhsString),
      rhsString            (copy.rhsString),
      mStopParam           (copy.mStopParam),
@@ -222,13 +222,13 @@ StopCondition::StopCondition(const StopCondition &copy)
    mAllRefObjectNames = copy.mAllRefObjectNames;  // Is this correct?
    
    if (copy.mInterpolator != NULL)
-      if (copy.mInterpolator->GetName() == wxT("InternalInterpolator"))
+      if (copy.mInterpolator->GetName() == "InternalInterpolator")
       {
          mInterpolator = (Interpolator*)copy.mInterpolator->Clone();
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Add
-            (mInterpolator, mInterpolator->GetName(), wxT("StopCondition::StopCondition(copy)"),
-             wxT("mInterpolator = (Interpolator*)copy.mInterpolator->Clone()"));
+            (mInterpolator, mInterpolator->GetName(), "StopCondition::StopCondition(copy)",
+             "mInterpolator = (Interpolator*)copy.mInterpolator->Clone()");
          #endif
       }
    
@@ -237,8 +237,8 @@ StopCondition::StopCondition(const StopCondition &copy)
       mEccParam = (Parameter*)copy.mEccParam->Clone();
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (mEccParam, mEccParam->GetName(), wxT("StopCondition::StopCondition(copy)"),
-          wxT("mEccParam = (Parameter*)copy.mEccParam->Clone()"));
+         (mEccParam, mEccParam->GetName(), "StopCondition::StopCondition(copy)",
+          "mEccParam = (Parameter*)copy.mEccParam->Clone()");
       #endif
    }
    
@@ -247,8 +247,8 @@ StopCondition::StopCondition(const StopCondition &copy)
       mRmagParam = (Parameter*)copy.mRmagParam->Clone();
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (mRmagParam, mRmagParam->GetName(), wxT("StopCondition::StopCondition(copy)"),
-          wxT("mRmagParam = (Parameter*)copy.mRmagParam->Clone()"));
+         (mRmagParam, mRmagParam->GetName(), "StopCondition::StopCondition(copy)",
+          "mRmagParam = (Parameter*)copy.mRmagParam->Clone()");
       #endif
    }
    
@@ -281,20 +281,20 @@ StopCondition& StopCondition::operator= (const StopCondition &right)
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (mInterpolator, mInterpolator->GetName(), wxT("StopCondition::operator="),
-             wxT("deleting mInterpolator"));
+            (mInterpolator, mInterpolator->GetName(), "StopCondition::operator=",
+             "deleting mInterpolator");
          #endif
          delete mInterpolator;
       }
       
       if (right.mInterpolator != NULL)
-         if (right.mInterpolator->GetName() == wxT("InternalInterpolator"))
+         if (right.mInterpolator->GetName() == "InternalInterpolator")
          {
             mInterpolator = (Interpolator*)right.mInterpolator->Clone();
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Add
-               (mInterpolator, mInterpolator->GetName(), wxT("StopCondition::operator="),
-                wxT("mInterpolator = (Interpolator*)right.mInterpolator->Clone()"));
+               (mInterpolator, mInterpolator->GetName(), "StopCondition::operator=",
+                "mInterpolator = (Interpolator*)right.mInterpolator->Clone()");
             #endif
          }
       
@@ -317,8 +317,8 @@ StopCondition& StopCondition::operator= (const StopCondition &right)
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (mEccParam, mEccParam->GetName(), wxT("StopCondition::operator="),
-             wxT("deleting mEccParam"));
+            (mEccParam, mEccParam->GetName(), "StopCondition::operator=",
+             "deleting mEccParam");
          #endif
          delete mEccParam;
       }
@@ -328,8 +328,8 @@ StopCondition& StopCondition::operator= (const StopCondition &right)
          mEccParam = (Parameter*)right.mEccParam->Clone();
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Add
-            (mEccParam, mEccParam->GetName(), wxT("StopCondition::operator="),
-             wxT("mEccParam = (Parameter*)right.mEccParam->Clone()"));
+            (mEccParam, mEccParam->GetName(), "StopCondition::operator=",
+             "mEccParam = (Parameter*)right.mEccParam->Clone()");
          #endif
       }
       else
@@ -339,8 +339,8 @@ StopCondition& StopCondition::operator= (const StopCondition &right)
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (mRmagParam, mRmagParam->GetName(), wxT("StopCondition::operator="),
-             wxT("deleting mRmagParam"));
+            (mRmagParam, mRmagParam->GetName(), "StopCondition::operator=",
+             "deleting mRmagParam");
          #endif
          delete mRmagParam;
       }
@@ -350,8 +350,8 @@ StopCondition& StopCondition::operator= (const StopCondition &right)
          mRmagParam = (Parameter*)right.mRmagParam->Clone();
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Add
-            (mRmagParam, mRmagParam->GetName(), wxT("StopCondition::operator="),
-             wxT("mRmagParam = (Parameter*)right.mRmagParam->Clone()"));
+            (mRmagParam, mRmagParam->GetName(), "StopCondition::operator=",
+             "mRmagParam = (Parameter*)right.mRmagParam->Clone()");
          #endif
       }
       else
@@ -393,8 +393,8 @@ StopCondition::~StopCondition()
 {
    #ifdef DEBUG_STOPCOND
    MessageInterface::ShowMessage
-      (wxT("StopCondition::~StopCondition() entered, lhsWrapper=<%p>, rhsWrapper=<%p>, ")
-       wxT("mEccParam=<%p>, mRmagParam=<%p>, mInterpolator=<%p>\n"), lhsWrapper,
+      ("StopCondition::~StopCondition() entered, lhsWrapper=<%p>, rhsWrapper=<%p>, "
+       "mEccParam=<%p>, mRmagParam=<%p>, mInterpolator=<%p>\n", lhsWrapper,
        rhsWrapper, mEccParam, mRmagParam, mInterpolator);
    #endif
    
@@ -404,8 +404,8 @@ StopCondition::~StopCondition()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (mEccParam, mEccParam->GetName(), wxT("StopCondition::~StopCondition()"),
-          wxT("deleting mEccParam"));
+         (mEccParam, mEccParam->GetName(), "StopCondition::~StopCondition()",
+          "deleting mEccParam");
       #endif
       delete mEccParam;
    }
@@ -414,20 +414,20 @@ StopCondition::~StopCondition()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (mRmagParam, mRmagParam->GetName(), wxT("StopCondition::~StopCondition()"),
-          wxT("deleting mRmagParam"));
+         (mRmagParam, mRmagParam->GetName(), "StopCondition::~StopCondition()",
+          "deleting mRmagParam");
       #endif
       delete mRmagParam;
    }
    
    if (mInterpolator != NULL)
    {
-      if (mInterpolator->GetName() == wxT("InternalInterpolator"))
+      if (mInterpolator->GetName() == "InternalInterpolator")
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (mInterpolator, mInterpolator->GetName(), wxT("StopCondition::~StopCondition()"),
-             wxT("deleting mInterpolator"));
+            (mInterpolator, mInterpolator->GetName(), "StopCondition::~StopCondition()",
+             "deleting mInterpolator");
          #endif
          delete mInterpolator;
       }
@@ -451,8 +451,8 @@ bool StopCondition::Evaluate()
 {
    #ifdef DEBUG_STOPCOND_EVAL
       MessageInterface::ShowMessage(
-         wxT("StopCondition::Evaluate() entered, mNumValidPoints=%d, mAllowGoalParam=%d, ")
-         wxT("isCyclicTimeCondition=%d\n"), mNumValidPoints, mAllowGoalParam,
+         "StopCondition::Evaluate() entered, mNumValidPoints=%d, mAllowGoalParam=%d, "
+         "isCyclicTimeCondition=%d\n", mNumValidPoints, mAllowGoalParam,
          isCyclicTimeCondition);
    #endif
    
@@ -465,7 +465,7 @@ bool StopCondition::Evaluate()
    
    #ifdef DEBUG_BUFFER_FILLING
       MessageInterface::ShowMessage(
-         wxT("StopCondition::Evaluate called, mNumValidPoints=%d, mAllowGoalParam=%d\n"),
+         "StopCondition::Evaluate called, mNumValidPoints=%d, mAllowGoalParam=%d\n",
          mNumValidPoints, mAllowGoalParam);
    #endif
    
@@ -498,7 +498,7 @@ bool StopCondition::Evaluate()
    
    #ifdef DEBUG_BUFFER_FILLING
    MessageInterface::ShowMessage
-      (wxT("   currentParmValue=%.15f, currentGoalValue=%.15f\n"), currentParmValue,
+      ("   currentParmValue=%.15f, currentGoalValue=%.15f\n", currentParmValue,
        currentGoalValue);
    #endif
    
@@ -545,7 +545,7 @@ bool StopCondition::Evaluate()
       
       #ifdef DEBUG_STOPCOND_EVAL
       MessageInterface::ShowMessage
-         (wxT("StopCondition::Evaluate()() returning false, mNumValidPoints is zero\n"));
+         ("StopCondition::Evaluate()() returning false, mNumValidPoints is zero\n");
       #endif
       return false;
    }
@@ -558,7 +558,7 @@ bool StopCondition::Evaluate()
       
       #ifdef DEBUG_STOPCOND_EVAL
          MessageInterface::ShowMessage(
-            wxT("Evaluating: min = %lf, max = %lf, goal = %lf\n"), min, max, currentGoalValue);
+            "Evaluating: min = %lf, max = %lf, goal = %lf\n", min, max, currentGoalValue);
       #endif
       
       if ((min != max) && readyToTest)
@@ -570,8 +570,8 @@ bool StopCondition::Evaluate()
       
             #ifdef DEBUG_STOPCOND_EVAL
                MessageInterface::ShowMessage(
-                  wxT("Previous Epoch = %.12lf, Epoch  %.12lf, Values = [%.12lf  %.12lf], ")
-                  wxT("StopInterval = %.12lf\n"), previousEpoch, epoch,
+                  "Previous Epoch = %.12lf, Epoch  %.12lf, Values = [%.12lf  %.12lf], "
+                  "StopInterval = %.12lf\n", previousEpoch, epoch,
                   previousAchievedValue, currentParmValue, mStopInterval);
             #endif
          }
@@ -588,16 +588,16 @@ bool StopCondition::Evaluate()
    // for time data we don't need to interpolate
    {
       #ifdef DEBUG_CYCLIC_TIME
-         MessageInterface::ShowMessage(wxT("Parameter %s is time based and %s\n"),
+         MessageInterface::ShowMessage("Parameter %s is time based and %s\n",
                mStopParam->GetTypeName().c_str(),
-               isCyclicTimeCondition ? wxT("cyclic") : wxT("not cyclic"));
+               isCyclicTimeCondition ? "cyclic" : "not cyclic");
          if (isCyclicTimeCondition)
          {
-            MessageInterface::ShowMessage(wxT("   Current goal value: %lf\n"),
+            MessageInterface::ShowMessage("   Current goal value: %lf\n",
                   currentGoalValue);
-            MessageInterface::ShowMessage(wxT("   Previous achieved value: %lf\n"),
+            MessageInterface::ShowMessage("   Previous achieved value: %lf\n",
                   previousAchievedValue);
-            MessageInterface::ShowMessage(wxT("   Current parm value: %lf\n"),
+            MessageInterface::ShowMessage("   Current parm value: %lf\n",
                   currentParmValue);
          }
       #endif
@@ -610,8 +610,8 @@ bool StopCondition::Evaluate()
 
       #ifdef DEBUG_STOPCOND_EVAL
          MessageInterface::ShowMessage(
-            wxT("prev = %15.9lf, curr = %15.9lf, lhs = %15.9lf, rhs = %15.9lf, ")
-            wxT("direction = %15.9lf, \n"), previousAchievedValue, currentParmValue, 
+            "prev = %15.9lf, curr = %15.9lf, lhs = %15.9lf, rhs = %15.9lf, "
+            "direction = %15.9lf, \n", previousAchievedValue, currentParmValue, 
             prevGoalDiff, currGoalDiff, direction);
       #endif
 
@@ -619,8 +619,8 @@ bool StopCondition::Evaluate()
 //      if (mNumValidPoints == 1)
 //         if (((2.0*currentGoalValue - currentParmValue - previousAchievedValue) * direction) < 0.0)
 //            MessageInterface::ShowMessage(
-//               wxT("Warning!  Time based stopping condition \"%s\" = %.10lf will ")
-//               wxT("never be satisfied\n"),
+//               "Warning!  Time based stopping condition \"%s\" = %.10lf will "
+//               "never be satisfied\n",
 //               instanceName.c_str(), currentGoalValue);
       
       // Goal met if it falls between previous and current values
@@ -631,11 +631,11 @@ bool StopCondition::Evaluate()
          
          #ifdef DEBUG_STOPCOND_EVAL
             MessageInterface::ShowMessage
-               (wxT("StopCondition::Evaluate() mUseInternalEpoch = %d, ")
-               wxT("epoch = %15.9lf, currentGoalValue = %15.9lf, ")
-               wxT("currentParmValue = %15.9lf, ")
-               wxT("previousAchievedValue = %15.9lf, ")
-               wxT("GoalDiffs = [%15.9lf  %15.9lf]\n"),  
+               ("StopCondition::Evaluate() mUseInternalEpoch = %d, "
+               "epoch = %15.9lf, currentGoalValue = %15.9lf, "
+               "currentParmValue = %15.9lf, "
+               "previousAchievedValue = %15.9lf, "
+               "GoalDiffs = [%15.9lf  %15.9lf]\n",  
                 mUseInternalEpoch, epoch, 
                 currentGoalValue, currentParmValue, previousAchievedValue, 
                 prevGoalDiff, currGoalDiff);
@@ -651,15 +651,15 @@ bool StopCondition::Evaluate()
    
    #ifdef DEBUG_BUFFER_FILLING
       MessageInterface::ShowMessage(
-         wxT("Value = %.12lf, Previous = %.12lf; Goal (%.12lf) %s, epoch = %15.12lf\n"), 
-         currentParmValue, previousAchievedValue, currentGoalValue, (goalMet ? wxT("met") : wxT("not met")), epoch);
+         "Value = %.12lf, Previous = %.12lf; Goal (%.12lf) %s, epoch = %15.12lf\n", 
+         currentParmValue, previousAchievedValue, currentGoalValue, (goalMet ? "met" : "not met"), epoch);
    #endif
    
    ++mNumValidPoints;
    
    #ifdef DEBUG_STOPCOND_EVAL
    MessageInterface::ShowMessage
-      (wxT("StopCondition::Evaluate() returning %s\n"), goalMet ? wxT("goal met") : wxT("goal not met"));
+      ("StopCondition::Evaluate() returning %s\n", goalMet ? "goal met" : "goal not met");
    #endif
    return goalMet;
 }
@@ -697,9 +697,9 @@ bool StopCondition::AddToBuffer(bool isInitialPoint)
 {
    #ifdef DEBUG_BUFFER_FILLING
       MessageInterface::ShowMessage(
-         wxT("StopCondition::AddToBuffer(%s) called, internalEpoch is %s\n"),
-         (isInitialPoint ? wxT("true") : wxT("false")),
-         (mUseInternalEpoch ? wxT("true") : wxT("false")));
+         "StopCondition::AddToBuffer(%s) called, internalEpoch is %s\n",
+         (isInitialPoint ? "true" : "false"),
+         (mUseInternalEpoch ? "true" : "false"));
    #endif
       
    // For now, skip time cases because they are already built
@@ -759,7 +759,7 @@ bool StopCondition::AddToBuffer(bool isInitialPoint)
    
    #ifdef DEBUG_BUFFER_FILLING
       MessageInterface::ShowMessage(
-         wxT("  New point: %.12lf, %.12lf\n"),
+         "  New point: %.12lf, %.12lf\n",
          epoch, currentParmValue);
    #endif
       
@@ -813,7 +813,7 @@ bool StopCondition::AddToBuffer(bool isInitialPoint)
       }
       
       #ifdef DEBUG_BUFFER_FILLING
-         MessageInterface::ShowMessage(wxT("Min value = %.12lf, Max = %.12lf\n"),
+         MessageInterface::ShowMessage("Min value = %.12lf, Max = %.12lf\n",
             minVal, maxVal);
       #endif
 
@@ -826,8 +826,8 @@ bool StopCondition::AddToBuffer(bool isInitialPoint)
          {
             #ifdef DEBUG_STOPCOND_EVAL
             MessageInterface::ShowMessage
-               (wxT("StopCondition::Evaluate() i=%d, lhsValueBuffer=%f, ")
-                wxT("mEpochBuffer=%f\n"), i, lhsValueBuffer[i], mEpochBuffer[i]);
+               ("StopCondition::Evaluate() i=%d, lhsValueBuffer=%f, "
+                "mEpochBuffer=%f\n", i, lhsValueBuffer[i], mEpochBuffer[i]);
             #endif
             mInterpolator->AddPoint(lhsValueBuffer[i], &mEpochBuffer[i]);
          }
@@ -841,18 +841,18 @@ bool StopCondition::AddToBuffer(bool isInitialPoint)
          
          #ifdef DEBUG_STOPCOND_EVAL
          MessageInterface::ShowMessage
-            (wxT("StopCondition::Evaluate() mStopEpoch=%f\n"), mStopEpoch);
+            ("StopCondition::Evaluate() mStopEpoch=%f\n", mStopEpoch);
          #endif
       }
    }
 
    #ifdef DEBUG_BUFFER_FILLING
-      MessageInterface::ShowMessage(wxT("Valid points: %d, Buffer contents:\n"),
+      MessageInterface::ShowMessage("Valid points: %d, Buffer contents:\n",
          mNumValidPoints);
       for (int i=0; i<mBufferSize; i++)
       {
          MessageInterface::ShowMessage
-            (wxT("   [%d]   %.12lf  %.12lf\n"), i, mEpochBuffer[i], lhsValueBuffer[i]);
+            ("   [%d]   %.12lf  %.12lf\n", i, mEpochBuffer[i], lhsValueBuffer[i]);
       }
    #endif
 
@@ -877,8 +877,8 @@ Real StopCondition::GetStopEpoch()
       
       #ifdef DEBUG_STOPCOND_EPOCH
          MessageInterface::ShowMessage
-            (wxT("StopCondition::GetStopEpoch()\n   Previous = %15.9lf\n   ")
-            wxT("Current = %15.9lf\n   Goal = %15.9lf"), previousEpoch, previousAchievedValue, 
+            ("StopCondition::GetStopEpoch()\n   Previous = %15.9lf\n   "
+            "Current = %15.9lf\n   Goal = %15.9lf", previousEpoch, previousAchievedValue, 
             currentGoalValue);
       #endif
 
@@ -890,7 +890,7 @@ Real StopCondition::GetStopEpoch()
    
    #ifdef DEBUG_STOPCOND_EPOCH
       MessageInterface::ShowMessage
-         (wxT("StopCondition::Evaluate()\n   Ring buffer:\n"));
+         ("StopCondition::Evaluate()\n   Ring buffer:\n");
    #endif
 
    mInterpolator->Clear();
@@ -898,8 +898,8 @@ Real StopCondition::GetStopEpoch()
    {
       #ifdef DEBUG_STOPCOND_EPOCH
          MessageInterface::ShowMessage
-            (wxT("      i=%d, lhsValueBuffer=%.12lf, ")
-             wxT("mEpochBuffer=%.12lf\n"), i, lhsValueBuffer[i], mEpochBuffer[i]);
+            ("      i=%d, lhsValueBuffer=%.12lf, "
+             "mEpochBuffer=%.12lf\n", i, lhsValueBuffer[i], mEpochBuffer[i]);
       #endif
       
       mInterpolator->AddPoint(lhsValueBuffer[i], &mEpochBuffer[i]);
@@ -908,11 +908,11 @@ Real StopCondition::GetStopEpoch()
    if (mInterpolator->Interpolate(currentGoalValue, &stopEpoch))
       mStopEpoch = stopEpoch;
    else
-      throw StopConditionException(wxT("Unable to interpolate a stop epoch"));
+      throw StopConditionException("Unable to interpolate a stop epoch");
   
    #ifdef DEBUG_STOPCOND_EPOCH
       MessageInterface::ShowMessage
-         (wxT("   Interpolated epoch = %.12lf\n"), mStopEpoch);
+         ("   Interpolated epoch = %.12lf\n", mStopEpoch);
    #endif
       
    return mStopEpoch;
@@ -946,8 +946,8 @@ bool StopCondition::CheckOnPeriapsis()
 {   
    #ifdef DEBUG_STOPCOND_PERIAPSIS
    MessageInterface::ShowMessage
-      (wxT("StopCondition::CheckOnPeriapsis() entered, previousAchievedValue=%.15f, ")
-       wxT("currentGoalValue=%.15f\n"), previousAchievedValue, currentGoalValue);
+      ("StopCondition::CheckOnPeriapsis() entered, previousAchievedValue=%.15f, "
+       "currentGoalValue=%.15f\n", previousAchievedValue, currentGoalValue);
    #endif
    
    bool goalMet = false;
@@ -958,7 +958,7 @@ bool StopCondition::CheckOnPeriapsis()
    //Real rmag = mRmagParam->EvaluateReal();  // ???
    
    //#ifdef DEBUG_STOPCOND_PERIAPSIS
-   //MessageInterface::ShowMessage(wxT("   ecc=%.15f\n"), ecc);
+   //MessageInterface::ShowMessage("   ecc=%.15f\n", ecc);
    //#endif
    
    //----------------------------------------------------------------------
@@ -976,8 +976,8 @@ bool StopCondition::CheckOnPeriapsis()
    
    #ifdef DEBUG_STOPCOND_PERIAPSIS
    MessageInterface::ShowMessage
-      (wxT("StopCondition::CheckOnPeriapsis() returning %s\n"), goalMet ?
-       wxT("goal met") : wxT("goal not met"));
+      ("StopCondition::CheckOnPeriapsis() returning %s\n", goalMet ?
+       "goal met" : "goal not met");
    #endif
    
    return goalMet;
@@ -991,7 +991,7 @@ bool StopCondition::CheckOnApoapsis()
 {
    if (mEccParam == NULL)
       throw StopConditionException
-         (wxT("StopCondition::CheckOnApoapsis() ECC parameter has NULL pointer.\n"));
+         ("StopCondition::CheckOnApoapsis() ECC parameter has NULL pointer.\n");
    
    // Eccentricity must be large enough to keep asculations from masking the
    // stop point
@@ -1045,7 +1045,7 @@ bool StopCondition::CheckCyclicCondition(Real &value)
       
       #ifdef DEBUG_CYCLIC_PARAMETERS
          MessageInterface::ShowMessage(
-            wxT("Cyclic condition: Goal = %lf, currValue = %lf, prevValue = %lf\n"),
+            "Cyclic condition: Goal = %lf, currValue = %lf, prevValue = %lf\n",
             currentGoalValue, value, previousAchievedValue);
       #endif
          
@@ -1062,7 +1062,7 @@ bool StopCondition::CheckCyclicCondition(Real &value)
 bool StopCondition::Initialize()
 {
    #ifdef DEBUG_STOPCOND_INIT
-   MessageInterface::ShowMessage(wxT("StopCondition::Initialize() entered\n"));
+   MessageInterface::ShowMessage("StopCondition::Initialize() entered\n");
    #endif
    
    mInitialized = false;
@@ -1075,8 +1075,8 @@ bool StopCondition::Initialize()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (mEccParam, mEccParam->GetName(), wxT("StopCondition::Initialize()"),
-          wxT("deleting mEccParam"));
+         (mEccParam, mEccParam->GetName(), "StopCondition::Initialize()",
+          "deleting mEccParam");
       #endif
       delete mEccParam;
    }
@@ -1085,8 +1085,8 @@ bool StopCondition::Initialize()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (mRmagParam, mRmagParam->GetName(), wxT("StopCondition::Initialize()"),
-          wxT("deleting mRmagParam"));
+         (mRmagParam, mRmagParam->GetName(), "StopCondition::Initialize()",
+          "deleting mRmagParam");
       #endif
       delete mRmagParam;
    }
@@ -1094,19 +1094,19 @@ bool StopCondition::Initialize()
    mEccParam = NULL;
    mRmagParam = NULL;
    
-   wxString paramTypeName = mStopParam->GetTypeName();
+   std::string paramTypeName = mStopParam->GetTypeName();
    
    if (Validate())
    {
-      if (mStopParamType == wxT("Apoapsis") ||
-          mStopParamType == wxT("Periapsis"))
+      if (mStopParamType == "Apoapsis" ||
+          mStopParamType == "Periapsis")
       {
          currentGoalValue = 0.0;
          initialGoalValue = 0.0;
          mAllowGoalParam = false;
-         if (mStopParamType == wxT("Apoapsis"))
+         if (mStopParamType == "Apoapsis")
             isApoapse = true;
-         if (mStopParamType == wxT("Periapsis"))
+         if (mStopParamType == "Periapsis")
             isPeriapse = true;
       }
       else
@@ -1125,8 +1125,8 @@ bool StopCondition::Initialize()
       bool angleParameter = mStopParam->IsAngleParameter();
       #ifdef DEBUG_STOPCOND_INIT
       MessageInterface::ShowMessage
-         (wxT("   ==> Stop Parameter '%s' is%s an angle parameter\n"), paramTypeName.c_str(),
-          angleParameter ? wxT("") : wxT(" not"));
+         ("   ==> Stop Parameter '%s' is%s an angle parameter\n", paramTypeName.c_str(),
+          angleParameter ? "" : " not");
       #endif
       
       if (angleParameter)
@@ -1134,7 +1134,7 @@ bool StopCondition::Initialize()
          isLhsCyclicCondition = true;
          lhsCycleType = mStopParam->GetCycleType();
          #ifdef DEBUG_STOPCOND_INIT
-         MessageInterface::ShowMessage(wxT("   ==> CycleType is %d\n"), lhsCycleType);
+         MessageInterface::ShowMessage("   ==> CycleType is %d\n", lhsCycleType);
          #endif
       }
       
@@ -1163,8 +1163,8 @@ bool StopCondition::Initialize()
    
    #ifdef DEBUG_STOPCOND_INIT
    MessageInterface::ShowMessage
-      (wxT("StopCondition::Initialize() returning mInitialized=%d, ")
-       wxT("initialGoalValue=%.12f, currentGoalValue=%.12f\n"), mInitialized,
+      ("StopCondition::Initialize() returning mInitialized=%d, "
+       "initialGoalValue=%.12f, currentGoalValue=%.12f\n", mInitialized,
        initialGoalValue, currentGoalValue);
    #endif
    
@@ -1185,8 +1185,8 @@ bool StopCondition::Validate()
 {   
    #ifdef DEBUG_STOPCOND_INIT   
    MessageInterface::ShowMessage
-      (wxT("StopCondition::Validate() entered, mUseInternalEpoch=%d, mEpochParam=<%p>, ")
-       wxT("mStopParam=<%p>, mAllowGoalParam=%d, mGoalParam=<%p>, rhsWrapper=<%p>\n"),
+      ("StopCondition::Validate() entered, mUseInternalEpoch=%d, mEpochParam=<%p>, "
+       "mStopParam=<%p>, mAllowGoalParam=%d, mGoalParam=<%p>, rhsWrapper=<%p>\n",
        mUseInternalEpoch, mEpochParam, mStopParam, mAllowGoalParam, mGoalParam,
        rhsWrapper);
    #endif
@@ -1195,8 +1195,8 @@ bool StopCondition::Validate()
    if (!mUseInternalEpoch && mEpochParam == NULL)
    {
       throw StopConditionException
-         (wxT("StopCondition::Validate() epoch parameter: ") + mEpochParamName +
-          wxT(" has NULL pointer.\n"));
+         ("StopCondition::Validate() epoch parameter: " + mEpochParamName +
+          " has NULL pointer.\n");
    }
    
    // check on stop parameter
@@ -1204,23 +1204,23 @@ bool StopCondition::Validate()
    {
       #ifdef DEBUG_STOPCOND_INIT
       MessageInterface::ShowMessage
-         (wxT("StopCondition::Validate() stop parameter '%s' is NULL\n"),
+         ("StopCondition::Validate() stop parameter '%s' is NULL\n",
           mStopParamName.c_str());
       #endif
       //throw StopConditionException
-      //   (wxT("StopCondition::Validate() stop parameter: ") + mStopParamName +
-      //    wxT(" has NULL pointer.\n"));
+      //   ("StopCondition::Validate() stop parameter: " + mStopParamName +
+      //    " has NULL pointer.\n");
       throw StopConditionException
-         (wxT("Currently GMAT expects a Spacecraft Parameter to be on the LHS of ")
-          wxT("stopping condition"));
+         ("Currently GMAT expects a Spacecraft Parameter to be on the LHS of "
+          "stopping condition");
    }
    
    // check if stop parameter is a system Parameter such as Sat.X
    if (mStopParam->GetKey() != GmatParam::SYSTEM_PARAM)
    {
       throw StopConditionException
-         (wxT("Currently GMAT expects a Spacecraft Parameter to be on the LHS of ")
-          wxT("stopping condition"));
+         ("Currently GMAT expects a Spacecraft Parameter to be on the LHS of "
+          "stopping condition");
    }
    
    isCyclicTimeCondition = false;
@@ -1230,25 +1230,25 @@ bool StopCondition::Validate()
    {
       mNeedInterpolator = false;
       // Set time parameter type
-      wxString timeTypeName = mStopParam->GetTypeName();
-      if (timeTypeName == wxT("ElapsedSecs"))
+      std::string timeTypeName = mStopParam->GetTypeName();
+      if (timeTypeName == "ElapsedSecs")
       {
          stopParamTimeType = SECOND_PARAM;
          isCyclicTimeCondition = true;
       }
-      else if (timeTypeName == wxT("ElapsedDays"))
+      else if (timeTypeName == "ElapsedDays")
       {
          stopParamTimeType = DAY_PARAM;
          isCyclicTimeCondition = true;
       }
-      else if (timeTypeName.find(wxT("ModJulian")) != wxString::npos)
+      else if (timeTypeName.find("ModJulian") != std::string::npos)
          stopParamTimeType = EPOCH_PARAM;
       else
          stopParamTimeType = UNKNOWN_PARAM_TIME_TYPE;
       
       #ifdef DEBUG_STOPCOND_INIT   
          MessageInterface::ShowMessage(
-            wxT("Stop parameter \"%s\" has time type %d\n"), timeTypeName.c_str(), 
+            "Stop parameter \"%s\" has time type %d\n", timeTypeName.c_str(), 
             stopParamTimeType);
       #endif
    }
@@ -1257,7 +1257,7 @@ bool StopCondition::Validate()
       if (mInterpolator == NULL)
       {
          throw StopConditionException
-            (wxT("StopCondition::Validate() Interpolator has NULL pointer.\n"));
+            ("StopCondition::Validate() Interpolator has NULL pointer.\n");
       }
       
       mNeedInterpolator = true;
@@ -1266,26 +1266,26 @@ bool StopCondition::Validate()
    // check on goal parameter
    if (mAllowGoalParam && mGoalParam == NULL)
       throw StopConditionException
-         (wxT("StopCondition::Validate() goal parameter: ") + rhsString +
-          wxT(" has NULL pointer.\n"));
+         ("StopCondition::Validate() goal parameter: " + rhsString +
+          " has NULL pointer.\n");
    
    // Apoapsis and Periapsis need additional parameters
-   if (mStopParamType == wxT("Apoapsis") ||
-       mStopParamType == wxT("Periapsis"))
+   if (mStopParamType == "Apoapsis" ||
+       mStopParamType == "Periapsis")
    {
       // check on Ecc parameter
       if (mEccParam  == NULL)
       {
          #ifdef DEBUG_STOPCOND_INIT
          MessageInterface::ShowMessage
-            (wxT("StopCondition::Validate(): Creating KepEcc...\n"));
+            ("StopCondition::Validate(): Creating KepEcc...\n");
          #endif
          
-         mEccParam = new KepEcc(wxT(""));
+         mEccParam = new KepEcc("");
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Add
-            (mEccParam, mEccParam->GetName(), wxT("StopCondition::Validate()"),
-             wxT("mEccParam = new KepEcc(")wxT(")"));
+            (mEccParam, mEccParam->GetName(), "StopCondition::Validate()",
+             "mEccParam = new KepEcc("")");
          #endif
          
          mEccParam->AddRefObject
@@ -1305,32 +1305,32 @@ bool StopCondition::Validate()
          mEccParam->Initialize();
       }
       
-      // check on SphRMag parameter if wxT("Periapsis")
-      if (mStopParamType == wxT("Periapsis"))
+      // check on SphRMag parameter if "Periapsis"
+      if (mStopParamType == "Periapsis")
       {
          if (mRmagParam == NULL)
          {
             #ifdef DEBUG_STOPCOND_INIT
             MessageInterface::ShowMessage
-               (wxT("StopCondition::Validate(): Creating SphRMag...\n"));
+               ("StopCondition::Validate(): Creating SphRMag...\n");
             #endif
             
-            wxString depObjName = mStopParam->GetStringParameter(wxT("DepObject"));
+            std::string depObjName = mStopParam->GetStringParameter("DepObject");
             
             #ifdef DEBUG_STOPCOND_INIT
             MessageInterface::ShowMessage
-               (wxT("StopCondition::Validate() depObjName of mStopParam=%s\n"),
+               ("StopCondition::Validate() depObjName of mStopParam=%s\n",
                 depObjName.c_str());
             #endif
             
-            mRmagParam = new SphRMag(wxT(""));
+            mRmagParam = new SphRMag("");
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Add
-               (mRmagParam, mRmagParam->GetName(), wxT("StopCondition::Validate()"),
-                wxT("mRmagParam = new SphRMag(")wxT(")"));
+               (mRmagParam, mRmagParam->GetName(), "StopCondition::Validate()",
+                "mRmagParam = new SphRMag("")");
             #endif
             
-            mRmagParam->SetStringParameter(wxT("DepObject"), depObjName);
+            mRmagParam->SetStringParameter("DepObject", depObjName);
             
             mRmagParam->AddRefObject
                (mStopParam->GetRefObject(Gmat::SPACECRAFT,
@@ -1348,9 +1348,9 @@ bool StopCondition::Validate()
             mRmagParam->Initialize();
             
 //            // set mRange
-//            if (depObjName == wxT("Earth"))
+//            if (depObjName == "Earth")
 //               mRange = 5.0e5;
-//            else if (depObjName == wxT("Luna"))
+//            else if (depObjName == "Luna")
 //               //mRange = 2.0e5; // Swingby has this.
 //               mRange = 5.0e5;
 //            else
@@ -1361,9 +1361,9 @@ bool StopCondition::Validate()
    
    #ifdef DEBUG_STOPCOND_INIT
    MessageInterface::ShowMessage
-      (wxT("StopCondition::Validate() returning true, mUseInternalEpoch=%d, mEpochParam=<%p>, ")
-       wxT("mInterpolator=<%p>\n   mStopParamType=%s, mStopParamName=%s, mStopParam=<%p>, ")
-       wxT("mGoalParam=<%p>\n"), mUseInternalEpoch, mEpochParam, mInterpolator, mStopParamType.c_str(),
+      ("StopCondition::Validate() returning true, mUseInternalEpoch=%d, mEpochParam=<%p>, "
+       "mInterpolator=<%p>\n   mStopParamType=%s, mStopParamName=%s, mStopParam=<%p>, "
+       "mGoalParam=<%p>\n", mUseInternalEpoch, mEpochParam, mInterpolator, mStopParamType.c_str(),
        mStopParamName.c_str(), mStopParam, mGoalParam);
    #endif
    
@@ -1406,9 +1406,9 @@ Integer StopCondition::GetBufferSize()
 
 
 //------------------------------------------------------------------------------
-// wxString& GetDescription()
+// std::string& GetDescription()
 //------------------------------------------------------------------------------
-wxString& StopCondition::GetDescription()
+std::string& StopCondition::GetDescription()
 {
    return mDescription;
 }
@@ -1451,9 +1451,9 @@ Interpolator* StopCondition::GetInterpolator()
 
 
 //------------------------------------------------------------------------------
-// void SetDescription(const wxString &desc)
+// void SetDescription(const std::string &desc)
 //------------------------------------------------------------------------------
-void StopCondition::SetDescription(const wxString &desc)
+void StopCondition::SetDescription(const std::string &desc)
 {
    mDescription = desc;
 }
@@ -1471,7 +1471,7 @@ void StopCondition::SetPropDirection(Real dir)
    
    #ifdef DEBUG_STOPCOND
    MessageInterface::ShowMessage
-      (wxT("StopCondition::SetPropDirection() dir=%f, mBackwardsProp=%d\n"),
+      ("StopCondition::SetPropDirection() dir=%f, mBackwardsProp=%d\n",
        dir, mBackwardsProp);
    #endif
 }
@@ -1493,7 +1493,7 @@ void StopCondition::SetSolarSystem(SolarSystem *solarSystem)
    else
    {
       throw StopConditionException(
-         wxT("Attempting to set solar system with NULL pointer."));
+         "Attempting to set solar system with NULL pointer.");
    }
 }
 
@@ -1511,7 +1511,7 @@ bool StopCondition::SetInterpolator(Interpolator *interp)
 {
    if (interp != NULL)
    {
-      if (mInterpolator->GetName() == wxT("InternalInterpolator"))
+      if (mInterpolator->GetName() == "InternalInterpolator")
          delete mInterpolator;
       
       mInterpolator = interp;
@@ -1561,8 +1561,8 @@ bool StopCondition::SetStopParameter(Parameter *param)
 {
    #ifdef DEBUG_STOP_PARAM
    MessageInterface::ShowMessage
-      (wxT("StopCondition::SetStopParameter() entered, param=<%p>'%s'\n"), param,
-       param ? param->GetName().c_str() : wxT("NULL"));
+      ("StopCondition::SetStopParameter() entered, param=<%p>'%s'\n", param,
+       param ? param->GetName().c_str() : "NULL");
    #endif
    
    if (param != NULL)
@@ -1571,7 +1571,7 @@ bool StopCondition::SetStopParameter(Parameter *param)
       mStopParamType = mStopParam->GetTypeName();
       
       isCyclicTimeCondition = false;
-      if (mStopParamType.find(wxT("Elapsed")) != mStopParamType.npos)
+      if (mStopParamType.find("Elapsed") != mStopParamType.npos)
          isCyclicTimeCondition = true;
       
       if (param->IsTimeParameter())
@@ -1585,7 +1585,7 @@ bool StopCondition::SetStopParameter(Parameter *param)
       
       #ifdef DEBUG_STOP_PARAM
       MessageInterface::ShowMessage
-         (wxT("StopCondition::SetStopParameter() returning true\n"));
+         ("StopCondition::SetStopParameter() returning true\n");
       #endif
       
       return true;
@@ -1593,7 +1593,7 @@ bool StopCondition::SetStopParameter(Parameter *param)
    
    #ifdef DEBUG_STOP_PARAM
    MessageInterface::ShowMessage
-      (wxT("StopCondition::SetStopParameter() returning false\n"));
+      ("StopCondition::SetStopParameter() returning false\n");
    #endif
    return false;
 }
@@ -1612,7 +1612,7 @@ bool StopCondition::SetGoalParameter(Parameter *param)
 {
    #ifdef DEBUG_STOPCOND_SET
    MessageInterface::ShowMessage
-      (wxT("StopCondition::SetGoalParameter() entered, param=<%p>\n"), param);
+      ("StopCondition::SetGoalParameter() entered, param=<%p>\n", param);
    #endif
    
    mGoalParam = param;
@@ -1623,54 +1623,54 @@ bool StopCondition::SetGoalParameter(Parameter *param)
    
    #ifdef DEBUG_STOPCOND_SET
    MessageInterface::ShowMessage
-      (wxT("StopCondition::SetGoalParameter() returning true\n"));
+      ("StopCondition::SetGoalParameter() returning true\n");
    #endif
    return true;
 }
 
 
 //------------------------------------------------------------------------------
-// void SetLhsString(const wxString &str)
+// void SetLhsString(const std::string &str)
 //------------------------------------------------------------------------------
-void StopCondition::SetLhsString(const wxString &str)
+void StopCondition::SetLhsString(const std::string &str)
 {
    #ifdef DEBUG_STOPCOND_SET
    MessageInterface::ShowMessage
-      (wxT("StopCondition::SetLhsString() this=<%p>'%s' entered, str='%s', ")
-       wxT("lhsString='%s'\n"), this, GetName().c_str(), str.c_str(), lhsString.c_str());
+      ("StopCondition::SetLhsString() this=<%p>'%s' entered, str='%s', "
+       "lhsString='%s'\n", this, GetName().c_str(), str.c_str(), lhsString.c_str());
    #endif
    
    lhsString = str;
    
    #ifdef DEBUG_STOPCOND_SET
    MessageInterface::ShowMessage
-      (wxT("StopCondition::SetLhsString() this=<%p>'%s' leaving, str='%s', ")
-       wxT("lhsString='%s'\n"), this, GetName().c_str(), str.c_str(), lhsString.c_str());
+      ("StopCondition::SetLhsString() this=<%p>'%s' leaving, str='%s', "
+       "lhsString='%s'\n", this, GetName().c_str(), str.c_str(), lhsString.c_str());
    #endif
 }
 
 
 //------------------------------------------------------------------------------
-// void SetRhsString(const wxString &str)
+// void SetRhsString(const std::string &str)
 //------------------------------------------------------------------------------
-void StopCondition::SetRhsString(const wxString &str)
+void StopCondition::SetRhsString(const std::string &str)
 {
    #ifdef DEBUG_STOPCOND_SET
    MessageInterface::ShowMessage
-      (wxT("StopCondition::SetRhsString() this=<%p>'%s' entered, str='%s', ")
-       wxT("rhsString='%s'\n"), this, GetName().c_str(), str.c_str(), rhsString.c_str());
+      ("StopCondition::SetRhsString() this=<%p>'%s' entered, str='%s', "
+       "rhsString='%s'\n", this, GetName().c_str(), str.c_str(), rhsString.c_str());
    #endif
    
    rhsString = str;
    
    // remove leading blanks
-   wxString::size_type pos = rhsString.find_first_not_of(wxT(' '));
+   std::string::size_type pos = rhsString.find_first_not_of(' ');
    rhsString.erase(0, pos);
    
    // if str is just a number
-   if (isdigit(rhsString[0]) || rhsString[0] == wxT('.') || rhsString[0] == wxT('-'))
+   if (isdigit(rhsString[0]) || rhsString[0] == '.' || rhsString[0] == '-')
    {
-      rhsString.ToDouble(&currentGoalValue);
+      currentGoalValue = atof(rhsString.c_str());
       initialGoalValue = currentGoalValue;
       mAllowGoalParam = false;
    }
@@ -1681,8 +1681,8 @@ void StopCondition::SetRhsString(const wxString &str)
    
    #ifdef DEBUG_STOPCOND_SET
    MessageInterface::ShowMessage
-      (wxT("StopCondition::SetRhsString() leaving, mAllowGoalParam=%d, rhsString='%s', ")
-       wxT("initialGoalValue=%le, currentGoalValue=%le\n"), mAllowGoalParam, rhsString.c_str(),
+      ("StopCondition::SetRhsString() leaving, mAllowGoalParam=%d, rhsString='%s', "
+       "initialGoalValue=%le, currentGoalValue=%le\n", mAllowGoalParam, rhsString.c_str(),
        initialGoalValue, currentGoalValue);
    #endif
    
@@ -1690,18 +1690,18 @@ void StopCondition::SetRhsString(const wxString &str)
 
 
 //------------------------------------------------------------------------------
-// wxString GetLhsString()
+// std::string GetLhsString()
 //------------------------------------------------------------------------------
-wxString StopCondition::GetLhsString()
+std::string StopCondition::GetLhsString()
 {
    return lhsString;
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetRhsString()
+// std::string GetRhsString()
 //------------------------------------------------------------------------------
-wxString StopCondition::GetRhsString()
+std::string StopCondition::GetRhsString()
 {
    return rhsString;
 }
@@ -1714,7 +1714,7 @@ bool StopCondition::SetLhsWrapper(ElementWrapper *toWrapper)
 {
    #ifdef DEBUG_WRAPPERS   
    MessageInterface::ShowMessage
-      (wxT("StopCondition::SetLhsWrapper() this=<%p>'%s' entered with toWrapper=<%p>\n"),
+      ("StopCondition::SetLhsWrapper() this=<%p>'%s' entered with toWrapper=<%p>\n",
        this, GetName().c_str(), toWrapper);
    #endif
    
@@ -1733,7 +1733,7 @@ bool StopCondition::SetRhsWrapper(ElementWrapper *toWrapper)
 {
    #ifdef DEBUG_WRAPPERS   
    MessageInterface::ShowMessage
-      (wxT("StopCondition::SetRhsWrapper() this=<%p>'%s' entered with toWrapper=<%p>\n"),
+      ("StopCondition::SetRhsWrapper() this=<%p>'%s' entered with toWrapper=<%p>\n",
        this, GetName().c_str(), toWrapper);
    #endif
    
@@ -1742,7 +1742,7 @@ bool StopCondition::SetRhsWrapper(ElementWrapper *toWrapper)
 
    #ifdef DEBUG_WRAPPERS   
    MessageInterface::ShowMessage
-      (wxT("   wrapper type=%d, desc='%s', value=%f, refObj=<%p>\n"),
+      ("   wrapper type=%d, desc='%s', value=%f, refObj=<%p>\n",
        toWrapper->GetWrapperType(), toWrapper->GetDescription().c_str(), toWrapper->EvaluateReal(),
        toWrapper->GetRefObject());
    #endif
@@ -1779,15 +1779,15 @@ bool StopCondition::SetSpacecraft(SpaceObject *sc)
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool StopCondition::RenameRefObject(const Gmat::ObjectType type,
-                                    const wxString &oldName,
-                                    const wxString &newName)
+                                    const std::string &oldName,
+                                    const std::string &newName)
 {
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("StopCondition::RenameRefObject() type=%s, oldName=%s, newName=%s\n"),
+      ("StopCondition::RenameRefObject() type=%s, oldName=%s, newName=%s\n",
        GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
    #endif
    
@@ -1795,8 +1795,8 @@ bool StopCondition::RenameRefObject(const Gmat::ObjectType type,
       return true;
    
    //set new StopCondition name
-   wxString name = GetName();
-   wxString::size_type pos = name.find(oldName);
+   std::string name = GetName();
+   std::string::size_type pos = name.find(oldName);
    if (pos != name.npos)
    {
       name = GmatStringUtil::ReplaceName(name, oldName, newName);
@@ -1838,8 +1838,8 @@ StopCondition::GetRefObjectNameArray(const Gmat::ObjectType type)
 {
    #ifdef DEBUG_STOPCOND_OBJ
    MessageInterface::ShowMessage
-      (wxT("StopCondition::GetRefObjectNameArray() entered, type=%d, mAllowGoalParam=%d, ")
-       wxT("lhsWrapper=<%p>, rhsWrapper=<%p>\n"), type, mAllowGoalParam, lhsWrapper,
+      ("StopCondition::GetRefObjectNameArray() entered, type=%d, mAllowGoalParam=%d, "
+       "lhsWrapper=<%p>, rhsWrapper=<%p>\n", type, mAllowGoalParam, lhsWrapper,
        rhsWrapper);
    #endif
    
@@ -1854,11 +1854,11 @@ StopCondition::GetRefObjectNameArray(const Gmat::ObjectType type)
    
    #ifdef DEBUG_STOPCOND_OBJ
    MessageInterface::ShowMessage
-      (wxT("StopCondition::GetRefObjectNameArray() returning %d ref object names\n"), \
+      ("StopCondition::GetRefObjectNameArray() returning %d ref object names\n", \
        mAllRefObjectNames.size());
    for (UnsignedInt i = 0; i < mAllRefObjectNames.size(); i++)
       MessageInterface::ShowMessage
-         (wxT("   mAllRefObjectNames[%d] = '%s'\n"), i, mAllRefObjectNames[i].c_str());
+         ("   mAllRefObjectNames[%d] = '%s'\n", i, mAllRefObjectNames[i].c_str());
    #endif
    
    return mAllRefObjectNames;
@@ -1867,16 +1867,16 @@ StopCondition::GetRefObjectNameArray(const Gmat::ObjectType type)
 
 //---------------------------------------------------------------------------
 // bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                   const wxString &name)
+//                   const std::string &name)
 //---------------------------------------------------------------------------
 bool StopCondition::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                 const wxString &name)
+                                 const std::string &name)
 {
    #ifdef DEBUG_STOPCOND_SET
    MessageInterface::ShowMessage
-      (wxT("StopCondition::SetRefObject() <%p>'%s' entered, obj=<%p>'%s', type=%d, ")
-       wxT("name='%s', mStopParamName=%s, rhsString=%s\n"), this, this->GetName().c_str(),
-       obj, obj ? obj->GetName().c_str() : wxT("NULL"), type, name.c_str(),
+      ("StopCondition::SetRefObject() <%p>'%s' entered, obj=<%p>'%s', type=%d, "
+       "name='%s', mStopParamName=%s, rhsString=%s\n", this, this->GetName().c_str(),
+       obj, obj ? obj->GetName().c_str() : "NULL", type, name.c_str(),
        mStopParamName.c_str(), rhsString.c_str());
    #endif
    
@@ -1905,9 +1905,9 @@ bool StopCondition::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
-wxString StopCondition::GetParameterText(const Integer id) const
+std::string StopCondition::GetParameterText(const Integer id) const
 {
    if (id >= GmatBaseParamCount && id < StopConditionParamCount)
       return PARAMETER_TEXT[id - GmatBaseParamCount];
@@ -1918,13 +1918,13 @@ wxString StopCondition::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer StopCondition::GetParameterID(const wxString &str) const
+Integer StopCondition::GetParameterID(const std::string &str) const
 {
    #ifdef DEBUG_STOPCOND_GET
    MessageInterface::ShowMessage
-      (wxT("StopCondition::GetParameterID() str = %s\n"), str.c_str());
+      ("StopCondition::GetParameterID() str = %s\n", str.c_str());
    #endif
    
    for (int i=GmatBaseParamCount; i<StopConditionParamCount; i++)
@@ -1950,9 +1950,9 @@ Gmat::ParameterType StopCondition::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
-wxString StopCondition::GetParameterTypeString(const Integer id) const
+std::string StopCondition::GetParameterTypeString(const Integer id) const
 {
    if (id >= GmatBaseParamCount && id < StopConditionParamCount)
       return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
@@ -1978,9 +1978,9 @@ Integer StopCondition::GetIntegerParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetIntegerParameter(const wxString &label) const
+// Integer GetIntegerParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-Integer StopCondition::GetIntegerParameter(const wxString &label) const
+Integer StopCondition::GetIntegerParameter(const std::string &label) const
 {
    return GetIntegerParameter(GetParameterID(label));
 }
@@ -2004,9 +2004,9 @@ Integer StopCondition::SetIntegerParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-// Integer SetIntegerParameter(const wxString &label, const Integer value)
+// Integer SetIntegerParameter(const std::string &label, const Integer value)
 //------------------------------------------------------------------------------
-Integer StopCondition::SetIntegerParameter(const wxString &label,
+Integer StopCondition::SetIntegerParameter(const std::string &label,
                                                const Integer value)
 {
    return SetIntegerParameter(GetParameterID(label), value);
@@ -2031,9 +2031,9 @@ Real StopCondition::GetRealParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label) const
+// Real GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-Real StopCondition::GetRealParameter(const wxString &label) const
+Real StopCondition::GetRealParameter(const std::string &label) const
 {
    return GetRealParameter(GetParameterID(label));
 }
@@ -2064,8 +2064,8 @@ Real StopCondition::SetRealParameter(const Integer id, const Real value)
       {
          currentGoalValue = startValue + initialGoalValue;
          #ifdef DEBUG_CYCLIC_TIME
-            MessageInterface::ShowMessage(wxT("  Current value: %.12lf  ")
-                  wxT("New Stop: %.12lf\n"), startValue, currentGoalValue);
+            MessageInterface::ShowMessage("  Current value: %.12lf  "
+                  "New Stop: %.12lf\n", startValue, currentGoalValue);
          #endif
       }
       else
@@ -2081,14 +2081,14 @@ Real StopCondition::SetRealParameter(const Integer id, const Real value)
 
 
 //------------------------------------------------------------------------------
-// Real SetRealParameter(const wxString &label, const Real value)
+// Real SetRealParameter(const std::string &label, const Real value)
 //------------------------------------------------------------------------------
-Real StopCondition::SetRealParameter(const wxString &label, const Real value)
+Real StopCondition::SetRealParameter(const std::string &label, const Real value)
 {
    #ifdef DEBUG_STOPCOND_SET
    MessageInterface::ShowMessage
-      (wxT("StopCondition::SetRealParameter() label=%s, ")
-       wxT("value=%le\n"), label.c_str(), value);
+      ("StopCondition::SetRealParameter() label=%s, "
+       "value=%le\n", label.c_str(), value);
    #endif
    
    return SetRealParameter(GetParameterID(label), value);
@@ -2096,9 +2096,9 @@ Real StopCondition::SetRealParameter(const wxString &label, const Real value)
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
-wxString StopCondition::GetStringParameter(const Integer id) const
+std::string StopCondition::GetStringParameter(const Integer id) const
 {
    switch (id)
    {
@@ -2115,13 +2115,13 @@ wxString StopCondition::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString StopCondition::GetStringParameter(const wxString &label) const
+std::string StopCondition::GetStringParameter(const std::string &label) const
 {
    #ifdef DEBUG_STOPCOND_GET
    MessageInterface::ShowMessage
-      (wxT("StopCondition::GetStringParameter() label = %s\n"), label.c_str());
+      ("StopCondition::GetStringParameter() label = %s\n", label.c_str());
    #endif
    
    return GetStringParameter(GetParameterID(label));
@@ -2129,14 +2129,14 @@ wxString StopCondition::GetStringParameter(const wxString &label) const
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
-bool StopCondition::SetStringParameter(const Integer id, const wxString &value)
+bool StopCondition::SetStringParameter(const Integer id, const std::string &value)
 {
    #ifdef DEBUG_STOPCOND_SET
    MessageInterface::ShowMessage
-      (wxT("StopCondition::SetStringParameter() this=<%p>'%s' entered, id = %d, ")
-       wxT("value = %s \n"), this, GetName().c_str(), id, value.c_str());
+      ("StopCondition::SetStringParameter() this=<%p>'%s' entered, id = %d, "
+       "value = %s \n", this, GetName().c_str(), id, value.c_str());
    #endif
    
    switch (id)
@@ -2158,16 +2158,16 @@ bool StopCondition::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label,
-//                         const wxString &value)
+// bool SetStringParameter(const std::string &label,
+//                         const std::string &value)
 //------------------------------------------------------------------------------
-bool StopCondition::SetStringParameter(const wxString &label,
-                                           const wxString &value)
+bool StopCondition::SetStringParameter(const std::string &label,
+                                           const std::string &value)
 {
    #ifdef DEBUG_STOPCOND_SET
    MessageInterface::ShowMessage
-      (wxT("StopCondition::SetStringParameter() label = %s, ")
-       wxT("value = %s \n"), label.c_str(), value.c_str());
+      ("StopCondition::SetStringParameter() label = %s, "
+       "value = %s \n", label.c_str(), value.c_str());
    #endif
    
    return SetStringParameter(GetParameterID(label), value);
@@ -2216,9 +2216,9 @@ Real StopCondition::GetStopDifference()
       goalValue = currentGoalValue;
    
    #ifdef DEBUG_STOPCOND_EVAL
-      MessageInterface::ShowMessage(wxT("%s goal (%s) = %16.9lf, value = %16.9lf\n"), 
+      MessageInterface::ShowMessage("%s goal (%s) = %16.9lf, value = %16.9lf\n", 
          instanceName.c_str(), 
-         (mGoalParam ? mGoalParam->GetName().c_str() : wxT("Fixed goal")), goalValue,
+         (mGoalParam ? mGoalParam->GetName().c_str() : "Fixed goal"), goalValue,
          mStopParam->EvaluateReal());
    #endif
       
@@ -2259,13 +2259,13 @@ Real StopCondition::GetStopGoal()
    if (isLhsCyclicCondition)
    {
       #ifdef DEBUG_CYCLIC_PARAMETERS
-         MessageInterface::ShowMessage(wxT("Goal: %.12lf is cyclic; "), goalValue);
+         MessageInterface::ShowMessage("Goal: %.12lf is cyclic; ", goalValue);
       #endif
       Real min, max;
       GetRange(min, max);
       goalValue = PutInRange(goalValue, min, max);
       #ifdef DEBUG_CYCLIC_PARAMETERS
-         MessageInterface::ShowMessage(wxT("adjusted to [%lf, %lf] gives: %.12lf\n"),
+         MessageInterface::ShowMessage("adjusted to [%lf, %lf] gives: %.12lf\n",
                min, max, goalValue);
       #endif
    }
@@ -2425,7 +2425,7 @@ Real StopCondition::PutInRange(const Real value, const Real min, const Real max,
                                 bool isReflection)
 {
    if (min >= max)
-      throw StopConditionException(wxT("PutInRange received bad range limits\n"));
+      throw StopConditionException("PutInRange received bad range limits\n");
    Real range = max - min, retval = value;
    
    while (retval < min)
@@ -2455,7 +2455,7 @@ Real StopCondition::PutInRange(const Real value, const Real min, const Real max,
 //------------------------------------------------------------------------------
 void StopCondition::SkipEvaluation(bool shouldSkip)
 {
-   if (mStopParam->GetName().find(wxT("ModJulian")) == wxString::npos)
+   if (mStopParam->GetName().find("ModJulian") == std::string::npos)
       activated = !shouldSkip;
 }
 
@@ -2503,8 +2503,8 @@ void StopCondition::UpdateBuffer()
    
    #ifdef DEBUG_CYCLIC_PARAMETERS
       MessageInterface::ShowMessage(
-         wxT("Updated \"previous\" values to [previousAchievedValue  previousEpoch]")
-         wxT(" = [%.12lf  %.12lf]\n"), previousAchievedValue, previousEpoch);
+         "Updated \"previous\" values to [previousAchievedValue  previousEpoch]"
+         " = [%.12lf  %.12lf]\n", previousAchievedValue, previousEpoch);
    #endif
 }
 

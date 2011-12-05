@@ -29,9 +29,9 @@
 // #define DEBUG_EPOCH 1 
 
 // Epoch constant variables for the lists of state types and elements 
-const wxString Epoch::FORMAT[DateFormatCount] =
+const std::string Epoch::FORMAT[DateFormatCount] =
       {
-          wxT("TAIModJulian"), wxT("TAIGregorian"), wxT("UTCModJulian"), wxT("UTCGregorian")
+          "TAIModJulian", "TAIGregorian", "UTCModJulian", "UTCGregorian"
       };
 
 //-------------------------------------
@@ -51,7 +51,7 @@ Epoch::Epoch()
 }
 
 //---------------------------------------------------------------------------
-//  Epoch(const wxString &mFormat)
+//  Epoch(const std::string &mFormat)
 //---------------------------------------------------------------------------
 /**
  * Creates constructors with parameters.
@@ -59,18 +59,18 @@ Epoch::Epoch()
  * @param <mFormat> Format date 
  *
  */
-Epoch::Epoch(const wxString &mFormat)
+Epoch::Epoch(const std::string &mFormat)
 {
    DefineDefault();
     
    // Check if invalid then use default
    if (!SetValue(mFormat))
-      MessageInterface::ShowMessage(wxT("\n****Warning: Invalid date format***")
-                      wxT("\nUse default date format.\n"));  
+      MessageInterface::ShowMessage("\n****Warning: Invalid date format***"
+                      "\nUse default date format.\n");  
 }
 
 //---------------------------------------------------------------------------
-//  Epoch(const wxString &mFormat, const wxString &mValue)
+//  Epoch(const std::string &mFormat, const std::string &mValue)
 //---------------------------------------------------------------------------
 /**
  * Creates constructors with parameters.
@@ -79,14 +79,14 @@ Epoch::Epoch(const wxString &mFormat)
  * @param <stateVector> state's values
  *
  */
-Epoch::Epoch(const wxString &mFormat, const wxString &mValue)
+Epoch::Epoch(const std::string &mFormat, const std::string &mValue)
 {
    DefineDefault();
 
    // Check for invalid format date
    if (!SetValue(mFormat, mValue))
-      MessageInterface::ShowMessage(wxT("\n****Warning: Invalid date format ***")
-                      wxT("\nUse default date format.\n"));  
+      MessageInterface::ShowMessage("\n****Warning: Invalid date format ***"
+                      "\nUse default date format.\n");  
 }
 
 //---------------------------------------------------------------------------
@@ -139,20 +139,20 @@ Epoch& Epoch::operator=(const Epoch &e)
 }
 
 //---------------------------------------------------------------------------
-//  wxString GetValue() const
+//  std::string GetValue() const
 //---------------------------------------------------------------------------
 /**
  * Retrieve the value.
  *
  * @return the epoch's value.
  */
-wxString Epoch::GetValue() const
+std::string Epoch::GetValue() const
 {
    return value;
 }
 
 //---------------------------------------------------------------------------
-//  wxString GetValue(const wxString &mFormat) const
+//  std::string GetValue(const std::string &mFormat) const
 //---------------------------------------------------------------------------
 /**
  * Retrieve the value with the specific state type.
@@ -161,30 +161,30 @@ wxString Epoch::GetValue() const
  *
  * @return the epoch's value.
  */
-wxString Epoch::GetValue(const wxString &mFormat) const
+std::string Epoch::GetValue(const std::string &mFormat) const
 {
 #if DEBUG_EPOCH
-   MessageInterface::ShowMessage(wxT("\nEpoch::GetValue(\"%s\") format = %s ")
-                   wxT("and value = %s\n"),
+   MessageInterface::ShowMessage("\nEpoch::GetValue(\"%s\") format = %s "
+                   "and value = %s\n",
                    mFormat.c_str(),format.c_str(), value.c_str());
 #endif
 
-   if (mFormat == wxT("Epoch"))
+   if (mFormat == "Epoch")
       return GetFormat();
 
    if (!IsValidFormat(mFormat))
    {
       throw EpochException(
-            wxT("Epoch::GetValue() -> failure due to invalid date format")); 
+            "Epoch::GetValue() -> failure due to invalid date format"); 
    }   
 
-   wxString tempFormat = GetFormatTrim(mFormat);
+   std::string tempFormat = GetFormatTrim(mFormat);
 
    if (GetFormat() == tempFormat)
    {
 #if DEBUG_EPOCH
-      MessageInterface::ShowMessage(wxT("\nEpoch::GetValue() doesn't needs ")
-                       wxT("to call TimeConverter for conversion.\n"));
+      MessageInterface::ShowMessage("\nEpoch::GetValue() doesn't needs "
+                       "to call TimeConverter for conversion.\n");
 #endif
       return value;
    }
@@ -195,8 +195,8 @@ wxString Epoch::GetValue(const wxString &mFormat) const
    }
    catch(TimeConverter::TimeConverterException &tce)
    {
-      wxString msg = wxT("\nEpoch::GetValue() -> Get error from ") +
-                         tce.GetFullMessage() + wxT("\n");
+      std::string msg = "\nEpoch::GetValue() -> Get error from " +
+                         tce.GetFullMessage() + "\n";
       throw EpochException(msg);
    }
 }
@@ -211,33 +211,33 @@ wxString Epoch::GetValue(const wxString &mFormat) const
  */
 Real Epoch::GetRealValue()
 {
-   return GetRealValue(wxT("TAIModJulian"));
+   return GetRealValue("TAIModJulian");
 }
 
 //---------------------------------------------------------------------------
-//  Real GetRealValue(const wxString &mFormat)
+//  Real GetRealValue(const std::string &mFormat)
 //---------------------------------------------------------------------------
 /**
  * Retrieve the value in real data type.
  *
  * @return the epoch's value.
  */
-Real Epoch::GetRealValue(const wxString &mFormat)
+Real Epoch::GetRealValue(const std::string &mFormat)
 {
 #if DEBUG_EPOCH
-    MessageInterface::ShowMessage(wxT("\nEpoch::GetRealValue(\"%s\")\n"),
+    MessageInterface::ShowMessage("\nEpoch::GetRealValue(\"%s\")\n",
                                   mFormat.c_str());
 #endif
-   wxString tempValue = GetValue(mFormat);
+   std::string tempValue = GetValue(mFormat);
 
-   wxString tempFormat = GetFormatTrim(mFormat);
+   std::string tempFormat = GetFormatTrim(mFormat);
        
    // Check for right format for converting into Real epoch
    if (tempFormat != FORMAT[TAI_MJD] && tempFormat != FORMAT[UTC_MJD])
    {
       throw EpochException(
-            wxT("\nEpoch::GetRealValue() -> Can't convert to Real Epoch.  ")
-            wxT("Use TAIModJulian or UTCModJulian only.\n"));
+            "\nEpoch::GetRealValue() -> Can't convert to Real Epoch.  "
+            "Use TAIModJulian or UTCModJulian only.\n");
    }
 
    return (Real)atof(tempValue.c_str());
@@ -256,8 +256,8 @@ Real Epoch::GetRealValue(const wxString &mFormat)
 bool Epoch::UpdateValue(const Real mValue) 
 {
 #if DEBUG_EPOCH
-   MessageInterface::ShowMessage(wxT("\nEpoch::UpdateValue(%f)")
-                    wxT("\nvalue = %s and format = %s"), 
+   MessageInterface::ShowMessage("\nEpoch::UpdateValue(%f)"
+                    "\nvalue = %s and format = %s", 
                     mValue, value.c_str(), format.c_str());
 #endif
 
@@ -268,7 +268,7 @@ bool Epoch::UpdateValue(const Real mValue)
 
    try
    {
-      wxString newValue = timeConverter.Convert(valueBuffer.str(),
+      std::string newValue = timeConverter.Convert(valueBuffer.str(),
                                                    FORMAT[TAI_MJD], 
                                                    format);
       value = newValue;
@@ -282,7 +282,7 @@ bool Epoch::UpdateValue(const Real mValue)
 }
 
 //---------------------------------------------------------------------------
-//  bool SetValue(const wxString &mFormat)
+//  bool SetValue(const std::string &mFormat)
 //---------------------------------------------------------------------------
 /**
  * Set the value with the specific state type.
@@ -291,12 +291,12 @@ bool Epoch::UpdateValue(const Real mValue)
  *
  * @return true when successful; otherwise, false.
  */
-bool Epoch::SetValue(const wxString &mFormat) 
+bool Epoch::SetValue(const std::string &mFormat) 
 {
    if (!IsValidFormat(mFormat))
       return false; 
  
-   wxString tempFormat = GetFormatTrim(mFormat); 
+   std::string tempFormat = GetFormatTrim(mFormat); 
 
    if (mFormat != format)
    {
@@ -314,25 +314,25 @@ bool Epoch::SetValue(const wxString &mFormat)
 }
 
 //---------------------------------------------------------------------------
-//  bool SetValue(const wxString &mFormat, const wxString &mValue)
+//  bool SetValue(const std::string &mFormat, const std::string &mValue)
 //---------------------------------------------------------------------------
 /**
  * Set the value with the specific date format.
  *
  * @param <mFormat>  Epoch's date format
- * @param <mValue>   Epoch's value or Epoch's date format if mFormat is wxT("Epoch")
+ * @param <mValue>   Epoch's value or Epoch's date format if mFormat is "Epoch"
  *
  * @return true when successful; otherwise, false.
  */
-bool Epoch::SetValue(const wxString &mFormat, const wxString &mValue) 
+bool Epoch::SetValue(const std::string &mFormat, const std::string &mValue) 
 {
 #if DEBUG_EPOCH
-    MessageInterface::ShowMessage(wxT("\nEpoch::SetValue(\"%s\",\"%s\")\n"),
+    MessageInterface::ShowMessage("\nEpoch::SetValue(\"%s\",\"%s\")\n",
                     mFormat.c_str(),mValue.c_str());
 #endif
 
-   // Check if it is wxT("Epoch") with valid date format then do conversion
-   if (mFormat == wxT("Epoch"))
+   // Check if it is "Epoch" with valid date format then do conversion
+   if (mFormat == "Epoch")
    {
       if  (IsValidFormat(mValue))
       {
@@ -355,8 +355,8 @@ bool Epoch::SetValue(const wxString &mFormat, const wxString &mValue)
    value = mValue;     // @todo:  Need to check validity based on date format
 
 #if DEBUG_EPOCH
-    MessageInterface::ShowMessage(wxT("\nEpoch::SetValue(\"%s\",\"%s\") exits with ")
-                    wxT("format: %s and value: %s\n"),mFormat.c_str(),
+    MessageInterface::ShowMessage("\nEpoch::SetValue(\"%s\",\"%s\") exits with "
+                    "format: %s and value: %s\n",mFormat.c_str(),
                     mValue.c_str(),format.c_str(),value.c_str());
 #endif
 
@@ -394,20 +394,20 @@ bool Epoch::SetValue(const Real mValue)
 
 
 //---------------------------------------------------------------------------
-//  wxString GetFormat() const
+//  std::string GetFormat() const
 //---------------------------------------------------------------------------
 /**
  * Get the epoch's date format.
  *
  * @return the epoch's date format. 
  */
-wxString Epoch::GetFormat() const
+std::string Epoch::GetFormat() const
 {
    return format;
 }
 
 //---------------------------------------------------------------------------
-//  bool SetFormat(const wxString &mFormat) 
+//  bool SetFormat(const std::string &mFormat) 
 //---------------------------------------------------------------------------
 /**
  * Set the epoch's date format.
@@ -416,7 +416,7 @@ wxString Epoch::GetFormat() const
  *
  * @return true if successful; otherwise, false.
  */
-bool Epoch::SetFormat(const wxString &mFormat)
+bool Epoch::SetFormat(const std::string &mFormat)
 {
    if (!SetValue(mFormat))
       return false; 
@@ -425,7 +425,7 @@ bool Epoch::SetFormat(const wxString &mFormat)
 }
 
 //---------------------------------------------------------------------------
-//  bool IsValidFormat(const wxString &mFormat) const
+//  bool IsValidFormat(const std::string &mFormat) const
 //---------------------------------------------------------------------------
 /**
  * Check validity on the given date format. 
@@ -434,27 +434,27 @@ bool Epoch::SetFormat(const wxString &mFormat)
  *
  * @return true if valid; otherwise, false.
  */
-bool Epoch::IsValidFormat(const wxString &mFormat) const
+bool Epoch::IsValidFormat(const std::string &mFormat) const
 {
-    wxString tempFormat = mFormat;
+    std::string tempFormat = mFormat;
 
-    StringTokenizer token(mFormat,wxT("."));
+    StringTokenizer token(mFormat,".");
     Integer count = token.CountTokens();
 
     // Check if too many tokens then invalid
     if (count > 2) 
        return false;
 
-    if (count == 2 && token.GetToken(0) == wxT("Epoch"))
+    if (count == 2 && token.GetToken(0) == "Epoch")
         tempFormat = token.GetToken(1);
 
 #if DEBUG_EPOCH
-    MessageInterface::ShowMessage(wxT("\nEpoch::IsValidFormat(%s)...\n")
-                     wxT("count = %d, size: %d, tempFormat = %s\n"),
+    MessageInterface::ShowMessage("\nEpoch::IsValidFormat(%s)...\n"
+                     "count = %d, size: %d, tempFormat = %s\n",
                      mFormat.c_str(),count, mFormat.size(),tempFormat.c_str());
 #endif
 
-   if (tempFormat == wxT("Epoch"))
+   if (tempFormat == "Epoch")
       return true;
 
    for (UnsignedInt i=0; i < DateFormatCount; ++i)
@@ -468,16 +468,16 @@ bool Epoch::IsValidFormat(const wxString &mFormat) const
 }
 
 //---------------------------------------------------------------------------
-//  wxString GetLabel() const
+//  std::string GetLabel() const
 //---------------------------------------------------------------------------
 /**
  * Get the label for the parameter text.
  *
  * @return label of the parameter text.
  */
-wxString Epoch::GetLabel() const
+std::string Epoch::GetLabel() const
 {
-   return wxT("Epoch.") + GetFormat();
+   return "Epoch." + GetFormat();
 }
 
 //-------------------------------------
@@ -494,13 +494,13 @@ wxString Epoch::GetLabel() const
 void Epoch::DefineDefault()
 {
    format = FORMAT[TAI_MJD];
-   wxString epochString(wxT(""));
+   std::stringstream epochString("");
    epochString << GmatTimeConstants::MJD_OF_J2000;
    value = epochString.str();
 }
 
 //---------------------------------------------------------------------------
-//  wxString GetFormatTrim(const wxString &mFormat) const
+//  std::string GetFormatTrim(const std::string &mFormat) const
 //---------------------------------------------------------------------------
 /**
  * Trim out the text from the string with '.' as subparameters
@@ -509,15 +509,15 @@ void Epoch::DefineDefault()
  *
  * @return same format if it has been parsed out.
  */
-wxString Epoch::GetFormatTrim(const wxString &mFormat) const
+std::string Epoch::GetFormatTrim(const std::string &mFormat) const
 {
-   wxString tempFormat = mFormat;
+   std::string tempFormat = mFormat;
 
-   StringTokenizer token(mFormat,wxT("."));
+   StringTokenizer token(mFormat,".");
 
    if (token.CountTokens() == 2)
       tempFormat = token.GetToken(1);
-   else if (mFormat == wxT("Epoch"))
+   else if (mFormat == "Epoch")
       tempFormat = FORMAT[TAI_MJD]; 
 
    return tempFormat;

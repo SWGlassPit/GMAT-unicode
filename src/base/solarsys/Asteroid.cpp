@@ -34,7 +34,7 @@
 //---------------------------------
 // static data
 //---------------------------------
-//const wxString
+//const std::string
 //Asteroid::PARAMETER_TEXT[AsteroidParamCount - CelestialBodyParamCount] =
 //{
 //  
@@ -51,22 +51,22 @@
 // public methods
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  Asteroid(wxString name)
+//  Asteroid(std::string name)
 //------------------------------------------------------------------------------
 /**
 * This method creates an object of the Asteroid class
  * (default constructor).
  *
  * @param <name> optional parameter indicating the name of the celestial
- *               body (default is wxT("")).
+ *               body (default is "").
  */
 //------------------------------------------------------------------------------
-Asteroid::Asteroid(wxString name) :
-CelestialBody     (wxT("Asteroid"),name)
+Asteroid::Asteroid(std::string name) :
+CelestialBody     ("Asteroid",name)
 {
-//   CelestialBody::InitializeBody(wxT("Asteroid"));
+//   CelestialBody::InitializeBody("Asteroid");
    
-   objectTypeNames.push_back(wxT("Asteroid")); 
+   objectTypeNames.push_back("Asteroid"); 
    parameterCount = AsteroidParamCount;
    
    theCentralBodyName  = SolarSystem::SUN_NAME; 
@@ -99,7 +99,7 @@ CelestialBody     (wxT("Asteroid"),name)
 }
 
 //------------------------------------------------------------------------------
-//  Asteroid(wxString name, const wxString &cBody)
+//  Asteroid(std::string name, const std::string &cBody)
 //------------------------------------------------------------------------------
 /**
 * This method creates an object of the Asteroid class
@@ -110,12 +110,12 @@ CelestialBody     (wxT("Asteroid"),name)
  * @param <cBody> pointer to a central body.
  */
 //------------------------------------------------------------------------------
-Asteroid::Asteroid(wxString name, const wxString &cBody) :
-CelestialBody     (wxT("Asteroid"),name)
+Asteroid::Asteroid(std::string name, const std::string &cBody) :
+CelestialBody     ("Asteroid",name)
 {
-//   CelestialBody::InitializeBody(wxT("Asteroid"));
+//   CelestialBody::InitializeBody("Asteroid");
    
-   objectTypeNames.push_back(wxT("Asteroid"));
+   objectTypeNames.push_back("Asteroid");
    parameterCount = AsteroidParamCount;
 
    theCentralBodyName  = cBody; 
@@ -151,10 +151,10 @@ CelestialBody (copy)
 /**
  * Assignment operator for the Asteroid class.
  *
- * @param <copy> the Asteroid object whose data to assign to wxT("this")
+ * @param <copy> the Asteroid object whose data to assign to "this"
  *            solar system.
  *
- * @return wxT("this") Asteroid with data of input Asteroid copy.
+ * @return "this" Asteroid with data of input Asteroid copy.
  */
 //------------------------------------------------------------------------------
 Asteroid& Asteroid::operator=(const Asteroid &copy)

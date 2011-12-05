@@ -32,13 +32,13 @@ class SpiceOrbitKernelWriter;
 class GMAT_API EphemerisFile : public Subscriber
 {
 public:
-   EphemerisFile(const wxString &name, const wxString &type = wxT("EphemerisFile"));
+   EphemerisFile(const std::string &name, const std::string &type = "EphemerisFile");
    virtual ~EphemerisFile();
    EphemerisFile(const EphemerisFile &);
    EphemerisFile& operator=(const EphemerisFile&);
    
    // methods for this class
-   wxString          GetFileName();
+   std::string          GetFileName();
    virtual void         ValidateParameters();
    
    // methods inherited from Subscriber
@@ -49,17 +49,17 @@ public:
    virtual GmatBase*    Clone(void) const;
    virtual void         Copy(const GmatBase* orig);
    
-   virtual bool         TakeAction(const wxString &action,
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,
+                                   const std::string &actionData = "");
    
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+                                        const std::string &oldName,
+                                        const std::string &newName);
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    virtual bool         IsParameterReadOnly(const Integer id) const;
    
    virtual Gmat::ObjectType
@@ -75,17 +75,17 @@ public:
    virtual Integer      SetIntegerParameter(const Integer id,
                                             const Integer value);
    
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const wxString &label) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const std::string &label) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
    
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name);
+                                     const std::string &name);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    
    virtual const StringArray&
                         GetRefObjectNameArray(const Gmat::ObjectType type);
@@ -110,30 +110,30 @@ protected:
    StateArray  stateArray;
    
    /// ephemeris output path from the startup file
-   wxString oututPath;
+   std::string oututPath;
    /// ephmeris full file name including the path
-   wxString filePath;
-   wxString spacecraftName;
-   wxString fileName;
-   wxString fileFormat;
-   wxString epochFormat;
-   wxString ccsdsEpochFormat;
-   wxString initialEpoch;
-   wxString finalEpoch;
-   wxString stepSize;
-   wxString interpolatorName;
-   wxString stateType;
-   wxString outCoordSystemName;
+   std::string filePath;
+   std::string spacecraftName;
+   std::string fileName;
+   std::string fileFormat;
+   std::string epochFormat;
+   std::string ccsdsEpochFormat;
+   std::string initialEpoch;
+   std::string finalEpoch;
+   std::string stepSize;
+   std::string interpolatorName;
+   std::string stateType;
+   std::string outCoordSystemName;
    bool writeEphemeris;
    /// for propagator change
-   wxString prevPropName;
-   wxString currPropName;
+   std::string prevPropName;
+   std::string currPropName;
    /// for comments
-   wxString currComments;
+   std::string currComments;
    
    /// for meta data
-   wxString metaDataStartStr;
-   wxString metaDataStopStr;
+   std::string metaDataStartStr;
+   std::string metaDataStopStr;
    
    Integer     interpolationOrder;
    Integer     initialCount;
@@ -207,7 +207,7 @@ protected:
    void         HandleSpkOrbitData(bool writeData);
    
    // Interpolation
-   void         RestartInterpolation(const wxString &comments = wxT(""), bool writeAfterData = true);
+   void         RestartInterpolation(const std::string &comments = "", bool writeAfterData = true);
    bool         IsTimeToWrite(Real epochInSecs, const Real state[6]);
    void         WriteOrbit(Real reqEpochInSecs, const Real state[6]);
    void         WriteOrbitAt(Real reqEpochInSecs, const Real state[6]);
@@ -215,20 +215,20 @@ protected:
    void         WriteAttitude();
    void         FinishUpWriting();
    void         ProcessEpochsOnWaiting(bool checkFinalEpoch = false);
-   bool         SetEpoch(Integer id, const wxString &value,
+   bool         SetEpoch(Integer id, const std::string &value,
                          const StringArray &allowedValues);
-   bool         SetStepSize(Integer id, const wxString &value,
+   bool         SetStepSize(Integer id, const std::string &value,
                             const StringArray &allowedValues);
-   void         HandleError(Integer id, const wxString &value,
+   void         HandleError(Integer id, const std::string &value,
                             const StringArray &allowedValues,
-                            const wxString &additionalMsg = wxT(""));
-   wxString  ToString(const StringArray &strList);
+                            const std::string &additionalMsg = "");
+   std::string  ToString(const StringArray &strList);
    
    // General writing
-   void         WriteString(const wxString &str);
+   void         WriteString(const std::string &str);
    void         WriteHeader();
    void         WriteMetaData();
-   void         WriteComments(const wxString &comments);
+   void         WriteComments(const std::string &comments);
    
    // General data buffering
    void         BufferOrbitData(Real epochInDays, const Real state[6]);
@@ -242,7 +242,7 @@ protected:
    void         WriteCcsdsOemData(Real reqEpochInSecs, const Real state[6]);
    void         WriteCcsdsAemMetaData();
    void         WriteCcsdsAemData(Real reqEpochInSecs, const Real quat[4]);
-   void         WriteCcsdsComments(const wxString &comments);
+   void         WriteCcsdsComments(const std::string &comments);
    
    // CCSDS file actual writing (subclass should overwrite this methods)
    virtual bool OpenRealCcsdsEphemerisFile();
@@ -251,36 +251,36 @@ protected:
    virtual void WriteRealCcsdsOemMetaData();
    virtual void WriteRealCcsdsAemMetaData();
    virtual void WriteRealCcsdsAemData(Real reqEpochInSecs, const Real quat[4]);
-   virtual void WriteRealCcsdsComments(const wxString &comments);
+   virtual void WriteRealCcsdsComments(const std::string &comments);
    
    // SPK file writing
    void         WriteSpkHeader(); // This is for debug
    void         WriteSpkOrbitDataSegment();
    void         WriteSpkOrbitMetaData();
-   void         WriteSpkComments(const wxString &comments);
+   void         WriteSpkComments(const std::string &comments);
    void         FinalizeSpkFile();
    
    // Epoch handling
    RealArray::iterator
-                FindEpochOnWaiting(Real epochInSecs, const wxString &msg);
-   void         RemoveEpochAlreadyWritten(Real epochInSecs, const wxString &msg);
-   void         AddNextEpochToWrite(Real epochInSecs, const wxString &msg);
+                FindEpochOnWaiting(Real epochInSecs, const std::string &msg);
+   void         RemoveEpochAlreadyWritten(Real epochInSecs, const std::string &msg);
+   void         AddNextEpochToWrite(Real epochInSecs, const std::string &msg);
    
    // CoordinateSystem conversion
    void         ConvertState(Real epochInDays, const Real inState[6],
                              Real outState[6]);
    
    // for time formatting
-   wxString  ToUtcGregorian(Real epoch, bool inDays = false, Integer format = 2);
+   std::string  ToUtcGregorian(Real epoch, bool inDays = false, Integer format = 2);
    
    // for debugging
-   void         DebugWriteTime(const wxString &msg, Real epoch, bool inDays = false,
+   void         DebugWriteTime(const std::string &msg, Real epoch, bool inDays = false,
                                Integer format = 2);
-   void         DebugWriteOrbit(const wxString &msg, Real epoch, const Real state[6],
+   void         DebugWriteOrbit(const std::string &msg, Real epoch, const Real state[6],
                                 bool inDays = false, bool logOnly = false);
-   void         DebugWriteOrbit(const wxString &msg, A1Mjd *epochInDays,
+   void         DebugWriteOrbit(const std::string &msg, A1Mjd *epochInDays,
                                 Rvector6 *state, bool logOnly = false);
-   void         DebugWriteEpochsOnWaiting(const wxString &msg = wxT(""));
+   void         DebugWriteEpochsOnWaiting(const std::string &msg = "");
    
    // for deprecated field
    void         WriteDeprecatedMessage(Integer id) const;
@@ -290,11 +290,11 @@ protected:
    virtual bool Distribute(const Real * dat, Integer len);
    virtual void HandleManeuvering(GmatBase *originator, bool maneuvering, Real epoch,
                                   const StringArray &satNames,
-                                  const wxString &desc);
+                                  const std::string &desc);
    virtual void HandlePropagatorChange(GmatBase *provider);
    virtual void HandleScPropertyChange(GmatBase *originator, Real epoch,
-                                       const wxString &satName,
-                                       const wxString &desc);
+                                       const std::string &satName,
+                                       const std::string &desc);
    enum
    {
       SPACECRAFT = SubscriberParamCount,
@@ -313,7 +313,7 @@ protected:
       EphemerisFileParamCount   // Count of the parameters for this class
    };
    
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[EphemerisFileParamCount - SubscriberParamCount];
    static const Gmat::ParameterType
       PARAMETER_TYPE[EphemerisFileParamCount - SubscriberParamCount];

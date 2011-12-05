@@ -37,12 +37,12 @@ using namespace GmatMathUtil;
 
 const Real EnvData::ENV_REAL_UNDEFINED = GmatRealConstants::REAL_UNDEFINED_LARGE;
 
-const wxString
+const std::string
 EnvData::VALID_OBJECT_TYPE_LIST[EnvDataObjectCount] =
 {
-   wxT("Spacecraft"),
-   wxT("SolarSystem"),
-   wxT("SpacePoint")
+   "Spacecraft",
+   "SolarSystem",
+   "SpacePoint"
 }; 
 
 //---------------------------------
@@ -118,18 +118,18 @@ EnvData& EnvData::operator= (const EnvData &right)
 //------------------------------------------------------------------------------
 EnvData::~EnvData()
 {
-   //MessageInterface::ShowMessage(wxT("==> EnvData::~EnvData()\n"));
+   //MessageInterface::ShowMessage("==> EnvData::~EnvData()\n");
 }
 
 
 //------------------------------------------------------------------------------
-// Real GetEnvReal(const wxString &str)
+// Real GetEnvReal(const std::string &str)
 //------------------------------------------------------------------------------
 /**
  * Retrives atmospheric density where spacecraft is at.
  */
 //------------------------------------------------------------------------------
-Real EnvData::GetEnvReal(const wxString &str)
+Real EnvData::GetEnvReal(const std::string &str)
 {
    //-------------------------------------------------------
    // 1. Get Spacecraft's central body (It's done in InitializeRefObjects())
@@ -141,12 +141,12 @@ Real EnvData::GetEnvReal(const wxString &str)
    if (mSpacecraft == NULL || mSolarSystem == NULL || mOrigin == NULL)
       InitializeRefObjects();
 
-   if (str == wxT("AtmosDensity"))
+   if (str == "AtmosDensity")
    {
-      Real a1mjd = mSpacecraft->GetRealParameter(wxT("A1Epoch"));
+      Real a1mjd = mSpacecraft->GetRealParameter("A1Epoch");
       Rvector6 cartState = mSpacecraft->GetState().GetState();
       
-//       // Rvector6 cartState = mSpacecraft->GetStateVector(wxT("Cartesian"));
+//       // Rvector6 cartState = mSpacecraft->GetStateVector("Cartesian");
 //       Rvector6 cartState = mSpacecraft->GetState(0);
 //       Real state[6];
 //       for (int i=0; i<6; i++)
@@ -161,7 +161,7 @@ Real EnvData::GetEnvReal(const wxString &str)
          {
             #ifdef DEBUG_ENVDATA_RUN
             MessageInterface::ShowMessage
-               (wxT("EnvData::GetEnvReal() mOrigin=%s, a1mjd=%f, state=%s, density=%g\n"),
+               ("EnvData::GetEnvReal() mOrigin=%s, a1mjd=%f, state=%s, density=%g\n",
                 mOrigin->GetName().c_str(), a1mjd, cartState.ToString().c_str(), density);
             #endif
          }
@@ -169,7 +169,7 @@ Real EnvData::GetEnvReal(const wxString &str)
          {
             #ifdef DEBUG_ENVDATA_RUN
             MessageInterface::ShowMessage
-               (wxT("EnvData::GetEnvReal() AtmosphereModel used for %s is NULL\n"),
+               ("EnvData::GetEnvReal() AtmosphereModel used for %s is NULL\n",
                 mOrigin->GetName().c_str());
             #endif
          }
@@ -179,7 +179,7 @@ Real EnvData::GetEnvReal(const wxString &str)
    }
    else
    {
-      throw ParameterException(wxT("EnvData::GetEnvReal() Unknown parameter name: ") +
+      throw ParameterException("EnvData::GetEnvReal() Unknown parameter name: " +
                                str);
    }
 }
@@ -190,9 +190,9 @@ Real EnvData::GetEnvReal(const wxString &str)
 //-------------------------------------
 
 //------------------------------------------------------------------------------
-// virtual const wxString* GetValidObjectList() const
+// virtual const std::string* GetValidObjectList() const
 //------------------------------------------------------------------------------
-const wxString* EnvData::GetValidObjectList() const
+const std::string* EnvData::GetValidObjectList() const
 {
    return VALID_OBJECT_TYPE_LIST;
 }
@@ -227,30 +227,30 @@ bool EnvData::ValidateRefObjects(GmatBase *param)
 void EnvData::InitializeRefObjects()
 {
    #if DEBUG_ENVDATA_INIT
-   MessageInterface::ShowMessage(wxT("EnvData::InitializeRefObjects() entered.\n"));
+   MessageInterface::ShowMessage("EnvData::InitializeRefObjects() entered.\n");
    #endif
    
    mSpacecraft = (Spacecraft*)FindFirstObject(VALID_OBJECT_TYPE_LIST[SPACECRAFT]);
 
    if (mSpacecraft == NULL)
       throw ParameterException
-         (wxT("EnvData::InitializeRefObjects() Cannot find Spacecraft object.\n")
-          wxT("Make sure Spacecraft is set to any unnamed parameters\n"));
+         ("EnvData::InitializeRefObjects() Cannot find Spacecraft object.\n"
+          "Make sure Spacecraft is set to any unnamed parameters\n");
    
    mSolarSystem = (SolarSystem*)FindFirstObject(VALID_OBJECT_TYPE_LIST[SOLAR_SYSTEM]);
    if (mSolarSystem == NULL)
       throw ParameterException
-         (wxT("EnvData::InitializeRefObjects() Cannot find SolarSystem object\n"));
+         ("EnvData::InitializeRefObjects() Cannot find SolarSystem object\n");
 
    // set origin
-   wxString originName =
+   std::string originName =
       FindFirstObjectName(GmatBase::GetObjectType(VALID_OBJECT_TYPE_LIST[SPACE_POINT]));
 
-   if (originName != wxT(""))
+   if (originName != "")
    {
       #if DEBUG_ENVDATA_INIT
          MessageInterface::ShowMessage
-            (wxT("EnvData::InitializeRefObjects() getting originName:%s pointer.\n"),
+            ("EnvData::InitializeRefObjects() getting originName:%s pointer.\n",
              originName.c_str());
       #endif
          
@@ -259,8 +259,8 @@ void EnvData::InitializeRefObjects()
       
       if (!mOrigin)
          throw ParameterException
-            (wxT("EnvData::InitializeRefObjects() parameter dependent body not ")
-             wxT("found in the SolarSystem: ") + originName + wxT("\n"));
+            ("EnvData::InitializeRefObjects() parameter dependent body not "
+             "found in the SolarSystem: " + originName + "\n");
 
    }
 }

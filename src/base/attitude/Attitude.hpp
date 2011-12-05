@@ -95,7 +95,7 @@ public:
                                       Integer seq3);
                                       
    static StringArray       GetEulerSequenceStrings();
-   static UnsignedIntArray  ExtractEulerSequence(const wxString &seqStr);
+   static UnsignedIntArray  ExtractEulerSequence(const std::string &seqStr);
 
 
    // method to convert an euler axis and angle to a cosine matrix
@@ -108,7 +108,7 @@ public:
 
 
    // Constructor
-   Attitude(const wxString &typeStr, const wxString &itsName = wxT(""));
+   Attitude(const std::string &typeStr, const std::string &itsName = "");
    // copy constructor
    Attitude(const Attitude& att);
    // operator =
@@ -121,7 +121,7 @@ public:
    Real               GetEpoch() const;
    void               SetEpoch(Real toEpoch); // A1Mjd time
    virtual bool       SetReferenceCoordinateSystemName(
-                         const wxString &refName);
+                         const std::string &refName);
    
    const StringArray&         GetEulerSequenceList() const;
    // get the attitude as a Quaternion
@@ -140,36 +140,36 @@ public:
    virtual const Rvector3&    GetEulerAngleRates(Real atTime);
    
    // return the type of attitude model it is
-   wxString         GetAttitudeModelName() const;
+   std::string         GetAttitudeModelName() const;
    
    // methods to access object parameters
-   virtual wxString GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual std::string GetRefObjectName(const Gmat::ObjectType type) const;
    virtual bool        SetRefObjectName(const Gmat::ObjectType type,
-                                        const wxString &name);
+                                        const std::string &name);
    virtual bool        RenameRefObject(const Gmat::ObjectType type,
-                                       const wxString &oldName,
-                                       const wxString &newName);
+                                       const std::string &oldName,
+                                       const std::string &newName);
    virtual GmatBase*   GetRefObject(const Gmat::ObjectType type,
-                                    const wxString &name);
+                                    const std::string &name);
    virtual bool        SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                    const wxString &name = wxT(""));
+                                    const std::string &name = "");
                                     
    // methods to get/set parameter values
-   virtual wxString GetParameterText(const Integer id) const;
-   virtual Integer     GetParameterID(const wxString &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
+   virtual Integer     GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                        GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
 
    virtual bool        IsParameterReadOnly(const Integer id) const;
-   virtual bool        IsParameterReadOnly(const wxString &label) const;
+   virtual bool        IsParameterReadOnly(const std::string &label) const;
    
    virtual Real        GetRealParameter(const Integer id) const;
-   virtual Real        GetRealParameter(const wxString &label) const;
+   virtual Real        GetRealParameter(const std::string &label) const;
    
    virtual Real        SetRealParameter(const Integer id,
                                         const Real value);
-   virtual Real        SetRealParameter(const wxString &label,
+   virtual Real        SetRealParameter(const std::string &label,
                                         const Real value);
    virtual Real        SetRealParameter(const Integer id,
                                         const Real value,
@@ -179,41 +179,41 @@ public:
                        const Integer id) const; 
    virtual const UnsignedIntArray& 
                        GetUnsignedIntArrayParameter(
-                       const wxString &label) const;
+                       const std::string &label) const;
                                                
    virtual const Rvector&    GetRvectorParameter(const Integer id) const;
-   virtual const Rvector&    GetRvectorParameter(const wxString &label) const;
+   virtual const Rvector&    GetRvectorParameter(const std::string &label) const;
    virtual const Rvector&    SetRvectorParameter(const Integer id,
                                                  const Rvector &value);
-   virtual const Rvector&    SetRvectorParameter(const wxString &label,
+   virtual const Rvector&    SetRvectorParameter(const std::string &label,
                                                  const Rvector &value);
                                     
    virtual const Rmatrix&    GetRmatrixParameter(const Integer id) const;
-   virtual const Rmatrix&    GetRmatrixParameter(const wxString &label) const;
+   virtual const Rmatrix&    GetRmatrixParameter(const std::string &label) const;
    virtual const Rmatrix&    SetRmatrixParameter(const Integer id,
                                                  const Rmatrix &value);
-   virtual const Rmatrix&    SetRmatrixParameter(const wxString &label,
+   virtual const Rmatrix&    SetRmatrixParameter(const std::string &label,
                                                  const Rmatrix &value);
                                                  
-   virtual wxString GetStringParameter(const Integer id) const;
-   virtual wxString GetStringParameter(const wxString &label) const;
+   virtual std::string GetStringParameter(const Integer id) const;
+   virtual std::string GetStringParameter(const std::string &label) const;
    virtual bool        SetStringParameter(const Integer id, 
-                                          const wxString &value);
-   virtual bool        SetStringParameter(const wxString &label, 
-                                          const wxString &value);
-   virtual wxString GetStringParameter(const Integer id,
+                                          const std::string &value);
+   virtual bool        SetStringParameter(const std::string &label, 
+                                          const std::string &value);
+   virtual std::string GetStringParameter(const Integer id,
                                           const Integer index) const;
    virtual bool        SetStringParameter(const Integer id,
-                                          const wxString &value,
+                                          const std::string &value,
                                           const Integer index);
    virtual const StringArray& 
                        GetStringArrayParameter(const Integer id) const; 
    virtual const StringArray& 
-                       GetStringArrayParameter(const wxString &label) const;
-   virtual const wxString&  
+                       GetStringArrayParameter(const std::string &label) const;
+   virtual const std::string&  
                        GetGeneratingString(Gmat::WriteMode mode = Gmat::SCRIPTING,
-                                           const wxString &prefix = wxT(""),
-                                           const wxString &useName = wxT(""));
+                                           const std::string &prefix = "",
+                                           const std::string &useName = "");
 protected:
    enum
    {
@@ -263,15 +263,15 @@ protected:
        EndOtherReps
    };
    
-   static const wxString PARAMETER_TEXT[AttitudeParamCount - GmatBaseParamCount];
+   static const std::string PARAMETER_TEXT[AttitudeParamCount - GmatBaseParamCount];
    
    static const Gmat::ParameterType PARAMETER_TYPE[AttitudeParamCount - GmatBaseParamCount];
  
-   static const wxString OTHER_REP_TEXT[EndOtherReps - 7000]; // OTHER_REPS_OFFSET
+   static const std::string OTHER_REP_TEXT[EndOtherReps - 7000]; // OTHER_REPS_OFFSET
    
    static const Gmat::ParameterType OTHER_REP_TYPE[EndOtherReps - 7000]; // OTHER_REPS_OFFSET
  
-   static const wxString EULER_SEQ_LIST[12];
+   static const std::string EULER_SEQ_LIST[12];
    static const Real TESTACCURACY;
    static const Real QUAT_MIN_MAG;
    static const Real ATTITUDE_TIME_TOLERANCE;
@@ -286,8 +286,8 @@ protected:
    GmatAttitude::AttitudeRateStateType
                          inputAttitudeRateType;
                          
-   wxString           attitudeDisplayType; 
-   wxString           attitudeRateDisplayType;
+   std::string           attitudeDisplayType; 
+   std::string           attitudeRateDisplayType;
                          
    bool                  isInitialized;
    bool                  needsReinit;
@@ -298,10 +298,10 @@ protected:
    Real                  epoch;
     
    /// the reference coordinate system name
-   wxString           refCSName;
+   std::string           refCSName;
    /// pointer to the reference coordinate system
    CoordinateSystem      *refCS;
-   wxString           eulerSequence;
+   std::string           eulerSequence;
    /// initial user-supplied euler sequence
    UnsignedIntArray      eulerSequenceArray;
    
@@ -330,7 +330,7 @@ protected:
    /// the last computed euler angle rates  (radians/second)
    Rvector3  eulerAngleRates;
    
-   wxString attitudeModelName;
+   std::string attitudeModelName;
  
 
    
@@ -354,11 +354,11 @@ private:
    // default constructor - not implemented
    Attitude(); 
    bool      ValidateCosineMatrix(const Rmatrix33 &mat);
-   bool      ValidateEulerSequence(const wxString &seq);
+   bool      ValidateEulerSequence(const std::string &seq);
    bool      ValidateEulerSequence(const UnsignedIntArray &eulAng);
    bool      ValidateQuaternion(const Rvector &quat);
    bool      ValidateMRPs(const Rvector &mrps);		// Dunn Added
-   void      UpdateState(const wxString &rep);
-   void      SetRealArrayFromString(Integer id, const wxString &sval);
+   void      UpdateState(const std::string &rep);
+   void      SetRealArrayFromString(Integer id, const std::string &sval);
 };
 #endif /*Attitude_hpp*/

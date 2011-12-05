@@ -59,7 +59,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  CreateMathNode(const wxString &ofType, const wxString &withName)
+//  CreateMathNode(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested MathNode class 
@@ -70,8 +70,8 @@
  * @return The new object.
  */
 //------------------------------------------------------------------------------
-MathNode* MathFactory::CreateMathNode(const wxString &ofType,
-                                      const wxString &withName)
+MathNode* MathFactory::CreateMathNode(const std::string &ofType,
+                                      const std::string &withName)
 {
    MathNode *mathNode = NULL;
 
@@ -79,77 +79,77 @@ MathNode* MathFactory::CreateMathNode(const wxString &ofType,
    // so capitalize the first letter of the type before checking.
    // eg) cos, Cos, add, Add.
    
-   wxString newType = GmatStringUtil::Capitalize(ofType);
+   std::string newType = GmatStringUtil::Capitalize(ofType);
    
    #if DEBUG_MATH_FACTORY
    MessageInterface::ShowMessage
-      (wxT("MathFactory::CreateMathNode() ofType=%s, newType=%s, withName=%s\n"),
+      ("MathFactory::CreateMathNode() ofType=%s, newType=%s, withName=%s\n",
        ofType.c_str(), newType.c_str(), withName.c_str());
    #endif
    
    // Leaf node
-   if (ofType == wxT("MathElement"))
+   if (ofType == "MathElement")
       mathNode = new MathElement(ofType, withName);
    
    // Simple math operations
-   else if (newType == wxT("Add"))         // Add(x,y) or x+y
+   else if (newType == "Add")         // Add(x,y) or x+y
       mathNode = new Add(withName);
-   else if (newType == wxT("Subtract"))    // Subtract(x,y) or x-y
+   else if (newType == "Subtract")    // Subtract(x,y) or x-y
       mathNode = new Subtract(withName);
-   else if (newType == wxT("Multiply"))    // Multiply(x,y) or x*y
+   else if (newType == "Multiply")    // Multiply(x,y) or x*y
       mathNode = new Multiply(withName);
-   else if (newType == wxT("Divide"))      // Divide(x,y) or x/y
+   else if (newType == "Divide")      // Divide(x,y) or x/y
       mathNode = new Divide(withName);
-   else if (newType == wxT("Negate"))      // Negate(x)
+   else if (newType == "Negate")      // Negate(x)
       mathNode = new Negate(withName);
-   else if (newType == wxT("Sqrt"))        // Sqrt(x)
+   else if (newType == "Sqrt")        // Sqrt(x)
       mathNode = new Sqrt(withName);
-   else if (newType == wxT("Abs"))         // Abs(x)
+   else if (newType == "Abs")         // Abs(x)
       mathNode = new Abs(withName);
    
    // Power, Log functions
-   else if (newType == wxT("Power"))       // power(x,y) or x^y
+   else if (newType == "Power")       // power(x,y) or x^y
       mathNode = new Power(withName);
-   else if (newType == wxT("Exp"))         // exp(x)
+   else if (newType == "Exp")         // exp(x)
       mathNode = new Exp(withName);
-   else if (newType == wxT("Log"))         // log(x)
+   else if (newType == "Log")         // log(x)
       mathNode = new Log(withName);
-   else if (newType == wxT("Log10"))       // log10(x)
+   else if (newType == "Log10")       // log10(x)
       mathNode = new Log10(withName);
    
    // Matrix functions
-   else if (newType == wxT("Transpose"))   // transpose(m) or m'
+   else if (newType == "Transpose")   // transpose(m) or m'
       mathNode = new Transpose(withName);
-   else if (newType == wxT("Det"))         // det(m)
+   else if (newType == "Det")         // det(m)
       mathNode = new Determinant(withName);
-   else if (newType == wxT("Inv"))         // inv(m)
+   else if (newType == "Inv")         // inv(m)
       mathNode = new Inverse(withName);
-   else if (newType == wxT("Norm"))        // norm(m)
+   else if (newType == "Norm")        // norm(m)
       mathNode = new Norm(withName);
    
    // Trigonometric functions
-   else if (newType == wxT("Sin"))         // sin(x)
+   else if (newType == "Sin")         // sin(x)
       mathNode = new Sin(withName);
-   else if (newType == wxT("Cos"))         // cos(x)
+   else if (newType == "Cos")         // cos(x)
       mathNode = new Cos(withName);
-   else if (newType == wxT("Tan"))         // tan(x)
+   else if (newType == "Tan")         // tan(x)
       mathNode = new Tan(withName);
-   else if (newType == wxT("Asin"))        // asin(x)
+   else if (newType == "Asin")        // asin(x)
       mathNode = new Asin(withName);
-   else if (newType == wxT("Acos"))        // acos(x)
+   else if (newType == "Acos")        // acos(x)
       mathNode = new Acos(withName);
-   else if (newType == wxT("Atan"))        // atan(x)
+   else if (newType == "Atan")        // atan(x)
       mathNode = new Atan(withName);
-   else if (newType == wxT("Atan2"))       // atan2(y,x)
+   else if (newType == "Atan2")       // atan2(y,x)
       mathNode = new Atan2(withName);
    
    // Unit conversion functions
-   else if (newType == wxT("DegToRad") || newType == wxT("Deg2Rad"))
+   else if (newType == "DegToRad" || newType == "Deg2Rad")
       mathNode = new DegToRad(withName);
-   else if (newType == wxT("RadToDeg") || newType == wxT("Rad2Deg"))
+   else if (newType == "RadToDeg" || newType == "Rad2Deg")
       mathNode = new RadToDeg(withName);
    
-   else if (newType == wxT("FunctionRunner"))
+   else if (newType == "FunctionRunner")
       mathNode = new FunctionRunner(withName);
    
    return mathNode;
@@ -197,7 +197,7 @@ MathFactory::MathFactory(StringArray createList)
  * This method creates an object of the class MathFactory (called by
  * copy constructors of derived classes).  (copy constructor)
  *
- * @param <fact> the factory object to copy to wxT("this") factory.
+ * @param <fact> the factory object to copy to "this" factory.
  */
 //------------------------------------------------------------------------------
 MathFactory::MathFactory(const MathFactory &fact)
@@ -216,9 +216,9 @@ MathFactory::MathFactory(const MathFactory &fact)
 /**
  * Assignment operator for the MathFactory base class.
  *
- * @param <fact> the MathFactory object whose data to assign to wxT("this") factory.
+ * @param <fact> the MathFactory object whose data to assign to "this" factory.
  *
- * @return wxT("this") MathFactory with data of input factory fact.
+ * @return "this" MathFactory with data of input factory fact.
  */
 //------------------------------------------------------------------------------
 MathFactory& MathFactory::operator=(const MathFactory &fact)
@@ -255,45 +255,45 @@ void MathFactory::BuildCreatables()
    // The FIRST letter of function name can be either lower or upper case.
    
    // Math element
-   creatables.push_back(wxT("MathElement"));
+   creatables.push_back("MathElement");
    
    // Simple math operations
-   creatables.push_back(wxT("Negate"));
-   creatables.push_back(wxT("Add"));
-   creatables.push_back(wxT("Subtract"));
-   creatables.push_back(wxT("Multiply"));
-   creatables.push_back(wxT("Divide"));
+   creatables.push_back("Negate");
+   creatables.push_back("Add");
+   creatables.push_back("Subtract");
+   creatables.push_back("Multiply");
+   creatables.push_back("Divide");
    
    // Math functions
-   creatables.push_back(wxT("Sqrt"));
-   creatables.push_back(wxT("Abs"));
-   creatables.push_back(wxT("Power"));
-   creatables.push_back(wxT("Exp"));
-   creatables.push_back(wxT("Log"));
-   creatables.push_back(wxT("Log10"));
+   creatables.push_back("Sqrt");
+   creatables.push_back("Abs");
+   creatables.push_back("Power");
+   creatables.push_back("Exp");
+   creatables.push_back("Log");
+   creatables.push_back("Log10");
    
    // Matrix functions
-   creatables.push_back(wxT("Transpose"));
-   creatables.push_back(wxT("Det"));
-   creatables.push_back(wxT("Inv"));
-   creatables.push_back(wxT("Norm"));
+   creatables.push_back("Transpose");
+   creatables.push_back("Det");
+   creatables.push_back("Inv");
+   creatables.push_back("Norm");
    
    // Trigonometric functions
-   creatables.push_back(wxT("Sin"));
-   creatables.push_back(wxT("Cos"));
-   creatables.push_back(wxT("Tan"));
-   creatables.push_back(wxT("Asin"));
-   creatables.push_back(wxT("Acos"));
-   creatables.push_back(wxT("Atan"));
-   creatables.push_back(wxT("Atan2"));
+   creatables.push_back("Sin");
+   creatables.push_back("Cos");
+   creatables.push_back("Tan");
+   creatables.push_back("Asin");
+   creatables.push_back("Acos");
+   creatables.push_back("Atan");
+   creatables.push_back("Atan2");
    
    // Unit conversion functions
-   creatables.push_back(wxT("DegToRad"));  
-   creatables.push_back(wxT("RadToDeg"));
-   creatables.push_back(wxT("Deg2Rad"));  
-   creatables.push_back(wxT("Rad2Deg"));
+   creatables.push_back("DegToRad");  
+   creatables.push_back("RadToDeg");
+   creatables.push_back("Deg2Rad");  
+   creatables.push_back("Rad2Deg");
    
    // GmatFunction
-   creatables.push_back(wxT("FunctionRunner"));  
+   creatables.push_back("FunctionRunner");  
 }
 

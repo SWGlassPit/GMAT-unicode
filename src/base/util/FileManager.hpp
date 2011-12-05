@@ -20,7 +20,7 @@
  * The textures files and non-Earth gravity potential files not appear in the
  * predefined enum FileType list can be retrieved by using file naming
  * convention. The texture files should have PLANETNAME_TEXTURE_FILE.
- * e.g. wxT("EARTH_TEXTURE_FILE"), wxT("LUNA_TEXTURE_FILE"), etc. The potential files
+ * e.g. "EARTH_TEXTURE_FILE", "LUNA_TEXTURE_FILE", etc. The potential files
  * should have PLANETNAME_POT_FILE.
  */
 //------------------------------------------------------------------------------
@@ -94,50 +94,50 @@ public:
    static FileManager* Instance();
    ~FileManager();
    
-   wxString GetPathSeparator();
-   wxString GetCurrentPath();
-   bool DoesDirectoryExist(const wxString &dirPath);
-   bool DoesFileExist(const wxString &filename);
-   bool RenameFile(const wxString &oldName, const wxString &newName,
+   std::string GetPathSeparator();
+   std::string GetCurrentPath();
+   bool DoesDirectoryExist(const std::string &dirPath);
+   bool DoesFileExist(const std::string &filename);
+   bool RenameFile(const std::string &oldName, const std::string &newName,
                    Integer &retCode, bool overwriteIfExists = false);
    
-   wxString GetStartupFileDir();
-   wxString GetStartupFileName();
-   wxString GetFullStartupFilePath();
-   void ReadStartupFile(const wxString &fileName = wxT(""));
-   void WriteStartupFile(const wxString &fileName = wxT(""));
+   std::string GetStartupFileDir();
+   std::string GetStartupFileName();
+   std::string GetFullStartupFilePath();
+   void ReadStartupFile(const std::string &fileName = "");
+   void WriteStartupFile(const std::string &fileName = "");
    
-   wxString GetRootPath();
+   std::string GetRootPath();
    
    // Methods returning path
-   wxString GetPathname(const FileType type);
-   wxString GetPathname(const wxString &typeName);
+   std::string GetPathname(const FileType type);
+   std::string GetPathname(const std::string &typeName);
    
    // Methods returning filename
-   wxString GetFilename(const FileType type);
-   wxString GetFilename(const wxString &typeName);
+   std::string GetFilename(const FileType type);
+   std::string GetFilename(const std::string &typeName);
    
    // Methods returning full path and filename
-   //loj: Why the name wxT("GetFullPathName()") doesn't work? Reserved word?
+   //loj: Why the name "GetFullPathName()" doesn't work? Reserved word?
    // I'm getting unresolved ref on GetFullPathNameA()
-   wxString GetFullPathname(const FileType type);
-   wxString GetFullPathname(const wxString &typeName);
-   wxString GetAbsPathname(const FileType type);
-   wxString GetAbsPathname(const wxString &typeName);
+   std::string GetFullPathname(const FileType type);
+   std::string GetFullPathname(const std::string &typeName);
+   std::string GetAbsPathname(const FileType type);
+   std::string GetAbsPathname(const std::string &typeName);
    
-   wxString ConvertToAbsPath(const wxString &relPath);
+   std::string ConvertToAbsPath(const std::string &relPath);
    
-   void SetAbsPathname(const FileType type, const wxString &newpath);
-   void SetAbsPathname(const wxString &type, const wxString &newpath);
+   void SetAbsPathname(const FileType type, const std::string &newpath);
+   void SetAbsPathname(const std::string &type, const std::string &newpath);
    
    void ClearGmatFunctionPath();
-   void AddGmatFunctionPath(const wxString &path, bool addFront = true);
-   wxString GetGmatFunctionPath(const wxString &name);
+   void AddGmatFunctionPath(const std::string &path, bool addFront = true);
+   std::string GetGmatFunctionPath(const std::string &name);
    const StringArray& GetAllGmatFunctionPaths();
    
    void ClearMatlabFunctionPath();
-   void AddMatlabFunctionPath(const wxString &path, bool addFront = true);
-   wxString GetMatlabFunctionPath(const wxString &name);
+   void AddMatlabFunctionPath(const std::string &path, bool addFront = true);
+   std::string GetMatlabFunctionPath(const std::string &name);
    const StringArray& GetAllMatlabFunctionPaths();
    
    // Plug-in code
@@ -153,26 +153,26 @@ private:
    
    struct FileInfo
    {
-      wxString mPath;
-      wxString mFile;
+      std::string mPath;
+      std::string mFile;
       
-      FileInfo(const wxString &path, const wxString &file)
+      FileInfo(const std::string &path, const std::string &file)
          { mPath = path; mFile = file; }
    };
    
-   wxString mPathSeparator;
-   wxString mStartupFileDir;
-   wxString mStartupFileName;
-   wxString mRunMode;
-   wxString mPlotMode;
-   wxString mMatlabMode;
-   wxString mDebugMatlab;
-   wxString mDebugMissionTree;
+   std::string mPathSeparator;
+   std::string mStartupFileDir;
+   std::string mStartupFileName;
+   std::string mRunMode;
+   std::string mPlotMode;
+   std::string mMatlabMode;
+   std::string mDebugMatlab;
+   std::string mDebugMissionTree;
    std::ifstream mInStream;
-   std::map<wxString, wxString> mPathMap;
-   std::map<wxString, FileInfo*> mFileMap;
-   std::list<wxString> mGmatFunctionPaths;
-   std::list<wxString> mMatlabFunctionPaths;
+   std::map<std::string, std::string> mPathMap;
+   std::map<std::string, FileInfo*> mFileMap;
+   std::list<std::string> mGmatFunctionPaths;
+   std::list<std::string> mMatlabFunctionPaths;
    StringArray mGmatFunctionFullPaths;
    StringArray mMatlabFunctionFullPaths;
    StringArray mSavedComments;
@@ -181,19 +181,19 @@ private:
    
    StringArray mPluginList;
    
-   wxString GetFunctionPath(FunctionType type, std::list<wxString> &pathList,
-                               const wxString &funcName);
-   void AddFileType(const wxString &type, const wxString &name);
+   std::string GetFunctionPath(FunctionType type, std::list<std::string> &pathList,
+                               const std::string &funcName);
+   void AddFileType(const std::string &type, const std::string &name);
    void AddAvailablePotentialFiles();
    void WriteHeader(std::ofstream &outStream);
    void WriteFiles(std::ofstream &outStream, const std::string &type);
    void RefreshFiles();
    
    // For debugging
-   void ShowMaps(const wxString &msg);
+   void ShowMaps(const std::string &msg);
    
    static FileManager *theInstance;
-   static const wxString FILE_TYPE_STRING[FileTypeCount];
+   static const std::string FILE_TYPE_STRING[FileTypeCount];
    
    FileManager();
    

@@ -32,10 +32,10 @@
  */
 //------------------------------------------------------------------------------
 Else::Else() :
-    GmatCommand      (wxT("Else"))
+    GmatCommand      ("Else")
 {
-   objectTypeNames.push_back(wxT("Else"));
-   objectTypeNames.push_back(wxT("BranchEnd"));
+   objectTypeNames.push_back("Else");
+   objectTypeNames.push_back("BranchEnd");
    //depthChange = -1;  // is this correct here?
 }
 
@@ -147,7 +147,7 @@ bool Else::Execute()
 
 //---------------------------------------------------------------------------
 // bool RenameRefObject(const Gmat::ObjectType type,
-//                      const wxString &oldName, const wxString &newName)
+//                      const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /*
  * Renames referenced objects
@@ -160,8 +160,8 @@ bool Else::Execute()
  */
 //---------------------------------------------------------------------------
 bool Else::RenameRefObject(const Gmat::ObjectType type,
-                           const wxString &oldName,
-                           const wxString &newName)
+                           const std::string &oldName,
+                           const std::string &newName)
 {
    // There are no renamealbe objects
    return true;
@@ -185,7 +185,7 @@ GmatBase* Else::Clone() const
 
 
 //------------------------------------------------------------------------------
-//  const wxString GetGeneratingString()
+//  const std::string GetGeneratingString()
 //------------------------------------------------------------------------------
 /**
  * Method used to retrieve the string that was parsed to build this GmatCommand.
@@ -205,10 +205,10 @@ GmatBase* Else::Clone() const
  * @return The script line that defines this GmatCommand.
  */
 //------------------------------------------------------------------------------
-const wxString& Else::GetGeneratingString(Gmat::WriteMode mode,
-                                             const wxString &prefix,
-                                             const wxString &useName)
+const std::string& Else::GetGeneratingString(Gmat::WriteMode mode,
+                                             const std::string &prefix,
+                                             const std::string &useName)
 {
-   generatingString = prefix + wxT("Else");
+   generatingString = prefix + "Else";
    return GmatCommand::GetGeneratingString(mode, prefix, useName);
 }

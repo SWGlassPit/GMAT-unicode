@@ -30,7 +30,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  CreateObject(const wxString &ofType, const wxString &withName)
+//  CreateObject(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested ODEModel class
@@ -41,15 +41,15 @@
  *
  */
 //------------------------------------------------------------------------------
-ODEModel* ODEModelFactory::CreateObject(const wxString &ofType,
-                                        const wxString &withName)
+ODEModel* ODEModelFactory::CreateObject(const std::string &ofType,
+                                        const std::string &withName)
 {
    return CreateODEModel(ofType, withName);
 }
 
 
 //------------------------------------------------------------------------------
-//  CreateODEModel(const wxString &ofType, const wxString &withName)
+//  CreateODEModel(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested ODEModel class 
@@ -63,8 +63,8 @@ ODEModel* ODEModelFactory::CreateObject(const wxString &ofType,
  *       parameter may be added later.
  */
 //------------------------------------------------------------------------------
-ODEModel* ODEModelFactory::CreateODEModel(const wxString &ofType,
-                                          const wxString &withName)
+ODEModel* ODEModelFactory::CreateODEModel(const std::string &ofType,
+                                          const std::string &withName)
 {
    return new ODEModel(withName, ofType);
 }
@@ -85,8 +85,8 @@ Factory(Gmat::ODE_MODEL)
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("ForceModel"));  // default type for this factory
-      creatables.push_back(wxT("ODEModel"));  // default type for this factory
+      creatables.push_back("ForceModel");  // default type for this factory
+      creatables.push_back("ODEModel");  // default type for this factory
    }
 }
 
@@ -106,8 +106,8 @@ Factory(createList,Gmat::ODE_MODEL)
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("ForceModel"));  // default type for this factory
-      creatables.push_back(wxT("ODEModel"));  // default type for this factory
+      creatables.push_back("ForceModel");  // default type for this factory
+      creatables.push_back("ODEModel");  // default type for this factory
    }
 }
 
@@ -118,7 +118,7 @@ Factory(createList,Gmat::ODE_MODEL)
    * This method creates an object of the class ODEModelFactory 
    * (copy constructor).
    *
-   * @param <fact> the factory object to copy to wxT("this") factory.
+   * @param <fact> the factory object to copy to "this" factory.
    */
 //------------------------------------------------------------------------------
 ODEModelFactory::ODEModelFactory(const ODEModelFactory& fact) :
@@ -126,8 +126,8 @@ Factory(fact)
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("ForceModel"));  // default type for this factory
-      creatables.push_back(wxT("ODEModel"));  // default type for this factory
+      creatables.push_back("ForceModel");  // default type for this factory
+      creatables.push_back("ODEModel");  // default type for this factory
    }
 }
 
@@ -137,10 +137,10 @@ Factory(fact)
 /**
  * Assignment operator for the ODEModelFactory class.
  *
- * @param <fact> the ODEModelFactory object whose data to assign to wxT("this")
+ * @param <fact> the ODEModelFactory object whose data to assign to "this"
  *               factory.
  *
- * @return wxT("this") ODEModelFactory with data of input factory fact.
+ * @return "this" ODEModelFactory with data of input factory fact.
  */
 //------------------------------------------------------------------------------
 ODEModelFactory& ODEModelFactory::operator= (const ODEModelFactory& fact)
@@ -148,8 +148,8 @@ ODEModelFactory& ODEModelFactory::operator= (const ODEModelFactory& fact)
    Factory::operator=(fact);
    if (creatables.empty())
    {
-      creatables.push_back(wxT("ForceModel"));  // default type for this factory
-      creatables.push_back(wxT("ODEModel"));  // default type for this factory
+      creatables.push_back("ForceModel");  // default type for this factory
+      creatables.push_back("ODEModel");  // default type for this factory
    }
    return *this;
 }

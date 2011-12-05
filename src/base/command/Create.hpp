@@ -38,21 +38,21 @@ public:
    Create&        operator=(const Create &cr);
    
    // Parameter access methods - overridden from GmatBase
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const wxString &label) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const std::string &label) const;
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label, 
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label, 
+                                           const std::string &value);
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name);
+                                     const std::string &name);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    virtual GmatBase*    Clone() const;
    
    bool                 Initialize();
@@ -65,11 +65,11 @@ protected:
       OBJECT_TYPE = ManageObjectParamCount, 
       CreateParamCount
    };
-   static const wxString PARAMETER_TEXT[CreateParamCount - ManageObjectParamCount];
+   static const std::string PARAMETER_TEXT[CreateParamCount - ManageObjectParamCount];
    
    static const Gmat::ParameterType PARAMETER_TYPE[CreateParamCount - ManageObjectParamCount];
    
-   wxString  objType;
+   std::string  objType;
    GmatBase     *refObj;
    /// object names and sizes  when the object type is an Array
    StringArray  arrayNames;
@@ -77,8 +77,8 @@ protected:
    IntegerArray columns;
    
    void SetArrayInfo();
-   bool InsertIntoLOS(GmatBase *obj, const wxString &withName);
-   bool InsertIntoObjectStore(GmatBase *obj, const wxString &withName);
+   bool InsertIntoLOS(GmatBase *obj, const std::string &withName);
+   bool InsertIntoObjectStore(GmatBase *obj, const std::string &withName);
 };
 
 #endif /* Create_hpp */

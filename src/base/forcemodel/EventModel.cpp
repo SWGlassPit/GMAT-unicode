@@ -27,8 +27,8 @@
 
 //#define DEBUG_EXE
 
-EventModel::EventModel(const wxString &nomme) :
-   PhysicalModel        (Gmat::PHYSICAL_MODEL, wxT("EventModel"), nomme)
+EventModel::EventModel(const std::string &nomme) :
+   PhysicalModel        (Gmat::PHYSICAL_MODEL, "EventModel", nomme)
 {
 }
 
@@ -84,8 +84,8 @@ bool EventModel::Initialize()
       for (Integer j = 0; j < fc; ++j)
       {
          #ifdef DEBUG_INIT
-            MessageInterface::ShowMessage(wxT("Calling SetStateIndices(%d, %d, ")
-                  wxT("%d)\n"), j, eventStarts[i] + j,
+            MessageInterface::ShowMessage("Calling SetStateIndices(%d, %d, "
+                  "%d)\n", j, eventStarts[i] + j,
                   theState->GetAssociateIndex(eventStarts[i]+j));
          #endif
          events->at(i)->SetStateIndices(j, eventStarts[i] + j,
@@ -101,12 +101,12 @@ bool EventModel::GetDerivatives(Real *state, Real dt, Integer order, const Integ
    bool retval = false;
 
    #ifdef DEBUG_EXE
-      MessageInterface::ShowMessage(wxT("EventModel::GetDerivatives called\n%d ")
-            wxT("events\n%d functionCounts\n"), events->size(), functionCounts.size());
-      MessageInterface::ShowMessage(wxT("State = ["));
+      MessageInterface::ShowMessage("EventModel::GetDerivatives called\n%d "
+            "events\n%d functionCounts\n", events->size(), functionCounts.size());
+      MessageInterface::ShowMessage("State = [");
       for (Integer i = 0; i < eventStarts[0]+functionCounts[0]; ++i)
-         MessageInterface::ShowMessage(wxT(" %le "), state[i]);
-      MessageInterface::ShowMessage(wxT("]\n"));
+         MessageInterface::ShowMessage(" %le ", state[i]);
+      MessageInterface::ShowMessage("]\n");
    #endif
 
    for (UnsignedInt i = 0; i < events->size(); ++i)
@@ -122,10 +122,10 @@ bool EventModel::GetDerivatives(Real *state, Real dt, Integer order, const Integ
    retval = true;
 
    #ifdef DEBUG_EXE
-      MessageInterface::ShowMessage(wxT("Deriv = ["));
+      MessageInterface::ShowMessage("Deriv = [");
       for (Integer i = 0; i < eventStarts[0]+functionCounts[0]; ++i)
-         MessageInterface::ShowMessage(wxT(" %le "), deriv[i]);
-      MessageInterface::ShowMessage(wxT("]\n"));
+         MessageInterface::ShowMessage(" %le ", deriv[i]);
+      MessageInterface::ShowMessage("]\n");
    #endif
 
    return retval;
@@ -174,7 +174,7 @@ const StringArray& EventModel::GetRefObjectNameArray(
 
 
 bool EventModel::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-      const wxString &name)
+      const std::string &name)
 {
    bool retval = false;
 

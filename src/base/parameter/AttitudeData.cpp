@@ -33,10 +33,10 @@
 #include "MessageInterface.hpp"
 
 
-const wxString
+const std::string
 AttitudeData::VALID_OBJECT_TYPE_LIST[AttitudeDataObjectCount] =
 {
-   wxT("Spacecraft")
+   "Spacecraft"
 }; 
 
 const Real AttitudeData::ATTITUDE_REAL_UNDEFINED = GmatRealConstants::REAL_UNDEFINED_LARGE;
@@ -159,7 +159,7 @@ Real AttitudeData::GetAttitudeReal(Integer item)
    
    // otherwise, there is an error   
    throw ParameterException
-      (wxT("AttitudeData::GetAttitudeReal() Unknown parameter id: ") +
+      ("AttitudeData::GetAttitudeReal() Unknown parameter id: " +
        GmatRealUtil::ToString(item));
 
 }
@@ -169,9 +169,9 @@ Real AttitudeData::GetAttitudeReal(Integer item)
 //-------------------------------------
 
 //------------------------------------------------------------------------------
-// virtual const wxString* GetValidObjectList() const
+// virtual const std::string* GetValidObjectList() const
 //------------------------------------------------------------------------------
-const wxString* AttitudeData::GetValidObjectList() const
+const std::string* AttitudeData::GetValidObjectList() const
 {
    return VALID_OBJECT_TYPE_LIST;
 }
@@ -210,7 +210,7 @@ void AttitudeData::InitializeRefObjects()
 {
    #if DEBUG_ATTDATA_INIT
    MessageInterface::ShowMessage
-      (wxT("AttitudeData::InitializeRefObjects() entered.\n"));
+      ("AttitudeData::InitializeRefObjects() entered.\n");
    #endif
    
    mSpacecraft = (Spacecraft*)FindFirstObject(VALID_OBJECT_TYPE_LIST[SPACECRAFT]);
@@ -220,20 +220,20 @@ void AttitudeData::InitializeRefObjects()
       // just write a message
       #if DEBUG_ATTDATA_INIT
       MessageInterface::ShowMessage
-         (wxT("AttitudeData::InitializeRefObjects() Cannot find Attitude object.\n"));
+         ("AttitudeData::InitializeRefObjects() Cannot find Attitude object.\n");
       #endif
       
       //throw ParameterException
-      //   (wxT("AttitudeData::InitializeRefObjects() Cannot find Attitude object.\n"));
+      //   ("AttitudeData::InitializeRefObjects() Cannot find Attitude object.\n");
    }
    else
    {
-      mEpochId = mSpacecraft->GetParameterID(wxT("A1Epoch"));
+      mEpochId = mSpacecraft->GetParameterID("A1Epoch");
    }
    
    #if DEBUG_ATTDATA_INIT
    MessageInterface::ShowMessage
-      (wxT("AttitudeData::InitializeRefObjects() mSpacecraft=%s\n"),
+      ("AttitudeData::InitializeRefObjects() mSpacecraft=%s\n",
        mSpacecraft->GetName().c_str())
    #endif
 }

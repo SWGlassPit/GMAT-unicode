@@ -76,7 +76,7 @@ const Real    SlpFile::JD_MJD_OFFSET = GmatTimeConstants::JD_JAN_5_1941;
 // public methods
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  SlpFile(wxString withFileName)
+//  SlpFile(std::string withFileName)
 //------------------------------------------------------------------------------
 /**
  * This method creates an object of the SlpFile class
@@ -85,7 +85,7 @@ const Real    SlpFile::JD_MJD_OFFSET = GmatTimeConstants::JD_JAN_5_1941;
  * @param <name> parameter indicating the full path name of the SLP File.
  */
 //------------------------------------------------------------------------------
-SlpFile::SlpFile(wxString withFileName) :
+SlpFile::SlpFile(std::string withFileName) :
 PlanetaryEphem(withFileName)
 {
    InitializeSlpFile();
@@ -119,10 +119,10 @@ PlanetaryEphem(slpf)
 /**
  * Assignment operator for the SlpFile class.
  *
- * @param <slpf> the SlpFile object whose data to assign to wxT("this")
+ * @param <slpf> the SlpFile object whose data to assign to "this"
  *            SLP File.
  *
- * @return wxT("this") SlpFile with data of input SlpFile slpf.
+ * @return "this" SlpFile with data of input SlpFile slpf.
  */
 //------------------------------------------------------------------------------
 SlpFile& SlpFile::operator=(const SlpFile& slpf)
@@ -151,7 +151,7 @@ SlpFile::~SlpFile()
 }
 
 //------------------------------------------------------------------------------
-//  Integer GetBodyID(wxString bodyName)
+//  Integer GetBodyID(std::string bodyName)
 //------------------------------------------------------------------------------
 /**
 * This method returns the body ID for the specified body.
@@ -162,7 +162,7 @@ SlpFile::~SlpFile()
  *
  */
 //------------------------------------------------------------------------------
-Integer SlpFile::GetBodyID(wxString bodyName)
+Integer SlpFile::GetBodyID(std::string bodyName)
 {
    if (bodyName == SolarSystem::SUN_NAME)     return SlpFile::SUN_ID;
    if (bodyName == SolarSystem::MERCURY_NAME) return SlpFile::MERCURY_ID;
@@ -219,77 +219,77 @@ Real* SlpFile::GetPosVel(Integer forBody, A1Mjd atTime, bool overrideTimeSystem)
    switch (posCode)
    {
       case 1:
-         throw PlanetaryEphemException(wxT("Invalid number of bodies\n"));
+         throw PlanetaryEphemException("Invalid number of bodies\n");
          break;
       case 3:
-         //throw PlanetaryEphemException(wxT("Requested body not on SLP File\n"));
+         //throw PlanetaryEphemException("Requested body not on SLP File\n");
          throw PlanetaryEphemException
-            (wxT("Requested body: ") + GmatStringUtil::ToString(forBody) +
-             wxT(" not on SLP File\n"));
+            ("Requested body: " + GmatStringUtil::ToString(forBody) +
+             " not on SLP File\n");
          break;
       case 10:
          throw PlanetaryEphemException(
-               wxT("Modified Julian Date not on timing coefficients file\n"));
+               "Modified Julian Date not on timing coefficients file\n");
          break;
       case 11:
          throw PlanetaryEphemException(
-               wxT("Invalid SLP record number - time may not be on file\n"));
+               "Invalid SLP record number - time may not be on file\n");
          break;
       case 12:
-         throw PlanetaryEphemException(wxT("Error reading SLP File\n"));
+         throw PlanetaryEphemException("Error reading SLP File\n");
          break;
       case 13:
-         throw PlanetaryEphemException(wxT("Error opening SLP File\n"));
+         throw PlanetaryEphemException("Error opening SLP File\n");
          break;
       case 14:
-         throw PlanetaryEphemException(wxT("Error reading timing coefficients file\n"));
+         throw PlanetaryEphemException("Error reading timing coefficients file\n");
          break;
       case 23:
-         throw PlanetaryEphemException(wxT("SLP File is not J2000\n"));
+         throw PlanetaryEphemException("SLP File is not J2000\n");
          break;
       default:
          break;
    }
    if (posCode > 0)
-      throw PlanetaryEphemException(wxT("Unknown error from slp_pos\n"));
+      throw PlanetaryEphemException("Unknown error from slp_pos\n");
 
    int velCode     = slp_vel(forTime, 0.0, 1, iBody, vel);
    switch (velCode)
    {
       case 1:
-         throw PlanetaryEphemException(wxT("Invalid number of bodies\n"));
+         throw PlanetaryEphemException("Invalid number of bodies\n");
          break;
       case 3:
-         //throw PlanetaryEphemException(wxT("Requested body not on SLP File\n"));
+         //throw PlanetaryEphemException("Requested body not on SLP File\n");
          throw PlanetaryEphemException
-            (wxT("Requested body: ") + GmatStringUtil::ToString(forBody) +
-             wxT(" not on SLP File\n"));
+            ("Requested body: " + GmatStringUtil::ToString(forBody) +
+             " not on SLP File\n");
          break;
       case 10:
          throw PlanetaryEphemException(
-                                wxT("Modified Julian Date not on timing coefficients file\n"));
+                                "Modified Julian Date not on timing coefficients file\n");
          break;
       case 11:
          throw PlanetaryEphemException(
-                                wxT("Invalid SLP record number - time may not be on file\n"));
+                                "Invalid SLP record number - time may not be on file\n");
          break;
       case 12:
-         throw PlanetaryEphemException(wxT("Error reading SLP File\n"));
+         throw PlanetaryEphemException("Error reading SLP File\n");
          break;
       case 13:
-         throw PlanetaryEphemException(wxT("Error opening SLP File\n"));
+         throw PlanetaryEphemException("Error opening SLP File\n");
          break;
       case 14:
-         throw PlanetaryEphemException(wxT("Error reading timing coefficients file\n"));
+         throw PlanetaryEphemException("Error reading timing coefficients file\n");
          break;
       case 23:
-         throw PlanetaryEphemException(wxT("SLP File is not J2000\n"));
+         throw PlanetaryEphemException("SLP File is not J2000\n");
          break;
       default:
          break;
    }
    if (velCode > 0)
-      throw PlanetaryEphemException(wxT("Unknown error from slp_pos\n"));
+      throw PlanetaryEphemException("Unknown error from slp_pos\n");
 
 
    result[0] = (Real) pos[0][0];
@@ -323,16 +323,16 @@ Integer* SlpFile::GetStartDayAndYear()
    //    23 = slp file is not j2000
    if (err == 12)
       throw PlanetaryEphemException(
-                             wxT("There is an error reading the SLP File, on opening\n"));
+                             "There is an error reading the SLP File, on opening\n");
    if (err == 13)
       throw PlanetaryEphemException(
-                             wxT("There is an error opening the SLP File\n"));
+                             "There is an error opening the SLP File\n");
    if (err == 23)
       throw PlanetaryEphemException(
-                        wxT("SLP File is not J2000\n"));
+                        "SLP File is not J2000\n");
    if (err > 0)
       throw PlanetaryEphemException(
-                             wxT("Unknown error opening the SLP File\n"));
+                             "Unknown error opening the SLP File\n");
    
    Integer* res = new Integer[2];
    if (err == 0)
@@ -399,7 +399,7 @@ int SlpFile::open_slp (int slp_header[])
    if (g_pef_dcb.fptr == NULL)
    {
 
-      g_pef_dcb.fptr = fopen(g_pef_dcb.full_path.char_str(), "rb");
+      g_pef_dcb.fptr = fopen(g_pef_dcb.full_path, "rb");
 
       if (g_pef_dcb.fptr != NULL)
          g_pef_dcb.recl = SLP_LEN;
@@ -1024,7 +1024,7 @@ int SlpFile::slp_vel (double time, double elapst, int nbody, int ibody[],
 }
 
 //------------------------------------------------------------------------------
-// wxT("helper") functions from Swingby time_util.h
+// "helper" functions from Swingby time_util.h
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
@@ -1189,19 +1189,19 @@ int SlpFile::a1_utc_offset(double refmjd, double *a1utc, double *ut1utc, double 
    // interpolations
    // 20.02.06 - arg: changed to use enum types instead of strings
 //   Real mjdA1  = TimeConverterUtil::Convert(refmjd,
-//                 wxT("UtcMjd"), wxT("A1Mjd"), GmatTimeConstants::JD_JAN_5_1941);
+//                 "UtcMjd", "A1Mjd", GmatTimeConstants::JD_JAN_5_1941);
    Real mjdA1  = TimeConverterUtil::Convert(refmjd,
                  TimeConverterUtil::UTCMJD, TimeConverterUtil::A1MJD, 
                  GmatTimeConstants::JD_JAN_5_1941);
    *a1utc      = (mjdA1 - refmjd) * GmatTimeConstants::SECS_PER_DAY;
 //   Real mjdUT1 = TimeConverterUtil::Convert(refmjd,
-//                 wxT("UtcMjd"), wxT("Ut1Mjd"), GmatTimeConstants::JD_JAN_5_1941);
+//                 "UtcMjd", "Ut1Mjd", GmatTimeConstants::JD_JAN_5_1941);
    Real mjdUT1 = TimeConverterUtil::Convert(refmjd,
                  TimeConverterUtil::UTCMJD, TimeConverterUtil::UT1MJD, 
                  GmatTimeConstants::JD_JAN_5_1941);
    *ut1utc     = (mjdUT1 - refmjd) * GmatTimeConstants::SECS_PER_DAY;
 //   Real mjdTT  = TimeConverterUtil::Convert(refmjd,
-//                 wxT("UtcMjd"), wxT("TtMjd"), GmatTimeConstants::JD_JAN_5_1941);
+//                 "UtcMjd", "TtMjd", GmatTimeConstants::JD_JAN_5_1941);
    Real mjdTT  = TimeConverterUtil::Convert(refmjd,
                  TimeConverterUtil::UTCMJD, TimeConverterUtil::TTMJD, 
                  GmatTimeConstants::JD_JAN_5_1941);

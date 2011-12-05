@@ -28,8 +28,8 @@
 class GMAT_API PropSetupFactory : public Factory
 {
 public:
-   PropSetup*  CreatePropSetup(const wxString &ofType,
-                               const wxString &withName = wxT(""));
+   PropSetup*  CreatePropSetup(const std::string &ofType,
+                               const std::string &withName = "");
 
    // default constructor
    PropSetupFactory();

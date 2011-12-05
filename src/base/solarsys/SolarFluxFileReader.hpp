@@ -32,7 +32,7 @@ public:
         
    Integer LoadSolarFluxFile(Real a1_time, FILE *tkptr, 
                              bool new_file, GEOPARMS *geoParms);
-   FILE*   OpenSolarFluxFile(wxString filename);
+   FILE*   OpenSolarFluxFile(std::string filename);
    bool    CloseSolarFluxFile(FILE* tkptr);
    
 protected:

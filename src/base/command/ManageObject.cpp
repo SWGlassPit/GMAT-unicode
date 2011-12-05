@@ -30,10 +30,10 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 ManageObject::PARAMETER_TEXT[ManageObjectParamCount - GmatCommandParamCount] =
 {
-   wxT("ObjectNames"),
+   "ObjectNames",
 };
 
 const Gmat::ParameterType
@@ -49,7 +49,7 @@ ManageObject::PARAMETER_TYPE[ManageObjectParamCount - GmatCommandParamCount] =
  * Constructor
  */
 //------------------------------------------------------------------------------
-ManageObject::ManageObject(const wxString &typeStr) :
+ManageObject::ManageObject(const std::string &typeStr) :
    GmatCommand(typeStr)
 {
 }
@@ -106,14 +106,14 @@ ManageObject& ManageObject::operator=(const ManageObject &mo)
 }
 
 // Parameter access methods - overridden from GmatBase
-wxString ManageObject::GetParameterText(const Integer id) const
+std::string ManageObject::GetParameterText(const Integer id) const
 {
    if (id >= GmatCommandParamCount && id < ManageObjectParamCount)
       return PARAMETER_TEXT[id - GmatCommandParamCount];
    return GmatCommand::GetParameterText(id);
 }
 
-Integer ManageObject::GetParameterID(const wxString &str) const
+Integer ManageObject::GetParameterID(const std::string &str) const
 {
    for (Integer i = GmatCommandParamCount; i < ManageObjectParamCount; i++)
    {
@@ -132,19 +132,19 @@ Gmat::ParameterType ManageObject::GetParameterType(const Integer id) const
    return GmatCommand::GetParameterType(id);
 }
 
-wxString ManageObject::GetParameterTypeString(const Integer id) const
+std::string ManageObject::GetParameterTypeString(const Integer id) const
 {
    return GmatCommand::PARAM_TYPE_STRING[GetParameterType(id)];
 }
 
 
-wxString ManageObject::GetStringParameter(const Integer id) const
+std::string ManageObject::GetStringParameter(const Integer id) const
 {
    return GmatCommand::GetStringParameter(id);
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id, const Integer index)
+//  std::string  GetStringParameter(const Integer id, const Integer index)
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -159,21 +159,21 @@ wxString ManageObject::GetStringParameter(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString ManageObject::GetStringParameter(const Integer id,
+std::string ManageObject::GetStringParameter(const Integer id,
                                              const Integer index) const
 {
    if (id == OBJECT_NAMES)
    {
       if ((index < 0) || (index >= ((Integer) objectNames.size())))
          throw CommandException(
-               wxT("Index out of bounds when attempting to return object name\n"));
+               "Index out of bounds when attempting to return object name\n");
       return objectNames.at(index);
     }
    return GmatCommand::GetStringParameter(id, index);
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const wxString &label, const Integer index)
+//  std::string  GetStringParameter(const std::string &label, const Integer index)
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -186,14 +186,14 @@ wxString ManageObject::GetStringParameter(const Integer id,
  *
  */
 //------------------------------------------------------------------------------
-wxString ManageObject::GetStringParameter(const wxString &label,
+std::string ManageObject::GetStringParameter(const std::string &label,
                                              const Integer index) const
 {
    return GetStringParameter(GetParameterID(label), index);
 }
 
 //------------------------------------------------------------------------------
-//  bool  SetStringParameter(const Integer id, const wxString value)
+//  bool  SetStringParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the string parameter value, given the input
@@ -209,7 +209,7 @@ wxString ManageObject::GetStringParameter(const wxString &label,
  */
 //------------------------------------------------------------------------------
 bool ManageObject::SetStringParameter(const Integer id, 
-                                      const wxString &value)
+                                      const std::string &value)
 {
    if (id == OBJECT_NAMES)
    {
@@ -217,8 +217,8 @@ bool ManageObject::SetStringParameter(const Integer id,
       for (Integer ii = 0; ii < sz; ii++)
          if (objectNames[ii] == value)
          {
-            wxString ex = wxT("Attempting to add """);
-            ex += value + wxT(" more than once to list of objects.\n");
+            std::string ex = "Attempting to add """;
+            ex += value + """ more than once to list of objects.\n";
             throw CommandException(ex);
          }
       objectNames.push_back(value);
@@ -228,7 +228,7 @@ bool ManageObject::SetStringParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-//  bool  SetStringParameter(const wxString &label, const wxString value)
+//  bool  SetStringParameter(const std::string &label, const std::string value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the string parameter value, given the input
@@ -243,14 +243,14 @@ bool ManageObject::SetStringParameter(const Integer id,
  *
  */
 //------------------------------------------------------------------------------
-bool ManageObject::SetStringParameter(const wxString &label, 
-                                      const wxString &value)
+bool ManageObject::SetStringParameter(const std::string &label, 
+                                      const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
 
 bool ManageObject::SetStringParameter(const Integer id, 
-                                      const wxString &value,
+                                      const std::string &value,
                                       const Integer index)
 {
    if (id == OBJECT_NAMES)
@@ -258,10 +258,10 @@ bool ManageObject::SetStringParameter(const Integer id,
       Integer sz = objectNames.size();
       if (index < 0)
          throw CommandException(
-               wxT("Index of object name array out of bounds for ManageObject command.\n"));
+               "Index of object name array out of bounds for ManageObject command.\n");
       if (index > sz)
          throw CommandException(
-               wxT("Missing elements in Object Name list for ManageObject command.\n"));
+               "Missing elements in Object Name list for ManageObject command.\n");
       // push it onto the end of the list
       if (index == sz) objectNames.push_back(value);
       // or replace one of the already-existing names
@@ -272,8 +272,8 @@ bool ManageObject::SetStringParameter(const Integer id,
    return GmatCommand::SetStringParameter(id, value, index);
 }
 
-bool ManageObject::SetStringParameter(const wxString &label, 
-                                      const wxString &value,
+bool ManageObject::SetStringParameter(const std::string &label, 
+                                      const std::string &value,
                                       const Integer index)
 {
    return SetStringParameter(GetParameterID(label),value,index);
@@ -314,34 +314,34 @@ ManageObject::GetStringArrayParameter(const Integer id) const
 bool ManageObject::Initialize()
 {
    #ifdef DEBUG_MANAGE_OBJECT
-      MessageInterface::ShowMessage(wxT("ManageObject::Initialize() entered\n"));
+      MessageInterface::ShowMessage("ManageObject::Initialize() entered\n");
    #endif
       
    GmatCommand::Initialize();
    Integer numNames = (Integer) objectNames.size();
    if (numNames <= 0)
    {
-      wxString ex = wxT("No objects listed for ManageObject command.\n");
+      std::string ex = "No objects listed for ManageObject command.\n";
       throw CommandException(ex);
    }
    return true;
 }
 
 
-bool ManageObject::InsertIntoGOS(GmatBase *obj, const wxString &withName)
+bool ManageObject::InsertIntoGOS(GmatBase *obj, const std::string &withName)
 {
    #ifdef DEBUG_MANAGE_OBJECT
-      MessageInterface::ShowMessage(wxT("Entering InsertIntoGOS, with obj = <%p> and name = %s\n"),
+      MessageInterface::ShowMessage("Entering InsertIntoGOS, with obj = <%p> and name = %s\n",
             obj, withName.c_str());
    #endif
    if (!obj)
    {
-      wxString errMsg = wxT("ManageObject::InsertIntoGOS() passed a NULL object\n");
+      std::string errMsg = "ManageObject::InsertIntoGOS() passed a NULL object\n";
       throw CommandException(errMsg);
    }
    GmatBase *mapObj;
-   wxString ex;
-   ////wxString objType = obj->GetTypeName();
+   std::string ex;
+   ////std::string objType = obj->GetTypeName();
    Gmat::ObjectType objType = obj->GetType();
    // if it is already in the GOS, make sure the types match
    if (globalObjectMap->find(withName) != globalObjectMap->end())
@@ -349,20 +349,20 @@ bool ManageObject::InsertIntoGOS(GmatBase *obj, const wxString &withName)
       mapObj = (*globalObjectMap)[withName];
       if (!mapObj->IsOfType(objType))
       {
-         ex = wxT("Object of name ") + withName;
-         ex += wxT(", but of a different type, already exists in Global Object Store\n");
+         ex = "Object of name """ + withName;
+         ex += """, but of a different type, already exists in Global Object Store\n";
          throw CommandException(ex);
       }
       ////if (objType == "Array")
-      if (objType == Gmat::PARAMETER && obj->GetTypeName() == wxT("Array"))
+      if (objType == Gmat::PARAMETER && obj->GetTypeName() == "Array")
       {
          Integer r1, r2, c1, c2;
          ((Array*) mapObj)->GetSize(r1, c1);
          ((Array*) obj)->GetSize(r2, c2);
          if ((r1 != r2) || (c1 != c2))
          {
-            ex = wxT("Array of name ") + withName;
-            ex += wxT(", but with different dimensions already exists in Global Object Store\n");
+            ex = "Array of name """ + withName;
+            ex += """, but with different dimensions already exists in Global Object Store\n";
             throw CommandException(ex);
          }
       }
@@ -370,25 +370,25 @@ bool ManageObject::InsertIntoGOS(GmatBase *obj, const wxString &withName)
       // This Warning is very annoying when GmatFunction is running in a loop,
       // so defined macro here (loj: 2008.10.08)
       #ifdef __SHOW_GOS_WARNING__
-      ex = wxT("ManageObject::InsertIntoGOS() Cannot add more than ")
-         wxT("one object with name \"");
-      ex += withName + wxT("\" to the Global Object Store");
-      MessageInterface::ShowMessage(wxT("*** WARNING *** ") + ex + wxT(", So ignored.\n"));
+      ex = "ManageObject::InsertIntoGOS() Cannot add more than "
+         "one object with name \"";
+      ex += withName + "\" to the Global Object Store";
+      MessageInterface::ShowMessage("*** WARNING *** " + ex + ", So ignored.\n");
       // Let's just ignore for now to run TargetHohmannTransfer.gmf (loj: 2008.06.05) 
       //throw CommandException(ex);
       #endif
       
       // it is already in there, so we do not need to put this one in; clean it up
       #ifdef DEBUG_MANAGE_OBJECT
-         MessageInterface::ShowMessage(wxT(" Create::object %s was already in object store ...\n"),
+         MessageInterface::ShowMessage(" Create::object %s was already in object store ...\n",
             withName.c_str());
-         MessageInterface::ShowMessage(wxT("  pointer for obj = <%p> and pointer for mapObj = <%p>\n"),
+         MessageInterface::ShowMessage("  pointer for obj = <%p> and pointer for mapObj = <%p>\n",
             obj, mapObj);
       #endif
       if (mapObj != obj) 
       {
          #ifdef DEBUG_MANAGE_OBJECT
-               MessageInterface::ShowMessage(wxT(" Create:: object is not the same, though\n"),
+               MessageInterface::ShowMessage(" Create:: object is not the same, though\n",
                      withName.c_str());
          #endif
          return false;

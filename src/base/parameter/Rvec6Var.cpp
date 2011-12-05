@@ -30,9 +30,9 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// Rvec6Var::Rvec6Var(const wxString &name, const wxString &typeStr,
+// Rvec6Var::Rvec6Var(const std::string &name, const std::string &typeStr,
 //                    GmatParam::ParameterKey key, GmatBase *obj,
-//                    const wxString &desc, const wxString &unit,
+//                    const std::string &desc, const std::string &unit,
 //                    GmatParam::DepObject depObj, Gmat::ObjectType ownerType)
 //------------------------------------------------------------------------------
 /**
@@ -48,9 +48,9 @@
  * @exception <ParameterException> thrown if parameter name has blank spaces
  */
 //------------------------------------------------------------------------------
-Rvec6Var::Rvec6Var(const wxString &name, const wxString &typeStr,
+Rvec6Var::Rvec6Var(const std::string &name, const std::string &typeStr,
                    GmatParam::ParameterKey key, GmatBase *obj,
-                   const wxString &desc, const wxString &unit,
+                   const std::string &desc, const std::string &unit,
                    GmatParam::DepObject depObj, Gmat::ObjectType ownerType)
    : Parameter(name, typeStr, key, obj, desc, unit, depObj, ownerType, false,
                false, false, false)
@@ -133,15 +133,15 @@ bool Rvec6Var::operator!=(const Rvec6Var &right) const
 }
 
 //------------------------------------------------------------------------------
-// wxString ToString()
+// std::string ToString()
 //------------------------------------------------------------------------------
 /**
- * @return parameter value converted to wxString.
+ * @return parameter value converted to std::string.
  *
  * @exception <ParameterException> thrown if this method is called.
  */
 //------------------------------------------------------------------------------
-wxString Rvec6Var::ToString()
+std::string Rvec6Var::ToString()
 {
    return mRvec6Value.ToString();
 }
@@ -178,8 +178,8 @@ const Rvector6& Rvec6Var::EvaluateRvector6()
 {
    if (mKey == GmatParam::SYSTEM_PARAM)
    {
-      throw ParameterException(wxT("Parameter: EvaluateRvector6() should be implemented ")
-                               wxT("for Parameter Type:") + GetTypeName());
+      throw ParameterException("Parameter: EvaluateRvector6() should be implemented "
+                               "for Parameter Type:" + GetTypeName());
    }
    else
    {

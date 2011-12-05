@@ -23,8 +23,8 @@
 #include "PublisherException.hpp" // class's header file
 
 // class constructor
-PublisherException::PublisherException(wxString details) :
-    BaseException   (wxT("Publisher Exception: "), details)
+PublisherException::PublisherException(std::string details) :
+    BaseException   ("Publisher Exception: ", details)
 {
 }
 

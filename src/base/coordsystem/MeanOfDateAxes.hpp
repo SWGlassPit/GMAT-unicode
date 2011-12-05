@@ -34,8 +34,8 @@ class GMAT_API MeanOfDateAxes : public DynamicAxes
 public:
 
    // default constructor
-   MeanOfDateAxes(const wxString &itsType,
-                  const wxString &itsName = wxT(""));
+   MeanOfDateAxes(const std::string &itsType,
+                  const std::string &itsName = "");
    // copy constructor
    MeanOfDateAxes(const MeanOfDateAxes &mod);
    // operator = for assignment

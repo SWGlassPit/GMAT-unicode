@@ -39,7 +39,7 @@
 OnOffWrapper::OnOffWrapper() :
    ElementWrapper()
 {
-   value       = wxT("");
+   value       = "";
    wrapperType = Gmat::ON_OFF_WT;
 }
 
@@ -51,7 +51,7 @@ OnOffWrapper::OnOffWrapper() :
  * Constructs base OnOffWrapper structures used in derived classes, by 
  * copying the input instance (copy constructor).
  *
- * @param <copy>  OnOffWrapper instance to copy to create wxT("this") instance.
+ * @param <copy>  OnOffWrapper instance to copy to create "this" instance.
  */
 //------------------------------------------------------------------------------
 OnOffWrapper::OnOffWrapper(const OnOffWrapper &copy) :
@@ -127,7 +127,7 @@ Gmat::ParameterType OnOffWrapper::GetDataType() const
 Real OnOffWrapper::EvaluateReal() const
 {
    throw ParameterException(
-      wxT("EvaluateReal() method not valid for wrapper of OnOff type.\n"));
+      "EvaluateReal() method not valid for wrapper of OnOff type.\n");
 }
 
 
@@ -145,12 +145,12 @@ Real OnOffWrapper::EvaluateReal() const
 bool OnOffWrapper::SetReal(const Real toValue)
 {
    throw ParameterException(
-      wxT("SetReal() method not valid for wrapper of OnOff type.\n"));
+      "SetReal() method not valid for wrapper of OnOff type.\n");
 }
 
 
 //------------------------------------------------------------------------------
-//  wxString EvaluateOnOff() const
+//  std::string EvaluateOnOff() const
 //------------------------------------------------------------------------------
 /**
  * Method to return the string value of the OnOffWrapper object.
@@ -159,14 +159,14 @@ bool OnOffWrapper::SetReal(const Real toValue)
  * 
  */
 //------------------------------------------------------------------------------
-wxString OnOffWrapper::EvaluateOnOff() const
+std::string OnOffWrapper::EvaluateOnOff() const
 {
    return value;
 }
 
 
 //------------------------------------------------------------------------------
-//  bool SetOnOff(const wxString &val)
+//  bool SetOnOff(const std::string &val)
 //------------------------------------------------------------------------------
 /**
  * Method to set the string value of the wrapped object.
@@ -175,12 +175,12 @@ wxString OnOffWrapper::EvaluateOnOff() const
  * @return true if successful; false otherwise.
  */
 //------------------------------------------------------------------------------
-bool OnOffWrapper::SetOnOff(const wxString &val)
+bool OnOffWrapper::SetOnOff(const std::string &val)
 {
-   if (val == wxT("On") || val == wxT("Off"))
+   if (val == "On" || val == "Off")
       value = val;
    else
-      throw ParameterException(wxT("Input value is not \"On\" or \"Off\""));
+      throw ParameterException("Input value is not \"On\" or \"Off\"");
    
    return true;
 }
@@ -200,11 +200,11 @@ bool OnOffWrapper::SetOnOff(const wxString &val)
 //------------------------------------------------------------------------------
 void OnOffWrapper::SetupWrapper()
 {
-   if (description != wxT("On") && description != wxT("Off"))
+   if (description != "On" && description != "Off")
    {
-      wxString errmsg = wxT("For OnOff wrapper \"");
+      std::string errmsg = "For OnOff wrapper \"";
       errmsg += description;
-      errmsg += wxT("\", the description string is not \"On\" or \"Off\"\n"); 
+      errmsg += "\", the description string is not \"On\" or \"Off\"\n"; 
       throw ParameterException(errmsg);
    }
    

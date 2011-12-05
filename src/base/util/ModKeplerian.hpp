@@ -55,8 +55,8 @@ public:
    void SetState(const Rvector6& state);
 
    Integer GetNumData() const;
-   const wxString* GetDataDescriptions() const;
-   wxString* ToValueStrings();
+   const std::string* GetDataDescriptions() const;
+   std::string* ToValueStrings();
 
 protected:
 
@@ -69,8 +69,8 @@ private:
    Real     anomaly;           // True Anomaly as default; otherwise 
     
    static const Integer NUM_DATA = 6;
-   static const wxString DATA_DESCRIPTIONS[NUM_DATA];
-   wxString stringValues[NUM_DATA];
+   static const std::string DATA_DESCRIPTIONS[NUM_DATA];
+   std::string stringValues[NUM_DATA];
 
 };
 #endif // ModKeplerian_hpp

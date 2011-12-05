@@ -31,7 +31,7 @@
 class GMAT_API BranchCommand : public GmatCommand
 {
 public:
-   BranchCommand(const wxString &typeStr);
+   BranchCommand(const std::string &typeStr);
    virtual ~BranchCommand();
    BranchCommand(const BranchCommand& bc);
    BranchCommand&          operator=(const BranchCommand& bc);
@@ -51,25 +51,25 @@ public:
    
    virtual void            SetSolarSystem(SolarSystem *ss);
    virtual void            SetInternalCoordSystem(CoordinateSystem *cs);
-   virtual void            SetObjectMap(std::map<wxString, GmatBase*> *map);
-   virtual void            SetGlobalObjectMap(std::map<wxString, GmatBase*> *map);
+   virtual void            SetObjectMap(std::map<std::string, GmatBase*> *map);
+   virtual void            SetGlobalObjectMap(std::map<std::string, GmatBase*> *map);
    
-   virtual const wxString&
+   virtual const std::string&
                            GetGeneratingString(Gmat::WriteMode mode =
                                                Gmat::SCRIPTING,
-                                               const wxString &prefix = wxT(""),
-                                               const wxString &useName = wxT(""));
+                                               const std::string &prefix = "",
+                                               const std::string &useName = "");
    
    virtual bool            RenameRefObject(const Gmat::ObjectType type,
-                                           const wxString &oldName,
-                                           const wxString &newName);
+                                           const std::string &oldName,
+                                           const std::string &newName);
    
    virtual GmatCommand*    GetNext();
    virtual GmatCommand*    GetChildCommand(Integer whichOne = 0);
    virtual void            SetTransientForces(std::vector<PhysicalModel*> *tf);
    virtual bool            Initialize();
-   virtual bool            TakeAction(const wxString &action, 
-                                      const wxString &actionData = wxT(""));
+   virtual bool            TakeAction(const std::string &action, 
+                                      const std::string &actionData = "");
    virtual bool            Execute();
    virtual void            RunComplete();
    // method to handle GmatFunctions
@@ -103,7 +103,7 @@ protected:
    /// The branch that is being filled while the command sequence is being built
    Integer                 branchToFill;
    /// Local container used to return the full sequence from the branches
-   wxString             fullString;
+   std::string             fullString;
    /// Counter to track how deep the nesting is
    Integer                 nestLevel;
    /// Currently executing member of the branch.  NULL if branch not executing.

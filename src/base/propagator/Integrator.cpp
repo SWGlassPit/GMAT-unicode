@@ -49,7 +49,7 @@
 //                                - GetParameter() to GetRealParameter()
 //                                - virtual char* 
 //                                  GetParameterName(const int parm) const to
-//                                  virtual wxString 
+//                                  virtual std::string 
 //                                  GetParameterName(const int parm) const
 //
 //                           : 10/16/2003 - W. Waktola, 
@@ -82,16 +82,16 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 Integrator::PARAMETER_TEXT[IntegratorParamCount - PropagatorParamCount] =
 {
-    wxT("Accuracy"),
-    wxT("ErrorThreshold"),
-    wxT("SmallestInterval"),
-    wxT("MinStep"),
-    wxT("MaxStep"),
-    wxT("MaxStepAttempts"),
-    wxT("StopIfAccuracyIsViolated"),
+    "Accuracy",
+    "ErrorThreshold",
+    "SmallestInterval",
+    "MinStep",
+    "MaxStep",
+    "MaxStepAttempts",
+    "StopIfAccuracyIsViolated",
 };
 
 const Gmat::ParameterType
@@ -120,7 +120,7 @@ Integrator::PARAMETER_TYPE[IntegratorParamCount - PropagatorParamCount] =
  * @param <nomme>  Integrator name
  */
 //------------------------------------------------------------------------------
-Integrator::Integrator(const wxString &typeStr, const wxString &nomme)
+Integrator::Integrator(const std::string &typeStr, const std::string &nomme)
     : Propagator              (typeStr, nomme),
       tolerance               (1.0e-11),
       fixedStep               (false),
@@ -140,7 +140,7 @@ Integrator::Integrator(const wxString &typeStr, const wxString &nomme)
       errorThreshold          (0.10),
       derivativeOrder         (1)
 {
-   objectTypeNames.push_back(wxT("Integrator"));
+   objectTypeNames.push_back("Integrator");
    parameterCount = IntegratorParamCount;
 }
 
@@ -229,13 +229,13 @@ Integrator::~Integrator(void)
 }
 
 //------------------------------------------------------------------------------
-// wxString Integrator::GetParameterText(const Integer id) const
+// std::string Integrator::GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
 * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString Integrator::GetParameterText(const Integer id) const
+std::string Integrator::GetParameterText(const Integer id) const
 {
     if (id >= PropagatorParamCount && id < IntegratorParamCount)
         return PARAMETER_TEXT[id - PropagatorParamCount];
@@ -244,13 +244,13 @@ wxString Integrator::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// Integer Integrator::GetParameterID(const wxString &str) const
+// Integer Integrator::GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
 * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Integer Integrator::GetParameterID(const wxString &str) const
+Integer Integrator::GetParameterID(const std::string &str) const
 {
     for (int i = PropagatorParamCount; i < IntegratorParamCount; i++)
     {
@@ -276,13 +276,13 @@ Gmat::ParameterType Integrator::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// wxString Integrator::GetParameterTypeString(const Integer id) const
+// std::string Integrator::GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-wxString Integrator::GetParameterTypeString(const Integer id) const
+std::string Integrator::GetParameterTypeString(const Integer id) const
 {
     if (id >= PropagatorParamCount && id < IntegratorParamCount)
         return GmatBase::PARAM_TYPE_STRING
@@ -348,13 +348,13 @@ Real Integrator::GetRealParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// Real GetRealParameter(const wxString &label) const
+// Real GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Real Integrator::GetRealParameter(const wxString &label) const
+Real Integrator::GetRealParameter(const std::string &label) const
 {
     return GetRealParameter(GetParameterID(label));
 }
@@ -382,12 +382,12 @@ Real Integrator::SetRealParameter(const Integer id, const Real value)
          tolerance = value;
       else
       {
-         wxString buffer;
+         std::stringstream buffer;
          buffer << value;
             throw PropagatorException(
-               wxT("The value of \"") + buffer + wxT("\" for field \"Accuracy\"")
-               wxT(" on object \"") + instanceName + wxT("\" is not an allowed value.\n")
-               wxT("The allowed values are: [ Real Number > 0.0 ]. "));
+               "The value of \"" + buffer.str() + "\" for field \"Accuracy\""
+               " on object \"" + instanceName + "\" is not an allowed value.\n"
+               "The allowed values are: [ Real Number > 0.0 ]. ");
       }
       return value;
    case MIN_STEP:
@@ -395,12 +395,12 @@ Real Integrator::SetRealParameter(const Integer id, const Real value)
          minimumStep = value;
       else
       {
-         wxString buffer;
+         std::stringstream buffer;
          buffer << value;
          throw PropagatorException(
-            wxT("The value of \"") + buffer + wxT("\" for field \"Min Step\"")
-            wxT(" on object \"") + instanceName + wxT("\" is not an allowed value.\n")
-            wxT("The allowed values are: [ Real Number >= 0.0, MinStep <= MaxStep ]."));
+            "The value of \"" + buffer.str() + "\" for field \"Min Step\""
+            " on object \"" + instanceName + "\" is not an allowed value.\n"
+            "The allowed values are: [ Real Number >= 0.0, MinStep <= MaxStep ].");
       }
       return value;
    case MAX_STEP:
@@ -408,12 +408,12 @@ Real Integrator::SetRealParameter(const Integer id, const Real value)
             maximumStep = value;
       else
       {
-         wxString buffer;
+         std::stringstream buffer;
          buffer << value;
          throw PropagatorException(
-            wxT("The value of \"") + buffer + wxT("\" for field \"Max Step\"")
-            wxT(" on object \"") + instanceName + wxT("\" is not an allowed value.\n")
-            wxT("The allowed values are: [ Real Number > 0.0, MinStep <= MaxStep ]."));
+            "The value of \"" + buffer.str() + "\" for field \"Max Step\""
+            " on object \"" + instanceName + "\" is not an allowed value.\n"
+            "The allowed values are: [ Real Number > 0.0, MinStep <= MaxStep ].");
       }
       return value;
    case ERROR_THRESHOLD:
@@ -422,7 +422,7 @@ Real Integrator::SetRealParameter(const Integer id, const Real value)
          physicalModel->SetErrorThreshold(errorThreshold);
           else
              throw PropagatorException(
-                      wxT("Integrator::SetRealParameter -- PhysicalModel is NULL."));
+                      "Integrator::SetRealParameter -- PhysicalModel is NULL.");
       return value;
    case SMALLEST_INTERVAL:
       smallestTime = fabs(value);
@@ -433,13 +433,13 @@ Real Integrator::SetRealParameter(const Integer id, const Real value)
 }
 
 //------------------------------------------------------------------------------
-// Real SetRealParameter(const wxString &label, const Real value)
+// Real SetRealParameter(const std::string &label, const Real value)
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Real Integrator::SetRealParameter(const wxString &label, const Real value)
+Real Integrator::SetRealParameter(const std::string &label, const Real value)
 {
     return SetRealParameter(GetParameterID(label), value);
 }
@@ -460,13 +460,13 @@ Integer Integrator::GetIntegerParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// Integer Integrator::GetIntegerParameter(const wxString &label) const
+// Integer Integrator::GetIntegerParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Integer Integrator::GetIntegerParameter(const wxString &label) const
+Integer Integrator::GetIntegerParameter(const std::string &label) const
 {
     return GetIntegerParameter(GetParameterID(label));
 }
@@ -490,15 +490,15 @@ Integer Integrator::SetIntegerParameter(const Integer id, const Integer value)
          maxStepAttempts = value;
       else
       {
-         wxString buffer;
+         std::stringstream buffer;
          buffer << value;
 //         throw PropagatorException(
-//            wxT("The value of ") + buffer + wxT(" for the integrator Max Step Attempts")
-//            wxT(" a is not an allowed value. The allowed values are [Integer > 0]."));
+//            "The value of " + buffer.str() + " for the integrator Max Step Attempts"
+//            " a is not an allowed value. The allowed values are [Integer > 0].");
             throw PropagatorException(
-               wxT("The value of \"") + buffer + wxT("\" for field \"Max Step Attempts\"")
-               wxT(" on object \"") + instanceName + wxT("\" is not an allowed value.\n")
-               wxT("The allowed values are: [ Integer > 0 ]. "));
+               "The value of \"" + buffer.str() + "\" for field \"Max Step Attempts\""
+               " on object \"" + instanceName + "\" is not an allowed value.\n"
+               "The allowed values are: [ Integer > 0 ]. ");
       }
       return value;
    }
@@ -507,14 +507,14 @@ Integer Integrator::SetIntegerParameter(const Integer id, const Integer value)
 }
 
 //------------------------------------------------------------------------------
-// Integer Integrator::SetIntegerParameter(const wxString &label, 
+// Integer Integrator::SetIntegerParameter(const std::string &label, 
 //                                                          const Integer value)
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-Integer Integrator::SetIntegerParameter(const wxString &label, const Integer value)
+Integer Integrator::SetIntegerParameter(const std::string &label, const Integer value)
 {
     return SetIntegerParameter(GetParameterID(label), value);
 }
@@ -565,7 +565,7 @@ bool Integrator::SetBooleanParameter(const Integer id, const bool value)
 
 
 //------------------------------------------------------------------------------
-// bool TakeAction(const wxString &action, const wxString &actionData)
+// bool TakeAction(const std::string &action, const std::string &actionData)
 //------------------------------------------------------------------------------
 /**
  * Performs custom actions
@@ -579,18 +579,18 @@ bool Integrator::SetBooleanParameter(const Integer id, const bool value)
  * @return true if an action was taken, false if not
  */
 //------------------------------------------------------------------------------
-bool Integrator::TakeAction(const wxString &action,
-      const wxString &actionData)
+bool Integrator::TakeAction(const std::string &action,
+      const std::string &actionData)
 {
    bool retval = false;
 
-   if (action == wxT("PrepareForRun"))
+   if (action == "PrepareForRun")
    {
       accuracyWarningTriggered = false;
       retval = true;
    }
 
-   if (action == wxT("ChangeTypeSourceString"))
+   if (action == "ChangeTypeSourceString")
    {
       typeSource = actionData;
       retval = true;
@@ -620,7 +620,7 @@ void Integrator::SetPhysicalModel(PhysicalModel *pPhysicalModel)
         physicalModel->SetErrorThreshold(errorThreshold);
         else
            throw PropagatorException(
-                 wxT("Integrator::SetPhysicalModel -- PhyscialModel is NULL."));
+                 "Integrator::SetPhysicalModel -- PhyscialModel is NULL.");
 }
 
 

@@ -31,10 +31,10 @@
 // static data
 //---------------------------------
 
-const wxString SpaceObject::PARAMETER_TEXT[SpaceObjectParamCount -
+const std::string SpaceObject::PARAMETER_TEXT[SpaceObjectParamCount -
                                               SpacePointParamCount] =
    {
-      wxT("A1Epoch")
+      "A1Epoch"
    };
 
 
@@ -50,8 +50,8 @@ const Gmat::ParameterType SpaceObject::PARAMETER_TYPE[SpaceObjectParamCount -
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// SpaceObject(Gmat::ObjectType typeId, const wxString &typeStr,
-//             const wxString &instName)
+// SpaceObject(Gmat::ObjectType typeId, const std::string &typeStr,
+//             const std::string &instName)
 //------------------------------------------------------------------------------
 /**
  * Default constructor.
@@ -61,19 +61,19 @@ const Gmat::ParameterType SpaceObject::PARAMETER_TYPE[SpaceObjectParamCount -
  * @param <instName> Name of the constructed instance.
  */
 //------------------------------------------------------------------------------
-SpaceObject::SpaceObject(Gmat::ObjectType typeId, const wxString &typeStr,
-                         const wxString &instName) :
+SpaceObject::SpaceObject(Gmat::ObjectType typeId, const std::string &typeStr,
+                         const std::string &instName) :
    SpacePoint        (typeId, typeStr, instName),
    state             (6),
    isManeuvering     (false),
-   originName        (wxT("Earth")),
+   originName        ("Earth"),
    origin            (NULL),
    parmsChanged      (true),
    hasPublished      (false),
    hasEphemPropagated(false)
 {
    objectTypes.push_back(Gmat::SPACEOBJECT);
-   objectTypeNames.push_back(wxT("SpaceObject"));
+   objectTypeNames.push_back("SpaceObject");
 }
 
 
@@ -257,7 +257,7 @@ void SpaceObject::ParametersHaveChanged(bool flag)
 
 
 /// @todo Waiting for CoordinateSystems in Spacecraft, then see if needed
-void SpaceObject::SetOriginName(wxString cbName)
+void SpaceObject::SetOriginName(std::string cbName)
 {
    originName = cbName;
 }
@@ -267,7 +267,7 @@ SpacePoint* SpaceObject::GetOrigin()
    return origin;
 }
 
-const wxString SpaceObject::GetOriginName()
+const std::string SpaceObject::GetOriginName()
 {
    return originName;
 }
@@ -298,27 +298,27 @@ const Rvector6 SpaceObject::GetMJ2000State(const A1Mjd &atTime)
 {
    #ifdef DEBUG_J2000_STATE
       MessageInterface::ShowMessage(
-         wxT("SpaceObject::GetMJ2000State entered; epoch is %lf\n"), atTime.Get());
+         "SpaceObject::GetMJ2000State entered; epoch is %lf\n", atTime.Get());
    #endif
    if (j2000Body == NULL)
       throw SpaceObjectException(
-         wxT("SpaceObject::GetMJ2000State MJ2000 body not yet set for ") +
-         instanceName + wxT("\n"));
+         "SpaceObject::GetMJ2000State MJ2000 body not yet set for " +
+         instanceName + "\n");
          
    GmatState ps = GetState();
    
    Real *st = ps.GetState();
 
    #ifdef DEBUG_J2000_STATE
-      MessageInterface::ShowMessage(wxT("   Object state: [%lf %lf %lf %lf %lf ")
-            wxT("%lf]\n"), st[0], st[1], st[2], st[3], st[4], st[5]);
-      MessageInterface::ShowMessage(wxT("   Accessing J2000 body state for %s\n"),
+      MessageInterface::ShowMessage("   Object state: [%lf %lf %lf %lf %lf "
+            "%lf]\n", st[0], st[1], st[2], st[3], st[4], st[5]);
+      MessageInterface::ShowMessage("   Accessing J2000 body state for %s\n",
          j2000Body->GetName().c_str());
    #endif
    Rvector6 bodyState = j2000Body->GetMJ2000State(atTime);
 
    #ifdef DEBUG_J2000_STATE
-      MessageInterface::ShowMessage(wxT("   MJ2000: [%lf %lf %lf %lf %lf %lf]\n"),
+      MessageInterface::ShowMessage("   MJ2000: [%lf %lf %lf %lf %lf %lf]\n",
          bodyState[0], bodyState[1], bodyState[2], bodyState[3], bodyState[4], 
          bodyState[5]);
    #endif
@@ -329,21 +329,21 @@ const Rvector6 SpaceObject::GetMJ2000State(const A1Mjd &atTime)
 //      if (origin != j2000Body)
 //      {
 //         #ifdef DEBUG_J2000_STATE
-//            MessageInterface::ShowMessage(wxT("   Accessing origin state for %s\n"),
+//            MessageInterface::ShowMessage("   Accessing origin state for %s\n",
 //               origin->GetName().c_str());
 //         #endif
 //
 //         Rvector6 offset = origin->GetMJ2000State(atTime);
 //
 //         #ifdef DEBUG_J2000_STATE
-//            MessageInterface::ShowMessage(wxT("   origin: [%lf %lf %lf %lf %lf %lf]\n"),
+//            MessageInterface::ShowMessage("   origin: [%lf %lf %lf %lf %lf %lf]\n",
 //               offset[0], offset[1], offset[2], offset[3], offset[4], offset[5]);
 //         #endif
 //
 //         bodyState -= offset;
 //
 //         #ifdef DEBUG_J2000_STATE
-//            MessageInterface::ShowMessage(wxT("   Diff: [%lf %lf %lf %lf %lf %lf]\n"),
+//            MessageInterface::ShowMessage("   Diff: [%lf %lf %lf %lf %lf %lf]\n",
 //               bodyState[0], bodyState[1], bodyState[2], bodyState[3], bodyState[4],
 //               bodyState[5]);
 //         #endif
@@ -361,7 +361,7 @@ const Rvector6 SpaceObject::GetMJ2000State(const A1Mjd &atTime)
    j2kState[5] = st[5] - bodyState[5];
 
    #ifdef DEBUG_J2000_STATE
-      MessageInterface::ShowMessage(wxT("   J2K state: [%lf %lf %lf %lf %lf %lf]\n"),
+      MessageInterface::ShowMessage("   J2K state: [%lf %lf %lf %lf %lf %lf]\n",
             j2kState[0], j2kState[1], j2kState[2], j2kState[3], j2kState[4],
             j2kState[5]);
    #endif
@@ -413,7 +413,7 @@ const Rvector3 SpaceObject::GetMJ2000Velocity(const A1Mjd &atTime)
 
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -423,7 +423,7 @@ const Rvector3 SpaceObject::GetMJ2000Velocity(const A1Mjd &atTime)
  * @return ID for the requested parameter.
  */
 //------------------------------------------------------------------------------
-Integer SpaceObject::GetParameterID(const wxString &str) const
+Integer SpaceObject::GetParameterID(const std::string &str) const
 {
    for (Integer i = SpacePointParamCount; i < SpaceObjectParamCount; i++)
    {
@@ -436,7 +436,7 @@ Integer SpaceObject::GetParameterID(const wxString &str) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -446,7 +446,7 @@ Integer SpaceObject::GetParameterID(const wxString &str) const
  * @return parameter text for the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString SpaceObject::GetParameterText(const Integer id) const
+std::string SpaceObject::GetParameterText(const Integer id) const
 {
    if (id >= SpacePointParamCount && id < SpaceObjectParamCount)
       return PARAMETER_TEXT[id - SpacePointParamCount];
@@ -475,7 +475,7 @@ Gmat::ParameterType SpaceObject::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -485,7 +485,7 @@ Gmat::ParameterType SpaceObject::GetParameterType(const Integer id) const
  * @return parameter type string of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString SpaceObject::GetParameterTypeString(const Integer id) const
+std::string SpaceObject::GetParameterTypeString(const Integer id) const
 {
    return SpacePoint::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -511,7 +511,7 @@ Real SpaceObject::GetRealParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Real  GetRealParameter(const wxString &label) const
+//  Real  GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the Real parameter value, given the input parameter ID.
@@ -521,9 +521,9 @@ Real SpaceObject::GetRealParameter(const Integer id) const
  * @return Real value of the requested parameter.
  */
 //------------------------------------------------------------------------------
-Real SpaceObject::GetRealParameter(const wxString &label) const
+Real SpaceObject::GetRealParameter(const std::string &label) const
 {
-   if (label == wxT("A1Epoch"))
+   if (label == "A1Epoch")
       return state.GetEpoch();
    return GetRealParameter(GetParameterID(label));
 }
@@ -550,7 +550,7 @@ Real SpaceObject::SetRealParameter(const Integer id, const Real value)
 
 
 //------------------------------------------------------------------------------
-//  Real  SetRealParameter(const wxString &label, const Real value)
+//  Real  SetRealParameter(const std::string &label, const Real value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the Real parameter value, given the input parameter ID.
@@ -561,7 +561,7 @@ Real SpaceObject::SetRealParameter(const Integer id, const Real value)
  * @return Real value of the requested parameter.
  */
 //------------------------------------------------------------------------------
-Real SpaceObject::SetRealParameter(const wxString &label, const Real value)
+Real SpaceObject::SetRealParameter(const std::string &label, const Real value)
 {
    return SetRealParameter(GetParameterID(label), value);
 }
@@ -572,7 +572,7 @@ Real SpaceObject::GetRealParameter(const Integer id, const Integer row,
    return SpacePoint::GetRealParameter(id, row, col);
 }
 
-Real SpaceObject::GetRealParameter(const wxString &label, 
+Real SpaceObject::GetRealParameter(const std::string &label, 
                                       const Integer row, 
                                       const Integer col) const
 {
@@ -585,7 +585,7 @@ Real SpaceObject::SetRealParameter(const Integer id, const Real value,
    return SpacePoint::SetRealParameter(id, value, row, col);
 }
 
-Real SpaceObject::SetRealParameter(const wxString &label,
+Real SpaceObject::SetRealParameter(const std::string &label,
                                       const Real value, const Integer row,
                                       const Integer col)
 {
@@ -626,14 +626,14 @@ void SpaceObject::ClearLastStopTriggered()
    lastStopTriggered.clear();
 
    #ifdef DEBUG_STOPCONDITION_TRACKING
-      MessageInterface::ShowMessage(wxT("Cleared stop identifier from \"%s\"\n"), 
+      MessageInterface::ShowMessage("Cleared stop identifier from \"%s\"\n", 
          instanceName.c_str());
    #endif
 }
 
 
 //------------------------------------------------------------------------------
-// void SetLastStopTriggered(const wxString &stopCondName)
+// void SetLastStopTriggered(const std::string &stopCondName)
 //------------------------------------------------------------------------------
 /*
  * Adds name of a triggered stopping condition to the list of stops triggered.
@@ -641,18 +641,18 @@ void SpaceObject::ClearLastStopTriggered()
  * @param  stopCondName  The name of the triggering stopping condition.
  */
 //------------------------------------------------------------------------------
-void SpaceObject::SetLastStopTriggered(const wxString &stopCondName)
+void SpaceObject::SetLastStopTriggered(const std::string &stopCondName)
 {
    lastStopTriggered.push_back(stopCondName);
    
    #ifdef DEBUG_STOPCONDITION_TRACKING
-      MessageInterface::ShowMessage(wxT("Set stop identifier on \"%s\" to \"%s\"\n"), 
+      MessageInterface::ShowMessage("Set stop identifier on \"%s\" to \"%s\"\n", 
          instanceName.c_str(), stopCondName.c_str());
    #endif
 }
 
 //------------------------------------------------------------------------------
-// const wxString SpaceObject::GetLastStopTriggered()
+// const std::string SpaceObject::GetLastStopTriggered()
 //------------------------------------------------------------------------------
 /**
  * This method returns the first entry in the list of triggered stopping
@@ -661,15 +661,15 @@ void SpaceObject::SetLastStopTriggered(const wxString &stopCondName)
  * @return The name of the triggered stop
  */
 //------------------------------------------------------------------------------
-const wxString SpaceObject::GetLastStopTriggered()
+const std::string SpaceObject::GetLastStopTriggered()
 {
    if (lastStopTriggered.size() > 0)
       return lastStopTriggered[0];
-   return wxT("");
+   return "";
 }
 
 //------------------------------------------------------------------------------
-// bool WasLastStopTriggered(const wxString &stopCondName)
+// bool WasLastStopTriggered(const std::string &stopCondName)
 //------------------------------------------------------------------------------
 /*
  * Compares the name of the last stopping condition that triggered with the 
@@ -680,12 +680,12 @@ const wxString SpaceObject::GetLastStopTriggered()
  * @return true if the names match, false otherwise.
  */
 //------------------------------------------------------------------------------
-bool SpaceObject::WasLastStopTriggered(const wxString &stopCondName)
+bool SpaceObject::WasLastStopTriggered(const std::string &stopCondName)
 {
    #ifdef DEBUG_STOPCONDITION_TRACKING
       MessageInterface::ShowMessage(
-         wxT("Checking to see if triggered stop \"%s\" on \"%s\" is in the last ")
-         wxT("stop triggered list\n"), lastStopTriggered.c_str(), 
+         "Checking to see if triggered stop \"%s\" on \"%s\" is in the last "
+         "stop triggered list\n", lastStopTriggered.c_str(), 
          instanceName.c_str());
    #endif
 

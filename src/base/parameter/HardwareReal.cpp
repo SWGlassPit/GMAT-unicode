@@ -24,13 +24,13 @@
 
 
 //------------------------------------------------------------------------------
-// HardwareReal(const wxString &name, const wxString &typeStr, 
-//              GmatBase *obj, const wxString &desc, const wxString &unit)
+// HardwareReal(const std::string &name, const std::string &typeStr, 
+//              GmatBase *obj, const std::string &desc, const std::string &unit)
 //------------------------------------------------------------------------------
-HardwareReal::HardwareReal(const wxString &name, const wxString &typeStr, 
-                           GmatBase *obj, const wxString &desc,
-                           const wxString &unit)
-   : RealVar(name, wxT(""), typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit,
+HardwareReal::HardwareReal(const std::string &name, const std::string &typeStr, 
+                           GmatBase *obj, const std::string &desc,
+                           const std::string &unit)
+   : RealVar(name, "", typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit,
              GmatParam::OWNED_OBJ, Gmat::SPACECRAFT, false, true),
      SpacecraftData(name)
 {
@@ -98,7 +98,7 @@ bool HardwareReal::AddRefObject(GmatBase *obj, bool replaceName)
    {
       #if DEBUG_ATTITUDEREAL
       MessageInterface::ShowMessage
-         (wxT("HardwareReal::AddRefObject() obj->GetName()=%s, type=%d\n"),
+         ("HardwareReal::AddRefObject() obj->GetName()=%s, type=%d\n",
           obj->GetName().c_str(), obj->GetType());
       #endif
       
@@ -132,8 +132,8 @@ bool HardwareReal::Initialize()
    catch(BaseException &e)
    {
       throw GmatBaseException
-         (wxT("HardwareReal::Initialize() Fail to initialize Parameter:") +
-          this->GetTypeName() + wxT("\n") + e.GetFullMessage());
+         ("HardwareReal::Initialize() Fail to initialize Parameter:" +
+          this->GetTypeName() + "\n" + e.GetFullMessage());
    }
    
    return true;
@@ -141,29 +141,29 @@ bool HardwareReal::Initialize()
 
 
 //------------------------------------------------------------------------------
-// bool RenameRefObject(const Gmat::ObjectType type, const wxString &oldName,
-//                      const wxString &newName)
+// bool RenameRefObject(const Gmat::ObjectType type, const std::string &oldName,
+//                      const std::string &newName)
 //------------------------------------------------------------------------------
 bool HardwareReal::RenameRefObject(const Gmat::ObjectType type,
-                                   const wxString &oldName,
-                                   const wxString &newName)
+                                   const std::string &oldName,
+                                   const std::string &newName)
 {
    return SpacecraftData::RenameRefObject(type, oldName, newName);
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetRefObjectName(const Gmat::ObjectType type) const
+// std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
-wxString HardwareReal::GetRefObjectName(const Gmat::ObjectType type) const
+std::string HardwareReal::GetRefObjectName(const Gmat::ObjectType type) const
 {
-   wxString objName = SpacecraftData::GetRefObjectName(type);
+   std::string objName = SpacecraftData::GetRefObjectName(type);
    
-   if (objName == wxT("INVALID_OBJECT_TYPE"))
+   if (objName == "INVALID_OBJECT_TYPE")
    {
       throw ParameterException
-         (wxT("HardwareReal::GetRefObjectName() ") + GmatBase::GetObjectTypeString(type) +
-          wxT(" is not valid object type of ") + this->GetTypeName() + wxT("\n"));
+         ("HardwareReal::GetRefObjectName() " + GmatBase::GetObjectTypeString(type) +
+          " is not valid object type of " + this->GetTypeName() + "\n");
    }
    
    return objName;
@@ -180,17 +180,17 @@ const StringArray& HardwareReal::GetRefObjectNameArray(const Gmat::ObjectType ty
 
 
 //------------------------------------------------------------------------------
-// bool SetRefObjectName(const Gmat::ObjectType type, const wxString &name)
+// bool SetRefObjectName(const Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 bool HardwareReal::SetRefObjectName(const Gmat::ObjectType type,
-                                    const wxString &name)
+                                    const std::string &name)
 {
    bool ret = SpacecraftData::SetRefObjectName(type, name);
    
    if (!ret)
       MessageInterface::ShowMessage
-         (wxT("*** Warning *** HardwareReal::SetRefObjectName() RefObjType:%s is not valid ")
-          wxT("for ParameterName:%s\n"), GmatBase::GetObjectTypeString(type).c_str(),
+         ("*** Warning *** HardwareReal::SetRefObjectName() RefObjType:%s is not valid "
+          "for ParameterName:%s\n", GmatBase::GetObjectTypeString(type).c_str(),
           this->GetName().c_str());
    
    return ret;
@@ -198,18 +198,18 @@ bool HardwareReal::SetRefObjectName(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// GmatBase* GetRefObject(const Gmat::ObjectType type, const wxString &name)
+// GmatBase* GetRefObject(const Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 GmatBase* HardwareReal::GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name)
+                                     const std::string &name)
 {
    GmatBase *obj = SpacecraftData::GetRefObject(type, name);
    
    if (obj == NULL)
    {
       throw ParameterException
-         (wxT("HardwareReal::GetRefObject() Cannot find ref. object of type:") +
-          GmatBase::GetObjectTypeString(type) + wxT(", name:") + name + wxT(" in ") +
+         ("HardwareReal::GetRefObject() Cannot find ref. object of type:" +
+          GmatBase::GetObjectTypeString(type) + ", name:" + name + " in " +
           this->GetName());
    }
    
@@ -219,14 +219,14 @@ GmatBase* HardwareReal::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                   const wxString &name)
+//                   const std::string &name)
 //------------------------------------------------------------------------------
 bool HardwareReal::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                const wxString &name)
+                                const std::string &name)
 {
    #if DEBUG_ATTITUDEREAL
    MessageInterface::ShowMessage
-      (wxT("HardwareReal::SetRefObject() setting type=%d, name=%s to %s\n"),
+      ("HardwareReal::SetRefObject() setting type=%d, name=%s to %s\n",
        type, name.c_str(), this->GetName().c_str());
    #endif
    

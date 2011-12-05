@@ -57,8 +57,8 @@
 #include "TimeTypes.hpp"
 
 #include "GravityField.hpp"
-//#include wxT("PointMassForce.hpp")
-//#include wxT("Formation.hpp")      // for BuildState()
+//#include "PointMassForce.hpp"
+//#include "Formation.hpp"      // for BuildState()
 
 #include <string.h> 
 #include <algorithm>    // for find()
@@ -101,55 +101,55 @@
 static bool firstCallFired = false;
 #endif
 
-const wxString
+const std::string
 ODEModel::PARAMETER_TEXT[ODEModelParamCount - PhysicalModelParamCount] =
 {
-   wxT("CentralBody"),
-   wxT("PrimaryBodies"),
-   wxT("PointMasses"),
-   wxT("Drag"),
-   wxT("SRP"),
-   wxT("RelativisticCorrection"),
-   wxT("ErrorControl"),
-   wxT("CoordinateSystemList"),
+   "CentralBody",
+   "PrimaryBodies",
+   "PointMasses",
+   "Drag",
+   "SRP",
+   "RelativisticCorrection",
+   "ErrorControl",
+   "CoordinateSystemList",
    
    // owned object parameters
-   wxT("Degree"),
-   wxT("Order"),
-   wxT("PotentialFile"),
-   wxT("UserDefined")
+   "Degree",
+   "Order",
+   "PotentialFile",
+   "UserDefined"
 };
 
 
 const Gmat::ParameterType
 ODEModel::PARAMETER_TYPE[ODEModelParamCount - PhysicalModelParamCount] =
 {
-   Gmat::OBJECT_TYPE,       // wxT("CentralBody"),
-   Gmat::OBJECTARRAY_TYPE,  // wxT("PrimaryBodies"),
-   Gmat::OBJECTARRAY_TYPE,  // wxT("PointMasses"),
-   Gmat::OBJECT_TYPE,       // wxT("Drag"),
-   Gmat::ON_OFF_TYPE,       // wxT("SRP"),
-   Gmat::ON_OFF_TYPE,       // wxT("RelativisticCorrection"),
-   Gmat::ENUMERATION_TYPE,  // wxT("ErrorControl"),
-   Gmat::OBJECTARRAY_TYPE,  // wxT("CoordinateSystemList")
+   Gmat::OBJECT_TYPE,       // "CentralBody",
+   Gmat::OBJECTARRAY_TYPE,  // "PrimaryBodies",
+   Gmat::OBJECTARRAY_TYPE,  // "PointMasses",
+   Gmat::OBJECT_TYPE,       // "Drag",
+   Gmat::ON_OFF_TYPE,       // "SRP",
+   Gmat::ON_OFF_TYPE,       // "RelativisticCorrection",
+   Gmat::ENUMERATION_TYPE,  // "ErrorControl",
+   Gmat::OBJECTARRAY_TYPE,  // "CoordinateSystemList"
    
    // owned object parameters
-   Gmat::INTEGER_TYPE,      // wxT("Degree"),
-   Gmat::INTEGER_TYPE,      // wxT("Order"),
-   Gmat::STRING_TYPE,       // wxT("PotentialFile"),
-   Gmat::OBJECTARRAY_TYPE,  // wxT("UserDefined"),
+   Gmat::INTEGER_TYPE,      // "Degree",
+   Gmat::INTEGER_TYPE,      // "Order",
+   Gmat::STRING_TYPE,       // "PotentialFile",
+   Gmat::OBJECTARRAY_TYPE,  // "UserDefined",
 };
 
 
 // Table of alternative words used in force model scripting
-std::map<wxString, wxString> ODEModel::scriptAliases;
+std::map<std::string, std::string> ODEModel::scriptAliases;
 
 //--------------------------------------------------------------------------------
 // static methods
 //--------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// void SetScriptAlias(const wxString& alias, const wxString& typeName)
+// void SetScriptAlias(const std::string& alias, const std::string& typeName)
 //------------------------------------------------------------------------------
 /**
  * Sets mapping between script descriptions of forces and their class names.
@@ -167,8 +167,8 @@ std::map<wxString, wxString> ODEModel::scriptAliases;
  * @todo Put the initialization for force aliases in a convenient location.
  */
 //------------------------------------------------------------------------------
-void ODEModel::SetScriptAlias(const wxString& alias,
-                                const wxString& typeName)
+void ODEModel::SetScriptAlias(const std::string& alias,
+                                const std::string& typeName)
 {
    if (scriptAliases.find(alias) == scriptAliases.end())
    {
@@ -178,7 +178,7 @@ void ODEModel::SetScriptAlias(const wxString& alias,
 
 
 //------------------------------------------------------------------------------
-// wxString& GetScriptAlias(const wxString& alias)
+// std::string& GetScriptAlias(const std::string& alias)
 //------------------------------------------------------------------------------
 /**
  * Accesses mapping between script descriptions of forces and their class names.
@@ -190,9 +190,9 @@ void ODEModel::SetScriptAlias(const wxString& alias,
  * @return The class name.
  */
 //------------------------------------------------------------------------------
-wxString& ODEModel::GetScriptAlias(const wxString& alias)
+std::string& ODEModel::GetScriptAlias(const std::string& alias)
 {
-   static wxString type;
+   static std::string type;
    type = alias;
    if (scriptAliases.find(alias) != scriptAliases.end())
    {
@@ -207,8 +207,8 @@ wxString& ODEModel::GetScriptAlias(const wxString& alias)
 
 
 //------------------------------------------------------------------------------
-// ODEModel::ODEModel(Gmat::ObjectType id, const wxString &typeStr,
-//                        const wxString &nomme))
+// ODEModel::ODEModel(Gmat::ObjectType id, const std::string &typeStr,
+//                        const std::string &nomme))
 //------------------------------------------------------------------------------
 /**
  * The constructor
@@ -217,7 +217,7 @@ wxString& ODEModel::GetScriptAlias(const wxString& alias)
  * @param typeName   Type of model being built
  */
 //------------------------------------------------------------------------------
-ODEModel::ODEModel(const wxString &modelName, const wxString typeName) :
+ODEModel::ODEModel(const std::string &modelName, const std::string typeName) :
    PhysicalModel     (Gmat::ODE_MODEL, typeName, modelName),
 //   previousState     (NULL),
    state             (NULL),
@@ -225,14 +225,14 @@ ODEModel::ODEModel(const wxString &modelName, const wxString typeName) :
    estimationMethod  (ESTIMATE_STEP),     // Should this be removed?
    normType          (L2_DIFFERENCES),
    parametersSetOnce (false),
-   centralBodyName   (wxT("Earth")),
+   centralBodyName   ("Earth"),
    forceMembersNotInitialized (true),
    satCount          (0),
    stateStart        (-1),
    stateEnd          (-1),
    cartStateSize     (0),
    dynamicProperties (false),
-   j2kBodyName       (wxT("Earth")),
+   j2kBodyName       ("Earth"),
    j2kBody           (NULL),
    earthEq           (NULL),
    earthFixed        (NULL),
@@ -242,8 +242,8 @@ ODEModel::ODEModel(const wxString &modelName, const wxString typeName) :
    satIds[5] = satIds[6] = -1;
    
    objectTypes.push_back(Gmat::ODE_MODEL);
-   objectTypeNames.push_back(wxT("ODEModel"));
-   objectTypeNames.push_back(wxT("ForceModel")); // For backwards compatibility
+   objectTypeNames.push_back("ODEModel");
+   objectTypeNames.push_back("ForceModel"); // For backwards compatibility
 
    numForces = 0;
    stateSize = 6;
@@ -268,7 +268,7 @@ ODEModel::~ODEModel()
 {
    #ifdef DEBUG_ODEMODEL
    MessageInterface::ShowMessage
-      (wxT("ODEModel destructor entered, this=<%p>'%s', has %d forces\n"),
+      ("ODEModel destructor entered, this=<%p>'%s', has %d forces\n",
        this, GetName().c_str(), forceList.size());
    #endif
    
@@ -287,7 +287,7 @@ ODEModel::~ODEModel()
    #endif
       
    #ifdef DEBUG_ODEMODEL
-   MessageInterface::ShowMessage(wxT("ODEModel destructor exiting, has %d forces\n"),
+   MessageInterface::ShowMessage("ODEModel destructor exiting, has %d forces\n",
                                  forceList.size());
    #endif
 }
@@ -329,7 +329,7 @@ ODEModel::ODEModel(const ODEModel& fdf) :
    transientCount             (fdf.transientCount)
 {
    #ifdef DEBUG_ODEMODEL
-   MessageInterface::ShowMessage(wxT("ODEModel copy constructor entered\n"));
+   MessageInterface::ShowMessage("ODEModel copy constructor entered\n");
    #endif
    
    satIds[0] = satIds[1] = satIds[2] = satIds[3] = satIds[4] = 
@@ -358,15 +358,15 @@ ODEModel::ODEModel(const ODEModel& fdf) :
       #ifdef DEBUG_ODEMODEL
       GmatBase *obj = (*pm);
       MessageInterface::ShowMessage
-         (wxT("   Cloning PhysicalModel <%p><%s>'%s'\n"), obj, obj->GetTypeName().c_str(),
+         ("   Cloning PhysicalModel <%p><%s>'%s'\n", obj, obj->GetTypeName().c_str(),
           obj->GetName().c_str());
       #endif
       PhysicalModel *newPm = (PhysicalModel*)(*pm)->Clone();
       forceList.push_back(newPm);
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (newPm, newPm->GetName(), wxT("ODEModel::ODEModel(copy)"),
-          wxT("*newPm = (*pm)->Clone()"), this);
+         (newPm, newPm->GetName(), "ODEModel::ODEModel(copy)",
+          "*newPm = (*pm)->Clone()", this);
       #endif
    }
 }
@@ -444,8 +444,8 @@ ODEModel& ODEModel::operator=(const ODEModel& fdf)
       forceList.push_back(newPm);
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (newPm, newPm->GetName(), wxT("ODEModel::operator="),
-          wxT("*newPm = (*pm)->Clone()"), this);
+         (newPm, newPm->GetName(), "ODEModel::operator=",
+          "*newPm = (*pm)->Clone()", this);
       #endif
    }
    muMap = fdf.muMap;
@@ -482,12 +482,12 @@ ODEModel& ODEModel::operator=(const ODEModel& fdf)
 void ODEModel::AddForce(PhysicalModel *pPhysicalModel)
 {
    if (pPhysicalModel == NULL)
-      throw ODEModelException(wxT("Attempting to add a NULL force to ") +
+      throw ODEModelException("Attempting to add a NULL force to " +
          instanceName);
 
    #ifdef DEBUG_ODEMODEL_INIT
       MessageInterface::ShowMessage(
-         wxT("ODEModel::AddForce() <%p>'%s' entered, adding force = <%p><%s>'%s'\n"), this,
+         "ODEModel::AddForce() <%p>'%s' entered, adding force = <%p><%s>'%s'\n", this,
          GetName().c_str(), pPhysicalModel, pPhysicalModel->GetTypeName().c_str(),
          pPhysicalModel->GetName().c_str());
    #endif
@@ -496,51 +496,51 @@ void ODEModel::AddForce(PhysicalModel *pPhysicalModel)
    initialized = false;
    
    // Handle the name issues
-   wxString pmType = pPhysicalModel->GetTypeName();
-   if (pmType == wxT("DragForce"))
-      pPhysicalModel->SetName(wxT("Drag"));
+   std::string pmType = pPhysicalModel->GetTypeName();
+   if (pmType == "DragForce")
+      pPhysicalModel->SetName("Drag");
 
-   wxString forceBody = pPhysicalModel->GetBodyName();
+   std::string forceBody = pPhysicalModel->GetBodyName();
 
    // Trap multiple instances
-   if ((pmType == wxT("GravityField")) || (pmType == wxT("PointMassForce")))
+   if ((pmType == "GravityField") || (pmType == "PointMassForce"))
    {
-      wxString compType;
+      std::string compType;
       
       for (std::vector<PhysicalModel*>::iterator i = forceList.begin();
            i != forceList.end(); ++i)
       {
          compType = (*i)->GetTypeName();
-         if ((compType == wxT("GravityField")) || (compType == wxT("PointMassForce")))
+         if ((compType == "GravityField") || (compType == "PointMassForce"))
          {
             if ((*i)->GetBodyName() == forceBody && (*i) != pPhysicalModel)
                throw ODEModelException(
-                  wxT("Attempted to add a ") + pmType + 
-                  wxT(" force to the force model for the body ") + forceBody +
-                  wxT(", but there is already a ") + compType + 
-                  wxT(" force in place for that body."));
+                  "Attempted to add a " + pmType + 
+                  " force to the force model for the body " + forceBody +
+                  ", but there is already a " + compType + 
+                  " force in place for that body.");
          }
 
-         if ((pmType == wxT("GravityField")) && (compType == wxT("GravityField")))
+         if ((pmType == "GravityField") && (compType == "GravityField"))
          {
             throw ODEModelException(
-               wxT("Attempted to add a GravityField (aka primary body) force to ")
-               wxT("the force model \"") + instanceName + wxT("\" for the body ") +
-               forceBody + wxT(", but there already is a Gravity Field in the ODE ")
-               wxT("Model and only one GravityField is supported per ODE Model in ")
-               wxT("the current GMAT release"));
+               "Attempted to add a GravityField (aka primary body) force to "
+               "the force model \"" + instanceName + "\" for the body " +
+               forceBody + ", but there already is a Gravity Field in the ODE "
+               "Model and only one GravityField is supported per ODE Model in "
+               "the current GMAT release");
          }
       }      
    }
    
    // Check to be sure there is an associated PrimaryBody for drag forces
-   if (pmType == wxT("DragForce"))
+   if (pmType == "DragForce")
    {
       bool hasGravityField = false;
       for (std::vector<PhysicalModel*>::iterator i = forceList.begin();
            i != forceList.end(); ++i)
       {
-         if ((*i)->GetTypeName() == wxT("GravityField"))
+         if ((*i)->GetTypeName() == "GravityField")
          {
             if ((*i)->GetBodyName() == forceBody)
                hasGravityField = true;
@@ -548,24 +548,24 @@ void ODEModel::AddForce(PhysicalModel *pPhysicalModel)
       }
       if (hasGravityField == false)
          throw ODEModelException(
-            wxT("Attempted to add a drag force for the body ") + forceBody +
-            wxT(", but that body is not set as a primary body, so it does not ") +
-            wxT("support additional forces."));
+            "Attempted to add a drag force for the body " + forceBody +
+            ", but that body is not set as a primary body, so it does not " +
+            "support additional forces.");
    }
    
-   if (pmType == wxT("RelativisticCorrection"))
+   if (pmType == "RelativisticCorrection")
    {
-      std::map<wxString, Real>::iterator pos;
-      wxString rcBodyName = pPhysicalModel->GetBodyName();
+      std::map<std::string, Real>::iterator pos;
+      std::string rcBodyName = pPhysicalModel->GetBodyName();
       for (pos = muMap.begin(); pos != muMap.end(); ++pos)
       {
          if (pos->first == rcBodyName)
          {
             #ifdef DEBUG_MU_MAP
-               MessageInterface::ShowMessage(wxT("ODEModel::AddForce ---  setting mu value of %12.10f on newly-added RC for body %s\n"),
+               MessageInterface::ShowMessage("ODEModel::AddForce ---  setting mu value of %12.10f on newly-added RC for body %s\n",
                                              pos->second, rcBodyName.c_str());
             #endif
-            pPhysicalModel->SetRealParameter(pPhysicalModel->GetParameterID(wxT("Mu")), pos->second);
+            pPhysicalModel->SetRealParameter(pPhysicalModel->GetParameterID("Mu"), pos->second);
          }
       }
    }
@@ -577,24 +577,24 @@ void ODEModel::AddForce(PhysicalModel *pPhysicalModel)
       if (pPhysicalModel->IsTransient())
       {
          #ifdef DEBUG_ODEMODEL_INIT
-            MessageInterface::ShowMessage(wxT("Adding a %s to this list:\n"),
+            MessageInterface::ShowMessage("Adding a %s to this list:\n",
                   pPhysicalModel->GetTypeName().c_str());
             for (UnsignedInt i = 0; i < forceList.size(); ++i)
-               MessageInterface::ShowMessage(wxT("   %s\n"),
+               MessageInterface::ShowMessage("   %s\n",
                      forceList[i]->GetTypeName().c_str());
-            MessageInterface::ShowMessage(wxT("Transient count before ")
-                  wxT("addition = %d\n"), transientCount);
+            MessageInterface::ShowMessage("Transient count before "
+                  "addition = %d\n", transientCount);
          #endif
 
          ++transientCount;
 
          // Temporary code: prevent multiple finite burns in single force model
          if (transientCount > 1)
-            throw ODEModelException(wxT("Multiple Finite burns are not allowed in ")
-                  wxT("a single propagator; try breaking commands of the form")
-                  wxT("\"Propagate prop(sat1, sat2)\" into two synchronized ")
-                  wxT("propagators; e.g. \"Propagate Synchronized prop(sat1) ")
-                  wxT("prop(sat2)\"\nexiting"));
+            throw ODEModelException("Multiple Finite burns are not allowed in "
+                  "a single propagator; try breaking commands of the form"
+                  "\"Propagate prop(sat1, sat2)\" into two synchronized "
+                  "propagators; e.g. \"Propagate Synchronized prop(sat1) "
+                  "prop(sat2)\"\nexiting");
       }
       forceList.push_back(pPhysicalModel);
    }
@@ -605,7 +605,7 @@ void ODEModel::AddForce(PhysicalModel *pPhysicalModel)
 }
 
 //------------------------------------------------------------------------------
-// void DeleteForce(const wxString &name)
+// void DeleteForce(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Deletes named force from the force model.
@@ -613,17 +613,17 @@ void ODEModel::AddForce(PhysicalModel *pPhysicalModel)
  * @param name The name of the force to delete
  */
 //------------------------------------------------------------------------------
-void ODEModel::DeleteForce(const wxString &name)
+void ODEModel::DeleteForce(const std::string &name)
 {
    #ifdef DEBUG_ODEMODEL
    MessageInterface::ShowMessage
-      (wxT("ODEModel::DeleteForce() entered, name='%s'\n"), name.c_str());
+      ("ODEModel::DeleteForce() entered, name='%s'\n", name.c_str());
    #endif
    
    for (std::vector<PhysicalModel *>::iterator force = forceList.begin(); 
         force != forceList.end(); ++force) 
    {
-      wxString pmName = (*force)->GetName();
+      std::string pmName = (*force)->GetName();
       if (name == pmName)
       {
          PhysicalModel* pm = *force;
@@ -634,8 +634,8 @@ void ODEModel::DeleteForce(const wxString &name)
          {
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Remove
-               (pm, pm->GetName(), wxT("ODEModel::DeleteForce()"),
-                wxT("deleting non-transient force of ") + pm->GetTypeName(), this);
+               (pm, pm->GetName(), "ODEModel::DeleteForce()",
+                "deleting non-transient force of " + pm->GetTypeName(), this);
             #endif
             delete pm;
          }
@@ -673,8 +673,8 @@ void ODEModel::DeleteForce(PhysicalModel *pPhysicalModel)
          {
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Remove
-               (pm, pm->GetName(), wxT("ODEModel::DeleteForce()"),
-                wxT("deleting non-transient force of ") + pm->GetTypeName(), this);
+               (pm, pm->GetName(), "ODEModel::DeleteForce()",
+                "deleting non-transient force of " + pm->GetTypeName(), this);
             #endif
             delete pm;
          }
@@ -689,7 +689,7 @@ void ODEModel::DeleteForce(PhysicalModel *pPhysicalModel)
 
 
 //------------------------------------------------------------------------------
-// bool HasForce(const wxString &name)
+// bool HasForce(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Search force in the force model.
@@ -698,7 +698,7 @@ void ODEModel::DeleteForce(PhysicalModel *pPhysicalModel)
  * @return true if force exists, else false
  */
 //------------------------------------------------------------------------------
-bool ODEModel::HasForce(const wxString &name)
+bool ODEModel::HasForce(const std::string &name)
 {
    for (std::vector<PhysicalModel *>::iterator force = forceList.begin(); 
        force != forceList.end(); force++) 
@@ -733,16 +733,16 @@ StringArray& ODEModel::GetForceTypeNames()
 }
 
 //------------------------------------------------------------------------------
-// wxString GetForceTypeName(Integer index)
+// std::string GetForceTypeName(Integer index)
 //------------------------------------------------------------------------------
-wxString ODEModel::GetForceTypeName(Integer index)
+std::string ODEModel::GetForceTypeName(Integer index)
 {
     StringArray typeList = GetForceTypeNames();
     
     if (index >= 0 && index < numForces)
         return typeList[index];
 
-    return wxT("UNDEFINED_FORCE_TYPE");
+    return "UNDEFINED_FORCE_TYPE";
 }
 
 
@@ -768,7 +768,7 @@ PhysicalModel* ODEModel::GetForce(Integer index) const
 
 
 //------------------------------------------------------------------------------
-// PhysicalModel* GetForce(wxString forcetype, Integer whichOne)
+// PhysicalModel* GetForce(std::string forcetype, Integer whichOne)
 //------------------------------------------------------------------------------
 /**
  * Search for a force in the force model.
@@ -779,7 +779,7 @@ PhysicalModel* ODEModel::GetForce(Integer index) const
  * @return The pointer to that force instance.
  */
 //------------------------------------------------------------------------------
-const PhysicalModel* ODEModel::GetForce(wxString forcetype, 
+const PhysicalModel* ODEModel::GetForce(std::string forcetype, 
 										Integer whichOne) const
 {
    Integer i = 0;
@@ -787,7 +787,7 @@ const PhysicalModel* ODEModel::GetForce(wxString forcetype,
    for (std::vector<PhysicalModel *>::const_iterator force = forceList.begin(); 
         force != forceList.end(); ++force) 
    {
-      wxString pmName = (*force)->GetTypeName();
+      std::string pmName = (*force)->GetTypeName();
       if (pmName == forcetype) 
 	  {
          if (whichOne <= i)
@@ -821,7 +821,7 @@ const PhysicalModel* ODEModel::GetForce(wxString forcetype,
 //    if (find(spacecraft.begin(), spacecraft.end(), so) != spacecraft.end())
 //        return false;
 //
-//    wxString soJ2KBodyName = so->GetStringParameter(wxT("J2000BodyName"));
+//    std::string soJ2KBodyName = so->GetStringParameter("J2000BodyName");
 //
 //    // Set the refence body for the spacecraft states to match the J2000 body
 //    // on the first spacecraft added to the force model.
@@ -831,17 +831,17 @@ const PhysicalModel* ODEModel::GetForce(wxString forcetype,
 //    {
 //       if (j2kBodyName != soJ2KBodyName)
 //          throw ODEModelException(
-//             wxT("Force model error -- the internal reference body for all ")
-//             wxT("spacecraft in a force model must be the same.\n")
-//             wxT("The J2000Body for ") + so->GetName() + wxT(" is ") + soJ2KBodyName +
-//             wxT(", but the force model is already using ") + j2kBodyName +
-//             wxT(" as the reference body."));
+//             "Force model error -- the internal reference body for all "
+//             "spacecraft in a force model must be the same.\n"
+//             "The J2000Body for " + so->GetName() + " is " + soJ2KBodyName +
+//             ", but the force model is already using " + j2kBodyName +
+//             " as the reference body.");
 //    }
 //
 //    spacecraft.push_back(so);
 //
 //    // Quick fix for the epoch update
-//    satIds[0] = so->GetParameterID(wxT("A1Epoch"));
+//    satIds[0] = so->GetParameterID("A1Epoch");
 //    epoch = so->GetRealParameter(satIds[0]);
 //    parametersSetOnce = false;
 //    return true;
@@ -866,7 +866,7 @@ void ODEModel::UpdateSpaceObject(Real newEpoch)
 {
    #ifdef DEBUG_ODEMODEL_EXE
       MessageInterface::ShowMessage(
-            wxT("ODEModel::UpdateSpaceObject(%.12lf) called\n"), newEpoch);
+            "ODEModel::UpdateSpaceObject(%.12lf) called\n", newEpoch);
    #endif
 
    Integer stateSize;
@@ -897,9 +897,9 @@ void ODEModel::UpdateSpaceObject(Real newEpoch)
    
    #ifdef DEBUG_ODEMODEL_EXE
       MessageInterface::ShowMessage
-            (wxT("ODEModel::UpdateSpaceObject() on \"%s\" prevElapsedTime = %f ")
-             wxT("elapsedTime = %f newepoch = %f passed in epoch = %f ")
-             wxT("dX's: [%.12lf] - [%.12lf] = [%.12lf]\n"), 
+            ("ODEModel::UpdateSpaceObject() on \"%s\" prevElapsedTime = %f "
+             "elapsedTime = %f newepoch = %f passed in epoch = %f "
+             "dX's: [%.12lf] - [%.12lf] = [%.12lf]\n", 
              GetName().c_str(), previousState.GetEpoch(), elapsedTime, 
              newepoch, newEpoch, (*state)[0], previousState[0], 
              ((*state)[0] - previousState[0]));
@@ -948,7 +948,7 @@ void ODEModel::RevertSpaceObject()
 {
    #ifdef DEBUG_ODEMODEL_EXE
       MessageInterface::ShowMessage
-         (wxT("ODEModel::RevertSpacecraft() prevElapsedTime=%f elapsedTime=%f\n"),
+         ("ODEModel::RevertSpacecraft() prevElapsedTime=%f elapsedTime=%f\n",
           prevElapsedTime, elapsedTime);
    #endif
 
@@ -995,13 +995,13 @@ bool ODEModel::BuildModelFromMap()
 {
    bool retval = false;
    #ifdef DEBUG_INITIALIZATION
-      MessageInterface::ShowMessage(wxT("ODEModel::BuildModelFromMap() Entered\n"));
+      MessageInterface::ShowMessage("ODEModel::BuildModelFromMap() Entered\n");
    #endif
 
    if (psm == NULL)
    {
-      MessageInterface::ShowMessage(wxT("ODEModel::BuildModelFromMap():  Cannot ")
-            wxT("build the model: PropStateManager is NULL\n"));
+      MessageInterface::ShowMessage("ODEModel::BuildModelFromMap():  Cannot "
+            "build the model: PropStateManager is NULL\n");
       return retval;
    }
 
@@ -1009,8 +1009,8 @@ bool ODEModel::BuildModelFromMap()
 
    if (map == NULL)
    {
-      MessageInterface::ShowMessage(wxT("ODEModel::BuildModelFromMap():  Cannot ")
-            wxT("build the model: the map is NULL for %s\n"), instanceName.c_str());
+      MessageInterface::ShowMessage("ODEModel::BuildModelFromMap():  Cannot "
+            "build the model: the map is NULL for %s\n", instanceName.c_str());
       return retval;
    }
 
@@ -1025,7 +1025,7 @@ bool ODEModel::BuildModelFromMap()
 
    // Loop through the state map, counting objects for each type needed
    #ifdef DEBUG_INITIALIZATION
-      MessageInterface::ShowMessage(wxT("ODEModel map has %d entries\n"),
+      MessageInterface::ShowMessage("ODEModel map has %d entries\n",
             map->size());
    #endif
    for (UnsignedInt index = 0; index < map->size(); ++index)
@@ -1051,7 +1051,7 @@ bool ODEModel::BuildModelFromMap()
             {
 //               throw ODEModelException(
                MessageInterface::ShowMessage(
-                     wxT("Failed to build an element of the ODEModel.\n"));
+                     "Failed to build an element of the ODEModel.\n");
                
                retval = true;
             }
@@ -1086,23 +1086,23 @@ bool ODEModel::BuildModelFromMap()
       {
          // throw ODEModelException(
          MessageInterface::ShowMessage(
-            wxT("Failed to build an element of the ODEModel.\n"));
+            "Failed to build an element of the ODEModel.\n");
          retval = true;
       }
    }
 
    #ifdef DEBUG_BUILDING_MODELS
       // Show the state structure
-      MessageInterface::ShowMessage(wxT("State vector has the following structure:\n"));
-      MessageInterface::ShowMessage(wxT("   ID     Start   Count\n"));
+      MessageInterface::ShowMessage("State vector has the following structure:\n");
+      MessageInterface::ShowMessage("   ID     Start   Count\n");
       for (std::vector<StateStructure>::iterator i = sstruct.begin();
             i != sstruct.end(); ++i)
-         MessageInterface::ShowMessage(wxT("   %4d      %2d    %d\n"), i->id, i->index,
+         MessageInterface::ShowMessage("   %4d      %2d    %d\n", i->id, i->index,
                i->count);
    #endif
          
    #ifdef DEBUG_INITIALIZATION
-      MessageInterface::ShowMessage(wxT("ODEModel::BuildModelFromMap() Finished\n"));
+      MessageInterface::ShowMessage("ODEModel::BuildModelFromMap() Finished\n");
          #endif
 
    return retval;
@@ -1151,8 +1151,8 @@ bool ODEModel::BuildModelElement(Gmat::StateElementId id, Integer start,
    Integer modelsUsed = 0;
 
    #ifdef DEBUG_BUILDING_MODELS
-      MessageInterface::ShowMessage(wxT("Building ODEModel element; id = %d, ")
-            wxT("index = %d, count = %d; force list has %d elements\n"), id, start,
+      MessageInterface::ShowMessage("Building ODEModel element; id = %d, "
+            "index = %d, count = %d; force list has %d elements\n", id, start,
             objectCount, forceList.size());
    #endif
 
@@ -1169,8 +1169,8 @@ bool ODEModel::BuildModelElement(Gmat::StateElementId id, Integer start,
       {
          tf = (*i)->SetStart(id, start, objectCount);
          if (tf == false)
-            MessageInterface::ShowMessage(wxT("PhysicalModel %s was not set, even ")
-                  wxT("though it registered support for derivatives of type %d\n"),
+            MessageInterface::ShowMessage("PhysicalModel %s was not set, even "
+                  "though it registered support for derivatives of type %d\n",
                   (*i)->GetTypeName().c_str(), id);
          else
             ++modelsUsed;
@@ -1219,7 +1219,7 @@ bool ODEModel::BuildModelElement(Gmat::StateElementId id, Integer start,
 
    #ifdef DEBUG_BUILDING_MODELS
       MessageInterface::ShowMessage(
-            wxT("ODEModel is using %d components for element %d\n"), modelsUsed, id);
+            "ODEModel is using %d components for element %d\n", modelsUsed, id);
    #endif
    
    return retval;
@@ -1236,7 +1236,7 @@ bool ODEModel::BuildModelElement(Gmat::StateElementId id, Integer start,
 bool ODEModel::Initialize()
 {
    #ifdef DEBUG_INITIALIZATION
-      MessageInterface::ShowMessage(wxT("ODEModel::Initialize() entered\n"));
+      MessageInterface::ShowMessage("ODEModel::Initialize() entered\n");
    #endif
 //   Integer stateSize = 6;      // Will change if we integrate more variables
 //   Integer satCount = 1;
@@ -1244,20 +1244,20 @@ bool ODEModel::Initialize()
    
    if (!solarSystem)
       throw ODEModelException(
-         wxT("Cannot initialize force model; no solar system on '") + 
-         instanceName + wxT("'"));
+         "Cannot initialize force model; no solar system on '" + 
+         instanceName + "'");
 
-   if (j2kBodyName != wxT(""))
+   if (j2kBodyName != "")
    {
       j2kBody = solarSystem->GetBody(j2kBodyName);
       if (j2kBody == NULL)
-         throw ODEModelException(wxT("ODEModel J2000 body (") + j2kBodyName +
-            wxT(") was not found in the solar system"));
+         throw ODEModelException("ODEModel J2000 body (" + j2kBodyName +
+            ") was not found in the solar system");
    }
 
    #ifdef DEBUG_INITIALIZATION
       MessageInterface::ShowMessage(
-         wxT("Calling PhysicalModel::Initialize(); dimension = %d\n"), dimension);
+         "Calling PhysicalModel::Initialize(); dimension = %d\n", dimension);
    #endif
 
    dimension = state->GetSize();
@@ -1278,7 +1278,7 @@ bool ODEModel::Initialize()
    }
 
       #ifdef DEBUG_INITIALIZATION
-      MessageInterface::ShowMessage(wxT("Configuring for state of dimension %d\n"),
+      MessageInterface::ShowMessage("Configuring for state of dimension %d\n",
             dimension);
       #endif
       
@@ -1286,8 +1286,8 @@ bool ODEModel::Initialize()
    rawState = new Real[dimension];
    #ifdef DEBUG_MEMORY
    MemoryTracker::Instance()->Add
-      (rawState, wxT("rawState"), wxT("ODEModel::Initialize()"),
-       wxT("rawState = new Real[dimension]"), this);
+      (rawState, "rawState", "ODEModel::Initialize()",
+       "rawState = new Real[dimension]", this);
    #endif
    
    memcpy(rawState, state->GetState(), dimension * sizeof(Real));
@@ -1295,19 +1295,19 @@ bool ODEModel::Initialize()
    MoveToOrigin();
 
    // Variables used to set spacecraft parameters
-   wxString parmName, stringParm;
+   std::string parmName, stringParm;
 
    for (std::vector<PhysicalModel *>::iterator current = forceList.begin();
         current != forceList.end(); ++current)
    {
       #ifdef DEBUG_ODEMODEL_INIT
-         wxString name, type;
+         std::string name, type;
          name = (*current)->GetName();
-         if (name == wxT(""))
-            name = wxT("unnamed");
+         if (name == "")
+            name = "unnamed";
          type = (*current)->GetTypeName();
          MessageInterface::ShowMessage
-            (wxT("ODEModel::Initialize() initializing object %s of type %s\n"),
+            ("ODEModel::Initialize() initializing object %s of type %s\n",
              name.c_str(), type.c_str());
       #endif
       
@@ -1320,39 +1320,39 @@ bool ODEModel::Initialize()
          (*current)->SetSolarSystem(solarSystem);
          
          // Handle missing coordinate system issues for GravityFields
-		  if ((*current)->IsOfType(wxT("HarmonicField")))
+		  if ((*current)->IsOfType("HarmonicField"))
          {
-			   SetInternalCoordinateSystem(wxT("InputCoordinateSystem"), (*current));
-            SetInternalCoordinateSystem(wxT("FixedCoordinateSystem"), (*current));
-            SetInternalCoordinateSystem(wxT("TargetCoordinateSystem"), (*current));
+			   SetInternalCoordinateSystem("InputCoordinateSystem", (*current));
+            SetInternalCoordinateSystem("FixedCoordinateSystem", (*current));
+            SetInternalCoordinateSystem("TargetCoordinateSystem", (*current));
 
             if (body == NULL)
                body = solarSystem->GetBody(centralBodyName); // or should we get bodyName?
          }
 
-         if ((*current)->IsOfType(wxT("DragForce")))
+         if ((*current)->IsOfType("DragForce"))
          {
-            SetInternalCoordinateSystem(wxT("InputCoordinateSystem"), (*current));
-            SetInternalCoordinateSystem(wxT("FixedCoordinateSystem"), (*current));
+            SetInternalCoordinateSystem("InputCoordinateSystem", (*current));
+            SetInternalCoordinateSystem("FixedCoordinateSystem", (*current));
          }
       }
 
       // Initialize the forces
       if (!(*current)->Initialize())
       {
-         wxString msg = wxT("Component force ");
+         std::string msg = "Component force ";
          msg += (*current)->GetTypeName();
-         msg += wxT(" failed to initialize");
+         msg += " failed to initialize";
          throw ODEModelException(msg);
       }
-      if ((*current)->IsOfType(wxT("GravityField")))
+      if ((*current)->IsOfType("GravityField"))
       {
          // get the name and mu value for the muMap
-         wxString itsName;
+         std::string itsName;
          Real        itsMu;
          ((GravityField*) (*current))->GetBodyAndMu(itsName, itsMu);
          #ifdef DEBUG_MU_MAP
-            MessageInterface::ShowMessage(wxT("ODEModel::Initialize - saving mu value of %12.10f for body %s\n"),
+            MessageInterface::ShowMessage("ODEModel::Initialize - saving mu value of %12.10f for body %s\n",
                                           itsMu, itsName.c_str());
          #endif
          muMap[itsName] = itsMu;
@@ -1362,33 +1362,33 @@ bool ODEModel::Initialize()
    for (std::vector<PhysicalModel *>::iterator current = forceList.begin();
         current != forceList.end(); ++current)
    {
-      if ((*current)->IsOfType(wxT("RelativisticCorrection")))
+      if ((*current)->IsOfType("RelativisticCorrection"))
       {
-         std::map<wxString, Real>::iterator pos;
-         wxString rcBodyName = (*current)->GetBodyName();
+         std::map<std::string, Real>::iterator pos;
+         std::string rcBodyName = (*current)->GetBodyName();
          for (pos = muMap.begin(); pos != muMap.end(); ++pos)
          {
             if (pos->first == rcBodyName)
             {
                #ifdef DEBUG_MU_MAP
-                  MessageInterface::ShowMessage(wxT("ODEModel::Initialize ---  setting mu value of %12.10f on RC for body %s\n"),
+                  MessageInterface::ShowMessage("ODEModel::Initialize ---  setting mu value of %12.10f on RC for body %s\n",
                                                  pos->second, rcBodyName.c_str());
                #endif
-               (*current)->SetRealParameter((*current)->GetParameterID(wxT("Mu")), pos->second);
+               (*current)->SetRealParameter((*current)->GetParameterID("Mu"), pos->second);
             }
          }
       }
    }
 
    #ifdef DEBUG_FORCE_EPOCHS
-      wxString epfile = wxT("ForceEpochs.txt");
-      if (instanceName != wxT(""))
-         epfile = instanceName + wxT("_") + epfile;
+      std::string epfile = "ForceEpochs.txt";
+      if (instanceName != "")
+         epfile = instanceName + "_" + epfile;
       if (!epochFile.is_open()) 
       {
          epochFile.open(epfile.c_str());
-         epochFile << wxT("Epoch data for the force model '") 
-                   << instanceName << wxT("'\n");
+         epochFile << "Epoch data for the force model '" 
+                   << instanceName << "'\n";
       }
    #endif
 
@@ -1400,23 +1400,23 @@ bool ODEModel::Initialize()
    forceMembersNotInitialized = false;
 
    #ifdef DEBUG_INITIALIZATION
-      MessageInterface::ShowMessage(wxT("ODEModel::Initialize() complete\n"));
+      MessageInterface::ShowMessage("ODEModel::Initialize() complete\n");
    #endif
 
 //   modelState = state->GetState();
 
    if (forceList.size() == 0)
-      throw ODEModelException(wxT("The ODE model ") + instanceName +
-            wxT(" is empty, so it cannot be used for propagation."));
+      throw ODEModelException("The ODE model " + instanceName +
+            " is empty, so it cannot be used for propagation.");
 
    initialized = true;
 
    #ifdef DEBUG_MU_MAP
-      std::map<wxString, Real>::iterator pos;
-      MessageInterface::ShowMessage(wxT("----> At end of Initialize(), the muMap is:"));
+      std::map<std::string, Real>::iterator pos;
+      MessageInterface::ShowMessage("----> At end of Initialize(), the muMap is:");
       for (pos = muMap.begin(); pos != muMap.end(); ++pos)
       {
-         MessageInterface::ShowMessage(wxT("      %s      %12.10f\n"), (pos->first).c_str(), pos->second);
+         MessageInterface::ShowMessage("      %s      %12.10f\n", (pos->first).c_str(), pos->second);
       }
    #endif
 
@@ -1431,7 +1431,7 @@ void ODEModel::ClearForceList(bool deleteTransient)
 {
    #ifdef DEBUG_ODEMODEL_CLEAR
    MessageInterface::ShowMessage
-      (wxT("ODEModel::ClearForceList() entered, there are %d forces\n"), forceList.size());
+      ("ODEModel::ClearForceList() entered, there are %d forces\n", forceList.size());
    #endif
    
    // Delete the owned forces
@@ -1443,7 +1443,7 @@ void ODEModel::ClearForceList(bool deleteTransient)
       forceList.erase(ppm);
       
       #ifdef DEBUG_ODEMODEL_CLEAR
-      MessageInterface::ShowMessage(wxT("   Checking if pm<%p> is transient\n"), pm);
+      MessageInterface::ShowMessage("   Checking if pm<%p> is transient\n", pm);
       #endif
       
       // Transient forces are managed in the Sandbox.
@@ -1454,9 +1454,9 @@ void ODEModel::ClearForceList(bool deleteTransient)
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (pm, pm->GetName(), wxT("ODEModel::~ODEModel()"),
-             wxT("deleting non-transient \"") + pm->GetTypeName() +
-             wxT("\" PhysicalModel"), this);
+            (pm, pm->GetName(), "ODEModel::~ODEModel()",
+             "deleting non-transient \"" + pm->GetTypeName() +
+             "\" PhysicalModel", this);
          #endif
          delete pm;
       }
@@ -1481,8 +1481,8 @@ void ODEModel::ClearInternalCoordinateSystems()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         ((*i), (*i)->GetName(), wxT("ODEModel::ClearInternalCoordinateSystems()"),
-          wxT("deleting ICS"), this);
+         ((*i), (*i)->GetName(), "ODEModel::ClearInternalCoordinateSystems()",
+          "deleting ICS", this);
       #endif
       delete (*i);
    }
@@ -1490,7 +1490,7 @@ void ODEModel::ClearInternalCoordinateSystems()
 }
 
 //------------------------------------------------------------------------------
-// void SetInternalCoordinateSystem(const wxString csId, 
+// void SetInternalCoordinateSystem(const std::string csId, 
 //      PhysicalModel *currentPm)
 //------------------------------------------------------------------------------
 /**
@@ -1500,15 +1500,15 @@ void ODEModel::ClearInternalCoordinateSystems()
  * @param <currentPm>   Force that needs the CoordinateSystem.
  */
 //------------------------------------------------------------------------------
-void ODEModel::SetInternalCoordinateSystem(const wxString csId,
+void ODEModel::SetInternalCoordinateSystem(const std::string csId,
                                            PhysicalModel *currentPm)
 {
-   wxString csName;
+   std::string csName;
    CoordinateSystem *cs = NULL;
 
    #ifdef DEBUG_ODEMODEL_INIT     
       MessageInterface::ShowMessage(
-         wxT("Setting internal CS with ID '%s' for force type '%s'\n"),
+         "Setting internal CS with ID '%s' for force type '%s'\n",
          csId.c_str(), currentPm->GetTypeName().c_str());
    #endif
    csName = currentPm->GetStringParameter(csId);
@@ -1521,7 +1521,7 @@ void ODEModel::SetInternalCoordinateSystem(const wxString csId,
    {
       #ifdef DEBUG_ODEMODEL_INIT
          MessageInterface::ShowMessage(
-            wxT("Adding a coordinate system named '%s' for the %s physical model\n"),
+            "Adding a coordinate system named '%s' for the %s physical model\n",
             csName.c_str(), currentPm->GetTypeName().c_str());
       #endif
       
@@ -1536,20 +1536,20 @@ void ODEModel::SetInternalCoordinateSystem(const wxString csId,
          // We need to handle both inertial and fixed CS's here
          if (earthEq == NULL)
             throw ODEModelException(
-               wxT("Error setting force model coordinate system for ") +
-               instanceName + wxT(": EarthEq pointer has not been initialized!"));
+               "Error setting force model coordinate system for " +
+               instanceName + ": EarthEq pointer has not been initialized!");
          if (earthFixed == NULL)
             throw ODEModelException(
-               wxT("Error setting force model coordinate system for ") +
-               instanceName + wxT(": EarthFixed pointer has not been initialized!"));
+               "Error setting force model coordinate system for " +
+               instanceName + ": EarthFixed pointer has not been initialized!");
          
-         if (csName.find(wxT("Fixed"), 0) == wxString::npos)
+         if (csName.find("Fixed", 0) == std::string::npos)
          {
             cs = (CoordinateSystem *)earthEq->Clone();
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Add
-               (cs, csName, wxT("ODEModel::SetInternalCoordinateSystem()"),
-                wxT("cs = earthEq->Clone()"), this);
+               (cs, csName, "ODEModel::SetInternalCoordinateSystem()",
+                "cs = earthEq->Clone()", this);
             #endif
          }
          else
@@ -1557,19 +1557,19 @@ void ODEModel::SetInternalCoordinateSystem(const wxString csId,
             cs = (CoordinateSystem *)earthFixed->Clone();
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Add
-               (cs, csName, wxT("ODEModel::SetInternalCoordinateSystem()"),
-                wxT("cs = earthFixed->Clone()"), this);
+               (cs, csName, "ODEModel::SetInternalCoordinateSystem()",
+                "cs = earthFixed->Clone()", this);
             #endif
          }
          
          cs->SetName(csName);
-         cs->SetStringParameter(wxT("Origin"), centralBodyName);
+         cs->SetStringParameter("Origin", centralBodyName);
          cs->SetRefObject(forceOrigin, Gmat::CELESTIAL_BODY, 
             centralBodyName);
          internalCoordinateSystems.push_back(cs);
 
          #ifdef DEBUG_ODEMODEL_INIT
-            MessageInterface::ShowMessage(wxT("Created %s with description\n\n%s\n"), 
+            MessageInterface::ShowMessage("Created %s with description\n\n%s\n", 
                csName.c_str(), 
                cs->GetGeneratingString(Gmat::SCRIPTING).c_str());
          #endif
@@ -1582,9 +1582,9 @@ void ODEModel::SetInternalCoordinateSystem(const wxString csId,
 
       #ifdef DEBUG_ODEMODEL_INIT     
          MessageInterface::ShowMessage(
-            wxT("New coordinate system named '%s' has definition\n%s\n"),
+            "New coordinate system named '%s' has definition\n%s\n",
             csName.c_str(), 
-            cs->GetGeneratingString(Gmat::SCRIPTING, wxT("   ")).c_str());
+            cs->GetGeneratingString(Gmat::SCRIPTING, "   ").c_str());
       #endif
          
       currentPm->SetRefObject(cs, Gmat::COORDINATE_SYSTEM, csName);
@@ -1599,7 +1599,7 @@ Integer ODEModel::GetOwnedObjectCount()
 {
    #ifdef DEBUG_ODEMODEL_OWNED_OBJECT
    MessageInterface::ShowMessage
-      (wxT("ODEModel::GetOwnedObjectCount() this=<%p>'%s' returning %d\n"),
+      ("ODEModel::GetOwnedObjectCount() this=<%p>'%s' returning %d\n",
        this, GetName().c_str(), numForces);
    #endif
    return numForces;
@@ -1619,7 +1619,7 @@ GmatBase* ODEModel::GetOwnedObject(Integer whichOne)
 
 
 //------------------------------------------------------------------------------
-// virtual wxString BuildPropertyName(GmatBase *ownedObj)
+// virtual std::string BuildPropertyName(GmatBase *ownedObj)
 //------------------------------------------------------------------------------
 /*
  * Builds property name of owned object.
@@ -1631,11 +1631,11 @@ GmatBase* ODEModel::GetOwnedObject(Integer whichOne)
  * @return The property name
  */
 //------------------------------------------------------------------------------
-wxString ODEModel::BuildPropertyName(GmatBase *ownedObj)
+std::string ODEModel::BuildPropertyName(GmatBase *ownedObj)
 {
    #ifdef DEBUG_OWNED_OBJECT_STRINGS
    MessageInterface::ShowMessage
-      (wxT("ODEModel::BuildPropertyName() called with ownedObj type=%s\n"),
+      ("ODEModel::BuildPropertyName() called with ownedObj type=%s\n",
        ownedObj->GetTypeName().c_str());
    #endif
    
@@ -1655,7 +1655,7 @@ void ODEModel::UpdateInitialData(bool dynamicOnly)
    PhysicalModel *current; // = forceList[cf];  // waw: added 06/04/04
 
    // Variables used to set spacecraft parameters
-   wxString parmName, stringParm;
+   std::string parmName, stringParm;
    std::vector<SpaceObject *>::iterator sat;
 
    for (std::vector<PhysicalModel*>::iterator i = forceList.begin();
@@ -1690,7 +1690,7 @@ void ODEModel::UpdateInitialData(bool dynamicOnly)
 /**
  * Tells the transient forces in the model about the propagated SpaceObjects.
  *
- * In GMAT, a wxT("transient force") is a force that is applied based on state
+ * In GMAT, a "transient force" is a force that is applied based on state
  * changes made to the elements that are propagated during a run.  In other
  * words, a transient force is a force that gets applied when needed, but not
  * typically throughout the mission.  An example is a finite burn: the
@@ -1704,13 +1704,13 @@ void ODEModel::UpdateInitialData(bool dynamicOnly)
 void ODEModel::UpdateTransientForces()
 {
    #ifdef DEBUG_INITIALIZATION
-     MessageInterface::ShowMessage(wxT("ODEModel::UpdateTransientForces entered\n"));
+     MessageInterface::ShowMessage("ODEModel::UpdateTransientForces entered\n");
    #endif
    if (psm == NULL)
    {
-//      MessageInterface::ShowMessage(wxT("PSM is NULL\n"));
+//      MessageInterface::ShowMessage("PSM is NULL\n");
 //      throw ODEModelException(
-//            wxT("Cannot initialize ODEModel; no PropagationStateManager"));
+//            "Cannot initialize ODEModel; no PropagationStateManager");
       return;
    }
    
@@ -1732,7 +1732,7 @@ void ODEModel::UpdateTransientForces()
             {
                #ifdef DEBUG_INITIALIZATION
                MessageInterface::ShowMessage
-                  (wxT("ODEModel::UpdateTransientForces() Adding <%p>'%s' to propObjects\n"),
+                  ("ODEModel::UpdateTransientForces() Adding <%p>'%s' to propObjects\n",
                    obj, obj->GetName().c_str());
                #endif
                propObjects.push_back(obj);
@@ -1749,7 +1749,7 @@ void ODEModel::UpdateTransientForces()
       {
          ++transientCount;
          #ifdef DEBUG_INITIALIZATION
-            MessageInterface::ShowMessage(wxT("Updating transient force %s\n"),
+            MessageInterface::ShowMessage("Updating transient force %s\n",
                (*tf)->GetName().c_str());
          #endif
          (*tf)->SetPropList(&propObjects);
@@ -1775,12 +1775,12 @@ void ODEModel::UpdateTransientForces()
 Integer ODEModel::SetupSpacecraftData(ObjectArray *sats, Integer i)
 {
    #ifdef DEBUG_SPACECRAFT_PROPERTIES
-      MessageInterface::ShowMessage(wxT("ODEModel::SetupSpacecraftData(*, %d) ")
-            wxT("called\n"), i);
+      MessageInterface::ShowMessage("ODEModel::SetupSpacecraftData(*, %d) "
+            "called\n", i);
    #endif
 
    Real parm;
-   wxString stringParm;
+   std::string stringParm;
 
    GmatBase* sat;
    Integer increment = 1;
@@ -1791,53 +1791,53 @@ Integer ODEModel::SetupSpacecraftData(ObjectArray *sats, Integer i)
       sat = *j;
 
       #ifdef DEBUG_SPACECRAFT_PROPERTIES
-         MessageInterface::ShowMessage(wxT("   Looking at %s\n"),
+         MessageInterface::ShowMessage("   Looking at %s\n",
                sat->GetName().c_str());
       #endif
       // Only retrieve the parameter IDs once
-      if ((satIds[1] < 0) && sat->IsOfType(wxT("Spacecraft")))
+      if ((satIds[1] < 0) && sat->IsOfType("Spacecraft"))
       {
-         satIds[0] = sat->GetParameterID(wxT("A1Epoch"));
+         satIds[0] = sat->GetParameterID("A1Epoch");
          if (satIds[0] < 0)
-            throw ODEModelException(wxT("Epoch parameter undefined on object ") +
+            throw ODEModelException("Epoch parameter undefined on object " +
                                     sat->GetName());
          
-         satIds[1] = sat->GetParameterID(wxT("CoordinateSystem"));
+         satIds[1] = sat->GetParameterID("CoordinateSystem");
          if (satIds[1] < 0)
             throw ODEModelException(
-               wxT("CoordinateSystem parameter undefined on object ") + sat->GetName());
+               "CoordinateSystem parameter undefined on object " + sat->GetName());
          
-         satIds[2] = sat->GetParameterID(wxT("TotalMass"));
+         satIds[2] = sat->GetParameterID("TotalMass");
          if (satIds[2] < 0)
-            throw ODEModelException(wxT("TotalMass parameter undefined on object ") +
+            throw ODEModelException("TotalMass parameter undefined on object " +
                                     sat->GetName());
          
-         satIds[3] = sat->GetParameterID(wxT("Cd"));
+         satIds[3] = sat->GetParameterID("Cd");
          if (satIds[3] < 0)
-            throw ODEModelException(wxT("Cd parameter undefined on object ") +
+            throw ODEModelException("Cd parameter undefined on object " +
                                     sat->GetName());
          
-         satIds[4] = sat->GetParameterID(wxT("DragArea"));
+         satIds[4] = sat->GetParameterID("DragArea");
          if (satIds[4] < 0)
-            throw ODEModelException(wxT("Drag Area parameter undefined on object ") +
+            throw ODEModelException("Drag Area parameter undefined on object " +
                                     sat->GetName());
          
-         satIds[5] = sat->GetParameterID(wxT("SRPArea"));
+         satIds[5] = sat->GetParameterID("SRPArea");
          if (satIds[5] < 0)
-            throw ODEModelException(wxT("SRP Area parameter undefined on object ") +
+            throw ODEModelException("SRP Area parameter undefined on object " +
                                     sat->GetName());
          
-         satIds[6] = sat->GetParameterID(wxT("Cr"));
+         satIds[6] = sat->GetParameterID("Cr");
          if (satIds[6] < 0)
-            throw ODEModelException(wxT("Cr parameter undefined on object ") +
+            throw ODEModelException("Cr parameter undefined on object " +
                                     sat->GetName());
          
-         stateStart = sat->GetParameterID(wxT("CartesianX"));
-         stateEnd   = sat->GetParameterID(wxT("CartesianVZ"));
+         stateStart = sat->GetParameterID("CartesianX");
+         stateEnd   = sat->GetParameterID("CartesianVZ");
 
          #ifdef DEBUG_SATELLITE_PARAMETERS
          MessageInterface::ShowMessage(
-            wxT("Parameter ID Array: [%d %d %d %d %d %d %d]; PMepoch id  = %d\n"),
+            "Parameter ID Array: [%d %d %d %d %d %d %d]; PMepoch id  = %d\n",
             satIds[0], satIds[1], satIds[2], satIds[3], satIds[4], satIds[5], 
                satIds[6], PhysicalModel::EPOCH);
          #endif
@@ -1853,12 +1853,12 @@ Integer ODEModel::SetupSpacecraftData(ObjectArray *sats, Integer i)
          { 
             #ifdef DEBUG_SATELLITE_PARAMETERS
                MessageInterface::ShowMessage(
-                   wxT("ODEModel '%s', Member %s: %s->ParmsChanged = %s, ")
-                   wxT("parametersSetOnce = %s\n"),
+                   "ODEModel '%s', Member %s: %s->ParmsChanged = %s, "
+                   "parametersSetOnce = %s\n",
                    GetName().c_str(), pm->GetTypeName().c_str(), 
                    sat->GetName().c_str(), 
-                   (((SpaceObject*)sat)->ParametersHaveChanged() ? wxT("true") : wxT("false")), 
-                   (parametersSetOnce ? wxT("true") : wxT("false")));
+                   (((SpaceObject*)sat)->ParametersHaveChanged() ? "true" : "false"), 
+                   (parametersSetOnce ? "true" : "false"));
             #endif
                
             // Manage the epoch ...
@@ -1872,7 +1872,7 @@ Integer ODEModel::SetupSpacecraftData(ObjectArray *sats, Integer i)
             {
                #ifdef DEBUG_SATELLITE_PARAMETERS
                   MessageInterface::ShowMessage(
-                     wxT("Setting parameters for %s using data from %s\n"),
+                     "Setting parameters for %s using data from %s\n",
                      pm->GetTypeName().c_str(), sat->GetName().c_str());
                #endif
                
@@ -1884,48 +1884,48 @@ Integer ODEModel::SetupSpacecraftData(ObjectArray *sats, Integer i)
                       stringParm));
                if (!cs)
                {
-                  wxString sataddr;
-                  sataddr.Printf( wxT("%lx"), (unsigned long)sat);
+                  char sataddr[20];
+                  std::sprintf(sataddr, "%lx", (unsigned long)sat);
                   throw ODEModelException(
-                     wxT("CoordinateSystem is NULL on Spacecraft ") + sat->GetName() +
-                     wxT(" at address ") + sataddr);
+                     "CoordinateSystem is NULL on Spacecraft " + sat->GetName() +
+                     " at address " + sataddr);
                }
-               pm->SetSatelliteParameter(i, wxT("ReferenceBody"), cs->GetOriginName());
+               pm->SetSatelliteParameter(i, "ReferenceBody", cs->GetOriginName());
                
                // ... Mass ...
                parm = sat->GetRealParameter(satIds[2]);
                if (parm <= 0)
-                  throw ODEModelException(wxT("Mass parameter unphysical on object ") + 
+                  throw ODEModelException("Mass parameter unphysical on object " + 
                      sat->GetName());
-               pm->SetSatelliteParameter(i, wxT("Mass"), parm, satIds[2]);
+               pm->SetSatelliteParameter(i, "Mass", parm, satIds[2]);
                
                // ... Coefficient of drag ...
                parm = sat->GetRealParameter(satIds[3]);
                if (parm < 0)
-                  throw ODEModelException(wxT("Cd parameter unphysical on object ") + 
+                  throw ODEModelException("Cd parameter unphysical on object " + 
                      sat->GetName());
-               pm->SetSatelliteParameter(i, wxT("Cd"), parm, satIds[3]);
+               pm->SetSatelliteParameter(i, "Cd", parm, satIds[3]);
                
                // ... Drag area ...
                parm = sat->GetRealParameter(satIds[4]);
                if (parm < 0)
-                  throw ODEModelException(wxT("Drag Area parameter unphysical on object ") + 
+                  throw ODEModelException("Drag Area parameter unphysical on object " + 
                      sat->GetName());
-               pm->SetSatelliteParameter(i, wxT("DragArea"), parm, satIds[4]);
+               pm->SetSatelliteParameter(i, "DragArea", parm, satIds[4]);
                
                // ... SRP area ...
                parm = sat->GetRealParameter(satIds[5]);
                if (parm < 0)
-                  throw ODEModelException(wxT("SRP Area parameter unphysical on object ") + 
+                  throw ODEModelException("SRP Area parameter unphysical on object " + 
                      sat->GetName());
-               pm->SetSatelliteParameter(i, wxT("SRPArea"), parm, satIds[5]);
+               pm->SetSatelliteParameter(i, "SRPArea", parm, satIds[5]);
                
                // ... and Coefficient of reflectivity
                parm = sat->GetRealParameter(satIds[6]);
                if (parm < 0)
-                  throw ODEModelException(wxT("Cr parameter unphysical on object ") + 
+                  throw ODEModelException("Cr parameter unphysical on object " + 
                      sat->GetName());
-               pm->SetSatelliteParameter(i, wxT("Cr"), parm, satIds[6]);
+               pm->SetSatelliteParameter(i, "Cr", parm, satIds[6]);
                
                ((SpaceObject*)sat)->ParametersHaveChanged(false);
             }
@@ -1934,27 +1934,27 @@ Integer ODEModel::SetupSpacecraftData(ObjectArray *sats, Integer i)
          else if (sat->GetType() == Gmat::FORMATION) 
          {
             ObjectArray formSats;
-            ObjectArray elements = sat->GetRefObjectArray(wxT("SpaceObject"));
+            ObjectArray elements = sat->GetRefObjectArray("SpaceObject");
             for (ObjectArray::iterator n = elements.begin(); n != elements.end();
                  ++n) 
             {
                if ((*n)->IsOfType(Gmat::SPACEOBJECT))
                   formSats.push_back((SpaceObject *)(*n));
                else
-                  throw ODEModelException(wxT("Object \"") + sat->GetName() +
-                                          wxT("\" is not a SpaceObject."));
+                  throw ODEModelException("Object \"" + sat->GetName() +
+                                          "\" is not a SpaceObject.");
             }
             increment = SetupSpacecraftData(&formSats, i) - i;
          }
          else
-            throw ODEModelException(wxT("Setting SpaceObject parameters on unknown ")
-                  wxT("type for ") + sat->GetName());
+            throw ODEModelException("Setting SpaceObject parameters on unknown "
+                  "type for " + sat->GetName());
       }
       i += increment;
    }
    
    #ifdef DEBUG_SPACECRAFT_PROPERTIES
-      MessageInterface::ShowMessage(wxT("   ---> %d returned\n"), i);
+      MessageInterface::ShowMessage("   ---> %d returned\n", i);
    #endif
 
    return i;
@@ -1964,7 +1964,7 @@ Integer ODEModel::SetupSpacecraftData(ObjectArray *sats, Integer i)
 Integer ODEModel::UpdateDynamicSpacecraftData(ObjectArray *sats, Integer i)
 {
    Real parm;
-   wxString stringParm;
+   std::string stringParm;
 
    GmatBase* sat;
 
@@ -1974,7 +1974,7 @@ Integer ODEModel::UpdateDynamicSpacecraftData(ObjectArray *sats, Integer i)
       sat = *j;
 
       if (satIds[1] < 0)
-         throw ODEModelException(wxT("Epoch parameter undefined on object ") +
+         throw ODEModelException("Epoch parameter undefined on object " +
                                     sat->GetName());
 
       PhysicalModel *pm;
@@ -1987,54 +1987,54 @@ Integer ODEModel::UpdateDynamicSpacecraftData(ObjectArray *sats, Integer i)
          {
             #ifdef DEBUG_SATELLITE_PARAMETER_UPDATES
                MessageInterface::ShowMessage(
-                   wxT("ODEModel '%s', Member %s: %s->ParmsChanged = %s, ")
-                   wxT("parametersSetOnce = %s\n"),
+                   "ODEModel '%s', Member %s: %s->ParmsChanged = %s, "
+                   "parametersSetOnce = %s\n",
                    GetName().c_str(), pm->GetTypeName().c_str(),
                    sat->GetName().c_str(),
-                   (((SpaceObject*)sat)->ParametersHaveChanged() ? wxT("true") : wxT("false")),
-                   (parametersSetOnce ? wxT("true") : wxT("false")));
+                   (((SpaceObject*)sat)->ParametersHaveChanged() ? "true" : "false"),
+                   (parametersSetOnce ? "true" : "false"));
             #endif
 
                // ... Mass ...
                parm = sat->GetRealParameter(satIds[2]);
                if (parm <= 0)
-                  throw ODEModelException(wxT("Mass parameter unphysical on object ") +
+                  throw ODEModelException("Mass parameter unphysical on object " +
                      sat->GetName());
                pm->SetSatelliteParameter(i, satIds[2], parm);
 
                // ... Drag area ...
                parm = sat->GetRealParameter(satIds[4]);
                if (parm < 0)
-                  throw ODEModelException(wxT("Drag Area parameter unphysical on object ") +
+                  throw ODEModelException("Drag Area parameter unphysical on object " +
                      sat->GetName());
                pm->SetSatelliteParameter(i, satIds[4], parm);
 
                // ... SRP area ...
                parm = sat->GetRealParameter(satIds[5]);
                if (parm < 0)
-                  throw ODEModelException(wxT("SRP Area parameter unphysical on object ") +
+                  throw ODEModelException("SRP Area parameter unphysical on object " +
                      sat->GetName());
                pm->SetSatelliteParameter(i, satIds[5], parm);
          }
          else if (sat->GetType() == Gmat::FORMATION)
          {
             ObjectArray formSats;
-            ObjectArray elements = sat->GetRefObjectArray(wxT("SpaceObject"));
+            ObjectArray elements = sat->GetRefObjectArray("SpaceObject");
             for (ObjectArray::iterator n = elements.begin(); n != elements.end();
                  ++n)
             {
                if ((*n)->IsOfType(Gmat::SPACEOBJECT))
                   formSats.push_back((SpaceObject *)(*n));
                else
-                  throw ODEModelException(wxT("Object \"") + sat->GetName() +
-                                          wxT("\" is not a SpaceObject."));
+                  throw ODEModelException("Object \"" + sat->GetName() +
+                                          "\" is not a SpaceObject.");
             }
             UpdateDynamicSpacecraftData(&formSats, i);
          }
          else
             throw ODEModelException(
-                                    wxT("Setting SpaceObject parameters on unknown ")
-                                    wxT("type for ") + sat->GetName());
+                                    "Setting SpaceObject parameters on unknown "
+                                    "type for " + sat->GetName());
       }
       ++i;
    }
@@ -2062,10 +2062,10 @@ bool ODEModel::GetDerivatives(Real * state, Real dt, Integer order,
       const Integer id)
 {
    #ifdef DEBUG_ODEMODEL_EXE
-      MessageInterface::ShowMessage(wxT("  ODEModel Input state = ["));
+      MessageInterface::ShowMessage("  ODEModel Input state = [");
       for (Integer i = 0; i < dimension-1; ++i)
-         MessageInterface::ShowMessage(wxT("%le, "), state[i]);
-      MessageInterface::ShowMessage(wxT("%le]\n"), state[dimension - 1]);
+         MessageInterface::ShowMessage("%le, ", state[i]);
+      MessageInterface::ShowMessage("%le]\n", state[dimension - 1]);
    #endif
 
    if (order > 2)
@@ -2082,7 +2082,7 @@ bool ODEModel::GetDerivatives(Real * state, Real dt, Integer order,
       for (UnsignedInt i = 0; i < dynamicsIndex.size(); ++i)
       {
          #ifdef DEBUG_MASS_FLOW
-            MessageInterface::ShowMessage(wxT("Updating %s on %s to %.12le\n"),
+            MessageInterface::ShowMessage("Updating %s on %s to %.12le\n",
                   dynamicObjects[i]->GetParameterText(dynamicIDs[i]).c_str(),
                   dynamicObjects[i]->GetName().c_str(),
                   state[dynamicsIndex[i]]);
@@ -2114,15 +2114,15 @@ bool ODEModel::GetDerivatives(Real * state, Real dt, Integer order,
    }
 
    #ifdef DEBUG_ODEMODEL_EXE
-      MessageInterface::ShowMessage(wxT("Initializing derivative array\n"));
+      MessageInterface::ShowMessage("Initializing derivative array\n");
    #endif
 
    #ifdef DEBUG_STATE
       MessageInterface::ShowMessage(
-         wxT("Top of GetDeriv; State with dimension %d = ["), dimension);
+         "Top of GetDeriv; State with dimension %d = [", dimension);
       for (Integer i = 0; i < dimension-1; ++i)
-         MessageInterface::ShowMessage(wxT("%le, "), state[i]);
-      MessageInterface::ShowMessage(wxT("%le]\n"), state[dimension-1]);
+         MessageInterface::ShowMessage("%le, ", state[i]);
+      MessageInterface::ShowMessage("%le]\n", state[dimension-1]);
    #endif
   
    PrepareDerivativeArray();
@@ -2130,7 +2130,7 @@ bool ODEModel::GetDerivatives(Real * state, Real dt, Integer order,
    const Real* ddt;
 
    #ifdef DEBUG_ODEMODEL_EXE
-      MessageInterface::ShowMessage(wxT("Looping through %d PhysicalModels\n"),
+      MessageInterface::ShowMessage("Looping through %d PhysicalModels\n",
             forceList.size());
    #endif
 
@@ -2139,14 +2139,14 @@ bool ODEModel::GetDerivatives(Real * state, Real dt, Integer order,
          i != forceList.end(); ++i)
    {
       #ifdef DEBUG_ODEMODEL_EXE
-         MessageInterface::ShowMessage(wxT("   %s\n"), ((*i)->GetTypeName()).c_str());
+         MessageInterface::ShowMessage("   %s\n", ((*i)->GetTypeName()).c_str());
       #endif
    
       ddt = (*i)->GetDerivativeArray();
       if (!(*i)->GetDerivatives(state, dt, order))
       {
          #ifdef DEBUG_ODEMODEL_EXE
-            MessageInterface::ShowMessage(wxT("Derivative %s failed\n"),
+            MessageInterface::ShowMessage("Derivative %s failed\n",
                   ((*i)->GetTypeName()).c_str());
          #endif
          return false;
@@ -2155,24 +2155,24 @@ bool ODEModel::GetDerivatives(Real * state, Real dt, Integer order,
       
       #ifdef DEBUG_ODEMODEL_EXE
       for (Integer j = 0; j < dimension; ++j)
-         MessageInterface::ShowMessage(wxT("  ddt(%s[%s])[%d] = %le\n"),
+         MessageInterface::ShowMessage("  ddt(%s[%s])[%d] = %le\n",
             ((*i)->GetTypeName().c_str()),
-            ((*i)->GetStringParameter((*i)->GetParameterID(wxT("BodyName")))).c_str(),
+            ((*i)->GetStringParameter((*i)->GetParameterID("BodyName"))).c_str(),
             j, ddt[j]);
       #endif
       
       #ifdef DEBUG_ODEMODEL_EXE
-         MessageInterface::ShowMessage(wxT("  deriv = ["));
+         MessageInterface::ShowMessage("  deriv = [");
       #endif
       for (Integer j = 0; j < dimension; ++j)
       {
          deriv[j] += ddt[j];
          #ifdef DEBUG_ODEMODEL_EXE
-            MessageInterface::ShowMessage(wxT(" %16.14le "), ddt[j]);
+            MessageInterface::ShowMessage(" %16.14le ", ddt[j]);
          #endif
       }
       #ifdef DEBUG_ODEMODEL_EXE
-         MessageInterface::ShowMessage(wxT("]\n"));
+         MessageInterface::ShowMessage("]\n");
       #endif
 
 
@@ -2180,8 +2180,8 @@ bool ODEModel::GetDerivatives(Real * state, Real dt, Integer order,
          if (firstCallFired == false)
          {
             MessageInterface::ShowMessage(
-               wxT("   %s(%s)::GetDerivatives --> ")
-               wxT("[%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n"),
+               "   %s(%s)::GetDerivatives --> "
+               "[%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n",
                forceList[0]->GetTypeName().c_str(),
                forceList[0]->GetName().c_str(),
                ddt[0], ddt[1], ddt[2], ddt[3], ddt[4], ddt[5]);
@@ -2193,14 +2193,14 @@ bool ODEModel::GetDerivatives(Real * state, Real dt, Integer order,
       CompleteDerivativeCalculations(state);
 
    #ifdef DEBUG_ODEMODEL_EXE
-      MessageInterface::ShowMessage(wxT("  ===============================\n"));
+      MessageInterface::ShowMessage("  ===============================\n");
    #endif
 
    #ifdef DEBUG_FIRST_CALL
       if (firstCallFired == false)
       {
          MessageInterface::ShowMessage(
-            wxT("GetDerivatives: [%.16lf %.16lf %.16lf %.16lf %.16lf %.16lf]\n"),
+            "GetDerivatives: [%.16lf %.16lf %.16lf %.16lf %.16lf %.16lf]\n",
             deriv[0], deriv[1], deriv[2], deriv[3], deriv[4], deriv[5]);
       }
 
@@ -2209,39 +2209,39 @@ bool ODEModel::GetDerivatives(Real * state, Real dt, Integer order,
 
    #ifdef DEBUG_STATE
       MessageInterface::ShowMessage(
-               wxT("End of GetDeriv; State with dimension %d = ["), dimension);
+               "End of GetDeriv; State with dimension %d = [", dimension);
       for (Integer i = 0; i < dimension-1; ++i) //< state->GetSize()-1; ++i)
-         MessageInterface::ShowMessage(wxT("%.12le, "), state[i]); //(*state)[i]);
-      MessageInterface::ShowMessage(wxT("%.12le]\n"), state[dimension-1]); //(*state)[state->GetSize()-1]);
+         MessageInterface::ShowMessage("%.12le, ", state[i]); //(*state)[i]);
+      MessageInterface::ShowMessage("%.12le]\n", state[dimension-1]); //(*state)[state->GetSize()-1]);
 
       MessageInterface::ShowMessage(
-               wxT("   Derivative = ["));
+               "   Derivative = [");
       for (Integer i = 0; i < dimension-1; ++i) //< state->GetSize()-1; ++i)
-         MessageInterface::ShowMessage(wxT("%.12le, "), deriv[i]); //(*state)[i]);
-      MessageInterface::ShowMessage(wxT("%.12le]\n"), deriv[dimension-1]); //(*state)[state->GetSize()-1]);
+         MessageInterface::ShowMessage("%.12le, ", deriv[i]); //(*state)[i]);
+      MessageInterface::ShowMessage("%.12le]\n", deriv[dimension-1]); //(*state)[state->GetSize()-1]);
    #endif
 
    #ifdef DUMP_TOTAL_DERIVATIVE
       MessageInterface::ShowMessage(
-               wxT("   Derivative = ["));
+               "   Derivative = [");
       for (Integer i = 0; i < dimension-1; ++i) //< state->GetSize()-1; ++i)
-         MessageInterface::ShowMessage(wxT("%.12le, "), deriv[i]); //(*state)[i]);
-      MessageInterface::ShowMessage(wxT("%.12le]\n"), deriv[dimension-1]); //(*state)[state->GetSize()-1]);
+         MessageInterface::ShowMessage("%.12le, ", deriv[i]); //(*state)[i]);
+      MessageInterface::ShowMessage("%.12le]\n", deriv[dimension-1]); //(*state)[state->GetSize()-1]);
    #endif
 
    #ifdef DEBUG_STM_AMATRIX_DERIVS
-      MessageInterface::ShowMessage(wxT("Final dv array:\n"));
+      MessageInterface::ShowMessage("Final dv array:\n");
 
       for (Integer i = 0; i < 6; ++i)
       {
-         MessageInterface::ShowMessage(wxT("  %lf  "), deriv[i]);
+         MessageInterface::ShowMessage("  %lf  ", deriv[i]);
       }
-      MessageInterface::ShowMessage(wxT("\n"));
+      MessageInterface::ShowMessage("\n");
       for (Integer i = 6; i < dimension; i += 6)
       {
          for (Integer j = 0; j < 6; ++j)
-            MessageInterface::ShowMessage(wxT("  %le  "), deriv[i+j]);
-         MessageInterface::ShowMessage(wxT("\n"));
+            MessageInterface::ShowMessage("  %le  ", deriv[i+j]);
+         MessageInterface::ShowMessage("\n");
       }
    #endif
 
@@ -2264,8 +2264,8 @@ bool ODEModel::PrepareDerivativeArray()
    {
       #ifdef DEBUG_STM_AMATRIX_DERIVS
          if (eins == false)
-            MessageInterface::ShowMessage(wxT("Mapping [%d] %s\n"), i,
-                  ((*smap)[i]->nonzeroInit == true ? wxT("true") : wxT("false")));
+            MessageInterface::ShowMessage("Mapping [%d] %s\n", i,
+                  ((*smap)[i]->nonzeroInit == true ? "true" : "false"));
       #endif
 
       if ((*smap)[i]->nonzeroInit)
@@ -2279,18 +2279,18 @@ bool ODEModel::PrepareDerivativeArray()
    #ifdef DEBUG_STM_AMATRIX_DERIVS
       if (eins == false)
       {
-         MessageInterface::ShowMessage(wxT("Initial dv array:\n"));
+         MessageInterface::ShowMessage("Initial dv array:\n");
 
          for (Integer i = 0; i < 6; ++i)
          {
-            MessageInterface::ShowMessage(wxT("  %lf  "), deriv[i]);
+            MessageInterface::ShowMessage("  %lf  ", deriv[i]);
          }
-         MessageInterface::ShowMessage(wxT("\n"));
+         MessageInterface::ShowMessage("\n");
          for (Integer i = 6; i < dimension; i += 6)
          {
             for (Integer j = 0; j < 6; ++j)
-               MessageInterface::ShowMessage(wxT("  %lf  "), deriv[i+j]);
-            MessageInterface::ShowMessage(wxT("\n"));
+               MessageInterface::ShowMessage("  %lf  ", deriv[i+j]);
+            MessageInterface::ShowMessage("\n");
          }
       }
 
@@ -2374,8 +2374,8 @@ Real ODEModel::EstimateError(Real *diffs, Real *answer) const
    Real retval = 0.0, err, mag, vec[3];
 
    #ifdef DEBUG_ERROR_ESTIMATE
-      MessageInterface::ShowMessage(wxT("ODEModel::EstimateError normType == %d; ")
-            wxT("dimension = %d\n"), normType, dimension);
+      MessageInterface::ShowMessage("ODEModel::EstimateError normType == %d; "
+            "dimension = %d\n", normType, dimension);
    #endif
 
    // Handle non-Cartesian state elements as an L1 norm
@@ -2388,7 +2388,7 @@ Real ODEModel::EstimateError(Real *diffs, Real *answer) const
          err = err / mag;
 
       #ifdef DEBUG_ERROR_ESTIMATE
-         MessageInterface::ShowMessage(wxT("   {%d EstErr = %le} "), i, err);
+         MessageInterface::ShowMessage("   {%d EstErr = %le} ", i, err);
       #endif
 
       if (err > retval)
@@ -2459,7 +2459,7 @@ Real ODEModel::EstimateError(Real *diffs, Real *answer) const
       }
 
       #ifdef DEBUG_ERROR_ESTIMATE
-         MessageInterface::ShowMessage(wxT("   {%d EstErr = %le} "), i, err);
+         MessageInterface::ShowMessage("   {%d EstErr = %le} ", i, err);
       #endif
 
       if (err > retval)
@@ -2478,7 +2478,7 @@ Real ODEModel::EstimateError(Real *diffs, Real *answer) const
          err = err / mag;
 
       #ifdef DEBUG_ERROR_ESTIMATE
-         MessageInterface::ShowMessage(wxT("   {%d EstErr = %le} "), i, err);
+         MessageInterface::ShowMessage("   {%d EstErr = %le} ", i, err);
       #endif
 
       if (err > retval)
@@ -2488,7 +2488,7 @@ Real ODEModel::EstimateError(Real *diffs, Real *answer) const
    }
 
    #ifdef DEBUG_ERROR_ESTIMATE
-      MessageInterface::ShowMessage(wxT("   >>> Estimated Error = %le\n"), retval);
+      MessageInterface::ShowMessage("   >>> Estimated Error = %le\n", retval);
    #endif
 
    return retval;
@@ -2496,18 +2496,18 @@ Real ODEModel::EstimateError(Real *diffs, Real *answer) const
 
 
 //---------------------------------------------------------------------------
-// bool TakeAction(const wxString &action, const wxString &actionData = wxT(""))
+// bool TakeAction(const std::string &action, const std::string &actionData = "")
 //---------------------------------------------------------------------------
-bool ODEModel::TakeAction(const wxString &action, const wxString &actionData)
+bool ODEModel::TakeAction(const std::string &action, const std::string &actionData)
 {
-   if (action == wxT("ClearDefaultForce"))
+   if (action == "ClearDefaultForce")
    {
       std::vector<PhysicalModel*>::iterator oldIter = forceList.end();
       for (std::vector<PhysicalModel*>::iterator i =  forceList.begin(); 
            i != forceList.end(); ++i)
       {
-         wxString pmName = (*i)->GetName();
-         if (pmName == wxT("_DefaultInternalForce_"))
+         std::string pmName = (*i)->GetName();
+         if (pmName == "_DefaultInternalForce_")
             oldIter = i;
       }
       
@@ -2518,12 +2518,12 @@ bool ODEModel::TakeAction(const wxString &action, const wxString &actionData)
          
          #ifdef DEBUG_DEFAULT_FORCE
          MessageInterface::ShowMessage
-            (wxT("ODEModel::TakeAction() deleting default force <%p>\n"), oldForce);
+            ("ODEModel::TakeAction() deleting default force <%p>\n", oldForce);
          #endif
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (oldForce, oldForce->GetName(), wxT("ODEModel::DeleteForce()"),
-             wxT("deleting non-transient force of ") + oldForce->GetTypeName(), this);
+            (oldForce, oldForce->GetName(), "ODEModel::DeleteForce()",
+             "deleting non-transient force of " + oldForce->GetTypeName(), this);
          #endif
          delete oldForce;
       }
@@ -2535,7 +2535,7 @@ bool ODEModel::TakeAction(const wxString &action, const wxString &actionData)
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /*
  * Renames referenced object name.
@@ -2548,8 +2548,8 @@ bool ODEModel::TakeAction(const wxString &action, const wxString &actionData)
  */
 //---------------------------------------------------------------------------
 bool ODEModel::RenameRefObject(const Gmat::ObjectType type,
-                                 const wxString &oldName,
-                                 const wxString &newName)
+                                 const std::string &oldName,
+                                 const std::string &newName)
 {
    // There are no renamable objects
    return true;
@@ -2633,7 +2633,7 @@ const ObjectTypeArray& ODEModel::GetRefObjectTypeArray()
 //------------------------------------------------------------------------------
 const StringArray& ODEModel::GetRefObjectNameArray(const Gmat::ObjectType type)
 {
-   wxString pmName;
+   std::string pmName;
    StringArray pmRefs;
    
    forceReferenceNames.clear();
@@ -2641,7 +2641,7 @@ const StringArray& ODEModel::GetRefObjectNameArray(const Gmat::ObjectType type)
    // Provide point mass body names for validation checking
    if (type == Gmat::SPACE_POINT)
    {
-      forceReferenceNames = BuildBodyList(wxT("PointMassForce"));
+      forceReferenceNames = BuildBodyList("PointMassForce");
       
       // Add central body
       if (find(forceReferenceNames.begin(), forceReferenceNames.end(),
@@ -2663,8 +2663,8 @@ const StringArray& ODEModel::GetRefObjectNameArray(const Gmat::ObjectType type)
 //   }
    
    // Always grab these two:
-   forceReferenceNames.push_back(wxT("EarthMJ2000Eq"));
-   forceReferenceNames.push_back(wxT("EarthFixed"));
+   forceReferenceNames.push_back("EarthMJ2000Eq");
+   forceReferenceNames.push_back("EarthFixed");
    
    // Do the base class call
    try
@@ -2735,11 +2735,11 @@ const StringArray& ODEModel::GetRefObjectNameArray(const Gmat::ObjectType type)
       forceReferenceNames.push_back(centralBodyName);
    
    #ifdef DEBUG_FORCE_REF_OBJ
-      MessageInterface::ShowMessage(wxT("Reference object names for '%s'\n"), 
+      MessageInterface::ShowMessage("Reference object names for '%s'\n", 
          instanceName.c_str());
       for (StringArray::iterator i = forceReferenceNames.begin(); 
            i != forceReferenceNames.end(); ++i)
-         MessageInterface::ShowMessage(wxT("   %s\n"), i->c_str());
+         MessageInterface::ShowMessage("   %s\n", i->c_str());
    #endif
       
    // and return it
@@ -2760,7 +2760,7 @@ void ODEModel::SetSolarSystem(SolarSystem *ss)
    PhysicalModel::SetSolarSystem(ss);
 
    if (ss == NULL)
-      MessageInterface::ShowMessage(wxT("Setting NULL solar system on %s\n"), 
+      MessageInterface::ShowMessage("Setting NULL solar system on %s\n", 
          instanceName.c_str());
    
    if (solarSystem != NULL)
@@ -2769,8 +2769,8 @@ void ODEModel::SetSolarSystem(SolarSystem *ss)
       
       if (forceOrigin == NULL) 
          throw ODEModelException(
-            wxT("Force model origin (") + centralBodyName + 
-            wxT(") was not found in the solar system"));
+            "Force model origin (" + centralBodyName + 
+            ") was not found in the solar system");
 
       for (std::vector<PhysicalModel*>::iterator i = forceList.begin();
            i != forceList.end(); ++i)
@@ -2780,7 +2780,7 @@ void ODEModel::SetSolarSystem(SolarSystem *ss)
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                    const wxString &name)
+//                    const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets ref objects used by the member forces.
@@ -2796,33 +2796,33 @@ void ODEModel::SetSolarSystem(SolarSystem *ss)
  */
 //------------------------------------------------------------------------------
 bool ODEModel::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                              const wxString &name)
+                              const std::string &name)
 {
    #ifdef DEBUG_FORCE_REF_OBJ
    MessageInterface::ShowMessage
-      (wxT("ODEModel::SetRefObject() <%s> entered, obj=<%p><%s><%s>, type=%d, name='%s'\n"),
-       GetName().c_str(), obj, obj ? obj->GetTypeName().c_str() : wxT("NULL"),
-       obj ? obj->GetName().c_str() : wxT("NULL"), type, name.c_str());
+      ("ODEModel::SetRefObject() <%s> entered, obj=<%p><%s><%s>, type=%d, name='%s'\n",
+       GetName().c_str(), obj, obj ? obj->GetTypeName().c_str() : "NULL",
+       obj ? obj->GetName().c_str() : "NULL", type, name.c_str());
    #endif
    
    bool wasSet = false;
    
    // Handle the CS pointers we always want
-   if (name == wxT("EarthMJ2000Eq"))
+   if (name == "EarthMJ2000Eq")
    {
       if (type == Gmat::COORDINATE_SYSTEM)
          earthEq = (CoordinateSystem*)obj;
       else
          throw ODEModelException(
-            wxT("Object named EarthMJ2000Eq is not a coordinate system."));
+            "Object named EarthMJ2000Eq is not a coordinate system.");
    }
-   if (name == wxT("EarthFixed"))
+   if (name == "EarthFixed")
    {
       if (type == Gmat::COORDINATE_SYSTEM)
          earthFixed = (CoordinateSystem*)obj;
       else
          throw ODEModelException(
-            wxT("Object named EarthFixed is not a coordinate system."));
+            "Object named EarthFixed is not a coordinate system.");
    }
 
    // Attempt to set the object for the base class    
@@ -2848,7 +2848,7 @@ bool ODEModel::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
             if (type == Gmat::COORDINATE_SYSTEM)
             {
                CoordinateSystem *cs = (CoordinateSystem*)obj;
-               if (cs->GetOriginName() == wxT(""))
+               if (cs->GetOriginName() == "")
                {
                   // Finish setting CS data
                   cs->SetOriginName((*i)->GetBodyName());
@@ -2877,9 +2877,9 @@ Integer ODEModel::GetParameterCount() const
 
 // Access methods 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
-wxString ODEModel::GetParameterText(const Integer id) const
+std::string ODEModel::GetParameterText(const Integer id) const
 {
    if (id >= PhysicalModelParamCount && id < ODEModelParamCount)
       return PARAMETER_TEXT[id - PhysicalModelParamCount];
@@ -2888,16 +2888,16 @@ wxString ODEModel::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer ODEModel::GetParameterID(const wxString &str) const
+Integer ODEModel::GetParameterID(const std::string &str) const
 {
-   wxString alias = str;
+   std::string alias = str;
     
    // Script document required two different names for the primary body
    // force descriptor
-   if (alias == wxT("Gravity"))
-      alias = wxT("PrimaryBodies");
+   if (alias == "Gravity")
+      alias = "PrimaryBodies";
    
    for (int i = PhysicalModelParamCount; i < ODEModelParamCount; i++)
    {
@@ -2922,9 +2922,9 @@ Gmat::ParameterType ODEModel::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
-wxString ODEModel::GetParameterTypeString(const Integer id) const
+std::string ODEModel::GetParameterTypeString(const Integer id) const
 {
    if (id >= PhysicalModelParamCount && id < ODEModelParamCount)
       return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
@@ -2945,9 +2945,9 @@ bool ODEModel::IsParameterReadOnly(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// bool IsParameterReadOnly(const wxString &label) const
+// bool IsParameterReadOnly(const std::string &label) const
 //------------------------------------------------------------------------------
-bool ODEModel::IsParameterReadOnly(const wxString &label) const
+bool ODEModel::IsParameterReadOnly(const std::string &label) const
 {
    if (label == PARAMETER_TEXT[COORDINATE_SYSTEM_LIST-PhysicalModelParamCount])
       return true;
@@ -2956,9 +2956,9 @@ bool ODEModel::IsParameterReadOnly(const wxString &label) const
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
-wxString ODEModel::GetStringParameter(const Integer id) const
+std::string ODEModel::GetStringParameter(const Integer id) const
 {
    switch (id)
    {
@@ -2968,39 +2968,39 @@ wxString ODEModel::GetStringParameter(const Integer id) const
       case  DRAG:
       {
          // Find the drag force
-         const PhysicalModel *pm = GetForce(wxT("DragForce"));
-         // No drag force, return wxT("None")
+         const PhysicalModel *pm = GetForce("DragForce");
+         // No drag force, return "None"
          if (pm == NULL)
-            return wxT("None");
+            return "None";
          // Get the atmosphere model from the drag force
-         Integer id = pm->GetParameterID(wxT("AtmosphereModel"));
-         wxString am = pm->GetStringParameter(id);
+         Integer id = pm->GetParameterID("AtmosphereModel");
+         std::string am = pm->GetStringParameter(id);
          return am;
       }
       
 //       case  SRP:
 //       {
-//          const PhysicalModel *pm = GetForce(wxT("SolarRadiationPressure"));
+//          const PhysicalModel *pm = GetForce("SolarRadiationPressure");
 //          if (pm == NULL)
-//             return wxT("Off");
-//          return wxT("On");
+//             return "Off";
+//          return "On";
 //       }
       
       case ERROR_CONTROL:
          switch (normType)
          {
             case -2:
-               return wxT("RSSState");
+               return "RSSState";
             case -1:
-               return wxT("LargestState");
+               return "LargestState";
             case 0:
-               return wxT("None");
+               return "None";
             case 1:
-               return wxT("LargestStep");
+               return "LargestStep";
             case 2:
-               return wxT("RSSStep");
+               return "RSSStep";
             default:
-               throw ODEModelException(wxT("Unrecognized error control method."));
+               throw ODEModelException("Unrecognized error control method.");
          }
          break;
 
@@ -3018,21 +3018,21 @@ wxString ODEModel::GetStringParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString ODEModel::GetStringParameter(const wxString &label) const
+std::string ODEModel::GetStringParameter(const std::string &label) const
 {
     return GetStringParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
-bool ODEModel::SetStringParameter(const Integer id, const wxString &value)
+bool ODEModel::SetStringParameter(const Integer id, const std::string &value)
 {
    #ifdef DEBUG_FM_SET
    MessageInterface::ShowMessage
-      (wxT("ODEModel::SetStringParameter() entered, id=%d, value='%s'\n"),
+      ("ODEModel::SetStringParameter() entered, id=%d, value='%s'\n",
        id, value.c_str());
    #endif
    
@@ -3059,32 +3059,32 @@ bool ODEModel::SetStringParameter(const Integer id, const wxString &value)
 //          return false;
          
       case ERROR_CONTROL:
-         if (value == wxT("RSSState"))
+         if (value == "RSSState")
          {
             normType = -2;
             return true;
          }
-         if (value == wxT("LargestState"))
+         if (value == "LargestState")
          {
             normType = -1;
             return true;
          }
-         if (value == wxT("None"))
+         if (value == "None")
          {
             normType = 0;
             return true;
          }
-         if (value == wxT("LargestStep"))
+         if (value == "LargestStep")
          {
             normType = 1;
             return true;
          }
-         if (value == wxT("RSSStep"))
+         if (value == "RSSStep")
          {
             normType = 2;
             return true;
          }
-         throw ODEModelException(wxT("Unrecognized error control method."));
+         throw ODEModelException("Unrecognized error control method.");
          
       case POTENTIAL_FILE:
          {
@@ -3099,34 +3099,34 @@ bool ODEModel::SetStringParameter(const Integer id, const wxString &value)
 }
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label,const wxString &value)
+// bool SetStringParameter(const std::string &label,const std::string &value)
 //------------------------------------------------------------------------------
-bool ODEModel::SetStringParameter(const wxString &label,
-                                    const wxString &value)
+bool ODEModel::SetStringParameter(const std::string &label,
+                                    const std::string &value)
 {
     return SetStringParameter(GetParameterID(label), value);
 }
 
 //---------------------------------------------------------------------------
-//  wxString GetOnOffParameter(const Integer id) const
+//  std::string GetOnOffParameter(const Integer id) const
 //---------------------------------------------------------------------------
-wxString ODEModel::GetOnOffParameter(const Integer id) const
+std::string ODEModel::GetOnOffParameter(const Integer id) const
 {
    switch (id)
    {
    case SRP:
       {
-         const PhysicalModel *pm = GetForce(wxT("SolarRadiationPressure"));
+         const PhysicalModel *pm = GetForce("SolarRadiationPressure");
          if (pm == NULL)
-            return wxT("Off");
-         return wxT("On");
+            return "Off";
+         return "On";
       }
    case RELATIVISTIC_CORRECTION:
       {
-         const PhysicalModel *pm = GetForce(wxT("RelativisticCorrection"));
+         const PhysicalModel *pm = GetForce("RelativisticCorrection");
          if (pm == NULL)
-            return wxT("Off");
-         return wxT("On");
+            return "Off";
+         return "On";
       }
    default:
       return PhysicalModel::GetOnOffParameter(id);
@@ -3135,9 +3135,9 @@ wxString ODEModel::GetOnOffParameter(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-//  bool SetOnOffParameter(const Integer id, const wxString &value)
+//  bool SetOnOffParameter(const Integer id, const std::string &value)
 //---------------------------------------------------------------------------
-bool ODEModel::SetOnOffParameter(const Integer id, const wxString &value)
+bool ODEModel::SetOnOffParameter(const Integer id, const std::string &value)
 {
    switch (id)
    {
@@ -3152,19 +3152,19 @@ bool ODEModel::SetOnOffParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// wxString ODEModel::GetOnOffParameter(const wxString &label) const
+// std::string ODEModel::GetOnOffParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString ODEModel::GetOnOffParameter(const wxString &label) const
+std::string ODEModel::GetOnOffParameter(const std::string &label) const
 {
    return GetOnOffParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetOnOffParameter(const wxString &label, const wxString &value)
+// bool SetOnOffParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
-bool ODEModel::SetOnOffParameter(const wxString &label, 
-                                   const wxString &value)
+bool ODEModel::SetOnOffParameter(const std::string &label, 
+                                   const std::string &value)
 {
    return SetOnOffParameter(GetParameterID(label), value);
 }
@@ -3178,9 +3178,9 @@ const StringArray& ODEModel::GetStringArrayParameter(const Integer id) const
    switch (id)
    {
    case PRIMARY_BODIES:
-      return BuildBodyList(wxT("GravityField"));
+      return BuildBodyList("GravityField");
    case POINT_MASSES:
-      return BuildBodyList(wxT("PointMassForce"));
+      return BuildBodyList("PointMassForce");
    case COORDINATE_SYSTEM_LIST:
       return BuildCoordinateList();
    case USER_DEFINED:
@@ -3193,9 +3193,9 @@ const StringArray& ODEModel::GetStringArrayParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// StringArray& GetStringArrayParameter(const wxString &label) const
+// StringArray& GetStringArrayParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-const StringArray& ODEModel::GetStringArrayParameter(const wxString &label) const
+const StringArray& ODEModel::GetStringArrayParameter(const std::string &label) const
 {
     return GetStringArrayParameter(GetParameterID(label));
 }
@@ -3223,9 +3223,9 @@ Integer ODEModel::GetIntegerParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// virtual Integer GetIntegerParameter(const wxString &label) const
+// virtual Integer GetIntegerParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-Integer ODEModel::GetIntegerParameter(const wxString &label) const
+Integer ODEModel::GetIntegerParameter(const std::string &label) const
 {
    return GetIntegerParameter(GetParameterID(label));
 }
@@ -3238,7 +3238,7 @@ Integer ODEModel::SetIntegerParameter(const Integer id, const Integer value)
 {
    #ifdef DEBUG_FM_SET
    MessageInterface::ShowMessage
-      (wxT("ODEModel::SetIntegerParameter() id=%d, value=%d\n"), id, value);
+      ("ODEModel::SetIntegerParameter() id=%d, value=%d\n", id, value);
    #endif
    
    switch (id)
@@ -3251,7 +3251,7 @@ Integer ODEModel::SetIntegerParameter(const Integer id, const Integer value)
          Integer actualId = GetOwnedObjectId(id, &owner);
          #ifdef DEBUG_FM_SET
          MessageInterface::ShowMessage
-            (wxT("   Calling SetIntegerParameter() on '%s' of type '%s'\n"),
+            ("   Calling SetIntegerParameter() on '%s' of type '%s'\n",
              owner->GetName().c_str(), owner->GetTypeName().c_str());
          #endif
          Integer outval = owner->SetIntegerParameter(actualId, value);
@@ -3264,18 +3264,18 @@ Integer ODEModel::SetIntegerParameter(const Integer id, const Integer value)
 
 
 //------------------------------------------------------------------------------
-// virtual Integer SetIntegerParameter(const wxString &label, const Integer value)
+// virtual Integer SetIntegerParameter(const std::string &label, const Integer value)
 //------------------------------------------------------------------------------
-Integer ODEModel::SetIntegerParameter(const wxString &label, const Integer value)
+Integer ODEModel::SetIntegerParameter(const std::string &label, const Integer value)
 {
    return SetIntegerParameter(GetParameterID(label), value);
 }
 
 
 //------------------------------------------------------------------------------
-// const StringArray& BuildBodyList(wxString type) const
+// const StringArray& BuildBodyList(std::string type) const
 //------------------------------------------------------------------------------
-const StringArray& ODEModel::BuildBodyList(wxString type) const
+const StringArray& ODEModel::BuildBodyList(std::string type) const
 {
    static StringArray bodylist;
    bodylist.clear();
@@ -3283,11 +3283,11 @@ const StringArray& ODEModel::BuildBodyList(wxString type) const
    // Run through list of forces, adding body names for GravityField instances
    std::vector<PhysicalModel*>::const_iterator i;
    
-   wxString actualType = GetScriptAlias(type);
+   std::string actualType = GetScriptAlias(type);
    
    for (i = forceList.begin(); i != forceList.end(); ++i) {
        if ((*i)->GetTypeName() == actualType) {
-          bodylist.push_back((*i)->GetStringParameter(wxT("BodyName")));
+          bodylist.push_back((*i)->GetStringParameter("BodyName"));
        }
    }
    return bodylist;
@@ -3307,14 +3307,14 @@ const StringArray& ODEModel::BuildCoordinateList() const
    
    for (i = forceList.begin(); i != forceList.end(); ++i) 
    {
-      if ((*i)->GetTypeName() == wxT("GravityField")) 
+      if ((*i)->GetTypeName() == "GravityField") 
       {
          // For now, only build the body fixed CS's in list because others already exist.
          // If ODEModel is created inside of GmatFunction, not all CS exist, so added
          // InputCoordinateSystem and TargetCoordinateSystem to list(loj: 2008.06.25)
-         cslist.push_back((*i)->GetStringParameter(wxT("InputCoordinateSystem")));
-         cslist.push_back((*i)->GetStringParameter(wxT("FixedCoordinateSystem")));
-         cslist.push_back((*i)->GetStringParameter(wxT("TargetCoordinateSystem")));
+         cslist.push_back((*i)->GetStringParameter("InputCoordinateSystem"));
+         cslist.push_back((*i)->GetStringParameter("FixedCoordinateSystem"));
+         cslist.push_back((*i)->GetStringParameter("TargetCoordinateSystem"));
       }
    }
    return cslist;
@@ -3345,7 +3345,7 @@ const StringArray& ODEModel::BuildUserForceList() const
 
 
 //------------------------------------------------------------------------------
-// GmatBase* GetRefObject(const Gmat::ObjectType type, const wxString &name)
+// GmatBase* GetRefObject(const Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Accesses an internal object used in the ODEModel.
@@ -3362,16 +3362,16 @@ const StringArray& ODEModel::BuildUserForceList() const
  */
 //------------------------------------------------------------------------------
 GmatBase* ODEModel::GetRefObject(const Gmat::ObjectType type,
-                                   const wxString &name)
+                                   const std::string &name)
 {
    if (type != Gmat::PHYSICAL_MODEL)
        throw ODEModelException(
-          wxT("Only forces are accessed in ODEModel::GetRefObject"));
+          "Only forces are accessed in ODEModel::GetRefObject");
    
    // Run through list of forces, adding body names for GravityField instances
    std::vector<PhysicalModel*>::const_iterator i;
    
-   wxString actualType = GetScriptAlias(name);
+   std::string actualType = GetScriptAlias(name);
    
    for (i = forceList.begin(); i != forceList.end(); ++i) {
        if ((*i)->GetTypeName() == actualType) {
@@ -3383,7 +3383,7 @@ GmatBase* ODEModel::GetRefObject(const Gmat::ObjectType type,
 
                                     
 //------------------------------------------------------------------------------
-// GmatBase* GetRefObject(const Gmat::ObjectType type, const wxString &name, 
+// GmatBase* GetRefObject(const Gmat::ObjectType type, const std::string &name, 
 //                        const Integer index)
 //------------------------------------------------------------------------------
 /**
@@ -3404,15 +3404,15 @@ GmatBase* ODEModel::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 GmatBase* ODEModel::GetRefObject(const Gmat::ObjectType type, 
-                                   const wxString &name, const Integer index)
+                                   const std::string &name, const Integer index)
 {
    if (type != Gmat::PHYSICAL_MODEL)
        throw ODEModelException(
-          wxT("Only forces are accessed in ODEModel::GetRefObject"));
+          "Only forces are accessed in ODEModel::GetRefObject");
    
    // Run through list of forces, adding body names for GravityField instances
    std::vector<PhysicalModel*>::const_iterator i;
-   wxString actualType = GetScriptAlias(name);
+   std::string actualType = GetScriptAlias(name);
    Integer j = 0;
    
    for (i = forceList.begin(); i != forceList.end(); ++i) {
@@ -3427,7 +3427,7 @@ GmatBase* ODEModel::GetRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// ObjectArray& GetRefObjectArray(const wxString& typeString)
+// ObjectArray& GetRefObjectArray(const std::string& typeString)
 //------------------------------------------------------------------------------
 /**
  * Accesses arrays of internal objects used in the ODEModel.
@@ -3437,16 +3437,16 @@ GmatBase* ODEModel::GetRefObject(const Gmat::ObjectType type,
  * @return A reference to the ObjectArray.
  */
 //------------------------------------------------------------------------------
-ObjectArray& ODEModel::GetRefObjectArray(const wxString& typeString)
+ObjectArray& ODEModel::GetRefObjectArray(const std::string& typeString)
 {
    static ObjectArray objects;
    objects.clear();
    
    // Run through list of forces, adding body names for GravityField instances
    std::vector<PhysicalModel*>::const_iterator i;
-   wxString actualType = GetScriptAlias(typeString);
+   std::string actualType = GetScriptAlias(typeString);
 
-   if (typeString == wxT("PhysicalModel")) {
+   if (typeString == "PhysicalModel") {
       for (i = forceList.begin(); i != forceList.end(); ++i) {
          objects.push_back(*i);       // Ignore names for forces.
       }
@@ -3463,23 +3463,23 @@ ObjectArray& ODEModel::GetRefObjectArray(const wxString& typeString)
 
 
 //------------------------------------------------------------------------------
-// wxString BuildForceNameString(PhysicalModel *force)
+// std::string BuildForceNameString(PhysicalModel *force)
 //------------------------------------------------------------------------------
-wxString ODEModel::BuildForceNameString(PhysicalModel *force)
+std::string ODEModel::BuildForceNameString(PhysicalModel *force)
 {
-   wxString retval = wxT("UnknownForce"), forceType = force->GetTypeName();
+   std::string retval = "UnknownForce", forceType = force->GetTypeName();
    
-   if (forceType == wxT("DragForce"))
-      retval = wxT("Drag");
-   if (forceType == wxT("GravityField"))
-      // Changed wxT("Gravity") to wxT("GravityField") to be consistent with type name (loj: 2007.01.25)
-      retval = wxT("GravityField.") + force->GetStringParameter(wxT("BodyName"));
-   if (forceType == wxT("PointMassForce"))
-      retval = force->GetStringParameter(wxT("BodyName"));
-   if (forceType == wxT("SolarRadiationPressure"))
-      retval = wxT("SRP");
-   if (forceType == wxT("RelativisticCorrection"))
-      retval = wxT("RelativisticCorrection");
+   if (forceType == "DragForce")
+      retval = "Drag";
+   if (forceType == "GravityField")
+      // Changed "Gravity" to "GravityField" to be consistent with type name (loj: 2007.01.25)
+      retval = "GravityField." + force->GetStringParameter("BodyName");
+   if (forceType == "PointMassForce")
+      retval = force->GetStringParameter("BodyName");
+   if (forceType == "SolarRadiationPressure")
+      retval = "SRP";
+   if (forceType == "RelativisticCorrection")
+      retval = "RelativisticCorrection";
    
    // Add others here
    
@@ -3488,9 +3488,9 @@ wxString ODEModel::BuildForceNameString(PhysicalModel *force)
       retval = force->GetName();
       
         #ifdef DEBUG_USER_FORCES
-                MessageInterface::ShowMessage(wxT("Force type %s named '%s' %s a user force\n"),
+                MessageInterface::ShowMessage("Force type %s named '%s' %s a user force\n",
         force->GetTypeName().c_str(), force->GetName().c_str(), 
-        (force->IsUserForce() ? wxT("is") : wxT("is not")));
+        (force->IsUserForce() ? "is" : "is not"));
         #endif
 
         return retval;
@@ -3508,24 +3508,24 @@ wxString ODEModel::BuildForceNameString(PhysicalModel *force)
 void ODEModel::MoveToOrigin(Real newEpoch)
 {
 #ifdef DEBUG_REORIGIN
-   MessageInterface::ShowMessage(wxT("ODEModel::MoveToOrigin entered\n"));
+   MessageInterface::ShowMessage("ODEModel::MoveToOrigin entered\n");
 #endif
    
 #ifdef DEBUG_REORIGIN
    MessageInterface::ShowMessage(
-         wxT("SatCount = %d, dimension = %d, stateSize = %d\n"),cartesianCount,
+         "SatCount = %d, dimension = %d, stateSize = %d\n",cartesianCount,
          dimension, stateSize);
    MessageInterface::ShowMessage(
-         wxT("StatePointers: rawState = %p, modelState = %p\n"), rawState, 
+         "StatePointers: rawState = %p, modelState = %p\n", rawState, 
          modelState);
    MessageInterface::ShowMessage(
-       wxT("ODEModel::MoveToOrigin()\n   Input state: [ "));
+       "ODEModel::MoveToOrigin()\n   Input state: [ ");
    for (Integer i = 0; i < dimension; ++i)
-      MessageInterface::ShowMessage(wxT("%lf "), rawState[i]); 
-   MessageInterface::ShowMessage(wxT("]\n   model state: [ "));
+      MessageInterface::ShowMessage("%lf ", rawState[i]); 
+   MessageInterface::ShowMessage("]\n   model state: [ ");
    for (Integer i = 0; i < dimension; ++i)
-      MessageInterface::ShowMessage(wxT("%lf "), modelState[i]);
-   MessageInterface::ShowMessage(wxT("]\n\n"));
+      MessageInterface::ShowMessage("%lf ", modelState[i]);
+   MessageInterface::ShowMessage("]\n\n");
 #endif
     
    memcpy(modelState, rawState, dimension*sizeof(Real));
@@ -3547,12 +3547,12 @@ void ODEModel::MoveToOrigin(Real newEpoch)
 
          #ifdef DEBUG_REORIGIN
             MessageInterface::ShowMessage(
-                wxT("ODEModel::MoveToOrigin()\n")
-                wxT("   Input state: [%lf %lf %lf %lf %lf %lf]\n")
-                wxT("   j2k state:   [%lf %lf %lf %lf %lf %lf]\n")
-                wxT("   cb state:    [%lf %lf %lf %lf %lf %lf]\n")
-                wxT("   delta:       [%lf %lf %lf %lf %lf %lf]\n")
-                wxT("   model state: [%lf %lf %lf %lf %lf %lf]\n\n"),
+                "ODEModel::MoveToOrigin()\n"
+                "   Input state: [%lf %lf %lf %lf %lf %lf]\n"
+                "   j2k state:   [%lf %lf %lf %lf %lf %lf]\n"
+                "   cb state:    [%lf %lf %lf %lf %lf %lf]\n"
+                "   delta:       [%lf %lf %lf %lf %lf %lf]\n"
+                "   model state: [%lf %lf %lf %lf %lf %lf]\n\n",
                 rawState[i6], rawState[i6+1], rawState[i6+2], rawState[i6+3],
                 rawState[i6+4], rawState[i6+5],
                 j2kState[0], j2kState[1], j2kState[2], j2kState[3], j2kState[4],
@@ -3568,15 +3568,15 @@ void ODEModel::MoveToOrigin(Real newEpoch)
    
    #ifdef DEBUG_REORIGIN
       MessageInterface::ShowMessage(
-          wxT("   Move Complete\n   Input state: [ "));
+          "   Move Complete\n   Input state: [ ");
       for (Integer i = 0; i < dimension; ++i)
-         MessageInterface::ShowMessage(wxT("%lf "), rawState[i]);
-      MessageInterface::ShowMessage(wxT("]\n   model state: [ "));
+         MessageInterface::ShowMessage("%lf ", rawState[i]);
+      MessageInterface::ShowMessage("]\n   model state: [ ");
       for (Integer i = 0; i < dimension; ++i)
-         MessageInterface::ShowMessage(wxT("%lf "), modelState[i]);
-      MessageInterface::ShowMessage(wxT("]\n\n"));
+         MessageInterface::ShowMessage("%lf ", modelState[i]);
+      MessageInterface::ShowMessage("]\n\n");
 
-      MessageInterface::ShowMessage(wxT("ODEModel::MoveToOrigin Finished\n"));
+      MessageInterface::ShowMessage("ODEModel::MoveToOrigin Finished\n");
    #endif
 }
 
@@ -3592,7 +3592,7 @@ void ODEModel::MoveToOrigin(Real newEpoch)
 void ODEModel::ReturnFromOrigin(Real newEpoch)
 {
    #ifdef DEBUG_REORIGIN
-      MessageInterface::ShowMessage(wxT("ODEModel::ReturnFromOrigin entered\n"));
+      MessageInterface::ShowMessage("ODEModel::ReturnFromOrigin entered\n");
    #endif
 
    memcpy(rawState, modelState, dimension*sizeof(Real));
@@ -3613,11 +3613,11 @@ void ODEModel::ReturnFromOrigin(Real newEpoch)
             rawState[i6+j] = modelState[i6+j] - delta[j];
             #ifdef DEBUG_REORIGIN
                MessageInterface::ShowMessage(
-                   wxT("ODEModel::ReturnFromOrigin()\n   Input (model) state: [%lf %lf %lf %lf %lf")
-                   wxT(" %lf]\n   j2k state:   [%lf %lf %lf %lf %lf %lf]\n")
-                   wxT("   cb state:    [%lf %lf %lf %lf %lf %lf]\n")
-                   wxT("   delta:       [%lf %lf %lf %lf %lf %lf]\n")
-                   wxT("   raw state: [%lf %lf %lf %lf %lf %lf]\n\n"),
+                   "ODEModel::ReturnFromOrigin()\n   Input (model) state: [%lf %lf %lf %lf %lf"
+                   " %lf]\n   j2k state:   [%lf %lf %lf %lf %lf %lf]\n"
+                   "   cb state:    [%lf %lf %lf %lf %lf %lf]\n"
+                   "   delta:       [%lf %lf %lf %lf %lf %lf]\n"
+                   "   raw state: [%lf %lf %lf %lf %lf %lf]\n\n",
                    modelState[0], modelState[1], modelState[2], modelState[3], modelState[4],
                    modelState[5],
                    j2kState[0], j2kState[1], j2kState[2], j2kState[3], j2kState[4],
@@ -3645,38 +3645,38 @@ void ODEModel::ReportEpochData()
 //   if (epochFile.is_open())
 //   {
 //      epochFile.precision(16);
-//         epochFile << epoch << wxT(" ") << elapsedTime;
+//         epochFile << epoch << " " << elapsedTime;
 //
-//      epochFile << wxT(" Members ");
+//      epochFile << " Members ";
 //      for (std::vector<PhysicalModel*>::iterator i = forceList.begin();
 //           i != forceList.end(); ++i)
 //      {
 //         epochFile.precision(16);
-//         epochFile << wxT(" ")
+//         epochFile << " "
 //                   << (*i)->GetRealParameter(satIds[0])
-//                   << wxT(" ") << (*i)->GetTime();
+//                   << " " << (*i)->GetTime();
 //      }
 //
-//      epochFile << wxT(" Sats ") ;
+//      epochFile << " Sats " ;
 //      for (std::vector<SpaceObject*>::iterator i = spacecraft.begin();
 //           i != spacecraft.end(); ++i)
 //      {
 //         epochFile.precision(16);
-//         epochFile << wxT(" ") << (*i)->GetEpoch();
+//         epochFile << " " << (*i)->GetEpoch();
 //      }
-//      epochFile << wxT("\n");
+//      epochFile << "\n";
 //   }
 //   else
 //      throw ODEModelException(
-//         wxT("ODEModel::ReportEpochData: Attempting to write epoch data without ")
-//         wxT("opening the data file."));
+//         "ODEModel::ReportEpochData: Attempting to write epoch data without "
+//         "opening the data file.");
 
    // Changed 3/4/2010, DJC
    // Repurposed this method so it is not file based.  For some reason all but
    // the final exception above was commented out, making the method totally
    // useless.
 
-   MessageInterface::ShowMessage(wxT("  Epoch: %.12lf, elapsedTime: %.12lf\n"),
+   MessageInterface::ShowMessage("  Epoch: %.12lf, elapsedTime: %.12lf\n",
             epoch, elapsedTime);
 }
 
@@ -3691,11 +3691,11 @@ void ODEModel::SetState(GmatState *gms)
    state = gms;
 
    #ifdef DEBUG_STATE
-      MessageInterface::ShowMessage(wxT("Setting state with dimension %d to\n   ["),
+      MessageInterface::ShowMessage("Setting state with dimension %d to\n   [",
                state->GetSize());
       for (Integer i = 0; i < state->GetSize()-1; ++i)
-         MessageInterface::ShowMessage(wxT("%le, "), (*state)[i]);
-      MessageInterface::ShowMessage(wxT("%le]\n"), (*state)[state->GetSize()-1]);
+         MessageInterface::ShowMessage("%le, ", (*state)[i]);
+      MessageInterface::ShowMessage("%le]\n", (*state)[state->GetSize()-1]);
    #endif
 }
 
@@ -3722,7 +3722,7 @@ Integer ODEModel::GetOwnedObjectId(Integer id, GmatBase **owner) const
    GmatBase *ownedObj = NULL;
    
    if (numForces == 0)
-      throw ODEModelException(wxT("ODEModel::GetOwnedObjectId() failed, Has empty force list"));
+      throw ODEModelException("ODEModel::GetOwnedObjectId() failed, Has empty force list");
    
    for (Integer i=0; i<numForces; i++)
    {
@@ -3741,11 +3741,11 @@ Integer ODEModel::GetOwnedObjectId(Integer id, GmatBase **owner) const
    *owner = ownedObj;
    
    if (owner == NULL)
-      throw ODEModelException(wxT("ODEModel::GetOwnedObjectId() failed, Owned force is NULL"));
+      throw ODEModelException("ODEModel::GetOwnedObjectId() failed, Owned force is NULL");
    
    #ifdef DEBUG_FM_OWNED_OBJECT
    MessageInterface::ShowMessage
-      (wxT("ODEModel::GetOwnedObjectId() returning %d, owner=<%p><%s><%s>\n"),
+      ("ODEModel::GetOwnedObjectId() returning %d, owner=<%p><%s><%s>\n",
        actualId, *owner, (*owner)->GetTypeName().c_str(), (*owner)->GetName().c_str());
    #endif
    

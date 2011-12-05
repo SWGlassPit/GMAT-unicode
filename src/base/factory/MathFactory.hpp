@@ -28,8 +28,8 @@
 class GMAT_API MathFactory : public Factory
 {
 public:
-   MathNode* CreateMathNode(const wxString &ofType,
-                            const wxString &withName = wxT(""));
+   MathNode* CreateMathNode(const std::string &ofType,
+                            const std::string &withName = "");
    
    MathFactory();
    virtual ~MathFactory();

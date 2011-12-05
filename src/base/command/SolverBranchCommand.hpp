@@ -32,34 +32,34 @@ class Subscriber;
 class GMAT_API SolverBranchCommand : public BranchCommand
 {
 public:
-        SolverBranchCommand(const wxString &typeStr);
+        SolverBranchCommand(const std::string &typeStr);
         virtual ~SolverBranchCommand();
    SolverBranchCommand(const SolverBranchCommand& sbc);
 
    SolverBranchCommand&    operator=(const SolverBranchCommand& sbc);
    
    virtual GmatCommand*    GetNext();
-   virtual bool            TakeAction(const wxString &action, 
-                                      const wxString &actionData = wxT(""));
+   virtual bool            TakeAction(const std::string &action, 
+                                      const std::string &actionData = "");
    
    // Handle parsing internally
    virtual bool InterpretAction();
    
    // Parameter access methods
-   virtual wxString GetParameterText(const Integer id) const;
-   virtual Integer     GetParameterID(const wxString &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
+   virtual Integer     GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                        GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
    
    virtual bool        SetStringParameter(const Integer id, 
-                                          const wxString &value);
-   virtual wxString GetStringParameter(const Integer id) const; 
-   virtual wxString GetStringParameter(const wxString &label) const;
+                                          const std::string &value);
+   virtual std::string GetStringParameter(const Integer id) const; 
+   virtual std::string GetStringParameter(const std::string &label) const;
    virtual const StringArray& 
                        GetStringArrayParameter(const Integer id) const; 
    virtual const StringArray& 
-                       GetStringArrayParameter(const wxString &label) const;
+                       GetStringArrayParameter(const std::string &label) const;
 
    virtual bool        NeedsServerStartup();
    virtual Integer     GetCloneCount();
@@ -82,7 +82,7 @@ protected:
       STOP
    };
    
-   wxString         solverName;
+   std::string         solverName;
    Solver              *theSolver; 
    solverStartMode     startMode;
    solverExitMode      exitMode;
@@ -100,9 +100,9 @@ protected:
    std::vector<Subscriber*> activeSubscribers;
 
    /// Parsing function for SolveMode and ExitMode
-   void                CheckForOptions(wxString &opts);
+   void                CheckForOptions(std::string &opts);
    /// Returns the text for options that are not set to the default values
-   wxString         GetSolverOptionText();
+   std::string         GetSolverOptionText();
    
    // Methods used to save the starting point for the loops
    virtual void        StoreLoopData();

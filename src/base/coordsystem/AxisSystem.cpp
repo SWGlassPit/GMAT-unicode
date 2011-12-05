@@ -74,12 +74,12 @@ const Real AxisSystem::DETERMINANT_TOLERANCE = 1.0e-14;
 const Real AxisSystem::JD_OF_JANUARY_1_1997  = 2450449.5;  // correct????
 
 
-const wxString
+const std::string
 AxisSystem::PARAMETER_TEXT[AxisSystemParamCount - CoordinateBaseParamCount] =
 {
-   wxT("Epoch"),
-   wxT("UpdateInterval"),
-   wxT("OverrideOriginInterval"),
+   "Epoch",
+   "UpdateInterval",
+   "OverrideOriginInterval",
 };
 
 const Gmat::ParameterType
@@ -96,8 +96,8 @@ AxisSystem::PARAMETER_TYPE[AxisSystemParamCount - CoordinateBaseParamCount] =
 //------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//  AxisSystem(const wxString &itsType,
-//             const wxString &itsName);
+//  AxisSystem(const std::string &itsType,
+//             const std::string &itsName);
 //---------------------------------------------------------------------------
 /**
  * Constructs base AxisSystem structures used in derived classes
@@ -110,13 +110,13 @@ AxisSystem::PARAMETER_TYPE[AxisSystemParamCount - CoordinateBaseParamCount] =
  *       classes must pass in the itsType and itsName parameters.
  */
 //---------------------------------------------------------------------------
-AxisSystem::AxisSystem(const wxString &itsType,
-                       const wxString &itsName) :
+AxisSystem::AxisSystem(const std::string &itsType,
+                       const std::string &itsName) :
 CoordinateBase(Gmat::AXIS_SYSTEM,itsType,itsName),
-coordName        (wxT("")),
+coordName        (""),
 eop              (NULL),
 itrf             (NULL),
-epochFormat      (wxT("A1ModJulian")),
+epochFormat      ("A1ModJulian"),
 updateInterval   (60.0), 
 updateIntervalToUse    (60.0), 
 overrideOriginInterval (false),
@@ -142,7 +142,7 @@ CpVals           (NULL),
 DpVals           (NULL)
 {
    objectTypes.push_back(Gmat::AXIS_SYSTEM);
-   objectTypeNames.push_back(wxT("AxisSystem"));
+   objectTypeNames.push_back("AxisSystem");
    parameterCount = AxisSystemParamCount;
    rotMatrix    = Rmatrix33(false); // want zero matrix, not identity matrix
    rotDotMatrix = Rmatrix33(false); // want zero matrix, not identity matrix
@@ -272,7 +272,7 @@ const AxisSystem& AxisSystem::operator=(const AxisSystem &axisSys)
 AxisSystem::~AxisSystem()
 {
    #ifdef DEBUG_DESTRUCTION
-   MessageInterface::ShowMessage(wxT("---> Entering AxisSystem destructor for %s\n"),
+   MessageInterface::ShowMessage("---> Entering AxisSystem destructor for %s\n",
    instanceName.c_str());
    #endif
    
@@ -280,7 +280,7 @@ AxisSystem::~AxisSystem()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (aVals, wxT("aVals"), wxT("AxisSystem::~AxisSystem()"), wxT("deleting aVals"));
+         (aVals, "aVals", "AxisSystem::~AxisSystem()", "deleting aVals");
       #endif
       delete [] aVals;
    }
@@ -288,13 +288,13 @@ AxisSystem::~AxisSystem()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (apVals, wxT("apVals"), wxT("AxisSystem::~AxisSystem()"), wxT("deleting apVals"));
+         (apVals, "apVals", "AxisSystem::~AxisSystem()", "deleting apVals");
       #endif
       delete [] apVals;
    }
    
    #ifdef DEBUG_DESTRUCTION
-   MessageInterface::ShowMessage(wxT("---> LEAVING AxisSystem destructor for %s\n"),
+   MessageInterface::ShowMessage("---> LEAVING AxisSystem destructor for %s\n",
    instanceName.c_str());
    #endif
 }
@@ -346,16 +346,16 @@ GmatCoordinate::ParameterUsage AxisSystem::UsesNutationUpdateInterval() const
 
 bool AxisSystem::UsesSpacecraft() const
 {
-   if (origin && origin->IsOfType(wxT("Spacecraft")))  return true;
+   if (origin && origin->IsOfType("Spacecraft"))  return true;
    if (UsesPrimary())
    {
       SpacePoint *p = GetPrimaryObject();
-      if (p && p->IsOfType(wxT("Spacecraft"))) return true;
+      if (p && p->IsOfType("Spacecraft")) return true;
    }
    if (UsesSecondary())
    {
       SpacePoint *s = GetSecondaryObject();
-      if (s && s->IsOfType(wxT("Spacecraft"))) return true;
+      if (s && s->IsOfType("Spacecraft")) return true;
    }
    return false;
 }
@@ -390,17 +390,17 @@ void AxisSystem::SetEpoch(const A1Mjd &toEpoch)
    epoch = toEpoch;
 }
 
-void AxisSystem::SetXAxis(const wxString &toValue)
+void AxisSystem::SetXAxis(const std::string &toValue)
 {
    // default behavior is to ignore this
 }
 
-void AxisSystem::SetYAxis(const wxString &toValue)
+void AxisSystem::SetYAxis(const std::string &toValue)
 {
    // default behavior is to ignore this
 }
 
-void AxisSystem::SetZAxis(const wxString &toValue)
+void AxisSystem::SetZAxis(const std::string &toValue)
 {
    // default behavior is to ignore this
 }
@@ -435,7 +435,7 @@ void AxisSystem::SetCoefficientsFile(ItrfCoefficientsFile *itrfF)
    itrf = itrfF;
 }
 
-void AxisSystem::SetEpochFormat(const wxString &fmt)
+void AxisSystem::SetEpochFormat(const std::string &fmt)
 {
    epochFormat = fmt;
 }
@@ -466,19 +466,19 @@ A1Mjd AxisSystem::GetEpoch() const
 }
 
 
-wxString AxisSystem::GetXAxis() const
+std::string AxisSystem::GetXAxis() const
 {
-   return wxT("");
+   return "";
 }
 
-wxString AxisSystem::GetYAxis() const
+std::string AxisSystem::GetYAxis() const
 {
-   return wxT("");
+   return "";
 }
 
-wxString AxisSystem::GetZAxis() const
+std::string AxisSystem::GetZAxis() const
 {
-   return wxT("");
+   return "";
 }
 
 EopFile* AxisSystem::GetEopFile() const
@@ -491,7 +491,7 @@ ItrfCoefficientsFile* AxisSystem::GetItrfCoefficientsFile()
    return itrf;
 }
 
-wxString AxisSystem::GetEpochFormat() const
+std::string AxisSystem::GetEpochFormat() const
 {
    return epochFormat;
 }
@@ -520,7 +520,7 @@ void AxisSystem::GetLastRotationDotMatrix(Real *mat) const
    
 }
 
-void AxisSystem::SetCoordinateSystemName(const wxString &csName)
+void AxisSystem::SetCoordinateSystemName(const std::string &csName)
 {
    coordName = csName;
 }
@@ -585,15 +585,15 @@ bool AxisSystem::RotateToMJ2000Eq(const A1Mjd &epoch, const Rvector &inState,
    
    #ifdef DEBUG_CALCS
       MessageInterface::ShowMessage(
-         wxT("Input vector to ToMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n"),
+         "Input vector to ToMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n",
          inState[0], inState[1], inState[2], inState[3], inState[4], inState[5]);
       MessageInterface::ShowMessage(
-      wxT("the rotation matrix is : %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f\n"),
+      "the rotation matrix is : %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f\n",
       rotMatrix(0,0),rotMatrix(0,1),rotMatrix(0,2),
       rotMatrix(1,0),rotMatrix(1,1),rotMatrix(1,2),
       rotMatrix(2,0),rotMatrix(2,1),rotMatrix(2,2));
       MessageInterface::ShowMessage(
-      wxT("the rotation dot matrix is : %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f\n"),
+      "the rotation dot matrix is : %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f\n",
       rotDotMatrix(0,0),rotDotMatrix(0,1),rotDotMatrix(0,2),
       rotDotMatrix(1,0),rotDotMatrix(1,1),rotDotMatrix(1,2),
       rotDotMatrix(2,0),rotDotMatrix(2,1),rotDotMatrix(2,2));
@@ -623,10 +623,10 @@ bool AxisSystem::RotateToMJ2000Eq(const A1Mjd &epoch, const Rvector &inState,
                   outVel[0], outVel[1], outVel[2]);
    #ifdef DEBUG_CALCS
       MessageInterface::ShowMessage(
-         wxT("Computed Output vector in ToMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n"),
+         "Computed Output vector in ToMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n",
          outPos[0], outPos[1], outPos[2], outVel[0], outVel[1], outVel[2]);
       MessageInterface::ShowMessage(
-         wxT("Output vector from ToMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n"),
+         "Output vector from ToMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n",
          outState[0], outState[1], outState[2], outState[3], outState[4], outState[5]);
    #endif
 
@@ -634,22 +634,22 @@ bool AxisSystem::RotateToMJ2000Eq(const A1Mjd &epoch, const Rvector &inState,
       if ((firstCallFired == false) || (epoch.Get() == GmatTimeConstants::MJD_OF_J2000))
       {
          MessageInterface::ShowMessage(
-            wxT("AxisSystem::RotateToMJ2000Eq check for %s\n"), typeName.c_str());
+            "AxisSystem::RotateToMJ2000Eq check for %s\n", typeName.c_str());
          MessageInterface::ShowMessage(
-            wxT("   Rotation matrix = |%20.10lf %20.10lf %20.10lf|\n")
-            wxT("                     |%20.10lf %20.10lf %20.10lf|\n")
-            wxT("                     |%20.10lf %20.10lf %20.10lf|\n"),
+            "   Rotation matrix = |%20.10lf %20.10lf %20.10lf|\n"
+            "                     |%20.10lf %20.10lf %20.10lf|\n"
+            "                     |%20.10lf %20.10lf %20.10lf|\n",
             rotMatrix(0,0), rotMatrix(0,1), rotMatrix(0,2),
             rotMatrix(1,0), rotMatrix(1,1), rotMatrix(1,2),
             rotMatrix(2,0), rotMatrix(2,1), rotMatrix(2,2));
          MessageInterface::ShowMessage(
-            wxT("   Epoch: %.12lf\n"), epoch.Get());
+            "   Epoch: %.12lf\n", epoch.Get());
          MessageInterface::ShowMessage(
-            wxT("   AxisSystem::input State = [%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n"),
+            "   AxisSystem::input State = [%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n",
             inState[0], inState[1], inState[2], inState[3], inState[4], 
             inState[5]);
          MessageInterface::ShowMessage(
-            wxT("   AxisSystem::output State = [%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n"),
+            "   AxisSystem::output State = [%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n",
             outPos[0], outPos[1], outPos[2], outVel[0], outVel[1], 
             outVel[2]);
       }
@@ -668,15 +668,15 @@ bool AxisSystem::RotateToMJ2000Eq(const A1Mjd &epoch, const Real *inState,
    Real vel[3] = {inState[3], inState[4], inState[5]};   
    #ifdef DEBUG_CALCS
       MessageInterface::ShowMessage(
-         wxT("Input vector to ToMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n"),
+         "Input vector to ToMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n",
          inState[0], inState[1], inState[2], inState[3], inState[4], inState[5]);
       MessageInterface::ShowMessage(
-      wxT("the rotation matrix is : %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f\n"),
+      "the rotation matrix is : %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f\n",
       rotMatrix(0,0),rotMatrix(0,1),rotMatrix(0,2),
       rotMatrix(1,0),rotMatrix(1,1),rotMatrix(1,2),
       rotMatrix(2,0),rotMatrix(2,1),rotMatrix(2,2));
       MessageInterface::ShowMessage(
-      wxT("the rotation dot matrix is : %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f\n"),
+      "the rotation dot matrix is : %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f\n",
       rotDotMatrix(0,0),rotDotMatrix(0,1),rotDotMatrix(0,2),
       rotDotMatrix(1,0),rotDotMatrix(1,1),rotDotMatrix(1,2),
       rotDotMatrix(2,0),rotDotMatrix(2,1),rotDotMatrix(2,2));
@@ -711,7 +711,7 @@ bool AxisSystem::RotateToMJ2000Eq(const A1Mjd &epoch, const Real *inState,
       //   "Computed Output vector in ToMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n",
       //   outPos[0], outPos[1], outPos[2], outVel[0], outVel[1], outVel[2]);
       MessageInterface::ShowMessage(
-         wxT("Output vector from ToMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n"),
+         "Output vector from ToMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n",
          outState[0], outState[1], outState[2], outState[3], outState[4], outState[5]);
    #endif
 
@@ -719,18 +719,18 @@ bool AxisSystem::RotateToMJ2000Eq(const A1Mjd &epoch, const Real *inState,
       if ((firstCallFired == false) || (epoch.Get() == GmatTimeConstants::MJD_OF_J2000))
       {
          MessageInterface::ShowMessage(
-            wxT("RotateToMJ2000Eq check for %s\n"), typeName.c_str());
+            "RotateToMJ2000Eq check for %s\n", typeName.c_str());
          MessageInterface::ShowMessage(
-            wxT("   Rotation matrix = |%20.10lf %20.10lf %20.10lf|\n")
-            wxT("                     |%20.10lf %20.10lf %20.10lf|\n")
-            wxT("                     |%20.10lf %20.10lf %20.10lf|\n"),
+            "   Rotation matrix = |%20.10lf %20.10lf %20.10lf|\n"
+            "                     |%20.10lf %20.10lf %20.10lf|\n"
+            "                     |%20.10lf %20.10lf %20.10lf|\n",
             rotMatrix(0,0), rotMatrix(0,1), rotMatrix(0,2),
             rotMatrix(1,0), rotMatrix(1,1), rotMatrix(1,2),
             rotMatrix(2,0), rotMatrix(2,1), rotMatrix(2,2));
          MessageInterface::ShowMessage(
-            wxT("   Epoch: %.12lf\n"), epoch.Get());
+            "   Epoch: %.12lf\n", epoch.Get());
          MessageInterface::ShowMessage(
-            wxT("   input State = [%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n"),
+            "   input State = [%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n",
             inState[0], inState[1], inState[2], inState[3], inState[4], 
             inState[5]);
          //MessageInterface::ShowMessage(
@@ -765,7 +765,7 @@ bool AxisSystem::RotateFromMJ2000Eq(const A1Mjd &epoch,
                                     bool forceComputation)
 {
    #ifdef DEBUG_ROT_MATRIX
-      MessageInterface::ShowMessage(wxT("Entering AxisSystem::RotateFromMJ2000Eq on object of type %s\n"),
+      MessageInterface::ShowMessage("Entering AxisSystem::RotateFromMJ2000Eq on object of type %s\n",
             (GetTypeName()).c_str());
    #endif
    static Rvector3 tmpPosVec;
@@ -774,7 +774,7 @@ bool AxisSystem::RotateFromMJ2000Eq(const A1Mjd &epoch,
    static const Real  *tmpVel = tmpVelVec.GetDataVector();
    CalculateRotationMatrix(epoch, forceComputation);
    #ifdef DEBUG_ROT_MATRIX
-      MessageInterface::ShowMessage(wxT("In AxisSystem::rotateFromMJ2000Eq, DONE computing rotation matrix\n"));
+      MessageInterface::ShowMessage("In AxisSystem::rotateFromMJ2000Eq, DONE computing rotation matrix\n");
    #endif
    
    // *********** assuming only one 6-vector for now - UPDATE LATER!!!!!!
@@ -783,10 +783,10 @@ bool AxisSystem::RotateFromMJ2000Eq(const A1Mjd &epoch,
 
    #ifdef DEBUG_CALCS
       MessageInterface::ShowMessage(
-         wxT("Input vector to FromMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n"),
+         "Input vector to FromMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n",
          inState[0], inState[1], inState[2], inState[3], inState[4], inState[5]);
       MessageInterface::ShowMessage(
-      wxT("the rotation matrix is : %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f\n"),
+      "the rotation matrix is : %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f\n",
       rotMatrix(0,0),rotMatrix(0,1),rotMatrix(0,2),
       rotMatrix(1,0),rotMatrix(1,1),rotMatrix(1,2),
       rotMatrix(2,0),rotMatrix(2,1),rotMatrix(2,2));
@@ -819,32 +819,32 @@ bool AxisSystem::RotateFromMJ2000Eq(const A1Mjd &epoch,
 
    #ifdef DEBUG_CALCS
       MessageInterface::ShowMessage(
-         wxT("Computed Output vector in FromMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n"),
+         "Computed Output vector in FromMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n",
          outPos[0], outPos[1], outPos[2], outVel[0], outVel[1], outVel[2]);
       MessageInterface::ShowMessage(
-         wxT("Output vector from FromMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n"),
+         "Output vector from FromMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n",
          outState[0], outState[1], outState[2], outState[3], outState[4], outState[5]);
    #endif
    #ifdef DEBUG_FIRST_CALL
       if ((firstCallFired == false) || (epoch.Get() == GmatTimeConstants::MJD_OF_J2000))
       {
          MessageInterface::ShowMessage(
-            wxT("AxisSystem::RotateFromMJ2000Eq check for %s\n"), typeName.c_str());
+            "AxisSystem::RotateFromMJ2000Eq check for %s\n", typeName.c_str());
          MessageInterface::ShowMessage(
-            wxT("   Rotation matrix = |%20.10lf %20.10lf %20.10lf|\n")
-            wxT("                     |%20.10lf %20.10lf %20.10lf|\n")
-            wxT("                     |%20.10lf %20.10lf %20.10lf|\n"),
+            "   Rotation matrix = |%20.10lf %20.10lf %20.10lf|\n"
+            "                     |%20.10lf %20.10lf %20.10lf|\n"
+            "                     |%20.10lf %20.10lf %20.10lf|\n",
             rotMatrix(0,0), rotMatrix(0,1), rotMatrix(0,2),
             rotMatrix(1,0), rotMatrix(1,1), rotMatrix(1,2),
             rotMatrix(2,0), rotMatrix(2,1), rotMatrix(2,2));
          MessageInterface::ShowMessage(
-            wxT("   Epoch: %.12lf\n"), epoch.Get());
+            "   Epoch: %.12lf\n", epoch.Get());
          MessageInterface::ShowMessage(
-            wxT("   AxisSystem::input State = [%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n"),
+            "   AxisSystem::input State = [%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n",
             inState[0], inState[1], inState[2], inState[3], inState[4], 
             inState[5]);
          MessageInterface::ShowMessage(
-            wxT("   AxisSystem::output State = [%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n"),
+            "   AxisSystem::output State = [%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n",
             outPos[0], outPos[1], outPos[2], outVel[0], outVel[1], 
             outVel[2]);
          firstCallFired = true;
@@ -865,15 +865,15 @@ bool AxisSystem::RotateFromMJ2000Eq(const A1Mjd &epoch,
    Real vel[3] = {inState[3], inState[4], inState[5]};   
    #ifdef DEBUG_CALCS
       MessageInterface::ShowMessage(
-         wxT("Input vector to AxisSystem::FromMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n"),
+         "Input vector to AxisSystem::FromMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n",
          inState[0], inState[1], inState[2], inState[3], inState[4], inState[5]);
       MessageInterface::ShowMessage(
-      wxT("the rotation matrix is : %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f\n"),
+      "the rotation matrix is : %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f\n",
       rotMatrix(0,0),rotMatrix(0,1),rotMatrix(0,2),
       rotMatrix(1,0),rotMatrix(1,1),rotMatrix(1,2),
       rotMatrix(2,0),rotMatrix(2,1),rotMatrix(2,2));
       MessageInterface::ShowMessage(
-      wxT("the rotation matrix (as array) is : %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f\n"),
+      "the rotation matrix (as array) is : %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f %.17f\n",
       rotData[0],rotData[1],rotData[2],rotData[3],rotData[4],
       rotData[5],rotData[6],rotData[7],rotData[8]);
    #endif
@@ -900,25 +900,25 @@ bool AxisSystem::RotateFromMJ2000Eq(const A1Mjd &epoch,
    }     
    #ifdef DEBUG_CALCS
       MessageInterface::ShowMessage(
-         wxT("Output vector from AxisSystem::FromMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n"),
+         "Output vector from AxisSystem::FromMJ2000 = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n",
          outState[0], outState[1], outState[2], outState[3], outState[4], outState[5]);
    #endif
    #ifdef DEBUG_FIRST_CALL
       if ((firstCallFired == false) || (epoch.Get() == GmatTimeConstants::MJD_OF_J2000))
       {
          MessageInterface::ShowMessage(
-            wxT("AxisSystem::RotateFromMJ2000Eq check for %s\n"), typeName.c_str());
+            "AxisSystem::RotateFromMJ2000Eq check for %s\n", typeName.c_str());
          MessageInterface::ShowMessage(
-            wxT("   Rotation matrix = |%20.10lf %20.10lf %20.10lf|\n")
-            wxT("                     |%20.10lf %20.10lf %20.10lf|\n")
-            wxT("                     |%20.10lf %20.10lf %20.10lf|\n"),
+            "   Rotation matrix = |%20.10lf %20.10lf %20.10lf|\n"
+            "                     |%20.10lf %20.10lf %20.10lf|\n"
+            "                     |%20.10lf %20.10lf %20.10lf|\n",
             rotMatrix(0,0), rotMatrix(0,1), rotMatrix(0,2),
             rotMatrix(1,0), rotMatrix(1,1), rotMatrix(1,2),
             rotMatrix(2,0), rotMatrix(2,1), rotMatrix(2,2));
          MessageInterface::ShowMessage(
-            wxT("   Epoch: %.12lf\n"), epoch.Get());
+            "   Epoch: %.12lf\n", epoch.Get());
          MessageInterface::ShowMessage(
-            wxT("   input State = [%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n"),
+            "   input State = [%.10lf %.10lf %.10lf %.16lf %.16lf %.16lf]\n",
             inState[0], inState[1], inState[2], inState[3], inState[4], 
             inState[5]);
          //MessageInterface::ShowMessage(
@@ -935,7 +935,7 @@ bool AxisSystem::RotateFromMJ2000Eq(const A1Mjd &epoch,
 // public methods inherited from GmatBase
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -946,7 +946,7 @@ bool AxisSystem::RotateFromMJ2000Eq(const A1Mjd &epoch,
  *
  */
 //------------------------------------------------------------------------------
-wxString AxisSystem::GetParameterText(const Integer id) const
+std::string AxisSystem::GetParameterText(const Integer id) const
 {
    if (id >= CoordinateBaseParamCount && id < AxisSystemParamCount)
       return PARAMETER_TEXT[id - CoordinateBaseParamCount];
@@ -954,7 +954,7 @@ wxString AxisSystem::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -965,7 +965,7 @@ wxString AxisSystem::GetParameterText(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer AxisSystem::GetParameterID(const wxString &str) const
+Integer AxisSystem::GetParameterID(const std::string &str) const
 {
    for (Integer i = CoordinateBaseParamCount; i < AxisSystemParamCount; i++)
    {
@@ -997,7 +997,7 @@ Gmat::ParameterType AxisSystem::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -1008,7 +1008,7 @@ Gmat::ParameterType AxisSystem::GetParameterType(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString AxisSystem::GetParameterTypeString(const Integer id) const
+std::string AxisSystem::GetParameterTypeString(const Integer id) const
 {
    return CoordinateBase::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -1074,7 +1074,7 @@ Real AxisSystem::SetRealParameter(const Integer id, const Real value)
 }
 
 //------------------------------------------------------------------------------
-//  Real  GetRealParameter(const wxString &label) const
+//  Real  GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the real value, given the input parameter label.
@@ -1085,13 +1085,13 @@ Real AxisSystem::SetRealParameter(const Integer id, const Real value)
  *
  */
 //------------------------------------------------------------------------------
-Real AxisSystem::GetRealParameter(const wxString &label) const
+Real AxisSystem::GetRealParameter(const std::string &label) const
 {
    return GetRealParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-//  Real  SetRealParameter(const wxString &label, const Real value) 
+//  Real  SetRealParameter(const std::string &label, const Real value) 
 //------------------------------------------------------------------------------
 /**
  * This method sets the real value, given the input parameter label.
@@ -1103,7 +1103,7 @@ Real AxisSystem::GetRealParameter(const wxString &label) const
  *
  */
 //------------------------------------------------------------------------------
-Real AxisSystem::SetRealParameter(const wxString &label, const Real value)
+Real AxisSystem::SetRealParameter(const std::string &label, const Real value)
 {
    return SetRealParameter(GetParameterID(label), value);
 }
@@ -1115,9 +1115,9 @@ bool AxisSystem::GetBooleanParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// bool GetBooleanParameter(const wxString &label) const
+// bool GetBooleanParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-bool AxisSystem::GetBooleanParameter(const wxString &label) const
+bool AxisSystem::GetBooleanParameter(const std::string &label) const
 {
    return GetBooleanParameter(GetParameterID(label));
 }
@@ -1137,9 +1137,9 @@ bool AxisSystem::SetBooleanParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-// bool SetBooleanParameter(const wxString &label, const bool value)
+// bool SetBooleanParameter(const std::string &label, const bool value)
 //------------------------------------------------------------------------------
-bool AxisSystem::SetBooleanParameter(const wxString &label,
+bool AxisSystem::SetBooleanParameter(const std::string &label,
                                      const bool value)
 {
    return SetBooleanParameter(GetParameterID(label), value);
@@ -1151,24 +1151,24 @@ bool AxisSystem::SetBooleanParameter(const wxString &label,
 void AxisSystem::InitializeFK5()
 {
    #ifdef DEBUG_AXIS_SYSTEM_INIT
-      MessageInterface::ShowMessage(wxT("Entering InitializeFK5 for coordinate system %s of type %s\n"),
+      MessageInterface::ShowMessage("Entering InitializeFK5 for coordinate system %s of type %s\n",
             (GetName()).c_str(), (GetTypeName()).c_str());
    #endif
 //   if (originName == SolarSystem::EARTH_NAME)
 //   {
       if (eop == NULL)
          throw CoordinateSystemException(
-               wxT("EOP file has not been set for ") + instanceName);
+               "EOP file has not been set for " + instanceName);
       if (itrf == NULL)
          throw CoordinateSystemException(
-               wxT("Coefficient file has not been set for ") + instanceName);
+               "Coefficient file has not been set for " + instanceName);
       
       nutationSrc    = itrf->GetNutationTermsSource();
       planetarySrc   = itrf->GetPlanetaryTermsSource();
       Integer numNut = itrf->GetNumberOfNutationTerms();
       A.SetSize(numNut);   A.MakeZeroVector();
       #ifdef DEBUG_ITRF_UPDATES
-      MessageInterface::ShowMessage(wxT("In Axis System, nutation source is %d\n"),
+      MessageInterface::ShowMessage("In Axis System, nutation source is %d\n",
                         (Integer) nutationSrc);
       //for (Integer ii = 0; ii < A.GetSize(); ii++)
       //   MessageInterface::ShowMessage("In AxisSystem, A(%d) = %f\n", ii, A(ii));
@@ -1186,17 +1186,17 @@ void AxisSystem::InitializeFK5()
       Dp.SetSize(numPlan);   Dp.MakeZeroVector();
       
       bool OK = itrf->GetNutationTerms(a, A, B, C, D, E, F);
-      if (!OK) throw CoordinateSystemException(wxT("Error getting nutation data."));
+      if (!OK) throw CoordinateSystemException("Error getting nutation data.");
       #ifdef DEBUG_ITRF_UPDATES
       for (Integer ii = 0; ii < A.GetSize(); ii++)
-         MessageInterface::ShowMessage(wxT("In AxisSystem, after getting nutation data, A(%d) = %f\n"), ii, A(ii));
+         MessageInterface::ShowMessage("In AxisSystem, after getting nutation data, A(%d) = %f\n", ii, A(ii));
       #endif
       
       if (aVals)
       {
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (aVals, wxT("aVals"), wxT("AxisSystem::InitializeFK5()"), wxT("deleting aVals"));
+            (aVals, "aVals", "AxisSystem::InitializeFK5()", "deleting aVals");
          #endif
          delete [] aVals;
       }
@@ -1204,7 +1204,7 @@ void AxisSystem::InitializeFK5()
       aVals = new Integer[numNut * 5];
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (aVals, wxT("aVals"), wxT("AxisSystem::InitializeFK5()"), wxT("aVals = new Integer[numNut * 5]"));
+         (aVals, "aVals", "AxisSystem::InitializeFK5()", "aVals = new Integer[numNut * 5]");
       #endif
       
       for (Integer i = 0; i < 5; i++)
@@ -1216,9 +1216,9 @@ void AxisSystem::InitializeFK5()
       }
       
       #ifdef DEBUG_a_MATRIX
-         MessageInterface::ShowMessage(wxT("aVals = \n"));
+         MessageInterface::ShowMessage("aVals = \n");
          for (Integer q = 0; q < numNut; ++q)
-            MessageInterface::ShowMessage(wxT("         %3d: %8d %8d %8d %8d %8d\n"),
+            MessageInterface::ShowMessage("         %3d: %8d %8d %8d %8d %8d\n",
                q+1, aVals[q], aVals[q+numNut], aVals[q+2*numNut], 
                aVals[q+3*numNut], aVals[q+4*numNut]);
       #endif
@@ -1226,13 +1226,13 @@ void AxisSystem::InitializeFK5()
       if (nutationSrc == GmatItrf::NUTATION_1996)
       {
          OK      = itrf->GetPlanetaryTerms(ap, Ap, Bp, Cp, Dp);
-         if (!OK) throw CoordinateSystemException(wxT("Error getting planetary data."));
+         if (!OK) throw CoordinateSystemException("Error getting planetary data.");
 
          if (apVals)
          {
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Remove
-               (apVals, wxT("apVals"), wxT("AxisSystem::InitializeFK5()"), wxT("deleting apVals"));
+               (apVals, "apVals", "AxisSystem::InitializeFK5()", "deleting apVals");
             #endif
             delete [] apVals;
          }
@@ -1240,7 +1240,7 @@ void AxisSystem::InitializeFK5()
          apVals = new Integer[numPlan*10];
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Add
-            (apVals, wxT("apVals"), wxT("AxisSystem::InitializeFK5()"), wxT("apVals = new Integer[numPlan*10]"));
+            (apVals, "apVals", "AxisSystem::InitializeFK5()", "apVals = new Integer[numPlan*10]");
          #endif
          
          for (Integer i = 0; i < 10; i++)
@@ -1252,10 +1252,10 @@ void AxisSystem::InitializeFK5()
          }
 
          #ifdef DEBUG_Ap_MATRIX
-             MessageInterface::ShowMessage(wxT("apVals = \n"));
+             MessageInterface::ShowMessage("apVals = \n");
             for (Integer q = 0; q < numPlan; ++q)
                 MessageInterface::ShowMessage(
-                  wxT("         %3d: %8d %8d %8d %8d %8d   %8d %8d %8d %8d %8d\n"),
+                  "         %3d: %8d %8d %8d %8d %8d   %8d %8d %8d %8d %8d\n",
                   q+1, apVals[q], apVals[q+numPlan], apVals[q+2*numPlan], 
                   apVals[q+3*numPlan], apVals[q+4*numPlan], apVals[q+5*numPlan], 
                   apVals[q+6*numPlan], apVals[q+7*numPlan], apVals[q+8*numPlan], 
@@ -1266,7 +1266,7 @@ void AxisSystem::InitializeFK5()
          AVals = A.GetDataVector();
          #ifdef DEBUG_ITRF_UPDATES
          for (Integer ii = 0; ii < A.GetSize(); ii++)
-            MessageInterface::ShowMessage(wxT("AVals(%d) = %f\n"), ii, AVals[ii]);
+            MessageInterface::ShowMessage("AVals(%d) = %f\n", ii, AVals[ii]);
          #endif
          BVals = B.GetDataVector();
          CVals = C.GetDataVector();
@@ -1300,13 +1300,13 @@ void AxisSystem::ComputePrecessionMatrix(const Real tTDB, A1Mjd atEpoch)
    #ifdef DEBUG_FIRST_CALL
       if (!firstCallFired)
          MessageInterface::ShowMessage(
-            wxT("   AxisSystem::ComputePrecessionMatrix(%.12lf, %.12lf)\n"), tTDB, 
+            "   AxisSystem::ComputePrecessionMatrix(%.12lf, %.12lf)\n", tTDB, 
             atEpoch.Get());
 //         InitializeFK5();
    #endif
    
    #ifdef DEBUG_ROT_MATRIX
-      MessageInterface::ShowMessage(wxT("**** tTDB = %12.10f\n"),  tTDB);
+      MessageInterface::ShowMessage("**** tTDB = %12.10f\n",  tTDB);
    #endif
    Real tTDB2   = tTDB  * tTDB;
    Real tTDB3   = tTDB2 * tTDB;
@@ -1339,7 +1339,7 @@ void AxisSystem::ComputePrecessionMatrix(const Real tTDB, A1Mjd atEpoch)
             -sinTheta*sinzeta,
              cosTheta);
    #ifdef DEBUG_ROT_MATRIX
-      MessageInterface::ShowMessage(wxT("PREC = %s\n"), (PREC.ToString()).c_str());
+      MessageInterface::ShowMessage("PREC = %s\n", (PREC.ToString()).c_str());
    #endif
    lastPREC = PREC;
    lastPRECEpoch = atEpoch;
@@ -1355,14 +1355,14 @@ void AxisSystem::ComputeNutationMatrix(const Real tTDB, A1Mjd atEpoch,
    #ifdef DEBUG_FIRST_CALL
       if (!firstCallFired)
       {
-         MessageInterface::ShowMessage(wxT("firstCallFired set to TRUE!!!!\n"));
+         MessageInterface::ShowMessage("firstCallFired set to TRUE!!!!\n");
          MessageInterface::ShowMessage(
-            wxT("   AxisSystem::ComputeNutationMatrix(%.12lf, %.12lf, %.12lf, ")
-            wxT("%.12lf, %.12lf)\n"), tTDB, atEpoch.Get(), dPsi, longAscNodeLunar, 
+            "   AxisSystem::ComputeNutationMatrix(%.12lf, %.12lf, %.12lf, "
+            "%.12lf, %.12lf)\n", tTDB, atEpoch.Get(), dPsi, longAscNodeLunar, 
             cosEpsbar);
       }
       else
-         MessageInterface::ShowMessage(wxT("firstCallFired set to TRUE!!!!\n"));
+         MessageInterface::ShowMessage("firstCallFired set to TRUE!!!!\n");
    #endif
 
    static const Real const125 = 125.04455501*RAD_PER_DEG;
@@ -1371,12 +1371,12 @@ void AxisSystem::ComputeNutationMatrix(const Real tTDB, A1Mjd atEpoch,
    static const Real const93  =  93.27209062*RAD_PER_DEG;
    static const Real const297 = 297.85019547*RAD_PER_DEG;
 #ifdef DEBUG_UPDATE
-   MessageInterface::ShowMessage(wxT("static consts computed ... \n"));
-   MessageInterface::ShowMessage(wxT("  const125 = %12.10f\n"), const125);
-   MessageInterface::ShowMessage(wxT("  const134 = %12.10f\n"), const134);
-   MessageInterface::ShowMessage(wxT("  const357 = %12.10f\n"), const357);
-   MessageInterface::ShowMessage(wxT("  const93  = %12.10f\n"), const93);
-   MessageInterface::ShowMessage(wxT("  const297 = %12.10f\n"), const297);
+   MessageInterface::ShowMessage("static consts computed ... \n");
+   MessageInterface::ShowMessage("  const125 = %12.10f\n", const125);
+   MessageInterface::ShowMessage("  const134 = %12.10f\n", const134);
+   MessageInterface::ShowMessage("  const357 = %12.10f\n", const357);
+   MessageInterface::ShowMessage("  const93  = %12.10f\n", const93);
+   MessageInterface::ShowMessage("  const297 = %12.10f\n", const297);
 #endif
 
    register Real tTDB2   = tTDB  * tTDB;
@@ -1389,10 +1389,10 @@ void AxisSystem::ComputeNutationMatrix(const Real tTDB, A1Mjd atEpoch,
    // the neighbor's yard.  It can also be used, but is not tested, 
    // with the 2000 Theory.
 #ifdef DEBUG_UPDATE
-   MessageInterface::ShowMessage(wxT("registers set up\n"));
-   MessageInterface::ShowMessage(wxT("  tTDB2 = %12.10f\n"), tTDB2);
-   MessageInterface::ShowMessage(wxT("  tTDB3 = %12.10f\n"), tTDB3);
-   MessageInterface::ShowMessage(wxT("  tTDB4 = %12.10f\n"), tTDB4);
+   MessageInterface::ShowMessage("registers set up\n");
+   MessageInterface::ShowMessage("  tTDB2 = %12.10f\n", tTDB2);
+   MessageInterface::ShowMessage("  tTDB3 = %12.10f\n", tTDB3);
+   MessageInterface::ShowMessage("  tTDB4 = %12.10f\n", tTDB4);
 #endif
 
    // Compute values to be passed out first ... 
@@ -1406,22 +1406,22 @@ void AxisSystem::ComputeNutationMatrix(const Real tTDB, A1Mjd atEpoch,
    // if not enough time has passed, just return the last value
    Real dt = fabs(atEpoch.Subtract(lastNUTEpoch)) * SECS_PER_DAY;
    #ifdef DEBUG_UPDATE
-      MessageInterface::ShowMessage(wxT("ENTERED ComputeNutation .....\n"));
-      MessageInterface::ShowMessage(wxT("  longAscNodeLunar = %12.10f\n"), longAscNodeLunar);
-      MessageInterface::ShowMessage(wxT("  Epsbar = %12.10f\n"), Epsbar);
-      MessageInterface::ShowMessage(wxT("  cosEpsbar = %12.10f\n"), cosEpsbar);
+      MessageInterface::ShowMessage("ENTERED ComputeNutation .....\n");
+      MessageInterface::ShowMessage("  longAscNodeLunar = %12.10f\n", longAscNodeLunar);
+      MessageInterface::ShowMessage("  Epsbar = %12.10f\n", Epsbar);
+      MessageInterface::ShowMessage("  cosEpsbar = %12.10f\n", cosEpsbar);
    #endif
    if (( dt < updateIntervalToUse) && (!forceComputation))
    {
       #ifdef DEBUG_UPDATE
-         MessageInterface::ShowMessage(wxT(">>> In ComputeNutationMatrix, using previously saved values ......\n"));
+         MessageInterface::ShowMessage(">>> In ComputeNutationMatrix, using previously saved values ......\n");
       #endif
       dPsi = lastDPsi;
 
       #ifdef DEBUG_FIRST_CALL
          if (!firstCallFired)
             MessageInterface::ShowMessage(
-               wxT("   Using buffered nutation data: %.13lf = %.12f*(%.12lf - %.12lf)\n"),
+               "   Using buffered nutation data: %.13lf = %.12f*(%.12lf - %.12lf)\n",
                dt, SECS_PER_DAY, atEpoch.Get(), lastNUTEpoch.Get());
       #endif
       
@@ -1429,7 +1429,7 @@ void AxisSystem::ComputeNutationMatrix(const Real tTDB, A1Mjd atEpoch,
    }
 
    #ifdef DEBUG_UPDATE
-      MessageInterface::ShowMessage(wxT("----> Computing NEW NUT matrix at time %12.10f\n"),
+      MessageInterface::ShowMessage("----> Computing NEW NUT matrix at time %12.10f\n",
          atEpoch.Get());
    #endif
    // otherwise, need to recompute all the nutation data
@@ -1455,25 +1455,25 @@ void AxisSystem::ComputeNutationMatrix(const Real tTDB, A1Mjd atEpoch,
    Real sinAp = 0.0;
    Integer nut = itrf->GetNumberOfNutationTerms();
    #ifdef DEBUG_UPDATE
-      MessageInterface::ShowMessage(wxT(">>> After call to ITRF object ......\n"));
-      MessageInterface::ShowMessage(wxT("   and nut = %d\n"), nut);
+      MessageInterface::ShowMessage(">>> After call to ITRF object ......\n");
+      MessageInterface::ShowMessage("   and nut = %d\n", nut);
    #endif
 
    #ifdef DEBUG_FIRST_CALL
       if (!firstCallFired)
          MessageInterface::ShowMessage(
-            wxT("   Nutation data:\n")
-            wxT("      nut               = %d\n")
-            wxT("      meanAnomalyMoon   = %.13lf\n")
-            wxT("      meanAnomalySun    = %.13lf\n")
-            wxT("      argLatitudeMoon   = %.13lf\n")
-            wxT("      meanElongationSun = %.13lf\n")
-            wxT("      longAscNodeLunar  = %.13lf\n")
-            wxT("      cosEpsbar         = %.13lf\n")
-            wxT("      tTDB              = %.13le\n")
-            wxT("      tTDB2             = %.13le\n")
-            wxT("      tTDB3             = %.13le\n")
-            wxT("      tTDB4             = %.13le\n"),
+            "   Nutation data:\n"
+            "      nut               = %d\n"
+            "      meanAnomalyMoon   = %.13lf\n"
+            "      meanAnomalySun    = %.13lf\n"
+            "      argLatitudeMoon   = %.13lf\n"
+            "      meanElongationSun = %.13lf\n"
+            "      longAscNodeLunar  = %.13lf\n"
+            "      cosEpsbar         = %.13lf\n"
+            "      tTDB              = %.13le\n"
+            "      tTDB2             = %.13le\n"
+            "      tTDB3             = %.13le\n"
+            "      tTDB4             = %.13le\n",
             nut, meanAnomalyMoon, meanAnomalySun, argLatitudeMoon,
             meanElongationSun, longAscNodeLunar, cosEpsbar, tTDB, tTDB2, tTDB3,
             tTDB4);
@@ -1481,98 +1481,98 @@ void AxisSystem::ComputeNutationMatrix(const Real tTDB, A1Mjd atEpoch,
       if (!firstCallFired) 
       {
          MessageInterface::ShowMessage(
-            wxT("      a[0](1st 12 els)   = [%d %d %d %d %d %d %d %d %d %d %d %d]\n"),
+            "      a[0](1st 12 els)   = [%d %d %d %d %d %d %d %d %d %d %d %d]\n",
             aVals[0], aVals[1], aVals[2], aVals[3], aVals[4], aVals[5], 
             aVals[6], aVals[7], aVals[8], aVals[9], aVals[10], aVals[11]);
          MessageInterface::ShowMessage(
-            wxT("      a[1](1st 12 els)   = [%d %d %d %d %d %d %d %d %d %d %d %d]\n"),
+            "      a[1](1st 12 els)   = [%d %d %d %d %d %d %d %d %d %d %d %d]\n",
             aVals[nut*1+0], aVals[nut*1+1], aVals[nut*1+2], aVals[nut*1+3], 
             aVals[nut*1+4], aVals[nut*1+5], aVals[nut*1+6], aVals[nut*1+7], 
             aVals[nut*1+8], aVals[nut*1+9], aVals[nut*1+10], aVals[nut*1+11]);
          MessageInterface::ShowMessage(
-            wxT("      a[2](1st 12 els)   = [%d %d %d %d %d %d %d %d %d %d %d %d]\n"),
+            "      a[2](1st 12 els)   = [%d %d %d %d %d %d %d %d %d %d %d %d]\n",
             aVals[nut*2+0], aVals[nut*2+1], aVals[nut*2+2], aVals[nut*2+3], 
             aVals[nut*2+4], aVals[nut*2+5], aVals[nut*2+6], aVals[nut*2+7], 
             aVals[nut*2+8], aVals[nut*2+9], aVals[nut*2+10], aVals[nut*2+11]);
          MessageInterface::ShowMessage(
-            wxT("      a[3](1st 12 els)   = [%d %d %d %d %d %d %d %d %d %d %d %d]\n"),
+            "      a[3](1st 12 els)   = [%d %d %d %d %d %d %d %d %d %d %d %d]\n",
             aVals[nut*3+0], aVals[nut*3+1], aVals[nut*3+2], aVals[nut*3+3], 
             aVals[nut*3+4], aVals[nut*3+5], aVals[nut*3+6], aVals[nut*3+7], 
             aVals[nut*3+8], aVals[nut*3+9], aVals[nut*3+10], aVals[nut*3+11]);
          MessageInterface::ShowMessage(
-            wxT("      a[4](1st 12 els)   = [%d %d %d %d %d %d %d %d %d %d %d %d]\n"),
+            "      a[4](1st 12 els)   = [%d %d %d %d %d %d %d %d %d %d %d %d]\n",
             aVals[nut*4+0], aVals[nut*4+1], aVals[nut*4+2], aVals[nut*4+3], 
             aVals[nut*4+4], aVals[nut*4+5], aVals[nut*4+6], aVals[nut*4+7], 
             aVals[nut*4+8], aVals[nut*4+9], aVals[nut*4+10], aVals[nut*4+11]);
          MessageInterface::ShowMessage(
-            wxT("      a[*](Last els)     = [%d %d %d %d %d]\n"),
+            "      a[*](Last els)     = [%d %d %d %d %d]\n",
             aVals[nut-1], aVals[nut+nut-1], aVals[nut*2+nut-1], 
             aVals[nut*3+nut-1], aVals[nut*4+nut-1]);
             
          MessageInterface::ShowMessage(
-            wxT("      a[0](els 51-62)    = [%d %d %d %d %d %d %d %d %d %d %d %d]\n"),
+            "      a[0](els 51-62)    = [%d %d %d %d %d %d %d %d %d %d %d %d]\n",
             aVals[51], aVals[52], aVals[53], aVals[54], aVals[55], aVals[56], 
             aVals[57], aVals[58], aVals[59], aVals[60], aVals[61], aVals[62]);
          MessageInterface::ShowMessage(
-            wxT("      a[1](els 51-62)    = [%d %d %d %d %d %d %d %d %d %d %d %d]\n"),
+            "      a[1](els 51-62)    = [%d %d %d %d %d %d %d %d %d %d %d %d]\n",
             aVals[nut*1+51], aVals[nut*1+52], aVals[nut*1+53], aVals[nut*1+54], 
             aVals[nut*1+55], aVals[nut*1+56], aVals[nut*1+57], aVals[nut*1+58], 
             aVals[nut*1+59], aVals[nut*1+60], aVals[nut*1+61], aVals[nut*1+62]);
          MessageInterface::ShowMessage(
-            wxT("      a[2](els 51-62)    = [%d %d %d %d %d %d %d %d %d %d %d %d]\n"),
+            "      a[2](els 51-62)    = [%d %d %d %d %d %d %d %d %d %d %d %d]\n",
             aVals[nut*2+51], aVals[nut*2+52], aVals[nut*2+53], aVals[nut*2+54], 
             aVals[nut*2+55], aVals[nut*2+56], aVals[nut*2+57], aVals[nut*2+58], 
             aVals[nut*2+59], aVals[nut*2+60], aVals[nut*2+61], aVals[nut*2+62]);
          MessageInterface::ShowMessage(
-            wxT("      a[3](els 51-62)    = [%d %d %d %d %d %d %d %d %d %d %d %d]\n"),
+            "      a[3](els 51-62)    = [%d %d %d %d %d %d %d %d %d %d %d %d]\n",
             aVals[nut*3+51], aVals[nut*3+52], aVals[nut*3+53], aVals[nut*3+54], 
             aVals[nut*3+55], aVals[nut*3+56], aVals[nut*3+57], aVals[nut*3+58], 
             aVals[nut*3+59], aVals[nut*3+60], aVals[nut*3+61], aVals[nut*3+62]);
          MessageInterface::ShowMessage(
-            wxT("      a[4](els 51-62)    = [%d %d %d %d %d %d %d %d %d %d %d %d]\n"),
+            "      a[4](els 51-62)    = [%d %d %d %d %d %d %d %d %d %d %d %d]\n",
             aVals[nut*4+51], aVals[nut*4+52], aVals[nut*4+53], aVals[nut*4+54], 
             aVals[nut*4+55], aVals[nut*4+56], aVals[nut*4+57], aVals[nut*4+58], 
             aVals[nut*4+59], aVals[nut*4+60], aVals[nut*4+61], aVals[nut*4+62]);
          MessageInterface::ShowMessage(
-            wxT("      a[*](Last els)    = [%d %d %d %d %d]\n"),
+            "      a[*](Last els)    = [%d %d %d %d %d]\n",
             aVals[nut-1], aVals[nut+nut-1], aVals[nut*2+nut-1], 
             aVals[nut*3+nut-1], aVals[nut*4+nut-1]);
             
          MessageInterface::ShowMessage(
-            wxT("      A(1st 12 els)     = [%.13lf %.13lf %.13lf %.13lf\n")
-            wxT("                           %.13lf %.13lf %.13lf %.13lf\n")
-            wxT("                           %.13lf %.13lf %.13lf %.13lf]\n"),
+            "      A(1st 12 els)     = [%.13lf %.13lf %.13lf %.13lf\n"
+            "                           %.13lf %.13lf %.13lf %.13lf\n"
+            "                           %.13lf %.13lf %.13lf %.13lf]\n",
             AVals[0], AVals[1], AVals[2], AVals[3], 
             AVals[4], AVals[5], AVals[6], AVals[7], 
             AVals[8], AVals[9], AVals[10], AVals[11]);
          MessageInterface::ShowMessage(
-            wxT("      B(1st 12 els)     = [%.13lf %.13lf %.13lf %.13lf\n")
-            wxT("                           %.13lf %.13lf %.13lf %.13lf\n")
-            wxT("                           %.13lf %.13lf %.13lf %.13lf]\n"),
+            "      B(1st 12 els)     = [%.13lf %.13lf %.13lf %.13lf\n"
+            "                           %.13lf %.13lf %.13lf %.13lf\n"
+            "                           %.13lf %.13lf %.13lf %.13lf]\n",
             BVals[0], BVals[1], BVals[2], BVals[3], BVals[4], BVals[5], 
             BVals[6], BVals[7], BVals[8], BVals[9], BVals[10], BVals[11]);
          MessageInterface::ShowMessage(
-            wxT("      C(1st 12 els)     = [%.13lf %.13lf %.13lf %.13lf\n")
-            wxT("                           %.13lf %.13lf %.13lf %.13lf\n")
-            wxT("                           %.13lf %.13lf %.13lf %.13lf]\n"),
+            "      C(1st 12 els)     = [%.13lf %.13lf %.13lf %.13lf\n"
+            "                           %.13lf %.13lf %.13lf %.13lf\n"
+            "                           %.13lf %.13lf %.13lf %.13lf]\n",
             CVals[0], CVals[1], CVals[2], CVals[3], CVals[4], CVals[5], 
             CVals[6], CVals[7], CVals[8], CVals[9], CVals[10], CVals[11]);
          MessageInterface::ShowMessage(
-            wxT("      D(1st 12 els)     = [%.13lf %.13lf %.13lf %.13lf\n")
-            wxT("                           %.13lf %.13lf %.13lf %.13lf\n")
-            wxT("                           %.13lf %.13lf %.13lf %.13lf]\n"),
+            "      D(1st 12 els)     = [%.13lf %.13lf %.13lf %.13lf\n"
+            "                           %.13lf %.13lf %.13lf %.13lf\n"
+            "                           %.13lf %.13lf %.13lf %.13lf]\n",
             DVals[0], DVals[1], DVals[2], DVals[3], DVals[4], DVals[5], 
             DVals[6], DVals[7], DVals[8], DVals[9], DVals[10], DVals[11]);
          MessageInterface::ShowMessage(
-            wxT("      E(1st 12 els)     = [%.13lf %.13lf %.13lf %.13lf\n")
-            wxT("                           %.13lf %.13lf %.13lf %.13lf\n")
-            wxT("                           %.13lf %.13lf %.13lf %.13lf]\n"),
+            "      E(1st 12 els)     = [%.13lf %.13lf %.13lf %.13lf\n"
+            "                           %.13lf %.13lf %.13lf %.13lf\n"
+            "                           %.13lf %.13lf %.13lf %.13lf]\n",
             EVals[0], EVals[1], EVals[2], EVals[3], EVals[4], EVals[5], 
             EVals[6], EVals[7], EVals[8], EVals[9], EVals[10], EVals[11]);
          MessageInterface::ShowMessage(
-            wxT("      F(1st 12 els)     = [%.13lf %.13lf %.13lf %.13lf\n")
-            wxT("                           %.13lf %.13lf %.13lf %.13lf\n")
-            wxT("                           %.13lf %.13lf %.13lf %.13lf]\n"),
+            "      F(1st 12 els)     = [%.13lf %.13lf %.13lf %.13lf\n"
+            "                           %.13lf %.13lf %.13lf %.13lf\n"
+            "                           %.13lf %.13lf %.13lf %.13lf]\n",
             FVals[0], FVals[1], FVals[2], FVals[3], FVals[4], FVals[5], 
             FVals[6], FVals[7], FVals[8], FVals[9], FVals[10], FVals[11]);
       }
@@ -1581,7 +1581,7 @@ void AxisSystem::ComputeNutationMatrix(const Real tTDB, A1Mjd atEpoch,
    for (i = nut-1; i >= 0; i--)
    {
       #ifdef DEBUG_a_MATRIX
-         MessageInterface::ShowMessage(wxT("   a[%d}:  %8d %8d %8d %8d %8d\n"), i+1,
+         MessageInterface::ShowMessage("   a[%d}:  %8d %8d %8d %8d %8d\n", i+1,
             aVals[i], aVals[nut*1+i], aVals[nut*2+i], aVals[nut*3+i], 
             aVals[nut*4+i]);
       #endif
@@ -1606,7 +1606,7 @@ void AxisSystem::ComputeNutationMatrix(const Real tTDB, A1Mjd atEpoch,
    #ifdef DEBUG_FIRST_CALL
       if (!firstCallFired)
          MessageInterface::ShowMessage(
-            wxT("      apNut(%3d) dPsi(%3d) dEps(%3d) = %.13le %.13le %.13le\n"), i, 
+            "      apNut(%3d) dPsi(%3d) dEps(%3d) = %.13le %.13le %.13le\n", i, 
             i, i, apNut, dPsi, dEps);
    #endif
    }
@@ -1617,8 +1617,8 @@ void AxisSystem::ComputeNutationMatrix(const Real tTDB, A1Mjd atEpoch,
    #ifdef DEBUG_FIRST_CALL
       if (!firstCallFired)
          MessageInterface::ShowMessage(
-            wxT("      dPsi              = %.13lf\n")
-            wxT("      dEps              = %.13lf\n"), dPsi, dEps);
+            "      dPsi              = %.13lf\n"
+            "      dEps              = %.13lf\n", dPsi, dEps);
    #endif
 
    // Compute the corrections for planetary effects on the nutation and
@@ -1645,13 +1645,13 @@ void AxisSystem::ComputeNutationMatrix(const Real tTDB, A1Mjd atEpoch,
       #ifdef DEBUG_FIRST_CALL
          if (!firstCallFired)
             MessageInterface::ShowMessage(
-               wxT("      longVenus         = %.13lf\n")
-               wxT("      longEarth         = %.13lf\n")
-               wxT("      longMars          = %.13lf\n")
-               wxT("      longJupiter       = %.13lf\n")
-               wxT("      longSaturn        = %.13lf\n")
-               wxT("      genPrec           = %.13lf\n")
-               wxT("      nutpl             = %d\n"),
+               "      longVenus         = %.13lf\n"
+               "      longEarth         = %.13lf\n"
+               "      longMars          = %.13lf\n"
+               "      longJupiter       = %.13lf\n"
+               "      longSaturn        = %.13lf\n"
+               "      genPrec           = %.13lf\n"
+               "      nutpl             = %d\n",
                longVenus, longEarth, longMars, longJupiter, longSaturn, genPrec, 
                nutpl);
       #endif
@@ -1678,8 +1678,8 @@ void AxisSystem::ComputeNutationMatrix(const Real tTDB, A1Mjd atEpoch,
    #ifdef DEBUG_FIRST_CALL
       if (!firstCallFired)
          MessageInterface::ShowMessage(
-            wxT("      dPsi(0)           = %.13lf\n")
-            wxT("      dEps(0)           = %.13lf\n"),
+            "      dPsi(0)           = %.13lf\n"
+            "      dEps(0)           = %.13lf\n",
             dPsi, dEps);
    #endif
     
@@ -1691,8 +1691,8 @@ void AxisSystem::ComputeNutationMatrix(const Real tTDB, A1Mjd atEpoch,
    #ifdef DEBUG_FIRST_CALL
       if (!firstCallFired)
          MessageInterface::ShowMessage(
-            wxT("      dPsi(1)           = %.13lf\n")
-            wxT("      dEps(1)           = %.13lf\n"),
+            "      dPsi(1)           = %.13lf\n"
+            "      dEps(1)           = %.13lf\n",
             dPsi, dEps);
    #endif
     
@@ -1723,11 +1723,11 @@ void AxisSystem::ComputeNutationMatrix(const Real tTDB, A1Mjd atEpoch,
    lastDPsi     = dPsi; 
    
    #ifdef DEBUG_ROT_MATRIX
-      MessageInterface::ShowMessage(wxT("At end of ComputeNutationmatrix ...\n"));
-      MessageInterface::ShowMessage(wxT("   atEpoch   = %12.10f\n"), atEpoch.Get());
-      MessageInterface::ShowMessage(wxT("   longAscNodeLunar   = %12.10f\n"), longAscNodeLunar);
-      MessageInterface::ShowMessage(wxT("   cosEpsbar   = %12.10f\n"), cosEpsbar);
-      MessageInterface::ShowMessage(wxT("   dPsi   = %12.10f\n"), dPsi);
+      MessageInterface::ShowMessage("At end of ComputeNutationmatrix ...\n");
+      MessageInterface::ShowMessage("   atEpoch   = %12.10f\n", atEpoch.Get());
+      MessageInterface::ShowMessage("   longAscNodeLunar   = %12.10f\n", longAscNodeLunar);
+      MessageInterface::ShowMessage("   cosEpsbar   = %12.10f\n", cosEpsbar);
+      MessageInterface::ShowMessage("   dPsi   = %12.10f\n", dPsi);
    #endif
 //   return NUT;
 }
@@ -1743,11 +1743,11 @@ void AxisSystem::ComputeSiderealTimeRotation(const Real jdTT,
    #ifdef DEBUG_FIRST_CALL
       if (!firstCallFired)
       {
-         MessageInterface::ShowMessage(wxT("AxisSystem::ComputeSiderealTimeRotation, ")
-         wxT("for object of type %s\n"), typeName.c_str());
+         MessageInterface::ShowMessage("AxisSystem::ComputeSiderealTimeRotation, "
+         "for object of type %s\n", typeName.c_str());
          MessageInterface::ShowMessage(
-            wxT("   AxisSystem::ComputeSiderealTimeRotation(%.12lf, %.12lf, %.12lf,")
-            wxT(" %.12lf, %.12lf, %.12lf, %.12lf)\n"), jdTT, tUT1, dPsi, 
+            "   AxisSystem::ComputeSiderealTimeRotation(%.12lf, %.12lf, %.12lf,"
+            " %.12lf, %.12lf, %.12lf, %.12lf)\n", jdTT, tUT1, dPsi, 
             longAscNodeLunar, cosEpsbar, cosAst, sinAst);
       }
    #endif
@@ -1793,13 +1793,13 @@ void AxisSystem::ComputeSiderealTimeRotation(const Real jdTT,
    #ifdef DEBUG_FIRST_CALL
       if (!firstCallFired)
          MessageInterface::ShowMessage(
-            wxT("      EQequinox           = %.13lf\n")
-            wxT("      ThetaGmst           = %.13lf\n")
-            wxT("      ThetaAst            = %.13lf\n"),
+            "      EQequinox           = %.13lf\n"
+            "      ThetaGmst           = %.13lf\n"
+            "      ThetaAst            = %.13lf\n",
             EQequinox, ThetaGmst, ThetaAst);
    #endif
    #ifdef DEBUG_ROT_MATRIX
-      MessageInterface::ShowMessage(wxT("ST = %s\n"), (ST.ToString()).c_str());
+      MessageInterface::ShowMessage("ST = %s\n", (ST.ToString()).c_str());
    #endif
 
 //   return ST;
@@ -1813,8 +1813,8 @@ void AxisSystem::ComputeSiderealTimeDotRotation(const Real mjdUTC,
    #ifdef DEBUG_FIRST_CALL
       if (!firstCallFired)
          MessageInterface::ShowMessage(
-            wxT("   AxisSystem::ComputeSiderealTimeDotRotation(%.12lf, %.12lf,")
-            wxT(" %.12lf, %.12lf)\n"), mjdUTC, atEpoch.Get(),
+            "   AxisSystem::ComputeSiderealTimeDotRotation(%.12lf, %.12lf,"
+            " %.12lf, %.12lf)\n", mjdUTC, atEpoch.Get(),
             cosAst, sinAst);
    #endif
 
@@ -1828,7 +1828,7 @@ void AxisSystem::ComputeSiderealTimeDotRotation(const Real mjdUTC,
 //      return;
 //   }
    #ifdef DEBUG_UPDATE
-      MessageInterface::ShowMessage(wxT("----> Computing NEW STderiv matrix at time %12.10f\n"),
+      MessageInterface::ShowMessage("----> Computing NEW STderiv matrix at time %12.10f\n",
          atEpoch.Get());
    #endif
    // Convert to MJD UTC to use for polar motion  and LOD 
@@ -1838,11 +1838,11 @@ void AxisSystem::ComputeSiderealTimeDotRotation(const Real mjdUTC,
    Real x, y;
    eop->GetPolarMotionAndLod(mjdUTC,x,y,lod);
    #ifdef DEBUG_AXIS_SYSTEM_EOP
-      MessageInterface::ShowMessage(wxT("in STderiv calc, mjdUtc     = %12.10f\n"), mjdUTC);
-      MessageInterface::ShowMessage(wxT("                 atEpoch    = %12.10f\n"), atEpoch.Get());
-      MessageInterface::ShowMessage(wxT("                 lod        = %12.10f\n"), lod);
-      MessageInterface::ShowMessage(wxT("                 x          = %12.10f\n"), x);
-      MessageInterface::ShowMessage(wxT("                 y          = %12.10f\n"), y);
+      MessageInterface::ShowMessage("in STderiv calc, mjdUtc     = %12.10f\n", mjdUTC);
+      MessageInterface::ShowMessage("                 atEpoch    = %12.10f\n", atEpoch.Get());
+      MessageInterface::ShowMessage("                 lod        = %12.10f\n", lod);
+      MessageInterface::ShowMessage("                 x          = %12.10f\n", x);
+      MessageInterface::ShowMessage("                 y          = %12.10f\n", y);
    #endif
    
    // Compute the portion that has a significant time derivative
@@ -1852,8 +1852,8 @@ void AxisSystem::ComputeSiderealTimeDotRotation(const Real mjdUTC,
                             0.0,              0.0, 0.0);
    
    #ifdef DEBUG_ROT_MATRIX
-      MessageInterface::ShowMessage(wxT("lod = %12,10f\n"), lod);
-      MessageInterface::ShowMessage(wxT("STderiv = %s\n"), (STderiv.ToString()).c_str());
+      MessageInterface::ShowMessage("lod = %12,10f\n", lod);
+      MessageInterface::ShowMessage("STderiv = %s\n", (STderiv.ToString()).c_str());
    #endif
       
    lastSTDeriv      = STderiv;
@@ -1867,7 +1867,7 @@ void AxisSystem::ComputePolarMotionRotation(const Real mjdUTC, A1Mjd atEpoch,
    #ifdef DEBUG_FIRST_CALL
       if (!firstCallFired)
          MessageInterface::ShowMessage(
-            wxT("   AxisSystem::ComputePolarMotionRotation(%.12lf, %.12lf)\n"), 
+            "   AxisSystem::ComputePolarMotionRotation(%.12lf, %.12lf)\n", 
             mjdUTC, atEpoch.Get());
    #endif
 
@@ -1881,7 +1881,7 @@ void AxisSystem::ComputePolarMotionRotation(const Real mjdUTC, A1Mjd atEpoch,
 //      return;
 //   }
    #ifdef DEBUG_UPDATE
-      MessageInterface::ShowMessage(wxT("----> Computing NEW PM matrix at time %12.10f\n"),
+      MessageInterface::ShowMessage("----> Computing NEW PM matrix at time %12.10f\n",
          atEpoch.Get());
    #endif
    // Get the polar motion and lod data
@@ -1889,11 +1889,11 @@ void AxisSystem::ComputePolarMotionRotation(const Real mjdUTC, A1Mjd atEpoch,
    Real x, y;
    eop->GetPolarMotionAndLod(mjdUTC,x,y,lod);
    #ifdef DEBUG_AXIS_SYSTEM_EOP
-      MessageInterface::ShowMessage(wxT("in PM calc,      mjdUtc     = %12.10f\n"), mjdUTC);
-      MessageInterface::ShowMessage(wxT("                 atEpoch    = %12.10f\n"), atEpoch.Get());
-      MessageInterface::ShowMessage(wxT("                 lod        = %12.10f\n"), lod);
-      MessageInterface::ShowMessage(wxT("                 x          = %12.10f\n"), x);
-      MessageInterface::ShowMessage(wxT("                 y          = %12.10f\n"), y);
+      MessageInterface::ShowMessage("in PM calc,      mjdUtc     = %12.10f\n", mjdUTC);
+      MessageInterface::ShowMessage("                 atEpoch    = %12.10f\n", atEpoch.Get());
+      MessageInterface::ShowMessage("                 lod        = %12.10f\n", lod);
+      MessageInterface::ShowMessage("                 x          = %12.10f\n", x);
+      MessageInterface::ShowMessage("                 y          = %12.10f\n", y);
    #endif
    
    // Compute useful trigonometric quantities
@@ -1908,8 +1908,8 @@ void AxisSystem::ComputePolarMotionRotation(const Real mjdUTC, A1Mjd atEpoch,
            sinX, -cosX*sinY,  cosX*cosY); 
 
    #ifdef DEBUG_ROT_MATRIX
-      MessageInterface::ShowMessage(wxT("x = %12.10f  and y = %12.10f\n"), x, y);
-      MessageInterface::ShowMessage(wxT("PM = %s\n"), (PM.ToString()).c_str());
+      MessageInterface::ShowMessage("x = %12.10f  and y = %12.10f\n", x, y);
+      MessageInterface::ShowMessage("PM = %s\n", (PM.ToString()).c_str());
    #endif
       
    lastPM      = PM;
@@ -1918,9 +1918,9 @@ void AxisSystem::ComputePolarMotionRotation(const Real mjdUTC, A1Mjd atEpoch,
    #ifdef DEBUG_FIRST_CALL
       if (!firstCallFired)
          MessageInterface::ShowMessage(
-            wxT("      lod         = %.13lf\n")
-            wxT("      x           = %.13lf\n")
-            wxT("      y           = %.13lf\n"),
+            "      lod         = %.13lf\n"
+            "      x           = %.13lf\n"
+            "      y           = %.13lf\n",
             lod, x * RAD_PER_ARCSEC, y * RAD_PER_ARCSEC);
    #endif
    #ifdef DEBUG_FIRST_CALL

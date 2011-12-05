@@ -44,9 +44,9 @@ static EopFile *theEopFile;
 static LeapSecsFileReader *theLeapSecsFileReader;
 
 //------------------------------------------------------------------------------
-// Integer GetTimeTypeID(wxString &str) 
+// Integer GetTimeTypeID(std::string &str) 
 //------------------------------------------------------------------------------
-Integer TimeConverterUtil::GetTimeTypeID(wxString &str) 
+Integer TimeConverterUtil::GetTimeTypeID(std::string &str) 
 {
     for (Integer i = 0; i < TimeSystemCount; i++)
     {
@@ -59,8 +59,8 @@ Integer TimeConverterUtil::GetTimeTypeID(wxString &str)
 
 //---------------------------------------------------------------------------
 //  Real TimeConverterUtil::Convert(const Real origValue,
-//                                  const wxString &fromType,
-//                                  const wxString &toType)
+//                                  const std::string &fromType,
+//                                  const std::string &toType)
 //---------------------------------------------------------------------------
 /**
  * Assignment operator for TimeConverter structures.
@@ -82,7 +82,7 @@ Real TimeConverterUtil::Convert(const Real origValue,
       {
          firstCallFired = false;
          MessageInterface::ShowMessage(
-            wxT("Reset firstCallFired, orig == '%.12lf', last = '%.12lf'\n"),
+            "Reset firstCallFired, orig == '%.12lf', last = '%.12lf'\n",
             origValue, lastValue);
       }
       lastValue = origValue;
@@ -90,7 +90,7 @@ Real TimeConverterUtil::Convert(const Real origValue,
    
    #ifdef DEBUG_TIMECONVERTER_DETAILS
       MessageInterface::ShowMessage(
-         wxT("      TimeConverterUtil::Converting %.18lf in %s to %s; refJD = %.18lf\n"), origValue, 
+         "      TimeConverterUtil::Converting %.18lf in %s to %s; refJD = %.18lf\n", origValue, 
          TIME_SYSTEM_TEXT[fromType].c_str(), TIME_SYSTEM_TEXT[toType].c_str(), refJd);
    #endif
       
@@ -98,20 +98,20 @@ Real TimeConverterUtil::Convert(const Real origValue,
       TimeConverterUtil::ConvertToTaiMjd(fromType, origValue, refJd);
 
    #ifdef DEBUG_TIMECONVERTER_DETAILS
-      MessageInterface::ShowMessage(wxT("      TAI time =  %.18lf\n"), newTime);
+      MessageInterface::ShowMessage("      TAI time =  %.18lf\n", newTime);
    #endif
    
    Real returnTime =
       TimeConverterUtil::ConvertFromTaiMjd(toType, newTime, refJd);
 
    #ifdef DEBUG_FIRST_CALL
-//       if (toType == wxT("TtMjd"))
+//       if (toType == "TtMjd")
       if (toType == TTMJD)
          firstCallFired = true;
    #endif
 
    #ifdef DEBUG_TIMECONVERTER_DETAILS
-      MessageInterface::ShowMessage(wxT("      %s time =  %.18lf\n"), TIME_SYSTEM_TEXT[toType].c_str(), 
+      MessageInterface::ShowMessage("      %s time =  %.18lf\n", TIME_SYSTEM_TEXT[toType].c_str(), 
          returnTime);
    #endif
 
@@ -119,7 +119,7 @@ Real TimeConverterUtil::Convert(const Real origValue,
 }
 
 //---------------------------------------------------------------------------
-// Real ConvertToTaiMjd(wxString fromType, Real origValue, Real refJd)
+// Real ConvertToTaiMjd(std::string fromType, Real origValue, Real refJd)
 //---------------------------------------------------------------------------
 Real TimeConverterUtil::ConvertToTaiMjd(Integer fromType, Real origValue,
                                         Real refJd)
@@ -127,12 +127,12 @@ Real TimeConverterUtil::ConvertToTaiMjd(Integer fromType, Real origValue,
    #ifdef DEBUG_FIRST_CALL
       if (!firstCallFired)
          MessageInterface::ShowMessage(
-            wxT("   Converting %.11lf to TAI from %s\n"), origValue, TIME_SYSTEM_TEXT[fromType].c_str());
+            "   Converting %.11lf to TAI from %s\n", origValue, TIME_SYSTEM_TEXT[fromType].c_str());
    #endif
 
    #ifdef DEBUG_TIMECONVERTER_DETAILS
       MessageInterface::ShowMessage( 
-         wxT("      ***Converting %.18lf to TAI from %s\n"), origValue, 
+         "      ***Converting %.18lf to TAI from %s\n", origValue, 
          TIME_SYSTEM_TEXT[fromType].c_str());
    #endif
    
@@ -160,7 +160,7 @@ Real TimeConverterUtil::ConvertToTaiMjd(Integer fromType, Real origValue,
         //loj: 4/12/05 Added
         if (theLeapSecsFileReader == NULL)
            throw TimeFileException
-              (wxT("theLeapSecsFileReader is unknown\n"));
+              ("theLeapSecsFileReader is unknown\n");
           
         // look up leap secs from file
         Real numLeapSecs =
@@ -168,7 +168,7 @@ Real TimeConverterUtil::ConvertToTaiMjd(Integer fromType, Real origValue,
   
         #ifdef DEBUG_TIMECONVERTER_DETAILS
            MessageInterface::ShowMessage(
-              wxT("      CVT to TAI, Leap secs count = %.14lf\n"), numLeapSecs);
+              "      CVT to TAI, Leap secs count = %.14lf\n", numLeapSecs);
         #endif
     
         return (origValue + (numLeapSecs/GmatTimeConstants::SECS_PER_DAY));
@@ -177,7 +177,7 @@ Real TimeConverterUtil::ConvertToTaiMjd(Integer fromType, Real origValue,
     case TimeConverterUtil::UT1:
     {
         if (theEopFile == NULL)
-           throw TimeFileException(wxT("EopFile is unknown\n"));
+           throw TimeFileException("EopFile is unknown\n");
         
         Real offsetValue = 0;
         
@@ -213,21 +213,21 @@ Real TimeConverterUtil::ConvertToTaiMjd(Integer fromType, Real origValue,
              ttJd, 0.0);
 
       #ifdef DEBUG_TDB
-          MessageInterface::ShowMessage(wxT("TDB -> MJD\n"));
-          MessageInterface::ShowMessage(wxT("   T_TT_COEFF1 = %.15le\n"), T_TT_COEFF1);
-          MessageInterface::ShowMessage(wxT("   T_TT_OFFSET = %.15le\n"), T_TT_OFFSET);
-          MessageInterface::ShowMessage(wxT("   M_E_OFFSET  = %.15le\n"), M_E_OFFSET);
-          MessageInterface::ShowMessage(wxT("   M_E_COEFF1  = %.15le\n"), M_E_COEFF1);
-          MessageInterface::ShowMessage(wxT("   TDB_COEFF1  = %.15le\n"), TDB_COEFF1);
-          MessageInterface::ShowMessage(wxT("   TDB_COEFF2  = %.15le\n"), TDB_COEFF2);
-          MessageInterface::ShowMessage(wxT("   origValue   = %.15le\n"), origValue);
-          MessageInterface::ShowMessage(wxT("   refJd       = %.15le\n"), refJd);
-          MessageInterface::ShowMessage(wxT("   t_TT        = %.15le\n"), t_TT);
-          MessageInterface::ShowMessage(wxT("   m_E         = %.15le\n"), m_E);
-          MessageInterface::ShowMessage(wxT("   offset      = %.15le\n"), offset);
-          MessageInterface::ShowMessage(wxT("   ttJd        = %.15le\n"), ttJd);
-          MessageInterface::ShowMessage(wxT("   taiJd       = %.15le\n"), taiJd);
-          MessageInterface::ShowMessage(wxT("   tai         = %.15le\n"), taiJd - refJd);
+          MessageInterface::ShowMessage("TDB -> MJD\n");
+          MessageInterface::ShowMessage("   T_TT_COEFF1 = %.15le\n", T_TT_COEFF1);
+          MessageInterface::ShowMessage("   T_TT_OFFSET = %.15le\n", T_TT_OFFSET);
+          MessageInterface::ShowMessage("   M_E_OFFSET  = %.15le\n", M_E_OFFSET);
+          MessageInterface::ShowMessage("   M_E_COEFF1  = %.15le\n", M_E_COEFF1);
+          MessageInterface::ShowMessage("   TDB_COEFF1  = %.15le\n", TDB_COEFF1);
+          MessageInterface::ShowMessage("   TDB_COEFF2  = %.15le\n", TDB_COEFF2);
+          MessageInterface::ShowMessage("   origValue   = %.15le\n", origValue);
+          MessageInterface::ShowMessage("   refJd       = %.15le\n", refJd);
+          MessageInterface::ShowMessage("   t_TT        = %.15le\n", t_TT);
+          MessageInterface::ShowMessage("   m_E         = %.15le\n", m_E);
+          MessageInterface::ShowMessage("   offset      = %.15le\n", offset);
+          MessageInterface::ShowMessage("   ttJd        = %.15le\n", ttJd);
+          MessageInterface::ShowMessage("   taiJd       = %.15le\n", taiJd);
+          MessageInterface::ShowMessage("   tai         = %.15le\n", taiJd - refJd);
       #endif
 
        return taiJd;
@@ -235,9 +235,9 @@ Real TimeConverterUtil::ConvertToTaiMjd(Integer fromType, Real origValue,
     case TimeConverterUtil::TCBMJD:
     case TimeConverterUtil::TCB:
           throw UnimplementedException(
-               wxT("Not Implemented - TCB to TAI"));
+               "Not Implemented - TCB to TAI");
 //      Real tdbMjd;
-//      return ConvertToTaiMjd(wxT("TdbMjd"), tdbMjd);    
+//      return ConvertToTaiMjd("TdbMjd", tdbMjd);    
     case TimeConverterUtil::TTMJD:
     case TimeConverterUtil::TT:
           return (origValue -
@@ -251,7 +251,7 @@ Real TimeConverterUtil::ConvertToTaiMjd(Integer fromType, Real origValue,
 
 
 //---------------------------------------------------------------------------
-// Real ConvertFromTaiMjd(wxString toType, Real origValue, Real refJd)
+// Real ConvertFromTaiMjd(std::string toType, Real origValue, Real refJd)
 //---------------------------------------------------------------------------
 Real TimeConverterUtil::ConvertFromTaiMjd(Integer toType, Real origValue,
                                           Real refJd)
@@ -259,12 +259,12 @@ Real TimeConverterUtil::ConvertFromTaiMjd(Integer toType, Real origValue,
    #ifdef DEBUG_FIRST_CALL
       if (!firstCallFired)
          MessageInterface::ShowMessage(
-            wxT("   Converting %.11lf from TAI to %s\n"), origValue,
+            "   Converting %.11lf from TAI to %s\n", origValue,
             TIME_SYSTEM_TEXT[toType].c_str());
    #endif
    #ifdef DEBUG_TIMECONVERTER_DETAILS
       MessageInterface::ShowMessage(
-         wxT("      ** Converting %.18lf from TAI to %s\n"), origValue, 
+         "      ** Converting %.18lf from TAI to %s\n", origValue, 
          TIME_SYSTEM_TEXT[toType].c_str());
    #endif
    
@@ -274,7 +274,7 @@ Real TimeConverterUtil::ConvertFromTaiMjd(Integer toType, Real origValue,
       case TimeConverterUtil::A1:
       {
           #ifdef DEBUG_TIMECONVERTER_DETAILS
-             MessageInterface::ShowMessage(wxT("      In the 'a1' block\n"));
+             MessageInterface::ShowMessage("      In the 'a1' block\n");
           #endif
           return (origValue +
                  (GmatTimeConstants::A1_TAI_OFFSET/GmatTimeConstants::SECS_PER_DAY));
@@ -283,7 +283,7 @@ Real TimeConverterUtil::ConvertFromTaiMjd(Integer toType, Real origValue,
       case TimeConverterUtil::TAI:
       {
           #ifdef DEBUG_TIMECONVERTER_DETAILS
-             MessageInterface::ShowMessage(wxT("      In the 'tai' block\n"));
+             MessageInterface::ShowMessage("      In the 'tai' block\n");
           #endif
           // already in tai
           return origValue;
@@ -292,7 +292,7 @@ Real TimeConverterUtil::ConvertFromTaiMjd(Integer toType, Real origValue,
       case TimeConverterUtil::UTC:
        {
           #ifdef DEBUG_TIMECONVERTER_DETAILS
-             MessageInterface::ShowMessage(wxT("      In the 'utc' block\n"));
+             MessageInterface::ShowMessage("      In the 'utc' block\n");
           #endif
           Real offsetValue = 0;
     
@@ -305,7 +305,7 @@ Real TimeConverterUtil::ConvertFromTaiMjd(Integer toType, Real origValue,
           //loj: 4/12/05 Added
           if (theLeapSecsFileReader == NULL)
              throw TimeFileException
-                (wxT("theLeapSecsFileReader is unknown\n"));
+                ("theLeapSecsFileReader is unknown\n");
           
           Real taiLeapSecs =
              theLeapSecsFileReader->NumberOfLeapSecondsFrom(origValue + offsetValue);
@@ -316,9 +316,9 @@ Real TimeConverterUtil::ConvertFromTaiMjd(Integer toType, Real origValue,
                                      - (taiLeapSecs/GmatTimeConstants::SECS_PER_DAY));
     
           #ifdef DEBUG_TIMECONVERTER_DETAILS
-             MessageInterface::ShowMessage(wxT("      offsetValue = %.17lf\n"),
+             MessageInterface::ShowMessage("      offsetValue = %.17lf\n",
                 offsetValue);
-             MessageInterface::ShowMessage(wxT("      Leap secs: tai = %.17lf, utc = %.17lf\n"),
+             MessageInterface::ShowMessage("      Leap secs: tai = %.17lf, utc = %.17lf\n",
                 taiLeapSecs, utcLeapSecs);
           #endif
     
@@ -331,11 +331,11 @@ Real TimeConverterUtil::ConvertFromTaiMjd(Integer toType, Real origValue,
       case TimeConverterUtil::UT1:
        {
           #ifdef DEBUG_TIMECONVERTER_DETAILS
-             MessageInterface::ShowMessage(wxT("      In the 'ut1' block\n"));
+             MessageInterface::ShowMessage("      In the 'ut1' block\n");
           #endif
           if (theEopFile == NULL)
              throw TimeFileException(
-                   wxT("EopFile is unknown"));
+                   "EopFile is unknown");
     
           Real offsetValue = 0;
     
@@ -352,15 +352,15 @@ Real TimeConverterUtil::ConvertFromTaiMjd(Integer toType, Real origValue,
           numOffset = theEopFile->GetUt1UtcOffset(utcMjd + offsetValue);
     
           #ifdef DEBUG_TIMECONVERTER_DETAILS
-             MessageInterface::ShowMessage(wxT("   offsetValue = %.17lf\n"),
+             MessageInterface::ShowMessage("   offsetValue = %.17lf\n",
                 offsetValue);
              MessageInterface::ShowMessage(
-                wxT("   utcMjd = %.20lf, numOffset = %.20lf\n"), utcMjd, numOffset);
+                "   utcMjd = %.20lf, numOffset = %.20lf\n", utcMjd, numOffset);
           #endif
           #ifdef DEBUG_FIRST_CALL
              if (!firstCallFired || (numOffset == 0.0))
                 MessageInterface::ShowMessage(
-                   wxT("   utcMjd = %.20lf, numOffset = %.20lf\n"), utcMjd, numOffset);
+                   "   utcMjd = %.20lf, numOffset = %.20lf\n", utcMjd, numOffset);
           #endif
     
           // add delta ut1 read from eop file
@@ -371,7 +371,7 @@ Real TimeConverterUtil::ConvertFromTaiMjd(Integer toType, Real origValue,
       case TimeConverterUtil::TDB:      
           {
              #ifdef DEBUG_TIMECONVERTER_DETAILS
-                MessageInterface::ShowMessage(wxT("      In the 'tdb' block\n"));
+                MessageInterface::ShowMessage("      In the 'tdb' block\n");
              #endif
              // convert time to tt
              Real ttJd = TimeConverterUtil::ConvertFromTaiMjd(
@@ -394,7 +394,7 @@ Real TimeConverterUtil::ConvertFromTaiMjd(Integer toType, Real origValue,
        case TimeConverterUtil::TCB:
        {
           #ifdef DEBUG_TIMECONVERTER_DETAILS
-             MessageInterface::ShowMessage(wxT("      In the 'tcb' block\n"));
+             MessageInterface::ShowMessage("      In the 'tcb' block\n");
           #endif
           // convert time to tdb
           Real tdbMjd = TimeConverterUtil::ConvertFromTaiMjd(TimeConverterUtil::TDBMJD, 
@@ -411,7 +411,7 @@ Real TimeConverterUtil::ConvertFromTaiMjd(Integer toType, Real origValue,
        case TimeConverterUtil::TT:
        {
           #ifdef DEBUG_TIMECONVERTER_DETAILS
-             MessageInterface::ShowMessage(wxT("      In the 'tt' block\n"));
+             MessageInterface::ShowMessage("      In the 'tt' block\n");
           #endif
           return (origValue +
                  (GmatTimeConstants::TT_TAI_OFFSET/GmatTimeConstants::SECS_PER_DAY));
@@ -443,8 +443,8 @@ void TimeConverterUtil::SetLeapSecsFileReader(LeapSecsFileReader *leapSecsFileRe
 
 
 //---------------------------------------------------------------------------
-// void GetTimeSystemAndFormat(const wxString &type, wxString &system,
-//                             wxString &format)
+// void GetTimeSystemAndFormat(const std::string &type, std::string &system,
+//                             std::string &format)
 //---------------------------------------------------------------------------
 /*
  * Returns time system and format from the input format.
@@ -457,22 +457,22 @@ void TimeConverterUtil::SetLeapSecsFileReader(LeapSecsFileReader *leapSecsFileRe
  * @exception <TimeFormatException> thrown if input type is invalid
  */
 //---------------------------------------------------------------------------
-void TimeConverterUtil::GetTimeSystemAndFormat(const wxString &type,
-                                               wxString &system,
-                                               wxString &format)
+void TimeConverterUtil::GetTimeSystemAndFormat(const std::string &type,
+                                               std::string &system,
+                                               std::string &format)
 {
    //-------------------------------------------------------
    // Get from time system and format
    //-------------------------------------------------------
-   wxString::size_type loc = type.find(wxT("ModJulian"), 0);
+   std::string::size_type loc = type.find("ModJulian", 0);
    if (loc == type.npos)
-      loc = type.find(wxT("Gregorian"), 0);
+      loc = type.find("Gregorian", 0);
    
    if (loc == type.npos)
       throw TimeFormatException
-         (wxT("\"") + type + wxT("\" is not a valid time format.\n")
-          wxT("The allowed values are: [A1ModJulian, TAIModJulian, UTCModJulian, ")
-          wxT("TTModJulian, A1Gregorian, TAIGregorian, UTCGregorian, TTGregorian]"));
+         ("\"" + type + "\" is not a valid time format.\n"
+          "The allowed values are: [A1ModJulian, TAIModJulian, UTCModJulian, "
+          "TTModJulian, A1Gregorian, TAIGregorian, UTCGregorian, TTGregorian]");
    
    system = type.substr(0, loc);
    format = type.substr(loc);
@@ -480,27 +480,27 @@ void TimeConverterUtil::GetTimeSystemAndFormat(const wxString &type,
 
 
 //---------------------------------------------------------------------------
-// wxString ConvertMjdToGregorian(const Real mjd, Integer format = 1)
+// std::string ConvertMjdToGregorian(const Real mjd, Integer format = 1)
 //---------------------------------------------------------------------------
 /**
  * Converts MJD to Gregorian date format.
  *
- * @param  format    1 = wxT("01 Jan 2000 11:59:28.000")
- *                   2 = wxT("2000-01-01T11:59:28.000")
+ * @param  format    1 = "01 Jan 2000 11:59:28.000"
+ *                   2 = "2000-01-01T11:59:28.000"
  */
 //---------------------------------------------------------------------------
-wxString TimeConverterUtil::ConvertMjdToGregorian(const Real mjd,
+std::string TimeConverterUtil::ConvertMjdToGregorian(const Real mjd,
                                                      Integer format)
 {
    A1Mjd a1Mjd(mjd);
    A1Date a1Date = a1Mjd.ToA1Date();
    GregorianDate gregorianDate(&a1Date, format);
    #ifdef DEBUG_GREGORIAN
-       MessageInterface::ShowMessage(wxT("------ In ConvertMjdToGregorian\n"));
-       MessageInterface::ShowMessage(wxT("------ input mjd     = %.18lf\n"), mjd);
-       MessageInterface::ShowMessage(wxT("------ A1Date        = %s\n"), 
+       MessageInterface::ShowMessage("------ In ConvertMjdToGregorian\n");
+       MessageInterface::ShowMessage("------ input mjd     = %.18lf\n", mjd);
+       MessageInterface::ShowMessage("------ A1Date        = %s\n", 
           (a1Date.ToPackedCalendarString()).c_str());
-       MessageInterface::ShowMessage(wxT("------ GregorianDate = %s\n"), 
+       MessageInterface::ShowMessage("------ GregorianDate = %s\n", 
           (gregorianDate.GetDate()).c_str());
    #endif
    return gregorianDate.GetDate();
@@ -508,28 +508,28 @@ wxString TimeConverterUtil::ConvertMjdToGregorian(const Real mjd,
 
 
 //---------------------------------------------------------------------------
-// Real ConvertGregorianToMjd(const wxString &greg)
+// Real ConvertGregorianToMjd(const std::string &greg)
 //---------------------------------------------------------------------------
-Real TimeConverterUtil::ConvertGregorianToMjd(const wxString &greg)
+Real TimeConverterUtil::ConvertGregorianToMjd(const std::string &greg)
 {
    GregorianDate gregorianDate(greg);
    Real jules;
 
    if (!gregorianDate.IsValid())
       throw TimeFormatException(
-         wxT("Gregorian date '") + greg + wxT("' is not valid."));
+         "Gregorian date '" + greg + "' is not valid.");
 
    //MessageInterface::ShowMessage
-   //   (wxT("==> TimeConverterUtil::ConvertGregorianToMjd() greg=%s\n"), greg.c_str());
+   //   ("==> TimeConverterUtil::ConvertGregorianToMjd() greg=%s\n", greg.c_str());
    
    try
    {
       A1Date a1Date(gregorianDate.GetYMDHMS());
       
       #ifdef DEBUG_TIMECONVERTER_DETAILS
-         MessageInterface::ShowMessage(wxT("Gregorian: %s\n"), 
+         MessageInterface::ShowMessage("Gregorian: %s\n", 
             gregorianDate.GetYMDHMS().c_str());
-         MessageInterface::ShowMessage(wxT("YMDHMS:    %d  %d  %d  %d  %d  %.11lf\n"), 
+         MessageInterface::ShowMessage("YMDHMS:    %d  %d  %d  %d  %d  %.11lf\n", 
             a1Date.GetYear(),a1Date.GetMonth(), a1Date.GetDay(),
             a1Date.GetHour(), a1Date.GetMinute(),a1Date.GetSecond());
       #endif
@@ -538,38 +538,38 @@ Real TimeConverterUtil::ConvertGregorianToMjd(const wxString &greg)
                                  a1Date.GetDay(),a1Date.GetHour(),
                                  a1Date.GetMinute(),a1Date.GetSecond());
     #ifdef DEBUG_GREGORIAN
-       MessageInterface::ShowMessage(wxT("------ In ConvertGregorianToMjd\n"));
-       MessageInterface::ShowMessage(wxT("------ input greg = %s\n"), greg.c_str());
-       MessageInterface::ShowMessage(wxT("------ Gregorian  = %s\n"), 
+       MessageInterface::ShowMessage("------ In ConvertGregorianToMjd\n");
+       MessageInterface::ShowMessage("------ input greg = %s\n", greg.c_str());
+       MessageInterface::ShowMessage("------ Gregorian  = %s\n", 
             gregorianDate.GetYMDHMS().c_str());
-       MessageInterface::ShowMessage(wxT("------ A1Date     = %s\n"), 
+       MessageInterface::ShowMessage("------ A1Date     = %s\n", 
           (a1Date.ToPackedCalendarString()).c_str());
-       MessageInterface::ShowMessage(wxT("------ YMDHMS:    =     %d  %d  %d  %d  %d  %.17lf\n"), 
+       MessageInterface::ShowMessage("------ YMDHMS:    =     %d  %d  %d  %d  %d  %.17lf\n", 
             a1Date.GetYear(),a1Date.GetMonth(), a1Date.GetDay(),
             a1Date.GetHour(), a1Date.GetMinute(),a1Date.GetSecond());
-       MessageInterface::ShowMessage(wxT("------ jules      = %s\n"), 
+       MessageInterface::ShowMessage("------ jules      = %s\n", 
           (gregorianDate.GetDate()).c_str());
-       MessageInterface::ShowMessage(wxT("------ jules (as Real)      = %.12f\n"), 
+       MessageInterface::ShowMessage("------ jules (as Real)      = %.12f\n", 
           jules);
     #endif
    }
    catch (Date::TimeRangeError& )
    {
       throw TimeFormatException(
-         wxT("Gregorian date '") + greg +wxT("' appears to be out of range."));
+         "Gregorian date '" + greg +"' appears to be out of range.");
    }
 
    //MessageInterface::ShowMessage
-   //   (wxT("==> TimeConverterUtil::ConvertGregorianToMjd() jules=%.11f\n"), jules);
+   //   ("==> TimeConverterUtil::ConvertGregorianToMjd() jules=%.11f\n", jules);
    
    return jules;
 }
 
 
 //---------------------------------------------------------------------------
-// void Convert(const wxString &fromType, Real fromMjd,
-//              const wxString &fromStr, const wxString &toType,
-//              Real &toMjd, wxString &toStr, Integer format = 1)
+// void Convert(const std::string &fromType, Real fromMjd,
+//              const std::string &fromStr, const std::string &toType,
+//              Real &toMjd, std::string &toStr, Integer format = 1)
 //---------------------------------------------------------------------------
 /*
  * Converts input time and time format to output format. If input fromMjd
@@ -581,19 +581,19 @@ Real TimeConverterUtil::ConvertGregorianToMjd(const wxString &greg)
  * @param  toType    output time system and format (A1ModJulian, etc)
  * @param  toMjd     output time in mjd Real if toType is ModJulian, -999.999 otherwise
  * @param  toStr     output time string in toType format (1)
- * @param  format    1 = wxT("01 Jan 2000 11:59:28.000")
- *                   2 = wxT("2000-01-01T11:59:28.000")
+ * @param  format    1 = "01 Jan 2000 11:59:28.000"
+ *                   2 = "2000-01-01T11:59:28.000"
  */
 //---------------------------------------------------------------------------
-void TimeConverterUtil::Convert(const wxString &fromType, Real fromMjd, 
-                                const wxString &fromStr,
-                                const wxString &toType, Real &toMjd,
-                                wxString &toStr, Integer format)
+void TimeConverterUtil::Convert(const std::string &fromType, Real fromMjd, 
+                                const std::string &fromStr,
+                                const std::string &toType, Real &toMjd,
+                                std::string &toStr, Integer format)
 {
    #ifdef DEBUG_TIME_CONVERT
    MessageInterface::ShowMessage
-      (wxT("TimeConverterUtil::Convert() entered fromType=%s, fromMjd=%f, fromStr=%s\n")
-       wxT("   toType=%s\n"), fromType.c_str(), fromMjd, fromStr.c_str(), toType.c_str());
+      ("TimeConverterUtil::Convert() entered fromType=%s, fromMjd=%f, fromStr=%s\n"
+       "   toType=%s\n", fromType.c_str(), fromMjd, fromStr.c_str(), toType.c_str());
    #endif
    
    Real fromMjdVal = fromMjd;
@@ -606,14 +606,14 @@ void TimeConverterUtil::Convert(const wxString &fromType, Real fromMjd,
    //-------------------------------------------------------
    // Get from time system and format
    //-------------------------------------------------------
-   wxString fromSystem ;
-   wxString fromFormat;
+   std::string fromSystem ;
+   std::string fromFormat;
    GetTimeSystemAndFormat(fromType, fromSystem, fromFormat);
    
    // Validate from time system
    if (!TimeConverterUtil::ValidateTimeSystem(fromSystem))
       throw TimeFormatException
-         (wxT("\"") + fromSystem + wxT("\" is not a valid time system"));
+         ("\"" + fromSystem + "\" is not a valid time system");
    
    // Validate time format and value
    if (convertToModJulian)
@@ -622,44 +622,43 @@ void TimeConverterUtil::Convert(const wxString &fromType, Real fromMjd,
    //-------------------------------------------------------
    // Get to time system and format
    //-------------------------------------------------------   
-   wxString toSystem;
-   wxString toFormat;
+   std::string toSystem;
+   std::string toFormat;
    GetTimeSystemAndFormat(toType, toSystem, toFormat);
    
    // Validate to time system
    if (!TimeConverterUtil::ValidateTimeSystem(toSystem))
       throw TimeFormatException
-         (wxT("\"") + toSystem + wxT("\" is not a valid time system"));
+         ("\"" + toSystem + "\" is not a valid time system");
    
    //-------------------------------------------------------
    // Compute from time in mjd
    //-------------------------------------------------------
    toMjd = -999.999;
    
-   if (fromFormat == wxT("ModJulian"))
+   if (fromFormat == "ModJulian")
    {
       if (convertToModJulian)
       {
-         wxString str;
-         str = fromStr;
-         double theVal;
-         str.ToDouble(&theVal);
-         fromMjdVal = theVal;
+         std::stringstream str;
+         str.precision(timePrecision);
+         str.str(fromStr);
+         str >> fromMjdVal;
       }
    }
    else
    {
       #ifdef DEBUG_TIME_CONVERT
-      MessageInterface::ShowMessage(wxT("===> Converting %s from Gregorian to MJD\n"),
+      MessageInterface::ShowMessage("===> Converting %s from Gregorian to MJD\n",
       fromStr.c_str());
       #endif
       fromMjdVal = TimeConverterUtil::ConvertGregorianToMjd(fromStr);
    }
    
    #ifdef DEBUG_TIME_CONVERT
-   MessageInterface::ShowMessage(wxT("===> fromMjdVal=%.12f\n"), fromMjdVal);
-   MessageInterface::ShowMessage(wxT("===> fromType=%s\n"), fromType.c_str());
-   MessageInterface::ShowMessage(wxT("===> toType=%s\n"), toType.c_str());
+   MessageInterface::ShowMessage("===> fromMjdVal=%.12f\n", fromMjdVal);
+   MessageInterface::ShowMessage("===> fromType=%s\n", fromType.c_str());
+   MessageInterface::ShowMessage("===> toType=%s\n", toType.c_str());
    #endif
    
    //-------------------------------------------------------
@@ -681,23 +680,23 @@ void TimeConverterUtil::Convert(const wxString &fromType, Real fromMjd,
    //-------------------------------------------------------
    // Convert to output format
    //-------------------------------------------------------
-   if (toFormat == wxT("ModJulian"))
+   if (toFormat == "ModJulian")
       toStr = GmatStringUtil::ToString(toMjd, timePrecision);
    else
       toStr = TimeConverterUtil::ConvertMjdToGregorian(toMjd, format);
    
    #ifdef DEBUG_TIME_CONVERT
    MessageInterface::ShowMessage
-      (wxT("TimeConverterUtil::Convert() leaving toMjd=%f, toStr=%s\n"), toMjd,
+      ("TimeConverterUtil::Convert() leaving toMjd=%f, toStr=%s\n", toMjd,
        toStr.c_str());
    #endif
 }
 
 
 //---------------------------------------------------------------------------
-// bool TimeConverterUtil::ValidateTimeSystem(wxString sys)
+// bool TimeConverterUtil::ValidateTimeSystem(std::string sys)
 //---------------------------------------------------------------------------
-bool TimeConverterUtil::ValidateTimeSystem(wxString sys)
+bool TimeConverterUtil::ValidateTimeSystem(std::string sys)
 {
    for (Integer i = 0; i < TimeSystemCount; ++i)
       if (TIME_SYSTEM_TEXT[i] == sys)
@@ -708,33 +707,33 @@ bool TimeConverterUtil::ValidateTimeSystem(wxString sys)
 
 
 //---------------------------------------------------------------------------
-// bool TimeConverterUtil::ValidateTimeFormat(const wxString &format, 
-//                                            const wxString &value,
+// bool TimeConverterUtil::ValidateTimeFormat(const std::string &format, 
+//                                            const std::string &value,
 //                                            bool checkValue = true)
 //---------------------------------------------------------------------------
-bool TimeConverterUtil::ValidateTimeFormat(const wxString &format, 
-                                           const wxString &value,
+bool TimeConverterUtil::ValidateTimeFormat(const std::string &format, 
+                                           const std::string &value,
                                            bool checkValue)
 {
    bool retval = false;
    
-   wxString timeFormat = wxT("ModJulian");
-   if (format.find(wxT("Gregorian")) != format.npos)
-      timeFormat = wxT("Gregorian");
+   std::string timeFormat = "ModJulian";
+   if (format.find("Gregorian") != format.npos)
+      timeFormat = "Gregorian";
 
    #if DEBUG_VALIDATE_TIME
    MessageInterface::ShowMessage
-      (wxT("TimeConverterUtil::ValidateTimeFormat() format=%s, timeFormat=%s, ")
-       wxT("value=%s\n"), format.c_str(), timeFormat.c_str(), value.c_str());
+      ("TimeConverterUtil::ValidateTimeFormat() format=%s, timeFormat=%s, "
+       "value=%s\n", format.c_str(), timeFormat.c_str(), value.c_str());
    #endif
    
-   if (timeFormat == wxT("Gregorian"))
+   if (timeFormat == "Gregorian")
    {
       retval = DateUtil::IsValidGregorian(value, false);
       
       if (!retval)
           throw TimeFormatException
-             (wxT("Gregorian date \"") + value + wxT("\" is not valid."));
+             ("Gregorian date \"" + value + "\" is not valid.");
 
       if (checkValue)
       {
@@ -742,11 +741,11 @@ bool TimeConverterUtil::ValidateTimeFormat(const wxString &format,
 
          if (!retval)
              throw TimeFormatException
-                (wxT("Gregorian date \"") + value + wxT("\" is not valid - time specified must be \"04 Oct 1957 12:00:00.000\" or later"));
+                ("Gregorian date \"" + value + "\" is not valid - time specified must be \"04 Oct 1957 12:00:00.000\" or later");
       }
 
    }
-   else if (timeFormat == wxT("ModJulian"))
+   else if (timeFormat == "ModJulian")
    {
       Real rval;
       if (GmatStringUtil::ToReal(value, rval))
@@ -757,20 +756,20 @@ bool TimeConverterUtil::ValidateTimeFormat(const wxString &format,
          if ((checkValue) && (rval < 6116))
          {
             throw InvalidTimeException
-               (wxT("ModJulian Time \"") + value + wxT("\" is not valid - time specified must be >= 6116.00"));
+               ("ModJulian Time \"" + value + "\" is not valid - time specified must be >= 6116.00");
          }
       }
       else
       {
 //      if (!retval)
          throw InvalidTimeException
-            (wxT("ModJulian Time \"") + value + wxT("\" is not valid."));
+            ("ModJulian Time \"" + value + "\" is not valid.");
       }
    }
    else
    {
       throw TimeFormatException
-         (wxT("Invalid Time Format \"") + format + wxT("\" found."));
+         ("Invalid Time Format \"" + format + "\" found.");
    }
    
    return true;
@@ -786,12 +785,12 @@ StringArray TimeConverterUtil::GetValidTimeRepresentations()
    for (Integer i = A1; i < TimeSystemCount; ++i)
    {
       if ((i != UT1) && (i != TDB) && (i != TCB))
-         systems.push_back(TIME_SYSTEM_TEXT[i] + wxT("ModJulian"));
+         systems.push_back(TIME_SYSTEM_TEXT[i] + "ModJulian");
    }
    for (Integer i = A1; i < TimeSystemCount; ++i)
    {
       if ((i != UT1) && (i != TDB) && (i != TCB))
-         systems.push_back(TIME_SYSTEM_TEXT[i] + wxT("Gregorian"));
+         systems.push_back(TIME_SYSTEM_TEXT[i] + "Gregorian");
    }
    return systems;
 }

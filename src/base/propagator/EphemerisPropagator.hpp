@@ -32,22 +32,22 @@
 class GMAT_API EphemerisPropagator : public Propagator
 {
 public:
-   EphemerisPropagator(const wxString &typeStr, const wxString &name = wxT(""));
+   EphemerisPropagator(const std::string &typeStr, const std::string &name = "");
    virtual ~EphemerisPropagator();
    EphemerisPropagator(const EphemerisPropagator& ep);
    EphemerisPropagator& operator=(const EphemerisPropagator& ep);
 
    // Access methods for the scriptable parameters
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual wxString  GetParameterUnit(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual std::string  GetParameterUnit(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
 
    // Access methods for the scriptable parameters
    virtual bool         IsParameterReadOnly(const Integer id) const;
-   virtual bool         IsParameterReadOnly(const wxString &label) const;
+   virtual bool         IsParameterReadOnly(const std::string &label) const;
 
    virtual Real         GetRealParameter(const Integer id) const;
    virtual Real         SetRealParameter(const Integer id,
@@ -61,62 +61,62 @@ public:
                                          const Integer index);
    virtual Real         SetRealParameter(const Integer id, const Real value,
                                          const Integer row, const Integer col);
-   virtual Real         GetRealParameter(const wxString &label) const;
-   virtual Real         SetRealParameter(const wxString &label,
+   virtual Real         GetRealParameter(const std::string &label) const;
+   virtual Real         SetRealParameter(const std::string &label,
                                          const Real value);
-   virtual Real         GetRealParameter(const wxString &label,
+   virtual Real         GetRealParameter(const std::string &label,
                                          const Integer index) const;
-   virtual Real         SetRealParameter(const wxString &label,
+   virtual Real         SetRealParameter(const std::string &label,
                                          const Real value,
                                          const Integer index);
-   virtual Real         GetRealParameter(const wxString &label,
+   virtual Real         GetRealParameter(const std::string &label,
                                          const Integer row,
                                          const Integer col) const;
-   virtual Real         SetRealParameter(const wxString &label,
+   virtual Real         SetRealParameter(const std::string &label,
                                          const Real value, const Integer row,
                                          const Integer col);
 
 
-   virtual wxString  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value);
-   virtual wxString  GetStringParameter(const Integer id,
+                                           const std::string &value);
+   virtual std::string  GetStringParameter(const Integer id,
                                            const Integer index) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value,
+                                           const std::string &value,
                                            const Integer index);
-   virtual wxString  GetStringParameter(const wxString &label) const;
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
-   virtual wxString  GetStringParameter(const wxString &label,
+   virtual std::string  GetStringParameter(const std::string &label) const;
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
+   virtual std::string  GetStringParameter(const std::string &label,
                                            const Integer index) const;
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value,
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value,
                                            const Integer index);
 
    // Access methods derived classes can override on reference objects
-   virtual wxString  GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual std::string  GetRefObjectName(const Gmat::ObjectType type) const;
 //   virtual const ObjectTypeArray&
 //                        GetRefObjectTypeArray();
    virtual const StringArray&
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool         SetRefObjectName(const Gmat::ObjectType type,
-                                         const wxString &name);
+                                         const std::string &name);
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
 //   virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-//                                     const wxString &name);
+//                                     const std::string &name);
 //   virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-//                                     const wxString &name,
+//                                     const std::string &name,
 //                                     const Integer index);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name,
+                                     const std::string &name,
                                      const Integer index);
 //   virtual ObjectArray& GetRefObjectArray(const Gmat::ObjectType type);
-//   virtual ObjectArray& GetRefObjectArray(const wxString& typeString);
+//   virtual ObjectArray& GetRefObjectArray(const std::string& typeString);
 
    bool                 UsesODEModel();
    virtual void         SetPropStateManager(PropagationStateManager *sm);
@@ -148,9 +148,9 @@ protected:
    /// Step used to propagate through the ephemeris
    Real                       ephemStep;
    /// Format used for the start epoch data
-   wxString                epochFormat;
+   std::string                epochFormat;
    /// Start epoch
-   wxString                startEpoch;
+   std::string                startEpoch;
    /// Initial epoch
    Real                       initialEpoch;
    /// Current epoch
@@ -202,11 +202,11 @@ protected:
    static const Gmat::ParameterType
          PARAMETER_TYPE[EphemerisPropagatorParamCount - PropagatorParamCount];
    /// EphemerisPropagator parameter labels
-   static const wxString
+   static const std::string
          PARAMETER_TEXT[EphemerisPropagatorParamCount - PropagatorParamCount];
 
-   GmatEpoch ConvertToRealEpoch(const wxString &theEpoch,
-         const wxString &theFormat);
+   GmatEpoch ConvertToRealEpoch(const std::string &theEpoch,
+         const std::string &theFormat);
    virtual void UpdateState() = 0;
 
    virtual void SetEphemSpan(const GmatEpoch start, const GmatEpoch);

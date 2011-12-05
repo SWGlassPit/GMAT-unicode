@@ -29,9 +29,9 @@
 // EndFor::EndFor(void)
 //------------------------------------------------------------------------------
 EndFor::EndFor(void) :
-    GmatCommand         (wxT("EndFor"))
+    GmatCommand         ("EndFor")
 {
-   objectTypeNames.push_back(wxT("BranchEnd"));
+   objectTypeNames.push_back("BranchEnd");
    depthChange = -1;
 }
 
@@ -75,10 +75,10 @@ bool EndFor::Initialize(void)
    
    // Validate that next points to the owning for command
    if (!next)
-     throw CommandException(wxT("EndFor Command not properly reconnected"));
+     throw CommandException("EndFor Command not properly reconnected");
 
-   if (next->GetTypeName() != wxT("For"))
-     throw CommandException(wxT("EndFor Command not connected to For Command"));
+   if (next->GetTypeName() != "For")
+     throw CommandException("EndFor Command not connected to For Command");
                           
 
    return true;    
@@ -109,7 +109,7 @@ bool EndFor::Insert(GmatCommand *cmd, GmatCommand *prev)
 
 //---------------------------------------------------------------------------
 // bool RenameRefObject(const Gmat::ObjectType type,
-//                      const wxString &oldName, const wxString &newName)
+//                      const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /*
  * Renames referenced objects
@@ -122,8 +122,8 @@ bool EndFor::Insert(GmatCommand *cmd, GmatCommand *prev)
  */
 //---------------------------------------------------------------------------
 bool EndFor::RenameRefObject(const Gmat::ObjectType type,
-                             const wxString &oldName,
-                             const wxString &newName)
+                             const std::string &oldName,
+                             const std::string &newName)
 {
    // There are no renamealbe objects
    return true;
@@ -147,7 +147,7 @@ GmatBase* EndFor::Clone(void) const
 
 
 //------------------------------------------------------------------------------
-//  const wxString GetGeneratingString()
+//  const std::string GetGeneratingString()
 //------------------------------------------------------------------------------
 /**
  * Method used to retrieve the string that was parsed to build this GmatCommand.
@@ -167,11 +167,11 @@ GmatBase* EndFor::Clone(void) const
  * @return The script line that defines this GmatCommand.
  */
 //------------------------------------------------------------------------------
-const wxString& EndFor::GetGeneratingString(Gmat::WriteMode mode,
-                                               const wxString &prefix,
-                                               const wxString &useName)
+const std::string& EndFor::GetGeneratingString(Gmat::WriteMode mode,
+                                               const std::string &prefix,
+                                               const std::string &useName)
 {
-   generatingString = prefix + wxT("EndFor;");
+   generatingString = prefix + "EndFor;";
    return GmatCommand::GetGeneratingString(mode, prefix, useName);
 }
 

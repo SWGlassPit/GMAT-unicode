@@ -49,9 +49,9 @@ public:
    Maneuver&            operator=(const Maneuver& m);
    
    // Methods used for configuration
-   virtual bool         SetObject(const wxString &name,
+   virtual bool         SetObject(const std::string &name,
                                   const Gmat::ObjectType type,
-                                  const wxString &associate = wxT(""),
+                                  const std::string &associate = "",
                                   const Gmat::ObjectType associateType =
                                   Gmat::UNKNOWN_OBJECT);
    
@@ -61,14 +61,14 @@ public:
    
    // inherited from GmatBase
    virtual GmatBase* Clone() const;
-   virtual const wxString&
+   virtual const std::string&
                         GetGeneratingString(Gmat::WriteMode mode = Gmat::SCRIPTING,
-                                            const wxString &prefix = wxT(""),
-                                            const wxString &useName = wxT(""));
+                                            const std::string &prefix = "",
+                                            const std::string &useName = "");
    
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
    virtual const ObjectTypeArray&
                         GetRefObjectTypeArray();
@@ -76,15 +76,15 @@ public:
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    
    // Parameter accessor methods -- overridden from GmatBase
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    
-   virtual wxString  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
+                                           const std::string &value);
    
    // Methods used to run the command
    virtual bool         InterpretAction();
@@ -94,11 +94,11 @@ public:
    
 protected:
    /// The burn object used for the maneuver
-   wxString              burnName;
+   std::string              burnName;
    /// The burn object used for the maneuver
    Burn                    *burn;
    /// The name of the spacecraft that gets maneuvered
-   wxString             satName;
+   std::string             satName;
    /// The spacecraft
    Spacecraft              *sat;
    /// Flag used to tell if the summary can be built yet

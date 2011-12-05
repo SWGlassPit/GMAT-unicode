@@ -33,8 +33,8 @@ class GMAT_API InertialAxes : public AxisSystem
 public:
 
    // default constructor
-   InertialAxes(const wxString &itsType,
-                const wxString &itsName = wxT(""));
+   InertialAxes(const std::string &itsType,
+                const std::string &itsName = "");
    // copy constructor
    InertialAxes(const InertialAxes &inertial);
    // operator = for assignment
@@ -50,11 +50,11 @@ public:
 
    // Parameter access methods - overridden from GmatBase
    /* placeholder - may be needed later
-   virtual wxString     GetParameterText(const Integer id) const;     
-   virtual Integer         GetParameterID(const wxString &str) const; 
+   virtual std::string     GetParameterText(const Integer id) const;     
+   virtual Integer         GetParameterID(const std::string &str) const; 
    virtual Gmat::ParameterType
                            GetParameterType(const Integer id) const;
-   virtual wxString     GetParameterTypeString(const Integer id) const;
+   virtual std::string     GetParameterTypeString(const Integer id) const;
     */
    
 protected:
@@ -64,7 +64,7 @@ protected:
       InertialAxesParamCount = AxisSystemParamCount,
    };
    
-   //static const wxString PARAMETER_TEXT[InertialAxesParamCount - 
+   //static const std::string PARAMETER_TEXT[InertialAxesParamCount - 
    //                                        AxisSystemParamCount];
    
    //static const Gmat::ParameterType PARAMETER_TYPE[InertialAxesParamCount - 

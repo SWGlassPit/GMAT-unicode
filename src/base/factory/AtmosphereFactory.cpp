@@ -34,7 +34,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  CreateAtmosphere(wxString ofType, wxString withName, wxString forBody)
+//  CreateAtmosphere(std::string ofType, std::string withName, std::string forBody)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested Atmosphere class
@@ -51,17 +51,17 @@
  */
 //------------------------------------------------------------------------------
 AtmosphereModel*
-AtmosphereFactory::CreateAtmosphereModel(const wxString &ofType,
-                                         const wxString &withName,
-                                         const wxString &forBody)
+AtmosphereFactory::CreateAtmosphereModel(const std::string &ofType,
+                                         const std::string &withName,
+                                         const std::string &forBody)
 {
-   if (ofType == wxT("Exponential"))
+   if (ofType == "Exponential")
       return new ExponentialAtmosphere(withName);
-   if (ofType == wxT("Simple"))
+   if (ofType == "Simple")
       return new SimpleExponentialAtmosphere(withName);
-   else if (ofType == wxT("MSISE90"))
+   else if (ofType == "MSISE90")
       return new Msise90Atmosphere(withName);
-   else if (ofType == wxT("JacchiaRoberts"))
+   else if (ofType == "JacchiaRoberts")
       return new JacchiaRobertsAtmosphere(withName);
    return NULL;
 }
@@ -82,10 +82,10 @@ Factory(Gmat::ATMOSPHERE)
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("Exponential"));
-      creatables.push_back(wxT("Simple"));
-      creatables.push_back(wxT("MSISE90"));
-      creatables.push_back(wxT("JacchiaRoberts"));
+      creatables.push_back("Exponential");
+      creatables.push_back("Simple");
+      creatables.push_back("MSISE90");
+      creatables.push_back("JacchiaRoberts");
    }
 }
 

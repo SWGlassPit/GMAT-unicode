@@ -33,7 +33,7 @@ class GMAT_API MJ2000EqAxes : public InertialAxes
 public:
 
    // default constructor
-   MJ2000EqAxes(const wxString &itsName = wxT(""));
+   MJ2000EqAxes(const std::string &itsName = "");
    // copy constructor
    MJ2000EqAxes(const MJ2000EqAxes &mj2000);
    // operator = for assignment
@@ -50,11 +50,11 @@ public:
 
    // Parameter access methods - overridden from GmatBase
    /* placeholder - may be needed later
-   virtual wxString     GetParameterText(const Integer id) const;     
-   virtual Integer         GetParameterID(const wxString &str) const; 
+   virtual std::string     GetParameterText(const Integer id) const;     
+   virtual Integer         GetParameterID(const std::string &str) const; 
    virtual Gmat::ParameterType
                            GetParameterType(const Integer id) const;
-   virtual wxString     GetParameterTypeString(const Integer id) const;
+   virtual std::string     GetParameterTypeString(const Integer id) const;
     */
    
 protected:
@@ -64,7 +64,7 @@ protected:
       MJ2000EqAxesParamCount = InertialAxesParamCount,
    };
    
-   //static const wxString PARAMETER_TEXT[MJ2000EqAxesParamCount - 
+   //static const std::string PARAMETER_TEXT[MJ2000EqAxesParamCount - 
    //                                        InertialAxesParamCount];
    
    //static const Gmat::ParameterType PARAMETER_TYPE[MJ2000EqAxesParamCount - 

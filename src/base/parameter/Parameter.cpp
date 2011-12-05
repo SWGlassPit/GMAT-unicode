@@ -31,35 +31,35 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 Parameter::PARAMETER_KEY_STRING[GmatParam::KeyCount] =
 {
-   wxT("SystemParam"),
-   wxT("UserParam")
+   "SystemParam",
+   "UserParam"
 };
 
-const wxString
+const std::string
 Parameter::PARAMETER_TEXT[ParameterParamCount - GmatBaseParamCount] =
 {
-   wxT("Object"),
-   wxT("InitialValue"),
-   wxT("Expression"),
-   wxT("Description"),
-   wxT("Unit"),
-   wxT("DepObject"),
-   wxT("Color"),
+   "Object",
+   "InitialValue",
+   "Expression",
+   "Description",
+   "Unit",
+   "DepObject",
+   "Color",
 };
 
 const Gmat::ParameterType
 Parameter::PARAMETER_TYPE[ParameterParamCount - GmatBaseParamCount] =
 {
-   Gmat::OBJECT_TYPE,          //wxT("Object"),
-   Gmat::STRING_TYPE,          //wxT("InitialValue")
-   Gmat::STRING_TYPE,          //wxT("Expression"),
-   Gmat::STRING_TYPE,          //wxT("Description"),
-   Gmat::STRING_TYPE,          //wxT("Unit"),
-   Gmat::STRING_TYPE,          //wxT("DepObject"),
-   Gmat::UNSIGNED_INT_TYPE,    //wxT("Color"),
+   Gmat::OBJECT_TYPE,          //"Object",
+   Gmat::STRING_TYPE,          //"InitialValue"
+   Gmat::STRING_TYPE,          //"Expression",
+   Gmat::STRING_TYPE,          //"Description",
+   Gmat::STRING_TYPE,          //"Unit",
+   Gmat::STRING_TYPE,          //"DepObject",
+   Gmat::UNSIGNED_INT_TYPE,    //"Color",
 };
 
 //---------------------------------
@@ -67,9 +67,9 @@ Parameter::PARAMETER_TYPE[ParameterParamCount - GmatBaseParamCount] =
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// Parameter(const wxString &name, const wxString &typeStr,
-//           GmatParam::ParameterKey key, GmatBase *obj, const wxString &desc,
-//           const wxString &unit, GmatParam::DepObject depObj,
+// Parameter(const std::string &name, const std::string &typeStr,
+//           GmatParam::ParameterKey key, GmatBase *obj, const std::string &desc,
+//           const std::string &unit, GmatParam::DepObject depObj,
 //           Gmat::ObjectType ownerType, bool isTimeParam, bool isSettable,
 //           bool isPlottable, bool isReportable)
 //------------------------------------------------------------------------------
@@ -92,51 +92,51 @@ Parameter::PARAMETER_TYPE[ParameterParamCount - GmatBaseParamCount] =
  * @exception <ParameterException> thrown if parameter name has blank spaces
  */
 //------------------------------------------------------------------------------
-Parameter::Parameter(const wxString &name, const wxString &typeStr,
+Parameter::Parameter(const std::string &name, const std::string &typeStr,
                      GmatParam::ParameterKey key, GmatBase *obj,
-                     const wxString &desc, const wxString &unit,
+                     const std::string &desc, const std::string &unit,
                      GmatParam::DepObject depObj, Gmat::ObjectType ownerType,
                      bool isTimeParam, bool isSettable, bool isPlottable,
                      bool isReportable)
    : GmatBase(Gmat::PARAMETER, typeStr, name)
 {  
    objectTypes.push_back(Gmat::PARAMETER);
-   objectTypeNames.push_back(wxT("Parameter"));
+   objectTypeNames.push_back("Parameter");
    
    if (key == GmatParam::SYSTEM_PARAM)
-      objectTypeNames.push_back(wxT("SystemParameter"));
+      objectTypeNames.push_back("SystemParameter");
    
    mKey = key;
    
-   //if ((name != wxT("") && name != wxT(" ")))
-   if (name != wxT(""))
+   //if ((name != "" && name != " "))
+   if (name != "")
    {
       //if constructor throws an exception, it isn't caught in the caller code.
-      //so replace blank space with underscore wxT("_")
-      wxString tempName = name;
-      wxString replaceStr = wxT("_");
+      //so replace blank space with underscore "_"
+      std::string tempName = name;
+      std::string replaceStr = "_";
       for (unsigned int i=0; i<tempName.size(); i++)
-         if (tempName[i] == wxT(' '))
+         if (tempName[i] == ' ')
             tempName.replace(i, 1, replaceStr);
       
       instanceName = tempName;
       
       //if (name.find(' ') < name.npos)
       //     throw ParameterException
-      //         (wxT("Parameter: parameter name cannot have blank space: ") + name);
+      //         ("Parameter: parameter name cannot have blank space: " + name);
    }
    
-   if (desc == wxT(""))
+   if (desc == "")
       mDesc = instanceName;
    else
       mDesc = desc;
    
-   mExpr = wxT("");
+   mExpr = "";
    mUnit = unit;
-   mOwnerName = wxT("");
-   mDepObjectName = wxT("");
-   mCommentLine2 = wxT("");
-   mInitialValue = wxT("");
+   mOwnerName = "";
+   mDepObjectName = "";
+   mCommentLine2 = "";
+   mInitialValue = "";
    mIsCommentFromCreate = true;
    mOwnerType = ownerType;
    mDepObj = depObj;
@@ -458,19 +458,19 @@ bool Parameter::operator!=(const Parameter &right) const
 }
 
 //------------------------------------------------------------------------------
-// wxString ToString()
+// std::string ToString()
 //------------------------------------------------------------------------------
 /**
- * @return parameter value converted to wxString.
+ * @return parameter value converted to std::string.
  *
  * @exception <ParameterException> thrown if this method is called.
  */
 //------------------------------------------------------------------------------
-wxString Parameter::ToString()
+std::string Parameter::ToString()
 {
    throw ParameterException
-      (wxT("Parameter: ToString(): ") + this->GetTypeName() + wxT(" has no ")
-       wxT("implementation of ToString().\n"));
+      ("Parameter: ToString(): " + this->GetTypeName() + " has no "
+       "implementation of ToString().\n");
 }
 
 //------------------------------------------------------------------------------
@@ -485,9 +485,9 @@ wxString Parameter::ToString()
 Real Parameter::GetReal() const
 {
    throw ParameterException
-      (wxT("Parameter: GetReal(): ") + this->GetTypeName() + wxT(" has no ")
-       wxT("implementation of GetReal().\nMay be an invalid call to this ")
-       wxT("function.\n"));
+      ("Parameter: GetReal(): " + this->GetTypeName() + " has no "
+       "implementation of GetReal().\nMay be an invalid call to this "
+       "function.\n");
 }
 
 
@@ -503,9 +503,9 @@ Real Parameter::GetReal() const
 const Rvector6& Parameter::GetRvector6() const
 {
    throw ParameterException
-      (wxT("Parameter: GetRvector6(): ") + this->GetTypeName() + wxT(" has no ")
-       wxT("implementation of GetRvector6().\nMay be an invalid call to this ")
-       wxT("function.\n"));
+      ("Parameter: GetRvector6(): " + this->GetTypeName() + " has no "
+       "implementation of GetRvector6().\nMay be an invalid call to this "
+       "function.\n");
 }
 
 
@@ -521,9 +521,9 @@ const Rvector6& Parameter::GetRvector6() const
 const Rmatrix66& Parameter::GetRmatrix66() const
 {
    throw ParameterException
-      (wxT("Parameter: GetRmatrix66(): ") + this->GetTypeName() + wxT(" has no ")
-       wxT("implementation of GetRmatrix66().\nMay be an invalid call to this ")
-       wxT("function.\n"));
+      ("Parameter: GetRmatrix66(): " + this->GetTypeName() + " has no "
+       "implementation of GetRmatrix66().\nMay be an invalid call to this "
+       "function.\n");
 }
 
 
@@ -539,9 +539,9 @@ const Rmatrix66& Parameter::GetRmatrix66() const
 const Rmatrix33& Parameter::GetRmatrix33() const
 {
    throw ParameterException
-      (wxT("Parameter: GetRmatrix33(): ") + this->GetTypeName() + wxT(" has no ")
-       wxT("implementation of GetRmatrix33().\nMay be an invalid call to this ")
-       wxT("function.\n"));
+      ("Parameter: GetRmatrix33(): " + this->GetTypeName() + " has no "
+       "implementation of GetRmatrix33().\nMay be an invalid call to this "
+       "function.\n");
 }
 
 
@@ -557,14 +557,14 @@ const Rmatrix33& Parameter::GetRmatrix33() const
 const Rmatrix& Parameter::GetRmatrix() const
 {
    throw ParameterException
-      (wxT("Parameter: GetRmatrix(): ") + this->GetTypeName() + wxT(" has no ")
-       wxT("implementation of GetRmatrix().\nMay be an invalid call to this ")
-       wxT("function.\n"));
+      ("Parameter: GetRmatrix(): " + this->GetTypeName() + " has no "
+       "implementation of GetRmatrix().\nMay be an invalid call to this "
+       "function.\n");
 }
 
 
 //------------------------------------------------------------------------------
-// const wxString& GetString() const
+// const std::string& GetString() const
 //------------------------------------------------------------------------------
 /**
  * @return parameter value without evaluating.
@@ -572,12 +572,12 @@ const Rmatrix& Parameter::GetRmatrix() const
  * @exception <ParameterException> thrown if this method is called.
  */
 //------------------------------------------------------------------------------
-const wxString& Parameter::GetString() const
+const std::string& Parameter::GetString() const
 {
    throw ParameterException
-      (wxT("Parameter: GetString(): ") + this->GetTypeName() + wxT(" has no ")
-       wxT("implementation of GetString().\nMay be an invalid call to this ")
-       wxT("function.\n"));
+      ("Parameter: GetString(): " + this->GetTypeName() + " has no "
+       "implementation of GetString().\nMay be an invalid call to this "
+       "function.\n");
 }
 
 
@@ -593,9 +593,9 @@ const wxString& Parameter::GetString() const
 void Parameter::SetReal(Real val)
 {
    throw ParameterException
-      (wxT("Parameter: SetReal(): ") + this->GetTypeName() + wxT(" has no ")
-       wxT("implementation of SetReal().\nMay be an invalid call to this ")
-       wxT("function.\n"));
+      ("Parameter: SetReal(): " + this->GetTypeName() + " has no "
+       "implementation of SetReal().\nMay be an invalid call to this "
+       "function.\n");
 }
 
 
@@ -611,9 +611,9 @@ void Parameter::SetReal(Real val)
 void Parameter::SetRvector6(const Rvector6 &val)
 {
    throw ParameterException
-      (wxT("Parameter: SetRvector6(): ") + this->GetTypeName() + wxT(" has no ")
-       wxT("implementation of SetRvector6().\nMay be an invalid call to this ")
-       wxT("function.\n"));
+      ("Parameter: SetRvector6(): " + this->GetTypeName() + " has no "
+       "implementation of SetRvector6().\nMay be an invalid call to this "
+       "function.\n");
 }
 
 
@@ -629,9 +629,9 @@ void Parameter::SetRvector6(const Rvector6 &val)
 void Parameter::SetRmatrix66(const Rmatrix66 &mat)
 {
    throw ParameterException
-      (wxT("Parameter: SetRmatrix66(): ") + this->GetTypeName() + wxT(" has no ")
-       wxT("implementation of SetRmatrix66().\nMay be an invalid call to this ")
-       wxT("function.\n"));
+      ("Parameter: SetRmatrix66(): " + this->GetTypeName() + " has no "
+       "implementation of SetRmatrix66().\nMay be an invalid call to this "
+       "function.\n");
 }
 
 
@@ -647,9 +647,9 @@ void Parameter::SetRmatrix66(const Rmatrix66 &mat)
 void Parameter::SetRmatrix33(const Rmatrix33 &mat)
 {
    throw ParameterException
-      (wxT("Parameter: SetRmatrix33(): ") + this->GetTypeName() + wxT(" has no ")
-       wxT("implementation of SetRmatrix33().\nMay be an invalid call to this ")
-       wxT("function.\n"));
+      ("Parameter: SetRmatrix33(): " + this->GetTypeName() + " has no "
+       "implementation of SetRmatrix33().\nMay be an invalid call to this "
+       "function.\n");
 }
 
 
@@ -665,14 +665,14 @@ void Parameter::SetRmatrix33(const Rmatrix33 &mat)
 void Parameter::SetRmatrix(const Rmatrix &mat)
 {
    throw ParameterException
-      (wxT("Parameter: SetRmatrix(): ") + this->GetTypeName() + wxT(" has no ")
-       wxT("implementation of SetRmatrix().\nMay be an invalid call to this ")
-       wxT("function.\n"));
+      ("Parameter: SetRmatrix(): " + this->GetTypeName() + " has no "
+       "implementation of SetRmatrix().\nMay be an invalid call to this "
+       "function.\n");
 }
 
 
 //------------------------------------------------------------------------------
-// void SetString(const wxString &val)
+// void SetString(const std::string &val)
 //------------------------------------------------------------------------------
 /**
  * Sets string value of parameter.
@@ -680,12 +680,12 @@ void Parameter::SetRmatrix(const Rmatrix &mat)
  * @exception <ParameterException> thrown if this method is called.
  */
 //------------------------------------------------------------------------------
-void Parameter::SetString(const wxString &val)
+void Parameter::SetString(const std::string &val)
 {
    throw ParameterException
-      (wxT("Parameter: SetString(): ") + this->GetTypeName() + wxT(" has no ")
-       wxT("implementation of SetString().\nMay be an invalid call to this ")
-       wxT("function.\n"));
+      ("Parameter: SetString(): " + this->GetTypeName() + " has no "
+       "implementation of SetString().\nMay be an invalid call to this "
+       "function.\n");
 }
 
 
@@ -701,9 +701,9 @@ void Parameter::SetString(const wxString &val)
 Real Parameter::EvaluateReal()
 {
    throw ParameterException
-      (wxT("Parameter: EvaluateReal(): ") + this->GetTypeName() + wxT(" has no ")
-       wxT("implementation of EvaluateReal().\nMay be an invalid call to this ")
-       wxT("function.\n"));
+      ("Parameter: EvaluateReal(): " + this->GetTypeName() + " has no "
+       "implementation of EvaluateReal().\nMay be an invalid call to this "
+       "function.\n");
 }
 
 
@@ -719,9 +719,9 @@ Real Parameter::EvaluateReal()
 const Rvector6& Parameter::EvaluateRvector6()
 {
    throw ParameterException
-      (wxT("Parameter: EvaluateRvector6(): ") + this->GetTypeName() + wxT(" has no ")
-       wxT("implementation of EvaluateRvector6().\nMay be an invalid call to this ")
-       wxT("function.\n"));
+      ("Parameter: EvaluateRvector6(): " + this->GetTypeName() + " has no "
+       "implementation of EvaluateRvector6().\nMay be an invalid call to this "
+       "function.\n");
 }
 
 
@@ -737,9 +737,9 @@ const Rvector6& Parameter::EvaluateRvector6()
 const Rmatrix66& Parameter::EvaluateRmatrix66()
 {
    throw ParameterException
-      (wxT("Parameter: EvaluateRmatrix66(): ") + this->GetTypeName() + wxT(" has no ")
-       wxT("implementation of EvaluateRmatrix66().\nMay be an invalid call to this ")
-       wxT("function.\n"));
+      ("Parameter: EvaluateRmatrix66(): " + this->GetTypeName() + " has no "
+       "implementation of EvaluateRmatrix66().\nMay be an invalid call to this "
+       "function.\n");
 }
 
 
@@ -755,9 +755,9 @@ const Rmatrix66& Parameter::EvaluateRmatrix66()
 const Rmatrix33& Parameter::EvaluateRmatrix33()
 {
    throw ParameterException
-      (wxT("Parameter: EvaluateRmatrix33(): ") + this->GetTypeName() + wxT(" has no ")
-       wxT("implementation of EvaluateRmatrix33().\nMay be an invalid call to this ")
-       wxT("function.\n"));
+      ("Parameter: EvaluateRmatrix33(): " + this->GetTypeName() + " has no "
+       "implementation of EvaluateRmatrix33().\nMay be an invalid call to this "
+       "function.\n");
 }
 
 
@@ -773,14 +773,14 @@ const Rmatrix33& Parameter::EvaluateRmatrix33()
 const Rmatrix& Parameter::EvaluateRmatrix()
 {
    throw ParameterException
-      (wxT("Parameter: EvaluateRmatrix(): ") + this->GetTypeName() + wxT(" has no ")
-       wxT("implementation of EvaluateRmatrix().\nMay be an invalid call to this ")
-       wxT("function.\n"));
+      ("Parameter: EvaluateRmatrix(): " + this->GetTypeName() + " has no "
+       "implementation of EvaluateRmatrix().\nMay be an invalid call to this "
+       "function.\n");
 }
 
 
 //------------------------------------------------------------------------------
-// const wxString& EvaluateString()
+// const std::string& EvaluateString()
 //------------------------------------------------------------------------------
 /**
  * @return newly evaluated parameter value.
@@ -788,19 +788,19 @@ const Rmatrix& Parameter::EvaluateRmatrix()
  * @exception <ParameterException> thrown if this method is called.
  */
 //------------------------------------------------------------------------------
-const wxString& Parameter::EvaluateString()
+const std::string& Parameter::EvaluateString()
 {
    throw ParameterException
-      (wxT("Parameter: EvaluateString(): ") + this->GetTypeName() + wxT(" has no ")
-       wxT("implementation of EvaluateString().\nMay be an invalid call to this ")
-       wxT("function.\n"));
+      ("Parameter: EvaluateString(): " + this->GetTypeName() + " has no "
+       "implementation of EvaluateString().\nMay be an invalid call to this "
+       "function.\n");
 }
 
 
 //------------------------------------------------------------------------------
-// virtual const wxString* GetParameterList() const
+// virtual const std::string* GetParameterList() const
 //------------------------------------------------------------------------------
-const wxString* Parameter::GetParameterList() const
+const std::string* Parameter::GetParameterList() const
 {
    return NULL;
 }
@@ -843,8 +843,8 @@ bool Parameter::Initialize()
 bool Parameter::Evaluate()
 {
    if (mKey == GmatParam::SYSTEM_PARAM)
-      throw ParameterException(wxT("Parameter: Evaluate() should be implemented ")
-                               wxT("for Parameter Type: ") + GetTypeName() + wxT("\n"));
+      throw ParameterException("Parameter: Evaluate() should be implemented "
+                               "for Parameter Type: " + GetTypeName() + "\n");
 
    return false;
 }
@@ -859,8 +859,8 @@ bool Parameter::Evaluate()
 bool Parameter::AddRefObject(GmatBase *object, bool replaceName)
 {
    if (mKey == GmatParam::SYSTEM_PARAM)
-      throw ParameterException(wxT("Parameter: AddRefObject() should be implemented ")
-                               wxT("for Parameter Type:") + GetTypeName() + wxT("\n"));
+      throw ParameterException("Parameter: AddRefObject() should be implemented "
+                               "for Parameter Type:" + GetTypeName() + "\n");
 
    return false;
 }
@@ -871,8 +871,8 @@ bool Parameter::AddRefObject(GmatBase *object, bool replaceName)
 Integer Parameter::GetNumRefObjects() const
 {
    if (mKey == GmatParam::SYSTEM_PARAM)
-      throw ParameterException(wxT("Parameter: GetNumRefObjects() should be implemented")
-                               wxT("for Parameter Type: ") + GetTypeName() + wxT("\n"));
+      throw ParameterException("Parameter: GetNumRefObjects() should be implemented"
+                               "for Parameter Type: " + GetTypeName() + "\n");
 
    return 0;
 }
@@ -883,8 +883,8 @@ Integer Parameter::GetNumRefObjects() const
 bool Parameter::Validate()
 {
    if (mKey == GmatParam::SYSTEM_PARAM)
-      throw ParameterException(wxT("Parameter: Validate() should be implemented ")
-                               wxT("for Parameter Type: ") + GetTypeName() + wxT("\n"));
+      throw ParameterException("Parameter: Validate() should be implemented "
+                               "for Parameter Type: " + GetTypeName() + "\n");
 
    return true; // loj: 9/23/04 There is nothing to validate for USER_PARAM
 }
@@ -906,15 +906,15 @@ void Parameter::Copy(const GmatBase* orig)
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool Parameter::RenameRefObject(const Gmat::ObjectType type,
-                                const wxString &oldName,
-                                const wxString &newName)
+                                const std::string &oldName,
+                                const std::string &newName)
 {
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("Parameter::RenameRefObject() type=%s, oldName=%s, newName=%s\n"),
+      ("Parameter::RenameRefObject() type=%s, oldName=%s, newName=%s\n",
        GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
    #endif
 
@@ -922,8 +922,8 @@ bool Parameter::RenameRefObject(const Gmat::ObjectType type,
    if (type != Gmat::SPACECRAFT && type != Gmat::COORDINATE_SYSTEM)
       return true;
    
-   wxString oldExpr = mExpr;
-   wxString::size_type pos;
+   std::string oldExpr = mExpr;
+   std::string::size_type pos;
    
    pos = mExpr.find(oldName);
    
@@ -935,7 +935,7 @@ bool Parameter::RenameRefObject(const Gmat::ObjectType type,
    
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("oldExpr=%s, mExpr=%s\n"), oldExpr.c_str(), mExpr.c_str());
+      ("oldExpr=%s, mExpr=%s\n", oldExpr.c_str(), mExpr.c_str());
    #endif
    
    return true;
@@ -943,9 +943,9 @@ bool Parameter::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterText(const Integer id) const
+// std::string GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
-wxString Parameter::GetParameterText(const Integer id) const
+std::string Parameter::GetParameterText(const Integer id) const
 {
    if (id >= GmatBaseParamCount && id < ParameterParamCount)
       return PARAMETER_TEXT[id - GmatBaseParamCount];
@@ -955,9 +955,9 @@ wxString Parameter::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// Integer GetParameterID(const wxString &str) const
+// Integer GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
-Integer Parameter::GetParameterID(const wxString &str) const
+Integer Parameter::GetParameterID(const std::string &str) const
 {
    for (int i=GmatBaseParamCount; i<ParameterParamCount; i++)
    {
@@ -982,9 +982,9 @@ Gmat::ParameterType Parameter::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetParameterTypeString(const Integer id) const
+// std::string GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
-wxString Parameter::GetParameterTypeString(const Integer id) const
+std::string Parameter::GetParameterTypeString(const Integer id) const
 {
    if (id >= GmatBaseParamCount && id < ParameterParamCount)
       return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
@@ -1023,8 +1023,8 @@ bool Parameter::IsParameterReadOnly(const Integer id) const
 UnsignedInt Parameter::GetUnsignedIntParameter(const Integer id) const
 {
    #ifdef DEBUG_PARAMETER
-   MessageInterface::ShowMessage(wxT("Parameter::GetUnsignedIntParameter() ")
-                                 wxT("id=%d\n"), id);
+   MessageInterface::ShowMessage("Parameter::GetUnsignedIntParameter() "
+                                 "id=%d\n", id);
    #endif
    
    switch (id)
@@ -1037,9 +1037,9 @@ UnsignedInt Parameter::GetUnsignedIntParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-// UnsignedInt GetUnsignedIntParameter(const wxString &label) const
+// UnsignedInt GetUnsignedIntParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-UnsignedInt Parameter::GetUnsignedIntParameter(const wxString &label) const
+UnsignedInt Parameter::GetUnsignedIntParameter(const std::string &label) const
 {
    return GetUnsignedIntParameter(GetParameterID(label));
 }
@@ -1051,8 +1051,8 @@ UnsignedInt Parameter::SetUnsignedIntParameter(const Integer id,
                                                const UnsignedInt value)
 {
    #ifdef DEBUG_PARAMETER
-   MessageInterface::ShowMessage(wxT("Parameter::SetUnsignedIntParameter() ")
-                                 wxT("id=%d value=%d\n"), id, value);
+   MessageInterface::ShowMessage("Parameter::SetUnsignedIntParameter() "
+                                 "id=%d value=%d\n", id, value);
    #endif
    switch (id)
    {
@@ -1065,21 +1065,21 @@ UnsignedInt Parameter::SetUnsignedIntParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-// UnsignedInt SetUnsignedIntParameter(const wxString &label,
+// UnsignedInt SetUnsignedIntParameter(const std::string &label,
 //                                     const UnsignedInt &value)
 //------------------------------------------------------------------------------
-UnsignedInt Parameter::SetUnsignedIntParameter(const wxString &label,
+UnsignedInt Parameter::SetUnsignedIntParameter(const std::string &label,
                                                const UnsignedInt value)
 {
    return SetUnsignedIntParameter(GetParameterID(label), value);
 }
 
-//----- wxString parameters
+//----- std::string parameters
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const Integer id) const
+// std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
-wxString Parameter::GetStringParameter(const Integer id) const
+std::string Parameter::GetStringParameter(const Integer id) const
 {
    switch (id)
    {
@@ -1087,7 +1087,7 @@ wxString Parameter::GetStringParameter(const Integer id) const
       if (GetNumRefObjects() > 0)
          return GetRefObjectName(mOwnerType);
       else
-         return wxT("");
+         return "";
    case INITIAL_VALUE:
       return mInitialValue;
    case EXPRESSION:
@@ -1105,21 +1105,21 @@ wxString Parameter::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringParameter(const wxString &label) const
+// std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-wxString Parameter::GetStringParameter(const wxString &label) const
+std::string Parameter::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
-bool Parameter::SetStringParameter(const Integer id, const wxString &value)
+bool Parameter::SetStringParameter(const Integer id, const std::string &value)
 {
    #ifdef DEBUG_SET_STRING
-   MessageInterface::ShowMessage(wxT("Parameter::SetStringParameter() id=%d, value=%s\n"),
+   MessageInterface::ShowMessage("Parameter::SetStringParameter() id=%d, value=%s\n",
                                  id, value.c_str());
    #endif
    
@@ -1129,7 +1129,7 @@ bool Parameter::SetStringParameter(const Integer id, const wxString &value)
       return SetRefObjectName(mOwnerType, value);
    case INITIAL_VALUE:
       #ifdef DEBUG_SET_STRING
-      MessageInterface::ShowMessage(wxT("   InitialValue = '%s'\n"), value.c_str());
+      MessageInterface::ShowMessage("   InitialValue = '%s'\n", value.c_str());
       #endif
       mInitialValue = value;
       return true;
@@ -1156,14 +1156,14 @@ bool Parameter::SetStringParameter(const Integer id, const wxString &value)
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label,
-//                         const wxString &value)
+// bool SetStringParameter(const std::string &label,
+//                         const std::string &value)
 //------------------------------------------------------------------------------
-bool Parameter::SetStringParameter(const wxString &label,
-                                   const wxString &value)
+bool Parameter::SetStringParameter(const std::string &label,
+                                   const std::string &value)
 {
    #ifdef DEBUG_PARAMETER
-   MessageInterface::ShowMessage(wxT("Parameter::SetStringParameter() label=%s value=%s\n"),
+   MessageInterface::ShowMessage("Parameter::SetStringParameter() label=%s value=%s\n",
                                  label.c_str(), value.c_str());
    #endif
    
@@ -1172,7 +1172,7 @@ bool Parameter::SetStringParameter(const wxString &label,
 
 
 //---------------------------------------------------------------------------
-//  const wxString GetCommentLine(Integer which)
+//  const std::string GetCommentLine(Integer which)
 //---------------------------------------------------------------------------
 /*
  * This method retrives preface comments for Variable and Array.
@@ -1183,12 +1183,12 @@ bool Parameter::SetStringParameter(const wxString &label,
  * @return Preface comments
  */
 //---------------------------------------------------------------------------
-const wxString Parameter::GetCommentLine(Integer which)
+const std::string Parameter::GetCommentLine(Integer which)
 {
    #ifdef DEBUG_COMMENT
    MessageInterface::ShowMessage
-      (wxT("Parameter::GetCommentLine() <%s> which=%d\ncommentLine=<%s>\n")
-       wxT("mCommentLine2=<%s>\n"), GetName().c_str(), which, commentLine.c_str(),
+      ("Parameter::GetCommentLine() <%s> which=%d\ncommentLine=<%s>\n"
+       "mCommentLine2=<%s>\n", GetName().c_str(), which, commentLine.c_str(),
        mCommentLine2.c_str());
    #endif
    
@@ -1200,7 +1200,7 @@ const wxString Parameter::GetCommentLine(Integer which)
 
 
 //---------------------------------------------------------------------------
-//  void SetCommentLine(const wxString &comment, Integer which = 0)
+//  void SetCommentLine(const std::string &comment, Integer which = 0)
 //---------------------------------------------------------------------------
 /*
  * This method sets preface comments for Variable, Array, and String.
@@ -1215,7 +1215,7 @@ const wxString Parameter::GetCommentLine(Integer which)
  *
  */
 //---------------------------------------------------------------------------
-void Parameter::SetCommentLine(const wxString &comment, Integer which)
+void Parameter::SetCommentLine(const std::string &comment, Integer which)
 {
    if (which == 0)
    {
@@ -1224,7 +1224,7 @@ void Parameter::SetCommentLine(const wxString &comment, Integer which)
       {
          #ifdef DEBUG_COMMENT
          MessageInterface::ShowMessage
-            (wxT("Parameter::SetCommentLine() <%s> commentLine is set to <%s>\n"),
+            ("Parameter::SetCommentLine() <%s> commentLine is set to <%s>\n",
              GetName().c_str(), comment.c_str());
          #endif
          
@@ -1237,7 +1237,7 @@ void Parameter::SetCommentLine(const wxString &comment, Integer which)
          
          #ifdef DEBUG_COMMENT
          MessageInterface::ShowMessage
-            (wxT("Parameter::SetCommentLine() <%s> commentLine2 is set to <%s>\n"),
+            ("Parameter::SetCommentLine() <%s> commentLine2 is set to <%s>\n",
              GetName().c_str(), comment.c_str());
          #endif
       }

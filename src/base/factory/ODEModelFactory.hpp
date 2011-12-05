@@ -28,10 +28,10 @@
 class GMAT_API ODEModelFactory : public Factory
 {
 public:
-   ODEModel*  CreateObject(const wxString &ofType,
-                           const wxString &withName = wxT(""));
-   ODEModel*  CreateODEModel(const wxString &ofType,
-                             const wxString &withName = wxT(""));
+   ODEModel*  CreateObject(const std::string &ofType,
+                           const std::string &withName = "");
+   ODEModel*  CreateODEModel(const std::string &ofType,
+                             const std::string &withName = "");
    
    // default constructor
    ODEModelFactory();

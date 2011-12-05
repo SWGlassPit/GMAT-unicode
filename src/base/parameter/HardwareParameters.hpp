@@ -30,7 +30,7 @@ class GMAT_API FuelMass : public HardwareReal
 {
 public:
    
-   FuelMass(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   FuelMass(const std::string &name = "", GmatBase *obj = NULL);
    FuelMass(const FuelMass &copy);
    FuelMass& operator=(const FuelMass &right);
    virtual ~FuelMass();
@@ -50,7 +50,7 @@ class GMAT_API Pressure : public HardwareReal
 {
 public:
 
-   Pressure(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   Pressure(const std::string &name = "", GmatBase *obj = NULL);
    Pressure(const Pressure &copy);
    Pressure& operator=(const Pressure &right);
    virtual ~Pressure();
@@ -70,7 +70,7 @@ class GMAT_API Temperature : public HardwareReal
 {
 public:
 
-   Temperature(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   Temperature(const std::string &name = "", GmatBase *obj = NULL);
    Temperature(const Temperature &copy);
    Temperature& operator=(const Temperature &right);
    virtual ~Temperature();
@@ -90,7 +90,7 @@ class GMAT_API RefTemperature : public HardwareReal
 {
 public:
 
-   RefTemperature(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   RefTemperature(const std::string &name = "", GmatBase *obj = NULL);
    RefTemperature(const RefTemperature &copy);
    RefTemperature& operator=(const RefTemperature &right);
    virtual ~RefTemperature();
@@ -110,7 +110,7 @@ class GMAT_API Volume : public HardwareReal
 {
 public:
 
-   Volume(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   Volume(const std::string &name = "", GmatBase *obj = NULL);
    Volume(const Volume &copy);
    Volume& operator=(const Volume &right);
    virtual ~Volume();
@@ -130,7 +130,7 @@ class GMAT_API FuelDensity : public HardwareReal
 {
 public:
 
-   FuelDensity(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   FuelDensity(const std::string &name = "", GmatBase *obj = NULL);
    FuelDensity(const FuelDensity &copy);
    FuelDensity& operator=(const FuelDensity &right);
    virtual ~FuelDensity();
@@ -150,7 +150,7 @@ class GMAT_API DutyCycle : public HardwareReal
 {
 public:
 
-   DutyCycle(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   DutyCycle(const std::string &name = "", GmatBase *obj = NULL);
    DutyCycle(const DutyCycle &copy);
    DutyCycle& operator=(const DutyCycle &right);
    virtual ~DutyCycle();
@@ -170,7 +170,7 @@ class GMAT_API ThrustScaleFactor : public HardwareReal
 {
 public:
 
-   ThrustScaleFactor(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   ThrustScaleFactor(const std::string &name = "", GmatBase *obj = NULL);
    ThrustScaleFactor(const ThrustScaleFactor &copy);
    ThrustScaleFactor& operator=(const ThrustScaleFactor &right);
    virtual ~ThrustScaleFactor();
@@ -190,7 +190,7 @@ class GMAT_API GravitationalAccel : public HardwareReal
 {
 public:
 
-   GravitationalAccel(const wxString &name = wxT(""), GmatBase *obj = NULL);
+   GravitationalAccel(const std::string &name = "", GmatBase *obj = NULL);
    GravitationalAccel(const GravitationalAccel &copy);
    GravitationalAccel& operator=(const GravitationalAccel &right);
    virtual ~GravitationalAccel();
@@ -210,8 +210,8 @@ class GMAT_API ThrustCoefficients : public HardwareReal
 {
 public:
 
-   ThrustCoefficients(const wxString &type = wxT(""),
-                      const wxString &name = wxT(""),
+   ThrustCoefficients(const std::string &type = "",
+                      const std::string &name = "",
                       GmatBase *obj = NULL);
    ThrustCoefficients(const ThrustCoefficients &copy);
    ThrustCoefficients& operator=(const ThrustCoefficients &right);
@@ -233,8 +233,8 @@ class GMAT_API ImpulseCoefficients : public HardwareReal
 {
 public:
 
-   ImpulseCoefficients(const wxString &type = wxT(""),
-                       const wxString &name = wxT(""),
+   ImpulseCoefficients(const std::string &type = "",
+                       const std::string &name = "",
                        GmatBase *obj = NULL);
    ImpulseCoefficients(const ImpulseCoefficients &copy);
    ImpulseCoefficients& operator=(const ImpulseCoefficients &right);
@@ -256,8 +256,8 @@ class GMAT_API ThrustDirections : public HardwareReal
 {
 public:
 
-   ThrustDirections(const wxString &type = wxT(""),
-                    const wxString &name = wxT(""),
+   ThrustDirections(const std::string &type = "",
+                    const std::string &name = "",
                     GmatBase *obj = NULL);
    ThrustDirections(const ThrustDirections &copy);
    ThrustDirections& operator=(const ThrustDirections &right);

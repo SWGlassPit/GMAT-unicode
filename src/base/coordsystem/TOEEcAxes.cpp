@@ -35,7 +35,7 @@
 //---------------------------------
 
 /* placeholder - may be needed later
-const wxString
+const std::string
 TOEEcAxes::PARAMETER_TEXT[TOEEcAxesParamCount - InertialAxesParamCount] =
 {
    "",
@@ -52,8 +52,8 @@ TOEEcAxes::PARAMETER_TYPE[TOEEcAxesParamCount - InertialAxesParamCount] =
 //------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//  TOEEcAxes(const wxString &itsType,
-//            const wxString &itsName);
+//  TOEEcAxes(const std::string &itsType,
+//            const std::string &itsName);
 //---------------------------------------------------------------------------
 /**
  * Constructs base TOEEcAxes structures
@@ -64,10 +64,10 @@ TOEEcAxes::PARAMETER_TYPE[TOEEcAxesParamCount - InertialAxesParamCount] =
  *
  */
 //---------------------------------------------------------------------------
-TOEEcAxes::TOEEcAxes(const wxString &itsName) :
-InertialAxes(wxT("TOEEc"),itsName)
+TOEEcAxes::TOEEcAxes(const std::string &itsName) :
+InertialAxes("TOEEc",itsName)
 {
-   objectTypeNames.push_back(wxT("TOEEcAxes"));
+   objectTypeNames.push_back("TOEEcAxes");
    parameterCount = TOEEcAxesParamCount;
 }
 
@@ -254,7 +254,7 @@ GmatBase* TOEEcAxes::Clone() const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -265,7 +265,7 @@ GmatBase* TOEEcAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*wxString TOEEcAxes::GetParameterText(const Integer id) const
+/*std::string TOEEcAxes::GetParameterText(const Integer id) const
 {
    if (id >= InertialAxesParamCount && id < TOEEcAxesParamCount)
       return PARAMETER_TEXT[id - InertialAxesParamCount];
@@ -273,7 +273,7 @@ GmatBase* TOEEcAxes::Clone() const
 }
 */
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -284,7 +284,7 @@ GmatBase* TOEEcAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*Integer TOEEcAxes::GetParameterID(const wxString &str) const
+/*Integer TOEEcAxes::GetParameterID(const std::string &str) const
 {
    for (Integer i = InertialAxesParamCount; i < TOEEcAxesParamCount; i++)
    {
@@ -316,7 +316,7 @@ GmatBase* TOEEcAxes::Clone() const
 }
 */
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -327,7 +327,7 @@ GmatBase* TOEEcAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*wxString TOEEcAxes::GetParameterTypeString(const Integer id) const
+/*std::string TOEEcAxes::GetParameterTypeString(const Integer id) const
 {
    return InertialAxes::PARAM_TYPE_STRING[GetParameterType(id)];
 }

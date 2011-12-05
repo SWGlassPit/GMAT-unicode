@@ -96,7 +96,7 @@ Integer ParameterInfo::GetNumParameters() const
 const StringArray& ParameterInfo::GetTypesOfParameters()
 {
    mParamTypes.clear();
-   std::map<wxString, Gmat::ObjectType>::iterator pos;
+   std::map<std::string, Gmat::ObjectType>::iterator pos;
    
    for (pos = mParamObjectTypeMap.begin(); pos != mParamObjectTypeMap.end(); ++pos)
    {
@@ -117,7 +117,7 @@ const StringArray& ParameterInfo::GetTypesOfParameters()
 const StringArray& ParameterInfo::GetNamesOfParameters()
 {
    mParamNames.clear();
-   std::map<wxString, GmatParam::DepObject>::iterator pos;
+   std::map<std::string, GmatParam::DepObject>::iterator pos;
 
    for (pos = mParamDepObjMap.begin(); pos != mParamDepObjMap.end(); ++pos)
    {
@@ -129,9 +129,9 @@ const StringArray& ParameterInfo::GetNamesOfParameters()
 
 
 //------------------------------------------------------------------------------
-// Gmat::ObjectType GetObjectType(const wxString &name)
+// Gmat::ObjectType GetObjectType(const std::string &name)
 //------------------------------------------------------------------------------
-Gmat::ObjectType ParameterInfo::GetObjectType(const wxString &name)
+Gmat::ObjectType ParameterInfo::GetObjectType(const std::string &name)
 {
    if (mParamObjectTypeMap.find(name) != mParamObjectTypeMap.end())
       return mParamObjectTypeMap[name];
@@ -141,9 +141,9 @@ Gmat::ObjectType ParameterInfo::GetObjectType(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// GmatParam::DepObject GetDepObjectType(const wxString &name)
+// GmatParam::DepObject GetDepObjectType(const std::string &name)
 //------------------------------------------------------------------------------
-GmatParam::DepObject ParameterInfo::GetDepObjectType(const wxString &name)
+GmatParam::DepObject ParameterInfo::GetDepObjectType(const std::string &name)
 {
    if (mParamDepObjMap.find(name) != mParamDepObjMap.end())
       return mParamDepObjMap[name];
@@ -153,9 +153,9 @@ GmatParam::DepObject ParameterInfo::GetDepObjectType(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// bool ParameterInfo::IsPlottable(const wxString &name)
+// bool ParameterInfo::IsPlottable(const std::string &name)
 //------------------------------------------------------------------------------
-bool ParameterInfo::IsPlottable(const wxString &name)
+bool ParameterInfo::IsPlottable(const std::string &name)
 {
    if (mParamPlottableMap.find(name) != mParamPlottableMap.end())
       return mParamPlottableMap[name];
@@ -165,9 +165,9 @@ bool ParameterInfo::IsPlottable(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// bool ParameterInfo::IsReportable(const wxString &name)
+// bool ParameterInfo::IsReportable(const std::string &name)
 //------------------------------------------------------------------------------
-bool ParameterInfo::IsReportable(const wxString &name)
+bool ParameterInfo::IsReportable(const std::string &name)
 {
    if (mParamReportableMap.find(name) != mParamReportableMap.end())
       return mParamReportableMap[name];
@@ -177,9 +177,9 @@ bool ParameterInfo::IsReportable(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// bool ParameterInfo::IsSettable(const wxString &name)
+// bool ParameterInfo::IsSettable(const std::string &name)
 //------------------------------------------------------------------------------
-bool ParameterInfo::IsSettable(const wxString &name)
+bool ParameterInfo::IsSettable(const std::string &name)
 {
    if (mParamSettableMap.find(name) != mParamSettableMap.end())
       return mParamSettableMap[name];
@@ -189,28 +189,28 @@ bool ParameterInfo::IsSettable(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// void Add(const wxString &type, Gmat::ObjectType objectType,
-//          const wxString &name, GmatParam::DepObject depType,
+// void Add(const std::string &type, Gmat::ObjectType objectType,
+//          const std::string &name, GmatParam::DepObject depType,
 //          bool isPlottable, bool isReportable, bool isSettable)
 //------------------------------------------------------------------------------
-void ParameterInfo::Add(const wxString &type, Gmat::ObjectType objectType,
-                        const wxString &name, GmatParam::DepObject depType,
+void ParameterInfo::Add(const std::string &type, Gmat::ObjectType objectType,
+                        const std::string &name, GmatParam::DepObject depType,
                         bool isPlottable, bool isReportable, bool isSettable)
 {
    #ifdef DEBUG_PARAM_INFO
    MessageInterface::ShowMessage
-      (wxT("ParameterInfo::Add() entered, type='%s', objectType=%d\n   name='%s', ")
-       wxT("depType=%d, isPlottable=%d, isReportable=%d, isSettable=%d\n"), type.c_str(),
+      ("ParameterInfo::Add() entered, type='%s', objectType=%d\n   name='%s', "
+       "depType=%d, isPlottable=%d, isReportable=%d, isSettable=%d\n", type.c_str(),
        objectType, name.c_str(), depType, isPlottable, isReportable, isSettable);
    #endif
    
    // Check for dot first
-   wxString::size_type pos = name.find_last_of(wxT("."));
+   std::string::size_type pos = name.find_last_of(".");
    if (pos == name.npos)
    {
       #ifdef DEBUG_PARAM_INFO
       MessageInterface::ShowMessage
-         (wxT("ParameterInfo::Add() leaving, '%s' was not added, it's not a System Parameter\n"),
+         ("ParameterInfo::Add() leaving, '%s' was not added, it's not a System Parameter\n",
           type.c_str());
       #endif
       return;
@@ -221,7 +221,7 @@ void ParameterInfo::Add(const wxString &type, Gmat::ObjectType objectType,
    {
       #ifdef DEBUG_PARAM_INFO
       MessageInterface::ShowMessage
-         (wxT("ParameterInfo::Add() leaving, '%s' was not added, it's been already added\n"),
+         ("ParameterInfo::Add() leaving, '%s' was not added, it's been already added\n",
           type.c_str());
       #endif
       return;
@@ -231,7 +231,7 @@ void ParameterInfo::Add(const wxString &type, Gmat::ObjectType objectType,
    mParamObjectTypeMap[type] = objectType;
    
    // add property name
-   wxString propertyName = name.substr(pos+1, name.npos-pos);
+   std::string propertyName = name.substr(pos+1, name.npos-pos);
    
    mParamDepObjMap[propertyName] = depType;
    
@@ -248,16 +248,16 @@ void ParameterInfo::Add(const wxString &type, Gmat::ObjectType objectType,
    
    #ifdef DEBUG_PARAM_INFO
    MessageInterface::ShowMessage
-      (wxT("ParameterInfo::Add() leaving, propertyName:'%s' was added. There are ")
-       wxT("total %d Parameters\n"), propertyName.c_str(), mNumParams);
+      ("ParameterInfo::Add() leaving, propertyName:'%s' was added. There are "
+       "total %d Parameters\n", propertyName.c_str(), mNumParams);
    #endif
 }
 
 
 //------------------------------------------------------------------------------
-// void Remove(const wxString &name)
+// void Remove(const std::string &name)
 //------------------------------------------------------------------------------
-void ParameterInfo::Remove(const wxString &name)
+void ParameterInfo::Remove(const std::string &name)
 {
    mParamDepObjMap.erase(name);
    mNumParams = mParamDepObjMap.size();

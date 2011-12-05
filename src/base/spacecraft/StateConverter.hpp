@@ -44,8 +44,8 @@ public:
    
    // Default constructor
    StateConverter();
-   StateConverter(const wxString &newType);
-   StateConverter(const wxString &newType, const Real newMu);
+   StateConverter(const std::string &newType);
+   StateConverter(const std::string &newType, const Real newMu);
    
    // Copy constructor
    StateConverter(const StateConverter &state);
@@ -60,48 +60,48 @@ public:
    void SetMu(Real mu) { mMu = mu; }
    bool SetMu(const CoordinateSystem *cs);
    
-   Rvector6 FromCartesian(const Rvector6 &state, const wxString &toType,
-                          const wxString &anomalyType = wxT("TA"));
+   Rvector6 FromCartesian(const Rvector6 &state, const std::string &toType,
+                          const std::string &anomalyType = "TA");
    
-   Rvector6 FromKeplerian(const Rvector6 &state, const wxString &toType,
-                          const wxString &anomalyType = wxT("TA"));
+   Rvector6 FromKeplerian(const Rvector6 &state, const std::string &toType,
+                          const std::string &anomalyType = "TA");
    
-   Rvector6 FromModKeplerian(const Rvector6 &state, const wxString &toType,
-                             const wxString &anomalyType = wxT("TA"));
+   Rvector6 FromModKeplerian(const Rvector6 &state, const std::string &toType,
+                             const std::string &anomalyType = "TA");
    
-   Rvector6 FromSphericalAZFPA(const Rvector6 &state, const wxString &toType,
-                               const wxString &anomalyType = wxT("TA"));
+   Rvector6 FromSphericalAZFPA(const Rvector6 &state, const std::string &toType,
+                               const std::string &anomalyType = "TA");
    
-   Rvector6 FromSphericalRADEC(const Rvector6 &state, const wxString &toType,
-                               const wxString &anomalyType = wxT("TA"));
+   Rvector6 FromSphericalRADEC(const Rvector6 &state, const std::string &toType,
+                               const std::string &anomalyType = "TA");
    
-   Rvector6 FromEquinoctial(const Rvector6 &state, const wxString &toType,
-                            const wxString &anomalyType = wxT("TA"));
+   Rvector6 FromEquinoctial(const Rvector6 &state, const std::string &toType,
+                            const std::string &anomalyType = "TA");
    
-   Rvector6 Convert(const Rvector6 &state, const wxString &fromType,
-                    const wxString &toType,
-                    const wxString &anomalyType = wxT("TA"));
+   Rvector6 Convert(const Rvector6 &state, const std::string &fromType,
+                    const std::string &toType,
+                    const std::string &anomalyType = "TA");
    
-   Rvector6 Convert(const Rvector6 &state, const wxString &fromType,
-                    const wxString &toType, Anomaly &anomaly);
+   Rvector6 Convert(const Rvector6 &state, const std::string &fromType,
+                    const std::string &toType, Anomaly &anomaly);
    
-   Rvector6 Convert(const Real *state, const wxString &fromType,
-                    const wxString &toType, Anomaly &anomaly);
+   Rvector6 Convert(const Real *state, const std::string &fromType,
+                    const std::string &toType, Anomaly &anomaly);
    
    // Constant variable
    static const Real DEFAULT_MU;  // km^3/s^2
    
-   static wxString        GetTypeString(const wxString &type);
+   static std::string        GetTypeString(const std::string &type);
    static Integer            GetTypeCount() { return StateTypeCount; }
-   static const wxString* GetStateTypeList();
-   static bool               RequiresCelestialBodyOrigin(const wxString &type);
+   static const std::string* GetStateTypeList();
+   static bool               RequiresCelestialBodyOrigin(const std::string &type);
    
 protected:
 
 private:
    Real         mMu;
    
-   static const wxString STATE_TYPE_TEXT[StateTypeCount];
+   static const std::string STATE_TYPE_TEXT[StateTypeCount];
    static const bool        REQUIRES_CB_ORIGIN[StateTypeCount];
 
    Rvector6 CartesianToEquinoctial(const Rvector6& cartesian, const Real& mu);

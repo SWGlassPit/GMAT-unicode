@@ -29,8 +29,8 @@ class GMAT_API OrbitRmat33 : public Rmat33Var, public OrbitData
 {
 public:
    
-   OrbitRmat33(const wxString &name, const wxString &typeStr, 
-               GmatBase *obj, const wxString &desc, const wxString &unit,
+   OrbitRmat33(const std::string &name, const std::string &typeStr, 
+               GmatBase *obj, const std::string &desc, const std::string &unit,
                GmatParam::DepObject depObj, bool isSettable = false);
    OrbitRmat33(const OrbitRmat33 &copy);
    OrbitRmat33& operator=(const OrbitRmat33 &right);
@@ -49,18 +49,18 @@ public:
    
    // methods inherited from GmatBase
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
-   virtual wxString  GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual std::string  GetRefObjectName(const Gmat::ObjectType type) const;
    virtual const StringArray&
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool         SetRefObjectName(const Gmat::ObjectType type,
-                                         const wxString &name);
+                                         const std::string &name);
    virtual GmatBase*    GetRefObject(const Gmat::ObjectType type,
-                                     const wxString &name);
+                                     const std::string &name);
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
 
 protected:
 

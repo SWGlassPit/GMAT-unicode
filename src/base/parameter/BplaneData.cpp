@@ -40,20 +40,20 @@ using namespace GmatMathUtil;
 // static data
 //---------------------------------
 
-const wxString BplaneData::VALID_OBJECT_TYPE_LIST[BplaneDataObjectCount] =
+const std::string BplaneData::VALID_OBJECT_TYPE_LIST[BplaneDataObjectCount] =
 {
-   wxT("Spacecraft"),
-   wxT("SolarSystem"),
-   wxT("CoordinateSystem"),
-   wxT("SpacePoint")
+   "Spacecraft",
+   "SolarSystem",
+   "CoordinateSystem",
+   "SpacePoint"
 }; 
 
-const wxString BplaneData::VALID_PARAM_NAMES[BplaneParamEnd - BplaneParamBegin - 1] =
+const std::string BplaneData::VALID_PARAM_NAMES[BplaneParamEnd - BplaneParamBegin - 1] =
 {
-   wxT("BDotT"),
-   wxT("BDotR"),
-   wxT("BVectorMag"),
-   wxT("BVectorAngle")
+   "BDotT",
+   "BDotR",
+   "BVectorMag",
+   "BVectorAngle"
 };
 
 
@@ -162,7 +162,7 @@ Real BplaneData::GetBplaneReal(Integer item)
    // Check item range
    if (item <= BplaneParamBegin || item >= BplaneParamEnd)
       throw ParameterException
-         (wxT("BplaneData::GetBplaneReal() Unknown parameter ID: ") +
+         ("BplaneData::GetBplaneReal() Unknown parameter ID: " +
           GmatRealUtil::ToString(item, false, 2));
    
    if (mSpacecraft == NULL || mSolarSystem == NULL || mOrigin == NULL ||
@@ -175,16 +175,16 @@ Real BplaneData::GetBplaneReal(Integer item)
       mGravConst = ((CelestialBody*)mOrigin)->GetGravitationalConstant();
    else
       throw ParameterException
-         (wxT("BplaneData::GetBplaneReal() Cannot compute B-Plane ")
-          wxT("parameter for CoordinateSystem that has non-celestial body as origin.  ")
-          wxT("CoordinateSystem: ") + mOutCoordSystem->GetName() + wxT("  Origin: ") +
+         ("BplaneData::GetBplaneReal() Cannot compute B-Plane "
+          "parameter for CoordinateSystem that has non-celestial body as origin.  "
+          "CoordinateSystem: " + mOutCoordSystem->GetName() + "  Origin: " +
           mOrigin->GetName());
    
    Rvector6 state = GetCartState();
    
    #if DBGLVL_BPLANEDATA_RUN > 1
    MessageInterface::ShowMessage
-      (wxT("BplaneData::GetBplaneReal() item = %d, mGravConst = %f\n     state = %s\n"),
+      ("BplaneData::GetBplaneReal() item = %d, mGravConst = %f\n     state = %s\n",
        item, mGravConst, state.ToString().c_str());
    #endif
 
@@ -198,9 +198,9 @@ Real BplaneData::GetBplaneReal(Integer item)
 //-------------------------------------
 
 //------------------------------------------------------------------------------
-// virtual const wxString* GetValidObjectList() const
+// virtual const std::string* GetValidObjectList() const
 //------------------------------------------------------------------------------
-const wxString* BplaneData::GetValidObjectList() const
+const std::string* BplaneData::GetValidObjectList() const
 {
    return VALID_OBJECT_TYPE_LIST;
 }
@@ -239,7 +239,7 @@ void BplaneData::InitializeRefObjects()
 {
    #if DBGLVL_BPLANEDATA_INIT
    MessageInterface::ShowMessage
-      (wxT("BplaneData::InitializeRefObjects() entered.\n"));
+      ("BplaneData::InitializeRefObjects() entered.\n");
    #endif
    
    mSpacecraft =
@@ -247,45 +247,45 @@ void BplaneData::InitializeRefObjects()
    
    if (mSpacecraft == NULL)
       throw ParameterException
-         (wxT("BplaneData::InitializeRefObjects() Cannot find Spacecraft object.\n")
-          wxT("Make sure Spacecraft is set to any unnamed parameters\n"));
+         ("BplaneData::InitializeRefObjects() Cannot find Spacecraft object.\n"
+          "Make sure Spacecraft is set to any unnamed parameters\n");
    
    mSolarSystem =
       (SolarSystem*)FindFirstObject(VALID_OBJECT_TYPE_LIST[SOLAR_SYSTEM]);
    
    if (mSolarSystem == NULL)
       throw ParameterException
-         (wxT("BplaneData::InitializeRefObjects() Cannot find SolarSystem object\n"));
+         ("BplaneData::InitializeRefObjects() Cannot find SolarSystem object\n");
    
    if (mInternalCoordSystem == NULL)
       throw ParameterException
-         (wxT("BplaneData::InitializeRefObjects() Cannot find internal ")
-          wxT("CoordinateSystem object\n"));
+         ("BplaneData::InitializeRefObjects() Cannot find internal "
+          "CoordinateSystem object\n");
    
    mOutCoordSystem =
       (CoordinateSystem*)FindFirstObject(VALID_OBJECT_TYPE_LIST[COORD_SYSTEM]);
    
    if (mOutCoordSystem == NULL)
       throw ParameterException
-         (wxT("BplaneData::InitializeRefObjects() Cannot find output ")
-          wxT("CoordinateSystem object\n"));
+         ("BplaneData::InitializeRefObjects() Cannot find output "
+          "CoordinateSystem object\n");
    
    // get spacecraft CoordinateSystem
-   wxString csName = mSpacecraft->GetRefObjectName(Gmat::COORDINATE_SYSTEM);   
+   std::string csName = mSpacecraft->GetRefObjectName(Gmat::COORDINATE_SYSTEM);   
    CoordinateSystem *cs = (CoordinateSystem*)mSpacecraft->
       GetRefObject(Gmat::COORDINATE_SYSTEM, csName);
    
    if (!cs)
       throw ParameterException
-         (wxT("BplaneData::InitializeRefObjects() spacecraft CoordinateSystem not ")
-          wxT("found: ") + csName + wxT("\n"));
+         ("BplaneData::InitializeRefObjects() spacecraft CoordinateSystem not "
+          "found: " + csName + "\n");
    
    mOrigin = mOutCoordSystem->GetOrigin();
    
    if (!mOrigin)
       throw ParameterException
-         (wxT("BplaneData::InitializeRefObjects() origin not found: ") +
-          cs->GetOriginName() + wxT("\n"));
+         ("BplaneData::InitializeRefObjects() origin not found: " +
+          cs->GetOriginName() + "\n");
    
    // get gravity constant if out coord system origin is CelestialBody
    if (mOrigin->IsOfType(Gmat::CELESTIAL_BODY))
@@ -293,7 +293,7 @@ void BplaneData::InitializeRefObjects()
    
    #if DBGLVL_BPLANEDATA_INIT
    MessageInterface::ShowMessage
-      (wxT("BplaneData::InitializeRefObjects() mOriginName=%s\n"),
+      ("BplaneData::InitializeRefObjects() mOriginName=%s\n",
        mOrigin->GetName().c_str());
    #endif
 }
@@ -317,7 +317,7 @@ bool BplaneData::IsValidObjectType(Gmat::ObjectType type)
    }
    
    MessageInterface::ShowMessage
-      (wxT("==> BplaneData::IsValidObjectType() type=%d is not valid object type\n"),
+      ("==> BplaneData::IsValidObjectType() type=%d is not valid object type\n",
        type);
    
    return false;
@@ -366,8 +366,8 @@ Rvector6 BplaneData::GetCartState()
    
    #if DBGLVL_BPLANEDATA_RUN
    MessageInterface::ShowMessage
-      (wxT("BplaneData::GetCartState() internalCoordName=%s\n")
-       wxT("     outCoordName=%s\n"),
+      ("BplaneData::GetCartState() internalCoordName=%s\n"
+       "     outCoordName=%s\n",
        mInternalCoordSystem->GetName().c_str(),
        mOutCoordSystem->GetName().c_str());
    #endif
@@ -376,12 +376,12 @@ Rvector6 BplaneData::GetCartState()
    if (mInternalCoordSystem == NULL || mOutCoordSystem == NULL)
    {
       MessageInterface::ShowMessage
-         (wxT("BplaneData::GetCartState() Internal CoordSystem or Output ")
-          wxT("CoordSystem is NULL.\n"));
+         ("BplaneData::GetCartState() Internal CoordSystem or Output "
+          "CoordSystem is NULL.\n");
          
       throw ParameterException
-         (wxT("BplaneData::GetCartState() internal or output CoordinateSystem ")
-          wxT("is NULL.\n"));
+         ("BplaneData::GetCartState() internal or output CoordinateSystem "
+          "is NULL.\n");
    }
    
    // convert to output CoordinateSystem
@@ -389,12 +389,12 @@ Rvector6 BplaneData::GetCartState()
    {
       #if DBGLVL_BPLANEDATA_CONVERT
       MessageInterface::ShowMessage
-         (wxT("BplaneData::GetCartState() ===> mOutCoordSystem:%s Axis=%s\n"),
+         ("BplaneData::GetCartState() ===> mOutCoordSystem:%s Axis=%s\n",
           mOutCoordSystem->GetName().c_str(),
-          mOutCoordSystem->GetRefObject(Gmat::AXIS_SYSTEM, wxT(""))->GetName().c_str());
+          mOutCoordSystem->GetRefObject(Gmat::AXIS_SYSTEM, "")->GetName().c_str());
       MessageInterface::ShowMessage
-         (wxT("BplaneData::GetCartState() Before convert: mCartEpoch=%f\n")
-          wxT("state = %s\n"), mCartEpoch, mCartState.ToString().c_str());
+         ("BplaneData::GetCartState() Before convert: mCartEpoch=%f\n"
+          "state = %s\n", mCartEpoch, mCartState.ToString().c_str());
       #endif
       
       try
@@ -405,8 +405,8 @@ Rvector6 BplaneData::GetCartState()
          
          #if DBGLVL_BPLANEDATA_CONVERT
          MessageInterface::ShowMessage
-            (wxT("BplaneData::GetCartState() --After convert: mCartEpoch=%f\n")
-             wxT("     state = %s\n"), mCartEpoch, mCartState.ToString().c_str());
+            ("BplaneData::GetCartState() --After convert: mCartEpoch=%f\n"
+             "     state = %s\n", mCartEpoch, mCartState.ToString().c_str());
          #endif
       }
       catch (BaseException &e)

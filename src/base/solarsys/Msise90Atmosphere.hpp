@@ -32,7 +32,7 @@
 class GMAT_API Msise90Atmosphere : public AtmosphereModel
 {
 public:
-   Msise90Atmosphere(const wxString &name = wxT(""));
+   Msise90Atmosphere(const std::string &name = "");
    virtual ~Msise90Atmosphere();
    Msise90Atmosphere(const Msise90Atmosphere& msise);
    Msise90Atmosphere&      operator=(const Msise90Atmosphere& msise);
@@ -46,7 +46,7 @@ protected:
    /// Flag to indicate if data comes from a file
    bool                    fileData;
    /// Name of the file
-   wxString             fluxfilename;
+   std::string             fluxfilename;
    /// Second of day
    Real                    sod;
    /// Year + Day of year, in the form YYYYDDD

@@ -42,42 +42,42 @@ public:
    virtual void         RunComplete();
    
    // inherited from GmatBase
-   virtual bool         TakeAction(const wxString &action,  
-                                   const wxString &actionData = wxT(""));
-   virtual wxString  GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual bool         TakeAction(const std::string &action,  
+                                   const std::string &actionData = "");
+   virtual std::string  GetRefObjectName(const Gmat::ObjectType type) const;
    virtual const StringArray&
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool         SetRefObjectName(const Gmat::ObjectType type,
-                                         const wxString &name);
+                                         const std::string &name);
    virtual bool         Initialize();
    
    virtual GmatBase*    Clone() const;
    
    // Parameter accessors
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label, 
-                                           const wxString &value);
-   virtual wxString  GetStringParameter(const Integer id,
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label, 
+                                           const std::string &value);
+   virtual std::string  GetStringParameter(const Integer id,
                                            const Integer index) const;
-   virtual wxString  GetStringParameter(const wxString &label,
+   virtual std::string  GetStringParameter(const std::string &label,
                                            const Integer index) const;
    virtual const StringArray& 
                         GetStringArrayParameter(const Integer id) const;
-   virtual const wxString&
+   virtual const std::string&
                         GetGeneratingString(Gmat::WriteMode mode,
-                                            const wxString &prefix,
-                                            const wxString &useName);
+                                            const std::string &prefix,
+                                            const std::string &useName);
       
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
 protected:
    // Parameter IDs
@@ -102,10 +102,10 @@ protected:
    /// File streams used for the output
    std::ofstream        *fileArray;
    
-   void  UpdateOutputFileNames(Integer index, const wxString objName);
+   void  UpdateOutputFileNames(Integer index, const std::string objName);
    void  WriteObject(UnsignedInt i, GmatBase *o);
    
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[SaveParamCount - GmatCommandParamCount];
    static const Gmat::ParameterType
       PARAMETER_TYPE[SaveParamCount - GmatCommandParamCount];

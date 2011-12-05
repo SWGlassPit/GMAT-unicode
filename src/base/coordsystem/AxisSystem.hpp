@@ -37,8 +37,8 @@ class GMAT_API AxisSystem : public CoordinateBase
 public:
 
    // default constructor
-   AxisSystem(const wxString &itsType,
-              const wxString &itsName = wxT(""));
+   AxisSystem(const std::string &itsType,
+              const std::string &itsName = "");
    // copy constructor
    AxisSystem(const AxisSystem &axisSys);
    // operator = for assignment
@@ -61,29 +61,29 @@ public:
    virtual void                  SetPrimaryObject(SpacePoint *prim);
    virtual void                  SetSecondaryObject(SpacePoint *second);
    virtual void                  SetEpoch(const A1Mjd &toEpoch);
-   virtual void                  SetXAxis(const wxString &toValue);
-   virtual void                  SetYAxis(const wxString &toValue);
-   virtual void                  SetZAxis(const wxString &toValue);
+   virtual void                  SetXAxis(const std::string &toValue);
+   virtual void                  SetYAxis(const std::string &toValue);
+   virtual void                  SetZAxis(const std::string &toValue);
    // methods to set the files to use - for those AxisSystems that 
    // need all or part of the FK5 reduction
    virtual void                  SetEopFile(EopFile *eopF);
    virtual void                  SetCoefficientsFile(ItrfCoefficientsFile *itrfF);
-   virtual void                  SetEpochFormat(const wxString &fmt);  // for GUI
+   virtual void                  SetEpochFormat(const std::string &fmt);  // for GUI
    virtual SpacePoint*           GetPrimaryObject() const;
    virtual SpacePoint*           GetSecondaryObject() const;
    virtual A1Mjd                 GetEpoch() const;
-   virtual wxString           GetXAxis() const;
-   virtual wxString           GetYAxis() const;
-   virtual wxString           GetZAxis() const;
+   virtual std::string           GetXAxis() const;
+   virtual std::string           GetYAxis() const;
+   virtual std::string           GetZAxis() const;
    virtual EopFile*              GetEopFile() const;
    virtual ItrfCoefficientsFile* GetItrfCoefficientsFile();
-   virtual wxString           GetEpochFormat() const; // for GUI
+   virtual std::string           GetEpochFormat() const; // for GUI
    virtual Rmatrix33             GetLastRotationMatrix() const;
    virtual void                  GetLastRotationMatrix(Real *mat) const;
    virtual Rmatrix33             GetLastRotationDotMatrix() const;
    virtual void                  GetLastRotationDotMatrix(Real *mat) const;
    
-   virtual void                  SetCoordinateSystemName(const wxString &csName);
+   virtual void                  SetCoordinateSystemName(const std::string &csName);
 
    // initializes the AxisSystem
    virtual bool Initialize();
@@ -108,23 +108,23 @@ public:
    //virtual GmatBase*       Clone(void) const;
 
    // Parameter access methods - overridden from GmatBase - may need these later??
-   virtual wxString     GetParameterText(const Integer id) const;     
-   virtual Integer         GetParameterID(const wxString &str) const; 
+   virtual std::string     GetParameterText(const Integer id) const;     
+   virtual Integer         GetParameterID(const std::string &str) const; 
    virtual Gmat::ParameterType
                            GetParameterType(const Integer id) const;
-   virtual wxString     GetParameterTypeString(const Integer id) const;
+   virtual std::string     GetParameterTypeString(const Integer id) const;
    virtual bool            IsParameterReadOnly(const Integer id) const;
    virtual Real            GetRealParameter(const Integer id) const;
    virtual Real            SetRealParameter(const Integer id,
                                             const Real value);
-   virtual Real            GetRealParameter(const wxString &label) const;
-   virtual Real            SetRealParameter(const wxString &label,
+   virtual Real            GetRealParameter(const std::string &label) const;
+   virtual Real            SetRealParameter(const std::string &label,
                                             const Real value);
    virtual bool            GetBooleanParameter(const Integer id) const; 
-   virtual bool            GetBooleanParameter(const wxString &label) const; 
+   virtual bool            GetBooleanParameter(const std::string &label) const; 
    virtual bool            SetBooleanParameter(const Integer id,
                                                const bool value); 
-   virtual bool            SetBooleanParameter(const wxString &label,
+   virtual bool            SetBooleanParameter(const std::string &label,
                                                const bool value);
    
    // currently, no access to RotMatrix and RotDotMatrix allowed
@@ -139,7 +139,7 @@ protected:
       AxisSystemParamCount
    };
    
-   static const wxString PARAMETER_TEXT[AxisSystemParamCount - CoordinateBaseParamCount];
+   static const std::string PARAMETER_TEXT[AxisSystemParamCount - CoordinateBaseParamCount];
    
    static const Gmat::ParameterType PARAMETER_TYPE[AxisSystemParamCount - CoordinateBaseParamCount];
    
@@ -166,7 +166,7 @@ protected:
    /// epoch
    A1Mjd epoch;
    /// Name of the coordinate system
-   wxString coordName;
+   std::string coordName;
    
    
    const Real *rotData;
@@ -180,7 +180,7 @@ protected:
    EopFile                   *eop;
    ItrfCoefficientsFile      *itrf;
    
-   wxString               epochFormat;
+   std::string               epochFormat;
    
    Real                      updateInterval;
    Real                      updateIntervalToUse;

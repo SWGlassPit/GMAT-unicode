@@ -37,7 +37,7 @@
  * @brief Base class for targeters, optimizers, and parameter scanning tools.
  * 
  * The Solver subsystem provides the numerical engines that adjust input 
- * parameters (the wxT("variables")) and measure the results of these perturbations.  
+ * parameters (the "variables") and measure the results of these perturbations.  
  * The system works as a state machine.  The specific path through the state 
  * machine depends on the solver implementation.  This class defines the state 
  * values used, and the core methods that use these states and that report on 
@@ -107,7 +107,7 @@ public:
    };
 
 public:
-   Solver(const wxString &type, const wxString &name);
+   Solver(const std::string &type, const std::string &name);
    virtual ~Solver();
    Solver(const Solver& sol);
    Solver&             operator=(const Solver& sol);
@@ -123,33 +123,33 @@ public:
    virtual bool        UpdateSolverTolerance(Integer id, Real newValue);
    
    // Access methods overriden from the base class
-   virtual wxString GetParameterText(const Integer id) const;
-   virtual Integer     GetParameterID(const wxString &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
+   virtual Integer     GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                        GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
    virtual bool        IsParameterReadOnly(const Integer id) const;
-   virtual bool        IsParameterReadOnly(const wxString &label) const;
+   virtual bool        IsParameterReadOnly(const std::string &label) const;
 
    virtual Integer     GetIntegerParameter(const Integer id) const;
    virtual Integer     SetIntegerParameter(const Integer id,
                                            const Integer value);
-   virtual wxString GetStringParameter(const Integer id) const;
-   virtual wxString GetStringParameter(const wxString &label) const;
+   virtual std::string GetStringParameter(const Integer id) const;
+   virtual std::string GetStringParameter(const std::string &label) const;
    virtual bool        SetStringParameter(const Integer id, 
-                                          const wxString &value);
-   virtual bool        SetStringParameter(const wxString &label, 
-                                          const wxString &value);
+                                          const std::string &value);
+   virtual bool        SetStringParameter(const std::string &label, 
+                                          const std::string &value);
    // compiler complained again - so here they are ....
-   virtual wxString GetStringParameter(const Integer id,
+   virtual std::string GetStringParameter(const Integer id,
                                           const Integer index) const;
    virtual bool        SetStringParameter(const Integer id, 
-                                          const wxString &value,
+                                          const std::string &value,
                                           const Integer index);
-   virtual wxString GetStringParameter(const wxString &label,
+   virtual std::string GetStringParameter(const std::string &label,
                                           const Integer index) const;
-   virtual bool        SetStringParameter(const wxString &label, 
-                                          const wxString &value,
+   virtual bool        SetStringParameter(const std::string &label, 
+                                          const std::string &value,
                                           const Integer index);
 
    virtual const StringArray&
@@ -161,22 +161,22 @@ public:
                                            const bool value);
                                            
    virtual void        ReportProgress();
-   virtual void        SetDebugString(const wxString &str);
+   virtual void        SetDebugString(const std::string &str);
     
    virtual bool        Initialize();
    virtual bool        Finalize();
    
     
    virtual Integer     SetSolverVariables(Real *data,
-                                          const wxString &name);
+                                          const std::string &name);
    virtual bool        RefreshSolverVariables(Real *data,
-                                          const wxString &name);
+                                          const std::string &name);
 
    virtual Real        GetSolverVariable(Integer id);
    virtual void        SetUnscaledVariable(Integer id, Real value);
     
    //---------------------------------------------------------------------------
-   //  Integer SetSolverResults(Real *data, wxString name)
+   //  Integer SetSolverResults(Real *data, std::string name)
    //---------------------------------------------------------------------------
    /**
     * Sets up the data fields used for the results of an iteration.
@@ -190,8 +190,8 @@ public:
     */
    //---------------------------------------------------------------------------
    virtual Integer     SetSolverResults(Real *data,
-                                        const wxString &name,
-                                        const wxString &type = wxT("")) = 0;
+                                        const std::string &name,
+                                        const std::string &type = "") = 0;
     
    //---------------------------------------------------------------------------
    //  void SetResultValue(Integer id, Real value)
@@ -204,7 +204,7 @@ public:
     */
    //---------------------------------------------------------------------------
    virtual void        SetResultValue(Integer id, Real value,
-                                      const wxString &resultType = wxT("")) = 0;
+                                      const std::string &resultType = "") = 0;
 
 protected:
    /// Flag indicating if this Solver runs integrated into GMAT, or through
@@ -216,13 +216,13 @@ protected:
    /// current nested state
    SolverState         nestedState;
    /// Output mode: Compact, Normal, and Verbose
-   wxString         textFileMode;
+   std::string         textFileMode;
    /// Toggle for showing solver status
    bool                showProgress;
    /// Flag used to adjust targeter progress reports 
    Integer             progressStyle;
    /// String for debug information in debug mode
-   wxString         debugString;
+   std::string         debugString;
    /// The number of variables in the solver problem
    Integer             variableCount;
    /// List of variables
@@ -261,7 +261,7 @@ protected:
 
    // Reporting parameters
    /// Name of the targeter text file.  An empty string turns the file off.
-   wxString          solverTextFile;
+   std::string          solverTextFile;
    /// Used to indicate if data should append to the text file
    Integer              instanceNumber;
    /// The solver text file
@@ -284,11 +284,11 @@ protected:
    /// Determines if individual variables can set perts
    bool                 AllowIndependentPerts;
    /// Solver mode used for this instance
-   wxString          solverMode;
+   std::string          solverMode;
    /// State machine setting for the solver mode
    MachineMode          currentMode;
    /// String specifying the exit mode
-   wxString          exitModeText;
+   std::string          exitModeText;
    /// Enumerated exit mode setting
    ExitMode             exitMode;
    /// The most recent results of using this solver
@@ -320,17 +320,17 @@ protected:
       SolverParamCount
    };
    
-   static const wxString    PARAMETER_TEXT[SolverParamCount -
+   static const std::string    PARAMETER_TEXT[SolverParamCount -
                                               GmatBaseParamCount];
    static const Gmat::ParameterType
                                PARAMETER_TYPE[SolverParamCount -
                                               GmatBaseParamCount];
-   static const wxString    STYLE_TEXT[MaxStyle - NORMAL_STYLE];
+   static const std::string    STYLE_TEXT[MaxStyle - NORMAL_STYLE];
 
 
    // Methods that correspond to the solver states.  Derived classes should
    // implement the methods that correspond to the Solver's state machine.  The
-   // default implementation just advances the state to the wxT("next") state in the
+   // default implementation just advances the state to the "next" state in the
    // list.
    virtual void        CompleteInitialization();
    virtual void        RunNominal();
@@ -343,7 +343,7 @@ protected:
    
    void                ResetVariables();
    
-   virtual wxString GetProgressString();
+   virtual std::string GetProgressString();
    virtual void        FreeArrays();
    void                OpenSolverTextFile();
    

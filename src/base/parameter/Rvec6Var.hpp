@@ -29,11 +29,11 @@ class GMAT_API Rvec6Var : public Parameter
 {
 public:
 
-   Rvec6Var(const wxString &name = wxT(""),
-            const wxString &typeStr = wxT("Rvec6Var"),
+   Rvec6Var(const std::string &name = "",
+            const std::string &typeStr = "Rvec6Var",
             GmatParam::ParameterKey key = GmatParam::USER_PARAM,
-            GmatBase *obj = NULL, const wxString &desc = wxT(""),
-            const wxString &unit = wxT(""),
+            GmatBase *obj = NULL, const std::string &desc = "",
+            const std::string &unit = "",
             GmatParam::DepObject depObj = GmatParam::NO_DEP,
             Gmat::ObjectType ownerType = Gmat::UNKNOWN_OBJECT);
    Rvec6Var(const Rvec6Var &copy);
@@ -43,7 +43,7 @@ public:
    bool operator==(const Rvec6Var &right) const;
    bool operator!=(const Rvec6Var &right) const;
    
-   virtual wxString  ToString();
+   virtual std::string  ToString();
    
    virtual const        Rvector6& GetRvector6() const;
    virtual void         SetRvector6(const Rvector6 &val);

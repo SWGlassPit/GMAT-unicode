@@ -33,8 +33,8 @@
  * Constructor.
  */
 //------------------------------------------------------------------------------
-Power::Power(const wxString &nomme)
-   : MathFunction(wxT("Power"), nomme)
+Power::Power(const std::string &nomme)
+   : MathFunction("Power", nomme)
 {
 }
 
@@ -97,7 +97,7 @@ void Power::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
    rightNode->GetOutputInfo(type2, row2, col2);
 
    if ((type1 != type2) || (row1 != row2) || (col1 != col2))
-      throw MathException(wxT("Matrixes are not the same can not add.\n"));    
+      throw MathException("Matrixes are not the same can not add.\n");    
    else
    {
       type = type1;
@@ -118,7 +118,7 @@ void Power::GetOutputInfo(Integer &type, Integer &rowCount, Integer &colCount)
 bool Power::ValidateInputs()
 {
    if (leftNode == NULL)
-      throw MathException(wxT("Power() - Missing input arguments.\n"));
+      throw MathException("Power() - Missing input arguments.\n");
    
    Integer type1, row1, col1; // Left node
    

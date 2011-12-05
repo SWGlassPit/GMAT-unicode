@@ -61,10 +61,10 @@ class GMAT_API ConfigManager
 public:
    static ConfigManager*   Instance();
    
-   wxString         GetNewName(const wxString &name, Integer startCount);
+   std::string         GetNewName(const std::string &name, Integer startCount);
    
    void                AddObject(Gmat::ObjectType objType, GmatBase *obj);
-   wxString         AddClone(const wxString &name);
+   std::string         AddClone(const std::string &name);
    void                AddPhysicalModel(PhysicalModel *pm);
    void                AddPropagator(Propagator *prop);
    void                AddODEModel(ODEModel *fm);
@@ -85,7 +85,7 @@ public:
    
    void                SetDefaultSolarSystem(SolarSystem *ss);
    void                SetSolarSystemInUse(SolarSystem *ss);
-   bool                SetSolarSystemInUse(const wxString &name);
+   bool                SetSolarSystemInUse(const std::string &name);
 
    void                AddMeasurementModel(MeasurementModel *mModel);
    void                AddMeasurement(CoreMeasurement *meas);
@@ -97,50 +97,50 @@ public:
 
    const StringArray&  GetListOfAllItems();
    const StringArray&  GetListOfItems(Gmat::ObjectType itemType);
-   const StringArray&  GetListOfItems(const wxString &typeName);
+   const StringArray&  GetListOfItems(const std::string &typeName);
    const StringArray&  GetListOfItemsHas(Gmat::ObjectType type,
-                                         const wxString &name,
+                                         const std::string &name,
                                          bool includeSysParam = true);
    GmatBase*           GetFirstItemUsing(Gmat::ObjectType type,
-                                         const wxString &name,
+                                         const std::string &name,
                                          bool includeSysParam = true);
-   GmatBase*           GetItem(const wxString &name);
+   GmatBase*           GetItem(const std::string &name);
    
    bool                RenameItem(Gmat::ObjectType itemType,
-                                  const wxString &oldName,
-                                  const wxString &newName);
+                                  const std::string &oldName,
+                                  const std::string &newName);
    
    bool                RemoveAllItems();
-   bool                RemoveItem(Gmat::ObjectType type, const wxString &name);
-   bool                ReconfigureItem(GmatBase *newobj, const wxString &name);
+   bool                RemoveItem(Gmat::ObjectType type, const std::string &name);
+   bool                ReconfigureItem(GmatBase *newobj, const std::string &name);
    
    
-   PhysicalModel*      GetPhysicalModel(const wxString &name);
-   Propagator*         GetPropagator(const wxString &name);
-   ODEModel*           GetODEModel(const wxString &name);
-   SpaceObject*        GetSpacecraft(const wxString &name);
-   SpacePoint*         GetSpacePoint(const wxString &name);
-   Hardware*           GetHardware(const wxString &name);
-   PropSetup*          GetPropSetup(const wxString &name);
-   Subscriber*         GetSubscriber(const wxString &name);
+   PhysicalModel*      GetPhysicalModel(const std::string &name);
+   Propagator*         GetPropagator(const std::string &name);
+   ODEModel*           GetODEModel(const std::string &name);
+   SpaceObject*        GetSpacecraft(const std::string &name);
+   SpacePoint*         GetSpacePoint(const std::string &name);
+   Hardware*           GetHardware(const std::string &name);
+   PropSetup*          GetPropSetup(const std::string &name);
+   Subscriber*         GetSubscriber(const std::string &name);
    SolarSystem*        GetDefaultSolarSystem();
    SolarSystem*        GetSolarSystemInUse();
-   SolarSystem*        GetSolarSystemInUse(const wxString &name);
-   StopCondition*      GetStopCondition(const wxString &name);
-   Parameter*          GetParameter(const wxString &name);
-   Burn*               GetBurn(const wxString &name);
-   Solver*             GetSolver(const wxString &name);
-   AtmosphereModel*    GetAtmosphereModel(const wxString &name);
-   Function*           GetFunction(const wxString &name);
-   CoordinateSystem*   GetCoordinateSystem(const wxString &name);
-   CalculatedPoint*    GetCalculatedPoint(const wxString &name);
-   MeasurementModel*   GetMeasurementModel(const wxString &name);
-   TrackingSystem*     GetTrackingSystem(const wxString &name);
-   TrackingData*       GetTrackingData(const wxString &name);
+   SolarSystem*        GetSolarSystemInUse(const std::string &name);
+   StopCondition*      GetStopCondition(const std::string &name);
+   Parameter*          GetParameter(const std::string &name);
+   Burn*               GetBurn(const std::string &name);
+   Solver*             GetSolver(const std::string &name);
+   AtmosphereModel*    GetAtmosphereModel(const std::string &name);
+   Function*           GetFunction(const std::string &name);
+   CoordinateSystem*   GetCoordinateSystem(const std::string &name);
+   CalculatedPoint*    GetCalculatedPoint(const std::string &name);
+   MeasurementModel*   GetMeasurementModel(const std::string &name);
+   TrackingSystem*     GetTrackingSystem(const std::string &name);
+   TrackingData*       GetTrackingData(const std::string &name);
 
-   DataFile *          GetDataStream(const wxString &name);
+   DataFile *          GetDataStream(const std::string &name);
 
-   EventLocator*       GetEventLocator(const wxString &name);
+   EventLocator*       GetEventLocator(const std::string &name);
 
    bool                HasConfigurationChanged();
    void                ConfigurationChanged(bool tf);
@@ -156,7 +156,7 @@ private:
    /// A list of the names of the managed objects
    StringArray                         listOfItems;
    /// Mapping between the object names and their pointers
-   std::map<wxString, GmatBase *>   mapping;
+   std::map<std::string, GmatBase *>   mapping;
    /// Flag indicating that a managed object has been changed by a user
    bool                                objectChanged;
    

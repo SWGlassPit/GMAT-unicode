@@ -40,7 +40,7 @@ public:
    Real GetPALT();
    Real GetAALT();
    bool IsError();
-   wxString GetError();
+   std::string GetError();
 
 private:
    struct orbitElements 
@@ -54,7 +54,7 @@ private:
    };
 
    orbitElements elements;
-   wxString errormsg;
+   std::string errormsg;
    bool isError;
 };
 

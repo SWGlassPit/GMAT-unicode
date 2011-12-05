@@ -33,7 +33,7 @@ class GMAT_API TODEcAxes : public TrueOfDateAxes
 public:
 
    // default constructor
-   TODEcAxes(const wxString &itsName = wxT(""));
+   TODEcAxes(const std::string &itsName = "");
    // copy constructor
    TODEcAxes(const TODEcAxes &tod);
    // operator = for assignment
@@ -50,11 +50,11 @@ public:
 
    // Parameter access methods - overridden from GmatBase
    /* placeholder - may be needed later
-   virtual wxString     GetParameterText(const Integer id) const;     
-   virtual Integer         GetParameterID(const wxString &str) const; 
+   virtual std::string     GetParameterText(const Integer id) const;     
+   virtual Integer         GetParameterID(const std::string &str) const; 
    virtual Gmat::ParameterType
                            GetParameterType(const Integer id) const;
-   virtual wxString     GetParameterTypeString(const Integer id) const;
+   virtual std::string     GetParameterTypeString(const Integer id) const;
     */
    
 protected:
@@ -64,7 +64,7 @@ protected:
       TODEcAxesParamCount = TrueOfDateAxesParamCount,
    };
    
-   //static const wxString PARAMETER_TEXT[TODEcAxesParamCount - 
+   //static const std::string PARAMETER_TEXT[TODEcAxesParamCount - 
    //                                        TrueOfDateAxesParamCount];
    
    //static const Gmat::ParameterType PARAMETER_TYPE[TODEcAxesParamCount - 

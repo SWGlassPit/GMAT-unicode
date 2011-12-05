@@ -42,7 +42,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// AdamsBashforthMoulton::AdamsBashforthMoulton(const wxString &nomme)
+// AdamsBashforthMoulton::AdamsBashforthMoulton(const std::string &nomme)
 //------------------------------------------------------------------------------
 /**
  * The constructor for the ABM integrator
@@ -50,8 +50,8 @@
 //------------------------------------------------------------------------------
 //AdamsBashforthMoulton::AdamsBashforthMoulton() :
 //    PredictorCorrector      (4, 4),
-AdamsBashforthMoulton::AdamsBashforthMoulton(const wxString &nomme) :
-    PredictorCorrector      (4, 4, wxT("AdamsBashforthMoulton"), nomme),
+AdamsBashforthMoulton::AdamsBashforthMoulton(const std::string &nomme) :
+    PredictorCorrector      (4, 4, "AdamsBashforthMoulton", nomme),
     eeFactor                (19.0/270.0)
 {
     starter = new RungeKutta89;

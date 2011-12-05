@@ -68,9 +68,7 @@
 #include "StringUtil.hpp"           // for GmatStringUtil::
 #include "FileUtil.hpp"             // for GmatFileUtil::
 #include <algorithm>                // for sort(), set_difference()
-#include <wx/datetime.h>                    // for clock()
-#include <wx/sstream.h>
-#include <wx/txtstrm.h>
+#include <ctime>                    // for clock()
 
 
 
@@ -154,13 +152,13 @@ Moderator* Moderator::Instance()
 
 
 //------------------------------------------------------------------------------
-// bool Initialize(const wxString &startupFile, bool fromGui = false)
+// bool Initialize(const std::string &startupFile, bool fromGui = false)
 //------------------------------------------------------------------------------
-bool Moderator::Initialize(const wxString &startupFile, bool fromGui)
+bool Moderator::Initialize(const std::string &startupFile, bool fromGui)
 {
    #if DEBUG_INITIALIZE
    MessageInterface::ShowMessage
-      (wxT("Moderator::Initialize() entered, startupFile='%s', fromGui=%d\n"),
+      ("Moderator::Initialize() entered, startupFile='%s', fromGui=%d\n",
        startupFile.c_str(), fromGui);
    #endif
    
@@ -175,7 +173,7 @@ bool Moderator::Initialize(const wxString &startupFile, bool fromGui)
       theFileManager = FileManager::Instance();
       theFileManager->ReadStartupFile(startupFile);
       
-      MessageInterface::ShowMessage(wxT("Moderator is creating core engine...\n"));
+      MessageInterface::ShowMessage("Moderator is creating core engine...\n");
       
       // Set trace flag globally
       #ifdef DEBUG_MEMORY
@@ -187,14 +185,14 @@ bool Moderator::Initialize(const wxString &startupFile, bool fromGui)
       
       #if DEBUG_INITIALIZE
       MessageInterface::ShowMessage
-         (wxT(".....created  (%p)theFactoryManager\n"), theFactoryManager);
+         (".....created  (%p)theFactoryManager\n", theFactoryManager);
       #endif
       
       theConfigManager = ConfigManager::Instance();
       
       #if DEBUG_INITIALIZE
       MessageInterface::ShowMessage
-         (wxT(".....created  (%p)theConfigManager\n"), theConfigManager);
+         (".....created  (%p)theConfigManager\n", theConfigManager);
       #endif
       
       // Register factories
@@ -226,7 +224,7 @@ bool Moderator::Initialize(const wxString &startupFile, bool fromGui)
       
       #if DEBUG_INITIALIZE
       MessageInterface::ShowMessage
-         (wxT(".....created  (%p)thePublisher...\n"), thePublisher);
+         (".....created  (%p)thePublisher...\n", thePublisher);
       #endif
       
       // Create script interpreter
@@ -234,17 +232,17 @@ bool Moderator::Initialize(const wxString &startupFile, bool fromGui)
       
       #if DEBUG_INITIALIZE
       MessageInterface::ShowMessage
-         (wxT(".....created  (%p)theScriptInterpreter\n"), theScriptInterpreter);
+         (".....created  (%p)theScriptInterpreter\n", theScriptInterpreter);
       #endif
       
       LoadPlugins();
       
       // Create default SolarSystem
-      theDefaultSolarSystem = CreateSolarSystem(wxT("DefaultSolarSystem"));
+      theDefaultSolarSystem = CreateSolarSystem("DefaultSolarSystem");
       
       #if DEBUG_INITIALIZE
       MessageInterface::ShowMessage
-         (wxT(".....created  (%p)theDefaultSolarSystem\n"), theDefaultSolarSystem);
+         (".....created  (%p)theDefaultSolarSystem\n", theDefaultSolarSystem);
       #endif
       
       theConfigManager->SetDefaultSolarSystem(theDefaultSolarSystem);
@@ -265,8 +263,8 @@ bool Moderator::Initialize(const wxString &startupFile, bool fromGui)
       GmatCommand *noOp = new NoOp();
       
       #ifdef DEBUG_MEMORY
-      MemoryTracker::Instance()->Add(sandbox, wxT("Sandbox"), wxT("Moderator::Initialize()"), wxT(""));
-      MemoryTracker::Instance()->Add(noOp, wxT("NoOP"), wxT("Moderator::Initialize()"), wxT(""));
+      MemoryTracker::Instance()->Add(sandbox, "Sandbox", "Moderator::Initialize()", "");
+      MemoryTracker::Instance()->Add(noOp, "NoOP", "Moderator::Initialize()", "");
       #endif
       
       sandboxes.push_back(sandbox);
@@ -274,9 +272,9 @@ bool Moderator::Initialize(const wxString &startupFile, bool fromGui)
       
       #if DEBUG_INITIALIZE
       MessageInterface::ShowMessage
-         (wxT(".....created  (%p)Sandbox 1\n"), sandboxes[0]);
+         (".....created  (%p)Sandbox 1\n", sandboxes[0]);
       MessageInterface::ShowMessage
-         (wxT(".....created  (%p)%s\n"), commands[0], commands[0]->GetTypeName().c_str());
+         (".....created  (%p)%s\n", commands[0], commands[0]->GetTypeName().c_str());
       #endif
       
       // set objectMapInUse (loj: 2008.05.23)
@@ -284,8 +282,8 @@ bool Moderator::Initialize(const wxString &startupFile, bool fromGui)
       
       #ifdef DEBUG_OBJECT_MAP
       MessageInterface::ShowMessage
-         (wxT("Moderator::Initialize() objectMapInUse was set to the ")
-          wxT("configuration map <%p>\n"), objectMapInUse);
+         ("Moderator::Initialize() objectMapInUse was set to the "
+          "configuration map <%p>\n", objectMapInUse);
       #endif
       
       if (isFromGui)
@@ -294,24 +292,28 @@ bool Moderator::Initialize(const wxString &startupFile, bool fromGui)
    catch (BaseException &e)
    {
       MessageInterface::PopupMessage
-         (Gmat::WARNING_, wxT("Error occurred during initialization: ") +
+         (Gmat::WARNING_, "Error occurred during initialization: " +
           e.GetFullMessage());
       return false;
    }
    catch (...)
    {
       MessageInterface::PopupMessage
-         (Gmat::WARNING_, wxT("Unknown Error occurred during initialization"));
+         (Gmat::WARNING_, "Unknown Error occurred during initialization");
       return false;
    }
    
    // Let's put current time out
-   wxDateTime now = wxDateTime::Now();
-   wxString timestr;
-   timestr = now.Format( wxT("%Y-%m-%d %H:%M:%S"));
+   time_t rawtime;
+   struct tm * timeinfo;
+   
+   time(&rawtime);
+   timeinfo = localtime(&rawtime);
+   char timestr[80];
+   strftime(timestr, 80, "%Y-%m-%d %H:%M:%S",timeinfo);
    
    MessageInterface::ShowMessage
-      (wxT("%s GMAT Moderator successfully created core engine\n"), timestr.c_str());
+      ("%s GMAT Moderator successfully created core engine\n", timestr);
    
    // Check to see if there are any event locator factories
    StringArray elList = theFactoryManager->GetListOfItems(Gmat::EVENT_LOCATOR);
@@ -322,22 +324,22 @@ bool Moderator::Initialize(const wxString &startupFile, bool fromGui)
    if (GmatGlobal::Instance()->GetMatlabMode() == GmatGlobal::NO_MATLAB)
    {
       MessageInterface::ShowMessage
-         (wxT("*** Use of MATLAB is disabled from the gmat_startup_file\n"));
+         ("*** Use of MATLAB is disabled from the gmat_startup_file\n");
    }
    else
    {
       try
       {
-         theMatlabInterface = theFactoryManager->CreateInterface(wxT("MatlabInterface"), wxT("MI"));
+         theMatlabInterface = theFactoryManager->CreateInterface("MatlabInterface", "MI");
          #ifdef DEBUG_MATLAB
          MessageInterface::ShowMessage
-            (wxT("Moderator::Initialize() theMatlabInterface=<%p>\n"), theMatlabInterface);
+            ("Moderator::Initialize() theMatlabInterface=<%p>\n", theMatlabInterface);
          #endif
          // Check if MATLAB is installed
          // Do not override matlab setting in the startup file since
          // GmatFileUtil::IsAppInstalled() not implemented for all platforms
-         wxString appLoc;
-         bool hasMatlab = GmatFileUtil::IsAppInstalled(wxT("MATLAB"), appLoc);
+         std::string appLoc;
+         bool hasMatlab = GmatFileUtil::IsAppInstalled("MATLAB", appLoc);
          // Since GmatFileUtil::IsAppInstalled() is not complete for all platforms,
          // assume there is MATLAB for now. (LOJ: 2010.04.07)
          hasMatlab = true;
@@ -345,14 +347,14 @@ bool Moderator::Initialize(const wxString &startupFile, bool fromGui)
          {
             #ifdef DEBUG_MATLAB
             MessageInterface::ShowMessage
-               (wxT("*** MATLAB is installed in '%s'\n"), appLoc.c_str());
+               ("*** MATLAB is installed in '%s'\n", appLoc.c_str());
             #endif
             GmatGlobal::Instance()->SetMatlabAvailable(true);
          }
          else
          {
             #ifdef DEBUG_MATLAB
-            MessageInterface::ShowMessage(wxT("*** MATLAB is not installed\n"));
+            MessageInterface::ShowMessage("*** MATLAB is not installed\n");
             #endif
          }
       }
@@ -367,10 +369,10 @@ bool Moderator::Initialize(const wxString &startupFile, bool fromGui)
       GmatGlobal::Instance()->SetMatlabMode(GmatGlobal::NO_MATLAB);
    else
       theMatlabInterface->
-         SetIntegerParameter(wxT("MatlabMode"),
+         SetIntegerParameter("MatlabMode",
                              GmatGlobal::Instance()->GetMatlabMode());
    #if DEBUG_INITIALIZE
-   MessageInterface::ShowMessage(wxT("Moderator::Initialize() returning true\n"));
+   MessageInterface::ShowMessage("Moderator::Initialize() returning true\n");
    #endif
    
    return true;;
@@ -387,10 +389,10 @@ bool Moderator::Initialize(const wxString &startupFile, bool fromGui)
 //------------------------------------------------------------------------------
 void Moderator::Finalize()
 {
-   MessageInterface::ShowMessage(wxT("Moderator is deleting core engine...\n"));
+   MessageInterface::ShowMessage("Moderator is deleting core engine...\n");
    
    #if DEBUG_FINALIZE > 0
-   MessageInterface::ShowMessage(wxT("Moderator::Finalize() entered\n"));
+   MessageInterface::ShowMessage("Moderator::Finalize() entered\n");
    #endif
    
    #if DEBUG_FINALIZE > 1
@@ -403,13 +405,13 @@ void Moderator::Finalize()
    
    #if DEBUG_FINALIZE > 0
    MessageInterface::ShowMessage
-      (wxT(".....Moderator::Finalize() deleting (%p)theFileManager\n"), theFileManager);
+      (".....Moderator::Finalize() deleting (%p)theFileManager\n", theFileManager);
    MessageInterface::ShowMessage
-      (wxT(".....Moderator::Finalize() deleting (%p)theEopFile\n"), theEopFile);
+      (".....Moderator::Finalize() deleting (%p)theEopFile\n", theEopFile);
    MessageInterface::ShowMessage
-      (wxT(".....Moderator::Finalize() deleting (%p)theItrfFile\n"), theItrfFile);
+      (".....Moderator::Finalize() deleting (%p)theItrfFile\n", theItrfFile);
    MessageInterface::ShowMessage
-      (wxT(".....Moderator::Finalize() deleting (%p)theLeapSecsFile\n"), theLeapSecsFile);
+      (".....Moderator::Finalize() deleting (%p)theLeapSecsFile\n", theLeapSecsFile);
    #endif
    
    delete theFileManager;
@@ -428,8 +430,8 @@ void Moderator::Finalize()
    try
    {
       #if DEBUG_FINALIZE > 0
-      MessageInterface::ShowMessage(wxT(".....clearing resource\n"));
-      MessageInterface::ShowMessage(wxT(".....clearing command sequence\n"));
+      MessageInterface::ShowMessage(".....clearing resource\n");
+      MessageInterface::ShowMessage(".....clearing command sequence\n");
       #endif
       
       // Clear command sequence before resource (loj: 2008.07.10)
@@ -443,13 +445,13 @@ void Moderator::Finalize()
       userResources.clear();
 
       // Close out the plug-in libraries
-      std::map<wxString, DynamicLibrary*>::iterator i;
+      std::map<std::string, DynamicLibrary*>::iterator i;
       for (i = userLibraries.begin(); i != userLibraries.end(); ++i)
       {
          delete i->second;
          i->second = NULL;
          #ifdef DEBUG_PLUGINS
-            MessageInterface::ShowMessage(wxT("Closed %s.\n"), i->first.c_str());
+            MessageInterface::ShowMessage("Closed %s.\n", i->first.c_str());
          #endif
       }
 
@@ -467,7 +469,7 @@ void Moderator::Finalize()
       //delete theGuiInterpreter; (private destructor)
       #if DEBUG_FINALIZE > 0
       MessageInterface::ShowMessage
-         (wxT(".....Moderator::Finalize() deleting (%p)thePublisher\n"),
+         (".....Moderator::Finalize() deleting (%p)thePublisher\n",
           thePublisher);
       #endif      
       delete thePublisher;
@@ -475,13 +477,13 @@ void Moderator::Finalize()
       // delete solar systems
       #if DEBUG_FINALIZE > 0
       MessageInterface::ShowMessage
-         (wxT(".....Moderator::Finalize() deleting (%p)theDefaultSolarSystem\n"),
+         (".....Moderator::Finalize() deleting (%p)theDefaultSolarSystem\n",
           theDefaultSolarSystem);
       #endif      
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
          (theDefaultSolarSystem, theDefaultSolarSystem->GetName(),
-          wxT("Moderator::Finalize()"));
+          "Moderator::Finalize()");
       #endif
       delete theDefaultSolarSystem;
       theDefaultSolarSystem = NULL;
@@ -490,13 +492,13 @@ void Moderator::Finalize()
       {
          #if DEBUG_FINALIZE > 0
          MessageInterface::ShowMessage
-            (wxT(".....Moderator::Finalize() deleting (%p)theSolarSystemInUse\n"),
+            (".....Moderator::Finalize() deleting (%p)theSolarSystemInUse\n",
              theSolarSystemInUse);
          #endif
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
             (theSolarSystemInUse, theSolarSystemInUse->GetName(),
-             wxT("Moderator::Finalize()"));
+             "Moderator::Finalize()");
          #endif
          delete theSolarSystemInUse;
          theSolarSystemInUse = NULL;
@@ -507,13 +509,13 @@ void Moderator::Finalize()
       {
          #if DEBUG_FINALIZE > 0
          MessageInterface::ShowMessage
-            (wxT(".....Moderator::Finalize() deleting (%p)theInternalCoordSystem\n"),
+            (".....Moderator::Finalize() deleting (%p)theInternalCoordSystem\n",
              theInternalCoordSystem);
          #endif
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
             (theInternalCoordSystem, theInternalCoordSystem->GetName(),
-             wxT("Moderator::Finalize()"));
+             "Moderator::Finalize()");
          #endif
          delete theInternalCoordSystem;
          theInternalCoordSystem = NULL;
@@ -525,7 +527,7 @@ void Moderator::Finalize()
       #ifdef __ENABLE_CLEAR_UNMANAGED_FUNCTIONS__
       #if DEBUG_FINALIZE > 0
       MessageInterface::ShowMessage
-         (wxT(".....Moderator::Finalize() deleting %d unmanaged functions\n"),
+         (".....Moderator::Finalize() deleting %d unmanaged functions\n",
           unmanagedFunctions.size());
       #endif
       for (UnsignedInt i=0; i<unmanagedFunctions.size(); i++)
@@ -533,8 +535,8 @@ void Moderator::Finalize()
          GmatBase *func = (GmatBase*)(unmanagedFunctions[i]);
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (func, func->GetName(), wxT("Moderator::Finalize()"),
-             wxT("deleting unmanaged function"));
+            (func, func->GetName(), "Moderator::Finalize()",
+             "deleting unmanaged function");
          #endif
          delete func;
          func = NULL;
@@ -545,11 +547,11 @@ void Moderator::Finalize()
       // delete Sandbox (only 1 Sandbox for now)
       #if DEBUG_FINALIZE > 0
       MessageInterface::ShowMessage
-         (wxT(".....Moderator::Finalize() deleting (%p)sandbox 1\n"), sandboxes[0]);
+         (".....Moderator::Finalize() deleting (%p)sandbox 1\n", sandboxes[0]);
       #endif
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (sandboxes[0], wxT("Sandbox"), wxT("Moderator::Finalize()"));
+         (sandboxes[0], "Sandbox", "Moderator::Finalize()");
       #endif
       delete sandboxes[0];
       commands[0] = NULL;
@@ -565,13 +567,13 @@ void Moderator::Finalize()
    #ifdef DEBUG_MEMORY
    StringArray tracks = MemoryTracker::Instance()->GetTracks(true, false);
    MessageInterface::ShowMessage
-      (wxT("===> There are %d memory tracks after Finalize\n"), tracks.size());
+      ("===> There are %d memory tracks after Finalize\n", tracks.size());
    for (UnsignedInt i=0; i<tracks.size(); i++)
-      MessageInterface::ShowMessage(wxT("%s\n"), tracks[i].c_str());
+      MessageInterface::ShowMessage("%s\n", tracks[i].c_str());
    #endif
    
    #if DEBUG_FINALIZE > 0
-   MessageInterface::ShowMessage(wxT("Moderator::Finalize() exiting\n"));
+   MessageInterface::ShowMessage("Moderator::Finalize() exiting\n");
    #endif
 } // Finalize()
 
@@ -605,7 +607,7 @@ bool Moderator::OpenMatlabEngine()
 {
    #ifdef DEBUG_MATLAB
    MessageInterface::ShowMessage
-      (wxT("Moderator::OpenMatlabEngine() theMatlabInterface=<%p>\n"),
+      ("Moderator::OpenMatlabEngine() theMatlabInterface=<%p>\n",
        theMatlabInterface);
    #endif
    
@@ -613,7 +615,7 @@ bool Moderator::OpenMatlabEngine()
    {
       #ifdef DEBUG_MATLAB
       MessageInterface::ShowMessage
-         (wxT("Moderator::OpenMatlabEngine() calling theMatlabInterface->Open()\n"));
+         ("Moderator::OpenMatlabEngine() calling theMatlabInterface->Open()\n");
       #endif
       
       if (theMatlabInterface->Open() == 1)
@@ -625,7 +627,7 @@ bool Moderator::OpenMatlabEngine()
    {
       #ifdef DEBUG_MATLAB
       MessageInterface::ShowMessage
-         (wxT("Moderator::OpenMatlabEngine() theMatlabInterface is NULL, so returning false\n"));
+         ("Moderator::OpenMatlabEngine() theMatlabInterface is NULL, so returning false\n");
       #endif
       return false;
    }
@@ -639,7 +641,7 @@ bool Moderator::CloseMatlabEngine()
 {
    #ifdef DEBUG_MATLAB
    MessageInterface::ShowMessage
-      (wxT("Moderator::CloseMatlabEngine() theMatlabInterface=<%p>\n"),
+      ("Moderator::CloseMatlabEngine() theMatlabInterface=<%p>\n",
        theMatlabInterface);
    #endif
    
@@ -647,7 +649,7 @@ bool Moderator::CloseMatlabEngine()
    {
       #ifdef DEBUG_MATLAB
       MessageInterface::ShowMessage
-         (wxT("Moderator::CloseMatlabEngine() calling theMatlabInterface->Close()\n"));
+         ("Moderator::CloseMatlabEngine() calling theMatlabInterface->Close()\n");
       #endif
       
       if (theMatlabInterface->Close() == 1)
@@ -659,7 +661,7 @@ bool Moderator::CloseMatlabEngine()
    {
       #ifdef DEBUG_MATLAB
       MessageInterface::ShowMessage
-         (wxT("Moderator::OpenMatlabEngine() theMatlabInterface is NULL, so returning false\n"));
+         ("Moderator::OpenMatlabEngine() theMatlabInterface is NULL, so returning false\n");
       #endif
       return false;
    }
@@ -695,7 +697,7 @@ void Moderator::LoadPlugins()
    
          #ifdef DEBUG_PLUGIN_REGISTRATION
             MessageInterface::ShowMessage(
-                  wxT("*** Loading dynamic library \"%s\": "), i->c_str());
+                  "*** Loading dynamic library \"%s\": ", i->c_str());
          #endif
          LoadAPlugin(*i);
 
@@ -703,7 +705,7 @@ void Moderator::LoadPlugins()
          
          #ifdef DEBUG_PLUGIN_REGISTRATION
             MessageInterface::ShowMessage(
-                  wxT("*** Loading dynamic library \"%s\": "), i->c_str());
+                  "*** Loading dynamic library \"%s\": ", i->c_str());
          #endif
          LoadAPlugin(*i);
         
@@ -716,7 +718,7 @@ void Moderator::LoadPlugins()
 }
 
 //------------------------------------------------------------------------------
-// void LoadAPlugin(wxString pluginName)
+// void LoadAPlugin(std::string pluginName)
 //------------------------------------------------------------------------------
 /**
  * Method that loads a plug-in library into memory.
@@ -729,23 +731,23 @@ void Moderator::LoadPlugins()
  *                   include the file extension (e.g. ".ddl" or ".so").
  */ 
 //------------------------------------------------------------------------------
-void Moderator::LoadAPlugin(wxString pluginName)
+void Moderator::LoadAPlugin(std::string pluginName)
 {
    // Set platform specific slash style
    #ifdef DEBUG_PLUGIN_REGISTRATION
-      MessageInterface::ShowMessage(wxT("Input plugin name: \"%s\"\n"), pluginName.c_str());
+      MessageInterface::ShowMessage("Input plugin name: \"%s\"\n", pluginName.c_str());
    #endif
 
-   wxChar fSlash = wxT('/');
-   wxChar bSlash = wxT('\\');
-   wxChar osSlash = wxT('\\');       // Default to Windows, but change if *nix
+   char fSlash = '/';
+   char bSlash = '\\';
+   char osSlash = '\\';       // Default to Windows, but change if *nix
 
    #ifndef _WIN32
-      osSlash = wxT('/');          // Mac or Linux
+      osSlash = '/';          // Mac or Linux
    #endif
 
    #ifdef DEBUG_PLUGIN_REGISTRATION
-      MessageInterface::ShowMessage(wxT("OS slash is \"%c\"\n"), osSlash);
+      MessageInterface::ShowMessage("OS slash is \"%c\"\n", osSlash);
    #endif
 
    for (UnsignedInt i = 0; i < pluginName.length(); ++i)
@@ -755,7 +757,7 @@ void Moderator::LoadAPlugin(wxString pluginName)
    }
 
    #ifdef DEBUG_PLUGIN_REGISTRATION
-      MessageInterface::ShowMessage(wxT("Used plugin name:  \"%s\"\n"), pluginName.c_str());
+      MessageInterface::ShowMessage("Used plugin name:  \"%s\"\n", pluginName.c_str());
    #endif
 
    DynamicLibrary *theLib = LoadLibrary(pluginName);
@@ -769,8 +771,8 @@ void Moderator::LoadAPlugin(wxString pluginName)
          // Do the GMAT factory dance
          #ifdef DEBUG_PLUGIN_REGISTRATION
             MessageInterface::ShowMessage(
-               wxT("Library %s contains %d %s.\n"), pluginName.c_str(), fc,
-               ( fc==1 ? wxT("factory") : wxT("factories")));
+               "Library %s contains %d %s.\n", pluginName.c_str(), fc,
+               ( fc==1 ? "factory" : "factories"));
          #endif
             
          // Now pass factories to the FactoryManager
@@ -782,42 +784,42 @@ void Moderator::LoadAPlugin(wxString pluginName)
             {
                if (theFactoryManager->RegisterFactory(newFactory) == false)
                   MessageInterface::ShowMessage(
-                        wxT("Factory %d in library %s failed to register with the ")
-                        wxT("Factory Manager.\n"), i, pluginName.c_str());
+                        "Factory %d in library %s failed to register with the "
+                        "Factory Manager.\n", i, pluginName.c_str());
                else
                {
                   #ifdef DEBUG_PLUGIN_REGISTRATION
                      MessageInterface::ShowMessage(
-                        wxT("Factory %d in library %s is now registered with the ")
-                        wxT("Factory Manager!\n"), i, pluginName.c_str());
+                        "Factory %d in library %s is now registered with the "
+                        "Factory Manager!\n", i, pluginName.c_str());
 
                      StringArray facts = newFactory->GetListOfCreatableObjects();
 
                      MessageInterface::ShowMessage(
-                           wxT("The new factory creates these objects types:\n"));
+                           "The new factory creates these objects types:\n");
 
                      for (UnsignedInt f = 0; f < facts.size(); ++f)
-                        MessageInterface::ShowMessage(wxT("   %s\n"),
+                        MessageInterface::ShowMessage("   %s\n",
                               facts[f].c_str());
                   #endif
                }
             } 
             else
                MessageInterface::ShowMessage(
-                     wxT("Factory %d in library %s was not constructed; a NULL ")
-                     wxT("pointer was returned instead.\n"), i, pluginName.c_str());
+                     "Factory %d in library %s was not constructed; a NULL "
+                     "pointer was returned instead.\n", i, pluginName.c_str());
          }
       }
       else
          MessageInterface::PutMessage(
-            wxT("*** Library \"") + pluginName + wxT("\" does not contain a factory\n"));
+            "*** Library \"" + pluginName + "\" does not contain a factory\n");
       
       // Test to see if there might be TriggerManagers
       Integer triggerCount = theLib->GetTriggerManagerCount();
       #ifdef DEBUG_PLUGIN_REGISTRATION
          MessageInterface::ShowMessage(
-            wxT("Library %s contains %d %s.\n"), pluginName.c_str(), triggerCount,
-            ( triggerCount == 1 ? wxT("TriggerManager") : wxT("TriggerManagers")));
+            "Library %s contains %d %s.\n", pluginName.c_str(), triggerCount,
+            ( triggerCount == 1 ? "TriggerManager" : "TriggerManagers"));
       #endif
 
       for (Integer i = 0; i < triggerCount; ++i)
@@ -827,7 +829,7 @@ void Moderator::LoadAPlugin(wxString pluginName)
 
          #ifdef DEBUG_PLUGIN_REGISTRATION
             MessageInterface::ShowMessage(
-               wxT("   TriggerManager %d of type %s is now registered.\n"), i,
+               "   TriggerManager %d of type %s is now registered.\n", i,
                tm->GetTriggerTypeString().c_str());
          #endif
       }
@@ -836,8 +838,8 @@ void Moderator::LoadAPlugin(wxString pluginName)
       Integer menuCount = theLib->GetMenuEntryCount();
       #ifdef DEBUG_PLUGIN_REGISTRATION
          MessageInterface::ShowMessage(
-            wxT("Library %s contains %d %s.\n"), pluginName.c_str(), menuCount,
-            ( menuCount == 1 ? wxT("menu entry") : wxT("menu entries")));
+            "Library %s contains %d %s.\n", pluginName.c_str(), menuCount,
+            ( menuCount == 1 ? "menu entry" : "menu entries"));
       #endif
 
       for (Integer i = 0; i < menuCount; ++i)
@@ -846,9 +848,9 @@ void Moderator::LoadAPlugin(wxString pluginName)
          if (res != NULL)
          {
             #ifdef DEBUG_PLUGIN_REGISTRATION
-               MessageInterface::ShowMessage(wxT("Adding user resource node:\n")
-                     wxT("   Name: %s\n   Parent: %s\n   type: %d\n")
-                     wxT("   subtype: %s\n"), res->nodeName.c_str(),
+               MessageInterface::ShowMessage("Adding user resource node:\n"
+                     "   Name: %s\n   Parent: %s\n   type: %d\n"
+                     "   subtype: %s\n", res->nodeName.c_str(),
                      res->parentNodeName.c_str(), res->type,
                      res->subtype.c_str());
             #endif
@@ -857,14 +859,14 @@ void Moderator::LoadAPlugin(wxString pluginName)
 
          #ifdef DEBUG_PLUGIN_REGISTRATION
             MessageInterface::ShowMessage(
-               wxT("   Menu entry %d for node %s is now registered.\n"), i,
+               "   Menu entry %d for node %s is now registered.\n", i,
                res->nodeName.c_str());
          #endif
       }
    }
    else
       MessageInterface::PutMessage(
-         wxT("*** Unable to load the dynamic library \"") + pluginName + wxT("\"\n"));
+         "*** Unable to load the dynamic library \"" + pluginName + "\"\n");
 }
 
 //------------------------------------------------------------------------------
@@ -872,7 +874,7 @@ void Moderator::LoadAPlugin(wxString pluginName)
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// DynamicLibrary *LoadLibrary(const wxString &libraryName)
+// DynamicLibrary *LoadLibrary(const std::string &libraryName)
 //------------------------------------------------------------------------------
 /**
  * Loads a dynamic library into memory.
@@ -889,7 +891,7 @@ void Moderator::LoadAPlugin(wxString pluginName)
  *         NULL pointer if the library did not load.
  */ 
 //------------------------------------------------------------------------------
-DynamicLibrary *Moderator::LoadLibrary(const wxString &libraryName)
+DynamicLibrary *Moderator::LoadLibrary(const std::string &libraryName)
 {
    DynamicLibrary *theLib = new DynamicLibrary(libraryName);
    if (theLib->LoadDynamicLibrary())
@@ -898,7 +900,7 @@ DynamicLibrary *Moderator::LoadLibrary(const wxString &libraryName)
    }
    else
    {
-      MessageInterface::ShowMessage(wxT("*** Library \"%s\" did not open.\n"),
+      MessageInterface::ShowMessage("*** Library \"%s\" did not open.\n",
             libraryName.c_str());
       delete theLib;
       theLib = NULL;
@@ -908,7 +910,7 @@ DynamicLibrary *Moderator::LoadLibrary(const wxString &libraryName)
 }
 
 //------------------------------------------------------------------------------
-// bool IsLibraryLoaded(const wxString &libName)
+// bool IsLibraryLoaded(const std::string &libName)
 //------------------------------------------------------------------------------
 /**
  * Method that checks to see if a specified library has been loaded.
@@ -918,7 +920,7 @@ DynamicLibrary *Moderator::LoadLibrary(const wxString &libraryName)
  * @return true if the library has been loaded, false if not.
  */ 
 //------------------------------------------------------------------------------
-bool Moderator::IsLibraryLoaded(const wxString &libName)
+bool Moderator::IsLibraryLoaded(const std::string &libName)
 {
    bool retval = false;
    if (userLibraries.find(libName) != userLibraries.end())
@@ -928,8 +930,8 @@ bool Moderator::IsLibraryLoaded(const wxString &libName)
 }
 
 //------------------------------------------------------------------------------
-// void (*GetDynamicFunction(const wxString &funName, 
-//                           const wxString &libraryName))()
+// void (*GetDynamicFunction(const std::string &funName, 
+//                           const std::string &libraryName))()
 //------------------------------------------------------------------------------
 /**
  * Retrieves a specified function from a specified library.
@@ -944,8 +946,8 @@ bool Moderator::IsLibraryLoaded(const wxString &libName)
  *         and should be cast to the correct signature.
  */ 
 //------------------------------------------------------------------------------
-void (*Moderator::GetDynamicFunction(const wxString &funName, 
-      const wxString &libraryName))()
+void (*Moderator::GetDynamicFunction(const std::string &funName, 
+      const std::string &libraryName))()
 {
    void (*theFunction)() = NULL;
    if (IsLibraryLoaded(libraryName))
@@ -958,7 +960,7 @@ void (*Moderator::GetDynamicFunction(const wxString &funName,
 
 //----- ObjectType
 //------------------------------------------------------------------------------
-// wxString GetObjectTypeString(Gmat::ObjectType type)
+// std::string GetObjectTypeString(Gmat::ObjectType type)
 //------------------------------------------------------------------------------
 /**
  * Returns object type name of given object type.
@@ -968,12 +970,12 @@ void (*Moderator::GetDynamicFunction(const wxString &funName,
  * @return object type name
  */
 //------------------------------------------------------------------------------
-wxString Moderator::GetObjectTypeString(Gmat::ObjectType type)
+std::string Moderator::GetObjectTypeString(Gmat::ObjectType type)
 {
    if (type >= Gmat::SPACECRAFT && type <= Gmat::PROP_SETUP)
       return GmatBase::OBJECT_TYPE_STRING[type - Gmat::SPACECRAFT];
    else
-      return wxT("UnknownObject");
+      return "UnknownObject";
 }
 
 //----- interpreter
@@ -1062,9 +1064,9 @@ void Moderator::SetObjectMap(ObjectMap *objMap)
       
       #ifdef DEBUG_OBJECT_MAP
       MessageInterface::ShowMessage
-         (wxT("Moderator::SetObjectMap() objectMapInUse was set to input objMap <%p>\n"),
+         ("Moderator::SetObjectMap() objectMapInUse was set to input objMap <%p>\n",
           objMap);
-      ShowObjectMap(wxT("Moderator::SetObjectMap() Here is the object map in use"));
+      ShowObjectMap("Moderator::SetObjectMap() Here is the object map in use");
       #endif
    }
 }
@@ -1089,7 +1091,7 @@ void Moderator::SetObjectManageOption(Integer option)
 {
    #ifdef DEBUG_OBJECT_MANAGE
    MessageInterface::ShowMessage
-      (wxT("Moderator::SetObjectManageOption() option = %d\n"), option);
+      ("Moderator::SetObjectManageOption() option = %d\n", option);
    #endif
    objectManageOption = option;
 }
@@ -1109,7 +1111,7 @@ Integer Moderator::GetObjectManageOption()
 
 
 //------------------------------------------------------------------------------
-// bool ResetObjectPointer(GmatBase *newObj, const wxString &name)
+// bool ResetObjectPointer(GmatBase *newObj, const std::string &name)
 //------------------------------------------------------------------------------
 /*
  * Sets configured object pointer with new pointer.
@@ -1121,12 +1123,12 @@ Integer Moderator::GetObjectManageOption()
  */
 //------------------------------------------------------------------------------
 void Moderator::ResetObjectPointer(ObjectMap *objMap, GmatBase *newObj,
-                                   const wxString &name)
+                                   const std::string &name)
 {
    #if DEBUG_RESET_OBJECT
    MessageInterface::ShowMessage
-      (wxT("Moderator::ResetObjectPointer() entered, objMap=<%p>, newObj=<%p>, ")
-       wxT("name='%s'\n"), objMap, obj, newObj, name.c_str());
+      ("Moderator::ResetObjectPointer() entered, objMap=<%p>, newObj=<%p>, "
+       "name='%s'\n", objMap, obj, newObj, name.c_str());
    #endif
    
    if (objMap->find(name) != objMap->end())
@@ -1139,7 +1141,7 @@ void Moderator::ResetObjectPointer(ObjectMap *objMap, GmatBase *newObj,
          {
             #if DEBUG_RESET_OBJECT
             MessageInterface::ShowMessage
-               (wxT("   Replacing mapObj=<%p> with newObj=<%p>\n"), mapObj, newObj);
+               ("   Replacing mapObj=<%p> with newObj=<%p>\n", mapObj, newObj);
             #endif
             (*objMap)[name] = newObj;
          }
@@ -1147,7 +1149,7 @@ void Moderator::ResetObjectPointer(ObjectMap *objMap, GmatBase *newObj,
    }
    
    #if DEBUG_RESET_OBJECT
-   MessageInterface::ShowMessage(wxT("Moderator::ResetObjectPointer() leaving\n"));
+   MessageInterface::ShowMessage("Moderator::ResetObjectPointer() leaving\n");
    #endif
 }
 
@@ -1232,8 +1234,8 @@ const StringArray& Moderator::GetListOfUnviewableItems(Gmat::ObjectType type)
 
 
 //------------------------------------------------------------------------------
-// bool DoesObjectTypeMatchSubtype(const wxString &theType,
-//       const wxString &theSubtype)
+// bool DoesObjectTypeMatchSubtype(const std::string &theType,
+//       const std::string &theSubtype)
 //------------------------------------------------------------------------------
 /**
  * Checks if a creatable object type matches a subtype.
@@ -1247,7 +1249,7 @@ const StringArray& Moderator::GetListOfUnviewableItems(Gmat::ObjectType type)
  */
 //------------------------------------------------------------------------------
 bool Moderator::DoesObjectTypeMatchSubtype(const Gmat::ObjectType coreType,
-      const wxString &theType, const wxString &theSubtype)
+      const std::string &theType, const std::string &theSubtype)
 {
    return theFactoryManager->DoesObjectTypeMatchSubtype(coreType, theType,
          theSubtype);
@@ -1318,12 +1320,12 @@ const StringArray& Moderator::GetListOfObjects(Gmat::ObjectType type,
             theConfigManager->GetListOfItems(Gmat::CALCULATED_POINT);
          // Do not add default (built-in) barycenter(s) on option
          #ifdef DEBUG_LIST_CALCULATED_POINT
-            MessageInterface::ShowMessage(wxT("There are %d configured calculated points.\n"), (Integer) calptList.size());
+            MessageInterface::ShowMessage("There are %d configured calculated points.\n", (Integer) calptList.size());
          #endif
          if (excludeDefaultObjects)
          {
             #ifdef DEBUG_LIST_CALCULATED_POINT
-               MessageInterface::ShowMessage(wxT("--- Excluding default Calculated Point objects .....\n"));
+               MessageInterface::ShowMessage("--- Excluding default Calculated Point objects .....\n");
             #endif
             for (UnsignedInt i=0; i<calptList.size(); i++)
             {
@@ -1334,7 +1336,7 @@ const StringArray& Moderator::GetListOfObjects(Gmat::ObjectType type,
          else
          {
             #ifdef DEBUG_LIST_CALCULATED_POINT
-               MessageInterface::ShowMessage(wxT("--- NOT Excluding default Calculated Point objects .....\n"));
+               MessageInterface::ShowMessage("--- NOT Excluding default Calculated Point objects .....\n");
             #endif
             for (UnsignedInt i=0; i<calptList.size(); i++)
                tempObjectNames.push_back(calptList[i]);
@@ -1360,8 +1362,8 @@ const StringArray& Moderator::GetListOfObjects(Gmat::ObjectType type,
       tempObjectNames.clear();
       StringArray csObjNames = theConfigManager->GetListOfItems(type);
       for (UnsignedInt i=0; i<csObjNames.size(); i++)
-         if (csObjNames[i] != wxT("EarthMJ2000Eq") && csObjNames[i] != wxT("EarthMJ2000Ec") &&
-             csObjNames[i] != wxT("EarthFixed"))
+         if (csObjNames[i] != "EarthMJ2000Eq" && csObjNames[i] != "EarthMJ2000Ec" &&
+             csObjNames[i] != "EarthFixed")
             tempObjectNames.push_back(csObjNames[i]);
       return tempObjectNames;
    }
@@ -1382,7 +1384,7 @@ const StringArray& Moderator::GetListOfObjects(Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// const StringArray& GetListOfObjects(const wxString &typeName,
+// const StringArray& GetListOfObjects(const std::string &typeName,
 //                                     bool excludeDefaultObjects)
 //------------------------------------------------------------------------------
 /**
@@ -1396,25 +1398,25 @@ const StringArray& Moderator::GetListOfObjects(Gmat::ObjectType type,
  *  return all configured item if type is UNKNOWN_OBJECT
  */
 //------------------------------------------------------------------------------
-const StringArray& Moderator::GetListOfObjects(const wxString &typeName,
+const StringArray& Moderator::GetListOfObjects(const std::string &typeName,
                                                bool excludeDefaultObjects)
 {
-   if (typeName == wxT("UnknownObject"))
+   if (typeName == "UnknownObject")
       return theConfigManager->GetListOfAllItems();
    
-   if (typeName == wxT("CelestialBody") || typeName == wxT("SpacePoint"))
+   if (typeName == "CelestialBody" || typeName == "SpacePoint")
    {
       tempObjectNames.clear();
       
       if (theSolarSystemInUse == NULL)
          return tempObjectNames;
       
-      if (typeName == wxT("CelestialBody"))
+      if (typeName == "CelestialBody")
       {
          // add bodies to the list
          tempObjectNames = theSolarSystemInUse->GetBodiesInUse();
       }
-      else if (typeName == wxT("SpacePoint"))
+      else if (typeName == "SpacePoint")
       {
          // add Spacecraft to the list
          tempObjectNames = theConfigManager->GetListOfItems(Gmat::SPACECRAFT);
@@ -1430,7 +1432,7 @@ const StringArray& Moderator::GetListOfObjects(const wxString &typeName,
          if (excludeDefaultObjects)
          {
             #ifdef DEBUG_LIST_CALCULATED_POINT
-               MessageInterface::ShowMessage(wxT("--- Excluding default Calculated Point objects .....\n"));
+               MessageInterface::ShowMessage("--- Excluding default Calculated Point objects .....\n");
             #endif
             for (UnsignedInt i=0; i<calptList.size(); i++)
             {
@@ -1441,7 +1443,7 @@ const StringArray& Moderator::GetListOfObjects(const wxString &typeName,
          else
          {
             #ifdef DEBUG_LIST_CALCULATED_POINT
-               MessageInterface::ShowMessage(wxT("--- NOT Excluding default Calculated Point objects .....\n"));
+               MessageInterface::ShowMessage("--- NOT Excluding default Calculated Point objects .....\n");
             #endif
             for (UnsignedInt i=0; i<calptList.size(); i++)
                tempObjectNames.push_back(calptList[i]);
@@ -1459,18 +1461,18 @@ const StringArray& Moderator::GetListOfObjects(const wxString &typeName,
    }
    
    // Do not add default coordinate systems on option
-   if (typeName == wxT("CoordinateSystem") && excludeDefaultObjects)
+   if (typeName == "CoordinateSystem" && excludeDefaultObjects)
    {
       tempObjectNames.clear();
       StringArray csObjNames = theConfigManager->GetListOfItems(typeName);
       for (UnsignedInt i=0; i<csObjNames.size(); i++)
-         if (csObjNames[i] != wxT("EarthMJ2000Eq") && csObjNames[i] != wxT("EarthMJ2000Ec") &&
-             csObjNames[i] != wxT("EarthFixed"))
+         if (csObjNames[i] != "EarthMJ2000Eq" && csObjNames[i] != "EarthMJ2000Ec" &&
+             csObjNames[i] != "EarthFixed")
             tempObjectNames.push_back(csObjNames[i]);
       return tempObjectNames;
    }
    // Do not add default barycenter on option
-   if (typeName == wxT("CalculatedPoint") && excludeDefaultObjects)
+   if (typeName == "CalculatedPoint" && excludeDefaultObjects)
    {
       tempObjectNames.clear();
       StringArray cpNames = theConfigManager->GetListOfItems(typeName);
@@ -1485,30 +1487,30 @@ const StringArray& Moderator::GetListOfObjects(const wxString &typeName,
 
 
 //------------------------------------------------------------------------------
-// GmatBase* GetConfiguredObject(const wxString &name)
+// GmatBase* GetConfiguredObject(const std::string &name)
 //------------------------------------------------------------------------------
-GmatBase* Moderator::GetConfiguredObject(const wxString &name)
+GmatBase* Moderator::GetConfiguredObject(const std::string &name)
 {
    #if DEBUG_CONFIG
    MessageInterface::ShowMessage
-      (wxT("Moderator::GetConfiguredObject() entered: name=%s\n"), name.c_str());
+      ("Moderator::GetConfiguredObject() entered: name=%s\n", name.c_str());
    #endif
    
-   wxString newName = name;
+   std::string newName = name;
    
    // check for SolarSystem first until SolarSystem can be configured(LOJ: 2009.02.19)
-   if (name == wxT("SolarSystem") || name == wxT("Solar System"))
+   if (name == "SolarSystem" || name == "Solar System")
       return theSolarSystemInUse;
    
    // Ignore array indexing of Array
-   wxString::size_type index = name.find_first_of(wxT("(["));
+   std::string::size_type index = name.find_first_of("([");
    if (index != name.npos)
    {
       newName = name.substr(0, index);
       
       #if DEBUG_CONFIG
       MessageInterface::ShowMessage
-         (wxT("Moderator::GetConfiguredObject() entered: newName=%s\n"), newName.c_str());
+         ("Moderator::GetConfiguredObject() entered: newName=%s\n", newName.c_str());
       #endif
    }
    
@@ -1518,7 +1520,7 @@ GmatBase* Moderator::GetConfiguredObject(const wxString &name)
    {
       #if DEBUG_CONFIG
       MessageInterface::ShowMessage
-         (wxT("   Trying SolarSystem, theSolarSystemInUse=<%p>\n"), theSolarSystemInUse);
+         ("   Trying SolarSystem, theSolarSystemInUse=<%p>\n", theSolarSystemInUse);
       #endif
       
       // try SolarSystem
@@ -1530,13 +1532,13 @@ GmatBase* Moderator::GetConfiguredObject(const wxString &name)
    if (obj)
    {
       MessageInterface::ShowMessage
-         (wxT("Moderator::GetConfiguredObject() Found object: name=%s, type=%s, ")
-          wxT("addr=%p\n"), obj->GetName().c_str(), obj->GetTypeName().c_str(), obj);
+         ("Moderator::GetConfiguredObject() Found object: name=%s, type=%s, "
+          "addr=%p\n", obj->GetName().c_str(), obj->GetTypeName().c_str(), obj);
    }
    else
    {
       MessageInterface::ShowMessage
-         (wxT("Moderator::GetConfiguredObject() Cannot find object: name=%s\n"),
+         ("Moderator::GetConfiguredObject() Cannot find object: name=%s\n",
           newName.c_str());
    }
    #endif
@@ -1546,7 +1548,7 @@ GmatBase* Moderator::GetConfiguredObject(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// bool ReconfigureItem(GmatBase *newobj, const wxString &name)
+// bool ReconfigureItem(GmatBase *newobj, const std::string &name)
 //------------------------------------------------------------------------------
 /*
  * Sets configured object pointer with new pointer.
@@ -1557,7 +1559,7 @@ GmatBase* Moderator::GetConfiguredObject(const wxString &name)
  * @return  true if pointer was reset, false otherwise
  */
 //------------------------------------------------------------------------------
-bool Moderator::ReconfigureItem(GmatBase *newobj, const wxString &name)
+bool Moderator::ReconfigureItem(GmatBase *newobj, const std::string &name)
 {
    // Reconfigure item only if name found in the configuration.
    // Changed due to GmatFunction implementation (loj: 2008.06.25)
@@ -1569,7 +1571,7 @@ bool Moderator::ReconfigureItem(GmatBase *newobj, const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// wxString GetNewName(const wxString &name, Integer startCount)
+// std::string GetNewName(const std::string &name, Integer startCount)
 //------------------------------------------------------------------------------
 /*
  * It gives new name by adding counter to the input name.
@@ -1579,17 +1581,17 @@ bool Moderator::ReconfigureItem(GmatBase *newobj, const wxString &name)
  * @return new name
  */
 //------------------------------------------------------------------------------
-wxString Moderator::GetNewName(const wxString &name, Integer startCount)
+std::string Moderator::GetNewName(const std::string &name, Integer startCount)
 {
-   if (name == wxT(""))
-      return wxT("");
+   if (name == "")
+      return "";
    
    return theConfigManager->GetNewName(name, startCount);
 }
 
 
 //------------------------------------------------------------------------------
-// wxString AddClone(const wxString &name)
+// std::string AddClone(const std::string &name)
 //------------------------------------------------------------------------------
 /*
  * Adds the clone of the named object to configuration.
@@ -1598,18 +1600,18 @@ wxString Moderator::GetNewName(const wxString &name, Integer startCount)
  * return new name if object was cloned and added to configuration, blank otherwise
  */
 //------------------------------------------------------------------------------
-wxString Moderator::AddClone(const wxString &name)
+std::string Moderator::AddClone(const std::string &name)
 {
-   if (name == wxT(""))
-      return wxT("");
+   if (name == "")
+      return "";
 
    return theConfigManager->AddClone(name);
 }
 
 
 //------------------------------------------------------------------------------
-// bool RenameObject(Gmat::ObjectType type, const wxString &oldName
-//                           const wxString &newName)
+// bool RenameObject(Gmat::ObjectType type, const std::string &oldName
+//                           const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * Renames configured item
@@ -1621,12 +1623,12 @@ wxString Moderator::AddClone(const wxString &name)
  * @return true if the item has been removed; false otherwise
  */
 //------------------------------------------------------------------------------
-bool Moderator::RenameObject(Gmat::ObjectType type, const wxString &oldName,
-                                     const wxString &newName)
+bool Moderator::RenameObject(Gmat::ObjectType type, const std::string &oldName,
+                                     const std::string &newName)
 {
    #if DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("Moderator::RenameObject() type=%s, oldName=%s, newName=%s\n"),
+      ("Moderator::RenameObject() type=%s, oldName=%s, newName=%s\n",
        GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
    #endif
    
@@ -1634,7 +1636,7 @@ bool Moderator::RenameObject(Gmat::ObjectType type, const wxString &oldName,
    if (!GmatStringUtil::IsValidName(newName, true))
    {
       MessageInterface::PopupMessage
-         (Gmat::WARNING_, wxT("'%s' is not a valid object name.\nPlease enter a different name.\n"),
+         (Gmat::WARNING_, "'%s' is not a valid object name.\nPlease enter a different name.\n",
          newName.c_str());
       return false;
    }
@@ -1646,14 +1648,14 @@ bool Moderator::RenameObject(Gmat::ObjectType type, const wxString &oldName,
       if (commandNames[i] == newName)
       {
          MessageInterface::PopupMessage
-            (Gmat::WARNING_, wxT("'%s' is not a valid object name.\nPlease enter a different name.\n"),
+            (Gmat::WARNING_, "'%s' is not a valid object name.\nPlease enter a different name.\n",
             newName.c_str());
          return false;
       }
    }
    
    #if DEBUG_RENAME
-   MessageInterface::ShowMessage(wxT("   Calling theConfigManager->RenameItem()\n"));
+   MessageInterface::ShowMessage("   Calling theConfigManager->RenameItem()\n");
    #endif
    bool renamed = theConfigManager->RenameItem(type, oldName, newName);
    
@@ -1662,20 +1664,20 @@ bool Moderator::RenameObject(Gmat::ObjectType type, const wxString &oldName,
    //--------------------------------------------------
    #if DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("Moderator::RenameObject() ===> Change Command ref object names\n"));
+      ("Moderator::RenameObject() ===> Change Command ref object names\n");
    #endif
    
    int sandboxIndex = 0; //handles one sandbox for now
    GmatCommand *cmd = commands[sandboxIndex]->GetNext();
    GmatCommand *child;
-   wxString typeName;
+   std::string typeName;
    
    while (renamed && cmd != NULL)
    {
       typeName = cmd->GetTypeName();
       #if DEBUG_RENAME
       MessageInterface::ShowMessage
-         (wxT("...typeName=%12s, '%s'\n"), typeName.c_str(),
+         ("...typeName=%12s, '%s'\n", typeName.c_str(),
           cmd->GetGeneratingString(Gmat::NO_COMMENTS).c_str());
       #endif
       
@@ -1687,10 +1689,10 @@ bool Moderator::RenameObject(Gmat::ObjectType type, const wxString &oldName,
          typeName = child->GetTypeName();
          #if DEBUG_RENAME
          MessageInterface::ShowMessage
-            (wxT("......typeName=%12s, '%s'\n"), typeName.c_str(),
+            ("......typeName=%12s, '%s'\n", typeName.c_str(),
              cmd->GetGeneratingString(Gmat::NO_COMMENTS).c_str());
          #endif
-         if (typeName.find(wxT("End")) == typeName.npos)
+         if (typeName.find("End") == typeName.npos)
             renamed = child->RenameRefObject(type, oldName, newName);
          
          child = child->GetNext();
@@ -1701,14 +1703,14 @@ bool Moderator::RenameObject(Gmat::ObjectType type, const wxString &oldName,
    
    #if DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("Moderator::RenameObject() rename status=%d\n"), renamed);
+      ("Moderator::RenameObject() rename status=%d\n", renamed);
    #endif
 
    return renamed;
 }
 
 //------------------------------------------------------------------------------
-// bool RemoveObject(Gmat::ObjectType type, const wxString &name,
+// bool RemoveObject(Gmat::ObjectType type, const std::string &name,
 //                           bool delIfNotUsed)
 //------------------------------------------------------------------------------
 /**
@@ -1722,14 +1724,14 @@ bool Moderator::RenameObject(Gmat::ObjectType type, const wxString &oldName,
  * @return true if the item has been removed; false otherwise
  */
 //------------------------------------------------------------------------------
-bool Moderator::RemoveObject(Gmat::ObjectType type, const wxString &name,
+bool Moderator::RemoveObject(Gmat::ObjectType type, const std::string &name,
                              bool delOnlyIfNotUsed)
 {
    GmatCommand *cmd = GetFirstCommand();
    
    #if DEBUG_REMOVE
    MessageInterface::ShowMessage
-      (wxT("Moderator::RemoveObject() type=%d, name=%s, delOnlyIfNotUsed=%d\n"),
+      ("Moderator::RemoveObject() type=%d, name=%s, delOnlyIfNotUsed=%d\n",
        type, name.c_str(), delOnlyIfNotUsed);
    MessageInterface::ShowMessage(GmatCommandUtil::GetCommandSeqString(cmd));
    #endif
@@ -1742,14 +1744,14 @@ bool Moderator::RemoveObject(Gmat::ObjectType type, const wxString &name,
    {
       // remove if object is not used in other resource
       #if DEBUG_REMOVE
-      MessageInterface::ShowMessage(wxT("   Checking if '%s' is used in resource\n"), name.c_str());
+      MessageInterface::ShowMessage("   Checking if '%s' is used in resource\n", name.c_str());
       #endif
       GmatBase *obj = theConfigManager->GetFirstItemUsing(type, name);
       if (obj != NULL)
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** Cannot remove \"%s.\"  It is used in the %s ")
-             wxT("object named \"%s\"\n"), name.c_str(), obj->GetTypeName().c_str(),
+            ("*** WARNING *** Cannot remove \"%s.\"  It is used in the %s "
+             "object named \"%s\"\n", name.c_str(), obj->GetTypeName().c_str(),
              obj->GetName().c_str());
          return false;
       }
@@ -1757,15 +1759,15 @@ bool Moderator::RemoveObject(Gmat::ObjectType type, const wxString &name,
       {
          #if DEBUG_REMOVE
          MessageInterface::ShowMessage
-            (wxT("   '%s' is not used in resource, checking command\n"), name.c_str());
+            ("   '%s' is not used in resource, checking command\n", name.c_str());
          #endif
          // remove if object is not used in the command sequence
-         wxString cmdName;
+         std::string cmdName;
          if (GmatCommandUtil::FindObject(cmd, type, name, cmdName))
          {
             MessageInterface::ShowMessage
-               (wxT("*** WARNING *** Cannot remove \"%s.\"  It is used in the %s ")
-                wxT("command.\n"),  name.c_str(), cmdName.c_str());
+               ("*** WARNING *** Cannot remove \"%s.\"  It is used in the %s "
+                "command.\n",  name.c_str(), cmdName.c_str());
             return false;
          }
          else
@@ -1773,8 +1775,8 @@ bool Moderator::RemoveObject(Gmat::ObjectType type, const wxString &name,
             bool retval = theConfigManager->RemoveItem(type, name);
             #if DEBUG_REMOVE
             MessageInterface::ShowMessage
-               (wxT("Moderator::RemoveObject() returning %d from ")
-                wxT("theConfigManager->RemoveItem()\n"), retval);
+               ("Moderator::RemoveObject() returning %d from "
+                "theConfigManager->RemoveItem()\n", retval);
             #endif
             return retval;
          }
@@ -1793,8 +1795,8 @@ bool Moderator::HasConfigurationChanged(Integer sandboxNum)
    
    #if DEBUG_CONFIG
    MessageInterface::ShowMessage
-      (wxT("Moderator::HasConfigurationChanged() rsrcChanged=%d, ")
-       wxT("cmdsChanged=%d\n"), rsrcChanged, cmdsChanged);
+      ("Moderator::HasConfigurationChanged() rsrcChanged=%d, "
+       "cmdsChanged=%d\n", rsrcChanged, cmdsChanged);
    #endif
    
    return (rsrcChanged || cmdsChanged);
@@ -1808,7 +1810,7 @@ void Moderator::ConfigurationChanged(GmatBase *obj, bool tf)
 {
    #if DEBUG_CONFIG
    MessageInterface::ShowMessage
-      (wxT("Moderator::ConfigurationChanged() obj type=%s, name='%s', changed=%d\n"),
+      ("Moderator::ConfigurationChanged() obj type=%s, name='%s', changed=%d\n",
        obj->GetTypeName().c_str(), obj->GetName().c_str(), tf);
    #endif
    
@@ -1832,7 +1834,7 @@ void Moderator::ResetConfigurationChanged(bool resetResource, bool resetCommands
 {
    #if DEBUG_CONFIG
    MessageInterface::ShowMessage
-      (wxT("Moderator::ResetConfigurationChanged() entered\n"));
+      ("Moderator::ResetConfigurationChanged() entered\n");
    #endif
    
    if (resetResource)
@@ -1859,13 +1861,13 @@ SolarSystem* Moderator::GetDefaultSolarSystem()
 
 
 //------------------------------------------------------------------------------
-// SolarSystem* CreateSolarSystem(const wxString &name)
+// SolarSystem* CreateSolarSystem(const std::string &name)
 //------------------------------------------------------------------------------
-SolarSystem* Moderator::CreateSolarSystem(const wxString &name)
+SolarSystem* Moderator::CreateSolarSystem(const std::string &name)
 {
    #if DEBUG_SOLAR_SYSTEM
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateSolarSystem() creating '%s'\n"), name.c_str());
+      ("Moderator::CreateSolarSystem() creating '%s'\n", name.c_str());
    #endif
    
    // There is no factory to create SolarSystem so just create by new
@@ -1874,14 +1876,14 @@ SolarSystem* Moderator::CreateSolarSystem(const wxString &name)
    SolarSystem *ss = new SolarSystem(name);
    
    #ifdef DEBUG_MEMORY
-   wxString funcName;
-   funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+   std::string funcName;
+   funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
    MemoryTracker::Instance()->Add
-      (ss, name, wxT("Moderator::CreateSolarSystem()"), funcName);
+      (ss, name, "Moderator::CreateSolarSystem()", funcName);
    #endif
    
    #if DEBUG_SOLAR_SYSTEM
-   MessageInterface::ShowMessage(wxT("Moderator::CreateSolarSystem() returning %p\n"), ss);
+   MessageInterface::ShowMessage("Moderator::CreateSolarSystem() returning %p\n", ss);
    #endif
    
    return ss;
@@ -1902,8 +1904,8 @@ SolarSystem* Moderator::GetSolarSystemInUse(Integer manage)
 {
    #if DEBUG_SOLAR_SYSTEM_IN_USE
    MessageInterface::ShowMessage
-      (wxT("Moderator::GetSolarSystemInUse() entered, manage=%d, objectMapInUse=<%p>, ")
-       wxT("theInternalSolarSystem=<%p>\n"), manage, objectMapInUse, theInternalSolarSystem);
+      ("Moderator::GetSolarSystemInUse() entered, manage=%d, objectMapInUse=<%p>, "
+       "theInternalSolarSystem=<%p>\n", manage, objectMapInUse, theInternalSolarSystem);
    #endif
    
    SolarSystem *ss = NULL;
@@ -1911,17 +1913,17 @@ SolarSystem* Moderator::GetSolarSystemInUse(Integer manage)
    {
       ss = theConfigManager->GetSolarSystemInUse();
       #if DEBUG_SOLAR_SYSTEM_IN_USE
-      MessageInterface::ShowMessage(wxT("   Using SolarSystem from configuration <%p>\n"), ss);
+      MessageInterface::ShowMessage("   Using SolarSystem from configuration <%p>\n", ss);
       #endif
    }
    else
    {
-      ObjectMap::iterator pos = objectMapInUse->find(wxT("SolarSystem"));
+      ObjectMap::iterator pos = objectMapInUse->find("SolarSystem");
       if (pos != objectMapInUse->end())
       {
          ss = (SolarSystem*)pos->second;
          #if DEBUG_SOLAR_SYSTEM_IN_USE
-         MessageInterface::ShowMessage(wxT("   Using SolarSystem from objectMapInUse <%p>\n"), ss);
+         MessageInterface::ShowMessage("   Using SolarSystem from objectMapInUse <%p>\n", ss);
          #endif
       }
       
@@ -1929,7 +1931,7 @@ SolarSystem* Moderator::GetSolarSystemInUse(Integer manage)
       {
          ss = theInternalSolarSystem;
          #if DEBUG_SOLAR_SYSTEM_IN_USE
-         MessageInterface::ShowMessage(wxT("   Using Internal SolarSystem <%p>\n"), ss);
+         MessageInterface::ShowMessage("   Using Internal SolarSystem <%p>\n", ss);
          #endif
       }      
    }
@@ -1937,11 +1939,11 @@ SolarSystem* Moderator::GetSolarSystemInUse(Integer manage)
    // if SolarSystem is NULL, there is some problem
    if (ss == NULL)
       throw GmatBaseException
-         (wxT("Moderator::GetSolarSystemInUse() The SolarSystem in use is UNSET.\n"));
+         ("Moderator::GetSolarSystemInUse() The SolarSystem in use is UNSET.\n");
    
    #if DEBUG_SOLAR_SYSTEM_IN_USE
    MessageInterface::ShowMessage
-      (wxT("Moderator::GetSolarSystemInUse() returning <%p>\n"), ss);
+      ("Moderator::GetSolarSystemInUse() returning <%p>\n", ss);
    #endif
    
    return ss;
@@ -1957,7 +1959,7 @@ void Moderator::SetSolarSystemInUse(SolarSystem *ss)
       theConfigManager->SetSolarSystemInUse(ss);
    else
       throw GmatBaseException
-         (wxT("Moderator::SetSolarSystemInUse() cannot set NULL SolarSystem\n"));
+         ("Moderator::SetSolarSystemInUse() cannot set NULL SolarSystem\n");
 }
 
 
@@ -1978,7 +1980,7 @@ void Moderator::SetInternalSolarSystem(SolarSystem *ss)
    {
       #if DEBUG_SOLAR_SYSTEM_IN_USE
       MessageInterface::ShowMessage
-         (wxT("Moderator::SetInternalSolarSystem() entered, ss=<%p>'%s'\n"),
+         ("Moderator::SetInternalSolarSystem() entered, ss=<%p>'%s'\n",
           ss, ss->GetName().c_str());
       #endif
       
@@ -1988,9 +1990,9 @@ void Moderator::SetInternalSolarSystem(SolarSystem *ss)
 
 
 //------------------------------------------------------------------------------
-// bool SetSolarSystemInUse(const wxString &name)
+// bool SetSolarSystemInUse(const std::string &name)
 //------------------------------------------------------------------------------
-bool Moderator::SetSolarSystemInUse(const wxString &name)
+bool Moderator::SetSolarSystemInUse(const std::string &name)
 {
    return theConfigManager->SetSolarSystemInUse(name);
 }
@@ -1998,16 +2000,16 @@ bool Moderator::SetSolarSystemInUse(const wxString &name)
 
 // Create object
 //------------------------------------------------------------------------------
-// GmatBase* CreateOtherObject(Gmat::ObjectType objType, const wxString &type,
-//                             const wxString &name, bool createDefault)
+// GmatBase* CreateOtherObject(Gmat::ObjectType objType, const std::string &type,
+//                             const std::string &name, bool createDefault)
 //------------------------------------------------------------------------------
-GmatBase* Moderator::CreateOtherObject(Gmat::ObjectType objType, const wxString &type,
-                                       const wxString &name, bool createDefault)
+GmatBase* Moderator::CreateOtherObject(Gmat::ObjectType objType, const std::string &type,
+                                       const std::string &name, bool createDefault)
 {
    #if DEBUG_CREATE_RESOURCE
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateOtherObject() objType=%d, type='%s', name='%s', createDefault=%d, ")
-       wxT("objectManageOption=%d\n"), objType, type.c_str(), name.c_str(), createDefault,
+      ("Moderator::CreateOtherObject() objType=%d, type='%s', name='%s', createDefault=%d, "
+       "objectManageOption=%d\n", objType, type.c_str(), name.c_str(), createDefault,
        objectManageOption);
    #endif
    
@@ -2019,39 +2021,39 @@ GmatBase* Moderator::CreateOtherObject(Gmat::ObjectType objType, const wxString 
       if (obj == NULL)
       {
          throw GmatBaseException
-            (wxT("The Moderator cannot create an object of type \"") + type + wxT("\"\n"));
+            ("The Moderator cannot create an object of type \"" + type + "\"\n");
       }
       
       #ifdef DEBUG_MEMORY
       if (obj)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (obj, name, wxT("Moderator::CreateOtherObject()"), funcName);
+            (obj, name, "Moderator::CreateOtherObject()", funcName);
       }
       #endif
       
       // Manage it if it is a named object
       try
       {
-         if (name != wxT("") && objectManageOption == 1)
+         if (name != "" && objectManageOption == 1)
          {
             theConfigManager->AddObject(objType, obj);
             #if DEBUG_CREATE_RESOURCE
-            MessageInterface::ShowMessage(wxT("   ==> '%s' added to configuration\n"), name.c_str());
+            MessageInterface::ShowMessage("   ==> '%s' added to configuration\n", name.c_str());
             #endif
          }
       }
       catch (BaseException &e)
       {
-         MessageInterface::ShowMessage(wxT("Moderator::CreateOtherObject()\n") +
+         MessageInterface::ShowMessage("Moderator::CreateOtherObject()\n" +
                                        e.GetFullMessage());
       }
       
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateOtherObject() returning <%p>\n"), obj);
+         ("Moderator::CreateOtherObject() returning <%p>\n", obj);
       #endif
       return obj;
    }
@@ -2059,8 +2061,8 @@ GmatBase* Moderator::CreateOtherObject(Gmat::ObjectType objType, const wxString 
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateOtherObject() Unable to create an object ")
-          wxT("name: %s already exist\n"), name.c_str());
+         ("Moderator::CreateOtherObject() Unable to create an object "
+          "name: %s already exist\n", name.c_str());
       #endif
       return FindObject(name);
    }
@@ -2069,8 +2071,8 @@ GmatBase* Moderator::CreateOtherObject(Gmat::ObjectType objType, const wxString 
 
 // CalculatedPoint
 //------------------------------------------------------------------------------
-// CalculatedPoint* CreateCalculatedPoint(const wxString &type,
-//                                        const wxString &name,
+// CalculatedPoint* CreateCalculatedPoint(const std::string &type,
+//                                        const std::string &name,
 //                                        bool addDefaultBodies = true)
 //------------------------------------------------------------------------------
 /**
@@ -2083,21 +2085,21 @@ GmatBase* Moderator::CreateOtherObject(Gmat::ObjectType objType, const wxString 
  * @return a CalculatedPoint object pointer
  */
 //------------------------------------------------------------------------------
-CalculatedPoint* Moderator::CreateCalculatedPoint(const wxString &type,
-                                                  const wxString &name,
+CalculatedPoint* Moderator::CreateCalculatedPoint(const std::string &type,
+                                                  const std::string &name,
                                                   bool addDefaultBodies)
 {
    #if DEBUG_CREATE_RESOURCE
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateCalculatedPoint() type='%s', name='%s', ")
-       wxT("addDefaultBodies=%d, objectManageOption=%d\n"), type.c_str(), name.c_str(),
+      ("Moderator::CreateCalculatedPoint() type='%s', name='%s', "
+       "addDefaultBodies=%d, objectManageOption=%d\n", type.c_str(), name.c_str(),
        addDefaultBodies, objectManageOption);
    #endif
    
    if (GetCalculatedPoint(name) == NULL)
    {
       #ifdef DEBUG_CREATE_CALC_POINT
-         MessageInterface::ShowMessage(wxT("Moderator::Creating new %s named %s\n"),
+         MessageInterface::ShowMessage("Moderator::Creating new %s named %s\n",
                type.c_str(), name.c_str());
       #endif
       CalculatedPoint *obj = theFactoryManager->CreateCalculatedPoint(type, name);
@@ -2105,63 +2107,63 @@ CalculatedPoint* Moderator::CreateCalculatedPoint(const wxString &type,
       if (obj == NULL)
       {
          throw GmatBaseException
-            (wxT("The Moderator cannot create a CalculatedPoint type \"") + type + wxT("\"\n"));
+            ("The Moderator cannot create a CalculatedPoint type \"" + type + "\"\n");
       }
       
       #ifdef DEBUG_MEMORY
       if (obj)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (obj, name, wxT("Moderator::CreateCalculatedPoint()"), funcName);
+            (obj, name, "Moderator::CreateCalculatedPoint()", funcName);
       }
       #endif
       
       // add default bodies
-      if (type == wxT("LibrationPoint"))
+      if (type == "LibrationPoint")
       {
          if (addDefaultBodies)
          {
-            obj->SetStringParameter(wxT("Primary"), wxT("Sun"));
-            obj->SetStringParameter(wxT("Point"), wxT("L1"));
-            obj->SetStringParameter(wxT("Secondary"), wxT("Earth"));
+            obj->SetStringParameter("Primary", "Sun");
+            obj->SetStringParameter("Point", "L1");
+            obj->SetStringParameter("Secondary", "Earth");
             
             #ifdef __CREATE_DEFAULT_BC__
                // first create default Earth-Moon Barycenter
-               CalculatedPoint *defBc = GetCalculatedPoint(wxT("DefaultBC"));
+               CalculatedPoint *defBc = GetCalculatedPoint("DefaultBC");
 
                if (defBc == NULL)
-                  defBc = CreateCalculatedPoint(wxT("Barycenter"), wxT("DefaultBC"));
+                  defBc = CreateCalculatedPoint("Barycenter", "DefaultBC");
 
-               obj->SetStringParameter(wxT("Secondary"), wxT("DefaultBC"));
-               obj->SetRefObject(defBc, Gmat::SPACE_POINT, wxT("DefaultBC"));
+               obj->SetStringParameter("Secondary", "DefaultBC");
+               obj->SetRefObject(defBc, Gmat::SPACE_POINT, "DefaultBC");
             #endif
             
             // Set body and J2000Body pointer, so that GUI can create LibrationPoint
             // and use it in Coord.System conversion
-            SpacePoint *sun = (SpacePoint*)FindObject(wxT("Sun"));
-            SpacePoint *earth = (SpacePoint*)FindObject(wxT("Earth"));
+            SpacePoint *sun = (SpacePoint*)FindObject("Sun");
+            SpacePoint *earth = (SpacePoint*)FindObject("Earth");
             
             if (sun->GetJ2000Body() == NULL)
                sun->SetJ2000Body(earth);
             
             #if DEBUG_CREATE_RESOURCE
             MessageInterface::ShowMessage
-               (wxT("Moderator::Setting sun <%p> and earth <%p> to LibrationPoint %s\n"), sun, earth, name.c_str());
+               ("Moderator::Setting sun <%p> and earth <%p> to LibrationPoint %s\n", sun, earth, name.c_str());
             #endif
             
-            obj->SetRefObject(sun, Gmat::SPACE_POINT, wxT("Sun"));
-            obj->SetRefObject(earth, Gmat::SPACE_POINT, wxT("Earth"));
+            obj->SetRefObject(sun, Gmat::SPACE_POINT, "Sun");
+            obj->SetRefObject(earth, Gmat::SPACE_POINT, "Earth");
          }
       }
-      else if (type == wxT("Barycenter"))
+      else if (type == "Barycenter")
       {
          if (addDefaultBodies)
          {
 //            obj->SetStringParameter("BodyNames", "Earth");
-            ((CalculatedPoint*) obj)->SetDefaultBody(wxT("Earth"));
-            ((CalculatedPoint*) obj)->SetDefaultBody(wxT("Luna"));
+            ((CalculatedPoint*) obj)->SetDefaultBody("Earth");
+            ((CalculatedPoint*) obj)->SetDefaultBody("Luna");
 
             // Set body and J2000Body pointer, so that GUI can create LibrationPoint
             // and use it in Coord.System conversion
@@ -2179,12 +2181,12 @@ CalculatedPoint* Moderator::CreateCalculatedPoint(const wxString &type,
       // Manage it if it is a named CalculatedPoint
       try
       {
-         if (name != wxT("") && objectManageOption == 1)
+         if (name != "" && objectManageOption == 1)
             theConfigManager->AddCalculatedPoint(obj);
       }
       catch (BaseException &e)
       {
-         MessageInterface::ShowMessage(wxT("Moderator::CreateCalculatedPoint()\n") +
+         MessageInterface::ShowMessage("Moderator::CreateCalculatedPoint()\n" +
                                        e.GetFullMessage());
       }
       
@@ -2194,8 +2196,8 @@ CalculatedPoint* Moderator::CreateCalculatedPoint(const wxString &type,
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateCalculatedPoint() Unable to create CalculatedPoint ")
-          wxT("name: %s already exist\n"), name.c_str());
+         ("Moderator::CreateCalculatedPoint() Unable to create CalculatedPoint "
+          "name: %s already exist\n", name.c_str());
       #endif
       return GetCalculatedPoint(name);
    }
@@ -2203,7 +2205,7 @@ CalculatedPoint* Moderator::CreateCalculatedPoint(const wxString &type,
 
 
 //------------------------------------------------------------------------------
-// CalculatedPoint* GetCalculatedPoint(const wxString &name)
+// CalculatedPoint* GetCalculatedPoint(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a calclulated point object pointer by given name.
@@ -2213,9 +2215,9 @@ CalculatedPoint* Moderator::CreateCalculatedPoint(const wxString &type,
  * @return a CalculatedPoint object pointer, return null if name not found
  */
 //------------------------------------------------------------------------------
-CalculatedPoint* Moderator::GetCalculatedPoint(const wxString &name)
+CalculatedPoint* Moderator::GetCalculatedPoint(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return (CalculatedPoint*)FindObject(name);
@@ -2224,8 +2226,8 @@ CalculatedPoint* Moderator::GetCalculatedPoint(const wxString &name)
 
 // CelestialBody
 //------------------------------------------------------------------------------
-// CelestialBody* CreateCelestialBody(const wxString &type,
-//                                    const wxString &name)
+// CelestialBody* CreateCelestialBody(const std::string &type,
+//                                    const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Creates a celestial body object by given type and name.
@@ -2236,15 +2238,15 @@ CalculatedPoint* Moderator::GetCalculatedPoint(const wxString &name)
  * @return a CelestialBody object pointer
  */
 //------------------------------------------------------------------------------
-CelestialBody* Moderator::CreateCelestialBody(const wxString &type,
-                                              const wxString &name)
+CelestialBody* Moderator::CreateCelestialBody(const std::string &type,
+                                              const std::string &name)
 {
    #ifdef DEBUG_CREATE_BODY
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateCelestialBody() called with type = '%s' and name = '%s'\n"),
+      ("Moderator::CreateCelestialBody() called with type = '%s' and name = '%s'\n",
        type.c_str(), name.c_str());
    if (GetCelestialBody(name) != NULL) 
-      MessageInterface::ShowMessage(wxT("... that body alreday exists\n"));
+      MessageInterface::ShowMessage("... that body alreday exists\n");
    #endif
    if (GetCelestialBody(name) == NULL)
    {
@@ -2252,15 +2254,15 @@ CelestialBody* Moderator::CreateCelestialBody(const wxString &type,
       
       if (obj == NULL)
          throw GmatBaseException
-            (wxT("The Moderator cannot create a CelestialBody type \"") + type + wxT("\"\n"));
+            ("The Moderator cannot create a CelestialBody type \"" + type + "\"\n");
       
       #ifdef DEBUG_MEMORY
       if (obj)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (obj, name, wxT("Moderator::CreateCelestialBody()"), funcName);
+            (obj, name, "Moderator::CreateCelestialBody()", funcName);
       }
       #endif
       
@@ -2273,8 +2275,8 @@ CelestialBody* Moderator::CreateCelestialBody(const wxString &type,
       ss->AddBody(obj);
       #ifdef DEBUG_CREATE_BODY
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateCelestialBody() Created CelestialBody <%p> ")
-          wxT("\"%s\" and added to Solar System <%p>\n"), obj, name.c_str(), ss);
+         ("Moderator::CreateCelestialBody() Created CelestialBody <%p> "
+          "\"%s\" and added to Solar System <%p>\n", obj, name.c_str(), ss);
       #endif
       
       // Manually set configuration changed to true here since
@@ -2287,8 +2289,8 @@ CelestialBody* Moderator::CreateCelestialBody(const wxString &type,
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateCelestialBody() Unable to create CelestialBody ")
-          wxT("name: %s already exist\n"), name.c_str());
+         ("Moderator::CreateCelestialBody() Unable to create CelestialBody "
+          "name: %s already exist\n", name.c_str());
       #endif
       return GetCelestialBody(name);
    }
@@ -2296,7 +2298,7 @@ CelestialBody* Moderator::CreateCelestialBody(const wxString &type,
 
 
 //------------------------------------------------------------------------------
-// CelestialBody* GetCelestialBody(const wxString &name)
+// CelestialBody* GetCelestialBody(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a celestial body object pointer by given name.
@@ -2306,9 +2308,9 @@ CelestialBody* Moderator::CreateCelestialBody(const wxString &type,
  * @return a CelestialBody object pointer, return null if name not found
  */
 //------------------------------------------------------------------------------
-CelestialBody* Moderator::GetCelestialBody(const wxString &name)
+CelestialBody* Moderator::GetCelestialBody(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return (CelestialBody*)FindObject(name);
@@ -2317,7 +2319,7 @@ CelestialBody* Moderator::GetCelestialBody(const wxString &name)
 
 // Spacecraft
 //------------------------------------------------------------------------------
-// SpaceObject* CreateSpacecraft(const wxString &type, const wxString &name)
+// SpaceObject* CreateSpacecraft(const std::string &type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Creates a spacecraft object by given name.
@@ -2328,12 +2330,12 @@ CelestialBody* Moderator::GetCelestialBody(const wxString &name)
  * @return spacecraft object pointer
  */
 //------------------------------------------------------------------------------
-SpaceObject* Moderator::CreateSpacecraft(const wxString &type,
-                                         const wxString &name)
+SpaceObject* Moderator::CreateSpacecraft(const std::string &type,
+                                         const std::string &name)
 {
    #if DEBUG_CREATE_RESOURCE
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateSpacecraft() type = '%s', name = '%s'\n"),
+      ("Moderator::CreateSpacecraft() type = '%s', name = '%s'\n",
        type.c_str(), name.c_str());
    #endif
    
@@ -2343,15 +2345,15 @@ SpaceObject* Moderator::CreateSpacecraft(const wxString &type,
       
       if (obj == NULL)
          throw GmatBaseException
-            (wxT("The Moderator cannot create a Spacecraft type \"") + type + wxT("\"\n"));
+            ("The Moderator cannot create a Spacecraft type \"" + type + "\"\n");
       
       #ifdef DEBUG_MEMORY
       if (obj)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (obj, name, wxT("Moderator::CreateSpacecraft()"), funcName);
+            (obj, name, "Moderator::CreateSpacecraft()", funcName);
       }
       #endif
       
@@ -2364,28 +2366,28 @@ SpaceObject* Moderator::CreateSpacecraft(const wxString &type,
       // Create the default Solar System barycenter
       CreateDefaultBarycenter();
       
-      if (type == wxT("Spacecraft"))
+      if (type == "Spacecraft")
       {
          // Set internal and default CoordinateSystem
          obj->SetInternalCoordSystem(theInternalCoordSystem);
-         obj->SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+         obj->SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
       }
       
       // Manage it if it is a named Spacecraft
       try
       {
-         if (name != wxT("") && objectManageOption == 1)
+         if (name != "" && objectManageOption == 1)
             theConfigManager->AddSpacecraft(obj);
       }
       catch (BaseException &e)
       {
-         MessageInterface::ShowMessage(wxT("Moderator::CreateSpacecraft()\n") +
+         MessageInterface::ShowMessage("Moderator::CreateSpacecraft()\n" +
                                        e.GetFullMessage());
       }
       
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateSpacecraft() returning <%p>'%s'\n"), obj,
+         ("Moderator::CreateSpacecraft() returning <%p>'%s'\n", obj,
           obj->GetName().c_str());
       #endif
       return obj;
@@ -2394,8 +2396,8 @@ SpaceObject* Moderator::CreateSpacecraft(const wxString &type,
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateSpacecraft() Unable to create Spacecraft ")
-          wxT("name: %s already exist\n"), name.c_str());
+         ("Moderator::CreateSpacecraft() Unable to create Spacecraft "
+          "name: %s already exist\n", name.c_str());
       #endif
       return GetSpacecraft(name);
    }
@@ -2403,7 +2405,7 @@ SpaceObject* Moderator::CreateSpacecraft(const wxString &type,
 
 
 //------------------------------------------------------------------------------
-// SpaceObject* GetSpacecraft(const wxString &name)
+// SpaceObject* GetSpacecraft(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a spacecraft object pointer by given name.
@@ -2413,9 +2415,9 @@ SpaceObject* Moderator::CreateSpacecraft(const wxString &type,
  * @return a SpaceObject object pointer, return null if name not found
  */
 //------------------------------------------------------------------------------
-SpaceObject* Moderator::GetSpacecraft(const wxString &name)
+SpaceObject* Moderator::GetSpacecraft(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else      
       return (SpaceObject*)FindObject(name);
@@ -2423,7 +2425,7 @@ SpaceObject* Moderator::GetSpacecraft(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// wxString GetSpacecraftNotInFormation()
+// std::string GetSpacecraftNotInFormation()
 //------------------------------------------------------------------------------
 /**
  * This method finds the first spacecraft name sorted by ascending order not
@@ -2433,14 +2435,14 @@ SpaceObject* Moderator::GetSpacecraft(const wxString &name)
  *          return "" if such spacecraft is not found.
  */
 //------------------------------------------------------------------------------
-wxString Moderator::GetSpacecraftNotInFormation()
+std::string Moderator::GetSpacecraftNotInFormation()
 {
    StringArray scList = GetListOfObjects(Gmat::SPACECRAFT);
    StringArray fmList = GetListOfObjects(Gmat::FORMATION);
    int numSc = scList.size(), numFm = fmList.size();
    
    if (numSc == 0 && numFm == 0)
-      return wxT("");
+      return "";
    
    if (numSc > 0 && numFm == 0)
       return GetDefaultSpacecraft()->GetName();
@@ -2454,7 +2456,7 @@ wxString Moderator::GetSpacecraftNotInFormation()
    for (int i=0; i<numFm; i++)
    {
       GmatBase *fm = GetConfiguredObject(fmList[i]);
-      StringArray fmscList = fm->GetStringArrayParameter(fm->GetParameterID(wxT("Add")));
+      StringArray fmscList = fm->GetStringArrayParameter(fm->GetParameterID("Add"));
       fmscListAll.insert(fmscListAll.begin(), fmscList.begin(), fmscList.end());
    }
    
@@ -2475,13 +2477,13 @@ wxString Moderator::GetSpacecraftNotInFormation()
    if (scsNotInForms.size() > 0)
       return scsNotInForms[0];
    else
-      return wxT("");
+      return "";
 }
 
 
 // SpacePoints
 //------------------------------------------------------------------------------
-// SpacePoint* CreateSpacePoint(const wxString &type, const wxString &name)
+// SpacePoint* CreateSpacePoint(const std::string &type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Creates a spacepoint object by given name.
@@ -2492,12 +2494,12 @@ wxString Moderator::GetSpacecraftNotInFormation()
  * @return SpacePoint object pointer
  */
 //------------------------------------------------------------------------------
-SpacePoint* Moderator::CreateSpacePoint(const wxString &type,
-                                        const wxString &name)
+SpacePoint* Moderator::CreateSpacePoint(const std::string &type,
+                                        const std::string &name)
 {
    #if DEBUG_CREATE_RESOURCE
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateSpacePoint() type = '%s', name = '%s'\n"),
+      ("Moderator::CreateSpacePoint() type = '%s', name = '%s'\n",
        type.c_str(), name.c_str());
    #endif
    
@@ -2508,28 +2510,28 @@ SpacePoint* Moderator::CreateSpacePoint(const wxString &type,
       if (obj == NULL)
       {
          throw GmatBaseException
-            (wxT("The Moderator cannot create a SpacePoint type \"") + type + wxT("\"\n"));
+            ("The Moderator cannot create a SpacePoint type \"" + type + "\"\n");
       }
       
       #ifdef DEBUG_MEMORY
       if (obj)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (obj, name, wxT("Moderator::CreateSpacePoint()"), funcName);
+            (obj, name, "Moderator::CreateSpacePoint()", funcName);
       }
       #endif
             
       // Manage it if it is a named SpacePoint
       try
       {
-         if (name != wxT("") && objectManageOption == 1)
+         if (name != "" && objectManageOption == 1)
             theConfigManager->AddSpacePoint(obj);
       }
       catch (BaseException &e)
       {
-         MessageInterface::ShowMessage(wxT("Moderator::CreateSpacePoint()\n") +
+         MessageInterface::ShowMessage("Moderator::CreateSpacePoint()\n" +
                                        e.GetFullMessage());
       }
    
@@ -2539,15 +2541,15 @@ SpacePoint* Moderator::CreateSpacePoint(const wxString &type,
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateSpacePoint() Unable to create SpacePoint ")
-          wxT("name: %s already exist\n"), name.c_str());
+         ("Moderator::CreateSpacePoint() Unable to create SpacePoint "
+          "name: %s already exist\n", name.c_str());
       #endif
       return GetSpacePoint(name);
    }
 }
 
 //------------------------------------------------------------------------------
-// SpacePoint* GetSpacePoint(const wxString &name)
+// SpacePoint* GetSpacePoint(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a SpacePoint object pointer by given name.
@@ -2557,9 +2559,9 @@ SpacePoint* Moderator::CreateSpacePoint(const wxString &type,
  * @return a SpacePoint object pointer, return null if name not found
  */
 //------------------------------------------------------------------------------
-SpacePoint* Moderator::GetSpacePoint(const wxString &name)
+SpacePoint* Moderator::GetSpacePoint(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return (SpacePoint*)FindObject(name);
@@ -2568,7 +2570,7 @@ SpacePoint* Moderator::GetSpacePoint(const wxString &name)
 
 // Hardware
 //------------------------------------------------------------------------------
-// Hardware* CreateHardware(const wxString &type, const wxString &name)
+// Hardware* CreateHardware(const std::string &type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Creates a Hardware object by given name.
@@ -2579,11 +2581,11 @@ SpacePoint* Moderator::GetSpacePoint(const wxString &name)
  * @return Hardware object pointer
  */
 //------------------------------------------------------------------------------
-Hardware* Moderator::CreateHardware(const wxString &type, const wxString &name)
+Hardware* Moderator::CreateHardware(const std::string &type, const std::string &name)
 {
    #if DEBUG_CREATE_RESOURCE
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateHardware() type = '%s', name = '%s'\n"),
+      ("Moderator::CreateHardware() type = '%s', name = '%s'\n",
        type.c_str(), name.c_str());
    #endif
    
@@ -2594,28 +2596,28 @@ Hardware* Moderator::CreateHardware(const wxString &type, const wxString &name)
       if (obj == NULL)
       {
          throw GmatBaseException
-            (wxT("The Moderator cannot create a Hardware type \"") + type + wxT("\"\n"));
+            ("The Moderator cannot create a Hardware type \"" + type + "\"\n");
       }
       
       #ifdef DEBUG_MEMORY
       if (obj)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (obj, name, wxT("Moderator::CreateHardware()"), funcName);
+            (obj, name, "Moderator::CreateHardware()", funcName);
       }
       #endif
       
       // Manage it if it is a named Hardware
       try
       {
-         if (name != wxT("") && objectManageOption == 1)
+         if (name != "" && objectManageOption == 1)
             theConfigManager->AddHardware(obj);
       }
       catch (BaseException &e)
       {
-         MessageInterface::ShowMessage(wxT("Moderator::CreateHardware()\n") +
+         MessageInterface::ShowMessage("Moderator::CreateHardware()\n" +
                                        e.GetFullMessage());
       }
       
@@ -2625,8 +2627,8 @@ Hardware* Moderator::CreateHardware(const wxString &type, const wxString &name)
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateHardware() Unable to create Hardware ")
-          wxT("name: \"%s\" already exists\n"), name.c_str());
+         ("Moderator::CreateHardware() Unable to create Hardware "
+          "name: \"%s\" already exists\n", name.c_str());
       #endif
       return GetHardware(name);
    }
@@ -2634,7 +2636,7 @@ Hardware* Moderator::CreateHardware(const wxString &type, const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// Hardware* GetHardware(const wxString &name)
+// Hardware* GetHardware(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a Hardware object pointer by given name and add to configuration.
@@ -2644,9 +2646,9 @@ Hardware* Moderator::CreateHardware(const wxString &type, const wxString &name)
  * @return a Hardware object pointer, return null if name not found
  */
 //------------------------------------------------------------------------------
-Hardware* Moderator::GetHardware(const wxString &name)
+Hardware* Moderator::GetHardware(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return (Hardware*)FindObject(name);
@@ -2655,7 +2657,7 @@ Hardware* Moderator::GetHardware(const wxString &name)
 
 // Propagator
 //------------------------------------------------------------------------------
-// Propagator* CreatePropagator(const wxString &type, const wxString &name)
+// Propagator* CreatePropagator(const std::string &type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Creates a propagator object by given type and name. Actually this creates
@@ -2667,12 +2669,12 @@ Hardware* Moderator::GetHardware(const wxString &name)
  * @return a propagator object pointer
  */
 //------------------------------------------------------------------------------
-Propagator* Moderator::CreatePropagator(const wxString &type,
-                                        const wxString &name)
+Propagator* Moderator::CreatePropagator(const std::string &type,
+                                        const std::string &name)
 {
    #if DEBUG_CREATE_RESOURCE
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreatePropagator() type = '%s', name = '%s'\n"),
+      ("Moderator::CreatePropagator() type = '%s', name = '%s'\n",
        type.c_str(), name.c_str());
    #endif
    
@@ -2682,21 +2684,21 @@ Propagator* Moderator::CreatePropagator(const wxString &type,
       
    if (obj ==  NULL)
       throw GmatBaseException
-         (wxT("The Moderator cannot create a Propagator type \"") + type + wxT("\"\n"));
+         ("The Moderator cannot create a Propagator type \"" + type + "\"\n");
       
    #ifdef DEBUG_MEMORY
       if (obj)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (obj, name, wxT("Moderator::CreatePropagator()"), funcName);
+            (obj, name, "Moderator::CreatePropagator()", funcName);
       }
    #endif
       
    #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreatePropagator() returning new Propagator <%p>'%s'\n"),
+         ("Moderator::CreatePropagator() returning new Propagator <%p>'%s'\n",
           obj, obj->GetName().c_str());
       #endif
       
@@ -2704,7 +2706,7 @@ Propagator* Moderator::CreatePropagator(const wxString &type,
 }
 
 //------------------------------------------------------------------------------
-// Propagator* GetPropagator(const wxString &name)
+// Propagator* GetPropagator(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a propagator object pointer by given name.
@@ -2714,9 +2716,9 @@ Propagator* Moderator::CreatePropagator(const wxString &type,
  * @return a propagator object pointer, return null if name not found
  */
 //------------------------------------------------------------------------------
-Propagator* Moderator::GetPropagator(const wxString &name)
+Propagator* Moderator::GetPropagator(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return (Propagator*)FindObject(name);
@@ -2724,7 +2726,7 @@ Propagator* Moderator::GetPropagator(const wxString &name)
 
 // PhysicalModel
 //------------------------------------------------------------------------------
-// PhysicalModel* CreateDefaultPhysicalModel(const wxString &name)
+// PhysicalModel* CreateDefaultPhysicalModel(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Creates a default physical model of full Earth gravity force with JGM2 file.
@@ -2734,9 +2736,9 @@ Propagator* Moderator::GetPropagator(const wxString &name)
  * @return a physical model object pointer
  */
 //------------------------------------------------------------------------------
-PhysicalModel* Moderator::CreateDefaultPhysicalModel(const wxString &name)
+PhysicalModel* Moderator::CreateDefaultPhysicalModel(const std::string &name)
 {
-   wxString type = wxT("GravityField");
+   std::string type = "GravityField";
    
    if (GetPhysicalModel(name) == NULL)
    {
@@ -2745,38 +2747,38 @@ PhysicalModel* Moderator::CreateDefaultPhysicalModel(const wxString &name)
       
       if (obj ==  NULL)
          throw GmatBaseException
-               (wxT("The Moderator cannot create a PhysicalModel type \"") + type +
-                wxT("\"\n"));
+               ("The Moderator cannot create a PhysicalModel type \"" + type +
+                "\"\n");
       
       // set the EOP file, since it's a GravityField object
       HarmonicField *hf = (HarmonicField*) obj;
       hf->SetEopFile(theEopFile);
 
       #ifdef DEBUG_MEMORY
-      wxString funcName;
-      funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+      std::string funcName;
+      funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
       MemoryTracker::Instance()->Add
-         (obj, name, wxT("Moderator::CreateDefaultPhysicalModel()"), funcName);
+         (obj, name, "Moderator::CreateDefaultPhysicalModel()", funcName);
       #endif
       
       SolarSystem *ss = GetSolarSystemInUse(objectManageOption);
-      obj->SetName(wxT("Earth"));
+      obj->SetName("Earth");
       obj->SetSolarSystem(ss);
-      obj->SetBody(wxT("Earth"));
-      obj->SetBodyName(wxT("Earth"));
+      obj->SetBody("Earth");
+      obj->SetBodyName("Earth");
       
-      if (type == wxT("GravityField"))
-         obj->SetStringParameter(wxT("PotentialFile"), GetFileName(wxT("JGM2_FILE")));
+      if (type == "GravityField")
+         obj->SetStringParameter("PotentialFile", GetFileName("JGM2_FILE"));
       
       // Manage it if it is a named PhysicalModel
       try
       {
-         if (name != wxT("") && objectManageOption == 1)
+         if (name != "" && objectManageOption == 1)
             theConfigManager->AddPhysicalModel(obj);
       }
       catch (BaseException &e)
       {
-         MessageInterface::ShowMessage(wxT("Moderator::CreatePhysicalModel()\n") +
+         MessageInterface::ShowMessage("Moderator::CreatePhysicalModel()\n" +
                                        e.GetFullMessage());
       }
       
@@ -2786,16 +2788,16 @@ PhysicalModel* Moderator::CreateDefaultPhysicalModel(const wxString &name)
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreatePhysicalModel() Unable to create PhysicalModel ")
-          wxT("name: %s already exist\n"), name.c_str());
+         ("Moderator::CreatePhysicalModel() Unable to create PhysicalModel "
+          "name: %s already exist\n", name.c_str());
       #endif
       return GetPhysicalModel(name);
    }
 }
 
 //------------------------------------------------------------------------------
-// PhysicalModel* CreatePhysicalModel(const wxString &type,
-//                                    const wxString &name)
+// PhysicalModel* CreatePhysicalModel(const std::string &type,
+//                                    const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Creates a physical model object by given type and name.
@@ -2806,11 +2808,11 @@ PhysicalModel* Moderator::CreateDefaultPhysicalModel(const wxString &name)
  * @return a physical model object pointer
  */
 //------------------------------------------------------------------------------
-PhysicalModel* Moderator::CreatePhysicalModel(const wxString &type,
-                                              const wxString &name)
+PhysicalModel* Moderator::CreatePhysicalModel(const std::string &type,
+                                              const std::string &name)
 {
    #ifdef DEBUG_CREATE_PHYSICAL_MODEL
-      MessageInterface::ShowMessage(wxT("Now attempting to create a PhysicalModel of type %s with name %s\n"),
+      MessageInterface::ShowMessage("Now attempting to create a PhysicalModel of type %s with name %s\n",
             type.c_str(), name.c_str());
    #endif
    PhysicalModel *obj = GetPhysicalModel(name);
@@ -2820,27 +2822,27 @@ PhysicalModel* Moderator::CreatePhysicalModel(const wxString &type,
       
       if (obj ==  NULL)
          throw GmatBaseException
-            (wxT("The Moderator cannot create a PhysicalModel type \"") + type + wxT("\"\n"));
+            ("The Moderator cannot create a PhysicalModel type \"" + type + "\"\n");
       
       #ifdef DEBUG_MEMORY
       if (obj)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (obj, name, wxT("Moderator::CreatePhysicalModel()"), funcName);
+            (obj, name, "Moderator::CreatePhysicalModel()", funcName);
       }
       #endif
       
       // Manage it if it is a named PhysicalModel
       try
       {
-         if (name != wxT("") && objectManageOption == 1)
+         if (name != "" && objectManageOption == 1)
             theConfigManager->AddPhysicalModel(obj);
       }
       catch (BaseException &e)
       {
-         MessageInterface::ShowMessage(wxT("Moderator::CreatePhysicalModel()\n") +
+         MessageInterface::ShowMessage("Moderator::CreatePhysicalModel()\n" +
                                        e.GetFullMessage());
       }
       
@@ -2850,17 +2852,17 @@ PhysicalModel* Moderator::CreatePhysicalModel(const wxString &type,
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreatePhysicalModel() Unable to create PhysicalModel ")
-          wxT("name: %s already exist\n"), name.c_str());
+         ("Moderator::CreatePhysicalModel() Unable to create PhysicalModel "
+          "name: %s already exist\n", name.c_str());
       #endif
 //      return GetPhysicalModel(name);
    }
-   if ((obj != NULL) && obj->IsOfType(wxT("HarmonicField")))
+   if ((obj != NULL) && obj->IsOfType("HarmonicField"))
    {
       HarmonicField *hf = (HarmonicField*) obj;
       hf->SetEopFile(theEopFile);
    }
-   if ((obj != NULL) && obj->IsOfType(wxT("RelativisticCorrection")))
+   if ((obj != NULL) && obj->IsOfType("RelativisticCorrection"))
    {
       RelativisticCorrection *rc = (RelativisticCorrection*) obj;
       rc->SetEopFile(theEopFile);
@@ -2869,7 +2871,7 @@ PhysicalModel* Moderator::CreatePhysicalModel(const wxString &type,
 }
 
 //------------------------------------------------------------------------------
-// PhysicalModel* GetPhysicalModel(const wxString &name)
+// PhysicalModel* GetPhysicalModel(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a physical model object pointer by given name.
@@ -2879,9 +2881,9 @@ PhysicalModel* Moderator::CreatePhysicalModel(const wxString &type,
  * @return a physical model object pointer, return null if name not found
  */
 //------------------------------------------------------------------------------
-PhysicalModel* Moderator::GetPhysicalModel(const wxString &name)
+PhysicalModel* Moderator::GetPhysicalModel(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return (PhysicalModel*)FindObject(name);
@@ -2889,9 +2891,9 @@ PhysicalModel* Moderator::GetPhysicalModel(const wxString &name)
 
 // AtmosphereModel
 //------------------------------------------------------------------------------
-// AtmosphereModel* CreateAtmosphereModel(const wxString &type,
-//                                        const wxString &name,
-//                                        const wxString &body = wxT("Earth"))
+// AtmosphereModel* CreateAtmosphereModel(const std::string &type,
+//                                        const std::string &name,
+//                                        const std::string &body = "Earth")
 //------------------------------------------------------------------------------
 /**
  * Creates an atmosphere model object by given type and name and add to
@@ -2904,13 +2906,13 @@ PhysicalModel* Moderator::GetPhysicalModel(const wxString &name)
  * @return a atmosphereModel object pointer
  */
 //------------------------------------------------------------------------------
-AtmosphereModel* Moderator::CreateAtmosphereModel(const wxString &type,
-                                                  const wxString &name,
-                                                  const wxString &body)
+AtmosphereModel* Moderator::CreateAtmosphereModel(const std::string &type,
+                                                  const std::string &name,
+                                                  const std::string &body)
 {
    #if DEBUG_CREATE_RESOURCE
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateAtmosphereModel() type = '%s', name = '%s', body = '%s'\n"),
+      ("Moderator::CreateAtmosphereModel() type = '%s', name = '%s', body = '%s'\n",
        type.c_str(), name.c_str(), body.c_str());
    #endif
    
@@ -2922,28 +2924,28 @@ AtmosphereModel* Moderator::CreateAtmosphereModel(const wxString &type,
       
       if (obj ==  NULL)
          throw GmatBaseException
-            (wxT("The Moderator cannot create an AtmosphereModel type \"") + type + wxT("\"\n"));
+            ("The Moderator cannot create an AtmosphereModel type \"" + type + "\"\n");
       
       #ifdef DEBUG_MEMORY
       if (obj)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (obj, name, wxT("Moderator::CreateAtmosphereModel()"), funcName);
+            (obj, name, "Moderator::CreateAtmosphereModel()", funcName);
       }
       #endif
       
       // Manage it if it is a named AtmosphereModel
       try
       {
-         if (name != wxT("") && objectManageOption == 1)
+         if (name != "" && objectManageOption == 1)
             theConfigManager->AddAtmosphereModel(obj);
       }
       catch (BaseException &e)
       {
          MessageInterface::ShowMessage
-            (wxT("Moderator::CreateAtmosphereModel()\n") + e.GetFullMessage());
+            ("Moderator::CreateAtmosphereModel()\n" + e.GetFullMessage());
       }
     
       return obj;
@@ -2952,15 +2954,15 @@ AtmosphereModel* Moderator::CreateAtmosphereModel(const wxString &type,
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateAtmosphereModel() Unable to create AtmosphereModel ")
-          wxT("name: %s already exist\n"), name.c_str());
+         ("Moderator::CreateAtmosphereModel() Unable to create AtmosphereModel "
+          "name: %s already exist\n", name.c_str());
       #endif
       return GetAtmosphereModel(name);
    }
 }
 
 //------------------------------------------------------------------------------
-// AtmosphereModel* GetAtmosphereModel(const wxString &name)
+// AtmosphereModel* GetAtmosphereModel(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves an atmosphere model object pointer by given name.
@@ -2970,9 +2972,9 @@ AtmosphereModel* Moderator::CreateAtmosphereModel(const wxString &type,
  * @return a AtmosphereModel pointer, return null if name not found
  */
 //------------------------------------------------------------------------------
-AtmosphereModel* Moderator::GetAtmosphereModel(const wxString &name)
+AtmosphereModel* Moderator::GetAtmosphereModel(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return (AtmosphereModel*)FindObject(name);
@@ -2980,7 +2982,7 @@ AtmosphereModel* Moderator::GetAtmosphereModel(const wxString &name)
 
 // Burn
 //------------------------------------------------------------------------------
-// Burn* CreateBurn(const wxString &type, const wxString &name,
+// Burn* CreateBurn(const std::string &type, const std::string &name,
 //                  bool createDefault)
 //------------------------------------------------------------------------------
 /**
@@ -2996,12 +2998,12 @@ AtmosphereModel* Moderator::GetAtmosphereModel(const wxString &name)
  * @return a burn object pointer
  */
 //------------------------------------------------------------------------------
-Burn* Moderator::CreateBurn(const wxString &type,
-                            const wxString &name, bool createDefault)
+Burn* Moderator::CreateBurn(const std::string &type,
+                            const std::string &name, bool createDefault)
 {
    #if DEBUG_CREATE_RESOURCE
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateBurn() type = '%s, name = '%s'\n"), type.c_str(),
+      ("Moderator::CreateBurn() type = '%s, name = '%s'\n", type.c_str(),
        name.c_str());
    #endif
    
@@ -3012,34 +3014,34 @@ Burn* Moderator::CreateBurn(const wxString &type,
       
       if (obj ==  NULL)
          throw GmatBaseException
-            (wxT("The Moderator cannot create Burn type \"") + type + wxT("\"\n"));
+            ("The Moderator cannot create Burn type \"" + type + "\"\n");
       
       #ifdef DEBUG_MEMORY
       if (obj)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (obj, name, wxT("Moderator::CreateBurn()"), funcName);
+            (obj, name, "Moderator::CreateBurn()", funcName);
       }
       #endif
       
       // Set default Axes to VNB
       if (createDefault)
       {
-         obj->SetStringParameter(obj->GetParameterID(wxT("CoordinateSystem")), wxT("Local"));
-         obj->SetStringParameter(obj->GetParameterID(wxT("Axes")), wxT("VNB"));
+         obj->SetStringParameter(obj->GetParameterID("CoordinateSystem"), "Local");
+         obj->SetStringParameter(obj->GetParameterID("Axes"), "VNB");
       }
       
       // Manage it if it is a named Burn
       try
       {
-         if (name != wxT("") && objectManageOption == 1)
+         if (name != "" && objectManageOption == 1)
             theConfigManager->AddBurn(obj);
       }
       catch (BaseException &e)
       {
-         MessageInterface::ShowMessage(wxT("Moderator::CreateBurn()\n") +
+         MessageInterface::ShowMessage("Moderator::CreateBurn()\n" +
                                        e.GetFullMessage());
       }
       
@@ -3049,15 +3051,15 @@ Burn* Moderator::CreateBurn(const wxString &type,
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateBurn() Unable to create Burn ")
-          wxT("name: %s already exist\n"), name.c_str());
+         ("Moderator::CreateBurn() Unable to create Burn "
+          "name: %s already exist\n", name.c_str());
       #endif
       return GetBurn(name);
    }
 }
 
 //------------------------------------------------------------------------------
-// Burn* GetBurn(const wxString &name)
+// Burn* GetBurn(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a burn object pointer by given name.
@@ -3067,9 +3069,9 @@ Burn* Moderator::CreateBurn(const wxString &type,
  * @return a burn pointer, return null if name not found
  */
 //------------------------------------------------------------------------------
-Burn* Moderator::GetBurn(const wxString &name)
+Burn* Moderator::GetBurn(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return (Burn*)FindObject(name);
@@ -3077,7 +3079,7 @@ Burn* Moderator::GetBurn(const wxString &name)
 
 // Parameter
 //------------------------------------------------------------------------------
-// bool Moderator::IsParameter(const wxString &str)
+// bool Moderator::IsParameter(const std::string &str)
 //------------------------------------------------------------------------------
 /**
  * Checks to see if a given type is a Parameter. If str has '.', it parses
@@ -3088,31 +3090,31 @@ Burn* Moderator::GetBurn(const wxString &name)
  * @return true if the type is a registered parameter, false if not.
  */
 //------------------------------------------------------------------------------
-bool Moderator::IsParameter(const wxString &str)
+bool Moderator::IsParameter(const std::string &str)
 {
-   if (str == wxT("")) return false;
+   if (str == "") return false;
    StringArray sar = theFactoryManager->GetListOfItems(Gmat::PARAMETER);
-   wxString type;
+   std::string type;
    
-   if (str.find(wxT(".")) == str.npos)
+   if (str.find(".") == str.npos)
    {
       type = str;
    }
    else
    {
-      wxString ownerName, depObj;
+      std::string ownerName, depObj;
       GmatStringUtil::ParseParameter(str, type, ownerName, depObj);
    }
    
    if (find(sar.begin(), sar.end(), type) != sar.end()) {
       #ifdef DEBUG_LOOKUP_RESOURCE
-      MessageInterface::ShowMessage(wxT("Found parameter \"%s\"\n"), type.c_str());
+      MessageInterface::ShowMessage("Found parameter \"%s\"\n", type.c_str());
       #endif
       return true;
    }
 
    #ifdef DEBUG_LOOKUP_RESOURCE
-   MessageInterface::ShowMessage(wxT("Could not find parameter \"%s\"\n"),
+   MessageInterface::ShowMessage("Could not find parameter \"%s\"\n",
                                  type.c_str());
    #endif
    
@@ -3121,17 +3123,17 @@ bool Moderator::IsParameter(const wxString &str)
 
 
 //------------------------------------------------------------------------------
-// Parameter* CreateAutoParameter(const wxString &type, const wxString &name
-//                            const wxString &ownerName,
-//                            const wxString &depName, bool manage)
+// Parameter* CreateAutoParameter(const std::string &type, const std::string &name
+//                            const std::string &ownerName,
+//                            const std::string &depName, bool manage)
 //------------------------------------------------------------------------------
 /**
  * Creates a parameter object by given type and name and add to configuration.
  *
  * @param <type> parameter type
  * @param <name> parameter name
- * @param <ownerName> parameter owner name (wxT(""))
- * @param <depName> dependent object name (wxT(""))
+ * @param <ownerName> parameter owner name ("")
+ * @param <depName> dependent object name ("")
  * @param <manage>  0, if parameter is not managed
  *                  1, if parameter is added to configuration (default)
  *                  2, if Parameter is added to function object map
@@ -3139,17 +3141,17 @@ bool Moderator::IsParameter(const wxString &str)
  * @return a parameter object pointer
  */
 //------------------------------------------------------------------------------
-Parameter* Moderator::CreateAutoParameter(const wxString &type,
-                                          const wxString &name,
+Parameter* Moderator::CreateAutoParameter(const std::string &type,
+                                          const std::string &name,
                                           bool &alreadyManaged,
-                                          const wxString &ownerName,
-                                          const wxString &depName,
+                                          const std::string &ownerName,
+                                          const std::string &depName,
                                           Integer manage)
 {
    #if DEBUG_CREATE_PARAMETER
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateAutoParameter() type='%s', name='%s', ownerName='%s', ")
-       wxT("depName='%s', manage=%d\n"), type.c_str(), name.c_str(), ownerName.c_str(),
+      ("Moderator::CreateAutoParameter() type='%s', name='%s', ownerName='%s', "
+       "depName='%s', manage=%d\n", type.c_str(), name.c_str(), ownerName.c_str(),
        depName.c_str(), manage);
    #endif
    
@@ -3159,7 +3161,7 @@ Parameter* Moderator::CreateAutoParameter(const wxString &type,
    Parameter *param = GetParameter(name);
    #if DEBUG_CREATE_PARAMETER
    MessageInterface::ShowMessage
-      (wxT("   managed param = <%p> '%s'\n", param, param ? param->GetName().c_str() : "NULL"));
+      ("   managed param = <%p> '%s'\n", param, param ? param->GetName().c_str() : "NULL");
    #endif
    
    // if Parameter was created during GmatFunction parsing, just set reference object
@@ -3167,10 +3169,10 @@ Parameter* Moderator::CreateAutoParameter(const wxString &type,
    {
       #if DEBUG_CREATE_PARAMETER
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** Moderator::CreateAutoParameter() Unable to create ")
-          wxT("Parameter name: %s already exist\n"), name.c_str());
+         ("*** WARNING *** Moderator::CreateAutoParameter() Unable to create "
+          "Parameter name: %s already exist\n", name.c_str());
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateAutoParameter() returning <%s><%p>\n"), param->GetName().c_str(),
+         ("Moderator::CreateAutoParameter() returning <%s><%p>\n", param->GetName().c_str(),
           param);
       #endif
       
@@ -3193,9 +3195,9 @@ Parameter* Moderator::CreateAutoParameter(const wxString &type,
 
 
 //------------------------------------------------------------------------------
-// Parameter* CreateParameter(const wxString &type, const wxString &name
-//                            const wxString &ownerName = "",
-//                            const wxString &depName = "", bool manage = 1)
+// Parameter* CreateParameter(const std::string &type, const std::string &name
+//                            const std::string &ownerName = "",
+//                            const std::string &depName = "", bool manage = 1)
 //------------------------------------------------------------------------------
 /**
  * Creates a parameter object by given type and name and add to configuration.
@@ -3214,18 +3216,18 @@ Parameter* Moderator::CreateAutoParameter(const wxString &type,
  * use objectManageOption here.
  */
 //------------------------------------------------------------------------------
-Parameter* Moderator::CreateParameter(const wxString &type,
-                                      const wxString &name,
-                                      const wxString &ownerName,
-                                      const wxString &depName,
+Parameter* Moderator::CreateParameter(const std::string &type,
+                                      const std::string &name,
+                                      const std::string &ownerName,
+                                      const std::string &depName,
                                       Integer manage)
 {   
    #if DEBUG_CREATE_PARAMETER
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateParameter() type='%s', name='%s', ownerName='%s', ")
-       wxT("depName='%s', manage=%d\n"), type.c_str(), name.c_str(), ownerName.c_str(),
+      ("Moderator::CreateParameter() type='%s', name='%s', ownerName='%s', "
+       "depName='%s', manage=%d\n", type.c_str(), name.c_str(), ownerName.c_str(),
        depName.c_str(), manage);
-   MessageInterface::ShowMessage(wxT("   objectManageOption=%d\n"), objectManageOption);
+   MessageInterface::ShowMessage("   objectManageOption=%d\n", objectManageOption);
    #endif
    
    // if managing and Parameter already exist, give warning and return existing
@@ -3233,7 +3235,7 @@ Parameter* Moderator::CreateParameter(const wxString &type,
    Parameter *param = GetParameter(name);
    #if DEBUG_CREATE_PARAMETER
    MessageInterface::ShowMessage
-      (wxT("   managed param = <%p> '%s'\n", param, param ? param->GetName().c_str() : "NULL"));
+      ("   managed param = <%p> '%s'\n", param, param ? param->GetName().c_str() : "NULL");
    #endif
    
    // if Parameter was created during GmatFunction parsing, just set reference object
@@ -3241,10 +3243,10 @@ Parameter* Moderator::CreateParameter(const wxString &type,
    {
       #if DEBUG_CREATE_PARAMETER
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** Moderator::CreateParameter() Unable to create ")
-          wxT("Parameter name: %s already exist\n"), name.c_str());
+         ("*** WARNING *** Moderator::CreateParameter() Unable to create "
+          "Parameter name: %s already exist\n", name.c_str());
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateParameter() returning <%s><%p>\n"), param->GetName().c_str(),
+         ("Moderator::CreateParameter() returning <%s><%p>\n", param->GetName().c_str(),
           param);
       #endif
       
@@ -3262,16 +3264,16 @@ Parameter* Moderator::CreateParameter(const wxString &type,
    }
    
    // Check for deprecated Element* on Thruster, new Parameters are ThrustDirection*
-   wxString newType = type;
-   if (type == wxT("Element1") || type == wxT("Element2") || type == wxT("Element3"))
+   std::string newType = type;
+   if (type == "Element1" || type == "Element2" || type == "Element3")
    {
-      Integer numDots = GmatStringUtil::NumberOfOccurrences(name, wxT('.'));
+      Integer numDots = GmatStringUtil::NumberOfOccurrences(name, '.');
       if (numDots > 1)
       {
-         newType = GmatStringUtil::Replace(newType, wxT("Element"), wxT("ThrustDirection"));
+         newType = GmatStringUtil::Replace(newType, "Element", "ThrustDirection");
          #if DEBUG_CREATE_PARAMETER
          MessageInterface::ShowMessage
-            (wxT("   Parameter type '%s' in '%s' changed to '%s'\n"), type.c_str(),
+            ("   Parameter type '%s' in '%s' changed to '%s'\n", type.c_str(),
              name.c_str(), newType.c_str());
          #endif
       }
@@ -3283,28 +3285,28 @@ Parameter* Moderator::CreateParameter(const wxString &type,
    #ifdef DEBUG_MEMORY
    if (param)
    {
-      wxString funcName;
-      funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+      std::string funcName;
+      funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
       MemoryTracker::Instance()->Add
-         (param, name, wxT("Moderator::CreateParameter()"), funcName);
+         (param, name, "Moderator::CreateParameter()", funcName);
    }
    #endif
    
    #if DEBUG_CREATE_PARAMETER
    MessageInterface::ShowMessage
-      (wxT("   new param = <%p><%s>\n", param, param ? param->GetName().c_str() : "NULL"));
+      ("   new param = <%p><%s>\n", param, param ? param->GetName().c_str() : "NULL");
    #endif
    
    if (param == NULL)
    {
       throw GmatBaseException
-         (wxT("The Moderator cannot create a Parameter type \"") + newType +
-          wxT("\" named \"") + name + wxT("\"\n"));
+         ("The Moderator cannot create a Parameter type \"" + newType +
+          "\" named \"" + name + "\"\n");
    }
    
    // We don't know the owner type the parameter before create,
    // so validate owner type after create.
-   if (ownerName != wxT("") && manage != 0)
+   if (ownerName != "" && manage != 0)
       CheckParameterType(param, newType, ownerName);
    
    // set Parameter reference object
@@ -3320,7 +3322,7 @@ Parameter* Moderator::CreateParameter(const wxString &type,
       {
          bool oldFlag = theConfigManager->HasConfigurationChanged();
          
-         if (param->GetName() != wxT(""))
+         if (param->GetName() != "")
             theConfigManager->AddParameter(param);
          
          // if system paramter, set configuration changed to old flag.
@@ -3328,8 +3330,8 @@ Parameter* Moderator::CreateParameter(const wxString &type,
          {
             #if DEBUG_CREATE_PARAMETER
             MessageInterface::ShowMessage
-               (wxT("   Resetting configuration changed flag for SystemParameter ")
-                wxT("'%s' to %d\n"), param->GetName().c_str(), oldFlag);
+               ("   Resetting configuration changed flag for SystemParameter "
+                "'%s' to %d\n", param->GetName().c_str(), oldFlag);
             #endif
             
             theConfigManager->ConfigurationChanged(oldFlag);
@@ -3345,14 +3347,14 @@ Parameter* Moderator::CreateParameter(const wxString &type,
       // Use exception to remove Visual C++ warning
       e.GetMessageType();
       #if DEBUG_CREATE_PARAMETER
-      MessageInterface::ShowMessage(wxT("Moderator::CreateParameter()\n") +
-                                    e.GetFullMessage() + wxT("\n"));
+      MessageInterface::ShowMessage("Moderator::CreateParameter()\n" +
+                                    e.GetFullMessage() + "\n");
       #endif
    }
    
    #if DEBUG_CREATE_PARAMETER
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateParameter() returning <%s><%p>\n"), param->GetName().c_str(),
+      ("Moderator::CreateParameter() returning <%s><%p>\n", param->GetName().c_str(),
        param);
    #endif
    
@@ -3361,7 +3363,7 @@ Parameter* Moderator::CreateParameter(const wxString &type,
 
 
 //------------------------------------------------------------------------------
-// Parameter* GetParameter(const wxString &name)
+// Parameter* GetParameter(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a parameter object pointer by given name.
@@ -3371,11 +3373,11 @@ Parameter* Moderator::CreateParameter(const wxString &type,
  * @return a parameter object pointer, return null if name not found
  */
 //------------------------------------------------------------------------------
-Parameter* Moderator::GetParameter(const wxString &name)
+Parameter* Moderator::GetParameter(const std::string &name)
 {
    Parameter *obj = NULL;
    
-   if (name != wxT(""))
+   if (name != "")
    {
       // find Parameter from the current object map in use (loj: 2008.05.23)
       GmatBase* obj = FindObject(name);
@@ -3388,18 +3390,18 @@ Parameter* Moderator::GetParameter(const wxString &name)
 
 // ODEModel
 //------------------------------------------------------------------------------
-// ODEModel* CreateODEModel(const wxString &name)
+// ODEModel* CreateODEModel(const std::string &name)
 //------------------------------------------------------------------------------
 /*
  * Creates ODEModel with given name
  */
 //------------------------------------------------------------------------------
-ODEModel* Moderator::CreateODEModel(const wxString &type,
-                                    const wxString &name)
+ODEModel* Moderator::CreateODEModel(const std::string &type,
+                                    const std::string &name)
 {
    #if DEBUG_CREATE_RESOURCE
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateODEModel() name='%s', objectManageOption=%d\n"),
+      ("Moderator::CreateODEModel() name='%s', objectManageOption=%d\n",
        name.c_str(), objectManageOption);
    #endif
    
@@ -3411,41 +3413,41 @@ ODEModel* Moderator::CreateODEModel(const wxString &type,
       
       if (obj == NULL)
       {
-         MessageInterface::ShowMessage(wxT("No fm\n"));
+         MessageInterface::ShowMessage("No fm\n");
          throw GmatBaseException
-            (wxT("The Moderator cannot create ODEModel named \"") + name + wxT("\"\n"));
+            ("The Moderator cannot create ODEModel named \"" + name + "\"\n");
       }
       
       #ifdef DEBUG_MEMORY
       if (obj)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (obj, name, wxT("Moderator::CreateODEModel()"), funcName);
+            (obj, name, "Moderator::CreateODEModel()", funcName);
       }
       #endif
       
       // Create default physical model
-      PhysicalModel *pm = CreateDefaultPhysicalModel(wxT(""));
-      pm->SetName(wxT("_DefaultInternalForce_"));
+      PhysicalModel *pm = CreateDefaultPhysicalModel("");
+      pm->SetName("_DefaultInternalForce_");
       obj->AddForce(pm);
       
       // Manage it if it is a named ODEModel
       try
       {
-         if (obj->GetName() != wxT("") && objectManageOption == 1)
+         if (obj->GetName() != "" && objectManageOption == 1)
             theConfigManager->AddODEModel(obj);
       }
       catch (BaseException &e)
       {
-         MessageInterface::ShowMessage(wxT("Moderator::CreateODEModel()\n") +
-                                       e.GetFullMessage() + wxT("\n"));
+         MessageInterface::ShowMessage("Moderator::CreateODEModel()\n" +
+                                       e.GetFullMessage() + "\n");
       }
       
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateODEModel() returning new ODEModel, <%p> '%s'\n"),
+         ("Moderator::CreateODEModel() returning new ODEModel, <%p> '%s'\n",
           obj, obj->GetName().c_str());
       #endif
       return obj;
@@ -3454,8 +3456,8 @@ ODEModel* Moderator::CreateODEModel(const wxString &type,
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateODEModel() Unable to create ODEModel ")
-          wxT("name: %s already exist <%p>\n"), name.c_str(), obj);
+         ("Moderator::CreateODEModel() Unable to create ODEModel "
+          "name: %s already exist <%p>\n", name.c_str(), obj);
       #endif
       return obj;
    }
@@ -3463,13 +3465,13 @@ ODEModel* Moderator::CreateODEModel(const wxString &type,
 
 
 //------------------------------------------------------------------------------
-// ODEModel* GetODEModel(const wxString &name)
+// ODEModel* GetODEModel(const std::string &name)
 //------------------------------------------------------------------------------
-ODEModel* Moderator::GetODEModel(const wxString &name)
+ODEModel* Moderator::GetODEModel(const std::string &name)
 {
    ODEModel *fm = NULL;
    
-   if (name != wxT(""))
+   if (name != "")
    {
       // Find ODEModel from the current object map in use (loj: 2008.06.20)
       GmatBase* obj = FindObject(name);
@@ -3479,7 +3481,7 @@ ODEModel* Moderator::GetODEModel(const wxString &name)
          
          #if DEBUG_CREATE_RESOURCE
          MessageInterface::ShowMessage
-            (wxT("Moderator::GetODEModel() name='%s', returning <%p>\n"), name.c_str(), fm);
+            ("Moderator::GetODEModel() name='%s', returning <%p>\n", name.c_str(), fm);
          #endif
          
          return fm;
@@ -3488,7 +3490,7 @@ ODEModel* Moderator::GetODEModel(const wxString &name)
    
    #if DEBUG_CREATE_RESOURCE
    MessageInterface::ShowMessage
-      (wxT("Moderator::GetODEModel() name='%s', returning <%p>\n"), name.c_str(), fm);
+      ("Moderator::GetODEModel() name='%s', returning <%p>\n", name.c_str(), fm);
    #endif
    
    return fm;
@@ -3496,11 +3498,11 @@ ODEModel* Moderator::GetODEModel(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// bool AddToODEModel(const wxString &ODEModelName,
-//                      const wxString &forceName)
+// bool AddToODEModel(const std::string &ODEModelName,
+//                      const std::string &forceName)
 //------------------------------------------------------------------------------
-bool Moderator::AddToODEModel(const wxString &odeModelName,
-                                const wxString &forceName)
+bool Moderator::AddToODEModel(const std::string &odeModelName,
+                                const std::string &forceName)
 {
    bool status = true;
    ODEModel *fm = theConfigManager->GetODEModel(odeModelName);
@@ -3512,7 +3514,7 @@ bool Moderator::AddToODEModel(const wxString &odeModelName,
 
 // Solver
 //------------------------------------------------------------------------------
-// Solver* CreateSolver(const wxString &type, const wxString &name)
+// Solver* CreateSolver(const std::string &type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Creates a solver object by given type and name and add to configuration.
@@ -3523,11 +3525,11 @@ bool Moderator::AddToODEModel(const wxString &odeModelName,
  * @return a solver object pointer
  */
 //------------------------------------------------------------------------------
-Solver* Moderator::CreateSolver(const wxString &type, const wxString &name)
+Solver* Moderator::CreateSolver(const std::string &type, const std::string &name)
 {
    #if DEBUG_CREATE_RESOURCE
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateSolver() type = '%s', name = '%s'\n"), type.c_str(),
+      ("Moderator::CreateSolver() type = '%s', name = '%s'\n", type.c_str(),
        name.c_str());
    #endif
    
@@ -3538,28 +3540,28 @@ Solver* Moderator::CreateSolver(const wxString &type, const wxString &name)
       if (obj == NULL)
       {
          throw GmatBaseException
-            (wxT("The Moderator cannot create Solver type \"") + type + wxT("\"\n"));
+            ("The Moderator cannot create Solver type \"" + type + "\"\n");
       }
       
       #ifdef DEBUG_MEMORY
       if (obj)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (obj, name, wxT("Moderator::CreateSolver()"), funcName);
+            (obj, name, "Moderator::CreateSolver()", funcName);
       }
       #endif
       
       // Manage it if it is a named Solver
       try
       {
-         if (obj->GetName() != wxT("") && objectManageOption == 1)
+         if (obj->GetName() != "" && objectManageOption == 1)
             theConfigManager->AddSolver(obj);
       }
       catch (BaseException &e)
       {
-         MessageInterface::ShowMessage(wxT("Moderator::CreateSolver()\n") +
+         MessageInterface::ShowMessage("Moderator::CreateSolver()\n" +
                                        e.GetFullMessage());
       }
       
@@ -3569,8 +3571,8 @@ Solver* Moderator::CreateSolver(const wxString &type, const wxString &name)
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateSolver() Unable to create Solver ")
-          wxT("name: %s already exist\n"), name.c_str());
+         ("Moderator::CreateSolver() Unable to create Solver "
+          "name: %s already exist\n", name.c_str());
       #endif
       return GetSolver(name);
    }
@@ -3578,7 +3580,7 @@ Solver* Moderator::CreateSolver(const wxString &type, const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// Solver* GetSolver(const wxString &name)
+// Solver* GetSolver(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a solver object pointer by given name.
@@ -3588,9 +3590,9 @@ Solver* Moderator::CreateSolver(const wxString &type, const wxString &name)
  * @return a solver object pointer, return null if name not found
  */
 //------------------------------------------------------------------------------
-Solver* Moderator::GetSolver(const wxString &name)
+Solver* Moderator::GetSolver(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return (Solver*)FindObject(name);
@@ -3598,13 +3600,13 @@ Solver* Moderator::GetSolver(const wxString &name)
 
 // PropSetup
 //------------------------------------------------------------------------------
-// PropSetup* CreateDefaultPropSetup(const wxString &name)
+// PropSetup* CreateDefaultPropSetup(const std::string &name)
 //------------------------------------------------------------------------------
-PropSetup* Moderator::CreateDefaultPropSetup(const wxString &name)
+PropSetup* Moderator::CreateDefaultPropSetup(const std::string &name)
 {
    #if DEBUG_CREATE_RESOURCE
-   MessageInterface::ShowMessage(wxT("====================\n"));
-   MessageInterface::ShowMessage(wxT("Moderator::CreateDefaultPropSetup() name='%s'\n"),
+   MessageInterface::ShowMessage("====================\n");
+   MessageInterface::ShowMessage("Moderator::CreateDefaultPropSetup() name='%s'\n",
                                  name.c_str());
    #endif
    
@@ -3619,11 +3621,11 @@ PropSetup* Moderator::CreateDefaultPropSetup(const wxString &name)
    // Why unnamed FM? Changed back to named FM, since it causes error in
    // Interpreter::FinalPass() when parsing ScriptEvent (Begin/EndScript) from GUI.
    // The error is about undefined DefaultProp_ForceModel(LOJ: 2011.01.12)
-   //ODEModel *fm= CreateODEModel(wxT("ForceModel", name + "_ForceModel"));
+   //ODEModel *fm= CreateODEModel("ForceModel", name + "_ForceModel");
    // Create unnamed ODEModel when creating default PropSetup (LOJ: 2009.11.23)
    // and delete fm after setting it to PropSetup (see below)
-   ODEModel *fm = CreateODEModel(wxT("ForceModel"), wxT(""));
-   fm->SetName(name + wxT("_ForceModel"));
+   ODEModel *fm = CreateODEModel("ForceModel", "");
+   fm->SetName(name + "_ForceModel");
    
    //=======================================================
    #if 0
@@ -3631,7 +3633,7 @@ PropSetup* Moderator::CreateDefaultPropSetup(const wxString &name)
    GravityField *gravForce = new GravityField("", "Earth");
    
    #ifdef DEBUG_MEMORY
-   wxString funcName;
+   std::string funcName;
    funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
    MemoryTracker::Instance()->Add
       (gravForce, gravForce->GetName(),
@@ -3652,7 +3654,7 @@ PropSetup* Moderator::CreateDefaultPropSetup(const wxString &name)
    // Why unnamed FM? Commented out (LOJ: 2011.01.12)
    // PropSetup::SetODEModel() clones the ODEModel, so delete it from here (LOJ: 2009.11.23)
    //#ifdef DEBUG_MEMORY
-   //wxString funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
+   //std::string funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
    //MemoryTracker::Instance()->Remove
    //   (fm, fm->GetName(), "Moderator::CreateDefaultPropSetup()"
    //    "deleting fm", funcName);
@@ -3661,24 +3663,24 @@ PropSetup* Moderator::CreateDefaultPropSetup(const wxString &name)
    
    #if DEBUG_CREATE_RESOURCE
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreatePropSetup() returning new DefaultPropSetup <%p>\n"), propSetup);
+      ("Moderator::CreatePropSetup() returning new DefaultPropSetup <%p>\n", propSetup);
    #endif
    
    return propSetup;
 }
 
 //------------------------------------------------------------------------------
-// PropSetup* CreatePropSetup(const wxString &name)
+// PropSetup* CreatePropSetup(const std::string &name)
 //------------------------------------------------------------------------------
 /*
  * Creates PropSetup which contains Integrator and ODEModel.
  */
 //------------------------------------------------------------------------------
-PropSetup* Moderator::CreatePropSetup(const wxString &name)
+PropSetup* Moderator::CreatePropSetup(const std::string &name)
 {
    #if DEBUG_CREATE_RESOURCE
-   MessageInterface::ShowMessage(wxT("====================\n"));
-   MessageInterface::ShowMessage(wxT("Moderator::CreatePropSetup() name='%s'\n"),
+   MessageInterface::ShowMessage("====================\n");
+   MessageInterface::ShowMessage("Moderator::CreatePropSetup() name='%s'\n",
                                  name.c_str());
    #endif
    
@@ -3689,31 +3691,31 @@ PropSetup* Moderator::CreatePropSetup(const wxString &name)
       if (propSetup == NULL)
       {
          MessageInterface::PopupMessage
-            (Gmat::ERROR_, wxT("The Moderator cannot create a PropSetup.\n")
-             wxT("Make sure PropSetup is correct type and registered to ")
-             wxT("PropSetupFactory.\n"));
+            (Gmat::ERROR_, "The Moderator cannot create a PropSetup.\n"
+             "Make sure PropSetup is correct type and registered to "
+             "PropSetupFactory.\n");
          return NULL;
       }
       
       #ifdef DEBUG_MEMORY
       if (propSetup)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (propSetup, name, wxT("Moderator::CreatePropSetup()"), funcName);
+            (propSetup, name, "Moderator::CreatePropSetup()", funcName);
       }
       #endif
       
       // PropSetup creates default Integrator(RungeKutta89)
       // and default ODEModel (PointMassForce body=Earth)
       
-      if (name != wxT("") && objectManageOption == 1)
+      if (name != "" && objectManageOption == 1)
          theConfigManager->AddPropSetup(propSetup);
       
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreatePropSetup() returning new PropSetup <%p>\n"), propSetup);
+         ("Moderator::CreatePropSetup() returning new PropSetup <%p>\n", propSetup);
       #endif
       
       return propSetup;
@@ -3722,19 +3724,19 @@ PropSetup* Moderator::CreatePropSetup(const wxString &name)
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreatePropSetup() Unable to create PropSetup ")
-          wxT("name: %s already exist\n"), name.c_str());
+         ("Moderator::CreatePropSetup() Unable to create PropSetup "
+          "name: %s already exist\n", name.c_str());
       #endif
       return GetPropSetup(name);
    }
 }
 
 //------------------------------------------------------------------------------
-// PropSetup* GetPropSetup(const wxString &name)
+// PropSetup* GetPropSetup(const std::string &name)
 //------------------------------------------------------------------------------
-PropSetup* Moderator::GetPropSetup(const wxString &name)
+PropSetup* Moderator::GetPropSetup(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return (PropSetup*)FindObject(name);
@@ -3743,7 +3745,7 @@ PropSetup* Moderator::GetPropSetup(const wxString &name)
 
 // MeasurementModel
 //------------------------------------------------------------------------------
-// MeasurementModel* CreateMeasurementModel(const wxString &name)
+// MeasurementModel* CreateMeasurementModel(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Creates a new named MeasurementModel and adds it to the configuration
@@ -3753,11 +3755,11 @@ PropSetup* Moderator::GetPropSetup(const wxString &name)
  * @return The new MeasurementModel
  */
 //------------------------------------------------------------------------------
-MeasurementModel* Moderator::CreateMeasurementModel(const wxString &name)
+MeasurementModel* Moderator::CreateMeasurementModel(const std::string &name)
 {
    #if DEBUG_CREATE_RESOURCE
-   MessageInterface::ShowMessage(wxT("====================\n"));
-   MessageInterface::ShowMessage(wxT("Moderator::GetMeasurementModel() name='%s'\n"),
+   MessageInterface::ShowMessage("====================\n");
+   MessageInterface::ShowMessage("Moderator::GetMeasurementModel() name='%s'\n",
                                  name.c_str());
    #endif
 
@@ -3768,29 +3770,29 @@ MeasurementModel* Moderator::CreateMeasurementModel(const wxString &name)
       if (obj == NULL)
       {
          MessageInterface::PopupMessage
-            (Gmat::ERROR_, wxT("The Moderator cannot create a MeasurementModel.\n")
-             wxT("Make sure MeasurementModel is correct type and registered to ")
-             wxT("MeasurementModelFactory.\n"));
+            (Gmat::ERROR_, "The Moderator cannot create a MeasurementModel.\n"
+             "Make sure MeasurementModel is correct type and registered to "
+             "MeasurementModelFactory.\n");
          return NULL;
       }
 
       #ifdef DEBUG_MEMORY
       if (obj)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : ("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (obj, name, wxT("Moderator::CreateMeasurementModel()"), funcName);
+            (obj, name, "Moderator::CreateMeasurementModel()", funcName);
       }
       #endif
       
-      if (name != wxT("") && objectManageOption == 1)
+      if (name != "" && objectManageOption == 1)
          theConfigManager->AddMeasurementModel(obj);
       
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateMeasurementModel() returning new MeasurementModel ")
-               wxT("<%p>\n"), obj);
+         ("Moderator::CreateMeasurementModel() returning new MeasurementModel "
+               "<%p>\n", obj);
       #endif
 
       return obj;
@@ -3799,15 +3801,15 @@ MeasurementModel* Moderator::CreateMeasurementModel(const wxString &name)
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateMeasurementModel() Unable to create ")
-          wxT("MeasurementModel name: %s already exist\n"), name.c_str());
+         ("Moderator::CreateMeasurementModel() Unable to create "
+          "MeasurementModel name: %s already exist\n", name.c_str());
       #endif
       return GetMeasurementModel(name);
    }
 }
 
 //------------------------------------------------------------------------------
-// MeasurementModel* GetMeasurementModel(const wxString &name)
+// MeasurementModel* GetMeasurementModel(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a measurement model from the configuration
@@ -3817,9 +3819,9 @@ MeasurementModel* Moderator::CreateMeasurementModel(const wxString &name)
  * @return The named MeasurementModel
  */
 //------------------------------------------------------------------------------
-MeasurementModel* Moderator::GetMeasurementModel(const wxString &name)
+MeasurementModel* Moderator::GetMeasurementModel(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return (MeasurementModel*)FindObject(name);
@@ -3827,8 +3829,8 @@ MeasurementModel* Moderator::GetMeasurementModel(const wxString &name)
 
 // TrackingSystem
 //------------------------------------------------------------------------------
-// TrackingSystem* CreateTrackingSystem(const wxString &type,
-//       const wxString &name)
+// TrackingSystem* CreateTrackingSystem(const std::string &type,
+//       const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Creates a new named TrackingSystem and adds it to the configuration
@@ -3839,13 +3841,13 @@ MeasurementModel* Moderator::GetMeasurementModel(const wxString &name)
  * @return The new TrackingSystem
  */
 //------------------------------------------------------------------------------
-TrackingSystem* Moderator::CreateTrackingSystem(const wxString &type,
-         const wxString &name)
+TrackingSystem* Moderator::CreateTrackingSystem(const std::string &type,
+         const std::string &name)
 {
    #if DEBUG_CREATE_RESOURCE
-   MessageInterface::ShowMessage(wxT("====================\n"));
-   MessageInterface::ShowMessage(wxT("Moderator::CreateTrackingSystem() type=%s, ")
-            wxT("name='%s'\n"), type.c_str(), name.c_str());
+   MessageInterface::ShowMessage("====================\n");
+   MessageInterface::ShowMessage("Moderator::CreateTrackingSystem() type=%s, "
+            "name='%s'\n", type.c_str(), name.c_str());
    #endif
 
    if (GetTrackingSystem(name) == NULL)
@@ -3855,29 +3857,29 @@ TrackingSystem* Moderator::CreateTrackingSystem(const wxString &type,
       if (obj == NULL)
       {
          MessageInterface::PopupMessage
-            (Gmat::ERROR_, wxT("The Moderator cannot create a TrackingSystem.\n")
-             wxT("Make sure TrackingSystem is correct type and registered to ")
-             wxT("TrackingSystemFactory.\n"));
+            (Gmat::ERROR_, "The Moderator cannot create a TrackingSystem.\n"
+             "Make sure TrackingSystem is correct type and registered to "
+             "TrackingSystemFactory.\n");
          return NULL;
       }
 
       #ifdef DEBUG_MEMORY
       if (obj)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (obj, name, wxT("Moderator::CreateTrackingSystem()"), funcName);
+            (obj, name, "Moderator::CreateTrackingSystem()", funcName);
       }
       #endif
       
-      if (name != wxT("") && objectManageOption == 1)
+      if (name != "" && objectManageOption == 1)
          theConfigManager->AddTrackingSystem(obj);
       
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateTrackingSystem() returning new TrackingSystem ")
-               wxT("<%p>\n"), obj);
+         ("Moderator::CreateTrackingSystem() returning new TrackingSystem "
+               "<%p>\n", obj);
       #endif
 
       return obj;
@@ -3886,15 +3888,15 @@ TrackingSystem* Moderator::CreateTrackingSystem(const wxString &type,
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateTrackingSystem() Unable to create ")
-          wxT("TrackingSystem name: %s already exists\n"), name.c_str());
+         ("Moderator::CreateTrackingSystem() Unable to create "
+          "TrackingSystem name: %s already exists\n", name.c_str());
       #endif
       return GetTrackingSystem(name);
    }
 }
 
 //------------------------------------------------------------------------------
-// TrackingSystem* GetTrackingSystem(const wxString &name)
+// TrackingSystem* GetTrackingSystem(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a TrackingSystem from the configuration
@@ -3904,9 +3906,9 @@ TrackingSystem* Moderator::CreateTrackingSystem(const wxString &type,
  * @return The named TrackingSystem
  */
 //------------------------------------------------------------------------------
-TrackingSystem* Moderator::GetTrackingSystem(const wxString &name)
+TrackingSystem* Moderator::GetTrackingSystem(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return (TrackingSystem*)FindObject(name);
@@ -3914,7 +3916,7 @@ TrackingSystem* Moderator::GetTrackingSystem(const wxString &name)
 
 // TrackingData
 //------------------------------------------------------------------------------
-// TrackingData* CreateTrackingData(const wxString &name)
+// TrackingData* CreateTrackingData(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Creates a new named TrackingData object and adds it to the configuration
@@ -3924,11 +3926,11 @@ TrackingSystem* Moderator::GetTrackingSystem(const wxString &name)
  * @return The new TrackingData object
  */
 //------------------------------------------------------------------------------
-TrackingData* Moderator::CreateTrackingData(const wxString &name)
+TrackingData* Moderator::CreateTrackingData(const std::string &name)
 {
    #if DEBUG_CREATE_RESOURCE
-   MessageInterface::ShowMessage(wxT("====================\n"));
-   MessageInterface::ShowMessage(wxT("Moderator::CreateTrackingData() name='%s'\n"),
+   MessageInterface::ShowMessage("====================\n");
+   MessageInterface::ShowMessage("Moderator::CreateTrackingData() name='%s'\n",
                                  name.c_str());
    #endif
 
@@ -3939,29 +3941,29 @@ TrackingData* Moderator::CreateTrackingData(const wxString &name)
       if (obj == NULL)
       {
          MessageInterface::PopupMessage
-            (Gmat::ERROR_, wxT("The Moderator cannot create a TrackingData object.")
-             wxT("\nMake sure TrackingData is correct type and registered to ")
-             wxT("TrackingDataFactory.\n"));
+            (Gmat::ERROR_, "The Moderator cannot create a TrackingData object."
+             "\nMake sure TrackingData is correct type and registered to "
+             "TrackingDataFactory.\n");
          return NULL;
       }
 
       #ifdef DEBUG_MEMORY
       if (obj)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (obj, name, wxT("Moderator::CreateTrackingData()"), funcName);
+            (obj, name, "Moderator::CreateTrackingData()", funcName);
       }
       #endif
       
-      if (name != wxT("") && objectManageOption == 1)
+      if (name != "" && objectManageOption == 1)
          theConfigManager->AddTrackingData(obj);
       
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateTrackingData() returning new TrackingData ")
-               wxT("<%p>\n"), obj);
+         ("Moderator::CreateTrackingData() returning new TrackingData "
+               "<%p>\n", obj);
       #endif
 
       return obj;
@@ -3970,15 +3972,15 @@ TrackingData* Moderator::CreateTrackingData(const wxString &name)
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateTrackingData() Unable to create ")
-          wxT("TrackingData name: %s already exists\n"), name.c_str());
+         ("Moderator::CreateTrackingData() Unable to create "
+          "TrackingData name: %s already exists\n", name.c_str());
       #endif
       return GetTrackingData(name);
    }
 }
 
 //------------------------------------------------------------------------------
-// TrackingData* GetTrackingData(const wxString &name)
+// TrackingData* GetTrackingData(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a TrackingData object from the configuration
@@ -3988,9 +3990,9 @@ TrackingData* Moderator::CreateTrackingData(const wxString &name)
  * @return The named TrackingData object
  */
 //------------------------------------------------------------------------------
-TrackingData* Moderator::GetTrackingData(const wxString &name)
+TrackingData* Moderator::GetTrackingData(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return (TrackingData*)FindObject(name);
@@ -3998,8 +4000,8 @@ TrackingData* Moderator::GetTrackingData(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// CoreMeasurement* CreateMeasurement(const wxString &type,
-//       const wxString &name)
+// CoreMeasurement* CreateMeasurement(const std::string &type,
+//       const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * This method calls the FactoryManager to create a new CoreMeasurement object
@@ -4010,12 +4012,12 @@ TrackingData* Moderator::GetTrackingData(const wxString &name)
  * @return The new object's pointer
  */
 //------------------------------------------------------------------------------
-CoreMeasurement* Moderator::CreateMeasurement(const wxString &type,
-      const wxString &name)
+CoreMeasurement* Moderator::CreateMeasurement(const std::string &type,
+      const std::string &name)
 {
    #if DEBUG_CREATE_RESOURCE
-   MessageInterface::ShowMessage(wxT("====================\n"));
-   MessageInterface::ShowMessage(wxT("Moderator::CreateMeasurement() name='%s'\n"),
+   MessageInterface::ShowMessage("====================\n");
+   MessageInterface::ShowMessage("Moderator::CreateMeasurement() name='%s'\n",
                                  name.c_str());
    #endif
 
@@ -4026,29 +4028,29 @@ CoreMeasurement* Moderator::CreateMeasurement(const wxString &type,
       if (obj == NULL)
       {
          MessageInterface::PopupMessage
-            (Gmat::ERROR_, wxT("The Moderator cannot create a Measurement.\n")
-             wxT("Make sure Measurement %s is correct type and registered to ")
-             wxT("MeasurementFactory.\n"), type.c_str());
+            (Gmat::ERROR_, "The Moderator cannot create a Measurement.\n"
+             "Make sure Measurement %s is correct type and registered to "
+             "MeasurementFactory.\n", type.c_str());
          return NULL;
       }
 
       #ifdef DEBUG_MEMORY
       if (obj)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (obj, name, wxT("Moderator::CreateMeasurementModel()"), funcName);
+            (obj, name, "Moderator::CreateMeasurementModel()", funcName);
       }
       #endif
 
-      if (name != wxT("") && objectManageOption == 1)
+      if (name != "" && objectManageOption == 1)
          theConfigManager->AddMeasurement(obj);
 
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateMeasurement() returning new Measurement ")
-               wxT("<%p>\n"), obj);
+         ("Moderator::CreateMeasurement() returning new Measurement "
+               "<%p>\n", obj);
       #endif
 
       return obj;
@@ -4057,16 +4059,16 @@ CoreMeasurement* Moderator::CreateMeasurement(const wxString &type,
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateMeasurement() Unable to create ")
-          wxT("Measurement name: %s already exist\n"), name.c_str());
+         ("Moderator::CreateMeasurement() Unable to create "
+          "Measurement name: %s already exist\n", name.c_str());
       #endif
       return GetMeasurement(type, name);
    }
 }
 
 //------------------------------------------------------------------------------
-// CoreMeasurement* GetMeasurement(const wxString &type,
-//       const wxString &name)
+// CoreMeasurement* GetMeasurement(const std::string &type,
+//       const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * This method finds a configured CoreMeasurement
@@ -4077,10 +4079,10 @@ CoreMeasurement* Moderator::CreateMeasurement(const wxString &type,
  * @return The object's pointer; NULL if the object is not in the configuration
  */
 //------------------------------------------------------------------------------
-CoreMeasurement* Moderator::GetMeasurement(const wxString &type,
-      const wxString &name)
+CoreMeasurement* Moderator::GetMeasurement(const std::string &type,
+      const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return (CoreMeasurement*)FindObject(name);
@@ -4089,7 +4091,7 @@ CoreMeasurement* Moderator::GetMeasurement(const wxString &type,
 
 // DataFile
 //------------------------------------------------------------------------------
-// DataFile* CreateDataFile(const wxString &type, const wxString &name)
+// DataFile* CreateDataFile(const std::string &type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Creates a new named DataFile and adds it to the configuration
@@ -4100,13 +4102,13 @@ CoreMeasurement* Moderator::GetMeasurement(const wxString &type,
  * @return The new DataFile
  */
 //------------------------------------------------------------------------------
-DataFile* Moderator::CreateDataFile(const wxString &type,
-                                    const wxString &name)
+DataFile* Moderator::CreateDataFile(const std::string &type,
+                                    const std::string &name)
 {
    #if DEBUG_CREATE_RESOURCE
-   MessageInterface::ShowMessage(wxT("====================\n"));
+   MessageInterface::ShowMessage("====================\n");
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateDataFile() type='%s', name='%s'\n"), type.c_str(),
+      ("Moderator::CreateDataFile() type='%s', name='%s'\n", type.c_str(),
        name.c_str());
    #endif
    
@@ -4117,29 +4119,29 @@ DataFile* Moderator::CreateDataFile(const wxString &type,
       if (df == NULL)
       {
          MessageInterface::PopupMessage
-            (Gmat::ERROR_, wxT("The Moderator cannot create a DataFile.\n")
-             wxT("Make sure DataFile is correct type and registered to ")
-             wxT("DataFileFactory.\n"));
+            (Gmat::ERROR_, "The Moderator cannot create a DataFile.\n"
+             "Make sure DataFile is correct type and registered to "
+             "DataFileFactory.\n");
          return NULL;
       }
       
       #ifdef DEBUG_MEMORY
       if (df)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (df, name, wxT("Moderator::CreateDataFile()"), funcName);
+            (df, name, "Moderator::CreateDataFile()", funcName);
       }
       #endif
       
-      if (name != wxT("") && objectManageOption == 1)
+      if (name != "" && objectManageOption == 1)
          theConfigManager->AddDataFile(df);
       
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateDataFile() returning new DataFile ")
-               wxT("<%p>\n"), df);
+         ("Moderator::CreateDataFile() returning new DataFile "
+               "<%p>\n", df);
       #endif
       
       return df;
@@ -4148,8 +4150,8 @@ DataFile* Moderator::CreateDataFile(const wxString &type,
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateDataFile() Unable to create ")
-          wxT("DataFile name: %s already exists\n"), name.c_str());
+         ("Moderator::CreateDataFile() Unable to create "
+          "DataFile name: %s already exists\n", name.c_str());
       #endif
       return GetDataFile(name);
    }
@@ -4157,7 +4159,7 @@ DataFile* Moderator::CreateDataFile(const wxString &type,
 
 
 //------------------------------------------------------------------------------
-// DataFile* GetDataFile(const wxString &name)
+// DataFile* GetDataFile(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a measurement DataFile from the configuration
@@ -4167,9 +4169,9 @@ DataFile* Moderator::CreateDataFile(const wxString &type,
  * @return The named DataFile
  */
 //------------------------------------------------------------------------------
-DataFile* Moderator::GetDataFile(const wxString &name)
+DataFile* Moderator::GetDataFile(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return (DataFile*)FindObject(name);
@@ -4178,13 +4180,13 @@ DataFile* Moderator::GetDataFile(const wxString &name)
 
 // ObType
 //------------------------------------------------------------------------------
-// ObType* CreateObType(const wxString &type, const wxString &name)
+// ObType* CreateObType(const std::string &type, const std::string &name)
 //------------------------------------------------------------------------------
-ObType* Moderator::CreateObType(const wxString &type, const wxString &name)
+ObType* Moderator::CreateObType(const std::string &type, const std::string &name)
 {
    #if DEBUG_CREATE_RESOURCE
-   MessageInterface::ShowMessage(wxT("====================\n"));
-   MessageInterface::ShowMessage(wxT("Moderator::CreateObType() name='%s'\n"),
+   MessageInterface::ShowMessage("====================\n");
+   MessageInterface::ShowMessage("Moderator::CreateObType() name='%s'\n",
                                  name.c_str());
    #endif
 
@@ -4195,29 +4197,29 @@ ObType* Moderator::CreateObType(const wxString &type, const wxString &name)
       if (ot == NULL)
       {
          MessageInterface::PopupMessage
-            (Gmat::ERROR_, wxT("The Moderator cannot create a ObType.\n")
-             wxT("Make sure ObType is correct type and registered to a ")
-             wxT("ObTypeFactory.\n"));
+            (Gmat::ERROR_, "The Moderator cannot create a ObType.\n"
+             "Make sure ObType is correct type and registered to a "
+             "ObTypeFactory.\n");
          return NULL;
       }
 
       #ifdef DEBUG_MEMORY
       if (ot)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (ot, name, wxT("Moderator::CreateObType()"), funcName);
+            (ot, name, "Moderator::CreateObType()", funcName);
       }
       #endif
 
-      if (name != wxT("") && objectManageOption == 1)
+      if (name != "" && objectManageOption == 1)
          theConfigManager->AddObType(ot);
       
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateObType() returning new ObType ")
-               wxT("<%p>\n"), ot);
+         ("Moderator::CreateObType() returning new ObType "
+               "<%p>\n", ot);
       #endif
 
       return ot;
@@ -4226,15 +4228,15 @@ ObType* Moderator::CreateObType(const wxString &type, const wxString &name)
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateDataFile() Unable to create ")
-          wxT("DataFile name: %s already exists\n"), name.c_str());
+         ("Moderator::CreateDataFile() Unable to create "
+          "DataFile name: %s already exists\n", name.c_str());
       #endif
       return GetObType(name);
    }
 }
 
 //------------------------------------------------------------------------------
-// ObType* GetObType(const wxString &name)
+// ObType* GetObType(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a ObType from the configuration
@@ -4244,9 +4246,9 @@ ObType* Moderator::CreateObType(const wxString &type, const wxString &name)
  * @return The named ObType  (Should always return NULL)
  */
 //------------------------------------------------------------------------------
-ObType* Moderator::GetObType(const wxString &name)
+ObType* Moderator::GetObType(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return (ObType*)FindObject(name);
@@ -4254,8 +4256,8 @@ ObType* Moderator::GetObType(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// EventLocator* Moderator::CreateEventLocator(const wxString &type,
-//                          const wxString &name)
+// EventLocator* Moderator::CreateEventLocator(const std::string &type,
+//                          const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Calls the FactoryManager to create an EventLocator
@@ -4266,12 +4268,12 @@ ObType* Moderator::GetObType(const wxString &name)
  * @return The named EventLocator
  */
 //------------------------------------------------------------------------------
-EventLocator* Moderator::CreateEventLocator(const wxString &type,
-                         const wxString &name)
+EventLocator* Moderator::CreateEventLocator(const std::string &type,
+                         const std::string &name)
 {
    #if DEBUG_CREATE_RESOURCE
-   MessageInterface::ShowMessage(wxT("====================\n"));
-   MessageInterface::ShowMessage(wxT("Moderator::CreateEventLocator() name='%s'\n"),
+   MessageInterface::ShowMessage("====================\n");
+   MessageInterface::ShowMessage("Moderator::CreateEventLocator() name='%s'\n",
                                  name.c_str());
    #endif
 
@@ -4282,30 +4284,30 @@ EventLocator* Moderator::CreateEventLocator(const wxString &type,
       if (el == NULL)
       {
          MessageInterface::PopupMessage
-            (Gmat::ERROR_, wxT("The Moderator cannot create an EventLocator.\n")
-             wxT("Make sure EventLocator is correct type and registered to a ")
-             wxT("EventLocatorFactory.\n"));
+            (Gmat::ERROR_, "The Moderator cannot create an EventLocator.\n"
+             "Make sure EventLocator is correct type and registered to a "
+             "EventLocatorFactory.\n");
          return NULL;
       }
 
       #ifdef DEBUG_MEMORY
       if (el)
       {
-         wxString funcName;
+         std::string funcName;
          funcName = currentFunction ?
-               wxT("function: ") + currentFunction->GetName() : wxT("");
+               "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (el, name, wxT("Moderator::CreateEventLocator()"), funcName);
+            (el, name, "Moderator::CreateEventLocator()", funcName);
       }
       #endif
 
-      if (name != wxT("") && objectManageOption == 1)
+      if (name != "" && objectManageOption == 1)
          theConfigManager->AddEventLocator(el);
 
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateEventLocator() returning new EventLocator ")
-               wxT("<%p>\n"), el);
+         ("Moderator::CreateEventLocator() returning new EventLocator "
+               "<%p>\n", el);
       #endif
 
       return el;
@@ -4314,8 +4316,8 @@ EventLocator* Moderator::CreateEventLocator(const wxString &type,
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateEventLocator() Unable to create ")
-          ("EventLocator name: %s already exists\n"), name.c_str());
+         ("Moderator::CreateEventLocator() Unable to create "
+          "EventLocator name: %s already exists\n", name.c_str());
       #endif
       return GetEventLocator(name);
    }
@@ -4323,10 +4325,10 @@ EventLocator* Moderator::CreateEventLocator(const wxString &type,
 
 
 //------------------------------------------------------------------------------
-// EventLocator* GetEventLocator(const wxString &name)
+// EventLocator* GetEventLocator(const std::string &name)
 //------------------------------------------------------------------------------
 /**
- * Retrieves a previously created EventLoactor
+ * Retrieves a previously created EvantLoactor
  *
  * @param name The name of the EventLocator
  *
@@ -4334,9 +4336,9 @@ EventLocator* Moderator::CreateEventLocator(const wxString &type,
  *         configuration.
  */
 //------------------------------------------------------------------------------
-EventLocator* Moderator::GetEventLocator(const wxString &name)
+EventLocator* Moderator::GetEventLocator(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return (EventLocator*)FindObject(name);
@@ -4345,8 +4347,8 @@ EventLocator* Moderator::GetEventLocator(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// Interpolator* CreateInterpolator(const wxString &type,
-//                                  const wxString &name)
+// Interpolator* CreateInterpolator(const std::string &type,
+//                                  const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Creates a Interpolator object by given type and name.
@@ -4357,15 +4359,15 @@ EventLocator* Moderator::GetEventLocator(const wxString &name)
  * @return a Interpolator object pointer
  */
 //------------------------------------------------------------------------------
-Interpolator* Moderator::CreateInterpolator(const wxString &type,
-                                            const wxString &name)
+Interpolator* Moderator::CreateInterpolator(const std::string &type,
+                                            const std::string &name)
 {
    //loj: 3/22/04 theFactoryManager->CreateInterpolator() not implemented
    return NULL;
 }
 
 //------------------------------------------------------------------------------
-// Interpolator* GetInterpolator(const wxString &name)
+// Interpolator* GetInterpolator(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a Interpolator object pointer by given name.
@@ -4375,14 +4377,14 @@ Interpolator* Moderator::CreateInterpolator(const wxString &type,
  * @return a Interpolator object pointer, return null if name not found
  */
 //------------------------------------------------------------------------------
-Interpolator* Moderator::GetInterpolator(const wxString &name)
+Interpolator* Moderator::GetInterpolator(const std::string &name)
 {
    return NULL;
 }
 
 // CoordinateSystem
 //------------------------------------------------------------------------------
-// CoordinateSystem* CreateCoordinateSystem(const wxString &name,
+// CoordinateSystem* CreateCoordinateSystem(const std::string &name,
 //                   bool createDefault = false, bool internal = false,
 //                   Integer manage = 1)
 //------------------------------------------------------------------------------
@@ -4397,14 +4399,14 @@ Interpolator* Moderator::GetInterpolator(const wxString &name)
  *                 1 = add to configuration
  */
 //------------------------------------------------------------------------------
-CoordinateSystem* Moderator::CreateCoordinateSystem(const wxString &name,
+CoordinateSystem* Moderator::CreateCoordinateSystem(const std::string &name,
                                                     bool createDefault,
                                                     bool internal, Integer manage)
 {
    #if DEBUG_CREATE_COORDSYS
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateCoordinateSystem() name='%s', createDefault=%d, ")
-       wxT("internal=%d, manage=%d, theSolarSystemInUse=%p\n"), name.c_str(), createDefault,
+      ("Moderator::CreateCoordinateSystem() name='%s', createDefault=%d, "
+       "internal=%d, manage=%d, theSolarSystemInUse=%p\n", name.c_str(), createDefault,
        internal, manage, theSolarSystemInUse);
    #endif
    
@@ -4414,7 +4416,7 @@ CoordinateSystem* Moderator::CreateCoordinateSystem(const wxString &name,
    {
       #if DEBUG_CREATE_COORDSYS
       MessageInterface::ShowMessage
-         (wxT("   Cannot find CoordinateSystem named '%s', so create\n"), name.c_str());
+         ("   Cannot find CoordinateSystem named '%s', so create\n", name.c_str());
       #endif
       
       obj = theFactoryManager->CreateCoordinateSystem(name);
@@ -4422,9 +4424,9 @@ CoordinateSystem* Moderator::CreateCoordinateSystem(const wxString &name,
       if (obj == NULL)
       {
          MessageInterface::PopupMessage
-            (Gmat::ERROR_, wxT("The Moderator cannot create a CoordinateSystem.\n")
-             wxT("Make sure CoordinateSystem is correct type and registered to ")
-             wxT("CoordinateSystemFactory.\n"));
+            (Gmat::ERROR_, "The Moderator cannot create a CoordinateSystem.\n"
+             "Make sure CoordinateSystem is correct type and registered to "
+             "CoordinateSystemFactory.\n");
          
          return NULL;
          
@@ -4435,17 +4437,17 @@ CoordinateSystem* Moderator::CreateCoordinateSystem(const wxString &name,
       #ifdef DEBUG_MEMORY
       if (obj)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (obj, name, wxT("Moderator::CreateCoordinateSystem()"), funcName);
+            (obj, name, "Moderator::CreateCoordinateSystem()", funcName);
       }
       #endif
       
       // Manage it if it is a named CoordinateSystem
       try
       {
-         if (name != wxT("") && !internal && manage != 0)
+         if (name != "" && !internal && manage != 0)
          {
             if (manage == 1)
                theConfigManager->AddCoordinateSystem(obj);
@@ -4458,27 +4460,27 @@ CoordinateSystem* Moderator::CreateCoordinateSystem(const wxString &name,
          // Call GetSolarSystemInUse() to get SolarSystem from configuration
          // or object map in use (loj: 2008.06.27)
          SolarSystem *ss = GetSolarSystemInUse(manage);
-         CelestialBody *earth = ss->GetBody(wxT("Earth"));
+         CelestialBody *earth = ss->GetBody("Earth");
          #if DEBUG_CREATE_COORDSYS
             MessageInterface::ShowMessage
-               (wxT("Mod::CreateCS = SolarSystem found at <%p>\n"), ss);
+               ("Mod::CreateCS = SolarSystem found at <%p>\n", ss);
             MessageInterface::ShowMessage
-               (wxT("Mod::CreateCS = Earth found at <%p>\n"), earth);
+               ("Mod::CreateCS = Earth found at <%p>\n", earth);
          #endif
          
          // Set J2000Body and SolarSystem
-         obj->SetStringParameter(wxT("J2000Body"), wxT("Earth"));
-         obj->SetRefObject(earth, Gmat::SPACE_POINT, wxT("Earth"));
+         obj->SetStringParameter("J2000Body", "Earth");
+         obj->SetRefObject(earth, Gmat::SPACE_POINT, "Earth");
          obj->SetSolarSystem(ss);
          obj->Initialize();
          
          if (createDefault)
          {
             // create MJ2000Eq AxisSystem with Earth as origin
-            AxisSystem *axis = CreateAxisSystem(wxT("MJ2000Eq"), wxT("MJ2000Eq_Earth"));
-            obj->SetStringParameter(wxT("J2000Body"), wxT("Earth"));
-            obj->SetStringParameter(wxT("Origin"), wxT("Earth"));
-            obj->SetRefObject(earth, Gmat::SPACE_POINT, wxT("Earth"));
+            AxisSystem *axis = CreateAxisSystem("MJ2000Eq", "MJ2000Eq_Earth");
+            obj->SetStringParameter("J2000Body", "Earth");
+            obj->SetStringParameter("Origin", "Earth");
+            obj->SetRefObject(earth, Gmat::SPACE_POINT, "Earth");
             obj->SetRefObject(axis, Gmat::AXIS_SYSTEM, axis->GetName());
             obj->SetSolarSystem(ss);
             obj->Initialize();
@@ -4486,8 +4488,8 @@ CoordinateSystem* Moderator::CreateCoordinateSystem(const wxString &name,
             // Since CoordinateSystem clones AxisSystem, delete it from here
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Remove
-               (axis, wxT("localAxes"), wxT("Moderator::CreateCoordinateSystem()"),
-                wxT("deleting localAxes"));
+               (axis, "localAxes", "Moderator::CreateCoordinateSystem()",
+                "deleting localAxes");
             #endif
             delete axis;
          }
@@ -4497,14 +4499,14 @@ CoordinateSystem* Moderator::CreateCoordinateSystem(const wxString &name,
          // Use exception to remove Visual C++ warning
          e.GetMessageType();
          #if DEBUG_CREATE_COORDSYS
-         MessageInterface::ShowMessage(wxT("Moderator::CreateCoordinateSystem() %s\n"),
+         MessageInterface::ShowMessage("Moderator::CreateCoordinateSystem() %s\n",
                                        e.GetFullMessage().c_str());
          #endif
       }
       
       #if DEBUG_CREATE_COORDSYS
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateCoordinateSystem() returning new %p\n"), obj);
+         ("Moderator::CreateCoordinateSystem() returning new %p\n", obj);
       #endif
       
       return obj;
@@ -4513,10 +4515,10 @@ CoordinateSystem* Moderator::CreateCoordinateSystem(const wxString &name,
    {
       #if DEBUG_CREATE_COORDSYS
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateCoordinateSystem() Unable to create CoordinateSystem ")
-          wxT("name: %s already exist\n"), name.c_str());      
+         ("Moderator::CreateCoordinateSystem() Unable to create CoordinateSystem "
+          "name: %s already exist\n", name.c_str());      
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateCoordinateSystem() returning existing %p\n"), obj);
+         ("Moderator::CreateCoordinateSystem() returning existing %p\n", obj);
       #endif
       
       return obj;
@@ -4525,11 +4527,11 @@ CoordinateSystem* Moderator::CreateCoordinateSystem(const wxString &name,
 
 
 //------------------------------------------------------------------------------
-// CoordinateSystem* GetCoordinateSystem(const wxString &name, Integer manage = 1)
+// CoordinateSystem* GetCoordinateSystem(const std::string &name, Integer manage = 1)
 //------------------------------------------------------------------------------
-CoordinateSystem* Moderator::GetCoordinateSystem(const wxString &name)
+CoordinateSystem* Moderator::GetCoordinateSystem(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return (CoordinateSystem*)FindObject(name);
@@ -4547,8 +4549,8 @@ const StringArray& Moderator::GetDefaultCoordinateSystemNames()
 
 // Subscriber
 //------------------------------------------------------------------------------
-// Subscriber* CreateSubscriber(const wxString &type, const wxString &name,
-//                              const wxString &fileName = "",
+// Subscriber* CreateSubscriber(const std::string &type, const std::string &name,
+//                              const std::string &fileName = "",
 //                              bool createDefault = false)
 //------------------------------------------------------------------------------
 /**
@@ -4562,19 +4564,19 @@ const StringArray& Moderator::GetDefaultCoordinateSystemNames()
  * @return a subscriber object pointer
  */
 //------------------------------------------------------------------------------
-Subscriber* Moderator::CreateSubscriber(const wxString &type,
-                                        const wxString &name,
-                                        const wxString &fileName,
+Subscriber* Moderator::CreateSubscriber(const std::string &type,
+                                        const std::string &name,
+                                        const std::string &fileName,
                                         bool createDefault)
 {
    #if DEBUG_CREATE_RESOURCE
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateSubscriber() type='%s', name='%s', fileName='%s'\n")
-       wxT("   createDefault=%d\n"), type.c_str(), name.c_str(), fileName.c_str(),
+      ("Moderator::CreateSubscriber() type='%s', name='%s', fileName='%s'\n"
+       "   createDefault=%d\n", type.c_str(), name.c_str(), fileName.c_str(),
        createDefault);
    MessageInterface::ShowMessage
-      (wxT("   currentFunction = <%p>'%s', objectManageOption=%d\n"), currentFunction,
-       currentFunction ? currentFunction->GetName().c_str() : wxT("NULL"),
+      ("   currentFunction = <%p>'%s', objectManageOption=%d\n", currentFunction,
+       currentFunction ? currentFunction->GetName().c_str() : "NULL",
        objectManageOption);
    #endif
    
@@ -4585,81 +4587,81 @@ Subscriber* Moderator::CreateSubscriber(const wxString &type,
       if (obj == NULL)
       {
          MessageInterface::PopupMessage
-            (Gmat::ERROR_, wxT("Cannot create a Subscriber type: %s.\n")
-             wxT("Make sure %s is correct type and registered to SubscriberFactory.\n"),
+            (Gmat::ERROR_, "Cannot create a Subscriber type: %s.\n"
+             "Make sure %s is correct type and registered to SubscriberFactory.\n",
              type.c_str(), type.c_str());
          
          return NULL;
          
          //throw GmatBaseException
-         //   (wxT("The Moderator cannot create a Subscriber type\"" + type + "\"\n"));
+         //   ("The Moderator cannot create a Subscriber type\"" + type + "\"\n");
       }
       
       #ifdef DEBUG_MEMORY
       if (obj)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (obj, name, wxT("Moderator::CreateSubscriber()"), funcName);
+            (obj, name, "Moderator::CreateSubscriber()", funcName);
       }
       #endif
       
       // Manage it if it is a named Subscriber
       try
       {
-         if (obj->GetName() != wxT("") && objectManageOption == 1)
+         if (obj->GetName() != "" && objectManageOption == 1)
             theConfigManager->AddSubscriber(obj);
          
          #if DEBUG_CREATE_RESOURCE
          MessageInterface::ShowMessage
-            (wxT("Moderator::CreateSubscriber() Creating default subscriber...\n"));
+            ("Moderator::CreateSubscriber() Creating default subscriber...\n");
          #endif
          
          if (createDefault)
          {
-            if (type == wxT("OrbitView"))
+            if (type == "OrbitView")
             {
                // add default spacecraft and coordinate system
-               obj->SetStringParameter(wxT("Add"), GetDefaultSpacecraft()->GetName());
-               obj->SetStringParameter(wxT("Add"), wxT("Earth"));
-               obj->SetStringParameter(wxT("CoordinateSystem"), wxT("EarthMJ2000Eq"));
+               obj->SetStringParameter("Add", GetDefaultSpacecraft()->GetName());
+               obj->SetStringParameter("Add", "Earth");
+               obj->SetStringParameter("CoordinateSystem", "EarthMJ2000Eq");
             }
-            else if (type == wxT("GroundTrackPlot"))
+            else if (type == "GroundTrackPlot")
             {
                // add default spacecraft and earth
-               obj->SetStringParameter(wxT("Add"), GetDefaultSpacecraft()->GetName());
-               obj->SetStringParameter(wxT("Add"), wxT("Earth"));
+               obj->SetStringParameter("Add", GetDefaultSpacecraft()->GetName());
+               obj->SetStringParameter("Add", "Earth");
             }
-            else if (type == wxT("XYPlot"))
+            else if (type == "XYPlot")
             {
                // add default x,y parameter to XYPlot
                obj->SetStringParameter(XyPlot::XVARIABLE, GetDefaultX()->GetName());
                obj->SetStringParameter(XyPlot::YVARIABLES, GetDefaultY()->GetName(), 0);
                obj->Activate(true);
             }
-            else if (type == wxT("ReportFile"))
+            else if (type == "ReportFile")
             {
                // add default parameters to ReportFile
-               obj->SetStringParameter(obj->GetParameterID(wxT("Filename")),
-                                       name + wxT(".txt"));
-               obj->SetStringParameter(wxT("Add"), GetDefaultX()->GetName());
-               obj->SetStringParameter(wxT("Add"), GetDefaultY()->GetName());
+               obj->SetStringParameter(obj->GetParameterID("Filename"),
+                                       name + ".txt");
+               obj->SetStringParameter("Add", GetDefaultX()->GetName());
+               obj->SetStringParameter("Add", GetDefaultY()->GetName());
                obj->Activate(true);
                
                // To validate and create element wrappers
                theScriptInterpreter->ValidateSubscriber(obj);
             }
-            else if (type == wxT("EphemerisFile"))
+            else if (type == "EphemerisFile")
             {
                // add default spacecraft and coordinate system
-               obj->SetStringParameter(wxT("Spacecraft"), GetDefaultSpacecraft()->GetName());
+               obj->SetStringParameter("Spacecraft", GetDefaultSpacecraft()->GetName());
             }
          }
       }
       catch (BaseException &e)
       {
-         MessageInterface::ShowMessage(wxT("Moderator::CreateSubscriber()\n") +
+         MessageInterface::ShowMessage("Moderator::CreateSubscriber()\n" +
                                        e.GetFullMessage());
       }
       
@@ -4669,8 +4671,8 @@ Subscriber* Moderator::CreateSubscriber(const wxString &type,
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateSubscriber() Unable to create Subscriber ")
-          wxT("name: %s already exist\n"), name.c_str());
+         ("Moderator::CreateSubscriber() Unable to create Subscriber "
+          "name: %s already exist\n", name.c_str());
       #endif
       
       return GetSubscriber(name);
@@ -4678,7 +4680,7 @@ Subscriber* Moderator::CreateSubscriber(const wxString &type,
 }
 
 //------------------------------------------------------------------------------
-// Subscriber* GetSubscriber(const wxString &name)
+// Subscriber* GetSubscriber(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a subscriber object pointer by given name.
@@ -4688,9 +4690,9 @@ Subscriber* Moderator::CreateSubscriber(const wxString &type,
  * @return a subscriber object pointer, return null if name not found
  */
 //------------------------------------------------------------------------------
-Subscriber* Moderator::GetSubscriber(const wxString &name)
+Subscriber* Moderator::GetSubscriber(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return (Subscriber*)FindObject(name);
@@ -4712,7 +4714,7 @@ Integer Moderator::GetNumberOfActivePlots()
    
    #ifdef DEBUG_ACTIVE_PLOTS
    MessageInterface::ShowMessage
-      (wxT("Moderator::GetNumberOfActivePlots() subscriber count = %d\n"), names.size());
+      ("Moderator::GetNumberOfActivePlots() subscriber count = %d\n", names.size());
    #endif
    
    //@todo
@@ -4720,21 +4722,21 @@ Integer Moderator::GetNumberOfActivePlots()
    for (Integer i=0; i<(Integer)names.size(); i++)
    {
       obj = theConfigManager->GetSubscriber(names[i]);
-      if (obj->IsOfType(wxT("XYPlot")))
+      if (obj->IsOfType("XYPlot"))
       {
-         if ( ((XyPlot*)obj)->GetBooleanParameter(wxT("ShowPlot")) )
+         if ( ((XyPlot*)obj)->GetBooleanParameter("ShowPlot") )
             activePlotCount++;
       }
-      else if (obj->IsOfType(wxT("OrbitPlot")))
+      else if (obj->IsOfType("OrbitPlot"))
       {
-         if ( ((OrbitPlot*)obj)->GetBooleanParameter(wxT("ShowPlot")) )
+         if ( ((OrbitPlot*)obj)->GetBooleanParameter("ShowPlot") )
             activePlotCount++;
       }
    }
    
    #ifdef DEBUG_ACTIVE_PLOTS
    MessageInterface::ShowMessage
-      (wxT("Moderator::GetNumberOfActivePlots() returning %d\n"), activePlotCount);
+      ("Moderator::GetNumberOfActivePlots() returning %d\n", activePlotCount);
    #endif
    
    return activePlotCount;
@@ -4742,8 +4744,8 @@ Integer Moderator::GetNumberOfActivePlots()
 
 
 //------------------------------------------------------------------------------
-// Subscriber* CreateEphemerisFile(const wxString &type,
-//                                 const wxString &name)
+// Subscriber* CreateEphemerisFile(const std::string &type,
+//                                 const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Creates a subscriber object by given type and name if not already created.
@@ -4754,16 +4756,16 @@ Integer Moderator::GetNumberOfActivePlots()
  * @return a subscriber object pointer
  */
 //------------------------------------------------------------------------------
-Subscriber* Moderator::CreateEphemerisFile(const wxString &type,
-                                           const wxString &name)
+Subscriber* Moderator::CreateEphemerisFile(const std::string &type,
+                                           const std::string &name)
 {
    #if DEBUG_CREATE_EPHEMFILE
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateEphemerisFile() type='%s', name='%s'\n"),
+      ("Moderator::CreateEphemerisFile() type='%s', name='%s'\n",
        type.c_str(), name.c_str());
    MessageInterface::ShowMessage
-      (wxT("   in function = <%p>'%s'\n"), currentFunction,
-       currentFunction ? currentFunction->GetName().c_str() : wxT("NULL"));
+      ("   in function = <%p>'%s'\n", currentFunction,
+       currentFunction ? currentFunction->GetName().c_str() : "NULL");
    #endif
    
    if (GetEphemerisFile(name) == NULL)
@@ -4773,13 +4775,13 @@ Subscriber* Moderator::CreateEphemerisFile(const wxString &type,
       if (obj == NULL)
       {
          #ifdef __USE_DATAFILE__
-            if (type == wxT("CcsdsEphemerisFile"))
+            if (type == "CcsdsEphemerisFile")
             {
                MessageInterface::PopupMessage
-                  (Gmat::ERROR_, wxT("**** ERROR **** Cannot create an EphemerisFile type: %s.\n")
-                   wxT("Make sure to specify PLUGIN = libDataFile and PLUGIN = libCcsdsEphemerisFile\n")
-                   wxT("in the gmat_start_file and make sure such dlls exist.  ")
-                   wxT("Make sure that libpcre-0 and libpcrecpp-0 also exist in the path\n"),
+                  (Gmat::ERROR_, "**** ERROR **** Cannot create an EphemerisFile type: %s.\n"
+                   "Make sure to specify PLUGIN = libDataFile and PLUGIN = libCcsdsEphemerisFile\n"
+                   "in the gmat_start_file and make sure such dlls exist.  "
+                   "Make sure that libpcre-0 and libpcrecpp-0 also exist in the path\n",
                    type.c_str(), type.c_str());
 
                return NULL;
@@ -4787,38 +4789,38 @@ Subscriber* Moderator::CreateEphemerisFile(const wxString &type,
          #else
             #ifdef DEBUG_CREATE_EPHEMFILE
             MessageInterface::ShowMessage
-               (wxT("CreateEphemerisFile() Creating a subscriber of type EphemerisFile\n"));
+               ("CreateEphemerisFile() Creating a subscriber of type EphemerisFile\n");
             #endif
-            // Try again with wxT("EphemerisFile") type
-            obj = (Subscriber*)(theFactoryManager->CreateSubscriber(wxT("EphemerisFile"), name));
+            // Try again with "EphemerisFile" type
+            obj = (Subscriber*)(theFactoryManager->CreateSubscriber("EphemerisFile", name));
          #endif
       }
       
       #ifdef DEBUG_MEMORY
       if (obj)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (obj, name, wxT("Moderator::CreateEphemerisFile()"), funcName);
+            (obj, name, "Moderator::CreateEphemerisFile()", funcName);
       }
       #endif
       
       // Manage it if it is a named EphemerisFile
       try
       {
-         if (name != wxT("") && objectManageOption == 1)
+         if (name != "" && objectManageOption == 1)
             theConfigManager->AddSubscriber(obj);
       }
       catch (BaseException &e)
       {
-         MessageInterface::ShowMessage(wxT("Moderator::CreateEphemerisFile()\n") +
+         MessageInterface::ShowMessage("Moderator::CreateEphemerisFile()\n" +
                                        e.GetFullMessage());
       }
       
       #if DEBUG_CREATE_EPHEMFILE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateEphemerisFile() returning <%p>\n"), obj);
+         ("Moderator::CreateEphemerisFile() returning <%p>\n", obj);
       #endif
       
       return obj;
@@ -4827,8 +4829,8 @@ Subscriber* Moderator::CreateEphemerisFile(const wxString &type,
    {
       #if DEBUG_CREATE_EPHEMFILE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateEphemerisFile() Unable to create EphemerisFile ")
-          wxT("name: %s already exist\n"), name.c_str());
+         ("Moderator::CreateEphemerisFile() Unable to create EphemerisFile "
+          "name: %s already exist\n", name.c_str());
       #endif
       
       return GetEphemerisFile(name);
@@ -4836,7 +4838,7 @@ Subscriber* Moderator::CreateEphemerisFile(const wxString &type,
 }
 
 //------------------------------------------------------------------------------
-// Subscriber* GetEphemerisFile(const wxString &name)
+// Subscriber* GetEphemerisFile(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a subscriber object pointer by given name.
@@ -4846,9 +4848,9 @@ Subscriber* Moderator::CreateEphemerisFile(const wxString &type,
  * @return a subscriber object pointer, return null if name not found
  */
 //------------------------------------------------------------------------------
-Subscriber* Moderator::GetEphemerisFile(const wxString &name)
+Subscriber* Moderator::GetEphemerisFile(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return (Subscriber*)FindObject(name);
@@ -4856,7 +4858,7 @@ Subscriber* Moderator::GetEphemerisFile(const wxString &name)
 
 // Function
 //------------------------------------------------------------------------------
-// Function* CreateFunction(const wxString &type, const wxString &name,
+// Function* CreateFunction(const std::string &type, const std::string &name,
 //                          Integer manage = 1)
 //------------------------------------------------------------------------------
 /**
@@ -4869,17 +4871,17 @@ Subscriber* Moderator::GetEphemerisFile(const wxString &name)
  * @return a Function object pointer
  */
 //------------------------------------------------------------------------------
-Function* Moderator::CreateFunction(const wxString &type,
-                                    const wxString &name,
+Function* Moderator::CreateFunction(const std::string &type,
+                                    const std::string &name,
                                     Integer manage)
 {
    #if DEBUG_CREATE_RESOURCE
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateFunction() type = '%s', name = '%s', manage=%d\n"),
+      ("Moderator::CreateFunction() type = '%s', name = '%s', manage=%d\n",
        type.c_str(), name.c_str(), manage);
    MessageInterface::ShowMessage
-      (wxT("   in function = <%p>'%s'\n"), currentFunction,
-       currentFunction ? currentFunction->GetName().c_str() : wxT("NULL"));
+      ("   in function = <%p>'%s'\n", currentFunction,
+       currentFunction ? currentFunction->GetName().c_str() : "NULL");
    #endif
    
    if (GetFunction(name) == NULL)
@@ -4889,37 +4891,37 @@ Function* Moderator::CreateFunction(const wxString &type,
       if (obj == NULL)
       {
          MessageInterface::PopupMessage
-            (Gmat::ERROR_, wxT("Cannot create a Function type: %s.\n")
-             wxT("Make sure %s is correct type and registered to FunctionFactory.\n"),
+            (Gmat::ERROR_, "Cannot create a Function type: %s.\n"
+             "Make sure %s is correct type and registered to FunctionFactory.\n",
              type.c_str(), type.c_str());
          
          return NULL;
          
          //throw GmatBaseException
-         //   (wxT("The Moderator cannot create a Function type \"" + type + "\"\n"));
+         //   ("The Moderator cannot create a Function type \"" + type + "\"\n");
       }
       
       #ifdef DEBUG_MEMORY
       if (obj)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (obj, name, wxT("Moderator::CreateFunction()"), funcName);
+            (obj, name, "Moderator::CreateFunction()", funcName);
       }
       #endif
       
       // Manage it if it is a named Function
       try
       {
-         if (name != wxT("") && manage == 1)
+         if (name != "" && manage == 1)
             theConfigManager->AddFunction(obj);
          else if (currentFunction != NULL && manage == 0)
             unmanagedFunctions.push_back(obj);
       }
       catch (BaseException &e)
       {
-         MessageInterface::ShowMessage(wxT("Moderator::CreateFunction()\n") +
+         MessageInterface::ShowMessage("Moderator::CreateFunction()\n" +
                                        e.GetFullMessage());
       }
       
@@ -4929,8 +4931,8 @@ Function* Moderator::CreateFunction(const wxString &type,
    {
       #if DEBUG_CREATE_RESOURCE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateFunction() Unable to create Function ")
-          wxT("name: %s already exist\n"), name.c_str());
+         ("Moderator::CreateFunction() Unable to create Function "
+          "name: %s already exist\n", name.c_str());
       #endif
       
       return GetFunction(name);
@@ -4939,7 +4941,7 @@ Function* Moderator::CreateFunction(const wxString &type,
 
 
 //------------------------------------------------------------------------------
-// Function* GetFunction(const wxString &name)
+// Function* GetFunction(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a function object pointer by given name.
@@ -4949,9 +4951,9 @@ Function* Moderator::CreateFunction(const wxString &type,
  * @return a Function object pointer, return null if name not found
  */
 //------------------------------------------------------------------------------
-Function* Moderator::GetFunction(const wxString &name)
+Function* Moderator::GetFunction(const std::string &name)
 {
-   if (name == wxT(""))
+   if (name == "")
       return NULL;
    else
       return theConfigManager->GetFunction(name);
@@ -4962,15 +4964,15 @@ Function* Moderator::GetFunction(const wxString &name)
 
 // StopCondition
 //------------------------------------------------------------------------------
-// StopCondition* CreateStopCondition(const wxString &type,
-//                                    const wxString &name)
+// StopCondition* CreateStopCondition(const std::string &type,
+//                                    const std::string &name)
 //------------------------------------------------------------------------------
-StopCondition* Moderator::CreateStopCondition(const wxString &type,
-                                              const wxString &name)
+StopCondition* Moderator::CreateStopCondition(const std::string &type,
+                                              const std::string &name)
 {
    #if DEBUG_CREATE_RESOURCE
-   MessageInterface::ShowMessage(wxT("Moderator::CreateStopCondition() type = '%s', ")
-                                 wxT("name = '%s'\n"), type.c_str(), name.c_str());
+   MessageInterface::ShowMessage("Moderator::CreateStopCondition() type = '%s', "
+                                 "name = '%s'\n", type.c_str(), name.c_str());
    #endif
    
    StopCondition *stopCond = theFactoryManager->CreateStopCondition(type, name);
@@ -4978,16 +4980,16 @@ StopCondition* Moderator::CreateStopCondition(const wxString &type,
    if (stopCond ==  NULL)
    {
       throw GmatBaseException
-         (wxT("The Moderator cannot create StopCondition type \"") + type + wxT("\"\n"));
+         ("The Moderator cannot create StopCondition type \"" + type + "\"\n");
    }
    
    #ifdef DEBUG_MEMORY
    if (stopCond)
    {
-      wxString funcName;
-      funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+      std::string funcName;
+      funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
       MemoryTracker::Instance()->Add
-         (stopCond, name, wxT("Moderator::CreateStopCondition()"), funcName);
+         (stopCond, name, "Moderator::CreateStopCondition()", funcName);
    }
    #endif
    
@@ -4996,8 +4998,8 @@ StopCondition* Moderator::CreateStopCondition(const wxString &type,
 
 
 //------------------------------------------------------------------------------
-// AxisSystem* CreateAxisSystem(const wxString &type,
-//                              const wxString &name, Integer manage)
+// AxisSystem* CreateAxisSystem(const std::string &type,
+//                              const std::string &name, Integer manage)
 //------------------------------------------------------------------------------
 /**
  * Creates a AxisSystem object by given type and name.
@@ -5011,12 +5013,12 @@ StopCondition* Moderator::CreateStopCondition(const wxString &type,
  * @return a AxisSystem object pointer
  */
 //------------------------------------------------------------------------------
-AxisSystem* Moderator::CreateAxisSystem(const wxString &type,
-                                        const wxString &name, Integer manage)
+AxisSystem* Moderator::CreateAxisSystem(const std::string &type,
+                                        const std::string &name, Integer manage)
 {
    #if DEBUG_CREATE_RESOURCE
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateAxisSystem() type = '%s', name = '%s', manage=%d\n"),
+      ("Moderator::CreateAxisSystem() type = '%s', name = '%s', manage=%d\n",
        type.c_str(), name.c_str(), manage);
    #endif
    
@@ -5025,23 +5027,23 @@ AxisSystem* Moderator::CreateAxisSystem(const wxString &type,
    if (axisSystem == NULL)
    {
       MessageInterface::PopupMessage
-         (Gmat::ERROR_, wxT("Cannot create a AxisSystem type: %s.\n")
-          wxT("Make sure %s is correct type and registered to AxisSystemFactory.\n"),
+         (Gmat::ERROR_, "Cannot create a AxisSystem type: %s.\n"
+          "Make sure %s is correct type and registered to AxisSystemFactory.\n",
           type.c_str(), type.c_str());
       
       return NULL;
       
       //throw GmatBaseException
-      //   (wxT("The Moderator cannot create AxisSystem type \"" + type + "\"\n"));
+      //   ("The Moderator cannot create AxisSystem type \"" + type + "\"\n");
    }
    
    #ifdef DEBUG_MEMORY
    if (axisSystem)
    {
-      wxString funcName;
-      funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+      std::string funcName;
+      funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
       MemoryTracker::Instance()->Add
-         (axisSystem, name, wxT("Moderator::CreateAxisSystem()"), funcName);
+         (axisSystem, name, "Moderator::CreateAxisSystem()", funcName);
    }
    #endif
    
@@ -5066,7 +5068,7 @@ AxisSystem* Moderator::CreateAxisSystem(const wxString &type,
    
    #if DEBUG_CREATE_RESOURCE
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateAxisSystem() returning <%p>\n"), axisSystem);
+      ("Moderator::CreateAxisSystem() returning <%p>\n", axisSystem);
    #endif
    
    return axisSystem;
@@ -5074,7 +5076,7 @@ AxisSystem* Moderator::CreateAxisSystem(const wxString &type,
 
 // MathNode
 //------------------------------------------------------------------------------
-// MathNode* CreateMathNode(const wxString &type, const wxString &name)
+// MathNode* CreateMathNode(const std::string &type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Creates a MathNode object by given type and name.
@@ -5085,12 +5087,12 @@ AxisSystem* Moderator::CreateAxisSystem(const wxString &type,
  * @return a MathNode object pointer
  */
 //------------------------------------------------------------------------------
-MathNode* Moderator::CreateMathNode(const wxString &type,
-                                    const wxString &name)
+MathNode* Moderator::CreateMathNode(const std::string &type,
+                                    const std::string &name)
 {
    #if DEBUG_CREATE_RESOURCE
-   MessageInterface::ShowMessage(wxT("Moderator::CreateMathNode() type = '%s', ")
-                                 wxT("name = '%s'\n"), type.c_str(), name.c_str());
+   MessageInterface::ShowMessage("Moderator::CreateMathNode() type = '%s', "
+                                 "name = '%s'\n", type.c_str(), name.c_str());
    #endif
    
    MathNode *mathNode = theFactoryManager->CreateMathNode(type, name);
@@ -5098,16 +5100,16 @@ MathNode* Moderator::CreateMathNode(const wxString &type,
    if (mathNode ==  NULL)
    {
       throw GmatBaseException
-         (wxT("The Moderator cannot create MathNode type \"") + type + wxT("\"\n"));
+         ("The Moderator cannot create MathNode type \"" + type + "\"\n");
    }
    
    #ifdef DEBUG_MEMORY
    if (mathNode)
    {
-      wxString funcName;
-      funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+      std::string funcName;
+      funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
       MemoryTracker::Instance()->Add
-         (mathNode, name, wxT("Moderator::CreateMathNode()"), funcName);
+         (mathNode, name, "Moderator::CreateMathNode()", funcName);
    }
    #endif
    
@@ -5115,7 +5117,7 @@ MathNode* Moderator::CreateMathNode(const wxString &type,
 }
 
 //------------------------------------------------------------------------------
-// Attitude* CreateAttitude(const wxString &type, const wxString &name)
+// Attitude* CreateAttitude(const std::string &type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Creates an Attitude object by given type and name.
@@ -5126,12 +5128,12 @@ MathNode* Moderator::CreateMathNode(const wxString &type,
  * @return an Attitude object pointer
  */
 //------------------------------------------------------------------------------
-Attitude* Moderator::CreateAttitude(const wxString &type,
-                                    const wxString &name)
+Attitude* Moderator::CreateAttitude(const std::string &type,
+                                    const std::string &name)
 {
    #if DEBUG_CREATE_RESOURCE
-   MessageInterface::ShowMessage(wxT("Moderator::CreateAttitude() type = '%s', ")
-                                 wxT("name = '%s'\n"), type.c_str(), name.c_str());
+   MessageInterface::ShowMessage("Moderator::CreateAttitude() type = '%s', "
+                                 "name = '%s'\n", type.c_str(), name.c_str());
    #endif
    
    Attitude *att = theFactoryManager->CreateAttitude(type, name);
@@ -5139,8 +5141,8 @@ Attitude* Moderator::CreateAttitude(const wxString &type,
    if (att == NULL)
    {
       MessageInterface::PopupMessage
-         (Gmat::ERROR_, wxT("Cannot create an Attitude type: %s.\n")
-          wxT("Make sure %s is correct type and registered to AttitudeFactory.\n"),
+         (Gmat::ERROR_, "Cannot create an Attitude type: %s.\n"
+          "Make sure %s is correct type and registered to AttitudeFactory.\n",
           type.c_str(), type.c_str());
       
       return NULL;
@@ -5149,10 +5151,10 @@ Attitude* Moderator::CreateAttitude(const wxString &type,
    #ifdef DEBUG_MEMORY
    if (att)
    {
-      wxString funcName;
-      funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+      std::string funcName;
+      funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
       MemoryTracker::Instance()->Add
-         (att, name, wxT("Moderator::CreateAttitude()"), funcName);
+         (att, name, "Moderator::CreateAttitude()", funcName);
    }
    #endif
    
@@ -5162,7 +5164,7 @@ Attitude* Moderator::CreateAttitude(const wxString &type,
 
 //GmatCommand
 //------------------------------------------------------------------------------
-// GmatCommand* InterpretGmatFunction(const wxString fileName)
+// GmatCommand* InterpretGmatFunction(const std::string fileName)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a function object pointer by given name.
@@ -5172,23 +5174,23 @@ Attitude* Moderator::CreateAttitude(const wxString &type,
  * @return A command list that is executed to run the function.
  */
 //------------------------------------------------------------------------------
-GmatCommand* Moderator::InterpretGmatFunction(const wxString &fileName)
+GmatCommand* Moderator::InterpretGmatFunction(const std::string &fileName)
 {
    #if DEBUG_GMAT_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("Moderator::InterpretGmatFunction() fileName='%s'\n"), fileName.c_str());
+      ("Moderator::InterpretGmatFunction() fileName='%s'\n", fileName.c_str());
    #endif
    
    GmatCommand *cmd = NULL;
-   if (fileName != wxT(""))
+   if (fileName != "")
       cmd =  theScriptInterpreter->InterpretGmatFunction(fileName);
    
    ResetConfigurationChanged();
    
    #if DEBUG_GMAT_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("Moderator::InterpretGmatFunction() returning <%p><%s>\n"), cmd,
-       cmd ? cmd->GetTypeName().c_str() : wxT("NULL"));
+      ("Moderator::InterpretGmatFunction() returning <%p><%s>\n", cmd,
+       cmd ? cmd->GetTypeName().c_str() : "NULL");
    #endif
    
    return cmd;
@@ -5214,7 +5216,7 @@ GmatCommand* Moderator::InterpretGmatFunction(Function *funct, ObjectMap *objMap
 {
    #if DEBUG_GMAT_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("Moderator::InterpretGmatFunction() function=<%p>, objMap=<%p>\n"),
+      ("Moderator::InterpretGmatFunction() function=<%p>, objMap=<%p>\n",
        funct, objMap);
    #endif
    
@@ -5227,8 +5229,8 @@ GmatCommand* Moderator::InterpretGmatFunction(Function *funct, ObjectMap *objMap
       objectMapInUse = theConfigManager->GetObjectMap();
       #ifdef DEBUG_OBJECT_MAP
       MessageInterface::ShowMessage
-         (wxT("Moderator::InterpretGmatFunction() objectMapInUse was set to the ")
-          wxT("configuration map <%p>\n"), objectMapInUse);
+         ("Moderator::InterpretGmatFunction() objectMapInUse was set to the "
+          "configuration map <%p>\n", objectMapInUse);
       #endif
    }
    else
@@ -5236,8 +5238,8 @@ GmatCommand* Moderator::InterpretGmatFunction(Function *funct, ObjectMap *objMap
       objectMapInUse = objMap;
       #ifdef DEBUG_OBJECT_MAP
       MessageInterface::ShowMessage
-         (wxT("Moderator::InterpretGmatFunction() objectMapInUse was set to ")
-          wxT("input objMap <%p>\n"), objectMapInUse);
+         ("Moderator::InterpretGmatFunction() objectMapInUse was set to "
+          "input objMap <%p>\n", objectMapInUse);
       #endif
    }
    
@@ -5252,18 +5254,18 @@ GmatCommand* Moderator::InterpretGmatFunction(Function *funct, ObjectMap *objMap
    
    #if DEBUG_GMAT_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("   Setting objectMapInUse<%p> to theScriptInterpreter\n")
-       wxT("   Setting theSolarSystemInUse<%p> to theScriptInterpreter\n"),
+      ("   Setting objectMapInUse<%p> to theScriptInterpreter\n"
+       "   Setting theSolarSystemInUse<%p> to theScriptInterpreter\n",
        objectMapInUse, solarSystemInUse);
    #endif
    
    #if DEBUG_GMAT_FUNCTION > 1
-   ShowObjectMap(wxT("Moderator::InterpretGmatFunction() Here is the object map in use"));
+   ShowObjectMap("Moderator::InterpretGmatFunction() Here is the object map in use");
    #endif
    
    // Set solar system in use and object map for GmatFunction
    SetSolarSystemAndObjectMap(solarSystemInUse, objectMapInUse, true,
-                              wxT("InterpretGmatFunction()"));
+                              "InterpretGmatFunction()");
    
    GmatCommand *cmd = NULL;
    cmd = theScriptInterpreter->InterpretGmatFunction(funct);
@@ -5273,8 +5275,8 @@ GmatCommand* Moderator::InterpretGmatFunction(Function *funct, ObjectMap *objMap
    
    #if DEBUG_GMAT_FUNCTION
    MessageInterface::ShowMessage
-      (wxT("Moderator::InterpretGmatFunction() returning <%p><%s>\n"), cmd,
-       cmd ? cmd->GetTypeName().c_str() : wxT("NULL"));
+      ("Moderator::InterpretGmatFunction() returning <%p><%s>\n", cmd,
+       cmd ? cmd->GetTypeName().c_str() : "NULL");
    #endif
    
    return cmd;
@@ -5282,7 +5284,7 @@ GmatCommand* Moderator::InterpretGmatFunction(Function *funct, ObjectMap *objMap
 
 
 //------------------------------------------------------------------------------
-// GmatCommand* CreateCommand(const wxString &type, const wxString &name
+// GmatCommand* CreateCommand(const std::string &type, const std::string &name
 //                            bool &retFlag)
 //------------------------------------------------------------------------------
 /**
@@ -5293,12 +5295,12 @@ GmatCommand* Moderator::InterpretGmatFunction(Function *funct, ObjectMap *objMap
  * @param  retFlag  The return flag
  */
 //------------------------------------------------------------------------------
-GmatCommand* Moderator::CreateCommand(const wxString &type,
-                                      const wxString &name, bool &retFlag)
+GmatCommand* Moderator::CreateCommand(const std::string &type,
+                                      const std::string &name, bool &retFlag)
 {
    #if DEBUG_CREATE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateCommand() entered: type = '%s', name = '%s'\n"),
+      ("Moderator::CreateCommand() entered: type = '%s', name = '%s'\n",
        type.c_str(), name.c_str());
    #endif
    
@@ -5307,27 +5309,27 @@ GmatCommand* Moderator::CreateCommand(const wxString &type,
    if (cmd == NULL)
    {
       //MessageInterface::PopupMessage
-      //   (Gmat::ERROR_, wxT("Cannot create a Command type: %s.\n")
-      //    wxT("Make sure %s is correct type and registered to Commandactory.\n"),
+      //   (Gmat::ERROR_, "Cannot create a Command type: %s.\n"
+      //    "Make sure %s is correct type and registered to Commandactory.\n",
       //    type.c_str(), type.c_str());
       
       throw GmatBaseException
-         (wxT("The Moderator cannot create a Command type \"") + type + wxT("\"\n"));
+         ("The Moderator cannot create a Command type \"" + type + "\"\n");
    }
    
    #ifdef DEBUG_MEMORY
    if (cmd)
    {
-      wxString funcName;
-      funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+      std::string funcName;
+      funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
       MemoryTracker::Instance()->Add
-         (cmd, type, wxT("Moderator::CreateCommand()"), funcName);
+         (cmd, type, "Moderator::CreateCommand()", funcName);
    }
    #endif
    
    #if DEBUG_CREATE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateCommand() returning <%p><%s>, retFlag=%d\n"), cmd,
+      ("Moderator::CreateCommand() returning <%p><%s>, retFlag=%d\n", cmd,
        cmd->GetTypeName().c_str(), retFlag);
    #endif
    
@@ -5337,8 +5339,8 @@ GmatCommand* Moderator::CreateCommand(const wxString &type,
 
 
 //------------------------------------------------------------------------------
-// GmatCommand* CreateDefaultCommand(const wxString &type,
-//                                   const wxString &name,
+// GmatCommand* CreateDefaultCommand(const std::string &type,
+//                                   const std::string &name,
 //                                   GmatCommand *refCmd = NULL)
 //------------------------------------------------------------------------------
 /*
@@ -5353,29 +5355,29 @@ GmatCommand* Moderator::CreateCommand(const wxString &type,
  * @return  New command pointer
  */
 //------------------------------------------------------------------------------
-GmatCommand* Moderator::CreateDefaultCommand(const wxString &type,
-                                             const wxString &name,
+GmatCommand* Moderator::CreateDefaultCommand(const std::string &type,
+                                             const std::string &name,
                                              GmatCommand *refCmd)
 {
    #if DEBUG_DEFAULT_COMMAND
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateDefaultCommand() entered: type = ") +
-       type + wxT(", name = ") + name + wxT("\n"));
+      ("Moderator::CreateDefaultCommand() entered: type = " +
+       type + ", name = " + name + "\n");
    #endif
    
    GmatCommand *cmd = theFactoryManager->CreateCommand(type, name);
    
    if (cmd == NULL)
       throw GmatBaseException
-         (wxT("The Moderator cannot create a Command type \"") + type + wxT("\"\n"));
+         ("The Moderator cannot create a Command type \"" + type + "\"\n");
    
    #ifdef DEBUG_MEMORY
    if (cmd)
    {
-      wxString funcName;
-      funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+      std::string funcName;
+      funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
       MemoryTracker::Instance()->Add
-         (cmd, type, wxT("Moderator::CreateDefaultCommand()"), funcName);
+         (cmd, type, "Moderator::CreateDefaultCommand()", funcName);
    }
    #endif
    
@@ -5383,61 +5385,61 @@ GmatCommand* Moderator::CreateDefaultCommand(const wxString &type,
    
    try
    {
-      if (type == wxT("If") || type == wxT("While"))
+      if (type == "If" || type == "While")
       {
-         wxString str = GetDefaultSpacecraft()->GetName() + wxT(".ElapsedDays");
-         cmd->SetCondition(str, wxT("<"), wxT("1.0"));
+         std::string str = GetDefaultSpacecraft()->GetName() + ".ElapsedDays";
+         cmd->SetCondition(str, "<", "1.0");
       }
-      else if (type == wxT("For"))
+      else if (type == "For")
       {
-         CreateParameter(wxT("Variable"), wxT("I"));
-         cmd->SetStringParameter(wxT("IndexName"), wxT("I"));
-         cmd->SetStringParameter(wxT("StartName"), wxT("1"));
-         cmd->SetStringParameter(wxT("EndName"), wxT("10"));
+         CreateParameter("Variable", "I");
+         cmd->SetStringParameter("IndexName", "I");
+         cmd->SetStringParameter("StartName", "1");
+         cmd->SetStringParameter("EndName", "10");
       }
-      else if (type == wxT("Save"))
+      else if (type == "Save")
       {
          cmd->SetRefObjectName(Gmat::SPACECRAFT,
                                GetDefaultSpacecraft()->GetName());
       }
-      else if (type == wxT("ClearPlot") || type == wxT("MarkPoint") ||
-               type == wxT("PenUp") || type == wxT("PenDown"))
+      else if (type == "ClearPlot" || type == "MarkPoint" ||
+               type == "PenUp" || type == "PenDown")
       {
-         Subscriber *defSub = GetDefaultSubscriber(wxT("XYPlot"), false, false);
+         Subscriber *defSub = GetDefaultSubscriber("XYPlot", false, false);
          if (defSub != NULL)
          {
             // Set default XYPlot
             if (defSub != NULL)
-               cmd->SetStringParameter(cmd->GetParameterID(wxT("Subscriber")),
+               cmd->SetStringParameter(cmd->GetParameterID("Subscriber"),
                                        defSub->GetName(), 0);
          }
          else
          {
-            if (type == wxT("PenUp") || type == wxT("PenDown"))
+            if (type == "PenUp" || type == "PenDown")
             {
                // default XYPlot not found so set default GroundTrackPlot
-               defSub = GetDefaultSubscriber(wxT("GroundTrackPlot"), false, false);          
+               defSub = GetDefaultSubscriber("GroundTrackPlot", false, false);          
                if (defSub != NULL)
-                  cmd->SetStringParameter(cmd->GetParameterID(wxT("Subscriber")),
+                  cmd->SetStringParameter(cmd->GetParameterID("Subscriber"),
                                           defSub->GetName(), 0);
             }
          }
       }
-      else if (type == wxT("Toggle"))
+      else if (type == "Toggle")
       {
-         cmd->SetStringParameter(cmd->GetParameterID(wxT("Subscriber")),
-                                 GetDefaultSubscriber(wxT("OrbitView"))->GetName());
+         cmd->SetStringParameter(cmd->GetParameterID("Subscriber"),
+                                 GetDefaultSubscriber("OrbitView")->GetName());
       }
-      else if (type == wxT("Report"))
+      else if (type == "Report")
       {
-         Subscriber *sub = GetDefaultSubscriber(wxT("ReportFile"), false);
+         Subscriber *sub = GetDefaultSubscriber("ReportFile", false);
          Parameter *param = GetDefaultX();
-         cmd->SetStringParameter(wxT("ReportFile"), sub->GetName());
-         cmd->SetStringParameter(wxT("Add"), param->GetName());
+         cmd->SetStringParameter("ReportFile", sub->GetName());
+         cmd->SetStringParameter("Add", param->GetName());
          cmd->SetRefObject(sub, Gmat::SUBSCRIBER, sub->GetName(), 0);
          cmd->SetRefObject(param, Gmat::PARAMETER, param->GetName(), 0);
       }
-      else if (type == wxT("Propagate"))
+      else if (type == "Propagate")
       {
          cmd->SetObject(GetDefaultPropSetup()->GetName(), Gmat::PROP_SETUP);
          
@@ -5450,35 +5452,35 @@ GmatCommand* Moderator::CreateDefaultCommand(const wxString &type,
          else
          {
             // Get first spacecraft name not in formation
-            wxString scName = GetSpacecraftNotInFormation();
-            if (scName != wxT(""))
+            std::string scName = GetSpacecraftNotInFormation();
+            if (scName != "")
                cmd->SetObject(scName, Gmat::SPACECRAFT);
             else
                cmd->SetObject(formList[0], Gmat::SPACECRAFT);
          }
          
-         cmd->SetRefObject(CreateDefaultStopCondition(), Gmat::STOP_CONDITION, wxT(""), 0);
+         cmd->SetRefObject(CreateDefaultStopCondition(), Gmat::STOP_CONDITION, "", 0);
          cmd->SetSolarSystem(theSolarSystemInUse);
       }
-      else if (type == wxT("Maneuver"))
+      else if (type == "Maneuver")
       {
          // set burn
-         id = cmd->GetParameterID(wxT("Burn"));
-         cmd->SetStringParameter(id, GetDefaultBurn(wxT("ImpulsiveBurn"))->GetName());
+         id = cmd->GetParameterID("Burn");
+         cmd->SetStringParameter(id, GetDefaultBurn("ImpulsiveBurn")->GetName());
          
          // set spacecraft
-         id = cmd->GetParameterID(wxT("Spacecraft"));
+         id = cmd->GetParameterID("Spacecraft");
          cmd->SetStringParameter(id, GetDefaultSpacecraft()->GetName());
       }
-      else if (type == wxT("BeginFiniteBurn"))
+      else if (type == "BeginFiniteBurn")
       {
          // set burn
-         cmd->SetRefObjectName(Gmat::FINITE_BURN, GetDefaultBurn(wxT("FiniteBurn"))->GetName());
+         cmd->SetRefObjectName(Gmat::FINITE_BURN, GetDefaultBurn("FiniteBurn")->GetName());
          
          // set spacecraft
          cmd->SetRefObjectName(Gmat::SPACECRAFT, GetDefaultSpacecraft()->GetName());
       }
-      else if (type == wxT("EndFiniteBurn"))
+      else if (type == "EndFiniteBurn")
       {
          // get burn name of BeginFiniteBurn
          if (refCmd)
@@ -5495,99 +5497,99 @@ GmatCommand* Moderator::CreateDefaultCommand(const wxString &type,
          else
          {
             // set burn
-            cmd->SetRefObjectName(Gmat::FINITE_BURN, GetDefaultBurn(wxT("FiniteBurn"))->GetName());
+            cmd->SetRefObjectName(Gmat::FINITE_BURN, GetDefaultBurn("FiniteBurn")->GetName());
          
             // set spacecraft
             cmd->SetRefObjectName(Gmat::SPACECRAFT, GetDefaultSpacecraft()->GetName());
          }
       }
-      else if (type == wxT("Target"))
+      else if (type == "Target")
       {
          // set solver
-         Solver *solver = CreateSolver(wxT("DifferentialCorrector"),
+         Solver *solver = CreateSolver("DifferentialCorrector",
                                        GetDefaultSolver()->GetName());
-         id = cmd->GetParameterID(wxT("Targeter"));
+         id = cmd->GetParameterID("Targeter");
          cmd->SetStringParameter(id, solver->GetName());
       }
-      else if (type == wxT("Optimize"))
+      else if (type == "Optimize")
       {
          // set solver
-         Solver *solver = CreateSolver(wxT("DifferentialCorrector"),
+         Solver *solver = CreateSolver("DifferentialCorrector",
                                        GetDefaultSolver()->GetName());
-         id = cmd->GetParameterID(wxT("OptimizerName"));
+         id = cmd->GetParameterID("OptimizerName");
          cmd->SetStringParameter(id, solver->GetName());
       }
-      else if (type == wxT("Vary"))
+      else if (type == "Vary")
       {
          // set solver
-         Solver *solver = CreateSolver(wxT("DifferentialCorrector"),
+         Solver *solver = CreateSolver("DifferentialCorrector",
                                        GetDefaultSolver()->GetName());
-         id = cmd->GetParameterID(wxT("SolverName"));
+         id = cmd->GetParameterID("SolverName");
          cmd->SetStringParameter(id, solver->GetName());
          
          // set sover pointer, so that GetGeneratingString() can write correctly
          cmd->SetRefObject(solver, Gmat::SOLVER);
          
          // set variable parameter
-         id = cmd->GetParameterID(wxT("Variable"));
-         cmd->SetStringParameter(id, GetDefaultBurn(wxT("ImpulsiveBurn"))->GetName() + wxT(".Element1"));
+         id = cmd->GetParameterID("Variable");
+         cmd->SetStringParameter(id, GetDefaultBurn("ImpulsiveBurn")->GetName() + ".Element1");
          
-         id = cmd->GetParameterID(wxT("InitialValue"));
-         cmd->SetStringParameter(id, wxT("0.5"));
+         id = cmd->GetParameterID("InitialValue");
+         cmd->SetStringParameter(id, "0.5");
          
-         id = cmd->GetParameterID(wxT("Perturbation"));
-         cmd->SetStringParameter(id, wxT("0.0001"));
+         id = cmd->GetParameterID("Perturbation");
+         cmd->SetStringParameter(id, "0.0001");
          
-         id = cmd->GetParameterID(wxT("Lower"));
-         cmd->SetStringParameter(id, wxT("0.0"));
+         id = cmd->GetParameterID("Lower");
+         cmd->SetStringParameter(id, "0.0");
          
-         id = cmd->GetParameterID(wxT("Upper"));
-         wxString ss(wxT(""));
+         id = cmd->GetParameterID("Upper");
+         std::stringstream ss("");
          ss << GmatMathConstants::PI;
-         cmd->SetStringParameter(id, ss);
+         cmd->SetStringParameter(id, ss.str());
       
-         id = cmd->GetParameterID(wxT("MaxStep"));
-         cmd->SetStringParameter(id, wxT("0.2"));
+         id = cmd->GetParameterID("MaxStep");
+         cmd->SetStringParameter(id, "0.2");
          
       }
-      else if (type == wxT("Achieve"))
+      else if (type == "Achieve")
       {
          // Get default solver
          Solver *solver = GetDefaultSolver();
 
          #if DEBUG_DEFAULT_COMMAND
          MessageInterface::ShowMessage
-            (wxT("Moderator::CreateDefaultCommand() cmd=%s, solver=%s\n"),
+            ("Moderator::CreateDefaultCommand() cmd=%s, solver=%s\n",
              cmd->GetTypeName().c_str(), solver->GetTypeName().c_str());
          #endif
          
-         id = cmd->GetParameterID(wxT("TargeterName"));
+         id = cmd->GetParameterID("TargeterName");
          cmd->SetStringParameter(id, solver->GetName());
          
          // set goal parameter
-         id = cmd->GetParameterID(wxT("Goal"));
-         cmd->SetStringParameter(id, GetDefaultSpacecraft()->GetName() + wxT(".Earth.RMAG"));
+         id = cmd->GetParameterID("Goal");
+         cmd->SetStringParameter(id, GetDefaultSpacecraft()->GetName() + ".Earth.RMAG");
          
-         id = cmd->GetParameterID(wxT("GoalValue"));
-         cmd->SetStringParameter(id, wxT("42165.0")); 
+         id = cmd->GetParameterID("GoalValue");
+         cmd->SetStringParameter(id, "42165.0"); 
          
-         id = cmd->GetParameterID(wxT("Tolerance"));
-         cmd->SetStringParameter(id, wxT("0.1"));
+         id = cmd->GetParameterID("Tolerance");
+         cmd->SetStringParameter(id, "0.1");
       }
       else
       {
          // We need to set actual command string so that it can be saved to script
-         wxString typeName = cmd->GetTypeName();
-         wxString genStr = cmd->GetGeneratingString();
+         std::string typeName = cmd->GetTypeName();
+         std::string genStr = cmd->GetGeneratingString();
          // If there is comment only, prepend command string
-         if (GmatStringUtil::StartsWith(genStr, wxT("%")))
-            cmd->SetGeneratingString(typeName + wxT("; ") + genStr);
+         if (GmatStringUtil::StartsWith(genStr, "%"))
+            cmd->SetGeneratingString(typeName + "; " + genStr);
       }
       
       // for creating ElementWrapper
       #if DEBUG_DEFAULT_COMMAND
       MessageInterface::ShowMessage
-         (wxT("   Moderator calling theScriptInterpreter->ValidateCommand()\n"));
+         ("   Moderator calling theScriptInterpreter->ValidateCommand()\n");
       #endif
       theScriptInterpreter->ValidateCommand(cmd);
       
@@ -5600,7 +5602,7 @@ GmatCommand* Moderator::CreateDefaultCommand(const wxString &type,
    
    #if DEBUG_DEFAULT_COMMAND
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateDefaultCommand() returning cmd=<%p><%s>\n"), cmd,
+      ("Moderator::CreateDefaultCommand() returning cmd=<%p><%s>\n", cmd,
        cmd->GetTypeName().c_str());
    #endif
    
@@ -5623,7 +5625,7 @@ bool Moderator::AppendCommand(GmatCommand *cmd, Integer sandboxNum)
 {
    #if DEBUG_RESOURCE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("==========> Moderator::AppendCommand() cmd=(%p)%s\n"),
+      ("==========> Moderator::AppendCommand() cmd=(%p)%s\n",
        cmd, cmd->GetTypeName().c_str());
    #endif
    
@@ -5632,7 +5634,7 @@ bool Moderator::AppendCommand(GmatCommand *cmd, Integer sandboxNum)
    
    #if DEBUG_RESOURCE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("     lastCmd=(%p)%s\n"), lastCmd, lastCmd->GetTypeName().c_str());
+      ("     lastCmd=(%p)%s\n", lastCmd, lastCmd->GetTypeName().c_str());
    #endif
    
    if (lastCmd != NULL)
@@ -5643,16 +5645,16 @@ bool Moderator::AppendCommand(GmatCommand *cmd, Integer sandboxNum)
 
 
 //------------------------------------------------------------------------------
-// GmatCommand* AppendCommand(const wxString &type, const wxString &name,
+// GmatCommand* AppendCommand(const std::string &type, const std::string &name,
 //                           bool &retFlag, Integer sandboxNum)
 //------------------------------------------------------------------------------
-GmatCommand* Moderator::AppendCommand(const wxString &type,
-                                      const wxString &name, bool &retFlag,
+GmatCommand* Moderator::AppendCommand(const std::string &type,
+                                      const std::string &name, bool &retFlag,
                                       Integer sandboxNum)
 {
    #if DEBUG_RESOURCE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("==========> Moderator::AppendCommand() type='%s', name='%s'\n"),
+      ("==========> Moderator::AppendCommand() type='%s', name='%s'\n",
        type.c_str(), name.c_str());
    #endif
    
@@ -5663,10 +5665,10 @@ GmatCommand* Moderator::AppendCommand(const wxString &type,
       #ifdef DEBUG_MEMORY
       if (cmd)
       {
-         wxString funcName;
-         funcName = currentFunction ? wxT("function: ") + currentFunction->GetName() : wxT("");
+         std::string funcName;
+         funcName = currentFunction ? "function: " + currentFunction->GetName() : "";
          MemoryTracker::Instance()->Add
-            (cmd, type, wxT("Moderator::AppendCommand()"), funcName);
+            (cmd, type, "Moderator::AppendCommand()", funcName);
       }
       #endif
       
@@ -5675,12 +5677,12 @@ GmatCommand* Moderator::AppendCommand(const wxString &type,
    else
    {
       throw GmatBaseException
-         (wxT("The Moderator cannot create a Command type \"") + type + wxT("\"\n"));
+         ("The Moderator cannot create a Command type \"" + type + "\"\n");
    }
    
    #if DEBUG_RESOURCE_COMMAND
    MessageInterface::ShowMessage
-      (wxT("==========> Moderator::AppendCommand() returning <%p>, retFlag=%d\n"),
+      ("==========> Moderator::AppendCommand() returning <%p>, retFlag=%d\n",
        cmd, retFlag);
    #endif
    
@@ -5704,8 +5706,8 @@ bool Moderator::InsertCommand(GmatCommand *cmd, GmatCommand *prevCmd,
                               Integer sandboxNum)
 {
    #if DEBUG_COMMAND_INSERT
-   MessageInterface::ShowMessage(wxT("==========> Moderator::InsertCommand() entered\n"));
-   ShowCommand(wxT("     inserting cmd = "), cmd, wxT(" after prevCmd = "), prevCmd);
+   MessageInterface::ShowMessage("==========> Moderator::InsertCommand() entered\n");
+   ShowCommand("     inserting cmd = ", cmd, " after prevCmd = ", prevCmd);
    #endif
    
    return commands[sandboxNum-1]->Insert(cmd, prevCmd);
@@ -5727,23 +5729,23 @@ bool Moderator::InsertCommand(GmatCommand *cmd, GmatCommand *prevCmd,
 GmatCommand* Moderator::DeleteCommand(GmatCommand *cmd, Integer sandboxNum)
 {
    #if DEBUG_COMMAND_DELETE
-   ShowCommand(wxT("==========> Moderator::DeleteCommand() cmd = "), cmd);
+   ShowCommand("==========> Moderator::DeleteCommand() cmd = ", cmd);
    #endif
    
    if (cmd == NULL)
       return NULL;
    
    GmatCommand *remvCmd;
-   if (cmd->GetTypeName() != wxT("BeginScript"))
+   if (cmd->GetTypeName() != "BeginScript")
    {
       GmatCommand *remvCmd = commands[sandboxNum-1]->Remove(cmd);
       
       #if DEBUG_COMMAND_DELETE
-      ShowCommand(wxT("   Removed = "), remvCmd);
+      ShowCommand("   Removed = ", remvCmd);
       #endif
       
       #if DEBUG_COMMAND_DELETE
-      ShowCommand(wxT("==========> Moderator::DeleteCommand() Returning "), remvCmd);
+      ShowCommand("==========> Moderator::DeleteCommand() Returning ", remvCmd);
       #endif
       
       return remvCmd;
@@ -5754,22 +5756,22 @@ GmatCommand* Moderator::DeleteCommand(GmatCommand *cmd, Integer sandboxNum)
    //-------------------------------------------------------
 
    // Check for previous command, it should not be NULL,
-   // since wxT("NoOp") is the first command
+   // since "NoOp" is the first command
    
    GmatCommand *prevCmd = cmd->GetPrevious();
    if (prevCmd == NULL)
    {
       MessageInterface::PopupMessage
-         (Gmat::ERROR_, wxT("Moderator::DeleteCommand() *** INTERNAL ERROR *** \n")
-          wxT("The previous command cannot be NULL.\n"));
+         (Gmat::ERROR_, "Moderator::DeleteCommand() *** INTERNAL ERROR *** \n"
+          "The previous command cannot be NULL.\n");
       return NULL;
    }
    
    GmatCommand *first = GetFirstCommand();
    
    #if DEBUG_COMMAND_DELETE
-   wxString cmdString1 = GmatCommandUtil::GetCommandSeqString(first);
-   MessageInterface::ShowMessage(wxT("     ==> Current sequence:"));
+   std::string cmdString1 = GmatCommandUtil::GetCommandSeqString(first);
+   MessageInterface::ShowMessage("     ==> Current sequence:");
    MessageInterface::ShowMessage(cmdString1);
    #endif
    
@@ -5777,21 +5779,21 @@ GmatCommand* Moderator::DeleteCommand(GmatCommand *cmd, Integer sandboxNum)
    
    #if DEBUG_COMMAND_DELETE
    GmatCommand *nextCmd = GmatCommandUtil::GetNextCommand(cmd);
-   ShowCommand(wxT("     prevCmd = "), prevCmd, wxT(" nextCmd = "), nextCmd);
+   ShowCommand("     prevCmd = ", prevCmd, " nextCmd = ", nextCmd);
    #endif
    
    // Get matching EndScript for BeginScript
    GmatCommand *endScript = GmatCommandUtil::GetMatchingEnd(cmd);
    
    #if DEBUG_COMMAND_DELETE
-   ShowCommand(wxT("     endScript = "), endScript);
+   ShowCommand("     endScript = ", endScript);
    #endif
    
    GmatCommand* next;
    while (current != NULL)
    {
       #if DEBUG_COMMAND_DELETE
-      ShowCommand(wxT("     current = "), current);
+      ShowCommand("     current = ", current);
       #endif
       
       if (current == endScript)
@@ -5800,7 +5802,7 @@ GmatCommand* Moderator::DeleteCommand(GmatCommand *cmd, Integer sandboxNum)
       next = current->GetNext();
       
       #if DEBUG_COMMAND_DELETE
-      ShowCommand(wxT("     removing and deleting "), current);
+      ShowCommand("     removing and deleting ", current);
       #endif
       
       remvCmd = cmd->Remove(current);
@@ -5811,7 +5813,7 @@ GmatCommand* Moderator::DeleteCommand(GmatCommand *cmd, Integer sandboxNum)
          remvCmd->ForceSetNext(NULL);
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (remvCmd, remvCmd->GetTypeName(), wxT("Moderator::DeleteCommand()"));
+            (remvCmd, remvCmd->GetTypeName(), "Moderator::DeleteCommand()");
          #endif
          delete remvCmd;
       }
@@ -5823,7 +5825,7 @@ GmatCommand* Moderator::DeleteCommand(GmatCommand *cmd, Integer sandboxNum)
    // Remove and delete EndScript
    //-------------------------------------------------------
    #if DEBUG_COMMAND_DELETE
-   ShowCommand(wxT("     removing and deleting "), current);
+   ShowCommand("     removing and deleting ", current);
    #endif
    
    remvCmd = cmd->Remove(current);
@@ -5833,7 +5835,7 @@ GmatCommand* Moderator::DeleteCommand(GmatCommand *cmd, Integer sandboxNum)
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (remvCmd, remvCmd->GetTypeName(), wxT("Moderator::DeleteCommand()"));
+         (remvCmd, remvCmd->GetTypeName(), "Moderator::DeleteCommand()");
       #endif
       delete remvCmd;
       remvCmd = NULL;
@@ -5842,14 +5844,14 @@ GmatCommand* Moderator::DeleteCommand(GmatCommand *cmd, Integer sandboxNum)
    next = cmd->GetNext();
    
    #if DEBUG_COMMAND_DELETE
-   ShowCommand(wxT("     next    = "), next, wxT(" nextCmd = "), nextCmd);
+   ShowCommand("     next    = ", next, " nextCmd = ", nextCmd);
    #endif
    
    //-------------------------------------------------------
    // Remove and delete BeginScript
    //-------------------------------------------------------
    #if DEBUG_COMMAND_DELETE
-   ShowCommand(wxT("     removing and deleting "), cmd);
+   ShowCommand("     removing and deleting ", cmd);
    #endif
    
    // Remove BeginScript
@@ -5861,17 +5863,17 @@ GmatCommand* Moderator::DeleteCommand(GmatCommand *cmd, Integer sandboxNum)
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (cmd, cmd->GetTypeName(), wxT("Moderator::DeleteCommand()"));
+         (cmd, cmd->GetTypeName(), "Moderator::DeleteCommand()");
       #endif
       delete cmd;
       cmd = NULL;
    }
    
    #if DEBUG_COMMAND_DELETE
-   wxString cmdString2 = GmatCommandUtil::GetCommandSeqString(first);
-   MessageInterface::ShowMessage(wxT("     ==> sequence after delete:"));
+   std::string cmdString2 = GmatCommandUtil::GetCommandSeqString(first);
+   MessageInterface::ShowMessage("     ==> sequence after delete:");
    MessageInterface::ShowMessage(cmdString2);
-   ShowCommand(wxT("==========> Moderator::DeleteCommand() Returning cmd = "), cmd);
+   ShowCommand("==========> Moderator::DeleteCommand() Returning cmd = ", cmd);
    #endif
    
    // Just return cmd, it should be deleted by the caller.
@@ -5987,29 +5989,29 @@ const StringArray& Moderator::GetPlanetarySourceTypesInUse()
 //
 //
 ////------------------------------------------------------------------------------
-//// bool SetAnalyticModelToUse(const wxString &modelName)
+//// bool SetAnalyticModelToUse(const std::string &modelName)
 ////------------------------------------------------------------------------------
-//bool Moderator::SetAnalyticModelToUse(const wxString &modelName)
+//bool Moderator::SetAnalyticModelToUse(const std::string &modelName)
 //{
 //   return theSolarSystemInUse->SetAnalyticModelToUse(modelName);
 //}
 
 
 //------------------------------------------------------------------------------
-// bool SetPlanetarySourceName(const wxString &sourceType,
-//                           const wxString &fileName)
+// bool SetPlanetarySourceName(const std::string &sourceType,
+//                           const std::string &fileName)
 //------------------------------------------------------------------------------
-bool Moderator::SetPlanetarySourceName(const wxString &sourceType,
-                                       const wxString &fileName)
+bool Moderator::SetPlanetarySourceName(const std::string &sourceType,
+                                       const std::string &fileName)
 {
    return theSolarSystemInUse->SetPlanetarySourceName(sourceType, fileName);
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetPlanetarySourceName(const wxString &sourceType)
+// std::string GetPlanetarySourceName(const std::string &sourceType)
 //------------------------------------------------------------------------------
-wxString Moderator::GetPlanetarySourceName(const wxString &sourceType)
+std::string Moderator::GetPlanetarySourceName(const std::string &sourceType)
 {
    return theSolarSystemInUse->GetPlanetarySourceName(sourceType);
 }
@@ -6034,18 +6036,18 @@ Integer Moderator::SetPlanetarySourceTypesInUse(const StringArray &sourceTypes)
 
 
 //------------------------------------------------------------------------------
-// Integer GetPlanetarySourceId(const wxString &sourceType)
+// Integer GetPlanetarySourceId(const std::string &sourceType)
 //------------------------------------------------------------------------------
-Integer Moderator::GetPlanetarySourceId(const wxString &sourceType)
+Integer Moderator::GetPlanetarySourceId(const std::string &sourceType)
 {
    return theSolarSystemInUse->GetPlanetarySourceId(sourceType);
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetPlanetarySourceNameInUse()
+// std::string GetPlanetarySourceNameInUse()
 //------------------------------------------------------------------------------
-wxString Moderator::GetCurrentPlanetarySource()
+std::string Moderator::GetCurrentPlanetarySource()
 {
    return theSolarSystemInUse->GetCurrentPlanetarySource();
 }
@@ -6053,31 +6055,31 @@ wxString Moderator::GetCurrentPlanetarySource()
 
 // Potential field files
 //------------------------------------------------------------------------------
-// wxString GetPotentialFileName(const wxString &fileType)
+// std::string GetPotentialFileName(const std::string &fileType)
 //------------------------------------------------------------------------------
-wxString Moderator::GetPotentialFileName(const wxString &fileType)
+std::string Moderator::GetPotentialFileName(const std::string &fileType)
 {
-   if (fileType == wxT("JGM2"))
-      return theFileManager->GetFullPathname(wxT("JGM2_FILE"));
-   else if (fileType == wxT("JGM3"))
-      return theFileManager->GetFullPathname(wxT("JGM3_FILE"));
-   else if (fileType == wxT("EGM96"))
-      return theFileManager->GetFullPathname(wxT("EGM96_FILE"));
-   else if (fileType == wxT("LP165P"))
-      return theFileManager->GetFullPathname(wxT("LP165P_FILE"));
-   else if (fileType == wxT("MGNP180U"))
-      return theFileManager->GetFullPathname(wxT("MGNP180U_FILE"));
-   else if (fileType == wxT("MARS50C"))
-      return theFileManager->GetFullPathname(wxT("MARS50C_FILE"));
+   if (fileType == "JGM2")
+      return theFileManager->GetFullPathname("JGM2_FILE");
+   else if (fileType == "JGM3")
+      return theFileManager->GetFullPathname("JGM3_FILE");
+   else if (fileType == "EGM96")
+      return theFileManager->GetFullPathname("EGM96_FILE");
+   else if (fileType == "LP165P")
+      return theFileManager->GetFullPathname("LP165P_FILE");
+   else if (fileType == "MGNP180U")
+      return theFileManager->GetFullPathname("MGNP180U_FILE");
+   else if (fileType == "MARS50C")
+      return theFileManager->GetFullPathname("MARS50C_FILE");
    else
-      return wxT("Unknown Potential File Type:") + fileType;
+      return "Unknown Potential File Type:" + fileType;
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetFileName(const wxString &fileType)
+// std::string GetFileName(const std::string &fileType)
 //------------------------------------------------------------------------------
-wxString Moderator::GetFileName(const wxString &fileType)
+std::string Moderator::GetFileName(const std::string &fileType)
 {
    return theFileManager->GetFullPathname(fileType);
 }
@@ -6090,11 +6092,11 @@ wxString Moderator::GetFileName(const wxString &fileType)
 bool Moderator::LoadDefaultMission()
 {
    #if DEBUG_DEFAULT_MISSION
-   MessageInterface::ShowMessage(wxT("Moderator::LoadDefaultMission() entered\n"));
+   MessageInterface::ShowMessage("Moderator::LoadDefaultMission() entered\n");
    #endif
    
-   theScriptInterpreter->SetHeaderComment(wxT(""));
-   theScriptInterpreter->SetFooterComment(wxT(""));
+   theScriptInterpreter->SetHeaderComment("");
+   theScriptInterpreter->SetFooterComment("");
    
    ClearCommandSeq(true, true);
    ClearResource();
@@ -6105,7 +6107,7 @@ bool Moderator::LoadDefaultMission()
    CreateDefaultMission();
    
    #if DEBUG_DEFAULT_MISSION
-   MessageInterface::ShowMessage(wxT("Moderator::LoadDefaultMission() leaving\n"));
+   MessageInterface::ShowMessage("Moderator::LoadDefaultMission() leaving\n");
    #endif
    
    return true;
@@ -6118,14 +6120,14 @@ bool Moderator::LoadDefaultMission()
 bool Moderator::ClearResource()
 {
    #if DEBUG_SEQUENCE_CLEARING
-   MessageInterface::ShowMessage(wxT("Moderator::ClearResource() entered\n"));
-   MessageInterface::ShowMessage(wxT("   Removing configured objects...\n"));
+   MessageInterface::ShowMessage("Moderator::ClearResource() entered\n");
+   MessageInterface::ShowMessage("   Removing configured objects...\n");
    #endif
    
    theConfigManager->RemoveAllItems();
    
    #if DEBUG_SEQUENCE_CLEARING
-   MessageInterface::ShowMessage(wxT("   Clearing Sandbox objects...\n"));
+   MessageInterface::ShowMessage("   Clearing Sandbox objects...\n");
    #endif
    
    ClearAllSandboxes();
@@ -6139,8 +6141,8 @@ bool Moderator::ClearResource()
    {
       #if DEBUG_SEQUENCE_CLEARING | DEBUG_FINALIZE > 0
       MessageInterface::ShowMessage
-         (wxT(".....Mod::ClearResource - <%p>theSolarSystemInUse was not deleted since ")
-          wxT("there was script errors\n"), theSolarSystemInUse);
+         (".....Mod::ClearResource - <%p>theSolarSystemInUse was not deleted since "
+          "there was script errors\n", theSolarSystemInUse);
       #endif
    }
    else
@@ -6149,13 +6151,13 @@ bool Moderator::ClearResource()
       {
          #if DEBUG_SEQUENCE_CLEARING | DEBUG_FINALIZE > 0
          MessageInterface::ShowMessage
-            (wxT(".....Mod::ClearResource - deleting (%p)theSolarSystemInUse\n"), theSolarSystemInUse);
+            (".....Mod::ClearResource - deleting (%p)theSolarSystemInUse\n", theSolarSystemInUse);
          #endif
          if (theInternalSolarSystem == theSolarSystemInUse) theInternalSolarSystem = NULL;
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
             (theSolarSystemInUse, theSolarSystemInUse->GetName(),
-             wxT("deleting theSolarSystemInUse in Moderator::ClearResource()"));
+             "deleting theSolarSystemInUse in Moderator::ClearResource()");
          #endif
          
          delete theSolarSystemInUse;
@@ -6165,7 +6167,7 @@ bool Moderator::ClearResource()
    #endif
    
    #if DEBUG_SEQUENCE_CLEARING
-   MessageInterface::ShowMessage(wxT("Moderator::ClearResource() returning true\n"));
+   MessageInterface::ShowMessage("Moderator::ClearResource() returning true\n");
    #endif
    
    return true;
@@ -6190,14 +6192,14 @@ bool Moderator::ClearCommandSeq(bool leaveFirstCmd, bool callRunComplete,
                                 Integer sandboxNum)
 {
    #if DEBUG_SEQUENCE_CLEARING
-   MessageInterface::ShowMessage(wxT("Moderator::ClearCommandSeq() entered\n"));
+   MessageInterface::ShowMessage("Moderator::ClearCommandSeq() entered\n");
    #endif
    
    if (commands.empty())
    {
       #if DEBUG_SEQUENCE_CLEARING
       MessageInterface::ShowMessage
-         (wxT("Moderator::ClearCommandSeq() exiting, command array is empty\n"));
+         ("Moderator::ClearCommandSeq() exiting, command array is empty\n");
       #endif
       return true;
    }
@@ -6208,7 +6210,7 @@ bool Moderator::ClearCommandSeq(bool leaveFirstCmd, bool callRunComplete,
    
    #if DEBUG_SEQUENCE_CLEARING
    MessageInterface::ShowMessage
-      (wxT("Moderator::ClearCommandSeq() returning %s\n", retval ? "true" : "false"));
+      ("Moderator::ClearCommandSeq() returning %s\n", retval ? "true" : "false");
    #endif
    
    return retval;
@@ -6228,15 +6230,15 @@ void Moderator::ClearAllSandboxes()
    #ifdef DEBUG_MEMORY
    StringArray tracks = MemoryTracker::Instance()->GetTracks(false, false);
    MessageInterface::ShowMessage
-      (wxT("===> There are %d memory tracks after Sandbox clear\n"), tracks.size());
+      ("===> There are %d memory tracks after Sandbox clear\n", tracks.size());
    #endif
 }
 
 
 //------------------------------------------------------------------------------
-// GmatBase* GetInternalObject(const wxString &name, Integer sandboxNum = 1)
+// GmatBase* GetInternalObject(const std::string &name, Integer sandboxNum = 1)
 //------------------------------------------------------------------------------
-GmatBase* Moderator::GetInternalObject(const wxString &name, Integer sandboxNum)
+GmatBase* Moderator::GetInternalObject(const std::string &name, Integer sandboxNum)
 {
    return sandboxes[sandboxNum-1]->GetInternalObject(name);
 }
@@ -6261,9 +6263,9 @@ GmatBase* Moderator::GetInternalObject(const wxString &name, Integer sandboxNum)
 //------------------------------------------------------------------------------
 Integer Moderator::RunMission(Integer sandboxNum)
 {
-   //MessageInterface::ShowMessage(wxT("\n========================================\n"));
+   //MessageInterface::ShowMessage("\n========================================\n");
    //MessageInterface::ShowMessage("Moderator::RunMission() entered\n");
-   MessageInterface::ShowMessage(wxT("Running mission...\n"));
+   MessageInterface::ShowMessage("Running mission...\n");
    Integer status = 1;
    // Set to 1 to always run the mission and get the sandbox error message
    // Changed this code while looking at Bug 1532 (LOJ: 2009.11.13)
@@ -6271,7 +6273,7 @@ Integer Moderator::RunMission(Integer sandboxNum)
    
    #if DEBUG_CONFIG
    MessageInterface::ShowMessage
-      (wxT("Moderator::RunMission() HasConfigurationChanged()=%d\n"), HasConfigurationChanged());
+      ("Moderator::RunMission() HasConfigurationChanged()=%d\n", HasConfigurationChanged());
    #endif
    
    clock_t t1 = clock(); // Should I clock after initilization?
@@ -6283,21 +6285,21 @@ Integer Moderator::RunMission(Integer sandboxNum)
       {
          #if DEBUG_RUN
          MessageInterface::ShowMessage
-            (wxT("Moderator::RunMission() before sandboxes[%d]->Clear()\n"), sandboxNum-1);
+            ("Moderator::RunMission() before sandboxes[%d]->Clear()\n", sandboxNum-1);
          #endif
          
          sandboxes[sandboxNum-1]->Clear();
          
          #if DEBUG_RUN
          MessageInterface::ShowMessage
-            (wxT("Moderator::RunMission() after sandboxes[%d]->Clear()\n"), sandboxNum-1);
+            ("Moderator::RunMission() after sandboxes[%d]->Clear()\n", sandboxNum-1);
          #endif
       }
       else
       {
          status = -1;
          MessageInterface::PopupMessage(Gmat::ERROR_,
-                                        wxT("Invalid Sandbox number") + sandboxNum);
+                                        "Invalid Sandbox number" + sandboxNum);
          return status;
       }
       
@@ -6317,7 +6319,7 @@ Integer Moderator::RunMission(Integer sandboxNum)
          
          #if DEBUG_RUN
          MessageInterface::ShowMessage
-            (wxT("Moderator::RunMission() after AddCommandToSandbox()\n"));
+            ("Moderator::RunMission() after AddCommandToSandbox()\n");
          #endif
          
          // initialize Sandbox
@@ -6328,7 +6330,7 @@ Integer Moderator::RunMission(Integer sandboxNum)
          {
             #if DEBUG_RUN
             MessageInterface::ShowMessage
-               (wxT("Moderator::RunMission() after InitializeSandbox()\n"));
+               ("Moderator::RunMission() after InitializeSandbox()\n");
             #endif
 
             // reset user interrupt flag
@@ -6340,43 +6342,43 @@ Integer Moderator::RunMission(Integer sandboxNum)
 
             #if DEBUG_RUN
             MessageInterface::ShowMessage
-               (wxT("Moderator::RunMission() after ExecuteSandbox()\n"));
+               ("Moderator::RunMission() after ExecuteSandbox()\n");
             #endif
          }
          else
          {
             // Execute only the PrepareMissionSequence command
             GmatCommand *cmd = commands[sandboxNum-1]->GetNext();
-            if (cmd->GetTypeName() == wxT("PrepareMissionSequence"))
+            if (cmd->GetTypeName() == "PrepareMissionSequence")
                cmd->Execute();
          }
       }
       catch (BaseException &e)
       {
-         wxString msg = e.GetFullMessage();
+         std::string msg = e.GetFullMessage();
          
          // assign status
          // Look for "interrupted" (loj: 2008.02.05)
          //if (msg.find("Execution interrupted") != msg.npos)
-         if (msg.find(wxT("interrupted")) != msg.npos)
+         if (msg.find("interrupted") != msg.npos)
          {
             status = -2;
-            MessageInterface::ShowMessage(wxT("GMAT execution stopped by user.\n"));      
+            MessageInterface::ShowMessage("GMAT execution stopped by user.\n");      
          }
          else
          {
             status = -3;
-//            msg = wxT("**** ERROR **** ") + msg;
+//            msg = "**** ERROR **** " + msg;
             // Dunn would like to note that this is the popup message we were
             // getting that only said "ERROR" and did not provide a message.
             // We might want to debug that some day.
-            MessageInterface::PopupMessage(Gmat::ERROR_, msg + wxT("\n"));
+            MessageInterface::PopupMessage(Gmat::ERROR_, msg + "\n");
          }
       }
       catch (...)
       {
          MessageInterface::ShowMessage
-            (wxT("Moderator::RunMission() Unknown error occurred.\n"));
+            ("Moderator::RunMission() Unknown error occurred.\n");
          status = -4;
          //throw; // LOJ: We want to finish up the clearing process below
       }
@@ -6384,7 +6386,7 @@ Integer Moderator::RunMission(Integer sandboxNum)
    else
    {
       MessageInterface::PopupMessage
-         (Gmat::ERROR_, wxT("Cannot Run Mission. No mission sequence defined.\n"));
+         (Gmat::ERROR_, "Cannot Run Mission. No mission sequence defined.\n");
       status = -4;
    }
    
@@ -6395,24 +6397,24 @@ Integer Moderator::RunMission(Integer sandboxNum)
       theUiInterpreter->NotifyRunCompleted();
    
    #if DEBUG_RUN > 1
-   MessageInterface::ShowMessage(wxT("===> status=%d\n"), status);
+   MessageInterface::ShowMessage("===> status=%d\n", status);
    #endif
    
    if (status == 1)
-      MessageInterface::ShowMessage(wxT("Mission run completed.\n"));
+      MessageInterface::ShowMessage("Mission run completed.\n");
    else if (status == -2)
-      MessageInterface::ShowMessage(wxT("*** Mission run interrupted.\n"));
+      MessageInterface::ShowMessage("*** Mission run interrupted.\n");
    else
-      MessageInterface::ShowMessage(wxT("*** Mission run failed.\n"));
+      MessageInterface::ShowMessage("*** Mission run failed.\n");
    
    clock_t t2 = clock();
    MessageInterface::ShowMessage
-      (wxT("===> Total Run Time: %f seconds\n"), (Real)(t2-t1)/CLOCKS_PER_SEC);
+      ("===> Total Run Time: %f seconds\n", (Real)(t2-t1)/CLOCKS_PER_SEC);
    
    #ifdef DEBUG_MEMORY
    StringArray tracks = MemoryTracker::Instance()->GetTracks(false, false);
    MessageInterface::ShowMessage
-      (wxT("===> There are %d memory tracks after MissionRun\n"), tracks.size());
+      ("===> There are %d memory tracks after MissionRun\n", tracks.size());
    #endif
    
    // show final state
@@ -6426,27 +6428,27 @@ Integer Moderator::RunMission(Integer sandboxNum)
       MessageInterface::ShowMessage(GmatCommandUtil::GetCommandSeqString(cmd));
       GmatCommand *lastCmd = GmatCommandUtil::GetLastCommand(cmd);
       
-      MessageInterface::ShowMessage(wxT("\n========== Final State ==========\n"));
-      MessageInterface::ShowMessage(lastCmd->GetStringParameter(wxT("MissionSummary")));
-      MessageInterface::ShowMessage(wxT("\n\n"));      
+      MessageInterface::ShowMessage("\n========== Final State ==========\n");
+      MessageInterface::ShowMessage(lastCmd->GetStringParameter("MissionSummary"));
+      MessageInterface::ShowMessage("\n\n");      
    }
    else
    {
-      MessageInterface::ShowMessage(wxT("\n========================================\n"));
+      MessageInterface::ShowMessage("\n========================================\n");
    }
    
    // Reset solar system in use and object map (LOJ: 2009.03.19)
    // So that users can create new objects from the GUI after GmatFunction run.
    objectMapInUse = theConfigManager->GetObjectMap();
    SetSolarSystemAndObjectMap(theSolarSystemInUse, objectMapInUse, false,
-                              wxT("RunMission()"));
+                              "RunMission()");
    
    return status;
 } // RunMission()
 
 
 //------------------------------------------------------------------------------
-// Integer ChangeRunState(const wxString &state, Integer sandboxNum)
+// Integer ChangeRunState(const std::string &state, Integer sandboxNum)
 //------------------------------------------------------------------------------
 /**
  * Changes run state.
@@ -6458,23 +6460,23 @@ Integer Moderator::RunMission(Integer sandboxNum)
  *    0 = successful, <0 = error (tbd)
  */
 //------------------------------------------------------------------------------
-Integer Moderator::ChangeRunState(const wxString &state, Integer sandboxNum)
+Integer Moderator::ChangeRunState(const std::string &state, Integer sandboxNum)
 {
    #if DEBUG_USER_INTERRUPT
    MessageInterface::ShowMessage
-      (wxT("Moderator::ChangeRunState(%s) entered\n"), state.c_str());
+      ("Moderator::ChangeRunState(%s) entered\n", state.c_str());
    #endif
    
-   if (state == wxT("Stop"))
+   if (state == "Stop")
    {
       runState = Gmat::IDLE;
       GmatGlobal::Instance()->SetRunInterrupted(true);
    }
    
-   else if (state == wxT("Pause"))
+   else if (state == "Pause")
       runState = Gmat::PAUSED;
    
-   else if (state == wxT("Resume"))
+   else if (state == "Resume")
       runState = Gmat::RUNNING;
    
    else
@@ -6500,7 +6502,7 @@ Integer Moderator::ChangeRunState(const wxString &state, Integer sandboxNum)
 Gmat::RunState Moderator::GetUserInterrupt()
 {
    #if DEBUG_USER_INTERRUPT
-   MessageInterface::ShowMessage(wxT("Moderator::GetUserInterrupt() entered\n"));
+   MessageInterface::ShowMessage("Moderator::GetUserInterrupt() entered\n");
    #endif
    
    // give MainFrame input focus
@@ -6521,7 +6523,7 @@ Gmat::RunState Moderator::GetRunState()
 {
    #if DEBUG_RUN
    MessageInterface::ShowMessage
-      (wxT("Moderator::GetRunsState() isRunReady=%d, endOfInterpreter=%d\n"),
+      ("Moderator::GetRunsState() isRunReady=%d, endOfInterpreter=%d\n",
        isRunReady, endOfInterpreter);
    #endif
    
@@ -6531,7 +6533,7 @@ Gmat::RunState Moderator::GetRunState()
    
    #if DEBUG_RUN
    MessageInterface::ShowMessage
-      (wxT("Moderator::GetRunsState() runState=%d\n"), runState);
+      ("Moderator::GetRunsState() runState=%d\n", runState);
    #endif
 
    return runState;
@@ -6540,8 +6542,8 @@ Gmat::RunState Moderator::GetRunState()
 
 // Script
 //------------------------------------------------------------------------------
-// bool InterpretScript(const wxString &filename, bool readBack = false,
-//                      const wxString &newPath = wxT(""))
+// bool InterpretScript(const std::string &filename, bool readBack = false,
+//                      const std::string &newPath = "")
 //------------------------------------------------------------------------------
 /**
  * Creates objects from script file. If readBack is true, it will save to
@@ -6555,17 +6557,17 @@ Gmat::RunState Moderator::GetRunState()
  * @return true if successful; false otherwise
  */
 //------------------------------------------------------------------------------
-bool Moderator::InterpretScript(const wxString &filename, bool readBack,
-                                const wxString &newPath)
+bool Moderator::InterpretScript(const std::string &filename, bool readBack,
+                                const std::string &newPath)
 {
    bool isGoodScript = false;
    isRunReady = false;
    endOfInterpreter = false;
    runState = Gmat::IDLE;
    
-   //MessageInterface::ShowMessage(wxT("========================================\n"));
+   //MessageInterface::ShowMessage("========================================\n");
    MessageInterface::ShowMessage
-      (wxT("\nInterpreting scripts from the file.\n***** file: ") + filename + wxT("\n"));
+      ("\nInterpreting scripts from the file.\n***** file: " + filename + "\n");
    
    try
    {
@@ -6579,34 +6581,34 @@ bool Moderator::InterpretScript(const wxString &filename, bool readBack,
       if (readBack)
       {
          #if DEBUG_INTERPRET
-         MessageInterface::ShowMessage(wxT("===> newPath=%s\n"), newPath.c_str());
+         MessageInterface::ShowMessage("===> newPath=%s\n", newPath.c_str());
          #endif
          
-         wxString newpath = newPath;
-         wxString sep = theFileManager->GetPathSeparator();
-         UnsignedInt index = filename.find_last_of(wxT("/\\"));
-         wxString fname = filename.substr(index+1);
+         std::string newpath = newPath;
+         std::string sep = theFileManager->GetPathSeparator();
+         UnsignedInt index = filename.find_last_of("/\\");
+         std::string fname = filename.substr(index+1);
          
-         if (newpath == wxT(""))
-            newpath = filename.substr(0, index) + sep + wxT("AutoSave") + sep;
+         if (newpath == "")
+            newpath = filename.substr(0, index) + sep + "AutoSave" + sep;
          
-         wxString newfile = newpath + fname;
+         std::string newfile = newpath + fname;
          
          #if DEBUG_INTERPRET
          MessageInterface::ShowMessage
-            (wxT("===> newpath=%s\n===> newfile=%s\n"), newpath.c_str(), newfile.c_str());
+            ("===> newpath=%s\n===> newfile=%s\n", newpath.c_str(), newfile.c_str());
          #endif
          
          if (!theFileManager->DoesDirectoryExist(newpath))
          {
-            wxString cmd = wxT("mkdir ") + newpath;
+            std::string cmd = "mkdir " + newpath;
             
-            int status = system(cmd.char_str());
+            int status = system(cmd.c_str());
             if (status != 0)
             {
                #if DEBUG_INTERPRET
                MessageInterface::ShowMessage
-                  (wxT("===> cmd=%s, status=%d\n"), cmd.c_str(), status);
+                  ("===> cmd=%s, status=%d\n", cmd.c_str(), status);
                #endif
             }
          }
@@ -6619,14 +6621,14 @@ bool Moderator::InterpretScript(const wxString &filename, bool readBack,
       {
          #if DEBUG_INTERPRET
          MessageInterface::ShowMessage
-            (wxT("Moderator::InterpretScript() successfully interpreted the script\n"));
+            ("Moderator::InterpretScript() successfully interpreted the script\n");
          #endif
          
          isRunReady = true;
       }
       else
       {
-         MessageInterface::ShowMessage(wxT("\n========================================\n"));
+         MessageInterface::ShowMessage("\n========================================\n");
       }
    }
    catch (BaseException &e)
@@ -6646,46 +6648,46 @@ bool Moderator::InterpretScript(const wxString &filename, bool readBack,
 
       
       #if DEBUG_INTERPRET
-      ShowCommand(wxT("first cmd = "), first, wxT(" second cmd = "), second);
+      ShowCommand("first cmd = ", first, " second cmd = ", second);
       #endif
       
-      wxString firstCommandType = 
-         (second != NULL ? second->GetTypeName() : wxT(""));
+      std::string firstCommandType = 
+         (second != NULL ? second->GetTypeName() : "");
       
       if (!IsSequenceStarter(firstCommandType))
       {
          // Show warning message for now (LOJ: 2010.07.15)
-         wxString firstCmdStr;
+         std::string firstCmdStr;
          if (second == NULL)
          {
-            firstCmdStr = wxT("There is no command detected.");
+            firstCmdStr = "There is no command detected.";
          }
          else
          {
             //if (second != NULL)            
-            firstCmdStr = wxT("The first command detected is \n'");
+            firstCmdStr = "The first command detected is \n'";
             firstCmdStr = firstCmdStr +
-               second->GetGeneratingString(Gmat::NO_COMMENTS) + wxT("'");
+               second->GetGeneratingString(Gmat::NO_COMMENTS) + "'";
          }
          
-         wxString knownStartCommands = wxT("   [") + GetStarterStringList() + wxT("]\n");
+         std::string knownStartCommands = "   [" + GetStarterStringList() + "]\n";
          //firstCmdStr = firstCmdStr + second->GetGeneratingString() + "'";
          MessageInterface::PopupMessage
-            (Gmat::WARNING_, wxT("*** WARNING *** Mission Sequence start command ")
-             wxT("is missing.  One will be required in future builds.  Recognized ")
-             wxT("start commands are\n") + knownStartCommands + firstCmdStr);
+            (Gmat::WARNING_, "*** WARNING *** Mission Sequence start command "
+             "is missing.  One will be required in future builds.  Recognized "
+             "start commands are\n" + knownStartCommands + firstCmdStr);
          
          #if DEBUG_INTERPRET
          MessageInterface::ShowMessage
-            (wxT("==> Inserting 'BeginMissionSequence' after '%s'\n"),
+            ("==> Inserting 'BeginMissionSequence' after '%s'\n",
              first->GetTypeName().c_str());
          #endif
          bool retval;
-         GmatCommand *bms = CreateCommand(wxT("BeginMissionSequence"), wxT(""), retval);
+         GmatCommand *bms = CreateCommand("BeginMissionSequence", "", retval);
          InsertCommand(bms, first);
       }
       
-      if (second != NULL && second->GetTypeName() == wxT("PrepareMissionSequence"))
+      if (second != NULL && second->GetTypeName() == "PrepareMissionSequence")
          loadSandboxAndPause = true;
       else
          loadSandboxAndPause = false;
@@ -6697,7 +6699,7 @@ bool Moderator::InterpretScript(const wxString &filename, bool readBack,
       #if DEBUG_INTERPRET > 0
       GmatCommand *cmd = GetFirstCommand();
       MessageInterface::ShowMessage(GmatCommandUtil::GetCommandSeqString(cmd));
-      MessageInterface::ShowMessage(wxT("Moderator::InterpretScript() returning %d\n"), isGoodScript);
+      MessageInterface::ShowMessage("Moderator::InterpretScript() returning %d\n", isGoodScript);
       #endif
 
    }
@@ -6717,16 +6719,16 @@ bool Moderator::InterpretScript(const wxString &filename, bool readBack,
  * @return true if successful; false otherwise
  */
 //------------------------------------------------------------------------------
-bool Moderator::InterpretScript(wxInputStream *ss, bool clearObjs)
+bool Moderator::InterpretScript(std::istringstream *ss, bool clearObjs)
 {
    bool isGoodScript = false;
    isRunReady = false;
    endOfInterpreter = false;
    runState = Gmat::IDLE;
    
-   //MessageInterface::ShowMessage(wxT("========================================\n"));
+   //MessageInterface::ShowMessage("========================================\n");
    MessageInterface::ShowMessage
-      (wxT("\nInterpreting scripts from the input stream\n"));
+      ("\nInterpreting scripts from the input stream\n");
    
    try
    {
@@ -6740,14 +6742,14 @@ bool Moderator::InterpretScript(wxInputStream *ss, bool clearObjs)
       {
          #if DEBUG_INTERPRET
          MessageInterface::ShowMessage
-            (wxT("Moderator::InterpretScript() successfully interpreted the script\n"));
+            ("Moderator::InterpretScript() successfully interpreted the script\n");
          #endif
          
          isRunReady = true;
       }
       else
       {
-         MessageInterface::ShowMessage(wxT("\n========================================\n"));
+         MessageInterface::ShowMessage("\n========================================\n");
       }
    }
    catch (BaseException &e)
@@ -6770,7 +6772,7 @@ bool Moderator::InterpretScript(wxInputStream *ss, bool clearObjs)
 
 
 //------------------------------------------------------------------------------
-// bool SaveScript(const wxString &filename,
+// bool SaveScript(const std::string &filename,
 //                 Gmat::WriteMode mode = Gmat::SCRIPTING)
 //------------------------------------------------------------------------------
 /**
@@ -6782,13 +6784,13 @@ bool Moderator::InterpretScript(wxInputStream *ss, bool clearObjs)
  * @return true if successful; false otherwise
  */
 //------------------------------------------------------------------------------
-bool Moderator::SaveScript(const wxString &filename, Gmat::WriteMode mode)
+bool Moderator::SaveScript(const std::string &filename, Gmat::WriteMode mode)
 {
    #ifdef DEBUG_SAVE_SCRIPT
    MessageInterface::ShowMessage
-      (wxT("Moderator::SaveScript() entered\n   file: %s, mode: %d\n"),
+      ("Moderator::SaveScript() entered\n   file: %s, mode: %d\n",
        filename.c_str(), mode);
-   MessageInterface::ShowMessage(wxT("The Script is saved to " + filename + "\n"));
+   MessageInterface::ShowMessage("The Script is saved to " + filename + "\n");
    #endif
    
    bool status = false;
@@ -6809,7 +6811,7 @@ bool Moderator::SaveScript(const wxString &filename, Gmat::WriteMode mode)
 
 
 //------------------------------------------------------------------------------
-// wxString GetScript(Gmat::WriteMode mode = Gmat::SCRIPTING)
+// std::string GetScript(Gmat::WriteMode mode = Gmat::SCRIPTING)
 //------------------------------------------------------------------------------
 /**
  * Returns built scripts from objects
@@ -6819,30 +6821,30 @@ bool Moderator::SaveScript(const wxString &filename, Gmat::WriteMode mode)
  * @return built scripts from objects
  */
 //------------------------------------------------------------------------------
-wxString Moderator::GetScript(Gmat::WriteMode mode)
+std::string Moderator::GetScript(Gmat::WriteMode mode)
 {
-   //MessageInterface::ShowMessage(wxT("Moderator::GetScript() mode: %d\n"), mode);
+   //MessageInterface::ShowMessage("Moderator::GetScript() mode: %d\n", mode);
    
    try
    {
-      wxStringOutputStream osStringStream;
-      theScriptInterpreter->SetOutStream(&osStringStream);
+      std::stringstream os;
+      theScriptInterpreter->SetOutStream(&os);
       
       if (theScriptInterpreter->Build(mode))
       {
-         return osStringStream.GetString();
+         return os.str();
       }
       else
       {
          MessageInterface::PopupMessage
-            (Gmat::ERROR_, wxT("Unable to build script from objects\n"));
-         return wxT("");
+            (Gmat::ERROR_, "Unable to build script from objects\n");
+         return "";
       }
    }
    catch (BaseException &e)
    {
-      MessageInterface::PopupMessage(Gmat::ERROR_, e.GetFullMessage() + wxT("\n"));
-      return wxT("");
+      MessageInterface::PopupMessage(Gmat::ERROR_, e.GetFullMessage() + "\n");
+      return "";
    }
 }
 
@@ -6861,7 +6863,7 @@ wxString Moderator::GetScript(Gmat::WriteMode mode)
 //------------------------------------------------------------------------------
 Integer Moderator::RunScript(Integer sandboxNum)
 {
-   MessageInterface::ShowMessage(wxT("Moderator::RunScript() entered\n"));
+   MessageInterface::ShowMessage("Moderator::RunScript() entered\n");
    return RunMission(sandboxNum);
 }
 
@@ -6908,16 +6910,16 @@ void Moderator::CreatePlanetaryCoeffFile()
 {
    #if DEBUG_INITIALIZE
    //MessageInterface::ShowMessage("========================================\n");
-   MessageInterface::ShowMessage(wxT("Moderator initializing planetary coefficient file...\n"));
+   MessageInterface::ShowMessage("Moderator initializing planetary coefficient file...\n");
    #endif
    
-   wxString nutFileName =
-      theFileManager->GetFullPathname(wxT("NUTATION_COEFF_FILE"));
-   MessageInterface::ShowMessage(wxT("Setting nutation file to %s\n"),
+   std::string nutFileName =
+      theFileManager->GetFullPathname("NUTATION_COEFF_FILE");
+   MessageInterface::ShowMessage("Setting nutation file to %s\n",
                                  nutFileName.c_str());
-   wxString planFileName =
-      theFileManager->GetFullPathname(wxT("PLANETARY_COEFF_FILE"));
-   MessageInterface::ShowMessage(wxT("Setting planetary coeff. file to %s\n"),
+   std::string planFileName =
+      theFileManager->GetFullPathname("PLANETARY_COEFF_FILE");
+   MessageInterface::ShowMessage("Setting planetary coeff. file to %s\n",
                                  planFileName.c_str());
    
    theItrfFile = new ItrfCoefficientsFile(nutFileName, planFileName);
@@ -6933,16 +6935,16 @@ void Moderator::CreateTimeFile()
 {
    #if DEBUG_INITIALIZE
    //MessageInterface::ShowMessage("========================================\n");
-   MessageInterface::ShowMessage(wxT("Moderator initializing time file...\n"));
+   MessageInterface::ShowMessage("Moderator initializing time file...\n");
    #endif
    
-   wxString filename = theFileManager->GetFullPathname(wxT("LEAP_SECS_FILE"));
-   MessageInterface::ShowMessage(wxT("Setting leap seconds file to %s\n"),
+   std::string filename = theFileManager->GetFullPathname("LEAP_SECS_FILE");
+   MessageInterface::ShowMessage("Setting leap seconds file to %s\n",
                                  filename.c_str());
    theLeapSecsFile = new LeapSecsFileReader(filename);
    theLeapSecsFile->Initialize();
    
-   filename = theFileManager->GetFullPathname(wxT("EOP_FILE"));
+   filename = theFileManager->GetFullPathname("EOP_FILE");
    theEopFile = new EopFile(filename);
    theEopFile->Initialize();
    
@@ -6967,8 +6969,8 @@ void Moderator::PrepareNextScriptReading(bool clearObjs)
 {
    #if DEBUG_RUN
    MessageInterface::ShowMessage
-      (wxT("Moderator::PrepareNextScriptReading() entered, %sclearing objects\n%s\n"),
-       clearObjs ? wxT("") : wxT("Not"),
+      ("Moderator::PrepareNextScriptReading() entered, %sclearing objects\n%s\n",
+       clearObjs ? "" : "Not",
        "======================================================================");
    #endif
    
@@ -6980,7 +6982,7 @@ void Moderator::PrepareNextScriptReading(bool clearObjs)
    {
       //clear both resource and command sequence
       #if DEBUG_RUN
-      MessageInterface::ShowMessage(wxT(".....Clearing both resource and command sequence...\n"));
+      MessageInterface::ShowMessage(".....Clearing both resource and command sequence...\n");
       #endif
       
       ClearCommandSeq(true, true);
@@ -6992,34 +6994,34 @@ void Moderator::PrepareNextScriptReading(bool clearObjs)
    
    #ifdef DEBUG_OBJECT_MAP
    MessageInterface::ShowMessage
-      (wxT("ObjectMapInUse was set to the configuration map <%p>\n"), objectMapInUse);
+      ("ObjectMapInUse was set to the configuration map <%p>\n", objectMapInUse);
    #endif
    
    #if DEBUG_RUN
-   MessageInterface::ShowMessage(wxT(".....Creating SolarSystem in use...\n"));
+   MessageInterface::ShowMessage(".....Creating SolarSystem in use...\n");
    #endif
    CreateSolarSystemInUse();
    
    // Need default CS's in case they are used in the script
    #if DEBUG_RUN
-   MessageInterface::ShowMessage(wxT(".....Creating Default CoordinateSystem...\n"));
+   MessageInterface::ShowMessage(".....Creating Default CoordinateSystem...\n");
    #endif
    CreateDefaultCoordSystems();
    // Create the default Solar System barycenter
    CreateDefaultBarycenter();
    
    #if DEBUG_OBJECT_MAP > 1
-   ShowObjectMap(wxT("   Moderator::PrepareNextScriptReading() Here is the configured object map"));
+   ShowObjectMap("   Moderator::PrepareNextScriptReading() Here is the configured object map");
    #endif
    
    // Set solar system in use and object map (loj: 2008.03.31)
    #if DEBUG_RUN
-   MessageInterface::ShowMessage(wxT(".....Setting SolarSystem and ObjectMap to Interpreter...\n"));
+   MessageInterface::ShowMessage(".....Setting SolarSystem and ObjectMap to Interpreter...\n");
    #endif
    
    // Reset initial solar system in use and object map 
    SetSolarSystemAndObjectMap(theSolarSystemInUse, objectMapInUse, false,
-                              wxT("PrepareNextScriptReading()"));
+                              "PrepareNextScriptReading()");
    currentFunction = NULL;
    
    // Delete unmanaged functions (LOJ: 2009.03.24)
@@ -7029,7 +7031,7 @@ void Moderator::PrepareNextScriptReading(bool clearObjs)
    #ifdef __ENABLE_CLEAR_UNMANAGED_FUNCTIONS__
    #if DEBUG_RUN > 0
    MessageInterface::ShowMessage
-      (wxT(".....Moderator::PrepareNextScriptReading() deleting %d unmanaged functions\n"),
+      (".....Moderator::PrepareNextScriptReading() deleting %d unmanaged functions\n",
        unmanagedFunctions.size());
    #endif
    for (UnsignedInt i=0; i<unmanagedFunctions.size(); i++)
@@ -7037,8 +7039,8 @@ void Moderator::PrepareNextScriptReading(bool clearObjs)
       GmatBase *func = (GmatBase*)(unmanagedFunctions[i]);
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (func, func->GetName(), wxT("Moderator::PrepareNextScriptReading()"),
-          wxT("deleting unmanaged function"));
+         (func, func->GetName(), "Moderator::PrepareNextScriptReading()",
+          "deleting unmanaged function");
       #endif
       delete func;
       func = NULL;
@@ -7048,8 +7050,8 @@ void Moderator::PrepareNextScriptReading(bool clearObjs)
    
    #if DEBUG_RUN
    MessageInterface::ShowMessage
-      (wxT("Moderator::PrepareNextScriptReading() exiting\n")
-       wxT("======================================================================\n"));
+      ("Moderator::PrepareNextScriptReading() exiting\n"
+       "======================================================================\n");
    #endif
 } // PrepareNextScriptReading
 
@@ -7073,12 +7075,12 @@ void Moderator::CreateSolarSystemInUse()
       {
          #if DEBUG_INITIALIZE
          MessageInterface::ShowMessage
-            (wxT("Moderator deleting old solar system in use <%p>\n"), theSolarSystemInUse);
+            ("Moderator deleting old solar system in use <%p>\n", theSolarSystemInUse);
          #endif
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
             (theSolarSystemInUse, theSolarSystemInUse->GetName(),
-             wxT("Moderator::CreateSolarSystemInUse()"));
+             "Moderator::CreateSolarSystemInUse()");
          #endif
          delete theSolarSystemInUse;
       }
@@ -7087,23 +7089,23 @@ void Moderator::CreateSolarSystemInUse()
       
       #if DEBUG_SOLAR_SYSTEM_IN_USE
       MessageInterface::ShowMessage
-         (wxT(".....Setting theSolarSystemInUse to clone of theDefaultSolarSystem <%p>...\n"),
+         (".....Setting theSolarSystemInUse to clone of theDefaultSolarSystem <%p>...\n",
           theDefaultSolarSystem);
       #endif
       
       theSolarSystemInUse = theDefaultSolarSystem->Clone();
-      theSolarSystemInUse->SetName(wxT("SolarSystem"));
+      theSolarSystemInUse->SetName("SolarSystem");
       
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
          (theSolarSystemInUse, theSolarSystemInUse->GetName(),
-          wxT("Moderator::CreateSolarSystemInUse()"),
-          wxT("theSolarSystemInUse = theDefaultSolarSystem->Clone()"));
+          "Moderator::CreateSolarSystemInUse()",
+          "theSolarSystemInUse = theDefaultSolarSystem->Clone()");
       #endif
       
       #if DEBUG_SOLAR_SYSTEM_IN_USE
       MessageInterface::ShowMessage
-         (wxT(".....Setting SolarSystemInUse to theInternalSolarSystem...\n"));
+         (".....Setting SolarSystemInUse to theInternalSolarSystem...\n");
       #endif
       theInternalSolarSystem = theSolarSystemInUse;
       
@@ -7112,7 +7114,7 @@ void Moderator::CreateSolarSystemInUse()
       
       #if DEBUG_INITIALIZE
       MessageInterface::ShowMessage
-         (wxT("Moderator created new solar system in use: %p\n"), theSolarSystemInUse);
+         ("Moderator created new solar system in use: %p\n", theSolarSystemInUse);
       #endif
       
    //-----------------------------------------------------------------
@@ -7124,24 +7126,24 @@ void Moderator::CreateSolarSystemInUse()
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Add
             (theSolarSystemInUse, theSolarSystemInUse->GetName(),
-             wxT("Moderator::CreateSolarSystemInUse()"),
-             wxT("theSolarSystemInUse = theDefaultSolarSystem->Clone()"));
+             "Moderator::CreateSolarSystemInUse()",
+             "theSolarSystemInUse = theDefaultSolarSystem->Clone()");
          #endif
-         theSolarSystemInUse->SetName(wxT("SolarSystem"));
+         theSolarSystemInUse->SetName("SolarSystem");
          SetSolarSystemInUse(theSolarSystemInUse);
       }
       else
       {
          theSolarSystemInUse->Copy(theDefaultSolarSystem);
-         theSolarSystemInUse->SetName(wxT("SolarSystem"));
+         theSolarSystemInUse->SetName("SolarSystem");
       }
       
       theInternalSolarSystem = theSolarSystemInUse;
       
       #if DEBUG_SOLAR_SYSTEM_IN_USE
       MessageInterface::ShowMessage
-         (wxT("Moderator::CreateSolarSystemInUse() theSolarSystemInUse=<%p>, ")
-          wxT("theDefaultSolarSystem=<%p>\n"), theSolarSystemInUse,  theDefaultSolarSystem);
+         ("Moderator::CreateSolarSystemInUse() theSolarSystemInUse=<%p>, "
+          "theDefaultSolarSystem=<%p>\n", theSolarSystemInUse,  theDefaultSolarSystem);
       #endif
    //-----------------------------------------------------------------
    #endif
@@ -7152,12 +7154,12 @@ void Moderator::CreateSolarSystemInUse()
    {
       #if DEBUG_SOLAR_SYSTEM_IN_USE
       MessageInterface::ShowMessage
-         (wxT(".....deleting (%p)theInternalCoordSystem\n"), theInternalCoordSystem);
+         (".....deleting (%p)theInternalCoordSystem\n", theInternalCoordSystem);
       #endif
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
          (theInternalCoordSystem, theInternalCoordSystem->GetName(),
-          wxT("Moderator::CreateSolarSystemInUse()"));
+          "Moderator::CreateSolarSystemInUse()");
       #endif
       delete theInternalCoordSystem;
       theInternalCoordSystem = NULL;
@@ -7179,15 +7181,15 @@ void Moderator::CreateSolarSystemInUse()
 void Moderator::CreateInternalCoordSystem()
 {
    #if DEBUG_INITIALIZE
-   //MessageInterface::ShowMessage(wxT("========================================\n"));
-   MessageInterface::ShowMessage(wxT("Moderator creating internal coordinate system...\n"));
+   //MessageInterface::ShowMessage("========================================\n");
+   MessageInterface::ShowMessage("Moderator creating internal coordinate system...\n");
    #endif
    
    if (theInternalCoordSystem != NULL)
    {
       #if DEBUG_INITIALIZE
       MessageInterface::ShowMessage
-         (wxT("..... <%p>theInternalCoordSystem already exists\n"),theInternalCoordSystem);
+         ("..... <%p>theInternalCoordSystem already exists\n",theInternalCoordSystem);
       #endif
    }
    else
@@ -7195,11 +7197,11 @@ void Moderator::CreateInternalCoordSystem()
       // Create internal CoordinateSystem with no name, since we don't want
       // it to be configured.
       theInternalCoordSystem =
-         CreateCoordinateSystem(wxT("InternalEarthMJ2000Eq"), true, true);
+         CreateCoordinateSystem("InternalEarthMJ2000Eq", true, true);
       
       #if DEBUG_INITIALIZE
       MessageInterface::ShowMessage
-         (wxT(".....created  <%p>theInternalCoordSystem\n"), theInternalCoordSystem);
+         (".....created  <%p>theInternalCoordSystem\n", theInternalCoordSystem);
       #endif
    }
 }
@@ -7211,53 +7213,53 @@ void Moderator::CreateInternalCoordSystem()
 void Moderator::CreateDefaultCoordSystems()
 {
    #if DEBUG_INITIALIZE
-   MessageInterface::ShowMessage(wxT("========================================\n"));
+   MessageInterface::ShowMessage("========================================\n");
    MessageInterface::ShowMessage
-      (wxT("Moderator checking if default coordinate systems should be created...\n"));
+      ("Moderator checking if default coordinate systems should be created...\n");
    #endif
    
    defaultCoordSystemNames.clear();
    
    try
    {
-      SpacePoint *earth = (SpacePoint*)GetConfiguredObject(wxT("Earth"));
+      SpacePoint *earth = (SpacePoint*)GetConfiguredObject("Earth");
       SolarSystem *ss = GetSolarSystemInUse();
       
       // EarthMJ2000Eq
-      CoordinateSystem *eqcs = GetCoordinateSystem(wxT("EarthMJ2000Eq"));
-      defaultCoordSystemNames.push_back(wxT("EarthMJ2000Eq"));
+      CoordinateSystem *eqcs = GetCoordinateSystem("EarthMJ2000Eq");
+      defaultCoordSystemNames.push_back("EarthMJ2000Eq");
       if (eqcs == NULL)
       {
-         eqcs = CreateCoordinateSystem(wxT("EarthMJ2000Eq"), true);
+         eqcs = CreateCoordinateSystem("EarthMJ2000Eq", true);
          
          #if DEBUG_INITIALIZE
          MessageInterface::ShowMessage
-            (wxT(".....created <%p>'%s'\n"), eqcs, eqcs->GetName().c_str());
+            (".....created <%p>'%s'\n", eqcs, eqcs->GetName().c_str());
          #endif
       }
       else
       {
          #if DEBUG_INITIALIZE
          MessageInterface::ShowMessage
-            (wxT(".....found <%p>'%s'\n"), eqcs, eqcs->GetName().c_str());
+            (".....found <%p>'%s'\n", eqcs, eqcs->GetName().c_str());
          #endif
          eqcs->SetSolarSystem(ss);
          eqcs->Initialize();
       }
       
       // EarthMJ2000Ec
-      CoordinateSystem *eccs = GetCoordinateSystem(wxT("EarthMJ2000Ec"));
-      defaultCoordSystemNames.push_back(wxT("EarthMJ2000Ec"));
+      CoordinateSystem *eccs = GetCoordinateSystem("EarthMJ2000Ec");
+      defaultCoordSystemNames.push_back("EarthMJ2000Ec");
       if (eccs == NULL)
       {
-         eccs = CreateCoordinateSystem(wxT("EarthMJ2000Ec"), false);
+         eccs = CreateCoordinateSystem("EarthMJ2000Ec", false);
          #if DEBUG_INITIALIZE
          MessageInterface::ShowMessage
-            (wxT(".....created <%p>'%s'\n"), eccs, eccs->GetName().c_str());
+            (".....created <%p>'%s'\n", eccs, eccs->GetName().c_str());
          #endif
-         AxisSystem *ecAxis = CreateAxisSystem(wxT("MJ2000Ec"), wxT("MJ2000Ec_Earth"));
-         eccs->SetStringParameter(wxT("Origin"), wxT("Earth"));
-         eccs->SetStringParameter(wxT("J2000Body"), wxT("Earth"));
+         AxisSystem *ecAxis = CreateAxisSystem("MJ2000Ec", "MJ2000Ec_Earth");
+         eccs->SetStringParameter("Origin", "Earth");
+         eccs->SetStringParameter("J2000Body", "Earth");
          eccs->SetRefObject(ecAxis, Gmat::AXIS_SYSTEM, ecAxis->GetName());
          eccs->SetOrigin(earth);
          eccs->SetJ2000Body(earth);
@@ -7267,8 +7269,8 @@ void Moderator::CreateDefaultCoordSystems()
          // Since CoordinateSystem clones AxisSystem, delete it from here
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (ecAxis, wxT("localAxes"), wxT("Moderator::CreateDefaultCoordSystems()"),
-             wxT("deleting localAxes"));
+            (ecAxis, "localAxes", "Moderator::CreateDefaultCoordSystems()",
+             "deleting localAxes");
          #endif
          delete ecAxis;
       }
@@ -7276,28 +7278,28 @@ void Moderator::CreateDefaultCoordSystems()
       {
          #if DEBUG_INITIALIZE
          MessageInterface::ShowMessage
-            (wxT(".....found <%p>'%s'\n"), eccs, eccs->GetName().c_str());
+            (".....found <%p>'%s'\n", eccs, eccs->GetName().c_str());
          #endif
          eccs->SetSolarSystem(ss);
          eccs->Initialize();
       }
       
       // EarthFixed
-      CoordinateSystem *bfcs = GetCoordinateSystem(wxT("EarthFixed"));
-      defaultCoordSystemNames.push_back(wxT("EarthFixed"));
+      CoordinateSystem *bfcs = GetCoordinateSystem("EarthFixed");
+      defaultCoordSystemNames.push_back("EarthFixed");
       if (bfcs == NULL)
       {
-         bfcs = CreateCoordinateSystem(wxT("EarthFixed"), false);
+         bfcs = CreateCoordinateSystem("EarthFixed", false);
          #if DEBUG_INITIALIZE
          MessageInterface::ShowMessage
-            (wxT(".....created <%p>'%s'\n"), bfcs, bfcs->GetName().c_str());
+            (".....created <%p>'%s'\n", bfcs, bfcs->GetName().c_str());
          #endif
          BodyFixedAxes *bfecAxis =
-            (BodyFixedAxes*)CreateAxisSystem(wxT("BodyFixed"), wxT("BodyFixed_Earth"));
+            (BodyFixedAxes*)CreateAxisSystem("BodyFixed", "BodyFixed_Earth");
          bfecAxis->SetEopFile(theEopFile);
          bfecAxis->SetCoefficientsFile(theItrfFile);
-         bfcs->SetStringParameter(wxT("Origin"), wxT("Earth"));
-         bfcs->SetStringParameter(wxT("J2000Body"), wxT("Earth"));
+         bfcs->SetStringParameter("Origin", "Earth");
+         bfcs->SetStringParameter("J2000Body", "Earth");
          bfcs->SetRefObject(bfecAxis, Gmat::AXIS_SYSTEM, bfecAxis->GetName());
          bfcs->SetOrigin(earth);
          bfcs->SetJ2000Body(earth);
@@ -7307,8 +7309,8 @@ void Moderator::CreateDefaultCoordSystems()
          // Since CoordinateSystem clones AxisSystem, delete it from here
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (bfecAxis, wxT("localAxes"), wxT("Moderator::CreateDefaultCoordSystems()"),
-             wxT("deleting localAxes"));
+            (bfecAxis, "localAxes", "Moderator::CreateDefaultCoordSystems()",
+             "deleting localAxes");
          #endif
          delete bfecAxis;
       }
@@ -7316,7 +7318,7 @@ void Moderator::CreateDefaultCoordSystems()
       {
          #if DEBUG_INITIALIZE
          MessageInterface::ShowMessage
-            (wxT(".....found <%p>'%s'\n"), bfcs, bfcs->GetName().c_str());
+            (".....found <%p>'%s'\n", bfcs, bfcs->GetName().c_str());
          #endif
          bfcs->SetSolarSystem(ss);
          bfcs->Initialize();
@@ -7326,8 +7328,8 @@ void Moderator::CreateDefaultCoordSystems()
    {
       MessageInterface::PopupMessage
          (Gmat::ERROR_,
-          wxT("Moderator::CreateDefaultCoordSystems() Error occurred during default ")
-          wxT("coordinate system creation. ") +  e.GetFullMessage());
+          "Moderator::CreateDefaultCoordSystems() Error occurred during default "
+          "coordinate system creation. " +  e.GetFullMessage());
    }
 }
 
@@ -7337,9 +7339,9 @@ void Moderator::CreateDefaultCoordSystems()
 void Moderator::CreateDefaultBarycenter()
 {
    #if DEBUG_INITIALIZE
-   MessageInterface::ShowMessage(wxT("========================================\n"));
+   MessageInterface::ShowMessage("========================================\n");
    MessageInterface::ShowMessage
-      (wxT("Moderator checking if default barycenter should be created...\n"));
+      ("Moderator checking if default barycenter should be created...\n");
    #endif
 
    try
@@ -7350,18 +7352,18 @@ void Moderator::CreateDefaultBarycenter()
       Barycenter *bary = (Barycenter*) GetCalculatedPoint(GmatSolarSystemDefaults::SOLAR_SYSTEM_BARYCENTER_NAME);
       if (bary == NULL)
       {
-         bary = (Barycenter*) CreateCalculatedPoint(wxT("Barycenter"), GmatSolarSystemDefaults::SOLAR_SYSTEM_BARYCENTER_NAME, false);
+         bary = (Barycenter*) CreateCalculatedPoint("Barycenter", GmatSolarSystemDefaults::SOLAR_SYSTEM_BARYCENTER_NAME, false);
 
          #if DEBUG_INITIALIZE
          MessageInterface::ShowMessage
-            (wxT(".....created <%p>'%s'\n"), bary, bary->GetName().c_str());
+            (".....created <%p>'%s'\n", bary, bary->GetName().c_str());
          #endif
       }
       else
       {
          #if DEBUG_INITIALIZE
          MessageInterface::ShowMessage
-            (wxT(".....found <%p>'%s'\n"), bary, bary->GetName().c_str());
+            (".....found <%p>'%s'\n", bary, bary->GetName().c_str());
          #endif
       }
       bary->SetSolarSystem(ss);
@@ -7372,8 +7374,8 @@ void Moderator::CreateDefaultBarycenter()
    {
       MessageInterface::PopupMessage
          (Gmat::ERROR_,
-          wxT("Moderator::CreateDefaultBarycenter() Error occurred during default ")
-          wxT("barycenter creation. ") +  e.GetFullMessage());
+          "Moderator::CreateDefaultBarycenter() Error occurred during default "
+          "barycenter creation. " +  e.GetFullMessage());
    }
 }
 
@@ -7383,8 +7385,8 @@ void Moderator::CreateDefaultBarycenter()
 void Moderator::CreateDefaultMission()
 {
    #if DEBUG_INITIALIZE
-   MessageInterface::ShowMessage(wxT("========================================\n"));
-   MessageInterface::ShowMessage(wxT("Moderator creating default mission...\n"));
+   MessageInterface::ShowMessage("========================================\n");
+   MessageInterface::ShowMessage("Moderator creating default mission...\n");
    #endif
    
    try
@@ -7402,20 +7404,20 @@ void Moderator::CreateDefaultMission()
       CreateDefaultBarycenter();
       
       // Spacecraft
-      Spacecraft *sc = (Spacecraft*)CreateSpacecraft(wxT("Spacecraft"), wxT("DefaultSC"));
+      Spacecraft *sc = (Spacecraft*)CreateSpacecraft("Spacecraft", "DefaultSC");
       sc->SetInternalCoordSystem(theInternalCoordSystem);
-      sc->SetRefObject(GetCoordinateSystem(wxT("EarthMJ2000Eq")),
-                       Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+      sc->SetRefObject(GetCoordinateSystem("EarthMJ2000Eq"),
+                       Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
       
       #if DEBUG_DEFAULT_MISSION
-      MessageInterface::ShowMessage(wxT("-->default Spacecraft created\n"));
+      MessageInterface::ShowMessage("-->default Spacecraft created\n");
       #endif
       
       // PropSetup
-      CreateDefaultPropSetup(wxT("DefaultProp"));
+      CreateDefaultPropSetup("DefaultProp");
       
       #if DEBUG_DEFAULT_MISSION
-      MessageInterface::ShowMessage(wxT("-->default PropSetup created\n"));
+      MessageInterface::ShowMessage("-->default PropSetup created\n");
       #endif
       
       //--------------------------------------------------------------
@@ -7424,233 +7426,233 @@ void Moderator::CreateDefaultMission()
       
       #ifdef __CREATE_HARDWARE__
       // Hardware 
-      CreateHardware(wxT("FuelTank"), wxT("DefaultFuelTank"));
-      CreateHardware(wxT("Thruster"), wxT("DefaultThruster"));
+      CreateHardware("FuelTank", "DefaultFuelTank");
+      CreateHardware("Thruster", "DefaultThruster");
       
       #if DEBUG_DEFAULT_MISSION > 0
-      MessageInterface::ShowMessage(wxT("-->default hardware created\n"));
+      MessageInterface::ShowMessage("-->default hardware created\n");
       #endif
       #endif
       
       #ifdef __CREATE_VNB_COORD__
       // Create VNB CoordinateSystem
-      CoordinateSystem *vnb = CreateCoordinateSystem(wxT("VNB"), false);
+      CoordinateSystem *vnb = CreateCoordinateSystem("VNB", false);
       ObjectReferencedAxes *orAxis =
-         (ObjectReferencedAxes*)CreateAxisSystem(wxT("ObjectReferenced"),
-                                                 wxT("ObjectReferenced"));
+         (ObjectReferencedAxes*)CreateAxisSystem("ObjectReferenced",
+                                                 "ObjectReferenced");
       orAxis->SetEopFile(theEopFile);
       orAxis->SetCoefficientsFile(theItrfFile);
-      orAxis->SetStringParameter(wxT("XAxis"), wxT("V"));
-      orAxis->SetStringParameter(wxT("YAxis"), wxT("N"));
-      orAxis->SetStringParameter(wxT("Primary"), wxT("Earth"));
-      orAxis->SetStringParameter(wxT("Secondary"), wxT("DefaultSC"));
-      vnb->SetStringParameter(wxT("Origin"), wxT("Earth"));
+      orAxis->SetStringParameter("XAxis", "V");
+      orAxis->SetStringParameter("YAxis", "N");
+      orAxis->SetStringParameter("Primary", "Earth");
+      orAxis->SetStringParameter("Secondary", "DefaultSC");
+      vnb->SetStringParameter("Origin", "Earth");
       vnb->SetRefObject(orAxis, Gmat::AXIS_SYSTEM, orAxis->GetName());
       
       // Since CoordinateSystem clones AxisSystem, delete it from here
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (orAxis, wxT("localAxes"), wxT("Moderator::CreateDefaultMission()"),
-          wxT("deleting localAxes"));
+         (orAxis, "localAxes", "Moderator::CreateDefaultMission()",
+          "deleting localAxes");
       #endif
       delete orAxis;
       
       #if DEBUG_DEFAULT_MISSION > 0
-      MessageInterface::ShowMessage(wxT("-->default vnb coordinate system created\n"));
+      MessageInterface::ShowMessage("-->default vnb coordinate system created\n");
       #endif
       #endif
       
       // ImpulsiveBurn
-      GetDefaultBurn(wxT("ImpulsiveBurn"));
+      GetDefaultBurn("ImpulsiveBurn");
       #if DEBUG_DEFAULT_MISSION > 0
-      MessageInterface::ShowMessage(wxT("-->default impulsive burn created\n"));
+      MessageInterface::ShowMessage("-->default impulsive burn created\n");
       #endif
       
       // ImpulsiveBurn parameters
-      CreateParameter(wxT("Element1"), wxT("DefaultIB.Element1"));
-      CreateParameter(wxT("Element2"), wxT("DefaultIB.Element2"));
-      CreateParameter(wxT("Element3"), wxT("DefaultIB.Element3"));
-      CreateParameter(wxT("V"), wxT("DefaultIB.V"));
-      CreateParameter(wxT("N"), wxT("DefaultIB.N"));
-      CreateParameter(wxT("B"), wxT("DefaultIB.B"));
+      CreateParameter("Element1", "DefaultIB.Element1");
+      CreateParameter("Element2", "DefaultIB.Element2");
+      CreateParameter("Element3", "DefaultIB.Element3");
+      CreateParameter("V", "DefaultIB.V");
+      CreateParameter("N", "DefaultIB.N");
+      CreateParameter("B", "DefaultIB.B");
       #if DEBUG_DEFAULT_MISSION
-      MessageInterface::ShowMessage(wxT("-->default impulsive burn parameters created\n"));
+      MessageInterface::ShowMessage("-->default impulsive burn parameters created\n");
       #endif
       //--------------------------------------------------------------
       
       // Time parameters
-      CreateParameter(wxT("ElapsedSecs"), wxT("DefaultSC.ElapsedSecs"));
-      CreateParameter(wxT("ElapsedDays"), wxT("DefaultSC.ElapsedDays"));      
-      CreateParameter(wxT("CurrA1MJD"), wxT("DefaultSC.CurrA1MJD"));
-      CreateParameter(wxT("A1ModJulian"), wxT("DefaultSC.A1ModJulian"));
-      CreateParameter(wxT("A1Gregorian"), wxT("DefaultSC.A1Gregorian"));
-      CreateParameter(wxT("TAIModJulian"), wxT("DefaultSC.TAIModJulian"));
-      CreateParameter(wxT("TAIGregorian"), wxT("DefaultSC.TAIGregorian"));
-      CreateParameter(wxT("TTModJulian"), wxT("DefaultSC.TTModJulian"));
-      CreateParameter(wxT("TTGregorian"), wxT("DefaultSC.TTGregorian"));
-      CreateParameter(wxT("TDBModJulian"), wxT("DefaultSC.TDBModJulian"));
-      CreateParameter(wxT("TDBGregorian"), wxT("DefaultSC.TDBGregorian"));
-      CreateParameter(wxT("TCBModJulian"), wxT("DefaultSC.TCBModJulian"));
-      CreateParameter(wxT("TCBGregorian"), wxT("DefaultSC.TCBGregorian"));
-      CreateParameter(wxT("UTCModJulian"), wxT("DefaultSC.UTCModJulian"));
-      CreateParameter(wxT("UTCGregorian"), wxT("DefaultSC.UTCGregorian"));      
+      CreateParameter("ElapsedSecs", "DefaultSC.ElapsedSecs");
+      CreateParameter("ElapsedDays", "DefaultSC.ElapsedDays");      
+      CreateParameter("CurrA1MJD", "DefaultSC.CurrA1MJD");
+      CreateParameter("A1ModJulian", "DefaultSC.A1ModJulian");
+      CreateParameter("A1Gregorian", "DefaultSC.A1Gregorian");
+      CreateParameter("TAIModJulian", "DefaultSC.TAIModJulian");
+      CreateParameter("TAIGregorian", "DefaultSC.TAIGregorian");
+      CreateParameter("TTModJulian", "DefaultSC.TTModJulian");
+      CreateParameter("TTGregorian", "DefaultSC.TTGregorian");
+      CreateParameter("TDBModJulian", "DefaultSC.TDBModJulian");
+      CreateParameter("TDBGregorian", "DefaultSC.TDBGregorian");
+      CreateParameter("TCBModJulian", "DefaultSC.TCBModJulian");
+      CreateParameter("TCBGregorian", "DefaultSC.TCBGregorian");
+      CreateParameter("UTCModJulian", "DefaultSC.UTCModJulian");
+      CreateParameter("UTCGregorian", "DefaultSC.UTCGregorian");      
       #if DEBUG_DEFAULT_MISSION > 1
-      MessageInterface::ShowMessage(wxT("-->default time parameters  created\n"));
+      MessageInterface::ShowMessage("-->default time parameters  created\n");
       #endif
       
       // Cartesian parameters
-      CreateParameter(wxT("X"), wxT("DefaultSC.EarthMJ2000Eq.X"));
-      CreateParameter(wxT("Y"), wxT("DefaultSC.EarthMJ2000Eq.Y"));
-      CreateParameter(wxT("Z"), wxT("DefaultSC.EarthMJ2000Eq.Z"));
-      CreateParameter(wxT("VX"), wxT("DefaultSC.EarthMJ2000Eq.VX"));
-      CreateParameter(wxT("VY"), wxT("DefaultSC.EarthMJ2000Eq.VY"));
-      CreateParameter(wxT("VZ"), wxT("DefaultSC.EarthMJ2000Eq.VZ"));
+      CreateParameter("X", "DefaultSC.EarthMJ2000Eq.X");
+      CreateParameter("Y", "DefaultSC.EarthMJ2000Eq.Y");
+      CreateParameter("Z", "DefaultSC.EarthMJ2000Eq.Z");
+      CreateParameter("VX", "DefaultSC.EarthMJ2000Eq.VX");
+      CreateParameter("VY", "DefaultSC.EarthMJ2000Eq.VY");
+      CreateParameter("VZ", "DefaultSC.EarthMJ2000Eq.VZ");
       #if DEBUG_DEFAULT_MISSION > 1
-      MessageInterface::ShowMessage(wxT("-->default cartesian parameters created\n"));
+      MessageInterface::ShowMessage("-->default cartesian parameters created\n");
       #endif
       
       // Keplerian parameters
-      CreateParameter(wxT("SMA"), wxT("DefaultSC.Earth.SMA"));
-      CreateParameter(wxT("ECC"), wxT("DefaultSC.Earth.ECC"));
-      CreateParameter(wxT("INC"), wxT("DefaultSC.Earth.INC"));
-      CreateParameter(wxT("RAAN"), wxT("DefaultSC.Earth.RAAN"));
-      CreateParameter(wxT("AOP"), wxT("DefaultSC.EarthMJ2000Eq.AOP"));
-      CreateParameter(wxT("TA"), wxT("DefaultSC.Earth.TA"));
-      CreateParameter(wxT("MA"), wxT("DefaultSC.Earth.MA"));
-      CreateParameter(wxT("EA"), wxT("DefaultSC.Earth.EA"));
-      CreateParameter(wxT("HA"), wxT("DefaultSC.Earth.HA"));
-      CreateParameter(wxT("MM"), wxT("DefaultSC.Earth.MM"));
+      CreateParameter("SMA", "DefaultSC.Earth.SMA");
+      CreateParameter("ECC", "DefaultSC.Earth.ECC");
+      CreateParameter("INC", "DefaultSC.Earth.INC");
+      CreateParameter("RAAN", "DefaultSC.Earth.RAAN");
+      CreateParameter("AOP", "DefaultSC.EarthMJ2000Eq.AOP");
+      CreateParameter("TA", "DefaultSC.Earth.TA");
+      CreateParameter("MA", "DefaultSC.Earth.MA");
+      CreateParameter("EA", "DefaultSC.Earth.EA");
+      CreateParameter("HA", "DefaultSC.Earth.HA");
+      CreateParameter("MM", "DefaultSC.Earth.MM");
       #if DEBUG_DEFAULT_MISSION > 1
-      MessageInterface::ShowMessage(wxT("-->default keplerian parameters created\n"));
+      MessageInterface::ShowMessage("-->default keplerian parameters created\n");
       #endif
       
       // Orbital parameters
-      CreateParameter(wxT("VelApoapsis"), wxT("DefaultSC.Earth.VelApoapsis"));
-      CreateParameter(wxT("VelPeriapsis"), wxT("DefaultSC.Earth.VelPeriapsis"));
-      CreateParameter(wxT("Apoapsis"), wxT("DefaultSC.Earth.Apoapsis"));
-      CreateParameter(wxT("Periapsis"), wxT("DefaultSC.Earth.Periapsis"));
-      CreateParameter(wxT("OrbitPeriod"), wxT("DefaultSC.Earth.OrbitPeriod"));
-      CreateParameter(wxT("RadApo"), wxT("DefaultSC.Earth.RadApo"));
-      CreateParameter(wxT("RadPer"), wxT("DefaultSC.Earth.RadPer"));
-      CreateParameter(wxT("C3Energy"), wxT("DefaultSC.Earth.C3Energy"));
-      CreateParameter(wxT("Energy"), wxT("DefaultSC.Earth.Energy"));
+      CreateParameter("VelApoapsis", "DefaultSC.Earth.VelApoapsis");
+      CreateParameter("VelPeriapsis", "DefaultSC.Earth.VelPeriapsis");
+      CreateParameter("Apoapsis", "DefaultSC.Earth.Apoapsis");
+      CreateParameter("Periapsis", "DefaultSC.Earth.Periapsis");
+      CreateParameter("OrbitPeriod", "DefaultSC.Earth.OrbitPeriod");
+      CreateParameter("RadApo", "DefaultSC.Earth.RadApo");
+      CreateParameter("RadPer", "DefaultSC.Earth.RadPer");
+      CreateParameter("C3Energy", "DefaultSC.Earth.C3Energy");
+      CreateParameter("Energy", "DefaultSC.Earth.Energy");
       #if DEBUG_DEFAULT_MISSION > 1
-      MessageInterface::ShowMessage(wxT("-->default orbital parameters created\n"));
+      MessageInterface::ShowMessage("-->default orbital parameters created\n");
       #endif
       
       // Spherical parameters
-      CreateParameter(wxT("RMAG"), wxT("DefaultSC.Earth.RMAG"));
-      CreateParameter(wxT("RA"), wxT("DefaultSC.Earth.RA"));
-      CreateParameter(wxT("DEC"), wxT("DefaultSC.EarthMJ2000Eq.DEC"));
-      CreateParameter(wxT("VMAG"), wxT("DefaultSC.EarthMJ2000Eq.VMAG"));
-      CreateParameter(wxT("RAV"), wxT("DefaultSC.EarthMJ2000Eq.RAV"));
-      CreateParameter(wxT("DECV"), wxT("DefaultSC.EarthMJ2000Eq.DECV"));
-      CreateParameter(wxT("AZI"), wxT("DefaultSC.EarthMJ2000Eq.AZI"));
-      CreateParameter(wxT("FPA"), wxT("DefaultSC.EarthMJ2000Eq.FPA"));
+      CreateParameter("RMAG", "DefaultSC.Earth.RMAG");
+      CreateParameter("RA", "DefaultSC.Earth.RA");
+      CreateParameter("DEC", "DefaultSC.EarthMJ2000Eq.DEC");
+      CreateParameter("VMAG", "DefaultSC.EarthMJ2000Eq.VMAG");
+      CreateParameter("RAV", "DefaultSC.EarthMJ2000Eq.RAV");
+      CreateParameter("DECV", "DefaultSC.EarthMJ2000Eq.DECV");
+      CreateParameter("AZI", "DefaultSC.EarthMJ2000Eq.AZI");
+      CreateParameter("FPA", "DefaultSC.EarthMJ2000Eq.FPA");
       #if DEBUG_DEFAULT_MISSION > 1
-      MessageInterface::ShowMessage(wxT("-->default spherical parameters created\n"));
+      MessageInterface::ShowMessage("-->default spherical parameters created\n");
       #endif
       
       // Angular parameters
-      CreateParameter(wxT("SemilatusRectum"), wxT("DefaultSC.Earth.SemilatusRectum"));
-      CreateParameter(wxT("HMAG"), wxT("DefaultSC.HMAG"));
-      CreateParameter(wxT("HX"), wxT("DefaultSC.EarthMJ2000Eq.HX"));
-      CreateParameter(wxT("HY"), wxT("DefaultSC.EarthMJ2000Eq.HY"));
-      CreateParameter(wxT("HZ"), wxT("DefaultSC.EarthMJ2000Eq.HZ"));
-      CreateParameter(wxT("DLA"), wxT("DefaultSC.EarthMJ2000Eq.DLA"));
-      CreateParameter(wxT("RLA"), wxT("DefaultSC.EarthMJ2000Eq.RLA"));
+      CreateParameter("SemilatusRectum", "DefaultSC.Earth.SemilatusRectum");
+      CreateParameter("HMAG", "DefaultSC.HMAG");
+      CreateParameter("HX", "DefaultSC.EarthMJ2000Eq.HX");
+      CreateParameter("HY", "DefaultSC.EarthMJ2000Eq.HY");
+      CreateParameter("HZ", "DefaultSC.EarthMJ2000Eq.HZ");
+      CreateParameter("DLA", "DefaultSC.EarthMJ2000Eq.DLA");
+      CreateParameter("RLA", "DefaultSC.EarthMJ2000Eq.RLA");
       #if DEBUG_DEFAULT_MISSION > 1
-      MessageInterface::ShowMessage(wxT("-->default angular parameters created\n"));
+      MessageInterface::ShowMessage("-->default angular parameters created\n");
       #endif
 
       #ifdef __ENABLE_ATMOS_DENSITY__
       // Environmental parameters
-      CreateParameter(wxT("AtmosDensity"), wxT("DefaultSC.Earth.AtmosDensity"));
+      CreateParameter("AtmosDensity", "DefaultSC.Earth.AtmosDensity");
       #if DEBUG_DEFAULT_MISSION > 1
-      MessageInterface::ShowMessage(wxT("-->default env parameters created\n"));
+      MessageInterface::ShowMessage("-->default env parameters created\n");
       #endif
       #endif
       
       // Planet parameters
-      CreateParameter(wxT("Altitude"), wxT("DefaultSC.Earth.Altitude"));
-      CreateParameter(wxT("MHA"), wxT("DefaultSC.Earth.MHA"));
-      CreateParameter(wxT("Longitude"), wxT("DefaultSC.Earth.Longitude"));
-      CreateParameter(wxT("Latitude"), wxT("DefaultSC.Earth.Latitude"));
-      CreateParameter(wxT("LST"), wxT("DefaultSC.Earth.LST"));
-      CreateParameter(wxT("BetaAngle"), wxT("DefaultSC.Earth.BetaAngle"));
+      CreateParameter("Altitude", "DefaultSC.Earth.Altitude");
+      CreateParameter("MHA", "DefaultSC.Earth.MHA");
+      CreateParameter("Longitude", "DefaultSC.Earth.Longitude");
+      CreateParameter("Latitude", "DefaultSC.Earth.Latitude");
+      CreateParameter("LST", "DefaultSC.Earth.LST");
+      CreateParameter("BetaAngle", "DefaultSC.Earth.BetaAngle");
       #if DEBUG_DEFAULT_MISSION > 1
-      MessageInterface::ShowMessage(wxT("-->default planet parameters created\n"));
+      MessageInterface::ShowMessage("-->default planet parameters created\n");
       #endif
       
       // B-Plane parameters
-      CreateParameter(wxT("BdotT"), wxT("DefaultSC.Earth.BdotT"));
-      CreateParameter(wxT("BdotR"), wxT("DefaultSC.Earth.BdotR"));
-      CreateParameter(wxT("BVectorMag"), wxT("DefaultSC.Earth.BVectorMag"));
-      CreateParameter(wxT("BVectorAngle"), wxT("DefaultSC.Earth.BVectorAngle"));
+      CreateParameter("BdotT", "DefaultSC.Earth.BdotT");
+      CreateParameter("BdotR", "DefaultSC.Earth.BdotR");
+      CreateParameter("BVectorMag", "DefaultSC.Earth.BVectorMag");
+      CreateParameter("BVectorAngle", "DefaultSC.Earth.BVectorAngle");
       #if DEBUG_DEFAULT_MISSION > 1
-      MessageInterface::ShowMessage(wxT("-->default b-plane parameters created\n"));
+      MessageInterface::ShowMessage("-->default b-plane parameters created\n");
       #endif
       
       // Attitude parameters
-      CreateParameter(wxT("DCM11"), wxT("DefaultSC.DCM11"));
-      CreateParameter(wxT("DCM12"), wxT("DefaultSC.DCM12"));
-      CreateParameter(wxT("DCM13"), wxT("DefaultSC.DCM13"));
-      CreateParameter(wxT("DCM21"), wxT("DefaultSC.DCM21"));
-      CreateParameter(wxT("DCM22"), wxT("DefaultSC.DCM22"));
-      CreateParameter(wxT("DCM23"), wxT("DefaultSC.DCM23"));
-      CreateParameter(wxT("DCM31"), wxT("DefaultSC.DCM31"));
-      CreateParameter(wxT("DCM32"), wxT("DefaultSC.DCM32"));
-      CreateParameter(wxT("DCM33"), wxT("DefaultSC.DCM33"));
-      CreateParameter(wxT("EulerAngle1"), wxT("DefaultSC.EulerAngle1"));
-      CreateParameter(wxT("EulerAngle2"), wxT("DefaultSC.EulerAngle2"));
-      CreateParameter(wxT("EulerAngle3"), wxT("DefaultSC.EulerAngle3"));
-      CreateParameter(wxT("MRP1"), wxT("DefaultSC.MRP1"));  // Dunn Added
-      CreateParameter(wxT("MRP2"), wxT("DefaultSC.MRP2"));  // Dunn Added
-      CreateParameter(wxT("MRP3"), wxT("DefaultSC.MRP3"));  // Dunn Added
-      CreateParameter(wxT("Q1"), wxT("DefaultSC.Q1"));
-      CreateParameter(wxT("Q2"), wxT("DefaultSC.Q2"));
-      CreateParameter(wxT("Q3"), wxT("DefaultSC.Q3"));
-      CreateParameter(wxT("Q4"), wxT("DefaultSC.Q4"));
-      CreateParameter(wxT("AngularVelocityX"), wxT("DefaultSC.AngularVelocityX"));
-      CreateParameter(wxT("AngularVelocityY"), wxT("DefaultSC.AngularVelocityY"));
-      CreateParameter(wxT("AngularVelocityZ"), wxT("DefaultSC.AngularVelocityZ"));
-      CreateParameter(wxT("EulerAngleRate1"), wxT("DefaultSC.EulerAngleRate1"));
-      CreateParameter(wxT("EulerAngleRate2"), wxT("DefaultSC.EulerAngleRate2"));
-      CreateParameter(wxT("EulerAngleRate3"), wxT("DefaultSC.EulerAngleRate3"));
+      CreateParameter("DCM11", "DefaultSC.DCM11");
+      CreateParameter("DCM12", "DefaultSC.DCM12");
+      CreateParameter("DCM13", "DefaultSC.DCM13");
+      CreateParameter("DCM21", "DefaultSC.DCM21");
+      CreateParameter("DCM22", "DefaultSC.DCM22");
+      CreateParameter("DCM23", "DefaultSC.DCM23");
+      CreateParameter("DCM31", "DefaultSC.DCM31");
+      CreateParameter("DCM32", "DefaultSC.DCM32");
+      CreateParameter("DCM33", "DefaultSC.DCM33");
+      CreateParameter("EulerAngle1", "DefaultSC.EulerAngle1");
+      CreateParameter("EulerAngle2", "DefaultSC.EulerAngle2");
+      CreateParameter("EulerAngle3", "DefaultSC.EulerAngle3");
+      CreateParameter("MRP1", "DefaultSC.MRP1");  // Dunn Added
+      CreateParameter("MRP2", "DefaultSC.MRP2");  // Dunn Added
+      CreateParameter("MRP3", "DefaultSC.MRP3");  // Dunn Added
+      CreateParameter("Q1", "DefaultSC.Q1");
+      CreateParameter("Q2", "DefaultSC.Q2");
+      CreateParameter("Q3", "DefaultSC.Q3");
+      CreateParameter("Q4", "DefaultSC.Q4");
+      CreateParameter("AngularVelocityX", "DefaultSC.AngularVelocityX");
+      CreateParameter("AngularVelocityY", "DefaultSC.AngularVelocityY");
+      CreateParameter("AngularVelocityZ", "DefaultSC.AngularVelocityZ");
+      CreateParameter("EulerAngleRate1", "DefaultSC.EulerAngleRate1");
+      CreateParameter("EulerAngleRate2", "DefaultSC.EulerAngleRate2");
+      CreateParameter("EulerAngleRate3", "DefaultSC.EulerAngleRate3");
       #if DEBUG_DEFAULT_MISSION > 1
-      MessageInterface::ShowMessage(wxT("-->default attitude parameters created\n"));
+      MessageInterface::ShowMessage("-->default attitude parameters created\n");
       #endif
       
       // Ballistic/Mass parameters
-      CreateParameter(wxT("DryMass"), wxT("DefaultSC.DryMass"));
-      CreateParameter(wxT("Cd"), wxT("DefaultSC.Cd"));
-      CreateParameter(wxT("Cr"), wxT("DefaultSC.Cr"));
-      CreateParameter(wxT("DragArea"), wxT("DefaultSC.DragArea"));
-      CreateParameter(wxT("SRPArea"), wxT("DefaultSC.SRPArea"));
-      CreateParameter(wxT("TotalMass"), wxT("DefaultSC.TotalMass"));
+      CreateParameter("DryMass", "DefaultSC.DryMass");
+      CreateParameter("Cd", "DefaultSC.Cd");
+      CreateParameter("Cr", "DefaultSC.Cr");
+      CreateParameter("DragArea", "DefaultSC.DragArea");
+      CreateParameter("SRPArea", "DefaultSC.SRPArea");
+      CreateParameter("TotalMass", "DefaultSC.TotalMass");
       #if DEBUG_DEFAULT_MISSION > 1
-      MessageInterface::ShowMessage(wxT("-->default ballistic/mass parameters created\n"));
+      MessageInterface::ShowMessage("-->default ballistic/mass parameters created\n");
       #endif
       
       // STM and A-Matrix parameters
-      CreateParameter(wxT("OrbitSTM"), wxT("DefaultSC.OrbitSTM"));
-      CreateParameter(wxT("OrbitSTMA"), wxT("DefaultSC.OrbitSTMA"));
-      CreateParameter(wxT("OrbitSTMB"), wxT("DefaultSC.OrbitSTMB"));
-      CreateParameter(wxT("OrbitSTMC"), wxT("DefaultSC.OrbitSTMC"));
-      CreateParameter(wxT("OrbitSTMD"), wxT("DefaultSC.OrbitSTMD"));
+      CreateParameter("OrbitSTM", "DefaultSC.OrbitSTM");
+      CreateParameter("OrbitSTMA", "DefaultSC.OrbitSTMA");
+      CreateParameter("OrbitSTMB", "DefaultSC.OrbitSTMB");
+      CreateParameter("OrbitSTMC", "DefaultSC.OrbitSTMC");
+      CreateParameter("OrbitSTMD", "DefaultSC.OrbitSTMD");
       #if DEBUG_DEFAULT_MISSION > 1
-      MessageInterface::ShowMessage(wxT("-->default STM parameters created\n"));
+      MessageInterface::ShowMessage("-->default STM parameters created\n");
       #endif
       
       #ifdef DEBUG_CREATE_VAR
       // User variable
-      Parameter *var = CreateParameter(wxT("Variable"), wxT("DefaultSC_EarthMJ2000Eq_Xx2"));
-      var->SetStringParameter(wxT("Expression"), wxT("DefaultSC.EarthMJ2000Eq.X * 2.0"));
-      var->SetRefObjectName(Gmat::PARAMETER, wxT("DefaultSC.EarthMJ2000Eq.X"));
+      Parameter *var = CreateParameter("Variable", "DefaultSC_EarthMJ2000Eq_Xx2");
+      var->SetStringParameter("Expression", "DefaultSC.EarthMJ2000Eq.X * 2.0");
+      var->SetRefObjectName(Gmat::PARAMETER, "DefaultSC.EarthMJ2000Eq.X");
       #endif
       
       #if DEBUG_DEFAULT_MISSION
-      MessageInterface::ShowMessage(wxT("-->default parameters created\n"));
+      MessageInterface::ShowMessage("-->default parameters created\n");
       #endif
       
       // Set parameter description and object name
@@ -7668,51 +7670,51 @@ void Moderator::CreateDefaultMission()
             {
                //MessageInterface::ShowMessage("name = '%s'\n", param->GetName().c_str());
                //param->SetStringParameter("Expression", param->GetName());
-               param->SetRefObjectName(Gmat::SPACECRAFT, wxT("DefaultSC"));
+               param->SetRefObjectName(Gmat::SPACECRAFT, "DefaultSC");
                
                if (param->NeedCoordSystem())
                {
-                  param->SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthMJ2000Eq"));
+                  param->SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthMJ2000Eq");
                   if (param->IsOriginDependent())
-                     param->SetStringParameter(wxT("DepObject"), wxT("Earth"));
+                     param->SetStringParameter("DepObject", "Earth");
                   else if (param->IsCoordSysDependent())
-                     param->SetStringParameter(wxT("DepObject"), wxT("EarthMJ2000Eq"));
+                     param->SetStringParameter("DepObject", "EarthMJ2000Eq");
                }
             }
             else if (param->GetOwnerType() == Gmat::IMPULSIVE_BURN)
             {
                //MessageInterface::ShowMessage("name = '%s'\n", param->GetName().c_str());
-               param->SetRefObjectName(Gmat::IMPULSIVE_BURN, wxT("DefaultIB"));
+               param->SetRefObjectName(Gmat::IMPULSIVE_BURN, "DefaultIB");
             }
          }
       }
       
       #if DEBUG_DEFAULT_MISSION
-      MessageInterface::ShowMessage(wxT("-->ref. object to parameters are set\n"));
+      MessageInterface::ShowMessage("-->ref. object to parameters are set\n");
       #endif
       
       // StopCondition
       StopCondition *stopOnElapsedSecs =
-         CreateStopCondition(wxT("StopCondition"), wxT("StopOnDefaultSC.ElapsedSecs"));
-      stopOnElapsedSecs->SetStringParameter(wxT("EpochVar"), wxT("DefaultSC.A1ModJulian"));
-      stopOnElapsedSecs->SetStringParameter(wxT("StopVar"), wxT("DefaultSC.ElapsedSecs"));
+         CreateStopCondition("StopCondition", "StopOnDefaultSC.ElapsedSecs");
+      stopOnElapsedSecs->SetStringParameter("EpochVar", "DefaultSC.A1ModJulian");
+      stopOnElapsedSecs->SetStringParameter("StopVar", "DefaultSC.ElapsedSecs");
       // Dunn changed ElapsedSecs for default mission to 12000.0 so the spacecraft
       // icon will stop on the near side of the earth where we can see it.  This
       // was required in two locations, so look for it again below.
-      stopOnElapsedSecs->SetStringParameter(wxT("Goal"), wxT("12000.0"));
+      stopOnElapsedSecs->SetStringParameter("Goal", "12000.0");
       //stopOnElapsedSecs->SetStringParameter("Goal", "8640.0");
       
       #if DEBUG_DEFAULT_MISSION
-      MessageInterface::ShowMessage(wxT("-->default StopCondition created\n"));
+      MessageInterface::ShowMessage("-->default StopCondition created\n");
       #endif
       
       // Subscribers
       // OrbitView
-      GetDefaultSubscriber(wxT("OrbitView"));
-      GetDefaultSubscriber(wxT("GroundTrackPlot"));
+      GetDefaultSubscriber("OrbitView");
+      GetDefaultSubscriber("GroundTrackPlot");
       
       #if DEBUG_DEFAULT_MISSION
-      MessageInterface::ShowMessage(wxT("-->default Subscribers created\n"));
+      MessageInterface::ShowMessage("-->default Subscribers created\n");
       #endif
       
       //----------------------------------------------------
@@ -7722,13 +7724,13 @@ void Moderator::CreateDefaultMission()
       
       // Append BeginMissionSequence command (New since 2010.07.09)
       //GmatCommand *cmd = AppendCommand("BeginMissionSequence", "", retval);
-      AppendCommand(wxT("BeginMissionSequence"), wxT(""), retval);
+      AppendCommand("BeginMissionSequence", "", retval);
       
       // Propagate Command
-      GmatCommand *propCommand = CreateCommand(wxT("Propagate"), wxT(""), retval);
-      propCommand->SetObject(wxT("DefaultProp"), Gmat::PROP_SETUP);
-      propCommand->SetObject(wxT("DefaultSC"), Gmat::SPACECRAFT);
-      propCommand->SetRefObject(stopOnElapsedSecs, Gmat::STOP_CONDITION, wxT(""), 0);
+      GmatCommand *propCommand = CreateCommand("Propagate", "", retval);
+      propCommand->SetObject("DefaultProp", Gmat::PROP_SETUP);
+      propCommand->SetObject("DefaultSC", Gmat::SPACECRAFT);
+      propCommand->SetRefObject(stopOnElapsedSecs, Gmat::STOP_CONDITION, "", 0);
       propCommand->SetSolarSystem(theSolarSystemInUse);
       
       #if DEBUG_MULTI_STOP
@@ -7736,24 +7738,24 @@ void Moderator::CreateDefaultMission()
       //just for testing multiple stopping condition
       //----- StopCondition 2
       StopCondition *stopOnX =
-         CreateStopCondition(wxT("StopCondition"), wxT("StopOnDefaultSC.EarthMJ2000Eq.X"));
-      stopOnX->SetStringParameter(wxT("EpochVar"), wxT("DefaultSC.A1ModJulian"));
-      stopOnX->SetStringParameter(wxT("StopVar"), wxT("DefaultSC.EarthMJ2000Eq.X"));
-      stopOnX->SetStringParameter(wxT("Goal"), wxT("5000.0"));
-      propCommand->SetRefObject(stopOnX, Gmat::STOP_CONDITION, wxT(""), 1);
+         CreateStopCondition("StopCondition", "StopOnDefaultSC.EarthMJ2000Eq.X");
+      stopOnX->SetStringParameter("EpochVar", "DefaultSC.A1ModJulian");
+      stopOnX->SetStringParameter("StopVar", "DefaultSC.EarthMJ2000Eq.X");
+      stopOnX->SetStringParameter("Goal", "5000.0");
+      propCommand->SetRefObject(stopOnX, Gmat::STOP_CONDITION, "", 1);
       #endif
       
       #if DEBUG_MULTI_STOP > 1
       StopCondition *stopOnPeriapsis =
-         CreateStopCondition(wxT("StopCondition"), wxT("StopOnDefaultSC.Earth.Periapsis"));
-      stopOnPeriapsis->SetStringParameter(wxT("EpochVar"), wxT("DefaultSC.A1ModJulian"));
-      stopOnPeriapsis->SetStringParameter(wxT("StopVar"), wxT("DefaultSC.Earth.Periapsis"));
-      propCommand->SetRefObject(stopOnPeriapsis, Gmat::STOP_CONDITION, wxT(""), 2);
+         CreateStopCondition("StopCondition", "StopOnDefaultSC.Earth.Periapsis");
+      stopOnPeriapsis->SetStringParameter("EpochVar", "DefaultSC.A1ModJulian");
+      stopOnPeriapsis->SetStringParameter("StopVar", "DefaultSC.Earth.Periapsis");
+      propCommand->SetRefObject(stopOnPeriapsis, Gmat::STOP_CONDITION, "", 2);
       //----------------------------------------------------
       #endif
 
       #if DEBUG_DEFAULT_MISSION
-      MessageInterface::ShowMessage(wxT("-->default Propagate command created\n"));
+      MessageInterface::ShowMessage("-->default Propagate command created\n");
       #endif
       
       // Append Propagate command
@@ -7761,14 +7763,14 @@ void Moderator::CreateDefaultMission()
       
       #if DEBUG_DEFAULT_MISSION
       MessageInterface::ShowMessage
-         (wxT("-->Setting SolarSystem <%p> and ObjectMap <%p> to theScriptInterpreter\n"),
+         ("-->Setting SolarSystem <%p> and ObjectMap <%p> to theScriptInterpreter\n",
           theSolarSystemInUse, theConfigManager->GetObjectMap());
       #endif
       
       // Reset initial solar system in use and object map
       objectMapInUse = theConfigManager->GetObjectMap();
       SetSolarSystemAndObjectMap(theSolarSystemInUse, objectMapInUse, false,
-                                 wxT("CreateDefaultMission()"));
+                                 "CreateDefaultMission()");
       
       loadSandboxAndPause = false;
       isRunReady = true;
@@ -7777,51 +7779,51 @@ void Moderator::CreateDefaultMission()
    {
       MessageInterface::PopupMessage
          (Gmat::ERROR_,
-          wxT("*** Error occurred during default mission creation.\n    The default ")
-          wxT("mission will not run.\n    Message: ") + e.GetFullMessage());
+          "*** Error occurred during default mission creation.\n    The default "
+          "mission will not run.\n    Message: " + e.GetFullMessage());
    }
    
    #if DEBUG_INITIALIZE
-   MessageInterface::ShowMessage(wxT("Moderator successfully created default mission\n"));
+   MessageInterface::ShowMessage("Moderator successfully created default mission\n");
    #endif
 } // CreateDefaultMission()
 
 
 // Parameter reference object setting
 //------------------------------------------------------------------------------
-// void CheckParameterType(Parameter *param, const wxString &type,
-//                         const wxString &ownerName)
+// void CheckParameterType(Parameter *param, const std::string &type,
+//                         const std::string &ownerName)
 //------------------------------------------------------------------------------
-void Moderator::CheckParameterType(Parameter *param, const wxString &type,
-                                   const wxString &ownerName)
+void Moderator::CheckParameterType(Parameter *param, const std::string &type,
+                                   const std::string &ownerName)
 {
    GmatBase *obj = FindObject(ownerName);
    if (obj)
    {
       #if DEBUG_CREATE_PARAMETER
       MessageInterface::ShowMessage
-         (wxT("   Found owner object, name='%s', addr=<%p>\n"), obj->GetName().c_str(), obj);
+         ("   Found owner object, name='%s', addr=<%p>\n", obj->GetName().c_str(), obj);
       #endif
       
       if (param->GetOwnerType() != obj->GetType())
       {
-         wxString paramOwnerType =
+         std::string paramOwnerType =
             GmatBase::GetObjectTypeString(param->GetOwnerType());
          
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (param, param->GetName(), wxT("Moderator::CheckParameterType()"));
+            (param, param->GetName(), "Moderator::CheckParameterType()");
          #endif
          delete param;
          param = NULL;
          
-         if (paramOwnerType == wxT(""))
+         if (paramOwnerType == "")
             throw GmatBaseException
-               (wxT("Cannot find the object type which has \"") + type +
-                wxT("\" as a Parameter type"));
+               ("Cannot find the object type which has \"" + type +
+                "\" as a Parameter type");
          else
             throw GmatBaseException
-               (wxT("Parameter type: ") + type + wxT(" should be property of ") +
+               ("Parameter type: " + type + " should be property of " +
                 paramOwnerType);
       }
    }
@@ -7829,7 +7831,7 @@ void Moderator::CheckParameterType(Parameter *param, const wxString &type,
 
 
 //------------------------------------------------------------------------------
-// void SetParameterRefObject(Parameter *param, const wxString &type, ...)
+// void SetParameterRefObject(Parameter *param, const std::string &type, ...)
 //------------------------------------------------------------------------------
 /**
  * Sets parameter reference object
@@ -7841,15 +7843,15 @@ void Moderator::CheckParameterType(Parameter *param, const wxString &type,
  * @param <depName> dependent object name
  */
 //------------------------------------------------------------------------------
-void Moderator::SetParameterRefObject(Parameter *param, const wxString &type,
-                                      const wxString &name,
-                                      const wxString &ownerName,
-                                      const wxString &depName, Integer manage)
+void Moderator::SetParameterRefObject(Parameter *param, const std::string &type,
+                                      const std::string &name,
+                                      const std::string &ownerName,
+                                      const std::string &depName, Integer manage)
 {
    #if DEBUG_PARAMETER_REF_OBJ
    MessageInterface::ShowMessage
-      (wxT("Moderator::SetParameterRefObject() param=<%p>, type=<%s>, name=<%s>, ")
-       wxT("owner=<%s>, dep=<%s>, manage=%d\n"),  param, type.c_str(), name.c_str(),
+      ("Moderator::SetParameterRefObject() param=<%p>, type=<%s>, name=<%s>, "
+       "owner=<%s>, dep=<%s>, manage=%d\n",  param, type.c_str(), name.c_str(),
        ownerName.c_str(), depName.c_str(), manage);
    #endif
    
@@ -7861,20 +7863,20 @@ void Moderator::SetParameterRefObject(Parameter *param, const wxString &type,
    //   param->SetStringParameter("Expression", name);
    
    // Set parameter owner and dependent object
-   if (ownerName != wxT(""))
+   if (ownerName != "")
    {
       param->SetRefObjectName(param->GetOwnerType(), ownerName);
       param->AddRefObject((Parameter*)FindObject(ownerName));
    }
    
-   wxString newDep = depName;
+   std::string newDep = depName;
    
    // Set dependent object name if depName is not blank,
    // if depName is blank get default dep name
-   if (depName != wxT(""))
-      param->SetStringParameter(wxT("DepObject"), depName);
+   if (depName != "")
+      param->SetStringParameter("DepObject", depName);
    else
-      newDep = param->GetStringParameter(wxT("DepObject"));
+      newDep = param->GetStringParameter("DepObject");
    
    // Set SolarSystem
    param->SetSolarSystem(theSolarSystemInUse);
@@ -7882,65 +7884,65 @@ void Moderator::SetParameterRefObject(Parameter *param, const wxString &type,
    
    #if DEBUG_PARAMETER_REF_OBJ
    MessageInterface::ShowMessage
-      (wxT("   name='%s', newDep='%s'\n"), name.c_str(), newDep.c_str());
+      ("   name='%s', newDep='%s'\n", name.c_str(), newDep.c_str());
    #endif
    
-   if (newDep != wxT(""))
+   if (newDep != "")
       param->AddRefObject(FindObject(newDep));
    
    // I'm not sure if we always use EarthMJ2000Eq (loj: 2008.06.03)
    if (param->NeedCoordSystem())
-      param->AddRefObject(FindObject(wxT("EarthMJ2000Eq")));
+      param->AddRefObject(FindObject("EarthMJ2000Eq"));
    
    // create parameter dependent coordinate system
-   if (type == wxT("Longitude") || type == wxT("Latitude") || type == wxT("Altitude") ||
-       type == wxT("MHA") || type == wxT("LST"))
+   if (type == "Longitude" || type == "Latitude" || type == "Altitude" ||
+       type == "MHA" || type == "LST")
    {
       // need body-fixed CS
-      StringTokenizer st(name, wxT("."));
+      StringTokenizer st(name, ".");
       StringArray tokens = st.GetAllTokens();
       
-      if (tokens.size() == 2 || (tokens.size() == 3 && tokens[1] == wxT("Earth")))
+      if (tokens.size() == 2 || (tokens.size() == 3 && tokens[1] == "Earth"))
       {
          #if DEBUG_PARAMETER_REF_OBJ
-         MessageInterface::ShowMessage(wxT("   Creating 'EarthFixed' CoordinateSystem\n"));
+         MessageInterface::ShowMessage("   Creating 'EarthFixed' CoordinateSystem\n");
          #endif
          
          // default EarthFixed
-         CoordinateSystem *cs = CreateCoordinateSystem(wxT("EarthFixed"), false, false, manage);
-         param->SetRefObjectName(Gmat::COORDINATE_SYSTEM, wxT("EarthFixed"));
+         CoordinateSystem *cs = CreateCoordinateSystem("EarthFixed", false, false, manage);
+         param->SetRefObjectName(Gmat::COORDINATE_SYSTEM, "EarthFixed");
          // Set CoordinateSystem to param (2008.06.26)
          // It will work without setting CS pointer since EarthFixed is a default
          // CoordinateSyste, but for consistency just set here
-         param->SetRefObject(cs, Gmat::COORDINATE_SYSTEM, wxT("EarthFixed"));
+         param->SetRefObject(cs, Gmat::COORDINATE_SYSTEM, "EarthFixed");
       }
       else if (tokens.size() == 3)
       {
-         wxString origin = tokens[1];
-         wxString axisName = origin + wxT("Fixed");
+         std::string origin = tokens[1];
+         std::string axisName = origin + "Fixed";
          
          #if DEBUG_PARAMETER_REF_OBJ
          MessageInterface::ShowMessage
-            (wxT("   Creating '%s' CoordinateSystem\n"), axisName.c_str());
+            ("   Creating '%s' CoordinateSystem\n", axisName.c_str());
          #endif
          
          CoordinateSystem *cs = CreateCoordinateSystem(axisName, false, false, manage);
          
          // create BodyFixedAxis with origin
-         AxisSystem *axis = CreateAxisSystem(wxT("BodyFixed"), wxT("BodyFixed_Earth"), manage);
-         cs->SetStringParameter(wxT("Origin"), origin);
+         AxisSystem *axis = CreateAxisSystem("BodyFixed", "BodyFixed_Earth", manage);
+         cs->SetStringParameter("Origin", origin);
          cs->SetRefObject(FindObject(origin), Gmat::SPACE_POINT, origin);
          cs->SetRefObject(axis, Gmat::AXIS_SYSTEM, axis->GetName());
-         cs->SetStringParameter(wxT("J2000Body"), wxT("Earth"));
-         cs->SetRefObject(FindObject(wxT("Earth")), Gmat::SPACE_POINT, wxT("Earth"));
+         cs->SetStringParameter("J2000Body", "Earth");
+         cs->SetRefObject(FindObject("Earth"), Gmat::SPACE_POINT, "Earth");
          cs->SetSolarSystem(theSolarSystemInUse);
          cs->Initialize();
          
          // Since CoordinateSystem clones AxisSystem, delete it from here
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (axis, wxT("localAxes"), wxT("Moderator::SetParameterRefObject()"),
-             wxT("deleting localAxes"));
+            (axis, "localAxes", "Moderator::SetParameterRefObject()",
+             "deleting localAxes");
          #endif
          delete axis;
          
@@ -7952,7 +7954,7 @@ void Moderator::SetParameterRefObject(Parameter *param, const wxString &type,
       }
       else
       {
-         MessageInterface::ShowMessage(wxT("===> Invalid parameter name: %s\n"),
+         MessageInterface::ShowMessage("===> Invalid parameter name: %s\n",
                                        name.c_str());
       }
    }
@@ -7961,7 +7963,7 @@ void Moderator::SetParameterRefObject(Parameter *param, const wxString &type,
 
 // object map
 //------------------------------------------------------------------------------
-// GmatBase* FindObject(const wxString &name)
+// GmatBase* FindObject(const std::string &name)
 //------------------------------------------------------------------------------
 /*
  * Finds object from the object map in use by name base on objectManageOption.
@@ -7973,19 +7975,19 @@ void Moderator::SetParameterRefObject(Parameter *param, const wxString &type,
  *          objects including automatic objects
  */
 //------------------------------------------------------------------------------
-GmatBase* Moderator::FindObject(const wxString &name)
+GmatBase* Moderator::FindObject(const std::string &name)
 {
    #if DEBUG_FIND_OBJECT
    MessageInterface::ShowMessage
-      (wxT("Moderator::FindObject() entered, name='%s', objectMapInUse=<%p>\n"),
+      ("Moderator::FindObject() entered, name='%s', objectMapInUse=<%p>\n",
        name.c_str(), objectMapInUse);
    #endif
    
-   if (name == wxT(""))
+   if (name == "")
    {
       #if DEBUG_FIND_OBJECT
       MessageInterface::ShowMessage
-         (wxT("Moderator::FindObject() name is blank, so just returning NULL\n"));
+         ("Moderator::FindObject() name is blank, so just returning NULL\n");
       #endif
       return NULL;
    }
@@ -7994,25 +7996,25 @@ GmatBase* Moderator::FindObject(const wxString &name)
    {
       #if DEBUG_FIND_OBJECT
       MessageInterface::ShowMessage
-         (wxT("Moderator::FindObject() objectMapInUse is NULL, so just returning NULL\n"));
+         ("Moderator::FindObject() objectMapInUse is NULL, so just returning NULL\n");
       #endif
       return NULL;
    }
    
    // Ignore array indexing of Array
-   wxString newName = name;
-   wxString::size_type index = name.find_first_of(wxT("(["));
+   std::string newName = name;
+   std::string::size_type index = name.find_first_of("([");
    if (index != name.npos)
    {
       newName = name.substr(0, index);
       
       #if DEBUG_FIND_OBJECT
-      MessageInterface::ShowMessage(wxT("   newName=%s\n"), newName.c_str());
+      MessageInterface::ShowMessage("   newName=%s\n", newName.c_str());
       #endif
    }
    
    #if DEBUG_FIND_OBJECT > 1
-   ShowObjectMap(wxT("Moderator::FindObject() Here is the object map in use"));
+   ShowObjectMap("Moderator::FindObject() Here is the object map in use");
    #endif
    
    GmatBase *obj = NULL;
@@ -8037,7 +8039,7 @@ GmatBase* Moderator::FindObject(const wxString &name)
          if (obj)
          {
             MessageInterface::ShowMessage
-               (wxT("   Found '%s' from the SolarSystem <%p> in the map\n"),
+               ("   Found '%s' from the SolarSystem <%p> in the map\n",
                 name.c_str(), ss);
          }
          #endif
@@ -8046,9 +8048,9 @@ GmatBase* Moderator::FindObject(const wxString &name)
    
    #if DEBUG_FIND_OBJECT
    MessageInterface::ShowMessage
-      (wxT("Moderator::FindObject() returning <%p><%s>'%s'\n"), obj, 
-       obj ? obj->GetTypeName().c_str() : wxT("NULL"),
-       obj ? obj->GetName().c_str() : wxT("NULL"));
+      ("Moderator::FindObject() returning <%p><%s>'%s'\n", obj, 
+       obj ? obj->GetTypeName().c_str() : "NULL",
+       obj ? obj->GetName().c_str() : "NULL");
    #endif
    
    return obj;
@@ -8070,16 +8072,16 @@ bool Moderator::AddObject(GmatBase *obj)
 {
    #if DEBUG_ADD_OBJECT
    MessageInterface::ShowMessage
-      (wxT("Moderator::AddObject() entered, obj=<%p><%s><%s>, objectMapInUse=<%p>\n"),
-       obj, obj ? obj->GetTypeName().c_str() : wxT("NULL"),
-       obj ? obj->GetName().c_str() : wxT("NULL"), objectMapInUse);
+      ("Moderator::AddObject() entered, obj=<%p><%s><%s>, objectMapInUse=<%p>\n",
+       obj, obj ? obj->GetTypeName().c_str() : "NULL",
+       obj ? obj->GetName().c_str() : "NULL", objectMapInUse);
    #endif
    
-   if (obj == NULL || (obj && obj->GetName() == wxT("")))
+   if (obj == NULL || (obj && obj->GetName() == ""))
    {
       #if DEBUG_ADD_OBJECT
       MessageInterface::ShowMessage
-         (wxT("Moderator::AddObject() returning false, has NULL obj or name is blank\n"));
+         ("Moderator::AddObject() returning false, has NULL obj or name is blank\n");
       #endif
       
       return false;
@@ -8087,12 +8089,12 @@ bool Moderator::AddObject(GmatBase *obj)
    
    if (objectMapInUse == NULL)
       throw GmatBaseException
-         (wxT("Moderator::AddObject() cannot add object named \"") + obj->GetName() +
-          wxT("\" to unset object map in use"));
+         ("Moderator::AddObject() cannot add object named \"" + obj->GetName() +
+          "\" to unset object map in use");
    
    #ifdef DEBUG_OBJECT_MAP
    MessageInterface::ShowMessage
-      (wxT("Moderator::Moderator::AddObject() Adding <%p><%s>'%s' to objectMapInUse <%p>\n"),
+      ("Moderator::Moderator::AddObject() Adding <%p><%s>'%s' to objectMapInUse <%p>\n",
        obj, obj->GetTypeName().c_str(), obj->GetName().c_str(), objectMapInUse);
    #endif
    
@@ -8103,13 +8105,13 @@ bool Moderator::AddObject(GmatBase *obj)
    {
       #if DEBUG_ADD_OBJECT
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** Moderator::AddObject() '%s' is already in the object map, so ignored\n"),
+         ("*** WARNING *** Moderator::AddObject() '%s' is already in the object map, so ignored\n",
           obj->GetName().c_str());
       #endif
    }
    
    #if DEBUG_ADD_OBJECT
-   MessageInterface::ShowMessage(wxT("Moderator::AddObject() returning true\n"));
+   MessageInterface::ShowMessage("Moderator::AddObject() returning true\n");
    #endif
    
    return true;
@@ -8118,7 +8120,7 @@ bool Moderator::AddObject(GmatBase *obj)
 
 //------------------------------------------------------------------------------
 // void SetSolarSystemAndObjectMap(SolarSystem *ss, ObjectMap *objMap,
-//         bool forFunction, const wxString &callFrom)
+//         bool forFunction, const std::string &callFrom)
 //------------------------------------------------------------------------------
 /*
  * Sets the solar system in use and configured object map to interpreters.
@@ -8130,13 +8132,13 @@ bool Moderator::AddObject(GmatBase *obj)
 //------------------------------------------------------------------------------
 void Moderator::SetSolarSystemAndObjectMap(SolarSystem *ss, ObjectMap *objMap,
                                            bool forFunction,
-                                           const wxString &callFrom)
+                                           const std::string &callFrom)
 {
    #if DEBUG_OBJECT_MAP
    MessageInterface::ShowMessage
-      (wxT("=====> Moderator::%s setting solarSystemInUse=<%p>, ")
-       wxT("objectMapInUse=<%p> %s\n"), callFrom.c_str(), ss, objMap,
-       forFunction ? wxT("for function") : wxT(""));
+      ("=====> Moderator::%s setting solarSystemInUse=<%p>, "
+       "objectMapInUse=<%p> %s\n", callFrom.c_str(), ss, objMap,
+       forFunction ? "for function" : "");
    #endif
    
    // Set solar system in use and object map 
@@ -8155,7 +8157,7 @@ void Moderator::SetSolarSystemAndObjectMap(SolarSystem *ss, ObjectMap *objMap,
 
 
 //------------------------------------------------------------------------------
-// bool IsSequenceStarter(const wxString &commandType)
+// bool IsSequenceStarter(const std::string &commandType)
 //------------------------------------------------------------------------------
 /*
  * Determines if a command identifies a mission control sequence start command
@@ -8165,7 +8167,7 @@ void Moderator::SetSolarSystemAndObjectMap(SolarSystem *ss, ObjectMap *objMap,
  * @return true if the command is a MCS start command
  */
 //------------------------------------------------------------------------------
-bool Moderator::IsSequenceStarter(const wxString &commandType)
+bool Moderator::IsSequenceStarter(const std::string &commandType)
 {
    bool retval = false;
 
@@ -8191,13 +8193,13 @@ bool Moderator::IsSequenceStarter(const wxString &commandType)
 const StringArray& Moderator::GetSequenceStarters()
 {
    sequenceStarters.clear();
-   sequenceStarters = theFactoryManager->GetListOfItems(Gmat::COMMAND, wxT("SequenceStarters"));
+   sequenceStarters = theFactoryManager->GetListOfItems(Gmat::COMMAND, "SequenceStarters");
 
    return sequenceStarters;
 }
 
 //------------------------------------------------------------------------------
-// const wxString& GetStarterStringList()
+// const std::string& GetStarterStringList()
 //------------------------------------------------------------------------------
 /*
  * Retrieves a string listing the mission control sequence start commands
@@ -8207,9 +8209,9 @@ const StringArray& Moderator::GetSequenceStarters()
  * @return The array naming the MCS start commands
  */
 //------------------------------------------------------------------------------
-const wxString& Moderator::GetStarterStringList()
+const std::string& Moderator::GetStarterStringList()
 {
-   if (starterList == wxT(""))
+   if (starterList == "")
    {
       if (sequenceStarters.empty())
          GetSequenceStarters();
@@ -8217,7 +8219,7 @@ const wxString& Moderator::GetStarterStringList()
       {
          starterList += sequenceStarters[i];
          if (i+1 < sequenceStarters.size())
-            starterList += wxT(", ");
+            starterList += ", ";
       }
    }
 
@@ -8246,7 +8248,7 @@ Spacecraft* Moderator::GetDefaultSpacecraft()
    else
    {
       // create Spacecraft
-      return (Spacecraft*)CreateSpacecraft(wxT("Spacecraft"), wxT("DefaultSC"));
+      return (Spacecraft*)CreateSpacecraft("Spacecraft", "DefaultSC");
    }
 }
 
@@ -8266,15 +8268,15 @@ PropSetup* Moderator::GetDefaultPropSetup()
    else
    {
       // create PropSetup
-      return CreateDefaultPropSetup(wxT("DefaultProp"));
+      return CreateDefaultPropSetup("DefaultProp");
    }
 }
 
 
 //------------------------------------------------------------------------------
-// Burn* GetDefaultBurn(const wxString &type)
+// Burn* GetDefaultBurn(const std::string &type)
 //------------------------------------------------------------------------------
-Burn* Moderator::GetDefaultBurn(const wxString &type)
+Burn* Moderator::GetDefaultBurn(const std::string &type)
 {
    StringArray configList = GetListOfObjects(Gmat::BURN);
 
@@ -8287,19 +8289,19 @@ Burn* Moderator::GetDefaultBurn(const wxString &type)
    
    Burn *burn = NULL;
    
-   if (type == wxT("ImpulsiveBurn"))
-      burn = CreateBurn(wxT("ImpulsiveBurn"), wxT("DefaultIB"));
-   else if (type == wxT("FiniteBurn"))
-      burn = CreateBurn(wxT("FiniteBurn"), wxT("DefaultFB"));
+   if (type == "ImpulsiveBurn")
+      burn = CreateBurn("ImpulsiveBurn", "DefaultIB");
+   else if (type == "FiniteBurn")
+      burn = CreateBurn("FiniteBurn", "DefaultFB");
    
    return burn;
 }
 
 
 //------------------------------------------------------------------------------
-// Hardware* GetDefaultHardware(const wxString &type)
+// Hardware* GetDefaultHardware(const std::string &type)
 //------------------------------------------------------------------------------
-Hardware* Moderator::GetDefaultHardware(const wxString &type)
+Hardware* Moderator::GetDefaultHardware(const std::string &type)
 {
    StringArray configList = GetListOfObjects(Gmat::HARDWARE);
 
@@ -8312,17 +8314,17 @@ Hardware* Moderator::GetDefaultHardware(const wxString &type)
    
    Hardware *hw = NULL;
    
-   if (type == wxT("FuelTank"))
-      hw = CreateHardware(wxT("FuelTank"), wxT("DefaultFuelTank"));
-   else if (type == wxT("Thruster"))
-      hw = CreateHardware(wxT("Thruster"), wxT("DefaultThruster"));
+   if (type == "FuelTank")
+      hw = CreateHardware("FuelTank", "DefaultFuelTank");
+   else if (type == "Thruster")
+      hw = CreateHardware("Thruster", "DefaultThruster");
    
    return hw;
 }
 
 
 //------------------------------------------------------------------------------
-// Subscriber* GetDefaultSubscriber(const wxString &type, bool addObjects = true,
+// Subscriber* GetDefaultSubscriber(const std::string &type, bool addObjects = true,
 //                                  bool createIfNoneFound = true)
 //------------------------------------------------------------------------------
 /**
@@ -8330,7 +8332,7 @@ Hardware* Moderator::GetDefaultHardware(const wxString &type)
  * create default subscriber.
  */
 //------------------------------------------------------------------------------
-Subscriber* Moderator::GetDefaultSubscriber(const wxString &type, bool addObjects,
+Subscriber* Moderator::GetDefaultSubscriber(const std::string &type, bool addObjects,
                                             bool createIfNoneFound)
 {
    StringArray configList = GetListOfObjects(Gmat::SUBSCRIBER);
@@ -8348,51 +8350,51 @@ Subscriber* Moderator::GetDefaultSubscriber(const wxString &type, bool addObject
    if (!createIfNoneFound)
       return NULL;
    
-   if (type == wxT("OrbitView"))
+   if (type == "OrbitView")
    {
       // create default OrbitView
-      sub = CreateSubscriber(wxT("OrbitView"), wxT("DefaultOrbitView"));
-      sub->SetStringParameter(wxT("Add"), wxT("DefaultSC"));
-      sub->SetStringParameter(wxT("Add"), wxT("Earth"));
-      sub->SetStringParameter(wxT("CoordinateSystem"), wxT("EarthMJ2000Eq"));
-      sub->SetStringParameter(wxT("ViewPointVector"), wxT("[30000 0 0]"));
+      sub = CreateSubscriber("OrbitView", "DefaultOrbitView");
+      sub->SetStringParameter("Add", "DefaultSC");
+      sub->SetStringParameter("Add", "Earth");
+      sub->SetStringParameter("CoordinateSystem", "EarthMJ2000Eq");
+      sub->SetStringParameter("ViewPointVector", "[30000 0 0]");
       sub->Activate(true);
    }
-   else if (type == wxT("GroundTrackPlot"))
+   else if (type == "GroundTrackPlot")
    {
       // create default GroundTrackPlot
-      sub = CreateSubscriber(wxT("GroundTrackPlot"), wxT("DefaultGroundTrackPlot"));
-      sub->SetStringParameter(wxT("Add"), wxT("DefaultSC"));
-      sub->SetStringParameter(wxT("Add"), wxT("Earth"));
+      sub = CreateSubscriber("GroundTrackPlot", "DefaultGroundTrackPlot");
+      sub->SetStringParameter("Add", "DefaultSC");
+      sub->SetStringParameter("Add", "Earth");
       sub->Activate(true);
    }
-   else if (type == wxT("XYPlot"))
+   else if (type == "XYPlot")
    {
       // create default XYPlot
-      sub = CreateSubscriber(wxT("XYPlot"), wxT("DefaultXYPlot"));
-      sub->SetStringParameter(wxT("XVariable"), wxT("DefaultSC.A1ModJulian"));
-      sub->SetStringParameter(wxT("YVariables"), wxT("DefaultSC.EarthMJ2000Eq.X"), 0);      
-      sub->SetStringParameter(wxT("YVariables"), wxT("DefaultSC.EarthMJ2000Eq.Y"), 1);
-      sub->SetStringParameter(wxT("YVariables"), wxT("DefaultSC.EarthMJ2000Eq.Z"), 2);
+      sub = CreateSubscriber("XYPlot", "DefaultXYPlot");
+      sub->SetStringParameter("XVariable", "DefaultSC.A1ModJulian");
+      sub->SetStringParameter("YVariables", "DefaultSC.EarthMJ2000Eq.X", 0);      
+      sub->SetStringParameter("YVariables", "DefaultSC.EarthMJ2000Eq.Y", 1);
+      sub->SetStringParameter("YVariables", "DefaultSC.EarthMJ2000Eq.Z", 2);
       sub->Activate(true);
    }
-   else if (type == wxT("ReportFile"))
+   else if (type == "ReportFile")
    {
       // create default ReportFile
-      sub = CreateSubscriber(wxT("ReportFile"), wxT("DefaultReportFile"));
-      wxString scName = GetDefaultSpacecraft()->GetName();
-      sub->SetStringParameter(sub->GetParameterID(wxT("Filename")),
-                              wxT("DefaultReportFile.txt"));
+      sub = CreateSubscriber("ReportFile", "DefaultReportFile");
+      std::string scName = GetDefaultSpacecraft()->GetName();
+      sub->SetStringParameter(sub->GetParameterID("Filename"),
+                              "DefaultReportFile.txt");
       
       if (addObjects)
       {
-         sub->SetStringParameter(wxT("Add"), scName + wxT(".A1ModJulian"));
-         sub->SetStringParameter(wxT("Add"), scName + wxT(".EarthMJ2000Eq.X"));
-         sub->SetStringParameter(wxT("Add"), scName + wxT(".EarthMJ2000Eq.Y"));
-         sub->SetStringParameter(wxT("Add"), scName + wxT(".EarthMJ2000Eq.Z"));
-         sub->SetStringParameter(wxT("Add"), scName + wxT(".EarthMJ2000Eq.VX"));
-         sub->SetStringParameter(wxT("Add"), scName + wxT(".EarthMJ2000Eq.VY"));
-         sub->SetStringParameter(wxT("Add"), scName + wxT(".EarthMJ2000Eq.VZ"));
+         sub->SetStringParameter("Add", scName + ".A1ModJulian");
+         sub->SetStringParameter("Add", scName + ".EarthMJ2000Eq.X");
+         sub->SetStringParameter("Add", scName + ".EarthMJ2000Eq.Y");
+         sub->SetStringParameter("Add", scName + ".EarthMJ2000Eq.Z");
+         sub->SetStringParameter("Add", scName + ".EarthMJ2000Eq.VX");
+         sub->SetStringParameter("Add", scName + ".EarthMJ2000Eq.VY");
+         sub->SetStringParameter("Add", scName + ".EarthMJ2000Eq.VZ");
       }
       sub->Activate(true);
       
@@ -8402,7 +8404,7 @@ Subscriber* Moderator::GetDefaultSubscriber(const wxString &type, bool addObject
    else
    {
       MessageInterface::ShowMessage
-         (wxT("*** ERROR *** GetDefaultSubscriber() Undefined subscriber type: %s\n"),
+         ("*** ERROR *** GetDefaultSubscriber() Undefined subscriber type: %s\n",
           type.c_str());
    }
 
@@ -8424,7 +8426,7 @@ Solver* Moderator::GetDefaultSolver()
    else
    {
       // create Solver
-      return CreateSolver(wxT("DifferentialCorrector"), wxT("DefaultDC"));
+      return CreateSolver("DifferentialCorrector", "DefaultDC");
    }
 }
 
@@ -8437,38 +8439,38 @@ StopCondition* Moderator::CreateDefaultStopCondition()
    Parameter *param;
    
    Spacecraft *sc = GetDefaultSpacecraft();
-   wxString scName = sc->GetName();
+   std::string scName = sc->GetName();
    
-   wxString epochVar = scName + wxT(".A1ModJulian");
-   wxString stopVar = scName + wxT(".ElapsedSecs");
+   std::string epochVar = scName + ".A1ModJulian";
+   std::string stopVar = scName + ".ElapsedSecs";
    
    #ifdef DEBUG_DEFAULT_MISSION
    MessageInterface::ShowMessage
-      (wxT("Moderator::CreateDefaultStopCondition() scName=%s, epochVar=%s, ")
-       wxT("stopVar=%s\n"), scName.c_str(), epochVar.c_str(), stopVar.c_str());
+      ("Moderator::CreateDefaultStopCondition() scName=%s, epochVar=%s, "
+       "stopVar=%s\n", scName.c_str(), epochVar.c_str(), stopVar.c_str());
    #endif
    
    if (GetParameter(epochVar) == NULL)
    {
-      param = CreateParameter(wxT("A1ModJulian"), epochVar);
+      param = CreateParameter("A1ModJulian", epochVar);
       param->SetRefObjectName(Gmat::SPACECRAFT, scName);
    }
    
    if (GetParameter(stopVar) == NULL)
    {
-      param = CreateParameter(wxT("ElapsedSecs"), stopVar);
+      param = CreateParameter("ElapsedSecs", stopVar);
       param->SetRefObjectName(Gmat::SPACECRAFT, scName);
    }
    
-   wxString stopCondName = wxT("StopOn") + stopVar;
+   std::string stopCondName = "StopOn" + stopVar;
    
-   stopCond = CreateStopCondition(wxT("StopCondition"), wxT("StopOn") + stopVar);
+   stopCond = CreateStopCondition("StopCondition", "StopOn" + stopVar);
    
-   stopCond->SetStringParameter(wxT("EpochVar"), epochVar);
-   stopCond->SetStringParameter(wxT("StopVar"), stopVar);
+   stopCond->SetStringParameter("EpochVar", epochVar);
+   stopCond->SetStringParameter("StopVar", stopVar);
    // Dunn changed ElapsedSecs for default mission to 12000.0 so the spacecraft
    // icon will stop on the near side of the earth where we can see it.
-   stopCond->SetStringParameter(wxT("Goal"), wxT("12000.0"));
+   stopCond->SetStringParameter("Goal", "12000.0");
    //stopCond->SetStringParameter("Goal", "8640.0");
    return stopCond;
 }
@@ -8480,11 +8482,11 @@ StopCondition* Moderator::CreateDefaultStopCondition()
 Parameter* Moderator::GetDefaultX()
 {
    Spacecraft *sc = GetDefaultSpacecraft();
-   Parameter* param = GetParameter(sc->GetName() + wxT(".A1ModJulian"));
+   Parameter* param = GetParameter(sc->GetName() + ".A1ModJulian");
 
    if (param == NULL)
    {
-      param = CreateParameter(wxT("A1ModJulian"), sc->GetName() + wxT(".A1ModJulian"));
+      param = CreateParameter("A1ModJulian", sc->GetName() + ".A1ModJulian");
       param->SetRefObjectName(Gmat::SPACECRAFT, sc->GetName());
    }
    
@@ -8498,11 +8500,11 @@ Parameter* Moderator::GetDefaultX()
 Parameter* Moderator::GetDefaultY()
 {
    Spacecraft *sc = GetDefaultSpacecraft();
-   Parameter* param = GetParameter(sc->GetName() + wxT(".EarthMJ2000Eq.X"));
+   Parameter* param = GetParameter(sc->GetName() + ".EarthMJ2000Eq.X");
    
    if (param == NULL)
    {
-      param = CreateParameter(wxT("X"), sc->GetName() + wxT(".EarthMJ2000Eq.X"));
+      param = CreateParameter("X", sc->GetName() + ".EarthMJ2000Eq.X");
       param->SetRefObjectName(Gmat::SPACECRAFT, sc->GetName());
    }
    
@@ -8518,9 +8520,9 @@ void Moderator::AddSolarSystemToSandbox(Integer index)
 {
    #if DEBUG_RUN
    MessageInterface::ShowMessage
-      (wxT("Moderator::AddSolarSystemToSandbox() entered\n"));
+      ("Moderator::AddSolarSystemToSandbox() entered\n");
    MessageInterface::ShowMessage
-      (wxT("   Adding theSolarSystemInUse<%p> to Sandbox\n"), theSolarSystemInUse);
+      ("   Adding theSolarSystemInUse<%p> to Sandbox\n", theSolarSystemInUse);
    #endif
    
    //If we are ready to configure SolarSystem by name
@@ -8556,9 +8558,9 @@ void Moderator::AddInternalCoordSystemToSandbox(Integer index)
 {
    #if DEBUG_RUN
    MessageInterface::ShowMessage
-      (wxT("Moderator::AddInternalCoordSystemToSandbox() entered.\n"));
+      ("Moderator::AddInternalCoordSystemToSandbox() entered.\n");
    MessageInterface::ShowMessage
-      (wxT("   Adding theInternalCoordSystem<%p> to Sandbox\n"), theInternalCoordSystem);
+      ("   Adding theInternalCoordSystem<%p> to Sandbox\n", theInternalCoordSystem);
    #endif
    
    sandboxes[index]->SetInternalCoordSystem(theInternalCoordSystem);
@@ -8573,9 +8575,9 @@ void Moderator::AddPublisherToSandbox(Integer index)
 {
    #if DEBUG_RUN
    MessageInterface::ShowMessage
-      (wxT("Moderator::AddPublisherToSandbox() entered.\n"));
+      ("Moderator::AddPublisherToSandbox() entered.\n");
    MessageInterface::ShowMessage
-      (wxT("   Adding thePublisher<%p> to Sandbox\n"), thePublisher);
+      ("   Adding thePublisher<%p> to Sandbox\n", thePublisher);
    #endif
    
    thePublisher->UnsubscribeAll();
@@ -8596,7 +8598,7 @@ void Moderator::HandleCcsdsEphemerisFile(ObjectMap *objMap, bool deleteOld)
 {
    #ifdef DEBUG_CCSDS_EPHEMERIS
    MessageInterface::ShowMessage
-      (wxT("Moderator::HandleCcsdsEphemerisFile() entered, objMap=<%p>\n"), objMap);
+      ("Moderator::HandleCcsdsEphemerisFile() entered, objMap=<%p>\n", objMap);
    #endif
    
    GmatBase *obj;
@@ -8617,42 +8619,42 @@ void Moderator::HandleCcsdsEphemerisFile(ObjectMap *objMap, bool deleteOld)
       // Create CcsdsEphemerisFile if file format is CCSDS
       if (obj->IsOfType(Gmat::EPHEMERIS_FILE))
       {
-         wxString name = obj->GetName();
-         wxString format = obj->GetStringParameter(wxT("FileFormat"));
+         std::string name = obj->GetName();
+         std::string format = obj->GetStringParameter("FileFormat");
          
          #ifdef DEBUG_CCSDS_EPHEMERIS
          MessageInterface::ShowMessage
-            (wxT("   Format of the object<%p><%s>'%s' is '%s'\n"),
+            ("   Format of the object<%p><%s>'%s' is '%s'\n",
              obj, obj->GetTypeName().c_str(), name.c_str(), format.c_str());
          #endif
          
-         if (format.find(wxT("CCSDS")) != format.npos)
+         if (format.find("CCSDS") != format.npos)
          {
             // Check type name to avoid recreating a CcsdsEphemerisFile object for re-runs
-            if (obj->GetTypeName() != wxT("CcsdsEphemerisFile"))
+            if (obj->GetTypeName() != "CcsdsEphemerisFile")
             {
                #ifdef DEBUG_CCSDS_EPHEMERIS
-               MessageInterface::ShowMessage(wxT("   About to create new CcsdsEphemerisFile\n"));
+               MessageInterface::ShowMessage("   About to create new CcsdsEphemerisFile\n");
                #endif
                
                // Create unnamed CcsdsEphemerisFile
-               GmatBase *newObj = CreateEphemerisFile(wxT("CcsdsEphemerisFile"), wxT(""));
+               GmatBase *newObj = CreateEphemerisFile("CcsdsEphemerisFile", "");
                if (newObj == NULL)
                {
                   throw GmatBaseException
-                     (wxT("Moderator::AddSubscriberToSandbox() Cannot continue due to missing ")
-                      wxT("CcsdsEphemerisFile plugin dll\n"));
+                     ("Moderator::AddSubscriberToSandbox() Cannot continue due to missing "
+                      "CcsdsEphemerisFile plugin dll\n");
                }
                
                newObj->SetName(name);
                ResetObjectPointer(objMap, newObj, name);
                ResetObjectPointer(objectMapInUse, newObj, name);
                newObj->Copy(obj);
-               newObj->TakeAction(wxT("ChangeTypeName"), wxT("CcsdsEphemerisFile"));
+               newObj->TakeAction("ChangeTypeName", "CcsdsEphemerisFile");
                
                #ifdef DEBUG_CCSDS_EPHEMERIS
                MessageInterface::ShowMessage
-                  (wxT("   New object <%p><%s>'%s' created\n"), newObj, newObj->GetTypeName().c_str(),
+                  ("   New object <%p><%s>'%s' created\n", newObj, newObj->GetTypeName().c_str(),
                    name.c_str());
                #endif
                
@@ -8664,12 +8666,12 @@ void Moderator::HandleCcsdsEphemerisFile(ObjectMap *objMap, bool deleteOld)
                {
                   #ifdef DEBUG_CCSDS_EPHEMERIS
                   MessageInterface::ShowMessage
-                     (wxT("   Deleting old object <%p><%s>'%s'\n"), oldObj, oldObj->GetTypeName().c_str(),
+                     ("   Deleting old object <%p><%s>'%s'\n", oldObj, oldObj->GetTypeName().c_str(),
                       name.c_str());
                   #endif
                   #ifdef DEBUG_MEMORY
                   MemoryTracker::Instance()->Remove
-                     (oldObj, oldObj->GetName(), wxT("Moderator::HandleCcsdsEphemerisFile()"));
+                     (oldObj, oldObj->GetName(), "Moderator::HandleCcsdsEphemerisFile()");
                   #endif
                   delete oldObj;
                }
@@ -8679,9 +8681,9 @@ void Moderator::HandleCcsdsEphemerisFile(ObjectMap *objMap, bool deleteOld)
    }
    
    #ifdef DEBUG_CCSDS_EPHEMERIS
-   ShowObjectMap(wxT("In Moderator::HandleCcsdsEphemerisFile()"), objMap);
+   ShowObjectMap("In Moderator::HandleCcsdsEphemerisFile()", objMap);
    MessageInterface::ShowMessage
-      (wxT("Moderator::HandleCcsdsEphemerisFile() leaving\n"));
+      ("Moderator::HandleCcsdsEphemerisFile() leaving\n");
    #endif
 }
 
@@ -8700,7 +8702,7 @@ void Moderator::AddSubscriberToSandbox(Integer index)
    
    #if DEBUG_RUN
    MessageInterface::ShowMessage
-      (wxT("Moderator::AddSubscriberToSandbox() count = %d\n"), names.size());
+      ("Moderator::AddSubscriberToSandbox() count = %d\n", names.size());
    #endif
    
    for (Integer i=0; i<(Integer)names.size(); i++)
@@ -8710,7 +8712,7 @@ void Moderator::AddSubscriberToSandbox(Integer index)
       
       #if DEBUG_RUN > 1
       MessageInterface::ShowMessage
-         (wxT("   Adding <%p><%s>'%s'\n"), obj, obj->GetTypeName().c_str(), 
+         ("   Adding <%p><%s>'%s'\n", obj, obj->GetTypeName().c_str(), 
           obj->GetName().c_str());
       #endif
    }
@@ -8727,7 +8729,7 @@ void Moderator::AddOtherObjectsToSandbox(Integer index)
    
    #if DEBUG_RUN
    MessageInterface::ShowMessage
-      (wxT("Moderator::AddOtherObjectsToSandbox() count = %d\n"), names.size());
+      ("Moderator::AddOtherObjectsToSandbox() count = %d\n", names.size());
    #endif
    
    for (Integer i=0; i<(Integer)names.size(); i++)
@@ -8740,7 +8742,7 @@ void Moderator::AddOtherObjectsToSandbox(Integer index)
       
       #ifdef DEBUG_RUN
       MessageInterface::ShowMessage
-         (wxT("   Adding <%p><%s>'%s'\n"), obj, obj->GetTypeName().c_str(),
+         ("   Adding <%p><%s>'%s'\n", obj, obj->GetTypeName().c_str(),
           obj->GetName().c_str());
       #endif
       sandboxes[index]->AddObject(obj);
@@ -8755,7 +8757,7 @@ void Moderator::AddCommandToSandbox(Integer index)
 {
    #if DEBUG_RUN
    MessageInterface::ShowMessage
-      (wxT("Moderator::AddCommandToSandbox() entered\n"));
+      ("Moderator::AddCommandToSandbox() entered\n");
    #endif
    
    GmatCommand *cmd = commands[index]->GetNext();
@@ -8764,7 +8766,7 @@ void Moderator::AddCommandToSandbox(Integer index)
    {
       #if DEBUG_RUN > 1
       MessageInterface::ShowMessage
-         (wxT("   Adding <%p><%s>\n"), cmd, cmd->GetTypeName().c_str());
+         ("   Adding <%p><%s>\n", cmd, cmd->GetTypeName().c_str());
       #endif
       
       sandboxes[index]->AddCommand(cmd);
@@ -8793,65 +8795,65 @@ void Moderator::ExecuteSandbox(Integer index)
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// void ShowCommand(const wxString &title1, GmatCommand *cmd1,
-//                  const wxString &title2, GmatCommand *cmd2)
+// void ShowCommand(const std::string &title1, GmatCommand *cmd1,
+//                  const std::string &title2, GmatCommand *cmd2)
 //------------------------------------------------------------------------------
-void Moderator::ShowCommand(const wxString &title1, GmatCommand *cmd1,
-                            const wxString &title2, GmatCommand *cmd2)
+void Moderator::ShowCommand(const std::string &title1, GmatCommand *cmd1,
+                            const std::string &title2, GmatCommand *cmd2)
 {
-   if (title2 == wxT(""))
+   if (title2 == "")
    {
       if (cmd1 == NULL)
-         MessageInterface::ShowMessage(wxT("%s<%p><NULL>\n"), title1.c_str(), cmd1);
+         MessageInterface::ShowMessage("%s<%p><NULL>\n", title1.c_str(), cmd1);
       else
          MessageInterface::ShowMessage
-            (wxT("%s<%p><%s>\n"), title1.c_str(), cmd1, cmd1->GetTypeName().c_str());
+            ("%s<%p><%s>\n", title1.c_str(), cmd1, cmd1->GetTypeName().c_str());
    }
    else
    {
       if (cmd2 == NULL)
          MessageInterface::ShowMessage
-            (wxT("%s<%p><NULL>%s<%p><NULL>\n"), title1.c_str(), cmd1, title2.c_str(), cmd2);
+            ("%s<%p><NULL>%s<%p><NULL>\n", title1.c_str(), cmd1, title2.c_str(), cmd2);
       else
          MessageInterface::ShowMessage
-            (wxT("%s<%p><%s>%s<%p><%s>\n"), title1.c_str(), cmd1, cmd1->GetTypeName().c_str(),
+            ("%s<%p><%s>%s<%p><%s>\n", title1.c_str(), cmd1, cmd1->GetTypeName().c_str(),
              title2.c_str(), cmd2, cmd2->GetTypeName().c_str());
    }
 }
 
 
 //------------------------------------------------------------------------------
-// void ShowObjectMap(const wxString &title, ObjectMap *objMap = NULL)
+// void ShowObjectMap(const std::string &title, ObjectMap *objMap = NULL)
 //------------------------------------------------------------------------------
-void Moderator::ShowObjectMap(const wxString &title, ObjectMap *objMap)
+void Moderator::ShowObjectMap(const std::string &title, ObjectMap *objMap)
 {
-   MessageInterface::ShowMessage(title + wxT("\n"));
+   MessageInterface::ShowMessage(title + "\n");
    if (objMap != NULL)
    {
       MessageInterface::ShowMessage
-         (wxT(" passedObjectMap = <%p>, it has %d objects\n"), objMap, objMap->size());
+         (" passedObjectMap = <%p>, it has %d objects\n", objMap, objMap->size());
       for (ObjectMap::iterator i = objMap->begin(); i != objMap->end(); ++i)
       {
          MessageInterface::ShowMessage
-            (wxT("   %30s  <%p><%s>\n"), i->first.c_str(), i->second,
-             i->second == NULL ? wxT("NULL") : (i->second)->GetTypeName().c_str());
+            ("   %30s  <%p><%s>\n", i->first.c_str(), i->second,
+             i->second == NULL ? "NULL" : (i->second)->GetTypeName().c_str());
       }
    }
    
    if (objectMapInUse == NULL)
    {
-      MessageInterface::ShowMessage(wxT("\nThe objectMapInUse is NULL\n"));
+      MessageInterface::ShowMessage("\nThe objectMapInUse is NULL\n");
       return;
    }
    
    MessageInterface::ShowMessage
-      (wxT(" objectMapInUse = <%p>, it has %d objects\n"), objectMapInUse, objectMapInUse->size());
+      (" objectMapInUse = <%p>, it has %d objects\n", objectMapInUse, objectMapInUse->size());
    for (ObjectMap::iterator i = objectMapInUse->begin();
         i != objectMapInUse->end(); ++i)
    {
       MessageInterface::ShowMessage
-         (wxT("   %30s  <%p><%s>\n"), i->first.c_str(), i->second,
-          i->second == NULL ? wxT("NULL") : (i->second)->GetTypeName().c_str());
+         ("   %30s  <%p><%s>\n", i->first.c_str(), i->second,
+          i->second == NULL ? "NULL" : (i->second)->GetTypeName().c_str());
    }
 }
 

@@ -33,10 +33,10 @@
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 While::PARAMETER_TEXT[WhileParamCount - ConditionalBranchParamCount] =
 {
-   wxT("NestLevel"),
+   "NestLevel",
 };
 
 const Gmat::ParameterType
@@ -53,7 +53,7 @@ While::PARAMETER_TYPE[WhileParamCount - ConditionalBranchParamCount] =
  */
 //------------------------------------------------------------------------------
 While::While() :
-ConditionalBranch  (wxT("While")),
+ConditionalBranch  ("While"),
 nestLevel          (0)
 {
 }
@@ -123,7 +123,7 @@ bool While::Append(GmatCommand *cmd)
 {
    #ifdef DEBUG_WHILE_END // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
       MessageInterface::ShowMessage(
-      wxT("Entering Append (%s) of while command   %s   %s  %s\n"),
+      "Entering Append (%s) of while command   %s   %s  %s\n",
       (cmd->GetTypeName()).c_str(), lhsList[0].c_str(), opStrings[0].c_str(), 
       rhsList[0].c_str());
    #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
@@ -131,13 +131,13 @@ bool While::Append(GmatCommand *cmd)
     {
       #ifdef DEBUG_WHILE_END // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
          MessageInterface::ShowMessage(
-         wxT("    and ConditionalBranch::Append() returned false\n"));
+         "    and ConditionalBranch::Append() returned false\n");
       #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
         return false;
     }
 
     // Check for the end of "While" branch, point that end back to this command
-    if (cmd->GetTypeName() == wxT("EndWhile"))
+    if (cmd->GetTypeName() == "EndWhile")
     {
        if ((nestLevel== 0) && (branchToFill != -1))
        {
@@ -146,9 +146,9 @@ bool While::Append(GmatCommand *cmd)
           branchToFill = -1;
          #ifdef DEBUG_WHILE_END // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
             MessageInterface::ShowMessage(
-            wxT("      -->Appending EndWhile command to while   %s   %s  %s\n"),
+            "      -->Appending EndWhile command to while   %s   %s  %s\n",
             lhsList[0].c_str(), opStrings[0].c_str(), rhsList[0].c_str());
-            MessageInterface::ShowMessage(wxT("----> that is, appending object %p to object %p\n"),
+            MessageInterface::ShowMessage("----> that is, appending object %p to object %p\n",
             this, cmd);
          #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
        }
@@ -156,21 +156,21 @@ bool While::Append(GmatCommand *cmd)
        {
          #ifdef DEBUG_WHILE_END // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
             MessageInterface::ShowMessage(
-            wxT("         Is an EndWhile command for while   %s   %s  %s, but not appending\n"),
+            "         Is an EndWhile command for while   %s   %s  %s, but not appending\n",
             lhsList[0].c_str(), opStrings[0].c_str(), rhsList[0].c_str());
             MessageInterface::ShowMessage(
-            wxT("         and nestLevel = %d\n"), nestLevel);
+            "         and nestLevel = %d\n", nestLevel);
          #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
           --nestLevel;
        }
     }
 
-    if (cmd->GetTypeName() == wxT("While"))
+    if (cmd->GetTypeName() == "While")
     {
       ++nestLevel;
       #ifdef DEBUG_WHILE_END // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
          MessageInterface::ShowMessage(
-         wxT("      +++Increasing nestLevel for while   %s   %s  %s to %d\n"),
+         "      +++Increasing nestLevel for while   %s   %s  %s to %d\n",
          lhsList[0].c_str(), opStrings[0].c_str(), rhsList[0].c_str(), nestLevel);
       #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
     }
@@ -193,12 +193,12 @@ bool While::Execute()
 {
    #ifdef DEBUG_WHILE // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
       MessageInterface::ShowMessage(
-         wxT("While::Executing(%s %s %s) status: commandComplete = %s, ")
-         wxT("commandExecuting = %s, branchExecuting = %s\n"),
+         "While::Executing(%s %s %s) status: commandComplete = %s, "
+         "commandExecuting = %s, branchExecuting = %s\n",
          lhsList[0].c_str(), opStrings[0].c_str(), rhsList[0].c_str(),
-         ((commandComplete) ? wxT("true") : wxT("false")),
-         ((commandExecuting) ? wxT("true") : wxT("false")),
-         ((branchExecuting) ? wxT("true") : wxT("false")) );
+         ((commandComplete) ? "true" : "false"),
+         ((commandExecuting) ? "true" : "false"),
+         ((branchExecuting) ? "true" : "false") );
    #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
 
    bool retval = true;
@@ -214,7 +214,7 @@ bool While::Execute()
       if (!commandExecuting) 
       {
          #ifdef DEBUG_WHILE // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
-            MessageInterface::ShowMessage(wxT("Starting command\n"));
+            MessageInterface::ShowMessage("Starting command\n");
          #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
          ConditionalBranch::Execute();
          commandComplete  = false;
@@ -224,7 +224,7 @@ bool While::Execute()
       {
          #ifdef DEBUG_WHILE // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
             MessageInterface::ShowMessage(
-               wxT("   Conditions true, running while loop\n"));
+               "   Conditions true, running while loop\n");
          #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
          branchExecuting = true;
          return true;
@@ -233,7 +233,7 @@ bool While::Execute()
       {
          #ifdef DEBUG_WHILE // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ debug ~~~~
             MessageInterface::ShowMessage(
-               wxT("   Conditions false; command complete\n"));
+               "   Conditions false; command complete\n");
          #endif // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end debug ~~~~
          publisher->FlushBuffers();
          commandComplete  = true;
@@ -247,7 +247,7 @@ bool While::Execute()
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
 * This method returns the parameter text, given the input parameter ID.
@@ -258,7 +258,7 @@ bool While::Execute()
  *
  */
 //------------------------------------------------------------------------------
-wxString While::GetParameterText(const Integer id) const
+std::string While::GetParameterText(const Integer id) const
 {
    if (id >= ConditionalBranchParamCount && id < WhileParamCount)
       return PARAMETER_TEXT[id - ConditionalBranchParamCount];
@@ -266,7 +266,7 @@ wxString While::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
 * This method returns the parameter ID, given the input parameter string.
@@ -277,7 +277,7 @@ wxString While::GetParameterText(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer While::GetParameterID(const wxString &str) const
+Integer While::GetParameterID(const std::string &str) const
 {
    for (Integer i = ConditionalBranchParamCount; i < WhileParamCount; i++)
    {
@@ -309,7 +309,7 @@ Gmat::ParameterType While::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
 * This method returns the parameter type string, given the input parameter ID.
@@ -320,7 +320,7 @@ Gmat::ParameterType While::GetParameterType(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString While::GetParameterTypeString(const Integer id) const
+std::string While::GetParameterTypeString(const Integer id) const
 {
    return ConditionalBranch::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -368,7 +368,7 @@ Integer While::SetIntegerParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetIntegerParameter(const wxString &label) const
+//  Integer  GetIntegerParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
 * This method returns the Integer parameter value, given the input
@@ -380,13 +380,13 @@ Integer While::SetIntegerParameter(const Integer id,
  *
  */
 //------------------------------------------------------------------------------
-Integer While::GetIntegerParameter(const wxString &label) const
+Integer While::GetIntegerParameter(const std::string &label) const
 {
    return GetIntegerParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-//  Integer  SetIntegerParameter(const wxString &label, const Integer value)
+//  Integer  SetIntegerParameter(const std::string &label, const Integer value)
 //------------------------------------------------------------------------------
 /**
 * This method sets the Integer parameter value, given the input
@@ -399,7 +399,7 @@ Integer While::GetIntegerParameter(const wxString &label) const
  *
  */
 //------------------------------------------------------------------------------
-Integer While::SetIntegerParameter(const wxString &label,
+Integer While::SetIntegerParameter(const std::string &label,
                                 const Integer value)
 {
    return SetIntegerParameter(GetParameterID(label), value);
@@ -421,7 +421,7 @@ GmatBase* While::Clone() const
 }
 
 //------------------------------------------------------------------------------
-//  const wxString& GetGeneratingString()
+//  const std::string& GetGeneratingString()
 //------------------------------------------------------------------------------
 /**
  * Method used to retrieve the string that was parsed to build this GmatCommand.
@@ -441,18 +441,18 @@ GmatBase* While::Clone() const
  * @return The script line that, when interpreted, defines this While command.
  */
 //------------------------------------------------------------------------------
-const wxString& While::GetGeneratingString(Gmat::WriteMode mode,
-                                           const wxString &prefix,
-                                           const wxString &useName)
+const std::string& While::GetGeneratingString(Gmat::WriteMode mode,
+                                           const std::string &prefix,
+                                           const std::string &useName)
 {
    if (mode == Gmat::NO_COMMENTS)
    {
-      generatingString = wxT("While ") + GetConditionalString();
+      generatingString = "While " + GetConditionalString();
       return generatingString;
    }
    
    // Build the local string
-   generatingString = prefix + wxT("While ") + GetConditionalString();
+   generatingString = prefix + "While " + GetConditionalString();
    return ConditionalBranch::GetGeneratingString(mode, prefix, useName);
 }
 

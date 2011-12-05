@@ -28,8 +28,8 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  CoordinateSystem* CreateCoordinateSystem(const wxString &ofType, 
-//                                           const wxString &withName)
+//  CoordinateSystem* CreateCoordinateSystem(const std::string &ofType, 
+//                                           const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested CoordinateSystem class 
@@ -42,8 +42,8 @@
  */
 //------------------------------------------------------------------------------
 CoordinateSystem*
-CoordinateSystemFactory::CreateCoordinateSystem(const wxString &ofType,
-                                                const wxString &withName)
+CoordinateSystemFactory::CreateCoordinateSystem(const std::string &ofType,
+                                                const std::string &withName)
 {
    return new CoordinateSystem(ofType, withName);
 }
@@ -63,7 +63,7 @@ Factory(Gmat::COORDINATE_SYSTEM)
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("CoordinateSystem"));  // default type for this factory
+      creatables.push_back("CoordinateSystem");  // default type for this factory
    }
 }
 
@@ -83,7 +83,7 @@ Factory(createList,Gmat::COORDINATE_SYSTEM)
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("CoordinateSystem"));  // default type for this factory
+      creatables.push_back("CoordinateSystem");  // default type for this factory
    }
 }
 
@@ -94,7 +94,7 @@ Factory(createList,Gmat::COORDINATE_SYSTEM)
    * This method creates an object of the class CoordinateSystemFactory 
    * (copy constructor).
    *
-   * @param <fact> the factory object to copy to wxT("this") factory.
+   * @param <fact> the factory object to copy to "this" factory.
    */
 //------------------------------------------------------------------------------
 CoordinateSystemFactory::CoordinateSystemFactory(const CoordinateSystemFactory& fact) :
@@ -102,7 +102,7 @@ Factory(fact)
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("CoordinateSystem"));  // default type for this factory
+      creatables.push_back("CoordinateSystem");  // default type for this factory
    }
 }
 
@@ -112,10 +112,10 @@ Factory(fact)
 /**
  * Assignment operator for the CoordinateSystemFactory class.
  *
- * @param <fact> the CoordinateSystemFactory object whose data to assign to wxT("this")
+ * @param <fact> the CoordinateSystemFactory object whose data to assign to "this"
  *               factory.
  *
- * @return wxT("this") CoordinateSystemFactory with data of input factory fact.
+ * @return "this" CoordinateSystemFactory with data of input factory fact.
  */
 //------------------------------------------------------------------------------
 CoordinateSystemFactory&
@@ -124,7 +124,7 @@ CoordinateSystemFactory::operator= (const CoordinateSystemFactory& fact)
    Factory::operator=(fact);
    if (creatables.empty())
    {
-      creatables.push_back(wxT("CoordinateSystem"));  // default type for this factory
+      creatables.push_back("CoordinateSystem");  // default type for this factory
    }
    return *this;
 }

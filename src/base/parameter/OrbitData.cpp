@@ -30,9 +30,9 @@
 #include "Linear.hpp"
 #include "Keplerian.hpp"         // for Cartesian to Keplerian elements
 #include "AngleUtil.hpp"
-//#include wxT("SphericalRADEC.hpp")    // for friend CartesianToSphericalRADEC/AZFPA()
+//#include "SphericalRADEC.hpp"    // for friend CartesianToSphericalRADEC/AZFPA()
 #include "ModKeplerian.hpp"      // for friend KeplerianToModKeplerian()
-//#include wxT("Equinoctial.hpp")
+//#include "Equinoctial.hpp"
 #include "CelestialBody.hpp"
 #include "StringUtil.hpp"        // for ToString()
 #include "MessageInterface.hpp"
@@ -54,40 +54,40 @@ using namespace GmatMathUtil;
 
 CoordinateConverter OrbitData::mCoordConverter = CoordinateConverter();
 
-const wxString
+const std::string
 OrbitData::VALID_OBJECT_TYPE_LIST[OrbitDataObjectCount] =
 {
-   wxT("Spacecraft"),
-   wxT("SolarSystem"),
-   wxT("CoordinateSystem"),
-   wxT("SpacePoint")
+   "Spacecraft",
+   "SolarSystem",
+   "CoordinateSystem",
+   "SpacePoint"
 };
 
 
 const Real OrbitData::ORBIT_DATA_TOLERANCE     = 2.0e-10;
 
-const wxString OrbitData::VALID_ANGLE_PARAM_NAMES[HYPERBOLIC_DLA - SEMILATUS_RECTUM + 1] =
+const std::string OrbitData::VALID_ANGLE_PARAM_NAMES[HYPERBOLIC_DLA - SEMILATUS_RECTUM + 1] =
 {
-   wxT("SemilatusRectum"),
-   wxT("HMag"),
-   wxT("HX"),
-   wxT("HY"),
-   wxT("HZ"),
-   wxT("BetaAngle"),
-   wxT("RLA"),
-   wxT("DLA")
+   "SemilatusRectum",
+   "HMag",
+   "HX",
+   "HY",
+   "HZ",
+   "BetaAngle",
+   "RLA",
+   "DLA"
 };
 
-const wxString OrbitData::VALID_OTHER_KEPLERIAN_PARAM_NAMES[ENERGY - MM + 1] =
+const std::string OrbitData::VALID_OTHER_KEPLERIAN_PARAM_NAMES[ENERGY - MM + 1] =
 {
-   wxT("MeanMotion"),
-   wxT("VelApoapsis"),
-   wxT("VelPeriapsis"),
-   wxT("OrbitPeriod"),
-   wxT("RadApoapsis"),
-   wxT("RadPeriapsis"),
-   wxT("C3Energy"),
-   wxT("Energy")
+   "MeanMotion",
+   "VelApoapsis",
+   "VelPeriapsis",
+   "OrbitPeriod",
+   "RadApoapsis",
+   "RadPeriapsis",
+   "C3Energy",
+   "Energy"
 };
 
 
@@ -96,13 +96,13 @@ const wxString OrbitData::VALID_OTHER_KEPLERIAN_PARAM_NAMES[ENERGY - MM + 1] =
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// OrbitData(const wxString &name = wxT(""))
+// OrbitData(const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Constructor.
  */
 //------------------------------------------------------------------------------
-OrbitData::OrbitData(const wxString &name)
+OrbitData::OrbitData(const std::string &name)
    : RefData(name),
    stateTypeId (-1)
 {
@@ -139,7 +139,7 @@ OrbitData::OrbitData(const OrbitData &data)
 {
    #ifdef DEBUG_CLONE
    MessageInterface::ShowMessage
-      (wxT("OrbitData::OrbitData copy constructor called\n"));
+      ("OrbitData::OrbitData copy constructor called\n");
    #endif
    
    mCartState = data.mCartState;
@@ -210,7 +210,7 @@ OrbitData& OrbitData::operator= (const OrbitData &right)
 OrbitData::~OrbitData()
 {
    #ifdef DEBUG_ORBITDATA_DESTRUCTOR
-   MessageInterface::ShowMessage(wxT("OrbitData::~OrbitData()\n"));
+   MessageInterface::ShowMessage("OrbitData::~OrbitData()\n");
    #endif
 }
 
@@ -222,7 +222,7 @@ void OrbitData::SetReal(Integer item, Real rval)
 {
    #if DEBUG_ORBITDATA_SET
    MessageInterface::ShowMessage
-      (wxT("OrbitData::SetReal() item=%d, rval=%f\n"), item, rval);
+      ("OrbitData::SetReal() item=%d, rval=%f\n", item, rval);
    #endif
    
    if (mSpacecraft == NULL)
@@ -231,27 +231,27 @@ void OrbitData::SetReal(Integer item, Real rval)
    if (mSpacecraft == NULL)
    {
       MessageInterface::ShowMessage
-         (wxT("*** INTERNAL ERROR *** Cannot find Spacecraft object so returning %f\n"),
+         ("*** INTERNAL ERROR *** Cannot find Spacecraft object so returning %f\n",
           GmatOrbitConstants::ORBIT_REAL_UNDEFINED);
    }
    
    CoordinateSystem *satCS =
-      (CoordinateSystem*)mSpacecraft->GetRefObject(Gmat::COORDINATE_SYSTEM, wxT(""));
+      (CoordinateSystem*)mSpacecraft->GetRefObject(Gmat::COORDINATE_SYSTEM, "");
    
    #if DEBUG_ORBITDATA_SET
    MessageInterface::ShowMessage
-      (wxT("   Parameter CS Origin = '%s'\n"), mOutCoordSystem->GetOriginName().c_str());
+      ("   Parameter CS Origin = '%s'\n", mOutCoordSystem->GetOriginName().c_str());
    MessageInterface::ShowMessage
-      (wxT("   Sat       CS Origin = '%s'\n"), satCS->GetOriginName().c_str());
+      ("   Sat       CS Origin = '%s'\n", satCS->GetOriginName().c_str());
    #endif
    
    if (mOutCoordSystem != satCS)
    {
       ParameterException pe;
-      pe.SetDetails(wxT("Currently GMAT cannot set %s; the spacecraft '%s' ")
-                    wxT("requires values to be in the '%s' coordinate system (setting ")
-                    wxT("values in different coordinate systems will be implemented in ")
-                    wxT("future builds)"),  mName.c_str(), mSpacecraft->GetName().c_str(),
+      pe.SetDetails("Currently GMAT cannot set %s; the spacecraft '%s' "
+                    "requires values to be in the '%s' coordinate system (setting "
+                    "values in different coordinate systems will be implemented in "
+                    "future builds)",  mName.c_str(), mSpacecraft->GetName().c_str(),
                     satCS->GetName().c_str());
       throw pe;
    }
@@ -260,25 +260,25 @@ void OrbitData::SetReal(Integer item, Real rval)
    switch (item)
    {
    case PX:
-      mSpacecraft->SetRealParameter(mSpacecraft->GetParameterID(wxT("X")), rval);
+      mSpacecraft->SetRealParameter(mSpacecraft->GetParameterID("X"), rval);
       break;
    case PY:
-      mSpacecraft->SetRealParameter(mSpacecraft->GetParameterID(wxT("Y")), rval);
+      mSpacecraft->SetRealParameter(mSpacecraft->GetParameterID("Y"), rval);
       break;
    case PZ:
-      mSpacecraft->SetRealParameter(mSpacecraft->GetParameterID(wxT("Z")), rval);
+      mSpacecraft->SetRealParameter(mSpacecraft->GetParameterID("Z"), rval);
       break;
    case VX:
-      mSpacecraft->SetRealParameter(mSpacecraft->GetParameterID(wxT("VX")), rval);
+      mSpacecraft->SetRealParameter(mSpacecraft->GetParameterID("VX"), rval);
       break;
    case VY:
-      mSpacecraft->SetRealParameter(mSpacecraft->GetParameterID(wxT("VY")), rval);
+      mSpacecraft->SetRealParameter(mSpacecraft->GetParameterID("VY"), rval);
       break;
    case VZ:
-      mSpacecraft->SetRealParameter(mSpacecraft->GetParameterID(wxT("VZ")), rval);
+      mSpacecraft->SetRealParameter(mSpacecraft->GetParameterID("VZ"), rval);
       break;
    default:
-      throw ParameterException(wxT("OrbitData::SetReal() Unknown parameter id: ") +
+      throw ParameterException("OrbitData::SetReal() Unknown parameter id: " +
                                GmatRealUtil::ToString(item));
    }
 }
@@ -291,7 +291,7 @@ void OrbitData::SetRvector6(const Rvector6 &val)
 {
    #if DEBUG_ORBITDATA_SET
    MessageInterface::ShowMessage
-      (wxT("OrbitData::SetRvector6() entered, rval=[%s]\n"), rval.ToString().c_str());
+      ("OrbitData::SetRvector6() entered, rval=[%s]\n", rval.ToString().c_str());
    #endif
    
    if (mSpacecraft == NULL)
@@ -300,7 +300,7 @@ void OrbitData::SetRvector6(const Rvector6 &val)
    if (mSpacecraft == NULL)
    {
       MessageInterface::ShowMessage
-         (wxT("*** INTERNAL ERROR *** Cannot find Spacecraft object so returning %f\n"),
+         ("*** INTERNAL ERROR *** Cannot find Spacecraft object so returning %f\n",
           GmatOrbitConstants::ORBIT_REAL_UNDEFINED);
    }
    
@@ -321,7 +321,7 @@ Rvector6 OrbitData::GetCartState()
    
    #ifdef DEBUG_ORBITDATA_RUN
    MessageInterface::ShowMessage
-      (wxT("OrbitData::GetCartState() '%s' mCartState=\n   %s\n"),
+      ("OrbitData::GetCartState() '%s' mCartState=\n   %s\n",
        mSpacecraft->GetName().c_str(), mCartState.ToString().c_str());
    #endif
    
@@ -333,10 +333,10 @@ Rvector6 OrbitData::GetCartState()
    if (mInternalCoordSystem == NULL || mOutCoordSystem == NULL)
    {
       MessageInterface::ShowMessage
-         (wxT("OrbitData::GetCartState() Internal CoordSystem or Output CoordSystem is NULL.\n"));
+         ("OrbitData::GetCartState() Internal CoordSystem or Output CoordSystem is NULL.\n");
       
       throw ParameterException
-         (wxT("OrbitData::GetCartState() internal or output CoordinateSystem is NULL.\n"));
+         ("OrbitData::GetCartState() internal or output CoordinateSystem is NULL.\n");
    }
    
    //-----------------------------------------------------------------
@@ -346,46 +346,46 @@ Rvector6 OrbitData::GetCartState()
    {
       #ifdef DEBUG_ORBITDATA_CONVERT
          MessageInterface::ShowMessage
-            (wxT("OrbitData::GetCartState() mOutCoordSystem:%s(%s), Axis addr=%d\n"),
+            ("OrbitData::GetCartState() mOutCoordSystem:%s(%s), Axis addr=%d\n",
              mOutCoordSystem->GetName().c_str(),
              mOutCoordSystem->GetTypeName().c_str(),
-             mOutCoordSystem->GetRefObject(Gmat::AXIS_SYSTEM, wxT("")));
-         if (mOutCoordSystem->AreAxesOfType(wxT("ObjectReferencedAxes")))
-               MessageInterface::ShowMessage(wxT("OrbitData::GetCartState() <-- ")
-                     wxT("mOutCoordSystem IS of type ObjectReferencedAxes!!!\n"));
+             mOutCoordSystem->GetRefObject(Gmat::AXIS_SYSTEM, ""));
+         if (mOutCoordSystem->AreAxesOfType("ObjectReferencedAxes"))
+               MessageInterface::ShowMessage("OrbitData::GetCartState() <-- "
+                     "mOutCoordSystem IS of type ObjectReferencedAxes!!!\n");
          else
-            MessageInterface::ShowMessage(wxT("OrbitData::GetCartState() <-- ")
-                  wxT("mOutCoordSystem IS NOT of type ObjectReferencedAxes!!!\n"));
+            MessageInterface::ShowMessage("OrbitData::GetCartState() <-- "
+                  "mOutCoordSystem IS NOT of type ObjectReferencedAxes!!!\n");
          MessageInterface::ShowMessage
-            (wxT("OrbitData::GetCartState() <-- Before convert: mCartEpoch=%f\n")
-                  wxT("state = %s\n"), mCartEpoch, mCartState.ToString().c_str());
+            ("OrbitData::GetCartState() <-- Before convert: mCartEpoch=%f\n"
+                  "state = %s\n", mCartEpoch, mCartState.ToString().c_str());
          MessageInterface::ShowMessage
-            (wxT("OrbitData::GetCartState() <-- firstTimeEpochWarning = %s\n"),
-             (firstTimeEpochWarning? wxT("true") : wxT("false")));
+            ("OrbitData::GetCartState() <-- firstTimeEpochWarning = %s\n",
+             (firstTimeEpochWarning? "true" : "false"));
 
       #endif
 
-      if ((mOutCoordSystem->AreAxesOfType(wxT("ObjectReferencedAxes"))) && !firstTimeEpochWarning)
+      if ((mOutCoordSystem->AreAxesOfType("ObjectReferencedAxes")) && !firstTimeEpochWarning)
       {
          GmatBase *objRefOrigin = mOutCoordSystem->GetOrigin();
-         if (objRefOrigin->IsOfType(wxT("Spacecraft")))
+         if (objRefOrigin->IsOfType("Spacecraft"))
          {
-            wxString objRefScName = ((Spacecraft*) objRefOrigin)->GetName();
+            std::string objRefScName = ((Spacecraft*) objRefOrigin)->GetName();
             if (objRefScName != mSpacecraft->GetName())
             {
                // Get the epochs of the spacecraft to see if they are different
-               Real scEpoch   = mSpacecraft->GetRealParameter(wxT("A1Epoch"));
-               Real origEpoch = ((Spacecraft*) objRefOrigin)->GetRealParameter(wxT("A1Epoch"));
+               Real scEpoch   = mSpacecraft->GetRealParameter("A1Epoch");
+               Real origEpoch = ((Spacecraft*) objRefOrigin)->GetRealParameter("A1Epoch");
                #ifdef DEBUG_ORBITDATA_OBJREF_EPOCH
-                  MessageInterface::ShowMessage(wxT("obj ref cs sc epoch = %12.10f\n"), origEpoch);
-                  MessageInterface::ShowMessage(wxT("   and the sc epoch = %12.10f\n"), scEpoch);
+                  MessageInterface::ShowMessage("obj ref cs sc epoch = %12.10f\n", origEpoch);
+                  MessageInterface::ShowMessage("   and the sc epoch = %12.10f\n", scEpoch);
                #endif
                if (!GmatMathUtil::IsEqual(scEpoch, origEpoch, ORBIT_DATA_TOLERANCE))
                {
-                  wxString errmsg = wxT("Warning:  In Coordinate System \"");
-                  errmsg += mOutCoordSystem->GetName() + wxT("\", \"");
-                  errmsg += mSpacecraft->GetName() + wxT("\" and \"");
-                  errmsg += objRefScName + wxT("\" have different epochs.\n");
+                  std::string errmsg = "Warning:  In Coordinate System \"";
+                  errmsg += mOutCoordSystem->GetName() + "\", \"";
+                  errmsg += mSpacecraft->GetName() + "\" and \"";
+                  errmsg += objRefScName + "\" have different epochs.\n";
 //                  MessageInterface::PopupMessage(Gmat::WARNING_, errmsg);
                   MessageInterface::ShowMessage(errmsg);
                   firstTimeEpochWarning = true;
@@ -397,7 +397,7 @@ Rvector6 OrbitData::GetCartState()
       try
       {
          #ifdef DEBUG_ORBITDATA_CONVERT
-            MessageInterface::ShowMessage(wxT("    --> Converting from %s to %s\n\n"),
+            MessageInterface::ShowMessage("    --> Converting from %s to %s\n\n",
                   mInternalCoordSystem->GetName().c_str(),
                   mOutCoordSystem->GetName().c_str());
          #endif
@@ -405,18 +405,18 @@ Rvector6 OrbitData::GetCartState()
                                  mCartState, mOutCoordSystem, true);
          #ifdef DEBUG_ORBITDATA_CONVERT
             MessageInterface::ShowMessage
-               (wxT("OrbitData::GetCartState() --> After  convert: mCartEpoch=%f\n")
-                wxT("state = %s\n"), mCartEpoch, mCartState.ToString().c_str());
+               ("OrbitData::GetCartState() --> After  convert: mCartEpoch=%f\n"
+                "state = %s\n", mCartEpoch, mCartState.ToString().c_str());
          #endif
       }
       catch (BaseException &e)
       {
          MessageInterface::ShowMessage
-            (wxT("OrbitData::GetCartState() Failed to convert to %s coordinate system.\n   %s\n"),
+            ("OrbitData::GetCartState() Failed to convert to %s coordinate system.\n   %s\n",
              mOutCoordSystem->GetName().c_str(), e.GetFullMessage().c_str());
-         wxString errmsg = wxT("OrbitData::GetCartState() Failed to convert to ") ;
-         errmsg += mOutCoordSystem->GetName() + wxT(" coordinate system.\n");
-         errmsg += wxT("Message: ") + e.GetFullMessage() + wxT("\n");
+         std::string errmsg = "OrbitData::GetCartState() Failed to convert to " ;
+         errmsg += mOutCoordSystem->GetName() + " coordinate system.\n";
+         errmsg += "Message: " + e.GetFullMessage() + "\n";
          throw ParameterException(errmsg);
       }
    }
@@ -434,7 +434,7 @@ Rvector6 OrbitData::GetKepState()
       InitializeRefObjects();
 
    #ifdef DEBUG_ORBITDATA_STATE
-   MessageInterface::ShowMessage(wxT("rbitData::GetKepState() from SC mKepState=%s\n"),
+   MessageInterface::ShowMessage("rbitData::GetKepState() from SC mKepState=%s\n",
                                   mKepState.ToString().c_str());
    #endif
    
@@ -443,7 +443,7 @@ Rvector6 OrbitData::GetKepState()
    mKepState = Keplerian::CartesianToKeplerian(mGravConst, state);
 
    #ifdef DEBUG_ORBITDATA_KEP_STATE
-   MessageInterface::ShowMessage(wxT("OrbitData::GetKepState() mKepState=%s\n"),
+   MessageInterface::ShowMessage("OrbitData::GetKepState() mKepState=%s\n",
                                  mKepState.ToString().c_str());
    #endif
    
@@ -480,11 +480,11 @@ Rvector6 OrbitData::GetSphRaDecState()
    // Call GetCartState() to convert to parameter coord system first
    Rvector6 state = GetCartState();
 //   mSphRaDecState = CartesianToSphericalRADEC(state);
-   mSphRaDecState = stateConverter.FromCartesian(state, wxT("SphericalRADEC"));
+   mSphRaDecState = stateConverter.FromCartesian(state, "SphericalRADEC");
 
    #ifdef DEBUG_ORBITDATA_STATE
    MessageInterface::ShowMessage
-      (wxT("OrbitData::GetSphRaDecState() mSphRaDecState=\n   %s\n"),
+      ("OrbitData::GetSphRaDecState() mSphRaDecState=\n   %s\n",
        mSphRaDecState.ToString().c_str());
    #endif
    
@@ -503,7 +503,7 @@ Rvector6 OrbitData::GetSphAzFpaState()
    // Call GetCartState() to convert to parameter coord system first
    Rvector6 state = GetCartState();
    //   mSphAzFpaState = CartesianToSphericalAZFPA(state);
-   mSphAzFpaState = stateConverter.FromCartesian(state, wxT("SphericalAZFPA"));
+   mSphAzFpaState = stateConverter.FromCartesian(state, "SphericalAZFPA");
 
    
    return mSphAzFpaState;
@@ -522,7 +522,7 @@ Rvector6 OrbitData::GetEquinState()
    Rvector6 state = GetCartState();
 //   Rvector6 mEquinState = CartesianToEquinoctial(state, mGravConst);
    stateConverter.SetMu(mGravConst);
-   Rvector6 mEquinState = stateConverter.FromCartesian(state, wxT("Equinoctial"));
+   Rvector6 mEquinState = stateConverter.FromCartesian(state, "Equinoctial");
    
    return mEquinState;
 }
@@ -538,14 +538,14 @@ Rvector6 OrbitData::GetEquinState()
 Real OrbitData::GetCartReal(Integer item)
 {
    #ifdef DEBUG_ORBITDATA_RUN
-   MessageInterface::ShowMessage(wxT("OrbitData::GetCartReal() item=%d\n"), item);
+   MessageInterface::ShowMessage("OrbitData::GetCartReal() item=%d\n", item);
    #endif
    
    Rvector6 state = GetCartState();
    if (item >= PX && item <= VZ)
       return mCartState[item];
    else
-      throw ParameterException(wxT("OrbitData::GetCartReal() Unknown parameter id: ") +
+      throw ParameterException("OrbitData::GetCartReal() Unknown parameter id: " +
                                GmatRealUtil::ToString(item));
 }
 
@@ -560,12 +560,12 @@ Real OrbitData::GetCartReal(Integer item)
 Real OrbitData::GetKepReal(Integer item)
 {
    #ifdef DEBUG_ORBITDATA_RUN
-   MessageInterface::ShowMessage(wxT("OrbitData::GetKepReal() item=%d\n"), item);
+   MessageInterface::ShowMessage("OrbitData::GetKepReal() item=%d\n", item);
    #endif
    
    Rvector6 state = GetCartState();
 
-   if (mOriginDep && mOrigin->GetName() != wxT("Earth"))
+   if (mOriginDep && mOrigin->GetName() != "Earth")
    {
       state = state - mOrigin->GetMJ2000State(mCartEpoch);
    }
@@ -576,8 +576,8 @@ Real OrbitData::GetKepReal(Integer item)
    
    if (rMag < GmatOrbitConstants::KEP_ZERO_TOL)
       throw ParameterException
-         (wxT("OrbitData::GetKepReal(") + GmatRealUtil::ToString(item) +
-          wxT(") position vector is zero. pos: ") + pos.ToString() + wxT(" vel: ") +
+         ("OrbitData::GetKepReal(" + GmatRealUtil::ToString(item) +
+          ") position vector is zero. pos: " + pos.ToString() + " vel: " +
           vel.ToString());
    
    switch (item)
@@ -595,14 +595,14 @@ Real OrbitData::GetKepReal(Integer item)
    case MA:
    {
       #ifdef DEBUG_MA
-      MessageInterface::ShowMessage(wxT("In OrbitData, computing MA -------\n"));
+      MessageInterface::ShowMessage("In OrbitData, computing MA -------\n");
       #endif
       return Keplerian::CartesianToMA(mGravConst, pos, vel);
    }
    case HA:
    {
       #ifdef DEBUG_HA
-      MessageInterface::ShowMessage(wxT("In OrbitData, computing HA -------\n"));
+      MessageInterface::ShowMessage("In OrbitData, computing HA -------\n");
       #endif
       return Keplerian::CartesianToHA(mGravConst, pos, vel);
    }
@@ -617,7 +617,7 @@ Real OrbitData::GetKepReal(Integer item)
       return Keplerian::CartesianToAOP(mGravConst, pos, vel);
       
    default:
-      throw ParameterException(wxT("OrbitData::GetKepReal() Unknown parameter id: ") +
+      throw ParameterException("OrbitData::GetKepReal() Unknown parameter id: " +
                                GmatRealUtil::ToString(item));
    }
 }
@@ -633,12 +633,12 @@ Real OrbitData::GetKepReal(Integer item)
 Real OrbitData::GetOtherKepReal(Integer item)
 {
    #ifdef DEBUG_ORBITDATA_RUN
-   MessageInterface::ShowMessage(wxT("OrbitData::GetOtherKepReal() item=%d\n"), item);
+   MessageInterface::ShowMessage("OrbitData::GetOtherKepReal() item=%d\n", item);
    #endif
    
    Rvector6 state = GetCartState();
    
-   if (mOriginDep && mOrigin->GetName() != wxT("Earth"))
+   if (mOriginDep && mOrigin->GetName() != "Earth")
    {
       state = state - mOrigin->GetMJ2000State(mCartEpoch);
    }
@@ -658,14 +658,14 @@ Real OrbitData::GetOtherKepReal(Integer item)
 Real OrbitData::GetSphRaDecReal(Integer item)
 {
    #ifdef DEBUG_ORBITDATA_RUN
-   MessageInterface::ShowMessage(wxT("OrbitData::GetSphRaDecReal() item=%d\n"), item);
+   MessageInterface::ShowMessage("OrbitData::GetSphRaDecReal() item=%d\n", item);
    #endif
    
    Rvector6 state = GetSphRaDecState();
 
    #ifdef DEBUG_ORBITDATA_RUN
    MessageInterface::ShowMessage
-      (wxT("OrbitData::GetSphRaDecReal() item=%d state=%s\n"),
+      ("OrbitData::GetSphRaDecReal() item=%d state=%s\n",
        item, state.ToString().c_str());
    #endif
    
@@ -673,8 +673,8 @@ Real OrbitData::GetSphRaDecReal(Integer item)
    {
    case RD_RMAG:
       {
-         // if orgin is wxT("Earth") just return default
-         if (mOrigin->GetName() == wxT("Earth"))
+         // if orgin is "Earth" just return default
+         if (mOrigin->GetName() == "Earth")
             return mSphRaDecState[RD_RMAG];
          else
             return GetPositionMagnitude(mOrigin);
@@ -687,7 +687,7 @@ Real OrbitData::GetSphRaDecReal(Integer item)
       return mSphRaDecState[item];
    default:
       throw ParameterException
-         (wxT("OrbitData::GetSphRaDecReal() Unknown parameter name: ") +
+         ("OrbitData::GetSphRaDecReal() Unknown parameter name: " +
           GmatRealUtil::ToString(item));
    }
 }
@@ -703,14 +703,14 @@ Real OrbitData::GetSphRaDecReal(Integer item)
 Real OrbitData::GetSphAzFpaReal(Integer item)
 {
    #ifdef DEBUG_ORBITDATA_RUN
-   MessageInterface::ShowMessage(wxT("OrbitData::GetSphAzFpaReal() item=%d\n"), item);
+   MessageInterface::ShowMessage("OrbitData::GetSphAzFpaReal() item=%d\n", item);
    #endif
    
    Rvector6 state = GetSphAzFpaState();
 
    #ifdef DEBUG_ORBITDATA_RUN
    MessageInterface::ShowMessage
-      (wxT("OrbitData::GetSphAzFpaReal() item=%s state=%s\n"),
+      ("OrbitData::GetSphAzFpaReal() item=%s state=%s\n",
        item, state.ToString().c_str());
    #endif
 
@@ -718,7 +718,7 @@ Real OrbitData::GetSphAzFpaReal(Integer item)
       return mSphAzFpaState[item];
    else
    {
-      throw ParameterException(wxT("OrbitData::GetSphAzFpaReal() Unknown parameter ID: ") +
+      throw ParameterException("OrbitData::GetSphAzFpaReal() Unknown parameter ID: " +
                                GmatRealUtil::ToString(item));
    }
 }
@@ -734,7 +734,7 @@ Real OrbitData::GetSphAzFpaReal(Integer item)
 Real OrbitData::GetAngularReal(Integer item)
 {
    #ifdef DEBUG_ORBITDATA_RUN
-   MessageInterface::ShowMessage(wxT("OrbitData::GetAngularReal() item=%d\n"), item);
+   MessageInterface::ShowMessage("OrbitData::GetAngularReal() item=%d\n", item);
    #endif
    
    Rvector6 state = GetCartState();
@@ -742,7 +742,7 @@ Real OrbitData::GetAngularReal(Integer item)
 
    #ifdef DEBUG_ORBITDATA_RUN
    MessageInterface::ShowMessage
-      (wxT("OrbitData::GetAngularReal() item=%d state=%s\n"),
+      ("OrbitData::GetAngularReal() item=%d state=%s\n",
        item, state.ToString().c_str());
    #endif
    
@@ -761,11 +761,11 @@ Real OrbitData::GetAngularReal(Integer item)
 Real OrbitData::GetOtherAngleReal(Integer item)
 {
    #ifdef DEBUG_ORBITDATA_RUN
-   MessageInterface::ShowMessage(wxT("OrbitData::GetOtherAngleReal() item=%d\n"), item);
+   MessageInterface::ShowMessage("OrbitData::GetOtherAngleReal() item=%d\n", item);
    #endif
    
    Rvector6 state;
-   if (mOrigin->GetName() != wxT("Earth"))
+   if (mOrigin->GetName() != "Earth")
       state = GetRelativeCartState(mOrigin);
    else
       state = GetCartState();
@@ -791,12 +791,12 @@ Real OrbitData::GetOtherAngleReal(Integer item)
 Real OrbitData::GetEquinReal(Integer item)
 {
    #ifdef DEBUG_ORBITDATA_RUN
-   MessageInterface::ShowMessage(wxT("OrbitData::GetEquinReal() item=%d\n"), item);
+   MessageInterface::ShowMessage("OrbitData::GetEquinReal() item=%d\n", item);
    #endif
    
    Rvector6 state = GetCartState();
 
-   if (mOriginDep && mOrigin->GetName() != wxT("Earth"))
+   if (mOriginDep && mOrigin->GetName() != "Earth")
    {
       state = state - mOrigin->GetMJ2000State(mCartEpoch);
    }
@@ -807,8 +807,8 @@ Real OrbitData::GetEquinReal(Integer item)
    
    if (rMag < GmatOrbitConstants::KEP_ZERO_TOL)
       throw ParameterException
-         (wxT("OrbitData::GetEquiReal(") + GmatRealUtil::ToString(item) +
-          wxT(") position vector is zero. pos: ") + pos.ToString() + wxT(" vel: ") +
+         ("OrbitData::GetEquiReal(" + GmatRealUtil::ToString(item) +
+          ") position vector is zero. pos: " + pos.ToString() + " vel: " +
           vel.ToString());
    
    switch (item)
@@ -842,7 +842,7 @@ Real OrbitData::GetEquinReal(Integer item)
       }
       
    default:
-      throw ParameterException(wxT("OrbitData::GetEquinReal() Unknown parameter id: ") +
+      throw ParameterException("OrbitData::GetEquinReal() Unknown parameter id: " +
                                GmatRealUtil::ToString(item));
    }
 }
@@ -859,8 +859,8 @@ const Rmatrix66& OrbitData::GetStmRmat66(Integer item)
 {
    #ifdef DEBUG_SCDATA_GET
    MessageInterface::ShowMessage
-      (wxT("OrbitData::GetStmRmat66() entered, mSpacecraft=<%p>'%s'\n"),
-       mSpacecraft, mSpacecraft ? mSpacecraft->GetName().c_str() : wxT("NULL"));
+      ("OrbitData::GetStmRmat66() entered, mSpacecraft=<%p>'%s'\n",
+       mSpacecraft, mSpacecraft ? mSpacecraft->GetName().c_str() : "NULL");
    #endif
    
    if (mSpacecraft == NULL)
@@ -870,13 +870,13 @@ const Rmatrix66& OrbitData::GetStmRmat66(Integer item)
    {
    case ORBIT_STM:
       {
-         mSTM = mSpacecraft->GetRmatrixParameter(wxT("OrbitSTM"));
+         mSTM = mSpacecraft->GetRmatrixParameter("OrbitSTM");
          return mSTM;
       }
    default:
       // otherwise, there is an error   
       throw ParameterException
-         (wxT("OrbitData::GetStmRmat66() Unknown parameter id: ") +
+         ("OrbitData::GetStmRmat66() Unknown parameter id: " +
           GmatStringUtil::ToString(item));
    }
 }
@@ -894,7 +894,7 @@ const Rmatrix33& OrbitData::GetStmRmat33(Integer item)
    if (mSpacecraft == NULL)
       InitializeRefObjects();
    
-   mSTM = mSpacecraft->GetRmatrixParameter(wxT("OrbitSTM"));
+   mSTM = mSpacecraft->GetRmatrixParameter("OrbitSTM");
    
    switch (item)
    {
@@ -913,7 +913,7 @@ const Rmatrix33& OrbitData::GetStmRmat33(Integer item)
    default:
       // otherwise, there is an error   
       throw ParameterException
-         (wxT("OrbitData::GetStmRmat33() Unknown parameter id: ") +
+         ("OrbitData::GetStmRmat33() Unknown parameter id: " +
           GmatStringUtil::ToString(item));
    }
 }
@@ -923,9 +923,9 @@ const Rmatrix33& OrbitData::GetStmRmat33(Integer item)
 //-------------------------------------
 
 //------------------------------------------------------------------------------
-// virtual const wxString* GetValidObjectList() const
+// virtual const std::string* GetValidObjectList() const
 //------------------------------------------------------------------------------
-const wxString* OrbitData::GetValidObjectList() const
+const std::string* OrbitData::GetValidObjectList() const
 {
    return VALID_OBJECT_TYPE_LIST;
 }
@@ -1010,7 +1010,7 @@ Rvector6 OrbitData::GetRelativeCartState(SpacePoint *origin)
    
    #ifdef DEBUG_ORBITDATA_RUN
       MessageInterface::ShowMessage
-         (wxT("OrbitData::GetRelativeCartState() origin=%s, state=%s\n"),
+         ("OrbitData::GetRelativeCartState() origin=%s, state=%s\n",
           origin->GetName().c_str(), originState.ToString().c_str());
    #endif
       
@@ -1045,7 +1045,7 @@ Real OrbitData::GetPositionMagnitude(SpacePoint *origin)
    
    #ifdef DEBUG_ORBITDATA_RUN
       MessageInterface::ShowMessage
-         (wxT("OrbitData::GetPositionMagnitude() scPos=%s, originPos=%s, relPos=%s\n"),
+         ("OrbitData::GetPositionMagnitude() scPos=%s, originPos=%s, relPos=%s\n",
           scPos.ToString().c_str(), originPos.ToString().c_str(),
           relPos.ToString().c_str());
    #endif
@@ -1061,7 +1061,7 @@ Real OrbitData::GetPositionMagnitude(SpacePoint *origin)
 void OrbitData::InitializeRefObjects()
 {
    #ifdef DEBUG_ORBITDATA_INIT
-   MessageInterface::ShowMessage(wxT("OrbitData::InitializeRefObjects() entered.\n"));
+   MessageInterface::ShowMessage("OrbitData::InitializeRefObjects() entered.\n");
    #endif
    
    mSpacecraft =
@@ -1071,44 +1071,44 @@ void OrbitData::InitializeRefObjects()
    {
       #ifdef DEBUG_ORBITDATA_INIT
       MessageInterface::ShowMessage
-         (wxT("OrbitData::InitializeRefObjects() Cannot find spacecraft: ") +
-          GetRefObjectName(Gmat::SPACECRAFT) + wxT(".\n") +
-          wxT("Make sure Spacecraft is set to any internal parameters.\n"));
+         ("OrbitData::InitializeRefObjects() Cannot find spacecraft: " +
+          GetRefObjectName(Gmat::SPACECRAFT) + ".\n" +
+          "Make sure Spacecraft is set to any internal parameters.\n");
       #endif
       
       throw ParameterException
-         (wxT("Cannot find spacecraft: ") + GetRefObjectName(Gmat::SPACECRAFT));
+         ("Cannot find spacecraft: " + GetRefObjectName(Gmat::SPACECRAFT));
    }
    
    if (stateTypeId == -1)
-      stateTypeId = mSpacecraft->GetParameterID(wxT("DisplayStateType"));
+      stateTypeId = mSpacecraft->GetParameterID("DisplayStateType");
    
    mSolarSystem =
       (SolarSystem*)FindFirstObject(VALID_OBJECT_TYPE_LIST[SOLAR_SYSTEM]);
    
    if (mSolarSystem == NULL)
       throw ParameterException
-         (wxT("OrbitData::InitializeRefObjects() Cannot find SolarSystem object\n"));
+         ("OrbitData::InitializeRefObjects() Cannot find SolarSystem object\n");
    
    if (mInternalCoordSystem == NULL)
       throw ParameterException
-         (wxT("OrbitData::InitializeRefObjects() Cannot find internal ")
-          wxT("CoordinateSystem object\n"));
+         ("OrbitData::InitializeRefObjects() Cannot find internal "
+          "CoordinateSystem object\n");
    
    //-----------------------------------------------------------------
    // if dependent body name exist and it is a CelestialBody,
    // it is origin dependent parameter, set new gravity constant.
    //-----------------------------------------------------------------
-   wxString originName =
+   std::string originName =
       FindFirstObjectName(GmatBase::GetObjectType(VALID_OBJECT_TYPE_LIST[SPACE_POINT]));
    
    mOriginDep = false;
    
-   if (originName != wxT(""))
+   if (originName != "")
    {
       #ifdef DEBUG_ORBITDATA_INIT
       MessageInterface::ShowMessage
-         (wxT("OrbitData::InitializeRefObjects() getting originName: %s pointer.\n"),
+         ("OrbitData::InitializeRefObjects() getting originName: %s pointer.\n",
           originName.c_str());
       #endif
       
@@ -1117,7 +1117,7 @@ void OrbitData::InitializeRefObjects()
       
       if (!mOrigin)
          throw InvalidDependencyException
-            (wxT(" is a central body dependent parameter."));
+            (" is a central body dependent parameter.");
       
       // override gravity constant if origin is CelestialBody
       if (mOrigin->IsOfType(Gmat::CELESTIAL_BODY))
@@ -1138,12 +1138,12 @@ void OrbitData::InitializeRefObjects()
       {
          #ifdef DEBUG_ORBITDATA_INIT
          MessageInterface::ShowMessage
-            (wxT("OrbitData::InitializeRefObjects() Cannot find output ")
-             wxT("CoordinateSystem object\n"));
+            ("OrbitData::InitializeRefObjects() Cannot find output "
+             "CoordinateSystem object\n");
          #endif
          
          throw ParameterException
-            (wxT("OrbitData::InitializeRefObjects() Cannot find coordinate system.\n"));
+            ("OrbitData::InitializeRefObjects() Cannot find coordinate system.\n");
       }
       
       
@@ -1155,13 +1155,13 @@ void OrbitData::InitializeRefObjects()
       {
          #ifdef DEBUG_ORBITDATA_INIT
          MessageInterface::ShowMessage
-            (wxT("OrbitData::InitializeRefObjects() origin not found: ") +
-             mOutCoordSystem->GetOriginName() + wxT("\n"));
+            ("OrbitData::InitializeRefObjects() origin not found: " +
+             mOutCoordSystem->GetOriginName() + "\n");
          #endif
       
          throw ParameterException
-            (wxT("OrbitData::InitializeRefObjects() The origin of CoordinateSystem \"") +
-             mOutCoordSystem->GetOriginName() + wxT("\" is NULL"));
+            ("OrbitData::InitializeRefObjects() The origin of CoordinateSystem \"" +
+             mOutCoordSystem->GetOriginName() + "\" is NULL");
       }
       
       // get gravity constant if out coord system origin is CelestialBody
@@ -1171,10 +1171,10 @@ void OrbitData::InitializeRefObjects()
    
    #ifdef DEBUG_ORBITDATA_INIT
    MessageInterface::ShowMessage
-      (wxT("OrbitData::InitializeRefObjects() exiting, mOrigin.Name=%s, mGravConst=%f, ")
-       wxT("mOriginDep=%d\n"),  mOrigin->GetName().c_str(), mGravConst, mOriginDep);
+      ("OrbitData::InitializeRefObjects() exiting, mOrigin.Name=%s, mGravConst=%f, "
+       "mOriginDep=%d\n",  mOrigin->GetName().c_str(), mGravConst, mOriginDep);
    MessageInterface::ShowMessage
-      (wxT("   mSpacecraft=<%p> '%s', mSolarSystem=<%p>, mOutCoordSystem=<%p>, mOrigin=<%p>\n"),
+      ("   mSpacecraft=<%p> '%s', mSolarSystem=<%p>, mOutCoordSystem=<%p>, mOrigin=<%p>\n",
        mSpacecraft, mSpacecraft->GetName().c_str(),mSolarSystem, mOutCoordSystem, mOrigin);
    #endif
 }

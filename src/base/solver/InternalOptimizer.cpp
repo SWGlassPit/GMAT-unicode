@@ -34,10 +34,10 @@
  * Default constructor
  */
 //------------------------------------------------------------------------------
-InternalOptimizer::InternalOptimizer(wxString type, wxString name) :
+InternalOptimizer::InternalOptimizer(std::string type, std::string name) :
    Optimizer      (type, name)
 {
-   objectTypeNames.push_back(wxT("InternalOptimizer"));
+   objectTypeNames.push_back("InternalOptimizer");
 }
 
 //------------------------------------------------------------------------------

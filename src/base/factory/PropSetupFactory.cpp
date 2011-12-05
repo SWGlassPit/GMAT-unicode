@@ -30,7 +30,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  CreatePropSetup(const wxString &ofType, const wxString &withName)
+//  CreatePropSetup(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
 * This method creates and returns an object of the requested PropSetup class
@@ -42,8 +42,8 @@
  *       parameter may be added later.
  */
 //------------------------------------------------------------------------------
-PropSetup* PropSetupFactory::CreatePropSetup(const wxString &ofType,
-                                             const wxString &withName)
+PropSetup* PropSetupFactory::CreatePropSetup(const std::string &ofType,
+                                             const std::string &withName)
 {
    return new PropSetup(withName);
 }
@@ -65,7 +65,7 @@ PropSetupFactory::PropSetupFactory()
 {
    if (creatables.empty())
    {
-      wxString propStr = wxT("PropSetup"); 
+      std::string propStr = "PropSetup"; 
       creatables.push_back(propStr);  // default type for this factory
    }
 }
@@ -87,7 +87,7 @@ PropSetupFactory::PropSetupFactory(StringArray createList)
 {
    if (creatables.empty())
    {
-      wxString propStr = wxT("PropSetup");
+      std::string propStr = "PropSetup";
       creatables.push_back(propStr);  // default type for this factory
    }
 }
@@ -99,7 +99,7 @@ PropSetupFactory::PropSetupFactory(StringArray createList)
  * This method creates an object of the class PropSetupFactory
  * (copy constructor).
  *
- * @param <fact> the factory object to copy to wxT("this") factory.
+ * @param <fact> the factory object to copy to "this" factory.
  */
 //------------------------------------------------------------------------------
 PropSetupFactory::PropSetupFactory(const PropSetupFactory &fact) 
@@ -108,7 +108,7 @@ PropSetupFactory::PropSetupFactory(const PropSetupFactory &fact)
 {
    if (creatables.empty())
    {
-      wxString propStr = wxT("PropSetup");
+      std::string propStr = "PropSetup";
       creatables.push_back(propStr);  // default type for this factory
    }
 }
@@ -119,10 +119,10 @@ PropSetupFactory::PropSetupFactory(const PropSetupFactory &fact)
 /**
 * Assignment operator for the PropSetupFactory class.
  *
- * @param <fact> the PropSetupFactory object whose data to assign to wxT("this")
+ * @param <fact> the PropSetupFactory object whose data to assign to "this"
  *               factory.
  *
- * @return wxT("this") PropSetupFactory with data of input factory fact.
+ * @return "this" PropSetupFactory with data of input factory fact.
  */
 //------------------------------------------------------------------------------
 PropSetupFactory& PropSetupFactory::operator= (const PropSetupFactory &fact)
@@ -130,7 +130,7 @@ PropSetupFactory& PropSetupFactory::operator= (const PropSetupFactory &fact)
    Factory::operator=(fact);
    if (creatables.empty())
    {
-      wxString propStr = wxT("PropSetup");
+      std::string propStr = "PropSetup";
       creatables.push_back(propStr);  // default type for this factory
    }
    return *this;

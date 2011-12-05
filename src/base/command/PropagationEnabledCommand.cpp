@@ -45,7 +45,7 @@
 #endif
 
 //------------------------------------------------------------------------------
-// PropagationEnabledCommand(const wxString &typeStr)
+// PropagationEnabledCommand(const std::string &typeStr)
 //------------------------------------------------------------------------------
 /**
  * Constructor
@@ -57,7 +57,7 @@
  * methods are implemented.
  */
 //------------------------------------------------------------------------------
-PropagationEnabledCommand::PropagationEnabledCommand(const wxString &typeStr)
+PropagationEnabledCommand::PropagationEnabledCommand(const std::string &typeStr)
 :
    GmatCommand          (typeStr),
    direction            (1.0),
@@ -78,7 +78,7 @@ PropagationEnabledCommand::PropagationEnabledCommand(const wxString &typeStr)
    em                   (NULL),
    publishOnStep        (true)
 {
-   objectTypeNames.push_back(wxT("PropagationEnabledCommand"));
+   objectTypeNames.push_back("PropagationEnabledCommand");
    physicsBasedCommand = true;
 }
 
@@ -280,7 +280,7 @@ bool PropagationEnabledCommand::Initialize()
       propObjects.clear();
 
 //      SpaceObject *so;
-      wxString pName;
+      std::string pName;
 //      GmatBase *mapObj = NULL;
 
       //// Ensure that we are using fresh objects when buffering stops
@@ -296,8 +296,8 @@ bool PropagationEnabledCommand::Initialize()
             {
                #ifdef DEBUG_MEMORY
                MemoryTracker::Instance()->Remove
-                  ((*ps), (*ps)->GetName(), wxT("PropagationEnabledCommand::")
-                        wxT("Initialize()"), wxT("deleting oldPs"));
+                  ((*ps), (*ps)->GetName(), "PropagationEnabledCommand::"
+                        "Initialize()", "deleting oldPs");
                #endif
                delete (*ps);
             }
@@ -312,7 +312,7 @@ bool PropagationEnabledCommand::Initialize()
 
       // Set the participant pointers
       #ifdef DEBUG_INITIALIZATION
-         MessageInterface::ShowMessage(wxT("Found %d lists of prop object names\n"),
+         MessageInterface::ShowMessage("Found %d lists of prop object names\n",
                propObjectNames.size());
       #endif
 
@@ -323,7 +323,7 @@ bool PropagationEnabledCommand::Initialize()
          ObjectArray els;
 
          #ifdef DEBUG_INITIALIZATION
-            MessageInterface::ShowMessage(wxT("List %d contains %d prop objects\n"),
+            MessageInterface::ShowMessage("List %d contains %d prop objects\n",
                   i+1, propObjectNames[i].size());
          #endif
 
@@ -347,22 +347,22 @@ bool PropagationEnabledCommand::Initialize()
 
          StringArray owners, elements;
          /// @todo Check to see if All and All.Epoch belong for all modes.
-         owners.push_back(wxT("All"));
-         elements.push_back(wxT("All.epoch"));
+         owners.push_back("All");
+         elements.push_back("All.epoch");
 
          for (StringArray::iterator j = names.begin(); j != names.end(); ++j)
          {
             GmatBase *obj = FindObject(*j);
             if (obj == NULL)
-               throw CommandException(wxT("Cannot find the object named ") + (*j) +
-                     wxT(" needed for propagation in the command\n") +
+               throw CommandException("Cannot find the object named " + (*j) +
+                     " needed for propagation in the command\n" +
                      GetGeneratingString());
             if (obj->IsOfType(Gmat::SPACEOBJECT))
             {
                objects->push_back((SpaceObject*)obj);
                #ifdef DEBUG_INITIALIZATION
-                  MessageInterface::ShowMessage(wxT("   Added the space object ")
-                        wxT("named %s\n"), obj->GetName().c_str());
+                  MessageInterface::ShowMessage("   Added the space object "
+                        "named %s\n", obj->GetName().c_str());
                #endif
 
                // Now load up the PSM
@@ -370,7 +370,7 @@ bool PropagationEnabledCommand::Initialize()
 
                SpaceObject *so = (SpaceObject*)obj;
                if (epochID == -1)
-                  epochID = so->GetParameterID(wxT("A1Epoch"));
+                  epochID = so->GetParameterID("A1Epoch");
 //               if (so->IsManeuvering())
 //                  finiteBurnActive = true;
 
@@ -388,8 +388,8 @@ bool PropagationEnabledCommand::Initialize()
             }
             #ifdef DEBUG_INITIALIZATION
                else
-                  MessageInterface::ShowMessage(wxT("   Found %s, not a space ")
-                        wxT("object\n"), obj->GetName().c_str());
+                  MessageInterface::ShowMessage("   Found %s, not a space "
+                        "object\n", obj->GetName().c_str());
             #endif
          }
 
@@ -403,11 +403,11 @@ bool PropagationEnabledCommand::Initialize()
          SetPropagationProperties(currentPSM);
 
          if (currentPSM->BuildState() == false)
-            throw CommandException(wxT("Could not build the state for the ")
-                  wxT("command \n") + generatingString);
+            throw CommandException("Could not build the state for the "
+                  "command \n" + generatingString);
          if (currentPSM->MapObjectsToVector() == false)
-            throw CommandException(wxT("Could not map state objects for the ")
-                  wxT("command\n") + generatingString);
+            throw CommandException("Could not map state objects for the "
+                  "command\n" + generatingString);
 
          currentODE->SetState(currentPSM->GetState());
 
@@ -427,8 +427,8 @@ bool PropagationEnabledCommand::Initialize()
 
          // Set spacecraft parameters for forces that need them
          if (currentODE->SetupSpacecraftData((ObjectArray*)objects, 0) <= 0)
-            throw PropagatorException(wxT("Propagate::Initialize -- ")
-                  wxT("ODE model cannot set spacecraft parameters"));
+            throw PropagatorException("Propagate::Initialize -- "
+                  "ODE model cannot set spacecraft parameters");
 
       }
 
@@ -439,10 +439,10 @@ bool PropagationEnabledCommand::Initialize()
 
       #ifdef DEBUG_INITIALIZATION
          if (retval == true)
-            MessageInterface::ShowMessage(wxT("PEC Initialize() succeeded\n"));
+            MessageInterface::ShowMessage("PEC Initialize() succeeded\n");
          else
             MessageInterface::ShowMessage(
-                  wxT("PEC Initialize() failed to initialize the PropSetups\n"));
+                  "PEC Initialize() failed to initialize the PropSetups\n");
       #endif
    }
 
@@ -492,7 +492,7 @@ bool PropagationEnabledCommand::PrepareToPropagate()
 {
    #ifdef DEBUG_INITIALIZATION
       MessageInterface::ShowMessage(
-            wxT("PropagationEnabledCommand::PrepareToPropagate() entered\n"));
+            "PropagationEnabledCommand::PrepareToPropagate() entered\n");
    #endif
    bool retval = false;
 
@@ -502,7 +502,7 @@ bool PropagationEnabledCommand::PrepareToPropagate()
    {
       #ifdef DEBUG_INITIALIZATION
          MessageInterface::ShowMessage(
-               wxT("   PrepareToPropagate() in hasFired state\n"));
+               "   PrepareToPropagate() in hasFired state\n");
       #endif
 
 //      // Handle the transient forces
@@ -528,7 +528,7 @@ bool PropagationEnabledCommand::PrepareToPropagate()
 //                  {
 //                     #ifdef DEBUG_TRANSIENT_FORCES
 //                     MessageInterface::ShowMessage
-//                        (wxT("Propagate::PrepareToPropagate() Adding transientForce<%p>'%s'\n"),
+//                        ("Propagate::PrepareToPropagate() Adding transientForce<%p>'%s'\n",
 //                         *i, (*i)->GetName().c_str());
 //                     #endif
 //                     prop[index]->GetODEModel()->AddForce(*i);
@@ -561,7 +561,7 @@ bool PropagationEnabledCommand::PrepareToPropagate()
       {
          if (propObjectNames[n].empty())
             throw CommandException(
-               wxT("Propagator has no associated space objects."));
+               "Propagator has no associated space objects.");
 
          GmatBase* sat1 = FindObject(*(propObjectNames[n].begin()));
          baseEpoch.push_back(sat1->GetRealParameter(epochID));
@@ -576,7 +576,7 @@ bool PropagationEnabledCommand::PrepareToPropagate()
    {
       #ifdef DEBUG_INITIALIZATION
          MessageInterface::ShowMessage(
-               wxT("PropagationEnabledCommand::PrepareToPropagate() first entry\n"));
+               "PropagationEnabledCommand::PrepareToPropagate() first entry\n");
       #endif
 
 //      // Set the prop state managers for the PropSetup ODEModels
@@ -585,7 +585,7 @@ bool PropagationEnabledCommand::PrepareToPropagate()
 //      {
 //         #ifdef DEBUG_INITIALIZATION
 //            MessageInterface::ShowMessage(
-//                  wxT("   Setting PSM on ODEModel for propagator %s\n"),
+//                  "   Setting PSM on ODEModel for propagator %s\n",
 //                  (*i)->GetName().c_str());
 //         #endif
 //
@@ -599,7 +599,7 @@ bool PropagationEnabledCommand::PrepareToPropagate()
 
       // Loop through the PropSetups and build the models
       #ifdef DEBUG_INITIALIZATION
-         MessageInterface::ShowMessage(wxT("   Looping through %d propagators\n"),
+         MessageInterface::ShowMessage("   Looping through %d propagators\n",
                propagators.size());
       #endif
       for (std::vector<PropSetup*>::iterator i=propagators.begin();
@@ -607,7 +607,7 @@ bool PropagationEnabledCommand::PrepareToPropagate()
       {
          #ifdef DEBUG_INITIALIZATION
             MessageInterface::ShowMessage(
-                  wxT("   Setting PSM on ODEModel for propagator %s\n"),
+                  "   Setting PSM on ODEModel for propagator %s\n",
                   (*i)->GetName().c_str());
          #endif
          ODEModel *ode = (*i)->GetODEModel();
@@ -616,7 +616,7 @@ bool PropagationEnabledCommand::PrepareToPropagate()
             // Build the ODE model
             ode->SetPropStateManager((*i)->GetPropStateManager());
             if (ode->BuildModelFromMap() == false)
-               throw CommandException(wxT("Unable to assemble the ODE model for ") +
+               throw CommandException("Unable to assemble the ODE model for " +
                      (*i)->GetName());
          }
       }
@@ -630,7 +630,7 @@ bool PropagationEnabledCommand::PrepareToPropagate()
       {
          #ifdef DEBUG_INITIALIZATION
             MessageInterface::ShowMessage(
-                  wxT("   Setting pointers for propagator %s\n"),
+                  "   Setting pointers for propagator %s\n",
                   propagators[n]->GetName().c_str());
          #endif
          elapsedTime.push_back(0.0);
@@ -642,7 +642,7 @@ bool PropagationEnabledCommand::PrepareToPropagate()
 
          #ifdef DEBUG_INITIALIZATION
             MessageInterface::ShowMessage(
-                  wxT("   Initializing propagator %s\n"),
+                  "   Initializing propagator %s\n",
                   propagators[n]->GetName().c_str());
          #endif
          p[n]->Initialize();
@@ -664,16 +664,16 @@ bool PropagationEnabledCommand::PrepareToPropagate()
    {
       #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Remove
-            (pubdata, wxT("pubdata"), wxT("Propagate::PrepareToPropagate()"),
-             wxT("deleting pub data"));
+            (pubdata, "pubdata", "Propagate::PrepareToPropagate()",
+             "deleting pub data");
       #endif
       delete [] pubdata;
    }
    pubdata = new Real[dim+1];
    #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (pubdata, wxT("pubdata"), wxT("Propagate::PrepareToPropagate()"),
-          wxT("pubdata = new Real[dim+1]"));
+         (pubdata, "pubdata", "Propagate::PrepareToPropagate()",
+          "pubdata = new Real[dim+1]");
    #endif
 
    // Publish the data
@@ -682,8 +682,8 @@ bool PropagationEnabledCommand::PrepareToPropagate()
 
    #ifdef DEBUG_PUBLISH_DATA
       MessageInterface::ShowMessage
-         (wxT("PropagationEnabledCommand::PrepareToPropagate() '%s' publishing initial %d data to ")
-          wxT("stream %d, 1st data = %f\n"), GetGeneratingString(Gmat::NO_COMMENTS).c_str(),
+         ("PropagationEnabledCommand::PrepareToPropagate() '%s' publishing initial %d data to "
+          "stream %d, 1st data = %f\n", GetGeneratingString(Gmat::NO_COMMENTS).c_str(),
           dim+1, streamID, pubdata[0]);
    #endif
 
@@ -691,7 +691,7 @@ bool PropagationEnabledCommand::PrepareToPropagate()
 
 #ifdef DEBUG_INITIALIZATION
    MessageInterface::ShowMessage(
-         wxT("PropagationEnabledCommand::PrepareToPropagate() finished\n"));
+         "PropagationEnabledCommand::PrepareToPropagate() finished\n");
 #endif
 
    return retval;
@@ -713,7 +713,7 @@ bool PropagationEnabledCommand::AssemblePropagators()
 {
    #ifdef DEBUG_INITIALIZATION
       MessageInterface::ShowMessage(
-            wxT("PropagationEnabledCommand::AssemblePropagators() entered\n"));
+            "PropagationEnabledCommand::AssemblePropagators() entered\n");
    #endif
    bool retval = true;
 
@@ -728,7 +728,7 @@ bool PropagationEnabledCommand::AssemblePropagators()
       {
          #ifdef DEBUG_INITIALIZATION
             MessageInterface::ShowMessage(
-                  wxT("Adding SpaceObject %s to PropSetup %s\n"),
+                  "Adding SpaceObject %s to PropSetup %s\n",
                   (*currentObjects)[j]->GetName().c_str(),
                   propagators[i]->GetName().c_str());
          #endif
@@ -774,10 +774,10 @@ bool PropagationEnabledCommand::Step(Real dt)
    {
       if (!(*current)->Step(dt))
       {
-         wxString size;
-         size.Printf( wxT("%.12lf"), dt);
-         throw CommandException(wxT("Propagator ") + (*current)->GetName() +
-            wxT(" failed to take a good final step (size = ") + size + wxT(")\n"));
+         char size[32];
+         std::sprintf(size, "%.12lf", dt);
+         throw CommandException("Propagator " + (*current)->GetName() +
+            " failed to take a good final step (size = " + size + ")\n");
       }
 
       ++current;
@@ -803,8 +803,8 @@ bool PropagationEnabledCommand::Step(Real dt)
 
       #ifdef DEBUG_PUBLISH_DATA
          MessageInterface::ShowMessage
-            (wxT("PropagationEnabledCommand::Step() '%s' publishing %d data to stream %d, 1st data = ")
-             wxT("%f\n"), GetGeneratingString(Gmat::NO_COMMENTS).c_str(),
+            ("PropagationEnabledCommand::Step() '%s' publishing %d data to stream %d, 1st data = "
+             "%f\n", GetGeneratingString(Gmat::NO_COMMENTS).c_str(),
              dim+1, streamID, pubdata[0]);
       #endif
 
@@ -831,8 +831,8 @@ bool PropagationEnabledCommand::Step(Real dt)
 //------------------------------------------------------------------------------
 bool PropagationEnabledCommand::TakeAStep(Real propStep)
 {
-   throw CommandException(wxT("TakeAStep must be overridden to use it; no override ")
-         wxT("exists for ") + typeName + wxT(" commands."));
+   throw CommandException("TakeAStep must be overridden to use it; no override "
+         "exists for " + typeName + " commands.");
 }
 
 //------------------------------------------------------------------------------
@@ -847,7 +847,7 @@ bool PropagationEnabledCommand::TakeAStep(Real propStep)
 void PropagationEnabledCommand::AddToBuffer(SpaceObject *so)
 {
    #ifdef DEBUG_STOPPING_CONDITIONS
-      MessageInterface::ShowMessage(wxT("Buffering states for '%s'\n"),
+      MessageInterface::ShowMessage("Buffering states for '%s'\n",
          so->GetName().c_str());
    #endif
 
@@ -857,8 +857,8 @@ void PropagationEnabledCommand::AddToBuffer(SpaceObject *so)
       satBuffer.push_back(clonedSat);
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (clonedSat, clonedSat->GetName(), wxT("Propagate::AddToBuffer()"),
-          wxT("(Spacecraft *)(so->Clone())"));
+         (clonedSat, clonedSat->GetName(), "Propagate::AddToBuffer()",
+          "(Spacecraft *)(so->Clone())");
       #endif
       //satBuffer.push_back((Spacecraft *)(so->Clone()));
    }
@@ -868,20 +868,20 @@ void PropagationEnabledCommand::AddToBuffer(SpaceObject *so)
       Formation *clonedForm = (Formation *)(so->Clone());
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (clonedForm, clonedForm->GetName(), wxT("Propagate::AddToBuffer()"),
-          wxT("(Formation *)(so->Clone())"));
+         (clonedForm, clonedForm->GetName(), "Propagate::AddToBuffer()",
+          "(Formation *)(so->Clone())");
       #endif
       //formBuffer.push_back((Formation *)(so->Clone()));
       formBuffer.push_back(clonedForm);
-      StringArray formSats = form->GetStringArrayParameter(wxT("Add"));
+      StringArray formSats = form->GetStringArrayParameter("Add");
 
       for (StringArray::iterator i = formSats.begin(); i != formSats.end(); ++i)
          AddToBuffer((SpaceObject *)(FindObject(*i)));
    }
    else
-      throw CommandException(wxT("Object " + so->GetName() + " is not either a ")
-         wxT("Spacecraft or a Formation; cannot buffer the object for propagator ")
-         wxT("stopping conditions."));
+      throw CommandException("Object " + so->GetName() + " is not either a "
+         "Spacecraft or a Formation; cannot buffer the object for propagator "
+         "stopping conditions.");
 }
 
 
@@ -899,7 +899,7 @@ void PropagationEnabledCommand::EmptyBuffer()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         ((*i), (*i)->GetName(), wxT("Propagate::EmptyBuffer()"), wxT("deleting from satBuffer"));
+         ((*i), (*i)->GetName(), "Propagate::EmptyBuffer()", "deleting from satBuffer");
       #endif
       delete (*i);
    }
@@ -910,7 +910,7 @@ void PropagationEnabledCommand::EmptyBuffer()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         ((*i), (*i)->GetName(), wxT("Propagate::EmptyBuffer()"), wxT("deleting from fromBuffer"));
+         ((*i), (*i)->GetName(), "Propagate::EmptyBuffer()", "deleting from fromBuffer");
       #endif
       delete (*i);
    }
@@ -931,7 +931,7 @@ void PropagationEnabledCommand::BufferSatelliteStates(bool fillingBuffer)
 {
    Spacecraft *fromSat, *toSat;
    Formation *fromForm, *toForm;
-   wxString soName;
+   std::string soName;
 
    for (std::vector<Spacecraft *>::iterator i = satBuffer.begin();
         i != satBuffer.end(); ++i)
@@ -950,18 +950,18 @@ void PropagationEnabledCommand::BufferSatelliteStates(bool fillingBuffer)
 
       #ifdef DEBUG_STATE_BUFFERING
          MessageInterface::ShowMessage(
-            wxT("   Sat is %s, fill direction is %s; fromSat epoch = %.12lf   ")
-            wxT("toSat epoch = %.12lf\n"),
+            "   Sat is %s, fill direction is %s; fromSat epoch = %.12lf   "
+            "toSat epoch = %.12lf\n",
             fromSat->GetName().c_str(),
-            (fillingBuffer ? wxT("from propagator") : wxT("from buffer")),
-            fromSat->GetRealParameter(wxT("A1Epoch")),
-            toSat->GetRealParameter(wxT("A1Epoch")));
+            (fillingBuffer ? "from propagator" : "from buffer"),
+            fromSat->GetRealParameter("A1Epoch"),
+            toSat->GetRealParameter("A1Epoch"));
 
          MessageInterface::ShowMessage(
-            wxT("   '%s' Satellite state:\n"), fromSat->GetName().c_str());
+            "   '%s' Satellite state:\n", fromSat->GetName().c_str());
          Real *satrv = fromSat->GetState().GetState();
          MessageInterface::ShowMessage(
-            wxT("      %.12lf  %.12lf  %.12lf\n      %.12lf  %.12lf  %.12lf\n"),
+            "      %.12lf  %.12lf  %.12lf\n      %.12lf  %.12lf  %.12lf\n",
             satrv[0], satrv[1], satrv[2], satrv[3], satrv[4], satrv[5]);
       #endif
 
@@ -969,9 +969,9 @@ void PropagationEnabledCommand::BufferSatelliteStates(bool fillingBuffer)
 
       #ifdef DEBUG_STATE_BUFFERING
          MessageInterface::ShowMessage(
-            wxT("After copy, From epoch %.12lf to epoch %.12lf\n"),
-            fromSat->GetRealParameter(wxT("A1Epoch")),
-            toSat->GetRealParameter(wxT("A1Epoch")));
+            "After copy, From epoch %.12lf to epoch %.12lf\n",
+            fromSat->GetRealParameter("A1Epoch"),
+            toSat->GetRealParameter("A1Epoch"));
       #endif
    }
 
@@ -980,8 +980,8 @@ void PropagationEnabledCommand::BufferSatelliteStates(bool fillingBuffer)
    {
       soName = (*i)->GetName();
       #ifdef DEBUG_STATE_BUFFERING
-         MessageInterface::ShowMessage(wxT("Buffering formation %s, filling = %s\n"),
-            soName.c_str(), (fillingBuffer?wxT("true"):wxT("false")));
+         MessageInterface::ShowMessage("Buffering formation %s, filling = %s\n",
+            soName.c_str(), (fillingBuffer?"true":"false"));
       #endif
       if (fillingBuffer)
       {
@@ -996,12 +996,12 @@ void PropagationEnabledCommand::BufferSatelliteStates(bool fillingBuffer)
 
       #ifdef DEBUG_STATE_BUFFERING
          MessageInterface::ShowMessage(
-            wxT("   Formation is %s, fill direction is %s; fromForm epoch = %.12lf")
-            wxT("   toForm epoch = %.12lf\n"),
+            "   Formation is %s, fill direction is %s; fromForm epoch = %.12lf"
+            "   toForm epoch = %.12lf\n",
             fromForm->GetName().c_str(),
-            (fillingBuffer ? wxT("from propagator") : wxT("from buffer")),
-            fromForm->GetRealParameter(wxT("A1Epoch")),
-            toForm->GetRealParameter(wxT("A1Epoch")));
+            (fillingBuffer ? "from propagator" : "from buffer"),
+            fromForm->GetRealParameter("A1Epoch"),
+            toForm->GetRealParameter("A1Epoch"));
       #endif
 
       (*toForm) = (*fromForm);
@@ -1009,23 +1009,23 @@ void PropagationEnabledCommand::BufferSatelliteStates(bool fillingBuffer)
       toForm->UpdateState();
 
       #ifdef DEBUG_STATE_BUFFERING
-         Integer count = fromForm->GetStringArrayParameter(wxT("Add")).size();
+         Integer count = fromForm->GetStringArrayParameter("Add").size();
 
          MessageInterface::ShowMessage(
-            wxT("After copy, From epoch %.12lf to epoch %.12lf\n"),
-            fromForm->GetRealParameter(wxT("A1Epoch")),
-            toForm->GetRealParameter(wxT("A1Epoch")));
+            "After copy, From epoch %.12lf to epoch %.12lf\n",
+            fromForm->GetRealParameter("A1Epoch"),
+            toForm->GetRealParameter("A1Epoch"));
 
          MessageInterface::ShowMessage(
-            wxT("   %s for '%s' Formation state:\n"),
-            (fillingBuffer ? wxT("Filling buffer") : wxT("Restoring states")),
+            "   %s for '%s' Formation state:\n",
+            (fillingBuffer ? "Filling buffer" : "Restoring states"),
             fromForm->GetName().c_str());
 
          Real *satrv = fromForm->GetState().GetState();
 
          for (Integer i = 0; i < count; ++i)
             MessageInterface::ShowMessage(
-               wxT("      %d:  %.12lf  %.12lf  %.12lf  %.12lf  %.12lf  %.12lf\n"),
+               "      %d:  %.12lf  %.12lf  %.12lf  %.12lf  %.12lf  %.12lf\n",
                i, satrv[i*6], satrv[i*6+1], satrv[i*6+2], satrv[i*6+3],
                satrv[i*6+4], satrv[i*6+5]);
       #endif
@@ -1035,8 +1035,8 @@ void PropagationEnabledCommand::BufferSatelliteStates(bool fillingBuffer)
       for (std::vector<Spacecraft *>::iterator i = satBuffer.begin();
            i != satBuffer.end(); ++i)
          MessageInterface::ShowMessage(
-            wxT("   Epoch of '%s' is %.12lf\n"), (*i)->GetName().c_str(),
-            (*i)->GetRealParameter(wxT("A1Epoch")));
+            "   Epoch of '%s' is %.12lf\n", (*i)->GetName().c_str(),
+            (*i)->GetRealParameter("A1Epoch"));
    #endif
 }
 
@@ -1053,7 +1053,7 @@ void PropagationEnabledCommand::LocateObjectEvents(const GmatBase *obj,
    if (events->size() == 0)
       return;
 
-   wxString objName = obj->GetName();
+   std::string objName = obj->GetName();
 
    // Walk through the events and see if any use this body as the target
    for (UnsignedInt i = 0; i < events->size(); ++i)
@@ -1100,14 +1100,14 @@ void PropagationEnabledCommand::InitializeForEventLocation()
    if (events == NULL)
    {
       #ifdef DEBUG_EVENTLOCATORS
-         MessageInterface::ShowMessage(wxT("Initializing with no event locator ")
-               wxT("pointer\n"));
+         MessageInterface::ShowMessage("Initializing with no event locator "
+               "pointer\n");
       #endif
       return;
    }
 
    #ifdef DEBUG_EVENTLOCATORS
-      MessageInterface::ShowMessage(wxT("Initializing with %d event locators\n"),
+      MessageInterface::ShowMessage("Initializing with %d event locators\n",
             events->size());
    #endif
 
@@ -1118,7 +1118,7 @@ void PropagationEnabledCommand::InitializeForEventLocation()
 
    for (UnsignedInt i = 0; i < events->size(); ++i)
    {
-      if (events->at(i)->GetBooleanParameter(wxT("IsActive")))
+      if (events->at(i)->GetBooleanParameter("IsActive"))
       {
          ++activeLocatorCount;
          activeEventIndices.push_back(i);
@@ -1130,7 +1130,7 @@ void PropagationEnabledCommand::InitializeForEventLocation()
       }
    }
    #ifdef DEBUG_EVENTLOCATORS
-      MessageInterface::ShowMessage(wxT("Found %d active event locators\n"),
+      MessageInterface::ShowMessage("Found %d active event locators\n",
             activeLocatorCount);
    #endif
 
@@ -1188,8 +1188,8 @@ void PropagationEnabledCommand::InitializeForEventLocation()
                MessageInterface::ShowMessage("   Building model from map\n");
             #endif
             if (propagators[index]->GetODEModel()->BuildModelFromMap() == false)
-               throw CommandException(wxT("Unable to assemble the ODE ")
-                     wxT("model  after adding an Event Model"));
+               throw CommandException("Unable to assemble the ODE "
+                     "model  after adding an Event Model");
          }
       }
    }
@@ -1213,8 +1213,8 @@ void PropagationEnabledCommand::CheckForEvents()
    if (events == NULL)
    {
       #ifdef DEBUG_EVENTLOCATORS
-         MessageInterface::ShowMessage(wxT("Checking for events with no event ")
-               wxT("locator pointer\n"));
+         MessageInterface::ShowMessage("Checking for events with no event "
+               "locator pointer\n");
       #endif
       return;
    }
@@ -1237,9 +1237,9 @@ void PropagationEnabledCommand::CheckForEvents()
       if (currentEventData[i] * previousEventData[i] <= 0.0)
       {
          #ifdef DEBUG_EVENTLOCATORS
-            MessageInterface::ShowMessage(wxT("Event function sign change ")
-                  wxT("detected\n   Transition from %lf to %lf at index %d, epoch ")
-                  wxT("[%12lf %12lf]\n"), previousEventData[i], currentEventData[i],
+            MessageInterface::ShowMessage("Event function sign change "
+                  "detected\n   Transition from %lf to %lf at index %d, epoch "
+                  "[%12lf %12lf]\n", previousEventData[i], currentEventData[i],
                   i, previousEventData[i-1], currentEventData[i-1]);
          #endif
 
@@ -1254,8 +1254,8 @@ void PropagationEnabledCommand::CheckForEvents()
          Integer functionIndex = (Integer)(i/3) - activeEventIndices[index];
 
          #ifdef DEBUG_EVENTLOCATORS
-            MessageInterface::ShowMessage(wxT("i = %d gives function %d on ")
-                  wxT("locator %d\n"), i, functionIndex, index);
+            MessageInterface::ShowMessage("i = %d gives function %d on "
+                  "locator %d\n", i, functionIndex, index);
          #endif
 
          bool found = LocateEvent(events->at(index), functionIndex);
@@ -1274,9 +1274,9 @@ void PropagationEnabledCommand::CheckForEvents()
       if (currentEventData[i] * previousEventData[i] <= 0.0)
       {
          #ifdef DEBUG_EVENTLOCATORS
-            MessageInterface::ShowMessage(wxT("Event function derivative sign ")
-                  wxT("change detected\n   Transition from %lf to %lf at index %d, ")
-                  wxT("epoch %12lf\n"), currentEventData[i], previousEventData[i], i,
+            MessageInterface::ShowMessage("Event function derivative sign "
+                  "change detected\n   Transition from %lf to %lf at index %d, "
+                  "epoch %12lf\n", currentEventData[i], previousEventData[i], i,
                   currentEventData[i-2]);
          #endif
       }
@@ -1306,13 +1306,13 @@ bool PropagationEnabledCommand::LocateEvent(EventLocator* el, Integer index)
    if (events == NULL)
    {
       #ifdef DEBUG_EVENTLOCATORS
-         MessageInterface::ShowMessage(wxT("LocateEvent called; event locator ")
-               wxT("pointer not set\n"));
+         MessageInterface::ShowMessage("LocateEvent called; event locator "
+               "pointer not set\n");
       #endif
 
       // TBD: Throw here?
-      MessageInterface::ShowMessage(wxT("PropagationEnabledCommand::LocateEvent ")
-            wxT("was called unexpectedly; no EventLocators have been set\n"));
+      MessageInterface::ShowMessage("PropagationEnabledCommand::LocateEvent "
+            "was called unexpectedly; no EventLocators have been set\n");
 
       return false;
    }
@@ -1329,7 +1329,7 @@ bool PropagationEnabledCommand::LocateEvent(EventLocator* el, Integer index)
       Real zero = epochs[0] - bounds[0] * (epochs[1] - epochs[0]) /
             (bounds[1] - bounds[0]);
 
-      MessageInterface::ShowMessage(wxT("Zero at %12lf\n"), zero);
+      MessageInterface::ShowMessage("Zero at %12lf\n", zero);
    #endif
 
    // Preserve the current state data
@@ -1371,11 +1371,11 @@ bool PropagationEnabledCommand::LocateEvent(EventLocator* el, Integer index)
          bool isForward = (*current)->PropagatesForward();
          if (!(*current)->Step(currentStep))
          {
-            wxString size;
-            size.Printf(wxT("%.12lf"), currentStep);
-            throw CommandException(wxT("In LocateEvent, Propagator ") + 
+            char size[32];
+            std::sprintf(size, "%.12lf", currentStep);
+            throw CommandException("In LocateEvent, Propagator " + 
                (*current)->GetName() +
-               wxT(" failed to take a good final step (size = ") + size + wxT(")\n"));
+               " failed to take a good final step (size = " + size + ")\n");
          }
          (*current)->SetAsFinalStep(false);
          (*current)->SetForwardPropagation(isForward);
@@ -1414,8 +1414,8 @@ bool PropagationEnabledCommand::LocateEvent(EventLocator* el, Integer index)
       }
 
       #ifdef DEBUG_EVENT_LOCATION
-         MessageInterface::ShowMessage(wxT("ElapsedSecs = %.12lf; Passing in new ")
-               wxT("data: %12lf %.12lf\n"), elapsedSeconds, tempEventData[index*3],
+         MessageInterface::ShowMessage("ElapsedSecs = %.12lf; Passing in new "
+               "data: %12lf %.12lf\n", elapsedSeconds, tempEventData[index*3],
                tempEventData[index*3+1]);
       #endif
 

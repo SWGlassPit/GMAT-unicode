@@ -58,14 +58,14 @@ public:
    
    // inherited from GmatBase
    virtual GmatBase*  Clone() const;
-   virtual const wxString&
+   virtual const std::string&
                         GetGeneratingString(Gmat::WriteMode mode,
-                                            const wxString &prefix = wxT(""),
-                                            const wxString &useName = wxT(""));
+                                            const std::string &prefix = "",
+                                            const std::string &useName = "");
    // for Ref Objects
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
    virtual const ObjectTypeArray&
                         GetRefObjectTypeArray();
@@ -73,38 +73,38 @@ public:
                         GetRefObjectNameArray(const Gmat::ObjectType type);
    
    // Parameter accessors
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    
    virtual Real         GetRealParameter(const Integer id) const;
    virtual Real         SetRealParameter(const Integer id,
                                          const Real value);
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const wxString &label) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const std::string &label) const;
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
    
    virtual bool         SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                     const wxString &name = wxT(""));
+                                     const std::string &name = "");
    
    // Inherited methods overridden from the base class
    virtual bool         InterpretAction();
    virtual const StringArray& 
                         GetWrapperObjectNameArray();
    virtual bool         SetElementWrapper(ElementWrapper* toWrapper,
-                                          const wxString &withName);
+                                          const std::string &withName);
    virtual void         ClearWrappers();
    
    virtual bool         Initialize();
    virtual bool         Execute();
    virtual void         RunComplete();
-   virtual bool         TakeAction(const wxString &action,
-                                   const wxString &actionData = wxT(""));
+   virtual bool         TakeAction(const std::string &action,
+                                   const std::string &actionData = "");
 
    
    // Used to apply corrections to the command
@@ -126,24 +126,24 @@ protected:
       VaryParamCount
    };
 
-   static const wxString    PARAMETER_TEXT[VaryParamCount -
+   static const std::string    PARAMETER_TEXT[VaryParamCount -
                                               GmatCommandParamCount];
    static const Gmat::ParameterType
                                PARAMETER_TYPE[VaryParamCount -
                                               GmatCommandParamCount];
 
    /// The name of the solver that does the solving
-   wxString         solverName;
+   std::string         solverName;
    /// The solver instance used to manage the state machine
    Solver              *solver;
 
    /// Name(s) of the variable(s)
-   wxString         variableName;
+   std::string         variableName;
    /// A wrapper used for the variable's owning object
    ElementWrapper      *variable;
 
    /// Initial variable value(s)
-   wxString         initialValueName;
+   std::string         initialValueName;
    /// A wrapper used for the variable's initial value
    ElementWrapper      *initialValue;
 
@@ -151,27 +151,27 @@ protected:
    Real                currentValue;
 
    /// Variable perturbation(s)
-   wxString         perturbationName;
+   std::string         perturbationName;
    /// A wrapper used for the variable perturbation
    ElementWrapper      *perturbation;
    /// Absolute minimum value
-   wxString         variableLowerName;
+   std::string         variableLowerName;
    /// A wrapper used for the variable's minimum allowed value
    ElementWrapper      *variableLower;
    /// Absolute maximum value
-   wxString         variableUpperName;
+   std::string         variableUpperName;
    /// A wrapper used for the variable's maximum allowed value
    ElementWrapper      *variableUpper;
    /// Maximum step allowed
-   wxString         variableMaximumStepName;
+   std::string         variableMaximumStepName;
    /// A wrapper used for to set the largest allowed change in the variable
    ElementWrapper      *variableMaximumStep;
    /// additive scale factor for optimizers
-   wxString         additiveScaleFactorName;
+   std::string         additiveScaleFactorName;
    /// A wrapper used for the additive scale factor
    ElementWrapper      *additiveScaleFactor;
    /// multiplicative scale factor for optimizers
-   wxString         multiplicativeScaleFactorName;
+   std::string         multiplicativeScaleFactorName;
    /// A wrapper used for the multiplicative scale factor
    ElementWrapper      *multiplicativeScaleFactor;
 
@@ -182,7 +182,7 @@ protected:
    bool                solverDataFinalized;
    
    /// Used for wrapper name checking, wrapper name can be a number
-   bool IsThereSameWrapperName(int param, const wxString &wrapperName);
+   bool IsThereSameWrapperName(int param, const std::string &wrapperName);
    /// Method to refresh values of data from variables
    void RefreshData();
 };

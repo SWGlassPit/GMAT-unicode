@@ -67,7 +67,7 @@ PlotInterface::~PlotInterface()
 
 
 //------------------------------------------------------------------------------
-//  bool CreateGlPlotWindow(const wxString &plotName, ...)
+//  bool CreateGlPlotWindow(const std::string &plotName, ...)
 //------------------------------------------------------------------------------
 /*
  * Creates OpenGlPlot window
@@ -87,16 +87,16 @@ PlotInterface::~PlotInterface()
  * @param <numPtsToRedraw>  number of points to redraw during the run
  */
 //------------------------------------------------------------------------------
-bool PlotInterface::CreateGlPlotWindow(const wxString &plotName,
-                                       const wxString &oldName,
+bool PlotInterface::CreateGlPlotWindow(const std::string &plotName,
+                                       const std::string &oldName,
                                        Real positionX, Real positionY,
                                        Real width, Real height,
                                        Integer numPtsToRedraw)
 {
    #if DEBUG_PLOTIF_GL_CREATE
    MessageInterface::ShowMessage
-      (wxT("PI::CreateGlPlotWindow() %s entered, x = %12.10f, y = %12.10f, w = %12.10f, h = %12.10f,")
-            wxT("thePlotReceiver=<%p>\n"), plotName.c_str(), positionX, positionY, width, height,
+      ("PI::CreateGlPlotWindow() %s entered, x = %12.10f, y = %12.10f, w = %12.10f, h = %12.10f,"
+            "thePlotReceiver=<%p>\n", plotName.c_str(), positionX, positionY, width, height,
        thePlotReceiver);
    #endif
    
@@ -118,9 +118,9 @@ void PlotInterface::SetViewType(GmatPlot::ViewType view)
 
 
 //------------------------------------------------------------------------------
-// void SetGlSolarSystem(const wxString &plotName, SolarSystem *ss)
+// void SetGlSolarSystem(const std::string &plotName, SolarSystem *ss)
 //------------------------------------------------------------------------------
-void PlotInterface::SetGlSolarSystem(const wxString &plotName, SolarSystem *ss)
+void PlotInterface::SetGlSolarSystem(const std::string &plotName, SolarSystem *ss)
 {
    if (thePlotReceiver != NULL)
       thePlotReceiver->SetGlSolarSystem(plotName, ss);
@@ -128,9 +128,9 @@ void PlotInterface::SetGlSolarSystem(const wxString &plotName, SolarSystem *ss)
 
 
 //------------------------------------------------------------------------------
-// void SetGlObject(const wxString &plotName,  ...
+// void SetGlObject(const std::string &plotName,  ...
 //------------------------------------------------------------------------------
-void PlotInterface::SetGlObject(const wxString &plotName,
+void PlotInterface::SetGlObject(const std::string &plotName,
                                 const StringArray &objNames,
                                 const UnsignedIntArray &objOrbitColors,
                                 const std::vector<SpacePoint*> &objArray)
@@ -142,9 +142,9 @@ void PlotInterface::SetGlObject(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// static void SetGlCoordSystem(const wxString &plotName, ...
+// static void SetGlCoordSystem(const std::string &plotName, ...
 //------------------------------------------------------------------------------
-void PlotInterface::SetGlCoordSystem(const wxString &plotName,
+void PlotInterface::SetGlCoordSystem(const std::string &plotName,
                                      CoordinateSystem *internalCs,
                                      CoordinateSystem *viewCs,
                                      CoordinateSystem *viewUpCs)
@@ -155,11 +155,11 @@ void PlotInterface::SetGlCoordSystem(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void SetGl2dDrawingOption(const wxString &plotName, Integer footPrintOption)
+// void SetGl2dDrawingOption(const std::string &plotName, Integer footPrintOption)
 //------------------------------------------------------------------------------
-void PlotInterface::SetGl2dDrawingOption(const wxString &plotName,
-                                         const wxString &centralBodyName,
-                                         const wxString &textureMap,
+void PlotInterface::SetGl2dDrawingOption(const std::string &plotName,
+                                         const std::string &centralBodyName,
+                                         const std::string &textureMap,
                                          Integer footPrintOption)
 {
    if (thePlotReceiver != NULL)
@@ -169,9 +169,9 @@ void PlotInterface::SetGl2dDrawingOption(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void SetGl3dDrawingOption(const wxString &plotName, bool drawEcPlane, ...)
+// void SetGl3dDrawingOption(const std::string &plotName, bool drawEcPlane, ...)
 //------------------------------------------------------------------------------
-void PlotInterface::SetGl3dDrawingOption(const wxString &plotName,
+void PlotInterface::SetGl3dDrawingOption(const std::string &plotName,
                                          bool drawEcPlane, bool drawXyPlane,
                                          bool drawWireFrame, bool drawAxes,
                                          bool drawGrid, bool drawSunLine,
@@ -188,13 +188,13 @@ void PlotInterface::SetGl3dDrawingOption(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void SetGl3dViewOption(const wxString &plotName, SpacePoint *vpRefObj, ...
+// void SetGl3dViewOption(const std::string &plotName, SpacePoint *vpRefObj, ...
 //------------------------------------------------------------------------------
-void PlotInterface::SetGl3dViewOption(const wxString &plotName,
+void PlotInterface::SetGl3dViewOption(const std::string &plotName,
                                       SpacePoint *vpRefObj, SpacePoint *vpVecObj,
                                       SpacePoint *vdObj, Real vsFactor,
                                       const Rvector3 &vpRefVec, const Rvector3 &vpVec,
-                                      const Rvector3 &vdVec, const wxString &upAxis,
+                                      const Rvector3 &vdVec, const std::string &upAxis,
                                       bool usevpRefVec, bool usevpVec, bool usevdVec)
 {
    if (thePlotReceiver != NULL)
@@ -205,9 +205,9 @@ void PlotInterface::SetGl3dViewOption(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void SetGlDrawOrbitFlag(const wxString &plotName, ...
+// void SetGlDrawOrbitFlag(const std::string &plotName, ...
 //------------------------------------------------------------------------------
-void PlotInterface::SetGlDrawOrbitFlag(const wxString &plotName,
+void PlotInterface::SetGlDrawOrbitFlag(const std::string &plotName,
                                        const std::vector<bool> &drawArray)
 {
    if (thePlotReceiver != NULL)
@@ -216,9 +216,9 @@ void PlotInterface::SetGlDrawOrbitFlag(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void SetGlShowObjectFlag(const wxString &plotName, ...
+// void SetGlShowObjectFlag(const std::string &plotName, ...
 //------------------------------------------------------------------------------
-void PlotInterface::SetGlShowObjectFlag(const wxString &plotName,
+void PlotInterface::SetGlShowObjectFlag(const std::string &plotName,
                                         const std::vector<bool> &showArray)
 {
    if (thePlotReceiver != NULL)
@@ -227,9 +227,9 @@ void PlotInterface::SetGlShowObjectFlag(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void SetGlUpdateFrequency(const wxString &plotName, Integer updFreq)
+// void SetGlUpdateFrequency(const std::string &plotName, Integer updFreq)
 //------------------------------------------------------------------------------
-void PlotInterface::SetGlUpdateFrequency(const wxString &plotName,
+void PlotInterface::SetGlUpdateFrequency(const std::string &plotName,
                                          Integer updFreq)
 {
    if (thePlotReceiver != NULL)
@@ -238,13 +238,13 @@ void PlotInterface::SetGlUpdateFrequency(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-//  bool IsThere(const wxString &plotName)
+//  bool IsThere(const std::string &plotName)
 //------------------------------------------------------------------------------
 /*
  * Checks if OpenGlPlot exist.
  */
 //------------------------------------------------------------------------------
-bool PlotInterface::IsThere(const wxString &plotName)
+bool PlotInterface::IsThere(const std::string &plotName)
 {    
    if (thePlotReceiver != NULL)
       return thePlotReceiver->IsThere(plotName);
@@ -254,7 +254,7 @@ bool PlotInterface::IsThere(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-//  bool InitializeGlPlot(const wxString &plotName)
+//  bool InitializeGlPlot(const std::string &plotName)
 //------------------------------------------------------------------------------
 /*
  * Deletes OpenGlPlot by plot name.
@@ -262,7 +262,7 @@ bool PlotInterface::IsThere(const wxString &plotName)
  * @param <plotName> name of plot to be deleted
  */
 //------------------------------------------------------------------------------
-bool PlotInterface::InitializeGlPlot(const wxString &plotName)
+bool PlotInterface::InitializeGlPlot(const std::string &plotName)
 {    
    if (thePlotReceiver != NULL)
       return thePlotReceiver->InitializeGlPlot(plotName);
@@ -272,13 +272,13 @@ bool PlotInterface::InitializeGlPlot(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-//  bool RefreshGlPlot(const wxString &plotName)
+//  bool RefreshGlPlot(const std::string &plotName)
 //------------------------------------------------------------------------------
 /*
  * Refreshes OpenGlPlot.
  */
 //------------------------------------------------------------------------------
-bool PlotInterface::RefreshGlPlot(const wxString &plotName)
+bool PlotInterface::RefreshGlPlot(const std::string &plotName)
 {    
    if (thePlotReceiver != NULL)
       return thePlotReceiver->RefreshGlPlot(plotName);
@@ -288,7 +288,7 @@ bool PlotInterface::RefreshGlPlot(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-//  bool DeleteGlPlot(const wxString &plotName)
+//  bool DeleteGlPlot(const std::string &plotName)
 //------------------------------------------------------------------------------
 /*
  * Deletes OpenGlPlot by plot name.
@@ -296,7 +296,7 @@ bool PlotInterface::RefreshGlPlot(const wxString &plotName)
  * @param <plotName> name of plot to be deleted
  */
 //------------------------------------------------------------------------------
-bool PlotInterface::DeleteGlPlot(const wxString &plotName)
+bool PlotInterface::DeleteGlPlot(const std::string &plotName)
 {    
    if (thePlotReceiver != NULL)
       return thePlotReceiver->DeleteGlPlot(plotName);
@@ -306,13 +306,13 @@ bool PlotInterface::DeleteGlPlot(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-// bool SetGlEndOfRun(const wxString &plotName)
+// bool SetGlEndOfRun(const std::string &plotName)
 //------------------------------------------------------------------------------
 /*
  * Sets end of run flag to OpenGlPlot.
  */
 //------------------------------------------------------------------------------
-bool PlotInterface::SetGlEndOfRun(const wxString &plotName)
+bool PlotInterface::SetGlEndOfRun(const std::string &plotName)
 {    
    if (thePlotReceiver != NULL)
       return thePlotReceiver->SetGlEndOfRun(plotName);
@@ -322,14 +322,14 @@ bool PlotInterface::SetGlEndOfRun(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-//  bool UpdateGlPlot(const wxString &plotName, ...
+//  bool UpdateGlPlot(const std::string &plotName, ...
 //------------------------------------------------------------------------------
 /*
  * Buffers data and updates OpenGL plow window if updateCanvas is true
  */
 //------------------------------------------------------------------------------
-bool PlotInterface::UpdateGlPlot(const wxString &plotName,
-                                 const wxString &oldName,
+bool PlotInterface::UpdateGlPlot(const std::string &plotName,
+                                 const std::string &oldName,
                                  const StringArray &scNames, const Real &time,
                                  const RealArray &posX, const RealArray &posY,
                                  const RealArray &posZ, const RealArray &velX,
@@ -340,7 +340,7 @@ bool PlotInterface::UpdateGlPlot(const wxString &plotName,
 {
    #if DEBUG_PLOTIF_GL_UPDATE
    MessageInterface::ShowMessage
-      (wxT("PI::UpdateGlPlot() '%s' entered, thePlotReceiver=<%p>\n"), plotName.c_str(),
+      ("PI::UpdateGlPlot() '%s' entered, thePlotReceiver=<%p>\n", plotName.c_str(),
        thePlotReceiver);
    #endif
    
@@ -354,10 +354,10 @@ bool PlotInterface::UpdateGlPlot(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// bool TakeGlAction(const wxString &plotName, const wxString &action)
+// bool TakeGlAction(const std::string &plotName, const std::string &action)
 //------------------------------------------------------------------------------
-bool PlotInterface::TakeGlAction(const wxString &plotName,
-                                 const wxString &action)
+bool PlotInterface::TakeGlAction(const std::string &plotName,
+                                 const std::string &action)
 {
    if (thePlotReceiver != NULL)
       return thePlotReceiver->TakeGlAction(plotName, action);
@@ -367,11 +367,11 @@ bool PlotInterface::TakeGlAction(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-//  bool CreateXyPlotWindow(const wxString &plotName,
-//                          const wxString &oldName,
-//                          const wxString &plotTitle,
-//                          const wxString &xAxisTitle,
-//                          const wxString &yAxisTitle,
+//  bool CreateXyPlotWindow(const std::string &plotName,
+//                          const std::string &oldName,
+//                          const std::string &plotTitle,
+//                          const std::string &xAxisTitle,
+//                          const std::string &yAxisTitle,
 //                          bool drawGrid = false)
 //------------------------------------------------------------------------------
 /*
@@ -389,13 +389,13 @@ bool PlotInterface::TakeGlAction(const wxString &plotName,
  * @return true on success, false is no plot was created
  */
 //------------------------------------------------------------------------------
-bool PlotInterface::CreateXyPlotWindow(const wxString &plotName,
-                                       const wxString &oldName,
+bool PlotInterface::CreateXyPlotWindow(const std::string &plotName,
+                                       const std::string &oldName,
                                        Real positionX, Real positionY,
                                        Real width, Real height,
-                                       const wxString &plotTitle,
-                                       const wxString &xAxisTitle,
-                                       const wxString &yAxisTitle,
+                                       const std::string &plotTitle,
+                                       const std::string &xAxisTitle,
+                                       const std::string &yAxisTitle,
                                        bool drawGrid, bool canSave)
 {    
    if (thePlotReceiver != NULL)
@@ -407,7 +407,7 @@ bool PlotInterface::CreateXyPlotWindow(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-//  bool DeleteXyPlot(const wxString &plotName)
+//  bool DeleteXyPlot(const std::string &plotName)
 //------------------------------------------------------------------------------
 /*
  * Deletes a XyPlot by plot name.
@@ -417,7 +417,7 @@ bool PlotInterface::CreateXyPlotWindow(const wxString &plotName,
  * @return true on success, false is no plot was deleted
  */
 //------------------------------------------------------------------------------
-bool PlotInterface::DeleteXyPlot(const wxString &plotName)
+bool PlotInterface::DeleteXyPlot(const std::string &plotName)
 {    
    if (thePlotReceiver != NULL)
       return thePlotReceiver->DeleteXyPlot(plotName);
@@ -427,9 +427,9 @@ bool PlotInterface::DeleteXyPlot(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-// bool AddXyPlotCurve(const wxString &plotName, int curveIndex,
+// bool AddXyPlotCurve(const std::string &plotName, int curveIndex,
 //                     int yOffset, Real yMin, Real yMax,
-//                     const wxString &curveTitle,
+//                     const std::string &curveTitle,
 //                     UnsignedInt penColor)
 //------------------------------------------------------------------------------
 /*
@@ -446,9 +446,9 @@ bool PlotInterface::DeleteXyPlot(const wxString &plotName)
  * @return true on success, false is no curve was added
  */
 //------------------------------------------------------------------------------
-bool PlotInterface::AddXyPlotCurve(const wxString &plotName, int curveIndex,
+bool PlotInterface::AddXyPlotCurve(const std::string &plotName, int curveIndex,
                                    int yOffset, Real yMin, Real yMax,
-                                   const wxString &curveTitle,
+                                   const std::string &curveTitle,
                                    UnsignedInt penColor)
 {
    if (thePlotReceiver != NULL)
@@ -459,8 +459,8 @@ bool PlotInterface::AddXyPlotCurve(const wxString &plotName, int curveIndex,
 }
 
 //------------------------------------------------------------------------------
-// bool DeleteAllXyPlotCurves(const wxString &plotName,
-//                            const wxString &oldName)
+// bool DeleteAllXyPlotCurves(const std::string &plotName,
+//                            const std::string &oldName)
 //------------------------------------------------------------------------------
 /*
  * Deletes all plot curves in XY plow window.
@@ -471,8 +471,8 @@ bool PlotInterface::AddXyPlotCurve(const wxString &plotName, int curveIndex,
  * @return true on success, false if no action was taken
  */
 //------------------------------------------------------------------------------
-bool PlotInterface::DeleteAllXyPlotCurves(const wxString &plotName,
-                                          const wxString &oldName)
+bool PlotInterface::DeleteAllXyPlotCurves(const std::string &plotName,
+                                          const std::string &oldName)
 {
    if (thePlotReceiver != NULL)
       return thePlotReceiver->DeleteAllXyPlotCurves(plotName, oldName);
@@ -482,7 +482,7 @@ bool PlotInterface::DeleteAllXyPlotCurves(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// bool DeleteXyPlotCurve(const wxString &plotName, int curveIndex)
+// bool DeleteXyPlotCurve(const std::string &plotName, int curveIndex)
 //------------------------------------------------------------------------------
 /*
  * Deletes a plot curve to XY plow window.
@@ -493,7 +493,7 @@ bool PlotInterface::DeleteAllXyPlotCurves(const wxString &plotName,
  * @return true on success, false if no curve was deleted
  */
 //------------------------------------------------------------------------------
-bool PlotInterface::DeleteXyPlotCurve(const wxString &plotName, int curveIndex)
+bool PlotInterface::DeleteXyPlotCurve(const std::string &plotName, int curveIndex)
 {
    if (thePlotReceiver != NULL)
       return thePlotReceiver->DeleteXyPlotCurve(plotName, curveIndex);
@@ -503,7 +503,7 @@ bool PlotInterface::DeleteXyPlotCurve(const wxString &plotName, int curveIndex)
 
 
 //------------------------------------------------------------------------------
-// void ClearXyPlotData(const wxString &plotName)
+// void ClearXyPlotData(const std::string &plotName)
 //------------------------------------------------------------------------------
 /**
  * Removes all data from the plot curves, leaving the curve containers in place
@@ -512,7 +512,7 @@ bool PlotInterface::DeleteXyPlotCurve(const wxString &plotName, int curveIndex)
  * @param plotName The name of the plot that is being cleared
  */
 //------------------------------------------------------------------------------
-void PlotInterface::ClearXyPlotData(const wxString &plotName)
+void PlotInterface::ClearXyPlotData(const std::string &plotName)
 {
    if (thePlotReceiver != NULL)
       thePlotReceiver->ClearXyPlotData(plotName);
@@ -520,7 +520,7 @@ void PlotInterface::ClearXyPlotData(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-// void XyPlotPenUp(const wxString &plotName)
+// void XyPlotPenUp(const std::string &plotName)
 //------------------------------------------------------------------------------
 /**
  * Tells a plot to stop drawing received data.  This method is idempotent.
@@ -528,14 +528,14 @@ void PlotInterface::ClearXyPlotData(const wxString &plotName)
  * @param plotName The name of the plot that is being cleared
  */
 //------------------------------------------------------------------------------
-void PlotInterface::XyPlotPenUp(const wxString &plotName)
+void PlotInterface::XyPlotPenUp(const std::string &plotName)
 {
    if (thePlotReceiver != NULL)
       thePlotReceiver->XyPlotPenUp(plotName);
 }
 
 //------------------------------------------------------------------------------
-// void XyPlotPenDown(const wxString &plotName)
+// void XyPlotPenDown(const std::string &plotName)
 //------------------------------------------------------------------------------
 /**
  * Tells a plot to resume drawing received data.  This method is idempotent.
@@ -543,7 +543,7 @@ void PlotInterface::XyPlotPenUp(const wxString &plotName)
  * @param plotName The name of the plot that is being cleared
  */
 //------------------------------------------------------------------------------
-void PlotInterface::XyPlotPenDown(const wxString &plotName)
+void PlotInterface::XyPlotPenDown(const std::string &plotName)
 {
    if (thePlotReceiver != NULL)
       thePlotReceiver->XyPlotPenDown(plotName);
@@ -551,7 +551,7 @@ void PlotInterface::XyPlotPenDown(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-// void XyPlotDarken(const wxString &plotName, Integer factor,
+// void XyPlotDarken(const std::string &plotName, Integer factor,
 //          Integer index = -1, Integer curveNumber = -1)
 //------------------------------------------------------------------------------
 /**
@@ -565,11 +565,11 @@ void PlotInterface::XyPlotPenDown(const wxString &plotName)
  *                    curves on the plot)
  */
 //------------------------------------------------------------------------------
-void PlotInterface::XyPlotDarken(const wxString &plotName, Integer factor,
+void PlotInterface::XyPlotDarken(const std::string &plotName, Integer factor,
          Integer index, Integer curveNumber)
 {
    #ifdef DEBUG_XYSTYLE_CHANGES
-         MessageInterface::ShowMessage(wxT("XyPlotDarken(%s, %d, %d, %d) called\n"),
+         MessageInterface::ShowMessage("XyPlotDarken(%s, %d, %d, %d) called\n",
                plotName.c_str(), factor, index, curveNumber);
    #endif
 
@@ -578,7 +578,7 @@ void PlotInterface::XyPlotDarken(const wxString &plotName, Integer factor,
 }
 
 //------------------------------------------------------------------------------
-// void XyPlotLighten(const wxString &plotName, Integer factor,
+// void XyPlotLighten(const std::string &plotName, Integer factor,
 //          Integer index = -1, Integer curveNumber = -1)
 //------------------------------------------------------------------------------
 /**
@@ -592,11 +592,11 @@ void PlotInterface::XyPlotDarken(const wxString &plotName, Integer factor,
  *                    curves on the plot)
  */
 //------------------------------------------------------------------------------
-void PlotInterface::XyPlotLighten(const wxString &plotName, Integer factor,
+void PlotInterface::XyPlotLighten(const std::string &plotName, Integer factor,
          Integer index, Integer curveNumber)
 {
    #ifdef DEBUG_XYSTYLE_CHANGES
-         MessageInterface::ShowMessage(wxT("XyPlotLighten(%s, %d, %d, %d) called\n"),
+         MessageInterface::ShowMessage("XyPlotLighten(%s, %d, %d, %d) called\n",
                plotName.c_str(), factor, index, curveNumber);
    #endif
 
@@ -605,7 +605,7 @@ void PlotInterface::XyPlotLighten(const wxString &plotName, Integer factor,
 }
 
 //------------------------------------------------------------------------------
-// void XyPlotChangeWidth(const wxString &plotName, Integer index = -1,
+// void XyPlotChangeWidth(const std::string &plotName, Integer index = -1,
 //       Integer newWidth = 1, int forCurve = -1)
 //------------------------------------------------------------------------------
 /**
@@ -618,7 +618,7 @@ void PlotInterface::XyPlotLighten(const wxString &plotName, Integer factor,
  * @param forCurve The index of the curve that is changing width.
  */
 //------------------------------------------------------------------------------
-void PlotInterface::XyPlotChangeWidth(const wxString &plotName,
+void PlotInterface::XyPlotChangeWidth(const std::string &plotName,
       Integer index, Integer newWidth, int forCurve)
 {
    if (thePlotReceiver != NULL)
@@ -626,7 +626,7 @@ void PlotInterface::XyPlotChangeWidth(const wxString &plotName,
 }
 
 //------------------------------------------------------------------------------
-// void XyPlotChangeStyle(const wxString &plotName, Integer index = -1,
+// void XyPlotChangeStyle(const std::string &plotName, Integer index = -1,
 //       Integer newStyle = 100, int forCurve = -1)
 //------------------------------------------------------------------------------
 /**
@@ -639,7 +639,7 @@ void PlotInterface::XyPlotChangeWidth(const wxString &plotName,
  * @param forCurve The index of the curve that is changing style.
  */
 //------------------------------------------------------------------------------
-void PlotInterface::XyPlotChangeStyle(const wxString &plotName,
+void PlotInterface::XyPlotChangeStyle(const std::string &plotName,
       Integer index, Integer newStyle, int forCurve)
 {
    if (thePlotReceiver != NULL)
@@ -647,7 +647,7 @@ void PlotInterface::XyPlotChangeStyle(const wxString &plotName,
 }
 
 //------------------------------------------------------------------------------
-// void XyPlotMarkPoint(const wxString &plotName, Integer index,
+// void XyPlotMarkPoint(const std::string &plotName, Integer index,
 //       Integer curveNumber)
 //------------------------------------------------------------------------------
 /**
@@ -659,7 +659,7 @@ void PlotInterface::XyPlotChangeStyle(const wxString &plotName,
  *                    curveNumber to -1 to mark all curves.
  */
 //------------------------------------------------------------------------------
-void PlotInterface::XyPlotMarkPoint(const wxString &plotName, Integer index,
+void PlotInterface::XyPlotMarkPoint(const std::string &plotName, Integer index,
       Integer curveNumber)
 {
    if (thePlotReceiver != NULL)
@@ -668,7 +668,7 @@ void PlotInterface::XyPlotMarkPoint(const wxString &plotName, Integer index,
 
 
 //------------------------------------------------------------------------------
-// void XyPlotMarkBreak(const wxString &plotName, Integer index = -1,
+// void XyPlotMarkBreak(const std::string &plotName, Integer index = -1,
 //          Integer curveNumber = -1)
 //------------------------------------------------------------------------------
 /**
@@ -681,7 +681,7 @@ void PlotInterface::XyPlotMarkPoint(const wxString &plotName, Integer index,
  *                    (-1 to mark all curves)
  */
 //------------------------------------------------------------------------------
-void PlotInterface::XyPlotMarkBreak(const wxString &plotName, Integer index,
+void PlotInterface::XyPlotMarkBreak(const std::string &plotName, Integer index,
          Integer curveNumber)
 {
    if (thePlotReceiver != NULL)
@@ -690,7 +690,7 @@ void PlotInterface::XyPlotMarkBreak(const wxString &plotName, Integer index,
 
 
 //------------------------------------------------------------------------------
-// void XyPlotClearFromBreak(const wxString &plotName,
+// void XyPlotClearFromBreak(const std::string &plotName,
 //          Integer startBreakNumber, Integer endBreakNumber = -1,
 //          Integer curveNumber = -1)
 //------------------------------------------------------------------------------
@@ -707,7 +707,7 @@ void PlotInterface::XyPlotMarkBreak(const wxString &plotName, Integer index,
  *                    (-1 to mark all curves)
  */
 //------------------------------------------------------------------------------
-void PlotInterface::XyPlotClearFromBreak(const wxString &plotName,
+void PlotInterface::XyPlotClearFromBreak(const std::string &plotName,
       Integer startBreakNumber, Integer endBreakNumber, Integer curveNumber)
 {
    if (thePlotReceiver != NULL)
@@ -717,7 +717,7 @@ void PlotInterface::XyPlotClearFromBreak(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void XyPlotRescale(const wxString &plotName)
+// void XyPlotRescale(const std::string &plotName)
 //------------------------------------------------------------------------------
 /**
  * Sends a rescale message to the plot
@@ -725,7 +725,7 @@ void PlotInterface::XyPlotClearFromBreak(const wxString &plotName,
  * @param plotName The plot that is to be rescaled
  */
 //------------------------------------------------------------------------------
-void PlotInterface::XyPlotRescale(const wxString &plotName)
+void PlotInterface::XyPlotRescale(const std::string &plotName)
 {
    if (thePlotReceiver != NULL)
       thePlotReceiver->XyPlotRescale(plotName);
@@ -733,7 +733,7 @@ void PlotInterface::XyPlotRescale(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-// void XyPlotCurveSettings(const wxString &plotName, bool useLines,
+// void XyPlotCurveSettings(const std::string &plotName, bool useLines,
 //       Integer lineWidth, Integer lineStyle, bool useMarkers,
 //       Integer markerSize, Integer marker, bool useHiLow, Integer forCurve)
 //------------------------------------------------------------------------------
@@ -752,7 +752,7 @@ void PlotInterface::XyPlotRescale(const wxString &plotName)
  * @param forCurve The index of the curve receiving the settings
  */
 //------------------------------------------------------------------------------
-void PlotInterface::XyPlotCurveSettings(const wxString &plotName,
+void PlotInterface::XyPlotCurveSettings(const std::string &plotName,
       bool useLines, Integer lineWidth, Integer lineStyle, bool useMarkers,
       Integer markerSize, Integer marker, bool useHiLow, Integer forCurve)
 {
@@ -763,8 +763,8 @@ void PlotInterface::XyPlotCurveSettings(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void SetXyPlotTitle(const wxString &plotName,
-//       const wxString &plotTitle)
+// void SetXyPlotTitle(const std::string &plotName,
+//       const std::string &plotTitle)
 //------------------------------------------------------------------------------
 /**
  * Sets the title for a plot
@@ -773,8 +773,8 @@ void PlotInterface::XyPlotCurveSettings(const wxString &plotName,
  * @param plotTitle The new title for the plot
  */
 //------------------------------------------------------------------------------
-void PlotInterface::SetXyPlotTitle(const wxString &plotName,
-                                   const wxString &plotTitle)
+void PlotInterface::SetXyPlotTitle(const std::string &plotName,
+                                   const std::string &plotTitle)
 {
    if (thePlotReceiver != NULL)
       thePlotReceiver->SetXyPlotTitle(plotName, plotTitle);
@@ -782,7 +782,7 @@ void PlotInterface::SetXyPlotTitle(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void ShowXyPlotLegend(const wxString &plotName)
+// void ShowXyPlotLegend(const std::string &plotName)
 //------------------------------------------------------------------------------
 /**
  * Turns on display of the plot legend
@@ -790,7 +790,7 @@ void PlotInterface::SetXyPlotTitle(const wxString &plotName,
  * @param plotName The name of the plot
  */
 //------------------------------------------------------------------------------
-void PlotInterface::ShowXyPlotLegend(const wxString &plotName)
+void PlotInterface::ShowXyPlotLegend(const std::string &plotName)
 {
    if (thePlotReceiver != NULL)
       thePlotReceiver->ShowXyPlotLegend(plotName);
@@ -798,7 +798,7 @@ void PlotInterface::ShowXyPlotLegend(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-// bool RefreshXyPlot(const wxString &plotName)
+// bool RefreshXyPlot(const std::string &plotName)
 //------------------------------------------------------------------------------
 /*
  * Refreshes all plot curves on a plot
@@ -808,7 +808,7 @@ void PlotInterface::ShowXyPlotLegend(const wxString &plotName)
  * @return true on success, false if nothing was refreshed
  */
 //------------------------------------------------------------------------------
-bool PlotInterface::RefreshXyPlot(const wxString &plotName)
+bool PlotInterface::RefreshXyPlot(const std::string &plotName)
 {
    if (thePlotReceiver != NULL)
       return thePlotReceiver->RefreshXyPlot(plotName);
@@ -818,11 +818,11 @@ bool PlotInterface::RefreshXyPlot(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-// bool UpdateXyPlot(const wxString &plotName, const wxString &oldName,
+// bool UpdateXyPlot(const std::string &plotName, const std::string &oldName,
 //                   const Real &xval, const Rvector &yvals,
-//                   const wxString &plotTitle,
-//                   const wxString &xAxisTitle,
-//                   const wxString &yAxisTitle, bool updateCanvas,
+//                   const std::string &plotTitle,
+//                   const std::string &xAxisTitle,
+//                   const std::string &yAxisTitle, bool updateCanvas,
 //                   bool drawGrid)
 //------------------------------------------------------------------------------
 /*
@@ -841,12 +841,12 @@ bool PlotInterface::RefreshXyPlot(const wxString &plotName)
  * @return true if an update occurred, false otherwise
  */
 //------------------------------------------------------------------------------
-bool PlotInterface::UpdateXyPlot(const wxString &plotName,
-                                 const wxString &oldName,
+bool PlotInterface::UpdateXyPlot(const std::string &plotName,
+                                 const std::string &oldName,
                                  const Real &xval, const Rvector &yvals,
-                                 const wxString &plotTitle,
-                                 const wxString &xAxisTitle,
-                                 const wxString &yAxisTitle,
+                                 const std::string &plotTitle,
+                                 const std::string &xAxisTitle,
+                                 const std::string &yAxisTitle,
                                  Integer solverOption, bool updateCanvas,
                                  bool drawGrid)
 {
@@ -859,7 +859,7 @@ bool PlotInterface::UpdateXyPlot(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// bool UpdateXyPlotData(const wxString &plotName, const Real &xval,
+// bool UpdateXyPlotData(const std::string &plotName, const Real &xval,
 //       const Rvector &yvals, const Rvector &hiError, const Rvector &lowError)
 //------------------------------------------------------------------------------
 /**
@@ -878,7 +878,7 @@ bool PlotInterface::UpdateXyPlot(const wxString &plotName,
  * @return true if the data was processed, false if not
  */
 //------------------------------------------------------------------------------
-bool PlotInterface::UpdateXyPlotData(const wxString &plotName,
+bool PlotInterface::UpdateXyPlotData(const std::string &plotName,
                              const Real &xval, const Rvector &yvals,
                              const Rvector &hiError, const Rvector &lowError)
 {
@@ -890,7 +890,7 @@ bool PlotInterface::UpdateXyPlotData(const wxString &plotName,
 }
 
 //------------------------------------------------------------------------------
-// bool UpdateXyPlotCurve(const wxString &plotName, Integer whichCurve,
+// bool UpdateXyPlotCurve(const std::string &plotName, Integer whichCurve,
 //       const Real &xval, const Real &yval, const Real hi, const Real low)
 //------------------------------------------------------------------------------
 /**
@@ -907,7 +907,7 @@ bool PlotInterface::UpdateXyPlotData(const wxString &plotName,
  * @return true if the data was processed, false if not
  */
 //------------------------------------------------------------------------------
-bool PlotInterface::UpdateXyPlotCurve(const wxString &plotName,
+bool PlotInterface::UpdateXyPlotCurve(const std::string &plotName,
                              Integer whichCurve, const Real &xval,
                              const Real &yval, const Real hi, const Real low)
 {
@@ -919,7 +919,7 @@ bool PlotInterface::UpdateXyPlotCurve(const wxString &plotName,
 }
 
 //------------------------------------------------------------------------------
-// bool DeactivateXyPlot(const wxString &plotName)
+// bool DeactivateXyPlot(const std::string &plotName)
 //------------------------------------------------------------------------------
 /**
  * Disables redrawing for a plot.  This method is used when a plot is receiving
@@ -931,7 +931,7 @@ bool PlotInterface::UpdateXyPlotCurve(const wxString &plotName,
  * @return true is a plot received the message, false if not
  */
 //------------------------------------------------------------------------------
-bool PlotInterface::DeactivateXyPlot(const wxString &plotName)
+bool PlotInterface::DeactivateXyPlot(const std::string &plotName)
 {
    if (thePlotReceiver != NULL)
       return thePlotReceiver->DeactivateXyPlot(plotName);
@@ -941,7 +941,7 @@ bool PlotInterface::DeactivateXyPlot(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-// bool ActivateXyPlot(const wxString &plotName)
+// bool ActivateXyPlot(const std::string &plotName)
 //------------------------------------------------------------------------------
 /**
  * Enables redrawing for a plot, and forces an immediate update.  This method is
@@ -953,7 +953,7 @@ bool PlotInterface::DeactivateXyPlot(const wxString &plotName)
  * @return true is a plot received the message, false if not
  */
 //------------------------------------------------------------------------------
-bool PlotInterface::ActivateXyPlot(const wxString &plotName)
+bool PlotInterface::ActivateXyPlot(const std::string &plotName)
 {
    if (thePlotReceiver != NULL)
       return thePlotReceiver->ActivateXyPlot(plotName);

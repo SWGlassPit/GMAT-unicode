@@ -28,14 +28,14 @@
 //#define DEBUG_DENSITY
 
 //------------------------------------------------------------------------------
-// SimpleExponentialAtmosphere(const wxString &name = wxT(""))
+// SimpleExponentialAtmosphere(const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Default constructor.
  */
 //------------------------------------------------------------------------------
-SimpleExponentialAtmosphere::SimpleExponentialAtmosphere(const wxString &name) :
-   AtmosphereModel      (wxT("SimpleExponential"), name),
+SimpleExponentialAtmosphere::SimpleExponentialAtmosphere(const std::string &name) :
+   AtmosphereModel      ("SimpleExponential", name),
    scaleHeight          (8.5),
    refHeight            (0.0),
    refDensity           (1.217),
@@ -83,9 +83,9 @@ SimpleExponentialAtmosphere::SimpleExponentialAtmosphere(
  * Assignment operator for the SimpleExponentialAtmosphere class.
  *
  * @param bary the SimpleExponentialAtmosphere object whose data to assign to
- *             wxT("this") calculated point.
+ *             "this" calculated point.
  *
- * @return wxT("this") SimpleExponentialAtmosphere with data of input
+ * @return "this" SimpleExponentialAtmosphere with data of input
  *                SimpleExponentialAtmosphere ea.
  */
 //------------------------------------------------------------------------------
@@ -124,12 +124,12 @@ bool SimpleExponentialAtmosphere::Density(Real *position, Real *density,
       Real epoch, Integer count)
 {
    #ifdef DEBUG_DENSITY
-      MessageInterface::ShowMessage(wxT("SimpleExponentialAtmosphere::Density called\n"));
+      MessageInterface::ShowMessage("SimpleExponentialAtmosphere::Density called\n");
    #endif
 
    if (centralBodyLocation == NULL)
-      throw AtmosphereException(wxT("Exponential atmosphere: Central body vector ")
-            wxT("was not initialized"));
+      throw AtmosphereException("Exponential atmosphere: Central body vector "
+            "was not initialized");
         
    Real loc[3], height;
    Integer i;
@@ -142,13 +142,13 @@ bool SimpleExponentialAtmosphere::Density(Real *position, Real *density,
         
       height = CalculateGeodetics(loc, epoch);
       if (height < 0.0)
-         throw AtmosphereException(wxT("Exponential atmosphere: Position vector is ")
-               wxT("inside central body"));
+         throw AtmosphereException("Exponential atmosphere: Position vector is "
+               "inside central body");
 
       density[i] = refDensity * exp(-(height - refHeight) / scaleHeight);
       #ifdef DEBUG_DENSITY
-         MessageInterface::ShowMessage(wxT("SEAtmos: [%lf %lf %lf] -> ht: %lf -> ")
-               wxT("density: %.12le\n"), loc[0], loc[1], loc[2], height, density[i]);
+         MessageInterface::ShowMessage("SEAtmos: [%lf %lf %lf] -> ht: %lf -> "
+               "density: %.12le\n", loc[0], loc[1], loc[2], height, density[i]);
       #endif
    }
     
@@ -162,7 +162,7 @@ bool SimpleExponentialAtmosphere::Density(Real *position, Real *density,
 /**
  * Clone the object (inherited from GmatBase).
  *
- * @return a clone of wxT("this") object.
+ * @return a clone of "this" object.
  */
 //------------------------------------------------------------------------------
 GmatBase* SimpleExponentialAtmosphere::Clone() const

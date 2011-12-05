@@ -149,7 +149,7 @@ void ManeuverFrame::CalculateBasis(Real basis[3][3])
 
 
 //------------------------------------------------------------------------------
-//  wxString GetFrameLabel(Integer id)
+//  std::string GetFrameLabel(Integer id)
 //------------------------------------------------------------------------------
 /**
  * Gets the label for the maneuver frame principal axes.
@@ -159,18 +159,18 @@ void ManeuverFrame::CalculateBasis(Real basis[3][3])
  * @return The label for the corresponding reference vector.
  */
 //------------------------------------------------------------------------------
-wxString ManeuverFrame::GetFrameLabel(Integer id)
+std::string ManeuverFrame::GetFrameLabel(Integer id)
 {
    switch (id)
    {
       case 1:
-         return wxT("X");
+         return "X";
       case 2:
-         return wxT("Y");
+         return "Y";
       case 3:
-         return wxT("Z");
+         return "Z";
       default:
          ;
    }
-   return wxT("Undefined");
+   return "Undefined";
 }

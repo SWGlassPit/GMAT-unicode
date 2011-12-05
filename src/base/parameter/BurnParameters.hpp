@@ -39,8 +39,8 @@ class GMAT_API ImpBurnElements : public BurnReal
 {
 public:
 
-   ImpBurnElements(const wxString &type = wxT(""),
-                   const wxString &name = wxT(""),
+   ImpBurnElements(const std::string &type = "",
+                   const std::string &name = "",
                    GmatBase *obj = NULL);
    ImpBurnElements(const ImpBurnElements &copy);
    ImpBurnElements& operator=(const ImpBurnElements &right);

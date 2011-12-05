@@ -28,7 +28,7 @@
 #include "CoordinateConverter.hpp"
 
 
-//#include wxT("RealUtilities.hpp")        // Inadequate for my needs here, so...
+//#include "RealUtilities.hpp"        // Inadequate for my needs here, so...
 #include <cmath>                    // for exp
 
 
@@ -40,12 +40,12 @@
 // static data
 //---------------------------------
 
-const wxString
+const std::string
 AtmosphereModel::PARAMETER_TEXT[AtmosphereModelParamCount-GmatBaseParamCount] =
 {
-   wxT("F107"),
-   wxT("F107A"),
-   wxT("MagneticIndex")                  // In GMAT, the wxT("published") value is K_p.
+   "F107",
+   "F107A",
+   "MagneticIndex"                  // In GMAT, the "published" value is K_p.
 };
 
 const Gmat::ParameterType
@@ -66,15 +66,15 @@ AtmosphereModel::PARAMETER_TYPE[AtmosphereModelParamCount-GmatBaseParamCount] =
  *  @param <name> The name of the derived atmosphere model.
  */
 //------------------------------------------------------------------------------
-AtmosphereModel::AtmosphereModel(const wxString &typeStr, const wxString &name) :
+AtmosphereModel::AtmosphereModel(const std::string &typeStr, const std::string &name) :
    GmatBase             (Gmat::ATMOSPHERE, typeStr, name),
    fileReader           (NULL),
    solarSystem          (NULL),
    mCentralBody         (NULL),
    solarFluxFile        (NULL),
-   fileName             (wxT("")),        // Set to a default when working
+   fileName             (""),        // Set to a default when working
    sunVector            (NULL),
-   centralBody          (wxT("Earth")),
+   centralBody          ("Earth"),
    centralBodyLocation  (NULL),
    cbRadius             (GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[GmatSolarSystemDefaults::EARTH]),
    cbFlattening         (0.0),       // Default is spherical
@@ -96,7 +96,7 @@ AtmosphereModel::AtmosphereModel(const wxString &typeStr, const wxString &name) 
    ghaEpoch             (0.0)
 {
    objectTypes.push_back(Gmat::ATMOSPHERE);
-   objectTypeNames.push_back(wxT("AtmosphereModel"));
+   objectTypeNames.push_back("AtmosphereModel");
 
    parameterCount = AtmosphereModelParamCount;
    nominalAp = ConvertKpToAp(nominalKp);
@@ -107,9 +107,9 @@ AtmosphereModel::AtmosphereModel(const wxString &typeStr, const wxString &name) 
    angVel[2]      = 7.29211585530e-5;
 
    #ifdef CHECK_KP2AP
-      MessageInterface::ShowMessage(wxT("K_p to A_p conversions:\n"));
+      MessageInterface::ShowMessage("K_p to A_p conversions:\n");
       for (Integer i = 0; i < 28; ++i)
-         MessageInterface::ShowMessage(wxT("   %12.9lf -> %12.9lf\n"), i/3.0,
+         MessageInterface::ShowMessage("   %12.9lf -> %12.9lf\n", i/3.0,
             ConvertKpToAp(i/3.0));
    #endif
 }
@@ -362,32 +362,32 @@ void AtmosphereModel::BuildAngularVelocity(const GmatEpoch when)
     wUpdateEpoch = when;
 
     #ifdef DEBUG_ANGVEL
-       MessageInterface::ShowMessage(wxT("Rotation Matrix:\n"));
+       MessageInterface::ShowMessage("Rotation Matrix:\n");
        for (Integer m = 0; m < 3; ++m)
        {
-          MessageInterface::ShowMessage(wxT("   ["));
+          MessageInterface::ShowMessage("   [");
           for (Integer n = 0; n < 3; ++n)
-             MessageInterface::ShowMessage(wxT(" %.14lf "),rotMat(m,n));
+             MessageInterface::ShowMessage(" %.14lf ",rotMat(m,n));
           if (m < 2)
-             MessageInterface::ShowMessage(wxT(";\n"));
+             MessageInterface::ShowMessage(";\n");
           else
-             MessageInterface::ShowMessage(wxT("]\n"));
+             MessageInterface::ShowMessage("]\n");
        }
 
-       MessageInterface::ShowMessage(wxT("Rotation Dot Matrix:\n"));
+       MessageInterface::ShowMessage("Rotation Dot Matrix:\n");
        for (Integer m = 0; m < 3; ++m)
        {
-          MessageInterface::ShowMessage(wxT("   ["));
+          MessageInterface::ShowMessage("   [");
           for (Integer n = 0; n < 3; ++n)
-             MessageInterface::ShowMessage(wxT(" %.14lf "),rotDotMat(m,n));
+             MessageInterface::ShowMessage(" %.14lf ",rotDotMat(m,n));
           if (m < 2)
-             MessageInterface::ShowMessage(wxT(";\n"));
+             MessageInterface::ShowMessage(";\n");
           else
-             MessageInterface::ShowMessage(wxT("]\n"));
+             MessageInterface::ShowMessage("]\n");
        }
 
-       MessageInterface::ShowMessage(wxT("AtmosphereModel::")
-             wxT("UpdateAngularVelocity(%.12lf) -> [%.12le %.12le %.12le]\n"),
+       MessageInterface::ShowMessage("AtmosphereModel::"
+             "UpdateAngularVelocity(%.12lf) -> [%.12le %.12le %.12le]\n",
              when, angVel[0], angVel[1], angVel[2]);
     #endif
 }
@@ -412,8 +412,8 @@ void AtmosphereModel::UpdateAngularVelocity(const GmatEpoch when)
       if (fabs(when - wUpdateEpoch) > wUpdateInterval)
       {
          if (cbFixed == NULL)
-            throw AtmosphereException(wxT("The body-fixed coordinate system is ")
-                  wxT("not set"));
+            throw AtmosphereException("The body-fixed coordinate system is "
+                  "not set");
          Real in[3], out[3];
          cbFixed->ToMJ2000Eq(when, in, out, true, true);
          BuildAngularVelocity(when);
@@ -593,8 +593,8 @@ Real AtmosphereModel::ConvertKpToAp(const Real kp)
             x[1] = x[2];
 
             if (i++ > maxIterations)
-               throw AtmosphereException(wxT("ConvertKpToAp failed; too ")
-                     wxT("many iterations"));
+               throw AtmosphereException("ConvertKpToAp failed; too "
+                     "many iterations");
          } while (fabs(y[1]) > epsilon);
 
          ap = x[2];
@@ -740,15 +740,15 @@ void AtmosphereModel::SetCentralBody(CelestialBody *cb)
       cbFlattening = mCentralBody->GetFlattening();
 
       #ifdef DEBUG_CB_PROPERTIES
-         MessageInterface::ShowMessage(wxT("Body set to %s; radius = %.12lf, ")
-               wxT("flattening = %.12lf\n"), mCentralBody->GetName().c_str(),
+         MessageInterface::ShowMessage("Body set to %s; radius = %.12lf, "
+               "flattening = %.12lf\n", mCentralBody->GetName().c_str(),
                cbRadius, cbFlattening);
       #endif
    }
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -758,7 +758,7 @@ void AtmosphereModel::SetCentralBody(CelestialBody *cb)
  * @return parameter text for the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString AtmosphereModel::GetParameterText(const Integer id) const
+std::string AtmosphereModel::GetParameterText(const Integer id) const
 {
    if ((id >= GmatBaseParamCount) && (id < AtmosphereModelParamCount))
       return PARAMETER_TEXT[id - GmatBaseParamCount];
@@ -767,7 +767,7 @@ wxString AtmosphereModel::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -777,7 +777,7 @@ wxString AtmosphereModel::GetParameterText(const Integer id) const
  * @return ID for the requested parameter.
  */
 //------------------------------------------------------------------------------
-Integer AtmosphereModel::GetParameterID(const wxString &str) const
+Integer AtmosphereModel::GetParameterID(const std::string &str) const
 {
    for (Integer i = GmatBaseParamCount; i < AtmosphereModelParamCount; ++i)
       if (str == PARAMETER_TEXT[i - GmatBaseParamCount])
@@ -806,7 +806,7 @@ Gmat::ParameterType AtmosphereModel::GetParameterType(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -816,7 +816,7 @@ Gmat::ParameterType AtmosphereModel::GetParameterType(const Integer id) const
  * @return parameter type string of the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString AtmosphereModel::GetParameterTypeString(const Integer id) const
+std::string AtmosphereModel::GetParameterTypeString(const Integer id) const
 {
    return GmatBase::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -894,15 +894,15 @@ Real AtmosphereModel::SetRealParameter(const Integer id, const Real value)
 
 
 //------------------------------------------------------------------------------
-//  void SetSolarFluxFile(const wxString &file)
+//  void SetSolarFluxFile(const std::string &file)
 //------------------------------------------------------------------------------
 /**
  * @param <file> The solar flux file
  */
 //------------------------------------------------------------------------------
-void AtmosphereModel::SetSolarFluxFile(const wxString &file)
+void AtmosphereModel::SetSolarFluxFile(const std::string &file)
 {
-   if (fileName == file)
+   if (strcmp(fileName.c_str(), file.c_str()) == 0)
       SetOpenFileFlag(true);
    else
    {
@@ -951,7 +951,7 @@ void AtmosphereModel::CloseFile()
    if (fileReader->CloseSolarFluxFile(solarFluxFile))
       fileRead = false;
    else
-      throw AtmosphereException(wxT("Error closing Atmosphere Model data file.\n"));
+      throw AtmosphereException("Error closing Atmosphere Model data file.\n");
 }
 
 
@@ -983,16 +983,16 @@ Real AtmosphereModel::CalculateGeodetics(Real *position, GmatEpoch when,
       when = wUpdateEpoch;
 
    #ifdef DEBUG_COORDINATE_TRANSFORMS
-      MessageInterface::ShowMessage(wxT("Geodetic calculations at epoch %.12lf\n"),
+      MessageInterface::ShowMessage("Geodetic calculations at epoch %.12lf\n",
             when);
-      MessageInterface::ShowMessage(wxT("Internal CS:\n%s\nFixed:\n%s\n"),
+      MessageInterface::ShowMessage("Internal CS:\n%s\nFixed:\n%s\n",
             mInternalCoordSystem->GetGeneratingString(
                   Gmat::NO_COMMENTS).c_str(),
             cbFixed->GetGeneratingString(Gmat::NO_COMMENTS).c_str());
       if (cbJ2000 != NULL)
-         MessageInterface::ShowMessage(wxT("cbJ2000 CS:\n%s\n"),
+         MessageInterface::ShowMessage("cbJ2000 CS:\n%s\n",
             cbJ2000->GetGeneratingString(Gmat::NO_COMMENTS).c_str());
-      MessageInterface::ShowMessage(wxT("Position: %lf, %lf, %lf\n"), position[0], position[1], position[2]);
+      MessageInterface::ShowMessage("Position: %lf, %lf, %lf\n", position[0], position[1], position[2]);
    #endif
 
    CoordinateConverter mCoordConverter;
@@ -1036,8 +1036,8 @@ Real AtmosphereModel::CalculateGeodetics(Real *position, GmatEpoch when,
    }
 
    #ifdef DEBUG_COORDINATE_TRANSFORMS
-      MessageInterface::ShowMessage(wxT("Geodetics:\n   Height = %.6lf\n   ")
-            wxT("Latitude = %.6lf\n   Longitude = %.6lf\n"), geoHeight, geoLat,
+      MessageInterface::ShowMessage("Geodetics:\n   Height = %.6lf\n   "
+            "Latitude = %.6lf\n   Longitude = %.6lf\n", geoHeight, geoLat,
             (includeLatLong ? geoLong : -999999.999999));
    #endif
 
@@ -1125,16 +1125,16 @@ Real AtmosphereModel::CalculateGeocentrics(Real *position, GmatEpoch when,
       when = wUpdateEpoch;
 
    #ifdef DEBUG_COORDINATE_TRANSFORMS
-      MessageInterface::ShowMessage(wxT("Geocentric calculations at epoch %.12lf\n"),
+      MessageInterface::ShowMessage("Geocentric calculations at epoch %.12lf\n",
             when);
-      MessageInterface::ShowMessage(wxT("Internal CS:\n%s\nFixed:\n%s\n"),
+      MessageInterface::ShowMessage("Internal CS:\n%s\nFixed:\n%s\n",
             mInternalCoordSystem->GetGeneratingString(
                   Gmat::NO_COMMENTS).c_str(),
             cbFixed->GetGeneratingString(Gmat::NO_COMMENTS).c_str());
       if (cbJ2000 != NULL)
-         MessageInterface::ShowMessage(wxT("cbJ2000 CS:\n%s\n"),
+         MessageInterface::ShowMessage("cbJ2000 CS:\n%s\n",
             cbJ2000->GetGeneratingString(Gmat::NO_COMMENTS).c_str());
-      MessageInterface::ShowMessage(wxT("Position: %lf, %lf, %lf\n"), position[0], position[1], position[2]);
+      MessageInterface::ShowMessage("Position: %lf, %lf, %lf\n", position[0], position[1], position[2]);
    #endif
 
    CoordinateConverter mCoordConverter;
@@ -1161,8 +1161,8 @@ Real AtmosphereModel::CalculateGeocentrics(Real *position, GmatEpoch when,
    }
 
    #ifdef DEBUG_COORDINATE_TRANSFORMS
-      MessageInterface::ShowMessage(wxT("Geocentrics:\n   Height = %.6lf\n   ")
-            wxT("Latitude = %.6lf\n   Longitude = %.6lf\n"), geoHeight, geoLat,
+      MessageInterface::ShowMessage("Geocentrics:\n   Height = %.6lf\n   "
+            "Latitude = %.6lf\n   Longitude = %.6lf\n", geoHeight, geoLat,
             (includeLatLong ? geoLong : -999999.999999));
    #endif
 

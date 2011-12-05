@@ -34,7 +34,7 @@ public:
    
    void OpenScript();
    void ClearScript();
-   void PutScript(wxString &str);
+   void PutScript(char *str);
    void BuildObject();
    void UpdateObject();
    void RunScript();
@@ -42,13 +42,13 @@ public:
    // methods to manage execution of GMAT callback
    bool  ExecuteCallback();
    bool  RegisterCallbackServer(GmatBase *callbackObject);
-   wxChar * GetCallbackStatus();
-   void  PutCallbackData(wxString &data);
-   wxChar * GetCallbackResults();
+   char* GetCallbackStatus();
+   void  PutCallbackData(std::string &data);
+   char* GetCallbackResults();
    
-   wxChar * GetRunState();
-   wxChar * GetGmatObject(const wxString &name);
-   wxChar * GetParameter(const wxString &name);
+   char* GetRunState();
+   char* GetGmatObject(const std::string &name);
+   char* GetParameter(const std::string &name);
    
    void CheckUserInterrupt();
    
@@ -62,8 +62,8 @@ private:
    
    GmatInterface();
    
-   static wxString dataString;
-   static wxString mStringStream;
+   std::stringstream mStringStream;
+   std::istringstream *mInStringStream;
    static GmatInterface *instance;
    static bool mPassedInterpreter;
    

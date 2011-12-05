@@ -41,24 +41,24 @@ public:
    EndFiniteBurn(const EndFiniteBurn& endman);
    EndFiniteBurn&         operator=(const EndFiniteBurn& endman);
 
-   virtual bool TakeAction(const wxString &action,  
-                           const wxString &actionData = wxT(""));
-   virtual wxString GetRefObjectName(const Gmat::ObjectType type) const;
+   virtual bool TakeAction(const std::string &action,  
+                           const std::string &actionData = "");
+   virtual std::string GetRefObjectName(const Gmat::ObjectType type) const;
    virtual const ObjectTypeArray&
                        GetRefObjectTypeArray();
    virtual const StringArray&
                        GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool        SetRefObjectName(const Gmat::ObjectType type,
-                                        const wxString &name);
+                                        const std::string &name);
 
    virtual GmatBase*    Clone() const;
    virtual bool        RenameRefObject(const Gmat::ObjectType type,
-                                       const wxString &oldName,
-                                       const wxString &newName);
-   virtual const wxString&
+                                       const std::string &oldName,
+                                       const std::string &newName);
+   virtual const std::string&
                         GetGeneratingString(Gmat::WriteMode mode,
-                                            const wxString &prefix,
-                                            const wxString &useName);
+                                            const std::string &prefix,
+                                            const std::string &useName);
 
    virtual void         SetTransientForces(std::vector<PhysicalModel*> *tf);
    
@@ -67,12 +67,12 @@ public:
 
 protected:
    /// Name of the FiniteBurn object used to set the maneuver details
-   wxString          thrustName;
+   std::string          thrustName;
    /// The FiniteThrust that is available for the force models
    FiniteThrust         *burnForce;
 
    /// Name of the FiniteBurn object used to set the maneuver details
-   wxString          burnName;
+   std::string          burnName;
    /// The FiniteBurn object
    FiniteBurn           *maneuver;
    /// The vector of forces managed by the Sandbox

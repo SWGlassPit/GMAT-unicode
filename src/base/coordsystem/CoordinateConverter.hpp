@@ -46,8 +46,8 @@ public:
    // initializes the CoordinateConverter
    virtual void Initialize(); 
    
-   //void        SetJ2000BodyName(const wxString &toName);
-   //wxString GetJ2000BodyName() const;
+   //void        SetJ2000BodyName(const std::string &toName);
+   //std::string GetJ2000BodyName() const;
    //void        SetJ2000Body(SpacePoint *toBody);
    //SpacePoint* GetJ2000Body();
    
@@ -78,7 +78,7 @@ protected:
    /// Equatorial coordinate system)
    //SpacePoint                     *j2000Body;  
    /// Name for the J2000 body
-   //wxString                    j2000BodyName;
+   //std::string                    j2000BodyName;
    
 };
 #endif // CoordinateConverter_hpp

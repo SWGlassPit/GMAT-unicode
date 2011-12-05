@@ -74,7 +74,7 @@ public:
    Integer GetDataWidth();
    Integer GetTimeWidth();
    Integer GetIntegerWidth();
-   wxString GetOutputPath();
+   std::string GetOutputPath();
 
    // Data Precision and Width
    void SetDataPrecision(Integer p);
@@ -82,11 +82,11 @@ public:
    void SetDataWidth(Integer w);
    void SetTimeWidth(Integer w);
    void SetIntegerWidth(Integer w);
-   void SetOutputPath(const wxString &path);
+   void SetOutputPath(const std::string &path);
    
    // MatlabFunction name extension
-   void SetMatlabFuncNameExt(const wxString &ext);
-   wxString GetMatlabFuncNameExt();
+   void SetMatlabFuncNameExt(const std::string &ext);
+   std::string GetMatlabFuncNameExt();
    
    // Run mode
    bool IsBatchMode();
@@ -127,7 +127,7 @@ public:
    void SetBinaryIn(bool flag);
    void SetBinaryOut(bool flag);
    void SetSpacing(Integer sp);
-   void SetPrefix(const wxString &prefix);
+   void SetPrefix(const std::string &prefix);
    void SetAppendEol(bool flag);
    
    void SetDefaultFormat();
@@ -135,16 +135,16 @@ public:
                          Integer width = GmatGlobal::DATA_WIDTH,
                          Integer precision = GmatGlobal::DATA_PRECISION,
                          bool horizontal = true, Integer spacing = 1,
-                         const wxString &prefix = wxT(""), bool appendEol = true,
+                         const std::string &prefix = "", bool appendEol = true,
                          bool binaryIn = false, bool binaryOut = false);
    
    void GetActualFormat(bool &scientific, bool &showPoint, Integer &precision,
                         Integer &width, bool &horizontal, Integer &spacing,
-                        wxString &prefix, bool &appendEol); 
+                        std::string &prefix, bool &appendEol); 
    
    void SetActualFormat(bool scientific, bool showPoint, Integer precision,
                         Integer width, bool horizontal = true, Integer spacing = 1,
-                        const wxString &prefix = wxT(""), bool appendEol = true);
+                        const std::string &prefix = "", bool appendEol = true);
    
    void SetToDefaultFormat();
    void SetToCurrentFormat();
@@ -162,7 +162,7 @@ private:
    {
       Setting(Integer dp = DATA_PRECISION, Integer tp = TIME_PRECISION,
               Integer dw = DATA_WIDTH, Integer tw = TIME_WIDTH,
-              Integer iw = INTEGER_WIDTH, const wxString &op = wxT(""))
+              Integer iw = INTEGER_WIDTH, const std::string &op = "")
       {
          mDataPrecision = dp;
          mTimePrecision = tp;
@@ -177,7 +177,7 @@ private:
       Integer mDataWidth;
       Integer mTimeWidth;
       Integer mIntegerWidth;
-      wxString mOutputPath;
+      std::string mOutputPath;
    };
    
    // I/O formatting   
@@ -187,7 +187,7 @@ private:
                Integer precision = GmatGlobal::DATA_PRECISION,
                Integer width = GmatGlobal::DATA_WIDTH,
                bool horizontal = true, Integer spacing = 1,
-               const wxString &prefix = wxT(""), bool appendEol = true,
+               const std::string &prefix = "", bool appendEol = true,
                bool binaryIn = false, bool binaryOut = false)
       {
          mScientific = scientific;
@@ -210,7 +210,7 @@ private:
       Integer mSpacing;    /// determines number of spaces in between each element
       bool mBinaryIn;      /// read in binary if true. Default is false
       bool mBinaryOut;     /// print in binary if true. Default is false
-      wxString mPrefix; /// prefix to be used for vertical formatting
+      std::string mPrefix; /// prefix to be used for vertical formatting
       bool mAppendEol ;    /// appends eol if true. Default is true
    };
    
@@ -233,7 +233,7 @@ private:
    IoFormat currentFormat;
    IoFormat actualFormat;
    
-   wxString matlabExt;
+   std::string matlabExt;
 
    EopFile *theEopFile;
    ItrfCoefficientsFile *theItrfFile;

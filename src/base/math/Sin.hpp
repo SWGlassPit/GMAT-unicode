@@ -26,7 +26,7 @@
 class GMAT_API Sin : public MathFunction
 {
 public:
-   Sin(const wxString &nomme);
+   Sin(const std::string &nomme);
    virtual ~Sin();
    Sin(const Sin &copy);
                  

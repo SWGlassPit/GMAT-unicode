@@ -31,7 +31,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  NotAKnotInterpolator(const wxString &name, Integer dim)
+//  NotAKnotInterpolator(const std::string &name, Integer dim)
 //------------------------------------------------------------------------------
 /**
  * Constructs not a knot interpolator (default constructor).
@@ -40,9 +40,9 @@
  * @param <dim>  The dimension of the vector that is interpolated.
  */
 //------------------------------------------------------------------------------
-NotAKnotInterpolator::NotAKnotInterpolator(const wxString &name,
+NotAKnotInterpolator::NotAKnotInterpolator(const std::string &name,
                                            Integer dim) :
-   Interpolator        (name, wxT("NotAKnotInterpolator"), dim),
+   Interpolator        (name, "NotAKnotInterpolator", dim),
    lastX               (-9.9999e75)
 {
    bufferSize = 5;
@@ -182,16 +182,16 @@ bool NotAKnotInterpolator::Interpolate(const Real ind, Real *results)
       retval = Estimate(ind, results);
       
    #ifdef DUMP_SPLINE_POINTS
-      MessageInterface::ShowMessage(wxT("Cubic spline uses these points:\n"));
+      MessageInterface::ShowMessage("Cubic spline uses these points:\n");
       for (Integer i = 0; i < 5; ++i)
       {
-         MessageInterface::ShowMessage(wxT("   %.12lf:"), x[i]);
+         MessageInterface::ShowMessage("   %.12lf:", x[i]);
          for (Integer j = 0; j < dimension; ++j)
-            MessageInterface::ShowMessage(wxT("   %.12lf"), y[i][j]);
-         MessageInterface::ShowMessage(wxT("\n"));
+            MessageInterface::ShowMessage("   %.12lf", y[i][j]);
+         MessageInterface::ShowMessage("\n");
       }
          
-      MessageInterface::ShowMessage(wxT("Cubic spline (not a knot) data points:\n"));
+      MessageInterface::ShowMessage("Cubic spline (not a knot) data points:\n");
       
       Real increment = (x[bufferSize - 1] - x[0]) / 100.0, xval;
       Real *dumpData = new Real[dimension];
@@ -199,15 +199,15 @@ bool NotAKnotInterpolator::Interpolate(const Real ind, Real *results)
       {
          xval = x[0] + i * increment;
          Estimate(xval, dumpData);
-         MessageInterface::ShowMessage(wxT("   %.12lf"), xval);
+         MessageInterface::ShowMessage("   %.12lf", xval);
          for (Integer j = 0; j < dimension; ++j)
-            MessageInterface::ShowMessage(wxT("   %.12lf"), dumpData[j]);
-         MessageInterface::ShowMessage(wxT("\n"));
+            MessageInterface::ShowMessage("   %.12lf", dumpData[j]);
+         MessageInterface::ShowMessage("\n");
       } 
       
-      MessageInterface::ShowMessage(wxT("Spline Estimate:\n"));
+      MessageInterface::ShowMessage("Spline Estimate:\n");
       for (Integer i = 0; i < dimension; ++i)
-         MessageInterface::ShowMessage(wxT("   %02d:   %.12lf\n"), i, results[i]);
+         MessageInterface::ShowMessage("   %02d:   %.12lf\n", i, results[i]);
       
       delete [] dumpData;   
    #endif
@@ -372,7 +372,7 @@ void NotAKnotInterpolator::CopyArrays(const NotAKnotInterpolator &i)
  *   4. The second derivatives must be continuous at the internal knots.
  *      (3 constraints) 
  * 
- * This implementation builds wxT("natural") splines -- the 2 remaining free 
+ * This implementation builds "natural" splines -- the 2 remaining free 
  * parameters in the derivation are determined by setting the second derivatives 
  * at the endpoints to 0.0.
  * 
@@ -498,7 +498,7 @@ void NotAKnotInterpolator::LoadArrays()
  * Perform the estimation using the information from the splines.  
  * 
  * This method is invoked after calling BuildSplines(), using the input 
- * parameters from the Interpolate() method.  It matches the wxT("splint") routine
+ * parameters from the Interpolate() method.  It matches the "splint" routine
  * found in Numerical Recipes in C, section 3.3.
  * 
  * @param ind       The value of the independent parameter.

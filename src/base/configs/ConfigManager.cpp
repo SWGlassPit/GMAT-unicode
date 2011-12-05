@@ -97,7 +97,7 @@ ConfigManager::~ConfigManager()
 
 
 //------------------------------------------------------------------------------
-// wxString GetNewName(const wxString &name, Integer startCount)
+// std::string GetNewName(const std::string &name, Integer startCount)
 //------------------------------------------------------------------------------
 /*
  * It gives new name by adding counter to the input name.
@@ -107,23 +107,23 @@ ConfigManager::~ConfigManager()
  * @return new name
  */
 //------------------------------------------------------------------------------
-wxString ConfigManager::GetNewName(const wxString &name, Integer startCount)
+std::string ConfigManager::GetNewName(const std::string &name, Integer startCount)
 {
    #if DEBUG_CONFIG_NEW_NAME
    MessageInterface::ShowMessage
-      (wxT("ConfigManager::GetNewName() name = %s\n"), name.c_str());
+      ("ConfigManager::GetNewName() name = %s\n", name.c_str());
    #endif
    
-   if (name == wxT(""))
-      return wxT("");
+   if (name == "")
+      return "";
    
    // get initial new name
    Integer counter = 0;
-   wxString baseName = GmatStringUtil::RemoveLastNumber(name, counter);
+   std::string baseName = GmatStringUtil::RemoveLastNumber(name, counter);
    if (counter == 0)
       counter = startCount;
    
-   wxString newName = baseName + GmatStringUtil::ToString(counter, 1);
+   std::string newName = baseName + GmatStringUtil::ToString(counter, 1);
    
    // construct new name while it exists
    while (GetItem(newName))
@@ -134,7 +134,7 @@ wxString ConfigManager::GetNewName(const wxString &name, Integer startCount)
    
    #if DEBUG_CONFIG_NEW_NAME
    MessageInterface::ShowMessage
-      (wxT("ConfigManager::GetNewName() newName = %s\n"), newName.c_str());
+      ("ConfigManager::GetNewName() newName = %s\n", newName.c_str());
    #endif
    
    return newName;
@@ -154,20 +154,20 @@ void ConfigManager::AddObject(Gmat::ObjectType objType, GmatBase *obj)
 {
    #ifdef DEBUG_ADD_OBJECT
    MessageInterface::ShowMessage
-      (wxT("ConfigManager::AddObject() entered, objType=%d, obj=<%p>\n"), objType, obj);
+      ("ConfigManager::AddObject() entered, objType=%d, obj=<%p>\n", objType, obj);
    #endif
-   wxString name = obj->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = obj->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
    
    if (!obj->IsOfType(objType))
-      throw ConfigManagerException(name + wxT(" is not a valid object type"));
+      throw ConfigManagerException(name + " is not a valid object type");
    
    AddObject(obj);
 }
 
 //------------------------------------------------------------------------------
-// wxString AddClone(const wxString &name)
+// std::string AddClone(const std::string &name)
 //------------------------------------------------------------------------------
 /*
  * Adds the clone of the named object to configuration.
@@ -177,13 +177,13 @@ void ConfigManager::AddObject(Gmat::ObjectType objType, GmatBase *obj)
  *        blank otherwise
  */
 //------------------------------------------------------------------------------
-wxString ConfigManager::AddClone(const wxString &name)
+std::string ConfigManager::AddClone(const std::string &name)
 {
-   if (name == wxT(""))
-      return wxT("");
+   if (name == "")
+      return "";
    
    GmatBase *obj1 = GetItem(name);
-   wxString newName = GetNewName(name, 2);
+   std::string newName = GetNewName(name, 2);
    
    GmatBase* obj2 = obj1->Clone();
    obj2->SetName(newName, newName);
@@ -191,7 +191,7 @@ wxString ConfigManager::AddClone(const wxString &name)
    
    #if DEBUG_CONFIG_ADD_CLONE
    MessageInterface::ShowMessage
-      (wxT("ConfigManager::AddClone() newName = %s, type = %s\n"), obj2->GetName().c_str(),
+      ("ConfigManager::AddClone() newName = %s, type = %s\n", obj2->GetName().c_str(),
        obj2->GetTypeName().c_str());
    #endif
    
@@ -210,12 +210,12 @@ wxString ConfigManager::AddClone(const wxString &name)
 //------------------------------------------------------------------------------
 void ConfigManager::AddPhysicalModel(PhysicalModel *pm)
 {
-   wxString name = pm->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = pm->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!pm->IsOfType(Gmat::PHYSICAL_MODEL))
-      throw ConfigManagerException(name + wxT(" is not a PhysicalModel"));
+      throw ConfigManagerException(name + " is not a PhysicalModel");
 
    AddObject(pm);
 }
@@ -231,12 +231,12 @@ void ConfigManager::AddPhysicalModel(PhysicalModel *pm)
 //------------------------------------------------------------------------------
 void ConfigManager::AddPropagator(Propagator *prop)
 {
-   wxString name = prop->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = prop->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!prop->IsOfType(Gmat::PROPAGATOR))
-      throw ConfigManagerException(name + wxT(" is not a Propagator"));
+      throw ConfigManagerException(name + " is not a Propagator");
 
    AddObject(prop);
 }
@@ -253,13 +253,13 @@ void ConfigManager::AddPropagator(Propagator *prop)
 //------------------------------------------------------------------------------
 void ConfigManager::AddODEModel(ODEModel *fm)
 {
-   wxString name = fm->GetName();
+   std::string name = fm->GetName();
 
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!fm->IsOfType(Gmat::ODE_MODEL))
-      throw ConfigManagerException(name + wxT(" is not a ForceModel"));
+      throw ConfigManagerException(name + " is not a ForceModel");
 
    AddObject(fm);
 }
@@ -276,12 +276,12 @@ void ConfigManager::AddODEModel(ODEModel *fm)
 //------------------------------------------------------------------------------
 void ConfigManager::AddSubscriber(Subscriber *subs)
 {
-   wxString name = subs->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = subs->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!subs->IsOfType(Gmat::SUBSCRIBER))
-      throw ConfigManagerException(name + wxT(" is not a Subscriber"));
+      throw ConfigManagerException(name + " is not a Subscriber");
 
    AddObject(subs);
 }
@@ -300,7 +300,7 @@ void ConfigManager::AddSubscriber(Subscriber *subs)
 //------------------------------------------------------------------------------
 void ConfigManager::AddSolarSystem(SolarSystem *solarSys)
 {
-   throw ConfigManagerException(wxT("SolarSystem objects are not yet managed"));
+   throw ConfigManagerException("SolarSystem objects are not yet managed");
 }
 
 
@@ -315,12 +315,12 @@ void ConfigManager::AddSolarSystem(SolarSystem *solarSys)
 //------------------------------------------------------------------------------
 void ConfigManager::AddPropSetup(PropSetup* propSetup)
 {
-   wxString name = propSetup->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = propSetup->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!propSetup->IsOfType(Gmat::PROP_SETUP))
-      throw ConfigManagerException(name + wxT(" is not a PropSetup"));
+      throw ConfigManagerException(name + " is not a PropSetup");
 
    AddObject(propSetup);
 }
@@ -337,12 +337,12 @@ void ConfigManager::AddPropSetup(PropSetup* propSetup)
 //------------------------------------------------------------------------------
 void ConfigManager::AddSpacecraft(SpaceObject *sc)
 {
-   wxString name = sc->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = sc->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!sc->IsOfType(Gmat::SPACEOBJECT))
-      throw ConfigManagerException(name + wxT(" is not a SpaceObject"));
+      throw ConfigManagerException(name + " is not a SpaceObject");
 
    AddObject(sc);
 }
@@ -361,12 +361,12 @@ void ConfigManager::AddSpacecraft(SpaceObject *sc)
 //------------------------------------------------------------------------------
 void ConfigManager::AddSpacePoint(SpacePoint *sp)
 {
-   wxString name = sp->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = sp->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!sp->IsOfType(Gmat::SPACE_POINT))
-      throw ConfigManagerException(name + wxT(" is not a SpacePoint"));
+      throw ConfigManagerException(name + " is not a SpacePoint");
 
    AddObject(sp);
 }
@@ -383,12 +383,12 @@ void ConfigManager::AddSpacePoint(SpacePoint *sp)
 //------------------------------------------------------------------------------
 void ConfigManager::AddHardware(Hardware *hw)
 {
-   wxString name = hw->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = hw->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!hw->IsOfType(Gmat::HARDWARE))
-      throw ConfigManagerException(name + wxT(" is not Hardware"));
+      throw ConfigManagerException(name + " is not Hardware");
 
    AddObject(hw);
 }
@@ -405,12 +405,12 @@ void ConfigManager::AddHardware(Hardware *hw)
 //------------------------------------------------------------------------------
 void ConfigManager::AddStopCondition(StopCondition* stopCond)
 {
-   wxString name = stopCond->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = stopCond->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!stopCond->IsOfType(Gmat::STOP_CONDITION))
-      throw ConfigManagerException(name + wxT(" is not a StopCondition"));
+      throw ConfigManagerException(name + " is not a StopCondition");
 
    AddObject(stopCond);
 }
@@ -427,12 +427,12 @@ void ConfigManager::AddStopCondition(StopCondition* stopCond)
 //------------------------------------------------------------------------------
 void ConfigManager::AddParameter(Parameter* parameter)
 {
-   wxString name = parameter->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = parameter->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!parameter->IsOfType(Gmat::PARAMETER))
-      throw ConfigManagerException(name + wxT(" is not a Parameter"));
+      throw ConfigManagerException(name + " is not a Parameter");
 
    AddObject(parameter);
 }
@@ -449,12 +449,12 @@ void ConfigManager::AddParameter(Parameter* parameter)
 //------------------------------------------------------------------------------
 void ConfigManager::AddBurn(Burn* burn)
 {
-   wxString name = burn->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = burn->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!burn->IsOfType(Gmat::BURN))
-      throw ConfigManagerException(name + wxT(" is not a Burn"));
+      throw ConfigManagerException(name + " is not a Burn");
 
    AddObject(burn);
 }
@@ -470,12 +470,12 @@ void ConfigManager::AddBurn(Burn* burn)
 //------------------------------------------------------------------------------
 void ConfigManager::AddSolver(Solver* solver)
 {
-   wxString name = solver->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = solver->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!solver->IsOfType(Gmat::SOLVER))
-      throw ConfigManagerException(name + wxT(" is not a Solver"));
+      throw ConfigManagerException(name + " is not a Solver");
 
    AddObject(solver);
 }
@@ -491,12 +491,12 @@ void ConfigManager::AddSolver(Solver* solver)
 //------------------------------------------------------------------------------
 void ConfigManager::AddAtmosphereModel(AtmosphereModel* atmosModel)
 {
-   wxString name = atmosModel->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = atmosModel->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!atmosModel->IsOfType(Gmat::ATMOSPHERE))
-      throw ConfigManagerException(name + wxT(" is not an AtmosphereModel"));
+      throw ConfigManagerException(name + " is not an AtmosphereModel");
 
    AddObject(atmosModel);
 }
@@ -512,12 +512,12 @@ void ConfigManager::AddAtmosphereModel(AtmosphereModel* atmosModel)
 //------------------------------------------------------------------------------
 void ConfigManager::AddFunction(Function* function)
 {
-   wxString name = function->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = function->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
    
    if (!function->IsOfType(Gmat::FUNCTION))
-      throw ConfigManagerException(name + wxT(" is not a Function"));
+      throw ConfigManagerException(name + " is not a Function");
 
    AddObject(function);
 }
@@ -533,13 +533,13 @@ void ConfigManager::AddFunction(Function* function)
 //------------------------------------------------------------------------------
 void ConfigManager::AddCoordinateSystem(CoordinateSystem *cs)
 {
-   wxString name = cs->GetName();
+   std::string name = cs->GetName();
 
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!cs->IsOfType(Gmat::COORDINATE_SYSTEM))
-      throw ConfigManagerException(name + wxT(" is not a CoordinateSystem"));
+      throw ConfigManagerException(name + " is not a CoordinateSystem");
 
    AddObject(cs);
 }
@@ -555,13 +555,13 @@ void ConfigManager::AddCoordinateSystem(CoordinateSystem *cs)
 //------------------------------------------------------------------------------
 void ConfigManager::AddCalculatedPoint(CalculatedPoint *cs)
 {
-   wxString name = cs->GetName();
+   std::string name = cs->GetName();
 
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!cs->IsOfType(Gmat::CALCULATED_POINT))
-      throw ConfigManagerException(name + wxT(" is not a CalculatedPoint"));
+      throw ConfigManagerException(name + " is not a CalculatedPoint");
 
    AddObject(cs);
 }
@@ -579,12 +579,12 @@ void ConfigManager::AddMeasurementModel(MeasurementModel *mModel)
 {
    GmatBase *obj = (GmatBase*)mModel;
 
-   wxString name = obj->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = obj->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!obj->IsOfType(Gmat::MEASUREMENT_MODEL))
-      throw ConfigManagerException(name + wxT(" is not a MeasurementModel"));
+      throw ConfigManagerException(name + " is not a MeasurementModel");
 
    AddObject(obj);
 }
@@ -602,12 +602,12 @@ void ConfigManager::AddTrackingSystem(TrackingSystem *ts)
 {
    GmatBase *obj = (GmatBase*)ts;
 
-   wxString name = obj->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = obj->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!obj->IsOfType(Gmat::TRACKING_SYSTEM))
-      throw ConfigManagerException(name + wxT(" is not a TrackingSystem"));
+      throw ConfigManagerException(name + " is not a TrackingSystem");
 
    AddObject(obj);
 }
@@ -625,12 +625,12 @@ void ConfigManager::AddTrackingData(TrackingData *td)
 {
    GmatBase *obj = (GmatBase*)td;
 
-   wxString name = obj->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = obj->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!obj->IsOfType(Gmat::TRACKING_DATA))
-      throw ConfigManagerException(name + wxT(" is not a TrackingData object"));
+      throw ConfigManagerException(name + " is not a TrackingData object");
 
    AddObject(obj);
 }
@@ -648,15 +648,15 @@ void ConfigManager::AddTrackingData(TrackingData *td)
 void ConfigManager::AddMeasurement(CoreMeasurement *meas)
 {
    GmatBase *obj = (GmatBase*)meas;
-   wxString name = obj->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = obj->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!obj->IsOfType(Gmat::CORE_MEASUREMENT))
-      throw ConfigManagerException(name + wxT(" is not a Measurement"));
+      throw ConfigManagerException(name + " is not a Measurement");
 
-   MessageInterface::ShowMessage(wxT("Warning: Core measurement %s configured; it ")
-         wxT("should be hidden inside of a MeasurementModel"), name.c_str());
+   MessageInterface::ShowMessage("Warning: Core measurement %s configured; it "
+         "should be hidden inside of a MeasurementModel", name.c_str());
    AddObject(obj);
 }
 
@@ -674,12 +674,12 @@ void ConfigManager::AddDataFile(DataFile *df)
 {
    GmatBase *obj = (GmatBase*)df;
 
-   wxString name = obj->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = obj->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if ((!obj->IsOfType(Gmat::DATA_FILE)) && (!obj->IsOfType(Gmat::DATASTREAM)))
-      throw ConfigManagerException(name + wxT(" is not a DataFile or DataStream"));
+      throw ConfigManagerException(name + " is not a DataFile or DataStream");
 
    AddObject(obj);
 }
@@ -698,15 +698,15 @@ void ConfigManager::AddObType(ObType *ot)
 {
    GmatBase *obj = (GmatBase*)ot;
 
-   wxString name = obj->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = obj->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!obj->IsOfType(Gmat::OBTYPE))
-      throw ConfigManagerException(name + wxT(" is not an ObType"));
+      throw ConfigManagerException(name + " is not an ObType");
 
-   MessageInterface::ShowMessage(wxT("Warning: ObType %s configured; it ")
-         wxT("should be hidden inside of a DataFile"), name.c_str());
+   MessageInterface::ShowMessage("Warning: ObType %s configured; it "
+         "should be hidden inside of a DataFile", name.c_str());
    AddObject(obj);
 }
 
@@ -724,12 +724,12 @@ void ConfigManager::AddEventLocator(EventLocator *el)
 {
    GmatBase *obj = (GmatBase*)el;
 
-   wxString name = obj->GetName();
-   if (name == wxT(""))
-      throw ConfigManagerException(wxT("Unnamed objects cannot be managed"));
+   std::string name = obj->GetName();
+   if (name == "")
+      throw ConfigManagerException("Unnamed objects cannot be managed");
 
    if (!obj->IsOfType(Gmat::EVENT_LOCATOR))
-      throw ConfigManagerException(name + wxT(" is not an EventLocator"));
+      throw ConfigManagerException(name + " is not an EventLocator");
 
    AddObject(obj);
 }
@@ -746,17 +746,17 @@ void ConfigManager::AddEventLocator(EventLocator *el)
 //------------------------------------------------------------------------------
 void ConfigManager::AddObject(GmatBase *obj)
 {
-   wxString name = obj->GetName();
+   std::string name = obj->GetName();
    
    #ifdef DEBUG_CONFIG_ADD
    MessageInterface::ShowMessage
-      (wxT("ConfigManager::AddObject() adding <%p><%s> '%s'\n"), obj,
+      ("ConfigManager::AddObject() adding <%p><%s> '%s'\n", obj,
        obj->GetTypeName().c_str(), name.c_str());
    #endif
    
    if (mapping.find(name) != mapping.end())
    {
-      name += wxT(" is already in the configuration table");
+      name += " is already in the configuration table";
       throw ConfigManagerException(name);
    }
    else
@@ -768,7 +768,7 @@ void ConfigManager::AddObject(GmatBase *obj)
    // Until we can add TextEphemFile to resource tree, we don't want to
    // write to script file on save script. (loj: 2007.04.07)
    
-   if (obj->GetTypeName() != wxT("TextEphemFile"))
+   if (obj->GetTypeName() != "TextEphemFile")
       objectChanged = true;
 }
 
@@ -803,7 +803,7 @@ void ConfigManager::SetSolarSystemInUse(SolarSystem *ss)
 {
    #if DEBUG_CONFIG_SS
    MessageInterface::ShowMessage
-      (wxT("ConfigManager::SetSolarSystemInUse() name=%s\n"), ss->GetName().c_str());
+      ("ConfigManager::SetSolarSystemInUse() name=%s\n", ss->GetName().c_str());
    #endif
    
    solarSystemInUse = ss;
@@ -811,7 +811,7 @@ void ConfigManager::SetSolarSystemInUse(SolarSystem *ss)
 
 
 //------------------------------------------------------------------------------
-// bool SetSolarSystemInUse(const wxString &name)
+// bool SetSolarSystemInUse(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets the name for the current SolarSystem.
@@ -821,10 +821,10 @@ void ConfigManager::SetSolarSystemInUse(SolarSystem *ss)
  * @note This method is not yet used in GMAT.
  */
 //------------------------------------------------------------------------------
-bool ConfigManager::SetSolarSystemInUse(const wxString &name)
+bool ConfigManager::SetSolarSystemInUse(const std::string &name)
 {
    throw ConfigManagerException
-      (wxT("ConfigManager::SetSolarSystemInUse(name) has not been implemented.\n"));
+      ("ConfigManager::SetSolarSystemInUse(name) has not been implemented.\n");
 }
 
 
@@ -854,7 +854,7 @@ const StringArray& ConfigManager::GetListOfAllItems()
 
 
 //------------------------------------------------------------------------------
-// const StringArray& GetListOfItemsHas(Gmat::ObjectType type, const wxString &name,
+// const StringArray& GetListOfItemsHas(Gmat::ObjectType type, const std::string &name,
 //                                      bool includeSysParam)
 //------------------------------------------------------------------------------
 /**
@@ -868,14 +868,14 @@ const StringArray& ConfigManager::GetListOfAllItems()
  */
 //------------------------------------------------------------------------------
 const StringArray& ConfigManager::GetListOfItemsHas(Gmat::ObjectType type,
-                                                    const wxString &name,
+                                                    const std::string &name,
                                                     bool includeSysParam)
 {
    StringArray items = GetListOfAllItems();
-   wxString::size_type pos;
+   std::string::size_type pos;
    GmatBase *obj;
-   wxString objName;
-   wxString objString;
+   std::string objName;
+   std::string objString;
    StringArray genStringArray;
    static StringArray itemList;
    itemList.clear();
@@ -883,7 +883,7 @@ const StringArray& ConfigManager::GetListOfItemsHas(Gmat::ObjectType type,
    
    #if DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("ConfigManager::GetListOfItemsHas() type=%d, name='%s', includeSysParam=%d\n"),
+      ("ConfigManager::GetListOfItemsHas() type=%d, name='%s', includeSysParam=%d\n",
        type, name.c_str(), includeSysParam);
    #endif
    
@@ -896,7 +896,7 @@ const StringArray& ConfigManager::GetListOfItemsHas(Gmat::ObjectType type,
          
          #if DEBUG_RENAME
          MessageInterface::ShowMessage
-            (wxT("===> obj[%d]=%s, %s\n"), itemIndex, obj->GetTypeName().c_str(),
+            ("===> obj[%d]=%s, %s\n", itemIndex, obj->GetTypeName().c_str(),
              obj->GetName().c_str());
          #endif
          
@@ -925,10 +925,10 @@ const StringArray& ConfigManager::GetListOfItemsHas(Gmat::ObjectType type,
          genStringArray = obj->GetGeneratingStringArray();
          
          #if DEBUG_RENAME
-         MessageInterface::ShowMessage(wxT("   genStringArray.size()=%d\n"), genStringArray.size());
+         MessageInterface::ShowMessage("   genStringArray.size()=%d\n", genStringArray.size());
          for (UnsignedInt ii = 0; ii < genStringArray.size(); ii++)
             MessageInterface::ShowMessage
-               (wxT("      genStringArray[%d]='%s'\n"), ii, genStringArray[ii].c_str());
+               ("      genStringArray[%d]='%s'\n", ii, genStringArray[ii].c_str());
          #endif
          
          if (genStringArray.empty())
@@ -939,14 +939,14 @@ const StringArray& ConfigManager::GetListOfItemsHas(Gmat::ObjectType type,
                objString = obj->GetGeneratingString();
                #if DEBUG_RENAME
                MessageInterface::ShowMessage
-                  (wxT("   objString='%s'\n"), objString.c_str());
+                  ("   objString='%s'\n", objString.c_str());
                #endif
                pos = objString.find(name);
                if (pos != objString.npos)
                {
                   #if DEBUG_RENAME
                   MessageInterface::ShowMessage
-                     (wxT("   '%s' found in Parameter, so adding '%s'\n"), name.c_str(),
+                     ("   '%s' found in Parameter, so adding '%s'\n", name.c_str(),
                       objName.c_str());
                   #endif
                   itemList.push_back(objName);
@@ -955,18 +955,18 @@ const StringArray& ConfigManager::GetListOfItemsHas(Gmat::ObjectType type,
          }
          else
          {
-            wxString rhsString;
+            std::string rhsString;
             for (StringArray::iterator iter = genStringArray.begin();
                  iter < genStringArray.end(); iter++)
             {
                objString = *iter;
-               StringArray parts = GmatStringUtil::SeparateBy(objString, wxT("="));
+               StringArray parts = GmatStringUtil::SeparateBy(objString, "=");
                
                #if DEBUG_RENAME
-               MessageInterface::ShowMessage(wxT("   parts.size()=%d\n"), parts.size());
+               MessageInterface::ShowMessage("   parts.size()=%d\n", parts.size());
                for (UnsignedInt j = 0; j < parts.size(); j++)
                   MessageInterface::ShowMessage
-                     (wxT("      parts[%d]='%s'\n"), j, parts[j].c_str());
+                     ("      parts[%d]='%s'\n", j, parts[j].c_str());
                #endif
                
                if (parts.size() > 1)
@@ -976,7 +976,7 @@ const StringArray& ConfigManager::GetListOfItemsHas(Gmat::ObjectType type,
                   
                   #if DEBUG_RENAME
                   MessageInterface::ShowMessage
-                     (wxT("   objString='%s', rhsString='%s'\n"), objString.c_str(),
+                     ("   objString='%s', rhsString='%s'\n", objString.c_str(),
                       rhsString.c_str());
                   #endif
                   
@@ -984,11 +984,11 @@ const StringArray& ConfigManager::GetListOfItemsHas(Gmat::ObjectType type,
                   if (pos != rhsString.npos)
                   {
                      // Add to list if name not found in string enclosed with single quote
-                     if (!GmatStringUtil::IsEnclosedWith(rhsString, wxT("'")))
+                     if (!GmatStringUtil::IsEnclosedWith(rhsString, "'"))
                      {
                         #if DEBUG_RENAME
                         MessageInterface::ShowMessage
-                           (wxT("   '%s' found in RHS, so adding '%s'\n"), name.c_str(), objName.c_str());
+                           ("   '%s' found in RHS, so adding '%s'\n", name.c_str(), objName.c_str());
                         #endif
                         itemList.push_back(objName);
                      }
@@ -1000,7 +1000,7 @@ const StringArray& ConfigManager::GetListOfItemsHas(Gmat::ObjectType type,
    }
    catch (BaseException &e)
    {
-      MessageInterface::ShowMessage(wxT("*** Error: %s\n"), e.GetFullMessage().c_str());
+      MessageInterface::ShowMessage("*** Error: %s\n", e.GetFullMessage().c_str());
    }
    
    return itemList;
@@ -1035,7 +1035,7 @@ const StringArray& ConfigManager::GetListOfItems(Gmat::ObjectType itemType)
 
 
 //------------------------------------------------------------------------------
-// const StringArray& GetListOfItems(const wxString &typeName)
+// const StringArray& GetListOfItems(const std::string &typeName)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a list of all configured objects of a given type name.
@@ -1045,7 +1045,7 @@ const StringArray& ConfigManager::GetListOfItems(Gmat::ObjectType itemType)
  * @return The list of objects.
  */
 //------------------------------------------------------------------------------
-const StringArray& ConfigManager::GetListOfItems(const wxString &typeName)
+const StringArray& ConfigManager::GetListOfItems(const std::string &typeName)
 {
    listOfItems.clear();
    
@@ -1062,7 +1062,7 @@ const StringArray& ConfigManager::GetListOfItems(const wxString &typeName)
 
 
 //------------------------------------------------------------------------------
-// GmatBase* GetFirstItemUsing(Gmat::ObjectType type, const wxString &name,
+// GmatBase* GetFirstItemUsing(Gmat::ObjectType type, const std::string &name,
 //                            bool includeSysParam = true);
 //------------------------------------------------------------------------------
 /**
@@ -1076,12 +1076,12 @@ const StringArray& ConfigManager::GetListOfItems(const wxString &typeName)
  */
 //------------------------------------------------------------------------------
 GmatBase* ConfigManager::GetFirstItemUsing(Gmat::ObjectType type,
-                                           const wxString &name,
+                                           const std::string &name,
                                            bool includeSysParam)
 {
    #ifdef DEBUG_CONFIG_OBJ_USING
    MessageInterface::ShowMessage
-      (wxT("ConfigManager::GetFirstItemUsing() type=%d, name='%s', includeSysParam=%d\n"),
+      ("ConfigManager::GetFirstItemUsing() type=%d, name='%s', includeSysParam=%d\n",
        type, name.c_str(), includeSysParam);
    #endif
    
@@ -1089,7 +1089,7 @@ GmatBase* ConfigManager::GetFirstItemUsing(Gmat::ObjectType type,
    
    #ifdef DEBUG_CONFIG_OBJ_USING
    MessageInterface::ShowMessage
-      (wxT("   There are %d objects using '%s'\n"), objList.size(), name.c_str());
+      ("   There are %d objects using '%s'\n", objList.size(), name.c_str());
    #endif
    
    GmatBase *obj = NULL;
@@ -1100,7 +1100,7 @@ GmatBase* ConfigManager::GetFirstItemUsing(Gmat::ObjectType type,
       
       #ifdef DEBUG_CONFIG_OBJ_USING
       MessageInterface::ShowMessage
-         (wxT("      obj = <%p><%s>'%s'\n"), obj, obj->GetTypeName().c_str(),
+         ("      obj = <%p><%s>'%s'\n", obj, obj->GetTypeName().c_str(),
           obj->GetName().c_str());
       #endif
       
@@ -1110,7 +1110,7 @@ GmatBase* ConfigManager::GetFirstItemUsing(Gmat::ObjectType type,
    
    #ifdef DEBUG_CONFIG_OBJ_USING
    MessageInterface::ShowMessage
-      (wxT("ConfigManager::GetFirstItemUsing() returning <%p>\n"), obj);
+      ("ConfigManager::GetFirstItemUsing() returning <%p>\n", obj);
    #endif
    
    return obj;
@@ -1118,7 +1118,7 @@ GmatBase* ConfigManager::GetFirstItemUsing(Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// GmatBase* GetItem(const wxString &name)
+// GmatBase* GetItem(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves an object by name.
@@ -1128,10 +1128,10 @@ GmatBase* ConfigManager::GetFirstItemUsing(Gmat::ObjectType type,
  * @return A pointer to the object.
  */
 //------------------------------------------------------------------------------
-GmatBase* ConfigManager::GetItem(const wxString &name)
+GmatBase* ConfigManager::GetItem(const std::string &name)
 {
    #ifdef DEBUG_CONFIG_GET_ITEM
-   MessageInterface::ShowMessage(wxT("ConfigManager::GetItem() name='%s'\n"), name.c_str());
+   MessageInterface::ShowMessage("ConfigManager::GetItem() name='%s'\n", name.c_str());
    #endif
    
    GmatBase *obj = NULL;
@@ -1145,7 +1145,7 @@ GmatBase* ConfigManager::GetItem(const wxString &name)
    }
    
    #ifdef DEBUG_CONFIG_GET_ITEM
-   MessageInterface::ShowMessage(wxT("===> ConfigManager::GetItem() returning <%p>\n"), obj);
+   MessageInterface::ShowMessage("===> ConfigManager::GetItem() returning <%p>\n", obj);
    #endif
    
    return obj;
@@ -1153,8 +1153,8 @@ GmatBase* ConfigManager::GetItem(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// bool RenameItem(Gmat::ObjectType type, const wxString &oldName,
-//                 const wxString &newName)
+// bool RenameItem(Gmat::ObjectType type, const std::string &oldName,
+//                 const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * Changes the name for a configured object.
@@ -1167,12 +1167,12 @@ GmatBase* ConfigManager::GetItem(const wxString &name)
  */
 //------------------------------------------------------------------------------
 bool ConfigManager::RenameItem(Gmat::ObjectType type,
-                               const wxString &oldName,
-                               const wxString &newName)
+                               const std::string &oldName,
+                               const std::string &newName)
 {
    #if DEBUG_RENAME
       MessageInterface::ShowMessage
-         (wxT("ConfigManager::RenameItem() type=%d, oldName='%s', newName='%s'\n"),
+         ("ConfigManager::RenameItem() type=%d, oldName='%s', newName='%s'\n",
           type, oldName.c_str(), newName.c_str());
    #endif
    
@@ -1196,20 +1196,20 @@ bool ConfigManager::RenameItem(Gmat::ObjectType type,
             renamed = true;
             #if DEBUG_RENAME
             MessageInterface::ShowMessage
-               (wxT("   Rename mapping mapObj=%s\n"), mapObj->GetName().c_str());
+               ("   Rename mapping mapObj=%s\n", mapObj->GetName().c_str());
             #endif
          }
          else
          {
             MessageInterface::PopupMessage
-               (Gmat::WARNING_, wxT("%s already exist, Please enter different name.\n"),
+               (Gmat::WARNING_, "%s already exist, Please enter different name.\n",
                 newName.c_str());
          }
       }
       else
       {
          MessageInterface::ShowMessage
-            (wxT("ConfigManager::RenameItem() oldName has different type:%d\n"),
+            ("ConfigManager::RenameItem() oldName has different type:%d\n",
              mapObj->GetType());
       }
    }
@@ -1218,7 +1218,7 @@ bool ConfigManager::RenameItem(Gmat::ObjectType type,
    {
       #if DEBUG_RENAME
          MessageInterface::ShowMessage
-            (wxT("ConfigManager::RenameItem() Unable to rename: oldName not found.\n"));
+            ("ConfigManager::RenameItem() Unable to rename: oldName not found.\n");
       #endif
       return false;
    }
@@ -1230,7 +1230,7 @@ bool ConfigManager::RenameItem(Gmat::ObjectType type,
    StringArray itemList = GetListOfItemsHas(type, oldName);
    #if DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("   =====> There are %d items has '%s'\n"), itemList.size(), oldName.c_str());
+      ("   =====> There are %d items has '%s'\n", itemList.size(), oldName.c_str());
    #endif
    for (UnsignedInt i=0; i<itemList.size(); i++)
    {
@@ -1239,7 +1239,7 @@ bool ConfigManager::RenameItem(Gmat::ObjectType type,
       {
          #if DEBUG_RENAME
          MessageInterface::ShowMessage
-            (wxT("      calling  %s->RenameRefObject()\n"), obj->GetName().c_str());
+            ("      calling  %s->RenameRefObject()\n", obj->GetName().c_str());
          #endif
          
          renamed = obj->RenameRefObject(type, oldName, newName);
@@ -1252,8 +1252,8 @@ bool ConfigManager::RenameItem(Gmat::ObjectType type,
    if (type == Gmat::PROP_SETUP)
    {
       // Change _ForceMode name if _ForceModel is configured
-      wxString oldFmName = oldName + wxT("_ForceModel");
-      wxString newFmName = newName + wxT("_ForceModel");
+      std::string oldFmName = oldName + "_ForceModel";
+      std::string newFmName = newName + "_ForceModel";
       if (mapping.find(oldFmName) != mapping.end())
       {
          mapObj = mapping[oldFmName];
@@ -1266,13 +1266,13 @@ bool ConfigManager::RenameItem(Gmat::ObjectType type,
             
             #if DEBUG_RENAME
             MessageInterface::ShowMessage
-               (wxT("   Rename mapping mapObj=%s\n"), mapObj->GetName().c_str());
+               ("   Rename mapping mapObj=%s\n", mapObj->GetName().c_str());
             #endif
          }
       }
       
       #if DEBUG_RENAME
-      MessageInterface::ShowMessage(wxT("   Calling PropSetup::RenameRefObject()\n"));
+      MessageInterface::ShowMessage("   Calling PropSetup::RenameRefObject()\n");
       #endif
       mapObj->RenameRefObject(type, oldName, newName);
    }
@@ -1290,7 +1290,7 @@ bool ConfigManager::RenameItem(Gmat::ObjectType type,
       for (unsigned int i=0; i<itemList.size(); i++)
       {
          obj = GetItem(itemList[i]);
-         if (obj->IsOfType(wxT("Thruster")))
+         if (obj->IsOfType("Thruster"))
              obj->RenameRefObject(type, oldName, newName);
       }
    }
@@ -1306,14 +1306,14 @@ bool ConfigManager::RenameItem(Gmat::ObjectType type,
        type == Gmat::THRUSTER || type == Gmat::FUEL_TANK)
    {
       StringArray params = GetListOfItems(Gmat::PARAMETER);
-      wxString oldParamName, newParamName;
+      std::string oldParamName, newParamName;
       Parameter *param;
-      wxString::size_type pos;
+      std::string::size_type pos;
       
       for (unsigned int i=0; i<params.size(); i++)
       {
          #if DEBUG_RENAME
-         MessageInterface::ShowMessage(wxT("params[%d]=%s\n"), i, params[i].c_str());
+         MessageInterface::ShowMessage("params[%d]=%s\n", i, params[i].c_str());
          #endif
          
          param = GetParameter(params[i]);
@@ -1332,7 +1332,7 @@ bool ConfigManager::RenameItem(Gmat::ObjectType type,
                
                #if DEBUG_RENAME
                MessageInterface::ShowMessage
-                  (wxT("===> oldParamName=%s, newParamName=%s\n"),
+                  ("===> oldParamName=%s, newParamName=%s\n",
                    oldParamName.c_str(), newParamName.c_str());
                #endif
                
@@ -1347,7 +1347,7 @@ bool ConfigManager::RenameItem(Gmat::ObjectType type,
             }
          }
          // if variable, need to change expression
-         else if (param->GetTypeName() == wxT("Variable"))
+         else if (param->GetTypeName() == "Variable")
          {
             param->RenameRefObject(Gmat::PARAMETER, oldName, newName);
          }
@@ -1356,9 +1356,9 @@ bool ConfigManager::RenameItem(Gmat::ObjectType type,
    
    #if DEBUG_RENAME
    StringArray allItems = GetListOfAllItems();
-   MessageInterface::ShowMessage(wxT("===> After rename\n"));
+   MessageInterface::ShowMessage("===> After rename\n");
    for (UnsignedInt i=0; i<allItems.size(); i++)
-      MessageInterface::ShowMessage(wxT("   item[%d] = %s\n"), i, allItems[i].c_str());
+      MessageInterface::ShowMessage("   item[%d] = %s\n", i, allItems[i].c_str());
    #endif
    
    objectChanged = true;
@@ -1381,23 +1381,23 @@ bool ConfigManager::RemoveAllItems()
    // delete objects
    #ifdef DEBUG_CONFIG_REMOVE
    MessageInterface::ShowMessage
-      (wxT("ConfigManager::RemoveAllItems() Deleting %d objects\n"), objects.size());
+      ("ConfigManager::RemoveAllItems() Deleting %d objects\n", objects.size());
    #endif
    
    for (unsigned int i=0; i<objects.size(); i++)
    {
-      wxString objName = objects[i]->GetName();
+      std::string objName = objects[i]->GetName();
       
       #ifdef DEBUG_CONFIG_REMOVE_MORE
       MessageInterface::ShowMessage
-         (wxT("   deleting <%p><%s>'%s'\n"), objects[i], objects[i]->GetTypeName().c_str(),
+         ("   deleting <%p><%s>'%s'\n", objects[i], objects[i]->GetTypeName().c_str(),
           objects[i]->GetName().c_str());
       #endif
       
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (objects[i], objects[i]->GetName(), wxT("ConfigManager::RemoveAllItems()"),
-          wxT(" deleting configured obj"));
+         (objects[i], objects[i]->GetName(), "ConfigManager::RemoveAllItems()",
+          " deleting configured obj");
       #endif
       
       delete objects[i];
@@ -1405,23 +1405,23 @@ bool ConfigManager::RemoveAllItems()
    }
    
    #ifdef DEBUG_CONFIG_REMOVE
-   MessageInterface::ShowMessage(wxT("Deleting %d new objects\n"), newObjects.size());
+   MessageInterface::ShowMessage("Deleting %d new objects\n", newObjects.size());
    #endif
    // delete objects that were reconfigured, ie, just object pointer reset in the map
    for (unsigned int i=0; i<newObjects.size(); i++)
    {
-      wxString objName = newObjects[i]->GetName();
+      std::string objName = newObjects[i]->GetName();
       
       #ifdef DEBUG_CONFIG_REMOVE_MORE
       MessageInterface::ShowMessage
-         (wxT("   deleting <%p><%s>'%s'\n"), newObjects[i], newObjects[i]->GetTypeName().c_str(),
+         ("   deleting <%p><%s>'%s'\n", newObjects[i], newObjects[i]->GetTypeName().c_str(),
           newObjects[i]->GetName().c_str());
       #endif
       
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (newObjects[i], newObjects[i]->GetName(), wxT("ConfigManager::RemoveAllItems()"),
-          wxT(" deleting configured obj"));
+         (newObjects[i], newObjects[i]->GetName(), "ConfigManager::RemoveAllItems()",
+          " deleting configured obj");
       #endif
       
       delete newObjects[i];
@@ -1437,7 +1437,7 @@ bool ConfigManager::RemoveAllItems()
 
 
 //------------------------------------------------------------------------------
-// bool RemoveItem(Gmat::ObjectType type, const wxString &name)
+// bool RemoveItem(Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Removes a specific item from memory.
@@ -1448,12 +1448,12 @@ bool ConfigManager::RemoveAllItems()
  * @return true on success, false on failure.
  */
 //------------------------------------------------------------------------------
-bool ConfigManager::RemoveItem(Gmat::ObjectType type, const wxString &name)
+bool ConfigManager::RemoveItem(Gmat::ObjectType type, const std::string &name)
 {
    #ifdef DEBUG_CONFIG_REMOVE
    MessageInterface::ShowMessage
-      (wxT("ConfigManager::RemoveItem() entered, type=%d, typeString='%s', ")
-       wxT("name='%s'\n"), type, GmatBase::GetObjectTypeString(type).c_str(),
+      ("ConfigManager::RemoveItem() entered, type=%d, typeString='%s', "
+       "name='%s'\n", type, GmatBase::GetObjectTypeString(type).c_str(),
        name.c_str());
    #endif
    
@@ -1464,7 +1464,7 @@ bool ConfigManager::RemoveItem(Gmat::ObjectType type, const wxString &name)
       (std::vector<GmatBase*>::iterator)(objects.begin());
    
    #ifdef DEBUG_CONFIG_REMOVE
-   MessageInterface::ShowMessage(wxT("   There are %d objects\n"), objects.size());
+   MessageInterface::ShowMessage("   There are %d objects\n", objects.size());
    #endif
    
    while (currentIter != (std::vector<GmatBase*>::iterator)(objects.end()))
@@ -1476,7 +1476,7 @@ bool ConfigManager::RemoveItem(Gmat::ObjectType type, const wxString &name)
          {
             #ifdef DEBUG_CONFIG_REMOVE
             MessageInterface::ShowMessage
-               (wxT("   Removing '%s' from objects\n"), name.c_str());
+               ("   Removing '%s' from objects\n", name.c_str());
             #endif
             objects.erase(currentIter);
             break;
@@ -1487,7 +1487,7 @@ bool ConfigManager::RemoveItem(Gmat::ObjectType type, const wxString &name)
    
    // remove from mapping
    #ifdef DEBUG_CONFIG_REMOVE
-   MessageInterface::ShowMessage(wxT("   There are %d objects in the mapping\n"), mapping.size());
+   MessageInterface::ShowMessage("   There are %d objects in the mapping\n", mapping.size());
    #endif
    
    if (mapping.find(name) != mapping.end())
@@ -1500,13 +1500,13 @@ bool ConfigManager::RemoveItem(Gmat::ObjectType type, const wxString &name)
             mapping.erase(name);
             #ifdef DEBUG_CONFIG_REMOVE
             MessageInterface::ShowMessage
-               (wxT("   Deleting '%s' from mapping\n"), name.c_str());
+               ("   Deleting '%s' from mapping\n", name.c_str());
             #endif
             
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Remove
-               (obj, name, wxT("ConfigManager::RemoveItem()"),
-                wxT("deleting object from mapping"));
+               (obj, name, "ConfigManager::RemoveItem()",
+                "deleting object from mapping");
             #endif
             
             delete obj;
@@ -1518,7 +1518,7 @@ bool ConfigManager::RemoveItem(Gmat::ObjectType type, const wxString &name)
       {
          #ifdef DEBUG_CONFIG_REMOVE
          MessageInterface::ShowMessage
-            (wxT("   The obj from the mapping is NULL\n"));
+            ("   The obj from the mapping is NULL\n");
          #endif
       }
    }
@@ -1527,15 +1527,15 @@ bool ConfigManager::RemoveItem(Gmat::ObjectType type, const wxString &name)
    
    #ifdef DEBUG_CONFIG_REMOVE
    MessageInterface::ShowMessage
-      (wxT("ConfigManager::RemoveItem() exiting, '%s' %s removed\n"), name.c_str(),
-       status ? wxT("was") : wxT("was not"));
+      ("ConfigManager::RemoveItem() exiting, '%s' %s removed\n", name.c_str(),
+       status ? "was" : "was not");
    #endif
    return status;
 }
 
 
 //------------------------------------------------------------------------------
-// bool ReconfigureItem(GmatBase *newobj, const wxString &name)
+// bool ReconfigureItem(GmatBase *newobj, const std::string &name)
 //------------------------------------------------------------------------------
 /*
  * Sets configured object pointer with new pointer.
@@ -1546,7 +1546,7 @@ bool ConfigManager::RemoveItem(Gmat::ObjectType type, const wxString &name)
  * @return  true if pointer was reset, false otherwise
  */
 //------------------------------------------------------------------------------
-bool ConfigManager::ReconfigureItem(GmatBase *newobj, const wxString &name)
+bool ConfigManager::ReconfigureItem(GmatBase *newobj, const std::string &name)
 {
    GmatBase *obj = NULL;
    
@@ -1558,7 +1558,7 @@ bool ConfigManager::ReconfigureItem(GmatBase *newobj, const wxString &name)
          
          #if DEBUG_CONFIG_RECONFIGURE
          MessageInterface::ShowMessage
-            (wxT("ConfigManager::ReconfigureItem() obj=%p newobj=%p\n"), obj,
+            ("ConfigManager::ReconfigureItem() obj=%p newobj=%p\n", obj,
              newobj);
          #endif
          
@@ -1577,7 +1577,7 @@ bool ConfigManager::ReconfigureItem(GmatBase *newobj, const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// PhysicalModel* GetPhysicalModel(const wxString &name)
+// PhysicalModel* GetPhysicalModel(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a PhysicalModel object.
@@ -1587,7 +1587,7 @@ bool ConfigManager::ReconfigureItem(GmatBase *newobj, const wxString &name)
  * @return A pointer to the object.
  */
 //------------------------------------------------------------------------------
-PhysicalModel* ConfigManager::GetPhysicalModel(const wxString &name)
+PhysicalModel* ConfigManager::GetPhysicalModel(const std::string &name)
 {
    PhysicalModel *physicalModel = NULL;
    if (mapping.find(name) != mapping.end())
@@ -1601,7 +1601,7 @@ PhysicalModel* ConfigManager::GetPhysicalModel(const wxString &name)
 }
 
 //------------------------------------------------------------------------------
-// Propagator* GetPropagator(const wxString &name)
+// Propagator* GetPropagator(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a Propagator object.
@@ -1611,7 +1611,7 @@ PhysicalModel* ConfigManager::GetPhysicalModel(const wxString &name)
  * @return A pointer to the object.
  */
 //------------------------------------------------------------------------------
-Propagator* ConfigManager::GetPropagator(const wxString &name)
+Propagator* ConfigManager::GetPropagator(const std::string &name)
 {
    Propagator *prop = NULL;
    if (mapping.find(name) != mapping.end())
@@ -1626,7 +1626,7 @@ Propagator* ConfigManager::GetPropagator(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// ForceModel* GetForceModel(const wxString &name)
+// ForceModel* GetForceModel(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a ForceModel object.
@@ -1636,14 +1636,14 @@ Propagator* ConfigManager::GetPropagator(const wxString &name)
  * @return A pointer to the object.
  */
 //------------------------------------------------------------------------------
-ODEModel* ConfigManager::GetODEModel(const wxString &name)
+ODEModel* ConfigManager::GetODEModel(const std::string &name)
 {
    ODEModel *fm = NULL;
    if (mapping.find(name) != mapping.end())
    {
       if (mapping[name] == NULL)
          throw ConfigManagerException
-            (wxT("ConfigManager::GetForceModel(name) is finding a NULL object in the mapping.\n"));
+            ("ConfigManager::GetForceModel(name) is finding a NULL object in the mapping.\n");
      
       if (mapping[name]->IsOfType(Gmat::ODE_MODEL))
       {
@@ -1655,7 +1655,7 @@ ODEModel* ConfigManager::GetODEModel(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// SpaceObject* GetSpacecraft(const wxString &name)
+// SpaceObject* GetSpacecraft(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a Spacecraft or Formation object.
@@ -1665,7 +1665,7 @@ ODEModel* ConfigManager::GetODEModel(const wxString &name)
  * @return A pointer to the object.
  */
 //------------------------------------------------------------------------------
-SpaceObject* ConfigManager::GetSpacecraft(const wxString &name)
+SpaceObject* ConfigManager::GetSpacecraft(const std::string &name)
 {
    SpaceObject *sc = NULL;
    if (mapping.find(name) != mapping.end())
@@ -1681,7 +1681,7 @@ SpaceObject* ConfigManager::GetSpacecraft(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// SpacePoint* GetSpacePoint(const wxString &name)
+// SpacePoint* GetSpacePoint(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a SpacePoint object.
@@ -1691,7 +1691,7 @@ SpaceObject* ConfigManager::GetSpacecraft(const wxString &name)
  * @return A pointer to the object.
  */
 //------------------------------------------------------------------------------
-SpacePoint* ConfigManager::GetSpacePoint(const wxString &name)
+SpacePoint* ConfigManager::GetSpacePoint(const std::string &name)
 {
    SpaceObject *sp = NULL;
    if (mapping.find(name) != mapping.end())
@@ -1706,7 +1706,7 @@ SpacePoint* ConfigManager::GetSpacePoint(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// Hardware* GetHardware(const wxString &name)
+// Hardware* GetHardware(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a Hardware object.
@@ -1716,7 +1716,7 @@ SpacePoint* ConfigManager::GetSpacePoint(const wxString &name)
  * @return A pointer to the object.
  */
 //------------------------------------------------------------------------------
-Hardware* ConfigManager::GetHardware(const wxString &name)
+Hardware* ConfigManager::GetHardware(const std::string &name)
 {
    Hardware *hw = NULL;
    if (mapping.find(name) != mapping.end())
@@ -1731,7 +1731,7 @@ Hardware* ConfigManager::GetHardware(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// PropSetup* GetPropSetup(const wxString &name)
+// PropSetup* GetPropSetup(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a PropSetup object.
@@ -1741,7 +1741,7 @@ Hardware* ConfigManager::GetHardware(const wxString &name)
  * @return A pointer to the object.
  */
 //------------------------------------------------------------------------------
-PropSetup* ConfigManager::GetPropSetup(const wxString &name)
+PropSetup* ConfigManager::GetPropSetup(const std::string &name)
 {
    PropSetup *ps = NULL;
    if (mapping.find(name) != mapping.end())
@@ -1756,7 +1756,7 @@ PropSetup* ConfigManager::GetPropSetup(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// Subscriber* GetSubscriber(const wxString &name)
+// Subscriber* GetSubscriber(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a Subscriber object.
@@ -1766,7 +1766,7 @@ PropSetup* ConfigManager::GetPropSetup(const wxString &name)
  * @return A pointer to the object.
  */
 //------------------------------------------------------------------------------
-Subscriber* ConfigManager::GetSubscriber(const wxString &name)
+Subscriber* ConfigManager::GetSubscriber(const std::string &name)
 {
    Subscriber *sub = NULL;
    if (mapping.find(name) != mapping.end())
@@ -1813,7 +1813,7 @@ SolarSystem* ConfigManager::GetSolarSystemInUse()
 
 
 //------------------------------------------------------------------------------
-// SolarSystem* GetSolarSystemInUse(const wxString &name)
+// SolarSystem* GetSolarSystemInUse(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves the current SolarSystem object by name
@@ -1823,20 +1823,20 @@ SolarSystem* ConfigManager::GetSolarSystemInUse()
  * @note This method is not yet used in GMAT.
  */
 //------------------------------------------------------------------------------
-SolarSystem* ConfigManager::GetSolarSystemInUse(const wxString &name)
+SolarSystem* ConfigManager::GetSolarSystemInUse(const std::string &name)
 {
    #if DEBUG_CONFIG_SS
    MessageInterface::ShowMessage
-      (wxT("ConfigManager::GetSolarSystemInUse() name=%s\n"), name.c_str());
+      ("ConfigManager::GetSolarSystemInUse() name=%s\n", name.c_str());
    #endif
    
    throw ConfigManagerException
-      (wxT("ConfigManager::GetSolarSystemInUse(name) has not been implemented.\n"));
+      ("ConfigManager::GetSolarSystemInUse(name) has not been implemented.\n");
 }
 
 
 //------------------------------------------------------------------------------
-// StopCondition* GetStopCondition(const wxString &name)
+// StopCondition* GetStopCondition(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a StopCondition object.
@@ -1846,7 +1846,7 @@ SolarSystem* ConfigManager::GetSolarSystemInUse(const wxString &name)
  * @return A pointer to the object.
  */
 //------------------------------------------------------------------------------
-StopCondition* ConfigManager::GetStopCondition(const wxString &name)
+StopCondition* ConfigManager::GetStopCondition(const std::string &name)
 {
    StopCondition *sc = NULL;
    if (mapping.find(name) != mapping.end())
@@ -1861,7 +1861,7 @@ StopCondition* ConfigManager::GetStopCondition(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// Parameter* GetParameter(const wxString &name)
+// Parameter* GetParameter(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a Parameter object.
@@ -1871,7 +1871,7 @@ StopCondition* ConfigManager::GetStopCondition(const wxString &name)
  * @return A pointer to the object.
  */
 //------------------------------------------------------------------------------
-Parameter* ConfigManager::GetParameter(const wxString &name)
+Parameter* ConfigManager::GetParameter(const std::string &name)
 {
    Parameter *param = NULL;
    if (mapping.find(name) != mapping.end())
@@ -1885,7 +1885,7 @@ Parameter* ConfigManager::GetParameter(const wxString &name)
 }
 
 //------------------------------------------------------------------------------
-// Burn* GetBurn(const wxString &name)
+// Burn* GetBurn(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a Burn object.
@@ -1895,7 +1895,7 @@ Parameter* ConfigManager::GetParameter(const wxString &name)
  * @return A pointer to the object.
  */
 //------------------------------------------------------------------------------
-Burn* ConfigManager::GetBurn(const wxString &name)
+Burn* ConfigManager::GetBurn(const std::string &name)
 {
    Burn *burn = NULL;
    if (mapping.find(name) != mapping.end())
@@ -1909,7 +1909,7 @@ Burn* ConfigManager::GetBurn(const wxString &name)
 }
 
 //------------------------------------------------------------------------------
-// Solver* GetSolver(const wxString &name)
+// Solver* GetSolver(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a Solver object.
@@ -1919,7 +1919,7 @@ Burn* ConfigManager::GetBurn(const wxString &name)
  * @return A pointer to the object.
  */
 //------------------------------------------------------------------------------
-Solver* ConfigManager::GetSolver(const wxString &name)
+Solver* ConfigManager::GetSolver(const std::string &name)
 {
    Solver *solver = NULL;
    if (mapping.find(name) != mapping.end())
@@ -1933,7 +1933,7 @@ Solver* ConfigManager::GetSolver(const wxString &name)
 }
 
 //------------------------------------------------------------------------------
-// AtmosphereModel* GetAtmosphereModel(const wxString &name)
+// AtmosphereModel* GetAtmosphereModel(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves an Atmosphere object.
@@ -1943,7 +1943,7 @@ Solver* ConfigManager::GetSolver(const wxString &name)
  * @return A pointer to the object.
  */
 //------------------------------------------------------------------------------
-AtmosphereModel* ConfigManager::GetAtmosphereModel(const wxString &name)
+AtmosphereModel* ConfigManager::GetAtmosphereModel(const std::string &name)
 {
    AtmosphereModel *atmosModel = NULL;
    if (mapping.find(name) != mapping.end())
@@ -1957,7 +1957,7 @@ AtmosphereModel* ConfigManager::GetAtmosphereModel(const wxString &name)
 }
 
 //------------------------------------------------------------------------------
-// Function* GetFunction(const wxString &name)
+// Function* GetFunction(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a Function object.
@@ -1967,7 +1967,7 @@ AtmosphereModel* ConfigManager::GetAtmosphereModel(const wxString &name)
  * @return A pointer to the object.
  */
 //------------------------------------------------------------------------------
-Function* ConfigManager::GetFunction(const wxString &name)
+Function* ConfigManager::GetFunction(const std::string &name)
 {
    Function *function = NULL;
    if (mapping.find(name) != mapping.end())
@@ -1981,7 +1981,7 @@ Function* ConfigManager::GetFunction(const wxString &name)
 }
 
 //------------------------------------------------------------------------------
-// CoordinateSystem* GetCoordinateSystem(const wxString &name)
+// CoordinateSystem* GetCoordinateSystem(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a CoordinateSystem object.
@@ -1991,7 +1991,7 @@ Function* ConfigManager::GetFunction(const wxString &name)
  * @return A pointer to the object.
  */
 //------------------------------------------------------------------------------
-CoordinateSystem* ConfigManager::GetCoordinateSystem(const wxString &name)
+CoordinateSystem* ConfigManager::GetCoordinateSystem(const std::string &name)
 {
    CoordinateSystem *cs = NULL;
    if (mapping.find(name) != mapping.end())
@@ -2006,7 +2006,7 @@ CoordinateSystem* ConfigManager::GetCoordinateSystem(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// CalculatedPoint* GetCalculatedPoint(const wxString &name)
+// CalculatedPoint* GetCalculatedPoint(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a CalculatedPoint object.
@@ -2016,7 +2016,7 @@ CoordinateSystem* ConfigManager::GetCoordinateSystem(const wxString &name)
  * @return A pointer to the object.
  */
 //------------------------------------------------------------------------------
-CalculatedPoint* ConfigManager::GetCalculatedPoint(const wxString &name)
+CalculatedPoint* ConfigManager::GetCalculatedPoint(const std::string &name)
 {
    CalculatedPoint *cs = NULL;
    if (mapping.find(name) != mapping.end())
@@ -2031,7 +2031,7 @@ CalculatedPoint* ConfigManager::GetCalculatedPoint(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// MeasurementModel* GetMeasurementModel(const wxString &name)
+// MeasurementModel* GetMeasurementModel(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a MeasurementModel from the configuration
@@ -2041,7 +2041,7 @@ CalculatedPoint* ConfigManager::GetCalculatedPoint(const wxString &name)
  * @return A pointer to the MeasurementModel, or NULL if it was not found
  */
 //------------------------------------------------------------------------------
-MeasurementModel* ConfigManager::GetMeasurementModel(const wxString &name)
+MeasurementModel* ConfigManager::GetMeasurementModel(const std::string &name)
 {
    MeasurementModel *mm = NULL;
    if (mapping.find(name) != mapping.end())
@@ -2055,7 +2055,7 @@ MeasurementModel* ConfigManager::GetMeasurementModel(const wxString &name)
 }
 
 //------------------------------------------------------------------------------
-// TrackingSystem* GetTrackingSystem(const wxString &name)
+// TrackingSystem* GetTrackingSystem(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a TrackingSystem from the configuration
@@ -2065,7 +2065,7 @@ MeasurementModel* ConfigManager::GetMeasurementModel(const wxString &name)
  * @return A pointer to the TrackingSystem, or NULL if it was not found
  */
 //------------------------------------------------------------------------------
-TrackingSystem* ConfigManager::GetTrackingSystem(const wxString &name)
+TrackingSystem* ConfigManager::GetTrackingSystem(const std::string &name)
 {
    TrackingSystem *obj = NULL;
    if (mapping.find(name) != mapping.end())
@@ -2079,7 +2079,7 @@ TrackingSystem* ConfigManager::GetTrackingSystem(const wxString &name)
 }
 
 //------------------------------------------------------------------------------
-// TrackingData* GetTrackingData(const wxString &name)
+// TrackingData* GetTrackingData(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a TrackingData object from the configuration
@@ -2089,7 +2089,7 @@ TrackingSystem* ConfigManager::GetTrackingSystem(const wxString &name)
  * @return A pointer to the TrackingData object, or NULL if it was not found
  */
 //------------------------------------------------------------------------------
-TrackingData* ConfigManager::GetTrackingData(const wxString &name)
+TrackingData* ConfigManager::GetTrackingData(const std::string &name)
 {
    TrackingData *obj = NULL;
    if (mapping.find(name) != mapping.end())
@@ -2102,18 +2102,18 @@ TrackingData* ConfigManager::GetTrackingData(const wxString &name)
    return obj;
 }
 
-//-----------------------------------------------------------------------------
-// DataFile* GetDataStream(const wxString &name)
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+// DataFile* GetDataStream(const std::string &name)
+//------------------------------------------------------------------------------
 /**
  * Retrieves a DataStream from the configuration.
  *
- * @param name the name of the DataStream.
+ * @param name The name of the DataStream.
  *
  * @return A pointer to the DataStream.
  */
-//-----------------------------------------------------------------------------
-DataFile* ConfigManager::GetDataStream(const wxString &name)
+//------------------------------------------------------------------------------
+DataFile* ConfigManager::GetDataStream(const std::string &name)
 {
    DataFile *df = NULL;
    if (mapping.find(name) != mapping.end())
@@ -2127,7 +2127,7 @@ DataFile* ConfigManager::GetDataStream(const wxString &name)
 }
 
 //------------------------------------------------------------------------------
-// EventLocator* GetEventLocator(const wxString &name)
+// EventLocator* GetEventLocator(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves an EventLocator from the configuration.
@@ -2137,7 +2137,7 @@ DataFile* ConfigManager::GetDataStream(const wxString &name)
  * @return A pointer to the locator.
  */
 //------------------------------------------------------------------------------
-EventLocator* ConfigManager::GetEventLocator(const wxString &name)
+EventLocator* ConfigManager::GetEventLocator(const std::string &name)
 {
    EventLocator *el = NULL;
    if (mapping.find(name) != mapping.end())

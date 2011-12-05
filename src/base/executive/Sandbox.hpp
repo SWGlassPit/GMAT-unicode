@@ -62,7 +62,7 @@ public:
    bool SetInternalCoordSystem(CoordinateSystem *ss);
    bool SetPublisher(Publisher *pub = NULL);
    
-   GmatBase* GetInternalObject(wxString name,
+   GmatBase* GetInternalObject(std::string name,
                                Gmat::ObjectType type = Gmat::UNKNOWN_OBJECT);
    
    // Execution methods
@@ -86,11 +86,11 @@ private:
    };
     
    /// Object store for this run
-   std::map<wxString, GmatBase *> objectMap;
+   std::map<std::string, GmatBase *> objectMap;
    /// Global object store for this run
-   std::map<wxString, GmatBase *> globalObjectMap;
+   std::map<std::string, GmatBase *> globalObjectMap;
    /// Combined object store for passing to interpreter (via Moderator)
-   std::map<wxString, GmatBase *> combinedObjectMap;
+   std::map<std::string, GmatBase *> combinedObjectMap;
    /// Solar System model for this Sandbox
    SolarSystem                       *solarSys;
    /// CoordinateSystem used internally
@@ -122,12 +122,12 @@ private:
    Sandbox(const Sandbox&);
    Sandbox& operator=(const Sandbox&);
    
-   GmatBase* FindObject(const wxString &name);
-   bool      SetObjectByNameInMap(const wxString &name, GmatBase *obj);
+   GmatBase* FindObject(const std::string &name);
+   bool      SetObjectByNameInMap(const std::string &name, GmatBase *obj);
    bool      HandleGmatFunction(GmatCommand *cmd,
-                                std::map<wxString, GmatBase *> *usingMap);
+                                std::map<std::string, GmatBase *> *usingMap);
    void      SetGlobalRefObject(GmatCommand *cmd);
-   void      ShowObjectMap(ObjectMap &om, const wxString &title);
+   void      ShowObjectMap(ObjectMap &om, const std::string &title);
    
    #ifdef DEBUG_SANDBOX_CLONING
       std::vector<Gmat::ObjectType>  clonable;

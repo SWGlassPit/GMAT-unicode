@@ -40,7 +40,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  Solver* CreateSolver(const wxString &ofType, const wxString &withName)
+//  Solver* CreateSolver(const std::string &ofType, const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * This method creates and returns an object of the requested Solver class. 
@@ -51,21 +51,21 @@
  * @return A pointer to the created object.
  */
 //------------------------------------------------------------------------------
-Solver* SolverFactory::CreateSolver(const wxString &ofType,
-                                    const wxString &withName)
+Solver* SolverFactory::CreateSolver(const std::string &ofType,
+                                    const std::string &withName)
 {
-   if (ofType == wxT("DifferentialCorrector"))
+   if (ofType == "DifferentialCorrector")
       return new DifferentialCorrector(withName);
      
-   //if (ofType == wxT("QuasiNewton")) 
+   //if (ofType == "QuasiNewton") 
    //   return new QuasiNewton(withName);
-   //else if (ofType == wxT("SteepestDescent"))
+   //else if (ofType == "SteepestDescent")
    //   return new SteepestDescent(withName);
-   // else if (ofType == wxT("Broyden"))
+   // else if (ofType == "Broyden")
    //   return new Broyden(withName);
-   //else if (ofType == wxT("ParametricScanner"))
+   //else if (ofType == "ParametricScanner")
    //   return new ParametricScanner(withName);
-   //else if (ofType == wxT("MonteCarlo"))
+   //else if (ofType == "MonteCarlo")
    //   return new MonteCarlo(withName);
     
    return NULL;
@@ -85,12 +85,12 @@ SolverFactory::SolverFactory() :
 {
    if (creatables.empty())
    {
-      //creatables.push_back(wxT("QuasiNewton"));
-      //creatables.push_back(wxT("SteepestDescent"));
-      creatables.push_back(wxT("DifferentialCorrector"));
-      //creatables.push_back(wxT("Broyden"));
-      //creatables.push_back(wxT("ParametricScanner"));
-      //creatables.push_back(wxT("MonteCarlo"));
+      //creatables.push_back("QuasiNewton");
+      //creatables.push_back("SteepestDescent");
+      creatables.push_back("DifferentialCorrector");
+      //creatables.push_back("Broyden");
+      //creatables.push_back("ParametricScanner");
+      //creatables.push_back("MonteCarlo");
    }
 }
 
@@ -116,7 +116,7 @@ Factory(createList, Gmat::SOLVER)
 /**
  * This method creates an object of the class SolverFactory.  (copy constructor)
  *
- * @param <fact> the factory object to copy to wxT("this") factory.
+ * @param <fact> the factory object to copy to "this" factory.
  */
 //------------------------------------------------------------------------------
 SolverFactory::SolverFactory(const SolverFactory& fact) :
@@ -124,12 +124,12 @@ SolverFactory::SolverFactory(const SolverFactory& fact) :
 {
    if (creatables.empty())
    {
-      //creatables.push_back(wxT("QuasiNewton"));
-      //creatables.push_back(wxT("SteepestDescent"));
-      creatables.push_back(wxT("DifferentialCorrector"));
-      //creatables.push_back(wxT("Broyden"));
-      //creatables.push_back(wxT("ParametricScanner"));
-      //creatables.push_back(wxT("MonteCarlo"));
+      //creatables.push_back("QuasiNewton");
+      //creatables.push_back("SteepestDescent");
+      creatables.push_back("DifferentialCorrector");
+      //creatables.push_back("Broyden");
+      //creatables.push_back("ParametricScanner");
+      //creatables.push_back("MonteCarlo");
    }
 }
 
@@ -142,7 +142,7 @@ SolverFactory::SolverFactory(const SolverFactory& fact) :
  *
  * @param <fact> the SolverFactory object that is copied.
  *
- * @return wxT("this") SolverFactory with data set to match the input factory (fact).
+ * @return "this" SolverFactory with data set to match the input factory (fact).
  */
 //------------------------------------------------------------------------------
 SolverFactory& SolverFactory::operator=(const SolverFactory& fact)
@@ -165,8 +165,8 @@ SolverFactory::~SolverFactory()
 
 
 //------------------------------------------------------------------------------
-// bool DoesObjectTypeMatchSubtype(const wxString &theType,
-//       const wxString &theSubtype)
+// bool DoesObjectTypeMatchSubtype(const std::string &theType,
+//       const std::string &theSubtype)
 //------------------------------------------------------------------------------
 /**
  * Checks if a creatable solver type matches a subtype.
@@ -178,14 +178,14 @@ SolverFactory::~SolverFactory()
  *         not match the subtype
  */
 //------------------------------------------------------------------------------
-bool SolverFactory::DoesObjectTypeMatchSubtype(const wxString &theType,
-      const wxString &theSubtype)
+bool SolverFactory::DoesObjectTypeMatchSubtype(const std::string &theType,
+      const std::string &theSubtype)
 {
    bool retval = false;
 
-   if ((theType == wxT("Boundary Value Solvers")) || (theType == wxT("Targeter")))
+   if ((theType == "Boundary Value Solvers") || (theType == "Targeter"))
    {
-      if (theSubtype == wxT("DifferentialCorrector"))
+      if (theSubtype == "DifferentialCorrector")
          retval = true;
    }
 

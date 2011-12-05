@@ -38,8 +38,8 @@ public:
 
    static const Real STOP_COND_TOL;
 
-   StopCondition(const wxString &name = wxT(""),
-                 const wxString &desc = wxT(""),
+   StopCondition(const std::string &name = "",
+                 const std::string &desc = "",
                  Parameter *epochParam = NULL, 
                  Parameter *stopParam = NULL,
                  const Real &goal = GmatBase::REAL_PARAMETER_UNDEFINED,
@@ -61,13 +61,13 @@ public:
    
    bool IsInitialized();
    Integer GetBufferSize();
-   wxString& GetDescription();
+   std::string& GetDescription();
    Parameter* GetEpochParameter();
    Parameter* GetStopParameter();
    Parameter* GetGoalParameter();
    Interpolator* GetInterpolator();
    
-   void SetDescription(const wxString &desc);
+   void SetDescription(const std::string &desc);
    void SetPropDirection(Real dir);
    void SetSolarSystem(SolarSystem *solarSystem);
    bool SetInterpolator(Interpolator *interp);
@@ -75,11 +75,11 @@ public:
    bool SetStopParameter(Parameter *param);
    bool SetGoalParameter(Parameter *param);
    
-   void SetLhsString(const wxString &str);
-   void SetRhsString(const wxString &str);
+   void SetLhsString(const std::string &str);
+   void SetRhsString(const std::string &str);
    
-   wxString GetLhsString();
-   wxString GetRhsString();
+   std::string GetLhsString();
+   std::string GetRhsString();
    
    bool SetLhsWrapper(ElementWrapper* toWrapper);
    bool SetRhsWrapper(ElementWrapper* toWrapper);
@@ -90,35 +90,35 @@ public:
    virtual GmatBase* Clone() const;
    
    virtual bool RenameRefObject(const Gmat::ObjectType type,
-                                const wxString &oldName,
-                                const wxString &newName);
+                                const std::string &oldName,
+                                const std::string &newName);
    
    virtual const StringArray& GetRefObjectNameArray(const Gmat::ObjectType type);
    virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                             const wxString &name = wxT(""));
+                             const std::string &name = "");
    
-   virtual wxString GetParameterText(const Integer id) const;
-   virtual Integer GetParameterID(const wxString &str) const;
+   virtual std::string GetParameterText(const Integer id) const;
+   virtual Integer GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType GetParameterType(const Integer id) const;
-   virtual wxString GetParameterTypeString(const Integer id) const;
+   virtual std::string GetParameterTypeString(const Integer id) const;
 
    virtual Integer GetIntegerParameter(const Integer id) const;
-   virtual Integer GetIntegerParameter(const wxString &label) const;
+   virtual Integer GetIntegerParameter(const std::string &label) const;
    virtual Integer SetIntegerParameter(const Integer id,
                                        const Integer value);
-   virtual Integer SetIntegerParameter(const wxString &label,
+   virtual Integer SetIntegerParameter(const std::string &label,
                                        const Integer value);
    
    virtual Real GetRealParameter(const Integer id) const;
-   virtual Real GetRealParameter(const wxString &label) const;
+   virtual Real GetRealParameter(const std::string &label) const;
    virtual Real SetRealParameter(const Integer id, const Real value);
-   virtual Real SetRealParameter(const wxString &label, const Real value);
+   virtual Real SetRealParameter(const std::string &label, const Real value);
    
-   virtual wxString GetStringParameter(const Integer id) const;
-   virtual wxString GetStringParameter(const wxString &label) const;
-   virtual bool SetStringParameter(const Integer id, const wxString &value);
-   virtual bool SetStringParameter(const wxString &label,
-                                   const wxString &value);
+   virtual std::string GetStringParameter(const Integer id) const;
+   virtual std::string GetStringParameter(const std::string &label) const;
+   virtual bool SetStringParameter(const Integer id, const std::string &value);
+   virtual bool SetStringParameter(const std::string &label,
+                                   const std::string &value);
    
    // Accessors for the last condition evaluated
    virtual Real GetStopValue();
@@ -144,12 +144,12 @@ protected:
    SolarSystem *mSolarSystem;
    
    Interpolator *mInterpolator;
-   wxString mDescription;
-   wxString mStopParamType;
-   wxString mStopParamName;
-   wxString mEpochParamName;
-   wxString lhsString;
-   wxString rhsString;
+   std::string mDescription;
+   std::string mStopParamType;
+   std::string mStopParamName;
+   std::string mEpochParamName;
+   std::string lhsString;
+   std::string rhsString;
    
    /// left hand side Parameter of stopping condition
    Parameter *mStopParam;
@@ -239,7 +239,7 @@ protected:
    
    static const Gmat::ParameterType
       PARAMETER_TYPE[StopConditionParamCount - GmatBaseParamCount];
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[StopConditionParamCount - GmatBaseParamCount];
 
    bool CheckOnPeriapsis();

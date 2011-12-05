@@ -31,7 +31,7 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  CubicSplineInterpolator(const wxString &name, Integer dim)
+//  CubicSplineInterpolator(const std::string &name, Integer dim)
 //------------------------------------------------------------------------------
 /**
  * Constructs cubic spline interpolator (default constructor).
@@ -40,9 +40,9 @@
  * @param <dim>  The dimension of the vector that is interpolated.
  */
 //------------------------------------------------------------------------------
-CubicSplineInterpolator::CubicSplineInterpolator(const wxString &name,
+CubicSplineInterpolator::CubicSplineInterpolator(const std::string &name,
                                                  Integer dim) :
-   Interpolator        (name, wxT("CubicSplineInterpolator"), dim),
+   Interpolator        (name, "CubicSplineInterpolator", dim),
    lastX               (-9.9999e75)
 {
    bufferSize = 5;
@@ -144,7 +144,7 @@ bool CubicSplineInterpolator::Interpolate(const Real ind, Real *results)
       retval = Estimate(ind, results);
       
    #ifdef DUMP_SPLINE_POINTS
-      MessageInterface::ShowMessage(wxT("Cubic spline data points:\n"));
+      MessageInterface::ShowMessage("Cubic spline data points:\n");
       
       Real increment = (x[bufferSize - 1] - x[0]) / 100.0, xval;
       Real *dumpData = new Real[dimension];
@@ -152,10 +152,10 @@ bool CubicSplineInterpolator::Interpolate(const Real ind, Real *results)
       {
          xval = x[0] + i * increment;
          Estimate(xval, dumpData);
-         MessageInterface::ShowMessage(wxT("   %.12lf"), xval);
+         MessageInterface::ShowMessage("   %.12lf", xval);
          for (Integer j = 0; j < dimension; ++j)
-            MessageInterface::ShowMessage(wxT("   %.12lf"), dumpData[j]);
-         MessageInterface::ShowMessage(wxT("\n"));
+            MessageInterface::ShowMessage("   %.12lf", dumpData[j]);
+         MessageInterface::ShowMessage("\n");
       } 
       
       delete [] dumpData;   
@@ -267,7 +267,7 @@ void CubicSplineInterpolator::CopyArrays(const CubicSplineInterpolator &i)
  *   4. The second derivatives must be continuous at the internal knots.
  *      (3 constraints) 
  * 
- * This implementation builds wxT("natural") splines -- the 2 remaining free 
+ * This implementation builds "natural" splines -- the 2 remaining free 
  * parameters in the derivation are determined by setting the second derivatives 
  * at the endpoints to 0.0.
  * 
@@ -325,7 +325,7 @@ bool CubicSplineInterpolator::BuildSplines()
          u[i] = (6.0*u[i] / (x[i+1] - x[i-1]) - sig*u[i-1]) / p;
       }
 
-      // This implementation uses wxT("natural") spline constraints, so the second
+      // This implementation uses "natural" spline constraints, so the second
       // derivatives vanish at the endpoint;
       y2[4][j] = 0.0;
         
@@ -380,7 +380,7 @@ void CubicSplineInterpolator::LoadArrays(void)
  * Perform the estimation using the information from the splines.  
  * 
  * This method is invoked after calling BuildSplines(), using the input 
- * parameters from the Interpolate() method.  It matches the wxT("splint") routine
+ * parameters from the Interpolate() method.  It matches the "splint" routine
  * found in Numerical Recipes in C, section 3.3.
  * 
  * @param ind       The value of the independent parameter.

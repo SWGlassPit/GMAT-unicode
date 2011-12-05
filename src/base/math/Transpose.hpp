@@ -26,7 +26,7 @@
 class GMAT_API Transpose : public MathFunction
 {
 public:
-   Transpose(const wxString &nomme);
+   Transpose(const std::string &nomme);
    virtual ~Transpose();
    Transpose(const Transpose &copy);
                  

@@ -31,9 +31,9 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// OrbitReal(const wxString &name, const wxString &typeStr, 
-//           GmatBase *obj, const wxString &desc,
-//           const wxString &unit, GmatParam::DepObject depObj,
+// OrbitReal(const std::string &name, const std::string &typeStr, 
+//           GmatBase *obj, const std::string &desc,
+//           const std::string &unit, GmatParam::DepObject depObj,
 //           bool isSettable)
 //------------------------------------------------------------------------------
 /**
@@ -48,11 +48,11 @@
  * @param <isSettable> true if parameter is settable, false otherwise
  */
 //------------------------------------------------------------------------------
-OrbitReal::OrbitReal(const wxString &name, const wxString &typeStr, 
-                     GmatBase *obj, const wxString &desc,
-                     const wxString &unit, GmatParam::DepObject depObj,
+OrbitReal::OrbitReal(const std::string &name, const std::string &typeStr, 
+                     GmatBase *obj, const std::string &desc,
+                     const std::string &unit, GmatParam::DepObject depObj,
                      bool isSettable)
-   : RealVar(name, wxT(""), typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit,
+   : RealVar(name, "", typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit,
              depObj, Gmat::SPACECRAFT, false, isSettable),
      OrbitData(name)
 {
@@ -75,7 +75,7 @@ OrbitReal::OrbitReal(const OrbitReal &copy)
 {
    #if DEBUG_ORBITREAL
    MessageInterface::ShowMessage
-      (wxT("===> OrbitReal::OrbitReal() copy constructor called on %s\n"),
+      ("===> OrbitReal::OrbitReal() copy constructor called on %s\n",
        instanceName.c_str());
    #endif
 }
@@ -111,7 +111,7 @@ OrbitReal& OrbitReal::operator=(const OrbitReal &right)
 //------------------------------------------------------------------------------
 OrbitReal::~OrbitReal()
 {
-   //MessageInterface::ShowMessage(wxT("==> OrbitReal::~OrbitReal()\n"));
+   //MessageInterface::ShowMessage("==> OrbitReal::~OrbitReal()\n");
 }
 
 
@@ -135,8 +135,8 @@ Real OrbitReal::EvaluateReal()
 //    catch (BaseException &e)
 //    {
 //       throw ParameterException
-//          (wxT("OrbitReal::EvaluateReal() for parameter ") +  this->GetTypeName() + wxT(":") +
-//           instanceName + wxT("\n") + e.GetDetails());
+//          ("OrbitReal::EvaluateReal() for parameter " +  this->GetTypeName() + ":" +
+//           instanceName + "\n" + e.GetDetails());
 //    }
    
    return mRealValue;
@@ -163,7 +163,7 @@ void OrbitReal::SetSolarSystem(SolarSystem *ss)
 {
    #if DEBUG_ORBITREAL
       MessageInterface::ShowMessage
-         (wxT("OrbitReal::SetSolarSystem() ss=%s to %s\n"), ss->GetTypeName().c_str(),
+         ("OrbitReal::SetSolarSystem() ss=%s to %s\n", ss->GetTypeName().c_str(),
           this->GetName().c_str());
    #endif
    
@@ -187,7 +187,7 @@ void OrbitReal::SetInternalCoordSystem(CoordinateSystem *cs)
 {
    #if DEBUG_ORBITREAL
       MessageInterface::ShowMessage
-         (wxT("OrbitReal::SetInternalCoordSystem() cs=%s to %s\n"), cs->GetTypeName().c_str(),
+         ("OrbitReal::SetInternalCoordSystem() cs=%s to %s\n", cs->GetTypeName().c_str(),
           this->GetName().c_str());
    #endif
    
@@ -225,7 +225,7 @@ bool OrbitReal::AddRefObject(GmatBase *obj, bool replaceName)
    {
       #if DEBUG_ORBITREAL
       MessageInterface::ShowMessage
-         (wxT("OrbitReal::AddRefObject() obj->GetName()=%s, type=%d\n"),
+         ("OrbitReal::AddRefObject() obj->GetName()=%s, type=%d\n",
           obj->GetName().c_str(), obj->GetType());
       #endif
       
@@ -273,7 +273,7 @@ bool OrbitReal::Initialize()
    {
       #if DEBUG_ORBITREAL
       MessageInterface::ShowMessage
-         (wxT("===> OrbitReal::Initialize() calling InitializeRefObjects() on %s\n"),
+         ("===> OrbitReal::Initialize() calling InitializeRefObjects() on %s\n",
           instanceName.c_str());
       #endif
       
@@ -283,24 +283,24 @@ bool OrbitReal::Initialize()
    {
       #if DEBUG_ORBITREAL
       MessageInterface::ShowMessage
-         (wxT("OrbitReal::Initialize() Fail to initialize Parameter:%s\n"),
+         ("OrbitReal::Initialize() Fail to initialize Parameter:%s\n",
           this->GetName().c_str());
       #endif
       
       throw ParameterException
-         (wxT("Incorrect parameter dependency: ") + GetName() + wxT(".\n") +
-          this->GetTypeName() + e.GetFullMessage() + wxT("\n"));
+         ("Incorrect parameter dependency: " + GetName() + ".\n" +
+          this->GetTypeName() + e.GetFullMessage() + "\n");
    }
    catch(BaseException &e)
    {
       #if DEBUG_ORBITREAL
       MessageInterface::ShowMessage
-         (wxT("OrbitReal::Initialize() Fail to initialize Parameter:%s\n"),
+         ("OrbitReal::Initialize() Fail to initialize Parameter:%s\n",
           this->GetName().c_str());
       #endif
       
       throw ParameterException
-         (e.GetFullMessage() + wxT(" in ") + GetName() + wxT("\n"));
+         (e.GetFullMessage() + " in " + GetName() + "\n");
    }
    
    return true;
@@ -313,11 +313,11 @@ bool OrbitReal::Initialize()
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool OrbitReal::RenameRefObject(const Gmat::ObjectType type,
-                                const wxString &oldName,
-                                const wxString &newName)
+                                const std::string &oldName,
+                                const std::string &newName)
 {
    OrbitData::RenameRefObject(type, oldName, newName);
    RealVar::RenameRefObject(type, oldName, newName);
@@ -327,7 +327,7 @@ bool OrbitReal::RenameRefObject(const Gmat::ObjectType type,
 
 
 //------------------------------------------------------------------------------
-// virtual wxString GetRefObjectName(const Gmat::ObjectType type) const
+// virtual std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
 /**
  * Calls OrbitData to get reference object name for given type.
@@ -335,15 +335,15 @@ bool OrbitReal::RenameRefObject(const Gmat::ObjectType type,
  * @return reference object name.
  */
 //------------------------------------------------------------------------------
-wxString OrbitReal::GetRefObjectName(const Gmat::ObjectType type) const
+std::string OrbitReal::GetRefObjectName(const Gmat::ObjectType type) const
 {
-   wxString objName = OrbitData::GetRefObjectName(type);
+   std::string objName = OrbitData::GetRefObjectName(type);
    
-   if (objName == wxT("INVALID_OBJECT_TYPE"))
+   if (objName == "INVALID_OBJECT_TYPE")
    {
       throw ParameterException
-         (wxT("OrbitReal::GetRefObjectName() ") + GmatBase::GetObjectTypeString(type) +
-          wxT(" is not valid object type of ") + this->GetTypeName() + wxT("\n"));
+         ("OrbitReal::GetRefObjectName() " + GmatBase::GetObjectTypeString(type) +
+          " is not valid object type of " + this->GetTypeName() + "\n");
    }
    
    return objName;
@@ -369,7 +369,7 @@ const StringArray& OrbitReal::GetRefObjectNameArray(const Gmat::ObjectType type)
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObjectName(const Gmat::ObjectType type,
-//                               const wxString &name)
+//                               const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets reference object name to given object type.
@@ -380,7 +380,7 @@ const StringArray& OrbitReal::GetRefObjectNameArray(const Gmat::ObjectType type)
  */
 //------------------------------------------------------------------------------
 bool OrbitReal::SetRefObjectName(const Gmat::ObjectType type,
-                                 const wxString &name)
+                                 const std::string &name)
 {
    return OrbitData::SetRefObjectName(type, name);
 }
@@ -388,7 +388,7 @@ bool OrbitReal::SetRefObjectName(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // virtual GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                                const wxString &name)
+//                                const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Calls OrbitData to get object pointer of given type and name
@@ -400,11 +400,11 @@ bool OrbitReal::SetRefObjectName(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 GmatBase* OrbitReal::GetRefObject(const Gmat::ObjectType type,
-                                  const wxString &name)
+                                  const std::string &name)
 {
    #ifdef DEBUG_REF_OBJECT
    MessageInterface::ShowMessage
-      (wxT("OrbitReal::GetRefObject() this='%s', type=%d, name='%s'\n"),
+      ("OrbitReal::GetRefObject() this='%s', type=%d, name='%s'\n",
        this->GetName().c_str(), type, name.c_str());
    #endif
    
@@ -413,8 +413,8 @@ GmatBase* OrbitReal::GetRefObject(const Gmat::ObjectType type,
    if (obj == NULL)
    {
       throw ParameterException
-         (wxT("OrbitReal::GetRefObject() Cannot find ref. object of type:") +
-          GmatBase::GetObjectTypeString(type) + wxT(", name:") + name + wxT(" in ") +
+         ("OrbitReal::GetRefObject() Cannot find ref. object of type:" +
+          GmatBase::GetObjectTypeString(type) + ", name:" + name + " in " +
           this->GetName());
    }
    
@@ -424,7 +424,7 @@ GmatBase* OrbitReal::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                           const wxString &name = wxT(""))
+//                           const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Calls OrbitData to set reference object pointer to given type and name.
@@ -438,11 +438,11 @@ GmatBase* OrbitReal::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool OrbitReal::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                             const wxString &name)
+                             const std::string &name)
 {
    #if DEBUG_ORBITREAL
    MessageInterface::ShowMessage
-      (wxT("OrbitReal::SetRefObject() setting type=%d, name=%s to %s\n"),
+      ("OrbitReal::SetRefObject() setting type=%d, name=%s to %s\n",
        type, name.c_str(), this->GetName().c_str());
    #endif
    

@@ -33,11 +33,11 @@
 //  static data
 //---------------------------------
 
-const wxString Rmatrix33::descs[9] =
+const std::string Rmatrix33::descs[9] =
 {
-   wxT("Element 1,1"), wxT("Element 1,2"), wxT("Element 1,3"),
-   wxT("Element 2,1"), wxT("Element 2,2"), wxT("Element 2,3"),
-   wxT("Element 3,1"), wxT("Element 3,2"), wxT("Element 3,3")
+   "Element 1,1", "Element 1,2", "Element 1,3",
+   "Element 2,1", "Element 2,2", "Element 2,3",
+   "Element 3,1", "Element 3,2", "Element 3,3"
 };
 
 
@@ -570,9 +570,9 @@ Rmatrix33 TransposeTimesTranspose(const Rmatrix33& m1, const Rmatrix33& m2)
 
 
 //------------------------------------------------------------------------------
-// const wxString* GetDataDescriptions() const
+// const std::string* GetDataDescriptions() const
 //------------------------------------------------------------------------------
-const wxString* Rmatrix33::GetDataDescriptions() const
+const std::string* Rmatrix33::GetDataDescriptions() const
 {
    return descs;
 }

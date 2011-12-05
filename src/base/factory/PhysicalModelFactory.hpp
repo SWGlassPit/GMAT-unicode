@@ -28,10 +28,10 @@
 class GMAT_API PhysicalModelFactory : public Factory
 {
 public:
-   PhysicalModel*  CreateObject(const wxString &ofType,
-                                const wxString &withName = wxT(""));
-   PhysicalModel*  CreatePhysicalModel(const wxString &ofType,
-                                       const wxString &withName = wxT(""));
+   PhysicalModel*  CreateObject(const std::string &ofType,
+                                const std::string &withName = "");
+   PhysicalModel*  CreatePhysicalModel(const std::string &ofType,
+                                       const std::string &withName = "");
 
    // default constructor
    PhysicalModelFactory();

@@ -29,7 +29,7 @@
 class GMAT_API GmatFunction : public Function
 {
 public:
-   GmatFunction(const wxString &nomme);
+   GmatFunction(const std::string &nomme);
    
    virtual ~GmatFunction(void);
    
@@ -49,9 +49,9 @@ public:
    virtual void         Copy(const GmatBase* orig);
    
    virtual bool         SetStringParameter(const Integer id, 
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
 protected:
    
    bool         mIsNewFunction;
@@ -63,7 +63,7 @@ protected:
    void BuildUnusedGlobalObjectList();
    
    // for debug
-   void ShowTrace(Integer count, Integer t1, const wxString &label = wxT(""),
+   void ShowTrace(Integer count, Integer t1, const std::string &label = "",
                   bool showMemoryTracks = false, bool addEol = false);
    
    enum
@@ -71,7 +71,7 @@ protected:
       GmatFunctionParamCount = FunctionParamCount  /// Count of the parameters for this class
    };
    
-//   static const wxString
+//   static const std::string
 //      PARAMETER_TEXT[GmatFunctionParamCount - FunctionParamCount];
 //   static const Gmat::ParameterType
 //      PARAMETER_TYPE[GmatFunctionParamCount - FunctionParamCount];

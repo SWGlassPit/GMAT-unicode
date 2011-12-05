@@ -59,14 +59,14 @@
 // static data
 //---------------------------------
 
-const wxString
+const std::string
 CoordinateSystem::PARAMETER_TEXT[CoordinateSystemParamCount - CoordinateBaseParamCount] =
 {
-   wxT("Axes"),
-   wxT("UpdateInterval"),
-   wxT("OverrideOriginInterval"),
+   "Axes",
+   "UpdateInterval",
+   "OverrideOriginInterval",
    //"InternalState",
-   wxT("Epoch"),
+   "Epoch",
 };
 
 const Gmat::ParameterType
@@ -85,8 +85,8 @@ CoordinateSystem::PARAMETER_TYPE[CoordinateSystemParamCount - CoordinateBasePara
 //------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//  CoordinateSystem(Gmat::ObjectType ofType, const wxString &itsType,
-//                   const wxString &itsName);
+//  CoordinateSystem(Gmat::ObjectType ofType, const std::string &itsType,
+//                   const std::string &itsName);
 //---------------------------------------------------------------------------
 /**
  * Constructs CoordinateSystem structures
@@ -100,16 +100,16 @@ CoordinateSystem::PARAMETER_TYPE[CoordinateSystemParamCount - CoordinateBasePara
  *       classes must pass in the ofType and itsType parameters.
  */
 //---------------------------------------------------------------------------
-CoordinateSystem::CoordinateSystem(const wxString &itsType,
-                                   const wxString &itsName) :
+CoordinateSystem::CoordinateSystem(const std::string &itsType,
+                                   const std::string &itsName) :
 CoordinateBase(Gmat::COORDINATE_SYSTEM,itsType,itsName),
 axes               (NULL)
 {
    objectTypes.push_back(Gmat::COORDINATE_SYSTEM);
-   objectTypeNames.push_back(wxT("CoordinateSystem"));
+   objectTypeNames.push_back("CoordinateSystem");
    parameterCount = CoordinateSystemParamCount;
    #ifdef DEBUG_CONSTRUCTION
-      MessageInterface::ShowMessage(wxT("Now constructing CS %s of type %s\n"),
+      MessageInterface::ShowMessage("Now constructing CS %s of type %s\n",
          itsName.c_str(), itsType.c_str());
    #endif
 }
@@ -133,8 +133,8 @@ CoordinateBase (coordSys)
       axes = (AxisSystem*)coordSys.axes->Clone();
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (axes, wxT("clonedAxes"), wxT("CoordinateSystem Copy Constructor"),
-          wxT("(AxisSystem*) obj->Clone()"));
+         (axes, "clonedAxes", "CoordinateSystem Copy Constructor",
+          "(AxisSystem*) obj->Clone()");
       #endif
    }
    else
@@ -163,8 +163,8 @@ const CoordinateSystem& CoordinateSystem::operator=(
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (axes, axes->GetTypeName(), wxT("CoordinateSystem::operator="),
-          wxT("deleting axes"));
+         (axes, axes->GetTypeName(), "CoordinateSystem::operator=",
+          "deleting axes");
       #endif
       delete axes;
    }
@@ -174,8 +174,8 @@ const CoordinateSystem& CoordinateSystem::operator=(
       axes = (AxisSystem*)coordSys.axes->Clone();
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (axes, wxT("clonedAxes"), wxT("CoordinateSystem Assignment operator"),
-          wxT("(AxisSystem*) obj->Clone()"));
+         (axes, "clonedAxes", "CoordinateSystem Assignment operator",
+          "(AxisSystem*) obj->Clone()");
       #endif
    }
    else
@@ -219,7 +219,7 @@ const bool CoordinateSystem::operator==(const CoordinateSystem &coordSys)
 CoordinateSystem::~CoordinateSystem()
 {
    #ifdef DEBUG_DESTRUCTION
-   MessageInterface::ShowMessage(wxT("---> Entering CoordinateSystem destructor for %s\n"),
+   MessageInterface::ShowMessage("---> Entering CoordinateSystem destructor for %s\n",
    instanceName.c_str());
    #endif
    
@@ -227,14 +227,14 @@ CoordinateSystem::~CoordinateSystem()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (axes, axes->GetTypeName(), wxT("CoordinateSystem::~CoordinateSystem()"),
-          wxT("deleting axes"));
+         (axes, axes->GetTypeName(), "CoordinateSystem::~CoordinateSystem()",
+          "deleting axes");
       #endif
       delete axes;
    }
    axes = NULL;
    #ifdef DEBUG_DESTRUCTION
-   MessageInterface::ShowMessage(wxT("---> LEAVING CoordinateSystem destructor for %s\n"),
+   MessageInterface::ShowMessage("---> LEAVING CoordinateSystem destructor for %s\n",
    instanceName.c_str());
    #endif
 }
@@ -317,17 +317,17 @@ void CoordinateSystem::SetEpoch(const A1Mjd &toEpoch)
    if (axes) axes->SetEpoch(toEpoch);
 }
 
-void CoordinateSystem::SetXAxis(const wxString &toValue)
+void CoordinateSystem::SetXAxis(const std::string &toValue)
 {
    if (axes) axes->SetXAxis(toValue);
 }
 
-void CoordinateSystem::SetYAxis(const wxString &toValue)
+void CoordinateSystem::SetYAxis(const std::string &toValue)
 {
    if (axes) axes->SetYAxis(toValue);
 }
 
-void CoordinateSystem::SetZAxis(const wxString &toValue)
+void CoordinateSystem::SetZAxis(const std::string &toValue)
 {
    if (axes) axes->SetZAxis(toValue);
 }
@@ -360,22 +360,22 @@ A1Mjd CoordinateSystem::GetEpoch() const
    return A1Mjd();  // does this make sense?
 }
 
-wxString CoordinateSystem::GetXAxis() const
+std::string CoordinateSystem::GetXAxis() const
 {
    if (axes) return axes->GetXAxis();
-   return wxT("");
+   return "";
 }
 
-wxString CoordinateSystem::GetYAxis() const
+std::string CoordinateSystem::GetYAxis() const
 {
    if (axes) return axes->GetYAxis();
-   return wxT("");
+   return "";
 }
 
-wxString CoordinateSystem::GetZAxis() const
+std::string CoordinateSystem::GetZAxis() const
 {
    if (axes) return axes->GetZAxis();
-   return wxT("");
+   return "";
 }
 
 EopFile* CoordinateSystem::GetEopFile() const
@@ -393,7 +393,7 @@ ItrfCoefficientsFile* CoordinateSystem::GetItrfCoefficientsFile()
 Rmatrix33 CoordinateSystem::GetLastRotationMatrix() const
 {
    if (!axes) 
-      throw CoordinateSystemException(wxT("No AxisSystem defined for ") 
+      throw CoordinateSystemException("No AxisSystem defined for " 
             + instanceName);
    return axes->GetLastRotationMatrix();
 }
@@ -401,7 +401,7 @@ Rmatrix33 CoordinateSystem::GetLastRotationMatrix() const
 void CoordinateSystem::GetLastRotationMatrix(Real *mat) const
 {
    if (!axes) 
-      throw CoordinateSystemException(wxT("No AxisSystem defined for ") 
+      throw CoordinateSystemException("No AxisSystem defined for " 
             + instanceName);
    axes->GetLastRotationMatrix(mat);
 }
@@ -409,7 +409,7 @@ void CoordinateSystem::GetLastRotationMatrix(Real *mat) const
 Rmatrix33 CoordinateSystem::GetLastRotationDotMatrix() const
 {
    if (!axes) 
-      throw CoordinateSystemException(wxT("No AxisSystem defined for ") 
+      throw CoordinateSystemException("No AxisSystem defined for " 
             + instanceName);
    return axes->GetLastRotationDotMatrix();
 }
@@ -417,12 +417,12 @@ Rmatrix33 CoordinateSystem::GetLastRotationDotMatrix() const
 void CoordinateSystem::GetLastRotationDotMatrix(Real *mat) const
 {
    if (!axes) 
-      throw CoordinateSystemException(wxT("No AxisSystem defined for ") 
+      throw CoordinateSystemException("No AxisSystem defined for " 
             + instanceName);
    axes->GetLastRotationDotMatrix(mat);
 }
 
-bool CoordinateSystem::AreAxesOfType(const wxString &ofType) const
+bool CoordinateSystem::AreAxesOfType(const std::string &ofType) const
 {
    if (!axes) return false;
    return axes->IsOfType(ofType);
@@ -441,7 +441,7 @@ bool CoordinateSystem::Initialize()
 {
    #if DEBUG_CS_INIT
    MessageInterface::ShowMessage
-      (wxT("CoordinateSystem::Initialize() csName=%s, axes=%p\n"),
+      ("CoordinateSystem::Initialize() csName=%s, axes=%p\n",
        GetName().c_str(), axes);
    #endif
    
@@ -451,8 +451,8 @@ bool CoordinateSystem::Initialize()
    {
       #if DEBUG_CS_INIT
       MessageInterface::ShowMessage
-         (wxT("   solar=<%p>, originName='%s', j2000BodyName='%s', origin=<%p>'%s', ")
-          wxT("j2000Body=<%p>'%s'\n"), solar, originName.c_str(), j2000BodyName.c_str(),
+         ("   solar=<%p>, originName='%s', j2000BodyName='%s', origin=<%p>'%s', "
+          "j2000Body=<%p>'%s'\n", solar, originName.c_str(), j2000BodyName.c_str(),
           origin, origin->GetName().c_str(), j2000Body, j2000Body->GetName().c_str());
       #endif
       
@@ -492,7 +492,7 @@ Rvector CoordinateSystem::ToMJ2000Eq(const A1Mjd &epoch, const Rvector &inState,
    static Rvector finalState;
    #ifdef DEBUG_INPUTS_OUTPUTS
       MessageInterface::ShowMessage(
-      wxT("In CS::ToMJ2000Eq, inState = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n"),
+      "In CS::ToMJ2000Eq, inState = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n",
       inState[0], inState[1], inState[2], inState[3],inState[4], inState[5]);
    #endif
    internalState.SetSize(inState.GetSize());
@@ -501,7 +501,7 @@ Rvector CoordinateSystem::ToMJ2000Eq(const A1Mjd &epoch, const Rvector &inState,
    if (axes)
    {
       if (!axes->RotateToMJ2000Eq(epoch,inState,internalState, forceComputation))
-         throw CoordinateSystemException(wxT("Error rotating state to MJ2000Eq for ")
+         throw CoordinateSystemException("Error rotating state to MJ2000Eq for "
                                          + instanceName);
    }
    else // assume this is MJ2000Eq, so no rotation is necessary
@@ -510,11 +510,11 @@ Rvector CoordinateSystem::ToMJ2000Eq(const A1Mjd &epoch, const Rvector &inState,
    if (!coincident)
    {
       if (!TranslateToMJ2000Eq(epoch,internalState, finalState))
-         throw CoordinateSystemException(wxT("Error translating state to MJ2000Eq for ")
+         throw CoordinateSystemException("Error translating state to MJ2000Eq for "
                                          + instanceName);
       #ifdef DEBUG_INPUTS_OUTPUTS
          MessageInterface::ShowMessage(
-         wxT("In CS::ToMJ2000Eq, translation happening\n"));
+         "In CS::ToMJ2000Eq, translation happening\n");
       #endif
    }
    else
@@ -522,11 +522,11 @@ Rvector CoordinateSystem::ToMJ2000Eq(const A1Mjd &epoch, const Rvector &inState,
 
    #ifdef DEBUG_INPUTS_OUTPUTS
       MessageInterface::ShowMessage(
-      wxT("In CS::ToMJ2000Eq, internalState = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n"),
+      "In CS::ToMJ2000Eq, internalState = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n",
       internalState[0], internalState[1], internalState[2], 
       internalState[3],internalState[4], internalState[5]);
       MessageInterface::ShowMessage(
-      wxT("In CS::ToMJ2000Eq, finalState = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n"),
+      "In CS::ToMJ2000Eq, finalState = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n",
       finalState[0], finalState[1], finalState[2], 
       finalState[3],finalState[4], finalState[5]);
    #endif
@@ -543,21 +543,21 @@ void CoordinateSystem::ToMJ2000Eq(const A1Mjd &epoch, const Real *inState,
 {
    #ifdef DEBUG_INPUTS_OUTPUTS
    MessageInterface::ShowMessage
-      (wxT("In CS::ToMJ2000Eq, inState = \n   %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n"),
+      ("In CS::ToMJ2000Eq, inState = \n   %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n",
        inState[0], inState[1], inState[2], inState[3],inState[4], inState[5]);
    MessageInterface::ShowMessage
-      (wxT("   axes=<%p> '%s'\n", axes, axes ? axes->GetName().c_str() : "NULL"));
+      ("   axes=<%p> '%s'\n", axes, axes ? axes->GetName().c_str() : "NULL");
    #endif
    Real internalState[6];
    if (axes)
    {
       if (!axes->RotateToMJ2000Eq(epoch, inState, internalState, forceComputation))
-         throw CoordinateSystemException(wxT("Error rotating state to MJ2000Eq for ")
+         throw CoordinateSystemException("Error rotating state to MJ2000Eq for "
                                          + instanceName);
       #ifdef DEBUG_INPUTS_OUTPUTS
       Rvector6 rv(internalState);
       MessageInterface::ShowMessage
-         (wxT("In CS::ToMJ2000Eq, Rotated to MJ2000Eq, internalState=\n   %s\n"),
+         ("In CS::ToMJ2000Eq, Rotated to MJ2000Eq, internalState=\n   %s\n",
           rv.ToString().c_str());
       #endif
    }
@@ -565,18 +565,18 @@ void CoordinateSystem::ToMJ2000Eq(const A1Mjd &epoch, const Real *inState,
       for (Integer i=0; i<6;i++) internalState[i] = inState[i];
    
    #ifdef DEBUG_TRANSLATION
-      MessageInterface::ShowMessage(wxT("In ToMJ2000Eq for %s, coincident = %s\n"),
-            instanceName.c_str(), (coincident? wxT("TRUE") : wxT("FALSE")));
+      MessageInterface::ShowMessage("In ToMJ2000Eq for %s, coincident = %s\n",
+            instanceName.c_str(), (coincident? "TRUE" : "FALSE"));
    #endif
    if (!coincident)
    {
       if (!TranslateToMJ2000Eq(epoch, internalState, outState))
-         throw CoordinateSystemException(wxT("Error translating state to MJ2000Eq for ")
+         throw CoordinateSystemException("Error translating state to MJ2000Eq for "
                                          + instanceName);
       #ifdef DEBUG_INPUTS_OUTPUTS
       Rvector6 rv(outState);
       MessageInterface::ShowMessage
-         (wxT("In CS::ToMJ2000Eq, translated to MJ2000Eq, outState=\n   %s\n"),
+         ("In CS::ToMJ2000Eq, translated to MJ2000Eq, outState=\n   %s\n",
           rv.ToString().c_str());
       #endif
    }
@@ -608,7 +608,7 @@ Rvector CoordinateSystem::FromMJ2000Eq(const A1Mjd &epoch, const Rvector &inStat
    static Rvector finalState;
     #ifdef DEBUG_INPUTS_OUTPUTS
       MessageInterface::ShowMessage(
-      wxT("In CS::FromMJ2000Eq, inState = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n"),
+      "In CS::FromMJ2000Eq, inState = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n",
       inState[0], inState[1], inState[2], inState[3],inState[4], inState[5]);
     #endif
    internalState.SetSize(inState.GetSize());
@@ -616,11 +616,11 @@ Rvector CoordinateSystem::FromMJ2000Eq(const A1Mjd &epoch, const Rvector &inStat
    if (!coincident)
    {
       if (!TranslateFromMJ2000Eq(epoch,inState, internalState))//,j2000Body))
-         throw CoordinateSystemException(wxT("Error translating from MJ2000Eq for ")
+         throw CoordinateSystemException("Error translating from MJ2000Eq for "
                                          + instanceName);
     #ifdef DEBUG_INPUTS_OUTPUTS
       MessageInterface::ShowMessage(
-      wxT("In CS::FromMJ2000Eq (2), translation happening\n"));
+      "In CS::FromMJ2000Eq (2), translation happening\n");
     #endif
    }
    else
@@ -631,7 +631,7 @@ Rvector CoordinateSystem::FromMJ2000Eq(const A1Mjd &epoch, const Rvector &inStat
    {
       if (!axes->RotateFromMJ2000Eq(epoch,internalState,finalState,
           forceComputation))//,j2000Body))
-         throw CoordinateSystemException(wxT("Error rotating state from MJ2000Eq for ")
+         throw CoordinateSystemException("Error rotating state from MJ2000Eq for "
                                          + instanceName);
    }
    else
@@ -640,11 +640,11 @@ Rvector CoordinateSystem::FromMJ2000Eq(const A1Mjd &epoch, const Rvector &inStat
 
    #ifdef DEBUG_INPUTS_OUTPUTS
       MessageInterface::ShowMessage(
-      wxT("In CS::FromMJ2000Eq, internalState = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n"),
+      "In CS::FromMJ2000Eq, internalState = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n",
       internalState[0], internalState[1], internalState[2], 
       internalState[3],internalState[4], internalState[5]);
       MessageInterface::ShowMessage(
-      wxT("In CS::FromMJ2000Eq, finalState = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n"),
+      "In CS::FromMJ2000Eq, finalState = %.17f  %.17f  %.17f  %.17f  %.17f  %.17f\n",
       finalState[0], finalState[1], finalState[2], 
       finalState[3], finalState[4], finalState[5]);
    #endif
@@ -660,11 +660,11 @@ void CoordinateSystem::FromMJ2000Eq(const A1Mjd &epoch, const Real *inState,
    if (!coincident)
    {
       if (!TranslateFromMJ2000Eq(epoch,inState, internalState))//,j2000Body))
-         throw CoordinateSystemException(wxT("Error translating from MJ2000Eq for ")
+         throw CoordinateSystemException("Error translating from MJ2000Eq for "
                                          + instanceName);
     #ifdef DEBUG_INPUTS_OUTPUTS
       MessageInterface::ShowMessage(
-      wxT("In CS::FromMJ2000Eq (1), translation happening\n"));
+      "In CS::FromMJ2000Eq (1), translation happening\n");
     #endif
    }
    else
@@ -674,18 +674,18 @@ void CoordinateSystem::FromMJ2000Eq(const A1Mjd &epoch, const Real *inState,
    if (axes)
    {
       #ifdef DEBUG_INPUTS_OUTPUTS
-         MessageInterface::ShowMessage(wxT("About to call RotateFromMJ2000Eq for object %s\n"),
+         MessageInterface::ShowMessage("About to call RotateFromMJ2000Eq for object %s\n",
                (GetName()).c_str());
       #endif
       if (!axes->RotateFromMJ2000Eq(epoch,internalState,outState, 
           forceComputation))//,j2000Body))
-         throw CoordinateSystemException(wxT("Error rotating state from MJ2000Eq for ")
+         throw CoordinateSystemException("Error rotating state from MJ2000Eq for "
                                          + instanceName);
    }
    else
    {
       #ifdef DEBUG_INPUTS_OUTPUTS
-         MessageInterface::ShowMessage(wxT("AXES are NULL in CS::FromMJ2000Eq (1) for c.s.of type %s\n"),
+         MessageInterface::ShowMessage("AXES are NULL in CS::FromMJ2000Eq (1) for c.s.of type %s\n",
                (GetTypeName()).c_str());
       #endif
       for (Integer i=0; i<6; i++) outState[i]    = internalState[i];
@@ -729,15 +729,15 @@ void CoordinateSystem::Copy(const GmatBase* orig)
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool CoordinateSystem::RenameRefObject(const Gmat::ObjectType type,
-                                       const wxString &oldName,
-                                       const wxString &newName)
+                                       const std::string &oldName,
+                                       const std::string &newName)
 {
    #if DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("CoordinateSystem::RenameRefObject() type=%s, oldName=%s, newName=%s\n"),
+      ("CoordinateSystem::RenameRefObject() type=%s, oldName=%s, newName=%s\n",
        GetObjectTypeString(type).c_str(), oldName.c_str(), newName.c_str());
    #endif
    
@@ -767,7 +767,7 @@ bool CoordinateSystem::IsParameterReadOnly(const Integer id) const
 
 
 //---------------------------------------------------------------------------
-//  bool IsParameterReadOnly(const wxString &label) const
+//  bool IsParameterReadOnly(const std::string &label) const
 //---------------------------------------------------------------------------
 /**
  * Checks to see if the requested parameter is read only.
@@ -777,14 +777,14 @@ bool CoordinateSystem::IsParameterReadOnly(const Integer id) const
  * @return true if the parameter is read only, false (the default) if not.
  */
 //---------------------------------------------------------------------------
-bool CoordinateSystem::IsParameterReadOnly(const wxString &label) const
+bool CoordinateSystem::IsParameterReadOnly(const std::string &label) const
 {
    return IsParameterReadOnly(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -795,7 +795,7 @@ bool CoordinateSystem::IsParameterReadOnly(const wxString &label) const
  *
  */
 //------------------------------------------------------------------------------
-wxString CoordinateSystem::GetParameterText(const Integer id) const
+std::string CoordinateSystem::GetParameterText(const Integer id) const
 {
    if (id >= CoordinateBaseParamCount && id < CoordinateSystemParamCount)
       return PARAMETER_TEXT[id - CoordinateBaseParamCount];
@@ -803,7 +803,7 @@ wxString CoordinateSystem::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -814,7 +814,7 @@ wxString CoordinateSystem::GetParameterText(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer CoordinateSystem::GetParameterID(const wxString &str) const
+Integer CoordinateSystem::GetParameterID(const std::string &str) const
 {
    for (Integer i = CoordinateBaseParamCount; i < CoordinateSystemParamCount; i++)
    {
@@ -846,7 +846,7 @@ Gmat::ParameterType CoordinateSystem::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -857,7 +857,7 @@ Gmat::ParameterType CoordinateSystem::GetParameterType(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString CoordinateSystem::GetParameterTypeString(const Integer id) const
+std::string CoordinateSystem::GetParameterTypeString(const Integer id) const
 {
    return CoordinateBase::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -878,11 +878,11 @@ Real CoordinateSystem::GetRealParameter(const Integer id) const
 {
    if (id == UPDATE_INTERVAL) 
    {
-      if (axes) return axes->GetRealParameter(wxT("UpdateInterval"));
+      if (axes) return axes->GetRealParameter("UpdateInterval");
    }
    else if (id == EPOCH) 
    {
-      if (axes) return axes->GetRealParameter(wxT("Epoch"));
+      if (axes) return axes->GetRealParameter("Epoch");
    }
    return CoordinateBase::GetRealParameter(id);
 }
@@ -904,26 +904,26 @@ Real CoordinateSystem::SetRealParameter(const Integer id, const Real value)
 {
    #ifdef DEBUG_CS_SET
    MessageInterface::ShowMessage
-      (wxT("CoordinateSystem::SetRealParameter()entered, axes=<%p>, id=%d, ")
-       wxT("value=%f\n"), axes, id, value);
+      ("CoordinateSystem::SetRealParameter()entered, axes=<%p>, id=%d, "
+       "value=%f\n", axes, id, value);
    #endif
    
    if (id == UPDATE_INTERVAL)
    {
       if (axes)
-         return axes->SetRealParameter(wxT("UpdateInterval"), value);
+         return axes->SetRealParameter("UpdateInterval", value);
    }
    else if (id == EPOCH)
    {
       if (axes)
-         return axes->SetRealParameter(wxT("Epoch"), value);
+         return axes->SetRealParameter("Epoch", value);
    }
    
    return CoordinateBase::SetRealParameter(id,value);
 }
 
 //------------------------------------------------------------------------------
-//  Real  GetRealParameter(const wxString &label) const
+//  Real  GetRealParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the real value, given the input parameter label.
@@ -934,13 +934,13 @@ Real CoordinateSystem::SetRealParameter(const Integer id, const Real value)
  *
  */
 //------------------------------------------------------------------------------
-Real CoordinateSystem::GetRealParameter(const wxString &label) const
+Real CoordinateSystem::GetRealParameter(const std::string &label) const
 {
    return GetRealParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-//  Real  SetRealParameter(const wxString &label, const Real value) 
+//  Real  SetRealParameter(const std::string &label, const Real value) 
 //------------------------------------------------------------------------------
 /**
  * This method sets the real value, given the input parameter label.
@@ -952,14 +952,14 @@ Real CoordinateSystem::GetRealParameter(const wxString &label) const
  *
  */
 //------------------------------------------------------------------------------
-Real CoordinateSystem::SetRealParameter(const wxString &label, const Real value)
+Real CoordinateSystem::SetRealParameter(const std::string &label, const Real value)
 {
    return SetRealParameter(GetParameterID(label), value);
 }
 
 
 //------------------------------------------------------------------------------
-//  wxString GetStringParameter(const Integer id) const
+//  std::string GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * Retrieve a string parameter.
@@ -970,14 +970,14 @@ Real CoordinateSystem::SetRealParameter(const wxString &label, const Real value)
  *         there is no string association.
  */
 //------------------------------------------------------------------------------
-wxString CoordinateSystem::GetStringParameter(const Integer id) const
+std::string CoordinateSystem::GetStringParameter(const Integer id) const
 {
    if (id == AXES)
    {
       if (axes)
          return axes->GetTypeName();
       else
-         throw CoordinateSystemException(wxT("Axis system not set for ")
+         throw CoordinateSystemException("Axis system not set for "
                                          + instanceName);
    }
       
@@ -986,7 +986,7 @@ wxString CoordinateSystem::GetStringParameter(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString GetStringParameter(const wxString &label) const
+//  std::string GetStringParameter(const std::string &label) const
 //------------------------------------------------------------------------------
 /**
  * Retrieve a string parameter.
@@ -997,21 +997,21 @@ wxString CoordinateSystem::GetStringParameter(const Integer id) const
  *         is no string association.
  */
 //------------------------------------------------------------------------------
-wxString CoordinateSystem::GetStringParameter(const wxString &label) const
+std::string CoordinateSystem::GetStringParameter(const std::string &label) const
 {
    return GetStringParameter(GetParameterID(label));
 }
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const Integer id, const wxString &value)
+// bool SetStringParameter(const Integer id, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
 bool CoordinateSystem::SetStringParameter(const Integer id,
-                                          const wxString &value)
+                                          const std::string &value)
 {
    switch (id)
    {
@@ -1024,14 +1024,14 @@ bool CoordinateSystem::SetStringParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-// bool SetStringParameter(const wxString &label, const wxString &value)
+// bool SetStringParameter(const std::string &label, const std::string &value)
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-bool CoordinateSystem::SetStringParameter(const wxString &label,
-                                          const wxString &value)
+bool CoordinateSystem::SetStringParameter(const std::string &label,
+                                          const std::string &value)
 {
    return SetStringParameter(GetParameterID(label), value);
 }
@@ -1044,16 +1044,16 @@ bool CoordinateSystem::GetBooleanParameter(const Integer id) const
 {
    if (id == OVERRIDE_ORIGIN_INTERVAL) 
    {
-      if (axes) return axes->GetBooleanParameter(wxT("OverrideOriginInterval"));
+      if (axes) return axes->GetBooleanParameter("OverrideOriginInterval");
       else      return false;  // or throw an exception here?
    }
    return CoordinateBase::GetBooleanParameter(id); 
 }
 
 //------------------------------------------------------------------------------
-// bool GetBooleanParameter(const wxString &label) const
+// bool GetBooleanParameter(const std::string &label) const
 //------------------------------------------------------------------------------
-bool CoordinateSystem::GetBooleanParameter(const wxString &label) const
+bool CoordinateSystem::GetBooleanParameter(const std::string &label) const
 {
    return GetBooleanParameter(GetParameterID(label));
 }
@@ -1067,7 +1067,7 @@ bool CoordinateSystem::SetBooleanParameter(const Integer id,
    if (id == OVERRIDE_ORIGIN_INTERVAL)
    {
       if (axes)
-         return axes->SetBooleanParameter(wxT("OverrideOriginInterval"), value);
+         return axes->SetBooleanParameter("OverrideOriginInterval", value);
       else  
          return false;  // or throw an exception here?
    }
@@ -1075,9 +1075,9 @@ bool CoordinateSystem::SetBooleanParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-// bool SetBooleanParameter(const wxString &label, const bool value)
+// bool SetBooleanParameter(const std::string &label, const bool value)
 //------------------------------------------------------------------------------
-bool CoordinateSystem::SetBooleanParameter(const wxString &label,
+bool CoordinateSystem::SetBooleanParameter(const std::string &label,
                                            const bool value)
 {
    return SetBooleanParameter(GetParameterID(label), value);
@@ -1086,7 +1086,7 @@ bool CoordinateSystem::SetBooleanParameter(const wxString &label,
 
 //------------------------------------------------------------------------------
 //  GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                         const wxString &name)
+//                         const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * This method returns a reference object from the CoordinateSystem class.
@@ -1099,7 +1099,7 @@ bool CoordinateSystem::SetBooleanParameter(const wxString &label,
  */
 //------------------------------------------------------------------------------
 GmatBase* CoordinateSystem::GetRefObject(const Gmat::ObjectType type,
-                                         const wxString &name)
+                                         const std::string &name)
 {
    switch (type)
    {
@@ -1109,11 +1109,11 @@ GmatBase* CoordinateSystem::GetRefObject(const Gmat::ObjectType type,
       // without casting CoordinateSystem * (LOJ: 2009.12.18)
       // @see GmatFunction::BuildUnusedGlobalObjectList()
       case Gmat::SPACE_POINT:
-         if (name == wxT("_GFOrigin_"))
+         if (name == "_GFOrigin_")
             return origin;
-         if (name == wxT("_GFPrimary_"))
+         if (name == "_GFPrimary_")
             return GetPrimaryObject();
-         if (name == wxT("_GFSecondary_"))
+         if (name == "_GFSecondary_")
             return GetSecondaryObject();
       default:
          break;
@@ -1208,7 +1208,7 @@ const StringArray& CoordinateSystem::GetRefObjectNameArray(const Gmat::ObjectTyp
 {
    #if DEBUG_CS_REF_OBJECT
    MessageInterface::ShowMessage
-      (wxT("CoordinateSystem::GetRefObjectNameArray() type=%d(%s)\n"), type,
+      ("CoordinateSystem::GetRefObjectNameArray() type=%d(%s)\n", type,
        GetObjectTypeString(type).c_str());
    #endif
    
@@ -1224,7 +1224,7 @@ const StringArray& CoordinateSystem::GetRefObjectNameArray(const Gmat::ObjectTyp
       
       #if DEBUG_CS_REF_OBJECT
       for (unsigned int i=0; i<refs.size(); i++)
-         MessageInterface::ShowMessage(wxT("   cs obj=%s\n"), refs[i].c_str());
+         MessageInterface::ShowMessage("   cs obj=%s\n", refs[i].c_str());
       #endif
       
       if (axes)
@@ -1236,15 +1236,15 @@ const StringArray& CoordinateSystem::GetRefObjectNameArray(const Gmat::ObjectTyp
          
          #if DEBUG_CS_REF_OBJECT
          for (unsigned int i=0; i<axisRefs.size(); i++)
-            MessageInterface::ShowMessage(wxT("   axisRef=%s\n"), axisRefs[i].c_str());
+            MessageInterface::ShowMessage("   axisRef=%s\n", axisRefs[i].c_str());
          #endif
          
          for (StringArray::iterator i = axisRefs.begin(); i != axisRefs.end(); ++i)
             if (find(refs.begin(), refs.end(), *i) == refs.end())
-               if( (*i) != wxT(""))
+               if( (*i) != "")
                {
                   #if DEBUG_CS_REF_OBJECT
-                  MessageInterface::ShowMessage(wxT("      axis obj=%s\n"), (*i).c_str());
+                  MessageInterface::ShowMessage("      axis obj=%s\n", (*i).c_str());
                   #endif
                   refs.push_back(*i);
                }
@@ -1259,7 +1259,7 @@ const StringArray& CoordinateSystem::GetRefObjectNameArray(const Gmat::ObjectTyp
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                    const wxString &name)
+//                    const std::string &name)
 //------------------------------------------------------------------------------
 /**
 * This method sets a reference object for the CoordinateSystem class.
@@ -1273,11 +1273,11 @@ const StringArray& CoordinateSystem::GetRefObjectNameArray(const Gmat::ObjectTyp
  */
 //------------------------------------------------------------------------------
 bool CoordinateSystem::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                    const wxString &name)
+                                    const std::string &name)
 {
    #ifdef DEBUG_CS_SET_REF
       MessageInterface::ShowMessage
-         (wxT("Entering CS::SetRefObject with obj of type %s and name '%s'\n"),
+         ("Entering CS::SetRefObject with obj of type %s and name '%s'\n",
           (obj->GetTypeName()).c_str(), name.c_str());
    #endif
    if (obj == NULL)
@@ -1291,9 +1291,9 @@ bool CoordinateSystem::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
       {
          #ifdef DEBUG_CS_SET_AXIS
          MessageInterface::ShowMessage
-            (wxT("CoordinateSystem::SetRefObject() %s, before axes=%p, obj=%p\n"),
+            ("CoordinateSystem::SetRefObject() %s, before axes=%p, obj=%p\n",
              GetName().c_str(), axes, obj);
-         MessageInterface::ShowMessage(wxT("CS::SetRefObject - object is of type AXIS_SYSTEM\n"));
+         MessageInterface::ShowMessage("CS::SetRefObject - object is of type AXIS_SYSTEM\n");
          #endif
          
          AxisSystem *oldAxis = axes;
@@ -1301,23 +1301,23 @@ bool CoordinateSystem::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
          axes = (AxisSystem*) obj->Clone();
          #ifdef DEBUG_MEMORY
          MemoryTracker::Instance()->Add
-            (axes, wxT("clonedAxes"), wxT("CoordinateSystem::SetRefObject()"),
-             wxT("(AxisSystem*) obj->Clone()"));
+            (axes, "clonedAxes", "CoordinateSystem::SetRefObject()",
+             "(AxisSystem*) obj->Clone()");
          #endif
-         axes->SetName(wxT(""));
+         axes->SetName("");
          ownedObjectCount = 1;
          
          #ifdef DEBUG_CS_SET_AXIS
          MessageInterface::ShowMessage
-            (wxT("CoordinateSystem::SetRefObject() %s, after axes=%p\n"),
+            ("CoordinateSystem::SetRefObject() %s, after axes=%p\n",
              GetName().c_str(), axes);
          #endif
          if (oldAxis)
          {
             #ifdef DEBUG_MEMORY
             MemoryTracker::Instance()->Remove
-               (oldAxis, oldAxis->GetTypeName(), wxT("CoordinateSystem::SetRefObject()"),
-                wxT("deleting oldAxis"));
+               (oldAxis, oldAxis->GetTypeName(), "CoordinateSystem::SetRefObject()",
+                "deleting oldAxis");
             #endif
             delete oldAxis;
             oldAxis = NULL;
@@ -1338,7 +1338,7 @@ bool CoordinateSystem::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
    if (retval)
       return true;
    #ifdef DEBUG_CS_SET_REF
-      MessageInterface::ShowMessage(wxT("CS::SetRefObject - object is NOT of type AXIS_SYSTEM\n"));
+      MessageInterface::ShowMessage("CS::SetRefObject - object is NOT of type AXIS_SYSTEM\n");
    #endif
    
    // Not handled here -- invoke the next higher SetRefObject call
@@ -1351,7 +1351,7 @@ bool CoordinateSystem::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 //----------------------------
 //------------------------------------------------------------------------------
 // static CoordinateSystem* CreateLocalCoordinateSystem(
-//                     const wxString &csName, const wxString &axesType,
+//                     const std::string &csName, const std::string &axesType,
 //                     SpacePoint *origin, SpacePoint *primary,
 //                     SpacePoint *secondary, SpacePoint *j2000Body,
 //                     SolarSystem *solarSystem)
@@ -1371,16 +1371,16 @@ bool CoordinateSystem::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 CoordinateSystem* CoordinateSystem::CreateLocalCoordinateSystem(
-                     const wxString &csName, const wxString &axesType,
+                     const std::string &csName, const std::string &axesType,
                      SpacePoint *origin, SpacePoint *primary,
                      SpacePoint *secondary, SpacePoint *j2000Body,
                      SolarSystem *solarSystem)
 {
    #ifdef DEBUG_CS_CREATE
    MessageInterface::ShowMessage
-      (wxT("CoordinateSystem::CreateLocalCoordinateSystem() entered\n   csName='%s', ")
-       wxT("axesType='%s', origin=<%p>, primary=<%p>, secondary=<%p>\n   j2000Body=<%p>, ")
-       wxT("solarSystem=<%p>\n"), csName.c_str(), axesType.c_str(), origin, primary,
+      ("CoordinateSystem::CreateLocalCoordinateSystem() entered\n   csName='%s', "
+       "axesType='%s', origin=<%p>, primary=<%p>, secondary=<%p>\n   j2000Body=<%p>, "
+       "solarSystem=<%p>\n", csName.c_str(), axesType.c_str(), origin, primary,
        secondary, j2000Body, solarSystem);
    #endif
    // check for NULL pointers
@@ -1391,46 +1391,46 @@ CoordinateSystem* CoordinateSystem::CreateLocalCoordinateSystem(
    AxisSystem       *theAxes = NULL;
    
    // check for supported axes name - these are used at least in the Burn code
-   if (axesType == wxT("VNB") || axesType == wxT("LVLH") || axesType == wxT("SpacecraftBody"))
+   if (axesType == "VNB" || axesType == "LVLH" || axesType == "SpacecraftBody")
    {
       if (primary == NULL || secondary == NULL)
          return NULL;
       
-      localCS  = new CoordinateSystem(wxT("CoordinateSystem"),csName);
+      localCS  = new CoordinateSystem("CoordinateSystem",csName);
       theAxes  = new ObjectReferencedAxes(csName);
       
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (localCS, wxT("localCS"), wxT("CoordinateSystem::CreateLocalCoordinateSystem()"),
-          wxT("new CoordinateSystem()"));
+         (localCS, "localCS", "CoordinateSystem::CreateLocalCoordinateSystem()",
+          "new CoordinateSystem()");
       MemoryTracker::Instance()->Add
-         (theAxes, wxT("theAxes"), wxT("CoordinateSystem::CreateLocalCoordinateSystem()"),
-          wxT("new ObjectReferencedAxes()"));
+         (theAxes, "theAxes", "CoordinateSystem::CreateLocalCoordinateSystem()",
+          "new ObjectReferencedAxes()");
       #endif
       
-      theAxes->SetStringParameter(wxT("Primary"), primary->GetName());
-      theAxes->SetStringParameter(wxT("Secondary"), secondary->GetName());
+      theAxes->SetStringParameter("Primary", primary->GetName());
+      theAxes->SetStringParameter("Secondary", secondary->GetName());
       theAxes->SetRefObject(origin, Gmat::SPACE_POINT, origin->GetName());
       theAxes->SetRefObject(primary, Gmat::SPACE_POINT, primary->GetName());
       theAxes->SetRefObject(secondary, Gmat::SPACE_POINT, secondary->GetName());
       
-      if (axesType == wxT("VNB"))
+      if (axesType == "VNB")
       {
-         theAxes->SetStringParameter(wxT("XAxis"), wxT("V"));
-         theAxes->SetStringParameter(wxT("YAxis"), wxT("N"));
-         localCS->SetStringParameter(wxT("Origin"), secondary->GetName());
+         theAxes->SetStringParameter("XAxis", "V");
+         theAxes->SetStringParameter("YAxis", "N");
+         localCS->SetStringParameter("Origin", secondary->GetName());
          localCS->SetRefObject(secondary, Gmat::SPACE_POINT, secondary->GetName());
       }
-      else if (axesType == wxT("LVLH"))
+      else if (axesType == "LVLH")
       {
-         theAxes->SetStringParameter(wxT("XAxis"), wxT("-R"));
-         theAxes->SetStringParameter(wxT("YAxis"), wxT("-N"));
-         localCS->SetStringParameter(wxT("Origin"), secondary->GetName());
+         theAxes->SetStringParameter("XAxis", "-R");
+         theAxes->SetStringParameter("YAxis", "-N");
+         localCS->SetStringParameter("Origin", secondary->GetName());
          localCS->SetRefObject(secondary, Gmat::SPACE_POINT, secondary->GetName());
       }
-      else if (axesType == wxT("SpacecraftBody"))
+      else if (axesType == "SpacecraftBody")
       {
-         localCS->SetStringParameter(wxT("Origin"), j2000Body->GetName());
+         localCS->SetStringParameter("Origin", j2000Body->GetName());
       }
       
       localCS->SetRefObject(theAxes, Gmat::AXIS_SYSTEM, theAxes->GetName());
@@ -1440,53 +1440,53 @@ CoordinateSystem* CoordinateSystem::CreateLocalCoordinateSystem(
       
       #ifdef DEBUG_CS_CREATE
       MessageInterface::ShowMessage
-         (wxT("   Local CS %s<%p> created with AxisSystem <%p>:\n")
-          wxT("      axesType    = '%s'\n      Origin      = <%p>'%s'\n")
-          wxT("      Primary     = <%p>'%s'\n      Secondary   = <%p>'%s'\n")
-          wxT("      j2000body   = <%p>'%s'\n"), csName.c_str(), localCS, theAxes, axesType.c_str(),
+         ("   Local CS %s<%p> created with AxisSystem <%p>:\n"
+          "      axesType    = '%s'\n      Origin      = <%p>'%s'\n"
+          "      Primary     = <%p>'%s'\n      Secondary   = <%p>'%s'\n"
+          "      j2000body   = <%p>'%s'\n", csName.c_str(), localCS, theAxes, axesType.c_str(),
           localCS->GetOrigin(), localCS->GetOriginName().c_str(), localCS->GetPrimaryObject(),
-          localCS->GetPrimaryObject() ? localCS->GetPrimaryObject()->GetName().c_str() : wxT("NULL"),
+          localCS->GetPrimaryObject() ? localCS->GetPrimaryObject()->GetName().c_str() : "NULL",
           localCS->GetSecondaryObject(),
-          localCS->GetSecondaryObject() ? localCS->GetSecondaryObject()->GetName().c_str() : wxT("NULL"),
+          localCS->GetSecondaryObject() ? localCS->GetSecondaryObject()->GetName().c_str() : "NULL",
           localCS->GetJ2000Body(),
-          localCS->GetJ2000Body() ? localCS->GetJ2000Body()->GetName().c_str() : wxT("NULL"));
+          localCS->GetJ2000Body() ? localCS->GetJ2000Body()->GetName().c_str() : "NULL");
       #endif
       
       // Since CoordinateSystem clones AxisSystem, delete it from here
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (theAxes, wxT("theAxes"), wxT("CoordinateSystem::CreateLocalCoordinateSystem()"),
-          wxT("deleting theAxes"));
+         (theAxes, "theAxes", "CoordinateSystem::CreateLocalCoordinateSystem()",
+          "deleting theAxes");
       #endif
       delete theAxes;
       return localCS;
    }
    // these are needed at least by the Measurement code
-   else if ((axesType == wxT("MJ2000Eq")) || (axesType == wxT("Topocentric")) ||
-            (axesType == wxT("BodyFixed") ))
+   else if ((axesType == "MJ2000Eq") || (axesType == "Topocentric") ||
+            (axesType == "BodyFixed" ))
    {
-      localCS = new CoordinateSystem(wxT("CoordinateSystem"),csName);
-      if (axesType == wxT("MJ2000Eq"))
+      localCS = new CoordinateSystem("CoordinateSystem",csName);
+      if (axesType == "MJ2000Eq")
          theAxes = new MJ2000EqAxes(csName);
-      else if (axesType == wxT("Topocentric"))
+      else if (axesType == "Topocentric")
          theAxes = new TopocentricAxes(csName);
       else
          theAxes = new BodyFixedAxes(csName);
       
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (localCS, wxT("localCS"), wxT("CreateLocalCoordinateSystem()"),
-          wxT("new CoordinateSystem()"));
+         (localCS, "localCS", "CreateLocalCoordinateSystem()",
+          "new CoordinateSystem()");
       MemoryTracker::Instance()->Add
-         (theAxes, wxT("theAxes"), wxT("CreateLocalCoordinateSystem()"),
-          wxT("new ObjectReferencedAxes()"));
+         (theAxes, "theAxes", "CreateLocalCoordinateSystem()",
+          "new ObjectReferencedAxes()");
       #endif
       
       GmatGlobal *gmatGlobal = GmatGlobal::Instance();
       
       #ifdef DEBUG_CS_CREATE
       MessageInterface::ShowMessage
-         (wxT("   eop=<%p>, itrf=<%p>\n"), gmatGlobal->GetEopFile(),
+         ("   eop=<%p>, itrf=<%p>\n", gmatGlobal->GetEopFile(),
           gmatGlobal->GetItrfCoefficientsFile());
       #endif
       
@@ -1496,7 +1496,7 @@ CoordinateSystem* CoordinateSystem::CreateLocalCoordinateSystem(
       if (theAxes->UsesItrfFile() == GmatCoordinate::REQUIRED)
          theAxes->SetCoefficientsFile(gmatGlobal->GetItrfCoefficientsFile());
       
-      localCS->SetStringParameter(wxT("Origin"), origin->GetName());
+      localCS->SetStringParameter("Origin", origin->GetName());
       localCS->SetRefObject(origin, Gmat::SPACE_POINT, origin->GetName());
       localCS->SetRefObject(theAxes, Gmat::AXIS_SYSTEM, theAxes->GetName());
       localCS->SetRefObject(j2000Body, Gmat::SPACE_POINT, j2000Body->GetName());
@@ -1505,23 +1505,23 @@ CoordinateSystem* CoordinateSystem::CreateLocalCoordinateSystem(
       
       #ifdef DEBUG_CS_CREATE
       MessageInterface::ShowMessage
-         (wxT("   Local CS %s<%p> created with AxisSystem <%p>:\n")
-          wxT("      axesType    = '%s'\n      Origin      = <%p>'%s'\n")
-          wxT("      Primary     = <%p>'%s'\n      Secondary   = <%p>'%s'\n")
-          wxT("      j2000body   = <%p>'%s'\n"), csName.c_str(), localCS, theAxes, axesType.c_str(),
+         ("   Local CS %s<%p> created with AxisSystem <%p>:\n"
+          "      axesType    = '%s'\n      Origin      = <%p>'%s'\n"
+          "      Primary     = <%p>'%s'\n      Secondary   = <%p>'%s'\n"
+          "      j2000body   = <%p>'%s'\n", csName.c_str(), localCS, theAxes, axesType.c_str(),
           localCS->GetOrigin(), localCS->GetOriginName().c_str(), localCS->GetPrimaryObject(),
-          localCS->GetPrimaryObject() ? localCS->GetPrimaryObject()->GetName().c_str() : wxT("NULL"),
+          localCS->GetPrimaryObject() ? localCS->GetPrimaryObject()->GetName().c_str() : "NULL",
           localCS->GetSecondaryObject(),
-          localCS->GetSecondaryObject() ? localCS->GetSecondaryObject()->GetName().c_str() : wxT("NULL"),
+          localCS->GetSecondaryObject() ? localCS->GetSecondaryObject()->GetName().c_str() : "NULL",
           localCS->GetJ2000Body(),
-          localCS->GetJ2000Body() ? localCS->GetJ2000Body()->GetName().c_str() : wxT("NULL"));
+          localCS->GetJ2000Body() ? localCS->GetJ2000Body()->GetName().c_str() : "NULL");
       #endif
       
       // Since CoordinateSystem clones AxisSystem, delete it from here
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (theAxes, wxT("theAxes"), wxT("CoordinateSystem::CreateLocalCoordinateSystem()"),
-          wxT("deleting theAxes"));
+         (theAxes, "theAxes", "CoordinateSystem::CreateLocalCoordinateSystem()",
+          "deleting theAxes");
       #endif
       delete theAxes;
       return localCS;
@@ -1529,8 +1529,8 @@ CoordinateSystem* CoordinateSystem::CreateLocalCoordinateSystem(
    else
    {
       MessageInterface::ShowMessage
-         (wxT("**** ERROR **** CoordinateSystem::CreateLocalCoordinateSystem() cannot ")
-          wxT("create CoordinateSystem, axes name \"%s\" is not supported\n"), axesType.c_str());
+         ("**** ERROR **** CoordinateSystem::CreateLocalCoordinateSystem() cannot "
+          "create CoordinateSystem, axes name \"%s\" is not supported\n", axesType.c_str());
       return NULL;
    }
    
@@ -1562,7 +1562,7 @@ bool CoordinateSystem::TranslateToMJ2000Eq(const A1Mjd &epoch,
 {
    #ifdef DEBUG_TRANSLATION
       MessageInterface::ShowMessage(
-            wxT("In TranslateToMJ2000Eq, coord. system is %s, origin is %s and j2000Body is %s\n"),
+            "In TranslateToMJ2000Eq, coord. system is %s, origin is %s and j2000Body is %s\n",
             (axes->GetTypeName()).c_str(), (origin->GetName()).c_str(), (j2000Body->GetName()).c_str());
    #endif
    if (origin == j2000Body)  
@@ -1577,23 +1577,23 @@ bool CoordinateSystem::TranslateToMJ2000Eq(const A1Mjd &epoch,
       #ifdef DEBUG_TRANSLATION
          Rvector6 tmpOrigin = origin->GetMJ2000State(epoch);
          MessageInterface::ShowMessage(
-            wxT("In translation, origin state is %12.17f  %12.17f  %12.17f \n"),
+            "In translation, origin state is %12.17f  %12.17f  %12.17f \n",
             tmpOrigin[0], tmpOrigin[1], tmpOrigin[2]);
          MessageInterface::ShowMessage(
-            wxT("                                %12.17f  %12.17f  %12.17f \n"),
+            "                                %12.17f  %12.17f  %12.17f \n",
             tmpOrigin[3], tmpOrigin[4], tmpOrigin[5]);
          Rvector6 tmpJ2000 = j2000Body->GetMJ2000State(epoch);
          MessageInterface::ShowMessage(
-            wxT("In translation, J2000Body state is %12.17f  %12.17f  %12.17f \n"),
+            "In translation, J2000Body state is %12.17f  %12.17f  %12.17f \n",
             tmpJ2000[0], tmpJ2000[1], tmpJ2000[2]);
          MessageInterface::ShowMessage(
-            wxT("                                %12.17f  %12.17f  %12.17f \n"),
+            "                                %12.17f  %12.17f  %12.17f \n",
             tmpJ2000[3], tmpJ2000[4], tmpJ2000[5]);
          MessageInterface::ShowMessage(
-            wxT("In translation, outState is %12.17f  %12.17f  %12.17f \n"),
+            "In translation, outState is %12.17f  %12.17f  %12.17f \n",
             outState[0], outState[1], outState[2]);
          MessageInterface::ShowMessage(
-            wxT("                            %12.17f  %12.17f  %12.17f \n"),
+            "                            %12.17f  %12.17f  %12.17f \n",
             outState[3], outState[4], outState[5]);
       #endif
    }
@@ -1610,13 +1610,13 @@ bool CoordinateSystem::TranslateToMJ2000Eq(const A1Mjd &epoch,
 {
    #ifdef DEBUG_TRANSLATION
       MessageInterface::ShowMessage(
-            wxT("In TranslateToMJ2000Eq, coord. system is %s, origin is %s and j2000Body is %s\n"),
+            "In TranslateToMJ2000Eq, coord. system is %s, origin is %s and j2000Body is %s\n",
             (axes->GetTypeName()).c_str(), (origin->GetName()).c_str(), (j2000Body->GetName()).c_str());
    #endif
    #ifdef DEBUG_INPUTS_OUTPUTS
    MessageInterface::ShowMessage
-      (wxT("In CS::TranslateToMJ2000Eq, inState = %.17f  %.17f  %.17f  %.17f  %.17f  ")
-       wxT("%.17f\n"), inState[0], inState[1], inState[2], inState[3],inState[4], inState[5]);
+      ("In CS::TranslateToMJ2000Eq, inState = %.17f  %.17f  %.17f  %.17f  %.17f  "
+       "%.17f\n", inState[0], inState[1], inState[2], inState[3],inState[4], inState[5]);
    #endif
    if (origin == j2000Body)  
       for (Integer i=0; i<6; i++) outState[i] = inState[i];
@@ -1626,16 +1626,16 @@ bool CoordinateSystem::TranslateToMJ2000Eq(const A1Mjd &epoch,
       Rvector6 originState = origin->GetMJ2000State(epoch);
       Rvector6 j2000BodyState = j2000Body->GetMJ2000State(epoch);
       MessageInterface::ShowMessage
-         (wxT("   originState =\n   %s\n"), originState.ToString().c_str());
+         ("   originState =\n   %s\n", originState.ToString().c_str());
       MessageInterface::ShowMessage
-         (wxT("   j2000BodyState =\n   %s\n"), j2000BodyState.ToString().c_str());
+         ("   j2000BodyState =\n   %s\n", j2000BodyState.ToString().c_str());
       #endif
       
       Rvector6 rif =  origin->GetMJ2000State(epoch) -
                       (j2000Body->GetMJ2000State(epoch));
       
       #ifdef DEBUG_INPUTS_OUTPUTS
-      MessageInterface::ShowMessage(wxT("   rif = %s\n"), rif.ToString().c_str());
+      MessageInterface::ShowMessage("   rif = %s\n", rif.ToString().c_str());
       #endif
       const Real *toRif = rif.GetDataVector();
       for (Integer i=0; i<6; i++)  outState[i] = inState[i] + toRif[i];
@@ -1665,7 +1665,7 @@ bool CoordinateSystem::TranslateFromMJ2000Eq(const A1Mjd &epoch,
 {
    #ifdef DEBUG_TRANSLATION
       MessageInterface::ShowMessage(
-            wxT("In TranslateFromMJ2000Eq, coord. system is %s, origin is %s and j2000Body is %s\n"),
+            "In TranslateFromMJ2000Eq, coord. system is %s, origin is %s and j2000Body is %s\n",
             (axes->GetTypeName()).c_str(), (origin->GetName()).c_str(), (j2000Body->GetName()).c_str());
    #endif
    if (origin == j2000Body)  
@@ -1691,7 +1691,7 @@ bool CoordinateSystem::TranslateFromMJ2000Eq(const A1Mjd &epoch,
 {
    #ifdef DEBUG_TRANSLATION
       MessageInterface::ShowMessage(
-            wxT("In TranslateFromMJ2000Eq, coord. system is %s, origin is %s and j2000Body is %s\n"),
+            "In TranslateFromMJ2000Eq, coord. system is %s, origin is %s and j2000Body is %s\n",
             (axes->GetTypeName()).c_str(), (origin->GetName()).c_str(), (j2000Body->GetName()).c_str());
    #endif
    if (origin == j2000Body)  

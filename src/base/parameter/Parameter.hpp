@@ -56,9 +56,9 @@ class GMAT_API Parameter : public GmatBase
 {
 public:
 
-   Parameter(const wxString &name, const wxString &typeStr,
+   Parameter(const std::string &name, const std::string &typeStr,
              GmatParam::ParameterKey key, GmatBase *obj,
-             const wxString &desc, const wxString &unit,
+             const std::string &desc, const std::string &unit,
              GmatParam::DepObject depObj, Gmat::ObjectType ownerType,
              bool isTimeParam, bool isSettable, bool isPlottable,
              bool isReportable);
@@ -85,30 +85,30 @@ public:
    bool operator==(const Parameter &right) const;
    bool operator!=(const Parameter &right) const;
    
-   virtual wxString        ToString();
+   virtual std::string        ToString();
    
    virtual Real               GetReal() const;
    virtual const Rvector6&    GetRvector6() const;
    virtual const Rmatrix66&   GetRmatrix66() const;
    virtual const Rmatrix33&   GetRmatrix33() const;
    virtual const Rmatrix&     GetRmatrix() const;
-   virtual const wxString& GetString() const;
+   virtual const std::string& GetString() const;
    
    virtual void               SetReal(Real val);
    virtual void               SetRvector6(const Rvector6 &val);
    virtual void               SetRmatrix66(const Rmatrix66 &mat);
    virtual void               SetRmatrix33(const Rmatrix33 &mat);
    virtual void               SetRmatrix(const Rmatrix &mat);
-   virtual void               SetString(const wxString &val);
+   virtual void               SetString(const std::string &val);
    
    virtual Real               EvaluateReal();
    virtual const Rvector6&    EvaluateRvector6();
    virtual const Rmatrix66&   EvaluateRmatrix66();
    virtual const Rmatrix33&   EvaluateRmatrix33();
    virtual const Rmatrix&     EvaluateRmatrix();
-   virtual const wxString& EvaluateString();
+   virtual const std::string& EvaluateString();
    
-   virtual const wxString* GetParameterList() const;
+   virtual const std::string* GetParameterList() const;
    
    virtual CoordinateSystem*  GetInternalCoordSystem();
    
@@ -126,46 +126,46 @@ public:
    // methods inherited from GmatBase
    virtual void         Copy(const GmatBase*);
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
-   virtual wxString  GetParameterText(const Integer id) const;
-   virtual Integer      GetParameterID(const wxString &str) const;
+   virtual std::string  GetParameterText(const Integer id) const;
+   virtual Integer      GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType
                         GetParameterType(const Integer id) const;
-   virtual wxString  GetParameterTypeString(const Integer id) const;
+   virtual std::string  GetParameterTypeString(const Integer id) const;
    virtual bool         IsParameterReadOnly(const Integer id) const;
    
    virtual UnsignedInt  GetUnsignedIntParameter(const Integer id) const;
-   virtual UnsignedInt  GetUnsignedIntParameter(const wxString &label) const;
+   virtual UnsignedInt  GetUnsignedIntParameter(const std::string &label) const;
    virtual UnsignedInt  SetUnsignedIntParameter(const Integer id,
                                                 const UnsignedInt value);
-   virtual UnsignedInt  SetUnsignedIntParameter(const wxString &label,
+   virtual UnsignedInt  SetUnsignedIntParameter(const std::string &label,
                                                 const UnsignedInt value);
    
-   virtual wxString  GetStringParameter(const Integer id) const;
-   virtual wxString  GetStringParameter(const wxString &label) const;
+   virtual std::string  GetStringParameter(const Integer id) const;
+   virtual std::string  GetStringParameter(const std::string &label) const;
    virtual bool         SetStringParameter(const Integer id,
-                                           const wxString &value);
-   virtual bool         SetStringParameter(const wxString &label,
-                                           const wxString &value);
+                                           const std::string &value);
+   virtual bool         SetStringParameter(const std::string &label,
+                                           const std::string &value);
    
-   virtual const wxString   GetCommentLine(Integer which = 1);
-   virtual void                SetCommentLine(const wxString &comment,
+   virtual const std::string   GetCommentLine(Integer which = 1);
+   virtual void                SetCommentLine(const std::string &comment,
                                               Integer which = 0);
    
 protected:
    
-   static const wxString PARAMETER_KEY_STRING[GmatParam::KeyCount];
+   static const std::string PARAMETER_KEY_STRING[GmatParam::KeyCount];
    
    GmatParam::ParameterKey  mKey;
-   wxString   mDesc;
-   wxString   mUnit;
-   wxString   mExpr;
-   wxString   mOwnerName;
-   wxString   mDepObjectName;
-   wxString   mCommentLine2;
-   wxString   mInitialValue;
+   std::string   mDesc;
+   std::string   mUnit;
+   std::string   mExpr;
+   std::string   mOwnerName;
+   std::string   mDepObjectName;
+   std::string   mCommentLine2;
+   std::string   mInitialValue;
    
    Gmat::ObjectType     mOwnerType;
    Gmat::ParameterType  mReturnType;
@@ -197,7 +197,7 @@ protected:
    
    static const Gmat::ParameterType
       PARAMETER_TYPE[ParameterParamCount - GmatBaseParamCount];
-   static const wxString
+   static const std::string
       PARAMETER_TEXT[ParameterParamCount - GmatBaseParamCount];
 };
 #endif // Parameter_hpp

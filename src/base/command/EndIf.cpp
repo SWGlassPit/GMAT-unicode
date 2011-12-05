@@ -32,9 +32,9 @@
  */
 //------------------------------------------------------------------------------
 EndIf::EndIf() :
-    GmatCommand         (wxT("EndIf"))
+    GmatCommand         ("EndIf")
 {
-   objectTypeNames.push_back(wxT("BranchEnd"));
+   objectTypeNames.push_back("BranchEnd");
    depthChange = -1;
 }
 
@@ -102,13 +102,13 @@ bool EndIf::Initialize()
    
    // Validate that next points to the owning If command
    if (!next)
-      throw CommandException(wxT("EndIf Command not properly reconnected"));
+      throw CommandException("EndIf Command not properly reconnected");
    
    // @todo remove references to Else and ElseIf, if EndIf can only be commected 
    //       to If.
-   if (next->GetTypeName() != wxT("If") && next->GetTypeName() != wxT("Else") &&
-       next->GetTypeName() != wxT("ElseIf"))
-      throw CommandException(wxT("EndIf Command not connected to IF Command"));
+   if (next->GetTypeName() != "If" && next->GetTypeName() != "Else" &&
+       next->GetTypeName() != "ElseIf")
+      throw CommandException("EndIf Command not connected to IF Command");
    
    return true;    
 }
@@ -155,7 +155,7 @@ bool EndIf::Insert(GmatCommand *cmd, GmatCommand *prev)
 
 //---------------------------------------------------------------------------
 // bool RenameRefObject(const Gmat::ObjectType type,
-//                      const wxString &oldName, const wxString &newName)
+//                      const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /*
  * Renames referenced objects
@@ -168,8 +168,8 @@ bool EndIf::Insert(GmatCommand *cmd, GmatCommand *prev)
  */
 //---------------------------------------------------------------------------
 bool EndIf::RenameRefObject(const Gmat::ObjectType type,
-                            const wxString &oldName,
-                            const wxString &newName)
+                            const std::string &oldName,
+                            const std::string &newName)
 {
    // There are no renamealbe objects
    return true;
@@ -193,7 +193,7 @@ GmatBase* EndIf::Clone() const
 
 
 //------------------------------------------------------------------------------
-//  const wxString GetGeneratingString()
+//  const std::string GetGeneratingString()
 //------------------------------------------------------------------------------
 /**
  * Method used to retrieve the string that was parsed to build this GmatCommand.
@@ -213,10 +213,10 @@ GmatBase* EndIf::Clone() const
  * @return The script line that defines this GmatCommand.
  */
 //------------------------------------------------------------------------------
-const wxString& EndIf::GetGeneratingString(Gmat::WriteMode mode,
-                                               const wxString &prefix,
-                                               const wxString &useName)
+const std::string& EndIf::GetGeneratingString(Gmat::WriteMode mode,
+                                               const std::string &prefix,
+                                               const std::string &useName)
 {
-   generatingString = prefix + wxT("EndIf;");
+   generatingString = prefix + "EndIf;";
    return GmatCommand::GetGeneratingString(mode, prefix, useName);
 }

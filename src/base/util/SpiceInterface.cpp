@@ -41,43 +41,43 @@
 const Integer SpiceInterface::DEFAULT_NAIF_ID           = -123456789;
 const Integer SpiceInterface::DEFAULT_NAIF_ID_REF_FRAME = -123456789;
 
-const wxString
+const std::string
 SpiceInterface::VALID_ABERRATION_FLAGS[9] =
 {
-   wxT("NONE"),    // Apply no correction
+   "NONE",    // Apply no correction
    // the following 4 options apply to the 'reception' case, in which photons
    // depart from the target's location at time et-lt and arrive at the 
    // observer's location at et (input time)
-   wxT("LT"),      // Correct for one-way light time
-   wxT("LT+S"),    // Correct for one-way light time and stellar aberration
-   wxT("CN"),      // Converged Newtonian light time correction
-   wxT("CN+S"),    // Converged Newtonian light time and stellar aberration correction
+   "LT",      // Correct for one-way light time
+   "LT+S",    // Correct for one-way light time and stellar aberration
+   "CN",      // Converged Newtonian light time correction
+   "CN+S",    // Converged Newtonian light time and stellar aberration correction
    // the following 4 options apply to the 'transmission' case, in which photons
    // depart from the observer's location at time et and arrive at the 
    // target's location at et+lt (input time)
-   wxT("XLT"),     // Correct for one-way light time
-   wxT("XLT+S"),   // Correct for one-way light time and stellar aberration
-   wxT("XCN"),     // Converged Newtonian light time correction
-   wxT("XCN+S"),   // Converged Newtonian light time and stellar aberration correction
+   "XLT",     // Correct for one-way light time
+   "XLT+S",   // Correct for one-way light time and stellar aberration
+   "XCN",     // Converged Newtonian light time correction
+   "XCN+S",   // Converged Newtonian light time and stellar aberration correction
 };
 
-const Integer SpiceInterface::NUM_VALID_FRAMES = 1; // for now, only wxT("J2000")
+const Integer SpiceInterface::NUM_VALID_FRAMES = 1; // for now, only "J2000"
 
-const wxString
+const std::string
 SpiceInterface::VALID_FRAMES[12] =
 {
-   wxT("J2000"),   // default frame
-   wxT("NONE"),   // TBD
-   wxT("NONE"),   // TBD
-   wxT("NONE"),   // TBD
-   wxT("NONE"),   // TBD
-   wxT("NONE"),   // TBD
-   wxT("NONE"),   // TBD
-   wxT("NONE"),   // TBD
-   wxT("NONE"),   // TBD
-   wxT("NONE"),   // TBD
-   wxT("NONE"),   // TBD
-   wxT("NONE"),   // TBD
+   "J2000",   // default frame
+   "NONE",   // TBD
+   "NONE",   // TBD
+   "NONE",   // TBD
+   "NONE",   // TBD
+   "NONE",   // TBD
+   "NONE",   // TBD
+   "NONE",   // TBD
+   "NONE",   // TBD
+   "NONE",   // TBD
+   "NONE",   // TBD
+   "NONE",   // TBD
 };
 
 const Integer SpiceInterface::MAX_SHORT_MESSAGE         = 320;
@@ -90,7 +90,7 @@ StringArray    SpiceInterface::loadedKernels;
 /// counter of number of instances created
 Integer        SpiceInterface::numInstances = 0;
 /// the name (full path) of the leap second kernel to use
-wxString    SpiceInterface::lsKernel = wxT("");
+std::string    SpiceInterface::lsKernel = "";
 
 
 //---------------------------------
@@ -139,10 +139,10 @@ SpiceInterface::SpiceInterface(const SpiceInterface &copy) :
 /**
  * This method copies the data from the input object to the object.
  *
- * @param <copy> the SpiceInterface object whose data to assign to wxT("this")
+ * @param <copy> the SpiceInterface object whose data to assign to "this"
  *                 SpiceInterface.
  *
- * @return wxT("this") SpiceInterface with data of input SpiceInterface reader.
+ * @return "this" SpiceInterface with data of input SpiceInterface reader.
  */
 //------------------------------------------------------------------------------
 SpiceInterface& SpiceInterface::operator=(const SpiceInterface &copy)
@@ -176,7 +176,7 @@ SpiceInterface::~SpiceInterface()
 }
 
 //------------------------------------------------------------------------------
-//  bool LoadKernel(const wxString &fileName)
+//  bool LoadKernel(const std::string &fileName)
 //------------------------------------------------------------------------------
 /**
  * This method loads the input file into the SPICE kernel pool.
@@ -187,46 +187,46 @@ SpiceInterface::~SpiceInterface()
  *
  */
 //------------------------------------------------------------------------------
-bool SpiceInterface::LoadKernel(const wxString &fileName)
+bool SpiceInterface::LoadKernel(const std::string &fileName)
 {
    #ifdef DEBUG_SPK_LOADING
-         MessageInterface::ShowMessage(wxT("SpiceInterface: Attempting to load kernel %s <---------\n"),
+         MessageInterface::ShowMessage("SpiceInterface: Attempting to load kernel %s <---------\n",
                fileName.c_str());
    #endif
    for (StringArray::iterator jj = loadedKernels.begin();
         jj != loadedKernels.end(); ++jj)
       if ((*jj) == fileName)
       {
-//         MessageInterface::ShowMessage(wxT("Spice kernel %s has already been loaded.\n"),
+//         MessageInterface::ShowMessage("Spice kernel %s has already been loaded.\n",
 //               (*jj).c_str());
          return false;
       }
-   kernelNameSPICE = fileName.char_str();
-   furnsh_c(fileName.char_str());
+   kernelNameSPICE = fileName.c_str();
+   furnsh_c(kernelNameSPICE);
    if (failed_c() == SPICETRUE)
    {
-//      ConstSpiceChar option[] = wxT("SHORT"); // retrieve short error message, for now
+//      ConstSpiceChar option[] = "SHORT"; // retrieve short error message, for now
 //      SpiceInt       numChar  = MAX_SHORT_MESSAGE;
 //      SpiceChar      err[MAX_SHORT_MESSAGE];
       #ifdef DEBUG_SPK_LOADING
-            MessageInterface::ShowMessage(wxT("SpiceInterface: Error loading kernel %s <---------\n"),
+            MessageInterface::ShowMessage("SpiceInterface: Error loading kernel %s <---------\n",
                   fileName.c_str());
       #endif
       ConstSpiceChar option[] = "LONG"; // retrieve long error message, for now
       SpiceInt       numChar  = MAX_LONG_MESSAGE;
       SpiceChar      err[MAX_LONG_MESSAGE];
       getmsg_c(option, numChar, err);
-      wxString errStr(wxString::FromAscii(err));
-      wxString errmsg = wxT("Error loading kernel \"");
-      errmsg += fileName + wxT("\".  Message received from CSPICE is: ");
-      errmsg += errStr + wxT("\n");
+      std::string errStr(err);
+      std::string errmsg = "Error loading kernel \"";
+      errmsg += fileName + "\".  Message received from CSPICE is: ";
+      errmsg += errStr + "\n";
       reset_c();
       throw UtilityException(errmsg);
    }
    #ifdef DEBUG_SPK_LOADING
       else
       {
-         MessageInterface::ShowMessage(wxT("SpiceInterface Successfully loaded kernel %s <---------\n"),
+         MessageInterface::ShowMessage("SpiceInterface Successfully loaded kernel %s <---------\n",
                fileName.c_str());
       }
    #endif
@@ -258,7 +258,7 @@ bool SpiceInterface::LoadKernels(const StringArray &fileNames)
 }
 
 //------------------------------------------------------------------------------
-//  bool UnloadKernel(const wxString &fileName)
+//  bool UnloadKernel(const std::string &fileName)
 //------------------------------------------------------------------------------
 /**
  * This method unloads the input file from the SPICE kernel pool.
@@ -269,7 +269,7 @@ bool SpiceInterface::LoadKernels(const StringArray &fileNames)
  *
  */
 //------------------------------------------------------------------------------
-bool SpiceInterface::UnloadKernel(const wxString &fileName)
+bool SpiceInterface::UnloadKernel(const std::string &fileName)
 {
    bool found = false;
    for (StringArray::iterator jj = loadedKernels.begin();
@@ -283,29 +283,29 @@ bool SpiceInterface::UnloadKernel(const wxString &fileName)
    if (!found)
    {
 //      MessageInterface::ShowMessage(
-//            wxT("SpiceInterface::UnloadKernel() - kernel %s is not currently loaded.\n"),
+//            "SpiceInterface::UnloadKernel() - kernel %s is not currently loaded.\n",
 //            fileName.c_str());
       return false;
    }
    #ifdef DEBUG_SPK_LOADING
-      MessageInterface::ShowMessage(wxT("Now attempting to unload kernel %s\n"),
+      MessageInterface::ShowMessage("Now attempting to unload kernel %s\n",
             fileName.c_str());
    #endif
-   kernelNameSPICE = fileName.char_str();
-   unload_c(fileName.char_str());
+   kernelNameSPICE = fileName.c_str();
+   unload_c(kernelNameSPICE);
    if (failed_c())
    {
-//      ConstSpiceChar option[] = wxT("SHORT"); // retrieve short error message, for now
+//      ConstSpiceChar option[] = "SHORT"; // retrieve short error message, for now
 //      SpiceInt       numChar  = MAX_SHORT_MESSAGE;
 //      SpiceChar      err[MAX_SHORT_MESSAGE];
       ConstSpiceChar option[] = "LONG"; // retrieve long error message, for now
       SpiceInt       numChar  = MAX_LONG_MESSAGE;
       SpiceChar      err[MAX_LONG_MESSAGE];
       getmsg_c(option, numChar, err);
-      wxString errStr(wxString::FromAscii(err));
-      wxString errmsg = wxT("Error unloading kernel \"");
-      errmsg += fileName + wxT("\".  Message received from CSPICE is: ");
-      errmsg += errStr + wxT("\n");
+      std::string errStr(err);
+      std::string errmsg = "Error unloading kernel \"";
+      errmsg += fileName + "\".  Message received from CSPICE is: ";
+      errmsg += errStr + "\n";
       reset_c();
       throw UtilityException(errmsg);
    }
@@ -351,24 +351,24 @@ bool SpiceInterface::UnloadAllKernels()
         jj != loadedKernels.end(); ++jj)
    {
       #ifdef DEBUG_SPK_LOADING
-         MessageInterface::ShowMessage(wxT("Now attempting to unload kernel %s\n"),
+         MessageInterface::ShowMessage("Now attempting to unload kernel %s\n",
                (*jj).c_str());
       #endif
-      kernelNameSPICE = (*jj).char_str();
-      unload_c((*jj).char_str());
+      kernelNameSPICE = (*jj).c_str();
+      unload_c(kernelNameSPICE);
       if (failed_c())
       {
-//         ConstSpiceChar option[] = wxT("SHORT"); // retrieve short error message, for now
+//         ConstSpiceChar option[] = "SHORT"; // retrieve short error message, for now
 //         SpiceInt       numChar  = MAX_SHORT_MESSAGE;
 //         SpiceChar      err[MAX_SHORT_MESSAGE];
          ConstSpiceChar option[] = "LONG"; // retrieve long error message, for now
          SpiceInt       numChar  = MAX_LONG_MESSAGE;
          SpiceChar      err[MAX_LONG_MESSAGE];
          getmsg_c(option, numChar, err);
-         wxString errStr(wxString::FromAscii(err));
-         wxString errmsg = wxT("Error unloading kernel \"");
-         errmsg += (*jj) + wxT("\".  Message received from CSPICE is: ");
-         errmsg += errStr + wxT("\n");
+         std::string errStr(err);
+         std::string errmsg = "Error unloading kernel \"";
+         errmsg += (*jj) + "\".  Message received from CSPICE is: ";
+         errmsg += errStr + "\n";
          reset_c();
          throw UtilityException(errmsg);
       }
@@ -379,7 +379,7 @@ bool SpiceInterface::UnloadAllKernels()
 }
 
 //------------------------------------------------------------------------------
-//  bool IsLoaded(const wxString &fileName)
+//  bool IsLoaded(const std::string &fileName)
 //------------------------------------------------------------------------------
 /**
  * This method checks to see if the input file is loaded into the kernel pool.
@@ -391,10 +391,10 @@ bool SpiceInterface::UnloadAllKernels()
  *
  */
 //------------------------------------------------------------------------------
-bool SpiceInterface::IsLoaded(const wxString &fileName)
+bool SpiceInterface::IsLoaded(const std::string &fileName)
 {
    #ifdef DEBUG_SPK_LOADING
-      MessageInterface::ShowMessage(wxT("IsLoaded::Now attempting to find kernel name %s\n"), fileName.c_str());
+      MessageInterface::ShowMessage("IsLoaded::Now attempting to find kernel name %s\n", fileName.c_str());
    #endif
    for (StringArray::iterator jj = loadedKernels.begin();
         jj != loadedKernels.end(); ++jj)
@@ -402,7 +402,7 @@ bool SpiceInterface::IsLoaded(const wxString &fileName)
       if ((*jj) == fileName) return true;
    }
    #ifdef DEBUG_SPK_LOADING
-      MessageInterface::ShowMessage(wxT("IsLoaded::kernel name %s NOT ALREADY LOADED\n"), fileName.c_str());
+      MessageInterface::ShowMessage("IsLoaded::kernel name %s NOT ALREADY LOADED\n", fileName.c_str());
    #endif
    return false;
 }
@@ -446,7 +446,7 @@ StringArray SpiceInterface::GetValidFrames()
 }
 
 //------------------------------------------------------------------------------
-//  void SetLeapSecondKernel(const wxString &lsk)
+//  void SetLeapSecondKernel(const std::string &lsk)
 //------------------------------------------------------------------------------
 /**
  * This method sets the leap second kernel, loading it into the kernel pool.
@@ -456,17 +456,17 @@ StringArray SpiceInterface::GetValidFrames()
  *
  */
 //------------------------------------------------------------------------------
-void SpiceInterface::SetLeapSecondKernel(const wxString &lsk)
+void SpiceInterface::SetLeapSecondKernel(const std::string &lsk)
 {
    #ifdef DEBUG_SPK_LOADING
-      MessageInterface::ShowMessage(wxT("NOW loading LSK kernel %s\n"), lsk.c_str());
+      MessageInterface::ShowMessage("NOW loading LSK kernel %s\n", lsk.c_str());
    #endif
    lsKernel = lsk;
    if (!IsLoaded(lsKernel))   LoadKernel(lsKernel);
 }
 
 //------------------------------------------------------------------------------
-//  Integer GetNaifID(const wxString &forBody, bool popupMsg)
+//  Integer GetNaifID(const std::string &forBody, bool popupMsg)
 //------------------------------------------------------------------------------
 /**
  * This method returns the NAIF Id of an object, given its name.
@@ -479,24 +479,24 @@ void SpiceInterface::SetLeapSecondKernel(const wxString &lsk)
  *
  */
 //------------------------------------------------------------------------------
-Integer SpiceInterface::GetNaifID(const wxString &forBody, bool popupMsg)
+Integer SpiceInterface::GetNaifID(const std::string &forBody, bool popupMsg)
 {
    SpiceBoolean   found;
    SpiceInt       id;
-   ConstSpiceChar *bodyName = forBody.char_str();
+   ConstSpiceChar *bodyName = forBody.c_str();
    bodn2c_c(bodyName, &id, &found);
    if (found == SPICEFALSE)
    {
       if (popupMsg)
       {
-         wxString warnmsg = wxT("Cannot find NAIF ID for object ");
-         warnmsg += forBody + wxT(".  Insufficient data available.  Another SPICE Kernel may be necessary.");
+         std::string warnmsg = "Cannot find NAIF ID for object ";
+         warnmsg += forBody + ".  Insufficient data available.  Another SPICE Kernel may be necessary.";
          MessageInterface::PopupMessage(Gmat::WARNING_, warnmsg);
       }
       return 0;
    }
    #ifdef DEBUG_SPK_READING
-      MessageInterface::ShowMessage(wxT("NAIF ID for body %s has been found: it is %d\n"),
+      MessageInterface::ShowMessage("NAIF ID for body %s has been found: it is %d\n",
                                     forBody.c_str(), (Integer) id);
    #endif
    return (Integer) id;
@@ -580,11 +580,11 @@ void SpiceInterface::InitializeInterface()
       loadedKernels.clear();
       // Get path for output
       FileManager *fm = FileManager::Instance();
-      wxString outPath = fm->GetAbsPathname(FileManager::OUTPUT_PATH) + wxT("GMATSpiceKernelError.txt");
+      std::string outPath = fm->GetAbsPathname(FileManager::OUTPUT_PATH) + "GMATSpiceKernelError.txt";
       // need to get rid of const-ness to convert to SpiceChar*
       char *pathChar;
       pathChar = new char[outPath.length() + 1];
-      strcpy(pathChar, outPath.char_str());
+      strcpy(pathChar, outPath.c_str());
 
       // set output file for cspice methods
       SpiceChar      *spiceErrorFileFullPath = pathChar;
@@ -596,7 +596,7 @@ void SpiceInterface::InitializeInterface()
       errprt_c("SET", 1840, report);
       erract_c("SET", 1840, action);
 
-      delete [] pathChar;
+      delete pathChar;
    }
 }
 

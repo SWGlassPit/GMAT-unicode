@@ -24,7 +24,7 @@
 
 
 //------------------------------------------------------------------------------
-//  ODEModelException(wxString details)
+//  ODEModelException(std::string details)
 //------------------------------------------------------------------------------
 /**
  * Constructs CommandException instance (default constructor).
@@ -32,8 +32,8 @@
  * @param details A message providing the details of the exception. 
  */
 //------------------------------------------------------------------------------
-ODEModelException::ODEModelException(const wxString &details) :
-    BaseException           (wxT("ODEModel Exception Thrown: "), details)
+ODEModelException::ODEModelException(const std::string &details) :
+    BaseException           ("ODEModel Exception Thrown: ", details)
 {
 }
 

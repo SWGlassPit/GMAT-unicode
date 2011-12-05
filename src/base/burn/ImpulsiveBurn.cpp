@@ -36,14 +36,14 @@
 //---------------------------------
 
 /// Labels used for the parameters.
-const wxString
+const std::string
 ImpulsiveBurn::PARAMETER_TEXT[ImpulsiveBurnParamCount - BurnParamCount] =
 {
-   wxT("DecrementMass"),
-   wxT("Tank"),
-   wxT("Isp"),
-   wxT("GravitationalAccel"),
-   wxT("DeltaTankMass"),
+   "DecrementMass",
+   "Tank",
+   "Isp",
+   "GravitationalAccel",
+   "DeltaTankMass",
 };
 
 /// Types of the parameters
@@ -58,7 +58,7 @@ ImpulsiveBurn::PARAMETER_TYPE[ImpulsiveBurnParamCount - BurnParamCount] =
 };
 
 //------------------------------------------------------------------------------
-//  ImpulsiveBurn(const wxString &nomme)
+//  ImpulsiveBurn(const std::string &nomme)
 //------------------------------------------------------------------------------
 /**
  * Constructs the impulsive burn (default constructor).
@@ -66,8 +66,8 @@ ImpulsiveBurn::PARAMETER_TYPE[ImpulsiveBurnParamCount - BurnParamCount] =
  * @param <nomme> Name for the object
  */
 //------------------------------------------------------------------------------
-ImpulsiveBurn::ImpulsiveBurn(const wxString &nomme) :
-   Burn(Gmat::IMPULSIVE_BURN, wxT("ImpulsiveBurn"), nomme),
+ImpulsiveBurn::ImpulsiveBurn(const std::string &nomme) :
+   Burn(Gmat::IMPULSIVE_BURN, "ImpulsiveBurn", nomme),
    isp                      (300.0),
    gravityAccel             (9.81),
    deltaTankMass            (0),
@@ -77,7 +77,7 @@ ImpulsiveBurn::ImpulsiveBurn(const wxString &nomme) :
    simpleExpressions        (true)   // used?
 {
    objectTypes.push_back(Gmat::IMPULSIVE_BURN);
-   objectTypeNames.push_back(wxT("ImpulsiveBurn"));
+   objectTypeNames.push_back("ImpulsiveBurn");
    parameterCount = ImpulsiveBurnParamCount;
 }
 
@@ -161,9 +161,9 @@ void ImpulsiveBurn::SetSpacecraftToManeuver(Spacecraft *sat)
 {
    #ifdef DEBUG_IMPBURN_SET
    MessageInterface::ShowMessage
-      (wxT("ImpulsiveBurn::SetSpacecraftToManeuver() sat=<%p>'%s', spacecraft=<%p>'%s'\n"),
+      ("ImpulsiveBurn::SetSpacecraftToManeuver() sat=<%p>'%s', spacecraft=<%p>'%s'\n",
        sat, sat->GetName().c_str(), spacecraft,
-       spacecraft ? spacecraft->GetName().c_str() : wxT("NULL"));
+       spacecraft ? spacecraft->GetName().c_str() : "NULL");
    #endif
    
    if (sat == NULL)
@@ -177,7 +177,7 @@ void ImpulsiveBurn::SetSpacecraftToManeuver(Spacecraft *sat)
    
    #ifdef DEBUG_IMPBURN_SET
    MessageInterface::ShowMessage
-      (wxT("ImpulsiveBurn::SetSpacecraftToManeuver() returning\n"));
+      ("ImpulsiveBurn::SetSpacecraftToManeuver() returning\n");
    #endif
 }
 
@@ -203,23 +203,23 @@ bool ImpulsiveBurn::Fire(Real *burnData, Real epoch)
 {
    #ifdef DEBUG_IMPBURN_FIRE
    MessageInterface::ShowMessage
-      (wxT("ImpulsiveBurn::Fire() <%p>'%s' entered\n"), this, instanceName.c_str());
+      ("ImpulsiveBurn::Fire() <%p>'%s' entered\n", this, instanceName.c_str());
    MessageInterface::ShowMessage
-      (wxT("   deltaV: %18le  %18le  %18le\n"), deltaV[0], deltaV[1], deltaV[2]);
+      ("   deltaV: %18le  %18le  %18le\n", deltaV[0], deltaV[1], deltaV[2]);
    #endif
    
    #ifdef DEBUG_IMPBURN_FIRE
    MessageInterface::ShowMessage
-      (wxT("   usingLocalCoordSys=%d, spacecraft=<%p>, initialized=%d, ")
-       wxT("localCoordSystem=<%p>\n"), usingLocalCoordSys, spacecraft, initialized,
+      ("   usingLocalCoordSys=%d, spacecraft=<%p>, initialized=%d, "
+       "localCoordSystem=<%p>\n", usingLocalCoordSys, spacecraft, initialized,
        localCoordSystem);
    #endif
    
    // By this time, the spacecraft should have been set
    if (usingLocalCoordSys && spacecraft == NULL)
       throw BurnException
-         (wxT("Unable to initialize the ImpulsiveBurn object ") + 
-          instanceName + wxT(" ") + satName + wxT(" was not set for the burn."));
+         ("Unable to initialize the ImpulsiveBurn object " + 
+          instanceName + " " + satName + " was not set for the burn.");
    
    if (!initialized  || localCoordSystem == NULL)
    {
@@ -228,7 +228,7 @@ bool ImpulsiveBurn::Fire(Real *burnData, Real epoch)
    }
    
    if (epoch == GmatTimeConstants::MJD_OF_J2000)
-      epoch = spacecraft->GetRealParameter(wxT("A1Epoch"));
+      epoch = spacecraft->GetRealParameter("A1Epoch");
    
    Real *satState = spacecraft->GetState().GetState();
    // Update tank of the spacecraft
@@ -237,12 +237,12 @@ bool ImpulsiveBurn::Fire(Real *burnData, Real epoch)
    
    #ifdef DEBUG_IMPBURN_FIRE
    MessageInterface::ShowMessage
-      (wxT("   Maneuvering spacecraft %s\n"), spacecraft->GetName().c_str());
+      ("   Maneuvering spacecraft %s\n", spacecraft->GetName().c_str());
    MessageInterface::ShowMessage
-      (wxT("   Position for burn:    %18le  %18le  %18le\n"),
+      ("   Position for burn:    %18le  %18le  %18le\n",
        satState[0], satState[1], satState[2]);
    MessageInterface::ShowMessage
-      (wxT("   Velocity before burn: %18le  %18le  %18le\n"),
+      ("   Velocity before burn: %18le  %18le  %18le\n",
        satState[3], satState[4], satState[5]);
    #endif
    
@@ -255,17 +255,17 @@ bool ImpulsiveBurn::Fire(Real *burnData, Real epoch)
       
    #ifdef DEBUG_IMPBURN_FIRE
    MessageInterface::ShowMessage
-      (wxT("   Velocity after burn:  %18le  %18le  %18le\n"),
+      ("   Velocity after burn:  %18le  %18le  %18le\n",
        satState[3], satState[4], satState[5]);
    MessageInterface::ShowMessage
-      (wxT("   %s tank mass computation\n"), decrementMass ? wxT("Continue with ") : wxT("Skipping"));
+      ("   %s tank mass computation\n", decrementMass ? "Continue with " : "Skipping");
    #endif
    
    if (decrementMass)
       DecrementMass();
       
    #ifdef DEBUG_IMPBURN_FIRE
-   MessageInterface::ShowMessage(wxT("ImpulsiveBurn::Fire() returning true\n"));
+   MessageInterface::ShowMessage("ImpulsiveBurn::Fire() returning true\n");
    #endif
    
    return true;
@@ -283,8 +283,8 @@ bool ImpulsiveBurn::Initialize()
 {
    #ifdef DEBUG_IMPBURN_INIT
    MessageInterface::ShowMessage
-      (wxT("ImpulsiveBurn::Initialize() '%s' entered, localCoordSystem=<%p>, ")
-       wxT("decrementMass=%d, tankNames.size()=%d\n"), GetName().c_str(),
+      ("ImpulsiveBurn::Initialize() '%s' entered, localCoordSystem=<%p>, "
+       "decrementMass=%d, tankNames.size()=%d\n", GetName().c_str(),
        localCoordSystem, decrementMass, tankNames.size());
    #endif
    
@@ -292,7 +292,7 @@ bool ImpulsiveBurn::Initialize()
    {
       #ifdef DEBUG_IMPBURN_INIT
       MessageInterface::ShowMessage
-         (wxT("ImpulsiveBurn::Initialize() '%s' returning false\n"), GetName().c_str());
+         ("ImpulsiveBurn::Initialize() '%s' returning false\n", GetName().c_str());
       #endif
       return false;
    }
@@ -307,7 +307,7 @@ bool ImpulsiveBurn::Initialize()
    
    #ifdef DEBUG_IMPBURN_INIT
    MessageInterface::ShowMessage
-      (wxT("ImpulsiveBurn::Initialize() '%s' returning %d\n"), GetName().c_str(), retval);
+      ("ImpulsiveBurn::Initialize() '%s' returning %d\n", GetName().c_str(), retval);
    #endif
    
    return retval;
@@ -367,7 +367,7 @@ void ImpulsiveBurn::Copy(const GmatBase* orig)
 
 
 //---------------------------------------------------------------------------
-//  bool TakeAction(const wxString &action, const wxString &actionData)
+//  bool TakeAction(const std::string &action, const std::string &actionData)
 //---------------------------------------------------------------------------
 /**
  * Interface used to support user actions.
@@ -381,12 +381,12 @@ void ImpulsiveBurn::Copy(const GmatBase* orig)
  * @return true if the action was performed, false if not.
  */
 //---------------------------------------------------------------------------
-bool ImpulsiveBurn::TakeAction(const wxString &action,
-                               const wxString &actionData)
+bool ImpulsiveBurn::TakeAction(const std::string &action,
+                               const std::string &actionData)
 {
-   if (action == wxT("ClearTanks"))
+   if (action == "ClearTanks")
    {
-      MessageInterface::ShowMessage(wxT("Clearing tanks\n"));
+      MessageInterface::ShowMessage("Clearing tanks\n");
       tankNames.clear();
       tankMap.clear();
       return true;
@@ -418,7 +418,7 @@ bool ImpulsiveBurn::IsParameterReadOnly(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -428,7 +428,7 @@ bool ImpulsiveBurn::IsParameterReadOnly(const Integer id) const
  * @return parameter text for the requested parameter.
  */
 //------------------------------------------------------------------------------
-wxString ImpulsiveBurn::GetParameterText(const Integer id) const
+std::string ImpulsiveBurn::GetParameterText(const Integer id) const
 {
    if (id >= BurnParamCount && id < ImpulsiveBurnParamCount)
       return PARAMETER_TEXT[id - BurnParamCount];
@@ -438,7 +438,7 @@ wxString ImpulsiveBurn::GetParameterText(const Integer id) const
 
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -449,7 +449,7 @@ wxString ImpulsiveBurn::GetParameterText(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer ImpulsiveBurn::GetParameterID(const wxString &str) const
+Integer ImpulsiveBurn::GetParameterID(const std::string &str) const
 {
    for (Integer i = BurnParamCount; i < ImpulsiveBurnParamCount; i++)
    {
@@ -576,10 +576,10 @@ Real ImpulsiveBurn::SetRealParameter(const Integer id, const Real value)
             isp = value;
          else
          { 
-            BurnException aException(wxT(""));
+            BurnException aException("");
             aException.SetDetails(errorMessageFormat.c_str(),
                         GmatStringUtil::ToString(value, 16).c_str(),
-                        PARAMETER_TEXT[id-DECREMENT_MASS].c_str(), wxT("Real Number >= 0"));
+                        PARAMETER_TEXT[id-DECREMENT_MASS].c_str(), "Real Number >= 0");
             throw aException;
          }
          return isp;
@@ -598,7 +598,7 @@ Real ImpulsiveBurn::SetRealParameter(const Integer id, const Real value)
 
 
 //---------------------------------------------------------------------------
-//  wxString GetStringParameter(const Integer id) const
+//  std::string GetStringParameter(const Integer id) const
 //---------------------------------------------------------------------------
 /**
  * Retrieve a string parameter.
@@ -609,14 +609,14 @@ Real ImpulsiveBurn::SetRealParameter(const Integer id, const Real value)
  *         there is no string association.
  */
 //---------------------------------------------------------------------------
-wxString ImpulsiveBurn::GetStringParameter(const Integer id) const
+std::string ImpulsiveBurn::GetStringParameter(const Integer id) const
 {
    return Burn::GetStringParameter(id);
 }
 
 
 //---------------------------------------------------------------------------
-//  bool SetStringParameter(const Integer id, const wxString &value)
+//  bool SetStringParameter(const Integer id, const std::string &value)
 //---------------------------------------------------------------------------
 /**
  * Change the value of a string parameter.
@@ -627,11 +627,11 @@ wxString ImpulsiveBurn::GetStringParameter(const Integer id) const
  * @return true if the string is stored, throw if the string is not stored.
  */
 //---------------------------------------------------------------------------
-bool ImpulsiveBurn::SetStringParameter(const Integer id, const wxString &value)
+bool ImpulsiveBurn::SetStringParameter(const Integer id, const std::string &value)
 {
    #ifdef DEBUG_IMPBURN_SET
    MessageInterface::ShowMessage
-      (wxT("ImpulsiveBurn::SetStringParameter() id=%d, value='%s'\n"), id, value.c_str());
+      ("ImpulsiveBurn::SetStringParameter() id=%d, value='%s'\n", id, value.c_str());
    #endif
    switch (id)
    {
@@ -640,7 +640,7 @@ bool ImpulsiveBurn::SetStringParameter(const Integer id, const wxString &value)
       {
          #ifdef DEBUG_IMPBURN_SET
          MessageInterface::ShowMessage
-            (wxT("   Adding FuelTank '%s' to the list\n"), value.c_str());
+            ("   Adding FuelTank '%s' to the list\n", value.c_str());
          #endif
          
          tankNames.push_back(value);
@@ -656,14 +656,14 @@ bool ImpulsiveBurn::SetStringParameter(const Integer id, const wxString &value)
 
 
 //---------------------------------------------------------------------------
-//  bool SetStringParameter(const Integer id, const wxString &value,
+//  bool SetStringParameter(const Integer id, const std::string &value,
 //                          const Integer index)
 //---------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-bool ImpulsiveBurn::SetStringParameter(const Integer id, const wxString &value,
+bool ImpulsiveBurn::SetStringParameter(const Integer id, const std::string &value,
                                        const Integer index)
 {
    switch (id)
@@ -752,7 +752,7 @@ const StringArray& ImpulsiveBurn::GetRefObjectNameArray(const Gmat::ObjectType t
 {
    #ifdef DEBUG_IMPBURN_OBJECT
    MessageInterface::ShowMessage
-      (wxT("ImpulsiveBurn::GetRefObjectNameArray() this=<%p>'%s' entered, type=%d\n"),
+      ("ImpulsiveBurn::GetRefObjectNameArray() this=<%p>'%s' entered, type=%d\n",
        this, GetName().c_str(), type);
    #endif
    
@@ -768,10 +768,10 @@ const StringArray& ImpulsiveBurn::GetRefObjectNameArray(const Gmat::ObjectType t
       
       #ifdef DEBUG_IMPBURN_OBJECT
       MessageInterface::ShowMessage
-         (wxT("ImpulsiveBurn::GetRefObjectNameArray() this=<%p>'%s' returning %d ")
-          wxT("ref. object names\n"), this, GetName().c_str(), refObjectNames.size());
+         ("ImpulsiveBurn::GetRefObjectNameArray() this=<%p>'%s' returning %d "
+          "ref. object names\n", this, GetName().c_str(), refObjectNames.size());
       for (UnsignedInt i=0; i<refObjectNames.size(); i++)
-         MessageInterface::ShowMessage(wxT("   '%s'\n"), refObjectNames[i].c_str());
+         MessageInterface::ShowMessage("   '%s'\n", refObjectNames[i].c_str());
       #endif
       
       return refObjectNames;
@@ -779,8 +779,8 @@ const StringArray& ImpulsiveBurn::GetRefObjectNameArray(const Gmat::ObjectType t
    
    #ifdef DEBUG_IMPBURN_OBJECT
    MessageInterface::ShowMessage
-      (wxT("ImpulsiveBurn::GetRefObjectNameArray() this=<%p>'%s' returning ")
-       wxT("Burn::GetRefObjectNameArray()\n"), this, GetName().c_str());
+      ("ImpulsiveBurn::GetRefObjectNameArray() this=<%p>'%s' returning "
+       "Burn::GetRefObjectNameArray()\n", this, GetName().c_str());
    #endif
    
    return Burn::GetRefObjectNameArray(type);
@@ -789,7 +789,7 @@ const StringArray& ImpulsiveBurn::GetRefObjectNameArray(const Gmat::ObjectType t
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                    const wxString &name)
+//                    const std::string &name)
 //------------------------------------------------------------------------------
 /**
 * This method sets a reference object for the CoordinateSystem class.
@@ -803,12 +803,12 @@ const StringArray& ImpulsiveBurn::GetRefObjectNameArray(const Gmat::ObjectType t
  */
 //------------------------------------------------------------------------------
 bool ImpulsiveBurn::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                                 const wxString &name)
+                                 const std::string &name)
 {
    #ifdef DEBUG_BURN_SET
    MessageInterface::ShowMessage
-      (wxT("ImpulsiveBurn::SetRefObject() this=<%p> '%s', objType=%d, objTypeName=%s, ")
-       wxT("objName=%s, type=%d, name=%s\n"), this, GetName().c_str(), obj->GetType(),
+      ("ImpulsiveBurn::SetRefObject() this=<%p> '%s', objType=%d, objTypeName=%s, "
+       "objName=%s, type=%d, name=%s\n", this, GetName().c_str(), obj->GetType(),
        obj->GetTypeName().c_str(), obj->GetName().c_str(), type, name.c_str());
    #endif
    
@@ -828,7 +828,7 @@ bool ImpulsiveBurn::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 /**
  * Renames reference object name used in this class.
@@ -841,8 +841,8 @@ bool ImpulsiveBurn::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
  */
 //---------------------------------------------------------------------------
 bool ImpulsiveBurn::RenameRefObject(const Gmat::ObjectType type,
-                                    const wxString &oldName,
-                                    const wxString &newName)
+                                    const std::string &oldName,
+                                    const std::string &newName)
 {
    if (type == Gmat::FUEL_TANK)
    {
@@ -863,23 +863,23 @@ bool ImpulsiveBurn::SetTankFromSpacecraft()
 {
    #ifdef DEBUG_IMPBURN_SET
    MessageInterface::ShowMessage
-      (wxT("ImpulsiveBurn::SetTankFromSpacecraft() entered, spacecraft=<%p>'%s'\n"),
-       spacecraft, spacecraft ? spacecraft->GetName().c_str() : wxT("NULL"));
-   MessageInterface::ShowMessage(wxT("   tankNames.size()=%d\n"), tankNames.size());
+      ("ImpulsiveBurn::SetTankFromSpacecraft() entered, spacecraft=<%p>'%s'\n",
+       spacecraft, spacecraft ? spacecraft->GetName().c_str() : "NULL");
+   MessageInterface::ShowMessage("   tankNames.size()=%d\n", tankNames.size());
    #endif
    
    if (spacecraft == NULL)
       return false;
    
    if (tankNames.empty())
-      throw BurnException(wxT("ImpulsiveBurn::Initialize() ") + instanceName +
-                          wxT(" has no associated tank"));
+      throw BurnException("ImpulsiveBurn::Initialize() " + instanceName +
+                          " has no associated tank");
    
    ObjectArray tankArray = spacecraft->GetRefObjectArray(Gmat::FUEL_TANK);
    
    #ifdef DEBUG_IMPBURN_SET
    MessageInterface::ShowMessage
-      (wxT("   spacecraft tankArray.size()=%d\n"), tankArray.size());
+      ("   spacecraft tankArray.size()=%d\n", tankArray.size());
    #endif
    
    if (!tankNames.empty() && !tankArray.empty())
@@ -894,9 +894,9 @@ bool ImpulsiveBurn::SetTankFromSpacecraft()
          {
             #ifdef DEBUG_IMPBURN_SET
             MessageInterface::ShowMessage
-               (wxT("   The tank '%s' associated with spacecraft is <%p>'%s'\n"),
+               ("   The tank '%s' associated with spacecraft is <%p>'%s'\n",
                 (*tankName).c_str(), (*scTank),
-                (*scTank) ? (*scTank)->GetName().c_str() : wxT("NULL"));
+                (*scTank) ? (*scTank)->GetName().c_str() : "NULL");
             #endif
             
             // Just in case, check for NULL tank pointer
@@ -909,7 +909,7 @@ bool ImpulsiveBurn::SetTankFromSpacecraft()
                tankMap[*tankName] = (*scTank);
                #ifdef DEBUG_IMPBURN_SET
                MessageInterface::ShowMessage
-                  (wxT("   Assigned <%p>'%s' to tankMap\n"), *scTank, (*tankName).c_str());
+                  ("   Assigned <%p>'%s' to tankMap\n", *scTank, (*tankName).c_str());
                #endif
             }
             ++scTank;
@@ -919,7 +919,7 @@ bool ImpulsiveBurn::SetTankFromSpacecraft()
    
    #ifdef DEBUG_IMPBURN_SET
    MessageInterface::ShowMessage
-      (wxT("ImpulsiveBurn::SetTankFromSpacecraft() returning true\n"));
+      ("ImpulsiveBurn::SetTankFromSpacecraft() returning true\n");
    #endif
    
    return true;
@@ -933,14 +933,14 @@ void ImpulsiveBurn::DecrementMass()
 {
    #ifdef DEBUG_IMPBURN_DECMASS
    MessageInterface::ShowMessage
-      (wxT("ImpulsiveBurn::DecrementMass() <%p>'%s' entered. There are %d tank(s)\n"),
+      ("ImpulsiveBurn::DecrementMass() <%p>'%s' entered. There are %d tank(s)\n",
        this, instanceName.c_str(), tankMap.size());
    #endif
-   totalTankMass = spacecraft->GetRealParameter(wxT("TotalMass"));
+   totalTankMass = spacecraft->GetRealParameter("TotalMass");
    
    #ifdef DEBUG_IMPBURN_DECMASS
    MessageInterface::ShowMessage
-      (wxT("   Now decrementing mass\n      before maneuver totalTankMass = %f\n"),
+      ("   Now decrementing mass\n      before maneuver totalTankMass = %f\n",
        totalTankMass);
    #endif
    
@@ -949,14 +949,14 @@ void ImpulsiveBurn::DecrementMass()
    
    #ifdef DEBUG_IMPBURN_DECMASS
    MessageInterface::ShowMessage
-      (wxT("       after maneuver deltaTankMass = %f\n"), deltaTankMass);
+      ("       after maneuver deltaTankMass = %f\n", deltaTankMass);
    #endif
    
    totalTankMass = totalTankMass + deltaTankMass;
    
    #ifdef DEBUG_IMPBURN_DECMASS
    MessageInterface::ShowMessage
-      (wxT("       after maneuver totalTankMass = %f\n"), totalTankMass);
+      ("       after maneuver totalTankMass = %f\n", totalTankMass);
    #endif
 
    // Update tank mass
@@ -969,15 +969,15 @@ void ImpulsiveBurn::DecrementMass()
 
          #ifdef DEBUG_IMPBURN_DECMASS
          MessageInterface::ShowMessage
-            (wxT("       Decrementing tank mass for <%p>'%s'\n"), currTank,
+            ("       Decrementing tank mass for <%p>'%s'\n", currTank,
              (tankPos->first).c_str());
          #endif
-         Integer paramID = currTank->GetParameterID(wxT("FuelMass"));
+         Integer paramID = currTank->GetParameterID("FuelMass");
          Real oldTankMass = currTank->GetRealParameter(paramID);
          Real currTankMass = oldTankMass + deltaTankMass;
          #ifdef DEBUG_IMPBURN_DECMASS
          MessageInterface::ShowMessage
-            (wxT("       it was %f, it is now %f\n"), oldTankMass, currTankMass);
+            ("       it was %f, it is now %f\n", oldTankMass, currTankMass);
          #endif
          //@todo What should we do if decremented tank mass is below zero?
          currTank->SetRealParameter(paramID, currTankMass);
@@ -985,6 +985,6 @@ void ImpulsiveBurn::DecrementMass()
    }
    #ifdef DEBUG_IMPBURN_DECMASS
    MessageInterface::ShowMessage
-      (wxT("ImpulsiveBurn::DecrementMass() <%p>'%s' returning\n"), this, GetName().c_str());
+      ("ImpulsiveBurn::DecrementMass() <%p>'%s' returning\n", this, GetName().c_str());
    #endif
 }

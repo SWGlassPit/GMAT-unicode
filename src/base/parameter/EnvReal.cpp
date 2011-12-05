@@ -31,9 +31,9 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// EnvReal(const wxString &name, const wxString &typeStr, 
-//         GmatBase *obj, const wxString &desc,
-//         const wxString &unit, Gmat::ObjectType ownerType,
+// EnvReal(const std::string &name, const std::string &typeStr, 
+//         GmatBase *obj, const std::string &desc,
+//         const std::string &unit, Gmat::ObjectType ownerType,
 //         GmatParam::DepObject depObj)
 //------------------------------------------------------------------------------
 /**
@@ -48,11 +48,11 @@
  * @param <depObj> object which parameter is dependent on (COORD_SYS, ORIGIN, NO_DEP)
  */
 //------------------------------------------------------------------------------
-EnvReal::EnvReal(const wxString &name, const wxString &typeStr, 
-                 GmatBase *obj, const wxString &desc,
-                 const wxString &unit, Gmat::ObjectType ownerType,
+EnvReal::EnvReal(const std::string &name, const std::string &typeStr, 
+                 GmatBase *obj, const std::string &desc,
+                 const std::string &unit, Gmat::ObjectType ownerType,
                  GmatParam::DepObject depObj)
-   : RealVar(name, wxT(""), typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit, depObj,
+   : RealVar(name, "", typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit, depObj,
              ownerType, false, false)
 {
    mNeedCoordSystem = false;
@@ -105,7 +105,7 @@ EnvReal& EnvReal::operator=(const EnvReal &right)
 //------------------------------------------------------------------------------
 EnvReal::~EnvReal()
 {
-   //MessageInterface::ShowMessage(wxT("==> EnvReal::~EnvReal()\n"));
+   //MessageInterface::ShowMessage("==> EnvReal::~EnvReal()\n");
 }
 
 
@@ -137,7 +137,7 @@ void EnvReal::SetSolarSystem(SolarSystem *ss)
 {
 #if DEBUG_ENVREAL
    MessageInterface::ShowMessage
-      (wxT("EnvReal::SetSolarSystem() ss=%s to %s\n"), ss->GetTypeName().c_str(),
+      ("EnvReal::SetSolarSystem() ss=%s to %s\n", ss->GetTypeName().c_str(),
        this->GetName().c_str());
 #endif
    
@@ -217,17 +217,17 @@ bool EnvReal::Initialize()
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool EnvReal::RenameRefObject(const Gmat::ObjectType type,
-                              const wxString &oldName,
-                              const wxString &newName)
+                              const std::string &oldName,
+                              const std::string &newName)
 {
    return EnvData::RenameRefObject(type, oldName, newName);
 }
 
 //------------------------------------------------------------------------------
-// virtual wxString GetRefObjectName(const Gmat::ObjectType type) const
+// virtual std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
 /**
  * Calls EnvData to get reference object name for given type.
@@ -235,15 +235,15 @@ bool EnvReal::RenameRefObject(const Gmat::ObjectType type,
  * @return reference object name.
  */
 //------------------------------------------------------------------------------
-wxString EnvReal::GetRefObjectName(const Gmat::ObjectType type) const
+std::string EnvReal::GetRefObjectName(const Gmat::ObjectType type) const
 {
-   wxString objName = EnvData::GetRefObjectName(type);
+   std::string objName = EnvData::GetRefObjectName(type);
    
-   if (objName == wxT("INVALID_OBJECT_TYPE"))
+   if (objName == "INVALID_OBJECT_TYPE")
    {
       throw ParameterException
-         (wxT("OrbitReal::GetRefObjectName() ") + GmatBase::GetObjectTypeString(type) +
-          wxT(" is not valid object type of ") + this->GetTypeName() + wxT("\n"));
+         ("OrbitReal::GetRefObjectName() " + GmatBase::GetObjectTypeString(type) +
+          " is not valid object type of " + this->GetTypeName() + "\n");
    }
    
    return objName;
@@ -269,7 +269,7 @@ const StringArray& EnvReal::GetRefObjectNameArray(const Gmat::ObjectType type)
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObjectName(const Gmat::ObjectType type,
-//                               const wxString &name)
+//                               const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets reference object name to given object type.
@@ -280,14 +280,14 @@ const StringArray& EnvReal::GetRefObjectNameArray(const Gmat::ObjectType type)
  */
 //------------------------------------------------------------------------------
 bool EnvReal::SetRefObjectName(const Gmat::ObjectType type,
-                               const wxString &name)
+                               const std::string &name)
 {
    return EnvData::SetRefObjectName(type, name);
 }
 
 //------------------------------------------------------------------------------
 // virtual GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                                const wxString &name)
+//                                const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Calls EnvData to get object pointer of given type and name
@@ -299,14 +299,14 @@ bool EnvReal::SetRefObjectName(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 GmatBase* EnvReal::GetRefObject(const Gmat::ObjectType type,
-                                const wxString &name)
+                                const std::string &name)
 {
    return EnvData::GetRefObject(type, name);
 }
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                           const wxString &name = wxT(""))
+//                           const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Calls EnvData to set reference object pointer to given type and name.
@@ -320,7 +320,7 @@ GmatBase* EnvReal::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool EnvReal::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                           const wxString &name)
+                           const std::string &name)
 {
    return EnvData::SetRefObject(obj, type, name);
 }

@@ -45,78 +45,78 @@ namespace GmatSolarSystemDefaults
    };
 
    /// default names for each of the possible celestial bodies in the solar system
-   const wxString SOLAR_SYSTEM_BARYCENTER_NAME = wxT("SolarSystemBarycenter");
+   const std::string SOLAR_SYSTEM_BARYCENTER_NAME = "SolarSystemBarycenter";
 
-   const wxString SUN_NAME        = wxT("Sun");
+   const std::string SUN_NAME        = "Sun";
 
-   const wxString MERCURY_NAME    = wxT("Mercury");
+   const std::string MERCURY_NAME    = "Mercury";
 
-   const wxString VENUS_NAME      = wxT("Venus");
+   const std::string VENUS_NAME      = "Venus";
 
-   const wxString EARTH_NAME      = wxT("Earth");
-   const wxString MOON_NAME       = wxT("Luna");
+   const std::string EARTH_NAME      = "Earth";
+   const std::string MOON_NAME       = "Luna";
 
-   const wxString MARS_NAME       = wxT("Mars");
-   const wxString PHOBOS_NAME     = wxT("Phobos");
-   const wxString DEIMOS_NAME     = wxT("Deimos");
+   const std::string MARS_NAME       = "Mars";
+   const std::string PHOBOS_NAME     = "Phobos";
+   const std::string DEIMOS_NAME     = "Deimos";
 
-   const wxString JUPITER_NAME    = wxT("Jupiter");
-   const wxString METIS_NAME      = wxT("Metis");
-   const wxString ADRASTEA_NAME   = wxT("Adrastea");
-   const wxString AMALTHEA_NAME   = wxT("Amalthea");
-   const wxString THEBE_NAME      = wxT("Thebe");
-   const wxString IO_NAME         = wxT("Io");
-   const wxString EUROPA_NAME     = wxT("Europa");
-   const wxString GANYMEDE_NAME   = wxT("Ganymede");
-   const wxString CALLISTO_NAME   = wxT("Callisto");
+   const std::string JUPITER_NAME    = "Jupiter";
+   const std::string METIS_NAME      = "Metis";
+   const std::string ADRASTEA_NAME   = "Adrastea";
+   const std::string AMALTHEA_NAME   = "Amalthea";
+   const std::string THEBE_NAME      = "Thebe";
+   const std::string IO_NAME         = "Io";
+   const std::string EUROPA_NAME     = "Europa";
+   const std::string GANYMEDE_NAME   = "Ganymede";
+   const std::string CALLISTO_NAME   = "Callisto";
 
-   const wxString SATURN_NAME     = wxT("Saturn");
-   const wxString PAN_NAME        = wxT("Pan");
-   const wxString ATLAS_NAME      = wxT("Atlas");
-   const wxString PROMETHEUS_NAME = wxT("Promethus");
-   const wxString PANDORA_NAME    = wxT("Pandora");
-   const wxString EPIMETHEUS_NAME = wxT("Epimetheus");
-   const wxString JANUS_NAME      = wxT("Janus");
-   const wxString MIMAS_NAME      = wxT("Mimas");
-   const wxString ENCELADUS_NAME  = wxT("Enceladus");
-   const wxString TETHYS_NAME     = wxT("Tethys");
-   const wxString TELESTO_NAME    = wxT("Telesto");
-   const wxString CALYPSO_NAME    = wxT("Calypso");
-   const wxString DIONE_NAME      = wxT("Dione");
-   const wxString HELENE_NAME     = wxT("Helene");
-   const wxString RHEA_NAME       = wxT("Rhea");
-   const wxString TITAN_NAME      = wxT("Titan");
-   const wxString IAPETUS_NAME    = wxT("Iapetus");
-   const wxString PHOEBE_NAME     = wxT("Phoebe");
+   const std::string SATURN_NAME     = "Saturn";
+   const std::string PAN_NAME        = "Pan";
+   const std::string ATLAS_NAME      = "Atlas";
+   const std::string PROMETHEUS_NAME = "Promethus";
+   const std::string PANDORA_NAME    = "Pandora";
+   const std::string EPIMETHEUS_NAME = "Epimetheus";
+   const std::string JANUS_NAME      = "Janus";
+   const std::string MIMAS_NAME      = "Mimas";
+   const std::string ENCELADUS_NAME  = "Enceladus";
+   const std::string TETHYS_NAME     = "Tethys";
+   const std::string TELESTO_NAME    = "Telesto";
+   const std::string CALYPSO_NAME    = "Calypso";
+   const std::string DIONE_NAME      = "Dione";
+   const std::string HELENE_NAME     = "Helene";
+   const std::string RHEA_NAME       = "Rhea";
+   const std::string TITAN_NAME      = "Titan";
+   const std::string IAPETUS_NAME    = "Iapetus";
+   const std::string PHOEBE_NAME     = "Phoebe";
 
-   const wxString URANUS_NAME     = wxT("Uranus");
-   const wxString CORDELIA_NAME   = wxT("Cordelia");
-   const wxString OPHELIA_NAME    = wxT("Ophelia");
-   const wxString BIANCA_NAME     = wxT("Bianca");
-   const wxString CRESSIDA_NAME   = wxT("Cressida");
-   const wxString DESDEMONA_NAME  = wxT("Desdemona");
-   const wxString JULIET_NAME     = wxT("Juliet");
-   const wxString PORTIA_NAME     = wxT("Portia");
-   const wxString ROSALIND_NAME   = wxT("Rosalind");
-   const wxString BELINDA_NAME    = wxT("Belinda");
-   const wxString PUCK_NAME       = wxT("Puck");
-   const wxString MIRANDA_NAME    = wxT("Miranda");
-   const wxString ARIEL_NAME      = wxT("Ariel");
-   const wxString UMBRIEL_NAME    = wxT("Umbriel");
-   const wxString TITANIA_NAME    = wxT("Titania");
-   const wxString OBERON_NAME     = wxT("Oberon");
+   const std::string URANUS_NAME     = "Uranus";
+   const std::string CORDELIA_NAME   = "Cordelia";
+   const std::string OPHELIA_NAME    = "Ophelia";
+   const std::string BIANCA_NAME     = "Bianca";
+   const std::string CRESSIDA_NAME   = "Cressida";
+   const std::string DESDEMONA_NAME  = "Desdemona";
+   const std::string JULIET_NAME     = "Juliet";
+   const std::string PORTIA_NAME     = "Portia";
+   const std::string ROSALIND_NAME   = "Rosalind";
+   const std::string BELINDA_NAME    = "Belinda";
+   const std::string PUCK_NAME       = "Puck";
+   const std::string MIRANDA_NAME    = "Miranda";
+   const std::string ARIEL_NAME      = "Ariel";
+   const std::string UMBRIEL_NAME    = "Umbriel";
+   const std::string TITANIA_NAME    = "Titania";
+   const std::string OBERON_NAME     = "Oberon";
 
-   const wxString NEPTUNE_NAME    = wxT("Neptune");
-   const wxString NAIAD_NAME      = wxT("Naiad");
-   const wxString THALASSA_NAME   = wxT("Thalassa");
-   const wxString DESPINA_NAME    = wxT("Despina");
-   const wxString GALATEA_NAME    = wxT("Galatea");
-   const wxString LARISSA_NAME    = wxT("Larissa");
-   const wxString PROTEUS_NAME    = wxT("Proteus");
-   const wxString TRITON_NAME     = wxT("Triton");
+   const std::string NEPTUNE_NAME    = "Neptune";
+   const std::string NAIAD_NAME      = "Naiad";
+   const std::string THALASSA_NAME   = "Thalassa";
+   const std::string DESPINA_NAME    = "Despina";
+   const std::string GALATEA_NAME    = "Galatea";
+   const std::string LARISSA_NAME    = "Larissa";
+   const std::string PROTEUS_NAME    = "Proteus";
+   const std::string TRITON_NAME     = "Triton";
 
-   const wxString PLUTO_NAME      = wxT("Pluto");
-   const wxString CHARON_NAME     = wxT("Charon");
+   const std::string PLUTO_NAME      = "Pluto";
+   const std::string CHARON_NAME     = "Charon";
 
    /// Default barycenter data
 
@@ -128,7 +128,7 @@ namespace GmatSolarSystemDefaults
    /// Default planet data
 
    // default values for CelestialBody data
-   const wxString           PLANET_NAMES[NumberOfDefaultPlanets] =
+   const std::string           PLANET_NAMES[NumberOfDefaultPlanets] =
    {
       MERCURY_NAME,
       VENUS_NAME,
@@ -426,14 +426,14 @@ namespace GmatSolarSystemDefaults
    };
 
    // default values for CelestialBody data
-   const wxString           MOON_NAMES[NumberOfDefaultMoons] =
+   const std::string           MOON_NAMES[NumberOfDefaultMoons] =
    {
       MOON_NAME,
    //   PHOBOS_NAME,
    //   DEIMOS_NAME,
    };
 
-   const wxString           MOON_CENTRAL_BODIES[NumberOfDefaultMoons] =
+   const std::string           MOON_CENTRAL_BODIES[NumberOfDefaultMoons] =
    {
       EARTH_NAME,
    //   MARS_NAME,

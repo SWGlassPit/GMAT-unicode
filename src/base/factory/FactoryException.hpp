@@ -28,7 +28,7 @@ class GMAT_API FactoryException : public BaseException
 {
 public:
 
-   FactoryException(wxString details = wxT(""));
+   FactoryException(std::string details = "");
 
 protected:
    

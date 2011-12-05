@@ -32,8 +32,8 @@
  * @param <details> A message providing the details of the exception.
  */
 //------------------------------------------------------------------------------
-EventException::EventException(const wxString &details) :
-   BaseException           (wxT("Event Exception Thrown: "), details)
+EventException::EventException(const std::string &details) :
+   BaseException           ("Event Exception Thrown: ", details)
 {
 }
 

@@ -46,8 +46,8 @@ public:
    const StringArray&   GetGmatFunctionNames();
    void                 SetMathWrappers();
    
-   wxString          GetLHS() { return lhs; }
-   wxString          GetRHS() { return rhs; }
+   std::string          GetLHS() { return lhs; }
+   std::string          GetRHS() { return rhs; }
    
    virtual void         SetFunction(Function *function);
    virtual std::vector<Function*> GetFunctions() const;
@@ -72,28 +72,28 @@ public:
    virtual const StringArray& 
                         GetWrapperObjectNameArray();
    virtual bool         SetElementWrapper(ElementWrapper* toWrapper,
-                                          const wxString &withName);
+                                          const std::string &withName);
    virtual void         ClearWrappers();
    
    // inherited from GmatBase
    virtual bool         RenameRefObject(const Gmat::ObjectType type,
-                                        const wxString &oldName,
-                                        const wxString &newName);
+                                        const std::string &oldName,
+                                        const std::string &newName);
    
    virtual GmatBase*    Clone() const;
    
-   virtual const wxString&
+   virtual const std::string&
                         GetGeneratingString(
                            Gmat::WriteMode mode = Gmat::SCRIPTING,
-                           const wxString &prefix = wxT(""),
-                           const wxString &useName = wxT(""));
+                           const std::string &prefix = "",
+                           const std::string &useName = "");
 
 protected:
    
    /// string on the left side of the equals sign
-   wxString          lhs;
+   std::string          lhs;
    /// string on the right side of the equals sign
-   wxString          rhs;
+   std::string          rhs;
    /// ElementWrapper pointer for the lhs of the equals sign
    ElementWrapper*      lhsWrapper;
    /// ElementWrapper pointer for the rhs of the equals sign

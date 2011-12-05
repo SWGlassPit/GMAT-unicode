@@ -35,7 +35,7 @@
 //---------------------------------
 
 /* placeholder - may be needed later
-const wxString
+const std::string
 TODEcAxes::PARAMETER_TEXT[TODEcAxesParamCount - TrueOfDateAxesParamCount] =
 {
    "",
@@ -52,8 +52,8 @@ TODEcAxes::PARAMETER_TYPE[TODEcAxesParamCount - TrueOfDateAxesParamCount] =
 //------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-//  TODEcAxes(const wxString &itsType,
-//            const wxString &itsName);
+//  TODEcAxes(const std::string &itsType,
+//            const std::string &itsName);
 //---------------------------------------------------------------------------
 /**
  * Constructs base TODEcAxes structures
@@ -64,10 +64,10 @@ TODEcAxes::PARAMETER_TYPE[TODEcAxesParamCount - TrueOfDateAxesParamCount] =
  *
  */
 //---------------------------------------------------------------------------
-TODEcAxes::TODEcAxes(const wxString &itsName) :
-TrueOfDateAxes(wxT("TODEc"),itsName)
+TODEcAxes::TODEcAxes(const std::string &itsName) :
+TrueOfDateAxes("TODEc",itsName)
 {
-   objectTypeNames.push_back(wxT("TODEcAxes"));
+   objectTypeNames.push_back("TODEcAxes");
    parameterCount = TODEcAxesParamCount;
 }
 
@@ -151,7 +151,7 @@ GmatBase* TODEcAxes::Clone() const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -162,7 +162,7 @@ GmatBase* TODEcAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*wxString TODEcAxes::GetParameterText(const Integer id) const
+/*std::string TODEcAxes::GetParameterText(const Integer id) const
 {
    if (id >= TrueOfDateAxesParamCount && id < TODEcAxesParamCount)
       return PARAMETER_TEXT[id - TrueOfDateAxesParamCount];
@@ -170,7 +170,7 @@ GmatBase* TODEcAxes::Clone() const
 }
 */
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -181,7 +181,7 @@ GmatBase* TODEcAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*Integer TODEcAxes::GetParameterID(const wxString &str) const
+/*Integer TODEcAxes::GetParameterID(const std::string &str) const
 {
    for (Integer i = TrueOfDateAxesParamCount; i < TODEcAxesParamCount; i++)
    {
@@ -213,7 +213,7 @@ GmatBase* TODEcAxes::Clone() const
 }
 */
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -224,7 +224,7 @@ GmatBase* TODEcAxes::Clone() const
  *
  */
 //------------------------------------------------------------------------------
-/*wxString TODEcAxes::GetParameterTypeString(const Integer id) const
+/*std::string TODEcAxes::GetParameterTypeString(const Integer id) const
 {
    return TrueOfDateAxes::PARAM_TYPE_STRING[GetParameterType(id)];
 }

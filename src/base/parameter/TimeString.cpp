@@ -30,8 +30,8 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-// TimeString(const wxString &name, const wxString &typeStr, 
-//          GmatBase *obj, const wxString &desc, const wxString &unit)
+// TimeString(const std::string &name, const std::string &typeStr, 
+//          GmatBase *obj, const std::string &desc, const std::string &unit)
 //------------------------------------------------------------------------------
 /**
  * Constructor.
@@ -43,14 +43,14 @@
  * @param <unit> unit of the parameter
  */
 //------------------------------------------------------------------------------
-TimeString::TimeString(const wxString &name, const wxString &typeStr, 
-                       GmatBase *obj, const wxString &desc,
-                       const wxString &unit)
+TimeString::TimeString(const std::string &name, const std::string &typeStr, 
+                       GmatBase *obj, const std::string &desc,
+                       const std::string &unit)
    : StringVar(name, typeStr, GmatParam::SYSTEM_PARAM, obj, desc, unit,
                GmatParam::NO_DEP, Gmat::SPACECRAFT, true),
      TimeData(name)
 {
-   wxString type, ownerName, depObj;
+   std::string type, ownerName, depObj;
    GmatStringUtil::ParseParameter(name, type, ownerName, depObj);
    mOwnerName = ownerName;
    mExpr = name;
@@ -111,13 +111,13 @@ TimeString::~TimeString()
 //-------------------------------------
 
 //------------------------------------------------------------------------------
-// const virtual wxString& EvaluateString()
+// const virtual std::string& EvaluateString()
 //------------------------------------------------------------------------------
 /**
  * @return newly evaluated value of parameter
  */
 //------------------------------------------------------------------------------
-const wxString& TimeString::EvaluateString()
+const std::string& TimeString::EvaluateString()
 {
    Evaluate();
    return mStringValue;
@@ -195,12 +195,12 @@ bool TimeString::Initialize()
    {
       #if DEBUG_TIMESTRING
       MessageInterface::ShowMessage
-         (wxT("TimeString::Initialize() Fail to initialize Parameter '%s'\n"),
+         ("TimeString::Initialize() Fail to initialize Parameter '%s'\n",
           this->GetName().c_str());
       #endif
       
       throw ParameterException
-         (wxT("WARNING:  ") + e.GetFullMessage() + wxT(" in ") + GetName() + wxT("\n"));
+         ("WARNING:  " + e.GetFullMessage() + " in " + GetName() + "\n");
    }
    
    return true;
@@ -213,18 +213,18 @@ bool TimeString::Initialize()
 
 //---------------------------------------------------------------------------
 //  bool RenameRefObject(const Gmat::ObjectType type,
-//                       const wxString &oldName, const wxString &newName)
+//                       const std::string &oldName, const std::string &newName)
 //---------------------------------------------------------------------------
 bool TimeString::RenameRefObject(const Gmat::ObjectType type,
-                                 const wxString &oldName,
-                                 const wxString &newName)
+                                 const std::string &oldName,
+                                 const std::string &newName)
 {
    return TimeData::RenameRefObject(type, oldName, newName);
 }
 
 
 //------------------------------------------------------------------------------
-// virtual wxString GetRefObjectName(const Gmat::ObjectType type) const
+// virtual std::string GetRefObjectName(const Gmat::ObjectType type) const
 //------------------------------------------------------------------------------
 /**
  * Calls TimeData to get reference object name for given type.
@@ -232,7 +232,7 @@ bool TimeString::RenameRefObject(const Gmat::ObjectType type,
  * @return reference object name.
  */
 //------------------------------------------------------------------------------
-wxString TimeString::GetRefObjectName(const Gmat::ObjectType type) const
+std::string TimeString::GetRefObjectName(const Gmat::ObjectType type) const
 {
    return TimeData::GetRefObjectName(type);
 }
@@ -257,7 +257,7 @@ const StringArray& TimeString::GetRefObjectNameArray(const Gmat::ObjectType type
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObjectName(const Gmat::ObjectType type,
-//                               const wxString &name)
+//                               const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Sets reference object name to given object type.
@@ -268,7 +268,7 @@ const StringArray& TimeString::GetRefObjectNameArray(const Gmat::ObjectType type
  */
 //------------------------------------------------------------------------------
 bool TimeString::SetRefObjectName(const Gmat::ObjectType type,
-                                 const wxString &name)
+                                 const std::string &name)
 {
    return TimeData::SetRefObjectName(type, name);
 }
@@ -276,7 +276,7 @@ bool TimeString::SetRefObjectName(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // virtual GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                                const wxString &name)
+//                                const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Calls TimeData to get object pointer of given type and name
@@ -288,7 +288,7 @@ bool TimeString::SetRefObjectName(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 GmatBase* TimeString::GetRefObject(const Gmat::ObjectType type,
-                                  const wxString &name)
+                                  const std::string &name)
 {
    return TimeData::GetRefObject(type, name);
 }
@@ -296,7 +296,7 @@ GmatBase* TimeString::GetRefObject(const Gmat::ObjectType type,
 
 //------------------------------------------------------------------------------
 // virtual bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                           const wxString &name = wxT(""))
+//                           const std::string &name = "")
 //------------------------------------------------------------------------------
 /**
  * Calls TimeData to set reference object pointer to given type and name.
@@ -310,29 +310,29 @@ GmatBase* TimeString::GetRefObject(const Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool TimeString::SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-                              const wxString &name)
+                              const std::string &name)
 {
    return TimeData::SetRefObject(obj, type, name);
 }
 
 
 //------------------------------------------------------------------------------
-// const wxString& GetGeneratingString(...)
+// const std::string& GetGeneratingString(...)
 //------------------------------------------------------------------------------
 /**
  * @see GmatBase
  */
 //------------------------------------------------------------------------------
-const wxString& TimeString::GetGeneratingString(Gmat::WriteMode mode,
-                                                   const wxString &prefix,
-                                                   const wxString &useName)
+const std::string& TimeString::GetGeneratingString(Gmat::WriteMode mode,
+                                                   const std::string &prefix,
+                                                   const std::string &useName)
 {
    #ifdef DEBUG_GEN_STRING
    MessageInterface::ShowMessage
-      (wxT("TimeString::GetGeneratingString() this=<%p>'%s' entered, mode=%d, prefix='%s', ")
-       wxT("useName='%s'\n"), this, GetName().c_str(), mode, prefix.c_str(), useName.c_str());
+      ("TimeString::GetGeneratingString() this=<%p>'%s' entered, mode=%d, prefix='%s', "
+       "useName='%s'\n", this, GetName().c_str(), mode, prefix.c_str(), useName.c_str());
    MessageInterface::ShowMessage
-      (wxT("   mExpr='%s', mDepObjectName='%s'\n"), mExpr.c_str(), mDepObjectName.c_str());
+      ("   mExpr='%s', mDepObjectName='%s'\n", mExpr.c_str(), mDepObjectName.c_str());
    #endif
 
    // We want to skip StringVar::GetGeneratingString() since it is handled specially

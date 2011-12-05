@@ -24,7 +24,7 @@
 #include "Parameter.hpp"
 
 typedef std::vector<Parameter*> ParameterPtrArray;
-typedef std::map<wxString, Parameter*> StringParamPtrMap;
-typedef std::pair<wxString, Parameter*> StringParamPtrPair;
+typedef std::map<std::string, Parameter*> StringParamPtrMap;
+typedef std::pair<std::string, Parameter*> StringParamPtrPair;
 
 #endif

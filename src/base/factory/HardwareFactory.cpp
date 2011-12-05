@@ -30,8 +30,8 @@
 //---------------------------------
 
 //------------------------------------------------------------------------------
-//  Hardware* CreateHardware(const wxString &ofType,
-//                           const wxString &withName)
+//  Hardware* CreateHardware(const std::string &ofType,
+//                           const std::string &withName)
 //------------------------------------------------------------------------------
 /**
  * Creates tanks, thrusters, and other hardware attached to the GMAT spacecraft.
@@ -50,12 +50,12 @@
  *                               objects of type Hardware.
  */
 //------------------------------------------------------------------------------
-Hardware* HardwareFactory::CreateHardware(const wxString &ofType,
-                                  const wxString &withName)
+Hardware* HardwareFactory::CreateHardware(const std::string &ofType,
+                                  const std::string &withName)
 {
-   if (ofType == wxT("FuelTank"))
+   if (ofType == "FuelTank")
       return new FuelTank(withName);
-   if (ofType == wxT("Thruster"))
+   if (ofType == "Thruster")
       return new Thruster(withName);
    return NULL;
 }
@@ -75,8 +75,8 @@ Factory(Gmat::HARDWARE)
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("FuelTank"));
-      creatables.push_back(wxT("Thruster"));
+      creatables.push_back("FuelTank");
+      creatables.push_back("Thruster");
    }
 }
 
@@ -95,8 +95,8 @@ Factory(createList, Gmat::HARDWARE)
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("FuelTank"));
-      creatables.push_back(wxT("Thruster"));
+      creatables.push_back("FuelTank");
+      creatables.push_back("Thruster");
    }
 }
 
@@ -107,7 +107,7 @@ Factory(createList, Gmat::HARDWARE)
    * This method creates an object of the (base) class HardwareFactory 
    * (copy constructor).
    *
-   * @param <fact> the factory object to copy to wxT("this") factory.
+   * @param <fact> the factory object to copy to "this" factory.
    */
 //------------------------------------------------------------------------------
 HardwareFactory::HardwareFactory(const HardwareFactory& fact) :
@@ -115,8 +115,8 @@ Factory(fact)
 {
    if (creatables.empty())
    {
-      creatables.push_back(wxT("FuelTank"));
-      creatables.push_back(wxT("Thruster"));
+      creatables.push_back("FuelTank");
+      creatables.push_back("Thruster");
    }
 }
 
@@ -127,9 +127,9 @@ Factory(fact)
    * Assignment operator for the HardwareFactory base class.
    *
    * @param <fact> the HardwareFactory object whose data to assign
-   *                 to wxT("this") factory.
+   *                 to "this" factory.
    *
-   * @return wxT("this") HardwareFactory with data of input factory fact.
+   * @return "this" HardwareFactory with data of input factory fact.
    */
 //------------------------------------------------------------------------------
 HardwareFactory& HardwareFactory::operator= (const HardwareFactory& fact)
@@ -137,8 +137,8 @@ HardwareFactory& HardwareFactory::operator= (const HardwareFactory& fact)
    Factory::operator=(fact);
    if (creatables.empty())
    {
-      creatables.push_back(wxT("FuelTank"));
-      creatables.push_back(wxT("Thruster"));
+      creatables.push_back("FuelTank");
+      creatables.push_back("Thruster");
    }
    return *this;
 }

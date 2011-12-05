@@ -86,94 +86,94 @@ using namespace GmatMathUtil;
 //---------------------------------
 // static data
 //---------------------------------
-const wxString
+const std::string
 CelestialBody::PARAMETER_TEXT[CelestialBodyParamCount - SpacePointParamCount] =
 {
-   wxT("BodyType"),
-   wxT("Mass"),
-   wxT("EquatorialRadius"),
-   wxT("Flattening"),
-   wxT("PolarRadius"),
-   wxT("Mu"),
-   wxT("PosVelSource"),
-   wxT("State"),
-   wxT("StateTime"),
-   wxT("CentralBody"),
-   wxT("BodyNumber"),
-   wxT("RefBodyNumber"),
-   wxT("SourceFilename"),
-   wxT("SourceFile"),
-   wxT("UsePotentialFileFlag"),
-   wxT("PotentialFileName"),
-   wxT("AngularVelocity"),
-   wxT("HourAngle"),
-   wxT("AtmosphereModelName"),
-   wxT("Order"),
-   wxT("Degree"),
-   wxT("RotationDataSource"),
-   wxT("DateFormat"),               // for two-body method
-   wxT("StateType"),                // for two-body method
-   wxT("InitialEpoch"),             // for two-body method
-   wxT("SMA"),                      // for two-body method
-   wxT("ECC"),                      // for two-body method
-   wxT("INC"),                      // for two-body method
-   wxT("RAAN"),                     // for two-body method
-   wxT("AOP"),                      // for two-body method
-   wxT("TA"),                       // for two-body method
-   wxT("OrientationDateFormat"),    // orientation parameters, used to compute alpha, delta, W, Wdot
-   wxT("OrientationEpoch"),
-   wxT("SpinAxisRAConstant"),
-   wxT("SpinAxisRARate"),
-   wxT("SpinAxisDECConstant"),
-   wxT("SpinAxisDECRate"),
-   wxT("RotationConstant"),
-   wxT("RotationRate"),
-   wxT("TextureMapFileName"),
+   "BodyType",
+   "Mass",
+   "EquatorialRadius",
+   "Flattening",
+   "PolarRadius",
+   "Mu",
+   "PosVelSource",
+   "State",
+   "StateTime",
+   "CentralBody",
+   "BodyNumber",
+   "RefBodyNumber",
+   "SourceFilename",
+   "SourceFile",
+   "UsePotentialFileFlag",
+   "PotentialFileName",
+   "AngularVelocity",
+   "HourAngle",
+   "AtmosphereModelName",
+   "Order",
+   "Degree",
+   "RotationDataSource",
+   "DateFormat",               // for two-body method
+   "StateType",                // for two-body method
+   "InitialEpoch",             // for two-body method
+   "SMA",                      // for two-body method
+   "ECC",                      // for two-body method
+   "INC",                      // for two-body method
+   "RAAN",                     // for two-body method
+   "AOP",                      // for two-body method
+   "TA",                       // for two-body method
+   "OrientationDateFormat",    // orientation parameters, used to compute alpha, delta, W, Wdot
+   "OrientationEpoch",
+   "SpinAxisRAConstant",
+   "SpinAxisRARate",
+   "SpinAxisDECConstant",
+   "SpinAxisDECRate",
+   "RotationConstant",
+   "RotationRate",
+   "TextureMapFileName",
 };
 
 const Gmat::ParameterType
 CelestialBody::PARAMETER_TYPE[CelestialBodyParamCount - SpacePointParamCount] =
 {
-   Gmat::STRING_TYPE,   //wxT("BodyType"),
-   Gmat::REAL_TYPE,     //wxT("Mass"),
-   Gmat::REAL_TYPE,     //wxT("EquatorialRadius"),
-   Gmat::REAL_TYPE,     //wxT("Flattening"),
-   Gmat::REAL_TYPE,     //wxT("PolarRadius"),
-   Gmat::REAL_TYPE,     //wxT("Mu"),
-   Gmat::STRING_TYPE,   //wxT("PosVelSource"),
-   Gmat::RVECTOR_TYPE,  //wxT("State"),
-   Gmat::TIME_TYPE,     //wxT("StateTime"),
-   Gmat::STRING_TYPE,   //wxT("CentralBody"),
-   Gmat::INTEGER_TYPE,  //wxT("BodyNumber"),
-   Gmat::INTEGER_TYPE,  //wxT("RefBodyNumber"),
-   Gmat::STRING_TYPE,   //wxT("SourceFilename"),
-   Gmat::OBJECT_TYPE,   //wxT("SourceFile"),
-   Gmat::BOOLEAN_TYPE,  //wxT("UsePotentialFileFlag"),
-   Gmat::STRING_TYPE,   //wxT("PotentialFileName"),
-   Gmat::RVECTOR_TYPE,  //wxT("AngularVelocity"),
-   Gmat::REAL_TYPE,     //wxT("HourAngle"),
-   Gmat::STRING_TYPE,   //wxT("AtmosphereModelName"),
-   Gmat::INTEGER_TYPE,  //wxT("Order"),
-   Gmat::INTEGER_TYPE,  //wxT("Degree"),
-   Gmat::STRING_TYPE,   //wxT("RotationDataSource"),
-   Gmat::STRING_TYPE,   //wxT("DateFormat"),   
-   Gmat::STRING_TYPE,   //wxT("StateType"),  
-   Gmat::REAL_TYPE,     //wxT("InitialEpoch"),
-   Gmat::REAL_TYPE,     //wxT("SMA"), 
-   Gmat::REAL_TYPE,     //wxT("ECC"),   
-   Gmat::REAL_TYPE,     //wxT("INC"),   
-   Gmat::REAL_TYPE,     //wxT("RAAN"),    
-   Gmat::REAL_TYPE,     //wxT("AOP"),  
-   Gmat::REAL_TYPE,     //wxT("TA"), 
-   Gmat::STRING_TYPE,   //wxT("OrientationDateFormat"),  
-   Gmat::REAL_TYPE,     //wxT("OrientationEpoch"),
-   Gmat::REAL_TYPE,     //wxT("SpinAxisRAConstant"), 
-   Gmat::REAL_TYPE,     //wxT("SpinAxisRARate"), 
-   Gmat::REAL_TYPE,     //wxT("SpinAxisDECConstant"), 
-   Gmat::REAL_TYPE,     //wxT("SpinAxisDECRate"), 
-   Gmat::REAL_TYPE,     //wxT("RotationConstant"), 
-   Gmat::REAL_TYPE,     //wxT("RotationRate"), 
-   Gmat::STRING_TYPE,   //wxT("TextureMapFileName")
+   Gmat::STRING_TYPE,   //"BodyType",
+   Gmat::REAL_TYPE,     //"Mass",
+   Gmat::REAL_TYPE,     //"EquatorialRadius",
+   Gmat::REAL_TYPE,     //"Flattening",
+   Gmat::REAL_TYPE,     //"PolarRadius",
+   Gmat::REAL_TYPE,     //"Mu",
+   Gmat::STRING_TYPE,   //"PosVelSource",
+   Gmat::RVECTOR_TYPE,  //"State",
+   Gmat::TIME_TYPE,     //"StateTime",
+   Gmat::STRING_TYPE,   //"CentralBody",
+   Gmat::INTEGER_TYPE,  //"BodyNumber",
+   Gmat::INTEGER_TYPE,  //"RefBodyNumber",
+   Gmat::STRING_TYPE,   //"SourceFilename",
+   Gmat::OBJECT_TYPE,   //"SourceFile",
+   Gmat::BOOLEAN_TYPE,  //"UsePotentialFileFlag",
+   Gmat::STRING_TYPE,   //"PotentialFileName",
+   Gmat::RVECTOR_TYPE,  //"AngularVelocity",
+   Gmat::REAL_TYPE,     //"HourAngle",
+   Gmat::STRING_TYPE,   //"AtmosphereModelName",
+   Gmat::INTEGER_TYPE,  //"Order",
+   Gmat::INTEGER_TYPE,  //"Degree",
+   Gmat::STRING_TYPE,   //"RotationDataSource",
+   Gmat::STRING_TYPE,   //"DateFormat",   
+   Gmat::STRING_TYPE,   //"StateType",  
+   Gmat::REAL_TYPE,     //"InitialEpoch",
+   Gmat::REAL_TYPE,     //"SMA", 
+   Gmat::REAL_TYPE,     //"ECC",   
+   Gmat::REAL_TYPE,     //"INC",   
+   Gmat::REAL_TYPE,     //"RAAN",    
+   Gmat::REAL_TYPE,     //"AOP",  
+   Gmat::REAL_TYPE,     //"TA", 
+   Gmat::STRING_TYPE,   //"OrientationDateFormat",  
+   Gmat::REAL_TYPE,     //"OrientationEpoch",
+   Gmat::REAL_TYPE,     //"SpinAxisRAConstant", 
+   Gmat::REAL_TYPE,     //"SpinAxisRARate", 
+   Gmat::REAL_TYPE,     //"SpinAxisDECConstant", 
+   Gmat::REAL_TYPE,     //"SpinAxisDECRate", 
+   Gmat::REAL_TYPE,     //"RotationConstant", 
+   Gmat::REAL_TYPE,     //"RotationRate", 
+   Gmat::STRING_TYPE,   //"TextureMapFileName"
 };
 
 const Real    CelestialBody::JD_EPOCH_2000_TCB     = GmatTimeConstants::JD_OF_J2000;
@@ -187,7 +187,7 @@ const Integer CelestialBody::KEPLER_MAX_ITERATIONS = 50;
 // public methods
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  CelestialBody(wxString itsBodyType, wxString name)
+//  CelestialBody(std::string itsBodyType, std::string name)
 //------------------------------------------------------------------------------
 /**
  * This method creates an object of the CelestialBody class
@@ -197,7 +197,7 @@ const Integer CelestialBody::KEPLER_MAX_ITERATIONS = 50;
  * @param <name> parameter indicating the name of the celestial body.
  */
 //------------------------------------------------------------------------------
-CelestialBody::CelestialBody(wxString itsBodyType, wxString name) :
+CelestialBody::CelestialBody(std::string itsBodyType, std::string name) :
    SpacePoint(Gmat::CELESTIAL_BODY, itsBodyType, name),
    equatorialRadius   (GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[GmatSolarSystemDefaults::EARTH]),
    flattening         (GmatSolarSystemDefaults::PLANET_FLATTENING[GmatSolarSystemDefaults::EARTH]),
@@ -205,23 +205,23 @@ CelestialBody::CelestialBody(wxString itsBodyType, wxString name) :
    posVelSrc          (Gmat::DE405),
    stateTime          (GmatTimeConstants::MJD_OF_J2000),
    //theSolarSystem     (NULL),
-   theCentralBodyName (wxT("")),
+   theCentralBodyName (""),
    theCentralBody     (NULL),
    centralBodySet     (false),
    bodyNumber         (0),
    referenceBodyNumber(0),
-   sourceFilename     (wxT("")),
+   sourceFilename     (""),
    theSourceFile      (NULL),
    usePotentialFile   (false),
-   potentialFileName  (wxT("")),
+   potentialFileName  (""),
    hourAngle          (0.0),
    atmModel           (NULL),
-   atmModelType       (wxT("None")),
+   atmModelType       ("None"),
    potentialFileRead  (false),
    order              (0),
    degree             (0),
-   twoBodyFormat     (wxT("TAIModJulian")),
-   twoBodyStateType  (wxT("Keplerian")),
+   twoBodyFormat     ("TAIModJulian"),
+   twoBodyStateType  ("Keplerian"),
    twoBodyEpoch      (GmatTimeConstants::MJD_OF_J2000),
    newTwoBody        (true),
    overrideTime      (false),
@@ -230,16 +230,16 @@ CelestialBody::CelestialBody(wxString itsBodyType, wxString name) :
    rotationSrc        (Gmat::IAU_SIMPLIFIED),
    userDefined        (false),
    allowSpice         (false),
-   orientationDateFormat (wxT("TAIModJulian")),
+   orientationDateFormat ("TAIModJulian"),
    orientationEpoch   (GmatTimeConstants::MJD_OF_J2000), // @todo - really need it to be the TCB epoch used for the major bodies
    orientation        (GmatSolarSystemDefaults::PLANET_ORIENTATION_PARAMETERS[GmatSolarSystemDefaults::EARTH]),
    naifIdSet          (false),
    naifName           (name),
-   textureMapFileName (wxT("GenericCelestialBody.jpg")),
+   textureMapFileName ("GenericCelestialBody.jpg"),
    msgWritten         (false)
 {
    objectTypes.push_back(Gmat::CELESTIAL_BODY);
-   objectTypeNames.push_back(wxT("CelestialBody"));
+   objectTypeNames.push_back("CelestialBody");
    // @todo - what to use for defaults here? - set different values for different celestial bodies
    Rvector6 initKepler(GmatSolarSystemDefaults::PLANET_TWO_BODY_ELEMENTS[GmatSolarSystemDefaults::EARTH]);
    twoBodyKepler = initKepler;
@@ -248,7 +248,7 @@ CelestialBody::CelestialBody(wxString itsBodyType, wxString name) :
    polarRadius = (1.0 - flattening) * equatorialRadius;
 
    for (Integer i = 0; i < Gmat::ModelTypeCount; i++)
-      models[i].push_back(wxT("None"));
+      models[i].push_back("None");
    
    for (Integer i=0;i<6;i++)  prevState[i] = 0.0;
    #ifdef __USE_SPICE__
@@ -268,12 +268,12 @@ CelestialBody::CelestialBody(wxString itsBodyType, wxString name) :
 
    #ifdef DEBUG_CB_CONSTRUCTOR
    MessageInterface::ShowMessage
-      (wxT("CelestialBody(string) <%p> '%s' constructor entered\n"), this, GetName().c_str());
+      ("CelestialBody(string) <%p> '%s' constructor entered\n", this, GetName().c_str());
    #endif
 }
 
 //------------------------------------------------------------------------------
-//  CelestialBody(Gmat::BodyType itsBodyType, wxString name)
+//  CelestialBody(Gmat::BodyType itsBodyType, std::string name)
 //------------------------------------------------------------------------------
 /**
  * This method creates an object of the CelestialBody class
@@ -283,7 +283,7 @@ CelestialBody::CelestialBody(wxString itsBodyType, wxString name) :
  * @param <name> parameter indicating the name of the celestial body.
  */
 //------------------------------------------------------------------------------
-CelestialBody::CelestialBody(Gmat::BodyType itsBodyType, wxString name) :
+CelestialBody::CelestialBody(Gmat::BodyType itsBodyType, std::string name) :
    SpacePoint(Gmat::CELESTIAL_BODY,
               Gmat::BODY_TYPE_STRINGS[itsBodyType], name),
    bodyType           (itsBodyType),
@@ -294,23 +294,23 @@ CelestialBody::CelestialBody(Gmat::BodyType itsBodyType, wxString name) :
 //   analyticMethod     (Gmat::LOW_FIDELITY),
    stateTime          (GmatTimeConstants::MJD_OF_J2000),
    //theSolarSystem     (NULL),
-   theCentralBodyName (wxT("")),
+   theCentralBodyName (""),
    theCentralBody     (NULL),
    centralBodySet     (false),
    bodyNumber         (0),
    referenceBodyNumber(0),
-   sourceFilename     (wxT("")),
+   sourceFilename     (""),
    theSourceFile      (NULL),
    usePotentialFile   (false),
-   potentialFileName  (wxT("")),
+   potentialFileName  (""),
    hourAngle          (0.0),
    atmModel           (NULL),
-   atmModelType       (wxT("None")),
+   atmModelType       ("None"),
    potentialFileRead  (false),
    order              (0),
    degree             (0),
-   twoBodyFormat     (wxT("TAIModjulian")),
-   twoBodyStateType  (wxT("Keplerian")),
+   twoBodyFormat     ("TAIModjulian"),
+   twoBodyStateType  ("Keplerian"),
    twoBodyEpoch      (GmatTimeConstants::MJD_OF_J2000),
    newTwoBody        (true),
    overrideTime       (false),
@@ -319,16 +319,16 @@ CelestialBody::CelestialBody(Gmat::BodyType itsBodyType, wxString name) :
    rotationSrc        (Gmat::IAU_SIMPLIFIED),
    userDefined        (false),
    allowSpice         (false),
-   orientationDateFormat (wxT("TAIModJulian")),
+   orientationDateFormat ("TAIModJulian"),
    orientationEpoch   (GmatTimeConstants::MJD_OF_J2000), // @todo - really need it to be the TCB epoch used for the major bodies
    orientation        (GmatSolarSystemDefaults::PLANET_ORIENTATION_PARAMETERS[GmatSolarSystemDefaults::EARTH]),
    naifIdSet          (false),
    naifName           (name),
-   textureMapFileName (wxT("GenericCelestialBody.jpg")),
+   textureMapFileName ("GenericCelestialBody.jpg"),
    msgWritten         (false)
 {
    objectTypes.push_back(Gmat::CELESTIAL_BODY);
-   objectTypeNames.push_back(wxT("CelestialBody"));
+   objectTypeNames.push_back("CelestialBody");
    
    // @todo - what to use for defaults here? - set different values for different celestial bodies
    Rvector6 initKepler(GmatSolarSystemDefaults::PLANET_TWO_BODY_ELEMENTS[GmatSolarSystemDefaults::EARTH]);
@@ -338,7 +338,7 @@ CelestialBody::CelestialBody(Gmat::BodyType itsBodyType, wxString name) :
    polarRadius = (1.0 - flattening) * equatorialRadius;
 
    for (Integer i = 0; i < Gmat::ModelTypeCount; i++)
-      models[i].push_back(wxT("None"));
+      models[i].push_back("None");
    for (Integer i=0;i<6;i++)  prevState[i] = 0.0;
    
    #ifdef __USE_SPICE__
@@ -354,7 +354,7 @@ CelestialBody::CelestialBody(Gmat::BodyType itsBodyType, wxString name) :
    
    #ifdef DEBUG_CB_CONSTRUCTOR
    MessageInterface::ShowMessage
-      (wxT("CelestialBody(bodyType) <%p> '%s' constructor entered\n"),
+      ("CelestialBody(bodyType) <%p> '%s' constructor entered\n",
        this, GetName().c_str());
    #endif
 }
@@ -444,13 +444,13 @@ CelestialBody::CelestialBody(const CelestialBody &cBody) :
       AtmosphereModel *clonedAM = (AtmosphereModel*)(cBody.atmModel->Clone());   
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (clonedAM, clonedAM->GetName(), wxT("CelestialBody::copy constructor"),
-          wxT("clonedAM = (AtmosphereModel*)cBody.atmModel->Clone()"));
+         (clonedAM, clonedAM->GetName(), "CelestialBody::copy constructor",
+          "clonedAM = (AtmosphereModel*)cBody.atmModel->Clone()");
       #endif
       atmModel = clonedAM;
       #ifdef DEBUG_CELESTIAL_BODY
       MessageInterface::ShowMessage
-         (wxT("CelestialBody::CelestialBody() Setting ATM:%s on %s\n"),
+         ("CelestialBody::CelestialBody() Setting ATM:%s on %s\n",
           atmModel->GetName().c_str(), instanceName.c_str());
       #endif
    }
@@ -462,7 +462,7 @@ CelestialBody::CelestialBody(const CelestialBody &cBody) :
    
    #ifdef DEBUG_CB_CONSTRUCTOR
    MessageInterface::ShowMessage
-      (wxT("CelestialBody() <%p> '%s' copy constructor entered\n"), this, GetName().c_str());
+      ("CelestialBody() <%p> '%s' copy constructor entered\n", this, GetName().c_str());
    #endif
 }
 
@@ -472,10 +472,10 @@ CelestialBody::CelestialBody(const CelestialBody &cBody) :
 /**
  * Assignment operator for the CelestialBody class.
  *
- * @param <cBody> the CelestialBody object whose data to assign to wxT("this")
+ * @param <cBody> the CelestialBody object whose data to assign to "this"
  *            solar system.
  *
- * @return wxT("this") CelestialBody with data of input CelestialBody cb.
+ * @return "this" CelestialBody with data of input CelestialBody cb.
  */
 //------------------------------------------------------------------------------
 CelestialBody& CelestialBody::operator=(const CelestialBody &cBody)
@@ -529,8 +529,8 @@ CelestialBody& CelestialBody::operator=(const CelestialBody &cBody)
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (atmModel, atmModel->GetName(), wxT("CelestialBody::operator="),
-          wxT("deleting atmModel"));
+         (atmModel, atmModel->GetName(), "CelestialBody::operator=",
+          "deleting atmModel");
       #endif
       delete atmModel;
    }
@@ -541,8 +541,8 @@ CelestialBody& CelestialBody::operator=(const CelestialBody &cBody)
       AtmosphereModel *clonedAM = (AtmosphereModel*)(cBody.atmModel)->Clone();
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Add
-         (clonedAM, clonedAM->GetName(), wxT("CelestialBody::operator="),
-          wxT("clonedAM = (AtmosphereModel*)cBody.atmModel->Clone()"));
+         (clonedAM, clonedAM->GetName(), "CelestialBody::operator=",
+          "clonedAM = (AtmosphereModel*)cBody.atmModel->Clone()");
       #endif
       atmModel = clonedAM;
    }
@@ -595,24 +595,24 @@ CelestialBody::~CelestialBody()
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (atmModel, atmModel->GetName(), wxT("CelestialBody::~CelestialBody()"),
-          wxT("deleting atmModel"));
+         (atmModel, atmModel->GetName(), "CelestialBody::~CelestialBody()",
+          "deleting atmModel");
       #endif
       delete atmModel;
    }
    #ifdef DEBUG_CB_SPICE
-      MessageInterface::ShowMessage(wxT("In CB (%s) destructor, attempting to unload the kernel(s):\n"),
+      MessageInterface::ShowMessage("In CB (%s) destructor, attempting to unload the kernel(s):\n",
             instanceName.c_str());
       for (unsigned int jj = 0; jj < orbitSpiceKernelNames.size(); jj++)
-         MessageInterface::ShowMessage(wxT("    %s\n"), (orbitSpiceKernelNames.at(jj)).c_str());
+         MessageInterface::ShowMessage("    %s\n", (orbitSpiceKernelNames.at(jj)).c_str());
    #endif
    #ifdef __USE_SPICE__
    // unload the kernel(s) from the SpiceKernelReader
       for (unsigned int kk = 0; kk < orbitSpiceKernelNames.size(); kk++)
-         if (orbitSpiceKernelNames.at(kk) != wxT("") && (kernelReader != NULL) &&
+         if (orbitSpiceKernelNames.at(kk) != "" && (kernelReader != NULL) &&
             (kernelReader->IsLoaded(orbitSpiceKernelNames.at(kk))))
             kernelReader->UnloadKernel(orbitSpiceKernelNames.at(kk));
-//      if ((kernelReader != NULL) && (lskKernelName != wxT(""))) kernelReader->UnloadKernel(lskKernelName);
+//      if ((kernelReader != NULL) && (lskKernelName != "")) kernelReader->UnloadKernel(lskKernelName);
    #endif
 }
 
@@ -624,7 +624,7 @@ bool CelestialBody::Initialize()
 {
    #ifdef DEBUG_CB_INIT
    MessageInterface::ShowMessage
-      (wxT("CelestialBody::Initialize() this=<%p> %10s, posVelSrc=%d, ephemUpdateInterval=%f\n"),
+      ("CelestialBody::Initialize() this=<%p> %10s, posVelSrc=%d, ephemUpdateInterval=%f\n",
        this, GetName().c_str(), posVelSrc, ephemUpdateInterval);
    #endif
    
@@ -641,9 +641,9 @@ bool CelestialBody::Initialize()
 
    if (!centralBodySet)
    {
-      wxString errmsg = wxT("Central body \"");
-      errmsg += theCentralBodyName + wxT("\" not set for body \"");
-      errmsg += instanceName + wxT("\"");
+      std::string errmsg = "Central body \"";
+      errmsg += theCentralBodyName + "\" not set for body \"";
+      errmsg += instanceName + "\"";
       throw SolarSystemException(errmsg);
    }
    
@@ -664,8 +664,8 @@ void CelestialBody::SetUpBody()
    // main thing to do for now is to make sure the central body is set
    if (!theSolarSystem)
    {
-      wxString errmsg = wxT("Solar System not set for body \"");
-      errmsg += instanceName + wxT("\"\n");
+      std::string errmsg = "Solar System not set for body \"";
+      errmsg += instanceName + "\"\n";
       throw SolarSystemException(errmsg);
    }
    if (!theCentralBody)
@@ -673,9 +673,9 @@ void CelestialBody::SetUpBody()
       CelestialBody *cBody  = theSolarSystem->GetBody(theCentralBodyName);
       if (!cBody)
       {
-         wxString errmsg = wxT("Cannot set central body for body \"");
-         errmsg += instanceName + wxT("\" because body \"");
-         errmsg += theCentralBodyName + wxT("\" cannot be found.\n");
+         std::string errmsg = "Cannot set central body for body \"";
+         errmsg += instanceName + "\" because body \"";
+         errmsg += theCentralBodyName + "\" cannot be found.\n";
          throw SolarSystemException (errmsg);
       }
       SetRefObject(cBody, Gmat::CELESTIAL_BODY, theCentralBodyName);
@@ -713,18 +713,18 @@ const Rvector6&  CelestialBody::GetState(A1Mjd atTime)
 
    #ifdef DEBUG_GET_STATE
    MessageInterface::ShowMessage
-      (wxT("CelestialBody::GetState() <%p> '%s' entered with time %.17f\n"), this,
+      ("CelestialBody::GetState() <%p> '%s' entered with time %.17f\n", this,
        GetName().c_str(), atTime.Get());
    MessageInterface::ShowMessage
-      (wxT("   posVelSrc=%d for <%p> %s\n"), posVelSrc, this, GetName().c_str());
-   MessageInterface::ShowMessage(wxT("   lastEphemTime = %.17f\n"),lastEphemTime.Get());
+      ("   posVelSrc=%d for <%p> %s\n", posVelSrc, this, GetName().c_str());
+   MessageInterface::ShowMessage("   lastEphemTime = %.17f\n",lastEphemTime.Get());
    #endif
    
    Real dt = Abs(atTime.Subtract(lastEphemTime)) * GmatTimeConstants::SECS_PER_DAY;
    if ( dt < ephemUpdateInterval)
    {
       #ifdef DEBUG_GET_STATE
-      MessageInterface::ShowMessage(wxT("   returning lastState %s\n"), state.ToString().c_str());
+      MessageInterface::ShowMessage("   returning lastState %s\n", state.ToString().c_str());
       #endif
       return lastState;
    }
@@ -740,14 +740,14 @@ const Rvector6&  CelestialBody::GetState(A1Mjd atTime)
          if (!theSourceFile)
          {
             throw PlanetaryEphemException(
-//                  wxT("SLP or DE file requested, but no file specified"));
-                  wxT("DE file requested, but no file specified"));
+//                  "SLP or DE file requested, but no file specified");
+                  "DE file requested, but no file specified");
          }
          #ifdef DEBUG_GET_STATE
          MessageInterface::ShowMessage
-            (wxT("   In <%p> '%s', Calling theSourceFile(%s)->GetPosVel(%d, %f, %s)\n"),
+            ("   In <%p> '%s', Calling theSourceFile(%s)->GetPosVel(%d, %f, %s)\n",
              this, GetName().c_str(), (theSourceFile->GetName()).c_str(), bodyNumber, atTime.GetReal(),
-             overrideTime ? wxT("true") : wxT("false"));
+             overrideTime ? "true" : "false");
          #endif
          posVel     = theSourceFile->GetPosVel(bodyNumber, atTime, overrideTime);
          state.Set(posVel[0], posVel[1], posVel[2],
@@ -763,13 +763,13 @@ const Rvector6&  CelestialBody::GetState(A1Mjd atTime)
                    spiceState[3], spiceState[4], spiceState[5]);
          #else
          // Throw an error if GMAT was not build with __USE_SPICE__ (LOJ: 2010.05.18)
-         wxString errmsg = wxT("Use of SPICE file was disabled");
+         std::string errmsg = "Use of SPICE file was disabled";
          throw SolarSystemException(errmsg);
          #endif
          break;
       }
       default:
-         throw SolarSystemException(wxT("Invalid data source defined for body ")
+         throw SolarSystemException("Invalid data source defined for body "
                                     + instanceName);
          break;
    }
@@ -781,7 +781,7 @@ const Rvector6&  CelestialBody::GetState(A1Mjd atTime)
       prevState[i] = lastState[i];
    
    #ifdef DEBUG_GET_STATE
-   MessageInterface::ShowMessage(wxT("   returning state %s\n"), state.ToString().c_str());
+   MessageInterface::ShowMessage("   returning state %s\n", state.ToString().c_str());
    #endif
    
    return state;
@@ -817,7 +817,7 @@ const Rvector6&  CelestialBody::GetState(Real atTime)
 void CelestialBody::GetState(const A1Mjd &atTime, Real *outState)
 {
    #ifdef DEBUG_GET_STATE
-      MessageInterface::ShowMessage(wxT("Entering GetState with time %.17f\n"),
+      MessageInterface::ShowMessage("Entering GetState with time %.17f\n",
       atTime.Get());
    #endif
       
@@ -843,14 +843,14 @@ void CelestialBody::GetState(const A1Mjd &atTime, Real *outState)
          if (!theSourceFile)
          {
             throw PlanetaryEphemException(
-                  wxT("DE 405 file requested, but no file specified"));
-//                 wxT("SLP or DE file requested, but no file specified"));
+                  "DE 405 file requested, but no file specified");
+//                 "SLP or DE file requested, but no file specified");
          }
          #ifdef DEBUG_GET_STATE
          MessageInterface::ShowMessage
-            (wxT("   In <%p> '%s', Calling theSourceFile(%s)->GetPosVel(%d, %f, %s)\n"),
+            ("   In <%p> '%s', Calling theSourceFile(%s)->GetPosVel(%d, %f, %s)\n",
              this, GetName().c_str(), (theSourceFile->GetName()).c_str(), bodyNumber, atTime.GetReal(),
-             overrideTime ? wxT("true") : wxT("false"));
+             overrideTime ? "true" : "false");
          #endif
          outState     = theSourceFile->GetPosVel(bodyNumber,atTime, overrideTime);
          break;
@@ -863,7 +863,7 @@ void CelestialBody::GetState(const A1Mjd &atTime, Real *outState)
       #endif
          break;
       default:
-         throw SolarSystemException(wxT("Invalid data source defined for body ")
+         throw SolarSystemException("Invalid data source defined for body "
                                     + instanceName);
          break;
    }
@@ -876,7 +876,7 @@ void CelestialBody::GetState(const A1Mjd &atTime, Real *outState)
       prevState[i] = outState[i];
    
    #ifdef DEBUG_GET_STATE
-      MessageInterface::ShowMessage(wxT("Exiting GetState -------------f\n"));
+      MessageInterface::ShowMessage("Exiting GetState -------------f\n");
    #endif
 }
 
@@ -910,7 +910,7 @@ Gmat::BodyType CelestialBody::GetBodyType() const
 }
 
 //------------------------------------------------------------------------------
-//  const wxString& GetCentralBody() const
+//  const std::string& GetCentralBody() const
 //------------------------------------------------------------------------------
 /**
  * This method returns the name of the central body of the body.
@@ -919,7 +919,7 @@ Gmat::BodyType CelestialBody::GetBodyType() const
  *
  */
 //------------------------------------------------------------------------------
-const wxString& CelestialBody::GetCentralBody() const
+const std::string& CelestialBody::GetCentralBody() const
 {
    return theCentralBodyName;
 }
@@ -939,8 +939,8 @@ Real CelestialBody::GetGravitationalConstant()
 {
    #ifdef DEBUG_GRAV_CONST
    MessageInterface::ShowMessage
-      (wxT("CelestialBody::GetGravitationalConstant() this=<%p>, usePotentialFile=%d for %s, ")
-       wxT("isFirstTimeMu=%d\n"), this, usePotentialFile, instanceName.c_str(), isFirstTimeMu);
+      ("CelestialBody::GetGravitationalConstant() this=<%p>, usePotentialFile=%d for %s, "
+       "isFirstTimeMu=%d\n", this, usePotentialFile, instanceName.c_str(), isFirstTimeMu);
    #endif
    
    if (usePotentialFile == true)
@@ -952,8 +952,8 @@ Real CelestialBody::GetGravitationalConstant()
             if (isFirstTimeMu)
             {
                MessageInterface::ShowMessage
-                  (wxT("For body %s, cannot read file \"%s\", so using default mu")
-                   wxT(" (%.18f)\n"), instanceName.c_str(),
+                  ("For body %s, cannot read file \"%s\", so using default mu"
+                   " (%.18f)\n", instanceName.c_str(),
 //                   potentialFileName.c_str(), defaultMu);
                    potentialFileName.c_str(), default_mu);
                
@@ -969,7 +969,7 @@ Real CelestialBody::GetGravitationalConstant()
          if (isFirstTimeMu)
          {
             MessageInterface::LogMessage
-               (wxT("For body %s, using mu (%.18f) from file \"%s\"\n"),
+               ("For body %s, using mu (%.18f) from file \"%s\"\n",
                 instanceName.c_str(), mu, potentialFileName.c_str());
             
             isFirstTimeMu = false;
@@ -981,8 +981,8 @@ Real CelestialBody::GetGravitationalConstant()
       if (isFirstTimeMu)
       {
          MessageInterface::LogMessage
-            (wxT("For body %s, not using potential file, so using default mu (%.18f)\n"),
-             instanceName.c_str(), mu);
+            ("For body %s, not using potential file, so using default mu (%.18f)\n",
+             instanceName.c_str(), mu, potentialFileName.c_str());
          
          isFirstTimeMu = false;
       }
@@ -1006,9 +1006,9 @@ Real CelestialBody::GetGravitationalConstant()
 Real CelestialBody::GetEquatorialRadius() 
 {   
    #ifdef DEBUG_CB_EQ_RAD
-      MessageInterface::ShowMessage(wxT("Entering GetEquatorialRadius, %s equatorialRadius = %12.10f\n"),
+      MessageInterface::ShowMessage("Entering GetEquatorialRadius, %s equatorialRadius = %12.10f\n",
             instanceName.c_str(), equatorialRadius);
-      MessageInterface::ShowMessage(wxT("    usePotentialFile = %s\n"), (usePotentialFile? wxT("true") : wxT("false")));
+      MessageInterface::ShowMessage("    usePotentialFile = %s\n", (usePotentialFile? "true" : "false"));
    #endif
    if (usePotentialFile == true)
    {
@@ -1019,8 +1019,8 @@ Real CelestialBody::GetEquatorialRadius()
             if (isFirstTimeRadius)
             {
                MessageInterface::ShowMessage
-                  (wxT("For body %s, cannot read file \"%s\", so using default eq. radius")
-                   wxT(" (%.18f)\n"), instanceName.c_str(),
+                  ("For body %s, cannot read file \"%s\", so using default eq. radius"
+                   " (%.18f)\n", instanceName.c_str(),
 //                   potentialFileName.c_str(), defaultEqRadius);
                    potentialFileName.c_str(), default_equatorialRadius);
                
@@ -1036,7 +1036,7 @@ Real CelestialBody::GetEquatorialRadius()
          if (isFirstTimeRadius)
          {
             MessageInterface::ShowMessage
-               (wxT("For body %s, using eq. radius (%.18f) from file \"%s\"\n"),
+               ("For body %s, using eq. radius (%.18f) from file \"%s\"\n",
                 instanceName.c_str(), equatorialRadius, potentialFileName.c_str());
          
             isFirstTimeRadius = false;
@@ -1048,7 +1048,7 @@ Real CelestialBody::GetEquatorialRadius()
       if (isFirstTimeRadius)
       {
          MessageInterface::LogMessage
-            (wxT("For body %s, not using potential file, so using default eq. radius (%.18f)\n"),
+            ("For body %s, not using potential file, so using default eq. radius (%.18f)\n",
              instanceName.c_str(), equatorialRadius, potentialFileName.c_str());
          
          isFirstTimeRadius = false;
@@ -1058,7 +1058,7 @@ Real CelestialBody::GetEquatorialRadius()
    // recompute the polar radius
    polarRadius = (1.0 - flattening) * equatorialRadius;
    #ifdef DEBUG_CB_EQ_RAD
-      MessageInterface::ShowMessage(wxT("Exiting GetEquatorialRadius, %s equatorialRadius = %12.10f\n"),
+      MessageInterface::ShowMessage("Exiting GetEquatorialRadius, %s equatorialRadius = %12.10f\n",
             instanceName.c_str(), equatorialRadius);
    #endif
    return equatorialRadius;
@@ -1129,13 +1129,13 @@ Gmat::PosVelSource  CelestialBody::GetPosVelSource() const
 }
 
 //------------------------------------------------------------------------------
-// wxString GetSourceFileName() const
+// std::string GetSourceFileName() const
 //------------------------------------------------------------------------------
-wxString CelestialBody::GetSourceFileName() const
+std::string CelestialBody::GetSourceFileName() const
 {
    if (theSourceFile)
       return theSourceFile->GetName();
-   return wxT("");
+   return "";
 }
 
 //------------------------------------------------------------------------------
@@ -1296,7 +1296,7 @@ Real  CelestialBody::GetHourAngle(A1Mjd atTime)
 //   if ((usePotentialFile == true) & (!potentialFileRead))
 //   {
 //      bool OK = ReadPotentialFile();
-//      if (!OK) throw SolarSystemException(wxT("Unable to read potential file"));
+//      if (!OK) throw SolarSystemException("Unable to read potential file");
 //   }
 //   return dSbar;
 //}
@@ -1318,7 +1318,7 @@ Real  CelestialBody::GetHourAngle(A1Mjd atTime)
 //   if ((usePotentialFile == true) & (!potentialFileRead))
 //   {
 //      bool OK = ReadPotentialFile();
-//      if (!OK) throw SolarSystemException(wxT("Unable to read potential file"));
+//      if (!OK) throw SolarSystemException("Unable to read potential file");
 //   }
 //   return dCbar;
 //}
@@ -1358,7 +1358,7 @@ Integer CelestialBody::GetOrder()
 }
 
 //------------------------------------------------------------------------------
-//  wxString GetAtmosphereModelType()
+//  std::string GetAtmosphereModelType()
 //------------------------------------------------------------------------------
 /**
  * This method returns the name (type) of the current atmosphere model for
@@ -1368,10 +1368,10 @@ Integer CelestialBody::GetOrder()
  *
  */
 //------------------------------------------------------------------------------
-wxString  CelestialBody::GetAtmosphereModelType()
+std::string  CelestialBody::GetAtmosphereModelType()
 {
    if (!atmModel)
-      return wxT("Undefined");
+      return "Undefined";
 
    return atmModel->GetTypeName();  // or should I go through the AtmManager?
 }
@@ -1449,7 +1449,7 @@ StringArray CelestialBody::GetRotationDataSourceList() const
    for (unsigned int ii = 0; ii < Gmat::RotationDataSrcCount; ii++)
    {
 //      // exclude NOT_APPLICABLE for now
-//      if (Gmat::ROTATION_DATA_SOURCE_STRINGS[ii] != wxT("NotApplicable"))
+//      if (Gmat::ROTATION_DATA_SOURCE_STRINGS[ii] != "NotApplicable")
          srcList.push_back(Gmat::ROTATION_DATA_SOURCE_STRINGS[ii]);
    }
    
@@ -1474,22 +1474,22 @@ StringArray CelestialBody::GetEphemSourceList() const
    StringArray srcList;
    for (int jj = 0; jj < Gmat::PosVelSourceCount; jj++)
    {
-      wxString src = Gmat::POS_VEL_SOURCE_STRINGS[jj];
+      std::string src = Gmat::POS_VEL_SOURCE_STRINGS[jj];
          
       if (userDefined)
       {
       #ifdef __USE_SPICE__
-         if (!(GmatStringUtil::StartsWith(src, wxT("DE"))))
+         if (!(GmatStringUtil::StartsWith(src, "DE")))
             srcList.push_back(Gmat::POS_VEL_SOURCE_STRINGS[jj]);  
       #else
-            if ((!(GmatStringUtil::StartsWith(src, wxT("DE")))) &&
-                  (src.find(wxT("SPICE")) == wxString::npos))
+            if ((!(GmatStringUtil::StartsWith(src, "DE"))) &&
+                  (src.find("SPICE") == std::string::npos))
                srcList.push_back(Gmat::POS_VEL_SOURCE_STRINGS[jj]);  
       #endif
       }
       else if (!allowSpice)
       {
-         if (src.find(wxT("SPICE")) == wxString::npos)
+         if (src.find("SPICE") == std::string::npos)
             srcList.push_back(Gmat::POS_VEL_SOURCE_STRINGS[jj]);
       }
       else
@@ -1497,7 +1497,7 @@ StringArray CelestialBody::GetEphemSourceList() const
       #ifdef __USE_SPICE__
          srcList.push_back(Gmat::POS_VEL_SOURCE_STRINGS[jj]);
       #else
-      if (src.find(wxT("SPICE")) == wxString::npos)
+      if (src.find("SPICE") == std::string::npos)
          srcList.push_back(Gmat::POS_VEL_SOURCE_STRINGS[jj]);
       #endif
       }
@@ -1534,7 +1534,7 @@ bool CelestialBody::SetBodyType(Gmat::BodyType bType)
 }
 
 //------------------------------------------------------------------------------
-//  bool SetCentralBody(const wxString &cBody)
+//  bool SetCentralBody(const std::string &cBody)
 //------------------------------------------------------------------------------
 /**
  * This method sets the central body for the body.
@@ -1545,7 +1545,7 @@ bool CelestialBody::SetBodyType(Gmat::BodyType bType)
  *
  */
 //------------------------------------------------------------------------------
-bool CelestialBody::SetCentralBody(const wxString &cBody)
+bool CelestialBody::SetCentralBody(const std::string &cBody)
 {
    theCentralBodyName = cBody;
    return true;
@@ -1568,7 +1568,7 @@ bool CelestialBody::SetCentralBody(const wxString &cBody)
 bool CelestialBody::SetGravitationalConstant(Real newMu)
 {
    #ifdef DEBUG_CB_SET
-      MessageInterface::ShowMessage(wxT("In CB::SetGravitationalConstant, newMu = %.14f\n"),
+      MessageInterface::ShowMessage("In CB::SetGravitationalConstant, newMu = %.14f\n",
             newMu);
    #endif
    if (newMu <= 0.0)
@@ -1576,7 +1576,7 @@ bool CelestialBody::SetGravitationalConstant(Real newMu)
       SolarSystemException sse;
       sse.SetDetails(errorMessageFormat.c_str(),
                      GmatStringUtil::ToString(newMu, GetDataPrecision()).c_str(),
-                     wxT("Mu"), wxT("Real Number > 0.0"));
+                     "Mu", "Real Number > 0.0");
       throw sse;
    }
    
@@ -1602,7 +1602,7 @@ bool CelestialBody::SetGravitationalConstant(Real newMu)
 bool CelestialBody::SetEquatorialRadius(Real newEqRadius)
 {
    #ifdef DEBUG_CB_SET
-      MessageInterface::ShowMessage(wxT("In CB::SetEquatorialRadius, newEqRadius = %.14f\n"),
+      MessageInterface::ShowMessage("In CB::SetEquatorialRadius, newEqRadius = %.14f\n",
             newEqRadius);
    #endif
    if (newEqRadius <= 0.0)
@@ -1610,7 +1610,7 @@ bool CelestialBody::SetEquatorialRadius(Real newEqRadius)
       SolarSystemException sse;
       sse.SetDetails(errorMessageFormat.c_str(),
                      GmatStringUtil::ToString(newEqRadius, GetDataPrecision()).c_str(),
-                     wxT("Equatorial Radius"), wxT("Real Number > 0.0"));
+                     "Equatorial Radius", "Real Number > 0.0");
       throw sse;
    }
    
@@ -1634,7 +1634,7 @@ bool CelestialBody::SetEquatorialRadius(Real newEqRadius)
 bool CelestialBody::SetFlattening(Real flat) 
 {
    #ifdef DEBUG_CB_SET
-      MessageInterface::ShowMessage(wxT("In CB::SetFlattening, flat = %.14f\n"),
+      MessageInterface::ShowMessage("In CB::SetFlattening, flat = %.14f\n",
          flat);
    #endif
    if (flat < 0.0)
@@ -1642,7 +1642,7 @@ bool CelestialBody::SetFlattening(Real flat)
       SolarSystemException sse;
       sse.SetDetails(errorMessageFormat.c_str(),
                      GmatStringUtil::ToString(flat, GetDataPrecision()).c_str(),
-                     wxT("Flattening"), wxT("Real Number >= 0.0"));
+                     "Flattening", "Real Number >= 0.0");
       throw sse;
    }
    flattening                          = flat;
@@ -1684,7 +1684,7 @@ bool CelestialBody::SetSource(Gmat::PosVelSource pvSrc)
 {
    #ifdef DEBUG_EPHEM_SOURCE
    MessageInterface::ShowMessage
-      (wxT("CelestialBody::SetSource() <%p> %s, Setting source to %d(%s)\n"), this,
+      ("CelestialBody::SetSource() <%p> %s, Setting source to %d(%s)\n", this,
        GetName().c_str(), pvSrc, Gmat::POS_VEL_SOURCE_STRINGS[pvSrc].c_str());
    #endif
    
@@ -1694,8 +1694,8 @@ bool CelestialBody::SetSource(Gmat::PosVelSource pvSrc)
    {
       if (userDefined)
       {
-         wxString errmsg = wxT("DE405 file option not available for user-defined body ");
-         errmsg += instanceName + wxT("\n");
+         std::string errmsg = "DE405 file option not available for user-defined body ";
+         errmsg += instanceName + "\n";
          throw SolarSystemException(errmsg);
       }
    }
@@ -1703,8 +1703,8 @@ bool CelestialBody::SetSource(Gmat::PosVelSource pvSrc)
    {
       if ((!userDefined) && (!allowSpice))
       {
-         wxString errmsg = wxT("SPICE file option not available for default body ");
-         errmsg += instanceName + wxT("\n");
+         std::string errmsg = "SPICE file option not available for default body ";
+         errmsg += instanceName + "\n";
          throw SolarSystemException(errmsg);
       }
       spiceSetupDone = false;
@@ -1734,9 +1734,9 @@ bool CelestialBody::SetSourceFile(PlanetaryEphem *src)
    bodyNumber = theSourceFile->GetBodyID(instanceName);
    #ifdef DEBUG_EPHEM_SOURCE
       MessageInterface::ShowMessage
-         (wxT("CelestialBody::SetSourceFile() <%p> %s, Setting source file to %p\n"),
+         ("CelestialBody::SetSourceFile() <%p> %s, Setting source file to %p\n",
           this, GetName().c_str(), src);
-      MessageInterface::ShowMessage(wxT("    and bodyId from source is %d\n"), bodyNumber);
+      MessageInterface::ShowMessage("    and bodyId from source is %d\n", bodyNumber);
    #endif
    return true;
 }
@@ -1745,11 +1745,11 @@ bool CelestialBody::SetAllowSpice(const bool allow)
 {
    #ifdef DEBUG_CB_SPICE
       if (userDefined)
-         MessageInterface::ShowMessage(wxT("Cannot set allowSpice flag for body %s - it is user-defined.\n"),
+         MessageInterface::ShowMessage("Cannot set allowSpice flag for body %s - it is user-defined.\n",
                instanceName.c_str());
       else
-         MessageInterface::ShowMessage(wxT("Setting allowSpice flag for body %s to %s\n"),
-               instanceName.c_str(), (allow? wxT("true") : wxT("false")));
+         MessageInterface::ShowMessage("Setting allowSpice flag for body %s to %s\n",
+               instanceName.c_str(), (allow? "true" : "false"));
    #endif
    if (!userDefined) allowSpice = allow; // set for default bodies only
    if (allowSpice)   spiceSetupDone = false;
@@ -1791,7 +1791,7 @@ bool CelestialBody::SetUsePotentialFile(bool useIt)
 {
    #ifdef DEBUG_CB_SET
    MessageInterface::ShowMessage
-      (wxT("CelestialBody::SetUsePotentialFile() this=<%p> '%s' entered, useIt=%d\n"),
+      ("CelestialBody::SetUsePotentialFile() this=<%p> '%s' entered, useIt=%d\n",
        this, GetName().c_str(), useIt);
    #endif
    
@@ -1836,7 +1836,7 @@ bool CelestialBody::SetOverrideTimeSystem(bool overrideIt)
 {
    #ifdef DEBUG_CB_SET
    MessageInterface::ShowMessage
-      (wxT("CelestialBody::SetOverrideTimeSystem() <%p> '%s' entered, overrideIt=%d\n"),
+      ("CelestialBody::SetOverrideTimeSystem() <%p> '%s' entered, overrideIt=%d\n",
        this, GetName().c_str(), overrideIt);
    #endif
    overrideTime        = overrideIt;
@@ -1854,7 +1854,7 @@ bool CelestialBody::SetEphemUpdateInterval(Real intvl)
       SolarSystemException sse;
       sse.SetDetails(errorMessageFormat.c_str(),
                      GmatStringUtil::ToString(intvl, GetDataPrecision()).c_str(),
-                     wxT("Ephemeris Update Interval"), wxT("Real Number >= 0.0"));
+                     "Ephemeris Update Interval", "Real Number >= 0.0");
       throw sse;
    }
    ephemUpdateInterval = intvl;
@@ -1863,10 +1863,10 @@ bool CelestialBody::SetEphemUpdateInterval(Real intvl)
 
 
 //------------------------------------------------------------------------------
-// bool AddValidModelName(Gmat::ModelType m, const wxString &newModel)
+// bool AddValidModelName(Gmat::ModelType m, const std::string &newModel)
 //------------------------------------------------------------------------------
 bool CelestialBody::AddValidModelName(Gmat::ModelType m, 
-                                      const wxString &newModel)
+                                      const std::string &newModel)
 {
    // first, make sure it is not already on the list
    if (find(models[(Integer)m].begin(), models[(Integer)m].end(),
@@ -1880,10 +1880,10 @@ bool CelestialBody::AddValidModelName(Gmat::ModelType m,
 
 
 //------------------------------------------------------------------------------
-// bool RemoveValidModelName(Gmat::ModelType m, const wxString &modelName)
+// bool RemoveValidModelName(Gmat::ModelType m, const std::string &modelName)
 //------------------------------------------------------------------------------
 bool CelestialBody::RemoveValidModelName(Gmat::ModelType m, 
-                                         const wxString &modelName)
+                                         const std::string &modelName)
 {
    // remove it, if it's on the list
    bool found = false;
@@ -1936,7 +1936,7 @@ bool CelestialBody::SetDegree(Integer toDegree)
 
 
 //------------------------------------------------------------------------------
-//  bool SetAtmosphereModelType(wxString toAtmModelType)
+//  bool SetAtmosphereModelType(std::string toAtmModelType)
 //------------------------------------------------------------------------------
 /**
 * This method sets the atmosphere model type for the body.
@@ -1950,7 +1950,7 @@ bool CelestialBody::SetDegree(Integer toDegree)
  *
  */
 //------------------------------------------------------------------------------
-bool CelestialBody::SetAtmosphereModelType(wxString toAtmModelType)
+bool CelestialBody::SetAtmosphereModelType(std::string toAtmModelType)
 {
    atmModelType        = toAtmModelType;
    return true;
@@ -1975,8 +1975,8 @@ bool CelestialBody::SetAtmosphereModel(AtmosphereModel *toAtmModel)
    {
       #ifdef DEBUG_MEMORY
       MemoryTracker::Instance()->Remove
-         (atmModel, atmModel->GetName(), wxT("CelestialBody::SetAtmosphereModel()"),
-          wxT("deleting atmModel"));
+         (atmModel, atmModel->GetName(), "CelestialBody::SetAtmosphereModel()",
+          "deleting atmModel");
       #endif
       delete atmModel;
    }
@@ -1986,7 +1986,7 @@ bool CelestialBody::SetAtmosphereModel(AtmosphereModel *toAtmModel)
 
 
 //------------------------------------------------------------------------------
-//  bool SetPotentialFilename(const wxString &fn)
+//  bool SetPotentialFilename(const std::string &fn)
 //------------------------------------------------------------------------------
 /**
  * This method sets potential file name for this HarmonicField object.
@@ -1996,7 +1996,7 @@ bool CelestialBody::SetAtmosphereModel(AtmosphereModel *toAtmModel)
  * @return flag indicating success of the operation.
  */
 //------------------------------------------------------------------------------
-bool CelestialBody::SetPotentialFilename(const wxString &fn)
+bool CelestialBody::SetPotentialFilename(const std::string &fn)
 {
    if (potentialFileName != fn)
    {
@@ -2017,8 +2017,8 @@ bool CelestialBody::SetTwoBodyEpoch(const A1Mjd &toTime)
 {
    #ifdef DEBUG_TWO_BODY
       MessageInterface::ShowMessage(
-         wxT("In CB::SetTwoBodyEpoch, setting epoch to %.12f\n"), toTime.Get());
-//      wxT("In CB::SetAnalyticEpoch, setting epoch to %.12f\n"), toTime.Get());
+         "In CB::SetTwoBodyEpoch, setting epoch to %.12f\n", toTime.Get());
+//      "In CB::SetAnalyticEpoch, setting epoch to %.12f\n", toTime.Get());
    #endif
    twoBodyEpoch        = toTime;
    newTwoBody          = true;
@@ -2046,7 +2046,7 @@ bool CelestialBody::SetSMA(Real value)
       sse.SetDetails(errorMessageFormat.c_str(),
                      GmatStringUtil::ToString(value, GetDataPrecision()).c_str(),
                      PARAMETER_TEXT[TWO_BODY_SMA - SpacePointParamCount].c_str(),
-                     wxT("Real Number != 0.0"));
+                     "Real Number != 0.0");
       throw sse;
    }
    
@@ -2075,7 +2075,7 @@ bool CelestialBody::SetECC(Real value)
       sse.SetDetails(errorMessageFormat.c_str(),
                      GmatStringUtil::ToString(value, GetDataPrecision()).c_str(),
                      PARAMETER_TEXT[TWO_BODY_ECC - SpacePointParamCount].c_str(),
-                     wxT("Real Number >= 0.0"));
+                     "Real Number >= 0.0");
       throw sse;
    }
    
@@ -2091,10 +2091,10 @@ bool CelestialBody::SetTwoBodyElements(const Rvector6 &kepl)
 {
    #ifdef DEBUG_TWO_BODY
       MessageInterface::ShowMessage(
-         wxT("In CB::SetTwoBodyElements, setting elements to\n%.12f %.12f %.12f %.12f")
-         wxT(" %.12f %.12f\n"), kepl[0],kepl[1],kepl[2],kepl[3],kepl[4],kepl[5]);
-//      wxT("In CB::SetAnalyticElements, setting elements to\n%.12f %.12f %.12f %.12f")
-//      wxT(" %.12f %.12f\n"), kepl[0],kepl[1],kepl[2],kepl[3],kepl[4],kepl[5]);
+         "In CB::SetTwoBodyElements, setting elements to\n%.12f %.12f %.12f %.12f"
+         " %.12f %.12f\n", kepl[0],kepl[1],kepl[2],kepl[3],kepl[4],kepl[5]);
+//      "In CB::SetAnalyticElements, setting elements to\n%.12f %.12f %.12f %.12f"
+//      " %.12f %.12f\n", kepl[0],kepl[1],kepl[2],kepl[3],kepl[4],kepl[5]);
    #endif
       
    SetSMA(kepl[0]);
@@ -2102,27 +2102,27 @@ bool CelestialBody::SetTwoBodyElements(const Rvector6 &kepl)
    
 //    if (kepl[0] == 0.0)
 //    {
-//       //wxString errMsg = wxT("For body ") + instanceName + 
-//       //   wxT(", SMA value must be non-zero"); 
-//       wxString buffer;
+//       //std::string errMsg = "For body " + instanceName + 
+//       //   ", SMA value must be non-zero"; 
+//       std::stringstream buffer;
 //       buffer << kepl[0];
-//       wxString errMsg = wxT("The value of \"") + buffer + wxT("\" for field \"") + 
-//          PARAMETER_TEXT[TWO_BODY_SMA - SpacePointParamCount] + wxT("\" on object \"") + instanceName +
-//          wxT("\" is not an allowed value.  \nThe allowed values are: ") +
-//          wxT(" [Real number non-zero]."); 
+//       std::string errMsg = "The value of \"" + buffer.str() + "\" for field \"" + 
+//          PARAMETER_TEXT[TWO_BODY_SMA - SpacePointParamCount] + "\" on object \"" + instanceName +
+//          "\" is not an allowed value.  \nThe allowed values are: " +
+//          " [Real number non-zero]."; 
 //       throw SolarSystemException(errMsg);
 //    }
    
 //    if (kepl[1] < 0.0)
 //    {
-//       //wxString errMsg = wxT("For body ") + instanceName + 
-//       //   wxT(", ECC value must be greater than or equal to zero"); 
-//       wxString buffer;
+//       //std::string errMsg = "For body " + instanceName + 
+//       //   ", ECC value must be greater than or equal to zero"; 
+//       std::stringstream buffer;
 //       buffer << kepl[1];
-//       wxString errMsg = wxT("The value of \"") + buffer + wxT("\" for field ") + 
-//          PARAMETER_TEXT[TWO_BODY_ECC - SpacePointParamCount] + wxT("\" on object \"") + instanceName +
-//          wxT("\" is not an allowed value.  \nThe allowed values are: ") +
-//          wxT(" [Real number >= zero]."); 
+//       std::string errMsg = "The value of \"" + buffer.str() + "\" for field " + 
+//          PARAMETER_TEXT[TWO_BODY_ECC - SpacePointParamCount] + "\" on object \"" + instanceName +
+//          "\" is not an allowed value.  \nThe allowed values are: " +
+//          " [Real number >= zero]."; 
 //       throw SolarSystemException(errMsg);
 //    }
    
@@ -2153,9 +2153,9 @@ bool CelestialBody::SetUserDefined(bool userDefinedBody)
    if (userDefined) allowSpice = true;
    #ifdef DEBUG_CB_USER_DEFINED
       MessageInterface::ShowMessage(
-            wxT("In CB::SetUserDefined, body %s has been set to userDefined = %s and allowSpice = %s\n"),
-            instanceName.c_str(), (userDefined? wxT("true") : wxT("false")),
-            (allowSpice? wxT("true") : wxT("false")));
+            "In CB::SetUserDefined, body %s has been set to userDefined = %s and allowSpice = %s\n",
+            instanceName.c_str(), (userDefined? "true" : "false"),
+            (allowSpice? "true" : "false"));
    #endif
    // we DO want to show the all parameters and the Create line when writing the user-defined 
    // Celestial Body data out to a script
@@ -2171,14 +2171,14 @@ bool CelestialBody::SetUserDefined(bool userDefinedBody)
 const Rvector6 CelestialBody::GetMJ2000State(const A1Mjd &atTime)
 {
    #ifdef DEBUG_CB_GET_MJ2000_STATE
-   MessageInterface::ShowMessage(wxT("In GetMJ2000State, body is %s, time is %12.10f\n"),
+   MessageInterface::ShowMessage("In GetMJ2000State, body is %s, time is %12.10f\n",
          instanceName.c_str(), atTime.Get());
-   MessageInterface::ShowMessage(wxT("In GetMJ2000State, j2000Body is %s\n"),
+   MessageInterface::ShowMessage("In GetMJ2000State, j2000Body is %s\n",
          (j2000Body->GetName()).c_str());
    #endif
    if (j2000Body == NULL)
       throw SolarSystemException
-         (wxT("CelestialBody::GetMJ2000State() j2000Body is NULL for ") + instanceName);
+         ("CelestialBody::GetMJ2000State() j2000Body is NULL for " + instanceName);
    
    // If j2000Body is this body, return the zero state vector
    if(j2000Body->GetName() == instanceName) 
@@ -2198,15 +2198,15 @@ const Rvector6 CelestialBody::GetMJ2000State(const A1Mjd &atTime)
    }
    else
    {
-      throw SolarSystemException(wxT("j2000Body is of incorrect type."));
+      throw SolarSystemException("j2000Body is of incorrect type.");
    }
    
    #ifdef DEBUG_GET_STATE
    MessageInterface::ShowMessage
-      (wxT("CelestialBody::GetMJ2000State() stateEphem =\n   %s\n"),
+      ("CelestialBody::GetMJ2000State() stateEphem =\n   %s\n",
        stateEphem.ToString().c_str());
    MessageInterface::ShowMessage
-      (wxT("CelestialBody::GetMJ2000State() j2kEphemState =\n   %s\n"),
+      ("CelestialBody::GetMJ2000State() j2kEphemState =\n   %s\n",
        j2kEphemState.ToString().c_str());
    #endif
 #ifdef DEBUG_CB_GET_MJ2000_STATE
@@ -2218,7 +2218,7 @@ const Rvector6 CelestialBody::GetMJ2000State(const A1Mjd &atTime)
    Real tdbTime   = TimeConverterUtil::Convert(atTime.Get(), TimeConverterUtil::A1MJD, 
                     TimeConverterUtil::TDBMJD, GmatTimeConstants::JD_JAN_5_1941);
    MessageInterface::ShowMessage(
-         wxT("Body: %s   TT(TDB) Time: %12.10f (%12.10f)   state:  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f\n"),
+         "Body: %s   TT(TDB) Time: %12.10f (%12.10f)   state:  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f\n",
          instanceName.c_str(), ttTime, tdbTime, 
          theState[0], theState[1], theState[2], theState[3], theState[4], theState[5]);
 #endif
@@ -2288,7 +2288,7 @@ Rvector CelestialBody::GetBodyCartographicCoordinates(const A1Mjd &forTime) cons
          }
       if (!orientationDefined)
          throw SolarSystemException(
-            wxT("Orientation parameters not yet set for body ") + instanceName);
+            "Orientation parameters not yet set for body " + instanceName);
       Real alpha = 0;
       Real delta = 0;
       Real W     = 0;
@@ -2303,19 +2303,19 @@ Rvector CelestialBody::GetBodyCartographicCoordinates(const A1Mjd &forTime) cons
       #ifdef DEBUG_CB_CARTOGRAPHIC
 //      if ((forTime.Get() > 23158.005) && (forTime.Get() < 23158.006))
 //      {
-         MessageInterface::ShowMessage(wxT("returning cartographic coordinates for body %s at time %12.10f:\n"),
+         MessageInterface::ShowMessage("returning cartographic coordinates for body %s at time %12.10f:\n",
                                        instanceName.c_str(), forTime.Get());
-         MessageInterface::ShowMessage(wxT("   alpha = %12.10f    delta = %12.10f    W = %12.10f    Wdot = %12.10f    d = %12.10f    T = %12.10f  dDot = %12.10f\n"),
+         MessageInterface::ShowMessage("   alpha = %12.10f    delta = %12.10f    W = %12.10f    Wdot = %12.10f    d = %12.10f    T = %12.10f  dDot = %12.10f\n",
                                        alpha, delta, W, Wdot, d, T, CelestialBody::dDot);
-         MessageInterface::ShowMessage(wxT("   orientation array = %s\n"), orientation.ToString().c_str());
+         MessageInterface::ShowMessage("   orientation array = %s\n", orientation.ToString().c_str());
 //      }
       #endif
       return Rvector(4, alpha, delta, W, Wdot);
    }
    else
    {
-      wxString errmsg = wxT("Cannot compute cartographic coordinates for body ");
-      errmsg += instanceName + wxT("\n");
+      std::string errmsg = "Cannot compute cartographic coordinates for body ";
+      errmsg += instanceName + "\n";
       throw SolarSystemException(errmsg);
    }
 }
@@ -2363,7 +2363,7 @@ Rvector CelestialBody::GetBodyCartographicCoordinates(const A1Mjd &forTime) cons
 //   }
 //   catch (TableTemplateExceptions::IllegalSize& tte)
 //   {
-//      throw SolarSystemException(wxT("Sij input to body has no dimensions."));
+//      throw SolarSystemException("Sij input to body has no dimensions.");
 //   }
 //   try
 //   {
@@ -2372,12 +2372,12 @@ Rvector CelestialBody::GetBodyCartographicCoordinates(const A1Mjd &forTime) cons
 //   }
 //   catch (TableTemplateExceptions::IllegalSize& tte)
 //   {
-//      throw SolarSystemException(wxT("Cij input to body has no dimensions."));
+//      throw SolarSystemException("Cij input to body has no dimensions.");
 //   }
 //   return true;
 //}
 //------------------------------------------------------------------------------
-//  wxString  GetParameterText(const Integer id) const
+//  std::string  GetParameterText(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter text, given the input parameter ID.
@@ -2388,7 +2388,7 @@ Rvector CelestialBody::GetBodyCartographicCoordinates(const A1Mjd &forTime) cons
  *
  */
 //------------------------------------------------------------------------------
-wxString CelestialBody::GetParameterText(const Integer id) const
+std::string CelestialBody::GetParameterText(const Integer id) const
 {
    if (id >= SpacePointParamCount && id < CelestialBodyParamCount)
       return PARAMETER_TEXT[id - SpacePointParamCount];
@@ -2396,7 +2396,7 @@ wxString CelestialBody::GetParameterText(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  Integer  GetParameterID(const wxString &str) const
+//  Integer  GetParameterID(const std::string &str) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter ID, given the input parameter string.
@@ -2407,7 +2407,7 @@ wxString CelestialBody::GetParameterText(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-Integer     CelestialBody::GetParameterID(const wxString &str) const
+Integer     CelestialBody::GetParameterID(const std::string &str) const
 {
    for (Integer i = SpacePointParamCount; i < CelestialBodyParamCount; i++)
    {
@@ -2439,7 +2439,7 @@ Gmat::ParameterType CelestialBody::GetParameterType(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetParameterTypeString(const Integer id) const
+//  std::string  GetParameterTypeString(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the parameter type string, given the input parameter ID.
@@ -2450,7 +2450,7 @@ Gmat::ParameterType CelestialBody::GetParameterType(const Integer id) const
  *
  */
 //------------------------------------------------------------------------------
-wxString CelestialBody::GetParameterTypeString(const Integer id) const
+std::string CelestialBody::GetParameterTypeString(const Integer id) const
 {
    return SpacePoint::PARAM_TYPE_STRING[GetParameterType(id)];
 }
@@ -2517,7 +2517,7 @@ Real CelestialBody::SetRealParameter(const Integer id, const Real value)
 {
    Rvector6 tmpKepl = twoBodyKepler;
    #ifdef DEBUG_CB_SET
-      MessageInterface::ShowMessage(wxT("In CB::SetReal with id = %d, and value = %.14f\n"),
+      MessageInterface::ShowMessage("In CB::SetReal with id = %d, and value = %.14f\n",
       id, value);
    #endif
       
@@ -2666,19 +2666,19 @@ Real CelestialBody::SetRealParameter(const Integer id, const Real value)
           (id == SPIN_AXIS_DEC_CONSTANT) || (id == SPIN_AXIS_DEC_RATE) ||
           (id == ROTATION_CONSTANT)      || (id == ROTATION_RATE))
       {
-         wxString errmsg = wxT("Modification of orientation parameters for default body ");
-         errmsg += instanceName + wxT(" is not allowed.\n");
+         std::string errmsg = "Modification of orientation parameters for default body ";
+         errmsg += instanceName + " is not allowed.\n";
          throw SolarSystemException(errmsg);
       }
    }
 
    #ifdef DEBUG_TWO_BODY
       MessageInterface::ShowMessage(
-      wxT("At end of CB::SetReal, Keplerian elements are %.14f %.14f %.14f %.14f %.14f %.14f\n"),
+      "At end of CB::SetReal, Keplerian elements are %.14f %.14f %.14f %.14f %.14f %.14f\n",
       twoBodyKepler[0],twoBodyKepler[1],twoBodyKepler[2],twoBodyKepler[3],
       twoBodyKepler[4],twoBodyKepler[5]);
       MessageInterface::ShowMessage(
-      wxT("..... and epoch is: %.14f\n"),twoBodyEpoch.Get());
+      "..... and epoch is: %.14f\n",twoBodyEpoch.Get());
    #endif
    
    return SpacePoint::SetRealParameter(id, value);
@@ -2756,7 +2756,7 @@ Integer CelestialBody::SetIntegerParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-//  wxString  GetStringParameter(const Integer id) const
+//  std::string  GetStringParameter(const Integer id) const
 //------------------------------------------------------------------------------
 /**
  * This method returns the string parameter value, given the input
@@ -2768,7 +2768,7 @@ Integer CelestialBody::SetIntegerParameter(const Integer id,
  *
  */
 //------------------------------------------------------------------------------
-wxString CelestialBody::GetStringParameter(const Integer id) const
+std::string CelestialBody::GetStringParameter(const Integer id) const
 {
    if (id == BODY_TYPE)             return Gmat::BODY_TYPE_STRINGS[bodyType];
    if (id == POS_VEL_SOURCE)        return Gmat::POS_VEL_SOURCE_STRINGS[posVelSrc];
@@ -2779,7 +2779,7 @@ wxString CelestialBody::GetStringParameter(const Integer id) const
    if (id == POTENTIAL_FILE_NAME)   return potentialFileName;
    if (id == ATMOS_MODEL_NAME)
    {
-      if (atmModel == NULL) return wxT("");
+      if (atmModel == NULL) return "";
       return atmModel->GetTypeName();
    }
    if (id == CENTRAL_BODY)          return theCentralBodyName;
@@ -2794,7 +2794,7 @@ wxString CelestialBody::GetStringParameter(const Integer id) const
    return SpacePoint::GetStringParameter(id);
 }
 
-wxString CelestialBody::GetStringParameter(const Integer id,
+std::string CelestialBody::GetStringParameter(const Integer id,
                                               const Integer index) const
 {   
    return SpacePoint::GetStringParameter(id, index);
@@ -2802,7 +2802,7 @@ wxString CelestialBody::GetStringParameter(const Integer id,
 
 
 //------------------------------------------------------------------------------
-//  bool  SetStringParameter(const Integer id, const wxString value)
+//  bool  SetStringParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the string parameter value, given the input
@@ -2818,12 +2818,12 @@ wxString CelestialBody::GetStringParameter(const Integer id,
  */
 //------------------------------------------------------------------------------
 bool CelestialBody::SetStringParameter(const Integer id,
-                                       const wxString &value) // const?
+                                       const std::string &value) // const?
 {
    #ifdef DEBUG_CB_SET_STRING
-   wxString idString = GetParameterText(id);
+   std::string idString = GetParameterText(id);
    MessageInterface::ShowMessage
-      (wxT("CelestialBody::SetStringP:: id = %d (%s), value = %s\n"),
+      ("CelestialBody::SetStringP:: id = %d (%s), value = %s\n",
        id, idString.c_str(), value.c_str());
    #endif
    int i;
@@ -2839,16 +2839,16 @@ bool CelestialBody::SetStringParameter(const Integer id,
    }
    if (id == POS_VEL_SOURCE)
    {
-      if (userDefined && (value == wxT("DE405")))
+      if (userDefined && (value == "DE405"))
       {
-         wxString errmsg = wxT("DE405 not allowed as ephemeris source for user-defined body \"");
-         errmsg += instanceName + wxT("\"\n");
+         std::string errmsg = "DE405 not allowed as ephemeris source for user-defined body \"";
+         errmsg += instanceName + "\"\n";
          throw SolarSystemException(errmsg);
       }
-      else if ((!userDefined) && !allowSpice && (value == wxT("SPICE")))
+      else if ((!userDefined) && !allowSpice && (value == "SPICE"))
       {
-         wxString errmsg = wxT("SPICE not allowed as ephemeris source for default body \"");
-         errmsg += instanceName + wxT("\"\n");
+         std::string errmsg = "SPICE not allowed as ephemeris source for default body \"";
+         errmsg += instanceName + "\"\n";
          throw SolarSystemException(errmsg);
       }
       for (i=0;i<Gmat::PosVelSourceCount;i++)
@@ -2865,7 +2865,7 @@ bool CelestialBody::SetStringParameter(const Integer id,
       {
          SolarSystemException sse;
          sse.SetDetails(errorMessageFormat.c_str(),
-                        value.c_str(), wxT("SourceFilename"), wxT("File must exist"));
+                        value.c_str(), "SourceFilename", "File must exist");
          throw sse;
       }
       sourceFilename = value;
@@ -2877,7 +2877,7 @@ bool CelestialBody::SetStringParameter(const Integer id,
       {
          SolarSystemException sse;
          sse.SetDetails(errorMessageFormat.c_str(),
-                        value.c_str(), wxT("PotentialFileName"), wxT("File must exist"));
+                        value.c_str(), "PotentialFileName", "File must exist");
          throw sse;
       }
       potentialFileName = value;
@@ -2897,15 +2897,15 @@ bool CelestialBody::SetStringParameter(const Integer id,
    {
       #ifdef DEBUG_TWO_BODY
          MessageInterface::ShowMessage(
-         wxT("In CB::SetString (TWO_BODY_DATE_FORMAT) with id = %d, and value = %s\n"),
+         "In CB::SetString (TWO_BODY_DATE_FORMAT) with id = %d, and value = %s\n",
          id, value.c_str());
       #endif
-      if (value != wxT("TAIModJulian"))
+      if (value != "TAIModJulian")
       {
          SolarSystemException sse;
          sse.SetDetails(errorMessageFormat.c_str(), value.c_str(),
                         PARAMETER_TEXT[TWO_BODY_DATE_FORMAT - SpacePointParamCount].c_str(),
-                        wxT("TAIModJulian"));
+                        "TAIModJulian");
          throw sse;
       }
       twoBodyFormat = value;
@@ -2915,15 +2915,15 @@ bool CelestialBody::SetStringParameter(const Integer id,
    {
       #ifdef DEBUG_TWO_BODY
          MessageInterface::ShowMessage(
-         wxT("In CB::SetString (TWO_BODY_STATE_TYPE) with id = %d, and value = %s\n"),
+         "In CB::SetString (TWO_BODY_STATE_TYPE) with id = %d, and value = %s\n",
          id, value.c_str());
       #endif
-      if (value != wxT("Keplerian"))
+      if (value != "Keplerian")
       {
          SolarSystemException sse;
          sse.SetDetails(errorMessageFormat.c_str(), value.c_str(),
                         PARAMETER_TEXT[TWO_BODY_STATE_TYPE - SpacePointParamCount].c_str(),
-                        wxT("Keplerian"));
+                        "Keplerian");
          
          throw sse;
       }
@@ -2943,9 +2943,9 @@ bool CelestialBody::SetStringParameter(const Integer id,
          SetRotationDataSource(Gmat::IAU_SIMPLIFIED);
       else
       {
-         wxString errmsg = wxT("Unrecognized Rotation Data Source \"");
-         errmsg += value + wxT("\" for body ");
-         errmsg += instanceName + wxT("\n");
+         std::string errmsg = "Unrecognized Rotation Data Source \"";
+         errmsg += value + "\" for body ";
+         errmsg += instanceName + "\n";
          throw SolarSystemException(errmsg);
       }
       return true;
@@ -2953,12 +2953,12 @@ bool CelestialBody::SetStringParameter(const Integer id,
 
    if (id == ORIENTATION_DATE_FORMAT)
    {
-      if (value != wxT("TAIModJulian"))
+      if (value != "TAIModJulian")
       {
          SolarSystemException sse;
          sse.SetDetails(errorMessageFormat.c_str(), value.c_str(),
                         PARAMETER_TEXT[ORIENTATION_DATE_FORMAT - SpacePointParamCount].c_str(),
-                        wxT("TAIModJulian"));
+                        "TAIModJulian");
          throw sse;
       }
       orientationDateFormat = value;;
@@ -2974,7 +2974,7 @@ bool CelestialBody::SetStringParameter(const Integer id,
    return SpacePoint::SetStringParameter(id, value);
 }
    
-bool CelestialBody::SetStringParameter(const Integer id, const wxString &value,
+bool CelestialBody::SetStringParameter(const Integer id, const std::string &value,
                                        const Integer index)
 {
    return SpacePoint::SetStringParameter(id, value, index);
@@ -3002,7 +3002,7 @@ bool CelestialBody::GetBooleanParameter(const Integer id) const
 }
 
 //------------------------------------------------------------------------------
-//  bool  SetBooleanParameter(const Integer id, const wxString value)
+//  bool  SetBooleanParameter(const Integer id, const std::string value)
 //------------------------------------------------------------------------------
 /**
  * This method sets the bool parameter value, given the input
@@ -3091,14 +3091,14 @@ const Rvector&  CelestialBody::SetRvectorParameter(const Integer id,
    if (id == STATE)
    {
       if (sz != 6) throw SolarSystemException(
-                  wxT("Incorrectly sized Rvector passed in for state."));
+                  "Incorrectly sized Rvector passed in for state.");
       for (i=0;i<6;i++) state(i) = value(i);
       return state;
    }
    if (id == ANGULAR_VELOCITY)
    {
       if (sz != 3) throw SolarSystemException(
-                   wxT("Incorrectly sized Rvector passed in for angular velocity."));
+                   "Incorrectly sized Rvector passed in for angular velocity.");
       for (i=0;i<3;i++) angularVelocity(i) = value(i);
       return angularVelocity;
    }
@@ -3107,7 +3107,7 @@ const Rvector&  CelestialBody::SetRvectorParameter(const Integer id,
 }
 
 //------------------------------------------------------------------------------
-//  const Rvector&  GetRvectorParameter(const wxString &label)
+//  const Rvector&  GetRvectorParameter(const std::string &label)
 //------------------------------------------------------------------------------
 /**
  * This method gets the Rvector parameter value, given the input
@@ -3119,13 +3119,13 @@ const Rvector&  CelestialBody::SetRvectorParameter(const Integer id,
  *
  */
 //------------------------------------------------------------------------------
-const Rvector& CelestialBody::GetRvectorParameter(const wxString &label) const
+const Rvector& CelestialBody::GetRvectorParameter(const std::string &label) const
 {
    return GetRvectorParameter(GetParameterID(label));
 }
 
 //------------------------------------------------------------------------------
-//  const Rvector&  SetRvectorParameter(const wxString &label,
+//  const Rvector&  SetRvectorParameter(const std::string &label,
 //                                      const Rvector& value)
 //------------------------------------------------------------------------------
 /**
@@ -3139,7 +3139,7 @@ const Rvector& CelestialBody::GetRvectorParameter(const wxString &label) const
  *
  */
 //------------------------------------------------------------------------------
-const Rvector& CelestialBody::SetRvectorParameter(const wxString &label,
+const Rvector& CelestialBody::SetRvectorParameter(const std::string &label,
                                               const Rvector &value)
 {
    return SetRvectorParameter(GetParameterID(label), value);
@@ -3198,7 +3198,7 @@ const Rvector& CelestialBody::SetRvectorParameter(const wxString &label,
 //}
 
 //------------------------------------------------------------------------------
-//  const Rmatrix&  GetRmatrixParameter(const wxString &label)
+//  const Rmatrix&  GetRmatrixParameter(const std::string &label)
 //------------------------------------------------------------------------------
 /**
  * This method gets the Rmatrix parameter value, given the input
@@ -3210,13 +3210,13 @@ const Rvector& CelestialBody::SetRvectorParameter(const wxString &label,
  *
  */
 //------------------------------------------------------------------------------
-//const Rmatrix& CelestialBody::GetRmatrixParameter(const wxString &label) const
+//const Rmatrix& CelestialBody::GetRmatrixParameter(const std::string &label) const
 //{
 //   return GetRmatrixParameter(GetParameterID(label));
 //}
 
 //------------------------------------------------------------------------------
-//  const Rmatrix&  SetRmatrixParameter(const wxString &label,
+//  const Rmatrix&  SetRmatrixParameter(const std::string &label,
 //                                      const Rmatrix& value)
 //------------------------------------------------------------------------------
 /**
@@ -3230,7 +3230,7 @@ const Rvector& CelestialBody::SetRvectorParameter(const wxString &label,
  *
  */
 //------------------------------------------------------------------------------
-//const Rmatrix& CelestialBody::SetRmatrixParameter(const wxString &label,
+//const Rmatrix& CelestialBody::SetRmatrixParameter(const std::string &label,
 //                                                  const Rmatrix &value)
 //{
 //   return SetRmatrixParameter(GetParameterID(label), value);
@@ -3257,7 +3257,7 @@ const StringArray& CelestialBody::GetStringArrayParameter(const Integer id) cons
 
 //------------------------------------------------------------------------------
 //  GmatBase* GetRefObject(const Gmat::ObjectType type,
-//                         const wxString &name)
+//                         const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * This method returns a reference object from the CelestialBody class.
@@ -3270,7 +3270,7 @@ const StringArray& CelestialBody::GetStringArrayParameter(const Integer id) cons
  */
 //------------------------------------------------------------------------------
 GmatBase* CelestialBody::GetRefObject(const Gmat::ObjectType type,
-                                      const wxString &name)
+                                      const std::string &name)
 {
    switch (type)
    {
@@ -3314,16 +3314,16 @@ const StringArray& CelestialBody::GetRefObjectNameArray(
       refs.push_back(theCentralBodyName);
 
       #ifdef DEBUG_REFERENCE_SETTING
-         MessageInterface::ShowMessage(wxT("+++ReferenceObjects:\n"));
+         MessageInterface::ShowMessage("+++ReferenceObjects:\n");
          for (StringArray::iterator i = refs.begin(); i != refs.end(); ++i)
-            MessageInterface::ShowMessage(wxT("   %s\n"), i->c_str());
+            MessageInterface::ShowMessage("   %s\n", i->c_str());
       #endif
 
       return refs;
    }
 
    #ifdef DEBUG_REFERENCE_SETTING
-      MessageInterface::ShowMessage(wxT("Calling SpacePoint::GetRefObjectNameArray for body %s\n"),
+      MessageInterface::ShowMessage("Calling SpacePoint::GetRefObjectNameArray for body %s\n",
             instanceName.c_str());
    #endif
    // Not handled here -- invoke the next higher GetRefObject call
@@ -3333,7 +3333,7 @@ const StringArray& CelestialBody::GetRefObjectNameArray(
 
 //------------------------------------------------------------------------------
 //  bool SetRefObject(GmatBase *obj, const Gmat::ObjectType type,
-//                    const wxString &name)
+//                    const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * This method sets a reference object for the CelestialBody class.
@@ -3348,16 +3348,16 @@ const StringArray& CelestialBody::GetRefObjectNameArray(
 //------------------------------------------------------------------------------
 bool CelestialBody::SetRefObject(GmatBase *obj,
                                  const Gmat::ObjectType type,
-                                 const wxString &name)
+                                 const std::string &name)
 {
    #ifdef DEBUG_REFERENCE_SETTING
    MessageInterface::ShowMessage
-      (wxT("CelestialBody::SetRefObject() this=<%p> %s, obj=%p, name=%s\n"),
+      ("CelestialBody::SetRefObject() this=<%p> %s, obj=%p, name=%s\n",
        this, GetName().c_str(), obj, name.c_str());
-//   MessageInterface::ShowMessage(wxT("RefObjectNameArray for %s is:\n"), instanceName.c_str());
+//   MessageInterface::ShowMessage("RefObjectNameArray for %s is:\n", instanceName.c_str());
 //   StringArray names = GetRefObjectNameArray(Gmat::UNKNOWN_OBJECT);
 //   for (unsigned int ii = 0; ii < name.size(); ii++)
-//      MessageInterface::ShowMessage(wxT("    %s\n"), name.at(ii));
+//      MessageInterface::ShowMessage("    %s\n", name.at(ii));
    #endif
    
    if (this == obj)
@@ -3365,7 +3365,7 @@ bool CelestialBody::SetRefObject(GmatBase *obj,
    
    bool foundHere = false;
    bool trySP     = false;
-   if (obj->IsOfType(wxT("CelestialBody")))
+   if (obj->IsOfType("CelestialBody"))
    {
       if (name == theCentralBodyName)
       {
@@ -3373,7 +3373,7 @@ bool CelestialBody::SetRefObject(GmatBase *obj,
          if ((theCentralBody == NULL) || (theCentralBody != cb))
          {
             #ifdef DEBUG_REFERENCE_SETTING
-               MessageInterface::ShowMessage(wxT("   Setting %s as central body for %s\n"),
+               MessageInterface::ShowMessage("   Setting %s as central body for %s\n",
                                              name.c_str(), instanceName.c_str());
             #endif
             theCentralBody  = cb;
@@ -3393,7 +3393,7 @@ bool CelestialBody::SetRefObject(GmatBase *obj,
       //loj: We don't want to throw an exception here. (2007.12.05)
       //if (!foundHere) throw;
       #ifdef DEBUG_REFERENCE_SETTING
-      MessageInterface::ShowMessage(e.GetFullMessage() + wxT("\n"));
+      MessageInterface::ShowMessage(e.GetFullMessage() + "\n");
       #endif
    }
    if (foundHere || trySP) 
@@ -3410,7 +3410,7 @@ bool CelestialBody::SetRefObject(GmatBase *obj,
 bool CelestialBody::IsParameterReadOnly(const Integer id) const
 {
 //   #ifdef DEBUG_CB_READ_ONLY
-//      MessageInterface::ShowMessage(wxT("CB::IsParameterReadOnly (%s) called with id = %d (%s)\n"),
+//      MessageInterface::ShowMessage("CB::IsParameterReadOnly (%s) called with id = %d (%s)\n",
 //            instanceName.c_str(), id, (GetParameterText(id)).c_str());
 //   #endif
    // if we're not using an twoBody model, those parameters are read-only
@@ -3426,7 +3426,7 @@ bool CelestialBody::IsParameterReadOnly(const Integer id) const
 //      {
 //         #ifdef DEBUG_TWO_BODY
 ////            MessageInterface::ShowMessage(
-////            wxT("In CB::IParameterReadOnly, id = %d, returning TRUE\n"),
+////            "In CB::IParameterReadOnly, id = %d, returning TRUE\n",
 ////            id);
 //         #endif
 ////         return true; // 2009.01.11 WCS - always write out elements, no matter the source
@@ -3498,7 +3498,7 @@ bool CelestialBody::IsParameterEqualToDefault(const Integer id) const
    if (id == POS_VEL_SOURCE)
    {
       #ifdef DEBUG_CB_CLOAKING
-            MessageInterface::ShowMessage(wxT("In IsPEqual ... posVelSrc = %s & default = %s\n"),
+            MessageInterface::ShowMessage("In IsPEqual ... posVelSrc = %s & default = %s\n",
                   (Gmat::POS_VEL_SOURCE_STRINGS[posVelSrc]).c_str(), default_posVelSrc.c_str());
       #endif
       if (userDefined)
@@ -3566,9 +3566,9 @@ bool CelestialBody::IsParameterEqualToDefault(const Integer id) const
    {
       #ifdef DEBUG_CB_CLOAKING_EPOCH
             MessageInterface::ShowMessage(
-                  wxT("In CB::IsParameterEqualToDefault (%s), twoBody epoch,  time %12.10f == time %12.10f ?  %s\n"),
+                  "In CB::IsParameterEqualToDefault (%s), twoBody epoch,  time %12.10f == time %12.10f ?  %s\n",
                   instanceName.c_str(), default_twoBodyEpoch.Get(), twoBodyEpoch.Get(),
-                  (GmatMathUtil::IsEqual(default_twoBodyEpoch.Get(),twoBodyEpoch.Get())? wxT("TRUE") : wxT("FALSE")));
+                  (GmatMathUtil::IsEqual(default_twoBodyEpoch.Get(),twoBodyEpoch.Get())? "TRUE" : "FALSE"));
       #endif
       return (default_twoBodyEpoch == twoBodyEpoch);
 //      return GmatMathUtil::IsEqual(default_twoBodyEpoch.Get(),twoBodyEpoch.Get());
@@ -3586,9 +3586,9 @@ bool CelestialBody::IsParameterEqualToDefault(const Integer id) const
    {
       #ifdef DEBUG_CB_CLOAKING_EPOCH
             MessageInterface::ShowMessage(
-                  wxT("In CB::IsParameterEqualToDefault (%s), orientation epoch,  time %12.10f == time %12.10f ?  %s\n"),
+                  "In CB::IsParameterEqualToDefault (%s), orientation epoch,  time %12.10f == time %12.10f ?  %s\n",
                   instanceName.c_str(), default_orientationEpoch.Get(), orientationEpoch.Get(),
-                  (GmatMathUtil::IsEqual(default_orientationEpoch.Get(),orientationEpoch.Get())? wxT("TRUE") : wxT("FALSE")));
+                  (GmatMathUtil::IsEqual(default_orientationEpoch.Get(),orientationEpoch.Get())? "TRUE" : "FALSE"));
       #endif
       return (default_orientationEpoch == orientationEpoch);
 //      return GmatMathUtil::IsEqual(default_orientationEpoch.Get(),orientationEpoch.Get());
@@ -3763,7 +3763,7 @@ bool CelestialBody::SaveParameterAsDefault(const Integer id)
 //void CelestialBody::Copy(const GmatBase* orig)
 //{
 //   #ifdef DEBUG_CB_COPY
-//      MessageInterface::ShowMessage(wxT("Entering CB::Copy: copying from %p to %p\n"),
+//      MessageInterface::ShowMessage("Entering CB::Copy: copying from %p to %p\n",
 //            orig, this);
 //   #endif
 //   operator=(*((CelestialBody *)(orig)));
@@ -3774,7 +3774,7 @@ bool CelestialBody::SaveParameterAsDefault(const Integer id)
 // protected methods
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//  void  InitializeBody(wxString withBodyType)
+//  void  InitializeBody(std::string withBodyType)
 //------------------------------------------------------------------------------
 /**
  * This method initializes the data values for the body.
@@ -3783,18 +3783,18 @@ bool CelestialBody::SaveParameterAsDefault(const Integer id)
  *
  */
 //------------------------------------------------------------------------------
-void CelestialBody::InitializeBody(wxString withBodyType)
+void CelestialBody::InitializeBody(std::string withBodyType)
 {
    #ifdef DEBUG_CB_INIT
    MessageInterface::ShowMessage
-      (wxT("CelestialBody::InitializeBody(%s) entered\n"), withBodyType.c_str());
+      ("CelestialBody::InitializeBody(%s) entered\n", withBodyType.c_str());
    #endif
    
    // assuming derived classes will fill in all the specific things with
    // appropriate default values
    usePotentialFile  = false;
-   potentialFileName = wxT("");
-   sourceFilename    = wxT("");
+   potentialFileName = "";
+   sourceFilename    = "";
    theSourceFile     = NULL;
    stateTime         = 0.0;
    state             = Rvector6(0.0,0.0,0.0,0.0,0.0,0.0);
@@ -3815,12 +3815,12 @@ bool CelestialBody::DeterminePotentialFileNameFromStartup()
    try
    {
       FileManager *fm = FileManager::Instance();
-      wxString potfile = GmatStringUtil::ToUpper(instanceName) + wxT("_POT_FILE");
-      wxString filename = fm->GetFullPathname(potfile);
+      std::string potfile = GmatStringUtil::ToUpper(instanceName) + "_POT_FILE";
+      std::string filename = fm->GetFullPathname(potfile);
       
       #if DEBUG_CELESTIAL_BODY
       MessageInterface::ShowMessage
-         (wxT("Planet::DeterminePotentialFileNameFromStartup() body=%s, potfilename=%s\n"), instanceName.c_str(),
+         ("Planet::DeterminePotentialFileNameFromStartup() body=%s, potfilename=%s\n", instanceName.c_str(),
           filename.c_str());
       #endif
       
@@ -3849,7 +3849,7 @@ bool CelestialBody::DeterminePotentialFileNameFromStartup()
 bool CelestialBody::ReadPotentialFile()
 {
    if (potentialFileRead) return true;
-   if (potentialFileName == wxT("")) return false;
+   if (potentialFileName == "") return false;
    
    GravityFile gf;
    Integer fileDeg, fileOrd;
@@ -3859,8 +3859,8 @@ bool CelestialBody::ReadPotentialFile()
                           equatorialRadius))
       {
          throw SolarSystemException
-            (wxT("Error reading mu and equatorial radius of ") + instanceName
-             + wxT(" from ")+ potentialFileName);
+            ("Error reading mu and equatorial radius of " + instanceName
+             + " from "+ potentialFileName);
       }
    }
    catch (BaseException &e)
@@ -3879,7 +3879,7 @@ bool CelestialBody::ReadPotentialFile()
 
 
 //------------------------------------------------------------------------------
-//  bool IsBlank(wxString &aLine)
+//  bool IsBlank(char* aLine)
 //------------------------------------------------------------------------------
 /**
  * This method returns true if the string is empty or is all white space.
@@ -3887,10 +3887,10 @@ bool CelestialBody::ReadPotentialFile()
  * @return success flag.
  */
 //------------------------------------------------------------------------------
-bool CelestialBody::IsBlank(wxString & aLine)
+bool CelestialBody::IsBlank(char* aLine)
 {
    Integer i;
-   for (i=0;i<aLine.Length();i++)
+   for (i=0;i<(int)strlen(aLine);i++)
    {
       if (!isspace(aLine[i])) return false;
    }
@@ -3937,8 +3937,8 @@ Rvector6 CelestialBody::ComputeTwoBody(const A1Mjd &forTime)
    #ifdef DEBUG_TWO_BODY
 
    MessageInterface::ShowMessage
-      (wxT("CelestialBody::ComputeTwoBody() this=<%p> %s, ")
-       wxT("theCentralBody=<%p> %s\n"), this, GetName().c_str(), theCentralBody,
+      ("CelestialBody::ComputeTwoBody() this=<%p> %s, "
+       "theCentralBody=<%p> %s\n", this, GetName().c_str(), theCentralBody,
        theCentralBodyName.c_str());
    #endif
    
@@ -3947,16 +3947,16 @@ Rvector6 CelestialBody::ComputeTwoBody(const A1Mjd &forTime)
       return Rvector6(0.0,0.0,0.0,0.0,0.0,0.0);
    #ifdef DEBUG_TWO_BODY
    MessageInterface::ShowMessage
-      (wxT("CelestialBody::ComputeTwoBody() before call to centralBody->GetState()\n"));
+      ("CelestialBody::ComputeTwoBody() before call to centralBody->GetState()\n");
    if (!theCentralBody) 
-      MessageInterface::ShowMessage(wxT("The central body (%s) for %s is NULL!!!!\n"), 
+      MessageInterface::ShowMessage("The central body (%s) for %s is NULL!!!!\n", 
             theCentralBodyName.c_str(), instanceName.c_str());
    #endif
    
    Rvector6 cbState = theCentralBody->GetState(forTime);
    #ifdef DEBUG_TWO_BODY
    MessageInterface::ShowMessage
-      (wxT("CelestialBody::ComputeTwoBody() AFTER call to centralBody->GetState()\n"));
+      ("CelestialBody::ComputeTwoBody() AFTER call to centralBody->GetState()\n");
    #endif
    
    return (KeplersProblem(forTime) + cbState);    
@@ -3973,7 +3973,7 @@ Rvector6 CelestialBody::ComputeTwoBody(const A1Mjd &forTime)
  *         the central body.
  *
  * @note This is based on Algorithm 8 on pp. 101-2 (and algorithm 1 on
- *       p. 71) of wxT("Fundamentals of Astrodynamics and Applications"),
+ *       p. 71) of "Fundamentals of Astrodynamics and Applications",
  *       Second Edition, by David A. Vallado.
  */
 //------------------------------------------------------------------------------
@@ -3981,14 +3981,14 @@ Rvector6 CelestialBody::KeplersProblem(const A1Mjd &forTime)
 {
    #ifdef DEBUG_TWO_BODY
          MessageInterface::ShowMessage
-            (wxT("CelestialBody::KeplersProblem() this=<%p> %s, ")
-             wxT("theCentralBody=<%p> %s\n"), this, GetName().c_str(), theCentralBody,
+            ("CelestialBody::KeplersProblem() this=<%p> %s, "
+             "theCentralBody=<%p> %s\n", this, GetName().c_str(), theCentralBody,
              theCentralBodyName.c_str());
-         MessageInterface::ShowMessage(wxT("newTwoBody = %s\n"), (newTwoBody? wxT("TRUE") : wxT("FALSE")));
-         MessageInterface::ShowMessage(wxT("keplerian elements = %12.10f   %12.10f   %12.10f   %12.10f   %12.10f   %12.10f\n"),
+         MessageInterface::ShowMessage("newTwoBody = %s\n", (newTwoBody? "TRUE" : "FALSE"));
+         MessageInterface::ShowMessage("keplerian elements = %12.10f   %12.10f   %12.10f   %12.10f   %12.10f   %12.10f\n",
                twoBodyKepler[0],twoBodyKepler[1],twoBodyKepler[2],twoBodyKepler[3],twoBodyKepler[4],twoBodyKepler[5]); 
-         MessageInterface::ShowMessage(wxT("epoch = %12.10f\n"),twoBodyEpoch.Get()); 
-         MessageInterface::ShowMessage(wxT("forTime = %12.10f\n"),forTime.Get());         
+         MessageInterface::ShowMessage("epoch = %12.10f\n",twoBodyEpoch.Get()); 
+         MessageInterface::ShowMessage("forTime = %12.10f\n",forTime.Get());         
    #endif
 
    Real     cbMu  = theCentralBody->GetGravitationalConstant() + mu;
@@ -4001,7 +4001,7 @@ Rvector6 CelestialBody::KeplersProblem(const A1Mjd &forTime)
    cart  = CoordUtil::KeplerianToCartesian(twoBodyKepler, cbMu, CoordUtil::TA);  // or MA???
    dTime = forTime.Subtract(twoBodyEpoch) * GmatTimeConstants::SECS_PER_DAY;
    #ifdef DEBUG_TWO_BODY
-      MessageInterface::ShowMessage(wxT("cbMu = %12.14f    dTime = %12.14f\n"), cbMu, dTime);
+      MessageInterface::ShowMessage("cbMu = %12.14f    dTime = %12.14f\n", cbMu, dTime);
    #endif
 
    //   // check for number of revs and reduce dTime if necessary (this does not work for the Sun)
@@ -4013,14 +4013,14 @@ Rvector6 CelestialBody::KeplersProblem(const A1Mjd &forTime)
       Real revs = dTime/T;
       dTime = dTime - T * Fix(revs);
       #ifdef DEBUG_TWO_BODY
-         MessageInterface::ShowMessage(wxT("After Fix, sma = %12.14f    T = %12.14f     revs = %12.14f    dTime = %12.14f\n"), 
+         MessageInterface::ShowMessage("After Fix, sma = %12.14f    T = %12.14f     revs = %12.14f    dTime = %12.14f\n", 
                sma, T, revs, dTime);
       #endif
    }
 
 
    #ifdef DEBUG_TWO_BODY
-      MessageInterface::ShowMessage(wxT("r0 = %12.16f   %12.16f   %12.16f  & v0 = %12.16f   %12.16f   %12.16f\n"),
+      MessageInterface::ShowMessage("r0 = %12.16f   %12.16f   %12.16f  & v0 = %12.16f   %12.16f   %12.16f\n",
             cart[0], cart[1], cart[2], cart[3], cart[4], cart[5]);
    #endif
    Rvector3 r0     = cart.GetR();
@@ -4033,15 +4033,15 @@ Rvector6 CelestialBody::KeplersProblem(const A1Mjd &forTime)
    Real     rDotv = r0 * v0;  // dot product
    
    #ifdef DEBUG_TWO_BODY
-      MessageInterface::ShowMessage(wxT("alpha = %12.14f    rDotv = %12.14f\n"), alpha, rDotv);
-      MessageInterface::ShowMessage(wxT("KEPLER_TOL = %12.14f\n"), KEPLER_TOL);
+      MessageInterface::ShowMessage("alpha = %12.14f    rDotv = %12.14f\n", alpha, rDotv);
+      MessageInterface::ShowMessage("KEPLER_TOL = %12.14f\n", KEPLER_TOL);
    #endif
    // Determine initial guess .......
    // for a circle or ellipse
    if (alpha > KEPLER_TOL)  
    {
       #ifdef DEBUG_TWO_BODY
-         MessageInterface::ShowMessage(wxT(" -------- circle or ellipse\n"));
+         MessageInterface::ShowMessage(" -------- circle or ellipse\n");
       #endif
       x0 = Sqrt(cbMu) * dTime * alpha;
 
@@ -4055,7 +4055,7 @@ Rvector6 CelestialBody::KeplersProblem(const A1Mjd &forTime)
    else if (Abs(alpha) < KEPLER_TOL)
    {
       #ifdef DEBUG_TWO_BODY
-         MessageInterface::ShowMessage(wxT(" -------- parabola\n"));
+         MessageInterface::ShowMessage(" -------- parabola\n");
       #endif
       Rvector3 h     = Cross(r0, v0);
       Real     hMag0 = h.GetMagnitude();
@@ -4070,7 +4070,7 @@ Rvector6 CelestialBody::KeplersProblem(const A1Mjd &forTime)
    else if (alpha < -KEPLER_TOL)
    {
       #ifdef DEBUG_TWO_BODY
-         MessageInterface::ShowMessage(wxT(" -------- hyperbola\n"));
+         MessageInterface::ShowMessage(" -------- hyperbola\n");
       #endif
       Real     a     = 1.0 / alpha;
       Integer  signT = SignOf(dTime);
@@ -4080,7 +4080,7 @@ Rvector6 CelestialBody::KeplersProblem(const A1Mjd &forTime)
       x0             = signT * Sqrt(-a) * Ln(num / den);
    }
    #ifdef DEBUG_TWO_BODY
-      MessageInterface::ShowMessage(wxT("x0 = %12.14f\n"), x0);
+      MessageInterface::ShowMessage("x0 = %12.14f\n", x0);
    #endif
    // Loop until difference falls within tolerance
    Real    rVal    = 0.0;
@@ -4118,9 +4118,9 @@ Rvector6 CelestialBody::KeplersProblem(const A1Mjd &forTime)
       rVal = (xn * xn * c2) + (rDotv / Sqrt(cbMu)) * xn * (1.0 - psi * c3) +
               rMag0 * (1.0 - psi * c2);
       #ifdef DEBUG_TWO_BODY
-         MessageInterface::ShowMessage(wxT(" at start of loop,xn = %12.14f and psi = %12.14f\n"),  xn, psi);
-         MessageInterface::ShowMessage(wxT("                  c2 = %12.14f and c3 = %12.14f\n"),  c2, c3);
-         MessageInterface::ShowMessage(wxT("                  rVal = %12.14ff\n"),  rVal);
+         MessageInterface::ShowMessage(" at start of loop,xn = %12.14f and psi = %12.14f\n",  xn, psi);
+         MessageInterface::ShowMessage("                  c2 = %12.14f and c3 = %12.14f\n",  c2, c3);
+         MessageInterface::ShowMessage("                  rVal = %12.14ff\n",  rVal);
       #endif
                 
       xNew = xn + ((Sqrt(cbMu) * dTime) - (xn * xn * xn * c3) - 
@@ -4132,15 +4132,15 @@ Rvector6 CelestialBody::KeplersProblem(const A1Mjd &forTime)
       counter++;
    }
    #ifdef DEBUG_TWO_BODY
-      MessageInterface::ShowMessage(wxT(" after loop is done, xNew = %12.14f    xn = %12.14f\n"), xNew, xn);
+      MessageInterface::ShowMessage(" after loop is done, xNew = %12.14f    xn = %12.14f\n", xNew, xn);
    #endif
 
    if (counter >= KEPLER_MAX_ITERATIONS)
    {
-      wxString ss(wxT(""));
-      ss << wxT("Kepler's Problem (TwoBodyPropagation) for Body \"") << instanceName <<
-            wxT("\" is not converging after ") << KEPLER_MAX_ITERATIONS << wxT("iterations.");
-      throw SolarSystemException(ss);
+      std::stringstream ss("");
+      ss << "Kepler's Problem (TwoBodyPropagation) for Body \"" << instanceName <<
+            "\" is not converging after " << KEPLER_MAX_ITERATIONS << "iterations.";
+      throw SolarSystemException(ss.str());
    }
    
    Real f     = 1.0 - ((xn * xn) / rMag0) * c2;
@@ -4155,14 +4155,14 @@ Rvector6 CelestialBody::KeplersProblem(const A1Mjd &forTime)
 
    
    #ifdef DEBUG_TWO_BODY
-      MessageInterface::ShowMessage(wxT("f    = %12.14f, g    = %12.14f\n"), f, g);
-      MessageInterface::ShowMessage(wxT("fDot = %12.14f, gDot = %12.14f\n"), fDot, gDot);
-      MessageInterface::ShowMessage(wxT("Computed quantity (f*gDot - fDot * g) = %12.14f\n"), (Abs(f * gDot - g * fDot)));
+      MessageInterface::ShowMessage("f    = %12.14f, g    = %12.14f\n", f, g);
+      MessageInterface::ShowMessage("fDot = %12.14f, gDot = %12.14f\n", fDot, gDot);
+      MessageInterface::ShowMessage("Computed quantity (f*gDot - fDot * g) = %12.14f\n", (Abs(f * gDot - g * fDot)));
    #endif
 
    if (!IsEqual(Abs(f * gDot - g * fDot), 1.0, 1.0e-5))  // e-5 per S. Hughes 2009.02.19
       throw SolarSystemException(
-            wxT("Error performing two body propagation for body ")
+            "Error performing two body propagation for body "
             + instanceName);
    
    Rvector6 newState(r,v);
@@ -4171,9 +4171,9 @@ Rvector6 CelestialBody::KeplersProblem(const A1Mjd &forTime)
    newTwoBody       = false;
    // debug stuff
    #ifdef DEBUG_TWO_BODY
-      MessageInterface::ShowMessage(wxT("At end of TwoBody computation, new r  = %12.14f    %12.14f    %12.14f\n"),
+      MessageInterface::ShowMessage("At end of TwoBody computation, new r  = %12.14f    %12.14f    %12.14f\n",
             newState[0], newState[1], newState[2]);
-      MessageInterface::ShowMessage(wxT("At end of TwoBody computation, new v  = %12.14f    %12.14f    %12.14f\n"),
+      MessageInterface::ShowMessage("At end of TwoBody computation, new v  = %12.14f    %12.14f    %12.14f\n",
             newState[3], newState[4], newState[5]);
    #endif
    
@@ -4185,32 +4185,32 @@ bool CelestialBody::SetUpSPICE()
 #ifdef __USE_SPICE__
    #ifdef DEBUG_CB_SPICE
       MessageInterface::ShowMessage(
-            wxT("Entering SetUpSpice for body %s with source = %s and orbitSpiceKernelNames:\n"),
+            "Entering SetUpSpice for body %s with source = %s and orbitSpiceKernelNames:\n",
             instanceName.c_str(), Gmat::POS_VEL_SOURCE_STRINGS[posVelSrc].c_str());
       for (unsigned int ii = 0; ii < orbitSpiceKernelNames.size(); ii++)
-         MessageInterface::ShowMessage(wxT("     %s\n"), (orbitSpiceKernelNames.at(ii)).c_str());
-      MessageInterface::ShowMessage(wxT("   posVelSrc = %s\n"), Gmat::POS_VEL_SOURCE_STRINGS[posVelSrc].c_str());
+         MessageInterface::ShowMessage("     %s\n", (orbitSpiceKernelNames.at(ii)).c_str());
+      MessageInterface::ShowMessage("   posVelSrc = %s\n", Gmat::POS_VEL_SOURCE_STRINGS[posVelSrc].c_str());
       if (kernelReader == NULL)
-         MessageInterface::ShowMessage(wxT("   kernelReader is NULL\n"));
+         MessageInterface::ShowMessage("   kernelReader is NULL\n");
    #endif
    if (posVelSrc != Gmat::SPICE) return false;
    if (kernelReader == NULL)
    {
-      wxString errmsg = wxT("ERROR - SpiceKernelReader not set for body \"");
-      errmsg += instanceName + wxT("\"\n");
+      std::string errmsg = "ERROR - SpiceKernelReader not set for body \"";
+      errmsg += instanceName + "\"\n";
       throw SolarSystemException(errmsg);
    }
    #ifdef DEBUG_CB_SPICE
       if (kernelReader == NULL)
-         MessageInterface::ShowMessage(wxT("   kernelReader is STILL NULL\n"));
+         MessageInterface::ShowMessage("   kernelReader is STILL NULL\n");
    #endif
-   wxString mainSPK = theSolarSystem->GetStringParameter(wxT("SPKFilename"));
+   std::string mainSPK = theSolarSystem->GetStringParameter("SPKFilename");
    if (orbitSpiceKernelNames.empty())
    {
-      if (mainSPK == wxT(""))
+      if (mainSPK == "")
       {
-         wxString errmsg = wxT("ERROR - SPICE selected as source for body \"");
-         errmsg += instanceName + wxT("\", but no SPK file(s) specified.\n");
+         std::string errmsg = "ERROR - SPICE selected as source for body \"";
+         errmsg += instanceName + "\", but no SPK file(s) specified.\n";
          throw SolarSystemException(errmsg);
       }
       else  // outer planets/moons, comets, and asteroids must have their own SPK file specified
@@ -4221,22 +4221,22 @@ bool CelestialBody::SetUpSPICE()
 //             (instanceName != SolarSystem::MOON_NAME)))
          {
             MessageInterface::ShowMessage(
-               wxT("An additional body-specific SPK may be required for body %s or its satellites.\n"),
+               "An additional body-specific SPK may be required for body %s or its satellites.\n",
                instanceName.c_str());
             msgWritten = true;
          }
       }
    }
    #ifdef DEBUG_CB_SPICE
-      MessageInterface::ShowMessage(wxT("   now loading main SPK kernel ...\n"));
+      MessageInterface::ShowMessage("   now loading main SPK kernel ...\n");
    #endif
-   // make sure the wxT("main") Solar System Kernel(s) are loaded first
+   // make sure the "main" Solar System Kernel(s) are loaded first
    theSolarSystem->LoadSpiceKernels();
    // now load the spice kernels specified for this body
    for (unsigned int ii = 0; ii < orbitSpiceKernelNames.size(); ii++)
    {
       #ifdef DEBUG_CB_SPICE
-         MessageInterface::ShowMessage(wxT("   now checking %s ...\n"), orbitSpiceKernelNames.at(ii).c_str());
+         MessageInterface::ShowMessage("   now checking %s ...\n", orbitSpiceKernelNames.at(ii).c_str());
       #endif
       if (!(kernelReader->IsLoaded(orbitSpiceKernelNames.at(ii))))
       {
@@ -4244,44 +4244,44 @@ bool CelestialBody::SetUpSPICE()
          {
             kernelReader->LoadKernel(orbitSpiceKernelNames.at(ii));
             #ifdef DEBUG_CB_SPICE
-               MessageInterface::ShowMessage(wxT("   kernelReader has loaded file %s\n"),
+               MessageInterface::ShowMessage("   kernelReader has loaded file %s\n",
                      (orbitSpiceKernelNames.at(ii)).c_str());
             #endif
          }
          catch (UtilityException &ue)
          {
             #ifdef DEBUG_CB_SPICE
-               MessageInterface::ShowMessage(wxT("   EXCEPTION caught with message: %s ...\n"), ue.GetFullMessage().c_str());
+               MessageInterface::ShowMessage("   EXCEPTION caught with message: %s ...\n", ue.GetFullMessage().c_str());
             #endif
             // try again with path name if no path found
-            wxString spkName = orbitSpiceKernelNames.at(ii);
-            if (spkName.find(wxT("/")) == spkName.npos &&
-                spkName.find(wxT("\\")) == spkName.npos)
+            std::string spkName = orbitSpiceKernelNames.at(ii);
+            if (spkName.find("/") == spkName.npos &&
+                spkName.find("\\") == spkName.npos)
             {
-               wxString spkPath =
+               std::string spkPath =
                   FileManager::Instance()->GetFullPathname(FileManager::SPK_PATH);
                spkName = spkPath + spkName;
                try
                {
                   #ifdef DEBUG_CB_SPICE
-                     MessageInterface::ShowMessage(wxT("   now attempting to load %s ...\n"), spkName.c_str());
+                     MessageInterface::ShowMessage("   now attempting to load %s ...\n", spkName.c_str());
                   #endif
                   kernelReader->LoadKernel(spkName);
                   #ifdef DEBUG_CB_SPICE
-                  MessageInterface::ShowMessage(wxT("   kernelReader has loaded file %s\n"),
+                  MessageInterface::ShowMessage("   kernelReader has loaded file %s\n",
                      spkName.c_str());
                   #endif
                }
                catch (UtilityException &ue2)
                {
-                  MessageInterface::ShowMessage(wxT("ERROR loading kernel %s\n"),
+                  MessageInterface::ShowMessage("ERROR loading kernel %s\n",
                      (spkName.c_str()));
                   throw; // rethrow the exception, for now
                }
             }
             else
             {
-               MessageInterface::ShowMessage(wxT("ERROR loading kernel %s\n"),
+               MessageInterface::ShowMessage("ERROR loading kernel %s\n",
                   (orbitSpiceKernelNames.at(ii).c_str()));
                throw; // rethrow the exception, for now
             }
@@ -4291,24 +4291,24 @@ bool CelestialBody::SetUpSPICE()
    // get the NAIF Id from the Spice Kernel(s)   @todo - should this be moved to SpacePoint?
    if (!naifIdSet)
    {
-      // SPICE calls Earth's moon wxT("Moon") (like it's the only important one or something - sheesh!)
-      // GMAT calls Earth's moon wxT("Luna")    
+      // SPICE calls Earth's moon "Moon" (like it's the only important one or something - sheesh!)
+      // GMAT calls Earth's moon "Luna"    
       Integer spiceNaifId; 
       if (instanceName == SolarSystem::MOON_NAME)
-         spiceNaifId = kernelReader->GetNaifID(wxT("MOON")); 
+         spiceNaifId = kernelReader->GetNaifID("MOON"); 
       else if (instanceName == GmatSolarSystemDefaults::SOLAR_SYSTEM_BARYCENTER_NAME)
-         spiceNaifId = kernelReader->GetNaifID(wxT("SSB"));
+         spiceNaifId = kernelReader->GetNaifID("SSB");
       else
       {
             spiceNaifId = kernelReader->GetNaifID(instanceName, false);
             // if not found with the instanceName, try using the NAIF ID
             if (spiceNaifId == 0)   // SSB is 0, but that's handled above
             {
-               wxString ss(wxT(""));
+               std::stringstream ss("");
                ss << naifId;
-//               spiceNaifId = kernelReader->GetNaifID(ss, true);
+//               spiceNaifId = kernelReader->GetNaifID(ss.str(), true);
 //               if (spiceNaifId != 0)
-                  naifName = ss;
+                  naifName = ss.str();
 //               else
 //                  naifName = instanceName;  // ??
                   spiceNaifId = naifId;
@@ -4321,16 +4321,16 @@ bool CelestialBody::SetUpSPICE()
       
       if ((naifId != UNDEFINED_NAIF_ID) && (spiceNaifId != naifId))
       {
-         wxString ss(wxT(""));
-         ss << wxT("Overriding input NAIF ID for body \"") << instanceName <<
-               wxT("\" with SPICE NAIF ID (") << spiceNaifId << wxT(").\n");
-         MessageInterface::PopupMessage(Gmat::WARNING_, ss);
+         std::stringstream ss("");
+         ss << "Overriding input NAIF ID for body \"" << instanceName <<
+               "\" with SPICE NAIF ID (" << spiceNaifId << ").\n";
+         MessageInterface::PopupMessage(Gmat::WARNING_, ss.str());
       }
       naifId    = spiceNaifId;
       naifIdSet = true;
    }
    #ifdef DEBUG_CB_SPICE
-      MessageInterface::ShowMessage(wxT("   naifID for body %s is %d\n"),
+      MessageInterface::ShowMessage("   naifID for body %s is %d\n",
             instanceName.c_str(), naifId);
    #endif
 

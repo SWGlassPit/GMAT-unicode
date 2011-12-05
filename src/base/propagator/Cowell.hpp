@@ -31,7 +31,7 @@
 class GMAT_API Cowell : public PredictorCorrector
 {
 public:
-   Cowell(const wxString &typeStr, const wxString &nomme = wxT(""));
+   Cowell(const std::string &typeStr, const std::string &nomme = "");
    virtual ~Cowell(void);
    Cowell(const Cowell& bs);
    Cowell& operator=(const Cowell& bs);
@@ -45,14 +45,14 @@ public:
    virtual bool AdaptStep(Real maxerror);
 
    // Parameter accessor methods -- overridden from GmatBase
-   virtual wxString         GetParameterText(const Integer id) const;
-   virtual Integer             GetParameterID(const wxString &str) const;
+   virtual std::string         GetParameterText(const Integer id) const;
+   virtual Integer             GetParameterID(const std::string &str) const;
    virtual Gmat::ParameterType GetParameterType(const Integer id) const;
-   virtual wxString         GetParameterTypeString(const Integer id) const;
+   virtual std::string         GetParameterTypeString(const Integer id) const;
    virtual Real    GetRealParameter(const Integer id) const;
-   virtual Real    GetRealParameter(const wxString &label) const;
+   virtual Real    GetRealParameter(const std::string &label) const;
    virtual Real    SetRealParameter(const Integer id, const Real value);
-   virtual Real    SetRealParameter(const wxString &label, const Real value);
+   virtual Real    SetRealParameter(const std::string &label, const Real value);
         
 protected:
 
@@ -62,7 +62,7 @@ protected:
    };
    
    // save for possible later use
-   //static const wxString
+   //static const std::string
    //PARAMETER_TEXT[CowellParamCount - IntegratorParamCount];
    //static const Gmat::ParameterType
    //PARAMETER_TYPE[CowellParamCount - IntegratorParamCount];

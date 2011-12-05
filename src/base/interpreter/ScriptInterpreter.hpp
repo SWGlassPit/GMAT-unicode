@@ -36,32 +36,28 @@ public:
    virtual bool Interpret();
    virtual bool Interpret(GmatCommand *cmd, bool skipHeader = false,
                           bool functionMode = false);
-   virtual bool Interpret(const wxString &scriptfile);
+   virtual bool Interpret(const std::string &scriptfile);
    
-   GmatCommand* InterpretGmatFunction(const wxString &fileName);
+   GmatCommand* InterpretGmatFunction(const std::string &fileName);
    GmatCommand* InterpretGmatFunction(Function *funct);
    
    virtual bool Build(Gmat::WriteMode mode);
    
    bool ReadFirstPass();
    
-   bool Build(const wxString &scriptfile,
+   bool Build(const std::string &scriptfile,
               Gmat::WriteMode mode = Gmat::SCRIPTING);
    
-//   bool SetInStream(std::istream *str);
-   bool SetInStream(wxInputStream *str);
-//   bool SetOutStream(std::ostream *str);
-   bool SetOutStream(wxOutputStream *str);
+   bool SetInStream(std::istream *str);
+   bool SetOutStream(std::ostream *str);
    
 protected:
    
    /// The script interpreter singleton
    static ScriptInterpreter *instance;
    
-//   std::istream *inStream;
-//   std::ostream *outStream;
-   wxInputStream *inStream;
-   wxOutputStream *outStream;
+   std::istream *inStream;
+   std::ostream *outStream;
    
    bool ReadScript(GmatCommand *cmd = NULL, bool skipHeader = false);
    bool Parse(GmatCommand *inCmd = NULL);
@@ -79,11 +75,11 @@ private:
    /// Flag indicating function file has more than one function definition, so ignoring the rest
    bool ignoreRest;
    /// Function definition line
-   wxString functionDef;
+   std::string functionDef;
    /// Function file name
-   wxString functionFilename;
+   std::string functionFilename;
    /// Name of the current script file
-   wxString scriptFilename;
+   std::string scriptFilename;
    /// Section delimiter comment
    StringArray sectionDelimiterString;
    /// Script lines with Variable, Array, and String
@@ -95,19 +91,19 @@ private:
                           GmatBase *obj);
    bool ParseAssignmentBlock(const StringArray &chunks, GmatCommand *inCmd,
                              GmatBase *obj);
-   bool IsOneWordCommand(const wxString &str);
+   bool IsOneWordCommand(const std::string &str);
    
-   void SetComments(GmatBase *obj, const wxString &preStr,
-                    const wxString &inStr);
+   void SetComments(GmatBase *obj, const std::string &preStr,
+                    const std::string &inStr);
    
-   void WriteSectionDelimiter(const GmatBase *firstObj, const wxString &objDesc,
+   void WriteSectionDelimiter(const GmatBase *firstObj, const std::string &objDesc,
                               bool forceWriting = false);
-   void WriteSectionDelimiter(const wxString &firstObj, const wxString &objDesc,
+   void WriteSectionDelimiter(const std::string &firstObj, const std::string &objDesc,
                               bool forceWriting = false);
-   void WriteObjects(StringArray &objs, const wxString &objDesc,
+   void WriteObjects(StringArray &objs, const std::string &objDesc,
                      Gmat::WriteMode mode);
    void WriteODEModels(StringArray &objs, Gmat::WriteMode mode);
-   void WritePropagators(StringArray &objs, const wxString &objDesc,
+   void WritePropagators(StringArray &objs, const std::string &objDesc,
          Gmat::WriteMode mode, const StringArray &odes);
    void WriteSpacecrafts(StringArray &objs, Gmat::WriteMode mode);
    void WriteHardwares(StringArray &objs, Gmat::WriteMode mode);

@@ -24,8 +24,6 @@
 #include "DateUtil.hpp"         // for IsValidTime()
 #include "MessageInterface.hpp"
 #include <algorithm>
-#include <wx/sstream.h>
-#include <wx/txtstrm.h>
 
 //-------------------------------------
 // public methods
@@ -40,11 +38,11 @@
 //---------------------------------------------------------------------------
 GregorianDate::GregorianDate()
 {
-   SetDate(wxT("01 Jan 2000 12:00:00.000"));
+   SetDate("01 Jan 2000 12:00:00.000");
 }
 
 //---------------------------------------------------------------------------
-//  GregorianDate(const wxString &str)
+//  GregorianDate(const std::string &str)
 //---------------------------------------------------------------------------
 /**
  * Creates constructor with parameters.
@@ -52,7 +50,7 @@ GregorianDate::GregorianDate()
  * @param <str>   Given String of Date
  */
 //---------------------------------------------------------------------------
-GregorianDate::GregorianDate(const wxString &str)
+GregorianDate::GregorianDate(const std::string &str)
 {
    SetDate(str);   
 }
@@ -67,7 +65,7 @@ GregorianDate::GregorianDate(const wxString &str)
 GregorianDate::GregorianDate(Date *newDate, Integer format)
 {
    outFormat = format;
-   Initialize(wxT(""));
+   Initialize("");
    SetDate(newDate, format);
 }
 
@@ -85,7 +83,7 @@ GregorianDate::~GregorianDate()
 
     
 //---------------------------------------------------------------------------
-//  wxString GetDate() const
+//  std::string GetDate() const
 //---------------------------------------------------------------------------
 /**
  * Get the date in string.
@@ -93,13 +91,13 @@ GregorianDate::~GregorianDate()
  * @return the date in string. 
  */
 //---------------------------------------------------------------------------
-wxString GregorianDate::GetDate() const
+std::string GregorianDate::GetDate() const
 {
    return stringDate;
 }
 
 //---------------------------------------------------------------------------
-//  bool SetDate(const wxString &str) 
+//  bool SetDate(const std::string &str) 
 //---------------------------------------------------------------------------
 /**
  * Set the date in string. 
@@ -107,7 +105,7 @@ wxString GregorianDate::GetDate() const
  * @return        return flag indicator (true = successful; otherwise, false) 
  */
 //---------------------------------------------------------------------------
-bool GregorianDate::SetDate(const wxString &str) 
+bool GregorianDate::SetDate(const std::string &str) 
 {
     Initialize(str); // for now....
     ParseOut(str);
@@ -122,8 +120,8 @@ bool GregorianDate::SetDate(const wxString &str)
 /**
  * Set the new date in Date
  *
- * @param   format    1 = wxT("01 Jan 2000 11:59:28.000")
- *                    2 = wxT("2000-01-01T11:59:28.000")
+ * @param   format    1 = "01 Jan 2000 11:59:28.000"
+ *                    2 = "2000-01-01T11:59:28.000"
  * @return  return flag indicator (true = successful; otherwise, false) 
  * 
  */
@@ -133,42 +131,42 @@ bool GregorianDate::SetDate(Date *newDate, Integer format)
    // Check validity on date first then convert to string
    if (!newDate->IsValid())
    { 
-      MessageInterface::ShowMessage(wxT("Warning:  Can't set date to string\n"));
+      MessageInterface::ShowMessage("Warning:  Can't set date to string\n");
       return (isValid = false); 
    }  
    
-   wxString temp;
+   std::string temp;
    
    // Convert the date format in string
    if (format == 2)
    {
-      temp += NumToString(newDate->GetYear()) + wxT("-");
-      temp += NumToString(newDate->GetMonth()) + wxT("-");
-      temp += NumToString(newDate->GetDay()) + wxT("T");
-      temp += NumToString(newDate->GetHour()) + wxT(":");
-      temp += NumToString(newDate->GetMinute()) + wxT(":");
+      temp += NumToString(newDate->GetYear()) + "-";
+      temp += NumToString(newDate->GetMonth()) + "-";
+      temp += NumToString(newDate->GetDay()) + "T";
+      temp += NumToString(newDate->GetHour()) + ":";
+      temp += NumToString(newDate->GetMinute()) + ":";
       temp += NumToString(newDate->GetSecond());
       stringDate = temp;
    }
    else
    {
       temp = NumToString(newDate->GetDay());
-      temp += wxT(" ") + GetMonthName(newDate->GetMonth()) + wxT(" "); 
-      temp += NumToString(newDate->GetYear()) + wxT(" ");
-      temp += NumToString(newDate->GetHour()) + wxT(":");
-      temp += NumToString(newDate->GetMinute()) + wxT(":");
+      temp += " " + GetMonthName(newDate->GetMonth()) + " "; 
+      temp += NumToString(newDate->GetYear()) + " ";
+      temp += NumToString(newDate->GetHour()) + ":";
+      temp += NumToString(newDate->GetMinute()) + ":";
       temp += NumToString(newDate->GetSecond());
       stringDate = temp;
    }
    
    stringYMDHMS = newDate->ToPackedCalendarString();
-   type = wxT("Gregorian");
+   type = "Gregorian";
    
    return (isValid = true);
 }
 
 //---------------------------------------------------------------------------
-//  wxString GetYMDHMS() const
+//  std::string GetYMDHMS() const
 //---------------------------------------------------------------------------
 /**
  * Get YYYYMMDD.HHMMSSmmm from Gregorian format in string 
@@ -177,7 +175,7 @@ bool GregorianDate::SetDate(Date *newDate, Integer format)
  * 
  */
 //---------------------------------------------------------------------------
-wxString GregorianDate::GetYMDHMS() const
+std::string GregorianDate::GetYMDHMS() const
 {
    return stringYMDHMS;
 }
@@ -197,7 +195,7 @@ bool GregorianDate::IsValid() const
 }
 
 //---------------------------------------------------------------------------
-//  static bool IsValid(const wxString &greg)
+//  static bool IsValid(const std::string &greg)
 //---------------------------------------------------------------------------
 /**
  * Determines if input date is valid or not.
@@ -209,7 +207,7 @@ bool GregorianDate::IsValid() const
  * @return true if time is in valid Gregorian format; otherwise, false
  */
 //---------------------------------------------------------------------------
-bool GregorianDate::IsValid(const wxString &greg)
+bool GregorianDate::IsValid(const std::string &greg)
 {
    return DateUtil::IsValidGregorian(greg);
 }
@@ -219,47 +217,46 @@ bool GregorianDate::IsValid(const wxString &greg)
 //-------------------------------------
 
 //---------------------------------------------------------------------------
-//  void Initialize(const wxString &str) 
+//  void Initialize(const std::string &str) 
 //---------------------------------------------------------------------------
 /**
  * Initializes values of data method
  */
 //---------------------------------------------------------------------------
-void GregorianDate::Initialize(const wxString &str)
+void GregorianDate::Initialize(const std::string &str)
 {
    stringDate = str;
-   stringYMDHMS = wxT("");
-   type = wxT("Gregorian");
+   stringYMDHMS = "";
+   type = "Gregorian";
    isValid = false;
 }
 
 
 //---------------------------------------------------------------------------
-//  void ParseOut(const wxString &str) 
+//  void ParseOut(const std::string &str) 
 //---------------------------------------------------------------------------
 /**
  * Parse out the string and check validity
  */
 //---------------------------------------------------------------------------
-void GregorianDate::ParseOut(const wxString &str) 
+void GregorianDate::ParseOut(const std::string &str) 
 {
    #if DEBUG_GREGORIAN_VALIDATE
-   //MessageInterface::ShowMessage(wxT("==> GregorianDate::ParseOut() str=%s\n"), str.c_str());
+   //MessageInterface::ShowMessage("==> GregorianDate::ParseOut() str=%s\n", str.c_str());
    #endif
    
    // Check if non-empty string then parse out; otherwise, nothing. 
-   if (str != wxT(""))
+   if (str != "")
    {
-      StringTokenizer dateToken(str, wxT(" "));
+      StringTokenizer dateToken(str, " ");
 
       if (dateToken.CountTokens() == 4)
       {
-         wxString issString = (dateToken.GetToken(0));
-         wxStringInputStream issStringStream(issString);
-         wxTextInputStream iss(issStringStream);
+         std::istringstream iss;
          Integer dayNum, yearNum;
 
          // Get the number
+         iss.str(dateToken.GetToken(0)); 
          iss >> dayNum;
 
          // Get the year
@@ -271,7 +268,7 @@ void GregorianDate::ParseOut(const wxString &str)
 //            throw GregorianDateException();
 
          // Check validity for month 
-//          std::vector<wxString>::iterator pos;
+//          std::vector<std::string>::iterator pos;
 //          pos = find(monthName.begin(),monthName.end(),
 //                     dateToken.GetToken(1));
 
@@ -297,14 +294,14 @@ void GregorianDate::ParseOut(const wxString &str)
 //          Integer monthNum;
 //          monthNum = (Integer) distance(monthName.begin(),pos) + 1;
 
-         wxString tempYMD;
+         std::string tempYMD;
          tempYMD = dateToken.GetToken(2) + NumToString(monthNum); 
          if (dateToken.GetToken(0).length() == 1)
-            tempYMD += wxT("0");
-         tempYMD += dateToken.GetToken(0) + wxT("."); 
+            tempYMD += "0";
+         tempYMD += dateToken.GetToken(0) + "."; 
 
          // Start with time
-         StringTokenizer timeToken(dateToken.GetToken(3),wxT(":"));  
+         StringTokenizer timeToken(dateToken.GetToken(3),":");  
 
          if (timeToken.CountTokens() == 3)
          {
@@ -314,7 +311,7 @@ void GregorianDate::ParseOut(const wxString &str)
 //                timeToken.GetToken(2).length() != 6)
 //            {
 //               MessageInterface::ShowMessage(
-//                  wxT("\nWarning: invalid Gregorian format with time")); 
+//                  "\nWarning: invalid Gregorian format with time"); 
 //               return;
 //            }
 
@@ -322,20 +319,20 @@ void GregorianDate::ParseOut(const wxString &str)
             if (timeToken.GetToken(0).length() != 2)
             {
                MessageInterface::ShowMessage(
-                  wxT("\nWarning: invalid Gregorian time for hours format(HH)\n")); 
+                  "\nWarning: invalid Gregorian time for hours format(HH)\n"); 
                return;
             }
             // Check length of the minute format
             if (timeToken.GetToken(1).length() != 2)
             {
                MessageInterface::ShowMessage(
-                  wxT("\nWarning: invalid Gregorian time for minutes format(MM)\n")); 
+                  "\nWarning: invalid Gregorian time for minutes format(MM)\n"); 
                return;
             }
             if (timeToken.GetToken(2).length() != 6)
             {
                MessageInterface::ShowMessage(
-                  wxT("\nWarning: invalid Gregorian time for seconds format(SS.mmm)\n")); 
+                  "\nWarning: invalid Gregorian time for seconds format(SS.mmm)\n"); 
                return;
             }
 
@@ -347,8 +344,8 @@ void GregorianDate::ParseOut(const wxString &str)
             tempYMD += timeToken.GetToken(0) + timeToken.GetToken(1);
 
             // Finally start with seconds
-            wxString strSeconds = timeToken.GetToken(2);
-            timeToken.Set(strSeconds,wxT(".")); 
+            std::string strSeconds = timeToken.GetToken(2);
+            timeToken.Set(strSeconds,"."); 
 
             // Check time format in second
             if (timeToken.CountTokens() != 2 || 
@@ -356,7 +353,7 @@ void GregorianDate::ParseOut(const wxString &str)
                 timeToken.GetToken(1).length() != 3)
             {
                MessageInterface::ShowMessage(
-                  wxT("\nWarning: invalid Gregorian format with seconds")); 
+                  "\nWarning: invalid Gregorian format with seconds"); 
                return;
             }
             
@@ -366,20 +363,20 @@ void GregorianDate::ParseOut(const wxString &str)
             Real second = ToReal(strSeconds); 
    #if DEBUG_GREGORIAN_VALIDATE
             //MessageInterface::ShowMessage
-            //   (wxT("==> GregorianDate::ParseOut() second=%.10f\n"), second);
+            //   ("==> GregorianDate::ParseOut() second=%.10f\n", second);
             #endif
             
             // Finally check validity for the date  
             if (!IsValidTime(yearNum,monthNum,dayNum,hour,minute,second))
             {
                MessageInterface::ShowMessage(
-                  wxT("\nWarning: invalid Gregorian format from DateUtil")); 
+                  "\nWarning: invalid Gregorian format from DateUtil"); 
                return;
             } 
             
             stringYMDHMS = tempYMD;
             //MessageInterface::ShowMessage
-            //   (wxT("==> GregorianDate::ParseOut() stringYMDHMS=%s\n"),
+            //   ("==> GregorianDate::ParseOut() stringYMDHMS=%s\n",
             //    stringYMDHMS.c_str());
          }                    
          isValid = true;
@@ -387,19 +384,19 @@ void GregorianDate::ParseOut(const wxString &str)
       else
       {
          MessageInterface::ShowMessage(
-             wxT("\nWarning: invalid Gregorian format: %s"),str.c_str());  
+             "\nWarning: invalid Gregorian format: %s",str.c_str());  
       }
    }
    else
    {
        MessageInterface::ShowMessage(
-         wxT("\nWarning: invalid Gregorian format since there is no value."));  
+         "\nWarning: invalid Gregorian format since there is no value.");  
    } 
 
 }
 
 //---------------------------------------------------------------------------
-//  wxString NumToString(const Integer num) 
+//  std::string NumToString(const Integer num) 
 //---------------------------------------------------------------------------
 /**
  * Return the string from number.
@@ -409,14 +406,21 @@ void GregorianDate::ParseOut(const wxString &str)
  * @return     Return the string from the number.
  */
 //---------------------------------------------------------------------------
-wxString GregorianDate::NumToString(const Integer num)
+std::string GregorianDate::NumToString(const Integer num)
 {
-   wxString temp = wxString::Format(wxT("%02d"), num);
-   return temp;
+   std::string temp("");
+
+   if (num < 10)
+      temp = "0";
+
+   std::ostringstream ss;
+   ss << num;
+
+   return (temp += ss.str());
 }
 
 //---------------------------------------------------------------------------
-//  wxString NumToString(const Real num) 
+//  std::string NumToString(const Real num) 
 //---------------------------------------------------------------------------
 /**
  * Return the string from real number.
@@ -426,20 +430,23 @@ wxString GregorianDate::NumToString(const Integer num)
  * @return     Return the string from the real number.
  */
 //---------------------------------------------------------------------------
-wxString GregorianDate::NumToString(const Real num)
+std::string GregorianDate::NumToString(const Real num)
 {
-   wxString temp;
+   std::string temp("");
 
    if (num < 10.0)
-      temp = wxT("0");
+      temp = "0";
 
-   temp << num;
+   std::ostringstream ss;
+   ss.precision(3);
+   ss.setf(std::ios::fixed);
+   ss << num;
 
-   return temp;
+   return (temp += ss.str());
 }
 
 //---------------------------------------------------------------------------
-//  Integer ToInteger(const wxString &str) 
+//  Integer ToInteger(const std::string &str) 
 //---------------------------------------------------------------------------
 /**
  * Return the integer number from string.
@@ -449,17 +456,19 @@ wxString GregorianDate::NumToString(const Real num)
  * @return     Return the integer number from string.
  */
 //---------------------------------------------------------------------------
-Integer GregorianDate::ToInteger(const wxString &str)
+Integer GregorianDate::ToInteger(const std::string &str)
 {
    Integer num;
-   long thenum;
-   str.ToLong(&thenum);
-   num = thenum;
+   std::istringstream iss;
+   iss.str("");
+   iss.str(str); 
+   iss >> num;
+
    return num;
 }
 
 //---------------------------------------------------------------------------
-//  Real ToReal(const wxString &str) 
+//  Real ToReal(const std::string &str) 
 //---------------------------------------------------------------------------
 /**
  * Return the integer number from string.
@@ -469,17 +478,21 @@ Integer GregorianDate::ToInteger(const wxString &str)
  * @return     Return the real number from string.
  */
 //---------------------------------------------------------------------------
-Real GregorianDate::ToReal(const wxString &str)
+Real GregorianDate::ToReal(const std::string &str)
 {
    Real num;
-   double thenum;
-   str.ToDouble(&thenum);
-   num = thenum;
+   std::istringstream iss("");
+
+   iss.precision(3);
+   iss.setf(std::ios::fixed);
+   iss.str(str); 
+   iss >> num;
+
    return num;
 }
 
 //---------------------------------------------------------------------------
-//  wxString GetMonthName(const Integer month) 
+//  std::string GetMonthName(const Integer month) 
 //---------------------------------------------------------------------------
 /**
  * Return the string from number.
@@ -489,14 +502,14 @@ Real GregorianDate::ToReal(const wxString &str)
  * @return        Return the string from the number.
  */
 //---------------------------------------------------------------------------
-wxString GregorianDate::GetMonthName(const Integer month)
+std::string GregorianDate::GetMonthName(const Integer month)
 {
    if (month < 1 || month > 12) 
    {
-      MessageInterface::ShowMessage(wxT("Warning:  bad month!"));
+      MessageInterface::ShowMessage("Warning:  bad month!");
       isValid = false;
       // @todo - will add new exception for throwing
-      return wxT("");
+      return "";
    }
 
    return GmatTimeConstants::MONTH_NAME_TEXT[month-1];

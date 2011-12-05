@@ -28,7 +28,7 @@
  *              * /
  *              + -
  *
- * Parser Code Reference: wxT("The Complete Reference C++") by Herbert Schildt,
+ * Parser Code Reference: "The Complete Reference C++" by Herbert Schildt,
  *    4th Edition, P963-997
  */
 //------------------------------------------------------------------------------
@@ -39,7 +39,7 @@
 #include <iostream>
 
 #include <cstdlib>			// Required for GCC 4.3
-#include <wx/sstream.h>
+
 
 //#define DEBUG_EXP_PARSER 1
 
@@ -53,7 +53,7 @@
 //------------------------------------------------------------------------------
 ExpressionParser::ExpressionParser()
 {
-   mExp = wxT("");
+   mExp = NULL;
    mParamDb = NULL;
 
    for (int i=0; i<NUM_VARS; i++)
@@ -70,7 +70,7 @@ ExpressionParser::~ExpressionParser()
 
 
 //------------------------------------------------------------------------------
-// Real EvalExp(const wxString &exp)
+// Real EvalExp(const char *exp)
 //------------------------------------------------------------------------------
 /*
  * Evaluates given expression and return results.
@@ -80,15 +80,15 @@ ExpressionParser::~ExpressionParser()
  * @return expression evaluated results
  */
 //------------------------------------------------------------------------------
-Real ExpressionParser::EvalExp(const wxString &exp)
+Real ExpressionParser::EvalExp(const char *exp)
 {
    Real result;
    mExp = exp;
-   mToken = wxT("");
+   *mToken = '\0';
 
 #if DEBUG_EXP_PARSER
    MessageInterface::ShowMessage
-      (wxT("ExpressionParser::EvalExp() exp=%s\n"), exp);
+      ("ExpressionParser::EvalExp() exp=%s\n", exp);
 #endif
 
    GetToken();
@@ -137,22 +137,22 @@ void ExpressionParser::SetParameterDatabase(ParameterDatabase *pdb)
 //------------------------------------------------------------------------------
 void ExpressionParser::EvalTwoTerms(Real &result)
 {
-   register wxChar op; // it's heavily used
+   register char op; // it's heavily used
    Real temp;
 
    EvalTwoFactors(result);
 
-   while ((op = *mToken) == wxT('+') || op == wxT('-'))
+   while ((op = *mToken) == '+' || op == '-')
    {
       GetToken();
       EvalTwoFactors(temp);
 
       switch (op)
       {
-      case wxT('-'):
+      case '-':
          result = result - temp;
          break;
-      case wxT('+'):
+      case '+':
          result = result + temp;
          break;
       default:
@@ -171,22 +171,22 @@ void ExpressionParser::EvalTwoTerms(Real &result)
 //------------------------------------------------------------------------------
 void ExpressionParser::EvalTwoFactors(Real &result)
 {
-   register wxChar op; // it's heavily used
+   register char op; // it's heavily used
    Real temp;
 
    EvalExponent(result);
 
-   while ((op = *mToken) == wxT('*') || op == wxT('/') || op == wxT('%'))
+   while ((op = *mToken) == '*' || op == '/' || op == '%')
    {
       GetToken();
       EvalExponent(temp);
 
       switch (op)
       {
-      case wxT('*'):
+      case '*':
          result = result * temp;
          break;
-      case wxT('/'):
+      case '/':
          result = result / temp;
          break;
       default:
@@ -210,7 +210,7 @@ void ExpressionParser::EvalExponent(Real &result)
 
    EvalUnary(result);
 
-   if (*mToken == wxT('^'))
+   if (*mToken == '^')
    {
       GetToken();
       EvalExponent(temp);
@@ -228,7 +228,7 @@ void ExpressionParser::EvalExponent(Real &result)
 
       result = pow(result, temp);
       //MessageInterface::ShowMessage
-      //   (wxT("===> result=%f, ex=%f, temp=%f\n"), result, ex, temp);
+      //   ("===> result=%f, ex=%f, temp=%f\n", result, ex, temp);
    }
 }
 
@@ -242,11 +242,11 @@ void ExpressionParser::EvalExponent(Real &result)
 //------------------------------------------------------------------------------
 void ExpressionParser::EvalUnary(Real &result)
 {
-   register wxChar op;
+   register char op;
 
    op = 0;
 
-   if (((mTokenType == DELIMITER) && *mToken == wxT('+')) || *mToken == wxT('-'))
+   if (((mTokenType == DELIMITER) && *mToken == '+') || *mToken == '-')
    {
       op = *mToken;
       GetToken();
@@ -254,7 +254,7 @@ void ExpressionParser::EvalUnary(Real &result)
 
    EvalParenExp(result);
 
-   if (op == wxT('-'))
+   if (op == '-')
       result = - result;
 }
 
@@ -268,13 +268,13 @@ void ExpressionParser::EvalUnary(Real &result)
 //------------------------------------------------------------------------------
 void ExpressionParser::EvalParenExp(Real &result)
 {
-   if (*mToken == wxT('('))
+   if (*mToken == '(')
    {
       GetToken();
 
       EvalTwoTerms(result);
 
-      if (*mToken != wxT(')'))
+      if (*mToken != ')')
          HandleSyntaxError(UNBALANCED_PARENTHESES);
 
       GetToken();
@@ -297,7 +297,7 @@ void ExpressionParser::GetValue(Real &result)
 {
 #if DEBUG_EXP_PARSER
    MessageInterface::ShowMessage
-      (wxT("ExpressionParser::GetValue() mToken=%s\n"), mToken);
+      ("ExpressionParser::GetValue() mToken=%s\n", mToken);
 #endif
 
    switch (mTokenType)
@@ -307,7 +307,7 @@ void ExpressionParser::GetValue(Real &result)
       GetToken();
       return;
    case NUMBER:
-      mToken.ToDouble(&result);
+      result = atof(mToken);
       GetToken();
       return;
    default:
@@ -317,31 +317,31 @@ void ExpressionParser::GetValue(Real &result)
 
 
 //------------------------------------------------------------------------------
-// Real EvalVariable(wxString *var)
+// Real EvalVariable(char *var)
 //------------------------------------------------------------------------------
 /*
  * Get the value of a variable
  */
 //------------------------------------------------------------------------------
-Real ExpressionParser::EvalVariable(wxString &var)
+Real ExpressionParser::EvalVariable(char *var)
 {
    if (mParamDb == NULL)
    {
       throw ParameterException
-         (wxT("ExpressionParser::EvalVariable() Associated ParameterDatabase is NULL.\n")
-          wxT("Make sure to call SetParameterDatabase() in EvaluateReal() of variable.\n"));
+         ("ExpressionParser::EvalVariable() Associated ParameterDatabase is NULL.\n"
+          "Make sure to call SetParameterDatabase() in EvaluateReal() of variable.\n");
    }
 
-   wxString varName = wxString(var);
+   std::string varName = std::string(var);
    Parameter *param = mParamDb->GetParameter(varName);
 
 #if DEBUG_EXP_PARSER
    MessageInterface::ShowMessage
-      (wxT("ExpressionParser::EvalVariable() varName:%s\n"), varName.c_str());
+      ("ExpressionParser::EvalVariable() varName:%s\n", varName.c_str());
    //StringArray paramNames = mParamDb->GetNamesOfParameters();
    //for (int i = 0; i<mParamDb->GetNumParameters(); i++)
    //   MessageInterface::ShowMessage
-   //      (wxT("ExpressionParser::EvalVariable() In mParamDb: %s\n"), paramNames[i].c_str());
+   //      ("ExpressionParser::EvalVariable() In mParamDb: %s\n", paramNames[i].c_str());
 #endif
 
    if (param != NULL)
@@ -351,8 +351,8 @@ Real ExpressionParser::EvalVariable(wxString &var)
    else
    {
       throw ParameterException
-         (wxT("ExpressionParser::EvalVariable() Requested parameter: ") + varName +
-          wxT(" has NULL pointer. Make sure to call SetRefObject() of variable.\n"));
+         ("ExpressionParser::EvalVariable() Requested parameter: " + varName +
+          " has NULL pointer. Make sure to call SetRefObject() of variable.\n");
    }
 
 }
@@ -367,59 +367,53 @@ Real ExpressionParser::EvalVariable(wxString &var)
 //------------------------------------------------------------------------------
 void ExpressionParser::GetToken()
 {
-   wxString temp;
+   register char *temp;
 
    mTokenType = NUMBER;
-   temp = wxT("");
+   temp = mToken;
+   *temp = '\0';
 
-   if (mExp.IsEmpty())
+   if (!*mExp)
       return; // end of expression
 
-   mExp.Trim(false); //remove leading whitespace
+   while (isspace(*mExp))
+      ++mExp; // skip over white spaces
 
-   wxStringInputStream mExpStream(mExp);
-   wxChar ch = mExpStream.GetC(); //read first character and strip from stream
-
-   if (strchr("+-*/^=()", ch))
+   if (strchr("+-*/^=()", *mExp))
    {
       mTokenType = DELIMITER;
-      temp += ch; 
+      *temp++ = *mExp++; // advance to next char
    }
-   else if (isalpha(ch))
+   else if (isalpha(*mExp))
    {
-      while (!IsDelimiter(ch))
-      {
-         temp += ch;
-         ch = mExpStream.GetC();
-      }
+      while (!IsDelimiter(*mExp))
+         *temp++ = *mExp++;
+
       mTokenType = VARIABLE;
    }
    //else if (isdigit(*mExp))
-   else if (isdigit(ch) || ch == wxT('.')) //loj: 7/15/05 Added check for .
+   else if (isdigit(*mExp) || *mExp == '.') //loj: 7/15/05 Added check for .
    {
-      while (!IsDelimiter(ch))
-      {
-         temp += ch;
-         ch = mExpStream.GetC();
-      }
+      while (!IsDelimiter(*mExp))
+         *temp++ = *mExp++;
 
       mTokenType = NUMBER;
    }
-   mToken = temp;
+
+   *temp = '\0';
 }
 
 
 //------------------------------------------------------------------------------
-// bool IsDelimiter(wxChar c)
+// bool IsDelimiter(char c)
 //------------------------------------------------------------------------------
-/* Return true if c is a delimiter.
+/*
+ * Return true if c is a delimiter.
  */
 //------------------------------------------------------------------------------
-bool ExpressionParser::IsDelimiter(wxChar c)
+bool ExpressionParser::IsDelimiter(char c)
 {
-   if (c == wxT(' ') || c == wxT('+') || c == wxT('-') || c == wxT('/') || c == wxT('*') 
-    || c == wxT('^') || c == wxT('=') || c == wxT('(') || c == wxT(')') || c==wxT('\t') 
-    || c==wxT('\r') || c==wxT('\0'))
+   if (strchr(" +-/*^=()", c) || c==9 || c=='\r' || c==0)
       return true;
    else
       return false;
@@ -435,12 +429,12 @@ bool ExpressionParser::IsDelimiter(wxChar c)
 //------------------------------------------------------------------------------
 void ExpressionParser::HandleSyntaxError(int error)
 {
-   static const wxString errMsg[] =
+   static const char *errMsg[] =
    {
-      wxT("Syntax Error\n"),
-      wxT("Unbalanced Parentheses\n"),
-      wxT("No expression Present\n"),
+      "Syntax Error\n",
+      "Unbalanced Parentheses\n",
+      "No expression Present\n",
    };
 
-   throw ParameterException(errMsg[error]);
+   throw ParameterException(std::string(errMsg[error]));
 }

@@ -28,8 +28,8 @@
 class GMAT_API HardwareFactory : public Factory
 {
 public:
-   Hardware* CreateHardware(const wxString &ofType,
-                            const wxString &withName = wxT(""));
+   Hardware* CreateHardware(const std::string &ofType,
+                            const std::string &withName = "");
 
    // default constructor
    HardwareFactory();
