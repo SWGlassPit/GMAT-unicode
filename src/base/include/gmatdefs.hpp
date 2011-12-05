@@ -33,7 +33,7 @@
 #include <map>                  // For std::map
 #include <stack>                // for std::stack
 #include <list>                 // To fix VS DLL import/export issues
-#include "wx/wx.h"
+//#include "wx/wx.h"
 
 #ifdef _WIN32  // Windows
    #ifdef _MSC_VER  // Microsoft Visual C++
