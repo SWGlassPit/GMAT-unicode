@@ -31,10 +31,10 @@
 //---------------------------------
 // static variables
 //---------------------------------
-wxString UserInputValidator::lessOrEq = wxT(" <= ");
-wxString UserInputValidator::lessThan = wxT(" < ");
-wxString UserInputValidator::moreOrEq = wxT(" >= ");
-wxString UserInputValidator::moreThan = wxT(" > ");
+std::string UserInputValidator::lessOrEq = " <= ";
+std::string UserInputValidator::lessThan = " < ";
+std::string UserInputValidator::moreOrEq = " >= ";
+std::string UserInputValidator::moreThan = " > ";
 
 //------------------------------------------------------------------------------
 // UserInputValidator()
@@ -47,8 +47,8 @@ UserInputValidator::UserInputValidator()
    mIsInputValid = true;
    
    mMsgFormat =
-      wxT("The value of \"%s\" for field \"%s\" is not an allowed value. \n")
-      wxT("The allowed values are: [%s].");
+      "The value of \"%s\" for field \"%s\" is not an allowed value. \n"
+      "The allowed values are: [%s].";
 }
 
 
@@ -71,16 +71,16 @@ void UserInputValidator::SetObject(GmatBase *obj)
       if (mObject->IsOfType(Gmat::COMMAND))
       {
          mMsgFormat =
-            wxT("The value of \"%s\" for field \"%s\" on command \"")
-            + mObject->GetTypeName() +  wxT("\" is not an allowed value. \n")
-            wxT("The allowed values are: [%s].");
+            "The value of \"%s\" for field \"%s\" on command \""
+            + mObject->GetTypeName() +  "\" is not an allowed value. \n"
+            "The allowed values are: [%s].";
       }
       else
       {
          mMsgFormat =
-            wxT("The value of \"%s\" for field \"%s\" on object \"")
-            + mObject->GetName() +  wxT("\" is not an allowed value. \n")
-            wxT("The allowed values are: [%s].");
+            "The value of \"%s\" for field \"%s\" on object \""
+            + mObject->GetName() +  "\" is not an allowed value. \n"
+            "The allowed values are: [%s].";
       }
    }
 }
@@ -126,10 +126,10 @@ bool UserInputValidator::IsInputValid()
 //------------------------------------------------------------------------------
 bool UserInputValidator::IsValidName(const wxString &name)
 {
-   if (name == wxT(""))
+   if (name == "")
    {
       MessageInterface::PopupMessage
-         (Gmat::WARNING_, wxT("The name is blank, please enter a valid name"));
+         (Gmat::WARNING_, "The name is blank, please enter a valid name");
       
       SetErrorFlag();
       return false;
@@ -137,7 +137,7 @@ bool UserInputValidator::IsValidName(const wxString &name)
    
    if (!GmatStringUtil::IsValidName(name.c_str()))
    {
-      wxString format = GmatStringUtil::GetInvalidNameMessageFormat();
+      std::string format = GmatStringUtil::GetInvalidNameMessageFormat();
       MessageInterface::PopupMessage
          (Gmat::WARNING_, format.c_str(), name.c_str());
       
@@ -150,8 +150,8 @@ bool UserInputValidator::IsValidName(const wxString &name)
 
 
 //------------------------------------------------------------------------------
-// bool CheckFileName(const wxString &str, const wxString &str,
-//                    const wxString &field, bool onlyMsg = false)
+// bool CheckFileName(const wxString &str, const std::string &str,
+//                    const std::string &field, bool onlyMsg = false)
 //------------------------------------------------------------------------------
 /*
  * Checks for a valid file name.
@@ -163,12 +163,12 @@ bool UserInputValidator::IsValidName(const wxString &name)
  * @return true if input name is valid, false otherwise
  */
 //------------------------------------------------------------------------------
-bool UserInputValidator::CheckFileName(const wxString &str,
-                                       const wxString &field, bool onlyMsg)
+bool UserInputValidator::CheckFileName(const std::string &str,
+                                       const std::string &field, bool onlyMsg)
 {
    if (onlyMsg)
    {
-      wxString msg = GmatFileUtil::GetInvalidFileNameMessage(1);
+      std::string msg = GmatFileUtil::GetInvalidFileNameMessage(1);
       MessageInterface::PopupMessage
          (Gmat::ERROR_, mMsgFormat.c_str(), str.c_str(), field.c_str(),
           msg.c_str());
@@ -180,7 +180,7 @@ bool UserInputValidator::CheckFileName(const wxString &str,
    // We don't want allow blank file name so pass false
    if (!GmatFileUtil::IsValidFileName(str, false))
    {
-      wxString msg = GmatFileUtil::GetInvalidFileNameMessage(1);
+      std::string msg = GmatFileUtil::GetInvalidFileNameMessage(1);
       MessageInterface::PopupMessage
          (Gmat::ERROR_, mMsgFormat.c_str(), str.c_str(), field.c_str(),
           msg.c_str());
@@ -194,8 +194,8 @@ bool UserInputValidator::CheckFileName(const wxString &str,
 
 
 //------------------------------------------------------------------------------
-// bool CheckReal(Real &rvalue, const wxString &str,
-//                const wxString &field, const wxString &expRange,
+// bool CheckReal(Real &rvalue, const std::string &str,
+//                const std::string &field, const std::string &expRange,
 //                bool onlyMsg, bool checkRange, bool positive bool zeroOk)
 //------------------------------------------------------------------------------
 /*
@@ -216,13 +216,13 @@ bool UserInputValidator::CheckFileName(const wxString &str,
  * @return true if value is valid, false otherwise
  */
 //------------------------------------------------------------------------------
-bool UserInputValidator::CheckReal(Real &rvalue, const wxString &str,
-                          const wxString &field, const wxString &expRange,
+bool UserInputValidator::CheckReal(Real &rvalue, const std::string &str,
+                          const std::string &field, const std::string &expRange,
                           bool onlyMsg, bool checkRange, bool positive, bool zeroOk)
 {
    #ifdef DEBUG_CHECK_REAL
    MessageInterface::ShowMessage
-      (wxT("UserInputValidator::CheckReal() str='%s', field='%s', expRange='%s'\n"), str.c_str(),
+      ("UserInputValidator::CheckReal() str='%s', field='%s', expRange='%s'\n", str.c_str(),
        field.c_str(), expRange.c_str());
    #endif
    
@@ -243,7 +243,7 @@ bool UserInputValidator::CheckReal(Real &rvalue, const wxString &str,
       rvalue = rval;
       #ifdef DEBUG_CHECK_REAL
       MessageInterface::ShowMessage
-         (wxT("UserInputValidator::CheckReal() rval = %12.10f\n"), rval);
+         ("UserInputValidator::CheckReal() rval = %12.10f\n", rval);
       #endif
       
       if (checkRange)
@@ -257,7 +257,7 @@ bool UserInputValidator::CheckReal(Real &rvalue, const wxString &str,
    
    #ifdef DEBUG_CHECK_REAL
    MessageInterface::ShowMessage
-      (wxT("UserInputValidator::CheckReal() NOT a valid real number\n"));
+      ("UserInputValidator::CheckReal() NOT a valid real number\n");
    #endif
    MessageInterface::PopupMessage
       (Gmat::ERROR_, mMsgFormat.c_str(), str.c_str(), field.c_str(),
@@ -269,8 +269,8 @@ bool UserInputValidator::CheckReal(Real &rvalue, const wxString &str,
 
 
 //------------------------------------------------------------------------------
-// bool CheckInteger(Integer &ivalue, const wxString &str,
-//                   const wxString &field, const wxString &expRange,
+// bool CheckInteger(Integer &ivalue, const std::string &str,
+//                   const std::string &field, const std::string &expRange,
 //                   bool onlyMsg = false, bool positive, bool zeroOk)
 //------------------------------------------------------------------------------
 /*
@@ -291,9 +291,9 @@ bool UserInputValidator::CheckReal(Real &rvalue, const wxString &str,
  * @return true if value is valid, false otherwise
  */
 //------------------------------------------------------------------------------
-bool UserInputValidator::CheckInteger(Integer &ivalue, const wxString &str,
-                                      const wxString &field,
-                                      const wxString &expRange, bool onlyMsg,
+bool UserInputValidator::CheckInteger(Integer &ivalue, const std::string &str,
+                                      const std::string &field,
+                                      const std::string &expRange, bool onlyMsg,
                                       bool checkRange, bool positive, bool zeroOk)
 {
    if (onlyMsg)
@@ -331,8 +331,8 @@ bool UserInputValidator::CheckInteger(Integer &ivalue, const wxString &str,
 
 
 //------------------------------------------------------------------------------
-// bool CheckIntegerRange(Integer &ivalue, const wxString &str, 
-//         const wxString &field, Integer lower, Integer upper,
+// bool CheckIntegerRange(Integer &ivalue, const std::string &str, 
+//         const std::string &field, Integer lower, Integer upper,
 //         bool checkLower = true, bool checkUpper = true,
 //         bool includeLower = false, bool includeUpper = false)
 //------------------------------------------------------------------------------
@@ -353,8 +353,8 @@ bool UserInputValidator::CheckInteger(Integer &ivalue, const wxString &str,
  * @return true if input value is valid, false otherwise
  */
 //------------------------------------------------------------------------------
-bool UserInputValidator::CheckIntegerRange(Integer &ivalue, const wxString &str, 
-                                           const wxString &field, Integer lower,
+bool UserInputValidator::CheckIntegerRange(Integer &ivalue, const std::string &str, 
+                                           const std::string &field, Integer lower,
                                            Integer upper, bool checkLower, bool checkUpper,
                                            bool includeLower, bool includeUpper)
 {
@@ -371,7 +371,7 @@ bool UserInputValidator::CheckIntegerRange(Integer &ivalue, const wxString &str,
       return retval;
    }
    
-   wxString expRange = wxT("Integer");
+   std::string expRange = "Integer";
    MessageInterface::PopupMessage
       (Gmat::ERROR_, mMsgFormat.c_str(), str.c_str(), field.c_str(),
        expRange.c_str());
@@ -382,8 +382,8 @@ bool UserInputValidator::CheckIntegerRange(Integer &ivalue, const wxString &str,
 
 
 //------------------------------------------------------------------------------
-// bool CheckVariable(const wxString &varName, Gmat::ObjectType ownerType,
-//                    const wxString &field, const wxString &expRange,
+// bool CheckVariable(const std::string &varName, Gmat::ObjectType ownerType,
+//                    const std::string &field, const std::string &expRange,
 //                    bool allowNumber  = true, bool allowNonPlottable = false)
 //------------------------------------------------------------------------------
 /*
@@ -401,14 +401,14 @@ bool UserInputValidator::CheckIntegerRange(Integer &ivalue, const wxString &str,
  * @return true if varName is valid
  */
 //------------------------------------------------------------------------------
-bool UserInputValidator::CheckVariable(const wxString &varName, Gmat::ObjectType ownerType,
-                              const wxString &field, const wxString &expRange,
+bool UserInputValidator::CheckVariable(const std::string &varName, Gmat::ObjectType ownerType,
+                              const std::string &field, const std::string &expRange,
                               bool allowNumber, bool allowNonPlottable)
 {
    if (mGuiManager == NULL)
    {
       MessageInterface::ShowMessage
-         (wxT("==> UserInputValidator::CheckVariable() mGuiManager is NULL\n"));
+         ("==> UserInputValidator::CheckVariable() mGuiManager is NULL\n");
       return false;
    }
    
@@ -418,34 +418,34 @@ bool UserInputValidator::CheckVariable(const wxString &varName, Gmat::ObjectType
    if (retval == -1)
    {
       MessageInterface::PopupMessage
-         (Gmat::ERROR_, wxT("The variable \"%s\" for field \"%s\" ")
-          wxT("does not exist.\nPlease create it first from the ParameterSelectDialog or ")
-          wxT("from the Resource Tree.\n"), varName.c_str(), field.c_str());
+         (Gmat::ERROR_, "The variable \"%s\" for field \"%s\" "
+          "does not exist.\nPlease create it first from the ParameterSelectDialog or "
+          "from the Resource Tree.\n", varName.c_str(), field.c_str());
       
       SetErrorFlag();
       return false;
    }
    else if (retval == 3)
    {
-      wxString type, ownerName, depObj;
+      std::string type, ownerName, depObj;
       GmatStringUtil::ParseParameter(varName, type, ownerName, depObj);
       
       MessageInterface::PopupMessage
-         (Gmat::ERROR_, wxT("The Parameter \"%s\" for field \"%s\" ")
-          wxT("has undefined object \"%s\".\nPlease create proper object first ")
-          wxT("from the Resource Tree.\n"), varName.c_str(), field.c_str(), ownerName.c_str());
+         (Gmat::ERROR_, "The Parameter \"%s\" for field \"%s\" "
+          "has undefined object \"%s\".\nPlease create proper object first "
+          "from the Resource Tree.\n", varName.c_str(), field.c_str(), ownerName.c_str());
       
       SetErrorFlag();
       return false;
    }
    else if (retval == 4)
    {
-      wxString type, ownerName, depObj;
+      std::string type, ownerName, depObj;
       GmatStringUtil::ParseParameter(varName, type, ownerName, depObj);
       
       MessageInterface::PopupMessage
-         (Gmat::ERROR_, wxT("The Parameter \"%s\" for field \"%s\" ")
-          wxT("has unknown Parameter type \"%s\".\n"), varName.c_str(), field.c_str(),
+         (Gmat::ERROR_, "The Parameter \"%s\" for field \"%s\" "
+          "has unknown Parameter type \"%s\".\n", varName.c_str(), field.c_str(),
           type.c_str());
       
       SetErrorFlag();
@@ -488,8 +488,8 @@ bool UserInputValidator::CheckVariable(const wxString &varName, Gmat::ObjectType
  * @return true if input value is valid, false otherwise
  */
 //------------------------------------------------------------------------------
-bool UserInputValidator::CheckRealRange(const wxString &sValue,
-                                        Real value,        const wxString &field,
+bool UserInputValidator::CheckRealRange(const std::string &sValue,
+                                        Real value,        const std::string &field,
                                         Real lower,        Real upper,
                                         bool checkLower,   bool checkUpper,
                                         bool includeLower, bool includeUpper,
@@ -514,12 +514,12 @@ bool UserInputValidator::CheckRealRange(const wxString &sValue,
       if (includeUpper && GmatMathUtil::IsEqual(value, upper)) return true;
    }
 
-   wxString inputType = wxT("Real Number");
+   std::string inputType = "Real Number";
    if (isInteger)
-      inputType = wxT("Integer Number");
+      inputType = "Integer Number";
    
    // range check failed; generate error message
-   wxString ss;
+   std::stringstream ss("");
    if (checkLower && checkUpper)
    {
       ss << lower;
@@ -545,7 +545,7 @@ bool UserInputValidator::CheckRealRange(const wxString &sValue,
       ss << upper;
    }
 
-   wxString expRange = ss;
+   std::string expRange = ss.str();
    MessageInterface::PopupMessage
       (Gmat::ERROR_, mMsgFormat.c_str(), sValue.c_str(), field.c_str(),
        expRange.c_str());
@@ -555,8 +555,8 @@ bool UserInputValidator::CheckRealRange(const wxString &sValue,
 }
 
 //------------------------------------------------------------------------------
-// bool CheckTimeFormatAndValue(const wxString &format, const wxString& value,
-//                              const wxString &field,  bool checkRange)
+// bool CheckTimeFormatAndValue(const std::string &format, const std::string& value,
+//                              const std::string &field,  bool checkRange)
 //------------------------------------------------------------------------------
 /*
  * Checks the input epoch string for correct format and, on option, allowed value.
@@ -569,27 +569,27 @@ bool UserInputValidator::CheckRealRange(const wxString &sValue,
  * @return true if input value is valid, false otherwise
  */
 //------------------------------------------------------------------------------
-bool UserInputValidator::CheckTimeFormatAndValue(const wxString &format, const wxString& value,
-                                                 const wxString &field,  bool checkRange)
+bool UserInputValidator::CheckTimeFormatAndValue(const std::string &format, const std::string& value,
+                                                 const std::string &field,  bool checkRange)
 {
-   wxString timeFormat = wxT("ModJulian");
-   if (format.find(wxT("Gregorian")) != format.npos)
-      timeFormat = wxT("Gregorian");
+   std::string timeFormat = "ModJulian";
+   if (format.find("Gregorian") != format.npos)
+      timeFormat = "Gregorian";
 
-   wxString expRange;
+   std::string expRange;
    try
    {
       TimeConverterUtil::ValidateTimeFormat(format, value, false);
    }
    catch (BaseException &)
    {
-      if (timeFormat == wxT("Gregorian"))
+      if (timeFormat == "Gregorian")
       {
-         expRange = wxT("DD Mon YYYY HH:MM:SS.sss");
+         expRange = "DD Mon YYYY HH:MM:SS.sss";
       }
       else
       {
-         expRange = wxT("Real Number");
+         expRange = "Real Number";
       }
       MessageInterface::PopupMessage
          (Gmat::ERROR_, mMsgFormat.c_str(), value.c_str(), field.c_str(),
@@ -605,14 +605,14 @@ bool UserInputValidator::CheckTimeFormatAndValue(const wxString &format, const w
       }
       catch (BaseException &)
       {
-         wxString expRange = wxT("04 Oct 1957 12:00:00.000 or later");
-         if (timeFormat == wxT("Gregorian"))
+         std::string expRange = "04 Oct 1957 12:00:00.000 or later";
+         if (timeFormat == "Gregorian")
          {
-            expRange = wxT("04 Oct 1957 12:00:00.000 or later");
+            expRange = "04 Oct 1957 12:00:00.000 or later";
          }
          else
          {
-            expRange = wxT("Real Number >= 6116.00");
+            expRange = "Real Number >= 6116.00";
          }
          MessageInterface::PopupMessage
             (Gmat::ERROR_, mMsgFormat.c_str(), value.c_str(), field.c_str(),
@@ -629,7 +629,7 @@ bool UserInputValidator::CheckTimeFormatAndValue(const wxString &format, const w
 // wxArrayString ToWxArrayString(const StringArray &array)
 //------------------------------------------------------------------------------
 /**
- * Converts wxString array to wxString array.
+ * Converts std::string array to wxString array.
  */
 //------------------------------------------------------------------------------
 wxArrayString UserInputValidator::ToWxArrayString(const StringArray &array)
@@ -651,8 +651,8 @@ wxArrayString UserInputValidator::ToWxArrayString(const StringArray &array)
 //------------------------------------------------------------------------------
 wxString UserInputValidator::ToWxString(const wxArrayString &names)
 {
-   wxString str = wxT("");
-   wxString delimiter = wxT(", ");
+   wxString str = "";
+   wxString delimiter = ", ";
    if (names.Count() > 0)
    {
       str = names[0];

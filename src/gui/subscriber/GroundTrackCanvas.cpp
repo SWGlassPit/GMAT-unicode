@@ -148,7 +148,7 @@ GroundTrackCanvas::GroundTrackCanvas(wxWindow *parent, wxWindowID id,
    
    #if DEBUG_INIT
    MessageInterface::ShowMessage
-      (wxT("GroundTrackCanvas() name=%s, size.X=%d, size.Y=%d\n"),
+      ("GroundTrackCanvas() name=%s, size.X=%d, size.Y=%d\n",
        name.c_str(), size.GetWidth(), size.GetHeight());
    #endif
    
@@ -165,7 +165,7 @@ GroundTrackCanvas::GroundTrackCanvas(wxWindow *parent, wxWindowID id,
       {
          #if DEBUG_INIT
          MessageInterface::ShowMessage
-            (wxT("   Setting new wxGLContext(this) to ModelManager::modelContext\n"));
+            ("   Setting new wxGLContext(this) to ModelManager::modelContext\n");
          #endif
          mm->modelContext = new wxGLContext(this);
       }
@@ -194,7 +194,7 @@ GroundTrackCanvas::GroundTrackCanvas(wxWindow *parent, wxWindowID id,
    // viewpoint
    SetDefaultViewPoint();
    
-   mOriginName = wxT("");
+   mOriginName = "";
    mOriginId = 0;
    
    mRotateXy = true;
@@ -208,15 +208,15 @@ GroundTrackCanvas::GroundTrackCanvas(wxWindow *parent, wxWindowID id,
    
    #if DEBUG_INIT
    MessageInterface::ShowMessage
-      (wxT("   pInternalCoordSystem=%p, pViewCoordSystem=%p\n"), pInternalCoordSystem,
+      ("   pInternalCoordSystem=%p, pViewCoordSystem=%p\n", pInternalCoordSystem,
        pViewCoordSystem);
    if (pInternalCoordSystem)
       MessageInterface::ShowMessage
-         (wxT("   pInternalCoordSystem=%s\n"), pInternalCoordSystem->GetName().c_str());
+         ("   pInternalCoordSystem=%s\n", pInternalCoordSystem->GetName().c_str());
    if (pViewCoordSystem)
       MessageInterface::ShowMessage
-         (wxT("   pViewCoordSystem=%s\n"), pViewCoordSystem->GetName().c_str());
-   MessageInterface::ShowMessage(wxT("GroundTrackCanvas() constructor exiting\n"));
+         ("   pViewCoordSystem=%s\n", pViewCoordSystem->GetName().c_str());
+   MessageInterface::ShowMessage("GroundTrackCanvas() constructor exiting\n");
    #endif
 }
 
@@ -232,7 +232,7 @@ GroundTrackCanvas::~GroundTrackCanvas()
 {
    #ifdef DEBUG_RESOURCE_CLEARING
    MessageInterface::ShowMessage
-      (wxT("GroundTrackCanvas::~GroundTrackCanvas() '%s' entered\n"), mPlotName.c_str());
+      ("GroundTrackCanvas::~GroundTrackCanvas() '%s' entered\n", mPlotName.c_str());
    #endif
    
    // Patch from Tristan Moody
@@ -260,23 +260,23 @@ GroundTrackCanvas::~GroundTrackCanvas()
    
    #ifdef DEBUG_RESOURCE_CLEARING
    MessageInterface::ShowMessage
-      (wxT("GroundTrackCanvas::~GroundTrackCanvas() '%s' exiting\n"), mPlotName.c_str());
+      ("GroundTrackCanvas::~GroundTrackCanvas() '%s' exiting\n", mPlotName.c_str());
    #endif
 }
 
 
 //------------------------------------------------------------------------------
-// void SetGl2dDrawingOption(const wxString &centralBodyName,
-//         const wxString &textureMap, Integer footPrintOption)
+// void SetGl2dDrawingOption(const std::string &centralBodyName,
+//         const std::string &textureMap, Integer footPrintOption)
 //------------------------------------------------------------------------------
-void GroundTrackCanvas::SetGl2dDrawingOption(const wxString &centralBodyName,
-                                             const wxString &textureMap,
+void GroundTrackCanvas::SetGl2dDrawingOption(const std::string &centralBodyName,
+                                             const std::string &textureMap,
                                              Integer footPrintOption)
 {
    #ifdef DEBUG_DRAWING_OPTION
    MessageInterface::ShowMessage
-      (wxT("GroundTrackCanvas::SetGl2dDrawingOption() entered, centralBodyName='%s', ")
-       wxT("textureMap='%s', footPrintOption=%d\n"), centralBodyName.c_str(),
+      ("GroundTrackCanvas::SetGl2dDrawingOption() entered, centralBodyName='%s', "
+       "textureMap='%s', footPrintOption=%d\n", centralBodyName.c_str(),
        textureMap.c_str(), footPrintOption);
    #endif
    mCentralBodyName = centralBodyName;
@@ -320,7 +320,7 @@ void GroundTrackCanvas::RedrawPlot(bool viewAnimation)
 {
    #ifdef DEBUG_REDRAW
    MessageInterface::ShowMessage
-      (wxT("GroundTrackCanvas::RedrawPlot() entered, viewAnimation=%d\n"), viewAnimation);
+      ("GroundTrackCanvas::RedrawPlot() entered, viewAnimation=%d\n", viewAnimation);
    #endif
       
    if (viewAnimation)
@@ -384,11 +384,11 @@ void GroundTrackCanvas::DrawInOtherCoordSystem(const wxString &csName)
 {
    #if DEBUG_ACTION
    MessageInterface::ShowMessage
-      (wxT("GroundTrackCanvas::DrawInOtherCoordSysName() viewCS=%s, newCS=%s\n"),
+      ("GroundTrackCanvas::DrawInOtherCoordSysName() viewCS=%s, newCS=%s\n",
        mViewCoordSysName.c_str(), csName.c_str());
    #endif
 
-   if (csName == wxT(""))
+   if (csName == "")
       return;
    
    
@@ -425,7 +425,7 @@ void GroundTrackCanvas::ViewAnimation(int interval, int frameInc)
 {
    #ifdef DEBUG_ANIMATION
    MessageInterface::ShowMessage
-      (wxT("GroundTrackCanvas::ViewAnimation() interval=%d, frameInc=%d\n"),
+      ("GroundTrackCanvas::ViewAnimation() interval=%d, frameInc=%d\n",
        interval, frameInc);
    #endif
    
@@ -452,9 +452,9 @@ void GroundTrackCanvas::ViewAnimation(int interval, int frameInc)
 
 
 //---------------------------------------------------------------------------
-// void TakeAction(const wxString &action)
+// void TakeAction(const std::string &action)
 //---------------------------------------------------------------------------
-void GroundTrackCanvas::TakeAction(const wxString &action)
+void GroundTrackCanvas::TakeAction(const std::string &action)
 {
    // Any actions to handle in this plot?
    
@@ -473,8 +473,8 @@ void GroundTrackCanvas::OnPaint(wxPaintEvent& event)
 {
    #ifdef DEBUG_ONPAINT
    MessageInterface::ShowMessage
-      (wxT("GroundTrackCanvas::OnPaint() entered, mFatalErrorFound=%d, mGlInitialized=%d, ")
-       wxT("mObjectCount=%d\n"), mFatalErrorFound, mGlInitialized, mObjectCount);
+      ("GroundTrackCanvas::OnPaint() entered, mFatalErrorFound=%d, mGlInitialized=%d, "
+       "mObjectCount=%d\n", mFatalErrorFound, mGlInitialized, mObjectCount);
    #endif
    
    // must always be here
@@ -498,7 +498,7 @@ void GroundTrackCanvas::OnPaint(wxPaintEvent& event)
    if (!mGlInitialized && mObjectCount > 0)
    {
       #ifdef DEBUG_INIT
-      MessageInterface::ShowMessage(wxT("GroundTrackCanvas::OnPaint() Calling InitOpenGL()\n"));
+      MessageInterface::ShowMessage("GroundTrackCanvas::OnPaint() Calling InitOpenGL()\n");
       #endif
       InitOpenGL();
       mGlInitialized = true;
@@ -516,8 +516,8 @@ void GroundTrackCanvas::OnPaint(wxPaintEvent& event)
       if (mWriteRepaintDisalbedInfo)
       {
          Freeze();
-         wxString msg = wxT("*** WARNING *** This plot data was published inside a ")
-            wxT("function, so repainting or drawing animation is disabled.\n");
+         wxString msg = "*** WARNING *** This plot data was published inside a "
+            "function, so repainting or drawing animation is disabled.\n";
          MessageInterface::ShowMessage(msg.c_str());
          GmatAppData::Instance()->GetMainFrame()->EnableAnimation(false);
          
@@ -540,7 +540,7 @@ void GroundTrackCanvas::OnPaint(wxPaintEvent& event)
 void GroundTrackCanvas::OnSize(wxSizeEvent& event)
 {
    #ifdef DEBUG_ONSIZE
-   MessageInterface::ShowMessage(wxT("GroundTrackCanvas::OnSize() entered\n"));
+   MessageInterface::ShowMessage("GroundTrackCanvas::OnSize() entered\n");
    #endif
    
    // Linux specific handler for sizing
@@ -575,7 +575,7 @@ void GroundTrackCanvas::OnSize(wxSizeEvent& event)
    
    #ifdef DEBUG_ONSIZE
    MessageInterface::ShowMessage
-      (wxT("GroundTrackCanvas::OnSize() leaving, w = %d, h = %d, mAxisLength = %f\n"),
+      ("GroundTrackCanvas::OnSize() leaving, w = %d, h = %d, mAxisLength = %f\n",
        nWidth, nHeight, mAxisLength);
    #endif
 }
@@ -603,7 +603,7 @@ void GroundTrackCanvas::OnMouse(wxMouseEvent& event)
    double lon = (mouseX * 360 / width) - 180.0;
    double lat = (mouseY * 180 / height) - 90.0;
    wxString mousePosStr;
-   mousePosStr.Printf(wxT("Latitude:%g  Longitude:%g"), lat, lon);   
+   mousePosStr.Printf("Latitude:%g  Longitude:%g", lat, lon);   
    theStatusBar->SetStatusText(mousePosStr, 2);
    //#endif
    
@@ -695,14 +695,14 @@ void GroundTrackCanvas::InitializeViewPoint()
 {
    #if DEBUG_INIT
    MessageInterface::ShowMessage
-      (wxT("GroundTrackCanvas::InitializeViewPoint() entered\n"));
+      ("GroundTrackCanvas::InitializeViewPoint() entered\n");
    #endif
    
    mViewPointInitialized = true;
    
    #if DEBUG_INIT
    MessageInterface::ShowMessage
-      (wxT("GroundTrackCanvas::InitializeViewPoint() leaving\n"));
+      ("GroundTrackCanvas::InitializeViewPoint() leaving\n");
    #endif
 }
 
@@ -725,7 +725,7 @@ void GroundTrackCanvas::SetDefaultView()
 void GroundTrackCanvas::SetupWorld()
 {
    #if DEBUG_PROJECTION > 2
-   MessageInterface::ShowMessage(wxT("GroundTrackCanvas::SetupWorld() entered\n"));
+   MessageInterface::ShowMessage("GroundTrackCanvas::SetupWorld() entered\n");
    #endif
    
    double left    = -180.0;
@@ -749,14 +749,14 @@ void GroundTrackCanvas::SetupWorld()
    
    #if DEBUG_PROJECTION > 2
    MessageInterface::ShowMessage
-      (wxT("   left = %f, right = %f, bottom = %f, top = %f\n"), left, right, bottom, top);
+      ("   left = %f, right = %f, bottom = %f, top = %f\n", left, right, bottom, top);
    #endif
    
    // Set left, right, bottom, top
    gluOrtho2D(left, right, bottom, top);
    
    #if DEBUG_PROJECTION > 2
-   MessageInterface::ShowMessage(wxT("GroundTrackCanvas::SetupWorld() leaving\n"));
+   MessageInterface::ShowMessage("GroundTrackCanvas::SetupWorld() leaving\n");
    #endif
 } // end SetupWorld()
 
@@ -772,8 +772,8 @@ void GroundTrackCanvas::DrawFrame()
 {
    #if DEBUG_ANIMATION
    MessageInterface::ShowMessage
-      (wxT("GroundTrackCanvas::DrawFrame() entered, mNumData=%d, mUsenitialViewPoint=%d\n")
-       wxT("   mViewCoordSysName=%s\n"), mNumData, mUseInitialViewPoint,
+      ("GroundTrackCanvas::DrawFrame() entered, mNumData=%d, mUsenitialViewPoint=%d\n"
+       "   mViewCoordSysName=%s\n", mNumData, mUseInitialViewPoint,
        mViewCoordSysName.c_str());
    #endif
    
@@ -832,7 +832,7 @@ void GroundTrackCanvas::DrawFrame()
    mIsEndOfRun = true;
    
    #if DEBUG_ANIMATION
-   MessageInterface::ShowMessage(wxT("GroundTrackCanvas::DrawFrame() leaving\n"));
+   MessageInterface::ShowMessage("GroundTrackCanvas::DrawFrame() leaving\n");
    #endif
 } // end DrawFrame()
 
@@ -851,18 +851,18 @@ void GroundTrackCanvas::DrawPlot()
    
    #if DEBUG_DRAW
    MessageInterface::ShowMessage
-      (wxT("===========================================================================\n"));
+      ("===========================================================================\n");
    MessageInterface::ShowMessage
-      (wxT("GroundTrackCanvas::DrawPlot() entered, mTotalPoints=%d, mNumData=%d, mTime[%d]=%f\n"),
+      ("GroundTrackCanvas::DrawPlot() entered, mTotalPoints=%d, mNumData=%d, mTime[%d]=%f\n",
        mTotalPoints, mNumData, mLastIndex, mTime[mLastIndex]);
    #endif
    #if DEBUG_DRAW > 1
    MessageInterface::ShowMessage
-      (wxT("   mRedrawLastPointsOnly=%d, mNumPointsToRedraw=%d, mViewCsIsInternalCs=%d, ")
-       wxT("mUseInitialViewPoint=%d\n"), mRedrawLastPointsOnly, mNumPointsToRedraw,
+      ("   mRedrawLastPointsOnly=%d, mNumPointsToRedraw=%d, mViewCsIsInternalCs=%d, "
+       "mUseInitialViewPoint=%d\n", mRedrawLastPointsOnly, mNumPointsToRedraw,
        mViewCsIsInternalCs, mUseInitialViewPoint);
    MessageInterface::ShowMessage
-      (wxT("   mUseInitialViewPoint=%d, mIsEndOfData=%d, mIsEndOfRun=%d, mDrawSolverData=%d\n"),
+      ("   mUseInitialViewPoint=%d, mIsEndOfData=%d, mIsEndOfRun=%d, mDrawSolverData=%d\n",
        mUseInitialViewPoint, mIsEndOfData, mIsEndOfRun, mDrawSolverData);
    #endif
    
@@ -902,13 +902,13 @@ void GroundTrackCanvas::DrawPlot()
    if (mDrawSolverData)
       DrawSolverData();
    
-   DrawStatus(wxT(""), GmatColor::RED32, wxT("  Epoch: "), mTime[mLastIndex], 0, 5, false);   
+   DrawStatus("", GmatColor::RED32, "  Epoch: ", mTime[mLastIndex], 0, 5, false);   
    
    glFlush();
    SwapBuffers();
    
    #if DEBUG_DRAW
-   MessageInterface::ShowMessage(wxT("GroundTrackCanvas::DrawPlot() leaving\n"));
+   MessageInterface::ShowMessage("GroundTrackCanvas::DrawPlot() leaving\n");
    #endif
 } // end DrawPlot()
 
@@ -927,7 +927,7 @@ void GroundTrackCanvas::DrawObjectOrbit(int frame)
 {
    #if DEBUG_DRAW
    MessageInterface::ShowMessage
-      (wxT("==========> DrawObjectOrbit() entered, frame=%d, mLastIndex=%d, mObjectCount=%d\n"),
+      ("==========> DrawObjectOrbit() entered, frame=%d, mLastIndex=%d, mObjectCount=%d\n",
        frame, mLastIndex, mObjectCount);
    #endif
    
@@ -952,19 +952,19 @@ void GroundTrackCanvas::DrawObjectOrbit(int frame)
       
       #if DEBUG_DRAW
       MessageInterface::ShowMessage
-         (wxT("DrawObjectOrbit() obj=%d, objId=%d, objName='%s'\n"),
+         ("DrawObjectOrbit() obj=%d, objId=%d, objName='%s'\n",
           obj, objId, objName.c_str());
       #endif
      
       #if DEBUG_DRAW_DEBUG
-      DrawDebugMessage(wxT(" Before DrawOrbit --- "), GmatColor::RED32, 0, 100);
+      DrawDebugMessage(" Before DrawOrbit --- ", GmatColor::RED32, 0, 100);
       #endif
       
       // always draw spacecraft orbit trajectory
       DrawOrbit(objName, obj, objId);
       
       #if DEBUG_DRAW_DEBUG
-      DrawDebugMessage(wxT(" After DrawOrbit  --- "), GmatColor::RED32, 0, 120);
+      DrawDebugMessage(" After DrawOrbit  --- ", GmatColor::RED32, 0, 120);
       #endif
       
       //---------------------------------------------------------
@@ -978,7 +978,7 @@ void GroundTrackCanvas::DrawObjectOrbit(int frame)
    }
    
    #if DEBUG_DRAW
-   MessageInterface::ShowMessage(wxT("==========> DrawObjectOrbit() leaving, frame=%d\n"), frame);
+   MessageInterface::ShowMessage("==========> DrawObjectOrbit() leaving, frame=%d\n", frame);
    #endif
 } // end DrawObjectOrbit()
 
@@ -996,11 +996,11 @@ void GroundTrackCanvas::DrawObjectTexture(const wxString &objName, int obj,
    
    #if DEBUG_DRAW
    MessageInterface::ShowMessage
-      (wxT("DrawObjectTexture() entered, objName='%s', obj=%d, objId=%d, frame=%d, ")
-       wxT("index2=%d, mObjLastFrame[%d]=%d\n"), objName.c_str(), obj, objId, frame,
+      ("DrawObjectTexture() entered, objName='%s', obj=%d, objId=%d, frame=%d, "
+       "index2=%d, mObjLastFrame[%d]=%d\n", objName.c_str(), obj, objId, frame,
        index2, objId, mObjLastFrame[objId]);
    MessageInterface::ShowMessage
-      (wxT("   mObjectViewPos=%f, %f, %f\n"), mObjectViewPos[index2+0],
+      ("   mObjectViewPos=%f, %f, %f\n", mObjectViewPos[index2+0],
        mObjectViewPos[index2+1], mObjectViewPos[index2+2]);
    #endif
    
@@ -1016,7 +1016,7 @@ void GroundTrackCanvas::DrawObjectTexture(const wxString &objName, int obj,
    //-------------------------------------------------------
    if (mEnableLightSource && mSunPresent)
    {
-      int sunId = GetObjectId(wxT("Sun"));
+      int sunId = GetObjectId("Sun");
       int index;
       if (sunId == UNKNOWN_OBJ_ID)
       {
@@ -1050,7 +1050,7 @@ void GroundTrackCanvas::DrawObjectTexture(const wxString &objName, int obj,
    if (mObjectArray[obj]->IsOfType(Gmat::SPACECRAFT))
    {     
       #if DEBUG_DRAW
-      MessageInterface::ShowMessage(wxT("==> Drawing spacecraft '%s'\n"), objName.c_str());
+      MessageInterface::ShowMessage("==> Drawing spacecraft '%s'\n", objName.c_str());
       #endif
       
       // If drawing at current position is on
@@ -1060,7 +1060,7 @@ void GroundTrackCanvas::DrawObjectTexture(const wxString &objName, int obj,
    else if (mObjectArray[obj]->IsOfType(Gmat::GROUND_STATION))
    {
       #if DEBUG_DRAW
-      MessageInterface::ShowMessage(wxT("==> Drawing ground station '%s'\n"), objName.c_str());
+      MessageInterface::ShowMessage("==> Drawing ground station '%s'\n", objName.c_str());
       #endif
       
       DrawGroundStation(objName, objId, index2);
@@ -1068,7 +1068,7 @@ void GroundTrackCanvas::DrawObjectTexture(const wxString &objName, int obj,
    else
    {
       #if DEBUG_DRAW
-      MessageInterface::ShowMessage(wxT("==> Drawing body '%s'\n"), objName.c_str());
+      MessageInterface::ShowMessage("==> Drawing body '%s'\n", objName.c_str());
       #endif
       
       //put object at final position
@@ -1106,7 +1106,7 @@ void GroundTrackCanvas::DrawObject(const wxString &objName, int obj)
    
    #if DEBUG_DRAW > 1
    MessageInterface::ShowMessage
-      (wxT("GroundTrackCanvas::DrawObject() drawing:%s, obj=%d, objId:%d, frame:%d\n"),
+      ("GroundTrackCanvas::DrawObject() drawing:%s, obj=%d, objId:%d, frame:%d\n",
        objName.c_str(), obj, objId, frame);
    #endif
    
@@ -1116,7 +1116,7 @@ void GroundTrackCanvas::DrawObject(const wxString &objName, int obj)
    //-------------------------------------------------------
    if (mEnableLightSource && mSunPresent)
    {
-      int sunId = GetObjectId(wxT("Sun"));
+      int sunId = GetObjectId("Sun");
       int index = sunId * MAX_DATA * 3 + frame * 3;
       
       if (sunId == UNKNOWN_OBJ_ID)
@@ -1166,14 +1166,14 @@ void GroundTrackCanvas::DrawOrbitLines(int i, const wxString &objName, int obj,
                                        int objId)
 {
    #if DEBUG_DRAW_DEBUG
-   DrawDebugMessage(wxT(" Entered DrawOrbitLines  --- "), GmatColor::RED32, 0, 300);
+   DrawDebugMessage(" Entered DrawOrbitLines  --- ", GmatColor::RED32, 0, 300);
    #endif
    
    #ifdef DEBUG_ORBIT_LINES
    MessageInterface::ShowMessage
-      (wxT("GroundTrackCanvas::DrawOrbitLines() entered, i=%d, objName='%s', ")
-       wxT("obj=%d, objId=%d, mTime[%3d]=%f, mTime[%3d]=%f, mIsDrawing[%3d]=%d, ")
-       wxT("mIsDrawing[%3d]=%d\n"), i, objName.c_str(), obj, objId, i, mTime[i],
+      ("GroundTrackCanvas::DrawOrbitLines() entered, i=%d, objName='%s', "
+       "obj=%d, objId=%d, mTime[%3d]=%f, mTime[%3d]=%f, mIsDrawing[%3d]=%d, "
+       "mIsDrawing[%3d]=%d\n", i, objName.c_str(), obj, objId, i, mTime[i],
        i-1, mTime[i-1], i, mIsDrawing[i], i-1, mIsDrawing[i-1]);
    #endif
    
@@ -1210,7 +1210,7 @@ void GroundTrackCanvas::DrawOrbitLines(int i, const wxString &objName, int obj,
       {
          #if DEBUG_SHOW_SKIP
          MessageInterface::ShowMessage
-            (wxT("   plot=%s, i1=%d, i2=%d, time1=%f, time2=%f\n   r1=%s, r2=%s\n"),
+            ("   plot=%s, i1=%d, i2=%d, time1=%f, time2=%f\n   r1=%s, r2=%s\n",
              GetName().c_str(), i-1, i, mTime[i-1], mTime[i], r1.ToString().c_str(),
              r2.ToString().c_str());
          #endif
@@ -1241,7 +1241,7 @@ void GroundTrackCanvas::DrawOrbitLines(int i, const wxString &objName, int obj,
                      mObjectViewVel[index2+2]);
          
          // We don't want to draw celestial body
-         if (objName != wxT("Earth") && objName != wxT("Sun"))
+         if (objName != "Earth" && objName != "Sun")
          {
             DrawGroundTrackLines(r1, v1, r2, v2);
             
@@ -1261,12 +1261,12 @@ void GroundTrackCanvas::DrawOrbitLines(int i, const wxString &objName, int obj,
       
       #ifdef DEBUG_ORBIT_LINES
       MessageInterface::ShowMessage
-         (wxT("DrawOrbitLines() leaving, mObjLastFrame[%d] = %d\n"), objId, i);
+         ("DrawOrbitLines() leaving, mObjLastFrame[%d] = %d\n", objId, i);
       #endif
    }
    
    #if DEBUG_DRAW_DEBUG
-   DrawDebugMessage(wxT(" Leaving DrawOrbitLines  --- "), GmatColor::RED32, 0, 420);
+   DrawDebugMessage(" Leaving DrawOrbitLines  --- ", GmatColor::RED32, 0, 420);
    #endif
 }
 
@@ -1278,11 +1278,11 @@ void GroundTrackCanvas::DrawGroundTrackLines(Rvector3 &r1, Rvector3 &v1,
                                              Rvector3 &r2, Rvector3 &v2)
 {
    #if DEBUG_DRAW_LINE
-   MessageInterface::ShowMessage(wxT("DrawGroundTrackLines() entered\n"));
+   MessageInterface::ShowMessage("DrawGroundTrackLines() entered\n");
    #endif
    
    #if DEBUG_DRAW_DEBUG
-   DrawDebugMessage(wxT(" Entered DrawGroundTrackLines --- "), GmatColor::RED32, 0, 500);
+   DrawDebugMessage(" Entered DrawGroundTrackLines --- ", GmatColor::RED32, 0, 500);
    #endif
       
    // Compute latitude and longitude
@@ -1297,7 +1297,7 @@ void GroundTrackCanvas::DrawGroundTrackLines(Rvector3 &r1, Rvector3 &v1,
    lat2 *= GmatMathConstants::DEG_PER_RAD;
    
    #if DEBUG_DRAW_LINE
-   MessageInterface::ShowMessage(wxT("---> lon1=%f, lat1=%f, lon2=%f, lat2=%f\n"), lon1, lat1, lon2, lat2);
+   MessageInterface::ShowMessage("---> lon1=%f, lat1=%f, lon2=%f, lat2=%f\n", lon1, lat1, lon2, lat2);
    #endif
    
    // Turn on TEXTURE_2D to dim the color, alpha doen't seem to work!!
@@ -1318,13 +1318,13 @@ void GroundTrackCanvas::DrawGroundTrackLines(Rvector3 &r1, Rvector3 &v1,
    
    #if DEBUG_DRAW_LINE
    MessageInterface::ShowMessage
-      (wxT("   plusLon2=%f, plusLon1=%f, minusLon2=%f, minusLon1=%f\n"),
+      ("   plusLon2=%f, plusLon1=%f, minusLon2=%f, minusLon1=%f\n",
        plusLon2, plusLon1, minusLon2, minusLon1);
    #endif
    
    #if DEBUG_DRAW_LINE
    MessageInterface::ShowMessage
-      (wxT("---> dir1=%d, dir2=%d, m=%f\n"), dir1, dir2, m);
+      ("---> dir1=%d, dir2=%d, m=%f\n", dir1, dir2, m);
    #endif
    
    // New point wrapps off RHS border
@@ -1335,7 +1335,7 @@ void GroundTrackCanvas::DrawGroundTrackLines(Rvector3 &r1, Rvector3 &v1,
       m1 = (lat2 - lat1) / (plusLon2 - plusLon1);
       lat3 = m1 * (GmatMathConstants::PI_DEG - plusLon2) + lat2;
       #if DEBUG_DRAW_LINE
-      MessageInterface::ShowMessage(wxT("------> at RHS border, lat3=%f\n"), lat3);
+      MessageInterface::ShowMessage("------> at RHS border, lat3=%f\n", lat3);
       #endif
       
       DrawLine(lon1, lat1, GmatMathConstants::PI_DEG, lat3);
@@ -1349,7 +1349,7 @@ void GroundTrackCanvas::DrawGroundTrackLines(Rvector3 &r1, Rvector3 &v1,
       m1 = (lat2 - lat1) / (minusLon2 - minusLon1);
       lat3 = m1 * (-GmatMathConstants::PI_DEG - minusLon2) + lat2;
       #if DEBUG_DRAW_LINE
-      MessageInterface::ShowMessage(wxT("------> at LHS border, lat3=%f\n"), lat3);
+      MessageInterface::ShowMessage("------> at LHS border, lat3=%f\n", lat3);
       #endif
       
       DrawLine(lon1, lat1, -GmatMathConstants::PI_DEG, lat3);
@@ -1358,7 +1358,7 @@ void GroundTrackCanvas::DrawGroundTrackLines(Rvector3 &r1, Rvector3 &v1,
    else
    {
       #if DEBUG_DRAW_LINE
-      MessageInterface::ShowMessage(wxT("------> at normal drawing\n"));
+      MessageInterface::ShowMessage("------> at normal drawing\n");
       #endif
       
       DrawLine(lon1, lat1, lon2, lat2);
@@ -1368,11 +1368,11 @@ void GroundTrackCanvas::DrawGroundTrackLines(Rvector3 &r1, Rvector3 &v1,
    glDisable(GL_TEXTURE_2D);
    
    #if DEBUG_DRAW_DEBUG
-   DrawDebugMessage(wxT(" Leaving DrawGroundTrackLines --- "), GmatColor::RED32, 0, 500);
+   DrawDebugMessage(" Leaving DrawGroundTrackLines --- ", GmatColor::RED32, 0, 500);
    #endif
    
    #if DEBUG_DRAW_LINE
-   MessageInterface::ShowMessage(wxT("DrawGroundTrackLines() leaving\n"));
+   MessageInterface::ShowMessage("DrawGroundTrackLines() leaving\n");
    #endif
 }
 
@@ -1403,7 +1403,7 @@ void GroundTrackCanvas::DrawGridLines()
       // Draw labels
       if (i != -180 && i != 180)
       {
-         str.Printf(wxT("%d"), i);
+         str.Printf("%d", i);
          DrawStringAt(str, lon1+1, lat2+1, 0, 1);
       }
    }
@@ -1420,7 +1420,7 @@ void GroundTrackCanvas::DrawGridLines()
       // Draw labels
       if (i != -90 && i != 90)
       {
-         str.Printf(wxT("%d"), i);
+         str.Printf("%d", i);
          DrawStringAt(str, lon1+1, lat2+1, 0, 1);
       }
    }
@@ -1436,7 +1436,7 @@ void GroundTrackCanvas::DrawGridLines()
 void GroundTrackCanvas::DrawCentralBodyTexture()
 {
    #ifdef DEBUG_DRAW
-   MessageInterface::ShowMessage(wxT("DrawCentralBodyTexture() entered\n"));
+   MessageInterface::ShowMessage("DrawCentralBodyTexture() entered\n");
    #endif
    
    if (mTextureIdMap[mCentralBodyName.c_str()] != GmatPlot::UNINIT_TEXTURE)
@@ -1459,7 +1459,7 @@ void GroundTrackCanvas::DrawCentralBodyTexture()
    }
    
    #ifdef DEBUG_DRAW
-   MessageInterface::ShowMessage(wxT("DrawCentralBodyTexture() leaving\n"));
+   MessageInterface::ShowMessage("DrawCentralBodyTexture() leaving\n");
    #endif
 }
 
@@ -1491,7 +1491,7 @@ void GroundTrackCanvas::DrawCircleAtCurrentPosition(int objId, int index,
       BodyFixedStateConverterUtil::CartesianToSpherical(r2, 0.0, 0.0);
    Real lon3 = latLonHgt[1] * GmatMathConstants::DEG_PER_RAD;
    Real lat3 = latLonHgt[0] * GmatMathConstants::DEG_PER_RAD;
-   MessageInterface::ShowMessage(wxT("   lon3 = %f, lat3 = %f\n"), lon3, lat3);
+   MessageInterface::ShowMessage("   lon3 = %f, lat3 = %f\n", lon3, lat3);
    #endif
    //======================================================================
    
@@ -1500,7 +1500,7 @@ void GroundTrackCanvas::DrawCircleAtCurrentPosition(int objId, int index,
    lat2 *= GmatMathConstants::DEG_PER_RAD;
    
    #if DEBUG_DRAW_SPACECRAFT
-   MessageInterface::ShowMessage(wxT("   lon2 = %f, lat2 = %f\n"), lon2, lat2);
+   MessageInterface::ShowMessage("   lon2 = %f, lat2 = %f\n", lon2, lat2);
    #endif
    
    // Set color
@@ -1559,7 +1559,7 @@ void GroundTrackCanvas::DrawSpacecraft(const wxString &objName, int objId, int i
    float imagePos = 2.0 * (defaultCanvasAxis / mAxisLength);
    
    #if DEBUG_DRAW_SPACECRAFT
-   MessageInterface::ShowMessage(wxT("   lon = %f, lat = %f\n"), lon, lat);
+   MessageInterface::ShowMessage("   lon = %f, lat = %f\n", lon, lat);
    #endif
    
    if (mTextureIdMap[objName.c_str()] != GmatPlot::UNINIT_TEXTURE)
@@ -1656,7 +1656,7 @@ void GroundTrackCanvas::DrawGroundStation(const wxString &objName, int objId,
    lat2 *= GmatMathConstants::DEG_PER_RAD;
    
    #if DEBUG_DRAW_GROUNDSTATION
-   MessageInterface::ShowMessage(wxT("   lon2 = %f, lat2 = %f\n"), lon2, lat2);
+   MessageInterface::ShowMessage("   lon2 = %f, lat2 = %f\n", lon2, lat2);
    #endif
    
    // Set color to yellow
@@ -1685,7 +1685,7 @@ void GroundTrackCanvas::RotateBodyUsingAttitude(const wxString &objName, int obj
 {
    #if DEBUG_ROTATE_BODY > 1
    MessageInterface::ShowMessage
-      (wxT("RotateBodyUsingAttitude() '%s' entered, objId=%d, mLastIndex=%d, time=%f\n"),
+      ("RotateBodyUsingAttitude() '%s' entered, objId=%d, mLastIndex=%d, time=%f\n",
        objName.c_str(), objId, mLastIndex, mTime[mLastIndex]);
    #endif
    
@@ -1715,9 +1715,9 @@ void GroundTrackCanvas::RotateBodyUsingAttitude(const wxString &objName, int obj
                           mObjectQuat[attIndex+2], mObjectQuat[attIndex+3]);
    
    #if DEBUG_ROTATE_BODY > 1
-   MessageInterface::ShowMessage(wxT("==================================\n"));
+   MessageInterface::ShowMessage("==================================\n");
    MessageInterface::ShowMessage
-      (wxT("==> attIndex=%d, quat=%s\n"), attIndex, quat.ToString(16, 1).c_str());
+      ("==> attIndex=%d, quat=%s\n", attIndex, quat.ToString(16, 1).c_str());
    #endif
    
    if (quat.IsZeroVector())
@@ -1727,7 +1727,7 @@ void GroundTrackCanvas::RotateBodyUsingAttitude(const wxString &objName, int obj
    Rmatrix33 matIB = Attitude::ToCosineMatrix(quat);
    
    #if DEBUG_ROTATE_BODY > 1
-   MessageInterface::ShowMessage(wxT("==> matIB=\n%s"), matIB.ToString(16, 25).c_str());
+   MessageInterface::ShowMessage("==> matIB=\n%s", matIB.ToString(16, 25).c_str());
    #endif
    
    // Get the rotation matrix from the coordinate system of the plot to the inertial coordinate system
@@ -1738,13 +1738,13 @@ void GroundTrackCanvas::RotateBodyUsingAttitude(const wxString &objName, int obj
    
    #if DEBUG_ROTATE_BODY > 1
    MessageInterface::ShowMessage
-      (wxT("   posIndex=%d, inState=%s\n"), posIndex, inState.ToString(16, 1).c_str());
+      ("   posIndex=%d, inState=%s\n", posIndex, inState.ToString(16, 1).c_str());
    MessageInterface::ShowMessage
-      (wxT("   pViewCoordSystem=<%p>'%s', pInternalCoordSystem=<%p>'%s'\n"),
+      ("   pViewCoordSystem=<%p>'%s', pInternalCoordSystem=<%p>'%s'\n",
        pViewCoordSystem,
-       pViewCoordSystem ? pViewCoordSystem->GetName().c_str() : wxT("NULL"),
+       pViewCoordSystem ? pViewCoordSystem->GetName().c_str() : "NULL",
        pInternalCoordSystem,
-       pInternalCoordSystem ? pInternalCoordSystem->GetName().c_str() : wxT("NULL"));
+       pInternalCoordSystem ? pInternalCoordSystem->GetName().c_str() : "NULL");
    #endif
 
    mCoordConverter.Convert(mTime[mLastIndex], inState, pViewCoordSystem,
@@ -1753,13 +1753,13 @@ void GroundTrackCanvas::RotateBodyUsingAttitude(const wxString &objName, int obj
    Rmatrix33 matIP = mCoordConverter.GetLastRotationMatrix();
    
    #if DEBUG_ROTATE_BODY > 1
-   MessageInterface::ShowMessage(wxT("==> matIP=\n%s"), matIP.ToString(16, 25).c_str());
+   MessageInterface::ShowMessage("==> matIP=\n%s", matIP.ToString(16, 25).c_str());
    #endif
    
    Rmatrix33 matBP = matIB.Transpose() * matIP;
    
    #if DEBUG_ROTATE_BODY > 1
-   MessageInterface::ShowMessage(wxT("==> matPB=\n%s"), matBP.ToString(16, 25).c_str());
+   MessageInterface::ShowMessage("==> matPB=\n%s", matBP.ToString(16, 25).c_str());
    #endif
    
    // Compute angle and axis
@@ -1772,8 +1772,8 @@ void GroundTrackCanvas::RotateBodyUsingAttitude(const wxString &objName, int obj
    
    #if DEBUG_ROTATE_BODY > 1
    MessageInterface::ShowMessage
-      (wxT("RotateBodyUsingAttitude() '%s', epoch=%f, attIndex=%d, eAngle=%f, angInDeg=%f\n")
-       wxT("   eAxis=%s\n"), objName.c_str(), mTime[mLastIndex], attIndex, eAngle, angInDeg,
+      ("RotateBodyUsingAttitude() '%s', epoch=%f, attIndex=%d, eAngle=%f, angInDeg=%f\n"
+       "   eAxis=%s\n", objName.c_str(), mTime[mLastIndex], attIndex, eAngle, angInDeg,
        eAxis.ToString().c_str());
    #endif
    
@@ -1789,8 +1789,8 @@ void GroundTrackCanvas::RotateBody(const wxString &objName, int frame, int objId
 {
    #ifdef DEBUG_ROTATE_BODY
    MessageInterface::ShowMessage
-      (wxT("RotateBody() '%s' entered, objName='%s', objId=%d, mOriginId=%d, ")
-       wxT("mOriginName='%s'\n"), mPlotName.c_str(), objName.c_str(),
+      ("RotateBody() '%s' entered, objName='%s', objId=%d, mOriginId=%d, "
+       "mOriginName='%s'\n", mPlotName.c_str(), objName.c_str(),
        objId, mOriginId, mOriginName.c_str());
    #endif
    
@@ -1811,7 +1811,7 @@ bool GroundTrackCanvas::ConvertObjectData()
    
    #if DEBUG_CONVERT
    MessageInterface::ShowMessage
-      (wxT("GroundTrackCanvas::ConvertObjectData() internalCS=%s, viewCSName=%s, viewCS=%d\n"),
+      ("GroundTrackCanvas::ConvertObjectData() internalCS=%s, viewCSName=%s, viewCS=%d\n",
        pInternalCoordSystem->GetName().c_str(), pViewCoordSystem->GetName().c_str(),
        pViewCoordSystem);
    #endif
@@ -1821,8 +1821,8 @@ bool GroundTrackCanvas::ConvertObjectData()
    {
       #if DEBUG_CONVERT
       MessageInterface::ShowMessage
-         (wxT("GroundTrackCanvas::ConvertObjectData() No conversion is needed. ")
-          wxT("Just copy MJ2000 pos\n"));
+         ("GroundTrackCanvas::ConvertObjectData() No conversion is needed. "
+          "Just copy MJ2000 pos\n");
       #endif
       for (int obj=0; obj<mObjectCount; obj++)
       {
@@ -1855,7 +1855,7 @@ bool GroundTrackCanvas::ConvertObjectData()
          
          #if DEBUG_CONVERT
          MessageInterface::ShowMessage
-            (wxT("GroundTrackCanvas::ConvertObjectData() mObjectNames[%d]=%s\n"), objId,
+            ("GroundTrackCanvas::ConvertObjectData() mObjectNames[%d]=%s\n", objId,
              mObjectNames[i].c_str());
          #endif         
          
@@ -1897,8 +1897,8 @@ void GroundTrackCanvas::ConvertObject(int objId, int index)
    if (index < 10)
    {
       MessageInterface::ShowMessage
-         (wxT("   index=%d, inState=%16.9f, %16.9f, %16.9f\n")
-          wxT("           outState=%16.9f, %16.9f, %16.9f\n"), index, inState[0],
+         ("   index=%d, inState=%16.9f, %16.9f, %16.9f\n"
+          "           outState=%16.9f, %16.9f, %16.9f\n", index, inState[0],
           inState[1], inState[2], outState[0], outState[1], outState[2]);
    }
    #endif

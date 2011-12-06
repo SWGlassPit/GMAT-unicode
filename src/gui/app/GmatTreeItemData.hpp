@@ -346,7 +346,7 @@ class GmatTreeItemData : public wxTreeItemData
 {
 public:
    GmatTreeItemData(const wxString &name, GmatTree::ItemType type,
-                    const wxString &title = wxT(""));
+                    const wxString &title = "");
 
    wxString GetName();
    wxString GetTitle();

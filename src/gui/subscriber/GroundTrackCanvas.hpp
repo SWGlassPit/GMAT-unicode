@@ -43,8 +43,8 @@ public:
    virtual ~GroundTrackCanvas();
    
    
-   void SetGl2dDrawingOption(const wxString &centralBodyName,
-                        const wxString &textureMap,
+   void SetGl2dDrawingOption(const std::string &centralBodyName,
+                        const std::string &textureMap,
                         Integer footPrintOption);
    
    // actions
@@ -60,7 +60,7 @@ public:
    void ViewAnimation(int interval, int frameInc = 30);
    
    // user actions
-   void TakeAction(const wxString &action);
+   void TakeAction(const std::string &action);
    
 protected:
    
@@ -76,7 +76,7 @@ private:
    
    static const int LAST_STD_BODY_ID;// = 10;
    static const int MAX_COORD_SYS;// = 10;
-   static const wxString BODY_NAME[GmatPlot::MAX_BODIES];
+   static const std::string BODY_NAME[GmatPlot::MAX_BODIES];
    static const Real MAX_ZOOM_IN;// = 3700.0;
    static const Real RADIUS_ZOOM_RATIO;// = 2.2;
    static const Real DEFAULT_DIST;// = 30000.0;
@@ -94,8 +94,8 @@ private:
    GLfloat mfLeftPos, mfRightPos, mfBottomPos, mfTopPos;
    
    // central body
-   wxString mCentralBodyName;
-   wxString mCentralBodyTextureFile;
+   std::string mCentralBodyName;
+   std::string mCentralBodyTextureFile;
    
    // foot print option
    Integer mFootPrintOption;
@@ -118,8 +118,8 @@ private:
    int mInversion;    // 1 is true movement, -1 is inverted
    
    // initial viewpoint
-   wxString mViewPointRefObjName;
-   wxString mViewUpAxisName;
+   std::string mViewPointRefObjName;
+   std::string mViewUpAxisName;
    
    // spacecraft
    GLuint mGlList;

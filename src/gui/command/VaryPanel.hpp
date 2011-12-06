@@ -36,8 +36,8 @@ public:
    
 protected:
    Vary *mVaryCommand;
-   wxString solverName;
-   wxString variableName;
+   std::string solverName;
+   std::string variableName;
    bool        inOptimizeCmd;
    bool        solverChanged;
    bool        variableChanged;

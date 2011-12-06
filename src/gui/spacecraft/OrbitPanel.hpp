@@ -97,15 +97,15 @@ private:
    Rvector6 mOutState;
    
    CoordinateConverter mCoordConverter;
-   wxString mFromCoordSysStr;
-   wxString mFromStateTypeStr;
-   wxString mFromAnomalyTypeStr;
-   wxString mFromEpochFormat;
+   std::string mFromCoordSysStr;
+   std::string mFromStateTypeStr;
+   std::string mFromAnomalyTypeStr;
+   std::string mFromEpochFormat;
    
-   wxString mElements[6];
-   wxString mEpochStr;
-   wxString mTaiMjdStr;
-   wxString mAnomalyType;
+   std::string mElements[6];
+   std::string mEpochStr;
+   std::string mTaiMjdStr;
+   std::string mAnomalyType;
    
    void Create();
    void AddElements(wxWindow *parent);
@@ -117,11 +117,11 @@ private:
    void OnButton(wxCommandEvent& event);
 
    void InitializeCoordinateSystem(CoordinateSystem *cs);
-   void SetLabelsUnits(const wxString &stateType);
+   void SetLabelsUnits(const std::string &stateType);
 
    void DisplayState();
    void BuildValidStateTypes();
-   void BuildValidCoordinateSystemList(const wxString &forStateType);
+   void BuildValidCoordinateSystemList(const std::string &forStateType);
    void BuildState(const Rvector6 &inputState, bool isInternal = false);
    
    wxString ToString(Real rval);
@@ -136,7 +136,7 @@ private:
    bool CheckSpherical(Rvector6 &state, const wxString &stateType);
    bool CheckEquinoctial(Rvector6 &state);
    bool CheckAnomaly(Rvector6 &state);
-   bool ComputeTrueAnomaly(Rvector6 &state, const wxString &stateType);
+   bool ComputeTrueAnomaly(Rvector6 &state, const std::string &stateType);
    
    GmatPanel *theScPanel;
    

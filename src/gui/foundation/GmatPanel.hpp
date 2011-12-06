@@ -99,7 +99,7 @@ protected:
    wxButton *theScriptButton;
    wxButton *theSummaryButton;
    
-   wxString mObjectName;
+   std::string mObjectName;
    GmatBase *mObject;
    
    // any class wishing to process wxWindows events must use this macro

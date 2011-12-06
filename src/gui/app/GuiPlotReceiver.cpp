@@ -98,7 +98,7 @@ GuiPlotReceiver::~GuiPlotReceiver()
 
 
 //------------------------------------------------------------------------------
-//  bool CreateGlPlotWindow(const wxString &plotName, ...)
+//  bool CreateGlPlotWindow(const std::string &plotName, ...)
 //------------------------------------------------------------------------------
 /*
  * Creates OpenGlPlot window
@@ -110,8 +110,8 @@ GuiPlotReceiver::~GuiPlotReceiver()
  * @param <numPtsToRedraw>  number of points to redraw during the run
  */
 //------------------------------------------------------------------------------
-bool GuiPlotReceiver::CreateGlPlotWindow(const wxString &plotName,
-                                         const wxString &oldName,
+bool GuiPlotReceiver::CreateGlPlotWindow(const std::string &plotName,
+                                         const std::string &oldName,
                                          Real positionX, Real positionY,
                                          Real width, Real height,
                                          Integer numPtsToRedraw)
@@ -125,8 +125,8 @@ bool GuiPlotReceiver::CreateGlPlotWindow(const wxString &plotName,
    
    #if DEBUG_PLOTIF_GL_CREATE
    MessageInterface::ShowMessage
-      (wxT("GuiPlotReceiver::CreateGlPlotWindow() MdiGlPlot::numChildren=%d, ")
-       wxT("plotName='%s', numPtsToRedraw=%d\n   oldName=%s\n"), MdiGlPlot::numChildren,
+      ("GuiPlotReceiver::CreateGlPlotWindow() MdiGlPlot::numChildren=%d, "
+       "plotName='%s', numPtsToRedraw=%d\n   oldName=%s\n", MdiGlPlot::numChildren,
        plotName.c_str(), oldName.c_str(), numPtsToRedraw);
    #endif
    
@@ -141,7 +141,7 @@ bool GuiPlotReceiver::CreateGlPlotWindow(const wxString &plotName,
       
       #if DEBUG_PLOTIF_GL_CREATE
       MessageInterface::ShowMessage
-         (wxT("GuiPlotReceiver::CreateGlPlotWindow() currPlotName[%d]=<%p>'%s'\n"),
+         ("GuiPlotReceiver::CreateGlPlotWindow() currPlotName[%d]=<%p>'%s'\n",
           i, frame, currPlotName.c_str());
       #endif
       
@@ -166,8 +166,8 @@ bool GuiPlotReceiver::CreateGlPlotWindow(const wxString &plotName,
    {
       #if DEBUG_PLOTIF_GL_CREATE
       MessageInterface::ShowMessage
-         (wxT("GuiPlotReceiver::CreateGlPlotWindow() Creating MdiChildViewFrame ")
-          wxT("%s\n"), plotName.c_str());
+         ("GuiPlotReceiver::CreateGlPlotWindow() Creating MdiChildViewFrame "
+          "%s\n", plotName.c_str());
       #endif
       
       Integer x, y, w, h;
@@ -187,7 +187,7 @@ bool GuiPlotReceiver::CreateGlPlotWindow(const wxString &plotName,
       if (currentView == GmatPlot::ENHANCED_3D_VIEW)
       {
          #if DEBUG_PLOTIF_GL_CREATE
-         MessageInterface::ShowMessage(wxT("   Creating MdiChild3DViewFrame...\n"));
+         MessageInterface::ShowMessage("   Creating MdiChild3DViewFrame...\n");
          #endif
          frame = new MdiChild3DViewFrame
             (GmatAppData::Instance()->GetMainFrame(),
@@ -197,7 +197,7 @@ bool GuiPlotReceiver::CreateGlPlotWindow(const wxString &plotName,
       else if (currentView == GmatPlot::GROUND_TRACK_PLOT)
       {
          #if DEBUG_PLOTIF_GL_CREATE
-         MessageInterface::ShowMessage(wxT("   Creating MdiChildGroundTrackFrame...\n"));
+         MessageInterface::ShowMessage("   Creating MdiChildGroundTrackFrame...\n");
          #endif
          frame = new MdiChildGroundTrackFrame
             (GmatAppData::Instance()->GetMainFrame(),
@@ -207,7 +207,7 @@ bool GuiPlotReceiver::CreateGlPlotWindow(const wxString &plotName,
       else
       {
          MessageInterface::ShowMessage
-            (wxT("**** ERROR **** Unknown view type %d\n"), currentView);
+            ("**** ERROR **** Unknown view type %d\n", currentView);
          return false;
       }
       
@@ -236,7 +236,7 @@ bool GuiPlotReceiver::CreateGlPlotWindow(const wxString &plotName,
          
       #if DEBUG_PLOTIF_GL_CREATE
       MessageInterface::ShowMessage
-         (wxT("GuiPlotReceiver::CreateGlPlotWindow() frame created, frame->GetPlotName()=%s\n"),
+         ("GuiPlotReceiver::CreateGlPlotWindow() frame created, frame->GetPlotName()=%s\n",
           frame->GetPlotName().c_str());
       #endif
       
@@ -254,14 +254,14 @@ bool GuiPlotReceiver::CreateGlPlotWindow(const wxString &plotName,
    {
       #if DEBUG_PLOTIF_GL_CREATE
       MessageInterface::ShowMessage
-         (wxT("GuiPlotReceiver::CreateGlPlotWindow() PlotName:%s already exist.\n"),
+         ("GuiPlotReceiver::CreateGlPlotWindow() PlotName:%s already exist.\n",
           plotName.c_str());
       #endif
    }
    
    #if DEBUG_PLOTIF_GL_CREATE
    MessageInterface::ShowMessage
-      (wxT("GuiPlotReceiver::CreateGlPlotWindow() setting num points to redraw for %s\n"),
+      ("GuiPlotReceiver::CreateGlPlotWindow() setting num points to redraw for %s\n",
        frame->GetPlotName().c_str());
    #endif
    
@@ -269,7 +269,7 @@ bool GuiPlotReceiver::CreateGlPlotWindow(const wxString &plotName,
    
    #if DEBUG_PLOTIF_GL_CREATE
    MessageInterface::ShowMessage
-      (wxT("GuiPlotReceiver::CreateGlPlotWindow() returning true, there are %d plots.\n"),
+      ("GuiPlotReceiver::CreateGlPlotWindow() returning true, there are %d plots.\n",
        MdiGlPlot::numChildren);
    #endif
    
@@ -278,13 +278,13 @@ bool GuiPlotReceiver::CreateGlPlotWindow(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void SetGlSolarSystem(const wxString &plotName, SolarSystem *ss)
+// void SetGlSolarSystem(const std::string &plotName, SolarSystem *ss)
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::SetGlSolarSystem(const wxString &plotName, SolarSystem *ss)
+void GuiPlotReceiver::SetGlSolarSystem(const std::string &plotName, SolarSystem *ss)
 {
    #if DEBUG_PLOTIF_GL_SET
    MessageInterface::ShowMessage
-      (wxT("GuiPlotReceiver::SetGlSolarSystem() SolarSystem=%p\n"), ss);
+      ("GuiPlotReceiver::SetGlSolarSystem() SolarSystem=%p\n", ss);
    #endif
 
    wxString owner = wxString(plotName.c_str());
@@ -303,16 +303,16 @@ void GuiPlotReceiver::SetGlSolarSystem(const wxString &plotName, SolarSystem *ss
 
 
 //------------------------------------------------------------------------------
-// void SetGlObject(const wxString &plotName,  ...
+// void SetGlObject(const std::string &plotName,  ...
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::SetGlObject(const wxString &plotName,
+void GuiPlotReceiver::SetGlObject(const std::string &plotName,
                                   const StringArray &objNames,
                                   const UnsignedIntArray &objOrbitColors,
                                   const std::vector<SpacePoint*> &objArray)
 {
    #if DEBUG_PLOTIF_GL_SET
    MessageInterface::ShowMessage
-      (wxT("GuiPlotReceiver::SetGlObject() plotName:%s\n"), plotName.c_str());
+      ("GuiPlotReceiver::SetGlObject() plotName:%s\n", plotName.c_str());
    #endif
 
    wxString owner = wxString(plotName.c_str());
@@ -331,16 +331,16 @@ void GuiPlotReceiver::SetGlObject(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// static void SetGlCoordSystem(const wxString &plotName, ...
+// static void SetGlCoordSystem(const std::string &plotName, ...
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::SetGlCoordSystem(const wxString &plotName,
+void GuiPlotReceiver::SetGlCoordSystem(const std::string &plotName,
                                        CoordinateSystem *internalCs,
                                        CoordinateSystem *viewCs,
                                        CoordinateSystem *viewUpCs)
 {
    #if DEBUG_PLOTIF_GL_SET
    MessageInterface::ShowMessage
-      (wxT("GuiPlotReceiver::SetGlCoordSystem() plotName:%s\n"), plotName.c_str());
+      ("GuiPlotReceiver::SetGlCoordSystem() plotName:%s\n", plotName.c_str());
    #endif
 
    wxString owner = wxString(plotName.c_str());
@@ -359,11 +359,11 @@ void GuiPlotReceiver::SetGlCoordSystem(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void SetGl2dDrawingOption(const wxString &plotName, ...)
+// void SetGl2dDrawingOption(const std::string &plotName, ...)
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::SetGl2dDrawingOption(const wxString &plotName,
-                                           const wxString &centralBodyName,
-                                           const wxString &textureMap,
+void GuiPlotReceiver::SetGl2dDrawingOption(const std::string &plotName,
+                                           const std::string &centralBodyName,
+                                           const std::string &textureMap,
                                            Integer footPrintOption)
 {
    wxString owner = wxString(plotName.c_str());
@@ -383,9 +383,9 @@ void GuiPlotReceiver::SetGl2dDrawingOption(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void SetGl3dDrawingOption(const wxString &plotName, ...)
+// void SetGl3dDrawingOption(const std::string &plotName, ...)
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::SetGl3dDrawingOption(const wxString &plotName,
+void GuiPlotReceiver::SetGl3dDrawingOption(const std::string &plotName,
                                          bool drawEcPlane, bool drawXyPlane,
                                          bool drawWireFrame, bool drawAxes,
                                          bool drawGrid, bool drawSunLine,
@@ -413,18 +413,18 @@ void GuiPlotReceiver::SetGl3dDrawingOption(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void SetGl3dViewOption(const wxString &plotName, SpacePoint *vpRefObj, ...
+// void SetGl3dViewOption(const std::string &plotName, SpacePoint *vpRefObj, ...
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::SetGl3dViewOption(const wxString &plotName,
+void GuiPlotReceiver::SetGl3dViewOption(const std::string &plotName,
                                       SpacePoint *vpRefObj, SpacePoint *vpVecObj,
                                       SpacePoint *vdObj, Real vsFactor,
                                       const Rvector3 &vpRefVec, const Rvector3 &vpVec,
-                                      const Rvector3 &vdVec, const wxString &upAxis,
+                                      const Rvector3 &vdVec, const std::string &upAxis,
                                       bool usevpRefVec, bool usevpVec, bool usevdVec)
 {
    #if DEBUG_PLOTIF_GL_SET
    MessageInterface::ShowMessage
-      (wxT("GuiPlotReceiver::SetGl3dViewOption() plotName:%s\n"), plotName.c_str());
+      ("GuiPlotReceiver::SetGl3dViewOption() plotName:%s\n", plotName.c_str());
    #endif
 
    wxString owner = wxString(plotName.c_str());
@@ -438,7 +438,7 @@ void GuiPlotReceiver::SetGl3dViewOption(const wxString &plotName,
       {
          #if DEBUG_PLOTIF_GL_SET
          MessageInterface::ShowMessage
-            (wxT("GuiPlotReceiver::SetGl3dViewOption() vpRefObj=%d, vsFactor=%f\n"),
+            ("GuiPlotReceiver::SetGl3dViewOption() vpRefObj=%d, vsFactor=%f\n",
              vpRefObj, vsFactor);
          #endif
          
@@ -451,14 +451,14 @@ void GuiPlotReceiver::SetGl3dViewOption(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void SetGlDrawOrbitFlag(const wxString &plotName, ...
+// void SetGlDrawOrbitFlag(const std::string &plotName, ...
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::SetGlDrawOrbitFlag(const wxString &plotName,
+void GuiPlotReceiver::SetGlDrawOrbitFlag(const std::string &plotName,
                                          const std::vector<bool> &drawArray)
 {
    #if DEBUG_PLOTIF_GL_SET
    MessageInterface::ShowMessage
-      (wxT("GuiPlotReceiver::SetGlDrawOrbitFlag() plotName:%s\n"), plotName.c_str());
+      ("GuiPlotReceiver::SetGlDrawOrbitFlag() plotName:%s\n", plotName.c_str());
    #endif
 
    wxString owner = wxString(plotName.c_str());
@@ -477,14 +477,14 @@ void GuiPlotReceiver::SetGlDrawOrbitFlag(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void SetGlShowObjectFlag(const wxString &plotName, ...
+// void SetGlShowObjectFlag(const std::string &plotName, ...
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::SetGlShowObjectFlag(const wxString &plotName,
+void GuiPlotReceiver::SetGlShowObjectFlag(const std::string &plotName,
                                         const std::vector<bool> &showArray)
 {
    #if DEBUG_PLOTIF_GL_SET
    MessageInterface::ShowMessage
-      (wxT("GuiPlotReceiver::SetGlShowObjectFlag() plotName:%s\n"), plotName.c_str());
+      ("GuiPlotReceiver::SetGlShowObjectFlag() plotName:%s\n", plotName.c_str());
    #endif
 
    wxString owner = wxString(plotName.c_str());
@@ -503,9 +503,9 @@ void GuiPlotReceiver::SetGlShowObjectFlag(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void SetGlUpdateFrequency(const wxString &plotName, Integer updFreq)
+// void SetGlUpdateFrequency(const std::string &plotName, Integer updFreq)
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::SetGlUpdateFrequency(const wxString &plotName,
+void GuiPlotReceiver::SetGlUpdateFrequency(const std::string &plotName,
                                          Integer updFreq)
 {
    wxString owner = wxString(plotName.c_str());
@@ -524,13 +524,13 @@ void GuiPlotReceiver::SetGlUpdateFrequency(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-//  bool IsThere(const wxString &plotName)
+//  bool IsThere(const std::string &plotName)
 //------------------------------------------------------------------------------
 /*
  * Checks if OpenGlPlot exist.
  */
 //------------------------------------------------------------------------------
-bool GuiPlotReceiver::IsThere(const wxString &plotName)
+bool GuiPlotReceiver::IsThere(const std::string &plotName)
 {
    if (GmatAppData::Instance()->GetMainFrame() != NULL)
    {
@@ -553,19 +553,19 @@ bool GuiPlotReceiver::IsThere(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-//  bool InitializeGlPlot(const wxString &plotName)
+//  bool InitializeGlPlot(const std::string &plotName)
 //------------------------------------------------------------------------------
 /*
  * Refreshes OpenGlPlot.
  */
 //------------------------------------------------------------------------------
-bool GuiPlotReceiver::InitializeGlPlot(const wxString &plotName)
+bool GuiPlotReceiver::InitializeGlPlot(const std::string &plotName)
 {
    if (GmatAppData::Instance()->GetMainFrame() != NULL)
    {
       #if DEBUG_PLOTIF_GL
       MessageInterface::ShowMessage
-         (wxT("GuiPlotReceiver::InitializeGlPlot() plotName=%s\n"),plotName.c_str());
+         ("GuiPlotReceiver::InitializeGlPlot() plotName=%s\n",plotName.c_str());
       #endif
 
       wxString owner = wxString(plotName.c_str());
@@ -587,19 +587,19 @@ bool GuiPlotReceiver::InitializeGlPlot(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-//  bool RefreshGlPlot(const wxString &plotName)
+//  bool RefreshGlPlot(const std::string &plotName)
 //------------------------------------------------------------------------------
 /*
  * Refreshes OpenGlPlot.
  */
 //------------------------------------------------------------------------------
-bool GuiPlotReceiver::RefreshGlPlot(const wxString &plotName)
+bool GuiPlotReceiver::RefreshGlPlot(const std::string &plotName)
 {
    if (GmatAppData::Instance()->GetMainFrame() != NULL)
    {
       #if DEBUG_PLOTIF_GL
       MessageInterface::ShowMessage
-         (wxT("GuiPlotReceiver::RefreshGlPlot() plotName=%s\n"),plotName.c_str());
+         ("GuiPlotReceiver::RefreshGlPlot() plotName=%s\n",plotName.c_str());
       #endif
 
       wxString owner = wxString(plotName.c_str());
@@ -621,7 +621,7 @@ bool GuiPlotReceiver::RefreshGlPlot(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-//  bool DeleteGlPlot(const wxString &plotName)
+//  bool DeleteGlPlot(const std::string &plotName)
 //------------------------------------------------------------------------------
 /*
  * Deletes OpenGlPlot by plot name.
@@ -629,7 +629,7 @@ bool GuiPlotReceiver::RefreshGlPlot(const wxString &plotName)
  * @param <plotName> name of plot to be deleted
  */
 //------------------------------------------------------------------------------
-bool GuiPlotReceiver::DeleteGlPlot(const wxString &plotName)
+bool GuiPlotReceiver::DeleteGlPlot(const std::string &plotName)
 {
    GmatAppData *gmatAppData = GmatAppData::Instance();
 
@@ -637,7 +637,7 @@ bool GuiPlotReceiver::DeleteGlPlot(const wxString &plotName)
    {
       #if DEBUG_PLOTIF_GL_DELETE
       MessageInterface::ShowMessage
-         (wxT("GuiPlotReceiver::DeleteGlPlot() plotName=%s\n"), plotName.c_str());
+         ("GuiPlotReceiver::DeleteGlPlot() plotName=%s\n", plotName.c_str());
       #endif
 
       wxString owner = wxString(plotName.c_str());
@@ -662,19 +662,19 @@ bool GuiPlotReceiver::DeleteGlPlot(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-// bool SetGlEndOfRun(const wxString &plotName)
+// bool SetGlEndOfRun(const std::string &plotName)
 //------------------------------------------------------------------------------
 /*
  * Sets end of run flag to OpenGlPlot.
  */
 //------------------------------------------------------------------------------
-bool GuiPlotReceiver::SetGlEndOfRun(const wxString &plotName)
+bool GuiPlotReceiver::SetGlEndOfRun(const std::string &plotName)
 {
    if (GmatAppData::Instance()->GetMainFrame() != NULL)
    {
       #if DEBUG_PLOTIF_GL_SET
          MessageInterface::ShowMessage
-            (wxT("GuiPlotReceiver::SetGlEndOfRun() plotName=%s\n"),plotName.c_str());
+            ("GuiPlotReceiver::SetGlEndOfRun() plotName=%s\n",plotName.c_str());
       #endif
       wxString owner = wxString(plotName.c_str());
 
@@ -695,14 +695,14 @@ bool GuiPlotReceiver::SetGlEndOfRun(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-//  bool UpdateGlPlot(const wxString &plotName, ...
+//  bool UpdateGlPlot(const std::string &plotName, ...
 //------------------------------------------------------------------------------
 /*
  * Buffers data and updates OpenGL plow window if updateCanvas is true
  */
 //------------------------------------------------------------------------------
-bool GuiPlotReceiver::UpdateGlPlot(const wxString &plotName,
-                                   const wxString &oldName,
+bool GuiPlotReceiver::UpdateGlPlot(const std::string &plotName,
+                                   const std::string &oldName,
                                    const StringArray &scNames, const Real &time,
                                    const RealArray &posX, const RealArray &posY,
                                    const RealArray &posZ, const RealArray &velX,
@@ -713,7 +713,7 @@ bool GuiPlotReceiver::UpdateGlPlot(const wxString &plotName,
 {
    #if DEBUG_PLOTIF_GL_UPDATE
    MessageInterface::ShowMessage
-      (wxT("GuiPlotReceiver::UpdateGlPlot() entered. time = %f, number of plots = %d\n"),
+      ("GuiPlotReceiver::UpdateGlPlot() entered. time = %f, number of plots = %d\n",
        time, MdiGlPlot::numChildren);
    #endif
    
@@ -728,15 +728,15 @@ bool GuiPlotReceiver::UpdateGlPlot(const wxString &plotName,
 
       #if DEBUG_PLOTIF_GL_UPDATE
       MessageInterface::ShowMessage
-         (wxT("GuiPlotReceiver::UpdateGlPlot() frame[%d]->GetPlotName()=%s ")
-          wxT("owner=%s\n"), i, frame->GetPlotName().c_str(), owner.c_str());
+         ("GuiPlotReceiver::UpdateGlPlot() frame[%d]->GetPlotName()=%s "
+          "owner=%s\n", i, frame->GetPlotName().c_str(), owner.c_str());
       #endif
       
       if (frame && frame->GetPlotName().IsSameAs(owner.c_str()))
       {
          #if DEBUG_PLOTIF_GL_UPDATE
          MessageInterface::ShowMessage
-            (wxT("GuiPlotReceiver::UpdateGlPlot() now updating '%s'...\n"),
+            ("GuiPlotReceiver::UpdateGlPlot() now updating '%s'...\n",
              frame->GetPlotName().c_str());
          #endif
          frame->UpdatePlot(scNames, time, posX, posY, posZ, velX, velY, velZ,
@@ -753,14 +753,14 @@ bool GuiPlotReceiver::UpdateGlPlot(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// bool TakeGlAction(const wxString &plotName, const wxString &action)
+// bool TakeGlAction(const std::string &plotName, const std::string &action)
 //------------------------------------------------------------------------------
-bool GuiPlotReceiver::TakeGlAction(const wxString &plotName,
-                                 const wxString &action)
+bool GuiPlotReceiver::TakeGlAction(const std::string &plotName,
+                                 const std::string &action)
 {
    #if DEBUG_PLOTIF_GL_CLEAR
    MessageInterface::ShowMessage
-      (wxT("GuiPlotReceiver::ClearGlSolverData() entered\n"));
+      ("GuiPlotReceiver::ClearGlSolverData() entered\n");
    #endif
 
    bool retval = false;
@@ -774,8 +774,8 @@ bool GuiPlotReceiver::TakeGlAction(const wxString &plotName,
 
       #if DEBUG_PLOTIF_GL_CLEAR
       MessageInterface::ShowMessage
-         (wxT("GuiPlotReceiver::ClearGlSolverData() frame[%d]->GetPlotName()=%s ")
-          wxT("owner=%s\n"), i, frame->GetPlotName().c_str(), owner.c_str());
+         ("GuiPlotReceiver::ClearGlSolverData() frame[%d]->GetPlotName()=%s "
+          "owner=%s\n", i, frame->GetPlotName().c_str(), owner.c_str());
       #endif
 
       if (frame)
@@ -793,9 +793,9 @@ bool GuiPlotReceiver::TakeGlAction(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-//  bool CreateXyPlotWindow(const wxString &plotName,
-//       const wxString &oldName, const wxString &plotTitle,
-//       const wxString &xAxisTitle, const wxString &yAxisTitle,
+//  bool CreateXyPlotWindow(const std::string &plotName,
+//       const std::string &oldName, const std::string &plotTitle,
+//       const std::string &xAxisTitle, const std::string &yAxisTitle,
 //       bool drawGrid = false)
 //------------------------------------------------------------------------------
 /*
@@ -813,13 +813,13 @@ bool GuiPlotReceiver::TakeGlAction(const wxString &plotName,
  * @return true on success, false on failure
  */
 //------------------------------------------------------------------------------
-bool GuiPlotReceiver::CreateXyPlotWindow(const wxString &plotName,
-                                       const wxString &oldName,
+bool GuiPlotReceiver::CreateXyPlotWindow(const std::string &plotName,
+                                       const std::string &oldName,
                                        Real positionX, Real positionY,
                                        Real width, Real height,
-                                       const wxString &plotTitle,
-                                       const wxString &xAxisTitle,
-                                       const wxString &yAxisTitle,
+                                       const std::string &plotTitle,
+                                       const std::string &xAxisTitle,
+                                       const std::string &yAxisTitle,
                                        bool drawGrid,
                                        bool canSaveLocation)
 {
@@ -844,8 +844,8 @@ bool GuiPlotReceiver::CreateXyPlotWindow(const wxString &plotName,
       {
          #if DEBUG_RENAME
          MessageInterface::ShowMessage
-            (wxT("GuiPlotReceiver::CreateXyPlotWindow() currPlotName=%s, ")
-                  wxT("oldName=%s\n"), currPlotName.c_str(), oldName.c_str());
+            ("GuiPlotReceiver::CreateXyPlotWindow() currPlotName=%s, "
+                  "oldName=%s\n", currPlotName.c_str(), oldName.c_str());
          #endif
 
          // change plot name
@@ -862,8 +862,8 @@ bool GuiPlotReceiver::CreateXyPlotWindow(const wxString &plotName,
    {
       #if DEBUG_PLOTIF_XY
       MessageInterface::ShowMessage
-         (wxT("GuiPlotReceiver::CreateXyPlotWindow() Creating new ")
-          wxT("MdiChildTsFrame\n   X Axis Title = %s  Y Axis Title = %s\n"),
+         ("GuiPlotReceiver::CreateXyPlotWindow() Creating new "
+          "MdiChildTsFrame\n   X Axis Title = %s  Y Axis Title = %s\n",
           xAxisTitle.c_str(), yAxisTitle.c_str());
       #endif
 
@@ -930,14 +930,14 @@ bool GuiPlotReceiver::CreateXyPlotWindow(const wxString &plotName,
    
    #if DEBUG_PLOTIF_XY
    MessageInterface::ShowMessage
-      (wxT("GuiPlotReceiver::CreateXyPlotWindow() leaving\n"));
+      ("GuiPlotReceiver::CreateXyPlotWindow() leaving\n");
    #endif
 
    return true;
 }
 
 //------------------------------------------------------------------------------
-//  bool DeleteXyPlot(const wxString &plotName)
+//  bool DeleteXyPlot(const std::string &plotName)
 //------------------------------------------------------------------------------
 /*
  * Deletes XyPlot by plot name.
@@ -945,14 +945,14 @@ bool GuiPlotReceiver::CreateXyPlotWindow(const wxString &plotName,
  * @param plotName name of plot to be deleted
  */
 //------------------------------------------------------------------------------
-bool GuiPlotReceiver::DeleteXyPlot(const wxString &plotName)
+bool GuiPlotReceiver::DeleteXyPlot(const std::string &plotName)
 {
    GmatAppData *gmatAppData = GmatAppData::Instance();
 
    if (gmatAppData->GetMainFrame() != NULL)
    {
       #if DEBUG_PLOTIF_XY
-         MessageInterface::ShowMessage(wxT("GuiPlotReceiver::DeleteXyPlot()\n"));
+         MessageInterface::ShowMessage("GuiPlotReceiver::DeleteXyPlot()\n");
       #endif
 
       wxString owner = wxString(plotName.c_str());
@@ -978,9 +978,9 @@ bool GuiPlotReceiver::DeleteXyPlot(const wxString &plotName)
 }
 
 //------------------------------------------------------------------------------
-// bool AddXyPlotCurve(const wxString &plotName, int curveIndex,
+// bool AddXyPlotCurve(const std::string &plotName, int curveIndex,
 //                     int yOffset, Real yMin, Real yMax,
-//                     const wxString &curveTitle,
+//                     const std::string &curveTitle,
 //                     UnsignedInt penColor)
 //------------------------------------------------------------------------------
 /*
@@ -997,9 +997,9 @@ bool GuiPlotReceiver::DeleteXyPlot(const wxString &plotName)
  * @return true on success, false is no curve was added
  */
 //------------------------------------------------------------------------------
-bool GuiPlotReceiver::AddXyPlotCurve(const wxString &plotName,
+bool GuiPlotReceiver::AddXyPlotCurve(const std::string &plotName,
       int curveIndex, int yOffset, Real yMin, Real yMax,
-      const wxString &curveTitle, UnsignedInt penColor)
+      const std::string &curveTitle, UnsignedInt penColor)
 {
    UnsignedInt localPenColor = penColor;
    if (penColor == 0)
@@ -1009,12 +1009,12 @@ bool GuiPlotReceiver::AddXyPlotCurve(const wxString &plotName,
 
    #if DEBUG_PLOTIF_XY
    MessageInterface::ShowMessage
-      (wxT("GuiPlotReceiver::AddXyPlotCurve() entered.")
-       wxT(" plotName = ") + plotName + wxT(" curveTitle = ") +
-       curveTitle + wxT("\n"));
+      ("GuiPlotReceiver::AddXyPlotCurve() entered."
+       " plotName = " + plotName + " curveTitle = " +
+       curveTitle + "\n");
 
    MessageInterface::ShowMessage
-      (wxT("GuiPlotReceiver::AddXyPlotCurve() numChildren = %d\n"),
+      ("GuiPlotReceiver::AddXyPlotCurve() numChildren = %d\n",
        MdiTsPlot::numChildren);
    #endif
 
@@ -1035,8 +1035,8 @@ bool GuiPlotReceiver::AddXyPlotCurve(const wxString &plotName,
 }
 
 //------------------------------------------------------------------------------
-// bool DeleteAllXyPlotCurves(const wxString &plotName,
-//                            const wxString &oldName)
+// bool DeleteAllXyPlotCurves(const std::string &plotName,
+//                            const std::string &oldName)
 //------------------------------------------------------------------------------
 /*
  * Deletes all plot curves in XY plow window.
@@ -1047,13 +1047,13 @@ bool GuiPlotReceiver::AddXyPlotCurve(const wxString &plotName,
  * @return true on success, false if no action was taken
  */
 //------------------------------------------------------------------------------
-bool GuiPlotReceiver::DeleteAllXyPlotCurves(const wxString &plotName,
-                                          const wxString &oldName)
+bool GuiPlotReceiver::DeleteAllXyPlotCurves(const std::string &plotName,
+                                          const std::string &oldName)
 {
    #if DEBUG_PLOTIF_XY
    MessageInterface::ShowMessage
-      (wxT("GuiPlotReceiver::DeleteAllPlotCurve() plotName = %s ")
-       wxT("numChildren = %d\n"), plotName.c_str(),
+      ("GuiPlotReceiver::DeleteAllPlotCurve() plotName = %s "
+       "numChildren = %d\n", plotName.c_str(),
        MdiTsPlot::numChildren);
    #endif
 
@@ -1073,7 +1073,7 @@ bool GuiPlotReceiver::DeleteAllXyPlotCurves(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// bool DeleteXyPlotCurve(const wxString &plotName, int curveIndex)
+// bool DeleteXyPlotCurve(const std::string &plotName, int curveIndex)
 //------------------------------------------------------------------------------
 /*
  * Deletes a plot curve to XY plow window.
@@ -1084,16 +1084,16 @@ bool GuiPlotReceiver::DeleteAllXyPlotCurves(const wxString &plotName,
  * @return true on success, false if no curve was deleted
  */
 //------------------------------------------------------------------------------
-bool GuiPlotReceiver::DeleteXyPlotCurve(const wxString &plotName,
+bool GuiPlotReceiver::DeleteXyPlotCurve(const std::string &plotName,
       int curveIndex)
 {
    #if DEBUG_PLOTIF_XY
    MessageInterface::ShowMessage
-      (wxT("GuiPlotReceiver::DeleteXyPlotCurve() entered plotName = %s ")
-       wxT("curveIndex = %d\n"), plotName.c_str(), curveIndex);
+      ("GuiPlotReceiver::DeleteXyPlotCurve() entered plotName = %s "
+       "curveIndex = %d\n", plotName.c_str(), curveIndex);
 
    MessageInterface::ShowMessage
-      (wxT("GuiPlotReceiver::DeleteXyPlotCurve() numChildren = %d\n"),
+      ("GuiPlotReceiver::DeleteXyPlotCurve() numChildren = %d\n",
        MdiTsPlot::numChildren);
    #endif
 
@@ -1113,7 +1113,7 @@ bool GuiPlotReceiver::DeleteXyPlotCurve(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void ClearXyPlotData(const wxString &plotName))
+// void ClearXyPlotData(const std::string &plotName))
 //------------------------------------------------------------------------------
 /**
  * Removes all data from the plot curves, leaving the curve containers in place
@@ -1122,11 +1122,11 @@ bool GuiPlotReceiver::DeleteXyPlotCurve(const wxString &plotName,
  * @param plotName The name of the plot that is being cleared
  */
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::ClearXyPlotData(const wxString &plotName)
+void GuiPlotReceiver::ClearXyPlotData(const std::string &plotName)
 {
    #if DEBUG_PLOTIF_XY
    MessageInterface::ShowMessage
-      (wxT("GuiPlotReceiver::ClearXyPlotData() numChildren = %d\n"),
+      ("GuiPlotReceiver::ClearXyPlotData() numChildren = %d\n",
        MdiTsPlot::numChildren);
    #endif
 
@@ -1144,7 +1144,7 @@ void GuiPlotReceiver::ClearXyPlotData(const wxString &plotName)
 }
 
 //------------------------------------------------------------------------------
-// void XyPlotPenUp(const wxString &plotName))
+// void XyPlotPenUp(const std::string &plotName))
 //------------------------------------------------------------------------------
 /**
  * Tells a plot to stop drawing received data.  This method is idempotent.
@@ -1152,11 +1152,11 @@ void GuiPlotReceiver::ClearXyPlotData(const wxString &plotName)
  * @param plotName The name of the plot that is being cleared
  */
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::XyPlotPenUp(const wxString &plotName)
+void GuiPlotReceiver::XyPlotPenUp(const std::string &plotName)
 {
    #if DEBUG_PLOTIF_XY
       MessageInterface::ShowMessage
-         (wxT("GuiPlotReceiver::XyPlotPenUp() numChildren = %d\n"),
+         ("GuiPlotReceiver::XyPlotPenUp() numChildren = %d\n",
           MdiTsPlot::numChildren);
    #endif
 
@@ -1174,7 +1174,7 @@ void GuiPlotReceiver::XyPlotPenUp(const wxString &plotName)
 }
 
 //------------------------------------------------------------------------------
-// void XyPlotPenDown(const wxString &plotName))
+// void XyPlotPenDown(const std::string &plotName))
 //------------------------------------------------------------------------------
 /**
  * Tells a plot to resume drawing received data.  This method is idempotent.
@@ -1182,11 +1182,11 @@ void GuiPlotReceiver::XyPlotPenUp(const wxString &plotName)
  * @param plotName The name of the plot that is being cleared
  */
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::XyPlotPenDown(const wxString &plotName)
+void GuiPlotReceiver::XyPlotPenDown(const std::string &plotName)
 {
    #if DEBUG_PLOTIF_XY
       MessageInterface::ShowMessage
-         (wxT("GuiPlotReceiver::XyPlotPenDown() numChildren = %d\n"),
+         ("GuiPlotReceiver::XyPlotPenDown() numChildren = %d\n",
           MdiTsPlot::numChildren);
    #endif
 
@@ -1204,7 +1204,7 @@ void GuiPlotReceiver::XyPlotPenDown(const wxString &plotName)
 }
 
 
-void GuiPlotReceiver::XyPlotDarken(const wxString &plotName, Integer factor,
+void GuiPlotReceiver::XyPlotDarken(const std::string &plotName, Integer factor,
          Integer index, Integer forCurve)
 {
    MdiChildTsFrame *frame = NULL;
@@ -1221,7 +1221,7 @@ void GuiPlotReceiver::XyPlotDarken(const wxString &plotName, Integer factor,
 }
 
 
-void GuiPlotReceiver::XyPlotLighten(const wxString &plotName, Integer factor,
+void GuiPlotReceiver::XyPlotLighten(const std::string &plotName, Integer factor,
          Integer index, Integer forCurve)
 {
    MdiChildTsFrame *frame = NULL;
@@ -1239,7 +1239,7 @@ void GuiPlotReceiver::XyPlotLighten(const wxString &plotName, Integer factor,
 
 
 //------------------------------------------------------------------------------
-// void XyPlotMarkPoint(const wxString &plotName, Integer index,
+// void XyPlotMarkPoint(const std::string &plotName, Integer index,
 //       Integer forCurve)
 //------------------------------------------------------------------------------
 /**
@@ -1251,12 +1251,12 @@ void GuiPlotReceiver::XyPlotLighten(const wxString &plotName, Integer factor,
  *                    curveNumber to -1 to mark all curves.
  */
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::XyPlotMarkPoint(const wxString &plotName,
+void GuiPlotReceiver::XyPlotMarkPoint(const std::string &plotName,
       Integer index, Integer forCurve)
 {
    #if DEBUG_PLOTIF_XY
       MessageInterface::ShowMessage
-         (wxT("GuiPlotReceiver::XyPlotPenDown() numChildren = %d\n"),
+         ("GuiPlotReceiver::XyPlotPenDown() numChildren = %d\n",
           MdiTsPlot::numChildren);
    #endif
 
@@ -1274,7 +1274,7 @@ void GuiPlotReceiver::XyPlotMarkPoint(const wxString &plotName,
 }
 
 //------------------------------------------------------------------------------
-// void XyPlotMarkBreak(const wxString &plotName, Integer index, 
+// void XyPlotMarkBreak(const std::string &plotName, Integer index, 
 //       Integer forCurve)
 //------------------------------------------------------------------------------
 /**
@@ -1285,12 +1285,12 @@ void GuiPlotReceiver::XyPlotMarkPoint(const wxString &plotName,
  * @param forCurve The index of the curve that contains the break (-1 for all)
  */
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::XyPlotMarkBreak(const wxString &plotName,
+void GuiPlotReceiver::XyPlotMarkBreak(const std::string &plotName,
       Integer index, Integer forCurve)
 {
    #ifdef DEBUG_MESSSAGE_FLOW
-      MessageInterface::ShowMessage(wxT("GuiPlotReceiver::XyPlotMarkBreak(%s, %d, ")
-            wxT("%d) called\n"), plotName.c_str(), index, forCurve);
+      MessageInterface::ShowMessage("GuiPlotReceiver::XyPlotMarkBreak(%s, %d, "
+            "%d) called\n", plotName.c_str(), index, forCurve);
    #endif
    MdiChildTsFrame *frame = NULL;
 
@@ -1307,7 +1307,7 @@ void GuiPlotReceiver::XyPlotMarkBreak(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void GuiPlotReceiver::XyPlotClearFromBreak(const wxString &plotName,
+// void GuiPlotReceiver::XyPlotClearFromBreak(const std::string &plotName,
 //       Integer startBreakNumber, Integer endBreakNumber, Integer forCurve)
 //------------------------------------------------------------------------------
 /**
@@ -1320,7 +1320,7 @@ void GuiPlotReceiver::XyPlotMarkBreak(const wxString &plotName,
  * @param forCurve The index of the curve that contains the break (-1 for all)
  */
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::XyPlotClearFromBreak(const wxString &plotName,
+void GuiPlotReceiver::XyPlotClearFromBreak(const std::string &plotName,
       Integer startBreakNumber, Integer endBreakNumber, Integer forCurve)
 {
    MdiChildTsFrame *frame = NULL;
@@ -1338,7 +1338,7 @@ void GuiPlotReceiver::XyPlotClearFromBreak(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void XyPlotChangeColor(const wxString &plotName, Integer index,
+// void XyPlotChangeColor(const std::string &plotName, Integer index,
 //       UnsignedInt newColor, Integer forCurve)
 //------------------------------------------------------------------------------
 /**
@@ -1350,12 +1350,12 @@ void GuiPlotReceiver::XyPlotClearFromBreak(const wxString &plotName,
  * @param forCurve The index of the curve that is changing color.
  */
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::XyPlotChangeColor(const wxString &plotName,
+void GuiPlotReceiver::XyPlotChangeColor(const std::string &plotName,
       Integer index, UnsignedInt newColor, Integer forCurve)
 {
    #if DEBUG_PLOTIF_XY
       MessageInterface::ShowMessage
-         (wxT("GuiPlotReceiver::XyPlotChangeColor() numChildren = %d\n"),
+         ("GuiPlotReceiver::XyPlotChangeColor() numChildren = %d\n",
           MdiTsPlot::numChildren);
    #endif
 
@@ -1374,7 +1374,7 @@ void GuiPlotReceiver::XyPlotChangeColor(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void XyPlotChangeMarker(const wxString &plotName, Integer index,
+// void XyPlotChangeMarker(const std::string &plotName, Integer index,
 //       Integer newMarker, Integer forCurve)
 //------------------------------------------------------------------------------
 /**
@@ -1386,12 +1386,12 @@ void GuiPlotReceiver::XyPlotChangeColor(const wxString &plotName,
  * @param forCurve The index of the curve that is changing color.
  */
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::XyPlotChangeMarker(const wxString &plotName,
+void GuiPlotReceiver::XyPlotChangeMarker(const std::string &plotName,
       Integer index, Integer newMarker, Integer forCurve)
 {
    #if DEBUG_PLOTIF_XY
       MessageInterface::ShowMessage
-         (wxT("GuiPlotReceiver::XyPlotPenDown() numChildren = %d\n"),
+         ("GuiPlotReceiver::XyPlotPenDown() numChildren = %d\n",
           MdiTsPlot::numChildren);
    #endif
 
@@ -1410,7 +1410,7 @@ void GuiPlotReceiver::XyPlotChangeMarker(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void XyPlotChangeWidth(const wxString &plotName, Integer index = -1,
+// void XyPlotChangeWidth(const std::string &plotName, Integer index = -1,
 //       Integer newWidth = 1, int forCurve = -1)
 //------------------------------------------------------------------------------
 /**
@@ -1426,7 +1426,7 @@ void GuiPlotReceiver::XyPlotChangeMarker(const wxString &plotName,
  * @param forCurve The index of the curve that is changing width.
  */
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::XyPlotChangeWidth(const wxString &plotName,
+void GuiPlotReceiver::XyPlotChangeWidth(const std::string &plotName,
       Integer index, Integer newWidth, int forCurve)
 {
    MdiChildTsFrame *frame = NULL;
@@ -1444,7 +1444,7 @@ void GuiPlotReceiver::XyPlotChangeWidth(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void XyPlotChangeStyle(const wxString &plotName, Integer index = -1,
+// void XyPlotChangeStyle(const std::string &plotName, Integer index = -1,
 //       Integer newStyle = 100, int forCurve = -1)
 //------------------------------------------------------------------------------
 /**
@@ -1460,7 +1460,7 @@ void GuiPlotReceiver::XyPlotChangeWidth(const wxString &plotName,
  * @param forCurve The index of the curve that is changing style.
  */
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::XyPlotChangeStyle(const wxString &plotName,
+void GuiPlotReceiver::XyPlotChangeStyle(const std::string &plotName,
       Integer index, Integer newStyle, int forCurve)
 {
    MdiChildTsFrame *frame = NULL;
@@ -1478,7 +1478,7 @@ void GuiPlotReceiver::XyPlotChangeStyle(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void XyPlotRescale(const wxString &plotName)
+// void XyPlotRescale(const std::string &plotName)
 //------------------------------------------------------------------------------
 /**
  * Sends a rescale message to the plot
@@ -1486,11 +1486,11 @@ void GuiPlotReceiver::XyPlotChangeStyle(const wxString &plotName,
  * @param plotName The plot that is to be rescaled
  */
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::XyPlotRescale(const wxString &plotName)
+void GuiPlotReceiver::XyPlotRescale(const std::string &plotName)
 {
    #if DEBUG_PLOTIF_XY
       MessageInterface::ShowMessage
-         (wxT("GuiPlotReceiver::XyPlotRescale() numChildren = %d\n"),
+         ("GuiPlotReceiver::XyPlotRescale() numChildren = %d\n",
           MdiTsPlot::numChildren);
    #endif
 
@@ -1509,7 +1509,7 @@ void GuiPlotReceiver::XyPlotRescale(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-// void XyPlotCurveSettings(const wxString &plotName, bool useLines,
+// void XyPlotCurveSettings(const std::string &plotName, bool useLines,
 //       Integer lineWidth, Integer lineStyle, bool useMarkers,
 //       Integer markerSize, Integer marker, bool useHiLow, Integer forCurve)
 //------------------------------------------------------------------------------
@@ -1528,7 +1528,7 @@ void GuiPlotReceiver::XyPlotRescale(const wxString &plotName)
  * @param forCurve The index of the curve receiving the settings
  */
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::XyPlotCurveSettings(const wxString &plotName,
+void GuiPlotReceiver::XyPlotCurveSettings(const std::string &plotName,
       bool useLines, Integer lineWidth, Integer lineStyle, bool useMarkers,
       Integer markerSize, Integer marker, bool useHiLow, Integer forCurve)
 {
@@ -1547,8 +1547,8 @@ void GuiPlotReceiver::XyPlotCurveSettings(const wxString &plotName,
 }
 
 //------------------------------------------------------------------------------
-// void SetXyPlotTitle(const wxString &plotName,
-//       const wxString &plotTitle)
+// void SetXyPlotTitle(const std::string &plotName,
+//       const std::string &plotTitle)
 //------------------------------------------------------------------------------
 /**
  * Sets the title for a plot
@@ -1557,13 +1557,13 @@ void GuiPlotReceiver::XyPlotCurveSettings(const wxString &plotName,
  * @param plotTitle The new title for the plot
  */
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::SetXyPlotTitle(const wxString &plotName,
-                                   const wxString &plotTitle)
+void GuiPlotReceiver::SetXyPlotTitle(const std::string &plotName,
+                                   const std::string &plotTitle)
 {
    #if DEBUG_PLOTIF_XY
    MessageInterface::ShowMessage
-      (wxT("GuiPlotReceiver::SetXyPlotTitle() plotName = %s ")
-       wxT("plotTitle = %s\n"), plotName.c_str(), plotTitle.c_str());
+      ("GuiPlotReceiver::SetXyPlotTitle() plotName = %s "
+       "plotTitle = %s\n", plotName.c_str(), plotTitle.c_str());
    #endif
 
    MdiChildTsFrame *frame = NULL;
@@ -1575,8 +1575,8 @@ void GuiPlotReceiver::SetXyPlotTitle(const wxString &plotName,
       {
          #if DEBUG_PLOTIF_XY
             MessageInterface::ShowMessage
-               (wxT("GuiPlotReceiver::SetXyPlotTitle() calling ")
-                wxT(" frame->SetPlotTitle() \n"));
+               ("GuiPlotReceiver::SetXyPlotTitle() calling "
+                " frame->SetPlotTitle() \n");
          #endif
 
          frame->SetPlotTitle(wxString(plotTitle.c_str()));
@@ -1586,7 +1586,7 @@ void GuiPlotReceiver::SetXyPlotTitle(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// void GuiPlotReceiver::ShowXyPlotLegend(const wxString &plotName)
+// void GuiPlotReceiver::ShowXyPlotLegend(const std::string &plotName)
 //------------------------------------------------------------------------------
 /**
  * Turns on display of the plot legend
@@ -1596,7 +1596,7 @@ void GuiPlotReceiver::SetXyPlotTitle(const wxString &plotName,
  * @note This method is not yet implemented
  */
 //------------------------------------------------------------------------------
-void GuiPlotReceiver::ShowXyPlotLegend(const wxString &plotName)
+void GuiPlotReceiver::ShowXyPlotLegend(const std::string &plotName)
 {
 //   MdiChildTsFrame *frame = NULL;
 //   for (int i=0; i<MdiTsPlot::numChildren; i++)
@@ -1607,7 +1607,7 @@ void GuiPlotReceiver::ShowXyPlotLegend(const wxString &plotName)
 //      {
 //         #if DEBUG_PLOTIF_XY
 //            MessageInterface::ShowMessage
-//               (wxT("GuiPlotReceiver::ShowXyPlotLegend() calling  frame->ShowPlotLegend() \n"));
+//               ("GuiPlotReceiver::ShowXyPlotLegend() calling  frame->ShowPlotLegend() \n");
 //         #endif
 //
 //         frame->ShowPlotLegend();
@@ -1617,7 +1617,7 @@ void GuiPlotReceiver::ShowXyPlotLegend(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-// bool RefreshXyPlot(const wxString &plotName)
+// bool RefreshXyPlot(const std::string &plotName)
 //------------------------------------------------------------------------------
 /*
  * Refreshes the XY plot.
@@ -1625,13 +1625,13 @@ void GuiPlotReceiver::ShowXyPlotLegend(const wxString &plotName)
  * @param plotName name of xy plot
  */
 //------------------------------------------------------------------------------
-bool GuiPlotReceiver::RefreshXyPlot(const wxString &plotName)
+bool GuiPlotReceiver::RefreshXyPlot(const std::string &plotName)
 {
    if (GmatAppData::Instance()->GetMainFrame() != NULL)
    {
       #if DEBUG_PLOTIF_XY_UPDATE
          MessageInterface::ShowMessage
-            (wxT("GuiPlotReceiver::RefreshXyPlot() plotName=%s, numChildren=%d\n"),
+            ("GuiPlotReceiver::RefreshXyPlot() plotName=%s, numChildren=%d\n",
              plotName.c_str(), MdiTsPlot::numChildren);
       #endif
 
@@ -1660,11 +1660,11 @@ bool GuiPlotReceiver::RefreshXyPlot(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-// bool UpdateXyPlot(const wxString &plotName, const wxString &oldName,
+// bool UpdateXyPlot(const std::string &plotName, const std::string &oldName,
 //                   const Real &xval, const Rvector &yvals,
-//                   const wxString &plotTitle,
-//                   const wxString &xAxisTitle,
-//                   const wxString &yAxisTitle, bool updateCanvas,
+//                   const std::string &plotTitle,
+//                   const std::string &xAxisTitle,
+//                   const std::string &yAxisTitle, bool updateCanvas,
 //                   bool drawGrid)
 //------------------------------------------------------------------------------
 /*
@@ -1683,12 +1683,12 @@ bool GuiPlotReceiver::RefreshXyPlot(const wxString &plotName)
  * @return true if an update occurred, false otherwise
  */
 //------------------------------------------------------------------------------
-bool GuiPlotReceiver::UpdateXyPlot(const wxString &plotName,
-                                 const wxString &oldName,
+bool GuiPlotReceiver::UpdateXyPlot(const std::string &plotName,
+                                 const std::string &oldName,
                                  const Real &xval, const Rvector &yvals,
-                                 const wxString &plotTitle,
-                                 const wxString &xAxisTitle,
-                                 const wxString &yAxisTitle,
+                                 const std::string &plotTitle,
+                                 const std::string &xAxisTitle,
+                                 const std::string &yAxisTitle,
                                  bool updateCanvas, bool drawGrid)
 {
    bool updated = false;
@@ -1696,7 +1696,7 @@ bool GuiPlotReceiver::UpdateXyPlot(const wxString &plotName,
 
    #if DEBUG_PLOTIF_XY_UPDATE
    MessageInterface::ShowMessage
-      (wxT("GuiPlotReceiver::UpdateXyPlot() numChildren = %d\n"),
+      ("GuiPlotReceiver::UpdateXyPlot() numChildren = %d\n",
        MdiTsPlot::numChildren);
    #endif
 
@@ -1713,14 +1713,14 @@ bool GuiPlotReceiver::UpdateXyPlot(const wxString &plotName,
             int numCurves = frame->GetCurveCount();
             #if DEBUG_PLOTIF_XY_UPDATE
                MessageInterface::ShowMessage
-               (wxT("GuiPlotReceiver::UpdateXyPlot() numCurves = %d\n"), numCurves);
+               ("GuiPlotReceiver::UpdateXyPlot() numCurves = %d\n", numCurves);
             #endif
 
             for (int j=0; j<numCurves; j++)
             {
                #if DEBUG_PLOTIF_XY_UPDATE
                   MessageInterface::ShowMessage
-                  (wxT("GuiPlotReceiver::UpdateXyPlot() yvals[%d] = %f\n"), j, yvals(j));
+                  ("GuiPlotReceiver::UpdateXyPlot() yvals[%d] = %f\n", j, yvals(j));
                #endif
 
                frame->AddDataPoints(j, xval, yvals(j));
@@ -1738,7 +1738,7 @@ bool GuiPlotReceiver::UpdateXyPlot(const wxString &plotName,
 }
 
 //------------------------------------------------------------------------------
-// bool UpdateXyPlotData(const wxString &plotName, const Real &xval,
+// bool UpdateXyPlotData(const std::string &plotName, const Real &xval,
 //       const Rvector &yvals, const Rvector *yhis, const Rvector *ylows)
 //------------------------------------------------------------------------------
 /**
@@ -1756,7 +1756,7 @@ bool GuiPlotReceiver::UpdateXyPlot(const wxString &plotName,
  * @return true if the data was processed, false if not
  */
 //------------------------------------------------------------------------------
-bool GuiPlotReceiver::UpdateXyPlotData(const wxString &plotName,
+bool GuiPlotReceiver::UpdateXyPlotData(const std::string &plotName,
       const Real &xval, const Rvector &yvals, const Rvector *yhis,
       const Rvector *ylows)
 {
@@ -1776,14 +1776,14 @@ bool GuiPlotReceiver::UpdateXyPlotData(const wxString &plotName,
             int numCurves = frame->GetCurveCount();
             #if DEBUG_PLOTIF_XY_UPDATE
                MessageInterface::ShowMessage
-               (wxT("GuiPlotReceiver::UpdateXyPlot() numCurves = %d\n"), numCurves);
+               ("GuiPlotReceiver::UpdateXyPlot() numCurves = %d\n", numCurves);
             #endif
 
             for (int j=0; j<numCurves; j++)
             {
                #if DEBUG_PLOTIF_XY_UPDATE
                   MessageInterface::ShowMessage
-                  (wxT("GuiPlotReceiver::UpdateXyPlot() yvals[%d] = %f\n"), j, yvals(j));
+                  ("GuiPlotReceiver::UpdateXyPlot() yvals[%d] = %f\n", j, yvals(j));
                #endif
 
                if (yhis != NULL)
@@ -1812,7 +1812,7 @@ bool GuiPlotReceiver::UpdateXyPlotData(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// bool UpdateXyPlotCurve(const wxString &plotName, const Integer whichCurve,
+// bool UpdateXyPlotCurve(const std::string &plotName, const Integer whichCurve,
 //       const Real xval, const Real yval, const Real yhi, const Real ylow)
 //------------------------------------------------------------------------------
 /**
@@ -1829,7 +1829,7 @@ bool GuiPlotReceiver::UpdateXyPlotData(const wxString &plotName,
  * @return true if the data was processed, false if not
  */
 //------------------------------------------------------------------------------
-bool GuiPlotReceiver::UpdateXyPlotCurve(const wxString &plotName,
+bool GuiPlotReceiver::UpdateXyPlotCurve(const std::string &plotName,
                       const Integer whichCurve, const Real xval,
                       const Real yval, const Real yhi, const Real ylow)
 {
@@ -1851,7 +1851,7 @@ bool GuiPlotReceiver::UpdateXyPlotCurve(const wxString &plotName,
                int numCurves = frame->GetCurveCount();
                #if DEBUG_PLOTIF_XY_UPDATE
                   MessageInterface::ShowMessage
-                        (wxT("GuiPlotReceiver::UpdateXyPlotCurve() numCurves = %d\n"),
+                        ("GuiPlotReceiver::UpdateXyPlotCurve() numCurves = %d\n",
                          numCurves);
                #endif
 
@@ -1859,7 +1859,7 @@ bool GuiPlotReceiver::UpdateXyPlotCurve(const wxString &plotName,
                {
                   #if DEBUG_PLOTIF_XY_UPDATE
                      MessageInterface::ShowMessage
-                     (wxT("GuiPlotReceiver::UpdateXyPlot() yvals[%d] = %f\n"), j, yvals(j));
+                     ("GuiPlotReceiver::UpdateXyPlot() yvals[%d] = %f\n", j, yvals(j));
                   #endif
 
                   frame->AddDataPoints(whichCurve, xval, yval, yhi, ylow);
@@ -1879,7 +1879,7 @@ bool GuiPlotReceiver::UpdateXyPlotCurve(const wxString &plotName,
 
 
 //------------------------------------------------------------------------------
-// bool DeactivateXyPlot(const wxString &plotName)
+// bool DeactivateXyPlot(const std::string &plotName)
 //------------------------------------------------------------------------------
 /**
  * Disables redrawing for a plot.  This method is used when a plot is receiving
@@ -1891,7 +1891,7 @@ bool GuiPlotReceiver::UpdateXyPlotCurve(const wxString &plotName,
  * @return true is a plot received the message, false if not
  */
 //------------------------------------------------------------------------------
-bool GuiPlotReceiver::DeactivateXyPlot(const wxString &plotName)
+bool GuiPlotReceiver::DeactivateXyPlot(const std::string &plotName)
 {
    bool deactivated = false;
 
@@ -1917,7 +1917,7 @@ bool GuiPlotReceiver::DeactivateXyPlot(const wxString &plotName)
 
 
 //------------------------------------------------------------------------------
-// bool ActivateXyPlot(const wxString &plotName)
+// bool ActivateXyPlot(const std::string &plotName)
 //------------------------------------------------------------------------------
 /**
  * Enables redrawing for a plot, and forces an immediate update.  This method is
@@ -1929,7 +1929,7 @@ bool GuiPlotReceiver::DeactivateXyPlot(const wxString &plotName)
  * @return true is a plot received the message, false if not
  */
 //------------------------------------------------------------------------------
-bool GuiPlotReceiver::ActivateXyPlot(const wxString &plotName)
+bool GuiPlotReceiver::ActivateXyPlot(const std::string &plotName)
 {
    bool activated = false;
 

@@ -138,12 +138,12 @@ private:
    wxString *eulerAngleRates[3];
    
    // string versions of current data on combo boxes
-   wxString      attitudeModel;
-   wxString      attCoordSystem;
-   wxString      eulerSequence;
-   wxString      attStateType;
-   wxString      attRateStateType;
-   //wxString      attitudeType;   // for later use - Kinematic, etc.
+   std::string      attitudeModel;
+   std::string      attCoordSystem;
+   std::string      eulerSequence;
+   std::string      attStateType;
+   std::string      attRateStateType;
+   //std::string      attitudeType;   // for later use - Kinematic, etc.
 
    // flags for data modification
    bool dataChanged;
@@ -192,10 +192,10 @@ private:
    bool UpdateEulerAngleRates();
    bool UpdateAngularVelocity();
       
-   bool IsStateModified(const wxString which = wxT("Both"));
-   void ResetStateFlags(const wxString which = wxT("Both"),
+   bool IsStateModified(const std::string which = "Both");
+   void ResetStateFlags(const std::string which = "Both",
                         bool discardEdits = false);
-   bool ValidateState(const wxString which = wxT("Both"));
+   bool ValidateState(const std::string which = "Both");
    
    void DisableInitialAttitudeRate();
    void EnableInitialAttitudeRate();
@@ -259,8 +259,8 @@ private:
       attStateRateTypeCount,  // Dunn renamed from StateRateTypeCount
    };
    
-   static const wxString STATE_TEXT[attStateTypeCount];
-   static const wxString STATE_RATE_TEXT[attStateRateTypeCount];
+   static const std::string STATE_TEXT[attStateTypeCount];
+   static const std::string STATE_RATE_TEXT[attStateRateTypeCount];
    
    static const Integer STARTUP_STATE_TYPE_SELECTION;
    static const Integer STARTUP_RATE_STATE_TYPE_SELECTION;

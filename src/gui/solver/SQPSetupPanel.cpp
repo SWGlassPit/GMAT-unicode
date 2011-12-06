@@ -104,10 +104,10 @@ void SQPSetupPanel::LoadData()
    {
       mObject = theSolver;
 
-	  wxString valueStr;
+	  std::string valueStr;
 
 // GradObj, GradConstr, DerivativeCheck, Diagnostics, and Display are no longer been used:
-//      wxString valueStr = theSolver->GetStringParameter("GradObj");
+//      std::string valueStr = theSolver->GetStringParameter("GradObj");
 //      if (valueStr == "On")
 //         gradObjCB->SetValue(true);
 //      else
@@ -131,44 +131,44 @@ void SQPSetupPanel::LoadData()
 //      else
 //         diagnosticsCB->SetValue(false);
 
-      valueStr = theSolver->GetStringParameter(wxT("TolFun"));
-      tolFunTextCtrl->SetValue(valueStr.c_str());
+      valueStr = theSolver->GetStringParameter("TolFun");
+      tolFunTextCtrl->SetValue(wxT(valueStr.c_str()));
 
-      valueStr = theSolver->GetStringParameter(wxT("TolCon"));
-      tolConTextCtrl->SetValue(valueStr.c_str());
+      valueStr = theSolver->GetStringParameter("TolCon");
+      tolConTextCtrl->SetValue(wxT(valueStr.c_str()));
 
-      valueStr = theSolver->GetStringParameter(wxT("TolX"));
-      tolXTextCtrl->SetValue(valueStr.c_str());
+      valueStr = theSolver->GetStringParameter("TolX");
+      tolXTextCtrl->SetValue(wxT(valueStr.c_str()));
 
-      valueStr = theSolver->GetStringParameter(wxT("MaxFunEvals"));
-      maxFunEvalsTextCtrl->SetValue(valueStr.c_str());
+      valueStr = theSolver->GetStringParameter("MaxFunEvals");
+      maxFunEvalsTextCtrl->SetValue(wxT(valueStr.c_str()));
 
-      valueStr = wxString::Format(wxT("%d"),theSolver->GetIntegerParameter(theSolver->GetParameterID(wxT("MaximumIterations"))));		//valueStr = theSolver->GetStringParameter(wxT("MaxIter"));
-      maxIterTextCtrl->SetValue(valueStr.c_str());
+      valueStr = wxString::Format("%d",theSolver->GetIntegerParameter(theSolver->GetParameterID("MaximumIterations")));		//valueStr = theSolver->GetStringParameter("MaxIter");
+      maxIterTextCtrl->SetValue(wxT(valueStr.c_str()));
 
-      valueStr = theSolver->GetStringParameter(wxT("DiffMinChange"));
-      diffMinChangeTextCtrl->SetValue(valueStr.c_str());
+      valueStr = theSolver->GetStringParameter("DiffMinChange");
+      diffMinChangeTextCtrl->SetValue(wxT(valueStr.c_str()));
 
-      valueStr = theSolver->GetStringParameter(wxT("DiffMaxChange"));
-      diffMaxChangeTextCtrl->SetValue(valueStr.c_str());
+      valueStr = theSolver->GetStringParameter("DiffMaxChange");
+      diffMaxChangeTextCtrl->SetValue(wxT(valueStr.c_str()));
 
 //      valueStr = theSolver->GetStringParameter("Display");
 //      displayComboBox->SetValue(wxT(valueStr.c_str()));
 
   	  Integer id;
-	  id = theSolver->GetParameterID(wxT("ShowProgress"));
+	  id = theSolver->GetParameterID("ShowProgress");
 	  showProgressCheckBox->SetValue(theSolver->GetBooleanParameter(id));
 
-	  id = theSolver->GetParameterID(wxT("ReportStyle"));
+	  id = theSolver->GetParameterID("ReportStyle");
 	  styleComboBox->SetValue(theSolver->GetStringParameter(id).c_str());
 
-	  id = theSolver->GetParameterID(wxT("ReportFile"));
+	  id = theSolver->GetParameterID("ReportFile");
 	  reportfileTextCtrl->SetValue(theSolver->GetStringParameter(id).c_str());
    }
    catch (BaseException &e)
    {
       MessageInterface::ShowMessage
-         (wxT("SQPSetupPanel:LoadData() error occurred!\n%s\n"),
+         ("SQPSetupPanel:LoadData() error occurred!\n%s\n",
           e.GetFullMessage().c_str());
    }
 
@@ -186,9 +186,9 @@ void SQPSetupPanel::SaveData()
    canClose = true;
    Real tolFun, tolCon, tolX, diffMinChange, diffMaxChange;
    Integer maxIter, maxFunEvals;
-   wxString tolFunStr, tolConStr, tolXStr, maxIterStr, maxFunEvalsStr;
-   wxString diffMinChangeStr, diffMaxChangeStr;
-   wxString str;
+   std::string tolFunStr, tolConStr, tolXStr, maxIterStr, maxFunEvalsStr;
+   std::string diffMinChangeStr, diffMaxChangeStr;
+   std::string str;
 
    //-----------------------------------------------------------------
    // check values from text field
@@ -196,31 +196,31 @@ void SQPSetupPanel::SaveData()
    if (isTextModified)
    {
       str = tolFunTextCtrl->GetValue();
-      CheckReal(tolFun, str, wxT("TolFun"), wxT("Real Number > 0"));
+      CheckReal(tolFun, str, "TolFun", "Real Number > 0");
       tolFunStr = str;
 
       str = tolConTextCtrl->GetValue();
-      CheckReal(tolCon, str, wxT("TolCon"), wxT("Real Number > 0"));
+      CheckReal(tolCon, str, "TolCon", "Real Number > 0");
       tolConStr = str;
 
       str = tolXTextCtrl->GetValue();
-      CheckReal(tolX, str, wxT("TolX"), wxT("Real Number > 0"));
+      CheckReal(tolX, str, "TolX", "Real Number > 0");
       tolXStr = str;
 
       str = maxIterTextCtrl->GetValue();
-      CheckInteger(maxIter, str, wxT("MaximumIterations"), wxT("Integer Number > 0"));
+      CheckInteger(maxIter, str, "MaximumIterations", "Integer Number > 0");
       maxIterStr = str;
 
       str = maxFunEvalsTextCtrl->GetValue();
-      CheckInteger(maxFunEvals, str, wxT("MaxFunEvals"), wxT("Integer Number > 0"));
+      CheckInteger(maxFunEvals, str, "MaxFunEvals", "Integer Number > 0");
       maxFunEvalsStr = str;
 
       str = diffMinChangeTextCtrl->GetValue();
-      CheckReal(diffMinChange, str, wxT("DiffMinChange"), wxT("Real Number > 0"));
+      CheckReal(diffMinChange, str, "DiffMinChange", "Real Number > 0");
       diffMinChangeStr = str;
 
       str = diffMaxChangeTextCtrl->GetValue();
-      CheckReal(diffMaxChange, str, wxT("DiffMaxChange"), wxT("Real Number > 0"));
+      CheckReal(diffMaxChange, str, "DiffMaxChange", "Real Number > 0");
       diffMaxChangeStr = str;
    }
 
@@ -235,13 +235,13 @@ void SQPSetupPanel::SaveData()
 
       if (isTextModified)
       {
-         theSolver->SetStringParameter(wxT("TolFun"), tolFunStr);
-         theSolver->SetStringParameter(wxT("TolCon"), tolConStr);
-         theSolver->SetStringParameter(wxT("TolX"), tolXStr);
-         theSolver->SetIntegerParameter(theSolver->GetParameterID(wxT("MaximumIterations")), maxIter);
-         theSolver->SetStringParameter(wxT("MaxFunEvals"), maxFunEvalsStr);
-         theSolver->SetStringParameter(wxT("DiffMinChange"), diffMinChangeStr);
-         theSolver->SetStringParameter(wxT("DiffMaxChange"), diffMaxChangeStr);
+         theSolver->SetStringParameter("TolFun", tolFunStr);
+         theSolver->SetStringParameter("TolCon", tolConStr);
+         theSolver->SetStringParameter("TolX", tolXStr);
+         theSolver->SetIntegerParameter(theSolver->GetParameterID("MaximumIterations"), maxIter);
+         theSolver->SetStringParameter("MaxFunEvals", maxFunEvalsStr);
+         theSolver->SetStringParameter("DiffMinChange", diffMinChangeStr);
+         theSolver->SetStringParameter("DiffMaxChange", diffMaxChangeStr);
          isTextModified = false;
       }
 
@@ -269,13 +269,13 @@ void SQPSetupPanel::SaveData()
 //      theSolver->SetStringParameter("Display", displayComboBox->GetValue().c_str());
 
 	  Integer id;
-      id = theSolver->GetParameterID(wxT("ShowProgress"));
+      id = theSolver->GetParameterID("ShowProgress");
       theSolver->SetBooleanParameter(id, showProgressCheckBox->GetValue());
 
-	  id = theSolver->GetParameterID(wxT("ReportStyle"));
+	  id = theSolver->GetParameterID("ReportStyle");
 	  theSolver->SetStringParameter(id, styleComboBox->GetValue().c_str());
 
-      id = theSolver->GetParameterID(wxT("ReportFile"));
+      id = theSolver->GetParameterID("ReportFile");
       theSolver->SetStringParameter(id, reportfileTextCtrl->GetValue().c_str());
    }
    catch (BaseException &e)
@@ -293,15 +293,15 @@ void SQPSetupPanel::SaveData()
 void SQPSetupPanel::Setup( wxWindow *parent)
 {
 	wxString *styleArray = new wxString[4];
-	styleArray[0] = wxT("Normal");
-	styleArray[1] = wxT("Concise");
-	styleArray[2] = wxT("Verbose");
-	styleArray[3] = wxT("Debug");
+	styleArray[0] = "Normal";
+	styleArray[1] = "Concise";
+	styleArray[2] = "Verbose";
+	styleArray[3] = "Debug";
 
     Integer bsize = 2;
 
 	// 1. Create Options box:
-	wxStaticBoxSizer *optionsStaticBoxSizer = new wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Options"));
+	wxStaticBoxSizer *optionsStaticBoxSizer = new wxStaticBoxSizer(wxHORIZONTAL, this, "Options");
 	wxFlexGridSizer *grid1 = new wxFlexGridSizer( 2, 0, 0 );
 	grid1->AddGrowableCol(1);
 
@@ -352,7 +352,7 @@ void SQPSetupPanel::Setup( wxWindow *parent)
 
 
    	// 2. Create Output Box:
-	wxStaticBoxSizer *outputStaticBoxSizer = new wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Output"));
+	wxStaticBoxSizer *outputStaticBoxSizer = new wxStaticBoxSizer(wxHORIZONTAL, this, "Output");
 	wxFlexGridSizer *grid2 = new wxFlexGridSizer( 3, 0, 0 );
 	grid2->AddGrowableCol(1);
 

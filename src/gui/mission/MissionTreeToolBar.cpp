@@ -135,19 +135,19 @@ void MissionTreeToolBar::CreateMissionTreeToolBar()
    
    // Do not change the order, this order is how it appears in the toolbar
    
-   guiManager->LoadIcon(wxT("mtc_LA"), bitmapType, &bitmaps[++index], mtc_LA_xpm);
-   guiManager->LoadIcon(wxT("mtc_L1"), bitmapType, &bitmaps[++index], mtc_L1_xpm);
-   guiManager->LoadIcon(wxT("mtc_L2"), bitmapType, &bitmaps[++index], mtc_L2_xpm);
-   guiManager->LoadIcon(wxT("mtc_L3"), bitmapType, &bitmaps[++index], mtc_L3_xpm);
-   guiManager->LoadIcon(wxT("mtc_IncPhysics"), bitmapType, &bitmaps[++index], mtc_IncPhysics_xpm);
-   guiManager->LoadIcon(wxT("mtc_IncSolver"), bitmapType, &bitmaps[++index], mtc_IncSolver_xpm);
-   guiManager->LoadIcon(wxT("mtc_IncScriptEvent"), bitmapType, &bitmaps[++index], mtc_IncScriptEvent_xpm);
-   guiManager->LoadIcon(wxT("mtc_IncControlFlow"), bitmapType, &bitmaps[++index], mtc_IncControlFlow_xpm);
-   guiManager->LoadIcon(wxT("mtc_ExcReport"), bitmapType, &bitmaps[++index], mtc_ExcReport_xpm);
-   guiManager->LoadIcon(wxT("mtc_ExcEquation"), bitmapType, &bitmaps[++index], mtc_ExcEquation_xpm);
-   guiManager->LoadIcon(wxT("mtc_ExcPlot"), bitmapType, &bitmaps[++index], mtc_ExcPlot_xpm);
-   guiManager->LoadIcon(wxT("mtc_ExcCall"), bitmapType, &bitmaps[++index], mtc_ExcCall_xpm);
-   guiManager->LoadIcon(wxT("mtc_CustomView"), bitmapType, &bitmaps[++index], mtc_CustomView_xpm);
+   guiManager->LoadIcon("mtc_LA", bitmapType, &bitmaps[++index], mtc_LA_xpm);
+   guiManager->LoadIcon("mtc_L1", bitmapType, &bitmaps[++index], mtc_L1_xpm);
+   guiManager->LoadIcon("mtc_L2", bitmapType, &bitmaps[++index], mtc_L2_xpm);
+   guiManager->LoadIcon("mtc_L3", bitmapType, &bitmaps[++index], mtc_L3_xpm);
+   guiManager->LoadIcon("mtc_IncPhysics", bitmapType, &bitmaps[++index], mtc_IncPhysics_xpm);
+   guiManager->LoadIcon("mtc_IncSolver", bitmapType, &bitmaps[++index], mtc_IncSolver_xpm);
+   guiManager->LoadIcon("mtc_IncScriptEvent", bitmapType, &bitmaps[++index], mtc_IncScriptEvent_xpm);
+   guiManager->LoadIcon("mtc_IncControlFlow", bitmapType, &bitmaps[++index], mtc_IncControlFlow_xpm);
+   guiManager->LoadIcon("mtc_ExcReport", bitmapType, &bitmaps[++index], mtc_ExcReport_xpm);
+   guiManager->LoadIcon("mtc_ExcEquation", bitmapType, &bitmaps[++index], mtc_ExcEquation_xpm);
+   guiManager->LoadIcon("mtc_ExcPlot", bitmapType, &bitmaps[++index], mtc_ExcPlot_xpm);
+   guiManager->LoadIcon("mtc_ExcCall", bitmapType, &bitmaps[++index], mtc_ExcCall_xpm);
+   guiManager->LoadIcon("mtc_CustomView", bitmapType, &bitmaps[++index], mtc_CustomView_xpm);
    
    index = 0;
    AddCheckTool(TOOL_LEVEL_ALL, wxT("LevelA"), *bitmaps[index],
@@ -294,7 +294,7 @@ int MissionTreeToolBar::GetOnlyOneClicked(int category)
    
    #ifdef DEBUG_MISSION_VIEW_CONTROL
    MessageInterface::ShowMessage
-      (wxT("There are %d tools clicked, onlyOneClicked = %d\n"), numClicked,
+      ("There are %d tools clicked, onlyOneClicked = %d\n", numClicked,
        onlyOneClicked);
    #endif
    
@@ -374,8 +374,8 @@ void MissionTreeToolBar::OnViewByCategory(wxCommandEvent& event)
    
    #ifdef DEBUG_MISSION_VIEW_CONTROL
    MessageInterface::ShowMessage
-      (wxT("MissionTreeToolBar::OnViewByCategory() eventId = %d, mLastIncCategoryClicked = %d, ")
-       wxT("mLastExcCategoryClicked = %d\n"), eventId, mLastIncCategoryClicked,
+      ("MissionTreeToolBar::OnViewByCategory() eventId = %d, mLastIncCategoryClicked = %d, "
+       "mLastExcCategoryClicked = %d\n", eventId, mLastIncCategoryClicked,
        mLastExcCategoryClicked);
    #endif
    
@@ -398,35 +398,35 @@ void MissionTreeToolBar::OnViewByCategory(wxCommandEvent& event)
       // Include Physics based
       if (GetToolState(TOOL_INC_PHYSICS))
       {
-         cmdsToInclude.Add(wxT("Propagate"));
-         cmdsToInclude.Add(wxT("Maneuver"));
-         cmdsToInclude.Add(wxT("BeginFiniteBurn"));
-         cmdsToInclude.Add(wxT("EndFiniteBurn"));
+         cmdsToInclude.Add("Propagate");
+         cmdsToInclude.Add("Maneuver");
+         cmdsToInclude.Add("BeginFiniteBurn");
+         cmdsToInclude.Add("EndFiniteBurn");
       }
       
       // Include Solver related
       if (GetToolState(TOOL_INC_SOLVER))
       {
-         cmdsToInclude.Add(wxT("Target"));
-         cmdsToInclude.Add(wxT("Optimize"));
-         cmdsToInclude.Add(wxT("Vary"));
-         cmdsToInclude.Add(wxT("Achieve"));
-         cmdsToInclude.Add(wxT("NonlinearConstraint"));
-         cmdsToInclude.Add(wxT("Minimize"));
+         cmdsToInclude.Add("Target");
+         cmdsToInclude.Add("Optimize");
+         cmdsToInclude.Add("Vary");
+         cmdsToInclude.Add("Achieve");
+         cmdsToInclude.Add("NonlinearConstraint");
+         cmdsToInclude.Add("Minimize");
       }
       
       // Include ScriptEvent
       if (GetToolState(TOOL_INC_SCRIPT))
       {
-         cmdsToInclude.Add(wxT("BeginScript"));
+         cmdsToInclude.Add("BeginScript");
       }
       
       // Include ControlFlow
       if (GetToolState(TOOL_INC_CONTROL))
       {
-         cmdsToInclude.Add(wxT("If"));
-         cmdsToInclude.Add(wxT("While"));
-         cmdsToInclude.Add(wxT("For"));
+         cmdsToInclude.Add("If");
+         cmdsToInclude.Add("While");
+         cmdsToInclude.Add("For");
       }
       
       mLastIncCategoryClicked = GetOnlyOneClicked(1);
@@ -450,29 +450,29 @@ void MissionTreeToolBar::OnViewByCategory(wxCommandEvent& event)
       
       // Exclude Report
       if (GetToolState(TOOL_EXC_REPORT))
-         cmdsToInclude.Remove(wxT("Report"));
+         cmdsToInclude.Remove("Report");
       
       // Exclude Equation
       if (GetToolState(TOOL_EXC_EQUATION))
-         cmdsToInclude.Remove(wxT("GMAT"));
+         cmdsToInclude.Remove("GMAT");
       
       // Exclude Subscriber related
       if (GetToolState(TOOL_EXC_PLOT))
       {
-         cmdsToInclude.Remove(wxT("ClearPlot"));
-         cmdsToInclude.Remove(wxT("MarkPoint"));
-         cmdsToInclude.Remove(wxT("PenUp"));
-         cmdsToInclude.Remove(wxT("PenDown"));
-         cmdsToInclude.Remove(wxT("Toggle"));
+         cmdsToInclude.Remove("ClearPlot");
+         cmdsToInclude.Remove("MarkPoint");
+         cmdsToInclude.Remove("PenUp");
+         cmdsToInclude.Remove("PenDown");
+         cmdsToInclude.Remove("Toggle");
       }
       
       // Exclude CallGMATFunction, CallMatlabFunction, Save, SaveMission
       if (GetToolState(TOOL_EXC_CALL))
       {
-         cmdsToInclude.Remove(wxT("CallGmatFunction"));
-         cmdsToInclude.Remove(wxT("CallMatlabFunction"));
-         cmdsToInclude.Remove(wxT("Save"));
-         cmdsToInclude.Remove(wxT("SaveMission"));
+         cmdsToInclude.Remove("CallGmatFunction");
+         cmdsToInclude.Remove("CallMatlabFunction");
+         cmdsToInclude.Remove("Save");
+         cmdsToInclude.Remove("SaveMission");
       }
       
       mLastExcCategoryClicked = GetOnlyOneClicked(2);
@@ -492,7 +492,7 @@ void MissionTreeToolBar::OnViewByCategory(wxCommandEvent& event)
 void MissionTreeToolBar::OnCustomView(wxCommandEvent& event)
 {
    #ifdef DEBUG_MORE_VIEW_OPTIONS
-   MessageInterface::ShowMessage(wxT("MissionTreeToolBar::OnCustomView() entered\n"));
+   MessageInterface::ShowMessage("MissionTreeToolBar::OnCustomView() entered\n");
    #endif
    
    int grandpX = 0, grandpY = 0, grandpW = 0, grandpH = 0;
@@ -510,9 +510,9 @@ void MissionTreeToolBar::OnCustomView(wxCommandEvent& event)
    
    #ifdef DEBUG_MORE_VIEW_OPTIONS
    MessageInterface::ShowMessage
-      (wxT("   grandpX = %3d, grandpY = %3d, grandpW = %3d, grandpH = %3d\n"), grandpX, grandpY, grandpW, grandpH);
+      ("   grandpX = %3d, grandpY = %3d, grandpW = %3d, grandpH = %3d\n", grandpX, grandpY, grandpW, grandpH);
    MessageInterface::ShowMessage
-      (wxT("   parentX = %3d, parentY = %3d, parentW = %3d, parentH = %3d\n"), parentX, parentY, parentW, parentH);
+      ("   parentX = %3d, parentY = %3d, parentW = %3d, parentH = %3d\n", parentX, parentY, parentW, parentH);
    #endif
    
    if (parentX == grandpX)
@@ -528,12 +528,12 @@ void MissionTreeToolBar::OnCustomView(wxCommandEvent& event)
    
    
    #ifdef DEBUG_MORE_VIEW_OPTIONS
-   MessageInterface::ShowMessage(wxT("         x = %3d,       y = %3d\n"), x, y);
+   MessageInterface::ShowMessage("         x = %3d,       y = %3d\n", x, y);
    #endif
    
    ResetMissionTreeTools();
    TreeViewOptionDialog optionDlg(this, mMissionTree,
-                                  wxT("MissionTree Customize View"),
+                                  "MissionTree Customize View",
                                   wxPoint(x, y), wxDefaultSize,
                                   wxRESIZE_BORDER|wxDEFAULT_DIALOG_STYLE);
    

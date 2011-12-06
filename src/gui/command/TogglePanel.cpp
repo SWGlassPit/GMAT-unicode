@@ -55,7 +55,7 @@ TogglePanel::TogglePanel(wxWindow *parent, GmatCommand *cmd, bool forXyPlotOnly,
 {
    #if DEBUG_TOGGLE_PANEL
    MessageInterface::ShowMessage
-      (wxT("TogglePanel::TogglePanel() entered, parent=<%p>, cmd=<%p>, forXyPlotOnly=%d\n"),
+      ("TogglePanel::TogglePanel() entered, parent=<%p>, cmd=<%p>, forXyPlotOnly=%d\n",
        parent, cmd, forXyPlotOnly);
    #endif
    
@@ -70,7 +70,7 @@ TogglePanel::TogglePanel(wxWindow *parent, GmatCommand *cmd, bool forXyPlotOnly,
    }
    
    #if DEBUG_TOGGLE_PANEL
-   MessageInterface::ShowMessage(wxT("TogglePanel::TogglePanel() leaving\n"));
+   MessageInterface::ShowMessage("TogglePanel::TogglePanel() leaving\n");
    #endif
 }
 
@@ -81,9 +81,9 @@ TogglePanel::TogglePanel(wxWindow *parent, GmatCommand *cmd, bool forXyPlotOnly,
 TogglePanel::~TogglePanel()
 {
    if (isForXyPlotOnly)
-      theGuiManager->UnregisterCheckListBox(wxT("XYPlot"), mSubsCheckListBox);
+      theGuiManager->UnregisterCheckListBox("XYPlot", mSubsCheckListBox);
    else
-      theGuiManager->UnregisterCheckListBox(wxT("Subscriber"), mSubsCheckListBox);
+      theGuiManager->UnregisterCheckListBox("Subscriber", mSubsCheckListBox);
 }
 
 
@@ -94,11 +94,11 @@ bool TogglePanel::TakeAction(const wxString &action)
 {
    #ifdef DEBUG_TAKE_ACTION
    MessageInterface::ShowMessage
-      (wxT("TogglePanel::TakeAction() for '%s' entered, action = '%s'\n"),
+      ("TogglePanel::TakeAction() for '%s' entered, action = '%s'\n",
        mCmdTypeName.c_str(), action.c_str());
    #endif
    
-   if (action == wxT("EnableUpdate"))
+   if (action == "EnableUpdate")
       EnableUpdate(true);
    
    return true;
@@ -123,7 +123,7 @@ bool TogglePanel::TakeAction(const wxString &action)
 void TogglePanel::Create()
 {
    #if DEBUG_TOGGLE_PANEL
-   MessageInterface::ShowMessage(wxT("TogglePanel::Create() entered\n"));
+   MessageInterface::ShowMessage("TogglePanel::Create() entered\n");
    #endif
    
    int bsize = 2;
@@ -173,7 +173,7 @@ void TogglePanel::Create()
    theMiddleSizer->Add(pageSizer, 0, wxALIGN_CENTRE|wxALL, bsize);
    
    #if DEBUG_TOGGLE_PANEL
-   MessageInterface::ShowMessage(wxT("TogglePanel::Create() leaving\n"));
+   MessageInterface::ShowMessage("TogglePanel::Create() leaving\n");
    #endif
 }
 
@@ -185,7 +185,7 @@ void TogglePanel::LoadData()
 {
    #if DEBUG_TOGGLE_PANEL
    MessageInterface::ShowMessage
-      (wxT("TogglePanel::LoadData() '%s' entered, mShowToggleState=%d\n"),
+      ("TogglePanel::LoadData() '%s' entered, mShowToggleState=%d\n",
        theCommand->GetTypeName().c_str(), mShowToggleState);
    #endif
    
@@ -204,27 +204,27 @@ void TogglePanel::LoadData()
             ("      subNames[%d]='%s'\n", i, subNames[i].c_str());
       #endif
       
-      wxString toggleState;
+      std::string toggleState;
       if (mShowToggleState)
       {
          toggleState = theCommand->GetStringParameter
-            (theCommand->GetParameterID(wxT("ToggleState")));
+            (theCommand->GetParameterID("ToggleState"));
          
          #if DEBUG_TOGGLE_PANEL
          for (unsigned int i=0; i<subNames.size(); i++)
             MessageInterface::ShowMessage
-               (wxT("   subName[%d]=%s, toggleState=%s\n"), i,
+               ("   subName[%d]=%s, toggleState=%s\n", i,
                 subNames[i].c_str(), toggleState.c_str());
          #endif
       }
       
       // Initialize check list box
-      wxString name;
+      std::string name;
       for (UnsignedInt i=0; i<mSubsCheckListBox->GetCount(); i++)
       {
          name = mSubsCheckListBox->GetString(i).c_str();
          #if DEBUG_TOGGLE_PANEL
-         MessageInterface::ShowMessage(wxT("   available name = '%s'\n"), name.c_str());
+         MessageInterface::ShowMessage("   available name = '%s'\n", name.c_str());
          #endif
          for (int j=0; j<subsize; j++)
          {
@@ -238,7 +238,7 @@ void TogglePanel::LoadData()
       
       if (mShowToggleState)
       {
-         if (toggleState == wxT("On"))
+         if (toggleState == "On")
             mOnRadioButton->SetValue(true);
          else
             mOffRadioButton->SetValue(true);
@@ -246,11 +246,11 @@ void TogglePanel::LoadData()
    }
    catch (GmatBaseException &ex)
    {
-      MessageInterface::ShowMessage(ex.GetFullMessage() + wxT("\n"));
+      MessageInterface::ShowMessage(ex.GetFullMessage() + "\n");
    }
    
    #if DEBUG_TOGGLE_PANEL
-   MessageInterface::ShowMessage(wxT("TogglePanel::LoadData() leaving\n"));
+   MessageInterface::ShowMessage("TogglePanel::LoadData() leaving\n");
    #endif
 }
 
@@ -262,16 +262,16 @@ void TogglePanel::SaveData()
 {
    #if DEBUG_TOGGLE_PANEL
    MessageInterface::ShowMessage
-      (wxT("TogglePanel::SaveData() '%s' entered, mShowToggleState=%d\n"),
+      ("TogglePanel::SaveData() '%s' entered, mShowToggleState=%d\n",
        theCommand->GetTypeName().c_str(), mShowToggleState);
    #endif
    
    int count = mSubsCheckListBox->GetCount();
    int checkedCount = 0;
-   wxString onOff = wxT("Off");
+   std::string onOff = "Off";
    
    if (mShowToggleState)
-      onOff = mOnRadioButton->GetValue() ? wxT("On") : wxT("Off");
+      onOff = mOnRadioButton->GetValue() ? "On" : "Off";
    
    canClose = true;
    
@@ -286,7 +286,7 @@ void TogglePanel::SaveData()
    {
       MessageInterface::PopupMessage
          (Gmat::ERROR_,
-          wxT("Please select one or more subscribers to %s."), theCommand->GetTypeName().c_str());
+          "Please select one or more subscribers to %s.", theCommand->GetTypeName().c_str());
       canClose = false;
       return;
    }
@@ -298,45 +298,45 @@ void TogglePanel::SaveData()
    
    try
    {
-      theCommand->TakeAction(wxT("Clear"));
+      theCommand->TakeAction("Clear");
       
-      wxString subName;
-      //wxString cmdStr = theCommand->GetTypeName();
+      std::string subName;
+      //std::string cmdStr = theCommand->GetTypeName();
       for (int i=0; i<count; i++)
       {
          subName = mSubsCheckListBox->GetString(i);
          #if DEBUG_TOGGLE_PANEL
-         MessageInterface::ShowMessage(wxT("   name = '%s' and "), subName.c_str());
+         MessageInterface::ShowMessage("   name = '%s' and ", subName.c_str());
          #endif
          if (mSubsCheckListBox->IsChecked(i))
          {
             #if DEBUG_TOGGLE_PANEL
-            MessageInterface::ShowMessage(wxT("it is checked\n"));
+            MessageInterface::ShowMessage("it is checked\n");
             #endif
             
-            //cmdStr = cmdStr + wxT(" ") + subName;
-            theCommand->SetStringParameter(theCommand->GetParameterID(wxT("Subscriber")), subName);
+            //cmdStr = cmdStr + " " + subName;            
+            theCommand->SetStringParameter(theCommand->GetParameterID("Subscriber"), subName);
          }
          else
          {
             #if DEBUG_TOGGLE_PANEL
-            MessageInterface::ShowMessage(wxT("it is not checked\n"));
+            MessageInterface::ShowMessage("it is not checked\n");
             #endif
          }
       }
 
       #if 0
       if (mShowToggleState)
-         cmdStr = cmdStr + wxT(" ") + onOff;
-      cmdStr = cmdStr + wxT(";");
+         cmdStr = cmdStr + " " + onOff;
+      cmdStr = cmdStr + ";";
       
       #if DEBUG_TOGGLE_PANEL
-      MessageInterface::ShowMessage(wxT("   cmdStr = '%s'\n"), cmdStr.c_str());
+      MessageInterface::ShowMessage("   cmdStr = '%s'\n", cmdStr.c_str());
       #endif
       #endif
       
       if (mShowToggleState)
-         theCommand->SetStringParameter(theCommand->GetParameterID(wxT("ToggleState")), onOff);
+         theCommand->SetStringParameter(theCommand->GetParameterID("ToggleState"), onOff);
       
    }
    catch (BaseException &ex)
@@ -345,7 +345,7 @@ void TogglePanel::SaveData()
    }
    
    #if DEBUG_TOGGLE_PANEL
-   MessageInterface::ShowMessage(wxT("TogglePanel::SaveData() leaving\n"));
+   MessageInterface::ShowMessage("TogglePanel::SaveData() leaving\n");
    #endif
 }
 

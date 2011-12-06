@@ -66,7 +66,7 @@ SavePanel::SavePanel(wxWindow *parent, GmatCommand *cmd)
 //------------------------------------------------------------------------------
 SavePanel::~SavePanel()
 {
-   theGuiManager->UnregisterCheckListBox(wxT("AllObject"), mObjectCheckListBox);
+   theGuiManager->UnregisterCheckListBox("AllObject", mObjectCheckListBox);
 }
 
 
@@ -128,7 +128,7 @@ void SavePanel::LoadData()
    for (UnsignedInt i=0; i<objNames.size(); i++)
    {
       #ifdef DEBUG_SAVEPANEL_LOAD
-      MessageInterface::ShowMessage(wxT("   objName=<%s>\n"), objNames[i].c_str());
+      MessageInterface::ShowMessage("   objName=<%s>\n", objNames[i].c_str());
       #endif
       
       wxString objName = objNames[i].c_str();
@@ -162,14 +162,14 @@ void SavePanel::SaveData()
    if (checkedCount == 0)
    {
       MessageInterface::PopupMessage
-         (Gmat::ERROR_, wxT("Please select one or more objects to save."));
+         (Gmat::ERROR_, "Please select one or more objects to save.");
       canClose = false;
       return;
    }
    
    #ifdef DEBUG_SAVEPANEL_SAVE
    MessageInterface::ShowMessage
-      (wxT("SavePanel::SaveData() number of checked object=%d\n"), checkedCount);
+      ("SavePanel::SaveData() number of checked object=%d\n", checkedCount);
    #endif
    
    //-----------------------------------------------------------------
@@ -178,7 +178,7 @@ void SavePanel::SaveData()
    
    wxString objStr, objName;
    
-   theCommand->TakeAction(wxT("Clear"));
+   theCommand->TakeAction("Clear");
    
    for (int i=0; i<count; i++)
    {
@@ -189,7 +189,7 @@ void SavePanel::SaveData()
          
          #ifdef DEBUG_SAVEPANEL_SAVE
          MessageInterface::ShowMessage
-            (wxT("objStr=<%s>, objName=<%s>\n"), objStr.c_str(), objName.c_str());
+            ("objStr=<%s>, objName=<%s>\n", objStr.c_str(), objName.c_str());
          #endif
          
          theCommand->SetRefObjectName(Gmat::UNKNOWN_OBJECT, objName.c_str());         

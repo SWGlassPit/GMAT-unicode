@@ -47,7 +47,7 @@ public:
                 const wxPoint& pos = wxPoint(1,1),
                 const wxSize& size = wxDefaultSize, 
                 long style = wxTAB_TRAVERSAL,
-                const wxString& name = wxT(""));
+                const wxString& name = "");
 
    virtual void OnPaint(wxPaintEvent& ev);
    virtual void OnSize(wxSizeEvent& ev);
@@ -55,9 +55,9 @@ public:
    
    void Refresh(wxDC &dc, bool drawAll);
 
-   void DumpData(const wxString &fn);
-   void SetLabel(const wxString &dataName, const PlotComponents which);
-   void SetDataName(const wxString &dataName);
+   void DumpData(const std::string &fn);
+   void SetLabel(const std::string &dataName, const PlotComponents which);
+   void SetDataName(const std::string &dataName);
    void AddData(TsPlotCurve *curve, wxColour startColor = *wxWHITE);
    void DataUpdate(bool tf = true);
    int  GetCurveCount();
@@ -82,7 +82,7 @@ public:
    
    void SetLineWidth(int w,  int lineId = -1);
    void SetLineStyle(int ls, int lineId = -1);
-   void SetAxisLimit(wxString axisEnd, bool automatic = false, 
+   void SetAxisLimit(std::string axisEnd, bool automatic = false, 
                      double value = 0.0);
                      
    void Rescale();
@@ -111,12 +111,12 @@ protected:
    
    wxPen *plotPens;
    std::vector <int> *plotDependent;
-   std::vector <wxString> names;
-   wxString xDataName;
-   wxString filename;
-   wxString plotTitle;
-   wxString xLabel;
-   wxString yLabel;
+   std::vector <std::string> names;
+   std::string xDataName;
+   std::string filename;
+   std::string plotTitle;
+   std::string xLabel;
+   std::string yLabel;
    double plotXMin;
    double plotXMax;
    double plotYMin;
@@ -148,7 +148,7 @@ protected:
    double xMax;
    double yMin;
    double yMax;
-   wxString xName, yName;
+   std::string xName, yName;
    
    int currentId;
    bool hasData;

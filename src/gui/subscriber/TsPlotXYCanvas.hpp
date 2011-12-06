@@ -25,7 +25,7 @@ public:
                   const wxPoint& pos = wxPoint(1,1),
                   const wxSize& size = wxDefaultSize,
                   long style = wxTAB_TRAVERSAL,
-                  const wxString& name = wxT(""));
+                  const wxString& name = "");
 	virtual    ~TsPlotXYCanvas();
 
 protected:

@@ -83,7 +83,7 @@ VisualModelPanel::VisualModelPanel(GmatPanel *scPanel, wxWindow *parent,
    //LoadPOV(new ModelObject(), wxT("C:/Programs/DevelGMAT/files/models/DMSPWithTextures/DMSP-WithTextures-POVRayFormat.pov"));
 
    FileManager *fm = FileManager::Instance();
-   modelPath = fm->GetPathname(wxT("MODEL_PATH")).c_str();
+   modelPath = wxT(fm->GetPathname("MODEL_PATH").c_str());
 
    Create();
 }
@@ -122,7 +122,7 @@ bool VisualModelPanel::CanvasOn(bool onOrOff)
 void VisualModelPanel::Create()
 {
    #ifdef DEBUG_ORBIT_PANEL
-      MessageInterface::ShowMessage(wxT("In VisualModelPanel::Create() \n"));
+      MessageInterface::ShowMessage("In VisualModelPanel::Create() \n");
    #endif
 
    Integer bsize = 2.0; // border size
@@ -370,7 +370,7 @@ void VisualModelPanel::Create()
    visSizer->Add(rightSizer, 1, wxGROW | wxALIGN_CENTER, bsize);
 
    InitializeCanvas();
-	if (currentSpacecraft->modelFile == wxT(""))
+	if (currentSpacecraft->modelFile == "")
 	{
 		ToggleInterface(false);
 		interfaceEnabled = false;
@@ -432,12 +432,12 @@ void VisualModelPanel::ToggleInterface(bool enable)
 void VisualModelPanel::InitializeCanvas()
 {
    Real x,y,z;
-   if (currentSpacecraft->modelFile != wxT(""))
+   if (currentSpacecraft->modelFile != "")
    {
       modelCanvas->LoadModel(currentSpacecraft->modelFile.c_str());
-      x = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelOffsetX")));
-      y = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelOffsetY")));
-      z = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelOffsetZ")));
+      x = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID("ModelOffsetX"));
+      y = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID("ModelOffsetY"));
+      z = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID("ModelOffsetZ"));
       xTranValueText->SetLabel(wxString::Format(wxT("%f"), x));
       yTranValueText->SetLabel(wxString::Format(wxT("%f"), y));
       zTranValueText->SetLabel(wxString::Format(wxT("%f"), z));
@@ -446,9 +446,9 @@ void VisualModelPanel::InitializeCanvas()
       zTranSlider->SetValue(z*100);
       //modelCanvas->Translate(x, y, z);
 
-      x = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelRotationX")));
-      y = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelRotationY")));
-      z = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelRotationZ")));
+      x = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID("ModelRotationX"));
+      y = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID("ModelRotationY"));
+      z = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID("ModelRotationZ"));
       xRotValueText->SetLabel(wxString::Format(wxT("%f"), x));
       yRotValueText->SetLabel(wxString::Format(wxT("%f"), y));
       zRotValueText->SetLabel(wxString::Format(wxT("%f"), z));
@@ -457,12 +457,12 @@ void VisualModelPanel::InitializeCanvas()
       zRotSlider->SetValue(z);
       //modelCanvas->Rotate(true, x, y, z);
 
-      x = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelScale")));
+      x = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID("ModelScale"));
       scaleSlider->SetValue(x);
       scaleValueText->SetLabel(wxString::Format(wxT("%f"), x));
       //modelCanvas->Scale(x, x, x);
 
-      modelTextCtrl->ChangeValue(currentSpacecraft->modelFile.c_str());
+      modelTextCtrl->ChangeValue(wxT(currentSpacecraft->modelFile.c_str()));
       modelCanvas->Refresh(false);
    }
 }
@@ -483,9 +483,9 @@ void VisualModelPanel::ResetSliders()
    xRotValueText->SetLabel(wxT("0"));
    yRotValueText->SetLabel(wxT("0"));
    zRotValueText->SetLabel(wxT("0"));
-   currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelRotationX")), 0);
-   currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelRotationY")), 0);
-   currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelRotationZ")), 0);
+   currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelRotationX"), 0);
+   currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelRotationY"), 0);
+   currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelRotationZ"), 0);
    xTranSlider->SetValue(0);
    yTranSlider->SetValue(0);
    zTranSlider->SetValue(0);
@@ -493,12 +493,12 @@ void VisualModelPanel::ResetSliders()
    yTranValueText->SetLabel(wxT("0"));
    zTranValueText->SetLabel(wxT("0"));
    mTextChanged = false;
-   currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelOffsetX")), 0);
-   currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelOffsetY")), 0);
-   currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelOffsetZ")), 0);
+   currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelOffsetX"), 0);
+   currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelOffsetY"), 0);
+   currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelOffsetZ"), 0);
    scaleSlider->SetValue(1);
    scaleValueText->SetLabel(wxT("1"));
-   currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelOffsetX")), 1);
+   currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelOffsetX"), 1);
 }
 
 //------------------------------------------------------------------------------
@@ -510,12 +510,12 @@ void VisualModelPanel::ResetSliders()
 //------------------------------------------------------------------------------
 void VisualModelPanel::OnPaint(wxPaintEvent& event)
 {
-	if (interfaceEnabled && currentSpacecraft->modelFile == wxT(""))
+	if (interfaceEnabled && currentSpacecraft->modelFile == "")
 	{
 		interfaceEnabled = false;
 		ToggleInterface(false);
 	}
-	if (!interfaceEnabled && currentSpacecraft->modelFile != wxT(""))
+	if (!interfaceEnabled && currentSpacecraft->modelFile != "")
 	{
 		interfaceEnabled = true;
 		ToggleInterface(true);
@@ -542,9 +542,9 @@ void VisualModelPanel::OnSlide(wxCommandEvent &event)
          y = (float)yRotSlider->GetValue();
          z = (float)zRotSlider->GetValue();
          //modelCanvas->Rotate(true, x, y, z);
-         currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelRotationX")), x);
-         currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelRotationY")), y);
-         currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelRotationZ")), z);
+         currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelRotationX"), x);
+         currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelRotationY"), y);
+         currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelRotationZ"), z);
 			xRotValueText->SetLabel(wxString::Format(wxT("%f"), x));
 			yRotValueText->SetLabel(wxString::Format(wxT("%f"), y));
 			zRotValueText->SetLabel(wxString::Format(wxT("%f"), z));
@@ -555,9 +555,9 @@ void VisualModelPanel::OnSlide(wxCommandEvent &event)
          y = (float)yTranSlider->GetValue()/100.0f;
          z = (float)zTranSlider->GetValue()/100.0f;
          //modelCanvas->Translate(x, y, z);
-         currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelOffsetX")), x);
-         currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelOffsetY")), y);
-         currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelOffsetZ")), z);
+         currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelOffsetX"), x);
+         currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelOffsetY"), y);
+         currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelOffsetZ"), z);
 			xTranValueText->SetLabel(wxString::Format(wxT("%f"), x));
 			yTranValueText->SetLabel(wxString::Format(wxT("%f"), y));
 			zTranValueText->SetLabel(wxString::Format(wxT("%f"), z));
@@ -574,7 +574,7 @@ void VisualModelPanel::OnSlide(wxCommandEvent &event)
             break;
          //modelCanvas->Scale(x, x, x);
 			scaleValueText->SetLabel(wxString::Format(wxT("%f"), x));
-			currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelScale")), x);
+			currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelScale"), x);
 			modelCanvas->Refresh(false);
 			break;
    }
@@ -636,9 +636,9 @@ void VisualModelPanel::UpdateTextCtrl(int id)
 			y = y < -180? -180 : y > 180? 180 : y;
 			z = z < -180? -180 : z > 180? 180 : z;
 			//modelCanvas->Rotate(true, x, y, z);
-			currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelRotationX")), x);
-			currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelRotationY")), y);
-			currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelRotationZ")), z);
+			currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelRotationX"), x);
+			currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelRotationY"), y);
+			currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelRotationZ"), z);
 			xRotValueText->SetLabel(wxString::Format(wxT("%f"), x));
 			yRotValueText->SetLabel(wxString::Format(wxT("%f"), y));
 			zRotValueText->SetLabel(wxString::Format(wxT("%f"), z));
@@ -655,9 +655,9 @@ void VisualModelPanel::UpdateTextCtrl(int id)
 			y = y < -3.5? -3.5 : y > 3.5? 3.5 : y;
 			z = z < -3.5? -3.5 : z > 3.5? 3.5 : z;
 			//modelCanvas->Translate(x, y, z);
-			currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelOffsetX")), x);
-			currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelOffsetY")), y);
-			currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelOffsetZ")), z);
+			currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelOffsetX"), x);
+			currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelOffsetY"), y);
+			currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelOffsetZ"), z);
 			xTranValueText->SetLabel(wxString::Format(wxT("%f"), x));
 			yTranValueText->SetLabel(wxString::Format(wxT("%f"), y));
 			zTranValueText->SetLabel(wxString::Format(wxT("%f"), z));
@@ -670,7 +670,7 @@ void VisualModelPanel::UpdateTextCtrl(int id)
 			scaleValueText->GetLabelText().ToDouble(&x);
 			x = x <= 0? 0.001 : x > 1000? 1000 : x;
 			//modelCanvas->Scale(x, x, x);
-			currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelScale")), x);
+			currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelScale"), x);
 			scaleValueText->SetLabel(wxString::Format(wxT("%f"), x));
 			if (x < 1)
 			{
@@ -712,7 +712,7 @@ void VisualModelPanel::OnBrowseButton(wxCommandEvent& event)
       dataChanged = true;
       theScPanel->EnableUpdate(true);
       // Set the textctrl to display the selected filename
-      modelTextCtrl->ChangeValue(filename);
+      modelTextCtrl->ChangeValue(wxT(filename));
 	  dataChanged = true;
 	  theScPanel->EnableUpdate(true);
 	  ToggleInterface(true);
@@ -738,9 +738,9 @@ void VisualModelPanel::OnRecenterButton(wxCommandEvent& event)
    xTranValueText->SetLabel(wxString::Format(wxT("%f"), offset[0]));
    yTranValueText->SetLabel(wxString::Format(wxT("%f"), offset[1]));
    zTranValueText->SetLabel(wxString::Format(wxT("%f"), offset[2]));
-   currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelOffsetX")), offset[0]);
-   currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelOffsetY")), offset[1]);
-   currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelOffsetZ")), offset[2]);
+   currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelOffsetX"), offset[0]);
+   currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelOffsetY"), offset[1]);
+   currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelOffsetZ"), offset[2]);
    modelCanvas->Refresh(false);
    dataChanged = true;
 
@@ -752,7 +752,7 @@ void VisualModelPanel::OnAutoscaleButton(wxCommandEvent& event)
 	float scale = modelCanvas->AutoscaleModel();
 	scaleSlider->SetValue(scale);
 	scaleValueText->SetLabel(wxString::Format(wxT("%f"), scale));
-	currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelScale")), scale);
+	currentSpacecraft->SetRealParameter(currentSpacecraft->GetParameterID("ModelScale"), scale);
 	modelCanvas->Refresh(false);
 	dataChanged = true;
  	theScPanel->EnableUpdate(true);

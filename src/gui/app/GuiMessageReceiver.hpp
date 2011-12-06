@@ -40,39 +40,42 @@ public:
 
    virtual void ClearMessage();
    virtual int  GetNumberOfMessageLines();
-   virtual void ShowMessage(const wxString &msg);
-   virtual void PopupMessage(Gmat::MessageType msgType, const wxString &msg);
-   virtual void PopupAbortContinue(const wxString &abortMsg,
-                                  const wxString &continueMsg,
-                                  const wxString &msg);
+   virtual void ShowMessage(const std::string &msg);
+   virtual void ShowMessage(const char *msg, ...);
+   virtual void PopupMessage(Gmat::MessageType msgType, const std::string &msg);
+   virtual void PopupMessage(Gmat::MessageType msgType, const char *msg, ...);
+   virtual void PopupAbortContinue(const std::string &abortMsg,
+                                  const std::string &continueMsg,
+                                  const std::string &msg);
    
-   virtual void LogMessage(const wxString &msg);
+   virtual void LogMessage(const std::string &msg);
+   virtual void LogMessage(const char *msg, ...);
    
-   virtual wxString GetLogFileName();
+   virtual std::string GetLogFileName();
 
    virtual void SetLogEnable(bool flag);
-   virtual void SetLogPath(const wxString &pathname, bool append = false);
-   virtual void SetLogFile(const wxString &filename);
+   virtual void SetLogPath(const std::string &pathname, bool append = false);
+   virtual void SetLogFile(const std::string &filename);
    
-   virtual void OpenLogFile(const wxString &filename, bool append = false);
+   virtual void OpenLogFile(const std::string &filename, bool append = false);
    virtual void CloseLogFile();
    
-   virtual wxString GetMessage();
-   virtual void PutMessage(const wxString &msg);
+   virtual std::string GetMessage();
+   virtual void PutMessage(const std::string &msg);
    virtual void ClearMessageQueue();
    
 private:
    static GuiMessageReceiver*  instance;
    const int MAX_MESSAGE_LENGTH;
    
-   std::queue<wxString> messageQueue;
-   wxString popupMessage;
-   wxString abortMessage;
-   wxString continueMessage;
+   std::queue<std::string> messageQueue;
+   std::string popupMessage;
+   std::string abortMessage;
+   std::string continueMessage;
    Gmat::MessageType messageType;
    int showIntervalInMilSec;
    short messageExist;
-   wxString logFileName;
+   std::string logFileName;
    FILE *logFile;
    bool logEnabled;
    bool logFileSet;

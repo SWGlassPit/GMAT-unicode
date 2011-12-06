@@ -47,7 +47,7 @@ END_EVENT_TABLE()
  */
 //------------------------------------------------------------------------------
 ForDialog::ForDialog(wxWindow *parent, For *forCommand, Integer col)
-    : GmatDialog(parent, -1, wxString(wxT("ForDialog")))
+    : GmatDialog(parent, -1, wxString(_T("ForDialog")))
 {
     if (forCommand != NULL)    
         theForCommand = forCommand;
@@ -87,7 +87,7 @@ void ForDialog::Initialize()
 {  
     if (theForCommand == NULL)
     {
-        MessageInterface::ShowMessage(wxT("Error: The For Command is NULL.\n"));
+        MessageInterface::ShowMessage("Error: The For Command is NULL.\n");
         Close();
     }
     
@@ -124,11 +124,11 @@ void ForDialog::LoadData()
     Initialize();
     
     if (whichParameter == START_COL)
-       forID = theForCommand->GetParameterID(wxT("StartValue"));
+       forID = theForCommand->GetParameterID("StartValue");
     else if (whichParameter == INCR_COL)
-       forID = theForCommand->GetParameterID(wxT("Step"));
+       forID = theForCommand->GetParameterID("Step");
     else if (whichParameter == END_COL)
-       forID = theForCommand->GetParameterID(wxT("EndValue"));
+       forID = theForCommand->GetParameterID("EndValue");
        
     forTextCtrl->SetValue(wxVariant(theForCommand->GetRealParameter(forID)));
     theOkButton->Enable(false);
@@ -164,7 +164,7 @@ void ForDialog::SaveData()
       }
       else
       {
-         wxMessageBox(wxT("Invalid number entered!!"), wxT(""), wxOK, this);
+         wxMessageBox("Invalid number entered!!", _T(""), wxOK, this);
          madeUpdate = false;
          canClose = false;
       }

@@ -96,7 +96,7 @@ void OutputTree::RemoveItem(GmatTree::ItemType type, const wxString &name)
 {
    #if DEBUG_OUTPUT_TREE
    MessageInterface::ShowMessage
-      (wxT("OutputTree::RemoveItem() type=%d, name=%s\n"), type, name.c_str());
+      ("OutputTree::RemoveItem() type=%d, name=%s\n", type, name.c_str());
    #endif
    
    wxTreeItemId parentId;
@@ -120,14 +120,14 @@ void OutputTree::RemoveItem(GmatTree::ItemType type, const wxString &name)
       
       #if DEBUG_OUTPUT_TREE
       MessageInterface::ShowMessage
-         (wxT("   type=%d, name=%s removed\n"), type, name.c_str());
+         ("   type=%d, name=%s removed\n", type, name.c_str());
       #endif
    }
    else
    {
       #if DEBUG_OUTPUT_TREE
       MessageInterface::ShowMessage
-         (wxT("   type=%d, name=%s NOT found\n"), type, name.c_str());
+         ("   type=%d, name=%s NOT found\n", type, name.c_str());
       #endif
    }
 }
@@ -149,7 +149,7 @@ wxTreeItemId OutputTree::FindItem(wxTreeItemId parentId, const wxString &name)
 {
    #if DEBUG_OUTPUT_TREE
    MessageInterface::ShowMessage
-      (wxT("OutputTree::FindItem() parentId=%s, name=%s\n"),
+      ("OutputTree::FindItem() parentId=%s, name=%s\n",
        GetItemText(parentId).c_str(), name.c_str());
    #endif
    
@@ -189,7 +189,7 @@ void OutputTree::UpdateOutput(bool resetTree, bool removeReports)
 {
    #if DEBUG_OUTPUT_TREE
    MessageInterface::ShowMessage
-      (wxT("OutputTree::UpdateOutput() resetTree=%d\n"), resetTree);
+      ("OutputTree::UpdateOutput() resetTree=%d\n", resetTree);
    #endif
    
    if (removeReports)
@@ -224,19 +224,19 @@ void OutputTree::UpdateOutput(bool resetTree, bool removeReports)
       wxString objName = wxString(listOfSubs[i].c_str());
       wxString objTypeName = wxString(sub->GetTypeName().c_str());
       
-      if (objTypeName.Trim() == wxT("ReportFile"))
+      if (objTypeName.Trim() == "ReportFile")
       {
          AppendItem(mReportItem, objName, GmatTree::OUTPUT_ICON_REPORTFILE, -1,
                     new GmatTreeItemData(objName, GmatTree::OUTPUT_REPORT));
       }
-      else if (objTypeName.Trim() == wxT("OrbitView") &&
-               sub->GetBooleanParameter(wxT("ShowPlot")))
+      else if (objTypeName.Trim() == "OrbitView" &&
+               sub->GetBooleanParameter("ShowPlot"))
       {
          AppendItem(mOpenGlItem, objName, GmatTree::OUTPUT_ICON_ORBITVIEW, -1,
                     new GmatTreeItemData(objName, GmatTree::OUTPUT_ORBIT_VIEW));
       }
-      else if (objTypeName.Trim() == wxT("XYPlot") &&
-               sub->GetBooleanParameter(wxT("ShowPlot")))
+      else if (objTypeName.Trim() == "XYPlot" &&
+               sub->GetBooleanParameter("ShowPlot"))
       {
          AppendItem(mXyPlotItem, objName, GmatTree::OUTPUT_ICON_XYPLOT, -1,
                     new GmatTreeItemData(objName, GmatTree::OUTPUT_XY_PLOT));
@@ -352,7 +352,7 @@ void OutputTree::ShowMenu(wxTreeItemId itemId, const wxPoint& pt)
    
    #if DEBUG_OUTPUT_TREE
    MessageInterface::ShowMessage
-      (wxT("OutputTree::ShowMenu() theSubscriberName=%s\n"), theSubscriberName.c_str());
+      ("OutputTree::ShowMenu() theSubscriberName=%s\n", theSubscriberName.c_str());
    #endif
    
 #if wxUSE_MENUS
@@ -437,7 +437,7 @@ void OutputTree::OnClose(wxCommandEvent &event)
 void OutputTree::OnRename(wxCommandEvent &event)
 {
    #if DEBUG_OUTPUT_TREE
-   MessageInterface::ShowMessage(wxT("OutputTree::OnRename() entered\n"));
+   MessageInterface::ShowMessage("OutputTree::OnRename() entered\n");
    #endif
    
    wxTreeItemId item = GetSelection();
@@ -578,10 +578,10 @@ void OutputTree::OnAddReportFile(wxCommandEvent &event)
    wxTreeItemId item = GetSelection();
   
    wxString name;
-   name.Printf(wxT("ReportFile"));
+   name.Printf("ReportFile");
 
    if (theGuiInterpreter->CreateSubscriber
-       (wxT("ReportFile"), wxString(name.c_str())) != NULL)
+       ("ReportFile", std::string(name.c_str())) != NULL)
    {
       AppendItem(item, name, GmatTree::OUTPUT_ICON_REPORTFILE, -1,
                  new GmatTreeItemData(name, GmatTree::REPORT_FILE));
@@ -605,10 +605,10 @@ void OutputTree::OnAddXyPlot(wxCommandEvent &event)
    wxTreeItemId item = GetSelection();
   
    wxString name;
-   name.Printf(wxT("XYPlot"));
+   name.Printf("XYPlot");
 
    if (theGuiInterpreter->CreateSubscriber
-       (wxT("XYPlot"), wxString(name.c_str())) != NULL)
+       ("XYPlot", std::string(name.c_str())) != NULL)
    {
       AppendItem(item, name, GmatTree::OUTPUT_ICON_XYPLOT, -1,
                  new GmatTreeItemData(name, GmatTree::XY_PLOT));
@@ -632,10 +632,10 @@ void OutputTree::OnAddOrbitView(wxCommandEvent &event)
    wxTreeItemId item = GetSelection();
    
    wxString name;
-   name.Printf(wxT("OrbitView"));
+   name.Printf("OrbitView");
    
    if (theGuiInterpreter->CreateSubscriber
-       (wxT("OrbitView"), wxString(name.c_str())) != NULL)
+       ("OrbitView", std::string(name.c_str())) != NULL)
    {
       AppendItem(item, name, GmatTree::OUTPUT_ICON_ORBITVIEW, -1,
                  new GmatTreeItemData(name, GmatTree::ORBIT_VIEW));
@@ -664,30 +664,30 @@ void OutputTree::OnCompareNumericValues(wxCommandEvent &event)
    if (!theReport)
    {
       MessageInterface::ShowMessage
-         (wxT("OutputTree::OnCompareNumericValues() The ReportFile: %s is NULL.\n"),
+         ("OutputTree::OnCompareNumericValues() The ReportFile: %s is NULL.\n",
           theSubscriberName.c_str());
       return;
    }
    
-   wxString filename1 = theReport->GetPathAndFileName();
+   std::string filename1 = theReport->GetPathAndFileName();
    StringArray colTitles = theReport->GetRefObjectNameArray(Gmat::PARAMETER);
    wxString filename2 =
-      wxFileSelector(wxT("Choose a file to open"), wxT(""), wxT(""), wxT("report"),
-                     wxT("Report files (*.report)|*.report|")
-                     wxT("Text files (*.txt)|*.txt|All files (*.*)|*.*"));
+      wxFileSelector("Choose a file to open", "", "", "report",
+                     "Report files (*.report)|*.report|"
+                     "Text files (*.txt)|*.txt|All files (*.*)|*.*");
    
    if (filename2.empty())
       return;
    
    Real tol = GmatFileUtil::CompareAbsTol;
    wxString tolStr;
-   tolStr.Printf(wxT("%e"), tol);
-   tolStr = wxGetTextFromUser(wxT("Enter absolute tolerance to be used in flagging: "),
-                              wxT("Tolerance"), tolStr, this);
+   tolStr.Printf("%e", tol);
+   tolStr = wxGetTextFromUser("Enter absolute tolerance to be used in flagging: ",
+                              "Tolerance", tolStr, this);
    
    if (!tolStr.ToDouble(&tol))
    {
-      wxMessageBox(wxT("Entered Invalid Tolerance"), wxT("Error"), wxOK, this);
+      wxMessageBox("Entered Invalid Tolerance", "Error", wxOK, this);
       return;
    }
    
@@ -699,10 +699,10 @@ void OutputTree::OnCompareNumericValues(wxCommandEvent &event)
    {
       compWindow = 
          new ViewTextFrame(GmatAppData::Instance()->GetMainFrame(),
-                           wxT("Compare Utility"), 50, 50, 800, 500, wxT("Permanent"));
+                           _T("Compare Utility"), 50, 50, 800, 500, "Permanent");
       GmatAppData::Instance()->SetCompareWindow(compWindow);
       wxString msg;
-      msg.Printf(wxT("GMAT Build Date: %s %s\n\n"),  __DATE__, __TIME__);  
+      msg.Printf(_T("GMAT Build Date: %s %s\n\n"),  __DATE__, __TIME__);  
       compWindow->AppendText(msg);
    }
    
@@ -732,17 +732,17 @@ void OutputTree::OnCompareTextLines(wxCommandEvent &event)
    if (!theReport)
    {
       MessageInterface::ShowMessage
-         (wxT("OutputTree::OnCompareTextLines() The ReportFile: %s is NULL.\n"),
+         ("OutputTree::OnCompareTextLines() The ReportFile: %s is NULL.\n",
           theSubscriberName.c_str());
       return;
    }
    
-   wxString filename1 = theReport->GetPathAndFileName();
+   std::string filename1 = theReport->GetPathAndFileName();
    StringArray colTitles = theReport->GetRefObjectNameArray(Gmat::PARAMETER);
    wxString filename2 =
-      wxFileSelector(wxT("Choose a file to open"), wxT(""), wxT(""), wxT("report"),
-                     wxT("Report files (*.report)|*.report|")
-                     wxT("Text files (*.txt)|*.txt|All files (*.*)|*.*"));
+      wxFileSelector("Choose a file to open", "", "", "report",
+                     "Report files (*.report)|*.report|"
+                     "Text files (*.txt)|*.txt|All files (*.*)|*.*");
    
    if (filename2.empty())
       return;
@@ -752,7 +752,7 @@ void OutputTree::OnCompareTextLines(wxCommandEvent &event)
    int file3DiffCount = 0;
    
    StringArray output =
-      GmatFileUtil::CompareLines(1, filename1.c_str(), filename2.c_str(), wxT(""), wxT(""),
+      GmatFileUtil::CompareLines(1, filename1.c_str(), filename2.c_str(), "", "",
                                  file1DiffCount, file2DiffCount, file3DiffCount);
    
    ViewTextFrame *compWindow = GmatAppData::Instance()->GetCompareWindow();
@@ -760,10 +760,10 @@ void OutputTree::OnCompareTextLines(wxCommandEvent &event)
    {
       compWindow =
          new ViewTextFrame(GmatAppData::Instance()->GetMainFrame(),
-                           wxT("Compare Utility"), 50, 50, 800, 500, wxT("Permanent"));
+                           _T("Compare Utility"), 50, 50, 800, 500, "Permanent");
       GmatAppData::Instance()->SetCompareWindow(compWindow);
       wxString msg;
-      msg.Printf(wxT("GMAT Build Date: %s %s\n\n"),  __DATE__, __TIME__);      
+      msg.Printf(_T("GMAT Build Date: %s %s\n\n"),  __DATE__, __TIME__);      
       compWindow->AppendText(msg);
    }
    

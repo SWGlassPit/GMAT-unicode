@@ -112,8 +112,8 @@ public:
                         CoordinateSystem *viewUpCs);
    
    // drawing options
-   virtual void SetGl2dDrawingOption(const wxString &centralBodyName,
-                        const wxString &textureMap,
+   virtual void SetGl2dDrawingOption(const std::string &centralBodyName,
+                        const std::string &textureMap,
                         Integer footPrintOption);
    virtual void SetGl3dDrawingOption(bool drawEcPlane, bool drawXyPlane,
                         bool drawWireFrame, bool drawAxes,
@@ -126,7 +126,7 @@ public:
    virtual void SetGl3dViewOption(SpacePoint *vpRefObj, SpacePoint *vpVecObj,
                         SpacePoint *vdObj, Real vscaleFactor,
                         const Rvector3 &vpRefVec, const Rvector3 &vpVec,
-                        const Rvector3 &vdVec, const wxString &upAxis,
+                        const Rvector3 &vdVec, const std::string &upAxis,
                         bool usevpRefVec, bool usevpVec, bool usevdVec);
    
    // drawing toggle switch
@@ -138,7 +138,7 @@ public:
    virtual void SetNumPointsToRedraw(Integer numPoints);
    
    // actions
-   virtual void TakeAction(const wxString &action);
+   virtual void TakeAction(const std::string &action);
    
    // update
    virtual void UpdatePlot(const StringArray &scNames, const Real &time,
@@ -220,7 +220,7 @@ protected:
    
    // texture
    std::map<wxString, GLuint> mTextureIdMap;
-   std::map<wxString, wxString> mTextureFileMap;
+   std::map<wxString, std::string> mTextureFileMap;
    
    // view control
    bool mUseInitialViewPoint;
@@ -362,7 +362,7 @@ protected:
    
    virtual void DrawStatus(const wxString &label1, unsigned int textColor,
                         const wxString &label2, double time,  int xpos = 0,
-                        int ypos = 0, bool showCS = true, const wxString &label3 = wxT(""));
+                        int ypos = 0, bool showCS = true, const wxString &label3 = "");
       
    // for object
    virtual int  GetObjectId(const wxString &name);
@@ -390,7 +390,7 @@ protected:
    virtual void CopyVector3(Real to[3], Real from[3]);
    
    // for loading image
-   virtual bool LoadImage(const wxString &fileName, bool isSpacecraft);
+   virtual bool LoadImage(const std::string &fileName, bool isSpacecraft);
    
    // for debug
    void DrawDebugMessage(const wxString &msg, unsigned int textColor, int xpos, int ypos);

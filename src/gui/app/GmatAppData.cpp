@@ -271,7 +271,7 @@ GmatAppData::GmatAppData()
    theMessageWindow = NULL;
    theCompareWindow = NULL;
    theMessageTextCtrl = NULL;
-   theTempScriptName = wxT("$gmattempscript$.script");
+   theTempScriptName = "$gmattempscript$.script";
    thePersonalizationConfig = NULL;
 
    
@@ -281,7 +281,7 @@ GmatAppData::GmatAppData()
    
    theFont = wxFont(10, wxMODERN, wxNORMAL, wxNORMAL);
    // set the global wx config, read from local directory (GMAT.ini)
-   wxFileConfig *pConfig = new wxFileConfig(wxEmptyString, wxEmptyString, wxT("GMAT.ini"), 
+   wxFileConfig *pConfig = new wxFileConfig(wxEmptyString, wxEmptyString, "GMAT.ini", 
            wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
    wxConfigBase::Set(pConfig);
 #endif

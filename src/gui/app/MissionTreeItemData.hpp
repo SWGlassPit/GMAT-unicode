@@ -28,7 +28,7 @@ class MissionTreeItemData : public GmatTreeItemData
 {
 public:
    MissionTreeItemData(const wxString &name, GmatTree::ItemType type,
-                       const wxString &title = wxT(""), GmatCommand *cmd = NULL);
+                       const wxString &title = "", GmatCommand *cmd = NULL);
    
    virtual GmatCommand* GetCommand();
    virtual void SetCommand(GmatCommand *cmd);

@@ -65,7 +65,7 @@ protected:
 
 
    bool           isCoordSysModified;
-   wxString    currentCoordSysName;
+   std::string    currentCoordSysName;
    GuiItemManager *theGuiManager;
    bool           summaryForEntireMission;
    bool           physicsBasedOnly;

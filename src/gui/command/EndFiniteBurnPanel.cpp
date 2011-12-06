@@ -62,7 +62,7 @@ EndFiniteBurnPanel::EndFiniteBurnPanel(wxWindow *parent, GmatCommand *cmd)
 
 {
    theCommand = cmd;
-   mObjectTypeList.Add(wxT("Spacecraft"));
+   mObjectTypeList.Add("Spacecraft");
    
    if (theCommand != NULL)
    {
@@ -77,7 +77,7 @@ EndFiniteBurnPanel::EndFiniteBurnPanel(wxWindow *parent, GmatCommand *cmd)
 //------------------------------------------------------------------------------
 EndFiniteBurnPanel::~EndFiniteBurnPanel()
 {
-   theGuiManager->UnregisterComboBox(wxT("FiniteBurn"), mFiniteBurnComboBox);
+   theGuiManager->UnregisterComboBox("FiniteBurn", mFiniteBurnComboBox);
 }
 
 
@@ -89,7 +89,7 @@ EndFiniteBurnPanel::~EndFiniteBurnPanel()
 // wxArrayString ToWxArrayString(const StringArray &array)
 //------------------------------------------------------------------------------
 /**
- * Converts wxString array to wxString array.
+ * Converts std::string array to wxString array.
  */
 //------------------------------------------------------------------------------
 wxArrayString EndFiniteBurnPanel::ToWxArrayString(const StringArray &array)
@@ -111,8 +111,8 @@ wxArrayString EndFiniteBurnPanel::ToWxArrayString(const StringArray &array)
 //------------------------------------------------------------------------------
 wxString EndFiniteBurnPanel::ToWxString(const wxArrayString &names)
 {
-   wxString str = wxT("");
-   wxString delimiter = wxT(", ");
+   wxString str = "";
+   wxString delimiter = ", ";
    if (names.Count() > 0)
    {
       str = names[0];
@@ -141,7 +141,7 @@ void EndFiniteBurnPanel::Create()
 {
    #ifdef DEBUG_ENDFBPANEL_CREATE
    MessageInterface::ShowMessage
-      (wxT("EndFiniteBurnPanel::Create() Entered. command=%s\n"),
+      ("EndFiniteBurnPanel::Create() Entered. command=%s\n",
        theCommand->GetTypeName().c_str());
    #endif
    
@@ -158,18 +158,18 @@ void EndFiniteBurnPanel::Create()
    // create burn label
    wxStaticText *burnLabel =
       new wxStaticText(this, ID_TEXT,
-                       wxT(GUI_ACCEL_KEY) wxT("Burn"), wxDefaultPosition, wxSize(50, -1));
+                       wxT(GUI_ACCEL_KEY"Burn"), wxDefaultPosition, wxSize(50, -1));
    
    #ifdef DEBUG_ENDFBPANEL_CREATE
    MessageInterface::ShowMessage
-      (wxT("EndFiniteBurnPanel::Create() Calling theGuiManager->")
-       wxT("GetFiniteBurnComboBox()\n"));
+      ("EndFiniteBurnPanel::Create() Calling theGuiManager->"
+       "GetFiniteBurnComboBox()\n");
    #endif
    
    // create finite burn combo box
    mFiniteBurnComboBox =
       theGuiManager->GetFiniteBurnComboBox(this, ID_COMBOBOX, wxSize(150,-1));
-   mFiniteBurnComboBox->SetToolTip(pConfig->Read(wxT("BurnHint")));
+   mFiniteBurnComboBox->SetToolTip(pConfig->Read(_T("BurnHint")));
    
    //----------------------------------------------------------------------
    // Spacecraft
@@ -177,14 +177,14 @@ void EndFiniteBurnPanel::Create()
    
    wxStaticText *satLabel =
       new wxStaticText(this, ID_TEXT,
-                       wxT(GUI_ACCEL_KEY) wxT("Spacecraft"), wxDefaultPosition, wxSize(50,-1));
+                       wxT(GUI_ACCEL_KEY"Spacecraft"), wxDefaultPosition, wxSize(50,-1));
    mSatTextCtrl =
       new wxTextCtrl( this, ID_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(150,-1));
-   mSatTextCtrl->SetToolTip(pConfig->Read(wxT("SpacecraftHint")));
+   mSatTextCtrl->SetToolTip(pConfig->Read(_T("SpacecraftHint")));
    
    wxButton *selectSatButton =
-      new wxButton(this, ID_BUTTON, wxT("E") wxT(GUI_ACCEL_KEY) wxT("dit"), wxDefaultPosition, wxDefaultSize);
-   selectSatButton->SetToolTip(pConfig->Read(wxT("SelectSpacecraftHint")));
+      new wxButton(this, ID_BUTTON, wxT("E"GUI_ACCEL_KEY"dit"), wxDefaultPosition, wxDefaultSize);
+   selectSatButton->SetToolTip(pConfig->Read(_T("SelectSpacecraftHint")));
    
    
    //----------------------------------------------------------------------
@@ -198,7 +198,7 @@ void EndFiniteBurnPanel::Create()
    burnSatSizer->Add(mSatTextCtrl, 0, wxALIGN_LEFT|wxALL, bsize);
    burnSatSizer->Add(selectSatButton, 0, wxALIGN_LEFT|wxALL, bsize);
    
-   GmatStaticBoxSizer *optionsSizer = new GmatStaticBoxSizer( wxVERTICAL, this, wxT("Options") );
+   GmatStaticBoxSizer *optionsSizer = new GmatStaticBoxSizer( wxVERTICAL, this, "Options" );
    optionsSizer->Add(burnSatSizer, 0, wxGROW|wxALIGN_LEFT|wxALL, 6);
    wxBoxSizer *pageSizer = new wxBoxSizer(wxVERTICAL);
    pageSizer->Add(optionsSizer, 1, wxALIGN_CENTER|wxGROW|wxALL, 6);
@@ -207,7 +207,7 @@ void EndFiniteBurnPanel::Create()
    theMiddleSizer->Add(pageSizer, 1, wxGROW|wxALIGN_CENTRE|wxALL, bsize);     
    
    #ifdef DEBUG_ENDFBPANEL_CREATE
-   MessageInterface::ShowMessage(wxT("EndFiniteBurnPanel::Create() Exiting\n"));
+   MessageInterface::ShowMessage("EndFiniteBurnPanel::Create() Exiting\n");
    #endif
 }
 
@@ -223,11 +223,11 @@ void EndFiniteBurnPanel::LoadData()
    try
    {
       // Get FiniteBurn from the command
-      wxString burnName = theCommand->GetRefObjectName(Gmat::FINITE_BURN);
+      std::string burnName = theCommand->GetRefObjectName(Gmat::FINITE_BURN);
       
       #if DEBUG_BEGIN_FINITE_BURN
       MessageInterface::ShowMessage
-         (wxT("EndFiniteBurnPanel::LoadData() burnName=<%s>\n"), burnName.c_str());
+         ("EndFiniteBurnPanel::LoadData() burnName=<%s>\n", burnName.c_str());
       #endif
       
       mFiniteBurnComboBox->SetValue(burnName.c_str());
@@ -251,7 +251,7 @@ void EndFiniteBurnPanel::LoadData()
 void EndFiniteBurnPanel::SaveData()
 {
    #ifdef DEBUG_ENDFBPANEL_SAVE
-   MessageInterface::ShowMessage(wxT("EndFiniteBurnPanel::SaveData() entered\n"));
+   MessageInterface::ShowMessage("EndFiniteBurnPanel::SaveData() entered\n");
    #endif
    
    canClose = true;
@@ -260,23 +260,23 @@ void EndFiniteBurnPanel::SaveData()
    //-----------------------------------------------------------------
    // check empty spacecraft list
    //-----------------------------------------------------------------
-   if (satNames == wxT(""))
+   if (satNames == "")
    {
       MessageInterface::PopupMessage
-         (Gmat::ERROR_, wxT("Please enter Spacecrafts to begin maneuver\n"));
+         (Gmat::ERROR_, "Please enter Spacecrafts to begin maneuver\n");
       canClose = false;
       return;
    }
    
    // In case user typed in spacecraft names, get value from textbox and
    // parse by blank or comma
-   wxString scNames = satNames.c_str();
-   StringTokenizer st(scNames, wxT(" ,"));
+   std::string scNames = satNames.c_str();
+   StringTokenizer st(scNames, " ,");
    StringArray scList = st.GetAllTokens();
    #ifdef DEBUG_ENDFBPANEL_SAVE
    for (UnsignedInt i=0; i<scList.size(); i++)
       MessageInterface::ShowMessage
-         (wxT("   selected spacecraft[%d] = '%s'\n"), i, scList[i].c_str());
+         ("   selected spacecraft[%d] = '%s'\n", i, scList[i].c_str());
    #endif
    
    //-----------------------------------------------------------------
@@ -291,21 +291,21 @@ void EndFiniteBurnPanel::SaveData()
    
    #ifdef DEBUG_ENDFBPANEL_SAVE
    for (UnsignedInt i=0; i<result.size(); i++)
-      MessageInterface::ShowMessage(wxT("   sc not configured[%d] = '%s'\n"), i, result[i].c_str());
+      MessageInterface::ShowMessage("   sc not configured[%d] = '%s'\n", i, result[i].c_str());
    #endif
    
    if (result.size() > 0)
    {
-      wxString scLabel = wxT("The spacecraft \"");
-      wxString desc = wxT("\" is undefined.\n");
+      std::string scLabel = "The spacecraft \"";
+      std::string desc = "\" is undefined.\n";
       if (result.size() > 1)
       {
-         scLabel = wxT("The spacecrafts \"");
-         desc = wxT("\" are undefined.\n");
+         scLabel = "The spacecrafts \"";
+         desc = "\" are undefined.\n";
       }
       
-      wxString unknownSc = (ToWxString(ToWxArrayString(result))).c_str();
-      wxString msg = scLabel + unknownSc + desc;
+      std::string unknownSc = (ToWxString(ToWxArrayString(result))).c_str();
+      std::string msg = scLabel + unknownSc + desc;
       MessageInterface::PopupMessage(Gmat::ERROR_, msg);
       canClose = false;
       return;
@@ -322,7 +322,7 @@ void EndFiniteBurnPanel::SaveData()
       
       // save spacecrafts
       int count = scList.size();
-      theCommand->TakeAction(wxT("Clear"));
+      theCommand->TakeAction("Clear");
       
       for (int i=0; i<count; i++)
          theCommand->SetRefObjectName(Gmat::SPACECRAFT, scList[i]);
@@ -336,7 +336,7 @@ void EndFiniteBurnPanel::SaveData()
    }
    
    #ifdef DEBUG_ENDFBPANEL_SAVE
-   MessageInterface::ShowMessage(wxT("EndFiniteBurnPanel::SaveData() exiting\n"));
+   MessageInterface::ShowMessage("EndFiniteBurnPanel::SaveData() exiting\n");
    #endif
 }
 
@@ -349,7 +349,7 @@ void EndFiniteBurnPanel::OnButtonClicked(wxCommandEvent& event)
    // Allow multiple selection on spacecraft
    ParameterSelectDialog paramDlg(this, mObjectTypeList,
                                   GuiItemManager::SHOW_WHOLE_OBJECT_ONLY, true,
-                                  false, true, false, false, false, wxT("Spacecraft"));
+                                  false, true, false, false, false, "Spacecraft");
    
    paramDlg.SetParamNameArray(mSpacecraftList);
    paramDlg.ShowModal();

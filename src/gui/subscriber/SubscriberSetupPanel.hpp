@@ -53,8 +53,8 @@ protected:
    virtual void         SaveData();
    void                 Setup(wxWindow *parent);
    wxControl *          BuildControl(wxWindow *parent, Integer index);
-   void                 LoadControl(const wxString &label);
-   void                 SaveControl(const wxString &label);
+   void                 LoadControl(const std::string &label);
+   void                 SaveControl(const std::string &label);
 
    // Text control event method
    void OnTextUpdate(wxCommandEvent& event);
@@ -70,7 +70,7 @@ protected:
    /// GUI controls that are used to configure the properties
    std::vector<wxControl*>          propertyControls;
    /// Mapping between text strings and the index for the associated control
-   std::map<wxString, Integer>   controlMap;
+   std::map<std::string, Integer>   controlMap;
 
    /// IDs used for event management
    enum

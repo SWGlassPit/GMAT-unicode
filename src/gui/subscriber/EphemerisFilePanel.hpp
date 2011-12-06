@@ -44,8 +44,8 @@ protected:
    virtual void         LoadData();
    virtual void         SaveData();
    wxControl *          BuildControl(wxWindow *parent, Integer index);
-   void                 LoadControl(const wxString &label);
-   void                 SaveControl(const wxString &label);
+   void                 LoadControl(const std::string &label);
+   void                 SaveControl(const std::string &label);
    
    // Text control event method
    void OnTextUpdate(wxCommandEvent& event);

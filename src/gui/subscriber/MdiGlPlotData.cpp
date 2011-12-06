@@ -22,22 +22,22 @@ wxList MdiGlPlot::mdiChildren;
 int    MdiGlPlot::numChildren = 0;
 bool   MdiGlPlot::usePresetSize = false;
 
-wxString GmatPlot::BodyInfo::BODY_NAME[GmatPlot::MAX_BODIES] =
+std::string GmatPlot::BodyInfo::BODY_NAME[GmatPlot::MAX_BODIES] =
 {
-   wxT("Sun"),      wxT("Mercury"),  wxT("Venus"),   wxT("Earth"),
-   wxT("Mars"),     wxT("Jupiter"),  wxT("Saturn"),  wxT("Uranus"),
-   wxT("Neptune"),  wxT("Pluto"),    wxT("Luna"),    wxT("Body1"),
-   wxT("Body2"),    wxT("Body3"),    wxT("Body4"),   wxT("Body5"),
-   wxT("Body6"),    wxT("Body7"),    wxT("Body8"),   wxT("Body9")
+   "Sun",      "Mercury",  "Venus",   "Earth",
+   "Mars",     "Jupiter",  "Saturn",  "Uranus",
+   "Neptune",  "Pluto",    "Luna",    "Body1",
+   "Body2",    "Body3",    "Body4",   "Body5",
+   "Body6",    "Body7",    "Body8",   "Body9"
 };
 
 wxString GmatPlot::BodyInfo::WX_BODY_NAME[GmatPlot::MAX_BODIES] =
 {
-   wxT("Sun"),      wxT("Mercury"),  wxT("Venus"),   wxT("Earth"),
-   wxT("Mars"),     wxT("Jupiter"),  wxT("Saturn"),  wxT("Uranus"),
-   wxT("Neptune"),  wxT("Pluto"),    wxT("Luna"),    wxT("Body1"),
-   wxT("Body2"),    wxT("Body3"),    wxT("Body4"),   wxT("Body5"),
-   wxT("Body6"),    wxT("Body7"),    wxT("Body8"),   wxT("Body9")
+   "Sun",      "Mercury",  "Venus",   "Earth",
+   "Mars",     "Jupiter",  "Saturn",  "Uranus",
+   "Neptune",  "Pluto",    "Luna",    "Body1",
+   "Body2",    "Body3",    "Body4",   "Body5",
+   "Body6",    "Body7",    "Body8",   "Body9"
 };
 
 unsigned int GmatPlot::BodyInfo::BODY_COLOR[GmatPlot::MAX_BODIES] =
@@ -50,9 +50,9 @@ unsigned int GmatPlot::BodyInfo::BODY_COLOR[GmatPlot::MAX_BODIES] =
 };
 
 //------------------------------------------------------------------------------
-// wxString& GetBodyName(int bodyId)
+// std::string& GetBodyName(int bodyId)
 //------------------------------------------------------------------------------
-wxString& GmatPlot::GetBodyName(int bodyId)
+std::string& GmatPlot::GetBodyName(int bodyId)
 {
    return BodyInfo::BODY_NAME[bodyId];
 }

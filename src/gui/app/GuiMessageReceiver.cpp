@@ -134,8 +134,8 @@ int GuiMessageReceiver::GetNumberOfMessageLines()
    }
    else
    {
-      wxLogError(wxT("GuiMessageReceiver::GetNumberOfMessageLines(): ")
-                 wxT("MessageWindow was not created."));
+      wxLogError("GuiMessageReceiver::GetNumberOfMessageLines(): "
+                 "MessageWindow was not created.");
       wxLog::FlushActive();
       return 0;
    }
@@ -144,34 +144,96 @@ int GuiMessageReceiver::GetNumberOfMessageLines()
 }
 
 
-
-
 //------------------------------------------------------------------------------
-//  void ShowMessage(const wxString &msg)
+//  void ShowMessage(const std::string &msgString)
 //------------------------------------------------------------------------------
 /**
- * Displays the message passed in as a wxString.
+ * Displays the message passed in as an std::string.
  * 
- * @param msg The message to be displayed. 
+ * @param msgString The message that is displayed.
  */
 //------------------------------------------------------------------------------
-void GuiMessageReceiver::ShowMessage(const wxString &msgString)
+void GuiMessageReceiver::ShowMessage(const std::string &msgString)
 {
    GmatAppData *appData = GmatAppData::Instance();
    if (appData->GetMessageTextCtrl() != NULL)
    {
-      appData->GetMessageTextCtrl()->AppendText(msgString);
+      appData->GetMessageTextCtrl()->AppendText(wxString(msgString.c_str()));
+      // Added since text in the message window are not always scrolled down,
+      // such as debug message from the panel or dialog (LOJ: 2009.03.20)
       appData->GetMessageTextCtrl()->PageDown();
       appData->GetMessageTextCtrl()->Update();
    }
-   LogMessage(msgString);
+   LogMessage(msgString);   
+}
 
+
+//------------------------------------------------------------------------------
+//  void ShowMessage(const char *msg, ...)
+//------------------------------------------------------------------------------
+/**
+ * Displays a message passed in as a char* and a variable argument
+ * list.  Throws std::bad_alloc on memory exhaustion.
+ * 
+ * @param msg The message, possibly including markers for variable argument 
+ *            substitution.
+ * @param ... The optional list of parameters that are inserted into the msg 
+ *            string.
+ */
+//------------------------------------------------------------------------------
+void GuiMessageReceiver::ShowMessage(const char *msg, ...)
+{
+   short    ret;
+   short    size;
+   va_list  marker;
+   char     *msgBuffer;
+   
+   // msg is vsprintf format
+   // actual max message length is MAX_MESSAGE_LENGTH
+   size = strlen(msg) + MAX_MESSAGE_LENGTH;
+   //LogMessage("strlen(msg)=%d, size=%d\n", strlen(msg), size);
+   
+//   if( (msgBuffer = (char *)malloc(size)) != NULL )
+//   {
+//      va_start(marker, msg);
+//      ret = vsprintf(msgBuffer, msg, marker);
+//      va_end(marker);
+//      //LogMessage("ret from vsprintf()=%d\n", ret);
+//   }
+//   else
+//   {
+//      msgBuffer =
+//         "*** WARNING *** Cannot allocate enough memory to show the message.\n";
+//   }
+
+   // Note: 'new' throws an exception of type std::bad_alloc on failure.
+   // (Note that if an exception is thrown, no memory will have been
+   // allocated, so there will be no memory leak.)
+   msgBuffer = new char[size];
+
+   // For older C++ compilers, duplicate that behavior by hand.
+   if (!msgBuffer)
+      throw std::bad_alloc();
+
+   // Process the message
+   va_start(marker, msg);
+   ret = vsprintf(msgBuffer, msg, marker);
+   va_end(marker);
+   //LogMessage("ret from vsprintf()=%d\n", ret);
+   
+   GmatAppData *appData = GmatAppData::Instance();
+   if (appData->GetMessageTextCtrl() != NULL)
+      appData->GetMessageTextCtrl()->AppendText(wxString(msgBuffer));
+   
+   LogMessage(std::string(msgBuffer));
+
+//   free(msgBuffer);
+   delete[] msgBuffer;
 } // end ShowMessage()
 
 
 //------------------------------------------------------------------------------
-//  void PopupAbortContinue(const wxString & abortMsg, 
-//                          const wxString & continueMsg, const wxString & msg)
+//  void PopupAbortContinue(const std::string abortMsg, ...)
 //------------------------------------------------------------------------------
 /**
  * Pops up Abort or Continue message box.
@@ -181,9 +243,9 @@ void GuiMessageReceiver::ShowMessage(const wxString &msgString)
  * @param msg         The message
  */
 //------------------------------------------------------------------------------
-void GuiMessageReceiver::PopupAbortContinue(const wxString &abortMsg,
-                                          const wxString &continueMsg,
-                                          const wxString &msg)
+void GuiMessageReceiver::PopupAbortContinue(const std::string &abortMsg,
+                                          const std::string &continueMsg,
+                                          const std::string &msg)
 {  
    popupMessage = msg;
    abortMessage = abortMsg;
@@ -191,39 +253,42 @@ void GuiMessageReceiver::PopupAbortContinue(const wxString &abortMsg,
 } // end PopupAbortContinue()
 
 
-
 //------------------------------------------------------------------------------
-//  static void PopupMessage(Gmat::MessageType msgType, const wxString &msg)
+//  static void PopupMessage(Gmat::MessageType msgType, const std::string &msg)
 //------------------------------------------------------------------------------
 /**
  * Pops up a message in a message box.
  * 
- * This method logs informational messages directed at pop-up message boxes and
+ * This method logs informational messages directed at pop-up message boxes and  
  * shows them in a pop-up.
- *
+ * 
  * @param msgType The type of message that is displayed, selected from the set
  *                {ERROR_, WARNING_, INFO_} enumerated in the Gmat namespace.
- * @param msg The message. 
+ * @param msg The message.
  */
 //------------------------------------------------------------------------------
-void GuiMessageReceiver::PopupMessage(Gmat::MessageType msgType, const wxString &msg)
+void GuiMessageReceiver::PopupMessage(Gmat::MessageType msgType, const std::string &msg)
 {
-   ShowMessage(msg);
+   popupMessage = msg;
+   messageType = msgType;
    
+   // always show message
+   ShowMessage(msg);
+      
    if (GmatGlobal::Instance()->IsBatchMode() != true)
    {
       switch (msgType)
       {
       case Gmat::ERROR_:
-         (void)wxMessageBox(msg,
+         (void)wxMessageBox(wxT(wxString(msg.c_str())),
                             wxT("GMAT Error"));
          break;
       case Gmat::WARNING_:
-         (void)wxMessageBox(msg,
+         (void)wxMessageBox(wxT(wxString(msg.c_str())),
                             wxT("GMAT Warning"));
          break;
       case Gmat::INFO_:
-         (void)wxMessageBox(msg,
+         (void)wxMessageBox(wxT(wxString(msg.c_str())),
                             wxT("Information"));
          break;
       default:
@@ -235,7 +300,98 @@ void GuiMessageReceiver::PopupMessage(Gmat::MessageType msgType, const wxString 
 
 
 //------------------------------------------------------------------------------
-// wxString GetLogFileName()
+//  static void PopupMessage(Gmat::MessageType msgType, const char *msg, ...)
+//------------------------------------------------------------------------------
+/**
+ * Pops up a message in a message box.
+ * 
+ * This method logs informational messages directed at pop-up message boxes and
+ * shows the message as a pop-up.
+ *
+ * Throws std::bad_alloc in memory exhaustion.
+ * 
+ * @param msgType The type of message that is displayed, selected from the set
+ *                {ERROR_, WARNING_, INFO_} enumerated in the Gmat namespace.
+ * @param msg The message, possibly including markers for variable argument 
+ *            substitution.
+ * @param ... The optional list of parameters that are inserted into the msg 
+ *            string.
+ */
+//------------------------------------------------------------------------------
+void GuiMessageReceiver::PopupMessage(Gmat::MessageType msgType, const char *msg, ...)
+{
+   short    ret;
+   short    size;
+   va_list  marker;
+   char     *msgBuffer;
+   
+   // msg is vsprintf format
+   // actual max message length is MAX_MESSAGE_LENGTH
+   size = strlen(msg) + MAX_MESSAGE_LENGTH;
+   
+   // Note: 'new' throws an exception of type std::bad_alloc on failure.
+   // (Note that if an exception is thrown, no memory will have been
+   // allocated, so there will be no memory leak.)
+   msgBuffer = new char[size];
+
+   // For older C++ compilers, duplicate that behavior by hand.
+   if (!msgBuffer) throw std::bad_alloc();
+
+   // Process the message
+   va_start(marker, msg);
+   ret = vsprintf(msgBuffer, msg, marker);
+   va_end(marker);
+
+   // if no EOL then append it
+   if (msgBuffer[strlen(msgBuffer)-1] != '\n')
+      msgBuffer[strlen(msgBuffer)] = '\n';
+
+//   if ( (msgBuffer = (char *)malloc(size)) != NULL )
+//   {
+//      va_start(marker, msg);
+//      ret = vsprintf(msgBuffer, msg, marker);
+//      va_end(marker);
+//
+//      // if no EOL then append it
+//      if (msgBuffer[strlen(msgBuffer)-1] != '\n')
+//         msgBuffer[strlen(msgBuffer)] = '\n';
+//   }
+//   else
+//   {
+//      msgBuffer = "*** WARNING *** Cannot allocate enough memory to show the message.\n";
+//   }
+   
+   // always show message
+   ShowMessage(msgBuffer);
+   
+   if (GmatGlobal::Instance()->IsBatchMode() != true)
+   {
+      switch (msgType)
+      {
+      case Gmat::ERROR_:
+         (void)wxMessageBox(wxT(wxString(msgBuffer)),
+                            wxT("GMAT Error"));
+         break;
+      case Gmat::WARNING_:
+         (void)wxMessageBox(wxT(wxString(msgBuffer)),
+                            wxT("GMAT Warning"));
+         break;
+      case Gmat::INFO_:
+         (void)wxMessageBox(wxT(wxString(msgBuffer)),
+                            wxT("Information"));
+         break;
+      default:
+         break;
+      };
+   }
+   
+//   free(msgBuffer);
+   delete[] msgBuffer;
+} // end PopupMessage()
+
+
+//------------------------------------------------------------------------------
+// std::string GetLogFileName()
 //------------------------------------------------------------------------------
 /**
  * Retrieves the fully qualified name of the log file.
@@ -243,23 +399,23 @@ void GuiMessageReceiver::PopupMessage(Gmat::MessageType msgType, const wxString 
  * @return The name of the log file, including path information.
  */
 //------------------------------------------------------------------------------
-wxString GuiMessageReceiver::GetLogFileName()
+std::string GuiMessageReceiver::GetLogFileName()
 {
    FileManager *fm = FileManager::Instance();
-   wxString fname;
+   std::string fname;
    try
    {
-      if (logFileName == wxT(""))
+      if (logFileName == "")
       {
-         fname = fm->GetFullPathname(wxT("LOG_FILE"));
+         fname = fm->GetFullPathname("LOG_FILE");
       }
       else
       {
-         wxString outputPath = fm->GetPathname(FileManager::LOG_FILE);
+         std::string outputPath = fm->GetPathname(FileManager::LOG_FILE);
          
          // add output path if there is no path
-         if (logFileName.find(wxT("/")) == logFileName.npos &&
-             logFileName.find(wxT("\\")) == logFileName.npos)
+         if (logFileName.find("/") == logFileName.npos &&
+             logFileName.find("\\") == logFileName.npos)
          {
             fname = outputPath + logFileName;
          }
@@ -268,34 +424,32 @@ wxString GuiMessageReceiver::GetLogFileName()
    catch (BaseException &e)
    {
       GuiMessageReceiver::ShowMessage
-         (wxT("**** ERROR **** ") + e.GetFullMessage() + 
-          wxT("So setting log file name to GmatLog.txt"));
+         ("**** ERROR **** " + e.GetFullMessage() + 
+          "So setting log file name to GmatLog.txt");
       
-      fname = wxT("GmatLog.txt");
+      fname = "GmatLog.txt";
    }
    
    return fname;
 }
 
 
-
-
 //------------------------------------------------------------------------------
-//  void LogMessage(const wxString &msg)
+// void LogMessage(const std::string &msg)
 //------------------------------------------------------------------------------
 /**
  * Logs the message to the log file.
  * 
  * This method displays the input message on the console and writes it to the 
  * log file.
- *
+ * 
  * @param msg The message.
  */
 //------------------------------------------------------------------------------
-void GuiMessageReceiver::LogMessage(const wxString &msg)
+void GuiMessageReceiver::LogMessage(const std::string &msg)
 {
-   std::cout << msg.mb_str();
-
+   std::cout << msg;
+   
    if (logEnabled)
    {
       if (logFile == NULL)
@@ -310,10 +464,71 @@ void GuiMessageReceiver::LogMessage(const wxString &msg)
    
    if (logFile)
    {
-      fprintf(logFile, "%s", (char *) msg.char_str());
+      //std::string tempStr = GmatStringUtil::Replace(msg, "%", "%%");
+      //fprintf(logFile, "%s", tempStr.c_str());
+      fprintf(logFile, "%s", msg.c_str());
       fflush(logFile);
    }
+}
+
+
+//------------------------------------------------------------------------------
+//  void LogMessage(const char *msg, ...)
+//------------------------------------------------------------------------------
+/**
+ * Logs a variable argument formatted message to the log file.
+ * 
+ * This method calls the std::string vrrersion of LogMessage to do the actual
+ * logging.
+ *
+ * Throws std::bad_alloc on memory exhaustion.
+ * 
+ * @param msg The message, possibly including markers for variable argument 
+ *            substitution.
+ * @param ... The optional list of parameters that are inserted into the msg 
+ *            string.
+ */
+//------------------------------------------------------------------------------
+void GuiMessageReceiver::LogMessage(const char *msg, ...)
+{
+   short    ret;
+   short    size;
+   va_list  marker;
+   char     *msgBuffer;
    
+   // msg is vsprintf format
+   // actual max message length is MAX_MESSAGE_LENGTH
+   size = strlen(msg) + MAX_MESSAGE_LENGTH;
+   
+//   if ( (msgBuffer = (char *)malloc(size)) != NULL )
+//   {
+//      va_start(marker, msg);
+//      ret = vsprintf(msgBuffer, msg, marker);
+//      va_end(marker);
+//   }
+//   else
+//   {
+//      msgBuffer = "*** WARNING *** Cannot allocate enough memory to log the message.\n";
+//   }
+//
+
+   // Note: 'new' throws an exception of type std::bad_alloc on failure.
+   // (Note that if an exception is thrown, no memory will have been
+   // allocated, so there will be no memory leak.)
+   msgBuffer = new char[size];
+
+   // For older C++ compilers, duplicate that behavior by hand.
+   if (!msgBuffer) throw std::bad_alloc();
+
+   // Process the message
+   va_start(marker, msg);
+   ret = vsprintf(msgBuffer, msg, marker);
+   va_end(marker);
+   
+   LogMessage(std::string(msgBuffer));
+   
+//   free(msgBuffer);
+   delete[] msgBuffer;
 } // end LogMessage()
 
 
@@ -334,7 +549,7 @@ void GuiMessageReceiver::SetLogEnable(bool flag)
 
 
 //------------------------------------------------------------------------------
-// void SetLogPath(const wxString &pathname, bool append = false)
+// void SetLogPath(const std::string &pathname, bool append = false)
 //------------------------------------------------------------------------------
 /*
  * Sets log file path with keeping log file name as is.
@@ -343,22 +558,22 @@ void GuiMessageReceiver::SetLogEnable(bool flag)
  * @param  append  true if appending log message (false)
  */
 //------------------------------------------------------------------------------
-void GuiMessageReceiver::SetLogPath(const wxString &pathname, bool append)
+void GuiMessageReceiver::SetLogPath(const std::string &pathname, bool append)
 {
    FileManager *fm = FileManager::Instance();
-   wxString fname;
+   std::string fname;
    try
    {
-      wxString filename = fm->GetFilename(FileManager::LOG_FILE);
+      std::string filename = fm->GetFilename(FileManager::LOG_FILE);
       fname = pathname + filename;
    }
    catch (BaseException &e)
    {
       GuiMessageReceiver::ShowMessage
-         (wxT("**** ERROR **** ") + e.GetFullMessage() + 
-          wxT("So setting log file name to GmatLog.txt"));
+         ("**** ERROR **** " + e.GetFullMessage() + 
+          "So setting log file name to GmatLog.txt");
       
-      fname = wxT("GmatLog.txt");
+      fname = "GmatLog.txt";
    }
    
    OpenLogFile(fname, append);
@@ -367,7 +582,7 @@ void GuiMessageReceiver::SetLogPath(const wxString &pathname, bool append)
 
 
 //------------------------------------------------------------------------------
-// void SetLogFile(const wxString &filename)
+// void SetLogFile(const std::string &filename)
 //------------------------------------------------------------------------------
 /*
  * Calls OpenLogFile() to set the log file path and name and then open the log.
@@ -375,14 +590,14 @@ void GuiMessageReceiver::SetLogPath(const wxString &pathname, bool append)
  * @param  filename  log file name, such as "/newpath/test1/GmatLog.txt"
  */
 //------------------------------------------------------------------------------
-void GuiMessageReceiver::SetLogFile(const wxString &filename)
+void GuiMessageReceiver::SetLogFile(const std::string &filename)
 {
-   wxString fname = filename;
+   std::string fname = filename;
    
-   if (GmatFileUtil::ParsePathName(fname) == wxT(""))
+   if (GmatFileUtil::ParsePathName(fname) == "")
    {
       FileManager *fm = FileManager::Instance();
-      wxString outPath = fm->GetFullPathname(FileManager::OUTPUT_PATH);
+      std::string outPath = fm->GetFullPathname(FileManager::OUTPUT_PATH);
       fname = outPath + fname;
    }
    
@@ -391,7 +606,7 @@ void GuiMessageReceiver::SetLogFile(const wxString &filename)
 
 
 //------------------------------------------------------------------------------
-// void OpenLogFile(const wxString &filename, bool append = false)
+// void OpenLogFile(const std::string &filename, bool append = false)
 //------------------------------------------------------------------------------
 /*
  * Sets the log file name and opens the log file.
@@ -400,7 +615,7 @@ void GuiMessageReceiver::SetLogFile(const wxString &filename)
  * @param append  true if appending log message
  */
 //------------------------------------------------------------------------------
-void GuiMessageReceiver::OpenLogFile(const wxString &filename, bool append)
+void GuiMessageReceiver::OpenLogFile(const std::string &filename, bool append)
 {
    logFileName = filename;
    
@@ -408,27 +623,27 @@ void GuiMessageReceiver::OpenLogFile(const wxString &filename, bool append)
       fclose(logFile);
    
    if (append)
-      logFile = fopen(logFileName.char_str(), "a");
+      logFile = fopen(logFileName.c_str(), "a");
    else
-      logFile = fopen(logFileName.char_str(), "w");
+      logFile = fopen(logFileName.c_str(), "w");
    
    if (!logFile)
    {
-      std::cout << wxT("**** ERROR **** Error setting the log file to ") << logFileName
-                << wxT("\nSo setting it to \"GmatLog.txt\" in the executable directory\n");
+      std::cout << "**** ERROR **** Error setting the log file to " << logFileName
+                << "\nSo setting it to \"GmatLog.txt\" in the executable directory\n";
       
-      logFileName = wxT("GmatLog.txt");
+      logFileName = "GmatLog.txt";
       
       if (append)
-         logFile = fopen(logFileName.char_str(), "a");
+         logFile = fopen(logFileName.c_str(), "a");
       else
-         logFile = fopen(logFileName.char_str(), "w");
+         logFile = fopen(logFileName.c_str(), "w");
    }
    
    if (logFile)
    {
       fprintf(logFile, "GMAT Build Date: %s %s\n\n",  __DATE__, __TIME__);
-      fprintf(logFile, "GMAT Log file set to %s\n", (char *) logFileName.char_str());
+      fprintf(logFile, "GMAT Log file set to %s\n", logFileName.c_str());
       
       logFileSet = true;
    }
@@ -453,7 +668,7 @@ void GuiMessageReceiver::CloseLogFile()
 
 
 //------------------------------------------------------------------------------
-//  wxString GetMessage()
+//  std::string GetMessage()
 //------------------------------------------------------------------------------
 /**
  * Pops the messages off the message queue and concatenates them together.
@@ -461,9 +676,9 @@ void GuiMessageReceiver::CloseLogFile()
  * @return The concatenated messages.
  */
 //------------------------------------------------------------------------------
-wxString GuiMessageReceiver::GetMessage()
+std::string GuiMessageReceiver::GetMessage()
 {
-   wxString msg;
+   std::string msg;
    
    while (!GuiMessageReceiver::messageQueue.empty())
    {
@@ -476,13 +691,13 @@ wxString GuiMessageReceiver::GetMessage()
 }
 
 //------------------------------------------------------------------------------
-// void PutMessage(const wxString &msg)
+// void PutMessage(const std::string &msg)
 //------------------------------------------------------------------------------
 /**
  * Push the message into queue
  */
 //------------------------------------------------------------------------------
-void GuiMessageReceiver::PutMessage(const wxString &msg)
+void GuiMessageReceiver::PutMessage(const std::string &msg)
 {
    messageQueue.push(msg);
 }

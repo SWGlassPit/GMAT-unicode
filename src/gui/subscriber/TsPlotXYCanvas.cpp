@@ -63,7 +63,7 @@ void TsPlotXYCanvas::DrawAxes(wxDC &dc)
    dyval = (currentYMax-currentYMin) / (double)yticks;
    
    wxString label;
-   wxString labelStream;
+   std::stringstream labelStream;
    
    //if ((int)xGridLoc.size() != xticks+1)
    //{
@@ -86,7 +86,7 @@ void TsPlotXYCanvas::DrawAxes(wxDC &dc)
 
    #ifdef DEBUG_INTERFACE
       MessageInterface::ShowMessage
-         (wxT("***XMin = %lf, XMax = %lf, delta=%lf\n"), currentXMin, currentXMax, delta);
+         ("***XMin = %lf, XMax = %lf, delta=%lf\n", currentXMin, currentXMax, delta);
    #endif
 
    step = delta / (xticks+1.0);
@@ -102,9 +102,9 @@ void TsPlotXYCanvas::DrawAxes(wxDC &dc)
 
       #ifdef DEBUG_INTERFACE
          MessageInterface::ShowMessage(
-            wxT("step = %lf, logStep = %lf, factor = %lf, div = %lf\n"), step, 
+            "step = %lf, logStep = %lf, factor = %lf, div = %lf\n", step, 
             logStep, factor, div);
-         MessageInterface::ShowMessage(wxT("Start = %lf, delta = %lf\n"), start,
+         MessageInterface::ShowMessage("Start = %lf, delta = %lf\n", start,
             delta);
       #endif
    }
@@ -113,11 +113,12 @@ void TsPlotXYCanvas::DrawAxes(wxDC &dc)
       start = currentXMin;
       delta = step;
       #ifdef DEBUG_INTERFACE
-         MessageInterface::ShowMessage(wxT("Start = %lf, delta = %lf\n"), start, 
+         MessageInterface::ShowMessage("Start = %lf, delta = %lf\n", start, 
             delta);
       #endif
    }
    
+   labelStream.precision(xLabelPrecision);
    for (int i = 0; i <= xticks; ++i)
    {
       idx = (int)(i * dx + 0.5);
@@ -127,9 +128,9 @@ void TsPlotXYCanvas::DrawAxes(wxDC &dc)
       xGridLoc[i] = GetXLocation(fval);  //x0 + idx;
       dc.DrawLine(xGridLoc[i], y0, xGridLoc[i], y0 - tickSize);
       dc.DrawLine(xGridLoc[i], ym, xGridLoc[i], ym + tickSize);
-      labelStream = wxT("");
+      labelStream.str("");
       labelStream << fval;
-      label = labelStream.c_str();
+      label = labelStream.str().c_str();
       dc.GetTextExtent(label, &w, &h);
       dc.DrawText(label, xGridLoc[i] - w/2, y0 + h/2);
    }
@@ -137,7 +138,7 @@ void TsPlotXYCanvas::DrawAxes(wxDC &dc)
    delta = currentYMax - currentYMin;
 
    #ifdef DEBUG_INTERFACE
-      MessageInterface::ShowMessage(wxT("***YMin = %lf, YMax = %lf, delta=%g\n"), currentYMin,
+      MessageInterface::ShowMessage("***YMin = %lf, YMax = %lf, delta=%g\n", currentYMin,
          currentYMax, delta);
    #endif
    
@@ -154,9 +155,9 @@ void TsPlotXYCanvas::DrawAxes(wxDC &dc)
 
       #ifdef DEBUG_INTERFACE
          MessageInterface::ShowMessage(
-            wxT("step = %lf, logStep = %lf, factor = %lf, div = %lf\n"),
+            "step = %lf, logStep = %lf, factor = %lf, div = %lf\n",
             step, logStep, factor, div);
-         MessageInterface::ShowMessage(wxT("Start = %lf, delta = %lf\n"), start, 
+         MessageInterface::ShowMessage("Start = %lf, delta = %lf\n", start, 
             delta);
       #endif
    }
@@ -165,11 +166,12 @@ void TsPlotXYCanvas::DrawAxes(wxDC &dc)
       start = currentYMin;
       delta = step;
       #ifdef DEBUG_INTERFACE
-         MessageInterface::ShowMessage(wxT("Start = %lf, delta = %lf\n"), start, 
+         MessageInterface::ShowMessage("Start = %lf, delta = %lf\n", start, 
             delta);
       #endif
    }
    
+   labelStream.precision(yLabelPrecision);
    for (int i = 0; i <= yticks; ++i)
    {
       idy = (int)(i * dy + 0.5);
@@ -178,9 +180,9 @@ void TsPlotXYCanvas::DrawAxes(wxDC &dc)
       yGridLoc[i] = GetYLocation(fval);
       dc.DrawLine(xm, yGridLoc[i], xm - tickSize, yGridLoc[i]);
       dc.DrawLine(x0, yGridLoc[i], x0 + tickSize, yGridLoc[i]);
-      labelStream = wxT("");
+      labelStream.str("");
       labelStream << fval;
-      label = labelStream.c_str();
+      label = labelStream.str().c_str();
       dc.GetTextExtent(label, &w, &h);
       dc.DrawText(label, x0 - w - 4, yGridLoc[i] - h/2);
    }
@@ -195,36 +197,36 @@ void TsPlotXYCanvas::DrawLabels(wxDC &dc)
    int xCenter = (wid + left - right)/ 2, yCenter = (ht + top - bottom)/ 2;
 
    // Build default labels if they are not set already
-   if ((xLabel == wxT("")) && defaultLabels)
-      xLabel = wxT("X Data");
+   if ((xLabel == "") && defaultLabels)
+      xLabel = "X Data";
       
-   if ((yLabel == wxT("")) && defaultLabels)
+   if ((yLabel == "") && defaultLabels)
    {
       if (names.size() != 0)
       {
-         for (std::vector<wxString>::iterator i = names.begin(); 
+         for (std::vector<std::string>::iterator i = names.begin(); 
               i < names.end(); ++i)
          {
             if (i != names.begin())
-               yLabel += wxT(", ");
+               yLabel += ", ";
             yLabel += *i;
          }
       }
       else
       {
-         yLabel = wxT("Y Data");
+         yLabel = "Y Data";
       }
    }
    
    if (showTitle)
    {
-      if (plotTitle == wxT(""))
-         plotTitle = yLabel + wxT(" vs ") + xLabel;
+      if (plotTitle == "")
+         plotTitle = yLabel + " vs " + xLabel;
 
       // Draw the title
       dc.SetFont(titleFont);
       wxString label;
-      wxString title = plotTitle.c_str();
+      wxString title = _T(plotTitle.c_str());
       dc.GetTextExtent(title, &w, &h);
       int xloc = xCenter - w / 2;
       int yloc = (top - h) / 2;
@@ -235,14 +237,14 @@ void TsPlotXYCanvas::DrawLabels(wxDC &dc)
    {
       // Add x-axis label
       dc.SetFont(axisFont);
-      wxString title = xLabel.c_str();
+      wxString title = _T(xLabel.c_str());
       dc.GetTextExtent(title, &w, &h);
       int xloc = xCenter - w / 2;
       int yloc = ht - bottom / 2;
       dc.DrawText(title, xloc, yloc);
 
       // Add y-axis label
-      title = yLabel.c_str();
+      title = _T(yLabel.c_str());
       dc.GetTextExtent(title, &w, &h);
       xloc = h / 2;
       yloc = yCenter + w / 2;
@@ -379,8 +381,8 @@ void TsPlotXYCanvas::PlotData(wxDC &dc)
                            lo = hi;
 
                         #ifdef DEBUG_ERROR_BARS
-                           MessageInterface::ShowMessage(wxT("high = %lf -> ")
-                                 wxT("hi = %d, lo = %d\n"), (*curve)->highError[j],
+                           MessageInterface::ShowMessage("high = %lf -> "
+                                 "hi = %d, lo = %d\n", (*curve)->highError[j],
                                  hi, lo);
                         #endif
                      }
@@ -462,8 +464,8 @@ void TsPlotXYCanvas::Rescale(wxDC &dc)
    {
       #ifdef DEBUG_RESCALING
          MessageInterface::ShowMessage
-            (wxT("===> no-zoom: plotXMin=%g, plotXMax=%g, plotYMin=%g, ")
-             wxT("plotYMax=%g\n"), plotXMin, plotXMax, plotYMin, plotYMax);
+            ("===> no-zoom: plotXMin=%g, plotXMax=%g, plotYMin=%g, "
+             "plotYMax=%g\n", plotXMin, plotXMax, plotYMin, plotYMax);
       #endif
       std::vector<TsPlotCurve *>::iterator i = data.begin();
       if (i != data.end())
@@ -494,9 +496,9 @@ void TsPlotXYCanvas::Rescale(wxDC &dc)
                isNotFirstPoint = true;
                #if DEBUG_TS_CANVAS
                   MessageInterface::ShowMessage(
-                     wxT("TsPlotCanvas::Rescale() datasize=%d, %s\n"), 
+                     "TsPlotCanvas::Rescale() datasize=%d, %s\n", 
                      data.size(),  
-                     (isNotFirstPoint?wxT("is not First Point"):wxT("is First Point")));
+                     (isNotFirstPoint?"is not First Point":"is First Point"));
                #endif
             }
          }
@@ -507,7 +509,7 @@ void TsPlotXYCanvas::Rescale(wxDC &dc)
       
       #ifdef DEBUG_RESCALING
          MessageInterface::ShowMessage
-            (wxT("===> no-zoom: xMin=%g, xMax=%g, yMin=%g, yMax=%g\n"),
+            ("===> no-zoom: xMin=%g, xMax=%g, yMin=%g, yMax=%g\n",
              xMin, xMax, yMin, yMax);
       #endif
       
@@ -521,19 +523,19 @@ void TsPlotXYCanvas::Rescale(wxDC &dc)
       {
          #if DEBUG_TS_CANVAS
             MessageInterface::ShowMessage(
-               wxT("TsPlotCanvas::Rescale() xMin(%lf) < plotXMin(%lf) new value: "),
+               "TsPlotCanvas::Rescale() xMin(%lf) < plotXMin(%lf) new value: ",
                xMin, plotXMin);
          #endif
          plotXMin = xMin - delx;
          rescaled = true;
          #if DEBUG_TS_CANVAS
-            MessageInterface::ShowMessage(wxT("%lf\n"), plotXMin);
+            MessageInterface::ShowMessage("%lf\n", plotXMin);
          #endif
       }
 
       #ifdef DEBUG_RESCALING
          MessageInterface::ShowMessage
-            (wxT("===> no-zoom: yMin=%g, yMax=%g, plotYMin=%g, plotYMax=%g\n"),
+            ("===> no-zoom: yMin=%g, yMax=%g, plotYMin=%g, plotYMax=%g\n",
              yMin, yMax, plotYMin, plotYMax);
       #endif
 
@@ -551,11 +553,11 @@ void TsPlotXYCanvas::Rescale(wxDC &dc)
 
       #ifdef DEBUG_RESCALING
          MessageInterface::ShowMessage
-            (wxT("===> no-zoom: Overrides = %s %s %s %s\n"),
-             (overrideXMin ? wxT("true") : wxT("false")),
-             (overrideXMax ? wxT("true") : wxT("false")),
-             (overrideYMin ? wxT("true") : wxT("false")),
-             (overrideYMax ? wxT("true") : wxT("false")));
+            ("===> no-zoom: Overrides = %s %s %s %s\n",
+             (overrideXMin ? "true" : "false"),
+             (overrideXMax ? "true" : "false"),
+             (overrideYMin ? "true" : "false"),
+             (overrideYMax ? "true" : "false"));
       #endif
 
       if (rescaled)
@@ -581,8 +583,8 @@ void TsPlotXYCanvas::Rescale(wxDC &dc)
       
       #ifdef DEBUG_RESCALING
          MessageInterface::ShowMessage
-            (wxT("===> no-zoom: currentXMin=%g, currentXMax=%g, currentYMin=%g, ")
-             wxT("currentYMax=%g\n"), currentXMin, currentXMax, currentYMin,
+            ("===> no-zoom: currentXMin=%g, currentXMax=%g, currentYMin=%g, "
+             "currentYMax=%g\n", currentXMin, currentXMax, currentYMin,
              currentYMax);
       #endif
    }
@@ -602,8 +604,8 @@ void TsPlotXYCanvas::Rescale(wxDC &dc)
       currentYMax = zoomYMax;
       
       //MessageInterface::ShowMessage
-      //   (wxT("===>    zoom: currentXMin=%f, currentXMax=%f, currentYMin=%f,")
-      //    wxT("currentYMax=%f\n"), currentXMin, currentXMax, currentYMin, currentYMax);
+      //   ("===>    zoom: currentXMin=%f, currentXMax=%f, currentYMin=%f,"
+      //    "currentYMax=%f\n", currentXMin, currentXMax, currentYMin, currentYMax);
       
       rescaled = true;
    }
@@ -612,7 +614,7 @@ void TsPlotXYCanvas::Rescale(wxDC &dc)
    yScale = h / dely;
    
    //MessageInterface::ShowMessage
-   //   (wxT("===> xScale=%g, yScale=%g, w=%d, h=%d, delx=%g, dely=%g\n"),
+   //   ("===> xScale=%g, yScale=%g, w=%d, h=%d, delx=%g, dely=%g\n",
    //    xScale, yScale, w, h, delx, dely);
 }
 

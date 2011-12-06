@@ -46,7 +46,7 @@ WhilePanel::WhilePanel(wxWindow *parent, GmatCommand *cmd) : GmatPanel(parent)
    mNumberOfConditions = 0;
    mNumberOfLogicalOps = 0;
 
-   mObjectTypeList.Add(wxT("Spacecraft"));
+   mObjectTypeList.Add("Spacecraft");
    mLhsList.clear();
    mEqualityOpStrings.clear();
    mRhsList.clear();
@@ -103,19 +103,19 @@ void WhilePanel::Setup(wxWindow *parent)
     }    
     //conditionGrid->SetReadOnly(0,0, true);
         
-    conditionGrid->SetColLabelValue(0, wxT(""));
+    conditionGrid->SetColLabelValue(0, _T(""));
     conditionGrid->SetColSize(0, 60);
-    conditionGrid->SetColLabelValue(1, wxT("Left Hand Side"));
+    conditionGrid->SetColLabelValue(1, _T("Left Hand Side"));
     conditionGrid->SetColSize(1, 165);
-    conditionGrid->SetColLabelValue(2, wxT("Condition"));
+    conditionGrid->SetColLabelValue(2, _T("Condition"));
 #ifdef __WXMAC__
     conditionGrid->SetColSize(2, 80);
 #else
     conditionGrid->SetColSize(2, 60);
 #endif
-    conditionGrid->SetColLabelValue(3, wxT("Right Hand Side"));
+    conditionGrid->SetColLabelValue(3, _T("Right Hand Side"));
     conditionGrid->SetColSize(3, 165);
-    conditionGrid->SetCellValue(0, COMMAND_COL, wxT("While"));
+    conditionGrid->SetCellValue(0, COMMAND_COL, "While");
         
     item0->Add( conditionGrid, 0, wxALIGN_CENTER|wxALL, 5 );
 
@@ -137,24 +137,24 @@ void WhilePanel::LoadData()
    {
       Integer paramId;
       
-      paramId = theWhileCommand->GetParameterID(wxT("NumberOfConditions"));
+      paramId = theWhileCommand->GetParameterID("NumberOfConditions");
       mNumberOfConditions = theWhileCommand->GetIntegerParameter(paramId);
       
       if (mNumberOfConditions > 0)
       {
-         paramId = theWhileCommand->GetParameterID(wxT("NumberOfLogicalOperators"));
+         paramId = theWhileCommand->GetParameterID("NumberOfLogicalOperators");
          mNumberOfLogicalOps = theWhileCommand->GetIntegerParameter(paramId); 
          
-         paramId = theWhileCommand->GetParameterID(wxT("LeftHandStrings"));
+         paramId = theWhileCommand->GetParameterID("LeftHandStrings");
          mLhsList = theWhileCommand->GetStringArrayParameter(paramId);
          
-         paramId = theWhileCommand->GetParameterID(wxT("OperatorStrings"));
+         paramId = theWhileCommand->GetParameterID("OperatorStrings");
          mEqualityOpStrings = theWhileCommand->GetStringArrayParameter(paramId);
          
-         paramId = theWhileCommand->GetParameterID(wxT("RightHandStrings"));
+         paramId = theWhileCommand->GetParameterID("RightHandStrings");
          mRhsList = theWhileCommand->GetStringArrayParameter(paramId);
          
-         paramId = theWhileCommand->GetParameterID(wxT("LogicalOperators"));
+         paramId = theWhileCommand->GetParameterID("LogicalOperators");
          mLogicalOpStrings = theWhileCommand->GetStringArrayParameter(paramId); 
          
          for (Integer i = 0; i < mNumberOfConditions; i++)
@@ -210,7 +210,7 @@ void WhilePanel::SaveData()
       itemMissing = 0;
       for (Integer j=0; j<MAX_COL; j++)
       {
-         if (conditionGrid->GetCellValue(i, j) == wxT(""))
+         if (conditionGrid->GetCellValue(i, j) == "")
             itemMissing++;
       }
       
@@ -226,7 +226,7 @@ void WhilePanel::SaveData()
       {
          MessageInterface::PopupMessage
             (Gmat::ERROR_,
-             wxT("Logical operator or parameters are missing in row %d.\n"), i+1);
+             "Logical operator or parameters are missing in row %d.\n", i+1);
          canClose = false;
          return;
       }
@@ -234,14 +234,14 @@ void WhilePanel::SaveData()
    
    #if DEBUG_WHILE_PANEL
    MessageInterface::ShowMessage
-      (wxT("WhilePanel::SaveData() mNumberOfConditions=%d\n"), mNumberOfConditions);
+      ("WhilePanel::SaveData() mNumberOfConditions=%d\n", mNumberOfConditions);
    #endif
    
    if (mNumberOfConditions == 0)
    {
       MessageInterface::PopupMessage
-      (Gmat::WARNING_, wxT("Incomplete parameters for If condition.\n")
-                       wxT("Updates have not been saved"));
+      (Gmat::WARNING_, "Incomplete parameters for If condition.\n"
+                       "Updates have not been saved");
       canClose = false;
       return;
    }
@@ -250,12 +250,12 @@ void WhilePanel::SaveData()
    // check input values: Number, Variable, Array element, Parameter
    //-----------------------------------------------------------------
    for (UnsignedInt i=0; i<mLhsList.size(); i++)
-      CheckVariable(mLhsList[i].c_str(), Gmat::SPACECRAFT, wxT("LHS"),
-                    wxT("Variable, Array element, plottable Parameter"), true);
+      CheckVariable(mLhsList[i].c_str(), Gmat::SPACECRAFT, "LHS",
+                    "Variable, Array element, plottable Parameter", true);
    
    for (UnsignedInt i=0; i<mRhsList.size(); i++)
-      CheckVariable(mRhsList[i].c_str(), Gmat::SPACECRAFT, wxT("RHS"),
-                    wxT("Variable, Array element, plottable Parameter"), true);
+      CheckVariable(mRhsList[i].c_str(), Gmat::SPACECRAFT, "RHS",
+                    "Variable, Array element, plottable Parameter", true);
    
    if (!canClose)
       return;
@@ -269,8 +269,8 @@ void WhilePanel::SaveData()
       {
          #if DEBUG_WHILE_PANEL
          MessageInterface::ShowMessage
-            (wxT("   i=%d, mLogicalOpStrings='%s', mLhsList='%s', mEqualityOpStrings='%s'\n")
-             wxT("   mRhsList='%s'\n"), i, mLogicalOpStrings[i].c_str(), mLhsList[i].c_str(),
+            ("   i=%d, mLogicalOpStrings='%s', mLhsList='%s', mEqualityOpStrings='%s'\n"
+             "   mRhsList='%s'\n", i, mLogicalOpStrings[i].c_str(), mLhsList[i].c_str(),
              mEqualityOpStrings[i].c_str(), mRhsList[i].c_str());
          #endif
          
@@ -320,8 +320,8 @@ void WhilePanel::OnCellRightClick(wxGridEvent& event)
       wxString oldStr = conditionGrid->GetCellValue(row, col);
       wxString strArray[] = {wxT("&"), wxT("|")};        
       
-      wxSingleChoiceDialog dialog(this, wxT("Logic Selection: \n"),
-                                        wxT("WhileConditionDialog"), 2, strArray);
+      wxSingleChoiceDialog dialog(this, _T("Logic Selection: \n"),
+                                        _T("WhileConditionDialog"), 2, strArray);
       dialog.SetSelection(0);
       
       if (dialog.ShowModal() == wxID_OK)
@@ -354,8 +354,8 @@ void WhilePanel::OnCellRightClick(wxGridEvent& event)
       wxString strArray[] = {wxT("=="), wxT("~="), wxT(">"), wxT("<"), 
                              wxT(">="), wxT("<=")};        
       
-      wxSingleChoiceDialog dialog(this, wxT("Equality Selection: \n"),
-                                        wxT("WhileConditionDialog"), 6, strArray);
+      wxSingleChoiceDialog dialog(this, _T("Equality Selection: \n"),
+                                        _T("WhileConditionDialog"), 6, strArray);
       dialog.SetSelection(0);
       
       if (dialog.ShowModal() == wxID_OK)

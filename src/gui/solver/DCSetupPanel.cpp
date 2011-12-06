@@ -53,7 +53,7 @@ DCSetupPanel::DCSetupPanel(wxWindow *parent, const wxString &name)
    fileDialog = NULL;
 
    theSolver =
-      (Solver*)theGuiInterpreter->GetConfiguredObject(wxString(name.c_str()));
+      (Solver*)theGuiInterpreter->GetConfiguredObject(std::string(name.c_str()));
    
    theDC = (DifferentialCorrector *)theSolver;
    isTextModified = false;
@@ -94,23 +94,23 @@ void DCSetupPanel::LoadData()
     
    Integer id;
          
-   id = theDC->GetParameterID(wxT("MaximumIterations"));
+   id = theDC->GetParameterID("MaximumIterations");
    maxTextCtrl->SetValue(wxVariant((long)theDC->GetIntegerParameter(id)));
   
-   id = theDC->GetParameterID(wxT("ReportStyle"));
+   id = theDC->GetParameterID("ReportStyle");
    styleComboBox->SetValue(theDC->GetStringParameter(id).c_str());
    // reportStyle = theDC->GetStringParameter(id).c_str();
    // styleComboBox->SetValue(reportStyle.c_str());
    
-   id = theDC->GetParameterID(wxT("ReportFile"));
+   id = theDC->GetParameterID("ReportFile");
    //id = theDC->GetParameterID("TargeterTextFile");
    reportfileTextCtrl->SetValue(theDC->GetStringParameter(id).c_str());
    // textfileTextCtrl->SetValue(theDC->GetStringParameter(id).c_str());
    
-   id = theDC->GetParameterID(wxT("ShowProgress"));
+   id = theDC->GetParameterID("ShowProgress");
    showProgressCheckBox->SetValue(theDC->GetBooleanParameter(id));
    
-   id = theDC->GetParameterID(wxT("DerivativeMethod"));
+   id = theDC->GetParameterID("DerivativeMethod");
    // id = theDC->GetParameterID("UseCentralDifferences");
    derivativeMethodComboBox->SetValue(theDC->GetStringParameter(id).c_str());
    // centralDifferencesCheckBox->SetValue(theDC->GetBooleanParameter(id));
@@ -125,7 +125,7 @@ void DCSetupPanel::LoadData()
 void DCSetupPanel::SaveData()
 {   
    canClose = true;
-   wxString str;
+   std::string str;
    Integer maxIter;
    
    //-----------------------------------------------------------------
@@ -134,7 +134,7 @@ void DCSetupPanel::SaveData()
    if (isTextModified)
    {
       str = maxTextCtrl->GetValue();
-      CheckInteger(maxIter, str, wxT("Maximum Iterations"), wxT("Integer Number > 0"));
+      CheckInteger(maxIter, str, "Maximum Iterations", "Integer Number > 0");
    }
    
    if (!canClose)
@@ -150,24 +150,24 @@ void DCSetupPanel::SaveData()
       if (isTextModified)
       {
          // save maximum iterations
-         id = theDC->GetParameterID(wxT("MaximumIterations"));      
+         id = theDC->GetParameterID("MaximumIterations");      
          theDC->SetIntegerParameter(id, maxIter);
          isTextModified = false;
       }
       
-      id = theDC->GetParameterID(wxT("ReportStyle"));
+      id = theDC->GetParameterID("ReportStyle");
       theDC->SetStringParameter(id, styleComboBox->GetValue().c_str());
       // theDC->SetStringParameter(id, reportStyle.c_str());
       
-      id = theDC->GetParameterID(wxT("ReportFile"));
+      id = theDC->GetParameterID("ReportFile");
       // id = theDC->GetParameterID("TargeterTextFile");
       theDC->SetStringParameter(id, reportfileTextCtrl->GetValue().c_str());
       // theDC->SetStringParameter(id, textfileTextCtrl->GetValue().c_str());
       
-      id = theDC->GetParameterID(wxT("ShowProgress"));
+      id = theDC->GetParameterID("ShowProgress");
       theDC->SetBooleanParameter(id, showProgressCheckBox->GetValue());
     
-      id = theDC->GetParameterID(wxT("DerivativeMethod"));
+      id = theDC->GetParameterID("DerivativeMethod");
       // id = theDC->GetParameterID("UseCentralDifferences");
       theDC->SetStringParameter(id, derivativeMethodComboBox->GetValue().c_str());
       // theDC->SetBooleanParameter(id, centralDifferencesCheckBox->GetValue());
@@ -186,15 +186,15 @@ void DCSetupPanel::SaveData()
 void DCSetupPanel::Setup( wxWindow *parent)
 {   
    wxString *styleArray = new wxString[4];
-   styleArray[0] = wxT("Normal");
-   styleArray[1] = wxT("Concise");
-   styleArray[2] = wxT("Verbose");
-   styleArray[3] = wxT("Debug");
+   styleArray[0] = "Normal";
+   styleArray[1] = "Concise";
+   styleArray[2] = "Verbose";
+   styleArray[3] = "Debug";
    
    wxString *derivativeMethodArray = new wxString[3];
-   derivativeMethodArray[0] = wxT("CentralDifference");
-   derivativeMethodArray[1] = wxT("ForwardDifference");
-   derivativeMethodArray[2] = wxT("BackwardDifference");
+   derivativeMethodArray[0] = "CentralDifference";
+   derivativeMethodArray[1] = "ForwardDifference";
+   derivativeMethodArray[2] = "BackwardDifference";
    
    
     wxBitmap openBitmap = wxBitmap(OpenFolder_xpm);
@@ -206,7 +206,7 @@ void DCSetupPanel::Setup( wxWindow *parent)
 
     Integer bsize = 2;                      // box size
    // 1. Create Options Box:
-   wxStaticBoxSizer *optionsStaticBoxSizer = new wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Options"));
+   wxStaticBoxSizer *optionsStaticBoxSizer = new wxStaticBoxSizer(wxHORIZONTAL, this, "Options");
    wxFlexGridSizer *grid1 = new wxFlexGridSizer( 2, 0, 0 );
    grid1->AddGrowableCol(1);
    
@@ -228,7 +228,7 @@ void DCSetupPanel::Setup( wxWindow *parent)
    
    
    // 2. Create Output Box:
-   wxStaticBoxSizer *outputStaticBoxSizer = new wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Output"));
+   wxStaticBoxSizer *outputStaticBoxSizer = new wxStaticBoxSizer(wxHORIZONTAL, this, "Output");
    wxFlexGridSizer *grid2 = new wxFlexGridSizer( 3, 0, 0 );
    grid2->AddGrowableCol(1);
    

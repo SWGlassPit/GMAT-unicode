@@ -49,7 +49,7 @@ NonlinearConstraintPanel::NonlinearConstraintPanel(wxWindow *parent, GmatCommand
    : GmatPanel(parent)
 {
    mNonlinearConstraintCommand = (NonlinearConstraint *)cmd;      
-   mObjectTypeList.Add(wxT("Spacecraft"));
+   mObjectTypeList.Add("Spacecraft");
    theGuiManager = GuiItemManager::GetInstance();
    
    Create();
@@ -64,7 +64,7 @@ NonlinearConstraintPanel::NonlinearConstraintPanel(wxWindow *parent, GmatCommand
 NonlinearConstraintPanel::~NonlinearConstraintPanel()
 {
    mObjectTypeList.Clear();
-   theGuiManager->UnregisterComboBox(wxT("Optimizer"), mSolverComboBox);
+   theGuiManager->UnregisterComboBox("Optimizer", mSolverComboBox);
 }
 
 //------------------------------------------------------------------------------
@@ -99,7 +99,7 @@ void NonlinearConstraintPanel::Create()
                        wxDefaultPosition, wxSize(60, -1), 0);
    wxString comparisons[] = { wxT("<="), wxT(">="), wxT("=") };
    mComparisonComboBox =
-         new wxComboBox(this, ID_COMBO, comparisons[0], wxDefaultPosition,
+         new wxComboBox(this, ID_COMBO, wxT(comparisons[0]), wxDefaultPosition,
                         wxSize(45,-1), 3, comparisons,
                         wxCB_DROPDOWN|wxCB_READONLY);
 
@@ -168,9 +168,9 @@ void NonlinearConstraintPanel::Create()
 void NonlinearConstraintPanel::LoadData()
 {
    #if DEBUG_ACHIEVE_PANEL
-   MessageInterface::ShowMessage(wxT("NonlinearConstraintPanel::LoadData() entered\n"));
+   MessageInterface::ShowMessage("NonlinearConstraintPanel::LoadData() entered\n");
    MessageInterface::ShowMessage
-      (wxT("Command=%s\n"), mNonlinearConstraintCommand->GetTypeName().c_str());
+      ("Command=%s\n", mNonlinearConstraintCommand->GetTypeName().c_str());
    #endif
    
    try
@@ -178,28 +178,28 @@ void NonlinearConstraintPanel::LoadData()
       // Set the pointer for the "Show Script" button
       mObject = mNonlinearConstraintCommand;
       
-      wxString loadedSolverName = mNonlinearConstraintCommand->
-         GetStringParameter(mNonlinearConstraintCommand->GetParameterID(wxT("OptimizerName")));
+      std::string loadedSolverName = mNonlinearConstraintCommand->
+         GetStringParameter(mNonlinearConstraintCommand->GetParameterID("OptimizerName"));
       
-      if (loadedSolverName == wxT(""))
+      if (loadedSolverName == "")
          mSolverComboBox->SetSelection(0);
       else
-         mSolverComboBox->SetStringSelection(loadedSolverName.c_str());
+         mSolverComboBox->SetStringSelection(wxT(loadedSolverName.c_str()));
 
-      wxString loadedVariableName = mNonlinearConstraintCommand->
-         GetStringParameter(mNonlinearConstraintCommand->GetParameterID(wxT("ConstraintArg1")));
+      std::string loadedVariableName = mNonlinearConstraintCommand->
+         GetStringParameter(mNonlinearConstraintCommand->GetParameterID("ConstraintArg1"));
 
-      mLHSTextCtrl->SetValue(loadedVariableName.c_str());
+      mLHSTextCtrl->SetValue(wxT(loadedVariableName.c_str()));
 
-      wxString operatorStr = mNonlinearConstraintCommand->
-         GetStringParameter(mNonlinearConstraintCommand->GetParameterID(wxT("Operator")));
+      std::string operatorStr = mNonlinearConstraintCommand->
+         GetStringParameter(mNonlinearConstraintCommand->GetParameterID("Operator"));
       
-      mComparisonComboBox->SetStringSelection(operatorStr.c_str());
+      mComparisonComboBox->SetStringSelection(wxT(operatorStr.c_str()));
 
-      wxString loadedValue = mNonlinearConstraintCommand->
-         GetStringParameter(mNonlinearConstraintCommand->GetParameterID(wxT("ConstraintArg2")));
+      std::string loadedValue = mNonlinearConstraintCommand->
+         GetStringParameter(mNonlinearConstraintCommand->GetParameterID("ConstraintArg2"));
 
-      mRHSTextCtrl->SetValue(loadedValue.c_str());
+      mRHSTextCtrl->SetValue(wxT(loadedValue.c_str()));
       
       //Real tolValue = mNonlinearConstraintCommand->
        //  GetRealParameter(mNonlinearConstraintCommand->GetParameterID("Tolerance"));
@@ -220,21 +220,21 @@ void NonlinearConstraintPanel::LoadData()
 void NonlinearConstraintPanel::SaveData()
 {   
    #if DEBUG_NLC_PANEL
-   MessageInterface::ShowMessage(wxT("NonlinearConstraintPanel::SaveData() entered\n"));
+   MessageInterface::ShowMessage("NonlinearConstraintPanel::SaveData() entered\n");
    #endif
    
    canClose = true;
-   wxString inputString;
+   std::string inputString;
    
    //-----------------------------------------------------------------
    // check input values: Number, Variable, Array element, Parameter
    //-----------------------------------------------------------------
    inputString = mLHSTextCtrl->GetValue().c_str();
-   CheckVariable(inputString, Gmat::SPACECRAFT, wxT("Constraint"),
-                 wxT("Real Number, Variable, Array element, plottable Parameter"), true);
+   CheckVariable(inputString, Gmat::SPACECRAFT, "Constraint",
+                 "Real Number, Variable, Array element, plottable Parameter", true);
    inputString = mRHSTextCtrl->GetValue().c_str();
-   CheckVariable(inputString, Gmat::SPACECRAFT, wxT("Constraint Value"),
-                 wxT("Real Number, Variable, Array element, plottable Parameter"), true);
+   CheckVariable(inputString, Gmat::SPACECRAFT, "Constraint Value",
+                 "Real Number, Variable, Array element, plottable Parameter", true);
    
    if (!canClose)
       return;
@@ -245,25 +245,25 @@ void NonlinearConstraintPanel::SaveData()
    try
    {
       mNonlinearConstraintCommand->SetStringParameter
-         (mNonlinearConstraintCommand->GetParameterID(wxT("OptimizerName")),
+         (mNonlinearConstraintCommand->GetParameterID("OptimizerName"),
           mSolverComboBox->GetValue().c_str());
       
       mNonlinearConstraintCommand->SetStringParameter
-         (mNonlinearConstraintCommand->GetParameterID(wxT("ConstraintArg1")),
+         (mNonlinearConstraintCommand->GetParameterID("ConstraintArg1"),
           mLHSTextCtrl->GetValue().c_str());
       
       mNonlinearConstraintCommand->SetStringParameter
-         (mNonlinearConstraintCommand->GetParameterID(wxT("Operator")),
+         (mNonlinearConstraintCommand->GetParameterID("Operator"),
           mComparisonComboBox->GetValue().c_str());
       
       #if DEBUG_NLC_PANEL
-      MessageInterface::ShowMessage(wxT("   about to save ConstraintArg2 value\n"));
+      MessageInterface::ShowMessage("   about to save ConstraintArg2 value\n");
       #endif
       mNonlinearConstraintCommand->SetStringParameter
-         (mNonlinearConstraintCommand->GetParameterID(wxT("ConstraintArg2")),
+         (mNonlinearConstraintCommand->GetParameterID("ConstraintArg2"),
           mRHSTextCtrl->GetValue().c_str());
       #if DEBUG_NLC_PANEL
-      MessageInterface::ShowMessage(wxT("   finished saving ConstraintArg2 value\n"));
+      MessageInterface::ShowMessage("   finished saving ConstraintArg2 value\n");
       #endif
       
       theGuiInterpreter->ValidateCommand(mNonlinearConstraintCommand);
@@ -278,7 +278,7 @@ void NonlinearConstraintPanel::SaveData()
    }
    
    #if DEBUG_NLC_PANEL
-   MessageInterface::ShowMessage(wxT("NonlinearConstraintPanel::SaveData() exited\n"));
+   MessageInterface::ShowMessage("NonlinearConstraintPanel::SaveData() exited\n");
    #endif
 }
 

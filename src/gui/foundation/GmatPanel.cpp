@@ -96,8 +96,8 @@ GmatPanel::GmatPanel(wxWindow *parent, bool showBottomSizer, bool showScriptButt
 
    #ifdef DEBUG_GMATPANEL
    MessageInterface::ShowMessage
-      (wxT("GmatPanel::GmatPanel() entered. theGuiInterpreter=<%p>\n   ")
-       wxT("showBottomSizer=%d, showScriptButton=%d\n"), theGuiInterpreter,
+      ("GmatPanel::GmatPanel() entered. theGuiInterpreter=<%p>\n   "
+       "showBottomSizer=%d, showScriptButton=%d\n", theGuiInterpreter,
        showBottomSizer, showScriptButton);
    #endif
 
@@ -126,25 +126,25 @@ GmatPanel::GmatPanel(wxWindow *parent, bool showBottomSizer, bool showScriptButt
       wxBitmap *bitmap = new wxBitmap(NewScript_xpm);
       theScriptButton = new wxBitmapButton
          (this, ID_BUTTON_SCRIPT, *bitmap, wxDefaultPosition, wxDefaultSize, 4);
-      theScriptButton->SetToolTip(wxT("Show Script"));
+      theScriptButton->SetToolTip("Show Script");
       bitmap = new wxBitmap(report_xpm);
       theSummaryButton = new wxBitmapButton
          (this, ID_BUTTON_SUMMARY, *bitmap, wxDefaultPosition, wxDefaultSize, 4);
-      theSummaryButton->SetToolTip(wxT("Command Summary"));
+      theSummaryButton->SetToolTip("Command Summary");
       //theScriptButton = new wxButton
       //   (this, ID_BUTTON_SCRIPT, "Show "GUI_ACCEL_KEY"Script", wxDefaultPosition, wxDefaultSize, 0);
       //theSummaryButton = new wxButton
       //   (this, ID_BUTTON_SUMMARY, GUI_ACCEL_KEY"Command Summary", wxDefaultPosition, wxDefaultSize, 0);
 
       theOkButton = new wxButton
-         (this, ID_BUTTON_OK, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0);
+         (this, ID_BUTTON_OK, "OK", wxDefaultPosition, wxDefaultSize, 0);
       theApplyButton = new wxButton
-         (this, ID_BUTTON_APPLY, wxT(GUI_ACCEL_KEY) wxT("Apply"), wxDefaultPosition, wxDefaultSize, 0);
+         (this, ID_BUTTON_APPLY, GUI_ACCEL_KEY"Apply", wxDefaultPosition, wxDefaultSize, 0);
       theCancelButton = new wxButton
-                  (this, ID_BUTTON_CANCEL, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
+                  (this, ID_BUTTON_CANCEL, "Cancel", wxDefaultPosition, wxDefaultSize, 0);
 
       theHelpButton = new wxButton
-         (this, ID_BUTTON_HELP, wxT(GUI_ACCEL_KEY) wxT("Help"), wxDefaultPosition, wxDefaultSize, 0);
+         (this, ID_BUTTON_HELP, GUI_ACCEL_KEY"Help", wxDefaultPosition, wxDefaultSize, 0);
 
       // set the Apply button as the default button, T. Grubb
       theApplyButton->SetDefault();
@@ -187,7 +187,7 @@ GmatPanel::GmatPanel(wxWindow *parent, bool showBottomSizer, bool showScriptButt
    mObject = NULL;
 
    #ifdef DEBUG_GMATPANEL
-   MessageInterface::ShowMessage(wxT("GmatPanel::GmatPanel() exiting\n"));
+   MessageInterface::ShowMessage("GmatPanel::GmatPanel() exiting\n");
    #endif
 }
 
@@ -208,7 +208,7 @@ void GmatPanel::EnableUpdate(bool enable)
 {
    #ifdef DEBUG_GMATPANEL_SAVE
    MessageInterface::ShowMessage
-      (wxT("GmatPanel::EnableUpdate() enable=%d\n"), enable);
+      ("GmatPanel::EnableUpdate() enable=%d\n", enable);
    #endif
 
    GmatMdiChildFrame* mdichild = (GmatMdiChildFrame*)theParent->GetParent();
@@ -295,7 +295,7 @@ void GmatPanel::OnApply(wxCommandEvent &event)
 {
    #ifdef DEBUG_GMATPANEL_SAVE
    MessageInterface::ShowMessage
-      (wxT("GmatPanel::OnApply() mDataChanged=%d\n"), mDataChanged);
+      ("GmatPanel::OnApply() mDataChanged=%d\n", mDataChanged);
    #endif
 
    if (mDataChanged)
@@ -323,7 +323,7 @@ void GmatPanel::OnOK(wxCommandEvent &event)
 {
    #ifdef DEBUG_GMATPANEL_SAVE
    MessageInterface::ShowMessage
-      (wxT("GmatPanel::OnOK() mDataChanged=%d\n"), mDataChanged);
+      ("GmatPanel::OnOK() mDataChanged=%d\n", mDataChanged);
    #endif
 
    if (mDataChanged)
@@ -369,7 +369,7 @@ void GmatPanel::OnHelp(wxCommandEvent &event)
 {
     wxString s;
     wxString baseHelpLink;
-    wxString msgBuffer;
+    char msgBuffer[255];
 
     // get the config object
     wxConfigBase *pConfig = wxConfigBase::Get();
@@ -379,18 +379,18 @@ void GmatPanel::OnHelp(wxCommandEvent &event)
     else
       s = GetName().c_str();
     // get base help link if available
-    baseHelpLink = pConfig->Read(wxT("BaseHelpLink"),wxT("http://gmat.sourceforge.net/docs/R2011a/html/%s.html"));
-    msgBuffer.Printf( baseHelpLink.c_str(), s.c_str());
+    baseHelpLink = pConfig->Read(_T("BaseHelpLink"),_T("http://gmat.sourceforge.net/docs/R2011a/html/%s.html"));
+    sprintf( msgBuffer, baseHelpLink.c_str(), s.c_str());
     #ifdef DEBUG_GMATPANEL
       MessageInterface::ShowMessage
-         (wxT("GmatPanel::OnHelp() Default Help Link=%s\n"), msgBuffer);
+         ("GmatPanel::OnHelp() Default Help Link=%s\n", msgBuffer);
     #endif
 
     // open separate window to show help
-    s = pConfig->Read(s,msgBuffer);
+    s = pConfig->Read(_T(s),_T(msgBuffer));
     #ifdef DEBUG_GMATPANEL
       MessageInterface::ShowMessage
-         (wxT("GmatPanel::OnHelp() Web Page=<%s>\n"),
+         ("GmatPanel::OnHelp() Web Page=<%s>\n",
           s);
     #endif
 
@@ -427,10 +427,10 @@ void GmatPanel::OnHelp(wxCommandEvent &event)
 //------------------------------------------------------------------------------
 void GmatPanel::OnScript(wxCommandEvent &event)
 {
-   wxString title = wxT("Object Script");
+   wxString title = "Object Script";
    // open separate window to show scripts?
    if (mObject != NULL) {
-      title = wxT("Scripting for ");
+      title = "Scripting for ";
       title += mObject->GetName().c_str();
    }
    ShowScriptDialog ssd(this, -1, title, mObject);
@@ -447,11 +447,11 @@ void GmatPanel::OnScript(wxCommandEvent &event)
 //------------------------------------------------------------------------------
 void GmatPanel::OnSummary(wxCommandEvent &event)
 {
-   wxString title = wxT("Object Script");
+   wxString title = "Object Script";
    // open separate window to show scripts?
    if (mObject != NULL) {
-      title = wxT("Command Summary for ");
-      if (mObject->GetName() != wxT(""))
+      title = "Command Summary for ";
+      if (mObject->GetName() != "")
          title += mObject->GetName().c_str();
       else
          title += mObject->GetTypeName().c_str();
@@ -474,8 +474,8 @@ bool GmatPanel::SetObject(GmatBase *obj)
    if (obj == NULL)
    {
       MessageInterface::PopupMessage
-         (Gmat::WARNING_, wxT("The panel cannot be populated, the object named \"") +
-          mObjectName + wxT("\" is NULL\n"));
+         (Gmat::WARNING_, "The panel cannot be populated, the object named \"" +
+          mObjectName + "\" is NULL\n");
       return false;
    }
    else

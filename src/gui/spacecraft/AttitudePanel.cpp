@@ -52,12 +52,12 @@
 // - "Attitude" Tab
 // - "Attitude Initial Conditions" Static Box
 // - "Attitude State Type" Combo Box
-const wxString AttitudePanel::STATE_TEXT[attStateTypeCount] = 
+const std::string AttitudePanel::STATE_TEXT[attStateTypeCount] = 
 {
-   wxT("EulerAngles"),
-   wxT("Quaternion"),
-   wxT("DirectionCosineMatrix"),
-   wxT("MRPs"),                    // Dunn added MRPs
+   "EulerAngles",
+   "Quaternion",
+   "DirectionCosineMatrix",
+   "MRPs",                    // Dunn added MRPs
 };
 
 // These labels show up in the following location in the GUI:
@@ -65,10 +65,10 @@ const wxString AttitudePanel::STATE_TEXT[attStateTypeCount] =
 // - "Attitude" Tab
 // - "Attitude Rate Initial Conditions" Static Box
 // - "Attitude Rate State Type" Combo Box
-const wxString AttitudePanel::STATE_RATE_TEXT[attStateRateTypeCount] = 
+const std::string AttitudePanel::STATE_RATE_TEXT[attStateRateTypeCount] = 
 {
-   wxT("EulerAngleRates"),
-   wxT("AngularVelocity"),
+   "EulerAngleRates",
+   "AngularVelocity",
 };
 
 // initial selections in combo boxes
@@ -112,7 +112,7 @@ AttitudePanel::AttitudePanel(GmatPanel *scPanel, wxWindow *parent,
    canClose    (true)
 {
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::AttitudePanel() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::AttitudePanel() entered\n");
    #endif
 
    theScPanel        = scPanel;
@@ -133,11 +133,11 @@ AttitudePanel::AttitudePanel(GmatPanel *scPanel, wxWindow *parent,
    seq.push_back(defSeq[1]);
    seq.push_back(defSeq[2]);
    
-   attitudeModel       = wxT("");
-   attCoordSystem      = wxT("");
-   eulerSequence       = wxT("321");  // Dunn changed from 312 to 321
-   attStateType        = wxT("");
-   attRateStateType    = wxT("");
+   attitudeModel       = "";
+   attCoordSystem      = "";
+   eulerSequence       = "321";  // Dunn changed from 312 to 321
+   attStateType        = "";
+   attRateStateType    = "";
    //attitudeType        = "";  // currently not used
    
    stateTypeModified     = false;
@@ -148,7 +148,7 @@ AttitudePanel::AttitudePanel(GmatPanel *scPanel, wxWindow *parent,
    seqModified           = false;
    modelModified         = false;
    
-   ResetStateFlags(wxT("Both"));   
+   ResetStateFlags("Both");   
 
    dataChanged = false;
    canClose    = true;
@@ -160,10 +160,10 @@ AttitudePanel::AttitudePanel(GmatPanel *scPanel, wxWindow *parent,
 //------------------------------------------------------------------------------
 AttitudePanel::~AttitudePanel()
 {
-   theGuiManager->UnregisterComboBox(wxT("CoordinateSystem"), config2ComboBox);
+   theGuiManager->UnregisterComboBox("CoordinateSystem", config2ComboBox);
 
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::~AttitudePanel() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::~AttitudePanel() entered\n");
    #endif
 }
 
@@ -177,7 +177,7 @@ AttitudePanel::~AttitudePanel()
 void AttitudePanel::Create()
 { 
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::Create() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::Create() entered\n");
    #endif
    
    // get the config object
@@ -208,24 +208,24 @@ void AttitudePanel::Create()
    unsigned int modelSz = modelArray.size();
    attitudeModelArray = new wxString[modelSz];
    for (x = 0; x < modelSz; ++x)
-      attitudeModelArray[x] = modelArray[x].c_str();
+      attitudeModelArray[x] = wxT(modelArray[x].c_str());
 
    config1StaticText =
-      new wxStaticText( this, ID_TEXT, wxT("Attitude ") wxT(GUI_ACCEL_KEY) wxT("Model"),
+      new wxStaticText( this, ID_TEXT, wxT("Attitude "GUI_ACCEL_KEY"Model"),
                         wxDefaultPosition, wxDefaultSize, 0);
    config1ComboBox = 
-      new wxComboBox( this, ID_CB_MODEL, attitudeModelArray[0], 
+      new wxComboBox( this, ID_CB_MODEL, wxT(attitudeModelArray[0]), 
          wxDefaultPosition, wxDefaultSize, modelSz, attitudeModelArray, 
          wxCB_DROPDOWN|wxCB_READONLY );
-   config1ComboBox->SetToolTip(pConfig->Read(wxT("AttitudeModelHint")));
+   config1ComboBox->SetToolTip(pConfig->Read(_T("AttitudeModelHint")));
 
    // Coordinate System
    config2StaticText =
-      new wxStaticText( this, ID_TEXT, wxT(GUI_ACCEL_KEY) wxT("Coordinate System"),
+      new wxStaticText( this, ID_TEXT, wxT(GUI_ACCEL_KEY"Coordinate System"),
          wxDefaultPosition, wxDefaultSize, 0);
    config2ComboBox =  theGuiManager->GetCoordSysComboBox(this, ID_CB_COORDSYS, 
       wxDefaultSize);
-   config2ComboBox->SetToolTip(pConfig->Read(wxT("CoordinateSystemHint")));
+   config2ComboBox->SetToolTip(pConfig->Read(_T("CoordinateSystemHint")));
 
    //Euler Angle Sequence
    eulerSeqArray           = Attitude::GetEulerSequenceStrings();
@@ -238,16 +238,16 @@ void AttitudePanel::Create()
       eulerSequenceArray[i] = eulerSeqArray[i].c_str();
 
    config4StaticText =
-      new wxStaticText( this, ID_TEXT, wxT(GUI_ACCEL_KEY) wxT("Euler Angle Sequence"),
+      new wxStaticText( this, ID_TEXT, wxT(GUI_ACCEL_KEY"Euler Angle Sequence"),
                         wxDefaultPosition, wxDefaultSize, 0);
-   config4ComboBox = new wxComboBox( this, ID_CB_SEQ, eulerSequenceArray[0],
+   config4ComboBox = new wxComboBox( this, ID_CB_SEQ, wxT(eulerSequenceArray[0]),
                       wxDefaultPosition, wxDefaultSize, 12,
                       eulerSequenceArray, wxCB_DROPDOWN|wxCB_READONLY );
-   config4ComboBox->SetToolTip(pConfig->Read(wxT("EulerAngleSequenceHint")));
+   config4ComboBox->SetToolTip(pConfig->Read(_T("EulerAngleSequenceHint")));
 
    // State Type
    stateTypeStaticText =
-      new wxStaticText( this, ID_TEXT, wxT("Attitude ") wxT(GUI_ACCEL_KEY) wxT("State Type"),
+      new wxStaticText( this, ID_TEXT, wxT("Attitude "GUI_ACCEL_KEY"State Type"),
                         wxDefaultPosition, wxDefaultSize, 0);
 
    for (ii = 0; ii < attStateTypeCount; ii++)
@@ -258,10 +258,10 @@ void AttitudePanel::Create()
       stateArray[ii] = stateTypeArray[ii].c_str();
    
    stateTypeComboBox = 
-      new wxComboBox( this, ID_CB_STATE, stateArray[STARTUP_STATE_TYPE_SELECTION],
+      new wxComboBox( this, ID_CB_STATE, wxT(stateArray[STARTUP_STATE_TYPE_SELECTION]),
          wxDefaultPosition, wxSize(180,20), attStateTypeCount, stateArray, 
          wxCB_DROPDOWN|wxCB_READONLY );
-   stateTypeComboBox->SetToolTip(pConfig->Read(wxT("StateTypeHint")));
+   stateTypeComboBox->SetToolTip(pConfig->Read(_T("StateTypeHint")));
    
    st1StaticText =
       new wxStaticText( this, ID_TEXT, wxT(""),
@@ -308,7 +308,7 @@ void AttitudePanel::Create()
 
    // Rate State Type
    stateTypeRate4StaticText =
-      new wxStaticText( this, ID_TEXT, wxT("Attitude ") wxT(GUI_ACCEL_KEY) wxT("Rate State Type"),
+      new wxStaticText( this, ID_TEXT, wxT("Attitude "GUI_ACCEL_KEY"Rate State Type"),
                         wxDefaultPosition, wxDefaultSize, 0);
 
    for (ii = 0; ii < attStateRateTypeCount; ii++)
@@ -320,10 +320,10 @@ void AttitudePanel::Create()
 
    stateRateTypeComboBox =
       new wxComboBox( this, ID_CB_STATE_RATE, 
-         stateRateArray[STARTUP_RATE_STATE_TYPE_SELECTION], wxDefaultPosition, 
+         wxT(stateRateArray[STARTUP_RATE_STATE_TYPE_SELECTION]), wxDefaultPosition, 
          wxSize(180,20), attStateRateTypeCount, stateRateArray, 
          wxCB_DROPDOWN|wxCB_READONLY );                  
-   stateRateTypeComboBox->SetToolTip(pConfig->Read(wxT("RateStateTypeHint")));
+   stateRateTypeComboBox->SetToolTip(pConfig->Read(_T("RateStateTypeHint")));
    
    str1StaticText =
       new wxStaticText( this, ID_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0);
@@ -344,7 +344,7 @@ void AttitudePanel::Create()
 
    #ifdef DEBUG_ATTITUDE_PANEL
       MessageInterface::ShowMessage
-         (wxT("AttitudePanel::Create() Creating wxTextCtrl objects\n"));
+         ("AttitudePanel::Create() Creating wxTextCtrl objects\n");
    #endif
 
    rateUnits1 = new wxStaticText( this, ID_TEXT, wxT("deg/sec"));
@@ -367,23 +367,23 @@ void AttitudePanel::Create()
 
    #ifdef DEBUG_ATTITUDE_PANEL
       MessageInterface::ShowMessage
-         (wxT("AttitudePanel::Create() Creating wxString objects\n"));
+         ("AttitudePanel::Create() Creating wxString objects\n");
    #endif
       
       
    #ifdef DEBUG_ATTITUDE_PANEL
       MessageInterface::ShowMessage(
-         wxT("AttitudePanel::Create() Creating wxBoxSizer objects.\n"));
+         "AttitudePanel::Create() Creating wxBoxSizer objects.\n");
    #endif
    
    Integer bsize = 2; // border size
    // wx*Sizers   
    wxBoxSizer *boxSizer1 = new wxBoxSizer(wxHORIZONTAL);
    //GmatStaticBoxSizer *boxSizer1 = new GmatStaticBoxSizer( wxHORIZONTAL, this, "" );
-   GmatStaticBoxSizer *boxSizer2 = new GmatStaticBoxSizer( wxVERTICAL, this, wxT("") );
-   GmatStaticBoxSizer *boxSizer3 = new GmatStaticBoxSizer( wxVERTICAL, this, wxT("") );
-   attitudeSizer = new GmatStaticBoxSizer( wxVERTICAL, this, wxT("Attitude Initial Conditions") );
-   attRateSizer = new GmatStaticBoxSizer( wxVERTICAL, this, wxT("Attitude Rate Initial Conditions") );
+   GmatStaticBoxSizer *boxSizer2 = new GmatStaticBoxSizer( wxVERTICAL, this, "" );
+   GmatStaticBoxSizer *boxSizer3 = new GmatStaticBoxSizer( wxVERTICAL, this, "" );
+   attitudeSizer = new GmatStaticBoxSizer( wxVERTICAL, this, "Attitude Initial Conditions" );
+   attRateSizer = new GmatStaticBoxSizer( wxVERTICAL, this, "Attitude Rate Initial Conditions" );
    
    wxFlexGridSizer *flexGridSizer1 = new wxFlexGridSizer( 2, 0, 0 );
    flexGridSizer2 = new wxFlexGridSizer( 4, 0, 0 );
@@ -462,12 +462,12 @@ void AttitudePanel::Create()
    boxSizer1->Fit( this );
    boxSizer1->SetSizeHints( this );
 
-   wxString initialModel = config1ComboBox->GetValue().c_str();
-   if (initialModel == wxT("CoordinateSystemFixed"))
+   std::string initialModel = config1ComboBox->GetValue().c_str();
+   if (initialModel == "CoordinateSystemFixed")
       DisableInitialAttitudeRate();
    
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::Create() exiting\n"));
+      MessageInterface::ShowMessage("AttitudePanel::Create() exiting\n");
    #endif
 }    
 
@@ -478,67 +478,67 @@ void AttitudePanel::Create()
 void AttitudePanel::LoadData()
 {
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::LoadData() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::LoadData() entered\n");
    #endif
    
    unsigned int x, y;
    bool newAttitude = false;
    // check to see if the spacecraft has an attitude object
-   theAttitude = (Attitude*) theSpacecraft->GetRefObject(Gmat::ATTITUDE, wxT(""));
+   theAttitude = (Attitude*) theSpacecraft->GetRefObject(Gmat::ATTITUDE, "");
    if (theAttitude == NULL)   // no attitude yet
    {
       #ifdef DEBUG_ATTITUDE_PANEL
       MessageInterface::ShowMessage
-         (wxT("   Attitude is NULL, so try to create %s.\n"), attitudeModelArray[0].c_str());
+         ("   Attitude is NULL, so try to create %s.\n", attitudeModelArray[0].c_str());
       #endif
       
       theAttitude = (Attitude *)theGuiInterpreter->
-         CreateObject((attitudeModelArray[0]).c_str(), wxT("")); // Use no name
+         CreateObject((attitudeModelArray[0]).c_str(), ""); // Use no name
       // Set new attitude to spacecraft (LOJ: 2009.03.10)
       theSpacecraft->SetRefObject(theAttitude, Gmat::ATTITUDE);
       newAttitude = true;
    }
    if (theAttitude == NULL)
    {
-      wxString ex = wxT("ERROR- unable to find or create an attitude object for ");
-      ex += theSpacecraft->GetName() + wxT("\n");
+      std::string ex = "ERROR- unable to find or create an attitude object for ";
+      ex += theSpacecraft->GetName() + "\n";
       throw GmatBaseException(ex);
    }
    
    try
    {
       #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("   Now retrieve data from the attitude\n"));
+      MessageInterface::ShowMessage("   Now retrieve data from the attitude\n");
       #endif
       
       epoch = theAttitude->GetEpoch();
       
       attStateType     = 
-         theAttitude->GetStringParameter(wxT("AttitudeDisplayStateType"));
+         theAttitude->GetStringParameter("AttitudeDisplayStateType");
       attRateStateType = 
-         theAttitude->GetStringParameter(wxT("AttitudeRateDisplayStateType"));
+         theAttitude->GetStringParameter("AttitudeRateDisplayStateType");
       attitudeModel    = theAttitude->GetAttitudeModelName();
-      config1ComboBox->SetValue(attitudeModel.c_str());
+      config1ComboBox->SetValue(wxT(attitudeModel.c_str()));
       
-      eulerSequence  = theAttitude->GetStringParameter(wxT("EulerAngleSequence"));
+      eulerSequence  = theAttitude->GetStringParameter("EulerAngleSequence");
       seq            = Attitude::ExtractEulerSequence(eulerSequence);
-      config4ComboBox->SetValue(eulerSequence.c_str());
+      config4ComboBox->SetValue(wxT(eulerSequence.c_str()));
    
-      attCoordSystem = theAttitude->GetStringParameter(wxT("AttitudeCoordinateSystem"));
-      config2ComboBox->SetValue(attCoordSystem.c_str());
+      attCoordSystem = theAttitude->GetStringParameter("AttitudeCoordinateSystem");
+      config2ComboBox->SetValue(wxT(attCoordSystem.c_str()));
       if (!attCS) attCS  = (CoordinateSystem*)theGuiInterpreter->
                      GetConfiguredObject(attCoordSystem);
       //if (newAttitude) attCS = NULL;
       //else             attCS = (CoordinateSystem*) theAttitude->
       //                 GetRefObject(Gmat::COORDINATE_SYSTEM, 
       //                 attCoordSystem);
-      if (attitudeModel == wxT("CoordinateSystemFixed"))
+      if (attitudeModel == "CoordinateSystemFixed")
       {
          EnableAll();
          DisableInitialAttitudeRate();
          spiceMessage->Show(false);
       }
-      else if (attitudeModel == wxT("SpiceAttitude"))
+      else if (attitudeModel == "SpiceAttitude")
       {
          DisableAll();
          DisplaySpiceReminder();
@@ -551,10 +551,10 @@ void AttitudePanel::LoadData()
       }
       
       //if (attStateType == STATE_TEXT[EULER_ANGLES])
-      if (attStateType == wxT("EulerAngles"))
+      if (attStateType == "EulerAngles")
       {
          //Rvector eaVal = theAttitude->GetRvectorParameter(STATE_TEXT[EULER_ANGLES]);
-         Rvector eaVal = theAttitude->GetRvectorParameter(wxT("EulerAngles"));
+         Rvector eaVal = theAttitude->GetRvectorParameter("EulerAngles");
          for (x = 0; x < 3; ++x)
          {
             *eulerAngles[x] = theGuiManager->ToWxString(eaVal[x]);
@@ -562,9 +562,9 @@ void AttitudePanel::LoadData()
          }
          DisplayEulerAngles();
       }
-      else if (attStateType == wxT("Quaternion"))
+      else if (attStateType == "Quaternion")
       {
-         Rvector qVal = theAttitude->GetRvectorParameter(wxT("Quaternion"));
+         Rvector qVal = theAttitude->GetRvectorParameter("Quaternion");
          for (x = 0; x < 4; ++x)
          {
             *quaternion[x] = theGuiManager->ToWxString(qVal[x]);
@@ -572,9 +572,9 @@ void AttitudePanel::LoadData()
          }
          DisplayQuaternion();
       }
-      else if (attStateType == wxT("MRPs"))	// Added by Dunn
+      else if (attStateType == "MRPs")	// Added by Dunn
       {
-         Rvector MRPVal = theAttitude->GetRvectorParameter(wxT("MRPs"));
+         Rvector MRPVal = theAttitude->GetRvectorParameter("MRPs");
          for (x = 0; x < 3; ++x)
          {
             *MRPs[x] = theGuiManager->ToWxString(MRPVal[x]);
@@ -584,7 +584,7 @@ void AttitudePanel::LoadData()
       }
       else // "DirectionCosineMatrix
       {
-         Rmatrix matVal = theAttitude->GetRmatrixParameter(wxT("DirectionCosineMatrix"));
+         Rmatrix matVal = theAttitude->GetRmatrixParameter("DirectionCosineMatrix");
          for (x = 0; x < 3; ++x)
             for (y = 0; y < 3; ++y)
             {
@@ -594,9 +594,9 @@ void AttitudePanel::LoadData()
          DisplayDCM();
       }
    
-      if (attRateStateType == wxT("EulerAngleRates")) 
+      if (attRateStateType == "EulerAngleRates") 
       {
-         Rvector earVal = theAttitude->GetRvectorParameter(wxT("EulerAngleRates"));
+         Rvector earVal = theAttitude->GetRvectorParameter("EulerAngleRates");
          for (x = 0; x < 3; ++x)
          {
             *eulerAngleRates[x] = theGuiManager->ToWxString(earVal[x]);
@@ -606,7 +606,7 @@ void AttitudePanel::LoadData()
       }
       else // AngularVelocity
       {
-         Rvector avVal = theAttitude->GetRvectorParameter(wxT("AngularVelocity"));
+         Rvector avVal = theAttitude->GetRvectorParameter("AngularVelocity");
          for (x = 0; x < 3; ++x)
          {
             *angVel[x] = theGuiManager->ToWxString(avVal[x]);
@@ -630,24 +630,24 @@ void AttitudePanel::LoadData()
 void AttitudePanel::SaveData()
 {
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::SaveData() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::SaveData() entered\n");
    #endif
    #ifdef DEBUG_ATTITUDE_SAVE
-      MessageInterface::ShowMessage(wxT("   modelModified = %s, seqModified = %s\n"),
-            (modelModified? wxT("true") : wxT("false")),  (seqModified? wxT("true") : wxT("false")));
-      MessageInterface::ShowMessage(wxT("   csModified = %s, stateTypeModified = %s\n"),
-            (csModified? wxT("true") : wxT("false")),  (stateTypeModified? wxT("true") : wxT("false")));
-      MessageInterface::ShowMessage(wxT("   stateModified = %s, rateStateTypeModified = %s\n"),
-            (stateModified? wxT("true") : wxT("false")),  (rateStateTypeModified? wxT("true") : wxT("false")));
-      MessageInterface::ShowMessage(wxT("   stateRateModified = %s\n"),
-            (stateRateModified? wxT("true") : wxT("false")));
-      MessageInterface::ShowMessage(wxT("   attStateType = %s\n"), attStateType.c_str());
+      MessageInterface::ShowMessage("   modelModified = %s, seqModified = %s\n",
+            (modelModified? "true" : "false"),  (seqModified? "true" : "false"));
+      MessageInterface::ShowMessage("   csModified = %s, stateTypeModified = %s\n",
+            (csModified? "true" : "false"),  (stateTypeModified? "true" : "false"));
+      MessageInterface::ShowMessage("   stateModified = %s, rateStateTypeModified = %s\n",
+            (stateModified? "true" : "false"),  (rateStateTypeModified? "true" : "false"));
+      MessageInterface::ShowMessage("   stateRateModified = %s\n",
+            (stateRateModified? "true" : "false"));
+      MessageInterface::ShowMessage("   attStateType = %s\n", attStateType.c_str());
    #endif
    
-   if (!ValidateState(wxT("Both")))
+   if (!ValidateState("Both"))
    {
       MessageInterface::PopupMessage(Gmat::ERROR_, +
-         wxT("Please enter valid value(s) before saving the Attitude data\n"));
+         "Please enter valid value(s) before saving the Attitude data\n");
          canClose = false;
      return;
    }
@@ -663,11 +663,11 @@ void AttitudePanel::SaveData()
       {
          #ifdef DEBUG_ATTITUDE_PANEL
             MessageInterface::ShowMessage(
-            wxT("   about to create a new attitude of type %s\n"), 
+            "   about to create a new attitude of type %s\n", 
             attitudeModel.c_str());
          #endif
          useAttitude = (Attitude *)theGuiInterpreter->
-                       CreateObject(attitudeModel, wxT("")); // Use no name
+                       CreateObject(attitudeModel, ""); // Use no name
       }
       catch (BaseException &ex)
       {
@@ -680,7 +680,7 @@ void AttitudePanel::SaveData()
    
    #ifdef DEBUG_ATTITUDE_PANEL
       if (!useAttitude)
-        MessageInterface::ShowMessage(wxT("   Attitude pointer is NULL\n"));
+        MessageInterface::ShowMessage("   Attitude pointer is NULL\n");
    #endif
 
    try
@@ -688,35 +688,35 @@ void AttitudePanel::SaveData()
       if (seqModified || isNewAttitude)
       {
          #ifdef DEBUG_ATTITUDE_PANEL
-            MessageInterface::ShowMessage(wxT("   Setting new sequence: %s\n"),
+            MessageInterface::ShowMessage("   Setting new sequence: %s\n",
             eulerSequence.c_str());
          #endif
-         useAttitude->SetStringParameter(wxT("EulerAngleSequence"), eulerSequence);
+         useAttitude->SetStringParameter("EulerAngleSequence", eulerSequence);
 
          // set attitude state and rate as well, to match what the user sees on the screen
          if (attStateType == stateTypeArray[EULER_ANGLES])
-            useAttitude->SetRvectorParameter(wxT("EulerAngles"), ea);
+            useAttitude->SetRvectorParameter("EulerAngles", ea);
          else if (attStateType == stateTypeArray[QUATERNION])
-            useAttitude->SetRvectorParameter(wxT("Quaternion"), q);
+            useAttitude->SetRvectorParameter("Quaternion", q);
          else if (attStateType == stateTypeArray[MRPS])
-            useAttitude->SetRvectorParameter(wxT("MRPs"), mrp);	 // Added by Dunn
+            useAttitude->SetRvectorParameter("MRPs", mrp);	 // Added by Dunn
          else
-            useAttitude->SetRmatrixParameter(wxT("DirectionCosineMatrix"), dcmat);
+            useAttitude->SetRmatrixParameter("DirectionCosineMatrix", dcmat);
 
          if (attRateStateType == stateRateTypeArray[EULER_ANGLE_RATES])
-            useAttitude->SetRvectorParameter(wxT("EulerAngleRates"), ear);
+            useAttitude->SetRvectorParameter("EulerAngleRates", ear);
          else
-            useAttitude->SetRvectorParameter(wxT("AngularVelocity"), av);
+            useAttitude->SetRvectorParameter("AngularVelocity", av);
          seqModified = false;
       }
 
       if (csModified || isNewAttitude)
       {
          #ifdef DEBUG_ATTITUDE_PANEL
-            MessageInterface::ShowMessage(wxT("   Setting new coordinate system: %s\n"),
+            MessageInterface::ShowMessage("   Setting new coordinate system: %s\n",
             attCoordSystem.c_str());
          #endif
-         useAttitude->SetStringParameter(wxT("AttitudeCoordinateSystem"),attCoordSystem);
+         useAttitude->SetStringParameter("AttitudeCoordinateSystem",attCoordSystem);
          useAttitude->SetRefObject(attCS, Gmat::COORDINATE_SYSTEM, attCoordSystem);
          csModified = false;
       }
@@ -724,62 +724,62 @@ void AttitudePanel::SaveData()
       if (stateTypeModified || isNewAttitude)
       {
          #ifdef DEBUG_ATTITUDE_PANEL
-            MessageInterface::ShowMessage(wxT("   Setting new state type to ...\n"),
+            MessageInterface::ShowMessage("   Setting new state type to ...\n",
             attStateType.c_str());
          #endif
-         useAttitude->SetStringParameter(wxT("AttitudeDisplayStateType"), attStateType);
+         useAttitude->SetStringParameter("AttitudeDisplayStateType", attStateType);
       }
          
       if (stateModified || isNewAttitude)
       {
          #ifdef DEBUG_ATTITUDE_PANEL
-            MessageInterface::ShowMessage(wxT("   Setting new state ...\n"));
+            MessageInterface::ShowMessage("   Setting new state ...\n");
             if (attStateType == stateTypeArray[QUATERNION])
             {
                MessageInterface::ShowMessage(
-                     wxT("Quaternion = %12.10f   %12.10f   %12.10f   %12.10f\n"),
+                     "Quaternion = %12.10f   %12.10f   %12.10f   %12.10f\n",
                      q[0], q[1], q[2], q[3]);
             }
          #endif
          if (attStateType == stateTypeArray[EULER_ANGLES])
-            useAttitude->SetRvectorParameter(wxT("EulerAngles"), ea);
+            useAttitude->SetRvectorParameter("EulerAngles", ea);
          else if (attStateType == stateTypeArray[QUATERNION])
-            useAttitude->SetRvectorParameter(wxT("Quaternion"), q);
+            useAttitude->SetRvectorParameter("Quaternion", q);
          else if (attStateType == stateTypeArray[MRPS])
-            useAttitude->SetRvectorParameter(wxT("MRPs"), mrp);	// Dunn Added
+            useAttitude->SetRvectorParameter("MRPs", mrp);	// Dunn Added
          else
-            useAttitude->SetRmatrixParameter(wxT("DirectionCosineMatrix"), dcmat);
+            useAttitude->SetRmatrixParameter("DirectionCosineMatrix", dcmat);
          stateModified = false;
       }
 
       if (rateStateTypeModified || isNewAttitude)
       {
          #ifdef DEBUG_ATTITUDE_PANEL
-            MessageInterface::ShowMessage(wxT("   Setting new rate state type to ...\n"),
+            MessageInterface::ShowMessage("   Setting new rate state type to ...\n",
             attRateStateType.c_str());
          #endif
-         useAttitude->SetStringParameter(wxT("AttitudeRateDisplayStateType"), attRateStateType);
+         useAttitude->SetStringParameter("AttitudeRateDisplayStateType", attRateStateType);
       }
    
       if (stateRateModified || isNewAttitude)
       {
          #ifdef DEBUG_ATTITUDE_PANEL
-            MessageInterface::ShowMessage(wxT("   Setting new state rate ...\n"));
+            MessageInterface::ShowMessage("   Setting new state rate ...\n");
          #endif
          if (attRateStateType == stateRateTypeArray[EULER_ANGLE_RATES])
-            useAttitude->SetRvectorParameter(wxT("EulerAngleRates"), ear);
+            useAttitude->SetRvectorParameter("EulerAngleRates", ear);
          else
-            useAttitude->SetRvectorParameter(wxT("AngularVelocity"), av);
+            useAttitude->SetRvectorParameter("AngularVelocity", av);
          stateRateModified = false;
       }
       
       if (isNewAttitude)
       {
          #ifdef DEBUG_ATTITUDE_PANEL
-            MessageInterface::ShowMessage(wxT("Setting new attitude model of type %s on spacecraft\n"),
+            MessageInterface::ShowMessage("Setting new attitude model of type %s on spacecraft\n",
             attitudeModel.c_str());
          #endif
-         theSpacecraft->SetRefObject(useAttitude, Gmat::ATTITUDE, wxT(""));
+         theSpacecraft->SetRefObject(useAttitude, Gmat::ATTITUDE, "");
          // spacecraft deletes the old attitude pointer
          theAttitude = useAttitude;
       }
@@ -790,19 +790,19 @@ void AttitudePanel::SaveData()
       dataChanged = true;
       MessageInterface::PopupMessage(Gmat::ERROR_, ex.GetFullMessage());
    }
-   ResetStateFlags(wxT("Both"), canClose);
+   ResetStateFlags("Both", canClose);
    if (canClose) dataChanged = false;
 }
 
 //------------------------------------------------------------------------------
-// bool IsStateModified(const wxString which = "Both")
+// bool IsStateModified(const std::string which = "Both")
 //------------------------------------------------------------------------------
-bool AttitudePanel::IsStateModified(const wxString which)
+bool AttitudePanel::IsStateModified(const std::string which)
 {
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::IsStateModified() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::IsStateModified() entered\n");
    #endif
-   if ((which == wxT("State"))  || (which == wxT("Both")))
+   if ((which == "State")  || (which == "Both"))
    {
       if (attStateType == stateTypeArray[EULER_ANGLES])
       {
@@ -826,7 +826,7 @@ bool AttitudePanel::IsStateModified(const wxString which)
       }
       return false;
    }
-   if ((which == wxT("Rate")) || (which == wxT("Both")))
+   if ((which == "Rate") || (which == "Both"))
    {
       if (attRateStateType == stateRateTypeArray[EULER_ANGLE_RATES])
       {
@@ -845,16 +845,16 @@ bool AttitudePanel::IsStateModified(const wxString which)
 
 
 //------------------------------------------------------------------------------
-// void ResetStateFlags(const wxString which = "Both",
+// void ResetStateFlags(const std::string which = "Both",
 //                      bool discardEdits = false)
 //------------------------------------------------------------------------------
-void AttitudePanel::ResetStateFlags(const wxString which,
+void AttitudePanel::ResetStateFlags(const std::string which,
                                     bool discardEdits)
 {
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::ResetStateFlags() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::ResetStateFlags() entered\n");
    #endif
-   if ((which == wxT("State")) || (which == wxT("Both")))
+   if ((which == "State") || (which == "Both"))
    {
       for (Integer ii = 0; ii < 9; ii++)
          dcmatModified[ii]   = false;
@@ -878,7 +878,7 @@ void AttitudePanel::ResetStateFlags(const wxString which,
          st10TextCtrl->DiscardEdits();
       }
    }
-   if ((which == wxT("Rate")) || (which == wxT("Both")))
+   if ((which == "Rate") || (which == "Both"))
    {
       for (Integer ii = 0; ii < 3; ii++)
       {
@@ -896,38 +896,38 @@ void AttitudePanel::ResetStateFlags(const wxString which,
 }
 
 //------------------------------------------------------------------------------
-// bool ValidateState(const wxString which = "Both")
+// bool ValidateState(const std::string which = "Both")
 //------------------------------------------------------------------------------
-bool AttitudePanel::ValidateState(const wxString which)
+bool AttitudePanel::ValidateState(const std::string which)
 {
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::ValidateState() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::ValidateState() entered\n");
    #endif
    bool retval = true;
-   wxString strVal;
+   std::string strVal;
    Real        tmpVal;
-   if ((which == wxT("State")) || (which == wxT("Both")))
+   if ((which == "State") || (which == "Both"))
    {
       if (attStateType == stateTypeArray[EULER_ANGLES])
       {
          if (eaModified[0])
          {
             strVal = st1TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("Euler Angle 1"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "Euler Angle 1", "Real Number"))
                retval = false;
             else  ea[0] = tmpVal;
          }
          if (eaModified[1]) 
          {
             strVal = st2TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("Euler Angle 2"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "Euler Angle 2", "Real Number"))
                retval = false;
             else  ea[1] = tmpVal;
          }
          if (eaModified[2])
          {
             strVal = st3TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("Euler Angle 3"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "Euler Angle 3", "Real Number"))
                retval = false;
             else  ea[2] = tmpVal;
          }
@@ -937,28 +937,28 @@ bool AttitudePanel::ValidateState(const wxString which)
          if (qModified[0])
          {
             strVal = st1TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("q1"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "q1", "Real Number"))
                retval = false;
             else  q[0] = tmpVal;
          }
          if (qModified[1])
          {
             strVal = st2TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("q2"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "q2", "Real Number"))
                retval = false;
             else  q[1] = tmpVal;
          }
          if (qModified[2])
          {
             strVal = st3TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("q3"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "q3", "Real Number"))
                retval = false;
             else  q[2] = tmpVal;
          }
          if (qModified[3])
          {
             strVal = st4TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("q4"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "q4", "Real Number"))
                retval = false;
             else  q[3] = tmpVal;
          }
@@ -968,21 +968,21 @@ bool AttitudePanel::ValidateState(const wxString which)
          if (mrpModified[0])
          {
             strVal = st1TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("MRP 1"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "MRP 1", "Real Number"))
                retval = false;
             else  mrp[0] = tmpVal;
          }
          if (mrpModified[1]) 
          {
             strVal = st2TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("MRP 2"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "MRP 2", "Real Number"))
                retval = false;
             else  mrp[1] = tmpVal;
          }
          if (mrpModified[2])
          {
             strVal = st3TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("MRP 3"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "MRP 3", "Real Number"))
                retval = false;
             else  mrp[2] = tmpVal;
          }
@@ -992,91 +992,91 @@ bool AttitudePanel::ValidateState(const wxString which)
          if (dcmatModified[0])
          {
             strVal = st1TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("DCM 1,1"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "DCM 1,1", "Real Number"))
                retval = false;
             else  dcmat(0,0) = tmpVal;
          }
          if (dcmatModified[1])
          {
             strVal = st5TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("DCM 1,2"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "DCM 1,2", "Real Number"))
                retval = false;
             else  dcmat(0,1) = tmpVal;
          }
          if (dcmatModified[2])
          {
             strVal = st8TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("DCM 1,3"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "DCM 1,3", "Real Number"))
                retval = false;
             else  dcmat(0,2) = tmpVal;
          }
          if (dcmatModified[3])
          {
             strVal = st2TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("DCM 2,1"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "DCM 2,1", "Real Number"))
                retval = false;
             else  dcmat(1,0) = tmpVal;
          }
          if (dcmatModified[4])
          {
             strVal = st6TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("DCM 2,2"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "DCM 2,2", "Real Number"))
                retval = false;
             else  dcmat(1,1) = tmpVal;
          }
          if (dcmatModified[5])
          {
             strVal = st9TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("DCM 2,3"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "DCM 2,3", "Real Number"))
                retval = false;
             else  dcmat(1,2) = tmpVal;
          }
          if (dcmatModified[6])
          {
             strVal = st3TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("DCM 3,1"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "DCM 3,1", "Real Number"))
                retval = false;
             else  dcmat(2,0) = tmpVal;
          }
          if (dcmatModified[7])
          {
             strVal = st7TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("DCM 3,2"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "DCM 3,2", "Real Number"))
                retval = false;
             else  dcmat(2,1) = tmpVal;
          }
          if (dcmatModified[8])
          {
             strVal = st10TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("DCM 3,3"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "DCM 3,3", "Real Number"))
                retval = false;
             else  dcmat(2,2) = tmpVal;
          }
       }
 
    }
-   if ((which == wxT("Rate")) || (which == wxT("Both")))
+   if ((which == "Rate") || (which == "Both"))
    {
       if (attRateStateType == stateRateTypeArray[EULER_ANGLE_RATES])
       {
          if (earModified[0])
          {
             strVal = str1TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("Euler Angle Rate 1"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "Euler Angle Rate 1", "Real Number"))
                retval = false;
             else  ear[0] = tmpVal;
          }
          if (earModified[1])
          {
             strVal = str2TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("Euler Angle Rate 2"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "Euler Angle Rate 2", "Real Number"))
                retval = false;
             else  ear[1] = tmpVal;
          }
          if (earModified[2])
          {
             strVal = str3TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("Euler Angle Rate 3"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "Euler Angle Rate 3", "Real Number"))
                retval = false;
             else  ear[2] = tmpVal;
          }
@@ -1086,21 +1086,21 @@ bool AttitudePanel::ValidateState(const wxString which)
          if (avModified[0])
          {
             strVal = str1TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("Angular Velocity X"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "Angular Velocity X", "Real Number"))
                retval = false;
             else  av[0] = tmpVal;
          }
          if (avModified[1])
          {
             strVal = str2TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("Angular Velocity Y"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "Angular Velocity Y", "Real Number"))
                retval = false;
             else  av[1] = tmpVal;
          }
          if (avModified[2])
          {
             strVal = str3TextCtrl->GetValue();
-            if (!theScPanel->CheckReal(tmpVal, strVal, wxT("Angular Velocity Z"), wxT("Real Number")))
+            if (!theScPanel->CheckReal(tmpVal, strVal, "Angular Velocity Z", "Real Number"))
                retval = false;
             else  av[2] = tmpVal;
          }
@@ -1268,7 +1268,7 @@ void AttitudePanel::OnStateTextUpdate(wxCommandEvent &event)
 {
    //if (!canClose) return; // ??
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::OnStateTextUpdate() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::OnStateTextUpdate() entered\n");
    #endif
    
    if (attStateType == STATE_TEXT[EULER_ANGLES])
@@ -1304,7 +1304,7 @@ void AttitudePanel::OnStateTextUpdate(wxCommandEvent &event)
       if (st10TextCtrl->IsModified()) dcmatModified[8] = true;
    }
     
-   if (IsStateModified(wxT("State")))
+   if (IsStateModified("State"))
    {
       stateModified = true;
       dataChanged   = true;
@@ -1319,7 +1319,7 @@ void AttitudePanel::OnStateRateTextUpdate(wxCommandEvent &event)
 {
    //if (!canClose) return;  // ??
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::OnStateRateTextUpdate() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::OnStateRateTextUpdate() entered\n");
    #endif
    
    if (attRateStateType == stateRateTypeArray[EULER_ANGLE_RATES])
@@ -1335,7 +1335,7 @@ void AttitudePanel::OnStateRateTextUpdate(wxCommandEvent &event)
       if (str3TextCtrl->IsModified())  avModified[2]  = true;
    }
     
-   if (IsStateModified(wxT("Rate")))
+   if (IsStateModified("Rate"))
    {
       stateRateModified = true;
       dataChanged   = true;
@@ -1349,16 +1349,16 @@ void AttitudePanel::OnStateRateTextUpdate(wxCommandEvent &event)
 void AttitudePanel::OnCoordinateSystemSelection(wxCommandEvent &event)
 {
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::OnCoordinateSystemSelection() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::OnCoordinateSystemSelection() entered\n");
    #endif
-   wxString newCS = config2ComboBox->GetValue().c_str();
+   std::string newCS = config2ComboBox->GetValue().c_str();
    if (newCS == attCoordSystem) return;
    // first, validate the state
-   if (!ValidateState(wxT("Both")))
+   if (!ValidateState("Both"))
    {
-      config2ComboBox->SetValue(attCoordSystem.c_str());
+      config2ComboBox->SetValue(wxT(attCoordSystem.c_str()));
       MessageInterface::PopupMessage(Gmat::ERROR_, +
-         wxT("Please enter valid value(s) before changing the Reference Coordinate System\n"));
+         "Please enter valid value(s) before changing the Reference Coordinate System\n");
          return;
    }
    if (!attCS) attCS  = (CoordinateSystem*)theGuiInterpreter->
@@ -1388,10 +1388,10 @@ void AttitudePanel::OnCoordinateSystemSelection(wxCommandEvent &event)
 void AttitudePanel::OnAttitudeModelSelection(wxCommandEvent &event)
 {
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::OnAttitudeModelSelection() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::OnAttitudeModelSelection() entered\n");
    #endif
    // if the user changes the attitude model, we will need to create a new one
-    wxString newModel = config1ComboBox->GetValue().c_str();
+    std::string newModel = config1ComboBox->GetValue().c_str();
     if (newModel != attitudeModel)
     {
       modelModified = true;
@@ -1399,13 +1399,13 @@ void AttitudePanel::OnAttitudeModelSelection(wxCommandEvent &event)
       attitudeModel = newModel;
       theScPanel->EnableUpdate(true);
     }
-    if (newModel == wxT("CoordinateSystemFixed"))
+    if (newModel == "CoordinateSystemFixed")
     {
        EnableAll();
        DisableInitialAttitudeRate();
        spiceMessage->Show(false);
     }
-    else if (newModel == wxT("SpiceAttitude"))
+    else if (newModel == "SpiceAttitude")
     {
        DisableAll();
        DisplaySpiceReminder();
@@ -1425,9 +1425,9 @@ void AttitudePanel::OnAttitudeModelSelection(wxCommandEvent &event)
 void AttitudePanel::OnEulerSequenceSelection(wxCommandEvent &event)
 {
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::OnEulerSequenceSelection() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::OnEulerSequenceSelection() entered\n");
    #endif
-   wxString newSeq = config4ComboBox->GetValue().c_str();
+   std::string newSeq = config4ComboBox->GetValue().c_str();
    if (newSeq != eulerSequence)
    {
       seqModified   = true;
@@ -1446,15 +1446,15 @@ void AttitudePanel::OnStateTypeSelection(wxCommandEvent &event)
 {
    bool OK = true;
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::OnStateTypeSelection() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::OnStateTypeSelection() entered\n");
    #endif
-   wxString newStateType = stateTypeComboBox->GetStringSelection().c_str();
+   std::string newStateType = stateTypeComboBox->GetStringSelection().c_str();
    if (newStateType == attStateType) return;
-   if (!ValidateState(wxT("State")))
+   if (!ValidateState("State"))
    {
-      stateTypeComboBox->SetValue(attStateType.c_str());
+      stateTypeComboBox->SetValue(wxT(attStateType.c_str()));
       MessageInterface::PopupMessage(Gmat::ERROR_, +
-         wxT("Please enter valid value before changing the Attitude State Type\n"));
+         "Please enter valid value before changing the Attitude State Type\n");
      return;
    }
    
@@ -1468,7 +1468,7 @@ void AttitudePanel::OnStateTypeSelection(wxCommandEvent &event)
       OK = DisplayMRPs();
       
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("   Now setting attitude state type to %s\n"),
+      MessageInterface::ShowMessage("   Now setting attitude state type to %s\n",
       newStateType.c_str());
    #endif
    if (OK)
@@ -1492,17 +1492,17 @@ void AttitudePanel::OnStateTypeRateSelection(wxCommandEvent &event)
 {
    bool OK = true;
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::OnStateTypeRateSelection() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::OnStateTypeRateSelection() entered\n");
    #endif
-   wxString newStateRateType = 
+   std::string newStateRateType = 
       stateRateTypeComboBox->GetStringSelection().c_str();
       if (newStateRateType == attRateStateType) return;
       
-   if (!ValidateState(wxT("Both")))
+   if (!ValidateState("Both"))
    {
-      stateRateTypeComboBox->SetValue(attRateStateType.c_str());
+      stateRateTypeComboBox->SetValue(wxT(attRateStateType.c_str()));
       MessageInterface::PopupMessage(Gmat::ERROR_, +
-         wxT("Please enter valid value before changing the Attitude Rate State Type\n"));
+         "Please enter valid value before changing the Attitude Rate State Type\n");
      return;
    }
   
@@ -1512,7 +1512,7 @@ void AttitudePanel::OnStateTypeRateSelection(wxCommandEvent &event)
       OK = DisplayAngularVelocity();
       
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("   Now setting attitude rate state type to %s\n"),
+      MessageInterface::ShowMessage("   Now setting attitude rate state type to %s\n",
       newStateRateType.c_str());
    #endif
    if (OK)
@@ -1535,7 +1535,7 @@ bool AttitudePanel::DisplayEulerAngles()
 {
    bool retval = true;
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::DisplayEulerAngles() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::DisplayEulerAngles() entered\n");
    #endif
    // get the config object
    wxConfigBase *pConfig = wxConfigBase::Get();
@@ -1557,11 +1557,11 @@ bool AttitudePanel::DisplayEulerAngles()
       ResizeTextCtrl1234();
 
       st1TextCtrl->Show(true);
-      st1TextCtrl->SetToolTip(pConfig->Read(wxT("EulerAngle1Hint")));
+      st1TextCtrl->SetToolTip(pConfig->Read(_T("EulerAngle1Hint")));
       st2TextCtrl->Show(true);
-      st2TextCtrl->SetToolTip(pConfig->Read(wxT("EulerAngle2Hint")));
+      st2TextCtrl->SetToolTip(pConfig->Read(_T("EulerAngle2Hint")));
       st3TextCtrl->Show(true);
-      st3TextCtrl->SetToolTip(pConfig->Read(wxT("EulerAngle3Hint")));
+      st3TextCtrl->SetToolTip(pConfig->Read(_T("EulerAngle3Hint")));
       st4TextCtrl->Show(false);
 
       st5TextCtrl->Show(false);
@@ -1572,9 +1572,9 @@ bool AttitudePanel::DisplayEulerAngles()
       st9TextCtrl->Show(false);
       st10TextCtrl->Show(false);
 
-      st1StaticText->SetLabel(wxT("Euler Angle ") wxT(GUI_ACCEL_KEY) wxT("1"));
-      st2StaticText->SetLabel(wxT("Euler Angle ") wxT(GUI_ACCEL_KEY) wxT("2"));
-      st3StaticText->SetLabel(wxT("Euler Angle ") wxT(GUI_ACCEL_KEY) wxT("3"));
+      st1StaticText->SetLabel(wxT("Euler Angle "GUI_ACCEL_KEY"1"));
+      st2StaticText->SetLabel(wxT("Euler Angle "GUI_ACCEL_KEY"2"));
+      st3StaticText->SetLabel(wxT("Euler Angle "GUI_ACCEL_KEY"3"));
    
       st1TextCtrl->SetValue(*eulerAngles[0]);
       st2TextCtrl->SetValue(*eulerAngles[1]);
@@ -1588,7 +1588,7 @@ bool AttitudePanel::DisplayEulerAngles()
    
       attitudeSizer->Layout();
       Refresh();
-      ResetStateFlags(wxT("State"), true);
+      ResetStateFlags("State", true);
    }
    return retval;
 }
@@ -1600,7 +1600,7 @@ bool AttitudePanel::DisplayQuaternion()
 {
    bool retval = true;
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::DisplayQuaternion() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::DisplayQuaternion() entered\n");
    #endif
    // get the config object
    wxConfigBase *pConfig = wxConfigBase::Get();
@@ -1612,7 +1612,7 @@ bool AttitudePanel::DisplayQuaternion()
    {
       stateTypeComboBox->
          SetValue(wxT("Quaternion"));
-      attStateType = wxT("Quaternion");
+      attStateType = "Quaternion";
 
       st1StaticText->Show(true);
       st2StaticText->Show(true);
@@ -1622,13 +1622,13 @@ bool AttitudePanel::DisplayQuaternion()
       ResizeTextCtrl1234(true);
 
       st1TextCtrl->Show(true);
-      st1TextCtrl->SetToolTip(pConfig->Read(wxT("Quaternion1Hint")));
+      st1TextCtrl->SetToolTip(pConfig->Read(_T("Quaternion1Hint")));
       st2TextCtrl->Show(true);
-      st2TextCtrl->SetToolTip(pConfig->Read(wxT("Quaternion2Hint")));
+      st2TextCtrl->SetToolTip(pConfig->Read(_T("Quaternion2Hint")));
       st3TextCtrl->Show(true);
-      st3TextCtrl->SetToolTip(pConfig->Read(wxT("Quaternion3Hint")));
+      st3TextCtrl->SetToolTip(pConfig->Read(_T("Quaternion3Hint")));
       st4TextCtrl->Show(true);
-      st4TextCtrl->SetToolTip(pConfig->Read(wxT("Quaternion4Hint")));
+      st4TextCtrl->SetToolTip(pConfig->Read(_T("Quaternion4Hint")));
 
       st5TextCtrl->Show(false);
       st6TextCtrl->Show(false);
@@ -1638,10 +1638,10 @@ bool AttitudePanel::DisplayQuaternion()
       st9TextCtrl->Show(false);
       st10TextCtrl->Show(false);
 
-      st1StaticText->SetLabel(wxT("q") wxT(GUI_ACCEL_KEY) wxT("1"));
-      st2StaticText->SetLabel(wxT("q") wxT(GUI_ACCEL_KEY) wxT("2"));
-      st3StaticText->SetLabel(wxT("q") wxT(GUI_ACCEL_KEY) wxT("3"));
-      st4StaticText->SetLabel(wxT("q") wxT(GUI_ACCEL_KEY) wxT("4"));  // Dunn changed 4 to c
+      st1StaticText->SetLabel(wxT("q"GUI_ACCEL_KEY"1"));
+      st2StaticText->SetLabel(wxT("q"GUI_ACCEL_KEY"2"));
+      st3StaticText->SetLabel(wxT("q"GUI_ACCEL_KEY"3"));
+      st4StaticText->SetLabel(wxT("q"GUI_ACCEL_KEY"4"));  // Dunn changed 4 to c
    
       st1TextCtrl->SetValue(*quaternion[0]);
       st2TextCtrl->SetValue(*quaternion[1]);
@@ -1656,7 +1656,7 @@ bool AttitudePanel::DisplayQuaternion()
    
       attitudeSizer->Layout();
       Refresh();
-      ResetStateFlags(wxT("State"), true);
+      ResetStateFlags("State", true);
    }
    return retval;
 }
@@ -1668,7 +1668,7 @@ bool AttitudePanel::DisplayDCM()
 {
    bool retval = true;
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::DisplayDCM() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::DisplayDCM() entered\n");
    #endif
    // get the config object
    wxConfigBase *pConfig = wxConfigBase::Get();
@@ -1680,7 +1680,7 @@ bool AttitudePanel::DisplayDCM()
    {
       stateTypeComboBox->
          SetValue(wxT("DirectionCosineMatrix"));
-      attStateType = wxT("DirectionCosineMatrix");
+      attStateType = "DirectionCosineMatrix";
 
       st1StaticText->Show(false);
       st2StaticText->Show(false);
@@ -1690,26 +1690,26 @@ bool AttitudePanel::DisplayDCM()
       ResizeTextCtrl1234();
 
       st1TextCtrl->Show(true);
-      st1TextCtrl->SetToolTip(pConfig->Read(wxT("DCM1Hint")));
+      st1TextCtrl->SetToolTip(pConfig->Read(_T("DCM1Hint")));
       st2TextCtrl->Show(true);
-      st2TextCtrl->SetToolTip(pConfig->Read(wxT("DCM2Hint")));
+      st2TextCtrl->SetToolTip(pConfig->Read(_T("DCM2Hint")));
       st3TextCtrl->Show(true);
-      st3TextCtrl->SetToolTip(pConfig->Read(wxT("DCM3Hint")));
+      st3TextCtrl->SetToolTip(pConfig->Read(_T("DCM3Hint")));
       st4TextCtrl->Show(false);
 
       st5TextCtrl->Show(true);
-      st5TextCtrl->SetToolTip(pConfig->Read(wxT("DCM5Hint")));
+      st5TextCtrl->SetToolTip(pConfig->Read(_T("DCM5Hint")));
       st6TextCtrl->Show(true);
-      st6TextCtrl->SetToolTip(pConfig->Read(wxT("DCM6Hint")));
+      st6TextCtrl->SetToolTip(pConfig->Read(_T("DCM6Hint")));
       st7TextCtrl->Show(true);
-      st7TextCtrl->SetToolTip(pConfig->Read(wxT("DCM7Hint")));
+      st7TextCtrl->SetToolTip(pConfig->Read(_T("DCM7Hint")));
 
       st8TextCtrl->Show(true);
-      st8TextCtrl->SetToolTip(pConfig->Read(wxT("DCM8Hint")));
+      st8TextCtrl->SetToolTip(pConfig->Read(_T("DCM8Hint")));
       st9TextCtrl->Show(true);
-      st9TextCtrl->SetToolTip(pConfig->Read(wxT("DCM9Hint")));
+      st9TextCtrl->SetToolTip(pConfig->Read(_T("DCM9Hint")));
       st10TextCtrl->Show(true);
-      st10TextCtrl->SetToolTip(pConfig->Read(wxT("DCM10Hint")));
+      st10TextCtrl->SetToolTip(pConfig->Read(_T("DCM10Hint")));
 
       st1StaticText->SetLabel(wxT(""));
       st2StaticText->SetLabel(wxT(""));
@@ -1734,7 +1734,7 @@ bool AttitudePanel::DisplayDCM()
    
       attitudeSizer->Layout();
       Refresh();
-      ResetStateFlags(wxT("State"), true);
+      ResetStateFlags("State", true);
    }
    return retval;
 }
@@ -1746,7 +1746,7 @@ bool AttitudePanel::DisplayMRPs()
 {
    bool retval = true;
 #ifdef DEBUG_ATTITUDE_PANEL
-   MessageInterface::ShowMessage(wxT("AttitudePanel::DisplayMRPs() entered\n"));
+   MessageInterface::ShowMessage("AttitudePanel::DisplayMRPs() entered\n");
 #endif
    // get the config object
    wxConfigBase *pConfig = wxConfigBase::Get();
@@ -1758,7 +1758,7 @@ bool AttitudePanel::DisplayMRPs()
    {
       stateTypeComboBox->
          SetValue(wxT("MRPs"));
-      attStateType = wxT("MRPs");
+      attStateType = "MRPs";
 
       st1StaticText->Show(true);
       st2StaticText->Show(true);
@@ -1768,11 +1768,11 @@ bool AttitudePanel::DisplayMRPs()
       ResizeTextCtrl1234();
 
       st1TextCtrl->Show(true);
-      st1TextCtrl->SetToolTip(pConfig->Read(wxT("MRP1Hint")));
+      st1TextCtrl->SetToolTip(pConfig->Read(_T("MRP1Hint")));
       st2TextCtrl->Show(true);
-      st2TextCtrl->SetToolTip(pConfig->Read(wxT("MRP2Hint")));
+      st2TextCtrl->SetToolTip(pConfig->Read(_T("MRP2Hint")));
       st3TextCtrl->Show(true);
-      st3TextCtrl->SetToolTip(pConfig->Read(wxT("MRP3Hint")));
+      st3TextCtrl->SetToolTip(pConfig->Read(_T("MRP3Hint")));
       st4TextCtrl->Show(false);
 
       st5TextCtrl->Show(false);
@@ -1783,9 +1783,9 @@ bool AttitudePanel::DisplayMRPs()
       st9TextCtrl->Show(false);
       st10TextCtrl->Show(false);
 
-      st1StaticText->SetLabel(wxT("MRP ") wxT(GUI_ACCEL_KEY) wxT("1"));
-      st2StaticText->SetLabel(wxT("MRP ") wxT(GUI_ACCEL_KEY) wxT("2"));
-      st3StaticText->SetLabel(wxT("MRP ") wxT(GUI_ACCEL_KEY) wxT("3"));
+      st1StaticText->SetLabel(wxT("MRP "GUI_ACCEL_KEY"1"));
+      st2StaticText->SetLabel(wxT("MRP "GUI_ACCEL_KEY"2"));
+      st3StaticText->SetLabel(wxT("MRP "GUI_ACCEL_KEY"3"));
 
       st1TextCtrl->SetValue(*MRPs[0]);
       st2TextCtrl->SetValue(*MRPs[1]);
@@ -1799,7 +1799,7 @@ bool AttitudePanel::DisplayMRPs()
 
       attitudeSizer->Layout();
       Refresh();
-      ResetStateFlags(wxT("State"), true);
+      ResetStateFlags("State", true);
    }
    return retval;
 }
@@ -1811,7 +1811,7 @@ bool AttitudePanel::DisplayEulerAngleRates()
 {
    bool retval = true;
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::DisplayEulerAngleRates() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::DisplayEulerAngleRates() entered\n");
    #endif
    // get the config object
    wxConfigBase *pConfig = wxConfigBase::Get();
@@ -1823,14 +1823,14 @@ bool AttitudePanel::DisplayEulerAngleRates()
    {
       stateRateTypeComboBox->
          SetValue(wxT("EulerAngleRates"));
-      attRateStateType = wxT("EulerAngleRates");
-      str1StaticText->SetLabel(wxT("Euler Angle Rate ") wxT(GUI_ACCEL_KEY) wxT("1"));
-      str2StaticText->SetLabel(wxT("Euler Angle Rate ") wxT(GUI_ACCEL_KEY) wxT("2"));
-      str3StaticText->SetLabel(wxT("Euler Angle Rate ") wxT(GUI_ACCEL_KEY) wxT("3"));
+      attRateStateType = "EulerAngleRates";
+      str1StaticText->SetLabel(wxT("Euler Angle Rate "GUI_ACCEL_KEY"1"));
+      str2StaticText->SetLabel(wxT("Euler Angle Rate "GUI_ACCEL_KEY"2"));
+      str3StaticText->SetLabel(wxT("Euler Angle Rate "GUI_ACCEL_KEY"3"));
 
-      str1TextCtrl->SetToolTip(pConfig->Read(wxT("EulerAngleRate1Hint")));
-      str2TextCtrl->SetToolTip(pConfig->Read(wxT("EulerAngleRate2Hint")));
-      str3TextCtrl->SetToolTip(pConfig->Read(wxT("EulerAngleRate3Hint")));
+      str1TextCtrl->SetToolTip(pConfig->Read(_T("EulerAngleRate1Hint")));
+      str2TextCtrl->SetToolTip(pConfig->Read(_T("EulerAngleRate2Hint")));
+      str3TextCtrl->SetToolTip(pConfig->Read(_T("EulerAngleRate3Hint")));
 
       str1TextCtrl->SetValue(*eulerAngleRates[0]);
       str2TextCtrl->SetValue(*eulerAngleRates[1]);
@@ -1838,7 +1838,7 @@ bool AttitudePanel::DisplayEulerAngleRates()
 
       attRateSizer->Layout();
       Refresh();
-      ResetStateFlags(wxT("Rate"), true);
+      ResetStateFlags("Rate", true);
    }
    return retval;
 }
@@ -1850,7 +1850,7 @@ bool AttitudePanel::DisplayAngularVelocity()
 {
    bool retval = true;
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::DisplayAngularVelocity() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::DisplayAngularVelocity() entered\n");
    #endif
    // get the config object
    wxConfigBase *pConfig = wxConfigBase::Get();
@@ -1862,14 +1862,14 @@ bool AttitudePanel::DisplayAngularVelocity()
    {
       stateRateTypeComboBox->
          SetValue(wxT("AngularVelocity"));
-      attRateStateType = wxT("AngularVelocity");
-      str1StaticText->SetLabel(wxT("Angular Velocity ") wxT(GUI_ACCEL_KEY) wxT("X"));
-      str2StaticText->SetLabel(wxT("Angular Velocity ") wxT(GUI_ACCEL_KEY) wxT("Y"));
-      str3StaticText->SetLabel(wxT("Angular Velocity ") wxT(GUI_ACCEL_KEY) wxT("Z"));
+      attRateStateType = "AngularVelocity";
+      str1StaticText->SetLabel(wxT("Angular Velocity "GUI_ACCEL_KEY"X"));
+      str2StaticText->SetLabel(wxT("Angular Velocity "GUI_ACCEL_KEY"Y"));
+      str3StaticText->SetLabel(wxT("Angular Velocity "GUI_ACCEL_KEY"Z"));
 
-      str1TextCtrl->SetToolTip(pConfig->Read(wxT("AngularVelocity1Hint")));
-      str2TextCtrl->SetToolTip(pConfig->Read(wxT("AngularVelocity2Hint")));
-      str3TextCtrl->SetToolTip(pConfig->Read(wxT("AngularVelocity3Hint")));
+      str1TextCtrl->SetToolTip(pConfig->Read(_T("AngularVelocity1Hint")));
+      str2TextCtrl->SetToolTip(pConfig->Read(_T("AngularVelocity2Hint")));
+      str3TextCtrl->SetToolTip(pConfig->Read(_T("AngularVelocity3Hint")));
 
       str1TextCtrl->SetValue(*angVel[0]);
       str2TextCtrl->SetValue(*angVel[1]);
@@ -1877,7 +1877,7 @@ bool AttitudePanel::DisplayAngularVelocity()
 
       attRateSizer->Layout();
       Refresh();
-      ResetStateFlags(wxT("Rate"), true);
+      ResetStateFlags("Rate", true);
    }
    return retval;
 }
@@ -1890,7 +1890,7 @@ bool AttitudePanel::UpdateCosineMatrix()
 {
    bool retval = true;
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::UpdateCosineMatrix() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::UpdateCosineMatrix() entered\n");
    #endif
    if (attStateType == stateTypeArray[DCM]) return true;
    try
@@ -1930,7 +1930,7 @@ bool AttitudePanel::UpdateQuaternion()
 {
    bool retval = true;
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::UpdateQuaternion() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::UpdateQuaternion() entered\n");
    #endif
    if (attStateType == stateTypeArray[QUATERNION]) return true;
    try
@@ -1966,7 +1966,7 @@ bool AttitudePanel::UpdateQuaternion()
 bool AttitudePanel::UpdateEulerAngles()
 {
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::UpdateEulerAngles() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::UpdateEulerAngles() entered\n");
    #endif
    bool retval = true;
    if (attStateType == stateTypeArray[EULER_ANGLES]) return true;
@@ -2009,7 +2009,7 @@ bool AttitudePanel::UpdateEulerAngles()
 bool AttitudePanel::UpdateMRPs()
 {
 #ifdef DEBUG_ATTITUDE_PANEL
-   MessageInterface::ShowMessage(wxT("AttitudePanel::UpdateEulerAngles() entered\n"));
+   MessageInterface::ShowMessage("AttitudePanel::UpdateEulerAngles() entered\n");
 #endif
    bool retval = true;
    if (attStateType == stateTypeArray[MRPS]) return true;
@@ -2048,7 +2048,7 @@ bool AttitudePanel::UpdateMRPs()
 bool AttitudePanel::UpdateAngularVelocity()
 {
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::UpdateAngularVelocity() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::UpdateAngularVelocity() entered\n");
    #endif
    bool retval = true;
    if (attRateStateType == stateRateTypeArray[ANGULAR_VELOCITY]) return true;
@@ -2080,7 +2080,7 @@ bool AttitudePanel::UpdateAngularVelocity()
 bool AttitudePanel::UpdateEulerAngleRates()
 {
    #ifdef DEBUG_ATTITUDE_PANEL
-      MessageInterface::ShowMessage(wxT("AttitudePanel::UpdateEulerAngleRates() entered\n"));
+      MessageInterface::ShowMessage("AttitudePanel::UpdateEulerAngleRates() entered\n");
    #endif
    bool retval = true;
    if (attRateStateType == stateRateTypeArray[EULER_ANGLE_RATES]) return true;

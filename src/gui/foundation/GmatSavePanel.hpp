@@ -43,7 +43,7 @@ class GmatSavePanel : public GmatPanel
 public:
    // constructors
    GmatSavePanel(wxWindow *parent, bool showScriptButton = true,
-                 wxString filename = wxT(""), bool showScriptActiveStatus = false,
+                 wxString filename = "", bool showScriptActiveStatus = false,
                  bool isScriptActive = false);
    
    virtual void OnSave(wxCommandEvent &event);
@@ -63,7 +63,7 @@ protected:
    virtual void SaveData() = 0;
 
    void RefreshScriptActiveStatus(bool isActive);
-   bool FileExists(wxString scriptFilename);
+   bool FileExists(std::string scriptFilename);
    
    // member data
    GuiInterpreter *theGuiInterpreter;

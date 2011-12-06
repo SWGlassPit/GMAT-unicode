@@ -61,7 +61,7 @@ TankPanel::TankPanel(GmatPanel *scPanel, wxWindow *parent, Spacecraft *spacecraf
 //------------------------------------------------------------------------------
 TankPanel::~TankPanel()
 {
-   theGuiManager->UnregisterListBox(wxT("FuelTank"), availableTankListBox,
+   theGuiManager->UnregisterListBox("FuelTank", availableTankListBox,
                                     &mExcludedTankList);
 }
 
@@ -80,28 +80,28 @@ void TankPanel::Create()
    pConfig->SetPath(wxT("/Spacecraft Tanks"));
 
    // wxButton
-   selectButton = new wxButton( this, ID_BUTTON, wxT("-") wxT(GUI_ACCEL_KEY) wxT(">"),
+   selectButton = new wxButton( this, ID_BUTTON, wxT("-"GUI_ACCEL_KEY">"),
                               wxDefaultPosition, wxDefaultSize, 0 );
-   selectButton->SetToolTip(pConfig->Read(wxT("AddTankHint")));
+   selectButton->SetToolTip(pConfig->Read(_T("AddTankHint")));
 
-   removeButton = new wxButton( this, ID_BUTTON, wxT(GUI_ACCEL_KEY) wxT("<-"),
+   removeButton = new wxButton( this, ID_BUTTON, wxT(GUI_ACCEL_KEY"<-"),
                               wxDefaultPosition, wxDefaultSize, 0 );
-   removeButton->SetToolTip(pConfig->Read(wxT("RemoveTankHint")));
+   removeButton->SetToolTip(pConfig->Read(_T("RemoveTankHint")));
 
    selectAllButton = new wxButton( this, ID_BUTTON, wxT("=>"),
                               wxDefaultPosition, wxDefaultSize, 0 );
-   selectAllButton->SetToolTip(pConfig->Read(wxT("AddAllTanksHint")));
+   selectAllButton->SetToolTip(pConfig->Read(_T("AddAllTanksHint")));
 
-   removeAllButton = new wxButton( this, ID_BUTTON, wxT("<") wxT(GUI_ACCEL_KEY) wxT("="),
+   removeAllButton = new wxButton( this, ID_BUTTON, wxT("<"GUI_ACCEL_KEY"="),
                               wxDefaultPosition, wxDefaultSize, 0 );
-   removeAllButton->SetToolTip(pConfig->Read(wxT("ClearTanksHint")));
+   removeAllButton->SetToolTip(pConfig->Read(_T("ClearTanksHint")));
 
                               
    // wxString
    //causing VC++ error => wxString emptyList[] = {};
    wxArrayString emptyList;
                             
-   Integer paramID = theSpacecraft->GetParameterID(wxT("Tanks"));
+   Integer paramID = theSpacecraft->GetParameterID("Tanks");
    StringArray tankNames = theSpacecraft->GetStringArrayParameter(paramID);
    
    int count = tankNames.size();
@@ -111,12 +111,12 @@ void TankPanel::Create()
    availableTankListBox =
       theGuiManager->GetFuelTankListBox(this, ID_LISTBOX, wxSize(150,200),
                                         &mExcludedTankList);
-   availableTankListBox->SetToolTip(pConfig->Read(wxT("AvailableTanksHint")));
+   availableTankListBox->SetToolTip(pConfig->Read(_T("AvailableTanksHint")));
    
    selectedTankListBox =
       new wxListBox(this, ID_LISTBOX, wxDefaultPosition, wxSize(150,200), //0,
                     emptyList, wxLB_SINGLE);
-   selectedTankListBox->SetToolTip(pConfig->Read(wxT("SelectedTanksHint")));
+   selectedTankListBox->SetToolTip(pConfig->Read(_T("SelectedTanksHint")));
    
    Integer bsize = 3; // border size
    
@@ -124,9 +124,9 @@ void TankPanel::Create()
    wxBoxSizer *boxSizer1 = new wxBoxSizer( wxVERTICAL );
    wxBoxSizer *boxSizer2 = new wxBoxSizer( wxVERTICAL );
    wxBoxSizer *boxSizer3 = new wxBoxSizer( wxHORIZONTAL );
-   wxStaticBox *staticBox1 = new wxStaticBox( this, -1, wxT(GUI_ACCEL_KEY) wxT("Available Tanks") );
+   wxStaticBox *staticBox1 = new wxStaticBox( this, -1, wxT(GUI_ACCEL_KEY"Available Tanks") );
    wxStaticBoxSizer *staticBoxSizer1 = new wxStaticBoxSizer( staticBox1, wxHORIZONTAL );
-   wxStaticBox *staticBox2 = new wxStaticBox( this, -1, wxT(GUI_ACCEL_KEY) wxT("Selected Tanks") );
+   wxStaticBox *staticBox2 = new wxStaticBox( this, -1, wxT(GUI_ACCEL_KEY"Selected Tanks") );
    wxStaticBoxSizer *staticBoxSizer2 = new wxStaticBoxSizer( staticBox2, wxHORIZONTAL );
    
    // Add to wx*Sizers   
@@ -167,7 +167,7 @@ void TankPanel::LoadData()
        return;
     
     // Load list of selected tanks
-    Integer paramID = theSpacecraft->GetParameterID(wxT("Tanks"));
+    Integer paramID = theSpacecraft->GetParameterID("Tanks");
     StringArray tankNames = theSpacecraft->GetStringArrayParameter(paramID);
     
     int count = tankNames.size();
@@ -188,14 +188,14 @@ void TankPanel::SaveData()
    dataChanged = false;
    Integer paramID = 0;
     
-   theSpacecraft->TakeAction(wxT("RemoveTank"), wxT(""));
+   theSpacecraft->TakeAction("RemoveTank", "");
    int count = selectedTankListBox->GetCount();
     
    for (Integer i = 0; i < count; i++) 
    {        
-      paramID = theSpacecraft->GetParameterID(wxT("Tanks"));
+      paramID = theSpacecraft->GetParameterID("Tanks");
       theSpacecraft->SetStringParameter(paramID,
-         wxString(selectedTankListBox->GetString(i).c_str()));       
+         std::string(selectedTankListBox->GetString(i).c_str()));       
    }
 }
 

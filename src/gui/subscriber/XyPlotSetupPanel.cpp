@@ -66,13 +66,13 @@ XyPlotSetupPanel::XyPlotSetupPanel(wxWindow *parent,
    : GmatPanel(parent)
 {
    #if DEBUG_XYPLOT_PANEL
-   MessageInterface::ShowMessage(wxT("XyPlotSetupPanel() entering...\n"));
-   MessageInterface::ShowMessage(wxT("XyPlotSetupPanel() subscriberName = ") +
-                                 wxString(subscriberName.c_str()) + wxT("\n"));
+   MessageInterface::ShowMessage("XyPlotSetupPanel() entering...\n");
+   MessageInterface::ShowMessage("XyPlotSetupPanel() subscriberName = " +
+                                 std::string(subscriberName.c_str()) + "\n");
    #endif
    
    Subscriber *subscriber = (Subscriber*)
-      theGuiInterpreter->GetConfiguredObject(wxString(subscriberName.c_str()));
+      theGuiInterpreter->GetConfiguredObject(std::string(subscriberName.c_str()));
    
    mXyPlot = (XyPlot*)subscriber;
    
@@ -82,8 +82,8 @@ XyPlotSetupPanel::XyPlotSetupPanel(wxWindow *parent,
    mNumXParams = 0;
    mNumYParams = 0;
    
-   mObjectTypeList.Add(wxT("Spacecraft"));
-   mObjectTypeList.Add(wxT("ImpulsiveBurn"));
+   mObjectTypeList.Add("Spacecraft");
+   mObjectTypeList.Add("ImpulsiveBurn");
    
    Create();
    Show();
@@ -102,7 +102,7 @@ XyPlotSetupPanel::XyPlotSetupPanel(wxWindow *parent,
    
    #if DEBUG_XYPLOT_PANEL
    MessageInterface::ShowMessage
-      (wxT("   mNumXParams=%d, mNumYParams=%d, mXParamChanged=%d, mYParamChanged=%d\n"),
+      ("   mNumXParams=%d, mNumYParams=%d, mXParamChanged=%d, mYParamChanged=%d\n",
        mNumXParams, mNumYParams, mXParamChanged, mYParamChanged);
    #endif
 }
@@ -147,8 +147,8 @@ void XyPlotSetupPanel::ObjectNameChanged(Gmat::ObjectType type,
 {
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("XyPlotPanel::ObjectNameChanged() type=%d, oldName=<%s>, ")
-       wxT("newName=<%s>, mDataChanged=%d\n"), type, oldName.c_str(), newName.c_str(),
+      ("XyPlotPanel::ObjectNameChanged() type=%d, oldName=<%s>, "
+       "newName=<%s>, mDataChanged=%d\n", type, oldName.c_str(), newName.c_str(),
        mDataChanged);
    #endif
    
@@ -279,26 +279,26 @@ void XyPlotSetupPanel::Create()
    // plot option
    //------------------------------------------------------
    showPlotCheckBox =
-      new wxCheckBox(this, ID_CHECKBOX, wxT("Show ") wxT(GUI_ACCEL_KEY) wxT("Plot"),
+      new wxCheckBox(this, ID_CHECKBOX, wxT("Show "GUI_ACCEL_KEY"Plot"),
                      wxDefaultPosition, wxSize(100, -1), 0);
-   showPlotCheckBox->SetToolTip(pConfig->Read(wxT("ShowPlotHint")));
+   showPlotCheckBox->SetToolTip(pConfig->Read(_T("ShowPlotHint")));
    
    showGridCheckBox =
-      new wxCheckBox(this, ID_CHECKBOX, wxT("Show ") wxT(GUI_ACCEL_KEY) wxT("Grid"),
+      new wxCheckBox(this, ID_CHECKBOX, wxT("Show "GUI_ACCEL_KEY"Grid"),
                      wxDefaultPosition, wxSize(100, -1), 0);
-   showGridCheckBox->SetToolTip(pConfig->Read(wxT("ShowGridHint")));
+   showGridCheckBox->SetToolTip(pConfig->Read(_T("ShowGridHint")));
    
    //----- Solver Iteration ComboBox
    wxStaticText *solverIterLabel =
-      new wxStaticText(this, -1, wxT(GUI_ACCEL_KEY) wxT("Solver Iterations"),
+      new wxStaticText(this, -1, wxT(GUI_ACCEL_KEY"Solver Iterations"),
                        wxDefaultPosition, wxSize(-1, -1), 0);
    
    mSolverIterComboBox =
       new wxComboBox(this, ID_COMBOBOX, wxT(""), wxDefaultPosition, wxSize(65, -1), NULL, wxCB_READONLY);
-   mSolverIterComboBox->SetToolTip(pConfig->Read(wxT("SolverIterationsHint")));
+   mSolverIterComboBox->SetToolTip(pConfig->Read(_T("SolverIterationsHint")));
    
    // Get Solver Iteration option list from the Subscriber
-   const wxString *solverIterList = Subscriber::GetSolverIterOptionList();
+   const std::string *solverIterList = Subscriber::GetSolverIterOptionList();
    int count = Subscriber::GetSolverIterOptionCount();
    for (int i=0; i<count; i++)
       mSolverIterComboBox->Append(solverIterList[i].c_str());
@@ -312,7 +312,7 @@ void XyPlotSetupPanel::Create()
    option2Sizer->Add(mSolverIterComboBox, 0, wxALIGN_LEFT|wxALL, bsize);
    
    GmatStaticBoxSizer *optionSizer =
-      new GmatStaticBoxSizer(wxVERTICAL, this, wxT("Options"));
+      new GmatStaticBoxSizer(wxVERTICAL, this, "Options");
    optionSizer->Add(option2Sizer, 0, wxALIGN_CENTRE|wxALL, bsize);
    
    
@@ -323,14 +323,14 @@ void XyPlotSetupPanel::Create()
    mXSelectedListBox =
       new wxListBox(this, ID_LISTBOX, wxDefaultPosition, wxSize(170, 200),
                     emptyList, wxLB_SINGLE);
-   mXSelectedListBox->SetToolTip(pConfig->Read(wxT("SelectedXHint")));
+   mXSelectedListBox->SetToolTip(pConfig->Read(_T("SelectedXHint")));
    
-   mViewXButton = new wxButton(this, ID_BUTTON, wxT("Edit ") wxT(GUI_ACCEL_KEY) wxT("X"),
+   mViewXButton = new wxButton(this, ID_BUTTON, "Edit "GUI_ACCEL_KEY"X",
                                wxDefaultPosition, wxDefaultSize, 0);
-   mViewXButton->SetToolTip(pConfig->Read(wxT("SelectXHint")));
+   mViewXButton->SetToolTip(pConfig->Read(_T("SelectXHint")));
    
    GmatStaticBoxSizer *xSelectedBoxSizer =
-      new GmatStaticBoxSizer(wxVERTICAL, this, wxT("Selected X"));
+      new GmatStaticBoxSizer(wxVERTICAL, this, "Selected X");
    
    xSelectedBoxSizer->Add(mXSelectedListBox, 0, wxALIGN_CENTRE|wxALL, bsize);
    xSelectedBoxSizer->Add(mViewXButton, 0, wxALIGN_CENTRE|wxALL, bsize);
@@ -341,14 +341,14 @@ void XyPlotSetupPanel::Create()
    mYSelectedListBox =
       new wxListBox(this, ID_LISTBOX, wxDefaultPosition, wxSize(170,200),
                     emptyList, wxLB_SINGLE);
-   mYSelectedListBox->SetToolTip(pConfig->Read(wxT("SelectedYHint")));
+   mYSelectedListBox->SetToolTip(pConfig->Read(_T("SelectedYHint")));
    
-   mViewYButton = new wxButton(this, ID_BUTTON, wxT("Edit ") wxT(GUI_ACCEL_KEY) wxT("Y"),
+   mViewYButton = new wxButton(this, ID_BUTTON, "Edit "GUI_ACCEL_KEY"Y",
                                wxDefaultPosition, wxDefaultSize, 0);
-   mViewYButton->SetToolTip(pConfig->Read(wxT("SelectYHint")));
+   mViewYButton->SetToolTip(pConfig->Read(_T("SelectYHint")));
    
    GmatStaticBoxSizer *ySelectedBoxSizer =
-      new GmatStaticBoxSizer(wxVERTICAL, this, wxT("Selected Y"));
+      new GmatStaticBoxSizer(wxVERTICAL, this, "Selected Y");
    
    ySelectedBoxSizer->Add(mYSelectedListBox, 0, wxALIGN_CENTRE|wxALL, bsize);
    ySelectedBoxSizer->Add(mViewYButton, 0, wxALIGN_CENTRE|wxALL, bsize);
@@ -396,11 +396,11 @@ void XyPlotSetupPanel::LoadData()
       
       #if DEBUG_XYPLOT_PANEL_LOAD
       MessageInterface::ShowMessage
-         (wxT("XyPlotSetupPanel::LoadData() xParamNames[0] = %s\n"),
+         ("XyPlotSetupPanel::LoadData() xParamNames[0] = %s\n",
           xParamNames[0].c_str());
       #endif
       
-      if (!xParamNames[0].IsSameAs(wxT("")))
+      if (!xParamNames[0].IsSameAs(""))
       {
          mNumXParams = 1;
          mXSelectedListBox->Set(1, xParamNames);
@@ -422,7 +422,7 @@ void XyPlotSetupPanel::LoadData()
          {
             #if DEBUG_XYPLOT_PANEL_LOAD
                MessageInterface::ShowMessage
-                  (wxT("XyPlotSetupPanel::LoadData() y param = %s\n"),
+                  ("XyPlotSetupPanel::LoadData() y param = %s\n",
                    yParamList[i].c_str());
             #endif
             yParamNames[i] = yParamList[i].c_str();
@@ -452,8 +452,8 @@ void XyPlotSetupPanel::SaveData()
 {
    #if DEBUG_XYPLOT_PANEL_SAVE
    MessageInterface::ShowMessage
-      (wxT("XyPlotSetupPanel::SaveData() mNumXParams=%d, mNumYParams=%d, ")
-       wxT("mXParamChanged=%d, mYParamChanged=%d\n"),
+      ("XyPlotSetupPanel::SaveData() mNumXParams=%d, mNumYParams=%d, "
+       "mXParamChanged=%d, mYParamChanged=%d\n",
        mNumXParams, mNumYParams, mXParamChanged, mYParamChanged);
    #endif
    
@@ -472,13 +472,13 @@ void XyPlotSetupPanel::SaveData()
       if (mXSelectedListBox->GetCount() == 0 && showPlotCheckBox->IsChecked())
       {
          MessageInterface::PopupMessage
-            (Gmat::WARNING_, wxT("X parameter not selected. ")
-             wxT("The plot will not be activated."));
+            (Gmat::WARNING_, "X parameter not selected. "
+             "The plot will not be activated.");
          mXyPlot->Activate(false);
       }
       else
       {
-         wxString selXName = wxString(mXSelectedListBox->GetString(0).c_str());
+         std::string selXName = std::string(mXSelectedListBox->GetString(0).c_str());
          mXyPlot->SetStringParameter(XyPlot::XVARIABLE, selXName);
          mXParamChanged = false;
       }
@@ -493,15 +493,15 @@ void XyPlotSetupPanel::SaveData()
       if (mNumYParams == 0 && showPlotCheckBox->IsChecked())
       {
          MessageInterface::PopupMessage
-            (Gmat::WARNING_,wxT("Y parameters not selected. ")
-             wxT("The plot will not be activated."));
+            (Gmat::WARNING_,"Y parameters not selected. "
+             "The plot will not be activated.");
          mXyPlot->Activate(false);
       }
       else if (numYParams > GmatPlot::MAX_XY_CURVE)
       {
          MessageInterface::PopupMessage
-            (Gmat::WARNING_, wxT("Selected Y parameter count is greater than 6.\n")
-             wxT("First 6 parameters will be plotted."));
+            (Gmat::WARNING_, "Selected Y parameter count is greater than 6.\n"
+             "First 6 parameters will be plotted.");
          
          mNumYParams = GmatPlot::MAX_XY_CURVE;
       }
@@ -513,15 +513,15 @@ void XyPlotSetupPanel::SaveData()
       
       if (mNumYParams >= 0) // >=0 because the list needs to be cleared
       {
-         mXyPlot->TakeAction(wxT("Clear"));
+         mXyPlot->TakeAction("Clear");
          for (int i=0; i<mNumYParams; i++)
          {
             #if DEBUG_XYPLOT_PANEL_SAVE
                MessageInterface::ShowMessage
-                  (wxT("XyPlotSetupPanel::SaveData() DepVar = %s\n"),
+                  ("XyPlotSetupPanel::SaveData() DepVar = %s\n",
                    mYSelectedListBox->GetString(i).c_str());
             #endif
-            wxString selYName = wxString(mYSelectedListBox->GetString(i).c_str());
+            std::string selYName = std::string(mYSelectedListBox->GetString(i).c_str());
             mXyPlot->SetStringParameter(XyPlot::YVARIABLES, selYName, i);
          }
       }

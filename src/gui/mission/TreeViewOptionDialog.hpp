@@ -35,7 +35,7 @@ public:
 
    // constructors
    TreeViewOptionDialog(wxWindow *parent, wxTreeCtrl *treeCtrl = NULL,
-                        const wxString& title = wxT(""),
+                        const wxString& title = "",
                         const wxPoint& pos = wxDefaultPosition,
                         const wxSize& size = wxDefaultSize,
                         long style = wxDEFAULT_DIALOG_STYLE);

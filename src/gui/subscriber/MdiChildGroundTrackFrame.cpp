@@ -37,7 +37,7 @@ MdiChildGroundTrackFrame::MdiChildGroundTrackFrame(wxMDIParentFrame *parent,
                              const wxString& plotName, const wxString& title,
                              const wxPoint& pos, const wxSize& size,
                              const long style)
-   : MdiChildViewFrame(parent, plotName, title, pos, size, style, wxT("2D"),
+   : MdiChildViewFrame(parent, plotName, title, pos, size, style, "2D",
                        GmatTree::OUTPUT_GROUND_TRACK_PLOT)
 {
    // Create GLCanvas
@@ -63,10 +63,10 @@ MdiChildGroundTrackFrame::~MdiChildGroundTrackFrame()
 
 
 //------------------------------------------------------------------------------
-// void SetGl2dDrawingOption(const wxString &textureMap, Integer footPrintOption)
+// void SetGl2dDrawingOption(const std::string &textureMap, Integer footPrintOption)
 //------------------------------------------------------------------------------
-void MdiChildGroundTrackFrame::SetGl2dDrawingOption(const wxString &centralBodyName,
-                                                    const wxString &textureMap,
+void MdiChildGroundTrackFrame::SetGl2dDrawingOption(const std::string &centralBodyName,
+                                                    const std::string &textureMap,
                                                     Integer footPrintOption)
 {
    if (mCanvas)

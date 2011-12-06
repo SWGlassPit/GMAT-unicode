@@ -70,7 +70,7 @@ BarycenterPanel::BarycenterPanel(wxWindow *parent, const wxString &name)
 //------------------------------------------------------------------------------
 BarycenterPanel::~BarycenterPanel()
 {
-   theGuiManager->UnregisterListBox(wxT("CelestialBody"), bodyListBox, &mExcludedCelesBodyList);
+   theGuiManager->UnregisterListBox("CelestialBody", bodyListBox, &mExcludedCelesBodyList);
 }
 
 //-------------------------------------------
@@ -102,13 +102,13 @@ void BarycenterPanel::Create()
    buttonsBoxSizer->Add(clearBodyButton, 0, wxALIGN_CENTER|wxALL, borderSize);
    
    // 2. Create Available Bodies box:
-   GmatStaticBoxSizer* listStaticBoxSizer = new GmatStaticBoxSizer(wxHORIZONTAL, this, wxT("Available Bodies"));
+   GmatStaticBoxSizer* listStaticBoxSizer = new GmatStaticBoxSizer(wxHORIZONTAL, this, "Available Bodies");
    wxArrayString tmpArrayString;
    bodyListBox = theGuiManager->GetCelestialBodyListBox(this, -1, wxSize(180, 200), &mExcludedCelesBodyList);
    listStaticBoxSizer->Add(bodyListBox, 0, wxALIGN_CENTRE|wxALL, borderSize);
    
    // 3. Create Selected Bodies box:
-   GmatStaticBoxSizer* selectedStaticBoxSizer = new GmatStaticBoxSizer(wxHORIZONTAL, this, wxT("Selected Bodies"));
+   GmatStaticBoxSizer* selectedStaticBoxSizer = new GmatStaticBoxSizer(wxHORIZONTAL, this, "Selected Bodies");
    bodySelectedListBox = new wxListBox(this, ID_BODY_SEL_LISTBOX, wxDefaultPosition, wxSize(180, 200), //0,
                                        emptyList, wxLB_SINGLE);
    selectedStaticBoxSizer->Add(bodySelectedListBox, 0, wxALIGN_CENTRE|wxALL, borderSize);
@@ -118,7 +118,7 @@ void BarycenterPanel::Create()
    bodyGridSizer->Add(listStaticBoxSizer, 0, wxALIGN_CENTER|wxALL, borderSize);
    bodyGridSizer->Add(buttonsBoxSizer, 0, wxALIGN_CENTER|wxALL, borderSize);
    bodyGridSizer->Add(selectedStaticBoxSizer, 0, wxALIGN_CENTER|wxALL, borderSize);
-   GmatStaticBoxSizer * bodiesStaticBoxSizer = new GmatStaticBoxSizer(wxVERTICAL, this, wxT("Bodies"));
+   GmatStaticBoxSizer * bodiesStaticBoxSizer = new GmatStaticBoxSizer(wxVERTICAL, this, "Bodies");
    bodiesStaticBoxSizer->Add(bodyGridSizer, 0, wxALIGN_CENTER|wxALL, borderSize);
    
    // 5. Add to parent sizer:
@@ -141,7 +141,7 @@ void BarycenterPanel::LoadData()
       else
       {
          selectedBodies= theBarycenter->
-            GetStringArrayParameter(wxT("BodyNames"));
+            GetStringArrayParameter("BodyNames");
          if (selectedBodies.empty())
             selectedBodies = theBarycenter->GetDefaultBodies();
       }
@@ -161,7 +161,7 @@ void BarycenterPanel::LoadData()
    catch (BaseException &e)
    {
       MessageInterface::ShowMessage
-         (wxT("BarycenterPanel:LoadData() error occurred!\n%s\n"),
+         ("BarycenterPanel:LoadData() error occurred!\n%s\n",
             e.GetFullMessage().c_str());
    }
    
@@ -196,23 +196,23 @@ void BarycenterPanel::SaveData()
       if (count == 0)
       {
          MessageInterface::PopupMessage(Gmat::ERROR_,
-                 wxT("At least one body must be selected!"));
+                 "At least one body must be selected!");
          canClose = false;
          return;
       }
       
-      theBarycenter->TakeAction(wxT("ClearBodies"));
+      theBarycenter->TakeAction("ClearBodies");
       
       // get Earth pointer as J2000Body
       CelestialBody *j2000body =
-         (CelestialBody*)theGuiInterpreter->GetConfiguredObject(wxT("Earth"));
+         (CelestialBody*)theGuiInterpreter->GetConfiguredObject("Earth");
       CelestialBody *body;
-      wxString bodyName;
+      std::string bodyName;
       
       for (Integer i = 0; i < count; i++)
       {
          bodyName = bodySelectedListBox->GetString(i).c_str();
-         theBarycenter->SetStringParameter(wxT("BodyNames"), bodyName, i);
+         theBarycenter->SetStringParameter("BodyNames", bodyName, i);
          
          body = (CelestialBody*)theGuiInterpreter->GetConfiguredObject(bodyName);
          
@@ -224,7 +224,7 @@ void BarycenterPanel::SaveData()
          
          #if DEBUG_BARYCENTER_PANEL
          MessageInterface::ShowMessage
-            (wxT("BarycenterPanel::SaveData() body[%d]=%d, name=%s, J2000Body=%d\n"),
+            ("BarycenterPanel::SaveData() body[%d]=%d, name=%s, J2000Body=%d\n",
              i, body, bodyName.c_str(), j2000body);
          #endif
          
@@ -233,7 +233,7 @@ void BarycenterPanel::SaveData()
    catch (BaseException &e)
    {
       MessageInterface::ShowMessage
-         (wxT("BarycenterPanel:SaveData() error occurred!\n%s\n"),
+         ("BarycenterPanel:SaveData() error occurred!\n%s\n",
             e.GetFullMessage().c_str());
    }
 }
@@ -282,7 +282,7 @@ void BarycenterPanel::OnButton(wxCommandEvent& event)
          return;
       
       #ifdef DEBUG_REMOVE
-      MessageInterface::ShowMessage(wxT("Removing body: %s\n"), str.c_str());
+      MessageInterface::ShowMessage("Removing body: %s\n", str.c_str());
       #endif
       
       // Add to available list

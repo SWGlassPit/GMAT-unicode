@@ -66,15 +66,15 @@ void DoWhilePanel::Setup( wxWindow *parent)
     conditionGrid->SetDefaultCellAlignment(wxALIGN_CENTRE, wxALIGN_CENTRE);
     conditionGrid->EnableEditing(false);
         
-    conditionGrid->SetColLabelValue(0, wxT(""));
+    conditionGrid->SetColLabelValue(0, _T(""));
     conditionGrid->SetColSize(0, 60);
-    conditionGrid->SetColLabelValue(1, wxT("LHS"));
+    conditionGrid->SetColLabelValue(1, _T("LHS"));
     conditionGrid->SetColSize(1, 165);
-    conditionGrid->SetColLabelValue(2, wxT("Condition"));
+    conditionGrid->SetColLabelValue(2, _T("Condition"));
     conditionGrid->SetColSize(2, 60);
-    conditionGrid->SetColLabelValue(3, wxT("RHS"));
+    conditionGrid->SetColLabelValue(3, _T("RHS"));
     conditionGrid->SetColSize(3, 165);
-    conditionGrid->SetCellValue(0, 0, wxT("Do"));
+    conditionGrid->SetCellValue(0, 0, "Do");
         
     item0->Add( conditionGrid, 0, wxALIGN_CENTER|wxALL, 5 );
 
@@ -125,8 +125,8 @@ void DoWhilePanel::OnCellDoubleLeftClick(wxGridEvent& event)
             wxT("While")
          };
          
-         wxSingleChoiceDialog dialog(this, wxT("Condition: \n"),
-                                        wxT("DoWhileConditionDialog"), 1, strArray);
+         wxSingleChoiceDialog dialog(this, _T("Condition: \n"),
+                                        _T("DoWhileConditionDialog"), 1, strArray);
          dialog.SetSelection(0);
 
          if (dialog.ShowModal() == wxID_OK)
@@ -163,8 +163,8 @@ void DoWhilePanel::OnCellDoubleLeftClick(wxGridEvent& event)
             wxT("!=")
          };
          
-         wxSingleChoiceDialog dialog(this, wxT("Condition: \n"),
-                                        wxT("DoWhileConditionDialog"), 6, strArray);
+         wxSingleChoiceDialog dialog(this, _T("Condition: \n"),
+                                        _T("DoWhileConditionDialog"), 6, strArray);
          dialog.SetSelection(0);
 
          if (dialog.ShowModal() == wxID_OK)
@@ -202,8 +202,8 @@ void DoWhilePanel::OnCellDoubleLeftClick(wxGridEvent& event)
 //               wxT("END")
 //            };
 //         
-//            wxSingleChoiceDialog dialog(this, wxT("Condition: \n"),
-//                                        wxT("ConditionDialog"), 3, strArray);
+//            wxSingleChoiceDialog dialog(this, _T("Condition: \n"),
+//                                        _T("ConditionDialog"), 3, strArray);
 //            dialog.SetSelection(0);
 //
 //            if (dialog.ShowModal() == wxID_OK)

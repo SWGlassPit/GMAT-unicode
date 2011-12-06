@@ -51,7 +51,7 @@ ConditionPanel::ConditionPanel(wxWindow *parent, GmatCommand *cmd) : GmatPanel(p
    mNumberOfConditions = 0;
    mNumberOfLogicalOps = 0;
    
-   mObjectTypeList.Add(wxT("Spacecraft"));
+   mObjectTypeList.Add("Spacecraft");
    mLhsList.clear();
    mEqualityOpStrings.clear();
    mRhsList.clear();
@@ -92,15 +92,15 @@ void ConditionPanel::Create()
    conditionGrid->CreateGrid( MAX_ROW, MAX_COL, wxGrid::wxGridSelectCells );
    conditionGrid->SetRowLabelSize(0);
    conditionGrid->SetDefaultCellAlignment(wxALIGN_CENTRE, wxALIGN_CENTRE);
-   wxColour gridColor = wxTheColourDatabase->Find(wxT("DIM GREY"));
+   wxColour gridColor = wxTheColourDatabase->Find("DIM GREY");
    conditionGrid->SetGridLineColour(gridColor);
    
-   conditionGrid->SetColLabelValue(COMMAND_COL, wxT(""));
-   conditionGrid->SetColLabelValue(LHS_SEL_COL, wxT(""));
-   conditionGrid->SetColLabelValue(LHS_COL, wxT("Left Hand Side"));
-   conditionGrid->SetColLabelValue(COND_COL, wxT("Condition"));
-   conditionGrid->SetColLabelValue(RHS_SEL_COL, wxT(""));
-   conditionGrid->SetColLabelValue(RHS_COL, wxT("Right Hand Side"));
+   conditionGrid->SetColLabelValue(COMMAND_COL, _T(""));
+   conditionGrid->SetColLabelValue(LHS_SEL_COL, _T(""));
+   conditionGrid->SetColLabelValue(LHS_COL, _T("Left Hand Side"));
+   conditionGrid->SetColLabelValue(COND_COL, _T("Condition"));
+   conditionGrid->SetColLabelValue(RHS_SEL_COL, _T(""));
+   conditionGrid->SetColLabelValue(RHS_COL, _T("Right Hand Side"));
    conditionGrid->SetColSize(COMMAND_COL, 60);
    conditionGrid->SetColSize(LHS_SEL_COL, 25);
    conditionGrid->SetColSize(LHS_COL, 165);
@@ -120,8 +120,8 @@ void ConditionPanel::Create()
       conditionGrid->SetReadOnly(i, COND_COL, true);
       conditionGrid->SetCellBackgroundColour(i, LHS_SEL_COL, *wxLIGHT_GREY);
       conditionGrid->SetCellBackgroundColour(i, RHS_SEL_COL, *wxLIGHT_GREY);
-      conditionGrid->SetCellValue(i, LHS_SEL_COL, wxT("  ... "));
-      conditionGrid->SetCellValue(i, RHS_SEL_COL, wxT("  ... "));
+      conditionGrid->SetCellValue(i, LHS_SEL_COL, _T("  ... "));
+      conditionGrid->SetCellValue(i, RHS_SEL_COL, _T("  ... "));
    }
    
    item0->Add( conditionGrid, 0, wxALIGN_CENTER|wxALL, 0 );
@@ -145,24 +145,24 @@ void ConditionPanel::LoadData()
    {
       Integer paramId;
       
-      paramId = theCommand->GetParameterID(wxT("NumberOfConditions"));
+      paramId = theCommand->GetParameterID("NumberOfConditions");
       mNumberOfConditions = theCommand->GetIntegerParameter(paramId);
       
       if (mNumberOfConditions > 0)
       {
-         paramId = theCommand->GetParameterID(wxT("NumberOfLogicalOperators"));
+         paramId = theCommand->GetParameterID("NumberOfLogicalOperators");
          mNumberOfLogicalOps = theCommand->GetIntegerParameter(paramId); 
          
-         paramId = theCommand->GetParameterID(wxT("LeftHandStrings"));
+         paramId = theCommand->GetParameterID("LeftHandStrings");
          mLhsList = theCommand->GetStringArrayParameter(paramId);
          
-         paramId = theCommand->GetParameterID(wxT("OperatorStrings"));
+         paramId = theCommand->GetParameterID("OperatorStrings");
          mEqualityOpStrings = theCommand->GetStringArrayParameter(paramId);
           
-         paramId = theCommand->GetParameterID(wxT("RightHandStrings"));
+         paramId = theCommand->GetParameterID("RightHandStrings");
          mRhsList = theCommand->GetStringArrayParameter(paramId);
          
-         paramId = theCommand->GetParameterID(wxT("LogicalOperators"));
+         paramId = theCommand->GetParameterID("LogicalOperators");
          mLogicalOpStrings = theCommand->GetStringArrayParameter(paramId); 
          
          for (Integer i = 0; i < mNumberOfConditions; i++)
@@ -219,7 +219,7 @@ void ConditionPanel::SaveData()
       itemMissing = 0;
       for (Integer j=0; j<MAX_COL; j++)
       {
-         if (conditionGrid->GetCellValue(i, j) == wxT(""))
+         if (conditionGrid->GetCellValue(i, j) == "")
             itemMissing++;
       }
       
@@ -235,7 +235,7 @@ void ConditionPanel::SaveData()
       {
          MessageInterface::PopupMessage
             (Gmat::ERROR_,
-             wxT("Logical operator or parameters are missing in row %d.\n"), i+1);
+             "Logical operator or parameters are missing in row %d.\n", i+1);
          canClose = false;
          return;
       }
@@ -243,14 +243,14 @@ void ConditionPanel::SaveData()
    
    #ifdef DEBUG_PANEL_SAVE
    MessageInterface::ShowMessage
-      (wxT("ConditionPanel::SaveData() mNumberOfConditions=%d\n"), mNumberOfConditions);
+      ("ConditionPanel::SaveData() mNumberOfConditions=%d\n", mNumberOfConditions);
    #endif
    
    if (mNumberOfConditions == 0)
    {
       MessageInterface::PopupMessage
-      (Gmat::WARNING_, wxT("Incomplete parameters for If condition.\n")
-                       wxT("Updates have not been saved"));
+      (Gmat::WARNING_, "Incomplete parameters for If condition.\n"
+                       "Updates have not been saved");
       canClose = false;
       return;
    }
@@ -259,12 +259,12 @@ void ConditionPanel::SaveData()
    // check input values: Number, Variable, Array element, Parameter
    //-----------------------------------------------------------------
    for (UnsignedInt i=0; i<mLhsList.size(); i++)
-      CheckVariable(mLhsList[i].c_str(), Gmat::SPACECRAFT, wxT("LHS"),
-                    wxT("Variable, Array element, plottable Parameter"), true);
+      CheckVariable(mLhsList[i].c_str(), Gmat::SPACECRAFT, "LHS",
+                    "Variable, Array element, plottable Parameter", true);
    
    for (UnsignedInt i=0; i<mRhsList.size(); i++)
-      CheckVariable(mRhsList[i].c_str(), Gmat::SPACECRAFT, wxT("RHS"),
-                    wxT("Variable, Array element, plottable Parameter"), true);
+      CheckVariable(mRhsList[i].c_str(), Gmat::SPACECRAFT, "RHS",
+                    "Variable, Array element, plottable Parameter", true);
    
    if (!canClose)
       return;
@@ -278,8 +278,8 @@ void ConditionPanel::SaveData()
       {
          #ifdef DEBUG_PANEL_SAVE
          MessageInterface::ShowMessage
-            (wxT("   i=%d, mLogicalOpStrings='%s', mLhsList='%s', mEqualityOpStrings='%s'\n")
-             wxT("   mRhsList='%s'\n"), i, mLogicalOpStrings[i].c_str(), mLhsList[i].c_str(),
+            ("   i=%d, mLogicalOpStrings='%s', mLhsList='%s', mEqualityOpStrings='%s'\n"
+             "   mRhsList='%s'\n", i, mLogicalOpStrings[i].c_str(), mLhsList[i].c_str(),
              mEqualityOpStrings[i].c_str(), mRhsList[i].c_str());
          #endif
          try
@@ -368,8 +368,8 @@ void ConditionPanel::OnCellRightClick(wxGridEvent& event)
       wxString oldStr = conditionGrid->GetCellValue(row, col);
       wxString strArray[] = {wxT("&"), wxT("|")};        
       
-      wxSingleChoiceDialog dialog(this, wxT("Logical Operator Selection:"),
-                                        wxT("LogicalOperators"), 2, strArray);
+      wxSingleChoiceDialog dialog(this, _T("Logical Operator Selection:"),
+                                        _T("LogicalOperators"), 2, strArray);
       dialog.SetSelection(0);
       
       if (dialog.ShowModal() == wxID_OK)
@@ -391,8 +391,8 @@ void ConditionPanel::OnCellRightClick(wxGridEvent& event)
       wxString strArray[] = {wxT("=="), wxT("~="), wxT(">"), wxT("<"), 
                              wxT(">="), wxT("<=")};        
       
-      wxSingleChoiceDialog dialog(this, wxT("Relation Operator Selection:"),
-                                        wxT("RelationalOperators"), 6, strArray);
+      wxSingleChoiceDialog dialog(this, _T("Relation Operator Selection:"),
+                                        _T("RelationalOperators"), 6, strArray);
       dialog.SetSelection(0);
       
       if (dialog.ShowModal() == wxID_OK)

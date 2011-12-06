@@ -77,13 +77,13 @@ UniversePanel::UniversePanel(wxWindow *parent):GmatPanel(parent)
    theSolarSystem = theGuiInterpreter->GetSolarSystemInUse();
    if (theSolarSystem == NULL)
    {
-      MessageInterface::PopupMessage(Gmat::ERROR_, wxT("The Solar System is NULL"));
+      MessageInterface::PopupMessage(Gmat::ERROR_, "The Solar System is NULL");
    }
    else
    {
       #ifdef DEBUG_UNIVERSEPANEL_CREATE
       MessageInterface::ShowMessage
-         (wxT("UniversePanel::UniversePanel() theSolarSystem=<%p>'%s'\n"), theSolarSystem,
+         ("UniversePanel::UniversePanel() theSolarSystem=<%p>'%s'\n", theSolarSystem,
           theSolarSystem->GetName().c_str());
       #endif
       
@@ -110,10 +110,10 @@ UniversePanel::~UniversePanel()
 //------------------------------------------------------------------------------
 void UniversePanel::OnScript(wxCommandEvent &event)
 {
-   wxString title = wxT("Object Script");
+   wxString title = "Object Script";
    // open separate window to show scripts?
    if (mObject != NULL) {
-      title = wxT("Scripting for ");
+      title = "Scripting for ";
       title += mObject->GetName().c_str();
    }
    ShowScriptDialog ssd(this, -1, title, mObject, true);
@@ -138,7 +138,7 @@ void UniversePanel::OnScript(wxCommandEvent &event)
 void UniversePanel::Create()
 {
    #ifdef DEBUG_UNIVERSEPANEL_CREATE
-   MessageInterface::ShowMessage(wxT("UniversePanel::Create() entered\n"));
+   MessageInterface::ShowMessage("UniversePanel::Create() entered\n");
    #endif
    
    #if __WXMAC__
@@ -161,11 +161,11 @@ void UniversePanel::Create()
    // ephemeris update interval
    //-------------------------------------------------------
    wxStaticText *intervalStaticText =
-      new wxStaticText(this, ID_TEXT, wxT("Ephemeris Update ") wxT(GUI_ACCEL_KEY) wxT("Interval"),
+      new wxStaticText(this, ID_TEXT, wxT("Ephemeris Update "GUI_ACCEL_KEY"Interval"),
                        wxDefaultPosition, wxSize(-1,-1), 0);
    mIntervalTextCtrl = new wxTextCtrl(this, ID_TEXT_CTRL, wxT(""),
                                  wxDefaultPosition, wxSize(50,-1), 0, wxTextValidator(wxGMAT_FILTER_NUMERIC));
-   mIntervalTextCtrl->SetToolTip(pConfig->Read(wxT("EphemerisUpdateIntervalHint")));
+   mIntervalTextCtrl->SetToolTip(pConfig->Read(_T("EphemerisUpdateIntervalHint")));
    wxStaticText *intervalUnitsStaticText =
       new wxStaticText(this, ID_TEXT, wxT("seconds"),
                        wxDefaultPosition, wxSize(-1,-1), 0);
@@ -174,59 +174,59 @@ void UniversePanel::Create()
    // ephemeris source
    //-------------------------------------------------------
    wxStaticText *fileTypeLabel =
-      new wxStaticText(this, ID_TEXT, wxT("Ephemeris ") wxT(GUI_ACCEL_KEY) wxT("Source"),
+      new wxStaticText(this, ID_TEXT, wxT("Ephemeris "GUI_ACCEL_KEY"Source"),
                        wxDefaultPosition, wxSize(-1,-1), 0);
    
    mFileTypeComboBox = 
       new wxComboBox(this, ID_COMBOBOX, wxT(""), wxDefaultPosition, wxDefaultSize,
                      emptyArray, wxCB_READONLY);
-   mFileTypeComboBox->SetToolTip(pConfig->Read(wxT("EphemerisSourceHint")));
+   mFileTypeComboBox->SetToolTip(pConfig->Read(_T("EphemerisSourceHint")));
    
    //-------------------------------------------------------
    // ephemeris file
    //-------------------------------------------------------
    fileNameLabel =
-      new wxStaticText(this, ID_TEXT, wxT("Ephemeris ") wxT(GUI_ACCEL_KEY) wxT("Filename"),
+      new wxStaticText(this, ID_TEXT, wxT("Ephemeris "GUI_ACCEL_KEY"Filename"),
                        wxDefaultPosition, wxSize(-1,-1), 0);
    
    mFileNameTextCtrl =
       new wxTextCtrl(this, ID_TEXT_CTRL, wxT(""),
                      wxDefaultPosition, wxSize(300, -1),  0);
-   mFileNameTextCtrl->SetToolTip(pConfig->Read(wxT("EphemerisFilenameHint")));
+   mFileNameTextCtrl->SetToolTip(pConfig->Read(_T("EphemerisFilenameHint")));
    
    
    mBrowseButton =
       new wxBitmapButton(this, ID_BUTTON_BROWSE, openBitmap, wxDefaultPosition,
                          wxSize(buttonWidth, 20));
-   mBrowseButton->SetToolTip(pConfig->Read(wxT("BrowseEphemerisFilenameHint")));
+   mBrowseButton->SetToolTip(pConfig->Read(_T("BrowseEphemerisFilenameHint")));
    
    
    //-------------------------------------------------------
    // SPICE Leap Second Kernel (LSK)
    //-------------------------------------------------------
    lskNameLabel =
-      new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY) wxT("Leap Second Kernel"),
+      new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY"Leap Second Kernel"),
                        wxDefaultPosition, wxSize(-1,-1), 0);
 
    mLSKFileNameTextCtrl =
       new wxTextCtrl(this, ID_TEXT_CTRL, wxT(""),
                      wxDefaultPosition, wxSize(300, -1),  0);
-   mLSKFileNameTextCtrl->SetToolTip(pConfig->Read(wxT("LeapSecondFilenameHint")));
+   mLSKFileNameTextCtrl->SetToolTip(pConfig->Read(_T("LeapSecondFilenameHint")));
 
 
    mLSKBrowseButton =
       new wxBitmapButton(this, ID_LSK_BUTTON_BROWSE, openBitmap, wxDefaultPosition,
                          wxSize(buttonWidth, 20));
-   mLSKBrowseButton->SetToolTip(pConfig->Read(wxT("BrowseLSKFilenameHint")));
+   mLSKBrowseButton->SetToolTip(pConfig->Read(_T("BrowseLSKFilenameHint")));
 
 
    //-------------------------------------------------------
    // use TT for ephemeris
    //-------------------------------------------------------
    mOverrideCheckBox =
-      new wxCheckBox(this, ID_CHECKBOX, wxT("Use ") wxT(GUI_ACCEL_KEY) wxT("TT for Ephemeris"),
+      new wxCheckBox(this, ID_CHECKBOX, wxT("Use "GUI_ACCEL_KEY"TT for Ephemeris"),
                      wxDefaultPosition, wxSize(-1, -1), 0);
-   mOverrideCheckBox->SetToolTip(pConfig->Read(wxT("UseTTForEphemerisHint")));
+   mOverrideCheckBox->SetToolTip(pConfig->Read(_T("UseTTForEphemerisHint")));
    
    
    //-------------------------------------------------------
@@ -257,13 +257,13 @@ void UniversePanel::Create()
    //-------------------------------------------------------
    // Add to pageSizer
    //------------------------------------------------------- 
-   mPageSizer = new GmatStaticBoxSizer (wxVERTICAL, this, wxT("Options"));
+   mPageSizer = new GmatStaticBoxSizer (wxVERTICAL, this, "Options");
    mPageSizer->Add(bottomGridSizer, 0, wxALIGN_CENTRE|wxALL, bsize);
    
    theMiddleSizer->Add(mPageSizer, 1, wxALIGN_CENTER|wxGROW|wxALL, bsize);
    
    #ifdef DEBUG_UNIVERSEPANEL_CREATE
-   MessageInterface::ShowMessage(wxT("UniversePanel::Create() leaving\n"));
+   MessageInterface::ShowMessage("UniversePanel::Create() leaving\n");
    #endif
 
 }
@@ -275,7 +275,7 @@ void UniversePanel::Create()
 void UniversePanel::LoadData()
 {
    #ifdef DEBUG_UNIVERSEPANEL_LOAD
-   MessageInterface::ShowMessage(wxT("UniversePanel::LoadData() entered\n"));
+   MessageInterface::ShowMessage("UniversePanel::LoadData() entered\n");
    #endif
    
    try
@@ -286,15 +286,15 @@ void UniversePanel::LoadData()
       
       #ifdef DEBUG_UNIVERSEPANEL_LOAD
       MessageInterface::ShowMessage
-         (wxT("   There are %d available file type(s)\n"), mAllFileTypes.size());
+         ("   There are %d available file type(s)\n", mAllFileTypes.size());
       for (unsigned int i=0; i<mAllFileTypes.size(); i++)
          MessageInterface::ShowMessage
-            (wxT("      '%s'\n"), mAllFileTypes[i].c_str());
+            ("      '%s'\n", mAllFileTypes[i].c_str());
       MessageInterface::ShowMessage
-         (wxT("   There are %d file type(s) in use\n"), fileTypesInUse.size());
+         ("   There are %d file type(s) in use\n", fileTypesInUse.size());
       for (unsigned int i=0; i<fileTypesInUse.size(); i++)
          MessageInterface::ShowMessage
-            (wxT("      '%s'\n"), fileTypesInUse[i].c_str());
+            ("      '%s'\n", fileTypesInUse[i].c_str());
       #endif
       
       // load  ephemeris update interval
@@ -302,7 +302,7 @@ void UniversePanel::LoadData()
       mIntervalTextCtrl->SetValue(theGuiManager->ToWxString(interval));
       
       #ifdef DEBUG_UNIVERSEPANEL_LOAD
-      MessageInterface::ShowMessage(wxT("   Interval set to %f\n"), interval);
+      MessageInterface::ShowMessage("   Interval set to %f\n", interval);
       #endif
       
       // available source
@@ -315,11 +315,11 @@ void UniversePanel::LoadData()
       }
       
       #ifdef DEBUG_UNIVERSEPANEL_LOAD
-      MessageInterface::ShowMessage(wxT("   Here is the mapping of file types\n"));
+      MessageInterface::ShowMessage("   Here is the mapping of file types\n");
       for (std::map<wxString, wxString>::iterator i = mFileTypeNameMap.begin();
            i != mFileTypeNameMap.end(); ++i)
          MessageInterface::ShowMessage
-            (wxT("      <%-20s>   '%-30s'\n"), (i->first).c_str(), (i->second).c_str());
+            ("      <%-20s>   '%-30s'\n", (i->first).c_str(), (i->second).c_str());
       #endif
       
       // available analytic models
@@ -331,20 +331,20 @@ void UniversePanel::LoadData()
       // set defaults
       //mAnalyticModelComboBox->SetSelection(0);
       
-      wxString currentSource =
-         theSolarSystem->GetStringParameter(theSolarSystem->GetParameterID(wxT("EphemerisSource")));
+      std::string currentSource =
+         theSolarSystem->GetStringParameter(theSolarSystem->GetParameterID("EphemerisSource"));
       mFileTypeComboBox->SetStringSelection(currentSource.c_str());
       
       #ifdef DEBUG_UNIVERSEPANEL_LOAD
       MessageInterface::ShowMessage
-         (wxT("   Ephemeris source set to '%s'\n"), currentSource.c_str());
+         ("   Ephemeris source set to '%s'\n", currentSource.c_str());
       #endif
       
       //mFileTypeComboBox->SetStringSelection(fileTypesInUse[0].c_str());
       //if (mFileTypeComboBox->GetStringSelection() == "Analytic")
-      if (mFileTypeComboBox->GetStringSelection() == wxT("TwoBodyPropagation"))
+      if (mFileTypeComboBox->GetStringSelection() == "TwoBodyPropagation")
       {
-         fileNameLabel->SetLabel(wxT("Ephemeris ") wxT(GUI_ACCEL_KEY) wxT("Filename"));
+         fileNameLabel->SetLabel(wxT("Ephemeris "GUI_ACCEL_KEY"Filename"));
          mBrowseButton->Disable();
          mFileNameTextCtrl->Disable();
          lskNameLabel->Show(false);
@@ -358,16 +358,16 @@ void UniversePanel::LoadData()
       {
          mBrowseButton->Enable();
          mFileNameTextCtrl->Enable();
-         if (mFileTypeComboBox->GetStringSelection() == wxT("SPICE"))
+         if (mFileTypeComboBox->GetStringSelection() == "SPICE")
          {
-            fileNameLabel->SetLabel(wxT("SPK ") wxT(GUI_ACCEL_KEY) wxT("Kernel"));
+            fileNameLabel->SetLabel(wxT("SPK "GUI_ACCEL_KEY"Kernel"));
             lskNameLabel->Show(true);
             mLSKBrowseButton->Show(true);
             mLSKFileNameTextCtrl->Show(true);
          }
          else
          {
-            fileNameLabel->SetLabel(wxT("DE ") wxT(GUI_ACCEL_KEY) wxT("Filename"));
+            fileNameLabel->SetLabel(wxT("DE "GUI_ACCEL_KEY"Filename"));
             lskNameLabel->Show(false);
             mLSKBrowseButton->Show(false);
             wxWindow *windowWithFocus = FindFocus();
@@ -380,28 +380,28 @@ void UniversePanel::LoadData()
       wxString selStr = mFileTypeComboBox->GetStringSelection();
       #ifdef DEBUG_UNIVERSEPANEL_LOAD
       MessageInterface::ShowMessage
-         (wxT("   Selected ephemeris source is '%s'\n"), selStr.c_str());
+         ("   Selected ephemeris source is '%s'\n", selStr.c_str());
       #endif
-      if (selStr != wxT(""))
+      if (selStr != "")
       {
          wxString fileName = mFileTypeNameMap[selStr];
          mFileNameTextCtrl->SetValue(fileName);
          
          #ifdef DEBUG_UNIVERSEPANEL_LOAD
          MessageInterface::ShowMessage
-            (wxT("   Ephemeris file name set to '%s'\n"), fileName.c_str());
+            ("   Ephemeris file name set to '%s'\n", fileName.c_str());
          #endif
       }
       
-      wxString lskFile = (theSolarSystem->GetStringParameter(wxT("LSKFilename"))).c_str();
+      wxString lskFile = (theSolarSystem->GetStringParameter("LSKFilename")).c_str();
       mLSKFileNameTextCtrl->SetValue(lskFile);
 
-      bool useTT = theSolarSystem->GetBooleanParameter(wxT("UseTTForEphemeris"));
+      bool useTT = theSolarSystem->GetBooleanParameter("UseTTForEphemeris");
       mOverrideCheckBox->SetValue(useTT);
       
       #ifdef DEBUG_UNIVERSEPANEL_LOAD
       MessageInterface::ShowMessage
-         (wxT("   UseTTForEphemeris set to %s\n"), useTT ? wxT("true") : wxT("false"));
+         ("   UseTTForEphemeris set to %s\n", useTT ? "true" : "false");
       #endif
       
       mPageSizer->Layout();
@@ -414,7 +414,7 @@ void UniversePanel::LoadData()
    }
    
    #ifdef DEBUG_UNIVERSEPANEL_LOAD
-   MessageInterface::ShowMessage(wxT("UniversePanel::LoadData() leaving\n"));
+   MessageInterface::ShowMessage("UniversePanel::LoadData() leaving\n");
    #endif
 }
 
@@ -425,19 +425,19 @@ void UniversePanel::LoadData()
 void UniversePanel::SaveData()
 {
    #ifdef DEBUG_UNIVERSEPANEL_SAVE
-   MessageInterface::ShowMessage(wxT("UniversePanel::SaveData() entered\n"));
-   MessageInterface::ShowMessage(wxT(" hasTextModified = %s\n"),
-         (mHasTextModified? wxT("true"): wxT("false")));
-   MessageInterface::ShowMessage(wxT(" mHasFileTypesInUseChanged = %s\n"),
-         (mHasFileTypesInUseChanged? wxT("true"): wxT("false")));
-   MessageInterface::ShowMessage(wxT(" mHasFileNameChanged = %s\n"),
-         (mHasFileNameChanged? wxT("true"): wxT("false")));
-   MessageInterface::ShowMessage(wxT(" mHasLSKFileNameChanged = %s\n"),
-         (mHasLSKFileNameChanged? wxT("true"): wxT("false")));
+   MessageInterface::ShowMessage("UniversePanel::SaveData() entered\n");
+   MessageInterface::ShowMessage(" hasTextModified = %s\n",
+         (mHasTextModified? "true": "false"));
+   MessageInterface::ShowMessage(" mHasFileTypesInUseChanged = %s\n",
+         (mHasFileTypesInUseChanged? "true": "false"));
+   MessageInterface::ShowMessage(" mHasFileNameChanged = %s\n",
+         (mHasFileNameChanged? "true": "false"));
+   MessageInterface::ShowMessage(" mHasLSKFileNameChanged = %s\n",
+         (mHasLSKFileNameChanged? "true": "false"));
    #endif
    
    canClose = true;
-   wxString str;
+   std::string str;
    Real interval;
    
    //-----------------------------------------------------------------
@@ -447,7 +447,7 @@ void UniversePanel::SaveData()
    if (mHasTextModified)
    {
       str = mIntervalTextCtrl->GetValue();
-      CheckReal(interval, str, wxT("Interval"), wxT("Real Number >= 0.0"));
+      CheckReal(interval, str, "Interval", "Real Number >= 0.0");
    }
    
    if (!canClose)
@@ -469,13 +469,13 @@ void UniversePanel::SaveData()
       if (mHasFileTypesInUseChanged)
       {
          mFileTypesInUse.clear();
-         wxString srcSelection = wxString(mFileTypeComboBox->GetStringSelection().c_str());
+         std::string srcSelection = std::string(mFileTypeComboBox->GetStringSelection().c_str());
          mFileTypesInUse.push_back(srcSelection);
-         theSolarSystem->SetStringParameter(theSolarSystem->GetParameterID(wxT("EphemerisSource")),
+         theSolarSystem->SetStringParameter(theSolarSystem->GetParameterID("EphemerisSource"),
                srcSelection);
          #ifdef DEBUG_UNIVERSEPANEL_SAVE
          MessageInterface::ShowMessage
-            (wxT("UniversePanel::SaveData() types=%s\n"),
+            ("UniversePanel::SaveData() types=%s\n",
              mFileTypesInUse[0].c_str());
          #endif
          theGuiInterpreter->SetPlanetarySourceTypesInUse(mFileTypesInUse);
@@ -487,18 +487,18 @@ void UniversePanel::SaveData()
       {
          wxString type = mFileTypeComboBox->GetStringSelection();
          str = mFileNameTextCtrl->GetValue();
-         std::ifstream filename(str.char_str());
+         std::ifstream filename(str.c_str());
          
          // Check if the file doesn't exist then stop
 //         if (type != "Analytic" && !filename) 
-         if (type != wxT("TwoBodyPropagation") && !filename) 
+         if (type != "TwoBodyPropagation" && !filename) 
          {
-            wxString fieldName = wxT("DEFilename");
-            if (type == wxT("SPICE"))
-               fieldName = wxT("SPKFilename");
+            std::string fieldName = "DEFilename";
+            if (type == "SPICE")
+               fieldName = "SPKFilename";
             MessageInterface::PopupMessage
                (Gmat::ERROR_, mMsgFormat.c_str(),
-                str.c_str(), fieldName.c_str(), wxT("File must exist"));
+                str.c_str(), fieldName.c_str(), "File must exist");
             canClose = false;
             return;
          }
@@ -508,15 +508,15 @@ void UniversePanel::SaveData()
          for (unsigned int i=0; i<mAllFileTypes.size(); i++)
          {
             wxString theType = mAllFileTypes[i].c_str();
-            wxString name = wxString(mFileTypeNameMap[theType].c_str());
+            std::string name = std::string(mFileTypeNameMap[theType].c_str());
             theGuiInterpreter->SetPlanetarySourceName(mAllFileTypes[i], name);
             #ifdef DEBUG_UNIVERSEPANEL_SAVE
-               wxString fieldName = wxT("DEFilename");
-               if (type == wxT("SPICE"))
-                  fieldName = wxT("SPKFilename");
+               std::string fieldName = "DEFilename";
+               if (type == "SPICE")
+                  fieldName = "SPKFilename";
 //               MessageInterface::ShowMessage("theType = %s\n", theType.c_str());
-               MessageInterface::ShowMessage(wxT("fieldName = %s\n"), fieldName.c_str());
-               MessageInterface::ShowMessage(wxT("str = %s\n"), str.c_str());
+               MessageInterface::ShowMessage("fieldName = %s\n", fieldName.c_str());
+               MessageInterface::ShowMessage("str = %s\n", str.c_str());
             #endif
          }
 //         theGuiInterpreter->SetPlanetarySourceName(type.c_str(), str);
@@ -529,22 +529,22 @@ void UniversePanel::SaveData()
       {
          wxString type = mFileTypeComboBox->GetStringSelection();
          str = mLSKFileNameTextCtrl->GetValue();
-         std::ifstream filename(str.char_str());
+         std::ifstream filename(str.c_str());
 
          // Check if the file doesn't exist then stop
 //         if (type != "Analytic" && !filename)
-         if (type == wxT("SPICE") && !filename)
+         if (type == "SPICE" && !filename)
          {
-            wxString fieldName = wxT("LSKFilename");
+            std::string fieldName = "LSKFilename";
             MessageInterface::PopupMessage
                (Gmat::ERROR_, mMsgFormat.c_str(),
-                str.c_str(), fieldName.c_str(), wxT("File must exist"));
+                str.c_str(), fieldName.c_str(), "File must exist");
             canClose = false;
             return;
          }
          filename.close();
 
-         theSolarSystem->SetStringParameter(wxT("LSKFilename"), str);
+         theSolarSystem->SetStringParameter("LSKFilename", str);
 
          mHasLSKFileNameChanged = false;
       }
@@ -557,7 +557,7 @@ void UniversePanel::SaveData()
 //         mHasAnaModelChanged = false;
 //      }
       
-      theSolarSystem->SetBooleanParameter(wxT("UseTTForEphemeris"),
+      theSolarSystem->SetBooleanParameter("UseTTForEphemeris",
                                           mOverrideCheckBox->IsChecked());
    }
    catch (BaseException &e)
@@ -568,7 +568,7 @@ void UniversePanel::SaveData()
    }
    
    #ifdef DEBUG_UNIVERSEPANEL_SAVE
-   MessageInterface::ShowMessage(wxT("UniversePanel::SaveData() leaving\n"));
+   MessageInterface::ShowMessage("UniversePanel::SaveData() leaving\n");
    #endif
 }// end SaveData()
 
@@ -579,7 +579,7 @@ void UniversePanel::SaveData()
 void UniversePanel::OnBrowseButton(wxCommandEvent& event)
 {
    wxString oldname = mFileNameTextCtrl->GetValue();
-   wxFileDialog dialog(this, wxT("Choose a file"), wxT(""), wxT(""), wxT("*.*"));
+   wxFileDialog dialog(this, _T("Choose a file"), _T(""), _T(""), _T("*.*"));
    
    if (dialog.ShowModal() == wxID_OK)
    {
@@ -603,7 +603,7 @@ void UniversePanel::OnBrowseButton(wxCommandEvent& event)
 void UniversePanel::OnLSKBrowseButton(wxCommandEvent& event)
 {
    wxString oldname = mLSKFileNameTextCtrl->GetValue();
-   wxFileDialog dialog(this, wxT("Choose a file"), wxT(""), wxT(""), wxT("*.*"));
+   wxFileDialog dialog(this, _T("Choose a file"), _T(""), _T(""), _T("*.*"));
 
    if (dialog.ShowModal() == wxID_OK)
    {
@@ -636,10 +636,10 @@ void UniversePanel::OnComboBoxChange(wxCommandEvent& event)
       mFileNameTextCtrl->SetValue(mFileTypeNameMap[type]);
 
 //      if (type == "Analytic")
-      if (type == wxT("TwoBodyPropagation"))
+      if (type == "TwoBodyPropagation")
       {
 //         mPageSizer->Show(mAnaModelSizer, true);
-         fileNameLabel->SetLabel(wxT("Ephemeris ") wxT(GUI_ACCEL_KEY) wxT("Filename"));
+         fileNameLabel->SetLabel(wxT("Ephemeris "GUI_ACCEL_KEY"Filename"));
          mBrowseButton->Disable();
          mFileNameTextCtrl->Disable();
          lskNameLabel->Show(false);
@@ -657,9 +657,9 @@ void UniversePanel::OnComboBoxChange(wxCommandEvent& event)
 //         mPageSizer->Show(mAnaModelSizer, false);
          mBrowseButton->Enable();
          mFileNameTextCtrl->Enable();
-         if (type == wxT("SPICE"))
+         if (type == "SPICE")
          {
-            fileNameLabel->SetLabel(wxT("SPK ") wxT(GUI_ACCEL_KEY) wxT("Kernel"));
+            fileNameLabel->SetLabel(wxT("SPK "GUI_ACCEL_KEY"Kernel"));
             lskNameLabel->Enable();
             mLSKBrowseButton->Enable();
             mLSKFileNameTextCtrl->Enable();
@@ -669,7 +669,7 @@ void UniversePanel::OnComboBoxChange(wxCommandEvent& event)
          }
          else // "DE"
          {
-            fileNameLabel->SetLabel(wxT("DE ") wxT(GUI_ACCEL_KEY) wxT("Filename"));
+            fileNameLabel->SetLabel(wxT("DE "GUI_ACCEL_KEY"Filename"));
             lskNameLabel->Disable();
             mLSKFileNameTextCtrl->Disable();
             mLSKBrowseButton->Disable();
@@ -706,15 +706,15 @@ void UniversePanel::OnCheckBoxChange(wxCommandEvent& event)
 void UniversePanel::OnTextCtrlChange(wxCommandEvent& event)
 {
    #ifdef DEBUG_UNIVERSEPANEL_SAVE
-   MessageInterface::ShowMessage(wxT("UniversePanel::OnTextCtrlChange() entered\n"));
-   MessageInterface::ShowMessage(wxT(" hasTextModified = %s\n"),
-         (mHasTextModified? wxT("true"): wxT("false")));
-   MessageInterface::ShowMessage(wxT(" mHasFileTypesInUseChanged = %s\n"),
-         (mHasFileTypesInUseChanged? wxT("true"): wxT("false")));
-   MessageInterface::ShowMessage(wxT(" mHasFileNameChanged = %s\n"),
-         (mHasFileNameChanged? wxT("true"): wxT("false")));
-   MessageInterface::ShowMessage(wxT(" mHasLSKFileNameChanged = %s\n"),
-         (mHasLSKFileNameChanged? wxT("true"): wxT("false")));
+   MessageInterface::ShowMessage("UniversePanel::OnTextCtrlChange() entered\n");
+   MessageInterface::ShowMessage(" hasTextModified = %s\n",
+         (mHasTextModified? "true": "false"));
+   MessageInterface::ShowMessage(" mHasFileTypesInUseChanged = %s\n",
+         (mHasFileTypesInUseChanged? "true": "false"));
+   MessageInterface::ShowMessage(" mHasFileNameChanged = %s\n",
+         (mHasFileNameChanged? "true": "false"));
+   MessageInterface::ShowMessage(" mHasLSKFileNameChanged = %s\n",
+         (mHasLSKFileNameChanged? "true": "false"));
    #endif
    if (event.GetEventObject() == mIntervalTextCtrl)
    {
@@ -741,14 +741,14 @@ void UniversePanel::OnTextCtrlChange(wxCommandEvent& event)
    EnableUpdate(true);
 
    #ifdef DEBUG_UNIVERSEPANEL_SAVE
-   MessageInterface::ShowMessage(wxT("end of UniversePanel::OnTextCtrlChange() entered\n"));
-   MessageInterface::ShowMessage(wxT(" hasTextModified = %s\n"),
-         (mHasTextModified? wxT("true"): wxT("false")));
-   MessageInterface::ShowMessage(wxT(" mHasFileTypesInUseChanged = %s\n"),
-         (mHasFileTypesInUseChanged? wxT("true"): wxT("false")));
-   MessageInterface::ShowMessage(wxT(" mHasFileNameChanged = %s\n"),
-         (mHasFileNameChanged? wxT("true"): wxT("false")));
-   MessageInterface::ShowMessage(wxT(" mHasLSKFileNameChanged = %s\n"),
-         (mHasLSKFileNameChanged? wxT("true"): wxT("false")));
+   MessageInterface::ShowMessage("end of UniversePanel::OnTextCtrlChange() entered\n");
+   MessageInterface::ShowMessage(" hasTextModified = %s\n",
+         (mHasTextModified? "true": "false"));
+   MessageInterface::ShowMessage(" mHasFileTypesInUseChanged = %s\n",
+         (mHasFileTypesInUseChanged? "true": "false"));
+   MessageInterface::ShowMessage(" mHasFileNameChanged = %s\n",
+         (mHasFileNameChanged? "true": "false"));
+   MessageInterface::ShowMessage(" mHasLSKFileNameChanged = %s\n",
+         (mHasLSKFileNameChanged? "true": "false"));
    #endif
 }

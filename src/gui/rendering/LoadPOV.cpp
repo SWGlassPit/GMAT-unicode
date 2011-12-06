@@ -125,13 +125,13 @@ void LoadPOV(ModelObject *obj, const wxString &modelPath)
    int NumConSets;
    int TotObjects;
    
-   ifstream InFile(modelPath.char_str(), ios::in);
+   ifstream InFile(modelPath, ios::in);
    
    if (InFile.fail())
    {
-      wxString msg = wxT("Could not open model file: ");
+      wxString msg = "Could not open model file: ";
       msg.Append(modelPath);
-      MessageInterface::LogMessage(msg + wxT("\n"));
+      MessageInterface::LogMessage(msg + "\n");
       return;
    }
    

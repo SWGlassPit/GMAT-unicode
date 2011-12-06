@@ -120,15 +120,15 @@ void GmatNotebook::CreateUndockedMissionPanel()
 {
    #ifdef DEBUG_UNDOCK_MISSION_PAGE
    MessageInterface::ShowMessage
-      (wxT("GmatNotebook::CreateUndockedMissionPanel() entered, creating MDI child ")
-       wxT("UndockedMissionPanel through GmatMainFrame\n"));
+      ("GmatNotebook::CreateUndockedMissionPanel() entered, creating MDI child "
+       "UndockedMissionPanel through GmatMainFrame\n");
    MessageInterface::ShowMessage
-      (wxT("   mUndockedMissionPanel=<%p>\n"), mUndockedMissionPanel);
+      ("   mUndockedMissionPanel=<%p>\n", mUndockedMissionPanel);
    #endif
    
    // Create panel as MDIChildFrame
-   GmatTreeItemData item(wxT("Mission"), GmatTree::MISSION_TREE_UNDOCKED);
-   item.SetTitle(wxT("Mission"));
+   GmatTreeItemData item("Mission", GmatTree::MISSION_TREE_UNDOCKED);
+   item.SetTitle("Mission");
    mUndockedMissionPanel = (UndockedMissionPanel*)
       (GmatAppData::Instance()->GetMainFrame()->CreateChild(&item, true));
    
@@ -143,7 +143,7 @@ void GmatNotebook::CreateUndockedMissionPanel()
    
    #ifdef DEBUG_UNDOCK_MISSION_PAGE
    MessageInterface::ShowMessage
-      (wxT("GmatNotebook::CreateUndockedMissionPanel() leaving, mUndockedMissionPanel=<%p>\n"),
+      ("GmatNotebook::CreateUndockedMissionPanel() leaving, mUndockedMissionPanel=<%p>\n",
        mUndockedMissionPanel);
    #endif
 }
@@ -155,7 +155,7 @@ void GmatNotebook::CreateUndockedMissionPanel()
 void GmatNotebook::RestoreMissionPage()
 {
    #ifdef DEBUG_RESTORE
-   MessageInterface::ShowMessage(wxT("GmatNotebook::RestoreMissionPage() entered\n"));
+   MessageInterface::ShowMessage("GmatNotebook::RestoreMissionPage() entered\n");
    #endif
    
    if (mMissionPagePanel)
@@ -179,12 +179,12 @@ void GmatNotebook::RestoreMissionPage()
    
    #ifdef DEBUG_RESTORE
    MessageInterface::ShowMessage
-      (wxT("   deleting mUndockedMissionPanel<%p>\n"), mUndockedMissionPanel);
+      ("   deleting mUndockedMissionPanel<%p>\n", mUndockedMissionPanel);
    #endif
    mUndockedMissionPanel = NULL;
    
    #ifdef DEBUG_RESTORE
-   MessageInterface::ShowMessage(wxT("GmatNotebook::RestoreMissionPage() leaving\n"));
+   MessageInterface::ShowMessage("GmatNotebook::RestoreMissionPage() leaving\n");
    #endif
 }
 
@@ -264,7 +264,7 @@ wxPanel* GmatNotebook::CreateMissionPage()
    //---------------------------------------------
    int bsize = 5;
    #ifndef __WXMAC__
-      GmatStaticBoxSizer *treeCtrlSizer = new GmatStaticBoxSizer( wxVERTICAL, mMissionPagePanel, wxT("") );
+      GmatStaticBoxSizer *treeCtrlSizer = new GmatStaticBoxSizer( wxVERTICAL, mMissionPagePanel, "" );
       treeCtrlSizer->Add(mMissionTreeToolBar, 0, wxGROW|wxBOTTOM, bsize);
    #endif
    
@@ -330,7 +330,7 @@ void GmatNotebook::OnNotebookSelChange(wxNotebookEvent &event)
    int sel = event.GetSelection();
    
    #ifdef DEBUG_NOTEBOOK
-   MessageInterface::ShowMessage(wxT("GmatNotebook::OnNotebookSelChange sel=%d\n"), sel);
+   MessageInterface::ShowMessage("GmatNotebook::OnNotebookSelChange sel=%d\n", sel);
    #endif
    
    if (sel == 0)
@@ -393,7 +393,7 @@ void GmatNotebook::OnMouse(wxMouseEvent& event)
          {
             #ifdef DEBUG_UNDOCK_MISSION_PAGE
             MessageInterface::ShowMessage
-               (wxT("GmatNotebook::OnMouse() creating UndockedMissionPanel, current page = %d\n"),
+               ("GmatNotebook::OnMouse() creating UndockedMissionPanel, current page = %d\n",
                 GetSelection());
             #endif
             
@@ -403,7 +403,7 @@ void GmatNotebook::OnMouse(wxMouseEvent& event)
          {
             #ifdef DEBUG_UNDOCK_MISSION_PAGE
             MessageInterface::ShowMessage
-               (wxT("GmatNotebook::OnMouse() showing UndockedMissionPanel, current page = %d\n"),
+               ("GmatNotebook::OnMouse() showing UndockedMissionPanel, current page = %d\n",
                 GetSelection());
             #endif
          }

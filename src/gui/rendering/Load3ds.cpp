@@ -70,11 +70,11 @@ char Load3DS(ModelObject *p_object, const wxString &p_filename){
    // Make we have a file name
    if (p_filename[0] == '\0') 
       return 0;
-   fprintf(stdout, "Loading 3ds object: %s\n", (char *)p_filename.char_str());
+   fprintf(stdout, "Loading 3ds object: %s\n", p_filename.mb_str());
 
    // Load the file, print an error message if we couldn't find the file or it failed for any reason
 	if ((l_file = fopen(p_filename.mb_str(), "rb")) == NULL){ 
-      fprintf(stdout, "File %s not found!", (char *)p_filename.char_str());
+      fprintf(stdout, "File %s not found!", p_filename.mb_str());
       return 0;
    }
 

@@ -45,11 +45,11 @@ ViewTextDialog::ViewTextDialog(wxWindow *parent, const wxString& title,
    
    // create bottom buttons
    theOkButton =
-      new wxButton(this, ID_BUTTON, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0);
+      new wxButton(this, ID_BUTTON, "OK", wxDefaultPosition, wxDefaultSize, 0);
    
    if (isTextEditable)
       theCancelButton =
-         new wxButton(this, ID_BUTTON, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
+         new wxButton(this, ID_BUTTON, "Cancel", wxDefaultPosition, wxDefaultSize, 0);
    
    // adds the buttons to button sizer
    theButtonSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -63,10 +63,10 @@ ViewTextDialog::ViewTextDialog(wxWindow *parent, const wxString& title,
    // Set additional style wxTE_RICH to Ctrl + mouse scroll wheel to decrease or
    // increase text size(loj: 2009.02.05)
    if (isTextEditable)
-      theText = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, size,
+      theText = new wxTextCtrl(this, -1, _T(""), wxDefaultPosition, size,
                                wxTE_PROCESS_ENTER);
    else
-      theText = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, size,
+      theText = new wxTextCtrl(this, -1, _T(""), wxDefaultPosition, size,
                                wxTE_MULTILINE | wxTE_READONLY | wxTE_RICH);
    
    if (!isTextEditable)
@@ -104,7 +104,7 @@ ViewTextDialog::ViewTextDialog(wxWindow *parent, const wxString& title,
    FileManager *fm = FileManager::Instance();
    try
    {
-      wxString iconfile = fm->GetFullPathname(wxT("MAIN_ICON_FILE")).c_str();
+      wxString iconfile = fm->GetFullPathname("MAIN_ICON_FILE").c_str();
       #if defined __WXMSW__
          SetIcon(wxIcon(iconfile, wxBITMAP_TYPE_ICO));
       #elif defined __WXGTK__

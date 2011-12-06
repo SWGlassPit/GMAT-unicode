@@ -61,7 +61,7 @@ ThrusterPanel::ThrusterPanel(GmatPanel *scPanel, wxWindow *parent,
 //------------------------------------------------------------------------------
 ThrusterPanel::~ThrusterPanel()
 {
-   theGuiManager->UnregisterListBox(wxT("Thruster"), availableThrusterListBox,
+   theGuiManager->UnregisterListBox("Thruster", availableThrusterListBox,
                                     &mExcludedThrusterList);
 }
 
@@ -80,27 +80,27 @@ void ThrusterPanel::Create()
    pConfig->SetPath(wxT("/Spacecraft Thrusters"));
 
    // wxButton
-   selectButton = new wxButton( this, ID_BUTTON, wxT("-") wxT(GUI_ACCEL_KEY) wxT(">"),
+   selectButton = new wxButton( this, ID_BUTTON, wxT("-"GUI_ACCEL_KEY">"),
                               wxDefaultPosition, wxDefaultSize, 0 );
-   selectButton->SetToolTip(pConfig->Read(wxT("AddThrusterHint")));
+   selectButton->SetToolTip(pConfig->Read(_T("AddThrusterHint")));
 
-   removeButton = new wxButton( this, ID_BUTTON, wxT(GUI_ACCEL_KEY) wxT("<-"),
+   removeButton = new wxButton( this, ID_BUTTON, wxT(GUI_ACCEL_KEY"<-"),
                               wxDefaultPosition, wxDefaultSize, 0 );
-   removeButton->SetToolTip(pConfig->Read(wxT("RemoveThrusterHint")));
+   removeButton->SetToolTip(pConfig->Read(_T("RemoveThrusterHint")));
 
    selectAllButton = new wxButton( this, ID_BUTTON, wxT("=>"),
                               wxDefaultPosition, wxDefaultSize, 0 );
-   selectAllButton->SetToolTip(pConfig->Read(wxT("AddAllThrustersHint")));
+   selectAllButton->SetToolTip(pConfig->Read(_T("AddAllThrustersHint")));
 
-   removeAllButton = new wxButton( this, ID_BUTTON, wxT("<") wxT(GUI_ACCEL_KEY) wxT("="),
+   removeAllButton = new wxButton( this, ID_BUTTON, wxT("<"GUI_ACCEL_KEY"="),
                               wxDefaultPosition, wxDefaultSize, 0 );
-   removeAllButton->SetToolTip(pConfig->Read(wxT("ClearThrustersHint")));
+   removeAllButton->SetToolTip(pConfig->Read(_T("ClearThrustersHint")));
 
                               
    //causing VC++ error => wxString emptyList[] = {};
    wxArrayString emptyList;
    
-   Integer paramID = theSpacecraft->GetParameterID(wxT("Thrusters"));
+   Integer paramID = theSpacecraft->GetParameterID("Thrusters");
    StringArray thrusterNames = theSpacecraft->GetStringArrayParameter(paramID);
    
    Integer count = thrusterNames.size();
@@ -110,12 +110,12 @@ void ThrusterPanel::Create()
    availableThrusterListBox =
       theGuiManager->GetThrusterListBox(this, ID_LISTBOX, wxSize(150,200),
                                         &mExcludedThrusterList);
-   availableThrusterListBox->SetToolTip(pConfig->Read(wxT("AvailableThrustersHint")));
+   availableThrusterListBox->SetToolTip(pConfig->Read(_T("AvailableThrustersHint")));
    
    selectedThrusterListBox =
       new wxListBox(this, ID_LISTBOX, wxDefaultPosition, wxSize(150,200), //0,
                     emptyList, wxLB_SINGLE);
-   selectedThrusterListBox->SetToolTip(pConfig->Read(wxT("SelectedThrustersHint")));
+   selectedThrusterListBox->SetToolTip(pConfig->Read(_T("SelectedThrustersHint")));
                     
    Integer bsize = 3; // border size
    
@@ -123,9 +123,9 @@ void ThrusterPanel::Create()
    wxBoxSizer *boxSizer1 = new wxBoxSizer( wxVERTICAL );
    wxBoxSizer *boxSizer2 = new wxBoxSizer( wxVERTICAL );
    wxBoxSizer *boxSizer3 = new wxBoxSizer( wxHORIZONTAL );
-   wxStaticBox *staticBox1 = new wxStaticBox( this, -1, wxT(GUI_ACCEL_KEY) wxT("Available Thrusters") );
+   wxStaticBox *staticBox1 = new wxStaticBox( this, -1, wxT(GUI_ACCEL_KEY"Available Thrusters") );
    wxStaticBoxSizer *staticBoxSizer1 = new wxStaticBoxSizer( staticBox1, wxHORIZONTAL );
-   wxStaticBox *staticBox2 = new wxStaticBox( this, -1, wxT(GUI_ACCEL_KEY) wxT("Selected Thrusters") );
+   wxStaticBox *staticBox2 = new wxStaticBox( this, -1, wxT(GUI_ACCEL_KEY"Selected Thrusters") );
    wxStaticBoxSizer *staticBoxSizer2 = new wxStaticBoxSizer( staticBox2, wxHORIZONTAL );
 
    // Add to wx*Sizers   
@@ -166,7 +166,7 @@ void ThrusterPanel::LoadData()
        return;
 
     // Load list of selected thrusters
-    Integer paramID = theSpacecraft->GetParameterID(wxT("Thrusters"));
+    Integer paramID = theSpacecraft->GetParameterID("Thrusters");
     StringArray thrustersNames = theSpacecraft->GetStringArrayParameter(paramID);
      
     Integer count = thrustersNames.size();
@@ -184,14 +184,14 @@ void ThrusterPanel::SaveData()
    dataChanged = false;
    Integer paramID = 0;
    
-   theSpacecraft->TakeAction(wxT("RemoveThruster"), wxT(""));
+   theSpacecraft->TakeAction("RemoveThruster", "");
    Integer count = selectedThrusterListBox->GetCount();
    
    for (Integer i = 0; i < count; i++) 
    {        
-      paramID = theSpacecraft->GetParameterID(wxT("Thrusters"));
+      paramID = theSpacecraft->GetParameterID("Thrusters");
       theSpacecraft->SetStringParameter(paramID,
-         wxString(selectedThrusterListBox->GetString(i).c_str()));       
+         std::string(selectedThrusterListBox->GetString(i).c_str()));       
    }  
 }
 

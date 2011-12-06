@@ -57,10 +57,10 @@ protected:
    int  mScCount;
    int  mNonScCount;
    
-   wxString mSelSpName;
-   std::map<wxString, RgbColor> mOrbitColorMap;
-   std::map<wxString, RgbColor> mTargetColorMap;
-   std::map<wxString, bool> mDrawObjectMap;
+   std::string mSelSpName;
+   std::map<std::string, RgbColor> mOrbitColorMap;
+   std::map<std::string, RgbColor> mTargetColorMap;
+   std::map<std::string, bool> mDrawObjectMap;
    
    wxArrayString mExcludedScList;
    wxArrayString mExcludedCelesPointList;

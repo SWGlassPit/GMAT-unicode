@@ -25,7 +25,7 @@
 #include "CommandUtil.hpp"       // for GetCommandSeqString()
 #include "NoOp.hpp"
 #include <algorithm>             // for sort(), set_difference()
-#include <wx/sstream.h>               // for wxString
+#include <sstream>               // for std::stringstream
 
 // This needs more working on size, so commented out
 //#define __USE_SASH_WINDOW__
@@ -60,7 +60,7 @@ ScriptEventPanel::ScriptEventPanel(wxWindow *parent, MissionTreeItemData *item)
    theCommand = item->GetCommand();
    
    #if DBGLVL_SEPANEL
-   ShowCommand(wxT("ScriptEventPanel() theCommand="), theCommand);
+   ShowCommand("ScriptEventPanel() theCommand=", theCommand);
    #endif
    
    mPrevCommand = NULL;
@@ -117,7 +117,7 @@ void ScriptEventPanel::SetEditorModified(bool isModified)
 void ScriptEventPanel::Create()
 {
    #if DBGLVL_SEPANEL_CREATE
-   MessageInterface::ShowMessage(wxT("ScriptEventPanel::Create() entered\n"));
+   MessageInterface::ShowMessage("ScriptEventPanel::Create() entered\n");
    #endif
    
    int bsize = 3; // border size
@@ -175,7 +175,7 @@ void ScriptEventPanel::Create()
 #ifdef __USE_STC_EDITOR__
    #ifdef DEBUG_CREATE
    MessageInterface::ShowMessage
-      (wxT("ScriptEventPanel::Create(), creating Editor from parent = <%p>\n"), this);
+      ("ScriptEventPanel::Create(), creating Editor from parent = <%p>\n", this);
    #endif
    mEditor = new Editor(theScriptsWin, true, ID_STC);
 #else
@@ -231,7 +231,7 @@ void ScriptEventPanel::Create()
 #ifdef __USE_STC_EDITOR__
    #ifdef DEBUG_CREATE
    MessageInterface::ShowMessage
-      (wxT("ScriptEventPanel::Create(), creating Editor from parent = <%p>\n"), this);
+      ("ScriptEventPanel::Create(), creating Editor from parent = <%p>\n", this);
    #endif
    mEditor = new Editor(this, true, ID_STC);
 #else
@@ -273,7 +273,7 @@ void ScriptEventPanel::Create()
    //=================================================================
    
    #if DBGLVL_SEPANEL_CREATE
-   MessageInterface::ShowMessage(wxT("ScriptEventPanel::Create() leaving\n"));
+   MessageInterface::ShowMessage("ScriptEventPanel::Create() leaving\n");
    #endif
 }
 
@@ -288,20 +288,20 @@ void ScriptEventPanel::LoadData()
    mObject = theCommand;
    
    #if DBGLVL_SEPANEL_LOAD
-   MessageInterface::ShowMessage(wxT("ScriptEventPanel::LoadData()\n"));
-   MessageInterface::ShowMessage(wxT("     theCommand=%s\n"), theCommand->GetTypeName().c_str());
-   wxString cmdString = GmatCommandUtil::GetCommandSeqString(theCommand);
-   MessageInterface::ShowMessage(wxT("     theCommand seuqence=%s\n"), cmdString.c_str());
+   MessageInterface::ShowMessage("ScriptEventPanel::LoadData()\n");
+   MessageInterface::ShowMessage("     theCommand=%s\n", theCommand->GetTypeName().c_str());
+   std::string cmdString = GmatCommandUtil::GetCommandSeqString(theCommand);
+   MessageInterface::ShowMessage("     theCommand seuqence=%s\n", cmdString.c_str());
    
    GmatCommand *firstCmd = theGuiInterpreter->GetFirstCommand();
    cmdString = GmatCommandUtil::GetCommandSeqString(firstCmd);
-   MessageInterface::ShowMessage(wxT("===> mission seuqence=%s\n"), cmdString.c_str());
+   MessageInterface::ShowMessage("===> mission seuqence=%s\n", cmdString.c_str());
    
    mPrevCommand = theCommand->GetPrevious();
-   ShowCommand(wxT("     mPrevCommand = "), mPrevCommand);
+   ShowCommand("     mPrevCommand = ", mPrevCommand);
    #endif
    
-   wxString text;
+   std::stringstream text;
    
    // We don't want to include Begin/EndScript,
    // so pass Gmat::GUI_EDITOR to GetGeneratingString()
@@ -309,7 +309,7 @@ void ScriptEventPanel::LoadData()
    mCommentTextCtrl->AppendText(theCommand->GetCommentLine().c_str());
    mCommentTextCtrl->SetModified(false);
    
-   wxString scriptText = text.c_str();
+   wxString scriptText = text.str().c_str();
    
    #ifdef __USE_STC_EDITOR__
       mEditor->AppendText(scriptText);
@@ -336,11 +336,11 @@ void ScriptEventPanel::LoadData()
 void ScriptEventPanel::SaveData()
 {
    #if DBGLVL_SEPANEL_SAVE
-   MessageInterface::ShowMessage(wxT("ScriptEventPanel::SaveData() Entered\n"));
+   MessageInterface::ShowMessage("ScriptEventPanel::SaveData() Entered\n");
    #endif
    
    canClose = false;
-   wxString scriptText1;
+   std::stringstream scriptText1;
    
    // If only comment changed, just set comment and return
    #ifdef __USE_STC_EDITOR__
@@ -355,7 +355,7 @@ void ScriptEventPanel::SaveData()
       canClose = true;
       #if DBGLVL_SEPANEL_SAVE
       MessageInterface::ShowMessage
-         (wxT("ScriptEventPanel::SaveData() only comment saved, just returning\n"));
+         ("ScriptEventPanel::SaveData() only comment saved, just returning\n");
       #endif
       return;
    }
@@ -364,14 +364,14 @@ void ScriptEventPanel::SaveData()
    //-----------------------------------------------------------------
    // Add lines to stringstream
    //-----------------------------------------------------------------
-   scriptText1 << wxT("BeginScript;") << wxT("\n");
+   scriptText1 << "BeginScript;" << "\n";
    //=======================================================
    #ifdef __USE_STC_EDITOR__
    //=======================================================
    
    #if DBGLVL_SEPANEL_SAVE
    int numLines = mEditor->GetLineCount();
-   MessageInterface::ShowMessage(wxT("   number of lines=%d\n"), numLines);
+   MessageInterface::ShowMessage("   number of lines=%d\n", numLines);
    #endif
    
    wxString text = mEditor->GetText();
@@ -381,7 +381,7 @@ void ScriptEventPanel::SaveData()
    wxChar lastChar = text[length-1];
    
    if (lastChar != '\n' && lastChar != '\r' && lastChar != '\0')
-      text = text + wxT("\n");
+      text = text + "\n";
    
    scriptText1 << text;
    
@@ -394,7 +394,7 @@ void ScriptEventPanel::SaveData()
    for (int i=0; i<numLines; i++)
    {      
       line = mFileContentsTextCtrl->GetLineText(i);
-      scriptText1 << line << wxT("\n");
+      scriptText1 << line << "\n";
       // Since GmatMdiChildFrame uses this TextCtrl for checking
       // modified flag, set the flag to false
       mFileContentsTextCtrl->SetModified(false);
@@ -404,25 +404,25 @@ void ScriptEventPanel::SaveData()
    #endif
    //=======================================================
    
-   scriptText1 << wxT("EndScript;") << wxT("\n");
+   scriptText1 << "EndScript;" << "\n";
    
    
    //-----------------------------------------------------------------
    // Get previous command
    //-----------------------------------------------------------------
-   wxString cmdString = GmatCommandUtil::GetCommandSeqString(theCommand);
+   std::string cmdString = GmatCommandUtil::GetCommandSeqString(theCommand);
    
    #if DBGLVL_SEPANEL_SAVE
    MessageInterface::ShowMessage
-      (wxT("   ==> Current BeginScript sequence=%s\n"), cmdString.c_str());
+      ("   ==> Current BeginScript sequence=%s\n", cmdString.c_str());
    #endif
    
    // Get previous command
    mPrevCommand = theCommand->GetPrevious();
    
    #if DBGLVL_SEPANEL_SAVE
-   ShowCommand(wxT("   mPrevCommand = "), mPrevCommand);
-   ShowCommand(wxT("   theCommand->GetPrevious() = "), theCommand->GetPrevious());   
+   ShowCommand("   mPrevCommand = ", mPrevCommand);
+   ShowCommand("   theCommand->GetPrevious() = ", theCommand->GetPrevious());   
    #endif
    
    //-----------------------------------------------------------------
@@ -432,18 +432,18 @@ void ScriptEventPanel::SaveData()
    {      
       #if DBGLVL_SEPANEL_SAVE
       GmatCommand *firstCmd = theGuiInterpreter->GetFirstCommand();
-      ShowCommand(wxT("   firstCmd = "), firstCmd);
+      ShowCommand("   firstCmd = ", firstCmd);
       #endif
       
       MessageInterface::PopupMessage
-         (Gmat::ERROR_, wxT("ScriptEventPanal::SaveData() *** Internal Error ")
-          wxT("Occurred ***\nthe previous command is empty. Cannot continue.\n"));
+         (Gmat::ERROR_, "ScriptEventPanal::SaveData() *** Internal Error "
+          "Occurred ***\nthe previous command is empty. Cannot continue.\n");
       
       return;
    }
    
    #if DBGLVL_SEPANEL_SAVE
-   ShowCommand(wxT("   mPrevCommand = "), mPrevCommand);
+   ShowCommand("   mPrevCommand = ", mPrevCommand);
    #endif
    
    //-----------------------------------------------------------------
@@ -457,7 +457,7 @@ void ScriptEventPanel::SaveData()
    StringArray oldFunctions = theGuiInterpreter->GetListOfObjects(Gmat::FUNCTION);
    for (UnsignedInt i=0; i<oldFunctions.size(); i++)
       MessageInterface::ShowMessage
-         (wxT("   ==> oldFunctions[%d] = '%s'\n"), i, oldFunctions[i].c_str());
+         ("   ==> oldFunctions[%d] = '%s'\n", i, oldFunctions[i].c_str());
    
    try
    {
@@ -466,27 +466,26 @@ void ScriptEventPanel::SaveData()
       //--------------------------------------------------------------
       #if DBGLVL_SEPANEL_SAVE
       MessageInterface::ShowMessage
-         (wxT("   scriptText1 =\n%s\n"), scriptText1.c_str());
+         ("   scriptText1 =\n%s\n", scriptText1.str().c_str());
       #endif
-      // memory leak -- new has no corresponding delete
-      //std::istringstream *inStringStream = new std::istringstream;
-      //inStringStream->str(scriptText1);
-      wxStringInputStream inStringStream(scriptText1); 
+      
+      std::istringstream *inStringStream = new std::istringstream;
+      inStringStream->str(scriptText1.str());
       
       #if DBGLVL_SEPANEL_SAVE
       MessageInterface::ShowMessage
-         (wxT("====================> ScriptEvent calling ")
-          wxT("theGuiInterpreter->Interpret(%p)\n"), inCommand);
+         ("====================> ScriptEvent calling "
+          "theGuiInterpreter->Interpret(%p)\n", inCommand);
       #endif
       
-      canClose = theGuiInterpreter->Interpret(inCommand, &inStringStream);
+      canClose = theGuiInterpreter->Interpret(inCommand, inStringStream);
       
       #if DBGLVL_SEPANEL_SAVE
-      ShowCommand(wxT("   inCommand = "), inCommand);
+      ShowCommand("   inCommand = ", inCommand);
       cmdString = GmatCommandUtil::GetCommandSeqString(inCommand);
       MessageInterface::ShowMessage
-         (wxT("   ==> temp noOp seuqence=%s\n"), cmdString.c_str());
-      MessageInterface::ShowMessage(wxT("   canClose = %d\n"), canClose);
+         ("   ==> temp noOp seuqence=%s\n", cmdString.c_str());
+      MessageInterface::ShowMessage("   canClose = %d\n", canClose);
       #endif
       
       //--------------------------------------------------------------
@@ -496,7 +495,7 @@ void ScriptEventPanel::SaveData()
       if (!canClose)
       {         
          wxMessageDialog *msgDlg = new wxMessageDialog
-            (this, wxT("Errors were found in the ScriptEvent; Do you want to save it anyway?"), wxT(""),
+            (this, "Errors were found in the ScriptEvent; Do you want to save it anyway?", "",
              wxYES_NO | wxICON_QUESTION, wxDefaultPosition);
          int result = msgDlg->ShowModal();
          
@@ -512,7 +511,7 @@ void ScriptEventPanel::SaveData()
       {
          #if DBGLVL_SEPANEL_SAVE
          MessageInterface::ShowMessage
-            (wxT("   Deleting tempNoOp->GetNext()=%p\n"), tempNoOp->GetNext());
+            ("   Deleting tempNoOp->GetNext()=%p\n", tempNoOp->GetNext());
          #endif
          
          //--------------------------------------------
@@ -524,7 +523,7 @@ void ScriptEventPanel::SaveData()
          #if DBGLVL_SEPANEL_SAVE
          for (UnsignedInt i=0; i<allFunctions.size(); i++)
             MessageInterface::ShowMessage
-               (wxT("   ==> allFunctions[%d] = '%s'\n"), i, allFunctions[i].c_str());
+               ("   ==> allFunctions[%d] = '%s'\n", i, allFunctions[i].c_str());
          #endif
          
          sort(oldFunctions.begin(), oldFunctions.end());
@@ -539,7 +538,7 @@ void ScriptEventPanel::SaveData()
          {
             #if DBGLVL_SEPANEL_SAVE
             MessageInterface::ShowMessage
-               (wxT("   ==> removing newFunctions[%d] = '%s'\n"), i, newFunctions[i].c_str());
+               ("   ==> removing newFunctions[%d] = '%s'\n", i, newFunctions[i].c_str());
             #endif
             theGuiInterpreter->RemoveObjectIfNotUsed(Gmat::FUNCTION, newFunctions[i]);
          }
@@ -559,7 +558,7 @@ void ScriptEventPanel::SaveData()
          
          #if DBGLVL_SEPANEL_SAVE
          MessageInterface::ShowMessage
-            (wxT("   New Script not saved. Deleting tempNoOp=%p\n"), tempNoOp);
+            ("   New Script not saved. Deleting tempNoOp=%p\n", tempNoOp);
          #endif
          
          if (tempNoOp != NULL)
@@ -578,8 +577,8 @@ void ScriptEventPanel::SaveData()
       mNewCommand = tempNoOp->GetNext();
       
       #if DBGLVL_SEPANEL_SAVE
-      ShowCommand(wxT("   saving  mNewCommand = "), mNewCommand);
-      ShowCommand(wxT("   deleting tempNoOp   = "), tempNoOp);
+      ShowCommand("   saving  mNewCommand = ", mNewCommand);
+      ShowCommand("   deleting tempNoOp   = ", tempNoOp);
       #endif
       
       tempNoOp->ForceSetNext(NULL);
@@ -596,11 +595,11 @@ void ScriptEventPanel::SaveData()
       // Save comment if modified
       if (mCommentTextCtrl->IsModified())
       {
-         wxString comments = mCommentTextCtrl->GetValue().c_str();
-         comments = comments + wxT("\n");
+         std::string comments = mCommentTextCtrl->GetValue().c_str();
+         comments = comments + "\n";
          theCommand->SetCommentLine(comments);
          #if DBGLVL_SEPANEL_SAVE
-         MessageInterface::ShowMessage(wxT("   saving new comments\n"));
+         MessageInterface::ShowMessage("   saving new comments\n");
          #endif
       }
       
@@ -609,12 +608,12 @@ void ScriptEventPanel::SaveData()
    catch (BaseException &ex)
    {
       MessageInterface::PopupMessage(Gmat::ERROR_, ex.GetFullMessage() + 
-         wxT("\nError parsing the ScriptEvent; please correct the text"));
+         "\nError parsing the ScriptEvent; please correct the text");
       canClose = false;
    }
    
    #if DBGLVL_SEPANEL_SAVE
-   MessageInterface::ShowMessage(wxT("ScriptEventPanel::SaveData() exiting\n"));
+   MessageInterface::ShowMessage("ScriptEventPanel::SaveData() exiting\n");
    #endif
 }
 
@@ -647,7 +646,7 @@ void ScriptEventPanel::OnSashDrag(wxSashEvent &event)
 
    #ifdef DEBUG_SASH_DRAG
    MessageInterface::ShowMessage
-      (wxT("ScriptEventPanel::OnSashDrag() entered, clientW=%d, clientH=%d\n"), w, h);
+      ("ScriptEventPanel::OnSashDrag() entered, clientW=%d, clientH=%d\n", w, h);
    #endif
    
    if (event.GetDragStatus() == wxSASH_STATUS_OUT_OF_RANGE)
@@ -656,7 +655,7 @@ void ScriptEventPanel::OnSashDrag(wxSashEvent &event)
    int newH = event.GetDragRect().height;
    
    #ifdef DEBUG_SASH_DRAG
-   MessageInterface::ShowMessage(wxT("Setting comments new height to %d\n"), newH);
+   MessageInterface::ShowMessage("Setting comments new height to %d\n", newH);
    #endif
    
    // Sets size of comment window
@@ -669,7 +668,7 @@ void ScriptEventPanel::OnSashDrag(wxSashEvent &event)
    theMiddleSizer->Layout();
    
    #ifdef DEBUG_SASH_DRAG
-   MessageInterface::ShowMessage(wxT("ScriptEventPanel::OnSashDrag() leaving\n"));
+   MessageInterface::ShowMessage("ScriptEventPanel::OnSashDrag() leaving\n");
    #endif
 }
 
@@ -689,8 +688,8 @@ void ScriptEventPanel::OnSize(wxSizeEvent& event)
    GetClientSize(&w, &h);
 
    #ifdef DEBUG_SIZE
-   MessageInterface::ShowMessage(wxT("ScriptEventPanel::OnSize() entered\n"));
-   MessageInterface::ShowMessage(wxT("   client size w=%d, h=%d\n"), w, h);
+   MessageInterface::ShowMessage("ScriptEventPanel::OnSize() entered\n");
+   MessageInterface::ShowMessage("   client size w=%d, h=%d\n", w, h);
    #endif
    
    // adjust new maximum SashWindow size
@@ -705,10 +704,10 @@ void ScriptEventPanel::OnSize(wxSizeEvent& event)
       int maxcomH = theCommentsWin->GetMaximumSizeY();
       int minScrH = theScriptsWin->GetMinimumSizeY();
       int maxScrH = theScriptsWin->GetMaximumSizeY();
-      MessageInterface::ShowMessage(wxT("minComH=%d, maxcomH=%d\n"), minComH, maxcomH);
-      MessageInterface::ShowMessage(wxT("minScrH=%d, maxScrH=%d\n"), minScrH, maxScrH);
-      MessageInterface::ShowMessage(wxT("Setting comments min height to %d\n"), minH);
-      MessageInterface::ShowMessage(wxT("Setting comments max height to %d\n"), maxH);
+      MessageInterface::ShowMessage("minComH=%d, maxcomH=%d\n", minComH, maxcomH);
+      MessageInterface::ShowMessage("minScrH=%d, maxScrH=%d\n", minScrH, maxScrH);
+      MessageInterface::ShowMessage("Setting comments min height to %d\n", minH);
+      MessageInterface::ShowMessage("Setting comments max height to %d\n", maxH);
       #endif
       
       theCommentsWin->SetMinimumSizeY(minH);
@@ -723,7 +722,7 @@ void ScriptEventPanel::OnSize(wxSizeEvent& event)
    event.Skip(true);
    
    #ifdef DEBUG_SIZE
-   MessageInterface::ShowMessage(wxT("ScriptEventPanel::OnSize() leaving\n"));
+   MessageInterface::ShowMessage("ScriptEventPanel::OnSize() leaving\n");
    #endif
 }
 
@@ -739,10 +738,10 @@ void ScriptEventPanel::OnSize(wxSizeEvent& event)
 void ScriptEventPanel::ReplaceScriptEvent()
 {
    #if DBGLVL_SEPANEL_REPLACE_CMDS
-   MessageInterface::ShowMessage(wxT("ScriptEventPanel::ReplaceScriptEvent() Entered\n"));
-   ShowCommand(wxT("   theCommand   = "), theCommand);
-   ShowCommand(wxT("   mNewCommand  = "), mNewCommand);
-   ShowCommand(wxT("   mPrevCommand = "), mPrevCommand);
+   MessageInterface::ShowMessage("ScriptEventPanel::ReplaceScriptEvent() Entered\n");
+   ShowCommand("   theCommand   = ", theCommand);
+   ShowCommand("   mNewCommand  = ", mNewCommand);
+   ShowCommand("   mPrevCommand = ", mPrevCommand);
    #endif
    
    if (theCommand != NULL && mPrevCommand != NULL && mNewCommand != NULL)
@@ -757,15 +756,15 @@ void ScriptEventPanel::ReplaceScriptEvent()
       if (parent == NULL)
       {
          MessageInterface::PopupMessage
-            (Gmat::ERROR_, wxT("ScriptEventPanel::ReplaceScriptEvent() ")
-             wxT("*** INTERNAL ERROR ***  parent is NULL\n"));
+            (Gmat::ERROR_, "ScriptEventPanel::ReplaceScriptEvent() "
+             "*** INTERNAL ERROR ***  parent is NULL\n");
          return;
       }
       
       #if DBGLVL_SEPANEL_REPLACE_CMDS
-      ShowCommand(wxT("   first     = "), first);
-      ShowCommand(wxT("   parent    = "), parent);
-      ShowCommand(wxT("   endScript = "), endScript);
+      ShowCommand("   first     = ", first);
+      ShowCommand("   parent    = ", parent);
+      ShowCommand("   endScript = ", endScript);
       #endif
       
       // If endScript found continue, otherwise internal error found      
@@ -777,14 +776,14 @@ void ScriptEventPanel::ReplaceScriptEvent()
          mNextCommand = GmatCommandUtil::GetNextCommand(theCommand);
          
          #if DBGLVL_SEPANEL_REPLACE_CMDS
-         ShowCommand(wxT("   mNextCommand = "), mNextCommand);
+         ShowCommand("   mNextCommand = ", mNextCommand);
          #endif
          
          //-----------------------------------------------------------
          // Delete old ScriptEvent
          //-----------------------------------------------------------
          #if DBGLVL_SEPANEL_REPLACE_CMDS
-         ShowCommand(wxT("   ==> calling gui->DeleteCommand() "), theCommand);
+         ShowCommand("   ==> calling gui->DeleteCommand() ", theCommand);
          #endif
          
          //Note: DeleteCommand() does not delete theCommand
@@ -799,16 +798,16 @@ void ScriptEventPanel::ReplaceScriptEvent()
          
          #if DBGLVL_SEPANEL_REPLACE_CMDS
          MessageInterface::ShowMessage
-            (wxT("   ==> after Calling gui->DeleteCommand()\n"));
+            ("   ==> after Calling gui->DeleteCommand()\n");
          #endif
          
          //-----------------------------------------------------------
          // If this ScriptEvent is within BranchCommand, Insert Command
          //-----------------------------------------------------------
-         if (parent->IsOfType(wxT("BranchCommand")))
+         if (parent->IsOfType("BranchCommand"))
          {
             #if DBGLVL_SEPANEL_REPLACE_CMDS
-            ShowCommand(wxT("   insert commands to BranchCommand = "), parent);
+            ShowCommand("   insert commands to BranchCommand = ", parent);
             #endif
             
             GmatCommand *prevCmd = mPrevCommand;
@@ -818,12 +817,12 @@ void ScriptEventPanel::ReplaceScriptEvent()
             // if previous command is BranchCommand or BeginScript,
             // find matching end command, and set it to previous command
             GmatCommand *realPrevCmd = prevCmd;
-            if (prevCmd->GetTypeName() == wxT("BeginScript"))
+            if (prevCmd->GetTypeName() == "BeginScript")
             {
                realPrevCmd = GmatCommandUtil::GetMatchingEnd(prevCmd);
                
                #if DBGLVL_SEPANEL_REPLACE_CMDS
-               ShowCommand(wxT("   realPrevCmd = "), realPrevCmd);
+               ShowCommand("   realPrevCmd = ", realPrevCmd);
                #endif
                
                prevCmd = realPrevCmd;
@@ -835,15 +834,15 @@ void ScriptEventPanel::ReplaceScriptEvent()
                next = current->GetNext();
                
                #if DBGLVL_SEPANEL_REPLACE_CMDS
-               ShowCommand(wxT("   Inserting current = "), current);
-               ShowCommand(wxT("   after     prevCmd = "), prevCmd);
-               ShowCommand(wxT("             next    = "), next);
+               ShowCommand("   Inserting current = ", current);
+               ShowCommand("   after     prevCmd = ", prevCmd);
+               ShowCommand("             next    = ", next);
                #endif
                
                current->ForceSetNext(NULL);
                
                #if DBGLVL_SEPANEL_REPLACE_CMDS
-               MessageInterface::ShowMessage(wxT("   ==> calling gui->InsertCommand()\n"));
+               MessageInterface::ShowMessage("   ==> calling gui->InsertCommand()\n");
                #endif
                
                realPrevCmd = prevCmd;
@@ -855,13 +854,13 @@ void ScriptEventPanel::ReplaceScriptEvent()
                // command is not BeginScript, find matching End BranchCommand
                // and insert after it.
                //----------------------------------------------------------
-               if ((prevCmd->IsOfType(wxT("BranchCommand")) &&
-                    current->GetTypeName() != wxT("BeginScript")))
+               if ((prevCmd->IsOfType("BranchCommand") &&
+                    current->GetTypeName() != "BeginScript"))
                {
                   realPrevCmd = GmatCommandUtil::GetMatchingEnd(prevCmd);
                   
                   #if DBGLVL_SEPANEL_REPLACE_CMDS
-                  ShowCommand(wxT("   realPrevCmd = "), realPrevCmd);
+                  ShowCommand("   realPrevCmd = ", realPrevCmd);
                   #endif
 
                   prevCmd = realPrevCmd;
@@ -871,20 +870,20 @@ void ScriptEventPanel::ReplaceScriptEvent()
                
                #if DBGLVL_SEPANEL_REPLACE_CMDS
                MessageInterface::ShowMessage
-                  (wxT("   ==> after calling gui->InsertCommand()\n"));
-               ShowCommand(wxT("   prevCmd->next = "), prevCmd->GetNext());
+                  ("   ==> after calling gui->InsertCommand()\n");
+               ShowCommand("   prevCmd->next = ", prevCmd->GetNext());
                
-               wxString cmdString = GmatCommandUtil::GetCommandSeqString(first);
+               std::string cmdString = GmatCommandUtil::GetCommandSeqString(first);
                MessageInterface::ShowMessage
-                  (wxT("===> new sequence=%s\n"), cmdString.c_str());
+                  ("===> new sequence=%s\n", cmdString.c_str());
                #endif
                
                prevCmd = current;
                current = next;
                
                #if DBGLVL_SEPANEL_REPLACE_CMDS
-               ShowCommand(wxT("   Inserting current = "), current);
-               ShowCommand(wxT("   after     prevCmd = "), prevCmd);
+               ShowCommand("   Inserting current = ", current);
+               ShowCommand("   after     prevCmd = ", prevCmd);
                #endif
             } // end while
             
@@ -897,10 +896,10 @@ void ScriptEventPanel::ReplaceScriptEvent()
          {
             #if DBGLVL_SEPANEL_REPLACE_CMDS
             MessageInterface::ShowMessage
-               (wxT("   Set previous/next command of BeginScript\n"));
+               ("   Set previous/next command of BeginScript\n");
             #endif
             // Set previous/next command of BeginScript
-            if (mPrevCommand->IsOfType(wxT("BranchEnd")))
+            if (mPrevCommand->IsOfType("BranchEnd"))
             {
                // If previous command is BranchEnd, find matching parent of
                // BranchEnd and set BranchEnd's next command to matching parent, then
@@ -909,12 +908,12 @@ void ScriptEventPanel::ReplaceScriptEvent()
                   GmatCommandUtil::GetParentCommand(first, mPrevCommand);
                
                #if DBGLVL_SEPANEL_REPLACE_CMDS
-               ShowCommand(wxT("   Setting "), subParent, wxT(" as next of "), mPrevCommand);
+               ShowCommand("   Setting ", subParent, " as next of ", mPrevCommand);
                #endif
                mPrevCommand->ForceSetNext(subParent);
                
                #if DBGLVL_SEPANEL_REPLACE_CMDS
-               ShowCommand(wxT("   Setting "), mNewCommand, wxT(" as next of "), subParent);
+               ShowCommand("   Setting ", mNewCommand, " as next of ", subParent);
                #endif
                subParent->ForceSetNext(mNewCommand);
             }
@@ -941,12 +940,12 @@ void ScriptEventPanel::ReplaceScriptEvent()
          //-----------------------------------------------------------
          if (mNewCommand->GetPrevious() != mPrevCommand)
          {
-            if (!mPrevCommand->IsOfType(wxT("BranchEnd")))
+            if (!mPrevCommand->IsOfType("BranchEnd"))
             {
                MessageInterface::PopupMessage
-                  (Gmat::ERROR_, wxT("ScriptEventPanel::ReplaceScriptEvent() ")
-                   wxT("*** INTERNAL ERROR ***  \nmNewCommand->GetPrevious() != ")
-                   wxT("mPrevCommand\n"));
+                  (Gmat::ERROR_, "ScriptEventPanel::ReplaceScriptEvent() "
+                   "*** INTERNAL ERROR ***  \nmNewCommand->GetPrevious() != "
+                   "mPrevCommand\n");
                //ShowCommand("mPrevCommand = ", mPrevCommand);
             }
          }
@@ -954,56 +953,56 @@ void ScriptEventPanel::ReplaceScriptEvent()
          if (mNewCommand->GetNext() == NULL)
          {
             MessageInterface::PopupMessage
-               (Gmat::ERROR_, wxT("ScriptEventPanel::ReplaceScriptEvent() ")
-                wxT("*** INTERNAL ERROR ***  mNewCommand->GetNext() == NULL\n"));
+               (Gmat::ERROR_, "ScriptEventPanel::ReplaceScriptEvent() "
+                "*** INTERNAL ERROR ***  mNewCommand->GetNext() == NULL\n");
          }
          else
          {
             #if DBGLVL_SEPANEL_REPLACE_CMDS
-            wxString cmdString = GmatCommandUtil::GetCommandSeqString(first);    
+            std::string cmdString = GmatCommandUtil::GetCommandSeqString(first);    
             MessageInterface::ShowMessage
-               (wxT("===> final new sequence=%s\n"), cmdString.c_str());
+               ("===> final new sequence=%s\n", cmdString.c_str());
             #endif
          }
       }
       else
       {
          MessageInterface::PopupMessage
-            (Gmat::ERROR_, wxT("ScriptEventPanel::ReplaceScriptEvent() ")
-             wxT("*** INTERNAL ERROR ***  last command should not be NULL\n"));
+            (Gmat::ERROR_, "ScriptEventPanel::ReplaceScriptEvent() "
+             "*** INTERNAL ERROR ***  last command should not be NULL\n");
       }
    }
    
    #if DBGLVL_SEPANEL_REPLACE_CMDS
    MessageInterface::ShowMessage
-      (wxT("ScriptEventPanel::ReplaceScriptEvent() Leaving\n\n"));
+      ("ScriptEventPanel::ReplaceScriptEvent() Leaving\n\n");
    #endif
 }
 
 
 //------------------------------------------------------------------------------
-// void ShowCommand(const wxString &title1, GmatCommand *cmd1,
-//                   const wxString &title2, GmatCommand *cmd2)
+// void ShowCommand(const std::string &title1, GmatCommand *cmd1,
+//                   const std::string &title2, GmatCommand *cmd2)
 //------------------------------------------------------------------------------
-void ScriptEventPanel::ShowCommand(const wxString &title1, GmatCommand *cmd1,
-                                   const wxString &title2, GmatCommand *cmd2)
+void ScriptEventPanel::ShowCommand(const std::string &title1, GmatCommand *cmd1,
+                                   const std::string &title2, GmatCommand *cmd2)
 {
-   if (title2 == wxT(""))
+   if (title2 == "")
    {
       if (cmd1 == NULL)
-         MessageInterface::ShowMessage(wxT("%s(%p)NULL\n"), title1.c_str(), cmd1);
+         MessageInterface::ShowMessage("%s(%p)NULL\n", title1.c_str(), cmd1);
       else
          MessageInterface::ShowMessage
-            (wxT("%s(%p)%s\n"), title1.c_str(), cmd1, cmd1->GetTypeName().c_str());
+            ("%s(%p)%s\n", title1.c_str(), cmd1, cmd1->GetTypeName().c_str());
    }
    else
    {
       if (cmd2 == NULL)
          MessageInterface::ShowMessage
-            (wxT("%s(%p)NULL%s(%p)NULL\n"), title1.c_str(), cmd1, title2.c_str(), cmd2);
+            ("%s(%p)NULL%s(%p)NULL\n", title1.c_str(), cmd1, title2.c_str(), cmd2);
       else
          MessageInterface::ShowMessage
-            (wxT("%s(%p)%s%s(%p)%s\n"), title1.c_str(), cmd1, cmd1->GetTypeName().c_str(),
+            ("%s(%p)%s%s(%p)%s\n", title1.c_str(), cmd1, cmd1->GetTypeName().c_str(),
              title2.c_str(), cmd2, cmd2->GetTypeName().c_str());
    }
 }

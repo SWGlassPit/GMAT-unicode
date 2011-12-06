@@ -21,8 +21,6 @@
 #include <cmath>
 #include <fstream>
 #include <algorithm>
-#include <wx/wfstream.h>
-#include <wx/txtstrm.h>
 
 
 // Define the static data
@@ -62,11 +60,11 @@ TsPlotCanvas::TsPlotCanvas(wxWindow* parent, wxWindowID id, const wxPoint& pos,
    axisLabelSize  (12),
    plotPens       (NULL),
    plotDependent  (NULL),
-   xDataName      (wxT("X Data")),
-   filename       (wxT("PlotData.txt")),
+   xDataName      ("X Data"),
+   filename       ("PlotData.txt"),
    plotTitle      (name),
-   xLabel         (wxT("")),
-   yLabel         (wxT("")),
+   xLabel         (""),
+   yLabel         (""),
    plotXMin       (1e99),
    plotXMax       (-1e99),
    plotYMin       (1e99),
@@ -81,8 +79,8 @@ TsPlotCanvas::TsPlotCanvas(wxWindow* parent, wxWindowID id, const wxPoint& pos,
    xMax           (-1e99),
    yMin           (1e99),
    yMax           (-1e99),
-   xName          (wxT("X")),
-   yName          (wxT("Y")),
+   xName          ("X"),
+   yName          ("Y"),
    hasData        (false),
    rescaled       (true),
    zoomed         (false),
@@ -204,12 +202,12 @@ void TsPlotCanvas::OnMouseEvent(wxMouseEvent& event)
    if (event.RightDown())
    {
       wxMenu menu;
-      menu.AppendCheckItem(ID_TOGGLE_GRID, wxT("Toggle Grid"));
-      menu.AppendCheckItem(ID_TOGGLE_LEGEND, wxT("Toggle Legend"));
+      menu.AppendCheckItem(ID_TOGGLE_GRID, "Toggle Grid");
+      menu.AppendCheckItem(ID_TOGGLE_LEGEND, "Toggle Legend");
       menu.AppendSeparator();
-      menu.Append(ID_PLOT_DETAILS, wxT("Set Plot Options..."));
+      menu.Append(ID_PLOT_DETAILS, "Set Plot Options...");
       menu.AppendSeparator();
-      menu.Append(ID_PLOT_SAVE, wxT("Save Plot..."));
+      menu.Append(ID_PLOT_SAVE, "Save Plot...");
 
       menu.Check(ID_TOGGLE_GRID, hasGrid);
       menu.Check(ID_TOGGLE_LEGEND, hasLegend);
@@ -244,7 +242,7 @@ void TsPlotCanvas::OnMouseEvent(wxMouseEvent& event)
          if (!movingLegend)
          {
             #ifdef DEBUG_INTERFACE
-               MessageInterface::ShowMessage(wxT("Down at [%ld  %ld]\n"),
+               MessageInterface::ShowMessage("Down at [%ld  %ld]\n",
                   mouseRect.x, mouseRect.y);
             #endif
 
@@ -300,11 +298,11 @@ void TsPlotCanvas::OnMouseEvent(wxMouseEvent& event)
          }
 
          #ifdef DEBUG_INTERFACE
-            MessageInterface::ShowMessage(wxT("Up at [%ld  %ld]; "), pt.x, pt.y);
-            MessageInterface::ShowMessage(wxT("Rect is %ld by %ld\n"),
+            MessageInterface::ShowMessage("Up at [%ld  %ld]; ", pt.x, pt.y);
+            MessageInterface::ShowMessage("Rect is %ld by %ld\n",
                mouseRect.width, mouseRect.height);
-            MessageInterface::ShowMessage(wxT("Rectangle properties: [%ld %ld], ")
-               wxT("%ld by %ld\n"), region.x, region.y, region.width, region.height);
+            MessageInterface::ShowMessage("Rectangle properties: [%ld %ld], "
+               "%ld by %ld\n", region.x, region.y, region.width, region.height);
          #endif
 
          if (movingLegend)
@@ -368,7 +366,7 @@ void TsPlotCanvas::Refresh(wxDC &dc, bool drawAll)
 {
    #if DEBUG_TS_CANVAS
    MessageInterface::ShowMessage
-      (wxT("TsPlotCanvas::Refresh() datasize=%d, drawAll=%d\n"), data.size(), drawAll);
+      ("TsPlotCanvas::Refresh() datasize=%d, drawAll=%d\n", data.size(), drawAll);
    #endif
 
    wxCoord w, h;
@@ -435,7 +433,7 @@ void TsPlotCanvas::Refresh(wxDC &dc, bool drawAll)
    dataUpdated = false;
 
    #if DEBUG_TS_CANVAS
-   MessageInterface::ShowMessage(wxT("TsPlotCanvas::Refresh() leaving\n"));
+   MessageInterface::ShowMessage("TsPlotCanvas::Refresh() leaving\n");
    #endif
 }
 
@@ -653,7 +651,7 @@ void TsPlotCanvas::DrawLegend(wxDC &dc)
 {
    #if DEBUG_TS_CANVAS
    MessageInterface::ShowMessage
-      (wxT("TsPlotCanvas::DrawLegend() names.size=%d\n"), names.size());
+      ("TsPlotCanvas::DrawLegend() names.size=%d\n", names.size());
    #endif
 
    int j = 0, h = 16, w = 16, labelCount = (int)names.size();
@@ -719,7 +717,7 @@ void TsPlotCanvas::DrawLegend(wxDC &dc)
    for (j = 0; j < labelCount; ++j)
    {
 	  dc.SetTextForeground(data[j]->GetColour(0));
-      label = names[j].c_str();
+      label = _T(names[j].c_str());
       xloc = legendRect.x + markerReserve + 6;
       yloc = legendRect.y + (h+1)*j + 4;
       dc.DrawText(label, xloc, yloc);
@@ -742,41 +740,41 @@ void TsPlotCanvas::DrawLegend(wxDC &dc)
 // Data manipulation methods
 //==============================================================================
 
-void TsPlotCanvas::SetDataName(const wxString &dataName)
+void TsPlotCanvas::SetDataName(const std::string &dataName)
 {
    #ifdef DEBUG_INTERFACE
-      MessageInterface::ShowMessage(wxT("Adding data named %s\n"), dataName.c_str());
+      MessageInterface::ShowMessage("Adding data named %s\n", dataName.c_str());
    #endif
 
    names.push_back(dataName);
 }
 
 
-void TsPlotCanvas::SetLabel(const wxString &dataName,
+void TsPlotCanvas::SetLabel(const std::string &dataName,
                             const PlotComponents which)
 {
    switch (which)
    {
       case PLOT_TITLE:
          #ifdef DEBUG_LABELS
-            MessageInterface::ShowMessage(wxT("Plot title is %s\n"),
+            MessageInterface::ShowMessage("Plot title is %s\n",
                dataName.c_str());
          #endif
          plotTitle = dataName;
-         // yLabel = wxT("");
-         // xLabel = wxT("");
+         // yLabel = "";
+         // xLabel = "";
          break;
 
       case X_LABEL:
          #ifdef DEBUG_LABELS
-            MessageInterface::ShowMessage(wxT("X label is %s\n"), dataName.c_str());
+            MessageInterface::ShowMessage("X label is %s\n", dataName.c_str());
          #endif
          xLabel = dataName;
          break;
 
       case Y_LABEL:
          #ifdef DEBUG_LABELS
-            MessageInterface::ShowMessage(wxT("Y label is %s\n"), dataName.c_str());
+            MessageInterface::ShowMessage("Y label is %s\n", dataName.c_str());
          #endif
          yLabel = dataName;
          break;
@@ -968,7 +966,7 @@ void TsPlotCanvas::DeletePlotCurve(int index)
 
    #if DEBUG_TS_CANVAS
    MessageInterface::ShowMessage
-      (wxT("TsPlotCanvas::DeletePlotCurve() datasize=%d, index=%d\n"),
+      ("TsPlotCanvas::DeletePlotCurve() datasize=%d, index=%d\n",
        index, data.size());
    #endif
 }
@@ -979,20 +977,20 @@ int TsPlotCanvas::GetCurveCount()
 }
 
 
-void TsPlotCanvas::DumpData(const wxString &fn)
+void TsPlotCanvas::DumpData(const std::string &fn)
 {
-
-   wxString outname = filename;
-   if (fn != wxT(""))
+   std::ofstream outfile;
+   std::string outname = filename;
+   if (fn != "")
       outname = fn;
 
-   if (outname != wxT(""))
+   if (outname != "")
    {
-      wxFileOutputStream outfileStream(outname);
-      wxTextOutputStream outfile(outfileStream);
+      outfile.open(outname.c_str());
+      outfile.precision(15);
 
-      outfile << plotTitle << wxT("\n")
-              << xLabel << wxT("   ") << yLabel << wxT("\n");
+      outfile << plotTitle << std::endl
+              << xLabel << "   " << yLabel << std::endl;
 
       /// @todo Determine a better format to write out the plot data
       int curveNum = 0;
@@ -1000,12 +998,12 @@ void TsPlotCanvas::DumpData(const wxString &fn)
            i != data.end(); ++i)
       {
          int j;
-         outfile << names[curveNum++] << wxT("\n");
+         outfile << names[curveNum++] << "\n";
          for (j = 0; j < (int)((*i)->abscissa.size()); ++j)
-            outfile << (*i)->abscissa[j] << wxT(", ") << (*i)->ordinate[j] << wxT("\n");
-         outfile << wxT("\n");
+            outfile << (*i)->abscissa[j] << ", " << (*i)->ordinate[j] << "\n";
+         outfile << "\n";
       }
-      outfileStream.Close();
+      outfile.close();
    }
 }
 
@@ -1034,7 +1032,7 @@ void TsPlotCanvas::ClearAllCurveData()
 
    #if DEBUG_TS_CANVAS
    MessageInterface::ShowMessage(
-      wxT("TsPlotCanvas::ClearAllCurveData() clearing dc\n"));
+      "TsPlotCanvas::ClearAllCurveData() clearing dc\n");
    #endif
 
    //loj: 6/15/05 Added
@@ -1064,7 +1062,7 @@ void TsPlotCanvas::ClearAllCurveData()
 
    #if DEBUG_TS_CANVAS
    MessageInterface::ShowMessage(
-      wxT("TsPlotCanvas::ClearAllCurveData() leaving\n"));
+      "TsPlotCanvas::ClearAllCurveData() leaving\n");
    #endif
 }
 
@@ -1076,8 +1074,8 @@ void TsPlotCanvas::ClearAllCurveData()
 void TsPlotCanvas::ShowGrid(bool show)
 {
    #ifdef DEBUG_INTERFACE
-      MessageInterface::ShowMessage(wxT("Toggling hasGrid to %s\n"),
-         (show ? wxT("true") : wxT("false")));
+      MessageInterface::ShowMessage("Toggling hasGrid to %s\n",
+         (show ? "true" : "false"));
    #endif
    hasGrid = show;
 }
@@ -1093,8 +1091,8 @@ void TsPlotCanvas::ToggleGrid(wxCommandEvent& event)
 void TsPlotCanvas::ShowLegend(bool show)
 {
    #ifdef DEBUG_INTERFACE
-      MessageInterface::ShowMessage(wxT("Toggling hasLegend to %s\n"),
-         (show ? wxT("true") : wxT("false")));
+      MessageInterface::ShowMessage("Toggling hasLegend to %s\n",
+         (show ? "true" : "false"));
    #endif
    hasLegend = show;
 }
@@ -1109,7 +1107,7 @@ void TsPlotCanvas::ToggleLegend(wxCommandEvent& event)
 
 void TsPlotCanvas::SetOptions(wxCommandEvent& event)
 {
-   TsPlotOptionsDialog dlg(xName, yName, this, -1, wxT("Plot options"));
+   TsPlotOptionsDialog dlg(xName, yName, this, -1, "Plot options");
    dlg.SetPlotTitle(plotTitle);
    dlg.SetXLabel(xLabel);
    dlg.SetYLabel(yLabel);
@@ -1138,12 +1136,12 @@ void TsPlotCanvas::SetOptions(wxCommandEvent& event)
    {
       // Plot title
       plotTitle = dlg.GetPlotTitle();
-      showTitle = (plotTitle != wxT(""));
+      showTitle = (plotTitle != "");
 
       // Plot x- and y-axis label
       xLabel = dlg.GetXLabel();
       yLabel = dlg.GetYLabel();
-      labelAxes = ((xLabel != wxT("")) | (yLabel != wxT("")));
+      labelAxes = ((xLabel != "") | (yLabel != ""));
 
       // Line properties
       SetLineWidth(dlg.GetWidth());
@@ -1202,15 +1200,15 @@ void TsPlotCanvas::ResetRanges()
 
 void TsPlotCanvas::SaveData(wxCommandEvent& event)
 {
-   wxFileDialog dlg(this, wxT("Select save file name"), wxT(""), wxT("PlotData.txt"), wxT("*.*"),
+   wxFileDialog dlg(this, "Select save file name", "", "PlotData.txt", "*.*",
       wxFILE_SAVE_FLAG | wxFILE_OVERWRITE_FLAG);
 
    if (dlg.ShowModal() == wxID_OK)
    {
-      wxString filename;
+      std::string filename;
       filename = dlg.GetPath().c_str();
       #ifdef DEBUG_INTERFACE
-         MessageInterface::ShowMessage(wxT("Selected file name: %s"),
+         MessageInterface::ShowMessage("Selected file name: %s",
             filename.c_str());
       #endif
       DumpData(filename);
@@ -1236,8 +1234,8 @@ void TsPlotCanvas::Zoom(wxRect &region)
       region.SetHeight(ht-region.GetY());
 
    #ifdef DEBUG_INTERFACE
-      MessageInterface::ShowMessage(wxT("Zoom to [%d %d; %d %d]!\n")
-                                    wxT("BoundBox is [%d %d; %d %d]"),
+      MessageInterface::ShowMessage("Zoom to [%d %d; %d %d]!\n"
+                                    "BoundBox is [%d %d; %d %d]",
          region.GetX(), region.GetY(), region.GetX()+region.GetWidth(),
          region.GetY()+region.GetHeight(), left, top, wid, ht);
    #endif
@@ -1249,7 +1247,7 @@ void TsPlotCanvas::Zoom(wxRect &region)
 
    zoomed = true;
    #ifdef DEBUG_INTERFACE
-      MessageInterface::ShowMessage(wxT("Zoom region is [%lf %lf; %lf %lf]!\n"),
+      MessageInterface::ShowMessage("Zoom region is [%lf %lf; %lf %lf]!\n",
          zoomXMin, zoomXMax, zoomYMin, zoomYMax);
    #endif
 }
@@ -1258,7 +1256,7 @@ void TsPlotCanvas::Zoom(wxRect &region)
 void TsPlotCanvas::UnZoom()
 {
    #ifdef DEBUG_INTERFACE
-      MessageInterface::ShowMessage(wxT("Unzoom!\n"));
+      MessageInterface::ShowMessage("Unzoom!\n");
    #endif
    zoomed = false;
 }
@@ -1508,10 +1506,10 @@ void TsPlotCanvas::SetLineStyle(int ls, int lineId)
 }
 
 
-void TsPlotCanvas::SetAxisLimit(wxString axisEnd, bool automatic,
+void TsPlotCanvas::SetAxisLimit(std::string axisEnd, bool automatic,
                                 double value)
 {
-   if (axisEnd == wxT("xMinimum"))
+   if (axisEnd == "xMinimum")
    {
       if (automatic)
       {
@@ -1530,7 +1528,7 @@ void TsPlotCanvas::SetAxisLimit(wxString axisEnd, bool automatic,
          ResetRanges();
       }
    }
-   else if (axisEnd == wxT("xMaximum"))
+   else if (axisEnd == "xMaximum")
    {
       if (automatic)
       {
@@ -1549,7 +1547,7 @@ void TsPlotCanvas::SetAxisLimit(wxString axisEnd, bool automatic,
          ResetRanges();
       }
    }
-   else if (axisEnd == wxT("yMinimum"))
+   else if (axisEnd == "yMinimum")
    {
       if (automatic)
       {
@@ -1568,7 +1566,7 @@ void TsPlotCanvas::SetAxisLimit(wxString axisEnd, bool automatic,
          ResetRanges();
       }
    }
-   else if (axisEnd == wxT("yMaximum"))
+   else if (axisEnd == "yMaximum")
    {
       if (automatic)
       {
@@ -1589,9 +1587,9 @@ void TsPlotCanvas::SetAxisLimit(wxString axisEnd, bool automatic,
    }
    else
    {
-      MessageInterface::ShowMessage(wxT("Axis override failed; specify axes using ")
-         wxT("the names \"xMinimum\", \"xMaximum\", \"yMinimum\", or ")
-         wxT("\"yMaximum\".\n"));
+      MessageInterface::ShowMessage("Axis override failed; specify axes using "
+         "the names \"xMinimum\", \"xMaximum\", \"yMinimum\", or "
+         "\"yMaximum\".\n");
    }
 }
 
@@ -1613,7 +1611,7 @@ void TsPlotCanvas::Rescale()
 
    #ifdef DEBUG_RESCALING
       MessageInterface::ShowMessage
-         (wxT("!!! plotXMin=%g, plotXMax=%g, plotYMin=%g, plotYMax=%g\n"),
+         ("!!! plotXMin=%g, plotXMax=%g, plotYMin=%g, plotYMax=%g\n",
           plotXMin, plotXMax, plotYMin, plotYMax);
    #endif
 

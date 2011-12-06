@@ -57,14 +57,14 @@ MdiChildViewFrame::MdiChildViewFrame(wxMDIParentFrame *parent,
    mInFunction = false;
    
    // add Earth as default body
-   mBodyNames.Add(wxT("Earth"));
+   mBodyNames.Add("Earth");
    mBodyColors.push_back(GmatColor::GREEN32);
    
    MdiGlPlot::mdiChildren.Append(this);
    
    // Give it an icon
 #ifdef __WXMSW__
-   SetIcon(wxIcon(wxT("chrt_icn")));
+   SetIcon(wxIcon(_T("chrt_icn")));
 #else
    SetIcon(wxIcon( mondrian_xpm ));
 #endif
@@ -79,7 +79,7 @@ MdiChildViewFrame::~MdiChildViewFrame()
 {   
    #ifdef DEBUG_MDI_CHILD_FRAME_CLOSE
    MessageInterface::ShowMessage
-      (wxT("~MdiChildViewFrame() mPlotName=%s\n"), mPlotName.c_str());
+      ("~MdiChildViewFrame() mPlotName=%s\n", mPlotName.c_str());
    #endif
    
    MdiGlPlot::mdiChildren.DeleteObject(this);
@@ -87,7 +87,7 @@ MdiChildViewFrame::~MdiChildViewFrame()
    
    #ifdef DEBUG_MDI_CHILD_FRAME_CLOSE
    MessageInterface::ShowMessage
-      (wxT("~MdiChildViewFrame() exiting MdiGlPlot::numChildren=%d\n"),
+      ("~MdiChildViewFrame() exiting MdiGlPlot::numChildren=%d\n",
        MdiGlPlot::numChildren);
    #endif
 }
@@ -150,7 +150,7 @@ bool MdiChildViewFrame::GetDrawWireFrame()
 //------------------------------------------------------------------------------
 bool MdiChildViewFrame::GetDrawXyPlane()
 {
-   if (mCanvas && mViewType == wxT("3D"))
+   if (mCanvas && mViewType == "3D")
       return ((OrbitViewCanvas*)mCanvas)->GetDrawXyPlane();
    
    return false;
@@ -162,7 +162,7 @@ bool MdiChildViewFrame::GetDrawXyPlane()
 //------------------------------------------------------------------------------
 bool MdiChildViewFrame::GetDrawEcPlane()
 {
-   if (mCanvas && mViewType == wxT("3D"))
+   if (mCanvas && mViewType == "3D")
       return ((OrbitViewCanvas*)mCanvas)->GetDrawEcPlane();
 
    return false;
@@ -174,7 +174,7 @@ bool MdiChildViewFrame::GetDrawEcPlane()
 //------------------------------------------------------------------------------
 bool MdiChildViewFrame::GetDrawSunLine()
 {
-   if (mCanvas && mViewType == wxT("3D"))
+   if (mCanvas && mViewType == "3D")
       return ((OrbitViewCanvas*)mCanvas)->GetDrawSunLine();
 
    return false;
@@ -186,7 +186,7 @@ bool MdiChildViewFrame::GetDrawSunLine()
 //------------------------------------------------------------------------------
 bool MdiChildViewFrame::GetDrawAxes()
 {
-   if (mCanvas && mViewType == wxT("3D"))
+   if (mCanvas && mViewType == "3D")
       return ((OrbitViewCanvas*)mCanvas)->GetDrawAxes();
 
    return false;
@@ -197,7 +197,7 @@ bool MdiChildViewFrame::GetDrawAxes()
 //------------------------------------------------------------------------------
 bool MdiChildViewFrame::GetDrawGrid()
 {
-   if (mCanvas && mViewType == wxT("3D"))
+   if (mCanvas && mViewType == "3D")
       return ((OrbitViewCanvas*)mCanvas)->GetDrawGrid();
 
    return false;
@@ -209,7 +209,7 @@ bool MdiChildViewFrame::GetDrawGrid()
 //------------------------------------------------------------------------------
 UnsignedInt MdiChildViewFrame::GetXyPlaneColor()
 {
-   if (mCanvas && mViewType == wxT("3D"))
+   if (mCanvas && mViewType == "3D")
       return ((OrbitViewCanvas*)mCanvas)->GetXyPlaneColor();
 
    return 0;
@@ -221,7 +221,7 @@ UnsignedInt MdiChildViewFrame::GetXyPlaneColor()
 //------------------------------------------------------------------------------
 UnsignedInt MdiChildViewFrame::GetSunLineColor()
 {
-   if (mCanvas && mViewType == wxT("3D"))
+   if (mCanvas && mViewType == "3D")
       return ((OrbitViewCanvas*)mCanvas)->GetSunLineColor();
 
    return 0;
@@ -288,7 +288,7 @@ void MdiChildViewFrame::SetPlotName(const wxString &name)
 {
    #ifdef DEBUG_VIEW_FRAME
       MessageInterface::ShowMessage
-         (wxT("MdiChildViewFrame::SetPlotName() name=%s\n"), name.c_str());
+         ("MdiChildViewFrame::SetPlotName() name=%s\n", name.c_str());
    #endif
    
    GmatMdiChildFrame::SetPlotName(name);
@@ -304,7 +304,7 @@ void MdiChildViewFrame::ResetShowViewOption()
 {
    #ifdef DEBUG_VIEW_FRAME
    MessageInterface::ShowMessage
-      (wxT("MdiChildViewFrame::ResetShowViewOption()\n"));
+      ("MdiChildViewFrame::ResetShowViewOption()\n");
    #endif
 
     theMenuBar->Check(GmatPlot::MDI_GL_SHOW_OPTION_PANEL, false);
@@ -373,7 +373,7 @@ void MdiChildViewFrame::SetDrawWireFrame(bool flag)
 //------------------------------------------------------------------------------
 void MdiChildViewFrame::SetDrawStars(bool flag)
 {
-   if (mCanvas && mViewType == wxT("3D"))
+   if (mCanvas && mViewType == "3D")
    {
       ((OrbitViewCanvas*)mCanvas)->SetDrawStars(flag);
    }
@@ -384,7 +384,7 @@ void MdiChildViewFrame::SetDrawStars(bool flag)
 //------------------------------------------------------------------------------
 void MdiChildViewFrame::SetDrawConstellations(bool flag)
 {
-   if (mCanvas && mViewType == wxT("3D"))
+   if (mCanvas && mViewType == "3D")
    {
       ((OrbitViewCanvas*)mCanvas)->SetDrawConstellations(flag);
    }
@@ -395,7 +395,7 @@ void MdiChildViewFrame::SetDrawConstellations(bool flag)
 //------------------------------------------------------------------------------
 void MdiChildViewFrame::SetStarCount(int count)
 {
-   if (mCanvas && mViewType == wxT("3D"))
+   if (mCanvas && mViewType == "3D")
    {
       ((OrbitViewCanvas*)mCanvas)->SetStarCount(count);
    }
@@ -406,7 +406,7 @@ void MdiChildViewFrame::SetStarCount(int count)
 //------------------------------------------------------------------------------
 void MdiChildViewFrame::SetDrawXyPlane(bool flag)
 {
-   if (mCanvas && mViewType == wxT("3D"))
+   if (mCanvas && mViewType == "3D")
    {
       theMenuBar->Check(GmatPlot::MDI_GL_SHOW_EQUATORIAL_PLANE, flag);   
       ((OrbitViewCanvas*)mCanvas)->SetDrawXyPlane(flag);
@@ -419,7 +419,7 @@ void MdiChildViewFrame::SetDrawXyPlane(bool flag)
 //------------------------------------------------------------------------------
 void MdiChildViewFrame::SetDrawEcPlane(bool flag)
 {
-   if (mCanvas && mViewType == wxT("3D"))
+   if (mCanvas && mViewType == "3D")
       ((OrbitViewCanvas*)mCanvas)->SetDrawEcPlane(flag);
 }
 
@@ -429,7 +429,7 @@ void MdiChildViewFrame::SetDrawEcPlane(bool flag)
 //------------------------------------------------------------------------------
 void MdiChildViewFrame::SetDrawSunLine(bool flag)
 {
-   if (mCanvas && mViewType == wxT("3D"))
+   if (mCanvas && mViewType == "3D")
       ((OrbitViewCanvas*)mCanvas)->SetDrawSunLine(flag);
 }
 
@@ -439,7 +439,7 @@ void MdiChildViewFrame::SetDrawSunLine(bool flag)
 //------------------------------------------------------------------------------
 void MdiChildViewFrame::SetDrawAxes(bool flag)
 {
-   if (mCanvas && mViewType == wxT("3D"))
+   if (mCanvas && mViewType == "3D")
       ((OrbitViewCanvas*)mCanvas)->SetDrawAxes(flag);
 }
 
@@ -449,7 +449,7 @@ void MdiChildViewFrame::SetDrawAxes(bool flag)
 //------------------------------------------------------------------------------
 void MdiChildViewFrame::SetDrawGrid(bool flag)
 {
-   if (mCanvas && mViewType == wxT("3D"))
+   if (mCanvas && mViewType == "3D")
       ((OrbitViewCanvas*)mCanvas)->SetDrawGrid(flag);
 }
 
@@ -459,7 +459,7 @@ void MdiChildViewFrame::SetDrawGrid(bool flag)
 //------------------------------------------------------------------------------
 void MdiChildViewFrame::SetXyPlaneColor(UnsignedInt color)
 {
-   if (mCanvas && mViewType == wxT("3D"))
+   if (mCanvas && mViewType == "3D")
       ((OrbitViewCanvas*)mCanvas)->SetXyPlaneColor(color);
 }
 
@@ -469,7 +469,7 @@ void MdiChildViewFrame::SetXyPlaneColor(UnsignedInt color)
 //------------------------------------------------------------------------------
 void MdiChildViewFrame::SetSunLineColor(UnsignedInt color)
 {
-   if (mCanvas && mViewType == wxT("3D"))
+   if (mCanvas && mViewType == "3D")
       ((OrbitViewCanvas*)mCanvas)->SetSunLineColor(color);
 }
 
@@ -520,7 +520,7 @@ void MdiChildViewFrame::DrawInOtherCoordSystem(const wxString &csName)
 void MdiChildViewFrame::RedrawPlot(bool viewAnimation)
 {
    #ifdef DEBUG_VIEW_FRAME
-   MessageInterface::ShowMessage(wxT("MdiChildViewFrame::RedrawPlot() entered.\n"));
+   MessageInterface::ShowMessage("MdiChildViewFrame::RedrawPlot() entered.\n");
    #endif
    
    if (mCanvas)
@@ -544,8 +544,8 @@ void MdiChildViewFrame::OnClearPlot(wxCommandEvent& WXUNUSED(event))
 //------------------------------------------------------------------------------
 void MdiChildViewFrame::OnChangeTitle(wxCommandEvent& WXUNUSED(event))
 {
-   wxString title = wxGetTextFromUser(wxT("Enter the new title for MDI child"),
-                                      wxT(""),
+   wxString title = wxGetTextFromUser(_T("Enter the new title for MDI child"),
+                                      _T(""),
                                       mPlotTitle, //s_title,
                                       GetParent()->GetParent());
    if ( !title )
@@ -581,7 +581,7 @@ void MdiChildViewFrame::OnDrawWireFrame(wxCommandEvent& event)
 //------------------------------------------------------------------------------
 void MdiChildViewFrame::OnDrawXyPlane(wxCommandEvent& event)
 {
-   if (mCanvas && mViewType == wxT("3D"))
+   if (mCanvas && mViewType == "3D")
       ((OrbitViewCanvas*)mCanvas)->DrawXyPlane(event.IsChecked());
 }
 
@@ -664,7 +664,7 @@ void MdiChildViewFrame::OnMove(wxMoveEvent& event)
 void MdiChildViewFrame::OnPlotClose(wxCloseEvent &event)
 {
    #ifdef DEBUG_MDI_CHILD_FRAME_CLOSE
-   MessageInterface::ShowMessage(wxT("MdiChildViewFrame::OnPlotClose() entered\n"));
+   MessageInterface::ShowMessage("MdiChildViewFrame::OnPlotClose() entered\n");
    #endif
    
    CheckFrame();
@@ -680,7 +680,7 @@ void MdiChildViewFrame::OnPlotClose(wxCloseEvent &event)
    }
    
    #ifdef DEBUG_MDI_CHILD_FRAME_CLOSE
-   MessageInterface::ShowMessage(wxT("MdiChildViewFrame::OnPlotClose() exiting\n"));
+   MessageInterface::ShowMessage("MdiChildViewFrame::OnPlotClose() exiting\n");
    #endif
 }
 
@@ -691,7 +691,7 @@ void MdiChildViewFrame::OnPlotClose(wxCloseEvent &event)
 void MdiChildViewFrame::OnClose(wxCloseEvent &event)
 {
    #ifdef DEBUG_MDI_CHILD_FRAME_CLOSE
-   MessageInterface::ShowMessage(wxT("MdiChildViewFrame::OnClose() entered\n"));
+   MessageInterface::ShowMessage("MdiChildViewFrame::OnClose() entered\n");
    #endif
    
    CheckFrame();
@@ -707,7 +707,7 @@ void MdiChildViewFrame::OnClose(wxCloseEvent &event)
    }
    
    #ifdef DEBUG_MDI_CHILD_FRAME_CLOSE
-   MessageInterface::ShowMessage(wxT("MdiChildViewFrame::OnClose() exiting\n"));
+   MessageInterface::ShowMessage("MdiChildViewFrame::OnClose() exiting\n");
    #endif
 }
 
@@ -741,8 +741,8 @@ void MdiChildViewFrame::SetGlCoordSystem(CoordinateSystem *internalCs,
 //------------------------------------------------------------------------------
 // void SetGl2dDrawingOption(Integer footPrintOption)
 //------------------------------------------------------------------------------
-void MdiChildViewFrame::SetGl2dDrawingOption(const wxString &centralBodyName,
-                                             const wxString &textureMap,
+void MdiChildViewFrame::SetGl2dDrawingOption(const std::string &centralBodyName,
+                                             const std::string &textureMap,
                                              Integer footPrintOption)
 {
    // do nothing here
@@ -751,7 +751,7 @@ void MdiChildViewFrame::SetGl2dDrawingOption(const wxString &centralBodyName,
 
 
 //------------------------------------------------------------------------------
-// void SetGl3dDrawingOption(const wxString &plotName, ...)
+// void SetGl3dDrawingOption(const std::string &plotName, ...)
 //------------------------------------------------------------------------------
 void MdiChildViewFrame::SetGl3dDrawingOption(bool drawEcPlane, bool drawXyPlane,
                                              bool drawWireFrame, bool drawAxes,
@@ -771,7 +771,7 @@ void MdiChildViewFrame::SetGl3dDrawingOption(bool drawEcPlane, bool drawXyPlane,
 void MdiChildViewFrame::SetGl3dViewOption(SpacePoint *vpRefObj, SpacePoint *vpVecObj,
                                           SpacePoint *vdObj, Real vsFactor,
                                           const Rvector3 &vpRefVec, const Rvector3 &vpVec,
-                                          const Rvector3 &vdVec, const wxString &upAxis,
+                                          const Rvector3 &vdVec, const std::string &upAxis,
                                           bool usevpRefVec, bool usevpVec, bool usevdVec)
 {
    // do nothing here
@@ -822,7 +822,7 @@ void MdiChildViewFrame::UpdatePlot(const StringArray &scNames, const Real &time,
 {
    #ifdef DEBUG_UPDATE_PLOT
    MessageInterface::ShowMessage
-      (wxT("MdiChildViewFrame::UpdatePlot() entered, time=%f, updateCanvas=%d\n"),
+      ("MdiChildViewFrame::UpdatePlot() entered, time=%f, updateCanvas=%d\n",
        time, updateCanvas);
    #endif
    
@@ -852,9 +852,9 @@ void MdiChildViewFrame::UpdatePlot(const StringArray &scNames, const Real &time,
 
 
 //------------------------------------------------------------------------------
-// void TakeAction(const wxString &action)
+// void TakeAction(const std::string &action)
 //------------------------------------------------------------------------------
-void MdiChildViewFrame::TakeAction(const wxString &action)
+void MdiChildViewFrame::TakeAction(const std::string &action)
 {
    if (mCanvas)
       mCanvas->TakeAction(action);
@@ -872,7 +872,7 @@ void MdiChildViewFrame::InitializePlot()
 {
    #ifdef DEBUG_REFRESH_PLOT
    MessageInterface::ShowMessage
-      (wxT("MdiChildViewFrame::InitializePlot() entered\n"));
+      ("MdiChildViewFrame::InitializePlot() entered\n");
    #endif
    
    if (mCanvas)
@@ -894,7 +894,7 @@ void MdiChildViewFrame::RefreshPlot()
 {
    #ifdef DEBUG_REFRESH_PLOT
    MessageInterface::ShowMessage
-      (wxT("MdiChildViewFrame::RefreshPlot() entered\n"));
+      ("MdiChildViewFrame::RefreshPlot() entered\n");
    #endif
    
    if (mCanvas)
@@ -940,7 +940,7 @@ void MdiChildViewFrame::SetEndOfRun()
 void MdiChildViewFrame::CheckFrame()
 {
    #ifdef DEBUG_MDI_CHILD_FRAME_CLOSE
-   MessageInterface::ShowMessage(wxT("MdiChildViewFrame::CheckFrame() entered\n"));
+   MessageInterface::ShowMessage("MdiChildViewFrame::CheckFrame() entered\n");
    #endif
    
    if (mCanvas)
@@ -949,7 +949,7 @@ void MdiChildViewFrame::CheckFrame()
 
       #ifdef DEBUG_MDI_CHILD_FRAME_CLOSE
       MessageInterface::ShowMessage
-         (wxT("MdiChildViewFrame::CheckFrame() IsAnimationRunning=%d\n"),
+         ("MdiChildViewFrame::CheckFrame() IsAnimationRunning=%d\n",
           mCanvas->IsAnimationRunning());
       #endif
       
@@ -957,15 +957,15 @@ void MdiChildViewFrame::CheckFrame()
       
       if (mCanvas->IsAnimationRunning())
       {
-         wxMessageBox(wxT("The animation is running.\n")
-                         wxT("Please stop the animation first."),
-                      wxT("GMAT Warning"));
+         wxMessageBox(_T("The animation is running.\n"
+                         "Please stop the animation first."),
+                      _T("GMAT Warning"));
          mCanClose = false;
       }
    }
    
    #ifdef DEBUG_MDI_CHILD_FRAME_CLOSE
-   MessageInterface::ShowMessage(wxT("MdiChildViewFrame::CheckFrame() exiting\n"));
+   MessageInterface::ShowMessage("MdiChildViewFrame::CheckFrame() exiting\n");
    #endif
    
 }

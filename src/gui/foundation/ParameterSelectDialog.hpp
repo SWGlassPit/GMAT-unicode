@@ -37,7 +37,7 @@ public:
                          bool allowSysParam = true,
                          bool allowVariable = true,
                          bool allowArray = true,
-                         const wxString &objectType = wxT("Spacecraft"),
+                         const wxString &objectType = "Spacecraft",
                          bool createParam = true);
    ~ParameterSelectDialog();
 

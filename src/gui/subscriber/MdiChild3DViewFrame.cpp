@@ -37,7 +37,7 @@ MdiChild3DViewFrame::MdiChild3DViewFrame(wxMDIParentFrame *parent,
                                      const wxString& plotName, const wxString& title,
                                      const wxPoint& pos, const wxSize& size,
                                      const long style)
-   : MdiChildViewFrame(parent, plotName, title, pos, size, style, wxT("3D"),
+   : MdiChildViewFrame(parent, plotName, title, pos, size, style, "3D",
                        GmatTree::OUTPUT_ORBIT_VIEW)
 {
    // Create GLCanvas
@@ -88,14 +88,14 @@ void MdiChild3DViewFrame::SetGl3dDrawingOption(bool drawEcPlane, bool drawXyPlan
 void MdiChild3DViewFrame::SetGl3dViewOption(SpacePoint *vpRefObj, SpacePoint *vpVecObj,
                                             SpacePoint *vdObj, Real vsFactor,
                                             const Rvector3 &vpRefVec, const Rvector3 &vpVec,
-                                            const Rvector3 &vdVec, const wxString &upAxis,
+                                            const Rvector3 &vdVec, const std::string &upAxis,
                                             bool usevpRefVec, bool usevpVec, bool usevdVec)
 {
    if (mCanvas)
    {
       #ifdef DEBUG_VIEW_FRAME
       MessageInterface::ShowMessage
-         (wxT("MdiChild3dViewFrame::SetGl3dViewOption() vsFactor=%f\n"), vsFactor);
+         ("MdiChild3dViewFrame::SetGl3dViewOption() vsFactor=%f\n", vsFactor);
       #endif
       
       mCanvas->SetGl3dViewOption(vpRefObj, vpVecObj, vdObj, vsFactor, vpRefVec,

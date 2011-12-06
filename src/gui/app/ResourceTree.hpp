@@ -55,8 +55,8 @@ public:
    // Added so plugin code can update the tree structure
    void AddUserResources(std::vector<Gmat::PluginResource*> *rcs,
          bool onlyChildNodes = false);
-   wxTreeItemId AddUserTreeNode(const wxString &newNodeName,
-         const wxString &parent = wxT(""));
+   wxTreeItemId AddUserTreeNode(const std::string &newNodeName,
+         const std::string &parent = "");
    
 protected:
    GmatMainFrame  *theMainFrame;
@@ -98,20 +98,20 @@ protected:
    wxTreeItemId interfaceItem;
 
    // Mapping for plug-in objects
-   std::map<Integer, wxString> pluginMap;
+   std::map<Integer, std::string> pluginMap;
 
    /// Plugin tree item IDs
    std::vector<wxTreeItemId> mPluginItems;
    /// node Id -> Type mapping
-   std::map<wxString, Gmat::ObjectType> nodeTypeMap;
+   std::map<std::string, Gmat::ObjectType> nodeTypeMap;
    /// nodeId -> subtype mapping
-   std::map<wxString, wxString> nodeSubtypeMap;
+   std::map<std::string, std::string> nodeSubtypeMap;
 
    // MSVC compiler will not accept a non-constant size for std::vector
    static const Integer MAX_SUN_ORBITERS;
 
    // objects
-   GmatBase* GetObject(const wxString &name);
+   GmatBase* GetObject(const std::string &name);
    void UpdateGuiItem(GmatTree::ItemType itemType);
 
    // resource tree
@@ -208,27 +208,27 @@ protected:
 
    bool BuildScript(const wxString &filename, Integer openScriptOpt = 0,
                     bool closeScript = false, bool readBack = false,
-                    const wxString &savePath = wxT(""), bool multiScripts = false);
+                    const wxString &savePath = "", bool multiScripts = false);
 
    // menu
    void ShowMenu(wxTreeItemId id, const wxPoint& pt);
    wxMenu* CreatePopupMenu(GmatTree::ItemType type,
          const Gmat::ObjectType gmatType = Gmat::UNKNOWN_OBJECT,
-         const wxString &subtype = wxT(""));
+         const std::string &subtype = "");
    Gmat::ObjectType GetObjectType(GmatTree::ItemType itemType);
    wxTreeItemId GetTreeItemId(GmatTree::ItemType type);
    GmatTree::ResourceIconType GetTreeItemIcon(GmatTree::ItemType type);
    
    // icon
-   void GetBodyTypeAndIcon(const wxString bodyName,
+   void GetBodyTypeAndIcon(const std::string bodyName,
                           GmatTree::ItemType &bodyItemType,
                           GmatTree::ResourceIconType &iconType);
    
    GmatTree::ResourceIconType GetIconId(GmatBase *obj);
    
    // user text input
-   int GetNameFromUser(wxString &newName, const wxString &oldName = wxT(""),
-                       const wxString &msg = wxT(""), const wxString &caption = wxT(""));
+   int GetNameFromUser(wxString &newName, const wxString &oldName = "",
+                       const wxString &msg = "", const wxString &caption = "");
    
    // compare
    void CompareScriptRunResult(Real absTol, const wxString &replaceStr,

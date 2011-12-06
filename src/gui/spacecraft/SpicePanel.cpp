@@ -82,7 +82,7 @@ SpicePanel::SpicePanel(GmatPanel *scPanel,
    theScPanel       (scPanel)
 {
    #ifdef DEBUG_SPICE_PANEL
-      MessageInterface::ShowMessage(wxT("Entering SpicePanel Constructor, with theSC = %s (%s)\n"),
+      MessageInterface::ShowMessage("Entering SpicePanel Constructor, with theSC = %s (%s)\n",
             (theSC->GetName()).c_str(), (theSC->GetTypeName()).c_str());
    #endif
    guiManager     = GuiItemManager::GetInstance();
@@ -103,7 +103,7 @@ SpicePanel::~SpicePanel()
 
 void SpicePanel::SaveData()
 {
-   wxString strval;
+   std::string strval;
 //   Real        tmpval;
    Integer     tmpint;
    bool        retval;
@@ -121,7 +121,7 @@ void SpicePanel::SaveData()
       if (spkNameChanged)
       {
          #ifdef DEBUG_SPICE_PANEL
-            MessageInterface::ShowMessage(wxT("spkNameChanged is true : %s\n"),
+            MessageInterface::ShowMessage("spkNameChanged is true : %s\n",
                   strval.c_str());
          #endif
 
@@ -129,19 +129,19 @@ void SpicePanel::SaveData()
          for (unsigned int ii = 0; ii < numKernels; ii++)
          {
             strval = spkFileListBox->GetString(ii);
-            std::ifstream filename(strval.char_str());
+            std::ifstream filename(strval.c_str());
 
             if (!filename)
             {
-               wxString errmsg = wxT("File \"") + strval;
-               errmsg += wxT("\" does not exist.\n");
+               std::string errmsg = "File \"" + strval;
+               errmsg += "\" does not exist.\n";
                MessageInterface::PopupMessage(Gmat::ERROR_, errmsg);
                canClose = false;
             }
             else
             {
                filename.close();
-               theSpacecraft->SetStringParameter(theSpacecraft->GetParameterID(wxT("OrbitSpiceKernelName")),
+               theSpacecraft->SetStringParameter(theSpacecraft->GetParameterID("OrbitSpiceKernelName"),
                      strval);
             }
          }
@@ -149,7 +149,7 @@ void SpicePanel::SaveData()
       if (ckNameChanged)
       {
          #ifdef DEBUG_SPICE_PANEL
-            MessageInterface::ShowMessage(wxT("ckNameChanged is true : %s\n"),
+            MessageInterface::ShowMessage("ckNameChanged is true : %s\n",
                   strval.c_str());
          #endif
 
@@ -157,19 +157,19 @@ void SpicePanel::SaveData()
          for (unsigned int ii = 0; ii < numKernels; ii++)
          {
             strval = ckFileListBox->GetString(ii);
-            std::ifstream filename(strval.char_str());
+            std::ifstream filename(strval.c_str());
 
             if (!filename)
             {
-               wxString errmsg = wxT("File \"") + strval;
-               errmsg += wxT("\" does not exist.\n");
+               std::string errmsg = "File \"" + strval;
+               errmsg += "\" does not exist.\n";
                MessageInterface::PopupMessage(Gmat::ERROR_, errmsg);
                canClose = false;
             }
             else
             {
                filename.close();
-               theSpacecraft->SetStringParameter(theSpacecraft->GetParameterID(wxT("AttitudeSpiceKernelName")),
+               theSpacecraft->SetStringParameter(theSpacecraft->GetParameterID("AttitudeSpiceKernelName"),
                      strval);
             }
          }
@@ -177,7 +177,7 @@ void SpicePanel::SaveData()
       if (sclkNameChanged)
       {
          #ifdef DEBUG_SPICE_PANEL
-            MessageInterface::ShowMessage(wxT("sclkNameChanged is true : %s\n"),
+            MessageInterface::ShowMessage("sclkNameChanged is true : %s\n",
                   strval.c_str());
          #endif
 
@@ -185,19 +185,19 @@ void SpicePanel::SaveData()
          for (unsigned int ii = 0; ii < numKernels; ii++)
          {
             strval = sclkFileListBox->GetString(ii);
-            std::ifstream filename(strval.char_str());
+            std::ifstream filename(strval.c_str());
 
             if (!filename)
             {
-               wxString errmsg = wxT("File \"") + strval;
-               errmsg += wxT("\" does not exist.\n");
+               std::string errmsg = "File \"" + strval;
+               errmsg += "\" does not exist.\n";
                MessageInterface::PopupMessage(Gmat::ERROR_, errmsg);
                canClose = false;
             }
             else
             {
                filename.close();
-               theSpacecraft->SetStringParameter(theSpacecraft->GetParameterID(wxT("SCClockSpiceKernelName")),
+               theSpacecraft->SetStringParameter(theSpacecraft->GetParameterID("SCClockSpiceKernelName"),
                      strval);
             }
          }
@@ -205,7 +205,7 @@ void SpicePanel::SaveData()
       if (fkNameChanged)
       {
          #ifdef DEBUG_SPICE_PANEL
-            MessageInterface::ShowMessage(wxT("fkNameChanged is true : %s\n"),
+            MessageInterface::ShowMessage("fkNameChanged is true : %s\n",
                   strval.c_str());
          #endif
 
@@ -213,19 +213,19 @@ void SpicePanel::SaveData()
          for (unsigned int ii = 0; ii < numKernels; ii++)
          {
             strval = fkFileListBox->GetString(ii);
-            std::ifstream filename(strval.char_str());
+            std::ifstream filename(strval.c_str());
 
             if (!filename)
             {
-               wxString errmsg = wxT("File \"") + strval;
-               errmsg += wxT("\" does not exist.\n");
+               std::string errmsg = "File \"" + strval;
+               errmsg += "\" does not exist.\n";
                MessageInterface::PopupMessage(Gmat::ERROR_, errmsg);
                canClose = false;
             }
             else
             {
                filename.close();
-               theSpacecraft->SetStringParameter(theSpacecraft->GetParameterID(wxT("FrameSpiceKernelName")),
+               theSpacecraft->SetStringParameter(theSpacecraft->GetParameterID("FrameSpiceKernelName"),
                      strval);
             }
          }
@@ -233,49 +233,49 @@ void SpicePanel::SaveData()
       if (naifIdChanged)
       {
          strval = naifIdTextCtrl->GetValue();
-         retval = theScPanel->CheckInteger(tmpint, strval, wxT("NAIF ID"), wxT("Integer Number"));
+         retval = theScPanel->CheckInteger(tmpint, strval, "NAIF ID", "Integer Number");
          canClose = retval;
          if (retval)
          {
-            theSpacecraft->SetIntegerParameter(theSpacecraft->GetParameterID(wxT("NAIFId")), tmpint);
+            theSpacecraft->SetIntegerParameter(theSpacecraft->GetParameterID("NAIFId"), tmpint);
          }
       }
       if (naifIdRefFrameChanged)
       {
          strval = naifIdRefFrameTextCtrl->GetValue();
-         retval = theScPanel->CheckInteger(tmpint, strval, wxT(" Reference Frame NAIF ID"), wxT("Integer Number"));
+         retval = theScPanel->CheckInteger(tmpint, strval, " Reference Frame NAIF ID", "Integer Number");
          canClose = retval;
          if (retval)
          {
-            theSpacecraft->SetIntegerParameter(theSpacecraft->GetParameterID(wxT("NAIFIdReferenceFrame")), tmpint);
+            theSpacecraft->SetIntegerParameter(theSpacecraft->GetParameterID("NAIFIdReferenceFrame"), tmpint);
          }
       }
       if (spkFilesDeleted)
       {
          for (unsigned int ii = 0; ii < spkFilesToDelete.size(); ii++)
          {
-            theSpacecraft->RemoveSpiceKernelName(wxT("Orbit"), spkFilesToDelete.at(ii));
+            theSpacecraft->RemoveSpiceKernelName("Orbit", spkFilesToDelete.at(ii));
          }
       }
       if (ckFilesDeleted)
       {
          for (unsigned int ii = 0; ii < ckFilesToDelete.size(); ii++)
          {
-            theSpacecraft->RemoveSpiceKernelName(wxT("Attitude"), ckFilesToDelete.at(ii));
+            theSpacecraft->RemoveSpiceKernelName("Attitude", ckFilesToDelete.at(ii));
          }
       }
       if (sclkFilesDeleted)
       {
          for (unsigned int ii = 0; ii < sclkFilesToDelete.size(); ii++)
          {
-            theSpacecraft->RemoveSpiceKernelName(wxT("SCClock"), sclkFilesToDelete.at(ii));
+            theSpacecraft->RemoveSpiceKernelName("SCClock", sclkFilesToDelete.at(ii));
          }
       }
       if (fkFilesDeleted)
       {
          for (unsigned int ii = 0; ii < fkFilesToDelete.size(); ii++)
          {
-            theSpacecraft->RemoveSpiceKernelName(wxT("Frame"), fkFilesToDelete.at(ii));
+            theSpacecraft->RemoveSpiceKernelName("Frame", fkFilesToDelete.at(ii));
          }
       }
    }
@@ -287,8 +287,8 @@ void SpicePanel::SaveData()
    }
 
    #ifdef DEBUG_SPICE_ORBIT_PANEL
-      MessageInterface::ShowMessage(wxT("at end of SaveData, canClose = %s\n"),
-            (canClose? wxT("true") : wxT("false")));
+      MessageInterface::ShowMessage("at end of SaveData, canClose = %s\n",
+            (canClose? "true" : "false"));
    #endif
    if (canClose)
    {
@@ -301,54 +301,54 @@ void SpicePanel::LoadData()
 {
    try
    {
-      naifId         = theSpacecraft->GetIntegerParameter(theSpacecraft->GetParameterID(wxT("NAIFId")));
+      naifId         = theSpacecraft->GetIntegerParameter(theSpacecraft->GetParameterID("NAIFId"));
       naifIdStringWX = guiManager->ToWxString(naifId);
       naifIdTextCtrl->SetValue(naifIdStringWX);
 
-      naifIdRefFrame         = theSpacecraft->GetIntegerParameter(theSpacecraft->GetParameterID(wxT("NAIFIdReferenceFrame")));
+      naifIdRefFrame         = theSpacecraft->GetIntegerParameter(theSpacecraft->GetParameterID("NAIFIdReferenceFrame"));
       naifIdRefFrameStringWX = guiManager->ToWxString(naifIdRefFrame);
       naifIdRefFrameTextCtrl->SetValue(naifIdRefFrameStringWX);
 
       spkKernelNames           = theSpacecraft->GetStringArrayParameter(
-                                 theSpacecraft->GetParameterID(wxT("OrbitSpiceKernelName")));
+                                 theSpacecraft->GetParameterID("OrbitSpiceKernelName"));
       unsigned int spkListSz   = spkKernelNames.size();
       spkFileArrayWX           = new wxString[spkListSz];
       for (unsigned int jj = 0; jj < spkListSz; jj++)
       {
-         spkFileArrayWX[jj] = spkKernelNames[jj].c_str();
+         spkFileArrayWX[jj] = wxT(spkKernelNames[jj].c_str());
       }
       spkFileListBox->InsertItems(spkListSz, spkFileArrayWX, 0);
       spkFileListBox->SetSelection(spkListSz-1); // Select the last item
 
       fkKernelNames           = theSpacecraft->GetStringArrayParameter(
-                                theSpacecraft->GetParameterID(wxT("FrameSpiceKernelName")));
+                                theSpacecraft->GetParameterID("FrameSpiceKernelName"));
       unsigned int fkListSz   = fkKernelNames.size();
       fkFileArrayWX           = new wxString[fkListSz];
       for (unsigned int jj = 0; jj < fkListSz; jj++)
       {
-         fkFileArrayWX[jj] = fkKernelNames[jj].c_str();
+         fkFileArrayWX[jj] = wxT(fkKernelNames[jj].c_str());
       }
       fkFileListBox->InsertItems(fkListSz, fkFileArrayWX, 0);
       fkFileListBox->SetSelection(fkListSz-1); // Select the last item
 
       ckKernelNames           = theSpacecraft->GetStringArrayParameter(
-                                theSpacecraft->GetParameterID(wxT("AttitudeSpiceKernelName")));
+                                theSpacecraft->GetParameterID("AttitudeSpiceKernelName"));
       unsigned int ckListSz   = ckKernelNames.size();
       ckFileArrayWX           = new wxString[ckListSz];
       for (unsigned int jj = 0; jj < ckListSz; jj++)
       {
-         ckFileArrayWX[jj] = ckKernelNames[jj].c_str();
+         ckFileArrayWX[jj] = wxT(ckKernelNames[jj].c_str());
       }
       ckFileListBox->InsertItems(ckListSz, ckFileArrayWX, 0);
       ckFileListBox->SetSelection(ckListSz-1); // Select the last item
 
       sclkKernelNames           = theSpacecraft->GetStringArrayParameter(
-                                theSpacecraft->GetParameterID(wxT("SCClockSpiceKernelName")));
+                                theSpacecraft->GetParameterID("SCClockSpiceKernelName"));
       unsigned int sclkListSz   = sclkKernelNames.size();
       sclkFileArrayWX           = new wxString[sclkListSz];
       for (unsigned int jj = 0; jj < sclkListSz; jj++)
       {
-         sclkFileArrayWX[jj] = sclkKernelNames[jj].c_str();
+         sclkFileArrayWX[jj] = wxT(sclkKernelNames[jj].c_str());
       }
       sclkFileListBox->InsertItems(sclkListSz, sclkFileArrayWX, 0);
       sclkFileListBox->SetSelection(sclkListSz-1); // Select the last item
@@ -383,12 +383,12 @@ void SpicePanel::Create()
    pConfig->SetPath(wxT("/Spacecraft Spice"));
 
    // empty the temporary value strings
-   naifIdStringWX             = wxT("");
-   naifIdRefFrameStringWX     = wxT("");
-   spkFileStringWX            = wxT("");
-   ckFileStringWX             = wxT("");
-   sclkFileStringWX           = wxT("");
-   fkFileStringWX             = wxT("");
+   naifIdStringWX             = "";
+   naifIdRefFrameStringWX     = "";
+   spkFileStringWX            = "";
+   ckFileStringWX             = "";
+   sclkFileStringWX           = "";
+   fkFileStringWX             = "";
 
    wxBoxSizer *spkButtonSizer  = NULL;
    wxBoxSizer *ckButtonSizer   = NULL;
@@ -396,82 +396,82 @@ void SpicePanel::Create()
    wxBoxSizer *fkButtonSizer   = NULL;
 
    // naif ID for spacecraft
-   naifIdStaticText   = new wxStaticText(this, ID_TEXT,wxT(GUI_ACCEL_KEY) wxT("NAIF ID"),
+   naifIdStaticText   = new wxStaticText(this, ID_TEXT,wxT(GUI_ACCEL_KEY"NAIF ID"),
                         wxDefaultPosition, wxSize(-1,-1), 0);
    naifIdTextCtrl     = new wxTextCtrl(this, ID_TEXT_CTRL_NAIF_ID, wxT(""),
                         wxDefaultPosition, wxSize(80, -1), 0);
-   naifIdTextCtrl->SetToolTip(pConfig->Read(wxT("NAIFIDHint")));
+   naifIdTextCtrl->SetToolTip(pConfig->Read(_T("NAIFIDHint")));
    naifIdBlankText    = new wxStaticText(this, ID_TEXT,wxT(""),
                         wxDefaultPosition, wxSize(-1,-1), 0);
    // naif ID of the reference frame for the spacecraft
-   naifIdRefFrameStaticText   = new wxStaticText(this, ID_TEXT,wxT("F") wxT(GUI_ACCEL_KEY) wxT("rame\nNAIF ID"),
+   naifIdRefFrameStaticText   = new wxStaticText(this, ID_TEXT,wxT("F"GUI_ACCEL_KEY"rame\nNAIF ID"),
                         wxDefaultPosition, wxSize(-1,-1), 0);
    naifIdRefFrameTextCtrl     = new wxTextCtrl(this, ID_TEXT_CTRL_NAIF_ID_REF_FRAME, wxT(""),
                         wxDefaultPosition, wxSize(80, -1), 0);
-   naifIdRefFrameTextCtrl->SetToolTip(pConfig->Read(wxT("NAIFIDRefFrameHint")));
+   naifIdRefFrameTextCtrl->SetToolTip(pConfig->Read(_T("NAIFIDRefFrameHint")));
    naifIdRefFrameBlankText    = new wxStaticText(this, ID_TEXT,wxT(""),
                         wxDefaultPosition, wxSize(-1,-1), 0);
    // SPK file(s)
    wxArrayString emptyList;
-   spkFileStaticText   = new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY) wxT("SPK Files"),
+   spkFileStaticText   = new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY"SPK Files"),
                          wxDefaultPosition, wxSize(-1,-1), 0);
    spkFileListBox      = new wxListBox(this, ID_LIST_BOX_SPK_FILE, wxDefaultPosition, wxSize(150, 100),
                          emptyList, wxLB_EXTENDED|wxLB_NEEDED_SB|wxLB_HSCROLL);
-   spkFileListBox->SetToolTip(pConfig->Read(wxT("SPKFileListHint")));
-   spkFileBrowseButton = new wxButton(this, ID_BROWSE_BUTTON_SPK_FILE, wxT(GUI_ACCEL_KEY) wxT("Add"),
+   spkFileListBox->SetToolTip(pConfig->Read(_T("SPKFileListHint")));
+   spkFileBrowseButton = new wxButton(this, ID_BROWSE_BUTTON_SPK_FILE, wxT(GUI_ACCEL_KEY"Add"),
                          wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-   spkFileBrowseButton->SetToolTip(pConfig->Read(wxT("AddSPKFileHint")));
-   spkFileRemoveButton = new wxButton(this, ID_REMOVE_BUTTON_SPK_FILE, wxT(GUI_ACCEL_KEY) wxT("Remove"),
+   spkFileBrowseButton->SetToolTip(pConfig->Read(_T("AddSPKFileHint")));
+   spkFileRemoveButton = new wxButton(this, ID_REMOVE_BUTTON_SPK_FILE, wxT(GUI_ACCEL_KEY"Remove"),
                          wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-   spkFileRemoveButton->SetToolTip(pConfig->Read(wxT("RemoveSPKFileHint")));
+   spkFileRemoveButton->SetToolTip(pConfig->Read(_T("RemoveSPKFileHint")));
    spkButtonSizer = new wxBoxSizer(wxHORIZONTAL);
    spkButtonSizer->Add(spkFileBrowseButton,0, wxGROW|wxALIGN_CENTRE|wxALL, bSize);
    spkButtonSizer->Add(spkFileRemoveButton,0, wxGROW|wxALIGN_CENTRE|wxALL, bSize);
 
    // FK file(s)
-   fkFileStaticText   = new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY) wxT("FK Files"),
+   fkFileStaticText   = new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY"FK Files"),
                          wxDefaultPosition, wxSize(-1,-1), 0);
    fkFileListBox      = new wxListBox(this, ID_LIST_BOX_FK_FILE, wxDefaultPosition, wxSize(150, 100),
                          emptyList, wxLB_EXTENDED|wxLB_NEEDED_SB|wxLB_HSCROLL);
-   fkFileListBox->SetToolTip(pConfig->Read(wxT("FKFileListHint")));
-   fkFileBrowseButton = new wxButton(this, ID_BROWSE_BUTTON_FK_FILE, wxT(GUI_ACCEL_KEY) wxT("Add"),
+   fkFileListBox->SetToolTip(pConfig->Read(_T("FKFileListHint")));
+   fkFileBrowseButton = new wxButton(this, ID_BROWSE_BUTTON_FK_FILE, wxT(GUI_ACCEL_KEY"Add"),
                          wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-   fkFileBrowseButton->SetToolTip(pConfig->Read(wxT("AddFKFileHint")));
-   fkFileRemoveButton = new wxButton(this, ID_REMOVE_BUTTON_FK_FILE, wxT(GUI_ACCEL_KEY) wxT("Remove"),
+   fkFileBrowseButton->SetToolTip(pConfig->Read(_T("AddFKFileHint")));
+   fkFileRemoveButton = new wxButton(this, ID_REMOVE_BUTTON_FK_FILE, wxT(GUI_ACCEL_KEY"Remove"),
                          wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-   fkFileRemoveButton->SetToolTip(pConfig->Read(wxT("RemoveFKFileHint")));
+   fkFileRemoveButton->SetToolTip(pConfig->Read(_T("RemoveFKFileHint")));
    fkButtonSizer = new wxBoxSizer(wxHORIZONTAL);
    fkButtonSizer->Add(fkFileBrowseButton,0, wxGROW|wxALIGN_CENTRE|wxALL, bSize);
    fkButtonSizer->Add(fkFileRemoveButton,0, wxGROW|wxALIGN_CENTRE|wxALL, bSize);
 
    // CK file(s)
-   ckFileStaticText   = new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY) wxT("CK Files"),
+   ckFileStaticText   = new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY"CK Files"),
                          wxDefaultPosition, wxSize(-1,-1), 0);
    ckFileListBox      = new wxListBox(this, ID_LIST_BOX_CK_FILE, wxDefaultPosition, wxSize(150, 100),
                          emptyList, wxLB_EXTENDED|wxLB_NEEDED_SB|wxLB_HSCROLL);
-   ckFileListBox->SetToolTip(pConfig->Read(wxT("CKFileListHint")));
-   ckFileBrowseButton = new wxButton(this, ID_BROWSE_BUTTON_CK_FILE, wxT(GUI_ACCEL_KEY) wxT("Add"),
+   ckFileListBox->SetToolTip(pConfig->Read(_T("CKFileListHint")));
+   ckFileBrowseButton = new wxButton(this, ID_BROWSE_BUTTON_CK_FILE, wxT(GUI_ACCEL_KEY"Add"),
                          wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-   ckFileBrowseButton->SetToolTip(pConfig->Read(wxT("AddCKFileHint")));
-   ckFileRemoveButton = new wxButton(this, ID_REMOVE_BUTTON_CK_FILE, wxT(GUI_ACCEL_KEY) wxT("Remove"),
+   ckFileBrowseButton->SetToolTip(pConfig->Read(_T("AddCKFileHint")));
+   ckFileRemoveButton = new wxButton(this, ID_REMOVE_BUTTON_CK_FILE, wxT(GUI_ACCEL_KEY"Remove"),
                          wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-   ckFileRemoveButton->SetToolTip(pConfig->Read(wxT("RemoveCKFileHint")));
+   ckFileRemoveButton->SetToolTip(pConfig->Read(_T("RemoveCKFileHint")));
    ckButtonSizer = new wxBoxSizer(wxHORIZONTAL);
    ckButtonSizer->Add(ckFileBrowseButton,0, wxGROW|wxALIGN_CENTRE|wxALL, bSize);
    ckButtonSizer->Add(ckFileRemoveButton,0, wxGROW|wxALIGN_CENTRE|wxALL, bSize);
 
    // SCLK file(s)
-   sclkFileStaticText   = new wxStaticText(this, ID_TEXT, wxT("SC") wxT(GUI_ACCEL_KEY) wxT("LK Files"),
+   sclkFileStaticText   = new wxStaticText(this, ID_TEXT, wxT("SC"GUI_ACCEL_KEY"LK Files"),
                          wxDefaultPosition, wxSize(-1,-1), 0);
    sclkFileListBox      = new wxListBox(this, ID_LIST_BOX_SCLK_FILE, wxDefaultPosition, wxSize(150, 100),
                          emptyList, wxLB_EXTENDED|wxLB_NEEDED_SB|wxLB_HSCROLL);
-   sclkFileListBox->SetToolTip(pConfig->Read(wxT("SCLKFileListHint")));
-   sclkFileBrowseButton = new wxButton(this, ID_BROWSE_BUTTON_SCLK_FILE, wxT(GUI_ACCEL_KEY) wxT("Add"),
+   sclkFileListBox->SetToolTip(pConfig->Read(_T("SCLKFileListHint")));
+   sclkFileBrowseButton = new wxButton(this, ID_BROWSE_BUTTON_SCLK_FILE, wxT(GUI_ACCEL_KEY"Add"),
                          wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-   sclkFileBrowseButton->SetToolTip(pConfig->Read(wxT("AddSCLKFileHint")));
-   sclkFileRemoveButton = new wxButton(this, ID_REMOVE_BUTTON_SCLK_FILE, wxT(GUI_ACCEL_KEY) wxT("Remove"),
+   sclkFileBrowseButton->SetToolTip(pConfig->Read(_T("AddSCLKFileHint")));
+   sclkFileRemoveButton = new wxButton(this, ID_REMOVE_BUTTON_SCLK_FILE, wxT(GUI_ACCEL_KEY"Remove"),
                          wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-   sclkFileRemoveButton->SetToolTip(pConfig->Read(wxT("RemoveSCLKFileHint")));
+   sclkFileRemoveButton->SetToolTip(pConfig->Read(_T("RemoveSCLKFileHint")));
    sclkButtonSizer = new wxBoxSizer(wxHORIZONTAL);
    sclkButtonSizer->Add(sclkFileBrowseButton,0, wxGROW|wxALIGN_CENTRE|wxALL, bSize);
    sclkButtonSizer->Add(sclkFileRemoveButton,0, wxGROW|wxALIGN_CENTRE|wxALL, bSize);
@@ -523,10 +523,10 @@ void SpicePanel::Create()
    
    mainBoxSizer = new wxBoxSizer(wxHORIZONTAL);
    
-   GmatStaticBoxSizer  *boxSizer1 = new GmatStaticBoxSizer(wxVERTICAL, this, wxT("") );
+   GmatStaticBoxSizer  *boxSizer1 = new GmatStaticBoxSizer(wxVERTICAL, this, "" );
    boxSizer1->Add(leftFlexGridSizer, 0, wxALIGN_CENTRE|wxALL, bSize);
    
-   GmatStaticBoxSizer  *boxSizer2 = new GmatStaticBoxSizer(wxVERTICAL, this, wxT(""));
+   GmatStaticBoxSizer  *boxSizer2 = new GmatStaticBoxSizer(wxVERTICAL, this, "");
    boxSizer2->Add(rightFlexGridSizer, 0, wxALIGN_CENTRE|wxALL, bSize);
    
    mainBoxSizer->Add(boxSizer1, 1, wxGROW|wxALIGN_CENTRE|wxALL, bSize);
@@ -589,7 +589,7 @@ void SpicePanel::ResetChangeFlags(bool discardMods)
 void SpicePanel::OnSpkFileBrowseButton(wxCommandEvent &event)
 {
    wxArrayString oldFiles = spkFileListBox->GetStrings();
-   wxFileDialog dialog(this, wxT("Choose a file to add"), wxT(""), wxT(""), wxT("*.*"));
+   wxFileDialog dialog(this, _T("Choose a file to add"), _T(""), _T(""), _T("*.*"));
    Integer foundAt = -99;
    if (dialog.ShowModal() == wxID_OK)
    {
@@ -659,7 +659,7 @@ void SpicePanel::OnSpkFileListBoxChange(wxCommandEvent &event)
 void SpicePanel::OnCkFileBrowseButton(wxCommandEvent &event)
 {
    wxArrayString oldFiles = ckFileListBox->GetStrings();
-   wxFileDialog dialog(this, wxT("Choose a file to add"), wxT(""), wxT(""), wxT("*.*"));
+   wxFileDialog dialog(this, _T("Choose a file to add"), _T(""), _T(""), _T("*.*"));
    Integer foundAt = -99;
    if (dialog.ShowModal() == wxID_OK)
    {
@@ -730,7 +730,7 @@ void SpicePanel::OnCkFileListBoxChange(wxCommandEvent &event)
 void SpicePanel::OnSclkFileBrowseButton(wxCommandEvent &event)
 {
    wxArrayString oldFiles = sclkFileListBox->GetStrings();
-   wxFileDialog dialog(this, wxT("Choose a file to add"), wxT(""), wxT(""), wxT("*.*"));
+   wxFileDialog dialog(this, _T("Choose a file to add"), _T(""), _T(""), _T("*.*"));
    Integer foundAt = -99;
    if (dialog.ShowModal() == wxID_OK)
    {
@@ -801,7 +801,7 @@ void SpicePanel::OnSclkFileListBoxChange(wxCommandEvent &event)
 void SpicePanel::OnFkFileBrowseButton(wxCommandEvent &event)
 {
    wxArrayString oldFiles = fkFileListBox->GetStrings();
-   wxFileDialog dialog(this, wxT("Choose a file to add"), wxT(""), wxT(""), wxT("*.*"));
+   wxFileDialog dialog(this, _T("Choose a file to add"), _T(""), _T(""), _T("*.*"));
    Integer foundAt = -99;
    if (dialog.ShowModal() == wxID_OK)
    {

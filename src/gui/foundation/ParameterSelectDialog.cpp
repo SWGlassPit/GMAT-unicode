@@ -72,7 +72,7 @@ ParameterSelectDialog::ParameterSelectDialog
       bool allowMultiSelect, bool allowString, bool allowWholeObject, 
       bool allowSysParam, bool allowVariable, bool allowArray, 
       const wxString &objectType, bool createParam)
-   : GmatDialog(parent, -1, wxString(wxT("ParameterSelectDialog")))
+   : GmatDialog(parent, -1, wxString(_T("ParameterSelectDialog")))
 {
    mHasSelectionChanged = false;
    mIsParamSelected = false;
@@ -97,9 +97,9 @@ ParameterSelectDialog::ParameterSelectDialog
    
    #ifdef DEBUG_PSDIALOG
    MessageInterface::ShowMessage
-      (wxT("ParameterSelectDialog() mObjectType=%s, mShowOption=%d, mAllowSysParam=%d, ")
-       wxT("mAllowVariable=%d\n   mAllowArray=%d, mAllowString=%d, mAllowWholeObject=%d, ")
-       wxT("mAllowMultiSelect=%d, mCreateParam=%d\n"), mObjectType.c_str(), mShowOption,
+      ("ParameterSelectDialog() mObjectType=%s, mShowOption=%d, mAllowSysParam=%d, "
+       "mAllowVariable=%d\n   mAllowArray=%d, mAllowString=%d, mAllowWholeObject=%d, "
+       "mAllowMultiSelect=%d, mCreateParam=%d\n", mObjectType.c_str(), mShowOption,
        mAllowSysParam, mAllowVariable, mAllowArray, mAllowString, mAllowWholeObject,
        mAllowMultiSelect, mCreateParam);
    #endif
@@ -116,13 +116,13 @@ ParameterSelectDialog::~ParameterSelectDialog()
 {
    #ifdef DEBUG_PSDIALOG
    MessageInterface::ShowMessage
-      (wxT("ParameterSelectDialog::~ParameterSelectDialog() Unregister ")
-       wxT("mObjectListBox:%p\n"), mObjectListBox);
+      ("ParameterSelectDialog::~ParameterSelectDialog() Unregister "
+       "mObjectListBox:%p\n", mObjectListBox);
    #endif
    
    theGuiManager->UnregisterListBox(mObjectType, mObjectListBox);
-   theGuiManager->UnregisterComboBox(wxT("CoordinateSystem"), mCoordSysComboBox);
-   theGuiManager->UnregisterComboBox(wxT("CelestialBody"), mCentralBodyComboBox);
+   theGuiManager->UnregisterComboBox("CoordinateSystem", mCoordSysComboBox);
+   theGuiManager->UnregisterComboBox("CelestialBody", mCentralBodyComboBox);
 }
 
 
@@ -181,7 +181,7 @@ void ParameterSelectDialog::SetParamNameArray(const wxArrayString &paramNames)
    
    #ifdef DEBUG_PSDIALOG
    MessageInterface::ShowMessage
-      (wxT("SetParamNameArray() param count=%d\n"), mParamNameArray.GetCount());
+      ("SetParamNameArray() param count=%d\n", mParamNameArray.GetCount());
    #endif
    
    // show selected parameter
@@ -189,7 +189,7 @@ void ParameterSelectDialog::SetParamNameArray(const wxArrayString &paramNames)
    {
       mSelectedListBox->Append(mParamNameArray[i]);
       #ifdef DEBUG_PSDIALOG
-      MessageInterface::ShowMessage(wxT("param=%s\n"), mParamNameArray[i].c_str());
+      MessageInterface::ShowMessage("param=%s\n", mParamNameArray[i].c_str());
       #endif
    }
 }
@@ -201,7 +201,7 @@ void ParameterSelectDialog::SetParamNameArray(const wxArrayString &paramNames)
 void ParameterSelectDialog::Create()
 {
    #ifdef DEBUG_PSDIALOG
-   MessageInterface::ShowMessage(wxT("ParameterSelectDialog::Create() entered.\n"));
+   MessageInterface::ShowMessage("ParameterSelectDialog::Create() entered.\n");
    #endif
    
    //------------------------------------------------------
@@ -231,7 +231,7 @@ void ParameterSelectDialog::Create()
                                mAllowMultiSelect, mAllowString,
                                mAllowWholeObject, mAllowSysParam,
                                mAllowVariable, mAllowArray, mObjectType,
-                               wxT("Parameter Select"));
+                               "Parameter Select");
    
    //------------------------------------------------------
    // add to parent sizer
@@ -247,7 +247,7 @@ void ParameterSelectDialog::Create()
 void ParameterSelectDialog::LoadData()
 {   
    #ifdef DEBUG_PSDIALOG_LOAD
-   MessageInterface::ShowMessage(wxT("ParameterSelectDialog::LoadData() entered.\n"));
+   MessageInterface::ShowMessage("ParameterSelectDialog::LoadData() entered.\n");
    #endif
    
    if (mShowOption != GuiItemManager::SHOW_WHOLE_OBJECT_ONLY)
@@ -258,11 +258,11 @@ void ParameterSelectDialog::LoadData()
          //if (!mAllowMultiSelect)
          mPropertyListBox->SetSelection(0);
          
-         if (mObjectType == wxT("ImpulsiveBurn") || mAllowMultiSelect)
+         if (mObjectType == "ImpulsiveBurn" || mAllowMultiSelect)
          {
             mCoordSysLabel->Hide();
-            mCoordSysComboBox->SetValue(wxT(""));
-            mCentralBodyComboBox->SetValue(wxT(""));
+            mCoordSysComboBox->SetValue("");
+            mCentralBodyComboBox->SetValue("");
             mCoordSysComboBox->Hide();
             mCentralBodyComboBox->Hide();
          }
@@ -291,7 +291,7 @@ void ParameterSelectDialog::LoadData()
    
    #ifdef DEBUG_PSDIALOG_LOAD
    MessageInterface::ShowMessage
-      (wxT("ParameterSelectDialog::LoadData() exiting. mIsParamSelected=%d\n"),
+      ("ParameterSelectDialog::LoadData() exiting. mIsParamSelected=%d\n",
        mIsParamSelected);
    #endif
 }
@@ -303,7 +303,7 @@ void ParameterSelectDialog::LoadData()
 void ParameterSelectDialog::SaveData()
 {
    #ifdef DEBUG_PSDIALOG_SAVE
-   MessageInterface::ShowMessage(wxT("ParameterSelectDialog::SaveData() entered.\n"));
+   MessageInterface::ShowMessage("ParameterSelectDialog::SaveData() entered.\n");
    #endif
    
    mCanClose = true;
@@ -319,7 +319,7 @@ void ParameterSelectDialog::SaveData()
       {
          #ifdef DEBUG_PSDIALOG_SAVE
          MessageInterface::ShowMessage
-            (wxT("   adding %s\n"), mSelectedListBox->GetString(i).c_str());
+            ("   adding %s\n", mSelectedListBox->GetString(i).c_str());
          #endif
          
          mParamNameArray.Add(mSelectedListBox->GetString(i));
@@ -328,7 +328,7 @@ void ParameterSelectDialog::SaveData()
    
    #ifdef DEBUG_PSDIALOG_SAVE
    MessageInterface::ShowMessage
-      (wxT("ParameterSelectDialog::SaveData() exiting. mIsParamSelected=%d\n"),
+      ("ParameterSelectDialog::SaveData() exiting. mIsParamSelected=%d\n",
        mIsParamSelected);
    #endif
 }
@@ -363,7 +363,7 @@ void ParameterSelectDialog::OnCancel(wxCommandEvent &event)
 void ParameterSelectDialog::OnButtonClick(wxCommandEvent& event)
 {
    #ifdef DEBUG_PSDIALOG_BUTTON
-   MessageInterface::ShowMessage(wxT("OnButtonClick() entered\n"));
+   MessageInterface::ShowMessage("OnButtonClick() entered\n");
    #endif
    
    if (event.GetEventObject() == mUpButton)
@@ -441,7 +441,7 @@ void ParameterSelectDialog::OnButtonClick(wxCommandEvent& event)
 void ParameterSelectDialog::OnListBoxSelect(wxCommandEvent& event)
 {
    #ifdef DEBUG_PSDIALOG_LISTBOX_SELECT
-   MessageInterface::ShowMessage(wxT("OnListBoxSelect() entered\n"));
+   MessageInterface::ShowMessage("OnListBoxSelect() entered\n");
    #endif
    
    wxObject *obj = event.GetEventObject();
@@ -457,7 +457,7 @@ void ParameterSelectDialog::OnListBoxSelect(wxCommandEvent& event)
          wxArrayInt selections;
          int count = mObjectListBox->GetSelections(selections);
          MessageInterface::ShowMessage
-            (wxT("   mObjectListBox %d items selected.\n"), count);
+            ("   mObjectListBox %d items selected.\n", count);
       }
       #endif
       
@@ -465,15 +465,15 @@ void ParameterSelectDialog::OnListBoxSelect(wxCommandEvent& event)
       
       #ifdef DEBUG_PSDIALOG_LISTBOX_SELECT
       MessageInterface::ShowMessage
-         (wxT("   mObjectListBox item of <%s> selected\n"), objType.c_str());
+         ("   mObjectListBox item of <%s> selected\n", objType.c_str());
       #endif
       
       wxString objStr = GetObjectSelection();
       
       // if array, show row and column
-      if (objType == wxT("Array"))
+      if (objType == "Array")
       {         
-         if (objStr == wxT(""))
+         if (objStr == "")
          {
             // hide array element
             ShowArrayInfo(false);            
@@ -489,14 +489,14 @@ void ParameterSelectDialog::OnListBoxSelect(wxCommandEvent& event)
          
          #ifdef DEBUG_PSDIALOG_LISTBOX_SELECT
          MessageInterface::ShowMessage
-            (wxT("   item=%s, mNumRow=%d, mNumCol=%d\n"), objStr.c_str(), mNumRow, mNumCol);
+            ("   item=%s, mNumRow=%d, mNumCol=%d\n", objStr.c_str(), mNumRow, mNumCol);
          #endif
          
          wxString str;
-         str.Printf(wxT("%d"), mNumRow);
-         mRowStaticText->SetLabel(wxT("Row [") + str + wxT("]"));
-         str.Printf(wxT("%d"), mNumCol);
-         mColStaticText->SetLabel(wxT("Col [") + str + wxT("]"));
+         str.Printf("%d", mNumRow);
+         mRowStaticText->SetLabel("Row [" + str + "]");
+         str.Printf("%d", mNumCol);
+         mColStaticText->SetLabel("Col [" + str + "]");
          
          // show array element
          ShowArrayInfo(true);
@@ -515,7 +515,7 @@ void ParameterSelectDialog::OnListBoxSelect(wxCommandEvent& event)
          wxArrayInt selections;
          int count = mPropertyListBox->GetSelections(selections);
          MessageInterface::ShowMessage
-            (wxT("   mPropertyListBox %d items selected.\n"), count);
+            ("   mPropertyListBox %d items selected.\n", count);
       }
       #endif
       
@@ -531,7 +531,7 @@ void ParameterSelectDialog::OnListBoxSelect(wxCommandEvent& event)
 void ParameterSelectDialog::OnListBoxDoubleClick(wxCommandEvent& event)
 {
    #ifdef DEBUG_PSDIALOG_LISTBOX_DOUBLE_CLICK
-   MessageInterface::ShowMessage(wxT("OnListBoxDoubleClick() entered\n"));
+   MessageInterface::ShowMessage("OnListBoxDoubleClick() entered\n");
    #endif
    
    wxObject *obj = event.GetEventObject();
@@ -539,7 +539,7 @@ void ParameterSelectDialog::OnListBoxDoubleClick(wxCommandEvent& event)
    if (obj == mObjectListBox)
    {
       #ifdef DEBUG_PSDIALOG_LISTBOX_DOUBLE_CLICK
-      MessageInterface::ShowMessage(wxT("   mObjectListBox double clicked\n"));
+      MessageInterface::ShowMessage("   mObjectListBox double clicked\n");
       #endif
       
       if (AddWholeObject())
@@ -548,13 +548,13 @@ void ParameterSelectDialog::OnListBoxDoubleClick(wxCommandEvent& event)
    else if (obj == mPropertyListBox)
    {
       #ifdef DEBUG_PSDIALOG_LISTBOX_DOUBLE_CLICK
-      MessageInterface::ShowMessage(wxT("   mPropertyListBox double clicked\n"));
+      MessageInterface::ShowMessage("   mPropertyListBox double clicked\n");
       #endif
       
       if (mEntireObjectCheckBox->IsChecked())
       {
-         wxLogMessage(wxT("Please unchek the Select Entire Object check box\n")
-                      wxT("before adding the property to the liset."));
+         wxLogMessage("Please unchek the Select Entire Object check box\n"
+                      "before adding the property to the liset.");
          return;
       }
       
@@ -564,7 +564,7 @@ void ParameterSelectDialog::OnListBoxDoubleClick(wxCommandEvent& event)
    else if (obj == mSelectedListBox)
    {
       #ifdef DEBUG_PSDIALOG_LISTBOX_DOUBLE_CLICK
-      MessageInterface::ShowMessage(wxT("   mSelectedListBox double clicked\n"));
+      MessageInterface::ShowMessage("   mSelectedListBox double clicked\n");
       #endif
       
       RemoveParameter();
@@ -582,7 +582,7 @@ void ParameterSelectDialog::OnListBoxDoubleClick(wxCommandEvent& event)
 void ParameterSelectDialog::OnComboBoxChange(wxCommandEvent& event)
 {
    #ifdef DEBUG_PSDIALOG_COMBOBOX_CHANGE
-   MessageInterface::ShowMessage(wxT("OnComboBoxChange() entered\n"));
+   MessageInterface::ShowMessage("OnComboBoxChange() entered\n");
    #endif
    
    wxObject *obj = event.GetEventObject();
@@ -593,20 +593,20 @@ void ParameterSelectDialog::OnComboBoxChange(wxCommandEvent& event)
       
       #ifdef DEBUG_PSDIALOG_COMBOBOX_CHANGE
       MessageInterface::ShowMessage
-         (wxT("   ObjectTypeComboBox changed to %s\n"), objType.c_str());
+         ("   ObjectTypeComboBox changed to %s\n", objType.c_str());
       #endif
       
       // Clear object ListBox
       mObjectListBox->Clear();
       
-      if (objType == wxT("Spacecraft"))
+      if (objType == "Spacecraft")
       {
          // Show Spacecraft objects
          mObjectListBox->InsertItems(theGuiManager->GetSpacecraftList(), 0);
          
          // Set Spacecraft property
          mPropertyListBox->
-            Set(theGuiManager->GetPropertyList(wxT("Spacecraft"),
+            Set(theGuiManager->GetPropertyList("Spacecraft",
                                                GuiItemManager::SHOW_PLOTTABLE));
          
          if (!mAllowMultiSelect)
@@ -614,20 +614,20 @@ void ParameterSelectDialog::OnComboBoxChange(wxCommandEvent& event)
          
          ShowCoordSystem();
       }
-      else if (objType == wxT("ImpulsiveBurn"))
+      else if (objType == "ImpulsiveBurn")
       {
          // Show ImpulsiveBurn objects
          mObjectListBox->InsertItems(theGuiManager->GetImpulsiveBurnList(), 0);
          
          // Set ImpulsiveBurn property
          mPropertyListBox->
-            Set(theGuiManager->GetPropertyList(wxT("ImpulsiveBurn"),
+            Set(theGuiManager->GetPropertyList("ImpulsiveBurn",
                                                GuiItemManager::SHOW_PLOTTABLE));
          
          if (!mAllowMultiSelect)
             mPropertyListBox->SetSelection(0);
       }
-      else if (objType == wxT("Variable"))
+      else if (objType == "Variable")
       {
          // Show Variables
          if (theGuiManager->GetNumUserVariable() > 0)
@@ -638,7 +638,7 @@ void ParameterSelectDialog::OnComboBoxChange(wxCommandEvent& event)
          // There is no properties
          ClearProperties();
       }
-      else if (objType == wxT("Array"))
+      else if (objType == "Array")
       {
          // Show Arrays
          if (theGuiManager->GetNumUserArray() > 0)
@@ -649,11 +649,11 @@ void ParameterSelectDialog::OnComboBoxChange(wxCommandEvent& event)
          // There is no properties
          ClearProperties();
       }
-      else if (objType == wxT("String"))
+      else if (objType == "String")
       {
          #ifdef DEBUG_PSDIALOG_COMBOBOX_CHANGE
          MessageInterface::ShowMessage
-            (wxT("   theGuiManager->GetNumUserString() = %d\n"),
+            ("   theGuiManager->GetNumUserString() = %d\n",
              theGuiManager->GetNumUserString());
          #endif
          
@@ -704,10 +704,10 @@ void ParameterSelectDialog::OnCheckBoxChange(wxCommandEvent& event)
       bool allowWholeObject = mEntireObjectCheckBox->IsChecked();
       //#ifdef DEBUG_PSDIALOG_CHECK_BOX
       MessageInterface::ShowMessage
-         (wxT("OnCheckBoxChange() IsChecked()=%d\n"),
+         ("OnCheckBoxChange() IsChecked()=%d\n",
           mEntireObjectCheckBox->IsChecked());
       MessageInterface::ShowMessage
-         (wxT("On\nCheck\nBox\nChange() IsChecked()=%d\n"),
+         ("On\nCheck\nBox\nChange() IsChecked()=%d\n",
           mEntireObjectCheckBox->IsChecked());
       //#endif
       
@@ -738,25 +738,25 @@ void ParameterSelectDialog::OnCheckBoxChange(wxCommandEvent& event)
 bool ParameterSelectDialog::AddWholeObject()
 {
    #ifdef DEBUG_PSDIALOG_WHOLE_OBJECT
-   MessageInterface::ShowMessage(wxT("AddWholeObject() entered\n"));
+   MessageInterface::ShowMessage("AddWholeObject() entered\n");
    #endif
    
    wxString objType = mObjectTypeComboBox->GetValue();
    wxString objName = GetObjectSelection();
    
    // check if type is Variable
-   if (objType == wxT("Variable"))
+   if (objType == "Variable")
    {
       AddParameter(objName);
       return true;
    }
    
    // check if type is String
-   if (objType == wxT("String"))
+   if (objType == "String")
    {
       if (mShowOption == GuiItemManager::SHOW_PLOTTABLE)
       {
-         wxLogMessage(wxT("Selection of String object type is not allowed."));
+         wxLogMessage("Selection of String object type is not allowed.");
          return false;
       }
       else
@@ -776,13 +776,13 @@ bool ParameterSelectDialog::AddWholeObject()
       }
       else
       {
-         wxLogMessage(wxT("Selection of entire object is not allowed."));
+         wxLogMessage("Selection of entire object is not allowed.");
          return false;
       }
    }
    
    #ifdef DEBUG_PSDIALOG_WHOLE_OBJECT
-   MessageInterface::ShowMessage(wxT("AddWholeObject() returning false\n"));
+   MessageInterface::ShowMessage("AddWholeObject() returning false\n");
    #endif
    
    return false;
@@ -799,7 +799,7 @@ bool ParameterSelectDialog::AddWholeObject()
 bool ParameterSelectDialog::AddParameter()
 {
    #ifdef DEBUG_PSDIALOG_PARAMETER
-   MessageInterface::ShowMessage(wxT("AddParameter() entered\n"));
+   MessageInterface::ShowMessage("AddParameter() entered\n");
    #endif
    
    if (mAllowMultiSelect)
@@ -812,7 +812,7 @@ bool ParameterSelectDialog::AddParameter()
       {
          #ifdef DEBUG_PSDIALOG_PARAMETER
          MessageInterface::ShowMessage
-            (wxT("AddParameter() nothing selected, returning false\n"));
+            ("AddParameter() nothing selected, returning false\n");
          #endif
          
          return false;
@@ -823,18 +823,18 @@ bool ParameterSelectDialog::AddParameter()
    if (AddWholeObject() || mEntireObjectCheckBox->IsChecked())
    {
       #ifdef DEBUG_PSDIALOG_PARAMETER
-      MessageInterface::ShowMessage(wxT("AddParameter() returning true\n"));
+      MessageInterface::ShowMessage("AddParameter() returning true\n");
       #endif
       
       return true;
    }
    
    // if add an array element
-   if (mObjectTypeComboBox->GetValue() == wxT("Array") &&
+   if (mObjectTypeComboBox->GetValue() == "Array" &&
        !mEntireObjectCheckBox->IsChecked())
    {
       #ifdef DEBUG_PSDIALOG_PARAMETER
-      MessageInterface::ShowMessage(wxT("   adding array element\n"));
+      MessageInterface::ShowMessage("   adding array element\n");
       #endif
       
       wxString rowStr = mRowTextCtrl->GetValue();
@@ -847,12 +847,12 @@ bool ParameterSelectDialog::AddParameter()
       bool valid = false;
       
       // check for valid integer value first
-      valid = CheckInteger(row, rowStr.c_str(), wxT("Row"), wxT("Integer >= 1 and =< [Dimension]"));
-      valid = valid && CheckInteger(col, colStr.c_str(), wxT("Col"), wxT("Integer >= 1 and =< [Dimension]"));
+      valid = CheckInteger(row, rowStr.c_str(), "Row", "Integer >= 1 and =< [Dimension]");
+      valid = valid && CheckInteger(col, colStr.c_str(), "Col", "Integer >= 1 and =< [Dimension]");
       
       #ifdef DEBUG_PSDIALOG_PARAMETER
-      MessageInterface::ShowMessage(wxT("   valid=%d, row=%d, col=%d\n"), valid, row, col);
-      MessageInterface::ShowMessage(wxT("   mNumRow=%d, mNumCol=%d\n"), mNumRow, mNumCol);
+      MessageInterface::ShowMessage("   valid=%d, row=%d, col=%d\n", valid, row, col);
+      MessageInterface::ShowMessage("   mNumRow=%d, mNumCol=%d\n", mNumRow, mNumCol);
       #endif
       
       if (!valid)
@@ -864,8 +864,8 @@ bool ParameterSelectDialog::AddParameter()
       if (row < 1 || row > mNumRow)
       {
          MessageInterface::PopupMessage
-            (Gmat::ERROR_, wxT("Row index \"%s\" is out of range.\n")
-             wxT("Valid range is between 1 and %d\n"), rowStr.c_str(), mNumRow);
+            (Gmat::ERROR_, "Row index \"%s\" is out of range.\n"
+             "Valid range is between 1 and %d\n", rowStr.c_str(), mNumRow);
          valid = false;
       }
       
@@ -873,8 +873,8 @@ bool ParameterSelectDialog::AddParameter()
       if (col < 1 || col > mNumCol)
       {
          MessageInterface::PopupMessage
-            (Gmat::ERROR_, wxT("Column index \"%s\" is out of range.\n")
-             wxT("Valid range is between 1 and %d\n"), colStr.c_str(), mNumCol);
+            (Gmat::ERROR_, "Column index \"%s\" is out of range.\n"
+             "Valid range is between 1 and %d\n", colStr.c_str(), mNumCol);
          valid = false;
       }
       
@@ -882,10 +882,10 @@ bool ParameterSelectDialog::AddParameter()
          return false;
       
       wxString arrayStr = GetObjectSelection();
-      wxString arrayElem = arrayStr + wxT("(") + rowStr + wxT(",") + colStr + wxT(")");
+      wxString arrayElem = arrayStr + "(" + rowStr + "," + colStr + ")";
       
       #ifdef DEBUG_PSDIALOG_PARAMETER
-      MessageInterface::ShowMessage(wxT("   adding %s\n"), arrayElem.c_str());
+      MessageInterface::ShowMessage("   adding %s\n", arrayElem.c_str());
       #endif
       
       AddParameter(arrayElem);
@@ -896,7 +896,7 @@ bool ParameterSelectDialog::AddParameter()
    wxString newParam = FormParameterName();
    
    // if newParam is properly created
-   if (newParam != wxT(""))
+   if (newParam != "")
    {
       // Create a system paramete if it does not exist
       if (mAllowSysParam && mCreateParam)
@@ -904,7 +904,7 @@ bool ParameterSelectDialog::AddParameter()
          Parameter *param = GetParameter(newParam);
          if (param == NULL)
          {
-            wxLogMessage(wxT("Cannot create a Parameter %s."), newParam.c_str());
+            wxLogMessage("Cannot create a Parameter %s.", newParam.c_str());
             return false;
          }
       }
@@ -914,7 +914,7 @@ bool ParameterSelectDialog::AddParameter()
    }
    
    #ifdef DEBUG_PSDIALOG_PARAMETER
-   MessageInterface::ShowMessage(wxT("AddParameter() returning false\n"));
+   MessageInterface::ShowMessage("AddParameter() returning false\n");
    #endif
    
    return false;
@@ -927,7 +927,7 @@ bool ParameterSelectDialog::AddParameter()
 void ParameterSelectDialog::AddParameter(const wxString &param)
 {
    #ifdef DEBUG_PSDIALOG_PARAMETER
-   MessageInterface::ShowMessage(wxT("AddParameter() param=<%s>\n"), param.c_str());
+   MessageInterface::ShowMessage("AddParameter() param=<%s>\n", param.c_str());
    #endif
    
    // if the string wasn't found in the selected list, insert it
@@ -948,7 +948,7 @@ void ParameterSelectDialog::AddParameter(const wxString &param)
 bool ParameterSelectDialog::AddMultipleSelections()
 {
    #ifdef DEBUG_PSDIALOG_MULTI_SELECT
-   MessageInterface::ShowMessage(wxT("AddMultipleSelections() entered\n"));
+   MessageInterface::ShowMessage("AddMultipleSelections() entered\n");
    #endif
    
    wxString objType = mObjectTypeComboBox->GetValue();
@@ -958,12 +958,12 @@ bool ParameterSelectDialog::AddMultipleSelections()
    
    // add multiple selections if entire object is selected
    if (mEntireObjectCheckBox->GetValue() == true ||
-       objType == wxT("Variable") || objType == wxT("String"))
+       objType == "Variable" || objType == "String")
    {
       count = mObjectListBox->GetSelections(selections);
       
       #ifdef DEBUG_PSDIALOG_MULTI_SELECT
-      MessageInterface::ShowMessage(wxT("   entire object selection=%d\n"), count);
+      MessageInterface::ShowMessage("   entire object selection=%d\n", count);
       #endif
       
       if (count > 0)
@@ -971,7 +971,7 @@ bool ParameterSelectDialog::AddMultipleSelections()
          for (int i=0; i<count; i++)
          {
             #ifdef DEBUG_PSDIALOG_MULTI_SELECT
-            MessageInterface::ShowMessage(wxT("   setting selection %d\n"), selections[i]);
+            MessageInterface::ShowMessage("   setting selection %d\n", selections[i]);
             #endif
             
             mObjectListBox->SetSelection(selections[i]);
@@ -990,25 +990,25 @@ bool ParameterSelectDialog::AddMultipleSelections()
    }
    else if (mPropertyListBox->IsEmpty())
    {
-      if (objType == wxT("Array"))
+      if (objType == "Array")
       {
          count = mObjectListBox->GetSelections(selections);
          
          #ifdef DEBUG_PSDIALOG_MULTI_SELECT
-         MessageInterface::ShowMessage(wxT("   array component selection=%d\n"), count);
+         MessageInterface::ShowMessage("   array component selection=%d\n", count);
          #endif
          
          if (AddParameter())
          {
             #ifdef DEBUG_PSDIALOG_MULTI_SELECT
-            MessageInterface::ShowMessage(wxT("AddMultipleSelections() returning true\n"));
+            MessageInterface::ShowMessage("AddMultipleSelections() returning true\n");
             #endif
             return true;
          }
       }
       else
       {
-         MessageInterface::ShowMessage(wxT("==> What could it be?\n"));
+         MessageInterface::ShowMessage("==> What could it be?\n");
       }
    }
    else
@@ -1017,14 +1017,14 @@ bool ParameterSelectDialog::AddMultipleSelections()
       wxArrayInt selections;
       if (mObjectListBox->GetSelections(selections) == 0)
       {
-         wxLogMessage(wxT("Please select an object."));
+         wxLogMessage("Please select an object.");
          return false;
       }
       
       count = mPropertyListBox->GetSelections(selections);
       if (count == 0)
       {
-         wxLogMessage(wxT("Please select a property."));
+         wxLogMessage("Please select a property.");
          return false;
       }
       
@@ -1034,7 +1034,7 @@ bool ParameterSelectDialog::AddMultipleSelections()
       for (int i=0; i<count; i++)
       {
          #ifdef DEBUG_PSDIALOG_MULTI_SELECT
-         MessageInterface::ShowMessage(wxT("   deselecting %d\n"), selections[i]);
+         MessageInterface::ShowMessage("   deselecting %d\n", selections[i]);
          #endif
          mPropertyListBox->Deselect(selections[i]);
       }
@@ -1045,7 +1045,7 @@ bool ParameterSelectDialog::AddMultipleSelections()
       for (int i=0; i<count; i++)
       {
          #ifdef DEBUG_PSDIALOG_MULTI_SELECT
-         MessageInterface::ShowMessage(wxT("   setting selection %d\n"), selections[i]);
+         MessageInterface::ShowMessage("   setting selection %d\n", selections[i]);
          #endif
          
          mPropertyListBox->SetSelection(selections[i]);
@@ -1063,7 +1063,7 @@ bool ParameterSelectDialog::AddMultipleSelections()
    }
    
    #ifdef DEBUG_PSDIALOG_MULTI_SELECT
-   MessageInterface::ShowMessage(wxT("AddMultipleSelections() returning false\n"));
+   MessageInterface::ShowMessage("AddMultipleSelections() returning false\n");
    #endif
    
    return false;
@@ -1078,7 +1078,7 @@ void ParameterSelectDialog::AddAll()
    wxString objType = mObjectTypeComboBox->GetValue();
    bool entireObj = mEntireObjectCheckBox->IsChecked();
    
-   if (objType == wxT("Variable") || objType == wxT("String") || entireObj)
+   if (objType == "Variable" || objType == "String" || entireObj)
    {
       if (mAllowMultiSelect)
       {
@@ -1109,9 +1109,9 @@ void ParameterSelectDialog::AddAll()
       if (mAllowMultiSelect)
       {
          // check if object is selected
-         if (GetObjectSelection() == wxT(""))
+         if (GetObjectSelection() == "")
          {
-            wxLogMessage(wxT("Please select an object."));
+            wxLogMessage("Please select an object.");
          }
          else
          {
@@ -1177,15 +1177,15 @@ void ParameterSelectDialog::ShowArrayInfo(bool show)
 void ParameterSelectDialog::ShowCoordSystem()
 {
    #ifdef DEBUG_PSDIALOG_CS
-   MessageInterface::ShowMessage(wxT("ShowCoordSystem() entered\n"));
+   MessageInterface::ShowMessage("ShowCoordSystem() entered\n");
    #endif
    
-   wxString property = GetPropertySelection().c_str();
+   std::string property = GetPropertySelection().c_str();
    
-   if (property == wxT(""))
+   if (property == "")
    {
       #ifdef DEBUG_PSDIALOG_CS
-      MessageInterface::ShowMessage(wxT("ShowCoordSystem() property is empty, so just retun\n"));
+      MessageInterface::ShowMessage("ShowCoordSystem() property is empty, so just retun\n");
       #endif
       return;
    }
@@ -1193,13 +1193,13 @@ void ParameterSelectDialog::ShowCoordSystem()
    GmatParam::DepObject depObj = ParameterInfo::Instance()->GetDepObjectType(property);
    
    #ifdef DEBUG_PSDIALOG_CS
-   MessageInterface::ShowMessage(wxT("   depObj=%d\n"), depObj);
+   MessageInterface::ShowMessage("   depObj=%d\n", depObj);
    #endif
    
    if (depObj == GmatParam::COORD_SYS)
    {
       mCoordSysLabel->Show();
-      mCoordSysLabel->SetLabel(wxT("Coordinate ") wxT(GUI_ACCEL_KEY) wxT("System"));
+      mCoordSysLabel->SetLabel("Coordinate "GUI_ACCEL_KEY"System");
       
       mCoordSysComboBox->SetStringSelection(mLastCoordSysName);
       
@@ -1213,7 +1213,7 @@ void ParameterSelectDialog::ShowCoordSystem()
    else if (depObj == GmatParam::ORIGIN)
    {
       mCoordSysLabel->Show();
-      mCoordSysLabel->SetLabel(wxT("Central ") wxT(GUI_ACCEL_KEY) wxT("Body"));
+      mCoordSysLabel->SetLabel("Central "GUI_ACCEL_KEY"Body");
       
       // I had to remove mCoordSysComboBox first and then mCentralBodyComboBox,
       // otherwise, mCentralBodyComboBox shows too far to right
@@ -1235,7 +1235,7 @@ void ParameterSelectDialog::ShowCoordSystem()
    }
    
    #ifdef DEBUG_PSDIALOG_CS
-   MessageInterface::ShowMessage(wxT("ShowCoordSystem() exiting\n"));
+   MessageInterface::ShowMessage("ShowCoordSystem() exiting\n");
    #endif
 }
 
@@ -1275,7 +1275,7 @@ void ParameterSelectDialog::DeselectObjects(wxArrayInt &newSelects,
 {
    #ifdef DEBUG_PSDIALOG_MULTI_SELECT
    MessageInterface::ShowMessage
-      (wxT("DeselectObjects() entered, count of newSelects=%d, oldSelects=%d\n"),
+      ("DeselectObjects() entered, count of newSelects=%d, oldSelects=%d\n",
        newSelects.GetCount(), oldSelects.GetCount());
    #endif
    
@@ -1283,7 +1283,7 @@ void ParameterSelectDialog::DeselectObjects(wxArrayInt &newSelects,
    {
       #ifdef DEBUG_PSDIALOG_MULTI_SELECT
       MessageInterface::ShowMessage
-         (wxT("DeselectObjects() only one selection, so just return\n"));
+         ("DeselectObjects() only one selection, so just return\n");
       #endif
       
       return;
@@ -1292,13 +1292,13 @@ void ParameterSelectDialog::DeselectObjects(wxArrayInt &newSelects,
    for (unsigned int i=0; i<oldSelects.GetCount(); i++)
    {
       #ifdef DEBUG_PSDIALOG_MULTI_SELECT
-      MessageInterface::ShowMessage(wxT("   oldSelects[%d]=%d\n"), i, oldSelects[i]);
+      MessageInterface::ShowMessage("   oldSelects[%d]=%d\n", i, oldSelects[i]);
       #endif
       
       for (unsigned int j=0; j<newSelects.GetCount(); j++)
       {
          #ifdef DEBUG_PSDIALOG_MULTI_SELECT
-         MessageInterface::ShowMessage(wxT("   newSelects[%d]=%d\n"), j, newSelects[j]);
+         MessageInterface::ShowMessage("   newSelects[%d]=%d\n", j, newSelects[j]);
          #endif
          
          if (oldSelects[i] == newSelects[j])
@@ -1311,7 +1311,7 @@ void ParameterSelectDialog::DeselectObjects(wxArrayInt &newSelects,
    
    #ifdef DEBUG_PSDIALOG_MULTI_SELECT
    MessageInterface::ShowMessage
-      (wxT("DeselectObjects() exiting, count of newSelects=%d, oldSelects=%d\n"),
+      ("DeselectObjects() exiting, count of newSelects=%d, oldSelects=%d\n",
        newSelects.GetCount(), oldSelects.GetCount());
    #endif
 }
@@ -1328,7 +1328,7 @@ int ParameterSelectDialog::GetLastPropertySelection()
    
    #ifdef DEBUG_PSDIALOG_PROPERTY
    MessageInterface::ShowMessage
-      (wxT("GetLastPropertySelection() newCount=%d, oldCount=%d\n"), newCount,
+      ("GetLastPropertySelection() newCount=%d, oldCount=%d\n", newCount,
        mLastPropertySelections.GetCount());
    #endif
    
@@ -1352,7 +1352,7 @@ int ParameterSelectDialog::GetLastPropertySelection()
    
    #ifdef DEBUG_PSDIALOG_PROPERTY
    MessageInterface::ShowMessage
-      (wxT("GetLastPropertySelection() return %d\n"), lastSelect);
+      ("GetLastPropertySelection() return %d\n", lastSelect);
    #endif
    
    return lastSelect;
@@ -1373,7 +1373,7 @@ int ParameterSelectDialog::GetLastPropertySelection()
 wxString ParameterSelectDialog::GetObjectSelection()
 {
    #ifdef DEBUG_PSDIALOG_OBJECT
-   MessageInterface::ShowMessage(wxT("GetObjectSelection() entered\n"));
+   MessageInterface::ShowMessage("GetObjectSelection() entered\n");
    #endif
    
    wxString object;
@@ -1385,14 +1385,14 @@ wxString ParameterSelectDialog::GetObjectSelection()
       
       #ifdef DEBUG_PSDIALOG_OBJECT
       MessageInterface::ShowMessage
-         (wxT("   oldCount=%d, newCount=%d\n"), oldCount, newCount);
+         ("   oldCount=%d, newCount=%d\n", oldCount, newCount);
       #endif
       
       wxString objectType = mObjectTypeComboBox->GetValue();
       
       // check if only one selections is allowed, if so deselect one one
-      if (objectType == wxT("Array") || objectType == wxT("Spacecraft") ||
-          objectType == wxT("ImpulsiveBurn"))
+      if (objectType == "Array" || objectType == "Spacecraft" ||
+          objectType == "ImpulsiveBurn")
       {
          // allow only one selection if not entire object selection
          if (oldCount > 0 && mEntireObjectCheckBox->GetValue() == false)
@@ -1400,7 +1400,7 @@ wxString ParameterSelectDialog::GetObjectSelection()
          
          #ifdef DEBUG_PSDIALOG_OBJECT
          MessageInterface::ShowMessage
-            (wxT("   selected count=%d\n"), selections.GetCount());
+            ("   selected count=%d\n", selections.GetCount());
          #endif
          
          if (newCount > 0)
@@ -1420,7 +1420,7 @@ wxString ParameterSelectDialog::GetObjectSelection()
    }
    
    #ifdef DEBUG_PSDIALOG_OBJECT
-   MessageInterface::ShowMessage(wxT("GetObjectSelection() returning %s\n"),
+   MessageInterface::ShowMessage("GetObjectSelection() returning %s\n",
                                  object.c_str());
    #endif
    
@@ -1441,7 +1441,7 @@ wxString ParameterSelectDialog::GetPropertySelection()
 {
    #ifdef DEBUG_PSDIALOG_PROPERTY
    MessageInterface::ShowMessage
-      (wxT("GetPropertySelection() entered, mIsAddingMode=%d\n"), mIsAddingMode);
+      ("GetPropertySelection() entered, mIsAddingMode=%d\n", mIsAddingMode);
    #endif
    
    wxString property;
@@ -1469,7 +1469,7 @@ wxString ParameterSelectDialog::GetPropertySelection()
    }
    
    #ifdef DEBUG_PSDIALOG_PROPERTY
-   MessageInterface::ShowMessage(wxT("GetPropertySelection() returning %s\n"),
+   MessageInterface::ShowMessage("GetPropertySelection() returning %s\n",
                                  property.c_str());
    #endif
    
@@ -1484,16 +1484,16 @@ wxString ParameterSelectDialog::FormParameterName()
 {
    #ifdef DEBUG_PSDIALOG_PARAMETER
    MessageInterface::ShowMessage
-      (wxT("ParameterSelectDialog::FormParameterName() entered\n"));
+      ("ParameterSelectDialog::FormParameterName() entered\n");
    #endif
    
    bool selectEntireObject = mEntireObjectCheckBox->IsChecked();
    
    // make sure object is selected
-   if (GetObjectSelection() == wxT(""))
+   if (GetObjectSelection() == "")
    {
-      wxLogMessage(wxT("Please select an object."));
-      return wxT("");
+      wxLogMessage("Please select an object.");
+      return "";
    }
    
    wxString typeName = mObjectTypeComboBox->GetValue();
@@ -1501,27 +1501,27 @@ wxString ParameterSelectDialog::FormParameterName()
    
    #ifdef DEBUG_PSDIALOG_PARAMETER
    MessageInterface::ShowMessage
-      (wxT("   type=<%s>, object = <%s>\n"), typeName.c_str(), objectName.c_str());
+      ("   type=<%s>, object = <%s>\n", typeName.c_str(), objectName.c_str());
    #endif
    
    // return whole object or array element
-   if (selectEntireObject || typeName == wxT("Variable") || typeName == wxT("String"))
+   if (selectEntireObject || typeName == "Variable" || typeName == "String")
    {
       return objectName;
    }
-   else if (mObjectTypeComboBox->GetValue() == wxT("Array"))
+   else if (mObjectTypeComboBox->GetValue() == "Array")
    {
-      return objectName + wxT("(1,1)"); //@todo: compose row and col
+      return objectName + "(1,1)"; //@todo: compose row and col
    }
    
    wxString paramName;
-   wxString depObjName = wxT("");
+   wxString depObjName = "";
    wxString propertyName = GetPropertySelection();
    
-   if (propertyName == wxT(""))
+   if (propertyName == "")
    {
-      wxLogMessage(wxT("Please select a property."));
-      return wxT("");
+      wxLogMessage("Please select a property.");
+      return "";
    }
    
    // now compose object.dep.property
@@ -1531,17 +1531,17 @@ wxString ParameterSelectDialog::FormParameterName()
       depObjName = mCentralBodyComboBox->GetValue();
    
    #ifdef DEBUG_PSDIALOG_PARAMETER
-   MessageInterface::ShowMessage(wxT("   property=<%s>\n"), propertyName.c_str());
+   MessageInterface::ShowMessage("   property=<%s>\n", propertyName.c_str());
    #endif
    
-   if (depObjName == wxT(""))
-      paramName = objectName + wxT(".") + propertyName;
+   if (depObjName == "")
+      paramName = objectName + "." + propertyName;
    else
-      paramName = objectName + wxT(".") + depObjName + wxT(".") + propertyName;
+      paramName = objectName + "." + depObjName + "." + propertyName;
    
    #ifdef DEBUG_PSDIALOG_PARAMETER
    MessageInterface::ShowMessage
-      (wxT("ParameterSelectDialog::FormParameterName() returning paramName=%s\n"),
+      ("ParameterSelectDialog::FormParameterName() returning paramName=%s\n",
        paramName.c_str());
    #endif
    
@@ -1560,42 +1560,42 @@ wxString ParameterSelectDialog::FormParameterName()
 Parameter* ParameterSelectDialog::GetParameter(const wxString &name)
 {
    Parameter *param = 
-      theGuiInterpreter->GetParameter(wxString(name.c_str()));
+      theGuiInterpreter->GetParameter(std::string(name.c_str()));
    
    // create a parameter if it does not exist
    if (param == NULL)
    {
       #ifdef DEBUG_PSDIALOG_PARAMETER
       MessageInterface::ShowMessage
-         (wxT("ParameterSelectDialog::GetParameter() Creating parameter:<%s>\n"),
+         ("ParameterSelectDialog::GetParameter() Creating parameter:<%s>\n",
           name.c_str());
       #endif
       
-      wxString paramName(name.c_str());
-      wxString objTypeName(mObjectTypeComboBox->GetValue().c_str());
-      wxString objName(GetObjectSelection().c_str());
-      wxString propName(GetPropertySelection().c_str());
-      wxString depObjName = wxT("");
+      std::string paramName(name.c_str());
+      std::string objTypeName(mObjectTypeComboBox->GetValue().c_str());
+      std::string objName(GetObjectSelection().c_str());
+      std::string propName(GetPropertySelection().c_str());
+      std::string depObjName = "";
       
       if (mCoordSysComboBox->IsShown())
-         depObjName = wxString(mCoordSysComboBox->GetValue().c_str());
+         depObjName = std::string(mCoordSysComboBox->GetValue().c_str());
       else if (mCentralBodyComboBox->IsShown())
-         depObjName = wxString(mCentralBodyComboBox->GetValue().c_str());
+         depObjName = std::string(mCentralBodyComboBox->GetValue().c_str());
       
       param = theGuiInterpreter->CreateParameter(propName, paramName);
       
-      if (objTypeName == wxT("Spacecraft"))
+      if (objTypeName == "Spacecraft")
          param->SetRefObjectName(Gmat::SPACECRAFT, objName);
-      else if (objTypeName == wxT("ImpulsiveBurn"))
+      else if (objTypeName == "ImpulsiveBurn")
          param->SetRefObjectName(Gmat::IMPULSIVE_BURN, objName);
       else
          MessageInterface::PopupMessage
-            (Gmat::WARNING_, wxT("*** WARNING *** %s is not a valid object for property %s\n")
-             wxT("There will be no report generated for this parameter.\n"), objTypeName.c_str(),
+            (Gmat::WARNING_, "*** WARNING *** %s is not a valid object for property %s\n"
+             "There will be no report generated for this parameter.\n", objTypeName.c_str(),
              propName.c_str());
       
-      if (depObjName != wxT(""))
-         param->SetStringParameter(wxT("DepObject"), depObjName);
+      if (depObjName != "")
+         param->SetStringParameter("DepObject", depObjName);
       
       if (param->IsCoordSysDependent())
          param->SetRefObjectName(Gmat::COORDINATE_SYSTEM, depObjName);

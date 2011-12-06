@@ -42,7 +42,7 @@ END_EVENT_TABLE()
 // TextEphemFileDialog(wxWindow *parent)
 //------------------------------------------------------------------------------
 TextEphemFileDialog::TextEphemFileDialog(wxWindow *parent)
-   : GmatDialog(parent, -1, wxString(wxT("TextEphemFileDialog")))
+   : GmatDialog(parent, -1, wxString(_T("TextEphemFileDialog")))
 {
    mCreateEphemFile = false;
    
@@ -56,8 +56,8 @@ TextEphemFileDialog::TextEphemFileDialog(wxWindow *parent)
 //------------------------------------------------------------------------------
 TextEphemFileDialog::~TextEphemFileDialog()
 {
-   theGuiManager->UnregisterListBox(wxT("Spacecraft"), mSpacecraftListBox);
-   theGuiManager->UnregisterComboBox(wxT("CoordinateSystem"), mCoordSysComboBox);
+   theGuiManager->UnregisterListBox("Spacecraft", mSpacecraftListBox);
+   theGuiManager->UnregisterComboBox("CoordinateSystem", mCoordSysComboBox);
 }
 
 
@@ -67,7 +67,7 @@ TextEphemFileDialog::~TextEphemFileDialog()
 void TextEphemFileDialog::Create()
 {
    #if DEBUG_EPHEM_FILE_DIALOG
-   MessageInterface::ShowMessage(wxT("TextEphemFileDialog::Create() entered.\n"));
+   MessageInterface::ShowMessage("TextEphemFileDialog::Create() entered.\n");
    #endif
    
    int bsize = 2;
@@ -228,7 +228,7 @@ void TextEphemFileDialog::LoadData()
       mSelectedScListBox->SetStringSelection(scName);
       
       // set default ephemeris  file using spacecraft name
-      wxString fname = scName + wxT("_Ephem.txt");
+      wxString fname = scName + "_Ephem.txt";
       mEphemFileTextCtrl->SetValue(mEphemDirectory.c_str() + fname);
       
       theOkButton->Enable();
@@ -236,7 +236,7 @@ void TextEphemFileDialog::LoadData()
    else
    {
       mEphemFileTextCtrl->SetValue(mEphemDirectory.c_str() +
-                                   wxString(wxT("/TextEphemHeader.txt")));
+                                   wxString("/TextEphemHeader.txt"));
       
       theOkButton->Disable();
    }
@@ -254,7 +254,7 @@ void TextEphemFileDialog::LoadData()
    mEpochFormatComboBox->SetSelection(0);
    
    // Change label
-   theOkButton->SetLabel(wxT("Run and Create Ephemeris File"));
+   theOkButton->SetLabel("Run and Create Ephemeris File");
 }
 
 
@@ -287,7 +287,7 @@ void TextEphemFileDialog::OnButtonClick(wxCommandEvent& event)
 {
    if (event.GetEventObject() == mEphemFileBrowseButton)
    {
-      wxFileDialog dialog(this, wxT("Choose a file"), wxT(""), wxT(""), wxT("*.*"));
+      wxFileDialog dialog(this, _T("Choose a file"), _T(""), _T(""), _T("*.*"));
     
       if (dialog.ShowModal() == wxID_OK)
       {
@@ -296,7 +296,7 @@ void TextEphemFileDialog::OnButtonClick(wxCommandEvent& event)
          mEphemFileTextCtrl->SetInsertionPointEnd();
          #if DEBUG_EPHEM_FILE_DIALOG
          MessageInterface::ShowMessage
-            (wxT("TextEphemFileDialog::OnButtonClick() mEphemDirectory=%s\n"),
+            ("TextEphemFileDialog::OnButtonClick() mEphemDirectory=%s\n",
              mEphemDirectory.c_str());
          #endif
       }
@@ -346,48 +346,48 @@ void TextEphemFileDialog::OnButtonClick(wxCommandEvent& event)
 //------------------------------------------------------------------------------
 bool TextEphemFileDialog::CreateTextEphem()
 {
-   wxString ephemFileName = mEphemFileTextCtrl->GetValue().c_str();
+   std::string ephemFileName = mEphemFileTextCtrl->GetValue().c_str();
    
    TextEphemFile *ephemFile = (TextEphemFile*)(theGuiInterpreter->
-      CreateSubscriber(wxT("TextEphemFile"), wxT("TextEphemFile"), ephemFileName, false));
+      CreateSubscriber("TextEphemFile", "TextEphemFile", ephemFileName, false));
    
    // get first spacecraft from the list
-   wxString scName = mSelectedScListBox->GetString(0).c_str();
-   wxString epochFormat = mEpochFormatComboBox->GetValue().c_str();
-   wxString coordSys = mCoordSysComboBox->GetValue().c_str();
+   std::string scName = mSelectedScListBox->GetString(0).c_str();
+   std::string epochFormat = mEpochFormatComboBox->GetValue().c_str();
+   std::string coordSys = mCoordSysComboBox->GetValue().c_str();
 
    // check interval
    Real interval;
    if (!mIntervalTextCtrl->GetValue().ToDouble(&interval))
    {
-      wxMessageBox(wxT("Invalid Interval Entered."));
+      wxMessageBox("Invalid Interval Entered.");
       return false;
    }
    
    // Add parameters
-   wxString time = scName + wxT(".") + epochFormat;
-   wxString xpos = scName + wxT(".") + coordSys + wxT(".X");
-   wxString ypos = scName + wxT(".") + coordSys + wxT(".Y");
-   wxString zpos = scName + wxT(".") + coordSys + wxT(".Z");
-   wxString xvel = scName + wxT(".") + coordSys + wxT(".VX");
-   wxString yvel = scName + wxT(".") + coordSys + wxT(".VY");
-   wxString zvel = scName + wxT(".") + coordSys + wxT(".VZ");
+   std::string time = scName + "." + epochFormat;
+   std::string xpos = scName + "." + coordSys + ".X";
+   std::string ypos = scName + "." + coordSys + ".Y";
+   std::string zpos = scName + "." + coordSys + ".Z";
+   std::string xvel = scName + "." + coordSys + ".VX";
+   std::string yvel = scName + "." + coordSys + ".VY";
+   std::string zvel = scName + "." + coordSys + ".VZ";
    
    // Create parameters
    try
    {
       theGuiInterpreter->CreateParameter(epochFormat, time, scName);
-      theGuiInterpreter->CreateParameter(wxT("X"), xpos, scName, coordSys);
-      theGuiInterpreter->CreateParameter(wxT("Y"), ypos, scName, coordSys);
-      theGuiInterpreter->CreateParameter(wxT("Z"), zpos, scName, coordSys);
-      theGuiInterpreter->CreateParameter(wxT("VX"), xvel, scName, coordSys);
-      theGuiInterpreter->CreateParameter(wxT("VY"), yvel, scName, coordSys);
-      theGuiInterpreter->CreateParameter(wxT("VZ"), zvel, scName, coordSys);
+      theGuiInterpreter->CreateParameter("X", xpos, scName, coordSys);
+      theGuiInterpreter->CreateParameter("Y", ypos, scName, coordSys);
+      theGuiInterpreter->CreateParameter("Z", zpos, scName, coordSys);
+      theGuiInterpreter->CreateParameter("VX", xvel, scName, coordSys);
+      theGuiInterpreter->CreateParameter("VY", yvel, scName, coordSys);
+      theGuiInterpreter->CreateParameter("VZ", zvel, scName, coordSys);
    }
    catch (BaseException &e)
    {
       MessageInterface::ShowMessage
-         (wxT("TextEphemFileDialog:CreateTextEphem() error occurred!\n%s\n"),
+         ("TextEphemFileDialog:CreateTextEphem() error occurred!\n%s\n",
           e.GetFullMessage().c_str());
 
       return false;
@@ -397,24 +397,24 @@ bool TextEphemFileDialog::CreateTextEphem()
    try
    {
       //ephemFile->SetStringParameter("filename", ephemFileName);
-      ephemFile->SetStringParameter(wxT("Add"), time);
-      ephemFile->SetStringParameter(wxT("Add"), xpos);
-      ephemFile->SetStringParameter(wxT("Add"), ypos);
-      ephemFile->SetStringParameter(wxT("Add"), zpos);
-      ephemFile->SetStringParameter(wxT("Add"), xvel);
-      ephemFile->SetStringParameter(wxT("Add"), yvel);
-      ephemFile->SetStringParameter(wxT("Add"), zvel);
+      ephemFile->SetStringParameter("Add", time);
+      ephemFile->SetStringParameter("Add", xpos);
+      ephemFile->SetStringParameter("Add", ypos);
+      ephemFile->SetStringParameter("Add", zpos);
+      ephemFile->SetStringParameter("Add", xvel);
+      ephemFile->SetStringParameter("Add", yvel);
+      ephemFile->SetStringParameter("Add", zvel);
       
-      ephemFile->SetStringParameter(wxT("EpochFormat"), epochFormat);
-      ephemFile->SetStringParameter(wxT("CoordinateSystem"), coordSys);
-      ephemFile->SetRealParameter(wxT("Interval"), interval);
+      ephemFile->SetStringParameter("EpochFormat", epochFormat);
+      ephemFile->SetStringParameter("CoordinateSystem", coordSys);
+      ephemFile->SetRealParameter("Interval", interval);
       
       #if DEBUG_EPHEM_FILE_DIALOG
       StringArray params = ephemFile->GetRefObjectNameArray(Gmat::PARAMETER);
       MessageInterface::ShowMessage
-         (wxT("TextEphemFileDialog:CreateTextEphem() params=\n"));
+         ("TextEphemFileDialog:CreateTextEphem() params=\n");
       for (UnsignedInt i=0; i<params.size(); i++)
-         MessageInterface::ShowMessage(wxT("%s\n"), params[i].c_str());
+         MessageInterface::ShowMessage("%s\n", params[i].c_str());
       #endif
       
       // Now create element wrappers through ValidateSubscriber() (loj: 2008.03.19)
@@ -423,8 +423,8 @@ bool TextEphemFileDialog::CreateTextEphem()
    catch (BaseException &e)
    {
       MessageInterface::PopupMessage
-         (Gmat::ERROR_, wxT("Cannot generate text ephemeris file. ")
-          wxT("Error occurred!\n%s\n"), e.GetFullMessage().c_str());
+         (Gmat::ERROR_, "Cannot generate text ephemeris file. "
+          "Error occurred!\n%s\n", e.GetFullMessage().c_str());
       
       return false;
    }

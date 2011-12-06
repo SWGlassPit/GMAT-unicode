@@ -69,7 +69,7 @@ GmatApp::GmatApp()
    PlotInterface::SetPlotReceiver(thePlotReceiver);
    
    theModerator = (Moderator *)NULL;
-   scriptToRun = wxT("");
+   scriptToRun = "";
    showMainFrame = true;
    runScript = false;
    runBatch = false;
@@ -92,7 +92,7 @@ bool GmatApp::OnInit()
    wxInitAllImageHandlers();
    
    // set application name
-   SetAppName(wxT("GMAT"));
+   SetAppName("GMAT");
    
 #if wxUSE_PRINTING_ARCHITECTURE
    // initialize print data and setup
@@ -104,7 +104,7 @@ bool GmatApp::OnInit()
    {
       GmatAppData *gmatAppData = GmatAppData::Instance();
       FileManager *fm = FileManager::Instance();
-      wxString startupFile = fm->GetFullStartupFilePath();
+      wxString startupFile = fm->GetFullStartupFilePath().c_str();
       
       // continue work on this (loj: 2008.12.04)
       //@todo: add all files contains gmat_startup_file in
@@ -116,10 +116,10 @@ bool GmatApp::OnInit()
       
       wxArrayString choices;
       choices.Add(startupFile);
-      choices.Add(wxT("Read other startup file"));
-      wxString msg = wxT("Please select GMAT startup file to read");
+      choices.Add("Read other startup file");
+      wxString msg = "Please select GMAT startup file to read";
       int result =
-         wxGetSingleChoiceIndex(msg, wxT("GMAT Startup File"), 
+         wxGetSingleChoiceIndex(msg, "GMAT Startup File", 
                                 choices, NULL, -1, -1, true, 150, 200);
       if (result == 1)
          readOtherStartupFile = true;
@@ -128,9 +128,9 @@ bool GmatApp::OnInit()
       if (readOtherStartupFile)
       {
          wxString filename = 
-            ::wxFileSelector(wxT("Choose GMAT startup file"), wxT(""),
-                             wxT("gmat_startup_file.txt"), wxT("txt"), wxT("*.*"));
-         if (filename != wxT(""))
+            ::wxFileSelector("Choose GMAT startup file", "",
+                             "gmat_startup_file.txt", "txt", "*.*");
+         if (filename != "")
             startupFile = filename;
       }
       //---------------------------------------------------------      
@@ -183,8 +183,8 @@ bool GmatApp::OnInit()
             ::wxInitAllImageHandlers();
             
             //show the splash screen
-            wxString splashFile = theModerator->GetFileName(wxT("SPLASH_FILE"));
-            if (GmatFileUtil::DoesFileExist(splashFile))
+            wxString splashFile = theModerator->GetFileName("SPLASH_FILE").c_str();
+            if (GmatFileUtil::DoesFileExist(splashFile.c_str()))
             {
                wxImage::AddHandler(new wxTIFFHandler);
                wxBitmap *bitmap = new wxBitmap(splashFile, wxBITMAP_TYPE_TIF);
@@ -198,7 +198,7 @@ bool GmatApp::OnInit()
             else
             {
                MessageInterface::ShowMessage
-                  (wxT("*** WARNING *** Can't load SPLASH_FILE from '%s'\n"), splashFile.c_str());
+                  ("*** WARNING *** Can't load SPLASH_FILE from '%s'\n", splashFile.c_str());
             }
          }
          
@@ -206,24 +206,24 @@ bool GmatApp::OnInit()
          
          theMainFrame =
             new GmatMainFrame((wxFrame *)NULL, -1,
-                              wxT("GMAT - General Mission Analysis Tool"),
+                              _T("GMAT - General Mission Analysis Tool"),
                               wxDefaultPosition, size,
                               wxDEFAULT_FRAME_STYLE | wxHSCROLL | wxVSCROLL);
          
          wxDateTime now = wxDateTime::Now();
-         wxString wxNowStr = now.FormatISODate() + wxT(" ") + now.FormatISOTime() + wxT(" ");
-         wxString nowStr = wxNowStr.c_str();
+         wxString wxNowStr = now.FormatISODate() + " " + now.FormatISOTime() + " ";
+         std::string nowStr = wxNowStr.c_str();
          
-         MessageInterface::LogMessage(nowStr + wxT("GMAT GUI successfully launched.\n"));
+         MessageInterface::LogMessage(nowStr + "GMAT GUI successfully launched.\n");
          
          // Show any errors occured during initialization
-         wxString savedMsg = MessageInterface::GetQueuedMessage();
-         if (savedMsg != wxT(""))
+         std::string savedMsg = MessageInterface::GetQueuedMessage();
+         if (savedMsg != "")
             MessageInterface::ShowMessage(savedMsg);
          
          #ifdef DEBUG_GMATAPP
          MessageInterface::ShowMessage
-            (wxT("GmatApp::OnInit() size=%dx%d\n"), size.GetWidth(), size.GetHeight());
+            ("GmatApp::OnInit() size=%dx%d\n", size.GetWidth(), size.GetHeight());
          #endif
          
          // Mac user rather smaller frame and top left corner and show it.
@@ -257,7 +257,7 @@ bool GmatApp::OnInit()
                theMainFrame->Close();
                #ifdef __LINUX__
                   // Linux needs this to complete shutdown
-                  MessageInterface::ShowMessage(wxT("\n"));
+                  MessageInterface::ShowMessage("\n");
                #endif
             }
          }
@@ -292,11 +292,11 @@ bool GmatApp::OnInit()
    catch (BaseException &e)
    {
       wxDateTime now = wxDateTime::Now();
-      wxString wxNowStr = now.FormatISODate() + wxT(" ") + now.FormatISOTime() + wxT(" ");
-      wxString nowStr = wxNowStr.c_str();
+      wxString wxNowStr = now.FormatISODate() + " " + now.FormatISOTime() + " ";
+      std::string nowStr = wxNowStr.c_str();
       
       MessageInterface::LogMessage
-         (nowStr + wxT("Error encountered while launching GMAT GUI.\n\n"));
+         (nowStr + "Error encountered while launching GMAT GUI.\n\n");
       
       MessageInterface::LogMessage(e.GetFullMessage());
       return false;
@@ -304,11 +304,11 @@ bool GmatApp::OnInit()
    catch (...)
    {
       wxDateTime now = wxDateTime::Now();
-      wxString wxNowStr = now.FormatISODate() + wxT(" ") + now.FormatISOTime() + wxT(" ");
-      wxString nowStr = wxNowStr.c_str();
+      wxString wxNowStr = now.FormatISODate() + " " + now.FormatISOTime() + " ";
+      std::string nowStr = wxNowStr.c_str();
       
       MessageInterface::LogMessage
-         (nowStr + wxT("Unknown error encountered while launching GMAT GUI.\n\n"));
+         (nowStr + "Unknown error encounted while launching GMAT GUI.\n\n");
       return false;
    }
 }
@@ -331,10 +331,10 @@ int GmatApp::OnExit()
 #endif // wxUSE_PRINTING_ARCHITECTURE
    
    wxDateTime now = wxDateTime::Now();
-   wxString wxNowStr = now.FormatISODate() + wxT(" ") + now.FormatISOTime() + wxT(" ");
-   wxString nowStr = wxNowStr;
+   wxString wxNowStr = now.FormatISODate() + " " + now.FormatISOTime() + " ";
+   std::string nowStr = wxNowStr.c_str();
 
-   MessageInterface::LogMessage(nowStr + wxT("GMAT GUI exiting.\n"));
+   MessageInterface::LogMessage(nowStr + "GMAT GUI exiting.\n");
    
    return 0;
 }
@@ -353,7 +353,7 @@ int GmatApp::OnExit()
 //------------------------------------------------------------------------------
 int GmatApp::FilterEvent(wxEvent& event)
 {
-   if (theMainFrame != NULL)
+   if (theMainFrame)
    {
       if (event.GetEventType() == wxEVT_KEY_DOWN)
       {
@@ -383,16 +383,16 @@ int GmatApp::FilterEvent(wxEvent& event)
 void GmatApp::ProcessCommandLineOptions()
 {
    wxString commandLineOptions =
-      wxT("Valid command line options are:\n")
-      wxT("   --help, -h              Shows available options\n")
-      wxT("   --version, -v           Shows GMAT build date\n")
-      wxT("   --start-server          Starts GMAT server on start-up\n")
-      wxT("   --run, -r <scriptname>  Builds and runs the script\n")
-      wxT("   --minimize, -m          Minimizes GMAT window\n")
-      wxT("   --exit, -x              Exits GMAT after a script is run\n\n");
+      "Valid command line options are:\n"
+      "   --help, -h              Shows available options\n"
+      "   --version, -v           Shows GMAT build date\n"
+      "   --start-server          Starts GMAT server on start-up\n"
+      "   --run, -r <scriptname>  Builds and runs the script\n"
+      "   --minimize, -m          Minimizes GMAT window\n"
+      "   --exit, -x              Exits GMAT after a script is run\n\n";
 
    #ifdef DEBUG_CMD_LINE
-   MessageInterface::ShowMessage(wxT("argc = %d\n"), argc);
+   MessageInterface::ShowMessage("argc = %d\n", argc);
    #endif
    
    // Handle any command line arguments
@@ -400,60 +400,60 @@ void GmatApp::ProcessCommandLineOptions()
    {
       for (int i = 1; i < argc; ++i)
       {
-         wxString arg = argv[i];
+         std::string arg = argv[i];
          #ifdef DEBUG_CMD_LINE
-         MessageInterface::ShowMessage(wxT("arg = %s\n"), arg.c_str());
+         MessageInterface::ShowMessage("arg = %s\n", arg.c_str());
          #endif
 //         if (arg == "-ms")
-         if (arg == wxT("--start-server"))
+         if (arg == "--start-server")
          {
             startMatlabServer = true;
          }
 //         else if (arg == "-date")
-         else if ((arg == wxT("--version")) || (arg == wxT("-v")))
+         else if ((arg == "--version") || (arg == "-v"))
          {
             wxString buildDate;
-            buildDate.Printf(wxT("Build Date: %s %s\n"), wxT(__DATE__), wxT(__TIME__));
+            buildDate.Printf("Build Date: %s %s\n", __DATE__, __TIME__);
             MessageInterface::ShowMessage(buildDate.c_str());
          }
 //         else if (arg == "-br")
-         else if ((arg == wxT("--run")) || (arg == wxT("-r")))
+         else if ((arg == "--run") || (arg == "-r"))
          {
             if (argc < 3)
             {
                MessageInterface::ShowMessage
-                  (wxT("Please enter script file name to run\n"));
+                  ("Please enter script file name to run\n");
             }
             else
             {
                scriptToRun = argv[i+1];
                // Replace single quotes
-               scriptToRun.Replace(wxT("'"), wxT(""), true);
+               scriptToRun.Replace("'", "", true);
                runScript = true;
                ++i;
                #ifdef DEBUG_CMD_LINE
-               MessageInterface::ShowMessage(wxT("%s\n"), scriptToRun.c_str());
+               MessageInterface::ShowMessage("%s\n", scriptToRun.c_str());
                #endif
             }
          }
 //         else if (arg == "-help")
-         else if ((arg == wxT("--help")) || (arg == wxT("-h")))
+         else if ((arg == "--help") || (arg == "-h"))
          {
             MessageInterface::ShowMessage(commandLineOptions.c_str());
          }
 //         else if (arg == "-exit")
-         else if ((arg == wxT("--exit")) || (arg == wxT("-x")))
+         else if ((arg == "--exit") || (arg == "-x"))
          {
             GmatGlobal::Instance()->SetRunMode(GmatGlobal::EXIT_AFTER_RUN);
          }
 //         else if (arg == "-minimize")
-         else if ((arg == wxT("--minimize")) || (arg == wxT("-m")))
+         else if ((arg == "--minimize") || (arg == "-m"))
          {
             GmatGlobal::Instance()->SetGuiMode(GmatGlobal::MINIMIZED_GUI);
          }
          else
          {
-            MessageInterface::ShowMessage(wxT("The option \"%s\" is not valid.\n"), arg.c_str());
+            MessageInterface::ShowMessage("The option \"%s\" is not valid.\n", arg.c_str());
             MessageInterface::ShowMessage(commandLineOptions.c_str());
             break;
          }

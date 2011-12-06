@@ -58,7 +58,7 @@ TargetPanel::TargetPanel(wxWindow *parent, GmatCommand *cmd)
 //------------------------------------------------------------------------------
 TargetPanel::~TargetPanel()
 {
-   theGuiManager->UnregisterComboBox(wxT("BoundarySolver"), mSolverComboBox);
+   theGuiManager->UnregisterComboBox("BoundarySolver", mSolverComboBox);
 }
 
 //-------------------------------
@@ -90,7 +90,7 @@ void TargetPanel::Create()
    mSolverComboBox =
       theGuiManager->GetBoundarySolverComboBox(this, ID_COMBO, wxSize(180,-1));
    
-   StringArray options = theCommand->GetStringArrayParameter(wxT("SolveModeOptions"));
+   StringArray options = theCommand->GetStringArrayParameter("SolveModeOptions");
    wxArrayString theOptions;
    
    for (StringArray::iterator i = options.begin(); i != options.end(); ++i)
@@ -100,7 +100,7 @@ void TargetPanel::Create()
       new wxComboBox(this, ID_COMBO, wxT(""), wxDefaultPosition, wxSize(180,-1),
                      theOptions, wxCB_READONLY);
 
-   options = theCommand->GetStringArrayParameter(wxT("ExitModeOptions"));
+   options = theCommand->GetStringArrayParameter("ExitModeOptions");
    theOptions.Clear();
    
    for (StringArray::iterator i = options.begin(); i != options.end(); ++i)
@@ -141,17 +141,17 @@ void TargetPanel::LoadData()
       // Set the pointer for the "Show Script" button
       mObject = theCommand;
       
-      wxString solverName =
-         theCommand->GetStringParameter(theCommand->GetParameterID(wxT("Targeter")));
+      std::string solverName =
+         theCommand->GetStringParameter(theCommand->GetParameterID("Targeter"));
       
       mSolverComboBox->SetValue(solverName.c_str());
        
-      wxString solverMode =
-               theCommand->GetStringParameter(wxT("SolveMode"));
+      std::string solverMode =
+               theCommand->GetStringParameter("SolveMode");
       mSolverModeComboBox->SetValue(solverMode.c_str());
 
-      wxString exitMode =
-               theCommand->GetStringParameter(wxT("ExitMode"));
+      std::string exitMode =
+               theCommand->GetStringParameter("ExitMode");
       mExitModeComboBox->SetValue(exitMode.c_str());
    }
    catch (BaseException &e)
@@ -168,15 +168,15 @@ void TargetPanel::SaveData()
 {
    try
    {
-      wxString solverName = mSolverComboBox->GetValue().c_str();
-      wxString solverMode = mSolverModeComboBox->GetValue().c_str();
-      wxString exitMode   = mExitModeComboBox->GetValue().c_str();
+      std::string solverName = mSolverComboBox->GetValue().c_str();
+      std::string solverMode = mSolverModeComboBox->GetValue().c_str();
+      std::string exitMode   = mExitModeComboBox->GetValue().c_str();
 
-      theCommand->SetStringParameter(theCommand->GetParameterID(wxT("Targeter")),
+      theCommand->SetStringParameter(theCommand->GetParameterID("Targeter"),
                                      solverName);
-      theCommand->SetStringParameter(theCommand->GetParameterID(wxT("SolveMode")), 
+      theCommand->SetStringParameter(theCommand->GetParameterID("SolveMode"), 
             solverMode);
-      theCommand->SetStringParameter(theCommand->GetParameterID(wxT("ExitMode")), 
+      theCommand->SetStringParameter(theCommand->GetParameterID("ExitMode"), 
             exitMode);
       
       EnableUpdate(false);
@@ -206,5 +206,5 @@ void TargetPanel::OnComboBoxChange(wxCommandEvent& event)
 //------------------------------------------------------------------------------
 void TargetPanel::OnApplyButtonPress(wxCommandEvent& event)
 {
-   theCommand->TakeAction(wxT("ApplyCorrections"));
+   theCommand->TakeAction("ApplyCorrections");
 }

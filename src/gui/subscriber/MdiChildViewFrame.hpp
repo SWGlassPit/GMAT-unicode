@@ -118,8 +118,8 @@ public:
                         CoordinateSystem *viewCs,
                         CoordinateSystem *viewUpCs);
    
-   virtual void SetGl2dDrawingOption(const wxString &centralBodyName,
-                        const wxString &textureMap,
+   virtual void SetGl2dDrawingOption(const std::string &centralBodyName,
+                        const std::string &textureMap,
                         Integer footPrintOption);
    
    virtual void SetGl3dDrawingOption(bool drawEcPlane, bool drawXyPlane,
@@ -132,7 +132,7 @@ public:
    virtual void SetGl3dViewOption(SpacePoint *vpRefObj, SpacePoint *vpVecObj,
                         SpacePoint *vdObj, Real vsFactor,
                         const Rvector3 &vpRefVec, const Rvector3 &vpVec,
-                        const Rvector3 &vdVec, const wxString &upAxis,
+                        const Rvector3 &vdVec, const std::string &upAxis,
                         bool usevpRefVec, bool usevpVec, bool usevdVec);
    
    virtual void SetGlDrawOrbitFlag(const std::vector<bool> &drawArray);
@@ -146,7 +146,7 @@ public:
                         const UnsignedIntArray &scColors, bool solving,
                         Integer solverOption, bool updateCanvas,
                         bool drawing, bool inFunction = false);
-   virtual void TakeAction(const wxString &action);
+   virtual void TakeAction(const std::string &action);
    virtual void InitializePlot();
    virtual void RefreshPlot();
    virtual void DeletePlot();

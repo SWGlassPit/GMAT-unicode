@@ -56,7 +56,7 @@ ForPanel::ForPanel(wxWindow *parent, GmatCommand *cmd)
    mEndIsParam = false;
    mIncrIsParam = false;
    
-   mObjectTypeList.Add(wxT("Spacecraft"));
+   mObjectTypeList.Add("Spacecraft");
    
    Create();
    Show();
@@ -112,14 +112,14 @@ void ForPanel::Create()
    conditionGrid->SetColSize(END_COL, 125);
 #endif
 
-   conditionGrid->SetColLabelValue(INDEX_SEL_COL, wxT(""));
-   conditionGrid->SetColLabelValue(INDEX_COL, wxT("Index"));
-   conditionGrid->SetColLabelValue(START_SEL_COL, wxT(""));
-   conditionGrid->SetColLabelValue(START_COL, wxT("Start"));
-   conditionGrid->SetColLabelValue(INCR_SEL_COL, wxT(""));
-   conditionGrid->SetColLabelValue(INCR_COL, wxT("Increment"));
-   conditionGrid->SetColLabelValue(END_SEL_COL, wxT(""));
-   conditionGrid->SetColLabelValue(END_COL, wxT("End"));
+   conditionGrid->SetColLabelValue(INDEX_SEL_COL, _T(""));
+   conditionGrid->SetColLabelValue(INDEX_COL, _T("Index"));
+   conditionGrid->SetColLabelValue(START_SEL_COL, _T(""));
+   conditionGrid->SetColLabelValue(START_COL, _T("Start"));
+   conditionGrid->SetColLabelValue(INCR_SEL_COL, _T(""));
+   conditionGrid->SetColLabelValue(INCR_COL, _T("Increment"));
+   conditionGrid->SetColLabelValue(END_SEL_COL, _T(""));
+   conditionGrid->SetColLabelValue(END_COL, _T("End"));
    
    conditionGrid->SetRowLabelSize(0);
    
@@ -130,10 +130,10 @@ void ForPanel::Create()
    conditionGrid->SetCellBackgroundColour(0, START_SEL_COL, *wxLIGHT_GREY);
    conditionGrid->SetCellBackgroundColour(0, INCR_SEL_COL, *wxLIGHT_GREY);
    conditionGrid->SetCellBackgroundColour(0, END_SEL_COL, *wxLIGHT_GREY);
-   conditionGrid->SetCellValue(0, INDEX_SEL_COL, wxT("  ... "));
-   conditionGrid->SetCellValue(0, START_SEL_COL, wxT("  ... "));
-   conditionGrid->SetCellValue(0, INCR_SEL_COL, wxT("  ... "));
-   conditionGrid->SetCellValue(0, END_SEL_COL, wxT("  ... "));
+   conditionGrid->SetCellValue(0, INDEX_SEL_COL, _T("  ... "));
+   conditionGrid->SetCellValue(0, START_SEL_COL, _T("  ... "));
+   conditionGrid->SetCellValue(0, INCR_SEL_COL, _T("  ... "));
+   conditionGrid->SetCellValue(0, END_SEL_COL, _T("  ... "));
    
    // wx*Sizers
    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
@@ -149,7 +149,7 @@ void ForPanel::Create()
 void ForPanel::LoadData()
 {
    #if DEBUG_FOR_PANEL_LOAD
-   MessageInterface::ShowMessage(wxT("ForPanel::LoadData() entered\n"));
+   MessageInterface::ShowMessage("ForPanel::LoadData() entered\n");
    #endif
    
    // Set the pointer for the "Show Script" button
@@ -163,16 +163,16 @@ void ForPanel::LoadData()
       Integer paramId;
       wxString str;
 
-      paramId = theForCommand->GetParameterID(wxT("IndexName"));
+      paramId = theForCommand->GetParameterID("IndexName");
       mIndexString = theForCommand->GetStringParameter(paramId).c_str();
 
-      paramId = theForCommand->GetParameterID(wxT("StartName"));
+      paramId = theForCommand->GetParameterID("StartName");
       mStartString = theForCommand->GetStringParameter(paramId).c_str();
 
-      paramId = theForCommand->GetParameterID(wxT("EndName"));
+      paramId = theForCommand->GetParameterID("EndName");
       mEndString = theForCommand->GetStringParameter(paramId).c_str();
 
-      paramId = theForCommand->GetParameterID(wxT("IncrementName"));
+      paramId = theForCommand->GetParameterID("IncrementName");
       mIncrString = theForCommand->GetStringParameter(paramId).c_str();
       
       conditionGrid->SetCellValue(0, INDEX_COL, mIndexString);
@@ -194,7 +194,7 @@ void ForPanel::LoadData()
 void ForPanel::SaveData()
 {
    #if DEBUG_FOR_PANEL_SAVE
-   MessageInterface::ShowMessage(wxT("ForPanel::SaveData() entered\n"));
+   MessageInterface::ShowMessage("ForPanel::SaveData() entered\n");
    #endif
    
    canClose = true;
@@ -202,14 +202,14 @@ void ForPanel::SaveData()
    //-----------------------------------------------------------------
    // check input values: Number, Variable, Array element, Parameter
    //-----------------------------------------------------------------
-   CheckVariable(mIndexString.c_str(), Gmat::SPACECRAFT, wxT("Index"),
-                 wxT("Variable"), false);
-   CheckVariable(mStartString.c_str(), Gmat::SPACECRAFT, wxT("Start"),
-                 wxT("Real Number, Variable, Array element, plottable Parameter"), true);
-   CheckVariable(mIncrString.c_str(), Gmat::SPACECRAFT, wxT("Increment"),
-                 wxT("Real Number, Variable, Array element, plottable Parameter"), true);
-   CheckVariable(mEndString.c_str(), Gmat::SPACECRAFT, wxT("End"),
-                 wxT("Real Number, Variable, Array element, plottable Parameter"), true);
+   CheckVariable(mIndexString.c_str(), Gmat::SPACECRAFT, "Index",
+                 "Variable", false);
+   CheckVariable(mStartString.c_str(), Gmat::SPACECRAFT, "Start",
+                 "Real Number, Variable, Array element, plottable Parameter", true);
+   CheckVariable(mIncrString.c_str(), Gmat::SPACECRAFT, "Increment",
+                 "Real Number, Variable, Array element, plottable Parameter", true);
+   CheckVariable(mEndString.c_str(), Gmat::SPACECRAFT, "End",
+                 "Real Number, Variable, Array element, plottable Parameter", true);
    
    if (!canClose)
       return;
@@ -220,16 +220,16 @@ void ForPanel::SaveData()
    try
    {
       Integer paramId;
-      paramId = theForCommand->GetParameterID(wxT("IndexName"));
+      paramId = theForCommand->GetParameterID("IndexName");
       theForCommand->SetStringParameter(paramId, mIndexString.c_str());
       
-      paramId = theForCommand->GetParameterID(wxT("StartName"));
+      paramId = theForCommand->GetParameterID("StartName");
       theForCommand->SetStringParameter(paramId, mStartString.c_str());
       
-      paramId = theForCommand->GetParameterID(wxT("EndName"));
+      paramId = theForCommand->GetParameterID("EndName");
       theForCommand->SetStringParameter(paramId, mEndString.c_str());
       
-      paramId = theForCommand->GetParameterID(wxT("IncrementName"));
+      paramId = theForCommand->GetParameterID("IncrementName");
       theForCommand->SetStringParameter(paramId, mIncrString.c_str());
       
       if (!theGuiInterpreter->ValidateCommand(theForCommand))
@@ -341,7 +341,7 @@ void ForPanel::OnCellValueChange(wxGridEvent& event)
    
    #if DEBUG_FOR_PANEL_CELL
    MessageInterface::ShowMessage
-      (wxT("ForPanel::OnCellValueChange() row=%d, col=%d, value=%s\n"), row, col,
+      ("ForPanel::OnCellValueChange() row=%d, col=%d, value=%s\n", row, col,
        valStr.c_str());
    #endif
    

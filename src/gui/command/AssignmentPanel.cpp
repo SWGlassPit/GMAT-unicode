@@ -44,7 +44,7 @@ AssignmentPanel::AssignmentPanel( wxWindow *parent, GmatCommand *cmd)
    : GmatPanel(parent)
 {
    #if DEBUG_ASSIGNMENT_PANEL
-   MessageInterface::ShowMessage(wxT("AssignmentPanel() entered\n"));
+   MessageInterface::ShowMessage("AssignmentPanel() entered\n");
    #endif
    
    theCommand = (Assignment *)cmd;
@@ -75,7 +75,7 @@ AssignmentPanel::~AssignmentPanel()
 void AssignmentPanel::Create()
 {
    #if DEBUG_ASSIGNMENT_PANEL
-   MessageInterface::ShowMessage(wxT("AssignmentPanel::Create() entered\n"));
+   MessageInterface::ShowMessage("AssignmentPanel::Create() entered\n");
    #endif
    
    int bsize = 2; // bordersize
@@ -87,22 +87,22 @@ void AssignmentPanel::Create()
    wxFlexGridSizer *pageSizer = new wxFlexGridSizer(3, 0, 0);
    
    wxStaticText *mLhsLabel =
-      new wxStaticText( this, ID_TEXT, wxT(GUI_ACCEL_KEY) wxT("Left-Hand Side") );
+      new wxStaticText( this, ID_TEXT, wxT(GUI_ACCEL_KEY"Left-Hand Side") );
    mLhsTextCtrl =
       new wxTextCtrl(this, ID_TEXTCTRL, wxT(""), 
                      wxDefaultPosition, wxSize(150,-1), 0);
-   mLhsTextCtrl->SetToolTip(pConfig->Read(wxT("LeftHandSideHint")));
+   mLhsTextCtrl->SetToolTip(pConfig->Read(_T("LeftHandSideHint")));
    
    wxStaticText *equalSign =
       new wxStaticText(this, ID_TEXT, wxT(" = "),
                        wxDefaultPosition, wxDefaultSize, 0);
    
    wxStaticText *mRhsLabel =
-      new wxStaticText( this, ID_TEXT, wxT(GUI_ACCEL_KEY)wxT("Right-Hand Side")) ;
+      new wxStaticText( this, ID_TEXT, wxT(GUI_ACCEL_KEY"Right-Hand Side") );
    mRhsTextCtrl =
       new wxTextCtrl(this, ID_TEXTCTRL, wxT(""), 
                      wxDefaultPosition, wxSize(400,-1), 0);
-   mRhsTextCtrl->SetToolTip(pConfig->Read(wxT("RightHandSideHint")));
+   mRhsTextCtrl->SetToolTip(pConfig->Read(_T("RightHandSideHint")));
    
    pageSizer->Add(mLhsLabel, 0, wxALIGN_LEFT|wxALL, bsize);
    pageSizer->Add(0, 0, wxALIGN_CENTRE|wxALL, bsize);
@@ -122,7 +122,7 @@ void AssignmentPanel::Create()
 void AssignmentPanel::LoadData()
 {
    #if DEBUG_ASSIGNMENT_PANEL
-   MessageInterface::ShowMessage(wxT("AssignmentPanel::LoadData() entered\n"));
+   MessageInterface::ShowMessage("AssignmentPanel::LoadData() entered\n");
    #endif
    
    mObject = theCommand;
@@ -133,7 +133,7 @@ void AssignmentPanel::LoadData()
    mLhsTextCtrl->SetValue(lhs);
    mRhsTextCtrl->SetValue(rhs);
    
-   if (lhs == wxT("") || rhs == wxT(""))
+   if (lhs == "" || rhs == "")
    {
       // force to call SaveData() for empty LHS and RHS checking
       mIsTextModified = true;
@@ -149,12 +149,12 @@ void AssignmentPanel::SaveData()
 {
    #if DEBUG_ASSIGNMENT_PANEL_SAVE
    MessageInterface::ShowMessage
-      (wxT("AssignmentPanel::SaveData() mIsTextModified=%d\n"), mIsTextModified);
+      ("AssignmentPanel::SaveData() mIsTextModified=%d\n", mIsTextModified);
    #endif
    
    canClose = true;
-   wxString lhs = mLhsTextCtrl->GetValue().c_str();
-   wxString rhs = mRhsTextCtrl->GetValue().c_str();
+   std::string lhs = mLhsTextCtrl->GetValue().c_str();
+   std::string rhs = mRhsTextCtrl->GetValue().c_str();
    
    //-----------------------------------------------------------------
    // check values from text field
@@ -164,10 +164,10 @@ void AssignmentPanel::SaveData()
       Real rval;
       
       // check if it has blank lhs or rhs
-      if (lhs == wxT("") || rhs == wxT(""))
+      if (lhs == "" || rhs == "")
       {
          MessageInterface::PopupMessage
-            (Gmat::ERROR_, wxT("LHS or RHS cannot be blank"));
+            (Gmat::ERROR_, "LHS or RHS cannot be blank");
          canClose = false;
          return;
       }
@@ -176,7 +176,7 @@ void AssignmentPanel::SaveData()
       if (GmatStringUtil::ToReal(lhs, rval))
       {
          MessageInterface::PopupMessage
-            (Gmat::ERROR_, wxT("Left hand side cannot be a number. %f"),
+            (Gmat::ERROR_, "Left hand side cannot be a number. %f",
              rval);
          canClose = false;
       }
@@ -188,8 +188,8 @@ void AssignmentPanel::SaveData()
          if (theGuiInterpreter->GetConfiguredObject(lhs) == NULL)
          {
             MessageInterface::PopupMessage
-               (Gmat::ERROR_, wxT("Left hand side should be an existing Variable ")
-                wxT("or Object Property"));
+               (Gmat::ERROR_, "Left hand side should be an existing Variable "
+                "or Object Property");
             canClose = false;
          }
       }
@@ -203,11 +203,11 @@ void AssignmentPanel::SaveData()
    //-----------------------------------------------------------------
    if (mIsTextModified)
    {
-      wxString genStr = wxT("GMAT ") + mLhsTextCtrl->GetValue() + wxT(" = ") +
+      wxString genStr = "GMAT " + mLhsTextCtrl->GetValue() + " = " +
          mRhsTextCtrl->GetValue();
       
       #if DEBUG_ASSIGNMENT_PANEL_SAVE
-      MessageInterface::ShowMessage(wxT("     genStr=%s\n"), genStr.c_str());
+      MessageInterface::ShowMessage("     genStr=%s\n", genStr.c_str());
       #endif
       
       try

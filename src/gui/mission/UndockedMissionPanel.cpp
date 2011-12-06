@@ -63,7 +63,7 @@ UndockedMissionPanel::~UndockedMissionPanel()
 {
    #ifdef DEBUG_DESTRUCTOR
    MessageInterface::ShowMessage
-      (wxT("UndockedMissionPanel destructor entered, restoring mGmatNotebook=<%p>\n"),
+      ("UndockedMissionPanel destructor entered, restoring mGmatNotebook=<%p>\n",
        mGmatNotebook);
    #endif
    
@@ -80,7 +80,7 @@ MissionTree* UndockedMissionPanel::GetMissionTree()
 {
    #ifdef DEBUG_MISSION_TREE
    MessageInterface::ShowMessage
-      (wxT("UndockedMissionPanel::GetMissionTree() returning <%p>\n"), mMissionTree);
+      ("UndockedMissionPanel::GetMissionTree() returning <%p>\n", mMissionTree);
    #endif
    return mMissionTree;
 }
@@ -107,8 +107,8 @@ void UndockedMissionPanel::SetGmatNotebook(GmatNotebook *notebook)
 {
    #ifdef DEBUG_NOTEBOOK
    MessageInterface::ShowMessage
-      (wxT("UndockedMissionPanel::SetGmatNotebook() this<%p> entered, ")
-       wxT("notebook=<%p>\n"), this, notebook);
+      ("UndockedMissionPanel::SetGmatNotebook() this<%p> entered, "
+       "notebook=<%p>\n", this, notebook);
    #endif
    mGmatNotebook = notebook;
 }
@@ -120,7 +120,7 @@ void UndockedMissionPanel::SetGmatNotebook(GmatNotebook *notebook)
 void UndockedMissionPanel::Create()
 {  
    #ifdef DEBUG_CREATE
-   MessageInterface::ShowMessage(wxT("UndockedMissionPanel::Create() entered\n"));
+   MessageInterface::ShowMessage("UndockedMissionPanel::Create() entered\n");
    #endif
    
    //---------------------------------------------
@@ -136,7 +136,7 @@ void UndockedMissionPanel::Create()
                                   wxSize(180,300), style);
    
    #ifdef DEBUG_CREATE
-   MessageInterface::ShowMessage(wxT("   mMissionTree<%p> created\n"), mMissionTree);
+   MessageInterface::ShowMessage("   mMissionTree<%p> created\n", mMissionTree);
    #endif
    
    //---------------------------------------------
@@ -146,7 +146,7 @@ void UndockedMissionPanel::Create()
       new MissionTreeToolBar(this, wxTB_VERTICAL | wxTB_FLAT);
    
    #ifdef DEBUG_CREATE
-   MessageInterface::ShowMessage(wxT("   mMissionTreeToolBar<%p> created\n"), mMissionTreeToolBar);
+   MessageInterface::ShowMessage("   mMissionTreeToolBar<%p> created\n", mMissionTreeToolBar);
    #endif
    
    //---------------------------------------------
@@ -154,9 +154,9 @@ void UndockedMissionPanel::Create()
    //---------------------------------------------
    int bsize = 2;
    #ifndef __WXMAC__
-      GmatStaticBoxSizer *treeSizer = new GmatStaticBoxSizer( wxVERTICAL, this, wxT("") );
+      GmatStaticBoxSizer *treeSizer = new GmatStaticBoxSizer( wxVERTICAL, this, "" );
       treeSizer->Add(mMissionTree, 1, wxGROW|wxALL, bsize);
-      GmatStaticBoxSizer *treeCtrlSizer = new GmatStaticBoxSizer( wxVERTICAL, this, wxT("") );
+      GmatStaticBoxSizer *treeCtrlSizer = new GmatStaticBoxSizer( wxVERTICAL, this, "" );
       treeCtrlSizer->Add(mMissionTreeToolBar, 0, wxGROW|wxALL, bsize);
    #endif
    
@@ -182,9 +182,9 @@ void UndockedMissionPanel::Create()
 void UndockedMissionPanel::LoadData()
 {
    #ifdef DEBUG_LOAD_DATA
-   MessageInterface::ShowMessage(wxT("UndockedMissionPanel::LoadData() entered\n"));
+   MessageInterface::ShowMessage("UndockedMissionPanel::LoadData() entered\n");
    MessageInterface::ShowMessage
-      (wxT("   Setting MissionTree<%p> to toolbar<%p> and appData<%p>\n"), mMissionTree,
+      ("   Setting MissionTree<%p> to toolbar<%p> and appData<%p>\n", mMissionTree,
        mMissionTreeToolBar, GmatAppData::Instance());
    #endif
    
@@ -192,14 +192,14 @@ void UndockedMissionPanel::LoadData()
    GmatAppData::Instance()->SetMissionTree(mMissionTree);
    
    #ifdef DEBUG_LOAD_DATA
-   MessageInterface::ShowMessage(wxT("   Adding default mission to tree\n"));
+   MessageInterface::ShowMessage("   Adding default mission to tree\n");
    #endif
    
    mMissionTree->AddDefaultMission();
    mMissionTreeToolBar->SetMissionTreeExpandLevel(10);
    
    #ifdef DEBUG_LOAD_DATA
-   MessageInterface::ShowMessage(wxT("UndockedMissionPanel::LoadData() leaving\n"));
+   MessageInterface::ShowMessage("UndockedMissionPanel::LoadData() leaving\n");
    #endif
 }
 
@@ -220,7 +220,7 @@ void UndockedMissionPanel::OnClose(wxCloseEvent& event)
 {
    #ifdef DEBUG_CLOSE
    MessageInterface::ShowMessage
-      (wxT("UndockedMissionPanel::OnClose() entered, mGmatNotebook=<%p>\n"),
+      ("UndockedMissionPanel::OnClose() entered, mGmatNotebook=<%p>\n",
        mGmatNotebook);
    #endif
    

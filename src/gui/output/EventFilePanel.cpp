@@ -70,8 +70,8 @@ EventFilePanel::EventFilePanel(wxWindow *parent, wxString locatorName)
    {
       // show error message
       MessageInterface::ShowMessage
-         (wxT("**** ERROR **** EventFilePanel:Create() the running EventLocator ")
-          wxT("\"%s\" is NULL\n"), locatorName.c_str());
+         ("**** ERROR **** EventFilePanel:Create() the running EventLocator "
+          "\"%s\" is NULL\n", locatorName.c_str());
    }
    
 }
@@ -107,9 +107,9 @@ void EventFilePanel::Create()
       
    // create bottom buttons
    theCloseButton =
-      new wxButton(this, ID_BUTTON_CLOSE, wxT("Close"), wxDefaultPosition, wxDefaultSize, 0);
+      new wxButton(this, ID_BUTTON_CLOSE, "Close", wxDefaultPosition, wxDefaultSize, 0);
    theHelpButton =
-      new wxButton(this, ID_BUTTON_HELP, wxT("Help"), wxDefaultPosition, wxDefaultSize, 0);
+      new wxButton(this, ID_BUTTON_HELP, "Help", wxDefaultPosition, wxDefaultSize, 0);
    
    theGridSizer->Add(mFileContentsTextCtrl, 0, wxGROW | wxALIGN_CENTER | wxALL,
                      borderSize);
@@ -153,30 +153,30 @@ void EventFilePanel::Show()
 //------------------------------------------------------------------------------
 void EventFilePanel::LoadData()
 {
-   wxString filename = theLocator->GetStringParameter(wxT("Filename"));
+   std::string filename = theLocator->GetStringParameter("Filename");
    
    // If filename does not include folder, use output as default
    if ((filename.find('/',0) == std::string::npos) &&
        (filename.find('\\',0) == std::string::npos))
    {
-      wxString fileLocation =
+      std::string fileLocation =
             FileManager::Instance()->GetFullPathname(FileManager::OUTPUT_PATH);
       filename = fileLocation + filename;
    }
 
    wxFile *file = new wxFile();
-   bool mFileExists = file->Exists(filename);
+   bool mFileExists = file->Exists(filename.c_str());
    
    #ifdef DEBUG_REPORT_FILE_PANEL
    MessageInterface::ShowMessage
-      (wxT("===> %p, EventFilePanel::LoadData() filename=%s, mFileExists=%d\n"),
+      ("===> %p, EventFilePanel::LoadData() filename=%s, mFileExists=%d\n",
        theLocator, filename.c_str(), mFileExists);
    #endif
    
    if (mFileExists)
-      mFileContentsTextCtrl->LoadFile(filename);
+      mFileContentsTextCtrl->LoadFile(filename.c_str());
    else
-      mFileContentsTextCtrl->SetValue(wxT(""));
+      mFileContentsTextCtrl->SetValue("");
    
    delete file;
 }

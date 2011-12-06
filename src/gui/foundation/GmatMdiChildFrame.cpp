@@ -73,8 +73,8 @@ GmatMdiChildFrame::GmatMdiChildFrame(wxMDIParentFrame *parent,
 {
    #ifdef DEBUG_MDI_CHILD_FRAME
    MessageInterface::ShowMessage
-      (wxT("GmatMdiChildFrame::GmatMdiChildFrame() entered, type=%d\n    ")
-       wxT("name='%s'\n   title='%s'"), type, name.c_str(), title.c_str());
+      ("GmatMdiChildFrame::GmatMdiChildFrame() entered, type=%d\n    "
+       "name='%s'\n   title='%s'", type, name.c_str(), title.c_str());
    #endif
    
    relativeZOrder          = maxZOrder++;
@@ -111,7 +111,7 @@ GmatMdiChildFrame::GmatMdiChildFrame(wxMDIParentFrame *parent,
    
       #ifdef DEBUG_MENUBAR
       MessageInterface::ShowMessage
-         (wxT("GmatMdiChildFrame::GmatMdiChildFrame() theMenuBarCreated %p\n"), theMenuBar);
+         ("GmatMdiChildFrame::GmatMdiChildFrame() theMenuBarCreated %p\n", theMenuBar);
       #endif
       
       // Commented out so that Window menu works for MdiChildFrame (loj: 2008.02.08)
@@ -125,7 +125,7 @@ GmatMdiChildFrame::GmatMdiChildFrame(wxMDIParentFrame *parent,
    // Enable Edit menu and tools if ScriptFile
    #ifdef DEBUG_UPDATE_GUI_ITEM
    MessageInterface::ShowMessage
-      (wxT("GmatMdiChildFrame() constructor calling UpdateGuiItem()\n"));
+      ("GmatMdiChildFrame() constructor calling UpdateGuiItem()\n");
    #endif
    UpdateGuiItem(1, 0);
    
@@ -133,7 +133,7 @@ GmatMdiChildFrame::GmatMdiChildFrame(wxMDIParentFrame *parent,
    FileManager *fm = FileManager::Instance();
    try
    {
-      wxString iconfile = fm->GetFullPathname(wxT("MAIN_ICON_FILE")).c_str();
+      wxString iconfile = fm->GetFullPathname("MAIN_ICON_FILE").c_str();
       #if defined __WXMSW__
          SetIcon(wxIcon(iconfile, wxBITMAP_TYPE_ICO));
       #elif defined __WXGTK__
@@ -156,7 +156,7 @@ GmatMdiChildFrame::~GmatMdiChildFrame()
 {
    #ifdef DEBUG_MDI_CHILD_FRAME
    MessageInterface::ShowMessage
-      (wxT("GmatMdiChildFrame::~GmatMdiChildFrame() name='%s', title='%s' entered\n"),
+      ("GmatMdiChildFrame::~GmatMdiChildFrame() name='%s', title='%s' entered\n",
        GetName().c_str(), GetTitle().c_str());
    #endif
    
@@ -168,14 +168,14 @@ GmatMdiChildFrame::~GmatMdiChildFrame()
       // Disable Edit menu and tools
       #ifdef DEBUG_UPDATE_GUI_ITEM
       MessageInterface::ShowMessage
-         (wxT("GmatMdiChildFrame() destructor calling UpdateGuiItem()\n"));
+         ("GmatMdiChildFrame() destructor calling UpdateGuiItem()\n");
       #endif
       UpdateGuiItem(2, 0);
    #endif
       
    #ifdef DEBUG_MDI_CHILD_FRAME
    MessageInterface::ShowMessage
-      (wxT("GmatMdiChildFrame::~GmatMdiChildFrame() name='%s', title='%s' exiting\n"),
+      ("GmatMdiChildFrame::~GmatMdiChildFrame() name='%s', title='%s' exiting\n",
        GetName().c_str(), GetTitle().c_str());
    #endif
 }
@@ -338,21 +338,21 @@ void GmatMdiChildFrame::OnActivate(wxActivateEvent &event)
 {
    #ifdef DEBUG_ACTIVATE
    MessageInterface::ShowMessage
-      (wxT("GmatMdiChildFrame::OnActivate() entered, title='%s', mItemType=%d\n"),
+      ("GmatMdiChildFrame::OnActivate() entered, title='%s', mItemType=%d\n",
        GetTitle().c_str(), mItemType);
    #endif
    
    // update both edit and animation tools
    #ifdef DEBUG_UPDATE_GUI_ITEM
    MessageInterface::ShowMessage
-      (wxT("GmatMdiChildFrame()::OnActivate calling UpdateGuiItem()\n"));
+      ("GmatMdiChildFrame()::OnActivate calling UpdateGuiItem()\n");
    #endif
    UpdateGuiItem(1, 1);
    
    relativeZOrder = maxZOrder++;
    #ifdef DEBUG_ACTIVATE
    MessageInterface::ShowMessage
-      (wxT("GmatMdiChildFrame::OnActivate() setting zOrder for %s to %d, and maxZOrder set to %d\n"),
+      ("GmatMdiChildFrame::OnActivate() setting zOrder for %s to %d, and maxZOrder set to %d\n",
        GetTitle().c_str(), relativeZOrder, maxZOrder);
    #endif
    event.Skip();
@@ -366,7 +366,7 @@ void GmatMdiChildFrame::OnClose(wxCloseEvent &event)
 {
    #ifdef DEBUG_CLOSE
    MessageInterface::ShowMessage
-      (wxT("GmatMdiChildFrame::OnClose() entered, mDirty=%d, mOverrideDirty=%d\n"),
+      ("GmatMdiChildFrame::OnClose() entered, mDirty=%d, mOverrideDirty=%d\n",
        mDirty, mOverrideDirty);
    #endif
    
@@ -399,12 +399,12 @@ void GmatMdiChildFrame::OnClose(wxCloseEvent &event)
    {
       #ifdef DEBUG_CLOSE
       MessageInterface::ShowMessage
-         (wxT("   Panel has been changed, show exit confirm message\n"));
+         ("   Panel has been changed, show exit confirm message\n");
       #endif
       
-      if ( wxMessageBox(wxT("There were changes made to \"" + GetTitle() + "\" panel")
-                       wxT(" which will be lost on Close. \nDo you want to close anyway?"),
-                        wxT("Please Confirm Close"),
+      if ( wxMessageBox(_T("There were changes made to \"" + GetTitle() + "\" panel"
+                           " which will be lost on Close. \nDo you want to close anyway?"),
+                        _T("Please Confirm Close"),
                         wxICON_QUESTION | wxYES_NO) != wxYES )
       {
          event.Veto();
@@ -412,7 +412,7 @@ void GmatMdiChildFrame::OnClose(wxCloseEvent &event)
          
          #ifdef DEBUG_CLOSE
          MessageInterface::ShowMessage
-            (wxT("GmatMdiChildFrame::OnClose() exiting, close event was vetoed\n"));
+            ("GmatMdiChildFrame::OnClose() exiting, close event was vetoed\n");
          #endif
          
          return;
@@ -421,13 +421,13 @@ void GmatMdiChildFrame::OnClose(wxCloseEvent &event)
    else
    {
       #ifdef DEBUG_CLOSE
-      MessageInterface::ShowMessage(wxT("   No changes made to panel\n"));
+      MessageInterface::ShowMessage("   No changes made to panel\n");
       #endif
    }
    
    #ifdef DEBUG_CLOSE
    MessageInterface::ShowMessage
-      (wxT("GmatMdiChildFrame::OnClose() will call GmatMainFrame to remove child and exit\n"));
+      ("GmatMdiChildFrame::OnClose() will call GmatMainFrame to remove child and exit\n");
    #endif
    SaveChildPositionAndSize();
    // remove from list of frames
@@ -490,7 +490,7 @@ void GmatMdiChildFrame::SaveChildPositionAndSize()
 //   Integer     w           = (Integer) wxS.GetWidth();
 //   Integer     h           = (Integer) wxS.GetHeight();
 //   MessageInterface::ShowMessage
-//      (wxT("wxP.x = %d, wxP.y = %d, wxS.w = %d, wxS.h = %d\n"), x, y, w, h);
+//      ("wxP.x = %d, wxP.y = %d, wxS.w = %d, wxS.h = %d\n", x, y, w, h);
 //   #endif
 
    int tmpX = -1, tmpY = -1;
@@ -502,15 +502,15 @@ void GmatMdiChildFrame::SaveChildPositionAndSize()
 
    #ifdef DEBUG_PERSISTENCE
    // ======================= begin temporary ==============================
-   MessageInterface::ShowMessage(wxT("*** Size of SCREEN %s is: width = %d, height = %d\n"), mPlotName.c_str(), screenWidth, screenHeight);
-   MessageInterface::ShowMessage(wxT("Position of View plot %s is: x = %d, y = %d\n"), mPlotName.c_str(), tmpX, tmpY);
-   MessageInterface::ShowMessage(wxT("Size of View plot %s is: width = %d, height = %d\n"), mPlotName.c_str(), tmpW, tmpH);
-//   MessageInterface::ShowMessage(wxT("Position of View plot %s in pixels rel. to parent window is: x = %d, y = %d\n"),
+   MessageInterface::ShowMessage("*** Size of SCREEN %s is: width = %d, height = %d\n", mPlotName.c_str(), screenWidth, screenHeight);
+   MessageInterface::ShowMessage("Position of View plot %s is: x = %d, y = %d\n", mPlotName.c_str(), tmpX, tmpY);
+   MessageInterface::ShowMessage("Size of View plot %s is: width = %d, height = %d\n", mPlotName.c_str(), tmpW, tmpH);
+//   MessageInterface::ShowMessage("Position of View plot %s in pixels rel. to parent window is: x = %d, y = %d\n",
 //                                 mPlotName.c_str(), (Integer) tmpX, (Integer) tmpY);
-//   MessageInterface::ShowMessage(wxT("Size of View plot %s in pixels rel. to parent window is: x = %d, y = %d\n"),
+//   MessageInterface::ShowMessage("Size of View plot %s in pixels rel. to parent window is: x = %d, y = %d\n",
 //                                 mPlotName.c_str(), (Integer) tmpW, (Integer) tmpH);
 //   wxPoint tmpPt = ScreenToClient(wxP);
-//   MessageInterface::ShowMessage(wxT("--- Position of View plot %s in client coords is: x = %d, y = %d\n"),
+//   MessageInterface::ShowMessage("--- Position of View plot %s in client coords is: x = %d, y = %d\n",
 //                                 mPlotName.c_str(), (Integer) tmpPt.x, (Integer) tmpPt.y);
    // ======================= end temporary ==============================
    #endif
@@ -523,11 +523,11 @@ void GmatMdiChildFrame::SaveChildPositionAndSize()
    {
       GmatBase *obj =
          (Subscriber*)theGuiInterpreter->GetConfiguredObject(mPlotName.c_str());
-         
-      if (!obj || !obj->IsOfType(wxT("Subscriber")))
+
+      if (!obj || !obj->IsOfType("Subscriber"))
       {
-         wxString errmsg = wxT("Cannot find subscriber ");
-         errmsg += mPlotName + wxT("\n");
+         std::string errmsg = "Cannot find subscriber ";
+         errmsg += mPlotName + "\n";
          throw SubscriberException(errmsg);
       }
       Subscriber *sub = (Subscriber*) obj;
@@ -538,21 +538,21 @@ void GmatMdiChildFrame::SaveChildPositionAndSize()
          MessageInterface::ShowMessage("       Size                   = %12.10f   %12.10f\n", childSize[0], childSize[1]);
          MessageInterface::ShowMessage("       RelativeZOrder         = %d\n", relativeZOrder);
       #endif
-      sub->SetRvectorParameter(sub->GetParameterID(wxT("UpperLeft")), upperLeft);
-      sub->SetRvectorParameter(sub->GetParameterID(wxT("Size")), childSize);
-      sub->SetIntegerParameter(sub->GetParameterID(wxT("RelativeZOrder")), relativeZOrder);
+      sub->SetRvectorParameter(sub->GetParameterID("UpperLeft"), upperLeft);
+      sub->SetRvectorParameter(sub->GetParameterID("Size"), childSize);
+      sub->SetIntegerParameter(sub->GetParameterID("RelativeZOrder"), relativeZOrder);
    }
    else if (mItemType == GmatTree::MISSION_TREE_UNDOCKED)
    {
       // get the config object
       wxFileConfig *pConfig;
       pConfig = (wxFileConfig *) GmatAppData::Instance()->GetPersonalizationConfig();
-      wxString location;
-      location << upperLeft[0] << wxT(" ") << upperLeft[1];
-      wxString size;
-      size << childSize[0] << wxT(" ") << childSize[1];
-      pConfig->Write(wxT("/MissionTree/UpperLeft"), location.c_str());
-      pConfig->Write(wxT("/MissionTree/Size"), size.c_str());
+      std::stringstream location("");
+      location << upperLeft[0] << " " << upperLeft[1];
+      std::stringstream size("");
+      size << childSize[0] << " " << childSize[1];
+      pConfig->Write("/MissionTree/UpperLeft", location.str().c_str());
+      pConfig->Write("/MissionTree/Size", size.str().c_str());
    }
 }
 
@@ -572,7 +572,7 @@ void GmatMdiChildFrame::SetTitle(wxString newTitle)
 wxString GmatMdiChildFrame::GetTitle()
 {
    if (childTitle.IsNull())
-      return wxT("");
+      return "";
    else
       return childTitle;
 }
@@ -599,7 +599,7 @@ void GmatMdiChildFrame::UpdateGuiItem(int updateEdit, int updateAnimation)
 {
    #ifdef DEBUG_UPDATE_GUI_ITEM
    MessageInterface::ShowMessage
-      (wxT("GmatMdiChildFrame::UpdateGuiItem() updateEdit=%d, updateAnimation=%d\n"),
+      ("GmatMdiChildFrame::UpdateGuiItem() updateEdit=%d, updateAnimation=%d\n",
        updateEdit, updateAnimation);
    #endif
    
@@ -607,7 +607,7 @@ void GmatMdiChildFrame::UpdateGuiItem(int updateEdit, int updateAnimation)
    if (toolBar == NULL)
       return;
    
-   int editIndex = theMenuBar->FindMenu(wxT("Edit"));
+   int editIndex = theMenuBar->FindMenu("Edit");
    
    //------------------------------------------------------------
    // update edit from menubar and toolbar
@@ -645,14 +645,14 @@ void GmatMdiChildFrame::UpdateGuiItem(int updateEdit, int updateAnimation)
          toolBar->EnableTool(GmatMenu::TOOL_ANIMATION_FAST, true);
          toolBar->EnableTool(GmatMenu::TOOL_ANIMATION_SLOW, true);
          #ifdef DEBUG_UPDATE_GUI_ITEM
-         MessageInterface::ShowMessage(wxT("   Animation tools enabled\n"));
+         MessageInterface::ShowMessage("   Animation tools enabled\n");
          #endif
       }
       else
       {
          #ifdef DEBUG_UPDATE_GUI_ITEM
          MessageInterface::ShowMessage
-            (wxT("   Cannot enable animation tools, mission is still running\n"));
+            ("   Cannot enable animation tools, mission is still running\n");
          #endif
       }
    }
@@ -666,6 +666,6 @@ void GmatMdiChildFrame::UpdateGuiItem(int updateEdit, int updateAnimation)
    
    #ifdef DEBUG_UPDATE_GUI_ITEM
    MessageInterface::ShowMessage
-      (wxT("GmatMdiChildFrame::UpdateGuiItem() exiting\n"));
+      ("GmatMdiChildFrame::UpdateGuiItem() exiting\n");
    #endif
 }

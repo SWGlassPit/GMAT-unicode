@@ -50,7 +50,7 @@ ViewTextFrame::ViewTextFrame(wxFrame *frame, const wxString& title,
 
    // Set additional style wxTE_RICH to Ctrl + mouse scroll wheel to decrease or
    // increase text size(loj: 2009.02.05)
-   mTextCtrl = new wxTextCtrl(this, -1, wxT(""), wxPoint(0, 0), wxSize(0, 0),
+   mTextCtrl = new wxTextCtrl(this, -1, _T(""), wxPoint(0, 0), wxSize(0, 0),
                               wxTE_MULTILINE | wxTE_READONLY | wxTE_DONTWRAP | wxTE_RICH);
    mTextCtrl->SetMaxLength(320000);
    mTextCtrl->SetFont(GmatAppData::Instance()->GetFont());
@@ -64,7 +64,7 @@ ViewTextFrame::ViewTextFrame(wxFrame *frame, const wxString& title,
    FileManager *fm = FileManager::Instance();
    try
    {
-      wxString iconfile = fm->GetFullPathname(wxT("MAIN_ICON_FILE")).c_str();
+      wxString iconfile = fm->GetFullPathname("MAIN_ICON_FILE").c_str();
       #if defined __WXMSW__
          SetIcon(wxIcon(iconfile, wxBITMAP_TYPE_ICO));
       #elif defined __WXGTK__
@@ -87,7 +87,7 @@ ViewTextFrame::ViewTextFrame(wxFrame *frame, const wxString& title,
 //------------------------------------------------------------------------------
 ViewTextFrame::~ViewTextFrame()
 {
-   if (mWindowMode != wxT("Temporary"))
+   if (mWindowMode != "Temporary")
    {
       GmatAppData::Instance()->SetCompareWindow(NULL);
    }
@@ -120,17 +120,17 @@ void ViewTextFrame::OnSaveAs(wxCommandEvent& WXUNUSED(event))
    //MessageInterface::ShowMessage("ViewTextFrame::OnSaveAs() entered\n");
 
    wxString filename;
-   if (mTextType == wxT("Script"))
+   if (mTextType == "Script")
    {
       filename =
-         wxFileSelector(wxT("Choose a file to save"), wxT(""), wxT(""), wxT("script"),
-                        wxT("Script files (*.script)|*.script"), wxSAVE);
+         wxFileSelector("Choose a file to save", "", "", "script",
+                        "Script files (*.script)|*.script", wxSAVE);
    }
    else
    {
       filename =
-         wxFileSelector(wxT("Choose a file to save"), wxT(""), wxT(""), wxT("txt"),
-                        wxT("Report files (*.report)|*.report|Text files (*.txt)|*.txt"),
+         wxFileSelector("Choose a file to save", "", "", "txt",
+                        "Report files (*.report)|*.report|Text files (*.txt)|*.txt",
                         wxSAVE);
    }
 
@@ -145,7 +145,7 @@ void ViewTextFrame::OnSaveAs(wxCommandEvent& WXUNUSED(event))
 //------------------------------------------------------------------------------
 void ViewTextFrame::OnExit(wxCommandEvent& WXUNUSED(event) )
 {
-   if (mWindowMode == wxT("Temporary"))
+   if (mWindowMode == "Temporary")
       Close(true);
    else
       Show(false);
@@ -164,12 +164,12 @@ wxMenuBar* ViewTextFrame::CreateMainMenu()
    wxMenuBar *menuBar = new wxMenuBar;
 
    wxMenu *menuFile = new wxMenu;
-   menuFile->Append(VIEW_TEXT_CLEAR, wxT("&Clear"));
+   menuFile->Append(VIEW_TEXT_CLEAR, _T("&Clear"));
    menuFile->AppendSeparator();
-   menuFile->Append(VIEW_TEXT_SAVE_AS, wxT("&Save As..."));
+   menuFile->Append(VIEW_TEXT_SAVE_AS, _T("&Save As..."));
    menuFile->AppendSeparator();
-   menuFile->Append(VIEW_TEXT_EXIT, wxT("E&xit"));
-   menuBar->Append(menuFile, wxT("&File"));
+   menuFile->Append(VIEW_TEXT_EXIT, _T("E&xit"));
+   menuBar->Append(menuFile, _T("&File"));
 
    return menuBar;
 }

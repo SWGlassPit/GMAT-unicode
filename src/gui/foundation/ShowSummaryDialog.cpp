@@ -72,7 +72,7 @@ ShowSummaryDialog::ShowSummaryDialog(wxWindow *parent, wxWindowID id,
 ShowSummaryDialog::~ShowSummaryDialog()
 {
    coordSysComboBox->Clear();
-   theGuiManager->UnregisterComboBox(wxT("CoordinateSystem"), coordSysComboBox);
+   theGuiManager->UnregisterComboBox("CoordinateSystem", coordSysComboBox);
 }
 
 
@@ -99,15 +99,15 @@ void ShowSummaryDialog::Create()
    {
       pConfig->SetPath(wxT("/Command Summary"));
    }
-   wxString text = wxT("Summary not yet available for this panel");
+   wxString text = "Summary not yet available for this panel";
    // Find the height of a line of test, to use when sizing the text control
    GetTextExtent(text, &w, &h);
 
    // label for coordinate system
    wxStaticText *coordSysStaticText = new wxStaticText( this, ID_CS_TEXT,
-      wxT(GUI_ACCEL_KEY) wxT("Coordinate System"), wxDefaultPosition, wxDefaultSize, 0 );
+      wxT(GUI_ACCEL_KEY"Coordinate System"), wxDefaultPosition, wxDefaultSize, 0 );
    coordSysComboBox =theGuiManager->GetCoordSysComboBox(this, ID_COMBOBOX, wxSize(150,-1));
-   coordSysComboBox->SetToolTip(pConfig->Read(wxT("CoordinateSystemHint")));
+   coordSysComboBox->SetToolTip(pConfig->Read(_T("CoordinateSystemHint")));
 
    /// the coordinate system must have a celestial body as the origin and must
    /// not contain a reference to a spacecraft (e.g. primary, etc.)
@@ -116,11 +116,11 @@ void ShowSummaryDialog::Create()
    wxSize scriptPanelSize(500, 32);
    if (theObject != NULL)
    {
-      theObject->SetupSummary(wxT("EarthMJ2000Eq"), summaryForEntireMission, physicsBasedOnly);
+      theObject->SetupSummary("EarthMJ2000Eq", summaryForEntireMission, physicsBasedOnly);
       if (summaryForEntireMission)
-         text = theObject->GetStringParameter(wxT("MissionSummary")).c_str();
+         text = theObject->GetStringParameter("MissionSummary").c_str();
       else
-         text = theObject->GetStringParameter(wxT("Summary")).c_str();
+         text = theObject->GetStringParameter("Summary").c_str();
 
       // This code is flaky -- text width is height dependent??? -- on Linux:
 //      GetTextExtent(text, &w, &h);
@@ -194,12 +194,12 @@ void ShowSummaryDialog::ResetData()
 //------------------------------------------------------------------------------
 void ShowSummaryDialog::OnComboBoxChange(wxCommandEvent& event)
 {
-   wxString coordSysStr  = coordSysComboBox->GetValue().c_str();
-   wxString    text         = wxT("Summary not yet available for this panel");
+   std::string coordSysStr  = coordSysComboBox->GetValue().c_str();
+   wxString    text         = "Summary not yet available for this panel";
 
    #ifdef DEBUG_CMD_SUMMARY_COMBOBOX
    MessageInterface::ShowMessage
-      (wxT("ShowSummaryDialog::OnComboBoxChange() coordSysStr=%s\n"), coordSysStr.c_str());
+      ("ShowSummaryDialog::OnComboBoxChange() coordSysStr=%s\n", coordSysStr.c_str());
    #endif
 
    //-----------------------------------------------------------------
@@ -208,23 +208,23 @@ void ShowSummaryDialog::OnComboBoxChange(wxCommandEvent& event)
    if (event.GetEventObject() == coordSysComboBox)
    {
       isCoordSysModified          = true;
-      wxString lastCSName      = currentCoordSysName;
+      std::string lastCSName      = currentCoordSysName;
       currentCoordSysName         = coordSysComboBox->GetValue().c_str();
       theObject->SetupSummary(currentCoordSysName, summaryForEntireMission, physicsBasedOnly);
       try
       {
          if (summaryForEntireMission)
-            text = theObject->GetStringParameter(wxT("MissionSummary")).c_str();
+            text = theObject->GetStringParameter("MissionSummary").c_str();
          else
-            text = theObject->GetStringParameter(wxT("Summary")).c_str();
+            text = theObject->GetStringParameter("Summary").c_str();
          theSummary->ChangeValue(text);
       }
       catch (BaseException &e)
       {
          isCoordSysModified  = false;
          currentCoordSysName = lastCSName;
-         wxString errmsg = e.GetFullMessage();
-         errmsg += wxT("Resetting to last valid value: ") + currentCoordSysName + wxT("\n");
+         std::string errmsg = e.GetFullMessage();
+         errmsg += "Resetting to last valid value: " + currentCoordSysName + "\n";
          MessageInterface::PopupMessage(Gmat::ERROR_, errmsg.c_str());
          coordSysComboBox->SetValue(currentCoordSysName.c_str());
 //         canClose = false;
@@ -236,7 +236,7 @@ void ShowSummaryDialog::OnComboBoxChange(wxCommandEvent& event)
 
    #ifdef DEBUG_CMD_SUMMARY_COMBOBOX
    MessageInterface::ShowMessage
-      (wxT("ShowSummaryDialog::OnComboBoxChange() leaving\n"));
+      ("ShowSummaryDialog::OnComboBoxChange() leaving\n");
    #endif
 }
 
@@ -247,8 +247,8 @@ void ShowSummaryDialog::BuildValidCoordinateSystemList()
 {
    CoordinateSystem *tmpCS = NULL;
    SpacePoint       *origin = NULL;
-   wxString      currentCS = coordSysComboBox->GetValue().c_str();
-   wxString      newCS     = currentCS;
+   std::string      currentCS = coordSysComboBox->GetValue().c_str();
+   std::string      newCS     = currentCS;
    Integer          sz;
 
    // The only valid coordinate system for use here:
@@ -269,7 +269,7 @@ void ShowSummaryDialog::BuildValidCoordinateSystemList()
       else if (currentCS == coordSystemNames.at(ii)) newCS = currentCS;
       tmpCS      = (CoordinateSystem*) theGuiInterpreter->GetConfiguredObject(coordSystemNames.at(ii));
       origin     = tmpCS->GetOrigin();
-      if (origin->IsOfType(wxT("CelestialBody")) && (!tmpCS->UsesSpacecraft()))  // add it to the list
+      if (origin->IsOfType("CelestialBody") && (!tmpCS->UsesSpacecraft()))  // add it to the list
          coordSysComboBox->Append(wxString(coordSystemNames[ii].c_str()));
    }
    coordSysComboBox->SetValue(newCS.c_str());

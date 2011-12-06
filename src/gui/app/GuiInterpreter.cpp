@@ -59,7 +59,7 @@ GuiInterpreter::~GuiInterpreter()
 //------------------------------------------------------------------------------
 // bool Interpret(GmatCommand *inCmd, std::istringstream *ss)
 //------------------------------------------------------------------------------
-bool GuiInterpreter::Interpret(GmatCommand *inCmd, wxInputStream *ss)
+bool GuiInterpreter::Interpret(GmatCommand *inCmd, std::istringstream *ss)
 {   
    SetInStream(ss);
    inScriptEvent = true;
@@ -80,9 +80,9 @@ void GuiInterpreter::Finalize()
 
 
 //------------------------------------------------------------------------------
-// GmatBase* GetRunningObject(const wxString &name)
+// GmatBase* GetRunningObject(const std::string &name)
 //------------------------------------------------------------------------------
-GmatBase* GuiInterpreter::GetRunningObject(const wxString &name)
+GmatBase* GuiInterpreter::GetRunningObject(const std::string &name)
 {
    return theModerator->GetInternalObject(name);
 }
@@ -121,30 +121,30 @@ const StringArray& GuiInterpreter::GetListOfAllFactoryItems()
 
 
 //------------------------------------------------------------------------------
-// wxString GetStringOfAllFactoryItemsExcept(const ObjectTypeArray &types)
+// std::string GetStringOfAllFactoryItemsExcept(const ObjectTypeArray &types)
 //------------------------------------------------------------------------------
 /**
- * Return a wxString of all items that can be created except input object types
+ * Return a std::string of all items that can be created except input object types
  *
  * @param <type> object types to be excluded
  *
  * @return list of all creatable items.
  */
 //------------------------------------------------------------------------------
-wxString GuiInterpreter::GetStringOfAllFactoryItemsExcept(const ObjectTypeArray &types)
+std::string GuiInterpreter::GetStringOfAllFactoryItemsExcept(const ObjectTypeArray &types)
 {
    StringArray creatables = theModerator->GetListOfAllFactoryItemsExcept(types);
-   wxString str;
+   std::string str;
    
    for (UnsignedInt i = 0; i < creatables.size(); i++)
-      str = str + creatables[i] + wxT(" ");
+      str = str + creatables[i] + " ";
    
    return str;
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetNewName(const wxString &name, Integer startCount)
+// std::string GetNewName(const std::string &name, Integer startCount)
 //------------------------------------------------------------------------------
 /*
  * It gives new name by adding counter to the input name.
@@ -154,14 +154,14 @@ wxString GuiInterpreter::GetStringOfAllFactoryItemsExcept(const ObjectTypeArray 
  * @return new name
  */
 //------------------------------------------------------------------------------
-wxString GuiInterpreter::GetNewName(const wxString &name, Integer startCount)
+std::string GuiInterpreter::GetNewName(const std::string &name, Integer startCount)
 {
    return theModerator->GetNewName(name, startCount);
 }
 
 
 //------------------------------------------------------------------------------
-// wxString AddClone(const wxString &name)
+// std::string AddClone(const std::string &name)
 //------------------------------------------------------------------------------
 /*
  * Adds the clone of the named object to configuration.
@@ -170,15 +170,15 @@ wxString GuiInterpreter::GetNewName(const wxString &name, Integer startCount)
  * @return new name if object was cloned and added to configuration, blank otherwise
  */
 //------------------------------------------------------------------------------
-wxString GuiInterpreter::AddClone(const wxString &name)
+std::string GuiInterpreter::AddClone(const std::string &name)
 {
    return theModerator->AddClone(name);
 }
 
 
 //------------------------------------------------------------------------------
-// bool RenameObject(Gmat::ObjectType type, const wxString &oldName
-//                   const wxString &newName)
+// bool RenameObject(Gmat::ObjectType type, const std::string &oldName
+//                   const std::string &newName)
 //------------------------------------------------------------------------------
 /**
  * Renames item from the configured list.
@@ -191,15 +191,15 @@ wxString GuiInterpreter::AddClone(const wxString &name)
  */
 //------------------------------------------------------------------------------
 bool GuiInterpreter::RenameObject(Gmat::ObjectType type,
-                                  const wxString &oldName,
-                                  const wxString &newName)
+                                  const std::string &oldName,
+                                  const std::string &newName)
 {
    return theModerator->RenameObject(type, oldName, newName);
 }
 
 
 //------------------------------------------------------------------------------
-// bool RemoveObject(Gmat::ObjectType type, const wxString &name)
+// bool RemoveObject(Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Removes item from the configured list.
@@ -211,14 +211,14 @@ bool GuiInterpreter::RenameObject(Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool GuiInterpreter::RemoveObject(Gmat::ObjectType type,
-                                  const wxString &name)
+                                  const std::string &name)
 {
    return theModerator->RemoveObject(type, name, false);
 }
 
 
 //------------------------------------------------------------------------------
-// bool RemoveItemIfNotUsed(Gmat::ObjectType type, const wxString &name)
+// bool RemoveItemIfNotUsed(Gmat::ObjectType type, const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Removes item from the configured list if it is not used in the mission
@@ -231,7 +231,7 @@ bool GuiInterpreter::RemoveObject(Gmat::ObjectType type,
  */
 //------------------------------------------------------------------------------
 bool GuiInterpreter::RemoveObjectIfNotUsed(Gmat::ObjectType type,
-                                          const wxString &name)
+                                          const std::string &name)
 {
    return theModerator->RemoveObject(type, name, true);
 }
@@ -260,7 +260,7 @@ void GuiInterpreter::ConfigurationChanged(GmatBase *obj, bool tf)
    {
       #ifdef DEBUG_SYNC_STATUS
       MessageInterface::ShowMessage
-         (wxT("GuiInterpreter::ConfigurationChanged() Setting GUI dirty\n"));
+         ("GuiInterpreter::ConfigurationChanged() Setting GUI dirty\n");
       #endif
       mainFrame->UpdateGuiScriptSyncStatus(2, 0); // Set GUI dirty
    }
@@ -287,22 +287,22 @@ void GuiInterpreter::ResetConfigurationChanged(bool resetResource,
 
 
 //------------------------------------------------------------------------------
-// GmatBase* CreateObject(const wxString &type, const wxString &name,
+// GmatBase* CreateObject(const std::string &type, const std::string &name,
 //                        Integer manage, bool createDefault)
 //------------------------------------------------------------------------------
 /**
  * Creates an object by calling Interpreter::CreateObject()
  */
 //------------------------------------------------------------------------------
-GmatBase* GuiInterpreter::CreateObject(const wxString &type,
-                                       const wxString &name,
+GmatBase* GuiInterpreter::CreateObject(const std::string &type,
+                                       const std::string &name,
                                        Integer manage, bool createDefault)
 {
    #if !defined __CONSOLE_APP__
    
    #ifdef DEBUG_SYNC_STATUS
    MessageInterface::ShowMessage
-      (wxT("GuiInterpreter::CreateObject() type='%s', name='%s', Setting GUI dirty\n"),
+      ("GuiInterpreter::CreateObject() type='%s', name='%s', Setting GUI dirty\n",
        type.c_str(), name.c_str());
    #endif
    
@@ -353,7 +353,7 @@ SolarSystem* GuiInterpreter::GetSolarSystemInUse()
 
 
 //------------------------------------------------------------------------------
-// Parameter* GetParameter(const wxString &name)
+// Parameter* GetParameter(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Retrieves a parameter object pointer by given name.
@@ -363,14 +363,14 @@ SolarSystem* GuiInterpreter::GetSolarSystemInUse()
  * @return a parameter object pointer, return null if name not found
  */
 //------------------------------------------------------------------------------
-Parameter* GuiInterpreter::GetParameter(const wxString &name)
+Parameter* GuiInterpreter::GetParameter(const std::string &name)
 {
    return theModerator->GetParameter(name);
 }
 
 
 //------------------------------------------------------------------------------
-// bool Moderator::IsParameter(const wxString &str)
+// bool Moderator::IsParameter(const std::string &str)
 //------------------------------------------------------------------------------
 /**
  * Checks to see if a given type is a Parameter. If str has '.', it parses
@@ -381,15 +381,15 @@ Parameter* GuiInterpreter::GetParameter(const wxString &name)
  * @return true if the type is a registered parameter, false if not.
  */
 //------------------------------------------------------------------------------
-bool GuiInterpreter::IsParameter(const wxString &str)
+bool GuiInterpreter::IsParameter(const std::string &str)
 {
    return theModerator->IsParameter(str);
 }
 
 
 //------------------------------------------------------------------------------
-// Parameter* CreateParameter(const wxString &type, const wxString &name,
-//                            const wxString &ownerName, const wxString &depName
+// Parameter* CreateParameter(const std::string &type, const std::string &name,
+//                            const std::string &ownerName, const std::string &depName
 //                            bool manage = true)
 //------------------------------------------------------------------------------
 /**
@@ -408,10 +408,10 @@ bool GuiInterpreter::IsParameter(const wxString &str)
  *       is created the GUI.
  */
 //------------------------------------------------------------------------------
-Parameter* GuiInterpreter::CreateParameter(const wxString &type, 
-                                           const wxString &name,
-                                           const wxString &ownerName,
-                                           const wxString &depName,
+Parameter* GuiInterpreter::CreateParameter(const std::string &type, 
+                                           const std::string &name,
+                                           const std::string &ownerName,
+                                           const std::string &depName,
                                            bool manage)
 {
    return theModerator->CreateParameter(type, name, ownerName, depName, manage);
@@ -419,9 +419,9 @@ Parameter* GuiInterpreter::CreateParameter(const wxString &type,
 
 
 //------------------------------------------------------------------------------
-// Subscriber* CreateSubscriber(const wxString &type,
-//                              const const wxString &name,
-//                              const wxString &filename = "",
+// Subscriber* CreateSubscriber(const std::string &type,
+//                              const const std::string &name,
+//                              const std::string &filename = "",
 //                              bool createDefault = true)
 //------------------------------------------------------------------------------
 /**
@@ -434,9 +434,9 @@ Parameter* GuiInterpreter::CreateParameter(const wxString &type,
  * @return a subscriber object pointer
  */
 //------------------------------------------------------------------------------
-Subscriber* GuiInterpreter::CreateSubscriber(const wxString &type,
-                                             const wxString &name,
-                                             const wxString &filename,
+Subscriber* GuiInterpreter::CreateSubscriber(const std::string &type,
+                                             const std::string &name,
+                                             const std::string &filename,
                                              bool createDefault)
 {
    // Set object manage option to configuration object
@@ -456,7 +456,7 @@ Integer GuiInterpreter::GetNumberOfActivePlots()
 
 
 //------------------------------------------------------------------------------
-// GmatBase* CreateDefaultPropSetup(const wxString &name)
+// GmatBase* CreateDefaultPropSetup(const std::string &name)
 //------------------------------------------------------------------------------
 /**
  * Creates a default PropSetup object.
@@ -466,14 +466,14 @@ Integer GuiInterpreter::GetNumberOfActivePlots()
  * @return a PropSetup object pointer
  */
 //------------------------------------------------------------------------------
-GmatBase* GuiInterpreter::CreateDefaultPropSetup(const wxString &name)
+GmatBase* GuiInterpreter::CreateDefaultPropSetup(const std::string &name)
 {
    return (GmatBase*)theModerator->CreateDefaultPropSetup(name);
 }
 
-GmatBase* GuiInterpreter::CreateNewODEModel(const wxString &name)
+GmatBase* GuiInterpreter::CreateNewODEModel(const std::string &name)
 {
-   return theModerator->CreateODEModel(wxT("ODEModel"), name);
+   return theModerator->CreateODEModel("ODEModel", name);
 }
 
 //------------------------------------------------------------------------------
@@ -490,12 +490,12 @@ CoordinateSystem* GuiInterpreter::GetInternalCoordinateSystem()
 
 
 //------------------------------------------------------------------------------
-// bool IsDefaultCoordinateSystem(const wxString &name)
+// bool IsDefaultCoordinateSystem(const std::string &name)
 //------------------------------------------------------------------------------
-bool GuiInterpreter::IsDefaultCoordinateSystem(const wxString &name)
+bool GuiInterpreter::IsDefaultCoordinateSystem(const std::string &name)
 {
-   if (name == wxT("EarthMJ2000Eq") || name == wxT("EarthMJ2000Ec") ||
-       name == wxT("EarthFixed"))
+   if (name == "EarthMJ2000Eq" || name == "EarthMJ2000Ec" ||
+       name == "EarthFixed")
       return true;
    else
       return false;
@@ -555,20 +555,20 @@ const StringArray& GuiInterpreter::GetPlanetarySourceTypesInUse()
 //
 //
 ////------------------------------------------------------------------------------
-//// bool SetAnalyticModelToUse(const wxString &modelName)
+//// bool SetAnalyticModelToUse(const std::string &modelName)
 ////------------------------------------------------------------------------------
-//bool GuiInterpreter::SetAnalyticModelToUse(const wxString &modelName)
+//bool GuiInterpreter::SetAnalyticModelToUse(const std::string &modelName)
 //{
 //   return theModerator->SetAnalyticModelToUse(modelName);
 //}
 //
 
 //------------------------------------------------------------------------------
-// bool SetPlanetarySourceName(const wxString &sourceType,
-//                           const wxString &filename)
+// bool SetPlanetarySourceName(const std::string &sourceType,
+//                           const std::string &filename)
 //------------------------------------------------------------------------------
-bool GuiInterpreter::SetPlanetarySourceName(const wxString &sourceType,
-                                          const wxString &filename)
+bool GuiInterpreter::SetPlanetarySourceName(const std::string &sourceType,
+                                          const std::string &filename)
 {
    return theModerator->SetPlanetarySourceName(sourceType, filename);
 }
@@ -588,45 +588,45 @@ Integer GuiInterpreter::SetPlanetarySourceTypesInUse(const StringArray &sourceTy
 
 
 //------------------------------------------------------------------------------
-// wxString GetPlanetarySourceName(const wxString &sourceType)
+// std::string GetPlanetarySourceName(const std::string &sourceType)
 //------------------------------------------------------------------------------
-wxString GuiInterpreter::GetPlanetarySourceName(const wxString &sourceType)
+std::string GuiInterpreter::GetPlanetarySourceName(const std::string &sourceType)
 {
    return theModerator->GetPlanetarySourceName(sourceType);
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetPotentialFileName(const wxString &fileType)
+// std::string GetPotentialFileName(const std::string &fileType)
 //------------------------------------------------------------------------------
-wxString GuiInterpreter::GetPotentialFileName(const wxString &fileType)
+std::string GuiInterpreter::GetPotentialFileName(const std::string &fileType)
 {
    return theModerator->GetPotentialFileName(fileType);
 }
 
 
 //------------------------------------------------------------------------------
-// wxString GetFileName(const wxString &fileType)
+// std::string GetFileName(const std::string &fileType)
 //------------------------------------------------------------------------------
-wxString GuiInterpreter::GetFileName(const wxString &fileType)
+std::string GuiInterpreter::GetFileName(const std::string &fileType)
 {
    return theModerator->GetFileName(fileType);
 }
 
 
 //------------------------------------------------------------------------------
-// GmatBase* CreateStopCondition(const wxString &type, const wxString &name)
+// GmatBase* CreateStopCondition(const std::string &type, const std::string &name)
 //------------------------------------------------------------------------------
-GmatBase* GuiInterpreter::CreateStopCondition(const wxString &type,
-                                              const wxString &name)
+GmatBase* GuiInterpreter::CreateStopCondition(const std::string &type,
+                                              const std::string &name)
 {
    return (GmatBase*)theModerator->CreateStopCondition(type, name);
 }
 
 
 //------------------------------------------------------------------------------
-// GmatCommand* CreateDefaultCommand(const wxString &type,
-//                                   const wxString &name = "",
+// GmatCommand* CreateDefaultCommand(const std::string &type,
+//                                   const std::string &name = "",
 //                                   const GmatCommand *refCmd = NULL)
 //------------------------------------------------------------------------------
 /**
@@ -638,8 +638,8 @@ GmatBase* GuiInterpreter::CreateStopCondition(const wxString &type,
  * @return a command object pointer
  */
 //------------------------------------------------------------------------------
-GmatCommand* GuiInterpreter::CreateDefaultCommand(const wxString &type,
-                                                  const wxString &name,
+GmatCommand* GuiInterpreter::CreateDefaultCommand(const std::string &type,
+                                                  const std::string &name,
                                                   GmatCommand *refCmd)
 {
    return theModerator->CreateDefaultCommand(type, name, refCmd);
@@ -647,11 +647,11 @@ GmatCommand* GuiInterpreter::CreateDefaultCommand(const wxString &type,
 
 
 //------------------------------------------------------------------------------
-// GmatCommand* AppendCommand(const wxString &type, const wxString &name,
+// GmatCommand* AppendCommand(const std::string &type, const std::string &name,
 //                        Integer sandboxNum)
 //------------------------------------------------------------------------------
-GmatCommand* GuiInterpreter::AppendCommand(const wxString &type,
-                                           const wxString &name, bool &retFlag,
+GmatCommand* GuiInterpreter::AppendCommand(const std::string &type,
+                                           const std::string &name, bool &retFlag,
                                            Integer sandboxNum)
 {
    return theModerator->AppendCommand(type, name, retFlag, sandboxNum);
@@ -766,7 +766,7 @@ Integer GuiInterpreter::RunMission(Integer sandboxNum)
 
 
 //------------------------------------------------------------------------------
-// Integer ChangeRunState(const wxString &state, Integer sandboxNum)
+// Integer ChangeRunState(const std::string &state, Integer sandboxNum)
 //------------------------------------------------------------------------------
 /**
  * Calls Moderator to change run state.
@@ -778,15 +778,15 @@ Integer GuiInterpreter::RunMission(Integer sandboxNum)
  *    0 = successful, <0 = error (tbd)
  */
 //------------------------------------------------------------------------------
-Integer GuiInterpreter::ChangeRunState(const wxString &state, Integer sandboxNum)
+Integer GuiInterpreter::ChangeRunState(const std::string &state, Integer sandboxNum)
 {
    return theModerator->ChangeRunState(state, sandboxNum);
 }
 
 
 //------------------------------------------------------------------------------
-// bool InterpretScript(const wxString &filename, bool readBack = false,
-//                      const wxString &newPath = "")
+// bool InterpretScript(const std::string &filename, bool readBack = false,
+//                      const std::string &newPath = "")
 //------------------------------------------------------------------------------
 /**
  * Creates objects from script file.
@@ -798,15 +798,15 @@ Integer GuiInterpreter::ChangeRunState(const wxString &state, Integer sandboxNum
  * @return true if successful; false otherwise
  */
 //------------------------------------------------------------------------------
-bool GuiInterpreter::InterpretScript(const wxString &filename, bool readBack,
-                                     const wxString &newPath)
+bool GuiInterpreter::InterpretScript(const std::string &filename, bool readBack,
+                                     const std::string &newPath)
 {
    return theModerator->InterpretScript(filename, readBack, newPath);
 }
 
 
 //------------------------------------------------------------------------------
-// bool SaveScript(const wxString &filename, Gmat::WriteMode mode)
+// bool SaveScript(const std::string &filename, Gmat::WriteMode mode)
 //------------------------------------------------------------------------------
 /**
  * Builds scripts from objects and write to a file.
@@ -816,7 +816,7 @@ bool GuiInterpreter::InterpretScript(const wxString &filename, bool readBack,
  * @return true if successful; false otherwise
  */
 //------------------------------------------------------------------------------
-bool GuiInterpreter::SaveScript(const wxString &filename,
+bool GuiInterpreter::SaveScript(const std::string &filename,
                                 Gmat::WriteMode mode)
 {
    return theModerator->SaveScript(filename, mode);
@@ -824,7 +824,7 @@ bool GuiInterpreter::SaveScript(const wxString &filename,
 
 
 //------------------------------------------------------------------------------
-// wxString GetScript(Gmat::WriteMode mode)
+// std::string GetScript(Gmat::WriteMode mode)
 //------------------------------------------------------------------------------
 /**
  * Returns Built scripts from objects
@@ -832,7 +832,7 @@ bool GuiInterpreter::SaveScript(const wxString &filename,
  * @return built scripts from objects
  */
 //------------------------------------------------------------------------------
-wxString GuiInterpreter::GetScript(Gmat::WriteMode mode)
+std::string GuiInterpreter::GetScript(Gmat::WriteMode mode)
 {
    return theModerator->GetScript(mode);
 }

@@ -128,7 +128,7 @@ void CelestialBodyPanel::Create()
    }
    catch (BaseException &be)
    {
-      MessageInterface::ShowMessage(wxT("Error creating the CelestialBodyPanel: %s\n"),
+      MessageInterface::ShowMessage("Error creating the CelestialBodyPanel: %s\n",
                                    (be.GetFullMessage()).c_str());
    }
 }
@@ -147,7 +147,7 @@ void CelestialBodyPanel::LoadData()
    catch (BaseException &e)
    {
       MessageInterface::ShowMessage
-         (wxT("CelestialBodyPanel:LoadData() error occurred!\n%s\n"),
+         ("CelestialBodyPanel:LoadData() error occurred!\n%s\n",
             e.GetFullMessage().c_str());
    }
 
@@ -169,7 +169,7 @@ void CelestialBodyPanel::SaveData()
 //      ("CelestialBodyPanel::SaveData() isTextModified=%d, isStateTextModified=%d,"
 //       " isRotDataSourceChanged=%d\n", isTextModified, isStateTextModified,
 //       isRotDataSourceChanged);
-      MessageInterface::ShowMessage(wxT("in CBPanel, origBody = %p, theBody = %p\n"),
+      MessageInterface::ShowMessage("in CBPanel, origBody = %p, theBody = %p\n",
             origCelestialBody, theCelestialBody);
    #endif
    

@@ -179,7 +179,7 @@ ViewCanvas::ViewCanvas(wxWindow *parent, wxWindowID id,
    // Coordinate System
    pInternalCoordSystem = theGuiInterpreter->GetInternalCoordinateSystem();
    mInternalCoordSysName = wxString(pInternalCoordSystem->GetName().c_str());
-   mViewCoordSysName = wxT("");
+   mViewCoordSysName = "";
    pViewCoordSystem = NULL;
    mViewCsIsInternalCs = true;
    
@@ -199,7 +199,7 @@ ViewCanvas::ViewCanvas(wxWindow *parent, wxWindowID id,
 ViewCanvas::~ViewCanvas()
 {
    #ifdef DEBUG_VIEWCANVAS
-   MessageInterface::ShowMessage(wxT("ViewCanvas::~ViewCanvas() '%s' entered\n"), mPlotName.c_str());
+   MessageInterface::ShowMessage("ViewCanvas::~ViewCanvas() '%s' entered\n", mPlotName.c_str());
    #endif
    
    // Cleanup textures
@@ -208,9 +208,9 @@ ViewCanvas::~ViewCanvas()
    {
       GLuint texId = i->second;
       #ifdef DEBUG_VIEWCANVAS
-      MessageInterface::ShowMessage(wxT("   texId = %3d, obj = '%s'\n"), texId, i->first.c_str());
+      MessageInterface::ShowMessage("   texId = %3d, obj = '%s'\n", texId, i->first.c_str());
       #endif
-      if (i->first != wxT("") && texId != GmatPlot::UNINIT_TEXTURE)
+      if (i->first != "" && texId != GmatPlot::UNINIT_TEXTURE)
       {
          glDeleteTextures(1, &texId);
       }
@@ -221,7 +221,7 @@ ViewCanvas::~ViewCanvas()
       delete [] mScImage;
    
    #ifdef DEBUG_VIEWCANVAS
-   MessageInterface::ShowMessage(wxT("ViewCanvas::~ViewCanvas() '%s' leaviing\n"), mPlotName.c_str());
+   MessageInterface::ShowMessage("ViewCanvas::~ViewCanvas() '%s' leaviing\n", mPlotName.c_str());
    #endif
 }
 
@@ -266,7 +266,7 @@ bool ViewCanvas::InitializePlot()
 {
    #ifdef DEBUG_INIT
    MessageInterface::ShowMessage
-      (wxT("\nViewCanvas::InitializePlot() '%s' entered\n"), mPlotName.c_str());
+      ("\nViewCanvas::InitializePlot() '%s' entered\n", mPlotName.c_str());
    #endif
    
    // Add things to do here
@@ -295,7 +295,7 @@ bool ViewCanvas::InitializePlot()
    
    #ifdef DEBUG_INIT
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::InitializePlot() '%s' leaving\n\n"), mPlotName.c_str());
+      ("ViewCanvas::InitializePlot() '%s' leaving\n\n", mPlotName.c_str());
    #endif
    
    return true;
@@ -313,26 +313,26 @@ bool ViewCanvas::InitOpenGL()
 {   
    #ifdef DEBUG_INIT
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::InitOpenGL() '%s' entered, calling InitGL()\n"),
+      ("ViewCanvas::InitOpenGL() '%s' entered, calling InitGL()\n",
        mPlotName.c_str());
    #endif
    
    #ifdef DEBUG_GL_INFO
    char *GL_version = (char*)glGetString(GL_VERSION);
-   MessageInterface::ShowMessage(wxT("   GL version  = '%s'\n"), GL_version);
+   MessageInterface::ShowMessage("   GL version  = '%s'\n", GL_version);
    char *GL_vendor = (char*)glGetString(GL_VENDOR);
-   MessageInterface::ShowMessage(wxT("   GL vendor   = '%s'\n"), GL_vendor);
+   MessageInterface::ShowMessage("   GL vendor   = '%s'\n", GL_vendor);
    char *GL_renderer = (char*)glGetString(GL_RENDERER);
-   MessageInterface::ShowMessage(wxT("   GL renderer = '%s'\n"), GL_renderer);
+   MessageInterface::ShowMessage("   GL renderer = '%s'\n", GL_renderer);
    char *GLU_version = (char*)gluGetString(GLU_VERSION);
-   MessageInterface::ShowMessage(wxT("   GLU version = '%s'\n"), GLU_version);
+   MessageInterface::ShowMessage("   GLU version = '%s'\n", GLU_version);
    #endif
    
    #ifdef DEBUG_GL_MORE_INFO
    char *GL_ext = (char*)glGetString(GL_EXTENSIONS);
    char *GLU_ext = (char*)gluGetString(GLU_EXTENSIONS);
-   MessageInterface::ShowMessage(wxT("   GL extensions = '%s'\n"), GL_ext);
-   MessageInterface::ShowMessage(wxT("   GLU extensions = '%s'\n"), GLU_ext);
+   MessageInterface::ShowMessage("   GL extensions = '%s'\n", GL_ext);
+   MessageInterface::ShowMessage("   GLU extensions = '%s'\n", GLU_ext);
    #endif
    
    InitGL();
@@ -358,7 +358,7 @@ bool ViewCanvas::InitOpenGL()
    
    #ifdef DEBUG_INIT_OPENGL
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::InitOpenGL() '%s' returning true\n"), mPlotName.c_str());
+      ("ViewCanvas::InitOpenGL() '%s' returning true\n", mPlotName.c_str());
    #endif
    
    return true;
@@ -394,7 +394,7 @@ void ViewCanvas::SetGlObject(const StringArray &objNames,
 {
    #if DEBUG_OBJECT
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::SetGlObject() '%s' entered, objCount=%d, colorCount=%d.\n"),
+      ("ViewCanvas::SetGlObject() '%s' entered, objCount=%d, colorCount=%d.\n",
        mPlotName.c_str(), objNames.size(), objOrbitColors.size());
    #endif
    
@@ -423,7 +423,7 @@ void ViewCanvas::SetGlObject(const StringArray &objNames,
          
          #if DEBUG_OBJECT > 1
          MessageInterface::ShowMessage
-            (wxT("   objNames[%d]=%s, objPtr=<%p>%s\n"), i, objNames[i].c_str(),
+            ("   objNames[%d]=%s, objPtr=<%p>%s\n", i, objNames[i].c_str(),
              mObjectArray[i], mObjectArray[i]->GetName().c_str());
          #endif
       }
@@ -432,15 +432,15 @@ void ViewCanvas::SetGlObject(const StringArray &objNames,
    }
    else
    {
-      MessageInterface::ShowMessage(wxT("ViewCanvas::SetGlObject() object sizes ")
-                                    wxT("are not the same. No objects added.\n"));
+      MessageInterface::ShowMessage("ViewCanvas::SetGlObject() object sizes "
+                                    "are not the same. No objects added.\n");
    }
    
    mScCount = scCount;
    
    #if DEBUG_OBJECT
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::SetGlObject() '%s' leaving\n"), mPlotName.c_str());
+      ("ViewCanvas::SetGlObject() '%s' leaving\n", mPlotName.c_str());
    #endif
 }
 
@@ -464,14 +464,14 @@ void ViewCanvas::SetGlCoordSystem(CoordinateSystem *internalCs,
 {
    #if DEBUG_CS
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::SetGlCoordSystem() '%s' entered, internalCs=<%p>, viewCs=<%p>, ")
-       wxT(" viweUpCs=%p\n"),  mPlotName.c_str(), internalCs, viewCs, viewUpCs);
+      ("ViewCanvas::SetGlCoordSystem() '%s' entered, internalCs=<%p>, viewCs=<%p>, "
+       " viweUpCs=%p\n",  mPlotName.c_str(), internalCs, viewCs, viewUpCs);
    #endif
    
    if (internalCs == NULL || viewCs == NULL || viewUpCs == NULL)
    {
       throw SubscriberException
-         (wxT("Internal or View or View Up CoordinateSystem is NULL\n")); 
+         ("Internal or View or View Up CoordinateSystem is NULL\n"); 
    }
    
    pInternalCoordSystem = internalCs;
@@ -498,11 +498,11 @@ void ViewCanvas::SetGlCoordSystem(CoordinateSystem *internalCs,
    
    #if DEBUG_CS
    MessageInterface::ShowMessage
-      (wxT("   mViewCoordSysName=%s, pViewCoordSystem=%p, mOriginName=%s, ")
-       wxT("mOriginId=%d\n"), mViewCoordSysName.c_str(), pViewCoordSystem,
+      ("   mViewCoordSysName=%s, pViewCoordSystem=%p, mOriginName=%s, "
+       "mOriginId=%d\n", mViewCoordSysName.c_str(), pViewCoordSystem,
        mOriginName.c_str(),  mOriginId);
    MessageInterface::ShowMessage
-      (wxT("   mViewUpCoordSysName=%s, mViewObjName=%s, mViewObjId=%d\n"),
+      ("   mViewUpCoordSysName=%s, mViewObjName=%s, mViewObjId=%d\n",
        mViewUpCoordSysName.c_str(), mViewObjName.c_str(), mViewObjId);
    #endif
    
@@ -510,11 +510,11 @@ void ViewCanvas::SetGlCoordSystem(CoordinateSystem *internalCs,
 
 
 //---------------------------------------------------------------------------
-// void SetGl2dDrawingOption(const wxString &centralBodyName,
-//         const wxString &textureMap, bool drawFootPrints)
+// void SetGl2dDrawingOption(const std::string &centralBodyName,
+//         const std::string &textureMap, bool drawFootPrints)
 //---------------------------------------------------------------------------
-void ViewCanvas::SetGl2dDrawingOption(const wxString &centralBodyName,
-                                      const wxString &textureMap,
+void ViewCanvas::SetGl2dDrawingOption(const std::string &centralBodyName,
+                                      const std::string &textureMap,
                                       Integer footPrintOption)
 {
    // do nothing here
@@ -541,7 +541,7 @@ void ViewCanvas::SetGl3dDrawingOption(bool drawEcPlane, bool drawXyPlane,
 void ViewCanvas::SetGl3dViewOption(SpacePoint *vpRefObj, SpacePoint *vpVecObj,
                                    SpacePoint *vdObj, Real vscaleFactor,
                                    const Rvector3 &vpRefVec, const Rvector3 &vpVec,
-                                   const Rvector3 &vdVec, const wxString &upAxis,
+                                   const Rvector3 &vdVec, const std::string &upAxis,
                                    bool usevpRefVec, bool usevpVec, bool usevdVec)
 {
    // do nothing here
@@ -557,15 +557,15 @@ void ViewCanvas::SetGlDrawOrbitFlag(const std::vector<bool> &drawArray)
    
    #if DEBUG_OBJECT
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::SetGlDrawObjectFlag() mDrawOrbitArray.size()=%d, ")
-       wxT("mObjectCount=%d\n"), mDrawOrbitArray.size(), mObjectCount);
+      ("ViewCanvas::SetGlDrawObjectFlag() mDrawOrbitArray.size()=%d, "
+       "mObjectCount=%d\n", mDrawOrbitArray.size(), mObjectCount);
    
    bool draw;
    for (int i=0; i<mObjectCount; i++)
    {
       draw = mDrawOrbitArray[i] ? true : false;      
       MessageInterface::ShowMessage
-         (wxT("ViewCanvas::SetGlDrawObjectFlag() i=%d, mDrawOrbitArray[%s]=%d\n"),
+         ("ViewCanvas::SetGlDrawObjectFlag() i=%d, mDrawOrbitArray[%s]=%d\n",
           i, mObjectNames[i].c_str(), draw);
    }
    #endif
@@ -581,8 +581,8 @@ void ViewCanvas::SetGlShowObjectFlag(const std::vector<bool> &showArray)
 
    #if DEBUG_OBJECT
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::SetGlDrawObjectFlag() mDrawOrbitArray.size()=%d, ")
-       wxT("mObjectCount=%d\n"), mShowObjectArray.size(), mObjectCount);
+      ("ViewCanvas::SetGlDrawObjectFlag() mDrawOrbitArray.size()=%d, "
+       "mObjectCount=%d\n", mShowObjectArray.size(), mObjectCount);
    #endif
    
    bool show;
@@ -593,12 +593,12 @@ void ViewCanvas::SetGlShowObjectFlag(const std::vector<bool> &showArray)
       show = mShowObjectArray[i] ? true : false;
       mShowObjectMap[mObjectNames[i]] = show;
       
-      if (mObjectNames[i] == wxT("Sun") && mShowObjectMap[wxT("Sun")])
+      if (mObjectNames[i] == "Sun" && mShowObjectMap["Sun"])
          mSunPresent = true;
       
       #if DEBUG_OBJECT
       MessageInterface::ShowMessage
-         (wxT("ViewCanvas::SetGlShowObjectFlag() i=%d, mShowObjectMap[%s]=%d\n"),
+         ("ViewCanvas::SetGlShowObjectFlag() i=%d, mShowObjectMap[%s]=%d\n",
           i, mObjectNames[i].c_str(), show);
       #endif
    }
@@ -608,7 +608,7 @@ void ViewCanvas::SetGlShowObjectFlag(const std::vector<bool> &showArray)
    
    #if DEBUG_OBJECT
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::SetGlDrawObjectFlag() mEnableLightSource=%d, mSunPresent=%d\n"),
+      ("ViewCanvas::SetGlDrawObjectFlag() mEnableLightSource=%d, mSunPresent=%d\n",
        mEnableLightSource, mSunPresent);
    #endif
 }
@@ -621,7 +621,7 @@ void ViewCanvas::SetNumPointsToRedraw(Integer numPoints)
 {
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::SetNumPointsToRedraw() entered, numPoints=%d\n"), numPoints);
+      ("ViewCanvas::SetNumPointsToRedraw() entered, numPoints=%d\n", numPoints);
    #endif
    
    mNumPointsToRedraw = numPoints;
@@ -634,7 +634,7 @@ void ViewCanvas::SetNumPointsToRedraw(Integer numPoints)
    
    #ifdef DEBUG_SET
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::SetNumPointsToRedraw() leaving, mRedrawLastPointsOnly=%d\n"),
+      ("ViewCanvas::SetNumPointsToRedraw() leaving, mRedrawLastPointsOnly=%d\n",
        mRedrawLastPointsOnly);
    #endif
 }
@@ -655,7 +655,7 @@ void ViewCanvas::SetUpdateFrequency(Integer updFreq)
 wxString ViewCanvas::GetGotoObjectName()
 {
    // return blank name
-   return wxT("");
+   return "";
 }
 
 
@@ -675,8 +675,8 @@ void ViewCanvas::SetEndOfRun(bool flag)
 {
    #if DEBUG_UPDATE
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::SetEndOfRun() ViewCanvas::SetEndOfRun() flag=%d, ")
-       wxT("mNumData=%d\n"),  flag, mNumData);
+      ("ViewCanvas::SetEndOfRun() ViewCanvas::SetEndOfRun() flag=%d, "
+       "mNumData=%d\n",  flag, mNumData);
    #endif
    
    mIsEndOfRun = flag;
@@ -692,7 +692,7 @@ void ViewCanvas::SetEndOfRun(bool flag)
    {
       #if DEBUG_LONGITUDE
       MessageInterface::ShowMessage
-         (wxT("ViewCanvas::SetEndOfRun() mIsEndOfRun=%d, mNumData=%d\n"),
+         ("ViewCanvas::SetEndOfRun() mIsEndOfRun=%d, mNumData=%d\n",
           mIsEndOfRun, mNumData);
       #endif
       
@@ -712,36 +712,36 @@ void ViewCanvas::SetEndOfRun(bool flag)
 
 
 //---------------------------------------------------------------------------
-// void TakeAction(const wxString &action)
+// void TakeAction(const std::string &action)
 //---------------------------------------------------------------------------
 /**
  * Perform any actions for GL plot
  */
 //---------------------------------------------------------------------------
-void ViewCanvas::TakeAction(const wxString &action)
+void ViewCanvas::TakeAction(const std::string &action)
 {
    #ifdef DEBUG_TAKE_ACTION
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::TakeAction() '%s' entered, action = '%s'\n"), mPlotName.c_str(),
+      ("ViewCanvas::TakeAction() '%s' entered, action = '%s'\n", mPlotName.c_str(),
        action.c_str());
    #endif
    
-   if (action == wxT("ClearSolverData"))
+   if (action == "ClearSolverData")
    {
       mSolverAllPosX.clear();
       mSolverAllPosY.clear();
       mSolverAllPosZ.clear();
    }
-   else if (action == wxT("ClearObjects"))
+   else if (action == "ClearObjects")
    {
       mObjectCount = 0;
       mObjectArray.clear();
    }
-   else if (action == wxT("PenUp"))
+   else if (action == "PenUp")
    {
       mIsDrawing[mLastIndex] = true;
    }
-   else if (action == wxT("PenDown"))
+   else if (action == "PenDown")
    {
       // We don't want to connect to new point so set it to false
       mIsDrawing[mLastIndex] = false;
@@ -749,7 +749,7 @@ void ViewCanvas::TakeAction(const wxString &action)
    
    #ifdef DEBUG_TAKE_ACTION
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::TakeAction() '%s' leaving, action = '%s'\n"), mPlotName.c_str(),
+      ("ViewCanvas::TakeAction() '%s' leaving, action = '%s'\n", mPlotName.c_str(),
        action.c_str());
    #endif
 }
@@ -818,10 +818,10 @@ void ViewCanvas::UpdatePlot(const StringArray &scNames, const Real &time,
    
    #if DEBUG_UPDATE
    MessageInterface::ShowMessage
-      (wxT("===========================================================================\n"));
+      ("===========================================================================\n");
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::UpdatePlot() plot=%s, time=%f, posX=%f, mNumData=%d, ")
-       wxT("mScCount=%d, scColor=%u, solving=%d, solverOption=%d, drawing=%d, inFunction=%d\n"),
+      ("ViewCanvas::UpdatePlot() plot=%s, time=%f, posX=%f, mNumData=%d, "
+       "mScCount=%d, scColor=%u, solving=%d, solverOption=%d, drawing=%d, inFunction=%d\n",
        GetName().c_str(), time, posX[0], mNumData, mScCount, scColors[0], solving,
        solverOption, drawing, inFunction);
    #endif
@@ -849,13 +849,13 @@ void ViewCanvas::UpdatePlot(const StringArray &scNames, const Real &time,
    {
       #if DEBUG_UPDATE
       MessageInterface::ShowMessage
-         (wxT("ViewCanvas::UpdatePlot() Calling InitializeViewPoint()\n"));
+         ("ViewCanvas::UpdatePlot() Calling InitializeViewPoint()\n");
       #endif
       InitializeViewPoint();
    }
    
    #if DEBUG_UPDATE
-   MessageInterface::ShowMessage(wxT("ViewCanvas::UpdatePlot() leaving\n"));
+   MessageInterface::ShowMessage("ViewCanvas::UpdatePlot() leaving\n");
    #endif
 }
 
@@ -870,7 +870,7 @@ void ViewCanvas::AddObjectList(const wxArrayString &objNames,
 {
    #if DEBUG_OBJECT
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::AddObjectList() entered, object count=%d, color count=%d\n"),
+      ("ViewCanvas::AddObjectList() entered, object count=%d, color count=%d\n",
        objNames.GetCount(), objColors.size());
    #endif
    
@@ -886,7 +886,7 @@ void ViewCanvas::AddObjectList(const wxArrayString &objNames,
    ClearObjectArrays();
    
    if (!CreateObjectArrays())
-      throw SubscriberException(wxT("There is not enough memory to allocate\n"));
+      throw SubscriberException("There is not enough memory to allocate\n");
    
    for (int i=0; i<mObjectCount; i++)
    {
@@ -897,7 +897,7 @@ void ViewCanvas::AddObjectList(const wxArrayString &objNames,
       {
          #if DEBUG_OBJECT
          MessageInterface::ShowMessage
-            (wxT("ViewCanvas::AddObjectList() Bind new texture object=%s\n"),
+            ("ViewCanvas::AddObjectList() Bind new texture object=%s\n",
              objNames[i].c_str());
          #endif
          
@@ -925,7 +925,7 @@ void ViewCanvas::AddObjectList(const wxArrayString &objNames,
       
       #if DEBUG_OBJECT > 1
       MessageInterface::ShowMessage
-         (wxT("ViewCanvas::AddObjectList() objNames[%d]=%s\n"),
+         ("ViewCanvas::AddObjectList() objNames[%d]=%s\n",
           i, objNames[i].c_str());
       #endif
    }
@@ -941,7 +941,7 @@ void ViewCanvas::AddObjectList(const wxArrayString &objNames,
    ClearPlot();
    
    #if DEBUG_OBJECT
-   MessageInterface::ShowMessage(wxT("ViewCanvas::AddObjectList() leaving\n"));
+   MessageInterface::ShowMessage("ViewCanvas::AddObjectList() leaving\n");
    #endif
    
 } //AddObjectList()
@@ -963,7 +963,7 @@ bool ViewCanvas::SetPixelFormatDescriptor()
    
    #ifdef DEBUG_INIT
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::SetPixelFormatDescriptor() entered\n"));
+      ("ViewCanvas::SetPixelFormatDescriptor() entered\n");
    #endif
    
    // On Windows, for OpenGL, you have to set the pixel format
@@ -1000,14 +1000,14 @@ bool ViewCanvas::SetPixelFormatDescriptor()
    
    #ifdef DEBUG_INIT
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::SetPixelFormatDescriptor() pixelFormatId = %d \n"),
+      ("ViewCanvas::SetPixelFormatDescriptor() pixelFormatId = %d \n",
        pixelFormatId);
    #endif
    
    if(pixelFormatId == 0)
    {
       MessageInterface::ShowMessage
-         (wxT("**** ERROR **** Failed to find a matching pixel format\n"));
+         ("**** ERROR **** Failed to find a matching pixel format\n");
       return false;
    }
    
@@ -1015,13 +1015,13 @@ bool ViewCanvas::SetPixelFormatDescriptor()
    if (!SetPixelFormat(hdc, pixelFormatId, &pfd))
    {
       MessageInterface::ShowMessage
-         (wxT("**** ERROR **** Failed to set pixel format id %d\n"), pixelFormatId);
+         ("**** ERROR **** Failed to set pixel format id %d\n", pixelFormatId);
       return false;
    }
    
    #ifdef DEBUG_INIT
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::SetPixelFormatDescriptor() returning true\n"));
+      ("ViewCanvas::SetPixelFormatDescriptor() returning true\n");
    #endif
    
    return true;
@@ -1154,8 +1154,8 @@ int ViewCanvas::GetObjectId(const wxString &name)
    
    #if DEBUG_OBJECT
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::GetObjectId() obj name: ") + name +
-       wxT(" not found in the object list\n"));
+      ("ViewCanvas::GetObjectId() obj name: " + name +
+       " not found in the object list\n");
    #endif
    
    return UNKNOWN_OBJ_ID;
@@ -1168,7 +1168,7 @@ int ViewCanvas::GetObjectId(const wxString &name)
 void ViewCanvas::ClearObjectArrays(bool deleteArrays)
 {
    #if DEBUG_OBJECT
-   MessageInterface::ShowMessage(wxT("ViewCanvas::ClearObjectArrays() entered\n"));
+   MessageInterface::ShowMessage("ViewCanvas::ClearObjectArrays() entered\n");
    #endif
 
    if (deleteArrays)
@@ -1224,7 +1224,7 @@ void ViewCanvas::ClearObjectArrays(bool deleteArrays)
    mCoordData = NULL;
    
    #if DEBUG_OBJECT
-   MessageInterface::ShowMessage(wxT("ViewCanvas::ClearObjectArrays() exiting\n"));
+   MessageInterface::ShowMessage("ViewCanvas::ClearObjectArrays() exiting\n");
    #endif
 }
 
@@ -1240,7 +1240,7 @@ bool ViewCanvas::CreateObjectArrays()
 {
    #if DEBUG_OBJECT
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::CreateObjectArrays() allocating object arrays with %d\n"),
+      ("ViewCanvas::CreateObjectArrays() allocating object arrays with %d\n",
        mObjectCount);
    #endif
    
@@ -1289,7 +1289,7 @@ bool ViewCanvas::CreateObjectArrays()
       return false;
    
    #if DEBUG_OBJECT
-   MessageInterface::ShowMessage(wxT("ViewCanvas::CreateObjectArrays() exiting\n"));
+   MessageInterface::ShowMessage("ViewCanvas::CreateObjectArrays() exiting\n");
    #endif
    
    return true;
@@ -1323,8 +1323,8 @@ void ViewCanvas::ComputeBufferIndex(Real time)
       if (mWriteWarning)
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** '%s' exceed the maximum data points, now ")
-             wxT("showing %d most recent data points.\n"), mPlotName.c_str(), MAX_DATA);
+            ("*** WARNING *** '%s' exceed the maximum data points, now "
+             "showing %d most recent data points.\n", mPlotName.c_str(), MAX_DATA);
          mWriteWarning = false;
       }
       
@@ -1348,8 +1348,8 @@ void ViewCanvas::ComputeBufferIndex(Real time)
    
    #ifdef DEBUG_DATA_BUFFERRING
    MessageInterface::ShowMessage
-      (wxT("===> time=%f, mTotalPoints=%4d, mNumData=%3d, mCurrIndex=%3d, mLastIndex=%3d\n   ")
-       wxT("mBeginIndex1=%3d, mEndIndex1=%3d, mBeginIndex2=%3d, mEndIndex2=%3d\n"),
+      ("===> time=%f, mTotalPoints=%4d, mNumData=%3d, mCurrIndex=%3d, mLastIndex=%3d\n   "
+       "mBeginIndex1=%3d, mEndIndex1=%3d, mBeginIndex2=%3d, mEndIndex2=%3d\n",
        time, mTotalPoints, mNumData, mCurrIndex, mLastIndex, mBeginIndex1, mEndIndex1,
        mBeginIndex2, mEndIndex2);
    #endif
@@ -1364,8 +1364,8 @@ void ViewCanvas::ComputeActualIndex()
 {
    #ifdef DEBUG_COMPUTE_ACTUAL_INDEX
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::ComputeActualIndex() mRedrawLastPointsOnly=%d, mIsEndOfRun=%d\n")
-       wxT("   mBeginIndex1=%d, mEndIndex1=%d, mBeginIndex2=%d, mEndIndex2=%d\n"),
+      ("ViewCanvas::ComputeActualIndex() mRedrawLastPointsOnly=%d, mIsEndOfRun=%d\n"
+       "   mBeginIndex1=%d, mEndIndex1=%d, mBeginIndex2=%d, mEndIndex2=%d\n",
        mRedrawLastPointsOnly, mIsEndOfRun, mBeginIndex1, mEndIndex1, mBeginIndex2,
        mEndIndex2);
    #endif
@@ -1406,12 +1406,12 @@ void ViewCanvas::ComputeActualIndex()
    
    #ifdef DEBUG_COMPUTE_ACTUAL_INDEX
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::ComputeActualIndex()     mBeginIndex1=%3d,     mEndIndex1=%3d, ")
-       wxT("    mBeginIndex2=%3d,     mEndIndex2=%3d\n"), mBeginIndex1, mEndIndex1,
+      ("ViewCanvas::ComputeActualIndex()     mBeginIndex1=%3d,     mEndIndex1=%3d, "
+       "    mBeginIndex2=%3d,     mEndIndex2=%3d\n", mBeginIndex1, mEndIndex1,
        mBeginIndex2, mEndIndex2);
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::ComputeActualIndex() mRealBeginIndex1=%3d, mRealEndIndex1=%3d, ")
-       wxT("mRealBeginIndex2=%3d, mRealEndIndex2=%3d\n"), mRealBeginIndex1, mRealEndIndex1,
+      ("ViewCanvas::ComputeActualIndex() mRealBeginIndex1=%3d, mRealEndIndex1=%3d, "
+       "mRealBeginIndex2=%3d, mRealEndIndex2=%3d\n", mRealBeginIndex1, mRealEndIndex1,
        mRealBeginIndex2,  mRealEndIndex2);
    #endif
 }
@@ -1424,7 +1424,7 @@ bool ViewCanvas::LoadBodyTextures()
 {
    #if DEBUG_TEXTURE
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::LoadBodyTextures() entered, mObjectCount=%d\n"), mObjectCount);
+      ("ViewCanvas::LoadBodyTextures() entered, mObjectCount=%d\n", mObjectCount);
    #endif
    
    //--------------------------------------------------
@@ -1439,7 +1439,7 @@ bool ViewCanvas::LoadBodyTextures()
       {
          #if DEBUG_TEXTURE > 1
          MessageInterface::ShowMessage
-            (wxT("ViewCanvas::LoadBodyTextures() object=<%p>'%s'\n"),
+            ("ViewCanvas::LoadBodyTextures() object=<%p>'%s'\n",
              mObjectArray[i], mObjectNames[i].c_str());
          #endif
          
@@ -1450,7 +1450,7 @@ bool ViewCanvas::LoadBodyTextures()
    
    #if DEBUG_TEXTURE
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::LoadBodyTextures() leaving, mObjectCount=%d\n"), mObjectCount);
+      ("ViewCanvas::LoadBodyTextures() leaving, mObjectCount=%d\n", mObjectCount);
    #endif
    
    return true;   
@@ -1468,7 +1468,7 @@ bool ViewCanvas::LoadBodyTextures()
 GLuint ViewCanvas::BindTexture(SpacePoint *obj, const wxString &objName)
 {
    GLuint texId = GmatPlot::UNINIT_TEXTURE;
-   wxString textureFile;
+   std::string textureFile;
    
    // if texture file specified then use it
    if (mTextureFileMap.find(objName) != mTextureFileMap.end())
@@ -1476,7 +1476,7 @@ GLuint ViewCanvas::BindTexture(SpacePoint *obj, const wxString &objName)
    
    #if DEBUG_TEXTURE
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::BindTexture() entered, objName='%s', textureFile = '%s'\n"),
+      ("ViewCanvas::BindTexture() entered, objName='%s', textureFile = '%s'\n",
        objName.c_str(), textureFile.c_str());
    #endif
    
@@ -1485,31 +1485,31 @@ GLuint ViewCanvas::BindTexture(SpacePoint *obj, const wxString &objName)
       if (obj->IsOfType(Gmat::CELESTIAL_BODY))
       {
          // use texture map set by user for this plot, if not set use from the celestial body
-         if (textureFile == wxT("") || !GmatFileUtil::DoesFileExist(textureFile))
+         if (textureFile == "" || !GmatFileUtil::DoesFileExist(textureFile))
          {
             CelestialBody *body = (CelestialBody*) obj;
-            textureFile = body->GetStringParameter(body->GetParameterID(wxT("TextureMapFileName")));
+            textureFile = body->GetStringParameter(body->GetParameterID("TextureMapFileName"));
          }
       }
       else if (obj->IsOfType(Gmat::SPACECRAFT))
       {
          FileManager *fm = FileManager::Instance();
-         wxString iconLoc = fm->GetFullPathname(wxT("ICON_PATH"));
+         std::string iconLoc = fm->GetFullPathname("ICON_PATH");
          
          #ifdef DEBUG_TEXTURE
-         MessageInterface::ShowMessage(wxT("   iconLoc = '%s'\n"), iconLoc.c_str());
+         MessageInterface::ShowMessage("   iconLoc = '%s'\n", iconLoc.c_str());
          #endif
          
          // Check if icon file directory exist
          if (GmatFileUtil::DoesDirectoryExist(iconLoc.c_str(), false))
          {
-            textureFile = iconLoc + wxT("/Spacecraft.png");
+            textureFile = iconLoc + "/Spacecraft.png";
          }
       }
       
       #if DEBUG_TEXTURE
       MessageInterface::ShowMessage
-         (wxT("   theContext=<%p>, textureFile='%s'\n"), theContext, textureFile.c_str());
+         ("   theContext=<%p>, textureFile='%s'\n", theContext, textureFile.c_str());
       #endif
       
       #ifdef __USE_WX280_GL__
@@ -1525,7 +1525,7 @@ GLuint ViewCanvas::BindTexture(SpacePoint *obj, const wxString &objName)
       #if DEBUG_TEXTURE
       GLenum error = glGetError();
       MessageInterface::ShowMessage
-         (wxT("   texId = %3d, error = %d, GL_INVALID_VALUE = %d, UNINIT_TEXTURE = %d\n"),
+         ("   texId = %3d, error = %d, GL_INVALID_VALUE = %d, UNINIT_TEXTURE = %d\n",
           texId, error, GL_INVALID_VALUE, GmatPlot::UNINIT_TEXTURE);
       #endif
       
@@ -1539,8 +1539,8 @@ GLuint ViewCanvas::BindTexture(SpacePoint *obj, const wxString &objName)
          if (obj->IsOfType(Gmat::CELESTIAL_BODY))
          {
             MessageInterface::ShowMessage
-               (wxT("*** WARNING *** ViewCanvas::BindTexture() Cannot load texture ")
-                wxT("image for '%s' from '%s'\n"), objName.c_str(), textureFile.c_str());
+               ("*** WARNING *** ViewCanvas::BindTexture() Cannot load texture "
+                "image for '%s' from '%s'\n", objName.c_str(), textureFile.c_str());
          }
          texId = GmatPlot::UNINIT_TEXTURE;
       }
@@ -1551,14 +1551,14 @@ GLuint ViewCanvas::BindTexture(SpacePoint *obj, const wxString &objName)
       if (obj->IsOfType(Gmat::CELESTIAL_BODY))
       {
          MessageInterface::ShowMessage
-            (wxT("*** WARNING *** ViewCanvas::BindTexture() Cannot bind texture ")
-             wxT("image for %s.\n%s\n"), objName.c_str(), e.GetFullMessage().c_str());
+            ("*** WARNING *** ViewCanvas::BindTexture() Cannot bind texture "
+             "image for %s.\n%s\n", objName.c_str(), e.GetFullMessage().c_str());
       }
    }
    
    #if DEBUG_TEXTURE
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::BindTexture() objName='%s', texId=%d\n"), objName.c_str(),
+      ("ViewCanvas::BindTexture() objName='%s', texId=%d\n", objName.c_str(),
        texId);
    #endif
    
@@ -1567,20 +1567,20 @@ GLuint ViewCanvas::BindTexture(SpacePoint *obj, const wxString &objName)
 
 
 //---------------------------------------------------------------------------
-// bool LoadImage(const wxString &fileName, bool isSpacecraft)
+// bool LoadImage(const std::string &fileName, bool isSpacecraft)
 //---------------------------------------------------------------------------
-bool ViewCanvas::LoadImage(const wxString &fileName, bool isSpacecraft)
+bool ViewCanvas::LoadImage(const std::string &fileName, bool isSpacecraft)
 {
    #if DEBUG_LOAD_IMAGE
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::LoadImage() file='%s'\n"), fileName.c_str());
+      ("ViewCanvas::LoadImage() file='%s'\n", fileName.c_str());
    #endif
    
-   if (fileName == wxT(""))
+   if (fileName == "")
    {
       #if DEBUG_LOAD_IMAGE
       MessageInterface::ShowMessage
-         (wxT("ViewCanvas::LoadImage() blank filename, so returning false\n"));
+         ("ViewCanvas::LoadImage() blank filename, so returning false\n");
       #endif
       return false;
    }
@@ -1595,7 +1595,7 @@ bool ViewCanvas::LoadImage(const wxString &fileName, bool isSpacecraft)
    {
       #if DEBUG_LOAD_IMAGE
       MessageInterface::ShowMessage
-         (wxT("ViewCanvas::LoadImage() empty data, so returning false\n"));
+         ("ViewCanvas::LoadImage() empty data, so returning false\n");
       #endif
       return false;
    }
@@ -1603,7 +1603,7 @@ bool ViewCanvas::LoadImage(const wxString &fileName, bool isSpacecraft)
    #if DEBUG_LOAD_IMAGE
    int size = width * height * 3;
    MessageInterface::ShowMessage
-      (wxT("   width=%d, height=%d, size=%d, hasAlpha=%d\n"), width, height, size,
+      ("   width=%d, height=%d, size=%d, hasAlpha=%d\n", width, height, size,
        image.HasAlpha());
    #endif
    
@@ -1674,7 +1674,7 @@ bool ViewCanvas::LoadImage(const wxString &fileName, bool isSpacecraft)
    {
       #if DEBUG_LOAD_IMAGE
       MessageInterface::ShowMessage
-         (wxT("ViewCanvas::LoadImage() returning true, mipmapsStatus=%d\n"), mipmapsStatus);
+         ("ViewCanvas::LoadImage() returning true, mipmapsStatus=%d\n", mipmapsStatus);
       #endif
       
       return true;
@@ -1683,7 +1683,7 @@ bool ViewCanvas::LoadImage(const wxString &fileName, bool isSpacecraft)
    {
       #if DEBUG_LOAD_IMAGE
       MessageInterface::ShowMessage
-         (wxT("ViewCanvas::LoadImage() returning false, mipmapsStatus=%d\n"), mipmapsStatus);
+         ("ViewCanvas::LoadImage() returning false, mipmapsStatus=%d\n", mipmapsStatus);
       #endif
       return false;
    }
@@ -1701,7 +1701,7 @@ bool ViewCanvas::LoadImage(const wxString &fileName, bool isSpacecraft)
    
    #if DEBUG_LOAD_IMAGE
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::LoadImage() returning true, using glTexImage2D\d\n"));
+      ("ViewCanvas::LoadImage() returning true, using glTexImage2D\d\n");
    #endif
    
    return true;
@@ -1739,7 +1739,7 @@ int ViewCanvas::AddAlphaToTexture(const wxImage &image, bool isSpacecraft,
          
          #ifdef DEBUG_ADD_ALPHA
          MessageInterface::ShowMessage
-            (wxT("   image(%2d,%2d), red=%3d, green=%3d, blue=%3d\n"),
+            ("   image(%2d,%2d), red=%3d, green=%3d, blue=%3d\n",
              x, y, red, green, blue);
          #endif
          
@@ -1791,8 +1791,8 @@ bool ViewCanvas::LoadSpacecraftModels()
 {
    #if DEBUG_LOAD_MODEL
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::LoadSpacecraftModels() entered, mGlInitialized = %d, ")
-       wxT("modelsAreLoaded = %d, mScCount = %d\n"), mGlInitialized, modelsAreLoaded,
+      ("ViewCanvas::LoadSpacecraftModels() entered, mGlInitialized = %d, "
+       "modelsAreLoaded = %d, mScCount = %d\n", mGlInitialized, modelsAreLoaded,
        mScCount);
    #endif
    
@@ -1807,7 +1807,7 @@ bool ViewCanvas::LoadSpacecraftModels()
             if (satId != UNKNOWN_OBJ_ID)
             {
                Spacecraft *sat = (Spacecraft*)mObjectArray[satId];
-               if (sat->modelFile != wxT("") && sat->modelID == -1)
+               if (sat->modelFile != "" && sat->modelID == -1)
                {
                   wxString modelPath(sat->modelFile.c_str());
                   if (GmatFileUtil::DoesFileExist(modelPath.c_str()))
@@ -1815,14 +1815,14 @@ bool ViewCanvas::LoadSpacecraftModels()
                      sat->modelID = mm->LoadModel(modelPath);
                      #ifdef DEBUG_LOAD_MODEL
                      MessageInterface::ShowMessage
-                        (wxT("UpdateSpacecraftData() loaded model '%s'\n"), modelPath.c_str());
+                        ("UpdateSpacecraftData() loaded model '%s'\n", modelPath.c_str());
                      #endif
                   }
                   else
                   {
                      MessageInterface::ShowMessage
-                        (wxT("*** WARNING *** Cannot load the model file for spacecraft '%s'. ")
-                         wxT("The file '%s' does not exist.\n"), sat->GetName().c_str(),
+                        ("*** WARNING *** Cannot load the model file for spacecraft '%s'. "
+                         "The file '%s' does not exist.\n", sat->GetName().c_str(),
                          modelPath.c_str());
                   }
                }
@@ -1837,8 +1837,8 @@ bool ViewCanvas::LoadSpacecraftModels()
    
    #if DEBUG_LOAD_MODEL
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::LoadSpacecraftModels() leaving, mGlInitialized = %d, ")
-       wxT("modelsAreLoaded = %d\n"), mGlInitialized, modelsAreLoaded);
+      ("ViewCanvas::LoadSpacecraftModels() leaving, mGlInitialized = %d, "
+       "modelsAreLoaded = %d\n", mGlInitialized, modelsAreLoaded);
    #endif
    
    return modelsAreLoaded;
@@ -1855,7 +1855,7 @@ bool ViewCanvas::LoadSpacecraftModels()
 void ViewCanvas::SetupProjection()
 {
    #if DEBUG_PROJECTION > 2
-   MessageInterface::ShowMessage(wxT("ViewCanvas::SetupProjection() entered\n"));
+   MessageInterface::ShowMessage("ViewCanvas::SetupProjection() entered\n");
    #endif
    
    // Setup the world view
@@ -1866,7 +1866,7 @@ void ViewCanvas::SetupProjection()
    glLoadIdentity();            // clear all previous information
    
    #if DEBUG_PROJECTION > 2
-   MessageInterface::ShowMessage(wxT("ViewCanvas::SetupProjection() leaving\n"));
+   MessageInterface::ShowMessage("ViewCanvas::SetupProjection() leaving\n");
    #endif
 }
 
@@ -1880,7 +1880,7 @@ void ViewCanvas::UpdateSolverData(const RealArray &posX, const RealArray &posY,
 {
    #if DEBUG_SOLVER_DATA
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::UpdateSolverData() entered, solving=%d\n"), solving);
+      ("ViewCanvas::UpdateSolverData() entered, solving=%d\n", solving);
    #endif
    
    //-----------------------------------------------------------------
@@ -1921,7 +1921,7 @@ void ViewCanvas::UpdateSolverData(const RealArray &posX, const RealArray &posY,
    
    #if DEBUG_SOLVER_DATA
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::UpdateSolverData() leaving\n"));
+      ("ViewCanvas::UpdateSolverData() leaving\n");
    #endif
 }
 
@@ -1942,8 +1942,8 @@ void ViewCanvas::UpdateSpacecraftData(const Real &time,
    
    #if DEBUG_UPDATE
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::UpdateSpacecraftData() entered, time=%f, mScCount=%d, ")
-       wxT("mGlInitialized=%d, modelsAreLoaded=%d\n"), time, mScCount,
+      ("ViewCanvas::UpdateSpacecraftData() entered, time=%f, mScCount=%d, "
+       "mGlInitialized=%d, modelsAreLoaded=%d\n", time, mScCount,
        mGlInitialized, modelsAreLoaded);
    #endif
    
@@ -1960,7 +1960,7 @@ void ViewCanvas::UpdateSpacecraftData(const Real &time,
       
       #if DEBUG_UPDATE
       MessageInterface::ShowMessage
-         (wxT("ViewCanvas::UpdateSpacecraftData() satId=%d, scName=%s\n"), satId,
+         ("ViewCanvas::UpdateSpacecraftData() satId=%d, scName=%s\n", satId,
           mObjectNames[satId].c_str());
       #endif
       
@@ -1973,7 +1973,7 @@ void ViewCanvas::UpdateSpacecraftData(const Real &time,
          {
             mDrawOrbitFlag[colorIndex] = false;
             #ifdef DEBUG_UPDATE
-            MessageInterface::ShowMessage(wxT("===> mDrawOrbitArray[satId] is NULL\n"));
+            MessageInterface::ShowMessage("===> mDrawOrbitArray[satId] is NULL\n");
             #endif
             continue;
          }
@@ -2004,10 +2004,10 @@ void ViewCanvas::UpdateSpacecraftData(const Real &time,
          if (mNumData < sNumDebugOutput)
          {
             MessageInterface::ShowMessage
-               (wxT("   satId=%d, object=%s, colorIndex=%u, color=%u\n"), satId,
+               ("   satId=%d, object=%s, colorIndex=%u, color=%u\n", satId,
                 mObjectNames[satId].c_str(), colorIndex, mObjectOrbitColor[colorIndex]);
             MessageInterface::ShowMessage
-               (wxT("   satId:%d posIndex=%d, gcipos = %f, %f, %f\n"), satId,
+               ("   satId:%d posIndex=%d, gcipos = %f, %f, %f\n", satId,
                 posIndex, mObjectViewPos[posIndex+0], mObjectViewPos[posIndex+1],
                 mObjectViewPos[posIndex+2]);
          }
@@ -2035,7 +2035,7 @@ void ViewCanvas::UpdateSpacecraftData(const Real &time,
          if (mNumData < sNumDebugOutput)
          {
             MessageInterface::ShowMessage
-               (wxT("   satId:%d posIndex=%d, tmppos = %f, %f, %f\n"), satId, posIndex,
+               ("   satId:%d posIndex=%d, tmppos = %f, %f, %f\n", satId, posIndex,
                 mObjectViewPos[posIndex+0], mObjectViewPos[posIndex+1],
                 mObjectViewPos[posIndex+2]);
          }
@@ -2044,7 +2044,7 @@ void ViewCanvas::UpdateSpacecraftData(const Real &time,
          // Update spacecraft attitude
          #if DEBUG_UPDATE
          MessageInterface::ShowMessage
-            (wxT("   Now updating spacecraft attitude of %d\n"), satId);
+            ("   Now updating spacecraft attitude of %d\n", satId);
          #endif
          
          if (mNeedAttitude)
@@ -2054,7 +2054,7 @@ void ViewCanvas::UpdateSpacecraftData(const Real &time,
    
    #if DEBUG_UPDATE
    MessageInterface::ShowMessage
-      (wxT("ViewCanvas::UpdateSpacecraftData() leaving\n"));
+      ("ViewCanvas::UpdateSpacecraftData() leaving\n");
    #endif
 }
 
@@ -2075,7 +2075,7 @@ void ViewCanvas::UpdateOtherData(const Real &time)
          
          #if DEBUG_UPDATE_OBJECT
          MessageInterface::ShowMessage
-            (wxT("ViewCanvas::UpdateOtherData() objId=%d, obj=%s\n"), objId,
+            ("ViewCanvas::UpdateOtherData() objId=%d, obj=%s\n", objId,
              mObjectNames[objId].c_str());
          #endif
          
@@ -2106,7 +2106,7 @@ void ViewCanvas::UpdateOtherData(const Real &time)
             
             #if DEBUG_UPDATE_OBJECT > 1
             MessageInterface::ShowMessage
-               (wxT("ViewCanvas::UpdateOtherData() %s, posIndex=%d, objState=%s\n"),
+               ("ViewCanvas::UpdateOtherData() %s, posIndex=%d, objState=%s\n",
                 mObjectNames[obj].c_str(), posIndex, objState.ToString().c_str());
             #endif
             
@@ -2129,7 +2129,7 @@ void ViewCanvas::UpdateOtherData(const Real &time)
             
             #if DEBUG_UPDATE_OBJECT > 1
             MessageInterface::ShowMessage
-               (wxT("    %s posIndex=%d, tmppos = %f, %f, %f\n"), mObjectNames[obj].c_str(),
+               ("    %s posIndex=%d, tmppos = %f, %f, %f\n", mObjectNames[obj].c_str(),
                 posIndex, mObjectViewPos[posIndex+0], mObjectViewPos[posIndex+1],
                 mObjectViewPos[posIndex+2]);
             #endif
@@ -2142,7 +2142,7 @@ void ViewCanvas::UpdateOtherData(const Real &time)
          {
             #if DEBUG_UPDATE_OBJECT > 1
             MessageInterface::ShowMessage
-               (wxT("ViewCanvas::UpdateOtherData() Cannot Add data. Invalid objId=%d\n"),
+               ("ViewCanvas::UpdateOtherData() Cannot Add data. Invalid objId=%d\n",
                 objId);
             #endif
          }
@@ -2153,7 +2153,7 @@ void ViewCanvas::UpdateOtherData(const Real &time)
          if (mObjectArray[obj] == NULL)
          {
             MessageInterface::ShowMessage
-               (wxT("ViewCanvas::UpdateOtherData() Cannot add data. %s is NULL\n"),
+               ("ViewCanvas::UpdateOtherData() Cannot add data. %s is NULL\n",
                 mObjectNames[obj].c_str());
          }
          #endif
@@ -2219,7 +2219,7 @@ void ViewCanvas::UpdateOtherObjectAttitude(Real time, SpacePoint *sp,
    Rvector quat = Attitude::ToQuaternion(cosMat);
    #ifdef DEBUG_ATTITUDE
    MessageInterface::ShowMessage
-      (wxT("UpdateOtherObjectAttitude() '%s', attIndex=%d, quat=%s"), sp->GetName().c_str(),
+      ("UpdateOtherObjectAttitude() '%s', attIndex=%d, quat=%s", sp->GetName().c_str(),
        attIndex, quat.ToString().c_str());
    #endif
    mObjectQuat[attIndex+0] = quat[0];
@@ -2247,8 +2247,8 @@ void ViewCanvas::DrawOrbit(const wxString &objName, int obj, int objId)
 {
    #ifdef DEBUG_DRAW
    MessageInterface::ShowMessage
-      (wxT("==========> DrawOrbit() objName='%s', drawing first part, mRealBeginIndex1=%d, ")
-       wxT("mRealEndIndex1=%d\n"), objName.c_str(), mRealBeginIndex1, mRealEndIndex1);
+      ("==========> DrawOrbit() objName='%s', drawing first part, mRealBeginIndex1=%d, "
+       "mRealEndIndex1=%d\n", objName.c_str(), mRealBeginIndex1, mRealEndIndex1);
    #endif
    
    // Draw first part from the ring buffer
@@ -2262,7 +2262,7 @@ void ViewCanvas::DrawOrbit(const wxString &objName, int obj, int objId)
    {
       #ifdef DEBUG_DRAW
       MessageInterface::ShowMessage
-         (wxT("==========> DrawOrbit() objName='%s', drawing second part\n"),
+         ("==========> DrawOrbit() objName='%s', drawing second part\n",
           objName.c_str());
       #endif
       
@@ -2273,7 +2273,7 @@ void ViewCanvas::DrawOrbit(const wxString &objName, int obj, int objId)
    }
    
    #if DEBUG_DRAW_DEBUG
-   DrawDebugMessage(wxT(" Leaving DrawOrbit  --- "), GmatColor::RED32, 0, 240);
+   DrawDebugMessage(" Leaving DrawOrbit  --- ", GmatColor::RED32, 0, 240);
    #endif
 }
 
@@ -2294,7 +2294,7 @@ void ViewCanvas::DrawSolverData()
    
    #if DEBUG_SOLVER_DATA
    MessageInterface::ShowMessage
-      (wxT("==========> DrawSolverData() entered, solver points = %d\n"), numPoints);
+      ("==========> DrawSolverData() entered, solver points = %d\n", numPoints);
    #endif
    
    if (numPoints == 0)
@@ -2329,7 +2329,7 @@ void ViewCanvas::DrawSolverData()
    }
    
    #if DEBUG_SOLVER_DATA
-   MessageInterface::ShowMessage(wxT("==========> DrawSolverData() leaving\n"));
+   MessageInterface::ShowMessage("==========> DrawSolverData() leaving\n");
    #endif
 }
 
@@ -2348,7 +2348,7 @@ void ViewCanvas::DrawStatus(const wxString &label1, unsigned int textColor,
    #ifdef DEBUG_DRAW_STATUS
    int frame = mTotalPoints;
    MessageInterface::ShowMessage
-      (wxT("DrawStatus() entered, frame=%d, time=%.9f\n"), frame, time);
+      ("DrawStatus() entered, frame=%d, time=%.9f\n", frame, time);
    #endif
    
    //----------------------------------------------------
@@ -2367,23 +2367,23 @@ void ViewCanvas::DrawStatus(const wxString &label1, unsigned int textColor,
    wxString text;
    
    #ifdef DEBUG_DRAW_STATUS
-   str.Printf(wxT("%d"), frame);
+   str.Printf("%d", frame);
    text = label1 + str;
-   str1.Printf(wxT("%f - "), time);
+   str1.Printf("%f - ", time);
    #endif
    
-   if (label1 != wxT(""))
+   if (label1 != "")
       text = label1;      
    
    if (time > 0)
    {
       Real toMjd = -999;
-      wxString utcGregorian;
-      TimeConverterUtil::Convert(wxT("A1ModJulian"), time, wxT(""), wxT("UTCGregorian"),
+      std::string utcGregorian;
+      TimeConverterUtil::Convert("A1ModJulian", time, "", "UTCGregorian",
                                  toMjd, utcGregorian, 1);
       str = utcGregorian.c_str();
       #ifdef DEBUG_DRAW_STATUS
-      MessageInterface::ShowMessage(wxT("  after convert time=%s\n"), str.c_str());
+      MessageInterface::ShowMessage("  after convert time=%s\n", str.c_str());
       #endif
    }
    
@@ -2393,27 +2393,27 @@ void ViewCanvas::DrawStatus(const wxString &label1, unsigned int textColor,
    GlColorType *color = (GlColorType*)&textColor;
    glColor3ub(color->red, color->green, color->blue);
    glRasterPos2i(xpos, ypos);
-   glCallLists(text.Length(), GL_BYTE, (GLubyte*)text.c_str());
+   glCallLists(strlen(text.c_str()), GL_BYTE, (GLubyte*)text.c_str());
    
-   if (label3 != wxT(""))
+   if (label3 != "")
    {
       glRasterPos2i(xpos, 50);
-      glCallLists(label3.Length(), GL_BYTE, (GLubyte*)label3.c_str());
+      glCallLists(strlen(label3.c_str()), GL_BYTE, (GLubyte*)label3.c_str());
    }
    
    if (showCS)
    {
       // Prepend space before coordinate system name (Bug 2318 fix)
-      wxString viewCsName = wxT("  ") + mViewCoordSysName;
+      wxString viewCsName = "  " + mViewCoordSysName;
       glRasterPos2i(xpos, ypos+20);
-      glCallLists(viewCsName.Length(), GL_BYTE, (GLubyte*)viewCsName.c_str());
+      glCallLists(strlen(viewCsName.c_str()), GL_BYTE, (GLubyte*)viewCsName.c_str());
    }
    
    glEnable(GL_LIGHTING);
    glEnable(GL_LIGHT0);
    
    #ifdef DEBUG_DRAW_STATUS
-   MessageInterface::ShowMessage(wxT("DrawStatus() leaving\n"));
+   MessageInterface::ShowMessage("DrawStatus() leaving\n");
    #endif
 }
 
@@ -2435,7 +2435,7 @@ void ViewCanvas::DrawDebugMessage(const wxString &msg, unsigned int textColor,
    GlColorType *color = (GlColorType*)&textColor;
    glColor3ub(color->red, color->green, color->blue);
    glRasterPos2i(xpos, ypos);
-   glCallLists(msg.Length(), GL_BYTE, (GLubyte*)msg.c_str());
+   glCallLists(strlen(msg.c_str()), GL_BYTE, (GLubyte*)msg.c_str());
    
    SetupProjection();
 }

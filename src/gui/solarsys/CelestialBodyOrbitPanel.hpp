@@ -56,12 +56,12 @@ private:
    GuiInterpreter *guiInterpreter;
    SolarSystem    *ss;
    
-   wxString    ephemSrc;
-   wxString    previousEphemSrc;
-   wxString    ephemFile;
+   std::string    ephemSrc;
+   std::string    previousEphemSrc;
+   std::string    ephemFile;
    StringArray    spkFiles;
    Integer        naifID;
-   wxString    centralBody;
+   std::string    centralBody;
    Real           initialEpoch;
    Real           SMA;
    Real           ECC;

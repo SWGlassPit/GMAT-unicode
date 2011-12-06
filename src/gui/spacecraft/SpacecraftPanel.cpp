@@ -54,12 +54,12 @@ SpacecraftPanel::SpacecraftPanel(wxWindow *parent, const wxString &scName)
 {
    #if DEBUG_SPACECRAFT_PANEL
    MessageInterface::ShowMessage
-      (wxT("SpacecraftPanel::SpacecraftPanel() entered. scName='%s', theGuiInterpreter=<%p>\n"),
+      ("SpacecraftPanel::SpacecraftPanel() entered. scName='%s', theGuiInterpreter=<%p>\n",
        scName.c_str(), theGuiInterpreter);
    #endif
    
    theSpacecraft =
-      (Spacecraft*)theGuiInterpreter->GetConfiguredObject(wxString(scName.c_str()));
+      (Spacecraft*)theGuiInterpreter->GetConfiguredObject(std::string(scName.c_str()));
    
    if (theSpacecraft != NULL)
    {            
@@ -75,7 +75,7 @@ SpacecraftPanel::SpacecraftPanel(wxWindow *parent, const wxString &scName)
 SpacecraftPanel::~SpacecraftPanel()
 {
    #if DEBUG_SPACECRAFT_PANEL
-   MessageInterface::ShowMessage(wxT("SpacecraftPanel::~SpacecraftPanel() entered\n"));
+   MessageInterface::ShowMessage("SpacecraftPanel::~SpacecraftPanel() entered\n");
    #endif
    // need to delete child from list in mainFrame
    //    delete(theBallisticMassPanel);
@@ -94,7 +94,7 @@ SpacecraftPanel::~SpacecraftPanel()
 void SpacecraftPanel::Create()
 {
    #if DEBUG_SPACECRAFT_PANEL
-   MessageInterface::ShowMessage(wxT("SpacecraftPanel::Create() entered\n"));
+   MessageInterface::ShowMessage("SpacecraftPanel::Create() entered\n");
    #endif
    
    SolarSystem *theSolarSystem = theGuiInterpreter->GetSolarSystemInUse();
@@ -105,8 +105,8 @@ void SpacecraftPanel::Create()
       currentSpacecraft->
          SetInternalCoordSystem(theSpacecraft->GetInternalCoordSystem());    
       currentSpacecraft->
-         SetRefObject(theSpacecraft->GetRefObject(Gmat::COORDINATE_SYSTEM, wxT("")), 
-                      Gmat::COORDINATE_SYSTEM, wxT(""));
+         SetRefObject(theSpacecraft->GetRefObject(Gmat::COORDINATE_SYSTEM, ""), 
+                      Gmat::COORDINATE_SYSTEM, "");
    }
    catch (BaseException &e)
    {
@@ -134,38 +134,38 @@ void SpacecraftPanel::Create()
       (this, spacecraftNotebook, currentSpacecraft, theSolarSystem);
    
    #if DEBUG_SPACECRAFT_PANEL
-   MessageInterface::ShowMessage(wxT("   OrbitPanel created\n"));
+   MessageInterface::ShowMessage("   OrbitPanel created\n");
    #endif
    
    theAttitudePanel = new AttitudePanel
       (this, spacecraftNotebook, currentSpacecraft);
    #if DEBUG_SPACECRAFT_PANEL
-   MessageInterface::ShowMessage(wxT("   AttitudePanel created\n"));
+   MessageInterface::ShowMessage("   AttitudePanel created\n");
    #endif
    
    theBallisticMassPanel = new BallisticsMassPanel
       (this, spacecraftNotebook, currentSpacecraft);
    #if DEBUG_SPACECRAFT_PANEL
-   MessageInterface::ShowMessage(wxT("   BallisticsMassPanel created\n"));
+   MessageInterface::ShowMessage("   BallisticsMassPanel created\n");
    #endif
    
    theTankPanel = new TankPanel
       (this, spacecraftNotebook, currentSpacecraft);
    #if DEBUG_SPACECRAFT_PANEL
-   MessageInterface::ShowMessage(wxT("   TankPanel created\n"));
+   MessageInterface::ShowMessage("   TankPanel created\n");
    #endif
    
    theThrusterPanel = new ThrusterPanel
       (this, actuatorNotebook, currentSpacecraft);
    #if DEBUG_SPACECRAFT_PANEL
-   MessageInterface::ShowMessage(wxT("   ThrusterPanel created\n"));
+   MessageInterface::ShowMessage("   ThrusterPanel created\n");
    #endif
    #ifdef __USE_SPICE__
       theSpicePanel = new SpicePanel
          (this, spacecraftNotebook, currentSpacecraft);
    #endif
    #if DEBUG_SPACECRAFT_PANEL
-   MessageInterface::ShowMessage(wxT("   SpicePanel created\n"));
+   MessageInterface::ShowMessage("   SpicePanel created\n");
    #endif
 
    theVisualModelPanel = new VisualModelPanel
@@ -195,7 +195,7 @@ void SpacecraftPanel::Create()
 void SpacecraftPanel::LoadData()
 {
    #if DEBUG_SPACECRAFT_PANEL
-   MessageInterface::ShowMessage(wxT("SpacecraftPanel::LoadData() entered\n"));
+   MessageInterface::ShowMessage("SpacecraftPanel::LoadData() entered\n");
    #endif
    
    // Set object pointer for "Show Script"
@@ -234,10 +234,10 @@ void SpacecraftPanel::LoadData()
 void SpacecraftPanel::SaveData()
 {
    #if DEBUG_SPACECRAFT_PANEL
-   MessageInterface::ShowMessage(wxT("SpacecraftPanel::SaveData() entered\n"));
+   MessageInterface::ShowMessage("SpacecraftPanel::SaveData() entered\n");
    MessageInterface::ShowMessage
-      (wxT("BallisticMassPanelChanged=%d, OrbitPanelChanged=%d, TankPanelChanged=%d, ")
-       wxT("ThrusterPanelChanged=%d, AttitudePanelChanged=%d\n"),
+      ("BallisticMassPanelChanged=%d, OrbitPanelChanged=%d, TankPanelChanged=%d, "
+       "ThrusterPanelChanged=%d, AttitudePanelChanged=%d\n",
        theBallisticMassPanel->IsDataChanged(), theOrbitPanel->IsDataChanged(),
        theTankPanel->IsDataChanged(), theThrusterPanel->IsDataChanged(),
        theAttitudePanel->IsDataChanged());

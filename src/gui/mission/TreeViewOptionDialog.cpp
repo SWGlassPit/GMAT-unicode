@@ -86,11 +86,11 @@ void TreeViewOptionDialog::Create()
                    wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
    
    wxArrayString choices;
-   choices.Add(wxT("Include"));
-   choices.Add(wxT("Exclude"));
+   choices.Add("Include");
+   choices.Add("Exclude");
    
    mViewRadioBox =
-      new wxRadioBox(this, ID_RADIOBOX, wxT("Select Commands to"), wxDefaultPosition, wxDefaultSize, choices);
+      new wxRadioBox(this, ID_RADIOBOX, "Select Commands to", wxDefaultPosition, wxDefaultSize, choices);
       
    mViewCheckListBox =
       new wxCheckListBox(this, -1, wxDefaultPosition, wxSize(150, 250), commands,
@@ -109,7 +109,7 @@ void TreeViewOptionDialog::Create()
    viewByCmdSizer->Add( mViewCheckListBox, 1, wxGROW|wxALIGN_CENTER|wxALL, bsize );
    viewByCmdSizer->Add( mViewByCmdApplyButton, 0, wxALIGN_CENTER|wxALL, bsize );
    
-   GmatStaticBoxSizer *viewByCmdSizer1 = new GmatStaticBoxSizer( wxVERTICAL, this, wxT("View By Commands") );
+   GmatStaticBoxSizer *viewByCmdSizer1 = new GmatStaticBoxSizer( wxVERTICAL, this, "View By Commands" );
    viewByCmdSizer1->Add(viewByCmdSizer, 1, wxGROW|wxALIGN_CENTER||wxALL, bsize);
    
    //---------- add to page sizer
@@ -136,7 +136,7 @@ void TreeViewOptionDialog::Create()
 void TreeViewOptionDialog::OnButtonClick(wxCommandEvent &event)
 {
    #ifdef DEBUG_DIALOG
-   MessageInterface::ShowMessage(wxT("TreeViewOptionDialog::OnButtonClick() entered\n"));
+   MessageInterface::ShowMessage("TreeViewOptionDialog::OnButtonClick() entered\n");
    #endif
    
    MissionTree *missionTree = (MissionTree*)mTreeCtrl;
@@ -171,17 +171,17 @@ void TreeViewOptionDialog::OnButtonClick(wxCommandEvent &event)
       for (int i=0; i<count; i++)
       {
          cmdStr = mViewCheckListBox->GetString(i);
-         if (cmdStr == wxT("Equation"))
-            cmdStr = wxT("GMAT");
-         if (cmdStr == wxT("ScriptEvent"))
-            cmdStr = wxT("BeginScript");
+         if (cmdStr == "Equation")
+            cmdStr = "GMAT";
+         if (cmdStr == "ScriptEvent")
+            cmdStr = "BeginScript";
          
          if (mViewCheckListBox->IsChecked(i))
          {
             if (!exclude)
             {
                #ifdef DEBUG_DIALOG
-               MessageInterface::ShowMessage(wxT("   cmdStr='%s'\n"), cmdStr.c_str());
+               MessageInterface::ShowMessage("   cmdStr='%s'\n", cmdStr.c_str());
                #endif
                
                viewCmds.Add(cmdStr);

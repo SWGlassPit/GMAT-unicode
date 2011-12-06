@@ -111,7 +111,7 @@ void SolverSetupPanel::LoadData()
    {
       mObject = theSolver;
       
-      wxString label;
+      std::string label;
       Integer propertyCount = theSolver->GetParameterCount();
       
       for (Integer i = 0; i < propertyCount; ++i)
@@ -126,7 +126,7 @@ void SolverSetupPanel::LoadData()
    catch (BaseException &e)
    {
       MessageInterface::ShowMessage
-         (wxT("SolverSetupPanel:LoadData() error occurred!\n%s\n"),
+         ("SolverSetupPanel:LoadData() error occurred!\n%s\n",
           e.GetFullMessage().c_str());
    }
    
@@ -149,7 +149,7 @@ void SolverSetupPanel::SaveData()
    
    try
    {
-      for (std::map<wxString, Integer>::iterator i = controlMap.begin();
+      for (std::map<std::string, Integer>::iterator i = controlMap.begin();
             i != controlMap.end(); ++i)
       {
          SaveControl(i->first);
@@ -193,7 +193,7 @@ void SolverSetupPanel::Setup(wxWindow *parent)
       if (theSolver->IsParameterReadOnly(i) == false)
       {
          propertyDescriptors.push_back(new wxStaticText(parent, ID_TEXT, 
-               theSolver->GetParameterText(i).c_str()));
+               wxT(theSolver->GetParameterText(i).c_str())));
          
          controlMap[theSolver->GetParameterText(i)] = j++;
 
@@ -242,7 +242,7 @@ wxControl *SolverSetupPanel::BuildControl(wxWindow *parent, Integer index)
    {
       case Gmat::BOOLEAN_TYPE:
          {
-            wxComboBox *cbControl = new wxComboBox(parent, ID_COMBOBOX, wxT("true"), 
+            wxComboBox *cbControl = new wxComboBox(parent, ID_COMBOBOX, "true", 
                   wxDefaultPosition, wxDefaultSize, 2, TF_SCHEMES, 
                   wxCB_READONLY);
                            
@@ -261,7 +261,7 @@ wxControl *SolverSetupPanel::BuildControl(wxWindow *parent, Integer index)
 }
 
 //------------------------------------------------------------------------------
-// void LoadControl(const wxString &label)
+// void LoadControl(const std::string &label)
 //------------------------------------------------------------------------------
 /**
  * Sets the data for a control
@@ -269,7 +269,7 @@ wxControl *SolverSetupPanel::BuildControl(wxWindow *parent, Integer index)
  * @param label The control's label
  */
 //------------------------------------------------------------------------------
-void SolverSetupPanel::LoadControl(const wxString &label)
+void SolverSetupPanel::LoadControl(const std::string &label)
 {
    Integer index = theSolver->GetParameterID(label);
    Gmat::ParameterType type = theSolver->GetParameterType(index);
@@ -305,7 +305,7 @@ void SolverSetupPanel::LoadControl(const wxString &label)
          break;
       
       case Gmat::STRING_TYPE:
-         valueString = theSolver->GetStringParameter(label).c_str();
+         valueString = wxT(theSolver->GetStringParameter(label).c_str());
          ((wxTextCtrl*)theControl)->ChangeValue(valueString);
          break;
 
@@ -316,7 +316,7 @@ void SolverSetupPanel::LoadControl(const wxString &label)
 
 
 //------------------------------------------------------------------------------
-// void SaveControl(const wxString &label)
+// void SaveControl(const std::string &label)
 //------------------------------------------------------------------------------
 /**
  * Passes a control's data to the Solver
@@ -324,20 +324,20 @@ void SolverSetupPanel::LoadControl(const wxString &label)
  * @param label The string associated with the control.
  */
 //------------------------------------------------------------------------------
-void SolverSetupPanel::SaveControl(const wxString &label)
+void SolverSetupPanel::SaveControl(const std::string &label)
 {
    Integer index = theSolver->GetParameterID(label);
    Gmat::ParameterType type = theSolver->GetParameterType(index);
 
    wxControl *theControl = propertyControls[controlMap[label]];
-   wxString valueString;
+   std::string valueString;
    
    switch (type)
    {
       case Gmat::BOOLEAN_TYPE:
          {
             bool val = true;
-            if (((wxComboBox*)theControl)->GetValue() == wxT("false"))
+            if (((wxComboBox*)theControl)->GetValue() == "false")
                val = false;
             theSolver->SetBooleanParameter(index, val);
          }
@@ -347,7 +347,7 @@ void SolverSetupPanel::SaveControl(const wxString &label)
          {
             Real val; 
             valueString = ((wxTextCtrl*)theControl)->GetValue();
-            CheckReal(val, valueString, label, wxT("Real Number"));
+            CheckReal(val, valueString, label, "Real Number");
             if (!canClose)
                return;
             theSolver->SetRealParameter(index, val);
@@ -358,7 +358,7 @@ void SolverSetupPanel::SaveControl(const wxString &label)
          {
             Integer val;
             valueString = ((wxTextCtrl*)theControl)->GetValue();
-            CheckInteger(val, valueString, label, wxT("Integer"));
+            CheckInteger(val, valueString, label, "Integer");
             if (!canClose)
                return;
             theSolver->SetIntegerParameter(index, val);

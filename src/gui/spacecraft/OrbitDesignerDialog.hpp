@@ -50,8 +50,8 @@ public:
    
    //accessor functions
    Rvector6 GetElementsDouble();
-   wxString GetEpochFormat();
-   wxString GetEpoch();
+   std::string GetEpochFormat();
+   std::string GetEpoch();
    
    bool isEpochChanged;
    bool updateOrbit;

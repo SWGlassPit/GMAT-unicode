@@ -55,8 +55,8 @@ private:
    GuiInterpreter *guiInterpreter;
    SolarSystem    *ss;
    // object data
-   wxString currentStateType;
-   wxString currentHorizonReference;
+   std::string currentStateType;
+   std::string currentHorizonReference;
    Real        location1, location2, location3;
 
    // Event Handling

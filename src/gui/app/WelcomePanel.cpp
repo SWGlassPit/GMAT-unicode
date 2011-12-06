@@ -73,7 +73,7 @@ WelcomePanel::WelcomePanel(wxFrame *frame, const wxString& title,
 void WelcomePanel::Create()
 {
    #ifdef DEBUG_CREATE
-   MessageInterface::ShowMessage(wxT("WelcomePanel::Create() entered\n"));
+   MessageInterface::ShowMessage("WelcomePanel::Create() entered\n");
    #endif
    
    wxStaticLine *line1;
@@ -87,17 +87,17 @@ void WelcomePanel::Create()
    
    // Load GMAT ICON
    FileManager *fm = FileManager::Instance();
-   wxString iconFile = fm->GetFullPathname(wxT("ICON_PATH")) + wxT("GMATIcon.jpg");
+   std::string iconFile = fm->GetFullPathname("ICON_PATH") + "GMATIcon.jpg";
    
    #ifdef DEBUG_CREATE
-   MessageInterface::ShowMessage(wxT("WelcomePanel::Create() iconFile='%s'\n"), iconFile.c_str());
+   MessageInterface::ShowMessage("WelcomePanel::Create() iconFile='%s'\n", iconFile.c_str());
    #endif
    
    if (GmatFileUtil::DoesFileExist(iconFile))
    {
       #ifdef DEBUG_CREATE
       MessageInterface::ShowMessage
-         (wxT("   Loading iconFile '%s'\n"), iconFile.c_str());
+         ("   Loading iconFile '%s'\n", iconFile.c_str());
       #endif
       bitmap = LoadBitmap( iconFile.c_str(), 200, 200 );
       aboutButton = new wxBitmapButton(this, -1, bitmap, wxDefaultPosition,
@@ -107,17 +107,17 @@ void WelcomePanel::Create()
    {
       #ifdef DEBUG_CREATE
       MessageInterface::ShowMessage
-         (wxT("   the iconFile '%s' doesnot exist, so creating default\n"), iconFile.c_str());
+         ("   the iconFile '%s' doesnot exist, so creating default\n", iconFile.c_str());
       #endif
       aboutButton = new wxBitmapButton(this, -1, NULL, wxDefaultPosition,
                            wxSize(200,200));
    }
    
    wxColourDatabase cdb;
-   wxColour gmatColor = cdb.Find(wxT("NAVY"));
+   wxColour gmatColor = cdb.Find("NAVY");
    // title, build date
    wxStaticText *gmatText =
-      new wxStaticText(this, -1, wxT("General Mission Analysis Tool"));
+      new wxStaticText(this, -1, "General Mission Analysis Tool");
    wxFont font1 = wxFont();
 
    #ifdef __WXMAC__
@@ -131,8 +131,8 @@ void WelcomePanel::Create()
    gmatText->SetOwnForegroundColour(gmatColor);
 
    // website and contact email
-   wxStaticText *webText = new wxStaticText(this, -1, wxT("Website: "));
-   wxString gmatUrl = wxT("http://gmat.gsfc.nasa.gov");
+   wxStaticText *webText = new wxStaticText(this, -1, "Website: ");
+   wxString gmatUrl = "http://gmat.gsfc.nasa.gov";
    wxHyperlinkCtrl *webLink = new wxHyperlinkCtrl(this, -1, gmatUrl, gmatUrl);
    
    wxFlexGridSizer *contactSizer = new wxFlexGridSizer(2);
@@ -152,7 +152,7 @@ void WelcomePanel::Create()
    // now Links and Resources
    //-----------------------------------------------------------------
    wxStaticText *resourcesText =
-      new wxStaticText(this, -1, wxT("Links and Resources"));
+      new wxStaticText(this, -1, "Links and Resources");
    resourcesText->SetOwnFont(font1);
    resourcesText->SetOwnForegroundColour(gmatColor);
    wxBoxSizer *resourcesSizer = new wxBoxSizer(wxVERTICAL);
@@ -160,21 +160,21 @@ void WelcomePanel::Create()
    resourcesSizer->AddSpacer(bsize*2);
    // add the recent scripts
    pConfig = (wxFileConfig *) wxConfigBase::Get();
-//   MessageInterface::PopupMessage(Gmat::INFO_, wxT("Getting Welcome Links"));
-   resourcesSizer->Add(FillGroup(wxT("/Welcome/Links"), wxT(""), 3, ID_URL, false, pConfig), 0, wxALIGN_LEFT|wxALL, bsize*2);
-//   MessageInterface::PopupMessage(Gmat::INFO_, wxT("Got Welcome Links"));
+//   MessageInterface::PopupMessage(Gmat::INFO_, "Getting Welcome Links");
+   resourcesSizer->Add(FillGroup("/Welcome/Links", "", 3, ID_URL, false, pConfig), 0, wxALIGN_LEFT|wxALL, bsize*2);
+//   MessageInterface::PopupMessage(Gmat::INFO_, "Got Welcome Links");
 
    //-----------------------------------------------------------------
    // now Getting Started
    //-----------------------------------------------------------------
    wxStaticText *getStartedText =
-      new wxStaticText(this, -1, wxT("Getting Started"));
+      new wxStaticText(this, -1, "Getting Started");
    getStartedText->SetOwnFont(font1);
    getStartedText->SetOwnForegroundColour(gmatColor);
    wxBoxSizer *gettingStartedSizer = new wxBoxSizer(wxVERTICAL);
    gettingStartedSizer->Add(getStartedText, 0, wxALIGN_LEFT|wxALL, bsize);
    gettingStartedSizer->AddSpacer(bsize*2);
-   gettingStartedSizer->Add(FillGroup(wxT("/GettingStarted/Tutorials"), wxT("/GettingStarted/Tutorials/Icons"),
+   gettingStartedSizer->Add(FillGroup("/GettingStarted/Tutorials", "/GettingStarted/Tutorials/Icons",
                                       1, ID_URL, false, pConfig), 0, wxALIGN_LEFT|wxALL, bsize*2);
    //gettingStartedSizer->AddSpacer(bsize*2);
 
@@ -182,7 +182,7 @@ void WelcomePanel::Create()
    // now recent scripts
    //-----------------------------------------------------------------
    wxStaticText *recentScriptsText =
-      new wxStaticText(this, -1, wxT("Recent Scripts"));
+      new wxStaticText(this, -1, "Recent Scripts");
    recentScriptsText->SetOwnFont(font1);
    recentScriptsText->SetOwnForegroundColour(gmatColor);
    wxBoxSizer *recentSizer = new wxBoxSizer(wxVERTICAL);
@@ -190,7 +190,7 @@ void WelcomePanel::Create()
    recentSizer->AddSpacer(bsize*2);
    // add the recent scripts
    pConfig = (wxFileConfig *) GmatAppData::Instance()->GetPersonalizationConfig();
-   recentSizer->Add(FillGroup(wxT("/RecentFiles"), wxT(""), 1, ID_BUTTON_RECENT, true, pConfig), 0, wxALIGN_LEFT|wxALL, bsize*2);
+   recentSizer->Add(FillGroup("/RecentFiles", "", 1, ID_BUTTON_RECENT, true, pConfig), 0, wxALIGN_LEFT|wxALL, bsize*2);
 
 
    //-----------------------------------------------------------------
@@ -215,8 +215,8 @@ void WelcomePanel::Create()
 
    wxCheckBox *cbShow = new wxCheckBox( this, ID_CHECKBOX, wxT("&Show Welcome Page On Startup"));
    wxString showWelcomePanel;
-   pConfig->Read(wxT("/Main/ShowWelcomeOnStart"), &showWelcomePanel, wxT("true"));
-   cbShow->SetValue( showWelcomePanel.Lower() == wxT("true") );
+   pConfig->Read("/Main/ShowWelcomeOnStart", &showWelcomePanel, "true");
+   cbShow->SetValue( showWelcomePanel.Lower() == "true" );
    theMiddleSizer->Add(cbShow, 0, wxALIGN_LEFT|wxALL, bsize*2);
 
    wxSizer *thePanelSizer = new wxBoxSizer(wxVERTICAL);
@@ -227,7 +227,7 @@ void WelcomePanel::Create()
    // Set icon if icon file is in the start up file
    try
    {
-      wxString iconfile = fm->GetFullPathname(wxT("MAIN_ICON_FILE")).c_str();
+      wxString iconfile = fm->GetFullPathname("MAIN_ICON_FILE").c_str();
       #if defined __WXMSW__
          SetIcon(wxIcon(iconfile, wxBITMAP_TYPE_ICO));
       #elif defined __WXGTK__
@@ -242,7 +242,7 @@ void WelcomePanel::Create()
    }
    
    #ifdef DEBUG_CREATE
-   MessageInterface::ShowMessage(wxT("WelcomePanel::Create() leaving\n"));
+   MessageInterface::ShowMessage("WelcomePanel::Create() leaving\n");
    #endif
 }
 
@@ -272,9 +272,9 @@ void WelcomePanel::OnShowWelcomePanelClicked(wxCommandEvent& event)
 {
    wxFileConfig *pConfig = (wxFileConfig *) GmatAppData::Instance()->GetPersonalizationConfig();
    if (event.IsChecked())
-      pConfig->Write(wxT("/Main/ShowWelcomeOnStart"), wxT("true"));
+      pConfig->Write("/Main/ShowWelcomeOnStart", "true");
    else
-      pConfig->Write(wxT("/Main/ShowWelcomeOnStart"), wxT("false"));
+      pConfig->Write("/Main/ShowWelcomeOnStart", "false");
 }
 
 
@@ -295,7 +295,7 @@ wxFlexGridSizer *WelcomePanel::FillGroup( wxString INIGroup, wxString INIIconGro
 {
    #ifdef DEBUG_FILL_GROUP
    MessageInterface::ShowMessage
-      (wxT("WelcomePanel::FillGroup() entered, INIGroup='%s', INIIconGroup='%s'\n"),
+      ("WelcomePanel::FillGroup() entered, INIGroup='%s', INIIconGroup='%s'\n",
        INIGroup.c_str(), INIIconGroup.c_str());
    #endif
    
@@ -334,7 +334,7 @@ wxFlexGridSizer *WelcomePanel::FillGroup( wxString INIGroup, wxString INIIconGro
       }
    }
    // get the icons if section exists
-   if (INIIconGroup != wxT(""))
+   if (INIIconGroup != "")
    {
       config->SetPath(INIIconGroup);
       for (i=0; i<linkLabels.size(); i++)
@@ -350,7 +350,7 @@ wxFlexGridSizer *WelcomePanel::FillGroup( wxString INIGroup, wxString INIIconGro
       aSizer = new wxFlexGridSizer(maxCols, 10, 40);
    
    #ifdef DEBUG_FILL_GROUP
-   MessageInterface::ShowMessage(wxT("   There are %d linkLables\n"), linkLabels.size());
+   MessageInterface::ShowMessage("   There are %d linkLables\n", linkLabels.size());
    #endif
    
    if (linkLabels.size() > 0)
@@ -365,9 +365,9 @@ wxFlexGridSizer *WelcomePanel::FillGroup( wxString INIGroup, wxString INIIconGro
          if (linkIcons.size() > 0)
          {
             aIconNTextSizer = new wxFlexGridSizer(2, 20, 20);
-            wxString fullPath = fm->GetFullPathname(wxT("ICON_PATH")) + linkIcons[i].c_str();
+            std::string fullPath = fm->GetFullPathname("ICON_PATH") + linkIcons[i].c_str();
             #ifdef DEBUG_FILL_GROUP
-            MessageInterface::ShowMessage(wxT("   fullPath='%s'\n"), fullPath.c_str());
+            MessageInterface::ShowMessage("   fullPath='%s'\n", fullPath.c_str());
             #endif
             if (GmatFileUtil::DoesFileExist(fullPath.c_str()))
             {
@@ -378,7 +378,7 @@ wxFlexGridSizer *WelcomePanel::FillGroup( wxString INIGroup, wxString INIIconGro
             else
             {
                MessageInterface::ShowMessage
-                  (wxT("*** WARNING *** Can't load image from file '%s'\n"), fullPath.c_str());
+                  ("*** WARNING *** Can't load image from file '%s'\n", fullPath.c_str());
                abitmapButton = NULL;
             }
             
@@ -400,7 +400,7 @@ wxFlexGridSizer *WelcomePanel::FillGroup( wxString INIGroup, wxString INIIconGro
    
    #ifdef DEBUG_FILL_GROUP
    MessageInterface::ShowMessage
-      (wxT("WelcomePanel::FillGroup() returning aSizer<%p>\n"), aSizer);
+      ("WelcomePanel::FillGroup() returning aSizer<%p>\n", aSizer);
    #endif
    
    return aSizer;
@@ -447,7 +447,7 @@ wxBitmap WelcomePanel::LoadBitmap( wxString filename, int width, int height )
    else
    {
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** Can't load image from '%s'\n"), filename.c_str());
+         ("*** WARNING *** Can't load image from '%s'\n", filename.c_str());
    }
    
    return bitmap;

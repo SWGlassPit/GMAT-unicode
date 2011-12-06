@@ -69,8 +69,8 @@ ReportFilePanel::ReportFilePanel(wxWindow *parent, wxString reportName)
    {
       // show error message
       MessageInterface::ShowMessage
-         (wxT("**** ERROR **** ReportFilePanel:Create() the running ReportFile ")
-          wxT("\"%s\" is NULL\n"), reportName.c_str());
+         ("**** ERROR **** ReportFilePanel:Create() the running ReportFile "
+          "\"%s\" is NULL\n", reportName.c_str());
    }
    
 }
@@ -106,9 +106,9 @@ void ReportFilePanel::Create()
       
    // create bottom buttons
    theCloseButton =
-      new wxButton(this, ID_BUTTON_CLOSE, wxT("Close"), wxDefaultPosition, wxDefaultSize, 0);
+      new wxButton(this, ID_BUTTON_CLOSE, "Close", wxDefaultPosition, wxDefaultSize, 0);
    theHelpButton =
-      new wxButton(this, ID_BUTTON_HELP, wxT("Help"), wxDefaultPosition, wxDefaultSize, 0);
+      new wxButton(this, ID_BUTTON_HELP, "Help", wxDefaultPosition, wxDefaultSize, 0);
    
    theGridSizer->Add(mFileContentsTextCtrl, 0, wxGROW | wxALIGN_CENTER | wxALL,
                      borderSize);
@@ -152,21 +152,21 @@ void ReportFilePanel::Show()
 //------------------------------------------------------------------------------
 void ReportFilePanel::LoadData()
 {
-   wxString filename = theReport->GetStringParameter(wxT("Filename"));
+   std::string filename = theReport->GetStringParameter("Filename");
    
    wxFile *file = new wxFile();
    bool mFileExists = file->Exists(filename.c_str());
    
    #ifdef DEBUG_REPORT_FILE_PANEL
    MessageInterface::ShowMessage
-      (wxT("===> %p, ReportFilePanel::LoadData() filename=%s, mFileExists=%d\n"),
+      ("===> %p, ReportFilePanel::LoadData() filename=%s, mFileExists=%d\n",
        theReport, filename.c_str(), mFileExists);
    #endif
    
    if (mFileExists)
       mFileContentsTextCtrl->LoadFile(filename.c_str());
    else
-      mFileContentsTextCtrl->SetValue(wxT(""));
+      mFileContentsTextCtrl->SetValue("");
    
    delete file;
 }

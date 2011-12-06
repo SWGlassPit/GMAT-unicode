@@ -92,9 +92,9 @@ void SolverVariablesPanel::Setup( wxWindow *parent)
     varsGrid->SetColSize(0, 150);
     varsGrid->SetColSize(1, 585);
     varsGrid->SetColSize(2, 585);
-    varsGrid->SetColLabelValue(0, wxT("Solver"));
-    varsGrid->SetColLabelValue(1, wxT("Property"));
-    varsGrid->SetColLabelValue(2, wxT("Description"));
+    varsGrid->SetColLabelValue(0, _T("Solver"));
+    varsGrid->SetColLabelValue(1, _T("Property"));
+    varsGrid->SetColLabelValue(2, _T("Description"));
     varsGrid->SetRowLabelSize(0);
        
     // wxStaticText
@@ -134,7 +134,7 @@ void SolverVariablesPanel::Setup( wxWindow *parent)
     };
     
     // wxComboBox
-    solverComboBox = new wxComboBox( parent, ID_COMBO, strArray1[0], wxDefaultPosition, wxSize(200,-1), 0, strArray1, wxCB_DROPDOWN|wxCB_READONLY );
+    solverComboBox = new wxComboBox( parent, ID_COMBO, wxT(strArray1[0]), wxDefaultPosition, wxSize(200,-1), 0, strArray1, wxCB_DROPDOWN|wxCB_READONLY );
     
     // wxButton
     editButton = new wxButton( parent, ID_BUTTON, wxT("Edit"), wxDefaultPosition, wxDefaultSize, 0 );

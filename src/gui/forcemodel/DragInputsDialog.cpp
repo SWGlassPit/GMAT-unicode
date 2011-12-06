@@ -40,7 +40,7 @@ END_EVENT_TABLE()
 
 //------------------------------------------------------------------------------
 // DragInputsDialog(wxWindow *parent, DragForce *dragForce,
-//                  const wxString& title = wxT(""))
+//                  const wxString& title = "")
 //------------------------------------------------------------------------------
 /**
  * Constructs DragInputsDialog object.
@@ -58,9 +58,9 @@ DragInputsDialog::DragInputsDialog(wxWindow *parent, DragForce *dragForce,
 {
    #ifdef DEBUG_DRAG_INPUT
    MessageInterface::ShowMessage
-      (wxT("DragInputsDialog::DragInputsDialog() entered, dragForce=<%p><%s>'%s'\n"),
-       dragForce, dragForce ? dragForce->GetTypeName().c_str() : wxT("NULL"),
-       dragForce ? dragForce->GetName().c_str() : wxT("NULL"));
+      ("DragInputsDialog::DragInputsDialog() entered, dragForce=<%p><%s>'%s'\n",
+       dragForce, dragForce ? dragForce->GetTypeName().c_str() : "NULL",
+       dragForce ? dragForce->GetName().c_str() : "NULL");
    #endif
    
    mObject = (GmatBase*)dragForce;   
@@ -75,11 +75,11 @@ DragInputsDialog::DragInputsDialog(wxWindow *parent, DragForce *dragForce,
    else
    {
       MessageInterface::ShowMessage
-         (wxT("***  ERROR *** DragInputsDialog() input drag force is NULL\n"));
+         ("***  ERROR *** DragInputsDialog() input drag force is NULL\n");
    }
    
    #ifdef DEBUG_DRAG_INPUT
-   MessageInterface::ShowMessage(wxT("DragInputsDialog::DragInputsDialog() leaving\n"));
+   MessageInterface::ShowMessage("DragInputsDialog::DragInputsDialog() leaving\n");
    #endif
 }
 
@@ -210,8 +210,8 @@ void DragInputsDialog::Create()
    fileInputSizer->Add(fileNameTextCtrl, 0, wxALIGN_LEFT|wxALL, bsize);
    fileInputSizer->Add(browseButton, 0, wxALIGN_LEFT|wxALL, bsize);
    
-   GmatStaticBoxSizer *userInputGroup = new GmatStaticBoxSizer(wxVERTICAL, this, wxT(""));
-   GmatStaticBoxSizer *fileInputGroup = new GmatStaticBoxSizer(wxVERTICAL, this, wxT(""));
+   GmatStaticBoxSizer *userInputGroup = new GmatStaticBoxSizer(wxVERTICAL, this, "");
+   GmatStaticBoxSizer *fileInputGroup = new GmatStaticBoxSizer(wxVERTICAL, this, "");
    
    userInputGroup->Add(userInputFlexGridSizer, 0, wxALIGN_LEFT|wxALL, bsize);
    fileInputGroup->Add(fileInputRadioButton, 0, wxALIGN_LEFT|wxALL, bsize);
@@ -231,48 +231,48 @@ void DragInputsDialog::Create()
 void DragInputsDialog::LoadData()
 {
    #ifdef DEBUG_DRAG_LOAD
-   MessageInterface::ShowMessage(wxT("DragInputsDialog::LoadData() entered\n"));
+   MessageInterface::ShowMessage("DragInputsDialog::LoadData() entered\n");
    #endif
    
    try
    {
-      solarFluxID = theForce->GetParameterID(wxT("F107"));
+      solarFluxID = theForce->GetParameterID("F107");
       solarFluxTextCtrl->
          SetValue(wxVariant(theForce->GetRealParameter(solarFluxID)));
    }
    catch (BaseException &e)
    {
-      MessageInterface::ShowMessage(wxT("DragInputsDialog::LoadData()\n") +
+      MessageInterface::ShowMessage("DragInputsDialog::LoadData()\n" +
                                     e.GetFullMessage()); 
    }
    
    try
    {
-      avgSolarFluxID = theForce->GetParameterID(wxT("F107A"));
+      avgSolarFluxID = theForce->GetParameterID("F107A");
       avgSolarFluxTextCtrl->
          SetValue(wxVariant(theForce->GetRealParameter(avgSolarFluxID)));
    }
    catch (BaseException &e)
    {
-      MessageInterface::ShowMessage(wxT("DragInputsDialog::LoadData()\n") +
+      MessageInterface::ShowMessage("DragInputsDialog::LoadData()\n" +
                                     e.GetFullMessage()); 
    }
    
    try
    {
-      geomagnecticIndexID = theForce->GetParameterID(wxT("MagneticIndex"));
+      geomagnecticIndexID = theForce->GetParameterID("MagneticIndex");
       geomagneticIndexTextCtrl->
          SetValue(wxVariant(theForce->GetRealParameter(geomagnecticIndexID)));
    }
    catch (BaseException &e)
    {
-      MessageInterface::ShowMessage(wxT("DragInputsDialog::LoadData()\n") +
+      MessageInterface::ShowMessage("DragInputsDialog::LoadData()\n" +
                                     e.GetFullMessage()); 
    }
    
    try
    {
-      solarFluxFileID = theForce->GetParameterID(wxT("SolarFluxFile"));
+      solarFluxFileID = theForce->GetParameterID("SolarFluxFile");
       wxString filename = theForce->GetStringParameter(solarFluxFileID).c_str();
 
       if (!filename.IsNull())
@@ -280,28 +280,28 @@ void DragInputsDialog::LoadData()
    }
    catch (BaseException &e)
    {
-      MessageInterface::ShowMessage(wxT("DragInputsDialog::LoadData()\n") +
+      MessageInterface::ShowMessage("DragInputsDialog::LoadData()\n" +
                                     e.GetFullMessage()); 
    }
    
    try
    {
-      inputSourceID = theForce->GetParameterID(wxT("InputSource"));
+      inputSourceID = theForce->GetParameterID("InputSource");
       inputSourceString = theForce->GetStringParameter(inputSourceID).c_str();
    }
    catch (BaseException &e)
    {
-      MessageInterface::ShowMessage(wxT("DragInputsDialog::LoadData()\n") +
+      MessageInterface::ShowMessage("DragInputsDialog::LoadData()\n" +
                                     e.GetFullMessage()); 
    }
    
-   if (inputSourceString.CmpNoCase(wxT("Constant")) == 0)
+   if (inputSourceString.CmpNoCase("Constant") == 0)
    {
       useFile = false;
       userInputRadioButton->SetValue(true);
       fileInputRadioButton->SetValue(false); 
    }
-   else if (inputSourceString.CmpNoCase(wxT("File")) == 0)
+   else if (inputSourceString.CmpNoCase("File") == 0)
    {
       useFile = true;
       userInputRadioButton->SetValue(false);
@@ -311,7 +311,7 @@ void DragInputsDialog::LoadData()
    Update();
    
    #ifdef DEBUG_DRAG_LOAD
-   MessageInterface::ShowMessage(wxT("DragInputsDialog::LoadData() leaving\n"));
+   MessageInterface::ShowMessage("DragInputsDialog::LoadData() leaving\n");
    #endif
 }
 
@@ -322,7 +322,7 @@ void DragInputsDialog::LoadData()
 void DragInputsDialog::SaveData()
 {
    #ifdef DEBUG_DRAG_SAVE
-   MessageInterface::ShowMessage(wxT("DragInputsDialog::SaveData() entered\n"));
+   MessageInterface::ShowMessage("DragInputsDialog::SaveData() entered\n");
    #endif
    
    canClose = true;
@@ -333,16 +333,16 @@ void DragInputsDialog::SaveData()
    //-----------------------------------------------------------------
    if (isTextModified)
    {
-      wxString str;
+      std::string str;
       
       str = solarFluxTextCtrl->GetValue();
-      CheckReal(flux, str, wxT("Solar Flux (F10.7)"), wxT("Real Number >= 0.0"));
+      CheckReal(flux, str, "Solar Flux (F10.7)", "Real Number >= 0.0");
       
       str = avgSolarFluxTextCtrl->GetValue();
-      CheckReal(avgFlux, str, wxT("Average Solar Flux (F10.7A)"), wxT("Real Number >= 0.0"));
+      CheckReal(avgFlux, str, "Average Solar Flux (F10.7A)", "Real Number >= 0.0");
       
       str = geomagneticIndexTextCtrl->GetValue();
-      CheckReal(magIndex, str, wxT("Magnetic Index)"), wxT("0.0 <= Real Number <= 9.0"));
+      CheckReal(magIndex, str, "Magnetic Index)", "0.0 <= Real Number <= 9.0");
       
       if (!canClose)
          return;
@@ -356,12 +356,12 @@ void DragInputsDialog::SaveData()
    {
       if (useFile)
       {
-         wxString fileName = fileNameTextCtrl->GetValue().c_str();
-         if (fileName == wxT(""))
+         std::string fileName = fileNameTextCtrl->GetValue().c_str();
+         if (fileName == "")
          {
             MessageInterface::PopupMessage
-               (Gmat::ERROR_, wxT("The flux file name is empty, please enter file name or ")
-                wxT("switch to user input"));
+               (Gmat::ERROR_, "The flux file name is empty, please enter file name or "
+                "switch to user input");
             canClose = false;
             return;
          }
@@ -372,7 +372,7 @@ void DragInputsDialog::SaveData()
                                       fileNameTextCtrl->GetValue().c_str());
          #ifdef DEBUG_DRAG_SAVE
          MessageInterface::ShowMessage
-            (wxT("   ==> Saved filename%s\n"), fileNameTextCtrl->GetValue().c_str());
+            ("   ==> Saved filename%s\n", fileNameTextCtrl->GetValue().c_str());
          #endif
       }
       else
@@ -397,7 +397,7 @@ void DragInputsDialog::SaveData()
    }
    
    #ifdef DEBUG_DRAG_SAVE
-   MessageInterface::ShowMessage(wxT("DragInputsDialog::SaveData() leaving\n"));
+   MessageInterface::ShowMessage("DragInputsDialog::SaveData() leaving\n");
    #endif
 }
 
@@ -447,7 +447,7 @@ void DragInputsDialog::OnRadioButtonChange(wxCommandEvent& event)
 //------------------------------------------------------------------------------
 void DragInputsDialog::OnBrowse(wxCommandEvent &event)
 {
-   wxFileDialog dialog(this, wxT("Choose a file"), wxT(""), wxT(""), wxT("*.*"));
+   wxFileDialog dialog(this, _T("Choose a file"), _T(""), _T(""), _T("*.*"));
     
    if (dialog.ShowModal() == wxID_OK)
    {

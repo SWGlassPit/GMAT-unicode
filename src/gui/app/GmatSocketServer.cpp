@@ -89,7 +89,7 @@ bool GmatSocketServer::RunRequest(SOCKET sock)
 			#ifdef LINUX_MAC
 			printf("Client %d: Read message:%s\n", sock, buf);
 			#else
-			MessageInterface::ShowMessage(wxT("Client %d: Read message:%s\n"), sock, buf);
+			MessageInterface::ShowMessage("Client %d: Read message:%s\n", sock, buf);
 			#endif
 		#else
 			printf("Client %d: Read message:%s\n", sock, buf);
@@ -104,7 +104,7 @@ bool GmatSocketServer::RunRequest(SOCKET sock)
 			#ifdef LINUX_MAC
 			printf("Client %d: Echo back:%s\n", sock, buf);
 			#else
-			MessageInterface::ShowMessage(wxT("Client %d: Echo back:%s\n"), sock, buf);
+			MessageInterface::ShowMessage("Client %d: Echo back:%s\n", sock, buf);
 			#endif
 		#else
 			printf("Client %d: Echo back:%s\n", sock, buf);
@@ -165,7 +165,7 @@ bool GmatSocketServer::RunRequest(SOCKET sock)
 				#ifdef LINUX_MAC
 				printf("Client %d: Send result:%s\n", sock, result);
 				#else
-				MessageInterface::ShowMessage(wxT("Client %d: Send result:%s\n"), sock, result);
+				MessageInterface::ShowMessage("Client %d: Send result:%s\n", sock, result);
 				#endif
 			#else
 				printf("Client %d: Send result:%s\n", sock, result);
@@ -226,7 +226,7 @@ void GmatSocketServer::OnAccept(SOCKET sk)
 			#ifdef LINUX_MAC
 			printf("number of clients = %d\n", m_numClients);
 			#else
-			MessageInterface::ShowMessage(wxT("number of clients = %d\n"), m_numClients);
+			MessageInterface::ShowMessage("number of clients = %d\n", m_numClients);
 			#endif
 		#else
 			printf("number of clients = %d\n", m_numClients);
@@ -259,7 +259,7 @@ void GmatSocketServer::OnAccept(SOCKET sk)
 			#ifdef LINUX_MAC
 			printf("number of clients = %d\n", m_numClients);
 			#else
-			MessageInterface::ShowMessage(wxT("number of clients = %d\n"), m_numClients);
+			MessageInterface::ShowMessage("number of clients = %d\n", m_numClients);
 			#endif
 		#else
 			printf("number of clients = %d\n", m_numClients);
@@ -300,7 +300,7 @@ void GmatSocketServer::RunServer()
      {
 		#ifdef DEBUG_SOCKET
 			#ifdef MessageInterface_hpp
-				MessageInterface::ShowMessage(wxT("WSA Initialization failed! STOP!!!\n"));
+				MessageInterface::ShowMessage("WSA Initialization failed! STOP!!!\n");
 			#else
 				printf("WSA Initialization failed! STOP!!!\n");
 			#endif
@@ -313,7 +313,7 @@ void GmatSocketServer::RunServer()
      {
 		#ifdef DEBUG_SOCKET
 			#ifdef MessageInterface_hpp
-				MessageInterface::ShowMessage(wxT("WSA Initialization is successful...\n"));
+				MessageInterface::ShowMessage("WSA Initialization is successful...\n");
 			#else
 				printf("WSA Initialization is successful...\n");
 			#endif
@@ -330,7 +330,7 @@ void GmatSocketServer::RunServer()
 				#ifdef LINUX_MAC
 				printf("Socket creation failed!STOP!!!\n");
 				#else
-				MessageInterface::ShowMessage(wxT("Socket creation failed!STOP!!!\n"));
+				MessageInterface::ShowMessage("Socket creation failed!STOP!!!\n");
 				#endif
 			#else
 				printf("Socket creation failed!STOP!!!\n");
@@ -346,7 +346,7 @@ void GmatSocketServer::RunServer()
 				#ifdef LINUX_MAC
 				printf("Socket is created successfully...\n");
 				#else
-				MessageInterface::ShowMessage(wxT("Socket is created successfully...\n"));
+				MessageInterface::ShowMessage("Socket is created successfully...\n");
 				#endif
 			#else
 				printf("Socket is created successfully...\n");
@@ -389,7 +389,7 @@ void GmatSocketServer::RunServer()
 				#ifdef LINUX_MAC
 				printf("Attempt to bind failed!STOP!!!\n");
 				#else
-				MessageInterface::ShowMessage(wxT("Attempt to bind failed!STOP!!!\n"));
+				MessageInterface::ShowMessage("Attempt to bind failed!STOP!!!\n");
 				#endif
 			#else
 				printf("Attempt to bind failed!STOP!!!\n");
@@ -405,7 +405,7 @@ void GmatSocketServer::RunServer()
 				#ifdef LINUX_MAC
 				printf("Bind process is created successfully...\n");
 				#else
-				MessageInterface::ShowMessage(wxT("Bind process is created successfully...\n"));
+				MessageInterface::ShowMessage("Bind process is created successfully...\n");
 				#endif
 			#else
 				printf("Bind process is created successfully...\n");
@@ -421,7 +421,7 @@ void GmatSocketServer::RunServer()
 				#ifdef LINUX_MAC
 				printf("Error in listening the socket!STOP!!!\n");
 				#else
-				MessageInterface::ShowMessage(wxT("Error in listening the socket!STOP!!!\n"));
+				MessageInterface::ShowMessage("Error in listening the socket!STOP!!!\n");
 				#endif
 			#else
 				printf("Error in listening the socket!STOP!!!\n");
@@ -437,7 +437,7 @@ void GmatSocketServer::RunServer()
 				#ifdef LINUX_MAC
 				printf("Listening process is successfully...\n");
 				#else
-				MessageInterface::ShowMessage(wxT("Listening process is successfully...\n"));
+				MessageInterface::ShowMessage("Listening process is successfully...\n");
 				#endif
 			#else
 				printf("Listening process is successfully...\n");
@@ -453,7 +453,7 @@ void GmatSocketServer::RunServer()
 				#ifdef LINUX_MAC					
 				printf("Server is waiting for a connection ...\n");
 				#else
-				MessageInterface::ShowMessage(wxT("Server is waiting for a connection ...\n"));
+				MessageInterface::ShowMessage("Server is waiting for a connection ...\n");
 				#endif
 			#else
 				printf("Server is waiting for a connection ...\n");
@@ -504,7 +504,7 @@ void GmatSocketServer::Close()
      {
 		#ifdef DEBUG_SOCKET
 			#ifdef MessageInterface_hpp
-				MessageInterface::ShowMessage(wxT("WSACleanup failed! STOP!!!\n"));
+				MessageInterface::ShowMessage("WSACleanup failed! STOP!!!\n");
 			#else
 				printf("WSACleanup failed! STOP!!!\n");
 			#endif
@@ -517,7 +517,7 @@ void GmatSocketServer::Close()
      {
 		#ifdef DEBUG_SOCKET
 			#ifdef MessageInterface_hpp
-				MessageInterface::ShowMessage(wxT("WSACleanup is successful...\n"));
+				MessageInterface::ShowMessage("WSACleanup is successful...\n");
 			#else
 				printf("WSACleanup is successful...\n");
 			#endif

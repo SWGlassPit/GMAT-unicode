@@ -38,20 +38,20 @@ END_EVENT_TABLE()
 // InteractiveMatlabDialog(wxWindow *parent)
 //------------------------------------------------------------------------------
 InteractiveMatlabDialog::InteractiveMatlabDialog(wxWindow *parent)
-   : wxDialog(parent, -1, wxString(wxT("InteractiveMatlabDialog")))
+   : wxDialog(parent, -1, wxString(_T("InteractiveMatlabDialog")))
 {
    theGuiInterpreter = GmatAppData::Instance()->GetGuiInterpreter();
    theGuiManager = GuiItemManager::GetInstance();
    theParent = parent;
 
-   mObjectTypeList.Add(wxT("Spacecraft"));
+   mObjectTypeList.Add("Spacecraft");
    
    // reset array of strings
    inputStrings.Clear();
    outputStrings.Clear();
    
    // create command
-   theCmd = new CallFunction(wxT("CallMatlabFunction"));
+   theCmd = new CallFunction("CallMatlabFunction");
    
    Create();
    Show();
@@ -91,13 +91,13 @@ void InteractiveMatlabDialog::Create()
 
     // create bottom buttons
    theEvaluateButton =
-      new wxButton(this, ID_BUTTON, wxT("Evaluate"), wxDefaultPosition, wxDefaultSize, 0);
+      new wxButton(this, ID_BUTTON, "Evaluate", wxDefaultPosition, wxDefaultSize, 0);
 
    theClearButton =
-      new wxButton(this, ID_BUTTON, wxT("Clear"), wxDefaultPosition, wxDefaultSize, 0);
+      new wxButton(this, ID_BUTTON, "Clear", wxDefaultPosition, wxDefaultSize, 0);
 
    theCloseButton =
-      new wxButton(this, ID_BUTTON, wxT("Close"), wxDefaultPosition, wxDefaultSize, 0);
+      new wxButton(this, ID_BUTTON, "Close", wxDefaultPosition, wxDefaultSize, 0);
 
    // adds the buttons to button sizer
    theButtonSizer->Add(theEvaluateButton, 0, wxALIGN_CENTER | wxALL, borderSize);
@@ -245,7 +245,7 @@ void InteractiveMatlabDialog::OnButton(wxCommandEvent& event)
    if (event.GetEventObject() == theEvaluateButton)
    {
       delete(theCmd);
-      theCmd = new CallFunction(wxT("CallMatlabFunction"));
+      theCmd = new CallFunction("CallMatlabFunction");
       SetupCommand();
       SetResults();
    }
@@ -282,7 +282,7 @@ void InteractiveMatlabDialog::OnCellClick(wxGridEvent& event)
       paramDlg.ShowModal();
       
       inputStrings = paramDlg.GetParamNameArray();
-      wxString cellValue = wxT("");
+      wxString cellValue = "";
 
       if (inputStrings.Count() > 0)
       {
@@ -290,13 +290,13 @@ void InteractiveMatlabDialog::OnCellClick(wxGridEvent& event)
 
          for (unsigned int i=1; i<inputStrings.Count(); i++)
          {
-            cellValue = cellValue + wxT(", ") + inputStrings[i];
+            cellValue = cellValue + ", " + inputStrings[i];
          }
 
          inputGrid->SetCellValue(row, col, cellValue);
       }
       else     // no selections
-         inputGrid->SetCellValue(row, col, wxT(""));
+         inputGrid->SetCellValue(row, col, "");
    }
    else if (event.GetEventObject() == outputGrid)
    {
@@ -307,7 +307,7 @@ void InteractiveMatlabDialog::OnCellClick(wxGridEvent& event)
       paramDlg.ShowModal();
 
       outputStrings = paramDlg.GetParamNameArray();
-      wxString cellValue = wxT("");
+      wxString cellValue = "";
 
       if (outputStrings.Count() > 0)
       {
@@ -315,13 +315,13 @@ void InteractiveMatlabDialog::OnCellClick(wxGridEvent& event)
 
          for (unsigned int i=1; i<outputStrings.Count(); i++)
          {
-            cellValue = cellValue + wxT(", ") + outputStrings[i];
+            cellValue = cellValue + ", " + outputStrings[i];
          }
 
          outputGrid->SetCellValue(row, col, cellValue);
       }
       else     // no selections
-         outputGrid->SetCellValue(row, col, wxT(""));
+         outputGrid->SetCellValue(row, col, "");
    }
 }
 
@@ -331,10 +331,10 @@ void InteractiveMatlabDialog::SetupCommand()
    wxString functionName = functionComboBox->GetStringSelection();
 
    // arg: for now to avoid a crash
-   if (functionName != wxT(""))
+   if (functionName != "")
    {
       Function *function = (Function *)theGuiInterpreter->GetConfiguredObject(
-               functionName);
+               std::string(functionName));
 
       if (function != NULL)
       {
@@ -342,23 +342,23 @@ void InteractiveMatlabDialog::SetupCommand()
       }
    }
    else
-      throw (wxT("No Function Name Given"));
+      throw ("No Function Name Given");
 
    // clear out previous parameters
-   theCmd->TakeAction(wxT("Clear"));
+   theCmd->TakeAction("Clear");
 
    // set input parameters
    for (unsigned int i=0; i<inputStrings.Count(); i++)
    {
-      wxString selInName = wxString(inputStrings[i]);
-      theCmd->SetStringParameter(wxT("AddInput"), selInName, i);
+      std::string selInName = std::string(inputStrings[i]);
+      theCmd->SetStringParameter("AddInput", selInName, i);
    }
 
    // set output parameters
    for (unsigned int i=0; i<outputStrings.Count(); i++)
    {
-       wxString selOutName = wxString(outputStrings[i]);
-       theCmd->SetStringParameter(wxT("AddOutput"), selOutName, i);
+       std::string selOutName = std::string(outputStrings[i]);
+       theCmd->SetStringParameter("AddOutput", selOutName, i);
    }
 
 }
@@ -374,7 +374,7 @@ void InteractiveMatlabDialog::SetResults()
 //   MessageInterface::ShowMessage("executed command \n");
 
    outputTextCtrl->AppendText(wxT("\nSent to Matlab:  "));
-   wxString evaluationString = theCmd->FormEvalString();
+   std::string evaluationString = theCmd->FormEvalString();
    outputTextCtrl->AppendText(evaluationString.c_str());
 
 //   MessageInterface::ShowMessage("got eval string \n");
@@ -385,39 +385,39 @@ void InteractiveMatlabDialog::SetResults()
    for (unsigned int i=0; i<outputStrings.Count(); i++)
    {
       Parameter *param = (Parameter *)theGuiInterpreter->GetConfiguredObject(
-            wxString(outputStrings[i]));
+            std::string(outputStrings[i]));
 
-      if (param->GetTypeName() == wxT("Array"))
+      if (param->GetTypeName() == "Array")
       {
 //         MessageInterface::ShowMessage("parameter is an array \n");
 
          Array *array = (Array *)param;
-         int numRows = array->GetIntegerParameter(wxT("NumRows"));
-         int numCols = array->GetIntegerParameter(wxT("NumCols"));
+         int numRows = array->GetIntegerParameter("NumRows");
+         int numCols = array->GetIntegerParameter("NumCols");
 
          // create rmatrix
-         Rmatrix rmatrix = array->GetRmatrixParameter(wxT("RmatValue"));
+         Rmatrix rmatrix = array->GetRmatrixParameter("RmatValue");
 //         MessageInterface::ShowMessage("got the array values\n");
 
-         wxString os;
-         os << array->GetName().c_str() << wxT(" = \n") ;
+         std::ostringstream os;
+         os << array->GetName().c_str() << " = \n" ;
 
          for (int j=0; j<numRows; j++)
          {
            for (int k=0; k<numCols; k++)
-             os << wxT("\t") << rmatrix(j, k);
-           os << wxT("\n");
+             os << "\t" << rmatrix(j, k);
+           os << "\n";
          }
 
-         wxString paramString = os;
+         std::string paramString = os.str();
          outputTextCtrl->AppendText(paramString.c_str());
 
       }
-      else if (param->GetTypeName() == wxT("String"))
+      else if (param->GetTypeName() == "String")
       {
          wxString paramString;
          StringVar *stringVar = (StringVar *)param;
-         paramString.Printf(wxT("%s = %s\n"), param->GetName().c_str(),
+         paramString.Printf("%s = %s\n", param->GetName().c_str(),
                                            stringVar->GetString().c_str());
          outputTextCtrl->AppendText(paramString);
       }
@@ -425,7 +425,7 @@ void InteractiveMatlabDialog::SetResults()
 //      if (param->GetTypeName() == "Variable")
       {
          wxString paramString;
-         paramString.Printf(wxT("%s = %f\n"), param->GetName().c_str(),
+         paramString.Printf("%s = %f\n", param->GetName().c_str(),
                                            param->EvaluateReal());
          outputTextCtrl->AppendText(paramString);
       }
@@ -435,15 +435,15 @@ void InteractiveMatlabDialog::SetResults()
 void InteractiveMatlabDialog::OnClear()
 {
       // set gui to empty string
-      inputGrid->SetCellValue(0, 0, wxT(""));
-      outputGrid->SetCellValue(0, 0, wxT(""));
-      outputTextCtrl->SetValue(wxT(""));
-      functionComboBox->SetValue(wxT(""));
+      inputGrid->SetCellValue(0, 0, "");
+      outputGrid->SetCellValue(0, 0, "");
+      outputTextCtrl->SetValue("");
+      functionComboBox->SetValue("");
 
       // reset array of strings
       inputStrings.Clear();
       outputStrings.Clear();
 
       // clear out previous parameters
-      theCmd->TakeAction(wxT("Clear"));
+      theCmd->TakeAction("Clear");
 }

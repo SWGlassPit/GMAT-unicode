@@ -59,8 +59,8 @@ GmatCommandPanel::GmatCommandPanel(wxWindow *parent, GmatCommand *cmd)
 {
    #ifdef DEBUG_GMATCOMMAND_PANEL
    MessageInterface::ShowMessage
-      (wxT("GmatCommandPanel() entered, cmd=<%p><%s>\n"), cmd,
-       cmd ? cmd->GetTypeName().c_str() : wxT("NULL"));
+      ("GmatCommandPanel() entered, cmd=<%p><%s>\n", cmd,
+       cmd ? cmd->GetTypeName().c_str() : "NULL");
    #endif
    
    if (cmd != NULL)
@@ -73,7 +73,7 @@ GmatCommandPanel::GmatCommandPanel(wxWindow *parent, GmatCommand *cmd)
    }
    
    #ifdef DEBUG_GMATCOMMAND_PANEL
-   MessageInterface::ShowMessage(wxT("GmatCommandPanel() exiting...\n"));
+   MessageInterface::ShowMessage("GmatCommandPanel() exiting...\n");
    #endif
 }
 
@@ -106,7 +106,7 @@ GmatCommandPanel::~GmatCommandPanel()
 void GmatCommandPanel::Create()
 {
    #ifdef DEBUG_GMATCOMMAND_PANEL
-   MessageInterface::ShowMessage(wxT("GmatCommandPanel::Create() entering...\n"));
+   MessageInterface::ShowMessage("GmatCommandPanel::Create() entering...\n");
    #endif
    
    Integer bsize = 2; // border size
@@ -128,7 +128,7 @@ void GmatCommandPanel::Create()
    theMiddleSizer->Add(textSizer, 1, wxGROW|wxALIGN_CENTRE|wxALL, bsize);
    
    #ifdef DEBUG_GMATCOMMAND_PANEL
-   MessageInterface::ShowMessage(wxT("GmatCommandPanel::Create() exiting...\n"));
+   MessageInterface::ShowMessage("GmatCommandPanel::Create() exiting...\n");
    #endif
 }
 
@@ -139,7 +139,7 @@ void GmatCommandPanel::Create()
 void GmatCommandPanel::LoadData()
 {
    #ifdef DEBUG_GMATCOMMAND_PANEL_LOAD
-   MessageInterface::ShowMessage(wxT("GmatCommandPanel::LoadData() entering...\n"));
+   MessageInterface::ShowMessage("GmatCommandPanel::LoadData() entering...\n");
    #endif
    
    try
@@ -153,7 +153,7 @@ void GmatCommandPanel::LoadData()
    }
    
    #ifdef DEBUG_GMATCOMMAND_PANEL_LOAD
-   MessageInterface::ShowMessage(wxT("GmatCommandPanel::LoadData() exiting...\n"));
+   MessageInterface::ShowMessage("GmatCommandPanel::LoadData() exiting...\n");
    #endif
    
 }
@@ -165,11 +165,11 @@ void GmatCommandPanel::LoadData()
 void GmatCommandPanel::SaveData()
 {
    #ifdef DEBUG_GMATCOMMAND_PANEL_SAVE
-   MessageInterface::ShowMessage(wxT("GmatCommandPanel::SaveData() entered\n"));
+   MessageInterface::ShowMessage("GmatCommandPanel::SaveData() entered\n");
    #endif
    
    canClose = true;
-   wxString str;
+   std::string str;
 //   Integer width, prec;
    
    //-----------------------------------------------------------------
@@ -177,7 +177,7 @@ void GmatCommandPanel::SaveData()
    //-----------------------------------------------------------------
    try
    {
-      wxString cmdStr = commandTextCtrl->GetValue().c_str();
+      std::string cmdStr = commandTextCtrl->GetValue().c_str();
       theCommand->SetGeneratingString(cmdStr);
       theCommand->InterpretAction();
    }
@@ -189,7 +189,7 @@ void GmatCommandPanel::SaveData()
    }
    
    #ifdef DEBUG_GMATCOMMAND_PANEL_SAVE
-   MessageInterface::ShowMessage(wxT("GmatCommandPanel::SaveData() leaving\n"));
+   MessageInterface::ShowMessage("GmatCommandPanel::SaveData() leaving\n");
    #endif
 }
 

@@ -94,11 +94,11 @@ public:
    void SetGl3dViewOption(SpacePoint *vpRefObj, SpacePoint *vpVecObj,
                           SpacePoint *vdObj, Real vscaleFactor,
                           const Rvector3 &vpRefVec, const Rvector3 &vpVec,
-                          const Rvector3 &vdVec, const wxString &upAxis,
+                          const Rvector3 &vdVec, const std::string &upAxis,
                           bool usevpRefVec, bool usevpVec, bool usevdVec);
    
    // user actions   
-   void TakeAction(const wxString &action);
+   void TakeAction(const std::string &action);
       
 protected:
    
@@ -114,7 +114,7 @@ private:
    
    static const int LAST_STD_BODY_ID;// = 10;
    static const int MAX_COORD_SYS;// = 10;
-   static const wxString BODY_NAME[GmatPlot::MAX_BODIES];
+   static const std::string BODY_NAME[GmatPlot::MAX_BODIES];
    static const Real MAX_ZOOM_IN;// = 3700.0;
    static const Real RADIUS_ZOOM_RATIO;// = 2.2;
    static const Real DEFAULT_DIST;// = 30000.0;
@@ -176,8 +176,8 @@ private:
    int mInversion;    // 1 is true movement, -1 is inverted
    
    // initial viewpoint
-   wxString mViewPointRefObjName;
-   wxString mViewUpAxisName;
+   std::string mViewPointRefObjName;
+   std::string mViewUpAxisName;
    
    // passed view definition object pointers
    SpacePoint *pViewPointRefObj;

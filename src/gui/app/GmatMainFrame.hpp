@@ -101,7 +101,7 @@ public:
    bool InterpretScript(const wxString &filename,
                         Integer scriptOpenOpt = GmatGui::OPEN_SCRIPT_ON_ERROR,
                         bool closeScript = false, bool readBack = false,
-                        const wxString &savePath = wxT(""), bool multScripts = false);
+                        const wxString &savePath = "", bool multScripts = false);
    void BuildAndRunScript(const wxString &filename);
    Integer RunCurrentMission();
    void StopRunningMission();
@@ -202,10 +202,10 @@ public:
    void OnCloseAll(wxCommandEvent &event);
    void OnCloseActive(wxCommandEvent &event);
 
-   bool SetScriptFileName(const wxString &filename);
+   bool SetScriptFileName(const std::string &filename);
    bool IsActiveScriptModified();
    void RefreshActiveScript(const wxString &filename);
-   wxString GetActiveScriptFileName();
+   std::string GetActiveScriptFileName();
    void UpdateGuiScriptSyncStatus(int guiStatus, int scriptStatus);
    
    virtual bool Show(bool show = true);
@@ -227,8 +227,8 @@ private:
    Integer mRunStatus;
    
    GmatServer *mMatlabServer;
-   wxString mScriptFilename;
-   wxString mTempScriptName;
+   std::string mScriptFilename;
+   std::string mTempScriptName;
    GuiInterpreter *theGuiInterpreter;
    
    wxSashLayoutWindow* theMainWin;
@@ -264,11 +264,11 @@ private:
    bool ShowSaveMessage();
    bool SaveScriptAs();
    void OpenScript(bool restore = true);
-   void UpdateTitle(const wxString &filename = wxT(""));
+   void UpdateTitle(const wxString &filename = "");
    void SaveGuiToActiveScript();
    
    void SaveChildPositionsAndSizes();
-   bool GetConfigurationData(const wxString &forItem, Integer &x, Integer &y, Integer &w, Integer &h);
+   bool GetConfigurationData(const std::string &forItem, Integer &x, Integer &y, Integer &w, Integer &h);
 
    // IDs for the controls
    enum

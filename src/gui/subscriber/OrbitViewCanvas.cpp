@@ -182,7 +182,7 @@ OrbitViewCanvas::OrbitViewCanvas(wxWindow *parent, wxWindowID id,
    
    #if DEBUG_INIT
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas() name=%s, size.X=%d, size.Y=%d\n"),
+      ("OrbitViewCanvas() name=%s, size.X=%d, size.Y=%d\n",
        name.c_str(), size.GetWidth(), size.GetHeight());
    #endif
    
@@ -199,7 +199,7 @@ OrbitViewCanvas::OrbitViewCanvas(wxWindow *parent, wxWindowID id,
       {
          #if DEBUG_INIT
          MessageInterface::ShowMessage
-            (wxT("   Setting new wxGLContext(this) to ModelManager::modelContext\n"));
+            ("   Setting new wxGLContext(this) to ModelManager::modelContext\n");
          #endif
          mm->modelContext = new wxGLContext(this);
       }
@@ -243,7 +243,7 @@ OrbitViewCanvas::OrbitViewCanvas(wxWindow *parent, wxWindowID id,
    //mAxisLength = mCurrViewDist;
    mAxisLength = DEFAULT_DIST;
    
-   mOriginName = wxT("");
+   mOriginName = "";
    mOriginId = 0;
    
    //original value
@@ -255,7 +255,7 @@ OrbitViewCanvas::OrbitViewCanvas(wxWindow *parent, wxWindowID id,
    
    // Note from Dunn.  Size of earth vs. spacecraft models will take lots of
    // work in the future.  Models need to be drawn in meters.  Cameras need to
-   // be placed near models to wxT("make big enough to see"), and if camera is beyond
+   // be placed near models to "make big enough to see", and if camera is beyond
    // about 2000 meters, model should be drawn as dot.  More discussion to follow!
 //   mEarthRadius = 6378.14f; //km
    // @todo - does this need a pointer to the actual Earth object, to get radius? (mEarthRadius does not
@@ -289,7 +289,7 @@ OrbitViewCanvas::OrbitViewCanvas(wxWindow *parent, wxWindowID id,
    // solar system
    pSolarSystem = NULL;
    //MessageInterface::ShowMessage
-   //   (wxT("==> OrbitViewCanvas::OrbitViewCanvas() pSolarSystem=%p\n"), pSolarSystem);
+   //   ("==> OrbitViewCanvas::OrbitViewCanvas() pSolarSystem=%p\n", pSolarSystem);
    
    // objects
    mObjectCount         = 0;
@@ -308,7 +308,7 @@ OrbitViewCanvas::OrbitViewCanvas(wxWindow *parent, wxWindowID id,
    pInternalCoordSystem = theGuiInterpreter->GetInternalCoordinateSystem();
    mInternalCoordSysName = wxString(pInternalCoordSystem->GetName().c_str());
    
-   mViewCoordSysName = wxT("");
+   mViewCoordSysName = "";
    pViewCoordSystem = NULL;
    
    // CoordinateSystem conversion
@@ -316,15 +316,15 @@ OrbitViewCanvas::OrbitViewCanvas(wxWindow *parent, wxWindowID id,
    
    #if DEBUG_INIT
    MessageInterface::ShowMessage
-      (wxT("   pInternalCoordSystem=%p, pViewCoordSystem=%p\n"), pInternalCoordSystem,
+      ("   pInternalCoordSystem=%p, pViewCoordSystem=%p\n", pInternalCoordSystem,
        pViewCoordSystem);
    if (pInternalCoordSystem)
       MessageInterface::ShowMessage
-         (wxT("   pInternalCoordSystem=%s\n"), pInternalCoordSystem->GetName().c_str());
+         ("   pInternalCoordSystem=%s\n", pInternalCoordSystem->GetName().c_str());
    if (pViewCoordSystem)
       MessageInterface::ShowMessage
-         (wxT("   pViewCoordSystem=%s\n"), pViewCoordSystem->GetName().c_str());
-   MessageInterface::ShowMessage(wxT("OrbitViewCanvas() constructor exiting\n"));
+         ("   pViewCoordSystem=%s\n", pViewCoordSystem->GetName().c_str());
+   MessageInterface::ShowMessage("OrbitViewCanvas() constructor exiting\n");
    #endif
 }
 
@@ -340,7 +340,7 @@ OrbitViewCanvas::~OrbitViewCanvas()
 {
    #ifdef DEBUG_RESOURCE_CLEARING
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas::~OrbitViewCanvas() '%s' entered\n"), mPlotName.c_str());
+      ("OrbitViewCanvas::~OrbitViewCanvas() '%s' entered\n", mPlotName.c_str());
    #endif
    
    // Patch from Tristan Moody
@@ -368,7 +368,7 @@ OrbitViewCanvas::~OrbitViewCanvas()
    
    #ifdef DEBUG_RESOURCE_CLEARING
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas::~OrbitViewCanvas() '%s' exiting\n"), mPlotName.c_str());
+      ("OrbitViewCanvas::~OrbitViewCanvas() '%s' exiting\n", mPlotName.c_str());
    #endif
 }
 
@@ -407,14 +407,14 @@ void OrbitViewCanvas::RedrawPlot(bool viewAnimation)
 {
    #ifdef DEBUG_REDRAW
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas::RedrawPlot() entered, viewAnimation=%d\n"), viewAnimation);
+      ("OrbitViewCanvas::RedrawPlot() entered, viewAnimation=%d\n", viewAnimation);
    #endif
    
    if (mAxisLength < mMaxZoomIn)
    {
       mAxisLength = mMaxZoomIn;
       MessageInterface::ShowMessage
-         (wxT("OrbitViewCanvas::RedrawPlot() distance < max zoom in. distance set to %f\n"),
+         ("OrbitViewCanvas::RedrawPlot() distance < max zoom in. distance set to %f\n",
           mAxisLength);
    }
    
@@ -525,11 +525,11 @@ void OrbitViewCanvas::DrawInOtherCoordSystem(const wxString &csName)
 {
    #if DEBUG_ACTION
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas::DrawInOtherCoordSysName() viewCS=%s, newCS=%s\n"),
+      ("OrbitViewCanvas::DrawInOtherCoordSysName() viewCS=%s, newCS=%s\n",
        mViewCoordSysName.c_str(), csName.c_str());
    #endif
 
-   if (csName == wxT(""))
+   if (csName == "")
       return;
    
    
@@ -594,8 +594,8 @@ void OrbitViewCanvas::GotoObject(const wxString &objName)
    
    #ifdef DEBUG_OBJECT
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas::GotoObject() objName=%s, mViewObjId=%d, mMaxZoomIn=%f\n")
-       wxT("   mAxisLength=%f\n"), objName.c_str(), mViewObjId, mMaxZoomIn, mAxisLength);
+      ("OrbitViewCanvas::GotoObject() objName=%s, mViewObjId=%d, mMaxZoomIn=%f\n"
+       "   mAxisLength=%f\n", objName.c_str(), mViewObjId, mMaxZoomIn, mAxisLength);
    #endif
 
    mIsEndOfData = true;
@@ -611,7 +611,7 @@ void OrbitViewCanvas::ViewAnimation(int interval, int frameInc)
 {
    #ifdef DEBUG_ANIMATION
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas::ViewAnimation() interval=%d, frameInc=%d\n"),
+      ("OrbitViewCanvas::ViewAnimation() interval=%d, frameInc=%d\n",
        interval, frameInc);
    #endif
    
@@ -648,7 +648,7 @@ void OrbitViewCanvas::SetGlObject(const StringArray &objNames,
 {
    #if DEBUG_OBJECT
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas::SetGlObject() '%s' entered\n"), mPlotName.c_str());
+      ("OrbitViewCanvas::SetGlObject() '%s' entered\n", mPlotName.c_str());
    #endif
 
    ViewCanvas::SetGlObject(objNames, objOrbitColors, objArray);
@@ -658,7 +658,7 @@ void OrbitViewCanvas::SetGlObject(const StringArray &objNames,
       
    #if DEBUG_OBJECT
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas::SetGlObject() '%s' leaving\n"), mPlotName.c_str());
+      ("OrbitViewCanvas::SetGlObject() '%s' leaving\n", mPlotName.c_str());
    #endif
 }
 
@@ -673,7 +673,7 @@ void OrbitViewCanvas::SetGlCoordSystem(CoordinateSystem *internalCs,
 {
    #if DEBUG_CS
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas::SetGlCoordSystem() '%s' entered\n"), mPlotName.c_str());
+      ("OrbitViewCanvas::SetGlCoordSystem() '%s' entered\n", mPlotName.c_str());
    #endif
    
    ViewCanvas::SetGlCoordSystem(internalCs, viewCs, viewUpCs);
@@ -695,7 +695,7 @@ void OrbitViewCanvas::SetGlCoordSystem(CoordinateSystem *internalCs,
    
    #if DEBUG_CS
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas::SetGlCoordSystem() '%s' leaving\n"), mPlotName.c_str());
+      ("OrbitViewCanvas::SetGlCoordSystem() '%s' leaving\n", mPlotName.c_str());
    #endif
    
 } // end SetGlCoordSystem()
@@ -750,7 +750,7 @@ void OrbitViewCanvas::SetGl3dDrawingOption(bool drawEcPlane, bool drawXyPlane,
 void OrbitViewCanvas::SetGl3dViewOption(SpacePoint *vpRefObj, SpacePoint *vpVecObj,
                                         SpacePoint *vdObj, Real vsFactor,
                                         const Rvector3 &vpRefVec, const Rvector3 &vpVec,
-                                        const Rvector3 &vdVec, const wxString &upAxis,
+                                        const Rvector3 &vdVec, const std::string &upAxis,
                                         bool usevpRefVec, bool usevpVec, bool usevdVec)
 {
    pViewPointRefObj = vpRefObj;
@@ -772,10 +772,10 @@ void OrbitViewCanvas::SetGl3dViewOption(SpacePoint *vpRefObj, SpacePoint *vpVecO
       
    #if DEBUG_PROJECTION
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas::SetGlViewOption() pViewPointRefObj=%p, ")
-       wxT("pViewPointVectorObj=%p\n   pViewDirectionObj=%p, mViewScaleFactor=%f   ")
-       wxT("mViewPointRefVector=%s\n   mViewPointVector=%s, mViewDirectionVector=%s, ")
-       wxT("mViewUpAxisName=%s\n   mUseViewPointRefVector=%d, mUseViewDirectionVector=%d\n"),
+      ("OrbitViewCanvas::SetGlViewOption() pViewPointRefObj=%p, "
+       "pViewPointVectorObj=%p\n   pViewDirectionObj=%p, mViewScaleFactor=%f   "
+       "mViewPointRefVector=%s\n   mViewPointVector=%s, mViewDirectionVector=%s, "
+       "mViewUpAxisName=%s\n   mUseViewPointRefVector=%d, mUseViewDirectionVector=%d\n",
        pViewPointRefObj, pViewPointVectorObj, pViewDirectionObj, mViewScaleFactor,
        lvpRefVec.ToString(10).c_str(), lvpVec.ToString(10).c_str(),
        lvdVec.ToString(10).c_str(), mViewUpAxisName.c_str(), mUseViewPointRefVector,
@@ -794,21 +794,21 @@ void OrbitViewCanvas::SetGl3dViewOption(SpacePoint *vpRefObj, SpacePoint *vpVecO
       {
          mUseViewPointRefVector = true;
          MessageInterface::ShowMessage
-            (wxT("*** Warning *** OrbitViewCanvas::SetGlViewOption() Cannot find ")
-             wxT("pViewPointRefObj name=%s, so using vector=%s\n"),
+            ("*** Warning *** OrbitViewCanvas::SetGlViewOption() Cannot find "
+             "pViewPointRefObj name=%s, so using vector=%s\n",
              pViewPointRefObj->GetName().c_str(),
              mViewPointRefVector.ToString().c_str());
       }
    }
    else
    {
-      mViewPointRefObjName = wxT("Earth");
+      mViewPointRefObjName = "Earth";
       
       if (!mUseViewPointRefVector)
          MessageInterface::ShowMessage
-            (wxT("*** Warning *** OrbitViewCanvas::SetGlViewOption() ")
-             wxT("ViewPointRefObject is NULL,")
-             wxT("so will use default Vector instead.\n"));
+            ("*** Warning *** OrbitViewCanvas::SetGlViewOption() "
+             "ViewPointRefObject is NULL,"
+             "so will use default Vector instead.\n");
    }
    
    // Set viewpoint vector object id
@@ -820,8 +820,8 @@ void OrbitViewCanvas::SetGl3dViewOption(SpacePoint *vpRefObj, SpacePoint *vpVecO
       {
          mUseViewPointVector = true;
          MessageInterface::ShowMessage
-            (wxT("*** Warning *** OrbitViewCanvas::SetGlViewOption() Cannot find ")
-             wxT("pViewPointVectorObj name=%s, so using vector=%s\n"),
+            ("*** Warning *** OrbitViewCanvas::SetGlViewOption() Cannot find "
+             "pViewPointVectorObj name=%s, so using vector=%s\n",
              pViewPointVectorObj->GetName().c_str(),
              mViewPointVector.ToString().c_str());
       }
@@ -830,9 +830,9 @@ void OrbitViewCanvas::SetGl3dViewOption(SpacePoint *vpRefObj, SpacePoint *vpVecO
    {
       if (!mUseViewPointVector)
          MessageInterface::ShowMessage
-            (wxT("*** Warning *** OrbitViewCanvas::SetGlViewOption() ")
-             wxT("ViewPointVectorObject is NULL, ")
-             wxT("so will use default Vector instead.\n"));
+            ("*** Warning *** OrbitViewCanvas::SetGlViewOption() "
+             "ViewPointVectorObject is NULL, "
+             "so will use default Vector instead.\n");
    }
    
    // Set view direction object id
@@ -844,8 +844,8 @@ void OrbitViewCanvas::SetGl3dViewOption(SpacePoint *vpRefObj, SpacePoint *vpVecO
       {
          mUseViewDirectionVector = true;
          MessageInterface::ShowMessage
-            (wxT("*** Warning *** OrbitViewCanvas::SetGlViewOption() Cannot find ")
-             wxT("pViewDirectionObj name=%s, so using vector=%s\n"),
+            ("*** Warning *** OrbitViewCanvas::SetGlViewOption() Cannot find "
+             "pViewDirectionObj name=%s, so using vector=%s\n",
              pViewDirectionObj->GetName().c_str(),
              mViewDirectionVector.ToString().c_str());
       }
@@ -854,22 +854,22 @@ void OrbitViewCanvas::SetGl3dViewOption(SpacePoint *vpRefObj, SpacePoint *vpVecO
    {
       if (!mUseViewDirectionVector)
          MessageInterface::ShowMessage
-            (wxT("*** Warning *** OrbitViewCanvas::SetGlViewOption() ")
-             wxT("ViewDirectionObject is NULL,")
-             wxT("so will use default Vector instead.\n"));
+            ("*** Warning *** OrbitViewCanvas::SetGlViewOption() "
+             "ViewDirectionObject is NULL,"
+             "so will use default Vector instead.\n");
    }
    
 } //end SetGl3dViewOption()
 
 
 //---------------------------------------------------------------------------
-// void TakeAction(const wxString &action)
+// void TakeAction(const std::string &action)
 //---------------------------------------------------------------------------
-void OrbitViewCanvas::TakeAction(const wxString &action)
+void OrbitViewCanvas::TakeAction(const std::string &action)
 {
    #ifdef DEBUG_TAKE_ACTION
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas::TakeAction() entered, action = '%s'\n"), action.c_str());
+      ("OrbitViewCanvas::TakeAction() entered, action = '%s'\n", action.c_str());
    #endif
    
    // Any actions to handle in this plot?
@@ -890,7 +890,7 @@ void OrbitViewCanvas::OnPaint(wxPaintEvent& event)
 {
    #ifdef DEBUG_ON_PAINT
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas::OnPaint() entered, mFatalErrorFound=%d, mGlInitialized=%d, mObjectCount=%d\n"),
+      ("OrbitViewCanvas::OnPaint() entered, mFatalErrorFound=%d, mGlInitialized=%d, mObjectCount=%d\n",
        mFatalErrorFound, mGlInitialized, mObjectCount);
    #endif
    
@@ -915,7 +915,7 @@ void OrbitViewCanvas::OnPaint(wxPaintEvent& event)
    if (!mGlInitialized && mObjectCount > 0)
    {
       #ifdef DEBUG_INIT
-      MessageInterface::ShowMessage(wxT("OrbitViewCanvas::OnPaint() Calling InitOpenGL()\n"));
+      MessageInterface::ShowMessage("OrbitViewCanvas::OnPaint() Calling InitOpenGL()\n");
       #endif
       InitOpenGL();
       mGlInitialized = true;
@@ -968,8 +968,8 @@ void OrbitViewCanvas::OnPaint(wxPaintEvent& event)
       if (mWriteRepaintDisalbedInfo)
       {
          Freeze();
-         wxString msg = wxT("*** WARNING *** This plot data was published inside a ")
-            wxT("function, so repainting or drawing animation is disabled.\n");
+         wxString msg = "*** WARNING *** This plot data was published inside a "
+            "function, so repainting or drawing animation is disabled.\n";
          MessageInterface::ShowMessage(msg.c_str());
          GmatAppData::Instance()->GetMainFrame()->EnableAnimation(false);
          
@@ -1035,7 +1035,7 @@ void OrbitViewCanvas::OnMouse(wxMouseEvent& event)
 {
    
    //MessageInterface::ShowMessage
-   //   (wxT("===> OnMouse() mUseInitialViewPoint=%d, mIsEndOfData=%d\n"),
+   //   ("===> OnMouse() mUseInitialViewPoint=%d, mIsEndOfData=%d\n",
    //    mUseInitialViewPoint, mIsEndOfData);
    
    if (mIsEndOfData && mInFunction)
@@ -1134,7 +1134,7 @@ void OrbitViewCanvas::OnMouse(wxMouseEvent& event)
          Refresh(false);
       }
       //------------------------------
-      // wxT("zooming")
+      // "zooming"
       //------------------------------
       else if (mControlMode != MODE_ASTRONAUT_6DOF && event.RightIsDown())
       {            
@@ -1233,12 +1233,12 @@ void OrbitViewCanvas::OnMouse(wxMouseEvent& event)
    
    #ifdef __WRITE_GL_MOUSE_POS__
    wxString mousePosStr;
-   //mousePosStr.Printf(wxT("X = %g Y = %g"), fEndX, fEndY);
-   mousePosStr.Printf(wxT("X = %g Y = %g mouseX = %d, mouseY = %d"),
+   //mousePosStr.Printf("X = %g Y = %g", fEndX, fEndY);
+   mousePosStr.Printf("X = %g Y = %g mouseX = %d, mouseY = %d",
                       fEndX, fEndY, mouseX, mouseY);   
    theStatusBar->SetStatusText(mousePosStr, 2);
    //wxLogStatus(MdiGlPlot::mdiParentGlFrame,
-   //            wxT(wxT("X = %d Y = %d lastX = %f lastY = %f Zoom amount = %f Distance = %f")),
+   //            wxT("X = %d Y = %d lastX = %f lastY = %f Zoom amount = %f Distance = %f"),
    //            event.GetX(), event.GetY(), mfStartX, mfStartY, mZoomAmount, mAxisLength);
    #endif
    
@@ -1321,7 +1321,7 @@ void OrbitViewCanvas::OnKeyDown(wxKeyEvent &event)
 void OrbitViewCanvas::SetDefaultViewPoint()
 {
    mViewPointInitialized = false;
-   mViewPointRefObjName = wxT("UNKNOWN");
+   mViewPointRefObjName = "UNKNOWN";
    
    pViewPointRefObj = NULL;
    pViewPointVectorObj = NULL;
@@ -1353,7 +1353,7 @@ void OrbitViewCanvas::InitializeViewPoint()
 
    #if DEBUG_INIT
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas::InitializeViewPoint() entered\n"));
+      ("OrbitViewCanvas::InitializeViewPoint() entered\n");
    #endif
    
    wxString name;
@@ -1399,28 +1399,28 @@ void OrbitViewCanvas::InitializeViewPoint()
    }
    
    mCamera.Reset();
-   if (mViewUpAxisName == wxT("X"))
+   if (mViewUpAxisName == "X")
       mCamera.up = Rvector3(1.0, 0.0, 0.0);
-   else if (mViewUpAxisName == wxT("-X"))
+   else if (mViewUpAxisName == "-X")
       mCamera.up = Rvector3(-1.0, 0.0, 0.0);
-   else if (mViewUpAxisName == wxT("Y"))
+   else if (mViewUpAxisName == "Y")
       mCamera.up = Rvector3(0.0, 1.0, 0.0);
-   else if (mViewUpAxisName == wxT("-Y"))
+   else if (mViewUpAxisName == "-Y")
       mCamera.up = Rvector3(0.0, -1.0, 0.0);
-   else if (mViewUpAxisName == wxT("Z"))
+   else if (mViewUpAxisName == "Z")
       mCamera.up = Rvector3(0.0, 0.0, 1.0);
-   else if (mViewUpAxisName == wxT("-Z"))
+   else if (mViewUpAxisName == "-Z")
       mCamera.up = Rvector3(0.0, 0.0, -1.0);
    
    Rvector3 viewPos = refVec + viewpoint;
    Rvector3 viewDiff = viewPos - direction;
    
    #if DEBUG_INIT
-   MessageInterface::ShowMessage(wxT("   refVec    = %s"), refVec.ToString().c_str());
-   MessageInterface::ShowMessage(wxT("   viewpoint = %s"), viewpoint.ToString().c_str());
-   MessageInterface::ShowMessage(wxT("   viewPos   = %s"), viewPos.ToString().c_str());
-   MessageInterface::ShowMessage(wxT("   direction = %s"), viewPos.ToString().c_str());
-   MessageInterface::ShowMessage(wxT("   viewDiff  = %s"), viewDiff.ToString().c_str());
+   MessageInterface::ShowMessage("   refVec    = %s", refVec.ToString().c_str());
+   MessageInterface::ShowMessage("   viewpoint = %s", viewpoint.ToString().c_str());
+   MessageInterface::ShowMessage("   viewPos   = %s", viewPos.ToString().c_str());
+   MessageInterface::ShowMessage("   direction = %s", viewPos.ToString().c_str());
+   MessageInterface::ShowMessage("   viewDiff  = %s", viewDiff.ToString().c_str());
    #endif
    
    // If view difference is not zero then relocate camera
@@ -1435,7 +1435,7 @@ void OrbitViewCanvas::InitializeViewPoint()
    
    #if DEBUG_INIT
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas::InitializeViewPoint() leaving\n"));
+      ("OrbitViewCanvas::InitializeViewPoint() leaving\n");
    #endif
 }
 
@@ -1537,7 +1537,7 @@ void OrbitViewCanvas::ChangeView(float viewX, float viewY, float viewZ)
    mfCamRotZAngle = (int)(viewZ) % 360;
    
    //MessageInterface::ShowMessage
-   //   (wxT("===> OrbitViewCanvas::ChangeView() mfCamRotXYZAngle = %f %f %f\n"),
+   //   ("===> OrbitViewCanvas::ChangeView() mfCamRotXYZAngle = %f %f %f\n",
    //    mfCamRotXAngle, mfCamRotYAngle, mfCamRotZAngle);
    
    // don't let the rotation angles build up to some insane size
@@ -1622,8 +1622,8 @@ void OrbitViewCanvas::TransformView()
 {
    #if DEBUG_OrbitViewCanvas_DRAW
    MessageInterface::ShowMessage
-      (wxT("==> OrbitViewCanvas::TransformView() mUseGluLookAt=%d, mIsEndOfData=%d, ")
-       wxT("mIsEndOfRun=%d\n"), mUseGluLookAt, mIsEndOfData, mIsEndOfRun);
+      ("==> OrbitViewCanvas::TransformView() mUseGluLookAt=%d, mIsEndOfData=%d, "
+       "mIsEndOfRun=%d\n", mUseGluLookAt, mIsEndOfData, mIsEndOfRun);
    #endif
    
    glLoadIdentity();
@@ -1698,8 +1698,8 @@ void OrbitViewCanvas::DrawFrame()
 {
    #if DEBUG_ANIMATION
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas::DrawFrame() mNumData=%d, mUsenitialViewPoint=%d\n")
-       wxT("   mViewCoordSysName=%s\n"), mNumData, mUseInitialViewPoint,
+      ("OrbitViewCanvas::DrawFrame() mNumData=%d, mUsenitialViewPoint=%d\n"
+       "   mViewCoordSysName=%s\n", mNumData, mUseInitialViewPoint,
        mViewCoordSysName.c_str());
    #endif
    
@@ -1795,18 +1795,18 @@ void OrbitViewCanvas::DrawPlot()
    
    #if DEBUG_DRAW
    MessageInterface::ShowMessage
-      (wxT("===========================================================================\n"));
+      ("===========================================================================\n");
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas::DrawPlot() mTotalPoints=%d, mNumData=%d, mTime[%d]=%f\n"),
+      ("OrbitViewCanvas::DrawPlot() mTotalPoints=%d, mNumData=%d, mTime[%d]=%f\n",
        mTotalPoints, mNumData, mLastIndex, mTime[mLastIndex]);
    #endif
    #if DEBUG_DRAW > 1
    MessageInterface::ShowMessage
-      (wxT("   mRedrawLastPointsOnly=%d, mNumPointsToRedraw=%d, mViewCsIsInternalCs=%d, ")
-       wxT("mUseInitialViewPoint=%d, mAxisLength=%f\n"), mRedrawLastPointsOnly, mNumPointsToRedraw,
+      ("   mRedrawLastPointsOnly=%d, mNumPointsToRedraw=%d, mViewCsIsInternalCs=%d, "
+       "mUseInitialViewPoint=%d, mAxisLength=%f\n", mRedrawLastPointsOnly, mNumPointsToRedraw,
        mViewCsIsInternalCs, mUseInitialViewPoint, mAxisLength);
    MessageInterface::ShowMessage
-      (wxT("   mUseInitialViewPoint=%d, mIsEndOfData=%d, mIsEndOfRun=%d, mDrawSolverData=%d\n"),
+      ("   mUseInitialViewPoint=%d, mIsEndOfData=%d, mIsEndOfRun=%d, mDrawSolverData=%d\n",
        mUseInitialViewPoint, mIsEndOfData, mIsEndOfRun, mDrawSolverData);
    #endif
    
@@ -1818,7 +1818,7 @@ void OrbitViewCanvas::DrawPlot()
    else
       glClear(GL_DEPTH_BUFFER_BIT);
    
-   DrawStatus(wxT(""), GmatColor::YELLOW32, wxT("  Epoch: "), mTime[mLastIndex], 0, 5);
+   DrawStatus("", GmatColor::YELLOW32, "  Epoch: ", mTime[mLastIndex], 0, 5);
    
    // Plot is not refreshed when another panel is opened, so add glFlush()
    // and SwapBuffers() (loj: 4/5/06)
@@ -1884,7 +1884,7 @@ void OrbitViewCanvas::DrawObjectOrbit(int frame)
 {
    #if DEBUG_DRAW
    MessageInterface::ShowMessage
-      (wxT("==========> DrawObjectOrbit() entered, frame=%d, mLastIndex=%d\n"), frame,
+      ("==========> DrawObjectOrbit() entered, frame=%d, mLastIndex=%d\n", frame,
        mLastIndex);
    #endif
    
@@ -1909,7 +1909,7 @@ void OrbitViewCanvas::DrawObjectOrbit(int frame)
       
       #if DEBUG_DRAW
       MessageInterface::ShowMessage
-         (wxT("DrawObjectOrbit() obj=%d, objId=%d, objName='%s', index=%d\n"),
+         ("DrawObjectOrbit() obj=%d, objId=%d, objName='%s', index=%d\n",
           obj, objId, objName.c_str(), index);
       #endif
       
@@ -1918,7 +1918,7 @@ void OrbitViewCanvas::DrawObjectOrbit(int frame)
       {
          #if DEBUG_DRAW
          MessageInterface::ShowMessage
-            (wxT("==> Not drawing orbit of '%s', so skip\n"), objName.c_str());
+            ("==> Not drawing orbit of '%s', so skip\n", objName.c_str());
          #endif
          
          // just draw object texture and continue
@@ -1941,7 +1941,7 @@ void OrbitViewCanvas::DrawObjectOrbit(int frame)
    }
    
    #if DEBUG_DRAW
-   MessageInterface::ShowMessage(wxT("==========> DrawObjectOrbit() leaving, frame=%d\n"), frame);
+   MessageInterface::ShowMessage("==========> DrawObjectOrbit() leaving, frame=%d\n", frame);
    #endif
 } // end DrawObjectOrbit()
 
@@ -1959,11 +1959,11 @@ void OrbitViewCanvas::DrawObjectTexture(const wxString &objName, int obj,
    
    #if DEBUG_DRAW
    MessageInterface::ShowMessage
-      (wxT("DrawObjectTexture() entered, objName='%s', obj=%d, objId=%d, frame=%d, ")
-       wxT("index1=%d, mObjLastFrame[%d]=%d\n"), objName.c_str(), obj, objId, frame,
+      ("DrawObjectTexture() entered, objName='%s', obj=%d, objId=%d, frame=%d, "
+       "index1=%d, mObjLastFrame[%d]=%d\n", objName.c_str(), obj, objId, frame,
        index1, objId, mObjLastFrame[objId]);
    MessageInterface::ShowMessage
-      (wxT("   mObjectViewPos=%f, %f, %f\n"), mObjectViewPos[index1+0],
+      ("   mObjectViewPos=%f, %f, %f\n", mObjectViewPos[index1+0],
        mObjectViewPos[index1+1], mObjectViewPos[index1+2]);
    #endif
    
@@ -1986,7 +1986,7 @@ void OrbitViewCanvas::DrawObjectTexture(const wxString &objName, int obj,
    //-------------------------------------------------------
    if (mEnableLightSource && mSunPresent)
    {
-      int sunId = GetObjectId(wxT("Sun"));
+      int sunId = GetObjectId("Sun");
       int index;
       if (sunId == UNKNOWN_OBJ_ID)
       {
@@ -2032,7 +2032,7 @@ void OrbitViewCanvas::DrawObjectTexture(const wxString &objName, int obj,
       if (mIsDrawing[frame])
       {
          #if DEBUG_DRAW
-         MessageInterface::ShowMessage(wxT("==> Drawing spacecraft '%s'\n"), objName.c_str());
+         MessageInterface::ShowMessage("==> Drawing spacecraft '%s'\n", objName.c_str());
          #endif
          
          Spacecraft *spac = (Spacecraft*)mObjectArray[obj];
@@ -2059,7 +2059,7 @@ void OrbitViewCanvas::DrawObjectTexture(const wxString &objName, int obj,
    else
    {
       #if DEBUG_DRAW
-      MessageInterface::ShowMessage(wxT("==> Drawing body '%s'\n"), objName.c_str());
+      MessageInterface::ShowMessage("==> Drawing body '%s'\n", objName.c_str());
       #endif
       
       //put object at final position
@@ -2095,7 +2095,7 @@ void OrbitViewCanvas::DrawObject(const wxString &objName, int obj)
    
    #if DEBUG_DRAW > 1
    MessageInterface::ShowMessage
-         (wxT("OrbitViewCanvas::DrawObject() drawing:%s, obj=%d, objId:%d, frame:%d\n"),
+         ("OrbitViewCanvas::DrawObject() drawing:%s, obj=%d, objId:%d, frame:%d\n",
           objName.c_str(), obj, objId, frame);
    #endif
    
@@ -2104,7 +2104,7 @@ void OrbitViewCanvas::DrawObject(const wxString &objName, int obj)
    //-------------------------------------------------------
    if (mEnableLightSource && mSunPresent)
    {
-      int sunId = GetObjectId(wxT("Sun"));
+      int sunId = GetObjectId("Sun");
       int index = sunId * MAX_DATA * 3 + frame * 3;
       
       if (sunId == UNKNOWN_OBJ_ID)
@@ -2137,7 +2137,7 @@ void OrbitViewCanvas::DrawObject(const wxString &objName, int obj)
    
    #if DEBUG_DRAW > 1
    MessageInterface::ShowMessage
-      (wxT("   mTextureIdMap[%s]=%d\n"), objName.c_str(),
+      ("   mTextureIdMap[%s]=%d\n", objName.c_str(),
        mTextureIdMap[objName]);
    #endif
    
@@ -2147,7 +2147,7 @@ void OrbitViewCanvas::DrawObject(const wxString &objName, int obj)
    
    #if DEBUG_DRAW > 1
    MessageInterface::ShowMessage
-      (wxT("   After rotate body, mDrawAxes=%d, objId=%d, mOriginId=%d, mCanRotateAxes=%d\n"),
+      ("   After rotate body, mDrawAxes=%d, objId=%d, mOriginId=%d, mCanRotateAxes=%d\n",
        mDrawAxes, objId, mOriginId, mCanRotateAxes);
    #endif
    
@@ -2207,15 +2207,15 @@ void OrbitViewCanvas::DrawObject(const wxString &objName, int obj)
       //// Dunn took out old minus signs to get axis labels at the correct end of
       //// each axis and thus make attitude correct.
       //glColor3f(1, 0, 0);     // red
-      //axisLabel = wxT("+X Earth Fixed");
+      //axisLabel = "+X Earth Fixed";
       //DrawStringAt(axisLabel, +viewDist, 0.0, 0.0, 1.0);
 
       //glColor3f(0, 1, 0);     // green
-      //axisLabel = wxT("+Y Earth Fixed");
+      //axisLabel = "+Y Earth Fixed";
       //DrawStringAt(axisLabel, 0.0, +viewDist, 0.0, 1.0);
 
       //glColor3f(0, 0, 1);     // blue
-      //axisLabel = wxT("+Z Earth Fixed");
+      //axisLabel = "+Z Earth Fixed";
       //// 0.82 multiplier below so this label doesn't sit on top of ECI
       //DrawStringAt(axisLabel, 0.0, 0.0, +viewDist*0.82, 1.0); 
 
@@ -2256,7 +2256,7 @@ void OrbitViewCanvas::DrawObject(const wxString &objName, int obj)
       glBindTexture(GL_TEXTURE_2D, mTextureIdMap[objName]);
       glEnable(GL_TEXTURE_2D);
 
-      if (objName == wxT("Sun"))
+      if (objName == "Sun")
       {
          glDisable(GL_LIGHTING);
          DrawSphere(mObjectRadius[objId], 50, 50, GLU_FILL, GLU_INSIDE);
@@ -2270,14 +2270,14 @@ void OrbitViewCanvas::DrawObject(const wxString &objName, int obj)
       //----------------------------------------------------
       // draw grid on option
       //----------------------------------------------------
-      if (mDrawGrid && objName == wxT("Earth"))
+      if (mDrawGrid && objName == "Earth")
          DrawGridLines(objId);
    }
    else
    {
       #if DEBUG_DRAW
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** OrbitViewCanvas::DrawObject() %s texture not found.\n"),
+         ("*** WARNING *** OrbitViewCanvas::DrawObject() %s texture not found.\n",
           objName.c_str());
       #endif
       
@@ -2303,10 +2303,10 @@ void OrbitViewCanvas::DrawOrbitLines(int i, const wxString &objName, int obj,
 {
    #ifdef DEBUG_ORBIT_LINES
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas::DrawOrbitLines() entered, i=%d, objName='%s', ")
-       wxT("obj=%d, objId=%d, mTime[%3d]=%f, mTime[%3d]=%f, mIsDrawing[%3d]=%d, ")
-       wxT("mIsDrawing[%3d]=%d\n"), i, objName.c_str(), obj, objId, i, mTime[i],
-       i-1, mTime[i-1], i, mIsDrawing[i], i-1, mIsDrawing[i-1]);
+      ("OrbitViewCanvas::DrawOrbitLines() entered, i=%d, objName='%s', "
+       "obj=%d, objId=%d, mTime[%3d]=%f, mTime[%3d]=%f, mIsDrawing[%3d]=%d, "
+       "mIsDrawing[%3d]=%d\n", i, objName.c_str(), obj, objId, i, mTime[i],
+       i-1, mTime[i-1], i, mIsDrawing[i], i-1, mIsDrawing[i-1);
    #endif
    
    // If current or previous points are not drawing, just return
@@ -2342,7 +2342,7 @@ void OrbitViewCanvas::DrawOrbitLines(int i, const wxString &objName, int obj,
       {
          #if DEBUG_SHOW_SKIP
          MessageInterface::ShowMessage
-            (wxT("   plot=%s, i1=%d, i2=%d, time1=%f, time2=%f\n   r1=%s, r2=%s\n"),
+            ("   plot=%s, i1=%d, i2=%d, time1=%f, time2=%f\n   r1=%s, r2=%s\n",
              GetName().c_str(), i-1, i, mTime[i-1], mTime[i], r1.ToString().c_str(),
              r2.ToString().c_str());
          #endif
@@ -2370,7 +2370,7 @@ void OrbitViewCanvas::DrawOrbitLines(int i, const wxString &objName, int obj,
       
       #ifdef DEBUG_ORBIT_LINES
       MessageInterface::ShowMessage
-         (wxT("DrawOrbitLines() leaving, mObjLastFrame[%d] = %d\n"), objId, i);
+         ("DrawOrbitLines() leaving, mObjLastFrame[%d] = %d\n", objId, i);
       #endif
    }
 }
@@ -2456,7 +2456,7 @@ void OrbitViewCanvas::DrawEquatorialPlane(UnsignedInt color)
    //SetCelestialColor (color)
    
    GLubyte ubfactor = (GLubyte)(factor * 255);
-   //MessageInterface::ShowMessage(wxT("===> ubfactor=%d, factor=%f\n"), ubfactor, factor);
+   //MessageInterface::ShowMessage("===> ubfactor=%d, factor=%f\n", ubfactor, factor);
    
    // Why does alpha value have no effects?
    glColor4ub(sGlColor->red, sGlColor->green, sGlColor->blue, ubfactor);
@@ -2514,7 +2514,7 @@ void OrbitViewCanvas::DrawSunLine()
    if (frame <= 0)
       return;
    
-   int sunId = GetObjectId(wxT("Sun"));
+   int sunId = GetObjectId("Sun");
    
    // check for Sun
    if (sunId == UNKNOWN_OBJ_ID)
@@ -2557,7 +2557,7 @@ void OrbitViewCanvas::DrawSunLine()
    // get sun unit vector and multiply by distance
    // Dunn changed the division factor from 2.2 to 2.0
    mag = sqrt(sunPos[0]*sunPos[0] + sunPos[1]*sunPos[1] + sunPos[2]*sunPos[2]);
-   DrawStringAt(wxT(" +S"), sunPos[0]/mag*distance/2.0,
+   DrawStringAt(" +S", sunPos[0]/mag*distance/2.0,
                        sunPos[1]/mag*distance/2.0,
                        sunPos[2]/mag*distance/2.0,
                 1.0);
@@ -2603,15 +2603,15 @@ void OrbitViewCanvas::DrawAxes()
    // Dunn took out old minus signs to get axis labels at the correct end of
    // each axis and thus make attitude correct.
    glColor3f(1, 0, 0);     // red
-   axisLabel = wxT("+X ");
+   axisLabel = "+X ";
    DrawStringAt(axisLabel, +viewDist, 0.0, 0.0, 1.0);
    
    glColor3f(0, 1, 0);     // green
-   axisLabel = wxT("+Y ");
+   axisLabel = "+Y ";
    DrawStringAt(axisLabel, 0.0, +viewDist, 0.0, 1.0);
    
    glColor3f(0, 0, 1);     // blue
-   axisLabel = wxT("+Z ");
+   axisLabel = "+Z ";
    DrawStringAt(axisLabel, 0.0, 0.0, +viewDist, 1.0);
    
    glLineWidth(1.0);
@@ -2658,7 +2658,7 @@ void OrbitViewCanvas::DrawSpacecraft3dModel(Spacecraft *sc, int objId, int frame
    
    #ifdef DEBUG_SC_ATTITUDE
    MessageInterface::ShowMessage
-      (wxT("===> '%s', EARad=%s\n"), objName.c_str(),EARad.ToString().c_str());
+      ("===> '%s', EARad=%s\n", objName.c_str(),EARad.ToString().c_str());
    #endif
    
    float EAng1Deg = float(EARad(0)) * RTD;
@@ -2669,13 +2669,13 @@ void OrbitViewCanvas::DrawSpacecraft3dModel(Spacecraft *sc, int objId, int frame
    float     offset[3];
    float     rotation[3];
    float     scale;
-   offset[0]   = sc->GetRealParameter(sc->GetParameterID(wxT("ModelOffsetX")));
-   offset[1]   = sc->GetRealParameter(sc->GetParameterID(wxT("ModelOffsetY")));
-   offset[2]   = sc->GetRealParameter(sc->GetParameterID(wxT("ModelOffsetZ")));
-   rotation[0] = sc->GetRealParameter(sc->GetParameterID(wxT("ModelRotationX")));
-   rotation[1] = sc->GetRealParameter(sc->GetParameterID(wxT("ModelRotationY")));
-   rotation[2] = sc->GetRealParameter(sc->GetParameterID(wxT("ModelRotationZ")));
-   scale = sc->GetRealParameter(sc->GetParameterID(wxT("ModelScale")));
+   offset[0]   = sc->GetRealParameter(sc->GetParameterID("ModelOffsetX"));
+   offset[1]   = sc->GetRealParameter(sc->GetParameterID("ModelOffsetY"));
+   offset[2]   = sc->GetRealParameter(sc->GetParameterID("ModelOffsetZ"));
+   rotation[0] = sc->GetRealParameter(sc->GetParameterID("ModelRotationX"));
+   rotation[1] = sc->GetRealParameter(sc->GetParameterID("ModelRotationY"));
+   rotation[2] = sc->GetRealParameter(sc->GetParameterID("ModelRotationZ"));
+   scale = sc->GetRealParameter(sc->GetParameterID("ModelScale"));
    model->SetBaseOffset(offset[0], offset[1], offset[2]);
    model->SetBaseRotation(true, rotation[0], rotation[1], rotation[2]);
    model->SetBaseScale(scale, scale, scale);
@@ -2738,7 +2738,7 @@ void OrbitViewCanvas::DrawStars()
    
    #if DEBUG_DRAW > 1
    MessageInterface::ShowMessage
-      (wxT("   starCenter  =%s   starPosition=%s\n"), starCenter.ToString().c_str(),
+      ("   starCenter  =%s   starPosition=%s\n", starCenter.ToString().c_str(),
        starPosition.ToString().c_str());
    #endif
    
@@ -2765,7 +2765,7 @@ void OrbitViewCanvas::RotateBodyUsingAttitude(const wxString &objName, int objId
 {
    #if DEBUG_ROTATE_BODY > 1
    MessageInterface::ShowMessage
-      (wxT("RotateBodyUsingAttitude() '%s' entered, objId=%d, mLastIndex=%d, time=%f\n"),
+      ("RotateBodyUsingAttitude() '%s' entered, objId=%d, mLastIndex=%d, time=%f\n",
        objName.c_str(), objId, mLastIndex, mTime[mLastIndex]);
    #endif
    
@@ -2795,9 +2795,9 @@ void OrbitViewCanvas::RotateBodyUsingAttitude(const wxString &objName, int objId
                           mObjectQuat[attIndex+2], mObjectQuat[attIndex+3]);
    
    #if DEBUG_ROTATE_BODY > 1
-   MessageInterface::ShowMessage(wxT("==================================\n"));
+   MessageInterface::ShowMessage("==================================\n");
    MessageInterface::ShowMessage
-      (wxT("==> attIndex=%d, quat=%s\n"), attIndex, quat.ToString(16, 1).c_str());
+      ("==> attIndex=%d, quat=%s\n", attIndex, quat.ToString(16, 1).c_str());
    #endif
    
    if (quat.IsZeroVector())
@@ -2807,7 +2807,7 @@ void OrbitViewCanvas::RotateBodyUsingAttitude(const wxString &objName, int objId
    Rmatrix33 matIB = Attitude::ToCosineMatrix(quat);
    
    #if DEBUG_ROTATE_BODY > 1
-   MessageInterface::ShowMessage(wxT("==> matIB=\n%s"), matIB.ToString(16, 25).c_str());
+   MessageInterface::ShowMessage("==> matIB=\n%s", matIB.ToString(16, 25).c_str());
    #endif
    
    // Get the rotation matrix from the coordinate system of the plot to the inertial coordinate system
@@ -2818,13 +2818,13 @@ void OrbitViewCanvas::RotateBodyUsingAttitude(const wxString &objName, int objId
    
    #if DEBUG_ROTATE_BODY > 1
    MessageInterface::ShowMessage
-      (wxT("   posIndex=%d, inState=%s\n"), posIndex, inState.ToString(16, 1).c_str());
+      ("   posIndex=%d, inState=%s\n", posIndex, inState.ToString(16, 1).c_str());
    MessageInterface::ShowMessage
-      (wxT("   pViewCoordSystem=<%p>'%s', pInternalCoordSystem=<%p>'%s'\n"),
+      ("   pViewCoordSystem=<%p>'%s', pInternalCoordSystem=<%p>'%s'\n",
        pViewCoordSystem,
-       pViewCoordSystem ? pViewCoordSystem->GetName().c_str() : wxT("NULL"),
+       pViewCoordSystem ? pViewCoordSystem->GetName().c_str() : "NULL",
        pInternalCoordSystem,
-       pInternalCoordSystem ? pInternalCoordSystem->GetName().c_str() : wxT("NULL"));
+       pInternalCoordSystem ? pInternalCoordSystem->GetName().c_str() : "NULL");
    #endif
 
    mCoordConverter.Convert(mTime[mLastIndex], inState, pViewCoordSystem,
@@ -2833,13 +2833,13 @@ void OrbitViewCanvas::RotateBodyUsingAttitude(const wxString &objName, int objId
    Rmatrix33 matIP = mCoordConverter.GetLastRotationMatrix();
    
    #if DEBUG_ROTATE_BODY > 1
-   MessageInterface::ShowMessage(wxT("==> matIP=\n%s"), matIP.ToString(16, 25).c_str());
+   MessageInterface::ShowMessage("==> matIP=\n%s", matIP.ToString(16, 25).c_str());
    #endif
    
    Rmatrix33 matBP = matIB.Transpose() * matIP;
    
    #if DEBUG_ROTATE_BODY > 1
-   MessageInterface::ShowMessage(wxT("==> matPB=\n%s"), matBP.ToString(16, 25).c_str());
+   MessageInterface::ShowMessage("==> matPB=\n%s", matBP.ToString(16, 25).c_str());
    #endif
    
    // Compute angle and axis
@@ -2852,8 +2852,8 @@ void OrbitViewCanvas::RotateBodyUsingAttitude(const wxString &objName, int objId
    
    #if DEBUG_ROTATE_BODY > 1
    MessageInterface::ShowMessage
-      (wxT("RotateBodyUsingAttitude() '%s', epoch=%f, attIndex=%d, eAngle=%f, angInDeg=%f\n")
-       wxT("   eAxis=%s\n"), objName.c_str(), mTime[mLastIndex], attIndex, eAngle, angInDeg,
+      ("RotateBodyUsingAttitude() '%s', epoch=%f, attIndex=%d, eAngle=%f, angInDeg=%f\n"
+       "   eAxis=%s\n", objName.c_str(), mTime[mLastIndex], attIndex, eAngle, angInDeg,
        eAxis.ToString().c_str());
    #endif
    
@@ -2869,8 +2869,8 @@ void OrbitViewCanvas::RotateBody(const wxString &objName, int frame, int objId)
 {
    #ifdef DEBUG_ROTATE_BODY
    MessageInterface::ShowMessage
-      (wxT("RotateBody() '%s' entered, objName='%s', objId=%d, mOriginId=%d, ")
-       wxT("mOriginName='%s'\n"), mPlotName.c_str(), objName.c_str(),
+      ("RotateBody() '%s' entered, objName='%s', objId=%d, mOriginId=%d, "
+       "mOriginName='%s'\n", mPlotName.c_str(), objName.c_str(),
        objId, mOriginId, mOriginName.c_str());
    #endif
    
@@ -2889,10 +2889,10 @@ void OrbitViewCanvas::RotateBody(const wxString &objName, int frame, int objId)
 void OrbitViewCanvas::UpdateRotateFlags()
 {
    AxisSystem *axis =
-      (AxisSystem*)pViewCoordSystem->GetRefObject(Gmat::AXIS_SYSTEM, wxT(""));
+      (AxisSystem*)pViewCoordSystem->GetRefObject(Gmat::AXIS_SYSTEM, "");
    
-   if (axis->IsOfType(wxT("BodyFixedAxes")) &&
-       (mOriginName.IsSameAs(axis->GetStringParameter(wxT("Origin")).c_str())))
+   if (axis->IsOfType("BodyFixedAxes") &&
+       (mOriginName.IsSameAs(axis->GetStringParameter("Origin").c_str())))
    {
       mCanRotateAxes = true;
    }
@@ -2903,7 +2903,7 @@ void OrbitViewCanvas::UpdateRotateFlags()
    
    #if DEBUG_OBJECT
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas::UpdateRotateFlags() mCanRotateAxes=%d\n"),
+      ("OrbitViewCanvas::UpdateRotateFlags() mCanRotateAxes=%d\n",
        mCanRotateAxes);
    #endif
 }
@@ -2921,7 +2921,7 @@ bool OrbitViewCanvas::ConvertObjectData()
    
    #if DEBUG_CONVERT
    MessageInterface::ShowMessage
-      (wxT("OrbitViewCanvas::ConvertObjectData() internalCS=%s, viewCSName=%s, viewCS=%d\n"),
+      ("OrbitViewCanvas::ConvertObjectData() internalCS=%s, viewCSName=%s, viewCS=%d\n",
        pInternalCoordSystem->GetName().c_str(), pViewCoordSystem->GetName().c_str(),
        pViewCoordSystem);
    #endif
@@ -2931,8 +2931,8 @@ bool OrbitViewCanvas::ConvertObjectData()
    {
       #if DEBUG_CONVERT
       MessageInterface::ShowMessage
-         (wxT("OrbitViewCanvas::ConvertObjectData() No conversion is needed. ")
-          wxT("Just copy MJ2000 pos\n"));
+         ("OrbitViewCanvas::ConvertObjectData() No conversion is needed. "
+          "Just copy MJ2000 pos\n");
       #endif
       for (int obj=0; obj<mObjectCount; obj++)
       {
@@ -2965,7 +2965,7 @@ bool OrbitViewCanvas::ConvertObjectData()
          
          #if DEBUG_CONVERT
          MessageInterface::ShowMessage
-            (wxT("OrbitViewCanvas::ConvertObjectData() mObjectNames[%d]=%s\n"), objId,
+            ("OrbitViewCanvas::ConvertObjectData() mObjectNames[%d]=%s\n", objId,
              mObjectNames[i].c_str());
          #endif         
          
@@ -3007,8 +3007,8 @@ void OrbitViewCanvas::ConvertObject(int objId, int index)
    if (index < 10)
    {
       MessageInterface::ShowMessage
-         (wxT("   index=%d, inState=%16.9f, %16.9f, %16.9f\n")
-          wxT("           outState=%16.9f, %16.9f, %16.9f\n"), index, inState[0],
+         ("   index=%d, inState=%16.9f, %16.9f, %16.9f\n"
+          "           outState=%16.9f, %16.9f, %16.9f\n", index, inState[0],
           inState[1], inState[2], outState[0], outState[1], outState[2]);
    }
    #endif

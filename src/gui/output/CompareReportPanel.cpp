@@ -62,13 +62,13 @@ CompareReportPanel::CompareReportPanel(wxWindow *parent, const wxString &name)
    
    // create bottom buttons
    theCloseButton =
-      new wxButton(this, ID_BUTTON_CLOSE, wxT("Close"), wxDefaultPosition, wxDefaultSize, 0);
+      new wxButton(this, ID_BUTTON_CLOSE, "Close", wxDefaultPosition, wxDefaultSize, 0);
    
    // adds the buttons to button sizer
    wxBoxSizer *theButtonSizer = new wxBoxSizer(wxHORIZONTAL);
    theButtonSizer->Add(theCloseButton, 0, wxALIGN_CENTER | wxALL, borderSize);
    
-   GmatStaticBoxSizer *theBottomSizer = new GmatStaticBoxSizer(wxVERTICAL, this, wxT(""));
+   GmatStaticBoxSizer *theBottomSizer = new GmatStaticBoxSizer(wxVERTICAL, this, "");
 //   wxStaticBoxSizer *theBottomSizer = new wxStaticBoxSizer(wxVERTICAL, this, "");
    theBottomSizer->Add(theButtonSizer, 0, wxALIGN_CENTER | wxALL, borderSize);
    

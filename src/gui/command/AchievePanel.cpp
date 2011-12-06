@@ -54,12 +54,12 @@ AchievePanel::AchievePanel(wxWindow *parent, GmatCommand *cmd)
    mAchieveCommand = (Achieve *)cmd;
 
    mIsTextModified = false;
-   mSolverName = wxT("");
-   mGoalName = wxT("");
-   mGoalValue = wxT("");
-   mTolerance = wxT("1.0e-6");
+   mSolverName = "";
+   mGoalName = "";
+   mGoalValue = "";
+   mTolerance = "1.0e-6";
    
-   mObjectTypeList.Add(wxT("Spacecraft"));
+   mObjectTypeList.Add("Spacecraft");
    
    Create();
    Show();
@@ -74,7 +74,7 @@ AchievePanel::AchievePanel(wxWindow *parent, GmatCommand *cmd)
 AchievePanel::~AchievePanel()
 {
    mObjectTypeList.Clear();
-   theGuiManager->UnregisterComboBox(wxT("BoundarySolver"), mSolverComboBox);
+   theGuiManager->UnregisterComboBox("BoundarySolver", mSolverComboBox);
 }
 
 
@@ -156,8 +156,8 @@ void AchievePanel::Create()
 void AchievePanel::LoadData()
 {
    #if DEBUG_ACHIEVE_PANEL_LOAD
-   MessageInterface::ShowMessage(wxT("AchievePanel::LoadData() entered\n"));
-   MessageInterface::ShowMessage(wxT("Command=%s\n"), mAchieveCommand->GetTypeName().c_str());
+   MessageInterface::ShowMessage("AchievePanel::LoadData() entered\n");
+   MessageInterface::ShowMessage("Command=%s\n", mAchieveCommand->GetTypeName().c_str());
    #endif
    
    // We don't want user to edit this box
@@ -168,29 +168,29 @@ void AchievePanel::LoadData()
       // Set the pointer for the "Show Script" button
       mObject = mAchieveCommand;
       
-      wxString solverName = mAchieveCommand->
-         GetStringParameter(mAchieveCommand->GetParameterID(wxT("TargeterName")));
+      std::string solverName = mAchieveCommand->
+         GetStringParameter(mAchieveCommand->GetParameterID("TargeterName"));
       
-      wxString goalName = mAchieveCommand->
-         GetStringParameter(mAchieveCommand->GetParameterID(wxT("Goal")));
+      std::string goalName = mAchieveCommand->
+         GetStringParameter(mAchieveCommand->GetParameterID("Goal"));
       
-      wxString goalValue = mAchieveCommand->GetStringParameter
-         (mAchieveCommand->GetParameterID(wxT("GoalValue")));
+      std::string goalValue = mAchieveCommand->GetStringParameter
+         (mAchieveCommand->GetParameterID("GoalValue"));
       
-      wxString toleranceValue = mAchieveCommand->GetStringParameter
-         (mAchieveCommand->GetParameterID(wxT("Tolerance")));
+      std::string toleranceValue = mAchieveCommand->GetStringParameter
+         (mAchieveCommand->GetParameterID("Tolerance"));
       
       #if DEBUG_ACHIEVE_PANEL_LOAD
-      MessageInterface::ShowMessage(wxT("   solverName=%s\n"), solverName.c_str());
-      MessageInterface::ShowMessage(wxT("   goalName=%s\n"), goalName.c_str());
-      MessageInterface::ShowMessage(wxT("   goalValue=%s\n"), goalValue.c_str());
-      MessageInterface::ShowMessage(wxT("   tolerance=%s\n"), toleranceValue.c_str());
+      MessageInterface::ShowMessage("   solverName=%s\n", solverName.c_str());
+      MessageInterface::ShowMessage("   goalName=%s\n", goalName.c_str());
+      MessageInterface::ShowMessage("   goalValue=%s\n", goalValue.c_str());
+      MessageInterface::ShowMessage("   tolerance=%s\n", toleranceValue.c_str());
       #endif
       
-      mSolverName = solverName;      
-      mGoalName = goalName;
-      mGoalValue = goalValue;
-      mTolerance = toleranceValue;
+      mSolverName = wxT(solverName.c_str());      
+      mGoalName = wxT(goalName.c_str());
+      mGoalValue = wxT(goalValue.c_str());
+      mTolerance = wxT(toleranceValue.c_str());
       
       mSolverComboBox->SetValue(mSolverName);
       mGoalNameTextCtrl->SetValue(mGoalName);
@@ -212,11 +212,11 @@ void AchievePanel::SaveData()
 {   
    #if DEBUG_ACHIEVE_PANEL_SAVE
    MessageInterface::ShowMessage
-      (wxT("AchievePanel::SaveData() entered, mIsTextModified=%d\n"), mIsTextModified);
+      ("AchievePanel::SaveData() entered, mIsTextModified=%d\n", mIsTextModified);
    #endif
    
    canClose = true;
-   wxString inputString;
+   std::string inputString;
    
    //-----------------------------------------------------------------
    // check input values: Number, Variable, Array element, Parameter
@@ -224,12 +224,12 @@ void AchievePanel::SaveData()
    if (mIsTextModified)
    {
       inputString = mGoalValue.c_str();
-      CheckVariable(mGoalValue.c_str(), Gmat::SPACECRAFT, wxT("GoalValue"),
-                    wxT("Real Number, Variable, Array element, plottable Parameter"), true);
+      CheckVariable(mGoalValue.c_str(), Gmat::SPACECRAFT, "GoalValue",
+                    "Real Number, Variable, Array element, plottable Parameter", true);
       
       inputString = mToleranceTextCtrl->GetValue();
-      CheckVariable(inputString.c_str(), Gmat::SPACECRAFT, wxT("Tolerance"),
-                    wxT("Real Number, Variable, Array element, plottable Parameter"), true);
+      CheckVariable(inputString.c_str(), Gmat::SPACECRAFT, "Tolerance",
+                    "Real Number, Variable, Array element, plottable Parameter", true);
    }
    
    if (!canClose)
@@ -241,25 +241,25 @@ void AchievePanel::SaveData()
    try
    {
       mAchieveCommand->SetStringParameter
-         (mAchieveCommand->GetParameterID(wxT("TargeterName")), mSolverName.c_str());
+         (mAchieveCommand->GetParameterID("TargeterName"), mSolverName.c_str());
       
       mAchieveCommand->SetStringParameter
-         (mAchieveCommand->GetParameterID(wxT("Goal")), mGoalName.c_str());
+         (mAchieveCommand->GetParameterID("Goal"), mGoalName.c_str());
       
       if (mIsTextModified)
       {
          #if DEBUG_ACHIEVE_PANEL_SAVE
          MessageInterface::ShowMessage
-            (wxT("   Setting GoalValue to %s\n   Setting Tolerance to %s\n"),
+            ("   Setting GoalValue to %s\n   Setting Tolerance to %s\n",
              mGoalValue.c_str(), mTolerance.c_str());
          #endif
          
          mAchieveCommand->SetStringParameter
-            (mAchieveCommand->GetParameterID(wxT("GoalValue")), mGoalValue.c_str());
+            (mAchieveCommand->GetParameterID("GoalValue"), mGoalValue.c_str());
          
          mTolerance = mToleranceTextCtrl->GetValue();      
          mAchieveCommand->SetStringParameter
-            (mAchieveCommand->GetParameterID(wxT("Tolerance")), mTolerance.c_str());
+            (mAchieveCommand->GetParameterID("Tolerance"), mTolerance.c_str());
          
          mIsTextModified = false;
       }

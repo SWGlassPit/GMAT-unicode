@@ -66,18 +66,18 @@ protected:
    virtual void         LoadData();
    virtual void         SaveData();
    wxControl *          BuildControl(wxWindow *parent, GmatBase *theObject,
-                                     Integer index, const wxString &label,
+                                     Integer index, const std::string &label,
                                      wxFileConfig *config);
    void                 CreateControls(wxFlexGridSizer *mainSizer, GmatBase *theObject);
    void                 CreateControls(GmatBase *theObject, Integer index,
                                        wxStaticText **aLabel, wxControl **aControl,
                                        wxControl **aUnit, wxFileConfig *config);
-   void                 LoadControl(GmatBase *theObject, const wxString &label);
-   bool                 SaveControl(GmatBase *theObject, const wxString &label,
+   void                 LoadControl(GmatBase *theObject, const std::string &label);
+   bool                 SaveControl(GmatBase *theObject, const std::string &label,
                                     bool showErrorMsgs = false);
-   virtual wxString  GetParameterLabel(GmatBase *theObject, Integer index, wxFileConfig *config) const;
-   virtual wxString  GetParameterUnit(GmatBase *theObject, Integer index, wxFileConfig *config) const;
-   wxString          AssignAcceleratorKey(wxString text);
+   virtual std::string  GetParameterLabel(GmatBase *theObject, Integer index, wxFileConfig *config) const;
+   virtual std::string  GetParameterUnit(GmatBase *theObject, Integer index, wxFileConfig *config) const;
+   std::string          AssignAcceleratorKey(std::string text);
    virtual SizerMapType* CreateGroups(wxFlexGridSizer *mainSizer, wxFileConfig *config);
    virtual void         CreateProperties(wxFlexGridSizer *mainSizer,
                                          GmatBase *theObject, StringArray *propertyNames,
@@ -91,7 +91,7 @@ protected:
                                          std::vector<wxControl*> propertyUnits );
    wxWindow             *FixTabOrder( wxWindow *lastControl, wxSizer *sizer );
    virtual bool         GetLayoutConfig(GmatBase *theObject, wxFileConfig **config);
-   virtual void         RefreshProperties(GmatBase *theObject, wxString ignoreControl = wxT(""));
+   virtual void         RefreshProperties(GmatBase *theObject, std::string ignoreControl = "");
    virtual void         RefreshProperty(GmatBase *theObject, Integer index, wxControl *control, wxFileConfig *config);
    
    // Text control event method

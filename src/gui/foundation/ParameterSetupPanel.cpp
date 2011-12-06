@@ -55,7 +55,7 @@ ParameterSetupPanel::ParameterSetupPanel(wxWindow *parent, const wxString &name)
    
    mParam =
       (Parameter*)theGuiInterpreter->GetConfiguredObject(mVarName.c_str());
-   if (mParam->GetTypeName() == wxT("String"))
+   if (mParam->GetTypeName() == "String")
       mIsStringVar = true;
    
    Create();
@@ -172,17 +172,17 @@ void ParameterSetupPanel::LoadData()
          
    #if DEBUG_PARAM_PANEL
    MessageInterface::ShowMessage
-      (wxT("ParameterSetupPanel::LoadData() paramName=%s\n"), mParam->GetName().c_str());
+      ("ParameterSetupPanel::LoadData() paramName=%s\n", mParam->GetName().c_str());
    #endif
    
    try
    {
       // show expression
-      wxString varExp = mParam->GetStringParameter(wxT("Expression"));
+      std::string varExp = mParam->GetStringParameter("Expression");
       mVarNameTextCtrl->SetValue(mVarName);
       mVarExpTextCtrl->SetValue(varExp.c_str());
       
-      UnsignedInt intColor = mParam->GetUnsignedIntParameter(wxT("Color"));
+      UnsignedInt intColor = mParam->GetUnsignedIntParameter("Color");
       RgbColor color(intColor);
       mColor.Set(color.Red(), color.Green(), color.Blue());
       mColorButton->SetBackgroundColour(mColor);
@@ -198,8 +198,8 @@ void ParameterSetupPanel::LoadData()
       }
       else
       {
-         mVarExpTextCtrl->SetValue(mParam->GetStringParameter(wxT("Expression")).c_str());
-         mExpStaticText->SetLabel(wxT("Value"));
+         mVarExpTextCtrl->SetValue(mParam->GetStringParameter("Expression").c_str());
+         mExpStaticText->SetLabel("Value");
          mColorStaticText->Hide();
          mColorButton->Hide();
       }
@@ -219,7 +219,7 @@ void ParameterSetupPanel::LoadData()
 void ParameterSetupPanel::SaveData()
 {
    canClose = true;
-   wxString expr;
+   std::string expr;
    
    //-----------------------------------------------------------------
    // check values from text field if variable
@@ -228,8 +228,8 @@ void ParameterSetupPanel::SaveData()
    {
       expr = mVarExpTextCtrl->GetValue().c_str();
       Real rval;
-      if (mParam->GetTypeName() == wxT("Variable"))
-         CheckReal(rval, expr, wxT("Expression"), wxT("Real Number"));
+      if (mParam->GetTypeName() == "Variable")
+         CheckReal(rval, expr, "Expression", "Real Number");
    }
    
    if (!canClose)
@@ -243,14 +243,14 @@ void ParameterSetupPanel::SaveData()
       if (mIsExpChanged)
       {
          mIsExpChanged = false;
-         mParam->SetStringParameter(wxT("Expression"), expr);
+         mParam->SetStringParameter("Expression", expr);
       }
       
       if (mIsColorChanged)
       {
          mIsColorChanged = false;
          RgbColor color(mColor.Red(), mColor.Green(), mColor.Blue());
-         mParam->SetUnsignedIntParameter(wxT("Color"), color.GetIntColor());
+         mParam->SetUnsignedIntParameter("Color", color.GetIntColor());
       }
    }
    catch (BaseException &e)

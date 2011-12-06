@@ -46,7 +46,7 @@ ImpulsiveBurnSetupPanel::ImpulsiveBurnSetupPanel(wxWindow *parent,
    
    #ifdef DEBUG_BURNPANEL_CREATE
    MessageInterface::ShowMessage
-      (wxT("ImpulsiveBurnSetupPanel() constructor entered, theObject=<%p>'%s'\n"),
+      ("ImpulsiveBurnSetupPanel() constructor entered, theObject=<%p>'%s'\n",
        theObject, theObject->GetTypeName().c_str());
    #endif
    
@@ -72,13 +72,13 @@ ImpulsiveBurnSetupPanel::~ImpulsiveBurnSetupPanel()
 void ImpulsiveBurnSetupPanel::LoadData()
 {
    #ifdef DEBUG_BURNPANEL_LOAD
-   MessageInterface::ShowMessage(wxT("ImpulsiveBurnSetupPanel::LoadData() entered\n"));
+   MessageInterface::ShowMessage("ImpulsiveBurnSetupPanel::LoadData() entered\n");
    #endif
    
    try
    {
       Integer paramID;
-      paramID = theObject->GetParameterID(wxT("Isp"));
+      paramID = theObject->GetParameterID("Isp");
       ispTextCtrl->SetValue(wxVariant(theObject->GetRealParameter(paramID)));
    }
    catch (BaseException &e)
@@ -89,7 +89,7 @@ void ImpulsiveBurnSetupPanel::LoadData()
    BurnThrusterPanel::LoadData();
    
    #ifdef DEBUG_BURNPANEL_LOAD
-   MessageInterface::ShowMessage(wxT("ImpulsiveBurnSetupPanel::LoadData() entered\n"));
+   MessageInterface::ShowMessage("ImpulsiveBurnSetupPanel::LoadData() entered\n");
    #endif
 }
 
@@ -100,11 +100,11 @@ void ImpulsiveBurnSetupPanel::LoadData()
 void ImpulsiveBurnSetupPanel::SaveData()
 {
    #ifdef DEBUG_BURNPANEL_SAVE
-   MessageInterface::ShowMessage(wxT("ImpulsiveBurnSetupPanel::SaveData() entered\n"));
+   MessageInterface::ShowMessage("ImpulsiveBurnSetupPanel::SaveData() entered\n");
    #endif
    
    canClose = true;
-   wxString str;
+   std::string str;
    Real isp;
    Integer paramID;
    bool ispChanged = false;
@@ -114,7 +114,7 @@ void ImpulsiveBurnSetupPanel::SaveData()
       if (ispTextCtrl->IsModified())
       {
          str = ispTextCtrl->GetValue();      
-         CheckReal(isp, str, wxT("Isp"), wxT("Real Number >= 0"), false, true, true, true);
+         CheckReal(isp, str, "Isp", "Real Number >= 0", false, true, true, true);
          ispChanged = true;
       }
       
@@ -123,7 +123,7 @@ void ImpulsiveBurnSetupPanel::SaveData()
       
       if (ispChanged)
       {
-         paramID = theObject->GetParameterID(wxT("Isp"));
+         paramID = theObject->GetParameterID("Isp");
          theObject->SetRealParameter(paramID, isp);
       }
    }
@@ -136,6 +136,6 @@ void ImpulsiveBurnSetupPanel::SaveData()
    BurnThrusterPanel::SaveData();
    
    #ifdef DEBUG_BURNPANEL_SAVE
-   MessageInterface::ShowMessage(wxT("ImpulsiveBurnSetupPanel::SaveData() exiting\n"));
+   MessageInterface::ShowMessage("ImpulsiveBurnSetupPanel::SaveData() exiting\n");
    #endif
 }

@@ -56,7 +56,7 @@ FiniteBurnSetupPanel::FiniteBurnSetupPanel(wxWindow *parent,
    theBurn = 
       (FiniteBurn*) theGuiInterpreter->GetConfiguredObject(burnName.c_str());
    
-   thrusterSelected = wxT("");
+   thrusterSelected = "";
    canClose = true;
    
    Create();
@@ -75,7 +75,7 @@ FiniteBurnSetupPanel::FiniteBurnSetupPanel(wxWindow *parent,
 //------------------------------------------------------------------------------
 FiniteBurnSetupPanel::~FiniteBurnSetupPanel()
 {
-   theGuiManager->UnregisterComboBox(wxT("Thruster"), mThrusterComboBox);
+   theGuiManager->UnregisterComboBox("Thruster", mThrusterComboBox);
 }
 
 //-------------------------------
@@ -90,11 +90,11 @@ void FiniteBurnSetupPanel::OnComboBoxChange(wxCommandEvent& event)
    if (event.GetEventObject() == mThrusterComboBox)
    {
       thrusterSelected = mThrusterComboBox->GetStringSelection().c_str();
-      if (thrusterSelected == wxT("No Thruster Selected"))
-         thrusterSelected = wxT("");
+      if (thrusterSelected == "No Thruster Selected")
+         thrusterSelected = "";
       
       // remove "No Thruster Selected" once thruster is selected
-      int pos = mThrusterComboBox->FindString(wxT("No Thruster Selected"));
+      int pos = mThrusterComboBox->FindString("No Thruster Selected");
       if (pos != wxNOT_FOUND)
          mThrusterComboBox->Delete(pos);
       
@@ -118,7 +118,7 @@ void FiniteBurnSetupPanel::OnComboBoxChange(wxCommandEvent& event)
 void FiniteBurnSetupPanel::Create()
 {
    #if DEBUG_FINITEBURN_PANEL
-      MessageInterface::ShowMessage( wxT("FiniteBurnSetupPanel::Create() \n") );
+      MessageInterface::ShowMessage( "FiniteBurnSetupPanel::Create() \n" );
    #endif
    
    Integer bsize;
@@ -137,10 +137,10 @@ void FiniteBurnSetupPanel::Create()
       
       // Thrusters
       wxStaticText *thrusterLabel = new wxStaticText(this, ID_TEXT,
-         wxT(GUI_ACCEL_KEY) wxT("Thruster"), wxDefaultPosition, wxDefaultSize, 0);
+         wxT(GUI_ACCEL_KEY"Thruster"), wxDefaultPosition, wxDefaultSize, 0);
       mThrusterComboBox =
          theGuiManager->GetThrusterComboBox(this, ID_COMBOBOX, wxSize(150,-1));
-      mThrusterComboBox->SetToolTip(pConfig->Read(wxT("ThrusterHint")));
+      mThrusterComboBox->SetToolTip(pConfig->Read(_T("ThrusterHint")));
       
       // add to page sizer    
       pageSizer->Add(thrusterLabel, 0, wxALIGN_LEFT | wxALL, bsize);
@@ -153,7 +153,7 @@ void FiniteBurnSetupPanel::Create()
    {
       // show error message
       MessageInterface::ShowMessage
-         (wxT("FiniteBurnSetupPanel:Create() theBurn is NULL\n"));
+         ("FiniteBurnSetupPanel:Create() theBurn is NULL\n");
    }
 }
 
@@ -163,7 +163,7 @@ void FiniteBurnSetupPanel::Create()
 void FiniteBurnSetupPanel::LoadData()
 {
    #if DEBUG_FINITEBURN_PANEL
-      MessageInterface::ShowMessage( wxT("FiniteBurnSetupPanel::LoadData() \n") );
+      MessageInterface::ShowMessage( "FiniteBurnSetupPanel::LoadData() \n" );
    #endif
    
    // load data from the core engine 
@@ -173,12 +173,12 @@ void FiniteBurnSetupPanel::LoadData()
       mObject = theBurn;
       
       // load thruster
-      Integer id = theBurn->GetParameterID(wxT("Thrusters"));
+      Integer id = theBurn->GetParameterID("Thrusters");
       StringArray thrusters = theBurn->GetStringArrayParameter(id);
       
       #if DEBUG_FINITEBURN_PANEL
       MessageInterface::ShowMessage
-         (wxT("   # of configured thrusters = %d\n"), thrusters.size() );
+         ("   # of configured thrusters = %d\n", thrusters.size() );
       #endif
       
       if (thrusters.empty())
@@ -186,9 +186,9 @@ void FiniteBurnSetupPanel::LoadData()
          if (theGuiManager->GetNumThruster() > 0)
          {
             #if DEBUG_FINITEBURN_PANEL
-            MessageInterface::ShowMessage(wxT("   Inserting No Thruster Selected\n"));
+            MessageInterface::ShowMessage("   Inserting No Thruster Selected\n");
             #endif
-            mThrusterComboBox->Insert(wxT("No Thruster Selected"), 0);
+            mThrusterComboBox->Insert("No Thruster Selected", 0);
             mThrusterComboBox->SetSelection(0);
          }
       }
@@ -201,7 +201,7 @@ void FiniteBurnSetupPanel::LoadData()
    catch (BaseException &e)
    {
       MessageInterface::ShowMessage
-         (wxT("FiniteBurnSetupPanel:LoadData() error occurred!\n%s\n"), 
+         ("FiniteBurnSetupPanel:LoadData() error occurred!\n%s\n", 
             e.GetFullMessage().c_str());
    }
 }
@@ -213,7 +213,7 @@ void FiniteBurnSetupPanel::LoadData()
 void FiniteBurnSetupPanel::SaveData()
 {
    #if DEBUG_FINITEBURN_PANEL
-      MessageInterface::ShowMessage( wxT("FiniteBurnSetupPanel::SaveData() \n") );
+      MessageInterface::ShowMessage( "FiniteBurnSetupPanel::SaveData() \n" );
    #endif
       
    canClose = true;
@@ -224,7 +224,7 @@ void FiniteBurnSetupPanel::SaveData()
    try
    {
       // save thrusters
-      Integer id = theBurn->GetParameterID(wxT("Thrusters"));
+      Integer id = theBurn->GetParameterID("Thrusters");
       theBurn->SetStringParameter(id, thrusterSelected.c_str(), 0);
    }
    catch (BaseException &e)

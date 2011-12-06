@@ -1793,10 +1793,10 @@ int TrajPlotCanvas::ReadTextTrajectory(const wxString &filename)
    else
    {
       wxString info;
-      info.Printf(wxT("Cannot open trajectory file name: %s\n"),
+      info.Printf(_T("Cannot open trajectory file name: %s\n"),
                   filename.c_str());
         
-      wxMessageDialog msgDialog(this, info, wxT("ReadTextTrajectory File"));
+      wxMessageDialog msgDialog(this, info, _T("ReadTextTrajectory File"));
       msgDialog.ShowModal();
       return numDataPoints;
    }
@@ -1804,8 +1804,8 @@ int TrajPlotCanvas::ReadTextTrajectory(const wxString &filename)
    // initialize GL
    if (!InitGL())
    {
-      wxMessageDialog msgDialog(this, wxT("InitGL() failed"),
-                                wxT("ReadTextTrajectory File"));
+      wxMessageDialog msgDialog(this, _T("InitGL() failed"),
+                                _T("ReadTextTrajectory File"));
       msgDialog.ShowModal();
       return false;
    }

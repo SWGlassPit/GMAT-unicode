@@ -57,7 +57,7 @@ private:
    Real           mu;
    Real           eqRad;
    Real           flat;
-   wxString    textureMap;
+   std::string    textureMap;
    
    bool           muChanged;
    bool           eqRadChanged;

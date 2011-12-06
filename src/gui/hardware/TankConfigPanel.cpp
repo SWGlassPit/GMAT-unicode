@@ -93,7 +93,7 @@ END_EVENT_TABLE()
 TankConfigPanel::TankConfigPanel(wxWindow *parent, const wxString &name)
    : GmatPanel(parent)
 {           
-   wxString tankName = wxString(name.c_str());
+   std::string tankName = std::string(name.c_str());
    theFuelTank = (FuelTank*)theGuiInterpreter->GetConfiguredObject(tankName);
    
    if (theFuelTank)
@@ -104,7 +104,7 @@ TankConfigPanel::TankConfigPanel(wxWindow *parent, const wxString &name)
    else
    {
       MessageInterface::PopupMessage
-         (Gmat::ERROR_, wxT("Cannot find the FuelTank object named ") + tankName);
+         (Gmat::ERROR_, "Cannot find the FuelTank object named " + tankName);
    }
 }
 
@@ -145,71 +145,71 @@ void TankConfigPanel::Create()
    //-----------------------------------------------------------------
    // Volume
    wxStaticText *volumeLabel =
-      new wxStaticText( this, ID_TEXT, wxT(GUI_ACCEL_KEY) wxT("Volume")); 
+      new wxStaticText( this, ID_TEXT, wxT(GUI_ACCEL_KEY"Volume")); 
    volumeTextCtrl =
       new wxTextCtrl( this, ID_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(120,-1), 0, wxTextValidator(wxGMAT_FILTER_NUMERIC) );
-   volumeTextCtrl->SetToolTip(pConfig->Read(wxT("VolumeHint")));
+   volumeTextCtrl->SetToolTip(pConfig->Read(_T("VolumeHint")));
    wxStaticText *volumeUnit =
       new wxStaticText( this, ID_TEXT, wxT("m^3"));
    
    // Pressure Model
    wxStaticText *pressureModelLabel =
-      new wxStaticText( this, ID_TEXT, wxT("Pressure ") wxT(GUI_ACCEL_KEY) wxT("Model"));
+      new wxStaticText( this, ID_TEXT, wxT("Pressure "GUI_ACCEL_KEY"Model"));
    StringArray pressModelList =
        theFuelTank->GetPropertyEnumStrings(FuelTank::PRESSURE_MODEL);
    wxArrayString wxPressModelLabels = ToWxArrayString(pressModelList);
    pressureModelComboBox = 
       new wxComboBox( this, ID_COMBOBOX, wxT(""), wxDefaultPosition, wxSize(120,-1),
                       wxPressModelLabels, wxCB_DROPDOWN|wxCB_READONLY);
-   pressureModelComboBox->SetToolTip(pConfig->Read(wxT("PressureModelHint")));
+   pressureModelComboBox->SetToolTip(pConfig->Read(_T("PressureModelHint")));
    
    // Fuel Mass
    wxStaticText *fuelMassLabel =
-      new wxStaticText( this, ID_TEXT, wxT("F") wxT(GUI_ACCEL_KEY) wxT("uel Mass"));
+      new wxStaticText( this, ID_TEXT, wxT("F"GUI_ACCEL_KEY"uel Mass"));
    fuelMassTextCtrl =
       new wxTextCtrl( this, ID_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(120,-1), 0, wxTextValidator(wxGMAT_FILTER_NUMERIC) );
-   fuelMassTextCtrl->SetToolTip(pConfig->Read(wxT("MassHint")));
+   fuelMassTextCtrl->SetToolTip(pConfig->Read(_T("MassHint")));
    wxStaticText *fuelMassUnit =
       new wxStaticText( this, ID_TEXT, wxT("kg"));
    
    // Allow Negative Fuel Mass
    allowNegativeFuelMassCheckBox =
-      new wxCheckBox( this, ID_CHECKBOX, wxT("Allow ") wxT(GUI_ACCEL_KEY) wxT("Negative Fuel Mass"));
-   allowNegativeFuelMassCheckBox->SetToolTip(pConfig->Read(wxT("AllowNegFuelMassHint")));
+      new wxCheckBox( this, ID_CHECKBOX, wxT("Allow "GUI_ACCEL_KEY"Negative Fuel Mass"));
+   allowNegativeFuelMassCheckBox->SetToolTip(pConfig->Read(_T("AllowNegFuelMassHint")));
    
    // Fuel Density
    wxStaticText *fuelDensityLabel =
-      new wxStaticText( this, ID_TEXT, wxT("Fuel ") wxT(GUI_ACCEL_KEY) wxT("Density"));
+      new wxStaticText( this, ID_TEXT, wxT("Fuel "GUI_ACCEL_KEY"Density"));
    fuelDensityTextCtrl =
       new wxTextCtrl( this, ID_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(120,-1), 0, wxTextValidator(wxGMAT_FILTER_NUMERIC) );
-   fuelDensityTextCtrl->SetToolTip(pConfig->Read(wxT("DensityHint")));
+   fuelDensityTextCtrl->SetToolTip(pConfig->Read(_T("DensityHint")));
    wxStaticText *fuelDensityUnit =
       new wxStaticText( this, ID_TEXT, wxT("kg/m^3"));
    
    // Temperature
    wxStaticText *temperatureLabel =
-      new wxStaticText( this, ID_TEXT, wxT(GUI_ACCEL_KEY) wxT("Temperature"));
+      new wxStaticText( this, ID_TEXT, wxT(GUI_ACCEL_KEY"Temperature"));
    temperatureTextCtrl =
       new wxTextCtrl( this, ID_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(120,-1), 0, wxTextValidator(wxGMAT_FILTER_NUMERIC) );
-   temperatureTextCtrl->SetToolTip(pConfig->Read(wxT("TemperatureHint")));
+   temperatureTextCtrl->SetToolTip(pConfig->Read(_T("TemperatureHint")));
    wxStaticText *temperatureUnit =
       new wxStaticText( this, ID_TEXT, wxT("C"));
    
    // Reference Temperature
    wxStaticText *refTemperatureLabel =
-      new wxStaticText( this, ID_TEXT, wxT(GUI_ACCEL_KEY) wxT("Reference Temperature"));
+      new wxStaticText( this, ID_TEXT, wxT(GUI_ACCEL_KEY"Reference Temperature"));
    refTemperatureTextCtrl =
       new wxTextCtrl( this, ID_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(120,-1), 0, wxTextValidator(wxGMAT_FILTER_NUMERIC) );
-   refTemperatureTextCtrl->SetToolTip(pConfig->Read(wxT("ReferenceTemperatureHint")));
+   refTemperatureTextCtrl->SetToolTip(pConfig->Read(_T("ReferenceTemperatureHint")));
    wxStaticText *refTemperatureUnit =
       new wxStaticText( this, ID_TEXT, wxT("C"));
    
    // Pressure
    wxStaticText *pressureLabel =
-      new wxStaticText( this, ID_TEXT, wxT(GUI_ACCEL_KEY) wxT("Pressure"));
+      new wxStaticText( this, ID_TEXT, wxT(GUI_ACCEL_KEY"Pressure"));
    pressureTextCtrl =
       new wxTextCtrl( this, ID_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(120,-1), 0, wxTextValidator(wxGMAT_FILTER_NUMERIC) );
-   pressureTextCtrl->SetToolTip(pConfig->Read(wxT("PressureHint")));
+   pressureTextCtrl->SetToolTip(pConfig->Read(_T("PressureHint")));
    wxStaticText *pressureUnit =
       new wxStaticText( this, ID_TEXT, wxT("kPa"));
 
@@ -267,7 +267,7 @@ void TankConfigPanel::Create()
    flexGridSizer1->Add(pressureUnit, unitSizeProportion, wxALIGN_LEFT|wxALL, bsize);
    
    // create the Fuel Properties group box
-   fuelPropertiesSizer = new GmatStaticBoxSizer( wxVERTICAL, this, wxT("Fuel Properties") );
+   fuelPropertiesSizer = new GmatStaticBoxSizer( wxVERTICAL, this, "Fuel Properties" );
    fuelPropertiesSizer->Add(flexGridSizer1, 0, wxEXPAND|wxALL, bsize);
    
    //-----------------------------------------------------------------
@@ -285,7 +285,7 @@ void TankConfigPanel::Create()
    flexGridSizer2->Add(0, unitSizeProportion, wxALIGN_LEFT|wxALL, bsize);
 
    // create the Tank Properties group box
-   tankPropertiesSizer = new GmatStaticBoxSizer( wxVERTICAL, this, wxT("Tank Properties") );
+   tankPropertiesSizer = new GmatStaticBoxSizer( wxVERTICAL, this, "Tank Properties" );
    tankPropertiesSizer->Add(flexGridSizer2, 0, wxEXPAND|wxALL, bsize);
 
    //-----------------------------------------------------------------
@@ -335,34 +335,34 @@ void TankConfigPanel::SaveData()
    canClose = true;
    
    Real fuelMass, pressure, temp, refTemp, volume, fuelDensity;
-   wxString inputString;
+   std::string inputString;
    
    //-----------------------------------------------------------------
    // validate user input for non-Real value
    //-----------------------------------------------------------------
    // Fuel Mass 
    inputString = fuelMassTextCtrl->GetValue();
-   CheckReal(fuelMass, inputString, wxT("FuelMass"), wxT("Real Number >= 0.0"), false, true, true, true);
+   CheckReal(fuelMass, inputString, "FuelMass", "Real Number >= 0.0", false, true, true, true);
    
    // Pressure 
    inputString = pressureTextCtrl->GetValue();
-   CheckReal(pressure, inputString, wxT("Pressure"), wxT("Real Number >= 0.0"), false, true, true, true);
+   CheckReal(pressure, inputString, "Pressure", "Real Number >= 0.0", false, true, true, true);
    
    // Temperature
    inputString = temperatureTextCtrl->GetValue(); 
-   CheckReal(temp, inputString, wxT("Temperature"), wxT("Real Number"));
+   CheckReal(temp, inputString, "Temperature", "Real Number");
    
    // Reference Temperature
    inputString = refTemperatureTextCtrl->GetValue();
-   CheckReal(refTemp, inputString, wxT("RefTemperature"), wxT("Real Number"));
+   CheckReal(refTemp, inputString, "RefTemperature", "Real Number");
    
    // Volume
    inputString = volumeTextCtrl->GetValue();
-   CheckReal(volume, inputString, wxT("Volume"), wxT("Real Number >= 0.0"), false, true, true, true);
+   CheckReal(volume, inputString, "Volume", "Real Number >= 0.0", false, true, true, true);
    
    // Fuel Density 
    inputString = fuelDensityTextCtrl->GetValue();
-   CheckReal(fuelDensity, inputString, wxT("FuelDensity"), wxT("Real Number > 0.0"), false, true, true, false);
+   CheckReal(fuelDensity, inputString, "FuelDensity", "Real Number > 0.0", false, true, true, false);
    
    if (!canClose)
       return;
@@ -450,7 +450,7 @@ void TankConfigPanel::SaveData()
    try
    {
       // Pressure Model
-      wxString modelName = pressureModelComboBox->GetValue().c_str();
+      std::string modelName = pressureModelComboBox->GetValue().c_str();
       theFuelTank->SetStringParameter(FuelTank::PRESSURE_MODEL, modelName);
    }
    catch (BaseException &ex)

@@ -32,7 +32,7 @@ END_EVENT_TABLE()
 //------------------------------------------------------------------------------
 // ThrusterCoefficientDialog(wxWindow *parent, wxWindowID id, 
 //                           const wxString &title, GmatBase *obj,
-//                           const wxString &type)
+//                           const std::string &type)
 //------------------------------------------------------------------------------
 ThrusterCoefficientDialog::
 ThrusterCoefficientDialog(wxWindow *parent, wxWindowID id, 
@@ -69,11 +69,11 @@ void ThrusterCoefficientDialog::Create()
    coefGrid->SetRowLabelSize(0);
    coefGrid->SetDefaultCellAlignment(wxALIGN_LEFT, wxALIGN_CENTRE);
    
-   coefGrid->SetColLabelValue(0, wxT("Coefficient"));
+   coefGrid->SetColLabelValue(0, _T("Coefficient"));
    coefGrid->SetColSize(0, 70);
-   coefGrid->SetColLabelValue(1, wxT("Value"));
+   coefGrid->SetColLabelValue(1, _T("Value"));
    coefGrid->SetColSize(1, 135);
-   coefGrid->SetColLabelValue(2, wxT("Unit"));
+   coefGrid->SetColLabelValue(2, _T("Unit"));
    coefGrid->SetColSize(2, 80);
    
    // The first and third columns are read only
@@ -95,73 +95,73 @@ void ThrusterCoefficientDialog::LoadData()
    Integer paramID = 0;
    int coefCount = Thruster::COEFFICIENT_COUNT;
    
-   if (coefType == wxT("C"))
+   if (coefType == "C")
    {
-      paramID = theObject->GetParameterID(wxT("C1"));
+      paramID = theObject->GetParameterID("C1");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("C1"));
+      coefNames.push_back("C1");
       
-      paramID = theObject->GetParameterID(wxT("C2"));
+      paramID = theObject->GetParameterID("C2");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("C2"));
+      coefNames.push_back("C2");
       
-      paramID = theObject->GetParameterID(wxT("C3"));
+      paramID = theObject->GetParameterID("C3");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("C3"));
+      coefNames.push_back("C3");
       
-      paramID = theObject->GetParameterID(wxT("C4"));
+      paramID = theObject->GetParameterID("C4");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("C4"));
+      coefNames.push_back("C4");
       
-      paramID = theObject->GetParameterID(wxT("C5"));
+      paramID = theObject->GetParameterID("C5");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("C5"));
+      coefNames.push_back("C5");
       
-      paramID = theObject->GetParameterID(wxT("C6"));
+      paramID = theObject->GetParameterID("C6");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("C6"));
+      coefNames.push_back("C6");
       
-      paramID = theObject->GetParameterID(wxT("C7"));
+      paramID = theObject->GetParameterID("C7");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("C7"));
+      coefNames.push_back("C7");
       
-      paramID = theObject->GetParameterID(wxT("C8"));
+      paramID = theObject->GetParameterID("C8");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("C8"));
+      coefNames.push_back("C8");
       
-      paramID = theObject->GetParameterID(wxT("C9"));
+      paramID = theObject->GetParameterID("C9");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("C9"));
+      coefNames.push_back("C9");
       
-      paramID = theObject->GetParameterID(wxT("C10"));
+      paramID = theObject->GetParameterID("C10");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("C10"));
+      coefNames.push_back("C10");
       
-      paramID = theObject->GetParameterID(wxT("C11"));
+      paramID = theObject->GetParameterID("C11");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("C11"));
+      coefNames.push_back("C11");
       
-      paramID = theObject->GetParameterID(wxT("C12"));
+      paramID = theObject->GetParameterID("C12");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("C12"));
+      coefNames.push_back("C12");
       
-      paramID = theObject->GetParameterID(wxT("C13"));
+      paramID = theObject->GetParameterID("C13");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("C13"));
+      coefNames.push_back("C13");
       
-      paramID = theObject->GetParameterID(wxT("C14"));
+      paramID = theObject->GetParameterID("C14");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("C14"));
+      coefNames.push_back("C14");
    
-      paramID = theObject->GetParameterID(wxT("C15"));
+      paramID = theObject->GetParameterID("C15");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("C15"));
+      coefNames.push_back("C15");
       
-      paramID = theObject->GetParameterID(wxT("C16"));
+      paramID = theObject->GetParameterID("C16");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("C16"));
+      coefNames.push_back("C16");
 
-      paramID = theObject->GetParameterID(wxT("C_UNITS"));
+      paramID = theObject->GetParameterID("C_UNITS");
       StringArray coefUnits = theObject->GetStringArrayParameter(paramID);
       
       for (Integer i = 0; i < coefCount; i++)
@@ -171,73 +171,73 @@ void ThrusterCoefficientDialog::LoadData()
          coefGrid->SetCellValue(i, 2, coefUnits[i].c_str());
       }
    }
-   else if (coefType == wxT("K"))
+   else if (coefType == "K")
    {
-      paramID = theObject->GetParameterID(wxT("K1"));
+      paramID = theObject->GetParameterID("K1");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("K1"));
+      coefNames.push_back("K1");
       
-      paramID = theObject->GetParameterID(wxT("K2"));
+      paramID = theObject->GetParameterID("K2");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("K2"));
+      coefNames.push_back("K2");
       
-      paramID = theObject->GetParameterID(wxT("K3"));
+      paramID = theObject->GetParameterID("K3");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("K3"));
+      coefNames.push_back("K3");
       
-      paramID = theObject->GetParameterID(wxT("K4"));
+      paramID = theObject->GetParameterID("K4");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("K4"));
+      coefNames.push_back("K4");
       
-      paramID = theObject->GetParameterID(wxT("K5"));
+      paramID = theObject->GetParameterID("K5");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("K5"));
+      coefNames.push_back("K5");
       
-      paramID = theObject->GetParameterID(wxT("K6"));
+      paramID = theObject->GetParameterID("K6");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("K6"));
+      coefNames.push_back("K6");
       
-      paramID = theObject->GetParameterID(wxT("K7"));
+      paramID = theObject->GetParameterID("K7");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("K7"));
+      coefNames.push_back("K7");
       
-      paramID = theObject->GetParameterID(wxT("K8"));
+      paramID = theObject->GetParameterID("K8");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("K8"));
+      coefNames.push_back("K8");
       
-      paramID = theObject->GetParameterID(wxT("K9"));
+      paramID = theObject->GetParameterID("K9");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("K9"));
+      coefNames.push_back("K9");
       
-      paramID = theObject->GetParameterID(wxT("K10"));
+      paramID = theObject->GetParameterID("K10");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("K10"));
+      coefNames.push_back("K10");
       
-      paramID = theObject->GetParameterID(wxT("K11"));
+      paramID = theObject->GetParameterID("K11");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("K11"));
+      coefNames.push_back("K11");
       
-      paramID = theObject->GetParameterID(wxT("K12"));
+      paramID = theObject->GetParameterID("K12");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("K12"));
+      coefNames.push_back("K12");
       
-      paramID = theObject->GetParameterID(wxT("K13"));
+      paramID = theObject->GetParameterID("K13");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("K13"));
+      coefNames.push_back("K13");
       
-      paramID = theObject->GetParameterID(wxT("K14"));
+      paramID = theObject->GetParameterID("K14");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("K14"));
+      coefNames.push_back("K14");
       
-      paramID = theObject->GetParameterID(wxT("K15"));
+      paramID = theObject->GetParameterID("K15");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("K15"));
+      coefNames.push_back("K15");
       
-      paramID = theObject->GetParameterID(wxT("K16"));
+      paramID = theObject->GetParameterID("K16");
       coefValues.push_back(theObject->GetRealParameter(paramID));
-      coefNames.push_back(wxT("K16"));
+      coefNames.push_back("K16");
       
-      paramID = theObject->GetParameterID(wxT("K_UNITS"));
+      paramID = theObject->GetParameterID("K_UNITS");
       StringArray coefUnits = theObject->GetStringArrayParameter(paramID);
       
       for (Integer i = 0; i < coefCount; i++)
@@ -256,7 +256,7 @@ void ThrusterCoefficientDialog::SaveData()
 {
    #ifdef DEBUG_COEF_SAVE
    MessageInterface::ShowMessage
-      (wxT("ThrusterCoefficientDialog::SaveData() entered\n"));
+      ("ThrusterCoefficientDialog::SaveData() entered\n");
    #endif
    
    canClose = true;
@@ -264,12 +264,12 @@ void ThrusterCoefficientDialog::SaveData()
    // Validate input values
    for (int i = 0; i < coefCount; i++)
    {
-      wxString field = coefGrid->GetCellValue(i, 0).c_str();
-      wxString input = coefGrid->GetCellValue(i, 1).c_str();
+      std::string field = coefGrid->GetCellValue(i, 0).c_str();
+      std::string input = coefGrid->GetCellValue(i, 1).c_str();
       #ifdef DEBUG_COEF_SAVE
-      MessageInterface::ShowMessage(wxT("   %s = '%s'\n"), field.c_str(), input.c_str());
+      MessageInterface::ShowMessage("   %s = '%s'\n", field.c_str(), input.c_str());
       #endif
-      CheckReal(coefValues[i], input, field, wxT("Real Number"));
+      CheckReal(coefValues[i], input, field, "Real Number");
    }
    
    if (!canClose)
@@ -279,7 +279,7 @@ void ThrusterCoefficientDialog::SaveData()
    Integer paramID = 0;
    
    #ifdef DEBUG_COEF_SAVE
-   MessageInterface::ShowMessage(wxT("   Now saving coef values to Thruster\n"));
+   MessageInterface::ShowMessage("   Now saving coef values to Thruster\n");
    #endif
    
    for (int i = 0; i < coefCount; i++)
@@ -290,7 +290,7 @@ void ThrusterCoefficientDialog::SaveData()
    
    #ifdef DEBUG_COEF_SAVE
    MessageInterface::ShowMessage
-      (wxT("ThrusterCoefficientDialog::SaveData() exiting\n"));
+      ("ThrusterCoefficientDialog::SaveData() exiting\n");
    #endif
 }  
 

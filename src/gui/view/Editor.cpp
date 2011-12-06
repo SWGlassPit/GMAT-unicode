@@ -136,9 +136,9 @@ Editor::Editor(wxWindow *parent, bool notifyChange, wxWindowID id,
    StyleSetFont(wxSTC_STYLE_DEFAULT, font);
    StyleSetForeground(wxSTC_STYLE_DEFAULT, *wxBLACK);
    StyleSetBackground(wxSTC_STYLE_DEFAULT, *wxWHITE);
-   StyleSetForeground(wxSTC_STYLE_LINENUMBER, wxColour(wxT("DARK GREY")));
+   StyleSetForeground(wxSTC_STYLE_LINENUMBER, wxColour(_T("DARK GREY")));
    StyleSetBackground(wxSTC_STYLE_LINENUMBER, *wxWHITE);
-   StyleSetForeground(wxSTC_STYLE_INDENTGUIDE, wxColour(wxT("DARK GREY")));
+   StyleSetForeground(wxSTC_STYLE_INDENTGUIDE, wxColour(_T("DARK GREY")));
       
    // set visibility
    SetVisiblePolicy(wxSTC_VISIBLE_STRICT|wxSTC_VISIBLE_SLOP, 1);
@@ -146,16 +146,16 @@ Editor::Editor(wxWindow *parent, bool notifyChange, wxWindowID id,
    SetYCaretPolicy(wxSTC_CARET_EVEN|wxSTC_VISIBLE_STRICT|wxSTC_CARET_SLOP, 1);
    
    // markers
-   MarkerDefine(wxSTC_MARKNUM_FOLDER,        wxSTC_MARK_DOTDOTDOT, wxT("BLACK"), wxT("BLACK"));
-   MarkerDefine(wxSTC_MARKNUM_FOLDEROPEN,    wxSTC_MARK_ARROWDOWN, wxT("BLACK"), wxT("BLACK"));
-   MarkerDefine(wxSTC_MARKNUM_FOLDERSUB,     wxSTC_MARK_EMPTY,     wxT("BLACK"), wxT("BLACK"));
-   MarkerDefine(wxSTC_MARKNUM_FOLDEREND,     wxSTC_MARK_DOTDOTDOT, wxT("BLACK"), wxT("WHITE"));
-   MarkerDefine(wxSTC_MARKNUM_FOLDEROPENMID, wxSTC_MARK_ARROWDOWN, wxT("BLACK"), wxT("WHITE"));
-   MarkerDefine(wxSTC_MARKNUM_FOLDERMIDTAIL, wxSTC_MARK_EMPTY,     wxT("BLACK"), wxT("BLACK"));
-   MarkerDefine(wxSTC_MARKNUM_FOLDERTAIL,    wxSTC_MARK_EMPTY,     wxT("BLACK"), wxT("BLACK"));
+   MarkerDefine(wxSTC_MARKNUM_FOLDER,        wxSTC_MARK_DOTDOTDOT, _T("BLACK"), _T("BLACK"));
+   MarkerDefine(wxSTC_MARKNUM_FOLDEROPEN,    wxSTC_MARK_ARROWDOWN, _T("BLACK"), _T("BLACK"));
+   MarkerDefine(wxSTC_MARKNUM_FOLDERSUB,     wxSTC_MARK_EMPTY,     _T("BLACK"), _T("BLACK"));
+   MarkerDefine(wxSTC_MARKNUM_FOLDEREND,     wxSTC_MARK_DOTDOTDOT, _T("BLACK"), _T("WHITE"));
+   MarkerDefine(wxSTC_MARKNUM_FOLDEROPENMID, wxSTC_MARK_ARROWDOWN, _T("BLACK"), _T("WHITE"));
+   MarkerDefine(wxSTC_MARKNUM_FOLDERMIDTAIL, wxSTC_MARK_EMPTY,     _T("BLACK"), _T("BLACK"));
+   MarkerDefine(wxSTC_MARKNUM_FOLDERTAIL,    wxSTC_MARK_EMPTY,     _T("BLACK"), _T("BLACK"));
    
    // miscelaneous
-   mLineNumberMargin = TextWidth(wxSTC_STYLE_LINENUMBER, wxT("_999999"));
+   mLineNumberMargin = TextWidth(wxSTC_STYLE_LINENUMBER, _T("_999999"));
    mFoldingMargin = 16;
    CmdKeyClear(wxSTC_KEY_TAB, 0); // this is done by the menu accelerator key
    SetLayoutCache(wxSTC_CACHE_PAGE);
@@ -852,8 +852,8 @@ wxString Editor::DeterminePrefs(const wxString &filename)
       while(!filepattern.empty()) {
          wxString cur = filepattern.BeforeFirst(';');
          if ((cur == filename) ||
-            (cur ==(filename.BeforeLast('.') + wxT(".*"))) ||
-            (cur ==(wxT("*.") + filename.AfterLast('.'))))
+            (cur ==(filename.BeforeLast('.') + _T(".*"))) ||
+            (cur ==(_T("*.") + filename.AfterLast('.'))))
          {
             #ifdef DEBUG_EDITOR_PREF
             MessageInterface::ShowMessage
@@ -914,7 +914,7 @@ bool Editor::InitializePrefs(const wxString &name)
    
    // set margin for line numbers
    SetMarginType(mLineNumberID, wxSTC_MARGIN_NUMBER);
-   StyleSetForeground(wxSTC_STYLE_LINENUMBER, wxColour(wxT("DARK GREY")));
+   StyleSetForeground(wxSTC_STYLE_LINENUMBER, wxColour(_T("DARK GREY")));
    StyleSetBackground(wxSTC_STYLE_LINENUMBER, *wxWHITE);
    
    //SetMarginWidth(mLineNumberID, 0); // start out not visible
@@ -929,8 +929,8 @@ bool Editor::InitializePrefs(const wxString &name)
    }
    
    // set common styles
-   StyleSetForeground(wxSTC_STYLE_DEFAULT, wxColour(wxT("DARK GREY")));
-   StyleSetForeground(wxSTC_STYLE_INDENTGUIDE, wxColour(wxT("DARK GREY")));
+   StyleSetForeground(wxSTC_STYLE_DEFAULT, wxColour(_T("DARK GREY")));
+   StyleSetForeground(wxSTC_STYLE_INDENTGUIDE, wxColour(_T("DARK GREY")));
    
    // initialize settings
    if (GmatEditor::globalCommonPrefs.syntaxEnable)
@@ -984,21 +984,21 @@ bool Editor::InitializePrefs(const wxString &name)
    {
       SetMarginWidth(mFoldingID, curInfo->folds != 0? mFoldingMargin: 0);
       SetMarginSensitive(mFoldingID, curInfo->folds != 0);
-      SetProperty(wxT("fold"), curInfo->folds != 0? wxT("1"): wxT("0"));
-      SetProperty(wxT("fold.comment"),
-                  (curInfo->folds & GMAT_STC_FOLD_COMMENT) > 0? wxT("1"): wxT("0"));
-      SetProperty(wxT("fold.compact"),
-                  (curInfo->folds & GMAT_STC_FOLD_COMPACT) > 0? wxT("1"): wxT("0"));
-      SetProperty(wxT("fold.preprocessor"),
-                  (curInfo->folds & GMAT_STC_FOLD_PREPROC) > 0? wxT("1"): wxT("0"));
-      SetProperty(wxT("fold.html"),
-                  (curInfo->folds & GMAT_STC_FOLD_HTML) > 0? wxT("1"): wxT("0"));
-      SetProperty(wxT("fold.html.preprocessor"),
-                  (curInfo->folds & GMAT_STC_FOLD_HTMLPREP) > 0? wxT("1"): wxT("0"));
-      SetProperty(wxT("fold.comment.python"),
-                  (curInfo->folds & GMAT_STC_FOLD_COMMENTPY) > 0? wxT("1"): wxT("0"));
-      SetProperty(wxT("fold.quotes.python"),
-                  (curInfo->folds & GMAT_STC_FOLD_QUOTESPY) > 0? wxT("1"): wxT("0"));
+      SetProperty(_T("fold"), curInfo->folds != 0? _T("1"): _T("0"));
+      SetProperty(_T("fold.comment"),
+                  (curInfo->folds & GMAT_STC_FOLD_COMMENT) > 0? _T("1"): _T("0"));
+      SetProperty(_T("fold.compact"),
+                  (curInfo->folds & GMAT_STC_FOLD_COMPACT) > 0? _T("1"): _T("0"));
+      SetProperty(_T("fold.preprocessor"),
+                  (curInfo->folds & GMAT_STC_FOLD_PREPROC) > 0? _T("1"): _T("0"));
+      SetProperty(_T("fold.html"),
+                  (curInfo->folds & GMAT_STC_FOLD_HTML) > 0? _T("1"): _T("0"));
+      SetProperty(_T("fold.html.preprocessor"),
+                  (curInfo->folds & GMAT_STC_FOLD_HTMLPREP) > 0? _T("1"): _T("0"));
+      SetProperty(_T("fold.comment.python"),
+                  (curInfo->folds & GMAT_STC_FOLD_COMMENTPY) > 0? _T("1"): _T("0"));
+      SetProperty(_T("fold.quotes.python"),
+                  (curInfo->folds & GMAT_STC_FOLD_QUOTESPY) > 0? _T("1"): _T("0"));
    }
    SetFoldFlags(wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED | wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED);
    
@@ -1055,8 +1055,8 @@ bool Editor::LoadFile()
 #if wxUSE_FILEDLG
    // get filname
    if (!mFileName) {
-      wxFileDialog dlg(this, wxT("Open file"), wxEmptyString, wxEmptyString,
-                        wxT("Any file(*)|*"), wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR);
+      wxFileDialog dlg(this, _T("Open file"), wxEmptyString, wxEmptyString,
+                        _T("Any file(*)|*"), wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR);
       if (dlg.ShowModal() != wxID_OK) return false;
       mFileName = dlg.GetPath();
    }
@@ -1129,8 +1129,8 @@ bool Editor::SaveFile()
    // get filname
    if (!mFileName)
    {
-      wxFileDialog dlg(this, wxT("Save file"), wxEmptyString, wxEmptyString,
-                        wxT("Any file(*)|*"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+      wxFileDialog dlg(this, _T("Save file"), wxEmptyString, wxEmptyString,
+                        _T("Any file(*)|*"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
       if (dlg.ShowModal() != wxID_OK) return false;
       mFileName = dlg.GetPath();
    }

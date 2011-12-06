@@ -29,7 +29,7 @@ public:
 
    // constructors
    ViewTextFrame(wxFrame *frame, const wxString& title, int x, int y, int w, int h,
-                 const wxString &mode = wxT("Temporary"), const wxString &type = wxT("Output"));
+                 const wxString &mode = "Temporary", const wxString &type = "Output");
    ~ViewTextFrame();
 
    // operations

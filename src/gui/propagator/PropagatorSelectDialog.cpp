@@ -36,11 +36,11 @@ END_EVENT_TABLE()
 //------------------------------------------------------------------------------
 PropagatorSelectDialog::PropagatorSelectDialog(wxWindow *parent,
                                                const wxString &propName)
-   : GmatDialog(parent, -1, wxString(wxT("PropagatorSelectDialog")))
+   : GmatDialog(parent, -1, wxString(_T("PropagatorSelectDialog")))
 {
    mHasSelectionChanged = false;
    mPropName = propName;
-   mNewPropName = wxT("");
+   mNewPropName = "";
    
    Create();
    ShowData();

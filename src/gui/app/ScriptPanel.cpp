@@ -64,7 +64,7 @@ ScriptPanel::ScriptPanel(wxWindow *parent, const wxString &name, bool isActive)
    mUserModified = false;
    
    wxColourDatabase db;
-   mBgColor = db.Find(wxT("CYAN"));
+   mBgColor = db.Find("CYAN");
    
    Create();
    Show();
@@ -79,7 +79,7 @@ void ScriptPanel::Create()
    int bsize = 2; // border size
    
    // create sizers
-   GmatStaticBoxSizer *topSizer = new GmatStaticBoxSizer( wxHORIZONTAL, this, wxT(""));
+   GmatStaticBoxSizer *topSizer = new GmatStaticBoxSizer( wxHORIZONTAL, this, "");
    wxGridSizer *middleSizer = new wxGridSizer( 1, 0, 0 );
    wxBoxSizer *pageSizer = new wxBoxSizer(wxVERTICAL);
    
@@ -112,9 +112,9 @@ void ScriptPanel::Create()
    // for build and build & run
    //------------------------------------------------------
    mBuildButton =
-      new wxButton(this, ID_BUTTON, wxT("Save,Sync"), wxDefaultPosition, wxDefaultSize, 0);
+      new wxButton(this, ID_BUTTON, "Save,Sync", wxDefaultPosition, wxDefaultSize, 0);
    mBuildRunButton =
-      new wxButton(this, ID_BUTTON, wxT("Save,Sync,Run"), wxDefaultPosition, wxDefaultSize, 0);   
+      new wxButton(this, ID_BUTTON, "Save,Sync,Run", wxDefaultPosition, wxDefaultSize, 0);   
    
    //------------------------------------------------------
    // add to sizer
@@ -148,7 +148,7 @@ void ScriptPanel::Create()
 void ScriptPanel::LoadData()
 {
    #ifdef DEBUG_SCRIPTPANEL_LOAD
-   MessageInterface::ShowMessage(wxT("ScriptPanel::LoadData() entered\n"));
+   MessageInterface::ShowMessage("ScriptPanel::LoadData() entered\n");
    #endif
    
    wxFile *file = new wxFile();
@@ -157,7 +157,7 @@ void ScriptPanel::LoadData()
    if (mFileExists)
       mFileContentsTextCtrl->LoadFile(mScriptFilename);
    else
-      mFileContentsTextCtrl->SetValue(wxT(""));
+      mFileContentsTextCtrl->SetValue("");
    
    theSaveAsButton->Enable(true);
    theSaveButton->Enable(true);
@@ -172,7 +172,7 @@ void ScriptPanel::LoadData()
    mOldLastPos = mFileContentsTextCtrl->GetLastPosition();
    
    #ifdef DEBUG_SCRIPTPANEL_LOAD
-   MessageInterface::ShowMessage(wxT("ScriptPanel::LoadData() exiting\n"));
+   MessageInterface::ShowMessage("ScriptPanel::LoadData() exiting\n");
    #endif
 }
 
@@ -213,7 +213,7 @@ void ScriptPanel::OnTextEnterPressed(wxCommandEvent& event)
    {
       #ifdef DEBUG_SCRIPTPANEL_TEXT
       MessageInterface::ShowMessage
-         (wxT("ScriptPanel::OnTextEnterPressed() mDefBgColor=%ld, mBgColor=%ld\n"),
+         ("ScriptPanel::OnTextEnterPressed() mDefBgColor=%ld, mBgColor=%ld\n",
           mDefBgColor.GetPixel(), mBgColor.GetPixel());
       #endif
       
@@ -228,7 +228,7 @@ void ScriptPanel::OnTextEnterPressed(wxCommandEvent& event)
          
          #ifdef DEBUG_SCRIPTPANEL_TEXT
          MessageInterface::ShowMessage
-            (wxT("===> mOldLineNumber=%d, pos=%d\n"), mOldLineNumber, pos);
+            ("===> mOldLineNumber=%d, pos=%d\n", mOldLineNumber, pos);
          #endif
          
          mFileContentsTextCtrl->
@@ -243,7 +243,7 @@ void ScriptPanel::OnTextEnterPressed(wxCommandEvent& event)
       lineLength = mFileContentsTextCtrl->GetLineLength(lineNumber-1);
       
       #ifdef DEBUG_SCRIPTPANEL_TEXT
-      MessageInterface::ShowMessage(wxT("===> lineNumber=%d, pos=%d\n"), lineNumber, pos);
+      MessageInterface::ShowMessage("===> lineNumber=%d, pos=%d\n", lineNumber, pos);
       #endif
       
       // This causes wxEVT_COMMAND_TEXT_UPDATED event generated.
@@ -272,7 +272,7 @@ void ScriptPanel::OnTextUpdate(wxCommandEvent& event)
       
       #ifdef DEBUG_SCRIPTPANEL_TEXT
       MessageInterface::ShowMessage
-         (wxT("ScriptPanel::OnTextUpdate() mOldLastPos=%d, lastPos=%d\n"),
+         ("ScriptPanel::OnTextUpdate() mOldLastPos=%d, lastPos=%d\n",
           mOldLastPos, lastPos);
       #endif
       
@@ -281,7 +281,7 @@ void ScriptPanel::OnTextUpdate(wxCommandEvent& event)
       if (mUserModified || lastPos != mOldLastPos)
       {
          #ifdef DEBUG_SCRIPTPANEL_TEXT
-         MessageInterface::ShowMessage(wxT("===> data modified\n"));
+         MessageInterface::ShowMessage("===> data modified\n");
          #endif
          
          theSaveButton->Enable(true);
@@ -298,8 +298,8 @@ void ScriptPanel::OnTextUpdate(wxCommandEvent& event)
 //------------------------------------------------------------------------------
 void ScriptPanel::OnTextOverMaxLen(wxCommandEvent& event)
 {
-   wxMessageBox(wxT("Text control is already filled up to the maximum length.\n")
-                    wxT("The extra input will be discarded."),
+   wxMessageBox(wxT("Text control is already filled up to the maximum length.\n"
+                    "The extra input will be discarded."),
                 wxT("GMAT Warning"));
 }
 
@@ -309,10 +309,10 @@ void ScriptPanel::OnTextOverMaxLen(wxCommandEvent& event)
 //------------------------------------------------------------------------------
 void ScriptPanel::OnButton(wxCommandEvent& event)
 {
-   if (mFileContentsTextCtrl->GetValue() == wxT(""))
+   if (mFileContentsTextCtrl->GetValue() == "")
    {
       wxMessageDialog *msgDlg = new wxMessageDialog
-         (this, wxT("Can not build an empty file "), wxT("Can not build..."),
+         (this, "Can not build an empty file ", "Can not build...",
           wxOK | wxICON_INFORMATION, wxDefaultPosition);
       msgDlg->ShowModal();
       return;
@@ -328,7 +328,7 @@ void ScriptPanel::OnButton(wxCommandEvent& event)
       if (!mIsScriptActive)
       {
          wxMessageDialog *msgDlg = new wxMessageDialog
-            (this,wxT("Are you sure you want to make this script active?"), wxT("Save active..."),
+            (this,"Are you sure you want to make this script active?", "Save active...",
              wxYES_NO | wxICON_QUESTION, wxDefaultPosition);
          int result = msgDlg->ShowModal();
          
@@ -347,7 +347,7 @@ void ScriptPanel::OnButton(wxCommandEvent& event)
          
          // prompt user to save
          wxMessageDialog *msgDlg = new wxMessageDialog(this,
-            wxT("Would you like to save changes?"), wxT("Save..."), wxYES_NO | wxICON_QUESTION ,
+            "Would you like to save changes?", "Save...", wxYES_NO | wxICON_QUESTION ,
             wxDefaultPosition);
          int result = msgDlg->ShowModal();
          

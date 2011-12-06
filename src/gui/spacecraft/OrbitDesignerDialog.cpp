@@ -56,7 +56,7 @@ END_EVENT_TABLE()
 // A constructor.
 //--------------------------------------------------------------------------------
 OrbitDesignerDialog::OrbitDesignerDialog(wxWindow *parent, Spacecraft *spacecraft)
-   : GmatDialog(parent, -1, wxString(wxT("OrbitDesignerDialog")))
+   : GmatDialog(parent, -1, wxString(_T("OrbitDesignerDialog")))
 {
    orbitType = wxT("Sun Sync");
 
@@ -86,10 +86,10 @@ OrbitDesignerDialog::~OrbitDesignerDialog()
 void OrbitDesignerDialog::Create()
 {
    int bsize = 3; // border size
-   wxString orbitTypesArr[] = {wxT("Sun Sync"), wxT("Repeat Sun Sync"), wxT("Repeat Ground Track"), wxT("Geostationary"), 
-                                   wxT("Molniya"), wxT("Frozen")};
-   wxString epochTypesArr[] = {wxT("A1ModJulian"), wxT("TAIModJulian"), wxT("UTCModJulian"), wxT("TTModJulian"), 
-                                   wxT("A1Gregorian"), wxT("TAIGregorian"), wxT("UTCGregorian"), wxT("TTGregorian")};
+   wxString orbitTypesArr[] = {"Sun Sync", "Repeat Sun Sync", "Repeat Ground Track", "Geostationary", 
+                                   "Molniya", "Frozen"};
+   wxString epochTypesArr[] = {"A1ModJulian", "TAIModJulian", "UTCModJulian", "TTModJulian", 
+                                   "A1Gregorian", "TAIGregorian", "UTCGregorian", "TTGregorian"};
 
    //orbit selection combo box and label
    wxStaticText *orbitTypeStaticText = new wxStaticText( this, ID_TEXT, wxT("Orbit Type"),
@@ -212,7 +212,7 @@ void OrbitDesignerDialog::Create()
 
    //time inputs
    timeParamsFlexGridSizer = new wxFlexGridSizer(4,3,0,10);
-   timeSizer = new GmatStaticBoxSizer( wxVERTICAL, this, wxT("Optional") );
+   timeSizer = new GmatStaticBoxSizer( wxVERTICAL, this, "Optional" );
    
    timeParamsFlexGridSizer->Add(epochComboBox, 0, wxALIGN_LEFT|wxALL, bsize);
    timeParamsFlexGridSizer->AddSpacer(10);
@@ -234,7 +234,7 @@ void OrbitDesignerDialog::Create()
 
 
    //user input box
-   GmatStaticBoxSizer *inputSizer = new GmatStaticBoxSizer( wxVERTICAL, this, wxT("Inputs") );
+   GmatStaticBoxSizer *inputSizer = new GmatStaticBoxSizer( wxVERTICAL, this, "Inputs" );
    inputSizer->Add(orbitTypeFlexGridSizer, 0, wxGROW|wxALIGN_CENTRE|wxALL, bsize);
    inputSizer->Add(orbitParamsFlexGridSizer, 0, wxGROW|wxALIGN_CENTRE|wxALL, bsize);
    inputSizer->Add(timeSizer, 0, wxGROW|wxALIGN_CENTRE|wxALL, bsize);
@@ -394,7 +394,7 @@ void OrbitDesignerDialog::Create()
 
 
    //output box
-   GmatStaticBoxSizer *outputSizer = new GmatStaticBoxSizer( wxVERTICAL, this, wxT("Outputs") );
+   GmatStaticBoxSizer *outputSizer = new GmatStaticBoxSizer( wxVERTICAL, this, "Outputs" );
    outputSizer->Add(outputsFlexGridSizer, wxGROW|wxALIGN_CENTRE|wxALL, bsize);
    outputSizer->Add(showSummary, 0, wxALIGN_RIGHT|wxALL, bsize);
 
@@ -450,31 +450,31 @@ void OrbitDesignerDialog::OnComboBoxChange(wxCommandEvent& event)
    if (event.GetEventObject() == orbitTypeComboBox)
    {
       orbitType = orbitTypeComboBox->GetStringSelection().c_str();
-      if (orbitType == wxT("Sun Sync"))
+      if (orbitType == "Sun Sync")
       {
          DisplaySunSync();
          DisplayTime();
       }
-      else if (orbitType == wxT("Repeat Sun Sync"))
+      else if (orbitType == "Repeat Sun Sync")
       {
          DisplayRepeatSunSync();
          DisplayTime();
       }
-      else if (orbitType == wxT("Repeat Ground Track"))
+      else if (orbitType == "Repeat Ground Track")
       {
          DisplayRepeatGroundTrack();
          DisplayTime();
       }
-      else if (orbitType == wxT("Geostationary"))
+      else if (orbitType == "Geostationary")
       {
          DisplayGeostationary();
       }
-      else if (orbitType == wxT("Molniya"))
+      else if (orbitType == "Molniya")
       {
          DisplayMolniya();
          DisplayTime();
       }
-      else if (orbitType == wxT("Frozen"))
+      else if (orbitType == "Frozen")
       {
          DisplayFrozen();
          DisplayTime();
@@ -485,31 +485,31 @@ void OrbitDesignerDialog::OnComboBoxChange(wxCommandEvent& event)
    else if ((event.GetEventObject() == epochComboBox) )
    {
       epochType = epochComboBox->GetStringSelection().c_str();
-      if (epochType == wxT("A1ModJulian"))
-         timeIn1Val = wxT("21545.00000039794");
-      else if (epochType == wxT("TAIModJulian"))
-         timeIn1Val = wxT("21545");
-      else if (epochType == wxT("UTCModJulian"))
-         timeIn1Val = wxT("21544.99962962963");
-      else if (epochType == wxT("TTModJulian"))
-         timeIn1Val = wxT("21545.0003725");
-      else if (epochType == wxT("A1Gregorian"))
-         timeIn1Val = wxT("01 Jan 2000 12:00:00.034");
-      else if (epochType == wxT("TAIGregorian"))
-         timeIn1Val = wxT("01 Jan 2000 12:00:00.000");
-      else if (epochType == wxT("UTCGregorian"))
-         timeIn1Val = wxT("01 Jan 2000 11:59:28.000");
-      else if (epochType == wxT("TTGregorian"))
-         timeIn1Val = wxT("01 Jan 2000 12:00:32.184");
+      if (epochType == "A1ModJulian")
+         timeIn1Val = "21545.00000039794";
+      else if (epochType == "TAIModJulian")
+         timeIn1Val = "21545";
+      else if (epochType == "UTCModJulian")
+         timeIn1Val = "21544.99962962963";
+      else if (epochType == "TTModJulian")
+         timeIn1Val = "21545.0003725";
+      else if (epochType == "A1Gregorian")
+         timeIn1Val = "01 Jan 2000 12:00:00.034";
+      else if (epochType == "TAIGregorian")
+         timeIn1Val = "01 Jan 2000 12:00:00.000";
+      else if (epochType == "UTCGregorian")
+         timeIn1Val = "01 Jan 2000 11:59:28.000";
+      else if (epochType == "TTGregorian")
+         timeIn1Val = "01 Jan 2000 12:00:32.184";
       time1TextCtrl->SetValue(timeIn1Val);
-      time3TextCtrl->SetValue(wxT("12:00:00.000"));
+      time3TextCtrl->SetValue("12:00:00.000");
    }
 }
 
 void OrbitDesignerDialog::OnP1CheckBoxChange(wxCommandEvent& event)
 {
    paramOneVal = paramOneCheckBox->GetValue();
-   if (orbitType == wxT("Sun Sync"))
+   if (orbitType == "Sun Sync")
    {
       if (paramOneVal)
       {
@@ -644,7 +644,7 @@ void OrbitDesignerDialog::OnP1CheckBoxChange(wxCommandEvent& event)
 void OrbitDesignerDialog::OnP2CheckBoxChange(wxCommandEvent& event)
 {
    paramTwoVal = paramTwoCheckBox->GetValue();
-   if (orbitType == wxT("Sun Sync"))
+   if (orbitType == "Sun Sync")
    {
       if (paramTwoVal)
       {
@@ -774,7 +774,7 @@ void OrbitDesignerDialog::OnP2CheckBoxChange(wxCommandEvent& event)
          units7StaticText->Enable();
       }
    }
-   else if (orbitType == wxT("Repeat Sun Sync"))
+   else if (orbitType == "Repeat Sun Sync")
    {
       if (paramTwoVal)
       {
@@ -817,7 +817,7 @@ void OrbitDesignerDialog::OnP2CheckBoxChange(wxCommandEvent& event)
 void OrbitDesignerDialog::OnP3CheckBoxChange(wxCommandEvent& event)
 {
    paramThreeVal = paramThreeCheckBox->GetValue();
-   if (orbitType == wxT("Sun Sync"))
+   if (orbitType == "Sun Sync")
    {
       if (paramThreeVal)
       {
@@ -1003,7 +1003,7 @@ void OrbitDesignerDialog::OnP3CheckBoxChange(wxCommandEvent& event)
          units7StaticText->Enable();
       }
    }
-   else if (orbitType == wxT("Repeat Sun Sync"))
+   else if (orbitType == "Repeat Sun Sync")
    {
       if (paramThreeVal)
       {
@@ -1041,7 +1041,7 @@ void OrbitDesignerDialog::OnP3CheckBoxChange(wxCommandEvent& event)
          units2StaticText->Enable();
       }
    }
-   else if (orbitType == wxT("Repeat Ground Track"))
+   else if (orbitType == "Repeat Ground Track")
    {
       if (paramThreeVal)
       {
@@ -1084,7 +1084,7 @@ void OrbitDesignerDialog::OnP3CheckBoxChange(wxCommandEvent& event)
 void OrbitDesignerDialog::OnP4CheckBoxChange(wxCommandEvent& event)
 {
    paramFourVal = paramFourCheckBox->GetValue();
-   if (orbitType == wxT("Sun Sync"))
+   if (orbitType == "Sun Sync")
    {
       if (paramFourVal)
       {
@@ -1270,7 +1270,7 @@ void OrbitDesignerDialog::OnP4CheckBoxChange(wxCommandEvent& event)
          units7StaticText->Enable();
       }
    }
-   else if (orbitType == wxT("Repeat Sun Sync"))
+   else if (orbitType == "Repeat Sun Sync")
    {
       if (paramFourVal)
       {
@@ -1308,7 +1308,7 @@ void OrbitDesignerDialog::OnP4CheckBoxChange(wxCommandEvent& event)
          units2StaticText->Enable();
       }
    }
-   else if (orbitType == wxT("Repeat Ground Track"))
+   else if (orbitType == "Repeat Ground Track")
    {
       if (paramFourVal)
       {
@@ -1351,7 +1351,7 @@ void OrbitDesignerDialog::OnP4CheckBoxChange(wxCommandEvent& event)
 void OrbitDesignerDialog::OnP5CheckBoxChange(wxCommandEvent& event)
 {
    paramFiveVal = paramFiveCheckBox->GetValue();
-   if (orbitType == wxT("Sun Sync"))
+   if (orbitType == "Sun Sync")
    {
       if (paramFiveVal)
       {
@@ -1537,7 +1537,7 @@ void OrbitDesignerDialog::OnP5CheckBoxChange(wxCommandEvent& event)
          units7StaticText->Enable();
       }
    }
-   else if (orbitType == wxT("Repeat Ground Track"))
+   else if (orbitType == "Repeat Ground Track")
    {
       if (paramFiveVal)
       {
@@ -1580,7 +1580,7 @@ void OrbitDesignerDialog::OnP5CheckBoxChange(wxCommandEvent& event)
 void OrbitDesignerDialog::OnP6CheckBoxChange(wxCommandEvent& event)
 {
    paramSixVal = paramSixCheckBox->GetValue();
-   if (orbitType == wxT("Sun Sync"))
+   if (orbitType == "Sun Sync")
    {
       if (paramSixVal)
       {
@@ -1771,7 +1771,7 @@ void OrbitDesignerDialog::OnP6CheckBoxChange(wxCommandEvent& event)
 void OrbitDesignerDialog::OnP7CheckBoxChange(wxCommandEvent& event)
 {
    paramSevenVal = paramSevenCheckBox->GetValue();
-   if (orbitType == wxT("Sun Sync"))
+   if (orbitType == "Sun Sync")
    {
       if (paramSevenVal)
       {
@@ -2083,7 +2083,7 @@ void OrbitDesignerDialog::OnFindOrbit(wxCommandEvent& event)
 {
    canClose = true;
 
-   if (orbitType == wxT("Sun Sync"))
+   if (orbitType == "Sun Sync")
    {
       orbitSS.CalculateSunSync(paramOneVal, input1Val, paramTwoVal, input2Val, paramThreeVal, 
                                input3Val, paramFourVal, input4Val, paramFiveVal, input5Val, paramSixVal, input6Val, 
@@ -2096,30 +2096,30 @@ void OrbitDesignerDialog::OnFindOrbit(wxCommandEvent& event)
          return;
       }
       wxString sma;
-      sma.Printf(wxT("%.16f"), orbitSS.GetSMA());
+      sma.Printf("%.16f", orbitSS.GetSMA());
       output1TextCtrl->SetValue(sma);
       wxString alt;
-      alt.Printf(wxT("%.16f"), orbitSS.GetALT());
+      alt.Printf("%.16f", orbitSS.GetALT());
       output2TextCtrl->SetValue(alt);
       wxString ecc;
-      ecc.Printf(wxT("%.16f"), orbitSS.GetECC());
+      ecc.Printf("%.16f", orbitSS.GetECC());
       output3TextCtrl->SetValue(ecc);
       wxString inc;
-      inc.Printf(wxT("%.16f"), orbitSS.GetINC());
+      inc.Printf("%.16f", orbitSS.GetINC());
       output4TextCtrl->SetValue(inc);
       wxString rop;
-      rop.Printf(wxT("%.16f"), orbitSS.GetROP());
+      rop.Printf("%.16f", orbitSS.GetROP());
       output5TextCtrl->SetValue(rop);
       wxString roa;
-      roa.Printf(wxT("%.16f"), orbitSS.GetROA());
+      roa.Printf("%.16f", orbitSS.GetROA());
       output6TextCtrl->SetValue(roa);
       wxString p;
-      p.Printf(wxT("%.16f"), orbitSS.GetP());
+      p.Printf("%.16f", orbitSS.GetP());
       output7TextCtrl->SetValue(p);
 
       mIsOrbitChanged = true;
    }
-   else if (orbitType == wxT("Repeat Sun Sync"))
+   else if (orbitType == "Repeat Sun Sync")
    {
       orbitRSS.CalculateRepeatSunSync(paramOneVal, input1Val, paramTwoVal, input2Val, paramThreeVal,
                                       input3Val, paramFourVal, input4Val);
@@ -2131,30 +2131,30 @@ void OrbitDesignerDialog::OnFindOrbit(wxCommandEvent& event)
          return;
       }
       wxString sma;
-      sma.Printf(wxT("%.16f"), orbitRSS.GetSMA());
+      sma.Printf("%.16f", orbitRSS.GetSMA());
       output1TextCtrl->SetValue(sma);
       wxString alt;
-      alt.Printf(wxT("%.16f"), orbitRSS.GetALT());
+      alt.Printf("%.16f", orbitRSS.GetALT());
       output2TextCtrl->SetValue(alt);
       wxString ecc;
-      ecc.Printf(wxT("%.16f"), orbitRSS.GetECC());
+      ecc.Printf("%.16f", orbitRSS.GetECC());
       output3TextCtrl->SetValue(ecc);
       wxString inc;
-      inc.Printf(wxT("%.16f"), orbitRSS.GetINC());
+      inc.Printf("%.16f", orbitRSS.GetINC());
       output4TextCtrl->SetValue(inc);
       wxString rop;
-      rop.Printf(wxT("%.16f"), orbitRSS.GetROP());
+      rop.Printf("%.16f", orbitRSS.GetROP());
       output5TextCtrl->SetValue(rop);
       wxString roa;
-      roa.Printf(wxT("%.16f"), orbitRSS.GetROA());
+      roa.Printf("%.16f", orbitRSS.GetROA());
       output6TextCtrl->SetValue(roa);
       wxString p;
-      p.Printf(wxT("%.16f"), orbitRSS.GetP());
+      p.Printf("%.16f", orbitRSS.GetP());
       output7TextCtrl->SetValue(p);
 
       mIsOrbitChanged = true;
    }
-   else if (orbitType == wxT("Repeat Ground Track"))
+   else if (orbitType == "Repeat Ground Track")
    {
       orbitRGT.CalculateRepeatGroundTrack(paramOneVal, input1Val, paramTwoVal, input2Val, 
                                           paramThreeVal, input3Val, paramFourVal, input4Val, 
@@ -2167,30 +2167,30 @@ void OrbitDesignerDialog::OnFindOrbit(wxCommandEvent& event)
          return;
       }
       wxString sma;
-      sma.Printf(wxT("%.16f"), orbitRGT.GetSMA());
+      sma.Printf("%.16f", orbitRGT.GetSMA());
       output1TextCtrl->SetValue(sma);
       wxString alt;
-      alt.Printf(wxT("%.16f"), orbitRGT.GetALT());
+      alt.Printf("%.16f", orbitRGT.GetALT());
       output2TextCtrl->SetValue(alt);
       wxString ecc;
-      ecc.Printf(wxT("%.16f"), orbitRGT.GetECC());
+      ecc.Printf("%.16f", orbitRGT.GetECC());
       output3TextCtrl->SetValue(ecc);
       wxString inc;
-      inc.Printf(wxT("%.16f"), orbitRGT.GetINC());
+      inc.Printf("%.16f", orbitRGT.GetINC());
       output4TextCtrl->SetValue(inc);
       wxString rop;
-      rop.Printf(wxT("%.16f"), orbitRGT.GetROP());
+      rop.Printf("%.16f", orbitRGT.GetROP());
       output5TextCtrl->SetValue(rop);
       wxString roa;
-      roa.Printf(wxT("%.16f"), orbitRGT.GetROA());
+      roa.Printf("%.16f", orbitRGT.GetROA());
       output6TextCtrl->SetValue(roa);
       wxString p;
-      p.Printf(wxT("%.16f"), orbitRGT.GetP());
+      p.Printf("%.16f", orbitRGT.GetP());
       output7TextCtrl->SetValue(p);
 
       mIsOrbitChanged = true;
    }
-   else if (orbitType == wxT("Frozen"))
+   else if (orbitType == "Frozen")
    {
       orbitFZN.CalculateFrozen(input1Val, paramOneVal, input2Val, paramTwoVal);
       if (orbitFZN.IsError())
@@ -2201,16 +2201,16 @@ void OrbitDesignerDialog::OnFindOrbit(wxCommandEvent& event)
          return;
       }
       wxString sma;
-      sma.Printf(wxT("%.16f"), orbitFZN.GetSMA());
+      sma.Printf("%.16f", orbitFZN.GetSMA());
       output1TextCtrl->SetValue(sma);
       wxString aalt;
-      aalt.Printf(wxT("%.16f"), orbitFZN.GetAALT());
+      aalt.Printf("%.16f", orbitFZN.GetAALT());
       output2TextCtrl->SetValue(aalt);
       wxString palt;
-      palt.Printf(wxT("%.16f"), orbitFZN.GetPALT());
+      palt.Printf("%.16f", orbitFZN.GetPALT());
       output3TextCtrl->SetValue(palt);
       wxString ecc;
-      ecc.Printf(wxT("%.16f"), orbitFZN.GetECC());
+      ecc.Printf("%.16f", orbitFZN.GetECC());
       output4TextCtrl->SetValue(ecc);
 
       mIsOrbitChanged = true;
@@ -2218,28 +2218,28 @@ void OrbitDesignerDialog::OnFindOrbit(wxCommandEvent& event)
 
    if (timeParamOneVal)
    {
-      wxString str = time1TextCtrl->GetValue().c_str();
+      std::string str = time1TextCtrl->GetValue().c_str();
       orbitTime.SetEpoch(str);
-      if ((epochType == wxT("UTCGregorian")) || (epochType == wxT("A1Gregorian")) || 
-          (epochType == wxT("TAIGregorian")) || (epochType == wxT("TTGregorian")))
+      if ((epochType == "UTCGregorian") || (epochType == "A1Gregorian") || 
+          (epochType == "TAIGregorian") || (epochType == "TTGregorian"))
       {
-         if(!validator.CheckTimeFormatAndValue(wxT("UTCGregorian"), str, wxT("Epoch")))
+         if(!validator.CheckTimeFormatAndValue("UTCGregorian", str, "Epoch"))
             return;
       }
       else
       {
-         if(!validator.CheckTimeFormatAndValue(wxT("UTCModJulian"), str, wxT("Epoch")))
+         if(!validator.CheckTimeFormatAndValue("UTCModJulian", str, "Epoch"))
             return;
       }
-      if (orbitType == wxT("Geostationary"))
+      if (orbitType == "Geostationary")
       {
-         orbitTime = OrbitDesignerTime(wxString(timeIn1Val), wxString(epochType), 
+         orbitTime = OrbitDesignerTime(std::string(timeIn1Val), std::string(epochType), 
                                        timeParamTwoVal, timeIn2Val, timeParamThreeVal, 
-                                       wxString(timeIn3Val));
+                                       std::string(timeIn3Val));
          if (!timeParamTwoVal && timeParamThreeVal)
          {
-            str = wxT("01 Jan 2000 ") + time3TextCtrl->GetValue();
-            if(!validator.CheckTimeFormatAndValue(wxT("UTCGregorian"), str, wxT("Initial Local Sidereal Time")))
+            str = "01 Jan 2000 " + time3TextCtrl->GetValue();
+            if(!validator.CheckTimeFormatAndValue("UTCGregorian", str, "Initial Local Sidereal Time"))
                return;
             orbitTime.FindRAAN();
             if (orbitTime.IsError())
@@ -2254,7 +2254,7 @@ void OrbitDesignerDialog::OnFindOrbit(wxCommandEvent& event)
             if (lonVal>180)
                lonVal = lonVal-360;
             wxString lon;
-            lon.Printf(wxT("%.16f"), lonVal);//use value of raan for value of lon in geosynchronous case
+            lon.Printf("%.16f", lonVal);//use value of raan for value of lon in geosynchronous case
             timeOut2TextCtrl->SetValue(lon);//TA
             timeOut3TextCtrl->SetValue(time3TextCtrl->GetValue());//start time
             timeOut4TextCtrl->SetValue(lon);//longitude
@@ -2263,9 +2263,9 @@ void OrbitDesignerDialog::OnFindOrbit(wxCommandEvent& event)
          {
             timeOut2TextCtrl->SetValue(time2TextCtrl->GetValue());//TA
             Real lon;
-            wxString s = time2TextCtrl->GetValue().c_str();
+            std::string s = time2TextCtrl->GetValue().c_str();
             GmatStringUtil::ToReal(s, lon);
-            wxString start = orbitTime.FindStartTime(true, lon);
+            std::string start = orbitTime.FindStartTime(true, lon);
             if (orbitTime.IsError())
             {
                isEpochChanged = false;
@@ -2279,9 +2279,9 @@ void OrbitDesignerDialog::OnFindOrbit(wxCommandEvent& event)
          }
          else
          {
-            timeOut2TextCtrl->SetValue(wxT(""));//TA
-            timeOut3TextCtrl->SetValue(wxT(""));//start time
-            timeOut4TextCtrl->SetValue(wxT(""));//longitude
+            timeOut2TextCtrl->SetValue("");//TA
+            timeOut3TextCtrl->SetValue("");//start time
+            timeOut4TextCtrl->SetValue("");//longitude
          }
          timeOut1TextCtrl->SetValue(time1TextCtrl->GetValue());//epoch
          isEpochChanged = true;
@@ -2289,11 +2289,11 @@ void OrbitDesignerDialog::OnFindOrbit(wxCommandEvent& event)
       }
       else
       {
-         orbitTime = OrbitDesignerTime(wxString(timeIn1Val), wxString(epochType), 
+         orbitTime = OrbitDesignerTime(std::string(timeIn1Val), std::string(epochType), 
                                        timeParamTwoVal, timeIn2Val, timeParamThreeVal, 
-                                       wxString(timeIn3Val));
+                                       std::string(timeIn3Val));
          timeOut1TextCtrl->SetValue(orbitTime.GetEpoch().c_str());
-         wxString start = orbitTime.GetStartTime();
+         std::string start = orbitTime.GetStartTime();
          if (!timeParamTwoVal && timeParamThreeVal)
          {
             orbitTime.FindRAAN();
@@ -2306,7 +2306,7 @@ void OrbitDesignerDialog::OnFindOrbit(wxCommandEvent& event)
                return;
             }
             wxString raan;
-            raan.Printf(wxT("%.16f"), orbitTime.GetRAAN());
+            raan.Printf("%.16f", orbitTime.GetRAAN());
             timeOut2TextCtrl->SetValue(raan);
             timeOut3TextCtrl->SetValue(start.c_str());
          }
@@ -2322,15 +2322,15 @@ void OrbitDesignerDialog::OnFindOrbit(wxCommandEvent& event)
                return;
             }
             wxString raan;
-            raan.Printf(wxT("%.16f"), orbitTime.GetRAAN());
+            raan.Printf("%.16f", orbitTime.GetRAAN());
             timeOut2TextCtrl->SetValue(raan);
             timeOut3TextCtrl->SetValue(start.c_str());
          }
          else
          {
             orbitTime.SetRAAN(theSpacecraft->GetRealParameter(10009));
-            timeOut2TextCtrl->SetValue(wxT(""));
-            timeOut3TextCtrl->SetValue(wxT(""));
+            timeOut2TextCtrl->SetValue("");
+            timeOut3TextCtrl->SetValue("");
          }
                   
          isEpochChanged = true;
@@ -2346,88 +2346,88 @@ void OrbitDesignerDialog::OnFindOrbit(wxCommandEvent& event)
 
 void OrbitDesignerDialog::OnSummary(wxCommandEvent& event)
 {
-   summaryString = wxT("");
-   summaryString += wxT("SMA = ");
+   summaryString = "";
+   summaryString += "SMA = ";
    summaryString += output1TextCtrl->GetValue();
-   summaryString += wxT("\n");
+   summaryString += "\n";
 
-   if (orbitType == wxT("Frozen"))
+   if (orbitType == "Frozen")
    {
-      summaryString += wxT("Apogee ALT = ");
+      summaryString += "Apogee ALT = ";
       summaryString += output2TextCtrl->GetValue();
-      summaryString += wxT("\n");
-      summaryString += wxT("Perigee ALT = ");
+      summaryString += "\n";
+      summaryString += "Perigee ALT = ";
       summaryString += output3TextCtrl->GetValue();
-      summaryString += wxT("\n");
-      summaryString += wxT("ECC = ");
+      summaryString += "\n";
+      summaryString += "ECC = ";
       summaryString += output4TextCtrl->GetValue();
-      summaryString += wxT("\n");
-      summaryString += wxT("INC = ");
+      summaryString += "\n";
+      summaryString += "INC = ";
       summaryString += param2TextCtrl->GetValue();
-      summaryString += wxT("\n");
+      summaryString += "\n";
    }
    else
    {
-      summaryString += wxT("ALT = ");
+      summaryString += "ALT = ";
       summaryString += output2TextCtrl->GetValue();
-      summaryString += wxT("\n");
-      summaryString += wxT("ECC = ");
+      summaryString += "\n";
+      summaryString += "ECC = ";
       summaryString += output3TextCtrl->GetValue();
-      summaryString += wxT("\n");
-      summaryString += wxT("INC = ");
+      summaryString += "\n";
+      summaryString += "INC = ";
       summaryString += output4TextCtrl->GetValue();
-      summaryString += wxT("\n");
-      summaryString += wxT("RP = ");
+      summaryString += "\n";
+      summaryString += "RP = ";
       summaryString += output5TextCtrl->GetValue();
-      summaryString += wxT("\n");
-      summaryString += wxT("RA = ");
+      summaryString += "\n";
+      summaryString += "RA = ";
       summaryString += output6TextCtrl->GetValue();
-      summaryString += wxT("\n");
-      summaryString += wxT("P = ");
+      summaryString += "\n";
+      summaryString += "P = ";
       summaryString += output7TextCtrl->GetValue();
-      summaryString += wxT("\n");
+      summaryString += "\n";
    }
 
-   if (orbitType == wxT("Molniya"))
+   if (orbitType == "Molniya")
    {
-      summaryString += wxT("AOP = ");
+      summaryString += "AOP = ";
       summaryString += output8TextCtrl->GetValue();
-      summaryString += wxT("\n");
+      summaryString += "\n";
    }
 
-   summaryString += wxT("Epoch = ");
+   summaryString += "Epoch = ";
    summaryString += timeOut1TextCtrl->GetValue();
-   summaryString += wxT("\n");
+   summaryString += "\n";
 
-   if (orbitType == wxT("Geostationary"))
+   if (orbitType == "Geostationary")
    {
-      summaryString += wxT("RAAN = ");
+      summaryString += "RAAN = ";
       summaryString += output8TextCtrl->GetValue();
-      summaryString += wxT("\n");
-      summaryString += wxT("AOP = ");
+      summaryString += "\n";
+      summaryString += "AOP = ";
       summaryString += output9TextCtrl->GetValue();
-      summaryString += wxT("\n");
-      summaryString += wxT("TA = ");
+      summaryString += "\n";
+      summaryString += "TA = ";
       summaryString += timeOut2TextCtrl->GetValue();
-      summaryString += wxT("\n");
-      summaryString += wxT("Longitude = ");
+      summaryString += "\n";
+      summaryString += "Longitude = ";
       summaryString += timeOut4TextCtrl->GetValue();
-      summaryString += wxT("\n");
-      summaryString += wxT("Initial Local Sidereal Time = ");
+      summaryString += "\n";
+      summaryString += "Initial Local Sidereal Time = ";
       summaryString += timeOut3TextCtrl->GetValue();
-      summaryString += wxT("\n");
+      summaryString += "\n";
    }
    else
    {
-      summaryString += wxT("RAAN = ");
+      summaryString += "RAAN = ";
       summaryString += timeOut2TextCtrl->GetValue();
-      summaryString += wxT("\n");
-      summaryString += wxT("Initial Local Sidereal Time = ");
+      summaryString += "\n";
+      summaryString += "Initial Local Sidereal Time = ";
       summaryString += timeOut3TextCtrl->GetValue();
-      summaryString += wxT("\n");
+      summaryString += "\n";
    }
 
-   OrbitSummaryDialog summaryDlg(this, summaryString);
+   OrbitSummaryDialog summaryDlg(this, wxT(summaryString));
    summaryDlg.ShowModal();
 }
 
@@ -2442,8 +2442,8 @@ void OrbitDesignerDialog::DisplaySunSync()
    param1TextCtrl->Show(true);
    param1TextCtrl->Enable();
    param1TextCtrl->SetValue(wxT("7000.0000000000000000"));
-   param1TextCtrl->SetToolTip(wxT("6478.1363<SMA<8378.1363"));
-   wxString in1 = param1TextCtrl->GetValue().c_str();
+   param1TextCtrl->SetToolTip("6478.1363<SMA<8378.1363");
+   std::string in1 = param1TextCtrl->GetValue().c_str();
    GmatStringUtil::ToReal(in1, input1Val);
    units1StaticText->Show(true);
    units1StaticText->SetLabel(wxT("km"));
@@ -2457,8 +2457,8 @@ void OrbitDesignerDialog::DisplaySunSync()
    param2TextCtrl->Show(true);
    param2TextCtrl->Disable();
    param2TextCtrl->SetValue(wxT("621.863699999999880"));
-   param2TextCtrl->SetToolTip(wxT("100<ALT<2000"));
-   wxString in2 = param2TextCtrl->GetValue().c_str();
+   param2TextCtrl->SetToolTip("100<ALT<2000");
+   std::string in2 = param2TextCtrl->GetValue().c_str();
    GmatStringUtil::ToReal(in2, input2Val);
    units2StaticText->Show(true);
    units2StaticText->SetLabel(wxT("km"));
@@ -2472,8 +2472,8 @@ void OrbitDesignerDialog::DisplaySunSync()
    param3TextCtrl->Show(true);
    param3TextCtrl->Enable();
    param3TextCtrl->SetValue(wxT("0.0010000000000000"));
-   param3TextCtrl->SetToolTip(wxT("0<=ECC<1"));
-   wxString in3 = param3TextCtrl->GetValue().c_str();
+   param3TextCtrl->SetToolTip("0<=ECC<1");
+   std::string in3 = param3TextCtrl->GetValue().c_str();
    GmatStringUtil::ToReal(in3, input3Val);
    units3StaticText->Show(true);
    units3StaticText->SetLabel(wxT(""));
@@ -2487,8 +2487,8 @@ void OrbitDesignerDialog::DisplaySunSync()
    param4TextCtrl->Show(true);
    param4TextCtrl->Disable();
    param4TextCtrl->SetValue(wxT("97.8739286731882600"));
-   param4TextCtrl->SetToolTip(wxT("90<INC<110"));
-   wxString in4 = param4TextCtrl->GetValue().c_str();
+   param4TextCtrl->SetToolTip("90<INC<110");
+   std::string in4 = param4TextCtrl->GetValue().c_str();
    GmatStringUtil::ToReal(in4, input4Val);
    units4StaticText->Show(true);
    units4StaticText->SetLabel(wxT("deg"));
@@ -2502,8 +2502,8 @@ void OrbitDesignerDialog::DisplaySunSync()
    param5TextCtrl->Show(true);
    param5TextCtrl->Disable();
    param5TextCtrl->SetValue(wxT("6993.0000000000000000"));
-   param5TextCtrl->SetToolTip(wxT("6478.1363<RP<8378.1363"));
-   wxString in5 = param5TextCtrl->GetValue().c_str();
+   param5TextCtrl->SetToolTip("6478.1363<RP<8378.1363");
+   std::string in5 = param5TextCtrl->GetValue().c_str();
    GmatStringUtil::ToReal(in5, input5Val);
    units5StaticText->Show(true);
    units5StaticText->SetLabel(wxT("km"));
@@ -2517,8 +2517,8 @@ void OrbitDesignerDialog::DisplaySunSync()
    param6TextCtrl->Show(true);
    param6TextCtrl->Disable();
    param6TextCtrl->SetValue(wxT("7006.9999999999991000"));
-   param6TextCtrl->SetToolTip(wxT("6478.1363<RA<10278.1363"));
-   wxString in6 = param6TextCtrl->GetValue().c_str();
+   param6TextCtrl->SetToolTip("6478.1363<RA<10278.1363");
+   std::string in6 = param6TextCtrl->GetValue().c_str();
    GmatStringUtil::ToReal(in6, input6Val);
    units6StaticText->Show(true);
    units6StaticText->SetLabel(wxT("km"));
@@ -2532,8 +2532,8 @@ void OrbitDesignerDialog::DisplaySunSync()
    param7TextCtrl->Show(true);
    param7TextCtrl->Disable();
    param7TextCtrl->SetValue(wxT("6999.9929999999995000"));
-   param7TextCtrl->SetToolTip(wxT("0<P<8378.1363"));
-   wxString in7 = param7TextCtrl->GetValue().c_str();
+   param7TextCtrl->SetToolTip("0<P<8378.1363");
+   std::string in7 = param7TextCtrl->GetValue().c_str();
    GmatStringUtil::ToReal(in7, input7Val);
    units7StaticText->Show(true);
    units7StaticText->SetLabel(wxT("km"));
@@ -2609,8 +2609,8 @@ void OrbitDesignerDialog::DisplayRepeatSunSync()
    param1TextCtrl->Show(true);
    param1TextCtrl->Enable();
    param1TextCtrl->SetValue(wxT("0.001"));
-   param1TextCtrl->SetToolTip(wxT("0<=ECC<1"));
-   wxString in1 = param1TextCtrl->GetValue().c_str();
+   param1TextCtrl->SetToolTip("0<=ECC<1");
+   std::string in1 = param1TextCtrl->GetValue().c_str();
    GmatStringUtil::ToReal(in1, input1Val);
    units1StaticText->Show(true);
    units1StaticText->SetLabel(wxT(""));
@@ -2624,8 +2624,8 @@ void OrbitDesignerDialog::DisplayRepeatSunSync()
    param2TextCtrl->Show(true);
    param2TextCtrl->Enable();
    param2TextCtrl->SetValue(wxT("16"));
-   param2TextCtrl->SetToolTip(wxT(""));
-   wxString in2 = param2TextCtrl->GetValue().c_str();
+   param2TextCtrl->SetToolTip("");
+   std::string in2 = param2TextCtrl->GetValue().c_str();
    GmatStringUtil::ToReal(in2, input2Val);
    units2StaticText->Show(true);
    units2StaticText->SetLabel(wxT(""));
@@ -2639,8 +2639,8 @@ void OrbitDesignerDialog::DisplayRepeatSunSync()
    param3TextCtrl->Show(true);
    param3TextCtrl->Enable();
    param3TextCtrl->SetValue(wxT("232"));
-   param3TextCtrl->SetToolTip(wxT(""));
-   wxString in3 = param3TextCtrl->GetValue().c_str();
+   param3TextCtrl->SetToolTip("");
+   std::string in3 = param3TextCtrl->GetValue().c_str();
    GmatStringUtil::ToReal(in3, input3Val);
    units3StaticText->Show(true);
    units3StaticText->SetLabel(wxT(""));
@@ -2654,8 +2654,8 @@ void OrbitDesignerDialog::DisplayRepeatSunSync()
    param4TextCtrl->Show(true);
    param4TextCtrl->Enable();
    param4TextCtrl->SetValue(wxT("14.5"));
-   param4TextCtrl->SetToolTip(wxT(""));
-   wxString in4 = param4TextCtrl->GetValue().c_str();
+   param4TextCtrl->SetToolTip("");
+   std::string in4 = param4TextCtrl->GetValue().c_str();
    GmatStringUtil::ToReal(in4, input4Val);
    units4StaticText->Show(true);
    units4StaticText->SetLabel(wxT(""));
@@ -2742,8 +2742,8 @@ void OrbitDesignerDialog::DisplayRepeatGroundTrack()
    param1TextCtrl->Show(true);
    param1TextCtrl->Enable();
    param1TextCtrl->SetValue(wxT("0.00117604"));
-   param1TextCtrl->SetToolTip(wxT("0<=ECC<1"));
-   wxString in1 = param1TextCtrl->GetValue().c_str();
+   param1TextCtrl->SetToolTip("0<=ECC<1");
+   std::string in1 = param1TextCtrl->GetValue().c_str();
    GmatStringUtil::ToReal(in1, input1Val);
    units1StaticText->Show(true);
    units1StaticText->SetLabel(wxT(""));
@@ -2757,8 +2757,8 @@ void OrbitDesignerDialog::DisplayRepeatGroundTrack()
    param2TextCtrl->Show(true);
    param2TextCtrl->Enable();
    param2TextCtrl->SetValue(wxT("98.2"));
-   param2TextCtrl->SetToolTip(wxT("0<INC<180"));
-   wxString in2 = param2TextCtrl->GetValue().c_str();
+   param2TextCtrl->SetToolTip("0<INC<180");
+   std::string in2 = param2TextCtrl->GetValue().c_str();
    GmatStringUtil::ToReal(in2, input2Val);
    units2StaticText->Show(true);
    units2StaticText->SetLabel(wxT("deg"));
@@ -2772,8 +2772,8 @@ void OrbitDesignerDialog::DisplayRepeatGroundTrack()
    param3TextCtrl->Show(true);
    param3TextCtrl->Enable();
    param3TextCtrl->SetValue(wxT("232"));
-   param3TextCtrl->SetToolTip(wxT(""));
-   wxString in3 = param3TextCtrl->GetValue().c_str();
+   param3TextCtrl->SetToolTip("");
+   std::string in3 = param3TextCtrl->GetValue().c_str();
    GmatStringUtil::ToReal(in3, input3Val);
    units3StaticText->Show(true);
    units3StaticText->SetLabel(wxT(""));
@@ -2787,8 +2787,8 @@ void OrbitDesignerDialog::DisplayRepeatGroundTrack()
    param4TextCtrl->Show(true);
    param4TextCtrl->Enable();
    param4TextCtrl->SetValue(wxT("16"));
-   param4TextCtrl->SetToolTip(wxT(""));
-   wxString in4 = param4TextCtrl->GetValue().c_str();
+   param4TextCtrl->SetToolTip("");
+   std::string in4 = param4TextCtrl->GetValue().c_str();
    GmatStringUtil::ToReal(in4, input4Val);
    units4StaticText->Show(true);
    units4StaticText->SetLabel(wxT(""));
@@ -2802,8 +2802,8 @@ void OrbitDesignerDialog::DisplayRepeatGroundTrack()
    param5TextCtrl->Show(true);
    param5TextCtrl->Enable();
    param5TextCtrl->SetValue(wxT("14.5"));
-   param5TextCtrl->SetToolTip(wxT(""));
-   wxString in5 = param5TextCtrl->GetValue().c_str();
+   param5TextCtrl->SetToolTip("");
+   std::string in5 = param5TextCtrl->GetValue().c_str();
    GmatStringUtil::ToReal(in5, input5Val);
    units5StaticText->Show(true);
    units5StaticText->SetLabel(wxT(""));
@@ -2890,7 +2890,7 @@ void OrbitDesignerDialog::DisplayGeostationary()
    time1TextCtrl->Show(true);
    time1TextCtrl->Disable();
    time1TextCtrl->SetValue(wxT("01 Jan 2000 11:59:28.000"));
-   time1TextCtrl->SetToolTip(wxT("DD MM YYYY HH:MM:SS.s"));
+   time1TextCtrl->SetToolTip("DD MM YYYY HH:MM:SS.s");
    timeIn1Val = time1TextCtrl->GetValue();
    timeUnits1StaticText->Show(true);
    timeUnits1StaticText->SetLabel(wxT(""));
@@ -2904,8 +2904,8 @@ void OrbitDesignerDialog::DisplayGeostationary()
    time2TextCtrl->Show(true);
    time2TextCtrl->Disable();
    time2TextCtrl->SetValue(wxT("-79.5390165757071940"));
-   time1TextCtrl->SetToolTip(wxT("-180<Lon<180"));
-   wxString tIn2 = time2TextCtrl->GetValue().c_str();
+   time1TextCtrl->SetToolTip("-180<Lon<180");
+   std::string tIn2 = time2TextCtrl->GetValue().c_str();
    GmatStringUtil::ToReal(tIn2, timeIn2Val);
    timeUnits2StaticText->Show(true);
    timeUnits2StaticText->SetLabel(wxT("deg"));
@@ -2919,7 +2919,7 @@ void OrbitDesignerDialog::DisplayGeostationary()
    time3TextCtrl->Show(true);
    time3TextCtrl->Disable();
    time3TextCtrl->SetValue(wxT("12:00:00.0"));
-   time3TextCtrl->SetToolTip(wxT("HH:MM:SS.s"));
+   time3TextCtrl->SetToolTip("HH:MM:SS.s");
    timeIn3Val = time3TextCtrl->GetValue();
    timeUnits3StaticText->Show(true);
    timeUnits3StaticText->SetLabel(wxT(""));
@@ -2951,15 +2951,15 @@ void OrbitDesignerDialog::DisplayGeostationary()
    //show outputs
    paramOut1StaticText->SetLabel(wxT("SMA"));
    paramOut1StaticText->Show(true);
-   output1TextCtrl->SetValue(GmatStringUtil::ToString(SMA).c_str());
+   output1TextCtrl->SetValue(wxT(GmatStringUtil::ToString(SMA).c_str()));
    output1TextCtrl->Show(true);
    unitsOut1StaticText->SetLabel(wxT("km"));
    unitsOut1StaticText->Show(true);
 
    paramOut2StaticText->SetLabel(wxT("Altitude"));
    paramOut2StaticText->Show(true);
-   output2TextCtrl->SetValue(GmatStringUtil::ToString(SMA - 
-                                     GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]).c_str());
+   output2TextCtrl->SetValue(wxT(GmatStringUtil::ToString(SMA - 
+                                     GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]).c_str()));
    output2TextCtrl->Show(true);
    unitsOut2StaticText->SetLabel(wxT("km"));
    unitsOut2StaticText->Show(true);
@@ -2980,33 +2980,33 @@ void OrbitDesignerDialog::DisplayGeostationary()
 
    paramOut5StaticText->SetLabel(wxT("RP"));
    paramOut5StaticText->Show(true);
-   output5TextCtrl->SetValue(GmatStringUtil::ToString(SMA).c_str());
+   output5TextCtrl->SetValue(wxT(GmatStringUtil::ToString(SMA).c_str()));
    output5TextCtrl->Show(true);
    unitsOut5StaticText->SetLabel(wxT("km"));
    unitsOut5StaticText->Show(true);
 
    paramOut6StaticText->SetLabel(wxT("RA"));
    paramOut6StaticText->Show(true);
-   output6TextCtrl->SetValue(GmatStringUtil::ToString(SMA).c_str());
+   output6TextCtrl->SetValue(wxT(GmatStringUtil::ToString(SMA).c_str()));
    output6TextCtrl->Show(true);
    unitsOut6StaticText->SetLabel(wxT("km"));
    unitsOut6StaticText->Show(true);
 
-   paramOut7StaticText->SetLabel(wxT("P"));
+   paramOut7StaticText->SetLabel("P");
    paramOut7StaticText->Show(true);
-   output7TextCtrl->SetValue(GmatStringUtil::ToString(SMA).c_str());
+   output7TextCtrl->SetValue(wxT(GmatStringUtil::ToString(SMA).c_str()));
    output7TextCtrl->Show(true);
    unitsOut7StaticText->SetLabel(wxT("km"));
    unitsOut7StaticText->Show(true);
 
-   paramOut8StaticText->SetLabel(wxT("RAAN"));
+   paramOut8StaticText->SetLabel("RAAN");
    paramOut8StaticText->Show(true);
    output8TextCtrl->SetValue(wxT("0"));
    output8TextCtrl->Show(true);
    unitsOut8StaticText->SetLabel(wxT("deg"));
    unitsOut8StaticText->Show(true);
 
-   paramOut9StaticText->SetLabel(wxT("AOP"));
+   paramOut9StaticText->SetLabel("AOP");
    paramOut9StaticText->Show(true);
    output9TextCtrl->SetValue(wxT("0"));
    output9TextCtrl->Show(true);
@@ -3082,8 +3082,8 @@ void OrbitDesignerDialog::DisplayMolniya()
 
    paramOut2StaticText->SetLabel(wxT("Altitude"));
    paramOut2StaticText->Show(true);
-   output2TextCtrl->SetValue(GmatStringUtil::ToString(26554 - 
-                                     GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]).c_str());
+   output2TextCtrl->SetValue(wxT(GmatStringUtil::ToString(26554 - 
+                                     GmatSolarSystemDefaults::PLANET_EQUATORIAL_RADIUS[2]).c_str()));
    output2TextCtrl->Show(true);
    unitsOut2StaticText->SetLabel(wxT("km"));
    unitsOut2StaticText->Show(true);
@@ -3104,21 +3104,21 @@ void OrbitDesignerDialog::DisplayMolniya()
 
    paramOut5StaticText->SetLabel(wxT("RP"));
    paramOut5StaticText->Show(true);
-   output5TextCtrl->SetValue(GmatStringUtil::ToString(26554*(1+.72)).c_str());
+   output5TextCtrl->SetValue(wxT(GmatStringUtil::ToString(26554*(1+.72)).c_str()));
    output5TextCtrl->Show(true);
    unitsOut5StaticText->SetLabel(wxT("km"));
    unitsOut5StaticText->Show(true);
 
    paramOut6StaticText->SetLabel(wxT("RA"));
    paramOut6StaticText->Show(true);
-   output6TextCtrl->SetValue(GmatStringUtil::ToString(26554*(1-.72)).c_str());
+   output6TextCtrl->SetValue(wxT(GmatStringUtil::ToString(26554*(1-.72)).c_str()));
    output6TextCtrl->Show(true);
    unitsOut6StaticText->SetLabel(wxT("km"));
    unitsOut6StaticText->Show(true);
 
-   paramOut7StaticText->SetLabel(wxT("P"));
+   paramOut7StaticText->SetLabel("P");
    paramOut7StaticText->Show(true);
-   output7TextCtrl->SetValue(GmatStringUtil::ToString(26554*(1-pow(.72,2))).c_str());
+   output7TextCtrl->SetValue(wxT(GmatStringUtil::ToString(26554*(1-pow(.72,2))).c_str()));
    output7TextCtrl->Show(true);
    unitsOut7StaticText->SetLabel(wxT("km"));
    unitsOut7StaticText->Show(true);
@@ -3150,8 +3150,8 @@ void OrbitDesignerDialog::DisplayFrozen()
    param1TextCtrl->Show(true);
    param1TextCtrl->Enable();
    param1TextCtrl->SetValue(wxT("790"));
-   param1TextCtrl->SetToolTip(wxT("0<ALT"));
-   wxString in1 = param1TextCtrl->GetValue().c_str();
+   param1TextCtrl->SetToolTip("0<ALT");
+   std::string in1 = param1TextCtrl->GetValue().c_str();
    GmatStringUtil::ToReal(in1, input1Val);
    units1StaticText->Show(true);
    units1StaticText->SetLabel(wxT("km"));
@@ -3165,8 +3165,8 @@ void OrbitDesignerDialog::DisplayFrozen()
    param2TextCtrl->Show(true);
    param2TextCtrl->Enable();
    param2TextCtrl->SetValue(wxT("98.6"));
-   param2TextCtrl->SetToolTip(wxT("0<=INC<180"));
-   wxString in2 = param2TextCtrl->GetValue().c_str();
+   param2TextCtrl->SetToolTip("0<=INC<180");
+   std::string in2 = param2TextCtrl->GetValue().c_str();
    GmatStringUtil::ToReal(in2, input2Val);
    units2StaticText->Show(true);
    units2StaticText->SetLabel(wxT("deg"));
@@ -3246,7 +3246,7 @@ void OrbitDesignerDialog::DisplayTime()
    time1TextCtrl->Show(true);
    time1TextCtrl->Disable();
    time1TextCtrl->SetValue(wxT("01 Jan 2000 11:59:28.000"));
-   time1TextCtrl->SetToolTip(wxT("DD MM YYYY HH:MM:SS.s"));
+   time1TextCtrl->SetToolTip("DD MM YYYY HH:MM:SS.s");
    timeIn1Val = time1TextCtrl->GetValue();
    timeUnits1StaticText->Show(true);
    timeUnits1StaticText->SetLabel(wxT(""));
@@ -3260,9 +3260,9 @@ void OrbitDesignerDialog::DisplayTime()
    time2TextCtrl->Show(true);
    time2TextCtrl->Disable();
    time2TextCtrl->SetValue(wxT("280.4609834242928100"));
-   wxString tIn2 = time2TextCtrl->GetValue().c_str();
+   std::string tIn2 = time2TextCtrl->GetValue().c_str();
    GmatStringUtil::ToReal(tIn2, timeIn2Val);
-   time2TextCtrl->SetToolTip(wxT("0<=RAAN<360"));
+   time2TextCtrl->SetToolTip("0<=RAAN<360");
    timeUnits2StaticText->Show(true);
    timeUnits2StaticText->SetLabel(wxT("deg"));
    timeUnits2StaticText->Disable();
@@ -3275,7 +3275,7 @@ void OrbitDesignerDialog::DisplayTime()
    time3TextCtrl->Show(true);
    time3TextCtrl->Disable();
    time3TextCtrl->SetValue(wxT("12:00:00.0"));
-   time3TextCtrl->SetToolTip(wxT("ascending node"));
+   time3TextCtrl->SetToolTip("ascending node");
    timeIn3Val = time3TextCtrl->GetValue();
    timeUnits3StaticText->Show(true);
    timeUnits3StaticText->SetLabel(wxT(""));
@@ -3312,94 +3312,94 @@ void OrbitDesignerDialog::DisplayTime()
 wxArrayString OrbitDesignerDialog::GetElementsString()
 {
    wxString str;
-   if (orbitType == wxT("Sun Sync"))
+   if (orbitType == "Sun Sync")
    {
-      str.Printf(wxT("%.16f"), orbitSS.GetSMA());
+      str.Printf("%.16f", orbitSS.GetSMA());
       elements.Add(str);   
-      str.Printf(wxT("%.16f"), orbitSS.GetECC());
+      str.Printf("%.16f", orbitSS.GetECC());
       elements.Add(str);
-      str.Printf(wxT("%.16f"), orbitSS.GetINC());
+      str.Printf("%.16f", orbitSS.GetINC());
       elements.Add(str);
-      str.Printf(wxT("%.16f"), orbitTime.GetRAAN());
+      str.Printf("%.16f", orbitTime.GetRAAN());
       elements.Add(str);
       //aop
-      str.Printf(wxT("%.16f"), theSpacecraft->GetRealParameter(10010));
+      str.Printf("%.16f", theSpacecraft->GetRealParameter(10010));
       elements.Add(str);
       //ta
-      str.Printf(wxT("%.16f"), theSpacecraft->GetRealParameter(10011));
+      str.Printf("%.16f", theSpacecraft->GetRealParameter(10011));
       elements.Add(str);
    }
-   else if (orbitType == wxT("Repeat Sun Sync"))
+   else if (orbitType == "Repeat Sun Sync")
    {
-          str.Printf(wxT("%.16f"), orbitRSS.GetSMA());
+          str.Printf("%.16f", orbitRSS.GetSMA());
       elements.Add(str);   
-      str.Printf(wxT("%.16f"), orbitRSS.GetECC());
+      str.Printf("%.16f", orbitRSS.GetECC());
       elements.Add(str);
-      str.Printf(wxT("%.16f"), orbitRSS.GetINC());
+      str.Printf("%.16f", orbitRSS.GetINC());
       elements.Add(str);
-      str.Printf(wxT("%.16f"), orbitTime.GetRAAN());
+      str.Printf("%.16f", orbitTime.GetRAAN());
       elements.Add(str);
       //aop
-      str.Printf(wxT("%.16f"), theSpacecraft->GetRealParameter(10010));
+      str.Printf("%.16f", theSpacecraft->GetRealParameter(10010));
       elements.Add(str);
       //ta
-      str.Printf(wxT("%.16f"), theSpacecraft->GetRealParameter(10011));
+      str.Printf("%.16f", theSpacecraft->GetRealParameter(10011));
       elements.Add(str);
    }
-   else if (orbitType == wxT("Repeat Ground Track"))
+   else if (orbitType == "Repeat Ground Track")
    {
-          str.Printf(wxT("%.16f"), orbitRGT.GetSMA());
+          str.Printf("%.16f", orbitRGT.GetSMA());
       elements.Add(str);   
-      str.Printf(wxT("%.16f"), orbitRGT.GetECC());
+      str.Printf("%.16f", orbitRGT.GetECC());
       elements.Add(str);
-      str.Printf(wxT("%.16f"), orbitRGT.GetINC());
+      str.Printf("%.16f", orbitRGT.GetINC());
       elements.Add(str);                
-      str.Printf(wxT("%.16f"), orbitTime.GetRAAN());
+      str.Printf("%.16f", orbitTime.GetRAAN());
       elements.Add(str);
       //aop
-      str.Printf(wxT("%.16f"), theSpacecraft->GetRealParameter(10010));
+      str.Printf("%.16f", theSpacecraft->GetRealParameter(10010));
       elements.Add(str);
       //ta
-      str.Printf(wxT("%.16f"), theSpacecraft->GetRealParameter(10011));
+      str.Printf("%.16f", theSpacecraft->GetRealParameter(10011));
       elements.Add(str);
    }
-   else if (orbitType == wxT("Geostationary"))
+   else if (orbitType == "Geostationary")
    {
       Real SMA = 
          pow(GmatSolarSystemDefaults::PLANET_MU[2]*pow(86164.09054/(2*GmatMathConstants::PI),2),1/3.0);
       elements.Add(GmatStringUtil::ToString(SMA).c_str());
-      elements.Add(wxT("0"));
-      elements.Add(wxT("0"));                
-      elements.Add(wxT("0"));
-      elements.Add(wxT("0"));
-      elements.Add(wxT("0.6931030628395508"));
+      elements.Add("0");
+      elements.Add("0");                
+      elements.Add("0");
+      elements.Add("0");
+      elements.Add("0.6931030628395508");
    }
-   else if (orbitType == wxT("Molniya"))
+   else if (orbitType == "Molniya")
    {
-      elements.Add(wxT("26554"));   
-      elements.Add(wxT("0.72"));
-      elements.Add(wxT("63.4"));             
-      str.Printf(wxT("%.16f"), orbitTime.GetRAAN());
+      elements.Add("26554");   
+      elements.Add("0.72");
+      elements.Add("63.4");             
+      str.Printf("%.16f", orbitTime.GetRAAN());
       elements.Add(str);
-      elements.Add(wxT("270"));
-      str.Printf(wxT("%.16f"), theSpacecraft->GetRealParameter(10011));
+      elements.Add("270");
+      str.Printf("%.16f", theSpacecraft->GetRealParameter(10011));
       elements.Add(str);
    }
-   else if (orbitType == wxT("Frozen"))
+   else if (orbitType == "Frozen")
    {
-          str.Printf(wxT("%.16f"), orbitFZN.GetSMA());
+          str.Printf("%.16f", orbitFZN.GetSMA());
       elements.Add(str);   
-      str.Printf(wxT("%.16f"), orbitFZN.GetECC());
+      str.Printf("%.16f", orbitFZN.GetECC());
       elements.Add(str);
-      str.Printf(wxT("%.16f"), orbitFZN.GetINC());
+      str.Printf("%.16f", orbitFZN.GetINC());
       elements.Add(str);                
-      str.Printf(wxT("%.16f"), orbitTime.GetRAAN());
+      str.Printf("%.16f", orbitTime.GetRAAN());
       elements.Add(str);
       //aop
-      str.Printf(wxT("%.16f"), theSpacecraft->GetRealParameter(10010));
+      str.Printf("%.16f", theSpacecraft->GetRealParameter(10010));
       elements.Add(str);
       //ta
-      str.Printf(wxT("%.16f"), theSpacecraft->GetRealParameter(10011));
+      str.Printf("%.16f", theSpacecraft->GetRealParameter(10011));
       elements.Add(str);
    }
 
@@ -3409,40 +3409,40 @@ wxArrayString OrbitDesignerDialog::GetElementsString()
 Rvector6 OrbitDesignerDialog::GetElementsDouble()
 {
    Rvector6 elementVector;
-   if (orbitType == wxT("Sun Sync"))
+   if (orbitType == "Sun Sync")
    {
       elementVector = 
          Rvector6(orbitSS.GetSMA(), orbitSS.GetECC(), orbitSS.GetINC(), orbitTime.GetRAAN(),
                   theSpacecraft->GetRealParameter(10010), theSpacecraft->GetRealParameter(10011));
    }
-   else if (orbitType == wxT("Repeat Sun Sync"))
+   else if (orbitType == "Repeat Sun Sync")
    {
       elementVector = 
          Rvector6(orbitRSS.GetSMA(), orbitRSS.GetECC(), orbitRSS.GetINC(),
                   theSpacecraft->GetRealParameter(10009), theSpacecraft->GetRealParameter(10010), 
                   theSpacecraft->GetRealParameter(10011));
    }
-   else if (orbitType == wxT("Repeat Ground Track"))
+   else if (orbitType == "Repeat Ground Track")
    {
       elementVector = 
          Rvector6(orbitRGT.GetSMA(), orbitRGT.GetECC(), orbitRGT.GetINC(), 
                   theSpacecraft->GetRealParameter(10009), theSpacecraft->GetRealParameter(10010), 
                   theSpacecraft->GetRealParameter(10011));
    }
-   else if (orbitType == wxT("Geostationary"))
+   else if (orbitType == "Geostationary")
    {
           Real SMA = 
          pow(GmatSolarSystemDefaults::PLANET_MU[2]*pow(86164.09054/(2*GmatMathConstants::PI),2),1/3.0);
           elementVector = 
              Rvector6(SMA, 0, 0, 0, 0, 0.6931030628395508);
    }
-   else if (orbitType == wxT("Molniya"))
+   else if (orbitType == "Molniya")
    {
       elementVector = 
          Rvector6(26554, 0.72, 63.4, orbitTime.GetRAAN(), 270, 
                   theSpacecraft->GetRealParameter(10011));
    }
-   else if (orbitType == wxT("Frozen"))
+   else if (orbitType == "Frozen")
    {
       elementVector = 
          Rvector6(orbitFZN.GetSMA(), orbitFZN.GetECC(), orbitFZN.GetINC(), 
@@ -3452,12 +3452,12 @@ Rvector6 OrbitDesignerDialog::GetElementsDouble()
    return elementVector;
 }
 
-wxString OrbitDesignerDialog::GetEpochFormat()
+std::string OrbitDesignerDialog::GetEpochFormat()
 {
    return orbitTime.GetEpochFormat();
 }
 
-wxString OrbitDesignerDialog::GetEpoch()
+std::string OrbitDesignerDialog::GetEpoch()
 {
    return orbitTime.GetEpoch();
 }

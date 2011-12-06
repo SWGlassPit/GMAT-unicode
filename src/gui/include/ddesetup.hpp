@@ -27,12 +27,12 @@
 #include <wx/ipc.h>
 
 // the default service name
-#define IPC_SERVICE wxT("4242")
+#define IPC_SERVICE _T("4242")
 
 // the IPC topic
-#define IPC_TOPIC wxT("GMAT-MATLAB")
+#define IPC_TOPIC _T("GMAT-MATLAB")
 
 // the name of the item we're being advised about
-#define IPC_ADVISE_NAME wxT("Item")
+#define IPC_ADVISE_NAME _T("Item")
 
 #endif

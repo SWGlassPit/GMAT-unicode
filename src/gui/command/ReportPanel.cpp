@@ -62,9 +62,9 @@ ReportPanel::ReportPanel(wxWindow *parent, GmatCommand *cmd)
    : GmatPanel(parent)
 {
    #ifdef DEBUG_REPORTPANEL
-   MessageInterface::ShowMessage(wxT("ReportPanel() entering...\n"));
-   MessageInterface::ShowMessage(wxT("ReportPanel() cmd = ") +
-                                 cmd->GetTypeName() + wxT("\n"));
+   MessageInterface::ShowMessage("ReportPanel() entering...\n");
+   MessageInterface::ShowMessage("ReportPanel() cmd = " +
+                                 cmd->GetTypeName() + "\n");
    #endif
    
    theCommand = cmd;
@@ -73,8 +73,8 @@ ReportPanel::ReportPanel(wxWindow *parent, GmatCommand *cmd)
    
    if (theCommand != NULL)
    {
-      mObjectTypeList.Add(wxT("Spacecraft"));
-      mObjectTypeList.Add(wxT("ImpulsiveBurn"));
+      mObjectTypeList.Add("Spacecraft");
+      mObjectTypeList.Add("ImpulsiveBurn");
       Create();
       Show();
       EnableUpdate(false);
@@ -88,7 +88,7 @@ ReportPanel::ReportPanel(wxWindow *parent, GmatCommand *cmd)
 ReportPanel::~ReportPanel()
 {
    mObjectTypeList.Clear();
-   theGuiManager->UnregisterComboBox(wxT("ReportFile"), mReportFileComboBox);   
+   theGuiManager->UnregisterComboBox("ReportFile", mReportFileComboBox);   
 }
 
 
@@ -108,7 +108,7 @@ ReportPanel::~ReportPanel()
 void ReportPanel::Create()
 {
    #ifdef DEBUG_REPORTPANEL
-   MessageInterface::ShowMessage(wxT("ReportPanel::Create() entering...\n"));
+   MessageInterface::ShowMessage("ReportPanel::Create() entering...\n");
    #endif
    
    Integer bsize = 2; // border size
@@ -139,7 +139,7 @@ void ReportPanel::Create()
                                 wxDefaultPosition, wxDefaultSize, 0 );
    
    GmatStaticBoxSizer *selectedSizer =
-      new GmatStaticBoxSizer(wxVERTICAL, this, wxT("Parameter List"));
+      new GmatStaticBoxSizer(wxVERTICAL, this, "Parameter List");
    
    selectedSizer->Add(mSelectedListBox, 0, wxGROW|wxALIGN_CENTRE|wxALL, bsize);
    selectedSizer->Add(mViewButton, 0, wxALIGN_CENTRE|wxALL, bsize);
@@ -158,7 +158,7 @@ void ReportPanel::Create()
    theMiddleSizer->Add(panelSizer, 0, wxALIGN_CENTRE|wxALL, bsize);
    
    #ifdef DEBUG_REPORTPANEL
-   MessageInterface::ShowMessage(wxT("ReportPanel::Create() exiting...\n"));
+   MessageInterface::ShowMessage("ReportPanel::Create() exiting...\n");
    #endif
 }
 
@@ -169,7 +169,7 @@ void ReportPanel::Create()
 void ReportPanel::LoadData()
 {
    #ifdef DEBUG_REPORTPANEL_LOAD
-   MessageInterface::ShowMessage(wxT("ReportPanel::LoadData() entering...\n"));
+   MessageInterface::ShowMessage("ReportPanel::LoadData() entering...\n");
    #endif
 
    try
@@ -178,11 +178,11 @@ void ReportPanel::LoadData()
       mObject = theCommand;
       
       // Get ReportFile name
-      wxString rfName = theCommand->GetRefObjectName(Gmat::SUBSCRIBER);
+      std::string rfName = theCommand->GetRefObjectName(Gmat::SUBSCRIBER);
       mReportFileComboBox->SetValue(rfName.c_str());
       
       #ifdef DEBUG_REPORTPANEL_LOAD
-      MessageInterface::ShowMessage(wxT("   ReportFile name='%s'\n"), rfName.c_str());
+      MessageInterface::ShowMessage("   ReportFile name='%s'\n", rfName.c_str());
       #endif
       
       // Get parameters to report
@@ -190,7 +190,7 @@ void ReportPanel::LoadData()
       mNumParameters = parameterList.size();
       
       #ifdef DEBUG_REPORTPANEL_LOAD
-      MessageInterface::ShowMessage(wxT("   mNumParameters=%d\n"), mNumParameters);
+      MessageInterface::ShowMessage("   mNumParameters=%d\n", mNumParameters);
       #endif
       
       if (mNumParameters > 0)
@@ -213,7 +213,7 @@ void ReportPanel::LoadData()
    }
    
    #ifdef DEBUG_REPORTPANEL_LOAD
-   MessageInterface::ShowMessage(wxT("ReportPanel::LoadData() exiting...\n"));
+   MessageInterface::ShowMessage("ReportPanel::LoadData() exiting...\n");
    #endif
    
 }
@@ -225,19 +225,19 @@ void ReportPanel::LoadData()
 void ReportPanel::SaveData()
 {
    #ifdef DEBUG_REPORTPANEL_SAVE
-   MessageInterface::ShowMessage(wxT("ReportPanel::SaveData() entering...\n"));
+   MessageInterface::ShowMessage("ReportPanel::SaveData() entering...\n");
    #endif
    
    canClose = true;
    
-   wxString rfName = mReportFileComboBox->GetValue().c_str();
+   std::string rfName = mReportFileComboBox->GetValue().c_str();
    
    ReportFile *reportFile =
       (ReportFile*)theGuiInterpreter->GetConfiguredObject(rfName);
    
    #ifdef DEBUG_REPORTPANEL_SAVE
    MessageInterface::ShowMessage
-      (wxT("   ReportFile name='%s', addr=%p\n"), rfName.c_str(), reportFile);
+      ("   ReportFile name='%s', addr=%p\n", rfName.c_str(), reportFile);
    #endif
    
    if (reportFile == NULL)
@@ -250,7 +250,7 @@ void ReportPanel::SaveData()
       {
          #ifdef DEBUG_REPORTPANEL_SAVE
          MessageInterface::ShowMessage
-            (wxT("    rfName=%s, reportFile=%p\n"), rfName.c_str(), reportFile);
+            ("    rfName=%s, reportFile=%p\n", rfName.c_str(), reportFile);
          #endif
          
          theCommand->SetRefObject(reportFile, Gmat::SUBSCRIBER, rfName, 0);
@@ -261,25 +261,25 @@ void ReportPanel::SaveData()
       if (mHasParameterChanged)
       {
          mHasParameterChanged = false;
-         theCommand->TakeAction(wxT("Clear"));
+         theCommand->TakeAction("Clear");
          Parameter *param = NULL;
          mNumParameters = mSelectedListBox->GetCount();
          
          #ifdef DEBUG_REPORTPANEL_SAVE
-         MessageInterface::ShowMessage(wxT("   mNumParameters=%d\n"), mNumParameters);
+         MessageInterface::ShowMessage("   mNumParameters=%d\n", mNumParameters);
          #endif
          
          for (int i=0; i<mNumParameters; i++)
          {
-            wxString selName =
-               wxString(mSelectedListBox->GetString(i).c_str());
+            std::string selName =
+               std::string(mSelectedListBox->GetString(i).c_str());
             
             #ifdef DEBUG_REPORTPANEL_SAVE
-            MessageInterface::ShowMessage(wxT("   selName='%s'\n"), selName.c_str());
+            MessageInterface::ShowMessage("   selName='%s'\n", selName.c_str());
             #endif
             
             param = theGuiInterpreter->GetParameter(selName);
-            theCommand->SetStringParameter(wxT("Add"), selName);
+            theCommand->SetStringParameter("Add", selName);
             theCommand->SetRefObject(param, Gmat::PARAMETER, selName, i);
          }
          
@@ -296,7 +296,7 @@ void ReportPanel::SaveData()
    }
    
    #ifdef DEBUG_REPORTPANEL_SAVE
-   MessageInterface::ShowMessage(wxT("ReportPanel::SaveData() exiting...\n"));
+   MessageInterface::ShowMessage("ReportPanel::SaveData() exiting...\n");
    #endif
    
 }

@@ -68,8 +68,8 @@ ManeuverPanel::ManeuverPanel(wxWindow *parent, GmatCommand *cmd)
 //------------------------------------------------------------------------------
 ManeuverPanel::~ManeuverPanel()
 {
-   theGuiManager->UnregisterComboBox(wxT("ImpulsiveBurn"), burnCB);
-   theGuiManager->UnregisterComboBox(wxT("Spacecraft"), satCB);
+   theGuiManager->UnregisterComboBox("ImpulsiveBurn", burnCB);
+   theGuiManager->UnregisterComboBox("Spacecraft", satCB);
 }
 
 
@@ -108,7 +108,7 @@ void ManeuverPanel::OnSatComboBoxChange(wxCommandEvent& event)
 void ManeuverPanel::Create()
 {
    #if DEBUG_MANEUVER_PANEL
-   MessageInterface::ShowMessage(wxT("ManeuverPanel::Create() command=%s\n"),
+   MessageInterface::ShowMessage("ManeuverPanel::Create() command=%s\n",
                                  theCommand->GetTypeName().c_str());
    #endif
    
@@ -128,7 +128,7 @@ void ManeuverPanel::Create()
    
    #if DEBUG_MANEUVER_PANEL
    MessageInterface::ShowMessage
-      (wxT("ManeuverPanel::Create() Calling theGuiManager->GetImpBurnComboBox()\n"));
+      ("ManeuverPanel::Create() Calling theGuiManager->GetImpBurnComboBox()\n");
    #endif
    
    // create burn combo box
@@ -144,7 +144,7 @@ void ManeuverPanel::Create()
 
    #if DEBUG_MANEUVER_PANEL
    MessageInterface::ShowMessage
-      (wxT("ManeuverPanel::Create() Calling theGuiManager->GetSpacecraftComboBox()\n"));
+      ("ManeuverPanel::Create() Calling theGuiManager->GetSpacecraftComboBox()\n");
    #endif
    
    // create spacecraft combo box
@@ -180,8 +180,8 @@ void ManeuverPanel::LoadData()
    //satCB->SetSelection(0);
 
    // burn 
-   id = theCommand->GetParameterID(wxT("Burn"));
-   wxString burn = theCommand->GetStringParameter(id);
+   id = theCommand->GetParameterID("Burn");
+   std::string burn = theCommand->GetStringParameter(id);
    //StringArray burnList = theCommand->GetStringArrayParameter(id);
    //MessageInterface::ShowMessage("ManeuverPanel::LoadData() burn=%s\n", burn.c_str());
    StringArray burnList = theGuiInterpreter->GetListOfObjects(Gmat::BURN);
@@ -195,20 +195,20 @@ void ManeuverPanel::LoadData()
          ++index;
    }
 
-   if (burn == wxT(""))
+   if (burn == "")
    {
-      burnCB->SetValue(wxT("Select a burn"));
+      burnCB->SetValue("Select a burn");
    }
    
    if (!burnCB->SetStringSelection(burn.c_str()))
    {
-          burnCB->Append(wxT(""));
-          burnCB->SetStringSelection(wxT(""));
+          burnCB->Append("");
+          burnCB->SetStringSelection("");
    }
     
    // spacecraft
-   id = theCommand->GetParameterID(wxT("Spacecraft"));
-   wxString sat = theCommand->GetStringParameter(id);
+   id = theCommand->GetParameterID("Spacecraft");
+   std::string sat = theCommand->GetStringParameter(id);
    //MessageInterface::ShowMessage("ManeuverPanel::LoadData() sat=%s\n", sat.c_str());
    StringArray satList = theGuiInterpreter->GetListOfObjects(Gmat::SPACECRAFT);
    index = 0;
@@ -221,15 +221,15 @@ void ManeuverPanel::LoadData()
          ++index;
    }
 
-   if (sat == wxT(""))
+   if (sat == "")
    {
-      satCB->SetValue(wxT("Select a spacecraft"));
+      satCB->SetValue("Select a spacecraft");
    }
    
    if (!satCB->SetStringSelection(sat.c_str()))
    {
-          satCB->Append(wxT(""));
-          satCB->SetStringSelection(wxT(""));
+          satCB->Append("");
+          satCB->SetStringSelection("");
    }
    
 
@@ -251,14 +251,14 @@ void ManeuverPanel::SaveData()
         
            // save burn
            wxString burnString = burnCB->GetStringSelection();
-           id = theCommand->GetParameterID(wxT("Burn"));
-           wxString burn = wxString (burnString.c_str());
+           id = theCommand->GetParameterID("Burn");
+           std::string burn = std::string (burnString.c_str());
            theCommand->SetStringParameter(id, burn);
         
             // save spacecraft
            wxString satString = satCB->GetStringSelection();
-           id = theCommand->GetParameterID(wxT("Spacecraft"));
-           wxString spacecraft = wxString (satString.c_str());
+           id = theCommand->GetParameterID("Spacecraft");
+           std::string spacecraft = std::string (satString.c_str());
            theCommand->SetStringParameter(id, spacecraft);
    }
    catch (BaseException &e)

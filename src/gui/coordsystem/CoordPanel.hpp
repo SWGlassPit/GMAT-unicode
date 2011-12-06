@@ -61,7 +61,7 @@ public:
    void ShowAxisData(AxisSystem *axis);
    AxisSystem* CreateAxis();
    void ChangeEpoch(wxString &oldFormat);
-   bool SaveData(const wxString &coordName, AxisSystem *axis,
+   bool SaveData(const std::string &coordName, AxisSystem *axis,
                  wxString &epochFormat);
 
 private:

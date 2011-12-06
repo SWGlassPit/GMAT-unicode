@@ -104,12 +104,12 @@ CelestialBodyOrbitPanel::CelestialBodyOrbitPanel(GmatPanel *cbPanel,
 
 CelestialBodyOrbitPanel::~CelestialBodyOrbitPanel()
 {
-   guiManager->UnregisterComboBox(wxT("CelestialBody"), centralBodyComboBox);
+   guiManager->UnregisterComboBox("CelestialBody", centralBodyComboBox);
 }
 
 void CelestialBodyOrbitPanel::SaveData()
 {
-   wxString strval;
+   std::string strval;
    Real        tmpval;
    Integer     tmpint;
    bool        retval;
@@ -126,33 +126,33 @@ void CelestialBodyOrbitPanel::SaveData()
       if (ephemSrcChanged)
       {
          strval = ephemSourceComboBox->GetValue();
-         theBody->SetStringParameter(theBody->GetParameterID(wxT("PosVelSource")), strval);
+         theBody->SetStringParameter(theBody->GetParameterID("PosVelSource"), strval);
       }
       if (ephemFileChanged)
       {
          strval = ephemFileTextCtrl->GetValue();
          #ifdef DEBUG_CB_ORBIT_PANEL
-            MessageInterface::ShowMessage(wxT("ephemFileChanged is true : %s\n"),
+            MessageInterface::ShowMessage("ephemFileChanged is true : %s\n",
                   strval.c_str());
          #endif
-         std::ifstream filename(strval.char_str());
+         std::ifstream filename(strval.c_str());
 
          if (!filename)
          {
-            wxString errmsg = wxT("File \"") + strval;
-            errmsg += wxT("\" does not exist.\n");
+            std::string errmsg = "File \"" + strval;
+            errmsg += "\" does not exist.\n";
             MessageInterface::PopupMessage(Gmat::ERROR_, errmsg);
          }
          else
          {
             filename.close();
-            theBody->SetStringParameter(theBody->GetParameterID(wxT("SourceFilename")), strval);
+            theBody->SetStringParameter(theBody->GetParameterID("SourceFilename"), strval);
          }
       }
       if ((userDef || allowSpiceForDefaultBodies) && spiceAvailable && spkFileChanged)
       {
          #ifdef DEBUG_CB_ORBIT_PANEL
-            MessageInterface::ShowMessage(wxT("spkFileChanged is true : %s\n"),
+            MessageInterface::ShowMessage("spkFileChanged is true : %s\n",
                   strval.c_str());
          #endif
 
@@ -160,19 +160,19 @@ void CelestialBodyOrbitPanel::SaveData()
          for (unsigned int ii = 0; ii < numKernels; ii++)
          {
             strval = spkFileListBox->GetString(ii);
-            std::ifstream filename(strval.char_str());
+            std::ifstream filename(strval.c_str());
 
             if (!filename)
             {
-               wxString errmsg = wxT("File \"") + strval;
-               errmsg += wxT("\" does not exist.\n");
+               std::string errmsg = "File \"" + strval;
+               errmsg += "\" does not exist.\n";
                MessageInterface::PopupMessage(Gmat::ERROR_, errmsg);
                canClose = false;
             }
             else
             {
                filename.close();
-               theBody->SetStringParameter(theBody->GetParameterID(wxT("OrbitSpiceKernelName")),
+               theBody->SetStringParameter(theBody->GetParameterID("OrbitSpiceKernelName"),
                      strval);
             }
          }
@@ -180,24 +180,24 @@ void CelestialBodyOrbitPanel::SaveData()
       if ((userDef || allowSpiceForDefaultBodies) && spiceAvailable && naifIDChanged)
       {
          strval = naifIDTextCtrl->GetValue();
-         retval = theCBPanel->CheckInteger(tmpint, strval, wxT("NAIF ID"), wxT("Integer Number"));
+         retval = theCBPanel->CheckInteger(tmpint, strval, "NAIF ID", "Integer Number");
          canClose = retval;
          if (retval)
          {
-            theBody->SetIntegerParameter(theBody->GetParameterID(wxT("NAIFId")), tmpint);
+            theBody->SetIntegerParameter(theBody->GetParameterID("NAIFId"), tmpint);
          }
       }
       if ((userDef || allowSpiceForDefaultBodies) && spiceAvailable && spkFilesDeleted)
       {
          for (unsigned int ii = 0; ii < spkFilesToDelete.size(); ii++)
          {
-            theBody->RemoveSpiceKernelName(wxT("Orbit"), spkFilesToDelete.at(ii));
+            theBody->RemoveSpiceKernelName("Orbit", spkFilesToDelete.at(ii));
          }
       }
       if (cBodyChanged)
       {
          strval = centralBodyComboBox->GetValue();
-         theBody->SetStringParameter(theBody->GetParameterID(wxT("CentralBody")), strval);
+         theBody->SetStringParameter(theBody->GetParameterID("CentralBody"), strval);
       }
 
       if (!isSun)
@@ -205,7 +205,7 @@ void CelestialBodyOrbitPanel::SaveData()
          if (epochChanged)
          {
             strval = initialEpochTextCtrl->GetValue();
-            retval = theCBPanel->CheckReal(tmpval, strval, wxT("Initial Two Body Epoch"), wxT("Real Number"));
+            retval = theCBPanel->CheckReal(tmpval, strval, "Initial Two Body Epoch", "Real Number");
             canClose = retval;
             if (retval)
             {
@@ -216,50 +216,50 @@ void CelestialBodyOrbitPanel::SaveData()
          if (stateChanged)
          {
             #ifdef DEBUG_CB_ORBIT_PANEL
-               MessageInterface::ShowMessage(wxT("state has been changed ...\n"),
+               MessageInterface::ShowMessage("state has been changed ...\n",
                      strval.c_str());
             #endif
             Rvector6 elements;
             bool     retval[6];
             strval = SMATextCtrl->GetValue();
-            retval[0] = theCBPanel->CheckReal(tmpval, strval, wxT("Initial SMA"), wxT("Real Number"));
+            retval[0] = theCBPanel->CheckReal(tmpval, strval, "Initial SMA", "Real Number");
             if (retval[0])
             {
                elements[0] = tmpval;
             }
             strval = ECCTextCtrl->GetValue();
-            retval[1] = theCBPanel->CheckReal(tmpval, strval, wxT("Initial SMA"), wxT("Real Number"));
+            retval[1] = theCBPanel->CheckReal(tmpval, strval, "Initial SMA", "Real Number");
             if (retval[1])
             {
                elements[1] = tmpval;
             }
             strval = INCTextCtrl->GetValue();
-            retval[2] = theCBPanel->CheckReal(tmpval, strval, wxT("Initial INC"), wxT("Real Number"));
+            retval[2] = theCBPanel->CheckReal(tmpval, strval, "Initial INC", "Real Number");
             if (retval[2])
             {
                elements[2] = tmpval;
             }
             strval = RAANTextCtrl->GetValue();
-            retval[3] = theCBPanel->CheckReal(tmpval, strval, wxT("Initial RAAN"), wxT("Real Number"));
+            retval[3] = theCBPanel->CheckReal(tmpval, strval, "Initial RAAN", "Real Number");
             if (retval[3])
             {
                elements[3] = tmpval;
             }
             strval = AOPTextCtrl->GetValue();
-            retval[4] = theCBPanel->CheckReal(tmpval, strval, wxT("Initial AOP"), wxT("Real Number"));
+            retval[4] = theCBPanel->CheckReal(tmpval, strval, "Initial AOP", "Real Number");
             if (retval[4])
             {
                elements[4] = tmpval;
             }
             strval = TATextCtrl->GetValue();
-            retval[5] = theCBPanel->CheckReal(tmpval, strval, wxT("Initial TA"), wxT("Real Number"));
+            retval[5] = theCBPanel->CheckReal(tmpval, strval, "Initial TA", "Real Number");
             if (retval[5])
             {
                elements[5] = tmpval;
             }
             #ifdef DEBUG_CB_ORBIT_PANEL
                MessageInterface::ShowMessage(
-                     wxT("elements = %12.10f  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f   ...\n"),
+                     "elements = %12.10f  %12.10f  %12.10f  %12.10f  %12.10f  %12.10f   ...\n",
                      elements[0],elements[1],elements[2],elements[3],elements[4],elements[5]);
             #endif
             canClose = retval[0] && retval[1] && retval[2] && retval[3] && retval[4] && retval[5];
@@ -277,8 +277,8 @@ void CelestialBodyOrbitPanel::SaveData()
    }
    
    #ifdef DEBUG_CB_ORBIT_SAVE
-      MessageInterface::ShowMessage(wxT("at end of CBOrbitPanel::SaveData, canClose = %s\n"),
-            (canClose? wxT("true") : wxT("false")));
+      MessageInterface::ShowMessage("at end of CBOrbitPanel::SaveData, canClose = %s\n",
+            (canClose? "true" : "false"));
    #endif
    if (canClose)
    {
@@ -291,7 +291,7 @@ void CelestialBodyOrbitPanel::LoadData()
 {
    try
    {
-      ephemSrc   = theBody->GetStringParameter(theBody->GetParameterID(wxT("PosVelSource")));
+      ephemSrc   = theBody->GetStringParameter(theBody->GetParameterID("PosVelSource"));
       ephemSourceComboBox->SetValue(ephemSrc.c_str());
       
       previousEphemSrc = ephemSrc;
@@ -305,24 +305,24 @@ void CelestialBodyOrbitPanel::LoadData()
       
       if ((userDef || allowSpiceForDefaultBodies) && spiceAvailable)
       {
-         naifID = theBody->GetIntegerParameter(theBody->GetParameterID(wxT("NAIFId")));
+         naifID = theBody->GetIntegerParameter(theBody->GetParameterID("NAIFId"));
          naifIDStringWX = guiManager->ToWxString(naifID);
          naifIDTextCtrl->SetValue(naifIDStringWX);
          spkFileArray             = theBody->GetStringArrayParameter(
-                                    theBody->GetParameterID(wxT("OrbitSpiceKernelName")));
+                                    theBody->GetParameterID("OrbitSpiceKernelName"));
          unsigned int spkListSz   = spkFileArray.size();
          spkFileArrayWX           = new wxString[spkListSz];
          spkFiles.clear();
          for (unsigned int jj = 0; jj < spkListSz; jj++)
          {
             spkFiles.push_back(spkFileArray[jj]);
-            spkFileArrayWX[jj] = spkFileArray[jj].c_str();
+            spkFileArrayWX[jj] = wxT(spkFileArray[jj].c_str());
          }
          spkFileListBox->InsertItems(spkListSz, spkFileArrayWX, 0);
          spkFileListBox->SetSelection(spkListSz-1); // Select the last item
       }
       
-      if (ephemSrc != wxT("DE405"))
+      if (ephemSrc != "DE405")
       {
          ephemFileStaticText->Hide();
          ephemFileTextCtrl->Hide();
@@ -336,7 +336,7 @@ void CelestialBodyOrbitPanel::LoadData()
          ephemFileBrowseButton->Show();
          orbitDataFlexGridSizer->Layout();
       }
-      if (ephemSrc == wxT("TwoBodyPropagation"))
+      if (ephemSrc == "TwoBodyPropagation")
       {
          if (!isSun)
          {
@@ -366,7 +366,7 @@ void CelestialBodyOrbitPanel::LoadData()
       }
       if ((userDef || allowSpiceForDefaultBodies) && spiceAvailable)
       {
-         if (ephemSrc != wxT("SPICE"))
+         if (ephemSrc != "SPICE")
          {
             spkFileStaticText->Hide();
             spkFileListBox->Hide();
@@ -451,66 +451,66 @@ void CelestialBodyOrbitPanel::Create()
    allowSpiceForDefaultBodies = ss->IsSpiceAllowedForDefaultBodies();
    
    // empty the temporary value strings
-   ephemSourceStringWX    = wxT("");
-   ephemFileStringWX      = wxT("");
-   naifIDStringWX         = wxT("");
-   centralBodyStringWX    = wxT("");
-   initialEpochStringWX   = wxT("");
-   SMAStringWX            = wxT("");
-   ECCStringWX            = wxT("");
-   INCStringWX            = wxT("");
-   RAANStringWX           = wxT("");
-   AOPStringWX            = wxT("");
-   TAStringWX             = wxT("");
+   ephemSourceStringWX    = "";
+   ephemFileStringWX      = "";
+   naifIDStringWX         = "";
+   centralBodyStringWX    = "";
+   initialEpochStringWX   = "";
+   SMAStringWX            = "";
+   ECCStringWX            = "";
+   INCStringWX            = "";
+   RAANStringWX           = "";
+   AOPStringWX            = "";
+   TAStringWX             = "";
    
    // ephem source combo box
    sourceArray              = theBody->GetEphemSourceList();
    unsigned int ephemListSz = sourceArray.size();
    sourceArrayWX            = new wxString[ephemListSz];
    for (unsigned int jj = 0; jj < ephemListSz; jj++)
-      sourceArrayWX[jj] = sourceArray[jj].c_str();
-   ephemSourceStaticText = new wxStaticText(this, ID_TEXT, wxT("Ephemeris ") wxT(GUI_ACCEL_KEY) wxT("Source"),
+      sourceArrayWX[jj] = wxT(sourceArray[jj].c_str());
+   ephemSourceStaticText = new wxStaticText(this, ID_TEXT, wxT("Ephemeris "GUI_ACCEL_KEY"Source"),
                            wxDefaultPosition, wxSize(-1,-1), 0);
-   ephemSourceComboBox   = new wxComboBox(this, ID_COMBO_BOX_EPHEM_SOURCE, sourceArrayWX[0],
+   ephemSourceComboBox   = new wxComboBox(this, ID_COMBO_BOX_EPHEM_SOURCE, wxT(sourceArrayWX[0]),
                            wxDefaultPosition, wxDefaultSize, ephemListSz, sourceArrayWX,
                            wxCB_DROPDOWN|wxCB_READONLY);
-   ephemSourceComboBox->SetToolTip(pConfig->Read(wxT("EphemerisSourceHint")));
+   ephemSourceComboBox->SetToolTip(pConfig->Read(_T("EphemerisSourceHint")));
    // ephem file
-   ephemFileStaticText    =  new wxStaticText(this, ID_TEXT, wxT("Ephemeris ") wxT(GUI_ACCEL_KEY) wxT("File"),
+   ephemFileStaticText    =  new wxStaticText(this, ID_TEXT, wxT("Ephemeris "GUI_ACCEL_KEY"File"),
                              wxDefaultPosition, wxSize(-1,-1), 0);
    ephemFileTextCtrl      = new wxTextCtrl(this, ID_TEXT_CTRL_EPHEM_FILE, wxT(""),
                             wxDefaultPosition, wxSize(150,-1), 0);
-   ephemFileTextCtrl->SetToolTip(pConfig->Read(wxT("EphemerisFileHint")));
+   ephemFileTextCtrl->SetToolTip(pConfig->Read(_T("EphemerisFileHint")));
    ephemFileBrowseButton  = new wxBitmapButton(this, ID_BROWSE_BUTTON_EPHEM_FILE, 
                             openBitmap, wxDefaultPosition,
                             wxSize(buttonWidth, 20));
-   ephemFileBrowseButton->SetToolTip(pConfig->Read(wxT("BrowseEphemerisFileHint"), wxT("Browse for file")));
+   ephemFileBrowseButton->SetToolTip(pConfig->Read(_T("BrowseEphemerisFileHint"), "Browse for file"));
    
    wxBoxSizer *spkButtonSizer = NULL;
    
    if ((userDef || allowSpiceForDefaultBodies) && spiceAvailable)
    {
       // naif ID for user-defined bodies
-      naifIDStaticText   = new wxStaticText(this, ID_TEXT,wxT(GUI_ACCEL_KEY) wxT("NAIF ID"),
+      naifIDStaticText   = new wxStaticText(this, ID_TEXT,wxT(GUI_ACCEL_KEY"NAIF ID"),
                            wxDefaultPosition, wxSize(-1,-1), 0);
       naifIDTextCtrl     = new wxTextCtrl(this, ID_TEXT_CTRL_NAIF_ID, wxT(""),
                            wxDefaultPosition, wxSize(80, -1), 0);
-      naifIDTextCtrl->SetToolTip(pConfig->Read(wxT("NAIFIDHint")));
+      naifIDTextCtrl->SetToolTip(pConfig->Read(_T("NAIFIDHint")));
       naifIDBlankText    = new wxStaticText(this, ID_TEXT,wxT(""),
                            wxDefaultPosition, wxSize(-1,-1), 0);
       // SPK file(s)
       wxArrayString emptyList;
-      spkFileStaticText   = new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY) wxT("SPK Files"),
+      spkFileStaticText   = new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY"SPK Files"),
                             wxDefaultPosition, wxSize(-1,-1), 0);
       spkFileListBox      = new wxListBox(this, ID_LIST_BOX_SPK_FILE, wxDefaultPosition, wxSize(80, 100),
                             emptyList, wxLB_EXTENDED|wxLB_NEEDED_SB|wxLB_HSCROLL);
-      spkFileListBox->SetToolTip(pConfig->Read(wxT("SPKFileListHint")));
-      spkFileBrowseButton = new wxButton(this, ID_BROWSE_BUTTON_SPK_FILE, wxT(GUI_ACCEL_KEY) wxT("Add"),
+      spkFileListBox->SetToolTip(pConfig->Read(_T("SPKFileListHint")));
+      spkFileBrowseButton = new wxButton(this, ID_BROWSE_BUTTON_SPK_FILE, wxT(GUI_ACCEL_KEY"Add"),
                             wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-      spkFileBrowseButton->SetToolTip(pConfig->Read(wxT("AddSPKFileHint")));
-      spkFileRemoveButton = new wxButton(this, ID_REMOVE_BUTTON_SPK_FILE, wxT(GUI_ACCEL_KEY) wxT("Remove"),
+      spkFileBrowseButton->SetToolTip(pConfig->Read(_T("AddSPKFileHint")));
+      spkFileRemoveButton = new wxButton(this, ID_REMOVE_BUTTON_SPK_FILE, wxT(GUI_ACCEL_KEY"Remove"),
                             wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-      spkFileRemoveButton->SetToolTip(pConfig->Read(wxT("RemoveSPKFileHint")));
+      spkFileRemoveButton->SetToolTip(pConfig->Read(_T("RemoveSPKFileHint")));
       spkButtonSizer = new wxBoxSizer(wxHORIZONTAL);
       spkButtonSizer->Add(spkFileBrowseButton,0, wxGROW|wxALIGN_CENTRE|wxALL, bSize);
       spkButtonSizer->Add(spkFileRemoveButton,0, wxGROW|wxALIGN_CENTRE|wxALL, bSize);
@@ -522,75 +522,75 @@ void CelestialBodyOrbitPanel::Create()
 //   centralBodyArrayWX = new wxString[bodiesSz];
 //   for (unsigned int ii = 0; ii < bodiesSz; ii++)
 //      centralBodyArrayWX[ii] = wxT(centralBodyArray[ii].c_str());
-   centralBodyStaticText = new wxStaticText(this, ID_TEXT, wxT("Central ") wxT(GUI_ACCEL_KEY) wxT("Body"),
+   centralBodyStaticText = new wxStaticText(this, ID_TEXT, wxT("Central "GUI_ACCEL_KEY"Body"),
                            wxDefaultPosition, wxSize(-1,-1), 0);
 //   centralBodyComboBox   = new wxComboBox(this, ID_COMBO_BOX_CENTRAL_BODY, wxT(centralBodyArrayWX[0]),
 //                           wxDefaultPosition, wxDefaultSize, bodiesSz, centralBodyArrayWX,
 //                           wxCB_DROPDOWN|wxCB_READONLY);
    centralBodyComboBox = guiManager->GetCelestialBodyComboBox(this, ID_COMBO_BOX_CENTRAL_BODY, 
                                                               wxSize(150,-1));
-   centralBodyComboBox->SetToolTip(pConfig->Read(wxT("CentralBodyHint")));
+   centralBodyComboBox->SetToolTip(pConfig->Read(_T("CentralBodyHint")));
    
    if (!isSun)
    {
       // initial epoch
-      initialEpochStaticText = new wxStaticText(this, ID_TEXT, wxT("Initial A1 ") wxT(GUI_ACCEL_KEY) wxT("Epoch"),
+      initialEpochStaticText = new wxStaticText(this, ID_TEXT, wxT("Initial A1 "GUI_ACCEL_KEY"Epoch"),
                                wxDefaultPosition, wxSize(-1,-1), 0);
       initialEpochTextCtrl   = new wxTextCtrl(this, ID_TEXT_CTRL_INITIAL_EPOCH, wxT(""),
                                wxDefaultPosition, wxSize(140, -1), 0, wxTextValidator(wxGMAT_FILTER_NUMERIC));
-      initialEpochTextCtrl->SetToolTip(pConfig->Read(wxT("InitialA1EpochHint")));
+      initialEpochTextCtrl->SetToolTip(pConfig->Read(_T("InitialA1EpochHint")));
       
       // SMA
-      SMAStaticText      = new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY) wxT("SMA"),
+      SMAStaticText      = new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY"SMA"),
                            wxDefaultPosition, wxSize(-1,-1), 0);
       SMATextCtrl        = new wxTextCtrl(this, ID_TEXT_CTRL_SMA, wxT(""),
                            wxDefaultPosition, wxSize(140, -1), 0, wxTextValidator(wxGMAT_FILTER_NUMERIC));
-      SMATextCtrl->SetToolTip(pConfig->Read(wxT("SMAHint")));
+      SMATextCtrl->SetToolTip(pConfig->Read(_T("SMAHint")));
       SMAUnitsStaticText = new wxStaticText(this, ID_TEXT, wxT("km"),
                            wxDefaultPosition, wxSize(-1,-1), 0);
       
       // ECC
-      ECCStaticText      = new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY) wxT("ECC"),
+      ECCStaticText      = new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY"ECC"),
                            wxDefaultPosition, wxSize(-1,-1), 0);
       ECCTextCtrl        = new wxTextCtrl(this, ID_TEXT_CTRL_ECC, wxT(""),
                            wxDefaultPosition, wxSize(140, -1), 0, wxTextValidator(wxGMAT_FILTER_NUMERIC));
-      ECCTextCtrl->SetToolTip(pConfig->Read(wxT("ECCHint")));
+      ECCTextCtrl->SetToolTip(pConfig->Read(_T("ECCHint")));
       ECCUnitsStaticText = new wxStaticText(this, ID_TEXT, wxT(""),
                            wxDefaultPosition, wxSize(-1,-1), 0);
       
       // INC
-      INCStaticText      = new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY) wxT("INC"),
+      INCStaticText      = new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY"INC"),
                            wxDefaultPosition, wxSize(-1,-1), 0);
       INCTextCtrl        = new wxTextCtrl(this, ID_TEXT_CTRL_INC, wxT(""),
                            wxDefaultPosition, wxSize(140, -1), 0, wxTextValidator(wxGMAT_FILTER_NUMERIC));
-      INCTextCtrl->SetToolTip(pConfig->Read(wxT("INCHint")));
+      INCTextCtrl->SetToolTip(pConfig->Read(_T("INCHint")));
       INCUnitsStaticText = new wxStaticText(this, ID_TEXT, wxT("deg"),
                            wxDefaultPosition, wxSize(-1,-1), 0);
       
       // RAAN
-      RAANStaticText      = new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY) wxT("RAAN"),
+      RAANStaticText      = new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY"RAAN"),
                             wxDefaultPosition, wxSize(-1,-1), 0);
       RAANTextCtrl        = new wxTextCtrl(this, ID_TEXT_CTRL_RAAN, wxT(""),
                             wxDefaultPosition, wxSize(140, -1), 0, wxTextValidator(wxGMAT_FILTER_NUMERIC));
-      RAANTextCtrl->SetToolTip(pConfig->Read(wxT("RAANHint")));
+      RAANTextCtrl->SetToolTip(pConfig->Read(_T("RAANHint")));
       RAANUnitsStaticText = new wxStaticText(this, ID_TEXT, wxT("deg"),
                             wxDefaultPosition, wxSize(-1,-1), 0);
       
       // AOP
-      AOPStaticText      = new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY) wxT("AOP"),
+      AOPStaticText      = new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY"AOP"),
                            wxDefaultPosition, wxSize(-1,-1), 0);
       AOPTextCtrl        = new wxTextCtrl(this, ID_TEXT_CTRL_AOP, wxT(""),
                            wxDefaultPosition, wxSize(140, -1), 0, wxTextValidator(wxGMAT_FILTER_NUMERIC));
-      AOPTextCtrl->SetToolTip(pConfig->Read(wxT("AOPHint")));
+      AOPTextCtrl->SetToolTip(pConfig->Read(_T("AOPHint")));
       AOPUnitsStaticText = new wxStaticText(this, ID_TEXT, wxT("deg"),
                            wxDefaultPosition, wxSize(-1,-1), 0);
       
       // TA
-      TAStaticText      = new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY) wxT("TA"),
+      TAStaticText      = new wxStaticText(this, ID_TEXT, wxT(GUI_ACCEL_KEY"TA"),
                            wxDefaultPosition, wxSize(-1,-1), 0);
       TATextCtrl        = new wxTextCtrl(this, ID_TEXT_CTRL_TA, wxT(""),
                            wxDefaultPosition, wxSize(140, -1), 0, wxTextValidator(wxGMAT_FILTER_NUMERIC));
-      TATextCtrl->SetToolTip(pConfig->Read(wxT("TAHint")));
+      TATextCtrl->SetToolTip(pConfig->Read(_T("TAHint")));
       TAUnitsStaticText = new wxStaticText(this, ID_TEXT, wxT("deg"),
                            wxDefaultPosition, wxSize(-1,-1), 0);
    
@@ -666,7 +666,7 @@ void CelestialBodyOrbitPanel::Create()
    
    mainBoxSizer = new wxBoxSizer(wxHORIZONTAL);
    
-   GmatStaticBoxSizer  *boxSizer1 = new GmatStaticBoxSizer(wxVERTICAL, this, wxT("Ephemeris Data"));
+   GmatStaticBoxSizer  *boxSizer1 = new GmatStaticBoxSizer(wxVERTICAL, this, "Ephemeris Data");
    boxSizer1->Add(orbitDataFlexGridSizer, 0, wxGROW|wxALIGN_CENTRE|wxALL, bSize);
    
    if (isSun)
@@ -676,7 +676,7 @@ void CelestialBodyOrbitPanel::Create()
    }
    else
    {
-      GmatStaticBoxSizer  *boxSizer2 = new GmatStaticBoxSizer(wxVERTICAL, this, wxT("Initial Two Body State"));
+      GmatStaticBoxSizer  *boxSizer2 = new GmatStaticBoxSizer(wxVERTICAL, this, "Initial Two Body State");
       boxSizer2->Add(initialStateFlexGridSizer, 0, wxGROW|wxALIGN_CENTER|wxALL, bSize);
       mainBoxSizer->Add(boxSizer1, 0, wxGROW|wxALIGN_CENTRE|wxALL, bSize);
       mainBoxSizer->Add(boxSizer2, 1, wxGROW|wxALIGN_CENTRE|wxALL, bSize); 
@@ -697,7 +697,7 @@ void CelestialBodyOrbitPanel::Create()
    // I like without another layer, too many lines, so set to 0 (LOJ: 2009.11.18)
    #if 1
    
-   GmatStaticBoxSizer *mainStaticBoxSizer = new GmatStaticBoxSizer(wxHORIZONTAL, this, wxT(""));
+   GmatStaticBoxSizer *mainStaticBoxSizer = new GmatStaticBoxSizer(wxHORIZONTAL, this, "");
    mainStaticBoxSizer->Add(mainBoxSizer, 1, wxGROW|wxALIGN_CENTRE|wxALL, bSize);
    
    this->SetAutoLayout(true);
@@ -757,13 +757,13 @@ void CelestialBodyOrbitPanel::ResetChangeFlags(bool discardMods)
 //Event Handling
 void CelestialBodyOrbitPanel::OnEphemSourceComboBoxChange(wxCommandEvent &event)
 {
-   wxString newEphemSrc = (ephemSourceComboBox->GetStringSelection()).c_str();
+   std::string newEphemSrc = (ephemSourceComboBox->GetStringSelection()).c_str();
    if (newEphemSrc == previousEphemSrc) return;
    ephemSrcChanged = true;
    dataChanged     = true;
 //   ephemSrc        = newEphemSrc;
    theCBPanel->EnableUpdate(true);
-   if (newEphemSrc != wxT("DE405"))
+   if (newEphemSrc != "DE405")
    {
       ephemFileStaticText->Hide();
       ephemFileTextCtrl->Hide();
@@ -781,7 +781,7 @@ void CelestialBodyOrbitPanel::OnEphemSourceComboBoxChange(wxCommandEvent &event)
       orbitDataFlexGridSizer->Layout();
       mainBoxSizer->Layout();
    }
-   if (newEphemSrc == wxT("TwoBodyPropagation"))
+   if (newEphemSrc == "TwoBodyPropagation")
    {
       if (!isSun)
       {
@@ -812,7 +812,7 @@ void CelestialBodyOrbitPanel::OnEphemSourceComboBoxChange(wxCommandEvent &event)
 
    if ((userDef || allowSpiceForDefaultBodies) && spiceAvailable)
    {
-      if (newEphemSrc != wxT("SPICE"))
+      if (newEphemSrc != "SPICE")
       {
          spkFileStaticText->Hide();
          spkFileListBox->Hide();
@@ -853,7 +853,7 @@ void CelestialBodyOrbitPanel::OnEphemFileTextCtrlChange(wxCommandEvent &event)
 void CelestialBodyOrbitPanel::OnEphemFileBrowseButton(wxCommandEvent &event)
 {
    wxString oldFile = ephemFileTextCtrl->GetValue();
-   wxFileDialog dialog(this, wxT("Choose a file"), wxT(""), wxT(""), wxT("*.*"));
+   wxFileDialog dialog(this, _T("Choose a file"), _T(""), _T(""), _T("*.*"));
    if (dialog.ShowModal() == wxID_OK)
    {
       wxString fileName = (dialog.GetPath()).c_str();
@@ -870,7 +870,7 @@ void CelestialBodyOrbitPanel::OnEphemFileBrowseButton(wxCommandEvent &event)
 void CelestialBodyOrbitPanel::OnSpkFileBrowseButton(wxCommandEvent &event)
 {
    wxArrayString oldFiles = spkFileListBox->GetStrings();
-   wxFileDialog dialog(this, wxT("Choose a file to add"), wxT(""), wxT(""), wxT("*.*"));
+   wxFileDialog dialog(this, _T("Choose a file to add"), _T(""), _T(""), _T("*.*"));
    Integer foundAt = -99;
    if (dialog.ShowModal() == wxID_OK)
    {
@@ -944,7 +944,7 @@ void CelestialBodyOrbitPanel::OnNaifIdTextCtrlChange(wxCommandEvent &event)
 
 void CelestialBodyOrbitPanel::OnCentralBodyComboBoxChange(wxCommandEvent &event)
 {
-   wxString newCentralBody = (centralBodyComboBox->GetStringSelection()).c_str();
+   std::string newCentralBody = (centralBodyComboBox->GetStringSelection()).c_str();
    if (newCentralBody == centralBody) return;
    cBodyChanged       = true;
    dataChanged        = true;

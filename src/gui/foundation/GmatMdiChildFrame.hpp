@@ -33,8 +33,8 @@ class GmatMdiChildFrame : public wxMDIChildFrame
 public:
    // constructors
    GmatMdiChildFrame(wxMDIParentFrame *parent, 
-                     const wxString &name = wxT(""),
-                     const wxString &title = wxT(""), 
+                     const wxString &name = "",
+                     const wxString &title = "", 
                      const GmatTree::ItemType type = GmatTree::UNKNOWN_ITEM,
                      wxWindowID id = -1, 
                      const wxPoint &pos = wxDefaultPosition, 

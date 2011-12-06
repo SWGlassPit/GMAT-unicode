@@ -37,7 +37,7 @@ END_EVENT_TABLE()
 // SetPathDialog(wxWindow *parent)
 //------------------------------------------------------------------------------
 SetPathDialog::SetPathDialog(wxWindow *parent)
-   : GmatDialog(parent, -1, wxT("SetPathDialog"))
+   : GmatDialog(parent, -1, "SetPathDialog")
 {
    Create();
    ShowData();
@@ -58,7 +58,7 @@ SetPathDialog::~SetPathDialog()
 void SetPathDialog::Create()
 {
    #ifdef DEBUG_SETPATH_DIALOG_CREATE
-   MessageInterface::ShowMessage(wxT("SetPathDialog::Create() entered.\n"));
+   MessageInterface::ShowMessage("SetPathDialog::Create() entered.\n");
    #endif
    
    FileManager *fm = FileManager::Instance();
@@ -87,7 +87,7 @@ void SetPathDialog::Create()
    
    //----- add to sizer
    GmatStaticBoxSizer *startupSizer =
-      new GmatStaticBoxSizer(wxVERTICAL, this, wxT("Startup File"));
+      new GmatStaticBoxSizer(wxVERTICAL, this, "Startup File");
    startupSizer->Add(readButton, 0, wxALIGN_LEFT|wxALL, 2);
    startupSizer->Add(currFileText, 0, wxALIGN_LEFT|wxALL, 2);
    startupSizer->Add(mReadFileTextCtrl, 0, wxALIGN_CENTER|wxGROW|wxALL, 2);
@@ -102,20 +102,20 @@ void SetPathDialog::Create()
    
    //----- add panels to notebook   
    mGmatFunPathPanel = new MultiPathSetupPanel(mPathNotebook, gmatPaths);
-   mPathNotebook->AddPage(mGmatFunPathPanel, wxT("GMAT Function"));
+   mPathNotebook->AddPage(mGmatFunPathPanel, "GMAT Function");
    
    StringArray matlabPaths = fm->GetAllMatlabFunctionPaths();
    mMatlabPathPanel = new MultiPathSetupPanel(mPathNotebook, matlabPaths);
-   mPathNotebook->AddPage(mMatlabPathPanel, wxT("MATLAB Function"));
+   mPathNotebook->AddPage(mMatlabPathPanel, "MATLAB Function");
    
-   wxString outputPath = fm->GetFullPathname(wxT("OUTPUT_PATH"));
+   std::string outputPath = fm->GetFullPathname("OUTPUT_PATH");
    
    #ifdef DEBUG_SETPATH_DIALOG_CREATE
-   MessageInterface::ShowMessage(wxT("   outputPath='%s'\n"), outputPath.c_str());
+   MessageInterface::ShowMessage("   outputPath='%s'\n", outputPath.c_str());
    #endif
    
    mOutputPathPanel = new SinglePathSetupPanel(mPathNotebook, outputPath.c_str());
-   mPathNotebook->AddPage(mOutputPathPanel, wxT("Output"));
+   mPathNotebook->AddPage(mOutputPathPanel, "Output");
    
    theMiddleSizer->Add(startupSizer, 0, wxALIGN_CENTER|wxGROW|wxALL, 5);
    theMiddleSizer->Add(mPathNotebook, 1, wxALIGN_CENTER|wxGROW|wxALL, 5);
@@ -139,7 +139,7 @@ void SetPathDialog::LoadData()
 void SetPathDialog::SaveData()
 {
    #ifdef DEBUG_SETPATH_DIALOG_SAVE
-   MessageInterface::ShowMessage(wxT("SetPathDialog::SaveData() entered.\n"));
+   MessageInterface::ShowMessage("SetPathDialog::SaveData() entered.\n");
    #endif
    
    canClose = true;
@@ -151,20 +151,20 @@ void SetPathDialog::SaveData()
    if (mGmatFunPathPanel->HasDataChanged())
    {
       #ifdef DEBUG_SETPATH_DIALOG_SAVE
-      MessageInterface::ShowMessage(wxT("   Saving GmatFunction paths...\n"));
+      MessageInterface::ShowMessage("   Saving GmatFunction paths...\n");
       #endif
       
       pathNames = mGmatFunPathPanel->GetPathNames();
       
       #ifdef DEBUG_SETPATH_DIALOG_SAVE
-      MessageInterface::ShowMessage(wxT("   ...Adding %d paths\n"), pathNames.GetCount());
+      MessageInterface::ShowMessage("   ...Adding %d paths\n", pathNames.GetCount());
       #endif
       
       fm->ClearGmatFunctionPath();
       for (UnsignedInt i=0; i<pathNames.GetCount(); i++)
       {
          #ifdef DEBUG_SETPATH_DIALOG_SAVE
-         MessageInterface::ShowMessage(wxT("   ...Adding '%s'\n"), pathNames[i].c_str());
+         MessageInterface::ShowMessage("   ...Adding '%s'\n", pathNames[i].c_str());
          #endif
          
          fm->AddGmatFunctionPath(pathNames[i].c_str(), false);
@@ -175,7 +175,7 @@ void SetPathDialog::SaveData()
    if (mMatlabPathPanel->HasDataChanged())
    {
       #ifdef DEBUG_SETPATH_DIALOG_SAVE
-      MessageInterface::ShowMessage(wxT("   Saving MatlabFunction paths...\n"));
+      MessageInterface::ShowMessage("   Saving MatlabFunction paths...\n");
       #endif
       
       pathNames = mMatlabPathPanel->GetPathNames();
@@ -187,20 +187,20 @@ void SetPathDialog::SaveData()
    // Log file path
    if (mOutputPathPanel->HasDataChanged())
    {
-      wxString pathName = mOutputPathPanel->GetFullPathName().c_str();
+      std::string pathName = mOutputPathPanel->GetFullPathName().c_str();
       if (wxDir::Exists(pathName.c_str()))
       {
          #ifdef DEBUG_SETPATH_DIALOG_SAVE
-         MessageInterface::ShowMessage(wxT("   Saving Log path to '%s'\n"), pathName.c_str());
+         MessageInterface::ShowMessage("   Saving Log path to '%s'\n", pathName.c_str());
          #endif
          
-         fm->SetAbsPathname(wxT("OUTPUT_PATH"), pathName);
+         fm->SetAbsPathname("OUTPUT_PATH", pathName);
          MessageInterface::SetLogPath(pathName);
       }
       else
       {
          wxString str;
-         str.Printf(wxT("The directory \" %s \" does not exist.\n"), pathName.c_str());
+         str.Printf("The directory \" %s \" does not exist.\n", pathName.c_str());
          wxMessageBox(str,
                       wxT("Directory Error"));
          
@@ -208,7 +208,7 @@ void SetPathDialog::SaveData()
          int numPage = mPathNotebook->GetPageCount();
          for (int i=0; i<numPage; i++)
          {
-            if (mPathNotebook->GetPageText(i) == wxT("Output"))
+            if (mPathNotebook->GetPageText(i) == "Output")
             {
                mPathNotebook->SetSelection(i);
                break;
@@ -219,7 +219,7 @@ void SetPathDialog::SaveData()
    }
    
    #ifdef DEBUG_SETPATH_DIALOG_SAVE
-   MessageInterface::ShowMessage(wxT("SetPathDialog::SaveData() exiting.\n"));
+   MessageInterface::ShowMessage("SetPathDialog::SaveData() exiting.\n");
    #endif
 }
 
@@ -239,7 +239,7 @@ void SetPathDialog::ResetData()
 void SetPathDialog::OnReadButtonClick(wxCommandEvent& event)
 {
    #ifdef DEBUG_SETPATH
-   MessageInterface::ShowMessage(wxT("SetPathDialog::OnReadButtonClick() entered\n"));
+   MessageInterface::ShowMessage("SetPathDialog::OnReadButtonClick() entered\n");
    #endif
    
    FileManager *fm = FileManager::Instance();
@@ -249,10 +249,10 @@ void SetPathDialog::OnReadButtonClick(wxCommandEvent& event)
    wxString defDir;
    
    #ifdef DEBUG_SETPATH
-   MessageInterface::ShowMessage(wxT(" defDir='%s'\n"), defDir.c_str());
+   MessageInterface::ShowMessage(" defDir='%s'\n", defDir.c_str());
    #endif
    
-   wxFileDialog dialog(this, wxT("Choose a file"), defDir, wxT(""), wxT("*.*"));
+   wxFileDialog dialog(this, _T("Choose a file"), defDir, _T(""), _T("*.*"));
    
    if (dialog.ShowModal() == wxID_OK)
    {
@@ -285,7 +285,7 @@ void SetPathDialog::OnReadButtonClick(wxCommandEvent& event)
 //------------------------------------------------------------------------------
 void SetPathDialog::OnSaveButtonClick(wxCommandEvent& event)
 {
-   wxFileDialog dialog(this, wxT("Choose a file"), wxT(""), wxT(""), wxT("*.*"));
+   wxFileDialog dialog(this, _T("Choose a file"), "", _T(""), _T("*.*"));
    
    if (dialog.ShowModal() == wxID_OK)
    {

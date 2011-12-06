@@ -44,7 +44,7 @@ GmatStaticBoxSizer::GmatStaticBoxSizer(int orient, wxWindow *parent,
    wxStaticText *labelText =
       new wxStaticText(parent, -1, label, wxDefaultPosition, wxSize(220,20), style);
    labelText->SetFont(wxFont(14, wxSWISS, wxFONTFAMILY_TELETYPE, wxFONTWEIGHT_BOLD,
-                             false, wxT(""), wxFONTENCODING_SYSTEM));
+                             false, _T(""), wxFONTENCODING_SYSTEM));
    Add(labelText);
 }
 #else

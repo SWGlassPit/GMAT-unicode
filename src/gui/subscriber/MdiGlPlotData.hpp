@@ -48,11 +48,11 @@ namespace GmatPlot
    struct BodyInfo
    {
       static wxString WX_BODY_NAME[MAX_BODIES];
-      static wxString BODY_NAME[MAX_BODIES];
+      static std::string BODY_NAME[MAX_BODIES];
       static unsigned int BODY_COLOR[MAX_BODIES];
    };
    
-   wxString& GetBodyName(int bodyId);
+   std::string& GetBodyName(int bodyId);
    int GetBodyId(const wxString &bodyName);
    unsigned int GetBodyColor(const wxString &bodyName);
    

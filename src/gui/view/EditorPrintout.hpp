@@ -26,7 +26,7 @@ class EditorPrintout: public wxPrintout
 public:
 
    // constructor
-   EditorPrintout (Editor *editor, wxChar *title = wxT(""));
+   EditorPrintout (Editor *editor, wxChar *title = _T(""));
 
    // event handlers
    bool OnPrintPage (int page);

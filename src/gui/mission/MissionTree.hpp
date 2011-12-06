@@ -225,11 +225,11 @@ private:
    bool IsInsideSolver(wxTreeItemId itemId, GmatTree::ItemType &itemType);
    
    // for Debug
-   void ShowCommands(const wxString &msg = wxT(""));
+   void ShowCommands(const wxString &msg = "");
    void ShowSubCommands(GmatCommand* brCmd, Integer level);
-   void WriteCommand(const wxString &prefix,
-                     const wxString &title1, GmatCommand *cmd1,
-                     const wxString &title2 = wxT(""),
+   void WriteCommand(const std::string &prefix,
+                     const std::string &title1, GmatCommand *cmd1,
+                     const std::string &title2 = "",
                      GmatCommand *cmd2 = NULL);
    
    //--------------------------------------------------
@@ -238,8 +238,8 @@ private:
    #ifdef __TEST_MISSION_TREE_ACTIONS__
    bool mSaveActions;
    bool mPlaybackActions;
-   wxString mActionsOutFile;
-   wxString mResultsFile;
+   std::string mActionsOutFile;
+   std::string mResultsFile;
    std::ofstream mActionsOutStream;
    std::ofstream mResultsStream;
    std::ofstream mPlaybackResultsStream;

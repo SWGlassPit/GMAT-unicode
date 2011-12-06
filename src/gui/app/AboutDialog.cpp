@@ -66,7 +66,7 @@ AboutDialog::AboutDialog(wxWindow *parent, wxWindowID id, const wxString& title,
    
    // if icon file available, use it
    FileManager *fm = FileManager::Instance();
-   wxString iconFile = (fm->GetFullPathname(wxT("ICON_PATH")) + wxT("GMATAboutIcon.jpg"));   
+   std::string iconFile = (fm->GetFullPathname("ICON_PATH") + "GMATAboutIcon.jpg");   
    if (fm->DoesFileExist(iconFile))
    {
       bitmap.LoadFile(iconFile.c_str(), wxBITMAP_TYPE_JPEG);
@@ -80,14 +80,14 @@ AboutDialog::AboutDialog(wxWindow *parent, wxWindowID id, const wxString& title,
                                        wxSize(60, 60));
    
    wxColourDatabase cdb;
-   wxColour gmatColor = cdb.Find(wxT("NAVY"));
+   wxColour gmatColor = cdb.Find("NAVY");
       
    wxStaticLine *line1 = new wxStaticLine(this);
    wxStaticLine *line2 = new wxStaticLine(this);
    
    // title, build date   
    wxStaticText *gmatText =
-      new wxStaticText(this, -1, wxT("General Mission Analysis Tool"));
+      new wxStaticText(this, -1, "General Mission Analysis Tool");
    wxFont font1 = wxFont();
    
    #ifdef __WXMAC__
@@ -101,7 +101,7 @@ AboutDialog::AboutDialog(wxWindow *parent, wxWindowID id, const wxString& title,
    gmatText->SetOwnForegroundColour(gmatColor);
    
    wxString buildDate;
-   buildDate.Printf(wxT("Build Date: %s %s\n"), __DATE__, __TIME__);
+   buildDate.Printf("Build Date: %s %s\n", __DATE__, __TIME__);
    
    wxStaticText *buildText = new wxStaticText(this, -1, buildDate);
    
@@ -115,11 +115,11 @@ AboutDialog::AboutDialog(wxWindow *parent, wxWindowID id, const wxString& title,
    buildText->SetFont(font1);
    
    // website and contact email
-   wxStaticText *webText = new wxStaticText(this, -1, wxT("Website: "));
-   wxString gmatUrl = wxT("http://gmat.gsfc.nasa.gov");
+   wxStaticText *webText = new wxStaticText(this, -1, "Website: ");
+   wxString gmatUrl = "http://gmat.gsfc.nasa.gov";
    wxHyperlinkCtrl *webLink = new wxHyperlinkCtrl(this, -1, gmatUrl, gmatUrl);
-   wxStaticText *contactText = new wxStaticText(this, -1, wxT("Contact: "));
-   wxStaticText *emailText = new wxStaticText(this, -1, wxT("gmat@gsfc.nasa.gov"));
+   wxStaticText *contactText = new wxStaticText(this, -1, "Contact: ");
+   wxStaticText *emailText = new wxStaticText(this, -1, "gmat@gsfc.nasa.gov");
    
    wxFlexGridSizer *contactSizer = new wxFlexGridSizer(2);
    contactSizer->Add(webText, 0, wxALIGN_RIGHT|wxALL, 2);
@@ -138,21 +138,21 @@ AboutDialog::AboutDialog(wxWindow *parent, wxWindowID id, const wxString& title,
    topSizer->Add(gmatSizer, 0, wxALIGN_CENTRE|wxALL, 4);
    
    // licence and thrid party
-   wxStaticText *licenceText = new wxStaticText(this, -1, wxT(" - Licensed under"));
-   wxString agreement = wxT("NASA Open Source Agreement");
+   wxStaticText *licenceText = new wxStaticText(this, -1, " - Licensed under");
+   wxString agreement = "NASA Open Source Agreement";
    theLicenseLink =
-      new wxHyperlinkCtrl(this, ID_HYPERLINK, agreement, wxT(""));
+      new wxHyperlinkCtrl(this, ID_HYPERLINK, agreement, "");
    wxBoxSizer *licenceSizer = new wxBoxSizer(wxHORIZONTAL);
    licenceSizer->Add(licenceText, 0, wxALIGN_CENTRE|wxALL, 1);
    licenceSizer->Add(theLicenseLink, 0, wxALIGN_CENTRE|wxALL, 1);
    
    wxString use;
-   use = use + wxT(" - Uses ") + wxVERSION_STRING + wxT("\n");
-   use = use + wxT(" - Uses TSPlot\n");
-   use = use + wxT(" - Uses Pearl Compatible Regular Expressions\n");
-   use = use + wxT(" - Uses JPL SPICE Library\n");
-   use = use + wxT(" - Planetary images courtesy of JPL/Caltech/USGS, Celestia \n");
-   use = use + wxT("   Motherlode, Bjorn Jonsson, and NASA World Wind");
+   use = use + " - Uses " + wxVERSION_STRING + "\n";
+   use = use + " - Uses TSPlot\n";
+   use = use + " - Uses Pearl Compatible Regular Expressions\n";
+   use = use + " - Uses JPL SPICE Library\n";
+   use = use + " - Planetary images courtesy of JPL/Caltech/USGS, Celestia \n";
+   use = use + "   Motherlode, Bjorn Jonsson, and NASA World Wind";
    wxStaticText *useText = new wxStaticText(this, -1, use);
    
    wxBoxSizer *useSizer = new wxBoxSizer(wxVERTICAL);
@@ -160,7 +160,7 @@ AboutDialog::AboutDialog(wxWindow *parent, wxWindowID id, const wxString& title,
    useSizer->Add(useText, 0, wxALIGN_CENTRE|wxALL, 4);
    
    // OK button
-   theOkButton = new wxButton(this, ID_BUTTON_OK, wxT("OK"));
+   theOkButton = new wxButton(this, ID_BUTTON_OK, "OK");
    
    // Add to page sizer and set sizer to this dialog
    wxBoxSizer *pageSizer = new wxBoxSizer(wxVERTICAL);
@@ -180,7 +180,7 @@ AboutDialog::AboutDialog(wxWindow *parent, wxWindowID id, const wxString& title,
    // Set icon if icon file is in the start up file
    try
    {
-      wxString iconfile = (fm->GetFullPathname(wxT("MAIN_ICON_FILE")));
+      wxString iconfile = fm->GetFullPathname("MAIN_ICON_FILE").c_str();
       #if defined __WXMSW__
          SetIcon(wxIcon(iconfile, wxBITMAP_TYPE_ICO));
       #elif defined __WXGTK__
@@ -223,13 +223,13 @@ void AboutDialog::OnHyperLinkClick(wxHyperlinkEvent &event)
    if (event.GetEventObject() == theLicenseLink)
    {
       ViewTextDialog *dlg =
-         new ViewTextDialog(this, wxT("NASA Open Source Agreement"), false,
+         new ViewTextDialog(this, _T("NASA Open Source Agreement"), false,
                             wxDefaultPosition, wxSize(450, 300));
       
       wxString rootPath = FileManager::Instance()->GetRootPath().c_str();
-      wxString fileName = rootPath + wxT("License.txt");
+      wxString fileName = rootPath + "License.txt";
       if (!GmatFileUtil::DoesFileExist(fileName.c_str()))
-         fileName = wxT("../License.txt");
+         fileName = "../License.txt";
       
       wxTextCtrl *text = dlg->GetTextCtrl();
       text->LoadFile(fileName);

@@ -154,14 +154,14 @@ private:
       SolarRadiationPressure *srpf;
       bool useSrp; // for future use (SRP on individual body is future implementation)
       
-      ForceType(const wxString &body, const wxString &grav = wxT("None"),
-                const wxString &drag = wxT("None"), const wxString &mag = wxT("None"),
+      ForceType(const wxString &body, const wxString &grav = "None",
+                const wxString &drag = "None", const wxString &mag = "None",
                 PointMassForce *pf = NULL, GravityField *gf = NULL,
                 DragForce *df = NULL)
          {
             bodyName = body; gravType = grav; dragType = drag; magfType = mag;
-            gravDegree = wxT("4"); gravOrder = wxT("4"); magfDegree = wxT("0"); 
-            magfOrder = wxT("0"); potFilename = wxT(""); pmf = pf; gravf = gf; 
+            gravDegree = "4"; gravOrder = "4"; magfDegree = "0"; 
+            magfOrder = "0"; potFilename = ""; pmf = pf; gravf = gf; 
             dragf = df; srpf = NULL; useSrp = false;
          }
       
@@ -259,10 +259,10 @@ private:
    
    wxBoxSizer *leftBoxSizer;
    
-   wxString propSetupName;
-   wxString thePropagatorName;
-   wxString theForceModelName;
-   wxString mFmPrefaceComment;
+   std::string propSetupName;
+   std::string thePropagatorName;
+   std::string theForceModelName;
+   std::string mFmPrefaceComment;
    
    wxString currentBodyName;
    wxString gravTypeName;
@@ -338,9 +338,9 @@ private:
    
    // Layout & data handling methods
    Integer FindPrimaryBody(const wxString& bodyName, bool create = true,
-                           const wxString& gravType = wxT("None"),
-                           const wxString& dragType = wxT("None"),
-                           const wxString& magfType = wxT("None"));
+                           const wxString& gravType = "None",
+                           const wxString& dragType = "None",
+                           const wxString& magfType = "None");
    
    Integer FindPointMassBody(const wxString& bodyName);
    
@@ -397,9 +397,9 @@ private:
    void OnSRPEditButton(wxCommandEvent &event);
    
    // for Debug
-   void ShowPropData(const wxString &header);
-   void ShowForceList(const wxString &header);
-   void ShowForceModel(const wxString &header);
+   void ShowPropData(const std::string &header);
+   void ShowForceList(const std::string &header);
+   void ShowForceModel(const std::string &header);
    
    // for reading gravity files
    void ParseDATGravityFile(const wxString& fname);

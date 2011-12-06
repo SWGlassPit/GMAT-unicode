@@ -70,9 +70,9 @@ ReportFileSetupPanel::ReportFileSetupPanel(wxWindow *parent,
    : GmatPanel(parent)
 {
    #if DEBUG_REPORTFILE_PANEL
-   MessageInterface::ShowMessage(wxT("ReportFileSetupPanel() entering...\n"));
-   MessageInterface::ShowMessage(wxT("ReportFileSetupPanel() subscriberName = ") +
-                                 wxString(subscriberName.c_str()) + wxT("\n"));
+   MessageInterface::ShowMessage("ReportFileSetupPanel() entering...\n");
+   MessageInterface::ShowMessage("ReportFileSetupPanel() subscriberName = " +
+                                 std::string(subscriberName.c_str()) + "\n");
    #endif
    
    Subscriber *subscriber = (Subscriber*)
@@ -80,8 +80,8 @@ ReportFileSetupPanel::ReportFileSetupPanel(wxWindow *parent,
    
    reportFile = (ReportFile*)subscriber;
    
-   mObjectTypeList.Add(wxT("Spacecraft"));
-   mObjectTypeList.Add(wxT("ImpulsiveBurn"));
+   mObjectTypeList.Add("Spacecraft");
+   mObjectTypeList.Add("ImpulsiveBurn");
    
    Create();
    Show();
@@ -93,7 +93,7 @@ ReportFileSetupPanel::ReportFileSetupPanel(wxWindow *parent,
    theGuiManager->AddToResourceUpdateListeners(this);
 
    #if DEBUG_REPORTFILE_PANEL
-   MessageInterface::ShowMessage(wxT("ReportFileSetupPanel() exiting...\n"));
+   MessageInterface::ShowMessage("ReportFileSetupPanel() exiting...\n");
    #endif
 }
 
@@ -137,8 +137,8 @@ void ReportFileSetupPanel::ObjectNameChanged(Gmat::ObjectType type,
 {
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("ReportFilePanel::ObjectNameChanged() type=%d, oldName=<%s>, ")
-       wxT("newName=<%s>, mDataChanged=%d\n"), type, oldName.c_str(), newName.c_str(),
+      ("ReportFilePanel::ObjectNameChanged() type=%d, oldName=<%s>, "
+       "newName=<%s>, mDataChanged=%d\n", type, oldName.c_str(), newName.c_str(),
        mDataChanged);
    #endif
    
@@ -184,7 +184,7 @@ void ReportFileSetupPanel::OnCheckBoxChange(wxCommandEvent& event)
 void ReportFileSetupPanel::Create()
 {
    #if DEBUG_REPORTFILE_PANEL
-   MessageInterface::ShowMessage(wxT("ReportFileSetupPanel::Create() entering...\n"));
+   MessageInterface::ShowMessage("ReportFileSetupPanel::Create() entering...\n");
    #endif
    
    Integer bsize = 2; // border size
@@ -218,7 +218,7 @@ void ReportFileSetupPanel::Create()
       new wxComboBox(this, ID_COMBOBOX, wxT(""), wxDefaultPosition, wxSize(65, -1));
    
    // Get Solver Iteration option list from the Subscriber
-   const wxString *solverIterList = Subscriber::GetSolverIterOptionList();
+   const std::string *solverIterList = Subscriber::GetSolverIterOptionList();
    int count = Subscriber::GetSolverIterOptionCount();
    for (int i=0; i<count; i++)
       mSolverIterComboBox->Append(solverIterList[i].c_str());
@@ -256,7 +256,7 @@ void ReportFileSetupPanel::Create()
    option2Sizer->Add(precisionTextCtrl, 0, wxGROW|wxALIGN_LEFT|wxALL, bsize);
    
    GmatStaticBoxSizer *optionSizer =
-      new GmatStaticBoxSizer(wxVERTICAL, this, wxT("Options"));
+      new GmatStaticBoxSizer(wxVERTICAL, this, "Options");
    optionSizer->Add(option2Sizer, 0, wxALIGN_CENTRE|wxALL, bsize);
    
    //-------------------------------------------------------
@@ -270,7 +270,7 @@ void ReportFileSetupPanel::Create()
                                 wxDefaultPosition, wxDefaultSize, 0 );
    
    GmatStaticBoxSizer *selectedSizer =
-      new GmatStaticBoxSizer(wxVERTICAL, this, wxT("Parameter List"));
+      new GmatStaticBoxSizer(wxVERTICAL, this, "Parameter List");
    
    selectedSizer->Add(mSelectedListBox, 0, wxALIGN_CENTRE|wxALL, bsize);
    selectedSizer->Add(mViewButton, 0, wxALIGN_CENTRE|wxALL, bsize);
@@ -306,7 +306,7 @@ void ReportFileSetupPanel::Create()
    theMiddleSizer->Add(fileSizer, 0, wxALIGN_CENTRE|wxALL, bsize);
    
    #if DEBUG_REPORTFILE_PANEL
-   MessageInterface::ShowMessage(wxT("ReportFileSetupPanel::Create() exiting...\n"));
+   MessageInterface::ShowMessage("ReportFileSetupPanel::Create() exiting...\n");
    #endif
 }
 
@@ -317,7 +317,7 @@ void ReportFileSetupPanel::Create()
 void ReportFileSetupPanel::LoadData()
 {
    #if DEBUG_REPORTFILE_PANEL_LOAD
-   MessageInterface::ShowMessage(wxT("ReportFileSetupPanel::LoadData() entering...\n"));
+   MessageInterface::ShowMessage("ReportFileSetupPanel::LoadData() entering...\n");
    #endif
    
    // Set the pointer for the "Show Script" button
@@ -325,7 +325,7 @@ void ReportFileSetupPanel::LoadData()
    
    // load data from the core engine
    //writeCheckBox->SetValue(reportFile->IsActive());
-   writeCheckBox->SetValue(reportFile->GetBooleanParameter(wxT("WriteReport")));
+   writeCheckBox->SetValue(reportFile->GetBooleanParameter("WriteReport"));
    
    try
    {
@@ -334,60 +334,60 @@ void ReportFileSetupPanel::LoadData()
       //      GetPathAndFileName() constructs filename if name is empty
       // We don't want to write name with path unless user specified the path
       // in the script, so check for the empty name first (LOJ: 2010.11.10)
-      wxString filename = reportFile->GetStringParameter(wxT("Filename"));
-      if (filename == wxT(""))
+      std::string filename = reportFile->GetStringParameter("Filename");
+      if (filename == "")
       {
-         wxString fullname = reportFile->GetPathAndFileName();
+         std::string fullname = reportFile->GetPathAndFileName();
          filename = reportFile->GetDefaultFileName();
       }
       
       Integer id;
       
-      mFileTextCtrl->SetValue(filename.c_str());
+      mFileTextCtrl->SetValue(wxT(filename.c_str()));
       
       #if DEBUG_REPORTFILE_PANEL_LOAD
       MessageInterface::ShowMessage
-         (wxT("ReportFileSetupPanel::LoadData() filename=%s\n"), filename.c_str());
+         ("ReportFileSetupPanel::LoadData() filename=%s\n", filename.c_str());
       #endif
       
-      id = reportFile->GetParameterID(wxT("WriteHeaders"));
-      if (reportFile->GetOnOffParameter(id) ==  wxT("On"))
+      id = reportFile->GetParameterID("WriteHeaders");
+      if (strcmp(reportFile->GetOnOffParameter(id).c_str(), "On") == 0)
          showHeaderCheckBox->SetValue(true);
       else
          showHeaderCheckBox->SetValue(false);
       
-      id = reportFile->GetParameterID(wxT("LeftJustify"));
-      if (reportFile->GetOnOffParameter(id) ==  wxT("On"))
+      id = reportFile->GetParameterID("LeftJustify");
+      if (strcmp(reportFile->GetOnOffParameter(id).c_str(), "On") == 0)
          leftJustifyCheckBox->SetValue(true);
       else
          leftJustifyCheckBox->SetValue(false);
       
-      id = reportFile->GetParameterID(wxT("ZeroFill"));
-      if (reportFile->GetOnOffParameter(id) ==  wxT("On"))
+      id = reportFile->GetParameterID("ZeroFill");
+      if (strcmp(reportFile->GetOnOffParameter(id).c_str(), "On") == 0)
          zeroFillCheckBox->SetValue(true);
       else
          zeroFillCheckBox->SetValue(false);
       
-      id = reportFile->GetParameterID(wxT("SolverIterations"));
+      id = reportFile->GetParameterID("SolverIterations");
       
       mSolverIterComboBox->
-         SetValue(reportFile->GetStringParameter(wxT("SolverIterations")).c_str());
+         SetValue(reportFile->GetStringParameter("SolverIterations").c_str());
       
-      id = reportFile->GetParameterID(wxT("ColumnWidth"));
+      id = reportFile->GetParameterID("ColumnWidth");
       wxString numSpacesValue;
-      numSpacesValue.Printf(wxT("%d"), reportFile->GetIntegerParameter(id));
+      numSpacesValue.Printf("%d", reportFile->GetIntegerParameter(id));
       colWidthTextCtrl->SetValue(numSpacesValue);
       
-      id = reportFile->GetParameterID(wxT("Precision"));
+      id = reportFile->GetParameterID("Precision");
       wxString precisionValue;
-      precisionValue.Printf(wxT("%d"), reportFile->GetIntegerParameter(id));
+      precisionValue.Printf("%d", reportFile->GetIntegerParameter(id));
       precisionTextCtrl->SetValue(precisionValue);
       
-      StringArray parameterList = reportFile->GetStringArrayParameter(wxT("Add"));
+      StringArray parameterList = reportFile->GetStringArrayParameter("Add");
       mNumParameters = parameterList.size();
       
       #if DEBUG_REPORTFILE_PANEL_LOAD
-      MessageInterface::ShowMessage(wxT("   mNumParameters=%d\n"), mNumParameters);
+      MessageInterface::ShowMessage("   mNumParameters=%d\n", mNumParameters);
       #endif
       
       if (mNumParameters > 0)
@@ -403,7 +403,7 @@ void ReportFileSetupPanel::LoadData()
             mReportWxStrings.Add(paramName);
             
             #if DEBUG_REPORTFILE_PANEL_LOAD
-            MessageInterface::ShowMessage(wxT("   added %s\n"), paramName.c_str());
+            MessageInterface::ShowMessage("   added %s\n", paramName.c_str());
             #endif
          }
       }
@@ -414,7 +414,7 @@ void ReportFileSetupPanel::LoadData()
    }
    
    #if DEBUG_REPORTFILE_PANEL_LOAD
-   MessageInterface::ShowMessage(wxT("ReportFileSetupPanel::LoadData() exiting...\n"));
+   MessageInterface::ShowMessage("ReportFileSetupPanel::LoadData() exiting...\n");
    #endif
    
 }
@@ -427,12 +427,12 @@ void ReportFileSetupPanel::SaveData()
 {
    #if DEBUG_REPORTFILE_PANEL_SAVE
    MessageInterface::ShowMessage
-      (wxT("ReportFileSetupPanel::SaveData() mHasParameterChanged=%d, mHasBoolDataChanged=%d\n"),
+      ("ReportFileSetupPanel::SaveData() mHasParameterChanged=%d, mHasBoolDataChanged=%d\n",
        mHasParameterChanged, mHasBoolDataChanged);
    #endif
    
    canClose = true;
-   wxString str;
+   std::string str;
    Integer width, prec;
    
    //-----------------------------------------------------------------
@@ -440,13 +440,13 @@ void ReportFileSetupPanel::SaveData()
    //-----------------------------------------------------------------
    
    str = colWidthTextCtrl->GetValue();
-   CheckInteger(width, str, wxT("Column Width"), wxT("Integer Number > 0"));
+   CheckInteger(width, str, "Column Width", "Integer Number > 0");
    
    str = precisionTextCtrl->GetValue();
-   CheckInteger(prec, str, wxT("Precision"), wxT("Integer Number > 0"));
+   CheckInteger(prec, str, "Precision", "Integer Number > 0");
    
    str = mFileTextCtrl->GetValue();
-   CheckFileName(str, wxT("Filename"));
+   CheckFileName(str, "Filename");
    
    if (!canClose)
       return;
@@ -463,61 +463,61 @@ void ReportFileSetupPanel::SaveData()
       {
          mHasBoolDataChanged = false;
          
-         clonedObj->SetBooleanParameter(wxT("WriteReport"), writeCheckBox->IsChecked());
+         clonedObj->SetBooleanParameter("WriteReport", writeCheckBox->IsChecked());
          
          #if DEBUG_RF_PANEL_SAVE
          if (theSubscriber->IsActive())
             MessageInterface::ShowMessage
-               (wxT("\nReportFileSetupPanel:: The subscriber was activiated\n"));
+               ("\nReportFileSetupPanel:: The subscriber was activiated\n");
          else
             MessageInterface::ShowMessage
-               (wxT("\nReportFileSetupPanel:: The subscriber was NOT activiated\n"));
+               ("\nReportFileSetupPanel:: The subscriber was NOT activiated\n");
          #endif
          
-         id = clonedObj->GetParameterID(wxT("WriteHeaders"));
+         id = clonedObj->GetParameterID("WriteHeaders");
          if (showHeaderCheckBox->IsChecked())
-            clonedObj->SetOnOffParameter(id, wxT("On"));
+            clonedObj->SetOnOffParameter(id, "On");
          else
-            clonedObj->SetOnOffParameter(id, wxT("Off"));
+            clonedObj->SetOnOffParameter(id, "Off");
          
-         id = clonedObj->GetParameterID(wxT("LeftJustify"));
+         id = clonedObj->GetParameterID("LeftJustify");
          if (leftJustifyCheckBox->IsChecked())
-            clonedObj->SetOnOffParameter(id, wxT("On"));
+            clonedObj->SetOnOffParameter(id, "On");
          else
-            clonedObj->SetOnOffParameter(id, wxT("Off"));
+            clonedObj->SetOnOffParameter(id, "Off");
          
-         id = clonedObj->GetParameterID(wxT("ZeroFill"));
+         id = clonedObj->GetParameterID("ZeroFill");
          if (zeroFillCheckBox->IsChecked())
-            clonedObj->SetOnOffParameter(id, wxT("On"));
+            clonedObj->SetOnOffParameter(id, "On");
          else
-            clonedObj->SetOnOffParameter(id, wxT("Off"));
+            clonedObj->SetOnOffParameter(id, "Off");
       }
       
-      id = clonedObj->GetParameterID(wxT("ColumnWidth"));
+      id = clonedObj->GetParameterID("ColumnWidth");
       clonedObj->SetIntegerParameter(id, width);
       
-      id = clonedObj->GetParameterID(wxT("Precision"));
+      id = clonedObj->GetParameterID("Precision");
       clonedObj->SetIntegerParameter(id, prec);
       
-      id = clonedObj->GetParameterID(wxT("SolverIterations"));
+      id = clonedObj->GetParameterID("SolverIterations");
       clonedObj->
          SetStringParameter(id, mSolverIterComboBox->GetValue().c_str());
       
       // save file name data
       str = mFileTextCtrl->GetValue();
-      wxString filename = str.c_str();
+      std::string filename = str.c_str();
       
       // Check for file extension
       // If file extension is blank, append .txt
-      if (GmatFileUtil::ParseFileExtension(filename) == wxT(""))
+      if (GmatFileUtil::ParseFileExtension(filename) == "")
       {
          MessageInterface::PopupMessage
-            (Gmat::WARNING_, wxT("Appended .txt to file name '%s'\n"), filename.c_str());
-         filename = filename + wxT(".txt");
-         mFileTextCtrl->SetValue(filename.c_str());
+            (Gmat::WARNING_, "Appended .txt to file name '%s'\n", filename.c_str());
+         filename = filename + ".txt";
+         mFileTextCtrl->SetValue(wxT(filename.c_str()));
       }
       
-      id = clonedObj->GetParameterID(wxT("Filename"));
+      id = clonedObj->GetParameterID("Filename");
       clonedObj->SetStringParameter(id, filename.c_str());
       
       // if parameter changed, clear the list and re-add parameters
@@ -527,16 +527,16 @@ void ReportFileSetupPanel::SaveData()
          mNumParameters = mSelectedListBox->GetCount();
          
          #if DEBUG_REPORTFILE_PANEL_SAVE
-         MessageInterface::ShowMessage(wxT("   mNumParameters=%d\n"), mNumParameters);
+         MessageInterface::ShowMessage("   mNumParameters=%d\n", mNumParameters);
          #endif
          
          if (mNumParameters >= 0) // >=0 because the list needs to be cleared
          {
-            clonedObj->TakeAction(wxT("Clear"));
+            clonedObj->TakeAction("Clear");
             for (int i=0; i<mNumParameters; i++)
             {
-               wxString selYName = mSelectedListBox->GetString(i).c_str();
-               clonedObj->SetStringParameter(wxT("Add"), selYName, i);
+               std::string selYName = mSelectedListBox->GetString(i).c_str();
+               clonedObj->SetStringParameter("Add", selYName, i);
             }
          }
          
@@ -588,7 +588,7 @@ void ReportFileSetupPanel::OnButtonClick(wxCommandEvent& event)
    }
    else if (event.GetEventObject() == mBrowseButton)
    {
-      wxFileDialog dialog(this, wxT("Choose a file"), wxT(""), wxT(""), wxT("*.*"));
+      wxFileDialog dialog(this, _T("Choose a file"), _T(""), _T(""), _T("*.*"));
     
       if (dialog.ShowModal() == wxID_OK)
       {

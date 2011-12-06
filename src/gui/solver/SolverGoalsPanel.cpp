@@ -95,9 +95,9 @@ void SolverGoalsPanel::Setup( wxWindow *parent)
     goalsGrid->SetColSize(0, 150);
     goalsGrid->SetColSize(1, 585);
     goalsGrid->SetColSize(2, 585);
-    goalsGrid->SetColLabelValue(0, wxT("Solver"));
-    goalsGrid->SetColLabelValue(1, wxT("Property"));
-    goalsGrid->SetColLabelValue(2, wxT("Description"));
+    goalsGrid->SetColLabelValue(0, _T("Solver"));
+    goalsGrid->SetColLabelValue(1, _T("Property"));
+    goalsGrid->SetColLabelValue(2, _T("Description"));
     goalsGrid->SetRowLabelSize(0);
  
     // wxStaticText
@@ -129,7 +129,7 @@ void SolverGoalsPanel::Setup( wxWindow *parent)
     };
     
     // wxComboBox
-    solverComboBox = new wxComboBox( parent, ID_COMBO, strArray1[0], wxDefaultPosition, wxSize(200,-1), 1, strArray1, wxCB_DROPDOWN|wxCB_READONLY );
+    solverComboBox = new wxComboBox( parent, ID_COMBO, wxT(strArray1[0]), wxDefaultPosition, wxSize(200,-1), 1, strArray1, wxCB_DROPDOWN|wxCB_READONLY );
 
     // wxButton
     editButton = new wxButton( parent, ID_BUTTON, wxT("Edit"), wxDefaultPosition, wxDefaultSize, 0 );

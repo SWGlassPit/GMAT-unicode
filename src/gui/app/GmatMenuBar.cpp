@@ -224,7 +224,7 @@ void GmatMenuBar::CreateMenu(GmatTree::ItemType itemType, wxMenu *windowMenu)
       winMenu->Append(TOOL_CLOSE_CURRENT, wxT("Close"), wxT(""));
       
       // Insert before Help menu
-      int helpPos = FindMenu(wxT("Help"));
+      int helpPos = FindMenu("Help");
       this->Insert(helpPos, winMenu, wxT("Window"));
    }
    else if (prependClose)

@@ -105,8 +105,8 @@ MdiChildTsFrame::MdiChildTsFrame(wxMDIParentFrame *parent, bool isMainFrame,
    
    #ifdef DEBUG_MDI_TS_FRAME
    MessageInterface::ShowMessage
-      (wxT("MdiChildTsFrame::MdiChildTsFrame()\n   X Axis Title = '%s'\n")
-       wxT("   Y Axis Title = '%s'\n   isMainFrame = %d\n"), xAxisTitle.c_str(),
+      ("MdiChildTsFrame::MdiChildTsFrame()\n   X Axis Title = '%s'\n"
+       "   Y Axis Title = '%s'\n   isMainFrame = %d\n", xAxisTitle.c_str(),
        yAxisTitle.c_str(), isMainFrame);
    #endif
    
@@ -114,7 +114,7 @@ MdiChildTsFrame::MdiChildTsFrame(wxMDIParentFrame *parent, bool isMainFrame,
     
    // Give it an icon
    #ifdef __WXMSW__
-      SetIcon(wxIcon(wxT("chrt_icn")));
+      SetIcon(wxIcon(_T("chrt_icn")));
    #else
       SetIcon(wxIcon( mondrian_xpm ));
    #endif
@@ -124,7 +124,7 @@ MdiChildTsFrame::MdiChildTsFrame(wxMDIParentFrame *parent, bool isMainFrame,
    GetClientSize(&width, &height);
    
    #ifdef DEBUG_MDI_TS_FRAME
-   MessageInterface::ShowMessage(wxT("   Creating TsPlotCanvas\n"));
+   MessageInterface::ShowMessage("   Creating TsPlotCanvas\n");
    #endif
    
    TsPlotCanvas *frame =
@@ -152,8 +152,8 @@ MdiChildTsFrame::MdiChildTsFrame(wxMDIParentFrame *parent, bool isMainFrame,
 
 
    #ifdef DEBUG_MDI_TS_FRAME
-   MessageInterface::ShowMessage(wxT("MdiChildTsFrame::MdiChildTsFrame() ")
-         wxT("leaving\n"));
+   MessageInterface::ShowMessage("MdiChildTsFrame::MdiChildTsFrame() "
+         "leaving\n");
    #endif
 }
 
@@ -169,14 +169,14 @@ MdiChildTsFrame::~MdiChildTsFrame()
 {
    #ifdef DEBUG_MDI_TS_FRAME
    MessageInterface::ShowMessage
-      (wxT("~MdiChildTsFrame() mPlotName=%s\n"), mPlotName.c_str());
+      ("~MdiChildTsFrame() mPlotName=%s\n", mPlotName.c_str());
    #endif
    
    MdiTsPlot::mdiChildren.DeleteObject(this);
    MdiTsPlot::numChildren--;
    
    #ifdef DEBUG_MDI_TS_FRAME
-   MessageInterface::ShowMessage(wxT("~MdiChildTsFrame() exiting\n"));
+   MessageInterface::ShowMessage("~MdiChildTsFrame() exiting\n");
    #endif
 }
 
@@ -199,17 +199,17 @@ int MdiChildTsFrame::ReadXyPlotFile(const wxString &filename)
    int numData = 0;
    double startTime;
    
-   if (filename != wxT(""))
+   if (filename != "")
    {       
-      inStream.open(filename.char_str());
+      inStream.open(filename.c_str());
       if (inStream.is_open())
       {
          TsPlotCurve *xCurve = new TsPlotCurve(0, -40000.0, 40000.0,
-               wxT("Position X"));
+               "Position X");
          TsPlotCurve *yCurve = new TsPlotCurve(0, -40000.0, 40000.0,
-               wxT("Position Y"));
+               "Position Y");
          TsPlotCurve *zCurve = new TsPlotCurve(0, -40000.0, 40000.0,
-               wxT("Position Z"));
+               "Position Z");
 
          // read 1st line to get start time
          for (int i=0; i<7; i++)
@@ -255,7 +255,7 @@ int MdiChildTsFrame::ReadXyPlotFile(const wxString &filename)
 //------------------------------------------------------------------------------
 bool MdiChildTsFrame::DeletePlot()
 {
-   MessageInterface::ShowMessage(wxT("MdiChildTsFrame::DeletePlot()\n"));
+   MessageInterface::ShowMessage("MdiChildTsFrame::DeletePlot()\n");
    Close(TRUE);
 
    return true;
@@ -274,14 +274,14 @@ bool MdiChildTsFrame::DeletePlot()
 void MdiChildTsFrame::SetPlotTitle(const wxString &title)
 {
    #ifdef DEBUG_MDI_TS_FRAME
-   MessageInterface::ShowMessage(wxT("MdiChildTsFrame::SetPlotTitle() title = %s\n"),
+   MessageInterface::ShowMessage("MdiChildTsFrame::SetPlotTitle() title = %s\n",
                                  title.c_str());
    #endif
    
    mPlotTitle = title;
    
    if (mXyPlot)
-      mXyPlot->SetLabel(title, TsPlotCanvas::PLOT_TITLE);
+      mXyPlot->SetLabel(title.c_str(), TsPlotCanvas::PLOT_TITLE);
 }
 
 
@@ -295,7 +295,7 @@ void MdiChildTsFrame::SetPlotTitle(const wxString &title)
 void MdiChildTsFrame::ShowPlotLegend()
 {
    #ifdef DEBUG_MDI_TS_FRAME
-      MessageInterface::ShowMessage(wxT("MdiChildTsFrame::ShowLegend() entered\n"));
+      MessageInterface::ShowMessage("MdiChildTsFrame::ShowLegend() entered\n");
    #endif
       
    if (mXyPlot)
@@ -323,7 +323,7 @@ void MdiChildTsFrame::AddPlotCurve(Integer curveIndex, Integer yOffset,
 {
    #ifdef DEBUG_MDI_TS_FRAME
       MessageInterface::ShowMessage
-         (wxT("MdiChildTsFrame::AddPlotCurve() yMin = %f, yMax = %f\n"), yMin, yMax);
+         ("MdiChildTsFrame::AddPlotCurve() yMin = %f, yMax = %f\n", yMin, yMax);
    #endif
    
    if (mXyPlot != NULL)
@@ -335,7 +335,7 @@ void MdiChildTsFrame::AddPlotCurve(Integer curveIndex, Integer yOffset,
       
       #ifdef DEBUG_MDI_TS_FRAME
          MessageInterface::ShowMessage(
-            wxT("MdiChildTsFrame::AddPlotCurve() curve title = %s\n"),
+            "MdiChildTsFrame::AddPlotCurve() curve title = %s\n",
             curveTitle.c_str());
       #endif
          
@@ -344,14 +344,14 @@ void MdiChildTsFrame::AddPlotCurve(Integer curveIndex, Integer yOffset,
       
       #ifdef DEBUG_MDI_TS_FRAME
             MessageInterface::ShowMessage
-               (wxT("MdiChildTsFrame::AddPlotCurve() curve count = %d added\n"),
+               ("MdiChildTsFrame::AddPlotCurve() curve count = %d added\n",
                 mXyPlot->GetCurveCount());
       #endif
    }
    else
    {
-      MessageInterface::ShowMessage(wxT("MdiChildTsFrame::AddPlotCurve() mXyPlot ")
-            wxT("is NULL... \n"));
+      MessageInterface::ShowMessage("MdiChildTsFrame::AddPlotCurve() mXyPlot "
+            "is NULL... \n");
    }
 }
 
@@ -369,7 +369,7 @@ void MdiChildTsFrame::DeleteAllPlotCurves()
    {
       #ifdef DEBUG_MDI_TS_FRAME
       MessageInterface::ShowMessage
-         (wxT("MdiChildTsFrame::DeleteAllPlotCurve() curve count=%d \n"),
+         ("MdiChildTsFrame::DeleteAllPlotCurve() curve count=%d \n",
           mXyPlot->GetCurveCount());
       #endif
       
@@ -378,8 +378,8 @@ void MdiChildTsFrame::DeleteAllPlotCurves()
    }
    else
    {
-      MessageInterface::ShowMessage(wxT("MdiChildTsFrame::DeletePlotCurve() ")
-            wxT("mXyPlot is NULL... \n"));
+      MessageInterface::ShowMessage("MdiChildTsFrame::DeletePlotCurve() "
+            "mXyPlot is NULL... \n");
    }
 }
 
@@ -396,7 +396,7 @@ void MdiChildTsFrame::DeletePlotCurve(Integer curveIndex)
 {
    #ifdef DEBUG_MDI_TS_FRAME
    MessageInterface::ShowMessage
-      (wxT("MdiChildTsFrame::DeletePlotCurve() curveIndex = %d\n"), curveIndex);
+      ("MdiChildTsFrame::DeletePlotCurve() curveIndex = %d\n", curveIndex);
    #endif
    
    if (mXyPlot != NULL)
@@ -408,8 +408,8 @@ void MdiChildTsFrame::DeletePlotCurve(Integer curveIndex)
    }
    else
    {
-      MessageInterface::ShowMessage(wxT("MdiChildTsFrame::DeletePlotCurve() ")
-            wxT("mXyPlot is NULL... \n"));
+      MessageInterface::ShowMessage("MdiChildTsFrame::DeletePlotCurve() "
+            "mXyPlot is NULL... \n");
    }
 }
 
@@ -432,7 +432,7 @@ void MdiChildTsFrame::AddDataPoints(Integer curveIndex, Real xData, Real yData,
 {
    #ifdef DEBUG_POINT_ADD
       MessageInterface::ShowMessage(
-         wxT("MdiChildTsFrame::AddDataPoints(%d, %lf, %lf )\n"), curveIndex, xData, 
+         "MdiChildTsFrame::AddDataPoints(%d, %lf, %lf )\n", curveIndex, xData, 
          yData);
    #endif
    
@@ -560,8 +560,8 @@ void MdiChildTsFrame::MarkPoint(Integer index, Integer forCurve)
 void MdiChildTsFrame::MarkBreak(int index, int forCurve)
 {
    #ifdef DEBUG_MESSSAGE_FLOW
-      MessageInterface::ShowMessage(wxT("MdiChildTsFrame::MarkBreak(%d, %d) called ")
-            wxT("for %s\n"), index, forCurve, mPlotName.c_str());
+      MessageInterface::ShowMessage("MdiChildTsFrame::MarkBreak(%d, %d) called "
+            "for %s\n", index, forCurve, mPlotName.c_str());
    #endif
    if (mXyPlot)
    {
@@ -813,7 +813,7 @@ void MdiChildTsFrame::RedrawCurve()
 void MdiChildTsFrame::SetPlotName(const wxString &name)
 {
    #ifdef DEBUG_RENAME
-      MessageInterface::ShowMessage(wxT("MdiChildTsFrame::SetPlotName() name=%s\n"),
+      MessageInterface::ShowMessage("MdiChildTsFrame::SetPlotName() name=%s\n",
                                     name.c_str());
    #endif
    GmatMdiChildFrame::SetPlotName(name);
@@ -866,11 +866,11 @@ void MdiChildTsFrame::OnChangeTitle(wxCommandEvent& WXUNUSED(event))
 {
    if (mXyPlot)
    {
-      //static wxString s_title = wxT("Plot Frame");
-      wxString oldTitle = wxT("Fred"); // mXyPlot->GetPlotTitle();
+      //static wxString s_title = _T("Plot Frame");
+      wxString oldTitle = _T("Fred"); // mXyPlot->GetPlotTitle();
 
-      wxString newTitle = wxGetTextFromUser(wxT("Enter the new title"),
-                                         wxT(""),
+      wxString newTitle = wxGetTextFromUser(_T("Enter the new title"),
+                                         _T(""),
                                          oldTitle,
                                          GetParent()->GetParent());
       if ( !newTitle )
@@ -1015,7 +1015,7 @@ void MdiChildTsFrame::OnPlotClose(wxCloseEvent& event)
 {
    #ifdef DEBUG_PLOT_CLOSE
    MessageInterface::ShowMessage
-      (wxT("MdiChildTsFrame::OnPlotClose() mPlotName='%s' entered\n"), mPlotName.c_str());
+      ("MdiChildTsFrame::OnPlotClose() mPlotName='%s' entered\n", mPlotName.c_str());
    #endif
    
    // Add any check before closing
@@ -1029,12 +1029,12 @@ void MdiChildTsFrame::OnPlotClose(wxCloseEvent& event)
    {
       event.Veto();
       MessageInterface::PopupMessage
-         (Gmat::ERROR_, wxT("**** Internal error occurred, Please close from the ToolBar"));
+         (Gmat::ERROR_, "**** Internal error occurred, Please close from the ToolBar");
    }
    
    #ifdef DEBUG_PLOT_CLOSE
    MessageInterface::ShowMessage
-      (wxT("MdiChildTsFrame::OnPlotClose() mPlotName='%s' exiting\n"), mPlotName.c_str());
+      ("MdiChildTsFrame::OnPlotClose() mPlotName='%s' exiting\n", mPlotName.c_str());
    #endif
 }
 
@@ -1048,7 +1048,7 @@ void MdiChildTsFrame::OnClose(wxCloseEvent& event)
    
    #ifdef DEBUG_PLOT_CLOSE
    MessageInterface::ShowMessage
-      (wxT("MdiChildTsFrame::OnClose() mPlotName='%s' entered\n"), mPlotName.c_str());
+      ("MdiChildTsFrame::OnClose() mPlotName='%s' entered\n", mPlotName.c_str());
    #endif
    
    GmatMdiChildFrame::OnClose(event);
@@ -1056,7 +1056,7 @@ void MdiChildTsFrame::OnClose(wxCloseEvent& event)
    
    #ifdef DEBUG_PLOT_CLOSE
    MessageInterface::ShowMessage
-      (wxT("MdiChildTsFrame::OnClose() mPlotName='%s' exiting\n"), mPlotName.c_str());
+      ("MdiChildTsFrame::OnClose() mPlotName='%s' exiting\n", mPlotName.c_str());
    #endif
 }
 
@@ -1114,7 +1114,7 @@ double MdiChildTsFrame::GetYMin()
    
       #ifdef DEBUG_MDI_TS_FRAME
          MessageInterface::ShowMessage
-            (wxT("MdiChildTsFrame::GetYMin() yMinVals.size()=%d\n"),
+            ("MdiChildTsFrame::GetYMin() yMinVals.size()=%d\n",
              yMinVals.size());;
       #endif
 
@@ -1150,7 +1150,7 @@ double MdiChildTsFrame::GetYMax()
       
       #ifdef DEBUG_MDI_TS_FRAME
          MessageInterface::ShowMessage
-            (wxT("MdiChildTsFrame::GetYMax() yMaxVals.size()=%d\n"),
+            ("MdiChildTsFrame::GetYMax() yMaxVals.size()=%d\n",
             yMaxVals.size());;
       #endif
       
@@ -1173,8 +1173,8 @@ double MdiChildTsFrame::GetYMax()
 //------------------------------------------------------------------------------
 void MdiChildTsFrame::OnOpenXyPlotFile(wxCommandEvent& WXUNUSED(event) )
 {
-   wxFileDialog fileDialog(this, wxT("Open Text XY Plot File"),
-                           wxT(""), wxT(""), wxT("text XY Plot file (*.txt)|*.txt"));
+   wxFileDialog fileDialog(this, _T("Open Text XY Plot File"),
+                           _T(""), _T(""), _T("text XY Plot file (*.txt)|*.txt"));
    
    fileDialog.SetDirectory(wxGetCwd());
    GmatAppData *gmatAppData = GmatAppData::Instance();
@@ -1184,7 +1184,7 @@ void MdiChildTsFrame::OnOpenXyPlotFile(wxCommandEvent& WXUNUSED(event) )
       wxString xyPlotFileName = fileDialog.GetPath();
       
       ++MdiTsPlot::numChildren;
-      gmatAppData->GetMainFrame()->tsSubframe->SetPlotName(wxT("XYPlotFile") +
+      gmatAppData->GetMainFrame()->tsSubframe->SetPlotName("XYPlotFile" +
                                                            MdiTsPlot::numChildren);
       gmatAppData->GetMainFrame()->tsSubframe->SetTitle(xyPlotFileName);
       

@@ -92,13 +92,13 @@ GmatDialog::GmatDialog(wxWindow *parent, wxWindowID id, const wxString& title,
 
    // create bottom buttons
    theOkButton =
-      new wxButton(this, ID_BUTTON_OK, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0);
+      new wxButton(this, ID_BUTTON_OK, "OK", wxDefaultPosition, wxDefaultSize, 0);
 
    theCancelButton =
-      new wxButton(this, ID_BUTTON_CANCEL, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
+      new wxButton(this, ID_BUTTON_CANCEL, "Cancel", wxDefaultPosition, wxDefaultSize, 0);
 
    theHelpButton = new wxButton
-      (this, ID_BUTTON_HELP, wxT(GUI_ACCEL_KEY) wxT("Help"), wxDefaultPosition, wxDefaultSize, 0);
+      (this, ID_BUTTON_HELP, GUI_ACCEL_KEY"Help", wxDefaultPosition, wxDefaultSize, 0);
 
    // adds the buttons to button sizer
    theButtonSizer->Add(0, 1, wxALIGN_LEFT | wxALL);
@@ -118,7 +118,7 @@ void GmatDialog::EnableUpdate(bool enable)
 {
    #if DEBUG_GMAT_DIALOG_SAVE
    MessageInterface::ShowMessage
-      (wxT("GmatDialog::EnableUpdate() enable=%d\n"), enable);
+      ("GmatDialog::EnableUpdate() enable=%d\n", enable);
    #endif
 
    if (enable)
@@ -159,7 +159,7 @@ void GmatDialog::OnOK(wxCommandEvent &event)
 
    #if DEBUG_GMAT_DIALOG_SAVE
    MessageInterface::ShowMessage
-      (wxT("GmatDialog::OnOK() canClose=%d\n"), canClose);
+      ("GmatDialog::OnOK() canClose=%d\n", canClose);
    #endif
 
    if (canClose)
@@ -196,18 +196,18 @@ void GmatDialog::OnHelp(wxCommandEvent &event)
 {
     wxString s;
     wxString baseHelpLink;
-    wxString msgBuffer;
+    char msgBuffer[255];
 
     // get the config object
     wxConfigBase *pConfig = wxConfigBase::Get();
     pConfig->SetPath(wxT("/Help"));
     s = GetName().c_str();
     // get base help link if available
-    baseHelpLink = pConfig->Read(wxT("BaseHelpLink"),wxT("http://gmat.sourceforge.net/docs/R2011a/html/%s.html"));
-    msgBuffer.Printf(baseHelpLink.c_str(), s.c_str());
+    baseHelpLink = pConfig->Read(_T("BaseHelpLink"),_T("http://gmat.sourceforge.net/docs/R2011a/html/%s.html"));
+    sprintf( msgBuffer, baseHelpLink.c_str(), s.c_str());
 
     // open separate window to show help
-    s = pConfig->Read(s,msgBuffer);
+    s = pConfig->Read(_T(s),_T(msgBuffer));
 
     wxLaunchDefaultBrowser(s);
 }
@@ -220,13 +220,13 @@ void GmatDialog::OnClose(wxCloseEvent &event)
 {
    #if DEBUG_GMAT_DIALOG_CLOSE
    MessageInterface::ShowMessage
-      (wxT("GmatDialog::OnClose() mDataChanged=%d\n"), mDataChanged);
+      ("GmatDialog::OnClose() mDataChanged=%d\n", mDataChanged);
    #endif
 
    if (mDataChanged)
    {
-      if ( wxMessageBox(wxT("Changes will be lost. \nDo you really want to close?"),
-                        wxT("Please confirm"), wxICON_QUESTION | wxYES_NO) != wxYES )
+      if ( wxMessageBox(_T("Changes will be lost. \nDo you really want to close?"),
+                        _T("Please confirm"), wxICON_QUESTION | wxYES_NO) != wxYES )
       {
          event.Veto();
          return;
@@ -264,7 +264,7 @@ void GmatDialog::ShowData()
    FileManager *fm = FileManager::Instance();
    try
    {
-      wxString iconfile = fm->GetFullPathname(wxT("MAIN_ICON_FILE"));
+      wxString iconfile = fm->GetFullPathname("MAIN_ICON_FILE").c_str();
       #if defined __WXMSW__
          SetIcon(wxIcon(iconfile, wxBITMAP_TYPE_ICO));
       #elif defined __WXGTK__

@@ -59,8 +59,8 @@ wxConnectionBase* GmatServer::OnAcceptConnection(const wxString& topic)
       return mConnection;
    }
    
-   wxMessageBox(wxT("OnAcceptConnection(): Unknown topic() entered"),
-                wxT("GmatServer"));
+   wxMessageBox(_T("OnAcceptConnection(): Unknown topic() entered"),
+                _T("GmatServer"));
    
    // unknown topic
    mConnection = NULL;

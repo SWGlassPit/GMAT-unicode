@@ -80,7 +80,7 @@ void MatlabFunctionSetupPanel::Create()
          wxSize(250,20), 0);
    // create buttons
    mBrowseButton =
-      new wxButton(this, ID_BUTTON, wxT("Browse"), wxDefaultPosition, wxDefaultSize, 0);
+      new wxButton(this, ID_BUTTON, "Browse", wxDefaultPosition, wxDefaultSize, 0);
 
    //------------------------------------------------------
    // add to sizer
@@ -105,8 +105,8 @@ void MatlabFunctionSetupPanel::LoadData()
    // Set the pointer for the "Show Script" button
    mObject = theMatlabFunction;
 
-   int pathId = theMatlabFunction->GetParameterID(wxT("FunctionPath"));
-   wxString path = theMatlabFunction->GetStringParameter(pathId);
+   int pathId = theMatlabFunction->GetParameterID("FunctionPath");
+   std::string path = theMatlabFunction->GetStringParameter(pathId);
    mPathTextCtrl->SetValue(path.c_str());
 }
 
@@ -115,7 +115,7 @@ void MatlabFunctionSetupPanel::LoadData()
 //------------------------------------------------------------------------------
 void MatlabFunctionSetupPanel::SaveData()
 {
-   int pathId = theMatlabFunction->GetParameterID(wxT("FunctionPath"));
+   int pathId = theMatlabFunction->GetParameterID("FunctionPath");
    theMatlabFunction->SetStringParameter(pathId,
          mPathTextCtrl->GetValue().c_str());
 }

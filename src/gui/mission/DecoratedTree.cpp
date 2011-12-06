@@ -83,7 +83,7 @@ void DecoratedTree::Initialize(void)
 {
     if (!initialized)
     {
-        AddRoot(wxT("Root"));
+        AddRoot("Root");
         initialized = true;        
     }
 }
@@ -99,14 +99,14 @@ void DecoratedTree::SetNodes(void)
     if (!initialized)
         Initialize();
     wxTreeItemId root = GetRootItem();
-    AppendItem(root, wxT("Propagate"));
-    AppendItem(root, wxT("Maneuver"));
-    AppendItem(root, wxT("Propagate"));
-    wxTreeItemId subroot = AppendItem(root, wxT("Target"));
-    AppendItem(subroot, wxT("Maneuver"));
-    AppendItem(subroot, wxT("Propagate"));
-    AppendItem(subroot, wxT("Maneuver"));
-    AppendItem(root, wxT("Propagate"));
+    AppendItem(root, "Propagate");
+    AppendItem(root, "Maneuver");
+    AppendItem(root, "Propagate");
+    wxTreeItemId subroot = AppendItem(root, "Target");
+    AppendItem(subroot, "Maneuver");
+    AppendItem(subroot, "Propagate");
+    AppendItem(subroot, "Maneuver");
+    AppendItem(root, "Propagate");
     
  /*
     SetString( 1, " 0");
@@ -127,22 +127,22 @@ void DecoratedTree::SetNodes(void)
     SetString(12, " 1");
     SetString(14, " 0");
 */
-    SetString(-1, wxT(" 0"));
-    SetString(-1, wxT(" 0"));
-    SetString(-1, wxT(" 0"));
-    SetString(-1, wxT(" 0"));
-    SetString(-1, wxT(" 0"));
-    SetString(-1, wxT(" 0"));
-    SetString(-1, wxT(" 2"));
-    SetString(-1, wxT(" 2"));
-    SetString(-1, wxT(" 0"));
-    SetString(-1, wxT(" 1"));
-    SetString(-1, wxT(" 0"));
-    SetString(-1, wxT(" 0"));
-    SetString(-1, wxT(" 2"));
-    SetString(-1, wxT(" 1"));
-    SetString(-1, wxT(" 0"));
-    SetString(-1, wxT(" 0"));
+    SetString(-1, " 0");
+    SetString(-1, " 0");
+    SetString(-1, " 0");
+    SetString(-1, " 0");
+    SetString(-1, " 0");
+    SetString(-1, " 0");
+    SetString(-1, " 2");
+    SetString(-1, " 2");
+    SetString(-1, " 0");
+    SetString(-1, " 1");
+    SetString(-1, " 0");
+    SetString(-1, " 0");
+    SetString(-1, " 2");
+    SetString(-1, " 1");
+    SetString(-1, " 0");
+    SetString(-1, " 0");
 }
 
 
@@ -168,7 +168,7 @@ void DecoratedTree::ExpandAll(wxTreeItemId root)
    wxTreeItemIdValue  cookie;
    wxTreeItemId current = GetFirstChild(root, cookie);
     
-   while (current > (wxTreeItemId)0L) {
+   while (current > (wxTreeItemId)0) {
       Expand(current);
       ExpandAll(current);
       current = GetNextChild(root, cookie);
@@ -200,12 +200,12 @@ wxTreeItemId DecoratedTree::Find(wxString str, wxTreeItemId root)
    wxTreeItemIdValue  cookie;
    wxTreeItemId current = GetFirstChild(root, cookie), item;
 
-   while (current > (wxTreeItemId)0L) {
+   while (current > (wxTreeItemId)0) {
       if (str == GetItemText(current))
          return current;
         
       item = Find(str, current);
-      if (item > (wxTreeItemId)0L)
+      if (item > (wxTreeItemId)0)
          return item;
         
       current = GetNextChild(root, cookie);
@@ -227,7 +227,7 @@ wxTreeItemId DecoratedTree::AddItem(wxString txt, wxString parent)
         Initialize();
     wxTreeItemId root = GetRootItem();
 
-    if (parent != wxT(""))
+    if (parent != "")
         root = Find(parent, root);
 
     return AppendItem(root, txt);
@@ -277,7 +277,7 @@ void DecoratedTree::DrawOutline(wxTreeItemId id)
 
     //wxWidgets-2.6.3:deprecated->dc.BeginDrawing();
     
-    while (current > (wxTreeItemId)0L) {
+    while (current > (wxTreeItemId)0) {
         visible = GetBoundingRect(current, bound, TRUE);
         dc.SetPen(wxPen(wxColour(0xaf, 0xaf, 0xaf), 1, wxSOLID));
 
@@ -323,7 +323,7 @@ void DecoratedTree::DrawBoxes(wxTreeItemId id)
 
     //wxWidgets-2.6.3:deprecated->dc.BeginDrawing();
     
-    while (current > (wxTreeItemId)0L) {
+    while (current > (wxTreeItemId)0) {
        visible = GetBoundingRect(current, bound, TRUE);
        dc.SetPen(wxPen(wxColour(0xaf, 0xaf, 0xaf), 1, wxSOLID));
 
@@ -463,14 +463,14 @@ int DecoratedTree::GetParameter(int id)
  * column of decorations; the control fills the data a column at a time, but it
  * may be better to provide a SetString method that is easier to use.
  */
-void DecoratedTree::SetString(int line, wxString value)
+void DecoratedTree::SetString(int line, std::string value)
 {
 //    MessageInterface::ShowMessage("DecoratedTree::SetString() entered\n");
 
     if (line < 0)
-        boxData.push_back(new wxString(value));
+        boxData.push_back(new std::string(value));
     else {
-        wxString *str = boxData[line];
+        std::string *str = boxData[line];
         *str = value;
     }
 //   MessageInterface::ShowMessage("DecoratedTree::SetString() exit\n");

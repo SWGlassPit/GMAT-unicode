@@ -55,7 +55,7 @@ END_EVENT_TABLE()
  */
 //------------------------------------------------------------------------------
 ArraySetupDialog::ArraySetupDialog(wxWindow *parent, const wxString &name)
-   : GmatDialog(parent, -1, wxString(wxT("ArraySetupDialog")))
+   : GmatDialog(parent, -1, wxString(_T("ArraySetupDialog")))
 {
    mVarName = name;
    mIsArrValChanged = false;
@@ -186,7 +186,7 @@ void ArraySetupDialog::Create()
 //------------------------------------------------------------------------------
 void ArraySetupDialog::LoadData()
 {
-   mParam = theGuiInterpreter->GetParameter(wxString(mVarName.c_str()));
+   mParam = theGuiInterpreter->GetParameter(std::string(mVarName.c_str()));
 
    // Set the pointer for the "Show Script" button
    mObject = mParam;
@@ -195,19 +195,19 @@ void ArraySetupDialog::LoadData()
    {
       #if DEBUG_ARRAY_LOAD
       MessageInterface::ShowMessage
-         (wxT("ArraySetupDialog::LoadData() paramName=<%p>'%s'\n"), mParam, mParam->GetName().c_str());
+         ("ArraySetupDialog::LoadData() paramName=<%p>'%s'\n", mParam, mParam->GetName().c_str());
       #endif
 
       try
       {
-         mNumRows = mParam->GetIntegerParameter(wxT("NumRows"));
-         mNumCols = mParam->GetIntegerParameter(wxT("NumCols"));
+         mNumRows = mParam->GetIntegerParameter("NumRows");
+         mNumCols = mParam->GetIntegerParameter("NumCols");
          
          mArrNameTextCtrl->SetValue(mVarName);
          wxString str;
          str << mNumRows;
          mArrRowTextCtrl->SetValue(str);
-         str = wxT("");
+         str = "";
          str << mNumCols;
          mArrColTextCtrl->SetValue(str);
          
@@ -232,11 +232,11 @@ void ArraySetupDialog::LoadData()
          Array *arrParam = (Array*)mParam;
          
          // set value (wxTextCtrl)
-         Real val = arrParam->GetRealParameter(wxT("SingleValue"), 0, 0);
+         Real val = arrParam->GetRealParameter("SingleValue", 0, 0);
          mArrValTextCtrl->SetValue(theGuiManager->ToWxString(val));
          
          #ifdef DEBUG_ARRAY_LOAD
-         MessageInterface::ShowMessage(wxT("mNumRows=%d, mNumCols=%d\n"),
+         MessageInterface::ShowMessage("mNumRows=%d, mNumCols=%d\n",
                                        mNumRows, mNumCols);
          #endif
          
@@ -248,13 +248,13 @@ void ArraySetupDialog::LoadData()
          
          for (row=0; row<mNumRows; row++)
          {
-            str.Printf(wxT("%d"), row+1);
+            str.Printf("%d", row+1);
             mArrGrid->SetRowLabelValue(row, str);
          }
          
          for (col=0; col<mNumCols; col++)
          {
-            str.Printf(wxT("%d"), col+1);
+            str.Printf("%d", col+1);
             mArrGrid->SetColLabelValue(col, str);
          }
          
@@ -265,11 +265,11 @@ void ArraySetupDialog::LoadData()
             for (col=0; col<mNumCols; col++)
             {
                mRmat.SetElement(row, col, arrParam->
-                                GetRealParameter(wxT("SingleValue"), row, col));
+                                GetRealParameter("SingleValue", row, col));
                
                #ifdef DEBUG_ARRAY_LOAD
                MessageInterface::ShowMessage
-                  (wxT("   val(%d,%d)=%f\n"), row, col, mRmat.GetElement(row, col));
+                  ("   val(%d,%d)=%f\n", row, col, mRmat.GetElement(row, col));
                #endif
                
                rval = mRmat.GetElement(row, col);
@@ -279,7 +279,7 @@ void ArraySetupDialog::LoadData()
       }
       catch (BaseException &e)
       {
-         wxLogError(e.GetFullMessage().c_str());
+         wxLogError(wxT(e.GetFullMessage().c_str()));
          wxLog::FlushActive();
       }
    }
@@ -298,7 +298,7 @@ void ArraySetupDialog::SaveData()
 {
    #if DEBUG_ARRAY_SAVE
    MessageInterface::ShowMessage
-      (wxT("ArraySetupDialog::SaveData() mIsArrValChanged=%d\n"), mIsArrValChanged);
+      ("ArraySetupDialog::SaveData() mIsArrValChanged=%d\n", mIsArrValChanged);
    #endif
    
    canClose = true;
@@ -326,7 +326,7 @@ void ArraySetupDialog::SaveData()
    
    #if DEBUG_ARRAY_SAVE
    MessageInterface::ShowMessage
-      (wxT("   mIsArrValChanged=%d, canClose=%d\n"), mIsArrValChanged, canClose);
+      ("   mIsArrValChanged=%d, canClose=%d\n", mIsArrValChanged, canClose);
    #endif
    
    if (!canClose)
@@ -347,22 +347,22 @@ void ArraySetupDialog::SaveData()
             wxString arrValue = mArrGrid->GetCellValue(i, j);
             #if DEBUG_ARRAY_SAVE
             MessageInterface::ShowMessage
-               (wxT("   Settting %g '%s' to (%d,%d)\n"), mRmat.GetElement(i,j), arrValue.c_str(), i, j);
+               ("   Settting %g '%s' to (%d,%d)\n", mRmat.GetElement(i,j), arrValue.c_str(), i, j);
             #endif
-            arrParam->SetRealParameter(wxT("SingleValue"), mRmat.GetElement(i,j), i, j);
+            arrParam->SetRealParameter("SingleValue", mRmat.GetElement(i,j), i, j);
 
             // Set initial value as string (LOJ: 2010.12.07)
             // As default if user enters 0.000005, it will write out 5e-006;
             // If we want to write out as user enters value,
             // define __WRITE_INITIAL_VALUE_STRING__ in Array.cpp
             wxString arrValueStr;
-            arrValueStr.Printf(wxT("%s(%d,%d)=%s"), mVarName.c_str(), i+1, j+1, arrValue.c_str());
+            arrValueStr.Printf("%s(%d,%d)=%s", mVarName.c_str(), i+1, j+1, arrValue.c_str());
             
             #if DEBUG_ARRAY_SAVE
-            MessageInterface::ShowMessage(wxT("   arrValueStr='%s'\n"), arrValueStr.c_str());
+            MessageInterface::ShowMessage("   arrValueStr='%s'\n", arrValueStr.c_str());
             #endif
             
-            arrParam->SetStringParameter(wxT("InitialValue"), arrValueStr.c_str());
+            arrParam->SetStringParameter("InitialValue", arrValueStr.c_str());
          }
    }
    catch (BaseException &e)
@@ -470,17 +470,17 @@ void ArraySetupDialog::UpdateCellValue()
 
 
 //------------------------------------------------------------------------------
-// bool CheckCellValue(Real &rval, int row, int col, const wxString &str)
+// bool CheckCellValue(Real &rval, int row, int col, const std::string &str)
 //------------------------------------------------------------------------------
 bool ArraySetupDialog::CheckCellValue(Real &rval, int row, int col,
-                                     const wxString &str)
+                                     const std::string &str)
 {
-   wxString field = wxT("(") + GmatStringUtil::ToString(row+1, 1) +
-      wxT(",") + GmatStringUtil::ToString(col+1, 1) + wxT(")");
+   std::string field = "(" + GmatStringUtil::ToString(row+1, 1) +
+      "," + GmatStringUtil::ToString(col+1, 1) + ")";
    
    EnableUpdate(true);
    
-   if (CheckReal(rval, str.c_str(), field, wxT("Real Number")))
+   if (CheckReal(rval, str.c_str(), field, "Real Number"))
    {
       mRmat.SetElement(row, col, rval);
       return true;

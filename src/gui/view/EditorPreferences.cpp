@@ -45,56 +45,56 @@ const GmatEditor::CommonInfoType GmatEditor::globalCommonPrefs =
 // keywordlists
 // GMAT
 wxChar* GmatCommands =
-   wxT("GMAT Create Global Maneuver Propagate Report Save Stop Toggle ")
-   wxT("Achieve Vary Target Optimize Minimize PenDown PenUp ")
-   wxT("For EndFor If Else EndIf While EndWhile Target EndTarget ")
-   wxT("BeginFiniteBurn EndFiniteBurn BeginScript EndScript " )
-   wxT("Spacecraft ForceModel Propagator FuelTank Thruster SolarSystem ")
-   wxT("CoordinateSystem Variable Array String ReportFile XYPlot OpenGLPlot " )
-   wxT("ImpulsiveBurn FiniteBurn DifferentialCorrector Optimizer MatlabFunction" );
+   _T("GMAT Create Global Maneuver Propagate Report Save Stop Toggle ")
+   _T("Achieve Vary Target Optimize Minimize PenDown PenUp ")
+   _T("For EndFor If Else EndIf While EndWhile Target EndTarget ")
+   _T("BeginFiniteBurn EndFiniteBurn BeginScript EndScript " )
+   _T("Spacecraft ForceModel Propagator FuelTank Thruster SolarSystem ")
+   _T("CoordinateSystem Variable Array String ReportFile XYPlot OpenGLPlot " )
+   _T("ImpulsiveBurn FiniteBurn DifferentialCorrector Optimizer MatlabFunction" );
 wxChar* GmatObjectTypes =
-   wxT("Spacecraft ForceModel Propagator FuelTank Thruster SolarSystem ")
-   wxT("CoordinateSystem Variable Array String ReportFile XYPlot OpenGLPlot " )
-   wxT("ImpulsiveBurn FiniteBurn DifferentialCorrector Optimizer MatlabFunction" );
+   _T("Spacecraft ForceModel Propagator FuelTank Thruster SolarSystem ")
+   _T("CoordinateSystem Variable Array String ReportFile XYPlot OpenGLPlot " )
+   _T("ImpulsiveBurn FiniteBurn DifferentialCorrector Optimizer MatlabFunction" );
 wxChar* GmatComments =
-   wxT("%");
+   _T("%");
 // C++
 wxChar* CppWordlist1 =
-   wxT("asm auto bool break case catch char class const const_cast ")
-   wxT("continue default delete do double dynamic_cast else enum explicit ")
-   wxT("export extern false float for friend goto if inline int long ")
-   wxT("mutable namespace new operator private protected public register ")
-   wxT("reinterpret_cast return short signed sizeof static static_cast ")
-   wxT("struct switch template this throw true try typedef typeid ")
-   wxT("typename union unsigned using virtual void volatile wchar_t ")
-   wxT("while");
+   _T("asm auto bool break case catch char class const const_cast ")
+   _T("continue default delete do double dynamic_cast else enum explicit ")
+   _T("export extern false float for friend goto if inline int long ")
+   _T("mutable namespace new operator private protected public register ")
+   _T("reinterpret_cast return short signed sizeof static static_cast ")
+   _T("struct switch template this throw true try typedef typeid ")
+   _T("typename union unsigned using virtual void volatile wchar_t ")
+   _T("while");
 wxChar* CppWordlist2 =
-   wxT("file");
+   _T("file");
 wxChar* CppWordlist3 =
-   wxT("a addindex addtogroup anchor arg attention author b brief bug c ")
-   wxT("class code date def defgroup deprecated dontinclude e em endcode ")
-   wxT("endhtmlonly endif endlatexonly endlink endverbatim enum example ")
-   wxT("exception f$ f[ f] file fn hideinitializer htmlinclude ")
-   wxT("htmlonly if image include ingroup internal invariant interface ")
-   wxT("latexonly li line link mainpage name namespace nosubgrouping note ")
-   wxT("overload p page par param post pre ref relates remarks return ")
-   wxT("retval sa section see showinitializer since skip skipline struct ")
-   wxT("subsection test throw todo typedef union until var verbatim ")
-   wxT("verbinclude version warning weakgroup $ @ \"\" & < > # { }");
+   _T("a addindex addtogroup anchor arg attention author b brief bug c ")
+   _T("class code date def defgroup deprecated dontinclude e em endcode ")
+   _T("endhtmlonly endif endlatexonly endlink endverbatim enum example ")
+   _T("exception f$ f[ f] file fn hideinitializer htmlinclude ")
+   _T("htmlonly if image include ingroup internal invariant interface ")
+   _T("latexonly li line link mainpage name namespace nosubgrouping note ")
+   _T("overload p page par param post pre ref relates remarks return ")
+   _T("retval sa section see showinitializer since skip skipline struct ")
+   _T("subsection test throw todo typedef union until var verbatim ")
+   _T("verbinclude version warning weakgroup $ @ \"\" & < > # { }");
 
 // Python
 wxChar* PythonWordlist1 =
-   wxT("and assert break class continue def del elif else except exec ")
-   wxT("finally for from global if import in is lambda None not or pass ")
-   wxT("print raise return try while yield");
+   _T("and assert break class continue def del elif else except exec ")
+   _T("finally for from global if import in is lambda None not or pass ")
+   _T("print raise return try while yield");
 wxChar* PythonWordlist2 =
-   wxT("ACCELERATORS ALT AUTO3STATE AUTOCHECKBOX AUTORADIOBUTTON BEGIN ")
-   wxT("BITMAP BLOCK BUTTON CAPTION CHARACTERISTICS CHECKBOX CLASS ")
-   wxT("COMBOBOX CONTROL CTEXT CURSOR DEFPUSHBUTTON DIALOG DIALOGEX ")
-   wxT("DISCARDABLE EDITTEXT END EXSTYLE FONT GROUPBOX ICON LANGUAGE ")
-   wxT("LISTBOX LTEXT MENU MENUEX MENUITEM MESSAGETABLE POPUP PUSHBUTTON ")
-   wxT("RADIOBUTTON RCDATA RTEXT SCROLLBAR SEPARATOR SHIFT STATE3 ")
-   wxT("STRINGTABLE STYLE TEXTINCLUDE VALUE VERSION VERSIONINFO VIRTKEY");
+   _T("ACCELERATORS ALT AUTO3STATE AUTOCHECKBOX AUTORADIOBUTTON BEGIN ")
+   _T("BITMAP BLOCK BUTTON CAPTION CHARACTERISTICS CHECKBOX CLASS ")
+   _T("COMBOBOX CONTROL CTEXT CURSOR DEFPUSHBUTTON DIALOG DIALOGEX ")
+   _T("DISCARDABLE EDITTEXT END EXSTYLE FONT GROUPBOX ICON LANGUAGE ")
+   _T("LISTBOX LTEXT MENU MENUEX MENUITEM MESSAGETABLE POPUP PUSHBUTTON ")
+   _T("RADIOBUTTON RCDATA RTEXT SCROLLBAR SEPARATOR SHIFT STATE3 ")
+   _T("STRINGTABLE STYLE TEXTINCLUDE VALUE VERSION VERSIONINFO VIRTKEY");
 
 
 //----------------------------------------------------------------------------
@@ -118,8 +118,8 @@ const GmatEditor::LanguageInfoType GmatEditor::globalLanguagePrefs [] = {
    //-------------------------------------------------------
    // GMAT script, function, Matlab scripts
    //-------------------------------------------------------
-   {wxT("GMAT"),
-    wxT("*.script;*.m;*.gmf"),
+   {_T("GMAT"),
+    _T("*.script;*.m;*.gmf"),
     #if 0
     // matlab style
     wxSTC_LEX_MATLAB, // Shows GMAT comments, but no commands
@@ -235,8 +235,8 @@ const GmatEditor::LanguageInfoType GmatEditor::globalLanguagePrefs [] = {
     GMAT_STC_FOLD_PREPROC},
     #endif
    // C++
-   {wxT("C++"),
-    wxT("*.c;*.cc;*.cpp;*.cxx;*.cs;*.h;*.hh;*.hpp;*.hxx;*.sma"),
+   {_T("C++"),
+    _T("*.c;*.cc;*.cpp;*.cxx;*.cs;*.h;*.hh;*.hpp;*.hxx;*.sma"),
     wxSTC_LEX_CPP,
     {{GMAT_STC_TYPE_DEFAULT, NULL},
      {GMAT_STC_TYPE_COMMENT, NULL},
@@ -273,8 +273,8 @@ const GmatEditor::LanguageInfoType GmatEditor::globalLanguagePrefs [] = {
     GMAT_STC_FOLD_COMMENT | GMAT_STC_FOLD_COMPACT |
     GMAT_STC_FOLD_PREPROC},
    // Python
-   {wxT("Python"),
-    wxT("*.py;*.pyw"),
+   {_T("Python"),
+    _T("*.py;*.pyw"),
     wxSTC_LEX_PYTHON,
     {{GMAT_STC_TYPE_DEFAULT, NULL},
      {GMAT_STC_TYPE_COMMENT_LINE, NULL},
@@ -311,7 +311,7 @@ const GmatEditor::LanguageInfoType GmatEditor::globalLanguagePrefs [] = {
     GMAT_STC_FOLD_COMMENTPY | GMAT_STC_FOLD_QUOTESPY},
    // * (any)
    {(wxChar *)DEFAULT_LANGUAGE,
-    wxT("*.*"),
+    _T("*.*"),
     wxSTC_LEX_PROPERTIES,
     {{GMAT_STC_TYPE_DEFAULT, NULL},
      {GMAT_STC_TYPE_DEFAULT, NULL},
@@ -354,163 +354,163 @@ const int GmatEditor::globalLanguagePrefsSize = WXSIZEOF(GmatEditor::globalLangu
 //! style types
 const GmatEditor::StyleInfoType GmatEditor::globalStylePrefs [] = {
    // GMAT_STC_TYPE_DEFAULT
-   {wxT("Default"),
-    wxT("BLACK"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Default"),
+    _T("BLACK"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_WORD1 (with wxSTC_LEX_PYTHON, GMAT KeyWords shows in this color)
-   {wxT("Keyword1"),
-    wxT("BLUE"), wxT("WHITE"),
-    //wxT(""), 10, GMAT_STC_STYLE_BOLD, 0},
-    wxT(""), 10, 0, 0},
+   {_T("Keyword1"),
+    _T("BLUE"), _T("WHITE"),
+    //_T(""), 10, GMAT_STC_STYLE_BOLD, 0},
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_WORD2
-   {wxT("Keyword2"),
-    wxT("RED"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Keyword2"),
+    _T("RED"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_WORD3
-   {wxT("Keyword3"),
-    wxT("CORNFLOWER BLUE"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Keyword3"),
+    _T("CORNFLOWER BLUE"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_WORD4
-   {wxT("Keyword4"),
-    wxT("CYAN"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Keyword4"),
+    _T("CYAN"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_WORD5
-   {wxT("Keyword5"),
-    wxT("DARK GREY"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Keyword5"),
+    _T("DARK GREY"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_WORD6
-   {wxT("Keyword6"),
-    wxT("GREY"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Keyword6"),
+    _T("GREY"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_COMMENT
-   {wxT("Comment"),
-    wxT("FOREST GREEN"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Comment"),
+    _T("FOREST GREEN"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_COMMENT_DOC
-   {wxT("Comment (Doc)"),
-    wxT("FOREST GREEN"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Comment (Doc)"),
+    _T("FOREST GREEN"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_COMMENT_LINE
-   {wxT("Comment line"),
-    wxT("FOREST GREEN"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Comment line"),
+    _T("FOREST GREEN"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_COMMENT_SPECIAL
-   {wxT("Special comment"),
-    wxT("FOREST GREEN"), wxT("WHITE"),
-    wxT(""), 10, GMAT_STC_STYLE_ITALIC, 0},
+   {_T("Special comment"),
+    _T("FOREST GREEN"), _T("WHITE"),
+    _T(""), 10, GMAT_STC_STYLE_ITALIC, 0},
 
    // GMAT_STC_TYPE_CHARACTER (with wxSTC_LEX_PYTHON, string inside single quote)
-   {wxT("Character"),
-    wxT("PURPLE"), wxT("WHITE"),
-    //wxT("KHAKI"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Character"),
+    _T("PURPLE"), _T("WHITE"),
+    //_T("KHAKI"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_CHARACTER_EOL
-   {wxT("Character (EOL)"),
-    wxT("PURPLE"), wxT("WHITE"),
-    //wxT("KHAKI"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Character (EOL)"),
+    _T("PURPLE"), _T("WHITE"),
+    //_T("KHAKI"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_STRING (with wxSTC_LEX_PYTHON, string inside double quote)
-   {wxT("String"),
-    wxT("BROWN"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("String"),
+    _T("BROWN"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_STRING_EOL
-   {wxT("String (EOL)"),
-    wxT("BROWN"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("String (EOL)"),
+    _T("BROWN"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_DELIMITER
-   {wxT("Delimiter"),
-    wxT("ORANGE"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Delimiter"),
+    _T("ORANGE"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_PUNCTUATION
-   {wxT("Punctuation"),
-    wxT("ORANGE"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Punctuation"),
+    _T("ORANGE"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_OPERATOR (with wxSTC_LEX_PYTHON, () [] math operators shown in this color)
-   {wxT("Operator"),
-    wxT("BLACK"), wxT("WHITE"),
-    //wxT(""), 10, GMAT_STC_STYLE_BOLD, 0},
-    wxT(""), 10, 0, 0},
+   {_T("Operator"),
+    _T("BLACK"), _T("WHITE"),
+    //_T(""), 10, GMAT_STC_STYLE_BOLD, 0},
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_BRACE
-   {wxT("Label"),
-    wxT("VIOLET"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Label"),
+    _T("VIOLET"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_COMMAND
-   {wxT("Command"),
-    wxT("BLUE"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Command"),
+    _T("BLUE"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_IDENTIFIER (with wxSTC_LEX_PYTHON, statesments showns in this color)
-   {wxT("Identifier"),
-    wxT("BLACK"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Identifier"),
+    _T("BLACK"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_LABEL
-   {wxT("Label"),
-    wxT("VIOLET"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Label"),
+    _T("VIOLET"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_NUMBER
-   {wxT("Number"),
-    wxT("SIENNA"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Number"),
+    _T("SIENNA"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_PARAMETER
-   {wxT("Parameter"),
-    wxT("VIOLET"), wxT("WHITE"),
-    wxT(""), 10, GMAT_STC_STYLE_ITALIC, 0},
+   {_T("Parameter"),
+    _T("VIOLET"), _T("WHITE"),
+    _T(""), 10, GMAT_STC_STYLE_ITALIC, 0},
 
    // GMAT_STC_TYPE_REGEX
-   {wxT("Regular expression"),
-    wxT("ORCHID"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Regular expression"),
+    _T("ORCHID"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_UUID
-   {wxT("UUID"),
-    wxT("ORCHID"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("UUID"),
+    _T("ORCHID"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_VALUE
-   {wxT("Value"),
-    wxT("ORCHID"), wxT("WHITE"),
-    wxT(""), 10, GMAT_STC_STYLE_ITALIC, 0},
+   {_T("Value"),
+    _T("ORCHID"), _T("WHITE"),
+    _T(""), 10, GMAT_STC_STYLE_ITALIC, 0},
 
    // GMAT_STC_TYPE_PREPROCESSOR
-   {wxT("Preprocessor"),
-    wxT("GREY"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Preprocessor"),
+    _T("GREY"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_SCRIPT
-   {wxT("Script"),
-    wxT("DARK GREY"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Script"),
+    _T("DARK GREY"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_ERROR
-   {wxT("Error"),
-    wxT("RED"), wxT("WHITE"),
-    wxT(""), 10, 0, 0},
+   {_T("Error"),
+    _T("RED"), _T("WHITE"),
+    _T(""), 10, 0, 0},
 
    // GMAT_STC_TYPE_UNDEFINED
-   {wxT("Undefined"),
-    wxT("ORANGE"), wxT("WHITE"),
-    wxT(""), 10, 0, 0}
+   {_T("Undefined"),
+    _T("ORANGE"), _T("WHITE"),
+    _T(""), 10, 0, 0}
 
 };
 

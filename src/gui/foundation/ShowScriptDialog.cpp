@@ -63,7 +63,7 @@ ShowScriptDialog::ShowScriptDialog(wxWindow *parent, wxWindowID id,
 void ShowScriptDialog::Create()
 {
    Integer w, h;
-   wxString text = wxT("Script not yet available for this panel");
+   wxString text = "Script not yet available for this panel";
    // Find the height of a line of test, to use when sizing the text control
    GetTextExtent(text, &w, &h);
 
@@ -73,12 +73,12 @@ void ShowScriptDialog::Create()
    {      
       if (theObject != NULL)
       {
-         wxString genstring =
+         std::string genstring =
             theObject->GetGeneratingString(Gmat::SHOW_SCRIPT).c_str();
          if (showAsSingleton)
          {
             // remove the "Create" line
-            Integer loc = genstring.find(wxT("\n"));
+            Integer loc = genstring.find("\n");
             genstring = genstring.substr(loc+1);
          }
          text = genstring.c_str();   

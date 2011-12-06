@@ -26,7 +26,7 @@ class DragInputsDialog : public GmatDialog
 {
 public:
    
-   DragInputsDialog(wxWindow *parent, DragForce *dragForce, const wxString &title = wxT(""));
+   DragInputsDialog(wxWindow *parent, DragForce *dragForce, const wxString &title = "");
    ~DragInputsDialog();
    DragForce* GetForce();
    

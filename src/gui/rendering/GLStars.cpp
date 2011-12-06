@@ -72,14 +72,14 @@ void GLStars::ReadTextStars(){
         const GLfloat RangeFactor = 0.0;
 
    FileManager *fm = FileManager::Instance();
-        TxtFilename = (fm->GetFullPathname(wxT("STAR_FILE"))).c_str();
+        TxtFilename = (fm->GetFullPathname("STAR_FILE")).c_str();
 
    // Try opening the file
    wxTextFile StarsFile;
    if (!StarsFile.Open(TxtFilename)){
-      wxString msg = wxT("Could not open Star Catalog at ");
+      wxString msg = "Could not open Star Catalog at ";
       msg.Append(TxtFilename);
-      MessageInterface::LogMessage(msg + wxT("\n"));
+      MessageInterface::LogMessage(msg + "\n");
       return;
    }
 
@@ -203,14 +203,14 @@ void GLStars::ReadTextConstellations(){
    int i;
 
    FileManager *fm = FileManager::Instance();
-   TxtFilename = (fm->GetFullPathname(wxT("CONSTELLATION_FILE"))).c_str();
+   TxtFilename = (fm->GetFullPathname("CONSTELLATION_FILE")).c_str();
    
    // Attempt to open the constellation file
    wxTextFile ConstellationFile;
    if (!ConstellationFile.Open(TxtFilename)){
-      wxString msg = wxT("Could not open Constellation File at ");
+      wxString msg = "Could not open Constellation File at ";
       msg.Append(TxtFilename);
-      MessageInterface::LogMessage(msg + wxT("\n"));
+      MessageInterface::LogMessage(msg + "\n");
       return;
    }
 

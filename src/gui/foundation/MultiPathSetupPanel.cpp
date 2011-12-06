@@ -93,7 +93,7 @@ void MultiPathSetupPanel::UpdatePathNames(const StringArray &pathNames)
 {
    #if DEBUG_SETPATH
    MessageInterface::ShowMessage
-      (wxT("MultiPathSetupPanel::UpdatePathNames() entered. There are %d input paths\n"),
+      ("MultiPathSetupPanel::UpdatePathNames() entered. There are %d input paths\n",
        pathNames.size());
    #endif
    
@@ -111,7 +111,7 @@ void MultiPathSetupPanel::UpdatePathNames(const StringArray &pathNames)
 void MultiPathSetupPanel::Create()
 {
    #if DEBUG_SETPATH
-   MessageInterface::ShowMessage(wxT("MultiPathSetupPanel::Create() entered.\n"));
+   MessageInterface::ShowMessage("MultiPathSetupPanel::Create() entered.\n");
    #endif
    
    int bsize = 3;
@@ -193,7 +193,7 @@ void MultiPathSetupPanel::LoadData()
 {
    #if DEBUG_SETPATH
    MessageInterface::ShowMessage
-      (wxT("MultiPathSetupPanel::LoadData() entered. There are %d paths\n"),
+      ("MultiPathSetupPanel::LoadData() entered. There are %d paths\n",
        mPathNames.size());
    #endif
    
@@ -238,18 +238,18 @@ void MultiPathSetupPanel::OnButtonClick(wxCommandEvent& event)
    // check if directory exist
    if (!wxDir::Exists(pathname))
    {
-      wxMessageBox(wxT("The directory \"") + pathname + wxT("\" does not exist.\n"),
+      wxMessageBox(wxT("The directory \"" + pathname + "\" does not exist.\n"),
                    wxT("Directory Error"));
       return;
    }
    
    pathname = pathname.Strip(wxString::both);
-   if (!pathname.EndsWith(wxT("/")))
-      pathname = pathname + wxT("/");
+   if (!pathname.EndsWith("/"))
+      pathname = pathname + "/";
    
    if (event.GetEventObject() == mAddButton)
    {
-      if (pathname != wxT("") && mPathListBox->FindString(pathname) == wxNOT_FOUND)
+      if (pathname != "" && mPathListBox->FindString(pathname) == wxNOT_FOUND)
       {
          // Add to top of the list (loj: 2008.10.20)
          //mPathListBox->Append(pathname);
@@ -259,11 +259,11 @@ void MultiPathSetupPanel::OnButtonClick(wxCommandEvent& event)
    }
    else if (event.GetEventObject() == mReplaceButton)
    {
-      if (pathSelected != wxT(""))
+      if (pathSelected != "")
          mPathListBox->SetString(selected, pathname);
    }
    
-   mFileTextCtrl->SetValue(wxT(""));
+   mFileTextCtrl->SetValue("");
    mHasDataChanged = true;
 }
 
@@ -311,7 +311,7 @@ void MultiPathSetupPanel::OnRemoveButtonClick(wxCommandEvent& event)
 {
    int selected = mPathListBox->GetSelection();
    mPathListBox->Delete(selected);
-   mFileTextCtrl->SetValue(wxT(""));
+   mFileTextCtrl->SetValue("");
    mHasDataChanged = true;
 }
 
@@ -323,14 +323,14 @@ void MultiPathSetupPanel::OnBrowseButtonClick(wxCommandEvent& event)
 {
    wxString defPath = mFileTextCtrl->GetValue();
    
-   wxDirDialog dialog(this, wxT("Choose a directory"), defPath);
+   wxDirDialog dialog(this, "Choose a directory", defPath);
    
    if (dialog.ShowModal() == wxID_OK)
    {
       wxString pathname;
       pathname = dialog.GetPath().c_str();
-      pathname.Replace(wxT("\\"), wxT("/"));
-      mFileTextCtrl->SetValue(pathname + wxT("/"));
+      pathname.Replace("\\", "/");
+      mFileTextCtrl->SetValue(pathname + "/");
    }
 }
 

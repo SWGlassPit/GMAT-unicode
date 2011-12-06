@@ -88,86 +88,86 @@ void GmatToolBar::CreateToolBar(wxToolBar* toolBar)
    
    // Do not change the order, this order is how it appears in the toolbar
    
-   guiManager->LoadIcon(wxT("NewScript"), bitmapType, &bitmaps[0], NewScript_xpm);
-   guiManager->LoadIcon(wxT("OpenScript"), bitmapType, &bitmaps[1], OpenScript_xpm);
-   guiManager->LoadIcon(wxT("SaveMission"), bitmapType, &bitmaps[2], SaveMission_xpm);
-   guiManager->LoadIcon(wxT("Copy"), bitmapType, &bitmaps[3], copy_xpm);
-   guiManager->LoadIcon(wxT("Cut"), bitmapType, &bitmaps[4], cut_xpm);
-   guiManager->LoadIcon(wxT("Paste"), bitmapType, &bitmaps[5], paste_xpm);
-   guiManager->LoadIcon(wxT("print"), bitmapType, &bitmaps[6], print_xpm);
-   guiManager->LoadIcon(wxT("Help"), bitmapType, &bitmaps[7], Help_xpm);
-   guiManager->LoadIcon(wxT("RunMission"), bitmapType, &bitmaps[8], RunMission_xpm);
-   guiManager->LoadIcon(wxT("PauseMission"), bitmapType, &bitmaps[9], PauseMission_xpm);
-   guiManager->LoadIcon(wxT("StopMission"), bitmapType, &bitmaps[10], StopMission_xpm);
-   guiManager->LoadIcon(wxT("CloseAll"), bitmapType, &bitmaps[11], CloseAll_xpm);
-   guiManager->LoadIcon(wxT("CloseOne"), bitmapType, &bitmaps[12], CloseOne_xpm);
-   guiManager->LoadIcon(wxT("NewMission"), bitmapType, &bitmaps[13], NewMission_xpm);
-   guiManager->LoadIcon(wxT("build"), bitmapType, &bitmaps[14], build_xpm);
-   guiManager->LoadIcon(wxT("WebHelp"), bitmapType, &bitmaps[15], WebHelp_xpm);
-   guiManager->LoadIcon(wxT("screenshot"), bitmapType, &bitmaps[16], screenshot_xpm);
+   guiManager->LoadIcon("NewScript", bitmapType, &bitmaps[0], NewScript_xpm);
+   guiManager->LoadIcon("OpenScript", bitmapType, &bitmaps[1], OpenScript_xpm);
+   guiManager->LoadIcon("SaveMission", bitmapType, &bitmaps[2], SaveMission_xpm);
+   guiManager->LoadIcon("Copy", bitmapType, &bitmaps[3], copy_xpm);
+   guiManager->LoadIcon("Cut", bitmapType, &bitmaps[4], cut_xpm);
+   guiManager->LoadIcon("Paste", bitmapType, &bitmaps[5], paste_xpm);
+   guiManager->LoadIcon("print", bitmapType, &bitmaps[6], print_xpm);
+   guiManager->LoadIcon("Help", bitmapType, &bitmaps[7], Help_xpm);
+   guiManager->LoadIcon("RunMission", bitmapType, &bitmaps[8], RunMission_xpm);
+   guiManager->LoadIcon("PauseMission", bitmapType, &bitmaps[9], PauseMission_xpm);
+   guiManager->LoadIcon("StopMission", bitmapType, &bitmaps[10], StopMission_xpm);
+   guiManager->LoadIcon("CloseAll", bitmapType, &bitmaps[11], CloseAll_xpm);
+   guiManager->LoadIcon("CloseOne", bitmapType, &bitmaps[12], CloseOne_xpm);
+   guiManager->LoadIcon("NewMission", bitmapType, &bitmaps[13], NewMission_xpm);
+   guiManager->LoadIcon("build", bitmapType, &bitmaps[14], build_xpm);
+   guiManager->LoadIcon("WebHelp", bitmapType, &bitmaps[15], WebHelp_xpm);
+   guiManager->LoadIcon("screenshot", bitmapType, &bitmaps[16], screenshot_xpm);
    
    // Changed from wxSize(18, 15) (LOJ: 2011.02.04)
    toolBar->SetToolBitmapSize(wxSize(16, 16));
    
    #ifdef DEBUG_TOOLBAR
-   MessageInterface::ShowMessage(wxT("   Adding mission tools\n"));
+   MessageInterface::ShowMessage("   Adding mission tools\n");
    #endif
    
    // add file tools
    toolBar->AddSeparator();
-   toolBar->AddTool(MENU_FILE_NEW_SCRIPT, wxT("New Script"), *bitmaps[0], wxT("New Script"));
-   toolBar->AddTool(MENU_FILE_OPEN_SCRIPT, wxT("Open"), *bitmaps[1], wxT("Open"));
-   toolBar->AddTool(MENU_FILE_SAVE_SCRIPT, wxT("Save"), *bitmaps[2], wxT("Save"));
+   toolBar->AddTool(MENU_FILE_NEW_SCRIPT, _T("New Script"), *bitmaps[0], _T("New Script"));
+   toolBar->AddTool(MENU_FILE_OPEN_SCRIPT, _T("Open"), *bitmaps[1], _T("Open"));
+   toolBar->AddTool(MENU_FILE_SAVE_SCRIPT, _T("Save"), *bitmaps[2], _T("Save"));
    toolBar->AddSeparator();
    
-   toolBar->AddTool(MENU_LOAD_DEFAULT_MISSION, wxT("New Mission"), *bitmaps[13], 
-                    wxT("New Mission"));
+   toolBar->AddTool(MENU_LOAD_DEFAULT_MISSION, _T("New Mission"), *bitmaps[13], 
+                    _T("New Mission"));
    toolBar->AddSeparator();
    
    #ifdef DEBUG_TOOLBAR
-   MessageInterface::ShowMessage(wxT("   Adding edit tools\n"));
+   MessageInterface::ShowMessage("   Adding edit tools\n");
    #endif
    
    // add edit tools
-   toolBar->AddTool(MENU_EDIT_COPY, wxT("Copy"), *bitmaps[3], wxT("Copy"));
-   toolBar->AddTool(MENU_EDIT_CUT, wxT("Cut"), *bitmaps[4], wxT("Cut"));
-   toolBar->AddTool(MENU_EDIT_PASTE, wxT("Paste"), *bitmaps[5], wxT("Paste"));
+   toolBar->AddTool(MENU_EDIT_COPY, _T("Copy"), *bitmaps[3], _T("Copy"));
+   toolBar->AddTool(MENU_EDIT_CUT, _T("Cut"), *bitmaps[4], _T("Cut"));
+   toolBar->AddTool(MENU_EDIT_PASTE, _T("Paste"), *bitmaps[5], _T("Paste"));
    toolBar->AddSeparator();
    
    #ifdef __ADD_PRINT_TO_TOOLBAR__
    // add print tool
-   toolBar->AddTool(MENU_FILE_PRINT, wxT("Print"), *bitmaps[6], wxT("Print"));
+   toolBar->AddTool(MENU_FILE_PRINT, _T("Print"), *bitmaps[6], _T("Print"));
    toolBar->AddSeparator();
    #endif
    
    #ifdef DEBUG_TOOLBAR
-   MessageInterface::ShowMessage(wxT("   Adding run tools\n"));
+   MessageInterface::ShowMessage("   Adding run tools\n");
    #endif
    
    // add run tools
-   toolBar->AddTool(TOOL_RUN, wxT("Run"), *bitmaps[8], wxT("Run"));
-   toolBar->AddTool(TOOL_PAUSE, wxT("Pause"), *bitmaps[9], wxT("Pause"));
-   toolBar->AddTool(TOOL_STOP, wxT("Stop"), *bitmaps[10], wxT("Stop"));
-   toolBar->AddTool(TOOL_SCREENSHOT, wxT("Screenshot"), *bitmaps[16], wxT("Screenshot"));
+   toolBar->AddTool(TOOL_RUN, _T("Run"), *bitmaps[8], _T("Run"));
+   toolBar->AddTool(TOOL_PAUSE, _T("Pause"), *bitmaps[9], _T("Pause"));
+   toolBar->AddTool(TOOL_STOP, _T("Stop"), *bitmaps[10], _T("Stop"));
+   toolBar->AddTool(TOOL_SCREENSHOT, _T("Screenshot"), *bitmaps[16], _T("Screenshot"));
    toolBar->AddSeparator();
    
    #ifdef DEBUG_TOOLBAR
-   MessageInterface::ShowMessage(wxT("   Adding window tools\n"));
+   MessageInterface::ShowMessage("   Adding window tools\n");
    #endif
    
    // add close window tool
-   toolBar->AddTool(TOOL_CLOSE_CHILDREN, wxT("Close All"), *bitmaps[11], wxT("Close All"));
-   toolBar->AddTool(TOOL_CLOSE_CURRENT, wxT("Close"), *bitmaps[12],
-                    wxT("Close"));
+   toolBar->AddTool(TOOL_CLOSE_CHILDREN, _T("Close All"), *bitmaps[11], _T("Close All"));
+   toolBar->AddTool(TOOL_CLOSE_CURRENT, _T("Close"), *bitmaps[12],
+                    _T("Close"));
    toolBar->AddSeparator();
    
    #ifdef DEBUG_TOOLBAR
-   MessageInterface::ShowMessage(wxT("   Adding help tools\n"));
+   MessageInterface::ShowMessage("   Adding help tools\n");
    #endif
    
    // add help tool
-   toolBar->AddTool(MENU_HELP_ABOUT, wxT("About GMAT"), *bitmaps[7], wxT("About GMAT"));
-   toolBar->AddTool(MENU_HELP_ONLINE, wxT("Online Help"), *bitmaps[15], wxT("Online Help"));
+   toolBar->AddTool(MENU_HELP_ABOUT, _T("About GMAT"), *bitmaps[7], _T("About GMAT"));
+   toolBar->AddTool(MENU_HELP_ONLINE, _T("Online Help"), *bitmaps[15], _T("Online Help"));
    
    // now realize to make tools appear
    toolBar->Realize();
@@ -189,7 +189,7 @@ void GmatToolBar::CreateToolBar(wxToolBar* toolBar)
       delete bitmaps[i];
    
    #ifdef DEBUG_TOOLBAR
-   MessageInterface::ShowMessage(wxT("GmatToolBar::CreateToolBar() exiting\n"));
+   MessageInterface::ShowMessage("GmatToolBar::CreateToolBar() exiting\n");
    #endif
 }
 
@@ -206,7 +206,7 @@ void GmatToolBar::CreateToolBar(wxToolBar* toolBar)
 void GmatToolBar::AddAnimationTools(wxToolBar* toolBar)
 {
    #ifdef DEBUG_TOOLBAR
-   MessageInterface::ShowMessage(wxT("GmatToolBar::AddAnimationTools() entered\n"));
+   MessageInterface::ShowMessage("GmatToolBar::AddAnimationTools() entered\n");
    #endif
    
    #ifdef __SHOW_GL_OPTION_DIALOG__
@@ -224,16 +224,16 @@ void GmatToolBar::AddAnimationTools(wxToolBar* toolBar)
    // Do not change the order, this order is how it appears in the toolbar
    
    // RunAnimation icon
-   guiManager->LoadIcon(wxT("RunAnimation"), bitmapType, &bitmaps[0], RunAnimation_xpm);
+   guiManager->LoadIcon("RunAnimation", bitmapType, &bitmaps[0], RunAnimation_xpm);
    
    // StopAnimation icon
-   guiManager->LoadIcon(wxT("StopAnimation"), bitmapType, &bitmaps[1], StopAnimation_xpm);
+   guiManager->LoadIcon("StopAnimation", bitmapType, &bitmaps[1], StopAnimation_xpm);
    
    // FasterAnimation
-   guiManager->LoadIcon(wxT("FasterAnimation"), bitmapType, &bitmaps[2], FasterAnimation_xpm);
+   guiManager->LoadIcon("FasterAnimation", bitmapType, &bitmaps[2], FasterAnimation_xpm);
    
    // SlowerAnimation
-   guiManager->LoadIcon(wxT("SlowerAnimation"), bitmapType, &bitmaps[3], SlowerAnimation_xpm);
+   guiManager->LoadIcon("SlowerAnimation", bitmapType, &bitmaps[3], SlowerAnimation_xpm);
    
    #ifdef __SHOW_GL_OPTION_DIALOG__
    bitmaps[4] = new wxBitmap(animation_options_xpm);
@@ -247,18 +247,18 @@ void GmatToolBar::AddAnimationTools(wxToolBar* toolBar)
    toolBar->AddControl(aniLabel);
    #endif
    
-   toolBar->AddTool(TOOL_ANIMATION_PLAY, wxT("AnimationPlay"), *bitmaps[0],
-                    wxT("Start Animation"), wxITEM_CHECK);
-   toolBar->AddTool(TOOL_ANIMATION_STOP, wxT("AnimationStop"), *bitmaps[1],
-                    wxT("Stop Animation"));
-   toolBar->AddTool(TOOL_ANIMATION_FAST, wxT("AnimationFast"), *bitmaps[2],
-                    wxT("Faster Animation"));
-   toolBar->AddTool(TOOL_ANIMATION_SLOW, wxT("AnimationSlow"), *bitmaps[3],
-                    wxT("Slower Animation"));
+   toolBar->AddTool(TOOL_ANIMATION_PLAY, _T("AnimationPlay"), *bitmaps[0],
+                    _T("Start Animation"), wxITEM_CHECK);
+   toolBar->AddTool(TOOL_ANIMATION_STOP, _T("AnimationStop"), *bitmaps[1],
+                    _T("Stop Animation"));
+   toolBar->AddTool(TOOL_ANIMATION_FAST, _T("AnimationFast"), *bitmaps[2],
+                    _T("Faster Animation"));
+   toolBar->AddTool(TOOL_ANIMATION_SLOW, _T("AnimationSlow"), *bitmaps[3],
+                    _T("Slower Animation"));
    
    #ifdef __SHOW_GL_OPTION_DIALOG__
-   toolBar->AddTool(TOOL_ANIMATION_OPTIONS, wxT("AnimationOptions"), *bitmaps[4],
-                    wxT("Show Animation Options"));
+   toolBar->AddTool(TOOL_ANIMATION_OPTIONS, _T("AnimationOptions"), *bitmaps[4],
+                    _T("Show Animation Options"));
    #endif
    
    // now realize to make tools appear
@@ -305,7 +305,7 @@ void GmatToolBar::AddGuiScriptSyncStatus(wxToolBar* toolBar)
    theSyncStatus->SetFont(font);
    
    // Set color
-   wxColour bgcolor = wxTheColourDatabase->Find(wxT("DIM GREY"));
+   wxColour bgcolor = wxTheColourDatabase->Find("DIM GREY");
    theSyncStatus->SetBackgroundColour(bgcolor);
    theSyncStatus->SetForegroundColour(*wxGREEN);
    
@@ -339,7 +339,7 @@ void GmatToolBar::UpdateGuiScriptSyncStatus(wxToolBar* toolBar, int guiStat,
 {
    #ifdef DEBUG_SYNC_STATUS
    MessageInterface::ShowMessage
-      (wxT("GmatToolBar::UpdateGuiScriptSyncStatus() entered, guiStat=%d, scriptStat = %d\n"),
+      ("GmatToolBar::UpdateGuiScriptSyncStatus() entered, guiStat=%d, scriptStat = %d\n",
        guiStat, scriptStat);
    #endif
    
@@ -355,7 +355,7 @@ void GmatToolBar::UpdateGuiScriptSyncStatus(wxToolBar* toolBar, int guiStat,
    
    #ifdef DEBUG_SYNC_STATUS
    MessageInterface::ShowMessage
-      (wxT("   guiStatus=%d, scriptStatus = %d\n"), guiStatus, scriptStatus);
+      ("   guiStatus=%d, scriptStatus = %d\n", guiStatus, scriptStatus);
    #endif
    
    wxString synchronized;
@@ -366,24 +366,24 @@ void GmatToolBar::UpdateGuiScriptSyncStatus(wxToolBar* toolBar, int guiStat,
    wxString guiError;
    wxString scriptError;
 #ifndef __WXMAC__
-   synchronized    = wxT(" Synchronized ");
-   guiModified     = wxT(" GUI Modified ");
-   scriptModified  = wxT(" Script Modified ");
-   unsynchronized  = wxT(" Unsynchronized ");
-   guiScriptError  = wxT(" Both GUI and Script Error ");
-   guiError        = wxT(" GUI Error ");
-   scriptError     = wxT(" Script Error ");
+   synchronized    = " Synchronized ";
+   guiModified     = " GUI Modified ";
+   scriptModified  = " Script Modified ";
+   unsynchronized  = " Unsynchronized ";
+   guiScriptError  = " Both GUI and Script Error ";
+   guiError        = " GUI Error ";
+   scriptError     = " Script Error ";
 #else
-   synchronized    = wxT("S");
-   guiModified     = wxT("g");
-   scriptModified  = wxT("s");
-   unsynchronized  = wxT("U");
-   guiScriptError  = wxT("E");
-   guiError        = wxT("g");
-   scriptError     = wxT("s");
+   synchronized    = "S";
+   guiModified     = "g";
+   scriptModified  = "s";
+   unsynchronized  = "U";
+   guiScriptError  = "E";
+   guiError        = "g";
+   scriptError     = "s";
 #endif
 
-   wxColour bgcolor = wxTheColourDatabase->Find(wxT("DIM GREY"));
+   wxColour bgcolor = wxTheColourDatabase->Find("DIM GREY");
    if (guiStatus == 1 && scriptStatus == 1)
    {
       theSyncStatus->SetLabel(synchronized);
@@ -393,21 +393,21 @@ void GmatToolBar::UpdateGuiScriptSyncStatus(wxToolBar* toolBar, int guiStat,
    else if (guiStatus == 2 && scriptStatus == 1)
    {
       theSyncStatus->SetLabel(guiModified);
-      wxColour yellow = wxTheColourDatabase->Find(wxT("Yellow"));
+      wxColour yellow = wxTheColourDatabase->Find("Yellow");
       theSyncStatus->SetBackgroundColour(bgcolor);
       theSyncStatus->SetForegroundColour(yellow);
    }
    else if (guiStatus == 1 && scriptStatus == 2)
    {
       theSyncStatus->SetLabel(scriptModified);
-      wxColour yellow = wxTheColourDatabase->Find(wxT("Yellow"));
+      wxColour yellow = wxTheColourDatabase->Find("Yellow");
       theSyncStatus->SetBackgroundColour(bgcolor);
       theSyncStatus->SetForegroundColour(yellow);
    }
    else if (guiStatus == 2 && scriptStatus == 2)
    {
       theSyncStatus->SetLabel(unsynchronized);
-      wxColour bgcolor = wxTheColourDatabase->Find(wxT("LIGHT GREY"));
+      wxColour bgcolor = wxTheColourDatabase->Find("LIGHT GREY");
       theSyncStatus->SetBackgroundColour(bgcolor);
       theSyncStatus->SetForegroundColour(*wxRED);
    }
@@ -433,7 +433,7 @@ void GmatToolBar::UpdateGuiScriptSyncStatus(wxToolBar* toolBar, int guiStat,
    
    #ifdef DEBUG_SYNC_STATUS
    MessageInterface::ShowMessage
-      (wxT("GmatToolBar::UpdateGuiScriptSyncStatus() leaving\n"));
+      ("GmatToolBar::UpdateGuiScriptSyncStatus() leaving\n");
    #endif
 }
 
@@ -446,7 +446,7 @@ void GmatToolBar::LoadIcon(const wxString &filename, long bitmapType, wxBitmap *
 {
    #ifdef DEBUG_LOAD_ICON
    MessageInterface::ShowMessage
-      (wxT("GmatToolBar::LoadIcon() entered, filename='%s', bitmap=<%p>\n"), filename.c_str(), bitmap);
+      ("GmatToolBar::LoadIcon() entered, filename='%s', bitmap=<%p>\n", filename.c_str(), bitmap);
    #endif
    
    wxImage iconImage;
@@ -454,20 +454,20 @@ void GmatToolBar::LoadIcon(const wxString &filename, long bitmapType, wxBitmap *
    {
       iconImage.LoadFile(filename, bitmapType);
       #ifdef DEBUG_LOAD_ICON
-      MessageInterface::ShowMessage(wxT("   creating bitmap from png image\n"));
+      MessageInterface::ShowMessage("   creating bitmap from png image\n");
       #endif
       *bitmap = new wxBitmap(iconImage);
    }
    else
    {
       #ifdef DEBUG_LOAD_ICON
-      MessageInterface::ShowMessage(wxT("   creating bitmap from xpm file\n"));
+      MessageInterface::ShowMessage("   creating bitmap from xpm file\n");
       #endif
       *bitmap = new wxBitmap(xpm);
    }
    
    #ifdef DEBUG_LOAD_ICON
-   MessageInterface::ShowMessage(wxT("GmatToolBar::LoadIcon() leavint\n"));
+   MessageInterface::ShowMessage("GmatToolBar::LoadIcon() leavint\n");
    #endif
 }
 

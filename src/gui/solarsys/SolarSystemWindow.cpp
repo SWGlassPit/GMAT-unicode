@@ -217,13 +217,13 @@ void SolarSystemWindow::OnBrowseButton(wxCommandEvent& WXUNUSED (event))
     wxFileDialog dialog
                  (
                     this,
-                    wxT("Open File"),
-                    wxT(""),
-                    wxT(""),
+                    _T("Open File"),
+                    _T(""),
+                    _T(""),
 #ifdef __WXMOTIF__
-                    wxT("C++ files (*.cpp)|*.cpp")
+                    _T("C++ files (*.cpp)|*.cpp")
 #else
-                    wxT("C++ files (*.h;*.cpp)|*.h;*.cpp")
+                    _T("C++ files (*.h;*.cpp)|*.h;*.cpp")
 #endif
                  );
 
@@ -236,7 +236,7 @@ void SolarSystemWindow::OnBrowseButton(wxCommandEvent& WXUNUSED (event))
                     dialog.GetDirectory().c_str(),
                     dialog.GetFilename().c_str());
     //                item11.LoadFile(info);
-        //wxMessageDialog dialog2(this, info, wxT("Selected file"));
+        //wxMessageDialog dialog2(this, info, _T("Selected file"));
         //dialog2.ShowModal();
     }
 }

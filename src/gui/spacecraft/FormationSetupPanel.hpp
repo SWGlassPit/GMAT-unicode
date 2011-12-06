@@ -34,7 +34,7 @@ public:
    
 protected:
    
-   wxString mFormationName;
+   std::string mFormationName;
    wxArrayString mSoExcList;
    
    wxListBox *mSoAvailableListBox;

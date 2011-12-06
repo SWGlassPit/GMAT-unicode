@@ -61,7 +61,7 @@ public:
    wxString ToWxString(Real rval);
    wxString ToWxString(Integer ival);
    wxArrayString ToWxArrayString(const StringArray &array);
-   int IsValidVariable(const wxString &varName, Gmat::ObjectType allowedType,
+   int IsValidVariable(const std::string &varName, Gmat::ObjectType allowedType,
                        bool allowNumber = false, bool allowNonPlottable = false);
    
    void UpdateAll(Gmat::ObjectType objType = Gmat::UNKNOWN_OBJECT);
@@ -264,24 +264,24 @@ public:
    
    wxListBox* GetPlottableParameterListBox(wxWindow *parent, wxWindowID id,
                                            const wxSize &size, 
-                                           const wxString &nameToExclude = wxT(""));
+                                           const wxString &nameToExclude = "");
    
    wxListBox* GetAllUserParameterListBox(wxWindow *parent, wxWindowID id,
                                          const wxSize &size, bool showArray);
    
    wxListBox* GetUserVariableListBox(wxWindow *parent, wxWindowID id,
                                      const wxSize &size,
-                                     const wxString &nameToExclude = wxT(""),
+                                     const wxString &nameToExclude = "",
                                       bool multiSelect = false);
    
    wxListBox* GetUserStringListBox(wxWindow *parent, wxWindowID id,
                                    const wxSize &size,
-                                   const wxString &nameToExclude = wxT(""),
+                                   const wxString &nameToExclude = "",
                                    bool multiSelect = false);
    
    wxListBox* GetUserArrayListBox(wxWindow *parent, wxWindowID id,
                                   const wxSize &size,
-                                  const wxString &nameToExclude = wxT(""),
+                                  const wxString &nameToExclude = "",
                                   bool multiSelect = false);
    
    wxListBox* GetUserParameterListBox(wxWindow *parent, wxWindowID id,
@@ -310,7 +310,7 @@ public:
           wxStaticText **coordSysLabel, wxBoxSizer **coordSysBoxSizer,
           const wxArrayString &objectTypeList,
           int showOption = SHOW_PLOTTABLE, bool showVariable = true,
-          bool showArray = false, const wxString &onwer = wxT("Spacecraft"));
+          bool showArray = false, const wxString &onwer = "Spacecraft");
    
    wxSizer* Create3ColParameterSizer
          (wxWindow *parent,
@@ -336,8 +336,8 @@ public:
           bool allowMultiSelect = false, bool showString = false,
           bool allowWholeObject = false, bool showSysParam = true,
           bool showVariable = false, bool showArray = false,
-          const wxString &onwer = wxT("Spacecraft"),
-          const wxString configSection = wxT("Parameter Select"));
+          const wxString &onwer = "Spacecraft",
+          const wxString configSection = "Parameter Select");
    
    wxSizer*
    CreateUserVarSizer(wxWindow *parent,

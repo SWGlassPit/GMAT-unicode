@@ -49,11 +49,11 @@ MinimizePanel::MinimizePanel(wxWindow *parent, GmatCommand *cmd)
    mMinimizeCommand = (Minimize *)cmd;
    theGuiManager = GuiItemManager::GetInstance();
    
-   solverName = wxT("");
+   solverName = "";
    minParam = NULL;
    mVarNameChanged = false;
    
-   mObjectTypeList.Add(wxT("Spacecraft"));
+   mObjectTypeList.Add("Spacecraft");
    
    Create();
    Show();
@@ -68,7 +68,7 @@ MinimizePanel::MinimizePanel(wxWindow *parent, GmatCommand *cmd)
 MinimizePanel::~MinimizePanel()
 {
    mObjectTypeList.Clear();
-   theGuiManager->UnregisterComboBox(wxT("Optimizer"), mSolverComboBox);
+   theGuiManager->UnregisterComboBox("Optimizer", mSolverComboBox);
 }
 
 
@@ -124,8 +124,8 @@ void MinimizePanel::Create()
 void MinimizePanel::LoadData()
 {
    #if DEBUG_MINIMIZE_PANEL
-   MessageInterface::ShowMessage(wxT("MinimizePanel::LoadData() entered\n"));
-   MessageInterface::ShowMessage(wxT("Command=%s\n"), mMinimizeCommand->GetTypeName().c_str());
+   MessageInterface::ShowMessage("MinimizePanel::LoadData() entered\n");
+   MessageInterface::ShowMessage("Command=%s\n", mMinimizeCommand->GetTypeName().c_str());
    #endif
 
    try
@@ -133,19 +133,19 @@ void MinimizePanel::LoadData()
       // Set the pointer for the "Show Script" button
       mObject = mMinimizeCommand;
       
-      wxString loadedSolverName = mMinimizeCommand->
-         GetStringParameter(mMinimizeCommand->GetParameterID(wxT("OptimizerName")));
+      std::string loadedSolverName = mMinimizeCommand->
+         GetStringParameter(mMinimizeCommand->GetParameterID("OptimizerName"));
 
-      wxString loadedVariableName = mMinimizeCommand->
-         GetStringParameter(mMinimizeCommand->GetParameterID(wxT("ObjectiveName")));
+      std::string loadedVariableName = mMinimizeCommand->
+         GetStringParameter(mMinimizeCommand->GetParameterID("ObjectiveName"));
 
       #if DEBUG_MINIMIZE_PANEL
-      MessageInterface::ShowMessage(wxT("solverName=%s\n"), loadedSolverName.c_str());
-      MessageInterface::ShowMessage(wxT("variable=%s\n"), loadedVariableName.c_str());
+      MessageInterface::ShowMessage("solverName=%s\n", loadedSolverName.c_str());
+      MessageInterface::ShowMessage("variable=%s\n", loadedVariableName.c_str());
       #endif
       
-      solverName = loadedSolverName.c_str();      
-      variableName = loadedVariableName.c_str();
+      solverName = wxT(loadedSolverName.c_str());      
+      variableName = wxT(loadedVariableName.c_str());
       
    }
    catch (BaseException &e)
@@ -163,7 +163,7 @@ void MinimizePanel::LoadData()
 void MinimizePanel::SaveData()
 {   
    #if DEBUG_MINIMIZE_PANEL
-   MessageInterface::ShowMessage(wxT("MinimizePanel::SaveData() entered\n"));
+   MessageInterface::ShowMessage("MinimizePanel::SaveData() entered\n");
    #endif
    
    canClose = true;
@@ -174,15 +174,15 @@ void MinimizePanel::SaveData()
    
    if (mVarNameChanged)
    {
-      wxString varName = variableName.c_str();
+      std::string varName = variableName.c_str();
       
       int retval = theGuiManager->IsValidVariable(varName, Gmat::SPACECRAFT);
       
       if (retval == -1)
       {
          MessageInterface::PopupMessage
-            (Gmat::ERROR_, wxT("The variable \"") + varName + wxT("\" does not exist.\n")
-             wxT("Press \"Choose\" or create from the resource tree."));
+            (Gmat::ERROR_, "The variable \"" + varName + "\" does not exist.\n"
+             "Press \"Choose\" or create from the resource tree.");
          
          canClose = false;
       }
@@ -190,8 +190,8 @@ void MinimizePanel::SaveData()
       {
          MessageInterface::PopupMessage
             (Gmat::ERROR_, mMsgFormat.c_str(),
-             variableName.c_str(), wxT("Variable to be Minimized"),
-             wxT("Variable, Array element, Spacecraft parameter"));
+             variableName.c_str(), "Variable to be Minimized",
+             "Variable, Array element, Spacecraft parameter");
          
          canClose = false;
       }
@@ -210,12 +210,12 @@ void MinimizePanel::SaveData()
    try
    {
       mMinimizeCommand->SetStringParameter
-         (mMinimizeCommand->GetParameterID(wxT("OptimizerName")),
-          wxString(solverName.c_str()));
+         (mMinimizeCommand->GetParameterID("OptimizerName"),
+          std::string(solverName.c_str()));
       
       mMinimizeCommand->SetStringParameter
-         (mMinimizeCommand->GetParameterID(wxT("ObjectiveName")),
-          wxString(variableName.c_str()));
+         (mMinimizeCommand->GetParameterID("ObjectiveName"),
+          std::string(variableName.c_str()));
           
       theGuiInterpreter->ValidateCommand(mMinimizeCommand);
    }
@@ -235,7 +235,7 @@ void MinimizePanel::ShowGoalSetup()
 {
    wxString str;
    
-   if (solverName == wxT(""))
+   if (solverName == "")
    {
       mSolverComboBox->SetSelection(0);
       solverName = mSolverComboBox->GetStringSelection();

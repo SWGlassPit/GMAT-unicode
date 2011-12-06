@@ -55,7 +55,7 @@ private:
 //   GuiInterpreter *guiInterpreter;
    
    //**************************************
-   wxString    rotationDataSource;
+   std::string    rotationDataSource;
    Real           nutationUpdateInterval;;
    Real           spinAxisRAConstant;
    Real           spinAxisRARate;

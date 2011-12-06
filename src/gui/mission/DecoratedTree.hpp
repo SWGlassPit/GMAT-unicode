@@ -82,7 +82,7 @@ class DecoratedTree : public wxTreeCtrl
                  long style = wxTR_HAS_BUTTONS | wxTR_LINES_AT_ROOT |
                               wxTR_HIDE_ROOT | wxTR_EXTENDED,
                  const wxValidator& validator = wxDefaultValidator,
-                 const wxString& name = wxT("listCtrl"));
+                 const wxString& name = "listCtrl");
 		~DecoratedTree();
 
         void				Initialize(void);
@@ -95,12 +95,12 @@ class DecoratedTree : public wxTreeCtrl
         wxTreeItemId        Find(wxString str);
         wxTreeItemId        Find(wxString str, wxTreeItemId root);
 
-        wxTreeItemId        AddItem(wxString txt, wxString parent = wxT(""));
+        wxTreeItemId        AddItem(wxString txt, wxString parent = "");
         
         // Configuration methods
         void                SetParameter(int id, int value);
         int                 GetParameter(int id);
-        void                SetString(int line, wxString value);
+        void                SetString(int line, std::string value);
 
         // Message overrides
         virtual void        OnPaint(wxPaintEvent& ev);
@@ -118,7 +118,7 @@ class DecoratedTree : public wxTreeCtrl
         /// Width of each of the decoration boxes
         int                 boxWidth;
         /// The text placed in the decorations
-        std::vector<wxString *> 
+        std::vector<std::string *> 
                             boxData;
         /// The height of each of the tree nodes
         int                 rowHeight;

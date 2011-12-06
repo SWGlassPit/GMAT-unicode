@@ -41,7 +41,7 @@ END_EVENT_TABLE()
 //------------------------------------------------------------------------------
 RunScriptFolderDialog::RunScriptFolderDialog(wxWindow *parent, int numScripts,
                                              Real absTol, const wxString &compareDir)
-   : GmatDialog(parent, -1, wxT("RunScriptFolderDialog"), NULL, wxDefaultPosition,
+   : GmatDialog(parent, -1, "RunScriptFolderDialog", NULL, wxDefaultPosition,
                 wxSize(100, 100))
 {
    mRunScripts = false;
@@ -55,8 +55,8 @@ RunScriptFolderDialog::RunScriptFolderDialog(wxWindow *parent, int numScripts,
    mAbsTol = absTol;
    mCompareDir = compareDir;
 
-   mFilterString = wxT("");
-   mReplaceString = wxT("GMAT");
+   mFilterString = "";
+   mReplaceString = "GMAT";
    
    Create();
    ShowData();
@@ -77,7 +77,7 @@ RunScriptFolderDialog::~RunScriptFolderDialog()
 void RunScriptFolderDialog::Create()
 {
    #ifdef DEBUG_RUN_SCRIPT_FOLDER_DIALOG
-   MessageInterface::ShowMessage(wxT("RunScriptFolderDialog::Create() entered.\n"));
+   MessageInterface::ShowMessage("RunScriptFolderDialog::Create() entered.\n");
    #endif
    
    int bsize = 1;
@@ -153,8 +153,8 @@ void RunScriptFolderDialog::Create()
       new wxStaticText(this, ID_TEXT, wxT("Current GMAT output directory:"),
                        wxDefaultPosition, wxDefaultSize, 0);
    wxStaticText *currOutDir2 =
-      new wxStaticText(this, ID_TEXT, wxT("(ReportFile will use this path if ")
-                                      wxT("it doesn't contain path)"),
+      new wxStaticText(this, ID_TEXT, wxT("(ReportFile will use this path if "
+                                          "it doesn't contain path)"),
                        wxDefaultPosition, wxDefaultSize, 0);
    
    mCurrOutDirTextCtrl =
@@ -185,7 +185,7 @@ void RunScriptFolderDialog::Create()
    runSizer->Add(mCreateRunFolderCheckBox, 0, wxALIGN_RIGHT|wxGROW|wxALL, bsize);
    
    GmatStaticBoxSizer *runStaticSizer =
-      new GmatStaticBoxSizer(wxVERTICAL, this, wxT("Run Scripts"));
+      new GmatStaticBoxSizer(wxVERTICAL, this, "Run Scripts");
    
    runStaticSizer->Add(saveScriptsSizer, 0, wxALIGN_LEFT|wxGROW|wxALL, bsize);
    runStaticSizer->Add(20, 3, 0, wxALIGN_LEFT|wxALL, bsize);
@@ -260,7 +260,7 @@ void RunScriptFolderDialog::Create()
                     wxDefaultPosition, wxDefaultSize, 0);
    
    GmatStaticBoxSizer *compareStaticSizer =
-      new GmatStaticBoxSizer(wxVERTICAL, this, wxT("Compare Results"));
+      new GmatStaticBoxSizer(wxVERTICAL, this, "Compare Results");
    
    wxBoxSizer *compDirSizer = new wxBoxSizer(wxHORIZONTAL);
    compDirSizer->Add(compDirLabel, 0, wxALIGN_CENTRE|wxGROW|wxALL, bsize);
@@ -295,7 +295,7 @@ void RunScriptFolderDialog::Create()
    theMiddleSizer->Add(pageBoxSizer, 0, wxALIGN_CENTRE|wxALL, bsize);
    
    #ifdef DEBUG_RUN_SCRIPT_FOLDER_DIALOG
-   MessageInterface::ShowMessage(wxT("RunScriptFolderDialog::Create() leaving.\n"));
+   MessageInterface::ShowMessage("RunScriptFolderDialog::Create() leaving.\n");
    #endif
 }
 
@@ -306,11 +306,11 @@ void RunScriptFolderDialog::Create()
 void RunScriptFolderDialog::LoadData()
 {
    #ifdef DEBUG_RUN_SCRIPT_FOLDER_DIALOG
-   MessageInterface::ShowMessage(wxT("RunScriptFolderDialog::LoadData() entered.\n"));
+   MessageInterface::ShowMessage("RunScriptFolderDialog::LoadData() entered.\n");
    #endif
    
    wxString str;
-   str.Printf(wxT("%d"), mNumScriptsToRun);
+   str.Printf("%d", mNumScriptsToRun);
    mNumScriptsToRunTextCtrl->SetValue(str);
    
    FileManager *fm = FileManager::Instance();
@@ -326,19 +326,19 @@ void RunScriptFolderDialog::LoadData()
    }
    
    #ifdef DEBUG_RUN_SCRIPT_FOLDER_DIALOG
-   MessageInterface::ShowMessage(wxT("   mCurrOutDir='%s'\n"), mCurrOutDir.c_str());
+   MessageInterface::ShowMessage("   mCurrOutDir='%s'\n", mCurrOutDir.c_str());
    #endif
    
-   mSaveScriptsDirTextCtrl->SetValue(mCurrOutDir + wxT("AutoSave"));
+   mSaveScriptsDirTextCtrl->SetValue(mCurrOutDir + "AutoSave");
    mCurrOutDirTextCtrl->SetValue(mCurrOutDir);
    
    //=======================================================
    #ifdef __ENABLE_COMPARE__
    //=======================================================
-   str.Printf(wxT("%g"), mAbsTol);
+   str.Printf("%g", mAbsTol);
    mAbsTolTextCtrl->SetValue(str);
    mCompareDirTextCtrl->SetValue(mCompareDir);
-   mSaveFileTextCtrl->SetValue(mCompareDir + sep + wxT("CompareNumericResults.txt"));
+   mSaveFileTextCtrl->SetValue(mCompareDir + sep + "CompareNumericResults.txt");
    mSaveResultCheckBox->Disable();
    mSaveFileTextCtrl->Disable();
    mSaveBrowseButton->Disable();
@@ -351,7 +351,7 @@ void RunScriptFolderDialog::LoadData()
    theOkButton->Enable();
    
    #ifdef DEBUG_RUN_SCRIPT_FOLDER_DIALOG
-   MessageInterface::ShowMessage(wxT("RunScriptFolderDialog::LoadData() leaving.\n"));
+   MessageInterface::ShowMessage("RunScriptFolderDialog::LoadData() leaving.\n");
    #endif
 }
 
@@ -368,21 +368,21 @@ void RunScriptFolderDialog::SaveData()
    
    if (!mStartingScriptTextCtrl->GetValue().ToLong(&numStartingScript))
    {
-      wxMessageBox(wxT("Invalid number of scripts to run entered."));
+      wxMessageBox("Invalid number of scripts to run entered.");
       canClose = false;
       return;
    }
    
    if (!mNumScriptsToRunTextCtrl->GetValue().ToLong(&numScriptsToRun))
    {
-      wxMessageBox(wxT("Invalid number of scripts to run entered."));
+      wxMessageBox("Invalid number of scripts to run entered.");
       canClose = false;
       return;
    }
    
    if (!mNumTimesToRunTextCtrl->GetValue().ToLong(&numTimesToRun))
    {
-      wxMessageBox(wxT("Invalid number of scripts to run entered."));
+      wxMessageBox("Invalid number of scripts to run entered.");
       canClose = false;
       return;
    }
@@ -392,7 +392,7 @@ void RunScriptFolderDialog::SaveData()
    //=======================================================
    if (!mAbsTolTextCtrl->GetValue().ToDouble(&mAbsTol))
    {
-      wxMessageBox(wxT("Invalid tolerance entered."));
+      wxMessageBox("Invalid tolerance entered.");
       canClose = false;
       return;
    }
@@ -400,9 +400,9 @@ void RunScriptFolderDialog::SaveData()
    #endif
    //=======================================================
    
-   if (mCurrOutDirTextCtrl->GetValue() == wxT(""))
+   if (mCurrOutDirTextCtrl->GetValue() == "")
    {
-      wxMessageBox(wxT("Please enter output directory."));
+      wxMessageBox("Please enter output directory.");
       canClose = false;
       return;
    }
@@ -413,9 +413,9 @@ void RunScriptFolderDialog::SaveData()
       mOutDirChanged = true;
    
    if (mRunFromSavedScripts &&
-       mSaveScriptsDirTextCtrl->GetValue() == wxT(""))
+       mSaveScriptsDirTextCtrl->GetValue() == "")
    {
-      wxMessageBox(wxT("Please enter directory to save scripts."));
+      wxMessageBox("Please enter directory to save scripts.");
       canClose = false;
       return;
    }
@@ -455,8 +455,8 @@ void RunScriptFolderDialog::SaveData()
    
    #ifdef DEBUG_RUN_SCRIPT_FOLDER_DIALOG
    MessageInterface::ShowMessage
-      (wxT("RunScriptFolderDialog::SaveData() mNumScriptsToRun=%d, mFilterString='%s', ")
-       wxT("mNumTimesToRun=%d\nmCompareResults=%d, mAbsTol=%e\n   mCompareDir=%s, mReplaceString=%s\n"),
+      ("RunScriptFolderDialog::SaveData() mNumScriptsToRun=%d, mFilterString='%s', "
+       "mNumTimesToRun=%d\nmCompareResults=%d, mAbsTol=%e\n   mCompareDir=%s, mReplaceString=%s\n",
        mNumScriptsToRun, mFilterString.c_str(), mNumTimesToRun, mCompareResults, mAbsTol,
        mCompareDir.c_str(), mReplaceString.c_str());
    #endif
@@ -482,7 +482,7 @@ void RunScriptFolderDialog::OnButtonClick(wxCommandEvent& event)
 {
    if (event.GetEventObject() == mChangeSaveScriptsDirButton)
    {
-      wxDirDialog dialog(this, wxT("Select a directory to save scripts"), mCompareDir);
+      wxDirDialog dialog(this, "Select a directory to save scripts", mCompareDir);
       
       if (dialog.ShowModal() == wxID_OK)
       {
@@ -491,14 +491,14 @@ void RunScriptFolderDialog::OnButtonClick(wxCommandEvent& event)
          
          #ifdef DEBUG_RUN_SCRIPT_FOLDER_DIALOG
          MessageInterface::ShowMessage
-            (wxT("RunScriptFolderDialog::OnButtonClick() mSaveScriptsDir=%s\n"),
+            ("RunScriptFolderDialog::OnButtonClick() mSaveScriptsDir=%s\n",
              mSaveScriptsDir.c_str());
          #endif
       }
    }
    else if (event.GetEventObject() == mChangeCurrOutDirButton)
    {
-      wxDirDialog dialog(this, wxT("Select a new output directory"), mCompareDir);
+      wxDirDialog dialog(this, "Select a new output directory", mCompareDir);
    
       if (dialog.ShowModal() == wxID_OK)
       {
@@ -510,7 +510,7 @@ void RunScriptFolderDialog::OnButtonClick(wxCommandEvent& event)
          //=================================================================
          #ifdef __ENABLE_COMPARE__
          //------------------------------------------------------
-         mSaveFileTextCtrl->SetValue(mCurrOutDir + sep + wxT("CompareNumericResults.txt"));
+         mSaveFileTextCtrl->SetValue(mCurrOutDir + sep + "CompareNumericResults.txt");
          //=================================================================
          #endif
          //------------------------------------------------------
@@ -519,7 +519,7 @@ void RunScriptFolderDialog::OnButtonClick(wxCommandEvent& event)
          
          #ifdef DEBUG_RUN_SCRIPT_FOLDER_DIALOG
          MessageInterface::ShowMessage
-            (wxT("RunScriptFolderDialog::OnButtonClick() mCurrOutDir=%s\n"),
+            ("RunScriptFolderDialog::OnButtonClick() mCurrOutDir=%s\n",
              mCurrOutDir.c_str());
          #endif
       }
@@ -529,7 +529,7 @@ void RunScriptFolderDialog::OnButtonClick(wxCommandEvent& event)
    //------------------------------------------------------
    else if (event.GetEventObject() == mDirBrowseButton)
    {
-      wxDirDialog dialog(this, wxT("Select a directory to compare"), mCompareDir);
+      wxDirDialog dialog(this, "Select a directory to compare", mCompareDir);
       
       if (dialog.ShowModal() == wxID_OK)
       {
@@ -538,7 +538,7 @@ void RunScriptFolderDialog::OnButtonClick(wxCommandEvent& event)
          
          #ifdef DEBUG_RUN_SCRIPT_FOLDER_DIALOG
          MessageInterface::ShowMessage
-            (wxT("RunScriptFolderDialog::OnButtonClick() dirname=%s\n"),
+            ("RunScriptFolderDialog::OnButtonClick() dirname=%s\n",
              dirname.c_str());
          #endif
       }
@@ -546,15 +546,15 @@ void RunScriptFolderDialog::OnButtonClick(wxCommandEvent& event)
    else if (event.GetEventObject() == mSaveBrowseButton)
    {
       wxString filename =
-         wxFileSelector(wxT("Choose a file to save"), wxT(""), wxT(""), wxT("txt"),
-                        wxT("Report files (*.report)|*.report|Text files (*.txt)|*.txt"),
+         wxFileSelector("Choose a file to save", "", "", "txt",
+                        "Report files (*.report)|*.report|Text files (*.txt)|*.txt",
                         wxSAVE);
       
       if (!filename.empty())
       {
          mSaveFileTextCtrl->SetValue(filename);
          MessageInterface::ShowMessage
-            (wxT("RunScriptFolderDialog::OnButtonClick() savefile=%s\n"),
+            ("RunScriptFolderDialog::OnButtonClick() savefile=%s\n",
              filename.c_str());
       }
    }

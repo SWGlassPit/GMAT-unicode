@@ -261,5 +261,5 @@ void DrawSquare(double x, double y, double radius, bool fill)
 void DrawStringAt(const wxString &str, GLfloat x, GLfloat y, GLfloat z, GLfloat k)
 {
    glRasterPos4f(x, y, z, k);
-   glCallLists(str.Length(), GL_BYTE, (GLubyte*)str.c_str());
+   glCallLists(strlen(str.c_str()), GL_BYTE, (GLubyte*)str.c_str());
 }

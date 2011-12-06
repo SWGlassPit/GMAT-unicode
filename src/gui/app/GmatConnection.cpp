@@ -88,46 +88,46 @@ wxChar* GmatConnection::OnRequest(const wxString& WXUNUSED(topic),
    // How can I tell whether item is an object or a parameter?
    // For now GetGMATObject.m appends '.' for object name.
    
-   wxChar *data;
+   char *data;
    if (item.Last() == '.')
    {
       wxString tempItem = item;
       tempItem.RemoveLast();
-      data = GmatInterface::Instance()->GetGmatObject(tempItem);
+      data = GmatInterface::Instance()->GetGmatObject(tempItem.c_str());
    }
-   else if (item == wxT("RunState"))
+   else if (item == "RunState")
    {
       data = GmatInterface::Instance()->GetRunState();
       
       #ifdef DEBUG_CONNECTION_REQUEST
       MessageInterface::ShowMessage
-         (wxT("GmatConnection::OnRequest() data=%s\n"), data);
+         ("GmatConnection::OnRequest() data=%s\n", data);
       #endif
    }
-   else if (item == wxT("CallbackStatus"))
+   else if (item == "CallbackStatus")
    {
       data = GmatInterface::Instance()->GetCallbackStatus();
       
       #ifdef DEBUG_CONNECTION_REQUEST
       MessageInterface::ShowMessage
-         (wxT("GmatConnection::OnRequest() data=%s\n"), data);
+         ("GmatConnection::OnRequest() data=%s\n", data);
       #endif
    }
-   else if (item == wxT("CallbackResults"))
+   else if (item == "CallbackResults")
    {
       data = GmatInterface::Instance()->GetCallbackResults();
       
       #ifdef DEBUG_CONNECTION_REQUEST
       MessageInterface::ShowMessage
-         (wxT("GmatConnection::OnRequest() data=%s\n"), data);
+         ("GmatConnection::OnRequest() data=%s\n", data);
       #endif
    }
    else
    {
-      data = GmatInterface::Instance()->GetParameter(item);
+      data = GmatInterface::Instance()->GetParameter(std::string(item.c_str()));
    }
    
-   return data;
+   return _T(data);
 }
 
 
@@ -165,39 +165,40 @@ bool GmatConnection::OnPoke(const wxString& WXUNUSED(topic),
    //------------------------------
    // save data to string stream
    //------------------------------
-   wxString theString(data);
-   if (theString == wxT("Open;"))
+   
+   if (strcmp(data, "Open;") == 0)
    {
       GmatInterface::Instance()->OpenScript();
    }
-   else if (theString == wxT("Clear;"))
+   else if (strcmp(data, "Clear;") == 0)
    {
       GmatInterface::Instance()->ClearScript();
    }
-   else if (theString == wxT("Build;"))
+   else if (strcmp(data, "Build;") == 0)
    {
       GmatInterface::Instance()->BuildObject();
    }
-   else if (theString == wxT("Update;"))
+   else if (strcmp(data, "Update;") == 0)
    {
       GmatInterface::Instance()->UpdateObject();
    }
-   else if (theString == wxT("Build+Run;"))
+   else if (strcmp(data, "Build+Run;") == 0)
    {
       GmatInterface::Instance()->BuildObject();
       GmatInterface::Instance()->RunScript();
    }
-   else if (theString == wxT("Run;"))
+   else if (strcmp(data, "Run;") == 0)
    {
       GmatInterface::Instance()->RunScript();
    }
-   else if (theString == wxT("Callback;"))
+   else if (strcmp(data, "Callback;") == 0)
    {
       GmatInterface::Instance()->ExecuteCallback();
    }
-   else if (theString.StartsWith( wxT("CallbackData")))
+   else if (strncmp(data, "CallbackData", 12) == 0)
    {
-      wxString callbackData = theString.substr(13,1024);
+      std::string theString(data);
+      std::string callbackData = theString.substr(13,1024);
       #ifdef DEBUG_CONNECTION_POKE
          MessageInterface::ShowMessage
             ("GmatConnection::callbackData = %s\n", callbackData.c_str());
@@ -206,7 +207,7 @@ bool GmatConnection::OnPoke(const wxString& WXUNUSED(topic),
    }
    else
    {
-      GmatInterface::Instance()->PutScript(theString);
+      GmatInterface::Instance()->PutScript((char*)data);
    }
    
    return TRUE;

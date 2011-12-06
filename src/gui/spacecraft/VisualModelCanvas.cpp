@@ -47,7 +47,7 @@ GLfloat ox, oy, oz,
 VisualModelCanvas::VisualModelCanvas(wxWindow *parent, Spacecraft *spacecraft,
    const wxWindowID id, const wxPoint &pos, const wxSize &size, const wxString &name, long style)
    #ifdef __USE_WX280_GL__
-   : wxGLCanvas(parent, id, GmatGLCanvasAttribs , pos, size, style, name)
+   : wxGLCanvas(parent, id, 0, pos, size, style, name)
    #else
    : wxGLCanvas(parent, id, pos, size, style, name)
    #endif
@@ -98,7 +98,7 @@ VisualModelCanvas::~VisualModelCanvas()
 {
    #ifndef __WXMAC__
       ModelManager *mm = ModelManager::Instance();
-      if (mm->modelContext)
+      if (!mm->modelContext)
       {
          // delete modelContext since it was created in the constructor
          delete mm->modelContext;
@@ -183,13 +183,13 @@ void VisualModelCanvas::OnPaint(wxPaintEvent &event)
    }
    else
    {
-      offset[0] = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelOffsetX")));
-      offset[1] = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelOffsetY")));
-      offset[2] = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelOffsetZ")));
-      rotation[0] = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelRotationX")));
-      rotation[1] = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelRotationY")));
-      rotation[2] = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelRotationZ")));
-      scale = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID(wxT("ModelScale")));
+      offset[0] = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID("ModelOffsetX"));
+      offset[1] = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID("ModelOffsetY"));
+      offset[2] = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID("ModelOffsetZ"));
+      rotation[0] = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID("ModelRotationX"));
+      rotation[1] = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID("ModelRotationY"));
+      rotation[2] = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID("ModelRotationZ"));
+      scale = currentSpacecraft->GetRealParameter(currentSpacecraft->GetParameterID("ModelScale"));
       loadedModel->SetBaseOffset(offset[0], offset[1], offset[2]);
       // Dunn changed the subscript below from [3] to [2]
       loadedModel->SetBaseRotation(true, rotation[0], rotation[1], rotation[2]);
@@ -327,17 +327,17 @@ void VisualModelCanvas::DrawAxes()
 
    // Label X-Axis
    glColor3f(1, 0, 0);     // red
-   axisLabel = wxT("+X ");
+   axisLabel = "+X ";
    DrawStringAt(axisLabel, +viewDist, 0.0, 0.0, 1.0);
 
    // Label Y-Axis
    glColor3f(0, 1, 0);     // green
-   axisLabel = wxT("+Y ");
+   axisLabel = "+Y ";
    DrawStringAt(axisLabel, 0.0, +viewDist, 0.0, 1.0);
    
    // Label Z-Axis
    glColor3f(0, 0, 1);     // blue
-   axisLabel = wxT("+Z ");
+   axisLabel = "+Z ";
    DrawStringAt(axisLabel, 0.0, 0.0, +viewDist, 1.0);
    
    glLineWidth(1.0);

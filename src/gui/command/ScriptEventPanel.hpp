@@ -71,8 +71,8 @@ private:
    void ReplaceScriptEvent();
    
    // for Debug
-   void ShowCommand(const wxString &title1, GmatCommand *cmd1,
-                    const wxString &title2 = wxT(""), GmatCommand *cmd2 = NULL);
+   void ShowCommand(const std::string &title1, GmatCommand *cmd1,
+                    const std::string &title2 = "", GmatCommand *cmd2 = NULL);
    
    // methods inherited from GmatPanel
    virtual void Create();

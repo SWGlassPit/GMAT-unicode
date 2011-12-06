@@ -65,7 +65,7 @@ END_EVENT_TABLE()
 GroundStationPanel::GroundStationPanel(wxWindow *parent, const wxString &name)
    : GmatPanel(parent)
 {           
-   wxString groundName = wxString(name);
+   std::string groundName = std::string(name.c_str());
    theGroundStation = (GroundStation*)theGuiInterpreter->GetConfiguredObject(groundName);
 
    guiManager     = GuiItemManager::GetInstance();
@@ -80,7 +80,7 @@ GroundStationPanel::GroundStationPanel(wxWindow *parent, const wxString &name)
    else
    {
       MessageInterface::PopupMessage
-         (Gmat::ERROR_, wxT("Cannot find the GroundStation object named ") + groundName);
+         (Gmat::ERROR_, "Cannot find the GroundStation object named " + groundName);
    }
 }
 
@@ -89,7 +89,7 @@ GroundStationPanel::GroundStationPanel(wxWindow *parent, const wxString &name)
 //------------------------------------------------------------------------------
 GroundStationPanel::~GroundStationPanel()
 {
-    GuiItemManager::GetInstance()->UnregisterComboBox(wxT("CelestialBody"), centralBodyComboBox);
+    GuiItemManager::GetInstance()->UnregisterComboBox("CelestialBody", centralBodyComboBox);
 }
 
 //-------------------------------
@@ -125,16 +125,16 @@ void GroundStationPanel::Create()
    //-----------------------------------------------------------------
    // Station ID
    wxStaticText *stationIDLabel =
-      new wxStaticText( this, ID_TEXT, wxT(GUI_ACCEL_KEY) wxT("ID") );
+      new wxStaticText( this, ID_TEXT, wxT(GUI_ACCEL_KEY"ID") );
    stationIDTextCtrl =
       new wxTextCtrl( this, ID_STATION_ID_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(120,-1), 0 );
-   stationIDTextCtrl->SetToolTip(pConfig->Read((GroundStation::PARAMETER_TEXT[GroundStation::STATION_ID-GroundStation::STATION_ID]+wxT("Hint"))));
+   stationIDTextCtrl->SetToolTip(pConfig->Read(_T((GroundStation::PARAMETER_TEXT[GroundStation::STATION_ID-GroundStation::STATION_ID]+"Hint").c_str())));
    
    // Central Body
    wxStaticText *centralBodyLabel =
-      new wxStaticText( this, ID_TEXT, wxT("Central ")wxT(GUI_ACCEL_KEY) wxT("Body"));
+      new wxStaticText( this, ID_TEXT, wxT("Central "GUI_ACCEL_KEY"Body"));
    StringArray centralBodyList;
-   centralBodyList.push_back(wxT("Earth"));
+   centralBodyList.push_back("Earth");
    wxArrayString wxCentralBodyLabels = ToWxArrayString(centralBodyList);
    centralBodyComboBox = new wxComboBox( this, ID_COMBOBOX, wxT(""), wxDefaultPosition, wxSize(120,-1),
          wxCentralBodyLabels, wxCB_DROPDOWN|wxCB_READONLY);
@@ -142,66 +142,66 @@ void GroundStationPanel::Create()
 // as central body, un-comment the following code:
 //   centralBodyComboBox = GuiItemManager::GetInstance()->GetCelestialBodyComboBox(this, ID_COMBOBOX,
 //                                                              wxSize(150,-1));
-   centralBodyComboBox->SetToolTip(pConfig->Read((BodyFixedPoint::PARAMETER_TEXT[BodyFixedPoint::CENTRAL_BODY-BodyFixedPoint::CENTRAL_BODY]+wxT("Hint"))));
+   centralBodyComboBox->SetToolTip(pConfig->Read(_T((BodyFixedPoint::PARAMETER_TEXT[BodyFixedPoint::CENTRAL_BODY-BodyFixedPoint::CENTRAL_BODY]+"Hint").c_str())));
    
    // State Type
    wxStaticText *stateTypeLabel =
-      new wxStaticText( this, ID_TEXT, wxT("State ") wxT(GUI_ACCEL_KEY) wxT("Type"));
+      new wxStaticText( this, ID_TEXT, wxT("State "GUI_ACCEL_KEY"Type"));
    StringArray stateTypeList =
        localGroundStation->GetPropertyEnumStrings(BodyFixedPoint::STATE_TYPE);
    wxArrayString wxStateTypeLabels = ToWxArrayString(stateTypeList);
    stateTypeComboBox = 
       new wxComboBox( this, ID_STATE_TYPE_COMBOBOX, wxT(""), wxDefaultPosition, wxSize(120,-1),
                       wxStateTypeLabels, wxCB_DROPDOWN|wxCB_READONLY);
-   stateTypeComboBox->SetToolTip(pConfig->Read((BodyFixedPoint::PARAMETER_TEXT[BodyFixedPoint::STATE_TYPE-BodyFixedPoint::CENTRAL_BODY]+wxT("Hint"))));
+   stateTypeComboBox->SetToolTip(pConfig->Read(_T((BodyFixedPoint::PARAMETER_TEXT[BodyFixedPoint::STATE_TYPE-BodyFixedPoint::CENTRAL_BODY]+"Hint").c_str())));
    
    // Horizon Reference
    wxStaticText *horizonReferenceLabel =
-      new wxStaticText( this, ID_TEXT, wxT(GUI_ACCEL_KEY) wxT("Horizon Reference"));
+      new wxStaticText( this, ID_TEXT, wxT(GUI_ACCEL_KEY"Horizon Reference"));
    StringArray horizonReferenceList =
        localGroundStation->GetPropertyEnumStrings(BodyFixedPoint::HORIZON_REFERENCE);
    wxArrayString wxHorizonReferenceLabels = ToWxArrayString(horizonReferenceList);
    horizonReferenceComboBox = 
       new wxComboBox( this, ID_HORIZON_REFERENCE_COMBOBOX, wxT(""), wxDefaultPosition, wxSize(120,-1),
                       wxHorizonReferenceLabels, wxCB_DROPDOWN|wxCB_READONLY);
-   horizonReferenceComboBox->SetToolTip(pConfig->Read((BodyFixedPoint::PARAMETER_TEXT[BodyFixedPoint::HORIZON_REFERENCE-BodyFixedPoint::CENTRAL_BODY]+wxT("Hint"))));
+   horizonReferenceComboBox->SetToolTip(pConfig->Read(_T((BodyFixedPoint::PARAMETER_TEXT[BodyFixedPoint::HORIZON_REFERENCE-BodyFixedPoint::CENTRAL_BODY]+"Hint").c_str())));
    
    // Location 1
    location1Label =
-       new wxStaticText( this, ID_TEXT, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_1));
+       new wxStaticText( this, ID_TEXT, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_1).c_str());
    location1TextCtrl =
       new wxTextCtrl( this, ID_LOCATION_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(120,-1), 0, wxTextValidator(wxGMAT_FILTER_NUMERIC) );
-   //location1TextCtrl->SetToolTip(pConfig->Read(localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_1+"Hint")));
+   //location1TextCtrl->SetToolTip(pConfig->Read(wxT(localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_1)+"Hint")));
    location1Unit =
-      new wxStaticText( this, ID_TEXT, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_UNITS_1));
+      new wxStaticText( this, ID_TEXT, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_UNITS_1).c_str());
    
    // Location 2
    location2Label =
-       new wxStaticText( this, ID_TEXT, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_2));
+       new wxStaticText( this, ID_TEXT, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_2).c_str());
    location2TextCtrl =
       new wxTextCtrl( this, ID_LOCATION_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(120,-1), 0, wxTextValidator(wxGMAT_FILTER_NUMERIC) );
-   //location2TextCtrl->SetToolTip(pConfig->Read(localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_2+"Hint")));
+   //location2TextCtrl->SetToolTip(pConfig->Read(wxT(localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_2)+"Hint")));
    location2Unit =
-       new wxStaticText( this, ID_TEXT, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_UNITS_2));
+       new wxStaticText( this, ID_TEXT, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_UNITS_2).c_str());
    
    // Location 3
    location3Label =
-       new wxStaticText( this, ID_TEXT, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_3));
+       new wxStaticText( this, ID_TEXT, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_3).c_str());
    location3TextCtrl =
       new wxTextCtrl( this, ID_LOCATION_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(120,-1), 0, wxTextValidator(wxGMAT_FILTER_NUMERIC) );
-   //location3TextCtrl->SetToolTip(pConfig->Read(localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_3+"Hint")));
+   //location3TextCtrl->SetToolTip(pConfig->Read(_T(localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_3)+"Hint")));
    location3Unit =
-       new wxStaticText( this, ID_TEXT, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_UNITS_3));
+       new wxStaticText( this, ID_TEXT, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_UNITS_3).c_str());
    
    // Hardware
    //hardwareLabel =
-   //    new wxStaticText( this, ID_TEXT, localGroundStation->GetStringParameter(BodyFixedPoint::HARDWARE));
+   //    new wxStaticText( this, ID_TEXT, wxT(localGroundStation->GetStringParameter(BodyFixedPoint::HARDWARE)));
 //   wxStaticText *hardwareLabel =
 //       new wxStaticText( this, ID_TEXT, wxT("Hardware"));
 //   hardwareTextCtrl =
 //      new wxTextCtrl( this, ID_HARDWARE_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(120,-1), 0 );
-//   //hardwareTextCtrl->SetToolTip(pConfig->Read(BodyFixedPoint::PARAMETER_TEXT[BodyFixedPoint::HARDWARE-BodyFixedPoint::CENTRAL_BODY]wxT("Hint")));
-//   hardwareTextCtrl->SetToolTip(pConfig->Read(wxT("HardwareHint")));
+//   //hardwareTextCtrl->SetToolTip(pConfig->Read(_T(BodyFixedPoint::PARAMETER_TEXT[BodyFixedPoint::HARDWARE-BodyFixedPoint::CENTRAL_BODY]"Hint")));
+//   hardwareTextCtrl->SetToolTip(pConfig->Read(_T("HardwareHint")));
    
    // update labels and tooltips based on statetype
    UpdateControls();
@@ -262,7 +262,7 @@ void GroundStationPanel::Create()
    flexGridSizer2->Add(location3Unit, unitSizeProportion, wxALIGN_LEFT|wxALL, bsize);
 
    // create the location Properties group box
-   locationPropertiesSizer = new GmatStaticBoxSizer( wxVERTICAL, this, wxT("Location") );
+   locationPropertiesSizer = new GmatStaticBoxSizer( wxVERTICAL, this, "Location" );
    locationPropertiesSizer->Add(flexGridSizer2, 0, wxEXPAND|wxALL, bsize);
 
    //-----------------------------------------------------------------
@@ -300,19 +300,19 @@ void GroundStationPanel::LoadData()
 
    try
    {
-      stationIDTextCtrl->SetValue(wxVariant(localGroundStation->GetStringParameter(GroundStation::STATION_ID)));
-      centralBodyComboBox->SetValue(wxVariant(localGroundStation->GetStringParameter(BodyFixedPoint::CENTRAL_BODY)));
+      stationIDTextCtrl->SetValue(wxVariant(localGroundStation->GetStringParameter(GroundStation::STATION_ID).c_str()));
+      centralBodyComboBox->SetValue(wxVariant(localGroundStation->GetStringParameter(BodyFixedPoint::CENTRAL_BODY).c_str()));
       currentStateType = localGroundStation->GetStringParameter(BodyFixedPoint::STATE_TYPE);
-      stateTypeComboBox->SetValue(wxVariant(currentStateType));
+      stateTypeComboBox->SetValue(wxVariant(currentStateType.c_str()));
       currentHorizonReference = localGroundStation->GetStringParameter(BodyFixedPoint::HORIZON_REFERENCE);
-      horizonReferenceComboBox->SetValue(wxVariant(currentHorizonReference));
+      horizonReferenceComboBox->SetValue(wxVariant(currentHorizonReference.c_str()));
       location1 = localGroundStation->GetRealParameter(BodyFixedPoint::LOCATION_1);
       location1TextCtrl->SetValue(wxVariant(location1));
       location2 = localGroundStation->GetRealParameter(BodyFixedPoint::LOCATION_2);
       location2TextCtrl->SetValue(wxVariant(location2));
       location3 = localGroundStation->GetRealParameter(BodyFixedPoint::LOCATION_3);
       location3TextCtrl->SetValue(wxVariant(location3));
-      //hardwareTextCtrl->SetValue(wxVariant(localGroundStation->GetStringParameter(GroundStation::HARDWARE)));
+      //hardwareTextCtrl->SetValue(wxVariant(localGroundStation->GetStringParameter(GroundStation::HARDWARE).c_str()));
       
       // update labels and tooltips based on statetype
       UpdateControls();
@@ -332,8 +332,8 @@ void GroundStationPanel::SaveData()
    canClose = true;
    
 //   Real location1, location2, location3;
-   wxString inputString;
-   wxString text;
+   std::string inputString;
+   std::string text;
    
    //-----------------------------------------------------------------
    // validate user input for locations if state type is not cartesian
@@ -345,7 +345,7 @@ void GroundStationPanel::SaveData()
    try
    {
       // State Type
-      text = stateTypeComboBox->GetValue();
+      text = stateTypeComboBox->GetValue().c_str();
       localGroundStation->SetStringParameter(BodyFixedPoint::STATE_TYPE, text);
    }
    catch (BaseException &ex)
@@ -356,18 +356,18 @@ void GroundStationPanel::SaveData()
 
    // Location 1 (X or Latitude)
    inputString = location1TextCtrl->GetValue();
-   CheckReal(location1, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_1), wxT("Real Number"));
+   CheckReal(location1, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_1), "Real Number");
    
    // Location 2 (Y or Longitude)
    inputString = location2TextCtrl->GetValue();
-   if (text != wxT("Cartesian"))
-      CheckReal(location2, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_2), wxT("Real Number >= 0.0"), false, true, true, true);
+   if (text != "Cartesian")
+      CheckReal(location2, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_2), "Real Number >= 0.0", false, true, true, true);
    else
-      CheckReal(location2, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_2), wxT("Real Number"));
+      CheckReal(location2, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_2), "Real Number");
    
    // Location 3 (Z or Altitude)
    inputString = location3TextCtrl->GetValue();
-   CheckReal(location3, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_3), wxT("Real Number"));
+   CheckReal(location3, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_3), "Real Number");
 
    if (!canClose)
       return;
@@ -378,7 +378,7 @@ void GroundStationPanel::SaveData()
    try
    {
       // Station ID
-      text = stationIDTextCtrl->GetValue();
+      text = stationIDTextCtrl->GetValue().c_str();
       localGroundStation->SetStringParameter(GroundStation::STATION_ID, text);
    }
    catch (BaseException &ex)
@@ -389,7 +389,7 @@ void GroundStationPanel::SaveData()
    try
    {
       // Central Body
-      text = centralBodyComboBox->GetValue();
+      text = centralBodyComboBox->GetValue().c_str();
       localGroundStation->SetStringParameter(BodyFixedPoint::CENTRAL_BODY, text);
    }
    catch (BaseException &ex)
@@ -400,7 +400,7 @@ void GroundStationPanel::SaveData()
    try
    {
       // Horizon Reference
-      text = horizonReferenceComboBox->GetValue();
+      text = horizonReferenceComboBox->GetValue().c_str();
       localGroundStation->SetStringParameter(BodyFixedPoint::HORIZON_REFERENCE, text);
    }
    catch (BaseException &ex)
@@ -441,7 +441,7 @@ void GroundStationPanel::SaveData()
    try
    {
       // Hardware
-//      text = hardwareTextCtrl->GetValue();
+//      text = hardwareTextCtrl->GetValue().c_str();
       //localGroundStation->SetStringParameter(GroundStation::HARDWARE, text);
    }
    catch (BaseException &ex)
@@ -464,7 +464,7 @@ void GroundStationPanel::SaveData()
 void GroundStationPanel::UpdateControls()
 {
 //   bool enableHorizon = localGroundStation->GetStringParameter(BodyFixedPoint::STATE_TYPE) != "Cartesian";
-   bool enableHorizon = currentStateType != wxT("Cartesian");
+   bool enableHorizon = currentStateType != "Cartesian";
    horizonReferenceComboBox->Enable(enableHorizon);
 
    // get the config object
@@ -472,15 +472,15 @@ void GroundStationPanel::UpdateControls()
    // SetPath() understands ".."
    pConfig->SetPath(wxT("/Ground Station"));
 
-   location1Label->SetLabel(localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_1));
-   location1TextCtrl->SetToolTip(pConfig->Read((localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_1+wxT("Hint")))));
-   location1Unit->SetLabel(localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_UNITS_1));
-   location2Label->SetLabel(localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_2));
-   location2TextCtrl->SetToolTip(pConfig->Read((localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_2+wxT("Hint")))));
-   location2Unit->SetLabel(localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_UNITS_2));
-   location3Label->SetLabel(localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_3));
-   location3TextCtrl->SetToolTip(pConfig->Read((localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_3+wxT("Hint")))));
-   location3Unit->SetLabel(localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_UNITS_3));
+   location1Label->SetLabel(localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_1).c_str());
+   location1TextCtrl->SetToolTip(pConfig->Read(_T((localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_1)+"Hint").c_str())));
+   location1Unit->SetLabel(localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_UNITS_1).c_str());
+   location2Label->SetLabel(localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_2).c_str());
+   location2TextCtrl->SetToolTip(pConfig->Read(_T((localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_2)+"Hint").c_str())));
+   location2Unit->SetLabel(localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_UNITS_2).c_str());
+   location3Label->SetLabel(localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_3).c_str());
+   location3TextCtrl->SetToolTip(pConfig->Read(_T((localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_3)+"Hint").c_str())));
+   location3Unit->SetLabel(localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_UNITS_3).c_str());
 }    
 
 
@@ -525,40 +525,40 @@ void GroundStationPanel::OnComboBoxChange(wxCommandEvent &event)
 //------------------------------------------------------------------------------
 void GroundStationPanel::OnStateTypeComboBoxChange(wxCommandEvent &event)
 {
-   wxString sttype       = stateTypeComboBox->GetValue();
-   wxString inputString;
+   std::string sttype       = stateTypeComboBox->GetValue().c_str();
+   std::string inputString;
    Real        location1, location2, location3;
    if (sttype != currentStateType)
    {
-      wxString bodyName = centralBodyComboBox->GetValue();
+      std::string bodyName = centralBodyComboBox->GetValue().c_str();
       // get a pointer to the celestial body
       CelestialBody *body = ss->GetBody(bodyName);
       if (!body)
       {
-         wxString errmsg = wxT("Cannot find body ");
-         errmsg += bodyName + wxT(" needed for GroundStation panel update.\n");
+         std::string errmsg = "Cannot find body ";
+         errmsg += bodyName + " needed for GroundStation panel update.\n";
          throw GmatBaseException(errmsg);
       }
-      Real meanRadius = body->GetRealParameter(body->GetParameterID(wxT("EquatorialRadius")));
-      Real flattening = body->GetRealParameter(body->GetParameterID(wxT("Flattening")));
+      Real meanRadius = body->GetRealParameter(body->GetParameterID("EquatorialRadius"));
+      Real flattening = body->GetRealParameter(body->GetParameterID("Flattening"));
       // Convert location values to the appropriate values
       // Location 1 (Latitude)
       inputString = location1TextCtrl->GetValue();
-      CheckReal(location1, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_1), wxT("Real Number"));
+      CheckReal(location1, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_1), "Real Number");
 
       // Location 2 (Longitude)
       inputString = location2TextCtrl->GetValue();
-      if (currentStateType != wxT("Cartesian"))
-         CheckReal(location2, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_2), wxT("Real Number >= 0.0"), false, true, true, true);
+      if (currentStateType != "Cartesian")
+         CheckReal(location2, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_2), "Real Number >= 0.0", false, true, true, true);
       else
-         CheckReal(location2, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_2), wxT("Real Number"));
+         CheckReal(location2, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_2), "Real Number");
 
       // Location 3 (Altitude)
       inputString = location3TextCtrl->GetValue();
-      CheckReal(location3, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_3), wxT("Real Number"));
+      CheckReal(location3, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_3), "Real Number");
 
       Rvector3 locInCurrent(location1, location2, location3);
-      if (currentStateType == wxT("Spherical")) // latitude and longitude need to be passed in as radians
+      if (currentStateType == "Spherical") // latitude and longitude need to be passed in as radians
       {
          locInCurrent[0] *= GmatMathConstants::RAD_PER_DEG;
          locInCurrent[1] *= GmatMathConstants::RAD_PER_DEG;
@@ -569,7 +569,7 @@ void GroundStationPanel::OnStateTypeComboBoxChange(wxCommandEvent &event)
       location1 = locInNew[0];
       location2 = locInNew[1];
       location3 = locInNew[2];
-      if (sttype == wxT("Spherical")) // need to display DEGREES for latitude and longitude
+      if (sttype == "Spherical") // need to display DEGREES for latitude and longitude
       {
          location1 *= GmatMathConstants::DEG_PER_RAD;
          location2 *= GmatMathConstants::DEG_PER_RAD;
@@ -592,55 +592,55 @@ void GroundStationPanel::OnStateTypeComboBoxChange(wxCommandEvent &event)
 //------------------------------------------------------------------------------
 void GroundStationPanel::OnHorizonReferenceComboBoxChange(wxCommandEvent &event)
 {
-   wxString horizon       = horizonReferenceComboBox->GetValue();
-   wxString inputString;
+   std::string horizon       = horizonReferenceComboBox->GetValue().c_str();
+   std::string inputString;
    Real        location1, location2, location3;
    if (horizon != currentHorizonReference)
    {
-      wxString bodyName = centralBodyComboBox->GetValue();
+      std::string bodyName = centralBodyComboBox->GetValue().c_str();
       // get a pointer to the celestial body
       CelestialBody *body = ss->GetBody(bodyName);
       if (!body)
       {
-         wxString errmsg = wxT("Cannot find body ");
-         errmsg += bodyName + wxT(" needed for GroundStation panel update.\n");
+         std::string errmsg = "Cannot find body ";
+         errmsg += bodyName + " needed for GroundStation panel update.\n";
          throw GmatBaseException(errmsg);
       }
-      Real meanRadius = body->GetRealParameter(body->GetParameterID(wxT("EquatorialRadius")));
-      Real flattening = body->GetRealParameter(body->GetParameterID(wxT("Flattening")));
+      Real meanRadius = body->GetRealParameter(body->GetParameterID("EquatorialRadius"));
+      Real flattening = body->GetRealParameter(body->GetParameterID("Flattening"));
       // Convert location values to the appropriate values
       // Location 1 (Latitude)
       inputString = location1TextCtrl->GetValue();
-      CheckReal(location1, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_1), wxT("Real Number"));
+      CheckReal(location1, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_1), "Real Number");
 
       // Location 2 (Longitude)
       inputString = location2TextCtrl->GetValue();
-      if (currentStateType != wxT("Cartesian"))
-         CheckReal(location2, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_2), wxT("Real Number >= 0.0"), false, true, true, true);
+      if (currentStateType != "Cartesian")
+         CheckReal(location2, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_2), "Real Number >= 0.0", false, true, true, true);
       else
-         CheckReal(location2, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_2), wxT("Real Number"));
+         CheckReal(location2, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_2), "Real Number");
 
       // Location 3 (Altitude)
       inputString = location3TextCtrl->GetValue();
-      CheckReal(location3, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_3), wxT("Real Number"));
+      CheckReal(location3, inputString, localGroundStation->GetStringParameter(BodyFixedPoint::LOCATION_LABEL_3), "Real Number");
 
       Rvector3 locInCurrent(location1, location2, location3);
-      if (currentStateType == wxT("Spherical")) // latitude and longitude need to be passed in as radians
+      if (currentStateType == "Spherical") // latitude and longitude need to be passed in as radians
       {
          locInCurrent[0] *= GmatMathConstants::RAD_PER_DEG;
          locInCurrent[1] *= GmatMathConstants::RAD_PER_DEG;
       }
-      MessageInterface::ShowMessage(wxT(" ... Spherical to new horizon ... loc = %12.10f  %12.10f  %12.10f\n"),
+      MessageInterface::ShowMessage(" ... Spherical to new horizon ... loc = %12.10f  %12.10f  %12.10f\n",
             locInCurrent[0], locInCurrent[1], locInCurrent[2]); // *************************
       Rvector3 locInNew = BodyFixedStateConverterUtil::Convert(locInCurrent, currentStateType,
                           currentHorizonReference, currentStateType, horizon,
                           flattening, meanRadius);
-      MessageInterface::ShowMessage(wxT(" ... result =  %12.10f  %12.10f  %12.10f\n"),
+      MessageInterface::ShowMessage(" ... result =  %12.10f  %12.10f  %12.10f\n",
             locInNew[0], locInNew[1], locInNew[2]); // *************************
       location1 = locInNew[0];
       location2 = locInNew[1];
       location3 = locInNew[2];
-      if (currentStateType == wxT("Spherical")) // need to display DEGREES for latitude and longitude
+      if (currentStateType == "Spherical") // need to display DEGREES for latitude and longitude
       {
          location1 *= GmatMathConstants::DEG_PER_RAD;
          location2 *= GmatMathConstants::DEG_PER_RAD;

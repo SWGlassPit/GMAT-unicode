@@ -58,7 +58,7 @@ OptimizePanel::OptimizePanel(wxWindow *parent, GmatCommand *cmd)
 //------------------------------------------------------------------------------
 OptimizePanel::~OptimizePanel()
 {
-   theGuiManager->UnregisterComboBox(wxT("Optimizer"), mSolverComboBox);
+   theGuiManager->UnregisterComboBox("Optimizer", mSolverComboBox);
 }
 
 //-------------------------------
@@ -86,7 +86,7 @@ void OptimizePanel::Create()
    mSolverComboBox =
       theGuiManager->GetOptimizerComboBox(this, ID_COMBO, wxSize(180,-1));
    
-   StringArray options = theCommand->GetStringArrayParameter(wxT("SolveModeOptions"));
+   StringArray options = theCommand->GetStringArrayParameter("SolveModeOptions");
    wxArrayString theOptions;
    
    for (StringArray::iterator i = options.begin(); i != options.end(); ++i)
@@ -122,13 +122,13 @@ void OptimizePanel::LoadData()
       // Set the pointer for the "Show Script" button
       mObject = theCommand;
       
-      wxString solverName =
-         theCommand->GetStringParameter(wxT("SolverName"));
+      std::string solverName =
+         theCommand->GetStringParameter("SolverName");
       
       mSolverComboBox->SetValue(solverName.c_str());
       
-      wxString solverMode =
-               theCommand->GetStringParameter(wxT("SolveMode"));
+      std::string solverMode =
+               theCommand->GetStringParameter("SolveMode");
       mSolverModeComboBox->SetValue(solverMode.c_str());
    }
    catch (BaseException &e)
@@ -145,12 +145,12 @@ void OptimizePanel::SaveData()
 {
    try
    {
-      wxString solverName = mSolverComboBox->GetValue().c_str();
-      wxString solverMode = mSolverModeComboBox->GetValue().c_str();
+      std::string solverName = mSolverComboBox->GetValue().c_str();
+      std::string solverMode = mSolverModeComboBox->GetValue().c_str();
 
-      theCommand->SetStringParameter(theCommand->GetParameterID(wxT("SolverName")),
+      theCommand->SetStringParameter(theCommand->GetParameterID("SolverName"),
                                      solverName);
-      theCommand->SetStringParameter(theCommand->GetParameterID(wxT("SolveMode")), 
+      theCommand->SetStringParameter(theCommand->GetParameterID("SolveMode"), 
             solverMode);
 
       EnableUpdate(false);
@@ -180,5 +180,5 @@ void OptimizePanel::OnComboBoxChange(wxCommandEvent& event)
 //------------------------------------------------------------------------------
 void OptimizePanel::OnApplyButtonPress(wxCommandEvent& event)
 {
-   theCommand->TakeAction(wxT("ApplyCorrections"));
+   theCommand->TakeAction("ApplyCorrections");
 }

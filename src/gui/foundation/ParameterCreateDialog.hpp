@@ -135,8 +135,8 @@ private:
    void CreateVariable();
    void CreateString();
    void CreateArray();
-   void SetVariableToAnotherObject(const wxString &varName,
-                                   const wxString &varExpr);
+   void SetVariableToAnotherObject(const std::string &varName,
+                                   const std::string &varExpr);
 };
 
 #endif

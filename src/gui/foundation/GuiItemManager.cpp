@@ -104,26 +104,26 @@ void GuiItemManager::LoadIcon(const wxString &filename, long bitmapType,
 {
    #ifdef DEBUG_LOAD_ICON
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::LoadIcon() entered, filename='%s', bitmap=<%p>\n"),
+      ("GuiItemManager::LoadIcon() entered, filename='%s', bitmap=<%p>\n",
        filename.c_str(), bitmap);
    #endif
    
    if (bitmapType == wxBITMAP_TYPE_PNG && !mPngHandlerLoaded)
    {
       FileManager *fm = FileManager::Instance();
-      wxString loc = fm->GetFullPathname(wxT("ICON_PATH"));
+      std::string loc = fm->GetFullPathname("ICON_PATH");
       wxString    locWx = loc.c_str();
       
       #ifdef DEBUG_TOOLBAR
-      MessageInterface::ShowMessage(wxT("   loc = '%s'\n"), loc.c_str());
+      MessageInterface::ShowMessage("   loc = '%s'\n", loc.c_str());
       #endif
       
       // Check if icon file directory exist
       if (GmatFileUtil::DoesDirectoryExist(loc.c_str(), false))
       {
          #ifdef DEBUG_TOOLBAR
-         MessageInterface::ShowMessage(wxT("   Loadinig images from '%s'\n"), loc.c_str());
-         MessageInterface::ShowMessage(wxT("   Loading .png files\n"));
+         MessageInterface::ShowMessage("   Loadinig images from '%s'\n", loc.c_str());
+         MessageInterface::ShowMessage("   Loading .png files\n");
          #endif
          
          wxImage::AddHandler(new wxPNGHandler);
@@ -134,26 +134,26 @@ void GuiItemManager::LoadIcon(const wxString &filename, long bitmapType,
    
    
    wxImage iconImage;
-   wxString fileType = wxT(".png");
+   wxString fileType = ".png";
    wxString fullFileName = mPngIconLocation + filename + fileType;
    if (mPngHandlerLoaded && GmatFileUtil::DoesFileExist(fullFileName.c_str()))
    {
       iconImage.LoadFile(fullFileName, bitmapType);
       #ifdef DEBUG_LOAD_ICON
-      MessageInterface::ShowMessage(wxT("   creating bitmap from png image\n"));
+      MessageInterface::ShowMessage("   creating bitmap from png image\n");
       #endif
       *bitmap = new wxBitmap(iconImage);
    }
    else
    {
       #ifdef DEBUG_LOAD_ICON
-      MessageInterface::ShowMessage(wxT("   creating bitmap from xpm file\n"));
+      MessageInterface::ShowMessage("   creating bitmap from xpm file\n");
       #endif
       *bitmap = new wxBitmap(xpm);
    }
    
    #ifdef DEBUG_LOAD_ICON
-   MessageInterface::ShowMessage(wxT("GuiItemManager::LoadIcon() leaving\n"));
+   MessageInterface::ShowMessage("GuiItemManager::LoadIcon() leaving\n");
    #endif
 }
 
@@ -212,10 +212,11 @@ void GuiItemManager::SetActiveScriptStatus(int status)
 wxString GuiItemManager::ToWxString(Real rval)
 {
    wxString str;
-   wxString ss;
+   std::stringstream ss;
+   ss.precision(theDataPrecision);
    
    ss << rval;
-   str.Printf(wxT("%s"), ss.c_str());
+   str.Printf("%s", ss.str().c_str());
    return str;
 }
 
@@ -225,10 +226,10 @@ wxString GuiItemManager::ToWxString(Real rval)
 wxString GuiItemManager::ToWxString(Integer ival)
 {
    wxString str;
-   wxString ss;
+   std::stringstream ss;
    
    ss << ival;
-   str.Printf(wxT("%s"), ss.c_str());
+   str.Printf("%s", ss.str().c_str());
    return str;
 }
 
@@ -237,7 +238,7 @@ wxString GuiItemManager::ToWxString(Integer ival)
 // wxArrayString ToWxArrayString(const StringArray &array)
 //------------------------------------------------------------------------------
 /**
- * Converts wxString array to wxString array.
+ * Converts std::string array to wxString array.
  */
 //------------------------------------------------------------------------------
 wxArrayString GuiItemManager::ToWxArrayString(const StringArray &array)
@@ -251,7 +252,7 @@ wxArrayString GuiItemManager::ToWxArrayString(const StringArray &array)
 
 
 //------------------------------------------------------------------------------
-// int IsValidVariable(const wxString &varName, Gmat::ObjectType allowedType,
+// int IsValidVariable(const std::string &varName, Gmat::ObjectType allowedType,
 //                     bool allowNumber = false, bool allowNonPlottable = true)
 //------------------------------------------------------------------------------
 /*
@@ -271,14 +272,14 @@ wxArrayString GuiItemManager::ToWxArrayString(const StringArray &array)
  *          4 if varName contains valid Parameter type
  */
 //------------------------------------------------------------------------------
-int GuiItemManager::IsValidVariable(const wxString &varName,
+int GuiItemManager::IsValidVariable(const std::string &varName,
                                     Gmat::ObjectType allowedType, bool allowNumber,
                                     bool allowNonPlottable)
 {
    #ifdef DEBUG_GUI_ITEM_VALIDATE
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::IsValidVariable() entered, varName=<%s>, allowedType=%d, ")
-       wxT("allowNumber=%d, allowNonPlottable=%d\n"), varName.c_str(), allowedType,
+      ("GuiItemManager::IsValidVariable() entered, varName=<%s>, allowedType=%d, "
+       "allowNumber=%d, allowNonPlottable=%d\n", varName.c_str(), allowedType,
        allowNumber, allowNonPlottable);
    #endif
    
@@ -294,17 +295,17 @@ int GuiItemManager::IsValidVariable(const wxString &varName,
    // If name has a system Parameter type and owner object exist, create
    if (obj == NULL)
    {
-      wxString type, ownerName, depObj;
+      std::string type, ownerName, depObj;
       GmatStringUtil::ParseParameter(varName, type, ownerName, depObj);
       
       #ifdef DEBUG_GUI_ITEM_VALIDATE
       MessageInterface::ShowMessage
-         (wxT("   Object name '%s' not found, type=<%s>, ownerName=<%s>, ")
-          wxT("depObj=<%s>\n"), varName.c_str(), type.c_str(), ownerName.c_str(),
+         ("   Object name '%s' not found, type=<%s>, ownerName=<%s>, "
+          "depObj=<%s>\n", varName.c_str(), type.c_str(), ownerName.c_str(),
           depObj.c_str());
       #endif
       
-      if (type != wxT(""))
+      if (type != "")
       {
          if (theGuiInterpreter->IsParameter(type))
          {
@@ -312,7 +313,7 @@ int GuiItemManager::IsValidVariable(const wxString &varName,
             {
                #ifdef DEBUG_GUI_ITEM_VALIDATE
                MessageInterface::ShowMessage
-                  (wxT("   Creating system Parameter '%s'\n"), varName.c_str());
+                  ("   Creating system Parameter '%s'\n", varName.c_str());
                #endif
                obj = theGuiInterpreter->CreateSystemParameter(varName);
             }
@@ -329,18 +330,18 @@ int GuiItemManager::IsValidVariable(const wxString &varName,
    {
       #ifdef DEBUG_GUI_ITEM_VALIDATE
       MessageInterface::ShowMessage
-         (wxT("   Object name '%s'<%p> found\n"), obj->GetName().c_str(), obj);
+         ("   Object name '%s'<%p> found\n", obj->GetName().c_str(), obj);
       #endif
    }
    
    Parameter *param = (Parameter*)obj;
    bool isValid = false;
    
-   if (param->IsOfType(wxT("Variable")))
+   if (param->IsOfType("Variable"))
    {
       isValid = true;
    }
-   else if (param->IsOfType(wxT("Array")))
+   else if (param->IsOfType("Array"))
    {
       // check to see if it is array element or whole array of 1x1
       if (GmatStringUtil::IsParenPartOfArray(varName))
@@ -356,7 +357,7 @@ int GuiItemManager::IsValidVariable(const wxString &varName,
    }
    else if (param->GetKey() == GmatParam::SYSTEM_PARAM)
    {
-      wxString ownerName = param->GetStringParameter(wxT("Object"));
+      std::string ownerName = param->GetStringParameter("Object");
       GmatBase *owner = theGuiInterpreter->GetConfiguredObject(ownerName);
       Gmat::ObjectType ownerType = allowedType;
       
@@ -366,7 +367,7 @@ int GuiItemManager::IsValidVariable(const wxString &varName,
       
       #ifdef DEBUG_GUI_ITEM_VALIDATE
       MessageInterface::ShowMessage
-         (wxT("   It is a system Parameter, owner='%s'<%p>\n"), ownerName.c_str(), owner);
+         ("   It is a system Parameter, owner='%s'<%p>\n", ownerName.c_str(), owner);
       #endif
       
       try
@@ -382,7 +383,7 @@ int GuiItemManager::IsValidVariable(const wxString &varName,
       {
          #ifdef DEBUG_GUI_ITEM_VALIDATE
          MessageInterface::ShowMessage
-            (wxT("   Allowing non-plottable Parameter, so checking for owner type %d\n"),
+            ("   Allowing non-plottable Parameter, so checking for owner type %d\n",
              param->GetOwnerType());
          #endif
          
@@ -394,8 +395,8 @@ int GuiItemManager::IsValidVariable(const wxString &varName,
       {
          #ifdef DEBUG_GUI_ITEM_VALIDATE
          MessageInterface::ShowMessage
-            (wxT("   Not allowing non-plottable Parameter, so checking for owner type %d ")
-             wxT("and plottable %d\n"), param->GetOwnerType(), param->IsPlottable());
+            ("   Not allowing non-plottable Parameter, so checking for owner type %d "
+             "and plottable %d\n", param->GetOwnerType(), param->IsPlottable());
          #endif
          // check to see if it is parameter of owner type and plottable
          if (owner && owner->IsOfType(ownerType) && param->IsPlottable())
@@ -405,7 +406,7 @@ int GuiItemManager::IsValidVariable(const wxString &varName,
    
    #ifdef DEBUG_GUI_ITEM_VALIDATE
    MessageInterface::ShowMessage
-      (wxT("   GuiItemManager::IsValidVariable() returning %d\n"), isValid);
+      ("   GuiItemManager::IsValidVariable() returning %d\n", isValid);
    #endif
    
    if (isValid)
@@ -426,7 +427,7 @@ void GuiItemManager::UpdateAll(Gmat::ObjectType objType)
 {
    #if DBGLVL_GUI_ITEM_UPDATE
    MessageInterface::ShowMessage
-      (wxT("==================> GuiItemManager::UpdateAll() entered, objType=%d\n"),
+      ("==================> GuiItemManager::UpdateAll() entered, objType=%d\n",
        objType);
    #endif
    
@@ -485,8 +486,8 @@ void GuiItemManager::UpdateAll(Gmat::ObjectType objType)
          break;
       default:
          MessageInterface::ShowMessage
-            (wxT("*** INTERNAL ERROR *** GuiItemManager::UpdateAll() the object type ")
-             wxT("%d ('%s') has not been implemented yet.\n"), objType,
+            ("*** INTERNAL ERROR *** GuiItemManager::UpdateAll() the object type "
+             "%d ('%s') has not been implemented yet.\n", objType,
              GmatBase::GetObjectTypeString(objType).c_str());
          break;
       }
@@ -496,77 +497,77 @@ void GuiItemManager::UpdateAll(Gmat::ObjectType objType)
    // Handle all object types
    UpdateCelestialPoint(false); // All CelestialBodies and CalculatedPoints
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("======> after UpdateCelestialPoint()\n"));
+   MessageInterface::ShowMessage("======> after UpdateCelestialPoint()\n");
    #endif
    
    UpdateFormation(false);
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("======> after UpdateFormation()\n"));
+   MessageInterface::ShowMessage("======> after UpdateFormation()\n");
    #endif
    
    UpdateSpacecraft(false);
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("======> after UpdateSpacecraft()\n"));
+   MessageInterface::ShowMessage("======> after UpdateSpacecraft()\n");
    #endif
    
    UpdateBurn(false);
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("======> after UpdateBurn()\n"));
+   MessageInterface::ShowMessage("======> after UpdateBurn()\n");
    #endif
    
    UpdateParameter(false);
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("======> after UpdateParameter()\n"));
+   MessageInterface::ShowMessage("======> after UpdateParameter()\n");
    #endif
    
    UpdateSolarSystem(false);
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("======> after UpdateSolarSystem()\n"));
+   MessageInterface::ShowMessage("======> after UpdateSolarSystem()\n");
    #endif
    
    UpdateCoordSystem(false);
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("======> after UpdateCoordSystem()\n"));
+   MessageInterface::ShowMessage("======> after UpdateCoordSystem()\n");
    #endif
    
    UpdatePropagator(false);
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("======> after UpdatePropagator()\n"));
+   MessageInterface::ShowMessage("======> after UpdatePropagator()\n");
    #endif
    
    UpdateForceModel(false);
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("======> after UpdateForceModel()\n"));
+   MessageInterface::ShowMessage("======> after UpdateForceModel()\n");
    #endif
    
    UpdateFuelTank(false);
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("======> after UpdateFuelTank()\n"));
+   MessageInterface::ShowMessage("======> after UpdateFuelTank()\n");
    #endif
    
    UpdateThruster(false);
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("======> after UpdateThruster()\n"));
+   MessageInterface::ShowMessage("======> after UpdateThruster()\n");
    #endif
    
    UpdateSensor(false);
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("======> after UpdateSensor()\n"));
+   MessageInterface::ShowMessage("======> after UpdateSensor()\n");
    #endif
    
    UpdateFunction(false);
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("======> after UpdateFunction()\n"));
+   MessageInterface::ShowMessage("======> after UpdateFunction()\n");
    #endif
    
    UpdateSubscriber(false);
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("======> after UpdateSubscriber()\n"));
+   MessageInterface::ShowMessage("======> after UpdateSubscriber()\n");
    #endif
    
    UpdateSolver(false);
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("======> after UpdateSolver()\n"));
+   MessageInterface::ShowMessage("======> after UpdateSolver()\n");
    #endif
    
    UpdateLocator(false);
@@ -578,7 +579,7 @@ void GuiItemManager::UpdateAll(Gmat::ObjectType objType)
    
    #if DBGLVL_GUI_ITEM_UPDATE
    MessageInterface::ShowMessage
-      (wxT("==================> GuiItemManager::UpdateAll() exiting\n"));
+      ("==================> GuiItemManager::UpdateAll() exiting\n");
    #endif
 }
 
@@ -593,7 +594,7 @@ void GuiItemManager::UpdateAll(Gmat::ObjectType objType)
 void GuiItemManager::UpdateGroundStation(bool updateObjectArray)
 {
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("===> UpdateGroundStation\n"));
+   MessageInterface::ShowMessage("===> UpdateGroundStation\n");
    #endif
    
    UpdateGroundStationList();
@@ -613,7 +614,7 @@ void GuiItemManager::UpdateGroundStation(bool updateObjectArray)
 void GuiItemManager::UpdateCelestialPoint(bool updateObjectArray)
 {
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("===> UpdateCelestialPoint\n"));
+   MessageInterface::ShowMessage("===> UpdateCelestialPoint\n");
    #endif
    
    UpdateCelestialPointList();
@@ -633,7 +634,7 @@ void GuiItemManager::UpdateCelestialPoint(bool updateObjectArray)
 void GuiItemManager::UpdateFormation(bool updateObjectArray)
 {
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("===> UpdateFormation\n"));
+   MessageInterface::ShowMessage("===> UpdateFormation\n");
    #endif
    
    UpdateFormationList();
@@ -654,7 +655,7 @@ void GuiItemManager::UpdateFormation(bool updateObjectArray)
 void GuiItemManager::UpdateForceModel(bool updateObjectArray)
 {
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("===> UpdateForceModel\n"));
+   MessageInterface::ShowMessage("===> UpdateForceModel\n");
    #endif
    
    UpdateForceModelList();
@@ -673,7 +674,7 @@ void GuiItemManager::UpdateForceModel(bool updateObjectArray)
 void GuiItemManager::UpdateSpacecraft(bool updateObjectArray)
 {
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("===> UpdateSpacecraft\n"));
+   MessageInterface::ShowMessage("===> UpdateSpacecraft\n");
    #endif
    
    UpdateSpacecraftList();
@@ -694,7 +695,7 @@ void GuiItemManager::UpdateSpacecraft(bool updateObjectArray)
 void GuiItemManager::UpdateSpacePoint(bool updateObjectArray)
 {
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("===> UpdateSpacePoint\n"));
+   MessageInterface::ShowMessage("===> UpdateSpacePoint\n");
    #endif
    
    UpdateSpacePointList();
@@ -713,7 +714,7 @@ void GuiItemManager::UpdateSpacePoint(bool updateObjectArray)
 void GuiItemManager::UpdateBurn(bool updateObjectArray)
 {
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("===> UpdateBurn\n"));
+   MessageInterface::ShowMessage("===> UpdateBurn\n");
    #endif
    
    UpdateBurnList();
@@ -732,7 +733,7 @@ void GuiItemManager::UpdateBurn(bool updateObjectArray)
 void GuiItemManager::UpdateCoordSystem(bool updateObjectArray)
 {
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("===> UpdateCoordSystem\n"));
+   MessageInterface::ShowMessage("===> UpdateCoordSystem\n");
    #endif
    
    UpdateCoordSystemList();
@@ -751,7 +752,7 @@ void GuiItemManager::UpdateCoordSystem(bool updateObjectArray)
 void GuiItemManager::UpdateFunction(bool updateObjectArray)
 {
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("===> UpdateFunction\n"));
+   MessageInterface::ShowMessage("===> UpdateFunction\n");
    #endif
    
    UpdateFunctionList();
@@ -770,7 +771,7 @@ void GuiItemManager::UpdateFunction(bool updateObjectArray)
 void GuiItemManager::UpdateFuelTank(bool updateObjectArray)
 {
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("===> UpdateFuelTank\n"));
+   MessageInterface::ShowMessage("===> UpdateFuelTank\n");
    #endif
    
    UpdateFuelTankList();
@@ -789,7 +790,7 @@ void GuiItemManager::UpdateFuelTank(bool updateObjectArray)
 void GuiItemManager::UpdateThruster(bool updateObjectArray)
 {
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("===> UpdateThruster\n"));
+   MessageInterface::ShowMessage("===> UpdateThruster\n");
    #endif
    
    UpdateThrusterList();
@@ -808,7 +809,7 @@ void GuiItemManager::UpdateThruster(bool updateObjectArray)
 void GuiItemManager::UpdateSensor(bool updateObjectArray)
 {
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("===> UpdateSensor\n"));
+   MessageInterface::ShowMessage("===> UpdateSensor\n");
    #endif
 
    // Always update antenna first, since sensor includes Antennas and RFHardwares
@@ -829,7 +830,7 @@ void GuiItemManager::UpdateSensor(bool updateObjectArray)
 void GuiItemManager::UpdateParameter(bool updateObjectArray)
 {
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("===> UpdateParameter\n"));
+   MessageInterface::ShowMessage("===> UpdateParameter\n");
    #endif
    
    UpdateParameterList();
@@ -848,7 +849,7 @@ void GuiItemManager::UpdateParameter(bool updateObjectArray)
 void GuiItemManager::UpdatePropagator(bool updateObjectArray)
 {
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("===> UpdatePropagator\n"));
+   MessageInterface::ShowMessage("===> UpdatePropagator\n");
    #endif
    
    UpdatePropagatorList();
@@ -867,7 +868,7 @@ void GuiItemManager::UpdatePropagator(bool updateObjectArray)
 void GuiItemManager::UpdateSolarSystem(bool updateObjectArray)
 {
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("===> UpdateSolarSystem\n"));
+   MessageInterface::ShowMessage("===> UpdateSolarSystem\n");
    #endif
    
    UpdateCelestialBodyList();
@@ -888,7 +889,7 @@ void GuiItemManager::UpdateSolarSystem(bool updateObjectArray)
 void GuiItemManager::UpdateSolver(bool updateObjectArray)
 {
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("===> UpdateSolver\n"));
+   MessageInterface::ShowMessage("===> UpdateSolver\n");
    #endif
    
    UpdateSolverList();
@@ -907,7 +908,7 @@ void GuiItemManager::UpdateSolver(bool updateObjectArray)
 void GuiItemManager::UpdateSubscriber(bool updateObjectArray)
 {
    #if DBGLVL_GUI_ITEM_UPDATE
-   MessageInterface::ShowMessage(wxT("===> UpdateSubscriber\n"));
+   MessageInterface::ShowMessage("===> UpdateSubscriber\n");
    #endif
    
    UpdateSubscriberList();
@@ -983,8 +984,8 @@ void GuiItemManager::NotifyObjectNameChange(Gmat::ObjectType type,
 {
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::NotifyObjectNameChange() entered, type=%d, oldName='%s', ")
-       wxT("newName='%s'\n"), type, oldName.c_str(), newName.c_str());
+      ("GuiItemManager::NotifyObjectNameChange() entered, type=%d, oldName='%s', "
+       "newName='%s'\n", type, oldName.c_str(), newName.c_str());
    #endif
    
    for (UnsignedInt i=0; i<mResourceUpdateListeners.size(); i++)
@@ -994,7 +995,7 @@ void GuiItemManager::NotifyObjectNameChange(Gmat::ObjectType type,
    
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::NotifyObjectNameChange() leaving\n"));
+      ("GuiItemManager::NotifyObjectNameChange() leaving\n");
    #endif
 }
 
@@ -1008,10 +1009,10 @@ void GuiItemManager::UnregisterListBox(const wxString &type, wxListBox *lb,
 {
    #if DBGLVL_GUI_ITEM_UNREG
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UnregisterListBox() lb=<%p>, excList=<%p>\n"), lb, excList);
+      ("GuiItemManager::UnregisterListBox() lb=<%p>, excList=<%p>\n", lb, excList);
    #endif
    
-   if (type == wxT("CelestialPoint"))
+   if (type == "CelestialPoint")
    {
       std::vector<wxListBox*>::iterator pos1 =
          find(mCelestialPointLBList.begin(), mCelestialPointLBList.end(), lb);
@@ -1025,7 +1026,7 @@ void GuiItemManager::UnregisterListBox(const wxString &type, wxListBox *lb,
       if (pos2 != mCelestialPointExcList.end())
          mCelestialPointExcList.erase(pos2);
    }
-   else if (type == wxT("CelestialBody"))
+   else if (type == "CelestialBody")
    {
       std::vector<wxListBox*>::iterator pos1 =
          find(mCelestialBodyLBList.begin(), mCelestialBodyLBList.end(), lb);
@@ -1039,7 +1040,7 @@ void GuiItemManager::UnregisterListBox(const wxString &type, wxListBox *lb,
       if (pos2 != mCelestialBodyExcList.end())
          mCelestialBodyExcList.erase(pos2);
    }
-   else if (type == wxT("SpaceObject"))
+   else if (type == "SpaceObject")
    {
       std::vector<wxListBox*>::iterator pos1 =
          find(mSpaceObjectLBList.begin(), mSpaceObjectLBList.end(), lb);
@@ -1053,7 +1054,7 @@ void GuiItemManager::UnregisterListBox(const wxString &type, wxListBox *lb,
       if (pos2 != mSpaceObjectExcList.end())
          mSpaceObjectExcList.erase(pos2);
    }
-   else if (type == wxT("Spacecraft"))
+   else if (type == "Spacecraft")
    {
       std::vector<wxListBox*>::iterator pos1 =
          find(mSpacecraftLBList.begin(), mSpacecraftLBList.end(), lb);
@@ -1067,7 +1068,7 @@ void GuiItemManager::UnregisterListBox(const wxString &type, wxListBox *lb,
       if (pos2 != mSpacecraftExcList.end())
          mSpacecraftExcList.erase(pos2);
    }
-   else if (type == wxT("ImpulsiveBurn"))
+   else if (type == "ImpulsiveBurn")
    {
       std::vector<wxListBox*>::iterator pos1 =
          find(mImpBurnLBList.begin(), mImpBurnLBList.end(), lb);
@@ -1081,7 +1082,7 @@ void GuiItemManager::UnregisterListBox(const wxString &type, wxListBox *lb,
       if (pos2 != mImpBurnExcList.end())
          mImpBurnExcList.erase(pos2);
    }
-   else if (type == wxT("FuelTank"))
+   else if (type == "FuelTank")
    {
       std::vector<wxListBox*>::iterator pos1 =
          find(mFuelTankLBList.begin(), mFuelTankLBList.end(), lb);
@@ -1095,7 +1096,7 @@ void GuiItemManager::UnregisterListBox(const wxString &type, wxListBox *lb,
       if (pos2 != mFuelTankExcList.end())
          mFuelTankExcList.erase(pos2);
    }
-   else if (type == wxT("Thruster"))
+   else if (type == "Thruster")
    {
       std::vector<wxListBox*>::iterator pos1 =
          find(mThrusterLBList.begin(), mThrusterLBList.end(), lb);
@@ -1121,10 +1122,10 @@ void GuiItemManager::UnregisterCheckListBox(const wxString &type, wxCheckListBox
 {
    #if DBGLVL_GUI_ITEM_UNREG
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UnregisterCheckListBox() clb=%d, excList=%d\n"), clb, excList);
+      ("GuiItemManager::UnregisterCheckListBox() clb=%d, excList=%d\n", clb, excList);
    #endif
    
-   if (type == wxT("Subscriber"))
+   if (type == "Subscriber")
    {
       std::vector<wxCheckListBox*>::iterator pos1 =
          find(mSubscriberCLBList.begin(), mSubscriberCLBList.end(), clb);
@@ -1138,7 +1139,7 @@ void GuiItemManager::UnregisterCheckListBox(const wxString &type, wxCheckListBox
       if (pos2 != mSubscriberExcList.end())
          mSubscriberExcList.erase(pos2);
    }
-   else if (type == wxT("XYPlot"))
+   else if (type == "XYPlot")
    {
       std::vector<wxCheckListBox*>::iterator pos1 =
          find(mXyPlotCLBList.begin(), mXyPlotCLBList.end(), clb);
@@ -1152,7 +1153,7 @@ void GuiItemManager::UnregisterCheckListBox(const wxString &type, wxCheckListBox
       if (pos2 != mXyPlotExcList.end())
          mXyPlotExcList.erase(pos2);
    }
-   else if (type == wxT("Spacecraft"))
+   else if (type == "Spacecraft")
    {
       std::vector<wxCheckListBox*>::iterator pos1 =
          find(mSpacecraftCLBList.begin(), mSpacecraftCLBList.end(), clb);
@@ -1166,7 +1167,7 @@ void GuiItemManager::UnregisterCheckListBox(const wxString &type, wxCheckListBox
       if (pos2 != mSpacecraftExcList.end())
          mSpacecraftExcList.erase(pos2);
    }
-   else if (type == wxT("AllObject"))
+   else if (type == "AllObject")
    {
       std::vector<wxCheckListBox*>::iterator pos1 =
          find(mAllObjectCLBList.begin(), mAllObjectCLBList.end(), clb);
@@ -1188,7 +1189,7 @@ void GuiItemManager::UnregisterCheckListBox(const wxString &type, wxCheckListBox
 //------------------------------------------------------------------------------
 void GuiItemManager::UnregisterComboBox(const wxString &type, wxComboBox *cb)
 {
-   if (type == wxT("SpacePoint"))
+   if (type == "SpacePoint")
    {
       std::vector<wxComboBox*>::iterator pos =
          find(mSpacePointCBList.begin(), mSpacePointCBList.end(), cb);
@@ -1196,7 +1197,7 @@ void GuiItemManager::UnregisterComboBox(const wxString &type, wxComboBox *cb)
       if (pos != mSpacePointCBList.end())
          mSpacePointCBList.erase(pos);
    }
-   else if (type == wxT("CelestialBody"))
+   else if (type == "CelestialBody")
    {
       std::vector<wxComboBox*>::iterator pos =
          find(mCelestialBodyCBList.begin(), mCelestialBodyCBList.end(), cb);
@@ -1204,7 +1205,7 @@ void GuiItemManager::UnregisterComboBox(const wxString &type, wxComboBox *cb)
       if (pos != mCelestialBodyCBList.end())
          mCelestialBodyCBList.erase(pos);
    }
-   else if (type == wxT("Spacecraft"))
+   else if (type == "Spacecraft")
    {
       std::vector<wxComboBox*>::iterator pos =
          find(mSpacecraftCBList.begin(), mSpacecraftCBList.end(), cb);
@@ -1212,7 +1213,7 @@ void GuiItemManager::UnregisterComboBox(const wxString &type, wxComboBox *cb)
       if (pos != mSpacecraftCBList.end())
          mSpacecraftCBList.erase(pos);
    }
-   else if (type == wxT("ImpulsiveBurn"))
+   else if (type == "ImpulsiveBurn")
    {
       std::vector<wxComboBox*>::iterator pos =
          find(mImpBurnCBList.begin(), mImpBurnCBList.end(), cb);
@@ -1220,7 +1221,7 @@ void GuiItemManager::UnregisterComboBox(const wxString &type, wxComboBox *cb)
       if (pos != mImpBurnCBList.end())
          mImpBurnCBList.erase(pos);
    }
-   else if (type == wxT("FiniteBurn"))
+   else if (type == "FiniteBurn")
    {
       std::vector<wxComboBox*>::iterator pos =
          find(mFiniteBurnCBList.begin(), mFiniteBurnCBList.end(), cb);
@@ -1228,7 +1229,7 @@ void GuiItemManager::UnregisterComboBox(const wxString &type, wxComboBox *cb)
       if (pos != mFiniteBurnCBList.end())
          mFiniteBurnCBList.erase(pos);
    }
-   else if (type == wxT("CoordinateSystem"))
+   else if (type == "CoordinateSystem")
    {
       std::vector<wxComboBox*>::iterator pos =
          find(mCoordSysCBList.begin(), mCoordSysCBList.end(), cb);
@@ -1236,7 +1237,7 @@ void GuiItemManager::UnregisterComboBox(const wxString &type, wxComboBox *cb)
       if (pos != mCoordSysCBList.end())
          mCoordSysCBList.erase(pos);
    }
-   else if (type == wxT("Function"))
+   else if (type == "Function")
    {
       std::vector<wxComboBox*>::iterator pos =
          find(mFunctionCBList.begin(), mFunctionCBList.end(), cb);
@@ -1244,7 +1245,7 @@ void GuiItemManager::UnregisterComboBox(const wxString &type, wxComboBox *cb)
       if (pos != mFunctionCBList.end())
          mFunctionCBList.erase(pos);
    }
-   else if (type == wxT("FuelTank"))
+   else if (type == "FuelTank")
    {
       std::vector<wxComboBox*>::iterator pos =
          find(mFuelTankCBList.begin(), mFuelTankCBList.end(), cb);
@@ -1252,7 +1253,7 @@ void GuiItemManager::UnregisterComboBox(const wxString &type, wxComboBox *cb)
       if (pos != mFuelTankCBList.end())
          mFuelTankCBList.erase(pos);
    }
-   else if (type == wxT("Thruster"))
+   else if (type == "Thruster")
    {
       std::vector<wxComboBox*>::iterator pos =
          find(mThrusterCBList.begin(), mThrusterCBList.end(), cb);
@@ -1260,7 +1261,7 @@ void GuiItemManager::UnregisterComboBox(const wxString &type, wxComboBox *cb)
       if (pos != mThrusterCBList.end())
          mThrusterCBList.erase(pos);
    }
-   else if (type == wxT("Sensor"))
+   else if (type == "Sensor")
    {
       std::vector<wxComboBox*>::iterator pos =
          find(mSensorCBList.begin(), mSensorCBList.end(), cb);
@@ -1268,7 +1269,7 @@ void GuiItemManager::UnregisterComboBox(const wxString &type, wxComboBox *cb)
       if (pos != mSensorCBList.end())
          mSensorCBList.erase(pos);
    }
-   else if (type == wxT("Antenna"))
+   else if (type == "Antenna")
    {
       std::vector<wxComboBox*>::iterator pos =
          find(mAntennaCBList.begin(), mAntennaCBList.end(), cb);
@@ -1276,7 +1277,7 @@ void GuiItemManager::UnregisterComboBox(const wxString &type, wxComboBox *cb)
       if (pos != mAntennaCBList.end())
          mAntennaCBList.erase(pos);
    }
-   else if (type == wxT("Subscriber"))
+   else if (type == "Subscriber")
    {
       std::vector<wxComboBox*>::iterator pos =
          find(mSubscriberCBList.begin(), mSubscriberCBList.end(), cb);
@@ -1284,7 +1285,7 @@ void GuiItemManager::UnregisterComboBox(const wxString &type, wxComboBox *cb)
       if (pos != mSubscriberCBList.end())
          mSubscriberCBList.erase(pos);
    }
-   else if (type == wxT("ReportFile"))
+   else if (type == "ReportFile")
    {
       std::vector<wxComboBox*>::iterator pos =
          find(mReportFileCBList.begin(), mReportFileCBList.end(), cb);
@@ -1292,7 +1293,7 @@ void GuiItemManager::UnregisterComboBox(const wxString &type, wxComboBox *cb)
       if (pos != mReportFileCBList.end())
          mReportFileCBList.erase(pos);
    }
-   else if (type == wxT("Solver"))
+   else if (type == "Solver")
    {
       std::vector<wxComboBox*>::iterator pos =
          find(mSolverCBList.begin(), mSolverCBList.end(), cb);
@@ -1300,7 +1301,7 @@ void GuiItemManager::UnregisterComboBox(const wxString &type, wxComboBox *cb)
       if (pos != mSolverCBList.end())
          mSolverCBList.erase(pos);
    }
-   else if (type == wxT("BoundarySolver"))
+   else if (type == "BoundarySolver")
    {
       std::vector<wxComboBox*>::iterator pos =
          find(mBoundarySolverCBList.begin(), mBoundarySolverCBList.end(), cb);
@@ -1308,7 +1309,7 @@ void GuiItemManager::UnregisterComboBox(const wxString &type, wxComboBox *cb)
       if (pos != mBoundarySolverCBList.end())
          mBoundarySolverCBList.erase(pos);
    }
-   else if (type == wxT("Optimizer"))
+   else if (type == "Optimizer")
    {
       std::vector<wxComboBox*>::iterator pos =
          find(mOptimizerCBList.begin(), mOptimizerCBList.end(), cb);
@@ -1329,12 +1330,12 @@ wxArrayString GuiItemManager::GetPropertyList(const wxString &objType,
 {
    #if DBGLVL_GUI_ITEM_PROPERTY
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::GetPropertyList() objType=%s\n"), objType.c_str());
+      ("GuiItemManager::GetPropertyList() objType=%s\n", objType.c_str());
    #endif
    
    wxArrayString array;
    
-   if (objType == wxT("Spacecraft"))
+   if (objType == "Spacecraft")
    {
       ParameterInfo *theParamInfo = ParameterInfo::Instance();
       for (int i=0; i<theNumScProperty; i++)
@@ -1345,7 +1346,7 @@ wxArrayString GuiItemManager::GetPropertyList(const wxString &objType,
             {
                #if DBGLVL_GUI_ITEM_PROPERTY > 1
                MessageInterface::ShowMessage
-                  (wxT("GetPropertyList() Adding %s\n"), theScPropertyList[i].c_str());
+                  ("GetPropertyList() Adding %s\n", theScPropertyList[i].c_str());
                #endif
                
                array.Add(theScPropertyList[i]);
@@ -1357,7 +1358,7 @@ wxArrayString GuiItemManager::GetPropertyList(const wxString &objType,
             {
                #if DBGLVL_GUI_ITEM_PROPERTY > 1
                MessageInterface::ShowMessage
-                  (wxT("GetPropertyList() Adding %s\n"), theScPropertyList[i].c_str());
+                  ("GetPropertyList() Adding %s\n", theScPropertyList[i].c_str());
                #endif
                
                array.Add(theScPropertyList[i]);
@@ -1369,7 +1370,7 @@ wxArrayString GuiItemManager::GetPropertyList(const wxString &objType,
             {
                #if DBGLVL_GUI_ITEM_PROPERTY > 1
                MessageInterface::ShowMessage
-                  (wxT("GetPropertyList() Adding %s\n"), theScPropertyList[i].c_str());
+                  ("GetPropertyList() Adding %s\n", theScPropertyList[i].c_str());
                #endif
                
                array.Add(theScPropertyList[i]);
@@ -1379,7 +1380,7 @@ wxArrayString GuiItemManager::GetPropertyList(const wxString &objType,
       
       return array;
    }
-   else if (objType == wxT("ImpulsiveBurn"))
+   else if (objType == "ImpulsiveBurn")
    {
       // for now all impulsive burn parameters are reportable
       array = theImpBurnPropertyList;
@@ -1388,7 +1389,7 @@ wxArrayString GuiItemManager::GetPropertyList(const wxString &objType,
    else
    {
       MessageInterface::ShowMessage
-         (wxT("*** WARNING *** Property list for %s is not available at this time\n"),
+         ("*** WARNING *** Property list for %s is not available at this time\n",
           objType.c_str());
       
       return array;
@@ -1405,11 +1406,11 @@ wxArrayString GuiItemManager::GetPropertyList(const wxString &objType,
 //------------------------------------------------------------------------------
 int GuiItemManager::GetNumProperty(const wxString &objType)
 {
-   if (objType == wxT("Spacecraft"))
+   if (objType == "Spacecraft")
       return theNumScProperty;
-   else if (objType == wxT("ImpulsiveBurn"))
+   else if (objType == "ImpulsiveBurn")
       return theNumImpBurnProperty;
-   else if (objType == wxT("FiniteBurn"))
+   else if (objType == "FiniteBurn")
       return theNumFiniteBurnProperty;
    else
       return 0;
@@ -1433,11 +1434,11 @@ int GuiItemManager::GetNumProperty(const wxString &objType)
 //       return theFiniteBurnPropertyList;
 //    else
 //       throw GmatBaseException("There are no properties associated with " +
-//                               wxString(objType.c_str()));
+//                               std::string(objType.c_str()));
 
 // //    if (objType != "Spacecraft")
 // //       throw GmatBaseException("There are no properties associated with " +
-// //                               wxString(objType.c_str()));
+// //                               std::string(objType.c_str()));
    
 // //    return theScPropertyList;
 // }
@@ -1461,17 +1462,17 @@ wxComboBox* GuiItemManager::GetObjectTypeComboBox(wxWindow *parent, wxWindowID i
    
    for (unsigned int i=0; i<objectTypeList.size(); i++)
    {
-      if (objectTypeList[i] == wxT("Spacecraft"))
+      if (objectTypeList[i] == "Spacecraft")
          cb->Append(objectTypeList[i]);
-      else if (objectTypeList[i] == wxT("ImpulsiveBurn"))
+      else if (objectTypeList[i] == "ImpulsiveBurn")
          cb->Append(objectTypeList[i]);
-      else if (objectTypeList[i] == wxT("FiniteBurn"))
+      else if (objectTypeList[i] == "FiniteBurn")
          cb->Append(objectTypeList[i]);
-      else if (objectTypeList[i] == wxT("Array"))
+      else if (objectTypeList[i] == "Array")
          cb->Append(objectTypeList[i]);
-      else if (objectTypeList[i] == wxT("Variable"))
+      else if (objectTypeList[i] == "Variable")
          cb->Append(objectTypeList[i]);
-      else if (objectTypeList[i] == wxT("String"))
+      else if (objectTypeList[i] == "String")
          cb->Append(objectTypeList[i]);
    }
    
@@ -1496,7 +1497,7 @@ wxComboBox* GuiItemManager::GetSpacecraftComboBox(wxWindow *parent, wxWindowID i
                      theSpacecraftList, wxCB_READONLY);
    
    if (theNumSpacecraft == 0)
-      spacecraftComboBox->Append(wxT("No Spacecrafts Available"));
+      spacecraftComboBox->Append("No Spacecrafts Available");
    
    // show first spacecraft
    spacecraftComboBox->SetSelection(0);
@@ -1507,7 +1508,7 @@ wxComboBox* GuiItemManager::GetSpacecraftComboBox(wxWindow *parent, wxWindowID i
    mSpacecraftCBList.push_back(spacecraftComboBox);
    #if DBGLVL_GUI_ITEM_SC
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::GetSpacecraftComboBox() Spacecraft:%d registered\n"),
+      ("GuiItemManager::GetSpacecraftComboBox() Spacecraft:%d registered\n",
        spacecraftComboBox);
    #endif
    
@@ -1530,7 +1531,7 @@ wxComboBox* GuiItemManager::GetImpBurnComboBox(wxWindow *parent, wxWindowID id,
                      theImpBurnList, wxCB_READONLY);
    
    if (theNumImpBurn == 0)
-      burnComboBox->Append(wxT("No Impulsive Burns Available"));
+      burnComboBox->Append("No Impulsive Burns Available");
    
    // show first burn
    burnComboBox->SetSelection(0);
@@ -1562,7 +1563,7 @@ wxComboBox* GuiItemManager::GetFiniteBurnComboBox(wxWindow *parent, wxWindowID i
                      theFiniteBurnList, wxCB_READONLY);
    
    if (theNumFiniteBurn == 0)
-      burnComboBox->Append(wxT("No Finite Burns Available"));
+      burnComboBox->Append("No Finite Burns Available");
    
    // show first burn
    burnComboBox->SetSelection(0);
@@ -1645,7 +1646,7 @@ wxComboBox* GuiItemManager::GetCelestialBodyComboBox(wxWindow *parent, wxWindowI
                      theCelestialBodyList, wxCB_READONLY);
    
    // show Earth as a default body
-   celesBodyComboBox->SetStringSelection(wxT("Earth"));
+   celesBodyComboBox->SetStringSelection("Earth");
    
    //---------------------------------------------
    // register for update
@@ -1671,7 +1672,7 @@ wxComboBox* GuiItemManager::GetFunctionComboBox(wxWindow *parent, wxWindowID id,
                      theFunctionList, wxCB_READONLY);
    
    if (theNumFunction == 0)
-      functionComboBox->Append(wxT("No Functions Available"));
+      functionComboBox->Append("No Functions Available");
    
    functionComboBox->SetSelection(0);
    
@@ -1698,7 +1699,7 @@ GuiItemManager::GetSpacePointComboBox(wxWindow *parent, wxWindowID id,
 {
    #if DBGLVL_GUI_ITEM_SP
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::GetSpacePointComboBox() theNumSpacePoint=%d\n"),
+      ("GuiItemManager::GetSpacePointComboBox() theNumSpacePoint=%d\n",
       theNumSpacePoint);
    #endif
    
@@ -1708,7 +1709,7 @@ GuiItemManager::GetSpacePointComboBox(wxWindow *parent, wxWindowID id,
                      wxCB_READONLY);
    
    if (addVector)
-      spacePointComboBox->Append(wxT("Vector"));
+      spacePointComboBox->Append("Vector");
    
    for (int i=0; i<theNumSpacePoint; i++)
       if (spacePointComboBox->FindString(theSpacePointList[i]) == wxNOT_FOUND)
@@ -1737,7 +1738,7 @@ GuiItemManager::GetCelestialPointComboBox(wxWindow *parent, wxWindowID id,
 {
    #if DBGLVL_GUI_ITEM
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::GetCelestialPointComboBox() theNumCelesPoint=%d\n"),
+      ("GuiItemManager::GetCelestialPointComboBox() theNumCelesPoint=%d\n",
       theNumCelesPoint);
    #endif
       
@@ -1747,7 +1748,7 @@ GuiItemManager::GetCelestialPointComboBox(wxWindow *parent, wxWindowID id,
                      wxCB_READONLY);
    
    if (addVector)
-      celestialPointComboBox->Append(wxT("Vector"));
+      celestialPointComboBox->Append("Vector");
    
    for (int i=0; i<theNumCelesPoint; i++)
       celestialPointComboBox->Append(theCelestialPointList[i]);
@@ -1774,7 +1775,7 @@ GuiItemManager::GetUserVariableComboBox(wxWindow *parent, wxWindowID id,
                      theUserVariableList, wxCB_READONLY);
    
    if (theNumUserVariable == 0)
-      userParamComboBox->Append(wxT("No Variables Available"));
+      userParamComboBox->Append("No Variables Available");
    
    // show first parameter
    userParamComboBox->SetSelection(0);
@@ -1798,7 +1799,7 @@ wxComboBox* GuiItemManager::GetFuelTankComboBox(wxWindow *parent, wxWindowID id,
                      theFuelTankList, wxCB_READONLY);
    
    if (theNumFuelTank == 0)
-      fuelTankComboBox->Append(wxT("No Fuel Tanks Available"));
+      fuelTankComboBox->Append("No Fuel Tanks Available");
    
    // show first burn
    fuelTankComboBox->SetSelection(0);
@@ -1828,7 +1829,7 @@ wxComboBox* GuiItemManager::GetThrusterComboBox(wxWindow *parent, wxWindowID id,
                      theThrusterList, wxCB_READONLY);
    
    if (theNumThruster == 0)
-      thrusterComboBox->Append(wxT("No Thrusters Available"));
+      thrusterComboBox->Append("No Thrusters Available");
    
    // show first Thruster
    thrusterComboBox->SetSelection(0);
@@ -1858,7 +1859,7 @@ wxComboBox* GuiItemManager::GetSensorComboBox(wxWindow *parent, wxWindowID id,
                      theSensorList, wxCB_READONLY);
    
    if (theNumSensor == 0)
-      sensorComboBox->Append(wxT("No Sensors Available"));
+      sensorComboBox->Append("No Sensors Available");
    
    // show first Sensor
    sensorComboBox->SetSelection(0);
@@ -1888,7 +1889,7 @@ wxComboBox* GuiItemManager::GetAntennaComboBox(wxWindow *parent, wxWindowID id,
                      theAntennaList, wxCB_READONLY);
    
    if (theNumAntenna == 0)
-      antennaComboBox->Append(wxT("No Antennas Available"));
+      antennaComboBox->Append("No Antennas Available");
    
    // show first Antenna
    antennaComboBox->SetSelection(0);
@@ -1918,7 +1919,7 @@ wxComboBox* GuiItemManager::GetSubscriberComboBox(wxWindow *parent, wxWindowID i
                      theSubscriberList, wxCB_READONLY);
    
    if (theNumSubscriber == 0)
-      subsComboBox->Append(wxT("No Subscribers Available"));
+      subsComboBox->Append("No Subscribers Available");
    
    // show first Subscriber
    subsComboBox->SetSelection(0);
@@ -1948,7 +1949,7 @@ wxComboBox* GuiItemManager::GetReportFileComboBox(wxWindow *parent, wxWindowID i
                      theReportFileList, wxCB_READONLY);
    
    if (theNumReportFile == 0)
-      rfComboBox->Append(wxT("No Report Files Available"));
+      rfComboBox->Append("No Report Files Available");
    
    // show first ReportFile
    rfComboBox->SetSelection(0);
@@ -1980,7 +1981,7 @@ wxComboBox* GuiItemManager::GetSolverComboBox(wxWindow *parent, wxWindowID id,
                      theSolverList, wxCB_READONLY);
    
    if (theNumSolver == 0)
-      solverComboBox->Append(wxT("No Solvers Available"));
+      solverComboBox->Append("No Solvers Available");
    
    // show first Solver
    solverComboBox->SetSelection(0);
@@ -2011,7 +2012,7 @@ wxComboBox* GuiItemManager::GetBoundarySolverComboBox(wxWindow *parent, wxWindow
    
    // Is this correct name?
    if (theNumBoundarySolver == 0)
-      bvsComboBox->Append(wxT("No Differential Correctors Available"));
+      bvsComboBox->Append("No Differential Correctors Available");
    
    // show first Boundary Solver
    bvsComboBox->SetSelection(0);
@@ -2042,7 +2043,7 @@ wxComboBox* GuiItemManager::GetOptimizerComboBox(wxWindow *parent, wxWindowID id
    
    // Is this correct name?
    if (theNumOptimizer == 0)
-      optimizerComboBox->Append(wxT("No Optimizers Available"));
+      optimizerComboBox->Append("No Optimizers Available");
    
    // show first Optimizer
    optimizerComboBox->SetSelection(0);
@@ -2329,7 +2330,7 @@ wxListBox* GuiItemManager::GetSpacePointListBox(wxWindow *parent, wxWindowID id,
                     wxLB_SINGLE|wxLB_SORT);
    
    if (addVector)
-      spacePointListBox->Append(wxT("Vector"));
+      spacePointListBox->Append("Vector");
    
    for (int i=0; i<theNumSpacePoint; i++)
       spacePointListBox->Append(theSpacePointList[i]);
@@ -2356,7 +2357,7 @@ wxListBox* GuiItemManager::GetCelestialPointListBox(wxWindow *parent, wxWindowID
 {
    #if DBGLVL_GUI_ITEM
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::GetCelestialPointListBox() theNumCelesPoint=%d\n"),
+      ("GuiItemManager::GetCelestialPointListBox() theNumCelesPoint=%d\n",
        theNumCelesPoint);
    #endif
    
@@ -2389,8 +2390,8 @@ wxListBox* GuiItemManager::GetCelestialPointListBox(wxWindow *parent, wxWindowID
    
    #if DBGLVL_GUI_ITEM_REG
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::GetCelestialPointListBox() mCelestialPointLBList.size()=%d, ")
-       wxT("mCelestialPointExcList.size()=%d, celesBodyListBox=<%p>\n"),
+      ("GuiItemManager::GetCelestialPointListBox() mCelestialPointLBList.size()=%d, "
+       "mCelestialPointExcList.size()=%d, celesBodyListBox=<%p>\n",
        mCelestialPointLBList.size(), mCelestialPointExcList.size(), celesPointListBox);
    #endif
    
@@ -2438,8 +2439,8 @@ wxListBox* GuiItemManager::GetCelestialBodyListBox(wxWindow *parent, wxWindowID 
    
    #if DBGLVL_GUI_ITEM_REG
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::GetCelestialBodyListBox() mCelestialBodyLBList.size()=%d, ")
-       wxT("mCelestialBodyExcList.size()=%d, celesBodyListBox=<%p>\n"),
+      ("GuiItemManager::GetCelestialBodyListBox() mCelestialBodyLBList.size()=%d, "
+       "mCelestialBodyExcList.size()=%d, celesBodyListBox=<%p>\n",
        mCelestialBodyLBList.size(), mCelestialBodyExcList.size(), celesBodyListBox);
    #endif
    
@@ -2461,11 +2462,11 @@ wxListBox* GuiItemManager::GetSpaceObjectListBox(wxWindow *parent, wxWindowID id
 {
    #if DBGLVL_GUI_ITEM_SO
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::GetSpaceObjectListBox() theNumSpaceObject=%d\n"),
+      ("GuiItemManager::GetSpaceObjectListBox() theNumSpaceObject=%d\n",
        theNumSpaceObject);
    for (unsigned int i=0; i<excList->GetCount(); i++)
    {
-      MessageInterface::ShowMessage(wxT("excList[%d]=<%s>\n"),
+      MessageInterface::ShowMessage("excList[%d]=<%s>\n",
                                     i, (*excList)[i].c_str());
    }
    #endif
@@ -2517,8 +2518,8 @@ wxListBox* GuiItemManager::GetSpaceObjectListBox(wxWindow *parent, wxWindowID id
    
    #if DBGLVL_GUI_ITEM_REG
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::GetSpaceObjectListBox() mSpaceObjectLBList.size()=%d, ")
-       wxT("mSpaceObjectExcList.size()=%d, celesBodyListBox=<%p>\n"),
+      ("GuiItemManager::GetSpaceObjectListBox() mSpaceObjectLBList.size()=%d, "
+       "mSpaceObjectExcList.size()=%d, celesBodyListBox=<%p>\n",
        mSpaceObjectLBList.size(), mSpaceObjectExcList.size(), spaceObjectListBox);
    #endif
    
@@ -2540,7 +2541,7 @@ wxListBox* GuiItemManager::GetSpacecraftListBox(wxWindow *parent, wxWindowID id,
 {
    #if DBGLVL_SC_LISTBOX
    MessageInterface::ShowMessage
-      (wxT("GetSpacecraftListBox() multiSelect=%d\n"), multiSelect);
+      ("GetSpacecraftListBox() multiSelect=%d\n", multiSelect);
    #endif
    
    wxArrayString emptyList;
@@ -2582,7 +2583,7 @@ wxListBox* GuiItemManager::GetSpacecraftListBox(wxWindow *parent, wxWindowID id,
    
    #if DBGLVL_SC_LISTBOX
    MessageInterface::ShowMessage
-      (wxT("GetSpacecraftListBox() returning %p\n"), spacecraftListBox);
+      ("GetSpacecraftListBox() returning %p\n", spacecraftListBox);
    #endif
    
    return spacecraftListBox;
@@ -2658,7 +2659,7 @@ wxListBox* GuiItemManager::GetPropertyListBox(wxWindow *parent, wxWindowID id,
 {
    #ifdef DEBUG_PROPERTY_LISTBOX
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::GetPropertyListBox() showOption=%d, multiSelect=%d\n"),
+      ("GuiItemManager::GetPropertyListBox() showOption=%d, multiSelect=%d\n",
        showOption, multiSelect);
    #endif
    
@@ -2678,7 +2679,7 @@ wxListBox* GuiItemManager::GetPropertyListBox(wxWindow *parent, wxWindowID id,
    }
    
    // now append properties
-   if (objType == wxT("Spacecraft"))
+   if (objType == "Spacecraft")
    {
       if (showOption == SHOW_PLOTTABLE)
       {
@@ -2705,20 +2706,20 @@ wxListBox* GuiItemManager::GetPropertyListBox(wxWindow *parent, wxWindowID id,
          }
       }
    }
-   else if (objType == wxT("ImpulsiveBurn"))
+   else if (objType == "ImpulsiveBurn")
    {
       for (int i=0; i<theNumImpBurnProperty; i++)
          propertyListBox->Append(theImpBurnPropertyList[i]);
    }
-   else if (objType == wxT("FiniteBurn"))
+   else if (objType == "FiniteBurn")
    {
       for (int i=0; i<theNumFiniteBurnProperty; i++)
          propertyListBox->Append(theFiniteBurnPropertyList[i]);
    }
    else
    {
-      throw GmatBaseException(wxT("There are no properties associated with ") +
-                              wxString(objType.c_str()));
+      throw GmatBaseException("There are no properties associated with " +
+                              std::string(objType.c_str()));
    }
    
    if (!multiSelect)
@@ -2731,7 +2732,7 @@ wxListBox* GuiItemManager::GetPropertyListBox(wxWindow *parent, wxWindowID id,
 //------------------------------------------------------------------------------
 // wxListBox* GetPlottableParameterListBox(wxWindow *parent, wxWindowID id,
 //                                         const wxSize &size,
-//                                         const wxString &nameToExclude = wxT(""))
+//                                         const wxString &nameToExclude = "")
 //------------------------------------------------------------------------------
 /**
  * @return Configured PlottableParameterListBox pointer
@@ -2748,7 +2749,7 @@ wxListBox* GuiItemManager::GetPlottableParameterListBox(wxWindow *parent,
       new wxListBox(parent, id, wxDefaultPosition, size, emptyList,
                     wxLB_SINGLE|wxLB_SORT);
    
-   if (nameToExclude != wxT(""))
+   if (nameToExclude != "")
    {
       for (int i=0; i<theNumPlottableParam; i++)
          if (thePlottableParamList[i] != nameToExclude)
@@ -2850,7 +2851,7 @@ wxListBox* GuiItemManager::GetUserVariableListBox(wxWindow *parent, wxWindowID i
    }
    
    // add to ListBox
-   if (nameToExclude != wxT(""))
+   if (nameToExclude != "")
    {
       for (int i=0; i<theNumUserVariable; i++)
          if (theUserVariableList[i] != nameToExclude)
@@ -2897,7 +2898,7 @@ wxListBox* GuiItemManager::GetUserStringListBox(wxWindow *parent, wxWindowID id,
    }
    
    // add to ListBox
-   if (nameToExclude != wxT(""))
+   if (nameToExclude != "")
    {
       for (int i=0; i<theNumUserString; i++)
          if (theUserStringList[i] != nameToExclude)
@@ -2944,7 +2945,7 @@ wxListBox* GuiItemManager::GetUserArrayListBox(wxWindow *parent, wxWindowID id,
    }
    
    // add to ListBox
-   if (nameToExclude != wxT(""))
+   if (nameToExclude != "")
    {
       for (int i=0; i<theNumUserArray; i++)
          if (theUserArrayList[i] != nameToExclude)
@@ -3003,8 +3004,8 @@ wxListBox* GuiItemManager::GetFuelTankListBox(wxWindow *parent, wxWindowID id,
 {
    #if DBGLVL_GUI_ITEM_HW
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::GetFuelTankListBox() theNumFuelTank=%d, ")
-       wxT("Exclude count=%d\n"), theNumFuelTank, excList->GetCount());
+      ("GuiItemManager::GetFuelTankListBox() theNumFuelTank=%d, "
+       "Exclude count=%d\n", theNumFuelTank, excList->GetCount());
    #endif
    
    wxArrayString emptyList;
@@ -3023,8 +3024,8 @@ wxListBox* GuiItemManager::GetFuelTankListBox(wxWindow *parent, wxWindowID id,
    
    for (int i=0; i<theNumSpacecraft; i++)
    {
-      sc = theGuiInterpreter->GetSpacecraft(wxString(theSpacecraftList[i].c_str()));
-      paramID = sc->GetParameterID(wxT("Tanks"));
+      sc = theGuiInterpreter->GetSpacecraft(std::string(theSpacecraftList[i].c_str()));
+      paramID = sc->GetParameterID("Tanks");
       tankNames = sc->GetStringArrayParameter(paramID);
       allTankNames.insert(allTankNames.end(), tankNames.begin(), tankNames.end());
    }
@@ -3035,7 +3036,7 @@ wxListBox* GuiItemManager::GetFuelTankListBox(wxWindow *parent, wxWindowID id,
       {
          StringArray::iterator pos =
             find(allTankNames.begin(), allTankNames.end(),
-                 wxString(theFuelTankList[i].c_str()));
+                 std::string(theFuelTankList[i].c_str()));
          
          if (pos == allTankNames.end())
             fuelTankListBox->Append(theFuelTankList[i]);
@@ -3169,7 +3170,7 @@ CreateParameterSizer(wxWindow *parent,
                      bool showVariable, bool showArray, const wxString &objectType)
 {
    #if DBGLVL_GUI_ITEM
-   MessageInterface::ShowMessage(wxT("GuiItemManager::CreateParameterSizer() entered\n"));
+   MessageInterface::ShowMessage("GuiItemManager::CreateParameterSizer() entered\n");
    #endif
    
    int bsize = 1;
@@ -3247,7 +3248,7 @@ CreateParameterSizer(wxWindow *parent,
       {
          *userParamListBox =
             GetUserVariableListBox(parent, userParamListBoxId,
-                                   wxSize(170, 50), wxT(""));
+                                   wxSize(170, 50), "");
       }
    }
    
@@ -3268,9 +3269,9 @@ CreateParameterSizer(wxWindow *parent,
    //-------------------------------------------------------
    wxStaticBoxSizer *userParamBoxSizer = NULL;
    if (showVariable || showArray)
-      userParamBoxSizer = new wxStaticBoxSizer(wxVERTICAL, parent, wxT(""));
+      userParamBoxSizer = new wxStaticBoxSizer(wxVERTICAL, parent, "");
    wxStaticBoxSizer *systemParamBoxSizer =
-      new wxStaticBoxSizer(wxVERTICAL, parent, wxT(""));
+      new wxStaticBoxSizer(wxVERTICAL, parent, "");
    #endif
    //-------------------------------------------------------
    
@@ -3306,7 +3307,7 @@ CreateParameterSizer(wxWindow *parent,
       (*impBurnComboBox, 0, wxGROW|wxALIGN_CENTER|wxBOTTOM|wxALL, bsize);
    
    // Show desired object type   
-   if (objectType == wxT("ImpulsiveBurn"))
+   if (objectType == "ImpulsiveBurn")
       systemParamBoxSizer->Hide(*spacecraftComboBox);
    else
       systemParamBoxSizer->Hide(*impBurnComboBox);
@@ -3370,9 +3371,9 @@ wxSizer* GuiItemManager::Create3ColParameterSizer
 {
    #if DEBUG_PARAM_SIZER
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::Create3ColParameterSizer() entered\n")
-       wxT("   showOption=%d, allowMultiSelect=%d, showString=%d, allowWholeObject=%d, ")
-       wxT("showSysParam=%d\n   showVariable=%d, showArray=%d, objectType=%s\n"),
+      ("GuiItemManager::Create3ColParameterSizer() entered\n"
+       "   showOption=%d, allowMultiSelect=%d, showString=%d, allowWholeObject=%d, "
+       "showSysParam=%d\n   showVariable=%d, showArray=%d, objectType=%s\n",
        showOption, allowMultiSelect, showString, allowWholeObject, showSysParam,
        showVariable, showArray, objectType.c_str());
    #endif
@@ -3381,18 +3382,18 @@ wxSizer* GuiItemManager::Create3ColParameterSizer
    // get the config object
    wxConfigBase *pConfig = wxConfigBase::Get();
    // SetPath() understands ".."
-   pConfig->SetPath(wxT("/")+configSection);
+   pConfig->SetPath(wxT("/"+configSection));
    
    //-----------------------------------------------------------------
    // Object type and list
    //-----------------------------------------------------------------
    wxStaticText *objectTypeStaticText =
-      new wxStaticText(parent, -1, wxT("Object ") wxT(GUI_ACCEL_KEY) wxT("Type"),
+      new wxStaticText(parent, -1, wxT("Object "GUI_ACCEL_KEY"Type"),
                        wxDefaultPosition, wxDefaultSize, 0);
    
    *entireObjCheckBox =
-      new wxCheckBox(parent, entireObjCheckBoxId, wxT("Select ") wxT(GUI_ACCEL_KEY) wxT("Entire Object"));
-   (*entireObjCheckBox)->SetToolTip(pConfig->Read(wxT("SelectEntireObjectHint")));
+      new wxCheckBox(parent, entireObjCheckBoxId, wxT("Select "GUI_ACCEL_KEY"Entire Object"));
+   (*entireObjCheckBox)->SetToolTip(pConfig->Read(_T("SelectEntireObjectHint")));
 
    if (!allowWholeObject)
       (*entireObjCheckBox)->Disable();
@@ -3404,50 +3405,50 @@ wxSizer* GuiItemManager::Create3ColParameterSizer
       tmpObjTypeList = objectTypeList;
    
    if (showVariable)
-      tmpObjTypeList.Add(wxT("Variable"));
+      tmpObjTypeList.Add("Variable");
    if (showArray)
-      tmpObjTypeList.Add(wxT("Array"));
+      tmpObjTypeList.Add("Array");
    if (showString)
-      tmpObjTypeList.Add(wxT("String"));
+      tmpObjTypeList.Add("String");
    
    *objectTypeComboBox =
       GetObjectTypeComboBox(parent, objectTypeComboBoxId, wxSize(170, 20),
                             tmpObjTypeList);
-   (*objectTypeComboBox)->SetToolTip(pConfig->Read(wxT("ObjectTypeListHint")));
+   (*objectTypeComboBox)->SetToolTip(pConfig->Read(_T("ObjectTypeListHint")));
    
    // set default object type and get appropriate ListBox
    (*objectTypeComboBox)->SetValue(objectType);
    
    wxStaticText *objectStaticText =
-      new wxStaticText(parent, -1, wxT(GUI_ACCEL_KEY) wxT("Object List"),
+      new wxStaticText(parent, -1, wxT(GUI_ACCEL_KEY"Object List"),
                        wxDefaultPosition, wxDefaultSize, 0);   
    
-   if (objectType == wxT("Spacecraft"))
+   if (objectType == "Spacecraft")
    {
       // create Spacecraft ListBox
       *objectListBox =
          GetSpacecraftListBox(parent, objectListBoxId, wxSize(170, 163), NULL,
                               allowMultiSelect);
-      (*objectListBox)->SetToolTip(pConfig->Read(wxT("SpacecraftListHint")));
+      (*objectListBox)->SetToolTip(pConfig->Read(_T("SpacecraftListHint")));
    }
-   else if (objectType == wxT("ImpulsiveBurn"))
+   else if (objectType == "ImpulsiveBurn")
    {
       // create ImpulsiveBurn ListBox
       *objectListBox =
          GetImpBurnListBox(parent, objectListBoxId, wxSize(170, 163), NULL,
                            allowMultiSelect);
-      (*objectListBox)->SetToolTip(pConfig->Read(wxT("ImpulsiveBurnListHint")));
+      (*objectListBox)->SetToolTip(pConfig->Read(_T("ImpulsiveBurnListHint")));
    }
    else
    {
       // create Variable ListBox
       *objectListBox =
-         GetUserVariableListBox(parent, objectListBoxId, wxSize(170, 163), wxT(""),
+         GetUserVariableListBox(parent, objectListBoxId, wxSize(170, 163), "",
                                 allowMultiSelect);
-      (*objectListBox)->SetToolTip(pConfig->Read(wxT("VariableListHint")));
+      (*objectListBox)->SetToolTip(pConfig->Read(_T("VariableListHint")));
       
       // set object type to Variable
-      (*objectTypeComboBox)->SetValue(wxT("Variable"));
+      (*objectTypeComboBox)->SetValue("Variable");
    }
    
    // select first item
@@ -3456,16 +3457,16 @@ wxSizer* GuiItemManager::Create3ColParameterSizer
    //-----------------------------------------------------------------
    // Array row and column
    //-----------------------------------------------------------------
-   *rowStaticText = new wxStaticText(parent, -1, wxT(GUI_ACCEL_KEY) wxT("Row [xx]"));
-   *colStaticText = new wxStaticText(parent, -1, wxT(GUI_ACCEL_KEY) wxT("Col [xx]"));
+   *rowStaticText = new wxStaticText(parent, -1, wxT(GUI_ACCEL_KEY"Row [xx]"));
+   *colStaticText = new wxStaticText(parent, -1, wxT(GUI_ACCEL_KEY"Col [xx]"));
    
    *rowTextCtrl =
       new wxTextCtrl(parent, -1, wxT("1"), wxDefaultPosition, wxSize(40, 20));
-   (*rowTextCtrl)->SetToolTip(pConfig->Read(wxT("ArrayRowHint")));
+   (*rowTextCtrl)->SetToolTip(pConfig->Read(_T("ArrayRowHint")));
    
    *colTextCtrl =
       new wxTextCtrl(parent, -1, wxT("1"), wxDefaultPosition, wxSize(40, 20));
-   (*colTextCtrl)->SetToolTip(pConfig->Read(wxT("ArrayColHint")));
+   (*colTextCtrl)->SetToolTip(pConfig->Read(_T("ArrayColHint")));
    
    //----- arrayIndexSizer
    wxFlexGridSizer *arrayIndexSizer = new wxFlexGridSizer(3);
@@ -3478,7 +3479,7 @@ wxSizer* GuiItemManager::Create3ColParameterSizer
    
    //----- objectListSizer
    GmatStaticBoxSizer *objectListSizer =
-      new GmatStaticBoxSizer(wxVERTICAL, parent, wxT(""));
+      new GmatStaticBoxSizer(wxVERTICAL, parent, "");
    
    objectListSizer->Add(objectTypeStaticText, 0, wxALIGN_CENTRE|wxALL, bsize);
    objectListSizer->Add(*objectTypeComboBox, 0, wxALIGN_CENTER|wxALL, bsize);
@@ -3495,7 +3496,7 @@ wxSizer* GuiItemManager::Create3ColParameterSizer
    //-----------------------------------------------------------------
    //----- propertySizer
    GmatStaticBoxSizer *propertySizer =
-      new GmatStaticBoxSizer(wxVERTICAL, parent, wxT(""));
+      new GmatStaticBoxSizer(wxVERTICAL, parent, "");
    
    if (showOption == SHOW_WHOLE_OBJECT_ONLY)
    {
@@ -3505,25 +3506,25 @@ wxSizer* GuiItemManager::Create3ColParameterSizer
    else
    {
       wxStaticText *propertyStaticText =
-         new wxStaticText(parent, -1, wxT("Object ") wxT(GUI_ACCEL_KEY) wxT("Properties"),
+         new wxStaticText(parent, -1, wxT("Object "GUI_ACCEL_KEY"Properties"),
                           wxDefaultPosition, wxDefaultSize, 0);
       
       *propertyListBox = 
          GetPropertyListBox(parent, propertyListBoxId, wxSize(170, 230), objectType,
                             showOption, allowMultiSelect);
-      (*propertyListBox)->SetToolTip(pConfig->Read(wxT("ObjectPropertiesHint")));
+      (*propertyListBox)->SetToolTip(pConfig->Read(_T("ObjectPropertiesHint")));
       
       *coordSysLabel =
-         new wxStaticText(parent, -1, wxT("Coordinate ") wxT(GUI_ACCEL_KEY) wxT("System"),
+         new wxStaticText(parent, -1, wxT("Coordinate "GUI_ACCEL_KEY"System"),
                           wxDefaultPosition, wxDefaultSize, 0);
       
       *coordSysComboBox =
          GetCoordSysComboBox(parent, coordSysComboBoxId, wxSize(170, 20));
-      (*coordSysComboBox)->SetToolTip(pConfig->Read(wxT("CoordinateSystemHint")));
+      (*coordSysComboBox)->SetToolTip(pConfig->Read(_T("CoordinateSystemHint")));
       
       *originComboBox =
          GetCelestialBodyComboBox(parent, originComboBoxId, wxSize(170, 20));
-      (*originComboBox)->SetToolTip(pConfig->Read(wxT("OriginHint")));
+      (*originComboBox)->SetToolTip(pConfig->Read(_T("OriginHint")));
       
       //----- coordSysBoxSizer
       *coordSysBoxSizer = new wxBoxSizer(wxVERTICAL);   
@@ -3544,34 +3545,34 @@ wxSizer* GuiItemManager::Create3ColParameterSizer
    #endif
    
    *upButton = new wxButton
-      (parent, addButtonId, wxT(GUI_ACCEL_KEY) wxT("UP"), wxDefaultPosition, buttonSize, 0);
-   (*upButton)->SetToolTip(pConfig->Read(wxT("MoveUpHint"),wxT("Move Up")));
+      (parent, addButtonId, wxT(GUI_ACCEL_KEY"UP"), wxDefaultPosition, buttonSize, 0);
+   (*upButton)->SetToolTip(pConfig->Read(_T("MoveUpHint"),"Move Up"));
    if (!allowMultiSelect)
       (*upButton)->Disable();
    
    *downButton = new wxButton
-      (parent, addButtonId, wxT(GUI_ACCEL_KEY) wxT("DN"), wxDefaultPosition, buttonSize, 0);
-   (*downButton)->SetToolTip(pConfig->Read(wxT("MoveDownHint"),wxT("Move Down")));
+      (parent, addButtonId, wxT(GUI_ACCEL_KEY"DN"), wxDefaultPosition, buttonSize, 0);
+   (*downButton)->SetToolTip(pConfig->Read(_T("MoveDownHint"),"Move Down"));
    if (!allowMultiSelect)
       (*downButton)->Disable();
    
    *addButton = new wxButton
-      (parent, addButtonId, wxT("-") wxT(GUI_ACCEL_KEY) wxT(">"), wxDefaultPosition, buttonSize, 0);
-   (*addButton)->SetToolTip(pConfig->Read(wxT("AddSelectedHint"),wxT("Add Selected Item(s)")));
+      (parent, addButtonId, wxT("-"GUI_ACCEL_KEY">"), wxDefaultPosition, buttonSize, 0);
+   (*addButton)->SetToolTip(pConfig->Read(_T("AddSelectedHint"),"Add Selected Item(s)"));
    
    *removeButton = new wxButton
-      (parent, removeButtonId, wxT(GUI_ACCEL_KEY) wxT("<-"), wxDefaultPosition, buttonSize, 0);
-   (*removeButton)->SetToolTip(pConfig->Read(wxT("RemoveSelectedHint"),wxT("Remove Selected Item")));
+      (parent, removeButtonId, wxT(GUI_ACCEL_KEY"<-"), wxDefaultPosition, buttonSize, 0);
+   (*removeButton)->SetToolTip(pConfig->Read(_T("RemoveSelectedHint"),"Remove Selected Item"));
    
    *addAllButton = new wxButton
       (parent, removeAllButtonId, wxT("=>"), wxDefaultPosition, buttonSize, 0);
-   (*addAllButton)->SetToolTip(pConfig->Read(wxT("AddAllHint"),wxT("Add All Items")));
+   (*addAllButton)->SetToolTip(pConfig->Read(_T("AddAllHint"),"Add All Items"));
    if (!allowMultiSelect)
       (*addAllButton)->Disable();
    
    *removeAllButton = new wxButton
-      (parent, removeAllButtonId, wxT("<") wxT(GUI_ACCEL_KEY) wxT("="), wxDefaultPosition, buttonSize, 0);
-   (*removeAllButton)->SetToolTip(pConfig->Read(wxT("RemoveAllHint"),wxT("Remove All Items")));
+      (parent, removeAllButtonId, wxT("<"GUI_ACCEL_KEY"="), wxDefaultPosition, buttonSize, 0);
+   (*removeAllButton)->SetToolTip(pConfig->Read(_T("RemoveAllHint"),"Remove All Items"));
    
    //----- arrowButtonsBoxSizer
    wxBoxSizer *arrowButtonsSizer = new wxBoxSizer(wxVERTICAL);
@@ -3588,7 +3589,7 @@ wxSizer* GuiItemManager::Create3ColParameterSizer
    // Selected values
    //-----------------------------------------------------------------
    wxStaticText *selectedLabel =
-      new wxStaticText(parent, -1, wxT("Selected ") wxT(GUI_ACCEL_KEY) wxT("Value(s)"),
+      new wxStaticText(parent, -1, wxT("Selected "GUI_ACCEL_KEY"Value(s)"),
                        wxDefaultPosition, wxDefaultSize, 0);
    
    wxArrayString emptyList;
@@ -3597,11 +3598,11 @@ wxSizer* GuiItemManager::Create3ColParameterSizer
    *selectedListBox =
       new wxListBox(parent, -1, wxDefaultPosition, wxSize(200, 270), emptyList,
                     wxLB_SINGLE);
-   (*selectedListBox)->SetToolTip(pConfig->Read(wxT("SelectedListHint")));
+   (*selectedListBox)->SetToolTip(pConfig->Read(_T("SelectedListHint")));
    
    //----- selectedSizer
    GmatStaticBoxSizer *selectedSizer =
-      new GmatStaticBoxSizer(wxVERTICAL, parent, wxT(""));
+      new GmatStaticBoxSizer(wxVERTICAL, parent, "");
    
    selectedSizer->Add(selectedLabel, 0, wxALIGN_CENTRE|wxALL, bsize);
    selectedSizer->Add(*selectedListBox, 0, wxGROW|wxALIGN_CENTRE|wxALL, bsize);
@@ -3636,7 +3637,7 @@ wxSizer* GuiItemManager::CreateUserVarSizer
     int showOption, bool showArray)
 {
    #if DBGLVL_GUI_ITEM
-   MessageInterface::ShowMessage(wxT("GuiItemManager::CreateUserVarSizer() entered\n"));
+   MessageInterface::ShowMessage("GuiItemManager::CreateUserVarSizer() entered\n");
    #endif
    
    int bsize = 1;
@@ -3662,7 +3663,7 @@ wxSizer* GuiItemManager::CreateUserVarSizer
    else
    {
       *userParamListBox =
-         GetUserVariableListBox(parent, userParamListBoxId, wxSize(170, 50), wxT(""));
+         GetUserVariableListBox(parent, userParamListBoxId, wxSize(170, 50), "");
    }
    
    //----- userParamBoxSizer
@@ -3701,7 +3702,7 @@ void GuiItemManager::UpdatePropertyList()
 {
    
    #if DBGLVL_GUI_ITEM_PROPERTY
-   MessageInterface::ShowMessage(wxT("GuiItemManager::UpdatePropertyList()\n"));
+   MessageInterface::ShowMessage("GuiItemManager::UpdatePropertyList()\n");
    #endif
    
    StringArray items =
@@ -3710,7 +3711,7 @@ void GuiItemManager::UpdatePropertyList()
    
    #if DBGLVL_GUI_ITEM_PROPERTY
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdatePropertyList() numParams=%d\n"), numParams);
+      ("GuiItemManager::UpdatePropertyList() numParams=%d\n", numParams);
    #endif
    
    theNumScProperty = 0;
@@ -3723,7 +3724,7 @@ void GuiItemManager::UpdatePropertyList()
    for (int i=0; i<numParams; i++)
    {
       // skip CurrA1Mjd from the GUI - The parameter CurrA1MJD will be removed (loj: 5/3/06)
-      if (items[i] == wxT("CurrA1MJD"))
+      if (items[i] == "CurrA1MJD")
          continue;
       
       // add only reportable parameters (Real, String for now) to list
@@ -3734,7 +3735,7 @@ void GuiItemManager::UpdatePropertyList()
          
          #if DBGLVL_GUI_ITEM_PROPERTY > 1
          MessageInterface::ShowMessage
-            (wxT("===> param name=%s, objectType=%d\n"),  items[i].c_str(), objectType);
+            ("===> param name=%s, objectType=%d\n",  items[i].c_str(), objectType);
          #endif
          
          if (objectType == Gmat::SPACECRAFT)
@@ -3755,8 +3756,8 @@ void GuiItemManager::UpdatePropertyList()
    
    #if DBGLVL_GUI_ITEM_PROPERTY
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdatePropertyList() theNumScProperty=%d, ")
-       wxT("theNumImpBurnProperty=%d\n"), theNumScProperty, theNumImpBurnProperty);
+      ("GuiItemManager::UpdatePropertyList() theNumScProperty=%d, "
+       "theNumImpBurnProperty=%d\n", theNumScProperty, theNumImpBurnProperty);
    #endif
 }
 
@@ -3773,9 +3774,9 @@ void GuiItemManager::UpdateParameterList()
 {    
    #if DBGLVL_GUI_ITEM_PARAM
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdateParameterList() entered\ntheNumPlottableParam=%d, ")
-       wxT("theNumSystemParam=%d, theNumUserVariable=%d\ntheNumUserString=%d, ")
-       wxT("theNumUserArray=%d, theNumUserParam=%d\n"), theNumPlottableParam,
+      ("GuiItemManager::UpdateParameterList() entered\ntheNumPlottableParam=%d, "
+       "theNumSystemParam=%d, theNumUserVariable=%d\ntheNumUserString=%d, "
+       "theNumUserArray=%d, theNumUserParam=%d\n", theNumPlottableParam,
        theNumSystemParam, theNumUserVariable, theNumUserString,
        theNumUserArray, theNumUserParam);
    #endif
@@ -3799,7 +3800,7 @@ void GuiItemManager::UpdateParameterList()
       
       #if DBGLVL_GUI_ITEM_PARAM > 1
       MessageInterface::ShowMessage
-         (wxT("GuiItemManager::UpdateParameterList() items[%d]=%s, type=%s\n"), i, 
+         ("GuiItemManager::UpdateParameterList() items[%d]=%s, type=%s\n", i, 
           items[i].c_str(), param->GetTypeName().c_str());
       #endif
       
@@ -3817,7 +3818,7 @@ void GuiItemManager::UpdateParameterList()
       else
       {
          // user Variable
-         if (param->GetTypeName() == wxT("Variable"))
+         if (param->GetTypeName() == "Variable")
          {
             theUserVariableList.Add(items[i].c_str());
             theUserParamList.Add(items[i].c_str());
@@ -3825,13 +3826,13 @@ void GuiItemManager::UpdateParameterList()
          else // not plottable parameters
          {
             // user String
-            if (param->GetTypeName() == wxT("String"))
+            if (param->GetTypeName() == "String")
             {
                theUserStringList.Add(items[i].c_str());
                theUserParamList.Add(items[i].c_str());
             }
             // user Array
-            else if (param->GetTypeName() == wxT("Array"))
+            else if (param->GetTypeName() == "Array")
             {
                theUserArrayList.Add(items[i].c_str());
                theUserParamList.Add(items[i].c_str());
@@ -3849,9 +3850,9 @@ void GuiItemManager::UpdateParameterList()
    
    #if DBGLVL_GUI_ITEM_PARAM
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdateParameterList() exiting\ntheNumPlottableParam=%d, ")
-       wxT("theNumSystemParam=%d, theNumUserVariable=%d\ntheNumUserString=%d, ")
-       wxT("theNumUserArray=%d, theNumUserParam=%d\n"), theNumPlottableParam,
+      ("GuiItemManager::UpdateParameterList() exiting\ntheNumPlottableParam=%d, "
+       "theNumSystemParam=%d, theNumUserVariable=%d\ntheNumUserString=%d, "
+       "theNumUserArray=%d, theNumUserParam=%d\n", theNumPlottableParam,
        theNumSystemParam, theNumUserVariable, theNumUserString,
        theNumUserArray, theNumUserParam);
    #endif
@@ -3873,7 +3874,7 @@ void GuiItemManager::UpdateGroundStationList()
    
    #if DBGLVL_GUI_ITEM_HW
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdateGroundStationList() numGroundStation=%d\n"), numGroundStation);
+      ("GuiItemManager::UpdateGroundStationList() numGroundStation=%d\n", numGroundStation);
    #endif
    
    theNumGroundStation = 0;
@@ -3885,7 +3886,7 @@ void GuiItemManager::UpdateGroundStationList()
       
       #if DBGLVL_GUI_ITEM_HW > 1
       MessageInterface::ShowMessage
-         (wxT("GuiItemManager::UpdateGroundStationList() ") + items[i] + wxT("\n"));
+         ("GuiItemManager::UpdateGroundStationList() " + items[i] + "\n");
       #endif
    }
    
@@ -3905,7 +3906,7 @@ void GuiItemManager::UpdateSpacecraftList()
 {
    #if DBGLVL_GUI_ITEM_SP
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdateSpacecraftList() entered. theNumSpacecraft=%d\n"),
+      ("GuiItemManager::UpdateSpacecraftList() entered. theNumSpacecraft=%d\n",
        theNumSpacecraft);
    #endif
    
@@ -3921,7 +3922,7 @@ void GuiItemManager::UpdateSpacecraftList()
          
          #if DBGLVL_GUI_ITEM_SP
          MessageInterface::ShowMessage
-            (wxT("GuiItemManager::UpdateSpacecraftList() theSpacecraftList[%d]=%s\n"),
+            ("GuiItemManager::UpdateSpacecraftList() theSpacecraftList[%d]=%s\n",
              i, theSpacecraftList[i].c_str());
          #endif
       }
@@ -3993,7 +3994,7 @@ void GuiItemManager::UpdateSpacecraftList()
    
    #if DBGLVL_GUI_ITEM_SP
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdateSpacecraftList() exiting. theNumSpacecraft=%d\n"),
+      ("GuiItemManager::UpdateSpacecraftList() exiting. theNumSpacecraft=%d\n",
        theNumSpacecraft);
    #endif
    
@@ -4014,7 +4015,7 @@ void GuiItemManager::UpdateFormationList()
    
    #if DBGLVL_GUI_ITEM_SO
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdateFormationList() numForm=%d\n"), numForm);
+      ("GuiItemManager::UpdateFormationList() numForm=%d\n", numForm);
    #endif
    
    theFormationList.Clear();
@@ -4026,7 +4027,7 @@ void GuiItemManager::UpdateFormationList()
       
       #if DBGLVL_GUI_ITEM_SO > 1
       MessageInterface::ShowMessage
-         (wxT("   %s added to theFormationList\n"), theFormationList[i].c_str());
+         ("   %s added to theFormationList\n", theFormationList[i].c_str());
       #endif
    }
    
@@ -4045,7 +4046,7 @@ void GuiItemManager::UpdateFormationList()
 void GuiItemManager::UpdateSpaceObjectList()
 {
    #if DBGLVL_GUI_ITEM_SO
-   MessageInterface::ShowMessage(wxT("GuiItemManager::UpdateSpaceObjectList() entered\n"));
+   MessageInterface::ShowMessage("GuiItemManager::UpdateSpaceObjectList() entered\n");
    #endif
    
    StringArray scList = theGuiInterpreter->GetListOfObjects(Gmat::SPACECRAFT);
@@ -4058,14 +4059,14 @@ void GuiItemManager::UpdateSpaceObjectList()
    
    #if DBGLVL_GUI_ITEM_SO > 1
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdateSpaceObjectList() ==========>\n"));
-   MessageInterface::ShowMessage(wxT("numSc=%d, scList="), numSc);
+      ("GuiItemManager::UpdateSpaceObjectList() ==========>\n");
+   MessageInterface::ShowMessage("numSc=%d, scList=", numSc);
    for (int i=0; i<numSc; i++)
-      MessageInterface::ShowMessage(wxT("%s "), scList[i].c_str());
-   MessageInterface::ShowMessage(wxT("\nnumFm=%d, fmList="), numFm);
+      MessageInterface::ShowMessage("%s ", scList[i].c_str());
+   MessageInterface::ShowMessage("\nnumFm=%d, fmList=", numFm);
    for (int i=0; i<numFm; i++)
-      MessageInterface::ShowMessage(wxT("%s "), fmList[i].c_str());
-   MessageInterface::ShowMessage(wxT("\n"));   
+      MessageInterface::ShowMessage("%s ", fmList[i].c_str());
+   MessageInterface::ShowMessage("\n");   
    #endif
    
    theSpaceObjectList.Clear();
@@ -4086,7 +4087,7 @@ void GuiItemManager::UpdateSpaceObjectList()
          for (int i=0; i<numFm; i++)
          {
             GmatBase *fm = theGuiInterpreter->GetConfiguredObject(fmList[i]);
-            StringArray fmscList = fm->GetStringArrayParameter(fm->GetParameterID(wxT("Add")));
+            StringArray fmscList = fm->GetStringArrayParameter(fm->GetParameterID("Add"));
             fmscListAll.insert(fmscListAll.begin(), fmscList.begin(), fmscList.end());
          }
          
@@ -4113,7 +4114,7 @@ void GuiItemManager::UpdateSpaceObjectList()
                
                #if DBGLVL_GUI_ITEM_SO > 1
                MessageInterface::ShowMessage
-                  (wxT("   %s added to theSpaceObjectList\n"),
+                  ("   %s added to theSpaceObjectList\n",
                    theSpaceObjectList[i].c_str());
                #endif
             }
@@ -4138,7 +4139,7 @@ void GuiItemManager::UpdateSpaceObjectList()
             
             #if DBGLVL_GUI_ITEM_SO > 1
             MessageInterface::ShowMessage
-               (wxT("   %s added to theSpaceObjectList\n"),
+               ("   %s added to theSpaceObjectList\n",
                 theSpaceObjectList[i].c_str());
             #endif
          }
@@ -4155,7 +4156,7 @@ void GuiItemManager::UpdateSpaceObjectList()
             
             #if DBGLVL_GUI_ITEM_SO > 1
             MessageInterface::ShowMessage
-               (wxT("   %s added to theSpaceObjectList\n"),
+               ("   %s added to theSpaceObjectList\n",
                 theSpaceObjectList[i].c_str());
             #endif
          }
@@ -4187,8 +4188,8 @@ void GuiItemManager::UpdateSpaceObjectList()
    
    #if DBGLVL_GUI_ITEM_SO
    MessageInterface::ShowMessage
-      (wxT("theNumSpaceObject=%d\n")
-       wxT("<==========GuiItemManager::UpdateSpaceObjectList() exiting\n"),
+      ("theNumSpaceObject=%d\n"
+       "<==========GuiItemManager::UpdateSpaceObjectList() exiting\n",
        theNumSpaceObject);
    #endif
 }
@@ -4204,7 +4205,7 @@ void GuiItemManager::UpdateSpaceObjectList()
 void GuiItemManager::UpdateCelestialBodyList()
 {
    #if DBGLVL_GUI_ITEM_SP
-   MessageInterface::ShowMessage(wxT("GuiItemManager::UpdateCelestialBodyList() entered\n"));
+   MessageInterface::ShowMessage("GuiItemManager::UpdateCelestialBodyList() entered\n");
    #endif
    
    StringArray items = theGuiInterpreter->GetListOfObjects(Gmat::CELESTIAL_BODY);
@@ -4213,7 +4214,7 @@ void GuiItemManager::UpdateCelestialBodyList()
    
    #if DBGLVL_GUI_ITEM_SP
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdateCelestialBodyList() Adding %d items\n"), theNumCelesBody);
+      ("GuiItemManager::UpdateCelestialBodyList() Adding %d items\n", theNumCelesBody);
    #endif
    
    for (int i=0; i<theNumCelesBody; i++)
@@ -4221,8 +4222,8 @@ void GuiItemManager::UpdateCelestialBodyList()
       theCelestialBodyList.Add(items[i].c_str());
       
       #if DBGLVL_GUI_ITEM > 1
-      MessageInterface::ShowMessage(wxT("GuiItemManager::UpdateCelestialBodyList() ") +
-                                    wxString(theCelestialBodyList[i].c_str()) + wxT("\n"));
+      MessageInterface::ShowMessage("GuiItemManager::UpdateCelestialBodyList() " +
+                                    std::string(theCelestialBodyList[i].c_str()) + "\n");
       #endif
    }
    
@@ -4251,7 +4252,7 @@ void GuiItemManager::UpdateCelestialBodyList()
       
       #if DBGLVL_GUI_ITEM_REG
       MessageInterface::ShowMessage
-         (wxT("===============> registerdListBox=<%p>, excList=<%p>\n"), *pos, excList);
+         ("===============> registerdListBox=<%p>, excList=<%p>\n", *pos, excList);
       #endif
       
       for (int i=0; i<theNumCelesBody; i++)
@@ -4260,14 +4261,14 @@ void GuiItemManager::UpdateCelestialBodyList()
          {
             #if DBGLVL_GUI_ITEM_REG
             MessageInterface::ShowMessage
-               (wxT("   ==> Appending '%s'\n"), theCelestialBodyList[i].c_str());
+               ("   ==> Appending '%s'\n", theCelestialBodyList[i].c_str());
             #endif
             (*pos)->Append(theCelestialBodyList[i]);
          }
          else
          {
             #if DBGLVL_GUI_ITEM_REG
-            MessageInterface::ShowMessage(wxT("   ==> Excluding '%s'\n"), theCelestialBodyList[i].c_str());
+            MessageInterface::ShowMessage("   ==> Excluding '%s'\n", theCelestialBodyList[i].c_str());
             #endif
          }
       }
@@ -4299,8 +4300,8 @@ void GuiItemManager::UpdateCelestialPointList()
    
    #if DBGLVL_GUI_ITEM_SP
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdateCelestialPointList() theNumCelesBody=%d, ")
-       wxT("theNumCalPoint=%d, theNumCelesPoint=%d\n"), theNumCelesBody, theNumCalPoint,
+      ("GuiItemManager::UpdateCelestialPointList() theNumCelesBody=%d, "
+       "theNumCalPoint=%d, theNumCelesPoint=%d\n", theNumCelesBody, theNumCalPoint,
        theNumCelesPoint);
    #endif
    
@@ -4337,7 +4338,7 @@ void GuiItemManager::UpdateCelestialPointList()
       
       #if DBGLVL_GUI_ITEM_REG
       MessageInterface::ShowMessage
-         (wxT("===============> registerdListBox=<%p>, excList=<%p>\n"), *pos, excList);
+         ("===============> registerdListBox=<%p>, excList=<%p>\n", *pos, excList);
       #endif
       
       for (int i=0; i<theNumCelesPoint; i++)
@@ -4352,8 +4353,8 @@ void GuiItemManager::UpdateCelestialPointList()
    
    #if DBGLVL_GUI_ITEM_SP
    MessageInterface::ShowMessage
-      (wxT("theNumCelesPoint=%d\n")
-       wxT("<==========GuiItemManager::UpdateCelestialPointList() exiting\n"),
+      ("theNumCelesPoint=%d\n"
+       "<==========GuiItemManager::UpdateCelestialPointList() exiting\n",
        theNumCelesPoint);
    #endif
 } //UpdateCelestialPointList()
@@ -4373,7 +4374,7 @@ void GuiItemManager::UpdateSpacePointList()
    
    #if DBGLVL_GUI_ITEM_SP
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdateSpacePointList() theNumSpacePoint=%d\n"), theNumSpacePoint);
+      ("GuiItemManager::UpdateSpacePointList() theNumSpacePoint=%d\n", theNumSpacePoint);
    #endif
    
    theSpacePointList.Clear();
@@ -4384,7 +4385,7 @@ void GuiItemManager::UpdateSpacePointList()
       
       #if DBGLVL_GUI_ITEM_SP > 1
       MessageInterface::ShowMessage
-         (wxT("GuiItemManager::UpdateSpacePointList() theSpacePointList[%d]=%s\n"),
+         ("GuiItemManager::UpdateSpacePointList() theSpacePointList[%d]=%s\n",
           i, theSpacePointList[i].c_str());
       #endif
    }
@@ -4397,14 +4398,14 @@ void GuiItemManager::UpdateSpacePointList()
    {
       wxString str = (*pos)->GetStringSelection();
       
-      if ((*pos)->FindString(wxT("Vector")) == wxNOT_FOUND)
+      if ((*pos)->FindString("Vector") == wxNOT_FOUND)
       {
          (*pos)->Clear();
       }
       else
       {
          (*pos)->Clear();
-         (*pos)->Append(wxT("Vector"));
+         (*pos)->Append("Vector");
       }
       
       (*pos)->Append(theSpacePointList);
@@ -4427,7 +4428,7 @@ void GuiItemManager::UpdateBurnList()
    
    #if DBGLVL_GUI_ITEM_BURN
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdateBurnList() numBurn=%d\n"), numBurn);
+      ("GuiItemManager::UpdateBurnList() numBurn=%d\n", numBurn);
    #endif
    
    theNumImpBurn = 0;
@@ -4439,22 +4440,22 @@ void GuiItemManager::UpdateBurnList()
    for (int i=0; i<numBurn; i++)
    {
       obj = theGuiInterpreter->GetConfiguredObject(items[i]);
-      if (obj->GetTypeName() == wxT("ImpulsiveBurn"))
+      if (obj->GetTypeName() == "ImpulsiveBurn")
       {
          theImpBurnList.Add(items[i].c_str());
          
          #if DBGLVL_GUI_ITEM_BURN > 1
          MessageInterface::ShowMessage
-            (wxT("   %s added to theImpBurnList\n"), theImpBurnList[i].c_str());
+            ("   %s added to theImpBurnList\n", theImpBurnList[i].c_str());
          #endif
       }
-      else if (obj->GetTypeName() == wxT("FiniteBurn"))
+      else if (obj->GetTypeName() == "FiniteBurn")
       {
          theFiniteBurnList.Add(items[i].c_str());
          
          #if DBGLVL_GUI_ITEM_BURN > 1
          MessageInterface::ShowMessage
-            (wxT("   %s added to theFiniteBurnList\n"), theFiniteBurnList[i].c_str());
+            ("   %s added to theFiniteBurnList\n", theFiniteBurnList[i].c_str());
          #endif
       }
    }
@@ -4507,7 +4508,7 @@ void GuiItemManager::UpdateCoordSystemList()
    
    #if DBGLVL_GUI_ITEM_CS
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdateCoordSystemList() theNumCoordSys=%d\n"),
+      ("GuiItemManager::UpdateCoordSystemList() theNumCoordSys=%d\n",
        theNumCoordSys);
    #endif
    
@@ -4519,7 +4520,7 @@ void GuiItemManager::UpdateCoordSystemList()
       
       #if DBGLVL_GUI_ITEM_CS > 1
       MessageInterface::ShowMessage
-         (wxT("   %s added to theCoordSysList\n"), theCoordSysList[i].c_str());
+         ("   %s added to theCoordSysList\n", theCoordSysList[i].c_str());
       #endif
    }
    
@@ -4561,7 +4562,7 @@ void GuiItemManager::UpdateFuelTankList()
    
    #if DBGLVL_GUI_ITEM_HW
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdateFuelTankList() numFuelTank=%d\n"), numFuelTank);
+      ("GuiItemManager::UpdateFuelTankList() numFuelTank=%d\n", numFuelTank);
    #endif
    
    theNumFuelTank = 0;
@@ -4573,7 +4574,7 @@ void GuiItemManager::UpdateFuelTankList()
       
       #if DBGLVL_GUI_ITEM_HW > 1
       MessageInterface::ShowMessage
-         (wxT("GuiItemManager::UpdateFuelTankList() ") + items[i] + wxT("\n"));
+         ("GuiItemManager::UpdateFuelTankList() " + items[i] + "\n");
       #endif
    }
    
@@ -4611,10 +4612,10 @@ void GuiItemManager::UpdateFuelTankList()
    {
       sel = (*pos)->GetSelection();
       selStr = (*pos)->GetValue();
-      wxString noSelStr = wxT("No Fuel Tank Selected");
+      wxString noSelStr = "No Fuel Tank Selected";
       
       #if DBGLVL_GUI_ITEM_HW
-      MessageInterface::ShowMessage(wxT("   sel=%d, selStr='%s'\n"), sel, selStr.c_str());
+      MessageInterface::ShowMessage("   sel=%d, selStr='%s'\n", sel, selStr.c_str());
       #endif
       
       if (theNumFuelTank > 0)
@@ -4653,7 +4654,7 @@ void GuiItemManager::UpdateThrusterList()
    
    #if DBGLVL_GUI_ITEM_HW
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdateThrusterList() numThruster=%d\n"), numThruster);
+      ("GuiItemManager::UpdateThrusterList() numThruster=%d\n", numThruster);
    #endif
    
    theNumThruster = 0;
@@ -4665,7 +4666,7 @@ void GuiItemManager::UpdateThrusterList()
       
       #if DBGLVL_GUI_ITEM_HW > 1
       MessageInterface::ShowMessage
-         (wxT("GuiItemManager::UpdateThrusterList() ") + items[i] + wxT("\n"));
+         ("GuiItemManager::UpdateThrusterList() " + items[i] + "\n");
       #endif
    }
    
@@ -4703,10 +4704,10 @@ void GuiItemManager::UpdateThrusterList()
    {
       sel = (*pos)->GetSelection();
       selStr = (*pos)->GetValue();
-      wxString noSelStr = wxT("No Thruster Selected");
+      wxString noSelStr = "No Thruster Selected";
       
       #if DBGLVL_GUI_ITEM_HW
-      MessageInterface::ShowMessage(wxT("   sel=%d, selStr='%s'\n"), sel, selStr.c_str());
+      MessageInterface::ShowMessage("   sel=%d, selStr='%s'\n", sel, selStr.c_str());
       #endif
       
       if (theNumThruster > 0)
@@ -4745,7 +4746,7 @@ void GuiItemManager::UpdateAntennaList()
    
    #if DBGLVL_GUI_ITEM_HW
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdateSensorList() numAntenna=%d, numAntenna=%d\n"), ,
+      ("GuiItemManager::UpdateSensorList() numAntenna=%d, numAntenna=%d\n", ,
        numSensor, numAntenna);
    #endif
    
@@ -4758,7 +4759,7 @@ void GuiItemManager::UpdateAntennaList()
       
       #if DBGLVL_GUI_ITEM_HW > 1
       MessageInterface::ShowMessage
-         (wxT("GuiItemManager::UpdateAntennaList() ") + antennas[i] + wxT("\n"));
+         ("GuiItemManager::UpdateAntennaList() " + antennas[i] + "\n");
       #endif
    }
    
@@ -4783,7 +4784,7 @@ void GuiItemManager::UpdateAntennaList()
          // Insert first item as "No Antenna Selected"
          if (theAntennaList[0] != selStr)
          {
-            (*pos)->Insert(wxT("No Antenna Selected"), 0);
+            (*pos)->Insert("No Antenna Selected", 0);
             (*pos)->SetSelection(0);
          }
          else
@@ -4814,7 +4815,7 @@ void GuiItemManager::UpdateSensorList()
    
    #if DBGLVL_GUI_ITEM_HW
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdateSensorList() numSensor=%d, numAntenna=%d\n"), ,
+      ("GuiItemManager::UpdateSensorList() numSensor=%d, numAntenna=%d\n", ,
        numSensor, numAntenna);
    #endif
    
@@ -4827,7 +4828,7 @@ void GuiItemManager::UpdateSensorList()
       
       #if DBGLVL_GUI_ITEM_HW > 1
       MessageInterface::ShowMessage
-         (wxT("GuiItemManager::UpdateSensorList() ") + sensors[i] + wxT("\n"));
+         ("GuiItemManager::UpdateSensorList() " + sensors[i] + "\n");
       #endif
    }
    
@@ -4837,7 +4838,7 @@ void GuiItemManager::UpdateSensorList()
       
       #if DBGLVL_GUI_ITEM_HW > 1
       MessageInterface::ShowMessage
-         (wxT("GuiItemManager::UpdateSensorList() ") + antennas[i] + wxT("\n"));
+         ("GuiItemManager::UpdateSensorList() " + antennas[i] + "\n");
       #endif
    }
    
@@ -4884,7 +4885,7 @@ void GuiItemManager::UpdateSensorList()
          // Insert first item as "No Sensor Selected"
          if (theSensorList[0] != selStr)
          {
-            (*pos)->Insert(wxT("No Sensor Selected"), 0);
+            (*pos)->Insert("No Sensor Selected", 0);
             (*pos)->SetSelection(0);
          }
          else
@@ -4911,7 +4912,7 @@ void GuiItemManager::UpdateFunctionList()
    
    #if DBGLVL_GUI_ITEM_FN
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdateFunctionList() theNumFunction=%d\n"), theNumFunction);
+      ("GuiItemManager::UpdateFunctionList() theNumFunction=%d\n", theNumFunction);
    #endif
    
    theFunctionList.Clear();
@@ -4922,7 +4923,7 @@ void GuiItemManager::UpdateFunctionList()
       
       #if DBGLVL_GUI_ITEM_FN > 1
       MessageInterface::ShowMessage
-         (wxT("   %s added to theFunctionList\n"), theFunctionList[i].c_str());
+         ("   %s added to theFunctionList\n", theFunctionList[i].c_str());
       #endif
    }
    
@@ -4937,7 +4938,7 @@ void GuiItemManager::UpdateFunctionList()
       
       #if DBGLVL_GUI_ITEM_FN > 1
       MessageInterface::ShowMessage
-         (wxT("   appending %s to FunctionComboBox\n"), theFunctionList[0].c_str());
+         ("   appending %s to FunctionComboBox\n", theFunctionList[0].c_str());
       #endif
       
       (*pos)->Clear();
@@ -4968,7 +4969,7 @@ void GuiItemManager::UpdateSubscriberList()
    
    #if DBGLVL_GUI_ITEM_SUBS
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdateSubscriberList() theNumSubscriber=%d\n"), theNumSubscriber);
+      ("GuiItemManager::UpdateSubscriberList() theNumSubscriber=%d\n", theNumSubscriber);
    #endif
    
    wxArrayString subsNames;
@@ -4983,7 +4984,7 @@ void GuiItemManager::UpdateSubscriberList()
       
       #if DBGLVL_GUI_ITEM_SUBS > 1
       MessageInterface::ShowMessage
-         (wxT("   %s added to theSubscriberList\n"), theSubscriberList[i].c_str());
+         ("   %s added to theSubscriberList\n", theSubscriberList[i].c_str());
       #endif
    }
    
@@ -4992,7 +4993,7 @@ void GuiItemManager::UpdateSubscriberList()
    {
       // check for ReportFile
       obj = theGuiInterpreter->GetConfiguredObject(items[i]);
-      if (obj->IsOfType(wxT("ReportFile")))
+      if (obj->IsOfType("ReportFile"))
       {
          theReportFileList.Add(items[i].c_str());         
       }
@@ -5005,7 +5006,7 @@ void GuiItemManager::UpdateSubscriberList()
    {
       // check for ReportFile
       obj = theGuiInterpreter->GetConfiguredObject(items[i]);
-      if (obj->IsOfType(wxT("XYPlot")))
+      if (obj->IsOfType("XYPlot"))
       {
          theXyPlotList.Add(items[i].c_str());         
       }
@@ -5119,7 +5120,7 @@ void GuiItemManager::UpdateSubscriberList()
       {
          GmatPanel *parent = (GmatPanel*)((*pos)->GetParent());
          (*pos)->Check(0, true);
-         parent->TakeAction(wxT("EnableUpdate"));
+         parent->TakeAction("EnableUpdate");
       }
    }
    
@@ -5143,7 +5144,7 @@ void GuiItemManager::UpdateSolverList()
    
    #if DBGLVL_GUI_ITEM_SOLVER
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdateSolverList() theNumSolver=%d\n"), theNumSolver);
+      ("GuiItemManager::UpdateSolverList() theNumSolver=%d\n", theNumSolver);
    #endif
    
    GmatBase *obj;
@@ -5158,7 +5159,7 @@ void GuiItemManager::UpdateSolverList()
       
       #if DBGLVL_GUI_ITEM_SOLVER > 1
       MessageInterface::ShowMessage
-         (wxT("     %s added to theSolverList\n"), theSolverList[i].c_str());
+         ("     %s added to theSolverList\n", theSolverList[i].c_str());
       #endif
    }
    
@@ -5171,11 +5172,11 @@ void GuiItemManager::UpdateSolverList()
    {
       // check for Boundary Solver
       obj = theGuiInterpreter->GetConfiguredObject(items[i]);
-      if (obj->GetTypeName() == wxT("DifferentialCorrector"))
+      if (obj->GetTypeName() == "DifferentialCorrector")
       {
          #if DBGLVL_GUI_ITEM_SOLVER
          MessageInterface::ShowMessage
-            (wxT("   %s added to theBoundarySolverList\n"), items[i].c_str());
+            ("   %s added to theBoundarySolverList\n", items[i].c_str());
          #endif
          
          theBoundarySolverList.Add(items[i].c_str());
@@ -5194,13 +5195,13 @@ void GuiItemManager::UpdateSolverList()
    {
       // check for Optimizer
       obj = theGuiInterpreter->GetConfiguredObject(items[i]);
-      if (obj->IsOfType(wxT("Optimizer")))
+      if (obj->IsOfType("Optimizer"))
       {
          theOptimizerList.Add(items[i].c_str());
          
          #if DBGLVL_GUI_ITEM_SOLVER
          MessageInterface::ShowMessage
-            (wxT("   %s added to theOptimizerList\n"), theOptimizerList[i].c_str());
+            ("   %s added to theOptimizerList\n", theOptimizerList[i].c_str());
          #endif
       }
    }
@@ -5268,7 +5269,7 @@ void GuiItemManager::UpdatePropagatorList()
    numProp = listProp.size();
    #if DBGLVL_GUI_ITEM_PROP
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdatePropagatorList() numProp=%d\n"), numProp);
+      ("GuiItemManager::UpdatePropagatorList() numProp=%d\n", numProp);
    #endif
    
    // check to see if any propagators exist
@@ -5278,16 +5279,16 @@ void GuiItemManager::UpdatePropagatorList()
 
       #if DBGLVL_GUI_ITEM_PROP > 1
       MessageInterface::ShowMessage
-         (wxT("   %s added to thePropagatorList\n"), thePropagatorList[i].c_str());
+         ("   %s added to thePropagatorList\n", thePropagatorList[i].c_str());
       #endif
    }
 
    #ifdef __USE_SPICE__
-   listProp = theGuiInterpreter->GetListOfObjects(wxT("SPK"));
+   listProp = theGuiInterpreter->GetListOfObjects("SPK");
    numProp = listProp.size();
    #if DBGLVL_GUI_ITEM_PROP
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdatePropagatorList() SPK numProp=%d\n"), numProp);
+      ("GuiItemManager::UpdatePropagatorList() SPK numProp=%d\n", numProp);
    #endif
    
     // check to see if any SPK propagators exist
@@ -5297,7 +5298,7 @@ void GuiItemManager::UpdatePropagatorList()
       
       #if DBGLVL_GUI_ITEM_PROP > 1
       MessageInterface::ShowMessage
-         (wxT("   %s added to thePropagatorList\n"), thePropagatorList[i].c_str());
+         ("   %s added to thePropagatorList\n", thePropagatorList[i].c_str());
       #endif
    }
    #endif
@@ -5321,7 +5322,7 @@ void GuiItemManager::UpdateForceModelList()
    
    #if DBGLVL_GUI_ITEM_FM
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::UpdateForceModelList() numForceModel=%d\n"), numForceModel);
+      ("GuiItemManager::UpdateForceModelList() numForceModel=%d\n", numForceModel);
    #endif
    
    theForceModelList.Clear();
@@ -5333,7 +5334,7 @@ void GuiItemManager::UpdateForceModelList()
       
       #if DBGLVL_GUI_ITEM_FM > 1
       MessageInterface::ShowMessage
-         (wxT("   %s added to theForceModelList\n"), theForceModelList[i].c_str());
+         ("   %s added to theForceModelList\n", theForceModelList[i].c_str());
       #endif
    }
    
@@ -5388,7 +5389,7 @@ void GuiItemManager::AddToAllObjectArray()
 {
    #if DBGLVL_GUI_ITEM_ALL_OBJECT
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::AddToAllObjectArray() entered\n"));
+      ("GuiItemManager::AddToAllObjectArray() entered\n");
    #endif
    
    theNumAllObject = 0;
@@ -5396,119 +5397,119 @@ void GuiItemManager::AddToAllObjectArray()
    
    // Add CoordinateSystem objects to the list
    #if DBGLVL_GUI_ITEM_ALL_OBJECT > 1
-   MessageInterface::ShowMessage(wxT("   Adding %d CoordinateSystem\n"), theNumCoordSys);
+   MessageInterface::ShowMessage("   Adding %d CoordinateSystem\n", theNumCoordSys);
    #endif
    
    for (int i=0; i<theNumCoordSys; i++)
-      theAllObjectList.Add(theCoordSysList[i] + wxT(" <CoordinateSystem>"));
+      theAllObjectList.Add(theCoordSysList[i] + " <CoordinateSystem>");
    
    // Add Spacecraft objects to the list
    #if DBGLVL_GUI_ITEM_ALL_OBJECT > 1
-   MessageInterface::ShowMessage(wxT("   Adding %d Spacecraft\n"), theNumSpacecraft);
+   MessageInterface::ShowMessage("   Adding %d Spacecraft\n", theNumSpacecraft);
    #endif
    for (int i=0; i<theNumSpacecraft; i++)
-      theAllObjectList.Add(theSpacecraftList[i] + wxT(" <Spacecraft>"));
+      theAllObjectList.Add(theSpacecraftList[i] + " <Spacecraft>");
    
    // Add Formation objects to the list
    #if DBGLVL_GUI_ITEM_ALL_OBJECT > 1
-   MessageInterface::ShowMessage(wxT("   Adding %d Formation\n"), theNumFormation);
+   MessageInterface::ShowMessage("   Adding %d Formation\n", theNumFormation);
    #endif
    for (int i=0; i<theNumFormation; i++)
-      theAllObjectList.Add(theFormationList[i] + wxT(" <Formation>"));
+      theAllObjectList.Add(theFormationList[i] + " <Formation>");
    
    // Add CalculatedPoint objects to the list
    #if DBGLVL_GUI_ITEM_ALL_OBJECT > 1
-   MessageInterface::ShowMessage(wxT("   Adding %d CalculatedPoint\n"), theNumCalPoint);
+   MessageInterface::ShowMessage("   Adding %d CalculatedPoint\n", theNumCalPoint);
    #endif
    for (int i=0; i<theNumCalPoint; i++)
    {
       GmatBase *obj = theGuiInterpreter->GetConfiguredObject(theCalPointList[i].c_str());
-      if (obj->GetTypeName() == wxT("LibrationPoint"))
-         theAllObjectList.Add(theCalPointList[i] + wxT(" <LibrationPoint>"));
-      else if (obj->GetTypeName() == wxT("Barycenter"))
-         theAllObjectList.Add(theCalPointList[i] + wxT(" <Barycenter>"));
+      if (obj->GetTypeName() == "LibrationPoint")
+         theAllObjectList.Add(theCalPointList[i] + " <LibrationPoint>");
+      else if (obj->GetTypeName() == "Barycenter")
+         theAllObjectList.Add(theCalPointList[i] + " <Barycenter>");
    }
    
    // Add Function objects to the list
    #if DBGLVL_GUI_ITEM_ALL_OBJECT > 1
-   MessageInterface::ShowMessage(wxT("   Adding %d Function\n"), theNumFunction);
+   MessageInterface::ShowMessage("   Adding %d Function\n", theNumFunction);
    #endif
    for (int i=0; i<theNumFunction; i++)
-      theAllObjectList.Add(theFunctionList[i] + wxT(" <Function>"));
+      theAllObjectList.Add(theFunctionList[i] + " <Function>");
    
    // Add FuelTank objects to the list
    #if DBGLVL_GUI_ITEM_ALL_OBJECT > 1
-   MessageInterface::ShowMessage(wxT("   Adding %d FuelTank\n"), theNumFuelTank);
+   MessageInterface::ShowMessage("   Adding %d FuelTank\n", theNumFuelTank);
    #endif
    for (int i=0; i<theNumFuelTank; i++)
-      theAllObjectList.Add(theFuelTankList[i] + wxT(" <FuelTank>"));
+      theAllObjectList.Add(theFuelTankList[i] + " <FuelTank>");
    
    // Add Thruster objects to the list
    #if DBGLVL_GUI_ITEM_ALL_OBJECT > 1
-   MessageInterface::ShowMessage(wxT("   Adding %d Thruster\n"), theNumThruster);
+   MessageInterface::ShowMessage("   Adding %d Thruster\n", theNumThruster);
    #endif
    for (int i=0; i<theNumThruster; i++)
-      theAllObjectList.Add(theThrusterList[i] + wxT(" <Thruster>"));
+      theAllObjectList.Add(theThrusterList[i] + " <Thruster>");
    
    // Add ImpulsiveBurn objects to the list
    #if DBGLVL_GUI_ITEM_ALL_OBJECT > 1
-   MessageInterface::ShowMessage(wxT("   Adding %d ImpulsiveBurn\n"), theNumImpBurn);
+   MessageInterface::ShowMessage("   Adding %d ImpulsiveBurn\n", theNumImpBurn);
    #endif
    for (int i=0; i<theNumImpBurn; i++)
-      theAllObjectList.Add(theImpBurnList[i] + wxT(" <ImpulsiveBurn>"));
+      theAllObjectList.Add(theImpBurnList[i] + " <ImpulsiveBurn>");
    
    // Add FiniteBurn objects to the list
    #if DBGLVL_GUI_ITEM_ALL_OBJECT > 1
-   MessageInterface::ShowMessage(wxT("   Adding %d FiniteBurn\n"), theNumFiniteBurn);
+   MessageInterface::ShowMessage("   Adding %d FiniteBurn\n", theNumFiniteBurn);
    #endif
    for (int i=0; i<theNumFiniteBurn; i++)
-      theAllObjectList.Add(theFiniteBurnList[i] + wxT(" <FiniteBurn>"));
+      theAllObjectList.Add(theFiniteBurnList[i] + " <FiniteBurn>");
    
    // Add Propagator objects to the list
    #if DBGLVL_GUI_ITEM_ALL_OBJECT > 1
-   MessageInterface::ShowMessage(wxT("   Adding %d Propagator\n"), theNumPropagator);
+   MessageInterface::ShowMessage("   Adding %d Propagator\n", theNumPropagator);
    #endif
    for (int i=0; i<theNumPropagator; i++)
-      theAllObjectList.Add(thePropagatorList[i] + wxT(" <Propagator>"));
+      theAllObjectList.Add(thePropagatorList[i] + " <Propagator>");
    
    // Add ForceModel objects to the list
    #if DBGLVL_GUI_ITEM_ALL_OBJECT > 1
-   MessageInterface::ShowMessage(wxT("   Adding %d ForceModel\n"), theNumForceModel);
+   MessageInterface::ShowMessage("   Adding %d ForceModel\n", theNumForceModel);
    #endif
    for (int i=0; i<theNumForceModel; i++)
-      theAllObjectList.Add(theForceModelList[i] + wxT(" <ForceModel>"));
+      theAllObjectList.Add(theForceModelList[i] + " <ForceModel>");
    
    // Add Solver objects to the list
    #if DBGLVL_GUI_ITEM_ALL_OBJECT > 1
-   MessageInterface::ShowMessage(wxT("   Adding %d Solver\n"), theNumSolver);
+   MessageInterface::ShowMessage("   Adding %d Solver\n", theNumSolver);
    #endif
    for (int i=0; i<theNumSolver; i++)
-      theAllObjectList.Add(theSolverList[i] + wxT(" <Solver>"));
+      theAllObjectList.Add(theSolverList[i] + " <Solver>");
    
    // Add Variable objects to the list
    #if DBGLVL_GUI_ITEM_ALL_OBJECT > 1
-   MessageInterface::ShowMessage(wxT("   Adding %d Variable\n"), theNumUserVariable);
+   MessageInterface::ShowMessage("   Adding %d Variable\n", theNumUserVariable);
    #endif
    for (int i=0; i<theNumUserVariable; i++)
-      theAllObjectList.Add(theUserVariableList[i] + wxT(" <Variable>"));
+      theAllObjectList.Add(theUserVariableList[i] + " <Variable>");
    
    // Add Array objects to the list
    #if DBGLVL_GUI_ITEM_ALL_OBJECT > 1
-   MessageInterface::ShowMessage(wxT("   Adding %d Array\n"), theNumUserArray);
+   MessageInterface::ShowMessage("   Adding %d Array\n", theNumUserArray);
    #endif
    for (int i=0; i<theNumUserArray; i++)
-      theAllObjectList.Add(theUserArrayList[i] + wxT(" <Array>"));
+      theAllObjectList.Add(theUserArrayList[i] + " <Array>");
    
    // Add String objects to the list
    #if DBGLVL_GUI_ITEM_ALL_OBJECT > 1
-   MessageInterface::ShowMessage(wxT("   Adding %d String\n"), theNumUserString);
+   MessageInterface::ShowMessage("   Adding %d String\n", theNumUserString);
    #endif
    for (int i=0; i<theNumUserString; i++)
-      theAllObjectList.Add(theUserStringList[i] + wxT(" <String>"));
+      theAllObjectList.Add(theUserStringList[i] + " <String>");
    
    // Add Subscriber objects to the list
    #if DBGLVL_GUI_ITEM_ALL_OBJECT > 1
-   MessageInterface::ShowMessage(wxT("   Adding %d Subscriber\n"), theNumSubscriber);
+   MessageInterface::ShowMessage("   Adding %d Subscriber\n", theNumSubscriber);
    #endif
    for (int i=0; i<theNumSubscriber; i++)
    {
@@ -5518,7 +5519,7 @@ void GuiItemManager::AddToAllObjectArray()
          continue;
       
       wxString typeName = obj->GetTypeName().c_str();
-      theAllObjectList.Add(theSubscriberList[i] + wxT(" <") + typeName + wxT(">"));
+      theAllObjectList.Add(theSubscriberList[i] + " <" + typeName + ">");
    }
    
    // Add EventLocator objects to the list
@@ -5526,7 +5527,7 @@ void GuiItemManager::AddToAllObjectArray()
    MessageInterface::ShowMessage("   Adding %d EventLocators\n", theNumLocator);
    #endif
    for (int i=0; i<theNumLocator; i++)
-      theAllObjectList.Add(theLocatorList[i] + wxT(" <EventLocator>"));
+      theAllObjectList.Add(theLocatorList[i] + " <EventLocator>");
 
    theNumAllObject = theAllObjectList.GetCount();
    
@@ -5534,15 +5535,15 @@ void GuiItemManager::AddToAllObjectArray()
    if (theNumAllObject > 0)
    {
       #if DBGLVL_GUI_ITEM_ALL_OBJECT > 1
-      MessageInterface::ShowMessage(wxT("   Adding 1 SolarSystem\n"));
+      MessageInterface::ShowMessage("   Adding 1 SolarSystem\n");
       MessageInterface::ShowMessage
-         (wxT("   SolarSystemInUse=<%p>\n"), theGuiInterpreter->GetSolarSystemInUse());
+         ("   SolarSystemInUse=<%p>\n", theGuiInterpreter->GetSolarSystemInUse());
       #endif
       SolarSystem *ss = theGuiInterpreter->GetSolarSystemInUse();
       if (ss)
       {
          wxString ssName = ss->GetName().c_str();
-         ssName = ssName + wxT(" <SolarSystem>");
+         ssName = ssName + " <SolarSystem>";
          theAllObjectList.Add(ssName);
          theNumAllObject = theAllObjectList.GetCount();
       }
@@ -5554,7 +5555,7 @@ void GuiItemManager::AddToAllObjectArray()
    //-------------------------------------------------------
    #if DBGLVL_GUI_ITEM_ALL_OBJECT > 1
    MessageInterface::ShowMessage
-      (wxT("   Updating registerd All Object CheckListBox, count=%d\n"), mAllObjectCLBList.size());
+      ("   Updating registerd All Object CheckListBox, count=%d\n", mAllObjectCLBList.size());
    #endif
    for (std::vector<wxCheckListBox*>::iterator pos = mAllObjectCLBList.begin();
         pos != mAllObjectCLBList.end(); ++pos)
@@ -5593,7 +5594,7 @@ void GuiItemManager::AddToAllObjectArray()
    
    #if DBGLVL_GUI_ITEM_ALL_OBJECT
    MessageInterface::ShowMessage
-      (wxT("GuiItemManager::AddToAllObjectArray() exiting, theNumAllObject = %d\n"),
+      ("GuiItemManager::AddToAllObjectArray() exiting, theNumAllObject = %d\n",
        theNumAllObject);
    #endif
 }
@@ -5605,7 +5606,7 @@ void GuiItemManager::AddToAllObjectArray()
 GuiItemManager::GuiItemManager()
 {
    #if DBGLVL_GUI_ITEM
-   MessageInterface::ShowMessage(wxT("GuiItemManager::GuiItemManager() entered\n"));
+   MessageInterface::ShowMessage("GuiItemManager::GuiItemManager() entered\n");
    #endif
 
    mPngHandlerLoaded = false;

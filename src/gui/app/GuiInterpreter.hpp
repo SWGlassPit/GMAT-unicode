@@ -33,25 +33,25 @@ public:
    static GuiInterpreter* Instance();
 
    // Interpreter abstract methods
-   virtual bool Interpret(GmatCommand *inCmd, wxInputStream *ss);
+   virtual bool Interpret(GmatCommand *inCmd, std::istringstream *ss);
    
    void Finalize();
    
    //----- running object
-   GmatBase* GetRunningObject(const wxString &name);
+   GmatBase* GetRunningObject(const std::string &name);
    
    //----- factory
    const StringArray& GetListOfFactoryItems(Gmat::ObjectType type);
    const StringArray& GetListOfAllFactoryItems();
-   wxString GetStringOfAllFactoryItemsExcept(const ObjectTypeArray &types);
+   std::string GetStringOfAllFactoryItemsExcept(const ObjectTypeArray &types);
    
    //----- configuration
-   wxString GetNewName(const wxString &name, Integer startCount);
-   wxString AddClone(const wxString &name);
-   bool RenameObject(Gmat::ObjectType type, const wxString &oldName,
-                     const wxString &newName);
-   bool RemoveObject(Gmat::ObjectType type, const wxString &name);
-   bool RemoveObjectIfNotUsed(Gmat::ObjectType type, const wxString &name);
+   std::string GetNewName(const std::string &name, Integer startCount);
+   std::string AddClone(const std::string &name);
+   bool RenameObject(Gmat::ObjectType type, const std::string &oldName,
+                     const std::string &newName);
+   bool RemoveObject(Gmat::ObjectType type, const std::string &name);
+   bool RemoveObjectIfNotUsed(Gmat::ObjectType type, const std::string &name);
    bool HasConfigurationChanged(Integer sandboxNum = 1);
    void ConfigurationChanged(GmatBase *obj, bool tf);
    void ResetConfigurationChanged(bool resetResource = true,
@@ -59,60 +59,60 @@ public:
                                   Integer sandboxNum = 1);
    
    // General Object
-   GmatBase* CreateObject(const wxString &type, const wxString &name,
+   GmatBase* CreateObject(const std::string &type, const std::string &name,
                           Integer manage = 1, bool createDefault = false);
    
    // SolarSystem
    SolarSystem* GetDefaultSolarSystem();
    SolarSystem* GetSolarSystemInUse();
    CoordinateSystem* GetInternalCoordinateSystem();
-   bool IsDefaultCoordinateSystem(const wxString &name);
+   bool IsDefaultCoordinateSystem(const std::string &name);
    
    // Parameter
-   bool IsParameter(const wxString &type);
-   Parameter* GetParameter(const wxString &name);
-   virtual Parameter* CreateParameter(const wxString &type,
-                                      const wxString &name,
-                                      const wxString &ownerName = wxT(""),
-                                      const wxString &depName = wxT(""),
+   bool IsParameter(const std::string &type);
+   Parameter* GetParameter(const std::string &name);
+   virtual Parameter* CreateParameter(const std::string &type,
+                                      const std::string &name,
+                                      const std::string &ownerName = "",
+                                      const std::string &depName = "",
                                       bool manage = true);
    
    // Subscriber
-   Subscriber* CreateSubscriber(const wxString &type,
-                                const wxString &name,
-                                const wxString &filename = wxT(""),
+   Subscriber* CreateSubscriber(const std::string &type,
+                                const std::string &name,
+                                const std::string &filename = "",
                                 bool createDefault = true);
    Integer GetNumberOfActivePlots();
    
-   GmatBase* CreateDefaultPropSetup(const wxString &name);
-   GmatBase* CreateNewODEModel(const wxString &name);
+   GmatBase* CreateDefaultPropSetup(const std::string &name);
+   GmatBase* CreateNewODEModel(const std::string &name);
    
    // Planetary source
    const StringArray& GetPlanetarySourceTypes();
    const StringArray& GetPlanetarySourceNames();
    const StringArray& GetPlanetarySourceTypesInUse();
 //   const StringArray& GetAnalyticModelNames();
-//   bool SetAnalyticModelToUse(const wxString &modelName);
-   bool SetPlanetarySourceName(const wxString &sourceType,
-                               const wxString &filename);
+//   bool SetAnalyticModelToUse(const std::string &modelName);
+   bool SetPlanetarySourceName(const std::string &sourceType,
+                               const std::string &filename);
    Integer SetPlanetarySourceTypesInUse(const StringArray &sourceTypes);
-   wxString GetPlanetarySourceName(const wxString &sourceType);
+   std::string GetPlanetarySourceName(const std::string &sourceType);
    
    // Potential field files
-   wxString GetPotentialFileName(const wxString &fileType);
+   std::string GetPotentialFileName(const std::string &fileType);
    
    // Getting file names
-   wxString GetFileName(const wxString &fileType);
+   std::string GetFileName(const std::string &fileType);
    
    // StopCondition
-   GmatBase* CreateStopCondition(const wxString &type,
-                                 const wxString &name);
+   GmatBase* CreateStopCondition(const std::string &type,
+                                 const std::string &name);
    
    // Command
-   GmatCommand* CreateDefaultCommand(const wxString &type,
-                                     const wxString &name = wxT(""),
+   GmatCommand* CreateDefaultCommand(const std::string &type,
+                                     const std::string &name = "",
                                      GmatCommand *refCmd = NULL);
-   GmatCommand* AppendCommand(const wxString &type, const wxString &name,
+   GmatCommand* AppendCommand(const std::string &type, const std::string &name,
                               bool &retFlag, Integer sandboxNum = 1);
    GmatCommand* DeleteCommand(GmatCommand *cmd, Integer sandboxNum = 1);
    GmatCommand* GetFirstCommand(Integer sandboxNum = 1);
@@ -130,14 +130,14 @@ public:
    // Sandbox
    void ClearAllSandboxes();
    Integer RunMission(Integer sandboxNum = 1);
-   Integer ChangeRunState(const wxString &state, Integer sandboxNum = 1);
+   Integer ChangeRunState(const std::string &state, Integer sandboxNum = 1);
    
    // Script
-   bool InterpretScript(const wxString &filename, bool readBack = false,
-                        const wxString &newPath = wxT(""));
-   bool SaveScript(const wxString &filename,
+   bool InterpretScript(const std::string &filename, bool readBack = false,
+                        const std::string &newPath = "");
+   bool SaveScript(const std::string &filename,
                    Gmat::WriteMode mode = Gmat::SCRIPTING);
-   wxString GetScript(Gmat::WriteMode mode = Gmat::SCRIPTING);
+   std::string GetScript(Gmat::WriteMode mode = Gmat::SCRIPTING);
    
    Integer RunScript(Integer sandboxNum = 1);
 

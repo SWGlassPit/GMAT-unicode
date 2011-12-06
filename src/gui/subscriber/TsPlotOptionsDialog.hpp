@@ -28,24 +28,24 @@
 class TsPlotOptionsDialog : public wxDialog
 {
 public:
-	TsPlotOptionsDialog(const wxString xLabel, const wxString yLabel,
+	TsPlotOptionsDialog(const std::string xLabel, const std::string yLabel,
                      wxWindow* parent, wxWindowID id, 
-                     const wxString& title = wxT("TS Plot Options"), 
+                     const wxString& title = "TS Plot Options", 
                      const wxPoint& pos = wxDefaultPosition, 
                      const wxSize& size = wxSize(780,380), 
                      long style = wxDEFAULT_DIALOG_STYLE, 
-                     const wxString& name = wxT("TSPlotOptions"));
+                     const wxString& name = "TSPlotOptions");
 	virtual ~TsPlotOptionsDialog();
    
    // Accessors
-   wxString       GetPlotTitle();
-   wxString       GetXLabel();
-   wxString       GetYLabel();
+   std::string       GetPlotTitle();
+   std::string       GetXLabel();
+   std::string       GetYLabel();
    int               GetWidth();
    int               GetStyle();
-   void              SetPlotTitle(const wxString &str);
-   void              SetXLabel(const wxString &str);
-   void              SetYLabel(const wxString &str);
+   void              SetPlotTitle(const std::string &str);
+   void              SetXLabel(const std::string &str);
+   void              SetYLabel(const std::string &str);
    void              SetWidth(int lw);
    void              SetStyle(int ls);
    
@@ -74,8 +74,8 @@ public:
    void              SetYMin(double st);
    void              SetYMax(double st);
    
-   void              SetXName(wxString nomme);
-   void              SetYName(wxString nomme);
+   void              SetXName(std::string nomme);
+   void              SetYName(std::string nomme);
    void              UpdateLabels();
 
    void              SetXTickCount(int count);
@@ -122,8 +122,8 @@ protected:
    wxCheckBox           *yMinorTickLines;
    wxSpinCtrl           *yPrecision;
    
-   wxString          xName;
-   wxString          yName;
+   std::string          xName;
+   std::string          yName;
    
    void OnSettableXMinimum(wxCommandEvent &event);
    void OnSettableXMaximum(wxCommandEvent &event);

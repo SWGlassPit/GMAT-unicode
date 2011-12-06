@@ -69,7 +69,7 @@ FormationSetupPanel::FormationSetupPanel(wxWindow *parent,
                                          const wxString &formationName)
    : GmatPanel(parent)
 {
-   mFormationName = wxString(formationName.c_str());
+   mFormationName = std::string(formationName.c_str());
    Create();
    Show();
 }
@@ -80,7 +80,7 @@ FormationSetupPanel::FormationSetupPanel(wxWindow *parent,
 //------------------------------------------------------------------------------
 FormationSetupPanel::~FormationSetupPanel()
 {
-   theGuiManager->UnregisterListBox(wxT("SpaceObject"), mSoAvailableListBox, &mSoExcList);
+   theGuiManager->UnregisterListBox("SpaceObject", mSoAvailableListBox, &mSoExcList);
 }
 
 
@@ -104,7 +104,7 @@ FormationSetupPanel::~FormationSetupPanel()
 void FormationSetupPanel::Create()
 {
    #ifdef DEBUG_FORMATION
-   MessageInterface::ShowMessage(wxT("FormationSetupPanel::Create() enters...\n"));
+   MessageInterface::ShowMessage("FormationSetupPanel::Create() enters...\n");
    #endif
 
    Integer bsize = 3; // border size
@@ -123,31 +123,31 @@ void FormationSetupPanel::Create()
    // available SpaceObject list (1st column)
    //------------------------------------------------------
    GmatStaticBoxSizer *availableBoxSizer = new GmatStaticBoxSizer( wxVERTICAL, this, 
-      wxT("Space") wxT(GUI_ACCEL_KEY) wxT("craft") );
+      wxT("Space"GUI_ACCEL_KEY"craft") );
    
    mSoExcList.Add(mFormationName.c_str());
    
    mSoAvailableListBox = 
       theGuiManager->GetSpaceObjectListBox(this, AVL_LISTBOX, wxSize(150, 200),
                                            &mSoExcList, false); //loj: 7/18/05 Added false
-   mSoAvailableListBox->SetToolTip(pConfig->Read(wxT("AvailableSpacecraftListHint")));
+   mSoAvailableListBox->SetToolTip(pConfig->Read(_T("AvailableSpacecraftListHint")));
    
    availableBoxSizer->Add(mSoAvailableListBox, 0, wxALIGN_CENTRE|wxALL, bsize);
 
    //------------------------------------------------------
    // add, remove, clear parameter buttons (2nd column)
    //------------------------------------------------------
-   wxButton *addScButton = new wxButton(this, ADD_BUTTON, wxT("--") wxT(GUI_ACCEL_KEY) wxT(">"),
+   wxButton *addScButton = new wxButton(this, ADD_BUTTON, wxT("--"GUI_ACCEL_KEY">"),
                                wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-   addScButton->SetToolTip(pConfig->Read(wxT("AddSpacecraftHint")));
+   addScButton->SetToolTip(pConfig->Read(_T("AddSpacecraftHint")));
    
-   wxButton *removeScButton = new wxButton(this, REMOVE_BUTTON, wxT(GUI_ACCEL_KEY) wxT("<--"),
+   wxButton *removeScButton = new wxButton(this, REMOVE_BUTTON, wxT(GUI_ACCEL_KEY"<--"),
                               wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-   removeScButton->SetToolTip(pConfig->Read(wxT("RemoveSpacecraftHint")));
+   removeScButton->SetToolTip(pConfig->Read(_T("RemoveSpacecraftHint")));
    
-   wxButton *clearScButton = new wxButton(this, CLEAR_BUTTON, wxT("<") wxT(GUI_ACCEL_KEY) wxT("="),
+   wxButton *clearScButton = new wxButton(this, CLEAR_BUTTON, wxT("<"GUI_ACCEL_KEY"="),
                               wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-   clearScButton->SetToolTip(pConfig->Read(wxT("ClearSpacecraftHint")));
+   clearScButton->SetToolTip(pConfig->Read(_T("ClearSpacecraftHint")));
    
    wxBoxSizer *arrowButtonsBoxSizer = new wxBoxSizer(wxVERTICAL);
    arrowButtonsBoxSizer->Add(addScButton, 0, wxALIGN_CENTRE|wxALL, bsize);
@@ -158,12 +158,12 @@ void FormationSetupPanel::Create()
    // selected spacecraft list (4th column)
    //------------------------------------------------------
    GmatStaticBoxSizer *mSoSelectedBoxSizer = new GmatStaticBoxSizer( wxVERTICAL, this, 
-      wxT("Spacecraft in ") wxT(GUI_ACCEL_KEY) wxT("Formation") );
+      wxT("Spacecraft in "GUI_ACCEL_KEY"Formation") );
    
    mSoSelectedListBox =
       new wxListBox(this, SEL_LISTBOX, wxDefaultPosition, wxSize(150,200), //0,
                     emptyList, wxLB_SINGLE);
-   mSoSelectedListBox->SetToolTip(pConfig->Read(wxT("SelectedSpacecraftListHint")));
+   mSoSelectedListBox->SetToolTip(pConfig->Read(_T("SelectedSpacecraftListHint")));
    
    mSoSelectedBoxSizer->Add(mSoSelectedListBox, 0, wxALIGN_CENTRE|wxALL, bsize);
    
@@ -182,7 +182,7 @@ void FormationSetupPanel::Create()
    theMiddleSizer->Add(pageBoxSizer, 0, wxALIGN_CENTRE|wxALL, bsize);
 
    #ifdef DEBUG_FORMATION
-   MessageInterface::ShowMessage(wxT("FormationSetupPanel::Create() exits...\n"));
+   MessageInterface::ShowMessage("FormationSetupPanel::Create() exits...\n");
    #endif
 
 }
@@ -194,7 +194,7 @@ void FormationSetupPanel::Create()
 void FormationSetupPanel::LoadData()
 {
    Formation *form = (Formation*)(theGuiInterpreter->GetConfiguredObject(mFormationName));
-   StringArray scList = form->GetStringArrayParameter(form->GetParameterID(wxT("Add")));
+   StringArray scList = form->GetStringArrayParameter(form->GetParameterID("Add"));
 
    // Set object pointer for "Show Script"
    mObject = form;
@@ -217,13 +217,13 @@ void FormationSetupPanel::LoadData()
 void FormationSetupPanel::SaveData()
 {
    Formation *form = (Formation*)(theGuiInterpreter->GetConfiguredObject(mFormationName));
-   form->SetBooleanParameter(wxT("Clear"), true);
+   form->SetBooleanParameter("Clear", true);
    
    int soCount = mSoSelectedListBox->GetCount();
    for (int i=0; i<soCount; i++)
    {
-      form->SetStringParameter(form->GetParameterID(wxT("Add")),
-                               wxString(mSoSelectedListBox->GetString(i).c_str()));
+      form->SetStringParameter(form->GetParameterID("Add"),
+                               std::string(mSoSelectedListBox->GetString(i).c_str()));
    }
 
    theGuiManager->UpdateFormation();
@@ -238,7 +238,7 @@ void FormationSetupPanel::OnAddSpaceObject(wxCommandEvent& event)
 {
    #ifdef DEBUG_FORMATION
       MessageInterface::ShowMessage
-         (wxT("FormationSetupPanel::OnAddSpaceObject() enters..."));
+         ("FormationSetupPanel::OnAddSpaceObject() enters...");
    #endif
    
    // get string in first list and then search for it
@@ -249,7 +249,7 @@ void FormationSetupPanel::OnAddSpaceObject(wxCommandEvent& event)
    
    #ifdef DEBUG_FORMATION
       MessageInterface::ShowMessage
-         (wxT("str = \"%s\", sel = %d, found = %d\n"), str.c_str(),sel,found);
+         ("str = \"%s\", sel = %d, found = %d\n", str.c_str(),sel,found);
    #endif
       
    // Check no selection then do nothing
@@ -260,7 +260,7 @@ void FormationSetupPanel::OnAddSpaceObject(wxCommandEvent& event)
    if (found == wxNOT_FOUND)
    {
       #ifdef DEBUG_FORMATION
-         MessageInterface::ShowMessage(wxT("string is not found..."));
+         MessageInterface::ShowMessage("string is not found...");
       #endif
 
       mSoSelectedListBox->Append(str);
@@ -275,7 +275,7 @@ void FormationSetupPanel::OnAddSpaceObject(wxCommandEvent& event)
    
    #ifdef DEBUG_FORMATION
       MessageInterface::ShowMessage
-         (wxT("FormationSetupPanel::OnAddSpaceObject() exits..."));
+         ("FormationSetupPanel::OnAddSpaceObject() exits...");
    #endif
 }
 
@@ -287,14 +287,14 @@ void FormationSetupPanel::OnRemoveSpaceObject(wxCommandEvent& event)
 {
    #ifdef DEBUG_FORMATION
    MessageInterface::ShowMessage(
-                   wxT("\nFormationSetupPanel::OnRemoveSpaceObject() enters..."));
+                   "\nFormationSetupPanel::OnRemoveSpaceObject() enters...");
    #endif
 
    wxString str = mSoSelectedListBox->GetStringSelection();
    int sel = mSoSelectedListBox->GetSelection();
    
    #ifdef DEBUG_FORMATION
-      MessageInterface::ShowMessage(wxT("\nstr = \"%s\", sel = %d\n"),
+      MessageInterface::ShowMessage("\nstr = \"%s\", sel = %d\n",
                                     str.c_str(),sel);
    #endif
 
@@ -316,7 +316,7 @@ void FormationSetupPanel::OnRemoveSpaceObject(wxCommandEvent& event)
 
    #ifdef DEBUG_FORMATION
    MessageInterface::ShowMessage(
-                   wxT("\nFormationSetupPanel::OnRemoveSpaceObject() exits...\n"));
+                   "\nFormationSetupPanel::OnRemoveSpaceObject() exits...\n");
    #endif
 }
 

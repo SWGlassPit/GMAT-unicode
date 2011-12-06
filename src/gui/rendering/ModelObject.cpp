@@ -35,7 +35,7 @@
 #include <wx/image.h>
 #include "FileManager.hpp"
 
-#define DRAW_NORMALS
+//#define DRAW_NORMALS
 //#define WIREFRAME_MODE
 
 //int control_object;
@@ -63,7 +63,7 @@ char ModelObject::Load(const wxString &objectName, const wxString &path, float p
    wxString thepath, string;
    FileManager *fm = FileManager::Instance();
 
-   thepath = wxString(fm->GetPathname(wxT("MODEL_PATH")).c_str());
+   thepath = wxString(fm->GetPathname("MODEL_PATH").c_str());
    thepath.Append(path);
    string = thepath;
    string.Append(objectName);
@@ -90,7 +90,7 @@ char ModelObject::Load(const wxString &full_path, float posX, float posY, float 
       path.Append('\\');
    }
    else
-      path.Append('/');
+      path.append('/');
    extension = full_path.AfterLast('.');
    if (extension == wxT("3ds") || extension == wxT("3DS")){
            if (Load3DS(this, full_path) == 0)
@@ -142,7 +142,7 @@ void ModelObject::LoadTextures(){
    wxString string;
    for (i = 0; i < num_materials; i++){
       string = filePath;
-      string.Append(wxString::FromAscii(material[i].texture_name));
+      string.Append(material[i].texture_name);
       result = LoadTexture(string);
       material[i].id_texture = result;
    }
@@ -159,13 +159,13 @@ int ModelObject::LoadTexture(const wxString &filename){
       return -1;
    // Load the file
    ext = filename.AfterLast('.');
-   if (ext ==  wxT("bmp") || ext ==  wxT("BMP"))
+   if (strcmp(ext, "bmp") == 0 || strcmp(ext, "BMP") == 0)
       result = img.LoadFile(filename, wxBITMAP_TYPE_BMP, -1);
-   else if (ext ==  wxT("jpg") || ext ==  wxT("JPG"))
+   else if (strcmp(ext, "jpg") == 0 || strcmp(ext, "JPG") == 0)
       result = img.LoadFile(filename, wxBITMAP_TYPE_JPEG, -1);
-   else if (ext ==  wxT("png") || ext ==  wxT("PNG"))
+   else if (strcmp(ext, "png") == 0 || strcmp(ext, "PNG") == 0)
       result = img.LoadFile(filename, wxBITMAP_TYPE_PNG, -1);
-   else if (ext ==  wxT("tif") || ext ==  wxT("TIF"))
+   else if (strcmp(ext, "tif") == 0 || strcmp(ext, "TIF") == 0)
       result = img.LoadFile(filename, wxBITMAP_TYPE_TIF, -1);
    else
       return -1;

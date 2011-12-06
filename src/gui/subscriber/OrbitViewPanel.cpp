@@ -80,9 +80,9 @@ OrbitViewPanel::OrbitViewPanel(wxWindow *parent,
    : GmatPanel(parent)
 {
    #if DEBUG_OPENGL_PANEL
-   MessageInterface::ShowMessage(wxT("OrbitViewPanel() entering...\n"));
-   MessageInterface::ShowMessage(wxT("OrbitViewPanel() subscriberName = ") +
-                                 wxString(subscriberName.c_str()) + wxT("\n"));
+   MessageInterface::ShowMessage("OrbitViewPanel() entering...\n");
+   MessageInterface::ShowMessage("OrbitViewPanel() subscriberName = " +
+                                 std::string(subscriberName.c_str()) + "\n");
    #endif
    
    Subscriber *subscriber = (Subscriber*)
@@ -109,18 +109,18 @@ OrbitViewPanel::~OrbitViewPanel()
 {
    #if DEBUG_OPENGL_PANEL
    MessageInterface::ShowMessage
-      (wxT("OrbitViewPanel::~OrbitViewPanel() unregistering mSpacecraftListBox:%d\n"),
+      ("OrbitViewPanel::~OrbitViewPanel() unregistering mSpacecraftListBox:%d\n",
        mSpacecraftListBox);
    #endif
    
-   theGuiManager->UnregisterListBox(wxT("CelestialPoint"), mCelesPointListBox, &mExcludedCelesPointList);
-   theGuiManager->UnregisterListBox(wxT("Spacecraft"), mSpacecraftListBox, &mExcludedScList);
+   theGuiManager->UnregisterListBox("CelestialPoint", mCelesPointListBox, &mExcludedCelesPointList);
+   theGuiManager->UnregisterListBox("Spacecraft", mSpacecraftListBox, &mExcludedScList);
    
-   theGuiManager->UnregisterComboBox(wxT("CoordinateSystem"), mCoordSysComboBox);
-   theGuiManager->UnregisterComboBox(wxT("CoordinateSystem"), mViewUpCsComboBox);
-   theGuiManager->UnregisterComboBox(wxT("SpacePoint"), mViewPointRefComboBox);
-   theGuiManager->UnregisterComboBox(wxT("SpacePoint"), mViewPointVectorComboBox);
-   theGuiManager->UnregisterComboBox(wxT("SpacePoint"), mViewDirectionComboBox);
+   theGuiManager->UnregisterComboBox("CoordinateSystem", mCoordSysComboBox);
+   theGuiManager->UnregisterComboBox("CoordinateSystem", mViewUpCsComboBox);
+   theGuiManager->UnregisterComboBox("SpacePoint", mViewPointRefComboBox);
+   theGuiManager->UnregisterComboBox("SpacePoint", mViewPointVectorComboBox);
+   theGuiManager->UnregisterComboBox("SpacePoint", mViewDirectionComboBox);
    
    theGuiManager->RemoveFromResourceUpdateListeners(this);
 }
@@ -155,8 +155,8 @@ void OrbitViewPanel::ObjectNameChanged(Gmat::ObjectType type,
 {
    #ifdef DEBUG_RENAME
    MessageInterface::ShowMessage
-      (wxT("OrbitViewPanel::ObjectNameChanged() type=%d, oldName=<%s>, ")
-       wxT("newName=<%s>, mDataChanged=%d\n"), type, oldName.c_str(), newName.c_str(),
+      ("OrbitViewPanel::ObjectNameChanged() type=%d, oldName=<%s>, "
+       "newName=<%s>, mDataChanged=%d\n", type, oldName.c_str(), newName.c_str(),
        mDataChanged);
    #endif
    
@@ -205,14 +205,14 @@ void OrbitViewPanel::InitializeData()
 void OrbitViewPanel::Create()
 {
    #if DEBUG_OPENGL_PANEL_CREATE
-      MessageInterface::ShowMessage(wxT("OrbitViewPanel::Create() entered\n"));
+      MessageInterface::ShowMessage("OrbitViewPanel::Create() entered\n");
    #endif
    
    Integer bsize = 2; // border size
    
    // create axis array
    wxArrayString emptyList;
-   wxString axisArray[] = {wxT("X"), wxT("-X"), wxT("Y"), wxT("-Y"), wxT("Z"), wxT("-Z")};   
+   wxString axisArray[] = {"X", "-X", "Y", "-Y", "Z", "-Z"};   
    wxArrayString empty;
    wxStaticText *emptyStaticText =
       new wxStaticText( this, -1, wxT("  "), wxDefaultPosition, wxDefaultSize, 0 );   
@@ -288,8 +288,8 @@ void OrbitViewPanel::Create()
    plotOptionSizer->Add(starOptionSizer, 0, wxALIGN_LEFT|wxALL, bsize);
    
    wxStaticText *numPointsToRedrawLabel1 =
-      new wxStaticText(this, -1, wxT("Number of points to redraw\n")
-                                     wxT("(Enter 0 to redraw whole plot)"),
+      new wxStaticText(this, -1, wxT("Number of points to redraw\n"
+                                     "(Enter 0 to redraw whole plot)"),
                        wxDefaultPosition, wxSize(-1, 30), 0);
    mNumPointsToRedrawTextCtrl =
       new wxTextCtrl(this, ID_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(30, 20), 0);
@@ -311,7 +311,7 @@ void OrbitViewPanel::Create()
    plotOptionSizer->Add(mShowPlotCheckBox, 0, wxALIGN_LEFT|wxALL, bsize);
    
    GmatStaticBoxSizer *plotOptionStaticSizer =
-      new GmatStaticBoxSizer(wxVERTICAL, this, wxT("Plot Option"));
+      new GmatStaticBoxSizer(wxVERTICAL, this, "Plot Option");
    
    plotOptionStaticSizer->Add(plotOptionSizer, 0, wxALIGN_LEFT|wxALL, bsize);
    
@@ -350,7 +350,7 @@ void OrbitViewPanel::Create()
    #endif
    
    GmatStaticBoxSizer *viewOptionStaticSizer =
-      new GmatStaticBoxSizer(wxVERTICAL, this, wxT("View Option"));
+      new GmatStaticBoxSizer(wxVERTICAL, this, "View Option");
    viewOptionStaticSizer->Add(viewOptionSizer, 0, wxALIGN_LEFT|wxALL, bsize);
    
    //-----------------------------------------------------------------
@@ -416,7 +416,7 @@ void OrbitViewPanel::Create()
       new wxComboBox(this, ID_COMBOBOX, wxT(""), wxDefaultPosition, wxSize(65, -1));
    
    // Get Solver Iteration option list from the Subscriber
-   const wxString *solverIterList = Subscriber::GetSolverIterOptionList();
+   const std::string *solverIterList = Subscriber::GetSolverIterOptionList();
    int count = Subscriber::GetSolverIterOptionCount();
    for (int i=0; i<count; i++)
       mSolverIterComboBox->Append(solverIterList[i].c_str());
@@ -443,7 +443,7 @@ void OrbitViewPanel::Create()
    drawOptionSizer->Add(20, 2, 0, wxALIGN_LEFT|wxALL, bsize);
    
    GmatStaticBoxSizer *drawOptionStaticSizer =
-      new GmatStaticBoxSizer(wxVERTICAL, this, wxT("Drawing Option"));
+      new GmatStaticBoxSizer(wxVERTICAL, this, "Drawing Option");
    drawOptionStaticSizer->Add(drawOptionSizer, 0, wxALIGN_LEFT|wxALL, bsize);
    
    //-----------------------------------------------------------------
@@ -513,12 +513,12 @@ void OrbitViewPanel::Create()
    wxStaticText *orbitColorLabel =
       new wxStaticText(this, -1, wxT("Orbit Color"),
                        wxDefaultPosition, wxSize(-1,-1), wxALIGN_CENTRE);
-   mTargetColorButton = new wxButton(this, TARGET_COLOR_BUTTON, wxT(""),
+   mTargetColorButton = new wxButton(this, TARGET_COLOR_BUTTON, "",
                                      wxDefaultPosition, wxSize(colorW, 20), 0);
    mTargetColorLabel =
       new wxStaticText(this, -1, wxT("Target Color"),
                        wxDefaultPosition, wxSize(-1,-1), wxALIGN_CENTRE);
-   mOrbitColorButton = new wxButton(this, ORBIT_COLOR_BUTTON, wxT(""),
+   mOrbitColorButton = new wxButton(this, ORBIT_COLOR_BUTTON, "",
                                     wxDefaultPosition, wxSize(colorW, 20), 0);
    
    wxFlexGridSizer *scOptionSizer1 = new wxFlexGridSizer(1, 0, 0);
@@ -539,7 +539,7 @@ void OrbitViewPanel::Create()
    mObjectSizer->Add(mScOptionSizer, 0, wxALIGN_CENTRE|wxALL, bsize);
    
    GmatStaticBoxSizer *viewObjectStaticSizer =
-      new GmatStaticBoxSizer(wxVERTICAL, this, wxT("View Object"));
+      new GmatStaticBoxSizer(wxVERTICAL, this, "View Object");
    viewObjectStaticSizer->Add(mObjectSizer, 0, wxALIGN_LEFT|wxALL, bsize);
    
    //-----------------------------------------------------------------
@@ -653,7 +653,7 @@ void OrbitViewPanel::Create()
    mViewDefSizer->Add(mViewDirVectorSizer, 0, wxALIGN_LEFT|wxALL, bsize);
    
    GmatStaticBoxSizer *viewDefStaticSizer =
-      new GmatStaticBoxSizer(wxVERTICAL, this, wxT("View Definition"));
+      new GmatStaticBoxSizer(wxVERTICAL, this, "View Definition");
    viewDefStaticSizer->Add(mViewDefSizer, 0, wxALIGN_LEFT|wxALL, bsize);
    
    //-----------------------------------------------------------------
@@ -679,7 +679,7 @@ void OrbitViewPanel::Create()
    viewUpSizer->Add(mViewUpAxisComboBox, 0, wxALIGN_CENTER|wxALL, bsize);
    
    GmatStaticBoxSizer *upDefStaticSizer =
-      new GmatStaticBoxSizer(wxVERTICAL, this, wxT("View Up Definition"));
+      new GmatStaticBoxSizer(wxVERTICAL, this, "View Up Definition");
    
    upDefStaticSizer->Add(viewUpSizer, 0, wxALIGN_LEFT|wxALL, bsize);
       
@@ -707,11 +707,11 @@ void OrbitViewPanel::Create()
    
    #if DEBUG_OPENGL_PANEL_CREATE
    MessageInterface::ShowMessage
-      (wxT("OrbitViewPanel::Create() Exiting sizers for Windows\n"));
+      ("OrbitViewPanel::Create() Exiting sizers for Windows\n");
    #endif
    
    #if DEBUG_OPENGL_PANEL_CREATE
-   MessageInterface::ShowMessage(wxT("OrbitViewPanel::Create() exiting...\n"));
+   MessageInterface::ShowMessage("OrbitViewPanel::Create() exiting...\n");
    #endif
 }
 
@@ -722,7 +722,7 @@ void OrbitViewPanel::Create()
 void OrbitViewPanel::LoadData()
 {
    #if DEBUG_OPENGL_PANEL_LOAD
-   MessageInterface::ShowMessage(wxT("OrbitViewPanel::LoadData() entered.\n"));
+   MessageInterface::ShowMessage("OrbitViewPanel::LoadData() entered.\n");
    #endif
    
    try
@@ -731,36 +731,36 @@ void OrbitViewPanel::LoadData()
       wxString str;
       Real rval;
       
-      str.Printf(wxT("%d"), mOrbitView->GetIntegerParameter(wxT("DataCollectFrequency")));
+      str.Printf("%d", mOrbitView->GetIntegerParameter("DataCollectFrequency"));
       mDataCollectFreqTextCtrl->SetValue(str);
-      str.Printf(wxT("%d"), mOrbitView->GetIntegerParameter(wxT("UpdatePlotFrequency")));
+      str.Printf("%d", mOrbitView->GetIntegerParameter("UpdatePlotFrequency"));
       mUpdatePlotFreqTextCtrl->SetValue(str);
-      str.Printf(wxT("%d"), mOrbitView->GetIntegerParameter(wxT("NumPointsToRedraw")));
+      str.Printf("%d", mOrbitView->GetIntegerParameter("NumPointsToRedraw"));
       mNumPointsToRedrawTextCtrl->SetValue(str);
-      str.Printf(wxT("%d"), mOrbitView->GetIntegerParameter(wxT("StarCount")));
+      str.Printf("%d", mOrbitView->GetIntegerParameter("StarCount"));
       mStarCountTextCtrl->SetValue(str);
       
-      mShowPlotCheckBox->SetValue(mOrbitView->GetBooleanParameter(wxT("ShowPlot")));
+      mShowPlotCheckBox->SetValue(mOrbitView->GetBooleanParameter("ShowPlot"));
       mXYPlaneCheckBox->
-         SetValue(mOrbitView->GetOnOffParameter(wxT("XYPlane")) == wxT("On"));
+         SetValue(mOrbitView->GetOnOffParameter("XYPlane") == "On");
       mEclipticPlaneCheckBox->
-         SetValue(mOrbitView->GetOnOffParameter(wxT("CelestialPlane")) == wxT("On"));
+         SetValue(mOrbitView->GetOnOffParameter("CelestialPlane") == "On");
       mWireFrameCheckBox->
-         SetValue(mOrbitView->GetOnOffParameter(wxT("WireFrame")) == wxT("On"));
+         SetValue(mOrbitView->GetOnOffParameter("WireFrame") == "On");
       mAxesCheckBox->
-         SetValue(mOrbitView->GetOnOffParameter(wxT("Axes")) == wxT("On"));
+         SetValue(mOrbitView->GetOnOffParameter("Axes") == "On");
       mGridCheckBox->
-         SetValue(mOrbitView->GetOnOffParameter(wxT("Grid")) == wxT("On"));
+         SetValue(mOrbitView->GetOnOffParameter("Grid") == "On");
       mOriginSunLineCheckBox->
-         SetValue(mOrbitView->GetOnOffParameter(wxT("SunLine")) == wxT("On"));
+         SetValue(mOrbitView->GetOnOffParameter("SunLine") == "On");
       mUseInitialViewCheckBox->
-         SetValue(mOrbitView->GetOnOffParameter(wxT("UseInitialView")) == wxT("On"));
+         SetValue(mOrbitView->GetOnOffParameter("UseInitialView") == "On");
       mSolverIterComboBox->
-         SetValue(mOrbitView->GetStringParameter(wxT("SolverIterations")).c_str());
+         SetValue(mOrbitView->GetStringParameter("SolverIterations").c_str());
       mEnableStarsCheckBox->
-         SetValue(mOrbitView->GetOnOffParameter(wxT("EnableStars")) == wxT("On"));
+         SetValue(mOrbitView->GetOnOffParameter("EnableStars") == "On");
       mEnableConstellationsCheckBox->
-         SetValue(mOrbitView->GetOnOffParameter(wxT("EnableConstellations")) == wxT("On"));
+         SetValue(mOrbitView->GetOnOffParameter("EnableConstellations") == "On");
       
       // Update constellations and start count items
       if (mEnableStarsCheckBox->GetValue())
@@ -776,55 +776,55 @@ void OrbitViewPanel::LoadData()
       
       #ifdef __ENABLE_GL_PERSPECTIVE__
       mPerspectiveModeCheckBox->
-         SetValue(mOrbitView->GetOnOffParameter(wxT("PerspectiveMode")) == wxT("On"));
+         SetValue(mOrbitView->GetOnOffParameter("PerspectiveMode") == "On");
       mUseFixedFovCheckBox->
-         SetValue(mOrbitView->GetOnOffParameter(wxT("UseFixedFov")) == wxT("On"));
-      rval = mOrbitView->GetRealParameter(wxT("FixedFovAngle"));
+         SetValue(mOrbitView->GetOnOffParameter("UseFixedFov") == "On");
+      rval = mOrbitView->GetRealParameter("FixedFovAngle");
       mFixedFovTextCtrl->SetValue(theGuiManager->ToWxString(rval));
       #endif
       
       mCoordSysComboBox->SetStringSelection
-         (mOrbitView->GetStringParameter(wxT("CoordinateSystem")).c_str());
+         (mOrbitView->GetStringParameter("CoordinateSystem").c_str());
       
       //--------------------------------------------------------------
       // load view up direction info
       //--------------------------------------------------------------
       mViewUpAxisComboBox->
-         SetStringSelection(mOrbitView->GetStringParameter(wxT("ViewUpAxis")).c_str());
+         SetStringSelection(mOrbitView->GetStringParameter("ViewUpAxis").c_str());
       mViewUpCsComboBox->
-         SetStringSelection(mOrbitView->GetStringParameter(wxT("ViewUpCoordinateSystem")).c_str());
+         SetStringSelection(mOrbitView->GetStringParameter("ViewUpCoordinateSystem").c_str());
       
       //--------------------------------------------------------------
       // load ViewPoint info
       //--------------------------------------------------------------
       wxString viewObj;
-      viewObj = mOrbitView->GetStringParameter(wxT("ViewPointRefType")).c_str();
-      if (viewObj != wxT("Vector"))
-         viewObj = mOrbitView->GetStringParameter(wxT("ViewPointReference")).c_str();
+      viewObj = mOrbitView->GetStringParameter("ViewPointRefType").c_str();
+      if (viewObj != "Vector")
+         viewObj = mOrbitView->GetStringParameter("ViewPointReference").c_str();
       mViewPointRefComboBox->SetStringSelection(viewObj);
       
-      viewObj = mOrbitView->GetStringParameter(wxT("ViewPointVectorType")).c_str();
-      if (viewObj != wxT("Vector"))
-         viewObj = mOrbitView->GetStringParameter(wxT("ViewPointVector")).c_str();
+      viewObj = mOrbitView->GetStringParameter("ViewPointVectorType").c_str();
+      if (viewObj != "Vector")
+         viewObj = mOrbitView->GetStringParameter("ViewPointVector").c_str();
       mViewPointVectorComboBox->SetStringSelection(viewObj);
       
-      viewObj = mOrbitView->GetStringParameter(wxT("ViewDirectionType")).c_str();
+      viewObj = mOrbitView->GetStringParameter("ViewDirectionType").c_str();
       
-      if (viewObj != wxT("Vector"))
-         viewObj = mOrbitView->GetStringParameter(wxT("ViewDirection")).c_str();
+      if (viewObj != "Vector")
+         viewObj = mOrbitView->GetStringParameter("ViewDirection").c_str();
       mViewDirectionComboBox->SetStringSelection(viewObj);
       
-      rval = mOrbitView->GetRealParameter(wxT("ViewScaleFactor"));
+      rval = mOrbitView->GetRealParameter("ViewScaleFactor");
       mViewScaleFactorTextCtrl->SetValue(theGuiManager->ToWxString(rval));
       
       // show vector if viewpoint vector name is Vector
-      if (mViewPointRefComboBox->GetStringSelection() == wxT("Vector"))
+      if (mViewPointRefComboBox->GetStringSelection() == "Vector")
       {
-         Rvector3 vec = mOrbitView->GetVector(wxT("ViewPointReference"));
+         Rvector3 vec = mOrbitView->GetVector("ViewPointReference");
          
          #if DEBUG_OPENGL_PANEL_LOAD
          MessageInterface::ShowMessage
-            (wxT("   ViewPointReference = %s\n"), vec.ToString().c_str());
+            ("   ViewPointReference = %s\n", vec.ToString().c_str());
          #endif
          
          mViewPointRef1TextCtrl->SetValue(theGuiManager->ToWxString(vec[0]));
@@ -839,13 +839,13 @@ void OrbitViewPanel::LoadData()
       }
       
       // show vector if viewpoint vector name is Vector
-      if (mViewPointVectorComboBox->GetStringSelection() == wxT("Vector"))
+      if (mViewPointVectorComboBox->GetStringSelection() == "Vector")
       {
-         Rvector3 vec = mOrbitView->GetVector(wxT("ViewPointVector"));
+         Rvector3 vec = mOrbitView->GetVector("ViewPointVector");
          
          #if DEBUG_OPENGL_PANEL_LOAD
          MessageInterface::ShowMessage
-            (wxT("   ViewPointVector = %s\n"), vec.ToString().c_str());
+            ("   ViewPointVector = %s\n", vec.ToString().c_str());
          #endif
          
          mViewPointVec1TextCtrl->SetValue(theGuiManager->ToWxString(vec[0]));
@@ -860,13 +860,13 @@ void OrbitViewPanel::LoadData()
       }
       
       // show vector if view direction name is Vector
-      if (mViewDirectionComboBox->GetStringSelection() == wxT("Vector"))
+      if (mViewDirectionComboBox->GetStringSelection() == "Vector")
       {
-         Rvector3 vec = mOrbitView->GetVector(wxT("ViewDirection"));
+         Rvector3 vec = mOrbitView->GetVector("ViewDirection");
          
          #if DEBUG_OPENGL_PANEL_LOAD
          MessageInterface::ShowMessage
-            (wxT("   ViewDirector = %s\n"), vec.ToString().c_str());
+            ("   ViewDirector = %s\n", vec.ToString().c_str());
          #endif
          
          mViewDir1TextCtrl->SetValue(theGuiManager->ToWxString(vec[0]));
@@ -888,12 +888,12 @@ void OrbitViewPanel::LoadData()
       
       #if DEBUG_OPENGL_PANEL_LOAD
       MessageInterface::ShowMessage
-         (wxT("OrbitViewPanel::LoadData() spCount=%d\n"), spCount);
+         ("OrbitViewPanel::LoadData() spCount=%d\n", spCount);
       
       for (int i=0; i<spCount; i++)
       {
          MessageInterface::ShowMessage
-            (wxT("OrbitViewPanel::LoadData() spNameList[%d]=%s\n"),
+            ("OrbitViewPanel::LoadData() spNameList[%d]=%s\n",
              i, spNameList[i].c_str());
       }
       #endif
@@ -915,7 +915,7 @@ void OrbitViewPanel::LoadData()
       
       #if DEBUG_OPENGL_PANEL_LOAD
       MessageInterface::ShowMessage
-         (wxT("OrbitViewPanel::LoadData() mScCount=%d, mNonScCount=%d\n"),
+         ("OrbitViewPanel::LoadData() mScCount=%d, mNonScCount=%d\n",
           mScCount, mNonScCount);
       #endif
       
@@ -932,9 +932,9 @@ void OrbitViewPanel::LoadData()
             mDrawObjectMap[scNameArray[i]] =
                mOrbitView->GetShowObject(scNameArray[i]);
             mOrbitColorMap[scNameArray[i]]
-               = RgbColor(mOrbitView->GetColor(wxT("Orbit"), scNameArray[i]));
+               = RgbColor(mOrbitView->GetColor("Orbit", scNameArray[i]));
             mTargetColorMap[scNameArray[i]]
-               = RgbColor(mOrbitView->GetColor(wxT("Target"), scNameArray[i]));
+               = RgbColor(mOrbitView->GetColor("Target", scNameArray[i]));
             
             // Remove from the available ListBox
             mSpacecraftListBox->Delete(mSpacecraftListBox->FindString(scNames[i]));
@@ -944,8 +944,8 @@ void OrbitViewPanel::LoadData()
             
             #if DEBUG_OPENGL_PANEL_LOAD > 1
             MessageInterface::ShowMessage
-               (wxT("OrbitViewPanel::LoadData() scName=%s, orbColor=%u, ")
-                wxT("targetColor=%u\n"), scNameArray[i].c_str(),
+               ("OrbitViewPanel::LoadData() scName=%s, orbColor=%u, "
+                "targetColor=%u\n", scNameArray[i].c_str(),
                 mOrbitColorMap[scNameArray[i]].GetIntColor(),
                 mTargetColorMap[scNameArray[i]].GetIntColor());
             #endif
@@ -965,9 +965,9 @@ void OrbitViewPanel::LoadData()
             mDrawObjectMap[nonScNameArray[i]] =
                mOrbitView->GetShowObject(nonScNameArray[i]);
             mOrbitColorMap[nonScNameArray[i]]
-               = RgbColor(mOrbitView->GetColor(wxT("Orbit"), nonScNameArray[i]));
+               = RgbColor(mOrbitView->GetColor("Orbit", nonScNameArray[i]));
             mTargetColorMap[nonScNameArray[i]]
-               = RgbColor(mOrbitView->GetColor(wxT("Target"), nonScNameArray[i]));
+               = RgbColor(mOrbitView->GetColor("Target", nonScNameArray[i]));
             
             // Remove from the available ListBox
             mCelesPointListBox->Delete(mCelesPointListBox->FindString(nonScNames[i]));
@@ -1033,7 +1033,7 @@ void OrbitViewPanel::LoadData()
    
    
    #if DEBUG_OPENGL_PANEL_LOAD
-   MessageInterface::ShowMessage(wxT("OrbitViewPanel::LoadData() exiting.\n"));
+   MessageInterface::ShowMessage("OrbitViewPanel::LoadData() exiting.\n");
    #endif
 }
 
@@ -1044,11 +1044,11 @@ void OrbitViewPanel::LoadData()
 void OrbitViewPanel::SaveData()
 {
    #if DEBUG_OPENGL_PANEL_SAVE
-   MessageInterface::ShowMessage(wxT("OrbitViewPanel::SaveData() entered.\n"));
+   MessageInterface::ShowMessage("OrbitViewPanel::SaveData() entered.\n");
    #endif
    
    canClose = true;
-   wxString str1, str2;
+   std::string str1, str2;
    Integer collectFreq = 0, updateFreq = 0, pointsToRedraw = 0, starCount = 0;
    #ifdef __ENABLE_FOV__
    Integer initialFOV = 0, minFOV = 0, maxFOV = 0;
@@ -1065,65 +1065,65 @@ void OrbitViewPanel::SaveData()
    if (mHasIntegerDataChanged)
    {
       CheckInteger(collectFreq, mDataCollectFreqTextCtrl->GetValue().c_str(),
-                   wxT("DataCollectFrequency"), wxT("Integer Number > 0"), false, true, true);
+                   "DataCollectFrequency", "Integer Number > 0", false, true, true);
       
       CheckInteger(updateFreq, mUpdatePlotFreqTextCtrl->GetValue().c_str(),
-                   wxT("UpdatePlotFrequency"), wxT("Integer Number > 0"), false, true, true);
+                   "UpdatePlotFrequency", "Integer Number > 0", false, true, true);
       
       CheckInteger(pointsToRedraw, mNumPointsToRedrawTextCtrl->GetValue().c_str(),
-                   wxT("NumPointsToRedraw"), wxT("Integer Number >= 0"), false, true, true, true);
+                   "NumPointsToRedraw", "Integer Number >= 0", false, true, true, true);
       
       CheckInteger(starCount, mStarCountTextCtrl->GetValue().c_str(),
-                   wxT("StarCount"), wxT("Integer Number >= 0"), false, true);
+                   "StarCount", "Integer Number >= 0", false, true);
       
       #ifdef __ENABLE_FOV__
       CheckInteger(initialFOV, mFovTextCtrl->GetValue().c_str(),
-                   wxT("InitialFOV"), wxT(""));
+                   "InitialFOV", "");
       CheckInteger(minFOV, mFovMinTextCtrl->GetValue().c_str(),
-                   wxT("MinFOV"), wxT(""));
+                   "MinFOV", "");
       CheckInteger(maxFOV, mFovMaxTextCtrl->GetValue().c_str(),
-                   wxT("MaxFOV"), wxT(""));
+                   "MaxFOV", "");
       #endif
    }
    
-   if ((mViewPointRefComboBox->GetStringSelection() == wxT("Vector"))||
-       (mViewPointVectorComboBox->GetStringSelection() == wxT("Vector")) ||
-       (mViewDirectionComboBox->GetStringSelection() == wxT("Vector")))
+   if ((mViewPointRefComboBox->GetStringSelection() == "Vector")||
+       (mViewPointVectorComboBox->GetStringSelection() == "Vector") ||
+       (mViewDirectionComboBox->GetStringSelection() == "Vector"))
       setVector = true;
    
    if (setVector || mHasRealDataChanged)
    {
       CheckReal(scaleFactor, mViewScaleFactorTextCtrl->GetValue().c_str(),
-                wxT("ViewScaleFactor"), wxT("Real Number > 0"), false, true, true);
+                "ViewScaleFactor", "Real Number > 0", false, true, true);
       
-      if (mViewPointRefComboBox->GetStringSelection() == wxT("Vector"))
+      if (mViewPointRefComboBox->GetStringSelection() == "Vector")
       {
          CheckReal(viewRef[0], mViewPointRef1TextCtrl->GetValue().c_str(),
-                   wxT("ViewPointReference[1]"), wxT("Real Number"));
+                   "ViewPointReference[1]", "Real Number");
          CheckReal(viewRef[1], mViewPointRef2TextCtrl->GetValue().c_str(),
-                   wxT("ViewPointReference[2]"), wxT("Real Number"));
+                   "ViewPointReference[2]", "Real Number");
          CheckReal(viewRef[2], mViewPointRef3TextCtrl->GetValue().c_str(),
-                   wxT("ViewPointReference[3]"), wxT("Real Number"));
+                   "ViewPointReference[3]", "Real Number");
       }
       
-      if (mViewPointVectorComboBox->GetStringSelection() == wxT("Vector"))
+      if (mViewPointVectorComboBox->GetStringSelection() == "Vector")
       {
          CheckReal(viewVec[0], mViewPointVec1TextCtrl->GetValue().c_str(),
-                   wxT("ViewPointVector[1]"), wxT("Real Number"));
+                   "ViewPointVector[1]", "Real Number");
          CheckReal(viewVec[1], mViewPointVec2TextCtrl->GetValue().c_str(),
-                   wxT("ViewPointVector[2]"), wxT("Real Number"));
+                   "ViewPointVector[2]", "Real Number");
          CheckReal(viewVec[2], mViewPointVec3TextCtrl->GetValue().c_str(),
-                   wxT("ViewPointVector[3]"), wxT("Real Number"));
+                   "ViewPointVector[3]", "Real Number");
       }
       
-      if (mViewDirectionComboBox->GetStringSelection() == wxT("Vector"))
+      if (mViewDirectionComboBox->GetStringSelection() == "Vector")
       {
          CheckReal(viewDir[0], mViewDir1TextCtrl->GetValue().c_str(),
-                   wxT("ViewDirection[1]"), wxT("Real Number"));
+                   "ViewDirection[1]", "Real Number");
          CheckReal(viewDir[1], mViewDir2TextCtrl->GetValue().c_str(),
-                   wxT("ViewDirection[2]"), wxT("Real Number"));
+                   "ViewDirection[2]", "Real Number");
          CheckReal(viewDir[2], mViewDir3TextCtrl->GetValue().c_str(),
-                   wxT("ViewDirection[3]"), wxT("Real Number"));
+                   "ViewDirection[3]", "Real Number");
       }
    }
 
@@ -1150,18 +1150,18 @@ void OrbitViewPanel::SaveData()
       if (mHasIntegerDataChanged)
       {
          #if DEBUG_OPENGL_PANEL_SAVE
-         MessageInterface::ShowMessage(wxT("   Saving Integer data\n"));
+         MessageInterface::ShowMessage("   Saving Integer data\n");
          #endif
          
          mHasIntegerDataChanged = false;
-         mOrbitView->SetIntegerParameter(wxT("DataCollectFrequency"), collectFreq);
-         mOrbitView->SetIntegerParameter(wxT("UpdatePlotFrequency"), updateFreq);
-         mOrbitView->SetIntegerParameter(wxT("NumPointsToRedraw"), pointsToRedraw);
-         mOrbitView->SetIntegerParameter(wxT("StarCount"), starCount);
+         mOrbitView->SetIntegerParameter("DataCollectFrequency", collectFreq);
+         mOrbitView->SetIntegerParameter("UpdatePlotFrequency", updateFreq);
+         mOrbitView->SetIntegerParameter("NumPointsToRedraw", pointsToRedraw);
+         mOrbitView->SetIntegerParameter("StarCount", starCount);
          #ifdef __ENABLE_FOV__
-         mOrbitView->SetIntegerParameter(wxT("MinFOV"), minFOV);
-         mOrbitView->SetIntegerParameter(wxT("MaxFOV"), maxFOV);
-         mOrbitView->SetIntegerParameter(wxT("InitialFOV"), initialFOV);
+         mOrbitView->SetIntegerParameter("MinFOV", minFOV);
+         mOrbitView->SetIntegerParameter("MaxFOV", maxFOV);
+         mOrbitView->SetIntegerParameter("InitialFOV", initialFOV);
          #endif
       }
       
@@ -1171,19 +1171,19 @@ void OrbitViewPanel::SaveData()
       if (mHasViewInfoChanged)
       {
          #if DEBUG_OPENGL_PANEL_SAVE
-         MessageInterface::ShowMessage(wxT("   Saving View definition\n"));
+         MessageInterface::ShowMessage("   Saving View definition\n");
          #endif
          mHasViewInfoChanged = false;
          
          mOrbitView->SetStringParameter
-            (wxT("ViewPointReference"),
-             wxString(mViewPointRefComboBox->GetStringSelection().c_str()));
+            ("ViewPointReference",
+             std::string(mViewPointRefComboBox->GetStringSelection().c_str()));
          mOrbitView->SetStringParameter
-            (wxT("ViewPointVector"),
-             wxString(mViewPointVectorComboBox->GetStringSelection().c_str()));
+            ("ViewPointVector",
+             std::string(mViewPointVectorComboBox->GetStringSelection().c_str()));
          mOrbitView->SetStringParameter
-            (wxT("ViewDirection"),
-             wxString(mViewDirectionComboBox->GetStringSelection().c_str()));
+            ("ViewDirection",
+             std::string(mViewDirectionComboBox->GetStringSelection().c_str()));
       } // end if ( mHasViewInfoChanged)
       
       
@@ -1193,32 +1193,32 @@ void OrbitViewPanel::SaveData()
       if (setVector || mHasRealDataChanged)
       {
          #if DEBUG_OPENGL_PANEL_SAVE
-         MessageInterface::ShowMessage(wxT("   Saving Real data\n"));
+         MessageInterface::ShowMessage("   Saving Real data\n");
          #endif
          
          mHasViewInfoChanged = false;
          mHasRealDataChanged = false;
-         mOrbitView->SetRealParameter(wxT("ViewScaleFactor"), scaleFactor);
+         mOrbitView->SetRealParameter("ViewScaleFactor", scaleFactor);
          
-         if (mViewPointRefComboBox->GetStringSelection() == wxT("Vector"))
+         if (mViewPointRefComboBox->GetStringSelection() == "Vector")
          {
             vec.Set(viewRef[0], viewRef[1], viewRef[2]);
-            mOrbitView->SetStringParameter(wxT("ViewPointRefType"), wxT("Vector"));
-            mOrbitView->SetVector(wxT("ViewPointReference"), vec);
+            mOrbitView->SetStringParameter("ViewPointRefType", "Vector");
+            mOrbitView->SetVector("ViewPointReference", vec);
          }
          
-         if (mViewPointVectorComboBox->GetStringSelection() == wxT("Vector"))
+         if (mViewPointVectorComboBox->GetStringSelection() == "Vector")
          {
             vec.Set(viewVec[0], viewVec[1], viewVec[2]);
-            mOrbitView->SetStringParameter(wxT("ViewPointVectorType"), wxT("Vector"));
-            mOrbitView->SetVector(wxT("ViewPointVector"), vec);
+            mOrbitView->SetStringParameter("ViewPointVectorType", "Vector");
+            mOrbitView->SetVector("ViewPointVector", vec);
          }
          
-         if (mViewDirectionComboBox->GetStringSelection() == wxT("Vector"))
+         if (mViewDirectionComboBox->GetStringSelection() == "Vector")
          {
             vec.Set(viewDir[0], viewDir[1], viewDir[2]);
-            mOrbitView->SetStringParameter(wxT("ViewDirectionType"), wxT("Vector"));
-            mOrbitView->SetVector(wxT("ViewDirection"), vec);
+            mOrbitView->SetStringParameter("ViewDirectionType", "Vector");
+            mOrbitView->SetVector("ViewDirection", vec);
          }
       }
       
@@ -1229,42 +1229,42 @@ void OrbitViewPanel::SaveData()
       if (mHasDrawingOptionChanged)
       {
          #if DEBUG_OPENGL_PANEL_SAVE
-         MessageInterface::ShowMessage(wxT("   Saving drawing options\n"));
+         MessageInterface::ShowMessage("   Saving drawing options\n");
          #endif
          mHasDrawingOptionChanged = false;
          
-         mOrbitView->SetBooleanParameter(wxT("ShowPlot"), mShowPlotCheckBox->IsChecked());
+         mOrbitView->SetBooleanParameter("ShowPlot", mShowPlotCheckBox->IsChecked());
          //mOrbitView->Activate(mShowPlotCheckBox->IsChecked());
          
          if (mXYPlaneCheckBox->IsChecked())
-            mOrbitView->SetOnOffParameter(wxT("XYPlane"), wxT("On"));
+            mOrbitView->SetOnOffParameter("XYPlane", "On");
          else
-            mOrbitView->SetOnOffParameter(wxT("XYPlane"), wxT("Off"));
+            mOrbitView->SetOnOffParameter("XYPlane", "Off");
          
          if (mEclipticPlaneCheckBox->IsChecked())
-            mOrbitView->SetOnOffParameter(wxT("CelestialPlane"), wxT("On"));
+            mOrbitView->SetOnOffParameter("CelestialPlane", "On");
          else
-            mOrbitView->SetOnOffParameter(wxT("CelestialPlane"), wxT("Off"));
+            mOrbitView->SetOnOffParameter("CelestialPlane", "Off");
          
          if (mWireFrameCheckBox->IsChecked())
-            mOrbitView->SetOnOffParameter(wxT("WireFrame"), wxT("On"));
+            mOrbitView->SetOnOffParameter("WireFrame", "On");
          else
-            mOrbitView->SetOnOffParameter(wxT("WireFrame"), wxT("Off"));
+            mOrbitView->SetOnOffParameter("WireFrame", "Off");
          
          if (mAxesCheckBox->IsChecked())
-            mOrbitView->SetOnOffParameter(wxT("Axes"), wxT("On"));
+            mOrbitView->SetOnOffParameter("Axes", "On");
          else
-            mOrbitView->SetOnOffParameter(wxT("Axes"), wxT("Off"));
+            mOrbitView->SetOnOffParameter("Axes", "Off");
          
          if (mGridCheckBox->IsChecked())
-            mOrbitView->SetOnOffParameter(wxT("Grid"), wxT("On"));
+            mOrbitView->SetOnOffParameter("Grid", "On");
          else
-            mOrbitView->SetOnOffParameter(wxT("Grid"), wxT("Off"));
+            mOrbitView->SetOnOffParameter("Grid", "Off");
          
          if (mOriginSunLineCheckBox->IsChecked())
-            mOrbitView->SetOnOffParameter(wxT("SunLine"), wxT("On"));
+            mOrbitView->SetOnOffParameter("SunLine", "On");
          else
-            mOrbitView->SetOnOffParameter(wxT("SunLine"), wxT("Off"));
+            mOrbitView->SetOnOffParameter("SunLine", "Off");
          
          //if (mOverlapCheckBox->IsChecked())
          //   mOrbitView->SetOnOffParameter("Overlap", "On");
@@ -1272,11 +1272,11 @@ void OrbitViewPanel::SaveData()
          //   mOrbitView->SetOnOffParameter("Overlap", "Off");
          
          if (mUseInitialViewCheckBox->IsChecked())
-            mOrbitView->SetOnOffParameter(wxT("UseInitialView"), wxT("On"));
+            mOrbitView->SetOnOffParameter("UseInitialView", "On");
          else
-            mOrbitView->SetOnOffParameter(wxT("UseInitialView"), wxT("Off"));
+            mOrbitView->SetOnOffParameter("UseInitialView", "Off");
          
-         mOrbitView->SetStringParameter(wxT("SolverIterations"),
+         mOrbitView->SetStringParameter("SolverIterations",
                                          mSolverIterComboBox->GetValue().c_str());
       }
 
@@ -1287,14 +1287,14 @@ void OrbitViewPanel::SaveData()
       {
          mHasStarOptionChanged = false;
          if (mEnableStarsCheckBox->IsChecked())
-            mOrbitView->SetOnOffParameter(wxT("EnableStars"), wxT("On"));
+            mOrbitView->SetOnOffParameter("EnableStars", "On");
          else
-            mOrbitView->SetOnOffParameter(wxT("EnableStars"), wxT("Off"));
+            mOrbitView->SetOnOffParameter("EnableStars", "Off");
          
          if (mEnableConstellationsCheckBox->IsChecked())
-            mOrbitView->SetOnOffParameter(wxT("EnableConstellations"), wxT("On"));
+            mOrbitView->SetOnOffParameter("EnableConstellations", "On");
          else
-            mOrbitView->SetOnOffParameter(wxT("EnableConstellations"), wxT("Off"));
+            mOrbitView->SetOnOffParameter("EnableConstellations", "Off");
       }
       
       
@@ -1303,28 +1303,28 @@ void OrbitViewPanel::SaveData()
       //--------------------------------------------------------------
       #ifdef __ENABLE_GL_PERSPECTIVE__
       #if DEBUG_OPENGL_PANEL_SAVE
-      MessageInterface::ShowMessage(wxT("   Saving perspective mode data\n"));
+      MessageInterface::ShowMessage("   Saving perspective mode data\n");
       #endif
       
       if (mPerspectiveModeCheckBox->IsChecked())
-         mOrbitView->SetOnOffParameter(wxT("PerspectiveMode"), wxT("On"));
+         mOrbitView->SetOnOffParameter("PerspectiveMode", "On");
       else
-         mOrbitView->SetOnOffParameter(wxT("PerspectiveMode"), wxT("Off"));
+         mOrbitView->SetOnOffParameter("PerspectiveMode", "Off");
       
       if (mUseFixedFovCheckBox->IsChecked())
-         mOrbitView->SetOnOffParameter(wxT("UseFixedFov"), wxT("On"));
+         mOrbitView->SetOnOffParameter("UseFixedFov", "On");
       else
-         mOrbitView->SetOnOffParameter(wxT("UseFixedFov"), wxT("Off"));
+         mOrbitView->SetOnOffParameter("UseFixedFov", "Off");
       
       Real fov;
-      wxString fovStr = mFixedFovTextCtrl->GetValue();
+      std::string fovStr = mFixedFovTextCtrl->GetValue();
       if (!GmatStringUtil::ToReal(fovStr, &fov) || fov < 1)
       {
          MessageInterface::PopupMessage(Gmat::ERROR_, msg.c_str(),
-                 inputString[0].c_str(), wxT("FixedFovAngle"), wxT("Real Number >= 1"));
+                 inputString[0].c_str(), "FixedFovAngle", "Real Number >= 1");
          return;
       }
-      mOrbitView->SetRealParameter(wxT("FixedFovAngle"), fov);
+      mOrbitView->SetRealParameter("FixedFovAngle", fov);
       #endif
       
       
@@ -1334,7 +1334,7 @@ void OrbitViewPanel::SaveData()
       if (mHasSpChanged)
       {
          #if DEBUG_OPENGL_PANEL_SAVE
-         MessageInterface::ShowMessage(wxT("   Saving spacecraft and body list\n"));
+         MessageInterface::ShowMessage("   Saving spacecraft and body list\n");
          #endif
          
          mHasSpChanged = false;
@@ -1346,36 +1346,36 @@ void OrbitViewPanel::SaveData()
          
          #if DEBUG_OPENGL_PANEL_SAVE
          MessageInterface::ShowMessage
-            (wxT("   mScCount=%d, mNonScCount=%d\n"), mScCount, mNonScCount);
+            ("   mScCount=%d, mNonScCount=%d\n", mScCount, mNonScCount);
          #endif
          
          // clear the list first
-         mOrbitView->TakeAction(wxT("Clear"));
+         mOrbitView->TakeAction("Clear");
          
          // add spacecraft
          for (int i=0; i<mScCount; i++)
          {
-            mSelSpName = wxString(mSelectedScListBox->GetString(i).c_str());
+            mSelSpName = std::string(mSelectedScListBox->GetString(i).c_str());
             
             #if DEBUG_OPENGL_PANEL_SAVE
-            MessageInterface::ShowMessage(wxT("   Sc[%d] = %s\n"), i, mSelSpName.c_str());
+            MessageInterface::ShowMessage("   Sc[%d] = %s\n", i, mSelSpName.c_str());
             #endif
             
-            mOrbitView->SetStringParameter(wxT("Add"), mSelSpName, i);
+            mOrbitView->SetStringParameter("Add", mSelSpName, i);
          }
          
          // add non-spacecraft
          for (int i=0; i<mNonScCount; i++)
          {
-            mSelSpName = wxString(mSelectedObjListBox->GetString(i).c_str());
+            mSelSpName = std::string(mSelectedObjListBox->GetString(i).c_str());
             
             #if DEBUG_OPENGL_PANEL_SAVE
             MessageInterface::ShowMessage
-               (wxT("OrbitViewPanel::SaveData() NonSc[%d] = %s\n"), i,
+               ("OrbitViewPanel::SaveData() NonSc[%d] = %s\n", i,
                 mSelSpName.c_str());
             #endif
             
-            mOrbitView->SetStringParameter(wxT("Add"), mSelSpName, mScCount+i);
+            mOrbitView->SetStringParameter("Add", mSelSpName, mScCount+i);
          }
       }
       
@@ -1385,7 +1385,7 @@ void OrbitViewPanel::SaveData()
       if (mHasShowObjectChanged)
       {
          #if DEBUG_OPENGL_PANEL_SAVE
-         MessageInterface::ShowMessage(wxT("   Saving show object flags\n"));
+         MessageInterface::ShowMessage("   Saving show object flags\n");
          #endif
          
          mHasShowObjectChanged = false;
@@ -1393,7 +1393,7 @@ void OrbitViewPanel::SaveData()
          // change draw spacecraft
          for (int i=0; i<mScCount; i++)
          {
-            mSelSpName = wxString(mSelectedScListBox->GetString(i).c_str());
+            mSelSpName = std::string(mSelectedScListBox->GetString(i).c_str());
          
             mOrbitView->
                SetShowObject( mSelSpName, mDrawObjectMap[mSelSpName]);
@@ -1402,7 +1402,7 @@ void OrbitViewPanel::SaveData()
          // change draw non-spacecraft
          for (int i=0; i<mNonScCount; i++)
          {
-            mSelSpName = wxString(mSelectedObjListBox->GetString(i).c_str());
+            mSelSpName = std::string(mSelectedObjListBox->GetString(i).c_str());
          
             mOrbitView->
                SetShowObject(mSelSpName, mDrawObjectMap[mSelSpName]);
@@ -1415,7 +1415,7 @@ void OrbitViewPanel::SaveData()
       if (mHasOrbitColorChanged)
       {
          #if DEBUG_OPENGL_PANEL_SAVE
-         MessageInterface::ShowMessage(wxT("   Saving orbit colors\n"));
+         MessageInterface::ShowMessage("   Saving orbit colors\n");
          #endif
          
          mHasOrbitColorChanged = false;
@@ -1423,26 +1423,26 @@ void OrbitViewPanel::SaveData()
          // change spacecraft orbit color
          for (int i=0; i<mScCount; i++)
          {
-            mSelSpName = wxString(mSelectedScListBox->GetString(i).c_str());
+            mSelSpName = std::string(mSelectedScListBox->GetString(i).c_str());
             
             #if DEBUG_OPENGL_PANEL_SAVE
             MessageInterface::ShowMessage
-               (wxT("OrbitViewPanel::SaveData() objName=%s, orbColor=%u\n"),
+               ("OrbitViewPanel::SaveData() objName=%s, orbColor=%u\n",
                 mSelSpName.c_str(), mOrbitColorMap[mSelSpName].GetIntColor());
             #endif
             
             mOrbitView->
-               SetColor(wxT("Orbit"), mSelSpName,
+               SetColor("Orbit", mSelSpName,
                         mOrbitColorMap[mSelSpName].GetIntColor());
          }
          
          // change non-spacecraft orbit color
          for (int i=0; i<mNonScCount; i++)
          {
-            mSelSpName = wxString(mSelectedObjListBox->GetString(i).c_str());
+            mSelSpName = std::string(mSelectedObjListBox->GetString(i).c_str());
             
             mOrbitView->
-               SetColor(wxT("Orbit"), mSelSpName,
+               SetColor("Orbit", mSelSpName,
                         mOrbitColorMap[mSelSpName].GetIntColor());
          }
       }
@@ -1453,7 +1453,7 @@ void OrbitViewPanel::SaveData()
       if (mHasTargetColorChanged)
       {
          #if DEBUG_OPENGL_PANEL_SAVE
-         MessageInterface::ShowMessage(wxT("   Saving target colors\n"));
+         MessageInterface::ShowMessage("   Saving target colors\n");
          #endif
          
          mHasTargetColorChanged = false;
@@ -1461,32 +1461,32 @@ void OrbitViewPanel::SaveData()
          // change spacecraft target color
          for (int i=0; i<mScCount; i++)
          {
-            mSelSpName = wxString(mSelectedScListBox->GetString(i).c_str());
+            mSelSpName = std::string(mSelectedScListBox->GetString(i).c_str());
             
             #if DEBUG_OPENGL_PANEL_SAVE
             MessageInterface::ShowMessage
-               (wxT("   objName=%s targetColor=%u\n"),
+               ("   objName=%s targetColor=%u\n",
                 mSelSpName.c_str(), mTargetColorMap[mSelSpName].GetIntColor());
             #endif
             
             mOrbitView->
-               SetColor(wxT("Target"), mSelSpName,
+               SetColor("Target", mSelSpName,
                         mTargetColorMap[mSelSpName].GetIntColor());
          }
          
          // change non-spacecraft target color
          for (int i=0; i<mNonScCount; i++)
          {
-            mSelSpName = wxString(mSelectedObjListBox->GetString(i).c_str());
+            mSelSpName = std::string(mSelectedObjListBox->GetString(i).c_str());
             
             #if DEBUG_OPENGL_PANEL_SAVE
             MessageInterface::ShowMessage
-               (wxT("   objName=%s targetColor=%u\n"),
+               ("   objName=%s targetColor=%u\n",
                 mSelSpName.c_str(), mTargetColorMap[mSelSpName].GetIntColor());
             #endif
             
             mOrbitView->
-               SetColor(wxT("Target"), mSelSpName,
+               SetColor("Target", mSelSpName,
                         mTargetColorMap[mSelSpName].GetIntColor());
          }
       }
@@ -1497,13 +1497,13 @@ void OrbitViewPanel::SaveData()
       if (mHasCoordSysChanged)
       {
          #if DEBUG_OPENGL_PANEL_SAVE
-         MessageInterface::ShowMessage(wxT("   Saving view coordinate system\n"));
+         MessageInterface::ShowMessage("   Saving view coordinate system\n");
          #endif
          
          mHasCoordSysChanged = false;
          mOrbitView->SetStringParameter
-            (wxT("CoordinateSystem"),
-             wxString(mCoordSysComboBox->GetStringSelection().c_str()));
+            ("CoordinateSystem",
+             std::string(mCoordSysComboBox->GetStringSelection().c_str()));
       }
       
       //--------------------------------------------------------------
@@ -1512,16 +1512,16 @@ void OrbitViewPanel::SaveData()
       if (mHasViewUpInfoChanged)
       {
          #if DEBUG_OPENGL_PANEL_SAVE
-         MessageInterface::ShowMessage(wxT("   Saving view up coordinate system\n"));
+         MessageInterface::ShowMessage("   Saving view up coordinate system\n");
          #endif
          
          mHasViewUpInfoChanged = false;
          mOrbitView->SetStringParameter
-            (wxT("ViewUpCoordinateSystem"),
-             wxString(mViewUpCsComboBox->GetStringSelection().c_str()));
+            ("ViewUpCoordinateSystem",
+             std::string(mViewUpCsComboBox->GetStringSelection().c_str()));
          mOrbitView->SetStringParameter
-            (wxT("ViewUpAxis"),
-             wxString(mViewUpAxisComboBox->GetStringSelection().c_str()));
+            ("ViewUpAxis",
+             std::string(mViewUpAxisComboBox->GetStringSelection().c_str()));
       }
             
       EnableUpdate(false);
@@ -1533,7 +1533,7 @@ void OrbitViewPanel::SaveData()
    }
    
    #if DEBUG_OPENGL_PANEL_SAVE
-   MessageInterface::ShowMessage(wxT("OrbitViewPanel::SaveData() exiting.\n"));
+   MessageInterface::ShowMessage("OrbitViewPanel::SaveData() exiting.\n");
    #endif
 }
 
@@ -1544,7 +1544,7 @@ void OrbitViewPanel::SaveData()
 void OrbitViewPanel::OnAddSpacePoint(wxCommandEvent& event)
 {
    #ifdef DEBUG_ADD_SP
-   MessageInterface::ShowMessage(wxT("OrbitViewPanel::OnAddSpacePoint() entered\n"));
+   MessageInterface::ShowMessage("OrbitViewPanel::OnAddSpacePoint() entered\n");
    #endif
    
    if (mSpacecraftListBox->GetSelection() != -1)
@@ -1557,7 +1557,7 @@ void OrbitViewPanel::OnAddSpacePoint(wxCommandEvent& event)
       
       #ifdef DEBUG_ADD_SP
       MessageInterface::ShowMessage
-         (wxT("   str='%s', strId=%d, found=%d\n"), str.c_str(), strId, found);
+         ("   str='%s', strId=%d, found=%d\n", str.c_str(), strId, found);
       #endif
       
       // if the string wasn't found in the second list, insert it
@@ -1595,7 +1595,7 @@ void OrbitViewPanel::OnAddSpacePoint(wxCommandEvent& event)
       
       #ifdef DEBUG_ADD_SP
       MessageInterface::ShowMessage
-         (wxT("   str='%s', strId=%d, found=%d\n"), str.c_str(), strId, found);
+         ("   str='%s', strId=%d, found=%d\n", str.c_str(), strId, found);
       #endif
       
       // if the string wasn't found in the second list, insert it
@@ -1627,7 +1627,7 @@ void OrbitViewPanel::OnAddSpacePoint(wxCommandEvent& event)
       }
    }
    #ifdef DEBUG_ADD_SP
-   MessageInterface::ShowMessage(wxT("OrbitViewPanel::OnAddSpacePoint() leaving\n"));
+   MessageInterface::ShowMessage("OrbitViewPanel::OnAddSpacePoint() leaving\n");
    #endif
 }
 
@@ -1655,7 +1655,7 @@ void OrbitViewPanel::OnRemoveSpacePoint(wxCommandEvent& event)
       {
          mSelectedScListBox->SetSelection(0);
          if (mSelectedScListBox->GetCount() == 0)
-            ShowSpacePointOption(wxT(""), false); // hide spacecraft color, etc
+            ShowSpacePointOption("", false); // hide spacecraft color, etc
          else
             ShowSpacePointOption(mSelectedScListBox->GetStringSelection(), true);
       }
@@ -1683,7 +1683,7 @@ void OrbitViewPanel::OnRemoveSpacePoint(wxCommandEvent& event)
       {
          mSelectedObjListBox->SetSelection(0);
          if (mSelectedObjListBox->GetCount() == 0)
-            ShowSpacePointOption(wxT(""), false); // hide spacecraft color, etc
+            ShowSpacePointOption("", false); // hide spacecraft color, etc
          else
             ShowSpacePointOption(mSelectedObjListBox->GetStringSelection(), true);
       }
@@ -1731,7 +1731,7 @@ void OrbitViewPanel::OnClearSpacePoint(wxCommandEvent& event)
       mExcludedCelesPointList.Clear();
    }
    
-   ShowSpacePointOption(wxT(""), false);
+   ShowSpacePointOption("", false);
    mHasSpChanged = true;
    EnableUpdate(true);
 }
@@ -1818,20 +1818,20 @@ void OrbitViewPanel::OnCheckBoxChange(wxCommandEvent& event)
    {
       if (mSelectedScListBox->GetSelection() != -1)
       {
-         mSelSpName = wxString(mSelectedScListBox->GetStringSelection().c_str());
+         mSelSpName = std::string(mSelectedScListBox->GetStringSelection().c_str());
          mDrawObjectMap[mSelSpName] = mDrawObjectCheckBox->GetValue();
          mHasShowObjectChanged = true;
       }
       else if (mSelectedObjListBox->GetSelection() != -1)
       {
-         mSelSpName = wxString(mSelectedObjListBox->GetStringSelection().c_str());
+         mSelSpName = std::string(mSelectedObjListBox->GetStringSelection().c_str());
          mDrawObjectMap[mSelSpName] = mDrawObjectCheckBox->GetValue();
          mHasShowObjectChanged = true;
       }
       
       #if DEBUG_OPENGL_PANEL_CHECKBOX
       MessageInterface::ShowMessage
-         (wxT("OrbitViewPanel::OnCheckBoxChange() mSelSpName=%s, show=%d\n"),
+         ("OrbitViewPanel::OnCheckBoxChange() mSelSpName=%s, show=%d\n",
           mSelSpName.c_str(), mDrawObjectMap[mSelSpName]);
       #endif
    }
@@ -1878,7 +1878,7 @@ void OrbitViewPanel::OnOrbitColorClick(wxCommandEvent& event)
       // if spacecraft is selected
       if (mSelectedScListBox->GetSelection() != -1)
       {
-         mSelSpName = wxString(mSelectedScListBox->GetStringSelection().c_str());
+         mSelSpName = std::string(mSelectedScListBox->GetStringSelection().c_str());
          
          mOrbitColor = dialog.GetColourData().GetColour();
          mOrbitColorButton->SetBackgroundColour(mOrbitColor);
@@ -1890,18 +1890,18 @@ void OrbitViewPanel::OnOrbitColorClick(wxCommandEvent& event)
          
          #if DEBUG_OPENGL_PANEL_COLOR
          MessageInterface::ShowMessage
-            (wxT("OnOrbitColorClick() red=%u, green=%u, blue=%u, alpha=%u\n"),
+            ("OnOrbitColorClick() red=%u, green=%u, blue=%u, alpha=%u\n",
              mOrbitColor.Red(), mOrbitColor.Green(), mOrbitColor.Blue(),
              mOrbitColor.Alpha());
          UnsignedInt intColor = mOrbitColorMap[mSelSpName].GetIntColor();
          MessageInterface::ShowMessage
-            (wxT("OnOrbitColorClick() mOrbitColorMap[%s]=%u<%08x>\n"),
+            ("OnOrbitColorClick() mOrbitColorMap[%s]=%u<%08x>\n",
              mSelSpName.c_str(), intColor, intColor);
          #endif
       }
       else if (mSelectedObjListBox->GetSelection() != -1)
       {
-         mSelSpName = wxString(mSelectedObjListBox->GetStringSelection().c_str());
+         mSelSpName = std::string(mSelectedObjListBox->GetStringSelection().c_str());
          
          mOrbitColor = dialog.GetColourData().GetColour();
          mOrbitColorButton->SetBackgroundColour(mOrbitColor);
@@ -1914,12 +1914,12 @@ void OrbitViewPanel::OnOrbitColorClick(wxCommandEvent& event)
          
          #if DEBUG_OPENGL_PANEL_COLOR
          MessageInterface::ShowMessage
-            (wxT("OnOrbitColorClick() red=%u, green=%u, blue=%u, alpha=%u\n"),
+            ("OnOrbitColorClick() red=%u, green=%u, blue=%u, alpha=%u\n",
              mOrbitColor.Red(), mOrbitColor.Green(), mOrbitColor.Blue(),
              mOrbitColor.Alpha());
          UnsignedInt intColor = mOrbitColorMap[mSelSpName].GetIntColor();
          MessageInterface::ShowMessage
-            (wxT("OnOrbitColorClick() mOrbitColorMap[%s]=%u<%08x>\n"),
+            ("OnOrbitColorClick() mOrbitColorMap[%s]=%u<%08x>\n",
              mSelSpName.c_str(), intColor, intColor);
          #endif
       }
@@ -1944,7 +1944,7 @@ void OrbitViewPanel::OnTargetColorClick(wxCommandEvent& event)
    
    if (dialog.ShowModal() == wxID_OK)
    {
-      mSelSpName = wxString(mSelectedScListBox->GetStringSelection().c_str());
+      mSelSpName = std::string(mSelectedScListBox->GetStringSelection().c_str());
       
       mTargetColor = dialog.GetColourData().GetColour();
       mTargetColorButton->SetBackgroundColour(mTargetColor);
@@ -1956,12 +1956,12 @@ void OrbitViewPanel::OnTargetColorClick(wxCommandEvent& event)
       
       #if DEBUG_OPENGL_PANEL
       MessageInterface::ShowMessage
-         (wxT("OnTargetColorClick() red=%u, green=%u, blue=%u, alpha=%u\n"),
+         ("OnTargetColorClick() red=%u, green=%u, blue=%u, alpha=%u\n",
           mTargetColor.Red(), mTargetColor.Green(), mTargetColor.Blue(),
           mTargetColor.Alpha());
       UnsignedInt intColor = mTargetColorMap[mSelSpName].GetIntColor();
       MessageInterface::ShowMessage
-         (wxT("OnTargetColorClick() mTargetColorMap[%s]=%u<%08x>\n"),
+         ("OnTargetColorClick() mTargetColorMap[%s]=%u<%08x>\n",
           mSelSpName.c_str(), intColor, intColor);
       #endif
       
@@ -1980,7 +1980,7 @@ void OrbitViewPanel::OnComboBoxChange(wxCommandEvent& event)
    {
       // if coordinate system is other than EarthMJ2000Eq,
       // uncheck and disable draw ecliptic plane CheckBox
-      if (mCoordSysComboBox->GetValue() == wxT("EarthMJ2000Eq"))
+      if (mCoordSysComboBox->GetValue() == "EarthMJ2000Eq")
       {
          mEclipticPlaneCheckBox->Enable();
       }
@@ -2001,7 +2001,7 @@ void OrbitViewPanel::OnComboBoxChange(wxCommandEvent& event)
    {
       mHasViewInfoChanged = true;
       
-      if (mViewPointRefComboBox->GetStringSelection() == wxT("Vector"))
+      if (mViewPointRefComboBox->GetStringSelection() == "Vector")
          mViewDefSizer->Show(mViewPointRefSizer, true);
       else
          mViewDefSizer->Show(mViewPointRefSizer, false);
@@ -2010,7 +2010,7 @@ void OrbitViewPanel::OnComboBoxChange(wxCommandEvent& event)
    {
       mHasViewInfoChanged = true;
       
-      if (mViewPointVectorComboBox->GetStringSelection() == wxT("Vector"))
+      if (mViewPointVectorComboBox->GetStringSelection() == "Vector")
          mViewDefSizer->Show(mViewPointVectorSizer, true);
       else
          mViewDefSizer->Show(mViewPointVectorSizer, false);
@@ -2019,7 +2019,7 @@ void OrbitViewPanel::OnComboBoxChange(wxCommandEvent& event)
    {
       mHasViewInfoChanged = true;
       
-      if (mViewDirectionComboBox->GetStringSelection() == wxT("Vector"))
+      if (mViewDirectionComboBox->GetStringSelection() == "Vector")
          mViewDefSizer->Show(mViewDirVectorSizer, true);
       else
          mViewDefSizer->Show(mViewDirVectorSizer, false);
@@ -2087,20 +2087,20 @@ void OrbitViewPanel::ShowSpacePointOption(const wxString &name, bool show,
 {
    #if DEBUG_OPENGL_PANEL_SHOW
    MessageInterface::ShowMessage
-      (wxT("OrbitViewPanel::ShowSpacePointOption() name=%s, show=%d, isSc=%d, ")
-       wxT("color=%u\n"), name.c_str(), show, isSc, color);
+      ("OrbitViewPanel::ShowSpacePointOption() name=%s, show=%d, isSc=%d, "
+       "color=%u\n", name.c_str(), show, isSc, color);
    #endif
    
-   if (!name.IsSameAs(wxT("")))
+   if (!name.IsSameAs(""))
    {
-      mSelSpName = wxString(name.c_str());
+      mSelSpName = std::string(name.c_str());
       
       // if object name not found, insert
       if (mOrbitColorMap.find(mSelSpName) == mOrbitColorMap.end())
       {
          #if DEBUG_OPENGL_PANEL
          MessageInterface::ShowMessage
-            (wxT("ShowSpacePointOption() name not found, so adding it to color map\n"));
+            ("ShowSpacePointOption() name not found, so adding it to color map\n");
          #endif
          
          mOrbitColorMap[mSelSpName] = RgbColor(color);
@@ -2112,7 +2112,7 @@ void OrbitViewPanel::ShowSpacePointOption(const wxString &name, bool show,
       
       #if DEBUG_OPENGL_PANEL_SHOW
       MessageInterface::ShowMessage
-         (wxT("OrbitViewPanel::ShowSpacePointOption() orbColor=%u, targColor=%u\n"),
+         ("OrbitViewPanel::ShowSpacePointOption() orbColor=%u, targColor=%u\n",
           orbColor.GetIntColor(), targColor.GetIntColor());
       #endif
       

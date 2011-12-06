@@ -20,10 +20,9 @@
 #ifndef GmatOpenGLSupport_hpp
 #define GmatOpenGLSupport_hpp
 
-#include <wx/string.h>
 // windows specific functions
 void InitGL();
 bool SetPixelFormatDescriptor();
 void SetDefaultGLFont();
-void ScreenShotSave(wxString ImagePath);
+void ScreenShotSave(char* ImagePath);
 #endif

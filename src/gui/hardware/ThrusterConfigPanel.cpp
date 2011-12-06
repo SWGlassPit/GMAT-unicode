@@ -47,7 +47,7 @@ ThrusterConfigPanel::ThrusterConfigPanel(wxWindow *parent,
    
    #ifdef DEBUG_BURNPANEL_CREATE
    MessageInterface::ShowMessage
-      (wxT("ThrusterConfigPanel() constructor entered, theObject=<%p>'%s'\n"),
+      ("ThrusterConfigPanel() constructor entered, theObject=<%p>'%s'\n",
        theObject, theObject->GetTypeName().c_str());
    #endif
    
@@ -74,16 +74,16 @@ ThrusterConfigPanel::~ThrusterConfigPanel()
 void ThrusterConfigPanel::LoadData()
 {
    #ifdef DEBUG_BURNPANEL_LOAD
-   MessageInterface::ShowMessage(wxT("ThrusterConfigPanel::LoadData() entered\n"));
+   MessageInterface::ShowMessage("ThrusterConfigPanel::LoadData() entered\n");
    #endif
    
    try
    {
       Integer paramID;
-      paramID = theObject->GetParameterID(wxT("DutyCycle"));
+      paramID = theObject->GetParameterID("DutyCycle");
       dutyCycleTextCtrl->SetValue(wxVariant(theObject->GetRealParameter(paramID)));
       
-      paramID = theObject->GetParameterID(wxT("ThrustScaleFactor"));
+      paramID = theObject->GetParameterID("ThrustScaleFactor");
       scaleFactorTextCtrl->SetValue(wxVariant(theObject->GetRealParameter(paramID)));
    }
    catch (BaseException &e)
@@ -94,7 +94,7 @@ void ThrusterConfigPanel::LoadData()
    BurnThrusterPanel::LoadData();
    
    #ifdef DEBUG_BURNPANEL_LOAD
-   MessageInterface::ShowMessage(wxT("ThrusterConfigPanel::LoadData() entered\n"));
+   MessageInterface::ShowMessage("ThrusterConfigPanel::LoadData() entered\n");
    #endif
 }
 
@@ -105,11 +105,11 @@ void ThrusterConfigPanel::LoadData()
 void ThrusterConfigPanel::SaveData()
 {
    #ifdef DEBUG_BURNPANEL_SAVE
-   MessageInterface::ShowMessage(wxT("ThrusterConfigPanel::SaveData() entered\n"));
+   MessageInterface::ShowMessage("ThrusterConfigPanel::SaveData() entered\n");
    #endif
    
    canClose = true;
-   wxString str;
+   std::string str;
    Real dutyCycle, scaleFactor;
    Integer paramID;
    bool dutyCycleScaleFactorChanged = false;
@@ -119,10 +119,10 @@ void ThrusterConfigPanel::SaveData()
       if (dutyCycleTextCtrl->IsModified() || scaleFactorTextCtrl->IsModified())
       {
          str = dutyCycleTextCtrl->GetValue();      
-         CheckReal(dutyCycle, str, wxT("DutyCycle"), wxT("Real Number"));
+         CheckReal(dutyCycle, str, "DutyCycle", "Real Number");
          
          str = scaleFactorTextCtrl->GetValue();      
-         CheckReal(scaleFactor, str, wxT("ThrustScaleFactor"), wxT("Real Number"));
+         CheckReal(scaleFactor, str, "ThrustScaleFactor", "Real Number");
          
          dutyCycleScaleFactorChanged = true;
       }
@@ -132,10 +132,10 @@ void ThrusterConfigPanel::SaveData()
       
       if (dutyCycleScaleFactorChanged)
       {
-         paramID = theObject->GetParameterID(wxT("DutyCycle"));
+         paramID = theObject->GetParameterID("DutyCycle");
          theObject->SetRealParameter(paramID, dutyCycle);
       
-         paramID = theObject->GetParameterID(wxT("ThrustScaleFactor"));
+         paramID = theObject->GetParameterID("ThrustScaleFactor");
          theObject->SetRealParameter(paramID, scaleFactor);
       }
    }
@@ -148,6 +148,6 @@ void ThrusterConfigPanel::SaveData()
    if (canClose) BurnThrusterPanel::SaveData();
    
    #ifdef DEBUG_BURNPANEL_SAVE
-   MessageInterface::ShowMessage(wxT("ThrusterConfigPanel::SaveData() exiting\n"));
+   MessageInterface::ShowMessage("ThrusterConfigPanel::SaveData() exiting\n");
    #endif
 }
